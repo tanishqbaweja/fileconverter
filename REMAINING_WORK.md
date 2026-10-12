@@ -5,7 +5,32 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-12 — Fresh warning-fix native qualification ready
+## 2026-10-12 — Actual packet-cache native lifecycle PASS; fresh browser/full acceptance missing
+
+**Partially implemented**. Actual no-Docker job38206263853 SUCCESS6m15s at exact
+021552ac…c9113. New decoder4421339c…45cb/unchanged8b2 encoder keep actual fixed
+32+16MiB/no growth and all HEVC plane/auxiliary/allocator/codec/timing/metadata/
+fragment/AVIO/lifetime gates. Real pinned libavutil200000 packet reuses pass,
+one variable-size idle lease≤1MiB+64B, full padding, maximum payload, live aliases,
+deferred close and four injected allocation failures with owned allocations balanced.
+Old native13/9/80/lifetime units still pass. SDK-only warning handling does not
+weaken C-Wall/-Wextra/-Werror or explicit fixed-memory settings.
+
+All72 executed Git-head/current/post preimages retained in160,602B compact archive,
+eight-source branch/seven-source collector snapshots joined;20 local tools9.27MiB,
+same artifact/disk caps. Hosted finally scratch cleanup PASS; duplicate artifact
+11727487740 removed after verified local head/id/digest/hashes, API0 remain.
+All owned local wrappers/download/runtime absent, no local browser/conversion or
+original read/mutation.25 focused regression/three-file zero-warning lint and
+whitespace pass. [Actual native proof](evidence/mpeg2-packet-cache-build-38206263853.json).
+
+Native lifetime tests do NOT prove original OOM fixed, browser fidelity, full
+conversion, primary250MiB acceptance or speed gain. Remaining next: fresh actual-
+binary abort observer/control and production-browser fidelity/recovery, then
+changed complete original/repeats/scaling/controlled speed. No native job remains
+live or public promotion; all broader missing/partial requirements remain active.
+
+## 2026-10-12 — Fresh warning-fix native qualification ready (superseded above)
 
 **Partially implemented**. Corrected isolated workflow selects actual strict native
 builder. Fresh branch/collector/observer point to separate warning-fix source head,

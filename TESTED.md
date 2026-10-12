@@ -4,7 +4,46 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-12 — Corrected packet native workflow/branch/collector ready for fresh actual build
+## 2026-10-12 — Actual bounded packet-cache native build and lifetime/failure qualification PASS
+
+Previous goal turn was progress: preserved actual first build failure and precise
+SDK-only correction. ONE corrected no-Docker job38206263853 SUCCESS at exact
+021552ac0875bd22fa4f156ab329b13769ac9113,6m15s overall/5m34s compile. Actual10m
+ETA sleep then ONE same-job check; no seconds polling, redispatch or browser/full
+conversion. [Actual native proof](evidence/mpeg2-packet-cache-build-38206263853.json)
+retains new decoder6,906,448B SHA4421339c802d2031c27c6c62ee948174b454797a7176d338cfe451b19c2945cb,
+unchanged8b2 separate encoder and actual fixed512/256-page shared memories32+16MiB,
+no growth. Existing qualified HEVC planes/single-idle auxiliary refs, native13
+alignment/9 dispatch/80 selector/old lifetime units still PASS. No codec, timing,
+fragment, metadata, I/O, public ABI, live-reference or quality limit changed.
+
+REAL pinned libavutil/Wasm packet smoke PASS200000 reuses with no additional owned
+data allocations during reuse, one idle variable-size lease≤1MiB payload+64B,
+zero padding on every acquisition, maximum payload, live aliases not reused,
+deferred close until final reference, three allocation and one buffer-create
+injected failures, all owned allocation/free counts balanced. The SDK's redundant
+maximum-memory diagnostic remains visible; C-Wall/-Wextra/-Werror retained. This
+native lifecycle evidence is NOT browser fidelity, fixed-heap full-file fit,
+250MiB whole-browser memory acceptance or controlled speed improvement.
+
+All72 actual executed Git-head preimages/current/post source joins retained in
+160,602B recoverable gzip; only isolated generated workflow differs from unchanged
+canonical workflow. Exact eight-source branch and seven-source collector wrappers/
+pre/post/preimages and generated recipes retained.20 verified local artifacts
+9,716,351B (9.27MiB) inside original20/8MiB hosted/16MiB local limits, no media.
+Hosted scratch finally removed; local collector/download/wrapper runtime absent.
+Duplicate hosted artifact11727487740 deleted ONLY after exact local hashes/head/
+id/digest verification; API0 artifacts remain, local reusable tools preserved.
+Native job terminal; no local conversion or original-file read/mutation.
+
+Focused25/25 regression PASS0.788s; three new native-retention/cleanup/witness JS
+files zero-warning lint PASS; whitespace PASS. Actual72 native and seven collector
+sources now frozen. Next fresh actual-binary browser abort observer/control and
+production-browser fidelity/recovery qualification, then changed complete original
+and required repeats/scaling/controlled speed. No public route promoted; full
+original specification remains unfinished, not narrowed to this private candidate.
+
+## 2026-10-12 — Corrected packet native workflow/branch/collector ready for fresh actual build (superseded above)
 
 Previous goal turn was progress: actual terminal native build failure retained
 before source changes and precise SDK-driver-only correction prepared. Fresh
