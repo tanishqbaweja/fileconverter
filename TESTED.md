@@ -4,6 +4,24 @@ Updated 2026-10-12 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-12 — Real fixed-heap packet-cache native build prepared
+
+Previous goal turn was progress: actual packet-reallocation failure independently
+audited, source candidate prepared,36 focused checks and ledger pushedfb82f89.
+New reversible hosted build derivatives keep actual qualified HEVC planes,
+alignment16 SDK restoration before unchanged separate encoder, fixed32+16MiB,
+codec/timing/AVIO settings and existing old native units. New packet lifecycle
+smoke links the REAL pinned libavutil under fixed32MiB, tests200000 reuses,
+aliases/deferred close/full padding/maximum payload/four injected failures before
+production link. Generated mux/kernel changes reverse exactly; no old frozen
+native/control/media/full source mutated. Collector retains20 files/8MiB hosted
+artifact/16MiB local tool caps, exclusive copy/source/head/hash/cleanup gates;
+tiny packet smoke source is losslessly retained inside manifest, not a21st file.
+All six nested recipes parse; shell syntax/old HEVC evidence joins PASS.
+Focused17/17 PASS0.590s, nine new JS files zero-warning lint PASS5.366s.
+Actual build, browser fidelity, full conversion, primary memory, speed and public
+acceptance still pending; no expensive conversion repeated. Next ONE fresh build.
+
 ## 2026-10-12 — Changed original full run failed in packet reallocation; bounded reuse source candidate prepared
 
 Previous goal turn was progress: actual new native build, browser fidelity/recovery

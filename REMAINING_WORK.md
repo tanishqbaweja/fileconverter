@@ -5,6 +5,21 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-12 — Native packet-cache build/recovery/lifetime qualification prepared
+
+**Partially implemented**. Fresh no-Docker hosted builder and source-bound branch/
+collector/observer derivatives ready. Exact actual HEVC plane/allocator/encoder/
+fixed32+16MiB/codec/timing/AVIO and old native unit gates preserved. Real pinned
+libavutil packet smoke must exercise200000 reuses, aliases/deferred close, padding,
+maximum payload and four injected allocation failures before production link.
+All six generated nested recipes parse; shell syntax and source/evidence gates
+pass17 focused tests plus nine-file zero-warning lint. Artifact20/8MiB/local16MiB
+limits unchanged; redundant tiny smoke receipt retained exactly inside manifest.
+Actual build/native smoke, fresh production-browser/quality/recovery, then changed
+original full/repeats/scaling/controlled speed remain pending. No public promotion
+or unchanged expensive conversion; all broader missing/partial requirements below
+remain part of the active goal.
+
 ## 2026-10-12 — Actual original packet-allocation OOM; private reuse candidate awaiting native qualification
 
 **Partially implemented**. Changed original full23-47-49-089Z failed after
