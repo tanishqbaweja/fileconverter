@@ -5,7 +5,35 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-13 — Largest-idle native candidate implemented, not yet qualified
+## 2026-10-13 — Largest-idle real native lifetime/allocation qualification complete; route still partial
+
+**Partially implemented**. Changed fixed32MiB decoder built/qualified at exact
+Git head2748d632; actual hosted success38327579000 and cleanup PASS. Matched
+real pinned-libavutil controls each pass200,000 reuses, padding/alias/deferred
+close/four allocation failures. Same2,000 overlapping-live rounds reduce fresh
+payload calls4,001 ->2,001 and cumulative payload allocation628,682,088 ->506,088B.
+One idle1MiB+64 cap/live ownership/settings/fixed heaps unchanged. This is
+allocation churn, not peak-memory, original-root-cause or conversion-speed proof.
+Raw clock0 in both controls treated as unavailable timing/null speedup.
+
+79 executed/current/post source pins and exact preimages joined under unchanged
+128-file/2MiB caps; compact archive167,718B.20 reusable tools9,722,644B retained
+only inside work for actual browser qualification; scratch finally gone and
+exact-id/head/digest duplicate hosted archive deleted. No media created. Initial
+wrong default-all dispatch terminal CANCELLED/hosted cleanup FAILED, recorded
+separately without acceptance. Actual ETA sleeps300s+180s, no frequent polling.
+26 focused actual-evidence regressions PASS2.624s/scoped lint PASS.
+Final49/49 focused regression run PASS5.191s, latest five-file zero-warning lint
+and whitespace PASS; broader final-completion gates have not been substituted.
+[Proof](evidence/mpeg2-packet-largest-idle-build-38327579000.json).
+
+Still missing: qualify changed-binary packet-malloc ABI/capture, genuine identical
+browser fidelity/recovery/speed pair, three validated full-original runs, complete
+memory/cold/scaling and every broader source-scope requirement below. No public
+selector change/full acceptance. Goal remains ACTIVE; next safe step short changed
+decoder controls, not unchanged3h retry or weakened quality/memory thresholds.
+
+## 2026-10-13 — HISTORICAL largest-idle preparation (actual native result above)
 
 **Partially implemented**. Fresh native packet header changes only final-unref
 idle retention to largest eligible allocation. One idle/1MiB+64/fixed32+16MiB
@@ -17,6 +45,13 @@ source/recipe/terminal tests PASS2.842s. Native lifecycle measurements, changed
 binary qualification, precise full-failure allocation attribution and actual
 browser fidelity/recovery/full stress still missing. No speed/root-cause/public
 acceptance claimed; no unchanged long conversion replay.
+Expanded35 focused regressions PASS3.772s/scoped lint PASS; source and actual
+failed-run evidence pushed0fd4f8f. Isolated candidate build2748d632 verified on
+remote without changing canonical workflow/main. Initial default-all dispatch
+38327509951 cancellation requested; corrected explicit candidate38327579000
+observed pending. No build/control completion claim. Same handles next after
+~7min estimated from actual376s prior build; no redispatch on timeout.
+[Dispatch](evidence/mpeg2-packet-largest-idle-dispatch-2026-10-13.json).
 
 ## 2026-10-13 — Actual full native packet allocation failure; reliability remains partial
 

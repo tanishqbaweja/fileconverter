@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-10-13T00:45:36.111Z",
+  "status": "source-bound-disposable-hosted-artifact-deleted-local-tools-retained",
+  "runId": "38327579000",
+  "proofSha256": "7b87966e51d6da63a6bf02ee7779838278871b893db8affda79e3fcb8f627d88",
+  "artifactBefore": {
+    "id": 11781812619,
+    "node_id": "MDg6QXJ0aWZhY3QxMTc4MTgxMjYxOQ==",
+    "name": "private-mpeg2-aligned-reuse-38327579000",
+    "size_in_bytes": 2389933,
+    "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11781812619",
+    "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11781812619/zip",
+    "expired": false,
+    "digest": "sha256:ebdd0c3d44e6dc38b0342be1177451ae1ccae0ebff6f3a3367be3d2768baa306",
+    "created_at": "2026-10-13T00:41:50Z",
+    "updated_at": "2026-10-13T00:41:50Z",
+    "expires_at": "2026-10-14T00:41:49Z",
+    "workflow_run": {
+      "id": 38327579000,
+      "repository_id": 1304803353,
+      "head_repository_id": 1304803353,
+      "head_branch": "codex/mpeg2-packet-largest-idle-20261013",
+      "head_sha": "2748d632c14dc08624c858a77b4a4acaf21f43c1"
+    }
+  },
+  "artifactCountAfter": 0,
+  "localToolsRetained": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-packet-largest-idle-38327579000",
+  "localToolBytes": 9722644,
+  "recoverability": "Verified small local build tools retained for actual browser qualification; no user files/converted media deleted",
+  "ownedRuntimeRemoved": true,
+  "publicAcceptance": false,
+  "browserConversionsPerformed": 0
+}

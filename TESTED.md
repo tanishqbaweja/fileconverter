@@ -4,7 +4,43 @@ Updated 2026-10-13 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-13 — Largest-idle packet candidate implemented; actual native controls pending
+## 2026-10-13 — Largest-idle actual native qualification PASS; browser/full gates still missing
+
+Corrected hosted run38327579000 completed SUCCESS00:41:54Z; private build step
+580s, job632s. Actual fixed32MiB decoderSHA
+`7bb58a363d81030d38a8dc3187dc0adf541b77385f06bc0c576225ba29f78439`,
+unchanged fixed16MiB build encoder. Both real pinned-libavutil Wasm controls
+passed200,000 sequential reuses, aliases/deferred close/padding and four failure
+cases. Identical2,000 overlapping-live packet rounds: fresh payload calls
+4,001 ->2,001; cumulative allocated payload bytes628,682,088 ->506,088.
+This measures allocation churn, NOT peak/live memory or conversion throughput.
+Both clock() fields returned0; elapsed/speedup explicitly unavailable/null,
+never zero-duration evidence. No original failure root cause proven.
+
+All79 executed Git-head/current/post source pins and exact preimages recovered
+within unchanged128-file/2MiB caps; source archive167,718B retained.20 reusable
+artifacts9,722,644B inside work, no converted files created. Collector/source
+verification/hosted cleanup PASS; disposable download/wrapper scratch gone.
+Redundant hosted archive11781812619 removed only after exact head/id/digest and
+every local artifact verified; local tools retained for browser qualification.
+Initial default-all dispatch38327509951 confirmed CANCELLED; its hosted cleanup
+step FAILED, no cleanup success claim for that discarded dispatch.
+[Native proof](evidence/mpeg2-packet-largest-idle-build-38327579000.json),
+[all-source proof](evidence/packet-largest-idle-native-sources-38327579000.json).
+
+Actual interruptible waits300.0243s and180.0248s, same authoritative run handles,
+no redispatch on timeout/frequent polling.26 focused regressions PASS2.624s,
+including real native/archive/collector/branch and earlier full failure evidence;
+scoped lint PASS.
+Final expanded focused run49/49 PASS5.191s, five latest files zero-warning lint
+and source whitespace PASS; no broad expensive suite/unchanged conversion replay.
+Next qualify changed decoder's packet-malloc failure capture,
+actual headless-browser identical-settings fidelity/recovery and speed pair,
+then changed full-original stress only if short gates pass. Browser speed,
+full original,250MiB/repeats/cold/scaling/direct-native-AVIO/public acceptance
+all remain unproved. Goal ACTIVE/incomplete.
+
+## 2026-10-13 — HISTORICAL largest-idle preparation (actual native result above)
 
 Fresh header changes only final-unref idle selection: retain the largest released
 allocation, free the smaller idle/candidate, never reuse live mux references.
@@ -17,6 +53,14 @@ assertions are expectations pending execution, not measured conversion speed.
 Fresh no-Docker native build/collector preserve20-artifact/8MiB/16MiB caps and
 owned finally cleanup.13 focused tests PASS2.842s; actual Wasm lifecycle/build
 and browser fidelity/full stress still pending. No public promotion/full retry.
+Expanded35 regressions PASS3.772s; scoped12-file lint PASS. Pushed0fd4f8f to
+media-options; isolated build head2748d632 remote verified, canonical workflow,
+HEAD/index and remote main unchanged. First dispatch38327509951 omitted core,
+cancellation requested (terminal not yet confirmed); corrected38327579000 uses
+explicitwithin-mpeg2-aligned-reuse, observed pending behind cancellation.
+[Dispatch record](evidence/mpeg2-packet-largest-idle-dispatch-2026-10-13.json).
+Prior equivalent native build376s; next same-handle observation after~7min,
+not frequent polling or redispatch. Both statuses historical snapshots only.
 
 ## 2026-10-13 — Full attempt TERMINAL: native packet allocation failure; no acceptance
 
