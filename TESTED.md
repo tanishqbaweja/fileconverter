@@ -4,6 +4,79 @@ Updated 2026-10-13 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-13 — Changed decoder real browser qualification PASS; fresh speed pair mixed
+
+Actual7bb58a candidate four headless tests PASS2.9min, fresh442133 baseline four
+tests PASS3.0min. Eight genuine96-frame1920×804 HEVC→MPEG-2/MP4 conversions,
+all independent structural/frame/audio/artwork/metadata validators pass and
+all outputsSHA554cc84159d2e36f4fd2adb060062cf78be02d4195f7857ceefe0953065c5f27,
+2,245,558B. Input4,457,906B/SHA6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb,
+4Mbps/q4/native settings identical; ordinal SSIM.983095≥.98. Timestamp diagnostic
+.966841 not substituted. Write/cancel/read failure partials removed, real same-page
+production worker replacements each recovered. Each variant's seven suspension
+leases allocated/freed once, zero active/retained; bounded I/O/queues unchanged.
+
+Fresh sequential candidate-then-baseline timings (ms), NOT randomized or a proven
+full-source speed gain:
+
+| Genuine conversion phase | Baseline | Candidate |
+| --- | ---: | ---: |
+| Normal | 6879.215 | 6533.250 |
+| Write-failure recovery | 4825.255 | 4143.125 |
+| Cancellation recovery | 3280.120 | 4463.575 |
+| Input-failure recovery | 4870.675 | 6353.435 |
+
+Two faster/two slower; no reliable speed improvement established. Native allocation
+churn reduction remains measured separately, not throughput/peak-memory evidence.
+Do not use this pair to promote the private route or claim it is the fastest.
+[Candidate](evidence/2026-10-13T00-57-52-406Z-packet-largest-idle-media.json),
+[fresh baseline](evidence/2026-10-13T01-03-47-769Z-input-read-media.json),
+[independent pair/cleanup verification](evidence/2026-10-13-largest-idle-browser-qualification-and-timing-pair.json).
+
+All210 candidate/162 baseline source pins current/pre/post/preimages verified,
+plus83 control and79 native envelope. Independent15 owned births absent, stock
+dist restored, owned fixture/output/profile/wrapper/helper scratch gone, protected
+whole pre/post/current SHA unchanged.1,950,579B redundant raw reports removed
+only after lossless compressed archives verified; compact source/raw reports
+retained. No process killed, no Docker, no converted copies outside repository.
+24 focused regressions PASS1.762s; expanded28/28 PASS2.846s and scoped lint/
+whitespace PASS. Additional synthetic packet-path units prove one capture,
+unchanged fatal/heap, stale-slot refusal and unknown-stack no-read; these are
+not an actual browser packet abort. One candidate
+ETA140s+60s sleeps, baseline work plus60s, no frequent state polling. First recipe
+unit-count failure was before browser and is superseded by corrected controls.
+
+New native packet path is typed/observer-recognized, but no actual packet-malloc
+abort reproduced in these short jobs. Full-original reliability, exact failed
+request/owner/cause, three completed validated full runs, complete-tree250MiB,
+cold/scaling, direct-native-AVIO and broader/browser/manual gates still missing.
+Next fresh changed full-original harness must retain every original gate and
+all executed sources; no unchanged3h replay, quality/heap increase or promotion.
+Goal ACTIVE/incomplete.
+
+## 2026-10-13 — HISTORICAL changed-core control preparation (actual media result above)
+
+Actual headless synthetic native abort control7bb58a PASS00:53:07Z. Typed binary
+functions/map verify allocator1786648/attempt1918736/pool1918800, including
+mpeg2_packets4471, av_malloc4313/wrapper4473/sbrk4442. Failure-only observer now
+recognizes the actual packet stack as well as old direct/pool paths;16-word
+pending slot and bounded32,768 header-word/4,096 free-chunk caps unchanged.
+Synthetic control calls actual av_buffer_allocz, NOT mpeg2_packets or conversion;
+packet-call runtime attribution and original failed request still unknown.
+No payload/heap copy/native-at-abort calls. Actual prior abort chained,11 sampled
+native births absent/server/worker/profile/scratch removed. Native79-source
+envelope joins before/post; every browser control source pre/post archived.
+[Control](evidence/2026-10-13T00-53-07-022Z-packet-largest-idle-abort-control.json).
+
+Fresh media candidate replaces only qualified decoder artifacts/provenance;
+encoder A4ba, reused suspension glue,4Mbps/q4, full geometry, bounded I/O and
+all four genuine conversion/recovery/privacy/SSIM≥.98 gates preserved. Exact
+manifest reconstructed from hash-bound prior qualification + new native/control
+sources; altered manifest rejected. Four focused tests PASS/scoped lint PASS.
+Initial recipe label-count assertion7-versus6 FAILED before browser; corrected
+unique-count expectation without changing gates. Real media/full memory/speed
+acceptance still pending, no public promotion or original full retry.
+
 ## 2026-10-13 — Largest-idle actual native qualification PASS; browser/full gates still missing
 
 Corrected hosted run38327579000 completed SUCCESS00:41:54Z; private build step

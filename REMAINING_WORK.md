@@ -5,6 +5,59 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-13 — Changed-native browser fidelity/recovery verified; full reliability and speed still partial
+
+**Partially implemented**. Changed7bb58a decoder actual four headless cases PASS
+2.9min; fresh442133 baseline same four PASS3.0min. Eight genuine full-geometry
+96-frame HEVC→MPEG-2 MP4 outputs independently verified, byte-identical2,245,558B,
+SSIM.983095≥.98, same inputSHA/settings/audio/art/metadata. Write/cancel/input
+failure recovery and partial cleanup pass; all seven leases/variant allocated
+and freed once/zero retained. No headed coverage claimed.
+
+Matched source/settings fresh sequential timing pair is mixed: normal6879→6533ms,
+write-recovery4825→4143ms, cancel-recovery3280→4464ms, read-recovery4871→6353ms.
+Two faster/two slower; not randomized, no reliable conversion-speed improvement,
+not public acceptance or proof of fastest process. Native allocation-churn result
+is separate and does not substitute for throughput or complete-tree memory.
+[Independent pair](evidence/2026-10-13-largest-idle-browser-qualification-and-timing-pair.json).
+
+210 candidate/162 baseline/83 control current/pre/post source preimages verified;
+79 native envelope retained.15 independently absent owned births, full protected
+pre/post/current SHA unchanged, stock assets restored and all disposable owned
+fixtures/outputs/browser/wrapper/helper scratch removed.1,950,579B duplicate raw
+reports removed after lossless archives verified.24 focused regressions PASS1.762s,
+expanded28/28 PASS2.846s/scoped lint/whitespace PASS. Synthetic packet-path units
+verify one bounded capture/unchanged fatal/heap, stale/unknown paths refused;
+not an actual packet-abort reproduction. No Docker/visible windows/native
+conversion/full-file retry.
+
+Still missing: actual new packet-abort request/owner/cause attribution, genuine
+full protected-original reliability, three validated runs and complete-tree250MiB,
+matched stress/cold/scaling speed, direct native AVIO and all broader requirements
+below. Short job success is not full-source or primary-memory acceptance. Next
+fresh full harness must integrate actual qualified candidate without omitting
+executed sources or weakening quality/limits/cleanup. Goal ACTIVE/incomplete.
+
+## 2026-10-13 — HISTORICAL changed-core control preparation (actual media result above)
+
+**Partially implemented**. New7bb58a actual headless failure control passed:
+typed mpeg2_packets4471/native functions, fixed allocator/slot addresses and
+all79 actual native preimages verified. New observer recognizes packet path
+without pretending direct/pool qualification; same failure-only scalar/free
+header caps/no native-at-abort/no payload reads. Control itself invokes actual
+av_buffer_allocz only: original packet failure size/owner/cause and a runtime
+packet abort remain unproven.11 sampled births absent, all scratch finally gone.
+[Proof](evidence/2026-10-13T00-53-07-022Z-packet-largest-idle-abort-control.json).
+
+Fresh four-conversion browser candidate keeps exact encoder/suspension/quality/
+geometry/real production I/O/recovery/independent validators/SSIM≥.98. Changed
+native artifacts and exact manifest provenance qualified/reconstructed from
+prior receipt, all source/current/preimage checks unchanged. Four focused tests
+and scoped lint PASS; first label-count unit assertion failed before any browser,
+corrected to exact seven occurrences, not weakened. Genuine browser media,
+matched conversion speed, full-source stress/repeats/scaling and all broader
+requirements still missing. Goal ACTIVE/incomplete; no public promotion.
+
 ## 2026-10-13 — Largest-idle real native lifetime/allocation qualification complete; route still partial
 
 **Partially implemented**. Changed fixed32MiB decoder built/qualified at exact
