@@ -5,7 +5,44 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-13 — Qualified input-error full attempt LIVE; no full acceptance yet
+## 2026-10-13 — Largest-idle native candidate implemented, not yet qualified
+
+**Partially implemented**. Fresh native packet header changes only final-unref
+idle retention to largest eligible allocation. One idle/1MiB+64/fixed32+16MiB
+heaps/full zeroing/real AVBuffer live ownership/codec/mux/AVIO all preserved.
+Old380 executed sources unchanged. Identical first/largest controls compile
+against actual pinned libavutil:200,000 reuses plus2,000 overlapping-live rounds,
+alias integrity, padding, deferred close and four injected failures.13 focused
+source/recipe/terminal tests PASS2.842s. Native lifecycle measurements, changed
+binary qualification, precise full-failure allocation attribution and actual
+browser fidelity/recovery/full stress still missing. No speed/root-cause/public
+acceptance claimed; no unchanged long conversion replay.
+
+## 2026-10-13 — Actual full native packet allocation failure; reliability remains partial
+
+**Partially implemented**. Actual full-original attempt terminated after2h53m51s
+at250,053 frames/250,052 completed packets. Zero of three complete validated
+runs;4,943,266,688B partial output finally deleted. No captured input-read errors;
+abort stack proves av_malloc via __wrap_posix_memalign in mpeg2_packets.
+Attempted heap extent33,615,872B is NOT requested allocation size. Exact payload,
+side-data or cache site/owner/lifetime/fragmentation cause still unproven.
+Old244,859-frame suspension boundary exceeded, but native packet reliability not
+fixed.36,134 reused leases/one allocation/zero native frees on ABORT;262,156B
+reservation released only by owned worker/browser termination.
+
+Failed-window complete-Chromium234.99609375MiB =484,683,776 minus238,272,512B,
+95,383 valid/two unavailable samples, not full acceptance. All380 source pins
+joined, whole protected source SHA unchanged,25 owned births absent, stock dist
+and cleanup verified. One actual ETA sleep completed; no duplicate conversion.
+Three terminal regressions PASS. [Analysis](evidence/2026-10-12T19-50-01-210Z-input-read-full-terminal-analysis.json).
+Next actual policy candidate retains one largest eligible final-unref allocation
+under unchanged1MiB+64 cap/live references/fixed heaps/quality. Matched native
+controls and exact allocation attribution must qualify before another expensive
+full run. This lead is not a proven root cause or conversion speed gain.
+All broader source-scope, stress/cold/scaling, direct native AVIO, speed and
+browser/manual requirements remain in the audit; goal ACTIVE/incomplete.
+
+## 2026-10-13 — HISTORICAL qualified-input launch (terminal result above)
 
 **Partially implemented**. One actual full driver44848/parent41344, headless
 Chromium30552/sampler41476/supervisor16216; all five PID-parent-birth identities

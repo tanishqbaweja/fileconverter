@@ -4,7 +4,50 @@ Updated 2026-10-13 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-13 — Qualified input-error full attempt LIVE; next observation after ETA wait
+## 2026-10-13 — Largest-idle packet candidate implemented; actual native controls pending
+
+Fresh header changes only final-unref idle selection: retain the largest released
+allocation, free the smaller idle/candidate, never reuse live mux references.
+Still one idle/actual requested allocation/1MiB+64 cap/full zeroing/deferred close,
+unchanged codec/mux/AVIO/settings/fixed heaps. Old executed sources stay frozen.
+Same new C control compiled twice against real pinned libavutil will compare
+first-idle/largest-idle under200,000 sequential reuses and2,000 matched overlapping
+live-buffer rounds, aliases/padding/close/four injected failures. Allocation-byte
+assertions are expectations pending execution, not measured conversion speed.
+Fresh no-Docker native build/collector preserve20-artifact/8MiB/16MiB caps and
+owned finally cleanup.13 focused tests PASS2.842s; actual Wasm lifecycle/build
+and browser fidelity/full stress still pending. No public promotion/full retry.
+
+## 2026-10-13 — Full attempt TERMINAL: native packet allocation failure; no acceptance
+
+Actual full-original production-browser attempt failed after10,430,703.055ms
+(2h53m51s),250,053 frames/250,052 completed packets, zero of three validated
+conversions.4,943,266,688B partial output deleted by finally. Actual abort stack
+is av_malloc/__wrap_posix_memalign in mpeg2_packets, not an input-read failure or
+Asyncify allocation. Captured input-error records empty.33,615,872B is attempted
+heap extent, NOT the individual malloc size; exact packet/cache/side allocation,
+owner and fragmentation cause remain unknown. No unchanged full retry.
+
+Reusable suspension storage crossed the old244,859-frame failure boundary:
+one allocation/36,134 acquisitions/zero native frees on ABORT,262,156B retained
+until owned worker/browser termination. This is not an inside-aborted-module
+native free. Stable blank238,272,512B, complete-tree conversion peak484,683,776B,
+exact difference234.99609375MiB;95,383 valid samples and two unavailable/null
+samples retained/excluded. FAILED WINDOW ONLY, not full memory acceptance.
+
+Independent terminal analysis PASS: all380 executed/pre/post/current source pins,
+protected whole size/SHA unchanged,25 recorded owned births absent, stock dist
+restored and owned profile/output/runtime removed. Supervisor exit0 merely
+collected the actual driver exit1. Checkpoint losslessly archived4,368B and
+28,971B redundant raw removed; media raw/report/source archives and graphs kept.
+Three focused terminal-evidence tests PASS455ms. One actual interruptible ETA
+sleep15,524,342ms completed; no frequent agent polling or duplicate job.
+[Terminal analysis](evidence/2026-10-12T19-50-01-210Z-input-read-full-terminal-analysis.json).
+Next changed candidate: one largest eligible final-unref packet idle allocation,
+identical native ownership/failure controls; cache-policy lead is not proven cause
+or measured conversion speed gain. Full goal remains ACTIVE/incomplete.
+
+## 2026-10-13 — HISTORICAL qualified-input launch (terminal result above)
 
 One actual full driver44848/parent41344 launched19:51:30.892454Z;
 headless Chromium30552/native sampler41476, detached supervisor16216.
