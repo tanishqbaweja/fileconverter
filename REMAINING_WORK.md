@@ -5,6 +5,31 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-13 — Changed full-original integration prepared; reliability still partial
+
+**Partially implemented**. Fresh qualified7bb58a decoder/33,536B packet-path
+observer integrated into actual prior full driver; enumerate/reverse only
+candidate, observer, source-envelope and runtime identity changes. All original
+converter gates remain: protected full input,4Mbps/q4/SSIM>=.98, three stress
+runs,6h/run, fixed32+16MiB, exact complete-tree250MiB formula, bounded production
+I/O/privacy/finally cleanup. Offline source evidence is not converter memory.
+
+Actual preparation01:25:07Z PASS0 conversions: all439 pre/post/current source
+preimages recovered, immutable380 legacy +59 supplemental under independent
+128-file/2MiB cap (580,178B). No source omission/old cap increase. Archive246,954B;
+whole protected pre/post SHA unchanged, stock production restored and scratch
+removed. Four new units/22 focused regressions/two actual-preparation checks
+PASS; initial mechanical-replacement failures fixed before browser. Scoped lint
+PASS. [Preparation](evidence/2026-10-13T01-25-07-570Z-packet-largest-idle-original-full-preparation.json).
+
+Actual full supervisor launched01:28:08Z (27676, child40660), but launch is NOT
+acceptance. Verify actual driver/browser/sampler births before ETA wait; do not
+infer liveness from status/locks, duplicate, restart or run unrelated conversions
+while it owns staging. No valid new full outputs, three-run memory acceptance,
+cold/scaling speed or packet-failure request/cause established yet. Goal ACTIVE;
+all broader audit requirements below remain in scope. No public selector change.
+
+
 ## 2026-10-13 — Changed-native browser fidelity/recovery verified; full reliability and speed still partial
 
 **Partially implemented**. Changed7bb58a decoder actual four headless cases PASS

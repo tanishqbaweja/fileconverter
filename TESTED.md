@@ -4,6 +4,34 @@ Updated 2026-10-13 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-13 — Fresh changed-decoder full harness prepared; actual run launched, not acceptance
+
+Actual preparation at01:25:07Z PASS, zero conversion executions, all439 current/
+pre/post source pins/preimages recovered. The actual380-source legacy archive
+and its256+124 limits remain untouched;59 additional sources occupy a separate
+128-file/2MiB envelope (580,178B). Retained archive246,954B. Actual210-source
+four-browser qualification is joined, not substituted; adapter33,536B/SHA511ee27c,
+decoder7bb58a/encoder a4ba62, fixed32+16MiB heaps, one262,156B suspension lease.
+Original protected full input,4Mbps/q4,SSIM>=.98, three runs,6h/run, complete-tree
+250MiB blank-page formula, privacy, bounded I/O and finally cleanup stay unchanged.
+[Preparation](evidence/2026-10-13T01-25-07-570Z-packet-largest-idle-original-full-preparation.json).
+
+Fresh physical3,866,869,760B/virtual4,546,072,576B safety check PASS; free disk
+2,269,960,974,336B. Protected2,958,573,265B whole pre/post SHA31f36695...9db34
+identical; wrapper/candidate finally removed, stock production restored. Four
+new units PASS6.476s,22 focused regressions PASS7.974s, two actual-preparation
+checks PASS. Initial import-reversal/stager-match count failures occurred before
+any browser and are fixed by exact-statement replacements, not relaxed gates.
+Scoped seven-file zero-warning lint and whitespace PASS. No headed coverage.
+
+Actual changed full supervisor launched01:28:08Z, birth-qualified supervisor
+27676/child40660. This is launch evidence only, not genuine completion, validated
+output, speed gain or primary memory acceptance. No public promotion. Browser/
+native sampler liveness and ETA wait must be established separately; three-run
+full reliability, complete-memory/cold/scaling and the broader original scope
+remain incomplete. No Docker/native conversion/unrelated process cleanup.
+
+
 ## 2026-10-13 — Changed decoder real browser qualification PASS; fresh speed pair mixed
 
 Actual7bb58a candidate four headless tests PASS2.9min, fresh442133 baseline four
