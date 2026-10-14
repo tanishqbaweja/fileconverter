@@ -4,6 +4,44 @@ Updated 2026-10-15 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-15 — Corrected MVF native build and actual lifecycle controls PASS
+
+No-Docker run38643550000/headadb0c50b54564e351c0316e6b3bfb4e935b0ddb2
+terminal SUCCESS. Build555s/job604s, NOT conversion speed. Actual patched
+Wasm32 refstruct lifecycle passed six measured-size simultaneous slots, seventh
+live overflow, live aliases/content, deferred uninit, two constructor failures,
+four init-error flag cases, zeroing, nonselected/oversize upstream delegation,
+owned allocation balance and 200,000 sequential acquisitions. All retained
+single-idle/HEVC-plane/packet-cache/realloc/SDK controls also passed. Reserved
+raw backing for measured payload is 6,981,216 bytes; maximum8MiB/six slots.
+Idle-object admission remains one; do not confuse it with raw retained capacity.
+
+Decoder2aa60267136b8d35116cceb5cbff5f79d0aae21c62d524ac5bacabcd02f22576;
+separate build encoder byte-exact8b2fd64d...f4242. Decoder512/512 shared pages,
+encoder256/256 pages, no memory growth. Actual refstruct63afbc95...ea202 and
+HEVC57206d90...efade match source-qualified candidate. Fresh binary-derived
+addresses: gm1786904/496B, aligned1918992/64B, realloc1919056/64B,
+pool1919120/64B. Typed sbrk4444/malloc4439/realloc4442; old703 mappings must
+not be reused. Static constructor binding passed, runtime browser binding NOT
+yet qualified.
+
+All99 executed source pins/preimages verified against build commit: all93 parent
+paths plus6 candidate files, unchanged128-file/2MiB restored-source caps. Exact
+source archive203,361 bytes retained. All20 actual tools verified,9,739,246 bytes
+explicitly reusable in work/mpeg2-mvf-arena-38643550000. Owned collector/qualifier
+and build scratch removed. Verified duplicate hosted artifact11931807384 deleted;
+remote count0. Original test.mkv not read by build/qualification; no conversion,
+fixture, output media or browser profile created. Native counts are not browser
+fidelity, full-original reliability, primary memory or controlled speed acceptance.
+
+Evidence: `evidence/mpeg2-mvf-arena-build-38643550000.json`,
+`evidence/mvf-arena-native-38643550000.json`, exact collector/qualifier receipts,
+`evidence/mvf-arena-hosted-artifact-cleanup-38643550000.json`.
+14 focused tests PASS (2,562.823ms); latest two-file zero-warning lint PASS,
+prior correction nine-file zero-warning lint PASS. Next changed-binary headless
+fatal-hook controls, actual browser media fidelity/recovery, then full original.
+Public engines/registry unchanged; speed and full project goal remain incomplete.
+
 ## 2026-10-15 — First MVF native build failed on harness warnings; narrow correction tested
 
 No-Docker run38641789883/head679bf897 is terminal FAILED, not still running.

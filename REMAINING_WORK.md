@@ -5,6 +5,30 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-15 — MVF native candidate verified; browser qualification still required
+
+**Partially implemented**. Corrected no-Docker run38643550000 SUCCESS
+(555s build/604s job, not conversion performance). Real patched Wasm32 pool
+lifecycle passed six simultaneous measured slots, overflow, aliases/content,
+deferred close, constructor/init-error controls, zeroing and200,000 acquisitions;
+all retained native controls passed. Actual99-source seal preserves all93 parent
+paths plus6 candidate files within128-file/2MiB caps; all20 artifacts verified.
+Fresh typed binary ABI derived, not guessed from old decoder. Fixed32/16MiB
+heaps and separate encoder unchanged; no codec/quality/live-reference changes.
+
+Evidence: `evidence/mvf-arena-native-38643550000.json` and corresponding build,
+collector/qualifier/source archive receipts. 14 focused tests and scoped lint PASS.
+Verified duplicate hosted artifact removed (count0); reusable9,739,246-byte local
+tool cache retained. No user video read, conversion, media output or profile made.
+
+Remaining: current-binary runtime fatal-hook qualification, actual headless
+browser output fidelity/cancellation/write-failure/cleanup controls; only then
+changed full unchanged test.mkv with independent validation, required repeats,
+complete-tree <=250MiB, controlled conversion-speed benchmarks and scaling.
+Direct-native I/O/all requested browser/product/original scope gates still apply.
+Native lifecycle alone proves none of those browser/full-file requirements.
+No public promotion or full-goal completion claim.
+
 ## 2026-10-15 — MVF native harness compile failure recorded and corrected
 
 **Partially implemented**. First no-Docker native run38641789883 FAILED on two
