@@ -5,6 +5,30 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-14 — Realloc observer real headless control verified; full reliability remains partial
+
+**Partially implemented**. Actual08:18:27Z control PASS validates runtime decoder
+slot binding and six-function real realloc stack. One16-word pending request/
+44 free-header words, exact API33554432B, error/prior/stack restoration preserved.
+Internal chunk/original request/cause not inferred. Only two temporary exports
+changed; no converter/media/original read or primary-memory acceptance.
+[Actual control](evidence/2026-10-14T08-18-27-711Z-realloc-abort-control.json).
+
+114 executed/current/pre/post preimages recovered under unchanged128-file/2MiB
+caps, native86 envelope pre/post; all11 sampled births absent and owned code/
+profile/worker/server scratch finally gone. Zero forbidden requests/no public
+mutation/converted copies. Four units and15 scoped browser/native/full-terminal
+regressions/scoped lint PASS. Initial ambiguous unit replacement fixed before
+browser without reducing any gate. Headed/manual unverified.
+
+Next missing: qualify genuine browser same-input/settings output/recovery with
+new decoder+observer, preserving original quality, encoder, reusable suspension,
+heaps/I/O/privacy. Then actual full-original realloc request/lifetime evidence and
+reliability correction. No unchanged full replay, source reduction, heap increase
+or promotion. Three validated full runs/250MiB/cold/scaling/speed/direct native
+destination and every broader original requirement still incomplete. Goal ACTIVE.
+
+
 ## 2026-10-14 — Corrected native diagnostic qualified; conversion still partial
 
 **Partially implemented**. Exact headdd169b1/run38526781934 actual SUCCESS,

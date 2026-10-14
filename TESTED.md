@@ -4,6 +4,41 @@ Updated 2026-10-14 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-14 — Actual headless realloc fatal observer/control PASS; still not a conversion fix
+
+Actual08:18:27Z headless synthetic control PASS: qualifiedeb45bb decoder's
+constructor binds real64B/16-word slot1918912, fixed shared32MiB heap. Actual
+AVBuffer realloc stack4474/4192/4475/4440/4437/4442 captured once, exact API request
+33,554,432B/current pending sequence1;16 native words and44 allocator header
+words, complete bounded inventory. Fatal/prior callback once and Error stack
+limit restored; no native-at-abort/payload reads/heap copy/normal polling.
+Internal malloc chunk size and original Matroska failure cause remain unknown.
+[Actual browser control](evidence/2026-10-14T08-18-27-711Z-realloc-abort-control.json).
+
+Only two exports changed in temporary control derivative; all code/data/types/
+imports/tables/memory exact, original core unmodified. Four-byte NULL control cell
+and deliberate oversize request, no converter/user input/media. Export derivative
+NEVER for media; runtime decoder binding now proved by control, NOT merely static
+map or standalone-library constructor. No stable/continuous conversion memory
+acceptance: primaryIncrementalPrivateMiB null, publicAcceptance false.
+
+All114 executed/current/pre/post source preimages retained420,167B/restored
+1,661,849B under unchanged128-file/2MiB caps, plus86 native envelope pre/post.
+11 sampled native births absent/normal owned browser close; worker/server/profile/
+caller/export-only binary finally gone. Zero forbidden requests, no unrelated
+apps killed, original not read and no converted copies. One20s ETA wait, no rapid
+agent polling. Initial unit reversal collision in generic[i32] token failed before
+browser; corrected exact assertion-statement match, no gate reduction.
+Four new units/15 focused browser/native/full-terminal regressions PASS1.055s;
+seven new JS files scoped zero-warning lint/whitespace PASS. No headed coverage.
+
+Next: integrate actual qualified unchanged-core observer into genuine same-input/
+settings browser transcodes/recovery while keeping quality/IO/encoder/suspension
+limits, before a changed full diagnostic. No original realloc request/lifetime
+cause, reliable full original, speed gain, three-run250MiB/cold/scaling/direct
+native output or broader acceptance yet. Goal ACTIVE/incomplete.
+
+
 ## 2026-10-14 — Corrected real realloc controls/native source/ABI PASS; browser and original failure still unqualified
 
 Actual no-Docker run38526781934/exact headdd169b1 SUCCESS07:22:27Z, build577s/
