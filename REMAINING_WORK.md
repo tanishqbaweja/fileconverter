@@ -5,6 +5,51 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-14 — Actual155 fatal+four media jobs and full pin-bound preparation verified; reliability partial
+
+**Partially implemented**. Actual15:36:28Z155 headless4/4 genuine media/recovery
+PASS3.1m with same native core/encoder/quality/full geometry/96-frame fixture.
+All eight output hashes match golden; independent decode/audio/timelines/metadata/
+PNG/ordinalSSIM0.983095>=0.98 pass. Write/cancel/read same-page production recovery
+and seven one-lease alloc/free lifecycles pass. Four runtime versions and before/
+after/current executable/DLL bytes/SHA/identities match actual installed155.
+125/255 control/media source preimages retained under unchanged caps, scratch gone,
+original whole checksum exact.15 recorded births +22 sampled conversion PIDs
+absent; latter not falsely claimed pre-recorded birth inventory. Redundant974KB
+raw report removed after lossless83KB archive check.
+[Qualification](evidence/2026-10-14T15-36-28-196Z-installed-chrome-realloc-independent-qualification.json).
+
+Fresh full runner binds qualified155 pin/runtime/digests before and after; old
+154 guard not simply removed. Native adapter/settings/IO/quality/250MiB/three
+runs unchanged. Actual16:13:48Z preparation executions0 PASS:508 exact sources
+retain all493 predecessor/255 qualification with380 legacy+128 supplemental/
+1,103,259B under unchanged128/2MiB caps; archive387,598B. Original whole hash/pin
+equal pre/post; scratch gone/stock assets restored/host+disk safe.15 scoped tests
+and ten-file lint PASS. [Preparation](evidence/2026-10-14T16-13-48-481Z-installed-chrome-realloc-original-full-preparation.json).
+
+Remaining: actual full original realloc request/lifetime/cause and reliability
+fix; full-source0/3 accepted,250MiB complete-tree/cold/scaling/speed/direct native
+destination not accepted. Short samples/non-random timing not proof. All broader
+requirements below remain in scope; no public promotion. Goal ACTIVE.
+
+## 2026-10-14 — Current155 runtime/binary/fatal observer qualified; media/full reliability still partial
+
+**Partially implemented**. Actual15:33:36Z headless installed-Chrome155 fatal
+control PASS. Runtime version equals installed before/after launcher/DLL SHA,
+bytes/dev/inode/birth/mtime pin; unchangedeb45bb native decoder/32MiB/shared heap,
+one16-word request/44 bounded headers, no original allocation-cause inference.
+Native fatal/prior callback preserved, all12 sampled births and owned scratch
+gone. No converter/original input/media; temporary export-only derivative never
+accepted for media. [Control](evidence/2026-10-14T15-33-36-401Z-installed-chrome-realloc-control.json).
+
+125 control preimages under unchanged128/2MiB caps retained436,551B; native86
+joined. Three new units/twelve scoped regressions/scoped lint PASS. Same production
+media closure255 fits256 without source omission; before/after pin and actual
+runtime versions now enforced. Missing next:155 genuine four-case media/recovery,
+fresh full caller bound to qualified current pin, actual original realloc request/
+lifetime/reliability,250MiB/three repeats/cold/scaling/speed/direct native output.
+Every broader requirement stays in scope; no public promotion. Goal ACTIVE.
+
 ## 2026-10-14 — Installed Chrome pin changed; full launch rejected before conversion
 
 **Partially implemented**. Actual15:12:30Z supervisor terminal exit1 and15:12:33Z

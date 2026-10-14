@@ -4,6 +4,72 @@ Updated 2026-10-14 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-14 — Chrome155 real fatal/four media jobs qualified; pin-bound full preparation PASS
+
+Actual15:36:28Z155.0.8059.40 genuine headless4/4 conversion/recovery suite PASS3.1m,
+same unchangedeb45bb decoder/a4 plane encoder/input/1920×804/96frames/4Mbps/q4.
+All eight independent output hashes match prior golden2,245,558B SHA554cc841…;
+native full decode/audio packet+decoded content/timelines/metadata/chapters/PNG
+preservation pass. OrdinalSSIM0.983095>=unchanged0.98, same-page production-worker
+replacement recovery for write/cancel/read faults passes. Seven suspension
+alloc1/free1/retained0 samples; fixed32+16MiB/one262,156B lease/queue+IO caps
+unchanged. Four actual browser.version values equal installed155 pin; launcher
+and DLL version/bytes/SHA/dev/inode/birth/mtime equal before/after/current.
+[Actual155 media](evidence/2026-10-14T15-36-28-196Z-installed-chrome-realloc-media.json).
+
+125-control +255-media executed/current/post preimages verified under original
+128/2MiB and256/8MiB caps. Control archive436,551B, media778,252B; raw974,072B
+losslessly retained83,405B then duplicate raw removed. Owned fixtures/profile/
+worker/server/wrapper gone and original whole SHA exact pre/post/current.15
+recorded control/launcher/test-worker births absent; all22 sampled conversion
+PIDs gone (conversion samples did NOT record births). Primary site-memory null,
+headless not manual/headed; no speed/public/full acceptance.
+[Independent pin/source/output/cleanup join](evidence/2026-10-14T15-36-28-196Z-installed-chrome-realloc-independent-qualification.json).
+
+Fresh full caller binds ACTUAL qualified155 rather than removing the old pin
+gate. Before/after current pin, raw runtime version and raw executable/DLL hashes
+enforced; source/native production adapter byte-exact to prior qualification.
+Same-entry hidden supervisor/caller avoids adding unbounded or omitted source
+closure. Two pre-browser unit issues (missing predecessor dynamic references and
+ambiguous reversal substitution) caught/fixed without gate/cap changes.
+
+Actual16:13:48Z preparation PASS/executions0.508 exact pre/current/post sources
+retain ALL493 preparation and255 current qualification;380 immutable legacy+
+128 supplement/1,103,259B under unchanged128/2MiB caps. Runtime archive387,598B/
+restored1,520,022B; original whole SHA and155 pin equal pre/post. Owned candidate/
+wrapper absent, stock assets restored, RAM/disk guards pass.15 scoped source/
+rejection/native/fatal/media/full tests PASS22.266s; ten new JS/test files lint
+PASS. [Pin-bound preparation](evidence/2026-10-14T16-13-48-481Z-installed-chrome-realloc-original-full-preparation.json).
+
+Observed short times3.700/3.811/3.533/3.417s not a controlled speed benchmark.
+Next: actual full original with this qualified pin/core/observer, capture pending
+realloc request/lifetime and correct reliability. Full0/3 accepted so far; stable
+250MiB/cold/scaling/speed/direct native output and all broader scope incomplete.
+Goal ACTIVE, no public promotion. Actual ETA sleeps30s control/240s media/30s
+preparation; no rapid agent polling and no unrelated apps killed.
+
+## 2026-10-14 — Installed Chrome155 actual fatal control PASS; genuine media requalification pending
+
+Fresh15:33:36Z installed-Chrome control PASS. Actual runtime155.0.8059.40 matches
+before/after exact launcher4,586,648B SHA f76f0234… and DLL304,965,272B SHA
+b3d501c2e9af53f3e9e5d44c006aa42ed137cfb2d1dc161e3eca77cfbd48ea21;
+dev/inode/birth/mtime/version unchanged. No browser update/downgrade/guard removal.
+Actual unchangedeb45bb decoder code/data/types/imports/memory (two temporary
+exports NEVER for media), constructor/pending16-word realloc API record/44 free
+headers/six native stack frames pass. Original fatal/prior callback preserved;
+all12 sampled native births absent, normal close/worker/server/profile/caller
+scratch gone, zero forbidden requests. No converter/user input/original read.
+[Actual155 control](evidence/2026-10-14T15-33-36-401Z-installed-chrome-realloc-control.json).
+
+125 exact pre/current/post control sources retained436,551B/restored1,724,155B
+under unchanged128/2MiB caps, native86 envelope pre/post. New lazy media imports
+are not executed by control; full media closure255 fits unchanged256-source cap
+without omission. Three new units/twelve focused regressions PASS3.540s and four
+new-file zero-warning lint PASS. One30s ETA wait, no rapid polling. Native memory
+snapshots diagnostic only, primary null/public false. Current155 genuine four-case
+same-input/settings/quality/IO recovery qualification pending, then new full-caller
+pin binding; original full0/3 accepted and all broader scope remain incomplete.
+
 ## 2026-10-14 — Full launch correctly rejected changed Chrome pin BEFORE conversion
 
 Actual15:12:30Z hidden supervisor/child terminal exit1; full caller15:12:33Z

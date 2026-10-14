@@ -1,0 +1,41 @@
+{
+  "status": "registered-fixture-already-removed",
+  "registered": true,
+  "record": {
+    "version": 1,
+    "recordedAt": "2026-10-14T15:36:51.300Z",
+    "directory": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-artwork-validation-L7oRBT",
+    "dev": "1887170595",
+    "ino": "5910974515035705",
+    "birthtimeMs": "1791992210163",
+    "registrationIdentity": {
+      "pid": 12600,
+      "parentPid": 36288,
+      "createdAt": "2026-10-14T15:36:49.4448560Z"
+    }
+  },
+  "runnerAbsence": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 36288,
+      "parentPid": 14292,
+      "createdAt": "2026-10-14T15:36:48.1909040Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-10-14T15:40:00.311Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 1593,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "removedBytes": 0,
+  "ownedDirectoryAbsent": true,
+  "noProcessesKilled": true
+}
