@@ -5,6 +5,32 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-14 — Matroska reuse native candidate now genuinely compiled and controlled
+
+**Partially implemented**. Run 38608791023 successfully built the changed
+32 MiB decoder (SHA-256 70375632…6fe25), with unchanged encoder, settings,
+limits, production AVIO, and all parent controls. Real pinned-libavutil Wasm
+passed 200,000 reuse cycles, logical sizes, live aliases/deferred close,
+existing realloc content, oversized/zero fallback, four injected failures, and
+balanced allocations. All 93 executed source preimages/current hashes are
+retained within unchanged caps; all 20 local tools independently hash-match.
+Native function indices changed, so old browser diagnostic mappings are invalid.
+A matched 20,000-request loop requires one new candidate payload; zero clock()
+timings are not useful timing evidence and normalized timings remain null.
+No conversion speed gain or original fragmentation fix is yet proven.
+
+23 focused tests, full 1,464/1,464 unit suite (152.604 seconds), and scoped lint pass. A collector-only shadowing failure is
+retained with exact executed sources; V2 fixes the name without rebuilding or
+weakening gates. One 12-minute ETA sleep observed actual successful completion.
+Hosted build/download scratch are gone; redundant artifact removed after local
+verification, leaving zero remote artifacts and 9.73 MB reusable local tools.
+No new browser conversion or original-file read occurred. Required next work:
+qualify the new runtime ABI/fatal observer and production-browser fidelity/
+failure/cancellation recovery, then changed full original, repeats/cold,
+<=250 MiB complete-Chromium acceptance, direct-native output, and scaling.
+Historical full-original 0/3 remains FAILED; entire original scope stays active.
+See `evidence/ebml-reuse-native-38608791023.json` and performance-limit receipt.
+
 ## 2026-10-14 — Measured Matroska request now has a bounded reuse candidate
 
 **Partially implemented**. Fresh private `mpeg2-ebml-reuse.h` and exact-source

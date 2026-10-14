@@ -4,6 +4,46 @@ Updated 2026-10-14 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-14 — Actual no-Docker Matroska reuse build/lifecycle PASS, browser gates pending
+
+Hosted run 38608791023 at b35cd41fc08f001616eb604b14c36517f0800968
+completed successfully: actual compile/control step 443 seconds, job 497 seconds.
+One 720.0276-second ETA sleep was used after confirming the job in progress;
+no rapid job polling or unchanged original replay. The new decoder SHA-256 is
+7037563225465b6bff6f3f17eccc9a2f42033e435d3473101efb631b6736fe25;
+same fixed shared 32 MiB heap, unchanged baseline encoder SHA-256 8b2fd64d…4242.
+Actual pinned-libavutil Wasm passed 200,000 reuse iterations, exact logical
+sizes, live aliases, deferred close, grow/shrink/equal/copy-on-write content,
+oversized/zero upstream delegation, four injected allocation/create failures,
+and balanced owned allocations. A matched 20,000-request workload used one
+273,954-byte new cached payload. Control initial requests are counted by the
+executed loop, not an independent upstream allocation observer. Both clock()
+timings are zero/unusable: normalized elapsed values null, no speed gain claimed.
+
+Actual new static ABI/source qualification retains all 93 executed/current/post
+source pins and preimages (old 86 plus seven candidate files), 190,252-byte gzip,
+unchanged 128-source/2 MiB limits, all 20 reusable tools/9,731,471 bytes. Native
+av_buffer_realloc is now function 4193 and builtin malloc 4438; old 4192/4437
+browser mappings MUST NOT be reused. The constructor statically binds the same
+64-byte slot at 1918912; this is not runtime/browser fatal-hook qualification.
+First collector failed on a newly shadowing `smoke` declaration, before local
+cache retention; exact failed source/preimages kept and scratch removed. Fresh
+collector-only V2 renamed that local binding without changing assertions or
+rebuilding native code, then passed on the same successful hosted run.
+
+23 focused tests PASS 4,544.3964 ms; full current unit suite 1,464/1,464 PASS
+152,604.019 ms with zero failures/skips/cancellations. Six added correction/qualification/test files
+zero-warning lint PASS (prior ten-file scoped lint also passed). Hosted build
+cleanup and local download/finally cleanup passed. Redundant remote artifact
+11916824096 deleted after exact local-tool verification; run artifact count zero.
+Reusable tools retained ONLY in repository work for browser qualification.
+No media converted, protected original read/modified, Docker, browser windows,
+public promotion, full-file success, or new Chromium memory/speed acceptance.
+Next: current-Chrome production fidelity/recovery and new runtime ABI controls,
+then one changed original full test. See `evidence/ebml-reuse-native-38608791023.json`,
+`evidence/ebml-reuse-performance-limits-38608791023.json`, and
+`evidence/mpeg2-ebml-reuse-hosted-cleanup-38608791023.json`.
+
 ## 2026-10-14 — Private Matroska block-reuse implementation, native acceptance pending
 
 Implemented a fresh candidate for the measured initial-NULL 273,954-byte block

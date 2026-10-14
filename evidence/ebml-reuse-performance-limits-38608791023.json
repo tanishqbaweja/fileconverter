@@ -1,0 +1,19 @@
+{
+  "scope": "native-lifecycle-workload-not-media-speed-acceptance",
+  "nativeProof": "evidence/ebml-reuse-native-38608791023.json",
+  "matchedLogicalRequests": 20000,
+  "candidateNewPayloadAllocations": 1,
+  "candidateNewPayloadBytes": 273954,
+  "upstreamInitialBufferRequests": 20000,
+  "upstreamPayloadAllocationsIndependentlyCounted": false,
+  "candidateElapsedMs": null,
+  "controlElapsedMs": null,
+  "rawClockCandidateMs": 0,
+  "rawClockControlMs": 0,
+  "timingLimitation": "clock() reported zero for both nonempty workloads; these values are not useful elapsed measurements or speed evidence.",
+  "browserConversionsPerformed": 0,
+  "conversionSpeedGainProven": false,
+  "fullOriginalFailureFixed": false,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false
+}
