@@ -4,6 +4,34 @@ Updated 2026-10-14 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-14 — Full launch correctly rejected changed Chrome pin BEFORE conversion
+
+Actual15:12:30Z hidden supervisor/child terminal exit1; full caller15:12:33Z
+executions0. Installed Chrome155.0.8059.40 launcherSHAf76f0234… differs from
+inherited qualified Chrome154.0.8037.98/SHA6849d298…. Existing binary guard rejects
+before candidate creation, browser driver/profile/UI staging or conversion. This
+is NOT another codec failure, successful full run, or low-memory/speed result.
+RAM/disk guards passed; original whole SHA exact before/after/current. Parent
+productionRestored false because restoration was never invoked: independently
+checked stock assets unchanged, not relabelled as restored. Supervisor/child exact
+births absent; owned supervisor/caller scratch gone; zero converted copies.
+[Pin rejection](evidence/2026-10-14T15-12-33-678Z-realloc-chrome-pin-rejection.json).
+
+All493 actual rejected-launch pre/post pins match retained preparation and every
+current/recovered preimage. Failed ephemeral caller preimage separately unavailable;
+do NOT invent a failed-run generated archive (actual sourceArchive null). Exact
+installed launcher/library sizes/SHA and old154 pins retained; no browser downgrade,
+settings changes, unrelated process kills or pin-gate deletion. Three new evidence
+tests/eight focused rejection/preparation/fatal-record tests PASS1.917s, collector
+scoped lint PASS. No retry while an observation was unresolved: explicit supervisor
+terminal and exact birth absence were checked first.
+
+Next: fresh ACTUAL installed-Chrome155 headless native fatal + genuine four-case
+media qualification, before/after exact launcher/library pin and runtime version;
+then fresh full-caller derivative joins that qualification to the new pin. Keep
+the binary gate, same input/settings/fidelity/250MiB/three-run/cleanup rules. Full
+source0/3 accepted; no public promotion. All broader requirements remain in scope.
+
 ## 2026-10-14 — Changed full-original realloc harness prepared; no new full conversion yet
 
 Fresh full harness uses ACTUAL qualified249-sourceeb45bb decoder/glue/combined

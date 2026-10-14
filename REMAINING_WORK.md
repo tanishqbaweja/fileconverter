@@ -5,6 +5,26 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-14 — Installed Chrome pin changed; full launch rejected before conversion
+
+**Partially implemented**. Actual15:12:30Z supervisor terminal exit1 and15:12:33Z
+full caller executions0: installed Chrome155.0.8059.40 does not match inherited
+qualified154.0.8037.98 launcher hash. Guard correctly stops BEFORE browser/engine/
+candidate/profile/staging. Zero media generated, not a codec or250MiB failure.
+493 rejected-launch source pins/pre/post/current preimages recover from actual
+preparation; failed ephemeral caller/archive separately unavailable and not
+fabricated. Original whole checksum exact pre/post/current; owned exact births
+absent/scratch gone; stock assets independently unchanged (not falsely restored).
+[Rejection](evidence/2026-10-14T15-12-33-678Z-realloc-chrome-pin-rejection.json).
+
+Three new evidence/eight focused regressions and collector lint PASS. Do NOT drop
+the pin guard, downgrade Chrome, automatically repeat this failed launch or infer
+old browser qualification covers155. Next missing: actual155 fatal/media runtime
+qualification with before/after launcher/library SHA and browser version, then
+fresh browser-pin-bound full caller, unchanged250MiB/fidelity/three runs/source/
+cleanup. Original request/lifetime/cause/reliability and all broader scope remain
+incomplete. Full-source0/3 accepted, no public promotion; goal ACTIVE.
+
 ## 2026-10-14 — Fresh full-original realloc boundary/source closure ready; reliability still partial
 
 **Partially implemented**. Actual09:36:15Z changed full harness preparation PASS,
