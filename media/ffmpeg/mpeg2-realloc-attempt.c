@@ -60,6 +60,13 @@ static void within_realloc_attempt_begin(size_t bytes, uint32_t buffer_scope)
 
 int __wrap_av_buffer_realloc(AVBufferRef **buffer, size_t bytes)
 {
+    /* av_buffer_realloc may recurse with a fresh private buffer when the old
+     * storage is aliased. Preserve the OUTER owner scalars; the inner real
+     * av_realloc still records its current pointer/size in the same slot. */
+    uint32_t phase = within_realloc_attempt_words[3];
+    if (within_realloc_attempt_words[4] == 1 &&
+        (phase == BUFFER_REALLOC_PENDING || phase == REALLOC_CALL_RETURNED))
+        return WITHIN_REALLOC_REAL_BUFFER(buffer, bytes);
     within_realloc_attempt_begin(bytes, 1);
     /* Valid upstream arguments remain valid; do not add payload/ref retention. */
     AVBufferRef *old = buffer ? *buffer : NULL;

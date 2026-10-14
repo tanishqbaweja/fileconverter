@@ -1,8 +1,39 @@
 # Tested conversion ledger
 
-Updated 2026-10-13 (Asia/Calcutta) from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
+Updated 2026-10-14 (Asia/Calcutta) from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
+
+## 2026-10-14 — Actual realloc Wasm control exposed recursive-record bug; corrected code still unqualified
+
+Exact isolated headf366cbb/native run38523571937 terminal FAILURE06:45:24Z.
+Actual pinned-libavutil alias-growth assertion failed before candidate decoder
+or artifacts were produced. Heap/codec/allocator gates NOT relaxed. Hosted cleanup
+PASS, zero artifacts, no original read/media conversion. Exact86 Git-head source
+preimages retained169,485B; complete failed job log compressed34,050B. Failed
+slot words were not dumped, so observed old-size/refcount remain unknown/null;
+recursive overwrite is source-supported diagnosis, not claimed observed values.
+[Failed native control](evidence/realloc-build-38523571937-failure.json).
+
+Corrected diagnostic preserves outer AVBuffer metadata through native recursive
+AVBuffer calls, while inner av_realloc still captures actual current request.
+One64-byte slot unchanged; no allocator, buffer reference, payload, codec, heap
+or I/O change. Added explicit synthetic recursive dispatch:10/10 cases PASS.
+Six updated unit tests PASS3.815s. Real aliased-content/refcount/constructor
+assertions remain unchanged; corrected actual Wasm build and browser control
+remain unverified, no new full-original retry. The failed source version is
+recoverable rather than silently overwritten in evidence.
+
+Actual12-minute interruptible sleep completed720.022s before inspecting the same
+terminal run; no duplicate dispatch/rapid agent polling. Historical initial9-case
+unit and planned build below are superseded by actual result above. Goal ACTIVE;
+conversion reliability/request ownership/three-run memory/speed and broader
+requirements remain incomplete.
+
+Latest12/12 updated native/failure-evidence/full-terminal regressions PASS4.183s;
+six-file zero-warning lint/whitespace PASS. No corrected native build has run yet;
+that qualification is still required before browser/full-original use.
+
 
 ## 2026-10-14 — Fixed native realloc diagnostic implemented; actual Wasm qualification pending
 

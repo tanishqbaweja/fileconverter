@@ -1,0 +1,203 @@
+{
+  "recordedAt": "2026-10-14T06:41:49.565Z",
+  "status": "exact-hosted-build-confirmed-live-not-qualification",
+  "run": {
+    "conclusion": "",
+    "createdAt": "2026-10-14T06:40:16Z",
+    "databaseId": 38523571937,
+    "headSha": "f366cbb5563e51273fad20d295bdd09f2a5dcaf6",
+    "jobs": [
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 115718618941,
+        "name": "reproduce-ffmpeg",
+        "startedAt": "2026-10-14T06:40:20Z",
+        "status": "in_progress",
+        "steps": [
+          {
+            "completedAt": "2026-10-14T06:40:21Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-14T06:40:21Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T06:40:30Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-14T06:40:21Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T06:40:34Z",
+            "conclusion": "success",
+            "name": "Install native build prerequisites",
+            "number": 3,
+            "startedAt": "2026-10-14T06:40:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T06:40:59Z",
+            "conclusion": "success",
+            "name": "Install pinned Emscripten SDK without Docker",
+            "number": 4,
+            "startedAt": "2026-10-14T06:40:34Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Rebuild and compare requested FFmpeg module(s)",
+            "number": 5,
+            "startedAt": "2026-10-14T06:40:59Z",
+            "status": "in_progress"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private H264 candidate and corresponding sources",
+            "number": 6,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain corresponding source and configure diagnostics separately",
+            "number": 7,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private MPEG2 candidate",
+            "number": 8,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain MPEG2 corresponding source separately",
+            "number": 9,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain synthetic split frame contract only",
+            "number": 10,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain synthetic split properties contract only",
+            "number": 11,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private separate encoder and initialization contract",
+            "number": 12,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private split production pipeline",
+            "number": 13,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private aligned-reuse split candidate",
+            "number": 14,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private arithmetic report only",
+            "number": 15,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain mismatched artifacts for bounded diagnosis",
+            "number": 16,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Retain private SAD arithmetic report only",
+            "number": 17,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Remove repository-local build data",
+            "number": 18,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          },
+          {
+            "completedAt": "0001-01-01T00:00:00Z",
+            "conclusion": "",
+            "name": "Post Run actions/checkout@v4",
+            "number": 36,
+            "startedAt": "0001-01-01T00:00:00Z",
+            "status": "pending"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38523571937/job/115718618941"
+      }
+    ],
+    "status": "in_progress",
+    "updatedAt": "2026-10-14T06:40:21Z",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38523571937"
+  },
+  "branch": {
+    "path": "evidence/mpeg2-realloc-attempt-build-branch-2026-10-14.json",
+    "sha256": "ebd9a68bc8b219705be78804944b6c7af9efb4896ea6bd1e98f45752a987d6fe",
+    "head": "f366cbb5563e51273fad20d295bdd09f2a5dcaf6"
+  },
+  "explicitlyDispatchedCore": "within-mpeg2-aligned-reuse",
+  "noDuplicateDispatch": true,
+  "noDocker": true,
+  "estimatedBuildMinutes": [
+    10,
+    14
+  ],
+  "estimateBasis": "Previous actual largest-idle native build580s/job632s; two bounded controls add small work, no guaranteed duration.",
+  "waitMs": 720000,
+  "plannedObservationAfter": "2026-10-14T06:53:49.565Z",
+  "waitMechanism": "one interruptible ETA-length sleep; no rapid agent polling",
+  "browserConversions": 0,
+  "originalRead": false,
+  "originalFailureRequestProven": false,
+  "publicAcceptance": false,
+  "ownSource": {
+    "path": "scripts/record-realloc-build-wait.mjs",
+    "sha256": "a975f568d20e605bcd5f8f6b4c9294cd5ce447b25da5522d354f4dedad9defc7",
+    "preimage": "Ly8gT25lIGV4YWN0IGhvc3RlZC1ydW4gbGl2ZW5lc3MgcmVjZWlwdCBiZWZvcmUgRVRBIHdhaXQ7IG5ldmVyIGRpc3BhdGNoL3JldHJ5LgppbXBvcnQgYXNzZXJ0IGZyb20gIm5vZGU6YXNzZXJ0L3N0cmljdCI7CmltcG9ydCB7IGV4ZWNGaWxlIH0gZnJvbSAibm9kZTpjaGlsZF9wcm9jZXNzIjsKaW1wb3J0IHsgcmVhZEZpbGUsIHdyaXRlRmlsZSB9IGZyb20gIm5vZGU6ZnMvcHJvbWlzZXMiOwppbXBvcnQgcGF0aCBmcm9tICJub2RlOnBhdGgiOwppbXBvcnQgeyBwcm9taXNpZnkgfSBmcm9tICJub2RlOnV0aWwiOwppbXBvcnQgeyBzaGEgfSBmcm9tICIuL2xpYi9zdGFibGUtdWktaGVhZGxlc3MtYmFzZWxpbmUtcmVjaXBlLm1qcyI7CmFzc2VydC5lcXVhbChwcm9jZXNzLmFyZ3YubGVuZ3RoLCAzKTsgY29uc3QgcnVuSWQgPSBwcm9jZXNzLmFyZ3ZbMl07IGFzc2VydC5tYXRjaChydW5JZCwgL15bMC05XXs4LH0kLyk7CmNvbnN0IHJvb3QgPSBwYXRoLnJlc29sdmUoaW1wb3J0Lm1ldGEuZGlybmFtZSwgIi4uIiksIG93biA9ICJzY3JpcHRzL3JlY29yZC1yZWFsbG9jLWJ1aWxkLXdhaXQubWpzIjsKY29uc3QgYnJhbmNoUGF0aCA9ICJldmlkZW5jZS9tcGVnMi1yZWFsbG9jLWF0dGVtcHQtYnVpbGQtYnJhbmNoLTIwMjYtMTAtMTQuanNvbiIsIGJyYW5jaEJ5dGVzID0gYXdhaXQgcmVhZEZpbGUocGF0aC5qb2luKHJvb3QsIGJyYW5jaFBhdGgpKSwgYnJhbmNoID0gSlNPTi5wYXJzZShicmFuY2hCeXRlcyk7CmFzc2VydC5lcXVhbChicmFuY2guYnJhbmNoLCAiY29kZXgvbXBlZzItcmVhbGxvYy1hdHRlbXB0LTIwMjYxMDE0Iik7IGFzc2VydC5lcXVhbChicmFuY2gucmVtb3RlVmVyaWZpZWQsIHRydWUpOyBhc3NlcnQuZXF1YWwoYnJhbmNoLm9yaWdpbmFsUmVhZCwgZmFsc2UpOwphc3NlcnQub2soYnJhbmNoLndvcmtmbG93LmdlbmVyYXRlZEV4YWN0U291cmNlLmluY2x1ZGVzKCJub2RlIG1lZGlhL2ZmbXBlZy9idWlsZC1tcGVnMi1yZWFsbG9jLWF0dGVtcHQubWpzIikpOwpjb25zdCB7IHN0ZG91dCB9ID0gYXdhaXQgcHJvbWlzaWZ5KGV4ZWNGaWxlKSgiRDovUHJvZ3JhbSBGaWxlcy9HaXRIdWIgQ0xJL2doLmV4ZSIsIFsicnVuIiwgInZpZXciLCBydW5JZCwgIi0tcmVwbyIsICJ0YW5pc2hxYmF3ZWphL2ZpbGVjb252ZXJ0ZXIiLAogICItLWpzb24iLCAiZGF0YWJhc2VJZCxoZWFkU2hhLHN0YXR1cyxjb25jbHVzaW9uLGNyZWF0ZWRBdCx1cGRhdGVkQXQsam9icyx1cmwiXSwKICB7IGN3ZDogcm9vdCwgd2luZG93c0hpZGU6IHRydWUsIHRpbWVvdXQ6IDMwMDAwLCBtYXhCdWZmZXI6IDI2MjE0NCB9KTsKY29uc3QgcnVuID0gSlNPTi5wYXJzZShzdGRvdXQpOyBhc3NlcnQuZXF1YWwoU3RyaW5nKHJ1bi5kYXRhYmFzZUlkKSwgcnVuSWQpOyBhc3NlcnQuZXF1YWwocnVuLmhlYWRTaGEsIGJyYW5jaC5jb21taXQpOwphc3NlcnQuZXF1YWwocnVuLnN0YXR1cywgImluX3Byb2dyZXNzIik7IGFzc2VydC5lcXVhbChydW4uY29uY2x1c2lvbiwgIiIpOwpjb25zdCBvd25CeXRlcyA9IGF3YWl0IHJlYWRGaWxlKHBhdGguam9pbihyb290LCBvd24pKSwgbm93ID0gRGF0ZS5ub3coKSwgd2FpdE1zID0gNzIwMDAwOwpjb25zdCBwcm9vZiA9IHsgcmVjb3JkZWRBdDogbmV3IERhdGUobm93KS50b0lTT1N0cmluZygpLCBzdGF0dXM6ICJleGFjdC1ob3N0ZWQtYnVpbGQtY29uZmlybWVkLWxpdmUtbm90LXF1YWxpZmljYXRpb24iLAogIHJ1biwgYnJhbmNoOiB7IHBhdGg6IGJyYW5jaFBhdGgsIHNoYTI1Njogc2hhKGJyYW5jaEJ5dGVzKSwgaGVhZDogYnJhbmNoLmNvbW1pdCB9LAogIGV4cGxpY2l0bHlEaXNwYXRjaGVkQ29yZTogIndpdGhpbi1tcGVnMi1hbGlnbmVkLXJldXNlIiwgbm9EdXBsaWNhdGVEaXNwYXRjaDogdHJ1ZSwgbm9Eb2NrZXI6IHRydWUsCiAgZXN0aW1hdGVkQnVpbGRNaW51dGVzOiBbMTAsMTRdLCBlc3RpbWF0ZUJhc2lzOiAiUHJldmlvdXMgYWN0dWFsIGxhcmdlc3QtaWRsZSBuYXRpdmUgYnVpbGQ1ODBzL2pvYjYzMnM7IHR3byBib3VuZGVkIGNvbnRyb2xzIGFkZCBzbWFsbCB3b3JrLCBubyBndWFyYW50ZWVkIGR1cmF0aW9uLiIsCiAgd2FpdE1zLCBwbGFubmVkT2JzZXJ2YXRpb25BZnRlcjogbmV3IERhdGUobm93ICsgd2FpdE1zKS50b0lTT1N0cmluZygpLCB3YWl0TWVjaGFuaXNtOiAib25lIGludGVycnVwdGlibGUgRVRBLWxlbmd0aCBzbGVlcDsgbm8gcmFwaWQgYWdlbnQgcG9sbGluZyIsCiAgYnJvd3NlckNvbnZlcnNpb25zOiAwLCBvcmlnaW5hbFJlYWQ6IGZhbHNlLCBvcmlnaW5hbEZhaWx1cmVSZXF1ZXN0UHJvdmVuOiBmYWxzZSwgcHVibGljQWNjZXB0YW5jZTogZmFsc2UsCiAgb3duU291cmNlOiB7IHBhdGg6IG93biwgc2hhMjU2OiBzaGEob3duQnl0ZXMpLCBwcmVpbWFnZTogb3duQnl0ZXMudG9TdHJpbmcoImJhc2U2NCIpIH0gfTsKY29uc3Qgb3V0cHV0ID0gYGV2aWRlbmNlL3JlYWxsb2MtYnVpbGQtJHtydW5JZH0td2FpdC1wbGFuLmpzb25gOwphd2FpdCB3cml0ZUZpbGUocGF0aC5qb2luKHJvb3QsIG91dHB1dCksIEpTT04uc3RyaW5naWZ5KHByb29mLCBudWxsLCAyKSArICJcbiIsIHsgZmxhZzogInd4IiB9KTsKY29uc29sZS5sb2coSlNPTi5zdHJpbmdpZnkoeyBvdXRwdXQsIHJ1bklkLCBoZWFkOiBydW4uaGVhZFNoYSwgc3RhdHVzOiBydW4uc3RhdHVzLCB3YWl0TXMsIHBsYW5uZWRPYnNlcnZhdGlvbkFmdGVyOiBwcm9vZi5wbGFubmVkT2JzZXJ2YXRpb25BZnRlciB9KSk7Cg=="
+  }
+}

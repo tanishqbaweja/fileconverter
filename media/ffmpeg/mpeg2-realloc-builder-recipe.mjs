@@ -42,7 +42,8 @@ export function makeReallocHostedBuilder(source, root) {
   const dispatchBytes = await readFile(dispatchPath), actualBytes = await readFile(actualPath);
   const dispatch = JSON.parse(dispatchBytes), actual = JSON.parse(actualBytes);
   assert.equal(dispatch.scope, "synthetic-realloc-dispatch-not-real-libavutil-or-media-oom");
-  assert.equal(dispatch.passed, 9); assert.equal(dispatch.cases, 9); assert.equal(dispatch.slotBytes, 64);
+  assert.equal(dispatch.passed, 10); assert.equal(dispatch.cases, 10); assert.equal(dispatch.slotBytes, 64);
+  assert.equal(dispatch.outerMetadataPreservedAcrossRecursion, true);
   assert.equal(actual.scope, "actual-libavutil-realloc-lifetime-not-conversion");
   assert.equal(actual.passed, 6); assert.equal(actual.cases, 6); assert.equal(actual.slotBytes, 64);
   assert.equal(actual.aliasContentPreserved, true); assert.equal(actual.constructorBindingVerified, true);

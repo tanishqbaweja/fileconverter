@@ -29,7 +29,8 @@ export function makeReallocCollector(source, root) {
   assert.equal(sha(realloc.dispatchExactSource), realloc.dispatchSha256);
   assert.deepEqual(JSON.parse(realloc.dispatchExactSource), realloc.actualWasmSyntheticDispatch);
   assert.equal(realloc.actualWasmSyntheticDispatch.scope, 'synthetic-realloc-dispatch-not-real-libavutil-or-media-oom');
-  assert.equal(realloc.actualWasmSyntheticDispatch.passed, 9);
+  assert.equal(realloc.actualWasmSyntheticDispatch.passed, 10);
+  assert.equal(realloc.actualWasmSyntheticDispatch.outerMetadataPreservedAcrossRecursion, true);
   assert.equal(sha(realloc.actualExactSource), realloc.actualSha256);
   assert.deepEqual(JSON.parse(realloc.actualExactSource), realloc.actualWasmLibavutil);
   assert.equal(realloc.actualWasmLibavutil.scope, 'actual-libavutil-realloc-lifetime-not-conversion');

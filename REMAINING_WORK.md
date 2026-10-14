@@ -1,9 +1,32 @@
 # Remaining work audit
 
-Updated 2026-10-13 (Asia/Calcutta). This is the living requirement audit for the original
+Updated 2026-10-14 (Asia/Calcutta). This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
+
+## 2026-10-14 — Realloc control failed; outer-record recursion fix implemented
+
+**Partially implemented**. Actual no-Docker isolated Wasm/library run38523571937
+at headf366cbb FAILED alias-growth scalar assertion before decoder/artifacts.
+Hosted cleanup PASS/no media/original read.86 exact failed Git-head source
+preimages and complete job log retained; no failed scalar dump, so exact words
+unknown. [Failure](evidence/realloc-build-38523571937-failure.json).
+
+Native recursive AVBuffer call can overwrite outer diagnostic metadata. Fixed
+outer-scope preservation and added synthetic recursion:10/10 dispatch cases/
+six updated tests PASS3.815s. Same64-byte record/no allocator/reference/quality/
+heap/I/O changes; actual library assertions unchanged. Corrected actual Wasm,
+map/constructor/source-envelope and headless browser failure control still next;
+do not claim fixed original conversion, request attribution or acceptance.
+
+One requested ETA sleep720.022s completed/same terminal run inspected/no duplicate
+dispatch. Historical initial implementation below remains retained, superseded
+by actual failure/correction above. Goal ACTIVE/all original scope intact.
+
+Latest12/12 focused updated-code/actual-failure/full-terminal regressions PASS
+4.183s, six-file zero-warning lint/whitespace PASS; not final completion gates.
+
 
 ## 2026-10-14 — Realloc measurement implementation ready, not a conversion fix
 

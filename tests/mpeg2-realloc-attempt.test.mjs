@@ -28,12 +28,12 @@ test("all nested builder routes select new diagnostic, retain prior gates and pa
   const outer = makePacketCacheOuterBuilder(await read("media/ffmpeg/build-mpeg2-alignment16.mjs"), root); syntax(outer.generated);
   const hevc = makePacketCacheHevcWrapper(await read("media/ffmpeg/build-mpeg2-hevc-planes.mjs"), root); syntax(hevc.generated);
   assert.ok(outer.generated.includes("mpeg2-realloc-builder-recipe.mjs")); assert.ok(hevc.generated.includes("mpeg2-realloc-builder-recipe.mjs"));
-  for (const token of ["actual.constructorBindingVerified, true", "actual.aliasContentPreserved, true", "dispatch.passed, 9", "actual.passed, 6",
+  for (const token of ["actual.constructorBindingVerified, true", "actual.aliasContentPreserved, true", "dispatch.passed, 10", "actual.passed, 6",
     "heapLimitsChanged: false", "bufferReferenceOwnershipChanged: false", "browserFailurePathQualified: false", "publicAcceptance: false",
     "await unlink(dispatchPath); await unlink(actualPath);", "windowsHide: true", "runtime.close()"])
     assert.ok(recipe.generated.includes(token), token);
 });
-test("compile and execute real C diagnostic under synthetic host dispatch; nine cases with finally-owned cleanup", async () => {
+test("compile and execute real C diagnostic under synthetic host dispatch; ten cases including recursion with finally cleanup", async () => {
   const runtime = await createOwnedRuntimeScratch("native-realloc-control-");
   try {
     const compiler = "H:/LLVM-MinGW/llvm-mingw-20260616-ucrt-x86_64/bin/clang.exe";
@@ -45,7 +45,8 @@ test("compile and execute real C diagnostic under synthetic host dispatch; nine 
     const result = spawnSync(executable, [], { cwd: root, env: runtime.env, windowsHide: true, encoding: "utf8", timeout: 5000 });
     assert.equal(result.status, 0, result.stderr); const report = JSON.parse(result.stdout);
     assert.equal(report.scope, "synthetic-realloc-dispatch-not-real-libavutil-or-media-oom");
-    assert.equal(report.cases, 9); assert.equal(report.passed, 9); assert.equal(report.slotBytes, 64); assert.equal(report.conversionsPerformed, 0);
+    assert.equal(report.cases, 10); assert.equal(report.passed, 10); assert.equal(report.slotBytes, 64); assert.equal(report.conversionsPerformed, 0);
+    assert.equal(report.outerMetadataPreservedAcrossRecursion, true);
     assert.deepEqual(report.pendingPhases, [1,2]);
   } finally { await runtime.close(); await assert.rejects(access(runtime.directory), { code: "ENOENT" }); }
 });

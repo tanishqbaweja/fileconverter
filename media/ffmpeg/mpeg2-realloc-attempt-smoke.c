@@ -7,7 +7,7 @@
 typedef struct AVBufferRef { unsigned char *data; size_t size; unsigned refs; } AVBufferRef;
 static int av_buffer_get_ref_count(const AVBufferRef *buffer) { return (int)buffer->refs; }
 static unsigned char arena[16], replacement[16];
-static int calls, buffer_calls, fail_phase, return_error;
+static int calls, buffer_calls, fail_phase, return_error, recurse_once;
 static void *received_pointer;
 static size_t received_bytes;
 static jmp_buf jump;
@@ -27,6 +27,11 @@ static int mock_buffer(AVBufferRef **buffer, size_t bytes)
 {
     buffer_calls++;
     if (fail_phase == 1) longjmp(jump, 1);
+    if (recurse_once) {
+        AVBufferRef *private_buffer = NULL;
+        recurse_once = 0;
+        return __wrap_av_buffer_realloc(&private_buffer, bytes);
+    }
     void *pointer = __wrap_av_realloc(*buffer ? (*buffer)->data : NULL, bytes);
     if (!pointer) return -12;
     if (*buffer) { (*buffer)->data = pointer; (*buffer)->size = bytes; }
@@ -34,7 +39,7 @@ static int mock_buffer(AVBufferRef **buffer, size_t bytes)
 }
 static void reset(void)
 {
-    calls = buffer_calls = fail_phase = return_error = 0;
+    calls = buffer_calls = fail_phase = return_error = recurse_once = 0;
     received_pointer = NULL; received_bytes = 0;
     for (unsigned i = 0; i < 16; i++) within_realloc_attempt_words[i] = 0;
 }
@@ -79,9 +84,16 @@ int main(void)
     reset(); assert(__wrap_av_buffer_realloc(&buffer, 128) == 0); schema(4);
     assert(__wrap_av_realloc(arena, 64) == replacement); schema(3);
     assert(within_realloc_attempt_words[4] == 0 && within_realloc_attempt_words[7] == 0 && within_realloc_attempt_words[13] == 64);
+    reset(); value.data = arena; value.size = 4096; value.refs = 3; buffer = &value; recurse_once = 1;
+    assert(__wrap_av_buffer_realloc(&buffer, 16384) == 0); schema(4);
+    assert(buffer_calls == 2 && calls == 1 && within_realloc_attempt_words[2] == 1);
+    assert(within_realloc_attempt_words[7] == (uint32_t)(uintptr_t)&value);
+    assert(within_realloc_attempt_words[8] == (uint32_t)(uintptr_t)arena);
+    assert(within_realloc_attempt_words[9] == 4096 && within_realloc_attempt_words[11] == 3);
+    assert(within_realloc_attempt_words[12] == 0 && within_realloc_attempt_words[13] == 16384);
 #ifdef __EMSCRIPTEN__
     /* Production constructor binding itself is checked by the hosted real test. */
 #endif
-    puts("{\"scope\":\"synthetic-realloc-dispatch-not-real-libavutil-or-media-oom\",\"cases\":9,\"passed\":9,\"slotBytes\":64,\"pendingPhases\":[1,2],\"conversionsPerformed\":0}");
+    puts("{\"scope\":\"synthetic-realloc-dispatch-not-real-libavutil-or-media-oom\",\"cases\":10,\"passed\":10,\"slotBytes\":64,\"pendingPhases\":[1,2],\"outerMetadataPreservedAcrossRecursion\":true,\"conversionsPerformed\":0}");
     return 0;
 }
