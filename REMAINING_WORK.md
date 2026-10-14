@@ -5,6 +5,27 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-14 — Fresh full-original realloc boundary/source closure ready; reliability still partial
+
+**Partially implemented**. Actual09:36:15Z changed full harness preparation PASS,
+executions0. Uses actual qualified249-source decoder/glue/observer and unchanged
+encoder/settings/full input/IO/SSIM>=0.98/heaps/repeat/250MiB/cleanup gates. All493
+pre/current/post source preimages recovered, including previous439/new249;380
+legacy+113 supplement/824,441B under unchanged128/2MiB caps. Qualified external
+evidence remains recovered, not dropped. Archive312,763B; protected original whole
+pre/post SHA exact; scratch removed/stock assets restored, memory/disk guards pass.
+[Preparation](evidence/2026-10-14T09-36-15-026Z-realloc-original-full-preparation.json).
+
+Captured realloc scalars validated offline through every pending-slot schema guard
+without fake heap/Module or malloc-size inference; actual synthetic record passes,
+forged phase/API/ownership/binding/inventory/cap records refused.17 focused
+regressions/ten-file scoped lint PASS. Headless/no Docker/no public promotion.
+Missing next: execute changed full diagnostic, capture actual original request and
+lifetime/cause, correct reliability; full-source0/3 accepted so far. Stable blank/
+complete-tree250MiB, three validated repeats/cold/scaling/speed/direct native
+destination and EVERY broader original requirement remain unverified/incomplete.
+Preparation is not conversion, site-memory or speed proof. Goal ACTIVE.
+
 ## 2026-10-14 — Changed decoder genuinely qualified in four short jobs; full reliability remains partial
 
 **Partially implemented**. Actual journalled09:09:29Z headless4/4 suite PASS2.9m:

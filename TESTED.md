@@ -4,6 +4,34 @@ Updated 2026-10-14 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-14 — Changed full-original realloc harness prepared; no new full conversion yet
+
+Fresh full harness uses ACTUAL qualified249-sourceeb45bb decoder/glue/combined
+observer, samea4 plane encoder,4Mbps/q4/full1920×804/fixed32+16MiB/one reusable
+suspension lease and unchanged production input/output/quality/privacy/cancellation/
+three-run/250MiB/cleanup gates. Reversible driver/caller/stager derivatives retain
+old qualified sources byte-exact. Offline boundary decodes only captured16-word
+pending scalars through every original slot-schema guard; no fake heap/Module,
+heap-extent-as-request or internal malloc size. Actual combined synthetic fatal
+record passes; forged API/phase/binding/ownership/caps/inventory rejected.
+
+Actual09:36:15Z preparation PASS, executions0.493 current/executed/post/preimages
+include ALL previous439 and qualified249; immutable380 legacy plus113 supplemental
+files/824,441B under unchanged128-file/2MiB caps. Qualified external evidence
+preimages recovered via pinned bytes and existing249-source archive, not omitted.
+New lossless runtime archive312,763B/restored1,209,450B. Original whole SHA exact
+pre/post, stock assets restored, owned wrapper/candidate scratch absent. Host
+physical6.09GiB/virtual9.46GiB, disk~1.95TiB pass guards; NOT site-memory acceptance.
+[Preparation](evidence/2026-10-14T09-36-15-026Z-realloc-original-full-preparation.json).
+
+17 focused current/old full/source/native/media/cleanup regressions PASS17.123s;
+ten new JS/test files zero-warning lint/whitespace PASS. Hidden supervisor retains
+exact birth ownership/bounded tails/60s journal/no automatic restart/finally rules.
+No converter/browser launched during preparation, no media produced, no Docker,
+no headed coverage/public promotion or claimed speed/full250MiB acceptance.
+Next: launch this changed full diagnostic, capture actual original pending realloc
+request/lifetime and correct reliability. All broader scope remains incomplete.
+
 ## 2026-10-14 — Actual new decoder FOUR genuine headless conversions/recovery PASS; full original still pending
 
 Journalled09:09:29Z suite PASS4/4 in2.9m. Actual unchangedeb45bb decoder (NOT
