@@ -5,6 +5,31 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-14 — Corrected native diagnostic qualified; conversion still partial
+
+**Partially implemented**. Exact headdd169b1/run38526781934 actual SUCCESS,
+10-case Wasm dispatch and6-case pinned-library alias/content/constructor controls
+PASS. Diagnostic64B/one slot; old allocator, ownership, codec, fixed32+16MiB,
+I/O and all previous native gates unchanged.86 executed/current/post preimages
+retained178,635B under unchanged128-file/2MiB cap. Nine actual typed functions,
+map roots/new slot and constructor body/glue linkage verified, NOT runtime decoder
+binding or a media/native-failure reproduction. [Build](evidence/mpeg2-realloc-attempt-build-38526781934.json),
+[ABI](evidence/realloc-native-layout-38526781934.json).
+
+12/12 focused native/evidence/failure/namespace regressions and scoped lint PASS.
+20 local reusable tools9,727,491B retained inside work; all owned scratch gone,
+exact-id/head/digest duplicate hosted artifact removed after source/local-byte
+qualification. No original read/media created/public mutation. Actual one
+720.018s ETA wait completed; no duplicate dispatch/rapid polling.
+
+Next missing: qualify actual decoder runtime binding and bounded failure-only
+realloc observer in a headless browser, preserve identical fidelity/quality/IO
+and recovery, then capture actual original realloc request/lifetime and correct
+reliability. Native controls do not establish speed or250MiB browser acceptance.
+Complete original/three repeats/cold/scaling/direct output and every broader
+requirement below remain incomplete. Goal ACTIVE.
+
+
 ## 2026-10-14 — Fresh exact-head requalification ready
 
 **Partially implemented**. Corrected diagnostic gets a separate recursion-fix

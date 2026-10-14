@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-10-14T07:56:32.392Z",
+  "status": "source-bound-disposable-hosted-artifact-deleted-local-tools-retained",
+  "runId": "38526781934",
+  "proofSha256": "6a0c5f8929e073e9f0d0aa532d2c91f0b2917384eddffb7e2e26405f1df1899b",
+  "artifactBefore": {
+    "id": 11876364236,
+    "node_id": "MDg6QXJ0aWZhY3QxMTg3NjM2NDIzNg==",
+    "name": "private-mpeg2-aligned-reuse-38526781934",
+    "size_in_bytes": 2391260,
+    "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11876364236",
+    "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/11876364236/zip",
+    "expired": false,
+    "digest": "sha256:9612d2a7fd1d10251a1c157ad4c00474f1d0b7cce89293d72b615874fa03327a",
+    "created_at": "2026-10-14T07:22:23Z",
+    "updated_at": "2026-10-14T07:22:23Z",
+    "expires_at": "2026-10-15T07:22:21Z",
+    "workflow_run": {
+      "id": 38526781934,
+      "repository_id": 1304803353,
+      "head_repository_id": 1304803353,
+      "head_branch": "codex/mpeg2-realloc-attempt-20261014-recursion-fix",
+      "head_sha": "dd169b15703045092b8477f4b744aa6dabf94afe"
+    }
+  },
+  "artifactCountAfter": 0,
+  "localToolsRetained": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-realloc-attempt-38526781934",
+  "localToolBytes": 9727491,
+  "recoverability": "Verified small local build tools retained for actual browser qualification; no user files/converted media deleted",
+  "ownedRuntimeRemoved": true,
+  "publicAcceptance": false,
+  "browserConversionsPerformed": 0
+}

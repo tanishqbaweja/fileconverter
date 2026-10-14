@@ -4,6 +4,45 @@ Updated 2026-10-14 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-14 — Corrected real realloc controls/native source/ABI PASS; browser and original failure still unqualified
+
+Actual no-Docker run38526781934/exact headdd169b1 SUCCESS07:22:27Z, build577s/
+job626s. Same fixed32MiB decoder/16MiB build encoder. Corrected actual-Wasm10-case
+synthetic dispatch includes recursive outer-record preservation; real pinned
+libavutil6-case allocation/grow/shrink/equal-size/alias-content/constructor checks
+PASS. All prior allocator/HEVC/packet-cache lifetime controls remain passing.
+This qualifies the diagnostic implementation, NOT the original conversion.
+[Actual build](evidence/mpeg2-realloc-attempt-build-38526781934.json).
+
+All86 exact executed/current/post native sources and preimages verified under
+unchanged128-file/2MiB caps; archive178,635B. DecoderSHAeb45bb276b139f0c0404079c2087d06dfa0f629c400d3f18f5a28ead78521e3c;
+old build encoder8b2fd6 unchanged. Static actual link-map/typed body hashes join
+allocator1786760, alignment slot1918848, realloc slot1918912/64B and pool1918976.
+Nine actual typed functions include wrappers4474/4475, AVBuffer4192, EBML213,
+cluster223. Actual constructor55 binds import17 to this slot; minified glue sets
+the documented Module fields. Runtime DECODER constructor/fatal path remains
+unverified, distinct from the standalone library control's executed constructor.
+[Native envelope](evidence/realloc-native-sources-38526781934.json),
+[static ABI](evidence/realloc-native-layout-38526781934.json).
+
+An initial offline glue-token assertion expected spaces; inspected minified
+artifact and corrected exact tokens, no native/quality/memory gate change or
+expensive build replay.12/12 actual-evidence/namespace/failed-version/native
+regressions PASS6.438s; scoped new-code lint and whitespace PASS. One real ETA
+sleep720.018s completed before inspecting same terminal job, no rapid polling.
+
+All20 reusable tools9,727,491B verified/retained only in repository work;
+download/compiler/wrapper scratch cleaned. Redundant hosted artifact11876364236
+deleted only after exact local bytes/source/head/id/digest gates, artifact count0;
+local tools remain recoverable. No original read/media/conversion/public core
+mutation. [Cleanup](evidence/mpeg2-realloc-attempt-hosted-cleanup-38526781934.json).
+Next: fresh headless failure-only observer/control for this qualified binary,
+then unchanged-quality genuine browser qualification before any full retry.
+Original request/lifetime/fragmentation cause, reliable complete original, speed,
+three-run complete-tree250MiB/cold/scaling/direct output and all broader scope
+remain incomplete. Goal ACTIVE/no public promotion.
+
+
 ## 2026-10-14 — Corrected native diagnostic requalification prepared
 
 Fresh recursion-fix branch/collector/wait namespace preserves failed original
