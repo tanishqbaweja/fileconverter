@@ -4,7 +4,57 @@ Updated 2026-10-13 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
-## 2026-10-13 — Fresh changed-decoder full harness prepared; actual run launched, not acceptance
+## 2026-10-14 — Actual changed full-original attempt FAILED; Matroska realloc path now observed
+
+Actual full run terminal01:59:31Z on2026-10-13, NOT live/acceptance. Conversion
+failed after1,446,197.285ms (24.10min active, about31min launch-to-cleanup),
+34,348 frames/packets,626,767,162B partial output deleted by finally. Zero of
+three completed independently validated runs; full fidelity validation null.
+The first-idle prior reached250,053 frames; changed largest-idle native churn
+improvement did not establish reliability and this candidate is not promoted.
+[Actual analysis](evidence/2026-10-13T01-28-09-516Z-packet-largest-idle-full-terminal-analysis.json).
+
+Native stack: Matroska EBML/cluster parsing ->av_buffer_realloc ->av_realloc
+->emscripten_builtin_realloc ->malloc/sbrk. NOT previous mpeg2_packets malloc.
+33,759,232B attempted heap extent is NOT individual request bytes. Qualified
+packet/direct/pool paths false; slot reads0/failed request/free inventory null.
+No input read errors. One suspension allocation/4,746 reuses/0 native frees at
+fatal exit,262,156B retained until owned worker/browser termination, not a native
+free claim. Fixed32+16MiB,64KiB reads/writes/one pending write/zero final queue.
+
+Failed-window complete-tree difference exactly230.82421875MiB =485,535,744B
+peak minus243,499,008B stable blank. NOT complete-file memory acceptance.
+13,249 conversion phase samples/13,254 run-native snapshot samples have distinct
+cutoffs, preserved separately. Zero unavailable active samples; two unavailable
+startup samples remain null.16,314 native sequence/zero drops/rewrites. All six
+durable phase peaks/counts match; unavailable examples retained in raw archive,
+not falsely asserted present in compact checkpoint.
+
+All439 executed/current/pre/post preimages recovered (immutable380+59).29 owned
+native births independently absent; scratch/profile/server/observer/candidate
+removed, stock production restored, whole protected pre/post/current size/SHA
+unchanged. Redundant29,870B checkpoint removed only after lossless gzip verified;
+10,359,652B raw report already losslessly archived359,094B/deleted by caller.
+No converted copies outside repository, no process killed or conversion replay.
+Four-hour requested timer was interrupted; do not record it as a completed wait.
+
+Read-only independent FFprobe nearby-original packet inspection and pinned
+FFmpeg8.1.2 source identify an EBML binary-buffer realloc investigation, not a
+whole-cluster copy or observed failed request. Cumulative input-read bytes are
+not file offsets. [Investigation](media/ffmpeg/matroska-realloc-investigation.md).
+One offline checkpoint-shape assertion failed before archival because checkpoint
+omits unavailable-example arrays; fixed explicit comparison retains all actual
+peaks/counts/null examples and does not change converter gates. Full reliability,
+actual request/lifetime attribution, speed, three-run/cold/scaling and all broader
+requirements remain incomplete. Goal ACTIVE; no public profile promotion.
+
+17/17 focused current/preimage/full-preparation/full-terminal/prior-terminal/
+browser-evidence regressions PASS14.647s; two new code files zero-warning lint
+PASS and whitespace PASS. These are scoped evidence/regression gates, not the
+final production/browser/privacy/reproducibility completion suite.
+
+
+## 2026-10-13 — HISTORICAL changed-decoder preparation/launch (terminal failure above)
 
 Actual preparation at01:25:07Z PASS, zero conversion executions, all439 current/
 pre/post source pins/preimages recovered. The actual380-source legacy archive

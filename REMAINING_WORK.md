@@ -5,7 +5,43 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
-## 2026-10-13 — Changed full-original integration prepared; reliability still partial
+## 2026-10-14 — Changed full reliability contradicted; next allocation path established
+
+**Partially implemented**. Actual new full-original attempt FAILED at34,348
+frames after24.10min conversion (626,767,162B partial deleted), no validated
+full outputs/zero of3 runs. Terminal01:59:31Z2026-10-13; all owned processes now
+absent, do not continue waiting/relaunch from old live receipt. The largest-idle
+native allocation-churn optimization is NOT a reliable full-source implementation
+or demonstrated speed gain and remains out of public promotion.
+[Actual analysis](evidence/2026-10-13T01-28-09-516Z-packet-largest-idle-full-terminal-analysis.json).
+
+Failure stack moved from previous packet malloc to Matroska EBML binary-buffer
+av_buffer_realloc/av_realloc. Exact failed allocation/lifetime/fragmentation cause
+unknown;33,759,232B heap extent must not be called request size. Correct guard
+read zero unrelated native slots. No read error or Asyncify reservation failure.
+Fresh scalar realloc-attempt instrumentation and qualified typed binary/control
+are the actionable next measurement; do not raise heaps or reduce fidelity.
+[Pinned source investigation](media/ffmpeg/matroska-realloc-investigation.md).
+
+Failed-window230.824MiB exact complete-tree formula is diagnostic only.13,249
+phase samples and13,254 run snapshots retained as separate cutoffs; two unavailable
+startup samples null, no active missing samples; all six durable peaks/counts
+verified.439 executed/current/pre/post preimages recovered, protected whole
+pre/post/current hash identical,29 owned births independently absent, all scratch
+and partials gone/stock production restored.29,870B redundant checkpoint removed
+after verified lossless compression. Interrupted ETA timer is not completed-wait
+evidence. No native conversion/Docker/quality weakening or unrelated cleanup.
+
+Remaining: qualify/correct actual realloc allocation ownership, genuine original
+completion/recovery,3 stress runs/250MiB full-memory, direct native destination,
+cold/scaling/real speed and every broader requirement below. Goal ACTIVE.
+
+17/17 focused regressions PASS14.647s, two-file zero-warning lint and whitespace
+PASS. These do not replace the final full production/browser/privacy/offline/
+validator/reproducibility/cleanup/registry completion audit.
+
+
+## 2026-10-13 — HISTORICAL full-original preparation/launch (failure above)
 
 **Partially implemented**. Fresh qualified7bb58a decoder/33,536B packet-path
 observer integrated into actual prior full driver; enumerate/reverse only
