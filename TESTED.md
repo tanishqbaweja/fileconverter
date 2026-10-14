@@ -4,6 +4,39 @@ Updated 2026-10-14 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-14 — Private Matroska block-reuse implementation, native acceptance pending
+
+Implemented a fresh candidate for the measured initial-NULL 273,954-byte block
+allocation: per-demuxer storage, one largest final-unreferenced idle lease bounded
+to 1,048,640 bytes, logical AVBuffer sizes, original libavutil semantics for
+existing references, and unchanged upstream allocation for oversized blocks.
+Only Block/SimpleBlock use this policy; metadata/attachment allocation, payload
+reading, padding, short-read errors, codecs, 32/16 MiB heaps, and AVIO stay intact.
+Close defers owner destruction until outstanding packet aliases finally unref.
+The payload is fully overwritten by the preserved upstream read; only padding
+is cleared, with no whole-capacity clearing or maximum-size preallocation.
+
+The released FFmpeg 8.1.2 archive was downloaded inside owned repository scratch,
+verified against SHA-256 464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c,
+and deleted in finally. Actual matroskadec.c (184,805 bytes) SHA-256
+45261fc3f0bc3f3cce0395966eeadfdacc4779d97fb4b31d2ae490a2ce99e093
+transforms and reverses exactly. Retained upstream/source-preimage gzip is only
+57,230 bytes, not media. Initial branch preparation syntax check caught an
+outdated parent commit-message match BEFORE any branch/build; corrected to the
+actual parent message. The header's explicit error.h include was added after
+the upstream receipt; its earlier exact preimage remains retained, not rewritten.
+
+18 focused tests PASS 4,974.882 ms, including existing actual full-terminal
+evidence and diagnostic controls; ten new JavaScript/test files zero-warning
+scoped lint PASS. These are source/dispatch/preparation checks, NOT execution
+of the new real-libavutil lifecycle smoke or browser conversion acceptance.
+No expensive unchanged original retry, new converted file, Docker, browser,
+public engine/registry change, full-original success, or speed gain is claimed.
+Real Wasm lifecycle/content/alias/failure controls and subsequent independent
+browser fidelity, changed full-file reliability, <=250 MiB, repeat/cold/scaling,
+and direct-output gates remain pending. See
+`evidence/mpeg2-ebml-reuse-upstream-2026-10-14.json`.
+
 ## 2026-10-14 — Actual full original identifies273,954B initial Matroska realloc and fragmented free space
 
 Actual16:27:26Z full original FAILED at34,348 decoded/encoded/muxed frames after

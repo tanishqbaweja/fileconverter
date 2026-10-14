@@ -5,6 +5,27 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-14 — Measured Matroska request now has a bounded reuse candidate
+
+**Partially implemented**. Fresh private `mpeg2-ebml-reuse.h` and exact-source
+build recipes now reuse at most one final-unreferenced Block/SimpleBlock payload
+per demuxer, capped at 1 MiB + 64 padding. Live aliases cannot be reused; close
+defers cache destruction to their final release. Logical AVBuffer sizes,
+existing-reference libavutil semantics, larger-block upstream fallback,
+metadata/attachments, read/error/padding code, codec settings, fixed decoder/
+encoder heaps, production AVIO, and original thresholds are preserved.
+The actual checksum-pinned FFmpeg release archive supplies a byte-exact source
+patch/reversal proof; the downloaded archive/scratch are removed, leaving a
+57,230-byte source-preimage gzip. 18 focused checks and ten-file scoped lint
+pass; an initial stale branch-message match was caught/corrected before build.
+Real new Wasm/lifecycle controls are still pending, as are production-browser
+goldens and the changed full original. Historical 0/3 full transcodes remain
+failed; no public promotion, proven speed gain, or <=250 MiB complete acceptance.
+Do not replay the unchanged failed 20-minute full test. Next: compile candidate,
+verify actual lifecycle/content/alias/failure controls and new native ABI, then
+real production-browser fidelity before one changed full-original test.
+All other original requirement statuses below remain in force.
+
 ## 2026-10-14 — Actual full request known; demux allocation reuse/reliability still missing
 
 **Partially implemented**. Actual16:27:26Z full original FAILED34,348 frames/
