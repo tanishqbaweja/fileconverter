@@ -5,6 +5,40 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-15 — Changed full original FAILED; current allocation bottleneck differs
+
+**Partially implemented**. Actual703 decoder full attempt fails after34,334
+frames/20.42min,0/3 accepted completions;625,007,256-byte partial removed.
+New real fatal stack identifies HEVC frame/reference-pool allocation—not the
+previous Matroska NULL-buffer realloc. Current captured payload1,163,520 plus
+16-byte header requests1,163,536 bytes with5 required live entries/0 cached
+entries. Complete217-header inventory totals1,712,080 free bytes but largest
+770,000; optimistic contiguous top+tail915,920 also too small. Pool name and
+underlying fragmentation lifetime/policy origin unproven; do not infer them,
+drop live references, raise heaps, or blindly evict a nonexistent idle entry.
+The new demux reuse is not yet an accepted full-input fix and fails14 frames
+earlier; source-guided bounded large-pool placement/reuse is the next candidate.
+
+Exact failed-window complete-tree increment210.6328125MiB is NOT acceptance.
+Native14,354 sequence/six phases,phase11,274 versus run snapshot11,281 counts,
+zero unavailable/drops/rewrites preserved; finally native phase not captured.
+Deferred262,156-byte native lease/frees0 is not relabelled a free. All546 current/
+executed/post preimages verified,all27 owned births absent,original whole pre/
+post/current checksum stable,stock assets restored and owned media/profile/
+candidate/wrapper data gone. Raw/checkpoint evidence remains losslessly recoverable
+after redundant checkpoint removal. Supervisor0 never certifies driver1 failure.
+15 focused regressions and three-file zero-warning lint pass. One audit-only
+unused-field correction preserves executed preimage/results with exact reversal
+and actual six-phase equality; no analyzer/conversion replay or evidence rewrite.
+No unchanged re-launch/public promotion/speed claim.
+
+Required next: implement/qualify a measured bounded native allocation-placement
+candidate for the required live HEVC pool, retain original codec/reference/
+heap/quality/I/O gates, then real browser prerequisites and ONE changed original.
+Full repeats/cold,<=250MiB complete acceptance,near10GB scaling,direct-native
+output and all remaining original capabilities stay unverified/in scope.
+See `evidence/2026-10-14T19-03-00-388Z-ebml-reuse-full-terminal-analysis.json`.
+
 ## 2026-10-15 — Changed full original harness prepared, actual stress still pending
 
 **Partially implemented**. Actual18:50:10Z preparation uses the703 decoder and

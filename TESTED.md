@@ -4,6 +4,53 @@ Updated 2026-10-15 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-15 — Actual changed full original still FAILS; new HEVC pool request measured
+
+Hidden supervisor19:02:53Z launched ONE changed703 decoder run, caller19:03:00Z,
+driver19:04:20Z. Actual conversion fails at34,334 encoded/muxed frames after
+1,225,143.710ms/20.42min active,0/3 independently validated complete runs.
+625,007,256-byte partial output removed in finally. Failure occurs earlier than
+the previous34,348-frame Matroska realloc failure, now in HEVC
+alloc_frame→av_refstruct_pool_get→av_malloc→aligned wrapper→malloc→sbrk.
+The new demux cache is NOT a proven full-input reliability or speed fix.
+
+Actual64-byte pool record: sequence2214/address2853008, payload1,163,520 bytes,
+16-byte refcount header, request1,163,536 bytes,5 live entries/0 cached entries,
+single-idle flags536870912. Pool name remains null/not certified for this event.
+Realloc path false; do not relabel this as the old273,954-byte demux request or
+33,804,288-byte requested heap extent. Complete217-header inventory:29 free
+chunks,total1,712,080 bytes,largest770,000,top256,464 plus659,456 unclaimed tail.
+Even optimistic top+tail915,920 cannot fit1,163,536; immediate contiguous-space
+shortage supported, underlying lifetime/policy origin and internal malloc chunk
+size still unproven. Requested pool has no idle entry to evict; never free/reuse
+its five live references or repeat an unchanged cache-eviction trial.
+
+Failed-window metric exactly(464,683,008−243,818,496)/1048576=210.6328125 MiB,
+NOT complete250MiB acceptance. Stable blank6 samples,active phase11,274 native
+samples versus run-native snapshot11,281 (distinct cutoffs retained),sequence
+14,354 across6 phases; zero unavailable,zero clock drops/rewrites. No native
+finally-cleanup phase captured, explicitly not invented. Native lease frees0,
+retained262,156 bytes,active0,deferred to actual worker termination—not a native
+free claim. Queue/pending/active codec packets terminal0,input read errors empty.
+Original whole pre/post/current2,958,573,265-byte SHA31f36695…db34 stable; stock
+assets restored,all27 exact recorded process births independently absent.
+
+All546 executed/current/post preimages verified. Lossless raw8,634,124-byte
+report retained in319,676-byte gzip; verified29,633-byte duplicate checkpoint
+compressed and removed only after identity/hash/six-phase recovery checks.
+Supervisor/caller exit0 means completed orchestration, NOT converter success;
+actual driver exits1. Seven-minute setup timer was a verified wait; subsequent
+observation sees authoritative terminal/absent handles, no restart or live watch.
+Final15 focused regressions PASS1,366.1601ms (earlier14 PASS2,414.0179ms). Initial audit-only lint found one unused
+destructured field; corrected after execution with exact original preimage kept
+in the sealed proof, separate reversal/current-source receipt and equality on
+all six actual phases. No result changed or analyzer/converter replay occurred.
+Three-file zero-warning lint PASS; correction regression also passes.
+No Docker/public promotion/full quality/memory/scaling/speed acceptance. Next
+source-bound investigation: bounded placement/reuse of the newly requested large
+HEVC pool allocation, preserving its required live references and fixed heaps.
+See `evidence/2026-10-14T19-03-00-388Z-ebml-reuse-full-terminal-analysis.json`.
+
 ## 2026-10-15 — Changed Matroska-reuse full original PREPARATION ONLY passes
 
 Actual18:50:10Z preparation (UTC14/India15) performs zero browser conversions.
