@@ -4,6 +4,36 @@ Updated 2026-10-15 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-15 — Changed Matroska-reuse full original PREPARATION ONLY passes
+
+Actual18:50:10Z preparation (UTC14/India15) performs zero browser conversions.
+The new full harness now uses the exact70375632…6fe25 decoder, A4 plane encoder,
+glue and adapter from the actual four-golden/current-Chrome qualification.
+All full-input/three-run/6-hour-per-run/4Mbps/q4/fidelity/250MiB complete-tree/
+native100ms/stable-blank/backpressure/privacy/birth/finally gates are unchanged.
+New offline failure validator retains every captured-word guard and accepts
+the actual703 control while refusing EB45 identity; no fake heap/Module or
+internal allocation inference. Same-entry supervisor stays hidden/headless.
+
+All508 previous executed preimages retained (old380+128 caps unchanged), with
+38 new files in a separate bounded128-file/2MiB extension,546 total. Exact
+runtime/caller/trace and all546 current/post/preimages independently recover
+from221,925-byte gzip/911,526 restored bytes. Large already-qualified evidence
+uses at most16 size/hash-verified external preimages, never omission. Unit
+setup initially rejected a wrong scratch prefix and one-file source inventory;
+corrected test setup plus explicit parent508/extension hashing preserve those
+guards without weakening them. Full caller now describes all three layers
+truthfully rather than mislabelling the new total as≤508.
+
+Preparation host safe:4,958,142,464 physical/10,115,248,128 virtual bytes available;
+disk2,138,235,392,000 bytes free. Protected whole2,958,573,265-byte pre/post
+SHA31f36695…db34 matches.9,758,428-byte candidate/wrapper removed in finally,
+stock production restored, zero cleanup errors and no actual full launch yet.
+13 focused checks PASS23,238.8092ms/seven-file zero-warning scoped lint PASS.
+No Docker/public promotion/full success/250MiB/speed/scaling acceptance claimed.
+Next ONE fresh-guarded changed full launch; do not replay unchanged failed core.
+See `evidence/2026-10-14T18-50-10-851Z-ebml-reuse-original-full-preparation.json`.
+
 ## 2026-10-14 — Actual Chrome155 Matroska-reuse fatal binding and four genuine goldens PASS
 
 New70375632…6fe25 decoder qualified in actual headless Chrome155.0.8059.40,

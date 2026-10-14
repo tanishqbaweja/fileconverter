@@ -5,6 +5,28 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-15 — Changed full original harness prepared, actual stress still pending
+
+**Partially implemented**. Actual18:50:10Z preparation uses the703 decoder and
+exact adapter/glue/A4 encoder from the current-Chrome four-case media proof,
+preserving every original full input, encoding, fidelity, three-run,6-hour-per-run,
+stable blank, complete-process-tree250MiB, bounded I/O, privacy and cleanup gate.
+546 executed/current/post preimages recover: all parent508 (380+128) plus38
+bounded new files under unchanged per-layer128/2MiB caps; no history omitted.
+Actual unit guards rejected an invalid test scratch prefix/source inventory;
+corrected setup and additive source hashing retain all old checks. Offline
+new-decoder failure validation uses captured words only, no invented heap.
+
+Prepared candidate/wrapper finally removed; stock assets restored; protected
+original whole pre/post size/hash unchanged. Host physical4.958GB/virtual10.115GB
+and disk2.138TB checks passed then, but MUST be refreshed before launch.
+13 focused checks and seven-file scoped lint pass. Preparation executions0;
+no full conversion, memory/speed acceptance or public promotion yet. Next:
+ONE actual changed full-original stress run through the hidden supervisor,
+then terminal independent validation/cleanup, required repeat/cold/scaling gates.
+All broader original requirements remain in scope and the goal remains active.
+See `evidence/2026-10-14T18-50-10-851Z-ebml-reuse-original-full-preparation.json`.
+
 ## 2026-10-14 — Matroska reuse now passes genuine production-browser prerequisites
 
 **Partially implemented**. Actual current Chrome155.0.8059.40 qualifies the
