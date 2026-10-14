@@ -4,6 +4,57 @@ Updated 2026-10-14 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-14 — Actual full original identifies273,954B initial Matroska realloc and fragmented free space
+
+Actual16:27:26Z full original FAILED at34,348 decoded/encoded/muxed frames after
+1,226,154.705ms/20.44min active; partial626,767,162B removed in owned finally.
+0/3 complete independently validated runs; whole-file fidelity validation null.
+Same protected input/core/encoder/geometry/4Mbps/q4/32+16MiB/production IO. This
+is a real browser decode/re-encode failure, not renamed extension/native conversion.
+[Actual terminal](evidence/2026-10-14T16-27-26-406Z-installed-chrome-realloc-original-full-terminal.json).
+
+NEW actual pending16-word sequence73,389 API request273,954B captured in
+av_buffer_realloc→av_realloc→builtin realloc/malloc→sbrk, EBML/Matroska cluster
+stack. Outer and inner requested bytes273,954; old buffer ref/data/size/refcount
+and realloc pointer all0: initial NULL-buffer allocation, not growth of a retained
+old buffer. Requested heap extent33,759,232B is NOT request size; internal malloc
+chunk size stillnull. Complete383-word header-only inventory:74 free chunks,
+total2,071,568B/largest246,016B, top608B/unclaimedabove69,632B. No native-at-abort,
+payload read, heap copy or allocator mutation. Every inventoried contiguous chunk
+is smaller than the captured API request despite>2MiB aggregatefree. This supports
+immediate contiguous-space shortage; underlying allocation lifetime/policy that
+created fragmentation not yet proven. Captured cause flags remainfalse.
+[Independent request/source/memory/cleanup analysis](evidence/2026-10-14T16-27-26-406Z-installed-chrome-realloc-full-terminal-analysis.json).
+
+Failed-window exact primary(488,222,720−246,951,936)/MiB=230.09375, NOT full250MiB
+acceptance. Active11,268 vs run-native-peak11,278 sample cutoffs retaineddistinct;
+native sequence14,388, seven durable phase peak/count records match raw, no active
+unavailable samples/clock drops/rewrites. One262,156B lease allocation/acquisitions
+4,746, nativefrees0/retained262,156 atfatal: deferred release by owned worker
+termination, not falsely counted nativefree. Input reader failures[]/queue0/
+pending0/active codec packets0. SourceSubRip excluded from MP4 with actual warning;
+selected-destination route still documented bounded OPFS staging, not direct-native
+AVIO acceptance.
+
+All508 exact executed/current/pre/post preimages recovered under unchanged380+
+128/2MiB supplement caps. Exact155 pin unchanged pre/post/current. Native raw
+8,471,325B lossless308,493B archive; checkpoint30,466B compressed/duplicate removed.
+All27 unique recorded births independently absent, wrapper/candidate/browser/
+supervisor scratch gone, stock assets restored and protected whole SHA exact
+pre/post/current. Supervisor/collector exit0 is NOT driverexit1/conversion pass.
+Actual one1,800.050s ETA sleep completed; no unchanged relaunch/rapid agent poll.
+Four new actual-evidence tests/fourteen focused current/old failure/native/pin/
+source/cleanup regressions PASS4.092s; two-file scoped lint/whitespace PASS.
+
+Observed active20.44min vs previoussame-frame24.10min is not controlled speedproof
+(different browser/host/time). Next implementation: investigate bounded final-unref
+reuse for initial Matroska AVBuffer realloc payloads, preserving logical size,
+aliases/content/padding/zero/equal/grow/shrink/error/deferred-close semantics and
+fixed heap/settings/quality. Existing mux packet cache alone did not prevent this
+demux allocation failure. Do not increase heaps/enable growth/reduce input/fidelity
+or rerun unchanged full. Full reliability and all broader scope remain incomplete;
+goal ACTIVE/no public promotion.
+
 ## 2026-10-14 — Chrome155 real fatal/four media jobs qualified; pin-bound full preparation PASS
 
 Actual15:36:28Z155.0.8059.40 genuine headless4/4 conversion/recovery suite PASS3.1m,

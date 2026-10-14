@@ -5,6 +5,36 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-14 — Actual full request known; demux allocation reuse/reliability still missing
+
+**Partially implemented**. Actual16:27:26Z full original FAILED34,348 frames/
+20.44min active,0/3 accepted complete conversions,626,767,162B partial removed.
+Current pending realloc API273,954B/sequence73,389, initial NULL AVBuffer and
+NULL realloc pointer captured in real EBML/Matroska native stack.33,759,232B heap
+extent not treated as request. Internal malloc chunk size/lifetime origin still
+unknown. Complete bounded383-header inventory has2,071,568B aggregatefree but
+largest246,016B across74 chunks; captured request cannot fit any inventoried free
+chunk. Immediate contiguous-space shortage supported, underlying fragmentation
+policy/lifetime not yet proven or fixed.
+[Actual evidence](evidence/2026-10-14T16-27-26-406Z-installed-chrome-realloc-full-terminal-analysis.json).
+
+Failed-window230.09375MiB NOT complete250MiB acceptance; active11,268 vs runpeak
+11,278 cutoffs preserved, native14,388/seven durable phases/no clock rewrite or
+drop. Native lease free0 atabort honestly deferred to worker termination. All508
+source preimages/current/post recovered under unchanged caps; original whole
+pre/post/current SHA exact,155 binary pin unchanged, all27 recorded births absent,
+owned scratch gone/stock assets restored. Lossless native raw308KB retained;
+redundant30KB checkpoint removed. Parent/supervisor0 not converter success.
+Fourteen scoped tests/lint PASS; one completed30min ETA sleep, no relaunch.
+
+Missing next: bounded initial Matroska realloc payload reuse investigation/fix
+with real pinned-library alias/content/size/padding/failure/deferred-close controls,
+same fixed heaps/quality/IO, genuine browser goldens/recovery, then changed full
+retry. Existing mux packet cache insufficient here.20.44 vs24.10min timing not
+controlled speed proof. Three full accepted runs/cold/scaling/direct native output
+and every broader original requirement remain incomplete; no public promotion.
+Goal ACTIVE.
+
 ## 2026-10-14 — Actual155 fatal+four media jobs and full pin-bound preparation verified; reliability partial
 
 **Partially implemented**. Actual15:36:28Z155 headless4/4 genuine media/recovery
