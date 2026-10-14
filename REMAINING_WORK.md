@@ -5,6 +5,26 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-15 — MVF full-original harness staged and verified; execution pending
+
+**Partially implemented**. Actual22:37:12 preparation PASS with zero conversion
+executions. All588 source preimages recovered/current/post equal:508 base+80
+bounded extension, all546 prior executed paths retained. External cap remains16;
+17th eligible record embedded, envelope836,924 bytes under unchanged2MiB. No
+source/cap/quality/memory/repeat/cleanup weakening. Whole original pre/post
+size/SHA unchanged, host RAM/disk guards pass, staged assets restored and all
+owned candidate/wrapper scratch removed. Hidden birth-qualified/no-restart
+supervisor and current-ABI offline validator checked. Nine focused tests and
+seven-file zero-warning lint PASS. Evidence:22:37:12.514Z preparation receipt
+and compact source archive. Initial unit packing/prefix/assertion setup errors
+recorded in TESTED; no browser/full-original retries were performed.
+
+Remaining: launch one changed full-original attempt, complete independent
+full-output validation, required three-run/clean-session stress coverage, exact
+complete-tree <=250MiB acceptance, controlled speed comparison and scaling.
+Estimated3-4h per successful conversion plus validation, not a completion claim.
+Broader original product/direct-native-I/O/browser/CI requirements remain in scope.
+
 ## 2026-10-15 — MVF current browser fidelity/recovery qualified; full original pending
 
 **Partially implemented**. Changed decoder2aa602...22576 passed real headless

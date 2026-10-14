@@ -4,6 +4,35 @@ Updated 2026-10-15 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-15 — Changed full-original preparation PASS; no conversion started yet
+
+Actual22:37:12.514Z preparation:0 executions, full original pre/post read-only
+size2,958,573,265/SHA31f36695...9db34 equal. Correct2aa602 decoder/A4 encoder,
+same4Mbps/q4/1920x804 production adapter/32+16MiB fixed heaps. Host physical
+6,045,437,952/virtual7,042,310,144 bytes exceeds2GiB safety checks; repository
+disk2,135,865,962,496 bytes exceeds32GiB guard. Staging restored production;
+owned candidate/wrapper removed. No browser conversion/output/profile created.
+
+All588 executed/current/post preimages recovered: original508 base plus80
+extension, explicitly retaining all546 prior-full paths and adding42. Existing
+128-extension/2MiB/16-external/8MiB-runtime caps unchanged. Initial source unit
+hit17 eligible external records; deterministic largest16 remain hash-bound,
+the seventeenth is embedded, with836,924-byte envelope. No omissions or raised
+caps. Initial unit scratch-prefix and quoted supervisor-substring assertions
+corrected in tests, not production acceptance. Current offline fatal validator
+accepts actual new captured failure words and rejects old addresses/schema edits.
+Hidden birth-qualified/no-restart supervisor targets new entry only. Nine focused
+tests PASS (21,470.0328ms), seven-file zero-warning lint PASS.
+
+Evidence: `evidence/2026-10-14T22-37-12-514Z-mvf-arena-original-full-preparation.json`,
+348,616-byte lossless source archive/restored1,344,185 bytes, all588 hashes checked.
+Three full runs requested,6h maximum PER run, full-tree250MiB/quality/validation/
+finally gates unchanged. Primary source duration12,340.096s at24fps; estimated
+successful conversion roughly3-4h, plus validation, three-run suite roughly9-12h
+if successful. Estimate only, not a measured full-original completion/speed gain.
+Next one changed hidden supervised attempt; no automatic unchanged retries.
+Public engines/registry unchanged; original/full-memory/scaling/whole-goal open.
+
 ## 2026-10-15 — MVF current-binary browser controls and genuine media/recovery PASS
 
 First headless control22:15:11Z FAILED on a stale combined-harness aligned-slot
