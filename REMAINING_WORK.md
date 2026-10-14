@@ -5,6 +5,25 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-14 — Realloc measurement implementation ready, not a conversion fix
+
+**Partially implemented**. Separate fixed64-byte scalar realloc-attempt record
+now captures size arguments, old buffer fields/refcount and pending native phase,
+with no payload/ref/allocator/quality/heap/I/O changes. Actual old diagnostic
+correctly remains immutable; no runtime binary addresses or failed request bytes
+are guessed. Fresh reversible isolated builder preserves every old gate and adds
+actual pinned-libavutil6-case alias/content/constructor control.
+
+Local native C synthetic dispatch9/9 PASS with finally cleanup;6 new unit tests/
+14 focused regressions PASS6.739s/eight-file zero-warning lint PASS. This is NOT
+an actual Wasm/library/media failure reproduction. No original read or media
+created; no published engine/profile changed. Actual native build/control/map/
+constructor/source-envelope and browser failure-only qualification remain next.
+No new full-file test until genuinely changed qualified code justifies it.
+Full-source reliability, cause,3-run memory/speed/cold/scaling/direct output and
+every broader audit item below remain incomplete. Goal ACTIVE.
+
+
 ## 2026-10-14 — Changed full reliability contradicted; next allocation path established
 
 **Partially implemented**. Actual new full-original attempt FAILED at34,348

@@ -4,6 +4,33 @@ Updated 2026-10-13 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-14 — Fixed native realloc diagnostic implemented; actual Wasm qualification pending
+
+Added separate64-byte/16-word scalar slot around exact av_buffer_realloc and
+av_realloc calls. Records requested argument bytes, old public buffer scalar
+fields/refcount and current pending phase BEFORE a possible abort. Delegates
+original calls unchanged; no allocations/logs/payload copies/new references/
+allocator/codec/I/O/heap changes. Wasm32 static assertion and constructor binding;
+no browser observer is armed or new binary assumed qualified yet.
+
+Real C diagnostic compiled/executed locally with explicit synthetic mock dispatch:
+9/9 cases PASS, pending phases1/2, alias scalar preservation, NULL/error/zero-size,
+sequence saturation and stale-record clearing. These are NOT real libavutil,
+actual Wasm, original failure attribution or media acceptance. Owned executable/
+scratch removed in finally; no media created or original read. Separate actual
+pinned-libavutil6-case Wasm control added for real content/alias/constructor checks
+but NOT executed yet. Same old cache/SDK/encoder/fixed heaps and controls retained
+byte-exact via reversible recipe, isolated workflow/branch/collector protections.
+
+Six new focused tests PASS;14/14 diagnostic/hosted/full-terminal/packet-observer
+regressions PASS6.739s, eight new JS files zero-warning scoped lint PASS.
+No Docker/visible windows/public engine mutation/full conversion replay. Next:
+build isolated actual Wasm, verify constructor/maps and controls, retain all native
+executed sources, then qualify a failure-only browser observer for this binary.
+Full request/lifetime cause, fixed reliable conversion, quality/speed/memory and
+all broader scope remain incomplete. Goal ACTIVE.
+
+
 ## 2026-10-14 — Actual changed full-original attempt FAILED; Matroska realloc path now observed
 
 Actual full run terminal01:59:31Z on2026-10-13, NOT live/acceptance. Conversion
