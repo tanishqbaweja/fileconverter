@@ -1,0 +1,213 @@
+{
+  "recordedAt": "2026-10-14T21:48:14.909Z",
+  "run": {
+    "conclusion": "failure",
+    "databaseId": 38641789883,
+    "headSha": "679bf897ffa50eb9f1be08f5093f193c28dc09ed",
+    "jobs": [
+      {
+        "completedAt": "2026-10-14T21:43:33Z",
+        "conclusion": "failure",
+        "databaseId": 116118845920,
+        "name": "reproduce-ffmpeg",
+        "startedAt": "2026-10-14T21:38:26Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-14T21:38:27Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-14T21:38:26Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:38:33Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-14T21:38:27Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:38:43Z",
+            "conclusion": "success",
+            "name": "Install native build prerequisites",
+            "number": 3,
+            "startedAt": "2026-10-14T21:38:33Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:39:08Z",
+            "conclusion": "success",
+            "name": "Install pinned Emscripten SDK without Docker",
+            "number": 4,
+            "startedAt": "2026-10-14T21:38:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "failure",
+            "name": "Rebuild and compare requested FFmpeg module(s)",
+            "number": 5,
+            "startedAt": "2026-10-14T21:39:08Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "skipped",
+            "name": "Retain private H264 candidate and corresponding sources",
+            "number": 6,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "skipped",
+            "name": "Retain corresponding source and configure diagnostics separately",
+            "number": 7,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "skipped",
+            "name": "Retain private MPEG2 candidate",
+            "number": 8,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "skipped",
+            "name": "Retain MPEG2 corresponding source separately",
+            "number": 9,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "skipped",
+            "name": "Retain synthetic split frame contract only",
+            "number": 10,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "skipped",
+            "name": "Retain synthetic split properties contract only",
+            "number": 11,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "skipped",
+            "name": "Retain private separate encoder and initialization contract",
+            "number": 12,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "skipped",
+            "name": "Retain private split production pipeline",
+            "number": 13,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "skipped",
+            "name": "Retain private aligned-reuse split candidate",
+            "number": 14,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "skipped",
+            "name": "Retain private arithmetic report only",
+            "number": 15,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "skipped",
+            "name": "Retain mismatched artifacts for bounded diagnosis",
+            "number": 16,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:30Z",
+            "conclusion": "skipped",
+            "name": "Retain private SAD arithmetic report only",
+            "number": 17,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:32Z",
+            "conclusion": "success",
+            "name": "Remove repository-local build data",
+            "number": 18,
+            "startedAt": "2026-10-14T21:43:30Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:32Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 36,
+            "startedAt": "2026-10-14T21:43:32Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-14T21:43:32Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 37,
+            "startedAt": "2026-10-14T21:43:32Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38641789883/job/116118845920"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/38641789883"
+  },
+  "failures": [
+    "reproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-14T21:43:29.5558265Z /home/runner/work/fileconverter/fileconverter/work/mpeg2-split-pipeline-build/ffmpeg/libavutil/thread.h:216:49: error: unused parameter 'name' [-Werror,-Wunused-parameter]",
+    "reproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-14T21:43:29.5606811Z /home/runner/work/fileconverter/fileconverter/work/mpeg2-split-pipeline-build/ffmpeg/libavutil/refstruct.c:423:53: error: unused parameter 'unused' [-Werror,-Wunused-parameter]",
+    "reproduce-ffmpeg\tRebuild and compare requested FFmpeg module(s)\t2026-10-14T21:43:29.5707829Z emcc: error: '/home/runner/work/fileconverter/fileconverter/work/emsdk/upstream/bin/clang -target wasm32-unknown-emscripten -fignore-exceptions -mllvm -combiner-global-alias-analysis=false -mllvm -enable-emscripten-sjlj -mllvm -disable-lsr --sysroot=/home/runner/work/fileconverter/fileconverter/work/mpeg2-split-pipeline-build/emscripten-cache/sysroot -D__EMSCRIPTEN_SHARED_MEMORY__=1 -Xclang -iwithsysroot/include/fakesdl -Xclang -iwithsysroot/include/compat -I/home/runner/work/fileconverter/fileconverter/work/mpeg2-split-pipeline-build/install/include -I/home/runner/work/fileconverter/fileconverter/media/ffmpeg -I/home/runner/work/fileconverter/fileconverter/work/mpeg2-split-pipeline-build/ffmpeg -O2 -Wall -Wextra -Werror -UNDEBUG -pthread -c /home/runner/work/fileconverter/fileconverter/media/ffmpeg/mpeg2-mvf-arena-smoke.c -o /home/runner/work/fileconverter/fileconverter/work/mpeg2-split-pipeline-build/tmp/emscripten_temp_qz00qjo9/mpeg2-mvf-arena-smoke.o' failed (returned 1)"
+  ],
+  "artifactCount": 0,
+  "logArchive": {
+    "path": "outputs/reports/mvf-arena-build-failure-38641789883.log.gz",
+    "bytes": 14283,
+    "sha256": "fa7c363e489d8d4e2f42706e9de5609ac5c81cd5b07b28ae8b2285223b3d4340",
+    "restoredBytes": 122202,
+    "restoredSha256": "d56d46ac36d9f2d897fdc6eeb38107353e9019d8b455ac7b8c8316e349eda428"
+  },
+  "cleanupStep": {
+    "completedAt": "2026-10-14T21:43:32Z",
+    "conclusion": "success",
+    "name": "Remove repository-local build data",
+    "number": 18,
+    "startedAt": "2026-10-14T21:43:30Z",
+    "status": "completed"
+  },
+  "ownedRuntimeAbsent": true,
+  "originalRead": false,
+  "browserConversions": 0,
+  "publicAcceptance": false,
+  "ownSource": {
+    "file": "scripts/record-mvf-arena-build-failure.mjs",
+    "sha256": "080416e3bbecbf53e94ca1886c32bc1d84598469eb3910692144a11ca1f0e1a1",
+    "preimage": "Ly8gQ2FwdHVyZSBvbmUgdGVybWluYWwgaG9zdGVkIGJ1aWxkIGZhaWx1cmUsIGJvdW5kZWQgbG9ncywgYW5kIGV4YWN0IHNvdXJjZXMuCmltcG9ydCBhc3NlcnQgZnJvbSAibm9kZTphc3NlcnQvc3RyaWN0IjsKaW1wb3J0IHsgZXhlY0ZpbGUgfSBmcm9tICJub2RlOmNoaWxkX3Byb2Nlc3MiOwppbXBvcnQgeyBhY2Nlc3MsIHJlYWRGaWxlLCB3cml0ZUZpbGUgfSBmcm9tICJub2RlOmZzL3Byb21pc2VzIjsKaW1wb3J0IHBhdGggZnJvbSAibm9kZTpwYXRoIjsKaW1wb3J0IHsgcHJvbWlzaWZ5IH0gZnJvbSAibm9kZTp1dGlsIjsKaW1wb3J0IHsgZ3ppcFN5bmMsIGd1bnppcFN5bmMgfSBmcm9tICJub2RlOnpsaWIiOwppbXBvcnQgeyBzaGEgfSBmcm9tICIuL2xpYi9zdGFibGUtdWktaGVhZGxlc3MtYmFzZWxpbmUtcmVjaXBlLm1qcyI7CmltcG9ydCB7IGNyZWF0ZU93bmVkUnVudGltZVNjcmF0Y2ggfSBmcm9tICIuL2xpYi9vd25lZC1ydW50aW1lLXNjcmF0Y2gubWpzIjsKYXNzZXJ0LmVxdWFsKHByb2Nlc3MuYXJndi5sZW5ndGgsIDMpOyBjb25zdCBydW5JZCA9IHByb2Nlc3MuYXJndlsyXTsgYXNzZXJ0Lm1hdGNoKHJ1bklkLCAvXlswLTldezgsfSQvKTsKY29uc3Qgcm9vdCA9IHBhdGgucmVzb2x2ZShpbXBvcnQubWV0YS5kaXJuYW1lLCAiLi4iKSwgcnVudGltZSA9IGF3YWl0IGNyZWF0ZU93bmVkUnVudGltZVNjcmF0Y2goIm12Zi1hcmVuYS1idWlsZC1mYWlsdXJlLSIpOwpjb25zdCBleGVjdXRlID0gcHJvbWlzaWZ5KGV4ZWNGaWxlKSwgZ2ggPSAiRDovUHJvZ3JhbSBGaWxlcy9HaXRIdWIgQ0xJL2doLmV4ZSIsIHJlcG8gPSAidGFuaXNocWJhd2VqYS9maWxlY29udmVydGVyIjsKY29uc3QgY2FsbCA9IGFzeW5jIGFyZ3MgPT4gKGF3YWl0IGV4ZWN1dGUoZ2gsIGFyZ3MsIHsgY3dkOiByb290LCBlbnY6IHJ1bnRpbWUuZW52LCB3aW5kb3dzSGlkZTogdHJ1ZSwgdGltZW91dDogNjAwMDAsIG1heEJ1ZmZlcjogNCAqIDEwNDg1NzYgfSkpLnN0ZG91dDsKbGV0IHJ1biwgbG9ncywgYXJ0aWZhY3RDb3VudDsKdHJ5IHsKICBydW4gPSBKU09OLnBhcnNlKGF3YWl0IGNhbGwoWyJydW4iLCAidmlldyIsIHJ1bklkLCAiLS1yZXBvIiwgcmVwbywgIi0tanNvbiIsICJkYXRhYmFzZUlkLGhlYWRTaGEsc3RhdHVzLGNvbmNsdXNpb24sam9icyx1cmwiXSkpOwogIGFzc2VydC5lcXVhbChTdHJpbmcocnVuLmRhdGFiYXNlSWQpLCBydW5JZCk7IGFzc2VydC5lcXVhbChydW4uc3RhdHVzLCAiY29tcGxldGVkIik7IGFzc2VydC5lcXVhbChydW4uY29uY2x1c2lvbiwgImZhaWx1cmUiKTsKICBsb2dzID0gYXdhaXQgY2FsbChbInJ1biIsICJ2aWV3IiwgcnVuSWQsICItLXJlcG8iLCByZXBvLCAiLS1sb2ctZmFpbGVkIl0pOwogIGFydGlmYWN0Q291bnQgPSBKU09OLnBhcnNlKGF3YWl0IGNhbGwoWyJhcGkiLCBgcmVwb3MvJHtyZXBvfS9hY3Rpb25zL3J1bnMvJHtydW5JZH0vYXJ0aWZhY3RzYF0pKS50b3RhbF9jb3VudDsKfSBmaW5hbGx5IHsgYXdhaXQgcnVudGltZS5jbG9zZSgpOyBhd2FpdCBhc3NlcnQucmVqZWN0cyhhY2Nlc3MocnVudGltZS5kaXJlY3RvcnkpLCB7IGNvZGU6ICJFTk9FTlQiIH0pOyB9CmNvbnN0IHJhdyA9IEJ1ZmZlci5mcm9tKGxvZ3MpLCBjb21wcmVzc2VkID0gZ3ppcFN5bmMocmF3KTsgYXNzZXJ0LmRlZXBFcXVhbChndW56aXBTeW5jKGNvbXByZXNzZWQpLCByYXcpOwpjb25zdCBhcmNoaXZlUGF0aCA9IGBvdXRwdXRzL3JlcG9ydHMvbXZmLWFyZW5hLWJ1aWxkLWZhaWx1cmUtJHtydW5JZH0ubG9nLmd6YDsKYXdhaXQgd3JpdGVGaWxlKHBhdGguam9pbihyb290LCBhcmNoaXZlUGF0aCksIGNvbXByZXNzZWQsIHsgZmxhZzogInd4IiB9KTsKY29uc3QgZmFpbHVyZXMgPSBsb2dzLnNwbGl0KCJcbiIpLmZpbHRlcihsaW5lID0+IC9lcnJvcjp8QXNzZXJ0aW9uRXJyb3J8QXNzZXJ0aW9uIGZhaWxlZHxmYWlsZWQ6fGFzc2VydGlvbnxBYm9ydGVkfFJ1bnRpbWVFcnJvci8udGVzdChsaW5lKSkuc2xpY2UoLTQwKTsKY29uc3QgZmlsZSA9ICJzY3JpcHRzL3JlY29yZC1tdmYtYXJlbmEtYnVpbGQtZmFpbHVyZS5tanMiLCBieXRlcyA9IGF3YWl0IHJlYWRGaWxlKHBhdGguam9pbihyb290LCBmaWxlKSk7CmNvbnN0IG91dHB1dCA9IGBldmlkZW5jZS9tdmYtYXJlbmEtYnVpbGQtZmFpbHVyZS0ke3J1bklkfS5qc29uYDsKYXdhaXQgd3JpdGVGaWxlKHBhdGguam9pbihyb290LCBvdXRwdXQpLCBKU09OLnN0cmluZ2lmeSh7IHJlY29yZGVkQXQ6IG5ldyBEYXRlKCkudG9JU09TdHJpbmcoKSwgcnVuLCBmYWlsdXJlcywgYXJ0aWZhY3RDb3VudCwKICBsb2dBcmNoaXZlOiB7IHBhdGg6IGFyY2hpdmVQYXRoLCBieXRlczogY29tcHJlc3NlZC5sZW5ndGgsIHNoYTI1Njogc2hhKGNvbXByZXNzZWQpLCByZXN0b3JlZEJ5dGVzOiByYXcubGVuZ3RoLCByZXN0b3JlZFNoYTI1Njogc2hhKHJhdykgfSwKICBjbGVhbnVwU3RlcDogcnVuLmpvYnMuZmxhdE1hcChqb2IgPT4gam9iLnN0ZXBzKS5maW5kKHN0ZXAgPT4gc3RlcC5uYW1lID09PSAiUmVtb3ZlIHJlcG9zaXRvcnktbG9jYWwgYnVpbGQgZGF0YSIpLAogIG93bmVkUnVudGltZUFic2VudDogdHJ1ZSwgb3JpZ2luYWxSZWFkOiBmYWxzZSwgYnJvd3NlckNvbnZlcnNpb25zOiAwLCBwdWJsaWNBY2NlcHRhbmNlOiBmYWxzZSwKICBvd25Tb3VyY2U6IHsgZmlsZSwgc2hhMjU2OiBzaGEoYnl0ZXMpLCBwcmVpbWFnZTogYnl0ZXMudG9TdHJpbmcoImJhc2U2NCIpIH0gfSwgbnVsbCwgMikgKyAiXG4iLCB7IGZsYWc6ICJ3eCIgfSk7CmNvbnNvbGUubG9nKEpTT04uc3RyaW5naWZ5KHsgb3V0cHV0LCBmYWlsdXJlcywgbG9nQXJjaGl2ZUJ5dGVzOiBjb21wcmVzc2VkLmxlbmd0aCwgYXJ0aWZhY3RDb3VudCB9KSk7Cg=="
+  }
+}

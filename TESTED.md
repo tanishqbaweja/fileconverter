@@ -4,6 +4,26 @@ Updated 2026-10-15 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-15 — First MVF native build failed on harness warnings; narrow correction tested
+
+No-Docker run38641789883/head679bf897 is terminal FAILED, not still running.
+Build step262s/job307s; failure is -Werror unused upstream parameters in
+libavutil/thread.h and refstruct.c when included by the new lifecycle harness.
+No browser conversion or final candidate artifact produced; hosted artifacts0,
+cleanup step PASS. Exact bounded log retained losslessly (14,283 bytes):
+`evidence/mvf-arena-build-failure-38641789883.json` and corresponding log gzip.
+
+Corrected ONLY the harness include with clang diagnostic push/unused-parameter
+ignore/pop. Harness-owned code still uses -Wall/-Wextra/-Werror; production
+decoder patch, native recipe, heap/codec/quality/lifetime settings unchanged.
+Exact historical old/new source reversal recorded in
+`evidence/mvf-arena-smoke-warning-correction-2026-10-15.json`; original source
+proof/preimages unmodified, not mislabelled current corrected harness hash.
+Six correction/qualification-focused tests PASS (4,678.5423ms), nine-file
+zero-warning lint PASS. Corrected isolated build branch/collector/native
+qualifier support smoke-warnings revision. Next changed build; no unchanged
+retry, actual Wasm lifecycle/browser/full-original/speed acceptance still pending.
+
 ## 2026-10-15 — Bounded HEVC MVF arena implemented; source controls PASS, runtime pending
 
 Private candidate reserves six aligned raw slots at selected single-thread HEVC

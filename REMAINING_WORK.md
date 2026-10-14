@@ -5,6 +5,22 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-15 — MVF native harness compile failure recorded and corrected
+
+**Partially implemented**. First no-Docker native run38641789883 FAILED on two
+unused-parameter warnings in included upstream FFmpeg source under harness
+-Werror. Terminal job, cleanup PASS, zero hosted artifacts; no browser/media
+conversion. Exact failure log/terminal state retained, no unchanged rerun.
+Narrow diagnostic push/pop around upstream include keeps harness warnings
+strict. Decoder source/build recipe/heap/codec/quality/lifetime untouched;
+historical preimage preserved with explicit correction receipt, not overwritten.
+Six focused tests and nine-file zero-warning lint PASS. Native source verifier
+requires93 parent files plus6 candidate files (99 under original128-file cap),
+and derives actual changed ABI instead of old-index guesses. Next corrected
+isolated native build, then real native and browser controls before full original.
+Full-original completion/repeats, <=250MiB process-tree acceptance, speed,
+scaling, direct I/O and remaining original product requirements still pending.
+
 ## 2026-10-15 — MVF bounded-placement candidate implemented, not yet runtime qualified
 
 **Partially implemented**. Six-slot, maximum 8 MiB raw arena reserved at selected

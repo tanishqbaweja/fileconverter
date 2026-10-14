@@ -78,6 +78,11 @@ test("isolated workflow and collector retain ownership, source/codec/heap/old sm
   const branch = makeMvfArenaBranchCaller(await read("scripts/prepare-alignment16-build-branch.mjs"), root);
   const collector = makeMvfArenaCollector(await read("scripts/collect-mpeg2-single-idle-build.mjs"), root);
   syntax(branch.generated); syntax(collector.generated);
+  const revisedBranch = makeMvfArenaBranchCaller(await read("scripts/prepare-alignment16-build-branch.mjs"), root, "smoke-warnings");
+  const revisedCollector = makeMvfArenaCollector(await read("scripts/collect-mpeg2-single-idle-build.mjs"), root, "smoke-warnings");
+  syntax(revisedBranch.generated); syntax(revisedCollector.generated);
+  assert.ok(revisedBranch.generated.includes("codex/mpeg2-mvf-arena-20261015-smoke-warnings"));
+  assert.ok(revisedCollector.generated.includes("assert.equal(process.argv.length, 4)"));
   assert.ok(branch.generated.includes("codex/mpeg2-mvf-arena-20261015"));
   assert.ok(branch.generated.includes("assert.equal(await git([\"status\", \"--porcelain\"]), \"\""));
   for (const token of ["names.length <= 20", "16 * 1024 ** 2", "reverseSingleIdleRefstruct(reverseMvfArenaRefstruct(actualRefstruct))",

@@ -5,14 +5,15 @@ import { pathToFileURL } from "node:url";
 import { sha } from "./lib/stable-ui-headless-baseline-recipe.mjs";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { makeMvfArenaCollector } from "./lib/mvf-arena-build-recipe.mjs";
-assert.equal(process.argv.length, 3); const runId = process.argv[2]; assert.match(runId, /^[0-9]{8,}$/);
+assert.ok(process.argv.length >= 3 && process.argv.length <= 4); const runId = process.argv[2]; assert.match(runId, /^[0-9]{8,}$/);
+const revision = process.argv[3] ?? ""; assert.ok(["", "smoke-warnings"].includes(revision));
 const root = path.resolve(import.meta.dirname, ".."), base = "scripts/collect-mpeg2-single-idle-build.mjs";
 const files = ["scripts/collect-mvf-arena-build.mjs", "scripts/lib/mvf-arena-build-recipe.mjs", "scripts/lib/ebml-reuse-collector-v2.mjs",
   "scripts/lib/mpeg2-ebml-reuse-build-recipe.mjs", "scripts/lib/mpeg2-realloc-build-recipe.mjs", "scripts/lib/mpeg2-packet-largest-idle-build-recipe.mjs",
   "scripts/lib/mpeg2-packet-cache-strict-build-recipe.mjs", "scripts/lib/mpeg2-packet-cache-build-recipe.mjs", "scripts/lib/hevc-plane-build-recipe.mjs",
   "scripts/lib/alignment16-build-recipe.mjs", "scripts/lib/allocation-attempt-build-recipe.mjs", base];
 const sourcePins = {}, sourcePreimages = {}; for (const file of files) { const bytes = await readFile(path.join(root, file)); sourcePins[file] = sha(bytes); sourcePreimages[file] = bytes.toString("base64"); }
-const recipe = makeMvfArenaCollector(await readFile(path.join(root, base), "utf8"), root);
+const recipe = makeMvfArenaCollector(await readFile(path.join(root, base), "utf8"), root, revision);
 const runtime = await createOwnedRuntimeScratch("mvf-arena-collector-"); let failure = null;
 try { const file = path.join(runtime.directory, "collector.mjs"); await writeFile(file, recipe.generated, { flag: "wx" }); await import(pathToFileURL(file).href); }
 catch (error) { failure = String(error.stack ?? error).slice(0, 8192); process.exitCode = 1; }

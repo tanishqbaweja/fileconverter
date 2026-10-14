@@ -14,10 +14,12 @@ function transform(parent, edits) {
 export const makeAlignment16Workflow = source => transform(parentWorkflow(source), [
   ["node media/ffmpeg/build-mpeg2-ebml-reuse.mjs", "node media/ffmpeg/build-mpeg2-mvf-arena.mjs"],
 ]).generated;
-export function makeMvfArenaBranchCaller(source, root) {
+export function makeMvfArenaBranchCaller(source, root, revision = "") {
+  assert.ok(["", "smoke-warnings"].includes(revision)); const suffix = revision ? `-${revision}` : "";
   return transform(makeEbmlReuseBranchCaller(source, root).generated, [
-    ["codex/mpeg2-ebml-reuse-20261014", "codex/mpeg2-mvf-arena-20261015"],
-    ["evidence/mpeg2-ebml-reuse-build-branch-2026-10-14", "evidence/mpeg2-mvf-arena-build-branch-2026-10-15"],
+    ['const revision = process.argv[2] ?? "";', 'const revision = "";'],
+    ["codex/mpeg2-ebml-reuse-20261014", `codex/mpeg2-mvf-arena-20261015${suffix}`],
+    ["evidence/mpeg2-ebml-reuse-build-branch-2026-10-14", `evidence/mpeg2-mvf-arena-build-branch-2026-10-15${suffix}`],
     ["ebml-reuse-git-index-", "mvf-arena-git-index-"],
     ['["scripts/prepare-mpeg2-ebml-reuse-build-branch.mjs",', '["scripts/prepare-mvf-arena-build-branch.mjs", "scripts/lib/mvf-arena-build-recipe.mjs", "scripts/prepare-mpeg2-ebml-reuse-build-branch.mjs",'],
     [pathToFileURL(path.join(root, "scripts/lib/mpeg2-ebml-reuse-build-recipe.mjs")).href,
@@ -25,7 +27,8 @@ export function makeMvfArenaBranchCaller(source, root) {
     ["Build private Matroska final-unref buffer reuse with unchanged fixed heaps and codecs", "Build private bounded HEVC MVF arena with unchanged fixed heaps and codecs"],
   ]);
 }
-export function makeMvfArenaCollector(source, root) {
+export function makeMvfArenaCollector(source, root, revision = "") {
+  assert.ok(["", "smoke-warnings"].includes(revision)); const suffix = revision ? `-${revision}` : "";
   const gates = `  const mvfSourceProof = JSON.parse(await readFile(path.join(root, "evidence/mvf-arena-source-2026-10-15.json")));
   const mvf = manifest.mvfArena, mvfSmoke = mvf.actualWasmLifecycle;
   assert.equal(sha(mvf.exactSource), mvf.sha256); assert.deepEqual(JSON.parse(mvf.exactSource), mvfSmoke);
@@ -48,7 +51,8 @@ export function makeMvfArenaCollector(source, root) {
   return transform(makeEbmlReuseCollectorV2(source, root).generated, [
     ["work/mpeg2-ebml-reuse-${runId}", "work/mpeg2-mvf-arena-${runId}"],
     ["evidence/mpeg2-ebml-reuse-build-${runId}.json", "evidence/mpeg2-mvf-arena-build-${runId}.json"],
-    ["evidence/mpeg2-ebml-reuse-build-branch-2026-10-14.json", "evidence/mpeg2-mvf-arena-build-branch-2026-10-15.json"],
+    ["evidence/mpeg2-ebml-reuse-build-branch-2026-10-14.json", `evidence/mpeg2-mvf-arena-build-branch-2026-10-15${suffix}.json`],
+    ...(revision ? [["assert.equal(process.argv.length, 3)", "assert.equal(process.argv.length, 4)"]] : []),
     ["ebml-reuse-artifact-", "mvf-arena-artifact-"],
     ["private-fixed-heaps-ebml-reuse-candidate-not-browser-acceptance", "private-fixed-heaps-mvf-arena-candidate-not-browser-acceptance"],
     ["  reverseSingleIdleRefstruct(actualRefstruct);", `  const { reverseMvfArenaRefstruct } = await import(${JSON.stringify(uri)});\n  reverseSingleIdleRefstruct(reverseMvfArenaRefstruct(actualRefstruct));`],

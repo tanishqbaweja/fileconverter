@@ -33,7 +33,12 @@ static void observe_free(void *ptr)
 }
 #define av_malloc observe_malloc
 #define av_free observe_free
+/* Pinned upstream internal headers have intentionally unused parameters.
+ * Keep -Werror for this harness; scope the exception to that exact include. */
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-parameter"
 #include "libavutil/refstruct.c"
+#pragma clang diagnostic pop
 #undef av_malloc
 #undef av_free
 
