@@ -1,0 +1,1048 @@
+{
+  "recordedAt": "2026-10-14T09:17:14.459Z",
+  "status": "four-genuine-headless-conversions-and-recovery-independently-qualified-not-full-acceptance",
+  "receipt": {
+    "path": "evidence/2026-10-14T09-09-29-345Z-journaled-realloc-media.json",
+    "sha256": "2ebbeb5c9065683cf4f6a94c5343a76c6a12d75eea2dc6f5161e2fc77e8ed549"
+  },
+  "sourceCount": 249,
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-14T09-09-29-345Z-journaled-realloc-media-executed-sources.json.gz",
+    "bytes": 755754,
+    "sha256": "6ce77d2864233d0d2462b1f3b69ebedf4a200917a8cca251f6b2f8a3a25e0c20",
+    "restoredBytes": 3468050,
+    "restoredSha256": "c78846be93b575160b48cdf9fdd5695b6c1dbae4542b93625865da1cdb4757fc"
+  },
+  "reportArchive": {
+    "path": "outputs/reports/2026-10-14T09-09-29-345Z-journaled-realloc-media-golden-report.json.gz",
+    "bytes": 84036,
+    "sha256": "fe46cf44afa21024605dd5590f4704b5649213e40e71720ff1918c02e15d2a2a",
+    "restoredBytes": 984007,
+    "restoredSha256": "3cc4faf916fd81dbe48d1dee355ef7d827782c67034a78b3eae5f269654eb1bf"
+  },
+  "allExecutedCurrentPostPreimagesVerified": true,
+  "unchanged256Source8MiBCaps": true,
+  "analysis": {
+    "previous": {
+      "normal": {
+        "genuineSyntheticConversions": 1,
+        "caseStatus": "passed",
+        "qualityThreshold": 0.98,
+        "ordinalSsim": 0.983095,
+        "timestampAlignedSsim": 0.966841,
+        "scoreParsedNotMissing": true,
+        "syntheticNoiseStrength": 4,
+        "syntheticNoiseSeed": 20261011,
+        "inputDimensions": [
+          1920,
+          804
+        ],
+        "outputDimensions": [
+          1920,
+          804
+        ],
+        "frames": 96,
+        "fullOriginalAcceptance": false,
+        "completeChromiumMemoryAcceptance": false,
+        "publicAcceptance": false,
+        "historicalFullScoreStillUnknown": true,
+        "bitRate": 4000000,
+        "input": {
+          "bytes": 4457906,
+          "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+        },
+        "nativeConfiguration": {
+          "words": [
+            1,
+            1920,
+            804,
+            0,
+            1,
+            24,
+            24,
+            1,
+            4000000,
+            4,
+            20,
+            1,
+            1,
+            2,
+            2,
+            2,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "nativeSettingsMatch": 1,
+          "expectedBitRate": 4000000,
+          "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+        },
+        "outputBytes": 2245558,
+        "elapsedMs": 4052.6800000071526,
+        "controlledComparisonPending": true,
+        "conversionSpeedAcceptance": false
+      },
+      "recovery": {
+        "completedValidatedRecoveryConversions": 2,
+        "adverseCases": 2,
+        "results": [
+          {
+            "phase": "write-failure",
+            "adversePartialOutputRemoved": true,
+            "samePageProductionReplacementWorkerRecovered": true,
+            "analysis": {
+              "genuineSyntheticConversions": 1,
+              "caseStatus": "passed",
+              "qualityThreshold": 0.98,
+              "ordinalSsim": 0.983095,
+              "timestampAlignedSsim": 0.966841,
+              "scoreParsedNotMissing": true,
+              "syntheticNoiseStrength": 4,
+              "syntheticNoiseSeed": 20261011,
+              "inputDimensions": [
+                1920,
+                804
+              ],
+              "outputDimensions": [
+                1920,
+                804
+              ],
+              "frames": 96,
+              "fullOriginalAcceptance": false,
+              "completeChromiumMemoryAcceptance": false,
+              "publicAcceptance": false,
+              "historicalFullScoreStillUnknown": true,
+              "bitRate": 4000000,
+              "input": {
+                "bytes": 4457906,
+                "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+              },
+              "nativeConfiguration": {
+                "words": [
+                  1,
+                  1920,
+                  804,
+                  0,
+                  1,
+                  24,
+                  24,
+                  1,
+                  4000000,
+                  4,
+                  20,
+                  1,
+                  1,
+                  2,
+                  2,
+                  2,
+                  1,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "nativeSettingsMatch": 1,
+                "expectedBitRate": 4000000,
+                "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+              },
+              "outputBytes": 2245558,
+              "elapsedMs": 3695.7100000083447,
+              "controlledComparisonPending": true,
+              "conversionSpeedAcceptance": false
+            }
+          },
+          {
+            "phase": "cancellation",
+            "adversePartialOutputRemoved": true,
+            "samePageProductionReplacementWorkerRecovered": true,
+            "analysis": {
+              "genuineSyntheticConversions": 1,
+              "caseStatus": "passed",
+              "qualityThreshold": 0.98,
+              "ordinalSsim": 0.983095,
+              "timestampAlignedSsim": 0.966841,
+              "scoreParsedNotMissing": true,
+              "syntheticNoiseStrength": 4,
+              "syntheticNoiseSeed": 20261011,
+              "inputDimensions": [
+                1920,
+                804
+              ],
+              "outputDimensions": [
+                1920,
+                804
+              ],
+              "frames": 96,
+              "fullOriginalAcceptance": false,
+              "completeChromiumMemoryAcceptance": false,
+              "publicAcceptance": false,
+              "historicalFullScoreStillUnknown": true,
+              "bitRate": 4000000,
+              "input": {
+                "bytes": 4457906,
+                "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+              },
+              "nativeConfiguration": {
+                "words": [
+                  1,
+                  1920,
+                  804,
+                  0,
+                  1,
+                  24,
+                  24,
+                  1,
+                  4000000,
+                  4,
+                  20,
+                  1,
+                  1,
+                  2,
+                  2,
+                  2,
+                  1,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "nativeSettingsMatch": 1,
+                "expectedBitRate": 4000000,
+                "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+              },
+              "outputBytes": 2245558,
+              "elapsedMs": 3955.2150000035763,
+              "controlledComparisonPending": true,
+              "conversionSpeedAcceptance": false
+            }
+          }
+        ],
+        "completeChromiumMemoryAcceptance": false,
+        "fullOriginalAcceptance": false,
+        "publicAcceptance": false,
+        "speedImprovementProven": false
+      },
+      "actualAsyncifyLifecycleSamples": [
+        {
+          "stackBytes": 262144,
+          "headerBytes": 12,
+          "reservationBytes": 262156,
+          "allocations": 1,
+          "frees": 1,
+          "acquisitions": 69,
+          "activeLeases": 0,
+          "retainedBytes": 0,
+          "closing": true,
+          "maximumLeases": 1,
+          "zeroOnAcquireAndRelease": true,
+          "abortedReleaseDeferredUntilWorkerTermination": false
+        },
+        {
+          "stackBytes": 262144,
+          "headerBytes": 12,
+          "reservationBytes": 262156,
+          "allocations": 1,
+          "frees": 1,
+          "acquisitions": 69,
+          "activeLeases": 0,
+          "retainedBytes": 0,
+          "closing": true,
+          "maximumLeases": 1,
+          "zeroOnAcquireAndRelease": true,
+          "abortedReleaseDeferredUntilWorkerTermination": false
+        },
+        {
+          "stackBytes": 262144,
+          "headerBytes": 12,
+          "reservationBytes": 262156,
+          "allocations": 1,
+          "frees": 1,
+          "acquisitions": 69,
+          "activeLeases": 0,
+          "retainedBytes": 0,
+          "closing": true,
+          "maximumLeases": 1,
+          "zeroOnAcquireAndRelease": true,
+          "abortedReleaseDeferredUntilWorkerTermination": false
+        },
+        {
+          "stackBytes": 262144,
+          "headerBytes": 12,
+          "reservationBytes": 262156,
+          "allocations": 1,
+          "frees": 1,
+          "acquisitions": 38,
+          "activeLeases": 0,
+          "retainedBytes": 0,
+          "closing": true,
+          "maximumLeases": 1,
+          "zeroOnAcquireAndRelease": true,
+          "abortedReleaseDeferredUntilWorkerTermination": false
+        },
+        {
+          "stackBytes": 262144,
+          "headerBytes": 12,
+          "reservationBytes": 262156,
+          "allocations": 1,
+          "frees": 1,
+          "acquisitions": 69,
+          "activeLeases": 0,
+          "retainedBytes": 0,
+          "closing": true,
+          "maximumLeases": 1,
+          "zeroOnAcquireAndRelease": true,
+          "abortedReleaseDeferredUntilWorkerTermination": false
+        }
+      ],
+      "genuineValidatedConversions": 3,
+      "publicAcceptance": false
+    },
+    "inputReadFailures": [
+      {
+        "version": 1,
+        "scope": "production-input-read-failure-not-cause-attribution",
+        "failureOrdinal": 1,
+        "offset": 1048576,
+        "requestedBytes": 65536,
+        "inputSize": 4457906,
+        "exceptionName": "NotReadableError",
+        "exceptionCode": 0,
+        "messageClass": "injected-control",
+        "causeName": null,
+        "causeCode": null,
+        "stackAvailable": false,
+        "stackLocations": []
+      },
+      {
+        "version": 1,
+        "scope": "production-input-read-failure-not-cause-attribution",
+        "failureOrdinal": 2,
+        "offset": 1048576,
+        "requestedBytes": 65536,
+        "inputSize": 4457906,
+        "exceptionName": "NotReadableError",
+        "exceptionCode": 0,
+        "messageClass": "injected-control",
+        "causeName": null,
+        "causeCode": null,
+        "stackAvailable": false,
+        "stackLocations": []
+      }
+    ],
+    "validatedInputFailureRecovery": {
+      "genuineSyntheticConversions": 1,
+      "caseStatus": "passed",
+      "qualityThreshold": 0.98,
+      "ordinalSsim": 0.983095,
+      "timestampAlignedSsim": 0.966841,
+      "scoreParsedNotMissing": true,
+      "syntheticNoiseStrength": 4,
+      "syntheticNoiseSeed": 20261011,
+      "inputDimensions": [
+        1920,
+        804
+      ],
+      "outputDimensions": [
+        1920,
+        804
+      ],
+      "frames": 96,
+      "fullOriginalAcceptance": false,
+      "completeChromiumMemoryAcceptance": false,
+      "publicAcceptance": false,
+      "historicalFullScoreStillUnknown": true,
+      "bitRate": 4000000,
+      "input": {
+        "bytes": 4457906,
+        "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+      },
+      "nativeConfiguration": {
+        "words": [
+          1,
+          1920,
+          804,
+          0,
+          1,
+          24,
+          24,
+          1,
+          4000000,
+          4,
+          20,
+          1,
+          1,
+          2,
+          2,
+          2,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "nativeSettingsMatch": 1,
+        "expectedBitRate": 4000000,
+        "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+      },
+      "outputBytes": 2245558,
+      "elapsedMs": 3311.800000011921,
+      "controlledComparisonPending": true,
+      "conversionSpeedAcceptance": false
+    },
+    "actualExtraAsyncifyLifecycle": [
+      {
+        "stackBytes": 262144,
+        "headerBytes": 12,
+        "reservationBytes": 262156,
+        "allocations": 1,
+        "frees": 1,
+        "acquisitions": 19,
+        "activeLeases": 0,
+        "retainedBytes": 0,
+        "closing": true,
+        "maximumLeases": 1,
+        "zeroOnAcquireAndRelease": true,
+        "abortedReleaseDeferredUntilWorkerTermination": false
+      },
+      {
+        "stackBytes": 262144,
+        "headerBytes": 12,
+        "reservationBytes": 262156,
+        "allocations": 1,
+        "frees": 1,
+        "acquisitions": 69,
+        "activeLeases": 0,
+        "retainedBytes": 0,
+        "closing": true,
+        "maximumLeases": 1,
+        "zeroOnAcquireAndRelease": true,
+        "abortedReleaseDeferredUntilWorkerTermination": false
+      }
+    ],
+    "genuineValidatedConversions": 4,
+    "fullOriginalAcceptance": false,
+    "publicAcceptance": false,
+    "speedImprovementProven": false
+  },
+  "actualDecoderSha256": "eb45bb276b139f0c0404079c2087d06dfa0f629c400d3f18f5a28ead78521e3c",
+  "nativeSourceEnvelope": {
+    "path": "evidence/realloc-native-sources-38526781934.json",
+    "sha256": "69e116351d6ab6de1d788e29e0277e36db112655193d255a33c771199c85c4c0",
+    "sourceCount": 86,
+    "archive": {
+      "path": "outputs/reports/realloc-native-sources-38526781934.json.gz",
+      "bytes": 178635,
+      "sha256": "59079622638dfc8b0a311fccc63fd3576e4ddaf460db9942fcb15c47bb6a8a9a",
+      "restoredBytes": 676866,
+      "restoredSha256": "58bcb9d0157d35fbb934eb7fc76a9608a8919a0c89ab07252cbca7667b587bca"
+    },
+    "currentSourcePins": {
+      "media/ffmpeg/build-mpeg2-split-pipeline.sh": "eb00f3f3a23319e8b067d7d19bd41432df2b319a85a93ac4ad4f032a84ed9574",
+      "media/ffmpeg/mpeg2-split-pipeline-manifest.mjs": "7c9a3a0d2f57f985b5a07a72ab7454c7a87f34e97205816a508f1c538e73160b",
+      "media/ffmpeg/make-mpeg2-split-pipeline.mjs": "bfcdabf4e36b9c339bab2558a5177dbc23e005aa14e75dcd8af2c24b328232dd",
+      "media/ffmpeg/mpeg2-split-kernel.mjs": "b2cc0ddefde03b270deb6190f08e282995aaba6287e3c67c48689f1d1128339e",
+      "media/ffmpeg/mpeg2-split-mux-bridge.h": "eb13d16e4041440b1b6b95c3d3dd571c2bdabc244d455cb01ffb236d27ffd284",
+      "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+      "media/ffmpeg/mpeg2-candidate.c": "67d3b8299a9e695ea68f96fdcc51d3f5ba5a694547b3f8288e740990c5f7eac0",
+      "media/ffmpeg/mpeg2-split-codec-parameters.h": "dd3500db5cf0d437a9042424a9ddd97aee556c497abe7f5b6648c3756d120ccc",
+      "media/ffmpeg/mpeg2-split-frame-layout.h": "1ddac3dc35c54a3734885606deb0bd73ed1e5026fd81ee090e928a4a76ed9a17",
+      "media/ffmpeg/mpeg2-split-frame-properties.h": "d5591df913d50ac261c72846666efa0c27c28b996b4b44343fd060081e864a02",
+      "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f",
+      "scripts/lib/mpeg2-split-frame-bridge.mjs": "44f52d150de0155643e632a516ae4547a1652e2c5de08e41a9d57df70f506c0a",
+      "scripts/lib/mpeg2-split-frame-layout.mjs": "0fb7487948b750e9674cf3292170dc7e2462dd6f1e7eabc77502200dc3088fd7",
+      "scripts/lib/mpeg2-split-frame-properties.mjs": "6c57b7c38eadb5638ee2a17bd0d1327de6d7561a4bb9614929bd8ff06b102a94",
+      "scripts/lib/mpeg2-split-packet-bridge.mjs": "e19260e92721163370c5d8a8248f2d58f96e57f14d0b7e5496c566f82a98b55d",
+      "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+      "media/ffmpeg/patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
+      "media/ffmpeg/patches/mov-fragmented-cover-metadata-only.patch": "2e0da9a1978ce31858117c91d6349b0a933e1fa4a0d4de1e0d459054e567210b",
+      "media/ffmpeg/patches/mov-bounded-custom-metadata.patch": "b0bcd47e5997073071f06da3f093f08940536035c75888b4a18bce0fc2c7ecff",
+      "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch": "f6c9ab0dfe0a918e6e197f779d77b58b4f7e0e525ba4e72d6ed6375a5ed3381a",
+      "media/ffmpeg/patches/mpeg2-encoder-uncached-frame-buffers.patch": "d06563699a8747c429bdcc9432657a38c4a5c03446e2530a108cce10cae336ee",
+      "media/ffmpeg/patches/mpeg2-encoder-uncached-accessories.patch": "095c43cf7f636209be78d32cbedec1beacfa30c0d50978954d70bcf5abf9f645",
+      "media/ffmpeg/patches/hevc-decoder-uncached-frame-buffers.patch": "fef319d0497683a45a09959e12d524fa1dc46356f7a17f0f7c8c89f5b20699b0",
+      "media/ffmpeg/mpeg2-hevc-auxiliary-policy.mjs": "0533c01b91f2d7f669b413411d051082d36bcfb64f6249edc9389aee4343c29d",
+      "media/ffmpeg/mpeg2-hevc-auxiliary-policy.h": "8010a86e032c89fc1f37eec6862dfef2f7332f553fe4a03bd5ad02b78cbbac6d",
+      "media/ffmpeg/apply-mpeg2-split-hevc-policy.mjs": "795b028f1941e3b9b053080772c83dc9f905faf296ea8943f40a755573a39f81",
+      "media/ffmpeg/build-mpeg2-aligned-reuse.mjs": "7c920650273882d831b211d7f7eaddea0bbed2f9e00f4221f7966bb39639de57",
+      "media/ffmpeg/mpeg2-aligned-reuse-recipe.mjs": "fc14903561417fc91b0f6161f212f056fee19393aa9905f36888b9d70e52b387",
+      "media/ffmpeg/mpeg2-aligned-reuse.c": "57c83bb5dfe204cee152381002963a72394789abfa03efc7ac6685a8f3b9f785",
+      "media/ffmpeg/mpeg2-aligned-reuse-smoke.c": "8c8d4048b24e4c4abf10dd65398f180efcb5668f0bce96c8843fbc6205920e3c",
+      "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+      ".github/workflows/reproduce-ffmpeg-nondocker.yml": "cda0b434adc7dd36109b4a2cc63fe726a507889cf6d1c0f5862d5d78dbf5c965",
+      "media/ffmpeg/build-mpeg2-single-idle.mjs": "a1097363223f64e8d2440e1f539aa71a3747742d5903e02fb9175a05c16d931e",
+      "media/ffmpeg/mpeg2-single-idle-source.mjs": "0a84871b79a15f6f68aacfb1df2956874e0ba8c0d2f452ba63761f02dbea2244",
+      "media/ffmpeg/mpeg2-single-idle-recipe.mjs": "981cfa7757b832d7c581747fd83fe5a2e5d4addaee1a2d0aa0a8de0bcecb2c22",
+      "media/ffmpeg/patch-mpeg2-single-idle.mjs": "9b9cbe34b9109d419010a08a9fb2539137eb3c20c3b95e89c4cfa136f98c869c",
+      "media/ffmpeg/mpeg2-hevc-single-idle-policy.h": "702cad3c915a789e1d096f52ba09976a09d0e549f039a3c9b9ac687fc7e89211",
+      "media/ffmpeg/mpeg2-single-idle-smoke.c": "c75984831c14b9f866612f0ca41a2e5c270ceb9f6fe6c220f26d7f75ae6c52d6",
+      "media/ffmpeg/mpeg2-late-refstruct-recipe.mjs": "9ebc1f8edab84112c23d5c0dcbb7b421f3058acbff3f07bb15612840929c12d9",
+      "media/ffmpeg/mpeg2-late-refstruct-source.mjs": "575c8012fdce04cb0285466262324817974d3b9cf764a5825dacbc6517ccfdf7",
+      "media/ffmpeg/patch-late-refstruct.mjs": "adf859bebe227b3fec76a9ab5a317ce5a8b4329b53ba20620e29970b36784729",
+      "media/ffmpeg/mpeg2-late-refstruct-slot.c": "2e575ffe76d451056c024f1702029d4cf129fbae370a460c27e87876788fea5b",
+      "media/ffmpeg/mpeg2-late-refstruct-smoke.c": "faa0fff1572da10493f6e8d56a10d0ca270eead74a02e46dd305a4979e57fbeb",
+      ".github/workflows/mpeg2-single-idle-nondocker.yml": "0abad5e1727286c3828d7e8609f2aa53499c25f7831ec932d118edfcd771eac3",
+      "media/ffmpeg/build-mpeg2-allocation-attempt.mjs": "c480eb623e1a9b0bb8d5e128ebc7c3b07b7227ae4be6a7bae5f1a3315c2a4467",
+      "media/ffmpeg/mpeg2-allocation-attempt-recipe.mjs": "a2b95fea95820d2a37f91a22256d4f36cf7f62911bb55035cf883b1f07b6463b",
+      "media/ffmpeg/mpeg2-allocation-attempt.c": "254aec222317eefd22f0c7ff2fd44030b53db661548ad1122a8ec8d2a3f21c30",
+      "media/ffmpeg/mpeg2-allocation-attempt-smoke.c": "acdd0d8e211bf6f406bd5b7763bbe302720665ded4997429d3461e20e52a3a28",
+      "media/ffmpeg/build-mpeg2-alignment16.mjs": "c44148bd6b1340a1b96b2687c2a48ae6e773ef43805c2d95e1c62f7bbde60495",
+      "media/ffmpeg/mpeg2-alignment16-builder-recipe.mjs": "11e8d95b9c6c50b87a7b7298b809bdd3182d11f5322cac10a64c65268997c13d",
+      "media/ffmpeg/mpeg2-alignment16-sdk.mjs": "590833a79f59f604b7f5044796b02e605818a6e6c17d450344dbcc2eb3830cae",
+      "media/ffmpeg/mpeg2-alignment16-recipe.mjs": "b371a7ca71a4bcd823e671d23aacea6c8b0038f8f9cbd86fd3b77e9052dde01d",
+      "media/ffmpeg/mpeg2-alignment16-smoke.c": "5eb7b3ee4c2aaa8708626f4cc35f86f7581b94145d66d0a49e0acae76fcdb6ad",
+      "media/ffmpeg/build-mpeg2-hevc-planes.mjs": "2eaef641b07bfdef904f2e1ba05300cc28b230989894e7c69dedf828642e7e7d",
+      "media/ffmpeg/mpeg2-hevc-plane-builder-recipe.mjs": "44fd305b234ee129ba8f8149ca68a0fbdad1694dd581e5b2a1291138c6201cb0",
+      "media/ffmpeg/mpeg2-hevc-plane-recipe.mjs": "7f39d3d8653a75091824ce1388aadeef0786d604c39eaa0152062d16dd33732f",
+      "media/ffmpeg/mpeg2-hevc-plane-source.mjs": "f52bd8b1cff7a820dd9ade453dbe72e59c91939aacd65fa8bac3432d14b591ec",
+      "media/ffmpeg/mpeg2-hevc-plane-policy.h": "ba3475e401247117c11f7de4b3c8b8f96d6341cfbd6865871499a1aaad0c4ef8",
+      "media/ffmpeg/patch-mpeg2-hevc-planes.mjs": "94d298027e4741c4dc971d5060bda5538779e4e0fc849595909da6e48aa7e5d7",
+      "media/ffmpeg/mpeg2-encoder-plane-source.mjs": "7a25478e61d6edee7ad5582e29dbd7a9ef43f8ed51dc984eafededf1abb46b52",
+      "media/ffmpeg/mpeg2-encoder-plane-prototype-source.mjs": "fc34e18f291ab5468113a863f5dd9ffa5f0913677f75104dbfb99f176e753dd6",
+      "media/ffmpeg/mpeg2-encoder-plane-smoke.c": "6546d208968d91053fbd0c748d7368aa1b46ad80a7dfe802771e6bbbc21a5e43",
+      "media/ffmpeg/mpeg2-realloc-attempt.c": "f6c7b4341d1b40567a04f9a2d7b4a820609c97d8c82b976c47acdea6a45f0245",
+      "media/ffmpeg/mpeg2-realloc-attempt-smoke.c": "5cb8d2af1a31892ebf8d974c19f2e04944b434459527f610aac995c5605201e0",
+      "media/ffmpeg/mpeg2-realloc-avutil-smoke.c": "69c756ea1c41657efe63125849d26dcc21867fef78791bc4b055cd127f50f535",
+      "media/ffmpeg/mpeg2-realloc-attempt-recipe.mjs": "2d989f996692ba233cd712093ce6defc0aa0196b67ad2544842d468e704a6d1c",
+      "media/ffmpeg/mpeg2-realloc-builder-recipe.mjs": "bf5fee74f74b8f5e0286decd6eb078196404d596a659c75fb1b871c3f9447b06",
+      "media/ffmpeg/build-mpeg2-realloc-attempt.mjs": "01b7373e15d3821dd706744fcc40afc8c409ea79138a136c912b13b2e85467cf",
+      "tests/mpeg2-realloc-attempt.test.mjs": "bcd326a6905ef650e214f50f5f8210a94b0b40645150d29a45311311bf632394",
+      "media/ffmpeg/build-mpeg2-packet-largest-idle.mjs": "6d41e74dcd0434576a05f5053ad1f05ff3e4f67e3eb17cdb914d1a3beba842cb",
+      "media/ffmpeg/mpeg2-packet-largest-idle-builder-recipe.mjs": "d18488a39bf6baf54c91414c84e4903d56f1082e8b2073796bf8d64ef5e13eb6",
+      "media/ffmpeg/mpeg2-packet-largest-idle-recipe.mjs": "32ba8cda8a5ecb135cdb9f82d746a2a472e1e1787732c1ea3555727d74732f9d",
+      "media/ffmpeg/make-mpeg2-packet-largest-idle-pipeline.mjs": "d4a1a77a52983d5774824148d58cd3aac4f14ba18a056c4cb8848f661608f0e8",
+      "media/ffmpeg/mpeg2-packet-largest-idle-source.mjs": "81fbb97347c94f79d8c49fcf264a404a94f45c210788674de574e616452ed31b",
+      "media/ffmpeg/mpeg2-packet-largest-idle.h": "0058018f1793417925bf16de11de8f15f13be5f0701915b59ad5e57f7a8f44d9",
+      "media/ffmpeg/mpeg2-packet-largest-idle-smoke.c": "a24dae7e9d8a3d448e2ed980d49355d54783522e23de774a98cc13f628ee2a30",
+      "media/ffmpeg/build-mpeg2-packet-cache-strict.mjs": "4de4fa643a15d0d114995fae55d2392741e5c68eef2b4df18eb1642e836f952e",
+      "media/ffmpeg/mpeg2-packet-cache-strict-recipe.mjs": "6f482084ae072b34aa13ca982742d6b8eb812efd7c55b0ea65ba8113a37b1594",
+      "media/ffmpeg/build-mpeg2-packet-cache.mjs": "555ee56daefcf35cb5df1a7f69ba02370faed534e394b7b7643b8c3742d3ab82",
+      "media/ffmpeg/mpeg2-packet-cache-builder-recipe.mjs": "588ef097beac7d067622b49174ae74ee40b4ec58228ef0807cb3c23cadfe3e55",
+      "media/ffmpeg/mpeg2-packet-cache-recipe.mjs": "dd177d39945215aa04c3d55940c592e64869361019355f67f4fa82cdb8d4381e",
+      "media/ffmpeg/make-mpeg2-packet-cache-pipeline.mjs": "d83b97a477331c759718cb586dda2ff814d0ffffd61ea0fb90ebdde4eabc0334",
+      "media/ffmpeg/mpeg2-packet-cache-source.mjs": "73ee0ecb9bcadf35c9c3c1fba6c5ca8bcc61e63578dc8d2249721db221a73e88",
+      "media/ffmpeg/mpeg2-packet-cache.h": "df10682b7d49528d35412342ff96fe05b54978f1d8473e84a03293b9e5228a6e",
+      "media/ffmpeg/mpeg2-packet-cache-smoke.c": "b63db56402c373e60113e9fe188282b61dc6ec4ff63e89db8770e6b8be8e847d",
+      "media/ffmpeg/mpeg2-packet-cache-strict-builder-recipe.mjs": "d687935f0c6fbf3c513d23cda7a56a375daa8611f3d20f19b5a235a3e87a494e"
+    },
+    "allExecutedNativePreimagesVerified": true,
+    "unchanged128File2MiBEnvelopeCaps": true,
+    "publicAcceptance": false
+  },
+  "compositeControl": {
+    "path": "evidence/2026-10-14T08-50-39-535Z-realloc-composite-control.json",
+    "sha256": "9cfef97c5aed1e2d347d565848aa7b72da483070e936a2a049bc2a36d8e01ec5"
+  },
+  "outputSha256": "554cc84159d2e36f4fd2adb060062cf78be02d4195f7857ceefe0953065c5f27",
+  "allEightIndependentOutputHashesMatch": true,
+  "journal": {
+    "path": "outputs/reports/2026-10-14T09-09-29-345Z-journaled-realloc-fixture-cleanup.json",
+    "sha256": "455f4db32ad5def5f311ee86ab34fea4f22df93bd2854a67a215493ccc53dc24",
+    "status": "registered-fixture-already-removed",
+    "registered": true,
+    "record": {
+      "version": 1,
+      "recordedAt": "2026-10-14T09:09:41.040Z",
+      "directory": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-artwork-validation-G7vQaI",
+      "dev": "1887170595",
+      "ino": "1407374887635723",
+      "birthtimeMs": "1791968980527",
+      "registrationIdentity": {
+        "pid": 35148,
+        "parentPid": 34796,
+        "createdAt": "2026-10-14T09:09:39.8554730Z"
+      }
+    },
+    "runnerAbsence": {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 34796,
+        "parentPid": 13036,
+        "createdAt": "2026-10-14T09:09:38.9730410Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-14T09:12:36.451Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 1430,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    "removedBytes": 0,
+    "ownedDirectoryAbsent": true,
+    "noProcessesKilled": true
+  },
+  "birthChecks": [
+    {
+      "identity": {
+        "pid": 27304,
+        "parentPid": 13036,
+        "createdAt": "2026-10-14T09:09:36.2536550Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 34796,
+        "parentPid": 13036,
+        "createdAt": "2026-10-14T09:09:38.9730410Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 35148,
+        "parentPid": 34796,
+        "createdAt": "2026-10-14T09:09:39.8554730Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 23036,
+        "parentPid": 28524,
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-14T08:50:44.8461560Z",
+        "privateBytes": 48590848,
+        "rssBytes": 141242368
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 26396,
+        "parentPid": 23036,
+        "type": "crashpad-handler",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-14T08:50:46.8393210Z",
+        "privateBytes": 2678784,
+        "rssBytes": 9949184
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 21392,
+        "parentPid": 23036,
+        "type": "gpu-process",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-14T08:50:48.0009740Z",
+        "privateBytes": 97382400,
+        "rssBytes": 120508416
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 27744,
+        "parentPid": 23036,
+        "type": "utility",
+        "utilitySubtype": "network.mojom.NetworkService",
+        "sandboxType": "none",
+        "createdAt": "2026-10-14T08:50:48.0037200Z",
+        "privateBytes": 13324288,
+        "rssBytes": 39796736
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 31292,
+        "parentPid": 23036,
+        "type": "utility",
+        "utilitySubtype": "storage.mojom.StorageService",
+        "sandboxType": "service",
+        "createdAt": "2026-10-14T08:50:48.5851520Z",
+        "privateBytes": 8007680,
+        "rssBytes": 17510400
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 19520,
+        "parentPid": 23036,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-14T08:50:48.5874780Z",
+        "privateBytes": 45182976,
+        "rssBytes": 86937600
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 36456,
+        "parentPid": 23036,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-14T08:50:48.5948670Z",
+        "privateBytes": 18509824,
+        "rssBytes": 45686784
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 32308,
+        "parentPid": 23036,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-14T08:50:48.5973230Z",
+        "privateBytes": 99483648,
+        "rssBytes": 96694272
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 2624,
+        "parentPid": 23036,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-14T08:50:48.5996940Z",
+        "privateBytes": 18018304,
+        "rssBytes": 46133248
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 30924,
+        "parentPid": 23036,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-14T08:50:48.6448910Z",
+        "privateBytes": 23289856,
+        "rssBytes": 46170112
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 22036,
+        "parentPid": 23036,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-14T08:50:50.9913190Z",
+        "privateBytes": 17821696,
+        "rssBytes": 33968128
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 23104,
+        "parentPid": 23036,
+        "type": "utility",
+        "utilitySubtype": "unzip.mojom.Unzipper",
+        "sandboxType": "service",
+        "createdAt": "2026-10-14T08:50:51.9736070Z",
+        "privateBytes": 659456,
+        "rssBytes": 3391488
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    }
+  ],
+  "sampledPidChecks": [
+    {
+      "pid": 22804,
+      "parentPid": 35148,
+      "lastSampleAt": "2026-10-14T09:12:30.700Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 16352,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:12:30.700Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 29928,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:12:30.700Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 35320,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:12:30.700Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 19392,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:12:30.700Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 19568,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:10:44.838Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 13448,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:10:44.838Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 34288,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:10:09.862Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 31816,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:10:44.838Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 31468,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:10:37.020Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 16460,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:11:25.065Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 9448,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:11:25.065Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 23332,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:10:47.002Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 29760,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:11:25.065Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 33692,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:12:02.933Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 9504,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:12:02.933Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 31628,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:11:26.788Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 36432,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:12:02.933Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 37356,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:12:30.700Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 32472,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:12:30.700Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 37108,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:12:05.232Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 18556,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:12:30.700Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    },
+    {
+      "pid": 26204,
+      "parentPid": 22804,
+      "lastSampleAt": "2026-10-14T09:12:06.291Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionMemorySample": true
+    }
+  ],
+  "conversionMemorySamplesAreDiagnosticNotPrimaryAcceptance": true,
+  "primaryIncrementalPrivateMiB": null,
+  "speedGainProven": false,
+  "cases": [
+    {
+      "phase": "normal",
+      "elapsedMs": 4052.6800000071526,
+      "input": {
+        "bytes": 4457906,
+        "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+      },
+      "outputBytes": 2245558,
+      "ordinalSsim": 0.983095
+    },
+    {
+      "phase": "write-recovery",
+      "elapsedMs": 3695.7100000083447,
+      "input": {
+        "bytes": 4457906,
+        "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+      },
+      "outputBytes": 2245558,
+      "ordinalSsim": 0.983095
+    },
+    {
+      "phase": "cancel-recovery",
+      "elapsedMs": 3955.2150000035763,
+      "input": {
+        "bytes": 4457906,
+        "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+      },
+      "outputBytes": 2245558,
+      "ordinalSsim": 0.983095
+    },
+    {
+      "phase": "read-recovery",
+      "elapsedMs": 3311.800000011921,
+      "input": {
+        "bytes": 4457906,
+        "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+      },
+      "outputBytes": 2245558,
+      "ordinalSsim": 0.983095
+    }
+  ],
+  "originalWholePrePostCurrentSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+  "noProcessesKilled": true,
+  "noDocker": true,
+  "browserMode": "headless",
+  "headedCoverageVerified": false,
+  "fullOriginalAcceptance": false,
+  "completeChromiumMemoryAcceptance": false,
+  "publicAcceptance": false,
+  "removedRedundantRawJson": {
+    "path": "output/playwright/2026-10-14T09-09-40.455Z-packet-cache-media-axJ8V0-direct-artwork.json",
+    "bytes": 984007,
+    "sha256": "3cc4faf916fd81dbe48d1dee355ef7d827782c67034a78b3eae5f269654eb1bf",
+    "archive": {
+      "path": "outputs/reports/2026-10-14T09-09-29-345Z-journaled-realloc-media-golden-report.json.gz",
+      "bytes": 84036,
+      "sha256": "fe46cf44afa21024605dd5590f4704b5649213e40e71720ff1918c02e15d2a2a",
+      "restoredBytes": 984007,
+      "restoredSha256": "3cc4faf916fd81dbe48d1dee355ef7d827782c67034a78b3eae5f269654eb1bf"
+    },
+    "losslessArchiveVerifiedBeforeRemoval": true
+  },
+  "ownSource": {
+    "path": "scripts/verify-journaled-realloc-media-evidence.mjs",
+    "sha256": "cc594aaf25c1da59be30cf70d11e1543362e5d79f3c847a2d4ac5fa94fc25e04",
+    "preimage": "Ly8gT25lLW9mZiBpbmRlcGVuZGVudCBjdXJyZW50L2V2aWRlbmNlL3NvdXJjZSBqb2luOyBubyBleHBlbnNpdmUgYnJvd3NlciByZXBsYXkuCmltcG9ydCBhc3NlcnQgZnJvbSAibm9kZTphc3NlcnQvc3RyaWN0IjsKaW1wb3J0IHsgZXhlY0ZpbGUgfSBmcm9tICJub2RlOmNoaWxkX3Byb2Nlc3MiOwppbXBvcnQgeyBjcmVhdGVIYXNoIH0gZnJvbSAibm9kZTpjcnlwdG8iOwppbXBvcnQgeyBjcmVhdGVSZWFkU3RyZWFtIH0gZnJvbSAibm9kZTpmcyI7CmltcG9ydCB7IGFjY2Vzcyxsc3RhdCxyZWFkRmlsZSxzdGF0LHVubGluayx3cml0ZUZpbGUgfSBmcm9tICJub2RlOmZzL3Byb21pc2VzIjsKaW1wb3J0IHBhdGggZnJvbSAibm9kZTpwYXRoIjsKaW1wb3J0IHsgcHJvbWlzaWZ5IH0gZnJvbSAibm9kZTp1dGlsIjsKaW1wb3J0IHsgZ3VuemlwU3luYyB9IGZyb20gIm5vZGU6emxpYiI7CmltcG9ydCB7IHNoYSxiYXNlbGluZUJpbmRpbmcgfSBmcm9tICIuL2xpYi9zdGFibGUtdWktaGVhZGxlc3MtYmFzZWxpbmUtcmVjaXBlLm1qcyI7CmltcG9ydCB7IGluc3BlY3RSZWFsbG9jTWVkaWFSZXBvcnQgfSBmcm9tICIuL2xpYi9yZWFsbG9jLW1lZGlhLXJlcG9ydC1pbnNwZWN0b3IubWpzIjsKaW1wb3J0IHsgcmVhbGxvY01lZGlhQ29tcG9uZW50cyB9IGZyb20gIi4vbGliL3JlYWxsb2MtbWVkaWEtY29tcG9uZW50cy5tanMiOwppbXBvcnQgeyBSRUFMTE9DX0RFQ09ERVJfU0hBMjU2IH0gZnJvbSAiLi9saWIvcmVhbGxvYy1hdHRlbXB0LWFib3J0LWNhcHR1cmUubWpzIjsKYXNzZXJ0LmVxdWFsKHByb2Nlc3MuYXJndi5sZW5ndGgsMik7CmNvbnN0IHJvb3Q9cGF0aC5yZXNvbHZlKGltcG9ydC5tZXRhLmRpcm5hbWUsIi4uIikscmVhZD1maWxlPT5yZWFkRmlsZShwYXRoLmpvaW4ocm9vdCxmaWxlKSksc3RhbXA9IjIwMjYtMTAtMTRUMDktMDktMjktMzQ1WiI7CmNvbnN0IHByb29mUGF0aD1gZXZpZGVuY2UvJHtzdGFtcH0tam91cm5hbGVkLXJlYWxsb2MtbWVkaWEuanNvbmAscHJvb2ZCeXRlcz1hd2FpdCByZWFkKHByb29mUGF0aCkscHJvb2Y9SlNPTi5wYXJzZShwcm9vZkJ5dGVzKTsKYXNzZXJ0LmVxdWFsKHByb29mLmZhaWx1cmUsbnVsbCk7YXNzZXJ0LmVxdWFsKHByb29mLnN0YXR1cywiZm91ci1oZWFkbGVzcy1jb252ZXJzaW9ucy1pbnB1dC1mYWlsdXJlLWFuZC1yZWNvdmVyeS1wYXNzZWQtbm90LWZ1bGwtYWNjZXB0YW5jZSIpOwphc3NlcnQuZXF1YWwocHJvb2YuYW5hbHlzaXMuZ2VudWluZVZhbGlkYXRlZENvbnZlcnNpb25zLDQpO2Fzc2VydC5lcXVhbChwcm9vZi5icm93c2VyTW9kZSwiaGVhZGxlc3MiKTthc3NlcnQuZXF1YWwocHJvb2YucHVibGljQWNjZXB0YW5jZSxmYWxzZSk7CmFzc2VydC5lcXVhbChwcm9vZi5jb21wbGV0ZUNocm9taXVtTWVtb3J5QWNjZXB0YW5jZSxmYWxzZSk7YXNzZXJ0LmVxdWFsKHByb29mLm9yaWdpbmFsRnVsbFNvdXJjZUFjY2VwdGFuY2UsZmFsc2UpOwpjb25zdCByZXN0b3JlPWFzeW5jIChyZWNvcmQsbWF4aW11bSk9Pnthc3NlcnQuZXF1YWwocGF0aC5kaXJuYW1lKHBhdGgucmVzb2x2ZShyb290LHJlY29yZC5wYXRoKSkscGF0aC5qb2luKHJvb3QsIm91dHB1dHMvcmVwb3J0cyIpKTsKICBjb25zdCB6aXA9YXdhaXQgcmVhZChyZWNvcmQucGF0aCk7YXNzZXJ0LmVxdWFsKHppcC5sZW5ndGgscmVjb3JkLmJ5dGVzKTthc3NlcnQuZXF1YWwoc2hhKHppcCkscmVjb3JkLnNoYTI1Nik7CiAgY29uc3QgcmF3PWd1bnppcFN5bmMoemlwLHttYXhPdXRwdXRMZW5ndGg6bWF4aW11bX0pO2Fzc2VydC5lcXVhbChyYXcubGVuZ3RoLHJlY29yZC5yZXN0b3JlZEJ5dGVzKTthc3NlcnQuZXF1YWwoc2hhKHJhdykscmVjb3JkLnJlc3RvcmVkU2hhMjU2KTtyZXR1cm4gcmF3O307CmNvbnN0IGFyY2hpdmU9SlNPTi5wYXJzZShhd2FpdCByZXN0b3JlKHByb29mLmdlbmVyYXRlZEFyY2hpdmUsODM4ODYwOCkpO2Fzc2VydC5lcXVhbChPYmplY3Qua2V5cyhwcm9vZi5zb3VyY2VQaW5zKS5sZW5ndGgsMjQ5KTsKYXNzZXJ0Lm9rKE9iamVjdC5rZXlzKHByb29mLnNvdXJjZVBpbnMpLmxlbmd0aDw9MjU2KTthc3NlcnQuZGVlcEVxdWFsKGFyY2hpdmUuc291cmNlUGlucyxwcm9vZi5zb3VyY2VQaW5zKTthc3NlcnQuZGVlcEVxdWFsKHByb29mLnNvdXJjZVBpbnMscHJvb2YucG9zdFNvdXJjZVBpbnMpOwpmb3IoY29uc3QgW2ZpbGUsaGFzaF0gb2YgT2JqZWN0LmVudHJpZXMocHJvb2Yuc291cmNlUGlucykpe2Fzc2VydC5lcXVhbChzaGEoYXJjaGl2ZS5zb3VyY2VzW2ZpbGVdKSxoYXNoLGZpbGUpO2Fzc2VydC5lcXVhbChzaGEoYXdhaXQgcmVhZChmaWxlKSksaGFzaCxmaWxlKTt9CmNvbnN0IHJhdz1hd2FpdCByZXN0b3JlKHByb29mLnJlcG9ydC5hcmNoaXZlLDIwOTcxNTIpO2Fzc2VydC5lcXVhbChzaGEocmF3KSxwcm9vZi5yZXBvcnQuc2hhMjU2KTtjb25zdCByZXBvcnQ9SlNPTi5wYXJzZShyYXcpOwphc3NlcnQuZGVlcEVxdWFsKHJlcG9ydC5tYW5pZmVzdCxhcmNoaXZlLmdlbmVyYXRlZC5jb21wb3NpdGlvbi5tYW5pZmVzdCk7CmNvbnN0IGFuYWx5c2lzPWluc3BlY3RSZWFsbG9jTWVkaWFSZXBvcnQocmVwb3J0LEpTT04ucGFyc2UoYXdhaXQgcmVhZChwcm9vZi5iYXNlbGluZS5wYXRoKSkucmVwb3J0c1swXS5yZXBvcnQsSlNPTi5wYXJzZShhd2FpdCByZWFkKHByb29mLmJ1aWxkLnBhdGgpKSk7CmFzc2VydC5kZWVwRXF1YWwoYW5hbHlzaXMscHJvb2YuYW5hbHlzaXMpO2NvbnN0IHBhcnRzPWF3YWl0IHJlYWxsb2NNZWRpYUNvbXBvbmVudHMocm9vdCk7CmFzc2VydC5lcXVhbChyZXBvcnQubWFuaWZlc3QuYXJ0aWZhY3RzWyJ3aXRoaW4tbXBlZzItc3BsaXQud2FzbSJdLFJFQUxMT0NfREVDT0RFUl9TSEEyNTYpO2Fzc2VydC5lcXVhbChyZXBvcnQubWFuaWZlc3QuYXJ0aWZhY3RzWyJ3aXRoaW4tbXBlZzItc3BsaXQubWpzIl0scGFydHMuZ2x1ZS5nZW5lcmF0ZWRTaGEyNTYpOwphc3NlcnQuZXF1YWwocmVwb3J0Lm1hbmlmZXN0LmFydGlmYWN0c1sic3BsaXQtZW5jb2Rlci53YXNtIl0sImE0YmE2MjI1NDE0Y2E3YTY1OGQzNDlhZTgxOTI2ZTVlZDA0MGZhNzNiZTQ1NDBmZThhN2FkZjc2NTZmZTFjZWUiKTsKYXNzZXJ0LmVxdWFsKHJlcG9ydC5tYW5pZmVzdC5hZ2dyZWdhdGVXYXNtTWVtb3J5Qnl0ZXMsNTAzMzE2NDgpO2Fzc2VydC5lcXVhbChyZXBvcnQubWFuaWZlc3QuYWxsb3dNZW1vcnlHcm93dGgsZmFsc2UpOwphc3NlcnQuZGVlcEVxdWFsKHJlcG9ydC5tYW5pZmVzdC5yZWFsbG9jQXR0ZW1wdCxwYXJ0cy5idWlsZC5tYW5pZmVzdC5yZWFsbG9jQXR0ZW1wdCk7YXNzZXJ0LmRlZXBFcXVhbChyZXBvcnQubWFuaWZlc3QuY29tcG9uZW50UHJvb2ZzLm5hdGl2ZUV4ZWN1dGVkU291cmNlcyxwYXJ0cy5lbnZlbG9wZSk7CmFzc2VydC5kZWVwRXF1YWwocmVwb3J0Lm1hbmlmZXN0LnJlYWxsb2NDb21wb3NpdGlvbi5vYnNlcnZlclR5cGVkRnVuY3Rpb25zLHBhcnRzLm9ic2VydmVyVHlwZWRGdW5jdGlvbnMpOwphc3NlcnQuZXF1YWwoYXJjaGl2ZS5nZW5lcmF0ZWQuYXN5bmNpZnlHbHVlUmVjaXBlLmdlbmVyYXRlZCxwYXJ0cy5nbHVlLmdlbmVyYXRlZCk7YXNzZXJ0LmVxdWFsKGFyY2hpdmUuZ2VuZXJhdGVkLmluZnJhc3RydWN0dXJlVGltZW91dC5pbmRpdmlkdWFsVGVzdFRpbWVvdXRNcyw2MDAwMCk7CmFzc2VydC5lcXVhbChhcmNoaXZlLmdlbmVyYXRlZC5pbmZyYXN0cnVjdHVyZVRpbWVvdXQuY29udmVyc2lvbkFjY2VwdGFuY2VUaHJlc2hvbGRzQ2hhbmdlZCxmYWxzZSk7CmNvbnN0IGNvbmZpZz0oYXdhaXQgaW1wb3J0KCJkYXRhOnRleHQvamF2YXNjcmlwdDtiYXNlNjQsIitCdWZmZXIuZnJvbShhcmNoaXZlLmdlbmVyYXRlZC5jb25maWcpLnRvU3RyaW5nKCJiYXNlNjQiKSkpLmRlZmF1bHQ7CmFzc2VydC5lcXVhbChjb25maWcudXNlLmhlYWRsZXNzLHRydWUpO2Fzc2VydC5lcXVhbChjb25maWcucmV0cmllcywwKTthc3NlcnQuZXF1YWwoY29uZmlnLnRpbWVvdXQsNjAwMDApO2Fzc2VydC5lcXVhbChjb25maWcuZ2xvYmFsVGltZW91dCwyNzAwMDApOwpjb25zdCBjYXNlcz1yZXBvcnQucm93cy5maWx0ZXIoeD0+IXgua2luZCYmeC5zdGF0dXM9PT0icGFzc2VkIik7YXNzZXJ0LmVxdWFsKGNhc2VzLmxlbmd0aCw0KTsKY29uc3QgZGlhZ25vc3RpY3M9cmVwb3J0LnJvd3MuZmlsdGVyKHg9Pngua2luZD09PSJpbmRlcGVuZGVudC1mcmFtZS1kaWFnbm9zdGljIik7YXNzZXJ0LmVxdWFsKGRpYWdub3N0aWNzLmxlbmd0aCw0KTsKZm9yKGNvbnN0IHJvdyBvZiBbLi4uY2FzZXMsLi4uZGlhZ25vc3RpY3NdKXthc3NlcnQuZXF1YWwocm93Lm91dHB1dFNoYTI1NiwiNTU0Y2M4NDE1OWQyZTM2ZjRmZDJhZGIwNjAwNjJjZjc4YmUwMmQ0MTk1Zjc4NTdjZWVmZTA5NTMwNjVjNWYyNyIpO2Fzc2VydC5lcXVhbChyb3cub3V0cHV0Qnl0ZXMsMjI0NTU1OCk7CiAgYXNzZXJ0LmVxdWFsKHJvdy5zb3VyY2VCeXRlcyw0NDU3OTA2KTthc3NlcnQuZXF1YWwocm93Lm1ldHJpY3MucXVldWVkQnl0ZXMsMCk7YXNzZXJ0LmVxdWFsKHJvdy5tZXRyaWNzLnBlbmRpbmdPcGVyYXRpb25zLDApOwogIGFzc2VydC5vayhyb3cubWV0cmljcy5wZWFrUGVuZGluZ09wZXJhdGlvbnM8PTEmJnJvdy5tZXRyaWNzLnBlYWtRdWV1ZWRCeXRlczw9NTI0Mjg4KTthc3NlcnQuZXF1YWwocm93Lm1ldHJpY3MubWF4UmVhZENodW5rQnl0ZXMsNjU1MzYpO2Fzc2VydC5lcXVhbChyb3cubWV0cmljcy5wZWFrV2FzbU1lbW9yeUJ5dGVzLDUwMzMxNjQ4KTt9CmZvcihjb25zdCByb3cgb2YgZGlhZ25vc3RpY3Mpe2Fzc2VydC5lcXVhbChyb3cubmF0aXZlRnVsbERlY29kZVBhc3NlZCx0cnVlKTthc3NlcnQub2socm93Lm9yZGluYWxTc2ltPj0uOTgpO30KYXNzZXJ0LmVxdWFsKHJlcG9ydC5yb3dzLmZpbHRlcih4PT54LmtpbmQ9PT0iYXR0YWNoZWQtcGljdHVyZS1wcmVzZXJ2YXRpb24iJiZ4LnN0YXR1cz09PSJwYXNzZWQiKS5sZW5ndGgsNCk7CmFzc2VydC5kZWVwRXF1YWwocmVwb3J0LnJvd3MuZmlsdGVyKHg9Pngua2luZD09PSJ2YWxpZGF0ZWQtc2FtZS1wYWdlLXJlY292ZXJ5IikubWFwKHg9PngucGhhc2UpLFsid3JpdGUtZmFpbHVyZSIsImNhbmNlbGxhdGlvbiIsImlucHV0LXJlYWQtZmFpbHVyZSJdKTsKZm9yKGNvbnN0IHJvdyBvZiByZXBvcnQucm93cy5maWx0ZXIoeD0+eC5jbGVhbnVwUmVtb3ZlZEVudHJpZXMpKWFzc2VydC5kZWVwRXF1YWwocm93LmNsZWFudXBSZW1vdmVkRW50cmllcyxbXSk7CmNvbnN0IGpvdXJuYWxQYXRoPWFyY2hpdmUuZ2VuZXJhdGVkLmpvdXJuYWxlZEZpeHR1cmUuY2xlYW51cFBhdGgsam91cm5hbEJ5dGVzPWF3YWl0IHJlYWQoam91cm5hbFBhdGgpLGpvdXJuYWw9SlNPTi5wYXJzZShqb3VybmFsQnl0ZXMpOwphc3NlcnQuZXF1YWwoam91cm5hbC5zdGF0dXMsInJlZ2lzdGVyZWQtZml4dHVyZS1hbHJlYWR5LXJlbW92ZWQiKTthc3NlcnQuZXF1YWwoam91cm5hbC5vd25lZERpcmVjdG9yeUFic2VudCx0cnVlKTthc3NlcnQuZXF1YWwoam91cm5hbC5ydW5uZXJBYnNlbmNlLnN0YXR1cywib3duZWQtaWRlbnRpdHktYWJzZW50Iik7CmF3YWl0IGFzc2VydC5yZWplY3RzKGFjY2Vzcyhqb3VybmFsLnJlY29yZC5kaXJlY3RvcnkpLHtjb2RlOiJFTk9FTlQifSk7CmZvcihjb25zdCBmbGFnIG9mIFsib3duZWRXcmFwcGVyQWJzZW50IiwicHJpdmF0ZUFkZGl0aW9uc0Fic2VudCIsIm5vcm1hbEFwcEFuZENzc1VuY2hhbmdlZCJdKWFzc2VydC5lcXVhbChwcm9vZi5jbGVhbnVwW2ZsYWddLHRydWUpOwphc3NlcnQuZGVlcEVxdWFsKHByb29mLmNsZWFudXAubmV3Rml4dHVyZURpcnNSZW1haW5pbmcsW10pO2F3YWl0IGFzc2VydC5yZWplY3RzKGFjY2Vzcyhwcm9vZi5jbGVhbnVwLm93bmVkV3JhcHBlcikse2NvZGU6IkVOT0VOVCJ9KTsKY29uc3QgaGVscGVycz1wcm9vZi5jbGVhbnVwLmhlbHBlcnM7YXNzZXJ0LmVxdWFsKHNoYShhd2FpdCByZWFkKGhlbHBlcnMucGF0aCkpLGhlbHBlcnMuc2hhMjU2KTthd2FpdCBhc3NlcnQucmVqZWN0cyhhY2Nlc3MoaGVscGVycy5ydW50aW1lKSx7Y29kZToiRU5PRU5UIn0pOwpjb25zdCBpZGVudGl0aWVzPVsuLi5oZWxwZXJzLmxhdW5jaFJlY29yZHMubWFwKHJvdz0+cm93LmlkZW50aXR5KSxqb3VybmFsLnJlY29yZC5yZWdpc3RyYXRpb25JZGVudGl0eSwuLi5wYXJ0cy5wcm9vZi5uYXRpdmVJZGVudGl0aWVzXTsKY29uc3QgbWVtb3J5U2FtcGxlcz1yZXBvcnQucm93cy5maWx0ZXIoeD0+eC5tZW1vcnlTY29wZSkuZmxhdE1hcCh4PT54LnNhbXBsZXMpLHNhbXBsZWRQaWRzPW5ldyBNYXAoKTsKZm9yKGNvbnN0IHNhbXBsZSBvZiBtZW1vcnlTYW1wbGVzKWZvcihjb25zdCBpdGVtIG9mIHNhbXBsZS5wcm9jZXNzZXM/P1tdKXNhbXBsZWRQaWRzLnNldChpdGVtLnBpZCx7Li4uaXRlbSxsYXN0U2FtcGxlQXQ6c2FtcGxlLnRpbWVzdGFtcH0pOwpjb25zdCBpZHM9Wy4uLm5ldyBTZXQoWy4uLmlkZW50aXRpZXMubWFwKHg9PngucGlkKSwuLi5zYW1wbGVkUGlkcy5rZXlzKCldKV07YXNzZXJ0Lm9rKGlkcy5sZW5ndGg8PTY0KTsKY29uc3QgY29tbWFuZD0iJEVycm9yQWN0aW9uUHJlZmVyZW5jZT0nU3RvcCc7ICR2ZXJpZmljYXRpb25QaWRzPSIraWRzLmpvaW4oIiwiKSsiOyBDb252ZXJ0VG8tSnNvbiAtSW5wdXRPYmplY3QgQChHZXQtQ2ltSW5zdGFuY2UgV2luMzJfUHJvY2VzcyB8IFdoZXJlLU9iamVjdCB7JHZlcmlmaWNhdGlvblBpZHMgLWNvbnRhaW5zICRfLlByb2Nlc3NJZH0gfCBGb3JFYWNoLU9iamVjdCB7QHtwaWQ9W2ludF0kXy5Qcm9jZXNzSWQ7cGFyZW50UGlkPVtpbnRdJF8uUGFyZW50UHJvY2Vzc0lkO2NyZWF0ZWRBdD0kXy5DcmVhdGlvbkRhdGUuVG9Vbml2ZXJzYWxUaW1lKCkuVG9TdHJpbmcoJ28nKX19KSAtQ29tcHJlc3MiOwpjb25zdCByZXN1bHQ9YXdhaXQgcHJvbWlzaWZ5KGV4ZWNGaWxlKSgicG93ZXJzaGVsbC5leGUiLFsiLU5vUHJvZmlsZSIsIi1Ob25JbnRlcmFjdGl2ZSIsIi1FbmNvZGVkQ29tbWFuZCIsQnVmZmVyLmZyb20oY29tbWFuZCwidXRmMTZsZSIpLnRvU3RyaW5nKCJiYXNlNjQiKV0se2N3ZDpyb290LHdpbmRvd3NIaWRlOnRydWUsdGltZW91dDoxNTAwMCxtYXhCdWZmZXI6MTMxMDcyfSk7CmNvbnN0IGN1cnJlbnQ9SlNPTi5wYXJzZShyZXN1bHQuc3Rkb3V0KSxiaXJ0aENoZWNrcz1pZGVudGl0aWVzLm1hcChpZGVudGl0eT0+e2NvbnN0IG5vdz1jdXJyZW50LmZpbmQoeD0+eC5waWQ9PT1pZGVudGl0eS5waWQpPz9udWxsOwogIGFzc2VydC5vayhub3c9PT1udWxsfHxNYXRoLmFicyhEYXRlLnBhcnNlKG5vdy5jcmVhdGVkQXQpLURhdGUucGFyc2UoaWRlbnRpdHkuY3JlYXRlZEF0KSk+PTEpO3JldHVybiB7aWRlbnRpdHksY3VycmVudDpub3csb3duZWRCaXJ0aEFic2VudDp0cnVlfTt9KTsKY29uc3Qgc2FtcGxlZFBpZENoZWNrcz1bLi4uc2FtcGxlZFBpZHMudmFsdWVzKCldLm1hcChzYW1wbGU9Pntjb25zdCBub3c9Y3VycmVudC5maW5kKHg9PngucGlkPT09c2FtcGxlLnBpZCk/P251bGw7CiAgYXNzZXJ0Lm9rKG5vdz09PW51bGx8fERhdGUucGFyc2Uobm93LmNyZWF0ZWRBdCk+RGF0ZS5wYXJzZShzYW1wbGUubGFzdFNhbXBsZUF0KSk7cmV0dXJuIHtwaWQ6c2FtcGxlLnBpZCxwYXJlbnRQaWQ6c2FtcGxlLnBhcmVudFBpZCxsYXN0U2FtcGxlQXQ6c2FtcGxlLmxhc3RTYW1wbGVBdCxjdXJyZW50Om5vdyxzYW1wbGVkUHJvY2Vzc0dvbmU6dHJ1ZSwKICAgIGJpcnRoV2FzTm90UmVjb3JkZWRJbkNvbnZlcnNpb25NZW1vcnlTYW1wbGU6dHJ1ZX07fSk7CmZvcihjb25zdCBbbmFtZSxoYXNoXSBvZiBPYmplY3QuZW50cmllcyhwcm9vZi5jbGVhbnVwLnJlc3RvcmVkKSl7YXNzZXJ0LmVxdWFsKHNoYShhd2FpdCByZWFkKCJwdWJsaWMvZW5naW5lcy9yZW11eC8iK25hbWUpKSxoYXNoKTthc3NlcnQuZXF1YWwoc2hhKGF3YWl0IHJlYWQoImRpc3QvY2xpZW50L2VuZ2luZXMvcmVtdXgvIituYW1lKSksaGFzaCk7fQphc3NlcnQuZXF1YWwoc2hhKGF3YWl0IHJlYWQoImRpc3QvY2xpZW50IitiYXNlbGluZUJpbmRpbmcudXJsKSksYmFzZWxpbmVCaW5kaW5nLnNoYTI1Nik7CmNvbnN0IG9yaWdpbmFsPXBhdGguam9pbihyb290LCJ0ZXN0Lm1rdiIpO2Fzc2VydC5lcXVhbCgoYXdhaXQgc3RhdChvcmlnaW5hbCkpLnNpemUsMjk1ODU3MzI2NSk7Y29uc3Qgb3JpZ2luYWxIYXNoPWNyZWF0ZUhhc2goInNoYTI1NiIpOwpmb3IgYXdhaXQoY29uc3QgY2h1bmsgb2YgY3JlYXRlUmVhZFN0cmVhbShvcmlnaW5hbCx7aGlnaFdhdGVyTWFyazoxMDQ4NTc2fSkpb3JpZ2luYWxIYXNoLnVwZGF0ZShjaHVuayk7Y29uc3Qgb3JpZ2luYWxTaGEyNTY9b3JpZ2luYWxIYXNoLmRpZ2VzdCgiaGV4Iik7CmFzc2VydC5lcXVhbChvcmlnaW5hbFNoYTI1NiwiMzFmMzY2OTViNWI0NGM2MjEyNWE5ZTQyNjRlODRkYzA4NWFjY2QyMWMwMmNjMzQ4N2FhZTU5N2Y1NGI5ZGIzNCIpO2Fzc2VydC5kZWVwRXF1YWwocHJvb2YucHJvdGVjdGVkUHJlLHByb29mLnByb3RlY3RlZFBvc3QpO2Fzc2VydC5lcXVhbChwcm9vZi5wcm90ZWN0ZWRQb3N0LnNoYTI1NixvcmlnaW5hbFNoYTI1Nik7CmNvbnN0IHJhd1BhdGg9cGF0aC5yZXNvbHZlKHJvb3QscHJvb2YucmVwb3J0LnBhdGgpO2Fzc2VydC5lcXVhbChwYXRoLmRpcm5hbWUocmF3UGF0aCkscGF0aC5qb2luKHJvb3QsIm91dHB1dC9wbGF5d3JpZ2h0IikpOwphc3NlcnQubWF0Y2gocGF0aC5iYXNlbmFtZShyYXdQYXRoKSwvXjIwMjYtMTAtMTRUWzAtOTouVFotXSstcGFja2V0LWNhY2hlLW1lZGlhLWF4SjhWMC1kaXJlY3QtYXJ0d29ya1wuanNvbiQvKTsKYXNzZXJ0LmRlZXBFcXVhbChhd2FpdCByZWFkRmlsZShyYXdQYXRoKSxyYXcpO2NvbnN0IHJhd0lkZW50aXR5PWF3YWl0IGxzdGF0KHJhd1BhdGgse2JpZ2ludDp0cnVlfSk7YXNzZXJ0Lm9rKHJhd0lkZW50aXR5LmlzRmlsZSgpJiYhcmF3SWRlbnRpdHkuaXNTeW1ib2xpY0xpbmsoKSk7CmNvbnN0IG93bkZpbGU9InNjcmlwdHMvdmVyaWZ5LWpvdXJuYWxlZC1yZWFsbG9jLW1lZGlhLWV2aWRlbmNlLm1qcyIsb3duQnl0ZXM9YXdhaXQgcmVhZChvd25GaWxlKSxvdXRwdXQ9YGV2aWRlbmNlLyR7c3RhbXB9LWpvdXJuYWxlZC1yZWFsbG9jLW1lZGlhLWluZGVwZW5kZW50LXF1YWxpZmljYXRpb24uanNvbmA7CmNvbnN0IHByb29mT3V0PXtyZWNvcmRlZEF0Om5ldyBEYXRlKCkudG9JU09TdHJpbmcoKSxzdGF0dXM6ImZvdXItZ2VudWluZS1oZWFkbGVzcy1jb252ZXJzaW9ucy1hbmQtcmVjb3ZlcnktaW5kZXBlbmRlbnRseS1xdWFsaWZpZWQtbm90LWZ1bGwtYWNjZXB0YW5jZSIsCiAgcmVjZWlwdDp7cGF0aDpwcm9vZlBhdGgsc2hhMjU2OnNoYShwcm9vZkJ5dGVzKX0sc291cmNlQ291bnQ6MjQ5LHNvdXJjZUFyY2hpdmU6cHJvb2YuZ2VuZXJhdGVkQXJjaGl2ZSxyZXBvcnRBcmNoaXZlOnByb29mLnJlcG9ydC5hcmNoaXZlLAogIGFsbEV4ZWN1dGVkQ3VycmVudFBvc3RQcmVpbWFnZXNWZXJpZmllZDp0cnVlLHVuY2hhbmdlZDI1NlNvdXJjZThNaUJDYXBzOnRydWUsYW5hbHlzaXMsYWN0dWFsRGVjb2RlclNoYTI1NjpSRUFMTE9DX0RFQ09ERVJfU0hBMjU2LAogIG5hdGl2ZVNvdXJjZUVudmVsb3BlOnBhcnRzLmVudmVsb3BlLGNvbXBvc2l0ZUNvbnRyb2w6e3BhdGg6cGFydHMud2l0bmVzcy5wcm9vZi5wYXRoLHNoYTI1NjpwYXJ0cy53aXRuZXNzLnByb29mLnNoYTI1Nn0sCiAgb3V0cHV0U2hhMjU2OmNhc2VzWzBdLm91dHB1dFNoYTI1NixhbGxFaWdodEluZGVwZW5kZW50T3V0cHV0SGFzaGVzTWF0Y2g6dHJ1ZSxqb3VybmFsOntwYXRoOmpvdXJuYWxQYXRoLHNoYTI1NjpzaGEoam91cm5hbEJ5dGVzKSwuLi5qb3VybmFsfSxiaXJ0aENoZWNrcyxzYW1wbGVkUGlkQ2hlY2tzLAogIGNvbnZlcnNpb25NZW1vcnlTYW1wbGVzQXJlRGlhZ25vc3RpY05vdFByaW1hcnlBY2NlcHRhbmNlOnRydWUscHJpbWFyeUluY3JlbWVudGFsUHJpdmF0ZU1pQjpudWxsLHNwZWVkR2FpblByb3ZlbjpmYWxzZSwKICBjYXNlczpbYW5hbHlzaXMucHJldmlvdXMubm9ybWFsLC4uLmFuYWx5c2lzLnByZXZpb3VzLnJlY292ZXJ5LnJlc3VsdHMubWFwKHg9PnguYW5hbHlzaXMpLGFuYWx5c2lzLnZhbGlkYXRlZElucHV0RmFpbHVyZVJlY292ZXJ5XS5tYXAoKHgsaSk9Pih7cGhhc2U6WyJub3JtYWwiLCJ3cml0ZS1yZWNvdmVyeSIsImNhbmNlbC1yZWNvdmVyeSIsInJlYWQtcmVjb3ZlcnkiXVtpXSxlbGFwc2VkTXM6eC5lbGFwc2VkTXMsaW5wdXQ6eC5pbnB1dCxvdXRwdXRCeXRlczp4Lm91dHB1dEJ5dGVzLG9yZGluYWxTc2ltOngub3JkaW5hbFNzaW19KSksCiAgb3JpZ2luYWxXaG9sZVByZVBvc3RDdXJyZW50U2hhMjU2Om9yaWdpbmFsU2hhMjU2LG5vUHJvY2Vzc2VzS2lsbGVkOnRydWUsbm9Eb2NrZXI6dHJ1ZSxicm93c2VyTW9kZToiaGVhZGxlc3MiLGhlYWRlZENvdmVyYWdlVmVyaWZpZWQ6ZmFsc2UsCiAgZnVsbE9yaWdpbmFsQWNjZXB0YW5jZTpmYWxzZSxjb21wbGV0ZUNocm9taXVtTWVtb3J5QWNjZXB0YW5jZTpmYWxzZSxwdWJsaWNBY2NlcHRhbmNlOmZhbHNlLAogIHJlbW92ZWRSZWR1bmRhbnRSYXdKc29uOntwYXRoOnByb29mLnJlcG9ydC5wYXRoLGJ5dGVzOnJhdy5sZW5ndGgsc2hhMjU2OnNoYShyYXcpLGFyY2hpdmU6cHJvb2YucmVwb3J0LmFyY2hpdmUsbG9zc2xlc3NBcmNoaXZlVmVyaWZpZWRCZWZvcmVSZW1vdmFsOnRydWV9LAogIG93blNvdXJjZTp7cGF0aDpvd25GaWxlLHNoYTI1NjpzaGEob3duQnl0ZXMpLHByZWltYWdlOm93bkJ5dGVzLnRvU3RyaW5nKCJiYXNlNjQiKX19Owpjb25zdCByZWNoZWNrPWF3YWl0IGxzdGF0KHJhd1BhdGgse2JpZ2ludDp0cnVlfSk7YXNzZXJ0LmVxdWFsKHJlY2hlY2suZGV2LHJhd0lkZW50aXR5LmRldik7YXNzZXJ0LmVxdWFsKHJlY2hlY2suaW5vLHJhd0lkZW50aXR5Lmlubyk7YXNzZXJ0LmVxdWFsKHNoYShhd2FpdCByZWFkRmlsZShyYXdQYXRoKSksc2hhKHJhdykpOwphd2FpdCB1bmxpbmsocmF3UGF0aCk7YXdhaXQgYXNzZXJ0LnJlamVjdHMoYWNjZXNzKHJhd1BhdGgpLHtjb2RlOiJFTk9FTlQifSk7CmF3YWl0IHdyaXRlRmlsZShwYXRoLmpvaW4ocm9vdCxvdXRwdXQpLEpTT04uc3RyaW5naWZ5KHByb29mT3V0LG51bGwsMikrIlxuIix7ZmxhZzoid3gifSk7CmNvbnNvbGUubG9nKEpTT04uc3RyaW5naWZ5KHtvdXRwdXQsc291cmNlQ291bnQ6MjQ5LGFjdHVhbENhc2VzOmNhc2VzLmxlbmd0aCxhbGxFaWdodE91dHB1dEhhc2hlc01hdGNoOnRydWUsYmlydGhDaGVja3M6YmlydGhDaGVja3MubGVuZ3RoLHNhbXBsZWRDb252ZXJzaW9uUGlkc0dvbmU6c2FtcGxlZFBpZENoZWNrcy5sZW5ndGgscmVtb3ZlZFJhd0J5dGVzOnJhdy5sZW5ndGgscHJpbWFyeUluY3JlbWVudGFsUHJpdmF0ZU1pQjpudWxsfSkpOwo="
+  }
+}

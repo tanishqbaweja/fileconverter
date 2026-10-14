@@ -5,6 +5,66 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-14 — Changed decoder genuinely qualified in four short jobs; full reliability remains partial
+
+**Partially implemented**. Actual journalled09:09:29Z headless4/4 suite PASS2.9m:
+unchangedeb45bb native decoder (never export-only control), samea4 plane encoder,
+fixed32+16MiB/one262,156B reusable suspension lease, same4Mbps/q4 geometry/input.
+All eight recorded independent output hashes match prior golden;96 real MPEG2
+frames, audio/content/timeline/metadata/PNG preservation and ordinalSSIM0.983095
+>=unchanged0.98 pass. Write/cancel/read faults and same-page production recovery
+pass.249 exact executed/current/post source preimages under unchanged256/8MiB
+caps retained755,754B; native86/control121 evidence bound.
+[Qualified suite](evidence/2026-10-14T09-09-29-345Z-journaled-realloc-media.json).
+
+Owned fixture journal/current identity/ancestry and runner absence verified;
+normal hooks removed fixture, all wrapper/server/worker scratch gone. Protected
+original whole checksum exact pre/post/current, stock assets restored. Redundant
+984,007B raw JSON removed after lossless84,036B archive check.15 recorded births
+(control/launcher/test worker) absent;23 sampled conversion PIDs gone, explicitly
+NOT pre-recorded conversion birth inventory. No unrelated apps killed/headed
+coverage.32 focused regressions/scoped18-file zero-warning lint PASS.
+[Independent sources/output/cleanup](evidence/2026-10-14T09-09-29-345Z-journaled-realloc-media-independent-qualification.json).
+
+Observed job times4.053/3.696/3.955/3.312s not controlled speed proof. Short
+non-stable-baseline process-tree samples NOT250MiB acceptance; primary null.
+Original Matroska realloc failure request/lifetime/cause still unknown; full-source
+conversion0/3 accepted. Next missing: fresh full harness/new qualified observer,
+capture actual failure and correct reliability without heap/quality/IO/gate
+reductions, then complete original/three stress/cold/scaling/speed/direct-native
+destination acceptance. Existing destination uses bounded OPFS fallback, not
+direct native AVIO proof. All broader original requirements below remain in scope.
+No public promotion; original180s suite failure retained separately. Goal ACTIVE.
+
+## 2026-10-14 — Combined observer PASS; four-case watchdog/fixture cleanup corrected, qualification still partial
+
+**Partially implemented**. Actual combined headless fatal control08:50:39Z PASS:
+121 exact pre/current/post source preimages, same native86 qualification, one
+16-word realloc request/44 headers, no duplicate stack/other-slot reads; all12
+sampled births absent/owned code/profile scratch gone. No media acceptance.
+[Control](evidence/2026-10-14T08-50-39-535Z-realloc-composite-control.json).
+
+Actual genuine suite08:57:06Z FAILED inherited180s global watchdog during fourth
+case; final browser report unavailable and0 fully qualified four-case suites.
+243 executed/current/post preimages preserved. Leftover output matches golden
+bytes/SHA and independently decodes96 MPEG2 frames plus audio, NOT proof that
+all four recovery/fidelity/privacy/cleanup cases passed. Recorded server/runner
+births absent; complete browser birth inventory unavailable. Stock assets and
+protected original whole hash exact;20,696,643B owned fixture/output residue
+removed after safe terminal inspection, no unrelated apps killed.
+[Failure](evidence/2026-10-14T08-57-06-152Z-realloc-media-watchdog-failure.json).
+
+Fresh durable fixture journal and parent-finally cleanup implemented. Realpath,
+dev/inode/birth/ancestry/name caps and independent owned-runner absence guard
+prevent broad/live/unrelated deletion. Per-test60s and ALL conversion/fidelity/
+memory/IO gates unchanged; suite-only270/300s bounds account for four cases and
+hooks/validators, not speed evidence.17 focused regressions/scoped lint PASS.
+Actual journalled four-case qualification pending. Next: execute changed harness,
+validate all real outputs/recovery and finally cleanup, then changed full original
+diagnostic/reliability correction. Full original,250MiB/three repeats/cold/scaling/
+speed/direct native output and every broader requirement remain incomplete.
+Goal ACTIVE; no public promotion or unchanged full-original replay.
+
 ## 2026-10-14 — Realloc observer real headless control verified; full reliability remains partial
 
 **Partially implemented**. Actual08:18:27Z control PASS validates runtime decoder

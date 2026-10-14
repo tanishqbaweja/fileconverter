@@ -4,6 +4,91 @@ Updated 2026-10-14 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-14 — Actual new decoder FOUR genuine headless conversions/recovery PASS; full original still pending
+
+Journalled09:09:29Z suite PASS4/4 in2.9m. Actual unchangedeb45bb decoder (NOT
+export-only control), samea4ba62 plane encoder, same deterministic4,457,906B HEVC
+inputSHA6de34df2…,1920×804/96frames,4Mbps/q4. All four outputs2,245,558B SHA
+554cc84159d2e36f4fd2adb060062cf78be02d4195f7857ceefe0953065c5f27;
+all eight independently recorded hashes agree with old golden. Native full decode,
+audio packet/decoded-content/timeline, chapters/metadata/stream titles and bounded
+attached PNG preservation pass. OrdinalSSIM0.983095>=0.98; timestamp-aligned
+0.966841 remains diagnostic, not substituted acceptance. Same-page production
+replacement-worker recovery passes write failure/cancel/read failure.
+[Actual qualification](evidence/2026-10-14T09-09-29-345Z-journaled-realloc-media.json).
+
+Seven actual suspension lifecycles reserve262,156B once/one lease, alloc1/free1,
+retained0/active0 at close; fixed32+16MiB/no growth. Input max65,536B, queue/write
+max524,288B/one operation, terminal queues0; selected-destination production path
+still has its documented bounded OPFS fallback, NOT proven direct native output.
+Host physical/virtual>=2GiB and disk preflights pass. Original exact whole SHA
+verified pre/post/current; stock app/CSS/engine assets restored.
+
+249 executed/current/post/preimage sources retained755,754B/restored3,468,050B
+under unchanged256-source/8MiB media caps, including all old210 and new121 control
+sources; native86 pre/post qualification retained. Golden raw report984,007B
+losslessly retained84,036B then redundant raw JSON deleted. Parent fixture journal
+confirms exact worker ancestry/path/dev/inode/birth and runner absence; test hooks
+already removed owned fixture. All owned helper/wrapper/fixture scratch absent.
+Independent15 birth checks (12 control +2 launcher +1 test worker), plus all23
+sampled CONVERSION PIDs absent. Conversion memory samples did NOT record births;
+do not relabel these23 checks full native birth-inventory proof. No unrelated
+processes killed; headless only. [Independent join/cleanup](evidence/2026-10-14T09-09-29-345Z-journaled-realloc-media-independent-qualification.json).
+
+Observed four conversion times4.053/3.696/3.955/3.312s vs historical7bb run
+6.533/4.143/4.464/6.353s. Same input/settings/encoder, but different host/time;
+NOT fresh matched randomized benchmark, statistical speed proof or full-original
+performance. Whole-tree memory samples have explicitly non-stable short baseline:
+primaryIncrementalPrivateMiB null, no250MiB/full/public acceptance.
+
+32 focused source/native/control/media/failure/cleanup regressions PASS4.283s;
+18 new JS/test files zero-warning lint and whitespace PASS. Actual20s control/
+180s failed-suite/240s successful-suite ETA sleeps, no rapid agent polling.
+Prior180s watchdog failure remains distinct, exact frozen sources/limits retained;
+only SUITE budgeting/owned cleanup changed before passing rerun. Next: fresh
+full-original harness using this qualified core/observer to capture actual pending
+realloc request/lifetime, then fix reliability. No unchanged full retry/public
+promotion. Three full runs/250MiB/cold/scaling/speed/direct output and all broader
+original requirements remain incomplete. Goal ACTIVE.
+
+## 2026-10-14 — Combined observer qualified; genuine suite watchdog failure retained and fixture ownership corrected
+
+Actual08:50:39Z combined realloc/direct/pool/packet observer headless fatal control
+PASS on unchangedeb45bb decoder/code/data/imports/types/memory (temporary two-export
+control NEVER used for media). One16-word API request and44 free-header words;
+same bounded fatal stack/prior/native error preserved; no other-slot reads for
+realloc.121 executed/current/post preimages retained428,931B/restored1,697,745B
+under unchanged128-source/2MiB caps, native86 envelope pre/post. All12 sampled
+native births absent; an unrelated process in the terminal process snapshot is
+not relabelled an owned process or killed. Owned caller/profile/control scratch
+gone; zero media/public/primary-memory acceptance.
+[Control](evidence/2026-10-14T08-50-39-535Z-realloc-composite-control.json).
+
+Fresh genuine four-case same-input/settings qualification08:57:06Z FAILED the
+inherited180s SUITE watchdog during fourth case. Parent exit1, final browser
+report unavailable; do NOT claim four independently qualified cases.243 exact
+executed/current/post source preimages retained. Surviving fourth output2,245,558B
+SHA554cc84159d2e36f4fd2adb060062cf78be02d4195f7857ceefe0953065c5f27
+matches prior golden and independently decodes96 MPEG2 frames1920×804 plus audio;
+this one output is NOT whole-suite, fidelity or primary-memory acceptance.
+Two recorded helper births independently absent; complete browser-birth inventory
+unavailable. Stock assets restored/protected original whole SHA exact. Owned
+unique validation child joined to recipe/birth window/input bytes, then20,696,643B
+disposable fixtures/output deleted; no unrelated apps killed.
+[Failure and cleanup](evidence/2026-10-14T08-57-06-152Z-realloc-media-watchdog-failure.json).
+
+Fresh journalled derivative records dev/inode/birth/path and test-worker ancestry
+BEFORE fixture generation. Parent finally refuses reclaim while exact owned
+runner birth is live/unavailable, or directory identity/path/files mismatch.
+Same individual60s/UI/fidelity/settings/heaps/privacy/IO gates; bounded270s
+Playwright global/300s external SUITE budget accounts for four sequential cases
+plus generation/independent validation/hooks. This is infrastructure budgeting,
+NOT faster conversion or relaxed conversion acceptance. Native arity, required
+scratch prefix and exact builder-import provenance mistakes were caught/fixed
+before browser; old frozen qualified sources retained exact.17 focused tests
+PASS5.615s; scoped new-code zero-warning lint PASS. Journalled actual four-case
+run pending; no full-original retry or public promotion. Goal ACTIVE/incomplete.
+
 ## 2026-10-14 — Actual headless realloc fatal observer/control PASS; still not a conversion fix
 
 Actual08:18:27Z headless synthetic control PASS: qualifiedeb45bb decoder's
