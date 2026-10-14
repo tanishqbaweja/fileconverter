@@ -5,6 +5,15 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-14 — Fresh exact-head requalification ready
+
+**Partially implemented**. Corrected diagnostic gets a separate recursion-fix
+branch/collector/wait namespace without altering failed-head receipts. Four
+focused identity/failure regressions and scoped five-file lint PASS; actual Wasm,
+map/binding/source closure, browser diagnostic and full-source reliability remain
+unverified. No source reduction, heap/quality/gate change, publication or media.
+
+
 ## 2026-10-14 — Realloc control failed; outer-record recursion fix implemented
 
 **Partially implemented**. Actual no-Docker isolated Wasm/library run38523571937

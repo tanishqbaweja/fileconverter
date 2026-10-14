@@ -4,6 +4,16 @@ Updated 2026-10-14 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-14 — Corrected native diagnostic requalification prepared
+
+Fresh recursion-fix branch/collector/wait namespace preserves failed original
+head/receipts; only exact identity/evidence paths change. Four namespace/failure
+regressions PASS2.082s, five-file zero-warning lint/whitespace PASS. Old allocator,
+fixed heaps, library alias/content/constructor assertions, media preservation and
+all acceptance limits unchanged. Corrected native build/control is pending;
+no browser/full-original retry/public core change or media generated.
+
+
 ## 2026-10-14 — Actual realloc Wasm control exposed recursive-record bug; corrected code still unqualified
 
 Exact isolated headf366cbb/native run38523571937 terminal FAILURE06:45:24Z.
