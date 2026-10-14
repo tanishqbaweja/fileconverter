@@ -5,6 +5,35 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-15 — MVF current browser fidelity/recovery qualified; full original pending
+
+**Partially implemented**. Changed decoder2aa602...22576 passed real headless
+Chrome155.0.8059.40 fatal-hook and4/4 genuine production media/recovery cases.
+Earlier synthetic control stale-address failure retained with exact preimages
+and clean process/profile removal; corrected control qualifies actual new slots,
+not historical703 addresses. Native99/browser38 separate seals preserve135 paths.
+Four independent96-frame MPEG2 outputs all match unchanged golden hash/size,
+ordinal SSIM.983095>=.98, full decode/audio PCM/timing/metadata/artwork checks.
+Same-page recovery after write failure, cancellation and input read failure passes.
+Encoder/settings/fixed heaps/quality/I/O/backpressure unchanged. Still OPFS+bounded
+selected-destination transfer, not direct-native AVIO proof. Timings uncontrolled,
+no conversion speed gain established.
+
+Independent current/post/preimage qualification accounts for all297 source paths
+(255 legacy+42 bounded additions, no cap increase/drop). Native99 verified.
+All media/fixtures/profiles/callers/helpers cleaned, assets restored;14 birth
+identities and22 separately PID-only conversion samples absent. Whole original
+pre/post/current checksum unchanged. Compact lossless reports retained; raw
+duplicate removed only after validation. Latest10 focused tests and scoped lint
+PASS. See22:17:16 control,22:20:42 media/supplement/independent receipts in evidence.
+
+Remaining: prepare and run changed full unchanged test.mkv with all prior546
+sources/gates retained; independently validate full output, required repeated/clean
+sessions, complete-tree <=250MiB, controlled speed comparison and near10GB scaling.
+Direct-native output, broader original browser/product gates still apply. Headed
+coverage remains unverified under explicit headless-only instruction. Small case
+success is NOT full reliability, memory, speed, public promotion or goal completion.
+
 ## 2026-10-15 — MVF native candidate verified; browser qualification still required
 
 **Partially implemented**. Corrected no-Docker run38643550000 SUCCESS

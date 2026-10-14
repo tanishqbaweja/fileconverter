@@ -4,6 +4,51 @@ Updated 2026-10-15 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-15 — MVF current-binary browser controls and genuine media/recovery PASS
+
+First headless control22:15:11Z FAILED on a stale combined-harness aligned-slot
+assertion (1918848 instead of actual1918992). Combined pool guard also needed
+current1919120. Failure/preimages retained unchanged, no unchanged rerun; all11
+recorded births absent, profile/caller/export-only scratch removed. Corrected
+22:17:16Z control PASS on real installed Chrome155.0.8059.40. Runtime addresses
+realloc1919056/attempt1918992/pool1919120/gm1786904 match new compiled metadata.
+Actual synthetic fatal stack4444/4439/4442/4476/4193/4475,16 scalars/44 free
+headers, original callback once; no payload/native-at-abort calls. Export-only
+binary has exactly two added exports and is NEVER usable for media acceptance.
+Native99 and browser38 sources independently bounded128/2MiB each;135 distinct
+paths, not falsely called one <=128 closure. All pre/current/post pins verified.
+
+Actual production-browser media stamp22:20:42.730Z:4/4 cases PASS (3.3min suite),
+four independently validated 96-frame HEVC->MPEG2 conversions, same page and
+replacement production workers after write failure, cancellation and input read
+failure. Input4,457,906 bytes/SHA6de34df2...a5dcb; all8 independent output hash
+records equal554cc841...c5f27/2,245,558 bytes. Full video decode, ordinal SSIM
+.983095>=.98, AAC packet/decoded PCM/timelines/chapters/tags/PNG artwork pass.
+Timestamp-aligned .966841 remains diagnostic, not substituted as acceptance.
+Same1920x804/4Mbps/q4/32+16MiB fixed heaps/64KiB reads/one pending writer and
+512KiB fallback transfer. Seven Asyncify lifecycle samples allocate/free1/1,
+active0/retained0. OPFS staging/final copy remains disclosed, NOT direct-native
+AVIO acceptance. Timings3905.375/3742.810/3411.425/3481.405ms are uncontrolled,
+not a demonstrated speed gain. No primary complete-tree memory acceptance here.
+
+Independent qualification PASS: all255 legacy +42 supplemental =297 unique
+executed/current/post source preimages, unchanged256/8MiB and128/2MiB separate
+caps. All99 native sources retained. 14 exact birth checks absent;22 conversion
+PID samples absent separately, their birth identities were NOT recorded. All
+generated fixture/media/profile/stager/caller/helper scratch removed; six stock
+assets restored. Whole original2,958,573,265-byte test.mkv pre/post/current SHA
+31f36695...9db34 unchanged. Lossless91,974-byte report gzip verified before
+removing redundant1,027,944-byte raw JSON. No converted output retained.
+
+Evidence: `evidence/2026-10-14T22-17-16-644Z-mvf-arena-browser-control-executed-sources.json`,
+`evidence/2026-10-14T22-20-42-730Z-mvf-arena-media.json`,
+`evidence/2026-10-14T22-20-42-722Z-mvf-arena-media-supplement.json`,
+`evidence/2026-10-14T22-20-42-730Z-mvf-arena-independent-qualification.json`.
+10 focused tests PASS (10,894.0318ms), scoped zero-warning lint PASS. Headless
+coverage only; headed/manual unverified. Next changed full-original preparation
+preserving every old source/gate, then one supervised attempt; no public promotion
+or full-goal/speed/reliability/scaling acceptance claimed from these small cases.
+
 ## 2026-10-15 — Corrected MVF native build and actual lifecycle controls PASS
 
 No-Docker run38643550000/headadb0c50b54564e351c0316e6b3bfb4e935b0ddb2
