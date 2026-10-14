@@ -5,6 +5,27 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-15 — MVF bounded-placement candidate implemented, not yet runtime qualified
+
+**Partially implemented**. Six-slot, maximum 8 MiB raw arena reserved at selected
+single-thread HEVC motion-vector pool construction. For the measured payload,
+reserved backing is 6,981,216 bytes. No live references/DPB settings/object sizes,
+idle-object admission, quality/bitrate/resolution, encoder or fixed heap changes.
+Overflow beyond six live slots and oversized/nonselected pools delegate upstream.
+Raw unused backing is explicitly retained capacity, not a claim of only one
+physical payload. Current fatal pool name is still not certified; placement is
+a bounded source-guided hypothesis, not proof of the underlying failure cause.
+
+Pinned upstream reconstruction and byte-exact reversible source qualification
+passed; `evidence/mvf-arena-source-2026-10-15.json` and compact lossless source
+archive retained. 10 focused tests and nine-file zero-warning lint passed.
+Actual source-linked Wasm lifecycle smoke is implemented but NOT yet executed.
+Remaining: changed no-Docker native build and lifecycle controls, freshly derived
+binary ABI, actual browser quality/recovery controls, full unchanged test.mkv
+completion/independent validation/three-session repeats/complete-tree <=250 MiB,
+controlled speed comparison and original scaling/direct-I/O/browser/product gates.
+No unchanged full retry, no public promotion, no full-goal completion claim.
+
 ## 2026-10-15 — Changed full original FAILED; current allocation bottleneck differs
 
 **Partially implemented**. Actual703 decoder full attempt fails after34,334

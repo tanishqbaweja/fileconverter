@@ -4,6 +4,34 @@ Updated 2026-10-15 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-15 — Bounded HEVC MVF arena implemented; source controls PASS, runtime pending
+
+Private candidate reserves six aligned raw slots at selected single-thread HEVC
+tab_mvf pool construction, with an 8 MiB cap. Measured 1,163,520-byte objects
+require 6,981,216 reserved bytes, including six 16-byte headers. Raw unused
+capacity is NOT relabelled an idle object. Original one-idle-object admission,
+live aliases, object sizes, reference counts, decoder/encoder settings, and fixed
+32/16 MiB heaps remain unchanged. A seventh simultaneous live entry uses the
+original allocator; oversized and unselected pools remain upstream. Arena
+ownership ends only after final live unref, including uninit with live aliases.
+This is a placement hypothesis, not certified identification of the latest
+failing pool and not a proven allocation, quality, speed, or full-file fix.
+
+Source-only qualification reconstructed the actual executed refstruct parent
+byte-for-byte from pinned upstream. Refstruct and HEVC edits reverse exactly;
+three mutation-negative controls reject changes. Evidence:
+`evidence/mvf-arena-source-2026-10-15.json`; lossless source archive 88,710 bytes
+in `outputs/reports/mvf-arena-source-2026-10-15.json.gz`. No user video read,
+browser conversion, fixture, converted output or scratch media created.
+10 focused tests PASS (10,470.9747 ms), nine-file zero-warning lint PASS.
+Actual Wasm lifecycle smoke implemented, NOT yet executed: six live slots,
+overflow, aliases, two constructor failures, four init-error flag combinations,
+zero-every-time, deferred close, unselected/oversize behavior, allocation balance,
+and 200,000 sequential acquisitions. All old native build controls retained.
+Next: one changed no-Docker hosted native build, then current-binary ABI and
+browser fidelity/failure/cancel qualification before a changed full-original run.
+Public engines/selector unchanged; conversion speed and full goal incomplete.
+
 ## 2026-10-15 — Actual changed full original still FAILS; new HEVC pool request measured
 
 Hidden supervisor19:02:53Z launched ONE changed703 decoder run, caller19:03:00Z,

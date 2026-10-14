@@ -1,0 +1,51 @@
+{
+  "recordedAt": "2026-10-14T21:35:34.814Z",
+  "scope": "private-mvf-arena-source-only-not-runtime-acceptance",
+  "sourcePins": {
+    "scripts/qualify-mvf-arena-source.mjs": "1f70bf60cf10b65d0f47f04799fcf1dd2bfec799063b2559ead91285bae41c5e",
+    "media/ffmpeg/mpeg2-mvf-arena-source.mjs": "caa3a3052a0060594bd49117a755f2e1f0e7951e786ea6ca158f2c22c1e9175a",
+    "media/ffmpeg/mpeg2-mvf-arena-smoke.c": "f89cb2bcaa4c3fa4e1b34ef394cef8eb3ef4a396b99e967ebab3f9816a9a7451",
+    "media/ffmpeg/mpeg2-mvf-arena-recipe.mjs": "3b24dc3de0c812a2d300167949088060b5313a164bfa8a1c04dec3f30547ecc6",
+    "media/ffmpeg/mpeg2-mvf-arena-builder-recipe.mjs": "9a1f4144f55964889edbea6b76d8371572e48dfefc4f80fbc6eabbdd4897bb9a",
+    "media/ffmpeg/build-mpeg2-mvf-arena.mjs": "c6a7037faba5b38141e124ba6c9f54fab7cdfadcbf4f209f507c03b29f303662",
+    "media/ffmpeg/mpeg2-single-idle-source.mjs": "0a84871b79a15f6f68aacfb1df2956874e0ba8c0d2f452ba63761f02dbea2244",
+    "media/ffmpeg/mpeg2-late-refstruct-source.mjs": "575c8012fdce04cb0285466262324817974d3b9cf764a5825dacbc6517ccfdf7",
+    "media/ffmpeg/mpeg2-hevc-auxiliary-policy.mjs": "0533c01b91f2d7f669b413411d051082d36bcfb64f6249edc9389aee4343c29d"
+  },
+  "postSourcePins": {
+    "scripts/qualify-mvf-arena-source.mjs": "1f70bf60cf10b65d0f47f04799fcf1dd2bfec799063b2559ead91285bae41c5e",
+    "media/ffmpeg/mpeg2-mvf-arena-source.mjs": "caa3a3052a0060594bd49117a755f2e1f0e7951e786ea6ca158f2c22c1e9175a",
+    "media/ffmpeg/mpeg2-mvf-arena-smoke.c": "f89cb2bcaa4c3fa4e1b34ef394cef8eb3ef4a396b99e967ebab3f9816a9a7451",
+    "media/ffmpeg/mpeg2-mvf-arena-recipe.mjs": "3b24dc3de0c812a2d300167949088060b5313a164bfa8a1c04dec3f30547ecc6",
+    "media/ffmpeg/mpeg2-mvf-arena-builder-recipe.mjs": "9a1f4144f55964889edbea6b76d8371572e48dfefc4f80fbc6eabbdd4897bb9a",
+    "media/ffmpeg/build-mpeg2-mvf-arena.mjs": "c6a7037faba5b38141e124ba6c9f54fab7cdfadcbf4f209f507c03b29f303662",
+    "media/ffmpeg/mpeg2-single-idle-source.mjs": "0a84871b79a15f6f68aacfb1df2956874e0ba8c0d2f452ba63761f02dbea2244",
+    "media/ffmpeg/mpeg2-late-refstruct-source.mjs": "575c8012fdce04cb0285466262324817974d3b9cf764a5825dacbc6517ccfdf7",
+    "media/ffmpeg/mpeg2-hevc-auxiliary-policy.mjs": "0533c01b91f2d7f669b413411d051082d36bcfb64f6249edc9389aee4343c29d"
+  },
+  "archive": {
+    "path": "outputs/reports/mvf-arena-source-2026-10-15.json.gz",
+    "bytes": 88710,
+    "sha256": "9b43ca95db027a4202ad3eb934835646168f77e37c02ac7d8bd3bfe580bedebf",
+    "restoredBytes": 446520,
+    "restoredSha256": "814c1f0ab55913ad1f21307432f8abb60a1194659651a962e29cd677efde04e8"
+  },
+  "actualParentByteExact": true,
+  "parentRefstructSha256": "774749111621629ff38291ea1d197bf566b628a88eb4ed3fb3ef484e8599da5e",
+  "candidateRefstructSha256": "63afbc9523bd362388abe0dbad6202229985bd58f5606882b883e0da80cea202",
+  "candidateHevcSha256": "57206d9004a90785a8209dc6b0ed2418088d99ebd4d19b0b19e5f543404efade",
+  "exactReversals": true,
+  "negativeMutationControls": 3,
+  "maximumRawSlots": 6,
+  "maximumReservedBytes": 8388608,
+  "selectedMeasuredReservedBytes": 6981216,
+  "codecSettingsChanged": false,
+  "heapLimitsChanged": false,
+  "liveReferencesChanged": false,
+  "idleObjectAdmissionChanged": false,
+  "nativeLifecycleExecuted": false,
+  "browserConversions": 0,
+  "originalVideoRead": false,
+  "speedGainProven": false,
+  "publicAcceptance": false
+}
