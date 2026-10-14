@@ -1,9 +1,44 @@
 # Remaining work audit
 
-Updated 2026-10-14 (Asia/Calcutta). This is the living requirement audit for the original
+Updated 2026-10-15 (Asia/Calcutta). This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
+
+## 2026-10-14 — Matroska reuse now passes genuine production-browser prerequisites
+
+**Partially implemented**. Actual current Chrome155.0.8059.40 qualifies the
+70375632…6fe25 decoder's runtime constructor/scalar/allocator fatal observation
+using actual typed indices, with all11 recorded control process births cleaned.
+Four genuine production-browser HEVC→MPEG2 MP4 transcodes/recoveries passed,
+including write failure, cancellation, and read failure on replacement workers
+without page reload. All eight independent output hash records match the exact
+prior golden,2,245,558 bytes/96 frames/1920×804/SSIM.983095≥.98. Same4Mbps/q4,
+plane encoder,32/16 MiB heaps, one262,156-byte Asyncify lease, bounded reads,
+one outstanding write, queue limits, metadata/audio/clock/artwork fidelity and
+cleanup gates remain unchanged. The small full-resolution fixture qualifies
+native fidelity; it does NOT substitute for the protected full-original test.
+
+Browser pins before/after/current and four runtime versions match. Native93 +
+browser35 seals preserve126 control files; media retains all255 old sources plus
+18 explicit supplemental files under original per-seal budgets,273 distinct
+preimages/current/post hashes, not an invented single≤256 source count.
+Independent original whole pre/post/current checksum matches; all owned media/
+fixture/profile/helper data gone, stock assets restored,14 exact births absent,
+23 sampled conversion PIDs gone with missing birth fields explicitly disclosed.
+Verified raw report duplicate removed after lossless archive verification.
+19 focused tests and eight-file scoped lint PASS; a stale verifier anchor failed
+before deletion and was corrected without a converter replay. One five-minute
+ETA sleep used instead of repeated polling. Complete-Chromium incremental
+private memory remains null for short acceptance, performance gain unproven.
+Output is still OPFS staging/final copy, not proven direct-native selected output.
+
+Required next: ONE full protected-original run with this genuinely changed,
+browser-qualified decoder and all original quality/memory/three-run/cold/recovery
+gates. Historical full-original0/3 remains FAILED until new complete outputs
+are independently validated. Progressive near10GB scaling, browser coverage,
+direct-native output, and every other original requirement remain in scope.
+See `evidence/2026-10-14T18-18-41-950Z-ebml-reuse-independent-qualification.json`.
 
 ## 2026-10-14 — Matroska reuse native candidate now genuinely compiled and controlled
 

@@ -1,0 +1,41 @@
+{
+  "status": "registered-fixture-already-removed",
+  "registered": true,
+  "record": {
+    "version": 1,
+    "recordedAt": "2026-10-14T18:19:01.210Z",
+    "directory": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-artwork-validation-Nbs8S0",
+    "dev": "1887170595",
+    "ino": "3940649678063442",
+    "birthtimeMs": "1792001940010",
+    "registrationIdentity": {
+      "pid": 31884,
+      "parentPid": 8232,
+      "createdAt": "2026-10-14T18:18:59.3608060Z"
+    }
+  },
+  "runnerAbsence": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 8232,
+      "parentPid": 772,
+      "createdAt": "2026-10-14T18:18:58.4982180Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-10-14T18:21:35.527Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 1004,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "removedBytes": 0,
+  "ownedDirectoryAbsent": true,
+  "noProcessesKilled": true
+}

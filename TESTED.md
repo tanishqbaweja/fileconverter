@@ -1,8 +1,55 @@
 # Tested conversion ledger
 
-Updated 2026-10-14 (Asia/Calcutta) from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
+Updated 2026-10-15 (Asia/Calcutta) from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
+
+## 2026-10-14 — Actual Chrome155 Matroska-reuse fatal binding and four genuine goldens PASS
+
+New70375632…6fe25 decoder qualified in actual headless Chrome155.0.8059.40,
+with executable/DLL identity/hash/version pins equal before/after/current and
+four runtime version checks. Actual18:11:48Z export-only fatal control passed;
+synthetic derivative NEVER used for media. Exact current stack indices
+4443/4438/4441/4475/4193/4474, same native slot1918912,16 scalar words and44 free
+header words, prior fatal preserved, all11 sampled native birth identities absent.
+Separate bounded native93/browser35 seals retain126 distinct current executed
+preimages. Native/direct/pool/packet/realloc mappings are verified from actual
+new typed binary metadata, not old index arithmetic or fake Module fields.
+
+Actual18:18:41Z production browser suite PASS4/4 in2.6 minutes: normal HEVC→MPEG2
+MP4 plus same-page production replacement-worker recovery after write failure,
+cancellation, and read failure. Same4,457,906-byte synthetic source SHA6de34df2…a5dcb,
+1920×804/96 frames/4Mbps/q4, unchanged A4 plane encoder and fixed32+16 MiB heaps.
+All eight independently validated output-hash records equal prior golden
+554cc84159d2e36f4fd2adb060062cf78be02d4195f7857ceefe0953065c5f27,
+each2,245,558 bytes; four full native decodes, ordinal SSIM.983095≥.98, exact
+copied/decoded audio, presentation clocks, metadata, chapters, and PNG artwork
+passed. Timestamp-aligned.966841 remains diagnostic only, not the fidelity gate.
+Seven Asyncify samples allocate/free exactly one262,156-byte lease, terminal
+active/retained zero. Same65,536-byte reads/524,288-byte queue cap/one pending
+operation; terminal pending/queue zero. Output remains bounded OPFS staging plus
+final transfer, NOT direct native AVIO acceptance. Actual short elapsed values
+3333.560/3211.175/3380.815/3513.795ms are not a controlled speed gain.
+
+All old255 source preimages retained under256/8MiB; bounded18-file supplemental
+seal under128/2MiB preserves every new native/runtime/control source and binary
+preimage,273 distinct files total. No source dropped or old per-seal cap raised;
+do not mislabel273 as a single≤256 closure. Source archive816,705 bytes;
+supplement528,590 bytes. The independent verifier first rejected a stale witness
+declaration anchor BEFORE any deletion, then corrected its exact literal binding
+and passed all unchanged validation gates without replaying conversion.
+
+Protected original whole pre/post/current SHA31f36695…db34 and2,958,573,265-byte
+size stable. Fixture/conversion/profile/stager/helper scratch removed and stock
+assets/app/CSS restored. Independent14 exact birth-identity checks absent;
+23 conversion-sample PID checks separately disclose missing birth recording.
+Losslessly recoverable1,012,381-byte raw duplicate deleted only after exact
+90,129-byte gzip archive/hash/identity verification. One300.023-second ETA sleep,
+no rapid browser polling.19 focused tests PASS1229.0877ms/eight-file scoped
+zero-warning lint PASS. No Docker/headed coverage/public promotion/full-original
+success/complete-tree250MiB/speed acceptance. Next ONE changed full original,
+with the newly qualified703 decoder and unchanged all original stress gates.
+See `evidence/2026-10-14T18-18-41-950Z-ebml-reuse-independent-qualification.json`.
 
 ## 2026-10-14 — Actual no-Docker Matroska reuse build/lifecycle PASS, browser gates pending
 
