@@ -4,6 +4,63 @@ Updated 2026-10-15 (Asia/Calcutta) from the capability registry, retained succes
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
 
+## 2026-10-15 — MVF full original TERMINAL FAILED in encoded-packet allocation
+
+This supersedes22:53:16 live observation/launch receipts. Hidden supervisor
+22:43:40Z/caller22:43:44Z/driver22:45:10Z reached genuine conversion-1 after
+blank stabilization. Exact five process births confirmed live before a3h ETA
+sleep (not model polling); failure occurred automatically23:12:33Z and cleanup
+finished23:13:10Z. All processes stopped; no current job/unchanged retry. Caller
+and supervisor exit0 mean command completion only; actual converter driver exit1.
+
+ONE full untouched original attempt:34,338 frames/34,337 completed packet
+transfers,1,284,333.010ms/21.41min active;0/3 validated complete runs (two not
+attempted). 625,007,256-byte partial removed finally. Native abort now follows
+mpeg2_packets4473->av_malloc4315->aligned wrapper4474->malloc4439->sbrk4444,
+not the earlier HEVC pool request. Four more frames than previous34,334 does
+NOT establish full reliability or speed improvement. Raw split failed=false is
+bridge protocol state, not a successful converter result.
+
+Actual64B wrapper attempt sequence1010958/phase4 upstream-alignment-pending:
+212,670 requested bytes/alignment16. This is wrapper request, NOT a certified
+individual failed malloc/internal chunk size; those remain null. Requested heap
+extent33,660,928 is also NOT the allocation request. No pool/realloc slot read
+for this qualified packet path. Complete372-header inventory:65 free chunks,
+556,208 total bytes,largest78,656,top1,840,unclaimed tail106,496. Optimistic
+top+tail108,336 also cannot fit212,670. Immediate contiguous shortage supported;
+underlying lifetime/fragmentation cause, actual packet-cache idle/live state and
+raw arena use at that instant remain unmeasured. Do NOT forcibly free live refs.
+
+Failed-window complete-tree formula(466661376-238411776)/1048576=217.67578125MiB
+is NOT acceptance. All14,936 native samples/six phases retained, no unavailable,
+no clock drops/rewrites. Active-phase11,832/run-native snapshot11,839/budget
+capture11,840 are DISTINCT cutoffs. Initial analysis mixed the latter two;
+exact failed source preimage/one-assertion correction retained before deletion,
+raw converter evidence unchanged and no conversion rerun. Finally-cleanup native
+phase not captured. Deferred262,156-byte native Asyncify lease is not called a
+native free; worker/process termination releases the heap. Fixed32/16MiB heaps,
+4Mbps/q4/original dimensions/64KiB I/O/one outstanding write unchanged.
+
+Independent terminal audit: all588 pre/current/post source preimages verified,
+all27 exact owned birth identities absent, wrappers/candidate/profile/helper
+scratch gone, stock assets restored, whole original pre/post/current size/SHA
+unchanged. Raw8,701,231-byte report retained losslessly as328,159-byte gzip.
+29,564-byte checkpoint verified/recovered as4,676-byte gzip before duplicate raw
+deletion. No converted outputs remain. Actual source archive348,620 bytes, all
+prior546 paths preserved within508+80/128/2MiB/16-external limits.
+
+Evidence: `evidence/2026-10-14T22-43-44-516Z-mvf-arena-original-full-terminal.json`,
+`evidence/2026-10-14T22-43-44-516Z-mvf-arena-full-terminal-analysis.json`,
+`evidence/mvf-terminal-sample-cutoff-correction-2026-10-15.json`.
+11 focused tests PASS(2,858.4092ms), five-file zero-warning lint PASS.
+Executed-source audit confirms one largest final-unref idle packet lease and
+1s native interleave delta; earlier packet payload peak314,024 exceeds current
+wrapper request but does NOT prove current idle capacity. See
+`evidence/mvf-packet-ownership-source-audit-2026-10-15.json`. Next bounded cache
+ownership and/or actual pinned-libavformat queue-release controls before another
+change. Interleaver draining NOT implemented/proven. No heap/quality/live-ref
+relaxation/public promotion/full-goal completion; broader original scope remains.
+
 ## 2026-10-15 — Changed full-original preparation PASS; no conversion started yet
 
 Actual22:37:12.514Z preparation:0 executions, full original pre/post read-only

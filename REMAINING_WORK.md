@@ -5,6 +5,36 @@ privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,
 not the entire product specification.
 
+## 2026-10-15 — Changed MVF full original FAILED; packet ownership is next bottleneck
+
+**Partially implemented**. One real original attempt TERMINAL driverexit1 at
+23:12:33Z, supervisor/caller finished23:13:10Z. Earlier22:53 live observation is
+historical, not current liveness.34,338 frames/34,337 completed packet transfers,
+21.41min active,0/3 accepted runs;625,007,256-byte partial removed. Current
+typed stack is encoded-packet path->av_malloc->aligned wrapper->malloc->sbrk,
+not old HEVC pool allocation.212,670 is captured wrapper request only; precise
+failed internal allocation/chunk remains null.65 free chunks total556,208,
+largest78,656, optimistic top+tail108,336: contiguous shortage for wrapper size.
+Underlying fragmentation lifetime, actual cache idle/live ownership and arena
+use at the failure are unmeasured. No forced live-reference release or retry.
+
+Failed-window217.67578125MiB is not primary acceptance. Native14,936 samples,
+six phases/zero unavailable/drops/rewrites;11,832 phase/11,839 run/11,840 budget
+capture cutoffs explicitly distinguished. Analysis-only assertion correction
+preserves failed preimage/raw evidence. All588 source preimages/current/post
+verified; all27 owned births absent, scratch/profile/partial gone and stock
+assets restored. Whole original pre/post/current checksum unchanged. Lossless
+compact raw/checkpoint reports retained. Eleven focused tests/scoped lint PASS.
+See22:43:44.516 terminal/analysis and packet-ownership source-audit receipts.
+
+Remaining: measure bounded current packet-cache/mux ownership and test actual
+pinned-libavformat queue release before choosing the next change. Source confirms
+largest-final-unref idle policy and1s interleaving; it does not prove failure-time
+occupancy. Interleave-drain optimization is not implemented/qualified. Full
+output correctness/repeats/<=250MiB, controlled speed/scaling/direct-native I/O,
+broader browser/product/CI/original requirements remain open. Candidate private;
+do not label commandexit0, small outputs or four extra frames as project success.
+
 ## 2026-10-15 — MVF full-original harness staged and verified; execution pending
 
 **Partially implemented**. Actual22:37:12 preparation PASS with zero conversion
