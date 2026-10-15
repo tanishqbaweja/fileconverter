@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+## 2026-10-15 -17:32 full launch preflight FAIL;0 conversions, cleanup PASS
+
+Fresh changed actual preparation17:44:45Z PASS714 source paths/126 additive;
+no conversion execution/failure/cleanup errors. Opt-in query adapter recorded,
+original full SHA unchanged, normal assets restored and owned wrappers absent.
+`evidence/2026-10-15T17-44-45-831Z-composited-handoff-original-full-preparation.json`.
+
+Five-second read-only Chrome ProductVersion shell query failed before driver/
+browser execution. Exact supervisor9420 and child25356 births now absent. Original
+full SHA unchanged, normal assets restored, wrapper/candidate removed, no cleanup
+errors. Terminal `evidence/2026-10-15T17-32-47-545Z-composited-handoff-original-full-terminal.json`.
+No converted output and no memory/fidelity acceptance from this stopped launch.
+
+Changed test-only adapter retries only exact read-only version/single-PID birth
+queries:3 attempts/15s each. No codec/monitor/conversion timeout changes or fake
+query results. Actual unchanged Chrome155.0.8059.40/launcher+library hashes PASS;
+ordinary subprocess semantics and bounded failure tests PASS.3 tests15,322.6237ms,
+four-file zero-warning lint PASS.714-source closure retains all708 previous paths,
+126/128 additive paths and original2MiB cap. Actual new preparation pending.
+
 ## 2026-10-15 - Changed full session launched; not yet conversion evidence
 
 Durable headless supervisor17:32:28Z launched one changed three-repeat session.

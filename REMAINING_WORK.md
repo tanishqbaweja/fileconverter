@@ -1,5 +1,32 @@
 # Remaining work audit
 
+## 2026-10-15 - Full launch stopped at version preflight; bounded query fix tested
+
+Fresh actual preparation PASS17:44:45Z:
+`evidence/2026-10-15T17-44-45-831Z-composited-handoff-original-full-preparation.json`.
+714 sources/126 additive files, original caps unchanged, opt-in query module
+recorded in NODE_OPTIONS, no conversion or cleanup errors, protected SHA unchanged,
+normal assets restored and candidate/wrapper absent. Changed launch is ready.
+
+**Partially implemented**. The17:32 supervisor/child are terminal and independently
+absent. Receipt `evidence/2026-10-15T17-32-47-545Z-composited-handoff-original-full-terminal.json`
+records0 driver/conversion executions: the read-only Chrome ProductVersion
+PowerShell query hit its five-second timeout during preflight. No browser
+conversion began. Cleanup errors empty, original whole-file SHA unchanged,
+candidate/wrapper removed, normal production restored. Do not call this a media
+failure or repeat the unchanged launch harness.
+
+An explicit Node test-descendant adapter now retries ONLY the exact read-only
+Chrome-version command and exact single-PID birth-identity command, at most3
+attempts/15seconds each. Failed queries never become a fabricated version/hash,
+PID identity or zero. Other subprocesses retain their original promise/callback
+behavior, command lines, timeouts and options. Native codec, full-tree monitor,
+250MiB, five-minute lower blank and six-hour conversion deadlines are untouched.
+Version155.0.8059.40 and both exact browser binary hashes independently rechecked.
+Three focused tests PASS15,322.6237ms; four-file zero-warning lint PASS. New
+source closure714 paths retains all708 preceding paths,126<=128 additive files
+within unchanged2MiB cap. Fresh actual preparation is next; full repeats still0/3.
+
 ## 2026-10-15 - Changed full-original session supervisor launched; acceptance pending
 
 **Partially implemented / running**. One durable headless three-repeat session
