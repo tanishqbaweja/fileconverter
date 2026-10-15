@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+## 2026-10-16 - Changed full supervisor started; acceptance pending
+
+One changed session22:26:52Z, exact handle
+`evidence/2026-10-15T22-26-52-632Z-threaded-validation-supervisor-full.json`.
+Owned supervisor39084/birth22:26:53.4702980Z; child33844/birth22:26:56.8811990Z.
+Setup/baseline/encoding not yet confirmed.9min startup timer then one exact-handle
+check; same original/settings and all acceptance gates.0/3 accepted full repeats.
+Tested harness and preparation pushedb481efd.
+
 ## 2026-10-16 - Threaded full preparation PASS;8 focused regressions PASS
 
 Actual `evidence/2026-10-15T22-21-04-092Z-threaded-validation-original-full-preparation.json`:

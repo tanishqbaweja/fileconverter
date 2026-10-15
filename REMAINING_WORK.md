@@ -1,5 +1,16 @@
 # Remaining work audit
 
+## 2026-10-16 - Changed threaded-validator full supervisor launched
+
+**Partially implemented / running**. One changed three-repeat session launched
+22:26:52Z after successful726-source preparation and pushed harnessb481efd.
+Exact handle `evidence/2026-10-15T22-26-52-632Z-threaded-validation-supervisor-full.json`.
+Supervisor39084/birth22:26:53.4702980Z; child33844/parent39084/birth22:26:56.8811990Z.
+This is supervisor readiness, not browser/encoding/completion evidence. Allow9min
+for setup/lower5min blank baseline, then recheck these exact live births once.
+Prior same-input encode/save~3h01m; independent validation follows. No auto-retry,
+no baseline/settings/250MiB/fidelity/three-repeat changes;0/3 accepted full repeats.
+
 ## 2026-10-16 - Threaded-validator full preparation PASS726 sources
 
 **Partially implemented**. Actual preparation PASS:
