@@ -1,5 +1,74 @@
 # Remaining work audit
 
+## 2026-10-15 - Duration correction passes exact real-media fidelity; full-original still open
+
+Final focused regression:49/49 passed in18,191.0875ms;23 new JavaScript files
+passed zero-warning ESLint. Fresh hosted-artifact listing confirms zero, and
+`git diff --check` passed. Negative tests retain the genuine old timing failure
+and reject tampered payload, DTS or stream-duration metadata.
+
+**Partially implemented**. Actual Chrome155 production run10:41:15Z completed
+four96-frame HEVC->MPEG2 conversions with same-page recovery after write failure,
+cancellation and input-read failure. The independent comparison against the
+retained real baseline passes in all four cases: all475 packet payload hashes,
+sizes, PTS/DTS, durations, flags and side data are exact, excluding file positions
+only. Complete decoded video/audio, artwork, all stream metadata, chapters and
+user tags match. Video duration returns to64000 ticks/4s and average rate24/1.
+The rejected b65 output still fails this exact comparison; no threshold changed.
+
+Current output2,245,626bytes/SHA8b0d4370...9be35c is repeatable in all eight
+independent records. The top-level inventory locates the68-byte growth in moof
+headers; ftyp/moov/aggregate mdat sizes match. Other container bytes are not
+claimed byte-identical. Independent
+metadata comparison excludes only physical filename, whole-file size and its
+derived container bitrate, never a stream's timing or bitrate. This conditional
+semantic/packet qualification does not relabel the old file hash as identical.
+
+All338 media and168 control/native source closures are hash/preimage/current/
+post verified under unchanged separate caps.14 recorded owned births and24
+PID-only conversion samples were independently checked gone (not conflated).
+Original whole-file pre/post/current SHA remains31f366...9db34. All converted
+media/profiles/fixtures/scratch gone; stock engines/UI restored. Redundant raw
+JSON1,896,656bytes was deleted after lossless gzip verification; hosted duplicate
+removed after all20 local tool hashes were verified. The small9,744,357-byte
+candidate tool bundle is retained for full-original qualification only.
+
+This completes the small-fixture fidelity/recovery gate, not the full project.
+Primary250MiB/private-tree memory, full-original completion, three full repeats,
+scaling and controlled speed acceptance remain unproven. Next: adapt the full
+harness to the new126-source decoder and338-source media seal, preserving every
+previously executed588 full-harness path in independently bounded source layers;
+do not drop sources or raise existing caps. Then perform a changed full-original
+stress attempt with the same memory/quality/I/O/cleanup gates. OPFS staging plus
+bounded selected-destination copy remains a disclosed fallback, not native-direct
+AVIO acceptance. Evidence:
+`evidence/2026-10-15T10-41-15-440Z-duration-drain-independent-qualification.json`.
+
+## 2026-10-15 - Actual duration correction native and diagnostic checks passed
+
+**Partially implemented**. No-Docker run38678806473/head d3d3fe2 passed all
+parent controls plus the actual pinned-libavutil Wasm duration test: 21 rational
+clocks, 126,000 independent-integer-oracle checks, 15 invalid cases, unchanged
+packet bytes/PTS/DTS, exact last durations666/667 and96-frame total64,000.
+The actual decoder is e15ab14e...de4f7e; encoder8b2fd64d...f4242 and fixed32MiB
+decoder/shared/no-growth are unchanged. Native126-source executed-Git/current/
+post/preimage checks passed under128/2MiB, retaining all116 parent files.
+
+Fresh headless Chrome155 diagnostic control at10:37:24Z passed on this binary.
+Original callback ran once, native code/data/imports/types/memory were unchanged
+in the export-only diagnostic copy, and all11 observed owned births/profile/
+caller/synthetic scratch were cleaned. Separate126-native/44-browser seals cover
+168 distinct paths without changing either cap. This proves diagnostics, not
+media fidelity, full-original reliability, primary memory or speed acceptance.
+
+The new production media harness now composes the exact duration/queue kernel
+and two verified helper routes, retaining unchanged bridge/cache/encoder/quality/
+I/O/heap and all four adverse/recovery cases. It adds bounded independent packet,
+full decoded-video and MP4 box proofs to compare with the already retained real
+baseline; no additional baseline rerun is needed. Three new composition checks
+passed4,012.5289ms and five-file zero-warning lint passed. Actual media comparison
+is NEXT; the rejected b65 candidate and all its evidence remain unchanged.
+
 ## 2026-10-15 - Duration-boundary drain correction prepared
 
 **Partially implemented**. A new additive candidate keeps the rejected drain

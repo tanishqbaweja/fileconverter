@@ -1,5 +1,66 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Corrected real browser media is packet/timing/content exact: PASS
+
+Final focused regression49/49 PASS18,191.0875ms, including genuine prior-output
+negative control and payload/DTS/stream-duration mutation rejection.23 new
+JavaScript files passed zero-warning ESLint; `git diff --check` PASS; fresh
+hosted-artifact listing confirms zero retained artifacts.
+
+Actual headless Chrome155.0.8059.40 suite10:41:15Z:4/4 production conversions/
+recovery cases passed in3.5min, same4,457,906-byte source6de34d...a5dcb,
+1920x804/96frames/4Mbps/q4/fixed32+16MiB. Existing quality and all failure/
+recovery validators remain unchanged; ordinalSSIM.983095>=.98. Additional
+independent packet/video/box proofs now pass against the retained baseline in
+all four runs:475 packet payloads/sizes and every non-file-position field exact,
+including PTS/DTS/duration/side data. Decoded video/audio, copied-audio timing,
+artwork, full stream/chapter/user metadata exact. Video64000ticks/4s/24fps.
+The real previously rejected b65 output still fails the exact timing check.
+
+All eight output records repeat SHA8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c,
+2,245,626bytes. Old container golden remains554cc841...c5f27/2,245,558bytes;
+the top-level inventory locates68 extra bytes in moof and placement changes.
+Other container bytes are not claimed identical. No timing tolerance relaxation:
+metadata normalization removes
+only format filename/size/derived whole-container bitrate, not any stream field.
+
+Independent126-native/44-control/255-legacy+83-supplement source joins cover338
+media paths and168 control/native paths with every pre/current/post preimage
+verified within unchanged caps.14 actual owned births absent;24 conversion PIDs
+absent/PID-only, not birth-verified. Protected original pre/post/current whole
+SHA unchanged. Converted media, fixtures, profiles and scratch removed; six
+stock assets/UI restored. Lossless report verification preceded removal of
+1,896,656 redundant raw JSON bytes. Hosted duplicate deleted only after20 local
+tool hashes verified; zero remain.9,744,357-byte candidate cache retained for the
+next full-original test. No controlled speedup, primary memory/full-original/
+three-run/scaling/headed/public acceptance is claimed. See
+`evidence/2026-10-15T10-41-15-440Z-duration-drain-independent-qualification.json`.
+
+## 2026-10-15 - Actual Wasm duration unit and current headless diagnostics PASS
+
+No-Docker build38678806473/head d3d3fe2 passed all old controls and actual Wasm32
+pinned-libavutil rational checks:21 clocks/126,000 independent-integer-oracle
+iterations,15 invalid cases, read-only packet bytes and PTS/DTS, durations666/667,
+total64,000 for96 frames and unchanged source-offset last DTS64661. This is a
+library unit, not native media conversion. Fresh126-source provenance/current/
+post/preimage and actual typed ABI checks passed under unchanged128/2MiB caps.
+Decoder e15ab14e...de4f7e remains fixed32MiB/shared/no-growth; separate encoder
+8b2fd64d...f4242 remains exact. Retained tool bundle20files/9,744,357bytes is
+needed for the next real-browser qualification.
+
+Actual Chrome155.0.8059.40 headless control10:37:24Z PASS; export-only synthetic
+copy preserves all native code/data/types/imports/memory, original callback once,
+six native abort frames joined to actual binary, bounded capture. All11 recorded
+owned births absent, worker/profile/caller/synthetic data removed. Native126 and
+browser44 separate seals cover168 distinct files. No media/memory/speed/heading
+or full-original acceptance follows from this diagnostic.
+
+New duration-aware production composition preserves every old validator and
+recovery case and adds the already tested bounded per-packet/video/box validator.
+Three new composition checks PASS4,012.5289ms, five-file zero-warning lint PASS.
+Next genuine candidate run can compare against retained baseline packet proofs,
+without replaying the baseline or modifying the rejected b65 record/golden.
+
 ## 2026-10-15 - New duration-boundary correction: source checks PASS
 
 Additive candidate derives duration from adjacent FFmpeg-rescaled CFR boundaries,
