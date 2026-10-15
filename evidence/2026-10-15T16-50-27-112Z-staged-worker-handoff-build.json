@@ -1,0 +1,142 @@
+{
+  "recordedAt": "2026-10-15T16:50:45.120Z",
+  "status": "private-production-worker-handoff-built-not-browser-or-memory-acceptance",
+  "host": {
+    "acquiredAt": "2026-10-15T16:50:29.9802608Z",
+    "freePhysicalBytes": 4475473920,
+    "freeVirtualBytes": 6507896832,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "sourcePins": {
+    "scripts/build-staged-handoff-candidate.mjs": "526a28e78718fce4ad64c636781ad9697c7faa6354665b1156081fd1d686447b",
+    "scripts/lib/staged-worker-handoff-recipe.mjs": "aa3e34200510d756fd821c13bb8307dcbc83c8c4dc875e61868c77b89bcede0d",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "lib/staged-copy-protocol.ts": "7596cf8c6d99e746df3048284710208b138e790be6f0587cffa623d51b3d6d29",
+    "lib/staged-worker-coordinator.ts": "1770fe50692b80a9c51c53ad20eb8e12affaec53ca126751437c092812223d80",
+    "workers/staged-save-runtime.ts": "1d352f60cdd25ea3234db6268600f0befe277840896c5ce4a2d966ad3f321c0b",
+    "workers/staged-save.worker.ts": "fe8a83566f83026cec5558b11936d5fbef65ea673cb8edd62919f0b905ac60b0",
+    "tests/staged-worker-coordinator.test.mjs": "64101bcd086578dfb440daa19f1c14c3bdfb95698f5e38ec38a4a62be035c18f",
+    "tests/staged-save-runtime.test.mjs": "b11a309b4aa9428dab0b716993ab7acb53094fc76f2529c9336805c46aecff34",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+    "lib/conversion-protocol.ts": "4aabc3e0b42f3786a83552b312c878bdc5b18249d816a8a430a75ac1d47427e2",
+    "lib/resource-limits.ts": "c5613f021548b7330009c49d24a3389514d96aee125cc5a415052fa67a03113f",
+    "package-lock.json": "a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369",
+    "tsconfig.json": "8ebad4768b8ebfacbaa51ee40c6a2a9df5d793422af5aa000a64235c69525c29",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a"
+  },
+  "postSourcePins": {
+    "scripts/build-staged-handoff-candidate.mjs": "526a28e78718fce4ad64c636781ad9697c7faa6354665b1156081fd1d686447b",
+    "scripts/lib/staged-worker-handoff-recipe.mjs": "aa3e34200510d756fd821c13bb8307dcbc83c8c4dc875e61868c77b89bcede0d",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "lib/staged-copy-protocol.ts": "7596cf8c6d99e746df3048284710208b138e790be6f0587cffa623d51b3d6d29",
+    "lib/staged-worker-coordinator.ts": "1770fe50692b80a9c51c53ad20eb8e12affaec53ca126751437c092812223d80",
+    "workers/staged-save-runtime.ts": "1d352f60cdd25ea3234db6268600f0befe277840896c5ce4a2d966ad3f321c0b",
+    "workers/staged-save.worker.ts": "fe8a83566f83026cec5558b11936d5fbef65ea673cb8edd62919f0b905ac60b0",
+    "tests/staged-worker-coordinator.test.mjs": "64101bcd086578dfb440daa19f1c14c3bdfb95698f5e38ec38a4a62be035c18f",
+    "tests/staged-save-runtime.test.mjs": "b11a309b4aa9428dab0b716993ab7acb53094fc76f2529c9336805c46aecff34",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+    "lib/conversion-protocol.ts": "4aabc3e0b42f3786a83552b312c878bdc5b18249d816a8a430a75ac1d47427e2",
+    "lib/resource-limits.ts": "c5613f021548b7330009c49d24a3389514d96aee125cc5a415052fa67a03113f",
+    "package-lock.json": "a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369",
+    "tsconfig.json": "8ebad4768b8ebfacbaa51ee40c6a2a9df5d793422af5aa000a64235c69525c29",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a"
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-15T16-50-27-112Z-staged-worker-handoff-changed-and-entry-sources.json.gz",
+    "bytes": 286129,
+    "sha256": "cbb33a8ad286a99e637d871a4553c51da71f11b7b1e8b7cd85d75ecfd17f1de4",
+    "restoredBytes": 1288871,
+    "restoredSha256": "28af8fd28c7870b56ab54dfb2fa044de1cd14d4dfed2f13ebc07b22350ed781f"
+  },
+  "sourceSealScope": "changed-modules-and-production-entrypoints-not-an-entire-executed-media-source-closure",
+  "loads": [
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "ssr",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "client",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "client",
+      "id": "H:/Github Repositories/fileconverter/workers/conversion.worker.ts"
+    },
+    {
+      "environment": "ssr",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    }
+  ],
+  "assets": [
+    {
+      "role": "application",
+      "url": "/assets/ConverterApp-BdjFUUS-.js",
+      "bytes": 321021,
+      "sha256": "db4f34d6f05510bf75d613bf4310f8c8da5099bf70b23511fde05e64978fedc5",
+      "archive": {
+        "path": "outputs/reports/2026-10-15T16-50-27-112Z-staged-worker-handoff-application.js.gz",
+        "bytes": 69630,
+        "sha256": "234553a3668631a7ceb142b00a58d8a5c2c96a152258f8a07cf5c0ece99b5d01",
+        "restoredBytes": 321021,
+        "restoredSha256": "db4f34d6f05510bf75d613bf4310f8c8da5099bf70b23511fde05e64978fedc5"
+      }
+    },
+    {
+      "role": "codec-worker",
+      "url": "/assets/conversion.worker-D_waeFU2.js",
+      "bytes": 292839,
+      "sha256": "d4dd7158c753b733bfcf2f531958d0ded981c09fae4b3fceba6583496e3e409b",
+      "archive": {
+        "path": "outputs/reports/2026-10-15T16-50-27-112Z-staged-worker-handoff-codec-worker.js.gz",
+        "bytes": 76199,
+        "sha256": "12c2d4b7b83c2c935c2c5f5fcb5dc82d9470c1fced55d5cedb8b4a05387a8269",
+        "restoredBytes": 292839,
+        "restoredSha256": "d4dd7158c753b733bfcf2f531958d0ded981c09fae4b3fceba6583496e3e409b"
+      }
+    },
+    {
+      "role": "save-worker",
+      "url": "/assets/staged-save.worker-BDqh8LGu.js",
+      "bytes": 3738,
+      "sha256": "b176a6272d30963cfabf6f98b65eef4a3dcfd99f7a96233521ca54a68e9411b6",
+      "archive": {
+        "path": "outputs/reports/2026-10-15T16-50-27-112Z-staged-worker-handoff-save-worker.js.gz",
+        "bytes": 1643,
+        "sha256": "478ea8ec53e79b80a0b920cc3b31710d64616d808a665eafdb27599437d2ee26",
+        "restoredBytes": 3738,
+        "restoredSha256": "b176a6272d30963cfabf6f98b65eef4a3dcfd99f7a96233521ca54a68e9411b6"
+      }
+    }
+  ],
+  "privateAppEdits": 3,
+  "privateWorkerEdits": 2,
+  "codecParametersChanged": false,
+  "nativeWasmChanged": false,
+  "copyLoopChanged": false,
+  "fixedCopyBufferBytes": 524288,
+  "normalSourcesEdited": false,
+  "normalProductionRestored": true,
+  "forBrowser": false,
+  "genuineBrowserConversionPerformed": false,
+  "primaryMemoryAcceptance": false,
+  "fullOriginalAcceptance": false,
+  "publicAcceptance": false,
+  "speedGainProven": false
+}

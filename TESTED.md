@@ -1,5 +1,45 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Handoff production-browser conversion/recovery4/4 PASS
+
+Actual headless suite17:02Z-17:06Z:4/4 PASS (3.6min), with genuine96-frame
+full-geometry HEVC decode/MPEG2 encode plus same-page recovery after write
+failure, cancellation and input-read failure. Five closed save-worker lifetimes
+observed. Original peak50MiB Wasm assertion retained; current saver has no Wasm.
+Lifecycle events do not prove physical private-memory release.
+
+Independent receipt:
+`evidence/2026-10-15T17-02-03-457Z-staged-handoff-independent-qualification.json`.
+Four outputs2,245,626B/SHA8b0d4370...b59be35c, exact expected repeatable outputs;
+all475packet fields/payloads per case and complete decoded video/audio/timing/
+metadata checks PASS. SSIM0.983095>=0.98; unchanged codecs/heaps/copy loop.
+All356 distinct build/media source pre/current/post pins independently verified.
+Initial audit join error corrected using existing separate17-file build seal;
+no conversion rerun, dropped source, enlarged cap or changed gate.19 focused
+tests PASS15,122.0376ms; new audit JavaScript zero-warning lint PASS.
+
+All converted files/fixtures/profiles/runtime scratch removed, sampled processes
+gone, normal assets restored, protected original full hash unchanged. Removed
+1,894,933B redundant raw report after verifying retained lossless gzip. Small
+fidelity/recovery qualified only; full-original repeats still0/3. No primary
+memory, speed, public or headed/manual acceptance.
+
+## 2026-10-15 - Private staged-worker handoff: build and focused tests PASS
+
+15 coordinator/save-runtime tests PASS (9,673.5006ms); two media-generator tests
+PASS (3,904.4249ms). Full project TypeScript with private overlays, real esbuild
+worker checks and actual private production build PASS. Build receipt:
+`evidence/2026-10-15T16-50-27-112Z-staged-worker-handoff-build.json`.
+The save worker is 3,738B with no Wasm instantiation; normal assets restored.
+Public app/worker sources remain byte-exact. Codec/native settings, peak-Wasm
+gate, fixed 512KiB copy buffer and one pending write are unchanged.
+
+Tests cover bounded descriptors, chosen destination integrity, worker retirement,
+stale messages, cancellation, failures, cleanup, next-job startup and exact copy
+bytes. Actual browser handoff/fidelity tests are next, not yet passed. No claim
+of physical memory release, full-original completion, speed improvement, public
+acceptance or headed/manual validation follows from unit/build evidence.
+
 ## 2026-10-15 - Six6.414GB copies PASS; single-writer optimization NOT PROVEN
 
 Final focused regression20/20 PASS13,825.3329ms;14-file zero-warning ESLint PASS;

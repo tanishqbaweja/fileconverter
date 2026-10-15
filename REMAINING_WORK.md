@@ -1,5 +1,64 @@
 # Remaining work audit
 
+## 2026-10-15 - Actual handoff media and independent fidelity audit PASS
+
+**Partially implemented**. The changed private route completed all four actual
+production-browser cases in 3.6 minutes: genuine 96-frame HEVC-to-MPEG2 MP4 and
+same-page recovery following final-write failure, cancellation and input-read
+failure. Five actual Wasm-free save workers were observed (four successes plus
+the write-failure case); observed codec close precedes saver creation. Events
+are explicitly NOT proof of physical OS memory release.
+
+Independent audit:
+`evidence/2026-10-15T17-02-03-457Z-staged-handoff-independent-qualification.json`.
+All four outputs are 2,245,626B/SHA2568b0d4370...b59be35c, matching the qualified
+duration-corrected route. Every one of 475 packet fields/payloads per comparison,
+full decoded video/audio, exact timing and stream/chapter/user metadata matches
+the original baseline under the unchanged documented physical-position/size
+exceptions. SSIM0.983095 remains above0.98. No fidelity or memory gate weakened.
+
+Source evidence joins255 legacy+95 supplemental media files with the17-source
+private build seal (six additional paths),356 distinct current/pre/post files.
+The verifier initially assumed all17 build paths were also in the media seal;
+it rejected six separately archived paths. Corrected the join, replayed retained
+evidence only; NO repeated conversions or source omission/cap increase. Frozen
+build and browser sources remain unchanged.19 focused regression tests PASS
+15,122.0376ms, including full-overlay TypeScript/esbuild and negative audit tests.
+
+All fixtures, outputs, browser/runtime scratch and sampled Chromium processes
+are absent. Normal production assets restored. Protected original size and full
+SHA256 reverified unchanged. Redundant1,894,933B raw JSON removed only after
+lossless archive verification; compact source/build/report archives retained.
+No speed improvement, full-original or primary-memory/public acceptance claim.
+Next: integrate this qualified lifecycle change into the unchanged full-original
+stress gates and measure a changed attempt; do not rerun the old failed route.
+
+## 2026-10-15 - Private codec-to-save worker handoff built; browser checks next
+
+**Partially implemented**. A changed private production build now terminates the
+codec worker after native closure and closed OPFS staging, before creating a
+separate Wasm-free save worker. It passes only a validated bounded descriptor,
+the original selected destination and four-byte cancellation signal. It does not
+pass the input File, native heaps or output bytes. The original exact 512KiB copy
+loop, one pending write, codec settings, fixed 32+16MiB heaps and fidelity gates
+remain unchanged. Public sources/selectors are not changed.
+
+15 focused coordinator/save-runtime tests PASS (9,673.5006ms), including failure,
+cancellation, stale messages, next-job recovery, full overlay TypeScript and real
+esbuild checks. Actual private production build PASS:
+`evidence/2026-10-15T16-50-27-112Z-staged-worker-handoff-build.json`.
+Its save-worker bundle is 3,738B without Wasm instantiation; normal production
+assets restored. These are build/unit results, NOT physical-release or memory
+acceptance. Two media-generator regression tests also PASS (3,904.4249ms),
+preserving all four production conversion/recovery cases and original peak-Wasm
+assertion. A duplicate newline patch was fixed before any browser attempt.
+
+Next run actual small production-browser cases and independent packet/pixel/
+metadata validation. Worker lifecycle events alone cannot establish when the
+OS releases private memory. Do not repeat the three-hour original until the
+changed route is qualified. Full-original repeats remain 0/3; broad original
+scope, public memory and headed/manual coverage remain unverified.
+
 ## 2026-10-15 - Single-writer copy measured and rejected as optimization
 
 Final focused regression20/20 PASS13,825.3329ms, including the actual six-copy

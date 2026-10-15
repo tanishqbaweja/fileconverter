@@ -1,0 +1,1726 @@
+{
+  "recordedAt": "2026-10-15T17:10:11.724Z",
+  "status": "private-handoff-four-production-conversions-exact-fidelity-and-recovery-qualified-not-memory-acceptance",
+  "media": {
+    "path": "evidence/2026-10-15T17-02-03-457Z-staged-handoff-media.json",
+    "sha256": "411f1638846b45eb4e9ea59c96d9c193eb599cbc422805bb1545ac930ba2e7f8"
+  },
+  "supplemental": {
+    "path": "evidence/2026-10-15T17-02-03-450Z-staged-handoff-media-supplement.json",
+    "sha256": "4f647f0a4ebc3d8506886c3ea00857314964f56567a507513bc1162354c99b30"
+  },
+  "build": {
+    "path": "evidence/2026-10-15T17-02-03-457Z-staged-worker-handoff-build.json",
+    "sha256": "9f03c633256a3ce1026608183a70a8b213ab91975c36b2a8a4ce66df508629ae"
+  },
+  "equivalence": {
+    "comparisons": [
+      {
+        "streams": [
+          {
+            "index": 0,
+            "packets": 96,
+            "payloadHashesAndSizesMatch": true
+          },
+          {
+            "index": 1,
+            "packets": 189,
+            "payloadHashesAndSizesMatch": true
+          },
+          {
+            "index": 2,
+            "packets": 189,
+            "payloadHashesAndSizesMatch": true
+          },
+          {
+            "index": 4,
+            "packets": 1,
+            "payloadHashesAndSizesMatch": true
+          }
+        ],
+        "packetsPerVariant": 475,
+        "allPayloadHashesAndSizesMatch": true,
+        "completeDecodedVideoMatches": true,
+        "decodedVideoHash": "0,v,SHA256=b6ba622248e30c7748e07085ee1a38b01a3d985e62c9e0890d93a147f65f5536",
+        "packetFieldChangesExceptFilePositions": [],
+        "exactlyEquivalentApartFromFilePositions": true,
+        "packetTimingPreservationPassed": true,
+        "canonicalPerStreamPacketHashes": {
+          "baseline": "8edc8e6ff0f678e67190521af6a070526eb464839ce999166c79eaace217df72",
+          "candidate": "f59ffabd50766ca345ac68bf748c461d1324ace9f86d057b0cc37f4cb89ed1a3"
+        },
+        "boxSizeDeltas": {
+          "ftyp": 0,
+          "moov": 0,
+          "moof": 68,
+          "mdat": 0
+        },
+        "outputSizeDelta": 68,
+        "baselineTopLevelBoxes": [
+          {
+            "type": "ftyp",
+            "position": 0,
+            "size": 28,
+            "headerBytes": 8
+          },
+          {
+            "type": "moov",
+            "position": 28,
+            "size": 3512,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 3540,
+            "size": 1276,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 4816,
+            "size": 743350,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 748166,
+            "size": 1196,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 749362,
+            "size": 459193,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1208555,
+            "size": 1200,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1209755,
+            "size": 517494,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1727249,
+            "size": 1196,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1728445,
+            "size": 516373,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 2244818,
+            "size": 176,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 2244994,
+            "size": 564,
+            "headerBytes": 8
+          }
+        ],
+        "candidateTopLevelBoxes": [
+          {
+            "type": "ftyp",
+            "position": 0,
+            "size": 28,
+            "headerBytes": 8
+          },
+          {
+            "type": "moov",
+            "position": 28,
+            "size": 3512,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 3540,
+            "size": 1276,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 4816,
+            "size": 743350,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 748166,
+            "size": 1196,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 749362,
+            "size": 459193,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1208555,
+            "size": 1200,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1209755,
+            "size": 517494,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1727249,
+            "size": 1188,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1728437,
+            "size": 496944,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 2225381,
+            "size": 252,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 2225633,
+            "size": 19993,
+            "headerBytes": 8
+          }
+        ],
+        "candidateAccepted": false,
+        "fullOriginalAcceptance": false,
+        "memoryAcceptance": false,
+        "speedGainProven": false
+      },
+      {
+        "streams": [
+          {
+            "index": 0,
+            "packets": 96,
+            "payloadHashesAndSizesMatch": true
+          },
+          {
+            "index": 1,
+            "packets": 189,
+            "payloadHashesAndSizesMatch": true
+          },
+          {
+            "index": 2,
+            "packets": 189,
+            "payloadHashesAndSizesMatch": true
+          },
+          {
+            "index": 4,
+            "packets": 1,
+            "payloadHashesAndSizesMatch": true
+          }
+        ],
+        "packetsPerVariant": 475,
+        "allPayloadHashesAndSizesMatch": true,
+        "completeDecodedVideoMatches": true,
+        "decodedVideoHash": "0,v,SHA256=b6ba622248e30c7748e07085ee1a38b01a3d985e62c9e0890d93a147f65f5536",
+        "packetFieldChangesExceptFilePositions": [],
+        "exactlyEquivalentApartFromFilePositions": true,
+        "packetTimingPreservationPassed": true,
+        "canonicalPerStreamPacketHashes": {
+          "baseline": "8edc8e6ff0f678e67190521af6a070526eb464839ce999166c79eaace217df72",
+          "candidate": "f59ffabd50766ca345ac68bf748c461d1324ace9f86d057b0cc37f4cb89ed1a3"
+        },
+        "boxSizeDeltas": {
+          "ftyp": 0,
+          "moov": 0,
+          "moof": 68,
+          "mdat": 0
+        },
+        "outputSizeDelta": 68,
+        "baselineTopLevelBoxes": [
+          {
+            "type": "ftyp",
+            "position": 0,
+            "size": 28,
+            "headerBytes": 8
+          },
+          {
+            "type": "moov",
+            "position": 28,
+            "size": 3512,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 3540,
+            "size": 1276,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 4816,
+            "size": 743350,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 748166,
+            "size": 1196,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 749362,
+            "size": 459193,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1208555,
+            "size": 1200,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1209755,
+            "size": 517494,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1727249,
+            "size": 1196,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1728445,
+            "size": 516373,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 2244818,
+            "size": 176,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 2244994,
+            "size": 564,
+            "headerBytes": 8
+          }
+        ],
+        "candidateTopLevelBoxes": [
+          {
+            "type": "ftyp",
+            "position": 0,
+            "size": 28,
+            "headerBytes": 8
+          },
+          {
+            "type": "moov",
+            "position": 28,
+            "size": 3512,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 3540,
+            "size": 1276,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 4816,
+            "size": 743350,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 748166,
+            "size": 1196,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 749362,
+            "size": 459193,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1208555,
+            "size": 1200,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1209755,
+            "size": 517494,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1727249,
+            "size": 1188,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1728437,
+            "size": 496944,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 2225381,
+            "size": 252,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 2225633,
+            "size": 19993,
+            "headerBytes": 8
+          }
+        ],
+        "candidateAccepted": false,
+        "fullOriginalAcceptance": false,
+        "memoryAcceptance": false,
+        "speedGainProven": false
+      },
+      {
+        "streams": [
+          {
+            "index": 0,
+            "packets": 96,
+            "payloadHashesAndSizesMatch": true
+          },
+          {
+            "index": 1,
+            "packets": 189,
+            "payloadHashesAndSizesMatch": true
+          },
+          {
+            "index": 2,
+            "packets": 189,
+            "payloadHashesAndSizesMatch": true
+          },
+          {
+            "index": 4,
+            "packets": 1,
+            "payloadHashesAndSizesMatch": true
+          }
+        ],
+        "packetsPerVariant": 475,
+        "allPayloadHashesAndSizesMatch": true,
+        "completeDecodedVideoMatches": true,
+        "decodedVideoHash": "0,v,SHA256=b6ba622248e30c7748e07085ee1a38b01a3d985e62c9e0890d93a147f65f5536",
+        "packetFieldChangesExceptFilePositions": [],
+        "exactlyEquivalentApartFromFilePositions": true,
+        "packetTimingPreservationPassed": true,
+        "canonicalPerStreamPacketHashes": {
+          "baseline": "8edc8e6ff0f678e67190521af6a070526eb464839ce999166c79eaace217df72",
+          "candidate": "f59ffabd50766ca345ac68bf748c461d1324ace9f86d057b0cc37f4cb89ed1a3"
+        },
+        "boxSizeDeltas": {
+          "ftyp": 0,
+          "moov": 0,
+          "moof": 68,
+          "mdat": 0
+        },
+        "outputSizeDelta": 68,
+        "baselineTopLevelBoxes": [
+          {
+            "type": "ftyp",
+            "position": 0,
+            "size": 28,
+            "headerBytes": 8
+          },
+          {
+            "type": "moov",
+            "position": 28,
+            "size": 3512,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 3540,
+            "size": 1276,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 4816,
+            "size": 743350,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 748166,
+            "size": 1196,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 749362,
+            "size": 459193,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1208555,
+            "size": 1200,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1209755,
+            "size": 517494,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1727249,
+            "size": 1196,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1728445,
+            "size": 516373,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 2244818,
+            "size": 176,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 2244994,
+            "size": 564,
+            "headerBytes": 8
+          }
+        ],
+        "candidateTopLevelBoxes": [
+          {
+            "type": "ftyp",
+            "position": 0,
+            "size": 28,
+            "headerBytes": 8
+          },
+          {
+            "type": "moov",
+            "position": 28,
+            "size": 3512,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 3540,
+            "size": 1276,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 4816,
+            "size": 743350,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 748166,
+            "size": 1196,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 749362,
+            "size": 459193,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1208555,
+            "size": 1200,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1209755,
+            "size": 517494,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1727249,
+            "size": 1188,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1728437,
+            "size": 496944,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 2225381,
+            "size": 252,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 2225633,
+            "size": 19993,
+            "headerBytes": 8
+          }
+        ],
+        "candidateAccepted": false,
+        "fullOriginalAcceptance": false,
+        "memoryAcceptance": false,
+        "speedGainProven": false
+      },
+      {
+        "streams": [
+          {
+            "index": 0,
+            "packets": 96,
+            "payloadHashesAndSizesMatch": true
+          },
+          {
+            "index": 1,
+            "packets": 189,
+            "payloadHashesAndSizesMatch": true
+          },
+          {
+            "index": 2,
+            "packets": 189,
+            "payloadHashesAndSizesMatch": true
+          },
+          {
+            "index": 4,
+            "packets": 1,
+            "payloadHashesAndSizesMatch": true
+          }
+        ],
+        "packetsPerVariant": 475,
+        "allPayloadHashesAndSizesMatch": true,
+        "completeDecodedVideoMatches": true,
+        "decodedVideoHash": "0,v,SHA256=b6ba622248e30c7748e07085ee1a38b01a3d985e62c9e0890d93a147f65f5536",
+        "packetFieldChangesExceptFilePositions": [],
+        "exactlyEquivalentApartFromFilePositions": true,
+        "packetTimingPreservationPassed": true,
+        "canonicalPerStreamPacketHashes": {
+          "baseline": "8edc8e6ff0f678e67190521af6a070526eb464839ce999166c79eaace217df72",
+          "candidate": "f59ffabd50766ca345ac68bf748c461d1324ace9f86d057b0cc37f4cb89ed1a3"
+        },
+        "boxSizeDeltas": {
+          "ftyp": 0,
+          "moov": 0,
+          "moof": 68,
+          "mdat": 0
+        },
+        "outputSizeDelta": 68,
+        "baselineTopLevelBoxes": [
+          {
+            "type": "ftyp",
+            "position": 0,
+            "size": 28,
+            "headerBytes": 8
+          },
+          {
+            "type": "moov",
+            "position": 28,
+            "size": 3512,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 3540,
+            "size": 1276,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 4816,
+            "size": 743350,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 748166,
+            "size": 1196,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 749362,
+            "size": 459193,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1208555,
+            "size": 1200,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1209755,
+            "size": 517494,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1727249,
+            "size": 1196,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1728445,
+            "size": 516373,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 2244818,
+            "size": 176,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 2244994,
+            "size": 564,
+            "headerBytes": 8
+          }
+        ],
+        "candidateTopLevelBoxes": [
+          {
+            "type": "ftyp",
+            "position": 0,
+            "size": 28,
+            "headerBytes": 8
+          },
+          {
+            "type": "moov",
+            "position": 28,
+            "size": 3512,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 3540,
+            "size": 1276,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 4816,
+            "size": 743350,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 748166,
+            "size": 1196,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 749362,
+            "size": 459193,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1208555,
+            "size": 1200,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1209755,
+            "size": 517494,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 1727249,
+            "size": 1188,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 1728437,
+            "size": 496944,
+            "headerBytes": 8
+          },
+          {
+            "type": "moof",
+            "position": 2225381,
+            "size": 252,
+            "headerBytes": 8
+          },
+          {
+            "type": "mdat",
+            "position": 2225633,
+            "size": 19993,
+            "headerBytes": 8
+          }
+        ],
+        "candidateAccepted": false,
+        "fullOriginalAcceptance": false,
+        "memoryAcceptance": false,
+        "speedGainProven": false
+      }
+    ],
+    "metadataProbeHashes": [
+      "9b38bd6b754c1bf1660ccc8ab11626c84c6b15c0a6e253b71a7f88dc616c8718",
+      "9b38bd6b754c1bf1660ccc8ab11626c84c6b15c0a6e253b71a7f88dc616c8718",
+      "9b38bd6b754c1bf1660ccc8ab11626c84c6b15c0a6e253b71a7f88dc616c8718",
+      "9b38bd6b754c1bf1660ccc8ab11626c84c6b15c0a6e253b71a7f88dc616c8718"
+    ],
+    "exactPacketPayloadAndTimingPreservation": true,
+    "completeDecodedVideoAndAudioMatch": true,
+    "allStreamChapterAndUserMetadataMatch": true,
+    "historicalBaselineOutputHash": "554cc84159d2e36f4fd2adb060062cf78be02d4195f7857ceefe0953065c5f27",
+    "candidateRepeatableOutputHash": "8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c",
+    "historicalContainerByteIdentity": false,
+    "fragmentHeaderGrowthBytes": 68,
+    "allEightCurrentOutputsRepeatable": true,
+    "qualityOrTimingThresholdRelaxed": false,
+    "smallFixtureFidelityQualified": true,
+    "fullOriginalAcceptance": false,
+    "primaryMemoryAcceptance": false,
+    "publicAcceptance": false,
+    "speedGainProven": false
+  },
+  "handoff": {
+    "lifecycleRows": 4,
+    "saveWorkersObserved": 5,
+    "observedWorkerUrlsMatchCompiledBuild": true,
+    "eventDigest": "0b1066cf06fd2789d53845df49019f25469190cb29a8b0810e01db7ef814b79a",
+    "nativeAndCopySettingsUnchanged": true,
+    "actualAppResponseBytesHashed": false,
+    "physicalReleaseBeforeCopyProven": false,
+    "primaryMemoryAcceptance": false,
+    "fullOriginalAcceptance": false,
+    "publicAcceptance": false,
+    "speedGainProven": false
+  },
+  "sourceCounts": {
+    "native": 126,
+    "mediaLegacy": 255,
+    "mediaSupplemental": 95,
+    "totalMedia": 350,
+    "buildCaptured": 17,
+    "buildOnlyFiles": [
+      "workers/conversion.worker.ts",
+      "workers/media-remux.ts",
+      "lib/conversion-protocol.ts",
+      "lib/resource-limits.ts",
+      "tsconfig.json",
+      "vite.config.ts"
+    ],
+    "distinctBuildAndMediaFiles": 356
+  },
+  "allExecutedPreCurrentPostSourcePinsVerified": true,
+  "sourceCapsChanged": false,
+  "original": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "browserPin": {
+    "version": "155.0.8059.40",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4586648,
+      "sha256": "f76f0234efb271041dc84f9f38fb858e01859d5da6f775f5108668eb3ae80975",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "27021597764749677",
+        "birthtimeNs": "1791867752971432600",
+        "mtimeNs": "1791260841522006000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\155.0.8059.40\\chrome.dll",
+      "bytes": 304965272,
+      "sha256": "b3d501c2e9af53f3e9e5d44c006aa42ed137cfb2d1dc161e3eca77cfbd48ea21",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "180706935048772181",
+        "birthtimeNs": "1791867752984997700",
+        "mtimeNs": "1791260850912621000"
+      }
+    }
+  },
+  "analysis": {
+    "previous": {
+      "normal": {
+        "genuineSyntheticConversions": 1,
+        "caseStatus": "passed",
+        "qualityThreshold": 0.98,
+        "ordinalSsim": 0.983095,
+        "timestampAlignedSsim": 0.966841,
+        "scoreParsedNotMissing": true,
+        "syntheticNoiseStrength": 4,
+        "syntheticNoiseSeed": 20261011,
+        "inputDimensions": [
+          1920,
+          804
+        ],
+        "outputDimensions": [
+          1920,
+          804
+        ],
+        "frames": 96,
+        "fullOriginalAcceptance": false,
+        "completeChromiumMemoryAcceptance": false,
+        "publicAcceptance": false,
+        "historicalFullScoreStillUnknown": true,
+        "bitRate": 4000000,
+        "input": {
+          "bytes": 4457906,
+          "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+        },
+        "nativeConfiguration": {
+          "words": [
+            1,
+            1920,
+            804,
+            0,
+            1,
+            24,
+            24,
+            1,
+            4000000,
+            4,
+            20,
+            1,
+            1,
+            2,
+            2,
+            2,
+            1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "nativeSettingsMatch": 1,
+          "expectedBitRate": 4000000,
+          "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+        },
+        "outputBytes": 2245626,
+        "elapsedMs": 4610.679921895266,
+        "controlledComparisonPending": true,
+        "conversionSpeedAcceptance": false
+      },
+      "recovery": {
+        "completedValidatedRecoveryConversions": 2,
+        "adverseCases": 2,
+        "results": [
+          {
+            "phase": "write-failure",
+            "adversePartialOutputRemoved": true,
+            "samePageProductionReplacementWorkerRecovered": true,
+            "analysis": {
+              "genuineSyntheticConversions": 1,
+              "caseStatus": "passed",
+              "qualityThreshold": 0.98,
+              "ordinalSsim": 0.983095,
+              "timestampAlignedSsim": 0.966841,
+              "scoreParsedNotMissing": true,
+              "syntheticNoiseStrength": 4,
+              "syntheticNoiseSeed": 20261011,
+              "inputDimensions": [
+                1920,
+                804
+              ],
+              "outputDimensions": [
+                1920,
+                804
+              ],
+              "frames": 96,
+              "fullOriginalAcceptance": false,
+              "completeChromiumMemoryAcceptance": false,
+              "publicAcceptance": false,
+              "historicalFullScoreStillUnknown": true,
+              "bitRate": 4000000,
+              "input": {
+                "bytes": 4457906,
+                "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+              },
+              "nativeConfiguration": {
+                "words": [
+                  1,
+                  1920,
+                  804,
+                  0,
+                  1,
+                  24,
+                  24,
+                  1,
+                  4000000,
+                  4,
+                  20,
+                  1,
+                  1,
+                  2,
+                  2,
+                  2,
+                  1,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "nativeSettingsMatch": 1,
+                "expectedBitRate": 4000000,
+                "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+              },
+              "outputBytes": 2245626,
+              "elapsedMs": 3554.7849511802197,
+              "controlledComparisonPending": true,
+              "conversionSpeedAcceptance": false
+            }
+          },
+          {
+            "phase": "cancellation",
+            "adversePartialOutputRemoved": true,
+            "samePageProductionReplacementWorkerRecovered": true,
+            "analysis": {
+              "genuineSyntheticConversions": 1,
+              "caseStatus": "passed",
+              "qualityThreshold": 0.98,
+              "ordinalSsim": 0.983095,
+              "timestampAlignedSsim": 0.966841,
+              "scoreParsedNotMissing": true,
+              "syntheticNoiseStrength": 4,
+              "syntheticNoiseSeed": 20261011,
+              "inputDimensions": [
+                1920,
+                804
+              ],
+              "outputDimensions": [
+                1920,
+                804
+              ],
+              "frames": 96,
+              "fullOriginalAcceptance": false,
+              "completeChromiumMemoryAcceptance": false,
+              "publicAcceptance": false,
+              "historicalFullScoreStillUnknown": true,
+              "bitRate": 4000000,
+              "input": {
+                "bytes": 4457906,
+                "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+              },
+              "nativeConfiguration": {
+                "words": [
+                  1,
+                  1920,
+                  804,
+                  0,
+                  1,
+                  24,
+                  24,
+                  1,
+                  4000000,
+                  4,
+                  20,
+                  1,
+                  1,
+                  2,
+                  2,
+                  2,
+                  1,
+                  1,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0
+                ],
+                "nativeSettingsMatch": 1,
+                "expectedBitRate": 4000000,
+                "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+              },
+              "outputBytes": 2245626,
+              "elapsedMs": 3222.2202539145947,
+              "controlledComparisonPending": true,
+              "conversionSpeedAcceptance": false
+            }
+          }
+        ],
+        "completeChromiumMemoryAcceptance": false,
+        "fullOriginalAcceptance": false,
+        "publicAcceptance": false,
+        "speedImprovementProven": false
+      },
+      "actualAsyncifyLifecycleSamples": [
+        {
+          "stackBytes": 262144,
+          "headerBytes": 12,
+          "reservationBytes": 262156,
+          "allocations": 1,
+          "frees": 1,
+          "acquisitions": 69,
+          "activeLeases": 0,
+          "retainedBytes": 0,
+          "closing": true,
+          "maximumLeases": 1,
+          "zeroOnAcquireAndRelease": true,
+          "abortedReleaseDeferredUntilWorkerTermination": false
+        },
+        {
+          "stackBytes": 262144,
+          "headerBytes": 12,
+          "reservationBytes": 262156,
+          "allocations": 1,
+          "frees": 1,
+          "acquisitions": 69,
+          "activeLeases": 0,
+          "retainedBytes": 0,
+          "closing": true,
+          "maximumLeases": 1,
+          "zeroOnAcquireAndRelease": true,
+          "abortedReleaseDeferredUntilWorkerTermination": false
+        },
+        {
+          "stackBytes": 262144,
+          "headerBytes": 12,
+          "reservationBytes": 262156,
+          "allocations": 1,
+          "frees": 1,
+          "acquisitions": 69,
+          "activeLeases": 0,
+          "retainedBytes": 0,
+          "closing": true,
+          "maximumLeases": 1,
+          "zeroOnAcquireAndRelease": true,
+          "abortedReleaseDeferredUntilWorkerTermination": false
+        },
+        {
+          "stackBytes": 262144,
+          "headerBytes": 12,
+          "reservationBytes": 262156,
+          "allocations": 1,
+          "frees": 1,
+          "acquisitions": 33,
+          "activeLeases": 0,
+          "retainedBytes": 0,
+          "closing": true,
+          "maximumLeases": 1,
+          "zeroOnAcquireAndRelease": true,
+          "abortedReleaseDeferredUntilWorkerTermination": false
+        },
+        {
+          "stackBytes": 262144,
+          "headerBytes": 12,
+          "reservationBytes": 262156,
+          "allocations": 1,
+          "frees": 1,
+          "acquisitions": 69,
+          "activeLeases": 0,
+          "retainedBytes": 0,
+          "closing": true,
+          "maximumLeases": 1,
+          "zeroOnAcquireAndRelease": true,
+          "abortedReleaseDeferredUntilWorkerTermination": false
+        }
+      ],
+      "genuineValidatedConversions": 3,
+      "publicAcceptance": false
+    },
+    "inputReadFailures": [
+      {
+        "version": 1,
+        "scope": "production-input-read-failure-not-cause-attribution",
+        "failureOrdinal": 1,
+        "offset": 1048576,
+        "requestedBytes": 65536,
+        "inputSize": 4457906,
+        "exceptionName": "NotReadableError",
+        "exceptionCode": 0,
+        "messageClass": "injected-control",
+        "causeName": null,
+        "causeCode": null,
+        "stackAvailable": false,
+        "stackLocations": []
+      },
+      {
+        "version": 1,
+        "scope": "production-input-read-failure-not-cause-attribution",
+        "failureOrdinal": 2,
+        "offset": 1048576,
+        "requestedBytes": 65536,
+        "inputSize": 4457906,
+        "exceptionName": "NotReadableError",
+        "exceptionCode": 0,
+        "messageClass": "injected-control",
+        "causeName": null,
+        "causeCode": null,
+        "stackAvailable": false,
+        "stackLocations": []
+      }
+    ],
+    "validatedInputFailureRecovery": {
+      "genuineSyntheticConversions": 1,
+      "caseStatus": "passed",
+      "qualityThreshold": 0.98,
+      "ordinalSsim": 0.983095,
+      "timestampAlignedSsim": 0.966841,
+      "scoreParsedNotMissing": true,
+      "syntheticNoiseStrength": 4,
+      "syntheticNoiseSeed": 20261011,
+      "inputDimensions": [
+        1920,
+        804
+      ],
+      "outputDimensions": [
+        1920,
+        804
+      ],
+      "frames": 96,
+      "fullOriginalAcceptance": false,
+      "completeChromiumMemoryAcceptance": false,
+      "publicAcceptance": false,
+      "historicalFullScoreStillUnknown": true,
+      "bitRate": 4000000,
+      "input": {
+        "bytes": 4457906,
+        "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+      },
+      "nativeConfiguration": {
+        "words": [
+          1,
+          1920,
+          804,
+          0,
+          1,
+          24,
+          24,
+          1,
+          4000000,
+          4,
+          20,
+          1,
+          1,
+          2,
+          2,
+          2,
+          1,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "nativeSettingsMatch": 1,
+        "expectedBitRate": 4000000,
+        "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+      },
+      "outputBytes": 2245626,
+      "elapsedMs": 3586.3999121189117,
+      "controlledComparisonPending": true,
+      "conversionSpeedAcceptance": false
+    },
+    "actualExtraAsyncifyLifecycle": [
+      {
+        "stackBytes": 262144,
+        "headerBytes": 12,
+        "reservationBytes": 262156,
+        "allocations": 1,
+        "frees": 1,
+        "acquisitions": 19,
+        "activeLeases": 0,
+        "retainedBytes": 0,
+        "closing": true,
+        "maximumLeases": 1,
+        "zeroOnAcquireAndRelease": true,
+        "abortedReleaseDeferredUntilWorkerTermination": false
+      },
+      {
+        "stackBytes": 262144,
+        "headerBytes": 12,
+        "reservationBytes": 262156,
+        "allocations": 1,
+        "frees": 1,
+        "acquisitions": 69,
+        "activeLeases": 0,
+        "retainedBytes": 0,
+        "closing": true,
+        "maximumLeases": 1,
+        "zeroOnAcquireAndRelease": true,
+        "abortedReleaseDeferredUntilWorkerTermination": false
+      }
+    ],
+    "genuineValidatedConversions": 4,
+    "fullOriginalAcceptance": false,
+    "publicAcceptance": false,
+    "speedImprovementProven": false,
+    "actualHandoffLifecycleRows": [
+      {
+        "kind": "actual-staged-worker-handoff-lifecycle",
+        "events": [
+          {
+            "role": "codec",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083808104
+          },
+          {
+            "role": "codec",
+            "event": "closed",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083816694
+          },
+          {
+            "role": "save",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/staged-save.worker-BDqh8LGu.js",
+            "observedAt": 1792083816695
+          },
+          {
+            "role": "save",
+            "event": "closed",
+            "url": "http://127.0.0.1:59746/assets/staged-save.worker-BDqh8LGu.js",
+            "observedAt": 1792083816746
+          },
+          {
+            "role": "codec",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083817114
+          }
+        ],
+        "observedEventsNotPhysicalMemoryReleaseProof": true,
+        "publicAcceptance": false
+      },
+      {
+        "kind": "actual-staged-worker-handoff-lifecycle",
+        "events": [
+          {
+            "role": "codec",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083858344
+          },
+          {
+            "role": "codec",
+            "event": "closed",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083862513
+          },
+          {
+            "role": "save",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/staged-save.worker-BDqh8LGu.js",
+            "observedAt": 1792083862514
+          },
+          {
+            "role": "save",
+            "event": "closed",
+            "url": "http://127.0.0.1:59746/assets/staged-save.worker-BDqh8LGu.js",
+            "observedAt": 1792083862542
+          },
+          {
+            "role": "codec",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083862805
+          },
+          {
+            "role": "codec",
+            "event": "closed",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083870099
+          },
+          {
+            "role": "save",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/staged-save.worker-BDqh8LGu.js",
+            "observedAt": 1792083870100
+          },
+          {
+            "role": "save",
+            "event": "closed",
+            "url": "http://127.0.0.1:59746/assets/staged-save.worker-BDqh8LGu.js",
+            "observedAt": 1792083870125
+          },
+          {
+            "role": "codec",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083870539
+          }
+        ],
+        "observedEventsNotPhysicalMemoryReleaseProof": true,
+        "publicAcceptance": false
+      },
+      {
+        "kind": "actual-staged-worker-handoff-lifecycle",
+        "events": [
+          {
+            "role": "codec",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083903259
+          },
+          {
+            "role": "codec",
+            "event": "closed",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083904747
+          },
+          {
+            "role": "codec",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083905378
+          },
+          {
+            "role": "codec",
+            "event": "closed",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083911488
+          },
+          {
+            "role": "save",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/staged-save.worker-BDqh8LGu.js",
+            "observedAt": 1792083911500
+          },
+          {
+            "role": "save",
+            "event": "closed",
+            "url": "http://127.0.0.1:59746/assets/staged-save.worker-BDqh8LGu.js",
+            "observedAt": 1792083911532
+          },
+          {
+            "role": "codec",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083911927
+          }
+        ],
+        "observedEventsNotPhysicalMemoryReleaseProof": true,
+        "publicAcceptance": false
+      },
+      {
+        "kind": "actual-staged-worker-handoff-lifecycle",
+        "events": [
+          {
+            "role": "codec",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083942344
+          },
+          {
+            "role": "codec",
+            "event": "closed",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083943520
+          },
+          {
+            "role": "codec",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083943781
+          },
+          {
+            "role": "codec",
+            "event": "closed",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083949803
+          },
+          {
+            "role": "save",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/staged-save.worker-BDqh8LGu.js",
+            "observedAt": 1792083949817
+          },
+          {
+            "role": "save",
+            "event": "closed",
+            "url": "http://127.0.0.1:59746/assets/staged-save.worker-BDqh8LGu.js",
+            "observedAt": 1792083949923
+          },
+          {
+            "role": "codec",
+            "event": "created",
+            "url": "http://127.0.0.1:59746/assets/conversion.worker-D_waeFU2.js",
+            "observedAt": 1792083950201
+          }
+        ],
+        "observedEventsNotPhysicalMemoryReleaseProof": true,
+        "publicAcceptance": false
+      }
+    ],
+    "currentSaveWorkerWasmBytes": 0,
+    "nativePeakWasmBytes": 50331648,
+    "physicalReleaseBeforeCopyProven": false
+  },
+  "birthChecks": [
+    {
+      "identity": {
+        "pid": 9144,
+        "parentPid": 23864,
+        "createdAt": "2026-10-15T17:02:44.1434720Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 9536,
+        "parentPid": 23864,
+        "createdAt": "2026-10-15T17:02:49.4996320Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 8108,
+        "parentPid": 9536,
+        "createdAt": "2026-10-15T17:02:50.6216990Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    }
+  ],
+  "sampledPidChecks": [
+    {
+      "pid": 23384,
+      "lastSampleAt": "2026-10-15T17:06:26.113Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 13984,
+      "lastSampleAt": "2026-10-15T17:06:26.113Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 28624,
+      "lastSampleAt": "2026-10-15T17:06:26.113Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 28100,
+      "lastSampleAt": "2026-10-15T17:06:26.113Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 34660,
+      "lastSampleAt": "2026-10-15T17:06:26.113Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 32144,
+      "lastSampleAt": "2026-10-15T17:04:12.964Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 37832,
+      "lastSampleAt": "2026-10-15T17:04:12.964Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 31628,
+      "lastSampleAt": "2026-10-15T17:03:25.269Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 6724,
+      "lastSampleAt": "2026-10-15T17:04:12.964Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 31360,
+      "lastSampleAt": "2026-10-15T17:03:51.224Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 37236,
+      "lastSampleAt": "2026-10-15T17:04:58.725Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 10500,
+      "lastSampleAt": "2026-10-15T17:04:58.725Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 4048,
+      "lastSampleAt": "2026-10-15T17:04:14.539Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 37676,
+      "lastSampleAt": "2026-10-15T17:04:58.725Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 36692,
+      "lastSampleAt": "2026-10-15T17:05:38.388Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 2272,
+      "lastSampleAt": "2026-10-15T17:05:38.388Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 39332,
+      "lastSampleAt": "2026-10-15T17:05:01.995Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 13812,
+      "lastSampleAt": "2026-10-15T17:05:38.388Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 35124,
+      "lastSampleAt": "2026-10-15T17:05:23.312Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 33396,
+      "lastSampleAt": "2026-10-15T17:06:26.113Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 15244,
+      "lastSampleAt": "2026-10-15T17:06:26.113Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 372,
+      "lastSampleAt": "2026-10-15T17:05:40.917Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 29732,
+      "lastSampleAt": "2026-10-15T17:06:26.113Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 38424,
+      "lastSampleAt": "2026-10-15T17:06:23.592Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    }
+  ],
+  "removedRedundantRawJson": {
+    "path": "output/playwright/2026-10-15T17-02-51.147Z-packet-cache-media-Yj599h-direct-artwork.json",
+    "bytes": 1894933,
+    "sha256": "4bb3b183dea96e49db907c4b59dd9a5fdb0a22fb960c4f1cd8d7d46c861de179",
+    "retainedLosslessArchive": {
+      "path": "outputs/reports/2026-10-15T17-02-03-457Z-staged-handoff-media-golden-report.json.gz",
+      "bytes": 216912,
+      "sha256": "24abc7eb12ce8b99a9886eeae70386dc3b78b02715e0d038de17cfb9aef60e1c",
+      "restoredBytes": 1894933,
+      "restoredSha256": "4bb3b183dea96e49db907c4b59dd9a5fdb0a22fb960c4f1cd8d7d46c861de179"
+    }
+  },
+  "convertedOutputsProfilesAndFixturesRemoved": true,
+  "normalAssetsRestored": true,
+  "smallFixtureFidelityQualified": true,
+  "fullOriginalAcceptance": false,
+  "primaryMemoryAcceptance": false,
+  "speedGainProven": false,
+  "headedCoverageVerified": false,
+  "publicAcceptance": false,
+  "ownSources": {
+    "scripts/verify-staged-handoff-media.mjs": {
+      "sha256": "b9ac4ed4e36b49567ee8454a4a87c0b63fc66aae2fa2158848298160c2b4e010",
+      "preimage": "Ly8gSW5kZXBlbmRlbnQgYWN0dWFsIHNvdXJjZS9idWlsZCwgcGFja2V0L3BpeGVsL21ldGFkYXRhLCByZWNvdmVyeSBhbmQgY2xlYW51cCBhdWRpdC4KaW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyBleGVjRmlsZSB9IGZyb20gIm5vZGU6Y2hpbGRfcHJvY2VzcyI7CmltcG9ydCB7IGNyZWF0ZUhhc2ggfSBmcm9tICJub2RlOmNyeXB0byI7CmltcG9ydCB7IGNyZWF0ZVJlYWRTdHJlYW0gfSBmcm9tICJub2RlOmZzIjsKaW1wb3J0IHsgYWNjZXNzLCBsc3RhdCwgcmVhZEZpbGUsIHN0YXQsIHVubGluaywgd3JpdGVGaWxlIH0gZnJvbSAibm9kZTpmcy9wcm9taXNlcyI7CmltcG9ydCBwYXRoIGZyb20gIm5vZGU6cGF0aCI7CmltcG9ydCB7IHByb21pc2lmeSB9IGZyb20gIm5vZGU6dXRpbCI7CmltcG9ydCB7IGd1bnppcFN5bmMgfSBmcm9tICJub2RlOnpsaWIiOwppbXBvcnQgeyBzaGEsIGJhc2VsaW5lQmluZGluZyB9IGZyb20gIi4vbGliL3N0YWJsZS11aS1oZWFkbGVzcy1iYXNlbGluZS1yZWNpcGUubWpzIjsKaW1wb3J0IHsgaW5zcGVjdEluc3RhbGxlZENocm9tZVBpbiwgYXNzZXJ0SW5zdGFsbGVkQ2hyb21lUGluc0VxdWFsIH0gZnJvbSAiLi9saWIvaW5zdGFsbGVkLWNocm9tZS1waW4ubWpzIjsKaW1wb3J0IHsgdmVyaWZ5RHVyYXRpb25FcXVpdmFsZW5jZVJlcG9ydHMgfSBmcm9tICIuL2xpYi9kdXJhdGlvbi1kcmFpbi1lcXVpdmFsZW5jZS5tanMiOwppbXBvcnQgeyB2ZXJpZnlIYW5kb2ZmQnVpbGRBbmRFdmVudHMgfSBmcm9tICIuL2xpYi9zdGFnZWQtaGFuZG9mZi1ldmlkZW5jZS5tanMiOwppbXBvcnQgeyBpbnNwZWN0RWJtbE1lZGlhUmVwb3J0LCBlYm1sTWVkaWFQYXJ0cyB9IGZyb20gIi4vbGliL3N0YWdlZC1oYW5kb2ZmLW1lZGlhLXJlY2lwZS5tanMiOwpjb25zdCByb290ID0gcGF0aC5yZXNvbHZlKGltcG9ydC5tZXRhLmRpcm5hbWUsICIuLiIpLCByZWFkID0gZmlsZSA9PiByZWFkRmlsZShwYXRoLmpvaW4ocm9vdCwgZmlsZSkpOwpjb25zdCBbbWVkaWFQYXRoLCBzdXBwbGVtZW50UGF0aF0gPSBwcm9jZXNzLmFyZ3Yuc2xpY2UoMik7IGFzc2VydC5lcXVhbChwcm9jZXNzLmFyZ3YubGVuZ3RoLCA0KTsKYXNzZXJ0Lm1hdGNoKG1lZGlhUGF0aCwgL15ldmlkZW5jZVwvXGR7NH0tXGRcZC1cZFxkVFtcZC1dK1otc3RhZ2VkLWhhbmRvZmYtbWVkaWFcLmpzb24kLyk7CmFzc2VydC5tYXRjaChzdXBwbGVtZW50UGF0aCwgL15ldmlkZW5jZVwvXGR7NH0tXGRcZC1cZFxkVFtcZC1dK1otc3RhZ2VkLWhhbmRvZmYtbWVkaWEtc3VwcGxlbWVudFwuanNvbiQvKTsKY29uc3Qgb3V0cHV0ID0gbWVkaWFQYXRoLnJlcGxhY2UoIi1tZWRpYS5qc29uIiwgIi1pbmRlcGVuZGVudC1xdWFsaWZpY2F0aW9uLmpzb24iKTsKYXdhaXQgYXNzZXJ0LnJlamVjdHMoYWNjZXNzKHBhdGguam9pbihyb290LCBvdXRwdXQpKSwgeyBjb2RlOiAiRU5PRU5UIiB9KTsKY29uc3QgbWVkaWFCeXRlcyA9IGF3YWl0IHJlYWQobWVkaWFQYXRoKSwgbWVkaWEgPSBKU09OLnBhcnNlKG1lZGlhQnl0ZXMpOwpjb25zdCBzdXBwbGVtZW50Qnl0ZXMgPSBhd2FpdCByZWFkKHN1cHBsZW1lbnRQYXRoKSwgc3VwcGxlbWVudCA9IEpTT04ucGFyc2Uoc3VwcGxlbWVudEJ5dGVzKTsKY29uc3QgY29udHJvbFBhdGggPSAiZXZpZGVuY2UvMjAyNi0xMC0xNVQxMC0zNy0yNC05NjFaLWR1cmF0aW9uLWRyYWluLWJyb3dzZXItY29udHJvbC1leGVjdXRlZC1zb3VyY2VzLmpzb24iOwpwcm9jZXNzLmVudi5XSVRISU5fRFVSQVRJT05fRFJBSU5fQ09OVFJPTF9SRUNFSVBUID0gY29udHJvbFBhdGg7CnByb2Nlc3MuZW52LldJVEhJTl9JTlNUQUxMRURfQ0hST01FX0NPTlRST0xfUkVDRUlQVCA9ICJldmlkZW5jZS8yMDI2LTEwLTE0VDE1LTMzLTM2LTQwMVotaW5zdGFsbGVkLWNocm9tZS1yZWFsbG9jLWNvbnRyb2wtZXhlY3V0ZWQtc291cmNlcy5qc29uIjsKY29uc3QgcGFydHMgPSBhd2FpdCBlYm1sTWVkaWFQYXJ0cyhyb290KTsKYXNzZXJ0LmVxdWFsKG1lZGlhLmZhaWx1cmUsIG51bGwpOyBhc3NlcnQuZXF1YWwobWVkaWEuYW5hbHlzaXMuZ2VudWluZVZhbGlkYXRlZENvbnZlcnNpb25zLCA0KTsKYXNzZXJ0LmVxdWFsKHN1cHBsZW1lbnQuZmFpbHVyZSwgbnVsbCk7IGFzc2VydC5lcXVhbChzdXBwbGVtZW50LnByZXBhcmVPbmx5LCBmYWxzZSk7IGFzc2VydC5lcXVhbChzdXBwbGVtZW50Lm93bmVkQ2FsbGVyQWJzZW50LCB0cnVlKTsKYXN5bmMgZnVuY3Rpb24gdW5wYWNrKHJlY29yZCwgbWF4aW11bSwganNvbiA9IHRydWUpIHsKICBjb25zdCB6aXAgPSBhd2FpdCByZWFkKHJlY29yZC5wYXRoKTsgYXNzZXJ0LmVxdWFsKHppcC5sZW5ndGgsIHJlY29yZC5ieXRlcyk7IGFzc2VydC5lcXVhbChzaGEoemlwKSwgcmVjb3JkLnNoYTI1Nik7CiAgY29uc3QgcmF3ID0gZ3VuemlwU3luYyh6aXAsIHsgbWF4T3V0cHV0TGVuZ3RoOiBtYXhpbXVtIH0pOyBhc3NlcnQuZXF1YWwocmF3Lmxlbmd0aCwgcmVjb3JkLnJlc3RvcmVkQnl0ZXMpOwogIGFzc2VydC5lcXVhbChzaGEocmF3KSwgcmVjb3JkLnJlc3RvcmVkU2hhMjU2KTsgcmV0dXJuIHsgcmF3LCBwYXJzZWQ6IGpzb24gPyBKU09OLnBhcnNlKHJhdykgOiBudWxsIH07Cn0KY29uc3QgZ2VuZXJhdGVkID0gKGF3YWl0IHVucGFjayhtZWRpYS5nZW5lcmF0ZWRBcmNoaXZlLCA4Mzg4NjA4KSkucGFyc2VkOwpjb25zdCBleHRyYSA9IChhd2FpdCB1bnBhY2soc3VwcGxlbWVudC5hcmNoaXZlLCAyMDk3MTUyKSkucGFyc2VkOwpmb3IgKGNvbnN0IFtyZWNlaXB0LCBhcmNoaXZlLCBjb3VudCwgZW5jb2RpbmddIG9mIFtbbWVkaWEsIGdlbmVyYXRlZCwgMjU1LCAidGV4dCJdLCBbc3VwcGxlbWVudCwgZXh0cmEsIDk1LCAiYmFzZTY0Il1dKSB7CiAgYXNzZXJ0LmVxdWFsKE9iamVjdC5rZXlzKHJlY2VpcHQuc291cmNlUGlucykubGVuZ3RoLCBjb3VudCk7IGFzc2VydC5kZWVwRXF1YWwocmVjZWlwdC5zb3VyY2VQaW5zLCByZWNlaXB0LnBvc3RTb3VyY2VQaW5zKTsKICBhc3NlcnQuZGVlcEVxdWFsKGFyY2hpdmUuc291cmNlUGlucywgcmVjZWlwdC5zb3VyY2VQaW5zKTsKICBmb3IgKGNvbnN0IFtmaWxlLCBleHBlY3RlZF0gb2YgT2JqZWN0LmVudHJpZXMocmVjZWlwdC5zb3VyY2VQaW5zKSkgewogICAgYXNzZXJ0LmVxdWFsKHNoYShlbmNvZGluZyA9PT0gInRleHQiID8gYXJjaGl2ZS5zb3VyY2VzW2ZpbGVdIDogQnVmZmVyLmZyb20oYXJjaGl2ZS5wcmVpbWFnZXNbZmlsZV0sICJiYXNlNjQiKSksIGV4cGVjdGVkLCBmaWxlKTsKICAgIGFzc2VydC5lcXVhbChzaGEoYXdhaXQgcmVhZChmaWxlKSksIGV4cGVjdGVkLCBmaWxlKTsKICB9Cn0KYXNzZXJ0LmVxdWFsKHN1cHBsZW1lbnQuZGlzdGluY3RUb3RhbEZpbGVzLCAzNTApOyBhc3NlcnQuZXF1YWwocGFydHMubmF0aXZlLmVudmVsb3BlLnNvdXJjZUNvdW50LCAxMjYpOwphc3NlcnQuZXF1YWwoc3VwcGxlbWVudC5zdXBwbGVtZW50YWwubWF4aW11bUZpbGVzLCAxMjgpOyBhc3NlcnQuZXF1YWwoc3VwcGxlbWVudC5zdXBwbGVtZW50YWwubWF4aW11bVJlc3RvcmVkQnl0ZXMsIDIwOTcxNTIpOwphc3NlcnQuZXF1YWwoc3VwcGxlbWVudC5sZWdhY3kubWF4aW11bUZpbGVzLCAyNTYpOyBhc3NlcnQuZXF1YWwoc3VwcGxlbWVudC5sZWdhY3kubWF4aW11bVJlc3RvcmVkQnl0ZXMsIDgzODg2MDgpOwpjb25zdCByZXN0b3JlZCA9IGF3YWl0IHVucGFjayhtZWRpYS5yZXBvcnQuYXJjaGl2ZSwgMjA5NzE1MiksIHJlcG9ydCA9IHJlc3RvcmVkLnBhcnNlZDsKYXNzZXJ0LmVxdWFsKHNoYShyZXN0b3JlZC5yYXcpLCBtZWRpYS5yZXBvcnQuc2hhMjU2KTsgYXNzZXJ0LmRlZXBFcXVhbChyZXBvcnQubWFuaWZlc3QsIGdlbmVyYXRlZC5nZW5lcmF0ZWQuY29tcG9zaXRpb24ubWFuaWZlc3QpOwpjb25zdCBhbmFseXNpcyA9IGF3YWl0IGluc3BlY3RFYm1sTWVkaWFSZXBvcnQocmVwb3J0LCBKU09OLnBhcnNlKGF3YWl0IHJlYWQobWVkaWEuYmFzZWxpbmUucGF0aCkpLnJlcG9ydHNbMF0ucmVwb3J0LCBKU09OLnBhcnNlKGF3YWl0IHJlYWQobWVkaWEuYnVpbGQucGF0aCkpKTsKYXNzZXJ0LmRlZXBFcXVhbChhbmFseXNpcywgbWVkaWEuYW5hbHlzaXMpOwpjb25zdCBiYXNlbGluZVBhdGggPSAiZXZpZGVuY2UvMjAyNi0xMC0xNVQwMy0yNi0zNi0wNDBaLXBhY2tldC1vcmRlci1iYXNlbGluZS1tZWRpYS5qc29uIiwgYmFzZWxpbmUgPSBKU09OLnBhcnNlKGF3YWl0IHJlYWQoYmFzZWxpbmVQYXRoKSk7CmNvbnN0IGVxdWl2YWxlbmNlID0gdmVyaWZ5RHVyYXRpb25FcXVpdmFsZW5jZVJlcG9ydHMoKGF3YWl0IHVucGFjayhiYXNlbGluZS5yZXBvcnQuYXJjaGl2ZSwgMjA5NzE1MikpLnBhcnNlZCwgcmVwb3J0KTsKY29uc3QgYnVpbGRQYXRoID0gZ2VuZXJhdGVkLmdlbmVyYXRlZC5oYW5kb2ZmTGlmZWN5Y2xlLmJ1aWxkUHJvb2ZQYXRoLCBidWlsZEJ5dGVzID0gYXdhaXQgcmVhZChidWlsZFBhdGgpLCBidWlsZCA9IEpTT04ucGFyc2UoYnVpbGRCeXRlcyk7CmNvbnN0IGJ1aWxkQXJjaGl2ZSA9IChhd2FpdCB1bnBhY2soYnVpbGQuc291cmNlQXJjaGl2ZSwgMjA5NzE1MikpLnBhcnNlZDsKYXNzZXJ0LmRlZXBFcXVhbChidWlsZEFyY2hpdmUuc291cmNlUGlucywgYnVpbGQuc291cmNlUGlucyk7CmZvciAoY29uc3QgW2ZpbGUsIGV4cGVjdGVkXSBvZiBPYmplY3QuZW50cmllcyhidWlsZC5zb3VyY2VQaW5zKSkgewogIGFzc2VydC5lcXVhbChzaGEoQnVmZmVyLmZyb20oYnVpbGRBcmNoaXZlLnByZWltYWdlc1tmaWxlXSwgImJhc2U2NCIpKSwgZXhwZWN0ZWQsIGZpbGUpOwogIGFzc2VydC5lcXVhbChzaGEoYXdhaXQgcmVhZChmaWxlKSksIGV4cGVjdGVkLCBmaWxlKTsKICBjb25zdCBtZWRpYUhhc2ggPSBtZWRpYS5zb3VyY2VQaW5zW2ZpbGVdID8/IHN1cHBsZW1lbnQuc291cmNlUGluc1tmaWxlXTsKICBpZiAobWVkaWFIYXNoICE9PSB1bmRlZmluZWQpIGFzc2VydC5lcXVhbChtZWRpYUhhc2gsIGV4cGVjdGVkLCBmaWxlKTsKfQpjb25zdCBidWlsZE9ubHlGaWxlcyA9IE9iamVjdC5rZXlzKGJ1aWxkLnNvdXJjZVBpbnMpLmZpbHRlcihmaWxlID0+ICFPYmplY3QuaGFzT3duKG1lZGlhLnNvdXJjZVBpbnMsIGZpbGUpICYmICFPYmplY3QuaGFzT3duKHN1cHBsZW1lbnQuc291cmNlUGlucywgZmlsZSkpOwphc3NlcnQuZXF1YWwoYnVpbGRPbmx5RmlsZXMubGVuZ3RoLCA2KTsKY29uc3QgZGlzdGluY3RCdWlsZEFuZE1lZGlhRmlsZXMgPSBuZXcgU2V0KFsuLi5PYmplY3Qua2V5cyhtZWRpYS5zb3VyY2VQaW5zKSwgLi4uT2JqZWN0LmtleXMoc3VwcGxlbWVudC5zb3VyY2VQaW5zKSwgLi4uT2JqZWN0LmtleXMoYnVpbGQuc291cmNlUGlucyldKS5zaXplOwphc3NlcnQuZXF1YWwoZGlzdGluY3RCdWlsZEFuZE1lZGlhRmlsZXMsIDM1Nik7CmZvciAoY29uc3QgYXNzZXQgb2YgYnVpbGQuYXNzZXRzKSB7CiAgY29uc3QgcmF3ID0gKGF3YWl0IHVucGFjayhhc3NldC5hcmNoaXZlLCAyMDk3MTUyLCBmYWxzZSkpLnJhdzsKICBhc3NlcnQuZXF1YWwocmF3Lmxlbmd0aCwgYXNzZXQuYnl0ZXMpOyBhc3NlcnQuZXF1YWwoc2hhKHJhdyksIGFzc2V0LnNoYTI1Nik7CiAgaWYgKGFzc2V0LnJvbGUgPT09ICJzYXZlLXdvcmtlciIpIGFzc2VydC5lcXVhbCgvV2ViQXNzZW1ibHlcLig/Ok1lbW9yeXxpbnN0YW50aWF0ZXxjb21waWxlKS8udGVzdChyYXcudG9TdHJpbmcoKSksIGZhbHNlKTsKfQpjb25zdCBoYW5kb2ZmID0gdmVyaWZ5SGFuZG9mZkJ1aWxkQW5kRXZlbnRzKGJ1aWxkLCBnZW5lcmF0ZWQuZ2VuZXJhdGVkLCByZXBvcnQpOwphc3NlcnRJbnN0YWxsZWRDaHJvbWVQaW5zRXF1YWwobWVkaWEuYnJvd3NlclBpbkJlZm9yZSwgbWVkaWEuYnJvd3NlclBpbkFmdGVyKTsKYXNzZXJ0SW5zdGFsbGVkQ2hyb21lUGluc0VxdWFsKG1lZGlhLmJyb3dzZXJQaW5CZWZvcmUsIHBhcnRzLmNvbnRyb2wuYnJvd3NlclBpbkJlZm9yZSk7CmFzc2VydEluc3RhbGxlZENocm9tZVBpbnNFcXVhbChtZWRpYS5icm93c2VyUGluQmVmb3JlLCBhd2FpdCBpbnNwZWN0SW5zdGFsbGVkQ2hyb21lUGluKCkpOwpjb25zdCBydW50aW1lVmVyc2lvbnMgPSByZXBvcnQucm93cy5maWx0ZXIocm93ID0+IHJvdy5raW5kID09PSAiYWN0dWFsLXJ1bnRpbWUtYnJvd3Nlci12ZXJzaW9uIik7IGFzc2VydC5lcXVhbChydW50aW1lVmVyc2lvbnMubGVuZ3RoLCA0KTsKZm9yIChjb25zdCByZWNvcmQgb2YgcnVudGltZVZlcnNpb25zKSBhc3NlcnQuZXF1YWwocmVjb3JkLnZlcnNpb24sIG1lZGlhLmJyb3dzZXJQaW5CZWZvcmUudmVyc2lvbik7CmNvbnN0IGpvdXJuYWwgPSBKU09OLnBhcnNlKGF3YWl0IHJlYWQoZ2VuZXJhdGVkLmdlbmVyYXRlZC5qb3VybmFsZWRGaXh0dXJlLmNsZWFudXBQYXRoKSk7CmFzc2VydC5lcXVhbChqb3VybmFsLm93bmVkRGlyZWN0b3J5QWJzZW50LCB0cnVlKTsgYXNzZXJ0LmVxdWFsKGpvdXJuYWwucnVubmVyQWJzZW5jZS5zdGF0dXMsICJvd25lZC1pZGVudGl0eS1hYnNlbnQiKTsKZm9yIChjb25zdCBkaXJlY3Rvcnkgb2YgW2pvdXJuYWwucmVjb3JkLmRpcmVjdG9yeSwgbWVkaWEuY2xlYW51cC5vd25lZFdyYXBwZXIsIG1lZGlhLmNsZWFudXAuaGVscGVycy5ydW50aW1lXSkKICBhd2FpdCBhc3NlcnQucmVqZWN0cyhhY2Nlc3MoZGlyZWN0b3J5KSwgeyBjb2RlOiAiRU5PRU5UIiB9KTsKYXNzZXJ0LmRlZXBFcXVhbChtZWRpYS5jbGVhbnVwLm5ld0ZpeHR1cmVEaXJzUmVtYWluaW5nLCBbXSk7CmFzc2VydC5lcXVhbChtZWRpYS5jbGVhbnVwLm5vcm1hbEFwcEFuZENzc1VuY2hhbmdlZCwgdHJ1ZSk7IGFzc2VydC5lcXVhbChtZWRpYS5jbGVhbnVwLnByaXZhdGVBZGRpdGlvbnNBYnNlbnQsIHRydWUpOwphc3NlcnQuZXF1YWwoc2hhKGF3YWl0IHJlYWQoImRpc3QvY2xpZW50IiArIGJhc2VsaW5lQmluZGluZy51cmwpKSwgYmFzZWxpbmVCaW5kaW5nLnNoYTI1Nik7CmNvbnN0IGlkZW50aXRpZXMgPSBbLi4ubWVkaWEuY2xlYW51cC5oZWxwZXJzLmxhdW5jaFJlY29yZHMubWFwKHJvdyA9PiByb3cuaWRlbnRpdHkpLCBqb3VybmFsLnJlY29yZC5yZWdpc3RyYXRpb25JZGVudGl0eV07CmNvbnN0IHNhbXBsZWQgPSBuZXcgTWFwKCk7CmZvciAoY29uc3Qgcm93IG9mIHJlcG9ydC5yb3dzLmZpbHRlcihyb3cgPT4gcm93Lm1lbW9yeVNjb3BlKSkgZm9yIChjb25zdCBzYW1wbGUgb2Ygcm93LnNhbXBsZXMpIGZvciAoY29uc3QgcHJvY2VzcyBvZiBzYW1wbGUucHJvY2Vzc2VzID8/IFtdKQogIHNhbXBsZWQuc2V0KHByb2Nlc3MucGlkLCB7IHBpZDogcHJvY2Vzcy5waWQsIGxhc3RTYW1wbGVBdDogc2FtcGxlLnRpbWVzdGFtcCB9KTsKY29uc3QgcGlkcyA9IFsuLi5uZXcgU2V0KFsuLi5pZGVudGl0aWVzLm1hcChyb3cgPT4gcm93LnBpZCksIC4uLnNhbXBsZWQua2V5cygpXSldOyBhc3NlcnQub2socGlkcy5sZW5ndGggPiAwICYmIHBpZHMubGVuZ3RoIDw9IDY0KTsKY29uc3QgY29tbWFuZCA9ICIkRXJyb3JBY3Rpb25QcmVmZXJlbmNlPSdTdG9wJzsgJGhhbmRvZmZQcm9vZlBpZHM9IiArIHBpZHMuam9pbigiLCIpICsgIjsgQ29udmVydFRvLUpzb24gLUlucHV0T2JqZWN0IEAoR2V0LUNpbUluc3RhbmNlIFdpbjMyX1Byb2Nlc3MgfCBXaGVyZS1PYmplY3QgeyRoYW5kb2ZmUHJvb2ZQaWRzIC1jb250YWlucyAkXy5Qcm9jZXNzSWR9IHwgRm9yRWFjaC1PYmplY3Qge0B7cGlkPVtpbnRdJF8uUHJvY2Vzc0lkO2NyZWF0ZWRBdD0kXy5DcmVhdGlvbkRhdGUuVG9Vbml2ZXJzYWxUaW1lKCkuVG9TdHJpbmcoJ28nKX19KSAtQ29tcHJlc3MiOwpjb25zdCBvYnNlcnZlZCA9IGF3YWl0IHByb21pc2lmeShleGVjRmlsZSkoInBvd2Vyc2hlbGwuZXhlIiwgWyItTm9Qcm9maWxlIiwgIi1Ob25JbnRlcmFjdGl2ZSIsICItRW5jb2RlZENvbW1hbmQiLCBCdWZmZXIuZnJvbShjb21tYW5kLCAidXRmMTZsZSIpLnRvU3RyaW5nKCJiYXNlNjQiKV0sCiAgeyBjd2Q6IHJvb3QsIHdpbmRvd3NIaWRlOiB0cnVlLCB0aW1lb3V0OiAxNTAwMCwgbWF4QnVmZmVyOiAxMzEwNzIgfSk7CmNvbnN0IGN1cnJlbnQgPSBKU09OLnBhcnNlKG9ic2VydmVkLnN0ZG91dCk7CmNvbnN0IGJpcnRoQ2hlY2tzID0gaWRlbnRpdGllcy5tYXAoaWRlbnRpdHkgPT4geyBjb25zdCBub3cgPSBjdXJyZW50LmZpbmQocm93ID0+IHJvdy5waWQgPT09IGlkZW50aXR5LnBpZCkgPz8gbnVsbDsKICBhc3NlcnQub2sobm93ID09PSBudWxsIHx8IE1hdGguYWJzKERhdGUucGFyc2Uobm93LmNyZWF0ZWRBdCkgLSBEYXRlLnBhcnNlKGlkZW50aXR5LmNyZWF0ZWRBdCkpID49IDEpOwogIHJldHVybiB7IGlkZW50aXR5LCBjdXJyZW50OiBub3csIG93bmVkQmlydGhBYnNlbnQ6IHRydWUgfTsgfSk7CmNvbnN0IHNhbXBsZWRQaWRDaGVja3MgPSBbLi4uc2FtcGxlZC52YWx1ZXMoKV0ubWFwKHNhbXBsZSA9PiB7IGNvbnN0IG5vdyA9IGN1cnJlbnQuZmluZChyb3cgPT4gcm93LnBpZCA9PT0gc2FtcGxlLnBpZCkgPz8gbnVsbDsKICBhc3NlcnQub2sobm93ID09PSBudWxsIHx8IERhdGUucGFyc2Uobm93LmNyZWF0ZWRBdCkgPiBEYXRlLnBhcnNlKHNhbXBsZS5sYXN0U2FtcGxlQXQpKTsKICByZXR1cm4geyAuLi5zYW1wbGUsIGN1cnJlbnQ6IG5vdywgc2FtcGxlZFByb2Nlc3NHb25lOiB0cnVlLCBiaXJ0aFdhc05vdFJlY29yZGVkSW5Db252ZXJzaW9uU2FtcGxlOiB0cnVlIH07IH0pOwpmb3IgKGNvbnN0IFtmaWxlLCBoYXNoXSBvZiBPYmplY3QuZW50cmllcyhtZWRpYS5jbGVhbnVwLnJlc3RvcmVkKSkgZm9yIChjb25zdCBkaXJlY3Rvcnkgb2YgWyJwdWJsaWMiLCAiZGlzdC9jbGllbnQiXSkKICBhc3NlcnQuZXF1YWwoc2hhKGF3YWl0IHJlYWQoYCR7ZGlyZWN0b3J5fS9lbmdpbmVzL3JlbXV4LyR7ZmlsZX1gKSksIGhhc2gpOwpjb25zdCBvcmlnaW5hbCA9IHBhdGguam9pbihyb290LCAidGVzdC5ta3YiKTsgYXNzZXJ0LmVxdWFsKChhd2FpdCBzdGF0KG9yaWdpbmFsKSkuc2l6ZSwgMjk1ODU3MzI2NSk7CmNvbnN0IGRpZ2VzdCA9IGNyZWF0ZUhhc2goInNoYTI1NiIpOyBmb3IgYXdhaXQgKGNvbnN0IGNodW5rIG9mIGNyZWF0ZVJlYWRTdHJlYW0ob3JpZ2luYWwsIHsgaGlnaFdhdGVyTWFyazogMTA0ODU3NiB9KSkgZGlnZXN0LnVwZGF0ZShjaHVuayk7CmNvbnN0IG9yaWdpbmFsU2hhMjU2ID0gZGlnZXN0LmRpZ2VzdCgiaGV4Iik7IGFzc2VydC5lcXVhbChvcmlnaW5hbFNoYTI1NiwgIjMxZjM2Njk1YjViNDRjNjIxMjVhOWU0MjY0ZTg0ZGMwODVhY2NkMjFjMDJjYzM0ODdhYWU1OTdmNTRiOWRiMzQiKTsKYXNzZXJ0LmRlZXBFcXVhbChtZWRpYS5wcm90ZWN0ZWRQcmUsIG1lZGlhLnByb3RlY3RlZFBvc3QpOyBhc3NlcnQuZXF1YWwobWVkaWEucHJvdGVjdGVkUG9zdC5zaGEyNTYsIG9yaWdpbmFsU2hhMjU2KTsKY29uc3QgcmF3UGF0aCA9IHBhdGgucmVzb2x2ZShyb290LCBtZWRpYS5yZXBvcnQucGF0aCk7IGFzc2VydC5lcXVhbChwYXRoLmRpcm5hbWUocmF3UGF0aCksIHBhdGguam9pbihyb290LCAib3V0cHV0L3BsYXl3cmlnaHQiKSk7CmNvbnN0IGlkZW50aXR5ID0gYXdhaXQgbHN0YXQocmF3UGF0aCwgeyBiaWdpbnQ6IHRydWUgfSk7IGFzc2VydC5vayhpZGVudGl0eS5pc0ZpbGUoKSAmJiAhaWRlbnRpdHkuaXNTeW1ib2xpY0xpbmsoKSk7CmFzc2VydC5lcXVhbChzaGEoYXdhaXQgcmVhZEZpbGUocmF3UGF0aCkpLCBzaGEocmVzdG9yZWQucmF3KSk7CmNvbnN0IG93blNvdXJjZXMgPSB7fTsKZm9yIChjb25zdCBmaWxlIG9mIFsic2NyaXB0cy92ZXJpZnktc3RhZ2VkLWhhbmRvZmYtbWVkaWEubWpzIiwgInNjcmlwdHMvbGliL3N0YWdlZC1oYW5kb2ZmLWV2aWRlbmNlLm1qcyIsICJ0ZXN0cy9zdGFnZWQtaGFuZG9mZi1ldmlkZW5jZS50ZXN0Lm1qcyJdKSB7CiAgY29uc3QgYnl0ZXMgPSBhd2FpdCByZWFkKGZpbGUpOyBvd25Tb3VyY2VzW2ZpbGVdID0geyBzaGEyNTY6IHNoYShieXRlcyksIHByZWltYWdlOiBieXRlcy50b1N0cmluZygiYmFzZTY0IikgfTsKfQpjb25zdCBjaGVja2VkID0gYXdhaXQgbHN0YXQocmF3UGF0aCwgeyBiaWdpbnQ6IHRydWUgfSk7IGFzc2VydC5lcXVhbChjaGVja2VkLmRldiwgaWRlbnRpdHkuZGV2KTsgYXNzZXJ0LmVxdWFsKGNoZWNrZWQuaW5vLCBpZGVudGl0eS5pbm8pOwphc3NlcnQuZXF1YWwoc2hhKGF3YWl0IHJlYWRGaWxlKHJhd1BhdGgpKSwgc2hhKHJlc3RvcmVkLnJhdykpOyBhd2FpdCB1bmxpbmsocmF3UGF0aCk7IGF3YWl0IGFzc2VydC5yZWplY3RzKGFjY2VzcyhyYXdQYXRoKSwgeyBjb2RlOiAiRU5PRU5UIiB9KTsKY29uc3QgcmVzdWx0ID0geyByZWNvcmRlZEF0OiBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCksIHN0YXR1czogInByaXZhdGUtaGFuZG9mZi1mb3VyLXByb2R1Y3Rpb24tY29udmVyc2lvbnMtZXhhY3QtZmlkZWxpdHktYW5kLXJlY292ZXJ5LXF1YWxpZmllZC1ub3QtbWVtb3J5LWFjY2VwdGFuY2UiLAogIG1lZGlhOiB7IHBhdGg6IG1lZGlhUGF0aCwgc2hhMjU2OiBzaGEobWVkaWFCeXRlcykgfSwgc3VwcGxlbWVudGFsOiB7IHBhdGg6IHN1cHBsZW1lbnRQYXRoLCBzaGEyNTY6IHNoYShzdXBwbGVtZW50Qnl0ZXMpIH0sCiAgYnVpbGQ6IHsgcGF0aDogYnVpbGRQYXRoLCBzaGEyNTY6IHNoYShidWlsZEJ5dGVzKSB9LCBlcXVpdmFsZW5jZSwgaGFuZG9mZiwKICBzb3VyY2VDb3VudHM6IHsgbmF0aXZlOiAxMjYsIG1lZGlhTGVnYWN5OiAyNTUsIG1lZGlhU3VwcGxlbWVudGFsOiA5NSwgdG90YWxNZWRpYTogMzUwLAogICAgYnVpbGRDYXB0dXJlZDogMTcsIGJ1aWxkT25seUZpbGVzLCBkaXN0aW5jdEJ1aWxkQW5kTWVkaWFGaWxlcyB9LAogIGFsbEV4ZWN1dGVkUHJlQ3VycmVudFBvc3RTb3VyY2VQaW5zVmVyaWZpZWQ6IHRydWUsIHNvdXJjZUNhcHNDaGFuZ2VkOiBmYWxzZSwKICBvcmlnaW5hbDogeyBieXRlczogMjk1ODU3MzI2NSwgc2hhMjU2OiBvcmlnaW5hbFNoYTI1NiB9LCBicm93c2VyUGluOiBtZWRpYS5icm93c2VyUGluQmVmb3JlLAogIGFuYWx5c2lzLCBiaXJ0aENoZWNrcywgc2FtcGxlZFBpZENoZWNrcywKICByZW1vdmVkUmVkdW5kYW50UmF3SnNvbjogeyBwYXRoOiBtZWRpYS5yZXBvcnQucGF0aCwgYnl0ZXM6IHJlc3RvcmVkLnJhdy5sZW5ndGgsIHNoYTI1Njogc2hhKHJlc3RvcmVkLnJhdyksIHJldGFpbmVkTG9zc2xlc3NBcmNoaXZlOiBtZWRpYS5yZXBvcnQuYXJjaGl2ZSB9LAogIGNvbnZlcnRlZE91dHB1dHNQcm9maWxlc0FuZEZpeHR1cmVzUmVtb3ZlZDogdHJ1ZSwgbm9ybWFsQXNzZXRzUmVzdG9yZWQ6IHRydWUsIHNtYWxsRml4dHVyZUZpZGVsaXR5UXVhbGlmaWVkOiB0cnVlLAogIGZ1bGxPcmlnaW5hbEFjY2VwdGFuY2U6IGZhbHNlLCBwcmltYXJ5TWVtb3J5QWNjZXB0YW5jZTogZmFsc2UsIHNwZWVkR2FpblByb3ZlbjogZmFsc2UsIGhlYWRlZENvdmVyYWdlVmVyaWZpZWQ6IGZhbHNlLCBwdWJsaWNBY2NlcHRhbmNlOiBmYWxzZSwgb3duU291cmNlcyB9Owphd2FpdCB3cml0ZUZpbGUocGF0aC5qb2luKHJvb3QsIG91dHB1dCksIEpTT04uc3RyaW5naWZ5KHJlc3VsdCwgbnVsbCwgMikgKyAiXG4iLCB7IGZsYWc6ICJ3eCIgfSk7CmNvbnNvbGUubG9nKEpTT04uc3RyaW5naWZ5KHsgb3V0cHV0LCBzb3VyY2VDb3VudDogZGlzdGluY3RCdWlsZEFuZE1lZGlhRmlsZXMsIHNhdmVXb3JrZXJzT2JzZXJ2ZWQ6IGhhbmRvZmYuc2F2ZVdvcmtlcnNPYnNlcnZlZCwKICBleGFjdFBhY2tldENvbXBhcmlzb25zOiBlcXVpdmFsZW5jZS5jb21wYXJpc29ucy5sZW5ndGgsIHJlbW92ZWRSYXdCeXRlczogcmVzdG9yZWQucmF3Lmxlbmd0aCwgZnVsbE9yaWdpbmFsQWNjZXB0YW5jZTogZmFsc2UgfSkpOwo="
+    },
+    "scripts/lib/staged-handoff-evidence.mjs": {
+      "sha256": "8ccad3988fa119cfdeaf415baac5e6c40ed9cc0fe9c6dea8eb5bcb68bdf7ac58",
+      "preimage": "aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyBzaGEgfSBmcm9tICIuL3N0YWJsZS11aS1oZWFkbGVzcy1iYXNlbGluZS1yZWNpcGUubWpzIjsKCi8vIExpZmVjeWNsZSBvYnNlcnZhdGlvbnMgYXJlIE5PVCBldmlkZW5jZSBvZiBwaHlzaWNhbCBPUyBtZW1vcnkgcmVjbGFtYXRpb24uCmV4cG9ydCBmdW5jdGlvbiB2ZXJpZnlIYW5kb2ZmQnVpbGRBbmRFdmVudHMoYnVpbGQsIGdlbmVyYXRlZCwgcmVwb3J0KSB7CiAgYXNzZXJ0LmRlZXBFcXVhbChidWlsZC5zb3VyY2VQaW5zLCBidWlsZC5wb3N0U291cmNlUGlucyk7CiAgYXNzZXJ0LmVxdWFsKGJ1aWxkLmZvckJyb3dzZXIsIHRydWUpOyBhc3NlcnQuZXF1YWwoYnVpbGQubm9ybWFsU291cmNlc0VkaXRlZCwgZmFsc2UpOwogIGZvciAoY29uc3Qga2V5IG9mIFsiY29kZWNQYXJhbWV0ZXJzQ2hhbmdlZCIsICJuYXRpdmVXYXNtQ2hhbmdlZCIsICJjb3B5TG9vcENoYW5nZWQiLCAicHVibGljQWNjZXB0YW5jZSIsICJwcmltYXJ5TWVtb3J5QWNjZXB0YW5jZSJdKQogICAgYXNzZXJ0LmVxdWFsKGJ1aWxkW2tleV0sIGZhbHNlLCBrZXkpOwogIGFzc2VydC5lcXVhbChidWlsZC5maXhlZENvcHlCdWZmZXJCeXRlcywgNTI0Mjg4KTsKICBhc3NlcnQuZXF1YWwoZ2VuZXJhdGVkLmhhbmRvZmZMaWZlY3ljbGUuYnVpbGRQcm9vZlBhdGguZW5kc1dpdGgoIi1zdGFnZWQtd29ya2VyLWhhbmRvZmYtYnVpbGQuanNvbiIpLCB0cnVlKTsKICBhc3NlcnQuZXF1YWwoZ2VuZXJhdGVkLmhhbmRvZmZMaWZlY3ljbGUubmF0aXZlU2V0dGluZ3NVbmNoYW5nZWQsIHRydWUpOwogIGFzc2VydC5lcXVhbChnZW5lcmF0ZWQuaGFuZG9mZkxpZmVjeWNsZS5uYXRpdmVQZWFrV2FzbUdhdGVVbmNoYW5nZWQsIHRydWUpOwogIGFzc2VydC5lcXVhbChyZXBvcnQubWFuaWZlc3QuYWdncmVnYXRlV2FzbU1lbW9yeUJ5dGVzLCA1MDMzMTY0OCk7CiAgYXNzZXJ0LmVxdWFsKHJlcG9ydC5tYW5pZmVzdC5hcnRpZmFjdHNbIndpdGhpbi1tcGVnMi1zcGxpdC53YXNtIl0sICJlMTVhYjE0ZTZmNjk2MWM5OTU5MWUyZTg0NjM1ZDBkOTBmMDAwYWE1MDQyY2QxMzRmZDk4MTIxNDJhZGU0ZjdlIik7CiAgYXNzZXJ0LmVxdWFsKHJlcG9ydC5tYW5pZmVzdC5hcnRpZmFjdHNbInNwbGl0LWVuY29kZXIud2FzbSJdLCAiYTRiYTYyMjU0MTRjYTdhNjU4ZDM0OWFlODE5MjZlNWVkMDQwZmE3M2JlNDU0MGZlOGE3YWRmNzY1NmZlMWNlZSIpOwogIGFzc2VydC5vayhnZW5lcmF0ZWQuc3BlYy5pbmNsdWRlcygiZXhwZWN0KHN0YXRlLm1ldHJpY3M/LnBlYWtXYXNtTWVtb3J5Qnl0ZXMpLnRvQmUoZXhwZWN0ZWRNZW1vcnlCeXRlcykiKSk7CiAgYXNzZXJ0Lm9rKGdlbmVyYXRlZC5zcGVjLmluY2x1ZGVzKCJleHBlY3Qoc3RhdGUubWV0cmljcz8ud2FzbU1lbW9yeUJ5dGVzKS50b0JlKDApIikpOwogIGNvbnN0IGFzc2V0cyA9IE9iamVjdC5mcm9tRW50cmllcyhidWlsZC5hc3NldHMubWFwKHJvdyA9PiBbcm93LnJvbGUsIHJvd10pKTsKICBhc3NlcnQuZXF1YWwoT2JqZWN0LmtleXMoYXNzZXRzKS5sZW5ndGgsIDMpOyBhc3NlcnQub2soYXNzZXRzWyJzYXZlLXdvcmtlciJdLmJ5dGVzIDwgMzI3NjgpOwogIGNvbnN0IGxpZmVjeWNsZSA9IHJlcG9ydC5yb3dzLmZpbHRlcihyb3cgPT4gcm93LmtpbmQgPT09ICJhY3R1YWwtc3RhZ2VkLXdvcmtlci1oYW5kb2ZmLWxpZmVjeWNsZSIpOwogIGFzc2VydC5lcXVhbChsaWZlY3ljbGUubGVuZ3RoLCA0KTsKICBsZXQgc2F2ZVdvcmtlcnNPYnNlcnZlZCA9IDA7CiAgZm9yIChjb25zdCByb3cgb2YgbGlmZWN5Y2xlKSB7CiAgICBhc3NlcnQuZXF1YWwocm93Lm9ic2VydmVkRXZlbnRzTm90UGh5c2ljYWxNZW1vcnlSZWxlYXNlUHJvb2YsIHRydWUpOwogICAgYXNzZXJ0LmVxdWFsKHJvdy5wdWJsaWNBY2NlcHRhbmNlLCBmYWxzZSk7IGFzc2VydC5vayhyb3cuZXZlbnRzLmxlbmd0aCA+IDAgJiYgcm93LmV2ZW50cy5sZW5ndGggPD0gMzIpOwogICAgbGV0IGFjdGl2ZSA9IG51bGwsIGNsb3NlZENvZGVjID0gZmFsc2UsIHNhdmVzID0gMDsKICAgIGZvciAoY29uc3QgZXZlbnQgb2Ygcm93LmV2ZW50cykgewogICAgICBhc3NlcnQub2soWyJjb2RlYyIsICJzYXZlIl0uaW5jbHVkZXMoZXZlbnQucm9sZSkpOyBhc3NlcnQub2soTnVtYmVyLmlzU2FmZUludGVnZXIoZXZlbnQub2JzZXJ2ZWRBdCkpOwogICAgICBjb25zdCB1cmwgPSBuZXcgVVJMKGV2ZW50LnVybCk7IGFzc2VydC5lcXVhbCh1cmwuaG9zdG5hbWUsICIxMjcuMC4wLjEiKTsKICAgICAgYXNzZXJ0LmVxdWFsKHVybC5wYXRobmFtZSwgYXNzZXRzW2V2ZW50LnJvbGUgPT09ICJjb2RlYyIgPyAiY29kZWMtd29ya2VyIiA6ICJzYXZlLXdvcmtlciJdLnVybCk7CiAgICAgIGlmIChldmVudC5ldmVudCA9PT0gImNyZWF0ZWQiKSB7CiAgICAgICAgYXNzZXJ0LmVxdWFsKGFjdGl2ZSwgbnVsbCwgIk5vIGNvbmN1cnJlbnRseSBvYnNlcnZlZCBjb2RlYy9zYXZlIHdvcmtlcnMiKTsKICAgICAgICBpZiAoZXZlbnQucm9sZSA9PT0gInNhdmUiKSB7IGFzc2VydC5lcXVhbChjbG9zZWRDb2RlYywgdHJ1ZSk7IGNsb3NlZENvZGVjID0gZmFsc2U7IHNhdmVzKys7IH0KICAgICAgICBhY3RpdmUgPSBldmVudC5yb2xlOwogICAgICB9IGVsc2UgewogICAgICAgIGFzc2VydC5lcXVhbChldmVudC5ldmVudCwgImNsb3NlZCIpOyBhc3NlcnQuZXF1YWwoYWN0aXZlLCBldmVudC5yb2xlKTsgYWN0aXZlID0gbnVsbDsKICAgICAgICBpZiAoZXZlbnQucm9sZSA9PT0gImNvZGVjIikgY2xvc2VkQ29kZWMgPSB0cnVlOwogICAgICB9CiAgICB9CiAgICBhc3NlcnQub2soc2F2ZXMgPj0gMSk7IGFzc2VydC5ub3RFcXVhbChhY3RpdmUsICJzYXZlIiwgIlNhdmUgd29ya2VyIG11c3QgYmUgb2JzZXJ2ZWQgcmV0aXJlZCIpOwogICAgc2F2ZVdvcmtlcnNPYnNlcnZlZCArPSBzYXZlczsKICB9CiAgYXNzZXJ0LmVxdWFsKHNhdmVXb3JrZXJzT2JzZXJ2ZWQsIDUsICJGb3VyIHN1Y2Nlc3NlcyBhbmQgb25lIGdlbnVpbmUgZmluYWwtd3JpdGUgZmFpbHVyZSIpOwogIHJldHVybiB7IGxpZmVjeWNsZVJvd3M6IDQsIHNhdmVXb3JrZXJzT2JzZXJ2ZWQsIG9ic2VydmVkV29ya2VyVXJsc01hdGNoQ29tcGlsZWRCdWlsZDogdHJ1ZSwKICAgIGV2ZW50RGlnZXN0OiBzaGEoSlNPTi5zdHJpbmdpZnkobGlmZWN5Y2xlKSksIG5hdGl2ZUFuZENvcHlTZXR0aW5nc1VuY2hhbmdlZDogdHJ1ZSwKICAgIGFjdHVhbEFwcFJlc3BvbnNlQnl0ZXNIYXNoZWQ6IGZhbHNlLCBwaHlzaWNhbFJlbGVhc2VCZWZvcmVDb3B5UHJvdmVuOiBmYWxzZSwKICAgIHByaW1hcnlNZW1vcnlBY2NlcHRhbmNlOiBmYWxzZSwgZnVsbE9yaWdpbmFsQWNjZXB0YW5jZTogZmFsc2UsIHB1YmxpY0FjY2VwdGFuY2U6IGZhbHNlLCBzcGVlZEdhaW5Qcm92ZW46IGZhbHNlIH07Cn0K"
+    },
+    "tests/staged-handoff-evidence.test.mjs": {
+      "sha256": "ff23e6aafbe04d145c6de43c742a210be10bf8f06c5ec504cc7fe07bc4336174",
+      "preimage": "aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyByZWFkRmlsZSB9IGZyb20gIm5vZGU6ZnMvcHJvbWlzZXMiOwppbXBvcnQgcGF0aCBmcm9tICJub2RlOnBhdGgiOwppbXBvcnQgeyB0ZXN0IH0gZnJvbSAibm9kZTp0ZXN0IjsKaW1wb3J0IHsgZ3VuemlwU3luYyB9IGZyb20gIm5vZGU6emxpYiI7CmltcG9ydCB7IHZlcmlmeUhhbmRvZmZCdWlsZEFuZEV2ZW50cyB9IGZyb20gIi4uL3NjcmlwdHMvbGliL3N0YWdlZC1oYW5kb2ZmLWV2aWRlbmNlLm1qcyI7CmNvbnN0IHJvb3QgPSBwYXRoLnJlc29sdmUoaW1wb3J0Lm1ldGEuZGlybmFtZSwgIi4uIik7CmFzeW5jIGZ1bmN0aW9uIGlucHV0cygpIHsKICBjb25zdCByZWFkID0gYXN5bmMgZmlsZSA9PiBKU09OLnBhcnNlKGF3YWl0IHJlYWRGaWxlKHBhdGguam9pbihyb290LCBmaWxlKSkpOwogIGNvbnN0IG1lZGlhID0gYXdhaXQgcmVhZCgiZXZpZGVuY2UvMjAyNi0xMC0xNVQxNy0wMi0wMy00NTdaLXN0YWdlZC1oYW5kb2ZmLW1lZGlhLmpzb24iKTsKICBjb25zdCB1bnBhY2sgPSBhc3luYyByZWNvcmQgPT4gSlNPTi5wYXJzZShndW56aXBTeW5jKGF3YWl0IHJlYWRGaWxlKHBhdGguam9pbihyb290LCByZWNvcmQucGF0aCkpKSk7CiAgY29uc3QgZ2VuZXJhdGVkID0gKGF3YWl0IHVucGFjayhtZWRpYS5nZW5lcmF0ZWRBcmNoaXZlKSkuZ2VuZXJhdGVkOwogIGNvbnN0IHJlcG9ydCA9IGF3YWl0IHVucGFjayhtZWRpYS5yZXBvcnQuYXJjaGl2ZSksIGJ1aWxkID0gYXdhaXQgcmVhZChnZW5lcmF0ZWQuaGFuZG9mZkxpZmVjeWNsZS5idWlsZFByb29mUGF0aCk7CiAgcmV0dXJuIHsgZ2VuZXJhdGVkLCByZXBvcnQsIGJ1aWxkIH07Cn0KdGVzdCgiYWN0dWFsIGZpdmUgd29ya2VyIGhhbmRvZmZzIHByZXNlcnZlIGV4YWN0IGNvbXBpbGVkL25hdGl2ZSBiaW5kaW5ncyB3aXRob3V0IGNsYWltaW5nIE9TIHJlbGVhc2UiLCBhc3luYyAoKSA9PiB7CiAgY29uc3QgeyBidWlsZCwgZ2VuZXJhdGVkLCByZXBvcnQgfSA9IGF3YWl0IGlucHV0cygpLCBjaGVja2VkID0gdmVyaWZ5SGFuZG9mZkJ1aWxkQW5kRXZlbnRzKGJ1aWxkLCBnZW5lcmF0ZWQsIHJlcG9ydCk7CiAgYXNzZXJ0LmVxdWFsKGNoZWNrZWQuc2F2ZVdvcmtlcnNPYnNlcnZlZCwgNSk7IGFzc2VydC5lcXVhbChjaGVja2VkLnBoeXNpY2FsUmVsZWFzZUJlZm9yZUNvcHlQcm92ZW4sIGZhbHNlKTsKICBhc3NlcnQuZXF1YWwoY2hlY2tlZC5wcmltYXJ5TWVtb3J5QWNjZXB0YW5jZSwgZmFsc2UpOyBhc3NlcnQuZXF1YWwoY2hlY2tlZC5hY3R1YWxBcHBSZXNwb25zZUJ5dGVzSGFzaGVkLCBmYWxzZSk7Cn0pOwp0ZXN0KCJyZWplY3QgY2hhbmdlZCBoZWFwcywgY29weSBidWZmZXIsIHNvdXJjZSBzZWFscywgd29ya2VyIGlkZW50aXR5IGFuZCBtaXNzaW5nL2NvbmN1cnJlbnQgcmV0aXJlbWVudCIsIGFzeW5jICgpID0+IHsKICBjb25zdCBvcmlnaW5hbCA9IGF3YWl0IGlucHV0cygpOwogIGZvciAoY29uc3QgbXV0YXRlIG9mIFsKICAgIGRhdGEgPT4geyBkYXRhLmJ1aWxkLmZpeGVkQ29weUJ1ZmZlckJ5dGVzICo9IDI7IH0sCiAgICBkYXRhID0+IHsgZGF0YS5idWlsZC5uYXRpdmVXYXNtQ2hhbmdlZCA9IHRydWU7IH0sCiAgICBkYXRhID0+IHsgZGF0YS5idWlsZC5wb3N0U291cmNlUGlucy5leHRyYSA9ICJmYWtlIjsgfSwKICAgIGRhdGEgPT4geyBkYXRhLnJlcG9ydC5tYW5pZmVzdC5hZ2dyZWdhdGVXYXNtTWVtb3J5Qnl0ZXMgPSAwOyB9LAogICAgZGF0YSA9PiB7IGRhdGEuZ2VuZXJhdGVkLnNwZWMgPSBkYXRhLmdlbmVyYXRlZC5zcGVjLnJlcGxhY2UoImV4cGVjdChzdGF0ZS5tZXRyaWNzPy5wZWFrV2FzbU1lbW9yeUJ5dGVzKS50b0JlKGV4cGVjdGVkTWVtb3J5Qnl0ZXMpIiwgIiIpOyB9LAogICAgZGF0YSA9PiB7IGRhdGEucmVwb3J0LnJvd3MuZmluZChyb3cgPT4gcm93LmtpbmQgPT09ICJhY3R1YWwtc3RhZ2VkLXdvcmtlci1oYW5kb2ZmLWxpZmVjeWNsZSIpLmV2ZW50c1syXS51cmwgPSAiaHR0cDovLzEyNy4wLjAuMS9hc3NldHMvb3RoZXIuanMiOyB9LAogICAgZGF0YSA9PiB7IGRhdGEucmVwb3J0LnJvd3MuZmluZChyb3cgPT4gcm93LmtpbmQgPT09ICJhY3R1YWwtc3RhZ2VkLXdvcmtlci1oYW5kb2ZmLWxpZmVjeWNsZSIpLmV2ZW50cy5zcGxpY2UoMSwgMSk7IH0sCiAgICBkYXRhID0+IHsgZGF0YS5yZXBvcnQucm93cy5maW5kKHJvdyA9PiByb3cua2luZCA9PT0gImFjdHVhbC1zdGFnZWQtd29ya2VyLWhhbmRvZmYtbGlmZWN5Y2xlIikuZXZlbnRzLnNwbGljZSgzLCAxKTsgfSwKICAgIGRhdGEgPT4geyBkYXRhLnJlcG9ydC5yb3dzLmZpbmQocm93ID0+IHJvdy5raW5kID09PSAiYWN0dWFsLXN0YWdlZC13b3JrZXItaGFuZG9mZi1saWZlY3ljbGUiKS5vYnNlcnZlZEV2ZW50c05vdFBoeXNpY2FsTWVtb3J5UmVsZWFzZVByb29mID0gZmFsc2U7IH0sCiAgXSkgeyBjb25zdCBjaGFuZ2VkID0gc3RydWN0dXJlZENsb25lKG9yaWdpbmFsKTsgbXV0YXRlKGNoYW5nZWQpOyBhc3NlcnQudGhyb3dzKCgpID0+IHZlcmlmeUhhbmRvZmZCdWlsZEFuZEV2ZW50cyhjaGFuZ2VkLmJ1aWxkLCBjaGFuZ2VkLmdlbmVyYXRlZCwgY2hhbmdlZC5yZXBvcnQpKTsgfQp9KTsK"
+    }
+  }
+}
