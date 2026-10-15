@@ -1,5 +1,46 @@
 # Remaining work audit
 
+## 2026-10-15 - Packet-drain candidate compiled and headless diagnostics verified
+
+Final focused regression:28/28 passed in10,248.4625ms; all18 new JavaScript
+files passed zero-warning ESLint, with `git diff --check` clean. This includes
+independent native/source/body and actual-browser/control-cleanup evidence checks.
+
+**Partially implemented**. No-Docker run38673138419/head6f18b41 passed all
+inherited native controls. Actual decoder SHA-256 is
+`b65cc5991e9a74486066a9b442b1c0036d04f7e5a925bcb951971e0f060df152`;
+fixed32MiB/shared/no-growth and separate encoder hash remain unchanged. All107
+parent paths survive within116 native pins, with exact executed-Git/current/post
+joins and preimages in221,966-byte lossless archive under the same128/2MiB caps.
+Of15 typed control functions, only `mpeg2_packets` has a changed body hash;
+fresh indices/layout are derived from this actual binary, not assumed.
+
+Actual headless Chrome155.0.8059.40 synthetic failure control passed on this
+candidate. Export-only diagnostic copy changed no code/data/types/imports/memory;
+the original callback ran once and bounded failure capture matched actual native
+frames. All11 observed owned process births are absent; browser profile, caller
+and synthetic copy were removed. Separate41-file browser seal retains exact
+pre/current/post sources in215,879-byte lossless archive;155 distinct native and
+browser sources are verified without raising either seal's limits.
+
+No original reads or real media conversions occurred. Headed/manual coverage,
+real-container fidelity, full original reliability, primary250MiB/three-run and
+speed acceptance remain unverified. The static native report's hook flag stays
+false historically; the separate actual browser receipt now proves diagnostic
+hook execution only. Native479-second job/434-second build are NOT conversion
+timings. Hosted duplicate11944892861 was removed after all20 local tool hashes
+were verified; fresh artifact listing confirms zero. Only the9,740,577-byte
+explicitly reusable candidate cache remains for browser media qualification.
+
+Next: derive the production media harness from the same qualified baseline,
+explicitly verify the queue-only manifest difference, then execute unchanged
+packet/content/quality/metadata/recovery gates. Do not silently replace an old
+container golden if queue order changes; establish independent stream-level
+equivalence before accepting any different container bytes. No unchanged full
+retry or public promotion. Full goal remains incomplete.
+Evidence: `evidence/packet-drain-native-38673138419.json` and
+`evidence/2026-10-15T03-05-18-782Z-packet-drain-browser-control-executed-sources.json`.
+
 ## 2026-10-15 - Private packet-queue drain candidate prepared
 
 **Partially implemented**. Added a reversible kernel-only change: after the

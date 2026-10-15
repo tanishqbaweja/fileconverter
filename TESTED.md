@@ -1,5 +1,40 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Actual packet-drain native build and headless diagnostic PASS
+
+Final focused regression:28/28 passed in10,248.4625ms, across packet-drain source,
+native recipe, actual evidence and browser-control tests plus inherited MVF,
+interleaver ownership and terminal-failure checks. All18 new JavaScript files
+passed ESLint `--max-warnings 0`; `git diff --check` passed.
+
+No-Docker run38673138419/head6f18b41 passed all inherited SDK, allocator,
+refstruct arena, EBML, packet-cache and actual libavformat ownership controls.
+Fresh native qualifier joins every116 executed-Git/current/post source and all20
+tool hashes;107 parent paths retained. Lossless221,966-byte native source archive
+stays within128 files/2MiB. Actual decoder b65cc599...0df152 is fixed32MiB/shared/
+no-growth; separate encoder8b2fd64d...f4242 is unchanged. All15 typed functions
+are freshly read from the binary; only `mpeg2_packets` differs from the parent
+among those15 bodies. Native build434s/job479s are not conversion speed results.
+
+Actual Chrome155.0.8059.40 headless synthetic control at03:05:18Z passed. Only
+the export section of its diagnostic copy changed; all native code/data/types/
+imports/memory remained exact. Actual six-frame synthetic failure path was
+symbolized from this binary, original callback ran once, and existing bounded
+scalar/header capture guards passed. All11 owned birth identities absent,
+profile/caller/export-only copy removed. Separate41-file browser pre/current/
+post seal in215,879-byte lossless gzip gives155 distinct sources together with
+native116, under the inherited separate128/2MiB limits.
+
+No real conversion, original read, native converter, public engine mutation,
+full-original reliability,250MiB acceptance, speed gain or headed/manual coverage
+is claimed. Hosted duplicate artifact11944892861 deleted only after20 local
+hashes/native provenance verification; fresh run listing confirms zero artifacts.
+The9,740,577-byte candidate tool cache is explicitly retained for the next real
+production-browser media qualification; other temporary control data is gone.
+See `evidence/packet-drain-native-38673138419.json`, its source-bound build and
+qualifier receipts, and
+`evidence/2026-10-15T03-05-18-782Z-packet-drain-browser-control-executed-sources.json`.
+
 ## 2026-10-15 - Private queue-drain implementation: focused source checks passed
 
 New source factory derives the exact qualified largest-idle split kernel and
