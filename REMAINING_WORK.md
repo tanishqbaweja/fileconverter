@@ -1,5 +1,19 @@
 # Remaining work audit
 
+## 2026-10-16 - Changed full Run1 encoding; threaded validation follows
+
+**Partially implemented / running**. At22:35:57Z the exact39084/33844 supervisor/
+child births remain live, stderr empty. Actual driver2240/parent33844/
+birth22:28:55.3808180Z launched:
+`evidence/2026-10-15T22-27-06-823Z-threaded-validation-full-live.json`.
+Stable lower blank230.117MiB, genuine Run1 input9,660,042B/output19,316,548B,
+observed primary peak increment228.566MiB so far. These are partial observations,
+not finalized memory/fidelity acceptance. Same original/no resizing/q4/4Mbps/
+fixed heaps/all-tree250MiB. Source timing validator now4threads; other validation
+and converter settings unchanged. Prior same-source encode/save~3h01m; sleep3h
+interruptibly while autonomous monitoring/cleanup continues. No restart on timer.
+0/3 validated repeats; final quality and broad project scope remain unproven.
+
 ## 2026-10-16 - Changed threaded-validator full supervisor launched
 
 **Partially implemented / running**. One changed three-repeat session launched

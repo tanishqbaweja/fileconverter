@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+## 2026-10-16 - Changed full Run1 genuinely encoding; no acceptance yet
+
+22:35:57Z supervisor39084/child33844 exact births verified live; driver2240/
+birth22:28:55.3808180Z. Actual live receipt
+`evidence/2026-10-15T22-27-06-823Z-threaded-validation-full-live.json`.
+Stable lower blank230.117MiB; original-source input9,660,042B/output19,316,548B;
+observed peak increment228.566MiB so far. Same source/geometry/quality/heaps/gates.
+Source-only native validator threads4, not a browser encode change.3h interruptible
+timer from prior comparable encode;0/3 validated repeats, no final/public claim.
+
 ## 2026-10-16 - Changed full supervisor started; acceptance pending
 
 One changed session22:26:52Z, exact handle
