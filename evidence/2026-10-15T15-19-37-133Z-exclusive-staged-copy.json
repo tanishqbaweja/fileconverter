@@ -1,0 +1,225 @@
+{
+  "recordedAt": "2026-10-15T15:19:37.135Z",
+  "status": "failed-not-media-acceptance",
+  "scope": "controlled-production-loop-storage-only-not-media-acceptance",
+  "output": "evidence/2026-10-15T15-19-37-133Z-exclusive-staged-copy.json",
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\exclusive-staged-copy-oYCoJC",
+  "browserMode": "headless",
+  "windowsHidden": true,
+  "noDocker": true,
+  "fixtureBytes": 6414309978,
+  "formula": "peak complete Chromium tree private bytes minus same stable blank instance private bytes",
+  "primaryLimitMiB": 250,
+  "host": {
+    "acquiredAt": "2026-10-15T15:19:37.8075974Z",
+    "freePhysicalBytes": 6648434688,
+    "freeVirtualBytes": 8459522048,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "diskFreeBytes": 2101341765632,
+  "browserPin": {
+    "version": "155.0.8059.40",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4586648,
+      "sha256": "f76f0234efb271041dc84f9f38fb858e01859d5da6f775f5108668eb3ae80975",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "27021597764749677",
+        "birthtimeNs": "1791867752971432600",
+        "mtimeNs": "1791260841522006000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\155.0.8059.40\\chrome.dll",
+      "bytes": 304965272,
+      "sha256": "b3d501c2e9af53f3e9e5d44c006aa42ed137cfb2d1dc161e3eca77cfbd48ea21",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "180706935048772181",
+        "birthtimeNs": "1791867752984997700",
+        "mtimeNs": "1791260850912621000"
+      }
+    }
+  },
+  "blank": {
+    "stable": true,
+    "privateBytes": 297152512,
+    "spreadBytes": 0,
+    "rssBytes": 616833024,
+    "firstTimestamp": "2026-10-15T15:25:28.737Z",
+    "lastTimestamp": "2026-10-15T15:25:37.637Z",
+    "sampleCount": 5,
+    "minimumElapsedMs": 8000
+  },
+  "runs": [],
+  "adverse": [],
+  "forbiddenRequests": [],
+  "identities": [
+    {
+      "role": "headless-chrome",
+      "identity": {
+        "pid": 35708,
+        "parentPid": 37808,
+        "createdAt": "2026-10-15T15:19:41.0907870Z"
+      },
+      "exitObservation": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 35708,
+          "parentPid": 37808,
+          "createdAt": "2026-10-15T15:19:41.0907870Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-15T15:25:39.696Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 885,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    },
+    {
+      "role": "native-memory-observer",
+      "identity": {
+        "pid": 12844,
+        "parentPid": 37808,
+        "createdAt": "2026-10-15T15:19:44.6432740Z"
+      },
+      "exitObservation": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 12844,
+          "parentPid": 37808,
+          "createdAt": "2026-10-15T15:19:44.6432740Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-15T15:25:41.034Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1338,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    }
+  ],
+  "sourcePins": {
+    "scripts/benchmark-exclusive-staged-copy.mjs": "4bebe9be27a9e46570e812ac9a1734a79362aeb8a7558b378978bd9012e4ba95",
+    "scripts/lib/staged-copy-diagnostic-worker.mjs": "89e1be0b2bb7c0db0ce3123a8f9b0447970c007123364fe3a85874ae2a249d06",
+    "scripts/lib/exclusive-staged-writer.mjs": "efd69168d9b70be5e254196ee23d8697b0836b416a29f9b01cf6711057476005",
+    "scripts/lib/exclusive-staged-writer.d.mts": "f9ee820cad67f4cd2db5956124376d0488833d82e2fb1340970cae6c2a6597a8",
+    "scripts/lib/exclusive-stage-worker-recipe.mjs": "270aa3dfc3739417fee15148c2172e8f5df17e013cfe05a08908721edb4eb7b0",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "scripts/lib/stable-ui-headless-baseline-recipe.mjs": "6ad946837905a0c46e8019d31e16b480689d2bfa01bfcff544aa5770b63c7046",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "scripts/lib/installed-chrome-pin.mjs": "0f8731d998853343595e0453cf3fa4fd9df51721eedae47e03aaa3a87ab1cab6",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/ebml-reuse-browser-components.mjs": "39247cae67a79e07044c95a15c7652f82ffee3407bb9abf442ee84b6b01e97c0",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+    "scripts/lib/wasm-function-metadata.mjs": "b25430a8b4a1e5ed6510d85efc6a01cb65aa8b085fd3b632962f8c35a0815360",
+    "scripts/lib/wasm-stack-symbols.mjs": "dc342d621c989cc299a2aab44f02cfb8785993e0952e32a51abd41cb78081975"
+  },
+  "postSourcePins": {
+    "scripts/benchmark-exclusive-staged-copy.mjs": "4bebe9be27a9e46570e812ac9a1734a79362aeb8a7558b378978bd9012e4ba95",
+    "scripts/lib/staged-copy-diagnostic-worker.mjs": "89e1be0b2bb7c0db0ce3123a8f9b0447970c007123364fe3a85874ae2a249d06",
+    "scripts/lib/exclusive-staged-writer.mjs": "efd69168d9b70be5e254196ee23d8697b0836b416a29f9b01cf6711057476005",
+    "scripts/lib/exclusive-staged-writer.d.mts": "f9ee820cad67f4cd2db5956124376d0488833d82e2fb1340970cae6c2a6597a8",
+    "scripts/lib/exclusive-stage-worker-recipe.mjs": "270aa3dfc3739417fee15148c2172e8f5df17e013cfe05a08908721edb4eb7b0",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "scripts/lib/stable-ui-headless-baseline-recipe.mjs": "6ad946837905a0c46e8019d31e16b480689d2bfa01bfcff544aa5770b63c7046",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "scripts/lib/installed-chrome-pin.mjs": "0f8731d998853343595e0453cf3fa4fd9df51721eedae47e03aaa3a87ab1cab6",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/ebml-reuse-browser-components.mjs": "39247cae67a79e07044c95a15c7652f82ffee3407bb9abf442ee84b6b01e97c0",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+    "scripts/lib/wasm-function-metadata.mjs": "b25430a8b4a1e5ed6510d85efc6a01cb65aa8b085fd3b632962f8c35a0815360",
+    "scripts/lib/wasm-stack-symbols.mjs": "dc342d621c989cc299a2aab44f02cfb8785993e0952e32a51abd41cb78081975"
+  },
+  "failure": {
+    "name": "AssertionError",
+    "message": "No larger replacement baseline",
+    "stack": "AssertionError [ERR_ASSERTION]: No larger replacement baseline\n    at file:///H:/Github%20Repositories/fileconverter/scripts/benchmark-exclusive-staged-copy.mjs:98:45\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+  },
+  "cleanupErrors": [],
+  "mediaConversionAcceptance": false,
+  "fullOriginalAcceptance": false,
+  "publicAcceptance": false,
+  "nativeConvertersUsed": false,
+  "recipe": {
+    "generatedSha256": "fffcb6eab71121302f4a953d6b916798eb3427b0d5ffe8d9a2892203f6c4d4ca",
+    "productionLoopSha256": "d12a69fdbb41bce87f4e8e553484ad88f2063c9922a993cf6ef6308d1dc3a307",
+    "productionWorkerSha256": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "fixtureBytes": 6414309978,
+    "maximumBufferBytes": 524288,
+    "nativeConvertersUsed": false,
+    "mediaConversionAcceptance": false
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-15T15-19-37-133Z-exclusive-staged-copy-sources.json.gz",
+    "bytes": 92320,
+    "sha256": "35ca4792444520071ae4e18e775739b8bb8311b240dbaa329fe4796775bcf794",
+    "restoredBytes": 335593,
+    "restoredSha256": "507b786fae662b52c157419fb916475fb7940c6a0c7946dd2865b0edae646e77"
+  },
+  "runtimeRemoved": true,
+  "browserPinAfter": {
+    "version": "155.0.8059.40",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4586648,
+      "sha256": "f76f0234efb271041dc84f9f38fb858e01859d5da6f775f5108668eb3ae80975",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "27021597764749677",
+        "birthtimeNs": "1791867752971432600",
+        "mtimeNs": "1791260841522006000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\155.0.8059.40\\chrome.dll",
+      "bytes": 304965272,
+      "sha256": "b3d501c2e9af53f3e9e5d44c006aa42ed137cfb2d1dc161e3eca77cfbd48ea21",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "180706935048772181",
+        "birthtimeNs": "1791867752984997700",
+        "mtimeNs": "1791260850912621000"
+      }
+    }
+  },
+  "nativeArchive": {
+    "path": "outputs/reports/2026-10-15T15-19-37-133Z-exclusive-staged-copy-native.json.gz",
+    "bytes": 24369,
+    "sha256": "1384a604f4d54be78ac0f013393be56971e1bc6b40d647b7a51286a1d18da0a1",
+    "restoredBytes": 415684,
+    "restoredSha256": "64d5abec0ce127dad598e538ca558b9a88bfd16b786f14c96d699a6f90efaab0"
+  },
+  "finishedAt": "2026-10-15T15:25:43.676Z"
+}

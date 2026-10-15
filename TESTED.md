@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Exclusive final-copy writer prototype: unit/type/bundle PASS
+
+Seven focused candidate tests PASS8,607.5972ms; two lower-denominator diagnostic
+tests PASS323.3425ms. Full project TypeScript check with the changed production
+worker overlay and real esbuild browser-worker bundle PASS, no output artifacts
+written. Eight new JavaScript files zero-warning ESLint PASS. Sink keeps exactly
+one writer/one pending operation, uses existing512KiB buffer and original copy
+loop, releases locks/references on close/cancellation/failure, preserves bytes.
+Historical worker source and all codec/native/heap settings stay unchanged.
+
+First storage control15:19:37Z failed before generating data: late stable blank
+297,152,512B was higher than early blank.0 copy runs, no media, no acceptance;
+19 pre/post sources preserved, both owned processes gone and runtime removed.
+Receipt `evidence/2026-10-15T15-19-37-133Z-exclusive-staged-copy.json` retains
+compact source/native reports. Changed storage-only derivative uses the LOWER
+of two actual stable windows and records both; original full-media gates stay
+untouched. Six large-copy and adverse browser results are pending, not passed.
+
 ## 2026-10-15 - Full candidate terminal: final-copy memory FAIL258.168MiB
 
 Final focused regression10/10 PASS19,210.507ms; three audit/test JavaScript files

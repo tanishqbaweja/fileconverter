@@ -1,5 +1,38 @@
 # Remaining work audit
 
+## 2026-10-15 - Single-writer final-copy candidate implemented; measurement pending
+
+**Partially implemented**. A private production-worker derivative wraps only
+the staged final sink with one retained WritableStreamDefaultWriter rather than
+acquiring/releasing a writer for every chunk. Standard reference:
+https://fs.spec.whatwg.org/#api-filesystemwritablefilestream-write . This is an
+allocation-churn hypothesis, not a proven explanation for the observed60MB step.
+The same512KiB reusable buffer, exact copy/read/progress loop, one awaited write,
+source reads, codec settings,32+16MiB heaps, cancellation and abort path remain.
+Three reversible worker edits; historical production source stays byte-exact.
+
+Seven candidate tests PASS8,607.5972ms, including exact bytes/tails, no concurrent
+queueing, write/close/abort failure propagation, lock/reference cleanup and full
+project TypeScript validation using the changed worker overlay plus real esbuild
+bundle. Initial test invocation required passing the actual tsconfig filename
+to preserve its incremental option; no compiler rule was disabled.
+
+Storage-only diagnostic first control
+`evidence/2026-10-15T15-19-37-133Z-exclusive-staged-copy.json` stopped before any
+fixture/copy: the late stable blank297,152,512B exceeded its earlier blank.
+No denominator was inflated. Both owned root/observer exited and runtime was
+removed;0 runs, no converted media. All19 pre/post source pins and compact source/
+native archives are retained. Do not rerun that unchanged control.
+
+A separately recorded derivative now chooses the lower actual stable window
+for this storage-only diagnostic, explicitly retaining both measurements; it
+does not change any full-media baseline, formula, limit or acceptance gate.
+Two mutation/reversal tests PASS323.3425ms. Eight new JavaScript files passed
+zero-warning lint. Pending: six exact6,414,309,978B copy measurements plus fault/
+cancellation checks; then genuine production media validation and a changed
+full-original attempt only if evidence justifies the candidate. No memory,
+end-to-end speed, public or full-original acceptance from this prototype.
+
 ## 2026-10-15 - Full encoding finishes; final-copy memory fails, retry withheld
 
 Final focused regression10/10 PASS19,210.507ms, including retained audit/source/
