@@ -1,5 +1,38 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Pinned Wasm packet interleaver ownership experiment PASSED
+
+Final focused command: `node scripts/run-repository-owned-node.mjs --test
+tests/mpeg2-packet-interleave.test.mjs
+tests/packet-interleave-ownership-evidence.test.mjs tests/mpeg2-mvf-arena.test.mjs
+tests/mvf-arena-full-terminal.test.mjs`: 17/17 passed, 9,920.6033ms.
+Nine-file ESLint with `--max-warnings 0` and `git diff --check` passed.
+Fresh remote artifact listing independently confirms zero retained artifacts.
+
+This supersedes the pending native execution note below, not the failed full
+conversion. No-Docker hosted run38671160915 passed in413 seconds (368-second
+build step); these timings are compilation, NOT conversion performance.
+Real Wasm32 libavformat version4066406/FFmpeg8.1.2 retained all8 matched queued
+packet buffers until draining; explicit drains allowed one payload allocation
+instead of eight. 4,000 repeated two-stream transfers, complete synthetic
+payload/padding checks, per-stream timestamps, external aliases, a sink-held
+reference, deferred close, propagated write failure, abandonment and balanced
+owned allocations passed. No live references were forcibly dropped.
+
+Production decoder2aa60267...22576 and encoder8b2fd64d...f4242 are unchanged.
+All107 native source pins retain the99 parent files; the only changed inherited
+source is the isolated workflow. Exact current/post pins, preimages, generated
+collector/branch/hosted sources and manifest survive a losslessly verified
+259,961-byte gzip. No native or browser media conversion occurred. The previous
+fatal-time cache state, full-original completion, real-container fidelity,
+250MiB/three-run acceptance and conversion speed improvement remain unproven.
+
+Fresh duplicate tooling20files/9,741,876bytes was deleted only after verification
+against19 retained parent files and archiving the exact new manifest. Verified
+hosted duplicate artifact11944443742 was deleted; run artifact count is zero.
+All owned download/terminal runtime scratch was removed; original media was not
+read or changed. See `evidence/packet-interleave-ownership-38671160915.json`.
+
 ## 2026-10-15 - Packet interleaver native experiment: source checks only
 
 Prepared an additive actual-Wasm32/pinned-libavformat ownership experiment,

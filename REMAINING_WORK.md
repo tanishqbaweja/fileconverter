@@ -1,5 +1,37 @@
 # Remaining work audit
 
+## 2026-10-15 - Actual packet interleaver ownership verified; conversion fix still pending
+
+Final focused regression: 17/17 passed in9,920.6033ms; all nine new JavaScript
+files passed zero-warning lint and `git diff --check` passed. Independent fresh
+hosted-artifact listing confirms zero; no interleave scratch/cache remains.
+
+**Partially implemented**. No-Docker run38671160915 executed the new Wasm32
+test against real pinned FFmpeg8.1.2 libraries and passed every inherited gate.
+Eight matched video packets required eight cache payload allocations while
+retained by the real interleaver, versus one when explicitly drained. All4,000
+repeat transfers, exact synthetic payload/padding/per-stream timestamps, external
+aliases plus sink-held references, deferred close, write-error propagation and
+abandoned-queue cleanup passed. These are actual library results, not real media,
+full-file memory acceptance, proof of fatal-time ownership or a speed benchmark.
+
+The production decoder and encoder reproduced byte-for-byte unchanged. All99
+parent sources are retained within107 native source pins; only the isolated
+workflow differs among inherited sources. Exact source preimages, generated
+collectors and new manifest are losslessly archived in259,961 bytes. The fresh
+9,741,876-byte duplicate tool cache was removed after all19 non-manifest files
+matched the retained parent; the exact manifest survives in compact evidence.
+Hosted artifact11944443742 was deleted after verification; the run has zero
+artifacts. No conversion outputs, profiles or original-video reads were created.
+
+Next: prepare a private queue-drain candidate using only the interleaved-write
+API, preserving reference ownership/error propagation. Validate real-container
+packet/content/timestamp/metadata/quality equivalence before a changed original
+run; queue draining can alter global packet order, so synthetic ownership success
+alone must not relax the existing media gates. The full goal remains incomplete.
+Evidence: `evidence/packet-interleave-ownership-38671160915.json` and its linked
+source archive and source-bound build receipt.
+
 ## 2026-10-15 - Packet interleaver ownership experiment prepared
 
 **Partially implemented**: the previous full conversion is still failed, not
