@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Private queue-drain implementation: focused source checks passed
+
+New source factory derives the exact qualified largest-idle split kernel and
+adds only an explicit existing-interleaver flush after each successful video
+packet, preserving existing release acknowledgement and propagating flush/AVIO
+errors. Removing the insertion restores every parent byte. Bridge, timestamps,
+encoded payload, cache refcounts, codecs, quality, fixed heaps and public routes
+are unchanged. New nested generators route the actual production build through
+this source and retain all inherited native lifecycle/error controls.
+
+21 focused tests passed, 5,242.2016ms. Initial exact-generator guard rejected an
+incorrect relative module-path replacement; fixed to the parent's absolute URI
+before any native build or conversion. Source-only checks are not compiled
+behavior, browser fidelity, fatal-state proof, speed or full-original acceptance.
+Actual no-Docker compilation and native ABI qualification are next; no unchanged
+full-file retry. All generated test runtime scratch was removed.
+
 ## 2026-10-15 - Pinned Wasm packet interleaver ownership experiment PASSED
 
 Final focused command: `node scripts/run-repository-owned-node.mjs --test

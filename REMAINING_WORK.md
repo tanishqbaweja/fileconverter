@@ -1,5 +1,24 @@
 # Remaining work audit
 
+## 2026-10-15 - Private packet-queue drain candidate prepared
+
+**Partially implemented**. Added a reversible kernel-only change: after the
+existing successful video packet write, encoder-release acknowledgement and
+write-error checks, call `av_interleaved_write_frame(output, NULL)` and propagate
+its error and the AVIO error. No mixed write APIs, forced unrefs, payload/cache
+policy, codec settings, timestamp rewriting, heap growth or public route changes.
+All original kernel bytes return exactly when that one insertion is removed.
+The native build retains the107-source ownership-test parent and adds nine
+files, all previous smokes, fixed32MiB decoder and unchanged separate encoder.
+
+21 focused tests passed in5,242.2016ms. The first new generator test caught a
+relative-path replacement where the parent already used an absolute module URI;
+the exact guarded replacement and assertion were corrected before any native
+execution. No native failure/retry, conversion or protected-source read occurred.
+Actual build, current ABI, browser fidelity, full original, three-run memory and
+speed acceptance remain pending. Keep it private; queue draining may change
+container packet order and must not relax real-stream/metadata/quality gates.
+
 ## 2026-10-15 - Actual packet interleaver ownership verified; conversion fix still pending
 
 Final focused regression: 17/17 passed in9,920.6033ms; all nine new JavaScript
