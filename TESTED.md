@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Changed full session launched; not yet conversion evidence
+
+Durable headless supervisor17:32:28Z launched one changed three-repeat session.
+Receipt `evidence/2026-10-15T17-32-28-152Z-composited-handoff-supervisor-full.json`;
+owned supervisor9420/birth17:32:29.0152950Z, child25356/birth17:32:32.3138310Z.
+Startup/baseline/encoding are pending, not claimed complete.0/3 validated full
+repeats. Unchanged lower baseline/250MiB/fidelity/cleanup gates and no restart.
+Harness and compact preparation evidence pushed through2b03a84.
+
 ## 2026-10-15 - Full handoff harness actual preparation PASS708 sources
 
 Final focused regression8/8 PASS27,748.3261ms including actual708-source replay;

@@ -1,5 +1,17 @@
 # Remaining work audit
 
+## 2026-10-15 - Changed full-original session supervisor launched; acceptance pending
+
+**Partially implemented / running**. One durable headless three-repeat session
+launched17:32:28Z, after8/8 focused tests and pushed harness2b03a84. Exact handle:
+`evidence/2026-10-15T17-32-28-152Z-composited-handoff-supervisor-full.json`.
+Supervisor9420/birth17:32:29.0152950Z; child25356/parent9420/birth17:32:32.3138310Z.
+This records supervisor readiness only; browser baseline/encoding/completion are
+not yet verified. No auto-retry. Recheck these exact births/report, not an old
+lock/status/latest log. Original3h per encode estimate; allow~7min startup and
+baseline before first check, then sleep against actual/comparable progress.
+Full validated repeats remain0/3 and broad original-spec scope remains open.
+
 ## 2026-10-15 - Changed full-original harness prepared successfully
 
 Final focused regression8/8 PASS27,748.3261ms, including actual708-preimage
