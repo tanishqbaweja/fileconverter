@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Full Run1 encode+save COMPLETE; validation pending
+
+After3h timer: same exact supervisor/child/driver live, no terminal error. Actual
+output6,414,309,978B; native incremental peak through encoding/save225.359MiB,
+stable lower blank232.293MiB. Genuine original-source browser conversion; no
+native conversion or resized/partial-source substitution. Full validation now
+running, NOT yet accepted. FFprobe/count_frames17908/birth20:57:22.0841750Z read
+1.868GB in140s, supporting~6min remaining for that pass.45min conservative timer
+allows subsequent full timing/audio/decode/SSIM validation.0/3 validated repeats;
+no final memory/speed/public claim. Output kept only for validation, then cleaned.
+
 ## 2026-10-15 - Actual changed full Run1 encoding; no acceptance yet
 
 17:57Z verified supervisor28932/child38420/driver21416 exact births live.

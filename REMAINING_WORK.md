@@ -1,5 +1,22 @@
 # Remaining work audit
 
+## 2026-10-15 - Full Run1 encoded and saved6.414GB; validation live
+
+**Partially implemented / running**. After the3h interruptible sleep, the exact
+supervisor28932/child38420/driver21416 births remain live. Run1 genuinely reached
+complete with6,414,309,978B output from the unchanged2,958,573,265B original;
+native incremental peak through encode/save225.359MiB above232.293MiB lower blank.
+This is partial session evidence, not a finalized memory/fidelity pass or proof
+of speed improvement. First independent ffprobe/count_frames child17908/
+parent21416/birth20:57:22.0841750Z is live; at20:59:41 it read1,867,957,231B in
+~140s (~13MB/s). Allow~6min for that pass and~45min conservative overall validation
+for further whole-file timestamp/audio/decode/SSIM checks. Native tools validate
+only; conversion was entirely production Chromium.0/3 repeats accepted until
+independent checks and cleanup pass. Same exact supervisor/live handles above;
+no restart, no baseline/250MiB/settings change. Automated repeats continue only
+after successful validation and cleanup; disposable output remains repository-
+local only while needed by validators.
+
 ## 2026-10-15 - Changed full-original Run1 genuinely encoding
 
 **Partially implemented / running**. Changed query-reliable supervisor17:47:58Z
