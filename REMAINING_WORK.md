@@ -1,5 +1,46 @@
 # Remaining work audit
 
+## 2026-10-16 - Full file creation within observed memory; native validator failed
+
+Validator control21:54:44Z now live: one/four threads produce identical decoded
+pixels and ordered timestamps for all96 full-geometry fixture frames. Timings
+0.633s vs2.211s are noisy small-control observations, NOT a speed win. Actual
+unchanged full source4-thread extraction has52,105 frames in122,055ms (~427fps),
+supporting~10min remaining under the unchanged30min cap. Exact handle
+`evidence/2026-10-15T21-54-44-094Z-source-frame-threads-live.json`, owned ffprobe6040/
+parent39368/birth21:55:03.5996400Z. Full-source result still pending; no encode retry.
+
+**Partially implemented**. Session is TERMINAL, not live; later repeats were NOT
+started. Independent audit:
+`evidence/2026-10-15T17-48-11-250Z-composited-handoff-full-terminal-analysis.json`.
+Genuine browser HEVC decode/MPEG2 encode saved6,414,309,978B,296,160 frames/packets,
+original1920x804/default4Mbps/q4/fixed32+16MiB, final scratch0/current Wasm0/peak48MiB/
+4B cancel signal. Peak complete Chromium tree479,883,264B minus stable lower blank
+243,576,832B =225.359375MiB.99,862 native conversion samples,0 unavailable conversion
+samples, no dropped/rewritten timestamps. One unavailable STARTUP sample retained
+as unavailable, never0 or a baseline. No forcedGC/process exclusions/inflation.
+
+MP4 structural/count_frames probe identified296,160 MPEG2 frames and expected
+audio/artwork. Then the independent source decoded-frame timestamp ffprobe command
+failed. Exact timestamp comparison, audio equivalence, xerror decode and full SSIM
+were NOT reached; full output SHA was not reached.0/3 accepted repeats, no public/
+profile memory/speed/fidelity acceptance.30min timeout is a timing-based inference,
+not proven exit/signal cause because historical harness omitted those fields.
+
+All714 executed pre/current/post source records replayed;27 owned birth identities
+independently absent, no orphan validator lineage found, original full SHA unchanged,
+normal assets restored and all6.414GB media/profile/scratch removed.31,423B raw
+checkpoint losslessly compressed/removed; compact native/source/report archives
+retained. Two terminal audit tests PASS1,102.9733ms; four audit/parser tests PASS
+837.3978ms; new parser/validator JS zero-warning lint PASS. No unchanged3h retry.
+
+Installed FFprobe help confirms decoder threads DEFAULT1, frame/slice support.
+A separate independent-validator control is testing explicit4 threads, requiring
+all96 deterministic fixture pixel hashes and timestamps equal to1thread, followed
+by ALL296,160 frames of the exact protected original under the UNCHANGED30min
+validator deadline. Native tools validate only; browser codec settings unchanged.
+Full-source control results pending, not assumed successful.
+
 ## 2026-10-15 - Full Run1 encoded and saved6.414GB; validation live
 
 **Partially implemented / running**. After the3h interruptible sleep, the exact

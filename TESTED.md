@@ -1,5 +1,34 @@
 # Tested conversion ledger
 
+## 2026-10-16 - Full terminal: encode/save complete225.359MiB, validator FAIL
+
+Native validator control21:54:44Z: all96 fixture decoded pixel hashes and ordered
+timestamps match1vs4threads. Small timings0.633/2.211s are NOT a speed conclusion.
+Actual full source4-thread extraction52,105 frames/122.055s (~427fps), remaining
+estimate~10min; original30min deadline unchanged. Full result pending. Exact live
+receipt `evidence/2026-10-15T21-54-44-094Z-source-frame-threads-live.json`.
+
+`evidence/2026-10-15T17-48-11-250Z-composited-handoff-full-terminal-analysis.json`.
+Genuine full-original browser conversion6,414,309,978B /296,160 frames. Encode+save
+10,887,789.325ms (~3h01m28s); encoding completion bracket10,824,523.220-
+10,826,732.275ms. No controlled speed improvement claim. Whole-tree peak479,883,264B
+minus stable lower blank243,576,832B =225.359375MiB,99,862 valid conversion samples,
+0 unavailable conversion samples; single unavailable startup sample retained.
+Native heaps/current0/peak48MiB at saver, one512KiB buffer, one pending write.
+
+Output MP4/count_frames probe sees296,160 MPEG2 frames plus audio/artwork. Source
+frame timestamp ffprobe command then failed; timing/audio/full-xerror/SSIM/hash
+validation not completed,0/3 accepted repeats. Suspected30min validator timeout
+not proven: exit/signal were omitted by old harness. Profile memory/public/full
+acceptance remains false despite the observed single-attempt memory result.
+
+714 current/executed/post source records verified,27 owned births gone and no
+orphan validator lineage. All disposable converted/profile data removed, normal
+assets restored, original full SHA unchanged.31,423B checkpoint losslessly gzipped
+and raw removed. Four audit/parser focused tests PASS837.3978ms. InstalledFFprobe
+defaults1 decoder thread; separate4-thread validator qualification pending, with
+unchanged30min deadline and full-source/frame-count requirements. No encode retry.
+
 ## 2026-10-15 - Full Run1 encode+save COMPLETE; validation pending
 
 After3h timer: same exact supervisor/child/driver live, no terminal error. Actual
