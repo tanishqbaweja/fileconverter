@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Copy diagnostic safeguards:11 tests PASS, large results pending
+
+11/11 focused tests PASS10,986.197ms; phased quota wrapper/script/tests zero-
+warning ESLint PASS. Full changed-worker TypeScript/esbuild checks retained.
+Lower-blank control15:37:19Z produced0 copies: rejected reported quota before
+fixture generation, then completed cleanly15:58:27Z after exact owned-root
+cleanup.21 pre/post pins equal, both recorded processes gone, runtime removed.
+
+Chromium's usage+10GiB estimate behavior is documented in its static-quota policy;
+the actual full-media report likewise records10737418240B available at two usage
+levels. New storage-only derivative preserves6,414,309,978B source AND output,
+full12,828,619,956B peak disk plan and32GiB physical preflight, rechecking each
+additional6.414GB allocation against a fresh estimate. It requests persistence,
+propagates actual quota errors, and has bounded HTTP/browser cleanup and current-
+operation checkpoints. No quota/browser policy changed; full-media gates remain
+exact. No large-copy performance or memory claim until measurements complete.
+
 ## 2026-10-15 - Exclusive final-copy writer prototype: unit/type/bundle PASS
 
 Seven focused candidate tests PASS8,607.5972ms; two lower-denominator diagnostic

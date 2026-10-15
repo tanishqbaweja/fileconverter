@@ -1,0 +1,253 @@
+{
+  "recordedAt": "2026-10-15T15:37:19.892Z",
+  "status": "failed-not-media-acceptance",
+  "scope": "controlled-production-loop-storage-only-not-media-acceptance",
+  "output": "evidence/2026-10-15T15-37-19-888Z-exclusive-staged-copy-lower.json",
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\exclusive-staged-copy-bzwAg5",
+  "browserMode": "headless",
+  "windowsHidden": true,
+  "noDocker": true,
+  "fixtureBytes": 6414309978,
+  "formula": "peak complete Chromium tree private bytes minus same stable blank instance private bytes",
+  "primaryLimitMiB": 250,
+  "host": {
+    "acquiredAt": "2026-10-15T15:37:22.7814938Z",
+    "freePhysicalBytes": 6044487680,
+    "freeVirtualBytes": 7114276864,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "diskFreeBytes": 2099642327040,
+  "browserPin": {
+    "version": "155.0.8059.40",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4586648,
+      "sha256": "f76f0234efb271041dc84f9f38fb858e01859d5da6f775f5108668eb3ae80975",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "27021597764749677",
+        "birthtimeNs": "1791867752971432600",
+        "mtimeNs": "1791260841522006000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\155.0.8059.40\\chrome.dll",
+      "bytes": 304965272,
+      "sha256": "b3d501c2e9af53f3e9e5d44c006aa42ed137cfb2d1dc161e3eca77cfbd48ea21",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "180706935048772181",
+        "birthtimeNs": "1791867752984997700",
+        "mtimeNs": "1791260850912621000"
+      }
+    }
+  },
+  "blank": {
+    "stable": true,
+    "privateBytes": 286003200,
+    "spreadBytes": 5464064,
+    "rssBytes": 604426240,
+    "firstTimestamp": "2026-10-15T15:37:58.206Z",
+    "lastTimestamp": "2026-10-15T15:38:08.200Z",
+    "sampleCount": 14,
+    "minimumElapsedMs": 8000
+  },
+  "runs": [],
+  "adverse": [],
+  "forbiddenRequests": [],
+  "identities": [
+    {
+      "role": "headless-chrome",
+      "identity": {
+        "pid": 25968,
+        "parentPid": 39380,
+        "createdAt": "2026-10-15T15:37:25.1327030Z"
+      },
+      "exitObservation": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 25968,
+          "parentPid": 39380,
+          "createdAt": "2026-10-15T15:37:25.1327030Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-15T15:58:21.343Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 755,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    },
+    {
+      "role": "native-memory-observer",
+      "identity": {
+        "pid": 13992,
+        "parentPid": 39380,
+        "createdAt": "2026-10-15T15:37:27.4411570Z"
+      },
+      "exitObservation": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 13992,
+          "parentPid": 39380,
+          "createdAt": "2026-10-15T15:37:27.4411570Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-15T15:58:22.573Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1229,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    }
+  ],
+  "sourcePins": {
+    "scripts/benchmark-exclusive-staged-copy-lower.mjs": "83406e28a44f355a3234fbe201797851212da8f70bff590cf239afca2f893c46",
+    "scripts/lib/exclusive-copy-lower-baseline.mjs": "f39107061297e9811f935f773acc6431da8cb7bb0532d8833f4c2e39e11ab3c6",
+    "scripts/benchmark-exclusive-staged-copy.mjs": "4bebe9be27a9e46570e812ac9a1734a79362aeb8a7558b378978bd9012e4ba95",
+    "scripts/lib/staged-copy-diagnostic-worker.mjs": "89e1be0b2bb7c0db0ce3123a8f9b0447970c007123364fe3a85874ae2a249d06",
+    "scripts/lib/exclusive-staged-writer.mjs": "efd69168d9b70be5e254196ee23d8697b0836b416a29f9b01cf6711057476005",
+    "scripts/lib/exclusive-staged-writer.d.mts": "f9ee820cad67f4cd2db5956124376d0488833d82e2fb1340970cae6c2a6597a8",
+    "scripts/lib/exclusive-stage-worker-recipe.mjs": "270aa3dfc3739417fee15148c2172e8f5df17e013cfe05a08908721edb4eb7b0",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "scripts/lib/stable-ui-headless-baseline-recipe.mjs": "6ad946837905a0c46e8019d31e16b480689d2bfa01bfcff544aa5770b63c7046",
+    "scripts/lib/ebml-reuse-browser-components.mjs": "39247cae67a79e07044c95a15c7652f82ffee3407bb9abf442ee84b6b01e97c0",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "scripts/lib/installed-chrome-pin.mjs": "0f8731d998853343595e0453cf3fa4fd9df51721eedae47e03aaa3a87ab1cab6",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+    "scripts/lib/wasm-function-metadata.mjs": "b25430a8b4a1e5ed6510d85efc6a01cb65aa8b085fd3b632962f8c35a0815360",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/wasm-stack-symbols.mjs": "dc342d621c989cc299a2aab44f02cfb8785993e0952e32a51abd41cb78081975"
+  },
+  "postSourcePins": {
+    "scripts/benchmark-exclusive-staged-copy-lower.mjs": "83406e28a44f355a3234fbe201797851212da8f70bff590cf239afca2f893c46",
+    "scripts/lib/exclusive-copy-lower-baseline.mjs": "f39107061297e9811f935f773acc6431da8cb7bb0532d8833f4c2e39e11ab3c6",
+    "scripts/benchmark-exclusive-staged-copy.mjs": "4bebe9be27a9e46570e812ac9a1734a79362aeb8a7558b378978bd9012e4ba95",
+    "scripts/lib/staged-copy-diagnostic-worker.mjs": "89e1be0b2bb7c0db0ce3123a8f9b0447970c007123364fe3a85874ae2a249d06",
+    "scripts/lib/exclusive-staged-writer.mjs": "efd69168d9b70be5e254196ee23d8697b0836b416a29f9b01cf6711057476005",
+    "scripts/lib/exclusive-staged-writer.d.mts": "f9ee820cad67f4cd2db5956124376d0488833d82e2fb1340970cae6c2a6597a8",
+    "scripts/lib/exclusive-stage-worker-recipe.mjs": "270aa3dfc3739417fee15148c2172e8f5df17e013cfe05a08908721edb4eb7b0",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "scripts/lib/stable-ui-headless-baseline-recipe.mjs": "6ad946837905a0c46e8019d31e16b480689d2bfa01bfcff544aa5770b63c7046",
+    "scripts/lib/ebml-reuse-browser-components.mjs": "39247cae67a79e07044c95a15c7652f82ffee3407bb9abf442ee84b6b01e97c0",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "scripts/lib/installed-chrome-pin.mjs": "0f8731d998853343595e0453cf3fa4fd9df51721eedae47e03aaa3a87ab1cab6",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+    "scripts/lib/wasm-function-metadata.mjs": "b25430a8b4a1e5ed6510d85efc6a01cb65aa8b085fd3b632962f8c35a0815360",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/wasm-stack-symbols.mjs": "dc342d621c989cc299a2aab44f02cfb8785993e0952e32a51abd41cb78081975"
+  },
+  "failure": {
+    "name": "AssertionError",
+    "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ {\n+   message: 'Insufficient diagnostic quota',\n+   name: 'Error'\n+ }\n- undefined\n",
+    "stack": "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ {\n+   message: 'Insufficient diagnostic quota',\n+   name: 'Error'\n+ }\n- undefined\n\n    at data:text/javascript;base64,Ly8gQ29udHJvbGxlZDYuNDE0R0Igc3RvcmFnZS1vbmx5IGNvbXBhcmlzb247IE5PVCBhIHN1YnN0aXR1dGUgZm9yIHRoZSBvcmlnaW5hbAovLyBtZWRpYSBjb252ZXJzaW9uLCBpdHMgZnVsbCBzb3VyY2UsIGZpZGVsaXR5LCBtZW1vcnkgb3IgdGhyZWUtcnVuIGdhdGUuCmltcG9ydCBhc3NlcnQgZnJvbSAibm9kZTphc3NlcnQvc3RyaWN0IjsKaW1wb3J0IHsgc3Bhd24gfSBmcm9tICJub2RlOmNoaWxkX3Byb2Nlc3MiOwppbXBvcnQgeyBjcmVhdGVIYXNoIH0gZnJvbSAibm9kZTpjcnlwdG8iOwppbXBvcnQgeyBjcmVhdGVSZWFkU3RyZWFtIH0gZnJvbSAibm9kZTpmcyI7CmltcG9ydCB7IGFjY2VzcywgcmVhZEZpbGUsIHJlYWRkaXIsIHN0YXQsIHN0YXRmcywgd3JpdGVGaWxlIH0gZnJvbSAibm9kZTpmcy9wcm9taXNlcyI7CmltcG9ydCB7IGNyZWF0ZVNlcnZlciB9IGZyb20gIm5vZGU6aHR0cCI7CmltcG9ydCBwYXRoIGZyb20gIm5vZGU6cGF0aCI7CmltcG9ydCB7IGd6aXBTeW5jLCBndW56aXBTeW5jIH0gZnJvbSAibm9kZTp6bGliIjsKaW1wb3J0IHsgY2hyb21pdW0gfSBmcm9tICJmaWxlOi8vL0g6L0dpdGh1YiUyMFJlcG9zaXRvcmllcy9maWxlY29udmVydGVyL25vZGVfbW9kdWxlcy9AcGxheXdyaWdodC90ZXN0L2luZGV4Lm1qcyI7CmltcG9ydCB7IHNoYSB9IGZyb20gImZpbGU6Ly8vSDovR2l0aHViJTIwUmVwb3NpdG9yaWVzL2ZpbGVjb252ZXJ0ZXIvc2NyaXB0cy9saWIvc3RhYmxlLXVpLWhlYWRsZXNzLWJhc2VsaW5lLXJlY2lwZS5tanMiOwppbXBvcnQgeyBjcmVhdGVPd25lZFJ1bnRpbWVTY3JhdGNoLCBmaW5pc2hPd25lZENsZWFudXAgfSBmcm9tICJmaWxlOi8vL0g6L0dpdGh1YiUyMFJlcG9zaXRvcmllcy9maWxlY29udmVydGVyL3NjcmlwdHMvbGliL293bmVkLXJ1bnRpbWUtc2NyYXRjaC5tanMiOwppbXBvcnQgeyBpbnNwZWN0U3RyZXNzSG9zdE1lbW9yeSB9IGZyb20gImZpbGU6Ly8vSDovR2l0aHViJTIwUmVwb3NpdG9yaWVzL2ZpbGVjb252ZXJ0ZXIvc2NyaXB0cy9saWIvaG9zdC1tZW1vcnktcHJlZmxpZ2h0Lm1qcyI7CmltcG9ydCB7IGluc3BlY3RJbnN0YWxsZWRDaHJvbWVQaW4sIGFzc2VydEluc3RhbGxlZENocm9tZVBpbnNFcXVhbCB9IGZyb20gImZpbGU6Ly8vSDovR2l0aHViJTIwUmVwb3NpdG9yaWVzL2ZpbGVjb252ZXJ0ZXIvc2NyaXB0cy9saWIvaW5zdGFsbGVkLWNocm9tZS1waW4ubWpzIjsKaW1wb3J0IHsgcXVlcnlQcm9jZXNzSWRlbnRpdHksIG9ic2VydmVPd25lZFByb2Nlc3NFeGl0IH0gZnJvbSAiZmlsZTovLy9IOi9HaXRodWIlMjBSZXBvc2l0b3JpZXMvZmlsZWNvbnZlcnRlci9zY3JpcHRzL2xpYi9vd25lZC1wcm9jZXNzLWV4aXQtb2JzZXJ2YXRpb24ubWpzIjsKaW1wb3J0IHsgc2FtcGxlQ2hyb21pdW1UcmVlLCBzdGFibGVXaW5kb3cgfSBmcm9tICJmaWxlOi8vL0g6L0dpdGh1YiUyMFJlcG9zaXRvcmllcy9maWxlY29udmVydGVyL3NjcmlwdHMvbGliL2Nocm9taXVtLXByaXZhdGUtbWVtb3J5Lm1qcyI7CmltcG9ydCB7IHN0YXJ0UGFyYWxsZWxNZW1vcnlPYnNlcnZlciB9IGZyb20gImZpbGU6Ly8vSDovR2l0aHViJTIwUmVwb3NpdG9yaWVzL2ZpbGVjb252ZXJ0ZXIvc2NyaXB0cy9saWIvcGFyYWxsZWwtbWVtb3J5LW9ic2VydmVyLm1qcyI7CmltcG9ydCB7IG1ha2VTdGFnZWRDb3B5RGlhZ25vc3RpY1dvcmtlciB9IGZyb20gImZpbGU6Ly8vSDovR2l0aHViJTIwUmVwb3NpdG9yaWVzL2ZpbGVjb252ZXJ0ZXIvc2NyaXB0cy9saWIvc3RhZ2VkLWNvcHktZGlhZ25vc3RpYy13b3JrZXIubWpzIjsKYXNzZXJ0LmVxdWFsKHByb2Nlc3MuYXJndi5sZW5ndGgsIDIpOwpjb25zdCByb290ID0gIkg6XFxHaXRodWIgUmVwb3NpdG9yaWVzXFxmaWxlY29udmVydGVyIiwgc3RhbXAgPSBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCkucmVwbGFjZUFsbCgvWzouXS9nLCAiLSIpOwpjb25zdCBvdXRwdXQgPSBgZXZpZGVuY2UvJHtzdGFtcH0tZXhjbHVzaXZlLXN0YWdlZC1jb3B5LWxvd2VyLmpzb25gLCBydW50aW1lID0gYXdhaXQgY3JlYXRlT3duZWRSdW50aW1lU2NyYXRjaCgiZXhjbHVzaXZlLXN0YWdlZC1jb3B5LSIpOwpjb25zdCBwYXVzZSA9IG1zID0+IG5ldyBQcm9taXNlKHJlc29sdmUgPT4gc2V0VGltZW91dChyZXNvbHZlLCBtcykpOwpjb25zdCBzdGF0ZSA9IHsgcmVjb3JkZWRBdDogbmV3IERhdGUoKS50b0lTT1N0cmluZygpLCBzdGF0dXM6ICJzdGFydGluZyIsIHNjb3BlOiAiY29udHJvbGxlZC1wcm9kdWN0aW9uLWxvb3Atc3RvcmFnZS1vbmx5LW5vdC1tZWRpYS1hY2NlcHRhbmNlIiwKICBvdXRwdXQsIHJ1bnRpbWVEaXJlY3Rvcnk6IHJ1bnRpbWUuZGlyZWN0b3J5LCBicm93c2VyTW9kZTogImhlYWRsZXNzIiwgd2luZG93c0hpZGRlbjogdHJ1ZSwgbm9Eb2NrZXI6IHRydWUsCiAgZml4dHVyZUJ5dGVzOiA2NDE0MzA5OTc4LCBmb3JtdWxhOiAicGVhayBjb21wbGV0ZSBDaHJvbWl1bSB0cmVlIHByaXZhdGUgYnl0ZXMgbWludXMgc2FtZSBzdGFibGUgYmxhbmsgaW5zdGFuY2UgcHJpdmF0ZSBieXRlcyIsCiAgcHJpbWFyeUxpbWl0TWlCOiAyNTAsIGhvc3Q6IG51bGwsIGRpc2tGcmVlQnl0ZXM6IG51bGwsIGJyb3dzZXJQaW46IG51bGwsIGJsYW5rOiBudWxsLCBydW5zOiBbXSwgYWR2ZXJzZTogW10sCiAgZm9yYmlkZGVuUmVxdWVzdHM6IFtdLCBpZGVudGl0aWVzOiBbXSwgc291cmNlUGluczoge30sIHBvc3RTb3VyY2VQaW5zOiB7fSwgZmFpbHVyZTogbnVsbCwgY2xlYW51cEVycm9yczogW10sCiAgbWVkaWFDb252ZXJzaW9uQWNjZXB0YW5jZTogZmFsc2UsIGZ1bGxPcmlnaW5hbEFjY2VwdGFuY2U6IGZhbHNlLCBwdWJsaWNBY2NlcHRhbmNlOiBmYWxzZSwgbmF0aXZlQ29udmVydGVyc1VzZWQ6IGZhbHNlIH07CmxldCBzZXJ2ZXIsIGNocm9tZSwgYnJvd3Nlciwgb2JzZXJ2ZXIsIHBhZ"
+  },
+  "cleanupErrors": [],
+  "mediaConversionAcceptance": false,
+  "fullOriginalAcceptance": false,
+  "publicAcceptance": false,
+  "nativeConvertersUsed": false,
+  "recipe": {
+    "generatedSha256": "fffcb6eab71121302f4a953d6b916798eb3427b0d5ffe8d9a2892203f6c4d4ca",
+    "productionLoopSha256": "d12a69fdbb41bce87f4e8e553484ad88f2063c9922a993cf6ef6308d1dc3a307",
+    "productionWorkerSha256": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "fixtureBytes": 6414309978,
+    "maximumBufferBytes": 524288,
+    "nativeConvertersUsed": false,
+    "mediaConversionAcceptance": false
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-15T15-37-19-888Z-exclusive-staged-copy-lower-sources.json.gz",
+    "bytes": 93677,
+    "sha256": "327cd6a225acf81a07576ac8b374a17eaab2a17affa10a0ff3f1a33315c2c694",
+    "restoredBytes": 339945,
+    "restoredSha256": "21a967d4f87625907b248ac8f679984eded46baa02473767e2cb3940f99483c2"
+  },
+  "blankWindows": {
+    "early": {
+      "stable": true,
+      "privateBytes": 286003200,
+      "spreadBytes": 5464064,
+      "rssBytes": 604426240,
+      "firstTimestamp": "2026-10-15T15:37:58.206Z",
+      "lastTimestamp": "2026-10-15T15:38:08.200Z",
+      "sampleCount": 14,
+      "minimumElapsedMs": 8000
+    },
+    "settled": {
+      "stable": true,
+      "privateBytes": 296259584,
+      "spreadBytes": 1032192,
+      "rssBytes": 620175360,
+      "firstTimestamp": "2026-10-15T15:43:11.588Z",
+      "lastTimestamp": "2026-10-15T15:43:19.305Z",
+      "sampleCount": 6,
+      "minimumElapsedMs": 8000
+    },
+    "chosenLower": true,
+    "storageOnlyNotFullMediaAcceptance": true
+  },
+  "runtimeRemoved": true,
+  "browserPinAfter": {
+    "version": "155.0.8059.40",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4586648,
+      "sha256": "f76f0234efb271041dc84f9f38fb858e01859d5da6f775f5108668eb3ae80975",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "27021597764749677",
+        "birthtimeNs": "1791867752971432600",
+        "mtimeNs": "1791260841522006000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\155.0.8059.40\\chrome.dll",
+      "bytes": 304965272,
+      "sha256": "b3d501c2e9af53f3e9e5d44c006aa42ed137cfb2d1dc161e3eca77cfbd48ea21",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "180706935048772181",
+        "birthtimeNs": "1791867752984997700",
+        "mtimeNs": "1791260850912621000"
+      }
+    }
+  },
+  "nativeArchive": {
+    "path": "outputs/reports/2026-10-15T15-37-19-888Z-exclusive-staged-copy-lower-native.json.gz",
+    "bytes": 26637,
+    "sha256": "68b340f504dfecd08ac0855d53a1111450f966844a5a154bf210a2ae690bc0b4",
+    "restoredBytes": 424911,
+    "restoredSha256": "ef04b31862b76ce8ba138d7b576c2382ce978638d61ad4eda5076be6d5eba086"
+  },
+  "finishedAt": "2026-10-15T15:58:27.495Z"
+}

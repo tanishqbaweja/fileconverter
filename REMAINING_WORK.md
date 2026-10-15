@@ -1,5 +1,37 @@
 # Remaining work audit
 
+## 2026-10-15 - Copy diagnostic quota policy corrected; full-media gates unchanged
+
+**Partially implemented**. Single-writer prototype remains unpromoted. Final
+focused regression11/11 PASS10,986.197ms; all new quota-wrapper JavaScript lint
+PASS. The generated changed production worker also typechecks and bundles.
+
+The lower-blank control
+`evidence/2026-10-15T15-37-19-888Z-exclusive-staged-copy-lower.json` stopped
+before fixture generation: initial12,828,619,956B two-file check exceeded the
+reported quota.0 copies, no generated media;21 pre/post source pins preserved.
+The HTTP/browser-disconnect cleanup waited until the exact owned Chrome root
+25968/parent39380/birth15:37:25.132703Z/profileexclusive-staged-copy-bzwAg5 was
+closed after the memory observer had exited. No unrelated process was stopped;
+both recorded births and runtime are now absent. A debugger request was refused
+when the caller had already exited; no debugger was attached. No unchanged retry.
+
+Chromium's documented static estimate can be usage+10GiB while enforced quota
+is unaffected:
+https://chromium.googlesource.com/chromium/src/components/policy/+/b8e7e44318f442747ca9b3d38edde021a254ac1e/resources/templates/policy_definitions/Miscellaneous/StaticStorageQuotaEnabled.yaml
+The earlier full-media report independently shows exactly10GiB reported headroom
+at both sampled usage levels. A separate phased diagnostic now records the full
+two-file peak plan, requests persistence and checks the additional6,414,309,978B
+before source allocation and before EVERY output allocation. Unavailable or
+insufficient headroom still fails, and real QuotaExceededError still aborts.
+The unchanged32GiB physical-disk preflight covers both complete files. No smaller
+fixture, policy/flag override, quota exemption or acceptance-limit change.
+
+Its exact original512KiB production copy loop and six-run plan are retained;
+per-operation checkpoints and bounded disconnect/HTTP-connection cleanup prevent
+a failed control from remaining silently live. Browser measurements are pending;
+no media fidelity, memory or speed acceptance follows from these diagnostic fixes.
+
 ## 2026-10-15 - Single-writer final-copy candidate implemented; measurement pending
 
 **Partially implemented**. A private production-worker derivative wraps only
