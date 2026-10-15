@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Corrected full-original preparation: PASS, zero conversions
+
+Final focused regression7/7 PASS22,669.934ms, including actual archive656-source
+materialization and driver acceptance-token verification.
+
+`scripts/run-duration-drain-full.mjs --prepare-only` produced
+`evidence/2026-10-15T11-14-20-754Z-duration-drain-original-full-preparation.json`:
+status prepared-not-executed, failure null, executions0, all656 pre/post source
+pins equal, retained588 parent plus68 independently bounded new paths. New
+gzip archive199,579B/restored844,740B. Wrapper/candidate absent, assets restored,
+cleanup errors empty. Protected original wholeSHA/size unchanged31f366...b9db34/
+2,958,573,265B. Host physical5,602,750,464B/virtual9,155,846,144B safety PASS;
+disk2,111,240,691,712B exceeds unchanged32GiB requirement.
+
+Three focused harness tests PASS22,220.2822ms; seven-file zero-warning ESLint
+PASS. Actual current native identity/address validation accepts genuine control
+and rejects mutated addresses/schema/identity. Production driver retains full
+original/three runs/250MiB exact tree formula/five-minute stable lower blank/
+100ms native monitor/fixed32+16MiB/4Mbps/q4/SSIM>=.98/six-hour per-run gates.
+Full validator does not install small-fixture packet-array collection. This is
+preparation only: no full-original, memory, speed, public or headed acceptance.
+
 ## 2026-10-15 - Corrected real browser media is packet/timing/content exact: PASS
 
 Final focused regression49/49 PASS18,191.0875ms, including genuine prior-output

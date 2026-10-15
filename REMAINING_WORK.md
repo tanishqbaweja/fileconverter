@@ -1,5 +1,38 @@
 # Remaining work audit
 
+## 2026-10-15 - Corrected full-original harness prepared; stress execution next
+
+Final focused regression:7/7 passed in22,669.934ms, including independent
+materialization of all656 actual preparation preimages and exact driver gates.
+
+**Partially implemented**. New duration-drain full harness binds the actually
+qualified e15ab1...e4f7e decoder, unchanged a4ba62...6fe1cee plane encoder and
+338-source exact packet/timing/content/metadata qualification. Prior rejected
+timing output stays rejected; no historical golden was overwritten.
+
+Preparation `evidence/2026-10-15T11-14-20-754Z-duration-drain-original-full-preparation.json`
+passed with zero conversions. All588 previously executed full-source preimages
+remain hash-bound; a separate68-source layer fits its own128-file/2MiB envelope,
+16 external-record limit and8MiB runtime archive. Older508+80 layer and original
+380+128 caps remain intact, rather than flattening/raising their limits.
+The compact new source archive is199,579 bytes, restoring844,740 bytes.
+
+Three focused harness tests passed in22,220.2822ms; seven new JavaScript files
+passed zero-warning ESLint. Whole protected original before/after remains
+2,958,573,265 bytes/SHA25631f366...b9db34. Preflight recorded5,602,750,464 free
+physical bytes,9,155,846,144 free virtual bytes and2,111,240,691,712 free disk
+bytes. Preparation's owned wrapper/candidate were removed and normal assets
+restored. Native diagnostic addresses derive from the actual current build.
+
+Full conversion validation remains streaming (the bounded small packet-array
+probe is not installed). Full original,4Mbps/q4/fixed32+16MiB, five-minute lower
+blank baseline, full-tree native100ms sampling,250MiB primary cap,SSIM>=.98,
+three completed independent repeats and six-hour per-run deadline are retained.
+Full-source completion, memory acceptance and speed gain remain unproven. Next:
+fresh host/disk preflight and one supervised changed-candidate stress attempt;
+no automatic retry on failure. Verified media checkpoint88f1011 is pushed to
+the requested GitHub repository's media-options branch.
+
 ## 2026-10-15 - Duration correction passes exact real-media fidelity; full-original still open
 
 Final focused regression:49/49 passed in18,191.0875ms;23 new JavaScript files
