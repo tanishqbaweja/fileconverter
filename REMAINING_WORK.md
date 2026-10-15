@@ -1,5 +1,44 @@
 # Remaining work audit
 
+## 2026-10-16 - Threaded-validator full preparation PASS726 sources
+
+**Partially implemented**. Actual preparation PASS:
+`evidence/2026-10-15T22-21-04-092Z-threaded-validation-original-full-preparation.json`.
+0 conversion executions, failure null, cleanup errors empty. All726 source
+pre/current/post records replayed:714 executed parent paths plus12 new paths;
+original128-file/2MiB per-layer caps retained. Native validator qualification and
+binary pins identical before/after. Protected original full SHA unchanged,
+normal production intact, temporary candidate/wrapper absent.
+
+Final focused regression8/8 PASS26,593.1674ms; six-file zero-warning ESLint PASS.
+Tests replay actual preparation and native-source qualification, mutate invalid
+pixel/timestamp/deadline/source proofs, preserve every original browser/fidelity/
+memory/repeat gate, and exercise exact generated error bookkeeping. Changed
+session is ready to launch, NOT yet run or accepted. No browser code or encoding
+settings changed;0/3 accepted full repeats and broad original-spec work remain.
+
+## 2026-10-16 - Four-thread source validator integrated; full preparation next
+
+**Partially implemented**. New full stress derivative uses the qualified4-thread
+decoder ONLY when extracting timestamps from the unchanged original source;
+output timing decode stays at its original1thread. The original strict CSV
+parser, per-frame<=1ms comparison, complete frame counts, audio/artwork/metadata,
+xerror decode, full SSIM>=0.98 and30min/32MiB native-validator caps are unchanged.
+No browser engine, q4/4Mbps, geometry, fixed heaps, copy/queue, three-repeat,
+lower5min blank or complete-process250MiB gate changes.
+
+Three focused integration/negative tests PASS21,825.9913ms; five-file zero-warning
+lint PASS. Added bounded native failure fields (elapsed/deadline/code/signal/
+killed/stderr tail) so a later failed validator is not diagnosed from an omitted
+exit record. Native executable hashes are checked against actual qualification
+both before and after the test. Actual no-conversion preparation is pending.
+
+All714 paths from the prior executed full run are retained in their original
+verified layer. A separate128-file/2MiB additive layer captures new test sources;
+no old preimage/cap is dropped or expanded. Prior full source-timing failure and
+0/3 accepted repeats remain authoritative until changed full tests pass. Broad
+original-spec requirements remain open; no public/profile or fastest-speed claim.
+
 ## 2026-10-16 - Entire original source timing validator qualified at4 threads
 
 Final regression5/5 PASS3,080.4696ms; seven-file zero-warning lint PASS.

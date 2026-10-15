@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+## 2026-10-16 - Threaded full preparation PASS;8 focused regressions PASS
+
+Actual `evidence/2026-10-15T22-21-04-092Z-threaded-validation-original-full-preparation.json`:
+726 source records(714 parent+12 additive), all executed/current/post matched,
+128-file/2MiB caps unchanged. Native tool/qualification pins equal before/after,
+original full SHA unchanged, normal assets intact, candidate/wrapper removed.
+No conversion execution or cleanup errors.8/8 focused tests PASS26,593.1674ms;
+six-file zero-warning ESLint PASS. Exact generated native failure metadata
+retains deadline/buffer/error identity. Original CSV parser, source/output frame
+comparison, SSIM0.98,250MiB lower-baseline formula and three repeats unchanged.
+Changed full session pending;0/3 accepted repeats, no full/public/speed claim.
+
+## 2026-10-16 - Source validator integration focused tests PASS; preparation pending
+
+3 focused tests PASS21,825.9913ms; five-file zero-warning ESLint PASS. Original
+source timestamp extraction now uses qualified4 native threads; output timing
+decode remains1thread. Strict frame parser/1ms timing comparison/full counts/
+audio/artwork/metadata/xerror/SSIM0.98/30min/32MiB gates unchanged. No browser
+conversion/settings/250MiB/three-repeat or lower-baseline change. Native failure
+metadata now bounded and explicit; binary pins checked before/after.714 historical
+source records retained, separate new128-file/2MiB layer. Actual preparation next;
+no accepted full repeat or public/speed acceptance yet.
+
 ## 2026-10-16 - Whole original source4-thread timestamp validation PASS
 
 Final regression5/5 PASS3,080.4696ms; seven-file zero-warning lint PASS.
