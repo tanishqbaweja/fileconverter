@@ -1,0 +1,617 @@
+{
+  "recordedAt": "2026-10-15T16:05:01.942Z",
+  "status": "six-exact-large-copies-and-three-adverse-cases-passed-not-media-acceptance",
+  "scope": "controlled-production-loop-storage-only-not-media-acceptance",
+  "output": "evidence/2026-10-15T16-05-01-937Z-exclusive-staged-copy-phased.json",
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\exclusive-staged-copy-4IkuHy",
+  "browserMode": "headless",
+  "windowsHidden": true,
+  "noDocker": true,
+  "fixtureBytes": 6414309978,
+  "formula": "peak complete Chromium tree private bytes minus same stable blank instance private bytes",
+  "primaryLimitMiB": 250,
+  "host": {
+    "acquiredAt": "2026-10-15T16:05:05.5109411Z",
+    "freePhysicalBytes": 6143516672,
+    "freeVirtualBytes": 7439597568,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "diskFreeBytes": 2099516764160,
+  "browserPin": {
+    "version": "155.0.8059.40",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4586648,
+      "sha256": "f76f0234efb271041dc84f9f38fb858e01859d5da6f775f5108668eb3ae80975",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "27021597764749677",
+        "birthtimeNs": "1791867752971432600",
+        "mtimeNs": "1791260841522006000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\155.0.8059.40\\chrome.dll",
+      "bytes": 304965272,
+      "sha256": "b3d501c2e9af53f3e9e5d44c006aa42ed137cfb2d1dc161e3eca77cfbd48ea21",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "180706935048772181",
+        "birthtimeNs": "1791867752984997700",
+        "mtimeNs": "1791260850912621000"
+      }
+    }
+  },
+  "blank": {
+    "stable": true,
+    "privateBytes": 292208640,
+    "spreadBytes": 4005888,
+    "rssBytes": 604581888,
+    "firstTimestamp": "2026-10-15T16:05:41.463Z",
+    "lastTimestamp": "2026-10-15T16:05:52.390Z",
+    "sampleCount": 15,
+    "minimumElapsedMs": 8000
+  },
+  "runs": [
+    {
+      "number": 1,
+      "mode": "convenience",
+      "quotaPlan": {
+        "estimate": {
+          "quota": 17151728416,
+          "usage": 6414310176,
+          "usageDetails": {
+            "fileSystem": 6414310176
+          }
+        },
+        "reportedAvailableBytes": 10737418240,
+        "additionalBytesRequiredNow": 6414309978,
+        "fullPlannedPeakFileBytes": 12828619956,
+        "quotaIsAnEstimateNotAHardCapacity": true,
+        "noSmallerFixture": true,
+        "physicalPreflightMinimumBytes": 34359738368
+      },
+      "outputBytes": 6414309978,
+      "elapsedMs": 54897.960000008345,
+      "metrics": {
+        "inputBytes": 0,
+        "outputBytes": 6414309978,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288,
+        "maxWriteChunkBytes": 524288,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 524288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1
+      },
+      "writer": null,
+      "mediaConversion": false,
+      "outputSha256": "afe3adaff8f99764343048a309cfa159b3fdd8f33299ebc6a8c4dfef875a2fef",
+      "incrementalTreePrivateMiB": 60.421875,
+      "peakTreePrivateBytes": 355565568,
+      "peakTreeRssBytes": 689713152,
+      "validSamples": 509,
+      "unavailableSamples": 0
+    },
+    {
+      "number": 2,
+      "mode": "exclusive",
+      "quotaPlan": {
+        "estimate": {
+          "quota": 17151728416,
+          "usage": 6414310176,
+          "usageDetails": {
+            "fileSystem": 6414310176
+          }
+        },
+        "reportedAvailableBytes": 10737418240,
+        "additionalBytesRequiredNow": 6414309978,
+        "fullPlannedPeakFileBytes": 12828619956,
+        "quotaIsAnEstimateNotAHardCapacity": true,
+        "noSmallerFixture": true,
+        "physicalPreflightMinimumBytes": 34359738368
+      },
+      "outputBytes": 6414309978,
+      "elapsedMs": 61481.50999999046,
+      "metrics": {
+        "inputBytes": 0,
+        "outputBytes": 6414309978,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288,
+        "maxWriteChunkBytes": 524288,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 524288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1
+      },
+      "writer": {
+        "phase": "closed",
+        "locks": 1,
+        "releases": 1,
+        "writes": 12235,
+        "maximumWriteBytes": 524288,
+        "pendingOperations": 0,
+        "retainedWriter": false,
+        "retainedStream": false,
+        "additionalCopyBufferBytes": 0,
+        "queuedChunks": 0
+      },
+      "mediaConversion": false,
+      "outputSha256": "afe3adaff8f99764343048a309cfa159b3fdd8f33299ebc6a8c4dfef875a2fef",
+      "incrementalTreePrivateMiB": 63.70703125,
+      "peakTreePrivateBytes": 359010304,
+      "peakTreeRssBytes": 695173120,
+      "validSamples": 571,
+      "unavailableSamples": 0
+    },
+    {
+      "number": 3,
+      "mode": "exclusive",
+      "quotaPlan": {
+        "estimate": {
+          "quota": 17151728416,
+          "usage": 6414310176,
+          "usageDetails": {
+            "fileSystem": 6414310176
+          }
+        },
+        "reportedAvailableBytes": 10737418240,
+        "additionalBytesRequiredNow": 6414309978,
+        "fullPlannedPeakFileBytes": 12828619956,
+        "quotaIsAnEstimateNotAHardCapacity": true,
+        "noSmallerFixture": true,
+        "physicalPreflightMinimumBytes": 34359738368
+      },
+      "outputBytes": 6414309978,
+      "elapsedMs": 101197.84499999881,
+      "metrics": {
+        "inputBytes": 0,
+        "outputBytes": 6414309978,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288,
+        "maxWriteChunkBytes": 524288,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 524288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1
+      },
+      "writer": {
+        "phase": "closed",
+        "locks": 1,
+        "releases": 1,
+        "writes": 12235,
+        "maximumWriteBytes": 524288,
+        "pendingOperations": 0,
+        "retainedWriter": false,
+        "retainedStream": false,
+        "additionalCopyBufferBytes": 0,
+        "queuedChunks": 0
+      },
+      "mediaConversion": false,
+      "outputSha256": "afe3adaff8f99764343048a309cfa159b3fdd8f33299ebc6a8c4dfef875a2fef",
+      "incrementalTreePrivateMiB": 72.7265625,
+      "peakTreePrivateBytes": 368467968,
+      "peakTreeRssBytes": 698814464,
+      "validSamples": 933,
+      "unavailableSamples": 0
+    },
+    {
+      "number": 4,
+      "mode": "convenience",
+      "quotaPlan": {
+        "estimate": {
+          "quota": 17151728416,
+          "usage": 6414310176,
+          "usageDetails": {
+            "fileSystem": 6414310176
+          }
+        },
+        "reportedAvailableBytes": 10737418240,
+        "additionalBytesRequiredNow": 6414309978,
+        "fullPlannedPeakFileBytes": 12828619956,
+        "quotaIsAnEstimateNotAHardCapacity": true,
+        "noSmallerFixture": true,
+        "physicalPreflightMinimumBytes": 34359738368
+      },
+      "outputBytes": 6414309978,
+      "elapsedMs": 61727.869999974966,
+      "metrics": {
+        "inputBytes": 0,
+        "outputBytes": 6414309978,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288,
+        "maxWriteChunkBytes": 524288,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 524288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1
+      },
+      "writer": null,
+      "mediaConversion": false,
+      "outputSha256": "afe3adaff8f99764343048a309cfa159b3fdd8f33299ebc6a8c4dfef875a2fef",
+      "incrementalTreePrivateMiB": 79.26953125,
+      "peakTreePrivateBytes": 375328768,
+      "peakTreeRssBytes": 707457024,
+      "validSamples": 571,
+      "unavailableSamples": 0
+    },
+    {
+      "number": 5,
+      "mode": "convenience",
+      "quotaPlan": {
+        "estimate": {
+          "quota": 17151728416,
+          "usage": 6414310176,
+          "usageDetails": {
+            "fileSystem": 6414310176
+          }
+        },
+        "reportedAvailableBytes": 10737418240,
+        "additionalBytesRequiredNow": 6414309978,
+        "fullPlannedPeakFileBytes": 12828619956,
+        "quotaIsAnEstimateNotAHardCapacity": true,
+        "noSmallerFixture": true,
+        "physicalPreflightMinimumBytes": 34359738368
+      },
+      "outputBytes": 6414309978,
+      "elapsedMs": 88702,
+      "metrics": {
+        "inputBytes": 0,
+        "outputBytes": 6414309978,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288,
+        "maxWriteChunkBytes": 524288,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 524288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1
+      },
+      "writer": null,
+      "mediaConversion": false,
+      "outputSha256": "afe3adaff8f99764343048a309cfa159b3fdd8f33299ebc6a8c4dfef875a2fef",
+      "incrementalTreePrivateMiB": 80.59375,
+      "peakTreePrivateBytes": 376717312,
+      "peakTreeRssBytes": 709664768,
+      "validSamples": 819,
+      "unavailableSamples": 0
+    },
+    {
+      "number": 6,
+      "mode": "exclusive",
+      "quotaPlan": {
+        "estimate": {
+          "quota": 17151728416,
+          "usage": 6414310176,
+          "usageDetails": {
+            "fileSystem": 6414310176
+          }
+        },
+        "reportedAvailableBytes": 10737418240,
+        "additionalBytesRequiredNow": 6414309978,
+        "fullPlannedPeakFileBytes": 12828619956,
+        "quotaIsAnEstimateNotAHardCapacity": true,
+        "noSmallerFixture": true,
+        "physicalPreflightMinimumBytes": 34359738368
+      },
+      "outputBytes": 6414309978,
+      "elapsedMs": 60040.85499998927,
+      "metrics": {
+        "inputBytes": 0,
+        "outputBytes": 6414309978,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288,
+        "maxWriteChunkBytes": 524288,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 524288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1
+      },
+      "writer": {
+        "phase": "closed",
+        "locks": 1,
+        "releases": 1,
+        "writes": 12235,
+        "maximumWriteBytes": 524288,
+        "pendingOperations": 0,
+        "retainedWriter": false,
+        "retainedStream": false,
+        "additionalCopyBufferBytes": 0,
+        "queuedChunks": 0
+      },
+      "mediaConversion": false,
+      "outputSha256": "afe3adaff8f99764343048a309cfa159b3fdd8f33299ebc6a8c4dfef875a2fef",
+      "incrementalTreePrivateMiB": 86.2109375,
+      "peakTreePrivateBytes": 382607360,
+      "peakTreeRssBytes": 717524992,
+      "validSamples": 556,
+      "unavailableSamples": 0
+    }
+  ],
+  "adverse": [
+    {
+      "mode": "exclusive",
+      "cancelAfterBytes": 1048576,
+      "id": 14,
+      "error": {
+        "name": "AbortError",
+        "message": "Copy cancelled"
+      },
+      "cleanup": {
+        "outputRemoved": true
+      }
+    },
+    {
+      "mode": "exclusive",
+      "fault": "permission",
+      "id": 15,
+      "error": {
+        "name": "NotAllowedError",
+        "message": "Injected final-copy permission"
+      },
+      "cleanup": {
+        "outputRemoved": true
+      }
+    },
+    {
+      "mode": "exclusive",
+      "fault": "quota",
+      "id": 16,
+      "error": {
+        "name": "QuotaExceededError",
+        "message": "Injected final-copy quota"
+      },
+      "cleanup": {
+        "outputRemoved": true
+      }
+    }
+  ],
+  "forbiddenRequests": [],
+  "identities": [
+    {
+      "role": "headless-chrome",
+      "identity": {
+        "pid": 5288,
+        "parentPid": 18336,
+        "createdAt": "2026-10-15T16:05:07.6582220Z"
+      },
+      "exitObservation": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 5288,
+          "parentPid": 18336,
+          "createdAt": "2026-10-15T16:05:07.6582220Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-15T16:21:51.529Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1966,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    },
+    {
+      "role": "native-memory-observer",
+      "identity": {
+        "pid": 17772,
+        "parentPid": 18336,
+        "createdAt": "2026-10-15T16:05:10.4512180Z"
+      },
+      "exitObservation": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 17772,
+          "parentPid": 18336,
+          "createdAt": "2026-10-15T16:05:10.4512180Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-15T16:21:54.016Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 2487,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    }
+  ],
+  "sourcePins": {
+    "scripts/benchmark-exclusive-staged-copy-phased.mjs": "7d1bcf4ccc563cdfa02ab3e854121e958559f843abd67b1fe45d2e48a1028827",
+    "scripts/lib/exclusive-copy-phased-quota.mjs": "1e02ede9441075fb4bd6e6c9d7826517b2979a257ea92c8d14194a067b4d377e",
+    "scripts/benchmark-exclusive-staged-copy-lower.mjs": "83406e28a44f355a3234fbe201797851212da8f70bff590cf239afca2f893c46",
+    "scripts/lib/exclusive-copy-lower-baseline.mjs": "f39107061297e9811f935f773acc6431da8cb7bb0532d8833f4c2e39e11ab3c6",
+    "scripts/benchmark-exclusive-staged-copy.mjs": "4bebe9be27a9e46570e812ac9a1734a79362aeb8a7558b378978bd9012e4ba95",
+    "scripts/lib/staged-copy-diagnostic-worker.mjs": "89e1be0b2bb7c0db0ce3123a8f9b0447970c007123364fe3a85874ae2a249d06",
+    "scripts/lib/exclusive-staged-writer.mjs": "efd69168d9b70be5e254196ee23d8697b0836b416a29f9b01cf6711057476005",
+    "scripts/lib/exclusive-staged-writer.d.mts": "f9ee820cad67f4cd2db5956124376d0488833d82e2fb1340970cae6c2a6597a8",
+    "scripts/lib/exclusive-stage-worker-recipe.mjs": "270aa3dfc3739417fee15148c2172e8f5df17e013cfe05a08908721edb4eb7b0",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "scripts/lib/ebml-reuse-browser-components.mjs": "39247cae67a79e07044c95a15c7652f82ffee3407bb9abf442ee84b6b01e97c0",
+    "scripts/lib/stable-ui-headless-baseline-recipe.mjs": "6ad946837905a0c46e8019d31e16b480689d2bfa01bfcff544aa5770b63c7046",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "scripts/lib/installed-chrome-pin.mjs": "0f8731d998853343595e0453cf3fa4fd9df51721eedae47e03aaa3a87ab1cab6",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+    "scripts/lib/wasm-function-metadata.mjs": "b25430a8b4a1e5ed6510d85efc6a01cb65aa8b085fd3b632962f8c35a0815360",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/wasm-stack-symbols.mjs": "dc342d621c989cc299a2aab44f02cfb8785993e0952e32a51abd41cb78081975"
+  },
+  "postSourcePins": {
+    "scripts/benchmark-exclusive-staged-copy-phased.mjs": "7d1bcf4ccc563cdfa02ab3e854121e958559f843abd67b1fe45d2e48a1028827",
+    "scripts/lib/exclusive-copy-phased-quota.mjs": "1e02ede9441075fb4bd6e6c9d7826517b2979a257ea92c8d14194a067b4d377e",
+    "scripts/benchmark-exclusive-staged-copy-lower.mjs": "83406e28a44f355a3234fbe201797851212da8f70bff590cf239afca2f893c46",
+    "scripts/lib/exclusive-copy-lower-baseline.mjs": "f39107061297e9811f935f773acc6431da8cb7bb0532d8833f4c2e39e11ab3c6",
+    "scripts/benchmark-exclusive-staged-copy.mjs": "4bebe9be27a9e46570e812ac9a1734a79362aeb8a7558b378978bd9012e4ba95",
+    "scripts/lib/staged-copy-diagnostic-worker.mjs": "89e1be0b2bb7c0db0ce3123a8f9b0447970c007123364fe3a85874ae2a249d06",
+    "scripts/lib/exclusive-staged-writer.mjs": "efd69168d9b70be5e254196ee23d8697b0836b416a29f9b01cf6711057476005",
+    "scripts/lib/exclusive-staged-writer.d.mts": "f9ee820cad67f4cd2db5956124376d0488833d82e2fb1340970cae6c2a6597a8",
+    "scripts/lib/exclusive-stage-worker-recipe.mjs": "270aa3dfc3739417fee15148c2172e8f5df17e013cfe05a08908721edb4eb7b0",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "scripts/lib/ebml-reuse-browser-components.mjs": "39247cae67a79e07044c95a15c7652f82ffee3407bb9abf442ee84b6b01e97c0",
+    "scripts/lib/stable-ui-headless-baseline-recipe.mjs": "6ad946837905a0c46e8019d31e16b480689d2bfa01bfcff544aa5770b63c7046",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8",
+    "scripts/lib/installed-chrome-pin.mjs": "0f8731d998853343595e0453cf3fa4fd9df51721eedae47e03aaa3a87ab1cab6",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/parallel-memory-observer.mjs": "6263da3540e218fc217c3f51e596f19675bfeced8c559309b166c627b4b53890",
+    "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+    "scripts/lib/wasm-function-metadata.mjs": "b25430a8b4a1e5ed6510d85efc6a01cb65aa8b085fd3b632962f8c35a0815360",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/wasm-stack-symbols.mjs": "dc342d621c989cc299a2aab44f02cfb8785993e0952e32a51abd41cb78081975"
+  },
+  "failure": null,
+  "cleanupErrors": [],
+  "mediaConversionAcceptance": false,
+  "fullOriginalAcceptance": false,
+  "publicAcceptance": false,
+  "nativeConvertersUsed": false,
+  "recipe": {
+    "generatedSha256": "2366371a305b554c18f5355617a0504eafa62cfd9641a327b5161ef31235044d",
+    "productionLoopSha256": "d12a69fdbb41bce87f4e8e553484ad88f2063c9922a993cf6ef6308d1dc3a307",
+    "productionWorkerSha256": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "fixtureBytes": 6414309978,
+    "maximumBufferBytes": 524288,
+    "nativeConvertersUsed": false,
+    "mediaConversionAcceptance": false,
+    "parentSha256": "fffcb6eab71121302f4a953d6b916798eb3427b0d5ffe8d9a2892203f6c4d4ca",
+    "edits": [
+      [
+        "const SOURCE='copy-diagnostic-source.bin'",
+        "const planDiagnosticCopyAllocation=(function planDiagnosticCopyAllocation(estimate, bytes) {\n  if (!Number.isSafeInteger(bytes) || bytes <= 0 || bytes > Number.MAX_SAFE_INTEGER / 2 ||\n    !Number.isSafeInteger(estimate?.usage) || estimate.usage < 0 ||\n    !Number.isSafeInteger(estimate.quota) || estimate.quota < estimate.usage)\n    throw new TypeError(\"Valid measured storage estimate and allocation size required\");\n  const available = estimate.quota - estimate.usage;\n  if (available < bytes) throw new DOMException(`Additional allocation needs${bytes}B, reported headroom${available}B`, \"QuotaExceededError\");\n  return { estimate, reportedAvailableBytes: available, additionalBytesRequiredNow: bytes,\n    fullPlannedPeakFileBytes: bytes * 2, quotaIsAnEstimateNotAHardCapacity: true,\n    noSmallerFixture: true, physicalPreflightMinimumBytes: 32 * 1024 ** 3 };\n});\nconst SOURCE='copy-diagnostic-source.bin'"
+      ],
+      [
+        "const estimate=await navigator.storage.estimate();if(estimate.quota-estimate.usage<BYTES*2)throw new Error('Insufficient diagnostic quota');",
+        "const quotaPlan=planDiagnosticCopyAllocation(await navigator.storage.estimate(),BYTES);"
+      ],
+      [
+        "generatedBytes:at,maximumBufferBytes:buffer.length,sparse:false",
+        "generatedBytes:at,quotaPlan,maximumBufferBytes:buffer.length,sparse:false"
+      ],
+      [
+        "   const finalHandle=await root.getFileHandle(OUTPUT,{create:true})",
+        "   const quotaPlan=planDiagnosticCopyAllocation(await navigator.storage.estimate(),BYTES);\n   const finalHandle=await root.getFileHandle(OUTPUT,{create:true})"
+      ],
+      [
+        "const result={mode:data.mode,outputBytes:",
+        "const result={mode:data.mode,quotaPlan,outputBytes:"
+      ]
+    ],
+    "publicAcceptance": false,
+    "noSmallerFixture": true,
+    "quotaRecheckedBeforeEachAdditionalAllocation": true
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-15T16-05-01-937Z-exclusive-staged-copy-phased-sources.json.gz",
+    "bytes": 95964,
+    "sha256": "78ff9d1d3ffee09c7d10cddcc51ea539e91f2d1ac5988c47fd6bd7ae5e08b0f6",
+    "restoredBytes": 348182,
+    "restoredSha256": "64a9d50378fbceeca6b3b676cec72dc6cfb24b996e651badd5354fccf72b7e8e"
+  },
+  "blankWindows": {
+    "early": {
+      "stable": true,
+      "privateBytes": 292208640,
+      "spreadBytes": 4005888,
+      "rssBytes": 604581888,
+      "firstTimestamp": "2026-10-15T16:05:41.463Z",
+      "lastTimestamp": "2026-10-15T16:05:52.390Z",
+      "sampleCount": 15,
+      "minimumElapsedMs": 8000
+    },
+    "settled": {
+      "stable": true,
+      "privateBytes": 303472640,
+      "spreadBytes": 0,
+      "rssBytes": 622219264,
+      "firstTimestamp": "2026-10-15T16:10:54.865Z",
+      "lastTimestamp": "2026-10-15T16:11:05.130Z",
+      "sampleCount": 5,
+      "minimumElapsedMs": 8000
+    },
+    "chosenLower": true,
+    "storageOnlyNotFullMediaAcceptance": true
+  },
+  "persistenceRequested": true,
+  "persistenceGranted": false,
+  "currentOperation": {
+    "op": "copy",
+    "mode": "exclusive",
+    "fault": "quota"
+  },
+  "generated": {
+    "generatedBytes": 6414309978,
+    "quotaPlan": {
+      "estimate": {
+        "quota": 10737418240,
+        "usage": 0,
+        "usageDetails": {}
+      },
+      "reportedAvailableBytes": 10737418240,
+      "additionalBytesRequiredNow": 6414309978,
+      "fullPlannedPeakFileBytes": 12828619956,
+      "quotaIsAnEstimateNotAHardCapacity": true,
+      "noSmallerFixture": true,
+      "physicalPreflightMinimumBytes": 34359738368
+    },
+    "maximumBufferBytes": 65536,
+    "sparse": false,
+    "mediaConversion": false
+  },
+  "fixtureSha256": "afe3adaff8f99764343048a309cfa159b3fdd8f33299ebc6a8c4dfef875a2fef",
+  "runtimeRemoved": true,
+  "browserPinAfter": {
+    "version": "155.0.8059.40",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4586648,
+      "sha256": "f76f0234efb271041dc84f9f38fb858e01859d5da6f775f5108668eb3ae80975",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "27021597764749677",
+        "birthtimeNs": "1791867752971432600",
+        "mtimeNs": "1791260841522006000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\155.0.8059.40\\chrome.dll",
+      "bytes": 304965272,
+      "sha256": "b3d501c2e9af53f3e9e5d44c006aa42ed137cfb2d1dc161e3eca77cfbd48ea21",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "180706935048772181",
+        "birthtimeNs": "1791867752984997700",
+        "mtimeNs": "1791260850912621000"
+      }
+    }
+  },
+  "nativeArchive": {
+    "path": "outputs/reports/2026-10-15T16-05-01-937Z-exclusive-staged-copy-phased-native.json.gz",
+    "bytes": 85288,
+    "sha256": "c9db126801a518f0e4ffe9335729fe235632a0a52f97e58489f3ddb442d6b042",
+    "restoredBytes": 1200277,
+    "restoredSha256": "7de2459000a7930a141ceec730327ee7d697e993d98322924441e67778e75e85"
+  },
+  "finishedAt": "2026-10-15T16:22:00.898Z"
+}

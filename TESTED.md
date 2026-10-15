@@ -1,5 +1,32 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Six6.414GB copies PASS; single-writer optimization NOT PROVEN
+
+Final focused regression20/20 PASS13,825.3329ms;14-file zero-warning ESLint PASS;
+changed-worker project TypeScript/esbuild PASS. Negative tests preserve the
+genuine full-media failure and reject fake copy/cleanup/memory acceptance.
+
+Actual headless storage-only experiment16:05:01Z-16:22:00Z: three baseline plus
+three single-writer copies, each6,414,309,978B, all same independently validated
+streamed SHA256. Non-sparse source generated wholly inside browser using64KiB
+scratch buffer; exact original production copy loop usesone512KiB buffer and
+one pending write. No codec/media conversion claim from this isolated test.
+
+Times baseline54,897.960/61,727.870/88,702ms; candidate61,481.510/101,197.845/
+60,040.855ms. Median change~-0.4%, with mixed pair differences and2/3 candidate
+pairs slower. Full-tree copy-only peak increments80.59375MiB baseline vs
+86.2109375MiB candidate; mixed paired memory results and same-session drift.
+No speed or memory improvement established: candidate rejected for promotion
+and unchanged full-original retry. Original full-media250MiB gate remains failed.
+
+Three adverse cases PASS: normal cancellation, injected permission and quota
+failures; all outputs removed. Native100ms samples, queue/read/write bounds,
+23 pre/current/post source pins, expected full-pattern hash and48 absent owned
+births independently checked. No forbidden requests. Persistencefalse, no flag/
+policy override. Source/output/profile/runtime removed. Protected original again
+2,958,573,265B/SHA25631f366...b9db34 unchanged. Compact source/native archives
+95,964+85,288B, with JSON evidence and independent rejection analysis retained.
+
 ## 2026-10-15 - Copy diagnostic safeguards:11 tests PASS, large results pending
 
 11/11 focused tests PASS10,986.197ms; phased quota wrapper/script/tests zero-

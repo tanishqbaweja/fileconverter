@@ -1,5 +1,41 @@
 # Remaining work audit
 
+## 2026-10-15 - Single-writer copy measured and rejected as optimization
+
+Final focused regression20/20 PASS13,825.3329ms, including the actual six-copy
+audit, original failure preservation and mutation rejection;14 JavaScript files
+passed zero-warning ESLint. Generated-worker TypeScript/esbuild checks PASS.
+
+**Partially implemented**. The final-copy experiment completed: six browser-side
+copies of the same6,414,309,978B non-sparse deterministic STORAGE fixture, three
+per sink implementation in counterbalanced order, all independently streamed-
+SHA256 equal. This is isolated I/O, not a video conversion or full-profile test;
+it never replaced/read/modified the protected original. Exact production copy
+loop,512KiB reusable buffer andone pending write were retained.
+
+Baseline times54.898/61.728/88.702s; exclusive-writer61.482/101.198/60.041s.
+Medians61.728s vs61.482s (~0.4% difference), but candidate was slower in2/3 pairs.
+Paired private-memory changes also have mixed signs; aggregate copy-only peaks
+80.59375MiB baseline vs86.2109375MiB candidate above the SAME lower stable blank.
+Same-session drift is visible. Neither consistent speed gain nor lower memory is
+proven. REJECTED for production promotion/full-original retry; do not spend
+another three-hour encode on this unchanged candidate. Prototype stays private.
+
+Cancellation, injected permission failure and injected quota failure all passed
+with output removal. Persistence request returnedfalse; no policy/flag override.
+All source/output/profile/runtime data is removed;48 owned native birth identities
+independently absent. No network disclosure. Audit replayed all23 executed pre/
+current/post source seals and recomputed the6.414GB deterministic expected hash.
+Protected original checked again:2,958,573,265B/SHA25631f366...b9db34 unchanged.
+Retained source/native archives total181,252B plus compact JSON receipts only.
+
+Evidence `evidence/2026-10-15T16-05-01-937Z-exclusive-staged-copy-phased.json`
+and `evidence/2026-10-15T16-05-01-937Z-exclusive-staged-copy-independent-analysis.json`.
+The genuine full media attempt still fails258.168MiB at final save and has0/3
+validated repeats. Next investigate reducing codec/Wasm lifetime across the
+encoding-to-copy transition, rather than changing fidelity, file size or250MiB
+formula. Broad original-spec work remains open; no full/public/headed acceptance.
+
 ## 2026-10-15 - Copy diagnostic quota policy corrected; full-media gates unchanged
 
 **Partially implemented**. Single-writer prototype remains unpromoted. Final
