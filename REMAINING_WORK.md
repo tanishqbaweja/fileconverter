@@ -1,5 +1,88 @@
 # Remaining work audit
 
+## 2026-10-15 - Packet-drain candidate rejected for exact timing regression
+
+**Partially implemented. Do not run decoder b65cc599...0df152 unchanged on the
+original.** The first four-case production media suite passed. Purposeful matched
+baseline/candidate replays then completed four cases each with additional bounded
+independent packet hashes, decoded-video hashes and MP4 box inventories. All 12
+genuine browser conversions passed the existing quality/recovery/content checks,
+but the stronger exact cross-version packet-timing check rejected the candidate
+in all four comparisons. No golden or timing/quality threshold was relaxed.
+
+Both variants contain 475 reported packets: 96 video, two 189-packet AAC tracks,
+and one chapter packet. Every payload SHA and size matches; complete decoded
+video, decoded/copied audio, artwork, stream titles and audio timing match.
+The candidate changes video packet 94's duration from 666 to 667 ticks, then
+packet 95's PTS/DTS from 64661 to 64662 and duration from 667 to 668. Video
+duration grows from 64000 to 64002 ticks at 1/16000 (125 microseconds), and its
+derived average rate changes. The 68-byte file growth is entirely the aggregate
+`moof` size; total `mdat` size is unchanged. Thus identical pixels/payloads and a
+passing SSIM score do not establish exact timing preservation.
+
+All 321/303/325 captured source preimages/current/post pins were independently
+verified within the existing separate caps. Nine helper/fixture-registration
+birth identities and 65 sampled media PIDs were independently checked absent;
+the latter are explicitly PID-only observations, not birth-verified samples.
+All media, profiles, fixtures and scratch are removed; stock assets restored.
+Original whole-file pre/post/current SHA remains unchanged. Redundant raw JSON
+4,843,744 bytes was deleted only after lossless archive verification. Final
+36 focused tests passed in 5,871.3022 ms; 13-file zero-warning lint passed.
+
+Next: a NEW duration-exact queue-drain derivative. Pinned MOV source suggests
+fragment-final duration/end-point rounding after loss of lookahead, but this is
+a source-informed hypothesis, not runtime cause attribution. Test durations as
+differences of adjacent rescaled CFR frame boundaries (before adding the same
+source offset); at 24fps/1:16000, packet 94 must span 666 ticks and 95 must span
+667. Preserve the low-delay/no-B-frame/CFR guards, payloads, PTS/DTS, codecs,
+heap limits, ownership and every existing gate. Compile and independently
+compare actual packets before any full-original retry. No speed, primary memory,
+full-original/repeats/scaling, headed coverage or public promotion is accepted.
+Selected-destination mode still uses the qualified OPFS staging/bounded-copy
+fallback; this is not direct-native-AVIO acceptance.
+Evidence: `evidence/packet-drain-media-timing-rejection-2026-10-15.json`.
+
+## 2026-10-15 - Four genuine packet-drain media cases passed; cross-version bytes under investigation
+
+**Partially implemented**. Actual Chrome155 production pipeline completed all
+four96-frame full-geometry4Mbps/q4 conversions/recoveries in the unchanged test
+suite (3.3min). Quality0.983095>=0.98, decoded audio/timelines, artwork/metadata,
+bounded I/O, cancellation/write/read-failure recovery and cleanup gates passed.
+The source4,457,906-byte hash remains6de34d...a5dcb; all new outputs are
+2,245,626bytes/SHA-256d876da3c...6738c3, versus the earlier2,245,558-byte
+554cc841...c5f27 output. The68-byte/container-hash difference is NOT yet accepted
+as harmless. The main suite preserves within-run output hash/repeatability
+checks; the previous independent verifier's fixed old container golden is a
+separate cross-version check and is not satisfied merely by this suite passing.
+No historical golden or quality threshold was changed.
+
+Added an independent small-fixture packet-proof probe to resolve that precise
+gap: hash every encoded packet with timestamps/durations, decode/hash complete
+video, and scan top-level MP4 boxes using one16-byte header buffer. The proof
+has hard1024-packet/1MiB-JSON bounds and all original tests/assertions/finally
+remain unchanged. Five focused source tests passed4,434.7053ms; new five-file
+zero-warning lint passed. A purposeful matched baseline/candidate replay is
+next because previous outputs were already deleted and their reports lack
+encoded-video packet hashes. This is not another unchanged full-original test.
+Keep the candidate private until comparison and independent source/cleanup
+qualification pass. Full-original/memory/repeats/scaling/speed gates remain open.
+
+## 2026-10-15 - Packet-drain production media harness composed
+
+**Partially implemented**. Added a private derivative of the verified four-case
+production-browser media harness. A strict manifest-delta verifier proves the
+kernel differs by exactly the known queue insertion, the pipeline by one source
+module route, and all bridge/cache/refcount/limit fields remain exact. The real
+116-source decoder and previously qualified plane encoder A4 are composed with
+unchanged32+16MiB fixed heaps, I/O, quality, native validators, recovery cases
+and historical output-hash expectations. No candidate golden was substituted.
+All legacy255-source and supplemental128-file/2MiB gates remain intact.
+
+Three new focused checks passed in1,794.6604ms; five-file zero-warning lint
+passed. Native/cache/control/baseline composition is verified, but real media
+execution is still pending. This does not prove full-original reliability,
+memory, fidelity or speed. Preserve all old qualified sources; new files only.
+
 ## 2026-10-15 - Packet-drain candidate compiled and headless diagnostics verified
 
 Final focused regression:28/28 passed in10,248.4625ms; all18 new JavaScript

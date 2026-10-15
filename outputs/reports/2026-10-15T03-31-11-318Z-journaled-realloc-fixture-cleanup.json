@@ -1,0 +1,41 @@
+{
+  "status": "registered-fixture-already-removed",
+  "registered": true,
+  "record": {
+    "version": 1,
+    "recordedAt": "2026-10-15T03:31:31.150Z",
+    "directory": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-artwork-validation-JrJGhm",
+    "dev": "1887170595",
+    "ino": "9851624189166186",
+    "birthtimeMs": "1792035089407",
+    "registrationIdentity": {
+      "pid": 35124,
+      "parentPid": 7644,
+      "createdAt": "2026-10-15T03:31:28.8747800Z"
+    }
+  },
+  "runnerAbsence": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 7644,
+      "parentPid": 39568,
+      "createdAt": "2026-10-15T03:31:27.6534190Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-10-15T03:34:43.634Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 1089,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "removedBytes": 0,
+  "ownedDirectoryAbsent": true,
+  "noProcessesKilled": true
+}

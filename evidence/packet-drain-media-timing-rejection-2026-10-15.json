@@ -1,0 +1,2925 @@
+{
+  "recordedAt": "2026-10-15T03:42:03.746Z",
+  "status": "genuine-small-media-passed-but-exact-packet-timing-regression-rejected",
+  "runs": [
+    {
+      "variant": "initial",
+      "mediaPath": "evidence/2026-10-15T03-15-14-905Z-packet-drain-media.json",
+      "mediaSha256": "ed491b6c27895b5a135426c76e09d11d0ead5d24bcdaf710cfa28341773010a0",
+      "supplementalPath": "evidence/2026-10-15T03-15-14-897Z-packet-drain-media-supplement.json",
+      "supplementalSha256": "cf152c09e5734f65d4ded9fe2e5f52b7b23c964342932bb024892ca30396c651",
+      "sourceCounts": {
+        "legacy": 255,
+        "supplemental": 66,
+        "distinct": 321
+      },
+      "outputHash": "d876da3ca237bb742dcf014b95b4e22d59e5be1e87ef7335f4727ee6586738c3",
+      "analysis": {
+        "previous": {
+          "normal": {
+            "genuineSyntheticConversions": 1,
+            "caseStatus": "passed",
+            "qualityThreshold": 0.98,
+            "ordinalSsim": 0.983095,
+            "timestampAlignedSsim": 0.966841,
+            "scoreParsedNotMissing": true,
+            "syntheticNoiseStrength": 4,
+            "syntheticNoiseSeed": 20261011,
+            "inputDimensions": [
+              1920,
+              804
+            ],
+            "outputDimensions": [
+              1920,
+              804
+            ],
+            "frames": 96,
+            "fullOriginalAcceptance": false,
+            "completeChromiumMemoryAcceptance": false,
+            "publicAcceptance": false,
+            "historicalFullScoreStillUnknown": true,
+            "bitRate": 4000000,
+            "input": {
+              "bytes": 4457906,
+              "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+            },
+            "nativeConfiguration": {
+              "words": [
+                1,
+                1920,
+                804,
+                0,
+                1,
+                24,
+                24,
+                1,
+                4000000,
+                4,
+                20,
+                1,
+                1,
+                2,
+                2,
+                2,
+                1,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "nativeSettingsMatch": 1,
+              "expectedBitRate": 4000000,
+              "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+            },
+            "outputBytes": 2245626,
+            "elapsedMs": 4156.844999998808,
+            "controlledComparisonPending": true,
+            "conversionSpeedAcceptance": false
+          },
+          "recovery": {
+            "completedValidatedRecoveryConversions": 2,
+            "adverseCases": 2,
+            "results": [
+              {
+                "phase": "write-failure",
+                "adversePartialOutputRemoved": true,
+                "samePageProductionReplacementWorkerRecovered": true,
+                "analysis": {
+                  "genuineSyntheticConversions": 1,
+                  "caseStatus": "passed",
+                  "qualityThreshold": 0.98,
+                  "ordinalSsim": 0.983095,
+                  "timestampAlignedSsim": 0.966841,
+                  "scoreParsedNotMissing": true,
+                  "syntheticNoiseStrength": 4,
+                  "syntheticNoiseSeed": 20261011,
+                  "inputDimensions": [
+                    1920,
+                    804
+                  ],
+                  "outputDimensions": [
+                    1920,
+                    804
+                  ],
+                  "frames": 96,
+                  "fullOriginalAcceptance": false,
+                  "completeChromiumMemoryAcceptance": false,
+                  "publicAcceptance": false,
+                  "historicalFullScoreStillUnknown": true,
+                  "bitRate": 4000000,
+                  "input": {
+                    "bytes": 4457906,
+                    "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+                  },
+                  "nativeConfiguration": {
+                    "words": [
+                      1,
+                      1920,
+                      804,
+                      0,
+                      1,
+                      24,
+                      24,
+                      1,
+                      4000000,
+                      4,
+                      20,
+                      1,
+                      1,
+                      2,
+                      2,
+                      2,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "nativeSettingsMatch": 1,
+                    "expectedBitRate": 4000000,
+                    "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+                  },
+                  "outputBytes": 2245626,
+                  "elapsedMs": 3698.1799999773502,
+                  "controlledComparisonPending": true,
+                  "conversionSpeedAcceptance": false
+                }
+              },
+              {
+                "phase": "cancellation",
+                "adversePartialOutputRemoved": true,
+                "samePageProductionReplacementWorkerRecovered": true,
+                "analysis": {
+                  "genuineSyntheticConversions": 1,
+                  "caseStatus": "passed",
+                  "qualityThreshold": 0.98,
+                  "ordinalSsim": 0.983095,
+                  "timestampAlignedSsim": 0.966841,
+                  "scoreParsedNotMissing": true,
+                  "syntheticNoiseStrength": 4,
+                  "syntheticNoiseSeed": 20261011,
+                  "inputDimensions": [
+                    1920,
+                    804
+                  ],
+                  "outputDimensions": [
+                    1920,
+                    804
+                  ],
+                  "frames": 96,
+                  "fullOriginalAcceptance": false,
+                  "completeChromiumMemoryAcceptance": false,
+                  "publicAcceptance": false,
+                  "historicalFullScoreStillUnknown": true,
+                  "bitRate": 4000000,
+                  "input": {
+                    "bytes": 4457906,
+                    "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+                  },
+                  "nativeConfiguration": {
+                    "words": [
+                      1,
+                      1920,
+                      804,
+                      0,
+                      1,
+                      24,
+                      24,
+                      1,
+                      4000000,
+                      4,
+                      20,
+                      1,
+                      1,
+                      2,
+                      2,
+                      2,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "nativeSettingsMatch": 1,
+                    "expectedBitRate": 4000000,
+                    "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+                  },
+                  "outputBytes": 2245626,
+                  "elapsedMs": 3866.1349999904633,
+                  "controlledComparisonPending": true,
+                  "conversionSpeedAcceptance": false
+                }
+              }
+            ],
+            "completeChromiumMemoryAcceptance": false,
+            "fullOriginalAcceptance": false,
+            "publicAcceptance": false,
+            "speedImprovementProven": false
+          },
+          "actualAsyncifyLifecycleSamples": [
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 69,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            },
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 69,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            },
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 69,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            },
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 33,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            },
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 69,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            }
+          ],
+          "genuineValidatedConversions": 3,
+          "publicAcceptance": false
+        },
+        "inputReadFailures": [
+          {
+            "version": 1,
+            "scope": "production-input-read-failure-not-cause-attribution",
+            "failureOrdinal": 1,
+            "offset": 1048576,
+            "requestedBytes": 65536,
+            "inputSize": 4457906,
+            "exceptionName": "NotReadableError",
+            "exceptionCode": 0,
+            "messageClass": "injected-control",
+            "causeName": null,
+            "causeCode": null,
+            "stackAvailable": false,
+            "stackLocations": []
+          },
+          {
+            "version": 1,
+            "scope": "production-input-read-failure-not-cause-attribution",
+            "failureOrdinal": 2,
+            "offset": 1048576,
+            "requestedBytes": 65536,
+            "inputSize": 4457906,
+            "exceptionName": "NotReadableError",
+            "exceptionCode": 0,
+            "messageClass": "injected-control",
+            "causeName": null,
+            "causeCode": null,
+            "stackAvailable": false,
+            "stackLocations": []
+          }
+        ],
+        "validatedInputFailureRecovery": {
+          "genuineSyntheticConversions": 1,
+          "caseStatus": "passed",
+          "qualityThreshold": 0.98,
+          "ordinalSsim": 0.983095,
+          "timestampAlignedSsim": 0.966841,
+          "scoreParsedNotMissing": true,
+          "syntheticNoiseStrength": 4,
+          "syntheticNoiseSeed": 20261011,
+          "inputDimensions": [
+            1920,
+            804
+          ],
+          "outputDimensions": [
+            1920,
+            804
+          ],
+          "frames": 96,
+          "fullOriginalAcceptance": false,
+          "completeChromiumMemoryAcceptance": false,
+          "publicAcceptance": false,
+          "historicalFullScoreStillUnknown": true,
+          "bitRate": 4000000,
+          "input": {
+            "bytes": 4457906,
+            "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+          },
+          "nativeConfiguration": {
+            "words": [
+              1,
+              1920,
+              804,
+              0,
+              1,
+              24,
+              24,
+              1,
+              4000000,
+              4,
+              20,
+              1,
+              1,
+              2,
+              2,
+              2,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "nativeSettingsMatch": 1,
+            "expectedBitRate": 4000000,
+            "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+          },
+          "outputBytes": 2245626,
+          "elapsedMs": 3386.425000011921,
+          "controlledComparisonPending": true,
+          "conversionSpeedAcceptance": false
+        },
+        "actualExtraAsyncifyLifecycle": [
+          {
+            "stackBytes": 262144,
+            "headerBytes": 12,
+            "reservationBytes": 262156,
+            "allocations": 1,
+            "frees": 1,
+            "acquisitions": 19,
+            "activeLeases": 0,
+            "retainedBytes": 0,
+            "closing": true,
+            "maximumLeases": 1,
+            "zeroOnAcquireAndRelease": true,
+            "abortedReleaseDeferredUntilWorkerTermination": false
+          },
+          {
+            "stackBytes": 262144,
+            "headerBytes": 12,
+            "reservationBytes": 262156,
+            "allocations": 1,
+            "frees": 1,
+            "acquisitions": 69,
+            "activeLeases": 0,
+            "retainedBytes": 0,
+            "closing": true,
+            "maximumLeases": 1,
+            "zeroOnAcquireAndRelease": true,
+            "abortedReleaseDeferredUntilWorkerTermination": false
+          }
+        ],
+        "genuineValidatedConversions": 4,
+        "fullOriginalAcceptance": false,
+        "publicAcceptance": false,
+        "speedImprovementProven": false
+      },
+      "additionalPacketProofs": 0
+    },
+    {
+      "variant": "baseline",
+      "mediaPath": "evidence/2026-10-15T03-26-36-040Z-packet-order-baseline-media.json",
+      "mediaSha256": "73da79d18ee2bb2125fd14870af461296e5cccd504d6b0f67b6a68efc3806174",
+      "supplementalPath": "evidence/2026-10-15T03-26-36-033Z-packet-order-baseline-media-supplement.json",
+      "supplementalSha256": "7458a3d58c782cec1c7cbc1a02566016d03b4f86cf1e019d0d974d1599561c1a",
+      "sourceCounts": {
+        "legacy": 255,
+        "supplemental": 48,
+        "distinct": 303
+      },
+      "outputHash": "554cc84159d2e36f4fd2adb060062cf78be02d4195f7857ceefe0953065c5f27",
+      "analysis": {
+        "previous": {
+          "normal": {
+            "genuineSyntheticConversions": 1,
+            "caseStatus": "passed",
+            "qualityThreshold": 0.98,
+            "ordinalSsim": 0.983095,
+            "timestampAlignedSsim": 0.966841,
+            "scoreParsedNotMissing": true,
+            "syntheticNoiseStrength": 4,
+            "syntheticNoiseSeed": 20261011,
+            "inputDimensions": [
+              1920,
+              804
+            ],
+            "outputDimensions": [
+              1920,
+              804
+            ],
+            "frames": 96,
+            "fullOriginalAcceptance": false,
+            "completeChromiumMemoryAcceptance": false,
+            "publicAcceptance": false,
+            "historicalFullScoreStillUnknown": true,
+            "bitRate": 4000000,
+            "input": {
+              "bytes": 4457906,
+              "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+            },
+            "nativeConfiguration": {
+              "words": [
+                1,
+                1920,
+                804,
+                0,
+                1,
+                24,
+                24,
+                1,
+                4000000,
+                4,
+                20,
+                1,
+                1,
+                2,
+                2,
+                2,
+                1,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "nativeSettingsMatch": 1,
+              "expectedBitRate": 4000000,
+              "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+            },
+            "outputBytes": 2245558,
+            "elapsedMs": 3771.530000001192,
+            "controlledComparisonPending": true,
+            "conversionSpeedAcceptance": false
+          },
+          "recovery": {
+            "completedValidatedRecoveryConversions": 2,
+            "adverseCases": 2,
+            "results": [
+              {
+                "phase": "write-failure",
+                "adversePartialOutputRemoved": true,
+                "samePageProductionReplacementWorkerRecovered": true,
+                "analysis": {
+                  "genuineSyntheticConversions": 1,
+                  "caseStatus": "passed",
+                  "qualityThreshold": 0.98,
+                  "ordinalSsim": 0.983095,
+                  "timestampAlignedSsim": 0.966841,
+                  "scoreParsedNotMissing": true,
+                  "syntheticNoiseStrength": 4,
+                  "syntheticNoiseSeed": 20261011,
+                  "inputDimensions": [
+                    1920,
+                    804
+                  ],
+                  "outputDimensions": [
+                    1920,
+                    804
+                  ],
+                  "frames": 96,
+                  "fullOriginalAcceptance": false,
+                  "completeChromiumMemoryAcceptance": false,
+                  "publicAcceptance": false,
+                  "historicalFullScoreStillUnknown": true,
+                  "bitRate": 4000000,
+                  "input": {
+                    "bytes": 4457906,
+                    "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+                  },
+                  "nativeConfiguration": {
+                    "words": [
+                      1,
+                      1920,
+                      804,
+                      0,
+                      1,
+                      24,
+                      24,
+                      1,
+                      4000000,
+                      4,
+                      20,
+                      1,
+                      1,
+                      2,
+                      2,
+                      2,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "nativeSettingsMatch": 1,
+                    "expectedBitRate": 4000000,
+                    "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+                  },
+                  "outputBytes": 2245558,
+                  "elapsedMs": 3371.015000015497,
+                  "controlledComparisonPending": true,
+                  "conversionSpeedAcceptance": false
+                }
+              },
+              {
+                "phase": "cancellation",
+                "adversePartialOutputRemoved": true,
+                "samePageProductionReplacementWorkerRecovered": true,
+                "analysis": {
+                  "genuineSyntheticConversions": 1,
+                  "caseStatus": "passed",
+                  "qualityThreshold": 0.98,
+                  "ordinalSsim": 0.983095,
+                  "timestampAlignedSsim": 0.966841,
+                  "scoreParsedNotMissing": true,
+                  "syntheticNoiseStrength": 4,
+                  "syntheticNoiseSeed": 20261011,
+                  "inputDimensions": [
+                    1920,
+                    804
+                  ],
+                  "outputDimensions": [
+                    1920,
+                    804
+                  ],
+                  "frames": 96,
+                  "fullOriginalAcceptance": false,
+                  "completeChromiumMemoryAcceptance": false,
+                  "publicAcceptance": false,
+                  "historicalFullScoreStillUnknown": true,
+                  "bitRate": 4000000,
+                  "input": {
+                    "bytes": 4457906,
+                    "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+                  },
+                  "nativeConfiguration": {
+                    "words": [
+                      1,
+                      1920,
+                      804,
+                      0,
+                      1,
+                      24,
+                      24,
+                      1,
+                      4000000,
+                      4,
+                      20,
+                      1,
+                      1,
+                      2,
+                      2,
+                      2,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "nativeSettingsMatch": 1,
+                    "expectedBitRate": 4000000,
+                    "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+                  },
+                  "outputBytes": 2245558,
+                  "elapsedMs": 3290.925000011921,
+                  "controlledComparisonPending": true,
+                  "conversionSpeedAcceptance": false
+                }
+              }
+            ],
+            "completeChromiumMemoryAcceptance": false,
+            "fullOriginalAcceptance": false,
+            "publicAcceptance": false,
+            "speedImprovementProven": false
+          },
+          "actualAsyncifyLifecycleSamples": [
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 69,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            },
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 69,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            },
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 69,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            },
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 39,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            },
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 69,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            }
+          ],
+          "genuineValidatedConversions": 3,
+          "publicAcceptance": false
+        },
+        "inputReadFailures": [
+          {
+            "version": 1,
+            "scope": "production-input-read-failure-not-cause-attribution",
+            "failureOrdinal": 1,
+            "offset": 1048576,
+            "requestedBytes": 65536,
+            "inputSize": 4457906,
+            "exceptionName": "NotReadableError",
+            "exceptionCode": 0,
+            "messageClass": "injected-control",
+            "causeName": null,
+            "causeCode": null,
+            "stackAvailable": false,
+            "stackLocations": []
+          },
+          {
+            "version": 1,
+            "scope": "production-input-read-failure-not-cause-attribution",
+            "failureOrdinal": 2,
+            "offset": 1048576,
+            "requestedBytes": 65536,
+            "inputSize": 4457906,
+            "exceptionName": "NotReadableError",
+            "exceptionCode": 0,
+            "messageClass": "injected-control",
+            "causeName": null,
+            "causeCode": null,
+            "stackAvailable": false,
+            "stackLocations": []
+          }
+        ],
+        "validatedInputFailureRecovery": {
+          "genuineSyntheticConversions": 1,
+          "caseStatus": "passed",
+          "qualityThreshold": 0.98,
+          "ordinalSsim": 0.983095,
+          "timestampAlignedSsim": 0.966841,
+          "scoreParsedNotMissing": true,
+          "syntheticNoiseStrength": 4,
+          "syntheticNoiseSeed": 20261011,
+          "inputDimensions": [
+            1920,
+            804
+          ],
+          "outputDimensions": [
+            1920,
+            804
+          ],
+          "frames": 96,
+          "fullOriginalAcceptance": false,
+          "completeChromiumMemoryAcceptance": false,
+          "publicAcceptance": false,
+          "historicalFullScoreStillUnknown": true,
+          "bitRate": 4000000,
+          "input": {
+            "bytes": 4457906,
+            "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+          },
+          "nativeConfiguration": {
+            "words": [
+              1,
+              1920,
+              804,
+              0,
+              1,
+              24,
+              24,
+              1,
+              4000000,
+              4,
+              20,
+              1,
+              1,
+              2,
+              2,
+              2,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "nativeSettingsMatch": 1,
+            "expectedBitRate": 4000000,
+            "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+          },
+          "outputBytes": 2245558,
+          "elapsedMs": 3619.005000025034,
+          "controlledComparisonPending": true,
+          "conversionSpeedAcceptance": false
+        },
+        "actualExtraAsyncifyLifecycle": [
+          {
+            "stackBytes": 262144,
+            "headerBytes": 12,
+            "reservationBytes": 262156,
+            "allocations": 1,
+            "frees": 1,
+            "acquisitions": 19,
+            "activeLeases": 0,
+            "retainedBytes": 0,
+            "closing": true,
+            "maximumLeases": 1,
+            "zeroOnAcquireAndRelease": true,
+            "abortedReleaseDeferredUntilWorkerTermination": false
+          },
+          {
+            "stackBytes": 262144,
+            "headerBytes": 12,
+            "reservationBytes": 262156,
+            "allocations": 1,
+            "frees": 1,
+            "acquisitions": 69,
+            "activeLeases": 0,
+            "retainedBytes": 0,
+            "closing": true,
+            "maximumLeases": 1,
+            "zeroOnAcquireAndRelease": true,
+            "abortedReleaseDeferredUntilWorkerTermination": false
+          }
+        ],
+        "genuineValidatedConversions": 4,
+        "fullOriginalAcceptance": false,
+        "publicAcceptance": false,
+        "speedImprovementProven": false
+      },
+      "additionalPacketProofs": 4
+    },
+    {
+      "variant": "candidate",
+      "mediaPath": "evidence/2026-10-15T03-31-11-318Z-packet-order-candidate-media.json",
+      "mediaSha256": "64ac24b94806f38c7a64755318dee55795720d4d46753cbe59c48d27592d70a8",
+      "supplementalPath": "evidence/2026-10-15T03-31-11-311Z-packet-order-candidate-media-supplement.json",
+      "supplementalSha256": "3f3e4035b5063f63528ad81f36c6a3552df6ee1707f902ae519bbb2a2249eb0a",
+      "sourceCounts": {
+        "legacy": 255,
+        "supplemental": 70,
+        "distinct": 325
+      },
+      "outputHash": "d876da3ca237bb742dcf014b95b4e22d59e5be1e87ef7335f4727ee6586738c3",
+      "analysis": {
+        "previous": {
+          "normal": {
+            "genuineSyntheticConversions": 1,
+            "caseStatus": "passed",
+            "qualityThreshold": 0.98,
+            "ordinalSsim": 0.983095,
+            "timestampAlignedSsim": 0.966841,
+            "scoreParsedNotMissing": true,
+            "syntheticNoiseStrength": 4,
+            "syntheticNoiseSeed": 20261011,
+            "inputDimensions": [
+              1920,
+              804
+            ],
+            "outputDimensions": [
+              1920,
+              804
+            ],
+            "frames": 96,
+            "fullOriginalAcceptance": false,
+            "completeChromiumMemoryAcceptance": false,
+            "publicAcceptance": false,
+            "historicalFullScoreStillUnknown": true,
+            "bitRate": 4000000,
+            "input": {
+              "bytes": 4457906,
+              "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+            },
+            "nativeConfiguration": {
+              "words": [
+                1,
+                1920,
+                804,
+                0,
+                1,
+                24,
+                24,
+                1,
+                4000000,
+                4,
+                20,
+                1,
+                1,
+                2,
+                2,
+                2,
+                1,
+                1,
+                0,
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "nativeSettingsMatch": 1,
+              "expectedBitRate": 4000000,
+              "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+            },
+            "outputBytes": 2245626,
+            "elapsedMs": 3439.205000013113,
+            "controlledComparisonPending": true,
+            "conversionSpeedAcceptance": false
+          },
+          "recovery": {
+            "completedValidatedRecoveryConversions": 2,
+            "adverseCases": 2,
+            "results": [
+              {
+                "phase": "write-failure",
+                "adversePartialOutputRemoved": true,
+                "samePageProductionReplacementWorkerRecovered": true,
+                "analysis": {
+                  "genuineSyntheticConversions": 1,
+                  "caseStatus": "passed",
+                  "qualityThreshold": 0.98,
+                  "ordinalSsim": 0.983095,
+                  "timestampAlignedSsim": 0.966841,
+                  "scoreParsedNotMissing": true,
+                  "syntheticNoiseStrength": 4,
+                  "syntheticNoiseSeed": 20261011,
+                  "inputDimensions": [
+                    1920,
+                    804
+                  ],
+                  "outputDimensions": [
+                    1920,
+                    804
+                  ],
+                  "frames": 96,
+                  "fullOriginalAcceptance": false,
+                  "completeChromiumMemoryAcceptance": false,
+                  "publicAcceptance": false,
+                  "historicalFullScoreStillUnknown": true,
+                  "bitRate": 4000000,
+                  "input": {
+                    "bytes": 4457906,
+                    "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+                  },
+                  "nativeConfiguration": {
+                    "words": [
+                      1,
+                      1920,
+                      804,
+                      0,
+                      1,
+                      24,
+                      24,
+                      1,
+                      4000000,
+                      4,
+                      20,
+                      1,
+                      1,
+                      2,
+                      2,
+                      2,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "nativeSettingsMatch": 1,
+                    "expectedBitRate": 4000000,
+                    "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+                  },
+                  "outputBytes": 2245626,
+                  "elapsedMs": 3328.185000002384,
+                  "controlledComparisonPending": true,
+                  "conversionSpeedAcceptance": false
+                }
+              },
+              {
+                "phase": "cancellation",
+                "adversePartialOutputRemoved": true,
+                "samePageProductionReplacementWorkerRecovered": true,
+                "analysis": {
+                  "genuineSyntheticConversions": 1,
+                  "caseStatus": "passed",
+                  "qualityThreshold": 0.98,
+                  "ordinalSsim": 0.983095,
+                  "timestampAlignedSsim": 0.966841,
+                  "scoreParsedNotMissing": true,
+                  "syntheticNoiseStrength": 4,
+                  "syntheticNoiseSeed": 20261011,
+                  "inputDimensions": [
+                    1920,
+                    804
+                  ],
+                  "outputDimensions": [
+                    1920,
+                    804
+                  ],
+                  "frames": 96,
+                  "fullOriginalAcceptance": false,
+                  "completeChromiumMemoryAcceptance": false,
+                  "publicAcceptance": false,
+                  "historicalFullScoreStillUnknown": true,
+                  "bitRate": 4000000,
+                  "input": {
+                    "bytes": 4457906,
+                    "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+                  },
+                  "nativeConfiguration": {
+                    "words": [
+                      1,
+                      1920,
+                      804,
+                      0,
+                      1,
+                      24,
+                      24,
+                      1,
+                      4000000,
+                      4,
+                      20,
+                      1,
+                      1,
+                      2,
+                      2,
+                      2,
+                      1,
+                      1,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0,
+                      0
+                    ],
+                    "nativeSettingsMatch": 1,
+                    "expectedBitRate": 4000000,
+                    "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+                  },
+                  "outputBytes": 2245626,
+                  "elapsedMs": 3154.9299999773502,
+                  "controlledComparisonPending": true,
+                  "conversionSpeedAcceptance": false
+                }
+              }
+            ],
+            "completeChromiumMemoryAcceptance": false,
+            "fullOriginalAcceptance": false,
+            "publicAcceptance": false,
+            "speedImprovementProven": false
+          },
+          "actualAsyncifyLifecycleSamples": [
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 69,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            },
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 69,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            },
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 69,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            },
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 33,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            },
+            {
+              "stackBytes": 262144,
+              "headerBytes": 12,
+              "reservationBytes": 262156,
+              "allocations": 1,
+              "frees": 1,
+              "acquisitions": 69,
+              "activeLeases": 0,
+              "retainedBytes": 0,
+              "closing": true,
+              "maximumLeases": 1,
+              "zeroOnAcquireAndRelease": true,
+              "abortedReleaseDeferredUntilWorkerTermination": false
+            }
+          ],
+          "genuineValidatedConversions": 3,
+          "publicAcceptance": false
+        },
+        "inputReadFailures": [
+          {
+            "version": 1,
+            "scope": "production-input-read-failure-not-cause-attribution",
+            "failureOrdinal": 1,
+            "offset": 1048576,
+            "requestedBytes": 65536,
+            "inputSize": 4457906,
+            "exceptionName": "NotReadableError",
+            "exceptionCode": 0,
+            "messageClass": "injected-control",
+            "causeName": null,
+            "causeCode": null,
+            "stackAvailable": false,
+            "stackLocations": []
+          },
+          {
+            "version": 1,
+            "scope": "production-input-read-failure-not-cause-attribution",
+            "failureOrdinal": 2,
+            "offset": 1048576,
+            "requestedBytes": 65536,
+            "inputSize": 4457906,
+            "exceptionName": "NotReadableError",
+            "exceptionCode": 0,
+            "messageClass": "injected-control",
+            "causeName": null,
+            "causeCode": null,
+            "stackAvailable": false,
+            "stackLocations": []
+          }
+        ],
+        "validatedInputFailureRecovery": {
+          "genuineSyntheticConversions": 1,
+          "caseStatus": "passed",
+          "qualityThreshold": 0.98,
+          "ordinalSsim": 0.983095,
+          "timestampAlignedSsim": 0.966841,
+          "scoreParsedNotMissing": true,
+          "syntheticNoiseStrength": 4,
+          "syntheticNoiseSeed": 20261011,
+          "inputDimensions": [
+            1920,
+            804
+          ],
+          "outputDimensions": [
+            1920,
+            804
+          ],
+          "frames": 96,
+          "fullOriginalAcceptance": false,
+          "completeChromiumMemoryAcceptance": false,
+          "publicAcceptance": false,
+          "historicalFullScoreStillUnknown": true,
+          "bitRate": 4000000,
+          "input": {
+            "bytes": 4457906,
+            "sha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb"
+          },
+          "nativeConfiguration": {
+            "words": [
+              1,
+              1920,
+              804,
+              0,
+              1,
+              24,
+              24,
+              1,
+              4000000,
+              4,
+              20,
+              1,
+              1,
+              2,
+              2,
+              2,
+              1,
+              1,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "nativeSettingsMatch": 1,
+            "expectedBitRate": 4000000,
+            "scope": "native-context-audit-not-memory-or-fidelity-acceptance"
+          },
+          "outputBytes": 2245626,
+          "elapsedMs": 3154.4149999916553,
+          "controlledComparisonPending": true,
+          "conversionSpeedAcceptance": false
+        },
+        "actualExtraAsyncifyLifecycle": [
+          {
+            "stackBytes": 262144,
+            "headerBytes": 12,
+            "reservationBytes": 262156,
+            "allocations": 1,
+            "frees": 1,
+            "acquisitions": 19,
+            "activeLeases": 0,
+            "retainedBytes": 0,
+            "closing": true,
+            "maximumLeases": 1,
+            "zeroOnAcquireAndRelease": true,
+            "abortedReleaseDeferredUntilWorkerTermination": false
+          },
+          {
+            "stackBytes": 262144,
+            "headerBytes": 12,
+            "reservationBytes": 262156,
+            "allocations": 1,
+            "frees": 1,
+            "acquisitions": 69,
+            "activeLeases": 0,
+            "retainedBytes": 0,
+            "closing": true,
+            "maximumLeases": 1,
+            "zeroOnAcquireAndRelease": true,
+            "abortedReleaseDeferredUntilWorkerTermination": false
+          }
+        ],
+        "genuineValidatedConversions": 4,
+        "fullOriginalAcceptance": false,
+        "publicAcceptance": false,
+        "speedImprovementProven": false
+      },
+      "additionalPacketProofs": 4
+    }
+  ],
+  "comparisons": [
+    {
+      "streams": [
+        {
+          "index": 0,
+          "packets": 96,
+          "payloadHashesAndSizesMatch": true
+        },
+        {
+          "index": 1,
+          "packets": 189,
+          "payloadHashesAndSizesMatch": true
+        },
+        {
+          "index": 2,
+          "packets": 189,
+          "payloadHashesAndSizesMatch": true
+        },
+        {
+          "index": 4,
+          "packets": 1,
+          "payloadHashesAndSizesMatch": true
+        }
+      ],
+      "packetsPerVariant": 475,
+      "allPayloadHashesAndSizesMatch": true,
+      "completeDecodedVideoMatches": true,
+      "decodedVideoHash": "0,v,SHA256=b6ba622248e30c7748e07085ee1a38b01a3d985e62c9e0890d93a147f65f5536",
+      "packetFieldChangesExceptFilePositions": [
+        {
+          "stream": 0,
+          "packet": 94,
+          "field": "duration",
+          "baseline": 666,
+          "candidate": 667
+        },
+        {
+          "stream": 0,
+          "packet": 94,
+          "field": "duration_time",
+          "baseline": "0.041625",
+          "candidate": "0.041688"
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "pts",
+          "baseline": 64661,
+          "candidate": 64662
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "pts_time",
+          "baseline": "4.041313",
+          "candidate": "4.041375"
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "dts",
+          "baseline": 64661,
+          "candidate": 64662
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "dts_time",
+          "baseline": "4.041313",
+          "candidate": "4.041375"
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "duration",
+          "baseline": 667,
+          "candidate": 668
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "duration_time",
+          "baseline": "0.041688",
+          "candidate": "0.041750"
+        }
+      ],
+      "exactlyEquivalentApartFromFilePositions": false,
+      "packetTimingPreservationPassed": false,
+      "canonicalPerStreamPacketHashes": {
+        "baseline": "8edc8e6ff0f678e67190521af6a070526eb464839ce999166c79eaace217df72",
+        "candidate": "2a6953d9427a6664692e9cf1fd57436183cca7b98474007498eef4bfd5a92c1a"
+      },
+      "boxSizeDeltas": {
+        "ftyp": 0,
+        "moov": 0,
+        "moof": 68,
+        "mdat": 0
+      },
+      "outputSizeDelta": 68,
+      "baselineTopLevelBoxes": [
+        {
+          "type": "ftyp",
+          "position": 0,
+          "size": 28,
+          "headerBytes": 8
+        },
+        {
+          "type": "moov",
+          "position": 28,
+          "size": 3512,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 3540,
+          "size": 1276,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 4816,
+          "size": 743350,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 748166,
+          "size": 1196,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 749362,
+          "size": 459193,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1208555,
+          "size": 1200,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1209755,
+          "size": 517494,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1727249,
+          "size": 1196,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1728445,
+          "size": 516373,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 2244818,
+          "size": 176,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 2244994,
+          "size": 564,
+          "headerBytes": 8
+        }
+      ],
+      "candidateTopLevelBoxes": [
+        {
+          "type": "ftyp",
+          "position": 0,
+          "size": 28,
+          "headerBytes": 8
+        },
+        {
+          "type": "moov",
+          "position": 28,
+          "size": 3512,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 3540,
+          "size": 1276,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 4816,
+          "size": 743350,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 748166,
+          "size": 1196,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 749362,
+          "size": 459193,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1208555,
+          "size": 1200,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1209755,
+          "size": 517494,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1727249,
+          "size": 1188,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1728437,
+          "size": 496944,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 2225381,
+          "size": 252,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 2225633,
+          "size": 19993,
+          "headerBytes": 8
+        }
+      ],
+      "candidateAccepted": false,
+      "fullOriginalAcceptance": false,
+      "memoryAcceptance": false,
+      "speedGainProven": false
+    },
+    {
+      "streams": [
+        {
+          "index": 0,
+          "packets": 96,
+          "payloadHashesAndSizesMatch": true
+        },
+        {
+          "index": 1,
+          "packets": 189,
+          "payloadHashesAndSizesMatch": true
+        },
+        {
+          "index": 2,
+          "packets": 189,
+          "payloadHashesAndSizesMatch": true
+        },
+        {
+          "index": 4,
+          "packets": 1,
+          "payloadHashesAndSizesMatch": true
+        }
+      ],
+      "packetsPerVariant": 475,
+      "allPayloadHashesAndSizesMatch": true,
+      "completeDecodedVideoMatches": true,
+      "decodedVideoHash": "0,v,SHA256=b6ba622248e30c7748e07085ee1a38b01a3d985e62c9e0890d93a147f65f5536",
+      "packetFieldChangesExceptFilePositions": [
+        {
+          "stream": 0,
+          "packet": 94,
+          "field": "duration",
+          "baseline": 666,
+          "candidate": 667
+        },
+        {
+          "stream": 0,
+          "packet": 94,
+          "field": "duration_time",
+          "baseline": "0.041625",
+          "candidate": "0.041688"
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "pts",
+          "baseline": 64661,
+          "candidate": 64662
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "pts_time",
+          "baseline": "4.041313",
+          "candidate": "4.041375"
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "dts",
+          "baseline": 64661,
+          "candidate": 64662
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "dts_time",
+          "baseline": "4.041313",
+          "candidate": "4.041375"
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "duration",
+          "baseline": 667,
+          "candidate": 668
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "duration_time",
+          "baseline": "0.041688",
+          "candidate": "0.041750"
+        }
+      ],
+      "exactlyEquivalentApartFromFilePositions": false,
+      "packetTimingPreservationPassed": false,
+      "canonicalPerStreamPacketHashes": {
+        "baseline": "8edc8e6ff0f678e67190521af6a070526eb464839ce999166c79eaace217df72",
+        "candidate": "2a6953d9427a6664692e9cf1fd57436183cca7b98474007498eef4bfd5a92c1a"
+      },
+      "boxSizeDeltas": {
+        "ftyp": 0,
+        "moov": 0,
+        "moof": 68,
+        "mdat": 0
+      },
+      "outputSizeDelta": 68,
+      "baselineTopLevelBoxes": [
+        {
+          "type": "ftyp",
+          "position": 0,
+          "size": 28,
+          "headerBytes": 8
+        },
+        {
+          "type": "moov",
+          "position": 28,
+          "size": 3512,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 3540,
+          "size": 1276,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 4816,
+          "size": 743350,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 748166,
+          "size": 1196,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 749362,
+          "size": 459193,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1208555,
+          "size": 1200,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1209755,
+          "size": 517494,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1727249,
+          "size": 1196,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1728445,
+          "size": 516373,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 2244818,
+          "size": 176,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 2244994,
+          "size": 564,
+          "headerBytes": 8
+        }
+      ],
+      "candidateTopLevelBoxes": [
+        {
+          "type": "ftyp",
+          "position": 0,
+          "size": 28,
+          "headerBytes": 8
+        },
+        {
+          "type": "moov",
+          "position": 28,
+          "size": 3512,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 3540,
+          "size": 1276,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 4816,
+          "size": 743350,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 748166,
+          "size": 1196,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 749362,
+          "size": 459193,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1208555,
+          "size": 1200,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1209755,
+          "size": 517494,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1727249,
+          "size": 1188,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1728437,
+          "size": 496944,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 2225381,
+          "size": 252,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 2225633,
+          "size": 19993,
+          "headerBytes": 8
+        }
+      ],
+      "candidateAccepted": false,
+      "fullOriginalAcceptance": false,
+      "memoryAcceptance": false,
+      "speedGainProven": false
+    },
+    {
+      "streams": [
+        {
+          "index": 0,
+          "packets": 96,
+          "payloadHashesAndSizesMatch": true
+        },
+        {
+          "index": 1,
+          "packets": 189,
+          "payloadHashesAndSizesMatch": true
+        },
+        {
+          "index": 2,
+          "packets": 189,
+          "payloadHashesAndSizesMatch": true
+        },
+        {
+          "index": 4,
+          "packets": 1,
+          "payloadHashesAndSizesMatch": true
+        }
+      ],
+      "packetsPerVariant": 475,
+      "allPayloadHashesAndSizesMatch": true,
+      "completeDecodedVideoMatches": true,
+      "decodedVideoHash": "0,v,SHA256=b6ba622248e30c7748e07085ee1a38b01a3d985e62c9e0890d93a147f65f5536",
+      "packetFieldChangesExceptFilePositions": [
+        {
+          "stream": 0,
+          "packet": 94,
+          "field": "duration",
+          "baseline": 666,
+          "candidate": 667
+        },
+        {
+          "stream": 0,
+          "packet": 94,
+          "field": "duration_time",
+          "baseline": "0.041625",
+          "candidate": "0.041688"
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "pts",
+          "baseline": 64661,
+          "candidate": 64662
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "pts_time",
+          "baseline": "4.041313",
+          "candidate": "4.041375"
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "dts",
+          "baseline": 64661,
+          "candidate": 64662
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "dts_time",
+          "baseline": "4.041313",
+          "candidate": "4.041375"
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "duration",
+          "baseline": 667,
+          "candidate": 668
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "duration_time",
+          "baseline": "0.041688",
+          "candidate": "0.041750"
+        }
+      ],
+      "exactlyEquivalentApartFromFilePositions": false,
+      "packetTimingPreservationPassed": false,
+      "canonicalPerStreamPacketHashes": {
+        "baseline": "8edc8e6ff0f678e67190521af6a070526eb464839ce999166c79eaace217df72",
+        "candidate": "2a6953d9427a6664692e9cf1fd57436183cca7b98474007498eef4bfd5a92c1a"
+      },
+      "boxSizeDeltas": {
+        "ftyp": 0,
+        "moov": 0,
+        "moof": 68,
+        "mdat": 0
+      },
+      "outputSizeDelta": 68,
+      "baselineTopLevelBoxes": [
+        {
+          "type": "ftyp",
+          "position": 0,
+          "size": 28,
+          "headerBytes": 8
+        },
+        {
+          "type": "moov",
+          "position": 28,
+          "size": 3512,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 3540,
+          "size": 1276,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 4816,
+          "size": 743350,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 748166,
+          "size": 1196,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 749362,
+          "size": 459193,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1208555,
+          "size": 1200,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1209755,
+          "size": 517494,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1727249,
+          "size": 1196,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1728445,
+          "size": 516373,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 2244818,
+          "size": 176,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 2244994,
+          "size": 564,
+          "headerBytes": 8
+        }
+      ],
+      "candidateTopLevelBoxes": [
+        {
+          "type": "ftyp",
+          "position": 0,
+          "size": 28,
+          "headerBytes": 8
+        },
+        {
+          "type": "moov",
+          "position": 28,
+          "size": 3512,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 3540,
+          "size": 1276,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 4816,
+          "size": 743350,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 748166,
+          "size": 1196,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 749362,
+          "size": 459193,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1208555,
+          "size": 1200,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1209755,
+          "size": 517494,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1727249,
+          "size": 1188,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1728437,
+          "size": 496944,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 2225381,
+          "size": 252,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 2225633,
+          "size": 19993,
+          "headerBytes": 8
+        }
+      ],
+      "candidateAccepted": false,
+      "fullOriginalAcceptance": false,
+      "memoryAcceptance": false,
+      "speedGainProven": false
+    },
+    {
+      "streams": [
+        {
+          "index": 0,
+          "packets": 96,
+          "payloadHashesAndSizesMatch": true
+        },
+        {
+          "index": 1,
+          "packets": 189,
+          "payloadHashesAndSizesMatch": true
+        },
+        {
+          "index": 2,
+          "packets": 189,
+          "payloadHashesAndSizesMatch": true
+        },
+        {
+          "index": 4,
+          "packets": 1,
+          "payloadHashesAndSizesMatch": true
+        }
+      ],
+      "packetsPerVariant": 475,
+      "allPayloadHashesAndSizesMatch": true,
+      "completeDecodedVideoMatches": true,
+      "decodedVideoHash": "0,v,SHA256=b6ba622248e30c7748e07085ee1a38b01a3d985e62c9e0890d93a147f65f5536",
+      "packetFieldChangesExceptFilePositions": [
+        {
+          "stream": 0,
+          "packet": 94,
+          "field": "duration",
+          "baseline": 666,
+          "candidate": 667
+        },
+        {
+          "stream": 0,
+          "packet": 94,
+          "field": "duration_time",
+          "baseline": "0.041625",
+          "candidate": "0.041688"
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "pts",
+          "baseline": 64661,
+          "candidate": 64662
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "pts_time",
+          "baseline": "4.041313",
+          "candidate": "4.041375"
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "dts",
+          "baseline": 64661,
+          "candidate": 64662
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "dts_time",
+          "baseline": "4.041313",
+          "candidate": "4.041375"
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "duration",
+          "baseline": 667,
+          "candidate": 668
+        },
+        {
+          "stream": 0,
+          "packet": 95,
+          "field": "duration_time",
+          "baseline": "0.041688",
+          "candidate": "0.041750"
+        }
+      ],
+      "exactlyEquivalentApartFromFilePositions": false,
+      "packetTimingPreservationPassed": false,
+      "canonicalPerStreamPacketHashes": {
+        "baseline": "8edc8e6ff0f678e67190521af6a070526eb464839ce999166c79eaace217df72",
+        "candidate": "2a6953d9427a6664692e9cf1fd57436183cca7b98474007498eef4bfd5a92c1a"
+      },
+      "boxSizeDeltas": {
+        "ftyp": 0,
+        "moov": 0,
+        "moof": 68,
+        "mdat": 0
+      },
+      "outputSizeDelta": 68,
+      "baselineTopLevelBoxes": [
+        {
+          "type": "ftyp",
+          "position": 0,
+          "size": 28,
+          "headerBytes": 8
+        },
+        {
+          "type": "moov",
+          "position": 28,
+          "size": 3512,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 3540,
+          "size": 1276,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 4816,
+          "size": 743350,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 748166,
+          "size": 1196,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 749362,
+          "size": 459193,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1208555,
+          "size": 1200,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1209755,
+          "size": 517494,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1727249,
+          "size": 1196,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1728445,
+          "size": 516373,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 2244818,
+          "size": 176,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 2244994,
+          "size": 564,
+          "headerBytes": 8
+        }
+      ],
+      "candidateTopLevelBoxes": [
+        {
+          "type": "ftyp",
+          "position": 0,
+          "size": 28,
+          "headerBytes": 8
+        },
+        {
+          "type": "moov",
+          "position": 28,
+          "size": 3512,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 3540,
+          "size": 1276,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 4816,
+          "size": 743350,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 748166,
+          "size": 1196,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 749362,
+          "size": 459193,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1208555,
+          "size": 1200,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1209755,
+          "size": 517494,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 1727249,
+          "size": 1188,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 1728437,
+          "size": 496944,
+          "headerBytes": 8
+        },
+        {
+          "type": "moof",
+          "position": 2225381,
+          "size": 252,
+          "headerBytes": 8
+        },
+        {
+          "type": "mdat",
+          "position": 2225633,
+          "size": 19993,
+          "headerBytes": 8
+        }
+      ],
+      "candidateAccepted": false,
+      "fullOriginalAcceptance": false,
+      "memoryAcceptance": false,
+      "speedGainProven": false
+    }
+  ],
+  "allTwelveGenuineConversionsPassedExistingGates": true,
+  "independentExactTimingGatePassed": false,
+  "allEncodedPacketPayloadsMatchAcrossPair": true,
+  "completeDecodedVideoHashesMatch": true,
+  "copiedAudioArtworkTitlesAndTimingMatch": true,
+  "observedVideoDurationTicks": {
+    "baseline": 64000,
+    "candidate": 64002,
+    "timeBase": "1/16000",
+    "addedMicroseconds": 125
+  },
+  "candidateAccepted": false,
+  "historicalGoldenChanged": false,
+  "qualityOrTimingThresholdRelaxed": false,
+  "birthChecks": [
+    {
+      "identity": {
+        "pid": 34372,
+        "parentPid": 37664,
+        "createdAt": "2026-10-15T03:15:28.8358950Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 23052,
+        "parentPid": 37664,
+        "createdAt": "2026-10-15T03:15:33.8437790Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 39336,
+        "parentPid": 23052,
+        "createdAt": "2026-10-15T03:15:35.8464930Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 34876,
+        "parentPid": 21656,
+        "createdAt": "2026-10-15T03:26:47.5569160Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 37104,
+        "parentPid": 21656,
+        "createdAt": "2026-10-15T03:26:53.3917540Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 6780,
+        "parentPid": 37104,
+        "createdAt": "2026-10-15T03:26:54.7574600Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 27544,
+        "parentPid": 39568,
+        "createdAt": "2026-10-15T03:31:24.9480490Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 7644,
+        "parentPid": 39568,
+        "createdAt": "2026-10-15T03:31:27.6534190Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    },
+    {
+      "identity": {
+        "pid": 35124,
+        "parentPid": 7644,
+        "createdAt": "2026-10-15T03:31:28.8747800Z"
+      },
+      "current": null,
+      "ownedBirthAbsent": true
+    }
+  ],
+  "sampledPidChecks": [
+    {
+      "pid": 15128,
+      "lastSampleAt": "2026-10-15T03:18:52.973Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 32536,
+      "lastSampleAt": "2026-10-15T03:18:52.973Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 5928,
+      "lastSampleAt": "2026-10-15T03:27:22.927Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 26248,
+      "lastSampleAt": "2026-10-15T03:18:52.973Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 36768,
+      "lastSampleAt": "2026-10-15T03:18:52.973Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 5292,
+      "lastSampleAt": "2026-10-15T03:16:51.910Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 34052,
+      "lastSampleAt": "2026-10-15T03:16:51.910Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 29468,
+      "lastSampleAt": "2026-10-15T03:16:12.338Z",
+      "current": {
+        "createdAt": "2026-10-15T03:42:01.6741960Z",
+        "pid": 29468
+      },
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 38288,
+      "lastSampleAt": "2026-10-15T03:16:51.910Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 14008,
+      "lastSampleAt": "2026-10-15T03:17:32.309Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 28588,
+      "lastSampleAt": "2026-10-15T03:17:32.309Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 35504,
+      "lastSampleAt": "2026-10-15T03:16:54.612Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 29944,
+      "lastSampleAt": "2026-10-15T03:17:32.309Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 29968,
+      "lastSampleAt": "2026-10-15T03:18:13.249Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 30580,
+      "lastSampleAt": "2026-10-15T03:18:13.249Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 38436,
+      "lastSampleAt": "2026-10-15T03:17:35.331Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 17164,
+      "lastSampleAt": "2026-10-15T03:18:13.249Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 14516,
+      "lastSampleAt": "2026-10-15T03:18:07.863Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 22152,
+      "lastSampleAt": "2026-10-15T03:18:52.973Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 35344,
+      "lastSampleAt": "2026-10-15T03:18:52.973Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 11260,
+      "lastSampleAt": "2026-10-15T03:18:15.513Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 29960,
+      "lastSampleAt": "2026-10-15T03:18:52.973Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 19528,
+      "lastSampleAt": "2026-10-15T03:30:13.531Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 39844,
+      "lastSampleAt": "2026-10-15T03:30:13.531Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 34864,
+      "lastSampleAt": "2026-10-15T03:30:13.531Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 39040,
+      "lastSampleAt": "2026-10-15T03:30:13.531Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 29052,
+      "lastSampleAt": "2026-10-15T03:30:13.531Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 36504,
+      "lastSampleAt": "2026-10-15T03:27:58.362Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 38352,
+      "lastSampleAt": "2026-10-15T03:27:58.362Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 37664,
+      "lastSampleAt": "2026-10-15T03:27:58.362Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 2460,
+      "lastSampleAt": "2026-10-15T03:27:51.767Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 16504,
+      "lastSampleAt": "2026-10-15T03:28:44.339Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 8260,
+      "lastSampleAt": "2026-10-15T03:28:44.339Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 37052,
+      "lastSampleAt": "2026-10-15T03:28:01.379Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 38496,
+      "lastSampleAt": "2026-10-15T03:28:44.339Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 18404,
+      "lastSampleAt": "2026-10-15T03:29:30.944Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 26800,
+      "lastSampleAt": "2026-10-15T03:29:30.944Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 32068,
+      "lastSampleAt": "2026-10-15T03:28:46.213Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 38008,
+      "lastSampleAt": "2026-10-15T03:29:30.944Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 33760,
+      "lastSampleAt": "2026-10-15T03:30:13.531Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 37860,
+      "lastSampleAt": "2026-10-15T03:30:13.531Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 37060,
+      "lastSampleAt": "2026-10-15T03:29:36.079Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 33228,
+      "lastSampleAt": "2026-10-15T03:30:13.531Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 26672,
+      "lastSampleAt": "2026-10-15T03:34:38.392Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 20492,
+      "lastSampleAt": "2026-10-15T03:34:38.392Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 9244,
+      "lastSampleAt": "2026-10-15T03:34:38.392Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 36276,
+      "lastSampleAt": "2026-10-15T03:34:38.392Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 38584,
+      "lastSampleAt": "2026-10-15T03:34:38.392Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 36376,
+      "lastSampleAt": "2026-10-15T03:32:44.628Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 22560,
+      "lastSampleAt": "2026-10-15T03:32:44.628Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 336,
+      "lastSampleAt": "2026-10-15T03:32:02.149Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 25888,
+      "lastSampleAt": "2026-10-15T03:32:44.628Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 14068,
+      "lastSampleAt": "2026-10-15T03:34:07.638Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 6692,
+      "lastSampleAt": "2026-10-15T03:33:27.760Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 33028,
+      "lastSampleAt": "2026-10-15T03:33:27.760Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 36676,
+      "lastSampleAt": "2026-10-15T03:32:47.383Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 7144,
+      "lastSampleAt": "2026-10-15T03:33:27.760Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 32244,
+      "lastSampleAt": "2026-10-15T03:34:05.873Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 35336,
+      "lastSampleAt": "2026-10-15T03:34:05.873Z",
+      "current": {
+        "createdAt": "2026-10-15T03:40:08.9506430Z",
+        "pid": 35336
+      },
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 36600,
+      "lastSampleAt": "2026-10-15T03:33:31.163Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 29888,
+      "lastSampleAt": "2026-10-15T03:34:05.873Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 33956,
+      "lastSampleAt": "2026-10-15T03:33:58.439Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 34028,
+      "lastSampleAt": "2026-10-15T03:34:38.392Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 38564,
+      "lastSampleAt": "2026-10-15T03:34:38.392Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    },
+    {
+      "pid": 28460,
+      "lastSampleAt": "2026-10-15T03:34:38.392Z",
+      "current": null,
+      "sampledProcessGone": true,
+      "birthWasNotRecordedInConversionSample": true
+    }
+  ],
+  "original": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "removedRedundantRawJson": [
+    {
+      "path": "output/playwright/2026-10-15T03-15-36.379Z-packet-cache-media-5AKIqd-direct-artwork.json",
+      "bytes": 1042064,
+      "sha256": "bda3513f02612bef940b8b54efdac72a6e059c0a6a556f33aeb65342a632e590",
+      "retainedLosslessArchive": {
+        "path": "outputs/reports/2026-10-15T03-15-14-905Z-packet-drain-media-golden-report.json.gz",
+        "bytes": 100274,
+        "sha256": "8e7547c3e374a0379621d451a1f0ec801fbc7f193514bc8ced9db7f5814eb020",
+        "restoredBytes": 1042064,
+        "restoredSha256": "bda3513f02612bef940b8b54efdac72a6e059c0a6a556f33aeb65342a632e590"
+      }
+    },
+    {
+      "path": "output/playwright/2026-10-15T03-26-55.429Z-packet-cache-media-231AuU-direct-artwork.json",
+      "bytes": 1894814,
+      "sha256": "505cb7b5eb49fbaf5f88ca4aaa9384245ecbcd6704cc39b4450ddc8e3c9e1c2b",
+      "retainedLosslessArchive": {
+        "path": "outputs/reports/2026-10-15T03-26-36-040Z-packet-order-baseline-media-golden-report.json.gz",
+        "bytes": 207634,
+        "sha256": "4da8cece68c9753da02b5a489cb9aa7e7895f79e316ca81f8a507ad7e00da579",
+        "restoredBytes": 1894814,
+        "restoredSha256": "505cb7b5eb49fbaf5f88ca4aaa9384245ecbcd6704cc39b4450ddc8e3c9e1c2b"
+      }
+    },
+    {
+      "path": "output/playwright/2026-10-15T03-31-29.353Z-packet-cache-media-izFKqS-direct-artwork.json",
+      "bytes": 1906866,
+      "sha256": "b1cdd6fe9710b635e4465827fb4a7a4773a23dede8b62c0abf9730e840c1b87b",
+      "retainedLosslessArchive": {
+        "path": "outputs/reports/2026-10-15T03-31-11-318Z-packet-order-candidate-media-golden-report.json.gz",
+        "bytes": 215141,
+        "sha256": "190ec14870d77d8d12246105508e5a8e1366c52c2fbab5eb51d14ff6eac6568d",
+        "restoredBytes": 1906866,
+        "restoredSha256": "b1cdd6fe9710b635e4465827fb4a7a4773a23dede8b62c0abf9730e840c1b87b"
+      }
+    }
+  ],
+  "allRecordedPreCurrentPostSourcePinsVerified": true,
+  "convertedOutputsProfilesAndFixturesRemoved": true,
+  "normalAssetsRestored": true,
+  "fullOriginalCompleted": false,
+  "primaryIncrementalPrivateMiB": null,
+  "memoryAcceptance": false,
+  "speedGainProven": false,
+  "headedCoverageVerified": false,
+  "publicAcceptance": false,
+  "ownSources": {
+    "scripts/analyze-packet-order-media.mjs": {
+      "sha256": "2db76a0c5623b00ba628dd5b8984212e0b237848ec36b553257b78025d25068d",
+      "preimage": "Ly8gSW5kZXBlbmRlbnQgc291cmNlL2NvbnRlbnQvbGlmZXRpbWUgY2hlY2suIFJlY29yZHMgcmVqZWN0aW9uOyBuZXZlciByZWJhc2VsaW5lcy4KaW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyBleGVjRmlsZSB9IGZyb20gIm5vZGU6Y2hpbGRfcHJvY2VzcyI7CmltcG9ydCB7IGNyZWF0ZUhhc2ggfSBmcm9tICJub2RlOmNyeXB0byI7CmltcG9ydCB7IGNyZWF0ZVJlYWRTdHJlYW0gfSBmcm9tICJub2RlOmZzIjsKaW1wb3J0IHsgYWNjZXNzLCBsc3RhdCwgcmVhZEZpbGUsIHN0YXQsIHVubGluaywgd3JpdGVGaWxlIH0gZnJvbSAibm9kZTpmcy9wcm9taXNlcyI7CmltcG9ydCBwYXRoIGZyb20gIm5vZGU6cGF0aCI7CmltcG9ydCB7IHByb21pc2lmeSB9IGZyb20gIm5vZGU6dXRpbCI7CmltcG9ydCB7IGd1bnppcFN5bmMgfSBmcm9tICJub2RlOnpsaWIiOwppbXBvcnQgeyBzaGEgfSBmcm9tICIuL2xpYi9zdGFibGUtdWktaGVhZGxlc3MtYmFzZWxpbmUtcmVjaXBlLm1qcyI7CmltcG9ydCB7IGxvYWRNdmZNZWRpYUNvbXBvbmVudHMgfSBmcm9tICIuL2xpYi9tdmYtYXJlbmEtbWVkaWEtcmVjaXBlLm1qcyI7CmltcG9ydCB7IGxvYWRQYWNrZXREcmFpbk1lZGlhQ29tcG9uZW50cyB9IGZyb20gIi4vbGliL3BhY2tldC1kcmFpbi1tZWRpYS1yZWNpcGUubWpzIjsKaW1wb3J0IHsgY29tcGFyZVBhY2tldE9yZGVyUHJvb2ZzIH0gZnJvbSAiLi9saWIvcGFja2V0LW9yZGVyLWNvbXBhcmlzb24ubWpzIjsKYXNzZXJ0LmVxdWFsKHByb2Nlc3MuYXJndi5sZW5ndGgsIDIpOwpjb25zdCByb290ID0gcGF0aC5yZXNvbHZlKGltcG9ydC5tZXRhLmRpcm5hbWUsICIuLiIpLCByZWFkID0gZmlsZSA9PiByZWFkRmlsZShwYXRoLmpvaW4ocm9vdCwgZmlsZSkpOwpjb25zdCBvdXRwdXQgPSAiZXZpZGVuY2UvcGFja2V0LWRyYWluLW1lZGlhLXRpbWluZy1yZWplY3Rpb24tMjAyNi0xMC0xNS5qc29uIjsKYXdhaXQgYXNzZXJ0LnJlamVjdHMoYWNjZXNzKHBhdGguam9pbihyb290LCBvdXRwdXQpKSwgeyBjb2RlOiAiRU5PRU5UIiB9KTsKcHJvY2Vzcy5lbnYuV0lUSElOX01WRl9BUkVOQV9DT05UUk9MX1JFQ0VJUFQgPSAiZXZpZGVuY2UvMjAyNi0xMC0xNFQyMi0xNy0xNi02NDRaLW12Zi1hcmVuYS1icm93c2VyLWNvbnRyb2wtZXhlY3V0ZWQtc291cmNlcy5qc29uIjsKcHJvY2Vzcy5lbnYuV0lUSElOX1BBQ0tFVF9EUkFJTl9DT05UUk9MX1JFQ0VJUFQgPSAiZXZpZGVuY2UvMjAyNi0xMC0xNVQwMy0wNS0xOC03ODJaLXBhY2tldC1kcmFpbi1icm93c2VyLWNvbnRyb2wtZXhlY3V0ZWQtc291cmNlcy5qc29uIjsKY29uc3QgdmFyaWFudHMgPSBbCiAgWyJpbml0aWFsIiwgIjIwMjYtMTAtMTVUMDMtMTUtMTQtOTA1Wi1wYWNrZXQtZHJhaW4tbWVkaWEiLCAiMjAyNi0xMC0xNVQwMy0xNS0xNC04OTdaLXBhY2tldC1kcmFpbi1tZWRpYS1zdXBwbGVtZW50IiwgNjZdLAogIFsiYmFzZWxpbmUiLCAiMjAyNi0xMC0xNVQwMy0yNi0zNi0wNDBaLXBhY2tldC1vcmRlci1iYXNlbGluZS1tZWRpYSIsICIyMDI2LTEwLTE1VDAzLTI2LTM2LTAzM1otcGFja2V0LW9yZGVyLWJhc2VsaW5lLW1lZGlhLXN1cHBsZW1lbnQiLCA0OF0sCiAgWyJjYW5kaWRhdGUiLCAiMjAyNi0xMC0xNVQwMy0zMS0xMS0zMThaLXBhY2tldC1vcmRlci1jYW5kaWRhdGUtbWVkaWEiLCAiMjAyNi0xMC0xNVQwMy0zMS0xMS0zMTFaLXBhY2tldC1vcmRlci1jYW5kaWRhdGUtbWVkaWEtc3VwcGxlbWVudCIsIDcwXSwKXTsKYXN5bmMgZnVuY3Rpb24gcmVzdG9yZShyZWNvcmQsIG1heGltdW0pIHsKICBjb25zdCB6aXAgPSBhd2FpdCByZWFkKHJlY29yZC5wYXRoKTsgYXNzZXJ0LmVxdWFsKHppcC5sZW5ndGgsIHJlY29yZC5ieXRlcyk7IGFzc2VydC5lcXVhbChzaGEoemlwKSwgcmVjb3JkLnNoYTI1Nik7CiAgY29uc3QgcmF3ID0gZ3VuemlwU3luYyh6aXAsIHsgbWF4T3V0cHV0TGVuZ3RoOiBtYXhpbXVtIH0pOyBhc3NlcnQuZXF1YWwocmF3Lmxlbmd0aCwgcmVjb3JkLnJlc3RvcmVkQnl0ZXMpOwogIGFzc2VydC5lcXVhbChzaGEocmF3KSwgcmVjb3JkLnJlc3RvcmVkU2hhMjU2KTsgcmV0dXJuIHsgcmF3LCBwYXJzZWQ6IEpTT04ucGFyc2UocmF3KSB9Owp9CmNvbnN0IHJ1bnMgPSBbXSwgaWRlbnRpdGllcyA9IFtdLCBzYW1wbGVkID0gbmV3IE1hcCgpLCByYXdUb1JlbW92ZSA9IFtdOwpmb3IgKGNvbnN0IFt2YXJpYW50LCBzdGFtcCwgc3VwcGxlbWVudGFsU3RhbXAsIHN1cHBsZW1lbnRhbENvdW50XSBvZiB2YXJpYW50cykgewogIGNvbnN0IG1lZGlhUGF0aCA9IGBldmlkZW5jZS8ke3N0YW1wfS5qc29uYCwgbWVkaWFCeXRlcyA9IGF3YWl0IHJlYWQobWVkaWFQYXRoKSwgbWVkaWEgPSBKU09OLnBhcnNlKG1lZGlhQnl0ZXMpOwogIGNvbnN0IGV4dHJhUGF0aCA9IGBldmlkZW5jZS8ke3N1cHBsZW1lbnRhbFN0YW1wfS5qc29uYCwgZXh0cmFCeXRlcyA9IGF3YWl0IHJlYWQoZXh0cmFQYXRoKSwgZXh0cmEgPSBKU09OLnBhcnNlKGV4dHJhQnl0ZXMpOwogIGFzc2VydC5lcXVhbChtZWRpYS5mYWlsdXJlLCBudWxsKTsgYXNzZXJ0LmVxdWFsKG1lZGlhLmFuYWx5c2lzLmdlbnVpbmVWYWxpZGF0ZWRDb252ZXJzaW9ucywgNCk7CiAgYXNzZXJ0LmVxdWFsKGV4dHJhLmZhaWx1cmUsIG51bGwpOyBhc3NlcnQuZXF1YWwoZXh0cmEucHJlcGFyZU9ubHksIGZhbHNlKTsgYXNzZXJ0LmVxdWFsKGV4dHJhLm93bmVkQ2FsbGVyQWJzZW50LCB0cnVlKTsKICBjb25zdCBsZWdhY3kgPSAoYXdhaXQgcmVzdG9yZShtZWRpYS5nZW5lcmF0ZWRBcmNoaXZlLCA4Mzg4NjA4KSkucGFyc2VkOwogIGNvbnN0IHN1cHBsZW1lbnRhbCA9IChhd2FpdCByZXN0b3JlKGV4dHJhLmFyY2hpdmUsIDIwOTcxNTIpKS5wYXJzZWQ7CiAgYXNzZXJ0LmVxdWFsKE9iamVjdC5rZXlzKG1lZGlhLnNvdXJjZVBpbnMpLmxlbmd0aCwgMjU1KTsgYXNzZXJ0LmVxdWFsKE9iamVjdC5rZXlzKGV4dHJhLnNvdXJjZVBpbnMpLmxlbmd0aCwgc3VwcGxlbWVudGFsQ291bnQpOwogIGZvciAoY29uc3QgW3JlY2VpcHQsIGFyY2hpdmUsIGJhc2U2NF0gb2YgW1ttZWRpYSwgbGVnYWN5LCBmYWxzZV0sIFtleHRyYSwgc3VwcGxlbWVudGFsLCB0cnVlXV0pIHsKICAgIGFzc2VydC5kZWVwRXF1YWwocmVjZWlwdC5zb3VyY2VQaW5zLCByZWNlaXB0LnBvc3RTb3VyY2VQaW5zKTsgYXNzZXJ0LmRlZXBFcXVhbChhcmNoaXZlLnNvdXJjZVBpbnMsIHJlY2VpcHQuc291cmNlUGlucyk7CiAgICBmb3IgKGNvbnN0IFtmaWxlLCBleHBlY3RlZF0gb2YgT2JqZWN0LmVudHJpZXMocmVjZWlwdC5zb3VyY2VQaW5zKSkgewogICAgICBjb25zdCBwcmVpbWFnZSA9IGJhc2U2NCA/IEJ1ZmZlci5mcm9tKGFyY2hpdmUucHJlaW1hZ2VzW2ZpbGVdLCAiYmFzZTY0IikgOiBhcmNoaXZlLnNvdXJjZXNbZmlsZV07CiAgICAgIGFzc2VydC5lcXVhbChzaGEocHJlaW1hZ2UpLCBleHBlY3RlZCwgZmlsZSk7IGFzc2VydC5lcXVhbChzaGEoYXdhaXQgcmVhZChmaWxlKSksIGV4cGVjdGVkLCBmaWxlKTsKICAgIH0KICB9CiAgY29uc3QgcmVzdG9yZWQgPSBhd2FpdCByZXN0b3JlKG1lZGlhLnJlcG9ydC5hcmNoaXZlLCAyMDk3MTUyKSwgcmVwb3J0ID0gcmVzdG9yZWQucGFyc2VkOwogIGFzc2VydC5lcXVhbChzaGEocmVzdG9yZWQucmF3KSwgbWVkaWEucmVwb3J0LnNoYTI1Nik7IGFzc2VydC5kZWVwRXF1YWwocmVwb3J0Lm1hbmlmZXN0LCBsZWdhY3kuZ2VuZXJhdGVkLmNvbXBvc2l0aW9uLm1hbmlmZXN0KTsKICBjb25zdCBjb21wb25lbnRzID0gYXdhaXQgKHZhcmlhbnQgPT09ICJiYXNlbGluZSIgPyBsb2FkTXZmTWVkaWFDb21wb25lbnRzIDogbG9hZFBhY2tldERyYWluTWVkaWFDb21wb25lbnRzKShyb290KTsKICBjb25zdCBhbmFseXNpcyA9IGF3YWl0IGNvbXBvbmVudHMuaW5zcGVjdEVibWxNZWRpYVJlcG9ydChyZXBvcnQsIEpTT04ucGFyc2UoYXdhaXQgcmVhZChtZWRpYS5iYXNlbGluZS5wYXRoKSkucmVwb3J0c1swXS5yZXBvcnQsCiAgICBKU09OLnBhcnNlKGF3YWl0IHJlYWQobWVkaWEuYnVpbGQucGF0aCkpKTsKICBhc3NlcnQuZGVlcEVxdWFsKGFuYWx5c2lzLCBtZWRpYS5hbmFseXNpcyk7CiAgY29uc3Qgb3V0cHV0cyA9IHJlcG9ydC5yb3dzLmZpbHRlcihyb3cgPT4gKCFyb3cua2luZCAmJiByb3cuc3RhdHVzID09PSAicGFzc2VkIikgfHwgcm93LmtpbmQgPT09ICJpbmRlcGVuZGVudC1mcmFtZS1kaWFnbm9zdGljIik7CiAgYXNzZXJ0LmVxdWFsKG91dHB1dHMubGVuZ3RoLCA4KTsKICBjb25zdCBleHBlY3RlZEhhc2ggPSB2YXJpYW50ID09PSAiYmFzZWxpbmUiID8gIjU1NGNjODQxNTlkMmUzNmY0ZmQyYWRiMDYwMDYyY2Y3OGJlMDJkNDE5NWY3ODU3Y2VlZmUwOTUzMDY1YzVmMjciCiAgICA6ICJkODc2ZGEzY2EyMzdiYjc0MmRjZjAxNGI5NWI0ZTIyZDU5ZTViZTFlODdlZjczMzVmNDcyN2VlNjU4NjczOGMzIjsKICBmb3IgKGNvbnN0IHJvdyBvZiBvdXRwdXRzKSB7CiAgICBhc3NlcnQuZXF1YWwocm93Lm91dHB1dFNoYTI1NiwgZXhwZWN0ZWRIYXNoKTsgYXNzZXJ0LmVxdWFsKHJvdy5vdXRwdXRCeXRlcywgdmFyaWFudCA9PT0gImJhc2VsaW5lIiA/IDIyNDU1NTggOiAyMjQ1NjI2KTsKICAgIGFzc2VydC5lcXVhbChyb3cuc291cmNlQnl0ZXMsIDQ0NTc5MDYpOyBhc3NlcnQuZXF1YWwocm93Lm1ldHJpY3MucGVha1dhc21NZW1vcnlCeXRlcywgNTAzMzE2NDgpOwogICAgYXNzZXJ0LmVxdWFsKHJvdy5tZXRyaWNzLnF1ZXVlZEJ5dGVzLCAwKTsgYXNzZXJ0LmVxdWFsKHJvdy5tZXRyaWNzLnBlbmRpbmdPcGVyYXRpb25zLCAwKTsKICAgIGFzc2VydC5vayhyb3cubWV0cmljcy5wZWFrUGVuZGluZ09wZXJhdGlvbnMgPD0gMSAmJiByb3cubWV0cmljcy5wZWFrUXVldWVkQnl0ZXMgPD0gNTI0Mjg4KTsKICB9CiAgYXNzZXJ0LmRlZXBFcXVhbChtZWRpYS5wcm90ZWN0ZWRQcmUsIG1lZGlhLnByb3RlY3RlZFBvc3QpOwogIGFzc2VydC5lcXVhbChtZWRpYS5wcm90ZWN0ZWRQb3N0LmJ5dGVzLCAyOTU4NTczMjY1KTsKICBhc3NlcnQuZXF1YWwobWVkaWEucHJvdGVjdGVkUG9zdC5zaGEyNTYsICIzMWYzNjY5NWI1YjQ0YzYyMTI1YTllNDI2NGU4NGRjMDg1YWNjZDIxYzAyY2MzNDg3YWFlNTk3ZjU0YjlkYjM0Iik7CiAgYXNzZXJ0LmVxdWFsKG1lZGlhLmNsZWFudXAubm9ybWFsQXBwQW5kQ3NzVW5jaGFuZ2VkLCB0cnVlKTsgYXNzZXJ0LmVxdWFsKG1lZGlhLmNsZWFudXAucHJpdmF0ZUFkZGl0aW9uc0Fic2VudCwgdHJ1ZSk7CiAgYXNzZXJ0LmRlZXBFcXVhbChtZWRpYS5jbGVhbnVwLm5ld0ZpeHR1cmVEaXJzUmVtYWluaW5nLCBbXSk7CiAgY29uc3Qgam91cm5hbCA9IEpTT04ucGFyc2UoYXdhaXQgcmVhZChsZWdhY3kuZ2VuZXJhdGVkLmpvdXJuYWxlZEZpeHR1cmUuY2xlYW51cFBhdGgpKTsKICBhc3NlcnQuZXF1YWwoam91cm5hbC5vd25lZERpcmVjdG9yeUFic2VudCwgdHJ1ZSk7IGFzc2VydC5lcXVhbChqb3VybmFsLnJ1bm5lckFic2VuY2Uuc3RhdHVzLCAib3duZWQtaWRlbnRpdHktYWJzZW50Iik7CiAgaWRlbnRpdGllcy5wdXNoKC4uLm1lZGlhLmNsZWFudXAuaGVscGVycy5sYXVuY2hSZWNvcmRzLm1hcChyb3cgPT4gcm93LmlkZW50aXR5KSwgam91cm5hbC5yZWNvcmQucmVnaXN0cmF0aW9uSWRlbnRpdHkpOwogIGZvciAoY29uc3QgZGlyZWN0b3J5IG9mIFtqb3VybmFsLnJlY29yZC5kaXJlY3RvcnksIG1lZGlhLmNsZWFudXAub3duZWRXcmFwcGVyLCBtZWRpYS5jbGVhbnVwLmhlbHBlcnMucnVudGltZV0pCiAgICBhd2FpdCBhc3NlcnQucmVqZWN0cyhhY2Nlc3MoZGlyZWN0b3J5KSwgeyBjb2RlOiAiRU5PRU5UIiB9KTsKICBjb25zdCBydW5TYW1wbGVkID0gbmV3IFNldCgpOwogIGZvciAoY29uc3Qgcm93IG9mIHJlcG9ydC5yb3dzLmZpbHRlcihyb3cgPT4gcm93Lm1lbW9yeVNjb3BlKSkgZm9yIChjb25zdCBzYW1wbGUgb2Ygcm93LnNhbXBsZXMpIGZvciAoY29uc3QgcHJvY2VzcyBvZiBzYW1wbGUucHJvY2Vzc2VzID8/IFtdKSB7CiAgICBydW5TYW1wbGVkLmFkZChwcm9jZXNzLnBpZCk7IHNhbXBsZWQuc2V0KHByb2Nlc3MucGlkLCB7IHBpZDogcHJvY2Vzcy5waWQsIGxhc3RTYW1wbGVBdDogc2FtcGxlLnRpbWVzdGFtcCB9KTsKICB9CiAgYXNzZXJ0Lm9rKHJ1blNhbXBsZWQuc2l6ZSA8PSA2NCk7CiAgZm9yIChjb25zdCBbZmlsZSwgaGFzaF0gb2YgT2JqZWN0LmVudHJpZXMobWVkaWEuY2xlYW51cC5yZXN0b3JlZCkpIGZvciAoY29uc3QgZGlyZWN0b3J5IG9mIFsicHVibGljIiwgImRpc3QvY2xpZW50Il0pCiAgICBhc3NlcnQuZXF1YWwoc2hhKGF3YWl0IHJlYWQoYCR7ZGlyZWN0b3J5fS9lbmdpbmVzL3JlbXV4LyR7ZmlsZX1gKSksIGhhc2gpOwogIGNvbnN0IHRhcmdldCA9IHBhdGgucmVzb2x2ZShyb290LCBtZWRpYS5yZXBvcnQucGF0aCk7CiAgYXNzZXJ0LmVxdWFsKHBhdGguZGlybmFtZSh0YXJnZXQpLCBwYXRoLmpvaW4ocm9vdCwgIm91dHB1dC9wbGF5d3JpZ2h0IikpOwogIGNvbnN0IGlkZW50aXR5ID0gYXdhaXQgbHN0YXQodGFyZ2V0LCB7IGJpZ2ludDogdHJ1ZSB9KTsgYXNzZXJ0Lm9rKGlkZW50aXR5LmlzRmlsZSgpICYmICFpZGVudGl0eS5pc1N5bWJvbGljTGluaygpKTsKICBhc3NlcnQuZXF1YWwoc2hhKGF3YWl0IHJlYWRGaWxlKHRhcmdldCkpLCBzaGEocmVzdG9yZWQucmF3KSk7CiAgcmF3VG9SZW1vdmUucHVzaCh7IHRhcmdldCwgaWRlbnRpdHksIHNoYTI1Njogc2hhKHJlc3RvcmVkLnJhdyksIGJ5dGVzOiByZXN0b3JlZC5yYXcubGVuZ3RoLCBhcmNoaXZlOiBtZWRpYS5yZXBvcnQuYXJjaGl2ZSB9KTsKICBydW5zLnB1c2goeyB2YXJpYW50LCBtZWRpYVBhdGgsIG1lZGlhU2hhMjU2OiBzaGEobWVkaWFCeXRlcyksIHN1cHBsZW1lbnRhbFBhdGg6IGV4dHJhUGF0aCwgc3VwcGxlbWVudGFsU2hhMjU2OiBzaGEoZXh0cmFCeXRlcyksCiAgICBzb3VyY2VDb3VudHM6IHsgbGVnYWN5OiAyNTUsIHN1cHBsZW1lbnRhbDogc3VwcGxlbWVudGFsQ291bnQsIGRpc3RpbmN0OiBleHRyYS5kaXN0aW5jdFRvdGFsRmlsZXMgfSwKICAgIHJlcG9ydCwgb3V0cHV0SGFzaDogZXhwZWN0ZWRIYXNoLCBhbmFseXNpcyB9KTsKfQpjb25zdCBwcm9vZlJvd3MgPSB2YXJpYW50ID0+IHJ1bnMuZmluZChydW4gPT4gcnVuLnZhcmlhbnQgPT09IHZhcmlhbnQpLnJlcG9ydC5yb3dzLmZpbHRlcihyb3cgPT4gcm93LmtpbmQgPT09ICJpbmRlcGVuZGVudC1wYWNrZXQtb3JkZXItcHJvb2YiKTsKY29uc3QgYmFzZWxpbmVQcm9vZnMgPSBwcm9vZlJvd3MoImJhc2VsaW5lIiksIGNhbmRpZGF0ZVByb29mcyA9IHByb29mUm93cygiY2FuZGlkYXRlIik7CmFzc2VydC5lcXVhbChiYXNlbGluZVByb29mcy5sZW5ndGgsIDQpOyBhc3NlcnQuZXF1YWwoY2FuZGlkYXRlUHJvb2ZzLmxlbmd0aCwgNCk7CmNvbnN0IGNvbXBhcmlzb25zID0gYmFzZWxpbmVQcm9vZnMubWFwKChiYXNlbGluZSwgaW5kZXgpID0+IGNvbXBhcmVQYWNrZXRPcmRlclByb29mcyhiYXNlbGluZSwgY2FuZGlkYXRlUHJvb2ZzW2luZGV4XSkpOwpmb3IgKGNvbnN0IGNvbXBhcmlzb24gb2YgY29tcGFyaXNvbnMpIHsKICBhc3NlcnQuZXF1YWwoY29tcGFyaXNvbi5wYWNrZXRzUGVyVmFyaWFudCwgNDc1KTsgYXNzZXJ0LmVxdWFsKGNvbXBhcmlzb24uYWxsUGF5bG9hZEhhc2hlc0FuZFNpemVzTWF0Y2gsIHRydWUpOwogIGFzc2VydC5lcXVhbChjb21wYXJpc29uLmNvbXBsZXRlRGVjb2RlZFZpZGVvTWF0Y2hlcywgdHJ1ZSk7IGFzc2VydC5lcXVhbChjb21wYXJpc29uLmV4YWN0bHlFcXVpdmFsZW50QXBhcnRGcm9tRmlsZVBvc2l0aW9ucywgZmFsc2UpOwogIGFzc2VydC5lcXVhbChjb21wYXJpc29uLnBhY2tldFRpbWluZ1ByZXNlcnZhdGlvblBhc3NlZCwgZmFsc2UpOyBhc3NlcnQuZXF1YWwoY29tcGFyaXNvbi5vdXRwdXRTaXplRGVsdGEsIDY4KTsKICBhc3NlcnQuZXF1YWwoY29tcGFyaXNvbi5wYWNrZXRGaWVsZENoYW5nZXNFeGNlcHRGaWxlUG9zaXRpb25zLmxlbmd0aCwgOCk7Cn0KY29uc3QgYmFzZWxpbmVSb3dzID0gcnVucy5maW5kKHJ1biA9PiBydW4udmFyaWFudCA9PT0gImJhc2VsaW5lIikucmVwb3J0LnJvd3M7CmNvbnN0IGNhbmRpZGF0ZVJvd3MgPSBydW5zLmZpbmQocnVuID0+IHJ1bi52YXJpYW50ID09PSAiY2FuZGlkYXRlIikucmVwb3J0LnJvd3M7CmZvciAoY29uc3Qga2luZCBvZiBbImF0dGFjaGVkLXBpY3R1cmUtcHJlc2VydmF0aW9uIiwgImV4YWN0LXN0cmVhbS10aXRsZS1tYXBwaW5nIiwgImluZGVwZW5kZW50LWRlY29kZWQtYXVkaW8iLCAiaW5kZXBlbmRlbnQtY29waWVkLWF1ZGlvLXRpbWVsaW5lIl0pCiAgYXNzZXJ0LmRlZXBFcXVhbChiYXNlbGluZVJvd3MuZmlsdGVyKHJvdyA9PiByb3cua2luZCA9PT0ga2luZCksIGNhbmRpZGF0ZVJvd3MuZmlsdGVyKHJvdyA9PiByb3cua2luZCA9PT0ga2luZCksIGtpbmQpOwovLyBPbmUgcmVhZC1vbmx5IHByb2Nlc3MgcXVlcnksIHByZXNlcnZpbmcgdGhlIG9yaWdpbmFsIHBlci1ydW42NC1QSUQgc2NvcGUgY2FwLgpjb25zdCB1bmlxdWUgPSBbLi4ubmV3IE1hcChpZGVudGl0aWVzLm1hcChpZGVudGl0eSA9PiBbYCR7aWRlbnRpdHkucGlkfS8ke2lkZW50aXR5LmNyZWF0ZWRBdH1gLCBpZGVudGl0eV0pKS52YWx1ZXMoKV07CmNvbnN0IHBpZHMgPSBbLi4ubmV3IFNldChbLi4udW5pcXVlLm1hcChpZGVudGl0eSA9PiBpZGVudGl0eS5waWQpLCAuLi5zYW1wbGVkLmtleXMoKV0pXTsKYXNzZXJ0Lm9rKHVuaXF1ZS5sZW5ndGggPD0gNjQpOyBhc3NlcnQub2socGlkcy5sZW5ndGggPD0gdmFyaWFudHMubGVuZ3RoICogNjQpOwpjb25zdCBjb21tYW5kID0gIiRFcnJvckFjdGlvblByZWZlcmVuY2U9J1N0b3AnOyAkcGFja2V0UHJvb2ZQaWRzPSIgKyBwaWRzLmpvaW4oIiwiKSArICI7IENvbnZlcnRUby1Kc29uIC1JbnB1dE9iamVjdCBAKEdldC1DaW1JbnN0YW5jZSBXaW4zMl9Qcm9jZXNzIHwgV2hlcmUtT2JqZWN0IHskcGFja2V0UHJvb2ZQaWRzIC1jb250YWlucyAkXy5Qcm9jZXNzSWR9IHwgRm9yRWFjaC1PYmplY3Qge0B7cGlkPVtpbnRdJF8uUHJvY2Vzc0lkO2NyZWF0ZWRBdD0kXy5DcmVhdGlvbkRhdGUuVG9Vbml2ZXJzYWxUaW1lKCkuVG9TdHJpbmcoJ28nKX19KSAtQ29tcHJlc3MiOwpjb25zdCBvYnNlcnZlZCA9IGF3YWl0IHByb21pc2lmeShleGVjRmlsZSkoInBvd2Vyc2hlbGwuZXhlIiwgWyItTm9Qcm9maWxlIiwgIi1Ob25JbnRlcmFjdGl2ZSIsICItRW5jb2RlZENvbW1hbmQiLCBCdWZmZXIuZnJvbShjb21tYW5kLCAidXRmMTZsZSIpLnRvU3RyaW5nKCJiYXNlNjQiKV0sCiAgeyBjd2Q6IHJvb3QsIHdpbmRvd3NIaWRlOiB0cnVlLCB0aW1lb3V0OiAxNTAwMCwgbWF4QnVmZmVyOiAxMzEwNzIgfSk7CmNvbnN0IGN1cnJlbnQgPSBKU09OLnBhcnNlKG9ic2VydmVkLnN0ZG91dCk7CmNvbnN0IGJpcnRoQ2hlY2tzID0gdW5pcXVlLm1hcChpZGVudGl0eSA9PiB7IGNvbnN0IG5vdyA9IGN1cnJlbnQuZmluZChyb3cgPT4gcm93LnBpZCA9PT0gaWRlbnRpdHkucGlkKSA/PyBudWxsOwogIGFzc2VydC5vayhub3cgPT09IG51bGwgfHwgTWF0aC5hYnMoRGF0ZS5wYXJzZShub3cuY3JlYXRlZEF0KSAtIERhdGUucGFyc2UoaWRlbnRpdHkuY3JlYXRlZEF0KSkgPj0gMSk7CiAgcmV0dXJuIHsgaWRlbnRpdHksIGN1cnJlbnQ6IG5vdywgb3duZWRCaXJ0aEFic2VudDogdHJ1ZSB9OyB9KTsKY29uc3Qgc2FtcGxlZFBpZENoZWNrcyA9IFsuLi5zYW1wbGVkLnZhbHVlcygpXS5tYXAoc2FtcGxlID0+IHsgY29uc3Qgbm93ID0gY3VycmVudC5maW5kKHJvdyA9PiByb3cucGlkID09PSBzYW1wbGUucGlkKSA/PyBudWxsOwogIGFzc2VydC5vayhub3cgPT09IG51bGwgfHwgRGF0ZS5wYXJzZShub3cuY3JlYXRlZEF0KSA+IERhdGUucGFyc2Uoc2FtcGxlLmxhc3RTYW1wbGVBdCkpOwogIHJldHVybiB7IC4uLnNhbXBsZSwgY3VycmVudDogbm93LCBzYW1wbGVkUHJvY2Vzc0dvbmU6IHRydWUsIGJpcnRoV2FzTm90UmVjb3JkZWRJbkNvbnZlcnNpb25TYW1wbGU6IHRydWUgfTsgfSk7CmNvbnN0IG9yaWdpbmFsID0gcGF0aC5qb2luKHJvb3QsICJ0ZXN0Lm1rdiIpOyBhc3NlcnQuZXF1YWwoKGF3YWl0IHN0YXQob3JpZ2luYWwpKS5zaXplLCAyOTU4NTczMjY1KTsKY29uc3QgZGlnZXN0ID0gY3JlYXRlSGFzaCgic2hhMjU2Iik7IGZvciBhd2FpdCAoY29uc3QgY2h1bmsgb2YgY3JlYXRlUmVhZFN0cmVhbShvcmlnaW5hbCwgeyBoaWdoV2F0ZXJNYXJrOiAxMDQ4NTc2IH0pKSBkaWdlc3QudXBkYXRlKGNodW5rKTsKY29uc3Qgb3JpZ2luYWxTaGEyNTYgPSBkaWdlc3QuZGlnZXN0KCJoZXgiKTsgYXNzZXJ0LmVxdWFsKG9yaWdpbmFsU2hhMjU2LCAiMzFmMzY2OTViNWI0NGM2MjEyNWE5ZTQyNjRlODRkYzA4NWFjY2QyMWMwMmNjMzQ4N2FhZTU5N2Y1NGI5ZGIzNCIpOwpjb25zdCBvd25GaWxlcyA9IFsic2NyaXB0cy9hbmFseXplLXBhY2tldC1vcmRlci1tZWRpYS5tanMiLCAic2NyaXB0cy9saWIvcGFja2V0LW9yZGVyLWNvbXBhcmlzb24ubWpzIl07CmNvbnN0IG93blNvdXJjZXMgPSB7fTsKZm9yIChjb25zdCBmaWxlIG9mIG93bkZpbGVzKSB7IGNvbnN0IGJ5dGVzID0gYXdhaXQgcmVhZChmaWxlKTsgb3duU291cmNlc1tmaWxlXSA9IHsgc2hhMjU2OiBzaGEoYnl0ZXMpLCBwcmVpbWFnZTogYnl0ZXMudG9TdHJpbmcoImJhc2U2NCIpIH07IH0KZm9yIChjb25zdCByZWNvcmQgb2YgcmF3VG9SZW1vdmUpIHsKICBjb25zdCBub3cgPSBhd2FpdCBsc3RhdChyZWNvcmQudGFyZ2V0LCB7IGJpZ2ludDogdHJ1ZSB9KTsgYXNzZXJ0LmVxdWFsKG5vdy5kZXYsIHJlY29yZC5pZGVudGl0eS5kZXYpOyBhc3NlcnQuZXF1YWwobm93LmlubywgcmVjb3JkLmlkZW50aXR5Lmlubyk7CiAgYXNzZXJ0LmVxdWFsKHNoYShhd2FpdCByZWFkRmlsZShyZWNvcmQudGFyZ2V0KSksIHJlY29yZC5zaGEyNTYpOyBhd2FpdCB1bmxpbmsocmVjb3JkLnRhcmdldCk7CiAgYXdhaXQgYXNzZXJ0LnJlamVjdHMoYWNjZXNzKHJlY29yZC50YXJnZXQpLCB7IGNvZGU6ICJFTk9FTlQiIH0pOwp9CmNvbnN0IHZhbHVlID0geyByZWNvcmRlZEF0OiBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCksIHN0YXR1czogImdlbnVpbmUtc21hbGwtbWVkaWEtcGFzc2VkLWJ1dC1leGFjdC1wYWNrZXQtdGltaW5nLXJlZ3Jlc3Npb24tcmVqZWN0ZWQiLAogIHJ1bnM6IHJ1bnMubWFwKCh7IHJlcG9ydCwgLi4ucnVuIH0pID0+ICh7IC4uLnJ1biwgYWRkaXRpb25hbFBhY2tldFByb29mczogcmVwb3J0LnJvd3MuZmlsdGVyKHJvdyA9PiByb3cua2luZCA9PT0gImluZGVwZW5kZW50LXBhY2tldC1vcmRlci1wcm9vZiIpLmxlbmd0aCB9KSksCiAgY29tcGFyaXNvbnMsIGFsbFR3ZWx2ZUdlbnVpbmVDb252ZXJzaW9uc1Bhc3NlZEV4aXN0aW5nR2F0ZXM6IHRydWUsIGluZGVwZW5kZW50RXhhY3RUaW1pbmdHYXRlUGFzc2VkOiBmYWxzZSwKICBhbGxFbmNvZGVkUGFja2V0UGF5bG9hZHNNYXRjaEFjcm9zc1BhaXI6IHRydWUsIGNvbXBsZXRlRGVjb2RlZFZpZGVvSGFzaGVzTWF0Y2g6IHRydWUsIGNvcGllZEF1ZGlvQXJ0d29ya1RpdGxlc0FuZFRpbWluZ01hdGNoOiB0cnVlLAogIG9ic2VydmVkVmlkZW9EdXJhdGlvblRpY2tzOiB7IGJhc2VsaW5lOiA2NDAwMCwgY2FuZGlkYXRlOiA2NDAwMiwgdGltZUJhc2U6ICIxLzE2MDAwIiwgYWRkZWRNaWNyb3NlY29uZHM6IDEyNSB9LAogIGNhbmRpZGF0ZUFjY2VwdGVkOiBmYWxzZSwgaGlzdG9yaWNhbEdvbGRlbkNoYW5nZWQ6IGZhbHNlLCBxdWFsaXR5T3JUaW1pbmdUaHJlc2hvbGRSZWxheGVkOiBmYWxzZSwKICBiaXJ0aENoZWNrcywgc2FtcGxlZFBpZENoZWNrcywgb3JpZ2luYWw6IHsgYnl0ZXM6IDI5NTg1NzMyNjUsIHNoYTI1Njogb3JpZ2luYWxTaGEyNTYgfSwKICByZW1vdmVkUmVkdW5kYW50UmF3SnNvbjogcmF3VG9SZW1vdmUubWFwKHJlY29yZCA9PiAoeyBwYXRoOiBwYXRoLnJlbGF0aXZlKHJvb3QsIHJlY29yZC50YXJnZXQpLnJlcGxhY2VBbGwoIlxcIiwgIi8iKSwgYnl0ZXM6IHJlY29yZC5ieXRlcywgc2hhMjU2OiByZWNvcmQuc2hhMjU2LCByZXRhaW5lZExvc3NsZXNzQXJjaGl2ZTogcmVjb3JkLmFyY2hpdmUgfSkpLAogIGFsbFJlY29yZGVkUHJlQ3VycmVudFBvc3RTb3VyY2VQaW5zVmVyaWZpZWQ6IHRydWUsIGNvbnZlcnRlZE91dHB1dHNQcm9maWxlc0FuZEZpeHR1cmVzUmVtb3ZlZDogdHJ1ZSwgbm9ybWFsQXNzZXRzUmVzdG9yZWQ6IHRydWUsCiAgZnVsbE9yaWdpbmFsQ29tcGxldGVkOiBmYWxzZSwgcHJpbWFyeUluY3JlbWVudGFsUHJpdmF0ZU1pQjogbnVsbCwgbWVtb3J5QWNjZXB0YW5jZTogZmFsc2UsIHNwZWVkR2FpblByb3ZlbjogZmFsc2UsCiAgaGVhZGVkQ292ZXJhZ2VWZXJpZmllZDogZmFsc2UsIHB1YmxpY0FjY2VwdGFuY2U6IGZhbHNlLCBvd25Tb3VyY2VzLAogIHNvdXJjZUluZm9ybWVkSHlwb3RoZXNpc05vdFJ1bnRpbWVBdHRyaWJ1dGlvbjogIkZyYWdtZW50ZWQgTU9WIGxhc3Qtc2FtcGxlIGR1cmF0aW9uL2VuZHBvaW50IHJvdW5kaW5nIGxvc2VzIG5leHQtcGFja2V0IGxvb2thaGVhZCB3aGVuIGludGVybGVhdmVyIGlzIGRyYWluZWQ7IHRlc3QgZXhhY3QgcmVzY2FsZWQgQ0ZSIGJvdW5kYXJpZXMgYmVmb3JlIGEgY2hhbmdlZCBuYXRpdmUgYXR0ZW1wdC4iLAogIG5leHRBY3Rpb246ICJQcmVwYXJlIGEgbmV3IHByaXZhdGUgZHVyYXRpb24tZXhhY3QgZHJhaW4gZGVyaXZhdGl2ZSB3aXRoIHJlYWwgcmF0aW9uYWwtYm91bmRhcnkgYW5kIHBpbm5lZCBuYXRpdmUgdGVzdHM7IHByZXNlcnZlIGFsbCBlbmNvZGVkIGNvbnRlbnQsIHRpbWVzdGFtcHMsIHJlZmVyZW5jZSwgaGVhcCwgZmlkZWxpdHkgYW5kIGNsZWFudXAgZ2F0ZXMuIERvIG5vdCByZXJ1biB0aGlzIHVuY2hhbmdlZCBjYW5kaWRhdGUgb24gdGhlIG9yaWdpbmFsLiIgfTsKYXdhaXQgd3JpdGVGaWxlKHBhdGguam9pbihyb290LCBvdXRwdXQpLCBKU09OLnN0cmluZ2lmeSh2YWx1ZSwgbnVsbCwgMikgKyAiXG4iLCB7IGZsYWc6ICJ3eCIgfSk7CmNvbnNvbGUubG9nKEpTT04uc3RyaW5naWZ5KHsgb3V0cHV0LCBzdGF0dXM6IHZhbHVlLnN0YXR1cywgY29tcGFyaXNvbnM6IGNvbXBhcmlzb25zLmxlbmd0aCwgdGltaW5nRmllbGRDaGFuZ2VzOiBjb21wYXJpc29uc1swXS5wYWNrZXRGaWVsZENoYW5nZXNFeGNlcHRGaWxlUG9zaXRpb25zLAogIGJpcnRoczogYmlydGhDaGVja3MubGVuZ3RoLCBzYW1wbGVkUGlkczogc2FtcGxlZFBpZENoZWNrcy5sZW5ndGgsIHJlZHVuZGFudFJhd0J5dGVzUmVtb3ZlZDogcmF3VG9SZW1vdmUucmVkdWNlKChzdW0sIHJlY29yZCkgPT4gc3VtICsgcmVjb3JkLmJ5dGVzLCAwKSB9KSk7Cg=="
+    },
+    "scripts/lib/packet-order-comparison.mjs": {
+      "sha256": "01ffba5113c5e8420fedefe9c74fa52e42fcdcb022133abd1f92bb162a4f9313",
+      "preimage": "aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyBpc0RlZXBTdHJpY3RFcXVhbCB9IGZyb20gIm5vZGU6dXRpbCI7CmltcG9ydCB7IHNoYSB9IGZyb20gIi4vc3RhYmxlLXVpLWhlYWRsZXNzLWJhc2VsaW5lLXJlY2lwZS5tanMiOwpmdW5jdGlvbiBncm91cHMocGFja2V0cykgewogIGFzc2VydC5vayhBcnJheS5pc0FycmF5KHBhY2tldHMpICYmIHBhY2tldHMubGVuZ3RoID4gMCAmJiBwYWNrZXRzLmxlbmd0aCA8PSAxMDI0KTsKICByZXR1cm4gT2JqZWN0Lmdyb3VwQnkocGFja2V0cywgcGFja2V0ID0+IHBhY2tldC5zdHJlYW1faW5kZXgpOwp9CmV4cG9ydCBmdW5jdGlvbiBjb21wYXJlUGFja2V0T3JkZXJQcm9vZnMoYmFzZWxpbmUsIGNhbmRpZGF0ZSkgewogIGNvbnN0IGEgPSBncm91cHMoYmFzZWxpbmUucGFja2V0cyksIGIgPSBncm91cHMoY2FuZGlkYXRlLnBhY2tldHMpOwogIGFzc2VydC5kZWVwRXF1YWwoT2JqZWN0LmtleXMoYSksIE9iamVjdC5rZXlzKGIpKTsKICBjb25zdCBjaGFuZ2VzID0gW10sIHN0cmVhbXMgPSBbXTsKICBmb3IgKGNvbnN0IGluZGV4IG9mIE9iamVjdC5rZXlzKGEpKSB7CiAgICBhc3NlcnQuZXF1YWwoYVtpbmRleF0ubGVuZ3RoLCBiW2luZGV4XS5sZW5ndGgpOwogICAgbGV0IHBheWxvYWRzTWF0Y2ggPSB0cnVlOwogICAgZm9yIChsZXQgb3JkaW5hbCA9IDA7IG9yZGluYWwgPCBhW2luZGV4XS5sZW5ndGg7IG9yZGluYWwrKykgewogICAgICBjb25zdCBwcmV2aW91cyA9IGFbaW5kZXhdW29yZGluYWxdLCBjdXJyZW50ID0gYltpbmRleF1bb3JkaW5hbF07CiAgICAgIGFzc2VydC5tYXRjaChwcmV2aW91cy5kYXRhX2hhc2gsIC9eU0hBMjU2OlthLWYwLTldezY0fSQvKTsKICAgICAgYXNzZXJ0Lm1hdGNoKGN1cnJlbnQuZGF0YV9oYXNoLCAvXlNIQTI1NjpbYS1mMC05XXs2NH0kLyk7CiAgICAgIGlmIChwcmV2aW91cy5kYXRhX2hhc2ggIT09IGN1cnJlbnQuZGF0YV9oYXNoIHx8IHByZXZpb3VzLnNpemUgIT09IGN1cnJlbnQuc2l6ZSkgcGF5bG9hZHNNYXRjaCA9IGZhbHNlOwogICAgICBmb3IgKGNvbnN0IGZpZWxkIG9mIG5ldyBTZXQoWy4uLk9iamVjdC5rZXlzKHByZXZpb3VzKSwgLi4uT2JqZWN0LmtleXMoY3VycmVudCldKSkgewogICAgICAgIC8vIEZpbGUgcG9zaXRpb25zIGNoYW5nZSB3aXRoIGNvbnRhaW5lciBsYXlvdXQ7IGV2ZXJ5IG90aGVyIGZpZWxkIGlzIGNvbXBhcmVkLgogICAgICAgIGlmIChmaWVsZCAhPT0gInBvcyIgJiYgIWlzRGVlcFN0cmljdEVxdWFsKHByZXZpb3VzW2ZpZWxkXSwgY3VycmVudFtmaWVsZF0pKQogICAgICAgICAgY2hhbmdlcy5wdXNoKHsgc3RyZWFtOiBOdW1iZXIoaW5kZXgpLCBwYWNrZXQ6IG9yZGluYWwsIGZpZWxkLCBiYXNlbGluZTogcHJldmlvdXNbZmllbGRdLCBjYW5kaWRhdGU6IGN1cnJlbnRbZmllbGRdIH0pOwogICAgICB9CiAgICB9CiAgICBzdHJlYW1zLnB1c2goeyBpbmRleDogTnVtYmVyKGluZGV4KSwgcGFja2V0czogYVtpbmRleF0ubGVuZ3RoLCBwYXlsb2FkSGFzaGVzQW5kU2l6ZXNNYXRjaDogcGF5bG9hZHNNYXRjaCB9KTsKICB9CiAgY29uc3QgYm94VG90YWxzID0gYm94ZXMgPT4gewogICAgYXNzZXJ0Lm9rKGJveGVzLmxlbmd0aCA+IDAgJiYgYm94ZXMubGVuZ3RoIDw9IDEwMjQpOwogICAgcmV0dXJuIGJveGVzLnJlZHVjZSgocmVzdWx0LCBib3gpID0+IHsKICAgICAgcmVzdWx0W2JveC50eXBlXSA9IChyZXN1bHRbYm94LnR5cGVdID8/IDApICsgYm94LnNpemU7IHJldHVybiByZXN1bHQ7CiAgICB9LCB7fSk7CiAgfTsKICBjb25zdCB0b3RhbHNBID0gYm94VG90YWxzKGJhc2VsaW5lLnRvcExldmVsQm94ZXMpLCB0b3RhbHNCID0gYm94VG90YWxzKGNhbmRpZGF0ZS50b3BMZXZlbEJveGVzKTsKICBjb25zdCBib3hEZWx0YXMgPSBPYmplY3QuZnJvbUVudHJpZXMoWy4uLm5ldyBTZXQoWy4uLk9iamVjdC5rZXlzKHRvdGFsc0EpLCAuLi5PYmplY3Qua2V5cyh0b3RhbHNCKV0pXQogICAgLm1hcCh0eXBlID0+IFt0eXBlLCAodG90YWxzQlt0eXBlXSA/PyAwKSAtICh0b3RhbHNBW3R5cGVdID8/IDApXSkpOwogIGNvbnN0IGFsbFBheWxvYWRzTWF0Y2ggPSBzdHJlYW1zLmV2ZXJ5KHN0cmVhbSA9PiBzdHJlYW0ucGF5bG9hZEhhc2hlc0FuZFNpemVzTWF0Y2gpOwogIGNvbnN0IGRlY29kZWRWaWRlb01hdGNoZXMgPSBiYXNlbGluZS5kZWNvZGVkVmlkZW9IYXNoID09PSBjYW5kaWRhdGUuZGVjb2RlZFZpZGVvSGFzaDsKICBjb25zdCBleGFjdGx5RXF1aXZhbGVudEFwYXJ0RnJvbVBvc2l0aW9ucyA9IGNoYW5nZXMubGVuZ3RoID09PSAwICYmIGRlY29kZWRWaWRlb01hdGNoZXMgJiYgYWxsUGF5bG9hZHNNYXRjaDsKICByZXR1cm4geyBzdHJlYW1zLCBwYWNrZXRzUGVyVmFyaWFudDogYmFzZWxpbmUucGFja2V0cy5sZW5ndGgsIGFsbFBheWxvYWRIYXNoZXNBbmRTaXplc01hdGNoOiBhbGxQYXlsb2Fkc01hdGNoLAogICAgY29tcGxldGVEZWNvZGVkVmlkZW9NYXRjaGVzOiBkZWNvZGVkVmlkZW9NYXRjaGVzLCBkZWNvZGVkVmlkZW9IYXNoOiBiYXNlbGluZS5kZWNvZGVkVmlkZW9IYXNoLAogICAgcGFja2V0RmllbGRDaGFuZ2VzRXhjZXB0RmlsZVBvc2l0aW9uczogY2hhbmdlcywgZXhhY3RseUVxdWl2YWxlbnRBcGFydEZyb21GaWxlUG9zaXRpb25zOiBleGFjdGx5RXF1aXZhbGVudEFwYXJ0RnJvbVBvc2l0aW9ucywKICAgIHBhY2tldFRpbWluZ1ByZXNlcnZhdGlvblBhc3NlZDogY2hhbmdlcy5ldmVyeShjaGFuZ2UgPT4gIVsicHRzIiwgInB0c190aW1lIiwgImR0cyIsICJkdHNfdGltZSIsICJkdXJhdGlvbiIsICJkdXJhdGlvbl90aW1lIl0uaW5jbHVkZXMoY2hhbmdlLmZpZWxkKSksCiAgICBjYW5vbmljYWxQZXJTdHJlYW1QYWNrZXRIYXNoZXM6IHsgYmFzZWxpbmU6IHNoYShKU09OLnN0cmluZ2lmeShhKSksIGNhbmRpZGF0ZTogc2hhKEpTT04uc3RyaW5naWZ5KGIpKSB9LAogICAgYm94U2l6ZURlbHRhczogYm94RGVsdGFzLCBvdXRwdXRTaXplRGVsdGE6IGNhbmRpZGF0ZS5vdXRwdXRCeXRlcyAtIGJhc2VsaW5lLm91dHB1dEJ5dGVzLAogICAgYmFzZWxpbmVUb3BMZXZlbEJveGVzOiBiYXNlbGluZS50b3BMZXZlbEJveGVzLCBjYW5kaWRhdGVUb3BMZXZlbEJveGVzOiBjYW5kaWRhdGUudG9wTGV2ZWxCb3hlcywKICAgIGNhbmRpZGF0ZUFjY2VwdGVkOiBmYWxzZSwgZnVsbE9yaWdpbmFsQWNjZXB0YW5jZTogZmFsc2UsIG1lbW9yeUFjY2VwdGFuY2U6IGZhbHNlLCBzcGVlZEdhaW5Qcm92ZW46IGZhbHNlIH07Cn0K"
+    }
+  },
+  "sourceInformedHypothesisNotRuntimeAttribution": "Fragmented MOV last-sample duration/endpoint rounding loses next-packet lookahead when interleaver is drained; test exact rescaled CFR boundaries before a changed native attempt.",
+  "nextAction": "Prepare a new private duration-exact drain derivative with real rational-boundary and pinned native tests; preserve all encoded content, timestamps, reference, heap, fidelity and cleanup gates. Do not rerun this unchanged candidate on the original."
+}
