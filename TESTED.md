@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+## 2026-10-15 - New duration-boundary correction: source checks PASS
+
+Additive candidate derives duration from adjacent FFmpeg-rescaled CFR boundaries,
+retaining source offset, original PTS/DTS, encoded packet wire/payload, quality,
+codecs, refs, heaps and queue/error paths. Every correction reverses byte-exact
+to the rejected drain parent; no old executed source/evidence is edited.
+Native smoke SOURCE checks 21 clocks/126,000 cases against independent integer
+rounding, regression durations666/667 and total64,000, packet immutability,
+15 invalid cases and int64 edge handling. This is not yet an executed Wasm result.
+
+11 focused checks PASS8,194.0404ms; eight-file zero-warning lint PASS. All nested
+builders parse; native source set will retain116+10=126 under unchanged128/2MiB
+caps. Metadata explicitly says duration correction plus queue policy, not just
+queue-only. No compilation/media/original read/memory/fidelity/speed acceptance
+claimed at this stage. Actual no-Docker build and strict real packet validation
+must pass before another original-file run.
+
 ## 2026-10-15 - Matched packet comparison rejects first drain candidate
 
 Three genuine headless Chrome155 suites completed: initial candidate 4/4

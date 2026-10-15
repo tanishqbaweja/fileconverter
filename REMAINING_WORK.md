@@ -1,5 +1,27 @@
 # Remaining work audit
 
+## 2026-10-15 - Duration-boundary drain correction prepared
+
+**Partially implemented**. A new additive candidate keeps the rejected drain
+source/evidence frozen. It maps packet duration to the difference of adjacent
+rescaled CFR frame boundaries, before adding the unchanged source offset.
+PTS/DTS, encoder wire/payload, codecs, quality, reference ownership and fixed
+heaps are not rewritten. Invalid/reordered/missing timestamps, non-unit frame
+durations, coarse destination clocks and overflow are rejected, not clamped.
+The existing CFR/low-delay/no-B-frame contract remains required.
+
+Added real pinned-libavutil Wasm smoke source with an independent integer oracle:
+21 rational-clock combinations, 126,000 boundary checks, exact 96-frame/64,000-
+tick regression and last durations 666/667, read-only packet bytes, 15 invalid
+cases and near-int64 boundary handling. Actual Wasm execution remains PENDING.
+The no-Docker builder retains all 116 parent native files and adds ten (126),
+all prior controls, unchanged fixed heaps and encoder, and an explicit current
+metadata flag: this is duration correction plus queue drain, not queue-only.
+
+11 focused source/regression checks passed in 8,194.0404ms; eight-file zero-
+warning lint passed. No original read or conversion. Native compilation, actual
+ABI, strict packet comparison, memory and original-file acceptance remain open.
+
 ## 2026-10-15 - Packet-drain candidate rejected for exact timing regression
 
 **Partially implemented. Do not run decoder b65cc599...0df152 unchanged on the
