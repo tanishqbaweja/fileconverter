@@ -1,5 +1,70 @@
 # Remaining work audit
 
+## 2026-10-15 - Changed full-original harness prepared successfully
+
+Final focused regression8/8 PASS27,748.3261ms, including actual708-preimage
+preparation replay; all new source/preparation JavaScript zero-warning lint PASS.
+
+**Partially implemented**. Actual no-conversion preparation PASS:
+`evidence/2026-10-15T17-28-42-582Z-composited-handoff-original-full-preparation.json`.
+708 source paths retained, including ALL656 from the previous genuine full run;
+120 new-layer paths remain below the unchanged128-file/2MiB source cap. Archive
+replays all parent/new preimages and generated driver/caller/helper hashes. Three
+focused full-harness tests PASS20,862.0766ms; seven-file zero-warning lint PASS.
+Original whole-file hash checked pre/post, native tool composition verified,
+temporary wrapper/candidate removed and normal assets intact.0 conversions in
+this preparation; no memory/full/public acceptance.
+
+The first preparation unit check rejected compiled.js.gz/css.gz paths under the
+old source-type allowlist. A reversible source-capture derivative adds ONLY those
+two retained asset types, without dropping a file or raising any count/byte cap;
+then all integration tests and actual preparation passed. Next launch ONE changed
+full-original three-repeat session under the durable headless supervisor. Retain
+the prior true258.168MiB final-save failure; never relabel it as a pass or retry
+that unchanged route. Estimated encoding3h per repeat,9-12h including validation.
+
+## 2026-10-15 - Combined progress/handoff actual media qualified
+
+**Partially implemented**. Changed reliable-launch harness completed4/4 actual
+production-browser conversion/recovery cases (4.4min); exact previous full-test
+composited stylesheet retained. Independent audit replays367 distinct build/
+media pre/current/post source pins, all compiled assets, five observed save-worker
+lifetimes and four exact475-packet/pixel/audio/timing/metadata comparisons.
+Outputs remain2,245,626B/SHA8b0d4370...b59be35c, SSIM0.983095>=0.98. No codec,
+fidelity, buffer, heap or memory-limit change. Receipt:
+`evidence/2026-10-15T17-20-01-310Z-composited-handoff-independent-qualification.json`.
+
+All browser/helper/output/fixture scratch is removed, normal production restored,
+sampled processes absent and full protected-source SHA unchanged. Redundant
+1,915,281B raw JSON removed only after retained lossless archive validation.
+Six full-harness/launch/progress focused tests PASS6,127.7478ms before actual
+prerequisite integration. New full driver retains lower five-minute blank, all
+Chromium processes,250MiB,original geometry/quality, three complete repeats,
+native validation and cleanup. Current final-save Wasm reports0 while peak48MiB
+is unchanged. A cancellation-phase observer correction preserves the primary
+memory failure instead of misclassifying `Cancelling safely` as resumed encoding.
+Full-source preparation and actual changed full test are next, not accepted yet.
+
+## 2026-10-15 - Preserve composited progress in handoff full-test preparation
+
+**Partially implemented**. Combined private builder retains the exact prior
+full-test transform-based progress stylesheet while adding the qualified codec/
+save handoff. Two generator tests PASS3,668.718ms; combined build succeeded.
+First combined browser control17:15:11Z performed ZERO conversions: the owned
+server's three-second Windows CIM identity query timed out before runner/browser
+launch. Cleanup reported EBUSY and normal-asset verification failure, not success.
+No unchanged retry. Failed evidence and source archives retained.
+
+Read-only recheck found the exact recorded server/qualifier processes already
+absent; no process was killed. Restored normal production and removed only the
+explicit recorded orphan helper scratch after path/identity/liveness checks.
+Receipt `evidence/2026-10-15T17-15-11-444Z-composited-launch-cleanup.json`.
+No media files were created by that control. New bounded launch-only identity
+query allows three15-second attempts; exhausted queries still throw, never mean
+absence/zero or authorize a kill. Four focused tests PASS2,655.4729ms including
+negative identity and unchanged stylesheet/copy-limit checks; eight-file lint
+PASS. Next run changed harness qualification, then original full-file stress.
+
 ## 2026-10-15 - Actual handoff media and independent fidelity audit PASS
 
 **Partially implemented**. The changed private route completed all four actual

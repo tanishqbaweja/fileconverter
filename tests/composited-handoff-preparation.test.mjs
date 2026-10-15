@@ -1,0 +1,20 @@
+import assert from "node:assert/strict";
+import { access,readFile } from "node:fs/promises";
+import path from "node:path";
+import { test } from "node:test";
+import { materializeLayeredFullSourceArchive } from "../scripts/lib/composited-handoff-full-sources.mjs";
+const root=path.resolve(import.meta.dirname,"..");
+test("actual708-source full preparation replays all sealed preimages and leaves no conversion/runtime",async()=>{
+  const proof=JSON.parse(await readFile(path.join(root,"evidence/2026-10-15T17-28-42-582Z-composited-handoff-original-full-preparation.json")));
+  assert.equal(proof.status,"prepared-not-executed");assert.equal(proof.executions,0);assert.equal(proof.failure,null);assert.deepEqual(proof.cleanupErrors,[]);
+  assert.equal(proof.productionRestored,true);assert.equal(proof.wrapperAbsent,true);assert.equal(proof.candidateAbsent,true);
+  assert.deepEqual(proof.sourcePins,proof.postSourcePins);assert.equal(Object.keys(proof.sourcePins).length,708);
+  const archive=await materializeLayeredFullSourceArchive(root,proof.sourceArchive);
+  assert.deepEqual(archive.sourcePins,proof.sourcePins);assert.equal(archive.allPreimagesRecovered,true);
+  assert.equal(proof.sourceArchive.extensionPreimages,120);assert.equal(proof.sourceLayers.limits.extensionFiles,128);
+  assert.equal(proof.sourceLayers.limits.extensionRestoredBytes,2097152);
+  assert.equal(proof.primaryLimitMiB,250);assert.equal(proof.requestedRuns,3);assert.equal(proof.maximumConversionMsPerRun,21600000);
+  assert.equal(proof.browserMode,"headless");assert.equal(proof.publicAcceptance,false);
+  assert.equal(proof.protectedAfter.bytes,2958573265);assert.equal(proof.protectedAfter.sha256,"31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
+  for(const directory of [proof.wrapper,proof.candidateDirectory])await assert.rejects(access(directory),{code:"ENOENT"});
+});

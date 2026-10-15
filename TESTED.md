@@ -1,5 +1,51 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Full handoff harness actual preparation PASS708 sources
+
+Final focused regression8/8 PASS27,748.3261ms including actual708-source replay;
+new source/preparation JavaScript zero-warning ESLint PASS.
+
+Actual preparation17:28:42Z,0 conversion executions, no failures/cleanup errors.
+`evidence/2026-10-15T17-28-42-582Z-composited-handoff-original-full-preparation.json`.
+708 pre/current/post paths, all656 previous full paths retained;120 new-layer
+paths<=128,2MiB unchanged cap. Compiled.js.gz/css.gz allowlist addition followed
+an initial unit rejection; no preimages omitted and no cap enlarged. Generated
+driver/caller/helper syntax and archived preimages checked. Full protected hash
+pre/post unchanged, normal assets intact, native candidate/wrapper removed.
+Three full integration tests PASS20,862.0766ms; seven-file zero-warning lint PASS.
+Three repeats/6h per-run deadline/all-process250MiB/lower5min blank/original
+geometry+quality are preserved. Full conversion/memory acceptance is pending.
+
+## 2026-10-15 - Combined composited UI plus handoff browser4/4 and audit PASS
+
+Changed reliable-launch suite4/4 PASS4.4min, including genuine conversion and
+same-page write/cancel/read-failure recovery. Independent exact475-packet/pixel/
+audio/timing/metadata comparisons PASS; all outputs2,245,626B/SHA8b0d4370...b59be35c,
+SSIM0.983095>=0.98.367 distinct build/media source pre/current/post pins and
+compiled-code archives verified. The exact prior full-test progress stylesheet
+is retained. No physical-release/memory/speed/full-original claim.
+
+`evidence/2026-10-15T17-20-01-310Z-composited-handoff-independent-qualification.json`.
+All disposable media/profile/runtime scratch removed, sampled processes gone,
+normal assets restored; protected original full SHA unchanged.1,915,281B raw
+JSON removed after lossless gzip verification. Six focused tests PASS6,127.7478ms
+for original full gates, cancellation-phase diagnostics, exact stylesheet and
+bounded identity retries. Full-source closure/preparation/launch checks pending.
+
+## 2026-10-15 - Combined progress/handoff build PASS; launch control failed pre-browser
+
+Combined private build preserves the previous full-test composited progress CSS
+and qualified worker handoff. First17:15:11Z control failed before any browser/
+runner/conversion: launch-only CIM identity query timed out at3seconds. Cleanup
+failure was retained, not relabelled pass. Exact process recheck found both owned
+births gone without intervention; normal production rebuilt and recorded orphan
+scratch removed. See `evidence/2026-10-15T17-15-11-444Z-composited-launch-cleanup.json`.
+
+Changed launch query has at most3 attempts/15seconds each, preserves birth checks
+and rejects exhausted/unavailable identity rather than faking absence. Four
+focused tests PASS2,655.4729ms; eight-file zero-warning lint PASS. Actual combined
+media/recovery qualification remains pending. No full-file/memory/speed claim.
+
 ## 2026-10-15 - Handoff production-browser conversion/recovery4/4 PASS
 
 Actual headless suite17:02Z-17:06Z:4/4 PASS (3.6min), with genuine96-frame
