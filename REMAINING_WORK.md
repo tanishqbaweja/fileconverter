@@ -1,5 +1,40 @@
 # Remaining work audit
 
+## 2026-10-15 - Full encoding finishes; final-copy memory fails, retry withheld
+
+Final focused regression10/10 PASS19,210.507ms, including retained audit/source/
+checkpoint verification and mutations that must not turn this failure into a
+pass. Three new audit/test JavaScript files passed zero-warning ESLint.
+
+**Partially implemented**. The changed full test is now terminal, not live.
+Actual production HEVC->MPEG2 encoded all296,160 frames/packets without native
+OOM, yielding6,414,309,978B of staged MP4 from the unchanged2,958,573,265B source.
+Encoding completion lies in the measured10,994,307.405-10,996,976.435ms bracket
+(about3h03min); this is not validated end-to-end completion or a proven speedup.
+Native snapshot reports0 active/queued packets/frames, fixed32+16MiB heaps and
+one balanced Asyncify allocation/free with0 retained bytes.
+
+The final512KiB selected-destination copy exceeded the primary memory cap:
+`(512270336 - 241561600) / 1048576 = 258.16796875MiB` at14:29:54.5931891Z,
+above250MiB. A native adjacent sample shows59,977,728B added in converter
+renderer33476 and59,981,824B tree-wide. Exact allocation/callsite is unproven;
+the post-cancellation trace is not peak allocation evidence. Normal production
+cancellation removed scratch and the worker. The progress observer then treated
+`Cancelling safely` as a return to encoding, obscuring—but not negating—the
+real earlier memory failure. Independent output validation never ran;0/3 runs
+are accepted. Do not retry this unchanged candidate or relax memory/quality.
+
+Independent audit:
+`evidence/2026-10-15T11-18-16-969Z-duration-drain-full-terminal-analysis.json`.
+It replayed all656 actual pre/current/post source preimages, whole originalSHA,
+normal-asset restoration and26 owned birth identities (PID reuse is not killed).
+All generated media, partial destination, profiles and runtimes are absent.
+The30,662B redundant native checkpoint was losslessly compressed then removed;
+compact full raw/source archives and readable/CSV reports remain. Next work is
+to isolate/reduce final-copy lifetime/allocation pressure and correct cancellation
+observation without masking the250MiB failure; qualify that changed path before
+another full original run. Headed/public/full acceptance remains unverified.
+
 ## 2026-10-15 - Changed full-original stress attempt is live, not accepted
 
 Committed/pushed harness checkpointf082455; launched once via

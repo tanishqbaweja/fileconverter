@@ -1,5 +1,33 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Full candidate terminal: final-copy memory FAIL258.168MiB
+
+Final focused regression10/10 PASS19,210.507ms; three audit/test JavaScript files
+passed zero-warning ESLint. Negative tests reject fake completion, hidden memory
+failure, skipped packets, failed cleanup, dropped samples or network disclosure.
+
+Actual attempt11:18:08Z-14:30:37Z: genuine browser HEVC decode/MPEG2 encode
+finished296,160 frames and packets, staged6,414,309,978B, fixed32+16MiB Wasm,
+zero active/queued frames/packets at close, Asyncify1allocation/1free/0retained.
+Observed encoding completion bracket10,994,307.405-10,996,976.435ms. No native
+OOM or forbidden network request was captured. This does not prove output
+fidelity: independent output validation was not reached.
+
+At final selected-destination copy, native tree peak512,270,336B above stable
+blank241,561,600B =258.16796875MiB, exceeding250MiB. First budget callback
+cancelled normally; next sampled `Cancelling safely` phase triggered secondary
+`Reject return to encoding after final destination copy` assertion. Independent
+audit distinguishes this secondary error from the primary memory failure.
+Staged size6,414,309,978B; final copy stopped after5,668,601,856B. Buffer/read/
+queue bounds remained64KiB source,512KiB final-copy andone pending operation.
+
+`evidence/2026-10-15T11-18-16-969Z-duration-drain-full-terminal-analysis.json`
+verifies source656/current/post preimages,26 owned births absent, protected
+originalSHA31f366...b9db34 unchanged, normal assets restored and all generated
+media/profile/runtime paths gone.30,662B checkpoint losslessly compacted/deleted.
+0/3 full runs validated; no memory/public/speed/headed acceptance. Next is a
+changed final-copy/lifecycle investigation, not an unchanged expensive retry.
+
 ## 2026-10-15 - Full corrected candidate: RUNNING, acceptance pending
 
 One supervised changed-candidate attempt11:18:08Z, no retry. Exact live receipt
