@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Actual changed full Run1 encoding; no acceptance yet
+
+17:57Z verified supervisor28932/child38420/driver21416 exact births live.
+Supervisor `evidence/2026-10-15T17-47-58-210Z-composited-handoff-supervisor-full.json`;
+driver handle `evidence/2026-10-15T17-48-11-250Z-composited-handoff-full-live.json`.
+Stable lower blank232.293MiB; real full-original encoding has input33,973,825B,
+output35,160,450B, observed peak increment225.359MiB so far.0/3 validated full
+repeats, not a final memory/fidelity/speed pass. No resize/settings/source change.
+Use prior~3h same-file encode to sleep3h interruptibly; background gates continue.
+
 ## 2026-10-15 -17:32 full launch preflight FAIL;0 conversions, cleanup PASS
 
 Fresh changed actual preparation17:44:45Z PASS714 source paths/126 additive;

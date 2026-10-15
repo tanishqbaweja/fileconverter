@@ -1,5 +1,23 @@
 # Remaining work audit
 
+## 2026-10-15 - Changed full-original Run1 genuinely encoding
+
+**Partially implemented / running**. Changed query-reliable supervisor17:47:58Z
+launched actual driver21416/parent38420/birth17:49:43.5372330Z. Exact supervisor:
+`evidence/2026-10-15T17-47-58-210Z-composited-handoff-supervisor-full.json`;
+supervisor28932/birth17:47:58.7650960Z, child38420/birth17:48:00.7613280Z.
+Immutable driver handle:
+`evidence/2026-10-15T17-48-11-250Z-composited-handoff-full-live.json`.
+
+At17:57Z all three exact births independently live, no terminal error. Lower
+five-minute blank settled232.293MiB, actual Run1 encoding input33,973,825B /
+staged output35,160,450B, observed incremental peak225.359MiB so far. These are
+partial observations, NOT completed/fidelity/memory acceptance.0/3 full repeats
+validated. Same whole original/no resizing/default quality/fixed heaps/all-tree
+250MiB and native validators remain. Prior comparable encoding took~3h; an
+interruptible3h timer replaces agent-level polling while autonomous safety/
+privacy/cancellation/cleanup monitoring continues. Never restart on timeout.
+
 ## 2026-10-15 - Full launch stopped at version preflight; bounded query fix tested
 
 Fresh actual preparation PASS17:44:45Z:
