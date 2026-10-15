@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Full corrected candidate: RUNNING, acceptance pending
+
+One supervised changed-candidate attempt11:18:08Z, no retry. Exact live receipt
+`evidence/2026-10-15T11-18-16-969Z-duration-drain-full-live.json`; supervisor
+`evidence/2026-10-15T11-18-08-401Z-duration-drain-supervisor-full.json`. OS checked
+both expected supervisor/caller births11:25:48Z. Native journal actual stable
+blank241,561,600B after five-minute settlement; conversion1 began11:25:48Z.
+Early493,330,432B conversion-tree peak is not a completed-run memory result.
+All three full runs/independent validation/cleanup remain required. ETA3-4h
+per conversion from previous real34338-frame/21.41min rate; measured finished
+timing and actual acceptance remain unknown. Harnessf082455 pushed to requested
+origin/media-options. No headed, public or fastest-speed claim.
+
 ## 2026-10-15 - Corrected full-original preparation: PASS, zero conversions
 
 Final focused regression7/7 PASS22,669.934ms, including actual archive656-source

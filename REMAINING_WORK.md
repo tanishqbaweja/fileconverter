@@ -1,5 +1,26 @@
 # Remaining work audit
 
+## 2026-10-15 - Changed full-original stress attempt is live, not accepted
+
+Committed/pushed harness checkpointf082455; launched once via
+`scripts/run-duration-drain-full.mjs --supervise` at11:18:08Z. Supervisor7908
+born11:18:08.756888Z and caller24588 born11:18:10.908738Z independently matched
+OS birth identities after launch and again11:25:48Z. Driver30784 was launched
+at11:19:55.427124Z; live receipt is
+`evidence/2026-10-15T11-18-16-969Z-duration-drain-full-live.json`, bounded durable
+supervisor receipt is `evidence/2026-10-15T11-18-08-401Z-duration-drain-supervisor-full.json`.
+
+Native journal shows the required five-minute blank settlement, stable five
+samples11:25:18-28Z over>=8s, blank private241,561,600B. Conversion1 began
+11:25:48Z; native100ms journal retained all-phase peaks and missing samples as
+unavailable, not zero. Its early conversion peak493,330,432B is diagnostic
+only: no completed full run or250MiB acceptance yet. All generated media/profile
+data stays in owned repository scratch with existing finally cleanup. The
+previous34338-frame/21.41min rate suggests roughly3-4h per conversion, plus
+validation. Wait to the estimated first-run window instead of repeated model
+polling; existing native monitor continues automatically. Do not restart this
+attempt merely because a snapshot times out or a heartbeat is unchanged.
+
 ## 2026-10-15 - Corrected full-original harness prepared; stress execution next
 
 Final focused regression:7/7 passed in22,669.934ms, including independent
