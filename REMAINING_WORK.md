@@ -1,5 +1,31 @@
 # Remaining work audit
 
+## 2026-10-16 - Entire original source timing validator qualified at4 threads
+
+Final regression5/5 PASS3,080.4696ms; seven-file zero-warning lint PASS.
+
+**Partially implemented**. Native independent-validator qualification PASS:
+`evidence/2026-10-15T21-54-44-094Z-source-frame-threads.json`.
+All296,160 original-source decoded-frame timestamps extracted in681,309ms
+(11m21.309s), stderr empty/exit0, under the UNCHANGED1,800,000ms deadline. First0,
+last12339.958s, max step0.042s, ordered timestamp digest4da5643c...272b365c.
+Streaming collector retained no timestamp array, bounded4096B carry and32MiB
+stdout cap;7,137,404B actually processed. Source size/full SHA pre/post unchanged.
+
+Deterministic96-frame1920x804 HEVC fixture1vs4threads has identical ALL-frame
+decoded-pixel framemd5 digest AND ordered timestamps. Small extraction timings
+0.633/2.211s are NOT a production-speed improvement or controlled full-source
+1vs4 benchmark; previous1thread command failed and lacked exit/signal details.
+Do not claim an exact speedup or proven cause for that historical failure.
+
+All native controls were fixture generation/independent validation, not browser
+conversion substitutes. Seven current/executed/post sources matched, native tool
+hashes recorded, temporary1.376MB fixture/runtime removed and owned ffprobe exited.
+Next integrate explicit decoder threads into full independent validation while
+preserving every original quality/timing/decode/250MiB/repeat/cleanup gate, then
+run a changed full-original session. No unchanged3h retry and no profile/public/
+full acceptance. All jobs from this turn are now terminal; full accepted repeats0/3.
+
 ## 2026-10-16 - Full file creation within observed memory; native validator failed
 
 Validator control21:54:44Z now live: one/four threads produce identical decoded

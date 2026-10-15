@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+## 2026-10-16 - Whole original source4-thread timestamp validation PASS
+
+Final regression5/5 PASS3,080.4696ms; seven-file zero-warning lint PASS.
+
+`evidence/2026-10-15T21-54-44-094Z-source-frame-threads.json`.
+296,160 decoded-frame timestamps,681,309ms (11m21.309s), exit0/no stderr, unchanged
+30min cap. Ordered digest4da5643c...272b365c; first0,last12339.958s, max step0.042s.
+7,137,404B stdout streamed under32MiB cap with4096B carry and no timeline array.
+Actual source full SHA/size unchanged; seven pre/current/post source pins equal.
+96-frame deterministic HEVC decoded pixels/timestamps EXACT1vs4 threads. Small
+0.633/2.211s timings do NOT demonstrate a speed win. Native binary hashes recorded.
+Fixture1,376,148B and runtime removed, owned native process exited. Native tools
+only generated fixtures/validated; browser conversion not substituted. Full
+validator integration still required before changed full retry;0/3 accepted full
+repeats. All current jobs terminal; no full/public/speed acceptance.
+
 ## 2026-10-16 - Full terminal: encode/save complete225.359MiB, validator FAIL
 
 Native validator control21:54:44Z: all96 fixture decoded pixel hashes and ordered
