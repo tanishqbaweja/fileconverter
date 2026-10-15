@@ -1,5 +1,29 @@
 # Remaining work audit
 
+## 2026-10-15 - Packet interleaver ownership experiment prepared
+
+**Partially implemented**: the previous full conversion is still failed, not
+accepted. The new additive `mpeg2-packet-interleave-smoke.c` exercises the real
+pinned libavformat interleaver with the unchanged largest-idle packet cache:
+queued versus explicitly drained packets, payload/padding/per-stream timestamps,
+external aliases and sink-held references, deferred close, write failure,
+abandoned queues, and 4,000 repeated packet transfers. This is a synthetic
+library ownership test, not media conversion or proof of real-container fidelity.
+Production queue policy, codecs, original media, public routes and fixed heaps
+are unchanged. No unchanged full-file retry is authorized by this test.
+
+Four new focused checks plus ten inherited regression checks passed (14/14,
+13.082 seconds); seven-file zero-warning lint passed. The first test run exposed
+two test-authoring mistakes (non-module syntax checker and assignment check
+matching equality), both corrected without changing native behavior or gates.
+The no-Docker hosted recipe retains every parent control and requires exact
+unchanged production decoder/encoder hashes. Actual Wasm execution is still
+pending; expected allocation counts in source are not measured results.
+Next: compile and execute the pinned library test, then select a queue change
+only if ownership results support it; independently validate all real-container
+streams/timestamps/metadata before any changed full conversion. Runtime cache
+occupancy at the previous failure and its underlying cause remain unproven.
+
 Updated 2026-10-15 (Asia/Calcutta). This is the living requirement audit for the original
 privacy-first browser converter specification. It is deliberately stricter than
 the public route ledger: a green route registry proves the advertised routes,

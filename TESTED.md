@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+## 2026-10-15 - Packet interleaver native experiment: source checks only
+
+Prepared an additive actual-Wasm32/pinned-libavformat ownership experiment,
+without changing the production kernel, largest-idle cache, codecs, memory
+limits, public registry or protected original. It tests real queue ownership,
+explicit interleaver draining, aliases including a reference retained by the
+sink, final-unref reuse, deferred close, injected write error, abandoned queue
+cleanup and repeated two-stream transfers. No native media converter is used.
+
+`node scripts/run-repository-owned-node.mjs --test
+tests/mpeg2-packet-interleave.test.mjs tests/mpeg2-mvf-arena.test.mjs
+tests/mvf-arena-full-terminal.test.mjs`: 14/14 passed, 13,082.4722 ms.
+Seven new JavaScript files passed ESLint with zero warnings. Initial focused
+test failure was in the new test code (using a non-module syntax checker and
+mistaking `==` for assignment), fixed with Node's module syntax check and an
+assignment-specific assertion; no native test was run or relaxed in response.
+All test subprocesses are hidden and repo-owned runtime cleanup completed.
+
+Actual native execution and allocation counts remain UNVERIFIED until the
+isolated no-Docker hosted build runs. Real-container fidelity, fatal-time cache
+ownership, full-original completion, three-run memory acceptance and speed gains
+remain unverified. Do not promote this source-only check to conversion success.
+
 Updated 2026-10-15 (Asia/Calcutta) from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
 
 This is the living progress record. It is regenerated after each test/profile cycle so completed work is not repeated or inferred from memory.
