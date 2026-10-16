@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+## 2026-10-16 - Updated Chrome full750-source preparation PASS;0 conversions
+
+`evidence/2026-10-16T16-59-54-263Z-updated-chrome-full-preparation.json`:all726
+actual parent preimages retained plus24 new, all current/post pins equal. Same
+128-file/2MiB extension caps and bounded runtime archive. Exact generated driver
+reverses to parent; unchanged full original file/geometry/q4/4Mbps/32+16MiB heaps/
+copy/backpressure/strict timing/SSIM.98/250MiB lower-baseline/3repeat/6h/native
+validator30min+32MiB gates. Fresh.80 short browser proof and actual compiled/native
+assets replayed. Durable atomic+fsynced launch identities added (max32KiB); absent
+or unverifiable births cannot authorize cleanup or restart. Preparation candidate
+and wrapper removed, original SHA unchanged, normal assets intact. Earlier16:57
+preparation superseded by final16:59 preparation after additional cleanup guard.
+9 focused tests PASS6,706.5747ms;8-file zero-warning lint PASS. No actual full run
+yet,0/3 accepted full repeats; no full/public/speed/memory claim.
+
 ## 2026-10-16 - Chrome155.0.8059.80 real four-case qualification PASS
 
 Actual `evidence/2026-10-16T16-41-46-137Z-updated-chrome-media.json`:4genuine

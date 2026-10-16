@@ -1,5 +1,31 @@
 # Remaining work audit
 
+## 2026-10-16 - Updated-browser full harness prepared; all original gates retained
+
+**Partially implemented**. Final zero-conversion preparation PASS:
+`evidence/2026-10-16T16-59-54-263Z-updated-chrome-full-preparation.json`.
+750 pre/current/post sources = all726 executed parent preimages plus24 additions.
+Parent interruption remains unaccepted; its actual source archive and recovery
+audit are retained, not replaced by invented post-run success. New layer keeps
+128-file/2MiB/16-qualified-external/8MiB runtime archive caps. Exact full driver
+reverses to the actual executed parent. Only updated browser identity, owned paths,
+source coverage and durable startup ownership logging change; codec/q4/4Mbps/
+geometry/fixed32+16MiB heaps/512KiB copy/one-write queues/strict CSV timing parser/
+source4 vs output1 validator threads/30min+32MiB native validation/SSIM>=.98/
+lower5min blank/all-Chromium250MiB/three-repeat/six-hour-per-conversion gates stay
+unchanged. Updated.80 four-case browser proof and identical compiled/native bytes
+are replayed before any full launch. No public profile is promoted.
+
+Durable32KiB launch journal records driver birth, runtime directory, production
+server, Chrome root and native observer births via serialized atomic replacement
+and fsync before lengthy conversion. Cleanup refuses unproven birth/owned-path
+absence; missing identity is never zero or permission to delete/kill. No automatic
+restart. Protected original full SHA unchanged; wrapper/candidate removed, normal
+production untouched, no conversions in preparation. Earlier16:57 preparation
+passed before the missing-driver-birth cleanup guard; final16:59 preparation
+supersedes it. Final9 focused tests PASS6,706.5747ms;8-file zero-warning lint PASS.
+Full three-repeat browser execution is the next gate,0/3 accepted full repeats.
+
 ## 2026-10-16 - Chrome.80 four-case browser and independent replay PASS
 
 **Partially implemented; full project and original-file stress remain incomplete**.
