@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "status": "launch-recorded",
+  "updatedAt": "2026-10-16T17:02:27.927Z",
+  "driverIdentity": {
+    "pid": 12984,
+    "parentPid": 34204,
+    "createdAt": "2026-10-16T17:02:14.5539820Z"
+  },
+  "wrapperDirectory": "H:\\Github Repositories\\fileconverter\\work\\updated-chrome-full-wrapper-haSh5X",
+  "candidateDirectory": "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-media-VmKm1u",
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-full-runtime-iWJRoK",
+  "launches": [
+    {
+      "role": "production-server",
+      "identity": {
+        "pid": 32472,
+        "parentPid": 12984,
+        "createdAt": "2026-10-16T17:02:19.2897240Z"
+      }
+    },
+    {
+      "role": "headless-chrome-root",
+      "identity": {
+        "pid": 33872,
+        "parentPid": 12984,
+        "createdAt": "2026-10-16T17:02:22.3248820Z"
+      }
+    },
+    {
+      "role": "native-memory-observer",
+      "identity": {
+        "pid": 32864,
+        "parentPid": 12984,
+        "createdAt": "2026-10-16T17:02:23.8274260Z"
+      }
+    }
+  ],
+  "conversionAcceptance": false
+}

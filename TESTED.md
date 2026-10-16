@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+## 2026-10-16 - Actual Chrome.80 full Run1 encoding; no acceptance yet
+
+17:11:58Z durable checkpoint, exact driver12984/parent34204/
+birth17:02:14.5539820Z live; supervisor25904/child34204 exact births live too.
+`evidence/2026-10-16T17-01-47-260Z-updated-chrome-full-live.json` binds actual750
+sources and compiled/native assets. Durable launch journal17:02:15.592Z records
+server32472/Chrome33872/observer32864 births plus owned runtime/profile paths.
+Stable lower blank248,463,360B; partial observed peak480,342,016B =>221.13671875
+MiB increment,2,164 valid conversion samples/0unavailable. Last stdout input
+51,209,793B/output74,657,675B. Not completion or full memory acceptance. Same
+source/quality/geometry/heaps/gates.3h ETA-based interruptible timer for first
+encode/save; native validation and two further runs follow (~10–12h session if
+all gates pass).0/3 accepted repeats, no full/public/speed claim.
+
 ## 2026-10-16 - Updated Chrome full supervisor started; no acceptance yet
 
 One session17:01:39Z; exact handle

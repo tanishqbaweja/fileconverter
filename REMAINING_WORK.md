@@ -1,5 +1,28 @@
 # Remaining work audit
 
+## 2026-10-16 - Updated full Run1 live; actual source and ownership records retained
+
+**Partially implemented / running**. At17:11:58Z native checkpoint is current;
+supervisor25904/child34204 and driver12984/parent34204/birth17:02:14.5539820Z
+are exact live births. Actual receipt:
+`evidence/2026-10-16T17-01-47-260Z-updated-chrome-full-live.json`.
+Actual750-source archivef148770cdeb53d7923a51aee3116588bf07491c63ee1042e49929a203981d43b
+and identical compiled main/codec/save/styles bind this execution, not preparation.
+Durable ownership record
+`outputs/reports/2026-10-16T17-02-15-592Z-private-mpeg2-updated-chrome-full-native-100ms-launches.json`
+records server32472, Chrome33872 and observer32864 with exact births and the owned
+profile/runtime. These are ownership/liveness facts, NOT successful conversion.
+
+Stable lower blank248,463,360B (236.953MiB), actual observed conversion peak
+480,342,016B ->221.13671875MiB incremental so far.2,164 valid conversion samples,
+zero unavailable at that partial checkpoint. Last stdout observed original-source
+input51,209,793B/output74,657,675B. Same original geometry/q4/4Mbps/fixed heaps/
+full-tree250MiB gates;0/3 validated repeats. Sleep3h interruptibly from prior
+same-source~3h encode/save; independent validation follows, estimated10–12h for
+the full three-repeat session if all gates pass. No restart on expired timer;
+recheck this exact supervisor/driver and terminal evidence. Broader project
+scope remains incomplete; no full memory/fidelity/public/speed acceptance yet.
+
 ## 2026-10-16 - Updated Chrome supervised full session launched
 
 **Partially implemented / setup pending**. One no-auto-restart three-repeat full
