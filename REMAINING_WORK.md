@@ -1,5 +1,26 @@
 # Remaining work audit
 
+## 2026-10-17 - Changed full Run1 genuinely encoding;768 actual sources bound
+
+**Partially implemented / running**. At21:41:53Z supervisor27884/child34096
+exact births live; actual driver35584/parent34096/birth21:32:18.1935870Z live.
+Actual receipt `evidence/2026-10-16T21-31-52-360Z-recorded-timeline-full-live.json`
+and source archivec769222cc86f4dec691827f81e9232a087f843deeed9216832c714f1636f86f1
+bind all768 executed paths plus generated caller/driver/stager/helper/supervisor.
+Durable launch journal21:32:19.026Z (native report namespace remains historical
+updated-chrome-full to retain the identical ownership/monitor implementation)
+records server35232/Chrome28724/observer37680 exact births and owned runtime paths.
+
+Lower stable blank243,658,752B; partial conversion peak470,323,200B ->216.1640625
+MiB increment so far,2,118 valid conversion samples/0unavailable. Last stdout
+observed source53,904,434B/output78,631,804B. Same original/defaultgeometry/q4/
+4Mbps/heaps/queues/full-tree250MiB gates. Source reference is separately qualified
+against all296160 timestamps and whole-source hash; output validation unchanged
+or stricter, diagnostics retained. No solved-cause or fidelity claim. Sleep3h15m
+interruptibly based prior3h10m encode/save; native validation and two later
+repeats remain. Recheck this same handle/birth, never restart on timer expiry.
+0/3 accepted full repeats; broad original project scope remains incomplete.
+
 ## 2026-10-17 - Recorded-timeline full supervisor launched once
 
 **Partially implemented / setup pending**. Exact handle

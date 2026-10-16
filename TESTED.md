@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Recorded-timeline actual full Run1 live, not accepted
+
+21:41:53Z checkpoint current; exact driver35584/parent34096/
+birth21:32:18.1935870Z live; supervisor27884/child34096 exact births live.
+`evidence/2026-10-16T21-31-52-360Z-recorded-timeline-full-live.json` binds actual
+768sources and generated scripts. Durable21:32:19.026Z native ownership journal
+retains server35232/Chrome28724/observer37680 births and repository-owned paths.
+Stable lower blank243,658,752B; observed peak470,323,200B =>216.1640625MiB so far;
+2,118 valid conversion samples/0unavailable. Last stdout input53,904,434B/
+output78,631,804B. Same original/settings/gates. New source reference/output
+diagnostics not a conversion-speed or fidelity pass.3h15m ETA-based timer from
+prior3h10m encode/save, then same-handle check;0/3 accepted full repeats.
+
 ## 2026-10-17 - Changed recorded-timeline supervisor started
 
 Exact `evidence/2026-10-16T21-31-45-004Z-recorded-timeline-supervisor-full.json`.
