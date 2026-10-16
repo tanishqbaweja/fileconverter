@@ -1,5 +1,46 @@
 # Remaining work audit
 
+## 2026-10-17 - Full encode/save below observed budget; timestamp validation FAIL
+
+**Partially implemented;0/3 independently accepted repeats**. Actual terminal:
+`evidence/2026-10-16T17-01-47-260Z-updated-chrome-full-terminal.json`;
+independent audit `evidence/2026-10-16T17-01-47-260Z-updated-chrome-full-terminal-analysis.json`.
+Genuine original2,958,573,265B HEVC -> MPEG2/MP4 completed browser encoding AND
+closed destination save:6,414,309,978B in11,425,024.605ms (~3h10m25s),296160native
+frames/packets. Independent count_frames probe also296160frames,1920x804/24fps,
+expected AAC5.1 and PNG artwork. Container/stream titles/language/color, chapters,
+artwork compressed hash and subtitle-exclusion disclosure passed before failure.
+
+Complete-tree native conversion peak480,342,016B minus same stable lower blank
+248,463,360B =221.13671875MiB.104,861 valid conversion-phase samples,0 unavailable;
+the separate13 pre-conversion samples are not mislabeled as conversion samples.
+One unavailable startup sample and one unavailable VALIDATION sample remain
+explicitly recorded. This is one below-budget encode/save observation, NOT a
+public-profile or three-repeat/fidelity pass. Fixed heaps/I/O/quality unchanged.
+
+Independent validation then failed exactly at per-frame timestamp-count equality:
+parsed source157485 vs output21611 (`probe.mjs:540`). No native timeout/error
+metadata is attached to that assertion. Cause remains UNPROVEN: do not call it
+missing encoded frames, a parser bug or a native decoder failure without evidence.
+Current output count_frames and the earlier qualified source timing decode both
+count296160, conflicting with the later parsed counts. Full timestamp comparison,
+audio payload equality, full xerror decode and SSIM were NOT reached. Successful
+frameTimes calls did not retain raw CSV/stderr, so no retrospective reconstruction
+of their contents is possible. Next: native-only timestamp-validator diagnosis
+with bounded raw/progress/error retention; no unchanged multi-hour browser retry.
+Short read-only source probes at0/1000/6500/12000s accepted all returned timestamp
+lines; these small diagnostics do NOT resolve the full-length discrepancy.
+
+Automatic cleanup succeeded: original full SHA unchanged, normal production
+rebuilt/restored, all owned candidate/wrapper/profile/stage/output/supervisor
+scratch removed. Independent audit checked25 recorded births including parent
+supervisor; none survives. PID29604 was reused by an unrelated app after the test
+and was NOT killed. Actual750 executed/current/post sources replayed.19,411,123B
+raw report retained losslessly as631,287B gzip;29,179B checkpoint retained as4,425B
+gzip and redundant raw checkpoint deleted after identity/hash verification.
+Compact CSV/HTML/trace retained.6 focused audit/preparation/ownership tests PASS
+5,527.6572ms;3-file zero-warning lint PASS. No speed gain claimed; goal incomplete.
+
 ## 2026-10-16 - Updated full Run1 live; actual source and ownership records retained
 
 **Partially implemented / running**. At17:11:58Z native checkpoint is current;

@@ -1,5 +1,32 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Real full output saved; independent timestamp-count failure
+
+Terminal17:01:47.260Z and independent `updated-chrome-full-terminal-analysis.json`:
+6,414,309,978B genuine browser HEVC->MPEG2/MP4 saved/closed in11,425,024.605ms
+(~3h10m25s).296160nativeframes/packets and independently decodedcount_frames;
+1920x804,24fps,AAC5.1,PNG art. Earlier metadata/title/color/chapters/artwork checks
+passed. Full-tree conversion peak480,342,016 minus lower stable blank248,463,360
+=221.13671875MiB;104,861 conversion samples/0unavailable. Separate13 pre-conversion
+samples and one unavailable startup/one validation sample are retained honestly.
+
+FAIL at actualdriverline540: parsed source timestamp count157485 != output21611.
+Cause UNPROVEN; no attached native failure/timeout metadata. Do not label converter
+frame loss or a parser bug yet. Original source qualification and current output
+count_frames both296160. Exact timeline/audio payload/xerror/SSIM checks not
+reached;0/3 accepted full repeats, no promotion or broad memory/fidelity pass.
+Short native read-only probes at0/1000/6500/12000s accepted all returned lines but
+do not resolve full-length discrepancy. Need bounded native-only timestamp/CSV/
+stderr diagnosis before another expensive browser run; successful old frameTimes
+did not retain its raw stdout/stderr and cannot be reconstructed after cleanup.
+
+All750 source pins replayed current/post; original SHA preserved. All owned
+profile/stage/output/candidate/wrapper/supervisor scratch removed; normal build
+restored.25 birth checks absent; unrelated reused PID29604 untouched. Raw report
+19,411,123B ->631,287B lossless gzip; checkpoint29,179B ->4,425B gzip, redundant raw
+removed. Compact trace/CSV/HTML retained.6 focused tests PASS5,527.6572ms;3-file
+zero-warning lint PASS. Whole project remains incomplete; no speed-win claim.
+
 ## 2026-10-16 - Actual Chrome.80 full Run1 encoding; no acceptance yet
 
 17:11:58Z durable checkpoint, exact driver12984/parent34204/
