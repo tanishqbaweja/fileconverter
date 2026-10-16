@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Changed recorded-timeline supervisor started
+
+Exact `evidence/2026-10-16T21-31-45-004Z-recorded-timeline-supervisor-full.json`.
+Supervisor27884/birth21:31:45.0088630Z; child34096/parent27884/
+birth21:31:46.4430990Z. IPC readiness only, not conversion.9min setup timer then
+same-handle/birth check. Prior3h10m encode/save informs following sleep; all
+three runs/validation may take10–12h if successful. No automatic retry,0/3 accepted
+full repeats. Final768-source preparation retained; redundant zero-execution
+startup copy removed after exact ownership/terminal match.
+
 ## 2026-10-17 - Recorded timestamp validator integrated;768-source preparation PASS
 
 `evidence/2026-10-16T21-29-17-256Z-recorded-timeline-full-preparation.json`:0conversions,

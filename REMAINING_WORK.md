@@ -1,5 +1,18 @@
 # Remaining work audit
 
+## 2026-10-17 - Recorded-timeline full supervisor launched once
+
+**Partially implemented / setup pending**. Exact handle
+`evidence/2026-10-16T21-31-45-004Z-recorded-timeline-supervisor-full.json`.
+IPC-verified supervisor27884/parent38428/birth21:31:45.0088630Z and child34096/
+parent27884/birth21:31:46.4430990Z. No auto-retry; do not restart on an elapsed
+timer or unavailable observation. Setup/baseline/driver/encoding not yet verified.
+Wait9min, inspect these same births and durable records, then ETA-based sleep
+from prior same-source3h10m encode/save. Full three-repeat session may take10–12h
+if all validation gates pass.0/3 accepted repeats; broad project incomplete.
+Redundant zero-execution preparation live JSON removed only after matching its
+final preparation/source-archive ownership; final evidence remains retained.
+
 ## 2026-10-17 - Recorded-timeline full integration and768-source preparation PASS
 
 **Partially implemented;0/3 accepted full repeats**. Actual zero-conversion
