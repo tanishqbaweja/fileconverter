@@ -1,0 +1,28 @@
+import assert from "node:assert/strict";
+import {access,readFile} from "node:fs/promises";
+import path from "node:path";
+import {gunzipSync} from "node:zlib";
+import test from "node:test";
+import {materializeUpdatedFullArchive} from "../scripts/lib/recorded-timeline-full-sources.mjs";
+import {sha} from "../scripts/lib/stable-ui-headless-baseline-recipe.mjs";
+const root=path.resolve(import.meta.dirname,".."),read=file=>readFile(path.join(root,file));
+test("actual768-source preparation binds source reference, caller, driver and cleanup without conversion",async()=>{
+  const proof=JSON.parse(await read("evidence/2026-10-16T21-29-17-256Z-recorded-timeline-full-preparation.json"));
+  assert.equal(proof.status,"prepared-not-executed");assert.equal(proof.executions,0);assert.equal(proof.failure,null);assert.deepEqual(proof.cleanupErrors,[]);
+  assert.deepEqual(proof.sourcePins,proof.postSourcePins);assert.equal(Object.keys(proof.sourcePins).length,768);
+  const archive=await materializeUpdatedFullArchive(root,proof.sourceArchive);assert.deepEqual(archive.pins,proof.sourcePins);
+  assert.equal(archive.all750ParentPreimagesRetained,true);assert.equal(Object.keys(archive.extensionPins).length,18);
+  assert.equal(archive.limits.extensionFiles,128);assert.equal(archive.limits.extensionRestoredBytes,2097152);
+  assert.ok(archive.generatedCaller.includes("sourceTimelineReference:timeline.referenceBinding"));assert.ok(archive.generatedCaller.includes("callerRuntimeDirectory:"));
+  assert.ok(archive.driver.includes("createRecordedFrameValidator({root,source"));assert.ok(archive.driver.includes("maximumTimestampErrorSeconds <= 0.001"));
+  const parent=JSON.parse(await read(proof.parent.path));const oldZip=await read(parent.sourceArchive.path);assert.equal(sha(oldZip),parent.sourceArchive.sha256);
+  const old=JSON.parse(gunzipSync(oldZip,{maxOutputLength:8388608}));let reversed=archive.driver;
+  for(const [before,after]of archive.edits.toReversed())reversed=reversed.replace(after,before);assert.equal(reversed,old.driver);
+  assert.equal(sha(await read(proof.sourceTimelineReference.path)),proof.sourceTimelineReference.sha256);
+  assert.equal(proof.sourceTimelineReference.everyActualSourceTimestampVerified,true);assert.equal(proof.sourceTimelineReference.outputValidationRelaxed,false);
+  assert.deepEqual(proof.browserPinBefore,proof.browserPinAfter);assert.deepEqual(proof.nativeQualification,proof.nativeQualificationAfter);
+  assert.deepEqual(proof.protectedBefore,proof.protectedAfter);assert.equal(proof.protectedAfter.sha256,"31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
+  assert.equal(proof.wrapperRemoved,true);assert.equal(proof.candidateRemoved,true);assert.equal(proof.productionRestored,true);
+  for(const directory of [proof.wrapper,proof.candidateDirectory,proof.callerRuntimeDirectory])await assert.rejects(access(directory),{code:"ENOENT"});
+  for(const key of ["publicAcceptance","fullOriginalAcceptance","completeChromiumMemoryAcceptance"])assert.equal(proof[key],false);
+});

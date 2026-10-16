@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Recorded timestamp validator integrated;768-source preparation PASS
+
+`evidence/2026-10-16T21-29-17-256Z-recorded-timeline-full-preparation.json`:0conversions,
+failure null, cleanup errors empty.750actualparent+18new pins=current=post; original
+source/caps retained. Generated caller/driver/stager/helper/supervisor archived.
+Whole-source-hash-bound exact296160reference now integrated; output still uses
+actual decoded timestamps, pinnedFFprobe, exact old parser,296160count and<=1ms.
+Raw bounded stdout/diagnostics retained; nonempty error stderr rejected. Same
+30min/32MiB validation and every codec/quality/memory/repeat/cleanup gate.
+Original SHA unchanged, candidate/wrapper/outercaller gone, normal production
+intact, native/browser/reference pins stable.16focused tests PASS5,566.4647ms;
+6-file zero-warning lint PASS. No actual new full run yet;0/3 accepted repeats,
+no converter-speed improvement, no solved-cause or public/full acceptance claim.
+
 ## 2026-10-17 - Native full-source CSV296160 PASS; reference independently sealed
 
 `evidence/2026-10-16T21-01-48-525Z-source-timestamp-csv-diagnostic.json`:634,823ms,

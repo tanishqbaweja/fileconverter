@@ -1,5 +1,33 @@
 # Remaining work audit
 
+## 2026-10-17 - Recorded-timeline full integration and768-source preparation PASS
+
+**Partially implemented;0/3 accepted full repeats**. Actual zero-conversion
+preparation `evidence/2026-10-16T21-29-17-256Z-recorded-timeline-full-preparation.json`.
+All768 pre/current/post source pins match:750 executed parent paths retained plus
+18 additions. Same128-file/2MiB extension/16 qualified-external/8MiB runtime caps.
+Exact generated caller, driver, stager, helper and supervisor retained; independent
+replay reverses changed driver to the actual prior750-source executed driver.
+Original protected SHA unchanged; candidate, wrapper AND outer caller runtime
+absent; normal assets intact; browser/native/reference before-after pins stable.
+
+Full runner now integrates the source reference already verified against every
+native timestamp. It rehashes unchanged whole test.mkv before returning its exact
+296160 values; applies only to this exact source, not arbitrary CFR/VFR inputs.
+Every output still decodes through pinnedC:/ffmpeg/bin/ffprobe.exe with the exact
+old strict parser, expected296160frame check and unchanged<=1ms frame comparison.
+Command/bytes/digests/counts/stderr and bounded compressed stdout are retained on
+success/failure; error-level native stderr now explicitly fails instead of being
+discarded. Original30min/32MiB native caps unchanged. Video/audio/metadata/artwork/
+xerror/SSIM>=.98/heaps/I/O/queues/lower5min blank/full-tree250MiB/three repeats/
+6h-per-conversion gates unchanged. Actual converter/browser assets remain identical.
+No claimed fix for the historical opaque count mismatch, no conversion speed win;
+reference reuse only avoids redundant native SOURCE-validation decodes.
+
+16 focused tests PASS5,566.4647ms;6-file zero-warning lint PASS. Headless/no Docker,
+no automatic restart. Full changed original-file session is next, not yet executed.
+No public promotion or broad project completion.
+
 ## 2026-10-17 - Full native source CSV consistent; exact reference qualified
 
 **Partially implemented; failed browser output still unaccepted**. Actual native
