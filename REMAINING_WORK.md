@@ -1,5 +1,43 @@
 # Remaining work audit
 
+## 2026-10-17 - Full native source CSV consistent; exact reference qualified
+
+**Partially implemented; failed browser output still unaccepted**. Actual native
+diagnostic `evidence/2026-10-16T21-01-48-525Z-source-timestamp-csv-diagnostic.json`
+completed in634,823ms (10m34.823s), no conversion. Pinned4-threadFFprobe returned
+7,137,404B,296160timestamp lines, empty stderr. Streamed bytes equal exact
+execFile capture; strict parser, parseFloat diagnostic and EXACT archived failed
+frameTimes function all296160/digest4da5643ccd06096fd3b25f4a33eab23303e5e1dd4329427a52c01523272b365c.
+No rejected/nonempty ignored lines. Same full original SHA before/after, native
+tool qualification stable,9 pre/current/post source pins equal, runtime removed.
+Thus a persistent intrinsic parser failure on this valid source is not reproduced;
+the historical157485/21611 mismatch remains unexplained. Bare and absolute
+FFprobe CURRENTLY resolve to sameN-122712-g7e3781e3ca-20260211 build and identical
+96-frame short results; this does not prove historical executable identity.
+
+Independent reference seal:
+`evidence/2026-10-16T21-01-48-525Z-qualified-source-timeline-reference.json`.
+All296160 ACTUAL native CSV timestamp fields independently equal the reconstructible
+millisecond-quantized24fps series, including exact first0/last12339.958 and full
+digest. This is specific to source SHA31f36695..., not a CFR assumption for other
+inputs. A bounded2,369,280B Float64 reference can therefore be reused only after
+checking the complete unchanged source hash. No source timeline is rounded away
+or output comparison weakened. Raw774,659B CSV gzip deleted only after every-field
+verification; compact hashes, source proof and reproducible reference retained.
+Native birth36904 independently absent. No conversion copies or profile remain.
+
+New recorded-frame validator helper is unit-tested but NOT integrated into the
+full runner yet. It binds the exact old parser body, explicitly selects the
+pinnedFFprobe path, retains bounded stdout gzip/digest/counts/error-level stderr,
+records failures without losing native exit identity, and refuses missing output
+timestamps/changed source/parser. Same30min/32MiB/strict parser and unchanged
+<=1ms full-driver comparison remain required. Source reference reuse is validation
+optimization only; no conversion-speed gain or output correctness claimed.
+13 focused tests PASS745.8477ms;8-file zero-warning lint PASS. Next integrate the
+qualified reference+recorded output probe into a bounded derivative of the actual
+750-source full harness, preserving all prior gates, then prepare before a new
+original-file attempt.0/3 accepted repeats; full project remains incomplete.
+
 ## 2026-10-17 - Read-only full source timestamp diagnostic launched
 
 **Partially implemented / diagnostic running**, no browser conversion or retry.

@@ -1,5 +1,30 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Native full-source CSV296160 PASS; reference independently sealed
+
+`evidence/2026-10-16T21-01-48-525Z-source-timestamp-csv-diagnostic.json`:634,823ms,
+7,137,404B stdout,296160lines, empty stderr. Stream/capture hash identical, strict
+and float diagnostic counts296160; exact archived failed parser replay296160.
+Complete ordered digest4da5643ccd06096fd3b25f4a33eab23303e5e1dd4329427a52c01523272b365c
+matches prior independent qualification. No decoding/conversion of an output,
+no browser conversion. Original full SHA and9 source pins stable; native runtime
+removed. CURRENT bare/absoluteffprobe same version and same short96-frame result.
+The previous157485/21611 failure is not explained by this isolated success.
+
+Independent `qualified-source-timeline-reference.json` checks every actual native
+timestamp field against exact reconstructible reference (source31f36695... ONLY),
+296160values/2,369,280B, first0,last12339.958. Raw774,659B CSV gzip removed only
+after verification; proof/hashes retained. Source reuse must rehash unchanged
+original and does not relax actual-output296160count or <=1ms comparison.
+
+Recorded-output validator helper tests pass for strict valid296160 output,
+short-count rejection with retained raw evidence, nonempty error stderr,
+native-error identity, source-byte changes and substituted-parser rejection.
+Same30min/32MiB cap; no parser relaxation or native conversion. Helper NOT yet
+integrated/full-file-tested; no speed win or fidelity pass inferred.13 focused
+tests PASS745.8477ms;8-file zero-warning lint PASS.0/3 accepted full repeats;
+next step is bounded full-harness integration with complete output diagnostics.
+
 ## 2026-10-17 - Native-only CSV discrepancy diagnostic started
 
 `evidence/2026-10-16T21-01-48-525Z-source-timestamp-csv-live.json`, exactFFprobe
