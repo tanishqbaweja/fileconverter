@@ -1,5 +1,19 @@
 # Remaining work audit
 
+## 2026-10-16 - Updated Chrome supervised full session launched
+
+**Partially implemented / setup pending**. One no-auto-restart three-repeat full
+session launched17:01:39Z after pushed515c2b7 and successful750-source preparation.
+Exact handle `evidence/2026-10-16T17-01-39-930Z-updated-chrome-supervisor-full.json`.
+IPC-verified supervisor25904/parent25896/birth17:01:39.9352060Z; child34204/
+parent25904/birth17:01:41.1723110Z. This is launch readiness, not encoding or
+acceptance. Wait9min for setup/lower5min blank baseline, then inspect the same
+handle and exact births; never restart because a timer/observation expires.
+Estimate~3h encode/save per run from prior same-source result; validation follows.
+0/3 accepted full repeats. Two zero-conversion preparation startup JSON copies
+removed only after matching their final preparation receipts/archives; full
+terminal preparation proof is retained and no conversion output was discarded.
+
 ## 2026-10-16 - Updated-browser full harness prepared; all original gates retained
 
 **Partially implemented**. Final zero-conversion preparation PASS:

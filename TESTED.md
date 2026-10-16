@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+## 2026-10-16 - Updated Chrome full supervisor started; no acceptance yet
+
+One session17:01:39Z; exact handle
+`evidence/2026-10-16T17-01-39-930Z-updated-chrome-supervisor-full.json`.
+Supervisor25904/birth17:01:39.9352060Z; child34204/birth17:01:41.1723110Z,
+both IPC launch-bound. Setup/baseline/encoding not yet confirmed.9min startup
+timer, then exact-handle/birth check; no automatic restart. Same original/gates,
+0/3 accepted repeats. Two redundant zero-execution preparation live receipts
+deleted after final preparation/ownership match; terminal evidence retained.
+
 ## 2026-10-16 - Updated Chrome full750-source preparation PASS;0 conversions
 
 `evidence/2026-10-16T16-59-54-263Z-updated-chrome-full-preparation.json`:all726
