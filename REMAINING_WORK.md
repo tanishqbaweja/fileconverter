@@ -1,5 +1,31 @@
 # Remaining work audit
 
+## 2026-10-16 - Reboot interruption audited; disposable data removed
+
+**Partially implemented; 0/3 accepted full repeats**. Recovery receipt:
+`evidence/2026-10-16T16-36-10-030Z-threaded-validation-reboot-recovery.json`.
+The 22:26 threaded-validator attempt has no terminal conversion report. Last
+durable native sample 00:55:10.613Z precedes the observed Windows boot at
+00:59:19.500Z; all 25 recorded process births predate that boot. Exact termination
+time/cause is unproven. 77,122 valid conversion samples, zero unavailable conversion
+samples and observed incremental peak 228.56640625 MiB are PARTIAL evidence only,
+not a full conversion, fidelity, repeatability, speed or memory pass.
+
+Replayed all 726 executed/current source preimages and exact generated driver,
+trace helper and caller. Verified candidate and staged-asset hashes before
+restoring all six public assets and deleting nine private additions. Normal
+production rebuild PASS (8,291 ms), expected main/CSS hashes restored. Removed
+exact five owned directories: 4,542,654,460 bytes of disposable profiles, OPFS
+stage/output, helpers and candidate data. No processes killed. Protected test.mkv
+size 2,958,573,265 and full SHA-256 31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34
+unchanged before/after. Original checkpoint and stale supervisor retained as
+historical evidence; neither is a live-process handle.
+
+Focused recovery tests 3/3 PASS (77.0944 ms); three-file zero-warning ESLint PASS.
+Chrome changed from 155.0.8059.40 to 155.0.8059.80. Old qualification cannot justify
+a new full run: fresh browser qualification is required without weakening gates.
+Full original scope remains incomplete; no duplicate conversion launched.
+
 ## 2026-10-16 - Changed full Run1 encoding; threaded validation follows
 
 **Partially implemented / running**. At22:35:57Z the exact39084/33844 supervisor/

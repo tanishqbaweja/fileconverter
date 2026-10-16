@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+## 2026-10-16 - Interrupted full test recovered, not accepted
+
+Receipt `evidence/2026-10-16T16-36-10-030Z-threaded-validation-reboot-recovery.json`:
+Windows boot 00:59:19.500Z follows checkpoint 00:55:10.613Z and all 25 recorded
+births. No terminal report; exact termination cause/time unknown. Partial
+77,122 valid conversion samples / zero unavailable / peak increment228.56640625
+MiB do NOT prove complete memory/fidelity acceptance;0/3 accepted repeats.
+All726 executed/current preimages and generated driver/helper/caller verified.
+Five exact owned directories deleted (4,542,654,460B); normal assets and production
+build restored (8,291ms), original test.mkv full SHA/size unchanged. No process
+kills or conversion restart. Compact checkpoint/supervisor/recovery proof retained.
+3/3 recovery tests PASS77.0944ms;3-file zero-warning lint PASS. Current installed
+Chrome155.0.8059.80 differs from qualified155.0.8059.40; requalification needed.
+
 ## 2026-10-16 - Changed full Run1 genuinely encoding; no acceptance yet
 
 22:35:57Z supervisor39084/child33844 exact births verified live; driver2240/
