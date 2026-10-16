@@ -1,5 +1,21 @@
 # Remaining work audit
 
+## 2026-10-17 - Read-only full source timestamp diagnostic launched
+
+**Partially implemented / diagnostic running**, no browser conversion or retry.
+Exact live handle `evidence/2026-10-16T21-01-48-525Z-source-timestamp-csv-live.json`;
+FFprobe36904/parent38224/birth21:01:51.2324430Z, pinnedC:/ffmpeg/bin/ffprobe.exe.
+Same full original/source4threads/show_frames/CSV command, original30min/32MiB
+caps. Stream byte hash/counts are compared with exact execFile stdout and the
+actual archived failed frameTimes function; successful native stderr is retained
+this time. Strict/parseFloat comparison is diagnostic only, not a parser change
+or a relaxed acceptance rule. Bounded carry4KiB,8example cap, no full video copies.
+5 focused parser/bounds/terminal-truth tests PASS358.2882ms;3-file zero-warning
+lint PASS. Estimated12min from prior11m21source decode, then check this exact
+session. Raw compact timestamp diagnostic stays repository-local; original
+protection and owned-runtime finally cleanup required. Cause still unproven,
+0/3 accepted full browser repeats and broad scope incomplete.
+
 ## 2026-10-17 - Full encode/save below observed budget; timestamp validation FAIL
 
 **Partially implemented;0/3 independently accepted repeats**. Actual terminal:

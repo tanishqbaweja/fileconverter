@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Native-only CSV discrepancy diagnostic started
+
+`evidence/2026-10-16T21-01-48-525Z-source-timestamp-csv-live.json`, exactFFprobe
+36904/parent38224/birth21:01:51.2324430Z. Full protected source read-only, pinned
+binary,4threads, unchanged30min/32MiB caps. Compare streamed/captured stdout and
+exact executed old parser, retain bounded stderr/rejected examples. No conversion
+or acceptance-parser change.5 focused tests PASS358.2882ms;3-file zero-warning
+lint PASS.12min ETA-based sleep before same-session check. Diagnostic pending;
+no explanation claimed,0/3 independently accepted full repeats.
+
 ## 2026-10-17 - Real full output saved; independent timestamp-count failure
 
 Terminal17:01:47.260Z and independent `updated-chrome-full-terminal-analysis.json`:
