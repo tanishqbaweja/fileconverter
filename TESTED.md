@@ -1,5 +1,39 @@
 # Tested conversion ledger
 
+## 2026-10-16 - Chrome155.0.8059.80 real four-case qualification PASS
+
+Actual `evidence/2026-10-16T16-41-46-137Z-updated-chrome-media.json`:4genuine
+production-browser conversions and cancellation/write-failure/input-read-failure
+same-page recovery PASS. Same32+16MiB cores/q4/4Mbps/no geometry reduction/512KiB
+copy/strict validation.4outputs2,245,626B/96frames/SSIM0.983095; each475-packet
+proof including timestamps/payloads/positions/metadata/boxes and decoded video
+hash equals old.40 qualification exactly. Existing independent audio, subtitle,
+artwork, title/timing/decode checks unchanged.370pre/current/post sources and
+actual identical compiled assets verified; before/after browser/native pins equal.
+Driver cycle141,957ms includes build+validation+restore, NOT an encoding benchmark
+or speed gain. Candidate/profile/fixtures/outputs gone; protected original SHA
+unchanged; normal production restored; sampled browser processes independently
+observed gone or provably newer reused PIDs. Raw1,834,911B report losslessly retained
+as214,384B gzip, redundant raw removed. No physical-memory-release claim.
+
+Final focused10/10PASS1,858.7267ms;8-file zero-warning lint PASS. Wider13-test check:
+12PASS/1FAIL, historical full caller correctly rejects installed.80 vs pinned.40.
+That gate remains intact. Updated full stress harness integration is pending;
+no full attempt currently running,0/3 accepted repeats, no public/full/memory or
+fastest-speed acceptance. Headed/manual coverage remains unverified per AGENTS.
+
+## 2026-10-16 - Chrome.80 exact-suite preparation PASS, zero conversions
+
+`evidence/2026-10-16T16-40-44-786Z-updated-chrome-media.json`:370 source pins
+pre/current/post verified (255 legacy+106 supplemental+6 build-only+3new), exact
+generated-suite reversal and native/browser before/after pins verified. Only
+unique owned paths/stamp and actual runtime-version assertion change. No codec,
+quality, validation or recovery threshold changes. Disposable candidate removed;
+normal assets and test.mkv SHA unchanged.6 focused tests PASS209.858ms;4-file
+zero-warning lint PASS. Earlier count preflight255!=367 failed before any browser
+or candidate and was fixed by restoring all367 distinct source groups. Actual
+four-case execution pending; no full/public/memory/speed acceptance.
+
 ## 2026-10-16 - Interrupted full test recovered, not accepted
 
 Receipt `evidence/2026-10-16T16-36-10-030Z-threaded-validation-reboot-recovery.json`:

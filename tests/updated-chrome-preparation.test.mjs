@@ -1,0 +1,28 @@
+import assert from "node:assert/strict";
+import {access,readFile} from "node:fs/promises";
+import path from "node:path";
+import test from "node:test";
+import {gunzipSync} from "node:zlib";
+import {sha} from "../scripts/lib/stable-ui-headless-baseline-recipe.mjs";
+import {deriveUpdatedChromeMedia} from "../scripts/lib/updated-chrome-media.mjs";
+const root=path.resolve(import.meta.dirname,".."),read=file=>readFile(path.join(root,file));
+test("actual370-source preparation replays exact code, pins, and cleanup without converting",async()=>{
+  const proof=JSON.parse(await read("evidence/2026-10-16T16-40-44-786Z-updated-chrome-media.json"));
+  assert.equal(proof.status,"prepared-not-executed");assert.equal(proof.executions,0);
+  assert.equal(proof.failure,null);assert.deepEqual(proof.cleanupErrors,[]);
+  assert.deepEqual(proof.sourcePins,proof.postSourcePins);assert.equal(Object.keys(proof.sourcePins).length,370);
+  for(const [file,hash]of Object.entries(proof.sourcePins))assert.equal(sha(await read(file)),hash,file);
+  const zip=await read(proof.sourceArchive.path);assert.equal(zip.length,proof.sourceArchive.bytes);assert.equal(sha(zip),proof.sourceArchive.sha256);
+  const raw=gunzipSync(zip,{maxOutputLength:2097152});assert.equal(raw.length,proof.sourceArchive.restoredBytes);assert.equal(sha(raw),proof.sourceArchive.restoredSha256);
+  const archive=JSON.parse(raw);assert.deepEqual(archive.sourcePins,proof.sourcePins);
+  for(const [file,base64]of Object.entries(archive.preimages))assert.equal(sha(Buffer.from(base64,"base64")),proof.sourcePins[file]);
+  const parent=JSON.parse(await read(proof.parent.path));assert.equal(sha(await read(proof.parent.path)),proof.parent.sha256);
+  const previous=JSON.parse(gunzipSync(await read(parent.generatedArchive.path),{maxOutputLength:8388608}));
+  const stamp=path.basename(proof.sourceArchive.path).split("-updated-chrome-media-sources")[0];
+  assert.deepEqual(archive.recipe,deriveUpdatedChromeMedia(previous.generated,root,proof.runtimeDirectory,stamp,proof.browserPinBefore));
+  assert.deepEqual(proof.browserPinBefore,proof.browserPinAfter);
+  assert.deepEqual(proof.nativeQualification,proof.nativeQualificationAfter);
+  assert.deepEqual(proof.protectedBefore,proof.protectedAfter);assert.equal(proof.runtimeRemoved,true);assert.equal(proof.productionRestored,true);
+  await assert.rejects(access(proof.runtimeDirectory),{code:"ENOENT"});
+  for(const key of ["publicAcceptance","fullOriginalAcceptance","completeChromiumMemoryAcceptance"])assert.equal(proof[key],false);
+});

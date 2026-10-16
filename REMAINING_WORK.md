@@ -1,5 +1,54 @@
 # Remaining work audit
 
+## 2026-10-16 - Chrome.80 four-case browser and independent replay PASS
+
+**Partially implemented; full project and original-file stress remain incomplete**.
+Actual receipt `evidence/2026-10-16T16-41-46-137Z-updated-chrome-media.json`:
+four genuine production-browser conversions plus same-page cancellation, direct
+write-failure and input-read-failure recovery PASS on pinned155.0.8059.80.
+Driver/build/validation/restore cycle141,957ms is NOT isolated encode timing and
+does not demonstrate a conversion-speed gain. All four outputs2,245,626B,
+96frames, SSIM0.983095>=0.98. All475 independent packet records, payload hashes,
+timestamps, metadata fields, physical positions, MP4 boxes and complete decoded
+video hashes match the old.40 report exactly. Existing independent audio, title,
+artwork, timing, decode and fixed-buffer/heap assertions replayed unchanged.
+Actual compiled main/codec/save assets equal the previously qualified builds.
+Five saver lifecycles observed; physical OS reclamation is NOT inferred from it.
+
+370 executed/current/post source pins, native validator pins, browser before/
+after identities and protected original SHA verified. Candidate, browser helper
+profile, fixture and all converted files removed; normal production restored.
+Independent current-process audit confirms recorded helper/fixture births and
+all sampled browser PIDs gone (or replaced only after their last observation).
+Raw1,834,911B report removed only after lossless214,384B gzip validation; retain
+compact generated-code/source/build/report archives and cleanup receipts only.
+
+Final focused10/10 tests PASS1,858.7267ms;8-file zero-warning ESLint PASS. Broader
+13-test check was12PASS/1FAIL: the immutable historical full-caller preparation
+test correctly rejects installed.80 against required.40. Do NOT bypass its pin,
+change its historical test, or relabel old full qualification as current. Next:
+integrate the independently qualified updated-browser receipt into a new bounded
+full-original harness preserving all726 parent preimages and every native,
+quality, lower-baseline250MiB, three-repeat and cleanup gate; persist complete
+launch ownership before lengthy work. Then rerun the reboot-interrupted full
+session. No full run currently live,0/3 accepted full repeats, no public promotion.
+
+## 2026-10-16 - Updated Chrome short qualification prepared, not executed
+
+**Partially implemented**. Preparation receipt:
+`evidence/2026-10-16T16-40-44-786Z-updated-chrome-media.json`.
+Zero conversions; failure null, cleanup errors empty; temporary candidate removed,
+normal assets intact, protected original full SHA unchanged. Replayed255 legacy
+media+106 supplemental+6 build-only files (367 distinct) plus3 new implementation/
+test files:370 pre/current/post pins. Exact archived four-case browser suite,
+fixed32+16MiB/native binaries/quality/packet/pixel/timing/failure/recovery gates
+unchanged; only unique owned paths/stamps and actual browser-version assertion
+change to155.0.8059.80. Old .40 proof remains historical, not relabelled. Six
+focused recovery/derivation/actual-preparation tests PASS209.858ms;4-file zero-
+warning lint PASS. Initial preflight-count error255!=367 was corrected by replaying
+all three source groups; no browser started in that failed preflight. Actual
+short browser execution and new full stress qualification are still pending.
+
 ## 2026-10-16 - Reboot interruption audited; disposable data removed
 
 **Partially implemented; 0/3 accepted full repeats**. Recovery receipt:
