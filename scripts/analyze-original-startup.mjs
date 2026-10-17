@@ -10,20 +10,28 @@ import { gzipSync, gunzipSync } from "node:zlib";
 import { sha, baselineBinding } from "./lib/stable-ui-headless-baseline-recipe.mjs";
 import { materializeUpdatedFullArchive } from "./lib/recorded-timeline-full-sources.mjs";
 import { inspectOriginalStartupObservation } from "./lib/original-startup-observation.mjs";
+import { inspectOriginalIdleObservation } from "./lib/original-idle-observation.mjs";
 
 const root = path.resolve(import.meta.dirname, ".."), read = file => readFile(path.join(root, file));
-const terminalPath = "evidence/2026-10-17T02-01-05-994Z-original-startup-terminal.json";
+const args = process.argv.slice(2);
+assert.ok(args.length === 0 || (args.length === 1 && args[0] === "--idle"));
+const idleMode = args.length === 1;
+const stamp = idleMode ? "2026-10-17T02-16-33-923Z" : "2026-10-17T02-01-05-994Z";
+const kind = idleMode ? "original-idle" : "original-startup";
+const terminalPath = `evidence/${stamp}-${kind}-terminal.json`;
 const terminalBytes = await read(terminalPath), terminal = JSON.parse(terminalBytes);
 const zipped = await read(terminal.report.path);
 assert.equal(zipped.length, terminal.report.bytes); assert.equal(sha(zipped), terminal.report.sha256);
 const raw = gunzipSync(zipped, { maxOutputLength: 33554432 });
 assert.equal(raw.length, terminal.report.restoredBytes); assert.equal(sha(raw), terminal.report.restoredSha256);
 const report = JSON.parse(raw), analysis = inspectOriginalStartupObservation(terminal, report);
+if (idleMode) analysis.idleObservation = inspectOriginalIdleObservation(report);
 const sources = await materializeUpdatedFullArchive(root, terminal.sourceArchive);
-assert.equal(Object.keys(sources.pins).length, 771);
+const sourceCount = idleMode ? 774 : 771;
+assert.equal(Object.keys(sources.pins).length, sourceCount);
 assert.deepEqual(sources.pins, terminal.sourcePins); assert.deepEqual(terminal.postSourcePins, terminal.sourcePins);
 assert.deepEqual(report.sourceHashes, terminal.sourcePins);
-assert.ok(sources.traceHelper.includes("2026-10-17T02-01-05-994Z"));
+assert.ok(sources.traceHelper.includes(stamp));
 assert.ok(!sources.traceHelper.includes("2026-10-15T22-27-06-823Z"));
 const body = await read(terminal.sourceArchive.path);
 assert.equal(sha(body), terminal.sourceArchive.sha256);
@@ -46,7 +54,8 @@ const digest = createHash("sha256");
 for await (const chunk of createReadStream(original, { highWaterMark: 1048576 })) digest.update(chunk);
 const originalSha256 = digest.digest("hex");
 assert.equal(originalSha256, report.source.sha256);
-const base = "outputs/reports/2026-10-17T02-01-41-822Z-private-mpeg2-updated-chrome-full-native-100ms";
+const nativeStamp = idleMode ? "2026-10-17T02-17-00-017Z" : "2026-10-17T02-01-41-822Z";
+const base = `outputs/reports/${nativeStamp}-private-mpeg2-updated-chrome-full-native-100ms`;
 const checkpointPath = base + "-native-checkpoint.json", checkpoint = await read(checkpointPath);
 const parsed = JSON.parse(checkpoint); assert.deepEqual(parsed.native.identities, report.nativeMemory.identities);
 const compressed = gzipSync(checkpoint, { level: 9 }); assert.deepEqual(gunzipSync(compressed), checkpoint);
@@ -54,17 +63,19 @@ await writeFile(path.join(root, checkpointPath + ".gz"), compressed, { flag: "wx
 assert.equal(sha(gunzipSync(await read(checkpointPath + ".gz"))), sha(checkpoint));
 await rm(path.join(root, checkpointPath));
 const trace = await read(base + "-trace.zip");
-const ownFiles = ["scripts/analyze-original-startup.mjs", "scripts/lib/original-startup-observation.mjs", "tests/original-startup-observation.test.mjs"];
+const ownFiles = ["scripts/analyze-original-startup.mjs", "scripts/lib/original-startup-observation.mjs", "tests/original-startup-observation.test.mjs",
+  "scripts/lib/original-idle-observation.mjs", "tests/original-idle-observation.test.mjs"];
 const own = {};
 for (const file of ownFiles) { const bytes = await read(file); own[file] = { sha256: sha(bytes), preimage: bytes.toString("base64") }; }
 const result = { recordedAt: new Date().toISOString(), analysis,
   terminal: { path: terminalPath, sha256: sha(terminalBytes) }, sourceArchive: terminal.sourceArchive,
-  all771ExecutedCurrentPostPinsEqual: true, report: terminal.report, births,
+  sourceCount, allExecutedCurrentPostPinsEqual: true, report: terminal.report, births,
   original: { bytes: row.size, sha256: originalSha256 }, normalProductionRestored: true,
   checkpoint: { path: checkpointPath + ".gz", bytes: compressed.length, sha256: sha(compressed),
     restoredBytes: checkpoint.length, restoredSha256: sha(checkpoint), redundantRawRemovedAfterReplay: true },
   trace: { path: base + "-trace.zip", bytes: trace.length, sha256: sha(trace) }, ownSources: own,
-  nextAction: "Short original startup cancellation did not reproduce long-run excess. Isolate native-validation idle duration and successful save handoff retention before any unchanged full-file retry. This evidence does not resolve long-run memory or qualify a public profile." };
-const output = "evidence/2026-10-17-original-startup-independent-analysis.json";
+  nextAction: idleMode ? "Elapsed idle alone did not reproduce long-run excess. Isolate successful final-save handoff and native validation pressure before any unchanged full-file retry. No public/full-file acceptance."
+    : "Short original startup cancellation did not reproduce long-run excess. Isolate native-validation idle duration and successful save handoff retention before any unchanged full-file retry. This evidence does not resolve long-run memory or qualify a public profile." };
+const output = `evidence/2026-10-17-${kind}-independent-analysis.json`;
 await writeFile(path.join(root, output), JSON.stringify(result, null, 2) + "\n", { flag: "wx" });
 console.log(JSON.stringify({ output, peaks: analysis.runs.map(run => run.incrementalPrivateMiB), birthsChecked: births.length, originalSha256 }));

@@ -1,5 +1,49 @@
 # Remaining work audit
 
+## 2026-10-17 - Twenty-six-minute original idle control did not reproduce excess
+
+**Partially implemented; original long-run268.9609375MiB failure still unresolved.**
+Independent audit `evidence/2026-10-17-original-idle-independent-analysis.json`;
+terminal `evidence/2026-10-17T02-16-33-923Z-original-idle-terminal.json`. One new
+factor versus the previous original startup control: SAME replacement codec worker
+waited26minutes after normal cancellation before restarting. All original input,
+Chrome flags/full production app/cores/I/O, lower five-minute blank, same page,
+250MiB limit and cancellation guards unchanged. NO successful final save or native
+validation CPU/memory pressure simulated. No expensive unchanged full conversion.
+
+Actual idle1,560,000ms,137bounded UI/OS observations;14,307valid native idle samples,
+0unavailable, no worker lifecycle events inside the idle interval, no page reload,
+no forced GC, no larger baseline or omitted processes. Safety checks repeated before
+resume:7,938,736,128B free physical/12,093,313,024B free virtual >=2GiB each.
+Startup settlement312109ms; stable blank239,030,272B <= early243,355,648B; loaded
+idle306,638,848B. Actual finalized conversion phases (including cancellation):
+1)456,859,648B =>207.73828125MiB,101valid/0unavailable.
+2)485,765,120B =>235.3046875MiB,112valid/0unavailable AFTER26min idle.
+3)472,502,272B =>222.65625MiB,110valid/0unavailable.
+Finalized peaks match earlier run-loop snapshots. One unavailable native sample
+during BLANK startup remains null, not zero; no unavailable conversion/idle samples.
+Same bounded64KiB AVIO/fixed48MiB native memory/zero terminal queues/pending/scratch.
+Partial outputs4,619,030/4,901,945/4,901,945B all removed after normal cancellation.
+Completed conversions0, independent full validations0, no public/profile/speed pass.
+
+Elapsed idle ALONE after cancellation is not a sufficient reproduction in this
+run. Startup2 peak is27.56640625MiB above startup1 but still below250MiB; this
+does not establish an allocation cause or prove that idle can never contribute.
+Recovery remains36.535/37.566/39.988MiB above loaded idle. Next isolate SUCCESSFUL
+final-save handoff (not cancellation) under the actual full launcher, with a bounded
+complete fixture followed by unchanged original startup. Native validator pressure
+and long-conversion history remain separate untested factors. Do not repeat this
+unchanged26min control or make another unchanged three-hour attempt.
+
+Independent ALL774 executed/current/post source pins/archive replay; normal assets
+restored;24owned births absent/reused safely; all owned conversion/profile/candidate/
+wrapper/caller scratch gone. Original2,958,573,265B/fullSHA intact.8,543,826B report
+=>266,197B lossless gzip;37,452B checkpoint=>5,495B lossless gzip/rawremoved;
+41,949B trace retained. Redundant stale live receipt removed after terminal checks.
+Only two model-level status checks over the estimated~34min cycle, using ETA sleeps;
+native safety sampling remained automatic throughout.26focused tests PASS4991.4272ms;
+six-file zero-warning lint PASS. Goal and full repeatability remain incomplete.
+
 ## 2026-10-17 - Actual full-launch original startup: three cancellations below limit
 
 **Partially implemented; long-run repeatability remains unresolved.** New evidence

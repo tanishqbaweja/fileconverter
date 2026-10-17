@@ -1,5 +1,38 @@
 # Tested conversion ledger
 
+## 2026-10-17 - ORIGINAL startup after26min idle: negative reproduction
+
+Actual02:16:33.923Z terminal plus independent original-idle analysis. Headless actual
+full-test Chrome launch, same page/worker/original File/settings/32+16MiB kernels,
+full app/CSS/I/O, unchanged250MiB/formula. One added factor:26min waiting after
+normal cancellation, NOT after successful save; no native validator load simulated.
+Idle1,560,000ms/137bounded observations/14,307valid100ms native samples/0unavailable.
+Same worker remains throughout, no forced GC/navigation/baseline replacement.
+Resumed host passes2GiB checks with7,938,736,128B physical/12,093,313,024B virtual.
+
+Blank239,030,272B <= early243,355,648B; loaded306,638,848B. Finalized conversion
+peaks207.73828125/235.3046875/222.65625MiB,101/112/110valid samples/0unavailable;
+all finalized peaks match earlier run-loop snapshots. One unavailable BLANK-startup
+native sample stays null, not zero. Zero terminal queued/pending/scratch, bounded
+64KiB AVIO/fixed48MiB kernels. Partial outputs4,619,030/4,901,945/4,901,945B removed;
+all3normal cancellations,0completed/independently full-validated conversions.
+
+Idle alone did not reproduce268.9609375MiB long-run failure; peak after idle rose
+27.56640625MiB but stayed below250. This does not resolve allocation cause or
+exclude idle as a contributing factor with other conditions. Recovery retains
+36.535/37.566/39.988MiB above loaded idle. Next isolate successful save handoff
+using a bounded complete fixture under actual full launcher, then ORIGINAL startup;
+native validator pressure/long history remain untested. Do not rerun unchanged
+26min control/full conversion. No full-profile, speed, public, or goal acceptance.
+
+ALL774 executed/current/post source pins/archive replay;24owned births absent/reused
+safely, normal production restored, all owned conversion/profile/scratch gone,
+protected original2,958,573,265B/fullSHA unchanged.8,543,826B report=>266,197B gzip;
+37,452B checkpoint=>5,495B gzip/rawremoved after replay;41,949B trace retained.
+Stale duplicate live receipt removed after terminal verification. Two ETA-based
+model-level status checks over~34min, automatic native safety sampling unchanged.
+26focused tests PASS4991.4272ms; six-file zero-warning lint PASS.
+
 ## 2026-10-17 - Three bounded ORIGINAL startup controls; NOT full conversions
 
 Actual full-launch diagnostic02:01:05.994Z terminal; independent audit
