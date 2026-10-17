@@ -1,5 +1,34 @@
 # Tested conversion ledger
 
+## 2026-10-17 - First fully validated original-file run; repeatability memory failure
+
+Actual21:31:52.360Z terminal + independent recorded-timeline-full-terminal-analysis:
+Run1 real HEVC->MPEG2/MP4 output6,414,309,978B/SHA2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e,
+11,138,453.385ms (~3h05m38s).296160frames,1920x804/24fps, exact timestamp error
+max0.00031300000000555883s<=.001, copied audio hashes match, metadata/artwork/
+chapters/title/disclosure gates pass, full xerror decode succeeds, SSIM0.989565.
+Peak478,658,560 minus stable lower blank243,658,752 =224.11328125MiB;
+102,080 valid conversion samples/0unavailable. ONE independently validated run.
+
+Run2 SAME browser/page/default quality/heaps crossed250MiB at525,684,736B:
+268.9609375MiB.23 valid samples/0unavailable; cancelled within~1s, no second
+validated result and no Run3. Legacy completedRuns=2 counts attempted run rows,
+not accepted conversions. Repeatability/full-profile/public acceptance remains
+FALSE. AfterRun1 stable352,956,416 vs loaded315,670,528 retains35.55859375MiB.
+Renderer38896 contributes40,722,432B of adjacent41,050,112B boundary increase;
+exact allocation source unknown. Dump AFTER cancellation is not peak object proof.
+
+All768 pre/current/post sources replayed; every actual output timestamp independently
+replayed from7,159,363B captured stdout, empty stderr.798,119B raw timestamp gzip
+deleted only after complete replay; compact receipt/hashes remain.20,022,412B raw
+report retained as663,048B lossless gzip; checkpoint compacted/rawremoved. All
+owned conversions/profiles/runtimes gone, protected original full SHA unchanged,
+normal production restored, recorded births absent. Legacy22:27 trace filename is
+bound to actual current01:09 session/hash; unique scoping must be fixed before
+future failures.5focused tests PASS1,335.0329ms;3-file zero-warning lint PASS.
+Next bounded repeat/startup allocation controls, not an unchanged3h full rerun.
+No speed-win or overall-completion claim.
+
 ## 2026-10-17 - Recorded-timeline actual full Run1 live, not accepted
 
 21:41:53Z checkpoint current; exact driver35584/parent34096/

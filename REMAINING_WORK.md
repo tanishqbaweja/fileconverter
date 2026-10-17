@@ -1,5 +1,49 @@
 # Remaining work audit
 
+## 2026-10-17 - FIRST full fidelity PASS; second-repeat startup memory FAIL
+
+**Partially implemented;1 independently validated run, three-repeat gate FAILED**.
+Terminal `evidence/2026-10-16T21-31-52-360Z-recorded-timeline-full-terminal.json`;
+independent audit `evidence/2026-10-16T21-31-52-360Z-recorded-timeline-full-terminal-analysis.json`.
+Run1 genuine original HEVC->MPEG2/MP4 saved6,414,309,978B in11,138,453.385ms
+(~3h05m38s), SHA2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e.
+ALL296160 frames/packets independently validated; maximum source/output timestamp
+error0.00031300000000555883s <=.001; copied audio payloads match, full xerror
+decode succeeds, full SSIM0.989565>=.98. Original1920x804/24fps/metadata/titles/
+AAC5.1/artwork/chapters/color and disclosed subtitle exclusion preserved as tested.
+The output count discrepancy did NOT recur, but historical cause is still unproven.
+
+Run1 complete-tree peak478,658,560B minus same lower stable blank243,658,752B
+=224.11328125MiB;102,080 valid conversion samples/0unavailable. Run2 started in
+the SAME browser/page with unchanged settings and reached525,684,736B =>268.9609375
+MiB.23 valid conversion samples/0unavailable; normal automatic cancellation within
+~1s. Run2 not completed/validated, Run3 not started. Raw terminal's completedRuns=2
+is a legacy count of run RECORDS, not two completed/accepted conversions. NO
+repeatability/full-profile/public acceptance. Do not hide this failure by a new
+browser per repeat, larger baseline, omitted GPU/process, relaxed250MiB or quality.
+
+Post-Run1 stable private352,956,416B vs converter-loaded315,670,528B retains
+35.55859375MiB above loaded idle. Native failure boundary attributes40,722,432B of
+41,050,112B adjacent-sample tree increase to renderer38896; type is joined to its
+exact birth. Actual allocation/object/callsite remains UNPROVEN. Detailed dump
+was after production cancellation/codec-worker closure and is not peak allocation
+proof. Next: inspect retained renderer/native buffers/lifecycle and use short,
+bounded repeat/startup controls before another multi-hour original-file retry.
+
+Independent audit replays all768 executed/current/post pins and every output
+timestamp from retained7,159,363B stdout; empty native stderr,296160timestamps,
+same<=1ms result. Raw798,119B timestamp gzip removed after every-field verification;
+aggregate native receipt and hashes retained.20,022,412B report losslessly compacted
+to663,048B. Checkpoint compacted; redundant raw removed. All owned profile/stage/
+output/candidate/wrapper/outercaller/supervisor scratch absent; all recorded births
+absent, original full SHA unchanged, normal production restored, no unrelated kills.
+Failure trace retains a legacy parent22:27 filename but its hash/current01:09
+session are explicitly bound in audit; fix trace filename scoping before another
+failure capture to prevent collisions. Compact native/HTML/CSV/trace proof retained.
+5 focused terminal/preparation/reference tests PASS1,335.0329ms;3-file zero-warning
+lint PASS. No controlled conversion-speed win claimed; entire original goal remains
+incomplete, route not promoted.
+
 ## 2026-10-17 - Changed full Run1 genuinely encoding;768 actual sources bound
 
 **Partially implemented / running**. At21:41:53Z supervisor27884/child34096
