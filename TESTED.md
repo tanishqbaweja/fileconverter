@@ -1,5 +1,46 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Three complete cold/warm outputs correct; post-write-fault recovery over budget
+
+Independent `evidence/2026-10-17-warm-cache-independent-analysis.json` binds actual
+04:17:55.073Z terminal/report/build/all784 executed-current-post source fingerprints.
+04:17:13.211Z preparation executed0conversions/cleaned. Same exact compiled cache
+app+codec+saver/CSS/native assets, lower5min blank/full Chrome155.0.8059.80 launcher,
+unchanged codec/defaults/250MiB/production I/O. Original validator assertions and
+fault bodies preserved exactly apart from same-page history/native disk picker.
+No original short-start loop rerun; test requests6SMALL completions,0ORIGINAL.
+
+Actual cold+warm+warm outputs independently PASS:3x2,245,626B/SHA8b0d4370...,96frames,
+1920x804,SSIM0.983095,all475packet/decoded-video/MP4box proofs identical to prior
+fixture; original timing/audio/metadata/title/artwork/chapters/full-decode gates.
+Elapsed4137.225/3170.975/2950.370ms:one sequence, NOT speed-gain evidence. Then real
+injected destination write fault correctly errors/zero queues/no nonempty partial
+output/production worker replacement. FOLLOWING recovery encode fails unchanged
+memory guard at251.01171875MiB(native506,904,576B minus lowerblank243,699,712B).
+Higher CIM peak507,904,000B=>251.96484375MiB also retained. Final combined phase
+626valid/0unavailable. Input2,162,688/output748,166B,~1191ms,48MiB Wasm,64KiB reads/
+writes/queue,onepending; successful final save<=512KiB/onepending. Native automatic
+production cancellation and oldworker-close observed. Exactly3small completions,
+2warm; NOT6, zero validated adverse recovery, later cancel/read-fault cases not
+reached, zero completed ORIGINAL conversions. Legacy failed-original-startup-
+diagnostic status is inherited naming, not evidence of an original attempt.
+
+Cache logs2coldcompile/8reuse/no recompilation; cache alone insufficient for gate.
+Renderer40724 birth04:18:59.1635550Z adds28,602,368B of adjacent108ms28,643,328B tree
+increase. Cause UNKNOWN; post-cancel overlapping allocator dump is not peak-object
+proof. Do not repeat unchanged or start full original stress; next pre/post worker/
+native/renderer retention attribution across successful save and write-error recovery.
+No public promotion, raised baseline/limit, process omission, reduced quality or GC.
+
+App+worker overlays/actual validation module reconstructed exactly; all784pins replay,
+26owned births absent/reused safely; all owned media/profile/scratch removed, normal
+production restored, original size/fullSHA unchanged.4,209,491B report=>324,881B gzip,
+31,034B checkpoint=>4,525B gzip/rawremoved;313,272B unique allocation trace retained,
+plus browser trace/CSV/HTML. Headless/noDocker/no unrelated kills. Broader focused
+44tests PASS11569.2481ms, including full-project TypeScript overlay/source replay/
+strict validators/adverse handoff checks; six-new-file zero-warning lint and git
+diff check PASS. Goal remains active.
+
 ## 2026-10-17 - Bounded compiled-code reuse passes three short warm original starts
 
 Private candidate only; independent audit

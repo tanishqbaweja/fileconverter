@@ -1,5 +1,62 @@
 # Remaining work audit
 
+## 2026-10-17 - Warm complete outputs pass; recovery after write failure still exceeds memory
+
+**Partially implemented; compiled cache ALONE is insufficient, no full-stress launch.**
+Previous goal turn was concrete progress: implemented/private-tested bounded module
+reuse, all3original short starts fit, committed+pushed e66d85f. This changed cycle
+tests missing COMPLETE warm outputs and adverse recovery, not an unchanged retry.
+Independent `evidence/2026-10-17-warm-cache-independent-analysis.json` binds actual
+04:17:55.073Z terminal/build/report and ALL784 executed/current/post source pins;
+04:17:13.211Z preparation executed0conversions, cleaned. New wrapper adds no engine,
+codec setting, buffer, quality, sampling or public source change. Compiled app+
+codec+saver/CSS/native assets match previous candidate exactly. Every original
+validator assertion is retained; all3original fault-test bodies reverse exactly
+apart from native disk-file picker and same-page history URL adapters. A bounded
+per-job telemetry reset avoids conflating prior job samples. Same original96-frame
+HEVC fixture plus original12-second cancellation fixture, locally generated only.
+No original startup loop is rerun; requested ORIGINAL completions0, smalloutputs6.
+
+Actual same-page cold+warm+warm conversions COMPLETE and independently validate:
+3outputs each2,245,626B/SHA8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c,
+96frames/1920x804/SSIM0.983095. All three475packet hashes/MP4 boxes/decoded video
+hash proofs match the prior exact output; timing, decoded/copied audio, artwork,
+chapter, titles, all compatible container tags and full decode assertions unchanged.
+Elapsed4137.225/3170.975/2950.370ms, one sequence, NOT a causal speed benchmark/gain.
+Injected final-destination write failure correctly reports bounded-write rejection,
+zero pending/queued bytes, no nonempty partial file, retires saver and replaces codec.
+
+The following real recovery conversion FAILS the unchanged all-process250MiB gate.
+Stable lower blank243,699,712B, loaded311,062,528B. Native firstbreach506,904,576B
+=>251.01171875MiB at~1191ms,input2,162,688/output748,166B. Slower CIM sample also
+captures507,904,000B=>251.96484375MiB; retain the HIGHER observed peak, not only the
+guard value. Final combined conversion/validation phase626valid/0unavailable.
+Automatic normal production cancellation/worker close; no forcedGC/test termination.
+48MiB Wasm,64KiB reads/writes/queue,onepending; independent final save512KiB/onepending.
+Exactly3completed SMALL outputs (2warm), NOT6; zero validated adverse recovery,
+cancellation-fault/input-read-fault controls never reached; zero original completion.
+Legacy report status says failed-original-startup-diagnostic, but runs[] is empty;
+it does NOT indicate an original conversion happened. Cache telemetry2coldcompile/
+8reuse, no recompilation. Retaining compiled modules is not a sufficient memory fix.
+
+Adjacent108ms tree rise28,643,328B; renderer40724/birth04:18:59.1635550Z contributes
+28,602,368B. Exact allocation/object/callsite UNKNOWN. Post-production-cancel dump
+contains overlapping V8/malloc/cc/Blink values, not peak proof; no allocator totals
+summed or cause inferred. NEXT diagnose pre/post successful-save/error worker/native/
+renderer retention on this now reproducible sequence before a specific fix. Do not
+repeat unchanged, promote private profile, loosen memory, or launch multi-hour stress.
+
+Both app/worker overlays and actual generated validation module reconstruct exactly;
+ALL784 current/pre/post pins checked,26owned births absent/reused safely. All owned
+output/fixture/profile/candidate/wrapper/caller scratch removed, normal build restored,
+protected original2,958,573,265B/fullSHA31f36695... unchanged. Report4,209,491B=>324,881B
+lossless gzip; checkpoint31,034B=>4,525B gzip/rawdeleted after replay;313,272B unique
+post-cancel allocation trace retained with browser trace/CSV/HTML. Headless only,
+no Docker/unrelated process kills; headed/manual remains unverified. Broader focused
+44tests PASS11569.2481ms, including full-project TypeScript overlay checks, source
+replay, strict validators and adverse handoff guards; six-new-file zero-warning
+lint and git diff check PASS. Full original goal remains incomplete/active.
+
 ## 2026-10-17 - Two compiled modules reused: bounded warm-start controls now fit
 
 **Partially implemented; promising PRIVATE candidate, not a public/full-file pass.**
