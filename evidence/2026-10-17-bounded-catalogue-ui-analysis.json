@@ -1,0 +1,135 @@
+{
+  "recordedAt": "2026-10-17T17:24:39.317Z",
+  "status": "private-catalogue-ui-qualified-not-conversion-memory-qualified",
+  "reports": [
+    {
+      "path": "evidence/2026-10-17T17-21-21-170Z-bounded-catalogue-ui.json.gz",
+      "bytes": 220212,
+      "sha256": "d3a61a304e3b4f3321b91bc470f067f7eb775987c20d187fcb0404cbd207370f",
+      "restoredBytes": 1052812,
+      "restoredSha256": "935db2bb70a5b04fa270ee16b65cabb2f5d2cc8310de4b7d69f8f8c0e35b544e",
+      "cases": [
+        {
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "pages": 17,
+          "allCardsExact": true,
+          "allIdsExact": true,
+          "maxMounted": 24,
+          "finalMounted": 24,
+          "keyboardNavigation": true,
+          "searchAndEmptyAndReset": true,
+          "noHorizontalOverflow": true
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "pages": 17,
+          "allCardsExact": true,
+          "allIdsExact": true,
+          "maxMounted": 24,
+          "finalMounted": 24,
+          "keyboardNavigation": true,
+          "searchAndEmptyAndReset": true,
+          "noHorizontalOverflow": true
+        }
+      ],
+      "registryCount": 405,
+      "referenceCardsSha256": null,
+      "registryIdsSha256": null,
+      "ownedBirthsChecked": 11,
+      "screenshots": [
+        {
+          "path": "output/playwright/2026-10-17T17-21-21-170Z-bounded-catalogue-1280.png",
+          "bytes": 161201,
+          "sha256": "38659bad4819b602de41e7aa540f23cf976109c134c95589ecdb9976545525c7"
+        },
+        {
+          "path": "output/playwright/2026-10-17T17-21-21-170Z-bounded-catalogue-390.png",
+          "bytes": 172639,
+          "sha256": "c359c9c4e1673453aa5a3b1499f4e167f85f49a261126bfa119b3abaf304a8d7"
+        }
+      ]
+    },
+    {
+      "path": "evidence/2026-10-17T17-22-49-473Z-bounded-catalogue-ui.json.gz",
+      "bytes": 220317,
+      "sha256": "c42992db525dd3f79237de3814373507825f13fa3923c63cb88e15c5cd776805",
+      "restoredBytes": 1053072,
+      "restoredSha256": "d9dc66bd206356156046234e804bd1e59d2a48cf987394d2316b59e0d6f20723",
+      "cases": [
+        {
+          "viewport": {
+            "width": 1280,
+            "height": 900
+          },
+          "pages": 17,
+          "allCardsExact": true,
+          "allIdsExact": true,
+          "maxMounted": 24,
+          "finalMounted": 24,
+          "keyboardNavigation": true,
+          "searchAndEmptyAndReset": true,
+          "noHorizontalOverflow": true
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "pages": 17,
+          "allCardsExact": true,
+          "allIdsExact": true,
+          "maxMounted": 24,
+          "finalMounted": 24,
+          "keyboardNavigation": true,
+          "searchAndEmptyAndReset": true,
+          "noHorizontalOverflow": true
+        }
+      ],
+      "registryCount": 405,
+      "referenceCardsSha256": "98ea6da45e457c1067dc6edbffd97443b9dea1ee706fe9ecce20b0938e15cf40",
+      "registryIdsSha256": "e978d6819e6b1dfaa3d71339f60919b3174d7e3fc2e214eed56d72efa1a1b996",
+      "ownedBirthsChecked": 11,
+      "screenshots": [
+        {
+          "path": "output/playwright/2026-10-17T17-22-49-473Z-bounded-catalogue-1280.png",
+          "bytes": 161201,
+          "sha256": "38659bad4819b602de41e7aa540f23cf976109c134c95589ecdb9976545525c7"
+        },
+        {
+          "path": "output/playwright/2026-10-17T17-22-49-473Z-bounded-catalogue-390.png",
+          "bytes": 172639,
+          "sha256": "c359c9c4e1673453aa5a3b1499f4e167f85f49a261126bfa119b3abaf304a8d7"
+        }
+      ]
+    }
+  ],
+  "deduplicated": [
+    {
+      "removed": "output/playwright/2026-10-17T17-21-21-170Z-bounded-catalogue-1280.png",
+      "identicalRetained": "output/playwright/2026-10-17T17-22-49-473Z-bounded-catalogue-1280.png",
+      "sha256": "38659bad4819b602de41e7aa540f23cf976109c134c95589ecdb9976545525c7"
+    },
+    {
+      "removed": "output/playwright/2026-10-17T17-21-21-170Z-bounded-catalogue-390.png",
+      "identicalRetained": "output/playwright/2026-10-17T17-22-49-473Z-bounded-catalogue-390.png",
+      "sha256": "c359c9c4e1673453aa5a3b1499f4e167f85f49a261126bfa119b3abaf304a8d7"
+    }
+  ],
+  "removedLive": [
+    "evidence/2026-10-17T17-00-38-642Z-memoized-cache-control-live.json",
+    "evidence/2026-10-17T17-02-11-744Z-memoized-cache-control-live.json"
+  ],
+  "finalScreenshotsVisuallyReviewed": true,
+  "all405RoutesRetained": true,
+  "maximumMountedCards": 24,
+  "publicPromotion": false,
+  "conversionMemoryAcceptance": false,
+  "headedCoverage": false,
+  "preliminaryRunPredatesUnusedImportRemoval": true
+}

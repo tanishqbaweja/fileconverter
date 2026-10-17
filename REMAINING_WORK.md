@@ -1,5 +1,103 @@
 # Remaining work audit
 
+## 2026-10-17 - Catalogue actual conversion qualification fails; no promotion
+
+**Partially implemented; goal remains incomplete.** Corrected17:37:32.521Z run
+actually verifies all405 original cards and registry IDs across17pages, maximum24
+mounted after visiting every page, empty search/reset and no changed conversion
+controls. Independent audit:
+`evidence/2026-10-17-bounded-catalogue-independent-analysis.json` reconstructs app,
+worker and validation module; all803 executed/current/post pins equal at audit.
+Exact codec/save workers, native cores, quality, sampling, lower blank and original
+250MiB process-tree formula unchanged. Catalogue CSS/UI is intentionally different;
+build truthfully records originalJsxAndControlsPreserved=false while conversion
+controls/card content remain preserved.
+
+First conversion auto-cancels at253.58203125MiB (blank244002816B, loaded341872640B,
+peak509902848B),35valid/0unavailable conversion samples. Input2162688B, output0,
+elapsed1342.895ms, fixed50331648B Wasm,65536B max read,zero pending/queued output.
+ZERO complete small outputs; faults/recoveries and originals not reached. No speed,
+scaling, adverse-recovery or public acceptance. Candidate remains private; do not
+rerun unchanged or start another multi-hour original test.
+
+Per-process summary `evidence/2026-10-17-bounded-catalogue-process-summary.json`
+binds native identities to CIM roles by PID AND birth. At breach GPU private is
+164896768B; renderer38552 private204349440B, adjacent renderer delta18137088B.
+Loaded-idle GPU range144924672–153030656B (8CIM samples) and renderer range
+56553472–62877696B. This is observed process attribution, NOT allocation-callsite
+proof or a causal comparison with earlier runs. Next: bounded UI-only GPU/renderer
+checkpoints around catalogue traversal before another optimization/conversion run.
+No forced GC, disabled GPU, larger denominator or smaller media substitution.
+
+26 owned browser births independently absent, all disposable profile/fixture/
+runtime directories gone, normal app/CSS restored and test.mkv full SHA unchanged.
+Checkpoint identity-verified, losslessly compressed, redundant raw/live receipts
+removed; failure traces retained inside repository. Final focused regression:
+73/73 PASS in13826.9934ms, including full-project TypeScript with reversible worker
+overlay; all21 new source/test files lint with0warnings. Headed/manual remains
+unverified, per headless-only user constraint.
+
+## 2026-10-17 - Bounded catalogue implemented privately; all405 routes UI-qualified
+
+**Partially implemented; not promoted or memory-qualified.** New searchable React
+catalogue mounts at most24 cards; no route removed. Central registry, conversion
+selector, codec settings and production public sources unchanged. Both1280x900 and
+390x844 headless Chrome tests traverse all17pages, compare all405 IDs and exact card
+HTML against original production JSX/formatter, use keyboard pagination and test
+search/empty/reset/final-route accessibility. No horizontal overflow; screenshots
+visually reviewed. Independent compact record:
+`evidence/2026-10-17-bounded-catalogue-ui-analysis.json`; final lossless report
+`evidence/2026-10-17T17-22-49-473Z-bounded-catalogue-ui.json.gz`.
+Each UI run verifies11 sampled owned births absent. Two redundant identical PNGs
+and raw report copies removed after byte-verified compression/deduplication; all
+remaining evidence stays inside repository. UI coverage is component-only, NOT
+conversion memory, headed/manual or speed acceptance.
+
+The first full-production qualification17:26:47.168Z stopped BEFORE any conversion:
+initial SSR hydration adds72 literal empty React comments to the first24 cards.
+Independent trace replay captures ALL405 real production cards and proves exact
+original HTML hash after removing ONLY `<!-- -->`; all route IDs already matched.
+`evidence/2026-10-17-bounded-catalogue-hydration-analysis.json` checks all802 executed/
+current/post pins at audit time,24 owned births absent, scratch gone, normal build
+restored and protected full SHA unchanged. This is a harness mismatch, not a codec
+or memory failure. Preserve the pre-correction source archive; current comparison
+now ignores only those exact inert separators, with regressions refusing changed
+text, elements, attributes, spacing or nonempty comments. Conversion validators,
+six complete outputs/three adverse recoveries, lower blank/all-process250MiB and
+sampling remain unchanged. 68 regression tests including full-project TypeScript
+passed; subsequent7 focused catalogue/control tests and lint pass. Next action is
+ONE corrected real-production six-output memory qualification, visiting every page
+before loaded-idle measurement; never repeat the pre-correction harness unchanged.
+
+## 2026-10-17 - Combined memoization/cache rejected; catalogue investigation next
+
+**Partially implemented; goal not achieved.** Previous goal cycle made progress:
+the distinct compiled-module-cache plus JSX-preserving display-tree memoization
+candidate was actually tested. Current independent audit is
+`evidence/2026-10-17-memoized-cache-independent-analysis.json`. All791 executed,
+current and post-run source pins match; app/worker overlays and validator module
+reconstruct exactly. The preparation archive predates removal of an unused import;
+its preimage is retained, not misrepresented as the executed source.
+
+Actual17:02:11.744Z run: three complete HEVC-to-MPEG-2 fixture outputs, each
+2,245,626bytes,96frames,SSIM0.983095, identical SHA256
+8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c.
+Write fault handled correctly, but recovery exceeded the unchanged all-Chromium
+250MiB limit at252.68359375MiB (blank241643520B, peak506601472B),629 valid/0
+unavailable conversion samples. Adjacent renderer growth48,455,680B is observed;
+allocation callsite remains unproven. Fixed48MiB Wasm,64KiB AVIO, one pending write,
+2 compiled/8 reused modules remain unchanged. Six requested outputs NOT achieved;
+no completed adverse recovery, later cancellation/read fault not reached, zero
+original-file conversions. Times3943.020/3296.690/3223.800ms are not matched speed
+evidence. No public promotion; no unchanged full-file retry.
+
+Audit independently verified all26 owned process births absent, scratch removed,
+normal app/CSS restored and protected test.mkv SHA256 unchanged. Raw checkpoint
+losslessly compressed after identity verification; disposable media already gone.
+10 focused tests pass. Next concrete target: bound catalogue DOM with search and
+pagination while proving access to EVERY registry route and retaining exact card
+information, converter controls/settings and independent memory acceptance.
+
 ## 2026-10-17 - Rendering candidates screened; visually exact card boundary still fails recovery
 
 **Partially implemented; no rendering optimization retained as the memory fix.**

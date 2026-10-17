@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "status": "finished",
+  "updatedAt": "2026-10-17T17:44:28.223Z",
+  "driverIdentity": {
+    "pid": 39740,
+    "parentPid": 8884,
+    "createdAt": "2026-10-17T17:38:03.2792640Z"
+  },
+  "wrapperDirectory": "H:\\Github Repositories\\fileconverter\\work\\recorded-timeline-full-wrapper-4YiqSB",
+  "candidateDirectory": "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-media-pagSsd",
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-full-runtime-6PXL0r",
+  "launches": [
+    {
+      "role": "production-server",
+      "identity": {
+        "pid": 29328,
+        "parentPid": 39740,
+        "createdAt": "2026-10-17T17:38:28.9191110Z"
+      }
+    },
+    {
+      "role": "headless-chrome-root",
+      "identity": {
+        "pid": 38760,
+        "parentPid": 39740,
+        "createdAt": "2026-10-17T17:38:32.5909850Z"
+      }
+    },
+    {
+      "role": "native-memory-observer",
+      "identity": {
+        "pid": 36364,
+        "parentPid": 39740,
+        "createdAt": "2026-10-17T17:38:33.7798160Z"
+      }
+    }
+  ],
+  "conversionAcceptance": false
+}

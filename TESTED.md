@@ -1,5 +1,61 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Corrected catalogue production run: first conversion over budget
+
+17:37:32.521Z actual Chrome production qualification passes ALL405 original cards,
+17pages/24maximum mounted/search-empty-reset; ignores only72 inert SSR separators
+where present. Actual app324962B/SHA6b4b7d60faad1b9051b05acefdbb7a6ea2933646e13a79d1986c3b71f19166e7.
+Independent evidence/2026-10-17-bounded-catalogue-independent-analysis.json verifies
+803 executed/current/post source pins, reconstructed overlays/validator, unchanged
+worker/native/quality/memory rules and complete process-tree peak253.58203125MiB.
+Blank244002816B, loaded341872640B, peak509902848B;35valid/0unavailable conversion
+samples. Automatic cancellation at input2162688B/output0/~1342.895ms;48MiB Wasm,
+64KiB read,0pending/queued output. ZERO validated outputs; adverse cases and originals
+not reached. No conversion, memory, speed or public pass. Keep private; no unchanged
+rerun. Process summary binds GPU/renderer roles by PID+birth, not callsite proof.
+26 owned births absent; profiles/fixtures/runtime gone, production restored,
+original full SHA intact, checkpoint losslessly compacted, raw/live duplicates
+removed. Final73/73 focused tests PASS13826.9934ms incl TypeScript;21new files lint
+0warnings. Next: UI-only allocation checkpoints around catalogue traversal, not a
+new speculative CSS/codec variant or multi-hour source rerun.
+
+## 2026-10-17 - Private bounded catalogue UI passes; production hydration gate corrected
+
+405/405 routes,17pages,24 maximum/final mounted cards, exact original card contents
+and ordered IDs at1280x900 and390x844 in actual headless Chrome. Keyboard/search/
+empty/reset/final-route checks and no-overflow pass; screenshots reviewed. Final
+component-only proof: evidence/2026-10-17T17-22-49-473Z-bounded-catalogue-ui.json.gz;
+compact summary/deduplication: evidence/2026-10-17-bounded-catalogue-ui-analysis.json.
+11 owned sampled births absent per run; profiles gone; no conversions here.
+
+First real-production qualification17:26:47.168Z failed BEFORE conversion at exact
+card HTML comparison. Trace replay proves72 SSR empty-comment separators in first
+24cards explain ENTIRE mismatch: ALL405 normalized cards/IDs exact. Audit:
+evidence/2026-10-17-bounded-catalogue-hydration-analysis.json (802 pins equal at audit,
+24 owned births absent, scratch gone, normal build restored, original SHA intact).
+No media/memory result claimed. Correct comparison removes ONLY literal `<!-- -->`,
+not text/whitespace/attributes/other comments; regression rejects those changes.
+68 focused regressions incl TypeScript pass, then7 catalogue/control tests and lint
+pass. Next: corrected production6output/adverse recovery with original250MiB gate;
+catalogue candidate remains private. No matched speed gain or public acceptance.
+
+## 2026-10-17 - Combined compiled cache + display memoization: rejected
+
+Independent `evidence/2026-10-17-memoized-cache-independent-analysis.json`:
+791 executed/current/post pins equal, overlays/validation module reconstructed,
+26 owned births absent, normal production restored, original full SHA unchanged.
+Three actual complete 96-frame1920x804 HEVC-to-MPEG-2 browser outputs independently
+validated, each2245626B/SHA8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c,
+SSIM.983095. Write failure passed; recovery FAILED252.68359375MiB all-tree private
+increment (629valid/0unavailable; blank241643520B/peak506601472B). No smaller metric
+substituted. First adjacent renderer delta48455680B; allocation cause unproven.
+2compile/8reuse,48MiB Wasm,64KiB AVIO,one pending unchanged. 3/6 required small
+outputs; no complete adverse recovery, later fault cases untested,0 original runs.
+3943.020/3296.690/3223.800ms not causal speed proof. 10 focused tests pass. Candidate
+not promoted; DO NOT retry unchanged. Prep17:00:38.642Z predates unused-import lint
+fix; actual17:02:11.744Z archive is authoritative. Checkpoint compacted losslessly.
+Next: bounded searchable catalogue preserving all routes, not another CSS tweak.
+
 ## 2026-10-17 - Card layout boundary visually exact but NOT a recovery memory fix
 
 Independent paint-boundary analysis binds actual16:43:32.372Z terminal/build/report/

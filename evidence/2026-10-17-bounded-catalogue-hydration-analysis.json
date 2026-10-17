@@ -1,0 +1,344 @@
+{
+  "recordedAt": "2026-10-17T17:36:18.271Z",
+  "status": "preconversion-check-failure-attributed-to-empty-react-hydration-comments",
+  "terminal": {
+    "path": "evidence/2026-10-17T17-26-47-168Z-bounded-catalogue-control-terminal.json",
+    "sha256": "57f54e785661e6358f8ae592d5070c15ddacaf503092765dab7007b258d1648e"
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-17T17-26-47-168Z-recorded-timeline-full-sources.json.gz",
+    "bytes": 254295,
+    "sha256": "615d78d6fb1413a7e3772f003dc263b50148fd9e6cc68b726d6e43323c6454e7",
+    "restoredBytes": 972465,
+    "restoredSha256": "d98e1a42a1c24e3c2a3abd1527e7d37ed6a0490718fdb0a89bbfb6a63a1ca5e0",
+    "sourceCount": 802
+  },
+  "all802ExecutedCurrentPostPinsEqual": true,
+  "trace": {
+    "path": "outputs\\reports\\2026-10-17T17-27-16-285Z-private-mpeg2-updated-chrome-full-native-100ms-trace.zip",
+    "sha256": "28d11c51522676a7587a242eeb2eb7e5dc4b3a30f68e29d676608426df45a334"
+  },
+  "capturedCards": 405,
+  "capturedIdsSha256": "e978d6819e6b1dfaa3d71339f60919b3174d7e3fc2e214eed56d72efa1a1b996",
+  "originalHtmlSha256": "ebceb6d67d2a64a259efcf73cea899aa8bb2dda44c51de85613e22b718c24794",
+  "emptyReactSeparatorCount": 72,
+  "cardsWithEmptySeparators": 24,
+  "exactReferenceHtmlAfterRemovingOnlyLiteralEmptyComments": true,
+  "normalizedHtmlSha256": "98ea6da45e457c1067dc6edbffd97443b9dea1ee706fe9ecce20b0938e15cf40",
+  "conversionsStarted": 0,
+  "memoryAcceptance": false,
+  "publicAcceptance": false,
+  "directoriesAbsent": [
+    "H:\\Github Repositories\\fileconverter\\work\\recorded-timeline-full-wrapper-aQ7ZiH",
+    "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-media-5DRBAf",
+    "H:\\Github Repositories\\fileconverter\\work\\bounded-catalogue-caller-6K0Gxh",
+    "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-full-runtime-tHLNHb",
+    "H:\\Github Repositories\\fileconverter\\work\\completed-save-fixture-Hyy1eC"
+  ],
+  "births": [
+    {
+      "identity": {
+        "pid": 36368,
+        "parentPid": 39748,
+        "createdAt": "2026-10-17T17:27:15.1706610Z"
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 27576,
+        "parentPid": 36368,
+        "createdAt": "2026-10-17T17:27:38.9432930Z"
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 24688,
+        "parentPid": 36368,
+        "createdAt": "2026-10-17T17:27:41.6860070Z"
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 9808,
+        "parentPid": 36368,
+        "createdAt": "2026-10-17T17:27:43.0554430Z"
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 7268,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:27:41.8885181Z",
+        "creationFileTime": "134367316618885181",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 11572,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:27:41.7095764Z",
+        "creationFileTime": "134367316617095764",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 24168,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:27:42.1357812Z",
+        "creationFileTime": "134367316621357812",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 24688,
+        "parentPid": 36368,
+        "createdAt": "2026-10-17T17:27:41.6860078Z",
+        "creationFileTime": "134367316616860078",
+        "executableName": "chrome.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 29500,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:27:42.1567819Z",
+        "creationFileTime": "134367316621567819",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 31052,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:27:41.8947102Z",
+        "creationFileTime": "134367316618947102",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 31496,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:27:42.0125141Z",
+        "creationFileTime": "134367316620125141",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 31852,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:27:43.6011651Z",
+        "creationFileTime": "134367316636011651",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 33964,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:27:42.1504571Z",
+        "creationFileTime": "134367316621504571",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 35188,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:27:42.1449310Z",
+        "creationFileTime": "134367316621449310",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 40772,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:27:44.8408187Z",
+        "creationFileTime": "134367316648408187",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 40648,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:27:44.9156952Z",
+        "creationFileTime": "134367316649156952",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 31996,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:28:01.2654777Z",
+        "creationFileTime": "134367316812654777",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 6828,
+        "parentPid": 31996,
+        "createdAt": "2026-10-17T17:28:01.3131528Z",
+        "creationFileTime": "134367316813131528",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 37420,
+        "parentPid": 31996,
+        "createdAt": "2026-10-17T17:28:01.2901588Z",
+        "creationFileTime": "134367316812901588",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 38220,
+        "parentPid": 6828,
+        "createdAt": "2026-10-17T17:28:01.3506544Z",
+        "creationFileTime": "134367316813506544",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 32884,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:28:11.9100749Z",
+        "creationFileTime": "134367316919100749",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 36508,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:29:41.9234378Z",
+        "creationFileTime": "134367317819234378",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 24136,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:30:41.9111941Z",
+        "creationFileTime": "134367318419111941",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 38464,
+        "parentPid": 24688,
+        "createdAt": "2026-10-17T17:33:00.7362332Z",
+        "creationFileTime": "134367319807362332",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    }
+  ],
+  "original": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "checkpoint": {
+    "path": "outputs\\reports\\2026-10-17T17-27-16-285Z-private-mpeg2-updated-chrome-full-native-100ms-native-checkpoint.json.gz",
+    "bytes": 3501,
+    "sha256": "d23459dfa5c3450418cc4bda7fd9ea173d48c222e9c96e16f965239c72b86e35",
+    "restoredBytes": 25954,
+    "restoredSha256": "78c1f21707d0e049c35e11be572890677a7092b2d004a42b015e26c3ac5e3c97"
+  },
+  "nextAction": "Compare exact card HTML after removing ONLY literal React empty-comment separators. Retain all text/elements/attributes/route order. Add a regression for production hydration; rerun the unchanged conversion memory gate only after this adapter correction."
+}

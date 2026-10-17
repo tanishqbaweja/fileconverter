@@ -1,0 +1,434 @@
+{
+  "recordedAt": "2026-10-17T17:48:04.128Z",
+  "terminalPath": "evidence/2026-10-17T17-37-32-521Z-bounded-catalogue-control-terminal.json",
+  "report": "failed-original-startup-diagnostic",
+  "processes": [
+    {
+      "identity": {
+        "pid": 23292,
+        "parentPid": 38760,
+        "createdAt": "2026-10-17T17:38:33.0319196Z",
+        "creationFileTime": "134367323130319196",
+        "executableName": "chrome.exe",
+        "privateBytes": 33001472,
+        "rssBytes": 77455360,
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "type": "renderer",
+      "phaseRanges": [
+        {
+          "phase": "blank-baseline",
+          "validCimSamples": 5,
+          "minimumPrivateBytes": 32538624,
+          "maximumPrivateBytes": 32538624
+        },
+        {
+          "phase": "blank-startup-settle",
+          "validCimSamples": 86,
+          "minimumPrivateBytes": 32407552,
+          "maximumPrivateBytes": 42876928
+        },
+        {
+          "phase": "loaded-navigation",
+          "validCimSamples": 0,
+          "minimumPrivateBytes": null,
+          "maximumPrivateBytes": null
+        },
+        {
+          "phase": "loaded-idle",
+          "validCimSamples": 8,
+          "minimumPrivateBytes": 33001472,
+          "maximumPrivateBytes": 33001472
+        },
+        {
+          "phase": "conversion-completed-save-control",
+          "validCimSamples": 1,
+          "minimumPrivateBytes": 33001472,
+          "maximumPrivateBytes": 33001472
+        }
+      ]
+    },
+    {
+      "identity": {
+        "pid": 26828,
+        "parentPid": 38760,
+        "createdAt": "2026-10-17T17:38:32.9734345Z",
+        "creationFileTime": "134367323129734345",
+        "executableName": "chrome.exe",
+        "privateBytes": 8048640,
+        "rssBytes": 18096128,
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "type": "utility",
+      "phaseRanges": [
+        {
+          "phase": "blank-baseline",
+          "validCimSamples": 5,
+          "minimumPrivateBytes": 8036352,
+          "maximumPrivateBytes": 8036352
+        },
+        {
+          "phase": "blank-startup-settle",
+          "validCimSamples": 86,
+          "minimumPrivateBytes": 7917568,
+          "maximumPrivateBytes": 8036352
+        },
+        {
+          "phase": "loaded-navigation",
+          "validCimSamples": 0,
+          "minimumPrivateBytes": null,
+          "maximumPrivateBytes": null
+        },
+        {
+          "phase": "loaded-idle",
+          "validCimSamples": 8,
+          "minimumPrivateBytes": 8048640,
+          "maximumPrivateBytes": 8048640
+        },
+        {
+          "phase": "conversion-completed-save-control",
+          "validCimSamples": 1,
+          "minimumPrivateBytes": 8048640,
+          "maximumPrivateBytes": 8048640
+        }
+      ]
+    },
+    {
+      "identity": {
+        "pid": 30948,
+        "parentPid": 38760,
+        "createdAt": "2026-10-17T17:38:32.6220288Z",
+        "creationFileTime": "134367323126220288",
+        "executableName": "chrome.exe",
+        "privateBytes": 2588672,
+        "rssBytes": 10448896,
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "type": "crashpad-handler",
+      "phaseRanges": [
+        {
+          "phase": "blank-baseline",
+          "validCimSamples": 5,
+          "minimumPrivateBytes": 2588672,
+          "maximumPrivateBytes": 2588672
+        },
+        {
+          "phase": "blank-startup-settle",
+          "validCimSamples": 86,
+          "minimumPrivateBytes": 2486272,
+          "maximumPrivateBytes": 2670592
+        },
+        {
+          "phase": "loaded-navigation",
+          "validCimSamples": 0,
+          "minimumPrivateBytes": null,
+          "maximumPrivateBytes": null
+        },
+        {
+          "phase": "loaded-idle",
+          "validCimSamples": 8,
+          "minimumPrivateBytes": 2588672,
+          "maximumPrivateBytes": 2588672
+        },
+        {
+          "phase": "conversion-completed-save-control",
+          "validCimSamples": 1,
+          "minimumPrivateBytes": 2588672,
+          "maximumPrivateBytes": 2588672
+        }
+      ]
+    },
+    {
+      "identity": {
+        "pid": 31188,
+        "parentPid": 38760,
+        "createdAt": "2026-10-17T17:38:32.9519158Z",
+        "creationFileTime": "134367323129519158",
+        "executableName": "chrome.exe",
+        "privateBytes": 13246464,
+        "rssBytes": 41381888,
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "type": "utility",
+      "phaseRanges": [
+        {
+          "phase": "blank-baseline",
+          "validCimSamples": 5,
+          "minimumPrivateBytes": 12787712,
+          "maximumPrivateBytes": 12791808
+        },
+        {
+          "phase": "blank-startup-settle",
+          "validCimSamples": 86,
+          "minimumPrivateBytes": 12742656,
+          "maximumPrivateBytes": 13434880
+        },
+        {
+          "phase": "loaded-navigation",
+          "validCimSamples": 0,
+          "minimumPrivateBytes": null,
+          "maximumPrivateBytes": null
+        },
+        {
+          "phase": "loaded-idle",
+          "validCimSamples": 8,
+          "minimumPrivateBytes": 13123584,
+          "maximumPrivateBytes": 13463552
+        },
+        {
+          "phase": "conversion-completed-save-control",
+          "validCimSamples": 1,
+          "minimumPrivateBytes": 14143488,
+          "maximumPrivateBytes": 14143488
+        }
+      ]
+    },
+    {
+      "identity": {
+        "pid": 35740,
+        "parentPid": 38760,
+        "createdAt": "2026-10-17T17:43:54.2246449Z",
+        "creationFileTime": "134367326342246449",
+        "executableName": "chrome.exe",
+        "privateBytes": 14602240,
+        "rssBytes": 30896128,
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "type": "renderer",
+      "phaseRanges": [
+        {
+          "phase": "blank-baseline",
+          "validCimSamples": 0,
+          "minimumPrivateBytes": null,
+          "maximumPrivateBytes": null
+        },
+        {
+          "phase": "blank-startup-settle",
+          "validCimSamples": 0,
+          "minimumPrivateBytes": null,
+          "maximumPrivateBytes": null
+        },
+        {
+          "phase": "loaded-navigation",
+          "validCimSamples": 0,
+          "minimumPrivateBytes": null,
+          "maximumPrivateBytes": null
+        },
+        {
+          "phase": "loaded-idle",
+          "validCimSamples": 8,
+          "minimumPrivateBytes": 14602240,
+          "maximumPrivateBytes": 14983168
+        },
+        {
+          "phase": "conversion-completed-save-control",
+          "validCimSamples": 1,
+          "minimumPrivateBytes": 14602240,
+          "maximumPrivateBytes": 14602240
+        }
+      ]
+    },
+    {
+      "identity": {
+        "pid": 38552,
+        "parentPid": 38760,
+        "createdAt": "2026-10-17T17:38:33.0866805Z",
+        "creationFileTime": "134367323130866805",
+        "executableName": "chrome.exe",
+        "privateBytes": 204349440,
+        "rssBytes": 250351616,
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "type": "renderer",
+      "phaseRanges": [
+        {
+          "phase": "blank-baseline",
+          "validCimSamples": 5,
+          "minimumPrivateBytes": 14712832,
+          "maximumPrivateBytes": 14712832
+        },
+        {
+          "phase": "blank-startup-settle",
+          "validCimSamples": 86,
+          "minimumPrivateBytes": 14606336,
+          "maximumPrivateBytes": 14999552
+        },
+        {
+          "phase": "loaded-navigation",
+          "validCimSamples": 0,
+          "minimumPrivateBytes": null,
+          "maximumPrivateBytes": null
+        },
+        {
+          "phase": "loaded-idle",
+          "validCimSamples": 8,
+          "minimumPrivateBytes": 56553472,
+          "maximumPrivateBytes": 62877696
+        },
+        {
+          "phase": "conversion-completed-save-control",
+          "validCimSamples": 1,
+          "minimumPrivateBytes": 84164608,
+          "maximumPrivateBytes": 84164608
+        }
+      ]
+    },
+    {
+      "identity": {
+        "pid": 38760,
+        "parentPid": 39740,
+        "createdAt": "2026-10-17T17:38:32.5909855Z",
+        "creationFileTime": "134367323125909855",
+        "executableName": "chrome.exe",
+        "privateBytes": 48840704,
+        "rssBytes": 154329088,
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "type": "browser",
+      "phaseRanges": [
+        {
+          "phase": "blank-baseline",
+          "validCimSamples": 5,
+          "minimumPrivateBytes": 47472640,
+          "maximumPrivateBytes": 47489024
+        },
+        {
+          "phase": "blank-startup-settle",
+          "validCimSamples": 86,
+          "minimumPrivateBytes": 47067136,
+          "maximumPrivateBytes": 50831360
+        },
+        {
+          "phase": "loaded-navigation",
+          "validCimSamples": 0,
+          "minimumPrivateBytes": null,
+          "maximumPrivateBytes": null
+        },
+        {
+          "phase": "loaded-idle",
+          "validCimSamples": 8,
+          "minimumPrivateBytes": 48607232,
+          "maximumPrivateBytes": 51437568
+        },
+        {
+          "phase": "conversion-completed-save-control",
+          "validCimSamples": 1,
+          "minimumPrivateBytes": 48824320,
+          "maximumPrivateBytes": 48824320
+        }
+      ]
+    },
+    {
+      "identity": {
+        "pid": 40220,
+        "parentPid": 38760,
+        "createdAt": "2026-10-17T17:38:32.9516557Z",
+        "creationFileTime": "134367323129516557",
+        "executableName": "chrome.exe",
+        "privateBytes": 164896768,
+        "rssBytes": 204382208,
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "type": "gpu-process",
+      "phaseRanges": [
+        {
+          "phase": "blank-baseline",
+          "validCimSamples": 5,
+          "minimumPrivateBytes": 83681280,
+          "maximumPrivateBytes": 83681280
+        },
+        {
+          "phase": "blank-startup-settle",
+          "validCimSamples": 86,
+          "minimumPrivateBytes": 83587072,
+          "maximumPrivateBytes": 103030784
+        },
+        {
+          "phase": "loaded-navigation",
+          "validCimSamples": 0,
+          "minimumPrivateBytes": null,
+          "maximumPrivateBytes": null
+        },
+        {
+          "phase": "loaded-idle",
+          "validCimSamples": 8,
+          "minimumPrivateBytes": 144924672,
+          "maximumPrivateBytes": 153030656
+        },
+        {
+          "phase": "conversion-completed-save-control",
+          "validCimSamples": 1,
+          "minimumPrivateBytes": 164446208,
+          "maximumPrivateBytes": 164446208
+        }
+      ]
+    },
+    {
+      "identity": {
+        "pid": 40488,
+        "parentPid": 38760,
+        "createdAt": "2026-10-17T17:38:33.3129248Z",
+        "creationFileTime": "134367323133129248",
+        "executableName": "chrome.exe",
+        "privateBytes": 20328448,
+        "rssBytes": 43036672,
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "type": "renderer",
+      "phaseRanges": [
+        {
+          "phase": "blank-baseline",
+          "validCimSamples": 5,
+          "minimumPrivateBytes": 20324352,
+          "maximumPrivateBytes": 20324352
+        },
+        {
+          "phase": "blank-startup-settle",
+          "validCimSamples": 86,
+          "minimumPrivateBytes": 20160512,
+          "maximumPrivateBytes": 20451328
+        },
+        {
+          "phase": "loaded-navigation",
+          "validCimSamples": 0,
+          "minimumPrivateBytes": null,
+          "maximumPrivateBytes": null
+        },
+        {
+          "phase": "loaded-idle",
+          "validCimSamples": 8,
+          "minimumPrivateBytes": 20328448,
+          "maximumPrivateBytes": 20328448
+        },
+        {
+          "phase": "conversion-completed-save-control",
+          "validCimSamples": 1,
+          "minimumPrivateBytes": 20328448,
+          "maximumPrivateBytes": 20328448
+        }
+      ]
+    }
+  ],
+  "allProcessesRetained": true,
+  "allocationCallsiteProven": false,
+  "causalComparison": false,
+  "note": "CIM phase ranges are diagnostics only, not replacements for exact lower stable blank/all-tree private peak. GPU role bound by PID plus birth within1ms; unavailable stays null."
+}
