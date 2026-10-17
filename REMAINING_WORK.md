@@ -1,5 +1,74 @@
 # Remaining work audit
 
+## 2026-10-18 local - Slot reuse verifies actual production DOM, still fails recovery memory
+
+**Partially implemented; no promotion or accepted optimization.** Actual UTC
+2026-10-17T18:26:10.502Z run builds the private slot module (app324963B,
+SHA d027adf4cfbd9943f28917a6fca66df5f4ea9bfe847dabbae3f01b093f29ced7).
+All405 cards/17pages pass on the production page. Bounded mutation counters prove
+0pagination article creations: only24additions/24removals from the checked final
+empty-search/reset. Counter/observer removed BEFORE conversion; no retained DOM
+test handles. Codec/save worker, native cores, CSS, codec settings, quality,
+independent validators, baseline, sampling and250MiB formula unchanged.
+
+Three genuine complete HEVC-to-MPEG-2 fixture outputs independently pass, each
+2245626B/96frames/SSIM0.983095 and SHA
+8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c.
+Write failure handled, but recovery auto-cancels at251.578125MiB all-tree increment:
+blank249442304B, loaded339566592B, peak513241088B.735valid/0unavailable conversion
+samples; ONE blank-startup-settle sample unavailable/excluded, not zero.2compile/
+8reuse unchanged. Recovery input2162688B/output748166B/~1700.770ms, fixed50331648B
+Wasm,65536B bounded read/write/queue, one pending maximum. Adjacent renderer
+delta6148096B; allocation cause remains null.3/6outputs only, no complete adverse
+recovery, later cancellation/read-fault controls unreached,0original conversions.
+4356.785/3620.935/3994.970ms are NOT matched speed-gain evidence.
+
+Independent `evidence/2026-10-17-catalogue-slot-independent-analysis.json` checks all
+811actual executed/current/post pins for THIS run (not another811-source archive),
+reconstructs app/worker/slot recipes and actual validator module, verifies24owned
+births absent, disposable directories removed, normal build restored and protected
+test.mkv full SHA unchanged. Checkpoint identity-verified/losslessly compacted;
+obsolete live receipt removed after audit. Source proof, failure traces and compact
+reports remain inside repo; generated converted outputs already removed.
+
+Final80/80 focused tests PASS18475.403ms incl full-project TypeScript overlay gate;
+all11new source/test files lint0warnings, generated catalogue lint passed in actual
+build. UI node reuse is real but insufficient. Do NOT retry slot/CSS/cache/full
+original unchanged. Next: bounded worker/V8/Wasm execution/compilation allocation
+evidence at repeated recovery input2162688/output748166 checkpoint, before a specific
+runtime fix. Idle rendering attribution does NOT prove that active conversion
+callsite. No forced GC, missing-process exclusion or smaller acceptance metric.
+
+## 2026-10-17 - Stateless catalogue DOM reuse UI-qualified privately
+
+**Partially implemented; prior turn was progress.** Measured transient rendering
+allocation and rejected auto-scroll motivate a different implementation, not another
+CSS retry. Private catalogue recipe changes ONLY map callback/React key from profile
+ID to bounded slot index. Exact original module SHA8dc2db01... is required and card
+body is checked stateless (no controls, handlers, refs, nested stateful components).
+No DOM content, search/pagination, stylesheet, converter or codec rule changes.
+
+Actual headless Chrome18:20:55.174Z component gate passes desktop1280x900/mobile
+390x844 across all405 cards/17pages.381article and1524child identities reused per
+viewport; mutation counts0new articles/3removed on short last page. Every card HTML
+and ordered ID exact; keyboard/search/empty/reset/final-route/overflow checks pass.
+Both screenshots are byte-identical to earlier UI reference and visually reviewed;
+duplicate PNGs removed after verification, originals retained. Independent
+`evidence/2026-10-17-catalogue-slot-ui-analysis.json` checks12current source preimages,
+reconstructed two-edit recipe,11owned births absent and runtime removed. Reports
+losslessly compacted. First two harness setups failed BEFORE browser launch: missing
+side-effect import relocation, then accidental rewriting of nested bundle imports;
+both fixed with regression checks. No expensive media attempts spent on them.
+
+New production builder overlays the catalogue module without editing frozen public
+sources, lint-checks the generated module and requires actual overlay load. Codec/
+saver/native/CSS remain unchanged. Six-output/adverse qualification still visits all
+405 routes before loaded idle, verifies mutation counts with constant counters only,
+and disconnects/deletes the observer BEFORE conversion (no retained DOM handles).
+Five focused tests/lint pass. Next: ONE genuine production six-output recovery test,
+unchanged lower same-browser blank/all-process250MiB/codec/quality/validation gates.
+UI evidence is NOT conversion-memory, speed, scaling, headed/manual or public pass.
+
 ## 2026-10-17 - Instant-scroll hypothesis not retained; ABA incomplete
 
 **Partially implemented; no optimization promoted.** Actual18:06:27.397Z same-page

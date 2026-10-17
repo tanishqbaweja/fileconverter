@@ -1,5 +1,41 @@
 # Tested conversion ledger
 
+## 2026-10-18 local - Slot reuse production qualification rejected at251.578125MiB
+
+UTC18:26:10.502Z actual private build/app324963B/SHA
+d027adf4cfbd9943f28917a6fca66df5f4ea9bfe847dabbae3f01b093f29ced7.
+All405 original cards/17pages,24max mounted,0pagination article creations verified;
+bounded observer removed before media.3complete HEVC-to-MPEG-2 fixtures independently
+pass, each2245626B/96frames/SSIM.983095/SHA
+8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c.
+Write fault passed; recovery FAILED251.578125MiB (blank249442304B, loaded339566592B,
+peak513241088B),735valid/0unavailable conversion samples.1blank-settle sample remains
+unavailable/excluded. Same input2162688/output748166 checkpoint,~1700.770ms,
+48MiB Wasm/64KiB read-write-queue/onepending,2compile8reuse.3/6outputs, no complete
+adverse recovery, later fault cases unreached,0original runs.4356.785/3620.935/
+3994.970ms not matched speed proof. UI/component evidence does NOT grant promotion.
+Audit evidence/2026-10-17-catalogue-slot-independent-analysis.json reconstructs
+811executed/current/post source pins, all3recipes/validator,24owned births absent,
+scratch gone, normal build restored, original full SHA intact. Checkpoint compacted,
+obsolete live removed, converted data gone.80focused tests PASS18475.403ms incl TS;
+11new files lint0warnings. Do not repeat unchanged. Next target worker/V8/Wasm
+allocation at deterministic recovery checkpoint, not more speculative UI/CSS tweaks.
+
+## 2026-10-17 - Catalogue slot reuse: actual UI node and pixel proof, not media acceptance
+
+18:20:55.174Z headless Chrome:405/405 cards across17pages at1280x900 and390x844.
+381article/1524child identity comparisons reuse same elements per viewport;0added
+articles/3removed on last page. Exact original HTML/IDs, keyboard/search/empty/reset/
+final-route/nooverflow all pass. Two screenshots byte-identical to baseline and
+visually reviewed; duplicate images removed with retained-reference mapping. Audit:
+evidence/2026-10-17-catalogue-slot-ui-analysis.json.12current source preimages match,
+two-edit stateless-card recipe reconstructs,11owned births absent, runtime gone,
+raw reports losslessly compacted. Two pre-browser setup import errors fixed and
+regression-tested; no conversion ran.5focused tests/lint pass. Private builder checks
+actual module load/generated lint while preserving all native/writer/CSS/settings.
+Next unchanged six-output/adverse250MiB gate after all405 routes; bounded mutation
+counters removed before conversion. No UI-only speed/memory/public acceptance claim.
+
 ## 2026-10-17 - Auto-scroll rejected; no observed memory benefit and incompleteABA
 
 Actual18:06:27.397Z UI-only same-page comparison completes default/auto405-route

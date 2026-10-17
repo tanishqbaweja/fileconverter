@@ -1,0 +1,240 @@
+{
+  "recordedAt": "2026-10-17T18:23:45.433Z",
+  "status": "private-slot-reuse-component-qualified-not-conversion-memory-accepted",
+  "report": {
+    "path": "evidence/2026-10-17T18-20-55-174Z-catalogue-slot-ui.json.gz",
+    "bytes": 226344,
+    "sha256": "f56a66bb24007e44ad12b7fa0f6d49bdeaa6532616000ad6474875803e8cced7",
+    "restoredBytes": 1071484,
+    "restoredSha256": "080ea70e98995302a5ec08689cccd1bc144b3d5dc93becd1dd477692774cab33"
+  },
+  "failedPreparation": {
+    "path": "evidence/2026-10-17T18-20-30-695Z-catalogue-slot-ui.json.gz",
+    "bytes": 224455,
+    "sha256": "b0755546c6fee97c9cf97115aec9ee3b8f563bbd6543a1ccffe2df8d23eed0a0",
+    "restoredBytes": 1054073,
+    "restoredSha256": "5de71e8e269984323c2b75779d5ebd5b417da6db9beb0fa725a9b1eaab864aa6"
+  },
+  "all12CurrentSourcesMatchExecutedPreimages": true,
+  "exactRecipeReconstructed": true,
+  "cases": [
+    {
+      "viewport": {
+        "width": 1280,
+        "height": 900
+      },
+      "pages": 17,
+      "allCardsExact": true,
+      "allIdsExact": true,
+      "slotMutations": {
+        "addedArticles": 0,
+        "removedArticles": 3
+      },
+      "reusedArticleComparisons": 381,
+      "reusedChildComparisons": 1524,
+      "maxMounted": 24,
+      "finalMounted": 24,
+      "keyboardNavigation": true,
+      "searchAndEmptyAndReset": true,
+      "noHorizontalOverflow": true
+    },
+    {
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "pages": 17,
+      "allCardsExact": true,
+      "allIdsExact": true,
+      "slotMutations": {
+        "addedArticles": 0,
+        "removedArticles": 3
+      },
+      "reusedArticleComparisons": 381,
+      "reusedChildComparisons": 1524,
+      "maxMounted": 24,
+      "finalMounted": 24,
+      "keyboardNavigation": true,
+      "searchAndEmptyAndReset": true,
+      "noHorizontalOverflow": true
+    }
+  ],
+  "births": [
+    {
+      "identity": {
+        "pid": 32052,
+        "parentPid": 14620,
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:20:59.5146540Z",
+        "privateBytes": 52285440,
+        "rssBytes": 152842240
+      },
+      "absentNow": true,
+      "pidReusedNoAction": false
+    },
+    {
+      "identity": {
+        "pid": 27580,
+        "parentPid": 32052,
+        "type": "crashpad-handler",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:20:59.5494840Z",
+        "privateBytes": 2646016,
+        "rssBytes": 9834496
+      },
+      "absentNow": true,
+      "pidReusedNoAction": false
+    },
+    {
+      "identity": {
+        "pid": 37412,
+        "parentPid": 32052,
+        "type": "gpu-process",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:20:59.7110650Z",
+        "privateBytes": 160718848,
+        "rssBytes": 184909824
+      },
+      "absentNow": true,
+      "pidReusedNoAction": false
+    },
+    {
+      "identity": {
+        "pid": 27504,
+        "parentPid": 32052,
+        "type": "utility",
+        "utilitySubtype": "network.mojom.NetworkService",
+        "sandboxType": "none",
+        "createdAt": "2026-10-17T18:20:59.7270410Z",
+        "privateBytes": 13787136,
+        "rssBytes": 40562688
+      },
+      "absentNow": true,
+      "pidReusedNoAction": false
+    },
+    {
+      "identity": {
+        "pid": 33684,
+        "parentPid": 32052,
+        "type": "utility",
+        "utilitySubtype": "storage.mojom.StorageService",
+        "sandboxType": "service",
+        "createdAt": "2026-10-17T18:20:59.7659600Z",
+        "privateBytes": 8015872,
+        "rssBytes": 17580032
+      },
+      "absentNow": true,
+      "pidReusedNoAction": false
+    },
+    {
+      "identity": {
+        "pid": 36204,
+        "parentPid": 32052,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:20:59.8657390Z",
+        "privateBytes": 43278336,
+        "rssBytes": 86429696
+      },
+      "absentNow": true,
+      "pidReusedNoAction": false
+    },
+    {
+      "identity": {
+        "pid": 2512,
+        "parentPid": 32052,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:20:59.9494960Z",
+        "privateBytes": 79826944,
+        "rssBytes": 137060352
+      },
+      "absentNow": true,
+      "pidReusedNoAction": false
+    },
+    {
+      "identity": {
+        "pid": 33828,
+        "parentPid": 32052,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:20:59.9540820Z",
+        "privateBytes": 18857984,
+        "rssBytes": 47284224
+      },
+      "absentNow": true,
+      "pidReusedNoAction": false
+    },
+    {
+      "identity": {
+        "pid": 30396,
+        "parentPid": 32052,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:21:00.1831810Z",
+        "privateBytes": 21852160,
+        "rssBytes": 45809664
+      },
+      "absentNow": true,
+      "pidReusedNoAction": false
+    },
+    {
+      "identity": {
+        "pid": 2504,
+        "parentPid": 32052,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:21:01.4255480Z",
+        "privateBytes": 14958592,
+        "rssBytes": 30998528
+      },
+      "absentNow": true,
+      "pidReusedNoAction": false
+    },
+    {
+      "identity": {
+        "pid": 39372,
+        "parentPid": 32052,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:21:03.1784330Z",
+        "privateBytes": 15638528,
+        "rssBytes": 31997952
+      },
+      "absentNow": true,
+      "pidReusedNoAction": false
+    }
+  ],
+  "screenshots": [
+    {
+      "removedDuplicate": "output/playwright/2026-10-17T18-20-55-174Z-catalogue-slot-1280.png",
+      "retained": "output/playwright/2026-10-17T17-22-49-473Z-bounded-catalogue-1280.png",
+      "sha256": "38659bad4819b602de41e7aa540f23cf976109c134c95589ecdb9976545525c7",
+      "exactPixels": true,
+      "visuallyReviewed": true
+    },
+    {
+      "removedDuplicate": "output/playwright/2026-10-17T18-20-55-174Z-catalogue-slot-390.png",
+      "retained": "output/playwright/2026-10-17T17-22-49-473Z-bounded-catalogue-390.png",
+      "sha256": "c359c9c4e1673453aa5a3b1499f4e167f85f49a261126bfa119b3abaf304a8d7",
+      "exactPixels": true,
+      "visuallyReviewed": true
+    }
+  ],
+  "all405RoutesRetained": true,
+  "mediaConversions": 0,
+  "memoryAcceptance": false,
+  "speedGainProven": false,
+  "headedCoverage": false,
+  "nextAction": "Private production build overlay for the stateless catalogue module, then unchanged six-output/adverse recovery/all-tree250MiB qualification. No copied files outside repository and no public promotion from UI evidence."
+}
