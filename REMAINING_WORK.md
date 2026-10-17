@@ -1,5 +1,76 @@
 # Remaining work audit
 
+## 2026-10-17 - Rendering candidates screened; visually exact card boundary still fails recovery
+
+**Partially implemented; no rendering optimization retained as the memory fix.**
+Previous goal turn was progress: five actual lifecycle dumps narrowed rendering
+allocation growth, exact evidence pushed7fd546c. This changed cycle implements and
+screens distinct containment candidates before ONE uninstrumented warm-fault test;
+not another unchanged full-file retry. Independent
+`evidence/2026-10-17-paint-boundary-independent-analysis.json` binds actual16:43:32.372Z
+terminal/build/report, exact delivered CSS and ALL791 executed/current/post pins.
+16:42:21.657Z preparation executed0conversions/cleaned.
+
+Component-only real-Chrome visual harness extracts actual production progress,
+warning and error JSX + formatters, with exact pixels/geometry/text/no-overflow at
+1280x900 and390x844 across6states. NO simulated conversion/memory proof: test values
+are rendering inputs only; actual pipeline tested separately below. Long unbroken
+Unicode uses wrap-only reference so containment must add0pixel differences; no text
+is discarded. No hidden/offscreen/display/opacity, changed controls or codec rule.
+Panel paint containment FAILS8067pixels in running state; panel layout/style also
+FAILS the same pixels/hashes. Both rejected BEFORE any conversion benchmark. Card
+layout/style containment passed11states; final mobile long-case failed with uniform
+19px viewport displacement during unfinished focus smooth-scroll, not changed box
+sizes. Corrected harness to await stable focus-scroll>=400ms/bounded2500ms on BOTH
+sides, leaving exact-pixel/geometry thresholds untouched. Settled card check PASSES
+12/12, all PNG hashes identical, text retained/no clipping; desktop/mobile error
+screens visually reviewed. Component coverage only, not complete headed UI coverage.
+
+Initial visual runner exited without terminal report/cause unavailable. Unsafe
+whole-pixel-array assertion formatting was replaced with bounded scalar mismatch
+counts (no claim this proves exit cause). Second attempt exposed CDP browser.close
+disconnect-only semantics. Recovery verified PID+birth+parent+owned profile before
+explicit Browser.close; closed only owned test browser, removed2owned profiles,
+retained failed receipts/source preimages losslessly. Later runners explicitly close
+their browser and verify sampled births; final visual10sampled births absent and
+profile removed. `evidence/2026-10-17-paint-boundary-visual-recovery.json` preserves
+failures/recovery; no unrelated app killed, no headed windows/Docker.
+
+Actual candidate app/worker/saver/native assets unchanged from compiled-cache case.
+Only95CSS bytes add card layout/style boundary + safe long-word wrapping. Served
+stylesheet28035B/SHA1d5df28f3687c46a80ca9a6ed283cb9aeb768eb607adc6530a940ee3a380d31d
+is explicitly bound, not spoofed as old27940B CSS. Original product source/registry
+unchanged. Same full Chrome launcher/flags/lower5min blank/250MiB/default4Mbps-q4/
+48MiB heaps/production I/O and ALL six small-output/adverse gates, NO allocation
+dumps or tracing added before the failure. Exact3completed small outputs remain
+2,245,626B/SHA8b0d4370.../96frames/SSIM0.983095/all475packet hashes/independent timing,
+decoded/copied audio, titles/tags/artwork/chapters/full-decode checks. Write rejection
+correctly handled. NEXT recovery FAILS252.9921875MiB(508,735,488B minus lowerblank
+243,453,952B); loaded312,741,888B. Final conversion409valid/0unavailable. Input2,162,688/
+output748,166B at~924.7ms, fixed48MiB Wasm,64KiB read/write/queue,onepending;
+successful final save512KiB/onepending. Normal automatic cancellation/worker close.
+Exactly3small completions, NOT6; recovery/cancel-fault/read-fault/full-original
+completion remain unverified/not reached. No full stress or public promotion.
+
+Original uninstrumented warm case251.96484375MiB; candidate stillfails. Separate
+sessions do not prove causal saving/regression. Timings2220.080/2038.140/2016.340ms
+versus earlier4137.225/3170.975/2950.370ms are NOT matched speed-gain evidence.
+Reject card containment as current memory fix; do not rerun unchanged. NEXT distinct
+candidate: combine bounded module reuse with previously JSX/fidelity-qualified
+display-tree memoization, which was tested alone (without this cache) and failed.
+Retain original settings/visible UI/fault suite; no causal claim before measurement.
+
+Independent ALL791pins/actual CSS/12component proofs/image hashes replayed;24full-run
+births+10finalvisual births absent/reused safely, all owned media/profile/scratch
+gone, normal production restored, original2,958,573,265B/fullSHA31f36695... unchanged.
+Report4,084,781B=>320,126B gzip;29,548B checkpoint=>4,823B gzip/rawremoved. Redundant
+live receipts removed only after terminal/identity/directory checks. Compact reports,
+source preimages/screens and unique post-cancel trace retained. Broader focused
+54tests PASS7489.2947ms, including full-project TypeScript overlay checks, source
+replay, strict validators and adverse handoff guards; seven-new-file zero-warning
+lint/git diff check PASS.
+Full original goal stays incomplete/active.
+
 ## 2026-10-17 - Five lifecycle allocation dumps: idle heaps bounded, rendering growth narrowed
 
 **Partially implemented; diagnostic evidence, NOT an allocation fix or acceptance.**

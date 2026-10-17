@@ -1,0 +1,328 @@
+{
+  "recordedAt": "2026-10-17T16:36:51.752Z",
+  "status": "owned-visual-profiles-recovered-no-visual-or-conversion-acceptance",
+  "rows": [
+    {
+      "source": {
+        "path": "evidence/2026-10-17T16-32-25-187Z-paint-boundary-visual-live.json.gz",
+        "bytes": 152106,
+        "sha256": "1086725e2a82335e87f1c39f72f2d510ddaae1a1cd6867ac5cd460871d5fbd03",
+        "restoredBytes": 677950,
+        "restoredSha256": "93e630ab33c289d6bc99abb14dc6a229c885b0cd8b911eaee0114175900ae5d2"
+      },
+      "directory": "H:\\Github Repositories\\fileconverter\\work\\paint-boundary-visual-smXus1",
+      "directoryRemoved": true,
+      "closedOwnedBrowser": false,
+      "absences": [
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 21716,
+            "parentPid": 1936,
+            "createdAt": "2026-10-17T16:32:34.6012660Z"
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-17T16:36:38.413Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 977,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        }
+      ],
+      "originalFailure": null,
+      "unobservedExit": true,
+      "unobservedExitCause": null,
+      "processesKilled": false
+    },
+    {
+      "source": {
+        "path": "evidence/2026-10-17-paint-boundary-visual.json.gz",
+        "bytes": 154325,
+        "sha256": "014efdaedfeaa344e5cf629d95da2a9018b6744ef2ea3904d692c8b3ebb084ba",
+        "restoredBytes": 689781,
+        "restoredSha256": "eeb757558ada722e398f100a903dd1035a4b97e6225a9c675cd6dd66fe21ade0"
+      },
+      "directory": "H:\\Github Repositories\\fileconverter\\work\\paint-boundary-visual-Jc7yV5",
+      "directoryRemoved": true,
+      "closedOwnedBrowser": true,
+      "absences": [
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 40012,
+            "parentPid": 39840,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-17T16:34:36.9059220Z",
+            "privateBytes": 49074176,
+            "rssBytes": 145940480
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-17T16:36:42.438Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 976,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        },
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 28700,
+            "parentPid": 40012,
+            "type": "crashpad-handler",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-17T16:34:36.9328530Z",
+            "privateBytes": 2646016,
+            "rssBytes": 10817536
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-17T16:36:43.354Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 916,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        },
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 19476,
+            "parentPid": 40012,
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-17T16:34:37.2134480Z",
+            "privateBytes": 131629056,
+            "rssBytes": 155557888
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-17T16:36:44.293Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 939,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        },
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 7520,
+            "parentPid": 40012,
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "sandboxType": "none",
+            "createdAt": "2026-10-17T16:34:37.2228270Z",
+            "privateBytes": 13545472,
+            "rssBytes": 40407040
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-17T16:36:45.232Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 939,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        },
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 35604,
+            "parentPid": 40012,
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-17T16:34:37.2524000Z",
+            "privateBytes": 7974912,
+            "rssBytes": 18010112
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-17T16:36:46.125Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 893,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        },
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 22184,
+            "parentPid": 40012,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-17T16:34:37.3118500Z",
+            "privateBytes": 43855872,
+            "rssBytes": 86384640
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-17T16:36:47.044Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 919,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        },
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 512,
+            "parentPid": 40012,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-17T16:34:37.3742630Z",
+            "privateBytes": 26296320,
+            "rssBytes": 66117632
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-17T16:36:47.961Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 917,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        },
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 6024,
+            "parentPid": 40012,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-17T16:34:37.4291720Z",
+            "privateBytes": 17780736,
+            "rssBytes": 34557952
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-17T16:36:48.880Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 919,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        },
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 26984,
+            "parentPid": 40012,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-17T16:34:37.4324240Z",
+            "privateBytes": 20803584,
+            "rssBytes": 49479680
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-17T16:36:49.780Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 900,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        },
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 40892,
+            "parentPid": 40012,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-17T16:34:37.7035790Z",
+            "privateBytes": 23273472,
+            "rssBytes": 46358528
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-17T16:36:50.714Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 934,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        }
+      ],
+      "originalFailure": {
+        "name": "AssertionError",
+        "message": "Paint boundary changed visible pixels\n\n8067 !== 0\n"
+      },
+      "unobservedExit": false,
+      "unobservedExitCause": null,
+      "processesKilled": false
+    }
+  ],
+  "rejectedCss": "paint containment changed8067pixels in real running component",
+  "publicAcceptance": false
+}

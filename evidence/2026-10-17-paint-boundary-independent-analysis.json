@@ -1,0 +1,847 @@
+{
+  "recordedAt": "2026-10-17T16:53:46.090Z",
+  "status": "card-layout-candidate-rejected-as-memory-fix",
+  "analysis": {
+    "status": "three-small-cold-warm-outputs-validated-but-post-write-failure-recovery-over-budget",
+    "completedSmallOutputs": 3,
+    "completedWarmOutputs": 2,
+    "requestedSmallOutputs": 6,
+    "outputSha256": "8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c",
+    "outputBytes": 2245626,
+    "frames": 96,
+    "ssim": 0.983095,
+    "elapsedMs": [
+      2220.0801464915276,
+      2038.1398339867592,
+      2016.3399316370487
+    ],
+    "allThreePacketProofsIdentical": true,
+    "writeFailureHandled": true,
+    "completeAdverseRecoveryValidated": false,
+    "cancellationFaultTested": false,
+    "inputReadFaultTested": false,
+    "firstNativeBreachMiB": 252.9921875,
+    "peakPrivateBytes": 508735488,
+    "peakIncrementalPrivateMiB": 252.9921875,
+    "blankPrivateBytes": 243453952,
+    "loadedPrivateBytes": 312741888,
+    "conversionValidSamples": 409,
+    "conversionUnavailableSamples": 0,
+    "rendererAdjacentDelta": {
+      "pid": 32168,
+      "parentPid": 36220,
+      "createdAt": "2026-10-17T16:44:13.4120340Z",
+      "creationFileTime": "134367290534120340",
+      "beforePrivateBytes": 198987776,
+      "afterPrivateBytes": 217522176,
+      "deltaPrivateBytes": 18534400
+    },
+    "firstFailure": {
+      "phase": "conversion-completed-save-control",
+      "observedAt": 1792255830575,
+      "acquisitionLagMs": 62,
+      "baseline": {
+        "stable": true,
+        "privateBytes": 243453952,
+        "spreadBytes": 278528,
+        "rssBytes": 529473536,
+        "firstTimestamp": "2026-10-17T16:49:18.624Z",
+        "lastTimestamp": "2026-10-17T16:49:27.173Z",
+        "sampleCount": 5,
+        "minimumElapsedMs": 8000
+      },
+      "incrementalPrivateMiB": 252.9921875,
+      "before": {
+        "sequence": 3434,
+        "timestamp": "2026-10-17T16:50:30.4031771Z",
+        "privateBytes": 490184704,
+        "rssBytes": 807493632,
+        "processes": [
+          {
+            "pid": 23200,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.2654467Z",
+            "creationFileTime": "134367290532654467",
+            "executableName": "chrome.exe",
+            "privateBytes": 13029376,
+            "rssBytes": 41242624,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 23504,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.2938396Z",
+            "creationFileTime": "134367290532938396",
+            "executableName": "chrome.exe",
+            "privateBytes": 8052736,
+            "rssBytes": 18006016,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 32168,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.4120340Z",
+            "creationFileTime": "134367290534120340",
+            "executableName": "chrome.exe",
+            "privateBytes": 198987776,
+            "rssBytes": 244776960,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 36220,
+            "parentPid": 21692,
+            "createdAt": "2026-10-17T16:44:13.1322260Z",
+            "creationFileTime": "134367290531322260",
+            "executableName": "chrome.exe",
+            "privateBytes": 46751744,
+            "rssBytes": 150982656,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 36780,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.1501288Z",
+            "creationFileTime": "134367290531501288",
+            "executableName": "chrome.exe",
+            "privateBytes": 2560000,
+            "rssBytes": 10383360,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 38196,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:49:28.3763397Z",
+            "creationFileTime": "134367293683763397",
+            "executableName": "chrome.exe",
+            "privateBytes": 14635008,
+            "rssBytes": 30892032,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 39796,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.3467250Z",
+            "creationFileTime": "134367290533467250",
+            "executableName": "chrome.exe",
+            "privateBytes": 33210368,
+            "rssBytes": 77160448,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 39924,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.6518034Z",
+            "creationFileTime": "134367290536518034",
+            "executableName": "chrome.exe",
+            "privateBytes": 20221952,
+            "rssBytes": 42905600,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 40608,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.2605808Z",
+            "creationFileTime": "134367290532605808",
+            "executableName": "chrome.exe",
+            "privateBytes": 152735744,
+            "rssBytes": 191143936,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          }
+        ]
+      },
+      "after": {
+        "sequence": 3435,
+        "timestamp": "2026-10-17T16:50:30.5136648Z",
+        "privateBytes": 508735488,
+        "rssBytes": 821907456,
+        "processes": [
+          {
+            "pid": 23200,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.2654467Z",
+            "creationFileTime": "134367290532654467",
+            "executableName": "chrome.exe",
+            "privateBytes": 13029376,
+            "rssBytes": 41242624,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 23504,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.2938396Z",
+            "creationFileTime": "134367290532938396",
+            "executableName": "chrome.exe",
+            "privateBytes": 8052736,
+            "rssBytes": 18006016,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 32168,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.4120340Z",
+            "creationFileTime": "134367290534120340",
+            "executableName": "chrome.exe",
+            "privateBytes": 217522176,
+            "rssBytes": 259170304,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 36220,
+            "parentPid": 21692,
+            "createdAt": "2026-10-17T16:44:13.1322260Z",
+            "creationFileTime": "134367290531322260",
+            "executableName": "chrome.exe",
+            "privateBytes": 46772224,
+            "rssBytes": 151003136,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 36780,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.1501288Z",
+            "creationFileTime": "134367290531501288",
+            "executableName": "chrome.exe",
+            "privateBytes": 2560000,
+            "rssBytes": 10383360,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 38196,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:49:28.3763397Z",
+            "creationFileTime": "134367293683763397",
+            "executableName": "chrome.exe",
+            "privateBytes": 14635008,
+            "rssBytes": 30892032,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 39796,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.3467250Z",
+            "creationFileTime": "134367290533467250",
+            "executableName": "chrome.exe",
+            "privateBytes": 33210368,
+            "rssBytes": 77160448,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 39924,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.6518034Z",
+            "creationFileTime": "134367290536518034",
+            "executableName": "chrome.exe",
+            "privateBytes": 20221952,
+            "rssBytes": 42905600,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 40608,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.2605808Z",
+            "creationFileTime": "134367290532605808",
+            "executableName": "chrome.exe",
+            "privateBytes": 152731648,
+            "rssBytes": 191143936,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          }
+        ]
+      },
+      "delta": {
+        "beforeSequence": 3434,
+        "afterSequence": 3435,
+        "beforeTimestamp": "2026-10-17T16:50:30.4031771Z",
+        "afterTimestamp": "2026-10-17T16:50:30.5136648Z",
+        "adjacent": true,
+        "elapsedMs": 110,
+        "elapsedPrecision": "milliseconds; original timestamps retained",
+        "treeDeltaPrivateBytes": 18550784,
+        "processDeltas": [
+          {
+            "pid": 23200,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.2654467Z",
+            "creationFileTime": "134367290532654467",
+            "beforePrivateBytes": 13029376,
+            "afterPrivateBytes": 13029376,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 23504,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.2938396Z",
+            "creationFileTime": "134367290532938396",
+            "beforePrivateBytes": 8052736,
+            "afterPrivateBytes": 8052736,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 32168,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.4120340Z",
+            "creationFileTime": "134367290534120340",
+            "beforePrivateBytes": 198987776,
+            "afterPrivateBytes": 217522176,
+            "deltaPrivateBytes": 18534400
+          },
+          {
+            "pid": 36220,
+            "parentPid": 21692,
+            "createdAt": "2026-10-17T16:44:13.1322260Z",
+            "creationFileTime": "134367290531322260",
+            "beforePrivateBytes": 46751744,
+            "afterPrivateBytes": 46772224,
+            "deltaPrivateBytes": 20480
+          },
+          {
+            "pid": 36780,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.1501288Z",
+            "creationFileTime": "134367290531501288",
+            "beforePrivateBytes": 2560000,
+            "afterPrivateBytes": 2560000,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 38196,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:49:28.3763397Z",
+            "creationFileTime": "134367293683763397",
+            "beforePrivateBytes": 14635008,
+            "afterPrivateBytes": 14635008,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 39796,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.3467250Z",
+            "creationFileTime": "134367290533467250",
+            "beforePrivateBytes": 33210368,
+            "afterPrivateBytes": 33210368,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 39924,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.6518034Z",
+            "creationFileTime": "134367290536518034",
+            "beforePrivateBytes": 20221952,
+            "afterPrivateBytes": 20221952,
+            "deltaPrivateBytes": 0
+          },
+          {
+            "pid": 40608,
+            "parentPid": 36220,
+            "createdAt": "2026-10-17T16:44:13.2605808Z",
+            "creationFileTime": "134367290532605808",
+            "beforePrivateBytes": 152735744,
+            "afterPrivateBytes": 152731648,
+            "deltaPrivateBytes": -4096
+          }
+        ],
+        "addedIdentities": [],
+        "removedIdentities": [],
+        "allocationSource": null,
+        "acceptanceMetric": false
+      },
+      "cause": null,
+      "acceptanceMetric": false
+    },
+    "metricsBeforeAutomaticCancellation": {
+      "inputBytes": 2162688,
+      "outputBytes": 748166,
+      "queuedBytes": 0,
+      "peakQueuedBytes": 65536,
+      "pendingOperations": 0,
+      "peakPendingOperations": 1,
+      "maxReadChunkBytes": 65536,
+      "maxWriteChunkBytes": 65536,
+      "elapsedMs": 924.6750000119209,
+      "wasmMemoryBytes": 50331648,
+      "peakWasmMemoryBytes": 50331648,
+      "wasmMemories": {},
+      "sharedArrayBufferBytes": 50331652,
+      "activeWorkerCount": 1,
+      "imageWorkingBytes": 0
+    },
+    "allocationCauseProven": false,
+    "compiledCacheAloneSufficient": false,
+    "repeatUnchanged": false,
+    "speedGainProven": false,
+    "completedOriginalConversions": 0,
+    "fullOriginalAcceptance": false,
+    "publicAcceptance": false
+  },
+  "ownSources": {
+    "scripts/analyze-paint-boundary.mjs": {
+      "sha256": "7c647198aa12b493368db9c28d3fab271d2a4660ec00d5397b99c6ab1ce0fc24",
+      "preimage": "aW1wb3J0ICIuL2xpYi9yZWxpYWJsZS1yZWFkb25seS1wcmVmbGlnaHQubWpzIjsKaW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyBleGVjRmlsZSB9IGZyb20gIm5vZGU6Y2hpbGRfcHJvY2VzcyI7CmltcG9ydCB7IGNyZWF0ZUhhc2ggfSBmcm9tICJub2RlOmNyeXB0byI7CmltcG9ydCB7IGNyZWF0ZVJlYWRTdHJlYW0gfSBmcm9tICJub2RlOmZzIjsKaW1wb3J0IHsgYWNjZXNzLCByZWFkRmlsZSwgd3JpdGVGaWxlLCBybSwgbHN0YXQgfSBmcm9tICJub2RlOmZzL3Byb21pc2VzIjsKaW1wb3J0IHBhdGggZnJvbSAibm9kZTpwYXRoIjsKaW1wb3J0IHsgcHJvbWlzaWZ5IH0gZnJvbSAibm9kZTp1dGlsIjsKaW1wb3J0IHsgZ3ppcFN5bmMsIGd1bnppcFN5bmMgfSBmcm9tICJub2RlOnpsaWIiOwppbXBvcnQgeyBzaGEsIGJhc2VsaW5lQmluZGluZyB9IGZyb20gIi4vbGliL3N0YWJsZS11aS1oZWFkbGVzcy1iYXNlbGluZS1yZWNpcGUubWpzIjsKaW1wb3J0IHsgbWF0ZXJpYWxpemVVcGRhdGVkRnVsbEFyY2hpdmUgfSBmcm9tICIuL2xpYi9yZWNvcmRlZC10aW1lbGluZS1mdWxsLXNvdXJjZXMubWpzIjsKaW1wb3J0IHsgaW5zcGVjdFdhcm1DYWNoZUZhaWx1cmUgfSBmcm9tICIuL2xpYi93YXJtLWNhY2hlLW9ic2VydmF0aW9uLm1qcyI7CmltcG9ydCB7IFBBSU5UX0JPVU5EQVJZX0NTUywgUEFJTlRfQkFTRV9DU1MsIFBBSU5UX1ZJU1VBTF9QUk9PRiB9IGZyb20gIi4vbGliL3BhaW50LWJvdW5kYXJ5LWNhbmRpZGF0ZS5tanMiOwpjb25zdCByb290PXBhdGgucmVzb2x2ZShpbXBvcnQubWV0YS5kaXJuYW1lLCIuLiIpLHJlYWQ9ZmlsZT0+cmVhZEZpbGUocGF0aC5qb2luKHJvb3QsZmlsZSkpOwpjb25zdCB1bnBhY2s9YXN5bmMgcmVjb3JkPT57Y29uc3QgemlwPWF3YWl0IHJlYWQocmVjb3JkLnBhdGgpO2Fzc2VydC5lcXVhbCh6aXAubGVuZ3RoLHJlY29yZC5ieXRlcyk7YXNzZXJ0LmVxdWFsKHNoYSh6aXApLHJlY29yZC5zaGEyNTYpOwogIGNvbnN0IHJhdz1ndW56aXBTeW5jKHppcCx7bWF4T3V0cHV0TGVuZ3RoOjMzNTU0NDMyfSk7YXNzZXJ0LmVxdWFsKHJhdy5sZW5ndGgscmVjb3JkLnJlc3RvcmVkQnl0ZXMpO2Fzc2VydC5lcXVhbChzaGEocmF3KSxyZWNvcmQucmVzdG9yZWRTaGEyNTYpO3JldHVybiByYXc7fTsKY29uc3QgdGVybWluYWxQYXRoPSJldmlkZW5jZS8yMDI2LTEwLTE3VDE2LTQzLTMyLTM3MlotcGFpbnQtYm91bmRhcnktY29udHJvbC10ZXJtaW5hbC5qc29uIix0ZXJtaW5hbEJ5dGVzPWF3YWl0IHJlYWQodGVybWluYWxQYXRoKSx0ZXJtaW5hbD1KU09OLnBhcnNlKHRlcm1pbmFsQnl0ZXMpOwpjb25zdCBwcmlvclBhdGg9ImV2aWRlbmNlLzIwMjYtMTAtMTdUMDQtMTctNTUtMDczWi13YXJtLWNhY2hlLWNvbnRyb2wtdGVybWluYWwuanNvbiIscHJpb3JCeXRlcz1hd2FpdCByZWFkKHByaW9yUGF0aCkscHJpb3I9SlNPTi5wYXJzZShwcmlvckJ5dGVzKTsKY29uc3QgcmVwb3J0PUpTT04ucGFyc2UoYXdhaXQgdW5wYWNrKHRlcm1pbmFsLnJlcG9ydCkpLHByaW9yUmVwb3J0PUpTT04ucGFyc2UoYXdhaXQgdW5wYWNrKHByaW9yLnJlcG9ydCkpOwpjb25zdCBidWlsZEJ5dGVzPWF3YWl0IHJlYWQodGVybWluYWwuYnVpbGQucGF0aCkscHJpb3JCdWlsZEJ5dGVzPWF3YWl0IHJlYWQocHJpb3IuYnVpbGQucGF0aCk7CmFzc2VydC5lcXVhbChzaGEoYnVpbGRCeXRlcyksdGVybWluYWwuYnVpbGQuc2hhMjU2KTthc3NlcnQuZXF1YWwoc2hhKHByaW9yQnVpbGRCeXRlcykscHJpb3IuYnVpbGQuc2hhMjU2KTsKY29uc3QgYnVpbGQ9SlNPTi5wYXJzZShidWlsZEJ5dGVzKSxwcmlvckJ1aWxkPUpTT04ucGFyc2UocHJpb3JCdWlsZEJ5dGVzKTsKY29uc3QgYW5hbHlzaXM9aW5zcGVjdFdhcm1DYWNoZUZhaWx1cmUodGVybWluYWwscmVwb3J0LHByaW9yUmVwb3J0LGJ1aWxkLHByaW9yQnVpbGQpOwphc3NlcnQuZXF1YWwocmVwb3J0LnByb2dyZXNzUHJvYmUucGFpbnRCb3VuZGFyeUNhbmRpZGF0ZS5jc3MsUEFJTlRfQk9VTkRBUllfQ1NTKTsKYXNzZXJ0LmVxdWFsKHJlcG9ydC5wcm9ncmVzc1Byb2JlLnBhaW50Qm91bmRhcnlDYW5kaWRhdGUuY3NzU2hhMjU2LHNoYShQQUlOVF9CT1VOREFSWV9DU1MpKTsKYXNzZXJ0LmVxdWFsKHJlcG9ydC5wcm9ncmVzc1Byb2JlLnBhaW50Qm91bmRhcnlDYW5kaWRhdGUubmF0aXZlQ2hhbmdlZCxmYWxzZSk7CmFzc2VydC5lcXVhbChyZXBvcnQucHJvZ3Jlc3NQcm9iZS5wYWludEJvdW5kYXJ5Q2FuZGlkYXRlLnByb2dyZXNzQ2hhbmdlZCxmYWxzZSk7CmFzc2VydC5vayhyZXBvcnQuY3NzQ2FuZGlkYXRlLmNzcy5lbmRzV2l0aChQQUlOVF9CT1VOREFSWV9DU1MpKTsKY29uc3QgYmVmb3JlQ3NzPXJlcG9ydC5jc3NDYW5kaWRhdGUuY3NzLnNsaWNlKDAsLVBBSU5UX0JPVU5EQVJZX0NTUy5sZW5ndGgpLGFmdGVyQ3NzPVBBSU5UX0JBU0VfQ1NTK3JlcG9ydC5jc3NDYW5kaWRhdGUuY3NzOwphc3NlcnQuZXF1YWwoc2hhKFBBSU5UX0JBU0VfQ1NTK2JlZm9yZUNzcykscHJpb3JSZXBvcnQucHJvZ3Jlc3NQcm9iZS5leHBlY3RlZFN0eWxlc2hlZXQuYWZ0ZXJTaGEyNTYpOwphc3NlcnQuZXF1YWwoc2hhKGFmdGVyQ3NzKSxyZXBvcnQucHJvZ3Jlc3NQcm9iZS5leHBlY3RlZFN0eWxlc2hlZXQuYWZ0ZXJTaGEyNTYpOwphc3NlcnQuZXF1YWwoQnVmZmVyLmJ5dGVMZW5ndGgoYWZ0ZXJDc3MpLHJlcG9ydC5wcm9ncmVzc1Byb2JlLmV4cGVjdGVkU3R5bGVzaGVldC5hZnRlckJ5dGVzKTsKYXNzZXJ0LmVxdWFsKEJ1ZmZlci5ieXRlTGVuZ3RoKFBBSU5UX0JPVU5EQVJZX0NTUyksOTUpOwphc3NlcnQuZXF1YWwocmVwb3J0LmNzc0NhbmRpZGF0ZS5zdGF0aWNBc3NldHMubGVuZ3RoLDEpOwphc3NlcnQuZXF1YWwocmVwb3J0LmNzc0NhbmRpZGF0ZS5zdGF0aWNBc3NldHNbMF0uYWZ0ZXJTaGEyNTYsc2hhKGFmdGVyQ3NzKSk7CmNvbnN0IHNvdXJjZT1hd2FpdCBtYXRlcmlhbGl6ZVVwZGF0ZWRGdWxsQXJjaGl2ZShyb290LHRlcm1pbmFsLnNvdXJjZUFyY2hpdmUpOwphc3NlcnQuZXF1YWwoT2JqZWN0LmtleXMoc291cmNlLnBpbnMpLmxlbmd0aCw3OTEpO2Fzc2VydC5kZWVwRXF1YWwoc291cmNlLnBpbnMsdGVybWluYWwuc291cmNlUGlucyk7CmFzc2VydC5kZWVwRXF1YWwoc291cmNlLnBpbnMsdGVybWluYWwucG9zdFNvdXJjZVBpbnMpO2Fzc2VydC5kZWVwRXF1YWwoc291cmNlLnBpbnMscmVwb3J0LnNvdXJjZUhhc2hlcyk7CmZvcihjb25zdFtmaWxlLGRpZ2VzdF1vZiBPYmplY3QuZW50cmllcyhzb3VyY2UucGlucykpYXNzZXJ0LmVxdWFsKHNoYShhd2FpdCByZWFkKGZpbGUpKSxkaWdlc3QsZmlsZSk7CmNvbnN0IHZpc3VhbEJ5dGVzPWF3YWl0IHJlYWQoUEFJTlRfVklTVUFMX1BST09GKSx2aXN1YWw9SlNPTi5wYXJzZSh2aXN1YWxCeXRlcyk7CmFzc2VydC5lcXVhbChzaGEodmlzdWFsQnl0ZXMpLHNvdXJjZS5waW5zW1BBSU5UX1ZJU1VBTF9QUk9PRl0pO2Fzc2VydC5lcXVhbCh2aXN1YWwuY3NzLFBBSU5UX0JPVU5EQVJZX0NTUyk7CmFzc2VydC5lcXVhbCh2aXN1YWwuc3RhdHVzLCJwYXNzZWQtY29tcG9uZW50LW9ubHktcGFpbnQtYm91bmRhcnktcGl4ZWxzLWFuZC1nZW9tZXRyeSIpO2Fzc2VydC5lcXVhbCh2aXN1YWwuY29udmVyc2lvbnMsMCk7CmFzc2VydC5lcXVhbCh2aXN1YWwuY2FzZXMubGVuZ3RoLDEyKTthc3NlcnQuZXF1YWwodmlzdWFsLmZhaWx1cmUsbnVsbCk7YXNzZXJ0LmRlZXBFcXVhbCh2aXN1YWwuY2xlYW51cEVycm9ycyxbXSk7CmZvcihjb25zdCByb3cgb2YgdmlzdWFsLmNhc2VzKXtmb3IoY29uc3Qga2V5IG9mWyJleGFjdFBpeGVscyIsImV4YWN0R2VvbWV0cnkiLCJ0ZXh0UHJlc2VydmVkIiwibm9PdmVyZmxvdyJdKWFzc2VydC5lcXVhbChyb3dba2V5XSx0cnVlKTsKICBhc3NlcnQuZXF1YWwocm93LnBuZ0JlZm9yZVNoYTI1Nixyb3cucG5nQWZ0ZXJTaGEyNTYpO2Zvcihjb25zdCBpbWFnZSBvZiByb3cuaW1hZ2VzPz9bXSl7Y29uc3QgYnl0ZXM9YXdhaXQgcmVhZChpbWFnZS5wYXRoKTthc3NlcnQuZXF1YWwoYnl0ZXMubGVuZ3RoLGltYWdlLmJ5dGVzKTthc3NlcnQuZXF1YWwoc2hhKGJ5dGVzKSxpbWFnZS5zaGEyNTYpO319CmNvbnN0IHJlY292ZXJlZD1KU09OLnBhcnNlKGF3YWl0IHJlYWQoImV2aWRlbmNlLzIwMjYtMTAtMTctcGFpbnQtYm91bmRhcnktdmlzdWFsLXJlY292ZXJ5Lmpzb24iKSk7CmZvcihjb25zdCByb3cgb2YgcmVjb3ZlcmVkLnJvd3Mpe2F3YWl0IHVucGFjayhyb3cuc291cmNlKTthc3NlcnQuZXF1YWwocm93LmRpcmVjdG9yeVJlbW92ZWQsdHJ1ZSk7YXdhaXQgYXNzZXJ0LnJlamVjdHMoYWNjZXNzKHJvdy5kaXJlY3RvcnkpLHtjb2RlOiJFTk9FTlQifSk7fQpjb25zdCByZWplY3RlZD1bXTsKZm9yKGNvbnN0IGZpbGUgb2ZbImV2aWRlbmNlLzIwMjYtMTAtMTctcGFuZWwtbGF5b3V0LXZpc3VhbC5qc29uIiwiZXZpZGVuY2UvMjAyNi0xMC0xNy1jYXJkLWxheW91dC12aXN1YWwuanNvbiJdKXsKICBjb25zdCBieXRlcz1hd2FpdCByZWFkKGZpbGUpLHJvdz1KU09OLnBhcnNlKGJ5dGVzKTthc3NlcnQuZXF1YWwocm93LnN0YXR1cywiZmFpbGVkLWNvbXBvbmVudC1vbmx5LXBhaW50LWJvdW5kYXJ5LXZpc3VhbCIpO2Fzc2VydC5lcXVhbChyb3cucnVudGltZVJlbW92ZWQsdHJ1ZSk7CiAgYXdhaXQgYXNzZXJ0LnJlamVjdHMoYWNjZXNzKHJvdy5ydW50aW1lRGlyZWN0b3J5KSx7Y29kZToiRU5PRU5UIn0pO3JlamVjdGVkLnB1c2goe3BhdGg6ZmlsZSxzaGEyNTY6c2hhKGJ5dGVzKSxjYXNlczpyb3cuY2FzZXMubGVuZ3RoLHBpeGVsRmFpbHVyZTpyb3cucGl4ZWxGYWlsdXJlPy5jaGFuZ2VkUGl4ZWxzPz9udWxsLG1lc3NhZ2U6cm93LmZhaWx1cmUubWVzc2FnZS5zbGljZSgwLDUxMil9KTsKfQpjb25zdCBidWlsZFNvdXJjZT1KU09OLnBhcnNlKGF3YWl0IHVucGFjayhidWlsZC5zb3VyY2VBcmNoaXZlKSk7YXNzZXJ0LmRlZXBFcXVhbChidWlsZFNvdXJjZS5zb3VyY2VQaW5zLGJ1aWxkLnNvdXJjZVBpbnMpO2Fzc2VydC5kZWVwRXF1YWwoYnVpbGQuc291cmNlUGlucyxidWlsZC5wb3N0U291cmNlUGlucyk7CmZvcihjb25zdFtmaWxlLGRpZ2VzdF1vZiBPYmplY3QuZW50cmllcyhidWlsZC5zb3VyY2VQaW5zKSl7YXNzZXJ0LmVxdWFsKHNoYShCdWZmZXIuZnJvbShidWlsZFNvdXJjZS5wcmVpbWFnZXNbZmlsZV0sImJhc2U2NCIpKSxkaWdlc3QpO2Fzc2VydC5lcXVhbChzaGEoYXdhaXQgcmVhZChmaWxlKSksZGlnZXN0KTt9CmZvcihjb25zdCBhc3NldCBvZlsuLi5idWlsZC5hc3NldHMsYnVpbGQuc3R5bGVzaGVldF0pe2NvbnN0IGJ5dGVzPWF3YWl0IHVucGFjayhhc3NldC5hcmNoaXZlKTthc3NlcnQuZXF1YWwoYnl0ZXMubGVuZ3RoLGFzc2V0LmJ5dGVzKTthc3NlcnQuZXF1YWwoc2hhKGJ5dGVzKSxhc3NldC5zaGEyNTYpO30KY29uc3QgaGVscGVyPXJlcG9ydC5wcm9ncmVzc1Byb2JlLnN1Y2Nlc3NmdWxTYXZlQ29udHJvbC5wcm92ZW5hbmNlO2Fzc2VydC5lcXVhbChzaGEoYXdhaXQgdW5wYWNrKGhlbHBlci5hcmNoaXZlKSksaGVscGVyLmdlbmVyYXRlZEphdmFzY3JpcHRTaGEyNTYpOwpjb25zdCB0cmFjZT1yZXBvcnQucmVuZGVyZXJBdHRyaWJ1dGlvblJlc3VsdC5zZXNzaW9uc1swXS50cmFjZS50cmFjZTthc3NlcnQuZXF1YWwocGF0aC5kaXJuYW1lKHRyYWNlLnJhd0FyY2hpdmUucGF0aCkscGF0aC5qb2luKHJvb3QsIm91dHB1dHMvcmVwb3J0cyIpKTsKY29uc3QgdHJhY2VaaXA9YXdhaXQgcmVhZEZpbGUodHJhY2UucmF3QXJjaGl2ZS5wYXRoKTthc3NlcnQuZXF1YWwoc2hhKHRyYWNlWmlwKSx0cmFjZS5yYXdBcmNoaXZlLnNoYTI1Nik7Y29uc3QgdHJhY2VSYXc9Z3VuemlwU3luYyh0cmFjZVppcCx7bWF4T3V0cHV0TGVuZ3RoOjE2Nzc3MjE2fSk7CmFzc2VydC5lcXVhbChzaGEodHJhY2VSYXcpLHRyYWNlLnNoYTI1Nik7YXNzZXJ0LmVxdWFsKHRyYWNlUmF3Lmxlbmd0aCx0cmFjZS5zZXJpYWxpemVkQnl0ZXMpOwpjb25zdCBkaXJlY3Rvcmllcz1bdGVybWluYWwud3JhcHBlcix0ZXJtaW5hbC5jYW5kaWRhdGVEaXJlY3RvcnksdGVybWluYWwuY2FsbGVyUnVudGltZURpcmVjdG9yeSxyZXBvcnQucnVudGltZURpcmVjdG9yeSxyZXBvcnQuY2xlYW51cC5jb21wbGV0ZWRTYXZlRml4dHVyZS5maXh0dXJlRGlyZWN0b3J5LHZpc3VhbC5ydW50aW1lRGlyZWN0b3J5XTsKZm9yKGNvbnN0IGRpcmVjdG9yeSBvZiBkaXJlY3Rvcmllcyl7YXNzZXJ0Lm9rKGRpcmVjdG9yeS5zdGFydHNXaXRoKHBhdGguam9pbihyb290LCJ3b3JrIikrcGF0aC5zZXApKTthd2FpdCBhc3NlcnQucmVqZWN0cyhhY2Nlc3MoZGlyZWN0b3J5KSx7Y29kZToiRU5PRU5UIn0pO30KY29uc3Qge3N0ZG91dH09YXdhaXQgcHJvbWlzaWZ5KGV4ZWNGaWxlKSgicG93ZXJzaGVsbC5leGUiLFsiLU5vUHJvZmlsZSIsIi1Ob25JbnRlcmFjdGl2ZSIsIi1Db21tYW5kIiwiQ29udmVydFRvLUpzb24gLUlucHV0T2JqZWN0IEAoR2V0LUNpbUluc3RhbmNlIFdpbjMyX1Byb2Nlc3MgfCBGb3JFYWNoLU9iamVjdCB7QHtwaWQ9W2ludF0kXy5Qcm9jZXNzSWQ7Y3JlYXRlZEF0PSRfLkNyZWF0aW9uRGF0ZS5Ub1VuaXZlcnNhbFRpbWUoKS5Ub1N0cmluZygnbycpO2NvbW1hbmRMaW5lPSRfLkNvbW1hbmRMaW5lfX0pIC1Db21wcmVzcyJdLHt3aW5kb3dzSGlkZTp0cnVlLHRpbWVvdXQ6MTUwMDAsbWF4QnVmZmVyOjIwOTcxNTJ9KTsKY29uc3QgY3VycmVudD1KU09OLnBhcnNlKHN0ZG91dCksYmlydGhzPXRlcm1pbmFsLnRyZWVDbGVhbnVwQXVkaXQucmVjb3JkZWRCaXJ0aHMubWFwKGlkZW50aXR5PT57Y29uc3QgbGl2ZT1jdXJyZW50LmZpbmQocm93PT5yb3cucGlkPT09aWRlbnRpdHkucGlkKTsKICBhc3NlcnQub2soIWxpdmV8fE1hdGguYWJzKERhdGUucGFyc2UobGl2ZS5jcmVhdGVkQXQpLURhdGUucGFyc2UoaWRlbnRpdHkuY3JlYXRlZEF0KSk+MSk7cmV0dXJue2lkZW50aXR5LHN0YXR1czpsaXZlPyJvd25lZC1iaXJ0aC1hYnNlbnQtcmV1c2VkLXBpZC1uby1hY3Rpb24iOiJvd25lZC1iaXJ0aC1hYnNlbnQifTt9KTsKZm9yKGNvbnN0IGFic2VuY2Ugb2YgdmlzdWFsLnNhbXBsZWRCaXJ0aEFic2VuY2VzKXthc3NlcnQuZXF1YWwoYWJzZW5jZS5zdGF0dXMsIm93bmVkLWlkZW50aXR5LWFic2VudCIpO2NvbnN0IGxpdmU9Y3VycmVudC5maW5kKHJvdz0+cm93LnBpZD09PWFic2VuY2UuaWRlbnRpdHkucGlkKTthc3NlcnQub2soIWxpdmV8fE1hdGguYWJzKERhdGUucGFyc2UobGl2ZS5jcmVhdGVkQXQpLURhdGUucGFyc2UoYWJzZW5jZS5pZGVudGl0eS5jcmVhdGVkQXQpKT4xKTt9CmZvcihjb25zdCByb3cgb2YgY3VycmVudClhc3NlcnQub2soIWRpcmVjdG9yaWVzLnNvbWUoZGlyZWN0b3J5PT5yb3cuY29tbWFuZExpbmU/LnRvTG93ZXJDYXNlKCkuaW5jbHVkZXMoZGlyZWN0b3J5LnRvTG93ZXJDYXNlKCkpKSk7CmFzc2VydC5lcXVhbChzaGEoYXdhaXQgcmVhZCgiZGlzdC9jbGllbnQiK2Jhc2VsaW5lQmluZGluZy51cmwpKSxiYXNlbGluZUJpbmRpbmcuc2hhMjU2KTsKYXNzZXJ0LmVxdWFsKHNoYShhd2FpdCByZWFkKCJkaXN0L2NsaWVudC9hc3NldHMvaW5kZXgtQ0l6YmVCMEEuY3NzIikpLCJmNzhmNjczYzA4OWNlYjBkY2ZkMWE4ODVmZjAzZTJhNDM5ODRkODUxY2ZiZTFkOTE1ZTlhNzczYTQ1Yzc0N2RkIik7CmNvbnN0IG9yaWdpbmFsPXBhdGguam9pbihyb290LCJ0ZXN0Lm1rdiIpLHN0YXQ9YXdhaXQgbHN0YXQob3JpZ2luYWwpO2Fzc2VydC5lcXVhbChzdGF0LnNpemUsMjk1ODU3MzI2NSk7YXNzZXJ0Lm9rKHN0YXQuaXNGaWxlKCkmJiFzdGF0LmlzU3ltYm9saWNMaW5rKCkpOwpjb25zdCBoYXNoPWNyZWF0ZUhhc2goInNoYTI1NiIpO2ZvciBhd2FpdChjb25zdCBkYXRhIG9mIGNyZWF0ZVJlYWRTdHJlYW0ob3JpZ2luYWwse2hpZ2hXYXRlck1hcms6MTA0ODU3Nn0pKWhhc2gudXBkYXRlKGRhdGEpO2NvbnN0IG9yaWdpbmFsU2hhMjU2PWhhc2guZGlnZXN0KCJoZXgiKTthc3NlcnQuZXF1YWwob3JpZ2luYWxTaGEyNTYscmVwb3J0LnNvdXJjZS5zaGEyNTYpOwpjb25zdCBjaGVja3BvaW50PXJlcG9ydC5uYXRpdmVNZW1vcnkuZHVyYWJsZUNoZWNrcG9pbnQuZmlsZTthc3NlcnQuZXF1YWwocGF0aC5kaXJuYW1lKGNoZWNrcG9pbnQpLHBhdGguam9pbihyb290LCJvdXRwdXRzL3JlcG9ydHMiKSk7CmNvbnN0IHJhd0NoZWNrcG9pbnQ9YXdhaXQgcmVhZEZpbGUoY2hlY2twb2ludCksemlwcGVkQ2hlY2twb2ludD1nemlwU3luYyhyYXdDaGVja3BvaW50LHtsZXZlbDo5fSk7YXNzZXJ0LmRlZXBFcXVhbChKU09OLnBhcnNlKHJhd0NoZWNrcG9pbnQpLm5hdGl2ZS5pZGVudGl0aWVzLHJlcG9ydC5uYXRpdmVNZW1vcnkuaWRlbnRpdGllcyk7CmF3YWl0IHdyaXRlRmlsZShjaGVja3BvaW50KyIuZ3oiLHppcHBlZENoZWNrcG9pbnQse2ZsYWc6Ind4In0pO2Fzc2VydC5kZWVwRXF1YWwoZ3VuemlwU3luYyhhd2FpdCByZWFkRmlsZShjaGVja3BvaW50KyIuZ3oiKSkscmF3Q2hlY2twb2ludCk7YXdhaXQgcm0oY2hlY2twb2ludCk7CmNvbnN0IG93blNvdXJjZXM9e307Zm9yKGNvbnN0IGZpbGUgb2ZbInNjcmlwdHMvYW5hbHl6ZS1wYWludC1ib3VuZGFyeS5tanMiLCJzY3JpcHRzL2xpYi93YXJtLWNhY2hlLW9ic2VydmF0aW9uLm1qcyIsInRlc3RzL3BhaW50LWJvdW5kYXJ5LW9ic2VydmF0aW9uLnRlc3QubWpzIl0pe2NvbnN0IGJ5dGVzPWF3YWl0IHJlYWQoZmlsZSk7b3duU291cmNlc1tmaWxlXT17c2hhMjU2OnNoYShieXRlcykscHJlaW1hZ2U6Ynl0ZXMudG9TdHJpbmcoImJhc2U2NCIpfTt9CmNvbnN0IHJlc3VsdD17cmVjb3JkZWRBdDpuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCksc3RhdHVzOiJjYXJkLWxheW91dC1jYW5kaWRhdGUtcmVqZWN0ZWQtYXMtbWVtb3J5LWZpeCIsYW5hbHlzaXMsb3duU291cmNlcywKICB0ZXJtaW5hbDp7cGF0aDp0ZXJtaW5hbFBhdGgsc2hhMjU2OnNoYSh0ZXJtaW5hbEJ5dGVzKX0scHJpb3I6e3BhdGg6cHJpb3JQYXRoLHNoYTI1NjpzaGEocHJpb3JCeXRlcyl9LGFsbDc5MUV4ZWN1dGVkQ3VycmVudFBvc3RQaW5zRXF1YWw6dHJ1ZSwKICB2aXN1YWw6e3BhdGg6UEFJTlRfVklTVUFMX1BST09GLHNoYTI1NjpzaGEodmlzdWFsQnl0ZXMpLGNhc2VzOjEyLGNvbXBvbmVudE9ubHk6dHJ1ZSxjb252ZXJzaW9uczowLGhlYWRlZE1hbnVhbFZhbGlkYXRpb246ZmFsc2V9LHJlamVjdGVkVmlzdWFsczpyZWplY3RlZCwKICByZXBvcnQ6dGVybWluYWwucmVwb3J0LGJ1aWxkOnRlcm1pbmFsLmJ1aWxkLHNvdXJjZUFyY2hpdmU6dGVybWluYWwuc291cmNlQXJjaGl2ZSxiaXJ0aHMsdmlzdWFsQmlydGhzQ2hlY2tlZDp2aXN1YWwuc2FtcGxlZEJpcnRoQWJzZW5jZXMubGVuZ3RoLAogIG9yaWdpbmFsOntieXRlczpzdGF0LnNpemUsc2hhMjU2Om9yaWdpbmFsU2hhMjU2fSxjaGVja3BvaW50OntwYXRoOnBhdGgucmVsYXRpdmUocm9vdCxjaGVja3BvaW50KyIuZ3oiKS5yZXBsYWNlQWxsKHBhdGguc2VwLCIvIiksYnl0ZXM6emlwcGVkQ2hlY2twb2ludC5sZW5ndGgsc2hhMjU2OnNoYSh6aXBwZWRDaGVja3BvaW50KSxyZXN0b3JlZEJ5dGVzOnJhd0NoZWNrcG9pbnQubGVuZ3RoLHJlc3RvcmVkU2hhMjU2OnNoYShyYXdDaGVja3BvaW50KSxyYXdSZW1vdmVkOnRydWV9LAogIGNzc0FkZGVkQnl0ZXM6OTUsY3NzRGVsaXZlcmVkU2hhMjU2OnNoYShhZnRlckNzcyksc3BlZWRHYWluUHJvdmVuOmZhbHNlLG5vcm1hbFByb2R1Y3RTb3VyY2VDaGFuZ2VkOmZhbHNlLAogIG5leHRBY3Rpb246IlJlamVjdCBjYXJkIGxheW91dCBjb250YWlubWVudCBhcyB0aGUgY3VycmVudCBtZW1vcnkgZml4LiBEbyBub3QgcmVwZWF0IGl0IG9yIGZ1bGwgc3RyZXNzIHVuY2hhbmdlZC4gRXZhbHVhdGUgdGhlIGRpc3RpbmN0IGNvbWJpbmF0aW9uIG9mIGJvdW5kZWQgY29tcGlsZWQtbW9kdWxlIHJldXNlIGFuZCBwcmV2aW91c2x5IEpTWC9maWRlbGl0eS1xdWFsaWZpZWQgZGlzcGxheS10cmVlIG1lbW9pemF0aW9uIGFnYWluc3QgdGhlIHVuY2hhbmdlZCBzaXgtb3V0cHV0L2FkdmVyc2Ugc3VpdGU7IGRvIG5vdCBpbmZlciBhIGNhdXNhbCBnYWluIGZyb20gY3Jvc3Mtc2Vzc2lvbiB0aW1pbmcuIiwKICBwdWJsaWNBY2NlcHRhbmNlOmZhbHNlLGZ1bGxPcmlnaW5hbEFjY2VwdGFuY2U6ZmFsc2V9Owpjb25zdCBmaWxlPSJldmlkZW5jZS8yMDI2LTEwLTE3LXBhaW50LWJvdW5kYXJ5LWluZGVwZW5kZW50LWFuYWx5c2lzLmpzb24iO2F3YWl0IHdyaXRlRmlsZShwYXRoLmpvaW4ocm9vdCxmaWxlKSxKU09OLnN0cmluZ2lmeShyZXN1bHQsbnVsbCwyKSsiXG4iLHtmbGFnOiJ3eCJ9KTsKY29uc29sZS5sb2coSlNPTi5zdHJpbmdpZnkoe2ZpbGUscmVqZWN0ZWRQZWFrTWlCOmFuYWx5c2lzLnBlYWtJbmNyZW1lbnRhbFByaXZhdGVNaUIsc291cmNlQ291bnQ6NzkxLGJpcnRoc0NoZWNrZWQ6YmlydGhzLmxlbmd0aCxvcmlnaW5hbFNoYTI1Nn0pKTsK"
+    },
+    "scripts/lib/warm-cache-observation.mjs": {
+      "sha256": "50be364070f4c7551c8526c90549e04fde4ad11ac5baefbb9f161624f533886b",
+      "preimage": "aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwoKZXhwb3J0IGZ1bmN0aW9uIGluc3BlY3RXYXJtQ2FjaGVGYWlsdXJlKHRlcm1pbmFsLCByZXBvcnQsIHByZXZpb3VzUmVwb3J0LCBidWlsZCwgcHJldmlvdXNCdWlsZCkgewogIGFzc2VydC5lcXVhbCh0ZXJtaW5hbC5zdGF0dXMsICJmYWlsZWQtbm90LWFjY2VwdGVkIik7IGFzc2VydC5kZWVwRXF1YWwodGVybWluYWwuY2xlYW51cEVycm9ycywgW10pOwogIGZvciAoY29uc3Qga2V5IG9mIFsicHJvZHVjdGlvblJlc3RvcmVkIiwgIndyYXBwZXJSZW1vdmVkIiwgImNhbmRpZGF0ZVJlbW92ZWQiXSkgYXNzZXJ0LmVxdWFsKHRlcm1pbmFsW2tleV0sIHRydWUpOwogIGFzc2VydC5lcXVhbChyZXBvcnQucnVucy5sZW5ndGgsIDApOyBhc3NlcnQuZXF1YWwocmVwb3J0LnJlcXVlc3RlZENvbXBsZXRlZENvbnZlcnNpb25zLCAwKTsKICBhc3NlcnQuZXF1YWwocmVwb3J0LnJlcXVlc3RlZFNtYWxsQ29tcGxldGVkQ29udmVyc2lvbnMsIDYpOyBhc3NlcnQuZXF1YWwocmVwb3J0LnB1YmxpY0FjY2VwdGFuY2UsIGZhbHNlKTsKICBhc3NlcnQuZXF1YWwocmVwb3J0LmxpbWl0TWlCLCAyNTApOyBhc3NlcnQuZGVlcEVxdWFsKHJlcG9ydC5mb3JiaWRkZW5SZXF1ZXN0cywgW10pOwogIGFzc2VydC5lcXVhbChyZXBvcnQuYmxhbmtCYXNlbGluZS5zdGFibGUsIHRydWUpOwogIGFzc2VydC5vayhyZXBvcnQuYmxhbmtCYXNlbGluZS5wcml2YXRlQnl0ZXMgPD0gcmVwb3J0LnN0YXJ0dXBTZXR0bGVtZW50LmVhcmx5V2luZG93LnByaXZhdGVCeXRlcyk7CiAgYXNzZXJ0Lm9rKHJlcG9ydC5zdGFydHVwU2V0dGxlbWVudC5hY3R1YWxNcyA+PSAzMDAwMDApOwogIGFzc2VydC5kZWVwRXF1YWwoYnVpbGQuYXNzZXRzLm1hcCgoeyByb2xlLCB1cmwsIGJ5dGVzLCBzaGEyNTYgfSkgPT4gKHsgcm9sZSwgdXJsLCBieXRlcywgc2hhMjU2IH0pKSwKICAgIHByZXZpb3VzQnVpbGQuYXNzZXRzLm1hcCgoeyByb2xlLCB1cmwsIGJ5dGVzLCBzaGEyNTYgfSkgPT4gKHsgcm9sZSwgdXJsLCBieXRlcywgc2hhMjU2IH0pKSk7CiAgYXNzZXJ0LmVxdWFsKGJ1aWxkLnN0eWxlc2hlZXQuc2hhMjU2LCBwcmV2aW91c0J1aWxkLnN0eWxlc2hlZXQuc2hhMjU2KTsKICBhc3NlcnQuZGVlcEVxdWFsKHJlcG9ydC5tYW5pZmVzdCwgcHJldmlvdXNSZXBvcnQubWFuaWZlc3QpOwogIGFzc2VydC5kZWVwRXF1YWwocmVwb3J0LmFjdHVhbFdhc21NZW1vcnlMaW1pdHMsIHByZXZpb3VzUmVwb3J0LmFjdHVhbFdhc21NZW1vcnlMaW1pdHMpOwogIGNvbnN0IGNvbnRyb2wgPSByZXBvcnQucHJvZ3Jlc3NQcm9iZS5zdWNjZXNzZnVsU2F2ZUNvbnRyb2w7CiAgYXNzZXJ0LmVxdWFsKGNvbnRyb2wuc3VjY2Vzc2Z1bEZpeHR1cmVWYWxpZGF0aW9ucywgMyk7CiAgYXNzZXJ0LmVxdWFsKGNvbnRyb2wucHJvdmVuYW5jZS52YWxpZGF0aW9uQXNzZXJ0aW9uc0NoYW5nZWQsIGZhbHNlKTsKICBhc3NlcnQuZXF1YWwoY29udHJvbC5wcm92ZW5hbmNlLm5vUGFnZVJlbG9hZEJldHdlZW5Kb2JzLCB0cnVlKTsKICBhc3NlcnQuZXF1YWwoY29udHJvbC5wcm92ZW5hbmNlLm5hdGl2ZURpc2tGaWxlUGlja2VyQnlwYXNzLCB0cnVlKTsKICBjb25zdCBvdXRwdXRzID0gY29udHJvbC5yb3dzLmZpbHRlcihyb3cgPT4gcm93LmNvbnRhaW5lciA9PT0gIm1wNCIgJiYgcm93LnN0YXR1cyA9PT0gInBhc3NlZCIgJiYgcm93LnNvdXJjZUNvZGVjID09PSAiaGV2YyIpOwogIGFzc2VydC5lcXVhbChvdXRwdXRzLmxlbmd0aCwgMyk7CiAgY29uc3Qgb2xkUm93cyA9IHByZXZpb3VzUmVwb3J0LnByb2dyZXNzUHJvYmUuc3VjY2Vzc2Z1bFNhdmVDb250cm9sLnJvd3M7CiAgY29uc3Qgb2xkUHJvb2YgPSBvbGRSb3dzLmZpbmQocm93ID0+IHJvdy5raW5kID09PSAiaW5kZXBlbmRlbnQtcGFja2V0LW9yZGVyLXByb29mIik7CiAgY29uc3QgcGFja2V0UHJvb2ZzID0gY29udHJvbC5yb3dzLmZpbHRlcihyb3cgPT4gcm93LmtpbmQgPT09ICJpbmRlcGVuZGVudC1wYWNrZXQtb3JkZXItcHJvb2YiKTsKICBhc3NlcnQuZXF1YWwocGFja2V0UHJvb2ZzLmxlbmd0aCwgMyk7IGZvciAoY29uc3QgcHJvb2Ygb2YgcGFja2V0UHJvb2ZzKSBhc3NlcnQuZGVlcEVxdWFsKHByb29mLCBvbGRQcm9vZik7CiAgZm9yIChjb25zdCByb3cgb2Ygb3V0cHV0cykgewogICAgYXNzZXJ0LmVxdWFsKHJvdy5vdXRwdXRTaGEyNTYsICI4YjBkNDM3MDA2OGJmYTcyM2Y3ZTNhNWYxMWUxNTM2OWIxMzhmYTViZDQ0MTVmN2E0ZDdmMGI4NWI1OWJlMzVjIik7CiAgICBhc3NlcnQuZXF1YWwocm93Lm91dHB1dEJ5dGVzLCAyMjQ1NjI2KTsgYXNzZXJ0LmVxdWFsKE51bWJlcihyb3cuZnJhbWVzKSwgOTYpOyBhc3NlcnQuZXF1YWwocm93LnNzaW0sIDAuOTgzMDk1KTsKICAgIGFzc2VydC5lcXVhbChyb3cubWV0cmljcy5wZWFrV2FzbU1lbW9yeUJ5dGVzLCA1MDMzMTY0OCk7CiAgICBhc3NlcnQub2socm93Lm1ldHJpY3MucGVha1F1ZXVlZEJ5dGVzIDw9IDUyNDI4OCk7IGFzc2VydC5lcXVhbChyb3cubWV0cmljcy5wZWFrUGVuZGluZ09wZXJhdGlvbnMsIDEpOwogICAgYXNzZXJ0LmVxdWFsKHJvdy5tZXRyaWNzLnBlbmRpbmdPcGVyYXRpb25zLCAwKTsgYXNzZXJ0LmVxdWFsKHJvdy5tZXRyaWNzLnF1ZXVlZEJ5dGVzLCAwKTsKICB9CiAgYXNzZXJ0LmVxdWFsKGNvbnRyb2wucm93cy5maWx0ZXIocm93ID0+IHJvdy5raW5kID09PSAiZGlyZWN0LXdyaXRlLWZhaWx1cmUiICYmIHJvdy5zdGF0dXMgPT09ICJwYXNzZWQiKS5sZW5ndGgsIDEpOwogIGFzc2VydC5lcXVhbChjb250cm9sLnJvd3MuZmlsdGVyKHJvdyA9PiByb3cua2luZCA9PT0gInZhbGlkYXRlZC1zYW1lLXBhZ2UtcmVjb3ZlcnkiKS5sZW5ndGgsIDApOwogIGFzc2VydC5lcXVhbChjb250cm9sLnJvd3MuZmlsdGVyKHJvdyA9PiByb3cua2luZCA9PT0gImNhbmNlbC1hZnRlci1kaXJlY3Qtb3V0cHV0IikubGVuZ3RoLCAwKTsKICBhc3NlcnQuZXF1YWwoY29udHJvbC5yb3dzLmZpbHRlcihyb3cgPT4gcm93LmtpbmQgPT09ICJpbnB1dC1yZWFkLWZhaWx1cmUiKS5sZW5ndGgsIDApOwogIGNvbnN0IGZhaWx1cmUgPSByZXBvcnQubmF0aXZlRmFpbHVyZUNhcHR1cmUuZmlyc3RGYWlsdXJlOwogIGFzc2VydC5lcXVhbChmYWlsdXJlLnBoYXNlLCAiY29udmVyc2lvbi1jb21wbGV0ZWQtc2F2ZS1jb250cm9sIik7IGFzc2VydC5lcXVhbChmYWlsdXJlLmNhdXNlLCBudWxsKTsKICBhc3NlcnQuZXF1YWwoZmFpbHVyZS5pbmNyZW1lbnRhbFByaXZhdGVNaUIsIChmYWlsdXJlLmFmdGVyLnByaXZhdGVCeXRlcyAtIHJlcG9ydC5ibGFua0Jhc2VsaW5lLnByaXZhdGVCeXRlcykgLyAxMDQ4NTc2KTsKICBhc3NlcnQub2soZmFpbHVyZS5pbmNyZW1lbnRhbFByaXZhdGVNaUIgPiAyNTApOwogIGFzc2VydC5lcXVhbChmYWlsdXJlLmFmdGVyLnByaXZhdGVCeXRlcywgZmFpbHVyZS5hZnRlci5wcm9jZXNzZXMucmVkdWNlKChzdW0sIHJvdykgPT4gc3VtICsgcm93LnByaXZhdGVCeXRlcywgMCkpOwogIGNvbnN0IHBoYXNlID0gcmVwb3J0Lm5hdGl2ZU1lbW9yeS5waGFzZXMuZmluZChyb3cgPT4gcm93LnBoYXNlID09PSBmYWlsdXJlLnBoYXNlKTsKICBhc3NlcnQuZXF1YWwocGhhc2UudW5hdmFpbGFibGVTYW1wbGVzLCAwKTsgYXNzZXJ0Lm9rKHBoYXNlLnZhbGlkU2FtcGxlcyA+IDApOwogIGNvbnN0IGNpbSA9IHJlcG9ydC5zYW1wbGVzLmZpbHRlcihyb3cgPT4gcm93LnBoYXNlID09PSBmYWlsdXJlLnBoYXNlICYmIHJvdy5wcml2YXRlQnl0ZXMgIT0gbnVsbCk7CiAgY29uc3QgcGVhayA9IE1hdGgubWF4KHBoYXNlLnBlYWtbM10sIC4uLmNpbS5tYXAocm93ID0+IHJvdy5wcml2YXRlQnl0ZXMpKTsKICBhc3NlcnQuZXF1YWwocmVwb3J0LnF1aWVzY2VkQnVkZ2V0Q2FwdHVyZS5jYW5jZWxsYXRpb24udGVybWluYWxTdGF0ZSwgImNhbmNlbGxlZCIpOwogIGFzc2VydC5lcXVhbChyZXBvcnQucXVpZXNjZWRCdWRnZXRDYXB0dXJlLm9sZFdvcmtlckNsb3NlT2JzZXJ2ZWQsIHRydWUpOwogIGNvbnN0IG1ldHJpY3MgPSByZXBvcnQucXVpZXNjZWRCdWRnZXRDYXB0dXJlLnN0YXRlQmVmb3JlLm1ldHJpY3M7CiAgYXNzZXJ0LmVxdWFsKG1ldHJpY3Mud2FzbU1lbW9yeUJ5dGVzLCA1MDMzMTY0OCk7IGFzc2VydC5lcXVhbChtZXRyaWNzLnBlYWtQZW5kaW5nT3BlcmF0aW9ucywgMSk7CiAgYXNzZXJ0Lm9rKG1ldHJpY3MucGVha1F1ZXVlZEJ5dGVzIDw9IDY1NTM2ICYmIG1ldHJpY3MubWF4UmVhZENodW5rQnl0ZXMgPD0gNjU1MzYgJiYgbWV0cmljcy5tYXhXcml0ZUNodW5rQnl0ZXMgPD0gNjU1MzYpOwogIGNvbnN0IGV2ZW50cyA9IHJlcG9ydC5wcm9ncmVzc1Byb2JlLmNvbXBpbGVkQ2FjaGVFdmVudHM7CiAgYXNzZXJ0LmVxdWFsKGV2ZW50cy5maWx0ZXIocm93ID0+IHJvdy5ldmVudCA9PT0gImNvbXBpbGVkIikubGVuZ3RoLCAyKTsKICBhc3NlcnQuZXF1YWwoZXZlbnRzLmZpbHRlcihyb3cgPT4gcm93LmV2ZW50ID09PSAicmV1c2VkIikubGVuZ3RoLCA4KTsKICBmb3IgKGNvbnN0IGtleSBvZiBbIm1lZGlhUHJvZmlsZVJ1bnRpbWVSZW1vdmVkIiwgImdlbmVyYXRlZERpc3RSZXN0b3JlZCIsICJwcm90ZWN0ZWRGaXh0dXJlVW5jaGFuZ2VkIiwgIm9ic2VydmVyU3RvcHBlZCIsICJzYW1wbGVkQ2hyb21lUm9vdFN0b3BwZWQiXSkgYXNzZXJ0LmVxdWFsKHJlcG9ydC5jbGVhbnVwW2tleV0sIHRydWUpOwogIGFzc2VydC5lcXVhbChyZXBvcnQuY2xlYW51cC5jb21wbGV0ZWRTYXZlRml4dHVyZS5yZW1vdmVkLCB0cnVlKTsKICBjb25zdCByZW5kZXJlciA9IGZhaWx1cmUuZGVsdGEucHJvY2Vzc0RlbHRhcy5yZWR1Y2UoKGxhcmdlc3QsIHJvdykgPT4gcm93LmRlbHRhUHJpdmF0ZUJ5dGVzID4gbGFyZ2VzdC5kZWx0YVByaXZhdGVCeXRlcyA/IHJvdyA6IGxhcmdlc3QpOwogIGFzc2VydC5vayhyZXBvcnQuc2FtcGxlcy5zb21lKHNhbXBsZSA9PiBzYW1wbGUucHJvY2Vzc2VzLnNvbWUocm93ID0+IHJvdy5waWQgPT09IHJlbmRlcmVyLnBpZCAmJiByb3cudHlwZSA9PT0gInJlbmRlcmVyIikpKTsKICByZXR1cm4geyBzdGF0dXM6ICJ0aHJlZS1zbWFsbC1jb2xkLXdhcm0tb3V0cHV0cy12YWxpZGF0ZWQtYnV0LXBvc3Qtd3JpdGUtZmFpbHVyZS1yZWNvdmVyeS1vdmVyLWJ1ZGdldCIsCiAgICBjb21wbGV0ZWRTbWFsbE91dHB1dHM6IDMsIGNvbXBsZXRlZFdhcm1PdXRwdXRzOiAyLCByZXF1ZXN0ZWRTbWFsbE91dHB1dHM6IDYsCiAgICBvdXRwdXRTaGEyNTY6IG91dHB1dHNbMF0ub3V0cHV0U2hhMjU2LCBvdXRwdXRCeXRlczogb3V0cHV0c1swXS5vdXRwdXRCeXRlcywgZnJhbWVzOiA5Niwgc3NpbTogMC45ODMwOTUsCiAgICBlbGFwc2VkTXM6IG91dHB1dHMubWFwKHJvdyA9PiByb3cubWV0cmljcy5lbGFwc2VkTXMpLCBhbGxUaHJlZVBhY2tldFByb29mc0lkZW50aWNhbDogdHJ1ZSwKICAgIHdyaXRlRmFpbHVyZUhhbmRsZWQ6IHRydWUsIGNvbXBsZXRlQWR2ZXJzZVJlY292ZXJ5VmFsaWRhdGVkOiBmYWxzZSwgY2FuY2VsbGF0aW9uRmF1bHRUZXN0ZWQ6IGZhbHNlLCBpbnB1dFJlYWRGYXVsdFRlc3RlZDogZmFsc2UsCiAgICBmaXJzdE5hdGl2ZUJyZWFjaE1pQjogZmFpbHVyZS5pbmNyZW1lbnRhbFByaXZhdGVNaUIsIHBlYWtQcml2YXRlQnl0ZXM6IHBlYWssCiAgICBwZWFrSW5jcmVtZW50YWxQcml2YXRlTWlCOiAocGVhayAtIHJlcG9ydC5ibGFua0Jhc2VsaW5lLnByaXZhdGVCeXRlcykgLyAxMDQ4NTc2LAogICAgYmxhbmtQcml2YXRlQnl0ZXM6IHJlcG9ydC5ibGFua0Jhc2VsaW5lLnByaXZhdGVCeXRlcywgbG9hZGVkUHJpdmF0ZUJ5dGVzOiByZXBvcnQubG9hZGVkSWRsZS5wcml2YXRlQnl0ZXMsCiAgICBjb252ZXJzaW9uVmFsaWRTYW1wbGVzOiBwaGFzZS52YWxpZFNhbXBsZXMsIGNvbnZlcnNpb25VbmF2YWlsYWJsZVNhbXBsZXM6IHBoYXNlLnVuYXZhaWxhYmxlU2FtcGxlcywKICAgIHJlbmRlcmVyQWRqYWNlbnREZWx0YTogcmVuZGVyZXIsIGZpcnN0RmFpbHVyZTogZmFpbHVyZSwgbWV0cmljc0JlZm9yZUF1dG9tYXRpY0NhbmNlbGxhdGlvbjogbWV0cmljcywKICAgIGFsbG9jYXRpb25DYXVzZVByb3ZlbjogZmFsc2UsIGNvbXBpbGVkQ2FjaGVBbG9uZVN1ZmZpY2llbnQ6IGZhbHNlLCByZXBlYXRVbmNoYW5nZWQ6IGZhbHNlLAogICAgc3BlZWRHYWluUHJvdmVuOiBmYWxzZSwgY29tcGxldGVkT3JpZ2luYWxDb252ZXJzaW9uczogMCwgZnVsbE9yaWdpbmFsQWNjZXB0YW5jZTogZmFsc2UsIHB1YmxpY0FjY2VwdGFuY2U6IGZhbHNlIH07Cn0K"
+    },
+    "tests/paint-boundary-observation.test.mjs": {
+      "sha256": "54e27a77d812b5e605acbc7794919490f7c12ac83ff2a559f1d9cb5b42ec0684",
+      "preimage": "aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyByZWFkRmlsZSB9IGZyb20gIm5vZGU6ZnMvcHJvbWlzZXMiOwppbXBvcnQgdGVzdCBmcm9tICJub2RlOnRlc3QiOwppbXBvcnQgeyBndW56aXBTeW5jIH0gZnJvbSAibm9kZTp6bGliIjsKaW1wb3J0IHsgaW5zcGVjdFdhcm1DYWNoZUZhaWx1cmUgfSBmcm9tICIuLi9zY3JpcHRzL2xpYi93YXJtLWNhY2hlLW9ic2VydmF0aW9uLm1qcyI7CmltcG9ydCB7IFBBSU5UX0JPVU5EQVJZX0NTUywgUEFJTlRfVklTVUFMX1BST09GIH0gZnJvbSAiLi4vc2NyaXB0cy9saWIvcGFpbnQtYm91bmRhcnktY2FuZGlkYXRlLm1qcyI7CmNvbnN0IHRlcm1pbmFsPUpTT04ucGFyc2UoYXdhaXQgcmVhZEZpbGUoImV2aWRlbmNlLzIwMjYtMTAtMTdUMTYtNDMtMzItMzcyWi1wYWludC1ib3VuZGFyeS1jb250cm9sLXRlcm1pbmFsLmpzb24iKSk7CmNvbnN0IHByaW9yPUpTT04ucGFyc2UoYXdhaXQgcmVhZEZpbGUoImV2aWRlbmNlLzIwMjYtMTAtMTdUMDQtMTctNTUtMDczWi13YXJtLWNhY2hlLWNvbnRyb2wtdGVybWluYWwuanNvbiIpKTsKY29uc3QgcmVwb3J0PUpTT04ucGFyc2UoZ3VuemlwU3luYyhhd2FpdCByZWFkRmlsZSh0ZXJtaW5hbC5yZXBvcnQucGF0aCkpKSxvbGRSZXBvcnQ9SlNPTi5wYXJzZShndW56aXBTeW5jKGF3YWl0IHJlYWRGaWxlKHByaW9yLnJlcG9ydC5wYXRoKSkpOwpjb25zdCBidWlsZD1KU09OLnBhcnNlKGF3YWl0IHJlYWRGaWxlKHRlcm1pbmFsLmJ1aWxkLnBhdGgpKSxvbGRCdWlsZD1KU09OLnBhcnNlKGF3YWl0IHJlYWRGaWxlKHByaW9yLmJ1aWxkLnBhdGgpKTsKdGVzdCgidmlzdWFsbHkgaWRlbnRpY2FsIGNhcmQgbGF5b3V0IHN0aWxsIGZhaWxzIGFsbC1wcm9jZXNzIGJ1ZGdldDsgbm8gYWNjZXB0ZWQgbWVtb3J5IG9yIHNwZWVkIGZpeCIsKCk9PnsKICBjb25zdCByZXN1bHQ9aW5zcGVjdFdhcm1DYWNoZUZhaWx1cmUodGVybWluYWwscmVwb3J0LG9sZFJlcG9ydCxidWlsZCxvbGRCdWlsZCk7CiAgYXNzZXJ0LmVxdWFsKHJlc3VsdC5wZWFrSW5jcmVtZW50YWxQcml2YXRlTWlCLDI1Mi45OTIxODc1KTthc3NlcnQuZXF1YWwocmVzdWx0LmNvbXBsZXRlZFNtYWxsT3V0cHV0cywzKTthc3NlcnQuZXF1YWwocmVzdWx0LmNvbXBpbGVkQ2FjaGVBbG9uZVN1ZmZpY2llbnQsZmFsc2UpOwogIGFzc2VydC5lcXVhbChyZXBvcnQucHJvZ3Jlc3NQcm9iZS5wYWludEJvdW5kYXJ5Q2FuZGlkYXRlLmNzcyxQQUlOVF9CT1VOREFSWV9DU1MpO2Fzc2VydC5lcXVhbChyZXN1bHQucHVibGljQWNjZXB0YW5jZSxmYWxzZSk7YXNzZXJ0LmVxdWFsKHJlc3VsdC5jb21wbGV0ZWRPcmlnaW5hbENvbnZlcnNpb25zLDApOwp9KTsKdGVzdCgiZXhhY3QgY29tcG9uZW50IHBpeGVscy9nZW9tZXRyeSBuZXZlciBjZXJ0aWZ5IGEgY29udmVyc2lvbiBvciByZWxheCBhIG1lbW9yeSBnYXRlIixhc3luYygpPT57CiAgY29uc3QgcHJvb2Y9SlNPTi5wYXJzZShhd2FpdCByZWFkRmlsZShQQUlOVF9WSVNVQUxfUFJPT0YpKTthc3NlcnQuZXF1YWwocHJvb2YuY2FzZXMubGVuZ3RoLDEyKTthc3NlcnQuZXF1YWwocHJvb2YuY29udmVyc2lvbnMsMCk7YXNzZXJ0LmVxdWFsKHByb29mLm1lbW9yeUFjY2VwdGFuY2UsZmFsc2UpOwogIGZvcihjb25zdCByb3cgb2YgcHJvb2YuY2FzZXMpe2Fzc2VydC5lcXVhbChyb3cuZXhhY3RQaXhlbHMsdHJ1ZSk7YXNzZXJ0LmVxdWFsKHJvdy5leGFjdEdlb21ldHJ5LHRydWUpO2Fzc2VydC5lcXVhbChyb3cucG5nQmVmb3JlU2hhMjU2LHJvdy5wbmdBZnRlclNoYTI1Nik7fQogIGFzc2VydC5lcXVhbChwcm9vZi5ydW50aW1lUmVtb3ZlZCx0cnVlKTthc3NlcnQuZGVlcEVxdWFsKHByb29mLmNsZWFudXBFcnJvcnMsW10pOwp9KTsK"
+    }
+  },
+  "terminal": {
+    "path": "evidence/2026-10-17T16-43-32-372Z-paint-boundary-control-terminal.json",
+    "sha256": "9dd2dff5578d11a7d4c8430e9a4f345007d93d99a997660051a2f886ad7c42fd"
+  },
+  "prior": {
+    "path": "evidence/2026-10-17T04-17-55-073Z-warm-cache-control-terminal.json",
+    "sha256": "00d120bb7d3ad1871e6378a9ba3b9f31d704e94deb154b10a1a5e974ac568dee"
+  },
+  "all791ExecutedCurrentPostPinsEqual": true,
+  "visual": {
+    "path": "evidence/2026-10-17-card-layout-settled-visual.json",
+    "sha256": "6403258490079d834f3c56572aa0cecbef585677565592d3e2bdfbe1a030cb3c",
+    "cases": 12,
+    "componentOnly": true,
+    "conversions": 0,
+    "headedManualValidation": false
+  },
+  "rejectedVisuals": [
+    {
+      "path": "evidence/2026-10-17-panel-layout-visual.json",
+      "sha256": "4fbffde1219a6d1f31a47400bf129f1f8737c4575414639da5e3b2460b6ce896",
+      "cases": 1,
+      "pixelFailure": 8067,
+      "message": "Paint boundary changed visible pixels\n\n8067 !== 0\n"
+    },
+    {
+      "path": "evidence/2026-10-17-card-layout-visual.json",
+      "sha256": "4bd3dea6e30dded2122fc88ee4e7a49833a6b1162da8ca36297b13f069b21963",
+      "cases": 11,
+      "pixelFailure": null,
+      "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    geometry: [\n      {\n        className: '',\n        height: 909.78125,\n...\n        x: 0,\n+       y: -19\n-       y: 0\n      },\n      {\n        className: 'converter-card',\n        height: 877.78125,\n        tag: 'SECTION',\n        width: 343,\n        x: 16,\n+       y: -3\n-       y: 16\n      },\n      {\n        className: 'progress-panel',\n        height: 335.609375,\n        tag: 'DIV',\n        width: 307.40625,\n        x:"
+    }
+  ],
+  "report": {
+    "path": "outputs/reports/2026-10-17T16-43-32-372Z-paint-boundary-control-report.json.gz",
+    "bytes": 320126,
+    "sha256": "2389b0c7265b6c14f07e5ce73a1198bb4d6127b9da53d978207d112a72221389",
+    "restoredBytes": 4084781,
+    "restoredSha256": "0a7b710dd993fddf4d19a01b18f318c39472d6548dec916cecfc409810be3cf4",
+    "status": "failed-original-startup-diagnostic",
+    "completedRuns": 0,
+    "attemptedStartupControls": 0,
+    "failure": {
+      "name": "Error",
+      "message": "Cancelled\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: \"complete\"\nReceived: \"cancelled\"",
+      "stack": "Error: Cancelled\n\nexpect(received).toBe(expected) // Object.is equality\n\nExpected: \"complete\"\nReceived: \"cancelled\"\n    at captureRawStack (H:\\Github Repositories\\fileconverter\\node_modules\\playwright-core\\lib\\coreBundle.js:9681:17)\n    at callMatcherAsStep (H:\\Github Repositories\\fileconverter\\node_modules\\playwright\\lib\\matchers\\expect.js:13310:57)\n    at Object.toBe (H:\\Github Repositories\\fileconverter\\node_modules\\playwright\\lib\\matchers\\expect.js:13300:23)\n    at validateConversionOnce (data:text/javascript;base64,aW1wb3J0IHsgZXhwZWN0IH0gZnJvbSAiZmlsZTovLy9IOi9HaXRodWIlMjBSZXBvc2l0b3JpZXMvZmlsZWNvbnZlcnRlci9ub2RlX21vZHVsZXMvQHBsYXl3cmlnaHQvdGVzdC9pbmRleC5tanMiOwppbXBvcnQgeyBpbnNwZWN0U3NpbVN1bW1hcnksIHJlcXVpcmVOdW1lcmljU3NpbSB9IGZyb20gImZpbGU6Ly8vSDovR2l0aHViJTIwUmVwb3NpdG9yaWVzL2ZpbGVjb252ZXJ0ZXIvc2NyaXB0cy9saWIvYm91bmRlZC1zc2ltLXN1bW1hcnkubWpzIjsKaW1wb3J0IHsgdmFsaWRhdGVNYXRyb3NrYU1wNFN0cmVhbVRpdGxlIH0gZnJvbSAiZmlsZTovLy9IOi9HaXRodWIlMjBSZXBvc2l0b3JpZXMvZmlsZWNvbnZlcnRlci9zY3JpcHRzL2xpYi9tYXRyb3NrYS1tcDQtc3RyZWFtLXRpdGxlLm1qcyI7CmltcG9ydCB7IGV4ZWNGaWxlIH0gZnJvbSAibm9kZTpjaGlsZF9wcm9jZXNzIjsKaW1wb3J0IHsgY3JlYXRlSGFzaCB9IGZyb20gIm5vZGU6Y3J5cHRvIjsKaW1wb3J0IHsgb3BlbiwgcmVhZEZpbGUsIHJtLCBzdGF0LCB3cml0ZUZpbGUgfSBmcm9tICJub2RlOmZzL3Byb21pc2VzIjsKaW1wb3J0IHBhdGggZnJvbSAibm9kZTpwYXRoIjsKaW1wb3J0IHsgcHJvbWlzaWZ5IH0gZnJvbSAibm9kZTp1dGlsIjsKaW1wb3J0IHsgdmFsaWRhdGVDb3BpZWRBdWRpb1RpbWluZyB9IGZyb20gImZpbGU6Ly8vSDovR2l0aHViJTIwUmVwb3NpdG9yaWVzL2ZpbGVjb252ZXJ0ZXIvc2NyaXB0cy9saWIvY29waWVkLWF1ZGlvLXRpbWluZy5tanMiOwppbXBvcnQgeyB2YWxpZGF0ZVNtYWxsTWF0cm9za2FNcDRUaW1lbGluZSB9IGZyb20gImZpbGU6Ly8vSDovR2l0aHViJTIwUmVwb3NpdG9yaWVzL2ZpbGVjb252ZXJ0ZXIvc2NyaXB0cy9saWIvc21hbGwtbWF0cm9za2EtbXA0LXRpbWVsaW5lLm1qcyI7CmltcG9ydCB7IGNyZWF0ZU93bmVkUnVudGltZVNjcmF0Y2ggfSBmcm9tICJmaWxlOi8vL0g6L0dpdGh1YiUyMFJlcG9zaXRvcmllcy9maWxlY29udmVydGVyL3NjcmlwdHMvbGliL293bmVkLXJ1bnRpbWUtc2NyYXRjaC5tanMiOwpjb25zdCByb290ID0gIkg6XFxHaXRodWIgUmVwb3NpdG9yaWVzXFxmaWxlY29udmVydGVyIiwgZXhlYyA9IHByb21pc2lmeShleGVjRmlsZSksIGV4cGVjdGVkTWVtb3J5Qnl0ZXMgPSA1MDMzMTY0OCwgZXhwZXJpbWVudEJpdFJhdGUgPSA0ZTY7CmNvbnN0IHRpdGxlID0gIk1QRUctMiBjYWZceEU5IFx1MjAxNCBcdTk3RjNcdTY5N0QiOwpjb25zdCBhZGFwdGVycyA9IFt7IGNvbnRhaW5lcjogIm1wNCIsIHNvdXJjZTogIm1rdiIsIGZpeHR1cmU6ICJoZXZjIiwgc291cmNlQ29kZWM6ICJoZXZjIiwgZnJhbWVzOiA5NiwgcHJvZmlsZTogIm1rdi10by1tcDQiLCBkZXN0aW5hdGlvbjogImRpcmVjdCIgfV07CmNvbnN0IHJvd3MgPSBbXSwgYml0cmF0ZUF1ZGl0U2FtcGxlcyA9IFtdLCBzcGxpdEZpbmFsU2FtcGxlcyA9IFtdLCBhc3luY2lmeVN0b3JhZ2VTYW1wbGVzID0gW10sIGlucHV0UmVhZEZhaWx1cmVTYW1wbGVzID0gW10sIHN0YWNrUmVzZXJ2ZVNhbXBsZXMgPSBbXTsKbGV0IHdvcms7CmFzeW5jIGZ1bmN0aW9uIHBpY2tEaXNrRmlsZShwYWdlLCBmaWxlKSB7CiAgY29uc3Qgc2Vzc2lvbiA9IGF3YWl0IHBhZ2UuY29udGV4dCgpLm5ld0NEUFNlc3Npb24ocGFnZSk7CiAgdHJ5IHsKICAgIGNvbnN0IGRvY3VtZW50ID0gYXdhaXQgc2Vzc2lvbi5zZW5kKCJET00uZ2V0RG9jdW1lbnQiKTsKICAgIGNvbnN0IHsgbm9kZUlkIH0gPSBhd2FpdCBzZXNzaW9uLnNlbmQoIkRPTS5xdWVyeVNlbGVjdG9yIiwgeyBub2RlSWQ6IGRvY3VtZW50LnJvb3Qubm9kZUlkLCBzZWxlY3RvcjogJ1tkYXRhLXRlc3RpZD0iZmlsZS1pbnB1dCJdJyB9KTsKICAgIGV4cGVjdChub2RlSWQpLnRvQmVHcmVhdGVyVGhhbigwKTsKICAgIGF3YWl0IHNlc3Npb24uc2VuZCgiRE9NLnNldEZpbGVJbnB1dEZpbGVzIiwgeyBub2RlSWQsIGZpbGVzOiBbZmlsZV0gfSk7CiAgfSBmaW5hbGx5IHsKICAgIGF3YWl0IHNlc3Npb24uZGV0YWNoKCk7CiAgfQp9CmxldCBhZnRlclZhbGlkYXRlZCA9ICgpID0+IHsKfTsKZnVuY3Rpb24gcmVzZXRUZWxlbWV0cnkoKSB7CiAgZm9yIChjb25zdCByZWNvcmRzIG9mIFtiaXRyYXRlQXVkaXRTYW1wbGVzLCBzcGxpdEZpbmFsU2FtcGxlcywgYXN5bmNpZnlTdG9yYWdlU2FtcGxlcywgaW5wdXRSZWFkRmFpbHVyZVNhbXBsZXMsIHN0YWNrUmVzZXJ2ZVNhbXBsZXNdKSByZWNvcmRzLmxlbmd0aCA9IDA7Cn0KYXN5bmMgZnVuY3Rpb24gdmFsaWRhdGVDb252ZXJzaW9uKHBhZ2UsIGFkYXB0ZXIsIHJlbG9hZCA9IHRydWUpIHsKICByZXNldFRlbGVtZXRyeSgpOwogIGF3YWl0IHZhbGlkYXRlQ29udmVyc2lvbk9uY2UocGFnZSwgYWRhcHRlciwgcmVsb2FkKTsKICBhZnRlclZhbGlkYXRlZCgpOwogIGV4cGVjdChyb3dzLmxlbmd0aCkudG9CZUxlc3NUaGFuKDI1Nik7Cn0KYXN5bmMgZnVuY3Rpb24gcmVjb3Zlck9uU2FtZVBhZ2UocGFnZSwgb3JpZ2luYWxXb3JrZXIsIHBoYXNlKSB7CiAgYXdhaXQgcGFnZS53YWl0Rm9yRnVuY3Rpb24oKCkgPT4gd2luZG93Ll9fV0lUSElOX1RFU1RfXz8uZ2V0U3RhdGUoKS53b3JrZXJTdGF0dXMgPT09ICJyZWFkeSIpOwogIGV4cGVjdChwYWdlLndvcmtlcnMoKSkudG9IYXZlTGVuZ3RoKDEpOwogIGV4cGVjdChwYWdlLndvcmtlcnMoKSkubm90LnRvQ29udGFpbihvcmlnaW5hbFdvcmtlcik7CiAgY29uc3QgcmVjb3ZlcnlXb3JrZXIgPSBwYWdlLndvcmtlcnMoKVswXTsKICByb3dzLnB1c2goeyBraW5kOiAiYWR2ZXJzZS1uYXRpdmUtY29uZmlndXJhdGlvbiIsIHBoYXNlLCBzYW1wbGVzOiBbLi4uYml0cmF0ZUF1ZGl0U2FtcGxlc10sIHNwbGl0RmluYWxTYW1wbGVzOiBbLi4uc3BsaXRGaW5hbFNhbXBsZXNdIH0pOwogIGJpdHJhdGVBdWRpdFNhbXBsZXMubGVuZ3RoID0gMDsKICBzcGxpdEZpbmFsU2FtcGxlcy5sZW5ndGggPSAwOwogIGF3YWl0IHBhZ2UuZXZhbHVhdGUoKCkgPT4gaGlzdG9yeS5yZXBsYWNlU3RhdGUobnVsbCwgIiIsICIvP3Rlc3Q9MSZkaXJlY3Rvcnk9MSIpKTsKICBjb25zdCBzdGFydFJvdyA9IHJvd3MubGVuZ3RoOwogIGNvbnN0IGFkYXB0ZXIgPSBhZGFwdGVycy5maW5kKChhKSA9PiBhLmZpeHR1cmUgPT09ICJoZXZjIiAmJiBhLmRlc3RpbmF0aW9uID09PSAiZGlyZWN0Iik7CiAgYXdhaXQgdmFsaWRhdGVDb252ZXJzaW9uKHBhZ2UsIGFkYXB0ZXIsIGZhbHNlKTsKICBhd2FpdCBwYWdlLndhaXRGb3JGdW5jdGlvbigoKSA9PiB3aW5kb3cuX19XSVRISU5fVEVTVF9fPy5nZXRTdGF0ZSgpLndvcmtlclN0YXR1cyA9PT0gInJlYWR5Iik7CiAgZXhwZWN0KHBhZ2Uud29ya2VycygpKS50b0hhdmVMZW5ndGgoMSk7CiAgZXhwZWN0KHBhZ2Uud29ya2VycygpKS5ub3QudG9Db250YWluKHJlY292ZXJ5V29ya2VyKTsKICBleHBlY3QocGFnZS53b3JrZXJzKCkpLm5vdC50b0NvbnRhaW4ob3JpZ2luYWxXb3JrZXIpOwogIHJvd3MucHVzaCh7IGtpbmQ6ICJhY3R1YWwtbmF0aXZlLWJpdHJhdGUtY29uZmlndXJhdGlvbiIsIGJpdFJhdGU6IGV4cGVyaW1lbnRCaXRSYXRlLCBzYW1wbGVzOiBbLi4uYml0cmF0ZUF1ZGl0U2FtcGxlc10gfSk7CiAgY29uc3QgcmVtYWluaW5nID0gYXdhaXQgcGFnZS5ldmFsdWF0ZShhc3luYyAoKSA9PiB7CiAgICBjb25zdCBkaXJlY3RvcnkgPSBhd2FpdCBuYXZpZ2F0b3Iuc3RvcmFnZS5nZXREaXJlY3RvcnkoKTsKICAgIGNvbnN0IG5hbWVzID0gW107CiAgICBmb3IgYXdhaXQgKGNvbnN0IFtuYW1lXSBvZiBkaXJlY3RvcnkuZW50cmllcygpKSBuYW1lcy5wdXNoKG5hbWUpOwogICAgcmV0dXJuIG5hbWVzOwogIH0pOwogIGV4cGVjdChyZW1haW5pbmcpLnRvRXF1YWwoW10pOwogIHJvd3MucHVzaCh7IGNsZWFudXBSZW1vdmVkRW50cmllczogcmVtYWluaW5nIH0pOwogIHJvd3MucHVzaCh7CiAgICBraW5kOiAidmFsaWRhdGVkLXNhbWUtcGFnZS1yZWNvdmVyeSIsCiAgICBwaGFzZSwKICAgIHN0YXJ0Um93LAogICAgZW5kUm93OiByb3dzLmxlbmd0aCwKICAgIHNhbWVXb3JrZXJPYmplY3Q6IGZhbHNlLAogICAgcmV0aXJlZFdvcmtlckFic2VudDogdHJ1ZSwKICAgIHByb2R1Y3Rpb25SZXBsYWNlbWVudFdvcmtlclVzZWQ6IHRydWUsCiAgICBjb21wbGV0ZWRXb3JrZXJSZXRpcmVkOiB0cnVlLAogICAgbm9QYWdlUmVsb2FkOiB0cnVlCiAgfSk7Cn0KYXN5bmMgZnVuY3Rpb24gZXhlcmNpc2VXcml0ZUZhaWx1cmUocGFnZSkgewogIGF3YWl0IHBhZ2UuZXZhbHVhdGUoKHVybCkgPT4gaGlzdG9yeS5yZXBsYWNlU3RhdGUobnVsbCwgIiIsIHVybCksICIvP3Rlc3Q9MSZkaXJlY3Rvcnk9MSZmYXVsdD13cml0ZSIpOwogIGF3YWl0IHBhZ2Uud2FpdEZvckZ1bmN0aW9uKCgpID0+IHdpbmRvdy5fX1dJVEhJTl9URVNUX18/LmdldFN0YXRlKCkud29ya2VyU3RhdHVzID09PSAicmVhZHkiKTsKICBleHBlY3QocGFnZS53b3JrZXJzKCkpLnRvSGF2ZUxlbmd0aCgxKTsKICBjb25zdCBvcmlnaW5hbFdvcmtlciA9IHBhZ2Uud29ya2VycygpWzBdOwogIGF3YWl0IHBpY2tEaXNrRmlsZShwYWdlLCBwYXRoLmpvaW4od29yaywgImhldmMubWt2IikpOwogIGF3YWl0IHBhZ2UubG9jYXRvcignW2RhdGEtdGVzdGlkPSJmb3JtYXQtc2VsZWN0Il0nKS5zZWxlY3RPcHRpb24oIm1rdi10by1tcDQiKTsKICBhd2FpdCBwYWdlLmxvY2F0b3IoJ1tkYXRhLXRlc3RpZD0iY29udmVydC1idXR0b24iXScpLmNsaWNrKCk7CiAgYXdhaXQgcGFnZS53YWl0Rm9yRnVuY3Rpb24oKCkgPT4gd2luZG93Ll9fV0lUSElOX1RFU1RfXz8uZ2V0U3RhdGUoKS5qb2JTdGF0ZSA9PT0gImVycm9yIik7CiAgY29uc3Qgc3RhdGUgPSBhd2FpdCBwYWdlLmV2YWx1YXRlKCgpID0+IHdpbmRvdy5fX1dJVEhJTl9URVNUX18uZ2V0U3RhdGUoKSk7CiAgZXhwZWN0KHN0YXRlLmVycm9yPy50b0xvd2VyQ2FzZSgpKS50b0NvbnRhaW4oImRlc3RpbmF0aW9uIHJlamVjdGVkIGEgYm91bmRlZCB3cml0ZSIpOwogIGV4cGVjdChzdGF0ZS5tZXRyaWNzPy5wZW5kaW5nT3BlcmF0aW9ucykudG9CZSgwKTsKICBleHBlY3Qoc3RhdGUubWV0cmljcz8ucXVldWVkQnl0ZXMpLnRvQmUoMCk7CiAgZXhwZWN0KHN0YXRlLm9wZnNOYW1lKS50b0JlTnVsbCgpOwogIGNvbnN0IGZpbGVzID0gYXdhaXQgcGFnZS5ldmFsdWF0ZShhc3luYyAoKSA9PiB7CiAgICBjb25zdCBkaXJlY3RvcnkgPSBhd2FpdCBuYXZpZ2F0b3Iuc3RvcmFnZS5nZXREaXJlY3RvcnkoKTsKICAgIGNvbnN0IHNpemVzID0gW107CiAgICBmb3IgYXdhaXQgKGNvbnN0IFssIGhhbmRsZV0gb2YgZGlyZWN0b3J5LmVudHJpZXMoKSkgewogICAgICBpZiAoaGFuZGxlLmtpbmQgPT09ICJmaWxlIikgc2l6ZXMucHVzaCgoYXdhaXQgaGFuZGxlLmdldEZpbGUoKSkuc2l6ZSk7CiAgICB9CiAgICByZXR1cm4gc2l6ZXM7CiAgfSk7CiAgZXhwZWN0KGZpbGVzLmV2ZXJ5KChzaXplKSA9PiBzaXplID09PSAwKSkudG9CZSh0cnVlKTsKICByb3dzLnB1c2goeyBraW5kOiAiZGlyZWN0LXdyaXRlLWZhaWx1cmUiLCBzdGF0dXM6ICJwYXNzZWQiLCBlcnJvcjogc3RhdGUuZXJyb3IsIG1ldHJpY3M6IHN0YXRlLm1ldHJpY3MsIHBhcnRpYWxCeXRlczogZmlsZXMgfSk7CiAgYXdhaXQgcmVjb3Zlck9uU2FtZVBhZ2UocGFnZSwgb3JpZ2luYWxXb3JrZXIsICJ3cml0ZS1mYWlsdXJlIik7Cn0KYXN5bmMgZnVuY3Rpb24gZXhlcmNpc2VDYW5jZWxsYXRpb24ocGFnZSkgewogIHRyeSB7CiAgICBhd2FpdCBwYWdlLmV2YWx1YXRlKCh1cmwpID0+IGhpc3RvcnkucmVwbGFjZVN0YXRlKG51bG",
+      "frameValidationReceipt": null,
+      "nativeValidation": null,
+      "code": null,
+      "signal": null,
+      "killed": null,
+      "stderrTail": null
+    },
+    "cleanup": {
+      "mediaProfileRuntimeRemoved": true,
+      "generatedDistRestored": true,
+      "protectedFixtureUnchanged": true,
+      "observerStopped": true,
+      "sampledChromeRootStopped": true,
+      "conversionQuiescence": {
+        "scope": "no-running-conversion",
+        "cancellationRequested": false,
+        "terminalState": "cancelled"
+      },
+      "completedSaveFixture": {
+        "fixtureDirectory": "H:\\Github Repositories\\fileconverter\\work\\completed-save-fixture-a4VL4P",
+        "removed": true
+      },
+      "chromeRootExitObservation": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 36220,
+          "parentPid": 21692,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-17T16:44:13.1322260Z",
+          "privateBytes": 46546944,
+          "rssBytes": 140128256
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-17T16:50:36.963Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 989,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    }
+  },
+  "build": {
+    "path": "evidence/2026-10-17T16-43-32-372Z-compiled-cache-build.json",
+    "sha256": "8574e35d958e728822c66b328481d87e8ddc69ccffd1e1336670cbc7785e17a6"
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-17T16-43-32-372Z-recorded-timeline-full-sources.json.gz",
+    "bytes": 192401,
+    "sha256": "df98a77f64acea5ff33e308e730f10430ee873b21a2be74bc949a2aab4affec2",
+    "restoredBytes": 606661,
+    "restoredSha256": "9be0b6cb078a4b920fef7d76f4a1c4e4ce0f841ed651616dc27b5baf4de5fcc9",
+    "sourceCount": 791
+  },
+  "births": [
+    {
+      "identity": {
+        "pid": 21692,
+        "parentPid": 32176,
+        "createdAt": "2026-10-17T16:43:54.4168280Z"
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 40192,
+        "parentPid": 21692,
+        "createdAt": "2026-10-17T16:44:10.5434800Z"
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 36220,
+        "parentPid": 21692,
+        "createdAt": "2026-10-17T16:44:13.1322260Z"
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 204,
+        "parentPid": 21692,
+        "createdAt": "2026-10-17T16:44:14.2401100Z"
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 23200,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:44:13.2654467Z",
+        "creationFileTime": "134367290532654467",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 23504,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:44:13.2938396Z",
+        "creationFileTime": "134367290532938396",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 32168,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:44:13.4120340Z",
+        "creationFileTime": "134367290534120340",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 36220,
+        "parentPid": 21692,
+        "createdAt": "2026-10-17T16:44:13.1322260Z",
+        "creationFileTime": "134367290531322260",
+        "executableName": "chrome.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 36780,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:44:13.1501288Z",
+        "creationFileTime": "134367290531501288",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 37284,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:44:13.4191874Z",
+        "creationFileTime": "134367290534191874",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 39796,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:44:13.3467250Z",
+        "creationFileTime": "134367290533467250",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 39924,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:44:13.6518034Z",
+        "creationFileTime": "134367290536518034",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 40576,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:44:13.3755357Z",
+        "creationFileTime": "134367290533755357",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 40608,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:44:13.2605808Z",
+        "creationFileTime": "134367290532605808",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 32804,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:44:15.7252687Z",
+        "creationFileTime": "134367290557252687",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 40660,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:44:38.5822087Z",
+        "creationFileTime": "134367290785822087",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 13720,
+        "parentPid": 31284,
+        "createdAt": "2026-10-17T16:44:38.6515071Z",
+        "creationFileTime": "134367290786515071",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 31284,
+        "parentPid": 40660,
+        "createdAt": "2026-10-17T16:44:38.6343978Z",
+        "creationFileTime": "134367290786343978",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 38104,
+        "parentPid": 40660,
+        "createdAt": "2026-10-17T16:44:38.6138626Z",
+        "creationFileTime": "134367290786138626",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 37780,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:44:43.2722382Z",
+        "creationFileTime": "134367290832722382",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 29396,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:46:13.2747721Z",
+        "creationFileTime": "134367291732747721",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 7772,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:47:13.2789101Z",
+        "creationFileTime": "134367292332789101",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 38196,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:49:28.3763397Z",
+        "creationFileTime": "134367293683763397",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 31972,
+        "parentPid": 36220,
+        "createdAt": "2026-10-17T16:50:30.6470056Z",
+        "creationFileTime": "134367294306470056",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    }
+  ],
+  "visualBirthsChecked": 10,
+  "original": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "checkpoint": {
+    "path": "outputs/reports/2026-10-17T16-43-55-247Z-private-mpeg2-updated-chrome-full-native-100ms-native-checkpoint.json.gz",
+    "bytes": 4823,
+    "sha256": "50cce18d5520fc9675b6df02dec6237ff955ab5660d721e5c12333a35145b249",
+    "restoredBytes": 29548,
+    "restoredSha256": "942f6a5b6596f0ae4392ba40a22125164263b68532228d2c27af523339d74231",
+    "rawRemoved": true
+  },
+  "cssAddedBytes": 95,
+  "cssDeliveredSha256": "1d5df28f3687c46a80ca9a6ed283cb9aeb768eb607adc6530a940ee3a380d31d",
+  "speedGainProven": false,
+  "normalProductSourceChanged": false,
+  "nextAction": "Reject card layout containment as the current memory fix. Do not repeat it or full stress unchanged. Evaluate the distinct combination of bounded compiled-module reuse and previously JSX/fidelity-qualified display-tree memoization against the unchanged six-output/adverse suite; do not infer a causal gain from cross-session timing.",
+  "publicAcceptance": false,
+  "fullOriginalAcceptance": false
+}

@@ -1,0 +1,187 @@
+{
+  "recordedAt": "2026-10-17T16:43:48.781Z",
+  "status": "private-production-worker-handoff-built-not-browser-or-memory-acceptance",
+  "host": {
+    "acquiredAt": "2026-10-17T16:43:39.4515178Z",
+    "freePhysicalBytes": 18738106368,
+    "freeVirtualBytes": 17329442816,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "sourcePins": {
+    "lib/compiled-codec-cache.ts": "58bcc8a0c50db9d0e234a680b0182bb35aa76e891b429e7b73545f42bc9fceac",
+    "scripts/build-compiled-cache.mjs": "79e8b6bba660247aef052c2ce99ece4e4aadbf516af99ecd726b5dc6496544a6",
+    "scripts/diagnose-compiled-cache.mjs": "d2885163056a7bea9cc4710f697e9a649efab8c9b0f8d2115d0bf0872f7d383d",
+    "scripts/lib/compiled-cache-candidate.mjs": "f671f9e933a5e9af0c4c321b1fc98b751a3fbd0a986d126b1ff99c5ce6b9dd9d",
+    "tests/compiled-codec-cache.test.mjs": "2a95e4fa67ba71d79df20036b9c6f577512f6e9ef15e8754c5834dbde93b6e9a",
+    "tests/compiled-cache-candidate.test.mjs": "cb276ad3e1519ebc4dc92cf448883ca5cb733f7dbba6d20e8d39f7733babfcd6",
+    "scripts/build-composited-handoff.mjs": "8ce2578a79f690111b44e2186fbb7c092ef7118dc762fa0cbb76e139b5cf60a1",
+    "scripts/lib/composited-handoff-recipe.mjs": "4f6229ab5d50b277242f40d5d6edf12456e35dcfa1e449a258a1cdcc04e9aef9",
+    "tests/composited-handoff.test.mjs": "04443ca99e3c2d36b1721569e78ec96f3d001eb0843b9fcea7725671b8598f44",
+    "scripts/build-staged-handoff-candidate.mjs": "526a28e78718fce4ad64c636781ad9697c7faa6354665b1156081fd1d686447b",
+    "scripts/lib/staged-worker-handoff-recipe.mjs": "aa3e34200510d756fd821c13bb8307dcbc83c8c4dc875e61868c77b89bcede0d",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "lib/staged-copy-protocol.ts": "7596cf8c6d99e746df3048284710208b138e790be6f0587cffa623d51b3d6d29",
+    "lib/staged-worker-coordinator.ts": "1770fe50692b80a9c51c53ad20eb8e12affaec53ca126751437c092812223d80",
+    "workers/staged-save-runtime.ts": "1d352f60cdd25ea3234db6268600f0befe277840896c5ce4a2d966ad3f321c0b",
+    "workers/staged-save.worker.ts": "fe8a83566f83026cec5558b11936d5fbef65ea673cb8edd62919f0b905ac60b0",
+    "tests/staged-worker-coordinator.test.mjs": "64101bcd086578dfb440daa19f1c14c3bdfb95698f5e38ec38a4a62be035c18f",
+    "tests/staged-save-runtime.test.mjs": "b11a309b4aa9428dab0b716993ab7acb53094fc76f2529c9336805c46aecff34",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+    "lib/conversion-protocol.ts": "4aabc3e0b42f3786a83552b312c878bdc5b18249d816a8a430a75ac1d47427e2",
+    "lib/resource-limits.ts": "c5613f021548b7330009c49d24a3389514d96aee125cc5a415052fa67a03113f",
+    "package-lock.json": "a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369",
+    "tsconfig.json": "8ebad4768b8ebfacbaa51ee40c6a2a9df5d793422af5aa000a64235c69525c29",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a"
+  },
+  "postSourcePins": {
+    "lib/compiled-codec-cache.ts": "58bcc8a0c50db9d0e234a680b0182bb35aa76e891b429e7b73545f42bc9fceac",
+    "scripts/build-compiled-cache.mjs": "79e8b6bba660247aef052c2ce99ece4e4aadbf516af99ecd726b5dc6496544a6",
+    "scripts/diagnose-compiled-cache.mjs": "d2885163056a7bea9cc4710f697e9a649efab8c9b0f8d2115d0bf0872f7d383d",
+    "scripts/lib/compiled-cache-candidate.mjs": "f671f9e933a5e9af0c4c321b1fc98b751a3fbd0a986d126b1ff99c5ce6b9dd9d",
+    "tests/compiled-codec-cache.test.mjs": "2a95e4fa67ba71d79df20036b9c6f577512f6e9ef15e8754c5834dbde93b6e9a",
+    "tests/compiled-cache-candidate.test.mjs": "cb276ad3e1519ebc4dc92cf448883ca5cb733f7dbba6d20e8d39f7733babfcd6",
+    "scripts/build-composited-handoff.mjs": "8ce2578a79f690111b44e2186fbb7c092ef7118dc762fa0cbb76e139b5cf60a1",
+    "scripts/lib/composited-handoff-recipe.mjs": "4f6229ab5d50b277242f40d5d6edf12456e35dcfa1e449a258a1cdcc04e9aef9",
+    "tests/composited-handoff.test.mjs": "04443ca99e3c2d36b1721569e78ec96f3d001eb0843b9fcea7725671b8598f44",
+    "scripts/build-staged-handoff-candidate.mjs": "526a28e78718fce4ad64c636781ad9697c7faa6354665b1156081fd1d686447b",
+    "scripts/lib/staged-worker-handoff-recipe.mjs": "aa3e34200510d756fd821c13bb8307dcbc83c8c4dc875e61868c77b89bcede0d",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "lib/staged-copy-protocol.ts": "7596cf8c6d99e746df3048284710208b138e790be6f0587cffa623d51b3d6d29",
+    "lib/staged-worker-coordinator.ts": "1770fe50692b80a9c51c53ad20eb8e12affaec53ca126751437c092812223d80",
+    "workers/staged-save-runtime.ts": "1d352f60cdd25ea3234db6268600f0befe277840896c5ce4a2d966ad3f321c0b",
+    "workers/staged-save.worker.ts": "fe8a83566f83026cec5558b11936d5fbef65ea673cb8edd62919f0b905ac60b0",
+    "tests/staged-worker-coordinator.test.mjs": "64101bcd086578dfb440daa19f1c14c3bdfb95698f5e38ec38a4a62be035c18f",
+    "tests/staged-save-runtime.test.mjs": "b11a309b4aa9428dab0b716993ab7acb53094fc76f2529c9336805c46aecff34",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+    "lib/conversion-protocol.ts": "4aabc3e0b42f3786a83552b312c878bdc5b18249d816a8a430a75ac1d47427e2",
+    "lib/resource-limits.ts": "c5613f021548b7330009c49d24a3389514d96aee125cc5a415052fa67a03113f",
+    "package-lock.json": "a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369",
+    "tsconfig.json": "8ebad4768b8ebfacbaa51ee40c6a2a9df5d793422af5aa000a64235c69525c29",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a"
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-17T16-43-32-372Z-compiled-cache-changed-and-entry-sources.json.gz",
+    "bytes": 321110,
+    "sha256": "bef1449b47df7a47d32baf27df1edb4aaea0099ea99d09fd7440cd1645f6cd09",
+    "restoredBytes": 1455864,
+    "restoredSha256": "a40772d3872c1085ab86474e6f803f037defa35ef734d543744ef27d29cc76bd"
+  },
+  "sourceSealScope": "changed-modules-and-production-entrypoints-not-an-entire-executed-media-source-closure",
+  "loads": [
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/globals.css"
+    },
+    {
+      "environment": "ssr",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/globals.css"
+    },
+    {
+      "environment": "client",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "client",
+      "id": "H:/Github Repositories/fileconverter/workers/conversion.worker.ts"
+    },
+    {
+      "environment": "ssr",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    }
+  ],
+  "assets": [
+    {
+      "role": "application",
+      "url": "/assets/ConverterApp-DhiRq15g.js",
+      "bytes": 322733,
+      "sha256": "d3442a3449956bf687b52a8c90d53ecd87f0a5f484bdd8b000836d0aa7b55a91",
+      "archive": {
+        "path": "outputs/reports/2026-10-17T16-43-32-372Z-compiled-cache-application.js.gz",
+        "bytes": 70368,
+        "sha256": "07d9c2312a59ad3834479b4f63aefeda1f689d3e5b9dfbf34a34a7a4a6b9f836",
+        "restoredBytes": 322733,
+        "restoredSha256": "d3442a3449956bf687b52a8c90d53ecd87f0a5f484bdd8b000836d0aa7b55a91"
+      }
+    },
+    {
+      "role": "codec-worker",
+      "url": "/assets/conversion.worker-Bwu1rvz0.js",
+      "bytes": 294881,
+      "sha256": "4f2ef88023d984d79d2eb04bdaa8628fc48b71b927369c0c2b8f864b28ab49ab",
+      "archive": {
+        "path": "outputs/reports/2026-10-17T16-43-32-372Z-compiled-cache-codec-worker.js.gz",
+        "bytes": 77053,
+        "sha256": "c3f7ddb86c1e83eba80fee741cc6d29ff123800ce319843aa784763f10521461",
+        "restoredBytes": 294881,
+        "restoredSha256": "4f2ef88023d984d79d2eb04bdaa8628fc48b71b927369c0c2b8f864b28ab49ab"
+      }
+    },
+    {
+      "role": "save-worker",
+      "url": "/assets/staged-save.worker-BDqh8LGu.js",
+      "bytes": 3738,
+      "sha256": "b176a6272d30963cfabf6f98b65eef4a3dcfd99f7a96233521ca54a68e9411b6",
+      "archive": {
+        "path": "outputs/reports/2026-10-17T16-43-32-372Z-compiled-cache-save-worker.js.gz",
+        "bytes": 1643,
+        "sha256": "478ea8ec53e79b80a0b920cc3b31710d64616d808a665eafdb27599437d2ee26",
+        "restoredBytes": 3738,
+        "restoredSha256": "b176a6272d30963cfabf6f98b65eef4a3dcfd99f7a96233521ca54a68e9411b6"
+      }
+    }
+  ],
+  "compiledModuleReuse": true,
+  "maximumCompiledCodecModules": 2,
+  "userDataCached": false,
+  "instancesShared": false,
+  "wasmMemoriesSharedAcrossJobs": false,
+  "progressSamplingChanged": false,
+  "stylesheet": {
+    "url": "/assets/index-CxGQ2N3s.css",
+    "bytes": 26354,
+    "sha256": "3c4c62c528d98b5bd03492134f40bdca249e9c2896a5b607a63ca29ae46c34a6",
+    "archive": {
+      "path": "outputs/reports/2026-10-17T16-43-32-372Z-compiled-cache-style.css.gz",
+      "bytes": 6413,
+      "sha256": "42e9da2a7dc45cb944e8907c31ceb29a3224352794be3d6118329a57c40dbde5",
+      "restoredBytes": 26354,
+      "restoredSha256": "3c4c62c528d98b5bd03492134f40bdca249e9c2896a5b607a63ca29ae46c34a6"
+    }
+  },
+  "progressCompositingPreserved": true,
+  "privateAppEdits": 2,
+  "privateWorkerEdits": 2,
+  "codecParametersChanged": false,
+  "nativeWasmChanged": false,
+  "copyLoopChanged": false,
+  "fixedCopyBufferBytes": 524288,
+  "normalSourcesEdited": false,
+  "normalProductionRestored": false,
+  "forBrowser": true,
+  "genuineBrowserConversionPerformed": false,
+  "primaryMemoryAcceptance": false,
+  "fullOriginalAcceptance": false,
+  "publicAcceptance": false,
+  "speedGainProven": false
+}

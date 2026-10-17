@@ -1,5 +1,49 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Card layout boundary visually exact but NOT a recovery memory fix
+
+Independent paint-boundary analysis binds actual16:43:32.372Z terminal/build/report/
+CSS and ALL791 executed-current-post fingerprints. Preparation16:42:21.657Z ran0
+conversions/cleaned. Component-only real-Chrome screens use exact actual progress/
+warning/error JSX+formatters, NOT simulated converter success. Panel paint and panel
+layout/style each FAIL8067running-state pixels, rejected before conversion. Card
+layout/style passed11states then caught unfinished mobile focus smooth-scroll
+(uniform19px shift, same sizes). Awaiting stable scroll on both sides fixes harness
+timing without changing pixel/geometry thresholds. Settled card passes12states:
+6states xdesktop/mobile, exact PNG/geometry/text/nooverflow; long Unicode compared
+against wrap-only reference. Desktop/mobile errors visually reviewed, not headed
+manual/full-page-conversion UI certification.
+
+First visual exit had no terminal/cause unknown; bounded pixel mismatch counting
+replaces whole-array assertion formatting. Second exposed CDP disconnect-only close;
+PID/birth/parent/profile-verified recovery explicitly closed ONLY owned Chrome and
+removed2owned profiles. Failed receipts/preimages preserved gzip, not rewritten.
+Subsequent explicit Browser.close/sampled-birth checks clean; final10births absent.
+No unrelated kills/Docker/headed windows. Recovery receipt retained.
+
+ONE actual uninstrumented changed-CSS warm suite, same app/workers/native/defaults/
+48MiB/AVIO/save/backpressure/5min lowerblank/full-tree250MiB/independent gates.95CSS
+bytes/card boundary+longword wrapping only; served28035B/SHA1d5df28f... explicitly
+bound; normal product source/registry unchanged.3complete small HEVC outputs remain
+2,245,626B/SHA8b0d4370.../96frames/SSIM0.983095/all475packet proofs and full original
+timing/audio/metadata/art/chapter/decode checks. Write fault handled. Following
+recovery FAILS252.9921875MiB (508,735,488B minus blank243,453,952B), loaded312,741,888B;
+409valid/0unavailable conversion samples. Input2,162,688/output748,166B,~924.7ms,
+48MiB,64KiB/onepending, final save<=512KiB/onepending; normal automatic cancellation.
+Exactly3small outputs/0complete recovery/0ORIGINAL; later cancel/readfaults not reached.
+No full stress/public/profile/speed pass. Earlier warm case251.96484375MiB; card
+candidate stillfails. Timing2220.080/2038.140/2016.340ms is not a matched benchmark.
+
+All791pins/CSS/12component image proofs replay;24run+10finalvisual births absent,
+owned conversions/fixtures/profiles/scratch removed, normal production restored,
+original size/fullSHA unchanged.4,084,781B report=>320,126B gzip;29,548B checkpoint
+=>4,823B gzip/rawdeleted; redundant live receipts removed after checks. Broader focused
+54tests PASS7489.2947ms, including full-project TypeScript overlay/source replay/
+strict validators/adverse handoff checks; seven-new-file zero-warning lint and git
+diff check PASS. Reject containment
+as current fix, no unchanged repeat. Next distinct module-cache+qualified static-UI
+memoization combination (prior memoization-alone failure preserved). Goal active.
+
 ## 2026-10-17 - Loaded/save/error allocation snapshots narrow rendering growth
 
 Actual04:35:52.913Z lifecycle-warm diagnostic; independent analysis binds ALL789
