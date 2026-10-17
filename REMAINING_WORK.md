@@ -1,5 +1,104 @@
 # Remaining work audit
 
+## 2026-10-18 - Cold runtime trace audited; compiler overlap is not allocation proof
+
+**Partially implemented; not accepted.** The UTC21:30:14.947Z diagnostic fails the
+first genuine conversion at259.46875MiB (blank246874112B,loaded339435520B,
+peak518946816B).0completed fixture/original outputs; recovery was never reached.
+The complete unsaturated cold trace has7822events/24.6875%maximum buffer use/no
+reported data loss. Clock-command brackets retain4.001ms uncertainty. In the SAME
+birth-identified renderer,84Wasm top-tier compilation events span9threads with
+9maximum concurrent events;14overlap the adjacent28688384B private-memory jump,
+and1possibly spans the breach timestamp.767lazy compilation calls. These are event
+counts/timing, NOT native allocation bytes or a proven allocation cause. No forced
+GC/browser-flag/codec/quality/baseline/process inclusion/250MiB threshold change.
+
+`evidence/2026-10-18-cold-recovery-independent-analysis.json` independently verifies
+all821executed/current/postsource pins, exact3overlays/actualvalidator module/assets,
+rawtrace hashes/replayed summary/exact browser capability proof,26owned births
+absent and all5scratch directories absent. Normal app/CSS restored; original
+2958573265B/fullSHA31f36695... intact. Checkpoint losslessly compacted/readback-checked
+before redundant raw removal.2clock/correlation tests PASS; no speed/public/scaling
+acceptance. Do not repeat unchanged full-file or speculative UI tests.
+
+Next investigate the existing Asyncify code transformation as a source-level
+compile-footprint/speed target. Stable JSPI is an explicit original-spec option;
+verify pinnedSDK/runtime compatibility and retain fixed heaps, production AVIO,
+strict backpressure, codec settings and every qualification gate. It remains an
+unmeasured private candidate until genuine browser and independent validation.
+
+## 2026-10-18 - Corrected recovery trace unreachable when cold conversion breaches
+
+**Partially implemented; no trace or unsupported-engine inference.** Actual corrected
+UTC21:16:09.336Z run stops in FIRST conversion at258.8671875MiB (blank247087104B,
+loaded343175168B, peak518529024B),30valid/0unavailable conversion samples. Input
+2162688B/output0/~1003.655ms; fixed48MiB Wasm/64KiBread/0pending output.0complete
+outputs/recoveries/originals. Recovery hook never reached, so NO event trace started.
+`evidence/2026-10-18-recovery-startup-independent-analysis.json` verifies all818pins
+at audit time, exact assets/recipes/validator,23owned births absent, scratch gone,
+normal build restored and full protected SHA intact. Preserve failure; no event
+absence or runtime allocation cause proven. Existing capability proof remains valid.
+
+Changed diagnostic now adds a separate coarse COLD execution window before first
+conversion, closed on normal codec retirement or cancellation, and awaits closure
+before detailed warm-recovery window if reached. Max1MiB trace active at a time,
+separate bounded archives, original cancellation remains immediate. No codec/UI/
+browser-flag/threshold/input change.7focused tests/lint pass. Next one changed run
+captures whichever genuine failure occurs; no repeating the recovery-only hook
+that cannot observe an earlier breach.
+
+## 2026-10-18 - Empty category discovery diagnosed with short functional probe
+
+**Partially implemented; no new recovery allocation result yet.** First new actual
+runtime diagnostic UTC20:58:20.928Z completes3identical independently validated
+fixtures/writefault, then stops BEFORE recovery/trace at category discovery. No
+native budget breach. `evidence/2026-10-18-recovery-discovery-independent-analysis.json`
+checks all816executed/current/post pins AT AUDIT TIME, exact app/worker/slot/module
+recipes,26owned births absent, allscratch gone, normalbuild restored, full protected
+SHA intact. Failed old source preimages retained; do not confuse with corrected run.
+
+Short headless browser-only probe21:11:43.044Z proves the discovery issue: SAME
+Chrome155.0.8059.80/V8 15.5.35.23/revision43a195... reports ZERO categories yet explicit
+selection emits real wasm.AsyncCompile/CompileLazy/baseline/detail and V8compile
+events.41byte arithmetic module/20000calls/checksum200010000 only;0user files/media/
+conversions, same14launchflags, no forcedGC or memory/scaling acceptance.14owned
+sampled births absent/profile gone. Functional rawtrace20592Bgzip restores95452B;
+proof127459Bgzip restores600093B with lossless hashes/preimages.
+
+Corrected adapter permits explicit categories ONLY with cryptographically pinned
+functional proof matching product,revision ANDV8version; rejects mismatched builds.
+Discovery absence remains metadata absence, NOT engine unsupported proof. Rawtrace/
+buffer limits unchanged; buffer saturation now recorded/rejected, unavailable buffer
+usage staysnull.7focusedtests/lint pass before saturation-listener addition, subsequent
+5focusedtests pass. Next: one corrected real recovery trace, unchanged core/quality/
+memory/cancellation gates; do not repeat the failed discovery precondition unchanged.
+
+## 2026-10-18 - Recovery runtime event trace prepared; no new conversion result yet
+
+**Partially implemented; preceding turn was progress:** real slot reuse and three
+outputs were verified, but251.578125MiB recovery failed. Do not repeat that unchanged.
+New event-only diagnostic starts ONLY immediately before genuine post-write-failure
+recovery, using the exact same private production app/workers/cores/CSS and six-output
+qualification. Hooks reverse byte-exactly to prior qualification; validators and all
+three adverse controls remain intact. No flags, forcedGC, memory limit, fidelity,
+source size, baseline or process inclusion changes.
+
+Trace categories are queried from actual Chrome, not assumed. Requested V8/Wasm/GC
+categories follow official V8 tracing architecture and CDP APIs. Browser trace1MiB,
+serialized8MiB/gzip1MiB,256KiB reads,50000events/1024groups/four markers, one window.
+Raw evidence archived losslessly when within limits; incomplete/lost traces fail
+diagnostic and cannot prove absent events. Native guard notification records only
+scalars synchronously, preserving immediate production cancellation. Trace stops/
+detaches before original failure-only Blink dump; idempotent finally cleanup also
+closes it. No repeated native sampling: earlier Windows CDP native stacks were
+already unresolved, as recorded in repository history.
+
+Four focused tests PASS, five new files lint0warnings after fixing a pre-execution
+lint-only variable name. No browser has run this new diagnostic yet. Next: one real
+recovery event trace, then bind events/timestamps/process identities to actual failed
+state before considering a runtime fix. Instrumentation perturbs memory; no speed,
+public route, full-original, scaling or memory acceptance from this diagnostic.
+
 ## 2026-10-18 local - Slot reuse verifies actual production DOM, still fails recovery memory
 
 **Partially implemented; no promotion or accepted optimization.** Actual UTC

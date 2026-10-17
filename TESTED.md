@@ -1,5 +1,65 @@
 # Tested conversion ledger
 
+## 2026-10-18 - Unsaturated cold trace: compiler concurrency measured, no acceptance
+
+UTC21:30:14.947Z: first genuine fixture conversion cancels259.46875MiB;0complete
+outputs/recovery/originals. Blank246874112B/loaded339435520B/peak518946816B. Input
+2162688B/output0/~1303.370ms;48MiBWasm/64KiBread/0pending.7822trace events,
+buffer24.6875%/no data loss;767lazy compilation calls,84top-tier calls/9threads/
+9maximum concurrent. Clock brackets4.001ms uncertain;14top-tier calls overlap
+28688384B renderer private jump,1possibly at breach. Timing NOT allocation cause/
+bytes/speed/publicacceptance. Postcancel Blink trace remains explicitly postcancel.
+Audit evidence/2026-10-18-cold-recovery-independent-analysis.json:821executed/current/
+postpins,3recipes/assets/actualvalidator, tracehash+summary replay, exactChrome/V8
+capability proof,26owned births absent/5scratch dirs gone/normaldist restored.
+Original2958573265B/fullSHA31f36695... intact. Checkpoint compacted losslessly before
+raw removal.2correlation tests PASS; unchanged baseline/codec/flags/cancel/250MiB
+gates. Next private Asyncify-versus-stable-JSPI investigation, not full-original retry.
+Regression:13focused tests PASS841.426ms; all19new JavaScript source/test files
+ESLint0warnings; git diff --check PASS. Removed only3obsolete owned live receipts
+after terminal/audit verification; terminal reports and lossless evidence retained.
+
+## 2026-10-18 - Cold breach precedes recovery trace; widened diagnostic only
+
+UTC21:16:09.336Z first conversion auto-cancels258.8671875MiB;blank247087104B,
+loaded343175168B,peak518529024B;30valid/0unavailable.2162688B input/0output/~1003.655ms,
+48MiB Wasm/64KiBread/0pending.0complete outputs; recovery hook/tracing NOT reached.
+Audit evidence/2026-10-18-recovery-startup-independent-analysis.json:818executed/
+current/post pins at audit, unchanged assets/recipes/validator,23owned births absent,
+scratch gone, normal build restored, original SHA intact, checkpoint compacted.
+No event absence/callsite inference. New coarse cold window starts before first
+conversion and closes on production codec retirement/cancel; detailed recovery
+window waits for closure. Only1MiB trace active, bounded separate archives, no flags/
+codec/UI/input/threshold/GC change.7focused tests/lint pass; changed run pending.
+
+## 2026-10-18 - V8 trace discovery failure corrected by functional capability proof
+
+UTC20:58:20.928Z:3valid fixtures/writefault passed, but metadata gate stops BEFORE
+recovery/trace; no native memory breach. Audit evidence/2026-10-18-recovery-discovery-
+independent-analysis.json verifies816pins equal at audit, exact overlays/validator,
+26births absent, scratch gone, normalbuild restored, original fullSHA unchanged.
+UTC21:11:43.044Z short browser-only probe: sameChrome/V8/revision/14flags returns0
+categories but actual Wasm/compiler events collected by explicit selection.41byte
+arithmetic fixture only,0user files/conversions; checksum200010000,14owned births
+absent/profile removed. No converter/memory/performance acceptance. Functional proof
+evidence/2026-10-17T21-11-43-044Z-recovery-trace-capability.json.gz and rawtrace under
+outputs/reports, both hash-verified/lossless. Adapter now checks exact runtime revision
+against pinned real-event proof rather than assuming category absence=unsupported.
+Bounded trace and immediate cancellation preserved; saturated data rejected/null
+missing usage. Next corrected actual recovery trace; no unchanged discovery retry.
+
+## 2026-10-18 - Bounded V8/Wasm recovery event diagnostic prepared
+
+One trace window immediately before post-write-failure recovery; unchanged production
+assets/six-output/adverse validators/lower same-instance blank/all-process250MiB gate.
+1MiBChrome buffer,8MiBserialized/1MiBgzip,256KiBread,50000events/1024groups/four markers.
+Actual category discovery, exact raw archival, no forcedGC/flags/engine changes.
+Budget note is synchronous; cancellation stays immediate; trace closes before original
+postcancel Blink profiler and in finally. Unit tests4PASS; new5files lint0warnings
+(lint-only reserved variable corrected before execution). No actual diagnostic browser
+result yet; no allocation cause/speed/memory/public acceptance asserted. Earlier
+Windows native-stack sampling already unresolved; do not rerun it unchanged.
+
 ## 2026-10-18 local - Slot reuse production qualification rejected at251.578125MiB
 
 UTC18:26:10.502Z actual private build/app324963B/SHA
