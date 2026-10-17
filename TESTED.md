@@ -1,5 +1,43 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Successful-save control yields bounded ORIGINAL memory reproducer
+
+Independent save-handoff analysis binds two real headless runs under actual full
+Chrome launch/flags/lower5min blank/exact production app/cores/I/O. First03:01:12
+attempt failed298.78125MiB before output or save handoff. Installed Playwright1.62.1
+URL-connected CDP setInputFiles materializes entire4,457,906B fixture through
+readFile/base64/Uint8Array.from(atob(...)); retained current dependency hash/source
+excerpts show the mechanism. Post-cancel JS82,235,676B/allocated119,042,048B;
+renderer V8 dump119,275,364B. Not exact peak allocation provenance. Original full
+driver already uses native DOM.setFileInputFiles; this does NOT explain its failure.
+
+Changed ONLY fixture picker to same native disk-file bypass, preserving ALL original
+independent assertion bytes. Corrected03:13:05 run completes fixture and codec->save
+handoff:96frames1920x804 MPEG2,2,245,626B/SHA8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c,
+SSIM0.983095, full decode/timestamps/exact AAC+PCM/artwork/metadata/chapters pass.
+Combined native/CIM peak494,092,288 minus same blank244,588,544 =237.9453125MiB;
+finalized fixture+validation157valid/0unavailable samples (earlier snapshot156).
+No input materialization, weaker quality, omitted processes or changed baseline.
+
+Same session ORIGINAL startup1 fits224.09375MiB then planned normal cancellation.
+ORIGINAL startup2 FAILS250.4765625MiB at507,232,256B,~760ms,input222785/output84142;
+same early checkpoint as prior long-run failure, not proof of identical cause.
+Renderer14268 adds ALL27,525,120B at adjacent native boundary. Automatic cancellation,
+no third startup,0completed/full-validated original outputs. Strict250MiB remains;
+do not round the excess away. Native/compiled-Wasm lifetime is only a hypothesis.
+Next use this bounded warm-start reproducer for allocation/candidate comparisons,
+not an unchanged three-hour conversion. No product-speed/public/full-source pass.
+
+775pre/post pins per run; baseline771current unchanged; two evolved harness files
+from failed run retain exact preimages. Corrected775current pins equal. Actual
+generated helpers replayed from archived generators/esbuild0.28.0 byte exact;
+one picker-only edit reverses exactly.51recorded births absent/reused safely,
+all owned scratch/conversions/profile/fixture data gone, normal assets restored,
+original2,958,573,265B/fullSHA intact. Two raw checkpoints losslessly compacted
+30,063=>3,958B/35,860=>4,943B then rawremoved; unique post-cancel traces retained,
+not peak object proof. Stale duplicate live receipts removed after terminal checks.
+30focused tests PASS7917.2866ms; seven-file zero-warning lint PASS. Goal incomplete.
+
 ## 2026-10-17 - ORIGINAL startup after26min idle: negative reproduction
 
 Actual02:16:33.923Z terminal plus independent original-idle analysis. Headless actual

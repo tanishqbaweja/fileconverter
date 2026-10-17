@@ -1,5 +1,59 @@
 # Remaining work audit
 
+## 2026-10-17 - Fixed CDP test-file materialization; bounded warm-start breach reproduced
+
+**Partially implemented; useful short reproducer, NOT a memory fix/public pass.**
+Independent audit `evidence/2026-10-17-save-handoff-independent-analysis.json` binds
+03:01:12.135Z and03:13:05.207Z terminals/reports/sourcearchives/traces. Prepared
+once with0executions. One completed96-frame1920x804 fixture under the actual full
+Chrome launcher is followed by unchanged ORIGINAL startup/cancellation controls,
+same page/blank/flags/heaps/defaults/250MiB. This exercises successful codec->save
+handoff without another unchanged three-hour original conversion.
+
+First attempt never reached handoff: whole-tree298.78125MiB triggered normal
+cancellation with input/output0. A concrete HARNESS problem was found in installed
+Playwright1.62.1: URL-connected CDP marks the browser non-local; setInputFiles reads
+the whole4,457,906B fixture, converts it to base64 and reconstructs it in the
+renderer with Uint8Array.from(atob(...)). Retained package source hash/excerpts
+prove that path; post-cancel page usedJS82,235,676B/allocated119,042,048B and
+renderer V8 dump119,275,364B corroborate materialization, not exact peak callsite.
+The original full driver ALREADY uses DOM.setFileInputFiles and is not explained
+by this harness issue. Only the fixture picker adapter was changed to that exact
+native disk-file bypass; every independent validation assertion remains byte exact.
+No weaker baseline, omitted process, quality change or converter substitution.
+
+Corrected fixture genuinely completed, including the save worker, and independently
+passed96frames/full decode/<=1ms timing/SSIM0.983095/exact AAC/PCM/artwork/metadata/
+chapters. Output2,245,626B, SHA8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c.
+Combined native+CIM fixture peak494,092,288B minus blank244,588,544B =237.9453125MiB;
+finalized fixture-plus-validation phase157valid/0unavailable samples (earlier native
+snapshot156). Codec/save closure/replacement observed. Fresh ORIGINAL startup1
+then reached224.09375MiB and normal planned cancellation. ORIGINAL startup2 reached
+507,232,256B =>250.4765625MiB and automatically cancelled ~760ms after starting,
+at input222785/output84142, same early checkpoint as the prior268.96MiB long-run
+failure. Renderer14268 contributes ALL27,525,120B adjacent-sample increase; actual
+allocation source remains UNPROVEN. Do not round down the0.4765625MiB excess.
+Third original startup not attempted. Completed/full-validated ORIGINAL outputs0.
+
+We now have a bounded warm-start memory-breach reproducer, not proof of identical
+allocation cause or a requirement to repeat the long conversion. Next instrument
+native/compiled-Wasm lifetime at this first-frame boundary and compare a bounded
+candidate (e.g. at most two compiled modules reused across normal worker recycling
+if evidence supports it). No forced GC, larger baseline, altered quality, omitted
+GPU, or unchanged expensive retry. Full original repeatability remains unachieved.
+
+Independent775pre/post pins per attempt; all baseline771current pins equal. Two
+evolving harness files from failed attempt have exact retained preimages; corrected
+775current pins all equal. Both actual generated JS helpers reconstructed from
+their executed generator preimages/esbuild0.28.0 and equal archived bytes/hashes;
+one picker-only edit reverses exactly. All51recorded births absent/reused safely,
+owned fixtures/conversions/profiles/candidates/wrappers/callers gone, normal assets
+restored, original2,958,573,265B/fullSHA intact. Raw checkpoints losslessly compacted
+30,063=>3,958B and35,860=>4,943B before raw removal; both uniquely scoped post-cancel
+allocation traces retained (not peak-object proof). Stale live receipts removed
+after terminal checks.30focused tests PASS7917.2866ms; seven-file zero-warning lint
+PASS. No conversion-speed gain, public profile, full-source pass or goal completion.
+
 ## 2026-10-17 - Twenty-six-minute original idle control did not reproduce excess
 
 **Partially implemented; original long-run268.9609375MiB failure still unresolved.**
