@@ -1,5 +1,49 @@
 # Remaining work audit
 
+## 2026-10-17 - Display-tree reuse candidate rejected: original startup still253.19MiB
+
+**Partially implemented; candidate NOT retained as a fix or installed publicly.**
+Independent `evidence/2026-10-17-memoized-handoff-independent-analysis.json` binds
+actual03:35:55.302Z run; preparation03:34:41.079Z executed0conversions. Composed
+the previously reversible four-display-tree reuse candidate with the exact current
+worker handoff/progress compositing. Source inspection, options, stream plan and
+capability JSX/controls reconstruct byte exactly; React rendering tests cover all
+inspection categories, selector/plan changes, batch/error/capability states and
+actual rerender reuse. No native codec, Wasm, writer, buffer, quality, progress or
+memory-sampling change. Both worker asset hashes and stylesheet remain identical
+to corrected baseline03:13:05.207Z; only delivered main-app asset changes to
+ConverterApp-D68fwMHx.js,321232B,SHA0b7072dff6d30b7a5c0c752cc169d5f08f3f1c05f9cbb77cd35772cf5ec5d0fb.
+Original application/source untouched; private overlay only, normal build restored.
+
+Same real Chrome/flags/input/settings/blank formula/250MiB gate/same-page lifecycle.
+Blank settlement311503ms; stable248,786,944B <= early253,337,600B; loaded320,536,576B.
+Complete96-frame fixture remains2,245,626B/byte-identical SHA8b0d4370.../SSIM0.983095,
+with full existing independent timing/metadata/audio/artwork/chapters/decode checks.
+Finalized fixture+validation173valid/0unavailable; first original startup113valid/
+0unavailable fits243.23046875MiB, then planned normal cancellation. Second original
+startup22valid/0unavailable breaches253.19140625MiB at514,277,376B; normal automatic
+cancellation at~793ms,input222785/output84142,fixed48MiB Wasm. Renderer31000 adds
+ALL31,297,536B across adjacent~110ms samples. Cause remains unproven. No third
+startup, no completed/full-validated ORIGINAL output, no full/profile/public pass.
+
+Corrected baseline breached250.4765625MiB. Candidate still fails; cross-session
+variation means this pair does not prove a causal regression or memory saving.
+Small fixture elapsed3068.155ms baseline versus3387.300ms candidate; one sample
+per session is NOT a speed benchmark or gain. Reject this display reuse as the
+current memory fix; do not rerun unchanged or promote it. Next focus on bounded
+worker/native/compiled-module lifetime in the warm-start reproducer, with no
+forced GC, larger baseline, hidden process, quality reduction or full-file retry.
+
+Independent ALL779 executed/current/post source pins replayed; actual generated
+main overlay reconstructed exactly from retained build preimages; delivered app,
+unchanged workers/CSS/native manifest/memory limits match proofs.25owned births
+absent/reused safely; all owned output/fixtures/profile/candidate/wrapper/caller
+data gone, normal production restored, original2,958,573,265B/fullSHA unchanged.
+3,329,802B report=>239,671B lossless gzip;34,651B nativecheckpoint=>4,964B gzip then
+rawremoved;315,041B uniquely scoped post-cancel allocation trace retained, not peak
+object/callsite proof. Stale live receipts removed after terminal checks.37focused
+tests PASS8270.8317ms; seven-file zero-warning lint PASS. Full goal remains active.
+
 ## 2026-10-17 - Fixed CDP test-file materialization; bounded warm-start breach reproduced
 
 **Partially implemented; useful short reproducer, NOT a memory fix/public pass.**

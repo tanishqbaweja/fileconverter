@@ -1,5 +1,40 @@
 # Tested conversion ledger
 
+## 2026-10-17 - UI display reuse measured and rejected as memory fix
+
+Actual03:35:55.302Z memoized-handoff terminal + independent analysis. Private
+overlay composes four unchanged display-tree memoizations with current handoff/
+progress UI; exact JSX reconstruction/React state/rerender checks pass. Native
+codecs/Wasm/writers/buffers/quality/progress and memory sampling unchanged; exact
+worker assets/CSS unchanged. Real delivered main app321232B/SHA0b7072df... differs
+from321036B baseline. Public source unchanged, normal production restored.
+
+Same Chrome/flags/input/controls/5min lower blank/same page/250MiB. Blank248,786,944B
+<= early253,337,600B; loaded320,536,576B. Complete96-frame1920x804 fixture remains
+2,245,626B/SHA8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c,
+SSIM0.983095/full independent timing/audio/metadata/artwork/chapters/decode PASS.
+Finalized fixture+validation173valid/0unavailable; ORIGINAL startup1 fits243.23046875
+MiB then normal cancellation,113valid/0unavailable. Startup2 FAILS253.19140625MiB
+at514,277,376B,~793ms,input222785/output84142,48MiB Wasm;22valid/0unavailable.
+Renderer31000 adds31,297,536B at adjacent~110ms boundary. Automatic cancellation;
+no third startup or completed/full-validated original result; allocation cause UNKNOWN.
+
+Baseline original breach250.4765625MiB; this candidate does not solve the gate.
+Single cross-session pair does not prove memory saving or causal regression.
+Fixture elapsed3068.155ms baseline/3387.300ms candidate, NOT a robust speed result.
+Rejected as current memory fix, no public installation or repeat unchanged. Next
+bounded worker/native/compiled-module-lifetime investigation; no forced GC, relaxed
+formula, removed process, reduced quality, or unchanged full-file retry.
+
+ALL779 executed/current/post pins replayed; generated app reconstructed exactly
+from archived build preimages; served app/worker/CSS/native manifest/limits verified.
+25owned births absent/reused safely; all owned output/fixtures/profile/scratch gone,
+normal production restored, original2,958,573,265B/fullSHA intact.3,329,802B report
+=>239,671B gzip;34,651B checkpoint=>4,964B gzip/rawremoved after replay;315,041B
+post-cancel trace retained (not peak allocation proof). Stale live receipts removed
+after terminal checks.37focused tests PASS8270.8317ms; seven-file zero-warning lint
+PASS. Goal/repeatability/optimization acceptance remains incomplete.
+
 ## 2026-10-17 - Successful-save control yields bounded ORIGINAL memory reproducer
 
 Independent save-handoff analysis binds two real headless runs under actual full
