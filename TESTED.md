@@ -1,5 +1,38 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Auto-scroll rejected; no observed memory benefit and incompleteABA
+
+Actual18:06:27.397Z UI-only same-page comparison completes default/auto405-route
+passes; fails exact viewport geometry BEFORE restored-default. Independent
+evidence/2026-10-17-catalogue-scroll-independent-analysis.json replays real evaluated
+layouts: identical text/x/width/height, uniform2px yoffset (smooth scrollY2 vs auto0).
+Original assertion stays FAILED; no substituted fidelity pass or completeABA claim.
+811 executed/current/post pins match at audit; all5 raw GUID dumps replay.
+Default vs auto renderer tile_memory23773184/27607040B, GPUshared_images
+26778564/30612420B, both return6553600/9558980B on idle. Overlapping values NOT summed.
+712.7861/747.0585ms not repeatable speed evidence. No observed reduction; auto-scroll
+NOT retained, no retry merely to repair viewport comparison.0media/fixtures/codec
+compiles, unchanged all-tree baseline/sampling/browser flags, no forcedGC.26owned
+births absent, scratch gone, normal build restored, original full SHA intact,
+checkpoint compacted and obsolete live receipt removed after audit. Final30 focused
+tests PASS1367.4407ms;12new files lint0warnings. Next: bounded stateless-card DOM
+reuse, not another scroll/CSS guess or unchanged full-file conversion.
+
+## 2026-10-17 - UI-only attribution identifies transient tile/shared-image allocation
+
+Production17:52:52.402Z diagnostic: two405-route traversals/17pages/24cards,5 bounded
+light dumps,30second idle,0 media fixtures/conversions/compiled codec modules. Audit
+evidence/2026-10-17-catalogue-navigation-independent-analysis.json replays all5raw
+GUID intervals and808 executed/current/post pins; same rejected-candidate assets.
+Renderer cc/tile_memory [6553600,23773184,6553600,25083904,6553600]B. GPU shared_images
+[9558980,26778564,9558980,28089284,9558980]B. Overlapping allocations NOT summed.
+GPU private [120360960,146210816,118423552,147394560,118468608]B. Worker V8malloc61496B
+and usedJS480928B unchanged. PID attribution uses exact page+worker CDP heap sizes
+plus birth identities; extension renderer retained in complete tree. Trace perturbs
+memory; no conversion acceptance/speed/callsite proof.25owned births absent, scratch
+gone, normal production restored, original full SHA intact, checkpoint compacted.
+Next: within-page default/auto/default scroll-policy diagnostic, no media rerun.
+
 ## 2026-10-17 - Corrected catalogue production run: first conversion over budget
 
 17:37:32.521Z actual Chrome production qualification passes ALL405 original cards,

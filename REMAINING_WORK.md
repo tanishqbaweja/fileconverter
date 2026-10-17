@@ -1,5 +1,67 @@
 # Remaining work audit
 
+## 2026-10-17 - Instant-scroll hypothesis not retained; ABA incomplete
+
+**Partially implemented; no optimization promoted.** Actual18:06:27.397Z same-page
+smooth/auto/smooth diagnostic completes default and auto405-route passes, then stops
+at exact viewport geometry assertion BEFORE restored-default pass. Preserve failure:
+this is NOT a successful ABA or fidelity gate. Trace replay verifies identical full
+main text and every element x/width/height, but every viewport y differs by exactly
+2px: smooth reference scrollY2 versus auto scrollY0. No threshold normalized away.
+`evidence/2026-10-17-catalogue-scroll-independent-analysis.json` retains the exact
+offset explanation, all811 executed/current/post pins, five raw GUID replays, exact
+same private app/workers/CSS and complete descendant accounting.
+
+Auto mode offers no observed tile reduction: renderer cc/tile_memory23773184B
+after default versus27607040B after auto; GPU shared_images26778564B versus30612420B.
+Both later return to6553600B/9558980B. These classes overlap; do not sum. Timing
+712.7861ms default/747.0585ms auto is one incomplete diagnostic sequence, NOT a
+matched repeatable speed result. No media files/fixtures/conversions/codec modules,
+no GC/browser flag change, no original conversion-peak callsite proof. Therefore
+reject auto-scroll as current optimization and do NOT rerun just to fix the viewport
+assertion; allocation result gives no reason to spend another full baseline on it.
+Next meaningful candidate is bounded DOM/fiber reuse for stateless catalogue cards,
+with node-identity/content/keyboard/visual proof before conversion qualification.
+
+26 owned births absent, disposable directories gone, normal production restored,
+protected test.mkv full SHA unchanged. Raw checkpoint compressed after identity
+verification; two terminal-obsolete live receipts removed only after both independent
+audits. Compact traces kept in repo. Final30 focused tests PASS1367.4407ms, all12 new
+source/test files lint0warnings. No browser-code/native change in this diagnostic
+cycle, so do not claim a newly accepted production build, speed or memory fix.
+
+## 2026-10-17 - Catalogue allocation classes measured, without media conversion
+
+**Partially implemented; previous goal turn was progress, not a verified wait.**
+New17:52:52.402Z production UI-only diagnostic completes two405-route/17page
+traversals, five sequential bounded light memory dumps and30second idle. No selected
+files, media fixtures, compiled codec modules or conversions. Exact same private
+app6b4b7d60.../codec/save/CSS assets as rejected conversion candidate. Unchanged
+lower same-instance blank policy/all descendants, no GC/browser flag change.
+`evidence/2026-10-17-catalogue-navigation-independent-analysis.json` reconstructs
+overlays, verifies all808 executed/current/post pins and replays every raw GUID-bound
+dump. Split providers merge compatibly without summing overlapping resources.
+
+Actual renderer cc/tile_memory bytes across checkpoints:
+6553600 ->23773184 ->6553600 ->25083904 ->6553600.
+GPU shared_images bytes:9558980 ->26778564 ->9558980 ->28089284 ->9558980.
+These are overlapping allocation classes, NOT additive memory savings. GPU private
+120360960 ->146210816 ->118423552 ->147394560 ->118468608B. Actual page+worker PID
+is uniquely bound by BOTH separately sampled CDP heap sizes, not generic Renderer
+name (an extension renderer also has worker malloc). Other processes remain counted.
+Worker V8 malloc61496B at all five points; page worker JS used480928B unchanged.
+This supports transient compositor tile/GPU shared-image resources during traversal,
+not monotonic retained codec buffers. It does NOT prove the earlier conversion peak
+callsite, qualify any media route or demonstrate a speed gain. All UI phases have
+valid samples and0unavailable; tracing perturbs memory, so no acceptance claim.
+
+25 owned births independently absent, runtime/profile/overlay directories gone,
+normal app/CSS restored, original full SHA unchanged; checkpoint identity-verified
+and losslessly compacted. New diagnostic and observation tests pass. Next bounded
+hypothesis test: same-page smooth/auto/smooth scroll-animation comparison, retaining
+all405 card proofs, exact visible text/geometry and six bounded dumps. No media rerun
+until evidence warrants an actual implementation change; public UI unchanged.
+
 ## 2026-10-17 - Catalogue actual conversion qualification fails; no promotion
 
 **Partially implemented; goal remains incomplete.** Corrected17:37:32.521Z run

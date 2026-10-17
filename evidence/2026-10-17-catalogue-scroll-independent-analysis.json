@@ -1,0 +1,792 @@
+{
+  "layoutReplay": {
+    "elements": 224,
+    "textIdentical": true,
+    "xWidthHeightIdentical": true,
+    "everyViewportYShiftExactlyPixels": 2,
+    "geometryAcceptancePassed": false,
+    "abaCompleted": false,
+    "note": "Original exact viewport check failed and remains failed. Replay attributes it to a uniform2px scroll offset, not resized/reflowed elements. No auto-scroll candidate retained; no retry justified by tile results."
+  },
+  "recordedAt": "2026-10-17T18:16:33.184Z",
+  "analysis": {
+    "status": "auto-scroll-not-retained-no-observed-tile-reduction-and-aba-incomplete",
+    "points": [
+      {
+        "phase": "loaded-before-navigation",
+        "rendererIdentity": {
+          "pid": 29512,
+          "parentPid": 26228,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-17T18:07:09.8379340Z",
+          "privateBytes": 40509440,
+          "rssBytes": 93097984
+        },
+        "gpuIdentity": {
+          "pid": 36188,
+          "parentPid": 26228,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-17T18:07:09.6360260Z",
+          "privateBytes": 120659968,
+          "rssBytes": 158728192
+        },
+        "state": {
+          "jobState": "idle",
+          "workerStatus": "ready",
+          "metrics": null,
+          "cards": 24,
+          "elements": 258,
+          "scrollY": 0,
+          "innerWidth": 1280,
+          "innerHeight": 900
+        },
+        "rendererCompositorBytes": 6553600,
+        "rendererBlinkBytes": 3538944,
+        "workerV8MallocBytes": 61496,
+        "gpuAllocatorBytes": 11480540,
+        "gpuSkiaBytes": 293616,
+        "summedAllocatorTotal": null
+      },
+      {
+        "phase": "after-first-navigation",
+        "rendererIdentity": {
+          "pid": 29512,
+          "parentPid": 26228,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-17T18:07:09.8379340Z",
+          "privateBytes": 60338176,
+          "rssBytes": 119390208
+        },
+        "gpuIdentity": {
+          "pid": 36188,
+          "parentPid": 26228,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-17T18:07:09.6360260Z",
+          "privateBytes": 146358272,
+          "rssBytes": 185298944
+        },
+        "state": {
+          "jobState": "idle",
+          "workerStatus": "ready",
+          "metrics": null,
+          "cards": 24,
+          "elements": 258,
+          "scrollY": 2,
+          "innerWidth": 1280,
+          "innerHeight": 900
+        },
+        "rendererCompositorBytes": 23773968,
+        "rendererBlinkBytes": 13369424,
+        "workerV8MallocBytes": 61496,
+        "gpuAllocatorBytes": 28777569,
+        "gpuSkiaBytes": 535655,
+        "summedAllocatorTotal": null
+      },
+      {
+        "phase": "after-first-idle",
+        "rendererIdentity": {
+          "pid": 29512,
+          "parentPid": 26228,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-17T18:07:09.8379340Z",
+          "privateBytes": 47673344,
+          "rssBytes": 110018560
+        },
+        "gpuIdentity": {
+          "pid": 36188,
+          "parentPid": 26228,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-17T18:07:09.6360260Z",
+          "privateBytes": 140963840,
+          "rssBytes": 180305920
+        },
+        "state": {
+          "jobState": "idle",
+          "workerStatus": "ready",
+          "metrics": null,
+          "cards": 24,
+          "elements": 258,
+          "scrollY": 2,
+          "innerWidth": 1280,
+          "innerHeight": 900
+        },
+        "rendererCompositorBytes": 6554384,
+        "rendererBlinkBytes": 10092624,
+        "workerV8MallocBytes": 61496,
+        "gpuAllocatorBytes": 11554337,
+        "gpuSkiaBytes": 532007,
+        "summedAllocatorTotal": null
+      },
+      {
+        "phase": "after-second-navigation",
+        "rendererIdentity": {
+          "pid": 29512,
+          "parentPid": 26228,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-17T18:07:09.8379340Z",
+          "privateBytes": 57323520,
+          "rssBytes": 120082432
+        },
+        "gpuIdentity": {
+          "pid": 36188,
+          "parentPid": 26228,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-17T18:07:09.6360260Z",
+          "privateBytes": 160505856,
+          "rssBytes": 199405568
+        },
+        "state": {
+          "jobState": "idle",
+          "workerStatus": "ready",
+          "metrics": null,
+          "cards": 24,
+          "elements": 259,
+          "scrollY": 0,
+          "innerWidth": 1280,
+          "innerHeight": 900
+        },
+        "rendererCompositorBytes": 27607824,
+        "rendererBlinkBytes": 13107280,
+        "workerV8MallocBytes": 61496,
+        "gpuAllocatorBytes": 32609377,
+        "gpuSkiaBytes": 532007,
+        "summedAllocatorTotal": null
+      },
+      {
+        "phase": "after-thirty-second-idle",
+        "rendererIdentity": {
+          "pid": 29512,
+          "parentPid": 26228,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-17T18:07:09.8379340Z",
+          "privateBytes": 55406592,
+          "rssBytes": 118288384
+        },
+        "gpuIdentity": {
+          "pid": 36188,
+          "parentPid": 26228,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-17T18:07:09.6360260Z",
+          "privateBytes": 135503872,
+          "rssBytes": 174817280
+        },
+        "state": {
+          "jobState": "idle",
+          "workerStatus": "ready",
+          "metrics": null,
+          "cards": 24,
+          "elements": 259,
+          "scrollY": 0,
+          "innerWidth": 1280,
+          "innerHeight": 900
+        },
+        "rendererCompositorBytes": 6553600,
+        "rendererBlinkBytes": 13107280,
+        "workerV8MallocBytes": 61496,
+        "gpuAllocatorBytes": 11615628,
+        "gpuSkiaBytes": 530962,
+        "summedAllocatorTotal": null
+      }
+    ],
+    "diagnosticPerturbsMemory": true,
+    "mediaConversions": 0,
+    "publicAcceptance": false,
+    "abaCompleted": false,
+    "autoScrollRetained": false,
+    "speedGainProven": false,
+    "causalMemoryGainProven": false,
+    "repeatUnchanged": false,
+    "summedAllocatorTotal": null
+  },
+  "tileEvidence": [
+    {
+      "phase": "loaded-before-navigation",
+      "rendererIdentity": {
+        "pid": 29512,
+        "parentPid": 26228,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:07:09.8379340Z",
+        "privateBytes": 40509440,
+        "rssBytes": 93097984
+      },
+      "gpuIdentity": {
+        "pid": 36188,
+        "parentPid": 26228,
+        "type": "gpu-process",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:07:09.6360260Z",
+        "privateBytes": 120659968,
+        "rssBytes": 158728192
+      },
+      "rendererTileMemoryBytes": 6553600,
+      "gpuSharedImagesBytes": 9558980,
+      "summedTotal": null,
+      "overlappingResourcesNotSummed": true
+    },
+    {
+      "phase": "after-first-navigation",
+      "rendererIdentity": {
+        "pid": 29512,
+        "parentPid": 26228,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:07:09.8379340Z",
+        "privateBytes": 60338176,
+        "rssBytes": 119390208
+      },
+      "gpuIdentity": {
+        "pid": 36188,
+        "parentPid": 26228,
+        "type": "gpu-process",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:07:09.6360260Z",
+        "privateBytes": 146358272,
+        "rssBytes": 185298944
+      },
+      "rendererTileMemoryBytes": 23773184,
+      "gpuSharedImagesBytes": 26778564,
+      "summedTotal": null,
+      "overlappingResourcesNotSummed": true
+    },
+    {
+      "phase": "after-first-idle",
+      "rendererIdentity": {
+        "pid": 29512,
+        "parentPid": 26228,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:07:09.8379340Z",
+        "privateBytes": 47673344,
+        "rssBytes": 110018560
+      },
+      "gpuIdentity": {
+        "pid": 36188,
+        "parentPid": 26228,
+        "type": "gpu-process",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:07:09.6360260Z",
+        "privateBytes": 140963840,
+        "rssBytes": 180305920
+      },
+      "rendererTileMemoryBytes": 6553600,
+      "gpuSharedImagesBytes": 9558980,
+      "summedTotal": null,
+      "overlappingResourcesNotSummed": true
+    },
+    {
+      "phase": "after-second-navigation",
+      "rendererIdentity": {
+        "pid": 29512,
+        "parentPid": 26228,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:07:09.8379340Z",
+        "privateBytes": 57323520,
+        "rssBytes": 120082432
+      },
+      "gpuIdentity": {
+        "pid": 36188,
+        "parentPid": 26228,
+        "type": "gpu-process",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:07:09.6360260Z",
+        "privateBytes": 160505856,
+        "rssBytes": 199405568
+      },
+      "rendererTileMemoryBytes": 27607040,
+      "gpuSharedImagesBytes": 30612420,
+      "summedTotal": null,
+      "overlappingResourcesNotSummed": true
+    },
+    {
+      "phase": "after-thirty-second-idle",
+      "rendererIdentity": {
+        "pid": 29512,
+        "parentPid": 26228,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:07:09.8379340Z",
+        "privateBytes": 55406592,
+        "rssBytes": 118288384
+      },
+      "gpuIdentity": {
+        "pid": 36188,
+        "parentPid": 26228,
+        "type": "gpu-process",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-10-17T18:07:09.6360260Z",
+        "privateBytes": 135503872,
+        "rssBytes": 174817280
+      },
+      "rendererTileMemoryBytes": 6553600,
+      "gpuSharedImagesBytes": 9558980,
+      "summedTotal": null,
+      "overlappingResourcesNotSummed": true
+    }
+  ],
+  "ownSources": {
+    "scripts/analyze-catalogue-scroll.mjs": {
+      "sha256": "dcdadcb22135145b706907e129ad5aa014889779a76fafe60c094875f5517d52",
+      "preimage": "aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyBleGVjRmlsZSB9IGZyb20gIm5vZGU6Y2hpbGRfcHJvY2VzcyI7CmltcG9ydCB7IHJlYWRGaWxlIH0gZnJvbSAibm9kZTpmcy9wcm9taXNlcyI7CmltcG9ydCBwYXRoIGZyb20gIm5vZGU6cGF0aCI7CmltcG9ydCB7IHBhdGhUb0ZpbGVVUkwgfSBmcm9tICJub2RlOnVybCI7CmltcG9ydCB7IHByb21pc2lmeSB9IGZyb20gIm5vZGU6dXRpbCI7CmltcG9ydCB7IGV4YWN0UGF0Y2ggfSBmcm9tICIuL2xpYi9lYm1sLXJldXNlLWJyb3dzZXItY29tcG9uZW50cy5tanMiOwpjb25zdCByb290ID0gcGF0aC5yZXNvbHZlKGltcG9ydC5tZXRhLmRpcm5hbWUsICIuLiIpOwovLyBSZXBsYXkgdGhlIGFjdHVhbCBQbGF5d3JpZ2h0IGV2YWx1YXRpb24gcmVzdWx0czogcHJlc2VydmUgYWxsIHRleHQgYW5kIGFsbAovLzI1OGVsZW1lbnQgYm94IGRpbWVuc2lvbnMsIGRpc3Rpbmd1aXNoIHZpZXdwb3J0IHRyYW5zbGF0aW9uIGZyb20gY2hhbmdlZCBsYXlvdXQuCmFzeW5jIGZ1bmN0aW9uIGluc3BlY3RTY3JvbGxMYXlvdXRUcmFjZSgpIHsKICBjb25zdCBmaWxlID0gcGF0aC5qb2luKHJvb3QsICJvdXRwdXRzL3JlcG9ydHMvMjAyNi0xMC0xN1QxOC0wNy0wMC03MzlaLXByaXZhdGUtbXBlZzItdXBkYXRlZC1jaHJvbWUtZnVsbC1uYXRpdmUtMTAwbXMtdHJhY2UuemlwIik7CiAgY29uc3QgY29tbWFuZCA9ICJbQ29uc29sZV06Ok91dHB1dEVuY29kaW5nPVtUZXh0LlVURjhFbmNvZGluZ106Om5ldygkZmFsc2UpO0FkZC1UeXBlIC1Bc3NlbWJseU5hbWUgU3lzdGVtLklPLkNvbXByZXNzaW9uLkZpbGVTeXN0ZW07JHNjcm9sbEFyY2hpdmU9W0lPLkNvbXByZXNzaW9uLlppcEZpbGVdOjpPcGVuUmVhZCgnIiArIGZpbGUucmVwbGFjZUFsbCgiJyIsICInJyIpICsgIicpO3RyeXskc2Nyb2xsUmVhZGVyPVtJTy5TdHJlYW1SZWFkZXJdOjpuZXcoJHNjcm9sbEFyY2hpdmUuR2V0RW50cnkoJ3RyYWNlLnRyYWNlJykuT3BlbigpKTt0cnl7W0NvbnNvbGVdOjpXcml0ZSgkc2Nyb2xsUmVhZGVyLlJlYWRUb0VuZCgpKX1maW5hbGx5eyRzY3JvbGxSZWFkZXIuRGlzcG9zZSgpfX1maW5hbGx5eyRzY3JvbGxBcmNoaXZlLkRpc3Bvc2UoKX0iOwogIGNvbnN0IHsgc3Rkb3V0IH0gPSBhd2FpdCBwcm9taXNpZnkoZXhlY0ZpbGUpKCJwb3dlcnNoZWxsLmV4ZSIsIFsiLU5vUHJvZmlsZSIsICItTm9uSW50ZXJhY3RpdmUiLCAiLUNvbW1hbmQiLCBjb21tYW5kXSwgeyB3aW5kb3dzSGlkZTogdHJ1ZSwgdGltZW91dDogMTUwMDAsIG1heEJ1ZmZlcjogMjA5NzE1MiB9KTsKICBjb25zdCBkZWNvZGUgPSB2YWx1ZSA9PiAicyIgaW4gdmFsdWUgPyB2YWx1ZS5zIDogIm4iIGluIHZhbHVlID8gdmFsdWUubiA6IHZhbHVlLmEgPyB2YWx1ZS5hLm1hcChkZWNvZGUpIDogdmFsdWUubyA/IE9iamVjdC5mcm9tRW50cmllcyh2YWx1ZS5vLm1hcChyb3cgPT4gW3Jvdy5rLCBkZWNvZGUocm93LnYpXSkpIDogdmFsdWUudjsKICBjb25zdCBsYXlvdXRzID0gW107CiAgZm9yIChjb25zdCBsaW5lIG9mIHN0ZG91dC5zcGxpdCgvXHI/XG4vKS5maWx0ZXIoQm9vbGVhbikpIHsKICAgIGNvbnN0IHJvdyA9IEpTT04ucGFyc2UobGluZSk7IGlmIChyb3cudHlwZSAhPT0gImFmdGVyIiB8fCAhcm93LnJlc3VsdD8udmFsdWU/Lm8/LnNvbWUoZmllbGQgPT4gZmllbGQuayA9PT0gImJveGVzIikpIGNvbnRpbnVlOwogICAgbGF5b3V0cy5wdXNoKGRlY29kZShyb3cucmVzdWx0LnZhbHVlKSk7CiAgfQogIGFzc2VydC5lcXVhbChsYXlvdXRzLmxlbmd0aCwgMik7IGFzc2VydC5lcXVhbChsYXlvdXRzWzBdLnRleHQsIGxheW91dHNbMV0udGV4dCk7IGFzc2VydC5lcXVhbChsYXlvdXRzWzBdLmJveGVzLmxlbmd0aCwgbGF5b3V0c1sxXS5ib3hlcy5sZW5ndGgpOwogIGZvciAobGV0IGluZGV4ID0gMDsgaW5kZXggPCBsYXlvdXRzWzBdLmJveGVzLmxlbmd0aDsgaW5kZXgrKykgewogICAgY29uc3QgYmVmb3JlID0gbGF5b3V0c1swXS5ib3hlc1tpbmRleF0sIGFmdGVyID0gbGF5b3V0c1sxXS5ib3hlc1tpbmRleF07CiAgICBhc3NlcnQuZGVlcEVxdWFsKFtiZWZvcmVbMF0sIGJlZm9yZVsxXSwgYmVmb3JlWzNdLCBiZWZvcmVbNF1dLCBbYWZ0ZXJbMF0sIGFmdGVyWzFdLCBhZnRlclszXSwgYWZ0ZXJbNF1dKTsKICAgIGFzc2VydC5lcXVhbChhZnRlclsyXSAtIGJlZm9yZVsyXSwgMik7CiAgfQogIHJldHVybiB7IGVsZW1lbnRzOiBsYXlvdXRzWzBdLmJveGVzLmxlbmd0aCwgdGV4dElkZW50aWNhbDogdHJ1ZSwgeFdpZHRoSGVpZ2h0SWRlbnRpY2FsOiB0cnVlLAogICAgZXZlcnlWaWV3cG9ydFlTaGlmdEV4YWN0bHlQaXhlbHM6IDIsIGdlb21ldHJ5QWNjZXB0YW5jZVBhc3NlZDogZmFsc2UsIGFiYUNvbXBsZXRlZDogZmFsc2UsCiAgICBub3RlOiAiT3JpZ2luYWwgZXhhY3Qgdmlld3BvcnQgY2hlY2sgZmFpbGVkIGFuZCByZW1haW5zIGZhaWxlZC4gUmVwbGF5IGF0dHJpYnV0ZXMgaXQgdG8gYSB1bmlmb3JtMnB4IHNjcm9sbCBvZmZzZXQsIG5vdCByZXNpemVkL3JlZmxvd2VkIGVsZW1lbnRzLiBObyBhdXRvLXNjcm9sbCBjYW5kaWRhdGUgcmV0YWluZWQ7IG5vIHJldHJ5IGp1c3RpZmllZCBieSB0aWxlIHJlc3VsdHMuIiB9Owp9Cmdsb2JhbFRoaXMuX19jYXRhbG9ndWVTY3JvbGxMYXlvdXRQcm9vZiA9IGF3YWl0IGluc3BlY3RTY3JvbGxMYXlvdXRUcmFjZSgpOwpjb25zdCBzb3VyY2UgPSBhd2FpdCByZWFkRmlsZShwYXRoLmpvaW4ocm9vdCwgInNjcmlwdHMvYW5hbHl6ZS1jYXRhbG9ndWUtbmF2aWdhdGlvbi5tanMiKSwgInV0ZjgiKTsKbGV0IGdlbmVyYXRlZCA9IGV4YWN0UGF0Y2goc291cmNlLCBbCiAgWydpbXBvcnQgeyBpbnNwZWN0Q2F0YWxvZ3VlTmF2aWdhdGlvbiB9IGZyb20gIi4vbGliL2NhdGFsb2d1ZS1uYXZpZ2F0aW9uLW9ic2VydmF0aW9uLm1qcyI7JywgJ2ltcG9ydCB7IGluc3BlY3RDYXRhbG9ndWVTY3JvbGxEaWFnbm9zdGljIGFzIGluc3BlY3RDYXRhbG9ndWVOYXZpZ2F0aW9uIH0gZnJvbSAiLi9saWIvY2F0YWxvZ3VlLXNjcm9sbC1vYnNlcnZhdGlvbi5tanMiOyddLAogIFsnImV2aWRlbmNlLzIwMjYtMTAtMTdUMTctNTItNTItNDAyWi1jYXRhbG9ndWUtbmF2aWdhdGlvbi1jb250cm9sLXRlcm1pbmFsLmpzb24iJywgJyJldmlkZW5jZS8yMDI2LTEwLTE3VDE4LTA2LTI3LTM5N1otY2F0YWxvZ3VlLXNjcm9sbC1jb250cm9sLXRlcm1pbmFsLmpzb24iJ10sCiAgWydPYmplY3Qua2V5cyhzb3VyY2UucGlucykubGVuZ3RoLCA4MDgnLCAnT2JqZWN0LmtleXMoc291cmNlLnBpbnMpLmxlbmd0aCwgODExJ10sCiAgWycic2NyaXB0cy9hbmFseXplLWNhdGFsb2d1ZS1uYXZpZ2F0aW9uLm1qcyIsICJzY3JpcHRzL2xpYi9jYXRhbG9ndWUtbmF2aWdhdGlvbi1vYnNlcnZhdGlvbi5tanMiLCAidGVzdHMvY2F0YWxvZ3VlLW5hdmlnYXRpb24tb2JzZXJ2YXRpb24udGVzdC5tanMiJywKICAgICcic2NyaXB0cy9hbmFseXplLWNhdGFsb2d1ZS1zY3JvbGwubWpzIiwgInNjcmlwdHMvbGliL2NhdGFsb2d1ZS1zY3JvbGwtb2JzZXJ2YXRpb24ubWpzIiwgInRlc3RzL2NhdGFsb2d1ZS1zY3JvbGwtb2JzZXJ2YXRpb24udGVzdC5tanMiJ10sCiAgWydhbGw4MDhFeGVjdXRlZEN1cnJlbnRQb3N0UGluc0VxdWFsOiB0cnVlJywgJ2FsbDgxMUV4ZWN1dGVkQ3VycmVudFBvc3RQaW5zRXF1YWw6IHRydWUnXSwKICBbJ2NvbnN0IHJlc3VsdCA9IHsgcmVjb3JkZWRBdDonLCAnY29uc3QgcmVzdWx0ID0geyBsYXlvdXRSZXBsYXk6Z2xvYmFsVGhpcy5fX2NhdGFsb2d1ZVNjcm9sbExheW91dFByb29mLCByZWNvcmRlZEF0OiddLAogIFsnImV2aWRlbmNlLzIwMjYtMTAtMTctY2F0YWxvZ3VlLW5hdmlnYXRpb24taW5kZXBlbmRlbnQtYW5hbHlzaXMuanNvbiInLCAnImV2aWRlbmNlLzIwMjYtMTAtMTctY2F0YWxvZ3VlLXNjcm9sbC1pbmRlcGVuZGVudC1hbmFseXNpcy5qc29uIiddLAogIFsnT2JzZXJ2ZWQgdHJhbnNpZW50IGNjL3RpbGVfbWVtb3J5IGFuZCBHUFUgc2hhcmVkX2ltYWdlcyBleHBhbmQgb24gbmF2aWdhdGlvbiBhbmQgc2hyaW5rIG9uIGlkbGUuIFRlc3QgYSBuYXJyb3dseSBzY29wZWQgc2Nyb2xsLWFuaW1hdGlvbiBjYW5kaWRhdGUgaW4gYSB3aXRoaW4tc2Vzc2lvbiBkZWZhdWx0L2F1dG8vZGVmYXVsdCBVSSBjb21wYXJpc29uIGJlZm9yZSBjb252ZXJzaW9uIHF1YWxpZmljYXRpb24uIERvIG5vdCBjbGFpbSB0aGUgZWFybGllciBjb252ZXJzaW9uIHBlYWsgY2FsbHNpdGUgaXMgcHJvdmVkLCBmb3JjZSBHQywgb21pdCBwcm9jZXNzZXMgb3IgY2hhbmdlIGNvZGVjL21lZGlhIGZpZGVsaXR5LicsCiAgICAnRG8gbm90IHJldGFpbiBvciByZXBlYXQgYXV0by1zY3JvbGw6IG5vIG9ic2VydmVkIHRpbGUgcmVkdWN0aW9uIGFuZCBBQkEgaW5jb21wbGV0ZS4gS2VlcCB2aWV3cG9ydCBmYWlsdXJlIGFzIGZhaWx1cmUsIHdpdGggZXhhY3QgdHJhY2UgYXR0cmlidXRpb24gdG8ycHggc2Nyb2xsIG9mZnNldC4gSW52ZXN0aWdhdGUgYm91bmRlZCBjYXRhbG9ndWUgRE9NL2ZpYmVyIHJldXNlIG5leHQgd2l0aG91dCBjaGFuZ2luZyBjb252ZXJzaW9uIHRocmVzaG9sZHMgb3IgcmVwZWF0aW5nIG11bHRpLWhvdXIgc3RyZXNzLiddLAogIFsncGF0aC5yZXNvbHZlKGltcG9ydC5tZXRhLmRpcm5hbWUsICIuLiIpJywgSlNPTi5zdHJpbmdpZnkocm9vdCldLApdKS5nZW5lcmF0ZWQ7CmdlbmVyYXRlZCA9IGdlbmVyYXRlZC5yZXBsYWNlQWxsKC9mcm9tICIoXC5cL2xpYlwvW14iXG5dKykiL2csIChfLCByZWxhdGl2ZSkgPT4gYGZyb20gJHtKU09OLnN0cmluZ2lmeShwYXRoVG9GaWxlVVJMKHBhdGguam9pbihyb290LCAic2NyaXB0cyIsIHJlbGF0aXZlKSkuaHJlZil9YCkKICAucmVwbGFjZSgnaW1wb3J0ICIuL2xpYi9yZWxpYWJsZS1yZWFkb25seS1wcmVmbGlnaHQubWpzIjsnLCBgaW1wb3J0ICR7SlNPTi5zdHJpbmdpZnkocGF0aFRvRmlsZVVSTChwYXRoLmpvaW4ocm9vdCwgInNjcmlwdHMvbGliL3JlbGlhYmxlLXJlYWRvbmx5LXByZWZsaWdodC5tanMiKSkuaHJlZil9O2ApOwp0cnkgeyBhd2FpdCBpbXBvcnQoYGRhdGE6dGV4dC9qYXZhc2NyaXB0O2Jhc2U2NCwke0J1ZmZlci5mcm9tKGdlbmVyYXRlZCkudG9TdHJpbmcoImJhc2U2NCIpfWApOyB9CmZpbmFsbHkgeyBkZWxldGUgZ2xvYmFsVGhpcy5fX2NhdGFsb2d1ZVNjcm9sbExheW91dFByb29mOyB9Cg=="
+    },
+    "scripts/lib/catalogue-scroll-observation.mjs": {
+      "sha256": "17968426b36dfbc9bf04184b9fa56f20e5149901f1b6118a33773b4479c2e104",
+      "preimage": "aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyBtZXJnZUxpZmVjeWNsZVByb3ZpZGVycyB9IGZyb20gIi4vbGlmZWN5Y2xlLWFsbG9jYXRpb24tb2JzZXJ2YXRpb24ubWpzIjsKZXhwb3J0IGZ1bmN0aW9uIGluc3BlY3RDYXRhbG9ndWVTY3JvbGxEaWFnbm9zdGljKHRlcm1pbmFsLCByZXBvcnQpIHsKICBhc3NlcnQuZXF1YWwodGVybWluYWwuc3RhdHVzLCAiZmFpbGVkLW5vdC1hY2NlcHRlZCIpOyBhc3NlcnQuZGVlcEVxdWFsKHRlcm1pbmFsLmNsZWFudXBFcnJvcnMsIFtdKTsKICBmb3IgKGNvbnN0IGtleSBvZiBbInByb2R1Y3Rpb25SZXN0b3JlZCIsICJ3cmFwcGVyUmVtb3ZlZCIsICJjYW5kaWRhdGVSZW1vdmVkIl0pIGFzc2VydC5lcXVhbCh0ZXJtaW5hbFtrZXldLCB0cnVlKTsKICBhc3NlcnQuZXF1YWwocmVwb3J0LnN0YXR1cywgImZhaWxlZC1jYXRhbG9ndWUtc2Nyb2xsLXBvbGljeS1kaWFnbm9zdGljIik7CiAgYXNzZXJ0Lm9rKHJlcG9ydC5mYWlsdXJlLm1lc3NhZ2Uuc3RhcnRzV2l0aCgiQ2hhbmdpbmcgb25seSBzY3JvbGwgYW5pbWF0aW9uIHByZXNlcnZlcyBldmVyeSB2aXNpYmxlIHRleHQgYW5kIGJveCIpKTsKICBhc3NlcnQuZXF1YWwocmVwb3J0LnJlcXVlc3RlZENvbXBsZXRlZENvbnZlcnNpb25zLCAwKTsgYXNzZXJ0LmVxdWFsKHJlcG9ydC5yZXF1ZXN0ZWRTbWFsbENvbXBsZXRlZENvbnZlcnNpb25zLCAwKTsgYXNzZXJ0LmVxdWFsKHJlcG9ydC5ydW5zLmxlbmd0aCwgMCk7CiAgYXNzZXJ0LmRlZXBFcXVhbChyZXBvcnQucHJvZ3Jlc3NQcm9iZS5jb21waWxlZENhY2hlRXZlbnRzLCBbXSk7IGFzc2VydC5kZWVwRXF1YWwocmVwb3J0LmZvcmJpZGRlblJlcXVlc3RzLCBbXSk7CiAgYXNzZXJ0LmVxdWFsKHJlcG9ydC5ibGFua0Jhc2VsaW5lLnN0YWJsZSwgdHJ1ZSk7IGFzc2VydC5vayhyZXBvcnQuYmxhbmtCYXNlbGluZS5wcml2YXRlQnl0ZXMgPD0gcmVwb3J0LnN0YXJ0dXBTZXR0bGVtZW50LmVhcmx5V2luZG93LnByaXZhdGVCeXRlcyk7CiAgYXNzZXJ0Lm9rKHJlcG9ydC5zdGFydHVwU2V0dGxlbWVudC5hY3R1YWxNcyA+PSAzMDAwMDApOyBhc3NlcnQuZXF1YWwocmVwb3J0LmxpbWl0TWlCLCAyNTApOwogIGZvciAoY29uc3Qga2V5IG9mIFsiYm91bmRlZENhdGFsb2d1ZSIsICJzZWNvbmRDYXRhbG9ndWVOYXZpZ2F0aW9uIl0pIHsKICAgIGNvbnN0IHJvdyA9IHJlcG9ydC5wcm9ncmVzc1Byb2JlW2tleV07IGFzc2VydC5lcXVhbChyb3cucm91dGVDb3VudCwgNDA1KTsgYXNzZXJ0LmVxdWFsKHJvdy5wYWdlc1Zpc2l0ZWQsIDE3KTsKICAgIGFzc2VydC5lcXVhbChyb3cubWF4TW91bnRlZCwgMjQpOyBhc3NlcnQuZXF1YWwocm93LmV2ZXJ5T3JpZ2luYWxDYXJkSWRlbnRpY2FsLCB0cnVlKTsgYXNzZXJ0LmVxdWFsKHJvdy5ldmVyeVJlZ2lzdHJ5SWRBdmFpbGFibGUsIHRydWUpOwogIH0KICBhc3NlcnQuZXF1YWwocmVwb3J0LnByb2dyZXNzUHJvYmUudGhpcmRDYXRhbG9ndWVOYXZpZ2F0aW9uLCB1bmRlZmluZWQpOyBhc3NlcnQuZXF1YWwocmVwb3J0LnByb2dyZXNzUHJvYmUuc2Nyb2xsUG9saWN5Q29tcGFyaXNvbiwgdW5kZWZpbmVkKTsKICBhc3NlcnQuZGVlcEVxdWFsKHJlcG9ydC5wcm9ncmVzc1Byb2JlLm5hdmlnYXRpb25UaW1pbmdzLm1hcChyb3cgPT4gcm93Lm1vZGUpLCBbImRlZmF1bHQtYmVmb3JlIiwgImF1dG8iXSk7CiAgY29uc3QgZGlhZ25vc3RpYyA9IHJlcG9ydC5wcm9ncmVzc1Byb2JlLmNhdGFsb2d1ZUF0dHJpYnV0aW9uOwogIGFzc2VydC5lcXVhbChkaWFnbm9zdGljLnBlcnR1cmJzTWVtb3J5LCB0cnVlKTsgYXNzZXJ0LmVxdWFsKGRpYWdub3N0aWMubm9Gb3JjZWRHYywgdHJ1ZSk7IGFzc2VydC5lcXVhbChkaWFnbm9zdGljLmFjY2VwdGFuY2VNZXRyaWMsIGZhbHNlKTsKICBhc3NlcnQuZXF1YWwoZGlhZ25vc3RpYy5tYXhpbXVtUGVuZGluZywgMSk7IGFzc2VydC5lcXVhbChkaWFnbm9zdGljLmNoZWNrcG9pbnRzLmxlbmd0aCwgNSk7CiAgY29uc3QgcG9pbnRzID0gZGlhZ25vc3RpYy5jaGVja3BvaW50cy5tYXAocm93ID0+IHsKICAgIGFzc2VydC5lcXVhbChyb3cuZXJyb3IsIG51bGwpOyBhc3NlcnQuZXF1YWwocm93LmRldGFjaGVkLCB0cnVlKTsgYXNzZXJ0LmVxdWFsKHJvdy5zdGF0ZS5qb2JTdGF0ZSwgImlkbGUiKTsgYXNzZXJ0LmVxdWFsKHJvdy5zdGF0ZS5tZXRyaWNzLCBudWxsKTsKICAgIGNvbnN0IHByb3ZpZGVycyA9IG1lcmdlTGlmZWN5Y2xlUHJvdmlkZXJzKHJvdy5zdW1tYXJ5LnByb2Nlc3NlcyksIHBhZ2VSZWFsbSA9IHJvdy5yZWFsbXMudGFyZ2V0cy5maWx0ZXIodGFyZ2V0ID0+IHRhcmdldC50eXBlID09PSAicGFnZSIpLCB3b3JrZXJSZWFsbSA9IHJvdy5yZWFsbXMudGFyZ2V0cy5maWx0ZXIodGFyZ2V0ID0+IHRhcmdldC50eXBlID09PSAid29ya2VyIik7CiAgICBhc3NlcnQuZXF1YWwocGFnZVJlYWxtLmxlbmd0aCwgMSk7IGFzc2VydC5lcXVhbCh3b3JrZXJSZWFsbS5sZW5ndGgsIDEpOwogICAgY29uc3QgcGFnZXMgPSBwcm92aWRlcnMuZmlsdGVyKHAgPT4gcC5hbGxvY2F0b3JzWyJ2OC9tYWluL2hlYXAiXT8uc2l6ZSA9PT0gcGFnZVJlYWxtWzBdLmFsbG9jYXRlZEpTSGVhcEJ5dGVzICYmIHAuYWxsb2NhdG9yc1sidjgvd29ya2Vycy9oZWFwIl0/LnNpemUgPT09IHdvcmtlclJlYWxtWzBdLmFsbG9jYXRlZEpTSGVhcEJ5dGVzKTsKICAgIGFzc2VydC5lcXVhbChwYWdlcy5sZW5ndGgsIDEpOyBjb25zdCBwYWdlID0gcGFnZXNbMF0sIGdwdSA9IHByb3ZpZGVycy5maW5kKHAgPT4gcC5pZGVudGl0eT8udHlwZSA9PT0gImdwdS1wcm9jZXNzIik7IGFzc2VydC5vayhncHUpOwogICAgY29uc3QgdmFsdWUgPSAocHJvY2Vzcywga2V5KSA9PiBwcm9jZXNzLmFsbG9jYXRvcnNba2V5XT8uc2l6ZSA/PyBudWxsOwogICAgcmV0dXJuIHsgcGhhc2U6IHJvdy5waGFzZSwgcmVuZGVyZXJJZGVudGl0eTogcGFnZS5pZGVudGl0eSwgZ3B1SWRlbnRpdHk6IGdwdS5pZGVudGl0eSwgc3RhdGU6IHJvdy5zdGF0ZSwKICAgICAgcmVuZGVyZXJDb21wb3NpdG9yQnl0ZXM6IHZhbHVlKHBhZ2UsICJjYyIpLCByZW5kZXJlckJsaW5rQnl0ZXM6IHZhbHVlKHBhZ2UsICJibGlua19nYyIpLCB3b3JrZXJWOE1hbGxvY0J5dGVzOiB2YWx1ZShwYWdlLCAidjgvd29ya2Vycy9tYWxsb2MiKSwKICAgICAgZ3B1QWxsb2NhdG9yQnl0ZXM6IHZhbHVlKGdwdSwgImdwdSIpLCBncHVTa2lhQnl0ZXM6IHZhbHVlKGdwdSwgInNraWEiKSwgc3VtbWVkQWxsb2NhdG9yVG90YWw6IG51bGwgfTsKICB9KTsKICBhc3NlcnQub2socG9pbnRzWzNdLnJlbmRlcmVyQ29tcG9zaXRvckJ5dGVzID49IHBvaW50c1sxXS5yZW5kZXJlckNvbXBvc2l0b3JCeXRlcywgIk5vIG9ic2VydmVkIHJlZHVjdGlvbiB0byBqdXN0aWZ5IGEgY29udmVyc2lvbiByZXRyeSIpOwogIGZvciAoY29uc3Qgcm93IG9mIHJlcG9ydC5uYXRpdmVNZW1vcnkucGhhc2VzLmZpbHRlcihyb3cgPT4gIS9ibGFua3xmaW5hbGx5Ly50ZXN0KHJvdy5waGFzZSkpKSB7IGFzc2VydC5vayhyb3cudmFsaWRTYW1wbGVzID4gMCk7IGFzc2VydC5lcXVhbChyb3cudW5hdmFpbGFibGVTYW1wbGVzLCAwKTsgfQogIGZvciAoY29uc3Qga2V5IG9mIFsibWVkaWFQcm9maWxlUnVudGltZVJlbW92ZWQiLCAiZ2VuZXJhdGVkRGlzdFJlc3RvcmVkIiwgInByb3RlY3RlZEZpeHR1cmVVbmNoYW5nZWQiLCAib2JzZXJ2ZXJTdG9wcGVkIiwgInNhbXBsZWRDaHJvbWVSb290U3RvcHBlZCJdKSBhc3NlcnQuZXF1YWwocmVwb3J0LmNsZWFudXBba2V5XSwgdHJ1ZSk7CiAgcmV0dXJuIHsgc3RhdHVzOiAiYXV0by1zY3JvbGwtbm90LXJldGFpbmVkLW5vLW9ic2VydmVkLXRpbGUtcmVkdWN0aW9uLWFuZC1hYmEtaW5jb21wbGV0ZSIsIHBvaW50cywKICAgIGRpYWdub3N0aWNQZXJ0dXJic01lbW9yeTogdHJ1ZSwgbWVkaWFDb252ZXJzaW9uczogMCwgcHVibGljQWNjZXB0YW5jZTogZmFsc2UsIGFiYUNvbXBsZXRlZDogZmFsc2UsCiAgICBhdXRvU2Nyb2xsUmV0YWluZWQ6IGZhbHNlLCBzcGVlZEdhaW5Qcm92ZW46IGZhbHNlLCBjYXVzYWxNZW1vcnlHYWluUHJvdmVuOiBmYWxzZSwgcmVwZWF0VW5jaGFuZ2VkOiBmYWxzZSwgc3VtbWVkQWxsb2NhdG9yVG90YWw6IG51bGwgfTsKfQo="
+    },
+    "tests/catalogue-scroll-observation.test.mjs": {
+      "sha256": "9d5e9daea47265e6f4bbf0ffcb1361b74ed485683221ea1fce7fd52e4066cc96",
+      "preimage": "aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyByZWFkRmlsZSB9IGZyb20gIm5vZGU6ZnMvcHJvbWlzZXMiOwppbXBvcnQgdGVzdCBmcm9tICJub2RlOnRlc3QiOwppbXBvcnQgeyBndW56aXBTeW5jIH0gZnJvbSAibm9kZTp6bGliIjsKaW1wb3J0IHsgaW5zcGVjdENhdGFsb2d1ZVNjcm9sbERpYWdub3N0aWMgfSBmcm9tICIuLi9zY3JpcHRzL2xpYi9jYXRhbG9ndWUtc2Nyb2xsLW9ic2VydmF0aW9uLm1qcyI7CmNvbnN0IHRlcm1pbmFsID0gSlNPTi5wYXJzZShhd2FpdCByZWFkRmlsZSgiZXZpZGVuY2UvMjAyNi0xMC0xN1QxOC0wNi0yNy0zOTdaLWNhdGFsb2d1ZS1zY3JvbGwtY29udHJvbC10ZXJtaW5hbC5qc29uIikpOwpjb25zdCByZXBvcnQgPSBKU09OLnBhcnNlKGd1bnppcFN5bmMoYXdhaXQgcmVhZEZpbGUodGVybWluYWwucmVwb3J0LnBhdGgpKSk7CnRlc3QoImluY29tcGxldGVBQkEgd2l0aCBoaWdoZXIgYXV0by1zY3JvbGwgdGlsZXMgY2Fubm90IGJlY29tZSBhY2NlcHRlZCBvcHRpbWl6YXRpb24gb3Igc3BlZWQgcHJvb2YiLCAoKSA9PiB7CiAgY29uc3QgcmVzdWx0ID0gaW5zcGVjdENhdGFsb2d1ZVNjcm9sbERpYWdub3N0aWModGVybWluYWwsIHJlcG9ydCk7CiAgYXNzZXJ0LmVxdWFsKHJlc3VsdC5wb2ludHNbMV0ucmVuZGVyZXJDb21wb3NpdG9yQnl0ZXMsIDIzNzczOTY4KTsgYXNzZXJ0LmVxdWFsKHJlc3VsdC5wb2ludHNbM10ucmVuZGVyZXJDb21wb3NpdG9yQnl0ZXMsIDI3NjA3ODI0KTsKICBhc3NlcnQuZXF1YWwocmVzdWx0LmFiYUNvbXBsZXRlZCwgZmFsc2UpOyBhc3NlcnQuZXF1YWwocmVzdWx0LmF1dG9TY3JvbGxSZXRhaW5lZCwgZmFsc2UpOyBhc3NlcnQuZXF1YWwocmVzdWx0LnJlcGVhdFVuY2hhbmdlZCwgZmFsc2UpOwp9KTsKdGVzdCgicmVqZWN0IGZhYnJpY2F0ZWQgdGhpcmQgcGFzcywgY2hhbmdlZCBlcnJvciBwcm92ZW5hbmNlLCBtaXNzaW5nIHJvdXRlcyBvciB0cmFjZSBmYWlsdXJlIiwgKCkgPT4gewogIGZvciAoY29uc3QgbXV0YXRlIG9mIFtyID0+IHsgci5wcm9ncmVzc1Byb2JlLnRoaXJkQ2F0YWxvZ3VlTmF2aWdhdGlvbiA9IHt9OyB9LAogICAgciA9PiB7IHIuZmFpbHVyZS5tZXNzYWdlID0gInVucmVsYXRlZCBmYWlsdXJlIjsgfSwgciA9PiB7IHIucHJvZ3Jlc3NQcm9iZS5zZWNvbmRDYXRhbG9ndWVOYXZpZ2F0aW9uLnJvdXRlQ291bnQgPSAyNDsgfSwKICAgIHIgPT4geyByLnByb2dyZXNzUHJvYmUuY2F0YWxvZ3VlQXR0cmlidXRpb24uY2hlY2twb2ludHNbMF0uZXJyb3IgPSAiZmFpbGVkIGR1bXAiOyB9XSkgewogICAgY29uc3QgY29weSA9IHN0cnVjdHVyZWRDbG9uZShyZXBvcnQpOyBtdXRhdGUoY29weSk7IGFzc2VydC50aHJvd3MoKCkgPT4gaW5zcGVjdENhdGFsb2d1ZVNjcm9sbERpYWdub3N0aWModGVybWluYWwsIGNvcHkpKTsKICB9Cn0pOwo="
+    }
+  },
+  "terminal": {
+    "path": "evidence/2026-10-17T18-06-27-397Z-catalogue-scroll-control-terminal.json",
+    "sha256": "8aed8e178bbe08cc4bd78c289acba29b1dccd22c58818bc86795df42c4380f1f"
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-17T18-06-27-397Z-recorded-timeline-full-sources.json.gz",
+    "bytes": 267577,
+    "sha256": "b0e20dda09770c2322f60f886266081e3749cd0f8cd312ef06c05b93016c5877",
+    "restoredBytes": 1019547,
+    "restoredSha256": "e250d981594b6e473eb752b81ef7e32cb62930dc68dd52e69e997a8eb9570277",
+    "sourceCount": 811
+  },
+  "all811ExecutedCurrentPostPinsEqual": true,
+  "report": {
+    "path": "outputs/reports/2026-10-17T18-06-27-397Z-catalogue-scroll-control-report.json.gz",
+    "bytes": 160567,
+    "sha256": "824e3e69f91e8c52c2220ad55faa51107981edc7e4ecb42bf34ac3cf8c1f0c7e",
+    "restoredBytes": 2568135,
+    "restoredSha256": "0cdb34f59c4507d93d7d320dc3c3d736d3283915b26e73f182ce10d1af07bc36",
+    "status": "failed-catalogue-scroll-policy-diagnostic",
+    "completedRuns": 0,
+    "attemptedStartupControls": 0,
+    "failure": {
+      "name": "AssertionError",
+      "message": "Changing only scroll animation preserves every visible text and box\n+ actual - expected\n\n  {\n    boxes: [\n      [\n        'MAIN',\n        0,\n+       0,\n-       -2,\n        1265,\n        3347.328125\n      ],\n      [\n        'HEADER',\n        0,\n+       0,\n-       -2,\n        1265,\n        83.09375\n      ],\n      [\n        'A',\n        57.59375,\n+       25.546875,\n-       23.546875,\n        368.234375,\n        32\n      ],\n      [\n        'SPAN',\n        55.76310348510742,\n+       23.71622657775879,\n-       21.71622657775879,\n        35.66128921508789,\n        35.661293029785156\n      ],\n      [\n        'SPAN',\n        100.78125,\n+       29.0625,\n-       27.0625,\n        49.796875,\n        24.953125\n      ],\n      [\n        'NAV',\n        457.828125,\n+       26.171875,\n-       24.171875,\n        349.328125,\n        30.75\n      ],\n      [\n        'A',\n        457.828125,\n+       26.171875,\n-       24.171875,\n        52.390625,\n        30.75\n      ],\n      [\n        'A',\n        542.21875,\n+       26.171875,\n-       24.171875,\n        128.390625,\n        30.75\n      ],\n      [\n        'A',\n        702.609375,\n+       26.171875,\n-       24.171875,\n        104.546875,\n        30.75\n      ],\n      [\n        'DIV',\n        1100.71875,\n+       21.59375,\n-       19.59375,\n        106.6875,\n        39.90625\n      ],\n      [\n        'SPAN',\n        1115.3125,\n+       37.703125,\n-       35.703125,\n        7.671875,\n        7.671875\n      ],\n      [\n        'SECTION',\n        0,\n+       83.09375,\n-       81.09375,\n        1265,\n        820\n      ],\n      [\n        'DIV',\n        57.59375,\n+       230.609375,\n-       228.609375,\n        484.28125,\n        488.96875\n      ],\n      [\n        'P',\n        57.59375,\n+       230.609375,\n-       228.609375,\n        484.28125,\n        17.265625\n      ],\n      [\n        'H1',\n        57.59375,\n+       269.46875,\n-       267.46875,\n        484.28125,\n        251.90625\n      ],\n      [\n        'BR',\n        373.671875,\n+       252.46875,\n-       250.46875,\n        0,\n        116\n      ],\n      [\n        'EM',\n        57.59375,\n+       336.4375,\n-       334.4375,\n        365.375,\n        199.96875\n      ],\n      [\n        'P',\n        57.59375,\n+       556.5625,\n-       554.5625,\n        484.28125,\n        95.109375\n      ],\n      [\n        'DIV',\n        57.59375,\n+       683.671875,\n-       681.671875,\n        484.28125,\n        35.90625\n      ],\n      [\n        'SPAN',\n        57.59375,\n+       683.671875,\n-       681.671875,\n        120.75,\n        35.90625\n      ],\n      [\n        'SPAN',\n        187.9375,\n+       683.671875,\n-       681.671875,\n        126.734375,\n        35.90625\n      ],\n      [\n        'SPAN',\n        324.265625,\n+       683.671875,\n-       681.671875,\n        126.734375,\n        35.90625\n      ],\n      [\n        'SECTION',\n        644.265625,\n+       211.09375,\n-       209.09375,\n        563.125,\n        528\n      ],\n      [\n        'DIV',\n        682.0625,\n+       248.890625,\n-       246.890625,\n        487.53125,\n        78.453125\n      ],\n      [\n        'DIV',\n        682.0625,\n+       248.890625,\n-       246.890625,\n        332.21875,\n        78.453125\n      ],\n      [\n        'P',\n        682.0625,\n+       248.890625,\n-       246.890625,\n        332.21875,\n        16.078125\n      ],\n      [\n        'H2',\n        682.0625,\n+       272.15625,\n-       270.15625,\n        332.21875,\n        55.1875\n      ],\n      [\n        'SPAN',\n        1113.421875,\n+       271.71875,\n-       269.71875,\n        56.171875,\n        32.796875\n      ],\n      [\n        'DIV',\n        682.0625,\n+       354.53125,\n-       352.53125,\n        487.53125,\n        144\n      ],\n      [\n        'INPUT',\n        700.453125,\n+       372.921875,\n-       370.921875,\n        1,\n        1\n      ],\n      [\n        'LABEL',\n        700.453125,\n+       372.921875,\n-       370.921875,\n        450.75,\n        107.1875\n      ],\n      [\n        'SPAN',\n        907.828125,\n+       379.640625,\n-       377.640625,\n        36,\n        36\n      ],\n      [\n        'STRONG',\n        871.75,\n+       426.03125,\n-       424.03125,\n        108.140625,\n        23.03125\n      ],\n      [\n        'SPAN',\n        764.921875,\n+       454.65625,\n-       452.65625,\n        321.8125,\n        18.71875\n      ],\n      [\n        'SECTION',\n        0,\n+       903.09375,\n-       901.09375,\n        1265,\n        871.046875\n      ],\n      [\n        'DIV',\n        57.59375,\n+       1016.09375,\n-       1014.09375,\n        768,\n        178.34375\n      ],\n      [\n        'P',\n        57.59375,\n+       1016.09375,\n-       1014.09375,\n        768,\n        17.265625\n      ],\n      [\n        'H2',\n        57.59375,\n+       1054.953125,\n-       1052.953125,\n        768,\n        62.71875\n      ],\n      [\n        'P',\n        57.59375,\n+       1140.0625,\n-       1138.0625,\n        672,\n        54.375\n      ],\n      [\n        'OL',\n        57.59375,\n+       1250.4375,\n-       1248.4375,\n        1149.8125,\n        176\n      ],\n      [\n        'LI',\n        57.59375,\n+       1250.4375,\n-       1248.4375,\n        382.59375,\n        176\n      ],\n      [\n        'SPAN',\n        80.984375,\n+       1273.828125,\n-       1271.828125,\n        28.796875,\n        28.796875\n      ],\n      [\n        'DIV',\n        125.78125,\n+       1273.828125,\n-       1271.828125,\n        291.015625,\n        79.875\n      ],\n      [\n        'STRONG',\n        125.78125,\n+       1278.625,\n-       1276.625,\n        291.015625,\n        24\n      ],\n      [\n        'P',\n        125.78125,\n+       1313.015625,\n-       1311.015625,\n        291.015625,\n        40.6875\n      ],\n      [\n        'LI',\n        441.1875,\n+       1250.4375,\n-       1248.4375,\n        382.609375,\n        176\n      ],\n      [\n        'SPAN',\n        464.578125,\n+       1273.828125,\n-       1271.828125,\n        28.796875,\n        28.796875\n      ],\n      [\n        'DIV',\n        509.375,\n+       1273.828125,\n-       1271.828125,\n        291.03125,\n        79.875\n      ],\n      [\n        'STRONG',\n        509.375,\n+       1278.625,\n-       1276.625,\n        291.03125,\n        24\n      ],\n      [\n        'P',\n        509.375,\n+       1313.015625,\n-       1311.015625,\n        291.03125,\n        40.6875\n      ],\n      [\n        'LI',\n        824.796875,\n+       1250.4375,\n-       1248.4375,\n        382.59375,\n        176\n      ],\n      [\n        'SPAN',\n        848.1875,\n+       1273.828125,\n-       1271.828125,\n        28.796875,\n        28.796875\n      ],\n      [\n        'DIV',\n        892.984375,\n+       1273.828125,\n-       1271.828125,\n        291.015625,\n        79.875\n      ],\n      [\n        'STRONG',\n        892.984375,\n+       1278.625,\n-       1276.625,\n        291.015625,\n        24\n      ],\n      [\n        'P',\n        892.984375,\n+       1313.015625,\n-       1311.015625,\n        291.015625,\n        40.6875\n      ],\n      [\n        'DIV',\n        57.59375,\n+       1450.4375,\n-       1448.4375,\n        1149.8125,\n        80.609375\n      ],\n      [\n        'SPAN',\n        57.59375,\n+       1450.4375,\n-       1448.4375,\n        117.875,\n        35.90625\n      ],\n      [\n        'I',\n        69.78125,\n+       1465.1875,\n-       1463.1875,\n        6.390625,\n        6.390625\n      ],\n      [\n        'SPAN',\n        184.265625,\n+       1450.4375,\n-       1448.4375,\n        154.890625,\n        35.90625\n      ],\n      [\n        'I',\n        196.453125,\n+       1465.1875,\n-       1463.1875,\n        6.390625,\n        6.390625\n      ],\n      [\n        'SPAN',\n        347.953125,\n+       1450.4375,\n-       1448.4375,\n        180.421875,\n        35.90625\n      ],\n      [\n        'I',\n        360.140625,\n+       1465.1875,\n-       1463.1875,\n        6.390625,\n        6.390625\n      ],\n      [\n        'SPAN',\n        537.171875,\n+       1450.4375,\n-       1448.4375,\n        147.609375,\n        35.90625\n      ],\n      [\n        'I',\n        549.359375,\n+       1465.1875,\n-       1463.1875,\n        6.390625,\n        6.390625\n      ],\n      [\n        'SPAN',\n        693.578125,\n+       1450.4375,\n-       1448.4375,\n        116.21875,\n        35.90625\n      ],\n      [\n        'I',\n        705.765625,\n+       1465.1875,\n-       1463.1875,\n  ",
+      "stack": "AssertionError [ERR_ASSERTION]: Changing only scroll animation preserves every visible text and box\n+ actual - expected\n\n  {\n    boxes: [\n      [\n        'MAIN',\n        0,\n+       0,\n-       -2,\n        1265,\n        3347.328125\n      ],\n      [\n        'HEADER',\n        0,\n+       0,\n-       -2,\n        1265,\n        83.09375\n      ],\n      [\n        'A',\n        57.59375,\n+       25.546875,\n-       23.546875,\n        368.234375,\n        32\n      ],\n      [\n        'SPAN',\n        55.76310348510742,\n+       23.71622657775879,\n-       21.71622657775879,\n        35.66128921508789,\n        35.661293029785156\n      ],\n      [\n        'SPAN',\n        100.78125,\n+       29.0625,\n-       27.0625,\n        49.796875,\n        24.953125\n      ],\n      [\n        'NAV',\n        457.828125,\n+       26.171875,\n-       24.171875,\n        349.328125,\n        30.75\n      ],\n      [\n        'A',\n        457.828125,\n+       26.171875,\n-       24.171875,\n        52.390625,\n        30.75\n      ],\n      [\n        'A',\n        542.21875,\n+       26.171875,\n-       24.171875,\n        128.390625,\n        30.75\n      ],\n      [\n        'A',\n        702.609375,\n+       26.171875,\n-       24.171875,\n        104.546875,\n        30.75\n      ],\n      [\n        'DIV',\n        1100.71875,\n+       21.59375,\n-       19.59375,\n        106.6875,\n        39.90625\n      ],\n      [\n        'SPAN',\n        1115.3125,\n+       37.703125,\n-       35.703125,\n        7.671875,\n        7.671875\n      ],\n      [\n        'SECTION',\n        0,\n+       83.09375,\n-       81.09375,\n        1265,\n        820\n      ],\n      [\n        'DIV',\n        57.59375,\n+       230.609375,\n-       228.609375,\n        484.28125,\n        488.96875\n      ],\n      [\n        'P',\n        57.59375,\n+       230.609375,\n-       228.609375,\n        484.28125,\n        17.265625\n      ],\n      [\n        'H1',\n        57.59375,\n+       269.46875,\n-       267.46875,\n        484.28125,\n        251.90625\n      ],\n      [\n        'BR',\n        373.671875,\n+       252.46875,\n-       250.46875,\n        0,\n        116\n      ],\n      [\n        'EM',\n        57.59375,\n+       336.4375,\n-       334.4375,\n        365.375,\n        199.96875\n      ],\n      [\n        'P',\n        57.59375,\n+       556.5625,\n-       554.5625,\n        484.28125,\n        95.109375\n      ],\n      [\n        'DIV',\n        57.59375,\n+       683.671875,\n-       681.671875,\n        484.28125,\n        35.90625\n      ],\n      [\n        'SPAN',\n        57.59375,\n+       683.671875,\n-       681.671875,\n        120.75,\n        35.90625\n      ],\n      [\n        'SPAN',\n        187.9375,\n+       683.671875,\n-       681.671875,\n        126.734375,\n        35.90625\n      ],\n      [\n        'SPAN',\n        324.265625,\n+       683.671875,\n-       681.671875,\n        126.734375,\n        35.90625\n      ],\n      [\n        'SECTION',\n        644.265625,\n+       211.09375,\n-       209.09375,\n        563.125,\n        528\n      ],\n      [\n        'DIV',\n        682.0625,\n+       248.890625,\n-       246.890625,\n        487.53125,\n        78.453125\n      ],\n      [\n        'DIV',\n        682.0625,\n+       248.890625,\n-       246.890625,\n        332.21875,\n        78.453125\n      ],\n      [\n        'P',\n        682.0625,\n+       248.890625,\n-       246.890625,\n        332.21875,\n        16.078125\n      ],\n      [\n        'H2',\n        682.0625,\n+       272.15625,\n-       270.15625,\n        332.21875,\n        55.1875\n      ],\n      [\n        'SPAN',\n        1113.421875,\n+       271.71875,\n-       269.71875,\n        56.171875,\n        32.796875\n      ],\n      [\n        'DIV',\n        682.0625,\n+       354.53125,\n-       352.53125,\n        487.53125,\n        144\n      ],\n      [\n        'INPUT',\n        700.453125,\n+       372.921875,\n-       370.921875,\n        1,\n        1\n      ],\n      [\n        'LABEL',\n        700.453125,\n+       372.921875,\n-       370.921875,\n        450.75,\n        107.1875\n      ],\n      [\n        'SPAN',\n        907.828125,\n+       379.640625,\n-       377.640625,\n        36,\n        36\n      ],\n      [\n        'STRONG',\n        871.75,\n+       426.03125,\n-       424.03125,\n        108.140625,\n        23.03125\n      ],\n      [\n        'SPAN',\n        764.921875,\n+       454.65625,\n-       452.65625,\n        321.8125,\n        18.71875\n      ],\n      [\n        'SECTION',\n        0,\n+       903.09375,\n-       901.09375,\n        1265,\n        871.046875\n      ],\n      [\n        'DIV',\n        57.59375,\n+       1016.09375,\n-       1014.09375,\n        768,\n        178.34375\n      ],\n      [\n        'P',\n        57.59375,\n+       1016.09375,\n-       1014.09375,\n        768,\n        17.265625\n      ],\n      [\n        'H2',\n        57.59375,\n+       1054.953125,\n-       1052.953125,\n        768,\n        62.71875\n      ],\n      [\n        'P',\n        57.59375,\n+       1140.0625,\n-       1138.0625,\n        672,\n        54.375\n      ],\n      [\n        'OL',\n        57.59375,\n+       1250.4375,\n-       1248.4375,\n        1149.8125,\n        176\n      ],\n      [\n        'LI',\n        57.59375,\n+       1250.4375,\n-       1248.4375,\n        382.59375,\n        176\n      ],\n      [\n        'SPAN',\n        80.984375,\n+       1273.828125,\n-       1271.828125,\n        28.796875,\n        28.796875\n      ],\n      [\n        'DIV',\n        125.78125,\n+       1273.828125,\n-       1271.828125,\n        291.015625,\n        79.875\n      ],\n      [\n        'STRONG',\n        125.78125,\n+       1278.625,\n-       1276.625,\n        291.015625,\n        24\n      ],\n      [\n        'P',\n        125.78125,\n+       1313.015625,\n-       1311.015625,\n        291.015625,\n        40.6875\n      ],\n      [\n        'LI',\n        441.1875,\n+       1250.4375,\n-       1248.4375,\n        382.609375,\n        176\n      ],\n      [\n        'SPAN',\n        464.578125,\n+       1273.828125,\n-       1271.828125,\n        28.796875,\n        28.796875\n      ],\n      [\n        'DIV',\n        509.375,\n+       1273.828125,\n-       1271.828125,\n        291.03125,\n        79.875\n      ],\n      [\n        'STRONG',\n        509.375,\n+       1278.625,\n-       1276.625,\n        291.03125,\n        24\n      ],\n      [\n        'P',\n        509.375,\n+       1313.015625,\n-       1311.015625,\n        291.03125,\n        40.6875\n      ],\n      [\n        'LI',\n        824.796875,\n+       1250.4375,\n-       1248.4375,\n        382.59375,\n        176\n      ],\n      [\n        'SPAN',\n        848.1875,\n+       1273.828125,\n-       1271.828125,\n        28.796875,\n        28.796875\n      ],\n      [\n        'DIV',\n        892.984375,\n+       1273.828125,\n-       1271.828125,\n        291.015625,\n        79.875\n      ],\n      [\n        'STRONG',\n        892.984375,\n+       1278.625,\n-       1276.625,\n        291.015625,\n        24\n      ],\n      [\n        'P',\n        892.984375,\n+       1313.015625,\n-       1311.015625,\n        291.015625,\n        40.6875\n      ],\n      [\n        'DIV',\n        57.59375,\n+       1450.4375,\n-       1448.4375,\n        1149.8125,\n        80.609375\n      ],\n      [\n        'SPAN',\n        57.59375,\n+       1450.4375,\n-       1448.4375,\n        117.875,\n        35.90625\n      ],\n      [\n        'I',\n        69.78125,\n+       1465.1875,\n-       1463.1875,\n        6.390625,\n        6.390625\n      ],\n      [\n        'SPAN',\n        184.265625,\n+       1450.4375,\n-       1448.4375,\n        154.890625,\n        35.90625\n      ],\n      [\n        'I',\n        196.453125,\n+       1465.1875,\n-       1463.1875,\n        6.390625,\n        6.390625\n      ],\n      [\n        'SPAN',\n        347.953125,\n+       1450.4375,\n-       1448.4375,\n        180.421875,\n        35.90625\n      ],\n      [\n        'I',\n        360.140625,\n+       1465.1875,\n-       1463.1875,\n        6.390625,\n        6.390625\n      ],\n      [\n        'SPAN',\n        537.171875,\n+       1450.4375,\n-       1448.4375,\n        147.609375,\n        35.90625\n      ],\n      [\n        'I',\n        549.359375,\n+       1465.1875,\n-       1463.1875,\n        6.390625,\n        6.390625\n      ],\n      [\n        'SPAN',\n        693.578125,\n+       1450.4375,\n-       1448.4375,\n        116.21875,\n        35.90625\n      ],\n      [\n        'I',\n        705.765625,\n+       ",
+      "frameValidationReceipt": null,
+      "nativeValidation": null,
+      "code": "ERR_ASSERTION",
+      "signal": null,
+      "killed": null,
+      "stderrTail": null
+    },
+    "cleanup": {
+      "mediaProfileRuntimeRemoved": true,
+      "generatedDistRestored": true,
+      "protectedFixtureUnchanged": true,
+      "observerStopped": true,
+      "sampledChromeRootStopped": true,
+      "conversionQuiescence": {
+        "scope": "no-running-conversion",
+        "cancellationRequested": false,
+        "terminalState": "idle"
+      },
+      "chromeRootExitObservation": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 26228,
+          "parentPid": 24220,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-17T18:07:09.0653760Z",
+          "privateBytes": 46276608,
+          "rssBytes": 139812864
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-17T18:14:03.105Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1413,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    }
+  },
+  "build": {
+    "path": "evidence/2026-10-17T18-06-27-397Z-compiled-cache-build.json",
+    "sha256": "41aa7060820089133943adae51a7e67df544389027d104c46c58fb4ddb48fc11"
+  },
+  "allFiveClosedGuidDumpsReplayedExactly": true,
+  "splitProvidersMergedWithoutSumming": true,
+  "compiledAppAndWorkerOverlaysReconstructedExactly": true,
+  "births": [
+    {
+      "identity": {
+        "pid": 24220,
+        "parentPid": 13228,
+        "createdAt": "2026-10-17T18:06:59.3748990Z"
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 35956,
+        "parentPid": 24220,
+        "createdAt": "2026-10-17T18:07:04.8117500Z"
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 26228,
+        "parentPid": 24220,
+        "createdAt": "2026-10-17T18:07:09.0653760Z"
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 38664,
+        "parentPid": 24220,
+        "createdAt": "2026-10-17T18:07:10.4059070Z"
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 1416,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:09.1888138Z",
+        "creationFileTime": "134367340291888138",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 2336,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:09.7443989Z",
+        "creationFileTime": "134367340297443989",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 26228,
+        "parentPid": 24220,
+        "createdAt": "2026-10-17T18:07:09.0653769Z",
+        "creationFileTime": "134367340290653769",
+        "executableName": "chrome.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 29140,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:09.6403606Z",
+        "creationFileTime": "134367340296403606",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 29512,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:09.8379348Z",
+        "creationFileTime": "134367340298379348",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 30628,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:10.1105186Z",
+        "creationFileTime": "134367340301105186",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 31132,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:09.8228657Z",
+        "creationFileTime": "134367340298228657",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 34356,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:09.8391287Z",
+        "creationFileTime": "134367340298391287",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 35572,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:09.6813322Z",
+        "creationFileTime": "134367340296813322",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 36188,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:09.6360266Z",
+        "creationFileTime": "134367340296360266",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 35444,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:12.1977508Z",
+        "creationFileTime": "134367340321977508",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 21884,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:12.2604981Z",
+        "creationFileTime": "134367340322604981",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 19308,
+        "parentPid": 31900,
+        "createdAt": "2026-10-17T18:07:33.1388742Z",
+        "creationFileTime": "134367340531388742",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 20836,
+        "parentPid": 37480,
+        "createdAt": "2026-10-17T18:07:33.1816558Z",
+        "creationFileTime": "134367340531816558",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 31900,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:33.1174629Z",
+        "creationFileTime": "134367340531174629",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 37480,
+        "parentPid": 31900,
+        "createdAt": "2026-10-17T18:07:33.1619525Z",
+        "creationFileTime": "134367340531619525",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 24552,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:39.6602537Z",
+        "creationFileTime": "134367340596602537",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 30576,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:07:39.7291516Z",
+        "creationFileTime": "134367340597291516",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 33684,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:09:09.6513760Z",
+        "creationFileTime": "134367341496513760",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 36668,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:10:09.6574639Z",
+        "creationFileTime": "134367342096574639",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 35488,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:12:28.1364705Z",
+        "creationFileTime": "134367343481364705",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    },
+    {
+      "identity": {
+        "pid": 39156,
+        "parentPid": 26228,
+        "createdAt": "2026-10-17T18:12:51.0289955Z",
+        "creationFileTime": "134367343710289955",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "status": "owned-birth-absent"
+    }
+  ],
+  "disposablePathsAbsent": [
+    "H:\\Github Repositories\\fileconverter\\work\\recorded-timeline-full-wrapper-YewzHh",
+    "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-media-d8lTkv",
+    "H:\\Github Repositories\\fileconverter\\work\\catalogue-scroll-caller-kxXQfG",
+    "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-full-runtime-N3da62"
+  ],
+  "original": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "checkpoint": {
+    "path": "outputs/reports/2026-10-17T18-07-00-739Z-private-mpeg2-updated-chrome-full-native-100ms-native-checkpoint.json.gz",
+    "bytes": 4808,
+    "sha256": "e2b11b97723a698fad6efea4e0c8623f3605f291a76da4d7767ef32c4c4e27bd",
+    "restoredBytes": 34125,
+    "restoredSha256": "5f864fa613796afcf7b58d2cd9bbbf8496d1805e7bedda69cd3be56fbe848532",
+    "rawRemoved": true
+  },
+  "nextAction": "Do not retain or repeat auto-scroll: no observed tile reduction and ABA incomplete. Keep viewport failure as failure, with exact trace attribution to2px scroll offset. Investigate bounded catalogue DOM/fiber reuse next without changing conversion thresholds or repeating multi-hour stress.",
+  "publicAcceptance": false,
+  "fullOriginalAcceptance": false
+}
