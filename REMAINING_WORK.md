@@ -1,5 +1,63 @@
 # Remaining work audit
 
+## 2026-10-17 - Two compiled modules reused: bounded warm-start controls now fit
+
+**Partially implemented; promising PRIVATE candidate, not a public/full-file pass.**
+`evidence/2026-10-17-compiled-cache-independent-analysis.json` independently binds
+04:01:20.706Z terminal/build/report and all781 executed/current/post source pins.
+03:58:12.921Z preparation executed0conversions and cleaned its scratch. The last
+goal turn made concrete progress: candidate implementation and verified preparation;
+the intervening user-requested RAM recheck cleared the host safety gate, not a
+conversion result. This cycle executes the changed candidate, not an unchanged retry.
+
+Private app/worker overlays retain at most decoder+encoder WebAssembly.Module
+objects across worker replacement. No user File, output, packet, decoded frame,
+WebAssembly.Memory or Instance is cached. Every job gets fresh fixed32+16MiB heaps;
+normal codec-worker retirement and independent save worker remain unchanged. Only
+pinned same-origin private decoder/encoder URLs use reuse; unused static-response
+bodies are cancelled. Actual Chrome logs show2cold compilations,1retained pair,
+and6hot reuses (each codec in each of3original startups), no later recompilation.
+Compiled code bytes are unavailable/null, not0; all retained code still counts in
+complete Chromium private memory. No native codec/quality/buffer/sampling changes.
+Saver/CSS/native manifest/Wasm limits match baseline exactly. Normal product source
+and registry remain untouched; actual app+codec assets are separately hash bound.
+
+Same Chrome155.0.8059.80/full launcher/flags/1920x804/default4Mbps-q4/production I/O.
+Stable same-instance blank243,998,720B <= early249,315,328B,314480ms settlement;
+loaded310,444,032B. Full96-frame fixture remains2,245,626B,byte-identical SHA
+8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c,
+SSIM0.983095 with unchanged independent timestamp/audio/metadata/artwork/chapters/
+full-decode checks. Final fixture+validation peak241.26953125MiB,216valid/0unavailable.
+Three ORIGINAL short startup/normal-cancellation controls fit178.6171875,
+176.35546875,165.1796875MiB; final conversion-only native phases101/100/115valid,
+0unavailable each. These finalized peaks include the cancellation boundary and
+supersede earlier console snapshots. Each startup progresses past prior first-frame
+failure checkpoint; input3.36/3.22/3.93MB, output3.49/3.49/4.62MB. Reads/writes/queue
+<=64KiB,onepending,48MiB Wasm. Successful fixture save uses<=512KiB/onepending.
+Recovery360,714,240/361,234,432/357,130,240B:47.94/48.44/44.52MiB above loaded;
+not zero retention, not yet full-session stability proof.
+
+Baseline breached250.4765625MiB in startup2; changed candidate completes all3short
+controls below250. This cross-session pair does NOT establish precise allocation
+cause or causal savings. Cold fixture4594.480ms vs3068.155ms baseline, one sample
+per session, NOT a speed gain or matched benchmark. No completed ORIGINAL output,
+no hot-cache complete output yet, no scaling/clean-session/full acceptance. Keep
+candidate private. NEXT: qualify complete warm-cache outputs and adverse recovery
+with unchanged validators, then candidate full-original stress; do not repeat the
+unchanged baseline or promote from short controls.
+
+Independent app+worker overlays reconstruct exactly from archived build preimages;
+actual assets/fixture validation module replayed. All24owned births absent/reused
+safely, all owned fixtures/conversions/profiles/wrappers/candidates/caller gone;
+normal production restored, original2,958,573,265B/fullSHA31f36695... unchanged.
+Report3,111,533B=>195,691B lossless gzip; checkpoint39,392B=>5,572B gzip and redundant
+raw deleted after replay. Two redundant live receipts removed; durable terminal/
+preparation/source evidence retained. No unrelated process killed; no Docker or
+headed windows. Headed/manual coverage remains unverified. Broader focused40tests
+PASS12839.9795ms (including source replay, full validator, handoff/write-failure/
+cancellation guards); TypeScript noEmit, nine-file zero-warning lint and git diff
+check PASS. Full goal stays active.
+
 ## 2026-10-17 - Display-tree reuse candidate rejected: original startup still253.19MiB
 
 **Partially implemented; candidate NOT retained as a fix or installed publicly.**

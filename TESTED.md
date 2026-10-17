@@ -1,5 +1,45 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Bounded compiled-code reuse passes three short warm original starts
+
+Private candidate only; independent audit
+`evidence/2026-10-17-compiled-cache-independent-analysis.json` binds actual
+04:01:20.706Z run and all781 executed/current/post source pins. Preparation
+03:58:12.921Z executed0conversions, cleaned. Retain exactly2compiled Wasm modules,
+never user data, memories or instances; fresh32+16MiB heaps each job. Native cores,
+codec settings, queues, cancellation, save worker, CSS and sampling unchanged.
+Actual headless Chrome logs2cold compilations/6hot reuses/one retained pair.
+Compiled code bytes unknown/null, still counted in all-process private memory.
+Normal product source/registry unchanged; candidate app+codec hash bound separately.
+
+Blank243,998,720B <= early249,315,328B after314480ms; loaded310,444,032B. Complete
+96-frame1920x804 fixture stays2,245,626B/SHA8b0d4370.../SSIM0.983095, same full
+independent timing/audio/metadata/artwork/chapters/decode validators. Final fixture
+phase241.26953125MiB,216valid/0unavailable. ORIGINAL startup1/2/3 final peaks
+178.6171875/176.35546875/165.1796875MiB,101/100/115valid conversion-only samples,
+0unavailable; planned normal cancellation each time. Finalized peaks include late
+cancellation-boundary samples, not just earlier console snapshots. Each passes
+the former input222785/output84142 checkpoint; partial input3.36/3.22/3.93MB and
+output3.49/3.49/4.62MB then deleted. Queue/read/write<=64KiB,onepending,48MiB Wasm;
+fixture final save<=512KiB/onepending. Recoveries47.94/48.44/44.52MiB above loaded,
+not zero retention or full-session stability proof. No budget failure captured.
+
+Baseline startup2 failed250.4765625MiB; changed candidate fits this reproducer.
+Cross-session pair does not prove precise allocation cause or causal savings.
+Cold fixture4594.480ms vs3068.155ms baseline is NOT a speed benchmark/gain. Exactly
+0completed ORIGINAL conversions; warm-cache complete output/adverse paths/full
+stress/clean sessions/scaling remain unverified. NEXT complete hot-output and
+adverse-recovery qualification before original full stress. No public promotion.
+
+Actual app/worker overlays/assets/fixture helper reconstructed from retained
+preimages;24owned births absent/reused safely; owned outputs/fixtures/profile/
+scratch removed, normal production restored, protected original fullSHA unchanged.
+Report3,111,533B=>195,691B gzip; checkpoint39,392B=>5,572B gzip/rawdeleted; redundant
+live receipts removed, durable proofs kept. No unrelated programs killed, no
+Docker/headed windows. Broader focused40tests PASS12839.9795ms, including source
+replay/strict full validator/handoff/write-failure/cancellation guards; TypeScript
+noEmit/nine-file zero-warning lint/git diff check PASS. Goal incomplete/active.
+
 ## 2026-10-17 - UI display reuse measured and rejected as memory fix
 
 Actual03:35:55.302Z memoized-handoff terminal + independent analysis. Private
