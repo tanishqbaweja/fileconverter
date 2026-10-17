@@ -1,5 +1,26 @@
 # Remaining work audit
 
+## 2026-10-18 - Stable JSPI capability verified; private codec candidate prepared
+
+**Partially implemented; no codec result or speed/memory acceptance.** Actual
+Chrome155.0.8059.80/V8 15.5.35.23 page AND dedicated-worker capability probe passed
+without experimental flags.56byte arithmetic module/131calls per realm proves
+delayed suspension/resumption, exact rejection/throw propagation,128repeated calls,
+onepending and checksum16384.0userfiles/conversions/network requests.10sampled owned
+births absent/profile removed, cleanup errors empty, exact browser binary pins
+unchanged. `evidence/2026-10-17T21-51-35-848Z-jspi-capability.json` retains raw proof
+and source preimages. This is NOT codec/browser-profile acceptance.
+
+Private reproducible no-Docker candidate replaces ONLY decoder Asyncify compilation
+with JSPI and explicit within_remux export/five original async AVIO imports. Exact
+two-edit reversal preserves native C/kernel, codec settings, fixed32+16MiB heaps,
+256KiB guarded Cstacks, output/backpressure and all native smoke/fidelity/adverse
+gates. Encoder remains exact8b2fd64...; no public assets/registry change. Actual
+JSPI engine-managed stack allocation remainsunknown/included in the primary full
+Chromium tree metric; do not report its removed Asyncify linear stack as total
+runtime memory saved. Next compile once, independently verify artifacts, then
+qualify genuine production-browser conversions under unchanged limits.
+
 ## 2026-10-18 - Cold runtime trace audited; compiler overlap is not allocation proof
 
 **Partially implemented; not accepted.** The UTC21:30:14.947Z diagnostic fails the

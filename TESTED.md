@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+## 2026-10-18 - Stable JSPI arithmetic capability, not media acceptance
+
+Actual headlessChrome155.0.8059.80/V8 15.5.35.23 page AND dedicatedworker pass:
+56byte arithmetic Wasm/131calls, delayed result83/checksum16384/128repeats/onepending,
+exactPromise rejection and synchronous throw propagated. Same14qualification flags,
+noexperimental flags/GC/files/conversions/network.10owned births absent/profile gone,
+cleanupErrors[], before/after browser hashes identical. Raw source-bound proof:
+evidence/2026-10-17T21-51-35-848Z-jspi-capability.json. Initial lint-only reserved
+variable fixed before browser execution. Private decoder-only JSPI builder now
+prepared; no codec completion/fidelity/speed/memory/public claim. Exact two-edit
+suspension-only reversal, unchanged C/codec/AVIO/heaps/encoder/adverse/native gates.
+Removed Asyncify stack field0 is not an engine-managed-stack allocation measurement.
+Before hosted execution:9focused candidate/parent tests PASS739.7211ms, including
+all7nested generated JavaScript parsers;9new files ESLint0warnings, diff checkPASS.
+
 ## 2026-10-18 - Unsaturated cold trace: compiler concurrency measured, no acceptance
 
 UTC21:30:14.947Z: first genuine fixture conversion cancels259.46875MiB;0complete
