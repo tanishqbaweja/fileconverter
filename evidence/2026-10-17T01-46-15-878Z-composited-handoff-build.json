@@ -1,0 +1,169 @@
+{
+  "recordedAt": "2026-10-17T01:46:44.725Z",
+  "status": "private-production-worker-handoff-built-not-browser-or-memory-acceptance",
+  "host": {
+    "acquiredAt": "2026-10-17T01:46:30.8480447Z",
+    "freePhysicalBytes": 9850740736,
+    "freeVirtualBytes": 14259544064,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "sourcePins": {
+    "scripts/build-composited-handoff.mjs": "8ce2578a79f690111b44e2186fbb7c092ef7118dc762fa0cbb76e139b5cf60a1",
+    "scripts/lib/composited-handoff-recipe.mjs": "4f6229ab5d50b277242f40d5d6edf12456e35dcfa1e449a258a1cdcc04e9aef9",
+    "tests/composited-handoff.test.mjs": "04443ca99e3c2d36b1721569e78ec96f3d001eb0843b9fcea7725671b8598f44",
+    "scripts/build-staged-handoff-candidate.mjs": "526a28e78718fce4ad64c636781ad9697c7faa6354665b1156081fd1d686447b",
+    "scripts/lib/staged-worker-handoff-recipe.mjs": "aa3e34200510d756fd821c13bb8307dcbc83c8c4dc875e61868c77b89bcede0d",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "lib/staged-copy-protocol.ts": "7596cf8c6d99e746df3048284710208b138e790be6f0587cffa623d51b3d6d29",
+    "lib/staged-worker-coordinator.ts": "1770fe50692b80a9c51c53ad20eb8e12affaec53ca126751437c092812223d80",
+    "workers/staged-save-runtime.ts": "1d352f60cdd25ea3234db6268600f0befe277840896c5ce4a2d966ad3f321c0b",
+    "workers/staged-save.worker.ts": "fe8a83566f83026cec5558b11936d5fbef65ea673cb8edd62919f0b905ac60b0",
+    "tests/staged-worker-coordinator.test.mjs": "64101bcd086578dfb440daa19f1c14c3bdfb95698f5e38ec38a4a62be035c18f",
+    "tests/staged-save-runtime.test.mjs": "b11a309b4aa9428dab0b716993ab7acb53094fc76f2529c9336805c46aecff34",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+    "lib/conversion-protocol.ts": "4aabc3e0b42f3786a83552b312c878bdc5b18249d816a8a430a75ac1d47427e2",
+    "lib/resource-limits.ts": "c5613f021548b7330009c49d24a3389514d96aee125cc5a415052fa67a03113f",
+    "package-lock.json": "a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369",
+    "tsconfig.json": "8ebad4768b8ebfacbaa51ee40c6a2a9df5d793422af5aa000a64235c69525c29",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a"
+  },
+  "postSourcePins": {
+    "scripts/build-composited-handoff.mjs": "8ce2578a79f690111b44e2186fbb7c092ef7118dc762fa0cbb76e139b5cf60a1",
+    "scripts/lib/composited-handoff-recipe.mjs": "4f6229ab5d50b277242f40d5d6edf12456e35dcfa1e449a258a1cdcc04e9aef9",
+    "tests/composited-handoff.test.mjs": "04443ca99e3c2d36b1721569e78ec96f3d001eb0843b9fcea7725671b8598f44",
+    "scripts/build-staged-handoff-candidate.mjs": "526a28e78718fce4ad64c636781ad9697c7faa6354665b1156081fd1d686447b",
+    "scripts/lib/staged-worker-handoff-recipe.mjs": "aa3e34200510d756fd821c13bb8307dcbc83c8c4dc875e61868c77b89bcede0d",
+    "app/converter/ConverterApp.tsx": "b93cb0095b0286f84e58fe8b9bc6ae4bc415b5487d9e06b0fc72f365f37bce6b",
+    "workers/conversion.worker.ts": "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68",
+    "lib/staged-copy-protocol.ts": "7596cf8c6d99e746df3048284710208b138e790be6f0587cffa623d51b3d6d29",
+    "lib/staged-worker-coordinator.ts": "1770fe50692b80a9c51c53ad20eb8e12affaec53ca126751437c092812223d80",
+    "workers/staged-save-runtime.ts": "1d352f60cdd25ea3234db6268600f0befe277840896c5ce4a2d966ad3f321c0b",
+    "workers/staged-save.worker.ts": "fe8a83566f83026cec5558b11936d5fbef65ea673cb8edd62919f0b905ac60b0",
+    "tests/staged-worker-coordinator.test.mjs": "64101bcd086578dfb440daa19f1c14c3bdfb95698f5e38ec38a4a62be035c18f",
+    "tests/staged-save-runtime.test.mjs": "b11a309b4aa9428dab0b716993ab7acb53094fc76f2529c9336805c46aecff34",
+    "app/globals.css": "474a7c3ae9eeae021b9e69a76201fcb115f6978e3b9152528ad906ac5855aa4a",
+    "workers/media-remux.ts": "6f656580fb0e6401f1154f10b045fec53ef7986c8cb80f08806c694385b97610",
+    "lib/conversion-protocol.ts": "4aabc3e0b42f3786a83552b312c878bdc5b18249d816a8a430a75ac1d47427e2",
+    "lib/resource-limits.ts": "c5613f021548b7330009c49d24a3389514d96aee125cc5a415052fa67a03113f",
+    "package-lock.json": "a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369",
+    "tsconfig.json": "8ebad4768b8ebfacbaa51ee40c6a2a9df5d793422af5aa000a64235c69525c29",
+    "vite.config.ts": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a"
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-17T01-46-15-878Z-composited-handoff-changed-and-entry-sources.json.gz",
+    "bytes": 312018,
+    "sha256": "b03a01dbd725c4c0ecd4dab3c8d49c53a63c3fe41c0423b62cbce626f9166e7a",
+    "restoredBytes": 1422529,
+    "restoredSha256": "69e803ec8a4c5f52f648017b296f68fdce8c762b269ad37d61a0f301ecdf6b78"
+  },
+  "sourceSealScope": "changed-modules-and-production-entrypoints-not-an-entire-executed-media-source-closure",
+  "loads": [
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/globals.css"
+    },
+    {
+      "environment": "ssr",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "rsc",
+      "id": "H:/Github Repositories/fileconverter/app/globals.css"
+    },
+    {
+      "environment": "client",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    },
+    {
+      "environment": "client",
+      "id": "H:/Github Repositories/fileconverter/workers/conversion.worker.ts"
+    },
+    {
+      "environment": "ssr",
+      "id": "H:/Github Repositories/fileconverter/app/converter/ConverterApp.tsx"
+    }
+  ],
+  "assets": [
+    {
+      "role": "application",
+      "url": "/assets/ConverterApp-DPLBacSA.js",
+      "bytes": 321036,
+      "sha256": "e8c717f29d79831e8f706899ca47e6d456dee345432ec0c22c4f97489d056e99",
+      "archive": {
+        "path": "outputs/reports/2026-10-17T01-46-15-878Z-composited-handoff-application.js.gz",
+        "bytes": 69641,
+        "sha256": "7c0e8bd1ed072ea2fbd0c26090665550ba8ee2db9aa4065b341a81cf49c24520",
+        "restoredBytes": 321036,
+        "restoredSha256": "e8c717f29d79831e8f706899ca47e6d456dee345432ec0c22c4f97489d056e99"
+      }
+    },
+    {
+      "role": "codec-worker",
+      "url": "/assets/conversion.worker-D_waeFU2.js",
+      "bytes": 292839,
+      "sha256": "d4dd7158c753b733bfcf2f531958d0ded981c09fae4b3fceba6583496e3e409b",
+      "archive": {
+        "path": "outputs/reports/2026-10-17T01-46-15-878Z-composited-handoff-codec-worker.js.gz",
+        "bytes": 76199,
+        "sha256": "12c2d4b7b83c2c935c2c5f5fcb5dc82d9470c1fced55d5cedb8b4a05387a8269",
+        "restoredBytes": 292839,
+        "restoredSha256": "d4dd7158c753b733bfcf2f531958d0ded981c09fae4b3fceba6583496e3e409b"
+      }
+    },
+    {
+      "role": "save-worker",
+      "url": "/assets/staged-save.worker-BDqh8LGu.js",
+      "bytes": 3738,
+      "sha256": "b176a6272d30963cfabf6f98b65eef4a3dcfd99f7a96233521ca54a68e9411b6",
+      "archive": {
+        "path": "outputs/reports/2026-10-17T01-46-15-878Z-composited-handoff-save-worker.js.gz",
+        "bytes": 1643,
+        "sha256": "478ea8ec53e79b80a0b920cc3b31710d64616d808a665eafdb27599437d2ee26",
+        "restoredBytes": 3738,
+        "restoredSha256": "b176a6272d30963cfabf6f98b65eef4a3dcfd99f7a96233521ca54a68e9411b6"
+      }
+    }
+  ],
+  "stylesheet": {
+    "url": "/assets/index-CxGQ2N3s.css",
+    "bytes": 26354,
+    "sha256": "3c4c62c528d98b5bd03492134f40bdca249e9c2896a5b607a63ca29ae46c34a6",
+    "archive": {
+      "path": "outputs/reports/2026-10-17T01-46-15-878Z-composited-handoff-style.css.gz",
+      "bytes": 6413,
+      "sha256": "42e9da2a7dc45cb944e8907c31ceb29a3224352794be3d6118329a57c40dbde5",
+      "restoredBytes": 26354,
+      "restoredSha256": "3c4c62c528d98b5bd03492134f40bdca249e9c2896a5b607a63ca29ae46c34a6"
+    }
+  },
+  "progressCompositingPreserved": true,
+  "privateAppEdits": 4,
+  "privateWorkerEdits": 2,
+  "codecParametersChanged": false,
+  "nativeWasmChanged": false,
+  "copyLoopChanged": false,
+  "fixedCopyBufferBytes": 524288,
+  "normalSourcesEdited": false,
+  "normalProductionRestored": false,
+  "forBrowser": true,
+  "genuineBrowserConversionPerformed": false,
+  "primaryMemoryAcceptance": false,
+  "fullOriginalAcceptance": false,
+  "publicAcceptance": false,
+  "speedGainProven": false
+}

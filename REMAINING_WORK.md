@@ -1,5 +1,48 @@
 # Remaining work audit
 
+## 2026-10-17 - Three bounded startup controls: negative, not a full retry
+
+**Partially implemented; full repeatability still fails.** Independent receipt:
+`evidence/2026-10-17-repeat-startup-independent-analysis.json`. Added a bounded
+headless same-page diagnostic derived from the qualified small-browser pipeline,
+with real HEVC->MPEG2 conversion, unchanged fixed32+16MiB heaps, all existing
+independent output validators, 100ms complete-Chromium-tree sampling, and bounded
+Wasm startup API timing. No native converter, forced GC, omitted GPU, higher
+baseline, relaxed250MiB, or repeated three-hour conversion.
+
+Three distinct controls each produced ONE independently valid96-frame output:
+2,245,626B, SHA8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c,
+SSIM0.983095, copied audio/metadata/artwork/timestamp/full-decode checks retained.
+All stopped before repeat2; NOT six-repeat passes. Peaks above stable blank:
+382.6796875MiB (original small harness),360.7109375MiB (full-test1280x900 viewport
+and exact layout CSS),349.9375MiB (also disabling trace snapshots/screenshots,
+matching full trace settings). Neither layout matching nor reduced tracing
+resolved the short-test excess. These are different measurement conditions from
+the full driver's Chrome launch, NOT a reversal of the prior original Run1 pass.
+
+Latest startup API calls returned before the peak by614.584ms; this is temporal
+evidence, NOT proof that Wasm compilation, codec allocation, or UI is the cause.
+Allocation/object/callsite remains unknown. One unavailable native sample in the
+first control stays null/excluded; latest job has207 valid/0unavailable samples.
+The first terminal mistakenly counted attached-artwork status=passed as another
+conversion; independent audit corrects actual validated conversions to1. No old
+receipt rewritten. Later runner uses exact final-conversion rows only.
+
+All373 pre/post pins per control match; evolving diagnostic source preimages
+retained separately from the370 unchanged qualified sources. All disposable
+outputs, fixtures, candidate/profile/helper/caller scratch removed; normal
+production restored. Independent current OS snapshot checks42 recorded births,
+all absent or safely reused without action. Original2,958,573,265B/fullSHA intact.
+Latest bounded Playwright trace retained3,672,541B, unique timestamp namespace;
+three raw reports losslessly compacted. Earlier two traces were disposable under
+the parent harness; latest harness preserves its owned trace before cleanup.
+
+Focused derivation/regression4/4 PASS,243.9919ms; final worker-lifecycle/full-result
+regression14/14 PASS,515.1973ms; four-file zero-warning lint PASS. Diagnostic
+goal remains incomplete. Next concrete investigation: bounded ORIGINAL startup
+control using the actual full driver's Chrome launch and existing cancellation/
+allocation capture, rather than another mismatched small-suite or full retry.
+
 ## 2026-10-17 - FIRST full fidelity PASS; second-repeat startup memory FAIL
 
 **Partially implemented;1 independently validated run, three-repeat gate FAILED**.

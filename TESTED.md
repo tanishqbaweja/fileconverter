@@ -1,5 +1,36 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Bounded startup diagnosis: three negative controls retained
+
+Independent audit `evidence/2026-10-17-repeat-startup-independent-analysis.json`:
+actual stamps01:42:13.915,01:46:15.878,01:51:12.049. Each completed/independently
+validated ONE genuine96-frame1920x804 HEVC->MPEG2/MP4 output2,245,626B,
+SHA8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c,
+SSIM0.983095; full native decode/timings/audio/artwork/metadata validations pass.
+All failed complete-tree250MiB before repeat2:382.6796875,360.7109375,
+349.9375MiB. Controls respectively original small harness; full-test layout CSS
+and1280x900 viewport; also reduced trace capture (no snapshots/screenshots).
+Do not retry those unchanged hypotheses; neither resolved memory excess.
+
+Latest API return precedes peak614.584ms,207 valid job samples/0unavailable.
+Exact allocation cause remains UNKNOWN; API timing does not exclude background
+compilation or prove a codec/UI cause. First control has1unavailable native read
+recorded null, not zero. Its terminal incorrectly counts the attached-artwork
+pass as a second conversion; independent final-row count is1. No six-repeat,
+full-file, speed, or public acceptance follows. Actual full Chrome launch differs
+from the small-suite launcher; preserve prior original Run1 fidelity/224MiB pass.
+
+All373 actual pre/post source pins equal for each execution; source archives
+retain evolving harness preimages. Independent42-birth OS check confirms owned
+processes absent or safely reused; all fixtures/conversions/profile/runtime gone,
+normal production restored, original fullSHA/2,958,573,265B unchanged. Latest
+unique bounded trace retained3,672,541B; raw reports losslessly compacted. Earlier
+two disposable traces were not retained by parent harness; corrected for latest.
+Focused derivation + existing Chrome qualification tests4/4 PASS243.9919ms;
+final worker-lifecycle/full-result regression14/14 PASS515.1973ms; four-file
+zero-warning lint PASS. Next: actual full-launch bounded ORIGINAL startup control,
+not another unchanged three-hour test or mismatched short-harness rerun.
+
 ## 2026-10-17 - First fully validated original-file run; repeatability memory failure
 
 Actual21:31:52.360Z terminal + independent recorded-timeline-full-terminal-analysis:
