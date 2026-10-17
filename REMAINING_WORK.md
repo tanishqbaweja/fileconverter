@@ -1,5 +1,77 @@
 # Remaining work audit
 
+## 2026-10-17 - Five lifecycle allocation dumps: idle heaps bounded, rendering growth narrowed
+
+**Partially implemented; diagnostic evidence, NOT an allocation fix or acceptance.**
+Previous goal turn was progress: three complete cold/warm outputs independently
+validated, write-error recovery breach retained, commit847da45 pushed. This changed
+cycle adds bounded lifecycle attribution to the failing sequence, not another
+unchanged full conversion. `evidence/2026-10-17-lifecycle-warm-independent-analysis.json`
+binds actual04:35:52.913Z terminal/report/build and ALL789 executed/current/post
+source pins.04:35:03.050Z preparation executed0conversions/cleaned. Same candidate
+app/codec/quality/limits/production I/O; no published source or registry edit.
+
+New diagnostic records loaded-before-media, after3complete small outputs, and
+post-write-error-before-recovery. Six-checkpoint hard cap/onepending/noqueue,
+2MiB Chrome tracebuffer,256KiB trace reads,8MiB serialized/1MiB gzip per snapshot,
+bounded256allocator names/process. Five actual light traces each closed/detached,
+no loss/error, original nondeterministic dump mode/no forcedGC. Original native
+observer remains live through capture/drain; lifecycle tracing is settled before
+the separate original post-failure trace. Every original output-validator assertion
+unchanged; test intentionally stops at failed sequence's prefix (4requested SMALL
+outputs,0ORIGINAL). Later cancellation/read controls are not silently marked covered.
+
+Actual Chrome trace has multiple allocator-provider records per PID. Independent
+analysis merges only compatible fields by PID, preserves unavailable values/null,
+rejects conflicting providers, NEVER sums overlapping allocator sizes. All5raw
+archives/GUID intervals reparse to exact recorded summaries. Renderer24640/birth
+04:36:57.6353269Z is independently matched to OS native failure identity.
+
+| Idle checkpoint | Worker V8 malloc bytes | Renderer compositor bytes | GPU Skia bytes |
+| --- | ---: | ---: | ---: |
+| Loaded | 61,496 | 6,553,600 | 261,096 |
+| Completed output1 | 61,496 | 7,864,320 | 482,817 |
+| Completed output2 | 61,496 | 7,864,320 | 486,276 |
+| Completed output3 | 61,496 | 7,864,320 | 498,212 |
+| Write error before recovery | 61,496 | 17,432,576 | 11,621,062 |
+
+Post-output1/2/3/error main V8 malloc151,588B each; current Wasm metric0 at all four
+idle checkpoints. Renderer OS private89.38/94.43/96.37/95.41MB(decimal), not a growing
+sequence of retained48MiB heaps. This rules out that specific simple explanation at
+THESE sampled idle points, not all worker/native retention or an active peak cause.
+Renderer compositor grows9,568,256B and GPU Skia11,122,850B across thirdoutput->error.
+Different providers overlap: do not add those numbers to manufacture primary savings.
+Their rendering categories now justify examining error-status/scroll/repaint behavior;
+no callsite or causal leak claim. Old offscreen-only matrix optimization remains
+rejected as a worst-case fix; future work must preserve visible/scrolled UI coverage.
+
+All3complete small outputs remain2,245,626B/SHA8b0d4370.../96frames/SSIM0.983095/full
+independent metadata/audio/timeline/artwork/chapter/decode checks. Injected write
+failure handled; following recovery again automatically cancelled over budget.
+Instrumented all-tree peak532,553,728B minus lower stable blank249,536,512B =
+269.90625MiB; loaded318,885,888B. Conversion680valid/0unavailable; blank-settle1sample
+unavailable/excluded (NOT0), actual final stable blank valid. Renderer contributes
+33,992,704B of adjacent34,013,184B jump. Instrumentation perturbs memory: do NOT
+compare269.91 to uninstrumented251.96 as a causal regression, or accept lower
+snapshots/timings as an optimization. Recovery/full ORIGINAL completions0. Precise
+active allocation/callsite remains UNKNOWN. No full stress launched/public promotion.
+
+Audit reconstructs compiled overlays/actual generated helper, replays ALL789pins,
+all26owned births absent/reused safely; owned output/fixtures/profile/candidate/
+wrapper/caller gone, normal production restored, original2,958,573,265B/fullSHA
+31f36695... unchanged.31,111B checkpoint=>4,918B gzip/rawdeleted after replay;
+five compact raw allocation traces, post-cancel trace and compressed report retained.
+Redundant live receipts removed only after durable terminal cleanup checks.
+Headless/noDocker/no unrelated kills; manual/headed remains unverified. Broader
+focused50tests PASS11342.8437ms, including full-project TypeScript overlay checks,
+source replay, strict validators and adverse handoff guards; eight-new-file
+zero-warning lint/git diff check PASS. Full goal active.
+
+NEXT: target the measured error-status repaint/compositing allocation with a bounded
+private rendering change after geometry/visual checks; use the UNINSTRUMENTED warm
+qualification for memory/fidelity/recovery. Do not repeatedly profile unchanged,
+force GC, hide controls, omit processes, raise the blank, or start multi-hour stress.
+
 ## 2026-10-17 - Warm complete outputs pass; recovery after write failure still exceeds memory
 
 **Partially implemented; compiled cache ALONE is insufficient, no full-stress launch.**

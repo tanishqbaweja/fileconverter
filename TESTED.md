@@ -1,5 +1,46 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Loaded/save/error allocation snapshots narrow rendering growth
+
+Actual04:35:52.913Z lifecycle-warm diagnostic; independent analysis binds ALL789
+executed/current/post pins, app+worker overlays and actual generated helper.
+04:35:03.050Z preparation executed0conversions/cleaned. Same private cache codec/
+quality/buffers/I/O/unchanged validators, diagnostic prefix3outputs+writefault+recovery,
+4requested SMALL completions/0ORIGINAL. Five serial closed/detached light dumps:
+loaded, completed1/2/3, post-write-error. Sixcheckpointcap/onepending/noqueue,
+2MiB tracebuffer/256KiB read/8MiB serialized/1MiB gzip, noGC. Native sampling live;
+no overlap with original failure trace. Diagnostic explicitly perturbs memory.
+
+Raw Chrome has split allocator-provider rows per PID; independent parser merges
+compatible fields, rejects conflicts, no overlapping sums or unavailable=>0. All
+five archives/GUID intervals reconstruct exact summaries. Matched renderer24640
+birth04:36:57.6353269Z: worker V8 malloc61,496B at all5points; after3outputs and error,
+main V8 malloc151,588B each/current Wasm0. No monotonic retained48MiB heap sequence
+AT THESE idle points; not universal leak absence or active peak cause. Renderer
+compositor7,864,320=>17,432,576B and GPU Skia498,212=>11,621,062B output3->writeerror.
+Rendering categories justify targeted status/scroll/repaint work, not a proved
+callsite or manufactured total savings. Worst-case visible/scrolled UI must stay
+covered; earlier offscreen-only optimization remains rejected as a complete fix.
+
+Three complete small outputs byte-identical2,245,626B/SHA8b0d4370.../96frames/
+SSIM0.983095/full independent audio/timing/metadata/art/chapter/decode checks.
+Write failure handled; following recovery nativeguard cancels at269.90625MiB
+(532,553,728B minus lower stable blank249,536,512B), loaded318,885,888B. Final
+conversion680valid/0unavailable. Blank-settle1unavailable sample excluded, not0;
+final blank stable/valid. Renderer adjacent33,992,704B of34,013,184B tree jump.
+Instrumented peak NOT a causal regression versus previous uninstrumented251.96.
+Exactly3small outputs,0completed recovery/ORIGINAL, no speed or full/public pass.
+
+All789pins/actual helpers/5raw dumps replay;26owned births absent/reused safely;
+owned media/profile/scratch gone, normal production restored, original fullSHA
+unchanged.31,111B checkpoint=>4,918B gzip/rawremoved, compact dumps/report/traces
+retained; stale live receipts removed after terminal checks. Headless/noDocker/
+no unrelated kills; manual/headed unverified. Broader focused50tests PASS11342.8437ms,
+including full-project TypeScript overlay/source replay/strict validator/adverse
+handoff checks; eight-new-file zero-warning lint/git diff check PASS. Next bounded
+rendering correction with visual checks, then UNINSTRUMENTED warm qualification;
+no unchanged full stress. Goal active.
+
 ## 2026-10-17 - Three complete cold/warm outputs correct; post-write-fault recovery over budget
 
 Independent `evidence/2026-10-17-warm-cache-independent-analysis.json` binds actual
