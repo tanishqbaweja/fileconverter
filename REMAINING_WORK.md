@@ -1,5 +1,32 @@
 # Remaining work audit
 
+## 2026-10-18 - JSPI native build succeeded; browser integration is next, not acceptance
+
+**Partially implemented.** No-Docker hosted run39072949964 succeeded in8m52s on
+isolated commit92fd31faa8ca1ce2e7040606fef435cc8f2f6d41. All existing native smoke
+gates retained/passed, including200000reuse and actual duration-boundary oracle.
+Collector verifies20files/8562749B, source/workflow bindings, fixed32+16MiB memories,
+unchanged exact encoder, actual promising/Suspending glue and no Wasm unwind/rewind
+exports. No user media read/converted. Proof:`evidence/mpeg2-jspi-build-39072949964.json`.
+
+Static comparison independently rehashes BOTH complete tool sets and source pins:
+common sources equal except isolated workflow; native kernel/muxbridge/config and
+encoder bytes equal. Decoder6910093→5715985B (17.2806%smaller), glue79323→65707B
+(17.1653%). `evidence/2026-10-18-jspi-native-static-comparison.json`. Code size is NOT
+private-memory/speed/fidelity evidence; engine-managed stack allocation remainsnull.
+
+Reusable tools remain ONLY `work/mpeg2-jspi-39072949964` for upcoming genuine browser
+tests; disposable download/scratch removed, hostedartifact12116590124 deleted only
+after exact run/head/digest/local rehash verification; artifact count0. Hosted build
+cleanup passed. No public assets or selector changes. Need adapt source-bound
+candidate copy/stager/hash bindings and replace Asyncify-specific diagnostics with
+honest JSPI diagnostics, preserving every structural/SSIM>=.98/metadata/timing/
+backpressure/cleanup/adverse/six-output and lower-blank/full-tree250MiB assertion.
+Then run actual browser qualification ONCE before any full-original retry. Existing
+Asyncify storage telemetry cannot simply be reused or relabelled as JSPI stack data.
+Latest9focused tests/3new-script lint/diff checks PASS; fresh protected original
+size2958573265B/fullSHA31f36695... unchanged. Goal remains incomplete and active.
+
 ## 2026-10-18 - Stable JSPI capability verified; private codec candidate prepared
 
 **Partially implemented; no codec result or speed/memory acceptance.** Actual

@@ -1,0 +1,33 @@
+{
+  "recordedAt": "2026-10-17T22:07:20.289Z",
+  "status": "source-bound-disposable-hosted-artifact-deleted-local-tools-retained",
+  "runId": "39072949964",
+  "proofSha256": "2bfc2b7fdb9708269a4a35d6dee4841c561eedd0c6d3dba534615f14529c0168",
+  "artifactBefore": {
+    "id": 12116590124,
+    "node_id": "MDg6QXJ0aWZhY3QxMjExNjU5MDEyNA==",
+    "name": "private-mpeg2-aligned-reuse-39072949964",
+    "size_in_bytes": 2048222,
+    "url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/12116590124",
+    "archive_download_url": "https://api.github.com/repos/tanishqbaweja/fileconverter/actions/artifacts/12116590124/zip",
+    "expired": false,
+    "digest": "sha256:4409aa535e9e62f6af85e9e112e3dbb266247068e6de431289622ff935028f4e",
+    "created_at": "2026-10-17T22:04:18Z",
+    "updated_at": "2026-10-17T22:04:18Z",
+    "expires_at": "2026-10-18T22:04:17Z",
+    "workflow_run": {
+      "id": 39072949964,
+      "repository_id": 1304803353,
+      "head_repository_id": 1304803353,
+      "head_branch": "codex/mpeg2-jspi-20261018",
+      "head_sha": "92fd31faa8ca1ce2e7040606fef435cc8f2f6d41"
+    }
+  },
+  "artifactCountAfter": 0,
+  "localToolsRetained": "H:\\Github Repositories\\fileconverter\\work\\mpeg2-jspi-39072949964",
+  "localToolBytes": 8562749,
+  "recoverability": "Verified small local build tools retained for actual browser qualification; no user files/converted media deleted",
+  "ownedRuntimeRemoved": true,
+  "publicAcceptance": false,
+  "browserConversionsPerformed": 0
+}

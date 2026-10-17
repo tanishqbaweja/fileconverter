@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+## 2026-10-18 - JSPI codec build and static comparison PASS; media still untested
+
+Hosted no-Dockerrun39072949964/commit92fd31f... SUCCESS8m52s; existing actual native
+smoke gates preserved/passed (200000reuse/durationoracle/etc). Collector rechecks
+20files/8562749B/source pins/fixed32+16MiB/encoder SHA8b2fd64.../JSPI glue and absent
+Wasm unwind exports. Comparison rehashes both toolsets: decoder6910093→5715985B,
+17.2806%smaller; glue79323→65707B,17.1653%smaller. Same nativeC source pins except
+privateworkflow, exactkernel/muxbridge/config/encoder. Before final comparison,
+an unavailable hash-field comparison was replaced by required existent64hex hash
+assertions; final report rebuilt. See evidence/mpeg2-jspi-build-39072949964.json and
+evidence/2026-10-18-jspi-native-static-comparison.json. No runtime-memory/speed/
+fidelity/public acceptance. Browser capability only was previously proven.
+Reusable tools kept underwork; disposable local download removed, hostedcleanupPASS,
+source/head/digest-bound remoteartifact12116590124 deleted/count0 after localverify
+(cleanup proof retained). Next genuine browser integration needs JSPI-specific
+telemetry and exact candidate bindings, NOT relabelled Asyncify storage metrics.
+Final focused rerun:9tests PASS1383.440ms;3new verification/cleanup/observation
+scripts ESLint0warnings and diff checkPASS. Fresh protected original hash:
+2958573265B/SHA25631f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34.
+
 ## 2026-10-18 - Stable JSPI arithmetic capability, not media acceptance
 
 Actual headlessChrome155.0.8059.80/V8 15.5.35.23 page AND dedicatedworker pass:
