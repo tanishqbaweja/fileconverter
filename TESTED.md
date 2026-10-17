@@ -1,5 +1,69 @@
 # Tested conversion ledger
 
+## 2026-10-18 - JSPI actual6outputs/all adverse recoveries PASS218.93359375MiB
+
+UTC22:38:25.691Z exits0/failureNone/cleanupErrors[].6genuine HEVC→MPEG2 browser MP4
+outputs, each2245626B/96frames/2audio tracks/ordinalSSIM.983095 and SHA
+8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c. Every packet
+proof matches qualified parent. Diagnostic timealignedSSIM.966841 retained honestly;
+unchanged original ordinal/timeline assertions. Production write/cancel/readfailures
+each PASS and SAME-PAGE complete valid recovery/oldworkersretired/no reload.
+Whole tree inclGPU/browser/utilities/renderer: peak475635712B minus stable lower
+same-instance blank246067200B =218.93359375MiB;1300valid/0unavailable samples.
+Loaded340402176B;89.96484375MiBsite/128.96875MiBconversion-only are NOT primary.
+48MiBWasm/64KiBnative reads/512KiBfinal bounded selected-destination save/onepending;
+9JSPI records active0/max1, VMstackbytesnull included intotal.32history/33events/
+1eviction, no observer overflow.6immutable control proof archives replay exactly.
+Audit evidence/2026-10-18-jspi-browser-independent-analysis.json verifies832executed/
+current/postpins, exactdriver/caller/stager/3overlays/realmodule,132native preimages,
+ACTUAL plane encoder+a4...preserved,23owned births absent/5scratch dirs gone,
+normaldist andfulloriginal2958573265B/SHA31f36695... intact; checkpoint compacted.
+Auditpostcheckpoint tail assumptions corrected before success: exact3nativebitrate/
+cleanup/recovery rows checked, no content gate changed.2independent-observer tests
+PASS226.8463ms, including mutations for missing recovery/packet/GPU/baseline.
+Elapsed6jobs3744.245/3566.730/3354.070/3456.125/3321.975/3381.260ms, historicalparent
+first3 4356.785/3620.935/3994.970ms NOT paired speed proof.0fulloriginal runs/scaling/
+public acceptance. Next full protected3-run qualification ofthis EXACT candidate.
+Regression34focused tests PASS4227.0346ms (concurrency2), all16new JavaScript files
+ESLint0warnings and git diff --checkPASS. No headed/manual coverage inferred.
+
+## 2026-10-18 - JSPI run: Node observer crash, orphan cleanup and bounded correction
+
+UTC22:19:32.731Z actualrun FAILED/exit1/no finalreport: uncaught worker-event
+history32limit callback assertion. Complete validators/counts lost; no accepted
+outputs/memory/speed/full-original claims. Partialnative checkpoint~223MiBabove
+roundedblank isnot exact acceptance. Lastresult131072B unfinished, not validated.
+Audit evidence/2026-10-18-jspi-unreported-run-analysis.json:829executed/current/post
+pins AT AUDIT TIME,22owned births absent, normaldist restored/fulloriginalSHA intact.
+Supervisorhadnot removed driver-ownedruntime/fixture dirs afteruncaught exception;
+both exactowned roots independently identity/birth/fileinventory checked then
+removed, including fixtures,128KiBpartial andprofile. Nativecheckpoint losslessly
+compacted before raw removal. No unrelated programs stopped or user source changed.
+Harnessfix:32entryhistory maintained, complete2-role counters/evictions and safe-
+boundary invalidevent failure; no uncaught overflow.2000event synthetic test proves
+32retained/1968evicted/complete1000pairedcounts. Durable immutable gzipcontrol proof
+after EACH completed unchangedvalidator+outputcleanup;3reversiblehook edits, exact
+same6outputs/3adverse bodies.8focusedtests PASS5830.0196ms, changedretry pending.
+
+## 2026-10-18 - JSPI browser staging/ABI/plane-encoder integration prepared
+
+Native132executed source preimages verified at92fd31f...; two bounded126+6layers,
+each<=128files/2MiB; exact realWasm typedfunctions and linker addresses. Browser
+composition preserves ACTUAL plane encoderSHAa4ba6225... (NOT decoder build's default
+8b2fd64...encoder), all original settings/AVIO/UI/heaps/content/adverse assertions.
+New JSPI lifecycle enforcesone active entry/zero pending onclose, absent Asyncify
+linear storage; VM-managed stack bytesnull/not guessedzero and fulltree measured.
+Captured-word/fatal guards rebind exactnewABI; runtimefatal coverage stillunverified.
+5focused integration tests PASS5155.2772ms,8newfiles lint0warnings/diffPASS. Native
+source envelope:evidence/jspi-native-sources-39072949964.json. Read-only inspection
+initially lacked the required historical-control environment; failed before any
+browser/mutation, corrected to existing caller's explicit binding. Initial unused
+import lint warning fixed before browser execution.
+Preparation UTC22:17:32.107Z PASS/noerrors/owned wrapper+candidate cleaned/no browser
+conversions. Proof:evidence/2026-10-17T22-17-32-107Z-jspi-control-preparation.json.
+Actual six-output/adverse production-browser qualification is next; no memory,
+fidelity, speed, full-original/scaling/public acceptance from preparation.
+
 ## 2026-10-18 - JSPI codec build and static comparison PASS; media still untested
 
 Hosted no-Dockerrun39072949964/commit92fd31f... SUCCESS8m52s; existing actual native

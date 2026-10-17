@@ -1,0 +1,1270 @@
+{
+  "recordedAt": "2026-10-17T22:35:02.430Z",
+  "status": "worker-event-bookkeeping-crash-not-media-or-memory-acceptance",
+  "terminal": {
+    "path": "evidence/2026-10-17T22-19-32-731Z-jspi-control-terminal.json",
+    "sha256": "ef14bd46a75066c06f6dcdf2e3d9ce1cbbbcc8ab5ec340b3fa7cb584339e30c3"
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-17T22-19-32-731Z-recorded-timeline-full-sources.json.gz",
+    "bytes": 326469,
+    "sha256": "84e4ccc22287eca04954fea3f3f3daad9f4826ea1256c6d0d1b676a828c9d15f",
+    "restoredBytes": 1188794,
+    "restoredSha256": "c6390f1aac74331bd98b6ec498ab6f3a59ba50b9d89a6b934dbac21745943f24",
+    "sourceCount": 829
+  },
+  "all829ExecutedCurrentPostPinsEqual": true,
+  "nativePartialPhases": [
+    {
+      "phase": "blank-baseline",
+      "firstSequence": 1,
+      "lastSequence": 2938,
+      "validSamples": 172,
+      "unavailableSamples": 0,
+      "peak": [
+        51,
+        "2026-10-17T22:21:18.8666902Z",
+        "blank-baseline",
+        290054144,
+        589504512,
+        33.7887,
+        null,
+        [
+          [
+            0,
+            13246464,
+            39804928
+          ],
+          [
+            1,
+            48078848,
+            140976128
+          ],
+          [
+            2,
+            17985536,
+            46350336
+          ],
+          [
+            3,
+            15056896,
+            31350784
+          ],
+          [
+            4,
+            8028160,
+            17592320
+          ],
+          [
+            5,
+            98996224,
+            122499072
+          ],
+          [
+            6,
+            18333696,
+            48427008
+          ],
+          [
+            7,
+            47198208,
+            89104384
+          ],
+          [
+            8,
+            2670592,
+            10375168
+          ],
+          [
+            9,
+            20459520,
+            43024384
+          ]
+        ]
+      ],
+      "rssPeak": [
+        51,
+        "2026-10-17T22:21:18.8666902Z",
+        "blank-baseline",
+        290054144,
+        589504512,
+        33.7887,
+        null,
+        [
+          [
+            0,
+            13246464,
+            39804928
+          ],
+          [
+            1,
+            48078848,
+            140976128
+          ],
+          [
+            2,
+            17985536,
+            46350336
+          ],
+          [
+            3,
+            15056896,
+            31350784
+          ],
+          [
+            4,
+            8028160,
+            17592320
+          ],
+          [
+            5,
+            98996224,
+            122499072
+          ],
+          [
+            6,
+            18333696,
+            48427008
+          ],
+          [
+            7,
+            47198208,
+            89104384
+          ],
+          [
+            8,
+            2670592,
+            10375168
+          ],
+          [
+            9,
+            20459520,
+            43024384
+          ]
+        ]
+      ],
+      "last": [
+        2938,
+        "2026-10-17T22:26:32.4853412Z",
+        "blank-baseline",
+        246611968,
+        531718144,
+        14.8298,
+        null,
+        [
+          [
+            0,
+            12685312,
+            40153088
+          ],
+          [
+            1,
+            46092288,
+            142610432
+          ],
+          [
+            3,
+            14737408,
+            31223808
+          ],
+          [
+            4,
+            8032256,
+            17817600
+          ],
+          [
+            5,
+            84688896,
+            109375488
+          ],
+          [
+            6,
+            21540864,
+            56655872
+          ],
+          [
+            7,
+            35999744,
+            80510976
+          ],
+          [
+            8,
+            2580480,
+            10461184
+          ],
+          [
+            9,
+            20254720,
+            42909696
+          ]
+        ]
+      ]
+    },
+    {
+      "phase": "blank-startup-settle",
+      "firstSequence": 52,
+      "lastSequence": 2817,
+      "validSamples": 2766,
+      "unavailableSamples": 0,
+      "peak": [
+        1646,
+        "2026-10-17T22:24:11.5547014Z",
+        "blank-startup-settle",
+        539344896,
+        753463296,
+        15.4854,
+        null,
+        [
+          [
+            0,
+            12689408,
+            39997440
+          ],
+          [
+            1,
+            45809664,
+            141385728
+          ],
+          [
+            3,
+            14639104,
+            31055872
+          ],
+          [
+            4,
+            7909376,
+            17653760
+          ],
+          [
+            5,
+            84639744,
+            109137920
+          ],
+          [
+            6,
+            21151744,
+            56184832
+          ],
+          [
+            16,
+            292532224,
+            223641600
+          ],
+          [
+            7,
+            37298176,
+            81367040
+          ],
+          [
+            8,
+            2531328,
+            10309632
+          ],
+          [
+            9,
+            20144128,
+            42729472
+          ]
+        ]
+      ],
+      "rssPeak": [
+        1646,
+        "2026-10-17T22:24:11.5547014Z",
+        "blank-startup-settle",
+        539344896,
+        753463296,
+        15.4854,
+        null,
+        [
+          [
+            0,
+            12689408,
+            39997440
+          ],
+          [
+            1,
+            45809664,
+            141385728
+          ],
+          [
+            3,
+            14639104,
+            31055872
+          ],
+          [
+            4,
+            7909376,
+            17653760
+          ],
+          [
+            5,
+            84639744,
+            109137920
+          ],
+          [
+            6,
+            21151744,
+            56184832
+          ],
+          [
+            16,
+            292532224,
+            223641600
+          ],
+          [
+            7,
+            37298176,
+            81367040
+          ],
+          [
+            8,
+            2531328,
+            10309632
+          ],
+          [
+            9,
+            20144128,
+            42729472
+          ]
+        ]
+      ],
+      "last": [
+        2817,
+        "2026-10-17T22:26:19.2861056Z",
+        "blank-startup-settle",
+        246607872,
+        531648512,
+        22.3324,
+        null,
+        [
+          [
+            0,
+            12685312,
+            40153088
+          ],
+          [
+            1,
+            46092288,
+            142610432
+          ],
+          [
+            3,
+            14737408,
+            31223808
+          ],
+          [
+            4,
+            8032256,
+            17817600
+          ],
+          [
+            5,
+            84688896,
+            109375488
+          ],
+          [
+            6,
+            21536768,
+            56586240
+          ],
+          [
+            7,
+            35999744,
+            80510976
+          ],
+          [
+            8,
+            2580480,
+            10461184
+          ],
+          [
+            9,
+            20254720,
+            42909696
+          ]
+        ]
+      ]
+    },
+    {
+      "phase": "loaded-navigation",
+      "firstSequence": 2939,
+      "lastSequence": 2953,
+      "validSamples": 15,
+      "unavailableSamples": 0,
+      "peak": [
+        2953,
+        "2026-10-17T22:26:34.1166041Z",
+        "loaded-navigation",
+        354476032,
+        681897984,
+        18.7342,
+        null,
+        [
+          [
+            0,
+            12996608,
+            41041920
+          ],
+          [
+            17,
+            14974976,
+            31141888
+          ],
+          [
+            1,
+            47452160,
+            148205568
+          ],
+          [
+            3,
+            58019840,
+            116899840
+          ],
+          [
+            4,
+            8044544,
+            18063360
+          ],
+          [
+            5,
+            153686016,
+            192290816
+          ],
+          [
+            7,
+            36462592,
+            80826368
+          ],
+          [
+            8,
+            2580480,
+            10461184
+          ],
+          [
+            9,
+            20258816,
+            42967040
+          ]
+        ]
+      ],
+      "rssPeak": [
+        2953,
+        "2026-10-17T22:26:34.1166041Z",
+        "loaded-navigation",
+        354476032,
+        681897984,
+        18.7342,
+        null,
+        [
+          [
+            0,
+            12996608,
+            41041920
+          ],
+          [
+            17,
+            14974976,
+            31141888
+          ],
+          [
+            1,
+            47452160,
+            148205568
+          ],
+          [
+            3,
+            58019840,
+            116899840
+          ],
+          [
+            4,
+            8044544,
+            18063360
+          ],
+          [
+            5,
+            153686016,
+            192290816
+          ],
+          [
+            7,
+            36462592,
+            80826368
+          ],
+          [
+            8,
+            2580480,
+            10461184
+          ],
+          [
+            9,
+            20258816,
+            42967040
+          ]
+        ]
+      ],
+      "last": [
+        2953,
+        "2026-10-17T22:26:34.1166041Z",
+        "loaded-navigation",
+        354476032,
+        681897984,
+        18.7342,
+        null,
+        [
+          [
+            0,
+            12996608,
+            41041920
+          ],
+          [
+            17,
+            14974976,
+            31141888
+          ],
+          [
+            1,
+            47452160,
+            148205568
+          ],
+          [
+            3,
+            58019840,
+            116899840
+          ],
+          [
+            4,
+            8044544,
+            18063360
+          ],
+          [
+            5,
+            153686016,
+            192290816
+          ],
+          [
+            7,
+            36462592,
+            80826368
+          ],
+          [
+            8,
+            2580480,
+            10461184
+          ],
+          [
+            9,
+            20258816,
+            42967040
+          ]
+        ]
+      ]
+    },
+    {
+      "phase": "loaded-idle",
+      "firstSequence": 2954,
+      "lastSequence": 3155,
+      "validSamples": 202,
+      "unavailableSamples": 0,
+      "peak": [
+        2954,
+        "2026-10-17T22:26:34.2248177Z",
+        "loaded-idle",
+        353710080,
+        681140224,
+        15.7826,
+        null,
+        [
+          [
+            0,
+            12996608,
+            41041920
+          ],
+          [
+            17,
+            14974976,
+            31141888
+          ],
+          [
+            1,
+            47452160,
+            148209664
+          ],
+          [
+            3,
+            58019840,
+            116899840
+          ],
+          [
+            4,
+            8044544,
+            18063360
+          ],
+          [
+            5,
+            152920064,
+            191528960
+          ],
+          [
+            7,
+            36462592,
+            80826368
+          ],
+          [
+            8,
+            2580480,
+            10461184
+          ],
+          [
+            9,
+            20258816,
+            42967040
+          ]
+        ]
+      ],
+      "rssPeak": [
+        2954,
+        "2026-10-17T22:26:34.2248177Z",
+        "loaded-idle",
+        353710080,
+        681140224,
+        15.7826,
+        null,
+        [
+          [
+            0,
+            12996608,
+            41041920
+          ],
+          [
+            17,
+            14974976,
+            31141888
+          ],
+          [
+            1,
+            47452160,
+            148209664
+          ],
+          [
+            3,
+            58019840,
+            116899840
+          ],
+          [
+            4,
+            8044544,
+            18063360
+          ],
+          [
+            5,
+            152920064,
+            191528960
+          ],
+          [
+            7,
+            36462592,
+            80826368
+          ],
+          [
+            8,
+            2580480,
+            10461184
+          ],
+          [
+            9,
+            20258816,
+            42967040
+          ]
+        ]
+      ],
+      "last": [
+        3155,
+        "2026-10-17T22:26:56.1458992Z",
+        "loaded-idle",
+        340135936,
+        667983872,
+        14.143,
+        null,
+        [
+          [
+            0,
+            12996608,
+            41041920
+          ],
+          [
+            17,
+            14614528,
+            30908416
+          ],
+          [
+            1,
+            47321088,
+            148062208
+          ],
+          [
+            3,
+            52953088,
+            112132096
+          ],
+          [
+            4,
+            8044544,
+            18063360
+          ],
+          [
+            5,
+            144904192,
+            183521280
+          ],
+          [
+            7,
+            36462592,
+            80826368
+          ],
+          [
+            8,
+            2580480,
+            10461184
+          ],
+          [
+            9,
+            20258816,
+            42967040
+          ]
+        ]
+      ]
+    },
+    {
+      "phase": "conversion-completed-save-control",
+      "firstSequence": 3156,
+      "lastSequence": 4447,
+      "validSamples": 1292,
+      "unavailableSamples": 0,
+      "peak": [
+        3175,
+        "2026-10-17T22:26:58.3295418Z",
+        "conversion-completed-save-control",
+        480563200,
+        802529280,
+        15.910900000000002,
+        null,
+        [
+          [
+            0,
+            13049856,
+            41132032
+          ],
+          [
+            17,
+            14614528,
+            30908416
+          ],
+          [
+            1,
+            47509504,
+            151040000
+          ],
+          [
+            3,
+            175566848,
+            226410496
+          ],
+          [
+            4,
+            8044544,
+            18063360
+          ],
+          [
+            5,
+            162476032,
+            200720384
+          ],
+          [
+            7,
+            36462592,
+            80826368
+          ],
+          [
+            8,
+            2580480,
+            10461184
+          ],
+          [
+            9,
+            20258816,
+            42967040
+          ]
+        ]
+      ],
+      "rssPeak": [
+        3175,
+        "2026-10-17T22:26:58.3295418Z",
+        "conversion-completed-save-control",
+        480563200,
+        802529280,
+        15.910900000000002,
+        null,
+        [
+          [
+            0,
+            13049856,
+            41132032
+          ],
+          [
+            17,
+            14614528,
+            30908416
+          ],
+          [
+            1,
+            47509504,
+            151040000
+          ],
+          [
+            3,
+            175566848,
+            226410496
+          ],
+          [
+            4,
+            8044544,
+            18063360
+          ],
+          [
+            5,
+            162476032,
+            200720384
+          ],
+          [
+            7,
+            36462592,
+            80826368
+          ],
+          [
+            8,
+            2580480,
+            10461184
+          ],
+          [
+            9,
+            20258816,
+            42967040
+          ]
+        ]
+      ],
+      "last": [
+        4447,
+        "2026-10-17T22:29:16.9845910Z",
+        "conversion-completed-save-control",
+        382763008,
+        725123072,
+        16.3306,
+        null,
+        [
+          [
+            0,
+            13209600,
+            41377792
+          ],
+          [
+            17,
+            14614528,
+            30924800
+          ],
+          [
+            1,
+            49553408,
+            151326720
+          ],
+          [
+            3,
+            78258176,
+            150732800
+          ],
+          [
+            4,
+            7946240,
+            18079744
+          ],
+          [
+            5,
+            160112640,
+            198778880
+          ],
+          [
+            7,
+            36392960,
+            80510976
+          ],
+          [
+            8,
+            2486272,
+            10416128
+          ],
+          [
+            9,
+            20189184,
+            42975232
+          ]
+        ]
+      ]
+    }
+  ],
+  "coverageThroughSequence": 4447,
+  "exactSelectedBlankBaselineUnavailable": true,
+  "finalReportUnavailable": true,
+  "durablyProvenCompletedControls": null,
+  "cause": "Uncaught fixed32 worker-event callback assertion; enclosing Node finally could not produce final report or delete all scratch",
+  "births": [
+    {
+      "identity": {
+        "pid": 2608,
+        "parentPid": 39136,
+        "createdAt": "2026-10-17T22:20:17.6495200Z"
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 31812,
+        "parentPid": 2608,
+        "createdAt": "2026-10-17T22:21:03.1746870Z"
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 12684,
+        "parentPid": 2608,
+        "createdAt": "2026-10-17T22:21:08.8388880Z"
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 29768,
+        "parentPid": 2608,
+        "createdAt": "2026-10-17T22:21:11.0198760Z"
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 3160,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:21:09.3858310Z",
+        "creationFileTime": "134367492693858310",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 12684,
+        "parentPid": 2608,
+        "createdAt": "2026-10-17T22:21:08.8388887Z",
+        "creationFileTime": "134367492688388887",
+        "executableName": "chrome.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 19044,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:21:09.6169333Z",
+        "creationFileTime": "134367492696169333",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 24048,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:21:09.6142624Z",
+        "creationFileTime": "134367492696142624",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 27420,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:21:09.4361470Z",
+        "creationFileTime": "134367492694361470",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 28068,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:21:09.3774088Z",
+        "creationFileTime": "134367492693774088",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 28880,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:21:09.5740204Z",
+        "creationFileTime": "134367492695740204",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 30012,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:21:09.5161683Z",
+        "creationFileTime": "134367492695161683",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 34324,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:21:08.8805610Z",
+        "creationFileTime": "134367492688805610",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 35748,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:21:09.8590126Z",
+        "creationFileTime": "134367492698590126",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 26448,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:21:33.1363266Z",
+        "creationFileTime": "134367492931363266",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 14228,
+        "parentPid": 26448,
+        "createdAt": "2026-10-17T22:21:33.2089944Z",
+        "creationFileTime": "134367492932089944",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 24280,
+        "parentPid": 26448,
+        "createdAt": "2026-10-17T22:21:33.1705522Z",
+        "creationFileTime": "134367492931705522",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 36468,
+        "parentPid": 14228,
+        "createdAt": "2026-10-17T22:21:33.2406687Z",
+        "creationFileTime": "134367492932406687",
+        "executableName": "updater.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 31172,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:21:39.4448852Z",
+        "creationFileTime": "134367492994448852",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 30632,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:23:09.3853428Z",
+        "creationFileTime": "134367493893853428",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 29468,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:24:09.4105945Z",
+        "creationFileTime": "134367494494105945",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    },
+    {
+      "identity": {
+        "pid": 9228,
+        "parentPid": 12684,
+        "createdAt": "2026-10-17T22:26:32.5882435Z",
+        "creationFileTime": "134367495925882435",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "ownedBirthAbsent": true,
+      "reusedPidUnchanged": false
+    }
+  ],
+  "fixtureFilesRemoved": [
+    {
+      "name": "artwork.png",
+      "bytes": 476
+    },
+    {
+      "name": "cancel.mkv",
+      "bytes": 13505459
+    },
+    {
+      "name": "chapters.ffmetadata",
+      "bytes": 210
+    },
+    {
+      "name": "hevc.mkv",
+      "bytes": 4457906
+    },
+    {
+      "name": "result.mp4",
+      "bytes": 131072
+    }
+  ],
+  "ownedOrphanDirectoriesRemoved": [
+    "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-full-runtime-nFVaja",
+    "H:\\Github Repositories\\fileconverter\\work\\completed-save-fixture-2ymUsf"
+  ],
+  "fixtureOwnership": {
+    "exactGeneratedPrefixAndExpectedFileInventory": true,
+    "birthMatchesJournalBoundRuntimeWithinOneSecond": true,
+    "generatedModuleSha256": "ba4d7a28b3d4ecf9dc0af06c51bfbda9457d9c05deeb0db4cde5d3aff981d131",
+    "generatedMetadataMatched": true,
+    "noUnrelatedProcessesKilled": true
+  },
+  "normalDistRestored": true,
+  "original": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "checkpoint": {
+    "path": "outputs/reports/2026-10-17T22-20-22-628Z-private-mpeg2-updated-chrome-full-native-100ms-native-checkpoint.json.gz",
+    "bytes": 4289,
+    "sha256": "cae5ea55355f3c8accea4d31626746744262cc36aa69fee4334d2ce9d32d6be9",
+    "restoredBytes": 28889,
+    "restoredSha256": "283e743eeb5dcd77e9861599ed4a65739baedd600f42955b6be36023c76af841",
+    "redundantRawRemoved": true
+  },
+  "journal": {
+    "path": "outputs/reports/2026-10-17T22-20-22-628Z-private-mpeg2-updated-chrome-full-native-100ms-launches.json",
+    "sha256": "07b264e5a740dbaf0ca3827efd4d6c261b3ba1f9b4bc3d699b970641912b0550"
+  },
+  "ownSource": {
+    "path": "scripts/analyze-jspi-unreported-run.mjs",
+    "sha256": "22d3ecffdd6cf59fae44615a033cd37aaea19ff9ed2f541a0c108fc424208480",
+    "preimage": "Ly8gUmVjb3ZlciBvbmx5IHRoZSBleGFjdCB0ZXJtaW5hbCBjcmFzaC4gTmV2ZXIgaW5mZXIgY29tcGxldGVkIGpvYnMgZnJvbSBhCi8vIHBhcnRpYWwgZmlsZSBvciBtYW51ZmFjdHVyZSBhIGxvc3QgZmluYWwgY29udmVyc2lvbi9tZW1vcnkgcmVwb3J0LgppbXBvcnQgIi4vbGliL3JlbGlhYmxlLXJlYWRvbmx5LXByZWZsaWdodC5tanMiOwppbXBvcnQgYXNzZXJ0IGZyb20gIm5vZGU6YXNzZXJ0L3N0cmljdCI7CmltcG9ydCB7IGV4ZWNGaWxlIH0gZnJvbSAibm9kZTpjaGlsZF9wcm9jZXNzIjsKaW1wb3J0IHsgY3JlYXRlSGFzaCB9IGZyb20gIm5vZGU6Y3J5cHRvIjsKaW1wb3J0IHsgY3JlYXRlUmVhZFN0cmVhbSB9IGZyb20gIm5vZGU6ZnMiOwppbXBvcnQgeyBhY2Nlc3MsIGxzdGF0LCByZWFkRmlsZSwgcmVhZGRpciwgcmVhbHBhdGgsIHJtLCB3cml0ZUZpbGUgfSBmcm9tICJub2RlOmZzL3Byb21pc2VzIjsKaW1wb3J0IHBhdGggZnJvbSAibm9kZTpwYXRoIjsKaW1wb3J0IHsgcHJvbWlzaWZ5IH0gZnJvbSAibm9kZTp1dGlsIjsKaW1wb3J0IHsgZ3ppcFN5bmMsIGd1bnppcFN5bmMgfSBmcm9tICJub2RlOnpsaWIiOwppbXBvcnQgeyBtYXRlcmlhbGl6ZVVwZGF0ZWRGdWxsQXJjaGl2ZSB9IGZyb20gIi4vbGliL3JlY29yZGVkLXRpbWVsaW5lLWZ1bGwtc291cmNlcy5tanMiOwppbXBvcnQgeyBzaGEsIGJhc2VsaW5lQmluZGluZyB9IGZyb20gIi4vbGliL3N0YWJsZS11aS1oZWFkbGVzcy1iYXNlbGluZS1yZWNpcGUubWpzIjsKY29uc3Qgcm9vdCA9IHBhdGgucmVzb2x2ZShpbXBvcnQubWV0YS5kaXJuYW1lLCAiLi4iKSwgcmVhZCA9IGZpbGUgPT4gcmVhZEZpbGUocGF0aC5yZXNvbHZlKHJvb3QsIGZpbGUpKTsKY29uc3QgdGVybWluYWxQYXRoID0gImV2aWRlbmNlLzIwMjYtMTAtMTdUMjItMTktMzItNzMxWi1qc3BpLWNvbnRyb2wtdGVybWluYWwuanNvbiIsIHRlcm1pbmFsQnl0ZXMgPSBhd2FpdCByZWFkKHRlcm1pbmFsUGF0aCksIHRlcm1pbmFsID0gSlNPTi5wYXJzZSh0ZXJtaW5hbEJ5dGVzKTsKYXNzZXJ0LmVxdWFsKHRlcm1pbmFsLnN0YXR1cywgImZhaWxlZC1ub3QtYWNjZXB0ZWQiKTsgYXNzZXJ0LmVxdWFsKHRlcm1pbmFsLnJlcG9ydCwgbnVsbCk7IGFzc2VydC5kZWVwRXF1YWwodGVybWluYWwuY2xlYW51cEVycm9ycywgW10pOwphc3NlcnQuZXF1YWwodGVybWluYWwuZHJpdmVyRXhpdC5jb2RlLCAxKTsKY29uc3Qgc3RkZXJyID0gQnVmZmVyLmZyb20odGVybWluYWwuc3RkZXJyLnRhaWxCYXNlNjQsICJiYXNlNjQiKS50b1N0cmluZygpOyBhc3NlcnQub2soc3RkZXJyLmluY2x1ZGVzKCJhc3NlcnQub2socHJvZ3Jlc3NQcm9iZS5oYW5kb2ZmV29ya2VyRXZlbnRzLmxlbmd0aDwzMikiKSk7CmZvciAoY29uc3Qga2V5IG9mIFsicHJvZHVjdGlvblJlc3RvcmVkIiwgImNhbmRpZGF0ZVJlbW92ZWQiLCAid3JhcHBlclJlbW92ZWQiXSkgYXNzZXJ0LmVxdWFsKHRlcm1pbmFsW2tleV0sIHRydWUpOwpjb25zdCBhcmNoaXZlID0gYXdhaXQgbWF0ZXJpYWxpemVVcGRhdGVkRnVsbEFyY2hpdmUocm9vdCwgdGVybWluYWwuc291cmNlQXJjaGl2ZSk7CmFzc2VydC5lcXVhbChPYmplY3Qua2V5cyhhcmNoaXZlLnBpbnMpLmxlbmd0aCwgODI5KTsgYXNzZXJ0LmRlZXBFcXVhbChhcmNoaXZlLnBpbnMsIHRlcm1pbmFsLnNvdXJjZVBpbnMpOyBhc3NlcnQuZGVlcEVxdWFsKGFyY2hpdmUucGlucywgdGVybWluYWwucG9zdFNvdXJjZVBpbnMpOwpmb3IgKGNvbnN0IFtmaWxlLCBkaWdlc3RdIG9mIE9iamVjdC5lbnRyaWVzKGFyY2hpdmUucGlucykpIGFzc2VydC5lcXVhbChzaGEoYXdhaXQgcmVhZChmaWxlKSksIGRpZ2VzdCwgZmlsZSk7CmNvbnN0IGNoZWNrcG9pbnRQYXRoID0gIm91dHB1dHMvcmVwb3J0cy8yMDI2LTEwLTE3VDIyLTIwLTIyLTYyOFotcHJpdmF0ZS1tcGVnMi11cGRhdGVkLWNocm9tZS1mdWxsLW5hdGl2ZS0xMDBtcy1uYXRpdmUtY2hlY2twb2ludC5qc29uIjsKY29uc3QgY2hlY2twb2ludEJ5dGVzID0gYXdhaXQgcmVhZChjaGVja3BvaW50UGF0aCksIGNoZWNrcG9pbnQgPSBKU09OLnBhcnNlKGNoZWNrcG9pbnRCeXRlcyk7CmNvbnN0IGpvdXJuYWxQYXRoID0gIm91dHB1dHMvcmVwb3J0cy8yMDI2LTEwLTE3VDIyLTIwLTIyLTYyOFotcHJpdmF0ZS1tcGVnMi11cGRhdGVkLWNocm9tZS1mdWxsLW5hdGl2ZS0xMDBtcy1sYXVuY2hlcy5qc29uIjsKY29uc3Qgam91cm5hbEJ5dGVzID0gYXdhaXQgcmVhZChqb3VybmFsUGF0aCksIGpvdXJuYWwgPSBKU09OLnBhcnNlKGpvdXJuYWxCeXRlcyk7CmFzc2VydC5lcXVhbChqb3VybmFsLmRyaXZlcklkZW50aXR5LnBpZCwgdGVybWluYWwuZHJpdmVySWRlbnRpdHkucGlkKTsgYXNzZXJ0LmVxdWFsKGpvdXJuYWwud3JhcHBlckRpcmVjdG9yeSwgdGVybWluYWwud3JhcHBlcik7CmNvbnN0IHJ1bnRpbWUgPSBwYXRoLmpvaW4ocm9vdCwgIndvcmsvYWxsb2NhdGlvbi1hdHRlbXB0LWZ1bGwtcnVudGltZS1uRlZhamEiKSwgZml4dHVyZSA9IHBhdGguam9pbihyb290LCAid29yay9jb21wbGV0ZWQtc2F2ZS1maXh0dXJlLTJ5bVVzZiIpOwphc3NlcnQuZXF1YWwoam91cm5hbC5ydW50aW1lRGlyZWN0b3J5LCBydW50aW1lKTsgYXNzZXJ0Lm9rKHRlcm1pbmFsLnRyZWVDbGVhbnVwQXVkaXQucGF0aHMuaW5jbHVkZXMocnVudGltZSkpOwpjb25zdCBpZGVudGl0aWVzID0ge307CmZvciAoY29uc3QgZGlyZWN0b3J5IG9mIFtydW50aW1lLCBmaXh0dXJlXSkgewogIGFzc2VydC5lcXVhbChwYXRoLmRpcm5hbWUoZGlyZWN0b3J5KSwgcGF0aC5qb2luKHJvb3QsICJ3b3JrIikpOyBhc3NlcnQuZXF1YWwoYXdhaXQgcmVhbHBhdGgoZGlyZWN0b3J5KSwgZGlyZWN0b3J5KTsKICBjb25zdCBpbmZvID0gYXdhaXQgbHN0YXQoZGlyZWN0b3J5LCB7IGJpZ2ludDogdHJ1ZSB9KTsgYXNzZXJ0Lm9rKGluZm8uaXNEaXJlY3RvcnkoKSAmJiAhaW5mby5pc1N5bWJvbGljTGluaygpKTsgaWRlbnRpdGllc1tkaXJlY3RvcnldID0gaW5mbzsKICBhc3NlcnQub2soTnVtYmVyKGluZm8uYmlydGh0aW1lTXMpID4gRGF0ZS5wYXJzZSh0ZXJtaW5hbC5kcml2ZXJJZGVudGl0eS5jcmVhdGVkQXQpKTsKfQphc3NlcnQub2soTWF0aC5hYnMoTnVtYmVyKGlkZW50aXRpZXNbcnVudGltZV0uYmlydGh0aW1lTXMgLSBpZGVudGl0aWVzW2ZpeHR1cmVdLmJpcnRodGltZU1zKSkgPCAxMDAwKTsKY29uc3QgbmFtZXMgPSAoYXdhaXQgcmVhZGRpcihmaXh0dXJlKSkuc29ydCgpOyBhc3NlcnQuZGVlcEVxdWFsKG5hbWVzLCBbImFydHdvcmsucG5nIiwgImNhbmNlbC5ta3YiLCAiY2hhcHRlcnMuZmZtZXRhZGF0YSIsICJoZXZjLm1rdiIsICJyZXN1bHQubXA0Il0pOwpjb25zdCBmaXh0dXJlRmlsZXMgPSBbXTsKZm9yIChjb25zdCBuYW1lIG9mIG5hbWVzKSB7CiAgY29uc3QgZmlsZSA9IHBhdGguam9pbihmaXh0dXJlLCBuYW1lKSwgaW5mbyA9IGF3YWl0IGxzdGF0KGZpbGUpOyBhc3NlcnQub2soaW5mby5pc0ZpbGUoKSAmJiAhaW5mby5pc1N5bWJvbGljTGluaygpKTsKICBhc3NlcnQub2soaW5mby5zaXplID4gMCAmJiBpbmZvLnNpemUgPD0gMTYgKiAxMDI0ICoqIDIpOyBmaXh0dXJlRmlsZXMucHVzaCh7IG5hbWUsIGJ5dGVzOiBpbmZvLnNpemUgfSk7Cn0KYXNzZXJ0LmVxdWFsKGZpeHR1cmVGaWxlcy5maW5kKHJvdyA9PiByb3cubmFtZSA9PT0gInJlc3VsdC5tcDQiKS5ieXRlcywgMTMxMDcyKTsKYXNzZXJ0Lm9rKChhd2FpdCByZWFkRmlsZShwYXRoLmpvaW4oZml4dHVyZSwgImNoYXB0ZXJzLmZmbWV0YWRhdGEiKSwgInV0ZjgiKSkuaW5jbHVkZXMoIk1QRUctMiBjYWbDqSDigJQg6Z+z5qW9IikpOwpjb25zdCBtb2R1bGVaaXAgPSBhd2FpdCByZWFkKCJvdXRwdXRzL3JlcG9ydHMvMjAyNi0xMC0xN1QyMi0yMC0yMi02MjhaLXByaXZhdGUtbXBlZzItdXBkYXRlZC1jaHJvbWUtZnVsbC1uYXRpdmUtMTAwbXMtd2FybS1jYWNoZS1tb2R1bGUubWpzLmd6Iik7CmNvbnN0IG1vZHVsZVNvdXJjZSA9IGd1bnppcFN5bmMobW9kdWxlWmlwLCB7IG1heE91dHB1dExlbmd0aDogMjYyMTQ0IH0pLnRvU3RyaW5nKCk7IGFzc2VydC5vayhtb2R1bGVTb3VyY2UuaW5jbHVkZXMoJ2NyZWF0ZU93bmVkUnVudGltZVNjcmF0Y2goImNvbXBsZXRlZC1zYXZlLWZpeHR1cmUtIiknKSk7CmNvbnN0IGNvbW1hbmQgPSAiQ29udmVydFRvLUpzb24gLUlucHV0T2JqZWN0IEAoR2V0LUNpbUluc3RhbmNlIFdpbjMyX1Byb2Nlc3MgfCBGb3JFYWNoLU9iamVjdCB7QHtwaWQ9W2ludF0kXy5Qcm9jZXNzSWQ7Y3JlYXRlZEF0PSRfLkNyZWF0aW9uRGF0ZS5Ub1VuaXZlcnNhbFRpbWUoKS5Ub1N0cmluZygnbycpO2NvbW1hbmRMaW5lPSRfLkNvbW1hbmRMaW5lfX0pIC1Db21wcmVzcyI7CmNvbnN0IHsgc3Rkb3V0IH0gPSBhd2FpdCBwcm9taXNpZnkoZXhlY0ZpbGUpKCJwb3dlcnNoZWxsLmV4ZSIsIFsiLU5vUHJvZmlsZSIsICItTm9uSW50ZXJhY3RpdmUiLCAiLUNvbW1hbmQiLCBjb21tYW5kXSwgeyB3aW5kb3dzSGlkZTogdHJ1ZSwgdGltZW91dDogMTUwMDAsIG1heEJ1ZmZlcjogMjA5NzE1MiB9KTsKY29uc3QgY3VycmVudCA9IEpTT04ucGFyc2Uoc3Rkb3V0KSwgYmlydGhzID0gdGVybWluYWwudHJlZUNsZWFudXBBdWRpdC5yZWNvcmRlZEJpcnRocy5tYXAoaWRlbnRpdHkgPT4gewogIGNvbnN0IGxpdmUgPSBjdXJyZW50LmZpbmQocm93ID0+IHJvdy5waWQgPT09IGlkZW50aXR5LnBpZCk7IGFzc2VydC5vayghbGl2ZSB8fCBNYXRoLmFicyhEYXRlLnBhcnNlKGxpdmUuY3JlYXRlZEF0KSAtIERhdGUucGFyc2UoaWRlbnRpdHkuY3JlYXRlZEF0KSkgPiAxKTsKICByZXR1cm4geyBpZGVudGl0eSwgb3duZWRCaXJ0aEFic2VudDogdHJ1ZSwgcmV1c2VkUGlkVW5jaGFuZ2VkOiBCb29sZWFuKGxpdmUpIH07Cn0pOwpmb3IgKGNvbnN0IHJvdyBvZiBjdXJyZW50KSBhc3NlcnQub2soIVtydW50aW1lLCBmaXh0dXJlLCB0ZXJtaW5hbC53cmFwcGVyLCB0ZXJtaW5hbC5jYW5kaWRhdGVEaXJlY3RvcnldLnNvbWUoZGlyZWN0b3J5ID0+IHJvdy5jb21tYW5kTGluZT8udG9Mb3dlckNhc2UoKS5pbmNsdWRlcyhkaXJlY3RvcnkudG9Mb3dlckNhc2UoKSkpKTsKYXNzZXJ0LmVxdWFsKHNoYShhd2FpdCByZWFkKCJkaXN0L2NsaWVudCIgKyBiYXNlbGluZUJpbmRpbmcudXJsKSksIGJhc2VsaW5lQmluZGluZy5zaGEyNTYpOwphc3NlcnQuZXF1YWwoc2hhKGF3YWl0IHJlYWQoImRpc3QvY2xpZW50L2Fzc2V0cy9pbmRleC1DSXpiZUIwQS5jc3MiKSksICJmNzhmNjczYzA4OWNlYjBkY2ZkMWE4ODVmZjAzZTJhNDM5ODRkODUxY2ZiZTFkOTE1ZTlhNzczYTQ1Yzc0N2RkIik7CmNvbnN0IG9yaWdpbmFsID0gcGF0aC5qb2luKHJvb3QsICJ0ZXN0Lm1rdiIpLCBvcmlnaW5hbFN0YXQgPSBhd2FpdCBsc3RhdChvcmlnaW5hbCk7IGFzc2VydC5lcXVhbChvcmlnaW5hbFN0YXQuc2l6ZSwgMjk1ODU3MzI2NSk7CmNvbnN0IGhhc2ggPSBjcmVhdGVIYXNoKCJzaGEyNTYiKTsgZm9yIGF3YWl0IChjb25zdCBjaHVuayBvZiBjcmVhdGVSZWFkU3RyZWFtKG9yaWdpbmFsLCB7IGhpZ2hXYXRlck1hcms6IDEwNDg1NzYgfSkpIGhhc2gudXBkYXRlKGNodW5rKTsKY29uc3Qgb3JpZ2luYWxTaGEyNTYgPSBoYXNoLmRpZ2VzdCgiaGV4Iik7IGFzc2VydC5lcXVhbChvcmlnaW5hbFNoYTI1NiwgdGVybWluYWwucHJvdGVjdGVkQWZ0ZXIuc2hhMjU2KTsKY29uc3QgY29tcHJlc3NlZCA9IGd6aXBTeW5jKGNoZWNrcG9pbnRCeXRlcywgeyBsZXZlbDogOSB9KTsgYXdhaXQgd3JpdGVGaWxlKHBhdGguam9pbihyb290LCBjaGVja3BvaW50UGF0aCArICIuZ3oiKSwgY29tcHJlc3NlZCwgeyBmbGFnOiAid3giIH0pOwphc3NlcnQuZGVlcEVxdWFsKGd1bnppcFN5bmMoYXdhaXQgcmVhZChjaGVja3BvaW50UGF0aCArICIuZ3oiKSksIGNoZWNrcG9pbnRCeXRlcyk7Ci8vIElkZW50aXR5LWNoZWNrIGFnYWluIGltbWVkaWF0ZWx5IGJlZm9yZSBkZWxldGluZyBvbmx5IHRoZXNlIGV4YWN0IG93bmVkIHJvb3RzLgpmb3IgKGNvbnN0IGRpcmVjdG9yeSBvZiBbcnVudGltZSwgZml4dHVyZV0pIHsKICBjb25zdCBpbmZvID0gYXdhaXQgbHN0YXQoZGlyZWN0b3J5LCB7IGJpZ2ludDogdHJ1ZSB9KTsgYXNzZXJ0LmVxdWFsKGluZm8uZGV2LCBpZGVudGl0aWVzW2RpcmVjdG9yeV0uZGV2KTsgYXNzZXJ0LmVxdWFsKGluZm8uaW5vLCBpZGVudGl0aWVzW2RpcmVjdG9yeV0uaW5vKTsKICBhc3NlcnQuZXF1YWwoYXdhaXQgcmVhbHBhdGgoZGlyZWN0b3J5KSwgZGlyZWN0b3J5KTsgYXdhaXQgcm0oZGlyZWN0b3J5LCB7IHJlY3Vyc2l2ZTogdHJ1ZSwgbWF4UmV0cmllczogNSwgcmV0cnlEZWxheTogMTAwIH0pOwogIGF3YWl0IGFzc2VydC5yZWplY3RzKGFjY2VzcyhkaXJlY3RvcnkpLCB7IGNvZGU6ICJFTk9FTlQiIH0pOwp9CmF3YWl0IHJtKHBhdGguam9pbihyb290LCBjaGVja3BvaW50UGF0aCkpOwpjb25zdCBvdXRwdXQgPSAiZXZpZGVuY2UvMjAyNi0xMC0xOC1qc3BpLXVucmVwb3J0ZWQtcnVuLWFuYWx5c2lzLmpzb24iLCBvd24gPSAic2NyaXB0cy9hbmFseXplLWpzcGktdW5yZXBvcnRlZC1ydW4ubWpzIiwgb3duQnl0ZXMgPSBhd2FpdCByZWFkKG93bik7CmF3YWl0IHdyaXRlRmlsZShwYXRoLmpvaW4ocm9vdCwgb3V0cHV0KSwgSlNPTi5zdHJpbmdpZnkoeyByZWNvcmRlZEF0OiBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCksIHN0YXR1czogIndvcmtlci1ldmVudC1ib29ra2VlcGluZy1jcmFzaC1ub3QtbWVkaWEtb3ItbWVtb3J5LWFjY2VwdGFuY2UiLAogIHRlcm1pbmFsOiB7IHBhdGg6IHRlcm1pbmFsUGF0aCwgc2hhMjU2OiBzaGEodGVybWluYWxCeXRlcykgfSwgc291cmNlQXJjaGl2ZTogdGVybWluYWwuc291cmNlQXJjaGl2ZSwgYWxsODI5RXhlY3V0ZWRDdXJyZW50UG9zdFBpbnNFcXVhbDogdHJ1ZSwKICBuYXRpdmVQYXJ0aWFsUGhhc2VzOiBjaGVja3BvaW50Lm5hdGl2ZS5waGFzZXMsIGNvdmVyYWdlVGhyb3VnaFNlcXVlbmNlOiBjaGVja3BvaW50LmNvdmVyYWdlVGhyb3VnaFNlcXVlbmNlLAogIGV4YWN0U2VsZWN0ZWRCbGFua0Jhc2VsaW5lVW5hdmFpbGFibGU6IHRydWUsIGZpbmFsUmVwb3J0VW5hdmFpbGFibGU6IHRydWUsIGR1cmFibHlQcm92ZW5Db21wbGV0ZWRDb250cm9sczogbnVsbCwKICBjYXVzZTogIlVuY2F1Z2h0IGZpeGVkMzIgd29ya2VyLWV2ZW50IGNhbGxiYWNrIGFzc2VydGlvbjsgZW5jbG9zaW5nIE5vZGUgZmluYWxseSBjb3VsZCBub3QgcHJvZHVjZSBmaW5hbCByZXBvcnQgb3IgZGVsZXRlIGFsbCBzY3JhdGNoIiwKICBiaXJ0aHMsIGZpeHR1cmVGaWxlc1JlbW92ZWQ6IGZpeHR1cmVGaWxlcywgb3duZWRPcnBoYW5EaXJlY3Rvcmllc1JlbW92ZWQ6IFtydW50aW1lLCBmaXh0dXJlXSwKICBmaXh0dXJlT3duZXJzaGlwOiB7IGV4YWN0R2VuZXJhdGVkUHJlZml4QW5kRXhwZWN0ZWRGaWxlSW52ZW50b3J5OiB0cnVlLCBiaXJ0aE1hdGNoZXNKb3VybmFsQm91bmRSdW50aW1lV2l0aGluT25lU2Vjb25kOiB0cnVlLAogICAgZ2VuZXJhdGVkTW9kdWxlU2hhMjU2OiBzaGEobW9kdWxlU291cmNlKSwgZ2VuZXJhdGVkTWV0YWRhdGFNYXRjaGVkOiB0cnVlLCBub1VucmVsYXRlZFByb2Nlc3Nlc0tpbGxlZDogdHJ1ZSB9LAogIG5vcm1hbERpc3RSZXN0b3JlZDogdHJ1ZSwgb3JpZ2luYWw6IHsgYnl0ZXM6IG9yaWdpbmFsU3RhdC5zaXplLCBzaGEyNTY6IG9yaWdpbmFsU2hhMjU2IH0sCiAgY2hlY2twb2ludDogeyBwYXRoOiBjaGVja3BvaW50UGF0aCArICIuZ3oiLCBieXRlczogY29tcHJlc3NlZC5sZW5ndGgsIHNoYTI1Njogc2hhKGNvbXByZXNzZWQpLCByZXN0b3JlZEJ5dGVzOiBjaGVja3BvaW50Qnl0ZXMubGVuZ3RoLAogICAgcmVzdG9yZWRTaGEyNTY6IHNoYShjaGVja3BvaW50Qnl0ZXMpLCByZWR1bmRhbnRSYXdSZW1vdmVkOiB0cnVlIH0sCiAgam91cm5hbDogeyBwYXRoOiBqb3VybmFsUGF0aCwgc2hhMjU2OiBzaGEoam91cm5hbEJ5dGVzKSB9LCBvd25Tb3VyY2U6IHsgcGF0aDogb3duLCBzaGEyNTY6IHNoYShvd25CeXRlcyksIHByZWltYWdlOiBvd25CeXRlcy50b1N0cmluZygiYmFzZTY0IikgfSwKICBuYXRpdmVDb252ZXJzaW9uUGVyZm9ybWVkOiBmYWxzZSwgc3BlZWRHYWluUHJvdmVuOiBmYWxzZSwgbWVtb3J5QWNjZXB0YW5jZTogZmFsc2UsIHB1YmxpY0FjY2VwdGFuY2U6IGZhbHNlLCBmdWxsT3JpZ2luYWxBY2NlcHRhbmNlOiBmYWxzZSwKICBuZXh0QWN0aW9uOiAiUmVwbGFjZSBmYXRhbCBjYWxsYmFjayBoaXN0b3J5IG92ZXJmbG93IHdpdGggYm91bmRlZCBoaXN0b3J5IHBsdXMgY29tcGxldGUgc2NhbGFyIHRvdGFscyBhbmQgc2FmZS1ib3VuZGFyeSBlcnJvciBjaGVja3M7IGFkZCBkdXJhYmxlIHZhbGlkYXRlZC1jb250cm9sIGNoZWNrcG9pbnQsIHRoZW4gcmV0cnkgdGhpcyBjaGFuZ2VkIGhhcm5lc3Mgb25jZSB3aXRob3V0IGNoYW5naW5nIHByb2R1Y3Rpb24gYXNzZXRzIG9yIG1lbW9yeS9xdWFsaXR5IGdhdGVzLiIgfSwgbnVsbCwgMikgKyAiXG4iLCB7IGZsYWc6ICJ3eCIgfSk7CmNvbnNvbGUubG9nKEpTT04uc3RyaW5naWZ5KHsgb3V0cHV0LCBzb3VyY2VDb3VudDogODI5LCBvd25lZEJpcnRoc0Fic2VudDogYmlydGhzLmxlbmd0aCwgb3JwaGFuRGlyZWN0b3JpZXNSZW1vdmVkOiBbcnVudGltZSwgZml4dHVyZV0sIHVuZmluaXNoZWRPdXRwdXRSZW1vdmVkQnl0ZXM6IDEzMTA3Miwgb3JpZ2luYWxTaGEyNTYgfSkpOwo="
+  },
+  "nativeConversionPerformed": false,
+  "speedGainProven": false,
+  "memoryAcceptance": false,
+  "publicAcceptance": false,
+  "fullOriginalAcceptance": false,
+  "nextAction": "Replace fatal callback history overflow with bounded history plus complete scalar totals and safe-boundary error checks; add durable validated-control checkpoint, then retry this changed harness once without changing production assets or memory/quality gates."
+}

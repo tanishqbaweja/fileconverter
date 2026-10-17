@@ -1,5 +1,90 @@
 # Remaining work audit
 
+## 2026-10-18 - JSPI passes6real outputs and all adverse recovery at218.93359375MiB
+
+**Partially implemented overall; small private qualification verified complete.**
+Corrected UTC22:38:25.691Z run exits0; all6genuine production HEVC→MPEG2 MP4 outputs
+pass unchanged independent content/timeline/audio/metadata validators. Each2245626B,
+96frames,2audio tracks, ordinalSSIM.983095/SHA8b0d4370... identical to qualified
+parent including EVERY packet proof. Timestamp-aligned diagnostic remains.966841,
+not relabelled as>=.98; original ordinal/timestamp acceptance assertions unchanged.
+Production writefault/cancel/readfault each propagates and completes SAME-PAGE
+validated recovery with retired old/replacement workers, no reload.
+
+Exact whole-Chromium-tree peak475635712B minus SAME-instance stable lowerblank
+246067200B =218.93359375MiB. Loaded340402176B, loadedsite89.96484375MiB/conversiononly
+128.96875MiB are diagnostic subdivisions, NOT substitute acceptance formulas.
+1300valid/0unavailable native conversion samples, GPU/browser/utility/renderer sums
+checked; no budgetbreach. Fixed48MiBWasm,64KiBnative reads, onepending; final selected
+save512KiB bounded copy/queue.9actualJSPI lifecycle records active0/max1; VM-stack
+bytesnull and included in process totals.32history recorder survives33events/1eviction.
+
+`evidence/2026-10-18-jspi-browser-independent-analysis.json` replays832executed/
+current/postsource pins, exactdriver/caller/stager/3overlays/actualjournaledmodule,
+132native source preimages, actualdecoder+ACTUALplaneencoder composition, all6
+durable checkpoint hashes/delta rows, unchanged native/codecs/assets/gates.23owned
+births absent/all5scratch dirs gone/normaldist restored/fulloriginalSHA intact.
+Checkpoint losslessly compacted. First audit's assumed1postcheckpoint row corrected
+to EXACT actual3rows (native bitrate/cleanup/final recovery), individually checked.
+
+Actual6elapsed3744.245/3566.730/3354.070/3456.125/3321.975/3381.260ms. Historical
+Asyncify first3 were4356.785/3620.935/3994.970ms but this is NOT a paired speed proof;
+no speedup claim. No full original converted, no scaling/public acceptance yet.
+Next bind this exact qualified candidate/assets/validators into complete protected
+original THREE-run qualification under all original gates; do not rerun these
+unchanged small controls or start claiming the full goal complete.
+
+## 2026-10-18 - First JSPI media run lost final report to observer history assertion
+
+**Partially implemented; not accepted.** UTC22:19:32.731Z real run exits1 because
+Node's asynchronous worker callback asserts its32event history isnotfull. This
+prevents driverfinally/final report; outer supervisor restores canonical assets
+but leaves driverruntime/fixture scratch. No completed-control count isdurable,
+so do NOT infer6passes, exact primary memory fit, or speed from partial checkpoint.
+Partialnative trace observed~223MiBabove roundedblank, not a complete acceptance
+report. Lastresult131072B isunfinished, never a validated conversion.
+
+Independent evidence/2026-10-18-jspi-unreported-run-analysis.json verifies829actual/
+current/postpins AT AUDIT TIME,22owned births absent, canonicaldist and full original
+SHA intact. Exactjournal-bound orphanruntime and matched-owned fixture directory
+were identity checked and removed, including generated fixtures/128KiBunfinished
+output/profile; checkpoint compacted losslessly. No unrelated processes stopped.
+
+Corrected Node-only recorder keeps32history entries plus complete2-role scalar
+counts/eviction totals. Event callbacks neverthrow onoverflow; invalid events still
+fail at safe awaited boundary. Primary browser memory/engine/UI/flags/allprocess/
+quality/AVIO limits unchanged. New immutable per-validated-control gzip checkpoints
+persist ONLY AFTER literal original validator AND its outputcleanup have completed;
+3hook edits reverse exactly, unchanged6output and3adverse bodies. This prevents
+future harness crashes erasing every validated-output proof.8focusedtests PASS
+5830.0196ms; corrected changed harness is next, not an unchanged conversion retry.
+
+## 2026-10-18 - JSPI production integration prepared; real media qualification pending
+
+**Partially implemented; previous goal turn was progress, not acceptance.** Exact
+executed JSPI native132sources now retained/verified at92fd31f... in separate126+6
+layers, EACH<=128files/2MiB. New typedfunction indices/body hashes and actual linker
+addresses verified; scalar/allocator guards retained. All native source preimages
+match executed Git head; only isolated workflow differs from canonical bytes.
+
+Important integration correction: existing browser-qualified plane encoder is
+a4ba6225..., whereas the default encoder accompanying decoder-native builds is
+8b2fd64.... Preserve the ACTUAL browser plane encoder and its source/provenance;
+do not replace it with default encoder just because native-build comparisons agree.
+New composition changes decoder suspension/glue/ABI bindings only; same nativeC,
+4Mbit settings/geometry/quality/AVIO/heaps, exact plane encoder, UI/assets and guards.
+Old Asyncify storage is absent, JSPI entry lifecycle is bounded toone and VM-stack
+bytes remainnull/included in full process-tree measurement. Actual fatal capture
+has static new-ABI binding but runtime fatal requalification remainsunverified.
+
+All6content validators and3adverse recoveries reuse the literal existing module.
+5focused integration tests PASS5155.2772ms;8new files lint0warnings. Preparation-only
+UTC22:17:32.107Z PASS/no errors, owned directories cleaned, no browser conversions.
+See evidence/2026-10-17T22-17-32-107Z-jspi-control-preparation.json and
+evidence/jspi-native-sources-39072949964.json. Next one real six-output browser run
+under unchanged lower5minute blank/fulltree250MiB; do not count preparation as fit,
+quality, speed, full original, scaling or public acceptance.
+
 ## 2026-10-18 - JSPI native build succeeded; browser integration is next, not acceptance
 
 **Partially implemented.** No-Docker hosted run39072949964 succeeded in8m52s on
