@@ -1,5 +1,38 @@
 # Tested conversion ledger
 
+## 2026-10-17 - Three bounded ORIGINAL startup controls; NOT full conversions
+
+Actual full-launch diagnostic02:01:05.994Z terminal; independent audit
+`evidence/2026-10-17-original-startup-independent-analysis.json`. Same real Chrome
+launch/flags/5minute lower blank, original complete test.mkv File, exact compiled
+private production app/cores/I/O/CSS, same page/browser across3planned cancellations.
+Blank248,504,320B <= early253,550,592B; loaded idle310,390,784B. Native100ms peaks:
+231.77734375/225.28515625/242.5390625MiB incremental.105/107/104 finalized native
+conversion-phase samples (including cancellation),0unavailable. Earlier run-loop
+116/117/120 snapshots also include pre-conversion samples; not pure conversion
+counts. Finalized phase peaks match all3earlier run peaks. Partial
+outputs4,619,030/4,901,945/4,901,945B before normal cleanup at
+~11.09/11.41/11.10s. Bounded64KiB AVIO, fixed48MiB native memory, queues/pending0,
+scratch0after cancellation. Three codec worker closures/replacements, NO saver.
+
+This narrows investigation: immediate worker recycling under actual full launch
+does NOT reproduce the268.9609375MiB long-run failure. Recovery retains32.402/
+38.141/34.023MiB above loaded idle, also seen after short jobs. Neither retention
+nor different small-suite results prove allocation cause. Next isolate successful
+final-save handoff/native-validation idle interval with bounded controls. Do NOT
+count partial cancellations as three completed/validated conversions: completedRuns0,
+independentValidation null, fullOriginal/public/speed acceptanceFALSE. Worker current
+Wasm metrics after closure are last worker reports, not physical release evidence.
+
+Preparation0executions passed. Independent ALL771 executed/current/post source
+pins/hash replay; unique trace-failure namespace, exact current original fullSHA/
+2,958,573,265B; normal production restored;24owned births absent/reused safely,
+all owned scratch/outputs/profile gone.2,452,431B report=>148,303B lossless gzip;
+36,215B checkpoint=>5,095B gzip/rawremoved after replay;30,518B trace retained.
+Focused22/22 PASS6837.6711ms; six-file zero-warning lint PASS. Two redundant stale
+live receipts removed after terminal/cleanup verification. Long-run memory
+failure remains unresolved; no unchanged three-hour retry performed.
+
 ## 2026-10-17 - Bounded startup diagnosis: three negative controls retained
 
 Independent audit `evidence/2026-10-17-repeat-startup-independent-analysis.json`:

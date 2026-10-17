@@ -1,5 +1,50 @@
 # Remaining work audit
 
+## 2026-10-17 - Actual full-launch original startup: three cancellations below limit
+
+**Partially implemented; long-run repeatability remains unresolved.** New evidence
+`evidence/2026-10-17-original-startup-independent-analysis.json`, actual terminal
+`evidence/2026-10-17T02-01-05-994Z-original-startup-terminal.json`. Prepared first
+with0executions; then used the exact full test Chrome launch/flags, actual complete
+unchanged test.mkv File, fixed32+16MiB native cores, compiled production worker/I/O,
+1280x900/full CSS, normal native observer, and SAME page/browser across3controls.
+Five-minute blank settlement313832ms; final stable blank248,504,320B <= early
+253,550,592B; loaded idle310,390,784B. No inflated baseline, omitted GPU/process,
+forced GC, lower quality, resized source, native converter, or full-file retry.
+
+Planned ~10s conversion then NORMAL cancellation, not false completion:
+1) peak491,540,480B =>231.77734375MiB;105valid/0unavailable conversion samples;
+   partial output4,619,030B at cancellation11091.860ms.
+2) peak484,732,928B =>225.28515625MiB;107valid/0unavailable;
+   partial output4,901,945B at11405.275ms.
+3) peak502,824,960B =>242.5390625MiB;104valid/0unavailable;
+   partial output4,901,945B at11103.150ms.
+These finalized native conversion-phase counts include cancellation. The loop's
+earlier116/117/120 sample snapshots also include pre-conversion samples; they are
+not pure conversion counts. Finalized peaks equal earlier run peaks in all3cases.
+All queues/pending operations0, bounded64KiB AVIO, original48MiB Wasm, exact
+subtitle exclusion warning, scratch0after cancellation. Three codec worker closures
+and replacements observed; final-save worker NEVER exercised. No completed output,
+no independent full-output validation, NO full-profile/public/speed acceptance.
+
+Immediate recycling did NOT reproduce the prior268.9609375MiB long-run failure.
+Recovery remains32.402/38.141/34.023MiB above loaded idle even after these short
+jobs, so retained overhead alone is not unique to the three-hour conversion.
+Actual allocation cause remains unknown. Last worker-reported current-Wasm counters
+are not physical post-termination allocation proof. Next isolate the successful
+final-save handoff versus the native-validation idle interval with bounded controls;
+do not repeat unchanged full conversion or the mismatched small launcher.
+
+Independent replay verifies ALL771 executed/current/post source pins, sourcearchive
+and compiled report hashes, current normal production restoration, all24 recorded
+owned births absent/reused safely, all owned candidate/profile/wrapper/caller data
+gone. Protected original2,958,573,265B/fullSHA intact. Report2,452,431B compacted
+to148,303B; redundant36,215B nativecheckpoint losslessly compacted to5,095B then
+raw removed. Trace30,518B retained. Failure-dump namespace now uses actual unique
+stamp (no historical trace overwrite); no budget-failure dump needed this time.
+Final focused22/22 PASS6837.6711ms; six-file zero-warning lint PASS. Two redundant
+stale live receipts removed after their terminal/cleanup evidence was verified.
+
 ## 2026-10-17 - Three bounded startup controls: negative, not a full retry
 
 **Partially implemented; full repeatability still fails.** Independent receipt:
