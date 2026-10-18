@@ -1,5 +1,37 @@
 # Remaining work audit
 
+## 2026-10-18 - Full-original JSPI three-run harness assembled; conversion pending
+
+**Partially implemented; no full-original JSPI conversion claimed.** New additive
+`scripts/run-jspi-full.mjs` restores the complete original three-job loop, six-hour
+per-job deadline, native full-decode/audio/metadata/artwork/296160-timestamp checks,
+SSIM>=.98, lower five-minute blank and complete-Chromium 250MiB budget. Only the
+obsolete Asyncify lease assertions are replaced with real JSPI lifecycle checks;
+all content assertions reverse byte-exactly. Additional JSPI stack assertions and
+Node-only bounded durable progress/per-validated-full-run checkpoints are added.
+The prior six-output/adverse qualification is replayed against all832 current
+source pins and actual native composition, not rerun. Build assets must match the
+qualified app/codec-worker/save-worker/CSS exactly. All execution stays headless.
+
+Focused regression19/19 PASS (13361ms); added stack assertions6/6 PASS (7114ms).
+Initial preparation completed with854sources and cleanup, but independent exact
+driver reconstruction rejected it: an edit occurred after module import and
+before source capture. This is NOT accepted evidence. Details are retained in
+`evidence/2026-10-18-jspi-full-first-preparation-stale.json`; zero browser or
+conversion execution. Freeze sources and repeat preparation/reconstruction before
+any long browser test. Do not repeat the unchanged six small conversions.
+
+Frozen repeat preparation UTC02:15:05.030Z independently passed exact855-source
+driver/caller/stager/supervisor reconstruction. Protected original size/SHA and
+Chrome155.0.8059.80 pin match before/after; all3 owned preparation directories are
+absent and normal production assets restored.19focused tests PASS17.273s and seven
+MJS files lint with zero warnings. Inspector needs the same explicit qualification
+environment as the caller; its first missing-env invocation failed safely, then
+passed with that environment. Exact evidence and environment:
+`evidence/2026-10-18-jspi-full-preparation-analysis.json`. This is preparation only;
+zero full conversions, no speed/scaling/public acceptance. Next one supervised
+three-full-original session; do not edit frozen implementation during execution.
+
 ## 2026-10-18 - JSPI passes6real outputs and all adverse recovery at218.93359375MiB
 
 **Partially implemented overall; small private qualification verified complete.**

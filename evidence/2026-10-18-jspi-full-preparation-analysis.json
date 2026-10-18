@@ -1,0 +1,34 @@
+{
+  "status": "exact-full-harness-derivation-verified-not-conversion-acceptance",
+  "preparation": {
+    "path": "evidence/2026-10-18T02-15-05-030Z-jspi-full-preparation.json",
+    "sha256": "22e99e8bf71f954450e4f40ef828c7dff684b9eec8b6967d7123a2a446a302ef"
+  },
+  "inspector": {
+    "path": "scripts/inspect-jspi-full-preparation.mjs",
+    "sha256": "fa6053129175a50baf6a0eaa5fd7d316fcf110339df3536d6b20294ba9c79c76",
+    "requiredEnvironment": {
+      "WITHIN_DURATION_DRAIN_CONTROL_RECEIPT": "evidence/2026-10-15T10-37-24-961Z-duration-drain-browser-control-executed-sources.json"
+    }
+  },
+  "sourceCount": 855,
+  "currentPrePostPinsEqual": true,
+  "exactDriverCallerStagerSupervisorReconstructed": true,
+  "originalContentValidatorsUnchanged": true,
+  "originalFullSourceBytes": 2958573265,
+  "originalFullSourceSha256BeforeAndAfter": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+  "sameInstalledChromePinBeforeAndAfter": true,
+  "browserVersion": "155.0.8059.80",
+  "threeFullRunsRequired": true,
+  "primaryLimitMiB": 250,
+  "deadlinePerRunMs": 21600000,
+  "ownedPreparationScratchAbsent": true,
+  "productionRestored": true,
+  "executions": 0,
+  "focusedTests": { "passed": 19, "failed": 0, "durationMs": 17272.9466 },
+  "lint": { "newMjsFiles": 7, "warnings": 0, "errors": 0 },
+  "inspectorFirstInvocation": "Missing inherited qualification environment caused an assertion before composition verification; no browser started. Repeated with the exact caller environment above and the complete inspection passed.",
+  "nextAction": "Execute one hidden supervised three-full-original JSPI session; preserve all original gates and per-run durable checkpoints, no automatic retry.",
+  "fullOriginalAcceptance": false,
+  "publicAcceptance": false
+}

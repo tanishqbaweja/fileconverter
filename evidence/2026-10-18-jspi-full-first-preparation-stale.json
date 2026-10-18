@@ -1,0 +1,14 @@
+{
+  "preparation": "evidence/2026-10-18T02-12-22-536Z-jspi-full-preparation.json",
+  "status": "preparation-finished-but-independent-derivation-rejected-not-conversion-acceptance",
+  "executions": 0,
+  "reason": "The JSPI full-control module was edited after Node loaded it but before the preparation snapshot was captured. Post/current source hashes match each other, but do not prove the executed in-memory module. Independent full-driver reconstruction detected the missing newly added JSPI stack assertions.",
+  "currentDerivedDriverSha256": "29351dca93fe8eb12fa6fe501944bf61d78875bc616bf97b88c8916899427895",
+  "preparedDriverSha256": "4656eb65e84261a32a5225c9ce8cb477dfdcd0a8a8fe36ebc78932e4ca1229cf",
+  "productionRestored": true,
+  "wrapperRemoved": true,
+  "candidateRemoved": true,
+  "nextAction": "Freeze implementation files, rerun preparation only, independently reconstruct driver/caller/stager/supervisor before launching any browser. No expensive media control repeated.",
+  "publicAcceptance": false,
+  "fullOriginalAcceptance": false
+}
