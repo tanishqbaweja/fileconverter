@@ -1,0 +1,122 @@
+{
+  "recordedAt": "2026-10-18T23:49:29.257Z",
+  "cases": [
+    {
+      "lowQuality": false,
+      "args": [
+        "-v",
+        "info",
+        "-re",
+        "-f",
+        "lavfi",
+        "-i",
+        "testsrc2=size=128x96:rate=24:duration=2",
+        "-f",
+        "lavfi",
+        "-i",
+        "testsrc2=size=128x96:rate=24:duration=2",
+        "-filter_complex",
+        "[0:v:0]settb=1/1,setpts=N[ref];[1:v:0]settb=1/1,setpts=N[out];[ref][out]ssim",
+        "-an",
+        "-f",
+        "null",
+        "-"
+      ],
+      "oldParser": {
+        "status": "missing-summary",
+        "score": null,
+        "summaries": 0,
+        "summaryLine": null,
+        "stderrBytes": 3841,
+        "stderrSha256": "625495eec4d6cb5414a661424cf90d7f76980551576c7b5030067501fe0fba85",
+        "limits": {
+          "stderrBytes": 33554432,
+          "summaryLineBytes": 2048
+        }
+      },
+      "correctedParser": {
+        "status": "numeric-summary",
+        "score": 1,
+        "summaries": 1,
+        "summaryLine": "[Parsed_ssim_4 @ 0000014419d03000] SSIM Y:1.000000 (inf) U:1.000000 (inf) V:1.000000 (inf) All:1.000000 (inf)",
+        "stderrBytes": 3841,
+        "stderrSha256": "625495eec4d6cb5414a661424cf90d7f76980551576c7b5030067501fe0fba85",
+        "limits": {
+          "stderrBytes": 33554432,
+          "summaryLineBytes": 2048
+        }
+      },
+      "stderr": "ffmpeg version N-122712-g7e3781e3ca-20260211 Copyright (c) 2000-2026 the FFmpeg developers\r\n  built with gcc 15.2.0 (crosstool-NG 1.28.0.1_403899e)\r\n  configuration: --prefix=/ffbuild/prefix --pkg-config-flags=--static --pkg-config=pkg-config --cross-prefix=x86_64-w64-mingw32- --arch=x86_64 --target-os=mingw32 --enable-gpl --enable-version3 --disable-debug --enable-shared --disable-static --disable-w32threads --enable-pthreads --enable-iconv --enable-zlib --enable-libxml2 --enable-libvmaf --enable-fontconfig --enable-libharfbuzz --enable-libfreetype --enable-libfribidi --enable-vulkan --enable-libshaderc --enable-libvorbis --disable-libxcb --disable-xlib --disable-libpulse --enable-opencl --enable-gmp --enable-lzma --enable-liblcevc-dec --enable-amf --enable-libaom --enable-libaribb24 --enable-avisynth --enable-chromaprint --enable-libdav1d --enable-libdavs2 --enable-libdvdread --enable-libdvdnav --disable-libfdk-aac --enable-ffnvcodec --enable-cuda-llvm --enable-frei0r --enable-libgme --enable-libkvazaar --enable-libaribcaption --enable-libass --enable-libbluray --enable-libjxl --enable-libmp3lame --enable-libopus --enable-libplacebo --enable-librist --enable-libssh --enable-libtheora --enable-libvpx --enable-libwebp --enable-libzmq --enable-lv2 --enable-libvpl --enable-openal --enable-liboapv --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-librav1e --enable-librubberband --enable-schannel --enable-sdl2 --enable-libsnappy --enable-libsoxr --enable-libsrt --enable-libsvtav1 --enable-libtwolame --enable-libuavs3d --disable-libdrm --enable-vaapi --enable-libvidstab --enable-libvvenc --enable-whisper --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxvid --enable-libzimg --enable-libzvbi --extra-cflags=-DLIBTWOLAME_STATIC --extra-cxxflags= --extra-libs=-lgomp --extra-ldflags=-pthread --extra-ldexeflags= --cc=x86_64-w64-mingw32-gcc --cxx=x86_64-w64-mingw32-g++ --ar=x86_64-w64-mingw32-gcc-ar --ranlib=x86_64-w64-mingw32-gcc-ranlib --nm=x86_64-w64-mingw32-gcc-nm --extra-version=20260211\r\n  libavutil      60. 24.100 / 60. 24.100\r\n  libavcodec     62. 23.103 / 62. 23.103\r\n  libavformat    62.  9.100 / 62.  9.100\r\n  libavdevice    62.  2.100 / 62.  2.100\r\n  libavfilter    11. 12.100 / 11. 12.100\r\n  libswscale      9.  3.100 /  9.  3.100\r\n  libswresample   6.  2.100 /  6.  2.100\r\nInput #0, lavfi, from 'testsrc2=size=128x96:rate=24:duration=2':\r\n  Duration: N/A, start: 0.000000, bitrate: N/A\r\n  Stream #0:0: Video: wrapped_avframe, yuv420p, 128x96 [SAR 1:1 DAR 4:3], 24 fps, 24 tbr, 24 tbn\r\nInput #1, lavfi, from 'testsrc2=size=128x96:rate=24:duration=2':\r\n  Duration: N/A, start: 0.000000, bitrate: N/A\r\n  Stream #1:0: Video: wrapped_avframe, yuv420p, 128x96 [SAR 1:1 DAR 4:3], 24 fps, 24 tbr, 24 tbn\r\nStream mapping:\r\n  Stream #0:0 (wrapped_avframe) -> settb:default\r\n  Stream #1:0 (wrapped_avframe) -> settb:default\r\n  ssim:default -> Stream #0:0 (wrapped_avframe)\r\nPress [q] to stop, [?] for help\r\nOutput #0, null, to 'pipe:':\r\n  Metadata:\r\n    encoder         : Lavf62.9.100\r\n  Stream #0:0: Video: wrapped_avframe, yuv420p(progressive), 128x96 [SAR 1:1 DAR 4:3], q=2-31, 200 kb/s, 24 fps, 24 tbn\r\n    Metadata:\r\n      encoder         : Lavc62.23.103 wrapped_avframe\r\nframe=   25 fps=0.0 q=-0.0 size=N/A time=00:00:24.00 bitrate=N/A speed=46.1x elapsed=0:00:00.52    \rframe=   37 fps= 36 q=-0.0 size=N/A time=00:00:36.00 bitrate=N/A speed=34.8x elapsed=0:00:01.03    \r[Parsed_ssim_4 @ 0000014419d03000] SSIM Y:1.000000 (inf) U:1.000000 (inf) V:1.000000 (inf) All:1.000000 (inf)\r\n[out#0/null @ 0000014419d03ac0] video:20KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown\r\nframe=   48 fps= 33 q=-0.0 Lsize=N/A time=00:00:47.00 bitrate=N/A speed=  32x elapsed=0:00:01.46    \r\n",
+      "carriageReturns": 32
+    },
+    {
+      "lowQuality": true,
+      "args": [
+        "-v",
+        "info",
+        "-re",
+        "-f",
+        "lavfi",
+        "-i",
+        "testsrc2=size=128x96:rate=24:duration=2",
+        "-f",
+        "lavfi",
+        "-i",
+        "testsrc2=size=128x96:rate=24:duration=2",
+        "-filter_complex",
+        "[0:v:0]settb=1/1,setpts=N[ref];[1:v:0]settb=1/1,setpts=N,eq=brightness=0.1[out];[ref][out]ssim",
+        "-an",
+        "-f",
+        "null",
+        "-"
+      ],
+      "oldParser": {
+        "status": "missing-summary",
+        "score": null,
+        "summaries": 0,
+        "summaryLine": null,
+        "stderrBytes": 3853,
+        "stderrSha256": "d3dbaa1e6592b1365d4293b76d336d1ff3f0b8811eedc25aee42221fa4405642",
+        "limits": {
+          "stderrBytes": 33554432,
+          "summaryLineBytes": 2048
+        }
+      },
+      "correctedParser": {
+        "status": "numeric-summary",
+        "score": 0.971627,
+        "summaries": 1,
+        "summaryLine": "[Parsed_ssim_5 @ 0000021cd12b3300] SSIM Y:0.957441 (13.710085) U:1.000000 (inf) V:1.000000 (inf) All:0.971627 (15.470998)",
+        "stderrBytes": 3853,
+        "stderrSha256": "d3dbaa1e6592b1365d4293b76d336d1ff3f0b8811eedc25aee42221fa4405642",
+        "limits": {
+          "stderrBytes": 33554432,
+          "summaryLineBytes": 2048
+        }
+      },
+      "stderr": "ffmpeg version N-122712-g7e3781e3ca-20260211 Copyright (c) 2000-2026 the FFmpeg developers\r\n  built with gcc 15.2.0 (crosstool-NG 1.28.0.1_403899e)\r\n  configuration: --prefix=/ffbuild/prefix --pkg-config-flags=--static --pkg-config=pkg-config --cross-prefix=x86_64-w64-mingw32- --arch=x86_64 --target-os=mingw32 --enable-gpl --enable-version3 --disable-debug --enable-shared --disable-static --disable-w32threads --enable-pthreads --enable-iconv --enable-zlib --enable-libxml2 --enable-libvmaf --enable-fontconfig --enable-libharfbuzz --enable-libfreetype --enable-libfribidi --enable-vulkan --enable-libshaderc --enable-libvorbis --disable-libxcb --disable-xlib --disable-libpulse --enable-opencl --enable-gmp --enable-lzma --enable-liblcevc-dec --enable-amf --enable-libaom --enable-libaribb24 --enable-avisynth --enable-chromaprint --enable-libdav1d --enable-libdavs2 --enable-libdvdread --enable-libdvdnav --disable-libfdk-aac --enable-ffnvcodec --enable-cuda-llvm --enable-frei0r --enable-libgme --enable-libkvazaar --enable-libaribcaption --enable-libass --enable-libbluray --enable-libjxl --enable-libmp3lame --enable-libopus --enable-libplacebo --enable-librist --enable-libssh --enable-libtheora --enable-libvpx --enable-libwebp --enable-libzmq --enable-lv2 --enable-libvpl --enable-openal --enable-liboapv --enable-libopencore-amrnb --enable-libopencore-amrwb --enable-libopenh264 --enable-libopenjpeg --enable-libopenmpt --enable-librav1e --enable-librubberband --enable-schannel --enable-sdl2 --enable-libsnappy --enable-libsoxr --enable-libsrt --enable-libsvtav1 --enable-libtwolame --enable-libuavs3d --disable-libdrm --enable-vaapi --enable-libvidstab --enable-libvvenc --enable-whisper --enable-libx264 --enable-libx265 --enable-libxavs2 --enable-libxvid --enable-libzimg --enable-libzvbi --extra-cflags=-DLIBTWOLAME_STATIC --extra-cxxflags= --extra-libs=-lgomp --extra-ldflags=-pthread --extra-ldexeflags= --cc=x86_64-w64-mingw32-gcc --cxx=x86_64-w64-mingw32-g++ --ar=x86_64-w64-mingw32-gcc-ar --ranlib=x86_64-w64-mingw32-gcc-ranlib --nm=x86_64-w64-mingw32-gcc-nm --extra-version=20260211\r\n  libavutil      60. 24.100 / 60. 24.100\r\n  libavcodec     62. 23.103 / 62. 23.103\r\n  libavformat    62.  9.100 / 62.  9.100\r\n  libavdevice    62.  2.100 / 62.  2.100\r\n  libavfilter    11. 12.100 / 11. 12.100\r\n  libswscale      9.  3.100 /  9.  3.100\r\n  libswresample   6.  2.100 /  6.  2.100\r\nInput #0, lavfi, from 'testsrc2=size=128x96:rate=24:duration=2':\r\n  Duration: N/A, start: 0.000000, bitrate: N/A\r\n  Stream #0:0: Video: wrapped_avframe, yuv420p, 128x96 [SAR 1:1 DAR 4:3], 24 fps, 24 tbr, 24 tbn\r\nInput #1, lavfi, from 'testsrc2=size=128x96:rate=24:duration=2':\r\n  Duration: N/A, start: 0.000000, bitrate: N/A\r\n  Stream #1:0: Video: wrapped_avframe, yuv420p, 128x96 [SAR 1:1 DAR 4:3], 24 fps, 24 tbr, 24 tbn\r\nStream mapping:\r\n  Stream #0:0 (wrapped_avframe) -> settb:default\r\n  Stream #1:0 (wrapped_avframe) -> settb:default\r\n  ssim:default -> Stream #0:0 (wrapped_avframe)\r\nPress [q] to stop, [?] for help\r\nOutput #0, null, to 'pipe:':\r\n  Metadata:\r\n    encoder         : Lavf62.9.100\r\n  Stream #0:0: Video: wrapped_avframe, yuv420p(progressive), 128x96 [SAR 1:1 DAR 4:3], q=2-31, 200 kb/s, 24 fps, 24 tbn\r\n    Metadata:\r\n      encoder         : Lavc62.23.103 wrapped_avframe\r\nframe=   25 fps=0.0 q=-0.0 size=N/A time=00:00:24.00 bitrate=N/A speed=45.9x elapsed=0:00:00.52    \rframe=   37 fps= 36 q=-0.0 size=N/A time=00:00:36.00 bitrate=N/A speed=  35x elapsed=0:00:01.02    \r[Parsed_ssim_5 @ 0000021cd12b3300] SSIM Y:0.957441 (13.710085) U:1.000000 (inf) V:1.000000 (inf) All:0.971627 (15.470998)\r\n[out#0/null @ 0000021cd12b3dc0] video:20KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown\r\nframe=   48 fps= 33 q=-0.0 Lsize=N/A time=00:00:47.00 bitrate=N/A speed=32.1x elapsed=0:00:01.46    \r\n",
+      "carriageReturns": 32
+    }
+  ],
+  "ownSources": {
+    "scripts/reproduce-ssim-line-framing.mjs": {
+      "sha256": "e49c6c6eeb9e8b3cf30fb0d14c115699f3f17066f54865dc4a880acbb7ede5d0",
+      "preimage": "Ly8gSW5kZXBlbmRlbnQtdmFsaWRhdG9yIGRpYWdub3N0aWMgb25seTogdHdvIGdlbmVyYXRlZCBsYXZmaSBpbnB1dHMsIG51bGwgc2luay4KLy8gTm8gdXNlciBtZWRpYSBpcyBjb252ZXJ0ZWQsIGFuZCBubyBvdXRwdXQgZmlsZSBpcyBwcm9kdWNlZC4KaW1wb3J0ICIuL2xpYi9yZWxpYWJsZS1yZWFkb25seS1wcmVmbGlnaHQubWpzIjsKaW1wb3J0IHsgZXhlY0ZpbGUgfSBmcm9tICJub2RlOmNoaWxkX3Byb2Nlc3MiOwppbXBvcnQgeyBwcm9taXNpZnkgfSBmcm9tICJub2RlOnV0aWwiOwppbXBvcnQgYXNzZXJ0IGZyb20gIm5vZGU6YXNzZXJ0L3N0cmljdCI7CmltcG9ydCB7IHJlYWRGaWxlLCB3cml0ZUZpbGUgfSBmcm9tICJub2RlOmZzL3Byb21pc2VzIjsKaW1wb3J0IHsgY3JlYXRlUmVhZFN0cmVhbSB9IGZyb20gIm5vZGU6ZnMiOwppbXBvcnQgeyBjcmVhdGVIYXNoIH0gZnJvbSAibm9kZTpjcnlwdG8iOwppbXBvcnQgeyBpbnNwZWN0U3NpbVN1bW1hcnkgYXMgY29ycmVjdGVkIH0gZnJvbSAiLi9saWIvY3ItYXdhcmUtc3NpbS1zdW1tYXJ5Lm1qcyI7CmltcG9ydCB7IHNoYSB9IGZyb20gIi4vbGliL3N0YWJsZS11aS1oZWFkbGVzcy1iYXNlbGluZS1yZWNpcGUubWpzIjsKaW1wb3J0IHsgaW5zcGVjdFNzaW1TdW1tYXJ5IH0gZnJvbSAiLi9saWIvYm91bmRlZC1zc2ltLXN1bW1hcnkubWpzIjsKaW1wb3J0IHsgY3JlYXRlT3duZWRSdW50aW1lU2NyYXRjaCB9IGZyb20gIi4vbGliL293bmVkLXJ1bnRpbWUtc2NyYXRjaC5tanMiOwpjb25zdCBydW50aW1lID0gYXdhaXQgY3JlYXRlT3duZWRSdW50aW1lU2NyYXRjaCgic3NpbS1mcmFtaW5nLXByb2JlLSIpOwp0cnkgewogIGNvbnN0IGFyZ3MgPSBbIi12IiwgImluZm8iLCAiLXJlIiwgIi1mIiwgImxhdmZpIiwgIi1pIiwgInRlc3RzcmMyPXNpemU9MTI4eDk2OnJhdGU9MjQ6ZHVyYXRpb249MiIsCiAgICAiLWYiLCAibGF2ZmkiLCAiLWkiLCAidGVzdHNyYzI9c2l6ZT0xMjh4OTY6cmF0ZT0yNDpkdXJhdGlvbj0yIiwgIi1maWx0ZXJfY29tcGxleCIsCiAgICAiWzA6djowXXNldHRiPTEvMSxzZXRwdHM9TltyZWZdO1sxOnY6MF1zZXR0Yj0xLzEsc2V0cHRzPU5bb3V0XTtbcmVmXVtvdXRdc3NpbSIsICItYW4iLCAiLWYiLCAibnVsbCIsICItIl07CiAgY29uc3QgY2FzZXMgPSBbXTsKICBmb3IgKGNvbnN0IGxvd1F1YWxpdHkgb2YgW2ZhbHNlLCB0cnVlXSkgewogICAgY29uc3QgYWN0dWFsQXJncyA9IFsuLi5hcmdzXTsKICAgIGlmIChsb3dRdWFsaXR5KSBhY3R1YWxBcmdzW2FjdHVhbEFyZ3MuaW5kZXhPZigiLWZpbHRlcl9jb21wbGV4IikgKyAxXSA9IGFjdHVhbEFyZ3NbYWN0dWFsQXJncy5pbmRleE9mKCItZmlsdGVyX2NvbXBsZXgiKSArIDFdLnJlcGxhY2UoInNldHB0cz1OW291dF0iLCAic2V0cHRzPU4sZXE9YnJpZ2h0bmVzcz0wLjFbb3V0XSIpOwogICAgY29uc3QgeyBzdGRlcnIgfSA9IGF3YWl0IHByb21pc2lmeShleGVjRmlsZSkoIkM6L2ZmbXBlZy9iaW4vZmZtcGVnLmV4ZSIsIGFjdHVhbEFyZ3MsCiAgICAgIHsgd2luZG93c0hpZGU6IHRydWUsIGVudjogcnVudGltZS5lbnYsIHRpbWVvdXQ6IDMwMDAwLCBtYXhCdWZmZXI6IDEwNDg1NzYgfSk7CiAgICBjb25zdCBiZWZvcmUgPSBpbnNwZWN0U3NpbVN1bW1hcnkoc3RkZXJyKSwgYWZ0ZXIgPSBjb3JyZWN0ZWQoc3RkZXJyKTsKICAgIGFzc2VydC5lcXVhbChiZWZvcmUuc3RhdHVzLCAibWlzc2luZy1zdW1tYXJ5Iik7IGFzc2VydC5lcXVhbChhZnRlci5zdGF0dXMsICJudW1lcmljLXN1bW1hcnkiKTsKICAgIGFzc2VydC5lcXVhbChhZnRlci5zdGRlcnJTaGEyNTYsIGJlZm9yZS5zdGRlcnJTaGEyNTYpOyBhc3NlcnQuZXF1YWwoYWZ0ZXIuc3RkZXJyQnl0ZXMsIGJlZm9yZS5zdGRlcnJCeXRlcyk7CiAgICBhc3NlcnQuZXF1YWwoYWZ0ZXIuc2NvcmUgPj0gMC45OCwgIWxvd1F1YWxpdHkpOwogICAgY2FzZXMucHVzaCh7IGxvd1F1YWxpdHksIGFyZ3M6IGFjdHVhbEFyZ3MsIG9sZFBhcnNlcjogYmVmb3JlLCBjb3JyZWN0ZWRQYXJzZXI6IGFmdGVyLCBzdGRlcnIsCiAgICAgIGNhcnJpYWdlUmV0dXJuczogWy4uLnN0ZGVyci5tYXRjaEFsbCgvXHIvZyldLmxlbmd0aCB9KTsKICB9CiAgY29uc3Qgb3duU291cmNlcyA9IHt9OwogIGZvciAoY29uc3QgZmlsZSBvZiBbInNjcmlwdHMvcmVwcm9kdWNlLXNzaW0tbGluZS1mcmFtaW5nLm1qcyIsICJzY3JpcHRzL2xpYi9jci1hd2FyZS1zc2ltLXN1bW1hcnkubWpzIiwgInRlc3RzL2NyLWF3YXJlLXNzaW0tc3VtbWFyeS50ZXN0Lm1qcyJdKSB7CiAgICBjb25zdCBieXRlcyA9IGF3YWl0IHJlYWRGaWxlKGZpbGUpOyBvd25Tb3VyY2VzW2ZpbGVdID0geyBzaGEyNTY6IHNoYShieXRlcyksIHByZWltYWdlOiBieXRlcy50b1N0cmluZygiYmFzZTY0IikgfTsKICB9CiAgY29uc3QgYmluYXJ5SGFzaCA9IGNyZWF0ZUhhc2goInNoYTI1NiIpOyBmb3IgYXdhaXQgKGNvbnN0IGNodW5rIG9mIGNyZWF0ZVJlYWRTdHJlYW0oIkM6L2ZmbXBlZy9iaW4vZmZtcGVnLmV4ZSIsIHsgaGlnaFdhdGVyTWFyazogMTA0ODU3NiB9KSkgYmluYXJ5SGFzaC51cGRhdGUoY2h1bmspOwogIGNvbnN0IGZpbGUgPSAiZXZpZGVuY2UvMjAyNi0xMC0xOS1zc2ltLWNyLWZyYW1pbmctbmF0aXZlLXYyLmpzb24iOwogIGF3YWl0IHdyaXRlRmlsZShmaWxlLCBKU09OLnN0cmluZ2lmeSh7IHJlY29yZGVkQXQ6IG5ldyBEYXRlKCkudG9JU09TdHJpbmcoKSwgY2FzZXMsIG93blNvdXJjZXMsCiAgICBleGVjdXRhYmxlOiB7IHBhdGg6ICJDOi9mZm1wZWcvYmluL2ZmbXBlZy5leGUiLCBzaGEyNTY6IGJpbmFyeUhhc2guZGlnZXN0KCJoZXgiKSB9LAogICAgbm9PdXRwdXRGaWxlOiB0cnVlLCBub1VzZXJNZWRpYVJlYWQ6IHRydWUsIGFjY2VwdGFuY2U6IGZhbHNlIH0sIG51bGwsIDIpICsgIlxuIiwgeyBmbGFnOiAid3giIH0pOwogIGNvbnNvbGUubG9nKEpTT04uc3RyaW5naWZ5KHsgZmlsZSwgY2FzZXM6IGNhc2VzLm1hcChyb3cgPT4gKHsgbG93UXVhbGl0eTogcm93Lmxvd1F1YWxpdHksIG9sZDogcm93Lm9sZFBhcnNlci5zdGF0dXMsIGNvcnJlY3RlZDogcm93LmNvcnJlY3RlZFBhcnNlci5zdGF0dXMsIHNjb3JlOiByb3cuY29ycmVjdGVkUGFyc2VyLnNjb3JlIH0pKSB9KSk7Cn0gZmluYWxseSB7IGF3YWl0IHJ1bnRpbWUuY2xvc2UoKTsgfQo="
+    },
+    "scripts/lib/cr-aware-ssim-summary.mjs": {
+      "sha256": "6196b1016ba2adc66aae7aad2e161aca4868f26db75d8e900012cc468aac6864",
+      "preimage": "Ly8gSW5kZXBlbmRlbnQgbG9nIGZyYW1pbmcgb25seS4gUHJlc2VydmUgZXZlcnkgb3JpZ2luYWwgc2NvcmUvY291bnQvY2FwIGd1YXJkLgppbXBvcnQgeyByZWFkRmlsZSB9IGZyb20gIm5vZGU6ZnMvcHJvbWlzZXMiOwppbXBvcnQgeyBleGFjdFBhdGNoIH0gZnJvbSAiLi9lYm1sLXJldXNlLWJyb3dzZXItY29tcG9uZW50cy5tanMiOwpleHBvcnQgZnVuY3Rpb24gZGVyaXZlQ3JBd2FyZVNzaW1TdW1tYXJ5KHNvdXJjZSkgewogIHJldHVybiBleGFjdFBhdGNoKHNvdXJjZSwgW1sKICAgICcgICAgY29uc3QgbmV3bGluZSA9IHN0ZGVyci5pbmRleE9mKCJcXG4iLCBwb3NpdGlvbiksIGVuZCA9IG5ld2xpbmUgPCAwID8gc3RkZXJyLmxlbmd0aCA6IG5ld2xpbmU7JywKICAgICcgICAgbGV0IGVuZCA9IHBvc2l0aW9uO1xuICAgIHdoaWxlKGVuZCA8IHN0ZGVyci5sZW5ndGggJiYgc3RkZXJyLmNoYXJDb2RlQXQoZW5kKSAhPT0gMTAgJiYgc3RkZXJyLmNoYXJDb2RlQXQoZW5kKSAhPT0gMTMpIGVuZCsrOycsCiAgXV0pOwp9CmV4cG9ydCBjb25zdCBjckF3YXJlU3NpbURlcml2YXRpb24gPSBkZXJpdmVDckF3YXJlU3NpbVN1bW1hcnkoYXdhaXQgcmVhZEZpbGUobmV3IFVSTCgiLi9ib3VuZGVkLXNzaW0tc3VtbWFyeS5tanMiLCBpbXBvcnQubWV0YS51cmwpLCAidXRmOCIpKTsKY29uc3QgcGFyc2VyTW9kdWxlID0gYXdhaXQgaW1wb3J0KCJkYXRhOnRleHQvamF2YXNjcmlwdDtiYXNlNjQsIiArIEJ1ZmZlci5mcm9tKGNyQXdhcmVTc2ltRGVyaXZhdGlvbi5nZW5lcmF0ZWQpLnRvU3RyaW5nKCJiYXNlNjQiKSk7CmV4cG9ydCBjb25zdCBpbnNwZWN0U3NpbVN1bW1hcnkgPSBwYXJzZXJNb2R1bGUuaW5zcGVjdFNzaW1TdW1tYXJ5OwpleHBvcnQgY29uc3QgcmVxdWlyZU51bWVyaWNTc2ltID0gcGFyc2VyTW9kdWxlLnJlcXVpcmVOdW1lcmljU3NpbTsKZXhwb3J0IGNvbnN0IFNTSU1fRElBR05PU1RJQ19MSU1JVFMgPSBwYXJzZXJNb2R1bGUuU1NJTV9ESUFHTk9TVElDX0xJTUlUUzsK"
+    },
+    "tests/cr-aware-ssim-summary.test.mjs": {
+      "sha256": "1112b4f4cf3401f7766d4cc9d2c217d24b93824812c06b5fd6454da39644d177",
+      "preimage": "aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyByZWFkRmlsZSB9IGZyb20gIm5vZGU6ZnMvcHJvbWlzZXMiOwppbXBvcnQgdGVzdCBmcm9tICJub2RlOnRlc3QiOwppbXBvcnQgeyBpbnNwZWN0U3NpbVN1bW1hcnkgYXMgb3JpZ2luYWwgfSBmcm9tICIuLi9zY3JpcHRzL2xpYi9ib3VuZGVkLXNzaW0tc3VtbWFyeS5tanMiOwppbXBvcnQgeyBpbnNwZWN0U3NpbVN1bW1hcnksIHJlcXVpcmVOdW1lcmljU3NpbSwgY3JBd2FyZVNzaW1EZXJpdmF0aW9uLCBTU0lNX0RJQUdOT1NUSUNfTElNSVRTIH0gZnJvbSAiLi4vc2NyaXB0cy9saWIvY3ItYXdhcmUtc3NpbS1zdW1tYXJ5Lm1qcyI7CmNvbnN0IHN1bW1hcnkgPSB2YWx1ZSA9PiBgW1BhcnNlZF9zc2ltXzQgQCAweDEyM10gU1NJTSBZOi45OSAoMTIpIFU6MSAoaW5mKSBWOjEgKGluZikgQWxsOiR7dmFsdWV9ICgxMilgOwp0ZXN0KCJvbmx5IHRoZSByZWNvcmQtZGVsaW1pdGVyIHNjYW4gY2hhbmdlczsgb3JpZ2luYWwgc2NvcmluZywgYW1iaWd1aXR5IGFuZCBieXRlIGNhcHMgYXJlIGJ5dGUtZXhhY3QiLCBhc3luYyAoKSA9PiB7CiAgbGV0IHJlc3RvcmVkID0gY3JBd2FyZVNzaW1EZXJpdmF0aW9uLmdlbmVyYXRlZDsKICBmb3IgKGNvbnN0IFtiZWZvcmUsIGFmdGVyXSBvZiBjckF3YXJlU3NpbURlcml2YXRpb24uZWRpdHMudG9SZXZlcnNlZCgpKSByZXN0b3JlZCA9IHJlc3RvcmVkLnJlcGxhY2UoYWZ0ZXIsIGJlZm9yZSk7CiAgYXNzZXJ0LmVxdWFsKHJlc3RvcmVkLCBhd2FpdCByZWFkRmlsZSgic2NyaXB0cy9saWIvYm91bmRlZC1zc2ltLXN1bW1hcnkubWpzIiwgInV0ZjgiKSk7CiAgYXNzZXJ0LmVxdWFsKGNyQXdhcmVTc2ltRGVyaXZhdGlvbi5lZGl0cy5sZW5ndGgsIDEpOyBhc3NlcnQuZXF1YWwoU1NJTV9ESUFHTk9TVElDX0xJTUlUUy5zdGRlcnJCeXRlcywgMzM1NTQ0MzIpOwp9KTsKdGVzdCgiQ1IgcHJvZ3Jlc3MgYmVmb3JlIHRoZSBhY3R1YWwgc3VtbWFyeSBpcyBwYXJzZWQgd2l0aG91dCBjaGFuZ2luZyByYXcgYnl0ZXMvaGFzaCBvciBzY29yZSIsICgpID0+IHsKICBmb3IgKGNvbnN0IHNlcGFyYXRvciBvZiBbIlxyIiwgIlxuIiwgIlxyXG4iXSkgZm9yIChjb25zdCBzY29yZSBvZiBbMSwgMC45ODk1NjUsIDAuOTgsIDAuOTcsIDAsIC0wLjAxXSkgewogICAgY29uc3QgdGV4dCA9ICJmcmFtZT0zMDAgZnBzPTIwIiArIHNlcGFyYXRvciArIHN1bW1hcnkoc2NvcmUpICsgc2VwYXJhdG9yOwogICAgY29uc3QgcmVzdWx0ID0gaW5zcGVjdFNzaW1TdW1tYXJ5KHRleHQpOyBhc3NlcnQuZXF1YWwocmVxdWlyZU51bWVyaWNTc2ltKHJlc3VsdCksIHNjb3JlKTsKICAgIGFzc2VydC5lcXVhbChyZXN1bHQuc3RkZXJyU2hhMjU2LCBvcmlnaW5hbCh0ZXh0KS5zdGRlcnJTaGEyNTYpOyBhc3NlcnQuZXF1YWwocmVzdWx0LnN0ZGVyckJ5dGVzLCBCdWZmZXIuYnl0ZUxlbmd0aCh0ZXh0KSk7CiAgICBpZiAoc2VwYXJhdG9yICE9PSAiXHIiKSBhc3NlcnQuZGVlcEVxdWFsKHJlc3VsdCwgb3JpZ2luYWwodGV4dCkpOwogIH0KfSk7CnRlc3QoIm1pc3NpbmcsIGludmFsaWQsIGR1cGxpY2F0ZSwgb3ZlcnNpemVkIGFuZCByZWFsIGxvdyBzY29yZXMgcmVtYWluIGZhaWx1cmVzIG9yIG5vbnBhc3NpbmcgcXVhbGl0eSIsICgpID0+IHsKICBmb3IgKGNvbnN0IHRleHQgb2YgWyJmcmFtZT0xXHJubyBzdW1tYXJ5IiwgIkFsbDowLjk5XHIiLCBzdW1tYXJ5KCJuYW4iKSwgc3VtbWFyeSgiaW5mIiksIHN1bW1hcnkoIjFnYXJiYWdlIiksCiAgICBzdW1tYXJ5KCIyIiksIHN1bW1hcnkoIi45OSIpICsgIlxyIiArIHN1bW1hcnkoIi45OCIpLCAiU1NJTSAiICsgIngiLnJlcGVhdCgzMDAwKSArICIgQWxsOi45OVxyIl0pCiAgICBhc3NlcnQudGhyb3dzKCgpID0+IHJlcXVpcmVOdW1lcmljU3NpbShpbnNwZWN0U3NpbVN1bW1hcnkodGV4dCkpKTsKICBjb25zdCBsb3cgPSByZXF1aXJlTnVtZXJpY1NzaW0oaW5zcGVjdFNzaW1TdW1tYXJ5KCJmcmFtZT0xXHIiICsgc3VtbWFyeSgiLjk3IikpKTsgYXNzZXJ0Lm9rKGxvdyA8IDAuOTgpOwp9KTsKdGVzdCgibGFyZ2UgYm91bmRlZCBDUi1vbmx5IHByb2dyZXNzIGhpc3RvcnkgaXMgc2Nhbm5lZCB3aXRob3V0IHJldGFpbmluZyBpdCBpbiBkaWFnbm9zdGljcyIsICgpID0+IHsKICBjb25zdCByZXN1bHQgPSBpbnNwZWN0U3NpbVN1bW1hcnkoImZyYW1lPTEyMzQ1IGZwcz0yNFxyIi5yZXBlYXQoMTAwMDAwKSArIHN1bW1hcnkoIi45OSIpKTsKICBhc3NlcnQuZXF1YWwocmVzdWx0LnNjb3JlLCAwLjk5KTsgYXNzZXJ0Lm9rKEpTT04uc3RyaW5naWZ5KHJlc3VsdCkubGVuZ3RoIDwgMTAyNCk7Cn0pOwo="
+    }
+  },
+  "executable": {
+    "path": "C:/ffmpeg/bin/ffmpeg.exe",
+    "sha256": "867ff4c1023013b7ab6a7239e542f4e1de2023760f0cc3339eb7d12bf417c009"
+  },
+  "noOutputFile": true,
+  "noUserMediaRead": true,
+  "acceptance": false
+}

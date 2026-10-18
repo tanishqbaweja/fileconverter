@@ -7501,3 +7501,20 @@ Protected test.mkv size/SHA and Chrome155 pin unchanged; owned scratch absent,
 normal assets restored.19focused PASS17.273s/sevenMJS zero-warning lint PASS.
 evidence/2026-10-18-jspi-full-preparation-analysis.json. Still zero conversions;
 next one hidden supervised three-full-original session, no public promotion.
+2026-10-19 - Full JSPI result audited: one genuine296160-frame/6414309978B browser
+encode completed in11004108.330ms at234.2109375MiB complete-tree incremental memory.
+Full decode/audio/metadata/artwork/timestamps reached before SSIM parser rejected
+missing-summary; quality/outputSHA/recovery/three-repeat acceptance NOT proven.
+Exact855sources and five-directory/process cleanup/protected fixture verified in
+evidence/2026-10-19-jspi-full-failure-analysis.json. Real2-second native null-output
+fixtures reproduce CR-framing loss: corrected scanner reads1.0 and0.971627, the
+latter still fails unchanged.98. Raw logs retained in
+evidence/2026-10-19-ssim-cr-framing-native.json.7original/new parser focused PASS
+236.747ms;2full-failure audit focused PASS1814.948ms. No public route promoted.
+Final correction: reserved loader binding renamed; native controls repeated in
+evidence/2026-10-19-ssim-cr-framing-native-v2.json (same1.0/.971627, exact final
+sources).19focused PASS14.480s,12MJS zero-warning lint/diffcheck PASS. Frozen
+23:51:40.985Z preparation independently verified all868source pins and exact four
+runtime derivations, original size/SHA, scratch removal and normal production
+assets. evidence/2026-10-19-jspi-ssim-preparation-analysis.json. No browser retry
+started by this preparation; all original quality/memory/native commands retained.

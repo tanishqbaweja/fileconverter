@@ -1,0 +1,43 @@
+{
+  "status": "captured-independent-frame-probe",
+  "recordedAt": "2026-10-18T05:36:42.918Z",
+  "executable": "C:/ffmpeg/bin/ffprobe.exe",
+  "args": [
+    "-v",
+    "error",
+    "-threads",
+    "1",
+    "-select_streams",
+    "v:0",
+    "-show_frames",
+    "-show_entries",
+    "frame=best_effort_timestamp_time",
+    "-of",
+    "csv=p=0",
+    "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-full-runtime-0f8xFu\\profile\\Default\\File System\\000\\t\\00\\00000002"
+  ],
+  "maximumMs": 1800000,
+  "maximumStdoutBytes": 33554432,
+  "logicalExecutable": "ffprobe",
+  "stdout": {
+    "bytes": 7159363,
+    "sha256": "f8b258b8e148387528613c60a2e8e9cc4b52599fbe3eaca9d350e2f279e37348",
+    "archive": {
+      "path": "outputs/reports/2026-10-18T02-19-20-746Z-private-mpeg2-updated-chrome-full-native-100ms-output-timestamps-1.csv.gz",
+      "bytes": 798119,
+      "sha256": "2a6eca63bf3d982ee91548c2bb65a42c13f9564e6fb68deab00fb6fb3e855853"
+    }
+  },
+  "stderr": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tail": ""
+  },
+  "frames": 296160,
+  "expectedFrames": 296160,
+  "countMatchesExpected": true,
+  "fullOriginalAcceptance": false,
+  "publicAcceptance": false,
+  "failure": null,
+  "elapsedMs": 341932
+}

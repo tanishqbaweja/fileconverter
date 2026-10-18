@@ -1,5 +1,56 @@
 # Remaining work audit
 
+## 2026-10-19 - Full JSPI encode completed; SSIM framing failure audited, not accepted
+
+**Partially implemented.** Supervised UTC2026-10-18T02:17:46.714Z session stopped
+after run1; no automatic restart and no runs2/3. Browser genuinely decoded/encoded
+all296160 frames to MPEG2 1920x804, wrote6414309978B, and completed in11004108.330ms
+(3h03m24s). Native full-frame probe, metadata/audio/artwork checks and full decode
+completed before the SSIM-summary parser failed. All296160 retained output
+timestamps independently replayed: maximum error0.00031300000000555883s<=.001s.
+Quality score and output SHA remain UNKNOWN because their acceptance assignment
+was not reached; identical historical size is NOT a hash/quality proof.
+
+Complete-Chromium peak493719552B minus lower stable same-instance blank248131584B
+=234.2109375MiB.101211valid/0unavailable conversion samples, full-tree/GPU sums
+checked. Fixed48MiBWasm,64KiBreads,512KiBcopy/queue, onepending, zero terminal
+queue/pending, actualJSPI active0/max1. Exact855sourcepins/driver/caller/stager/
+supervisor/native manifest/qualified app+workers reconstructed. All5scratch paths
+absent, owned births absent, normaldist restored, original full size/SHA verified.
+Evidence:`evidence/2026-10-19-jspi-full-failure-analysis.json`. Full acceptance,
+post-validation recovery, three repeats, scaling and paired speed remain unproven.
+
+Native2-second lavfi/no-output-file reproduction isolates CR progress framing:
+oldparser reports missing-summary; corrected single delimiter-scan edit reads
+actual SSIM1.0 and0.971627, retaining raw stderr hashes and the SAME .98 threshold.
+The low-quality native control still fails quality. Original full stderr was NOT
+retained, so this reproduces the bug class rather than reconstructing its lost
+quality score. Exact native logs/sources are in
+`evidence/2026-10-19-ssim-cr-framing-native.json`. New private full wrapper changes
+only independent-validator log framing, durably retains raw SSIM stderr BEFORE
+assertion, and hashes completed output before SSIM. Original browser assets,
+codecs, native commands, quality/timing/memory/repeatability/cleanup gates unchanged.
+Do not rerun the unchanged small browser controls. Next freeze and independently
+prepare the corrected full session before one supervised retry.
+
+Corrected-harness19focused checks PASS36.502s. Initial zero-conversion preparation
+UTC23:47:33.530Z finished cleanup, but lint then rejected the Node loader binding
+named `module` under the Next rule. Renamed ONLY that binding, regenerated the
+two cheap native controls (same1.0/.971627), and retained a new immutable proof
+`evidence/2026-10-19-ssim-cr-framing-native-v2.json`. Old proof/preparation remain
+historical, not the final source qualification. No full conversion restarted.
+Final lint/tests must finish before a new frozen preparation; do not edit a loaded
+module during preparation or run an expensive unchanged browser control.
+
+Final lint12files/zero warnings PASS;19focused PASS14.480s; diffcheck PASS. Frozen
+UTC23:51:40.985Z preparation independently reconstructs all868source pins and
+exact driver/caller/stager/supervisor, keeps SAME .98 threshold/250MiB guard/native
+commands/browserassets/codecs, and removes owned scratch with original size/SHA
+intact. Evidence:`evidence/2026-10-19-jspi-ssim-preparation-analysis.json`. This is
+zero-conversion preparation, not quality/full-original/public acceptance. Ready
+for one supervised complete three-run retry; estimated~3h04m encoding +~26m native
+validation per run (~10h30m total), subject to measured progress and strict gates.
+
 ## 2026-10-18 - Full-original JSPI three-run harness assembled; conversion pending
 
 **Partially implemented; no full-original JSPI conversion claimed.** New additive

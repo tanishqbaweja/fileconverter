@@ -1,0 +1,35 @@
+{
+  "status": "exact-ssim-framing-full-harness-verified-not-conversion-acceptance",
+  "preparation": {
+    "path": "evidence/2026-10-18T23-51-40-985Z-jspi-ssim-full-preparation.json",
+    "sha256": "8185a88b6123cdee0ac50cfaf19fe5731395d8e1d0337e9627d948bfd56e8b37"
+  },
+  "inspector": "scripts/inspect-jspi-ssim-preparation.mjs",
+  "sourceCount": 868,
+  "currentPrePostPinsEqual": true,
+  "exactDriverCallerStagerSupervisorReconstructed": true,
+  "qualityThreshold": 0.98,
+  "primaryMemoryLimitMiB": 250,
+  "browserCodecChanges": 0,
+  "allOriginalIndependentNativeCommandsUnchanged": true,
+  "rawSsimStderrRetainedBeforeScoreAssertion": true,
+  "outputHashComputedBeforeSsim": true,
+  "nativeFramingQualification": "evidence/2026-10-19-ssim-cr-framing-native-v2.json",
+  "realLowQualityControlScore": 0.971627,
+  "realLowQualityControlStillRejected": true,
+  "focusedTests": { "passed": 19, "failed": 0, "durationMs": 14480.3412 },
+  "lint": { "files": 12, "errors": 0, "warnings": 0 },
+  "diffCheckPassed": true,
+  "originalBeforeAndAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "ownedPreparationScratchRemoved": true,
+  "normalProductionAssetsRestored": true,
+  "executions": 0,
+  "supersededPreparation": "evidence/2026-10-18T23-47-33-530Z-jspi-ssim-full-preparation.json",
+  "supersededReason": "Node-only binding module renamed to parserModule to pass the existing lint rule; native qualification regenerated against final sources. No browser conversion occurred.",
+  "nextAction": "One supervised full-original three-run retry with unchanged browser/codec/quality/memory/cleanup gates; no automatic restart.",
+  "fullOriginalAcceptance": false,
+  "publicAcceptance": false
+}
