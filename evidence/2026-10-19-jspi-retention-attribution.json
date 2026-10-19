@@ -1,0 +1,1008 @@
+{
+  "recordedAt": "2026-10-19T15:33:03.450Z",
+  "analysis": {
+    "status": "saved-full-session-retention-attributed-to-processes-not-allocations",
+    "snapshotKind": "Last simultaneous native sample in each phase; NOT stable-window median or sum of per-process maxima",
+    "snapshots": [
+      {
+        "phase": "loaded-idle",
+        "timestamp": "2026-10-19T00:02:55.6717408Z",
+        "sequence": 3128,
+        "privateBytes": 343584768,
+        "processes": [
+          {
+            "id": 0,
+            "pid": 3164,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.9842630Z",
+            "creationFileTime": "134368414299842630",
+            "executableName": "chrome.exe",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 52645888,
+            "rssBytes": 112394240
+          },
+          {
+            "id": 18,
+            "pid": 3764,
+            "parentPid": 35908,
+            "createdAt": "2026-10-19T00:02:32.5831748Z",
+            "creationFileTime": "134368417525831748",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 17432576,
+            "rssBytes": 33812480
+          },
+          {
+            "id": 2,
+            "pid": 18060,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.9085574Z",
+            "creationFileTime": "134368414299085574",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 8146944,
+            "rssBytes": 18563072
+          },
+          {
+            "id": 3,
+            "pid": 18276,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.9089298Z",
+            "creationFileTime": "134368414299089298",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 36499456,
+            "rssBytes": 81149952
+          },
+          {
+            "id": 4,
+            "pid": 18460,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.7363723Z",
+            "creationFileTime": "134368414297363723",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 145321984,
+            "rssBytes": 183775232
+          },
+          {
+            "id": 6,
+            "pid": 32340,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.8228481Z",
+            "creationFileTime": "134368414298228481",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 13266944,
+            "rssBytes": 41603072
+          },
+          {
+            "id": 7,
+            "pid": 32468,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.1569332Z",
+            "creationFileTime": "134368414291569332",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 2551808,
+            "rssBytes": 10498048
+          },
+          {
+            "id": 8,
+            "pid": 33852,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:10.2970475Z",
+            "creationFileTime": "134368414302970475",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 20672512,
+            "rssBytes": 43782144
+          },
+          {
+            "id": 9,
+            "pid": 35908,
+            "parentPid": 22916,
+            "createdAt": "2026-10-18T23:57:08.9440612Z",
+            "creationFileTime": "134368414289440612",
+            "executableName": "chrome.exe",
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 47046656,
+            "rssBytes": 148865024
+          }
+        ]
+      },
+      {
+        "phase": "cleanup-1",
+        "timestamp": "2026-10-19T05:12:56.5499687Z",
+        "sequence": 173702,
+        "privateBytes": 360296448,
+        "processes": [
+          {
+            "id": 0,
+            "pid": 3164,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.9842630Z",
+            "creationFileTime": "134368414299842630",
+            "executableName": "chrome.exe",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 79638528,
+            "rssBytes": 55537664
+          },
+          {
+            "id": 18,
+            "pid": 3764,
+            "parentPid": 35908,
+            "createdAt": "2026-10-19T00:02:32.5831748Z",
+            "creationFileTime": "134368417525831748",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 17825792,
+            "rssBytes": 14966784
+          },
+          {
+            "id": 2,
+            "pid": 18060,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.9085574Z",
+            "creationFileTime": "134368414299085574",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 8060928,
+            "rssBytes": 16707584
+          },
+          {
+            "id": 3,
+            "pid": 18276,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.9089298Z",
+            "creationFileTime": "134368414299089298",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 36433920,
+            "rssBytes": 18612224
+          },
+          {
+            "id": 4,
+            "pid": 18460,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.7363723Z",
+            "creationFileTime": "134368414297363723",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 124932096,
+            "rssBytes": 30937088
+          },
+          {
+            "id": 6,
+            "pid": 32340,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.8228481Z",
+            "creationFileTime": "134368414298228481",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 13053952,
+            "rssBytes": 30572544
+          },
+          {
+            "id": 7,
+            "pid": 32468,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.1569332Z",
+            "creationFileTime": "134368414291569332",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 2596864,
+            "rssBytes": 9187328
+          },
+          {
+            "id": 8,
+            "pid": 33852,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:10.2970475Z",
+            "creationFileTime": "134368414302970475",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 20615168,
+            "rssBytes": 20619264
+          },
+          {
+            "id": 9,
+            "pid": 35908,
+            "parentPid": 22916,
+            "createdAt": "2026-10-18T23:57:08.9440612Z",
+            "creationFileTime": "134368414289440612",
+            "executableName": "chrome.exe",
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 57139200,
+            "rssBytes": 61825024
+          }
+        ]
+      },
+      {
+        "phase": "cleanup-2",
+        "timestamp": "2026-10-19T10:02:43.1054020Z",
+        "sequence": 333298,
+        "privateBytes": 372334592,
+        "processes": [
+          {
+            "id": 0,
+            "pid": 3164,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.9842630Z",
+            "creationFileTime": "134368414299842630",
+            "executableName": "chrome.exe",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 86724608,
+            "rssBytes": 67760128
+          },
+          {
+            "id": 18,
+            "pid": 3764,
+            "parentPid": 35908,
+            "createdAt": "2026-10-19T00:02:32.5831748Z",
+            "creationFileTime": "134368417525831748",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 17838080,
+            "rssBytes": 15314944
+          },
+          {
+            "id": 2,
+            "pid": 18060,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.9085574Z",
+            "creationFileTime": "134368414299085574",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 8065024,
+            "rssBytes": 16683008
+          },
+          {
+            "id": 3,
+            "pid": 18276,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.9089298Z",
+            "creationFileTime": "134368414299089298",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 36438016,
+            "rssBytes": 18767872
+          },
+          {
+            "id": 4,
+            "pid": 18460,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.7363723Z",
+            "creationFileTime": "134368414297363723",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 126701568,
+            "rssBytes": 33964032
+          },
+          {
+            "id": 6,
+            "pid": 32340,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.8228481Z",
+            "creationFileTime": "134368414298228481",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 14663680,
+            "rssBytes": 30289920
+          },
+          {
+            "id": 7,
+            "pid": 32468,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.1569332Z",
+            "creationFileTime": "134368414291569332",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 2596864,
+            "rssBytes": 9064448
+          },
+          {
+            "id": 8,
+            "pid": 33852,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:10.2970475Z",
+            "creationFileTime": "134368414302970475",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 20627456,
+            "rssBytes": 20582400
+          },
+          {
+            "id": 9,
+            "pid": 35908,
+            "parentPid": 22916,
+            "createdAt": "2026-10-18T23:57:08.9440612Z",
+            "creationFileTime": "134368414289440612",
+            "executableName": "chrome.exe",
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 58679296,
+            "rssBytes": 63344640
+          }
+        ]
+      },
+      {
+        "phase": "cleanup-3",
+        "timestamp": "2026-10-19T14:31:59.8371637Z",
+        "sequence": 481547,
+        "privateBytes": 375975936,
+        "processes": [
+          {
+            "id": 0,
+            "pid": 3164,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.9842630Z",
+            "creationFileTime": "134368414299842630",
+            "executableName": "chrome.exe",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 84029440,
+            "rssBytes": 95543296
+          },
+          {
+            "id": 18,
+            "pid": 3764,
+            "parentPid": 35908,
+            "createdAt": "2026-10-19T00:02:32.5831748Z",
+            "creationFileTime": "134368417525831748",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 17838080,
+            "rssBytes": 3518464
+          },
+          {
+            "id": 2,
+            "pid": 18060,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.9085574Z",
+            "creationFileTime": "134368414299085574",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 8065024,
+            "rssBytes": 2985984
+          },
+          {
+            "id": 3,
+            "pid": 18276,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.9089298Z",
+            "creationFileTime": "134368414299089298",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 36438016,
+            "rssBytes": 4771840
+          },
+          {
+            "id": 4,
+            "pid": 18460,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.7363723Z",
+            "creationFileTime": "134368414297363723",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 132059136,
+            "rssBytes": 47718400
+          },
+          {
+            "id": 6,
+            "pid": 32340,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.8228481Z",
+            "creationFileTime": "134368414298228481",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 14639104,
+            "rssBytes": 15572992
+          },
+          {
+            "id": 7,
+            "pid": 32468,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:09.1569332Z",
+            "creationFileTime": "134368414291569332",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 2596864,
+            "rssBytes": 462848
+          },
+          {
+            "id": 8,
+            "pid": 33852,
+            "parentPid": 35908,
+            "createdAt": "2026-10-18T23:57:10.2970475Z",
+            "creationFileTime": "134368414302970475",
+            "executableName": "chrome.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 21676032,
+            "rssBytes": 4669440
+          },
+          {
+            "id": 9,
+            "pid": 35908,
+            "parentPid": 22916,
+            "createdAt": "2026-10-18T23:57:08.9440612Z",
+            "creationFileTime": "134368414289440612",
+            "executableName": "chrome.exe",
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "privateBytes": 58634240,
+            "rssBytes": 48631808
+          }
+        ]
+      }
+    ],
+    "perProcess": [
+      {
+        "pid": 3164,
+        "createdAt": "2026-10-18T23:57:09.9842630Z",
+        "type": "renderer",
+        "privateBytes": [
+          52645888,
+          79638528,
+          86724608,
+          84029440
+        ],
+        "stepChangesBytes": [
+          26992640,
+          7086080,
+          -2695168
+        ],
+        "loadedToFinalBytes": 31383552
+      },
+      {
+        "pid": 3764,
+        "createdAt": "2026-10-19T00:02:32.5831748Z",
+        "type": "unknown",
+        "privateBytes": [
+          17432576,
+          17825792,
+          17838080,
+          17838080
+        ],
+        "stepChangesBytes": [
+          393216,
+          12288,
+          0
+        ],
+        "loadedToFinalBytes": 405504
+      },
+      {
+        "pid": 18060,
+        "createdAt": "2026-10-18T23:57:09.9085574Z",
+        "type": "unknown",
+        "privateBytes": [
+          8146944,
+          8060928,
+          8065024,
+          8065024
+        ],
+        "stepChangesBytes": [
+          -86016,
+          4096,
+          0
+        ],
+        "loadedToFinalBytes": -81920
+      },
+      {
+        "pid": 18276,
+        "createdAt": "2026-10-18T23:57:09.9089298Z",
+        "type": "unknown",
+        "privateBytes": [
+          36499456,
+          36433920,
+          36438016,
+          36438016
+        ],
+        "stepChangesBytes": [
+          -65536,
+          4096,
+          0
+        ],
+        "loadedToFinalBytes": -61440
+      },
+      {
+        "pid": 18460,
+        "createdAt": "2026-10-18T23:57:09.7363723Z",
+        "type": "unknown",
+        "privateBytes": [
+          145321984,
+          124932096,
+          126701568,
+          132059136
+        ],
+        "stepChangesBytes": [
+          -20389888,
+          1769472,
+          5357568
+        ],
+        "loadedToFinalBytes": -13262848
+      },
+      {
+        "pid": 32340,
+        "createdAt": "2026-10-18T23:57:09.8228481Z",
+        "type": "unknown",
+        "privateBytes": [
+          13266944,
+          13053952,
+          14663680,
+          14639104
+        ],
+        "stepChangesBytes": [
+          -212992,
+          1609728,
+          -24576
+        ],
+        "loadedToFinalBytes": 1372160
+      },
+      {
+        "pid": 32468,
+        "createdAt": "2026-10-18T23:57:09.1569332Z",
+        "type": "unknown",
+        "privateBytes": [
+          2551808,
+          2596864,
+          2596864,
+          2596864
+        ],
+        "stepChangesBytes": [
+          45056,
+          0,
+          0
+        ],
+        "loadedToFinalBytes": 45056
+      },
+      {
+        "pid": 33852,
+        "createdAt": "2026-10-18T23:57:10.2970475Z",
+        "type": "unknown",
+        "privateBytes": [
+          20672512,
+          20615168,
+          20627456,
+          21676032
+        ],
+        "stepChangesBytes": [
+          -57344,
+          12288,
+          1048576
+        ],
+        "loadedToFinalBytes": 1003520
+      },
+      {
+        "pid": 35908,
+        "createdAt": "2026-10-18T23:57:08.9440612Z",
+        "type": "browser",
+        "privateBytes": [
+          47046656,
+          57139200,
+          58679296,
+          58634240
+        ],
+        "stepChangesBytes": [
+          10092544,
+          1540096,
+          -45056
+        ],
+        "loadedToFinalBytes": 11587584
+      }
+    ],
+    "changes": [
+      {
+        "from": "loaded-idle",
+        "to": "cleanup-1",
+        "deltaBytes": 16711680,
+        "processChanges": [
+          {
+            "pid": 3164,
+            "createdAt": "2026-10-18T23:57:09.9842630Z",
+            "type": "renderer",
+            "deltaBytes": 26992640
+          },
+          {
+            "pid": 3764,
+            "createdAt": "2026-10-19T00:02:32.5831748Z",
+            "type": "unknown",
+            "deltaBytes": 393216
+          },
+          {
+            "pid": 18060,
+            "createdAt": "2026-10-18T23:57:09.9085574Z",
+            "type": "unknown",
+            "deltaBytes": -86016
+          },
+          {
+            "pid": 18276,
+            "createdAt": "2026-10-18T23:57:09.9089298Z",
+            "type": "unknown",
+            "deltaBytes": -65536
+          },
+          {
+            "pid": 18460,
+            "createdAt": "2026-10-18T23:57:09.7363723Z",
+            "type": "unknown",
+            "deltaBytes": -20389888
+          },
+          {
+            "pid": 32340,
+            "createdAt": "2026-10-18T23:57:09.8228481Z",
+            "type": "unknown",
+            "deltaBytes": -212992
+          },
+          {
+            "pid": 32468,
+            "createdAt": "2026-10-18T23:57:09.1569332Z",
+            "type": "unknown",
+            "deltaBytes": 45056
+          },
+          {
+            "pid": 33852,
+            "createdAt": "2026-10-18T23:57:10.2970475Z",
+            "type": "unknown",
+            "deltaBytes": -57344
+          },
+          {
+            "pid": 35908,
+            "createdAt": "2026-10-18T23:57:08.9440612Z",
+            "type": "browser",
+            "deltaBytes": 10092544
+          }
+        ]
+      },
+      {
+        "from": "cleanup-1",
+        "to": "cleanup-2",
+        "deltaBytes": 12038144,
+        "processChanges": [
+          {
+            "pid": 3164,
+            "createdAt": "2026-10-18T23:57:09.9842630Z",
+            "type": "renderer",
+            "deltaBytes": 7086080
+          },
+          {
+            "pid": 3764,
+            "createdAt": "2026-10-19T00:02:32.5831748Z",
+            "type": "unknown",
+            "deltaBytes": 12288
+          },
+          {
+            "pid": 18060,
+            "createdAt": "2026-10-18T23:57:09.9085574Z",
+            "type": "unknown",
+            "deltaBytes": 4096
+          },
+          {
+            "pid": 18276,
+            "createdAt": "2026-10-18T23:57:09.9089298Z",
+            "type": "unknown",
+            "deltaBytes": 4096
+          },
+          {
+            "pid": 18460,
+            "createdAt": "2026-10-18T23:57:09.7363723Z",
+            "type": "unknown",
+            "deltaBytes": 1769472
+          },
+          {
+            "pid": 32340,
+            "createdAt": "2026-10-18T23:57:09.8228481Z",
+            "type": "unknown",
+            "deltaBytes": 1609728
+          },
+          {
+            "pid": 32468,
+            "createdAt": "2026-10-18T23:57:09.1569332Z",
+            "type": "unknown",
+            "deltaBytes": 0
+          },
+          {
+            "pid": 33852,
+            "createdAt": "2026-10-18T23:57:10.2970475Z",
+            "type": "unknown",
+            "deltaBytes": 12288
+          },
+          {
+            "pid": 35908,
+            "createdAt": "2026-10-18T23:57:08.9440612Z",
+            "type": "browser",
+            "deltaBytes": 1540096
+          }
+        ]
+      },
+      {
+        "from": "cleanup-2",
+        "to": "cleanup-3",
+        "deltaBytes": 3641344,
+        "processChanges": [
+          {
+            "pid": 3164,
+            "createdAt": "2026-10-18T23:57:09.9842630Z",
+            "type": "renderer",
+            "deltaBytes": -2695168
+          },
+          {
+            "pid": 3764,
+            "createdAt": "2026-10-19T00:02:32.5831748Z",
+            "type": "unknown",
+            "deltaBytes": 0
+          },
+          {
+            "pid": 18060,
+            "createdAt": "2026-10-18T23:57:09.9085574Z",
+            "type": "unknown",
+            "deltaBytes": 0
+          },
+          {
+            "pid": 18276,
+            "createdAt": "2026-10-18T23:57:09.9089298Z",
+            "type": "unknown",
+            "deltaBytes": 0
+          },
+          {
+            "pid": 18460,
+            "createdAt": "2026-10-18T23:57:09.7363723Z",
+            "type": "unknown",
+            "deltaBytes": 5357568
+          },
+          {
+            "pid": 32340,
+            "createdAt": "2026-10-18T23:57:09.8228481Z",
+            "type": "unknown",
+            "deltaBytes": -24576
+          },
+          {
+            "pid": 32468,
+            "createdAt": "2026-10-18T23:57:09.1569332Z",
+            "type": "unknown",
+            "deltaBytes": 0
+          },
+          {
+            "pid": 33852,
+            "createdAt": "2026-10-18T23:57:10.2970475Z",
+            "type": "unknown",
+            "deltaBytes": 1048576
+          },
+          {
+            "pid": 35908,
+            "createdAt": "2026-10-18T23:57:08.9440612Z",
+            "type": "browser",
+            "deltaBytes": -45056
+          }
+        ]
+      }
+    ],
+    "lastRendererDeltaBytes": -2695168,
+    "stableLoadedPrivateBytes": 343617536,
+    "stableRecoveries": [
+      {
+        "number": 1,
+        "privateBytes": 360296448,
+        "aboveLoadedMiB": 15.90625
+      },
+      {
+        "number": 2,
+        "privateBytes": 372342784,
+        "aboveLoadedMiB": 27.39453125
+      },
+      {
+        "number": 3,
+        "privateBytes": 375709696,
+        "aboveLoadedMiB": 30.60546875
+      }
+    ],
+    "retainedSamplePhases": [
+      "conversion-3",
+      "cleanup-3"
+    ],
+    "finalRealms": [
+      {
+        "targetId": "09171338864CF3380220B5E9AB291067",
+        "type": "worker",
+        "url": "http://127.0.0.1:61782/assets/conversion.worker-Bwu1rvz0.js",
+        "usedJSHeapBytes": 495064,
+        "allocatedJSHeapBytes": 1835008,
+        "embedderHeapUsedBytes": 773712,
+        "backingStorageBytes": 296173,
+        "error": null
+      },
+      {
+        "targetId": "5931D59B4FDE2CD26E30407B01CAD10F",
+        "type": "page",
+        "url": "http://127.0.0.1:61782/?test=1&directory=1",
+        "usedJSHeapBytes": 5762292,
+        "allocatedJSHeapBytes": 7716864,
+        "embedderHeapUsedBytes": 3648800,
+        "backingStorageBytes": 610596,
+        "error": null
+      }
+    ],
+    "earlierCleanupRealmSamplesAvailable": [
+      {
+        "phase": "cleanup-1",
+        "available": false
+      },
+      {
+        "phase": "cleanup-2",
+        "available": false
+      }
+    ],
+    "lastStateWasmBytes": 0,
+    "lastStateSharedBytes": 4,
+    "compiledModuleCount": 2,
+    "workerLifecycle": {
+      "maximumHistoryRecords": 32,
+      "totalEvents": 13,
+      "retainedEvents": 13,
+      "evictedEvents": 0,
+      "roles": {
+        "codec": {
+          "created": 4,
+          "closed": 3,
+          "active": 1,
+          "maximumActive": 1
+        },
+        "save": {
+          "created": 3,
+          "closed": 3,
+          "active": 0,
+          "maximumActive": 1
+        }
+      },
+      "firstError": null,
+      "retainsWorkerObjects": false
+    },
+    "browserPhysicallyStoppedAfterReport": true,
+    "allocationCause": null,
+    "zeroPrivateGrowthProven": false,
+    "noLeakProven": false,
+    "rendererProcessToPageMappingProven": false,
+    "anotherUnchangedFullConversionNeededForThisAttribution": false,
+    "acceptanceMetricChanged": false,
+    "publicAcceptance": false
+  },
+  "ownSources": {
+    "scripts/analyze-jspi-retention.mjs": {
+      "sha256": "e38a56cfd4c86b5bf34df1093e2c817a0699015a137384ce43cac670954badf1",
+      "preimage": "Ly8gTm8gYnJvd3NlciBsYXVuY2gsIHVzZXItbWVkaWEgcmVhZCwgY29udmVyc2lvbiBvciBkaWFnbm9zdGljIGZsYWdzLgppbXBvcnQgYXNzZXJ0IGZyb20gIm5vZGU6YXNzZXJ0L3N0cmljdCI7CmltcG9ydCB7IHJlYWRGaWxlLCB3cml0ZUZpbGUgfSBmcm9tICJub2RlOmZzL3Byb21pc2VzIjsKaW1wb3J0IHBhdGggZnJvbSAibm9kZTpwYXRoIjsKaW1wb3J0IHsgZ3VuemlwU3luYyB9IGZyb20gIm5vZGU6emxpYiI7CmltcG9ydCB7IHNoYSB9IGZyb20gIi4vbGliL3N0YWJsZS11aS1oZWFkbGVzcy1iYXNlbGluZS1yZWNpcGUubWpzIjsKaW1wb3J0IHsgYXR0cmlidXRlSnNwaVJldGVudGlvbiB9IGZyb20gIi4vbGliL2pzcGktcmV0ZW50aW9uLWF0dHJpYnV0aW9uLm1qcyI7CmNvbnN0IHJvb3QgPSBwYXRoLnJlc29sdmUoaW1wb3J0Lm1ldGEuZGlybmFtZSwgIi4uIiksIHJlYWQgPSBmaWxlID0+IHJlYWRGaWxlKHBhdGguam9pbihyb290LCBmaWxlKSk7CmNvbnN0IHByb29mUGF0aCA9ICJldmlkZW5jZS8yMDI2LTEwLTE5LWpzcGktdGhyZWUtZnVsbC1pbmRlcGVuZGVudC1hbmFseXNpcy5qc29uIiwgcHJvb2ZCeXRlcyA9IGF3YWl0IHJlYWQocHJvb2ZQYXRoKSwgcHJvb2YgPSBKU09OLnBhcnNlKHByb29mQnl0ZXMpOwpjb25zdCB0ZXJtaW5hbEJ5dGVzID0gYXdhaXQgcmVhZChwcm9vZi50ZXJtaW5hbC5wYXRoKTsgYXNzZXJ0LmVxdWFsKHNoYSh0ZXJtaW5hbEJ5dGVzKSwgcHJvb2YudGVybWluYWwuc2hhMjU2KTsKY29uc3QgdGVybWluYWwgPSBKU09OLnBhcnNlKHRlcm1pbmFsQnl0ZXMpLCB6aXAgPSBhd2FpdCByZWFkKHRlcm1pbmFsLnJlcG9ydC5wYXRoKTsKYXNzZXJ0LmVxdWFsKHNoYSh6aXApLCB0ZXJtaW5hbC5yZXBvcnQuc2hhMjU2KTsgY29uc3QgcmF3ID0gZ3VuemlwU3luYyh6aXAsIHsgbWF4T3V0cHV0TGVuZ3RoOiAzMzU1NDQzMiB9KTsKYXNzZXJ0LmVxdWFsKHNoYShyYXcpLCB0ZXJtaW5hbC5yZXBvcnQucmVzdG9yZWRTaGEyNTYpOyBjb25zdCBhbmFseXNpcyA9IGF0dHJpYnV0ZUpzcGlSZXRlbnRpb24oSlNPTi5wYXJzZShyYXcpKTsKY29uc3Qgb3duU291cmNlcyA9IHt9Owpmb3IgKGNvbnN0IGZpbGUgb2YgWyJzY3JpcHRzL2FuYWx5emUtanNwaS1yZXRlbnRpb24ubWpzIiwgInNjcmlwdHMvbGliL2pzcGktcmV0ZW50aW9uLWF0dHJpYnV0aW9uLm1qcyIsICJ0ZXN0cy9qc3BpLXJldGVudGlvbi1hdHRyaWJ1dGlvbi50ZXN0Lm1qcyJdKSB7CiAgY29uc3QgYnl0ZXMgPSBhd2FpdCByZWFkKGZpbGUpOyBvd25Tb3VyY2VzW2ZpbGVdID0geyBzaGEyNTY6IHNoYShieXRlcyksIHByZWltYWdlOiBieXRlcy50b1N0cmluZygiYmFzZTY0IikgfTsKfQpjb25zdCBvdXRwdXQgPSAiZXZpZGVuY2UvMjAyNi0xMC0xOS1qc3BpLXJldGVudGlvbi1hdHRyaWJ1dGlvbi5qc29uIjsKYXdhaXQgd3JpdGVGaWxlKHBhdGguam9pbihyb290LCBvdXRwdXQpLCBKU09OLnN0cmluZ2lmeSh7IHJlY29yZGVkQXQ6IG5ldyBEYXRlKCkudG9JU09TdHJpbmcoKSwgYW5hbHlzaXMsIG93blNvdXJjZXMsCiAgcHJldmlvdXNJbmRlcGVuZGVudEF1ZGl0OiB7IHBhdGg6IHByb29mUGF0aCwgc2hhMjU2OiBzaGEocHJvb2ZCeXRlcykgfSwgcmVwb3J0OiB0ZXJtaW5hbC5yZXBvcnQsCiAgbmV3QnJvd3Nlck9yQ29udmVyc2lvbnM6IDAsIG9yaWdpbmFsTWVkaWFSZWFkOiBmYWxzZSwgbmV4dEFjdGlvbjogIkRvIG5vdCBjYWxsIHRoaXMgYSBtb25vdG9uaWMgcmVuZGVyZXIgbGVhay4gTmF0aXZlIHBoYXNlLWxhc3QgcmVuZGVyZXIgbWVtb3J5IGZlbGwgYWZ0ZXIgcnVuMyB3aGlsZSBHUFUvb3RoZXIgbWVtb3J5IHJvc2UuIEVhcmxpZXIgcmVhbG0gc25hcHNob3RzIHdlcmUgZXZpY3RlZCwgYWxsb2NhdGlvbiBjYXVzZSByZW1haW5zIHVua25vd24uIEludmVzdGlnYXRlIGEgY29kZWMtc2V0dGluZ3MtcHJlc2VydmluZyBzcGVlZCBjYW5kaWRhdGUgd2l0aG91dCByZXBlYXRpbmcgYW4gdW5jaGFuZ2VkIG11bHRpLWhvdXIgY29udmVyc2lvbi4iLAogIHB1YmxpY0FjY2VwdGFuY2U6IGZhbHNlIH0sIG51bGwsIDIpICsgIlxuIiwgeyBmbGFnOiAid3giIH0pOwpjb25zb2xlLmxvZyhKU09OLnN0cmluZ2lmeSh7IG91dHB1dCwgc3RhdHVzOiBhbmFseXNpcy5zdGF0dXMsIGxhc3RUcmVlRGVsdGFCeXRlczogYW5hbHlzaXMuY2hhbmdlcy5hdCgtMSkuZGVsdGFCeXRlcywKICBsYXN0UmVuZGVyZXJEZWx0YUJ5dGVzOiBhbmFseXNpcy5sYXN0UmVuZGVyZXJEZWx0YUJ5dGVzLCB6ZXJvR3Jvd3RoUHJvdmVuOiBmYWxzZSwgYWxsb2NhdGlvbkNhdXNlOiBudWxsIH0pKTsK"
+    },
+    "scripts/lib/jspi-retention-attribution.mjs": {
+      "sha256": "aa24613ce4bde272cdbe12afec55af70fe3789079bd1ca9ad17949ad228977fa",
+      "preimage": "aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwpjb25zdCBjYW5vbmljYWxCaXJ0aCA9IHZhbHVlID0+IHZhbHVlLnJlcGxhY2UoLyhcLlxkKj9bMS05XSkwK1okLywgIiQxWiIpLnJlcGxhY2UoL1wuMCtaJC8sICJaIik7CmNvbnN0IGJpcnRoS2V5ID0gcm93ID0+IGAke3Jvdy5waWR9OiR7Y2Fub25pY2FsQmlydGgocm93LmNyZWF0ZWRBdCl9YDsKZXhwb3J0IGZ1bmN0aW9uIGF0dHJpYnV0ZUpzcGlSZXRlbnRpb24ocmVwb3J0KSB7CiAgY29uc3QgaWRlbnRpdHlUeXBlcyA9IG5ldyBNYXAoKTsKICBmb3IgKGNvbnN0IHNhbXBsZSBvZiByZXBvcnQuc2FtcGxlcykgZm9yIChjb25zdCBwcm9jZXNzIG9mIHNhbXBsZS5wcm9jZXNzZXMgPz8gW10pIHsKICAgIGlmICghcHJvY2Vzcy50eXBlIHx8IHByb2Nlc3MudHlwZSA9PT0gInVua25vd24iKSBjb250aW51ZTsKICAgIGNvbnN0IGtleSA9IGJpcnRoS2V5KHByb2Nlc3MpLCBwcmV2aW91cyA9IGlkZW50aXR5VHlwZXMuZ2V0KGtleSk7CiAgICBpZiAocHJldmlvdXMpIGFzc2VydC5lcXVhbChwcmV2aW91cywgcHJvY2Vzcy50eXBlLCAiT25lIHByb2Nlc3MgYmlydGggbXVzdCBub3QgY2hhbmdlIGNsYXNzaWZpY2F0aW9uIik7CiAgICBpZGVudGl0eVR5cGVzLnNldChrZXksIHByb2Nlc3MudHlwZSk7CiAgfQogIGNvbnN0IG5hbWVzID0gWyJsb2FkZWQtaWRsZSIsICJjbGVhbnVwLTEiLCAiY2xlYW51cC0yIiwgImNsZWFudXAtMyJdOwogIGNvbnN0IHNuYXBzaG90cyA9IG5hbWVzLm1hcChwaGFzZSA9PiB7CiAgICBjb25zdCBhZ2dyZWdhdGUgPSByZXBvcnQubmF0aXZlTWVtb3J5LnBoYXNlcy5maW5kKHJvdyA9PiByb3cucGhhc2UgPT09IHBoYXNlKSwgc2FtcGxlID0gYWdncmVnYXRlPy5sYXN0OwogICAgYXNzZXJ0Lm9rKHNhbXBsZSAmJiBzYW1wbGVbM10gIT0gbnVsbCAmJiBzYW1wbGVbNl0gPT0gbnVsbCwgIkEgbWlzc2luZyBuYXRpdmUgc25hcHNob3QgY2Fubm90IGJlIHRyZWF0ZWQgYXMgemVybyIpOwogICAgY29uc3QgcHJvY2Vzc2VzID0gc2FtcGxlWzddLm1hcCgoW2lkLCBwcml2YXRlQnl0ZXMsIHJzc0J5dGVzXSkgPT4gewogICAgICBjb25zdCBpZGVudGl0eSA9IHJlcG9ydC5uYXRpdmVNZW1vcnkuaWRlbnRpdGllc1tpZF07IGFzc2VydC5vayhpZGVudGl0eSk7CiAgICAgIGFzc2VydC5vayhOdW1iZXIuaXNTYWZlSW50ZWdlcihwcml2YXRlQnl0ZXMpICYmIHByaXZhdGVCeXRlcyA+PSAwKTsKICAgICAgcmV0dXJuIHsgaWQsIC4uLmlkZW50aXR5LCB0eXBlOiBpZGVudGl0eVR5cGVzLmdldChiaXJ0aEtleShpZGVudGl0eSkpID8/IGlkZW50aXR5LnR5cGUsIHByaXZhdGVCeXRlcywgcnNzQnl0ZXMgfTsKICAgIH0pOwogICAgYXNzZXJ0LmVxdWFsKHByb2Nlc3Nlcy5yZWR1Y2UoKHN1bSwgcm93KSA9PiBzdW0gKyByb3cucHJpdmF0ZUJ5dGVzLCAwKSwgc2FtcGxlWzNdKTsKICAgIHJldHVybiB7IHBoYXNlLCB0aW1lc3RhbXA6IHNhbXBsZVsxXSwgc2VxdWVuY2U6IHNhbXBsZVswXSwgcHJpdmF0ZUJ5dGVzOiBzYW1wbGVbM10sIHByb2Nlc3NlcyB9OwogIH0pOwogIGNvbnN0IG9yZGVyZWRCaXJ0aHMgPSBzbmFwc2hvdCA9PiBzbmFwc2hvdC5wcm9jZXNzZXMubWFwKGJpcnRoS2V5KS5zb3J0KCk7CiAgZm9yIChjb25zdCBzbmFwc2hvdCBvZiBzbmFwc2hvdHMpIGFzc2VydC5kZWVwRXF1YWwob3JkZXJlZEJpcnRocyhzbmFwc2hvdCksIG9yZGVyZWRCaXJ0aHMoc25hcHNob3RzWzBdKSwgIk9ubHkgbWF0Y2hpbmcgbWVhc3VyZWQgcHJvY2VzcyBiaXJ0aHMgbWF5IGJlIHN1YnRyYWN0ZWQiKTsKICBjb25zdCBwZXJQcm9jZXNzID0gc25hcHNob3RzWzBdLnByb2Nlc3Nlcy5tYXAoaWRlbnRpdHkgPT4gewogICAgY29uc3QgcHJpdmF0ZUJ5dGVzID0gc25hcHNob3RzLm1hcChzbmFwc2hvdCA9PiBzbmFwc2hvdC5wcm9jZXNzZXMuZmluZChyb3cgPT4gYmlydGhLZXkocm93KSA9PT0gYmlydGhLZXkoaWRlbnRpdHkpKS5wcml2YXRlQnl0ZXMpOwogICAgcmV0dXJuIHsgcGlkOiBpZGVudGl0eS5waWQsIGNyZWF0ZWRBdDogaWRlbnRpdHkuY3JlYXRlZEF0LCB0eXBlOiBpZGVudGl0eS50eXBlLCBwcml2YXRlQnl0ZXMsCiAgICAgIHN0ZXBDaGFuZ2VzQnl0ZXM6IHByaXZhdGVCeXRlcy5zbGljZSgxKS5tYXAoKHZhbHVlLCBpbmRleCkgPT4gdmFsdWUgLSBwcml2YXRlQnl0ZXNbaW5kZXhdKSwKICAgICAgbG9hZGVkVG9GaW5hbEJ5dGVzOiBwcml2YXRlQnl0ZXMuYXQoLTEpIC0gcHJpdmF0ZUJ5dGVzWzBdIH07CiAgfSk7CiAgY29uc3QgY2hhbmdlcyA9IHNuYXBzaG90cy5zbGljZSgxKS5tYXAoKHNuYXBzaG90LCBpbmRleCkgPT4gewogICAgY29uc3QgcHJvY2Vzc0NoYW5nZXMgPSBwZXJQcm9jZXNzLm1hcChyb3cgPT4gKHsgcGlkOiByb3cucGlkLCBjcmVhdGVkQXQ6IHJvdy5jcmVhdGVkQXQsIHR5cGU6IHJvdy50eXBlLCBkZWx0YUJ5dGVzOiByb3cuc3RlcENoYW5nZXNCeXRlc1tpbmRleF0gfSkpOwogICAgY29uc3QgZGVsdGFCeXRlcyA9IHNuYXBzaG90LnByaXZhdGVCeXRlcyAtIHNuYXBzaG90c1tpbmRleF0ucHJpdmF0ZUJ5dGVzOwogICAgYXNzZXJ0LmVxdWFsKHByb2Nlc3NDaGFuZ2VzLnJlZHVjZSgoc3VtLCByb3cpID0+IHN1bSArIHJvdy5kZWx0YUJ5dGVzLCAwKSwgZGVsdGFCeXRlcyk7CiAgICByZXR1cm4geyBmcm9tOiBuYW1lc1tpbmRleF0sIHRvOiBuYW1lc1tpbmRleCArIDFdLCBkZWx0YUJ5dGVzLCBwcm9jZXNzQ2hhbmdlcyB9OwogIH0pOwogIGNvbnN0IGxhc3QgPSBjaGFuZ2VzLmF0KC0xKSwgbGFzdFJlbmRlcmVyRGVsdGFCeXRlcyA9IGxhc3QucHJvY2Vzc0NoYW5nZXMuZmlsdGVyKHJvdyA9PiByb3cudHlwZSA9PT0gInJlbmRlcmVyIikucmVkdWNlKChzdW0sIHJvdykgPT4gc3VtICsgcm93LmRlbHRhQnl0ZXMsIDApOwogIGNvbnN0IHN0YWJsZVJlY292ZXJpZXMgPSByZXBvcnQucnVucy5tYXAocnVuID0+ICh7IG51bWJlcjogcnVuLm51bWJlciwgcHJpdmF0ZUJ5dGVzOiBydW4ucmVjb3ZlcnkucHJpdmF0ZUJ5dGVzLAogICAgYWJvdmVMb2FkZWRNaUI6IChydW4ucmVjb3ZlcnkucHJpdmF0ZUJ5dGVzIC0gcmVwb3J0LmxvYWRlZElkbGUucHJpdmF0ZUJ5dGVzKSAvIDEwNDg1NzYgfSkpOwogIGNvbnN0IGZpbmFsU2FtcGxlID0gcmVwb3J0LnNhbXBsZXMuZmluZExhc3Qocm93ID0+IHJvdy5waGFzZSA9PT0gImNsZWFudXAtMyIgJiYgcm93LmNkcElzb2xhdGVIZWFwcz8udGFyZ2V0c0F2YWlsYWJsZSk7CiAgYXNzZXJ0Lm9rKGZpbmFsU2FtcGxlKTsgY29uc3QgcmVhbG1zID0gZmluYWxTYW1wbGUuY2RwSXNvbGF0ZUhlYXBzLnRhcmdldHM7CiAgYXNzZXJ0LmVxdWFsKGZpbmFsU2FtcGxlLm1ldHJpY3Mud2FzbU1lbW9yeUJ5dGVzLCAwKTsgYXNzZXJ0LmVxdWFsKGZpbmFsU2FtcGxlLm1ldHJpY3Muc2hhcmVkQXJyYXlCdWZmZXJCeXRlcywgNCk7CiAgY29uc3QgY29tcGlsZWQgPSByZXBvcnQucHJvZ3Jlc3NQcm9iZS5jb21waWxlZENhY2hlRXZlbnRzLmZpbHRlcihyb3cgPT4gcm93LmV2ZW50ID09PSAiY29tcGlsZWQiKTsKICBhc3NlcnQuZXF1YWwoY29tcGlsZWQubGVuZ3RoLCAyKTsgYXNzZXJ0Lm9rKHJlcG9ydC5wcm9ncmVzc1Byb2JlLmNvbXBpbGVkQ2FjaGVFdmVudHMuZXZlcnkocm93ID0+IHJvdy5tb2R1bGVzIDw9IDIpKTsKICByZXR1cm4geyBzdGF0dXM6ICJzYXZlZC1mdWxsLXNlc3Npb24tcmV0ZW50aW9uLWF0dHJpYnV0ZWQtdG8tcHJvY2Vzc2VzLW5vdC1hbGxvY2F0aW9ucyIsCiAgICBzbmFwc2hvdEtpbmQ6ICJMYXN0IHNpbXVsdGFuZW91cyBuYXRpdmUgc2FtcGxlIGluIGVhY2ggcGhhc2U7IE5PVCBzdGFibGUtd2luZG93IG1lZGlhbiBvciBzdW0gb2YgcGVyLXByb2Nlc3MgbWF4aW1hIiwKICAgIHNuYXBzaG90cywgcGVyUHJvY2VzcywgY2hhbmdlcywgbGFzdFJlbmRlcmVyRGVsdGFCeXRlcywKICAgIHN0YWJsZUxvYWRlZFByaXZhdGVCeXRlczogcmVwb3J0LmxvYWRlZElkbGUucHJpdmF0ZUJ5dGVzLCBzdGFibGVSZWNvdmVyaWVzLAogICAgcmV0YWluZWRTYW1wbGVQaGFzZXM6IFsuLi5uZXcgU2V0KHJlcG9ydC5zYW1wbGVzLm1hcChyb3cgPT4gcm93LnBoYXNlKSldLCBmaW5hbFJlYWxtczogcmVhbG1zLAogICAgZWFybGllckNsZWFudXBSZWFsbVNhbXBsZXNBdmFpbGFibGU6IFsiY2xlYW51cC0xIiwgImNsZWFudXAtMiJdLm1hcChwaGFzZSA9PiAoeyBwaGFzZSwgYXZhaWxhYmxlOiByZXBvcnQuc2FtcGxlcy5zb21lKHJvdyA9PiByb3cucGhhc2UgPT09IHBoYXNlICYmIHJvdy5jZHBJc29sYXRlSGVhcHM/LnRhcmdldHNBdmFpbGFibGUpIH0pKSwKICAgIGxhc3RTdGF0ZVdhc21CeXRlczogZmluYWxTYW1wbGUubWV0cmljcy53YXNtTWVtb3J5Qnl0ZXMsIGxhc3RTdGF0ZVNoYXJlZEJ5dGVzOiBmaW5hbFNhbXBsZS5tZXRyaWNzLnNoYXJlZEFycmF5QnVmZmVyQnl0ZXMsCiAgICBjb21waWxlZE1vZHVsZUNvdW50OiBjb21waWxlZC5sZW5ndGgsIHdvcmtlckxpZmVjeWNsZTogcmVwb3J0LnByb2dyZXNzUHJvYmUuaGFuZG9mZldvcmtlckV2ZW50U3VtbWFyeSwKICAgIGJyb3dzZXJQaHlzaWNhbGx5U3RvcHBlZEFmdGVyUmVwb3J0OiByZXBvcnQuY2xlYW51cC5zYW1wbGVkQ2hyb21lUm9vdFN0b3BwZWQsCiAgICBhbGxvY2F0aW9uQ2F1c2U6IG51bGwsIHplcm9Qcml2YXRlR3Jvd3RoUHJvdmVuOiBmYWxzZSwgbm9MZWFrUHJvdmVuOiBmYWxzZSwKICAgIHJlbmRlcmVyUHJvY2Vzc1RvUGFnZU1hcHBpbmdQcm92ZW46IGZhbHNlLCBhbm90aGVyVW5jaGFuZ2VkRnVsbENvbnZlcnNpb25OZWVkZWRGb3JUaGlzQXR0cmlidXRpb246IGZhbHNlLAogICAgYWNjZXB0YW5jZU1ldHJpY0NoYW5nZWQ6IGZhbHNlLCBwdWJsaWNBY2NlcHRhbmNlOiBmYWxzZSB9Owp9Cg=="
+    },
+    "tests/jspi-retention-attribution.test.mjs": {
+      "sha256": "36042db2fa98a2be419f41b861619f02245dcc42271c1690eb99c64b50860917",
+      "preimage": "aW1wb3J0IGFzc2VydCBmcm9tICJub2RlOmFzc2VydC9zdHJpY3QiOwppbXBvcnQgeyByZWFkRmlsZSB9IGZyb20gIm5vZGU6ZnMvcHJvbWlzZXMiOwppbXBvcnQgeyBndW56aXBTeW5jIH0gZnJvbSAibm9kZTp6bGliIjsKaW1wb3J0IHRlc3QgZnJvbSAibm9kZTp0ZXN0IjsKaW1wb3J0IHsgYXR0cmlidXRlSnNwaVJldGVudGlvbiB9IGZyb20gIi4uL3NjcmlwdHMvbGliL2pzcGktcmV0ZW50aW9uLWF0dHJpYnV0aW9uLm1qcyI7CmNvbnN0IHRlcm1pbmFsID0gSlNPTi5wYXJzZShhd2FpdCByZWFkRmlsZSgiZXZpZGVuY2UvMjAyNi0xMC0xOFQyMy01NS0yOC02NDlaLWpzcGktc3NpbS1mdWxsLXRlcm1pbmFsLmpzb24iKSk7CmNvbnN0IHJlcG9ydCA9IEpTT04ucGFyc2UoZ3VuemlwU3luYyhhd2FpdCByZWFkRmlsZSh0ZXJtaW5hbC5yZXBvcnQucGF0aCkpKTsKdGVzdCgiYWN0dWFsIG5hdGl2ZSBwaGFzZSBzbmFwc2hvdHMgcmVjb25jaWxlIGFsbCBwcm9jZXNzIGRlbHRhcyB3aXRob3V0IHN1YnN0aXR1dGluZyBzdGFibGUgYmFzZWxpbmVzIiwgKCkgPT4gewogIGNvbnN0IHJlc3VsdCA9IGF0dHJpYnV0ZUpzcGlSZXRlbnRpb24ocmVwb3J0KTsKICBhc3NlcnQuZGVlcEVxdWFsKHJlc3VsdC5zbmFwc2hvdHMubWFwKHJvdyA9PiByb3cucHJpdmF0ZUJ5dGVzKSwgWzM0MzU4NDc2OCwgMzYwMjk2NDQ4LCAzNzIzMzQ1OTIsIDM3NTk3NTkzNl0pOwogIGFzc2VydC5lcXVhbChyZXN1bHQuY2hhbmdlcy5hdCgtMSkuZGVsdGFCeXRlcywgMzY0MTM0NCk7CiAgYXNzZXJ0LmVxdWFsKHJlc3VsdC5wZXJQcm9jZXNzLmZpbmQocm93ID0+IHJvdy5waWQgPT09IDMxNjQpLnN0ZXBDaGFuZ2VzQnl0ZXMuYXQoLTEpLCAtMjY5NTE2OCk7CiAgYXNzZXJ0LmVxdWFsKHJlc3VsdC5wZXJQcm9jZXNzLmZpbmQocm93ID0+IHJvdy50eXBlID09PSAiZ3B1LXByb2Nlc3MiKS5zdGVwQ2hhbmdlc0J5dGVzLmF0KC0xKSwgNTM1NzU2OCk7CiAgYXNzZXJ0LmVxdWFsKHJlc3VsdC5sYXN0UmVuZGVyZXJEZWx0YUJ5dGVzLCAtMTY0NjU5Mik7CiAgYXNzZXJ0LmVxdWFsKHJlc3VsdC5zdGFibGVSZWNvdmVyaWVzWzJdLnByaXZhdGVCeXRlcywgMzc1NzA5Njk2KTsgLy8gTm90IHRoZTM3NTk3NTkzNiBwaGFzZS1sYXN0IHNuYXBzaG90LgogIGFzc2VydC5lcXVhbChyZXN1bHQuemVyb1ByaXZhdGVHcm93dGhQcm92ZW4sIGZhbHNlKTsgYXNzZXJ0LmVxdWFsKHJlc3VsdC5ub0xlYWtQcm92ZW4sIGZhbHNlKTsgYXNzZXJ0LmVxdWFsKHJlc3VsdC5hbGxvY2F0aW9uQ2F1c2UsIG51bGwpOwogIGFzc2VydC5lcXVhbChyZXN1bHQuY29tcGlsZWRNb2R1bGVDb3VudCwgMik7IGFzc2VydC5lcXVhbChyZXN1bHQubGFzdFN0YXRlV2FzbUJ5dGVzLCAwKTsKfSk7CnRlc3QoIm1pc3NpbmcgbWVhc3VyZW1lbnRzLCBjb3JydXB0ZWQgcHJvY2VzcyBzdW1zIGFuZCBtaXNtYXRjaGVkIHByb2Nlc3MgYmlydGhzIGNhbm5vdCBiZWNvbWUgemVybyBvciB2YWxpZCBhdHRyaWJ1dGlvbiIsICgpID0+IHsKICBmb3IgKGNvbnN0IG11dGF0ZSBvZiBbCiAgICB2YWx1ZSA9PiB7IHZhbHVlLm5hdGl2ZU1lbW9yeS5waGFzZXMuZmluZChyb3cgPT4gcm93LnBoYXNlID09PSAiY2xlYW51cC0xIikubGFzdFszXSA9IG51bGw7IH0sCiAgICB2YWx1ZSA9PiB7IHZhbHVlLm5hdGl2ZU1lbW9yeS5waGFzZXMuZmluZChyb3cgPT4gcm93LnBoYXNlID09PSAiY2xlYW51cC0yIikubGFzdFs3XVswXVsxXSArPSAxOyB9LAogICAgdmFsdWUgPT4geyBjb25zdCBwaGFzZSA9IHZhbHVlLm5hdGl2ZU1lbW9yeS5waGFzZXMuZmluZChyb3cgPT4gcm93LnBoYXNlID09PSAiY2xlYW51cC0zIik7IHBoYXNlLmxhc3RbM10gLT0gcGhhc2UubGFzdFs3XS5hdCgtMSlbMV07IHBoYXNlLmxhc3RbN10ucG9wKCk7IH0sCiAgXSkgeyBjb25zdCBjaGFuZ2VkID0gc3RydWN0dXJlZENsb25lKHJlcG9ydCk7IG11dGF0ZShjaGFuZ2VkKTsgYXNzZXJ0LnRocm93cygoKSA9PiBhdHRyaWJ1dGVKc3BpUmV0ZW50aW9uKGNoYW5nZWQpKTsgfQp9KTsK"
+    }
+  },
+  "previousIndependentAudit": {
+    "path": "evidence/2026-10-19-jspi-three-full-independent-analysis.json",
+    "sha256": "90ff632be7fa44f52afefff1088fc3650b6ce6d75bd04076f3dfc95706f92880"
+  },
+  "report": {
+    "path": "outputs/reports/2026-10-18T23-55-28-649Z-jspi-ssim-full-report.json.gz",
+    "bytes": 589794,
+    "sha256": "ca7b32108dffd587efa8d7567d409f9336d646b128c6f8a8f7129ebae3b8683c",
+    "restoredBytes": 19446911,
+    "restoredSha256": "f301f48820a6dcd77d603fdafe40f0463ac3b840e8511f65a4a89a66c9d5ed81",
+    "status": "three-full-jspi-original-runs-completed-not-public-acceptance",
+    "completedRuns": 3,
+    "attemptedStartupControls": 3,
+    "failure": null,
+    "cleanup": {
+      "mediaProfileRuntimeRemoved": true,
+      "generatedDistRestored": true,
+      "protectedFixtureUnchanged": true,
+      "observerStopped": true,
+      "sampledChromeRootStopped": true,
+      "conversionQuiescence": {
+        "scope": "no-running-conversion",
+        "cancellationRequested": false,
+        "terminalState": "complete"
+      },
+      "chromeRootExitObservation": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 35908,
+          "parentPid": 22916,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "createdAt": "2026-10-18T23:57:08.9440610Z",
+          "privateBytes": 58224640,
+          "rssBytes": 36110336
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-19T14:32:05.020Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1542,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    }
+  },
+  "newBrowserOrConversions": 0,
+  "originalMediaRead": false,
+  "nextAction": "Do not call this a monotonic renderer leak. Native phase-last renderer memory fell after run3 while GPU/other memory rose. Earlier realm snapshots were evicted, allocation cause remains unknown. Investigate a codec-settings-preserving speed candidate without repeating an unchanged multi-hour conversion.",
+  "publicAcceptance": false
+}

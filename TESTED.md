@@ -7550,3 +7550,15 @@ Conversion/copy4h19m22/4h14m29/3h57m58, no paired speed proof. Cleanup retained
 not zero-growth proof); earlier9-small-job idle drift44.5546875MiB is diagnostic
 only. Cold-session repeat/new-route scaling/retention attribution/performance/
 public integration/final project gates remain pending. Entire goal incomplete.
+2026-10-19 - Saved-report retention attribution (zero new conversions/media reads):
+phase-last cleanup2→3 tree+3641344B, renderer3164-2695168B/GPU+5357568B/other
+renderer+1048576B; all renderers-1646592B. Not monotonic renderer growth, NOT an
+allocation/leak conclusion. CIM truncates FILETIME100ns to1us; corrected role
+matching at explicit WMI precision while retaining exact native births for delta
+subtraction/rejecting ambiguity.3focused PASS441.283ms. Corrected proof:
+evidence/2026-10-19-jspi-retention-attribution-v2.json; preliminary v1 retained.
+Private decoder-library LTO source prepared: only two compile/link flags, unchanged
+SDK6.0.4/JSPI/codecs/qualified encoder/heaps/stack/AVIO/cleanup.10focused tests
+PASS438.366ms. Prior slower H264/OpenH264 LTO remains rejected; no new speed claim.
+evidence/2026-10-19-mpeg2-library-lto-plan.json. Native build and paired browser
+benchmark pending; no public bytes changed and original goal remains incomplete.

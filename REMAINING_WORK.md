@@ -1,5 +1,39 @@
 # Remaining work audit
 
+## 2026-10-19 - Retention attributed to process births; decoder-library LTO prepared
+
+**Partially implemented.** No new browser conversion or original media read.
+Saved same-session phase-last snapshots independently reconcile every process
+delta. Cleanup2→3 tree +3641344B consists in part of renderer3164 -2695168B,
+GPU18460 +5357568B and renderer33852 +1048576B; total renderers -1646592B.
+Thus the final tree increase is NOT monotonic renderer growth. These snapshots
+are not the stable-window medians and must not be substituted for acceptance.
+Final page usedJSheap5762292B/allocated7716864B, Wasm0/SAB4B, two cached compiled
+modules; codec4created/3closed/1idle bootstrap, save3created/3closed. All physical
+processes already stopped. Earlier cleanup realm samples were evicted; object/
+allocation cause, zero growth and leak freedom remain UNPROVEN.
+
+First attribution classified only exact100ns timestamp strings and left some
+roles unknown because real Win32_Process CIM truncates native FILETIME to1us.
+The focused GPU test caught it. New classifier matches ONLY explicit1us WMI
+precision, rejects ambiguous PID reuse, and keeps exact100ns native births for
+subtraction. Actual report reproduces .7363723Z native vs.7363720Z CIM. v1 kept as
+superseded preliminary evidence, corrected
+`evidence/2026-10-19-jspi-retention-attribution-v2.json` records exact provenance.
+3focused PASS441.283ms, no missing sample treated as zero.
+
+Distinct speed hypothesis: regular -flto for the FFmpeg HEVC decoder libraries,
+whose compile flags currently lack it despite wrapper-link LTO. Exactly two
+decoder compile/link flag edits; SDK6.0.4, codec settings,32+16MiB heaps, guarded
+256KiB stacks, JSPI/AVIO/ownership unchanged; actual qualified plane encoder stays
+a4ba...1cee. Prior H264/OpenH264 LTO was5.15% slower and remains rejected; this
+is a different decoder path, not an unchanged retry or promised speedup.
+`evidence/2026-10-19-mpeg2-library-lto-plan.json` records official compiler docs,
+all gates and unknown performance.10focused source/retention/JSPI tests PASS
+438.366ms; initial new test used wrong historical builder input, then expected
+encoder heap literal in the wrong generated layer; corrected to actual inputs/
+encoder shell, not weakened guards. No hosted build/browser benchmark yet.
+
 ## 2026-10-19 - Three full JSPI repeats independently audited below250MiB
 
 **Verified complete: private same-session three-full-original qualification.**

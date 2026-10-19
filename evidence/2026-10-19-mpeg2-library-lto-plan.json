@@ -1,0 +1,51 @@
+{
+  "status": "private-decoder-library-lto-source-prepared-not-built-or-benchmarked",
+  "baseline": "evidence/2026-10-19-jspi-three-full-independent-analysis.json",
+  "hypothesis": "The qualified HEVC decoder's FFmpeg archive compilation lacks -flto while the final wrapper link already has it. Enable regular compile-and-link library LTO to permit cross-translation-unit optimization, changing neither codec algorithm/settings nor fixed memory/I/O/lifetime policy.",
+  "compilerFlagsOnly": [
+    "Decoder FFmpeg --extra-cflags: add -flto",
+    "Decoder FFmpeg --extra-ldflags: add -flto"
+  ],
+  "sdkVersionUnchanged": "6.0.4",
+  "emsdkCommitUnchanged": "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
+  "upstreamDocumentation": [
+    "https://emscripten.org/docs/compiling/WebAssembly.html",
+    "https://emscripten.org/docs/tools_reference/emcc.html"
+  ],
+  "documentationNote": "Current official documentation confirms regular -flto applies at compile and link and recommends regular rather than ThinLTO. The attempted raw tagged6.0.4 documentation fetch returned cache-miss; no unsupported claim of reading that tag. Actual build remains pinned to6.0.4.",
+  "historicalRejectedExperiment": {
+    "path": "evidence/h264-library-lto-comparison-2026-10-04.json",
+    "result": "Different H264/OpenH264 library LTO trial was5.15% slower; remains rejected. This is not an unchanged H264 retry: it changes the distinct current FFmpeg HEVC decoder libraries only and keeps the qualified MPEG2 encoder. Improvement is unknown."
+  },
+  "preserved": {
+    "decoderMemoryBytes": 33554432,
+    "qualifiedEncoderMemoryBytes": 16777216,
+    "nativeStackBytes": 262144,
+    "stackOverflowCheck": 2,
+    "jspiAsyncImports": 5,
+    "threadAndPoolSettings": "unchanged",
+    "codecQualityGeometryAndTimestamps": "unchanged",
+    "avioAndBackpressure": "unchanged",
+    "primaryCompleteChromiumIncrementalLimitMiB": 250,
+    "publicAssetsAndCanonicalWorkflow": "unchanged"
+  },
+  "criticalCompositionRule": "A successful decoder build accompanies default encoder8b2fd64d..., but browser composition MUST retain ACTUAL qualified plane encoder a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee. Never substitute the default encoder.",
+  "requiredBeforeBrowser": [
+    "Hosted build/unit/source/cleanup evidence",
+    "Retain all executed native source preimages with original per-layer caps",
+    "Reconstruct actual typed functions and addresses from new binary/map, never reuse old indices",
+    "Preserve qualified encoder and verify every native artifact"
+  ],
+  "requiredBeforeKeepingOptimization": [
+    "Paired production-browser comparisons on identical input/settings with balanced execution order",
+    "Unchanged independent content/quality/timing/metadata/audio validators",
+    "Complete-tree250MiB, fixed memory, bounded I/O and adverse cleanup gates",
+    "Required full/cold/scaling qualification and reproducibility"
+  ],
+  "focusedSourceTestsPassed": 10,
+  "focusedSourceTestsDurationMs": 438.3664,
+  "newBrowserConversions": 0,
+  "newNativeBuilds": 0,
+  "speedGainProven": false,
+  "publicAcceptance": false
+}
