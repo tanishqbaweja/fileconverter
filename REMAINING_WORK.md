@@ -1,5 +1,40 @@
 # Remaining work audit
 
+## 2026-10-19 - Actual ABBA screen rejects unchanged decoder-library LTO
+
+**Partially implemented** performance requirement; LTO NOT accepted. Four exact
+headless Chrome155 sessions ran JSPI/LTO/LTO/JSPI17:19:25.400→17:58:29.230UTC
+(39m03.830s). Each preserved six full small outputs and three complete same-page
+fault recoveries; total24genuine outputs/12recoveries. Same input SHA, actual
+4M native settings, original validators, packet/content/quality proofs, browser
+binary and production asset hashes. All outputs2245626B/SHA8b0d437...be35c.
+First-three pre-fault session medians: JSPI3313.135/3245.895ms vs
+LTO3237.850/3309.580ms. Aggregate3279.515→3273.715ms = ONLY0.17685% reduction;
+paired orders +2.27232% and -1.96202%, inconsistent and below predefined5% screen.
+Four session units, NOT24independent statistical observations. No general speed
+conclusion or original/scaling/public certification from a96-frame screen.
+
+Full-tree incremental peaks231.84375/227.6171875/225.1640625/236.49609375MiB,
+including GPU, each using its own LOWER stable blank;5097valid/0unavailable native
+conversion samples. Independent read-only re-audit reproduces all four complete
+832/853source snapshots, runtime derivations, native compositions, overlays,
+actual settings, executed validator and all24durable checkpoint hashes/rows,
+plus all11experiment preimages.102recorded owned births and20scratch dirs absent,
+protected original SHA unchanged and normal production assets restored.
+Converted outputs deleted after validation;83,883,199B four owned successful
+traces permanently removed after path/hash/audit, compact JSON/source/CSV/HTML/
+native checkpoints retained (72files/7,004,597B, no converted media).
+28focused tests PASS12798.8922ms/zero skipped; six new files zero-warning lint
+across preparation/result cycle, diffcheck PASS. Prelaunch final4 PASS11820.13ms.
+Evidence: `evidence/2026-10-19-jspi-lto-speed-screen-independent-analysis.json`
+and `evidence/2026-10-19-jspi-lto-speed-screen-cycle.json`.
+
+Do NOT repeat this unchanged build or screen or schedule expensive full-original
+LTO runs based on this failed screen. Reusable native tool remains private only,
+not promoted. Qualified baseline JSPI is unchanged. Next finish its original
+cold-session/scaling/public gates or investigate a separately evidenced new
+optimization. Entire project remains incomplete; no public bytes changed.
+
 ## 2026-10-19 - Matched JSPI/LTO ABBA speed screen prepared
 
 **Partially implemented.** New sequential orchestrator reuses the EXACT existing

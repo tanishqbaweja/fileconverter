@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+## 2026-10-19 - ABBA actual24outputs/12recoveries PASS; LTO speed screen REJECTED
+
+Four headless Chrome155 sessions, JSPI/LTO/LTO/JSPI;39m03.830s wall time, not
+conversion time. Same96frame fixture/native4M settings/original validators/
+assets/browser; all24 genuine outputs2245626B/SHA8b0d437...be35c, all12same-page
+fault recoveries. First-three session medians JSPI3313.135/3245.895ms vs
+LTO3237.850/3309.580ms. Aggregate3279.515→3273.715ms (0.17685%); paired orders
++2.27232%/-1.96202%. No repeatable5% gain; LTO NOT accepted for this workload.
+Four independent session units, not24independent timing samples. No general
+speed/full-original/scaling/public claim. Full-tree+GPU/lower stable blank peaks
+231.84375/227.6171875/225.1640625/236.49609375MiB;5097valid/0unavailable samples.
+Independent re-audit reproduces all four832/853source/runtime/native/overlay/
+validator/checkpoint sets and11experiment preimages.102owned births/20scratch
+dirs absent; original SHA/normaldist verified; converted copies deleted.
+Four successful traces83,883,199B permanently removed after audit; compact
+reports/preimages/CSV/HTML/native checkpoints retained.28focused PASS12798.8922ms,
+zero skipped; six-file lint clean across cycle/diffcheck PASS; prelaunch final
+four tests PASS11820.13ms. Exact rejection/limits/cleanup evidence:
+`evidence/2026-10-19-jspi-lto-speed-screen-independent-analysis.json` and
+`evidence/2026-10-19-jspi-lto-speed-screen-cycle.json`. No new native build or
+multi-hour original conversion. Do NOT retry unchanged LTO; baseline unchanged,
+cold/scaling/public-release work and entire original goal remain incomplete.
+
 ## 2026-10-19 - Matched ABBA speed harness25focused PASS; no new timing result yet
 
 Sequential JSPI/LTO/LTO/JSPI, existing six complete outputs/all three fault
