@@ -1,5 +1,23 @@
 # Remaining work audit
 
+## 2026-10-19 - Independent cold full session LIVE; misleading private phase recorded
+
+**Partially implemented.** Hidden supervisor34316/child8320 birth identities
+rechecked live18:16UTC; full driver38508 launched18:09:41.020Z, fresh profile.
+Actual868launch pins/browser equal verified preparation and prior full session.
+Run1 running:7,552,215input/15,800,036output bytes,31,699ms elapsed, approximate
+3.44h remaining,226.83203125MiB observed peak; NO completed/validated result yet.
+`evidence/2026-10-19-jspi-cold-session-launch.json` binds exact supervisor/live/
+progress/archive paths. Next approximate4h interruptible sleep based on early ETA
+and prior4–4.5h timings; follow same owned handle, never duplicate on timeout.
+
+Observed private progress still says `Lossless remux` because the test injects
+the qualified HEVC→MPEG2 core into the existing remux route. Misleading phase
+label is now an explicit PUBLIC-INTEGRATION blocker: correct actual phase and
+disclosures before promotion. It is not codec/content proof; retain independent
+FFprobe/decode/packet/timestamp/SSIM gates. Do not edit frozen live sources.
+Cold-session/scaling/public/entire goal remain incomplete.
+
 ## 2026-10-19 - Required independent cold full session prepared, unchanged baseline
 
 **Partially implemented.** Prior3fulls in ONE session do not prove the separate

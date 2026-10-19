@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+## 2026-10-19 - Independent cold full session running, no completed result yet
+
+Supervisor34316/child8320 live birth-verified18:16UTC, driver38508 launched
+18:09:41.020Z. Actual868launch pins/browser exactly match preparation/prior
+session. First running observation7,552,215input/15,800,036output bytes,
+31,699ms elapsed,226.83203125MiB peak, approximate3.44h remaining. Exact paths/
+births: `evidence/2026-10-19-jspi-cold-session-launch.json`. About4h interruptible
+sleep, not repeated short polling. No full result/cold/scaling/public claim.
+Private injected transcode still displays `Lossless remux`; documented as
+misleading private phase and public-integration blocker, NOT codec evidence.
+Independent content/codec validation stays required; live harness frozen.
+
 ## 2026-10-19 - Independent cold full-session preparation868pins exact,16tests PASS
 
 18:05:42.132Z existing unchanged JSPI/CR-SSIM full preparation: all868 current/

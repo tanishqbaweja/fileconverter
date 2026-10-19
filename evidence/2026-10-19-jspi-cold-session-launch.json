@@ -1,0 +1,23 @@
+{
+  "status": "first-independent-cold-session-full-conversion-running-not-acceptance",
+  "plan": "evidence/2026-10-19-jspi-cold-session-plan.json",
+  "supervisorReport": "evidence/2026-10-19T18-08-25-765Z-jspi-ssim-full-supervisor-full.json",
+  "liveReceipt": "evidence/2026-10-19T18-08-46-161Z-jspi-ssim-full-live.json",
+  "sourceArchive": "outputs/reports/2026-10-19T18-08-46-161Z-recorded-timeline-full-sources.json.gz",
+  "progress": "outputs/reports/2026-10-19T18-09-43-926Z-private-mpeg2-updated-chrome-full-native-100ms-jspi-progress.json",
+  "supervisorIdentity": { "pid": 34316, "parentPid": 34496, "createdAt": "2026-10-19T18:08:25.7723370Z" },
+  "childIdentity": { "pid": 8320, "parentPid": 34316, "createdAt": "2026-10-19T18:08:26.9573760Z" },
+  "driverIdentity": { "pid": 38508, "parentPid": 8320, "createdAt": "2026-10-19T18:09:41.0203370Z" },
+  "supervisorAndChildBirthsRecheckedLiveAtUtc": "2026-10-19T18:16:27Z",
+  "actual868SourcePinsMatchVerifiedPreparationAndPriorSession": true,
+  "observation": {
+    "recordedAt": "2026-10-19T18:16:20.725Z", "number": 1, "jobState": "running",
+    "phase": "Lossless remux", "inputBytes": 7552215, "outputBytes": 15800036,
+    "elapsedMs": 31699.17000001669, "estimatedRemainingMs": 12386421,
+    "peakIncrementalPrivateMiB": 226.83203125, "independentlyValidatedRuns": 0
+  },
+  "phaseLabelLimitation": "The private injected HEVC-to-MPEG2 harness retains the public remux route's phase label. That label is misleading, not evidence of stream copy. Codec/content will be independently verified; accurate production phase/disclosures must be fixed before public promotion. Do not edit the frozen live harness.",
+  "monitoring": "Approximate early progress ETA3.44h vs prior4–4.5h encode durations. Use about4h interruptible sleep, then inspect this same supervisor/driver/progress. No model busy polling or restart.",
+  "noPublicAcceptance": true,
+  "noCompletedConversionClaim": true
+}
