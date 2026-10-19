@@ -7535,3 +7535,18 @@ scaling/public acceptance remain pending. Do not restart or edit frozen sources.
 Immutable same-prefix -jspi-validated-full-2.json.gz and raw -ssim-2.stderr.gz.
 Run3 live10:18UTC, same original owned process births.2of3 validated, no complete
 session/cold-repeat/scaling/public claim yet; no conversion sources changed.
+2026-10-19 - Three-full-original same-session JSPI qualification independently
+VERIFIED. All3 outputs6414309978B/SHA2b127780...08024e/296160frames/SSIM.989565;
+full native decode/audio/metadata/artwork/timestamps passed (max.000313s error).
+Peaks223.6484375/213.41015625/193.375MiB, same lower blank/all-process+GPU formula;
+414112valid/0unavailable native conversion samples. All868sourcepins/four runtime
+derivations/app+workers+CSS/native bindings, all3 actual SSIM/raw frame/checkpoint
+archives replayed. Exact protected original SHA verified; all5scratch dirs and
+owned births absent, normaldist restored, converted copies deleted.21focused
+PASS4757.034ms/fourfile zero-warning lint/diffcheck PASS. Evidence:
+evidence/2026-10-19-jspi-three-full-independent-analysis.json.
+Conversion/copy4h19m22/4h14m29/3h57m58, no paired speed proof. Cleanup retained
+15.90625→27.39453125→30.60546875MiB above loaded idle (within original96MiB guard,
+not zero-growth proof); earlier9-small-job idle drift44.5546875MiB is diagnostic
+only. Cold-session repeat/new-route scaling/retention attribution/performance/
+public integration/final project gates remain pending. Entire goal incomplete.

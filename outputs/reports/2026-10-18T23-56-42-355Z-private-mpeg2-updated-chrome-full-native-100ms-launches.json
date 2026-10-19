@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "status": "finished",
+  "updatedAt": "2026-10-19T14:32:15.698Z",
+  "driverIdentity": {
+    "pid": 22916,
+    "parentPid": 22384,
+    "createdAt": "2026-10-18T23:56:34.9814850Z"
+  },
+  "wrapperDirectory": "H:\\Github Repositories\\fileconverter\\work\\recorded-timeline-full-wrapper-stvjp1",
+  "candidateDirectory": "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-media-JpdxkM",
+  "runtimeDirectory": "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-full-runtime-riZUx6",
+  "launches": [
+    {
+      "role": "production-server",
+      "identity": {
+        "pid": 23236,
+        "parentPid": 22916,
+        "createdAt": "2026-10-18T23:57:03.8032270Z"
+      }
+    },
+    {
+      "role": "headless-chrome-root",
+      "identity": {
+        "pid": 35908,
+        "parentPid": 22916,
+        "createdAt": "2026-10-18T23:57:08.9440610Z"
+      }
+    },
+    {
+      "role": "native-memory-observer",
+      "identity": {
+        "pid": 15800,
+        "parentPid": 22916,
+        "createdAt": "2026-10-18T23:57:11.1955380Z"
+      }
+    }
+  ],
+  "conversionAcceptance": false
+}

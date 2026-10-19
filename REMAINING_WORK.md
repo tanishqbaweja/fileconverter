@@ -1,5 +1,48 @@
 # Remaining work audit
 
+## 2026-10-19 - Three full JSPI repeats independently audited below250MiB
+
+**Verified complete: private same-session three-full-original qualification.**
+**Partially implemented: entire project/public qualification.** Existing session
+exited0 at14:32UTC; no restart. All3 genuine HEVC→MPEG2 MP4 outputs are EXACTLY
+6414309978B/SHA256 2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e,
+296160frames/SSIM.989565, full native decode/audio/metadata/artwork checks, and
+maximum timestamp error.00031300000000555883s. Native frame CSVs, raw SSIM stderr
+and all3 immutable validated-output checkpoints independently replayed.
+
+Run1/2/3 peaks223.6484375/213.41015625/193.375MiB above the SAME lower stable
+blank.414112valid/0unavailable native conversion samples. Complete native/CIM
+process sums and GPU birth inclusion verified; missing CIM samples stay null and
+are excluded, not zero. Fixed48MiBWasm,64KiBread/512KiBfinalcopy, onepending and
+zero terminal queue/pending. Actual conversion/copy15561872.485/15269432.245/
+14278026.455ms (~4h19m22/4h14m29/3h57m58). These varying machine-load measurements
+do NOT prove a paired speedup or fastest implementation.
+
+`evidence/2026-10-19-jspi-three-full-independent-analysis.json` verifies all868
+executed/current/postsource pins, exact driver/caller/stager/supervisor, qualified
+app+workers+CSS/native manifest, all3 full timestamps/SSIM/checkpoint archives,
+normaldist restored, all5owned scratch paths absent, all recorded process births
+absent, original2958573265B/SHA31f36695...b34 unchanged. All conversion copies were
+deleted after validation. Only compact evidence retained.21focused PASS4757.034ms;
+four new audit/inspection files lint zero warnings; diffcheck PASS. One test's
+mutation fixture initially assumed every CIM row had processes; corrected to
+respect actual unavailable/null rows. Actual audit always excluded null metrics.
+
+Cleanup private memory360296448→372342784→375709696B, or15.90625/27.39453125/
+30.60546875MiB above loaded idle. This passes original idle+96MiB guard but is NOT
+zero-growth proof; retain drift0/12046336/15413248B. Earlier9-small-job session
+ended44.5546875MiB above its loaded idle. That is useful warm-up evidence, NOT an
+allocation-cause or leak conclusion. Do bounded retention/source analysis using
+already retained phase/process/realm evidence before another unchanged long run.
+
+Remaining: independent cold-session repeat, newly added-route multi-GB/10GB
+scaling, meaningful paired speed optimization/benchmark, retention investigation,
+public integration/disclosures/registry/CI agreement, all final project gates and
+any other incomplete original requirements. No public promotion, no fastest
+claim, no whole-goal completion. Headed/manual coverage remains unverified by
+the user's headless-only override. Next safe stage is bounded retained-memory
+attribution and a concrete speed candidate, then the outstanding qualification.
+
 ## 2026-10-19 - Same full JSPI session: two validated outputs, third run live
 
 **Partially implemented overall;2of3 full-session repeats validated.** Run2
