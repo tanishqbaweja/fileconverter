@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+## 2026-10-19 - LTO actual6outputs/all3adverse recoveries PASS226.046875MiB
+
+Actual headless Chrome155 six HEVC→MPEG2 production saves:2245626B/96frames/
+two audio tracks, identical SHA8b0d437...be35c and packet proofs to qualified JSPI.
+Ordinal SSIM.983095; aligned.966841 diagnostic NOT claimed>=.98. Three write/
+cancel/read same-page complete validated recoveries passed. Lower blank242679808B,
+loaded338583552B, full-tree including GPU peak479707136B =>226.046875MiB;
+1352valid/0unavailable native conversion samples. Same32+16MiB/guarded256KiB/
+64KiB reads/512KiB save/one-pending limits. No fabricated JSPI VM-stack size.
+21focused PASS4804.1864ms/zero skipped, new analysis3file zero-warning lint PASS.
+All853sourcepins/138nativepreimages, app+worker+slot overlay/assets, composition,
+exact driver/caller/stager, executed unchanged validator module and six durable
+checkpoints independently replayed.25owned births/five scratch dirs absent,
+original SHA unchanged, normaldist restored, all converted copies deleted.
+20,972,131B disposable success trace hash/path checked and deleted, not uploaded;
+compact source/JSON/CSV/HTML/native checkpoint retained. Evidence:
+`evidence/2026-10-19-lto-browser-independent-analysis.json` and
+`evidence/2026-10-19-lto-browser-cycle.json`. Analysis-only bare-esbuild import
+resolution corrected without repeating conversion or changing validation gates.
+3.253–3.641s times are unpaired, NO speedup proof. Balanced identical-input A/B
+next; LTO full-original/cold/scaling/public/project acceptance remains pending.
+
 ## 2026-10-19 - LTO adapter18focused PASS; exact853-source preparation verified
 
 Four native slots/five typed function maps rebound without changing codec,

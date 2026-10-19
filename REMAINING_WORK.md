@@ -1,5 +1,39 @@
 # Remaining work audit
 
+## 2026-10-19 - LTO actual six-output/adverse qualification PASS226.046875MiB
+
+**Partially implemented.** Single changed-candidate headless Chrome155 session
+completed six genuine HEVC→MPEG2 MP4 saves: each2245626B/96frames/two audio tracks,
+SHA8b0d4370068bfa723f7e3a5f11e15369b138fa5bd4415f7a4d7f0b85b59be35c.
+All output bytes/packet proofs IDENTICAL to qualified JSPI baseline; ordinal
+SSIM.983095>=.98, timestamp-aligned diagnostic.966841 remains diagnostic only.
+All three write/cancel/read faults recovered with complete validated same-page
+outputs and no reload. Native32+16MiB heaps, guarded256KiB stacks,64KiB reads,
+512KiB final copy and one pending write unchanged. VM stack byte count remains
+unknown/included in the complete tree, not invented as zero.
+
+Lower stable blank242679808B, loaded338583552B, simultaneous full-tree peak
+479707136B =>226.046875MiB incremental INCLUDING GPU;1352valid/0unavailable
+native conversion samples.21focused tests PASS4804.1864ms/zero skipped; independent
+negative tests reject changed bytes/packets, missing recoveries/GPU, inflated
+baseline and queued-operation regression. Three new analysis files lint clean.
+All853 executed/current/post pins, actual138native preimages, app/worker/slot
+overlays, composition, exact driver/caller/stager, unchanged executed validator
+module and all six durable checkpoint hashes/rows independently reconstructed.
+25owned births and five owned scratch dirs absent, original size/SHA and normal
+production assets verified. All converted outputs removed after validation.
+The20,972,131B disposable SUCCESS trace was size/hash/path checked then removed;
+compact reports, source preimages, CSV/HTML and native checkpoint retained.
+`evidence/2026-10-19-lto-browser-independent-analysis.json` and
+`evidence/2026-10-19-lto-browser-cycle.json` retain exact evidence.
+
+Times3640.945/3259.280/3508.415/3441.075/3252.465/3338.810ms are UNPAIRED;
+no speed benefit proved. First derived analyzer could not resolve bare esbuild
+from a data URL; fixed analysis-only import resolution, no browser rerun/guard
+change. Next balanced identical-input JSPI/LTO comparison. Full-original LTO,
+cold-session/scaling/public/final project gates remain incomplete; no public
+selector or production source changed and no unchanged multi-hour test repeated.
+
 ## 2026-10-19 - LTO browser adapter prepared; actual qualification next
 
 **Partially implemented.** Actual decoder identity, five typed native function
