@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+## 2026-10-19 - Matched ABBA speed harness25focused PASS; no new timing result yet
+
+Sequential JSPI/LTO/LTO/JSPI, existing six complete outputs/all three fault
+recoveries per session unchanged. Independent auditor replays832/853pins, exact
+runtime harness/assets, unchanged validators and checkpoints; rejects different
+input/browser/settings/validator, missing recovery and excess memory. Four
+independent sessions, first three pre-fault jobs per session at matched lifecycle
+slots. Both order pairs and aggregate need5% reduction for a longer-workload
+trial; no general/full/scaling/public speed acceptance.25focused tests PASS
+12931.8412ms/zero skipped; four-file zero-warning lint/diffcheck PASS. Both retained
+actual sessions independently replayed without new browser conversions. Plan:
+`evidence/2026-10-19-jspi-lto-speed-screen-plan.json`. New headless screen next;
+no unchanged multi-hour original conversion scheduled.
+
 ## 2026-10-19 - LTO actual6outputs/all3adverse recoveries PASS226.046875MiB
 
 Actual headless Chrome155 six HEVC→MPEG2 production saves:2245626B/96frames/

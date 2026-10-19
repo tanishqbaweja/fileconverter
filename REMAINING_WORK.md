@@ -1,5 +1,25 @@
 # Remaining work audit
 
+## 2026-10-19 - Matched JSPI/LTO ABBA speed screen prepared
+
+**Partially implemented.** New sequential orchestrator reuses the EXACT existing
+JSPI and LTO six-output/three-adverse production qualifications, not a substitute
+engine. Order JSPI/LTO/LTO/JSPI controls order bias; browser pin, fixture SHA,
+validator hash, actual native words and output hashes must match. Each session
+keeps its own lower stable blank/full-tree+GPU250MiB gate. Independent per-block
+audit reconstructs all832/853executed/current/post pins, exact four runtime
+components, overlays/assets, unchanged validator and all six durable checkpoints;
+rechecks process births and all five scratch removals. Converted data remains
+owned finally-cleaned; successful trace deleted after audit, failure proof kept.
+First three pre-fault jobs are timed at matching lifecycle slots. Four sessions,
+NOT24independent timing observations. Both order pairs and aggregate reduction
+must reach5% to justify a longer trial; no general speed/large/public acceptance.
+25focused PASS12931.8412ms/zero skipped, including offline replay of both retained
+actual sessions and mismatch/weak-gate rejection; four-file lint/diffcheck PASS.
+`evidence/2026-10-19-jspi-lto-speed-screen-plan.json` records exact decision and
+limits. Estimate35–45minutes, interruptible completion-ETA sleep; no model busy
+polling and no automatic retry. No new browser test started at this checkpoint.
+
 ## 2026-10-19 - LTO actual six-output/adverse qualification PASS226.046875MiB
 
 **Partially implemented.** Single changed-candidate headless Chrome155 session

@@ -1,0 +1,21 @@
+{
+  "status": "prepared-order-balanced-small-fixture-screen-not-executed",
+  "order": ["jspi", "lto", "lto", "jspi"],
+  "commands": ["scripts/qualify-jspi-browser.mjs", "scripts/qualify-lto-browser.mjs"],
+  "sameQualifiedInputSha256": "6de34df2f96e8cce3318f21893d07a395b31a6968d680bd40484f6e8771a5dcb",
+  "fixedSettings": "96 frames,1920x804,24fps,4000000bit/s; actual native words checked for all six outputs per session",
+  "allSixOriginalOutputValidatorsAndThreeAdverseRecoveriesRetainedPerBlock": true,
+  "unchangedProtectedOriginalMultiHourBaselineIsNotRepeated": true,
+  "sameLowerBlankAndCompleteTree250MiBGateInEverySession": true,
+  "browserPinMustMatchAcrossAllFourBlocks": true,
+  "all832Or853CurrentExecutedPostSourcePinsAndExactRuntimeDerivationsRequiredPerBlock": true,
+  "timedExperimentalUnits": "Four independent clean browser sessions; compare first three pre-fault jobs at matching lifecycle positions. Do not count24 output files as24 independent timing samples.",
+  "decision": "Continue longer-workload candidate investigation only if both balanced order pairs and aggregate session-median reduction are at least5%. Otherwise do not accept LTO as speed optimization from this screen.",
+  "notProvenByScreen": ["General speed benefit", "Statistical significance", "LTO full protected-original fidelity", "Multi-gigabyte scaling", "Public acceptance", "Remaining original project requirements"],
+  "prelaunchTests": { "passed": 25, "failed": 0, "skipped": 0, "durationMs": 12931.8412 },
+  "lint": "Four files, zero warnings/errors; diffcheck passed",
+  "cleanup": "Original conversion finally-cleanup unchanged. Independently recheck every owned birth/path; compact native checkpoint and delete only owned successful trace after audit. Keep failure evidence. No Docker or unrelated process kills.",
+  "estimatedWallTimeMinutes": [35,45],
+  "monitoring": "Use interruptible estimated-completion sleep, not repeated short model polls. No automatic restart/resume or duplicate launch on observation timeout.",
+  "publicAcceptance": false
+}
