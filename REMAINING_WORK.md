@@ -1,5 +1,23 @@
 # Remaining work audit
 
+## 2026-10-19 - Same full JSPI session: two validated outputs, third run live
+
+**Partially implemented overall;2of3 full-session repeats validated.** Run2
+produced the EXACT same6414309978B SHA2b127780...08024e/296160frames/SSIM.989565,
+full decode/audio/metadata/artwork checks, and max timestamp error.000313s.
+Peak213.41015625MiB; actual15269432.245ms (~4h14m29s) conversion/copy. Output
+deleted and stable recovery372342784B recorded before immutable
+same-prefix `-jspi-validated-full-2.json.gz` checkpoint. Recovery grew12046336B
+from run1; retain this diagnostic honestly, do not claim zero retained-memory
+drift. Both recoveries remain within the original loaded-idle+96MiB guard.
+
+Run3 live10:18UTC, same supervisor30196/child22384/driver22916 birth identities,
+about7% input progress and193.046875MiB peak so far. Do not restart. Third-run
+quality, complete-session post-source/cleanup/process audit, clean-session repeat,
+scaling and public acceptance remain UNPROVEN. New final observation helper is
+being prepared separately; it is not imported by or modifying the frozen868
+conversion sources. Next completion-sized wait ~5hours based on actual repeats.
+
 ## 2026-10-19 - Corrected full JSPI session: run1 validated, run2 live
 
 **Partially implemented overall; one of three full-session runs validated.**

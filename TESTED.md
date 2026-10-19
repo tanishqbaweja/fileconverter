@@ -7528,3 +7528,10 @@ SSIM stderr retained in -ssim-1.stderr.gz. Prefix:
 outputs/reports/2026-10-18T23-56-42-355Z-private-mpeg2-updated-chrome-full-native-100ms.
 Run2 live05:14UTC in SAME session. Only1of3 passed; full session/post-source audit/
 scaling/public acceptance remain pending. Do not restart or edit frozen sources.
+2026-10-19 - Same session run2 also PASSED: identical6414309978B output SHA,
+296160frames/SSIM.989565/full decode/audio/metadata/artwork/timestamps. Peak
+213.41015625MiB;15269432.245ms conversion/copy. Output deleted, stable recovery
+372342784B (+12046336B vsrun1, diagnostic retained; within original idle+96MiB).
+Immutable same-prefix -jspi-validated-full-2.json.gz and raw -ssim-2.stderr.gz.
+Run3 live10:18UTC, same original owned process births.2of3 validated, no complete
+session/cold-repeat/scaling/public claim yet; no conversion sources changed.
