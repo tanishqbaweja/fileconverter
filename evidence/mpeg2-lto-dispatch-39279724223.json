@@ -1,0 +1,21 @@
+{
+  "status": "queued-native-build-not-browser-or-speed-acceptance",
+  "runId": 39279724223,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39279724223",
+  "createdAt": "2026-10-19T15:40:02Z",
+  "headSha": "36713782ef0bd8d6ee0fd9b3a4f661cb619b9a9d",
+  "branch": "codex/mpeg2-library-lto-20261019",
+  "workflow": "reproduce-ffmpeg-nondocker.yml",
+  "core": "within-mpeg2-aligned-reuse",
+  "actualNativeCompilationStartedAtObservation": false,
+  "observedAuthoritativeGitHubStatus": "queued",
+  "observationCommand": "gh run list --repo tanishqbaweja/fileconverter --workflow reproduce-ffmpeg-nondocker.yml --branch codex/mpeg2-library-lto-20261019 --event workflow_dispatch --limit 1 --json databaseId,headSha,status,conclusion,createdAt,url",
+  "exactBranchCommitMatched": true,
+  "newBrowserConversions": 0,
+  "originalRead": false,
+  "noDocker": true,
+  "noAutomaticRestart": true,
+  "estimatedBuildMinutesIncludingQueue": 15,
+  "speedGainProven": false,
+  "publicAcceptance": false
+}

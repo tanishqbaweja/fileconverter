@@ -1,0 +1,669 @@
+{
+  "recordedAt": "2026-10-19T16:33:29.368Z",
+  "status": "executed-library-lto-native-preimages-and-static-abi-verified-not-browser-acceptance",
+  "proof": {
+    "path": "evidence/mpeg2-lto-build-39279724223.json",
+    "sha256": "131e793b24831ba31e54606962ca1b55d5fd728639ed7fa34896c026cd79cb4e"
+  },
+  "branch": {
+    "path": "evidence/mpeg2-lto-build-branch-2026-10-19.json",
+    "sha256": "b687912a81c6a2e990fdcb9ad58cb192be810c481d0b3ab98f8553fc9f008c0e"
+  },
+  "executedHead": "36713782ef0bd8d6ee0fd9b3a4f661cb619b9a9d",
+  "layers": [
+    {
+      "label": "parent",
+      "sourceCount": 126,
+      "sourcePins": {
+        "media/ffmpeg/build-mpeg2-split-pipeline.sh": "eb00f3f3a23319e8b067d7d19bd41432df2b319a85a93ac4ad4f032a84ed9574",
+        "media/ffmpeg/mpeg2-split-pipeline-manifest.mjs": "7c9a3a0d2f57f985b5a07a72ab7454c7a87f34e97205816a508f1c538e73160b",
+        "media/ffmpeg/make-mpeg2-split-pipeline.mjs": "bfcdabf4e36b9c339bab2558a5177dbc23e005aa14e75dcd8af2c24b328232dd",
+        "media/ffmpeg/mpeg2-split-kernel.mjs": "b2cc0ddefde03b270deb6190f08e282995aaba6287e3c67c48689f1d1128339e",
+        "media/ffmpeg/mpeg2-split-mux-bridge.h": "eb13d16e4041440b1b6b95c3d3dd571c2bdabc244d455cb01ffb236d27ffd284",
+        "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+        "media/ffmpeg/mpeg2-candidate.c": "67d3b8299a9e695ea68f96fdcc51d3f5ba5a694547b3f8288e740990c5f7eac0",
+        "media/ffmpeg/mpeg2-split-codec-parameters.h": "dd3500db5cf0d437a9042424a9ddd97aee556c497abe7f5b6648c3756d120ccc",
+        "media/ffmpeg/mpeg2-split-frame-layout.h": "1ddac3dc35c54a3734885606deb0bd73ed1e5026fd81ee090e928a4a76ed9a17",
+        "media/ffmpeg/mpeg2-split-frame-properties.h": "d5591df913d50ac261c72846666efa0c27c28b996b4b44343fd060081e864a02",
+        "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f",
+        "scripts/lib/mpeg2-split-frame-bridge.mjs": "44f52d150de0155643e632a516ae4547a1652e2c5de08e41a9d57df70f506c0a",
+        "scripts/lib/mpeg2-split-frame-layout.mjs": "0fb7487948b750e9674cf3292170dc7e2462dd6f1e7eabc77502200dc3088fd7",
+        "scripts/lib/mpeg2-split-frame-properties.mjs": "6c57b7c38eadb5638ee2a17bd0d1327de6d7561a4bb9614929bd8ff06b102a94",
+        "scripts/lib/mpeg2-split-packet-bridge.mjs": "e19260e92721163370c5d8a8248f2d58f96e57f14d0b7e5496c566f82a98b55d",
+        "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+        "media/ffmpeg/patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
+        "media/ffmpeg/patches/mov-fragmented-cover-metadata-only.patch": "2e0da9a1978ce31858117c91d6349b0a933e1fa4a0d4de1e0d459054e567210b",
+        "media/ffmpeg/patches/mov-bounded-custom-metadata.patch": "b0bcd47e5997073071f06da3f093f08940536035c75888b4a18bce0fc2c7ecff",
+        "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch": "f6c9ab0dfe0a918e6e197f779d77b58b4f7e0e525ba4e72d6ed6375a5ed3381a",
+        "media/ffmpeg/patches/mpeg2-encoder-uncached-frame-buffers.patch": "d06563699a8747c429bdcc9432657a38c4a5c03446e2530a108cce10cae336ee",
+        "media/ffmpeg/patches/mpeg2-encoder-uncached-accessories.patch": "095c43cf7f636209be78d32cbedec1beacfa30c0d50978954d70bcf5abf9f645",
+        "media/ffmpeg/patches/hevc-decoder-uncached-frame-buffers.patch": "fef319d0497683a45a09959e12d524fa1dc46356f7a17f0f7c8c89f5b20699b0",
+        "media/ffmpeg/mpeg2-hevc-auxiliary-policy.mjs": "0533c01b91f2d7f669b413411d051082d36bcfb64f6249edc9389aee4343c29d",
+        "media/ffmpeg/mpeg2-hevc-auxiliary-policy.h": "8010a86e032c89fc1f37eec6862dfef2f7332f553fe4a03bd5ad02b78cbbac6d",
+        "media/ffmpeg/apply-mpeg2-split-hevc-policy.mjs": "795b028f1941e3b9b053080772c83dc9f905faf296ea8943f40a755573a39f81",
+        "media/ffmpeg/build-mpeg2-aligned-reuse.mjs": "7c920650273882d831b211d7f7eaddea0bbed2f9e00f4221f7966bb39639de57",
+        "media/ffmpeg/mpeg2-aligned-reuse-recipe.mjs": "fc14903561417fc91b0f6161f212f056fee19393aa9905f36888b9d70e52b387",
+        "media/ffmpeg/mpeg2-aligned-reuse.c": "57c83bb5dfe204cee152381002963a72394789abfa03efc7ac6685a8f3b9f785",
+        "media/ffmpeg/mpeg2-aligned-reuse-smoke.c": "8c8d4048b24e4c4abf10dd65398f180efcb5668f0bce96c8843fbc6205920e3c",
+        "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+        ".github/workflows/reproduce-ffmpeg-nondocker.yml": "f490a3af387e5d197802602feb79893edb0ffedbf55ce6cc43984262b2a92de2",
+        "media/ffmpeg/build-mpeg2-single-idle.mjs": "a1097363223f64e8d2440e1f539aa71a3747742d5903e02fb9175a05c16d931e",
+        "media/ffmpeg/mpeg2-single-idle-source.mjs": "0a84871b79a15f6f68aacfb1df2956874e0ba8c0d2f452ba63761f02dbea2244",
+        "media/ffmpeg/mpeg2-single-idle-recipe.mjs": "981cfa7757b832d7c581747fd83fe5a2e5d4addaee1a2d0aa0a8de0bcecb2c22",
+        "media/ffmpeg/patch-mpeg2-single-idle.mjs": "9b9cbe34b9109d419010a08a9fb2539137eb3c20c3b95e89c4cfa136f98c869c",
+        "media/ffmpeg/mpeg2-hevc-single-idle-policy.h": "702cad3c915a789e1d096f52ba09976a09d0e549f039a3c9b9ac687fc7e89211",
+        "media/ffmpeg/mpeg2-single-idle-smoke.c": "c75984831c14b9f866612f0ca41a2e5c270ceb9f6fe6c220f26d7f75ae6c52d6",
+        "media/ffmpeg/mpeg2-late-refstruct-recipe.mjs": "9ebc1f8edab84112c23d5c0dcbb7b421f3058acbff3f07bb15612840929c12d9",
+        "media/ffmpeg/mpeg2-late-refstruct-source.mjs": "575c8012fdce04cb0285466262324817974d3b9cf764a5825dacbc6517ccfdf7",
+        "media/ffmpeg/patch-late-refstruct.mjs": "adf859bebe227b3fec76a9ab5a317ce5a8b4329b53ba20620e29970b36784729",
+        "media/ffmpeg/mpeg2-late-refstruct-slot.c": "2e575ffe76d451056c024f1702029d4cf129fbae370a460c27e87876788fea5b",
+        "media/ffmpeg/mpeg2-late-refstruct-smoke.c": "faa0fff1572da10493f6e8d56a10d0ca270eead74a02e46dd305a4979e57fbeb",
+        ".github/workflows/mpeg2-single-idle-nondocker.yml": "0abad5e1727286c3828d7e8609f2aa53499c25f7831ec932d118edfcd771eac3",
+        "media/ffmpeg/build-mpeg2-allocation-attempt.mjs": "c480eb623e1a9b0bb8d5e128ebc7c3b07b7227ae4be6a7bae5f1a3315c2a4467",
+        "media/ffmpeg/mpeg2-allocation-attempt-recipe.mjs": "a2b95fea95820d2a37f91a22256d4f36cf7f62911bb55035cf883b1f07b6463b",
+        "media/ffmpeg/mpeg2-allocation-attempt.c": "254aec222317eefd22f0c7ff2fd44030b53db661548ad1122a8ec8d2a3f21c30",
+        "media/ffmpeg/mpeg2-allocation-attempt-smoke.c": "acdd0d8e211bf6f406bd5b7763bbe302720665ded4997429d3461e20e52a3a28",
+        "media/ffmpeg/build-mpeg2-alignment16.mjs": "c44148bd6b1340a1b96b2687c2a48ae6e773ef43805c2d95e1c62f7bbde60495",
+        "media/ffmpeg/mpeg2-alignment16-builder-recipe.mjs": "11e8d95b9c6c50b87a7b7298b809bdd3182d11f5322cac10a64c65268997c13d",
+        "media/ffmpeg/mpeg2-alignment16-sdk.mjs": "590833a79f59f604b7f5044796b02e605818a6e6c17d450344dbcc2eb3830cae",
+        "media/ffmpeg/mpeg2-alignment16-recipe.mjs": "b371a7ca71a4bcd823e671d23aacea6c8b0038f8f9cbd86fd3b77e9052dde01d",
+        "media/ffmpeg/mpeg2-alignment16-smoke.c": "5eb7b3ee4c2aaa8708626f4cc35f86f7581b94145d66d0a49e0acae76fcdb6ad",
+        "media/ffmpeg/build-mpeg2-hevc-planes.mjs": "2eaef641b07bfdef904f2e1ba05300cc28b230989894e7c69dedf828642e7e7d",
+        "media/ffmpeg/mpeg2-hevc-plane-builder-recipe.mjs": "44fd305b234ee129ba8f8149ca68a0fbdad1694dd581e5b2a1291138c6201cb0",
+        "media/ffmpeg/mpeg2-hevc-plane-recipe.mjs": "7f39d3d8653a75091824ce1388aadeef0786d604c39eaa0152062d16dd33732f",
+        "media/ffmpeg/mpeg2-hevc-plane-source.mjs": "f52bd8b1cff7a820dd9ade453dbe72e59c91939aacd65fa8bac3432d14b591ec",
+        "media/ffmpeg/mpeg2-hevc-plane-policy.h": "ba3475e401247117c11f7de4b3c8b8f96d6341cfbd6865871499a1aaad0c4ef8",
+        "media/ffmpeg/patch-mpeg2-hevc-planes.mjs": "94d298027e4741c4dc971d5060bda5538779e4e0fc849595909da6e48aa7e5d7",
+        "media/ffmpeg/mpeg2-encoder-plane-source.mjs": "7a25478e61d6edee7ad5582e29dbd7a9ef43f8ed51dc984eafededf1abb46b52",
+        "media/ffmpeg/mpeg2-encoder-plane-prototype-source.mjs": "fc34e18f291ab5468113a863f5dd9ffa5f0913677f75104dbfb99f176e753dd6",
+        "media/ffmpeg/mpeg2-encoder-plane-smoke.c": "6546d208968d91053fbd0c748d7368aa1b46ad80a7dfe802771e6bbbc21a5e43",
+        "media/ffmpeg/mpeg2-duration-boundary.h": "a6aa8c6cbb70ff6c2b43fd064151741a517221aec7c4cb4edc398cf01e19a3c9",
+        "media/ffmpeg/mpeg2-duration-boundary-smoke.c": "8bbc87dea23ff7d6b499f020bb08be4fa08bf4b280406051f41416e992774489",
+        "media/ffmpeg/mpeg2-duration-drain-source.mjs": "c0129b38b166e737dc4bbde46c0f7542a69c7737fa663a697fa65079f096be1e",
+        "media/ffmpeg/mpeg2-duration-drain-builder-recipe.mjs": "96d9445ed1c16a18c4a07a9fd7053b58cac0c72842dee4205309f28dacacee03",
+        "media/ffmpeg/build-mpeg2-duration-drain.mjs": "60ceb69c3ab97f92fe7782602a5e12782d93b8208295a235307ba1c2239fff30",
+        "media/ffmpeg/make-mpeg2-duration-drain-pipeline.mjs": "3c2dcecf751ec26c5b8c8ea65931f6c3cf8a1399db270d1b60e2ce4884909529",
+        "scripts/lib/duration-drain-build-recipe.mjs": "0c215b413685a4f07b7122a12e3671d7e78c480b5c1ff628854eb65168df05d7",
+        "scripts/prepare-duration-drain-build-branch.mjs": "7add8e79d24cb6fd8f7ea3d7ca0b6d39b2262f2568a0fab96505f71aee0aecb6",
+        "scripts/collect-duration-drain-build.mjs": "3904f33d217c22e7abce93836c87d0d5be3a41fa056ace74bff4d609757d01b5",
+        "tests/mpeg2-duration-drain.test.mjs": "38c3468c9f0b2dd0d27e8278abbb4613ac92d3e1bc9b2e87ea7cfb37fd008d8b",
+        "media/ffmpeg/mpeg2-packet-drain-source.mjs": "a286dd5cbdf95a8327ea4cfd23022e612afbab81b27683dfd8aa750ea2ee56ef",
+        "media/ffmpeg/mpeg2-packet-drain-recipe.mjs": "11b051620a6099408c5018031f6bb8cdc1dcbdeec2b5670dff261b0339dc60e9",
+        "media/ffmpeg/mpeg2-packet-drain-builder-recipe.mjs": "b2a16a2390f3f0c41cab136d1dfa3061785b50aaf3c4f2d8ef42cd11625cf725",
+        "media/ffmpeg/build-mpeg2-packet-drain.mjs": "8a3e064170c70effed8c5d8498b4b7a84f7f7dacdfd790ac1a9ccd8a2feedcbb",
+        "media/ffmpeg/make-mpeg2-packet-drain-pipeline.mjs": "02751170b522d8103bd6c0898c1b04a0f8132a7b9e0cdc8e4f834081a3f08431",
+        "scripts/lib/packet-drain-build-recipe.mjs": "cce3b42685b2b7c29db7667f78783598719f7c95433b4ec604cb594714ce2bea",
+        "scripts/prepare-packet-drain-build-branch.mjs": "d85abb2d343e5a23686defed8e790a7c511f310de1aeaa413b0d506906568fb4",
+        "scripts/collect-packet-drain-build.mjs": "f1cb8be7690fa02ebcf85d92c54f1154ae7f40a1cb83c5be879cd68dea12d654",
+        "tests/mpeg2-packet-drain.test.mjs": "10eb3b641b3140398e3fae3615756455177da550d19f2c1390ba51bcaa82d582",
+        "media/ffmpeg/mpeg2-packet-interleave-smoke.c": "cb00dc2932636f9187599a9c7d3cd57f4b99ee1df8380cbcd868a8603109a56c",
+        "media/ffmpeg/mpeg2-packet-interleave-recipe.mjs": "739b43707a7bdfd6c397648e6226c7df05a9f89ace3c5f724801049f4cfd784a",
+        "media/ffmpeg/mpeg2-packet-interleave-builder-recipe.mjs": "db3cebd059ad8a98c842cf9343e45a2ff68419e960cf7c842499e770a7e864a4",
+        "media/ffmpeg/build-mpeg2-packet-interleave.mjs": "e071eb00a5618749ff074aa5984d29984d3afcbabbd7876acf81ca6e1146394d",
+        "scripts/lib/packet-interleave-build-recipe.mjs": "e937b53d563ba0bb84b441d57fb2d65f7c2bec43e471ec6e3ac8671b9a0eeb72",
+        "scripts/prepare-packet-interleave-build-branch.mjs": "76f835bcdba428603a36f40e3734c8bd809bfaad3bc4a215370cc02743401c5b",
+        "scripts/collect-packet-interleave-build.mjs": "b213ab1e0b6e7ee9987b005a5402d6fc3b3ab7db9e04099ca9e18dbdd78b085e",
+        "tests/mpeg2-packet-interleave.test.mjs": "8c5bdd1b142e31f8d06a0235f6ff4ba15f70418b87621ca0af6c1713d3fc014d",
+        "media/ffmpeg/mpeg2-mvf-arena-source.mjs": "caa3a3052a0060594bd49117a755f2e1f0e7951e786ea6ca158f2c22c1e9175a",
+        "media/ffmpeg/mpeg2-mvf-arena-smoke.c": "a8437f0ad030eecd9e140f02c9c1de046c0ff3895688b2fa0a996b22a08b891e",
+        "media/ffmpeg/mpeg2-mvf-arena-recipe.mjs": "3b24dc3de0c812a2d300167949088060b5313a164bfa8a1c04dec3f30547ecc6",
+        "media/ffmpeg/mpeg2-mvf-arena-builder-recipe.mjs": "9a1f4144f55964889edbea6b76d8371572e48dfefc4f80fbc6eabbdd4897bb9a",
+        "media/ffmpeg/build-mpeg2-mvf-arena.mjs": "c6a7037faba5b38141e124ba6c9f54fab7cdfadcbf4f209f507c03b29f303662",
+        "tests/mpeg2-mvf-arena.test.mjs": "f28dd385a06a0de707c65c9cea211d334a08ebddf4f3e6386b0ac7fc67b4a363",
+        "media/ffmpeg/mpeg2-ebml-reuse.h": "6eaf6409cb47253dfc04e66d1f1cde5fba7b970620babd17f3f139957dce36e7",
+        "media/ffmpeg/mpeg2-ebml-reuse-smoke.c": "ff741735b3a2f852145850a6137970573017d2be469ccd97b804e187e533fe99",
+        "media/ffmpeg/mpeg2-ebml-reuse-source.mjs": "a67b41429dfd69d7326670d87eff2f0b97b881ea56bfe08c7b37eabf00f7a5ba",
+        "media/ffmpeg/mpeg2-ebml-reuse-recipe.mjs": "6e5424f0e9640bf01d9d95dd4d12347c334ebe6417bfff4bf2ba03b9ee1049da",
+        "media/ffmpeg/mpeg2-ebml-reuse-builder-recipe.mjs": "212d5cb0aa3bd981d1c5ef881d3fdd54d3caa24f99f66ef18773dd9c864ef19e",
+        "media/ffmpeg/build-mpeg2-ebml-reuse.mjs": "2d8f4a6cb0a337c55e78db90d8b96544ec48c90b49371c034d24e9d2055bc077",
+        "tests/mpeg2-ebml-reuse.test.mjs": "f1ed97bff19ca2639cb985c0b05471d8a45461e019cdb219dab2ba786c076f54",
+        "media/ffmpeg/mpeg2-realloc-attempt.c": "f6c7b4341d1b40567a04f9a2d7b4a820609c97d8c82b976c47acdea6a45f0245",
+        "media/ffmpeg/mpeg2-realloc-attempt-smoke.c": "5cb8d2af1a31892ebf8d974c19f2e04944b434459527f610aac995c5605201e0",
+        "media/ffmpeg/mpeg2-realloc-avutil-smoke.c": "69c756ea1c41657efe63125849d26dcc21867fef78791bc4b055cd127f50f535",
+        "media/ffmpeg/mpeg2-realloc-attempt-recipe.mjs": "2d989f996692ba233cd712093ce6defc0aa0196b67ad2544842d468e704a6d1c",
+        "media/ffmpeg/mpeg2-realloc-builder-recipe.mjs": "bf5fee74f74b8f5e0286decd6eb078196404d596a659c75fb1b871c3f9447b06",
+        "media/ffmpeg/build-mpeg2-realloc-attempt.mjs": "01b7373e15d3821dd706744fcc40afc8c409ea79138a136c912b13b2e85467cf",
+        "tests/mpeg2-realloc-attempt.test.mjs": "bcd326a6905ef650e214f50f5f8210a94b0b40645150d29a45311311bf632394",
+        "media/ffmpeg/build-mpeg2-packet-largest-idle.mjs": "6d41e74dcd0434576a05f5053ad1f05ff3e4f67e3eb17cdb914d1a3beba842cb",
+        "media/ffmpeg/mpeg2-packet-largest-idle-builder-recipe.mjs": "d18488a39bf6baf54c91414c84e4903d56f1082e8b2073796bf8d64ef5e13eb6",
+        "media/ffmpeg/mpeg2-packet-largest-idle-recipe.mjs": "32ba8cda8a5ecb135cdb9f82d746a2a472e1e1787732c1ea3555727d74732f9d",
+        "media/ffmpeg/make-mpeg2-packet-largest-idle-pipeline.mjs": "d4a1a77a52983d5774824148d58cd3aac4f14ba18a056c4cb8848f661608f0e8",
+        "media/ffmpeg/mpeg2-packet-largest-idle-source.mjs": "81fbb97347c94f79d8c49fcf264a404a94f45c210788674de574e616452ed31b",
+        "media/ffmpeg/mpeg2-packet-largest-idle.h": "0058018f1793417925bf16de11de8f15f13be5f0701915b59ad5e57f7a8f44d9",
+        "media/ffmpeg/mpeg2-packet-largest-idle-smoke.c": "a24dae7e9d8a3d448e2ed980d49355d54783522e23de774a98cc13f628ee2a30",
+        "media/ffmpeg/build-mpeg2-packet-cache-strict.mjs": "4de4fa643a15d0d114995fae55d2392741e5c68eef2b4df18eb1642e836f952e",
+        "media/ffmpeg/mpeg2-packet-cache-strict-recipe.mjs": "6f482084ae072b34aa13ca982742d6b8eb812efd7c55b0ea65ba8113a37b1594",
+        "media/ffmpeg/build-mpeg2-packet-cache.mjs": "555ee56daefcf35cb5df1a7f69ba02370faed534e394b7b7643b8c3742d3ab82",
+        "media/ffmpeg/mpeg2-packet-cache-builder-recipe.mjs": "588ef097beac7d067622b49174ae74ee40b4ec58228ef0807cb3c23cadfe3e55",
+        "media/ffmpeg/mpeg2-packet-cache-recipe.mjs": "dd177d39945215aa04c3d55940c592e64869361019355f67f4fa82cdb8d4381e",
+        "media/ffmpeg/make-mpeg2-packet-cache-pipeline.mjs": "d83b97a477331c759718cb586dda2ff814d0ffffd61ea0fb90ebdde4eabc0334",
+        "media/ffmpeg/mpeg2-packet-cache-source.mjs": "73ee0ecb9bcadf35c9c3c1fba6c5ca8bcc61e63578dc8d2249721db221a73e88",
+        "media/ffmpeg/mpeg2-packet-cache.h": "df10682b7d49528d35412342ff96fe05b54978f1d8473e84a03293b9e5228a6e",
+        "media/ffmpeg/mpeg2-packet-cache-smoke.c": "b63db56402c373e60113e9fe188282b61dc6ec4ff63e89db8770e6b8be8e847d",
+        "media/ffmpeg/mpeg2-packet-cache-strict-builder-recipe.mjs": "d687935f0c6fbf3c513d23cda7a56a375daa8611f3d20f19b5a235a3e87a494e"
+      },
+      "currentSourcePins": {
+        "media/ffmpeg/build-mpeg2-split-pipeline.sh": "eb00f3f3a23319e8b067d7d19bd41432df2b319a85a93ac4ad4f032a84ed9574",
+        "media/ffmpeg/mpeg2-split-pipeline-manifest.mjs": "7c9a3a0d2f57f985b5a07a72ab7454c7a87f34e97205816a508f1c538e73160b",
+        "media/ffmpeg/make-mpeg2-split-pipeline.mjs": "bfcdabf4e36b9c339bab2558a5177dbc23e005aa14e75dcd8af2c24b328232dd",
+        "media/ffmpeg/mpeg2-split-kernel.mjs": "b2cc0ddefde03b270deb6190f08e282995aaba6287e3c67c48689f1d1128339e",
+        "media/ffmpeg/mpeg2-split-mux-bridge.h": "eb13d16e4041440b1b6b95c3d3dd571c2bdabc244d455cb01ffb236d27ffd284",
+        "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+        "media/ffmpeg/mpeg2-candidate.c": "67d3b8299a9e695ea68f96fdcc51d3f5ba5a694547b3f8288e740990c5f7eac0",
+        "media/ffmpeg/mpeg2-split-codec-parameters.h": "dd3500db5cf0d437a9042424a9ddd97aee556c497abe7f5b6648c3756d120ccc",
+        "media/ffmpeg/mpeg2-split-frame-layout.h": "1ddac3dc35c54a3734885606deb0bd73ed1e5026fd81ee090e928a4a76ed9a17",
+        "media/ffmpeg/mpeg2-split-frame-properties.h": "d5591df913d50ac261c72846666efa0c27c28b996b4b44343fd060081e864a02",
+        "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f",
+        "scripts/lib/mpeg2-split-frame-bridge.mjs": "44f52d150de0155643e632a516ae4547a1652e2c5de08e41a9d57df70f506c0a",
+        "scripts/lib/mpeg2-split-frame-layout.mjs": "0fb7487948b750e9674cf3292170dc7e2462dd6f1e7eabc77502200dc3088fd7",
+        "scripts/lib/mpeg2-split-frame-properties.mjs": "6c57b7c38eadb5638ee2a17bd0d1327de6d7561a4bb9614929bd8ff06b102a94",
+        "scripts/lib/mpeg2-split-packet-bridge.mjs": "e19260e92721163370c5d8a8248f2d58f96e57f14d0b7e5496c566f82a98b55d",
+        "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+        "media/ffmpeg/patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
+        "media/ffmpeg/patches/mov-fragmented-cover-metadata-only.patch": "2e0da9a1978ce31858117c91d6349b0a933e1fa4a0d4de1e0d459054e567210b",
+        "media/ffmpeg/patches/mov-bounded-custom-metadata.patch": "b0bcd47e5997073071f06da3f093f08940536035c75888b4a18bce0fc2c7ecff",
+        "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch": "f6c9ab0dfe0a918e6e197f779d77b58b4f7e0e525ba4e72d6ed6375a5ed3381a",
+        "media/ffmpeg/patches/mpeg2-encoder-uncached-frame-buffers.patch": "d06563699a8747c429bdcc9432657a38c4a5c03446e2530a108cce10cae336ee",
+        "media/ffmpeg/patches/mpeg2-encoder-uncached-accessories.patch": "095c43cf7f636209be78d32cbedec1beacfa30c0d50978954d70bcf5abf9f645",
+        "media/ffmpeg/patches/hevc-decoder-uncached-frame-buffers.patch": "fef319d0497683a45a09959e12d524fa1dc46356f7a17f0f7c8c89f5b20699b0",
+        "media/ffmpeg/mpeg2-hevc-auxiliary-policy.mjs": "0533c01b91f2d7f669b413411d051082d36bcfb64f6249edc9389aee4343c29d",
+        "media/ffmpeg/mpeg2-hevc-auxiliary-policy.h": "8010a86e032c89fc1f37eec6862dfef2f7332f553fe4a03bd5ad02b78cbbac6d",
+        "media/ffmpeg/apply-mpeg2-split-hevc-policy.mjs": "795b028f1941e3b9b053080772c83dc9f905faf296ea8943f40a755573a39f81",
+        "media/ffmpeg/build-mpeg2-aligned-reuse.mjs": "7c920650273882d831b211d7f7eaddea0bbed2f9e00f4221f7966bb39639de57",
+        "media/ffmpeg/mpeg2-aligned-reuse-recipe.mjs": "fc14903561417fc91b0f6161f212f056fee19393aa9905f36888b9d70e52b387",
+        "media/ffmpeg/mpeg2-aligned-reuse.c": "57c83bb5dfe204cee152381002963a72394789abfa03efc7ac6685a8f3b9f785",
+        "media/ffmpeg/mpeg2-aligned-reuse-smoke.c": "8c8d4048b24e4c4abf10dd65398f180efcb5668f0bce96c8843fbc6205920e3c",
+        "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+        ".github/workflows/reproduce-ffmpeg-nondocker.yml": "cda0b434adc7dd36109b4a2cc63fe726a507889cf6d1c0f5862d5d78dbf5c965",
+        "media/ffmpeg/build-mpeg2-single-idle.mjs": "a1097363223f64e8d2440e1f539aa71a3747742d5903e02fb9175a05c16d931e",
+        "media/ffmpeg/mpeg2-single-idle-source.mjs": "0a84871b79a15f6f68aacfb1df2956874e0ba8c0d2f452ba63761f02dbea2244",
+        "media/ffmpeg/mpeg2-single-idle-recipe.mjs": "981cfa7757b832d7c581747fd83fe5a2e5d4addaee1a2d0aa0a8de0bcecb2c22",
+        "media/ffmpeg/patch-mpeg2-single-idle.mjs": "9b9cbe34b9109d419010a08a9fb2539137eb3c20c3b95e89c4cfa136f98c869c",
+        "media/ffmpeg/mpeg2-hevc-single-idle-policy.h": "702cad3c915a789e1d096f52ba09976a09d0e549f039a3c9b9ac687fc7e89211",
+        "media/ffmpeg/mpeg2-single-idle-smoke.c": "c75984831c14b9f866612f0ca41a2e5c270ceb9f6fe6c220f26d7f75ae6c52d6",
+        "media/ffmpeg/mpeg2-late-refstruct-recipe.mjs": "9ebc1f8edab84112c23d5c0dcbb7b421f3058acbff3f07bb15612840929c12d9",
+        "media/ffmpeg/mpeg2-late-refstruct-source.mjs": "575c8012fdce04cb0285466262324817974d3b9cf764a5825dacbc6517ccfdf7",
+        "media/ffmpeg/patch-late-refstruct.mjs": "adf859bebe227b3fec76a9ab5a317ce5a8b4329b53ba20620e29970b36784729",
+        "media/ffmpeg/mpeg2-late-refstruct-slot.c": "2e575ffe76d451056c024f1702029d4cf129fbae370a460c27e87876788fea5b",
+        "media/ffmpeg/mpeg2-late-refstruct-smoke.c": "faa0fff1572da10493f6e8d56a10d0ca270eead74a02e46dd305a4979e57fbeb",
+        ".github/workflows/mpeg2-single-idle-nondocker.yml": "0abad5e1727286c3828d7e8609f2aa53499c25f7831ec932d118edfcd771eac3",
+        "media/ffmpeg/build-mpeg2-allocation-attempt.mjs": "c480eb623e1a9b0bb8d5e128ebc7c3b07b7227ae4be6a7bae5f1a3315c2a4467",
+        "media/ffmpeg/mpeg2-allocation-attempt-recipe.mjs": "a2b95fea95820d2a37f91a22256d4f36cf7f62911bb55035cf883b1f07b6463b",
+        "media/ffmpeg/mpeg2-allocation-attempt.c": "254aec222317eefd22f0c7ff2fd44030b53db661548ad1122a8ec8d2a3f21c30",
+        "media/ffmpeg/mpeg2-allocation-attempt-smoke.c": "acdd0d8e211bf6f406bd5b7763bbe302720665ded4997429d3461e20e52a3a28",
+        "media/ffmpeg/build-mpeg2-alignment16.mjs": "c44148bd6b1340a1b96b2687c2a48ae6e773ef43805c2d95e1c62f7bbde60495",
+        "media/ffmpeg/mpeg2-alignment16-builder-recipe.mjs": "11e8d95b9c6c50b87a7b7298b809bdd3182d11f5322cac10a64c65268997c13d",
+        "media/ffmpeg/mpeg2-alignment16-sdk.mjs": "590833a79f59f604b7f5044796b02e605818a6e6c17d450344dbcc2eb3830cae",
+        "media/ffmpeg/mpeg2-alignment16-recipe.mjs": "b371a7ca71a4bcd823e671d23aacea6c8b0038f8f9cbd86fd3b77e9052dde01d",
+        "media/ffmpeg/mpeg2-alignment16-smoke.c": "5eb7b3ee4c2aaa8708626f4cc35f86f7581b94145d66d0a49e0acae76fcdb6ad",
+        "media/ffmpeg/build-mpeg2-hevc-planes.mjs": "2eaef641b07bfdef904f2e1ba05300cc28b230989894e7c69dedf828642e7e7d",
+        "media/ffmpeg/mpeg2-hevc-plane-builder-recipe.mjs": "44fd305b234ee129ba8f8149ca68a0fbdad1694dd581e5b2a1291138c6201cb0",
+        "media/ffmpeg/mpeg2-hevc-plane-recipe.mjs": "7f39d3d8653a75091824ce1388aadeef0786d604c39eaa0152062d16dd33732f",
+        "media/ffmpeg/mpeg2-hevc-plane-source.mjs": "f52bd8b1cff7a820dd9ade453dbe72e59c91939aacd65fa8bac3432d14b591ec",
+        "media/ffmpeg/mpeg2-hevc-plane-policy.h": "ba3475e401247117c11f7de4b3c8b8f96d6341cfbd6865871499a1aaad0c4ef8",
+        "media/ffmpeg/patch-mpeg2-hevc-planes.mjs": "94d298027e4741c4dc971d5060bda5538779e4e0fc849595909da6e48aa7e5d7",
+        "media/ffmpeg/mpeg2-encoder-plane-source.mjs": "7a25478e61d6edee7ad5582e29dbd7a9ef43f8ed51dc984eafededf1abb46b52",
+        "media/ffmpeg/mpeg2-encoder-plane-prototype-source.mjs": "fc34e18f291ab5468113a863f5dd9ffa5f0913677f75104dbfb99f176e753dd6",
+        "media/ffmpeg/mpeg2-encoder-plane-smoke.c": "6546d208968d91053fbd0c748d7368aa1b46ad80a7dfe802771e6bbbc21a5e43",
+        "media/ffmpeg/mpeg2-duration-boundary.h": "a6aa8c6cbb70ff6c2b43fd064151741a517221aec7c4cb4edc398cf01e19a3c9",
+        "media/ffmpeg/mpeg2-duration-boundary-smoke.c": "8bbc87dea23ff7d6b499f020bb08be4fa08bf4b280406051f41416e992774489",
+        "media/ffmpeg/mpeg2-duration-drain-source.mjs": "c0129b38b166e737dc4bbde46c0f7542a69c7737fa663a697fa65079f096be1e",
+        "media/ffmpeg/mpeg2-duration-drain-builder-recipe.mjs": "96d9445ed1c16a18c4a07a9fd7053b58cac0c72842dee4205309f28dacacee03",
+        "media/ffmpeg/build-mpeg2-duration-drain.mjs": "60ceb69c3ab97f92fe7782602a5e12782d93b8208295a235307ba1c2239fff30",
+        "media/ffmpeg/make-mpeg2-duration-drain-pipeline.mjs": "3c2dcecf751ec26c5b8c8ea65931f6c3cf8a1399db270d1b60e2ce4884909529",
+        "scripts/lib/duration-drain-build-recipe.mjs": "0c215b413685a4f07b7122a12e3671d7e78c480b5c1ff628854eb65168df05d7",
+        "scripts/prepare-duration-drain-build-branch.mjs": "7add8e79d24cb6fd8f7ea3d7ca0b6d39b2262f2568a0fab96505f71aee0aecb6",
+        "scripts/collect-duration-drain-build.mjs": "3904f33d217c22e7abce93836c87d0d5be3a41fa056ace74bff4d609757d01b5",
+        "tests/mpeg2-duration-drain.test.mjs": "38c3468c9f0b2dd0d27e8278abbb4613ac92d3e1bc9b2e87ea7cfb37fd008d8b",
+        "media/ffmpeg/mpeg2-packet-drain-source.mjs": "a286dd5cbdf95a8327ea4cfd23022e612afbab81b27683dfd8aa750ea2ee56ef",
+        "media/ffmpeg/mpeg2-packet-drain-recipe.mjs": "11b051620a6099408c5018031f6bb8cdc1dcbdeec2b5670dff261b0339dc60e9",
+        "media/ffmpeg/mpeg2-packet-drain-builder-recipe.mjs": "b2a16a2390f3f0c41cab136d1dfa3061785b50aaf3c4f2d8ef42cd11625cf725",
+        "media/ffmpeg/build-mpeg2-packet-drain.mjs": "8a3e064170c70effed8c5d8498b4b7a84f7f7dacdfd790ac1a9ccd8a2feedcbb",
+        "media/ffmpeg/make-mpeg2-packet-drain-pipeline.mjs": "02751170b522d8103bd6c0898c1b04a0f8132a7b9e0cdc8e4f834081a3f08431",
+        "scripts/lib/packet-drain-build-recipe.mjs": "cce3b42685b2b7c29db7667f78783598719f7c95433b4ec604cb594714ce2bea",
+        "scripts/prepare-packet-drain-build-branch.mjs": "d85abb2d343e5a23686defed8e790a7c511f310de1aeaa413b0d506906568fb4",
+        "scripts/collect-packet-drain-build.mjs": "f1cb8be7690fa02ebcf85d92c54f1154ae7f40a1cb83c5be879cd68dea12d654",
+        "tests/mpeg2-packet-drain.test.mjs": "10eb3b641b3140398e3fae3615756455177da550d19f2c1390ba51bcaa82d582",
+        "media/ffmpeg/mpeg2-packet-interleave-smoke.c": "cb00dc2932636f9187599a9c7d3cd57f4b99ee1df8380cbcd868a8603109a56c",
+        "media/ffmpeg/mpeg2-packet-interleave-recipe.mjs": "739b43707a7bdfd6c397648e6226c7df05a9f89ace3c5f724801049f4cfd784a",
+        "media/ffmpeg/mpeg2-packet-interleave-builder-recipe.mjs": "db3cebd059ad8a98c842cf9343e45a2ff68419e960cf7c842499e770a7e864a4",
+        "media/ffmpeg/build-mpeg2-packet-interleave.mjs": "e071eb00a5618749ff074aa5984d29984d3afcbabbd7876acf81ca6e1146394d",
+        "scripts/lib/packet-interleave-build-recipe.mjs": "e937b53d563ba0bb84b441d57fb2d65f7c2bec43e471ec6e3ac8671b9a0eeb72",
+        "scripts/prepare-packet-interleave-build-branch.mjs": "76f835bcdba428603a36f40e3734c8bd809bfaad3bc4a215370cc02743401c5b",
+        "scripts/collect-packet-interleave-build.mjs": "b213ab1e0b6e7ee9987b005a5402d6fc3b3ab7db9e04099ca9e18dbdd78b085e",
+        "tests/mpeg2-packet-interleave.test.mjs": "8c5bdd1b142e31f8d06a0235f6ff4ba15f70418b87621ca0af6c1713d3fc014d",
+        "media/ffmpeg/mpeg2-mvf-arena-source.mjs": "caa3a3052a0060594bd49117a755f2e1f0e7951e786ea6ca158f2c22c1e9175a",
+        "media/ffmpeg/mpeg2-mvf-arena-smoke.c": "a8437f0ad030eecd9e140f02c9c1de046c0ff3895688b2fa0a996b22a08b891e",
+        "media/ffmpeg/mpeg2-mvf-arena-recipe.mjs": "3b24dc3de0c812a2d300167949088060b5313a164bfa8a1c04dec3f30547ecc6",
+        "media/ffmpeg/mpeg2-mvf-arena-builder-recipe.mjs": "9a1f4144f55964889edbea6b76d8371572e48dfefc4f80fbc6eabbdd4897bb9a",
+        "media/ffmpeg/build-mpeg2-mvf-arena.mjs": "c6a7037faba5b38141e124ba6c9f54fab7cdfadcbf4f209f507c03b29f303662",
+        "tests/mpeg2-mvf-arena.test.mjs": "f28dd385a06a0de707c65c9cea211d334a08ebddf4f3e6386b0ac7fc67b4a363",
+        "media/ffmpeg/mpeg2-ebml-reuse.h": "6eaf6409cb47253dfc04e66d1f1cde5fba7b970620babd17f3f139957dce36e7",
+        "media/ffmpeg/mpeg2-ebml-reuse-smoke.c": "ff741735b3a2f852145850a6137970573017d2be469ccd97b804e187e533fe99",
+        "media/ffmpeg/mpeg2-ebml-reuse-source.mjs": "a67b41429dfd69d7326670d87eff2f0b97b881ea56bfe08c7b37eabf00f7a5ba",
+        "media/ffmpeg/mpeg2-ebml-reuse-recipe.mjs": "6e5424f0e9640bf01d9d95dd4d12347c334ebe6417bfff4bf2ba03b9ee1049da",
+        "media/ffmpeg/mpeg2-ebml-reuse-builder-recipe.mjs": "212d5cb0aa3bd981d1c5ef881d3fdd54d3caa24f99f66ef18773dd9c864ef19e",
+        "media/ffmpeg/build-mpeg2-ebml-reuse.mjs": "2d8f4a6cb0a337c55e78db90d8b96544ec48c90b49371c034d24e9d2055bc077",
+        "tests/mpeg2-ebml-reuse.test.mjs": "f1ed97bff19ca2639cb985c0b05471d8a45461e019cdb219dab2ba786c076f54",
+        "media/ffmpeg/mpeg2-realloc-attempt.c": "f6c7b4341d1b40567a04f9a2d7b4a820609c97d8c82b976c47acdea6a45f0245",
+        "media/ffmpeg/mpeg2-realloc-attempt-smoke.c": "5cb8d2af1a31892ebf8d974c19f2e04944b434459527f610aac995c5605201e0",
+        "media/ffmpeg/mpeg2-realloc-avutil-smoke.c": "69c756ea1c41657efe63125849d26dcc21867fef78791bc4b055cd127f50f535",
+        "media/ffmpeg/mpeg2-realloc-attempt-recipe.mjs": "2d989f996692ba233cd712093ce6defc0aa0196b67ad2544842d468e704a6d1c",
+        "media/ffmpeg/mpeg2-realloc-builder-recipe.mjs": "bf5fee74f74b8f5e0286decd6eb078196404d596a659c75fb1b871c3f9447b06",
+        "media/ffmpeg/build-mpeg2-realloc-attempt.mjs": "01b7373e15d3821dd706744fcc40afc8c409ea79138a136c912b13b2e85467cf",
+        "tests/mpeg2-realloc-attempt.test.mjs": "bcd326a6905ef650e214f50f5f8210a94b0b40645150d29a45311311bf632394",
+        "media/ffmpeg/build-mpeg2-packet-largest-idle.mjs": "6d41e74dcd0434576a05f5053ad1f05ff3e4f67e3eb17cdb914d1a3beba842cb",
+        "media/ffmpeg/mpeg2-packet-largest-idle-builder-recipe.mjs": "d18488a39bf6baf54c91414c84e4903d56f1082e8b2073796bf8d64ef5e13eb6",
+        "media/ffmpeg/mpeg2-packet-largest-idle-recipe.mjs": "32ba8cda8a5ecb135cdb9f82d746a2a472e1e1787732c1ea3555727d74732f9d",
+        "media/ffmpeg/make-mpeg2-packet-largest-idle-pipeline.mjs": "d4a1a77a52983d5774824148d58cd3aac4f14ba18a056c4cb8848f661608f0e8",
+        "media/ffmpeg/mpeg2-packet-largest-idle-source.mjs": "81fbb97347c94f79d8c49fcf264a404a94f45c210788674de574e616452ed31b",
+        "media/ffmpeg/mpeg2-packet-largest-idle.h": "0058018f1793417925bf16de11de8f15f13be5f0701915b59ad5e57f7a8f44d9",
+        "media/ffmpeg/mpeg2-packet-largest-idle-smoke.c": "a24dae7e9d8a3d448e2ed980d49355d54783522e23de774a98cc13f628ee2a30",
+        "media/ffmpeg/build-mpeg2-packet-cache-strict.mjs": "4de4fa643a15d0d114995fae55d2392741e5c68eef2b4df18eb1642e836f952e",
+        "media/ffmpeg/mpeg2-packet-cache-strict-recipe.mjs": "6f482084ae072b34aa13ca982742d6b8eb812efd7c55b0ea65ba8113a37b1594",
+        "media/ffmpeg/build-mpeg2-packet-cache.mjs": "555ee56daefcf35cb5df1a7f69ba02370faed534e394b7b7643b8c3742d3ab82",
+        "media/ffmpeg/mpeg2-packet-cache-builder-recipe.mjs": "588ef097beac7d067622b49174ae74ee40b4ec58228ef0807cb3c23cadfe3e55",
+        "media/ffmpeg/mpeg2-packet-cache-recipe.mjs": "dd177d39945215aa04c3d55940c592e64869361019355f67f4fa82cdb8d4381e",
+        "media/ffmpeg/make-mpeg2-packet-cache-pipeline.mjs": "d83b97a477331c759718cb586dda2ff814d0ffffd61ea0fb90ebdde4eabc0334",
+        "media/ffmpeg/mpeg2-packet-cache-source.mjs": "73ee0ecb9bcadf35c9c3c1fba6c5ca8bcc61e63578dc8d2249721db221a73e88",
+        "media/ffmpeg/mpeg2-packet-cache.h": "df10682b7d49528d35412342ff96fe05b54978f1d8473e84a03293b9e5228a6e",
+        "media/ffmpeg/mpeg2-packet-cache-smoke.c": "b63db56402c373e60113e9fe188282b61dc6ec4ff63e89db8770e6b8be8e847d",
+        "media/ffmpeg/mpeg2-packet-cache-strict-builder-recipe.mjs": "d687935f0c6fbf3c513d23cda7a56a375daa8611f3d20f19b5a235a3e87a494e"
+      },
+      "archive": {
+        "path": "outputs/reports/lto-native-parent-sources-39279724223.json.gz",
+        "bytes": 225214,
+        "sha256": "5b3ae6304c9a67190203c39d86b4308a361f06f6c7bb0ffeaf7666ad0794f81c",
+        "restoredBytes": 868771,
+        "restoredSha256": "4fde8aa52f0180f306e25c671a361060608d7c1217ee9055c870adf2184f95c6"
+      }
+    },
+    {
+      "label": "lto-extension",
+      "sourceCount": 12,
+      "sourcePins": {
+        "media/ffmpeg/mpeg2-lto-builder-recipe.mjs": "be6942f11485d9f5b973686c3aa4dab39c06e8c17a8923806c66c07d89c602fd",
+        "media/ffmpeg/build-mpeg2-lto.mjs": "f0f4f1968e98cb23d4cef6681dedd57e2e57164037be96035df105bb1a3cf1de",
+        "scripts/lib/lto-build-recipe.mjs": "dfbed663868bcd934db1c39e89d0d5a3fae48be62cc4d6de799e9263f73c9074",
+        "scripts/prepare-lto-build-branch.mjs": "6ebf97ff09ac991ca02dca7b7bc44f8dd34988107cbe19bb7ab9eaf5e8b2e208",
+        "scripts/collect-lto-build.mjs": "b4b3bce326d59f2a79eb8ab10743fbc77c10200759aae7c089acbfa5bf17e22f",
+        "tests/mpeg2-lto-build.test.mjs": "4a43054727146e6993ed2516cd159f06bb3356f22a85accd0f5c34e95f731e5f",
+        "media/ffmpeg/mpeg2-jspi-builder-recipe.mjs": "d44c31d987c0c36b62d324226eeec259cdc09c537709021c2c5d62cecc460bc4",
+        "media/ffmpeg/build-mpeg2-jspi.mjs": "8e5a952af937e0d99075db8b6ff6fc149dc3421ecaec997c01d215d9541405e3",
+        "scripts/lib/jspi-build-recipe.mjs": "1de04e70341522961d0a2e86e283abe31544ad95961f834e463a38832f954d04",
+        "scripts/prepare-jspi-build-branch.mjs": "bfc0c7914a383cf06aea98bcbdd567ae09c296c897689f3c13339313fca35d00",
+        "scripts/collect-jspi-build.mjs": "329598d9a4e26e6d97aeea7318c68f0c1c903cdd916dce1262ee21c59c6c2102",
+        "tests/mpeg2-jspi-build.test.mjs": "6f99963e286a805cff61b855f0fa3ceb5df686a75ea9f6a6d7f56e17ee53a130"
+      },
+      "currentSourcePins": {
+        "media/ffmpeg/mpeg2-lto-builder-recipe.mjs": "be6942f11485d9f5b973686c3aa4dab39c06e8c17a8923806c66c07d89c602fd",
+        "media/ffmpeg/build-mpeg2-lto.mjs": "f0f4f1968e98cb23d4cef6681dedd57e2e57164037be96035df105bb1a3cf1de",
+        "scripts/lib/lto-build-recipe.mjs": "dfbed663868bcd934db1c39e89d0d5a3fae48be62cc4d6de799e9263f73c9074",
+        "scripts/prepare-lto-build-branch.mjs": "6ebf97ff09ac991ca02dca7b7bc44f8dd34988107cbe19bb7ab9eaf5e8b2e208",
+        "scripts/collect-lto-build.mjs": "b4b3bce326d59f2a79eb8ab10743fbc77c10200759aae7c089acbfa5bf17e22f",
+        "tests/mpeg2-lto-build.test.mjs": "4a43054727146e6993ed2516cd159f06bb3356f22a85accd0f5c34e95f731e5f",
+        "media/ffmpeg/mpeg2-jspi-builder-recipe.mjs": "d44c31d987c0c36b62d324226eeec259cdc09c537709021c2c5d62cecc460bc4",
+        "media/ffmpeg/build-mpeg2-jspi.mjs": "8e5a952af937e0d99075db8b6ff6fc149dc3421ecaec997c01d215d9541405e3",
+        "scripts/lib/jspi-build-recipe.mjs": "1de04e70341522961d0a2e86e283abe31544ad95961f834e463a38832f954d04",
+        "scripts/prepare-jspi-build-branch.mjs": "bfc0c7914a383cf06aea98bcbdd567ae09c296c897689f3c13339313fca35d00",
+        "scripts/collect-jspi-build.mjs": "329598d9a4e26e6d97aeea7318c68f0c1c903cdd916dce1262ee21c59c6c2102",
+        "tests/mpeg2-jspi-build.test.mjs": "6f99963e286a805cff61b855f0fa3ceb5df686a75ea9f6a6d7f56e17ee53a130"
+      },
+      "archive": {
+        "path": "outputs/reports/lto-native-lto-extension-sources-39279724223.json.gz",
+        "bytes": 11545,
+        "sha256": "267762e416843f07755c95f647d22e060ec53746924bc10e885a4db9cd3042a0",
+        "restoredBytes": 43550,
+        "restoredSha256": "7039787c855a208cc382e6dc80944bfabe7670b84f43171cd603b1e5d99abea4"
+      }
+    }
+  ],
+  "sourceCount": 138,
+  "allSourcesMatchedExecutedGitHead": true,
+  "workflowCanonicalDiffOnly": true,
+  "allPrevious132SourcesUnchangedExceptIsolatedWorkflow": true,
+  "onlyDecoderLibraryCompileLinkFlagsChanged": true,
+  "decoder": {
+    "bytes": 6360544,
+    "sha256": "49e8229f4bbfb43fb93c0c59ebfa2fac9f3574944f50c58078d6d1dd00925c2d"
+  },
+  "parentDecoder": {
+    "bytes": 5715985,
+    "sha256": "4f3954a3cbbd5012c811fa380402981d29ac298d46422d1bc0fa40a6b9368d57"
+  },
+  "decoderBytesIncrease": 644559,
+  "layout": {
+    "_gm_": {
+      "address": 408936,
+      "bytes": 496
+    },
+    "within_allocator_attempt_words": {
+      "address": 541024,
+      "bytes": 64
+    },
+    "within_realloc_attempt_words": {
+      "address": 541088,
+      "bytes": 64
+    },
+    "within_refstruct_abort_words": {
+      "address": 1913344,
+      "bytes": 64
+    }
+  },
+  "functions": [
+    {
+      "functionIndex": 69,
+      "name": "emscripten_builtin_malloc",
+      "params": [
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 35212,
+      "bodyEnd": 40965,
+      "bodySha256": "35e91797b12791ffeab8981ebc7562f7f3863e6b813d7e184dded5376f3351a7"
+    },
+    {
+      "functionIndex": 72,
+      "name": "emscripten_builtin_realloc",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 43033,
+      "bodyEnd": 44288,
+      "bodySha256": "29e79f7130e7d86f6430003f8f9d0d679737aa7366db4635ab22c3358b39ebfc"
+    },
+    {
+      "functionIndex": 74,
+      "name": "sbrk",
+      "params": [
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 46058,
+      "bodyEnd": 46159,
+      "bodySha256": "d00afeac4c10b3aaef41335e180744feca776f3ef96d0a3e57ec24514b8747ab"
+    },
+    {
+      "functionIndex": 133,
+      "name": "mpeg2_packets",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 114920,
+      "bodyEnd": 120025,
+      "bodySha256": "c4912279bf6c3ab9f2f8263fcfae1cd37f85c028cd767c1f8f84b512a7cfe2e1"
+    },
+    {
+      "functionIndex": 159,
+      "name": "__wrap_posix_memalign",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 144047,
+      "bodyEnd": 144466,
+      "bodySha256": "0f9e079255bacd2d943be06fe2ec81a66accddbf715c16d8a13e9e2fa12657d8"
+    },
+    {
+      "functionIndex": 160,
+      "name": "__wrap_av_buffer_realloc",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 144468,
+      "bodyEnd": 144847,
+      "bodySha256": "a63b7b9cb9d18aebba990ce7eaba204a0f49345ff2021b98740edba9c8e40ea7"
+    },
+    {
+      "functionIndex": 161,
+      "name": "__wrap_av_realloc",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 144849,
+      "bodyEnd": 145192,
+      "bodySha256": "38183947a83035f15fd4cb5d75df870e248fd338356bb4d82de1f6804488948c"
+    },
+    {
+      "functionIndex": 211,
+      "name": "av_malloc",
+      "params": [
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 158571,
+      "bodyEnd": 158707,
+      "bodySha256": "d672eed59bf234491f00b5ca06f841137c22fdd78d03772c616dc4299ec19b09"
+    },
+    {
+      "functionIndex": 237,
+      "name": "av_buffer_realloc",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 170611,
+      "bodyEnd": 171138,
+      "bodySha256": "ce304f2b6f79b6831608ec5e6a5f7fbce3bd276f60d5a0bec45c323c1ee4e9e7"
+    },
+    {
+      "functionIndex": 859,
+      "name": "av_refstruct_pool_get",
+      "params": [
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 1019065,
+      "bodyEnd": 1020039,
+      "bodySha256": "5082fe287153c0e0f47297c5c4e6d7f487ce6ece0be886bd99870cfe99a62d63"
+    },
+    {
+      "functionIndex": 889,
+      "name": "av_buffer_allocz",
+      "params": [
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 1037736,
+      "bodyEnd": 1038028,
+      "bodySha256": "59f5d467aa17175e3de5ee6dd2c45a881e1b4bfcfe1e085ab23a0decfad1b74c"
+    }
+  ],
+  "parentFunctions": [
+    {
+      "functionIndex": 4190,
+      "name": "av_buffer_allocz",
+      "params": [
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 4988482,
+      "bodyEnd": 4988676,
+      "bodySha256": "ac36092aebed5ddc65b0e8ac4c15349765a63408193afb951d2a875b1ab49d9b"
+    },
+    {
+      "functionIndex": 4193,
+      "name": "av_buffer_realloc",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 4988808,
+      "bodyEnd": 4989305,
+      "bodySha256": "ef7e2fd6a5d9cefa6e5c5cc32dee14b7b18053210e4b9517257016003fb78094"
+    },
+    {
+      "functionIndex": 4315,
+      "name": "av_malloc",
+      "params": [
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 5054401,
+      "bodyEnd": 5054557,
+      "bodySha256": "93a32b12a26623eb721817840093dcfe7eaeb0631d6733937c1dcc1c4692d555"
+    },
+    {
+      "functionIndex": 4382,
+      "name": "av_refstruct_pool_get",
+      "params": [
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 5088549,
+      "bodyEnd": 5089498,
+      "bodySha256": "05eb5c5c9a72c52af7bf12c835c813f3a8fb98a754029c8ade50a523b731bd43"
+    },
+    {
+      "functionIndex": 4439,
+      "name": "emscripten_builtin_malloc",
+      "params": [
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 5118024,
+      "bodyEnd": 5123934,
+      "bodySha256": "390ad4b5ab6c5ca0fb37405dd74dbdf7541369a87c562181ec58d5ae72a4da97"
+    },
+    {
+      "functionIndex": 4442,
+      "name": "emscripten_builtin_realloc",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 5126050,
+      "bodyEnd": 5127331,
+      "bodySha256": "1ed3a34578d66632cdeaf1236e7ae3b6ca69584bfd0e5e6a11dad209a2cc373e"
+    },
+    {
+      "functionIndex": 4444,
+      "name": "sbrk",
+      "params": [
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 5129135,
+      "bodyEnd": 5129236,
+      "bodySha256": "ecbc1380ba659c02a9cbce5574aba35eb2905ad86f5ffd6eb863fdcf9f810838"
+    },
+    {
+      "functionIndex": 4473,
+      "name": "mpeg2_packets",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 5158985,
+      "bodyEnd": 5164617,
+      "bodySha256": "5acdd08da49438f3f18bf6b755efda9a3703df3304ef26b6f43d524233566f00"
+    },
+    {
+      "functionIndex": 4474,
+      "name": "__wrap_posix_memalign",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 5164619,
+      "bodyEnd": 5165077,
+      "bodySha256": "e44439588827f00391c3e2993cc0d65772b96c3196154866772441023441f363"
+    },
+    {
+      "functionIndex": 4475,
+      "name": "__wrap_av_buffer_realloc",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 5165079,
+      "bodyEnd": 5165491,
+      "bodySha256": "8f33c88e14b22063423a503bebd9d67c13c0c4b9009ab8cd3e8b13cbdd94ad0e"
+    },
+    {
+      "functionIndex": 4476,
+      "name": "__wrap_av_realloc",
+      "params": [
+        "i32",
+        "i32"
+      ],
+      "results": [
+        "i32"
+      ],
+      "bodyStart": 5165493,
+      "bodyEnd": 5165875,
+      "bodySha256": "98ccd50db8c9f24c593ce06f72ac68ae54272c1301ae3e05d23818666e99e818"
+    }
+  ],
+  "accompanyingDefaultEncoderIsNotQualifiedPlaneEncoder": true,
+  "browserCompositionMustKeepEncoderSha256": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee",
+  "ownSource": {
+    "path": "scripts/retain-lto-native-sources.mjs",
+    "sha256": "0a009a920fe1f1d557cbdf7130c89109d146e299bc81d9c114e80f8281138d3f",
+    "preimage": "Ly8gRXhhY3QxMzggZXhlY3V0ZWQgbmF0aXZlIHByZWltYWdlcywgdHdvIG9yaWdpbmFsLXNpemVkIGJvdW5kZWQgbGF5ZXJzLgppbXBvcnQgYXNzZXJ0IGZyb20gIm5vZGU6YXNzZXJ0L3N0cmljdCI7CmltcG9ydCB7IGV4ZWNGaWxlIH0gZnJvbSAibm9kZTpjaGlsZF9wcm9jZXNzIjsKaW1wb3J0IHsgcmVhZEZpbGUsIHdyaXRlRmlsZSB9IGZyb20gIm5vZGU6ZnMvcHJvbWlzZXMiOwppbXBvcnQgcGF0aCBmcm9tICJub2RlOnBhdGgiOwppbXBvcnQgeyBwcm9taXNpZnkgfSBmcm9tICJub2RlOnV0aWwiOwppbXBvcnQgeyBnemlwU3luYywgZ3VuemlwU3luYyB9IGZyb20gIm5vZGU6emxpYiI7CmltcG9ydCB7IHNoYSB9IGZyb20gIi4vbGliL3N0YWJsZS11aS1oZWFkbGVzcy1iYXNlbGluZS1yZWNpcGUubWpzIjsKaW1wb3J0IHsgcmVhZFdhc21GdW5jdGlvbk1ldGFkYXRhIH0gZnJvbSAiLi9saWIvd2FzbS1mdW5jdGlvbi1tZXRhZGF0YS5tanMiOwppbXBvcnQgeyByZWFkV2FzbU1lbW9yeUxpbWl0cyB9IGZyb20gIi4vbGliL3dhc20tbWVtb3J5LWxpbWl0cy5tanMiOwppbXBvcnQgeyBKU1BJX0JVSUxEX0ZJTEVTIH0gZnJvbSAiLi4vbWVkaWEvZmZtcGVnL21wZWcyLWpzcGktYnVpbGRlci1yZWNpcGUubWpzIjsKaW1wb3J0IHsgTFRPX0JVSUxEX0ZJTEVTLCBtYWtlTHRvU2hlbGxSZWNpcGUgfSBmcm9tICIuLi9tZWRpYS9mZm1wZWcvbXBlZzItbHRvLWJ1aWxkZXItcmVjaXBlLm1qcyI7CmNvbnN0IHJvb3Q9cGF0aC5yZXNvbHZlKGltcG9ydC5tZXRhLmRpcm5hbWUsIi4uIikscmVhZD1maWxlPT5yZWFkRmlsZShwYXRoLmpvaW4ocm9vdCxmaWxlKSksZXhlY3V0ZT1wcm9taXNpZnkoZXhlY0ZpbGUpOwpjb25zdCBwcm9vZlBhdGg9ImV2aWRlbmNlL21wZWcyLWx0by1idWlsZC0zOTI3OTcyNDIyMy5qc29uIixwcm9vZkJ5dGVzPWF3YWl0IHJlYWQocHJvb2ZQYXRoKSxidWlsZD1KU09OLnBhcnNlKHByb29mQnl0ZXMpOwpjb25zdCBicmFuY2hQYXRoPSJldmlkZW5jZS9tcGVnMi1sdG8tYnVpbGQtYnJhbmNoLTIwMjYtMTAtMTkuanNvbiIsYnJhbmNoQnl0ZXM9YXdhaXQgcmVhZChicmFuY2hQYXRoKSxicmFuY2g9SlNPTi5wYXJzZShicmFuY2hCeXRlcyk7CmFzc2VydC5lcXVhbChidWlsZC5ydW4uaGVhZFNoYSwiMzY3MTM3ODJlZjBiZDhkNmVlMGZkOWIzYTRmNjYxY2I2MTliOWE5ZCIpO2Fzc2VydC5lcXVhbChicmFuY2guY29tbWl0LGJ1aWxkLnJ1bi5oZWFkU2hhKTsKYXNzZXJ0LmVxdWFsKGJ1aWxkLnJ1bi5jb25jbHVzaW9uLCJzdWNjZXNzIik7YXNzZXJ0LmVxdWFsKGJyYW5jaC5yZW1vdGVWZXJpZmllZCx0cnVlKTsKY29uc3QgcHJldmlvdXM9SlNPTi5wYXJzZShhd2FpdCByZWFkKCJldmlkZW5jZS9tcGVnMi1qc3BpLWJ1aWxkLTM5MDcyOTQ5OTY0Lmpzb24iKSk7CmNvbnN0IHBhcmVudD1KU09OLnBhcnNlKGF3YWl0IHJlYWQoImV2aWRlbmNlL21wZWcyLWR1cmF0aW9uLWRyYWluLWJ1aWxkLTM4Njc4ODA2NDczLmpzb24iKSk7CmFzc2VydC5lcXVhbChPYmplY3Qua2V5cyhwcmV2aW91cy5tYW5pZmVzdC5zb3VyY2VzKS5sZW5ndGgsMTMyKTsKZm9yKGNvbnN0IFtmaWxlLGRpZ2VzdF1vZiBPYmplY3QuZW50cmllcyhwcmV2aW91cy5tYW5pZmVzdC5zb3VyY2VzKSlpZihmaWxlIT09YnJhbmNoLndvcmtmbG93LnBhdGgpYXNzZXJ0LmVxdWFsKGJ1aWxkLm1hbmlmZXN0LnNvdXJjZXNbZmlsZV0sZGlnZXN0LGZpbGUpOwpjb25zdCBwYXJlbnRGaWxlcz1PYmplY3Qua2V5cyhwYXJlbnQubWFuaWZlc3Quc291cmNlcyksZXh0cmFzPU9iamVjdC5rZXlzKGJ1aWxkLm1hbmlmZXN0LnNvdXJjZXMpLmZpbHRlcihmaWxlPT4hcGFyZW50RmlsZXMuaW5jbHVkZXMoZmlsZSkpOwphc3NlcnQuZXF1YWwocGFyZW50RmlsZXMubGVuZ3RoLDEyNik7YXNzZXJ0LmVxdWFsKGV4dHJhcy5sZW5ndGgsMTIpO2Fzc2VydC5lcXVhbChPYmplY3Qua2V5cyhidWlsZC5tYW5pZmVzdC5zb3VyY2VzKS5sZW5ndGgsMTM4KTsKYXNzZXJ0LmRlZXBFcXVhbChleHRyYXMudG9Tb3J0ZWQoKSxbLi4uSlNQSV9CVUlMRF9GSUxFUywuLi5MVE9fQlVJTERfRklMRVNdLnRvU29ydGVkKCkpOwpjb25zdCByZWNpcGU9bWFrZUx0b1NoZWxsUmVjaXBlKChhd2FpdCByZWFkKCJtZWRpYS9mZm1wZWcvYnVpbGQtbXBlZzItc3BsaXQtcGlwZWxpbmUuc2giKSkudG9TdHJpbmcoKSk7CmFzc2VydC5kZWVwRXF1YWwoYnVpbGQubWFuaWZlc3QubGlicmFyeUx0byxyZWNpcGUubGlicmFyeUx0byk7YXNzZXJ0LmVxdWFsKGJ1aWxkLm1hbmlmZXN0LmpzcGkuZ2VuZXJhdGVkU2hlbGwscmVjaXBlLmdlbmVyYXRlZCk7CmNvbnN0IGxheWVycz1bXTsKZm9yKGNvbnN0IFtsYWJlbCxmaWxlc11vZiBbWyJwYXJlbnQiLHBhcmVudEZpbGVzXSxbImx0by1leHRlbnNpb24iLGV4dHJhc11dKXsKICBhc3NlcnQub2soZmlsZXMubGVuZ3RoPD0xMjgpO2NvbnN0IHByZWltYWdlcz17fSxjdXJyZW50U291cmNlUGlucz17fSxzb3VyY2VQaW5zPXt9OwogIGZvcihsZXQgaW5kZXg9MDtpbmRleDxmaWxlcy5sZW5ndGg7aW5kZXgrPTgpewogICAgY29uc3Qgcm93cz1hd2FpdCBQcm9taXNlLmFsbChmaWxlcy5zbGljZShpbmRleCxpbmRleCs4KS5tYXAoYXN5bmMgZmlsZT0+ewogICAgICBhc3NlcnQub2soIWZpbGUuaW5jbHVkZXMoIi4uIikmJiFwYXRoLmlzQWJzb2x1dGUoZmlsZSkpOwogICAgICBjb25zdCB7c3Rkb3V0fT1hd2FpdCBleGVjdXRlKCJnaXQiLFsic2hvdyIsYCR7YnVpbGQucnVuLmhlYWRTaGF9OiR7ZmlsZX1gXSx7Y3dkOnJvb3Qsd2luZG93c0hpZGU6dHJ1ZSxlbmNvZGluZzoiYnVmZmVyIix0aW1lb3V0OjMwMDAwLG1heEJ1ZmZlcjoyNjIxNDR9KTsKICAgICAgYXNzZXJ0LmVxdWFsKHNoYShzdGRvdXQpLGJ1aWxkLm1hbmlmZXN0LnNvdXJjZXNbZmlsZV0sZmlsZSk7Y29uc3QgY3VycmVudD1hd2FpdCByZWFkKGZpbGUpOwogICAgICBpZihmaWxlPT09YnJhbmNoLndvcmtmbG93LnBhdGgpe2Fzc2VydC5lcXVhbChzdGRvdXQudG9TdHJpbmcoKSxicmFuY2gud29ya2Zsb3cuZ2VuZXJhdGVkRXhhY3RTb3VyY2UpO2Fzc2VydC5lcXVhbChzaGEoY3VycmVudCksYnJhbmNoLndvcmtmbG93LmNhbm9uaWNhbFNoYTI1Nik7fQogICAgICBlbHNlIGFzc2VydC5lcXVhbChzaGEoY3VycmVudCksc2hhKHN0ZG91dCksZmlsZSk7CiAgICAgIHJldHVybntmaWxlLGV4ZWN1dGVkOnN0ZG91dCxjdXJyZW50fTsKICAgIH0pKTsKICAgIGZvcihjb25zdCByb3cgb2Ygcm93cyl7c291cmNlUGluc1tyb3cuZmlsZV09c2hhKHJvdy5leGVjdXRlZCk7Y3VycmVudFNvdXJjZVBpbnNbcm93LmZpbGVdPXNoYShyb3cuY3VycmVudCk7cHJlaW1hZ2VzW3Jvdy5maWxlXT1yb3cuZXhlY3V0ZWQudG9TdHJpbmcoImJhc2U2NCIpO30KICB9CiAgY29uc3QgcmF3PUJ1ZmZlci5mcm9tKEpTT04uc3RyaW5naWZ5KHtzb3VyY2VQaW5zLGN1cnJlbnRTb3VyY2VQaW5zLHByZWltYWdlc30pKTthc3NlcnQub2socmF3Lmxlbmd0aDw9MjA5NzE1Mik7CiAgY29uc3QgemlwPWd6aXBTeW5jKHJhdyx7bGV2ZWw6OX0pLGZpbGU9YG91dHB1dHMvcmVwb3J0cy9sdG8tbmF0aXZlLSR7bGFiZWx9LXNvdXJjZXMtMzkyNzk3MjQyMjMuanNvbi5nemA7CiAgYXdhaXQgd3JpdGVGaWxlKHBhdGguam9pbihyb290LGZpbGUpLHppcCx7ZmxhZzoid3gifSk7YXNzZXJ0LmRlZXBFcXVhbChndW56aXBTeW5jKGF3YWl0IHJlYWQoZmlsZSkpLHJhdyk7CiAgbGF5ZXJzLnB1c2goe2xhYmVsLHNvdXJjZUNvdW50OmZpbGVzLmxlbmd0aCxzb3VyY2VQaW5zLGN1cnJlbnRTb3VyY2VQaW5zLGFyY2hpdmU6e3BhdGg6ZmlsZSxieXRlczp6aXAubGVuZ3RoLHNoYTI1NjpzaGEoemlwKSxyZXN0b3JlZEJ5dGVzOnJhdy5sZW5ndGgscmVzdG9yZWRTaGEyNTY6c2hhKHJhdyl9fSk7Cn0KY29uc3Qgc2xvdD0id29yay9tcGVnMi1sdG8tMzkyNzk3MjQyMjMiO2Fzc2VydC5lcXVhbChidWlsZC5maWxlcy5sZW5ndGgsMjApOwpmb3IoY29uc3Qgcm93IG9mIGJ1aWxkLmZpbGVzKXtjb25zdCBieXRlcz1hd2FpdCByZWFkKGAke3Nsb3R9LyR7cm93LmZpbGV9YCk7YXNzZXJ0LmVxdWFsKGJ5dGVzLmxlbmd0aCxyb3cuYnl0ZXMpO2Fzc2VydC5lcXVhbChzaGEoYnl0ZXMpLHJvdy5zaGEyNTYpO30KY29uc3QgYmluYXJ5PWF3YWl0IHJlYWQoYCR7c2xvdH0vd2l0aGluLW1wZWcyLXNwbGl0Lndhc21gKSxvbGRCaW5hcnk9YXdhaXQgcmVhZCgid29yay9tcGVnMi1qc3BpLTM5MDcyOTQ5OTY0L3dpdGhpbi1tcGVnMi1zcGxpdC53YXNtIik7CmFzc2VydC5lcXVhbChzaGEoYmluYXJ5KSwiNDllODIyOWY0YmJmYjQzZmI5M2MwYzU5ZWJmYTJmYWM5ZjM1NzQ5NDRmNTBjNTgwNzhkNmQxZGQwMDkyNWMyZCIpOwphc3NlcnQuZXF1YWwoc2hhKG9sZEJpbmFyeSksIjRmMzk1NGEzY2JiZDUwMTJjODExZmEzODA0MDI5ODFkMjlhYzI5OGQ0NjQyMmQxYmMwZmE0MGE2YjkzNjhkNTciKTsKYXNzZXJ0LmRlZXBFcXVhbChyZWFkV2FzbU1lbW9yeUxpbWl0cyhiaW5hcnkpLFt7aW1wb3J0ZWQ6dHJ1ZSxpbml0aWFsUGFnZXM6NTEyLG1heGltdW1QYWdlczo1MTIsc2hhcmVkOnRydWV9XSk7CmNvbnN0IGV4cGVjdGVkPW5ldyBNYXAoW1siYXZfYnVmZmVyX2FsbG9jeiIsWzEsMV1dLFsiYXZfbWFsbG9jIixbMSwxXV0sWyJhdl9yZWZzdHJ1Y3RfcG9vbF9nZXQiLFsxLDFdXSxbIm1wZWcyX3BhY2tldHMiLFsyLDFdXSwKICBbIl9fd3JhcF9wb3NpeF9tZW1hbGlnbiIsWzIsMV1dLFsic2JyayIsWzEsMV1dLFsiZW1zY3JpcHRlbl9idWlsdGluX21hbGxvYyIsWzEsMV1dLFsiZW1zY3JpcHRlbl9idWlsdGluX3JlYWxsb2MiLFsyLDFdXSwKICBbImF2X2J1ZmZlcl9yZWFsbG9jIixbMiwxXV0sWyJfX3dyYXBfYXZfcmVhbGxvYyIsWzIsMV1dLFsiX193cmFwX2F2X2J1ZmZlcl9yZWFsbG9jIixbMiwxXV1dKTsKY29uc3QgbWV0YWRhdGE9Ynl0ZXM9PnJlYWRXYXNtRnVuY3Rpb25NZXRhZGF0YShieXRlcyxuZXcgU2V0KGV4cGVjdGVkLmtleXMoKSkpLm1hcChyb3c9PnsKICBjb25zdCBbcGFyYW1zLHJlc3VsdHNdPWV4cGVjdGVkLmdldChyb3cubmFtZSk7YXNzZXJ0LmRlZXBFcXVhbChyb3cucGFyYW1zLEFycmF5KHBhcmFtcykuZmlsbCgiaTMyIikpO2Fzc2VydC5kZWVwRXF1YWwocm93LnJlc3VsdHMsQXJyYXkocmVzdWx0cykuZmlsbCgiaTMyIikpOwogIHJldHVybnsuLi5yb3csYm9keVNoYTI1NjpzaGEoYnl0ZXMuc3ViYXJyYXkocm93LmJvZHlTdGFydCxyb3cuYm9keUVuZCkpfTsKfSk7CmNvbnN0IGZ1bmN0aW9ucz1tZXRhZGF0YShiaW5hcnkpLHBhcmVudEZ1bmN0aW9ucz1tZXRhZGF0YShvbGRCaW5hcnkpLGxheW91dD17fSxtYXA9KGF3YWl0IHJlYWQoYCR7c2xvdH0vZGVjb2Rlci1saW5rLm1hcGApKS50b1N0cmluZygpOwpmb3IoY29uc3Qgc3ltYm9sIG9mIFsiX2dtXyIsIndpdGhpbl9hbGxvY2F0b3JfYXR0ZW1wdF93b3JkcyIsIndpdGhpbl9yZWFsbG9jX2F0dGVtcHRfd29yZHMiLCJ3aXRoaW5fcmVmc3RydWN0X2Fib3J0X3dvcmRzIl0pewogIGNvbnN0IG1hdGNoZXM9Wy4uLm1hcC5tYXRjaEFsbChuZXcgUmVnRXhwKGBeXFxzKihbYS1mMC05XSspXFxzK1thLWYwLTktXStcXHMrKFthLWYwLTldKylcXHMrJHtzeW1ib2x9JGAsImdtIikpXTsKICBhc3NlcnQuZXF1YWwobWF0Y2hlcy5sZW5ndGgsMSxzeW1ib2wpO2xheW91dFtzeW1ib2xdPXthZGRyZXNzOnBhcnNlSW50KG1hdGNoZXNbMF1bMV0sMTYpLGJ5dGVzOnBhcnNlSW50KG1hdGNoZXNbMF1bMl0sMTYpfTsKfQphc3NlcnQuZGVlcEVxdWFsKGxheW91dCx7X2dtXzp7YWRkcmVzczo0MDg5MzYsYnl0ZXM6NDk2fSx3aXRoaW5fYWxsb2NhdG9yX2F0dGVtcHRfd29yZHM6e2FkZHJlc3M6NTQxMDI0LGJ5dGVzOjY0fSwKICB3aXRoaW5fcmVhbGxvY19hdHRlbXB0X3dvcmRzOnthZGRyZXNzOjU0MTA4OCxieXRlczo2NH0sd2l0aGluX3JlZnN0cnVjdF9hYm9ydF93b3Jkczp7YWRkcmVzczoxOTEzMzQ0LGJ5dGVzOjY0fX0pOwpjb25zdCBvd249InNjcmlwdHMvcmV0YWluLWx0by1uYXRpdmUtc291cmNlcy5tanMiLG93bkJ5dGVzPWF3YWl0IHJlYWQob3duKSxvdXRwdXQ9ImV2aWRlbmNlL2x0by1uYXRpdmUtc291cmNlcy0zOTI3OTcyNDIyMy5qc29uIjsKYXdhaXQgd3JpdGVGaWxlKHBhdGguam9pbihyb290LG91dHB1dCksSlNPTi5zdHJpbmdpZnkoe3JlY29yZGVkQXQ6bmV3IERhdGUoKS50b0lTT1N0cmluZygpLHN0YXR1czoiZXhlY3V0ZWQtbGlicmFyeS1sdG8tbmF0aXZlLXByZWltYWdlcy1hbmQtc3RhdGljLWFiaS12ZXJpZmllZC1ub3QtYnJvd3Nlci1hY2NlcHRhbmNlIiwKICBwcm9vZjp7cGF0aDpwcm9vZlBhdGgsc2hhMjU2OnNoYShwcm9vZkJ5dGVzKX0sYnJhbmNoOntwYXRoOmJyYW5jaFBhdGgsc2hhMjU2OnNoYShicmFuY2hCeXRlcyl9LGV4ZWN1dGVkSGVhZDpidWlsZC5ydW4uaGVhZFNoYSwKICBsYXllcnMsc291cmNlQ291bnQ6MTM4LGFsbFNvdXJjZXNNYXRjaGVkRXhlY3V0ZWRHaXRIZWFkOnRydWUsd29ya2Zsb3dDYW5vbmljYWxEaWZmT25seTp0cnVlLAogIGFsbFByZXZpb3VzMTMyU291cmNlc1VuY2hhbmdlZEV4Y2VwdElzb2xhdGVkV29ya2Zsb3c6dHJ1ZSxvbmx5RGVjb2RlckxpYnJhcnlDb21waWxlTGlua0ZsYWdzQ2hhbmdlZDp0cnVlLAogIGRlY29kZXI6e2J5dGVzOmJpbmFyeS5sZW5ndGgsc2hhMjU2OnNoYShiaW5hcnkpfSxwYXJlbnREZWNvZGVyOntieXRlczpvbGRCaW5hcnkubGVuZ3RoLHNoYTI1NjpzaGEob2xkQmluYXJ5KX0sCiAgZGVjb2RlckJ5dGVzSW5jcmVhc2U6YmluYXJ5Lmxlbmd0aC1vbGRCaW5hcnkubGVuZ3RoLGxheW91dCxmdW5jdGlvbnMscGFyZW50RnVuY3Rpb25zLAogIGFjY29tcGFueWluZ0RlZmF1bHRFbmNvZGVySXNOb3RRdWFsaWZpZWRQbGFuZUVuY29kZXI6dHJ1ZSwKICBicm93c2VyQ29tcG9zaXRpb25NdXN0S2VlcEVuY29kZXJTaGEyNTY6ImE0YmE2MjI1NDE0Y2E3YTY1OGQzNDlhZTgxOTI2ZTVlZDA0MGZhNzNiZTQ1NDBmZThhN2FkZjc2NTZmZTFjZWUiLAogIG93blNvdXJjZTp7cGF0aDpvd24sc2hhMjU2OnNoYShvd25CeXRlcykscHJlaW1hZ2U6b3duQnl0ZXMudG9TdHJpbmcoImJhc2U2NCIpfSwKICBvbGRJbmRpY2VzT3JBZGRyZXNzZXNNdXN0Tm90QmVSZXVzZWQ6dHJ1ZSxhY3R1YWxSdW50aW1lRmF0YWxSZXF1YWxpZmllZDpmYWxzZSxvcmlnaW5hbFJlYWQ6ZmFsc2UsY29udmVyc2lvbnM6MCwKICBtZW1vcnlBY2NlcHRhbmNlOmZhbHNlLHNwZWVkR2FpblByb3ZlbjpmYWxzZSxwdWJsaWNBY2NlcHRhbmNlOmZhbHNlfSxudWxsLDIpKyJcbiIse2ZsYWc6Ind4In0pOwpjb25zb2xlLmxvZyhKU09OLnN0cmluZ2lmeSh7b3V0cHV0LHNvdXJjZUNvdW50OjEzOCxsYXllcnM6bGF5ZXJzLm1hcChyb3c9Pih7Y291bnQ6cm93LnNvdXJjZUNvdW50LGJ5dGVzOnJvdy5hcmNoaXZlLmJ5dGVzfSkpLAogIGRlY29kZXJCeXRlczpiaW5hcnkubGVuZ3RoLGRlY29kZXJHcm93dGhCeXRlczpiaW5hcnkubGVuZ3RoLW9sZEJpbmFyeS5sZW5ndGgsbGF5b3V0LHNwZWVkR2FpblByb3ZlbjpmYWxzZX0pKTsK"
+  },
+  "oldIndicesOrAddressesMustNotBeReused": true,
+  "actualRuntimeFatalRequalified": false,
+  "originalRead": false,
+  "conversions": 0,
+  "memoryAcceptance": false,
+  "speedGainProven": false,
+  "publicAcceptance": false
+}

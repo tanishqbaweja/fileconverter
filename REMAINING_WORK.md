@@ -34,6 +34,43 @@ all gates and unknown performance.10focused source/retention/JSPI tests PASS
 encoder heap literal in the wrong generated layer; corrected to actual inputs/
 encoder shell, not weakened guards. No hosted build/browser benchmark yet.
 
+Source/analysis pushed2ed59d3; isolated no-checkout workflow-only branch
+codex/mpeg2-library-lto-20261019 at36713782ef0bd8d6ee0fd9b3a4f661cb619b9a9d
+remote-verified; main/canonical workflow/index unchanged. Exactly one hosted
+non-Docker build dispatched:39279724223, authoritative queued state15:40:02UTC,
+exacthead matched. `evidence/mpeg2-lto-dispatch-39279724223.json` retains handle.
+Wait~15minutes; observe THIS job rather than duplicate/restart on timeout. No
+native result, browser conversion, speed gain or public acceptance claimed.
+
+Terminal native build39279724223 SUCCESS: actual compile15:41:05→15:50:29UTC
+(564s, NOT conversion time); sourcehead367137...9a9d. Earlier queued API snapshots
+are observations, not inferred queue duration. Collector verifies20 native files/
+9032181B, fixed512initial/max shared decoder pages, all native lifetime/allocator
+units and hosted cleanup. Actual decoder6360544B/SHA49e8229f...925c2d is644559B
+LARGER, not a code-size optimization or speed proof. All138 executed preimages
+match GitHEAD/current source except isolated workflow, retained as126+12 layers
+with original128file/2MiB caps. All previous132 sources remain unchanged except
+workflow. Actual11typed function IDs/bodies retained; new _gm_408936 and guard
+slots541024/541088/1913344 REQUIRE rebinding, old addresses cannot be reused.
+
+`evidence/lto-native-sources-39279724223.json` and
+`evidence/mpeg2-lto-retention-39279724223.json` retain proof. New static composition
+verifier validates exact new decoder/envelope/layout and preserves ACTUAL
+qualified plane encoder a4ba...1cee rather than accompanying default8b2f...4242.
+13focused PASS2360.099ms, zero skipped locally; new files lint zero warnings and
+diffcheck PASS. No browser instance/conversion, runtime fatal requalification,
+250MiB acceptance, paired speed, scaling or public promotion claimed.
+
+Owned hosted artifact12200461185 (2040083B) deleted ONLY after verified local
+retention/source capture; API confirms zero artifacts for this run. Download and
+hosted scratch removed. Retain only reusable9MB native tool for upcoming actual
+browser tests; no converted media created. Next bind new IDs/addresses into the
+adapter and failure checker, run unchanged correctness/adverse/memory controls,
+then balanced identical-input speed A/B. Public/default/native baseline intact.
+Final focused13/13 PASS2538.290ms, zero skipped locally; fourteen changed/new MJS
+files lint zero errors/warnings and diffcheck PASS. No new browser run or user
+media read was needed for this native preparation/retention-attribution cycle.
+
 ## 2026-10-19 - Three full JSPI repeats independently audited below250MiB
 
 **Verified complete: private same-session three-full-original qualification.**

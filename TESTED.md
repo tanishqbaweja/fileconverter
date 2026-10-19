@@ -7562,3 +7562,19 @@ SDK6.0.4/JSPI/codecs/qualified encoder/heaps/stack/AVIO/cleanup.10focused tests
 PASS438.366ms. Prior slower H264/OpenH264 LTO remains rejected; no new speed claim.
 evidence/2026-10-19-mpeg2-library-lto-plan.json. Native build and paired browser
 benchmark pending; no public bytes changed and original goal remains incomplete.
+2026-10-19 - Decoder-library LTO native build39279724223 SUCCESS at36713782...9a9d,
+564s compile NOT conversion time.20files/9032181B retained in approved work;
+decoder6360544B/SHA49e8229f...925c2d is644559B larger, fixed512initial/max pages.
+138actual GitHEAD/current preimages retained in126+12 layers with128file/2MiB
+caps; all11typed function IDs/bodies and changed static slots verified. New _gm_
+408936 vsold1786904; old pointers cannot be reused. Static browser composition
+preserves qualified plane encoder a4ba...1cee, NOT default encoder8b2f...4242.
+13focused PASS2360.099ms/zero skips locally, lint/diffcheck PASS. Exact proofs:
+evidence/lto-native-sources-39279724223.json and
+evidence/mpeg2-lto-retention-39279724223.json. Owned remote artifact12200461185
+deleted after retention, API0 confirmed; download/hosted scratch cleanup passed.
+Zero new browser conversion/media read; no250MiB/runtime-fatal/speed/public claim.
+Next actual adapter/failure-slot rebind, original content/adverse/memory controls,
+then balanced identical-input A/B. No unchanged multi-hour baseline repeated.
+Final focused13/13 PASS2538.290ms/zero skips; fourteen-file lint zero warnings/
+errors and diffcheck PASS. Current public assets and protected original untouched.
