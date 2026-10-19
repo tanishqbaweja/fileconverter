@@ -1,5 +1,22 @@
 # Remaining work audit
 
+## 2026-10-20 - Cold full run1 validated; run2 LIVE, not full-session acceptance
+
+**Partially implemented.** First fresh-session full output independently passed
+native decode/296160frames/timestamps/audio/artwork/metadata and SSIM.989565.
+6414309978B/SHA2b127780...08024e EXACT prior-session output; max timestamp error
+.00031300000000555883s, peak226.83203125MiB full-tree incremental private memory.
+Actual15820320.095ms conversion/copy (~4h23m40s), unpaired NOT speed improvement.
+Output deleted and stable recovery361127936B (+19.16015625MiB above loaded idle)
+BEFORE23:32:02.357Z immutable checkpoint,45,273B/SHA834eec96...1ee6a5e1. Raw
+SSIM stderr retained37,115B gzip. Exact evidence:
+`evidence/2026-10-20-jspi-cold-run1-checkpoint.json`.
+Only1of3 new-session runs complete; full source post-audit/cleanup still pending.
+Supervisor34316/child8320/driver38508 same births verified live, run2 started.
+Early run2 estimate unstable; use observed full-cycle ~5h20 encode+validation
+interruptible sleep. No busy short polling, source edits, duplicate or restart.
+Cold full-session/scaling/public/whole-project requirements remain incomplete.
+
 ## 2026-10-19 - Independent cold full session LIVE; misleading private phase recorded
 
 **Partially implemented.** Hidden supervisor34316/child8320 birth identities

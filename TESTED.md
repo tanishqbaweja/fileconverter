@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+## 2026-10-20 - Cold full run1 PASS226.83203125MiB;1of3 new-session runs only
+
+Actual6414309978B/SHA2b127780...08024e,296160 MPEG2 frames/native full decode,
+SSIM.989565/max timestamp error.00031300000000555883s/audio/artwork/metadata
+passed.15820320.095ms conversion/copy (~4h23m40s), no paired speed claim.
+Output deleted; stable recovery361127936B (+19.16015625MiB loaded idle), immutable
+23:32:02.357Z checkpoint45,273B SHA834eec96...1ee6a5e1 and raw SSIM gzip37,115B
+retained. `evidence/2026-10-20-jspi-cold-run1-checkpoint.json` links exact proof.
+Run2 LIVE in same independent session, original owned births verified. Only1of3
+validated; post-source/full-session cleanup/cold gate/scaling/public/entire goal
+remain pending. Approximate5h20 next encode+validation sleep; frozen sources.
+
 ## 2026-10-19 - Independent cold full session running, no completed result yet
 
 Supervisor34316/child8320 live birth-verified18:16UTC, driver38508 launched

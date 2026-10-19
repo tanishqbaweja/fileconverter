@@ -1,0 +1,52 @@
+{
+  "status": "one-of-three-cold-session-full-runs-validated-session-still-live",
+  "supervisor": "evidence/2026-10-19T18-08-25-765Z-jspi-ssim-full-supervisor-full.json",
+  "checkpoint": {
+    "path": "outputs/reports/2026-10-19T18-09-43-926Z-private-mpeg2-updated-chrome-full-native-100ms-jspi-validated-full-1.json.gz",
+    "bytes": 45273,
+    "sha256": "834eec960bfa5b2752debcc865262897d87dc74d2bc95604b426f1721ee6a5e1",
+    "restoredBytes": 122422,
+    "restoredSha256": "c6f3ae9b3c38d82a8d5845dccb2a652b2e85ef49d9c1820a98ec7dcc915efbba"
+  },
+  "recordedAt": "2026-10-19T23:32:02.357Z",
+  "number": 1,
+  "outputBytes": 6414309978,
+  "outputSha256": "2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e",
+  "frames": 296160,
+  "ssim": 0.989565,
+  "maximumTimestampErrorSeconds": 0.00031300000000555883,
+  "fullDecode": true,
+  "elapsedMs": 15820320.09503907,
+  "peakIncrementalPrivateMiB": 226.83203125,
+  "recoveryPrivateBytes": 361127936,
+  "recoveryAboveLoadedMiB": 19.16015625,
+  "originalValidationOutputDeletionAndRecoveryCompleted": true,
+  "rawSsimRecord": {
+    "status": "numeric-summary",
+    "score": 0.989565,
+    "summaries": 1,
+    "summaryLine": "[Parsed_ssim_4 @ 00000230020aec40] SSIM Y:0.988316 (19.324227) U:0.991961 (20.948113) V:0.992161 (21.057596) All:0.989565 (19.814947)",
+    "stderrBytes": 275934,
+    "stderrSha256": "d50d3bf7500a2c455e9a2f2f8c9957c24a36a519a6bec1b9b619812b42d4570b",
+    "limits": {
+      "stderrBytes": 33554432,
+      "summaryLineBytes": 2048
+    },
+    "recordFraming": "CR-or-LF-original-score-guards-unchanged",
+    "output": {
+      "outputBytes": 6414309978,
+      "sha256": "2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e"
+    },
+    "archive": {
+      "path": "outputs/reports/2026-10-19T18-09-43-926Z-private-mpeg2-updated-chrome-full-native-100ms-ssim-1.stderr.gz",
+      "bytes": 37115,
+      "sha256": "f3907dcaca9c803c639b7d0d687abff678e2c1c362b79fcd7e887e400509c6bf",
+      "restoredBytes": 275934,
+      "restoredSha256": "d50d3bf7500a2c455e9a2f2f8c9957c24a36a519a6bec1b9b619812b42d4570b"
+    }
+  },
+  "sources": 868,
+  "allThreeRunsOrWholeProjectComplete": false,
+  "nextAction": "Observe the same live supervisor for runs2/3. Approximate5h20 encode-plus-validation sleep, not model busy polling. No new codec/speed/public acceptance.",
+  "publicAcceptance": false
+}
