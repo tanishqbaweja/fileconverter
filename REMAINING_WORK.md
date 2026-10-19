@@ -1,5 +1,26 @@
 # Remaining work audit
 
+## 2026-10-19 - Corrected full JSPI session: run1 validated, run2 live
+
+**Partially implemented overall; one of three full-session runs validated.**
+Existing hidden supervisor UTC2026-10-18T23:54:47.907Z continues without restart.
+Run1 genuinely completed6414309978B MPEG2 MP4/296160frames, SHA256
+2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e.
+Independent full decode/audio/metadata/artwork/timestamps/SSIM checks all passed:
+SSIM.989565>=.98; maximum frame timestamp error.00031300000000555883s<=.001s.
+Peak complete-Chromium incremental memory223.6484375MiB. Encoding/copy took
+15561872.485ms (~4h19m22s); variable machine load, NOT a paired speedup claim.
+Output deletion and stable cleanup recovery completed before immutable checkpoint:
+`outputs/reports/2026-10-18T23-56-42-355Z-private-mpeg2-updated-chrome-full-native-100ms-jspi-validated-full-1.json.gz`.
+Actual original SSIM stderr retained in same-prefix `-ssim-1.stderr.gz`.
+
+Run2 confirmed live at05:14UTC with the same recorded driver22916 birth
+2026-10-18T23:56:34.981485Z and supervisor30196/child22384 original births. Do not
+start another session or edit frozen868 implementation sources. Final three-run
+acceptance, final post-source/process/fixture audit, scaling/public acceptance
+remain UNPROVEN. Estimate next full validation ~5h10m from run2 start based on
+actual run1 (conversion+validation); use an interruptible completion-sized wait.
+
 ## 2026-10-19 - Full JSPI encode completed; SSIM framing failure audited, not accepted
 
 **Partially implemented.** Supervised UTC2026-10-18T02:17:46.714Z session stopped

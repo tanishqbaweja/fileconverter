@@ -7518,3 +7518,13 @@ sources).19focused PASS14.480s,12MJS zero-warning lint/diffcheck PASS. Frozen
 runtime derivations, original size/SHA, scratch removal and normal production
 assets. evidence/2026-10-19-jspi-ssim-preparation-analysis.json. No browser retry
 started by this preparation; all original quality/memory/native commands retained.
+2026-10-19 - Corrected full session run1 PASSED native validation and cleanup
+recovery:6414309978B/296160frames/SHA2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e,
+SSIM.989565, max timestamp error.00031300000000555883s, full decode/audio/metadata/
+artwork checks, peak223.6484375MiB complete-Chromium incremental private memory.
+Actual15561872.485ms conversion/copy (~4h19m22s), no speedup claim. Output deleted
+before same-prefix -jspi-validated-full-1.json.gz immutable checkpoint; actual raw
+SSIM stderr retained in -ssim-1.stderr.gz. Prefix:
+outputs/reports/2026-10-18T23-56-42-355Z-private-mpeg2-updated-chrome-full-native-100ms.
+Run2 live05:14UTC in SAME session. Only1of3 passed; full session/post-source audit/
+scaling/public acceptance remain pending. Do not restart or edit frozen sources.
