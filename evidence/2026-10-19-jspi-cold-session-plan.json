@@ -1,0 +1,39 @@
+{
+  "status": "prepared-for-required-independent-cold-session-not-executed",
+  "reasonForExpensiveRepeat": "The prior three-full-original result proves one same-session run set only. The original specification separately requires repeatability in a fresh clean browser session. This is that missing gate, not an unchanged speed or LTO retry.",
+  "priorFullSession": "evidence/2026-10-18T23-55-28-649Z-jspi-ssim-full-terminal.json",
+  "priorIndependentAudit": "evidence/2026-10-19-jspi-three-full-independent-analysis.json",
+  "preparation": {
+    "path": "evidence/2026-10-19T18-05-42-132Z-jspi-ssim-full-preparation.json",
+    "sha256": "6cfa425940d3348d779b78d0921aa907e95411f31035694c3c92e4711de87e2c"
+  },
+  "sourceArchive": {
+    "path": "outputs/reports/2026-10-19T18-05-42-132Z-recorded-timeline-full-sources.json.gz",
+    "bytes": 655334,
+    "sha256": "0af624e6d4cdd71d77df32f2d8d9b15c3fff04929e3951345790d10a2354a22a",
+    "restoredBytes": 1835174,
+    "restoredSha256": "de611283090711fd20c50fee3c55c3142cb00d7005ad46ecb5fd5fa93a7a2aa1",
+    "sourceCount": 868
+  },
+  "exactFourRuntimeDerivationsReconstructed": true,
+  "all868PinsExactlyMatchPriorFullSession": true,
+  "browserAndBothQualificationReferencesExactlyMatch": true,
+  "codecSettingsQualityMemoryIoOrValidatorsChanged": false,
+  "protectedOriginalUnchanged": true,
+  "preparationScratchRemoved": true,
+  "preflight": { "freePhysicalBytes": 7941971968, "freeVirtualBytes": 7569412096, "freeDiskBytes": 1817679298560, "safeToStart": true },
+  "focusedTests": { "passed": 16, "failed": 0, "skipped": 0, "durationMs": 7736.7893 },
+  "command": "node scripts/run-jspi-ssim-full.mjs --supervise",
+  "fullOriginalConversionsRequested": 3,
+  "primaryCompleteTreeIncrementalPrivateLimitMiB": 250,
+  "perRunOriginalDeadlineMs": 21600000,
+  "qualityThreshold": 0.98,
+  "maximumTimestampErrorSeconds": 0.001,
+  "sameSessionPriorOutputSha256": "2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e",
+  "estimatedPerConversionHours": [4,4.5],
+  "estimatedSessionHoursIncludingValidation": [12,16],
+  "monitoring": "One hidden persistent supervisor with bounded durable heartbeat; model uses completion-ETA interruptible sleep. Confirm actual owned birth before waiting. Observe same handle on timeout; no automatic restart.",
+  "cleanup": "Existing unchanged finally cleanup removes each full output after independent validation, before the next run, plus partial outputs on failure. Approved repository-local profile/output/scratch only. Preserve compact evidence. No Docker/unrelated process kills.",
+  "notAcceptance": ["Preparation is not a conversion", "Fresh-session result pending", "Scaling pending", "Public integration pending", "General fastest/speed claim unproven", "Original project remains incomplete"],
+  "publicAcceptance": false
+}

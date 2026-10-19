@@ -1,5 +1,24 @@
 # Remaining work audit
 
+## 2026-10-19 - Required independent cold full session prepared, unchanged baseline
+
+**Partially implemented.** Prior3fulls in ONE session do not prove the separate
+original clean-session repeat requirement. Prepare existing unchanged JSPI/CR-SSIM
+three-full harness for a fresh profile/session; this is not an LTO/speed retry.
+18:05:42.132Z preparation independently reconstructs exact driver/caller/stager/
+supervisor and all868current/pre/post pins. All868pins, browser binaries and both
+qualification references EXACTLY equal the prior successful full session. No
+codec/quality/IO/heaps/stack/content-validator/memory-gate change.16focused tests
+PASS7736.7893ms/zero skipped; original size/SHA unchanged, preparation scratch
+removed/production restored, RAM+virtual>=2GiB/disk>=32GiB preflights pass.
+Plan `evidence/2026-10-19-jspi-cold-session-plan.json` retains exact proof/reason.
+Three full originals, each original6h deadline; estimate4–4.5h conversion each,
+12–16h entire session including validation. One hidden durable supervisor, ETA
+interruptible sleeps, no busy model polling or restart on observation timeout.
+Every output is independently validated/deleted before the next; no accumulated
+converted copies. Cold-session/scaling/public/whole-project acceptance still
+pending. This preparation has not started a browser conversion yet.
+
 ## 2026-10-19 - Actual ABBA screen rejects unchanged decoder-library LTO
 
 **Partially implemented** performance requirement; LTO NOT accepted. Four exact

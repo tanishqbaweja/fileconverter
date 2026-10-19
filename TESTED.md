@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+## 2026-10-19 - Independent cold full-session preparation868pins exact,16tests PASS
+
+18:05:42.132Z existing unchanged JSPI/CR-SSIM full preparation: all868 current/
+pre/post pins and exact four runtime derivations verified, then complete868pin
+map/browser/both qualification references compared byte-exact to prior3full
+session. Original size/SHA unchanged, scratch removed, production restored.
+16focused tests PASS7736.7893ms/zero skipped. Physical/virtual/disk preflight
+7,941,971,968B/7,569,412,096B/1,817,679,298,560B passed. No conversion at this
+checkpoint. `evidence/2026-10-19-jspi-cold-session-plan.json` records why this
+expensive repeat is required: missing independent clean-session coverage, NOT
+another unchanged speed/LTO attempt. Three full runs with identical original
+6h-per-run/content/SSIM>=.98/timestamp<=.001s/all-tree250MiB/finally cleanup
+gates. ETA12–16h including native validation, long interruptible sleeps. No
+cold/scaling/public/project acceptance until actual execution/audit passes.
+
 ## 2026-10-19 - ABBA actual24outputs/12recoveries PASS; LTO speed screen REJECTED
 
 Four headless Chrome155 sessions, JSPI/LTO/LTO/JSPI;39m03.830s wall time, not
