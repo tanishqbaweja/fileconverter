@@ -1,0 +1,23 @@
+{
+  "preparation": {
+    "path": "evidence/2026-10-19T16-54-51-511Z-lto-control-preparation.json",
+    "sha256": "b1e38f50e78e3558761740adc4ae4760443dbc649e029264a0b7a8bfaf84d5cf"
+  },
+  "status": "exact-lto-small-harness-derivation-verified-not-conversion-acceptance",
+  "sources": 853,
+  "exactDriverCallerStagerSupervisor": true,
+  "originalValidatorsUnchanged": true,
+  "sixSmallOutputsRequired": true,
+  "primaryLimitMiB": 250,
+  "ownedPreparationScratchAbsent": true,
+  "originalUnchanged": true,
+  "normalProductionAssetRestored": true,
+  "nativeDecoder": "49e8229f4bbfb43fb93c0c59ebfa2fac9f3574944f50c58078d6d1dd00925c2d",
+  "qualifiedPlaneEncoder": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee",
+  "executions": 0,
+  "speedGainProven": false,
+  "publicAcceptance": false,
+  "focusedTests": { "passed": 18, "failed": 0, "skipped": 0, "durationMs": 4806.7351 },
+  "lint": { "files": 7, "exitCode": 0, "maxWarnings": 0 },
+  "initialFailure": "New test JSON extraction ended at an embedded semicolon. Corrected extraction to the complete anchored adapter declaration; generated adapter and validation guards unchanged."
+}

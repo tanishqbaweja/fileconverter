@@ -1,5 +1,24 @@
 # Remaining work audit
 
+## 2026-10-19 - LTO browser adapter prepared; actual qualification next
+
+**Partially implemented.** Actual decoder identity, five typed native function
+maps and four relocated slots rebound; exact reversible delta preserves codec
+settings, production I/O, captured-word guards and qualified plane encoder.
+Actual glue binds native-provided addresses, not old hardcoded values. Same six
+output validators, all three same-page adverse recoveries, lower blank baseline
+and full-tree250MiB checks remain unchanged. No public route changed.
+18focused tests PASS4806.7351ms/zero skips; seven-file lint zero warnings and
+diffcheck PASS. Initial new test extraction incorrectly stopped at an embedded
+semicolon; fixed anchored JSON extraction, no adapter/guard changes to pass it.
+Preparation16:54:51.511Z independently reconstructs exact driver/caller/stager/
+supervisor against all853current/pre/post source pins. Protected original SHA,
+normal production asset and all three preparation scratch removals verified.
+`evidence/2026-10-19-lto-browser-preparation-analysis.json` retains the checkpoint.
+No browser conversion, runtime fatal qualification, speedup, scaling or public
+acceptance follows from preparation. Next single changed-candidate headless
+qualification, then identical-input balanced A/B only if correctness/memory pass.
+
 ## 2026-10-19 - Retention attributed to process births; decoder-library LTO prepared
 
 **Partially implemented.** No new browser conversion or original media read.

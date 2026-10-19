@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+## 2026-10-19 - LTO adapter18focused PASS; exact853-source preparation verified
+
+Four native slots/five typed function maps rebound without changing codec,
+AVIO, heaps, guarded stacks, plane encoder or six-output/all-adverse validators.
+18tests PASS4806.7351ms/zero skips, seven-file lint zero warnings/diffcheck PASS.
+Initial test-only JSON extraction bug fixed with anchored declaration matching.
+16:54:51.511Z preparation: all853current/pre/post pins and exact four runtime
+derivations, original SHA, restored normal asset, scratch removals verified.
+Evidence: `evidence/2026-10-19-lto-browser-preparation-analysis.json`.
+No browser conversion or speed/public acceptance yet; changed-candidate
+headless correctness/memory qualification next. No expensive unchanged retry.
+
 ## 2026-10-18 - JSPI actual6outputs/all adverse recoveries PASS218.93359375MiB
 
 UTC22:38:25.691Z exits0/failureNone/cleanupErrors[].6genuine HEVC→MPEG2 browser MP4
