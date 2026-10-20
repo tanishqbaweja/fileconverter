@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+## 2026-10-20 - Cold full run2 PASS209.0625MiB;2of3 only, run3 LIVE
+
+Actual6414309978B/SHA2b127780...08024e/296160frames/native full decode/audio/
+artwork/metadata/SSIM.989565/max timestamp error.00031300000000555883s passed.
+16463344.370ms conversion/copy (~4h34m23s), no paired speed claim. Output deleted
+before immutable04:53:17.520Z checkpoint. Stable recovery367738880B, +25.46484375
+MiB loaded idle (+6.3046875MiB vsrun1), within original96MiB guard NOT zero-growth
+proof. `evidence/2026-10-20-jspi-cold-run2-checkpoint.json` retains exact hashes.
+Same owned births verified live, run3 active; only2of3 passes, final source/
+cleanup/full-session/scaling/public/whole goal pending. Approximate5h20 next
+encode+validation sleep; no duplicate/restart/new optimization or frozen edits.
+
 ## 2026-10-20 - Closeout audit exposes current default-unit private prerequisites
 
 `RELEASE_BLOCKERS.md`: nine finite workstreams/exact exit evidence, original

@@ -1,5 +1,19 @@
 # Remaining work audit
 
+## 2026-10-20 - Cold full run2 validated; run3 LIVE,2of3 only
+
+**Partially implemented.** Run2 identical6414309978B/SHA2b127780...08024e/
+296160frames/full decode/audio/artwork/metadata/SSIM.989565/max timestamp error
+.00031300000000555883s passed, peak209.0625MiB full-tree incremental private.
+Actual16463344.370ms conversion/copy (~4h34m23s), NOT a speedup comparison.
+Output deleted before04:53:17.520Z immutable checkpoint; stable recovery367738880B
+(+25.46484375MiB above loaded idle, +6.3046875MiB versus run1; within original
+96MiB guard, not zero retained-growth proof). Exact checkpoint/SSIM hashes:
+`evidence/2026-10-20-jspi-cold-run2-checkpoint.json`. Same original supervisor/
+child/driver births verified live; run3 active.2of3 independent-session runs,
+no final source/cleanup/cold-session/scaling/public/entire-goal acceptance yet.
+Next~5h20 encode+validation interruptible sleep; no busy polling or new experiment.
+
 ## 2026-10-20 - Finite release closure; current CI prerequisite failure reproduced
 
 Current short queue: **[RELEASE_BLOCKERS.md](RELEASE_BLOCKERS.md)**. Nine ordered

@@ -1,0 +1,35 @@
+{
+  "status": "two-of-three-cold-session-full-runs-validated-session-still-live",
+  "supervisor": "evidence/2026-10-19T18-08-25-765Z-jspi-ssim-full-supervisor-full.json",
+  "checkpoint": {
+    "path": "outputs/reports/2026-10-19T18-09-43-926Z-private-mpeg2-updated-chrome-full-native-100ms-jspi-validated-full-2.json.gz",
+    "bytes": 45274,
+    "sha256": "28ee8d870c3cda90a705924297f6391bd579b13e1c11fe9ab71062d8e9c0701b",
+    "restoredBytes": 122416,
+    "restoredSha256": "6210ee488a8480368dfe744c02454a1b8c12ed4b73a4a8a541a5ec1d4dd358df"
+  },
+  "recordedAt": "2026-10-20T04:53:17.520Z",
+  "number": 2,
+  "outputBytes": 6414309978,
+  "outputSha256": "2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e",
+  "frames": 296160,
+  "ssim": 0.989565,
+  "maximumTimestampErrorSeconds": 0.00031300000000555883,
+  "fullDecode": true,
+  "elapsedMs": 16463344.369814456,
+  "peakIncrementalPrivateMiB": 209.0625,
+  "recoveryPrivateBytes": 367738880,
+  "recoveryAboveLoadedMiB": 25.46484375,
+  "originalValidationOutputDeletionAndRecoveryCompleted": true,
+  "rawSsimArchive": {
+    "path": "outputs/reports/2026-10-19T18-09-43-926Z-private-mpeg2-updated-chrome-full-native-100ms-ssim-2.stderr.gz",
+    "bytes": 24974,
+    "sha256": "9f25108db55b813096594d8106e26e9cf01e0ec0ef8a1e77b26aea2260d4f6d6",
+    "restoredBytes": 173181,
+    "restoredSha256": "4153772a7e0464bc59a50f41d3fc18a69dc598a5d8c28fade33305a4e284fdd2"
+  },
+  "sources": 868,
+  "allThreeRunsOrWholeProjectComplete": false,
+  "nextAction": "Observe same live supervisor for run3 and final source/cleanup audit, approximate5h20 encode-plus-validation sleep. Do not duplicate, edit frozen sources or claim public/scaling/project acceptance.",
+  "publicAcceptance": false
+}
