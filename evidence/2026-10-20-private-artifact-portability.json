@@ -1,0 +1,62 @@
+{
+  "status": "verified-local-default-unit-suite-has-untracked-private-artifact-prerequisite",
+  "command": {
+    "executable": "C:\\Program Files\\nodejs\\node.exe",
+    "args": [
+      "--import",
+      "./scripts/lib/ci-without-private-work.mjs",
+      "--test",
+      "--test-concurrency=1",
+      "tests/lto-browser-control.test.mjs"
+    ],
+    "windowsHide": true,
+    "exit": {
+      "code": 1,
+      "signal": null
+    }
+  },
+  "sources": {
+    "scripts/probe-private-artifact-portability.mjs": {
+      "bytes": 3215,
+      "sha256": "d168386662d156641b125e4bfc63fd8b3147e88cd546155be6f407e1920e2387"
+    },
+    "scripts/lib/ci-without-private-work.mjs": {
+      "bytes": 1091,
+      "sha256": "82d3f548950ad1f9ca8c408597fd8cc5d0a56f2b77b228cb9dd166d2490d726e"
+    },
+    "tests/lto-browser-control.test.mjs": {
+      "bytes": 6678,
+      "sha256": "1399541cc69733abe133bfef8a8d4cabe123c5082d8adbcbb19c918d2118dc98"
+    },
+    "package.json": {
+      "bytes": 19594,
+      "sha256": "372834e2da5d1916d61f6a68ac500a1ed72d6890c2a36058243060a41490e664"
+    },
+    ".github/workflows/ci.yml": {
+      "bytes": 9855,
+      "sha256": "1578ed72a62c95633724c64dfe207013eb2b9b1cdd52d2b037231bc7b72014e1"
+    }
+  },
+  "privatePaths": [
+    "H:\\Github Repositories\\fileconverter\\work\\mpeg2-jspi-39072949964\\LICENSE.ffmpeg",
+    "H:\\Github Repositories\\fileconverter\\work\\mpeg2-lto-39279724223\\LICENSE.ffmpeg"
+  ],
+  "expectedFailedTests": 4,
+  "sourceTestUnmodified": true,
+  "filesRemovedRenamedOrOverwritten": false,
+  "conversionsPerformed": 0,
+  "limitation": "This is a controlled local missing-work probe, not an executed Linux/hosted CI run or an inventory of all portability failures.",
+  "releaseBlocker": "Default npm test selects tests/*.test.mjs, including these tests; verify job calls npm test, while private native artifacts are not checked in. Fix test prerequisites/scope explicitly and retain all public acceptance gates; do not label the current commit CI-passed.",
+  "retainedBytesPerPipeLimit": 65536,
+  "stdoutTotalBytes": 2282,
+  "stderrTotalBytes": 0,
+  "publicAcceptance": false,
+  "focusedTests": {
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 2725.7903
+  },
+  "finalFocusedRerun": { "passed": 4, "failed": 0, "skipped": 0, "durationMs": 3926.0244 },
+  "initialProbeHarnessFailure": "When invoked under node:test, inherited NODE_TEST_CONTEXT caused the nested runner to report exit0 instead of executing a fresh test run. Remove that internal variable only from the diagnostic child's environment; keep the required four failures and all real source/tests unchanged."
+}

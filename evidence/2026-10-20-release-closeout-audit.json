@@ -1,0 +1,151 @@
+{
+  "status": "release-closeout-inventory-and-reproduced-ci-prerequisite-blocker-not-completion",
+  "scope": "All original scope retained; nine closure workstreams are not equally sized tasks, a completion percentage, or a reliable time estimate.",
+  "checklist": "RELEASE_BLOCKERS.md",
+  "originalRequirementLedgerIds": [
+    "P-01",
+    "P-02",
+    "P-03",
+    "P-04",
+    "P-05",
+    "P-06",
+    "P-07",
+    "P-08",
+    "A-01",
+    "A-02",
+    "A-03",
+    "A-04",
+    "A-05",
+    "A-06",
+    "A-07",
+    "A-08",
+    "A-09",
+    "M-01",
+    "M-02",
+    "M-03",
+    "M-04",
+    "M-05",
+    "M-06",
+    "M-07",
+    "M-08",
+    "M-09",
+    "N-01",
+    "N-02",
+    "N-03",
+    "N-04",
+    "N-05",
+    "N-06",
+    "N-07",
+    "N-08",
+    "U-01",
+    "U-02",
+    "U-03",
+    "U-04",
+    "U-05",
+    "U-06",
+    "U-07",
+    "U-08",
+    "T-01",
+    "T-02",
+    "T-03",
+    "T-04",
+    "T-05",
+    "T-06",
+    "T-07",
+    "T-08",
+    "T-09",
+    "T-10",
+    "T-11",
+    "T-12"
+  ],
+  "legacyLedgerStatusCounts": {
+    "Verified complete": 43,
+    "Partially implemented": 8,
+    "Intentionally unsupported": 3
+  },
+  "ledgerClaimsAreNotFreshIndependentCompletionProof": true,
+  "correctedStaleStatuses": [
+    "T-07",
+    "T-10"
+  ],
+  "openWorkstreams": [
+    "B01",
+    "B02",
+    "B03",
+    "B04",
+    "B05",
+    "B06",
+    "B07",
+    "B08",
+    "B09"
+  ],
+  "registryConsistency": {
+    "publicPassed": 405,
+    "compactEntries": 405,
+    "pending": 0,
+    "nonPassingPublic": 0,
+    "pdfFormats": 0,
+    "pdfProfiles": 0,
+    "newCurrentBrowserCertification": false
+  },
+  "publishedSelectableVideoEncoders": [
+    "vp8",
+    "vp9",
+    "mpeg4",
+    "theora"
+  ],
+  "unpublishedFreshVideoOutputGaps": [
+    "h264",
+    "av1",
+    "mpeg2video",
+    "hevc-legally-conditional"
+  ],
+  "publishedMediaSoftwareDecoderGaps": [
+    "av1",
+    "vp8",
+    "vp9"
+  ],
+  "privateImplementedButNotPromoted": [
+    "h264",
+    "mpeg2video"
+  ],
+  "privateImplementationNotErasedOrRelabelledMissing": true,
+  "absentImplementationIsNotMeasuredUnsupported": true,
+  "privateArtifactDefaultSuiteFailure": "evidence/2026-10-20-private-artifact-portability.json",
+  "latestHostedCI": {
+    "databaseId": 37684741516,
+    "headSha": "bb45f39bd6081cf5fe8598dec43a080fedd4ef3b",
+    "createdAt": "2026-10-07T20:47:47Z",
+    "conclusion": "success",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/37684741516",
+    "currentReleaseCommitPassed": false
+  },
+  "publishedEngineInventory": {
+    "directories": 12,
+    "checkPassed": true,
+    "actualRebuildPerformed": false,
+    "inventoryDoesNotProveAllTwelveRebuilt": true
+  },
+  "publicTreePathsChangedSinceHostedCI": [
+    "app/converter/PublishedFormatsCatalogue.tsx",
+    "lib/compiled-codec-cache.ts",
+    "lib/published-catalogue.ts",
+    "lib/staged-copy-protocol.ts",
+    "lib/staged-worker-coordinator.ts",
+    "workers/staged-save-runtime.ts",
+    "workers/staged-save.worker.ts"
+  ],
+  "publicArtifactPathsChangedSinceThatCI": [],
+  "all868LiveFrozenSourceHashesStillMatch": true,
+  "existingLongTestWasNotRestartedOrModified": true,
+  "focusedTests": {
+    "passed": 4,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 3926.0244
+  },
+  "auditGeneratedConvertedMediaBytes": 0,
+  "publicAcceptance": false,
+  "entireOriginalGoalComplete": false,
+  "nextAction": "Finish/re-audit the exact live cold session using ETA sleep. Then repair the actual clean-checkout/default-test contract (package.json currently frozen), preserving all public gates, and close the listed implementation/metadata/current-memory/release requirements. Do not reopen rejected LTO or replace completion with private tests."
+}

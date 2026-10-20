@@ -1,0 +1,76 @@
+# Release closure — original scope, not a reduced MVP
+
+This is the current short work queue. The original specification and all 54
+requirement rows in `REMAINING_WORK.md` still apply. This file does not declare
+them complete, turn missing implementations into unsupported profiles, lower a
+threshold, or replace the final requirement-by-requirement audit.
+
+The 405-entry public registry/compact-evidence check passed on 2026-10-20. That
+is a consistency result, **not** fresh current-browser certification of every
+route. Published and private codecs must stay clearly separate.
+
+## Ordered blockers and exact exit evidence
+
+| ID | Work to close | Evidence required to close it |
+| --- | --- | --- |
+| B01 | Restore reproducible clean-checkout verification at the release commit. | Inventory default tests requiring local/private assets or Windows-only evidence. Supply explicitly verified prerequisites or separate private qualification suites transparently; preserve every public unit, browser, privacy, validator and published-engine reproduction gate. Run the documented unit command and hosted verification from a clean checkout. A private suite not executed must remain unverified, never labelled passed. |
+| B02 | Account for fresh H.264, AV1, MPEG-2 and legally conditional HEVC video output. | For each codec: implement a real published bounded route and pass all original promotion gates, or retain a defensible exact technical/legal/quality/memory unsupported decision after genuine investigation. Source decoding, packet copy, image AVIF encoding, a native build or private short fixture is not fresh video-output acceptance. |
+| B03 | Account for source AV1/VP8/VP9 genuine decode/re-encode coverage. | The published media manifest currently contains none of those software decoders. Implement suitable bounded routes/fallbacks, or investigate and document exact unsupported profiles. Existing WebM/IVF stream-copy paths remain valid but do not close decode coverage. |
+| B04 | Finish qualification and real integration of the private MPEG-2 route. | Finish the live independent cold three-run session and post-source/ownership audit; preserve the prior full-session evidence. Complete new-route scaling toward 10 GB with valid media and flat whole-tree memory. Integrate actual planning/inspection/settings/preservation exclusions/progress/worker cleanup and public evidence consistently. Correct the private inherited `Lossless remux` label. Reuse byte-identical native evidence; do not claim an injected private adapter proves the final UI/route. |
+| B05 | Finish representable audio metadata/artwork coverage (M-08). | Independently compare broader Ogg/Opus comments, AIFF destination aliases, other representable fields and practical destination artwork. Preserve compatible data or issue accurate bounded, destination-specific exclusions. Seven common tags and MP3/FLAC cover art are an already-verified subset, not all metadata. |
+| B06 | Close current-release whole-tree memory and telemetry coverage (P-06/A-09). | Pin the release's installed stable browser. For public profiles and new topologies, reconcile native/CIM peaks and all attributable Chromium processes against the same-instance lower stable blank. Complete remaining harness telemetry and repository-owned scratch adoption; verify unavailable samples, backpressure, cleanup and measurement perturbation. Historical 405-route evidence is reusable only for what its source/browser/input scope actually proves. Never omit a process or increase the baseline. |
+| B07 | Close release browser/capability and interaction coverage. | Verify the final app on installed/practically testable Chrome, Edge, Brave and Opera; explicitly record unavailable variants/features. Recheck changed controls, direct destination, cancel/fail/reload/batch/storage flows headlessly with actual outputs and logs. Preserve historical headed evidence but do not relabel headless evidence as headed; the user's current headless-only instruction applies. |
+| B08 | Run final coherent build/security/registry/reproducibility gates. | Production build, lint, TypeScript, unit tests, production-browser conversions with independent validators, network privacy/offline tests, registry/report consistency, bounded-memory/forbidden-pattern review, owned cleanup and exact published-engine reproduction coverage. Reuse retained reproduction evidence only where actual artifact and declared source/dependency hashes still match; rebuild changed engines. No Docker. |
+| B09 | Finish full original-scope acceptance audit and handoff. | Reconcile all 54 requirement rows and every original named deliverable/format/command/constraint against authoritative current evidence. No undocumented missing/partial item. Unsupported entries need a genuine recorded reason and must stay out of public selection. README, registry, UI, tests and reports must agree. Verify protected-original size/SHA, no disposable converted copies, final commit and pushed remote; provide exact coverage, limits, memory and measured performance, without a global “fastest” claim. |
+
+These are nine workstreams, not nine equally sized tasks or a completion
+percentage. B02/B03 contain real missing capability/feasibility work. Successful
+completion of the live test alone cannot close this project.
+
+## Facts verified during this closeout pass
+
+- `node scripts/audit-public-evidence.mjs --manifest-only`: 405 public passed
+  profiles, 405 compact entries, zero pending/nonpassing public profiles, zero PDF.
+- `tests/media-output-encoder-inventory.test.mjs` rechecks the actual published
+  manifest and native wrapper: selectable output encoders are VP8, VP9, MPEG-4
+  Part 2 and Theora. The four fresh output gaps and three software decoder gaps
+  above remain real in the **published** media engine. Private work is not erased
+  or represented as published.
+- Controlled missing-private-work probe: all four actual tests in
+  `tests/lto-browser-control.test.mjs` fail when their untracked private artifacts
+  are unavailable. Real files/tests were not removed or changed. This proves a
+  default-suite prerequisite problem, not an executed hosted/Linux CI failure.
+  See `evidence/2026-10-20-private-artifact-portability.json`.
+- The CI workflow calls `npm test`, and `test:unit` currently selects
+  `tests/*.test.mjs`, including those tests. The latest hosted CI result inspected
+  is from October 7, not the current code. Therefore current-commit CI is open.
+- The reproducibility manifest currently covers **12** published engine
+  directories. That inventory check is not an actual 12-engine rebuild result.
+  Seven paths under `app/`, `lib/` and `workers/` differ from the inspected hosted
+  CI commit; no `public/` paths differ. Reconcile source and engine evidence
+  explicitly rather than treating an old “all 11” description as current proof.
+- The independent cold run is an existing owned process, not a new experiment.
+  Its exact supervisor and checkpoint are linked from
+  `evidence/2026-10-19-jspi-cold-session-launch.json` and
+  `evidence/2026-10-20-jspi-cold-run1-checkpoint.json`.
+
+## Work discipline and stop conditions
+
+1. While the long test is live, do not edit any of its 868 frozen source files.
+   `package.json` is frozen; `.github/workflows/ci.yml` is not, but changing only
+   CI to hide a broken default command would not close B01.
+2. Finish or diagnose that exact owned run; never duplicate it after a timeout.
+   Use estimated-completion interruptible sleeps, not repeated model polling.
+3. Do not start another codec optimization without a concrete bottleneck,
+   defined identical-input/settings comparison, and original acceptance gates.
+   Record accepted/rejected candidates. Decoder-library LTO is rejected for the
+   tested workload and must not be repeated unchanged.
+4. Optimization ends at the best **measured conforming** implementation for the
+   declared profile after its justified comparisons. This is not proof of a
+   mathematically fastest possible converter. Missing required capabilities
+   still need B02/B03 closure; convenience is not an unsupported reason.
+5. Reuse hash-matched valid evidence. Repeat expensive tests only for a named
+   uncovered gate, material behavior change, regression or unresolved failure.
+6. A blocker closes only when its evidence is inspected. No change of status
+   merely because the work is slow, a native build succeeded, or tests are green
+   for a smaller/different route. This checklist itself closes no capability.

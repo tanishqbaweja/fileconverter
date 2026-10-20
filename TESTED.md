@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+## 2026-10-20 - Closeout audit exposes current default-unit private prerequisites
+
+`RELEASE_BLOCKERS.md`: nine finite workstreams/exact exit evidence, original
+scope unchanged. Public registry manifest-only PASS405/405, zero pending/public
+nonpassing/PDF. Published codec inventory source hashes and two tests PASS:
+fresh H264/AV1/MPEG2/conditional HEVC and source AV1/VP8/VP9 software-decoder
+gaps remain published gaps, not proof of impracticality. Private work retained.
+Engine manifest covers12directories, not evidence of12rebuilds. Last hosted CI
+inspected37684741516/bb45f39...d4ef3b is Oct7, not current HEAD; seven app/lib/
+worker paths differ, no public/paths differ. Current CI gate remains open.
+Controlled missing-private-work probe executes actual lto-browser-control suite:
+FOUR expected ENOENT failures on untracked prerequisites, no real file removal/
+test edits/conversion. Default unit glob includes them. This is not an executed
+hosted/Linux failure and not an exemption from public checks. Initial nested
+probe exit0 caused by inherited NODE_TEST_CONTEXT; isolated child env correction
+preserves strict expected four failures.4focused PASS2725.7903ms/final3926.0244ms,
+zero skipped; new3file lint clean/diffcheck PASS. Public gates not weakened.
+All868running-test frozen hashes remain unchanged. Evidence:
+`evidence/2026-10-20-private-artifact-portability.json`,
+`evidence/2026-10-20-release-closeout-audit.json`. Zero audit media/conversions;
+existing cold session continues. T07/T10 aggregate stale statuses corrected.
+
 ## 2026-10-20 - Cold full run1 PASS226.83203125MiB;1of3 new-session runs only
 
 Actual6414309978B/SHA2b127780...08024e,296160 MPEG2 frames/native full decode,
