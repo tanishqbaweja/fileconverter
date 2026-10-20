@@ -1,5 +1,43 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Broader audio tags: real loss confirmed; bounded native candidate implemented
+
+Six actual production-UI/headless installed Chrome155.0.8059.85 checks with25
+Unicode/music/custom fields completed in29.6s: FLAC→Vorbis/Opus and Vorbis↔Opus
+preserve all25; Vorbis→FLAC and Opus→FLAC each preserve7and DROP18. All six
+outputs are structurally valid/full independently decoded, with bounded256KiB
+I/O/queue/one pending write. Exact source/destination scopes checked, not merged
+by the validator. The two failures remain real failures, not removed/skipped.
+Native code confirms the cause: only7named fields were merged from selected
+audio-stream metadata into a format-level destination. Original published
+source/binaries/registry remain unchanged; broader preservation is not claimed.
+
+Implemented private `audio-text-metadata.h` and exact reversible source derivative:
+complete parsed dictionaries, existing container precedence, repeated entries
+within the winning scope, empty values,4096total entries/2MiB text including
+terminators. Validate before allocation; new dictionary replaces old only after
+all checked copies succeed. Three metadata-only edits, including a precise budget
+error instead of a misleading disk-full message. Codec/settings/I/O/heap limits
+unchanged. Private no-Docker general-core build reuses pinned dependencies/
+configure/linker/cleanup, authenticates master/derived parent and verifies actual
+Wasm initial/maximum limits against public bytes. No public artifact overwrite.
+
+Actual native compilation/link against installed libavutil60 succeeded, verifying
+25fields, duplicate values, scope precedence, empty values,4097-entry/2MiB rejection
+and genuine allocator-failure atomicity. Installed library version is development
+`N-122712-g7e3781e3ca-20260211`, NOT the pinned browser Wasm; this is dictionary
+behavior testing, never a native media converter or browser-fix proof. Compiler
+output/scratch removed. Final focused5tests and lint/TypeScript PASS. Whole452-file
+portable1359PASS/0fail/0skip in100280.515ms preceded the final budget-error-message
+delta; focused5passed afterward.235prior hosted roots remain portable;162private
+qualifications unexecuted. All six browser fixture/output/scratch directories and
+OPFS data cleaned. Protected original not used or changed. Source fixtures use
+bitexact flags and have matching per-family hashes for a future strict changed-
+core comparison. No artwork/quality/current-browser process memory/stress/scaling/
+headed/promotion/full-goal acceptance. Wasm compile and actual fixed-browser
+recheck still pending. Exact fields, hashes, failures, candidate and next gates:
+`evidence/2026-10-21-audio-metadata-candidate-cycle.json`.
+
 ## 2026-10-21 - Typed Chromium/realm diagnosis implemented; all memory controls FAIL
 
 Added bounded `scripts/lib/chromium-attribution.mjs`: labels native samples from

@@ -1,5 +1,30 @@
 # Remaining work audit
 
+## 2026-10-21 - B05 broader text-field loss isolated; real native merge implementation ready
+
+Actual headless current Chrome25-field test: four FLAC/Ogg/Opus destination paths
+preserve25/25; Vorbis→FLAC and Opus→FLAC drop18/25 despite valid/full-decoded
+audio. This is a real native7-field allowlist gap, not a validator scope bug.
+New bounded complete-dictionary merge/private source derivative is implemented:
+container precedence, repeated values, atomic failure,4096entries/2MiB text and
+clear budget errors; original codec/I/O/heap parameters untouched. Native compile
+and actual installed libavutil dictionary behavior passed bounds/duplicates/
+Unicode/precedence/allocator-failure tests, but that is not browser-Wasm proof.
+Public master/binaries/registry unchanged. Private no-Docker Wasm build and six
+same-input actual browser rechecks are the next required steps, then full safety/
+sample fidelity/memory/repeat/recovery/stress/promotion gates. Do not rerun the
+unchanged stock engine expecting the missing fields to appear or label it fixed.
+
+Whole1359portable tests PASS/0skip before final error-message-only delta; final
+focused5PASS/lint/TypeScript. All six browser fixtures/outputs/scratch/OPFS data
+removed, native compiler scratch removed, original source not touched. The baseline
+source fixtures are bitexact/hash-matched by family for changed-core comparison.
+Exact measured failures/candidate/native result/limits:
+`evidence/2026-10-21-audio-metadata-candidate-cycle.json`.
+B05 stays OPEN, including repeated-value serialization in real outputs, AIFF
+aliases and destination artwork. B02-B04/B06-B09, including GPU memory excess and
+32dependency advisories, remain OPEN; original54requirements unchanged.
+
 ## 2026-10-21 - Native process/realm telemetry improved; memory source not fully resolved
 
 Implemented real browser-CDP page/worker heap observations and native process

@@ -46,6 +46,13 @@ private memory. Not byte-identical-input performance comparisons; no memory fix
 or promotion.1354portable tests PASS; exact findings/cleanup/rejected trace-only
 approach in `evidence/2026-10-21-chromium-attribution-cycle.json`.
 
+B05 increment: real25-field browser checks confirm Vorbis/Opus→FLAC lose18fields;
+four other tested paths preserve all25. Bounded atomic complete-dictionary merge
+implemented and native libavutil behavior verified, with private no-Docker build
+preparation. Actual changed Wasm/browser/recovery/memory/promotion remain pending;
+public engines unchanged. Exact proof/next gates
+`evidence/2026-10-21-audio-metadata-candidate-cycle.json`. B05 remains OPEN.
+
 ## Ordered blockers and exact exit evidence
 
 | ID | Work to close | Evidence required to close it |

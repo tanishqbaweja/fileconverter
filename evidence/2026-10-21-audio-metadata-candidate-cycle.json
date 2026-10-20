@@ -1,0 +1,1344 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-21",
+  "status": "real-public-metadata-loss-confirmed-private-native-source-fix-implemented-wasm-build-pending",
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false,
+  "publicEngineChanged": false,
+  "browserFixVerified": false,
+  "baseline": {
+    "browser": "Installed headless Chrome155.0.8059.85",
+    "suite": "tests/browser/audio-expanded-metadata.spec.ts",
+    "result": {
+      "passed": 4,
+      "failed": 2,
+      "durationSeconds": 29.6
+    },
+    "scope": "Six genuine production-UI/browser conversions with25 exact tags and full independent decode; not full metadata/artwork/quality/memory/scaling acceptance.",
+    "expectedTags": {
+      "title": "Titre café — 音楽",
+      "artist": "Émile / कलाकार",
+      "album": "Album naïf",
+      "genre": "Essai",
+      "date": "2026",
+      "track": "3/9",
+      "comment": "αβγ & <texte>",
+      "composer": "作曲者 Émile",
+      "album_artist": "Artiste collectif",
+      "performer": "Violon — 藝術家",
+      "disc": "2/3",
+      "copyright": "© 2026 Example",
+      "publisher": "Éditions locales",
+      "language": "fra",
+      "isrc": "FR9ZZ2600001",
+      "encoded_by": "Deterministic fixture",
+      "lyrics": "Un vers\n第二行",
+      "license": "Licence d’essai",
+      "contact": "Contact local",
+      "location": "Montréal",
+      "organization": "Atelier α",
+      "custom_field": "Valeur libre 音楽",
+      "replaygain_track_gain": "-5.25 dB",
+      "replaygain_track_peak": "0.800000",
+      "replaygain_album_gain": "-4.00 dB"
+    },
+    "cases": [
+      {
+        "report": {
+          "path": "output/playwright/audio-expanded-metadata-flac-to-ogg-d20797ba-fa81-4025-b630-7404831c3be4.json",
+          "bytes": 18548,
+          "sha256": "a0e7feb95b98518b6bd3e10be5e0b5ffaaaf905222234dc8b2ddfa97391b09da"
+        },
+        "profileId": "flac-to-ogg",
+        "status": "passed-small-expanded-metadata-check",
+        "source": {
+          "bytes": 37086,
+          "sha256": "bceca191b7b40164857884b4c95ac5b2b78e0c4969f3fad391b7c421adcc36bc",
+          "scope": "format",
+          "allExpectedSourceTagsVerified": true
+        },
+        "output": {
+          "bytes": 8031,
+          "sha256": "388379f3068d2505a648d7bb2785003a5b67e93f0808483f9dcff51e78549c87",
+          "scope": "audio-stream",
+          "fields": [
+            {
+              "field": "title",
+              "actualKey": "title",
+              "actualValue": "Titre café — 音楽",
+              "status": "preserved"
+            },
+            {
+              "field": "artist",
+              "actualKey": "artist",
+              "actualValue": "Émile / कलाकार",
+              "status": "preserved"
+            },
+            {
+              "field": "album",
+              "actualKey": "album",
+              "actualValue": "Album naïf",
+              "status": "preserved"
+            },
+            {
+              "field": "genre",
+              "actualKey": "genre",
+              "actualValue": "Essai",
+              "status": "preserved"
+            },
+            {
+              "field": "date",
+              "actualKey": "date",
+              "actualValue": "2026",
+              "status": "preserved"
+            },
+            {
+              "field": "track",
+              "actualKey": "track",
+              "actualValue": "3/9",
+              "status": "preserved"
+            },
+            {
+              "field": "comment",
+              "actualKey": "comment",
+              "actualValue": "αβγ & <texte>",
+              "status": "preserved"
+            },
+            {
+              "field": "composer",
+              "actualKey": "composer",
+              "actualValue": "作曲者 Émile",
+              "status": "preserved"
+            },
+            {
+              "field": "album_artist",
+              "actualKey": "album_artist",
+              "actualValue": "Artiste collectif",
+              "status": "preserved"
+            },
+            {
+              "field": "performer",
+              "actualKey": "performer",
+              "actualValue": "Violon — 藝術家",
+              "status": "preserved"
+            },
+            {
+              "field": "disc",
+              "actualKey": "disc",
+              "actualValue": "2/3",
+              "status": "preserved"
+            },
+            {
+              "field": "copyright",
+              "actualKey": "copyright",
+              "actualValue": "© 2026 Example",
+              "status": "preserved"
+            },
+            {
+              "field": "publisher",
+              "actualKey": "publisher",
+              "actualValue": "Éditions locales",
+              "status": "preserved"
+            },
+            {
+              "field": "language",
+              "actualKey": "language",
+              "actualValue": "fra",
+              "status": "preserved"
+            },
+            {
+              "field": "isrc",
+              "actualKey": "isrc",
+              "actualValue": "FR9ZZ2600001",
+              "status": "preserved"
+            },
+            {
+              "field": "encoded_by",
+              "actualKey": "encoded_by",
+              "actualValue": "Deterministic fixture",
+              "status": "preserved"
+            },
+            {
+              "field": "lyrics",
+              "actualKey": "lyrics",
+              "actualValue": "Un vers\n第二行",
+              "status": "preserved"
+            },
+            {
+              "field": "license",
+              "actualKey": "license",
+              "actualValue": "Licence d’essai",
+              "status": "preserved"
+            },
+            {
+              "field": "contact",
+              "actualKey": "contact",
+              "actualValue": "Contact local",
+              "status": "preserved"
+            },
+            {
+              "field": "location",
+              "actualKey": "location",
+              "actualValue": "Montréal",
+              "status": "preserved"
+            },
+            {
+              "field": "organization",
+              "actualKey": "organization",
+              "actualValue": "Atelier α",
+              "status": "preserved"
+            },
+            {
+              "field": "custom_field",
+              "actualKey": "custom_field",
+              "actualValue": "Valeur libre 音楽",
+              "status": "preserved"
+            },
+            {
+              "field": "replaygain_track_gain",
+              "actualKey": "replaygain_track_gain",
+              "actualValue": "-5.25 dB",
+              "status": "preserved"
+            },
+            {
+              "field": "replaygain_track_peak",
+              "actualKey": "replaygain_track_peak",
+              "actualValue": "0.800000",
+              "status": "preserved"
+            },
+            {
+              "field": "replaygain_album_gain",
+              "actualKey": "replaygain_album_gain",
+              "actualValue": "-4.00 dB",
+              "status": "preserved"
+            }
+          ]
+        },
+        "fullIndependentDecode": true,
+        "metrics": {
+          "inputBytes": 37086,
+          "outputBytes": 8031,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 4212,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 37086,
+          "maxWriteChunkBytes": 4212,
+          "elapsedMs": 403.27999997138977,
+          "wasmMemoryBytes": 33554432,
+          "peakWasmMemoryBytes": 33554432,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 33554436,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0
+        },
+        "sourcePins": {
+          "tests/browser/audio-expanded-metadata.spec.ts": "80edde42db7167226d2969962c166a3c8f1ae73a77dcc13989e2108642212df2",
+          "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+          "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+          "public/engines/remux/within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+          "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+        },
+        "sourcePinsUnchanged": true,
+        "remainingOpfsEntries": [],
+        "ownedDataRemoved": true
+      },
+      {
+        "report": {
+          "path": "output/playwright/audio-expanded-metadata-flac-to-opus-46edd2b9-72bb-4250-aec0-548a930d7bc5.json",
+          "bytes": 18495,
+          "sha256": "51cfce35cce82f3079a980f9f9486a6107149613c37324907d9dca12fe10a4f4"
+        },
+        "profileId": "flac-to-opus",
+        "status": "passed-small-expanded-metadata-check",
+        "source": {
+          "bytes": 37086,
+          "sha256": "bceca191b7b40164857884b4c95ac5b2b78e0c4969f3fad391b7c421adcc36bc",
+          "scope": "format",
+          "allExpectedSourceTagsVerified": true
+        },
+        "output": {
+          "bytes": 16942,
+          "sha256": "5588a5a60664e40675de7bdcf3b314303cb01e3652d0100ff41972e9b21e128a",
+          "scope": "audio-stream",
+          "fields": [
+            {
+              "field": "title",
+              "actualKey": "title",
+              "actualValue": "Titre café — 音楽",
+              "status": "preserved"
+            },
+            {
+              "field": "artist",
+              "actualKey": "artist",
+              "actualValue": "Émile / कलाकार",
+              "status": "preserved"
+            },
+            {
+              "field": "album",
+              "actualKey": "album",
+              "actualValue": "Album naïf",
+              "status": "preserved"
+            },
+            {
+              "field": "genre",
+              "actualKey": "genre",
+              "actualValue": "Essai",
+              "status": "preserved"
+            },
+            {
+              "field": "date",
+              "actualKey": "date",
+              "actualValue": "2026",
+              "status": "preserved"
+            },
+            {
+              "field": "track",
+              "actualKey": "track",
+              "actualValue": "3/9",
+              "status": "preserved"
+            },
+            {
+              "field": "comment",
+              "actualKey": "comment",
+              "actualValue": "αβγ & <texte>",
+              "status": "preserved"
+            },
+            {
+              "field": "composer",
+              "actualKey": "composer",
+              "actualValue": "作曲者 Émile",
+              "status": "preserved"
+            },
+            {
+              "field": "album_artist",
+              "actualKey": "album_artist",
+              "actualValue": "Artiste collectif",
+              "status": "preserved"
+            },
+            {
+              "field": "performer",
+              "actualKey": "performer",
+              "actualValue": "Violon — 藝術家",
+              "status": "preserved"
+            },
+            {
+              "field": "disc",
+              "actualKey": "disc",
+              "actualValue": "2/3",
+              "status": "preserved"
+            },
+            {
+              "field": "copyright",
+              "actualKey": "copyright",
+              "actualValue": "© 2026 Example",
+              "status": "preserved"
+            },
+            {
+              "field": "publisher",
+              "actualKey": "publisher",
+              "actualValue": "Éditions locales",
+              "status": "preserved"
+            },
+            {
+              "field": "language",
+              "actualKey": "language",
+              "actualValue": "fra",
+              "status": "preserved"
+            },
+            {
+              "field": "isrc",
+              "actualKey": "isrc",
+              "actualValue": "FR9ZZ2600001",
+              "status": "preserved"
+            },
+            {
+              "field": "encoded_by",
+              "actualKey": "encoded_by",
+              "actualValue": "Deterministic fixture",
+              "status": "preserved"
+            },
+            {
+              "field": "lyrics",
+              "actualKey": "lyrics",
+              "actualValue": "Un vers\n第二行",
+              "status": "preserved"
+            },
+            {
+              "field": "license",
+              "actualKey": "license",
+              "actualValue": "Licence d’essai",
+              "status": "preserved"
+            },
+            {
+              "field": "contact",
+              "actualKey": "contact",
+              "actualValue": "Contact local",
+              "status": "preserved"
+            },
+            {
+              "field": "location",
+              "actualKey": "location",
+              "actualValue": "Montréal",
+              "status": "preserved"
+            },
+            {
+              "field": "organization",
+              "actualKey": "organization",
+              "actualValue": "Atelier α",
+              "status": "preserved"
+            },
+            {
+              "field": "custom_field",
+              "actualKey": "custom_field",
+              "actualValue": "Valeur libre 音楽",
+              "status": "preserved"
+            },
+            {
+              "field": "replaygain_track_gain",
+              "actualKey": "replaygain_track_gain",
+              "actualValue": "-5.25 dB",
+              "status": "preserved"
+            },
+            {
+              "field": "replaygain_track_peak",
+              "actualKey": "replaygain_track_peak",
+              "actualValue": "0.800000",
+              "status": "preserved"
+            },
+            {
+              "field": "replaygain_album_gain",
+              "actualKey": "replaygain_album_gain",
+              "actualValue": "-4.00 dB",
+              "status": "preserved"
+            }
+          ]
+        },
+        "fullIndependentDecode": true,
+        "metrics": {
+          "inputBytes": 37086,
+          "outputBytes": 16942,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 7989,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 37086,
+          "maxWriteChunkBytes": 7989,
+          "elapsedMs": 387.27499997615814,
+          "wasmMemoryBytes": 33554432,
+          "peakWasmMemoryBytes": 33554432,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 33554436,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0
+        },
+        "sourcePins": {
+          "tests/browser/audio-expanded-metadata.spec.ts": "80edde42db7167226d2969962c166a3c8f1ae73a77dcc13989e2108642212df2",
+          "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+          "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+          "public/engines/remux/within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+          "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+        },
+        "sourcePinsUnchanged": true,
+        "remainingOpfsEntries": [],
+        "ownedDataRemoved": true
+      },
+      {
+        "report": {
+          "path": "output/playwright/audio-expanded-metadata-ogg-to-flac-3d08dfe9-97c0-40d1-97a1-b89772682890.json",
+          "bytes": 20749,
+          "sha256": "be628f3dd3240d2d9c98c7d256f0c965155cf6b437744df50fec9484382e5e74"
+        },
+        "profileId": "ogg-to-flac",
+        "status": "failed-or-incomplete",
+        "source": {
+          "bytes": 8054,
+          "sha256": "56595f3313d5bfae78b0bf168e059359fa947d92ae00646aebd7ae14fe8fd208",
+          "scope": "audio-stream",
+          "allExpectedSourceTagsVerified": true
+        },
+        "output": {
+          "bytes": 35548,
+          "sha256": "b51a668116b47597b638272a1a3f05f9a6ebd23d3b175051ea7e63049a155d84",
+          "scope": "format",
+          "fields": [
+            {
+              "field": "title",
+              "actualKey": "title",
+              "actualValue": "Titre café — 音楽",
+              "status": "preserved"
+            },
+            {
+              "field": "artist",
+              "actualKey": "artist",
+              "actualValue": "Émile / कलाकार",
+              "status": "preserved"
+            },
+            {
+              "field": "album",
+              "actualKey": "album",
+              "actualValue": "Album naïf",
+              "status": "preserved"
+            },
+            {
+              "field": "genre",
+              "actualKey": "genre",
+              "actualValue": "Essai",
+              "status": "preserved"
+            },
+            {
+              "field": "date",
+              "actualKey": "date",
+              "actualValue": "2026",
+              "status": "preserved"
+            },
+            {
+              "field": "track",
+              "actualKey": "track",
+              "actualValue": "3/9",
+              "status": "preserved"
+            },
+            {
+              "field": "comment",
+              "actualKey": "comment",
+              "actualValue": "αβγ & <texte>",
+              "status": "preserved"
+            },
+            {
+              "field": "composer",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "album_artist",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "performer",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "disc",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "copyright",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "publisher",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "language",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "isrc",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "encoded_by",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "lyrics",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "license",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "contact",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "location",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "organization",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "custom_field",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "replaygain_track_gain",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "replaygain_track_peak",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "replaygain_album_gain",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            }
+          ]
+        },
+        "fullIndependentDecode": true,
+        "metrics": {
+          "inputBytes": 8054,
+          "outputBytes": 35548,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 8458,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 8054,
+          "maxWriteChunkBytes": 8458,
+          "elapsedMs": 386.3349999785423,
+          "wasmMemoryBytes": 33554432,
+          "peakWasmMemoryBytes": 33554432,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 33554436,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0
+        },
+        "sourcePins": {
+          "tests/browser/audio-expanded-metadata.spec.ts": "80edde42db7167226d2969962c166a3c8f1ae73a77dcc13989e2108642212df2",
+          "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+          "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+          "public/engines/remux/within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+          "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+        },
+        "sourcePinsUnchanged": true,
+        "remainingOpfsEntries": [],
+        "ownedDataRemoved": true
+      },
+      {
+        "report": {
+          "path": "output/playwright/audio-expanded-metadata-ogg-to-opus-c918b00a-a336-4d41-87c2-acabe9f123d9.json",
+          "bytes": 18625,
+          "sha256": "b6faf325f9ce519aa7ce26a392e09387b95f09b259ad51495c573056d19915c6"
+        },
+        "profileId": "ogg-to-opus",
+        "status": "passed-small-expanded-metadata-check",
+        "source": {
+          "bytes": 8054,
+          "sha256": "56595f3313d5bfae78b0bf168e059359fa947d92ae00646aebd7ae14fe8fd208",
+          "scope": "audio-stream",
+          "allExpectedSourceTagsVerified": true
+        },
+        "output": {
+          "bytes": 16941,
+          "sha256": "4258d00cdde54310ff3f841c80bca223004a4ea2b6eac6672e092d1aa0517cb5",
+          "scope": "audio-stream",
+          "fields": [
+            {
+              "field": "title",
+              "actualKey": "title",
+              "actualValue": "Titre café — 音楽",
+              "status": "preserved"
+            },
+            {
+              "field": "artist",
+              "actualKey": "artist",
+              "actualValue": "Émile / कलाकार",
+              "status": "preserved"
+            },
+            {
+              "field": "album",
+              "actualKey": "album",
+              "actualValue": "Album naïf",
+              "status": "preserved"
+            },
+            {
+              "field": "genre",
+              "actualKey": "genre",
+              "actualValue": "Essai",
+              "status": "preserved"
+            },
+            {
+              "field": "date",
+              "actualKey": "date",
+              "actualValue": "2026",
+              "status": "preserved"
+            },
+            {
+              "field": "track",
+              "actualKey": "track",
+              "actualValue": "3/9",
+              "status": "preserved"
+            },
+            {
+              "field": "comment",
+              "actualKey": "comment",
+              "actualValue": "αβγ & <texte>",
+              "status": "preserved"
+            },
+            {
+              "field": "composer",
+              "actualKey": "composer",
+              "actualValue": "作曲者 Émile",
+              "status": "preserved"
+            },
+            {
+              "field": "album_artist",
+              "actualKey": "album_artist",
+              "actualValue": "Artiste collectif",
+              "status": "preserved"
+            },
+            {
+              "field": "performer",
+              "actualKey": "performer",
+              "actualValue": "Violon — 藝術家",
+              "status": "preserved"
+            },
+            {
+              "field": "disc",
+              "actualKey": "disc",
+              "actualValue": "2/3",
+              "status": "preserved"
+            },
+            {
+              "field": "copyright",
+              "actualKey": "copyright",
+              "actualValue": "© 2026 Example",
+              "status": "preserved"
+            },
+            {
+              "field": "publisher",
+              "actualKey": "publisher",
+              "actualValue": "Éditions locales",
+              "status": "preserved"
+            },
+            {
+              "field": "language",
+              "actualKey": "language",
+              "actualValue": "fra",
+              "status": "preserved"
+            },
+            {
+              "field": "isrc",
+              "actualKey": "isrc",
+              "actualValue": "FR9ZZ2600001",
+              "status": "preserved"
+            },
+            {
+              "field": "encoded_by",
+              "actualKey": "encoded_by",
+              "actualValue": "Deterministic fixture",
+              "status": "preserved"
+            },
+            {
+              "field": "lyrics",
+              "actualKey": "lyrics",
+              "actualValue": "Un vers\n第二行",
+              "status": "preserved"
+            },
+            {
+              "field": "license",
+              "actualKey": "license",
+              "actualValue": "Licence d’essai",
+              "status": "preserved"
+            },
+            {
+              "field": "contact",
+              "actualKey": "contact",
+              "actualValue": "Contact local",
+              "status": "preserved"
+            },
+            {
+              "field": "location",
+              "actualKey": "location",
+              "actualValue": "Montréal",
+              "status": "preserved"
+            },
+            {
+              "field": "organization",
+              "actualKey": "organization",
+              "actualValue": "Atelier α",
+              "status": "preserved"
+            },
+            {
+              "field": "custom_field",
+              "actualKey": "custom_field",
+              "actualValue": "Valeur libre 音楽",
+              "status": "preserved"
+            },
+            {
+              "field": "replaygain_track_gain",
+              "actualKey": "replaygain_track_gain",
+              "actualValue": "-5.25 dB",
+              "status": "preserved"
+            },
+            {
+              "field": "replaygain_track_peak",
+              "actualKey": "replaygain_track_peak",
+              "actualValue": "0.800000",
+              "status": "preserved"
+            },
+            {
+              "field": "replaygain_album_gain",
+              "actualKey": "replaygain_album_gain",
+              "actualValue": "-4.00 dB",
+              "status": "preserved"
+            }
+          ]
+        },
+        "fullIndependentDecode": true,
+        "metrics": {
+          "inputBytes": 8054,
+          "outputBytes": 16941,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 7962,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 8054,
+          "maxWriteChunkBytes": 7962,
+          "elapsedMs": 415.3799999952316,
+          "wasmMemoryBytes": 33554432,
+          "peakWasmMemoryBytes": 33554432,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 33554436,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0
+        },
+        "sourcePins": {
+          "tests/browser/audio-expanded-metadata.spec.ts": "80edde42db7167226d2969962c166a3c8f1ae73a77dcc13989e2108642212df2",
+          "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+          "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+          "public/engines/remux/within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+          "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+        },
+        "sourcePinsUnchanged": true,
+        "remainingOpfsEntries": [],
+        "ownedDataRemoved": true
+      },
+      {
+        "report": {
+          "path": "output/playwright/audio-expanded-metadata-opus-to-flac-bd5052b5-ecd6-4cb2-a783-6c11ec829ffa.json",
+          "bytes": 20695,
+          "sha256": "123478a40ef15096c3b24f89fa8c5e59691f7e9635fd99cb84725bfab2fa3880"
+        },
+        "profileId": "opus-to-flac",
+        "status": "failed-or-incomplete",
+        "source": {
+          "bytes": 20466,
+          "sha256": "28908beaea1fdad025d0c6604b5dcf0dcdafccff7f3a877852c34bd930ff4c1e",
+          "scope": "audio-stream",
+          "allExpectedSourceTagsVerified": true
+        },
+        "output": {
+          "bytes": 37894,
+          "sha256": "f26d6d8511828c335107f6a40fe1a1a99714f493765bb8c5b03e9a3124a309e5",
+          "scope": "format",
+          "fields": [
+            {
+              "field": "title",
+              "actualKey": "title",
+              "actualValue": "Titre café — 音楽",
+              "status": "preserved"
+            },
+            {
+              "field": "artist",
+              "actualKey": "artist",
+              "actualValue": "Émile / कलाकार",
+              "status": "preserved"
+            },
+            {
+              "field": "album",
+              "actualKey": "album",
+              "actualValue": "Album naïf",
+              "status": "preserved"
+            },
+            {
+              "field": "genre",
+              "actualKey": "genre",
+              "actualValue": "Essai",
+              "status": "preserved"
+            },
+            {
+              "field": "date",
+              "actualKey": "date",
+              "actualValue": "2026",
+              "status": "preserved"
+            },
+            {
+              "field": "track",
+              "actualKey": "track",
+              "actualValue": "3/9",
+              "status": "preserved"
+            },
+            {
+              "field": "comment",
+              "actualKey": "comment",
+              "actualValue": "αβγ & <texte>",
+              "status": "preserved"
+            },
+            {
+              "field": "composer",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "album_artist",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "performer",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "disc",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "copyright",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "publisher",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "language",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "isrc",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "encoded_by",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "lyrics",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "license",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "contact",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "location",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "organization",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "custom_field",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "replaygain_track_gain",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "replaygain_track_peak",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            },
+            {
+              "field": "replaygain_album_gain",
+              "actualKey": null,
+              "actualValue": null,
+              "status": "missing"
+            }
+          ]
+        },
+        "fullIndependentDecode": true,
+        "metrics": {
+          "inputBytes": 20466,
+          "outputBytes": 37894,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 8458,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 20466,
+          "maxWriteChunkBytes": 8458,
+          "elapsedMs": 395.33000004291534,
+          "wasmMemoryBytes": 33554432,
+          "peakWasmMemoryBytes": 33554432,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 33554436,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0
+        },
+        "sourcePins": {
+          "tests/browser/audio-expanded-metadata.spec.ts": "80edde42db7167226d2969962c166a3c8f1ae73a77dcc13989e2108642212df2",
+          "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+          "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+          "public/engines/remux/within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+          "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+        },
+        "sourcePinsUnchanged": true,
+        "remainingOpfsEntries": [],
+        "ownedDataRemoved": true
+      },
+      {
+        "report": {
+          "path": "output/playwright/audio-expanded-metadata-opus-to-ogg-d04cbf69-3f4d-4a62-bc53-68a4db8b3a29.json",
+          "bytes": 18622,
+          "sha256": "9410c29b5b0799d0e9d92e55d045dc3976ea628d722f8262980eb1f45e8cb6a7"
+        },
+        "profileId": "opus-to-ogg",
+        "status": "passed-small-expanded-metadata-check",
+        "source": {
+          "bytes": 20466,
+          "sha256": "28908beaea1fdad025d0c6604b5dcf0dcdafccff7f3a877852c34bd930ff4c1e",
+          "scope": "audio-stream",
+          "allExpectedSourceTagsVerified": true
+        },
+        "output": {
+          "bytes": 8382,
+          "sha256": "5659d2af02cefa89cb6930303561892e67f0f71805beb35a867dc2d2d261526b",
+          "scope": "audio-stream",
+          "fields": [
+            {
+              "field": "title",
+              "actualKey": "title",
+              "actualValue": "Titre café — 音楽",
+              "status": "preserved"
+            },
+            {
+              "field": "artist",
+              "actualKey": "artist",
+              "actualValue": "Émile / कलाकार",
+              "status": "preserved"
+            },
+            {
+              "field": "album",
+              "actualKey": "album",
+              "actualValue": "Album naïf",
+              "status": "preserved"
+            },
+            {
+              "field": "genre",
+              "actualKey": "genre",
+              "actualValue": "Essai",
+              "status": "preserved"
+            },
+            {
+              "field": "date",
+              "actualKey": "date",
+              "actualValue": "2026",
+              "status": "preserved"
+            },
+            {
+              "field": "track",
+              "actualKey": "track",
+              "actualValue": "3/9",
+              "status": "preserved"
+            },
+            {
+              "field": "comment",
+              "actualKey": "comment",
+              "actualValue": "αβγ & <texte>",
+              "status": "preserved"
+            },
+            {
+              "field": "composer",
+              "actualKey": "composer",
+              "actualValue": "作曲者 Émile",
+              "status": "preserved"
+            },
+            {
+              "field": "album_artist",
+              "actualKey": "album_artist",
+              "actualValue": "Artiste collectif",
+              "status": "preserved"
+            },
+            {
+              "field": "performer",
+              "actualKey": "performer",
+              "actualValue": "Violon — 藝術家",
+              "status": "preserved"
+            },
+            {
+              "field": "disc",
+              "actualKey": "disc",
+              "actualValue": "2/3",
+              "status": "preserved"
+            },
+            {
+              "field": "copyright",
+              "actualKey": "copyright",
+              "actualValue": "© 2026 Example",
+              "status": "preserved"
+            },
+            {
+              "field": "publisher",
+              "actualKey": "publisher",
+              "actualValue": "Éditions locales",
+              "status": "preserved"
+            },
+            {
+              "field": "language",
+              "actualKey": "language",
+              "actualValue": "fra",
+              "status": "preserved"
+            },
+            {
+              "field": "isrc",
+              "actualKey": "isrc",
+              "actualValue": "FR9ZZ2600001",
+              "status": "preserved"
+            },
+            {
+              "field": "encoded_by",
+              "actualKey": "encoded_by",
+              "actualValue": "Deterministic fixture",
+              "status": "preserved"
+            },
+            {
+              "field": "lyrics",
+              "actualKey": "lyrics",
+              "actualValue": "Un vers\n第二行",
+              "status": "preserved"
+            },
+            {
+              "field": "license",
+              "actualKey": "license",
+              "actualValue": "Licence d’essai",
+              "status": "preserved"
+            },
+            {
+              "field": "contact",
+              "actualKey": "contact",
+              "actualValue": "Contact local",
+              "status": "preserved"
+            },
+            {
+              "field": "location",
+              "actualKey": "location",
+              "actualValue": "Montréal",
+              "status": "preserved"
+            },
+            {
+              "field": "organization",
+              "actualKey": "organization",
+              "actualValue": "Atelier α",
+              "status": "preserved"
+            },
+            {
+              "field": "custom_field",
+              "actualKey": "custom_field",
+              "actualValue": "Valeur libre 音楽",
+              "status": "preserved"
+            },
+            {
+              "field": "replaygain_track_gain",
+              "actualKey": "replaygain_track_gain",
+              "actualValue": "-5.25 dB",
+              "status": "preserved"
+            },
+            {
+              "field": "replaygain_track_peak",
+              "actualKey": "replaygain_track_peak",
+              "actualValue": "0.800000",
+              "status": "preserved"
+            },
+            {
+              "field": "replaygain_album_gain",
+              "actualKey": "replaygain_album_gain",
+              "actualValue": "-4.00 dB",
+              "status": "preserved"
+            }
+          ]
+        },
+        "fullIndependentDecode": true,
+        "metrics": {
+          "inputBytes": 20466,
+          "outputBytes": 8382,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 4236,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 20466,
+          "maxWriteChunkBytes": 4236,
+          "elapsedMs": 417.31999999284744,
+          "wasmMemoryBytes": 33554432,
+          "peakWasmMemoryBytes": 33554432,
+          "wasmMemories": {},
+          "sharedArrayBufferBytes": 33554436,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0
+        },
+        "sourcePins": {
+          "tests/browser/audio-expanded-metadata.spec.ts": "80edde42db7167226d2969962c166a3c8f1ae73a77dcc13989e2108642212df2",
+          "scripts/lib/scoped-audio-tag-validation.mjs": "e67b6b6f0280c9376a18a3650d7ada6c3fd25cd5701418f88cdb2c66fd63ac1e",
+          "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+          "public/engines/remux/within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+          "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17"
+        },
+        "sourcePinsUnchanged": true,
+        "remainingOpfsEntries": [],
+        "ownedDataRemoved": true
+      }
+    ],
+    "finding": "Ogg/Opus selected-stream tags reach a format-level FLAC writer through a seven-key native allowlist. Both outputs are valid audio but18 of25 representable text fields are absent.",
+    "sameInputAvailableForFixComparison": "The bitexact fixture generator produces matching source SHA for each source family across its two baseline destinations. Require these exact source hashes in the changed-core comparison."
+  },
+  "candidate": {
+    "helper": "media/ffmpeg/audio-text-metadata.h",
+    "generator": "media/ffmpeg/audio-text-metadata-candidate.mjs",
+    "masterParentSha256": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+    "helperSha256": "85da9b964bb50ffa8fd3a93b073d4c2369a13034549cef4fd552c5fc82d0bf28",
+    "prototypeOnCurrentMasterSha256": "281d0a5d5d79d4705e16926b9e664d639fbd9c58d01f0854f12477d270c96bd4",
+    "scope": "Three reversible metadata-only edits; actual general-core compile additionally uses the authenticated historical pre-Theora parent derived by the pinned original recipe.",
+    "policy": {
+      "entries": 4096,
+      "totalKeyAndValueUtf8BytesIncludingTerminators": 2097152,
+      "scopePrecedence": "container over selected audio stream",
+      "duplicateValues": "retain repeated entries within winning scope using AV_DICT_MULTIKEY",
+      "emptyValues": "preserved",
+      "failure": "validate before allocating; build new dictionary atomically; leave old output intact on error; explicit bounded-metadata error instead of misleading disk-full message"
+    },
+    "codecSettingsChanged": false,
+    "ioChanged": false,
+    "wasmMemoryLimitsRaised": false,
+    "publishedCOrBinariesModified": false,
+    "nativeBehavior": {
+      "startedAt": "2026-10-20T19:53:13.874Z",
+      "scope": "Real installed libavutil dictionary behavior, not browser/codec/memory/promotion acceptance",
+      "publicAcceptance": false,
+      "sources": {
+        "tests/native/audio-text-metadata.c": "382371c8fdc61e43ee46ab54e80c378c549433839f623d38f61d6fe6c2ffef6f",
+        "media/ffmpeg/audio-text-metadata.h": "85da9b964bb50ffa8fd3a93b073d4c2369a13034549cef4fd552c5fc82d0bf28",
+        "scripts/check-audio-text-metadata-native.mjs": "2a10d70fe3b7c14843f2de633fb569d6e48600b1f6db282c25ff1eac955aa565"
+      },
+      "native": {
+        "compilerSha256": "a8b7a614eeadd9105f814be3701a7f312cda4cea51751b75b408c16100c94e85",
+        "dictionaryHeaderSha256": "b8b7abebb6e5ab5ffa70b8463df52c96d4e774aa2d5574bebbc02f6031e62ad8",
+        "libavutilDllSha256": "c4090c00550653c1a9c908a0231ab5c741a97ff00638411fd142bba86d788226"
+      },
+      "behavior": {
+        "status": "passed-native-dictionary-behavior",
+        "fields": 25,
+        "duplicateValuesPreserved": true,
+        "containerPrecedence": true,
+        "emptyValues": true,
+        "entryAndByteBounds": true,
+        "allocationFailureAtomic": true,
+        "libavutilVersion": 3938404,
+        "ffmpegVersion": "N-122712-g7e3781e3ca-20260211",
+        "browserConversionVerified": false
+      },
+      "status": "passed",
+      "ownedCompilerOutputAndScratchRemoved": true,
+      "finishedAt": "2026-10-20T19:53:15.143Z",
+      "report": "outputs/reports/2026-10-20T19-53-13.874Z-audio-metadata-native.json",
+      "scopeCaveat": "Real installed Windows libavutil development build, not the pinned browser Wasm or a native media conversion. Does not prove the browser fix."
+    },
+    "build": {
+      "builder": "media/ffmpeg/build-audio-text-metadata-candidate.mjs",
+      "recipe": "media/ffmpeg/audio-text-metadata-build-recipe.mjs",
+      "workflowAdapter": "scripts/lib/audio-metadata-build-workflow.mjs",
+      "scope": "Use existing registered workflow on an isolated codex build branch. Main workflow/master/public assets unchanged. Preserve original dependencies, configure/linker flags, codec settings and public Wasm initial/maximum limits. Private artifacts one-day retention. Real run not yet claimed."
+    }
+  },
+  "verification": {
+    "focusedUnitPassed": 5,
+    "focusedLint": "passed",
+    "wholeTypeScript": "passed",
+    "wholePortable": {
+      "files": 452,
+      "tests": 1359,
+      "passed": 1359,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 100280.515,
+      "report": "outputs/reports/2026-10-21-audio-metadata-candidate-units.json",
+      "scope": "Whole run preceded the final metadata-budget error-message-only generation delta; final focused5 pass after that delta."
+    },
+    "protectedPriorHostedPortableFiles": 235,
+    "qualificationFilesNotExecuted": 162,
+    "browserBaselineFailureNotHidden": true,
+    "nativeHelperBehaviorPassed": true,
+    "nativeWasmBuild": "pending",
+    "privateBrowserTagFix": "pending",
+    "promotion": "not accepted"
+  },
+  "cleanup": {
+    "allSixBrowserFixtureOutputScratchDirectoriesRemoved": true,
+    "allSixReportedOpfsStoresEmpty": true,
+    "nativeCompilerOutputScratchRemoved": true,
+    "protectedOriginalNotUsedOrChangedThisCycle": true,
+    "retainedOnlyEvidenceAndFailureArtifactsInsideRepository": true
+  },
+  "remaining": [
+    "Compile and hash-verify private Wasm artifact; do not mistake native dictionary tests for browser acceptance.",
+    "Re-run the same25-field browser cases with the actual candidate in the same production I/O pipeline and identical source fixture hashes.",
+    "Check repeated-value serialization, precedence, malformed/oversized metadata, allocation failure, actual sample fidelity and regressions.",
+    "Whole-tree memory/repeat/cleanup/stress qualification and truthful registry/disclosures before publishing any engine change.",
+    "AIFF alias/artwork coverage and other B05 work remain open; all B02-B09/full original requirements remain intact."
+  ]
+}
