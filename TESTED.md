@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Hosted current catalogue code/default/privacy PASS
+
+Actual run39476719118 at a83c3a74a658d62d4dfc9d8bc1bd03c98aab31ca SUCCESS:
+clean npm-ci,405registry/inventory audits, whole lint/TypeScript, build and
+literal npm-test1342PASS/0fail/1existing optional protected-original skip in
+58219.41564ms;18headless privacy/offline tests PASS45.5s. Node24.22.0; all job
+steps/post-cleanup inspected. Local suite1343PASS/0skip includes that original
+inspection. Exact receipt `evidence/2026-10-21-production-catalogue-hosted-success.json`.
+Separate conversion jobs,162private qualifications and engine rebuilds not run,
+not implied passed. MPEG-2 memory345.87890625MiB remains FAILED/unpublished;
+no full-project, speed, scaling or headed/manual acceptance claim.32advisories
+remain unresolved B08 work. Only documentation/receipt edits follow this code.
+
 ## 2026-10-21 - Actual bounded catalogue PASS; native-runtime memory gate FAIL
 
 Integrated the existing paginated component into the actual production app:

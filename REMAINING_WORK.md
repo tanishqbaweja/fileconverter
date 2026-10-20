@@ -1,5 +1,23 @@
 # Remaining work audit
 
+## 2026-10-21 - Fresh hosted catalogue verification PASS at a83c3a7
+
+Pushed production-code commit a83c3a74a658d62d4dfc9d8bc1bd03c98aab31ca.
+Hosted39476719118/verify118814474878 terminal SUCCESS: actual clean npm-ci,
+registry/inventory audits, whole lint/TypeScript, production build/literal npm-test
+1342PASS/0fail/1existing untracked-original skip in58219.41564ms, then18real
+privacy/offline tests PASS45.5s, Node24.22.0 and post-cleanup success. Local full
+1343PASS/0skip includes the protected-original inspection. Exact inspected job
+steps/log counts and exclusions:
+`evidence/2026-10-21-production-catalogue-hosted-success.json`.
+
+No new route or full-project closure.162private qualifications, separate public
+browser conversion jobs and engine rebuilds were not selected or counted passed.
+The native-runtime smoke still FAILED345.87890625MiB; real dispatcher/staged-save
+integration and allocation attribution remain next.32npm advisories remain B08
+work, not assumed harmless. Subsequent receipt/docs-only edits do not change the
+verified production/test/engine sources.
+
 ## 2026-10-21 - Bounded production catalogue integrated; MPEG-2 memory still FAILED
 
 The actual app now mounts `PublishedFormatsCatalogue`, at most24 display cards,

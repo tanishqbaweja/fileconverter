@@ -1,0 +1,238 @@
+{
+  "recordedLocalDate": "2026-10-21",
+  "status": "clean-hosted-default-and-privacy-offline-passed",
+  "scope": "portable-verify: exact pushed catalogue/runtime code, not private qualification or full project acceptance",
+  "codeCommit": "a83c3a74a658d62d4dfc9d8bc1bd03c98aab31ca",
+  "run": {
+    "conclusion": "success",
+    "createdAt": "2026-10-20T18:39:51Z",
+    "databaseId": 39476719118,
+    "headSha": "a83c3a74a658d62d4dfc9d8bc1bd03c98aab31ca",
+    "jobs": [
+      {
+        "completedAt": "2026-10-20T18:43:46Z",
+        "conclusion": "success",
+        "databaseId": 118814474878,
+        "name": "verify",
+        "startedAt": "2026-10-20T18:39:55Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-20T18:39:57Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-20T18:39:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:40:09Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-20T18:39:57Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:40:17Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v4",
+            "number": 3,
+            "startedAt": "2026-10-20T18:40:09Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:40:45Z",
+            "conclusion": "success",
+            "name": "Run npm ci",
+            "number": 4,
+            "startedAt": "2026-10-20T18:40:17Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:41:15Z",
+            "conclusion": "success",
+            "name": "Run npx playwright install --with-deps chromium",
+            "number": 5,
+            "startedAt": "2026-10-20T18:40:45Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:41:16Z",
+            "conclusion": "success",
+            "name": "Audit public route evidence",
+            "number": 6,
+            "startedAt": "2026-10-20T18:41:15Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:41:16Z",
+            "conclusion": "success",
+            "name": "Audit complete unit inventory (private qualification not executed here)",
+            "number": 7,
+            "startedAt": "2026-10-20T18:41:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:41:43Z",
+            "conclusion": "success",
+            "name": "Run npm run lint",
+            "number": 8,
+            "startedAt": "2026-10-20T18:41:16Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:41:53Z",
+            "conclusion": "success",
+            "name": "Run npx tsc --noEmit --incremental false",
+            "number": 9,
+            "startedAt": "2026-10-20T18:41:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:42:56Z",
+            "conclusion": "success",
+            "name": "Run npm test",
+            "number": 10,
+            "startedAt": "2026-10-20T18:41:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:43:43Z",
+            "conclusion": "success",
+            "name": "Run network privacy and offline browser tests",
+            "number": 11,
+            "startedAt": "2026-10-20T18:42:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:43:43Z",
+            "conclusion": "skipped",
+            "name": "Upload verification failure evidence",
+            "number": 12,
+            "startedAt": "2026-10-20T18:43:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:43:43Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v4",
+            "number": 23,
+            "startedAt": "2026-10-20T18:43:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:43:43Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 24,
+            "startedAt": "2026-10-20T18:43:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-20T18:43:43Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 25,
+            "startedAt": "2026-10-20T18:43:43Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39476719118/job/118814474878"
+      },
+      {
+        "completedAt": "2026-10-20T18:39:52Z",
+        "conclusion": "skipped",
+        "databaseId": 118814476014,
+        "name": "Browser conversions (${{ matrix.suite }})",
+        "startedAt": "2026-10-20T18:39:53Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39476719118/job/118814476014"
+      },
+      {
+        "completedAt": "2026-10-20T18:39:53Z",
+        "conclusion": "skipped",
+        "databaseId": 118814476619,
+        "name": "engine-matrix",
+        "startedAt": "2026-10-20T18:39:53Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39476719118/job/118814476619"
+      },
+      {
+        "completedAt": "2026-10-20T18:39:53Z",
+        "conclusion": "skipped",
+        "databaseId": 118814480488,
+        "name": "Reproduce non-Docker ${{ matrix.id }}",
+        "startedAt": "2026-10-20T18:39:53Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39476719118/job/118814480488"
+      },
+      {
+        "completedAt": "2026-10-20T18:39:53Z",
+        "conclusion": "skipped",
+        "databaseId": 118814549985,
+        "name": "audio-destination-scopes",
+        "startedAt": "2026-10-20T18:40:02Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39476719118/job/118814549985"
+      }
+    ],
+    "status": "completed",
+    "updatedAt": "2026-10-20T18:43:47Z",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39476719118"
+  },
+  "observedLogSummary": "\r\nverify\tSet up job\t2026-10-20T18:39:56.8149476Z Prepare workflow directory\r\nverify\tRun actions/checkout@v4\t2026-10-20T18:39:57.8692648Z   allow-unsafe-pr-checkout: false\r\nverify\tRun actions/setup-node@v4\t2026-10-20T18:40:09.5730250Z Found in cache @ /opt/hostedtoolcache/node/24.22.0/x64\r\nverify\tRun actions/setup-node@v4\t2026-10-20T18:40:12.7758562Z node: v24.22.0\r\nverify\tRun npm ci\t2026-10-20T18:40:45.2818418Z 32 vulnerabilities (1 low, 6 moderate, 24 high, 1 critical)\r\nverify\tRun npm ci\t2026-10-20T18:40:45.2838506Z npm warn install-scripts 7 packages have install scripts not yet \r\ncovered by allowScripts:\r\nverify\tRun npm ci\t2026-10-20T18:40:45.2849853Z npm warn install-scripts Run `npm install-scripts ls` to review, or \r\n`npm install-scripts approve <pkg>` to allow.\r\nverify\tRun npx playwright install --with-deps chromium\t2026-10-20T18:40:55.3200185Z The following additional packages \r\nwill be installed:\r\nverify\tRun npx playwright install --with-deps chromium\t2026-10-20T18:40:55.3521854Z The following NEW packages will be \r\ninstalled:\r\nverify\tRun npx playwright install --with-deps chromium\t2026-10-20T18:40:55.3547552Z The following packages will be \r\nupgraded:\r\nverify\tRun npm test\t2026-10-20T18:42:56.7383754Z {\"summary\":{\"success\":true,\"counts\":{\"tests\":1343,\"failed\":0,\"passed\":\r\n1342,\"cancelled\":0,\"skipped\":1,\"todo\":0,\"topLevel\":1343,\"suites\":0},\"duration_ms\":58219.41564},\"qualificationNotRun\":tr\r\nue,\"suite\":\"portable\"}\r\nverify\tRun network privacy and offline browser tests\t2026-10-20T18:43:43.1956117Z   18 passed (45.5s)\r\nverify\tComplete job\t2026-10-20T18:43:43.7137295Z ##[warning]Node.js 20 is deprecated. The following actions target \r\nNode.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-node@v4. For more information \r\nsee: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/\r\n\r\n",
+  "checks": {
+    "node": "24.22.0",
+    "npmCi": "passed",
+    "registryAudit": "passed",
+    "completeUnitInventory": "passed",
+    "lint": "passed",
+    "typescript": "passed",
+    "productionBuild": "passed via literal npm test",
+    "portableUnit": {
+      "tests": 1343,
+      "passed": 1342,
+      "failed": 0,
+      "skipped": 1,
+      "durationMs": 58219.41564,
+      "skip": {
+        "file": "tests/media-source-inspection.test.mjs",
+        "name": "protected multi-gigabyte Matroska inspection reads only 64 KiB",
+        "reason": "test.mkv is an intentionally untracked local stress fixture",
+        "localOriginalPresentAndTestPassed": true,
+        "removedOrNewlyIntroducedSkip": false
+      }
+    },
+    "privacyOffline": {
+      "passed": 18,
+      "failed": 0,
+      "durationSeconds": 45.5
+    },
+    "postCheckoutCleanup": "passed",
+    "npmAuditObserved": {
+      "total": 32,
+      "critical": 1,
+      "high": 24,
+      "moderate": 6,
+      "low": 1,
+      "resolved": false,
+      "workstream": "B08"
+    }
+  },
+  "notExecuted": [
+    "162explicit prerequisite-bound historical/private qualifications",
+    "separate browser conversion matrix jobs",
+    "audio-destination-scopes job",
+    "engine build/reproduction matrix",
+    "new MPEG2 stress/current whole-tree scaling",
+    "headed/manual acceptance"
+  ],
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false,
+  "remaining": "MPEG2 standalone runtime smoke still failed345.87890625MiB; actual job dispatch/staged retirement/allocation attribution and other B02-B09 work remain open. No codec promoted."
+}
