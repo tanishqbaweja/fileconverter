@@ -1,6 +1,25 @@
 # Tested conversion ledger
 
-## 2026-10-20 - Whole portable suite PASS1327; corrected scoped Linux check pending
+## 2026-10-20 - B01 portable/private contract CLOSED; hosted default/privacy PASS
+
+Actual hosted39415600517/d833f85808a78557c973aab2bea6101730754d27 SUCCESS:
+npm-ci/inventory/lint/TS/build/literal npm-test1326pass/0fail/1explicit optional
+protected-original skip in55612.018801ms;18headless privacy/offline tests PASS
+57.1s, Node24.22.0, post-cleanup success. Exact job metadata/summary and exclusions
+`evidence/2026-10-20-unit-contract-hosted-success.json`. Local whole portable447
+files1327PASS/0fail/0skip.607root files=447portable+160explicit qualification;
+all235prior hosted root units retained; full union still runnable. No native,
+browser conversion, quality, memory, privacy or cleanup threshold weakened.
+
+Separate five hosted browser suites at60a1b56 PASS962 (554media/153images/
+238streaming/9source-tags/8destination-scopes) with independent validation.
+Protected browser code/test/config/lock paths unchanged; no repeat of11.5min
+media suite. Prior failed verify runs remain failed. Private qualification,
+engine rebuilds, fresh complete-tree stress, headed/manual and full-project
+acceptance not implied. B01 closed only; B02-B09 still open, including32dependency
+advisories requiring actual security triage.
+
+## Historical checkpoint: Whole portable PASS1327; corrected scoped Linux then pending
 
 All447portable files1327PASS/0fail/0skip in125848.1918ms; full bounded report
 `outputs/reports/2026-10-20-unit-contract-final-local.json`.607root files include

@@ -1,0 +1,194 @@
+{
+  "status": "clean-checkout-portable-default-and-hosted-privacy-verification-passed-B01-closed",
+  "verifiedCommit": "d833f85808a78557c973aab2bea6101730754d27",
+  "run": {
+    "id": 39415600517,
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39415600517",
+    "scope": "portable-verify",
+    "status": "completed",
+    "conclusion": "success"
+  },
+  "job": {
+    "completed_at": "2026-10-20T11:35:26Z",
+    "conclusion": "success",
+    "id": 118603721939,
+    "name": "verify",
+    "started_at": "2026-10-20T11:31:52Z",
+    "status": "completed",
+    "steps": [
+      {
+        "conclusion": "success",
+        "name": "Set up job",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Run actions/checkout@v4",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Run actions/setup-node@v4",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Run npm ci",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Run npx playwright install --with-deps chromium",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Audit public route evidence",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Audit complete unit inventory (private qualification not executed here)",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Run npm run lint",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Run npx tsc --noEmit --incremental false",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Run npm test",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Run network privacy and offline browser tests",
+        "status": "completed"
+      },
+      {
+        "conclusion": "skipped",
+        "name": "Upload verification failure evidence",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Post Run actions/setup-node@v4",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Post Run actions/checkout@v4",
+        "status": "completed"
+      },
+      {
+        "conclusion": "success",
+        "name": "Complete job",
+        "status": "completed"
+      }
+    ]
+  },
+  "actualNodeVersion": "24.22.0",
+  "portable": {
+    "success": true,
+    "counts": {
+      "tests": 1327,
+      "failed": 0,
+      "passed": 1326,
+      "cancelled": 0,
+      "skipped": 1,
+      "todo": 0,
+      "topLevel": 1327,
+      "suites": 0
+    },
+    "duration_ms": 55612.018801
+  },
+  "optionalSkippedOriginalFixture": {
+    "file": "tests/media-source-inspection.test.mjs",
+    "count": 1,
+    "reason": "Protected test.mkv intentionally absent from clean hosted checkout; never substituted or copied.",
+    "countedAsPassed": false
+  },
+  "privacyOffline": {
+    "passed": 18,
+    "failed": 0,
+    "duration": "57.1s",
+    "actualHeadlessBrowser": true,
+    "headedOrManual": false
+  },
+  "localPortable": {
+    "files": 447,
+    "tests": 1327,
+    "passed": 1327,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 125848.1918,
+    "report": "outputs/reports/2026-10-20-unit-contract-final-local.json"
+  },
+  "suiteContract": {
+    "allRootFiles": 607,
+    "portableFiles": 447,
+    "qualificationFiles": 160,
+    "priorHostedRootUnitFilesKeptPortable": 235,
+    "defaultForNewTests": "portable",
+    "fullUnionStillRunnable": "npm run test:unit:all",
+    "privateQualificationExecutedOrImpliedPassed": false
+  },
+  "retainedBrowserConversions": {
+    "receipt": "evidence/2026-10-20-unit-contract-browser-jobs.json",
+    "run": 39411679700,
+    "commit": "60a1b56703e310e56e23ae9ca9c87db6f6c91856",
+    "passed": 962,
+    "allFiveJobsSucceeded": true,
+    "overallOldRunStillFailed": true
+  },
+  "browserPathDiffScope": [
+    "app",
+    "lib",
+    "workers",
+    "public",
+    "tests/browser",
+    "vite.config.ts",
+    "package-lock.json"
+  ],
+  "browserPathDiffSinceRetainedFiveSuites": "empty",
+  "typeScriptBoundaryChange": "Only generated scratch/build outputs excluded; current app/lib/workers/browser-test inclusion guarded and real typecheck passed.",
+  "unselectedJobs": {
+    "conversionSuites": "Not rerun in focused dispatch; matching retained962-test evidence separately scoped.",
+    "engineReproduction": "Not selected or claimed;12-directory manifest inventory is not12builds."
+  },
+  "otherGatesAtVerifiedCommit": [
+    "fresh hosted npm ci",
+    "complete inventory",
+    "full lint",
+    "full TypeScript",
+    "production build",
+    "literal npm test",
+    "network privacy/offline browser tests",
+    "Actions post-cleanup"
+  ],
+  "limits": "This closes B01 test-contract verification, not final release/full-project acceptance. B02/B03 codec implementation, B04 scale/integration, M08 metadata, current complete-tree stress/retention/browser coverage, dependency-advisory triage, final reproducibility and requirement audit remain open.",
+  "securityAdvisoriesUnresolved": {
+    "total": 32,
+    "critical": 1,
+    "high": 24,
+    "moderate": 6,
+    "low": 1
+  },
+  "nativeAndBrowserConversionImplementationChangedDuringContractFixes": false,
+  "primaryMemoryOrQualityOrCleanupThresholdWeakened": false,
+  "protectedOriginalAfter": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "matchesOriginal": true
+  },
+  "localOwnedCheckoutCleanup": "Only the original worktree remains; both isolated checkout and test runtime were removed in finally.",
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false
+}
