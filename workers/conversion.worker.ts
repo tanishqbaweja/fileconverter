@@ -12,7 +12,12 @@ import {
   validateAudioConversionOptions,
   validateVideoConversionOptions,
   videoOptionProfileForId,
+  DEFAULT_AUDIO_CONVERSION_OPTIONS,
+  DEFAULT_VIDEO_CONVERSION_OPTIONS,
 } from "../lib/media-conversion-options";
+import { MPEG2_JOB_PROFILE, estimateMpeg2StageBytes } from "../lib/mpeg2-stage-policy";
+import type { StagedCopyHandoff } from "../lib/staged-copy-protocol";
+import type { Mpeg2SplitCore } from "./mpeg2-split-runtime";
 import {
   MAX_PROGRESS_PHASE_CHARS,
   MAX_WORKER_RESPONSE_TEXT_CHARS,
@@ -502,15 +507,18 @@ async function openStagedDirectDestination(
   jobId: string,
   metrics: ConversionMetrics,
   startedAt: number,
+  requiredScratchBytes?: number,
 ): Promise<Destination> {
   if (
     !stagingName.startsWith(`within-stage-${profileId}-`) ||
+    stagingName !== `within-stage-${profileId}-${jobId}` ||
     (profileId !== "mp4-to-avi" &&
       profileId !== "mov-to-avi" &&
       profileId !== "3gp-to-avi" &&
       profileId !== "mkv-to-avi" &&
       profileId !== "mpeg-ts-to-avi" &&
       profileId !== "mkv-to-mp4" &&
+      profileId !== MPEG2_JOB_PROFILE &&
       profileId !== "avi-to-3gp" &&
       profileId !== "avi-to-mpeg-ts" &&
       profileId !== "m2v-to-ogv") ||
@@ -529,7 +537,10 @@ async function openStagedDirectDestination(
   }
 
   const estimate = await navigator.storage.estimate();
-  const requiredBytes = Math.ceil(sourceBytes * 1.25);
+  const requiredBytes = requiredScratchBytes ?? Math.ceil(sourceBytes * 1.25);
+  if (!Number.isSafeInteger(requiredBytes) || requiredBytes < sourceBytes) {
+    throw new Error("The media staging estimate is invalid.");
+  }
   const availableBytes =
     typeof estimate.quota === "number" && typeof estimate.usage === "number"
       ? estimate.quota - estimate.usage
@@ -584,7 +595,13 @@ async function openStagedDirectDestination(
   let finalWritable: FileSystemWritableFileStream | null = null;
 
   const removeStage = async (): Promise<void> => {
-    await root.removeEntry(stagingName).catch(() => {});
+    try { await root.removeEntry(stagingName); }
+    catch (error) {
+      if (!(error instanceof DOMException && error.name === "NotFoundError")) {
+        post({ type: "warning", jobId, message: "Temporary media staging could not be removed. Use Storage management to retry cleanup." });
+        throw error;
+      }
+    }
     metrics.scratchBytes = 0;
   };
 
@@ -624,6 +641,18 @@ async function openStagedDirectDestination(
           startedAt,
           true,
         );
+
+        if (profileId === MPEG2_JOB_PROFILE) {
+          const handoff: StagedCopyHandoff = {
+            type: "staged-copy-handoff", jobId, profileId, stagingName, stageClosed: true,
+            jobStartedEpochMs: performance.timeOrigin + startedAt, metrics: { ...metrics },
+          };
+          workerScope.postMessage(handoff);
+          // The host retires the codec worker before a Wasm-free bounded save.
+          // Never resolve this close() into a premature job completion.
+          await new Promise<void>(() => {});
+          return;
+        }
 
         finalWritable = await finalHandle.createWritable({
           keepExistingData: false,
@@ -4123,7 +4152,23 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
   let destination: Destination | null = null;
 
   try {
-    const audioOptions = validateAudioConversionOptions(
+    const isMpeg2Job = profileId === MPEG2_JOB_PROFILE;
+    let mpeg2SplitCore: Mpeg2SplitCore | undefined;
+    let requiredScratchBytes: number | undefined;
+    if (isMpeg2Job) {
+      const { assertMpeg2SplitOptions } = await import("./mpeg2-split-runtime");
+      assertMpeg2SplitOptions(message.audioOptions, message.videoOptions);
+      if (message.destination.mode !== "staged-handle") {
+        throw new Error("The unpublished MPEG-2 route requires a selected destination with bounded private-storage staging.");
+      }
+      emitProgress(jobId, "Inspecting MPEG-2 source", metrics, startedAt, true);
+      const { inspectMediaSource } = await import("../lib/media-source-inspection");
+      const inspection = await inspectMediaSource(file, "mkv");
+      requiredScratchBytes = estimateMpeg2StageBytes(file.size, inspection?.durationSeconds ?? null);
+      const { loadMpeg2SplitCore } = await import("./mpeg2-core-loader");
+      mpeg2SplitCore = await loadMpeg2SplitCore();
+    }
+    const audioOptions = isMpeg2Job ? message.audioOptions ?? DEFAULT_AUDIO_CONVERSION_OPTIONS : validateAudioConversionOptions(
       audioOptionProfileForId(profileId),
       message.audioOptions,
     );
@@ -4131,7 +4176,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       engine: "unsupported",
       output: "unsupported",
     };
-    const videoOptions = validateVideoConversionOptions(
+    const videoOptions = isMpeg2Job ? message.videoOptions ?? DEFAULT_VIDEO_CONVERSION_OPTIONS : validateVideoConversionOptions(
       videoOptionsProfile,
       message.videoOptions,
     );
@@ -4146,6 +4191,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         jobId,
         metrics,
         startedAt,
+        requiredScratchBytes,
       );
     } else {
       destination = await openDestination(
@@ -4370,7 +4416,10 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       await new Promise<void>(() => {});
       return;
     }
-    if (compressionTranscode) {
+    if (isMpeg2Job) {
+      await runMediaRemux({ file, profileId, writable: destination.writable, audioOptions, videoOptions,
+        remuxProfile: 40, mpeg2SplitCore, jobId, metrics, startedAt, isCancelled, emitProgress, post });
+    } else if (compressionTranscode) {
       const compressedDestination = destination.writable;
       await runCompressionTranscode({
         file,

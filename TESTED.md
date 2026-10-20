@@ -1,5 +1,60 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Real MPEG-2 job dispatch/staged retirement integrated; memory FAIL
+
+Explicit unpublished `mkv-to-mp4-mpeg2` now enters the actual conversion worker,
+bounded source inspection and duration/4Mbps-based scratch estimate. It loads
+only the canonical split-engine factories and rejects missing stable JSPI,
+missing engines, direct/non-staged requests and unqualified options. The app
+uses the existing lifecycle coordinator; a closed, exact job-owned stage is
+handed to a Wasm-free saver only after the codec worker is terminated. Final
+copy remains one reusable512KiB buffer/one pending write. Non-MPEG2 public
+staging retains its previous inline-copy behavior. Two start guards protect
+the lifecycle across asynchronous destination preflight.
+
+The localhost-only qualification bridge uses that actual app worker, job refs,
+progress/terminal handlers and cleanup, not a second standalone worker. It is
+NOT the final profile selector/planner/options/preservation implementation.
+Native files remain absent from public assets/registry and are staged only in
+the generated build for this finite test, then removed in finally.
+
+Actual headless production Chrome155.0.8059.85:497032B/4s HEVC input yields
+585266B MPEG-2 MP4/SHAa9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13,
+96frames/full native decode,SSIM.985963, identical AAC packet hash/title/language.
+Real phases include inspection, Encoding MPEG-2 MP4 and final stage copy.
+Browser worker events show codec close19:10:31.199Z, saver create31.207Z and
+saver close31.233Z. Native I/O/queue64KiB; final copy512KiB; one pending write;
+current Wasm/scratch0 and peak Wasm48MiB at completion. Job elapsed732.47ms is
+ONLY this tiny fixture, not a speed comparison or large-file throughput claim.
+
+COMPLETE-TREE MEMORY FAIL:352.19921875MiB versus unchanged250. Stable same-instance
+blank234168320B, loaded462520320B, conversion peak603475968B/RSS840388608B;
+376valid100ms samples/zero missing. Both observation windows exceed8seconds.
+All Chromium processes retained; non-browser process types remain unknown.
+Two largest peak processes235315200/240287744B cannot honestly be called GPU or
+renderer yet. Loaded-phase peak itself exceeds250MiB. Cause/observer effects
+remain unproven; no memory gain, promotion or full/scaled-file acceptance.
+
+Raw receipt `outputs/reports/2026-10-20T19-09-13.576Z-mpeg2-production-runtime.json`;
+retained9997194B failure trace inside `output/playwright`. Independent post-run
+audit matched all23 executed source pins. Original2958573265B/SHA31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34
+unchanged; converted output/fixture/profile/scratch/generated native assets
+removed; all three birth-identified owned process roots absent.405-route UI
+checks passed on desktop/mobile again; both screenshots reviewed headlessly.
+No headed/manual coverage, unchanged cold/full run or rejected LTO repeated.
+
+46focused integration/runtime/lifecycle tests and whole TypeScript passed.
+18production privacy/offline browser tests passed1.1m; whole lint and405-public
+registry audit passed. Initial whole portable run1345pass/5fail/0skip in3files:
+three assertions were historical overlays reading edited live worker bytes;
+two live staging regexes needed the explicit new profile/quota override. Old
+recipe hash guards remain unchanged and now read the verified immutable168379B
+worker preimage; live checks still read current sources.25focused corrected
+tests passed. Final450-file portable suite1350PASS/0fail/0skip in77154.8346ms;
+all235prior hosted files remain portable,162private qualifications unexecuted.
+Exact compact receipt `evidence/2026-10-21-mpeg2-job-integration-cycle.json`.
+Fresh hosted result is not assumed from the prior commit's green CI.
+
 ## 2026-10-21 - Hosted current catalogue code/default/privacy PASS
 
 Actual run39476719118 at a83c3a74a658d62d4dfc9d8bc1bd03c98aab31ca SUCCESS:

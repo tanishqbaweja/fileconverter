@@ -5,11 +5,10 @@ import assert from "node:assert/strict";
 import { execFile, spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { copyFile, lstat, mkdir, mkdtemp, open, readFile, realpath, rm, statfs, writeFile } from "node:fs/promises";
+import { copyFile, lstat, mkdir, open, readFile, realpath, rm, statfs, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { promisify } from "node:util";
-import { build } from "esbuild";
 import { chromium } from "playwright";
 import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runtime-scratch.mjs";
 import { inspectStressHostMemory } from "./lib/host-memory-preflight.mjs";
@@ -25,8 +24,8 @@ const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile)
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const chunk of createReadStream(file)) hash.update(chunk); return hash.digest("hex"); };
-const report = { scope: "explicit-production-MPEG2-runtime-small-fixture-not-public-acceptance", startedAt: new Date().toISOString(),
-  publicAcceptance: false, uiPlannerCoverage: false, largeFileCoverage: false, speedComparison: false, failures: [] };
+const report = { scope: "production-MPEG2-dispatch-and-staged-lifecycle-small-fixture-not-public-acceptance", startedAt: new Date().toISOString(),
+  publicAcceptance: false, uiPlannerCoverage: false, largeFileCoverage: false, speedComparison: false, standaloneWorker: false, failures: [] };
 const runtime = await createOwnedRuntimeScratch("mpeg2-production-runtime-");
 const env = { ...runtime.env, NODE_OPTIONS: [process.env.NODE_OPTIONS ?? "", "--import=" + pathToFileURL(path.join(root, "scripts/lib/hidden-unit-subprocesses.mjs")).href].filter(Boolean).join(" "),
   NEXT_TELEMETRY_DISABLED: "1", WRANGLER_SEND_METRICS: "false" };
@@ -39,10 +38,6 @@ const snapshot = async () => {
   assert.ok(samples.length + batch.samples.length <= 3000, "Bounded short-test sample cap");
   for (const sample of batch.samples) samples.push({ ...sample, phase, elapsedMs: Date.parse(sample.timestamp) - Date.parse(report.startedAt) });
 };
-async function ownedGeneratedDirectory(parent, prefix) {
-  const directory = await mkdtemp(path.join(parent, prefix)), identity = await lstat(directory, { bigint: true });
-  generated.push({ directory, identity }); return directory;
-}
 try {
   const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 32 * 1024 ** 3);
   report.hostMemory = await inspectStressHostMemory(); assert.equal(report.hostMemory.safeToStart, true);
@@ -63,9 +58,8 @@ try {
   const assetsParent = path.join(root, "dist/client/engines");
   // Exact fixed directory URL is worker-owned, created exclusively; never replace
   // public assets or reuse a previous run's generated directory.
-  const assetDirectory = path.join(assetsParent, "mpeg2-runtime-check"); await mkdir(assetDirectory);
+  const assetDirectory = path.join(assetsParent, "mpeg2"); await mkdir(assetDirectory);
   generated.push({ directory: assetDirectory, identity: await lstat(assetDirectory, { bigint: true }) });
-  const bundleDirectory = await ownedGeneratedDirectory(path.join(root, "dist/client"), "mpeg2-runtime-check-");
   report.native = [];
   for (const [file, directory, source, expected, pages] of [
     ["decoder.mjs", "mpeg2-jspi-39072949964", "within-mpeg2-split.mjs", "d4ec481a93a1b087c96aa11948ab9a98ccf6d09237ed143c022bf76bf6c31506"],
@@ -77,12 +71,11 @@ try {
     if (pages) assert.deepEqual(readWasmMemoryLimits(bytes), [{ imported: true, initialPages: pages, maximumPages: pages, shared: true }]);
     await copyFile(sourcePath, path.join(assetDirectory, file)); report.native.push({ source: path.relative(root, sourcePath), sha256: expected, bytes: bytes.length });
   }
-  await build({ entryPoints: [path.join(root, "tests/browser/fixtures/mpeg2-production-runtime.worker.ts")], bundle: true, platform: "browser", format: "esm",
-    outfile: path.join(bundleDirectory, "worker.js"), target: "esnext" });
-  const bundleUrl = "/" + path.basename(bundleDirectory) + "/worker.js";
   report.sources = {};
   for (const file of ["workers/media-remux.ts", "workers/mpeg2-split-runtime.ts", "workers/random-access-destination.ts",
-    "tests/browser/fixtures/mpeg2-production-runtime.worker.ts", "scripts/test-mpeg2-production-runtime.mjs",
+    "workers/conversion.worker.ts", "workers/mpeg2-core-loader.ts", "workers/staged-save.worker.ts", "workers/staged-save-runtime.ts",
+    "lib/staged-worker-coordinator.ts", "lib/staged-copy-protocol.ts", "lib/mpeg2-stage-policy.ts", "lib/mpeg2-qualification-job.ts",
+    "scripts/test-mpeg2-production-runtime.mjs",
     "scripts/lib/production-catalogue-check.mjs", "app/converter/ConverterApp.tsx", "app/converter/PublishedFormatsCatalogue.tsx",
     "app/globals.css", "lib/published-catalogue.ts", "lib/capability-registry.ts",
     ...["session", "frame-bridge", "frame-layout", "frame-properties", "packet-bridge"].map(suffix => "scripts/lib/mpeg2-split-" + suffix + ".mjs")]) {
@@ -109,6 +102,11 @@ try {
   browser = await chromium.connect(browserServer.wsEndpoint());
   context = await browser.newContext({ serviceWorkers: "block" });
   const page = await context.newPage();
+  report.workerEvents = [];
+  page.on("worker", worker => {
+    const record = type => { assert.ok(report.workerEvents.length < 32); report.workerEvents.push({ type, url: worker.url(), at: new Date().toISOString() }); };
+    record("created"); worker.on("close", () => record("closed"));
+  });
   page.on("console", message => { if (browserLogs.length === 32) browserLogs.shift(); browserLogs.push({ type: message.type(), text: message.text().slice(0, 512) }); });
   page.on("pageerror", error => { if (browserLogs.length === 32) browserLogs.shift(); browserLogs.push({ type: "pageerror", text: error.message.slice(0, 512) }); });
   monitor = await startChromiumMemoryMonitor(browserIdentity.pid, work, 100);
@@ -124,7 +122,7 @@ try {
   phase = "loaded";
   context.on("request", request => { if (!request.url().startsWith(base + "/") || request.method() !== "GET" || request.postData() !== null) {
     forbiddenRequests.push({ method: request.method(), url: request.url().slice(0, 256) }); } });
-  const response = await page.goto(base + "/");
+  const response = await page.goto(base + "/?test=1");
   assert.equal(response.status(), 200, "Production app route must load before file selection");
   const headers = response.headers(); assert.equal(headers["cross-origin-opener-policy"], "same-origin");
   assert.equal(headers["cross-origin-embedder-policy"], "require-corp"); assert.ok(headers["content-security-policy"]);
@@ -134,6 +132,7 @@ try {
     .map(profile => ({ id: profile.id, route: profile.route, inputLabel: formatById(profile.input).label, outputLabel: formatById(profile.output).label })), screenshotDirectory);
   await page.locator('input[type="file"]').first().setInputFiles(fixture);
   await page.waitForFunction(() => document.querySelector('[data-testid="media-inspection-status"]')?.textContent.includes("These stream facts came from bounded local header reads"));
+  await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
   // Observe the genuine loaded-site idle phase rather than starting conversion
   // during initial navigation/React rendering. Never subtract this baseline,
   // invoke GC, omit a process, or replace the lower blank baseline above.
@@ -152,28 +151,37 @@ try {
     monitorPending = snapshot().catch(error => { monitorFailure ??= error; }).finally(() => { monitorBusy = false; });
   }, 500);
   phase = "conversion";
-  report.conversion = await page.evaluate(async ({ bundleUrl }) => {
+  report.conversion = await page.evaluate(async () => {
     const file = document.querySelector('input[type="file"]').files[0];
     const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle("mpeg2-runtime-output.mp4", { create: true });
-    const worker = new Worker(bundleUrl, { type: "module" });
+    const jobId = crypto.randomUUID(), cancellationBuffer = new SharedArrayBuffer(4);
+    const job = { type: "start", jobId, profileId: "mkv-to-mp4-mpeg2", file,
+      destination: { mode: "staged-handle", handle, stagingName: `within-stage-mkv-to-mp4-mpeg2-${jobId}` }, cancellationBuffer };
+    let timeout;
     try {
-      const result = await new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => reject(new Error("Production runtime conversion timeout")), 60000);
-        worker.onerror = event => { clearTimeout(timeout); reject(new Error(event.message)); };
-        worker.onmessage = event => { clearTimeout(timeout); resolve(event.data); };
-        worker.postMessage({ file, handle });
-      });
-      return result;
-    } finally { worker.terminate(); }
-  }, { bundleUrl });
+      return await Promise.race([
+        window.__WITHIN_TEST__.runQualificationJob(job),
+        new Promise((_, reject) => { timeout = setTimeout(() => { Atomics.store(new Int32Array(cancellationBuffer), 0, 1);
+          reject(new Error("Production job conversion timeout")); }, 60000); }),
+      ]);
+    } finally { clearTimeout(timeout); }
+  });
   clearInterval(monitorTimer); await monitorPending; await snapshot();
   await monitor.close(); monitor = null; phase = "validation";
   assert.equal(report.conversion.type, "complete", JSON.stringify(report.conversion));
-  assert.deepEqual(report.conversion.phases, ["Encoding MPEG-2 MP4"]);
+  assert.ok(report.conversion.phases.includes("Inspecting MPEG-2 source"));
+  assert.ok(report.conversion.phases.includes("Encoding MPEG-2 MP4"));
+  assert.ok(report.conversion.phases.includes("Copying staged MP4 to selected destination"));
+  const nativeMetrics = report.conversion.nativeMetrics;
+  assert.equal(nativeMetrics.wasmMemoryBytes, 50331648); assert.ok(nativeMetrics.maxReadChunkBytes <= 262144);
+  assert.ok(nativeMetrics.maxWriteChunkBytes <= 262144); assert.ok(nativeMetrics.peakQueuedBytes <= 262144);
+  assert.equal(nativeMetrics.peakPendingOperations, 1);
   const metrics = report.conversion.metrics;
-  assert.equal(metrics.wasmMemoryBytes, 50331648); assert.ok(metrics.maxReadChunkBytes <= 262144);
-  assert.ok(metrics.maxWriteChunkBytes <= 262144); assert.ok(metrics.peakQueuedBytes <= 262144);
+  assert.equal(metrics.wasmMemoryBytes, 0); assert.equal(metrics.peakWasmMemoryBytes, 50331648); assert.equal(metrics.scratchBytes, 0);
+  assert.ok(metrics.maxWriteChunkBytes <= 524288); assert.ok(metrics.peakQueuedBytes <= 524288);
   assert.equal(metrics.peakPendingOperations, 1); assert.equal(metrics.pendingOperations, 0);
+  assert.ok(report.workerEvents.some(event => event.type === "closed" && event.url.includes("conversion.worker")));
+  assert.ok(report.workerEvents.some(event => event.type === "created" && event.url.includes("staged-save.worker")));
   const file = await open(output, "wx");
   try {
     await page.exposeFunction("receiveRuntimeOutput", async chunk => { assert.ok(Array.isArray(chunk) && chunk.length <= 65536); await file.write(Buffer.from(chunk)); });

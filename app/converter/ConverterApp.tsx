@@ -1,6 +1,8 @@
 "use client";
 
 import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";
+import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";
+import { runMpeg2QualificationJob, validateMpeg2QualificationRequest, type Mpeg2QualificationResult } from "../../lib/mpeg2-qualification-job";
 import {
   conversionProfiles,
   detectFormat,
@@ -38,6 +40,7 @@ import {
 } from "../../lib/media-conversion-plan";
 import type {
   ConversionMetrics,
+  StartConversionMessage,
   TestFault,
   WorkerRequest,
   WorkerResponse,
@@ -85,6 +88,7 @@ interface PerformanceWithMemory extends Performance {
 }
 
 interface TestBridge {
+  runQualificationJob: (request: StartConversionMessage) => Promise<Mpeg2QualificationResult>;
   getState: () => {
     jobState: JobState;
     phase: string;
@@ -694,9 +698,9 @@ export function ConverterApp() {
     };
 
     const installWorker = () => {
-      const worker = new Worker(
-        new URL("../../workers/conversion.worker.ts", import.meta.url),
-        { name: "within-conversion" },
+      const worker = createStagedWorkerCoordinator(
+        () => new Worker(new URL("../../workers/conversion.worker.ts", import.meta.url), { name: "within-conversion" }),
+        () => new Worker(new URL("../../workers/staged-save.worker.ts", import.meta.url), { name: "within-final-save" }),
       );
       workerRef.current = worker;
       worker.onmessage = async (event: MessageEvent<WorkerResponse>) => {
@@ -972,7 +976,28 @@ export function ConverterApp() {
 
   useEffect(() => {
     if (!testMode) return;
+    const lifetime = new AbortController();
     window.__WITHIN_TEST__ = {
+      runQualificationJob: async request => {
+        validateMpeg2QualificationRequest(request);
+        const worker = workerRef.current;
+        if (!worker || jobIdRef.current || activeBatchRef.current || testBridgeStateRef.current?.workerStatus !== "ready") {
+          throw new Error("The application conversion lifecycle is not ready.");
+        }
+        jobIdRef.current = request.jobId;
+        activeOpfsNameRef.current = request.destination.mode === "staged-handle" ? request.destination.stagingName : null;
+        cancellationSignalRef.current = new Int32Array(request.cancellationBuffer!);
+        setJobState("running"); setError(null); setWarnings([]); setMetrics({ ...EMPTY_METRICS });
+        setPhase("Starting MPEG-2 qualification");
+        try { return await runMpeg2QualificationJob(worker, request, lifetime.signal); }
+        catch (error) {
+          if (jobIdRef.current === request.jobId) {
+            jobIdRef.current = null; activeOpfsNameRef.current = null; cancellationSignalRef.current = null;
+            setJobState("error"); setError(error instanceof Error ? error.message : String(error));
+          }
+          throw error;
+        }
+      },
       getState: () => {
         const state = testBridgeStateRef.current;
         if (!state) throw new Error("Test bridge state is unavailable.");
@@ -980,6 +1005,7 @@ export function ConverterApp() {
       },
     };
     return () => {
+      lifetime.abort(new DOMException("Qualification view closed", "AbortError"));
       delete window.__WITHIN_TEST__;
     };
   }, [testMode]);
@@ -1143,6 +1169,7 @@ export function ConverterApp() {
   };
 
   const startConversion = async () => {
+    if (jobIdRef.current || activeBatchRef.current) return;
     const worker = workerRef.current;
     if (!file || !selectedProfile || !worker || !beginBatchItemRef.current) return;
     const files = batchFiles.length ? batchFiles : [file];
@@ -1197,6 +1224,9 @@ export function ConverterApp() {
       index: 0,
       opfsNames: [],
     };
+    // Destination preflight above awaits browser APIs. Another start may have
+    // acquired this lifecycle while those checks were pending.
+    if (jobIdRef.current || activeBatchRef.current || workerRef.current !== worker) return;
     activeBatchRef.current = batch;
     setWarnings([]);
     setOpfsNames([]);

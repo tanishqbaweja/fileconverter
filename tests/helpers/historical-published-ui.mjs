@@ -23,14 +23,25 @@ export async function readPreCatalogueUi(file) {
   return source.toString("utf8");
 }
 
-// Explicit adapter for historical evidence tests: only the three immutable UI
-// preimages above are archived. All reports/native assets/other source pins keep
+export async function readPreMpeg2JobWorker() {
+  const archive = JSON.parse(await readFile(new URL("../../fixtures/source/pre-mpeg2-job-worker-2026-10-21.json", import.meta.url), "utf8"));
+  const hash = "6349cbe78fe0c3ece7c7f285a4eb1f8b6a09155ab9a9f44319f9d12566791d68";
+  assert.equal(archive.schemaVersion, 1); assert.equal(archive.path, "workers/conversion.worker.ts");
+  assert.equal(archive.bytes, 168379); assert.equal(archive.sha256, hash);
+  const compressed = Buffer.from(archive.gzipBase64, "base64"); assert.ok(compressed.length <= 65536);
+  const source = gunzipSync(compressed, { maxOutputLength: 262144 });
+  assert.equal(source.length, archive.bytes); assert.equal(createHash("sha256").update(source).digest("hex"), hash);
+  return source.toString("utf8");
+}
+
+// Explicit adapter for historical evidence tests: the three immutable UI
+// preimages and the exact pre-MPEG2 job worker are archived. Other source pins keep
 // their original filesystem reads and assertions. Never use for live acceptance.
 export async function readHistoricalUiOrArtifact(file, options) {
   const filePath = file instanceof URL ? fileURLToPath(file) : typeof file === "string" ? path.resolve(file) : null;
   const relative = filePath && path.relative(path.resolve(import.meta.dirname, "../.."), filePath).replaceAll("\\", "/");
-  if (!pins.has(relative)) return readFile(file, options);
-  const bytes = Buffer.from(await readPreCatalogueUi(relative));
+  if (!pins.has(relative) && relative !== "workers/conversion.worker.ts") return readFile(file, options);
+  const bytes = Buffer.from(relative === "workers/conversion.worker.ts" ? await readPreMpeg2JobWorker() : await readPreCatalogueUi(relative));
   const encoding = typeof options === "string" ? options : options?.encoding;
   return encoding ? bytes.toString(encoding) : bytes;
 }

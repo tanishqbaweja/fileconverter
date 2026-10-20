@@ -1,5 +1,48 @@
 # Remaining work audit
 
+## 2026-10-21 - Actual MPEG-2 backend job/lifecycle integrated; memory gate still FAILS
+
+The main conversion worker now dispatches the explicit unpublished MPEG-2 job,
+inspects source duration, estimates scratch from source bytes plus selected4Mbps
+video with planning headroom, and lazily loads its canonical JSPI factories.
+The app now owns the real conversion/save lifecycle through the existing
+coordinator. Only a fully closed, exact job-owned stage crosses to the Wasm-free
+512KiB saver after codec termination. No public selector/registry/engine added.
+Localhost qualification uses the same app worker/progress/terminal/cleanup path;
+the standalone fixture worker is no longer used by this smoke. This closes that
+specific backend integration gap, NOT final UI planner/settings/preservation.
+
+One genuine production-browser job passed independent correctness:585266B,
+96 MPEG-2 frames,full decode,SSIM.985963, original AAC packets/title/language,
+64KiB native I/O/queue and one pending write. Browser events demonstrate codec
+close before saver creation/closure; completion has scratch/Wasm0,peak Wasm48MiB.
+BUT whole-tree memory still FAILS352.19921875MiB at unchanged250. Loaded-phase
+peak also exceeds250 before encoding. Process types except browser are unknown;
+no allocation-source, GPU attribution, memory optimization or speed gain claimed.
+Do not rerun unchanged conversions until green. Next add actual typed process/
+realm attribution and isolate observer overhead without changing the baseline,
+omitting processes, lowering quality or weakening any acceptance gate.
+
+Real final selector/planner/settings/preservation exclusions, browser failure/
+cancel flows, retained-memory recovery, scaling toward10GB and public qualification
+remain B04 work. B02/B03/B05-B09 remain open; all54 original requirements remain
+authoritative.32npm advisories are not resolved by this integration.
+
+46focused tests/TypeScript,18production privacy/offline tests and whole lint pass.
+Initial450-file whole suite1345pass/5fail/0skip diagnosed three frozen historical
+overlay assertions plus two deliberate staging-source expectation changes.
+Exact archived worker preimage preserves historical hash guards; live copy-loop,
+dispatch, ownership and quota tests read current code.25focused corrected tests
+pass. No test removed/skipped,162private qualifications not counted passed.
+All outputs/scratch/profiles/generated native assets removed; protected original
+size/SHA unchanged and three owned birth identities confirmed absent. Source23
+pins independently matched after failure. See latest `TESTED.md` entry and raw
+`outputs/reports/2026-10-20T19-09-13.576Z-mpeg2-production-runtime.json`.
+Final450-file portable1350PASS/0fail/0skip in77154.8346ms; all235prior hosted
+files remain portable. Exact compact receipt
+`evidence/2026-10-21-mpeg2-job-integration-cycle.json`. Fresh hosted code result
+remains separate; older green CI is not relabelled current.
+
 ## 2026-10-21 - Fresh hosted catalogue verification PASS at a83c3a7
 
 Pushed production-code commit a83c3a74a658d62d4dfc9d8bc1bd03c98aab31ca.

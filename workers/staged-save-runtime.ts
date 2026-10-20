@@ -1,5 +1,5 @@
 import type { ConversionMetrics, WorkerResponse } from "../lib/conversion-protocol";
-import type { StagedSaveRequest } from "../lib/staged-copy-protocol";
+import { isOwnedCompletedStage, type StagedSaveRequest } from "../lib/staged-copy-protocol";
 import { MIN_PROGRESS_INTERVAL_MS } from "../lib/resource-limits";
 
 export async function runStagedSave(message: StagedSaveRequest, options: {
@@ -44,8 +44,7 @@ export async function runStagedSave(message: StagedSaveRequest, options: {
     }
   };
   try {
-    if (message.profileId !== "mkv-to-mp4" || !/^within-stage-mkv-to-mp4-[A-Za-z0-9-]+$/.test(message.stagingName) ||
-      message.stagingName !== `within-stage-mkv-to-mp4-${message.jobId}` || message.stagingName.length > 160)
+    if (!isOwnedCompletedStage(message.profileId, message.stagingName, message.jobId))
       throw new Error("Invalid completed stage");
     stageOwned = true;
     assertActive(); root = await options.storage.getDirectory();

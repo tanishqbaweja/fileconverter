@@ -17,12 +17,12 @@ const metrics = () => ({ inputBytes: 100, outputBytes: 0, queuedBytes: 0, peakQu
   peakPendingOperations: 1, maxReadChunkBytes: 65536, maxWriteChunkBytes: 65536, elapsedMs: 100,
   scratchBytes: 5000000, peakScratchBytes: 5000000, wasmMemoryBytes: 50331648, peakWasmMemoryBytes: 50331648,
   wasmMemories: {}, sharedArrayBufferBytes: 50331652, activeWorkerCount: 1, imageWorkingBytes: 0 });
-function start(jobId = "job-1") {
-  return { type: "start", jobId, profileId: "mkv-to-mp4", file: { size: 100 },
-    destination: { mode: "staged-handle", handle: { chosen: jobId }, stagingName: `within-stage-mkv-to-mp4-${jobId}` },
+function start(jobId = "job-1", profileId = "mkv-to-mp4") {
+  return { type: "start", jobId, profileId, file: { size: 100 },
+    destination: { mode: "staged-handle", handle: { chosen: jobId }, stagingName: `within-stage-${profileId}-${jobId}` },
     cancellationBuffer: new SharedArrayBuffer(4) };
 }
-const handoff = request => ({ type: "staged-copy-handoff", jobId: request.jobId, profileId: "mkv-to-mp4",
+const handoff = request => ({ type: "staged-copy-handoff", jobId: request.jobId, profileId: request.profileId,
   stagingName: request.destination.stagingName, stageClosed: true, jobStartedEpochMs: performance.timeOrigin + performance.now() - 100, metrics: metrics() });
 function fixture(options = {}) {
   const encoders = [], savers = [], events = [], errors = [];
@@ -90,4 +90,23 @@ test("handoff validation preserves exact selected handle and rejects invalid can
   const request = start(), job = { ...request, sourceBytes: request.file.size };
   assert.equal(validateStagedCopyHandoff(handoff(request), job, performance.timeOrigin + performance.now()).handle, request.destination.handle);
   assert.throws(() => validateStagedCopyHandoff(handoff(request), { ...job, cancellationBuffer: new SharedArrayBuffer(8) }, performance.timeOrigin + performance.now()));
+});
+
+test("MPEG-2 owns the exact closed stage and retires the encoder before save; cross-profile and cross-job handoffs fail", () => {
+  for (const terminal of ["complete", "cancelled", "error"]) {
+    const f = fixture(), request = start("mpeg-job", "mkv-to-mp4-mpeg2");
+    f.encoders[0].emit({ type: "ready" }); f.owner.postMessage(request); f.encoders[0].emit(handoff(request));
+    assert.equal(f.encoders[0].terminated, true); f.savers[0].emit({ type: "ready" });
+    assert.equal(f.savers[0].messages[0].profileId, request.profileId);
+    assert.equal(f.savers[0].messages[0].file, undefined);
+    f.savers[0].emit({ type: terminal, jobId: request.jobId, metrics: metrics() });
+    assert.equal(f.events.at(-1).type, terminal); f.owner.terminate();
+  }
+  for (const change of [v => { v.profileId = "mkv-to-mp4"; }, v => { v.stagingName += "-other"; },
+    v => { v.jobId = "other"; }, v => { v.stageClosed = false; }]) {
+    const f = fixture(), request = start("mpeg-job", "mkv-to-mp4-mpeg2");
+    f.encoders[0].emit({ type: "ready" }); f.owner.postMessage(request);
+    const value = handoff(request); change(value); f.encoders[0].emit(value);
+    assert.equal(f.savers.length, 0); assert.equal(f.errors.length, 1); f.owner.terminate();
+  }
 });

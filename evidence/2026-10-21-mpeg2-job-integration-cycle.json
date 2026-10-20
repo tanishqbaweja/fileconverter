@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-21",
+  "status": "backend-integration-progress-memory-failed-not-route-promotion",
+  "scope": "Real production main-worker dispatch, app lifecycle coordinator and closed-stage Wasm-free saver; localhost qualification only.",
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false,
+  "uiPlannerCoverage": false,
+  "largeFileCoverage": false,
+  "speedComparison": false,
+  "implementation": {
+    "profile": "mkv-to-mp4-mpeg2",
+    "published": false,
+    "standaloneWorkerUsed": false,
+    "productionNativeProfile": 40,
+    "nativeFactories": "/engines/mpeg2/decoder.mjs and encoder.mjs, lazy; missing stable JSPI/assets rejected without memory fallback",
+    "quotaEstimate": "ceil(sourceBytes + inspectedDurationSeconds * 4000000 / 8 * 1.25 + 16MiB); estimate not quality/output-size cap",
+    "ownership": "Only exact within-stage-${profileId}-${jobId}; closed stage; original host destination retained; codec terminated before saver created",
+    "save": {
+      "reusableBufferBytes": 524288,
+      "maximumPendingWrites": 1,
+      "currentWasmBytesAtCompletion": 0,
+      "currentScratchBytesAtCompletion": 0,
+      "peakWasmBytes": 50331648
+    },
+    "publicStagingBehavior": "Existing public routes still use their prior inline save; coordinator passes non-handoff routes through.",
+    "qualifier": "Localhost test=1 only, same application worker/job refs/UI progress/terminal cleanup; bounded32 phases; listeners removed after terminal/error/abort.",
+    "startGuards": "Before and after asynchronous destination preflight; prevent duplicate active batch/job or stale worker."
+  },
+  "browser": {
+    "name": "Installed stable Chrome",
+    "version": "155.0.8059.85",
+    "headless": true,
+    "headedCoverage": false
+  },
+  "fixture": {
+    "sourceBytes": 497032,
+    "durationSeconds": 4,
+    "sourceCodec": "hevc",
+    "width": 320,
+    "height": 240,
+    "frames": 96
+  },
+  "output": {
+    "bytes": 585266,
+    "sha256": "a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13",
+    "codec": "mpeg2video",
+    "frames": 96,
+    "fullIndependentNativeDecode": true,
+    "ssim": 0.985963,
+    "audioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+    "titlePreserved": true,
+    "languagePreserved": true,
+    "jobElapsedMs": 732.4699902534485,
+    "jobElapsedScope": "tiny fixture only; not full-file speed or paired performance comparison"
+  },
+  "lifecycleEvents": {
+    "codecClosedAt": "2026-10-20T19:10:31.199Z",
+    "saverCreatedAt": "2026-10-20T19:10:31.207Z",
+    "saverClosedAt": "2026-10-20T19:10:31.233Z"
+  },
+  "bounds": {
+    "nativeReadWriteQueueBytes": 65536,
+    "finalCopyWriteQueueBytes": 524288,
+    "maximumPendingWrites": 1,
+    "forbiddenRequests": 0
+  },
+  "memory": {
+    "status": "FAILED",
+    "limitIncrementalPrivateMiB": 250,
+    "measuredIncrementalPrivateMiB": 352.19921875,
+    "blankPrivateBytes": 234168320,
+    "loadedIdlePrivateBytes": 462520320,
+    "conversionPeakPrivateBytes": 603475968,
+    "conversionPeakRssBytes": 840388608,
+    "loadedPhasePeakIncrementalPrivateMiB": 311.30078125,
+    "intervalMs": 100,
+    "validSamples": 376,
+    "unavailableSamples": 0,
+    "conversionSamples": 7,
+    "blankWindowMs": 8511.5536,
+    "loadedWindowMs": 8402.0657,
+    "allChromiumProcessesIncluded": true,
+    "baseline": "lower stable clean blank from same instance; both observation windows >=8seconds",
+    "nonBrowserProcessTypes": "unknown, not inferred",
+    "largestTwoPeakProcessesPrivateBytes": [
+      235315200,
+      240287744
+    ],
+    "allocationSourceProven": false,
+    "observerOverheadProven": false,
+    "memoryImprovementProven": false
+  },
+  "tests": {
+    "focusedInitial": {
+      "passed": 46,
+      "failed": 0,
+      "skipped": 0
+    },
+    "initialPortable": {
+      "files": 450,
+      "passed": 1345,
+      "failed": 5,
+      "skipped": 0,
+      "report": "outputs/reports/2026-10-21-mpeg2-job-integration-units.json"
+    },
+    "initialFailures": "Three historical overlay assertions read changed worker; two live staging source patterns needed explicit new profile/quota override. Historical SHA guards retained with verified immutable original; live checks remain current.",
+    "focusedCorrected": {
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0
+    },
+    "finalPortable": {
+      "files": 450,
+      "passed": 1350,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 77154.8346,
+      "report": "outputs/reports/2026-10-21-mpeg2-job-integration-final-units.json"
+    },
+    "qualificationFiles": 162,
+    "qualificationStatus": "not executed or implied passed",
+    "protectedPriorHostedFilesKeptPortable": 235,
+    "wholeLint": "passed",
+    "wholeTypeScript": "passed",
+    "productionBuild": "passed in runtime smoke and privacy webserver setup",
+    "privacyOffline": {
+      "headless": true,
+      "passed": 18,
+      "duration": "1.1m"
+    },
+    "registry": {
+      "publicPassedProfiles": 405,
+      "compactEntries": 405,
+      "pendingOrNonpassingPublic": 0,
+      "pdfFormats": 0
+    },
+    "catalogue": {
+      "viewports": [
+        [
+          1280,
+          720
+        ],
+        [
+          390,
+          844
+        ]
+      ],
+      "routesPerCase": 405,
+      "pagesPerCase": 17,
+      "maxMounted": 24,
+      "addedNodes": 0,
+      "removedLastPage": 3,
+      "keyboardSearchNoOverflow": true,
+      "screenshotsVisuallyReviewedHeadlessly": true
+    },
+    "hostedCi": "Fresh run will be recorded separately for pushed code; older green CI is not reused for these code changes."
+  },
+  "evidence": {
+    "rawReport": "outputs/reports/2026-10-20T19-09-13.576Z-mpeg2-production-runtime.json",
+    "rawReportSha256": "e68be26499d2af5e73a1abaf1faa1cee39ff6c6bb5aa74c8930945198372c13a",
+    "failureTrace": "output\\playwright\\2026-10-20T19-09-13.576Z-mpeg2-runtime-failure.zip",
+    "traceBytes": 9997194,
+    "traceSha256": "0bd2034cc4ccab75a2525564980f84269a91aa4e1366b7ff4c553f188b3d116c",
+    "postRunSourceAudit": {
+      "count": 23,
+      "mismatches": 0,
+      "method": "independent post-run Get-FileHash audit; main smoke fails memory before its final source-check block"
+    }
+  },
+  "executedSourcePins": {
+    "workers/media-remux.ts": "30849a702aa3e62472a00a0aa95df4fd7fa9cd35aae1b8d66488911c799a7b82",
+    "workers/mpeg2-split-runtime.ts": "fc1211af94be388fa847e2cb34aad8b91b6689f37501edbee9c5e1c220d9f7d4",
+    "workers/random-access-destination.ts": "f46a4db401daabeb40a0b9eaa9feb256b623c21d2a7f41af549b6797842b4375",
+    "workers/conversion.worker.ts": "9f0aa2947adc1189b4929cefe69c165bd7acde81400c0283f1470c403dbd23cc",
+    "workers/mpeg2-core-loader.ts": "6ea5efc0e5871c242a043a970fade5da2ca6d97524c9060b172e342fd0390c20",
+    "workers/staged-save.worker.ts": "fe8a83566f83026cec5558b11936d5fbef65ea673cb8edd62919f0b905ac60b0",
+    "workers/staged-save-runtime.ts": "436ea291d584e59c4f10be37f43e1c4b5e17487b318cb5fe953f0794c44f8f5f",
+    "lib/staged-worker-coordinator.ts": "1770fe50692b80a9c51c53ad20eb8e12affaec53ca126751437c092812223d80",
+    "lib/staged-copy-protocol.ts": "35c6a5092802f66c6e298e7787a45acb81b1052e0d6b27a4d99687d3f00577d8",
+    "lib/mpeg2-stage-policy.ts": "b41887d215cc7eaed2443e65d25f72c6a9e2b64d7bb47a808bdc0d0540c01592",
+    "lib/mpeg2-qualification-job.ts": "b95f7f7c41d6ce16b82e80dbd868095ccff3a2e3e3e68dd44338f9ea8433c58e",
+    "scripts/test-mpeg2-production-runtime.mjs": "54025c068efd6d247740a40973568ee486bf3c6a823b981a93d709b1fd5e919d",
+    "scripts/lib/production-catalogue-check.mjs": "58c1857d62cc3795b44c44308389ef2889eaf742e8893453def9c68d7edd8876",
+    "app/converter/ConverterApp.tsx": "24db0e1727ea6d1cc0056f76e738d7fa66560ae0369e7e5c8fbdcc362545664c",
+    "app/converter/PublishedFormatsCatalogue.tsx": "84fa69d5ef72cd1dd09572df7694a57aeab3ffa66e65beaaedbee922c6f10bb4",
+    "app/globals.css": "8d3a0ca65a3b8918628939b36ade8b5b99b91e2bd03f83e1f955d4cb8e3a8709",
+    "lib/published-catalogue.ts": "54369ffd6b233df781d45c03f398200b7dd81af1511e5d04674a5e02d0e6452f",
+    "lib/capability-registry.ts": "c44657e8d266e5bb9175afb4fabe6a5d0be77893f8ab64c457b74b012f257528",
+    "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f",
+    "scripts/lib/mpeg2-split-frame-bridge.mjs": "44f52d150de0155643e632a516ae4547a1652e2c5de08e41a9d57df70f506c0a",
+    "scripts/lib/mpeg2-split-frame-layout.mjs": "0fb7487948b750e9674cf3292170dc7e2462dd6f1e7eabc77502200dc3088fd7",
+    "scripts/lib/mpeg2-split-frame-properties.mjs": "6c57b7c38eadb5638ee2a17bd0d1327de6d7561a4bb9614929bd8ff06b102a94",
+    "scripts/lib/mpeg2-split-packet-bridge.mjs": "e19260e92721163370c5d8a8248f2d58f96e57f14d0b7e5496c566f82a98b55d"
+  },
+  "cleanup": {
+    "disposableOutputsFixturesProfilesScratchRemoved": true,
+    "generatedNativeAssetsRemoved": true,
+    "privacyProfileAbsent": true,
+    "ownedProcessRoots": [
+      {
+        "identity": {
+          "pid": 45008,
+          "parentPid": 33476,
+          "createdAt": "2026-10-20T19:09:45.757755Z"
+        },
+        "status": "owned-identity-absent",
+        "pidReused": false
+      },
+      {
+        "identity": {
+          "pid": 41512,
+          "parentPid": 33476,
+          "createdAt": "2026-10-20T19:09:48.58296Z"
+        },
+        "status": "owned-identity-absent",
+        "pidReused": false
+      },
+      {
+        "identity": {
+          "pid": 24692,
+          "parentPid": 33476,
+          "createdAt": "2026-10-20T19:09:49.654374Z"
+        },
+        "status": "owned-identity-absent",
+        "pidReused": false
+      }
+    ],
+    "protectedOriginal": {
+      "path": "test.mkv",
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+      "unchanged": true
+    },
+    "failureTraceAndScreenshotsRetainedInsideRepository": true
+  },
+  "remaining": [
+    "Final MPEG-2 selector/planner/settings/preservation integration and browser failure/cancel cases",
+    "Typed full-tree process/realm allocation attribution, observer effects and retained-cleanup recovery",
+    "New-route valid scaling toward10GB and all original promotion gates",
+    "All other open B02-B09 requirements, including missing codecs and32 dependency advisories"
+  ],
+  "nextAction": "Get real typed process/realm attribution and distinguish loaded-site/observer allocations before another memory acceptance run. Do not repeat unchanged long/full/cold/LTO tests."
+}

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readPreMpeg2JobWorker } from "./helpers/historical-published-ui.mjs";
 import test from "node:test";
 import path from "node:path";
 import ts from "typescript";
@@ -66,16 +66,16 @@ test("empty copy closes without a retained writer and all out-of-bound writes fa
   for (const size of [-1, NaN, Infinity, 1.5]) await assert.rejects(writer.truncate(size), /truncate/);
   await writer.truncate(0); await writer.close(); assert.equal(writer.writerMetrics().locks, 0); assert.equal(target.stats().locked, false);
 });
-test("private production worker has only three reversible sink-binding changes, unchanged copy loops and codec heaps", async () => {
-  const source = await readFile(new URL("../workers/conversion.worker.ts", import.meta.url), "utf8"), recipe = makeExclusiveStageWorker(source);
+test("historical private worker has only three reversible sink-binding changes, unchanged copy loops and codec heaps", async () => {
+  const source = await readPreMpeg2JobWorker(), recipe = makeExclusiveStageWorker(source);
   let restored = recipe.generated; for (const [before, after] of recipe.edits.toReversed()) restored = restored.replace(after, before);
   assert.equal(restored, source); assert.equal(recipe.edits.length, 3); assert.equal(recipe.fixedCopyBufferBytes, 524288);
   assert.equal(recipe.sourceReadWriteAndProgressLoopsChanged, false); assert.equal(recipe.primaryMemoryAcceptance, false);
   assert.throws(() => makeExclusiveStageWorker(source + "\n"));
 });
-test("changed production worker typechecks in the real project and bundles without writing private assets", async () => {
+test("historical worker overlay typechecks in the real project and bundles without writing private assets", async () => {
   const root = path.resolve(import.meta.dirname, ".."), filename = path.join(root, "workers/conversion.worker.ts");
-  const source = await readFile(filename, "utf8"), recipe = makeExclusiveStageWorker(source);
+  const source = await readPreMpeg2JobWorker(), recipe = makeExclusiveStageWorker(source);
   const configFile = ts.readConfigFile(path.join(root, "tsconfig.json"), ts.sys.readFile); assert.equal(configFile.error, undefined);
   const config = ts.parseJsonConfigFileContent(configFile.config, ts.sys, root, undefined, path.join(root, "tsconfig.json")), host = ts.createCompilerHost(config.options);
   const originalRead = host.readFile.bind(host);

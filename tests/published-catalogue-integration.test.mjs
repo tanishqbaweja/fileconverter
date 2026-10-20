@@ -24,11 +24,21 @@ const requireJsx = name => { assert.equal(name, "react/jsx-runtime"); return jsx
 const articleHtml = html => (html.match(/<article\b[^>]*>[\s\S]*?<\/article>/g) ?? []).map(card =>
   card.replace(/ data-profile-id="[^"]+"/, "").replaceAll("<!-- -->", ""));
 
-test("current application mounts the bounded component without changing conversion controls, handlers or lifecycle", () => {
+test("current application mounts the bounded component with explicit lifecycle and localhost qualification integration", () => {
   const begin = oldApp.indexOf("  // The compiled registry is immutable; progress must not rebuild its static display.");
   const end = oldApp.indexOf("\n  return (\n    <main>", begin);
   assert.ok(begin > 0 && end > begin);
   const restored = app.replace('import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";\n', "")
+    .replace('import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";\n', "")
+    .replace('import { runMpeg2QualificationJob, validateMpeg2QualificationRequest, type Mpeg2QualificationResult } from "../../lib/mpeg2-qualification-job";\n', "")
+    .replace('  StartConversionMessage,\n', "")
+    .replace('  runQualificationJob: (request: StartConversionMessage) => Promise<Mpeg2QualificationResult>;\n', "")
+    .replace('    const lifetime = new AbortController();\n', "")
+    .replace(/      runQualificationJob: async request => {[\s\S]*?      },\n(?=      getState:)/, "")
+    .replace('      lifetime.abort(new DOMException("Qualification view closed", "AbortError"));\n', "")
+    .replace('      const worker = createStagedWorkerCoordinator(\n        () => new Worker(new URL("../../workers/conversion.worker.ts", import.meta.url), { name: "within-conversion" }),\n        () => new Worker(new URL("../../workers/staged-save.worker.ts", import.meta.url), { name: "within-final-save" }),\n      );', '      const worker = new Worker(\n        new URL("../../workers/conversion.worker.ts", import.meta.url),\n        { name: "within-conversion" },\n      );')
+    .replace('    if (jobIdRef.current || activeBatchRef.current) return;\n', "")
+    .replace('    // Destination preflight above awaits browser APIs. Another start may have\n    // acquired this lifecycle while those checks were pending.\n    if (jobIdRef.current || activeBatchRef.current || workerRef.current !== worker) return;\n', "")
     .replace("  const publishedFormatsSection = <PublishedFormatsCatalogue />;\n", oldApp.slice(begin, end));
   assert.equal(restored, oldApp);
   assert.equal(app.split("<PublishedFormatsCatalogue />").length, 2);

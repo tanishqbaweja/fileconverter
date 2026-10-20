@@ -1,9 +1,19 @@
 import type { ConversionMetrics, StartConversionMessage, TestFault } from "./conversion-protocol";
+import { MPEG2_JOB_PROFILE } from "./mpeg2-stage-policy";
+
+export type StagedCopyProfile = "mkv-to-mp4" | typeof MPEG2_JOB_PROFILE;
+
+export function isOwnedCompletedStage(profileId: string, stagingName: string, jobId: string): boolean {
+  return (profileId === "mkv-to-mp4" || profileId === MPEG2_JOB_PROFILE) &&
+    typeof jobId === "string" && /^[A-Za-z0-9-]+$/.test(jobId) &&
+    typeof stagingName === "string" && stagingName.length <= 160 &&
+    stagingName === `within-stage-${profileId}-${jobId}`;
+}
 
 export interface StagedCopyHandoff {
   type: "staged-copy-handoff";
   jobId: string;
-  profileId: "mkv-to-mp4";
+  profileId: StagedCopyProfile;
   stagingName: string;
   stageClosed: true;
   jobStartedEpochMs: number;
@@ -13,7 +23,7 @@ export interface StagedCopyHandoff {
 export interface StagedSaveRequest {
   type: "copy-staged";
   jobId: string;
-  profileId: "mkv-to-mp4";
+  profileId: StagedCopyProfile;
   stagingName: string;
   handle: FileSystemFileHandle;
   jobStartedEpochMs: number;
@@ -43,10 +53,9 @@ const numericFields = new Set([
 export function validateStagedCopyHandoff(value: unknown, job: StagedJobIdentity, nowEpochMs: number): StagedSaveRequest {
   if (!value || typeof value !== "object" || !Number.isFinite(nowEpochMs)) invalid();
   const handoff = value as StagedCopyHandoff;
-  if (handoff.type !== "staged-copy-handoff" || handoff.jobId !== job.jobId || handoff.profileId !== "mkv-to-mp4" ||
+  if (handoff.type !== "staged-copy-handoff" || handoff.jobId !== job.jobId ||
     job.profileId !== handoff.profileId || job.destination.mode !== "staged-handle" || handoff.stageClosed !== true ||
-    handoff.stagingName !== job.destination.stagingName || handoff.stagingName.length > 160 ||
-    !/^within-stage-mkv-to-mp4-[A-Za-z0-9-]+$/.test(handoff.stagingName) ||
+    handoff.stagingName !== job.destination.stagingName || !isOwnedCompletedStage(handoff.profileId, handoff.stagingName, handoff.jobId) ||
     !Number.isFinite(handoff.jobStartedEpochMs) || handoff.jobStartedEpochMs <= 0 || handoff.jobStartedEpochMs > nowEpochMs + 1000)
     invalid();
   const original = handoff.metrics;
@@ -66,7 +75,7 @@ export function validateStagedCopyHandoff(value: unknown, job: StagedJobIdentity
     invalid();
   if (job.cancellationBuffer && job.cancellationBuffer.byteLength !== 4) invalid();
   return {
-    type: "copy-staged", jobId: job.jobId, profileId: "mkv-to-mp4", stagingName: handoff.stagingName,
+    type: "copy-staged", jobId: job.jobId, profileId: handoff.profileId, stagingName: handoff.stagingName,
     // Never trust a destination supplied by the retiring worker: retain the
     // original user-selected handle from the host's start request instead.
     handle: job.destination.handle, jobStartedEpochMs: handoff.jobStartedEpochMs,
