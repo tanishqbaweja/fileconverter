@@ -44,6 +44,13 @@ completion of the live test alone cannot close this project.
 - The CI workflow calls `npm test`, and `test:unit` currently selects
   `tests/*.test.mjs`, including those tests. The latest hosted CI result inspected
   is from October 7, not the current code. Therefore current-commit CI is open.
+- Actual isolated tracked checkout5c4946c: build passes;596unit files/1770cases/
+  1564pass/204fail/2skip. Per-file inventory and causes:
+  `evidence/2026-10-20-unit-portability-triage.json`. Worker lifecycle omission
+  fixed and three dependency-resolution tests corrected;33focused tests pass.
+  Default suite still unchanged/failing on private/historical qualification
+  prerequisites. Both owned temporary checkout attempts removed. This is local
+  Windows/ancestor-dependency evidence, not hosted Linux or npm-ci acceptance.
 - The reproducibility manifest currently covers **12** published engine
   directories. That inventory check is not an actual 12-engine rebuild result.
   Seven paths under `app/`, `lib/` and `workers/` differ from the inspected hosted

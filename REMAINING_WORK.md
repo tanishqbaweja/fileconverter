@@ -1,5 +1,39 @@
 # Remaining work audit
 
+## 2026-10-20 - Actual clean-checkout unit inventory; worker coverage regression fixed
+
+B01 now has a real isolated tracked checkout result, not just a missing-work
+hook: production build PASS; default596-file unit glob1770tests/1564pass/204fail/
+2skip,158failing files,106829.3361ms. Receipt
+`evidence/2026-10-20T10-38-34-637Z-clean-checkout-unit-probe.json` hashes the
+complete bounded per-file inventory. Checkout and runtime removed in finally;
+installed ancestor Node dependencies reused, so not npm-ci/hosted Linux proof.
+No conversion, original copy, browser launch, suite exclusion or new skip.
+
+Triage `evidence/2026-10-20-unit-portability-triage.json` identifies missing private
+native artifacts, historical absolute-root and source-byte bindings, three
+dependency-layout assumptions, stale actual Chrome pin and genuine worker-audit
+omissions. Original working package-lock391971B/11217CRLF vs committed380754B/LF
+and vite1756B/59CRLF vs1697B/LF explain many first source-hash failures. Do not
+rewrite historical receipts/hashes or rerun accepted conversions to conceal
+serialization differences. Three module-level failures remain recorded too.
+
+Only `worker-lifecycle.test.mjs` among the158 failed files existed at last
+inspected hosted-CI commit. Fixed it to require exact34-file inventory, staged
+save active/cancel state, entrypoint/finally/cancellation/queue/error/cleanup
+contracts. Worker/runtime/coordinator23focused tests PASS/0skip/11481.8903ms.
+Fixed three discovery tests to resolve installed Playwright package instead of
+assuming checkout/node_modules; all original discovery/quality/bitrate/recovery
+assertions unchanged. Those plus actual reporter smoke10PASS/0skip/5985.1899ms,
+eight-file lint clean. Reporter smoke proves intentional failure exits1 and skips
+remain skips. Initial probe reporter-URL error corrected before baseline tests;
+both owned probe checkouts removed. No production/native asset changed.
+
+B01 remains OPEN: next explicitly separate historical/private qualification
+prerequisites from portable unit assertions, preserve every public gate and
+private check, then verify documented default on committed clean checkout and
+hosted CI. No blanket failure skip; default command is still unchanged/failing.
+
 ## 2026-10-20 - Independent cold three-full repeat CLOSED; no unchanged rerun
 
 The owned session finished normally at09:36:38Z; no conversion remains live.
@@ -13545,7 +13579,7 @@ zero artifacts. This includes the corrected non-media inspection disclosure.
 | T-07 | Three-run same-session repeatability, cleanup recovery, clean-session repeats, and failure artifact retention for major profiles | Partially implemented | New private JSPI MPEG-2 now has two independently audited fresh sessions with three validated full originals each; all six identical outputs below250MiB. Exact evidence: `evidence/2026-10-20-jspi-cold-repeat-independent-analysis.json` and `evidence/2026-10-20-jspi-cold-repeat-cycle.json`. Null sample failures and bounded recovery drift explicitly retained; owned outputs/scratch/births absent. Historical public evidence retained within its actual scope. | Do not repeat unchanged cold/full qualification. Close new-route scaling, production topology/integration and remaining cleanup-retention coverage. Private cold repeat does not certify every public profile on the final release. |
 | T-08 | Timestamped JSON, CSV, and readable HTML memory reports with graphs                                                                                                                         | Verified complete                                                                                    | `scripts/memory-profile.mjs` and compact retained reports                                                                                                                                                                                                                                                                                                                                                                                                                  | Preserve compact reports while deleting payloads.                                                                                                                    |
 | T-09 | Every published binary is pinned, reproducible, and auditable from source                                                                                                                   | Verified complete                                                                                    | `scripts/engine-reproducibility-manifest.mjs` audits all 11 published engine directories and supplies an executable exact no-Docker recipe for each. Hosted run `33297796443`, TIFF rerun `33298467168`, and clean AVIF-encoder publication run `33311548748` prove every directory against pinned Emscripten 6.0.4; `evidence/non-docker-all-engine-repro-2026-08-30.json` records job IDs, sources, hashes, AVIF cache diagnosis, browser re-certification, and cleanup. | Keep each fail-independent exact comparison mandatory whenever its source or published bytes change.                                                                 |
-| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | Historical hosted CI `37684741516` passed at `bb45f39bd6081cf5fe8598dec43a080fedd4ef3b` on October7; not current HEAD. The default unit glob includes private composition tests requiring untracked work artifacts. Controlled probe reproduces all four failures: `evidence/2026-10-20-private-artifact-portability.json`. Published-engine evidence reusable only for matching bytes/sources. Cold session now terminal and independently sealed; executed package source retained in its archive. | Restore explicit reproducible clean-checkout test/prerequisite contract without dropping public gates, then verify documented default command and hosted release commit. See RELEASE_BLOCKERS.md B01/B08. |
+| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | Historical hosted CI `37684741516` passed at `bb45f39bd6081cf5fe8598dec43a080fedd4ef3b` on October7, not current HEAD. Actual clean committed checkout build passes; default unit suite1770tests/1564pass/204fail/2skip at5c4946c. Exact per-file inventory/causes and four focused portability/worker corrections: `evidence/2026-10-20-unit-portability-triage.json`. All33focused corrected tests pass; unchanged default remains failing on historical/private prerequisites. Published-engine evidence reusable only for matching bytes/sources. | Close explicit portable/private test prerequisites without hiding public regressions or skipping qualifications. Verify documented default on committed clean checkout and hosted release commit. B01/B08 remain open. |
 | T-11 | Detailed README covers architecture, copies, limits, storage, privacy, compatibility, fidelity, licensing, builds, tests, and measured results                                              | Verified complete for current implementation                                                         | `README.md` documents all named areas and links the generated route ledger                                                                                                                                                                                                                                                                                                                                                                                                 | Update it whenever remaining work changes behavior or evidence.                                                                                                      |
 
 | T-12 | Broader headed-browser review across every major category and important failure flow | Verified complete for representative required categories/flows | The September headed audits plus `evidence/headed-category-expansion-2026-10-03.json` cover media, audio, static/animated image, archive, compression, data, office/document, ebook and subtitles; batch, direct destination, cancellation, write failure, quota, permission, reload, cleanup and keyboard review. Seven added success flows include normal-page DOCX/GZIP destination selection and independent Unicode output validation. Chrome 154 passed protected 2.96 GB source cancellation with staging/partial-output deletion. The audit found and fixed stale previous-job warnings; the focused regression and all 18 privacy/offline cases passed. | Maintain representative headed review as UI/engine families change. Native OS picker dialogs and exhaustive per-profile manual review are not claimed; independent validators and process-tree memory gates remain separate. |

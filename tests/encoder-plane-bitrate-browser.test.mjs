@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { createRequire } from "node:module";
 import test from "node:test";
 import ts from "typescript";
 import { FROZEN_BROWSER_SOURCES } from "../scripts/lib/encoder-plane-browser-recipe.mjs";
@@ -40,7 +41,7 @@ test("actual Playwright discovery selects one real HEVC direct case per bitrate,
       const recipe = makeEncoderPlaneBitrateBrowserRecipe(sources, root, runtime.directory, "2026-10-11T00-00-00-000Z", branch, build, bitRate);
       await writeFile(path.join(runtime.directory, "candidate.spec.ts"), recipe.spec);
       const config = path.join(runtime.directory, "playwright.config.mjs"); await writeFile(config, recipe.config);
-      const listed = spawnSync(process.execPath, [path.join(root, "node_modules/@playwright/test/cli.js"), "test", "--config", config, "--list"],
+      const listed = spawnSync(process.execPath, [createRequire(import.meta.url).resolve("@playwright/test/cli"), "test", "--config", config, "--list"],
         { cwd: root, env: runtime.env, windowsHide: true, encoding: "utf8", timeout: 30000, maxBuffer: 1048576 });
       assert.equal(listed.status, 0, listed.stderr); assert.match(listed.stdout, /Total: 1 test in 1 file/);
       assert.match(listed.stdout, /private split MPEG2 hevc to mp4 via direct:/);

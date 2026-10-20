@@ -1,0 +1,2851 @@
+{
+  "recordedAt": "2026-10-20T10:40:37.226Z",
+  "commit": "5c4946cc9f5dc44be7f94bb9480118e563d363a7",
+  "committedPackageSha256": "372834e2da5d1916d61f6a68ac500a1ed72d6890c2a36058243060a41490e664",
+  "defaultUnitCommandUnchanged": true,
+  "actualTrackedCheckoutWithoutUntrackedWorkOrTestMkv": true,
+  "dependenciesReusedFromAncestor": true,
+  "npmCiOrHostedLinuxResult": false,
+  "productionBuildPassed": true,
+  "unitExit": {
+    "code": 1,
+    "signal": null
+  },
+  "inventory": {
+    "path": "outputs/reports/2026-10-20T10-38-34-637Z-clean-checkout-unit.json",
+    "sha256": "3fc026a4211b63f8d2058fbf278908c706cc7dd94efd5cd3e4e722e9ba3aaaeb"
+  },
+  "failingFiles": [
+    {
+      "file": "tests/aiff-id3-direct-diagnostic-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Frozen executed launcher/driver/source hashes, hidden/headless roles, lossless archives and finally cleanup match actual terminal",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n... Skipped lines\n\n  '// ONE explicit three-repeat private stress session; no automatic retry/publication.\\n' +\n    'import assert from \"node:assert/strict\";\\n' +\n    'import { execFile, spawn } from \"node:child_process\";\\n' +\n    'import { createHash } from \"node:crypto\";\\n' +\n    'import { constants, createReadStream } from \"node:fs\";\\n' +\n...\n    'import { gzipSync, gunzipSync } from \"node:zlib\";\\n' +\n+   'import { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n+   'import { inspectStressHostMemory } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/host-memory-preflight.mjs\";\\n' +\n+   'import { queryProcessIdentity, observeOwnedProcessExit } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-process-exit-observation.mjs\";\\n' +\n+   'import { makeAiffId3DiagnosticRecipe as makeAiffId3StressRecipe } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/aiff-id3-direct-diagnostic-recipe.mjs\";\\n' +\n+   'const root = \"H:\\\\\\\\Github Repositories\\\\\\\\fileconverter\", mode = process.argv[2];\\n' +\n-   'import { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n-   'import { inspectStressHostMemory } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/host-memory-preflight.mjs\";\\n' +\n-   'import { queryProcessIdentity, observeOwnedProcessExit } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/owned-process-exit-observation.mjs\";\\n' +\n-   'import { makeAiffId3DiagnosticRecipe as makeAiffId3StressRecipe } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/aiff-id3-direct-diagnostic-recipe.mjs\";\\n' +\n-   'const root = \"H:\\\\\\\\Github Repositories\\\\\\\\fileconverter\\\\\\\\work"
+        }
+      ]
+    },
+    {
+      "file": "tests/aiff-id3-native-attribution-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Actual native launcher/driver/source archives match execution; hidden/headless helpers absent, normal assets restored and disposable local data gone",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/alignment16-control-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual new-binary fatal joins111 current/pre/post/preimages, fresh function bodies/PCs, map and export-only code equality",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/alignment16-first-malloc-capacity.test.mjs",
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual first request normalizes399392B and cannot fit any captured free chunk or even optimistic top+tail",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-encoder-planes-38044000567\\encoder-plane-get-buffer.c'"
+        },
+        {
+          "name": "capacity rejects old8-byte normalization, fallback failure, changed field/PC/request and wrong source",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-encoder-planes-38044000567\\encoder-plane-get-buffer.c'"
+        }
+      ]
+    },
+    {
+      "file": "tests/alignment16-full-preparation-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual preparation retains all326 current/pre/post/preimages, exact changed candidate and unchanged evidence caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/alignment16-full-terminal-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual terminal audit joins326 current/pre/post/preimages and both byte-exact audit sources",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/alignment16-full.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual146 browser witness and all historical256 sources qualify the new full driver within unchanged layered caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/alignment16-media-evidence.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual media receipt joins all146 current/pre/post/source bytes and actual new-core/plane-encoder generated adapters",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/alignment16-media.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "compound actual decoder/plane encoder, exact source closure, observer adapter and three-case recipe retain gates and finally cleanup",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/allocation-attempt-abort-control-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual fatal joins qualified binary/map/source preimages and byte-exact non-export sections",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/allocation-attempt-abort-control.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual current-core export-only control and generated headless driver retain original non-export/IO/privacy/cleanup gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-allocation-attempt-38138821153\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/allocation-attempt-full-driver.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "new full driver reverses EXACT executed old driver, retains every original stress/quality/memory gate, and hashes all306 layered files",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Historical driver belongs to this repository"
+        }
+      ]
+    },
+    {
+      "file": "tests/allocation-attempt-full-preflight-evidence.test.mjs",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual changed full launch was held by the unchanged host virtual-memory gate BEFORE conversion, source reads, scratch creation or UI staging",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/allocation-attempt-full-preparation-evidence.test.mjs",
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual PREPARATION ONLY retains312 exact current/pre/post/preimage pins and all historical256, without inventing a full conversion",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual preparation cleanup and original whole-file checks passed; no full/browser/speed/memory acceptance inferred",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/allocation-attempt-media-evidence.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual media receipt joins all136 current/pre/post/source bytes and actual new-core/plane-encoder generated adapters",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/allocation-attempt-media.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "compound actual decoder/plane encoder, exact source closure, observer adapter and three-case recipe retain gates and finally cleanup",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/asyncify-storage-browser-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual157-source closure and generated glue match current pre/post bytes; fixed native engines and stack unchanged",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/asyncify-storage-full-preparation-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual365-source full preparation retains every346 previous source, exact candidate and original stress gates within unchanged caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/asyncify-storage-full-terminal-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "365 current/executed pre/post sources join, independent protected whole SHA retained,26 owned birth identities absent and scratch removed",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/asyncify-storage-full.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual qualified glue/close adapter, candidate and full driver preserve native hashes, original gates and added lifecycle assertions",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/asyncify-storage-media.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "fresh media derivative changes glue only, captures actual lease lifecycle, retains genuine recovery/fidelity/privacy/cleanup gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/attempt-alignment-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "capacity evidence independently rejoins actual binary bodies/PC/archive and scalar failure with unchanged current proof sources",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-allocation-attempt-38138821153\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/bounded-asyncify-storage.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "exact audited compiled glue patch reverses fully and retains state machine, stack and native imports",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-packet-cache-38206263853\\within-mpeg2-split.mjs'"
+        }
+      ]
+    },
+    {
+      "file": "tests/bounded-catalogue-control.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "qualification visits all routes before memory idle; retains exact6outputs/adverse/budget/source/cleanup gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/catalogue-navigation-control.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "UI-only diagnostic retains full production assets, baseline, entire tree and owned cleanup; never converts",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/catalogue-scroll-control.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "same-pageABA changes only scroll animation, compares complete content/layout, restores default and never converts",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/catalogue-slot-control.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "real qualification keeps six genuine outputs, every fault/validator/all-process250MiB/lower blank and removes counter before conversion",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/cold-recovery-control.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "cold trace begins before first real conversion; production retirement closes it before recovery and failure dump",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/compiled-cache-candidate.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "driver binds actual app and codec assets but keeps all-process budget, original input, lower blank and independent fixture gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/composite-allocation-abort-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual composite fatal joins all102 current/pre/post/source preimages and generated worker/factories within unchanged caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/composite-allocation-abort.test.mjs",
+      "passed": 6,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual qualified decoder/map bind both current slots and remapped getter (not a real pool fatal or conversion)",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-allocation-attempt-38138821153\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/composited-handoff-full.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "full driver changes lifecycle/actual UI binding only; original three repeats and primary gates remain",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "import { recordStagedOutputWorkCheckpoint as recordOutputWorkCheckpoint } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/c\n\n1 !== 2\n"
+        },
+        {
+          "name": "actual qualified combined media feeds complete bounded original-source closure and owned supervisor",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/composited-handoff-preparation.test.mjs",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual708-source full preparation replays all sealed preimages and leaves no conversion/runtime",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/direct-buffer-abort-control-evidence.test.mjs",
+      "passed": 3,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "held source preparation preserves actual38 current/preimages and reports zero browsers with unchanged safety gate",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual browser control joins proof, all38 executed preimages and unchanged non-export Wasm sections",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/direct-buffer-abort-control.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual current-core export-only derivative preserves all original section/code/data/import/memory checks",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-single-idle-37986418102\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/durable-packet-cache-preparation-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual346-source preparation stays under unchanged evidence caps, retains original333 plus13 additions and exact sidecar edits",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/durable-packet-cache-terminal-evidence.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "lossless final checkpoint exactly retains actual baseline/all phase peaks and removes redundant raw checkpoint;346 source joins and owned cleanup hold",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "static actual glue shows256KiB suspension stack plus12-byte header, but cannot claim the measured failed malloc size or a runtime fix",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-packet-cache-38206263853\\within-mpeg2-split.mjs'"
+        }
+      ]
+    },
+    {
+      "file": "tests/duration-drain-browser-control.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "duration candidate validates actual126 source pins, rational unit and actual ABI without borrowing parent addresses",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-duration-drain-38678806473\\LICENSE.ffmpeg'"
+        }
+      ]
+    },
+    {
+      "file": "tests/duration-drain-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "source338/control168 seals, cleanup and lossless raw compaction are independently preserved",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/duration-drain-full-preparation.test.mjs",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual preparation recovers every656 preimage and unchanged full-file acceptance gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/duration-drain-full.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "full candidate binds actual338-source packet-exact media, fixed heaps and plane encoder",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-duration-drain-38678806473\\LICENSE.ffmpeg'"
+        },
+        {
+          "name": "new bounded source layer retains all588 parent paths; full driver keeps original acceptance",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/duration-drain-media-recipe.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "current126-source native/control composes with unchanged plane encoder and original quality inspector",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-duration-drain-38678806473\\LICENSE.ffmpeg'"
+        }
+      ]
+    },
+    {
+      "file": "tests/ebml-reuse-browser-components.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual new native source/artifact seal and direct/pool/packet/realloc typed indices are independently verified",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-ebml-reuse-38608791023\\LICENSE.ffmpeg'"
+        }
+      ]
+    },
+    {
+      "file": "tests/ebml-reuse-browser-evidence.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual 273 media-source preimages retain old255+new18 without omissions and both immutable byte budgets",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/ebml-reuse-full-preparation.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual preparation recovers all546 executed/current/post preimages, preserves old508+bounded38 and original driver gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/ebml-reuse-full.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual273-source media/control prerequisites bind full caller to new native policy without weakening original gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-ebml-reuse-38608791023\\LICENSE.ffmpeg'"
+        },
+        {
+          "name": "full driver and same-entry hidden supervisor parse with new adapter identity, original conversion/measurement code and owned cleanup",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/ebml-reuse-media.test.mjs",
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual new Chrome control and old255 qualified sources join, same four glue edits/encoder/fixed heaps/quality with genuine new decoder",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-ebml-reuse-38608791023\\LICENSE.ffmpeg'"
+        },
+        {
+          "name": "new report inspector changes only actual decoder identity, preserving every quality/recovery assertion",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-ebml-reuse-38608791023\\LICENSE.ffmpeg'"
+        }
+      ]
+    },
+    {
+      "file": "tests/ebml-reuse-native-evidence.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual candidate fixed 32MiB binary/typed ABI are new, static binding is not browser fatal-hook qualification",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-ebml-reuse-38608791023\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/encoder-plane-bitrate-browser.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual Playwright discovery selects one real HEVC direct case per bitrate, no browser launch",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "node:internal/modules/cjs/loader:1413\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\node_modules\\@playwright\\test\\cli.js'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1410:15)\r\n    at defaultResolveImpl (node:internal/modules/cjs/loader:1051:19)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1056:22)\r\n    at Module._load (node:internal/modules/cjs/loader:1219:37)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.7.0\r\n\n\n1 !== 0\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/encoder-plane-bitrate-evidence.test.mjs",
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual browser receipts verify identical inputs and native bitrate-only quality improvement with no acceptance substitution",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        },
+        {
+          "name": "comparison receipt is hash-bound to both actual sources and duplicate raw reports are absent and recoverable",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/encoder-plane-quality-browser.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual Playwright discovery selects exactly the direct HEVC diagnostic without launching a browser",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "node:internal/modules/cjs/loader:1413\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\node_modules\\@playwright\\test\\cli.js'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1410:15)\r\n    at defaultResolveImpl (node:internal/modules/cjs/loader:1051:19)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1056:22)\r\n    at Module._load (node:internal/modules/cjs/loader:1219:37)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.7.0\r\n\n\n1 !== 0\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/encoder-plane-recovery-browser.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual browser-free discovery selects only two adverse/recovery cases",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "node:internal/modules/cjs/loader:1413\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\node_modules\\@playwright\\test\\cli.js'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1410:15)\r\n    at defaultResolveImpl (node:internal/modules/cjs/loader:1051:19)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1056:22)\r\n    at Module._load (node:internal/modules/cjs/loader:1219:37)\r\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:238:24)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.7.0\r\n\n\n1 !== 0\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/full-copied-audio-gate-recipe.test.mjs",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "tests\\full-copied-audio-gate-recipe.test.mjs",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_TEST_FAILURE",
+          "message": "test failed"
+        }
+      ]
+    },
+    {
+      "file": "tests/hevc-plane-build-evidence.test.mjs",
+      "passed": 2,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual successful changed HEVC build joins62 executed sources,20 artifacts, Git head and unchanged fixed heaps/encoder",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\mpeg2-hevc-planes-38183370743'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work\\\\mpeg2-hevc-planes-38183370743'\n"
+        },
+        {
+          "name": "actual collector5 current/pre/post preimages and exact generated derivative retained; owned scratch absent",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    edits: [\n      [\n        'work/mpeg2-alignment16-${runId}',\n        'work/mpeg2-hevc-planes-${runId}'\n...\n      'import { promisify } from \"node:util\";\\n' +\n+     'import { sha } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/stable-ui-headless-baseline-recipe.mjs\";\\n' +\n+     'import { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n+     'import { readWasmMemoryLimits } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/wasm-memory-limits.mjs\";\\n' +\n+     'import { reverseSingleIdleRefstruct } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/media/ffmpeg/mpeg2-single-idle-source.mjs\";\\n' +\n+     'const root = \"H:\\\\\\\\Github Repositories\\\\\\\\fileconverter\\\\\\\\work\\\\\\\\clean-checkout-unit-WUjlA8\\\\\\\\checkout\", execute = promisify(execFile);\\n' +\n-     'import { sha } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/stable-ui-headless-baseline-recipe.mjs\";\\n' +\n-     'import { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n-     'import { readWasmMemoryLimits } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/wasm-memory-limits.mjs\";\\n' +\n-     'import { reverseSingleIdleRefstruct } from \"file:///H:/Github%20Repositories/fileconverter/media/ffmpeg/mpeg2-single-idle-source.mjs\";\\n' +\n-     'const root = \"H:\\\\\\\\Github Repositories\\\\\\\\fileconverter\", execute = promisify(execFile);\\n' +\n      'const runId = process.argv[2]; assert.equal(process.argv.length, 3); assert.match(runId ?? \"\", /^[0-9]{8,}$/);\\n' +\n      'const cache = path.join(root, `work/mpeg2-hevc-planes-${runId}`), proofPath = path.join(root, `evidence/mpeg2-hevc-plane-build-${runId}.json`"
+        }
+      ]
+    },
+    {
+      "file": "tests/hevc-plane-control-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual new-binary fatal joins126 current/pre/post/preimages, fresh function bodies/PCs, map and export-only code equality",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/hevc-plane-control.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual new binary typed names prove shifted indices; derivations reverse exactly and preserve128/2MiB/privacy/cleanup/export-only gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-hevc-planes-38183370743\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/hevc-plane-full-preparation-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual preparation retains all338 current/pre/post/preimages, exact changed candidate and unchanged evidence caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/hevc-plane-full-terminal-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual failed original joins338 executed sources, both auditor preimages and nine actual typed fatal bodies",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/hevc-plane-full.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual158 browser witness and all historical256 sources qualify the new full driver within unchanged layered caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/hevc-plane-media-evidence.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual media receipt joins all158 current/pre/post/source bytes and actual new-core/plane-encoder generated adapters",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/hevc-plane-media.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "compound actual decoder/plane encoder, exact source closure, observer adapter and three-case recipe retain gates and finally cleanup",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/hevc-plane-preparation-evidence.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual bounded static collector retains all7 sources and four actual binary bodies/PCs without instantiating them",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-alignment16-38161556498\\within-mpeg2-split.wasm'"
+        },
+        {
+          "name": "actual10-source decoder plane preparation preserves exact built pool primitive and is NOT a compiled/browser/memory/speed result",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-encoder-planes-38044000567\\encoder-plane-buffer.c'"
+        }
+      ]
+    },
+    {
+      "file": "tests/input-diagnostic-browser-evidence.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual read-failure qualification joins162 executed/current sources and four unchanged independently validated goldens",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual whole-original input-only scan joins167 sources and cannot be relabelled genuine conversion",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/input-read-full-preparation-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual380-source preparation retains all365 prior sources and full gates, recovers every preimage inside unchanged caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/input-read-full-terminal-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "380 executed/current source pins, protected whole hash,25 absent owned births and finally cleanup join",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/input-read-full.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "full caller retains all365 prior sources, reverses to all old full gates and exposes bounded native read-error records",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual162-source qualified read helper/stager, unchanged native artifacts and fresh full driver preserve old gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/input-read-media.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "fresh bounded input diagnostic retains native artifacts and all old privacy/fidelity/recovery gates, adds read failure",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/input-scan-browser.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "whole-original input-only browser recipe uses actual bounded production bridge with no conversion/fixture generation",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/installed-chrome-full-terminal.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "exact failed-window230.09375MiB/not acceptance; source508 and raw/checkpoint seven phase counts recover without cap/cutoff changes",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/installed-chrome-full.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "qualified actual155 control/media pin replaces old154 only via before/after/runtime gates; old pipeline and original acceptance exactly retained",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "ALL493 preparation +255 qualification fit exact380+128/2MiB envelope; full driver conversion bytes unchanged apart from report namespace",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/installed-chrome-qualification-evidence.test.mjs",
+      "passed": 0,
+      "failed": 3,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual125 fatal +255 genuine media preimages/pin/runtime/quality/native composition join current, no full-memory or speed claim",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual new preparation retains508 exact current/post/preimages, same native/input and source caps; no converter launched",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual normal fixture cleanup/process exit/original whole hash and lossless report retention do not relabel PID checks birth inventory",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/journaled-realloc-media-evidence.test.mjs",
+      "passed": 2,
+      "failed": 3,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual combined fatal callback121-source closure retains native API/current slot/error and no media attribution",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual249-source pre/current/post exact media closure under256/8MiB caps retains all old210 and new121 sources",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual failed180s attempt remains distinct243-source evidence, not rewritten to passing suite; owned20.7MB residue gone",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/journaled-realloc-media.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "journalled four-case suite keeps identical conversion/validator bytes and per-test60s; parent cleanup precedes restore and reports ownership",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/jspi-browser-control.test.mjs",
+      "passed": 2,
+      "failed": 4,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "JSPI adapter rebinds actual typed functions while retaining quality, I/O, closure and ABI guards",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-jspi-39072949964\\LICENSE.ffmpeg'"
+        },
+        {
+          "name": "exact plane encoder is preserved; default encoder from decoder build must not replace it",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual generated driver/caller preserve six outputs, adverse controls, lower blank and full-tree guard",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/jspi-full-control.test.mjs",
+      "passed": 3,
+      "failed": 3,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "full driver restores three full jobs, fixed original limits and cleanup without small fixtures or reload",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        },
+        {
+          "name": "caller and hidden persistent supervisor bind full qualification, assets, source envelope and three completions",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-jspi-39072949964\\LICENSE.ffmpeg'"
+        },
+        {
+          "name": "actual six-output prerequisite is replayed against all832 current sources and exact candidate before full launch",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/jspi-lto-screen-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "all four native checkpoint compactions validate and disposable owned traces/raw checkpoints are absent",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/jspi-lto-speed-screen.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "complete independent block auditor replays the two already-retained sessions without new conversions",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/jspi-ssim-full-control.test.mjs",
+      "passed": 2,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "full driver changes only SSIM framing/retention/hash timing; exact native commands and all gates survive",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        },
+        {
+          "name": "caller and hidden supervisor bind the qualified correction without touching browser build or settings",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-jspi-39072949964\\LICENSE.ffmpeg'"
+        }
+      ]
+    },
+    {
+      "file": "tests/late-pool-abort-control.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "synthetic export-only control preserves every code/data/other section and actual function body/type/index",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-split-pipeline-37739125738\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/layered-full-preparation.test.mjs",
+      "passed": 3,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "historical256 plus actual136 and new five files roundtrip all304 pins without touching original archive or weakening layer caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "qualified full stager reverses to actual media-tested stage, keeping exact adapter/core/restore bytes",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/lifecycle-warm-cache.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "driver serializes pre/post and failure tracing; baseline/all-tree250MiB/native100ms/cleanup remain",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/lto-browser-control.test.mjs",
+      "passed": 0,
+      "failed": 4,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "LTO adapter changes only verified binary identity, five function maps and four native slots",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-jspi-39072949964\\LICENSE.ffmpeg'"
+        },
+        {
+          "name": "actual LTO glue binds native-provided guard addresses; composition retains the qualified plane encoder",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-lto-39279724223\\LICENSE.ffmpeg'"
+        },
+        {
+          "name": "exact driver delta leaves all six validators, three adverse controls and full-tree 250MiB guard unchanged",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/memoized-cache-candidate.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual six-output/fault qualification is unchanged except strict combined-build proof and owned namespace",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/memoized-handoff-candidate.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "only main app binding changes; source/full-process budget/worker/native/validation paths remain",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-alignment16-build-evidence.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual changed decoder/build/head/all53sources/artifacts/fixed32+16MiB and unchanged encoder are joined, not browser acceptance",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\mpeg2-alignment16-38161556498'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work\\\\mpeg2-alignment16-38161556498'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-encoder-plane-bitrate-full.test.mjs",
+      "passed": 5,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "full driver reverses all edits and preserves three whole-input six-hour250MiB0.98 fidelity gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        },
+        {
+          "name": "all short/recovery/current-source/archive/prior failed full prerequisites reverify without launching browsers",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-encoder-plane-clock-full.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "observer derivative reverses to the exact failed title driver; all conversion and full acceptance gates remain",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        },
+        {
+          "name": "qualified caller retains original restoration, failure, three-run, disk and source guards",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n... Skipped lines\n\n  '// ONE changed full-original attempt. Live PID is observable; never restart on wait timeout.\\n' +\n    'import assert from \"node:assert/strict\";\\n' +\n    'import { execFile, spawn, spawnSync } from \"node:child_process\";\\n' +\n    'import { createReadStream } from \"node:fs\";\\n' +\n    'import { createHash } from \"node:crypto\";\\n' +\n...\n    'import { gzipSync, gunzipSync } from \"node:zlib\";\\n' +\n+   'import { sha, baselineBinding } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/stable-ui-headless-baseline-recipe.mjs\";\\n' +\n+   'import { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n+   'import { queryProcessIdentity, observeOwnedProcessExit } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/owned-process-exit-observation.mjs\";\\n' +\n+   'import { inspectStressHostMemory } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/host-memory-preflight.mjs\";\\n' +\n+   'import { deriveDriverSourcePinFiles } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/driver-source-pin-union.mjs\";\\n' +\n+   'import { makeEncoderPlaneTitleFullDriver as makeSingleIdleFullDriver, verifySingleIdleAbortQualification, encoderPlaneTitleFullFiles as singleIdleFullFiles } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/encoder-plane-title-full-recipe.mjs\";\\n' +\n+   'import { verifyEncoderPlaneTitleGoldenReport } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/encoder-plane-title-browser-recipe.mjs\";\\n' +\n+   'import { verifyEncoderPlaneBuildEvidence as verifySingleIdleBuildEvidence, ENCODER_PLANE_SLOT as SINGLE_IDLE_S"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-encoder-plane-clock-terminal.test.mjs",
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "prospective full SSIM diagnostic records bounded numeric/null result BEFORE unchanged0.98 gate, without codec changes",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-encoder-plane-full.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Changed stager preserves byte-exact failure-only observer; decoder qualification binds identical actual bytes and original map",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-encoder-planes-38044000567\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-encoder-plane-staged-progress.test.mjs",
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Additive driver/caller derivatives reverse exactly; no original fixture, quality, memory, repeat, validation or cleanup gate edits",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "import { recordOutputWorkCheckpoint } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/split-copy-work-checkpoints.mjs\";\n\n0 !== 1\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-encoder-plane-staged-terminal.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Actual live227-source archive reconstructs changed observer driver/caller, while verifier additions are not measured-source edits",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-encoder-plane-terminal.test.mjs",
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Actual historical failed full encoder run keeps exact complete-tree227.78515625MiB and remains failure, not a new candidate or pass",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\outputs\\reports\\2026-10-09T20-55-24-319Z-single-idle-full-raw.json.gz'"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-encoder-plane-title-full.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "full title derivative reverses to actual executed driver and retains all full stress gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        },
+        {
+          "name": "new caller qualifies actual title goldens and old source pins before same full settings/cleanup, never an unchanged retry",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n... Skipped lines\n\n  '// ONE changed full-original attempt. Live PID is observable; never restart on wait timeout.\\n' +\n    'import assert from \"node:assert/strict\";\\n' +\n    'import { execFile, spawn, spawnSync } from \"node:child_process\";\\n' +\n    'import { createReadStream } from \"node:fs\";\\n' +\n    'import { createHash } from \"node:crypto\";\\n' +\n...\n    'import { gzipSync, gunzipSync } from \"node:zlib\";\\n' +\n+   'import { sha, baselineBinding } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/stable-ui-headless-baseline-recipe.mjs\";\\n' +\n+   'import { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n+   'import { queryProcessIdentity, observeOwnedProcessExit } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/owned-process-exit-observation.mjs\";\\n' +\n+   'import { inspectStressHostMemory } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/host-memory-preflight.mjs\";\\n' +\n+   'import { deriveDriverSourcePinFiles } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/driver-source-pin-union.mjs\";\\n' +\n+   'import { makeEncoderPlaneStagedFullDriver as makeSingleIdleFullDriver, verifySingleIdleAbortQualification, encoderPlaneStagedFullFiles as singleIdleFullFiles } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/encoder-plane-staged-full-recipe.mjs\";\\n' +\n+   'import { verifyEncoderPlaneBuildEvidence as verifySingleIdleBuildEvidence, ENCODER_PLANE_SLOT as SINGLE_IDLE_SLOT } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/encoder-plane-browser-recipe.mjs\";\\n' +\n+   'const root = \"H:\\\\\\\\Github Repositories\\\\\\\\f"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-encoder-plane-title-terminal.test.mjs",
+      "passed": 5,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "immutable actual240-source launch reconstructs title driver/caller; analyzer files are outside measured pins",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-hevc-plane-source.test.mjs",
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "new HEVC plane selector/wiring reverses executed decoder; sizes, padding, live references and nonselected policies remain exact",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-encoder-planes-38044000567\\encoder-plane-get-buffer.c'"
+        },
+        {
+          "name": "bounded pool source exactly equals actually built encoder primitive; actual-libavutil smoke is only a pending decoder derivative",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-encoder-planes-38044000567\\encoder-plane-buffer.c'"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-late-pool-callsite-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual caller offset joins the second of three decoded binary calls, not guessed source ordinal",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-split-pipeline-37479749443\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-packet-cache-native-evidence.test.mjs",
+      "passed": 4,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual successful changed HEVC build joins72 executed sources,20 artifacts, Git head and unchanged fixed heaps/encoder",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\mpeg2-packet-cache-38206263853'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work\\\\mpeg2-packet-cache-38206263853'\n"
+        },
+        {
+          "name": "actual collector7 current/pre/post preimages and exact generated derivative retained; owned scratch absent",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    edits: [\n      [\n        'evidence/mpeg2-packet-cache-build-branch-2026-10-12.json',\n        'evidence/mpeg2-packet-cache-build-branch-2026-10-12-warning-fix.json'\n...\n      'import { promisify } from \"node:util\";\\n' +\n+     'import { sha } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/stable-ui-headless-baseline-recipe.mjs\";\\n' +\n+     'import { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n+     'import { readWasmMemoryLimits } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/wasm-memory-limits.mjs\";\\n' +\n+     'import { reverseSingleIdleRefstruct } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/media/ffmpeg/mpeg2-single-idle-source.mjs\";\\n' +\n+     'const root = \"H:\\\\\\\\Github Repositories\\\\\\\\fileconverter\\\\\\\\work\\\\\\\\clean-checkout-unit-WUjlA8\\\\\\\\checkout\", execute = promisify(execFile);\\n' +\n-     'import { sha } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/stable-ui-headless-baseline-recipe.mjs\";\\n' +\n-     'import { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n-     'import { readWasmMemoryLimits } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/wasm-memory-limits.mjs\";\\n' +\n-     'import { reverseSingleIdleRefstruct } from \"file:///H:/Github%20Repositories/fileconverter/media/ffmpeg/mpeg2-single-idle-source.mjs\";\\n' +\n-     'const root = \"H:\\\\\\\\Github Repositories\\\\\\\\fileconverter\", execute = promisify(execFile);\\n' +\n      'const runId = process.argv[2]; assert.equal(process.argv.length, 3); assert.match(runId ?? \"\", /^[0-9]{8,}$/);\\n' +\n      'const cache = path.join(root, `work/mpeg2-packet-cache-${runId}`), proofPath = "
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-packet-cache-preparation-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual preparation joins nine current/pre/post/preimages and reversibly generated packet sources to the failed executed338 closure",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-hevc-planes-38183370743\\hevc-plane-buffer.c'"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-packet-largest-idle-branch-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "executed branch wrapper current/pre/post/preimage joins, preserves historical not-dispatched status and owned finally",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    edits: [\n      [\n        'codex/mpeg2-packet-cache-20261012-warning-fix',\n        'codex/mpeg2-packet-largest-idle-20261013'\n...\n      [\n+       'file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/mpeg2-packet-cache-strict-build-recipe.mjs',\n+       'file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/mpeg2-packet-largest-idle-build-recipe.mjs'\n-       'file:///H:/Github%20Repositories/fileconverter/scripts/lib/mpeg2-packet-cache-strict-build-recipe.mjs',\n-       'file:///H:/Github%20Repositories/fileconverter/scripts/lib/mpeg2-packet-largest-idle-build-recipe.mjs'\n      ]\n    ],\n    generated: '// Isolated index/tree; no checkout copies, protected media or canonical mutation.\\n' +\n      'import assert from \"node:assert/strict\";\\n' +\n      'import { execFile, spawnSync } from \"node:child_process\";\\n' +\n...\n      'import { promisify } from \"node:util\";\\n' +\n+     'import { sha } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/stable-ui-headless-baseline-recipe.mjs\";\\n' +\n+     'import { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n+     'import { makeAlignment16Workflow } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/mpeg2-packet-largest-idle-build-recipe.mjs\";\\n' +\n+     'const root = \"H:\\\\\\\\Github Repositories\\\\\\\\fileconverter\\\\\\\\work\\\\\\\\clean-checkout-unit-WUjlA8\\\\\\\\checkout\", execute = promisify(execFile);\\n' +\n-     'import { sha } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/stable-ui-headless-baseline-recipe.mjs\";\\n' +\n-     'import { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n-     'imp"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-packet-largest-idle-native-evidence.test.mjs",
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual generated collector source/pre/post/preimage joins, ownership finally and no false browser/full acceptance",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n... Skipped lines\n\n  {\n    edits: [\n      [\n        'work/mpeg2-packet-cache-${runId}',\n        'work/mpeg2-packet-largest-idle-${runId}'\n...\n      'import { promisify } from \"node:util\";\\n' +\n+     'import { sha } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/stable-ui-headless-baseline-recipe.mjs\";\\n' +\n+     'import { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n+     'import { readWasmMemoryLimits } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/wasm-memory-limits.mjs\";\\n' +\n+     'import { reverseSingleIdleRefstruct } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/media/ffmpeg/mpeg2-single-idle-source.mjs\";\\n' +\n+     'const root = \"H:\\\\\\\\Github Repositories\\\\\\\\fileconverter\\\\\\\\work\\\\\\\\clean-checkout-unit-WUjlA8\\\\\\\\checkout\", execute = promisify(execFile);\\n' +\n-     'import { sha } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/stable-ui-headless-baseline-recipe.mjs\";\\n' +\n-     'import { createOwnedRuntimeScratch } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n-     'import { readWasmMemoryLimits } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/wasm-memory-limits.mjs\";\\n' +\n-     'import { reverseSingleIdleRefstruct } from \"file:///H:/Github%20Repositories/fileconverter/media/ffmpeg/mpeg2-single-idle-source.mjs\";\\n' +\n-     'const root = \"H:\\\\\\\\Github Repositories\\\\\\\\fileconverter\", execute = promisify(execFile);\\n' +\n      'const runId = process.argv[2]; assert.equal(process.argv.length, 3); assert.match(runId ?? \"\", /^[0-9]{8,}$/);\\n' +\n      'const cache = path.join(root, `work/mpeg2-packet-largest-idle-${runId}`), proofPath = path.join(root, `evidence/mpeg2-packet-largest"
+        }
+      ]
+    },
+    {
+      "file": "tests/mpeg2-quiesced-budget-terminal-evidence.test.mjs",
+      "passed": 6,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual abort frames identify refstruct allocation path without guessing the request size",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-split-pipeline-37479749443\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/mvf-arena-browser-control.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "current native verifier retains all 99 sources and derives changed scalar/function bindings",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-mvf-arena-38643550000\\LICENSE.ffmpeg'"
+        }
+      ]
+    },
+    {
+      "file": "tests/mvf-arena-full-preparation.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual prepared588-source full harness recovers all prior546 and every added preimage within unchanged caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/mvf-arena-full-terminal.test.mjs",
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual current/post source seal retains all588 preimages and failed-window memory is not acceptance",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/mvf-arena-full.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "full candidate binds independently qualified297-source media without changing original acceptance",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-mvf-arena-38643550000\\LICENSE.ffmpeg'"
+        },
+        {
+          "name": "full source snapshot retains every546 prior path and original caps, driver has unchanged quality/repeat/memory gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/mvf-arena-media-recipe.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "media derivative preserves prior four-case production/independent validator pipeline and verifies current decoder",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-mvf-arena-38643550000\\LICENSE.ffmpeg'"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-cache-control-evidence.test.mjs",
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual 4421 browser fatal joins all typed bodies/PCs, exact bounded scalar/header capture and normal cleanup",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-packet-cache-38206263853\\within-mpeg2-split.wasm'"
+        },
+        {
+          "name": "all 74 executed browser source preimages and separate 72 native sources are recoverable/current/pre/post bound with unchanged caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-cache-control.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual binary typed indices and reversible callers preserve original browser privacy/cleanup/fixed-heap/cap gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-packet-cache-38206263853\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-cache-full-preparation-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual preparation retains all333 current/pre/post/preimages, exact changed candidate and unchanged evidence caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-cache-full.test.mjs",
+      "passed": 2,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual151 browser witness and all historical256 sources qualify the new full driver within unchanged layered caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "deduplicated qualified archives recover byte-exact preimages; unqualified references/hash/size/path changes rejected and every cap unchanged",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-cache-interruption-recovery-evidence.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "recovery restores stock assets and removes only five exact repository-owned targets",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'H:\\\\Github Repositories\\\\fileconverter\\\\work'\n- 'H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\\\\work'\n"
+        },
+        {
+          "name": "retained compact log and recovery own preimage are byte-exact, all333 original executed sources still join",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-cache-media-evidence.test.mjs",
+      "passed": 4,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual media receipt joins all151 current/pre/post/source bytes and actual new-core/plane-encoder generated adapters",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-cache-media.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "compound actual decoder/plane encoder, exact source closure, observer adapter and three-case recipe retain gates and finally cleanup",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-cache-supervised-preparation-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "supervised preparation joins all333 actual source preimages/current/post and preserves fixed memory, fidelity and run gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-drain-browser-control.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "candidate native bindings validate actual116 source preimages and new binary with existing observer guards",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-packet-drain-38673138419\\LICENSE.ffmpeg'"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-drain-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual headless current-Chrome control preserves native binary except exports and cleans11 owned births",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-drain-media-recipe.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "current116-source decoder/control and old production media baseline compose without changing validator code",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-packet-drain-38673138419\\LICENSE.ffmpeg'"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-interleave-ownership-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "verified duplicate artifacts are removed while exact compact evidence and parent tools remain",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-mvf-arena-38643550000\\LICENSE.ffmpeg'"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-largest-idle-browser-evidence.test.mjs",
+      "passed": 2,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual changed7bb native control joins83 current/pre/post/preimage sources, typed packet function and bounded no-payload abort slots",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual candidate210 and baseline162 sources join; each has four genuine independently validated identical outputs and recovery",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-largest-idle-control.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "fresh export/browser/caller retain exact native, private ownership, hidden browser and full79-source envelope gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-packet-largest-idle-38327579000\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-largest-idle-full-preparation.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual preparation recovers all439 current/pre/post preimages in untouched380 plus bounded59 supplemental sources",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-largest-idle-full-terminal.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual439 pre/post/current executed preimages recover with unchanged380 legacy and59 supplemental sources",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-largest-idle-full.test.mjs",
+      "passed": 2,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "fresh caller preserves full conversion gates and every previous executed source without raising old evidence caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual qualified210 adapter/native, full driver, and separate bounded source envelope round-trip with finally cleanup",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-largest-idle-media.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "qualified changed native decoder keeps exact encoder/suspension/IO/fidelity/recovery/read-error controls and rejects altered manifest",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/packet-order-media-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "all321/303/325 source preimages, owned cleanup and lossless raw compaction remain verifiable",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/paint-boundary-candidate.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "only delivered static CSS binding changes; same six complete outputs/faults, lower blank/all-process guard and worker assets",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/progress-compositing-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Exact private candidate sources/client CSS+JS reconstruct and type/lint pass; published App/CSS and normal production are restored",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/realloc-abort-control.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual export-only control changes only two typed exports; same audited headless/owned/private browser driver reverses exactly",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-realloc-attempt-38526781934\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/realloc-browser-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "all114 executed/current/pre/post preimages and actual86-source native envelope recover under unchanged caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/realloc-chrome-pin-rejection.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "all493 rejected-launch source pins recover from ACTUAL preparation, no fabricated failed ephemeral caller or rewritten old snapshots",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/realloc-composition.test.mjs",
+      "passed": 5,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual new glue uses the identical four reversible lifecycle edits and fixed262144B stack",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-realloc-attempt-38526781934\\within-mpeg2-split.mjs'"
+        }
+      ]
+    },
+    {
+      "file": "tests/realloc-full-preparation.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual preparation recovers ALL493 pre/current/post sources, previous439+qualified249 retained, unchanged380+128/2MiB caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/realloc-full.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "new full caller reverses exactly, retains ALL439 previous sources and full input/three runs/250MiB/quality/native sampler/cleanup gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual249 qualification composition/new original glue/full driver/380+128 source envelope reverses and round-trips with finally scratch/report removal",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/realloc-media.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "new unchanged decoder joins old210/new121/native86 closure without cap increase; same four conversion/fidelity/recovery gates",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/realloc-native-evidence.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual decoder fixed memory/map/typed bodies/constructor byte linkage verified, but decoder runtime binding remains false",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-realloc-attempt-38526781934\\within-mpeg2-split.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/recorded-timeline-full.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "new source layer replays every750 parent source with unchanged additive caps",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/recorded-timeline-preparation.test.mjs",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual768-source preparation binds source reference, caller, driver and cleanup without conversion",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/recovery-runtime-control.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "trace closes before original failure dump; never delays cancellation with heap sampling or changes production assets",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/reliable-readonly-preflight.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "ordinary subprocess/promise semantics and actual full binary version/hash pin remain unchanged",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '155.0.8059.80'\n- '155.0.8059.40'\n              ^\n"
+        },
+        {
+          "name": "full retry caller retains all708 previous paths within original128-file/2MiB layer",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/single-idle-audio-supplement.test.mjs",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "tests\\single-idle-audio-supplement.test.mjs",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_TEST_FAILURE",
+          "message": "test failed"
+        }
+      ]
+    },
+    {
+      "file": "tests/single-idle-encoder-static-evidence.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Actual12 encoder stack bodies/PCs preserved from unchanged anonymous binary, without decoder symbols or any codec/browser execution",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-single-idle-37986418102\\split-encoder.wasm'"
+        }
+      ]
+    },
+    {
+      "file": "tests/source-frame-threads-evidence.test.mjs",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual whole-source four-thread validator preserves all frames, fixed deadline, exact source pins and cleanup",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, stat 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\test.mkv'"
+        }
+      ]
+    },
+    {
+      "file": "tests/split-copy-kernel-browser-evidence.test.mjs",
+      "passed": 1,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Actual headless changed kernel proves three identical independently decoded codec outputs and both recovery cases",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "vite.config.ts\n+ actual - expected\n\n+ 'f7c14b8a38546bb6a7ec93cba22f8e8f131da9fbfe8b39327422ed5bb98d4613'\n- '5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a'\n"
+        },
+        {
+          "name": "Generated source overlays reconstruct exactly without codec/memory changes; headless source and restoration are bound",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "The expression evaluated to a falsy value:\n\n  assert.ok(path.relative(root, runtimeDirectory).startsWith(`work${path.sep}`))\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/split-copy-kernel.test.mjs",
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Exact reversible frame/session/glue recipes preserve original codec/AVIO/lifetime sources",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\work\\mpeg2-split-pipeline-37739125738\\within-mpeg2-split.mjs'"
+        }
+      ]
+    },
+    {
+      "file": "tests/split-copy-staged-guard.test.mjs",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "tests\\split-copy-staged-guard.test.mjs",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_TEST_FAILURE",
+          "message": "test failed"
+        }
+      ]
+    },
+    {
+      "file": "tests/split-render-progress.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Actual archived driver derivative preserves exact conversion gates, disabled JS allocation sampling and headless all-process measurements",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n... Skipped lines\n\n+ 'import {makeLateSlotBuildWorkflow} from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/late-slot-build-workflow.mjs\";\\n' +\n- 'import {makeLateSlotBuildWorkflow} from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/late-slot-build-workflow.mjs\";\\n' +\n    '// Full protected source, ONE page navigation; normal production worker recycling between repeats.\\n' +\n    '// Historical redundant-navigation driver remains unchanged for its executed source pins.\\n' +\n    'import assert from \"node:assert/strict\";\\n' +\n    'import { chromium } from \"file:///H:/Github%20Repositories/fileconverter/node_modules/@playwright/test/index.mjs\";\\n' +\n    'import { execFile, spawn } from \"node:child_process\";\\n' +\n...\n    'import { promisify } from \"node:util\";\\n' +\n+   'import { sampleChromiumTree, stableWindow } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/chromium-private-memory.mjs\";\\n' +\n+   'import { startParallelMemoryObserver } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/parallel-memory-observer.mjs\";\\n' +\n+   'import { connectRealmSampler } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/cdp-realm-memory.mjs\";\\n' +\n+   'import { classifyPrivateRequest } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/private-browser-request.mjs\";\\n' +\n+   'import { readWasmMemoryLimits } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/wasm-memory-limits.mjs\";\\n' +\n+   'import { createOwnedRuntimeScratch, finishOwnedCleanup } from \"file:///H:/Github%20Repositories/fileconverter/work/clean-checkout-unit-WUjlA8/checkout/scripts/lib/owned-runtime-scratch.mjs\";\\n' +\n+   'import { cancelBrowserConversionBeforeCleanup"
+        }
+      ]
+    },
+    {
+      "file": "tests/split-render-ui-build-evidence.test.mjs",
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Actual private production source overlay is exact, type/lint clean, hash-bound and not promoted",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n\n380754 !== 391971\n"
+        },
+        {
+          "name": "Actual compiled function decomposition survived production optimizer; larger bundle is not a memory or speed claim",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\dist\\client\\assets\\ConverterApp-BuCmNpWV.js'"
+        }
+      ]
+    },
+    {
+      "file": "tests/split-render-ui-golden-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Actual new split-render browser conversions are independently hash-bound with original golden fidelity and exact geometry; no promotion",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, stat 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\test.mkv'"
+        }
+      ]
+    },
+    {
+      "file": "tests/stable-progress-ui-build-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Actual second guard stopped before browser; normal production build and protected full original restored",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "vite.config.ts\n+ actual - expected\n\n+ 'f7c14b8a38546bb6a7ec93cba22f8e8f131da9fbfe8b39327422ed5bb98d4613'\n- '5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/stable-ui-headless-baseline-evidence.test.mjs",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Actual matching-mode baseline proves zero geometry delta with real candidate and baseline reports",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'f7c14b8a38546bb6a7ec93cba22f8e8f131da9fbfe8b39327422ed5bb98d4613'\n- '5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/stable-ui-headless-golden-evidence.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "Real served candidate, six inspected headless states, source provenance and cleanup are retained without full-memory or speed claims",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "vite.config.ts\n+ actual - expected\n\n+ 'f7c14b8a38546bb6a7ec93cba22f8e8f131da9fbfe8b39327422ed5bb98d4613'\n- '5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/threaded-validation-full.test.mjs",
+      "passed": 2,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "new source layer retains every714 executed parent preimage and unchanged128-file/2MiB new cap",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/threaded-validation-preparation.test.mjs",
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual726-source preparation replays every source and both native pins with no conversion or scratch",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual generated native error wrapper preserves failure identity, deadline/buffer options and explicit exit fields",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/updated-chrome-evidence.test.mjs",
+      "passed": 0,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual Chrome.80 browser result replays370 source pins and original independent validation",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        },
+        {
+          "name": "actual short-run owned profiles, fixtures, outputs and sampled processes are gone",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ENOENT",
+          "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout\\dist\\client\\assets\\ConverterApp-BuCmNpWV.js'"
+        }
+      ]
+    },
+    {
+      "file": "tests/updated-chrome-full-preparation.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual750-source full preparation preserves every726 parent preimage and all new generated code",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/updated-chrome-preparation.test.mjs",
+      "passed": 0,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "actual370-source preparation replays exact code, pins, and cleanup without converting",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "package-lock.json\n+ actual - expected\n\n+ '1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019'\n- 'a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369'\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/warm-cache-qualification.test.mjs",
+      "passed": 1,
+      "failed": 1,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "qualification keeps lower blank/native100ms/250MiB and cleanup, removes original startup loop honestly",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "const root = \"H:\\\\Github Repositories\\\\fileconverter\\\\work\\\\clean-checkout-unit-WUjlA8\\\\checkout\", MiB = 1024 ** 2;\n\n1 !== 2\n"
+        }
+      ]
+    },
+    {
+      "file": "tests/worker-lifecycle.test.mjs",
+      "passed": 6,
+      "failed": 2,
+      "skipped": 0,
+      "examples": [
+        {
+          "name": "every worker module has an explicit cross-job retained-state contract",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "audit inventory must be updated for worker additions or removals\n\n34 !== 32\n"
+        },
+        {
+          "name": "the only message-loop entrypoints have bounded responses and terminal cleanup",
+          "nesting": 0,
+          "failureType": "testCodeFailure",
+          "code": "ERR_ASSERTION",
+          "message": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    'conversion.worker.ts',\n    'direct-file-writer.worker.ts',\n    'jxl-source-inspection-worker.ts',\n+   'staged-save.worker.ts'\n  ]\n"
+        }
+      ]
+    }
+  ],
+  "skippedCases": 2,
+  "summary": {
+    "success": false,
+    "counts": {
+      "tests": 1770,
+      "failed": 204,
+      "passed": 1564,
+      "cancelled": 0,
+      "skipped": 2,
+      "todo": 0,
+      "topLevel": 1770,
+      "suites": 0
+    },
+    "duration_ms": 106829.3361
+  },
+  "commands": [
+    {
+      "executable": "git",
+      "args": [
+        "worktree",
+        "add",
+        "--detach",
+        "H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout",
+        "HEAD"
+      ],
+      "cwd": "H:\\Github Repositories\\fileconverter",
+      "windowsHide": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "stdout": {
+        "totalBytes": 93,
+        "retainedBytes": 93,
+        "limit": 65536,
+        "tailBase64": "SEVBRCBpcyBub3cgYXQgNWM0OTQ2YyBTZWFsIGluZGVwZW5kZW50IGNvbGQgZnVsbC10cmFuc2NvZGUgcmVwZWF0IGFuZCBjbG9zZSBvd25lZCBhcnRpZmFjdHMK"
+      },
+      "stderr": {
+        "totalBytes": 3048,
+        "retainedBytes": 3048,
+        "limit": 65536,
+        "tailBase64": "UHJlcGFyaW5nIHdvcmt0cmVlIChkZXRhY2hlZCBIRUFEIDVjNDk0NmMpClVwZGF0aW5nIGZpbGVzOiAgMTclICg4MDYvNDY2NSkNVXBkYXRpbmcgZmlsZXM6ICAxOCUgKDg0MC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDE5JSAoODg3LzQ2NjUpDVVwZGF0aW5nIGZpbGVzOiAgMjAlICg5MzMvNDY2NSkNVXBkYXRpbmcgZmlsZXM6ICAyMSUgKDk4MC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDIyJSAoMTAyNy80NjY1KQ1VcGRhdGluZyBmaWxlczogIDIzJSAoMTA3My80NjY1KQ1VcGRhdGluZyBmaWxlczogIDI0JSAoMTEyMC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDI1JSAoMTE2Ny80NjY1KQ1VcGRhdGluZyBmaWxlczogIDI2JSAoMTIxMy80NjY1KQ1VcGRhdGluZyBmaWxlczogIDI3JSAoMTI2MC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDI4JSAoMTMwNy80NjY1KQ1VcGRhdGluZyBmaWxlczogIDI5JSAoMTM1My80NjY1KQ1VcGRhdGluZyBmaWxlczogIDMwJSAoMTQwMC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDMxJSAoMTQ0Ny80NjY1KQ1VcGRhdGluZyBmaWxlczogIDMyJSAoMTQ5My80NjY1KQ1VcGRhdGluZyBmaWxlczogIDMzJSAoMTU0MC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDM0JSAoMTU4Ny80NjY1KQ1VcGRhdGluZyBmaWxlczogIDM1JSAoMTYzMy80NjY1KQ1VcGRhdGluZyBmaWxlczogIDM2JSAoMTY4MC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDM3JSAoMTcyNy80NjY1KQ1VcGRhdGluZyBmaWxlczogIDM4JSAoMTc3My80NjY1KQ1VcGRhdGluZyBmaWxlczogIDM5JSAoMTgyMC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDQwJSAoMTg2Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDQxJSAoMTkxMy80NjY1KQ1VcGRhdGluZyBmaWxlczogIDQyJSAoMTk2MC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDQyJSAoMTk5OS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDQzJSAoMjAwNi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDQ0JSAoMjA1My80NjY1KQ1VcGRhdGluZyBmaWxlczogIDQ1JSAoMjEwMC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDQ2JSAoMjE0Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDQ3JSAoMjE5My80NjY1KQ1VcGRhdGluZyBmaWxlczogIDQ4JSAoMjI0MC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDQ4JSAoMjI2Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDQ5JSAoMjI4Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDUwJSAoMjMzMy80NjY1KQ1VcGRhdGluZyBmaWxlczogIDUxJSAoMjM4MC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDUyJSAoMjQyNi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDUzJSAoMjQ3My80NjY1KQ1VcGRhdGluZyBmaWxlczogIDU0JSAoMjUyMC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDU0JSAoMjU1NS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDU1JSAoMjU2Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDU2JSAoMjYxMy80NjY1KQ1VcGRhdGluZyBmaWxlczogIDU3JSAoMjY2MC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDU4JSAoMjcwNi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDU5JSAoMjc1My80NjY1KQ1VcGRhdGluZyBmaWxlczogIDYwJSAoMjc5OS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDYwJSAoMjgyNy80NjY1KQ1VcGRhdGluZyBmaWxlczogIDYxJSAoMjg0Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDYyJSAoMjg5My80NjY1KQ1VcGRhdGluZyBmaWxlczogIDYzJSAoMjkzOS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDY0JSAoMjk4Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDY1JSAoMzAzMy80NjY1KQ1VcGRhdGluZyBmaWxlczogIDY2JSAoMzA3OS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDY3JSAoMzEyNi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDY4JSAoMzE3My80NjY1KQ1VcGRhdGluZyBmaWxlczogIDY5JSAoMzIxOS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDcwJSAoMzI2Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDcxJSAoMzMxMy80NjY1KQ1VcGRhdGluZyBmaWxlczogIDcyJSAoMzM1OS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDczJSAoMzQwNi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDczJSAoMzQzMS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDc0JSAoMzQ1My80NjY1KQ1VcGRhdGluZyBmaWxlczogIDc1JSAoMzQ5OS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDc2JSAoMzU0Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDc3JSAoMzU5My80NjY1KQ1VcGRhdGluZyBmaWxlczogIDc4JSAoMzYzOS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDc5JSAoMzY4Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDgwJSAoMzczMi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDgxJSAoMzc3OS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDgyJSAoMzgyNi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDgzJSAoMzg3Mi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDg0JSAoMzkxOS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDg1JSAoMzk2Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDg2JSAoNDAxMi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDg3JSAoNDA1OS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDg4JSAoNDEwNi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDg5JSAoNDE1Mi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDkwJSAoNDE5OS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDkxJSAoNDI0Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDkyJSAoNDI5Mi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDkyJSAoNDMyOC80NjY1KQ1VcGRhdGluZyBmaWxlczogIDkzJSAoNDMzOS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDk0JSAoNDM4Ni80NjY1KQ1VcGRhdGluZyBmaWxlczogIDk1JSAoNDQzMi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDk2JSAoNDQ3OS80NjY1KQ1VcGRhdGluZyBmaWxlczogIDk3JSAoNDUyNi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDk4JSAoNDU3Mi80NjY1KQ1VcGRhdGluZyBmaWxlczogIDk5JSAoNDYxOS80NjY1KQ1VcGRhdGluZyBmaWxlczogMTAwJSAoNDY2NS80NjY1KQ1VcGRhdGluZyBmaWxlczogMTAwJSAoNDY2NS80NjY1KSwgZG9uZS4K"
+      }
+    },
+    {
+      "executable": "git",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout",
+      "windowsHide": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "stdout": {
+        "totalBytes": 41,
+        "retainedBytes": 41,
+        "limit": 65536,
+        "tailBase64": "NWM0OTQ2Y2M5ZjVkYzQ0YmU3Zjk0YmI5NDgwMTE4ZTU2M2QzNjNhNwo="
+      },
+      "stderr": {
+        "totalBytes": 0,
+        "retainedBytes": 0,
+        "limit": 65536,
+        "tailBase64": ""
+      }
+    },
+    {
+      "executable": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "H:\\Github Repositories\\fileconverter\\node_modules\\vinext\\dist\\cli.js",
+        "build"
+      ],
+      "cwd": "H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout",
+      "windowsHide": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "stdout": {
+        "totalBytes": 1048,
+        "retainedBytes": 1048,
+        "limit": 65536,
+        "tailBase64": "CiAgdmluZXh0IGJ1aWxkICAoVml0ZSA4LjAuMTMpCgpbMS81XSBhbmFseXplIGNsaWVudCByZWZlcmVuY2VzLi4uChtbMksNdHJhbnNmb3JtaW5nLi4u4pyTIDEzMiBtb2R1bGVzIHRyYW5zZm9ybWVkLgpyZW5kZXJpbmcgY2h1bmtzLi4uCuKckyBidWlsdCBpbiA4NjJtcwpbMi81XSBhbmFseXplIHNlcnZlciByZWZlcmVuY2VzLi4uChtbMksNdHJhbnNmb3JtaW5nLi4u4pyTIDU4IG1vZHVsZXMgdHJhbnNmb3JtZWQuCnJlbmRlcmluZyBjaHVua3MuLi4K4pyTIGJ1aWx0IGluIDEwMG1zClszLzVdIGJ1aWxkIHJzYyBlbnZpcm9ubWVudC4uLgobWzJLDXRyYW5zZm9ybWluZy4uLuKckyAxMzggbW9kdWxlcyB0cmFuc2Zvcm1lZC4KcmVuZGVyaW5nIGNodW5rcy4uLgpjb21wdXRpbmcgZ3ppcCBzaXplLi4uCuKckyBidWlsdCBpbiAxLjA4cwpbNC81XSBidWlsZCBjbGllbnQgZW52aXJvbm1lbnQuLi4KG1sySw10cmFuc2Zvcm1pbmcuLi7inJMgNjYgbW9kdWxlcyB0cmFuc2Zvcm1lZC4KcmVuZGVyaW5nIGNodW5rcy4uLgpjb21wdXRpbmcgZ3ppcCBzaXplLi4uCuKckyBidWlsdCBpbiA3MTZtcwpbNS81XSBidWlsZCBzc3IgZW52aXJvbm1lbnQuLi4KG1sySw10cmFuc2Zvcm1pbmcuLi7inJMgNjQgbW9kdWxlcyB0cmFuc2Zvcm1lZC4KcmVuZGVyaW5nIGNodW5rcy4uLgpjb21wdXRpbmcgZ3ppcCBzaXplLi4uCuKckyBidWlsdCBpbiAzMDZtcwobWzBtCiAgUm91dGUgKGFwcCkKICDilIAgPyAvCgogID8gVW5rbm93bgoKICA/IFNvbWUgcm91dGVzIGNvdWxkIG5vdCBiZSBjbGFzc2lmaWVkLiB2aW5leHQgY3VycmVudGx5IHVzZXMgc3RhdGljIGFuYWx5c2lzCiAgICBhbmQgY2Fubm90IGRldGVjdCBkeW5hbWljIEFQSSB1c2FnZSAoaGVhZGVycygpLCBjb29raWVzKCksIGV0Yy4pIGF0IGJ1aWxkIHRpbWUuCiAgICBBdXRvbWF0aWMgY2xhc3NpZmljYXRpb24gd2lsbCBiZSBpbXByb3ZlZCBpbiBhIGZ1dHVyZSByZWxlYXNlLgoKICBCdWlsZCBjb21wbGV0ZS4gUnVuIGB2aW5leHQgc3RhcnRgIHRvIHN0YXJ0IHRoZSBwcm9kdWN0aW9uIHNlcnZlci4KCg=="
+      },
+      "stderr": {
+        "totalBytes": 0,
+        "retainedBytes": 0,
+        "limit": 65536,
+        "tailBase64": ""
+      }
+    },
+    {
+      "executable": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "--test",
+        "--test-concurrency=2",
+        "--test-reporter=file:///H:/Github%20Repositories/fileconverter/scripts/lib/unit-inventory-reporter.mjs",
+        "tests/*.test.mjs"
+      ],
+      "cwd": "H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout",
+      "windowsHide": true,
+      "exit": {
+        "code": 1,
+        "signal": null
+      },
+      "stdout": {
+        "totalBytes": 336,
+        "retainedBytes": 336,
+        "limit": 65536,
+        "tailBase64": "eyJyZXBvcnQiOiJIOlxcR2l0aHViIFJlcG9zaXRvcmllc1xcZmlsZWNvbnZlcnRlclxcb3V0cHV0c1xccmVwb3J0c1xcMjAyNi0xMC0yMFQxMC0zOC0zNC02MzdaLWNsZWFuLWNoZWNrb3V0LXVuaXQuanNvbiIsImZpbGVzIjo1OTYsImZhaWxpbmdGaWxlcyI6MTU4LCJza2lwcGVkQ2FzZXMiOjIsInN1bW1hcnkiOnsic3VjY2VzcyI6ZmFsc2UsImNvdW50cyI6eyJ0ZXN0cyI6MTc3MCwiZmFpbGVkIjoyMDQsInBhc3NlZCI6MTU2NCwiY2FuY2VsbGVkIjowLCJza2lwcGVkIjoyLCJ0b2RvIjowLCJ0b3BMZXZlbCI6MTc3MCwic3VpdGVzIjowfSwiZHVyYXRpb25fbXMiOjEwNjgyOS4zMzYxfX0K"
+      },
+      "stderr": {
+        "totalBytes": 0,
+        "retainedBytes": 0,
+        "limit": 65536,
+        "tailBase64": ""
+      }
+    },
+    {
+      "executable": "git",
+      "args": [
+        "worktree",
+        "remove",
+        "--force",
+        "H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-WUjlA8\\checkout"
+      ],
+      "cwd": "H:\\Github Repositories\\fileconverter",
+      "windowsHide": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "stdout": {
+        "totalBytes": 0,
+        "retainedBytes": 0,
+        "limit": 65536,
+        "tailBase64": ""
+      },
+      "stderr": {
+        "totalBytes": 0,
+        "retainedBytes": 0,
+        "limit": 65536,
+        "tailBase64": ""
+      }
+    }
+  ],
+  "checkoutRemoved": true,
+  "runtimeRemoved": true,
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false
+}

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { createRequire } from "node:module";
 import test from "node:test";
 import ts from "typescript";
 import { makeEncoderPlaneTitleBrowserRecipe } from "../scripts/lib/encoder-plane-title-browser-recipe.mjs";
@@ -38,7 +39,7 @@ test("actual Playwright discovery selects exactly the direct HEVC diagnostic wit
     await writeFile(path.join(runtime.directory, "candidate.spec.ts"), recipe.spec, { flag: "wx" });
     const config = path.join(runtime.directory, "playwright.config.mjs");
     await writeFile(config, recipe.config, { flag: "wx" });
-    const listed = spawnSync(process.execPath, [path.join(root, "node_modules/@playwright/test/cli.js"),
+    const listed = spawnSync(process.execPath, [createRequire(import.meta.url).resolve("@playwright/test/cli"),
       "test", "--config", config, "--list"], { cwd: root, env: runtime.env, windowsHide: true,
       encoding: "utf8", timeout: 30000, maxBuffer: 1048576 });
     assert.equal(listed.status, 0, listed.stderr);

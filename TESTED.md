@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+## 2026-10-20 - Real clean-checkout default-unit failure inventoried; four tests fixed
+
+Tracked checkout of5c4946c, no private work/test.mkv: production build PASS;
+596test files/1770cases/1564pass/204fail/2skip/158failing files,106829.3361ms.
+Exact receipt `evidence/2026-10-20T10-38-34-637Z-clean-checkout-unit-probe.json`.
+Ancestor installed dependencies reused; not npm-ci or hosted Linux evidence.
+Owned checkout/runtime removed in finally. Failure families: absent private native
+artifacts; historical absolute-root and CRLF source-byte pins; direct node_modules
+assumptions; stale actual Chrome pin; two omitted workers in lifecycle audit.
+`evidence/2026-10-20-unit-portability-triage.json` records source-byte proof and
+precise next action. Historical hashes/receipts/validators were not rewritten.
+
+Fixed worker audit for34files and added saver cancellation/finally/queue/cleanup
+contracts; runtime/coordinator/lifecycle23PASS/0skip/11481.8903ms. Three discovery
+tests now resolve Playwright from installed package; preserved all real assertions
+and no-browser/finally behavior. Discovery plus reporter smoke10PASS/0skip/
+5985.1899ms; eight-file lint PASS. Reporter smoke preserves failed exit and skips.
+No conversion/browser launch/production native change/exclusion/newskip. Initial
+reporter-path probe launch failed before running tests; file-URL loading corrected
+and real-child smoke added. Both disposable checkout attempts removed. Default
+unit command remains unchanged and B01 OPEN; current-release CI not yet passed.
+
 ## 2026-10-20 - Independent cold three-full repeat PASS; no unchanged rerun
 
 Two distinct clean Chromium/profile sessions, three real protected-original

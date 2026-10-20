@@ -63,8 +63,9 @@ function topLevelConstContainers(tree) {
 }
 
 test("every worker module has an explicit cross-job retained-state contract", () => {
-  assert.equal(workerFiles.length, 32, "audit inventory must be updated for worker additions or removals");
+  assert.equal(workerFiles.length, 34, "audit inventory must be updated for worker additions or removals");
   const expectedMutable = new Map([
+    ["staged-save.worker.ts", ["active", "cancelled"]],
     [
       "conversion.worker.ts",
       [
@@ -148,6 +149,7 @@ test("the only message-loop entrypoints have bounded responses and terminal clea
     "conversion.worker.ts",
     "direct-file-writer.worker.ts",
     "jxl-source-inspection-worker.ts",
+    "staged-save.worker.ts",
   ]);
 
   const conversionWorker = source("workers/conversion.worker.ts");
@@ -171,6 +173,19 @@ test("the only message-loop entrypoints have bounded responses and terminal clea
   assert.match(jxlInspectionWorker, /\.slice\(0, MAX_WORKER_RESPONSE_TEXT_CHARS\)/);
   assert.match(jxlInspectionWorker, /finally\s*{\s*workerScope\.close\(\)/s);
   assert.match(source("lib/jxl-source-inspection.ts"), /worker\.terminate\(\)/);
+
+  const saveWorker = source("workers/staged-save.worker.ts");
+  assert.match(saveWorker, /message\.jobId === active\) cancelled = true/);
+  assert.match(saveWorker, /message\.type !== "copy-staged" \|\| active/);
+  assert.match(saveWorker, /Atomics\.load\(signal, 0\) !== 0/);
+  assert.match(saveWorker, /\.finally\(\(\) => { active = null; cancelled = false; }\)/);
+  assert.doesNotMatch(saveWorker, /setInterval\s*\(/);
+  const saveRuntime = source("workers/staged-save-runtime.ts");
+  assert.match(saveRuntime, /const copyPhase = .*?copyChunkBytes = 512 \* 1024/);
+  assert.match(saveRuntime, /metrics\.pendingOperations = 1;.*?await finalWritable\.write\(value\);.*?finally\s*{\s*metrics\.queuedBytes = 0;\s*metrics\.pendingOperations = 0;/s);
+  assert.match(saveRuntime, /await finalWritable\?\.abort\(error\)/);
+  assert.match(saveRuntime, /await removeStage\(\)/);
+  assert.match(saveRuntime, /\.slice\(0, 512\)/);
 
   const destination = source("workers/random-access-destination.ts");
   assert.match(destination, /const fail = \(message: string\) => {\s*worker\.terminate\(\)/s);

@@ -1,0 +1,46 @@
+{
+  "status": "actual-clean-checkout-default-unit-failure-inventoried-public-worker-regression-fixed",
+  "baselineReceipt": "evidence/2026-10-20T10-38-34-637Z-clean-checkout-unit-probe.json",
+  "baselineCommit": "5c4946cc9f5dc44be7f94bb9480118e563d363a7",
+  "productionBuildPassed": true,
+  "testFiles": 596,
+  "tests": 1770,
+  "passed": 1564,
+  "failed": 204,
+  "skipped": 2,
+  "failingFiles": 158,
+  "firstFailureCodesByFile": { "ENOENT": 40, "ERR_ASSERTION": 115, "ERR_TEST_FAILURE": 3 },
+  "observedCauseFamilies": [
+    "Untracked private native artifacts under work are genuinely absent from the isolated committed checkout.",
+    "Historical stress qualification replays bind original absolute workspace paths rather than arbitrary checkout paths.",
+    "Historical source-pin assertions bind original CRLF working bytes; Git blobs use LF. This is not a native conversion failure, and changing recorded hashes would falsify evidence.",
+    "Three browser-free Playwright discovery tests assumed node_modules directly under their source checkout instead of resolving the installed package.",
+    "Reliable-readonly-preflight test pins an old actual installed Chrome version and hashes rather than a portable unit fixture.",
+    "The production worker lifecycle audit omitted the two added staged-save files and their entrypoint/mutable state. This is a genuine current test coverage regression and was fixed, not excluded."
+  ],
+  "lineEndingProof": [
+    { "path": "package-lock.json", "workingBytes": 391971, "committedBytes": 380754, "workingCRLF": 11217, "committedCRLF": 0, "workingSha256": "a1aacbd692c843360513c2e5a2eb958ec02c022e4b88165d88453e0c32ce8369", "committedSha256": "1bb84cc1731fcd744d26530c8ac190a2817ee4322395628446faaa02f0428019" },
+    { "path": "vite.config.ts", "workingBytes": 1756, "committedBytes": 1697, "workingCRLF": 59, "committedCRLF": 0, "workingSha256": "5d68239b2f24f42354e8a05cf69b83fd8f3ce34727f2edf2b55283e4f732c77a", "committedSha256": "f7c14b8a38546bb6a7ec93cba22f8e8f131da9fbfe8b39327422ed5bb98d4613" }
+  ],
+  "latestInspectedHostedCiCommit": "bb45f39bd6081cf5fe8598dec43a080fedd4ef3b",
+  "baselineFailingFilesPresentAtThatCommit": ["tests/worker-lifecycle.test.mjs"],
+  "changes": [
+    "Worker audit requires exact 34-file inventory, staged-save active/cancelled state, guarded entrypoint, cancellation signal, finally reset, bounded error/queue/write state and owned stage cleanup.",
+    "Three Playwright discovery tests resolve @playwright/test/cli using createRequire; original real discovery assertions, no-browser behavior and finally scratch cleanup unchanged.",
+    "Reusable isolated-checkout probe confines build/temp/cache to owned repository work and removes its worktree/runtime in finally.",
+    "Diagnostic reporter consumes all test outcomes, retains bounded per-file failures and preserves skipped cases and actual failed exit."
+  ],
+  "focusedTests": [
+    { "files": ["tests/worker-lifecycle.test.mjs", "tests/staged-save-runtime.test.mjs", "tests/staged-worker-coordinator.test.mjs"], "passed": 23, "failed": 0, "skipped": 0, "durationMs": 11481.8903 },
+    { "files": ["tests/encoder-plane-bitrate-browser.test.mjs", "tests/encoder-plane-quality-browser.test.mjs", "tests/encoder-plane-recovery-browser.test.mjs", "tests/unit-inventory-reporter.test.mjs"], "passed": 10, "failed": 0, "skipped": 0, "durationMs": 5985.1899 }
+  ],
+  "eightChangedToolTestFilesLintPassed": true,
+  "initialProbeToolFailure": "First launch loaded a Windows reporter path as an ESM h: URL, before any unit test ran. Corrected to pathToFileURL; a real child negative smoke now verifies reporter loading, failed exit and skip truthfulness. Initial and completed isolated checkouts were both removed; no conversion was repeated.",
+  "noTestsExcludedOrNewSkipsAdded": true,
+  "defaultUnitCommandUnchanged": true,
+  "nativeAndProductionEngineBytesChanged": false,
+  "hostedCiOrNpmCiEvidence": false,
+  "nextAction": "Close B01 with explicit portable-versus-private qualification prerequisites and commands. Preserve all prior public gates, real portable recipe assertions and all private qualification checks; do not blanket-skip failures or relabel private suites unexecuted on the release as passed. Recheck the corrected default from a committed clean checkout, then hosted verification.",
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false
+}
