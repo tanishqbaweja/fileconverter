@@ -1,6 +1,23 @@
 # Tested conversion ledger
 
-## 2026-10-20 - Windows clean source PASS, Linux reveals eight portability failures
+## 2026-10-20 - Whole portable suite PASS1327; corrected scoped Linux check pending
+
+All447portable files1327PASS/0fail/0skip in125848.1918ms; full bounded report
+`outputs/reports/2026-10-20-unit-contract-final-local.json`.607root files include
+160explicit qualification files; all235prior hosted roots remain portable.
+Second hosted portable39413776299/e38b0db failed3secondary guards (1323pass/1skip)
+and remains failed. `evidence/2026-10-20-unit-contract-second-hosted-failure.json`
+preserves exact errors. Equivalent workflow clause order restored; actual current
+MVF99-source check kept in qualification, archived proof remains portable. Native
+availability negative diagnostic now targets four real bounded file integrity
+prerequisites rather than full route controls preempted by correct source-seal
+failure; original LTO route controls unchanged in qualification. No missing input
+or failed check becomes passed acceptance.14focused PASS/0skip/2039.0223ms and
+changed lint PASS, then entire portable PASS; final hosted check pending. Prior
+962browser conversions retained at exact unchanged browser sources; no native,
+conversion, metadata, quality or memory threshold change. Full goal still OPEN.
+
+## Historical checkpoint: Windows source PASS, Linux reveals eight failures
 
 Windows tracked60a1b56 checkout build/units1325pass/0fail/1explicit optional
 original skip,148917.343ms, checkout/runtime removed. Exact inventory hash and

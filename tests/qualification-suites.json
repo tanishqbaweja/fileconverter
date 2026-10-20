@@ -46,6 +46,7 @@
       "id": "historical-source-bytes",
       "reason": "Requires byte-exact historical working sources (including recorded CRLF bytes) and private qualification source pins. Current Git LF bytes are not those preimages; recorded hashes must not be rewritten.",
       "files": [
+        "tests/mvf-current-source-qualification.test.mjs",
         "tests/encoder-plane-current-source-qualification.test.mjs",
         "tests/alignment16-control-evidence.test.mjs",
         "tests/alignment16-full-preparation-evidence.test.mjs",
@@ -128,6 +129,7 @@
       "id": "private-artifacts",
       "reason": "Requires untracked private native build artifacts and/or full qualification reports identified by the original test. Absence must fail qualification, not become a passed or silently skipped unit test.",
       "files": [
+        "tests/private-native-prerequisites.test.mjs",
         "tests/allocation-attempt-native-qualification.test.mjs",
         "tests/late-slot-native-qualification.test.mjs",
         "tests/lto-native-composition-qualification.test.mjs",

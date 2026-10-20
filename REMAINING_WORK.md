@@ -1,6 +1,24 @@
 # Remaining work audit
 
-## 2026-10-20 - Windows checkout PASS; actual hosted Linux failures corrected, recheck next
+## 2026-10-20 - Entire portable suite PASS1327; final scoped Linux verification next
+
+Current607-file inventory=447portable+160explicit qualification, all235prior
+hosted root units retained. Entire portable current-tree run1327PASS/0fail/0skip,
+125848.1918ms, complete per-file report
+`outputs/reports/2026-10-20-unit-contract-final-local.json`. No original conversion
+rerun; test runtime cleaned in finally. Second hosted portable39413776299 at
+e38b0db failed only3secondary guards (1323pass/1skip), not accepted. Exact evidence
+`evidence/2026-10-20-unit-contract-second-hosted-failure.json` keeps all failures.
+Restored equivalent workflow clause order to preserve existing public audio-scope
+contract. Archived99-source proof remains portable; actual current-source seal
+assertion moved intact into explicit qualification. Missing-work probe now runs
+four bounded native artifact integrity prerequisite checks independently of full
+route source seals; original LTO controls remain unchanged/required. Diagnostic
+hook readFile/lstat only, never production.14focused PASS/0skip/2039.0223ms,
+changed-file lint PASS, whole local suite PASS; B01 final hosted check pending.
+Do not restart the unchanged962passing browser conversions or rejected LTO test.
+
+## Historical checkpoint: Windows source PASS; first hosted Linux failures corrected
 
 Tracked Windows checkout60a1b56 build/units1325PASS/0FAIL/1existing original-
 fixture skip in148917.343ms; exact receipt in

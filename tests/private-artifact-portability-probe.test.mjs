@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-test("controlled missing-private-work probe reproduces four default-suite failures without altering real files", async () => {
+test("controlled unavailable-private-artifact probe fails all four static prerequisites without changing real files", async () => {
   const child = spawn(process.execPath, ["scripts/probe-private-artifact-portability.mjs"],
     { cwd: process.cwd(), env: process.env, windowsHide: true, stdio: ["ignore", "pipe", "pipe"] });
   let stdout = "", stderr = "";
@@ -14,6 +14,8 @@ test("controlled missing-private-work probe reproduces four default-suite failur
   assert.equal(value.sourceTestUnmodified, true); assert.equal(value.filesRemovedRenamedOrOverwritten, false);
   assert.equal(value.conversionsPerformed, 0); assert.equal(value.publicAcceptance, false);
   assert.equal(value.retainedBytesPerPipeLimit, 65536);
+  assert.equal(value.status,"verified-explicit-private-native-prerequisites-fail-without-owned-artifacts");
+  assert.equal(value.command.args.at(-1),"tests/private-native-prerequisites.test.mjs");
   assert.ok(value.privatePaths.length > 0 && value.privatePaths.every(file => /work[\\/]mpeg2-(?:jspi|lto)-/.test(file) && !file.includes("{ code:")));
 });
 test("diagnostic hook is not wired into production, build or the default test command", async () => {

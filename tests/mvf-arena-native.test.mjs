@@ -21,7 +21,7 @@ test("actual changed native build passed real arena lifetime controls without qu
   assert.equal(build.files.length, 20); assert.equal(build.reusableToolBytes, 9739246);
   assert.equal(build.manifest.artifacts["split-encoder.wasm"], "8b2fd64d3205143971d451f0ed562039d98fbac9f276d6cbb3c8898d889f4242");
 });
-test("actual 99-source seal retains all 93 parent paths and all executed preimages within unchanged caps", async () => {
+test("archived 99-source seal retains all93 parent paths/preimages within unchanged caps, not current-release identity", async () => {
   const proof = JSON.parse(await read("evidence/mvf-arena-native-38643550000.json"));
   const parent = JSON.parse(await read("evidence/ebml-reuse-native-38608791023.json"));
   const build = JSON.parse(await read(proof.proof.path));
@@ -36,7 +36,6 @@ test("actual 99-source seal retains all 93 parent paths and all executed preimag
   for (const [file, hash] of Object.entries(proof.sourcePins)) {
     const preimage = archive.sourcePreimages[file]; assert.equal(preimage.encoding, "base64");
     assert.equal(sha(Buffer.from(preimage.data, "base64")), hash);
-    assert.equal(sha(await read(file)), proof.currentSourcePins[file], file);
     if (file !== ".github/workflows/reproduce-ffmpeg-nondocker.yml") assert.equal(hash, proof.currentSourcePins[file]);
   }
   assert.equal(proof.decoder.sha256, "2aa60267136b8d35116cceb5cbff5f79d0aae21c62d524ac5bacabcd02f22576");

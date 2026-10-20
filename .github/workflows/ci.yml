@@ -35,7 +35,7 @@ permissions:
 
 jobs:
   engine-matrix:
-    if: github.event_name != 'workflow_dispatch' || (inputs.engine != 'verify-only' && inputs.engine != 'portable-verify' && inputs.engine != 'audio-destination-scopes')
+    if: github.event_name != 'workflow_dispatch' || (inputs.engine != 'verify-only' && inputs.engine != 'audio-destination-scopes' && inputs.engine != 'portable-verify')
     runs-on: ubuntu-latest
     outputs:
       engines: ${{ steps.manifest.outputs.engines }}

@@ -5,8 +5,9 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { syncBuiltinESMExports } from "node:module";
 const root = path.resolve(import.meta.dirname, "../.."), privateRoot = path.join(root, "work");
-const original = promises.readFile;
-promises.readFile = async function (file, ...args) {
+for(const method of ["readFile","lstat"]) {
+const original = promises[method];
+promises[method] = async function (file, ...args) {
   const name = file instanceof URL ? fileURLToPath(file) : typeof file === "string" ? file : null;
   if (name) {
     const absolute = path.resolve(name), relative = path.relative(privateRoot, absolute);
@@ -18,4 +19,5 @@ promises.readFile = async function (file, ...args) {
   }
   return original.call(this, file, ...args);
 };
+}
 syncBuiltinESMExports();
