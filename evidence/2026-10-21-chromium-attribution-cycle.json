@@ -1,0 +1,1062 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-21",
+  "status": "diagnostic-progress-all-three-memory-gates-failed",
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false,
+  "memoryFixProven": false,
+  "speedGainProven": false,
+  "productionApplicationCommit": "80e571125f4120bdd25238cb323cafff21a14d3d",
+  "productionFilesChangedThisCycle": false,
+  "implementation": {
+    "helper": "scripts/lib/chromium-attribution.mjs",
+    "driver": "scripts/test-mpeg2-production-runtime.mjs",
+    "processTypes": "CIM metadata joined to native samples by PID, parent PID and creation time at shared microsecond precision; unknown types retained and counted",
+    "realmTransport": "Real browser CDP session using non-flattened target messages; reuse bounded all-realm sampler. No evaluation, forced GC, user content or replacement memory metric.",
+    "realmLimits": {
+      "targets": 16,
+      "pendingTargetMessages": 64,
+      "maximumReplyBytes": 1048576,
+      "checkpointPairs": 8
+    },
+    "realmCoverage": "Five bounded diagnostic observations, not exact all-realm peaks; worker may be observed before codec allocation or absent after genuine retirement.",
+    "phaseCorrection": "Native acquisition timestamp joined to phase-change timeline, not current phase when a later batch is drained.",
+    "gateOrder": "Executed source/browser pins verified even when memory gate fails; optional perturbing allocator dump occurs after native monitor is stopped.",
+    "observerControl": "Events-only allowed only with explicit allocation diagnostic flag. Full trace remains default. Every primary process and original lower blank baseline retained.",
+    "postMeasurementDump": "Reuses bounded live-memory-infra helper,15-second deadline/8MiB serialized trace; retained-allocation diagnosis only, never acceptance."
+  },
+  "comparisonCaveat": "Freshly generated Matroska container SHA-256 differs between all three inputs. Same fixture recipe/settings and identical validated output do not prove byte-identical input. Not a paired speed benchmark or conclusive causal effect size for tracing.",
+  "cases": [
+    {
+      "mode": "full screenshot/snapshot tracing",
+      "report": {
+        "path": "outputs/reports/2026-10-20T19-27-08.637Z-mpeg2-production-runtime.json",
+        "bytes": 2778572,
+        "sha256": "f8d820531fbfd93c92aadc4c6b82bc2de93d151b303c7bcb74c89caa5fe66e83"
+      },
+      "status": "failed",
+      "startedAt": "2026-10-20T19:27:08.637Z",
+      "finishedAt": "2026-10-20T19:28:46.512Z",
+      "browser": "155.0.8059.85",
+      "fixture": {
+        "bytes": 497032,
+        "sha256": "d5550f329ad6615c4cf4e4434f719bfb37b756886dd7f907a0bb038b33421c6b",
+        "video": "hevc",
+        "width": 320,
+        "height": 240,
+        "frames": 96
+      },
+      "output": {
+        "bytes": 585266,
+        "sha256": "a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13",
+        "codec": "mpeg2video",
+        "frames": 96,
+        "ssim": 0.985963,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+        "titlePreserved": true,
+        "languagePreserved": true
+      },
+      "memory": {
+        "limitMiB": 250,
+        "incrementalPrivateMiB": 348.53515625,
+        "blank": {
+          "stable": true,
+          "privateBytes": 228515840,
+          "spreadBytes": 1486848,
+          "rssBytes": 474648576,
+          "firstTimestamp": "2026-10-20T19:27:49.9016101Z",
+          "lastTimestamp": "2026-10-20T19:27:58.3085098Z",
+          "sampleCount": 8,
+          "minimumElapsedMs": 8000
+        },
+        "loadedIdle": {
+          "stable": true,
+          "privateBytes": 455077888,
+          "spreadBytes": 524288,
+          "rssBytes": 756420608,
+          "firstTimestamp": "2026-10-20T19:28:13.5924963Z",
+          "lastTimestamp": "2026-10-20T19:28:22.0091425Z",
+          "sampleCount": 8,
+          "minimumElapsedMs": 8000
+        },
+        "loadedPhasePeakIncrementalPrivateMiB": 301.14453125,
+        "conversionPeakPrivateBytes": 593981440,
+        "conversionPeakRssBytes": 844615680,
+        "conversionPeakProcesses": [
+          {
+            "pid": 13968,
+            "parentPid": 43412,
+            "createdAt": "2026-10-20T19:27:39.9500518Z",
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "privateBytes": 8126464,
+            "rssBytes": 19316736
+          },
+          {
+            "pid": 17444,
+            "parentPid": 43412,
+            "createdAt": "2026-10-20T19:27:39.6694283Z",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "privateBytes": 2523136,
+            "rssBytes": 10366976
+          },
+          {
+            "pid": 28732,
+            "parentPid": 43412,
+            "createdAt": "2026-10-20T19:27:39.9095043Z",
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "privateBytes": 233123840,
+            "rssBytes": 262721536
+          },
+          {
+            "pid": 35932,
+            "parentPid": 43412,
+            "createdAt": "2026-10-20T19:27:40.5298034Z",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "privateBytes": 35688448,
+            "rssBytes": 79642624
+          },
+          {
+            "pid": 37776,
+            "parentPid": 43412,
+            "createdAt": "2026-10-20T19:27:39.9171475Z",
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "privateBytes": 16420864,
+            "rssBytes": 44130304
+          },
+          {
+            "pid": 42196,
+            "parentPid": 43412,
+            "createdAt": "2026-10-20T19:28:01.2397545Z",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "privateBytes": 15552512,
+            "rssBytes": 32567296
+          },
+          {
+            "pid": 42864,
+            "parentPid": 43412,
+            "createdAt": "2026-10-20T19:27:40.5601739Z",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "privateBytes": 234405888,
+            "rssBytes": 249348096
+          },
+          {
+            "pid": 43412,
+            "parentPid": 32144,
+            "createdAt": "2026-10-20T19:27:39.618279Z",
+            "type": "browser",
+            "utilitySubtype": null,
+            "privateBytes": 48140288,
+            "rssBytes": 146522112
+          }
+        ],
+        "intervalMs": 100,
+        "validSamples": 391,
+        "unavailableSamples": [
+          {
+            "sequence": 17,
+            "timestamp": "2026-10-20T19:27:42.8051927Z",
+            "completedAt": "2026-10-20T19:27:42.8148884Z",
+            "sampleError": "OpenProcess 17072",
+            "nativeElapsedMs": 9.8236,
+            "privateBytes": null,
+            "rssBytes": null,
+            "processes": null,
+            "phase": "blank",
+            "elapsedMs": 34168
+          }
+        ],
+        "conversionSamples": 6
+      },
+      "finalJobMetrics": {
+        "inputBytes": 497032,
+        "outputBytes": 585266,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 524288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 524288,
+        "elapsedMs": 696.6950390934944,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 50331648,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 4,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0,
+        "scratchBytes": 0,
+        "peakScratchBytes": 585266,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288
+      },
+      "nativeMetricsObservation": {
+        "inputBytes": 458752,
+        "outputBytes": 426179,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 634.0299999713898,
+        "wasmMemoryBytes": 50331648,
+        "peakWasmMemoryBytes": 50331648,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 50331652,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "phases": [
+        "Inspecting MPEG-2 source",
+        "Worker started",
+        "Destination opened",
+        "Encoding MPEG-2 MP4",
+        "Copying staged MP4 to selected destination",
+        "Complete"
+      ],
+      "executedSourceAndBrowserPinsVerified": true,
+      "driverSha256": "097c4c23a51f75099e79a8d2d5b14983c13fec83aa92cbec376977744d2e01ff",
+      "cleanup": {
+        "processObservations": [
+          {
+            "status": "owned-identity-absent",
+            "identity": {
+              "pid": 22448,
+              "parentPid": 32144,
+              "createdAt": "2026-10-20T19:27:37.319556Z"
+            },
+            "pidReused": false
+          },
+          {
+            "status": "owned-identity-absent",
+            "identity": {
+              "pid": 43412,
+              "parentPid": 32144,
+              "createdAt": "2026-10-20T19:27:39.618279Z"
+            },
+            "pidReused": false
+          },
+          {
+            "status": "owned-identity-absent",
+            "identity": {
+              "pid": 15624,
+              "parentPid": 32144,
+              "createdAt": "2026-10-20T19:27:40.626959Z"
+            },
+            "pidReused": false
+          }
+        ],
+        "disposableOutputDeleted": true,
+        "generatedDirectoriesRemoved": [
+          "dist\\client\\engines\\mpeg2"
+        ],
+        "scratchRemoved": "work\\mpeg2-production-runtime-bVFFYv",
+        "allOwnedProcessesAbsent": true,
+        "protectedOriginalUnchanged": true
+      },
+      "failureTrace": {
+        "path": "output\\playwright\\2026-10-20T19-27-08.637Z-mpeg2-runtime-failure.zip",
+        "bytes": 10609464,
+        "sha256": "1fdde544bf22d01de7383fd6d57f443270b9d308fc14c2d43f3e62129833029b"
+      }
+    },
+    {
+      "mode": "event-only tracing",
+      "report": {
+        "path": "outputs/reports/2026-10-20T19-29-42.130Z-mpeg2-production-runtime.json",
+        "bytes": 2805420,
+        "sha256": "a6dbb3446861c41eff6f61ac645014664a81c3dfa5f19fcdf107a0fbbfe7cba4"
+      },
+      "status": "failed",
+      "startedAt": "2026-10-20T19:29:42.13Z",
+      "finishedAt": "2026-10-20T19:31:13.763Z",
+      "browser": "155.0.8059.85",
+      "fixture": {
+        "bytes": 497032,
+        "sha256": "3f3ab4092e376dd10e88d2c7766f6adb875ce31b8db80aca6fa41825610b6719",
+        "video": "hevc",
+        "width": 320,
+        "height": 240,
+        "frames": 96
+      },
+      "output": {
+        "bytes": 585266,
+        "sha256": "a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13",
+        "codec": "mpeg2video",
+        "frames": 96,
+        "ssim": 0.985963,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+        "titlePreserved": true,
+        "languagePreserved": true
+      },
+      "memory": {
+        "limitMiB": 250,
+        "incrementalPrivateMiB": 317.01953125,
+        "blank": {
+          "stable": true,
+          "privateBytes": 230027264,
+          "spreadBytes": 1810432,
+          "rssBytes": 475824128,
+          "firstTimestamp": "2026-10-20T19:30:18.1038122Z",
+          "lastTimestamp": "2026-10-20T19:30:26.5116698Z",
+          "sampleCount": 8,
+          "minimumElapsedMs": 8000
+        },
+        "loadedIdle": {
+          "stable": true,
+          "privateBytes": 422699008,
+          "spreadBytes": 0,
+          "rssBytes": 716730368,
+          "firstTimestamp": "2026-10-20T19:30:41.7981953Z",
+          "lastTimestamp": "2026-10-20T19:30:50.3178882Z",
+          "sampleCount": 8,
+          "minimumElapsedMs": 8000
+        },
+        "loadedPhasePeakIncrementalPrivateMiB": 266.0625,
+        "conversionPeakPrivateBytes": 562446336,
+        "conversionPeakRssBytes": 805998592,
+        "conversionPeakProcesses": [
+          {
+            "pid": 14164,
+            "parentPid": 44788,
+            "createdAt": "2026-10-20T19:30:07.9877921Z",
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "privateBytes": 15953920,
+            "rssBytes": 43651072
+          },
+          {
+            "pid": 32108,
+            "parentPid": 44788,
+            "createdAt": "2026-10-20T19:30:29.4646959Z",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "privateBytes": 18432000,
+            "rssBytes": 35442688
+          },
+          {
+            "pid": 35696,
+            "parentPid": 44788,
+            "createdAt": "2026-10-20T19:30:07.7396529Z",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "privateBytes": 2510848,
+            "rssBytes": 10354688
+          },
+          {
+            "pid": 43412,
+            "parentPid": 44788,
+            "createdAt": "2026-10-20T19:30:08.6728517Z",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "privateBytes": 35815424,
+            "rssBytes": 79605760
+          },
+          {
+            "pid": 43428,
+            "parentPid": 44788,
+            "createdAt": "2026-10-20T19:30:08.7150941Z",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "privateBytes": 207433728,
+            "rssBytes": 220606464
+          },
+          {
+            "pid": 44220,
+            "parentPid": 44788,
+            "createdAt": "2026-10-20T19:30:08.0145818Z",
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "privateBytes": 8105984,
+            "rssBytes": 19283968
+          },
+          {
+            "pid": 44788,
+            "parentPid": 9300,
+            "createdAt": "2026-10-20T19:30:07.6901357Z",
+            "type": "browser",
+            "utilitySubtype": null,
+            "privateBytes": 48209920,
+            "rssBytes": 146194432
+          },
+          {
+            "pid": 45784,
+            "parentPid": 44788,
+            "createdAt": "2026-10-20T19:30:07.9798215Z",
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "privateBytes": 225984512,
+            "rssBytes": 250859520
+          }
+        ],
+        "intervalMs": 100,
+        "validSamples": 395,
+        "unavailableSamples": [],
+        "conversionSamples": 8
+      },
+      "finalJobMetrics": {
+        "inputBytes": 497032,
+        "outputBytes": 585266,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 524288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 524288,
+        "elapsedMs": 615.7898242473602,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 50331648,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 4,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0,
+        "scratchBytes": 0,
+        "peakScratchBytes": 585266,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288
+      },
+      "nativeMetricsObservation": {
+        "inputBytes": 393216,
+        "outputBytes": 272729,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 506.26500004529953,
+        "wasmMemoryBytes": 50331648,
+        "peakWasmMemoryBytes": 50331648,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 50331652,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "phases": [
+        "Inspecting MPEG-2 source",
+        "Worker started",
+        "Destination opened",
+        "Encoding MPEG-2 MP4",
+        "Copying staged MP4 to selected destination",
+        "Complete"
+      ],
+      "executedSourceAndBrowserPinsVerified": true,
+      "driverSha256": "097c4c23a51f75099e79a8d2d5b14983c13fec83aa92cbec376977744d2e01ff",
+      "cleanup": {
+        "processObservations": [
+          {
+            "status": "owned-identity-absent",
+            "identity": {
+              "pid": 32708,
+              "parentPid": 9300,
+              "createdAt": "2026-10-20T19:30:06.030349Z"
+            },
+            "pidReused": false
+          },
+          {
+            "status": "owned-identity-absent",
+            "identity": {
+              "pid": 44788,
+              "parentPid": 9300,
+              "createdAt": "2026-10-20T19:30:07.690135Z"
+            },
+            "pidReused": false
+          },
+          {
+            "status": "owned-identity-absent",
+            "identity": {
+              "pid": 3764,
+              "parentPid": 9300,
+              "createdAt": "2026-10-20T19:30:08.793061Z"
+            },
+            "pidReused": false
+          }
+        ],
+        "disposableOutputDeleted": true,
+        "generatedDirectoriesRemoved": [
+          "dist\\client\\engines\\mpeg2"
+        ],
+        "scratchRemoved": "work\\mpeg2-production-runtime-myF1Yc",
+        "allOwnedProcessesAbsent": true,
+        "protectedOriginalUnchanged": true
+      },
+      "failureTrace": {
+        "path": "output\\playwright\\2026-10-20T19-29-42.130Z-mpeg2-runtime-failure.zip",
+        "bytes": 42781,
+        "sha256": "b9ebebe3628c3f8cab16aaeb93c507c676b7481855ce904bd7214703385c6e99"
+      }
+    },
+    {
+      "mode": "event-only tracing plus post-measurement allocator dump",
+      "report": {
+        "path": "outputs/reports/2026-10-20T19-33-05.283Z-mpeg2-production-runtime.json",
+        "bytes": 3145544,
+        "sha256": "e0e6af49e0b3de6d45074d23f130b3a0d55c1ccb560ae4a9166176cc6dff7617"
+      },
+      "status": "failed",
+      "startedAt": "2026-10-20T19:33:05.283Z",
+      "finishedAt": "2026-10-20T19:34:37.65Z",
+      "browser": "155.0.8059.85",
+      "fixture": {
+        "bytes": 497032,
+        "sha256": "a5e40aeaa13373aa686ac84e4cf26886afc9947ea06a44f7ceb62148ccc5ba88",
+        "video": "hevc",
+        "width": 320,
+        "height": 240,
+        "frames": 96
+      },
+      "output": {
+        "bytes": 585266,
+        "sha256": "a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13",
+        "codec": "mpeg2video",
+        "frames": 96,
+        "ssim": 0.985963,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+        "titlePreserved": true,
+        "languagePreserved": true
+      },
+      "memory": {
+        "limitMiB": 250,
+        "incrementalPrivateMiB": 316.171875,
+        "blank": {
+          "stable": true,
+          "privateBytes": 228958208,
+          "spreadBytes": 1654784,
+          "rssBytes": 475181056,
+          "firstTimestamp": "2026-10-20T19:33:43.3770414Z",
+          "lastTimestamp": "2026-10-20T19:33:51.9037153Z",
+          "sampleCount": 8,
+          "minimumElapsedMs": 8000
+        },
+        "loadedIdle": {
+          "stable": true,
+          "privateBytes": 425566208,
+          "spreadBytes": 4096,
+          "rssBytes": 718626816,
+          "firstTimestamp": "2026-10-20T19:34:06.6307153Z",
+          "lastTimestamp": "2026-10-20T19:34:15.0596912Z",
+          "sampleCount": 8,
+          "minimumElapsedMs": 8000
+        },
+        "loadedPhasePeakIncrementalPrivateMiB": 263.52734375,
+        "conversionPeakPrivateBytes": 560488448,
+        "conversionPeakRssBytes": 802213888,
+        "conversionPeakProcesses": [
+          {
+            "pid": 18276,
+            "parentPid": 43256,
+            "createdAt": "2026-10-20T19:33:33.3108472Z",
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "privateBytes": 16580608,
+            "rssBytes": 44253184
+          },
+          {
+            "pid": 19612,
+            "parentPid": 43256,
+            "createdAt": "2026-10-20T19:33:33.3020234Z",
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "privateBytes": 228229120,
+            "rssBytes": 252833792
+          },
+          {
+            "pid": 21304,
+            "parentPid": 43256,
+            "createdAt": "2026-10-20T19:33:33.9979399Z",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "privateBytes": 204095488,
+            "rssBytes": 215764992
+          },
+          {
+            "pid": 37656,
+            "parentPid": 43256,
+            "createdAt": "2026-10-20T19:33:33.9657725Z",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "privateBytes": 35180544,
+            "rssBytes": 79097856
+          },
+          {
+            "pid": 38748,
+            "parentPid": 43256,
+            "createdAt": "2026-10-20T19:33:33.07053Z",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "privateBytes": 2519040,
+            "rssBytes": 10358784
+          },
+          {
+            "pid": 43256,
+            "parentPid": 43288,
+            "createdAt": "2026-10-20T19:33:33.0209254Z",
+            "type": "browser",
+            "utilitySubtype": null,
+            "privateBytes": 47382528,
+            "rssBytes": 145174528
+          },
+          {
+            "pid": 46340,
+            "parentPid": 43256,
+            "createdAt": "2026-10-20T19:33:54.6162677Z",
+            "type": "renderer",
+            "utilitySubtype": null,
+            "privateBytes": 18382848,
+            "rssBytes": 35430400
+          },
+          {
+            "pid": 46912,
+            "parentPid": 43256,
+            "createdAt": "2026-10-20T19:33:33.3340072Z",
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "privateBytes": 8118272,
+            "rssBytes": 19300352
+          }
+        ],
+        "intervalMs": 100,
+        "validSamples": 388,
+        "unavailableSamples": [],
+        "conversionSamples": 6
+      },
+      "finalJobMetrics": {
+        "inputBytes": 497032,
+        "outputBytes": 585266,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 524288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 524288,
+        "elapsedMs": 632.2301562428474,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 50331648,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 4,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0,
+        "scratchBytes": 0,
+        "peakScratchBytes": 585266,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288
+      },
+      "nativeMetricsObservation": {
+        "inputBytes": 393216,
+        "outputBytes": 272729,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 522.6550000309944,
+        "wasmMemoryBytes": 50331648,
+        "peakWasmMemoryBytes": 50331648,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 50331652,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "phases": [
+        "Inspecting MPEG-2 source",
+        "Worker started",
+        "Destination opened",
+        "Encoding MPEG-2 MP4",
+        "Copying staged MP4 to selected destination",
+        "Complete"
+      ],
+      "executedSourceAndBrowserPinsVerified": true,
+      "driverSha256": "7ea10657f4470c9d7147a3c85582f85507791376307a5afecf22036cec2464ea",
+      "cleanup": {
+        "processObservations": [
+          {
+            "status": "owned-identity-absent",
+            "identity": {
+              "pid": 3768,
+              "parentPid": 43288,
+              "createdAt": "2026-10-20T19:33:30.705933Z"
+            },
+            "pidReused": false
+          },
+          {
+            "status": "owned-identity-absent",
+            "identity": {
+              "pid": 43256,
+              "parentPid": 43288,
+              "createdAt": "2026-10-20T19:33:33.020925Z"
+            },
+            "pidReused": false
+          },
+          {
+            "status": "owned-identity-absent",
+            "identity": {
+              "pid": 35456,
+              "parentPid": 43288,
+              "createdAt": "2026-10-20T19:33:34.074607Z"
+            },
+            "pidReused": false
+          }
+        ],
+        "disposableOutputDeleted": true,
+        "generatedDirectoriesRemoved": [
+          "dist\\client\\engines\\mpeg2"
+        ],
+        "scratchRemoved": "work\\mpeg2-production-runtime-F4KUNM",
+        "allOwnedProcessesAbsent": true,
+        "protectedOriginalUnchanged": true
+      },
+      "failureTrace": {
+        "path": "output\\playwright\\2026-10-20T19-33-05.283Z-mpeg2-runtime-failure.zip",
+        "bytes": 45578,
+        "sha256": "fbafde94eca326a4dd22b0f919940ef7dab5a9dce6afcbb78198fd433a203889"
+      }
+    }
+  ],
+  "postMeasurementAllocatorDiagnostic": {
+    "archive": {
+      "path": "output/playwright/2026-10-20T19-33-05.283Z-post-measurement-memory.json.gz",
+      "bytes": 69649,
+      "sha256": "a9bbc7887094f5e48934ea46805701ff6024d9cce2a2278e0e8530ba398b131c",
+      "restoredBytes": 966294,
+      "restoredSha256": "3a285841a241ff83d86c3dc3eaade8d8ac474415c711beff2dc1f2093449a841"
+    },
+    "dumpStatus": "captured-live-light-memory-diagnostic",
+    "dumpRow": {
+      "dumpGuid": "0x4",
+      "success": true
+    },
+    "perturbsMemory": true,
+    "phase": "after-conversion-observer-stopped",
+    "processes": [
+      {
+        "pid": 19612,
+        "type": "gpu-process",
+        "osPrivate": 228229120,
+        "tracePrivate": 227323904,
+        "counters": [
+          {
+            "name": "gpu",
+            "values": {
+              "effective_size": 4211181,
+              "size": 17883437
+            }
+          },
+          {
+            "name": "malloc",
+            "values": {
+              "effective_size": 9421850,
+              "size": 10018864,
+              "virtual_size": 9629696
+            }
+          },
+          {
+            "name": "partition_alloc",
+            "values": {}
+          },
+          {
+            "name": "shared_memory",
+            "values": {
+              "effective_size": 94720,
+              "size": 1859584
+            }
+          },
+          {
+            "name": "skia",
+            "values": {
+              "effective_size": 676871,
+              "size": 680988
+            }
+          }
+        ]
+      },
+      {
+        "pid": 21304,
+        "type": "renderer",
+        "osPrivate": 96976896,
+        "tracePrivate": 106299392,
+        "counters": [
+          {
+            "name": "blink_gc",
+            "values": {
+              "effective_size": 36962304,
+              "size": 36962304
+            }
+          },
+          {
+            "name": "gpu",
+            "values": {
+              "effective_size": 262016,
+              "size": 262016
+            }
+          },
+          {
+            "name": "malloc",
+            "values": {
+              "effective_size": 31416243,
+              "size": 31945248,
+              "virtual_size": 24649728
+            }
+          },
+          {
+            "name": "partition_alloc",
+            "values": {
+              "effective_size": 5709103,
+              "size": 6766592
+            }
+          },
+          {
+            "name": "shared_memory",
+            "values": {
+              "effective_size": 120320,
+              "size": 495488
+            }
+          },
+          {
+            "name": "skia",
+            "values": {
+              "effective_size": 77348,
+              "size": 77348
+            }
+          },
+          {
+            "name": "v8",
+            "values": {
+              "effective_size": 17396752,
+              "size": 17396752
+            }
+          }
+        ]
+      }
+    ],
+    "realms": [
+      {
+        "label": "stable-blank",
+        "sample": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "F4EA53DC38F6981561D4D27EE9B7BBC0",
+              "type": "page",
+              "url": "about:blank",
+              "usedJSHeapBytes": 625824,
+              "allocatedJSHeapBytes": 1310720,
+              "embedderHeapUsedBytes": 1384568,
+              "backingStorageBytes": 6,
+              "error": null
+            }
+          ]
+        },
+        "error": null
+      },
+      {
+        "label": "loaded-before-catalogue",
+        "sample": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "F4EA53DC38F6981561D4D27EE9B7BBC0",
+              "type": "page",
+              "url": "http://127.0.0.1:3217/?test=1",
+              "usedJSHeapBytes": 1614312,
+              "allocatedJSHeapBytes": 2883584,
+              "embedderHeapUsedBytes": 3297056,
+              "backingStorageBytes": 610281,
+              "error": null
+            }
+          ]
+        },
+        "error": null
+      },
+      {
+        "label": "loaded-after-catalogue",
+        "sample": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "A19DD8E4A2503534550637C83D51C186",
+              "type": "worker",
+              "url": "http://127.0.0.1:3217/assets/conversion.worker-ChHDbuzb.js",
+              "usedJSHeapBytes": 506280,
+              "allocatedJSHeapBytes": 1572864,
+              "embedderHeapUsedBytes": 773712,
+              "backingStorageBytes": 359717,
+              "error": null
+            },
+            {
+              "targetId": "F4EA53DC38F6981561D4D27EE9B7BBC0",
+              "type": "page",
+              "url": "http://127.0.0.1:3217/?test=1#top",
+              "usedJSHeapBytes": 6520820,
+              "allocatedJSHeapBytes": 10764288,
+              "embedderHeapUsedBytes": 32385448,
+              "backingStorageBytes": 707752,
+              "error": null
+            }
+          ]
+        },
+        "error": null
+      },
+      {
+        "label": "conversion",
+        "sample": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "A19DD8E4A2503534550637C83D51C186",
+              "type": "worker",
+              "url": "http://127.0.0.1:3217/assets/conversion.worker-ChHDbuzb.js",
+              "usedJSHeapBytes": 506280,
+              "allocatedJSHeapBytes": 1572864,
+              "embedderHeapUsedBytes": 773712,
+              "backingStorageBytes": 359717,
+              "error": null
+            },
+            {
+              "targetId": "F4EA53DC38F6981561D4D27EE9B7BBC0",
+              "type": "page",
+              "url": "http://127.0.0.1:3217/?test=1#top",
+              "usedJSHeapBytes": 6538564,
+              "allocatedJSHeapBytes": 10764288,
+              "embedderHeapUsedBytes": 32385448,
+              "backingStorageBytes": 707812,
+              "error": null
+            }
+          ]
+        },
+        "error": null
+      },
+      {
+        "label": "post-completion",
+        "sample": {
+          "targetsAvailable": true,
+          "targets": [
+            {
+              "targetId": "F4EA53DC38F6981561D4D27EE9B7BBC0",
+              "type": "page",
+              "url": "http://127.0.0.1:3217/?test=1#top",
+              "usedJSHeapBytes": 7315108,
+              "allocatedJSHeapBytes": 11026432,
+              "embedderHeapUsedBytes": 34418352,
+              "backingStorageBytes": 708288,
+              "error": null
+            }
+          ]
+        },
+        "error": null
+      }
+    ],
+    "forbiddenRequests": [],
+    "allocatorValuesOverlap": true,
+    "summedAllocatorTotal": null,
+    "scope": "After conversion and codec retirement; native monitor already stopped. Tracing-service process starts only for this perturbing post-measurement capture and has no earlier OS-byte observation.",
+    "conclusion": "Identifies GPU process and retained renderer allocator categories, but light allocator counters do not fully account for GPU OS private memory. Not proof of texture-cache, driver, shader, CSS or per-frame leak cause."
+  },
+  "observedHeapExamples": {
+    "fullTraceConversionCheckpoint": {
+      "pageUsedJSHeapBytes": 7531184,
+      "pageAllocatedJSHeapBytes": 14958592,
+      "workerUsedJSHeapBytes": 506280,
+      "workerAllocatedJSHeapBytes": 1572864
+    },
+    "eventOnlyConversionCheckpoint": {
+      "pageUsedJSHeapBytes": 7099056,
+      "pageAllocatedJSHeapBytes": 11026432,
+      "workerUsedJSHeapBytes": 575408,
+      "workerAllocatedJSHeapBytes": 1572864
+    },
+    "notPeak": true,
+    "notPrivateMemory": true
+  },
+  "sourcePinsFinalDiagnostic": {
+    "workers/media-remux.ts": "30849a702aa3e62472a00a0aa95df4fd7fa9cd35aae1b8d66488911c799a7b82",
+    "workers/mpeg2-split-runtime.ts": "fc1211af94be388fa847e2cb34aad8b91b6689f37501edbee9c5e1c220d9f7d4",
+    "workers/random-access-destination.ts": "f46a4db401daabeb40a0b9eaa9feb256b623c21d2a7f41af549b6797842b4375",
+    "workers/conversion.worker.ts": "9f0aa2947adc1189b4929cefe69c165bd7acde81400c0283f1470c403dbd23cc",
+    "workers/mpeg2-core-loader.ts": "6ea5efc0e5871c242a043a970fade5da2ca6d97524c9060b172e342fd0390c20",
+    "workers/staged-save.worker.ts": "fe8a83566f83026cec5558b11936d5fbef65ea673cb8edd62919f0b905ac60b0",
+    "workers/staged-save-runtime.ts": "436ea291d584e59c4f10be37f43e1c4b5e17487b318cb5fe953f0794c44f8f5f",
+    "lib/staged-worker-coordinator.ts": "1770fe50692b80a9c51c53ad20eb8e12affaec53ca126751437c092812223d80",
+    "lib/staged-copy-protocol.ts": "35c6a5092802f66c6e298e7787a45acb81b1052e0d6b27a4d99687d3f00577d8",
+    "lib/mpeg2-stage-policy.ts": "b41887d215cc7eaed2443e65d25f72c6a9e2b64d7bb47a808bdc0d0540c01592",
+    "lib/mpeg2-qualification-job.ts": "b95f7f7c41d6ce16b82e80dbd868095ccff3a2e3e3e68dd44338f9ea8433c58e",
+    "scripts/test-mpeg2-production-runtime.mjs": "7ea10657f4470c9d7147a3c85582f85507791376307a5afecf22036cec2464ea",
+    "scripts/lib/chromium-attribution.mjs": "8f189f534bc02383e00c28f3b2e1e3f747b29d1e1096fee47ce74811f8624937",
+    "scripts/lib/cdp-realm-memory.mjs": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+    "scripts/lib/live-memory-infra.mjs": "d6d2b7f68c9b48f83f51de9f2fe1981aae41c9623d8b2cd9337d1ffb0501c1ae",
+    "scripts/lib/memory-infra-attribution.mjs": "057d8308f612ba56620003d1e6f8393ef907372663b92c476ab1a3e62d02902d",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/production-catalogue-check.mjs": "58c1857d62cc3795b44c44308389ef2889eaf742e8893453def9c68d7edd8876",
+    "app/converter/ConverterApp.tsx": "24db0e1727ea6d1cc0056f76e738d7fa66560ae0369e7e5c8fbdcc362545664c",
+    "app/converter/PublishedFormatsCatalogue.tsx": "84fa69d5ef72cd1dd09572df7694a57aeab3ffa66e65beaaedbee922c6f10bb4",
+    "app/globals.css": "8d3a0ca65a3b8918628939b36ade8b5b99b91e2bd03f83e1f955d4cb8e3a8709",
+    "lib/published-catalogue.ts": "54369ffd6b233df781d45c03f398200b7dd81af1511e5d04674a5e02d0e6452f",
+    "lib/capability-registry.ts": "c44657e8d266e5bb9175afb4fabe6a5d0be77893f8ab64c457b74b012f257528",
+    "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f",
+    "scripts/lib/mpeg2-split-frame-bridge.mjs": "44f52d150de0155643e632a516ae4547a1652e2c5de08e41a9d57df70f506c0a",
+    "scripts/lib/mpeg2-split-frame-layout.mjs": "0fb7487948b750e9674cf3292170dc7e2462dd6f1e7eabc77502200dc3088fd7",
+    "scripts/lib/mpeg2-split-frame-properties.mjs": "6c57b7c38eadb5638ee2a17bd0d1327de6d7561a4bb9614929bd8ff06b102a94",
+    "scripts/lib/mpeg2-split-packet-bridge.mjs": "e19260e92721163370c5d8a8248f2d58f96e57f14d0b7e5496c566f82a98b55d"
+  },
+  "firstTwoExecutedDriverPreimage": {
+    "path": "fixtures/source/mpeg2-attribution-driver-2026-10-21.json",
+    "bytes": 25516,
+    "sha256": "097c4c23a51f75099e79a8d2d5b14983c13fec83aa92cbec376977744d2e01ff",
+    "verifiedAgainstRecordedExecutionHash": true
+  },
+  "cleanupAudit": {
+    "observedChromiumBirthIdentities": 34,
+    "matchingIdentitiesStillPresent": 0,
+    "postDumpTracingServicePidCurrentlyPresent": 0,
+    "generatedPrivateAssetsAbsent": true,
+    "disposableConvertedCopiesFixturesProfilesScratchDeleted": true,
+    "protectedOriginal": {
+      "path": "test.mkv",
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+      "unchangedAcrossAllThreeRuns": true
+    },
+    "onlyCompactEvidenceAndFailureArtifactsRetainedInsideRepository": true
+  },
+  "tests": {
+    "focusedPassed": 17,
+    "focusedFailed": 0,
+    "wholePortable": {
+      "files": 451,
+      "tests": 1354,
+      "passed": 1354,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 75185.7693,
+      "report": "outputs/reports/2026-10-21-chromium-attribution-units.json"
+    },
+    "qualificationFiles": 162,
+    "qualificationStatus": "not executed or counted passed",
+    "protectedPriorHostedPortableFiles": 235,
+    "focusedLint": "passed",
+    "productionBuild": "passed in all three real browser runs",
+    "privacyNetworkChecks": "zero forbidden requests in all three; separate18-test privacy suite last passed at80e5711, not rerun or relabelled here"
+  },
+  "notClosed": [
+    "Full GPU/private allocation source and a conforming memory fix",
+    "Exact all-realm peak telemetry and recovery/scaling qualification",
+    "Final MPEG-2 UI/planner/settings/preservation and browser terminal-path coverage",
+    "Other B02-B09 requirements including32 dependency advisories"
+  ],
+  "nextActions": [
+    "Do not rerun full/events-only controls unchanged; both exceed250MiB.",
+    "Use the captured data to investigate the unexplained GPU process private allocations; do not infer texture/cache ownership from aggregate size.",
+    "Any strict paired optimization comparison must reuse one hash-pinned fixture rather than regenerate containers.",
+    "Continue other open implementation work in parallel in the project plan; these diagnostics do not reduce the original scope."
+  ]
+}

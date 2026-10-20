@@ -15,28 +15,52 @@ import { inspectStressHostMemory } from "./lib/host-memory-preflight.mjs";
 import { inspectInstalledChromePin, assertInstalledChromePinsEqual } from "./lib/installed-chrome-pin.mjs";
 import { queryProcessIdentity, observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mjs";
 import { startChromiumMemoryMonitor } from "./lib/persistent-chromium-memory.mjs";
-import { stableWindow } from "./lib/chromium-private-memory.mjs";
+import { stableWindow, sampleChromiumTree } from "./lib/chromium-private-memory.mjs";
+import { annotateNativeProcessTypes, connectPlaywrightRealmSampler } from "./lib/chromium-attribution.mjs";
+import { captureLiveMemoryInfra } from "./lib/live-memory-infra.mjs";
 import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
 import { verifyProductionCatalogue } from "./lib/production-catalogue-check.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
+const flags = new Set(process.argv.slice(2));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators"].includes(flag)));
+assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
+assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
+const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const chunk of createReadStream(file)) hash.update(chunk); return hash.digest("hex"); };
 const report = { scope: "production-MPEG2-dispatch-and-staged-lifecycle-small-fixture-not-public-acceptance", startedAt: new Date().toISOString(),
   publicAcceptance: false, uiPlannerCoverage: false, largeFileCoverage: false, speedComparison: false, standaloneWorker: false, failures: [] };
+report.observer = { allocationDiagnostics: diagnose, screenshots: !eventsOnly, snapshots: !eventsOnly, sources: true,
+  controlScope: eventsOnly ? "events-only observer comparison, not route promotion" : "existing full screenshot/snapshot trace" };
 const runtime = await createOwnedRuntimeScratch("mpeg2-production-runtime-");
 const env = { ...runtime.env, NODE_OPTIONS: [process.env.NODE_OPTIONS ?? "", "--import=" + pathToFileURL(path.join(root, "scripts/lib/hidden-unit-subprocesses.mjs")).href].filter(Boolean).join(" "),
   NEXT_TELEMETRY_DISABLED: "1", WRANGLER_SEND_METRICS: "false" };
 const generated = [], processIdentities = [], samples = [], baselineWindows = [], blankObservations = [], forbiddenRequests = [];
-let server, serverIdentity, browserServer, browser, context, monitor, monitorTimer, monitorPending = Promise.resolve(), monitorFailure, phase = "blank";
+let server, serverIdentity, browserServer, browser, context, monitor, monitorTimer, monitorPending = Promise.resolve(), monitorFailure, realmSampler, browserRootPid;
+const phaseChanges = [{ phase: "blank", at: Date.parse(report.startedAt) }];
+const changePhase = phase => { phaseChanges.push({ phase, at: Date.now() }); };
+const attribution = { references: [], realms: [], scope: "bounded diagnostic observations, not exact realm-heap peaks or replacement private bytes" };
+const captureAttribution = async label => {
+  if (!diagnose) return;
+  assert.ok(attribution.references.length < 8);
+  const startedAt = new Date().toISOString();
+  const [os, realms] = await Promise.allSettled([sampleChromiumTree(browserRootPid), realmSampler.sample()]);
+  attribution.references.push({ label, startedAt, completedAt: new Date().toISOString(), tree: os.status === "fulfilled" ? os.value : null,
+    error: os.status === "rejected" ? String(os.reason).slice(0, 512) : null });
+  attribution.realms.push({ label, startedAt, completedAt: new Date().toISOString(), sample: realms.status === "fulfilled" ? realms.value : null,
+    error: realms.status === "rejected" ? String(realms.reason).slice(0, 512) : null });
+};
 const browserLogs = [];
 let serverLog = "", output, browserPin, originalHash, work, monitorBusy = false, tracing = false;
 const snapshot = async () => {
   const batch = await monitor.drain();
   assert.ok(samples.length + batch.samples.length <= 3000, "Bounded short-test sample cap");
-  for (const sample of batch.samples) samples.push({ ...sample, phase, elapsedMs: Date.parse(sample.timestamp) - Date.parse(report.startedAt) });
+  for (const sample of batch.samples) samples.push({ ...sample,
+    phase: phaseChanges.findLast(change => change.at <= Date.parse(sample.timestamp))?.phase ?? "unavailable",
+    elapsedMs: Date.parse(sample.timestamp) - Date.parse(report.startedAt) });
 };
 try {
   const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 32 * 1024 ** 3);
@@ -75,7 +99,9 @@ try {
   for (const file of ["workers/media-remux.ts", "workers/mpeg2-split-runtime.ts", "workers/random-access-destination.ts",
     "workers/conversion.worker.ts", "workers/mpeg2-core-loader.ts", "workers/staged-save.worker.ts", "workers/staged-save-runtime.ts",
     "lib/staged-worker-coordinator.ts", "lib/staged-copy-protocol.ts", "lib/mpeg2-stage-policy.ts", "lib/mpeg2-qualification-job.ts",
-    "scripts/test-mpeg2-production-runtime.mjs",
+    "scripts/test-mpeg2-production-runtime.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
+    "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",
+    "scripts/lib/chromium-private-memory.mjs", "scripts/lib/persistent-chromium-memory.mjs",
     "scripts/lib/production-catalogue-check.mjs", "app/converter/ConverterApp.tsx", "app/converter/PublishedFormatsCatalogue.tsx",
     "app/globals.css", "lib/published-catalogue.ts", "lib/capability-registry.ts",
     ...["session", "frame-bridge", "frame-layout", "frame-properties", "packet-bridge"].map(suffix => "scripts/lib/mpeg2-split-" + suffix + ".mjs")]) {
@@ -99,6 +125,7 @@ try {
   assert.equal(ready, true, serverLog);
   browserServer = await chromium.launchServer({ executablePath: browserPin.launcher.path, headless: true, env });
   const browserIdentity = await queryProcessIdentity(browserServer.process().pid); assert.ok(browserIdentity); processIdentities.push(browserIdentity);
+  browserRootPid = browserIdentity.pid;
   browser = await chromium.connect(browserServer.wsEndpoint());
   context = await browser.newContext({ serviceWorkers: "block" });
   const page = await context.newPage();
@@ -118,14 +145,16 @@ try {
   }
   assert.ok(baselineWindows.length >= 2, "Stable same-instance blank baseline unavailable");
   report.blankBaseline = baselineWindows.reduce((lower, next) => next.privateBytes < lower.privateBytes ? next : lower);
-  await context.tracing.start({ screenshots: true, snapshots: true, sources: true }); tracing = true;
-  phase = "loaded";
+  if (diagnose) { realmSampler = await connectPlaywrightRealmSampler(browser, base); await captureAttribution("stable-blank"); }
+  await context.tracing.start({ screenshots: !eventsOnly, snapshots: !eventsOnly, sources: true }); tracing = true;
+  changePhase("loaded");
   context.on("request", request => { if (!request.url().startsWith(base + "/") || request.method() !== "GET" || request.postData() !== null) {
     forbiddenRequests.push({ method: request.method(), url: request.url().slice(0, 256) }); } });
   const response = await page.goto(base + "/?test=1");
   assert.equal(response.status(), 200, "Production app route must load before file selection");
   const headers = response.headers(); assert.equal(headers["cross-origin-opener-policy"], "same-origin");
   assert.equal(headers["cross-origin-embedder-policy"], "require-corp"); assert.ok(headers["content-security-policy"]);
+  await captureAttribution("loaded-before-catalogue");
   const screenshotDirectory = path.join(root, "output/playwright", report.startedAt.replaceAll(":", "-") + "-catalogue");
   await mkdir(screenshotDirectory);
   report.catalogueUi = await verifyProductionCatalogue(page, conversionProfiles.filter(profile => profile.public && profile.automatedTestStatus === "passed")
@@ -145,13 +174,14 @@ try {
   }
   assert.ok(report.loadedIdle, "Stable loaded-site idle observation unavailable");
   report.loadedPeakIncrementalPrivateMiB = (Math.max(...loadedSamples.filter(sample => sample.privateBytes !== null).map(sample => sample.privateBytes)) - report.blankBaseline.privateBytes) / 1048576;
+  await captureAttribution("loaded-after-catalogue");
   monitorTimer = setInterval(() => {
     if (monitorBusy) return;
     monitorBusy = true;
     monitorPending = snapshot().catch(error => { monitorFailure ??= error; }).finally(() => { monitorBusy = false; });
   }, 500);
-  phase = "conversion";
-  report.conversion = await page.evaluate(async () => {
+  changePhase("conversion");
+  [report.conversion] = await Promise.all([page.evaluate(async () => {
     const file = document.querySelector('input[type="file"]').files[0];
     const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle("mpeg2-runtime-output.mp4", { create: true });
     const jobId = crypto.randomUUID(), cancellationBuffer = new SharedArrayBuffer(4);
@@ -165,9 +195,14 @@ try {
           reject(new Error("Production job conversion timeout")); }, 60000); }),
       ]);
     } finally { clearTimeout(timeout); }
-  });
+  }).then(result => { changePhase("recovery"); return result; }), captureAttribution("conversion")]);
   clearInterval(monitorTimer); await monitorPending; await snapshot();
-  await monitor.close(); monitor = null; phase = "validation";
+  await captureAttribution("post-completion"); await snapshot();
+  await monitor.close(); monitor = null; changePhase("validation");
+  if (diagnose) {
+    annotateNativeProcessTypes(samples, attribution.references, browserRootPid);
+    report.attribution = attribution; report.diagnosticMemorySamples = samples;
+  }
   assert.equal(report.conversion.type, "complete", JSON.stringify(report.conversion));
   assert.ok(report.conversion.phases.includes("Inspecting MPEG-2 source"));
   assert.ok(report.conversion.phases.includes("Encoding MPEG-2 MP4"));
@@ -214,15 +249,32 @@ try {
   report.memory = { scope: "small-runtime-integration-only-not-large-file-or-public-profile-acceptance", intervalMs: 100,
     validSamples: samples.filter(sample => sample.privateBytes !== null).length, unavailableSamples: samples.filter(sample => sample.privateBytes === null),
     conversionSamples: conversionSamples.length, peak, incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 };
-  assert.ok(report.memory.incrementalPrivateMiB <= 250);
   assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
   for (const [file, hash] of Object.entries(report.sources)) assert.equal(sha(await readFile(path.join(root, file))), hash, "Executed source changed: " + file);
-  report.status = "passed-small-production-runtime-integration";
+  report.executedSourcesAndBrowserPinsVerified = true;
+  if (flags.has("--post-measurement-allocators")) {
+    // The primary native observer is already stopped and its baseline/peak are
+    // immutable. This bounded, perturbing dump is ONLY retained-allocation
+    // diagnosis, never included in or substituted for acceptance measurements.
+    try {
+      const archivePath = path.join(root, "output/playwright", report.startedAt.replaceAll(":", "-") + "-post-measurement-memory.json.gz");
+      report.postMeasurementAllocators = await captureLiveMemoryInfra({ session: await browser.newBrowserCDPSession(),
+        phase: "after-conversion-observer-stopped", processes: attribution.references.at(-1)?.tree?.processes ?? null, archivePath });
+    } catch (error) { report.postMeasurementAllocators = { status: "unavailable", error: String(error).slice(0, 1024), acceptanceMetric: false }; }
+  }
+  assert.ok(report.memory.incrementalPrivateMiB <= 250);
+  report.status = diagnose ? "passed-small-allocation-diagnostic-not-route-promotion" : "passed-small-production-runtime-integration";
 } catch (error) {
   report.status = "failed"; report.failures.push(String(error.stack ?? error)); report.serverLog = serverLog;
   report.failureMemorySamples = samples; process.exitCode = 1;
 } finally {
   clearInterval(monitorTimer); await monitorPending;
+  realmSampler?.close();
+  if (diagnose) {
+    annotateNativeProcessTypes(samples, attribution.references, browserRootPid);
+    report.attribution = attribution; report.diagnosticMemorySamples = samples;
+  }
+  report.phaseChanges = phaseChanges;
   report.browserLogs = browserLogs;
   if (context && tracing) {
     try {

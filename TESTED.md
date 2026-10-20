@@ -1,5 +1,65 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Typed Chromium/realm diagnosis implemented; all memory controls FAIL
+
+Added bounded `scripts/lib/chromium-attribution.mjs`: labels native samples from
+CIM metadata only after PID/parent/birth match at shared microsecond precision.
+Unknown processes remain counted. Real non-flattened browser CDP routing reuses
+the existing all-realm sampler: page/worker heaps now return actual values, not
+guessed0s. Five bounded observations are NOT exact realm peaks. No forced GC,
+content inspection, byte subtraction, omitted processes or browser flag change.
+
+The production runtime driver now assigns phases from native acquisition time,
+not the phase current when a later batch is drained. Source/browser-pin checks
+run before the unchanged memory assertion, including failed cases. Optional
+events-only trace is diagnostic-only; default retains screenshot/snapshot trace.
+Reused live-memory-infra capture runs only AFTER the primary native observer is
+stopped, with its original15s/8MiB bounds; it cannot change baseline or peak.
+
+Three real headless Chrome155.0.8059.85 production jobs:
+
+| Observation | Complete-tree incremental private MiB | Valid/null samples | Result |
+| --- | ---: | ---: | --- |
+| Full screenshot/snapshot trace + typed/realm observations | 348.53515625 | 391/1 | FAIL250 |
+| Event-only trace, same fixture recipe/settings/UI interaction | 317.01953125 | 395/0 | FAIL250 |
+| Event-only + post-measurement allocator dump | 316.171875 | 388/0 | FAIL250 |
+
+All outputs byte-identical585266B/SHAa9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13,
+96MPEG-2 frames/full independent decode,SSIM.985963,AAC packet identity/title/
+language,64KiB native queue/I/O,512KiB save/one pending write. Final scratch/
+current Wasm0,peak Wasm48MiB. Desktop/mobile catalogue cases still verify all405
+routes/17pages with24mounted cards. All request checks remained private.
+
+IMPORTANT: freshly generated Matroska container hashes differ. These are not
+byte-identical-input paired speed tests or proof of tracing's causal effect
+size. The observations show that removing continuous trace screenshots does NOT
+achieve250MiB. Do not rerun these controls unchanged or report a memory speedup.
+First two executed driver bytes are archived/hash-verified in
+`fixtures/source/mpeg2-attribution-driver-2026-10-21.json`; final29source pins and
+browser pins verified during the third run. Application/native sources unchanged.
+
+At full-trace peak: GPU233123840B and largest renderer234405888B; event-only
+peak: GPU225984512B/renderer207433728B. Real conversion-checkpoint page JS heap
+~7MiB and worker~0.5MiB are observations, not exact peaks or private memory.
+Post-measurement light dump succeeded: GPU OS private228229120B/trace private
+227323904B, but gpu allocator17883437B,malloc10018864B,shared1859584B,skia680988B.
+These counters overlap and do not fully attribute OS private bytes. Renderer
+retained categories include Blink36962304B,V817396752B,malloc31945248B; do not
+sum them into an acceptance metric. No texture-cache/driver/CSS/leak cause proven.
+The bounded966294B raw trace is retained as69649B hash-verified gzip. This is
+AFTER conversion/worker retirement, not conversion-peak allocation attribution.
+
+17focused tests and lint PASS; whole451-file portable1354PASS/0fail/0skip in
+75185.7693ms. All235prior hosted roots retained;162qualifications not executed.
+Each browser run rebuilt production, independently validated output, checked
+protected-original size/SHA and removed disposable fixtures/outputs/profiles/
+scratch/generated native assets. All9owned launch roots absent; an independent
+post-run audit found34observed Chromium birth identities absent, plus the late
+diagnostic tracing-service PID absent. Useful reports/failure artifacts stay
+inside repository. No long/full/cold/LTO experiment repeated, public promotion,
+new headed coverage or full-project completion. Exact compact receipt:
+`evidence/2026-10-21-chromium-attribution-cycle.json`.
+
 ## 2026-10-21 - Fresh hosted MPEG-2 lifecycle code verification PASS
 
 Pushed80e571125f4120bdd25238cb323cafff21a14d3d. Hosted39482225002/verify118833434104

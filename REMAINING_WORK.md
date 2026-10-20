@@ -1,5 +1,45 @@
 # Remaining work audit
 
+## 2026-10-21 - Native process/realm telemetry improved; memory source not fully resolved
+
+Implemented real browser-CDP page/worker heap observations and native process
+metadata joins using PID/parent/birth, with bounded targets/requests/checkpoints.
+Missing values stay null; unknown descendants stay in the private-memory total.
+Fixed phase assignment to native acquisition timestamps instead of drain time.
+Driver verifies executed source/browser pins before failing the unchanged250MiB
+gate. Optional bounded light-allocator capture occurs after native observation
+stops; default trace remains unchanged, event-only control is diagnostic-only.
+
+Three genuine small production jobs validate the same585266B/96-frame MPEG-2
+output/SSIM.985963 and preserved AAC/title/language, but memory FAILS348.53515625,
+317.01953125 and316.171875MiB. Fresh Matroska container hashes differ: not a strict
+identical-input optimization comparison or tracing-causality/speedup proof.
+Removing continuous screenshots alone is not a conforming solution; controls
+must not be repeated unchanged. A real paired comparison needs one hash-pinned
+fixture, not regenerated containers.
+
+Large allocations now genuinely assigned to GPU and renderer processes. However,
+the successful post-conversion light dump reports only~17MiB GPU allocator
+counter against~218MiB GPU OS private; overlapping counters cannot account for
+or replace that private total. Full allocation cause is still unproven. Do not
+guess textures/driver/CSS ownership or subtract a graphics process. B06 still
+needs exact all-realm peaks, missing telemetry, retained-memory recovery and a
+conforming fix/current-browser public/scaled qualification; five heap checkpoints
+and post-retirement allocators do not close it. B04 final planner/UI/settings/
+preservation/browser terminal paths/scaling and all other blockers remain open.
+
+17focused tests/lint PASS;451-file portable1354PASS/0fail/0skip in75185.7693ms,
+all235protected root files portable;162qualifications not counted passed. Three
+production builds and real private network/output validations passed; memory
+gates failed. All disposable media/profiles/scratch/native staging removed,
+protected original size/SHA unchanged across3runs,34observed Chromium birth
+identities independently absent. Source receipts, limitations, retained artifacts
+and exact next actions:
+`evidence/2026-10-21-chromium-attribution-cycle.json`. No change to production
+app/engines/registry or32dependency advisories; no full-goal closure. Continue
+other missing capabilities as well as targeted memory attribution, not more
+unchanged conversion loops.
+
 ## 2026-10-21 - Fresh hosted integration regression PASS; release gaps unchanged
 
 Actual code80e571125f4120bdd25238cb323cafff21a14d3d pushed; hosted39482225002
