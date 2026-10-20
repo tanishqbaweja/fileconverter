@@ -9,6 +9,14 @@ The 405-entry public registry/compact-evidence check passed on 2026-10-20. That
 is a consistency result, **not** fresh current-browser certification of every
 route. Published and private codecs must stay clearly separate.
 
+Latest B04 increment: explicit production `runMediaRemux` MPEG-2 profile40/runtime
+implemented, with accurate phase and strict settings/cleanup, but no public route
+or final UI/job integration. Two genuine small outputs validate; both full-tree
+diagnostics exceed250MiB (307.29296875/293.52734375). Baseline-window correction
+also remains unexecuted. Exact scope/failures/next action in
+`evidence/2026-10-20-mpeg2-production-runtime-cycle.json`. B04 remains OPEN; do not
+repeat unchanged full/cold or LTO gates or interpret valid output as promotion.
+
 ## Ordered blockers and exact exit evidence
 
 | ID | Work to close | Evidence required to close it |

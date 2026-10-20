@@ -46,6 +46,7 @@
       "id": "historical-source-bytes",
       "reason": "Requires byte-exact historical working sources (including recorded CRLF bytes) and private qualification source pins. Current Git LF bytes are not those preimages; recorded hashes must not be rewritten.",
       "files": [
+        "tests/aiff-id3-stress-current-source-qualification.test.mjs",
         "tests/mvf-current-source-qualification.test.mjs",
         "tests/encoder-plane-current-source-qualification.test.mjs",
         "tests/alignment16-control-evidence.test.mjs",

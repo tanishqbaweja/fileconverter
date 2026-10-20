@@ -98,7 +98,7 @@ test("Private stress memory uses stable blank and full tree/native+CIM maximum, 
   assert.match(missing[0].unavailableExamples[0][6], /OpenProcess/);
 });
 
-test("Stress runs remain headless/hidden, losslessly archived, private and birth-owned cleaned after success/cancellation", async () => {
+test("Historical stress runs remain headless/hidden, losslessly archived, private and birth-owned cleaned after success/cancellation", async () => {
   assert.equal(raw.browser.headless, true);
   assert.equal(proof.browserMode, "headless");
   assert.equal(proof.subprocessWindowsHidden, true);
@@ -128,7 +128,9 @@ test("Stress runs remain headless/hidden, losslessly archived, private and birth
   assert.ok(executed.includes("Refusing reused or unrelated PID cleanup"));
   assert.ok(executed.includes("source.artwork && (mp3Output || flacOutput || aiffOutput) ? 1 : 0;"));
   for (const entry of proof.retainedReports) await restore(entry);
-  for (const [file, hash] of Object.entries(proof.sourcePins)) assert.equal(sha(await read(file)), hash, file);
+  // This is archived October-10 evidence, not acceptance of changed production
+  // code. The original current-source equality assertion remains runnable in
+  // aiff-id3-stress-current-source-qualification.test.mjs, without new hashes.
   for (const name of ["within-aiff.mjs", "within-aiff.wasm"])
     assert.equal(sha(await read("dist/client/engines/remux/" + name)), sha(await read("public/engines/remux/" + name)));
 });

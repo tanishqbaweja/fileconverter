@@ -1,5 +1,49 @@
 # Remaining work audit
 
+## 2026-10-20 - Explicit MPEG-2 runtime implemented; real output valid, memory gate FAILED
+
+Added `workers/mpeg2-split-runtime.ts` and explicit profile40 in production
+`runMediaRemux`. No more profile1/remux substitution for this entry; phase is
+`Encoding MPEG-2 MP4`. It uses the qualified32+16MiB native modules,256KiB native
+stacks,4Mbps/default-geometry-timing-quality policy, one active JSPI call and
+bounded256KiB AVIO. Unsupported user options fail explicitly. Native owner and
+input-reader cleanup run on terminal paths. No public native assets, registry
+entry, selector codec or unsupported decision added; final job/UI dispatch,
+planner/preservation/options, staged-save retirement and qualification remain OPEN.
+
+Finite real headless browser adapter calls those production I/O/runtime modules
+with the pinned native bytes. Two actual4-second320x240HEVC inputs produced
+identical585266B MPEG-2 MP4 outputs, SHA a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13,
+96frames/full native decode,SSIM.985963, copied AAC packet hash/title/language
+preserved,64KiB maximum read/write/queue and one pending write; zero forbidden
+requests. BUT whole-tree diagnostic increments307.29296875 and293.52734375MiB
+FAIL the unchanged250MiB guard. Second attempt included loaded-idle observation;
+it still failed. No speedup/public/large-file acceptance claim. Initial attempt
+failed before conversion at wrong `/converter` URL; app is `/`.
+
+An additional observer issue was found: five adjacent100ms samples do not make
+an8-second stable window. Current harness now uses2100ms-spaced observations
+while retaining all100ms native samples and the original lower blank baseline.
+That correction is NOT executed/accepted yet. Old reports remain diagnostics,
+not strict release memory acceptance. No rerun of unchanged full/cold or rejected
+LTO work. Next attribute loaded-site/codec allocations and finish actual bounded
+production integration before another acceptance run; do not rerun until green.
+
+Compact exact receipt: `evidence/2026-10-20-mpeg2-production-runtime-cycle.json`.
+All three owned browser/server/observer roots absent after each attempt, generated
+outputs/fixtures/profiles/staged assets removed, protected original size/SHA
+unchanged before/after. Useful1992986B failed trace retained in repository for
+allocation investigation.39focused transport/runtime checks passed; first whole
+portable1337pass/2fail exposed a Theora source-pattern update and historical AIFF
+source equality. Theora now still requires async input for39 plus40. AIFF's old
+hash assertion is preserved intact as an explicit historical qualification, not
+rewritten or counted current acceptance.29focused corrected checks pass/0skip;
+final whole portable448files/1339PASS/0fail/0skip in79212.381ms. All235prior
+hosted units retained;609root tests=448portable+161explicit qualifications.
+Changed-file lint, whole TypeScript and405-public-route manifest audit PASS.
+Production build passed during each browser attempt. No fresh hosted CI or
+current public-browser regression suite claimed after this source change.
+
 ## 2026-10-20 - B01 CLOSED: clean hosted default and privacy/offline PASS
 
 Hosted39415600517 atd833f85808a78557c973aab2bea6101730754d27 terminal SUCCESS.

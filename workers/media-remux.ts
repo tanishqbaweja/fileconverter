@@ -9,6 +9,7 @@ import {
   type VideoConversionOptions,
 } from "../lib/media-conversion-options";
 import type { RandomAccessDestination } from "./random-access-destination";
+import type { Mpeg2SplitCore } from "./mpeg2-split-runtime";
 
 const REMUX_MODULE_URL = "/engines/remux/within-remux.mjs";
 const REMUX_WASM_URL = "/engines/remux/within-remux.wasm";
@@ -36,7 +37,7 @@ const MAX_ENGINE_ERRORS = 32;
 const MAX_ENGINE_ERROR_CHARS = 512;
 const ROTATE_REQUIRED = -4096;
 
-interface RemuxProgress {
+export interface RemuxProgress {
   inputPosition: number;
   outputSize: number;
   mediaTimeUs: number;
@@ -44,7 +45,7 @@ interface RemuxProgress {
   wasmMemoryBytes: number;
 }
 
-interface RemuxBridge {
+export interface RemuxBridge {
   inputSize: number;
   copyOutput: boolean;
   readSync?: (offset: number, destination: Uint8Array) => number;
@@ -61,7 +62,7 @@ interface RemuxBridge {
   progress: (progress: RemuxProgress) => void;
 }
 
-interface RemuxModule {
+export interface RemuxModule {
   ccall: (
     name: string,
     returnType: "number",
@@ -69,20 +70,25 @@ interface RemuxModule {
     arguments_: readonly number[],
     options: { async: true },
   ) => Promise<number>;
+  dispose?: () => void;
 }
 
-type RemuxModuleFactory = (options: {
+export interface RemuxFactoryOptions {
   withinBridge: RemuxBridge;
   locateFile: (path: string) => string;
   print: (text: string) => void;
   printErr: (text: string) => void;
-}) => Promise<RemuxModule>;
+}
+
+type RemuxModuleFactory = (options: RemuxFactoryOptions) => Promise<RemuxModule>;
 
 export interface MediaRemuxOptions {
   file: File;
   profileId: string;
   writable: RandomAccessDestination;
-  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39;
+  remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40;
+  /** Unpublished MPEG-2 integration. Never substitutes for a remux/audio core. */
+  mpeg2SplitCore?: Mpeg2SplitCore;
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;
   lowMemoryVideoCore?: boolean;
@@ -120,6 +126,7 @@ export async function runMediaRemux({
   profileId,
   writable,
   remuxProfile,
+  mpeg2SplitCore,
   audioOptions,
   videoOptions,
   lowMemoryVideoCore = false,
@@ -133,6 +140,18 @@ export async function runMediaRemux({
   emitProgress,
   post,
 }: MediaRemuxOptions): Promise<void> {
+  if ((remuxProfile === 40) !== Boolean(mpeg2SplitCore)) {
+    throw new Error("The MPEG-2 split core requires its explicit native profile 40.");
+  }
+  const mpeg2Runtime = remuxProfile === 40
+    ? await import("./mpeg2-split-runtime")
+    : undefined;
+  if (mpeg2Runtime) {
+    if (aiffSpecialistCore || lowMemoryVideoCore || singleThreadVideoCore) {
+      throw new Error("MPEG-2 cannot use another codec's specialist core.");
+    }
+    mpeg2Runtime.assertMpeg2SplitOptions(audioOptions, videoOptions);
+  }
   if (aiffSpecialistCore && remuxProfile !== 28) {
     throw new Error("The AIFF specialist can only run native profile 28.");
   }
@@ -156,7 +175,9 @@ export async function runMediaRemux({
       remuxProfile === 10 ||
       remuxProfile === 11);
   const phase =
-    remuxProfile === 1
+    remuxProfile === 40
+      ? "Encoding MPEG-2 MP4"
+    : remuxProfile === 1
       ? "Lossless remux"
       : remuxProfile === 12
         ? "Extracting H.264 video"
@@ -235,6 +256,10 @@ export async function runMediaRemux({
   let totalReadBytes = 0;
   let lastDirectCancellationYieldBytes = 0;
   let inputReader: ReadableStreamBYOBReader | null = null;
+  const closeMpeg2InputReader = async (): Promise<void> => {
+    try { await inputReader?.cancel("MPEG-2 conversion finished"); }
+    finally { inputReader = null; }
+  };
   let inputReaderPosition = -1;
   let inputBuffer = new Uint8Array(MAX_AVIO_CHUNK);
   const synchronousFileReader =
@@ -253,7 +278,8 @@ export async function runMediaRemux({
     remuxProfile === 36 ||
     remuxProfile === 37 ||
     remuxProfile === 38 ||
-    remuxProfile === 39
+    remuxProfile === 39 ||
+    remuxProfile === 40
       ? null
       : synchronousFileReader;
   const threadedWorkerPoolSize =
@@ -633,76 +659,90 @@ export async function runMediaRemux({
       : remuxProfile === 10 || remuxProfile === 11
         ? VP9_WASM_URL
         : REMUX_WASM_URL;
-  const imported = (await import(
+  const imported = mpeg2Runtime && mpeg2SplitCore
+    ? { default: (options: RemuxFactoryOptions) =>
+        mpeg2Runtime.createMpeg2SplitRuntime(options, mpeg2SplitCore) }
+    : (await import(
     /* @vite-ignore */ moduleUrl
   )) as { default: RemuxModuleFactory };
-  const engineModule = await imported.default({
-    withinBridge: bridge,
-    locateFile: (path) =>
-      path.endsWith(".wasm") ? wasmUrl : `/engines/remux/${path}`,
-    print: () => {},
-    printErr: (text) => {
-      recordEngineError(text);
-    },
-  });
-  assertActive();
+  let engineModule: RemuxModule | undefined;
+  try {
+    engineModule = await imported.default({
+      withinBridge: bridge,
+      locateFile: (path) =>
+        path.endsWith(".wasm") ? wasmUrl : `/engines/remux/${path}`,
+      print: () => {},
+      printErr: (text) => {
+        recordEngineError(text);
+      },
+    });
+    assertActive();
 
-  const usesCertifiedSpecialistAbi =
-    useDirectRemuxCore ||
-    useSingleThreadVideoCore ||
-    useWebmQualityCore ||
-    remuxProfile === 4 ||
-    remuxProfile === 5 ||
-    remuxProfile === 7 ||
-    remuxProfile === 10 ||
-    remuxProfile === 11;
-  const videoArguments = [
-    videoCodecCode(videoOptions?.codec ?? "automatic"),
-    videoOptions?.maxWidth ?? 0,
-    videoOptions?.bitRateBps ?? 0,
-    videoOptions?.frameRateFps ?? 0,
-    videoQualityCode(videoOptions?.quality ?? "automatic"),
-  ];
-  const arguments_ = usesCertifiedSpecialistAbi
-    ? [
-        remuxProfile,
-        audioOptions?.bitRateBps ?? 0,
-        audioOptions?.sampleRateHz ?? 0,
-        audioOptions?.channels ?? 0,
-        ...videoArguments,
-      ]
-    : [
-        remuxProfile,
-        audioOptions?.bitRateBps ?? 0,
-        audioOptions?.sampleRateHz ?? 0,
-        audioOptions?.channels ?? 0,
-        audioCodecCode(audioOptions?.codec ?? "automatic"),
-        audioCompressionCode(audioOptions?.compression ?? "automatic"),
-        audioQualityCode(audioOptions?.quality ?? "automatic"),
-        ...videoArguments,
-      ];
-  const result = await engineModule.ccall(
-    aiffSpecialistCore ? "within_aiff" : "within_remux",
-    "number",
-    arguments_.map(() => "number" as const),
-    arguments_,
-    { async: true },
-  );
-  if (isCancelled()) {
-    throw new DOMException("Conversion cancelled", "AbortError");
-  }
-  if (result === 0) {
-    flushCoalescedOutputSync();
-  }
-  if (result === 0 && metrics.outputBytes === 0) {
-    throw new Error(
-      engineErrors.join(" | ") ||
-        "FFmpeg completed without producing any output bytes.",
+    const usesCertifiedSpecialistAbi =
+      useDirectRemuxCore ||
+      useSingleThreadVideoCore ||
+      useWebmQualityCore ||
+      remuxProfile === 4 ||
+      remuxProfile === 5 ||
+      remuxProfile === 7 ||
+      remuxProfile === 10 ||
+      remuxProfile === 11;
+    const videoArguments = [
+      videoCodecCode(videoOptions?.codec ?? "automatic"),
+      videoOptions?.maxWidth ?? 0,
+      videoOptions?.bitRateBps ?? 0,
+      videoOptions?.frameRateFps ?? 0,
+      videoQualityCode(videoOptions?.quality ?? "automatic"),
+    ];
+    const arguments_ = usesCertifiedSpecialistAbi
+      ? [
+          remuxProfile,
+          audioOptions?.bitRateBps ?? 0,
+          audioOptions?.sampleRateHz ?? 0,
+          audioOptions?.channels ?? 0,
+          ...videoArguments,
+        ]
+      : [
+          remuxProfile,
+          audioOptions?.bitRateBps ?? 0,
+          audioOptions?.sampleRateHz ?? 0,
+          audioOptions?.channels ?? 0,
+          audioCodecCode(audioOptions?.codec ?? "automatic"),
+          audioCompressionCode(audioOptions?.compression ?? "automatic"),
+          audioQualityCode(audioOptions?.quality ?? "automatic"),
+          ...videoArguments,
+        ];
+    const result = await engineModule.ccall(
+      aiffSpecialistCore ? "within_aiff" : "within_remux",
+      "number",
+      arguments_.map(() => "number" as const),
+      arguments_,
+      { async: true },
     );
-  }
-  if (result !== 0) {
-    throw new Error(
-      engineErrors.join(" | ") || `FFmpeg remux failed with code ${result}.`,
-    );
+    if (isCancelled()) {
+      throw new DOMException("Conversion cancelled", "AbortError");
+    }
+    if (result === 0) {
+      flushCoalescedOutputSync();
+    }
+    if (result === 0 && metrics.outputBytes === 0) {
+      throw new Error(
+        engineErrors.join(" | ") ||
+          "FFmpeg completed without producing any output bytes.",
+      );
+    }
+    if (result !== 0) {
+      throw new Error(
+        engineErrors.join(" | ") || `FFmpeg remux failed with code ${result}.`,
+      );
+    }
+  } finally {
+    if (mpeg2Runtime) {
+      try {
+        engineModule?.dispose?.();
+      } finally {
+        await closeMpeg2InputReader();
+      }
+    }
   }
 }

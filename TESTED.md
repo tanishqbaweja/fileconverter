@@ -1,5 +1,43 @@
 # Tested conversion ledger
 
+## 2026-10-20 - Real explicit MPEG-2 runtime output; memory qualification FAILED
+
+Implemented production `runMediaRemux` profile40 and owned split-runtime module,
+accurate `Encoding MPEG-2 MP4` phase, strict settings/JSPI/heap/stack/AVIO guards
+and cleanup. This is unpublished runtime integration, NOT final UI/planner/
+conversion.worker dispatch or public support. Uses unchanged qualified native
+decoder32MiB/plane encoder16MiB and4Mbps/q4..20/default geometry/timing.
+
+Two actual headless production-runtime conversions:4-second320x240HEVC to MPEG-2
+MP4, identical585266B/SHA a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13,
+96frames, full native decode,SSIM.985963, AAC packet hash/title/language unchanged,
+64KiB read/write/queue peaks,one pending write,zero forbidden requests. Both
+FAILED the unchanged250MiB whole-tree guard:307.29296875 and293.52734375MiB.
+Earlier attempt failed at harness404 before conversion. The second conversion
+added loaded-idle observation; it still failed and retained a1992986B trace.
+
+Baseline-observer caveat: old last-five windows covered only~0.4s despite waiting
+8s overall. Corrected current harness spaces observation points2100ms apart,
+retains all100ms samples and does not change/subtract the loaded baseline, invoke
+GC or omit GPU/other processes. Correction not executed yet; these are diagnostic
+failures, not strict memory acceptance. Do not repeat unchanged diagnostics or
+full-original/private LTO loops. Investigate actual allocations/integration next.
+
+All generated media, browser scratch/profiles and generated native/worker assets
+removed in finally; owned roots verified absent. `test.mkv`2958573265B/SHA
+31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34 unchanged.
+Full receipt, raw report/trace hashes and exact limitations:
+`evidence/2026-10-20-mpeg2-production-runtime-cycle.json`.
+39focused runtime/transport checks PASS. Initial whole portable1337PASS/2FAIL/
+0skip retained; historical AIFF source seal preserved separately without hash
+changes and Theora async-reader assertion updated to include40.29focused
+corrected checks PASS/0skip. Final whole portable448files/1339PASS/0fail/0skip
+in79212.381ms;235prior hosted roots retained.609root files include161explicit
+qualifications, not implied passed. Changed-file lint, whole TypeScript and
+405-public-route manifest audit PASS; production builds passed. Fresh hosted CI
+and current public-browser regression after this source change remain unverified.
+No new public route, native rebuild, scaling, speed comparison or goal completion.
+
 ## 2026-10-20 - B01 portable/private contract CLOSED; hosted default/privacy PASS
 
 Actual hosted39415600517/d833f85808a78557c973aab2bea6101730754d27 SUCCESS:
