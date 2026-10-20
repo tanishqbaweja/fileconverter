@@ -1,7 +1,8 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { readFile } from "node:fs/promises";
+
 import { Writable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
@@ -11,7 +12,7 @@ const proof = JSON.parse(proofBytes);
 const analysis = JSON.parse(await readFile(new URL("../evidence/mpeg2-flex-original-analysis-2026-10-07.json", import.meta.url)));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 
-test("actual flex original failed at a fixed decoder heap, despite below-limit partial full-tree measurements", () => {
+test("Historical actual flex original failed at a fixed decoder heap, despite below-limit partial full-tree measurements", () => {
   assert.equal(analysis.input.sha256, sha(proofBytes)); assert.equal(analysis.input.bytes, proofBytes.length);
   assert.equal(proof.rawStatus, "failed"); assert.equal(proof.runs.length, 1);
   assert.equal(proof.runs[0].state.jobState, "error"); assert.equal(proof.runs[0].independentValidation, null);
@@ -40,7 +41,7 @@ test("actual flex original failed at a fixed decoder heap, despite below-limit p
   assert.equal(analysis.dom.nativeProcessIdentity, null); assert.equal(analysis.dom.allocationObjectOrCallsite, null);
 });
 
-test("terminal flex evidence preserves exact executed source pins and independently verified cleanup", async () => {
+test("Historical terminal flex evidence preserves exact executed source pins and independently verified cleanup", async () => {
   assert.equal(sha(proof.generatedSource), proof.generatedSourceSha256);
   for (const [relative, hash] of Object.entries({ ...proof.sourcePins, ...analysis.sourcePins })) {
     assert.ok(!relative.includes(".."));
@@ -58,7 +59,7 @@ test("terminal flex evidence preserves exact executed source pins and independen
   assert.equal(analysis.noNewConversion, true); assert.equal(analysis.originalUninstrumentedFailureCause, null);
 });
 
-test("compact terminal diagnostic archive reconstructs the exact failed raw report, without a report-sized buffer", async () => {
+test("Historical compact terminal diagnostic archive reconstructs the exact failed raw report, without a report-sized buffer", async () => {
   const compact = JSON.parse(await readFile(new URL("../evidence/mpeg2-flex-original-compaction-2026-10-07.json", import.meta.url)));
   assert.deepEqual(compact.raw, proof.rawReport);
   assert.equal(compact.status, "verified-lossless-diagnostic-compaction");

@@ -1,6 +1,7 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
@@ -9,7 +10,7 @@ const root = path.resolve(import.meta.dirname, ".."), sha = b => createHash("sha
 const prefix = "evidence/2026-10-08T11-27-43-052Z-ui-hero-flex-layout";
 const read = async suffix => JSON.parse(await readFile(path.join(root, prefix + suffix + ".json")));
 
-test("actual terminal hero pair rejects desktop drift, not its unchanged content or narrow geometries", async () => {
+test("Historical actual terminal hero pair rejects desktop drift, not its unchanged content or narrow geometries", async () => {
   const p = await read("");
   assert.equal(p.status, "candidate-layout-rejected"); assert.equal(p.failure, null);
   assert.equal(p.geometry.length, 9);
@@ -37,7 +38,7 @@ test("actual terminal hero pair rejects desktop drift, not its unchanged content
   for (const [file, hash] of Object.entries(p.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), hash, file);
 });
 
-test("promising but rejected layout allocations are not live peak, speed or primary acceptance", async () => {
+test("Historical promising but rejected layout allocations are not live peak, speed or primary acceptance", async () => {
   const a = await read("-analysis"), [grid, flex] = a.modes;
   assert.equal(a.status, "verified-terminal-hero-layout-pair-not-public-acceptance");
   assert.equal(a.candidateGeometryAccepted, false);
@@ -57,7 +58,7 @@ test("promising but rejected layout allocations are not live peak, speed or prim
   for (const [file, hash] of Object.entries(a.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), hash, file);
 });
 
-test("exact compact hero archives reconstruct capped traces after identity-checked raw removal", async () => {
+test("Historical exact compact hero archives reconstruct capped traces after identity-checked raw removal", async () => {
   const p = await read(""), c = await read("-compaction");
   assert.equal(c.status, "verified-lossless-ui-hero-raw-report-compaction");
   assert.equal(c.bytesSaved, 1509738); assert.equal(c.reports.length, 2);

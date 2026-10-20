@@ -1,13 +1,14 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
 const root = path.resolve(import.meta.dirname, ".."), sha = b => createHash("sha256").update(b).digest("hex");
 const read = async stem => JSON.parse(await readFile(path.join(root, `evidence/mpeg2-hero-width-${stem}-2026-10-08.json`)));
 
-test("actual hero original remains failed256.43359375MiB with all96 executed sources unchanged", async () => {
+test("Historical actual hero original remains failed256.43359375MiB with all96 executed sources unchanged", async () => {
   const p = await read("original"), a = await read("terminal-analysis");
   assert.equal(p.rawStatus, "failed"); assert.equal(p.completeOriginalConversions, 0);
   assert.equal(a.executedSourcesVerified, 96); assert.equal(a.completedFullOutputs, 0);
@@ -26,7 +27,7 @@ test("actual hero original remains failed256.43359375MiB with all96 executed sou
   assert.equal(a.publicAcceptance, false); assert.equal(a.originalFullSourceAcceptance, false); assert.equal(a.conversionSpeedAcceptance, false);
 });
 
-test("actual renderer jump/delayed types cannot certify peak allocation cause; all five runtimes gone", async () => {
+test("Historical actual renderer jump/delayed types cannot certify peak allocation cause; all five runtimes gone", async () => {
   const a = await read("terminal-analysis"), launch = await read("original-launch");
   assert.equal(launch.sessionId, 49484); assert.equal(a.adjacentNativeDelta.elapsedMs, 109);
   assert.equal(a.adjacentNativeDelta.treeDeltaPrivateBytes, 40828928);
@@ -47,7 +48,7 @@ test("actual renderer jump/delayed types cannot certify peak allocation cause; a
   for (const [file, hash] of Object.entries(failed.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), hash, file);
 });
 
-test("terminal compact archive reconstructs exact failed diagnostic, trace and companions remain", async () => {
+test("Historical terminal compact archive reconstructs exact failed diagnostic, trace and companions remain", async () => {
   const p = await read("original"), a = await read("terminal-analysis"), c = await read("terminal-compaction");
   assert.equal(c.status, "verified-lossless-diagnostic-compaction"); assert.equal(c.uncompressedRawRemoved, true);
   await assert.rejects(access(path.join(root, c.raw.path)), { code: "ENOENT" });

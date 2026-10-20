@@ -1,3 +1,4 @@
+import { readPreCatalogueUi } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
@@ -82,9 +83,9 @@ test("new save worker retains byte-exact old copy loop, imports no codec engine 
   assert.ok(!Object.keys(bundle.metafile.inputs).some(name => /media-remux|ffmpeg|resvg|conversion\.worker/.test(name)));
   assert.equal(/WebAssembly\.(?:Memory|instantiate|compile)/.test(bundle.outputFiles[0].text), false);
 });
-test("private app/worker overlays reverse exactly and pass full project TypeScript checking", async () => {
+test("historical app overlay and unchanged worker overlay reverse exactly and pass full project TypeScript checking", async () => {
   const app = path.join(root, "app/converter/ConverterApp.tsx"), worker = path.join(root, "workers/conversion.worker.ts");
-  const appSource = await readFile(app, "utf8"), workerSource = await readFile(worker, "utf8");
+  const appSource = await readPreCatalogueUi("app/converter/ConverterApp.tsx"), workerSource = await readFile(worker, "utf8");
   const appRecipe = makeStagedHandoffApp(appSource), workerRecipe = makeStagedHandoffWorker(workerSource);
   for (const [recipe, source] of [[appRecipe, appSource], [workerRecipe, workerSource]]) {
     let reversed = recipe.generated; for (const [before, after] of recipe.edits.toReversed()) reversed = reversed.replace(after, before); assert.equal(reversed, source);

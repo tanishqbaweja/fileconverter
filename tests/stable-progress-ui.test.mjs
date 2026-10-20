@@ -1,13 +1,13 @@
+import { readPreCatalogueUi } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import test from "node:test";
 import ts from "typescript";
 import { makeStableProgressUiSource, recoverStableProgressUiBaseline, STABLE_PROGRESS_UI_DEPENDENCIES } from "../scripts/lib/stable-progress-ui-recipe.mjs";
 
-const baseline = await readFile(new URL("../app/converter/ConverterApp.tsx", import.meta.url), "utf8");
+const baseline = await readPreCatalogueUi("app/converter/ConverterApp.tsx");
 const candidate = makeStableProgressUiSource(baseline);
 
-test("Sampled progress UI candidate preserves every original JSX/control/source byte reversibly", () => {
+test("Historical Sampled progress UI candidate preserves every original JSX/control/source byte reversibly", () => {
   assert.equal(recoverStableProgressUiBaseline(candidate), baseline);
   assert.equal(makeStableProgressUiSource(recoverStableProgressUiBaseline(candidate)), candidate);
   for (const changed of [candidate + "\n", candidate.replace("No accounts.", "Accounts."), candidate.replace("[profiles]", "[]"), candidate.replace("sourceInspectionError]", "metrics]")])
@@ -15,7 +15,7 @@ test("Sampled progress UI candidate preserves every original JSX/control/source 
   assert.throws(() => makeStableProgressUiSource(baseline + "\n"));
 });
 
-test("Candidate hooks are unconditional and invalidate on source, profile, inspection, batch and capability changes, not progress", () => {
+test("Historical Candidate hooks are unconditional and invalidate on source, profile, inspection, batch and capability changes, not progress", () => {
   const source = ts.createSourceFile("ConverterApp.tsx", candidate, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
   assert.deepEqual(source.parseDiagnostics, []);
   const component = source.statements.find(node => ts.isFunctionDeclaration(node) && node.name?.text === "ConverterApp");
@@ -32,7 +32,7 @@ test("Candidate hooks are unconditional and invalidate on source, profile, inspe
     ["capabilities", "batchFiles.length", "workerReady", "mediaProfile", "selectedProfile", "inputMimeType"]);
 });
 
-test("Candidate transpiles; no CSS, media pipeline, options, privacy, storage or memory limit changes are implied", () => {
+test("Historical Candidate transpiles; no CSS, media pipeline, options, privacy, storage or memory limit changes are implied", () => {
   const result = ts.transpileModule(candidate, { fileName: "ConverterApp.tsx", reportDiagnostics: true,
     compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext, jsx: ts.JsxEmit.ReactJSX } });
   assert.deepEqual(result.diagnostics, []);

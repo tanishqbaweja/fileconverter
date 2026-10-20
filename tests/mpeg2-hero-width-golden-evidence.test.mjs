@@ -1,12 +1,13 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 const root = path.resolve(import.meta.dirname, ".."), sha = b => createHash("sha256").update(b).digest("hex");
 const file = "evidence/2026-10-08T11-43-06-973Z-mpeg2-hero-width-golden-validation.json";
 
-test("actual hero-width headed suite preserves exact genuine MPEG2 goldens, PCM, fidelity and recovery", async () => {
+test("Historical actual hero-width headed suite preserves exact genuine MPEG2 goldens, PCM, fidelity and recovery", async () => {
   const bytes = await readFile(path.join(root, file)); assert.ok(bytes.length < 32768);
   const p = JSON.parse(bytes); assert.equal(p.status, "passed-5-of-5-private-regression"); assert.equal(p.conversions.length, 3);
   for (const r of p.conversions) {
@@ -24,7 +25,7 @@ test("actual hero-width headed suite preserves exact genuine MPEG2 goldens, PCM,
   assert.equal(p.originalFullSourceAcceptance, false); assert.equal(p.publicAcceptance, false);
 });
 
-test("six actually reviewed screenshots and executed new CSS source pins survive independent freeze", async () => {
+test("Historical six actually reviewed screenshots and executed new CSS source pins survive independent freeze", async () => {
   const p = JSON.parse(await readFile(path.join(root, file)));
   assert.deepEqual(p.matrixUiObservations.map(r => r.jobState), ["complete", "complete", "complete", "error", "running", "cancelled"]);
   assert.equal(p.matrixUiObservations[4].outputBytes, 232344);

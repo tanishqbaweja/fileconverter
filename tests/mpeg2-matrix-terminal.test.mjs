@@ -1,6 +1,7 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
 import { summarizeMemoryInfraTrace } from "../scripts/lib/partial-largest-blink-type-summary.mjs";
@@ -8,7 +9,7 @@ const read = file => readFile(new URL("../" + file, import.meta.url));
 const json = async file => JSON.parse(await read(file));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 
-test("matrix original attempt is actually terminal251.484MiB failure, not stale running snapshot or accepted output", async () => {
+test("Historical matrix original attempt is actually terminal251.484MiB failure, not stale running snapshot or accepted output", async () => {
   const p = await json("evidence/mpeg2-matrix-original-2026-10-08.json"), a = await json("evidence/mpeg2-matrix-terminal-analysis-2026-10-08.json");
   assert.equal(p.rawStatus, "failed"); assert.match(p.failure.message, /251\.484375MiB exceeds 250MiB/);
   assert.equal(p.blankBaseline.privateBytes, 241549312); assert.equal(p.nativePeak.privateBytes, 505249792);
@@ -28,7 +29,7 @@ test("matrix original attempt is actually terminal251.484MiB failure, not stale 
   for (const [file, hash] of Object.entries(a.sourcePins)) assert.equal(sha(await read(file)), hash, file);
 });
 
-test("matrix failure preserves successful delayed dump and renderer jump, not peak-time allocation or live heap proof", async () => {
+test("Historical matrix failure preserves successful delayed dump and renderer jump, not peak-time allocation or live heap proof", async () => {
   const p = await json("evidence/mpeg2-matrix-original-2026-10-08.json"), a = await json("evidence/mpeg2-matrix-terminal-analysis-2026-10-08.json");
   const archive = await read(a.rawTraceArchive.path); assert.equal(archive.length, 303780); assert.equal(sha(archive), a.rawTraceArchive.sha256);
   const trace = gunzipSync(archive, { maxOutputLength: 16 * 1048576 });
@@ -43,7 +44,7 @@ test("matrix failure preserves successful delayed dump and renderer jump, not pe
   assert.equal(a.delayedTarget.selection.partialInventory, true); assert.equal(a.liveHeapBytes, null);
 });
 
-test("matrix terminal raw report removed only after exact lossless archive/identity verification, companions retained", async () => {
+test("Historical matrix terminal raw report removed only after exact lossless archive/identity verification, companions retained", async () => {
   const c = await json("evidence/mpeg2-matrix-terminal-compaction-2026-10-08.json");
   const archive = await read(c.archive.path); assert.equal(archive.length, c.archive.bytes); assert.equal(sha(archive), c.archive.sha256);
   const raw = gunzipSync(archive, { maxOutputLength: c.bounds.maximumRawBytes });

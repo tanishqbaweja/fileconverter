@@ -1,5 +1,41 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Actual bounded catalogue PASS; native-runtime memory gate FAIL
+
+Integrated the existing paginated component into the actual production app:
+24maximum mounted cards,128-character search, every405published route retained,
+reused stateless slots. Actual headless production Chrome155.0.8059.85 desktop
+1280x720 andmobile390x844 cases each verified all17pages/405IDs/labels, unchanged
+registry order,zero added/three final-page removed articles, keyboard navigation,
+search/exact-ID/no-match/reset and no horizontal overflow. Both screenshots
+visually inspected. Current-file unit tests prove other app controls/handlers/
+lifecycle and prior card markup unchanged. No native/registry/settings change.
+
+Real production-runtime small conversion again validates585266B/SHAa9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13,
+96frames,full decode,SSIM.985963,AAC packet identity/title/language,64KiB I/O/
+queue andone pending write,zero forbidden requests. COMPLETE-TREE MEMORY FAIL:
+345.87890625MiB versus unchanged250. Stable blank/loaded windows now span
+8.397/8.407s,379valid native samples/zero missing. No paired speed/memory gain
+claim, full-original substitution, scaled-file acceptance or public promotion.
+287screencast frames/528snapshots were captured; observer effects and allocation
+cause remain unproven. Separate backend smoke worker is not final real-job or
+staged-retirement integration. Next fix that integration and attribute memory,
+not another unchanged codec/full-file/LTO run.
+
+Whole portable449files1343PASS/0fail/0skip in107364.1028ms;235prior hosted roots
+retained,611total files include162explicit qualifications not counted passed.
+Whole lint/TypeScript/build PASS.18actual Chrome privacy/offline tests PASS(1.1m),
+after correcting a PATH-only pre-test launcher failure.405-route manifest audit
+PASS. Historical source checks keep original digests and use three explicit
+immutable preimages; two live-source seals remain intact in qualification and
+249/256executed preimages are independently checked. Initial31failed unit cases
+and subsequent two pin failures remain recorded, not changed to skipped tests.
+
+Smoke outputs/fixtures/profiles/staging removed; original size/SHA unchanged
+before/after. Useful traces/screenshots remain repository-local. Exact reports,
+hashes, cleanup and scope: `evidence/2026-10-21-production-catalogue-integration-cycle.json`.
+No current whole-project/headed/manual/final codec or hosted-CI acceptance claim.
+
 ## 2026-10-20 - Real explicit MPEG-2 runtime output; memory qualification FAILED
 
 Implemented production `runMediaRemux` profile40 and owned split-runtime module,

@@ -1,3 +1,4 @@
+import { readPreCatalogueUi } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
@@ -5,8 +6,8 @@ import test from "node:test";
 import { makeStaticFormatMatrixSource, recoverStaticFormatMatrixBaseline } from "../scripts/lib/static-format-matrix-recipe.mjs";
 import { makeUiMatrixBenchmarkDriver } from "../scripts/lib/ui-matrix-benchmark-recipe.mjs";
 const root = path.resolve(import.meta.dirname, "..");
-test("Static display reuse reverses every baseline byte and rejects other UI changes", async () => {
-  const current = await readFile(path.join(root, "app/converter/ConverterApp.tsx"), "utf8");
+test("Historical Static display reuse reverses every baseline byte and rejects other UI changes", async () => {
+  const current = await readPreCatalogueUi("app/converter/ConverterApp.tsx");
   const baseline = recoverStaticFormatMatrixBaseline(current), candidate = makeStaticFormatMatrixSource(baseline);
   assert.equal(recoverStaticFormatMatrixBaseline(candidate), baseline);
   assert.ok(candidate.includes("const publishedFormatsSection = useMemo"));
@@ -14,7 +15,7 @@ test("Static display reuse reverses every baseline byte and rejects other UI cha
   for (const mutated of [candidate + "\n", candidate.replace("No accounts.", "Accounts."), candidate.replace("405", "406") + " "])
     assert.throws(() => recoverStaticFormatMatrixBaseline(mutated));
 });
-test("UI benchmark changes only native sampler to CPU metrics and retains privacy/source/cleanup/no-conversion gates", async () => {
+test("Historical UI benchmark changes only native sampler to CPU metrics and retains privacy/source/cleanup/no-conversion gates", async () => {
   const source = await readFile(path.join(root, "scripts/diagnose-ui-native-allocation.mjs"), "utf8");
   const generated = makeUiMatrixBenchmarkDriver(source, root, specifier => import.meta.resolve(specifier));
   assert.ok(generated.includes('"Performance.enable", { timeDomain: "threadTicks" }'));

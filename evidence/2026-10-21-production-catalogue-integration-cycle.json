@@ -1,0 +1,507 @@
+{
+  "recordedLocalDate": "2026-10-21",
+  "status": "production-catalogue-functionally-verified-mpeg2-memory-still-failed",
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false,
+  "implementation": {
+    "application": "app/converter/ConverterApp.tsx",
+    "component": "app/converter/PublishedFormatsCatalogue.tsx",
+    "model": "lib/published-catalogue.ts",
+    "maximumMountedCards": 24,
+    "queryLimit": 128,
+    "allPublishedRoutesRetained": 405,
+    "statelessDisplaySlotsReused": true,
+    "conversionControlsAndLifecycleOtherwiseUnchanged": true,
+    "registryOrCodecSettingsChanged": false,
+    "nativeBinariesChanged": false
+  },
+  "evidence": {
+    "rawReport": {
+      "path": "outputs/reports/2026-10-20T18-16-41.846Z-mpeg2-production-runtime.json",
+      "bytes": 1321452,
+      "sha256": "a3e316da7b54e9327c170fb581d6f1934d955e61ae30a7dd28474c555e193ae5"
+    },
+    "scope": "explicit-production-MPEG2-runtime-small-fixture-not-public-acceptance",
+    "status": "failed",
+    "catalogueUi": {
+      "scope": "actual-production-registry-UI-not-conversion-acceptance",
+      "cases": [
+        {
+          "viewport": {
+            "width": 1280,
+            "height": 720
+          },
+          "routes": 405,
+          "pages": 17,
+          "maximumMounted": 24,
+          "mutations": {
+            "added": 0,
+            "removed": 3
+          },
+          "keyboardNavigation": true,
+          "searchEmptyExactAndReset": true,
+          "noHorizontalOverflow": true,
+          "screenshot": "H:\\Github Repositories\\fileconverter\\output\\playwright\\2026-10-20T18-16-41.846Z-catalogue\\catalogue-1280x720.png",
+          "routeIdsSha256": "e978d6819e6b1dfaa3d71339f60919b3174d7e3fc2e214eed56d72efa1a1b996"
+        },
+        {
+          "viewport": {
+            "width": 390,
+            "height": 844
+          },
+          "routes": 405,
+          "pages": 17,
+          "maximumMounted": 24,
+          "mutations": {
+            "added": 0,
+            "removed": 3
+          },
+          "keyboardNavigation": true,
+          "searchEmptyExactAndReset": true,
+          "noHorizontalOverflow": true,
+          "screenshot": "H:\\Github Repositories\\fileconverter\\output\\playwright\\2026-10-20T18-16-41.846Z-catalogue\\catalogue-390x844.png",
+          "routeIdsSha256": "e978d6819e6b1dfaa3d71339f60919b3174d7e3fc2e214eed56d72efa1a1b996"
+        }
+      ]
+    },
+    "blankBaseline": {
+      "stable": true,
+      "privateBytes": 233517056,
+      "spreadBytes": 1896448,
+      "rssBytes": 479531008,
+      "firstTimestamp": "2026-10-20T18:17:22.5210483Z",
+      "lastTimestamp": "2026-10-20T18:17:30.9188423Z",
+      "sampleCount": 8,
+      "minimumElapsedMs": 8000
+    },
+    "loadedIdle": {
+      "stable": true,
+      "privateBytes": 470142976,
+      "spreadBytes": 4096,
+      "rssBytes": 770277376,
+      "firstTimestamp": "2026-10-20T18:17:45.7566448Z",
+      "lastTimestamp": "2026-10-20T18:17:54.1639983Z",
+      "sampleCount": 8,
+      "minimumElapsedMs": 8000
+    },
+    "loadedPeakIncrementalPrivateMiB": 312.953125,
+    "output": {
+      "bytes": 585266,
+      "sha256": "a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13",
+      "codec": "mpeg2video",
+      "frames": 96,
+      "ssim": 0.985963,
+      "fullNativeDecodePassed": true,
+      "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+      "titlePreserved": true,
+      "languagePreserved": true
+    },
+    "conversion": {
+      "type": "complete",
+      "metrics": {
+        "inputBytes": 497032,
+        "outputBytes": 585266,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 0,
+        "activeWorkerCount": 1,
+        "sharedArrayBufferBytes": 50331648,
+        "wasmMemoryBytes": 50331648,
+        "peakWasmMemoryBytes": 50331648
+      },
+      "phases": [
+        "Encoding MPEG-2 MP4"
+      ]
+    },
+    "memory": {
+      "scope": "small-runtime-integration-only-not-large-file-or-public-profile-acceptance",
+      "intervalMs": 100,
+      "validSamples": 379,
+      "unavailableSamples": [],
+      "conversionSamples": 6,
+      "peak": {
+        "sequence": 376,
+        "timestamp": "2026-10-20T18:17:54.4921117Z",
+        "completedAt": "2026-10-20T18:17:54.5052628Z",
+        "sampleError": null,
+        "nativeElapsedMs": 13.339500000000001,
+        "privateBytes": 596197376,
+        "rssBytes": 828526592,
+        "processes": [
+          {
+            "pid": 9872,
+            "parentPid": 43508,
+            "createdAt": "2026-10-20T18:17:12.9413835Z",
+            "creationFileTime": "134369938329413835",
+            "executableName": "chrome.exe",
+            "privateBytes": 243798016,
+            "rssBytes": 239529984,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 15320,
+            "parentPid": 43508,
+            "createdAt": "2026-10-20T18:17:12.1122399Z",
+            "creationFileTime": "134369938321122399",
+            "executableName": "chrome.exe",
+            "privateBytes": 222334976,
+            "rssBytes": 254382080,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 18204,
+            "parentPid": 43508,
+            "createdAt": "2026-10-20T18:17:12.1480150Z",
+            "creationFileTime": "134369938321480150",
+            "executableName": "chrome.exe",
+            "privateBytes": 8134656,
+            "rssBytes": 19320832,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 39352,
+            "parentPid": 43508,
+            "createdAt": "2026-10-20T18:17:11.8673364Z",
+            "creationFileTime": "134369938318673364",
+            "executableName": "chrome.exe",
+            "privateBytes": 2506752,
+            "rssBytes": 10350592,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 41960,
+            "parentPid": 43508,
+            "createdAt": "2026-10-20T18:17:12.1226571Z",
+            "creationFileTime": "134369938321226571",
+            "executableName": "chrome.exe",
+            "privateBytes": 16015360,
+            "rssBytes": 43749376,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 43508,
+            "parentPid": 30228,
+            "createdAt": "2026-10-20T18:17:11.8382101Z",
+            "creationFileTime": "134369938318382101",
+            "executableName": "chrome.exe",
+            "privateBytes": 50819072,
+            "rssBytes": 148099072,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 45068,
+            "parentPid": 43508,
+            "createdAt": "2026-10-20T18:17:12.9321313Z",
+            "creationFileTime": "134369938329321313",
+            "executableName": "chrome.exe",
+            "privateBytes": 37040128,
+            "rssBytes": 80515072,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 47060,
+            "parentPid": 43508,
+            "createdAt": "2026-10-20T18:17:33.1949276Z",
+            "creationFileTime": "134369938531949276",
+            "executableName": "chrome.exe",
+            "privateBytes": 15548416,
+            "rssBytes": 32579584,
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          }
+        ],
+        "phase": "conversion",
+        "elapsedMs": 72646
+      },
+      "incrementalPrivateMiB": 345.87890625
+    },
+    "native": [
+      {
+        "source": "work\\mpeg2-jspi-39072949964\\within-mpeg2-split.mjs",
+        "sha256": "d4ec481a93a1b087c96aa11948ab9a98ccf6d09237ed143c022bf76bf6c31506",
+        "bytes": 65707
+      },
+      {
+        "source": "work\\mpeg2-jspi-39072949964\\within-mpeg2-split.wasm",
+        "sha256": "4f3954a3cbbd5012c811fa380402981d29ac298d46422d1bc0fa40a6b9368d57",
+        "bytes": 5715985
+      },
+      {
+        "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.mjs",
+        "sha256": "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e",
+        "bytes": 68202
+      },
+      {
+        "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.wasm",
+        "sha256": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee",
+        "bytes": 675411
+      }
+    ],
+    "sources": {
+      "workers/media-remux.ts": "30849a702aa3e62472a00a0aa95df4fd7fa9cd35aae1b8d66488911c799a7b82",
+      "workers/mpeg2-split-runtime.ts": "fc1211af94be388fa847e2cb34aad8b91b6689f37501edbee9c5e1c220d9f7d4",
+      "workers/random-access-destination.ts": "f46a4db401daabeb40a0b9eaa9feb256b623c21d2a7f41af549b6797842b4375",
+      "tests/browser/fixtures/mpeg2-production-runtime.worker.ts": "3ee9c4d8bd042e23dcf13ef421ad5b8eebeaa4a967841cc5dba7103144ba8750",
+      "scripts/test-mpeg2-production-runtime.mjs": "50f2aeedbb6e333626706b03e9ea1819e2dd83b7a2417945adc6e8614a43db92",
+      "scripts/lib/production-catalogue-check.mjs": "58c1857d62cc3795b44c44308389ef2889eaf742e8893453def9c68d7edd8876",
+      "app/converter/ConverterApp.tsx": "6f4ad8c83c912543f48dc099c84da2b6553f0d34a92781b5d30bd7291d71bdb0",
+      "app/converter/PublishedFormatsCatalogue.tsx": "84fa69d5ef72cd1dd09572df7694a57aeab3ffa66e65beaaedbee922c6f10bb4",
+      "app/globals.css": "8d3a0ca65a3b8918628939b36ade8b5b99b91e2bd03f83e1f955d4cb8e3a8709",
+      "lib/published-catalogue.ts": "54369ffd6b233df781d45c03f398200b7dd81af1511e5d04674a5e02d0e6452f",
+      "lib/capability-registry.ts": "c44657e8d266e5bb9175afb4fabe6a5d0be77893f8ab64c457b74b012f257528",
+      "scripts/lib/mpeg2-split-session.mjs": "753c80f9d55283a2384834714981dfd5ff4ddbcb900428b88c24ab0c88370a6f",
+      "scripts/lib/mpeg2-split-frame-bridge.mjs": "44f52d150de0155643e632a516ae4547a1652e2c5de08e41a9d57df70f506c0a",
+      "scripts/lib/mpeg2-split-frame-layout.mjs": "0fb7487948b750e9674cf3292170dc7e2462dd6f1e7eabc77502200dc3088fd7",
+      "scripts/lib/mpeg2-split-frame-properties.mjs": "6c57b7c38eadb5638ee2a17bd0d1327de6d7561a4bb9614929bd8ff06b102a94",
+      "scripts/lib/mpeg2-split-packet-bridge.mjs": "e19260e92721163370c5d8a8248f2d58f96e57f14d0b7e5496c566f82a98b55d"
+    },
+    "forbiddenRequests": [],
+    "protectedOriginalUnchanged": true,
+    "cleanup": {
+      "processObservations": [
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 30068,
+            "parentPid": 30228,
+            "createdAt": "2026-10-20T18:17:09.3359860Z"
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-20T18:18:01.935Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 479,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        },
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 43508,
+            "parentPid": 30228,
+            "createdAt": "2026-10-20T18:17:11.8382100Z"
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-20T18:18:02.418Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 483,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        },
+        {
+          "status": "owned-identity-absent",
+          "identity": {
+            "pid": 23496,
+            "parentPid": 30228,
+            "createdAt": "2026-10-20T18:17:13.0119540Z"
+          },
+          "observations": [
+            {
+              "acquiredAt": "2026-10-20T18:18:02.967Z",
+              "current": null,
+              "unavailable": null,
+              "ownedIdentityPresent": false,
+              "sameParent": null
+            }
+          ],
+          "pidReused": false,
+          "elapsedMs": 549,
+          "noProcessesKilled": true,
+          "unavailableIsNotZero": true
+        }
+      ],
+      "disposableOutputDeleted": true,
+      "generatedDirectoriesRemoved": [
+        "dist\\client\\engines\\mpeg2-runtime-check",
+        "dist\\client\\mpeg2-runtime-check-GCTCgc"
+      ],
+      "scratchRemoved": "work\\mpeg2-production-runtime-YalJYb",
+      "allOwnedProcessesAbsent": true
+    },
+    "failures": [
+      "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(report.memory.incrementalPrivateMiB <= 250)\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-mpeg2-production-runtime.mjs:209:10\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+    ],
+    "trace": {
+      "path": "output\\playwright\\2026-10-20T18-16-41.846Z-mpeg2-runtime-failure.zip",
+      "bytes": 10500253,
+      "sha256": "41d1764201c79acb258c56f8bd8626f99e643889b9cc96d7eb2e9d8efaa537da"
+    },
+    "finalUnits": {
+      "path": "outputs/reports/2026-10-20-production-catalogue-final-units.json",
+      "bytes": 231038,
+      "sha256": "438069f78742cc4866bceafe3fb79efba5f2320e1f655379c7d991aeb765c231",
+      "files": 449,
+      "summary": {
+        "success": true,
+        "counts": {
+          "tests": 1343,
+          "failed": 0,
+          "passed": 1343,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1343,
+          "suites": 0
+        },
+        "duration_ms": 107364.1028
+      }
+    },
+    "screenshots": [
+      {
+        "path": "H:\\Github Repositories\\fileconverter\\output\\playwright\\2026-10-20T18-16-41.846Z-catalogue\\catalogue-1280x720.png",
+        "bytes": 77539,
+        "sha256": "b24f597694d547d117cd9083d14013aa38171f6ed4802563e2f8cf7cee1d3458"
+      },
+      {
+        "path": "H:\\Github Repositories\\fileconverter\\output\\playwright\\2026-10-20T18-16-41.846Z-catalogue\\catalogue-390x844.png",
+        "bytes": 57911,
+        "sha256": "c8dc4d5266943249d95dc82570c06679e61c2b968835a59204bca5057aa483df"
+      }
+    ],
+    "productionSourcesStillMatch": true
+  },
+  "observations": {
+    "stableBlankWindowSeconds": 8.397,
+    "stableLoadedWindowSeconds": 8.407,
+    "browserUiCasesPassed": 2,
+    "visuallyReviewedScreenshots": 2,
+    "sourcePinsStillMatchedAfterRegressionChecks": true,
+    "playwrightTraceCounts": {
+      "olderDiagnostic": {
+        "path": "output/playwright/2026-10-20T12-10-33.823Z-mpeg2-runtime-failure.zip",
+        "screencastFrames": 5,
+        "frameSnapshots": 11,
+        "entries": 14,
+        "compressedBytes": 1992986
+      },
+      "catalogueNavigation": {
+        "screencastFrames": 287,
+        "frameSnapshots": 528,
+        "entries": 297,
+        "compressedBytes": 10500253
+      },
+      "allocationCauseProven": false
+    },
+    "publicRouteCountUnchanged": 405
+  },
+  "checks": {
+    "focusedLiveAndHistorical": {
+      "passed": 41,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 18706.2853
+    },
+    "initialWholePortable": {
+      "report": "outputs/reports/2026-10-20-production-catalogue-units.json",
+      "passed": 1312,
+      "failed": 31,
+      "skipped": 0,
+      "failingFiles": 27,
+      "durationMs": 103387.5747,
+      "cause": "Historical app/CSS source hashes are not the changed live UI; original failures retained."
+    },
+    "intermediateHistorical": {
+      "report": "outputs/reports/2026-10-20-catalogue-historical-pins-focused.json",
+      "passed": 79,
+      "failed": 2,
+      "skipped": 0,
+      "cause": "Two archived terminal checks also pinned changed historical test files; source-preimage audits retained and original live-source assertions moved intact to explicit qualification."
+    },
+    "focusedFinalCorrections": {
+      "passed": 12,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 1695.2788
+    },
+    "finalPortable": {
+      "path": "outputs/reports/2026-10-20-production-catalogue-final-units.json",
+      "bytes": 231038,
+      "sha256": "438069f78742cc4866bceafe3fb79efba5f2320e1f655379c7d991aeb765c231",
+      "files": 449,
+      "summary": {
+        "success": true,
+        "counts": {
+          "tests": 1343,
+          "failed": 0,
+          "passed": 1343,
+          "cancelled": 0,
+          "skipped": 0,
+          "todo": 0,
+          "topLevel": 1343,
+          "suites": 0
+        },
+        "duration_ms": 107364.1028
+      }
+    },
+    "portableFiles": 449,
+    "qualificationFilesNotImpliedPassed": 162,
+    "allRootTestFiles": 611,
+    "priorHostedRootTestsKeptPortable": 235,
+    "wholeProjectTypeScript": "passed noEmit incremental false",
+    "wholeProjectLint": "passed",
+    "productionBuild": "passed in real browser smoke and privacy/offline run",
+    "privacyOffline": {
+      "passed": 18,
+      "failed": 0,
+      "durationDisplay": "1.1m",
+      "scope": "existing production Chrome privacy/offline suite, not whole-tree stress acceptance",
+      "initialLaunch": "Failed before tests because direct Node CLI lacked node_modules/.bin on PATH; corrected environment and reran.",
+      "command": "node scripts/run-repository-owned-node.mjs node_modules/@playwright/test/cli.js test tests/browser/privacy-offline.spec.ts --reporter=line",
+      "port": 3218,
+      "headless": true,
+      "subprocessWindowsHidden": true,
+      "headedManualCoverage": false
+    },
+    "registryAudit": "passed405public/405compact entries,0pending/nonpassing/PDF",
+    "hostedCI": "not yet run for this increment"
+  },
+  "historicalEvidencePolicy": {
+    "fixture": "fixtures/source/pre-catalogue-ui-2026-10-20.json",
+    "helper": "tests/helpers/historical-published-ui.mjs",
+    "scope": "Only three explicitly pinned UI preimages are historical. Other artifact/source reads retain normal filesystem behavior. Live UI acceptance uses current files and actual production page.",
+    "oldDigestsRewritten": false,
+    "noTestsSkippedOrRemoved": true,
+    "liveTerminalAssertionsPreservedIn": "tests/historical-mpeg2-terminal-current-source-qualification.test.mjs"
+  },
+  "limitations": [
+    "The new catalogue was verified as UI functionality, not as a successful250MiB optimization.",
+    "New native-runtime smoke still failed345.87890625MiB after exercising all405routes in both viewports; output fidelity/backpressure checks passed and outputs were deleted.",
+    "This smoke uses a standalone backend worker alongside the app bootstrap worker, not final conversion.worker dispatch, UI job state or staged-save retirement. Complete process-tree private memory includes all of them.",
+    "First strict2100ms-spaced stable observation windows now exceed8seconds. Earlier0.4-second-window diagnostics remain historical only, not recertified.",
+    "Trace capture grew to287screencast frames/528snapshots. Its memory effect and renderer/GPU allocation cause are hypotheses, not proven or excluded from totals.",
+    "No original full/cold, near10GB scaling, rejected LTO, paired speed comparison, new native build or fresh405-route memory certification was performed."
+  ],
+  "nextAction": "Implement the explicit MPEG2 route in the normal job dispatcher and staged worker retirement, replace the standalone smoke worker, and gather typed process/realm/observer-perturbation evidence before further memory acceptance runs. Keep MPEG2 unpublished."
+}

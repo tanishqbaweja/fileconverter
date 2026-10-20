@@ -1,3 +1,4 @@
+import { readPreCatalogueUi } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
@@ -11,16 +12,16 @@ import ts from "typescript";
 import { formatById } from "../lib/capability-registry.ts";
 import { makeCatalogueSlotReuse, deriveCatalogueSlotUiHarness } from "../scripts/lib/catalogue-slot-reuse.mjs";
 const require = createRequire(import.meta.url), root = process.cwd();
-test("positional key reuses only exact stateless card; controls, JSX body, CSS and file data untouched", async () => {
-  const source = await readFile("app/converter/PublishedFormatsCatalogue.tsx", "utf8"), result = makeCatalogueSlotReuse(source);
+test("Historical positional key reuses only exact stateless card; controls, JSX body, CSS and file data untouched", async () => {
+  const source = await readPreCatalogueUi("app/converter/PublishedFormatsCatalogue.tsx"), result = makeCatalogueSlotReuse(source);
   let reversed = result.generated; for (const [before, after] of result.edits.toReversed()) reversed = reversed.replace(after, before);
   assert.equal(reversed, source); assert.equal(result.edits.length, 2); assert.equal(result.cardBodyChanged, false);
   assert.equal(result.conversionControlsChanged, false); assert.equal(result.publicAcceptance, false);
   assert.throws(() => makeCatalogueSlotReuse(source.replace("<small>", "<small onClick={()=>{}}>")));
   await transform(result.generated, { loader: "tsx" });
 });
-test("actual React markup is byte-identical for multiple full/partial/empty pages and changing card values", async () => {
-  const source = await readFile("app/converter/PublishedFormatsCatalogue.tsx", "utf8");
+test("Historical actual React markup is byte-identical for multiple full/partial/empty pages and changing card values", async () => {
+  const source = await readPreCatalogueUi("app/converter/PublishedFormatsCatalogue.tsx");
   function compile(text, page) {
     const stripped = text.replace(/^import .*;\n/gm, "").replace("export const PublishedFormatsCatalogue", "const PublishedFormatsCatalogue");
     const code = ts.transpileModule(stripped + "\nPublishedFormatsCatalogue;", { fileName: "view.tsx", compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX } }).outputText;
@@ -35,7 +36,7 @@ test("actual React markup is byte-identical for multiple full/partial/empty page
     assert.equal(renderToStaticMarkup(createElement(compile(makeCatalogueSlotReuse(source).generated, rows))), renderToStaticMarkup(createElement(compile(source, rows))));
   }
 });
-test("headless UI gate requires actual node identity and zero newly created articles across all405routes", async () => {
+test("Historical headless UI gate requires actual node identity and zero newly created articles across all405routes", async () => {
   const result = deriveCatalogueSlotUiHarness(await readFile("scripts/validate-bounded-catalogue.mjs", "utf8"), root);
   for (const token of ["sameArticles,true", "sameChildren,true", "slotMutations.addedArticles,0", "slotMutations.removedArticles,3",
     "await slotHandle.dispose()", "assert.deepEqual(observed, expected", "keyboardNavigation: true", "Browser.close"])

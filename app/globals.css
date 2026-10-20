@@ -971,6 +971,54 @@ h1 em {
   padding: 2rem;
 }
 
+.catalogue-search {
+  display: grid;
+  gap: 0.6rem;
+  max-width: 32rem;
+  margin-top: 2rem;
+}
+
+.catalogue-search input {
+  background: #252824;
+  color: #f4f1e9;
+  border: 1px solid #74786e;
+  border-radius: 0.6rem;
+  padding: 0.8rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.catalogue-search input:focus-visible,
+.catalogue-pages button:focus-visible {
+  outline: 3px solid var(--coral);
+  outline-offset: 3px;
+}
+
+.catalogue-pages {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.catalogue-pages button {
+  padding: 0.7rem 1rem;
+  border: 1px solid #74786e;
+  border-radius: 0.6rem;
+  background: #252824;
+  color: #f4f1e9;
+  cursor: pointer;
+}
+
+.catalogue-pages button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+#catalogue-results {
+  margin-top: 1.5rem;
+}
+
 footer {
   align-items: center;
   background: var(--ink);

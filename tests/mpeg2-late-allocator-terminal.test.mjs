@@ -1,13 +1,14 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
 import test from "node:test";
 import { summarizeMemoryInfraTrace } from "../scripts/lib/partial-largest-blink-type-summary.mjs";
 const read=file=>readFile(new URL("../"+file,import.meta.url));
 const json=async file=>JSON.parse(await read(file));
 const sha=bytes=>createHash("sha256").update(bytes).digest("hex");
-test("actual original attempt is terminal whole-tree budget failure, not the older decoder abort or accepted conversion",async()=>{
+test("Historical actual original attempt is terminal whole-tree budget failure, not the older decoder abort or accepted conversion",async()=>{
   const p=await json("evidence/mpeg2-late-allocator-original-2026-10-08.json"),a=await json("evidence/mpeg2-late-allocator-terminal-analysis-2026-10-08.json");
   assert.equal(p.rawStatus,"failed");assert.match(p.failure.message,/263\.64453125MiB exceeds 250MiB/);
   assert.equal(p.completeOriginalConversions,0);assert.equal(a.completedFullOutputs,0);assert.equal(a.actualDecoderAbortRecords,0);
@@ -23,7 +24,7 @@ test("actual original attempt is terminal whole-tree budget failure, not the old
   for(const[file,hash]of Object.entries(p.sourcePins))assert.equal(sha(await read(file)),hash,file);
   for(const[file,hash]of Object.entries(a.sourcePins))assert.equal(sha(await read(file)),hash,file);
 });
-test("actual successful delayed dump reconstructs exact trace/GUID/types, not peak-time liveness or a decoder cause",async()=>{
+test("Historical actual successful delayed dump reconstructs exact trace/GUID/types, not peak-time liveness or a decoder cause",async()=>{
   const p=await json("evidence/mpeg2-late-allocator-original-2026-10-08.json"),a=await json("evidence/mpeg2-late-allocator-terminal-analysis-2026-10-08.json");
   const archive=await read(a.rawTraceArchive.path);assert.equal(sha(archive),a.rawTraceArchive.sha256);
   const trace=gunzipSync(archive,{maxOutputLength:16777216});assert.equal(trace.length,a.serializedTrace.bytes);assert.equal(sha(trace),a.serializedTrace.sha256);
@@ -39,7 +40,7 @@ test("actual successful delayed dump reconstructs exact trace/GUID/types, not pe
   assert.equal(a.cleanup.nativeBirths,21);assert.equal(a.cleanup.allSampledNativeBirthsAbsent,true);
   assert.equal(a.cleanup.protectedFullPostHashVerified,true);assert.equal(a.cleanup.allThreeOwnedRuntimeDirectoriesAbsent,true);
 });
-test("redundant terminal raw JSON removed only after exact bounded gzip reconstruction; compact companions retained",async()=>{
+test("Historical redundant terminal raw JSON removed only after exact bounded gzip reconstruction; compact companions retained",async()=>{
   const c=await json("evidence/mpeg2-late-allocator-terminal-compaction-2026-10-08.json");
   const archive=await read(c.archive.path);assert.equal(archive.length,121824);assert.equal(sha(archive),c.archive.sha256);
   const raw=gunzipSync(archive,{maxOutputLength:c.bounds.maximumRawBytes});assert.equal(raw.length,2692717);assert.equal(sha(raw),c.raw.sha256);

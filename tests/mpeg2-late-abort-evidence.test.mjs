@@ -1,13 +1,14 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { makeLateAbortAdapter } from "../scripts/lib/mpeg2-late-abort-adapter.mjs";
 const root=path.resolve(import.meta.dirname,".."),sha=bytes=>createHash("sha256").update(bytes).digest("hex");
 const json=async file=>JSON.parse(await readFile(path.join(root,file)));
 
-test("actual current-Chrome request82 abort is real pool allocation, not old original cause or media acceptance",async()=>{
+test("Historical actual current-Chrome request82 abort is real pool allocation, not old original cause or media acceptance",async()=>{
   const proof=await json("evidence/late-pool-abort-control-2026-10-08.json"), terminal=proof.result.terminal;
   assert.equal(proof.status,"passed-synthetic-abort-control");assert.equal(proof.browserVersion,"154.0.8037.98");
   assert.equal(proof.failure,null);assert.deepEqual(proof.forbiddenRequests,[]);
@@ -35,7 +36,7 @@ test("actual current-Chrome request82 abort is real pool allocation, not old ori
   assert.equal(proof.primaryIncrementalPrivateMiB,null);assert.equal(proof.actualOriginalOomAllocationCallsite,null);
 });
 
-test("controlled production adapter adds failure-only observer with exact unchanged encoder/session/AVIO behavior",async()=>{
+test("Historical controlled production adapter adds failure-only observer with exact unchanged encoder/session/AVIO behavior",async()=>{
   const inputs={stager:await readFile(path.join(root,"scripts/stage-mpeg2-split-direct.mjs"),"utf8"),
     stackHelper:await readFile(path.join(root,"scripts/lib/bounded-wasm-abort-capture.mjs"),"utf8"),
     snapshotHelper:await readFile(path.join(root,"scripts/lib/late-refstruct-abort-snapshot.mjs"),"utf8"),
@@ -49,7 +50,7 @@ test("controlled production adapter adds failure-only observer with exact unchan
   assert.throws(()=>makeLateAbortAdapter({...inputs,poolHelper:inputs.poolHelper+"\n"}));
 });
 
-test("five actual production goldens preserve exact bytes/content/recovery and restore all assets",async()=>{
+test("Historical five actual production goldens preserve exact bytes/content/recovery and restore all assets",async()=>{
   const proof=await json("evidence/mpeg2-late-abort-golden-validation-2026-10-08.json");
   assert.equal(proof.status,"passed-5-of-5-private-regression");assert.equal(proof.elapsedBrowserTestSeconds,27);
   assert.equal(proof.conversions.length,3);assert.equal(proof.recovery.length,2);
@@ -75,7 +76,7 @@ test("five actual production goldens preserve exact bytes/content/recovery and r
   assert.equal(proof.originalFullSourceAcceptance,false);assert.equal(proof.publicAcceptance,false);
 });
 
-test("held RAM check records no browser/conversion before user-freed capacity, without lowering guard",async()=>{
+test("Historical held RAM check records no browser/conversion before user-freed capacity, without lowering guard",async()=>{
   const proof=await json("evidence/mpeg2-late-goldens-host-held-2026-10-08.json");
   assert.equal(sha(await readFile(path.join(root,proof.source))),proof.executedSourceSha256);
   assert.equal(proof.subsequentReadOnlyConfirmation.safeToStart,false);

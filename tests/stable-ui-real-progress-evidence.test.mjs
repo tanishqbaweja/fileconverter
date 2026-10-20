@@ -1,5 +1,6 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
 import { sha } from "../scripts/lib/stable-ui-headless-baseline-recipe.mjs";
@@ -7,7 +8,7 @@ import { compareRealProgressDiagnostics } from "../scripts/lib/real-progress-com
 import { summarizeJsAllocation } from "../scripts/lib/bounded-js-allocation.mjs";
 const read = file => readFile(new URL(`../${file}`, import.meta.url));
 const proof = JSON.parse(await read("evidence/2026-10-08T22-04-15-944Z-stable-ui-real-progress-analysis.json"));
-test("Actual full-input diagnostic pair preserves failed full-conversion gates and independently reconstructable profiles", async () => {
+test("Historical Actual full-input diagnostic pair preserves failed full-conversion gates and independently reconstructable profiles", async () => {
   const bytes = await read(proof.executionReceipt.path); assert.equal(sha(bytes), proof.executionReceipt.sha256);
   const e = JSON.parse(bytes); assert.equal(e.executions.length, 2); assert.equal(e.productionRestored, true);
   assert.equal(sha(await read(proof.verifier.path)), proof.verifier.sha256);

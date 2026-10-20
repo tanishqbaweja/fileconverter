@@ -1,6 +1,6 @@
 "use client";
 
-// Private candidate until full production-browser memory/recovery qualification.
+// Bounded registry display. This does not certify a conversion's memory budget.
 import { memo, useMemo, useState } from "react";
 import { formatById } from "../../lib/capability-registry";
 import { cataloguePage, CATALOGUE_QUERY_LIMIT } from "../../lib/published-catalogue";
@@ -43,8 +43,9 @@ export const PublishedFormatsCatalogue = memo(function PublishedFormatsCatalogue
         {view.total ? ` Page ${view.page + 1} of ${view.pages}.` : " No matching routes. Try another search."}
       </p>
       <div className="matrix" id="catalogue-results">
-        {view.profiles.map(profile => (
-          <article key={profile.id} data-profile-id={profile.id}>
+        {/* Display-only slots have no local state; reuse their DOM on pagination. */}
+        {view.profiles.map((profile, slot) => (
+          <article key={slot} data-profile-id={profile.id}>
             <span>{formatById(profile.input)?.label}</span>
             <b aria-hidden="true">→</b>
             <span>{formatById(profile.output)?.label}</span>

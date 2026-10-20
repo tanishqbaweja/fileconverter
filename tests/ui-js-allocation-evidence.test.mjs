@@ -1,6 +1,7 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+
 import path from "node:path";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
@@ -11,7 +12,7 @@ const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const proof = JSON.parse(await read("evidence/ui-js-allocation-tooling-2026-10-08.json"));
 const compressed = await read(proof.compressedReport.path);
 const restored = gunzipSync(compressed, { maxOutputLength: 4 * 1024 ** 2 }), raw = JSON.parse(restored);
-test("Actual JS tooling probe retains exact source, generated control and lossless bounded raw evidence", async context => {
+test("Historical Actual JS tooling probe retains exact source, generated control and lossless bounded raw evidence", async context => {
   assert.equal(sha(compressed), proof.compressedReport.sha256);
   assert.equal(compressed.length, proof.compressedReport.bytes);
   assert.equal(restored.length, proof.originalReport.bytes); assert.equal(sha(restored), proof.originalReport.sha256);
@@ -29,7 +30,7 @@ test("Actual JS tooling probe retains exact source, generated control and lossle
   } else context.diagnostic("Historical generated SHA is receipt-bound; byte-exact regeneration requires the original Windows workspace and module paths");
   assert.deepEqual(receipt.generatedControl, proof.generatedControl);
 });
-test("Actual callframes are available but include collected and automation allocations, not native cause", () => {
+test("Historical Actual callframes are available but include collected and automation allocations, not native cause", () => {
   assert.equal(proof.status, "verified-js-callsite-tooling-not-conversion-acceptance");
   assert.equal(raw.profiles.length, 5);
   for (const row of raw.profiles) assert.deepEqual(row.summary, summarizeJsAllocation({ profile: row.profile }));
@@ -46,7 +47,7 @@ test("Actual callframes are available but include collected and automation alloc
   assert.deepEqual(proof.historicalNativeSampling.sampleCounts, [1, 3, 1, 1, 1]);
   assert.equal(proof.historicalNativeSampling.symbolsResolved, false);
 });
-test("Terminal production probe passed guarded host/privacy/protected-source and exact identity cleanup", () => {
+test("Historical Terminal production probe passed guarded host/privacy/protected-source and exact identity cleanup", () => {
   assert.equal(raw.host.safeToStart, true); assert.ok(raw.host.freePhysicalBytes >= 2147483648 && raw.host.freeVirtualBytes >= 2147483648);
   assert.equal(proof.protectedFixturePrePostVerified, true);
   assert.equal(proof.originalSourceBytes, 2958573265);

@@ -1,6 +1,7 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 // Actual independent audit output, not synthetic completion evidence.
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+
 import path from "node:path";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
@@ -8,7 +9,7 @@ import { sha } from "../scripts/lib/stable-ui-headless-baseline-recipe.mjs";
 import { encoderPlaneClockTerminalFacts } from "../scripts/lib/encoder-plane-clock-terminal-facts.mjs";
 const root = path.resolve(import.meta.dirname, ".."), read = file => readFile(path.join(root, file));
 const analysis = JSON.parse(await read("evidence/2026-10-11T03-53-11-041Z-encoder-plane-clock-original-full-terminal-analysis.json"));
-test("actual strict clock audit binds archives, recomputed whole-tree memory, unknown quality and no acceptance", async () => {
+test("Historical actual strict clock audit binds archives, recomputed whole-tree memory, unknown quality and no acceptance", async () => {
   const bytes = await read(analysis.receipt.path); assert.equal(sha(bytes), analysis.receipt.sha256);
   const receipt = JSON.parse(bytes), archive = receipt.candidate.compressedReport, zipped = await read(archive.path);
   assert.equal(zipped.length, archive.bytes); assert.equal(sha(zipped), archive.sha256);
@@ -24,10 +25,18 @@ test("actual strict clock audit binds archives, recomputed whole-tree memory, un
     "fullProtectedPostSha256Verified", "normalProductionAndSixEnginesRestored", "ninePrivateAssetsAbsent", "ownedRuntimeAndWrapperAbsent"])
     assert.equal(analysis[field], true, field);
 });
-test("actual249 measured source pins and independent audit source pins remain current, without rewriting historical evidence", async () => {
+test("Historical249 measured source preimages and independent audit source pins remain exact", async () => {
   const receipt = JSON.parse(await read(analysis.receipt.path)); assert.deepEqual(receipt.sourcePins, receipt.postSourcePins);
   assert.equal(analysis.sourcePreimagesVerified, 249); assert.equal(Object.keys(receipt.sourcePins).length, 249);
-  for (const [file, expected] of Object.entries(receipt.sourcePins)) assert.equal(sha(await read(file)), expected, file);
+  const archive = receipt.sourceArchive, zipped = await read(archive.path);
+  assert.equal(zipped.length, archive.bytes); assert.equal(sha(zipped), archive.sha256);
+  const bytes = gunzipSync(zipped, { maxOutputLength: 33554432 });
+  assert.equal(bytes.length, archive.restoredBytes); assert.equal(sha(bytes), archive.restoredSha256);
+  const executed = JSON.parse(bytes); assert.equal(Object.keys(executed.sourcePreimages).length, 249);
+  for (const [file, expected] of Object.entries(receipt.sourcePins)) {
+    assert.equal(executed.sourcePreimages[file].encoding, "base64");
+    assert.equal(sha(Buffer.from(executed.sourcePreimages[file].data, "base64")), expected, file);
+  }
   for (const [file, expected] of Object.entries(analysis.analysisSourcePins)) assert.equal(sha(await read(file)), expected, file);
   assert.equal(Object.hasOwn(receipt.sourcePins, "scripts/lib/encoder-plane-clock-terminal-recipe.mjs"), false);
 });

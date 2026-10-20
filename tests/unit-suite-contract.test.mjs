@@ -26,7 +26,7 @@ test("stale, duplicate, invalid, prior-public or production-import exceptions ca
 });
 test("actual manifest retains every one of235 prior hosted files plus current public worker/cache/save checks",async()=>{
   const root=path.resolve(import.meta.dirname,".."),plan=await loadUnitSuitePlan(root);
-  assert.equal(plan.protectedPriorHostedFiles,235);assert.equal(plan.qualification.length,161);
+  assert.equal(plan.protectedPriorHostedFiles,235);assert.equal(plan.qualification.length,162);
   for(const file of ["worker-lifecycle","compiled-codec-cache","staged-save-runtime","staged-worker-coordinator",
     "encoder-plane-quality-browser","encoder-plane-bitrate-browser","encoder-plane-recovery-browser","readonly-preflight-unit"])
     assert.ok(plan.portable.includes(`tests/${file}.test.mjs`),file);
@@ -43,6 +43,7 @@ test("actual manifest retains every one of235 prior hosted files plus current pu
   assert.ok(plan.qualification.includes("tests/lto-native-composition-qualification.test.mjs"));
   assert.ok(plan.qualification.includes("tests/encoder-plane-current-source-qualification.test.mjs"));
   assert.ok(plan.qualification.includes("tests/aiff-id3-stress-current-source-qualification.test.mjs"));
+  assert.ok(plan.qualification.includes("tests/historical-mpeg2-terminal-current-source-qualification.test.mjs"));
   assert.ok(plan.portable.includes("tests/aiff-id3-stress-success-evidence.test.mjs"));
   assert.ok(plan.portable.includes("tests/mpeg2-production-runtime.test.mjs"));
   const aiffCurrent=await readFile(path.join(root,"tests/aiff-id3-stress-current-source-qualification.test.mjs"),"utf8");

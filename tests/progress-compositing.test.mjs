@@ -1,12 +1,12 @@
+import { readPreCatalogueUi } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import test from "node:test";
 import ts from "typescript";
 import { makeProgressCompositingCandidate } from "../scripts/lib/progress-compositing-recipe.mjs";
-const app = await readFile(new URL("../app/converter/ConverterApp.tsx", import.meta.url), "utf8");
-const css = await readFile(new URL("../app/globals.css", import.meta.url), "utf8");
+const app = await readPreCatalogueUi("app/converter/ConverterApp.tsx");
+const css = await readPreCatalogueUi("app/globals.css");
 const candidate = makeProgressCompositingCandidate(app, css);
-test("Only one progress style and its CSS change reversibly; source/options/actual metrics and terminal handlers remain identical", () => {
+test("Historical Only one progress style and its CSS change reversibly; source/options/actual metrics and terminal handlers remain identical", () => {
   assert.equal(candidate.app.replace(candidate.appPatch[1], candidate.appPatch[0]), app);
   assert.equal(candidate.css.replace(candidate.cssPatch[1], candidate.cssPatch[0]), css);
   for (const name of ["setMetrics(message.metrics)", 'aria-hidden="true"', "progress.toFixed", 'message.type === "complete"', 'message.type === "cancelled"'])
@@ -17,7 +17,7 @@ test("Only one progress style and its CSS change reversibly; source/options/actu
   const parsed = ts.createSourceFile("candidate.tsx", candidate.app, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
   assert.deepEqual(parsed.parseDiagnostics, []);
 });
-test("Transform uses unchanged progress, timing and fixed zero-marker; no forced layer promotion/containment/worker or native change", () => {
+test("Historical Transform uses unchanged progress, timing and fixed zero-marker; no forced layer promotion/containment/worker or native change", () => {
   assert.ok(candidate.app.includes('transform: `scaleX(${progress / 100})`'));
   assert.ok(candidate.cssPatch[1].includes("transition: transform 160ms linear;"));
   assert.ok(candidate.cssPatch[1].includes("width: 0.2rem;"));
@@ -28,7 +28,7 @@ test("Transform uses unchanged progress, timing and fixed zero-marker; no forced
     assert.equal(candidateVisibleWidth, originalVisibleWidth);
   }
 });
-test("Recipe rejects source or target CSS drift before building or launching browsers", () => {
+test("Historical Recipe rejects source or target CSS drift before building or launching browsers", () => {
   assert.throws(() => makeProgressCompositingCandidate(app + "\n", css));
   assert.throws(() => makeProgressCompositingCandidate(app, css.replace("transition: width 160ms linear;", "transition: width 200ms linear;")));
   assert.throws(() => makeProgressCompositingCandidate(app, css.replace("min-width: 0.2rem;", "min-width: 0.3rem;")));

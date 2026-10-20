@@ -1,6 +1,7 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+
 import test from "node:test";
 const read = f => readFile(new URL(`../${f}`, import.meta.url));
 const proof = async name => JSON.parse(await read(`evidence/${name}-2026-10-07.json`));
@@ -9,7 +10,7 @@ async function verifyPins(p) {
   for (const [file, digest] of Object.entries(p.sourcePins)) assert.equal(sha(await read(file)), digest, file);
   for (const [name, digest] of Object.entries(p.generatedSourceHashes)) assert.equal(sha(p.generatedSources[name]), digest, name);
 }
-test("actual largest64 blank prerequisite retains bounded type data and honest omissions, not a full inventory", async () => {
+test("Historical actual largest64 blank prerequisite retains bounded type data and honest omissions, not a full inventory", async () => {
   const p = await proof("largest-blink-type-control"); await verifyPins(p);
   assert.equal(p.status, "completed-largest-blink-type-control"); assert.equal(p.typeFieldsAvailable, true);
   assert.equal(p.trace.trace.dataLossOccurred, false); assert.equal(p.trace.trace.overflow, false);
@@ -27,7 +28,7 @@ test("actual largest64 blank prerequisite retains bounded type data and honest o
   for (const value of Object.values(p.cleanup)) assert.equal(value, true);
   assert.equal(p.outerGeneratedRuntimeRemoved, true); assert.equal(p.completeChromiumMemoryAcceptance, false);
 });
-test("actual two-session real UI attribution has both complete GUID intervals and measured grid/text increases", async () => {
+test("Historical actual two-session real UI attribution has both complete GUID intervals and measured grid/text increases", async () => {
   const p = await proof("ui-largest-blink-types"); await verifyPins(p);
   assert.equal(p.status, "completed-diagnostic"); assert.equal(p.traces.length, 2); assert.equal(p.rows.length, 7);
   for (const t of p.traces) {
@@ -51,7 +52,7 @@ test("actual two-session real UI attribution has both complete GUID intervals an
   assert.ok(p.rows.filter(r => r.jobState != null).every(r => r.jobState === "idle")); assert.deepEqual(p.forbidden, []);
   for (const value of Object.values(p.cleanup)) assert.equal(value, true);
 });
-test("failed offscreen candidate retains its actual navigation failure and lower point metrics without being promoted", async () => {
+test("Historical failed offscreen candidate retains its actual navigation failure and lower point metrics without being promoted", async () => {
   const p = await proof("ui-offscreen-matrix-experiment"); await verifyPins(p);
   assert.equal(p.status, "failed-diagnostic"); assert.match(p.failure, /locator\.click.*Timeout/s);
   assert.equal(p.cssCandidate.matrixCards, 405); assert.equal(p.cssCandidate.formatAnchorWorked, false);
@@ -65,7 +66,7 @@ test("failed offscreen candidate retains its actual navigation failure and lower
   for (const value of Object.values(p.cleanup)) assert.equal(value, true);
   assert.equal(p.completeChromiumMemoryAcceptance, false); assert.equal(p.conversionSpeedAcceptance, false);
 });
-test("actual responsive fragment/rendering check restores high visible-matrix heap and leaves worst-case memory fix unproven", async () => {
+test("Historical actual responsive fragment/rendering check restores high visible-matrix heap and leaves worst-case memory fix unproven", async () => {
   const p = await proof("ui-offscreen-rendered-matrix-experiment"); await verifyPins(p);
   assert.equal(p.status, "completed-diagnostic"); assert.equal(p.rows.length, 8);
   assert.equal(p.cssCandidate.navbarLinkVisible, false);
@@ -90,7 +91,7 @@ test("actual responsive fragment/rendering check restores high visible-matrix he
   assert.equal(p.originalSourceBytes, 2958573265); assert.equal(p.originalSourceSha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
   assert.equal(p.conversionsPerformed, 0); assert.equal(p.generatedMediaCopies, 0); assert.deepEqual(p.forbidden, []);
 });
-test("actual independent CSS runs reused a root PID, so a cross-run PID-only comparison would be invalid", async () => {
+test("Historical actual independent CSS runs reused a root PID, so a cross-run PID-only comparison would be invalid", async () => {
   const old = await proof("ui-offscreen-matrix-experiment"), fresh = await proof("ui-offscreen-rendered-matrix-experiment");
   const before = old.rows[0].processes.find(p => p.pid === 11420), after = fresh.rows[0].processes.find(p => p.pid === 11420);
   assert.equal(before.type, "browser"); assert.equal(after.type, "browser");

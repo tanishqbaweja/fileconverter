@@ -1,7 +1,8 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { access, readFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import { Writable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
@@ -12,7 +13,7 @@ const proof=JSON.parse(input);
 const analysis=JSON.parse(await readFile(new URL("../evidence/mpeg2-staged-abort-terminal-analysis-2026-10-08.json",import.meta.url)));
 const compact=JSON.parse(await readFile(new URL("../evidence/mpeg2-staged-abort-terminal-compaction-2026-10-08.json",import.meta.url)));
 
-test("actual full-source attempt fails unchanged whole-tree ceiling before any Wasm abort",()=>{
+test("Historical actual full-source attempt fails unchanged whole-tree ceiling before any Wasm abort",()=>{
   assert.equal(proof.rawStatus,"failed"); assert.match(proof.failure.message,/264\.2421875MiB exceeds 250MiB/);
   assert.equal(proof.blankBaseline.privateBytes,239501312); assert.equal(proof.nativePeak.privateBytes,516579328);
   assert.equal(proof.nativePeak.processes.reduce((sum,p)=>sum+p.privateBytes,0),516579328);
@@ -25,7 +26,7 @@ test("actual full-source attempt fails unchanged whole-tree ceiling before any W
   assert.equal(proof.publicAcceptance,false); assert.equal(analysis.input.sha256,sha(input));
 });
 
-test("adjacent renderer burst identifies a birth-matched process, not a guessed allocator",()=>{
+test("Historical adjacent renderer burst identifies a birth-matched process, not a guessed allocator",()=>{
   const burst=analysis.adjacentBurst, deltas=burst.processDeltas.filter(p=>p.deltaPrivateBytes!==0);
   assert.equal(burst.beforeSequence,3457); assert.equal(burst.afterSequence,3458);
   assert.equal(burst.treeDeltaPrivateBytes,49987584); assert.equal(deltas.length,1);
@@ -38,7 +39,7 @@ test("adjacent renderer burst identifies a birth-matched process, not a guessed 
   assert.equal(analysis.failureCollectorUnavailableSamples,1); assert.equal(analysis.unavailableIsNotZero,true);
 });
 
-test("partial encoding keeps fixed memory/backpressure and independently verified cleanup",()=>{
+test("Historical partial encoding keeps fixed memory/backpressure and independently verified cleanup",()=>{
   const final=proof.splitFinalSamples[0], metrics=analysis.partialMetrics;
   assert.equal(final.frames,1530); assert.equal(final.completedPackets,1530); assert.equal(final.closed,true);
   assert.equal(final.aggregateWasmMemoryBytes,50331648);
@@ -50,7 +51,7 @@ test("partial encoding keeps fixed memory/backpressure and independently verifie
   for(const key of["allSampledNativeBirthsAbsent","helperBirthsAbsent","bothRuntimeDirectoriesAbsent","ninePrivateAssetsAbsent","protectedFullPostHashVerified","noProcessesKilled"])assert.equal(analysis.cleanup[key],true);
 });
 
-test("all executed sources remain pinned and tiny lossless archive preserves actual failure",async()=>{
+test("Historical all executed sources remain pinned and tiny lossless archive preserves actual failure",async()=>{
   assert.equal(sha(proof.generatedSource),proof.generatedSourceSha256);
   for(const report of[proof,analysis,compact])for(const[file,hash]of Object.entries(report.sourcePins))
     assert.equal(sha(await readFile(new URL(`../${file}`,import.meta.url))),hash,file);

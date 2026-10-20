@@ -1,6 +1,7 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+
 import test from "node:test";
 const read = file => readFile(new URL(`../${file}`, import.meta.url));
 const proof = async file => JSON.parse(await read(`evidence/${file}-2026-10-07.json`));
@@ -9,7 +10,7 @@ async function verifyPins(p) {
   for (const [file, digest] of Object.entries(p.sourcePins)) assert.equal(sha(await read(file)), digest, file);
   for (const [name, digest] of Object.entries(p.generatedSourceHashes)) assert.equal(sha(p.generatedSources[name]), digest, name);
 }
-test("actual production UI complete heap measurement joins the same post-navigation renderer identity, not another realm", async () => {
+test("Historical actual production UI complete heap measurement joins the same post-navigation renderer identity, not another realm", async () => {
   const p = await proof("ui-complete-blink-heap"); await verifyPins(p);
   assert.equal(p.status, "completed-diagnostic"); assert.equal(p.browserVersion, "154.0.8037.98");
   assert.equal(p.rows.length, 7); assert.equal(p.trace.dumps.length, 7);
@@ -32,7 +33,7 @@ test("actual production UI complete heap measurement joins the same post-navigat
   for (const flag of ["publicAcceptance", "completeChromiumMemoryAcceptance", "conversionSpeedAcceptance"]) assert.equal(p[flag], false);
   assert.equal(p.allocationSourceOfOriginalFailure, null); assert.equal(p.conversionsPerformed, 0);
 });
-test("actual detailed prerequisite failures remain failed: trace loss, long names and genuine record overflow are not erased", async () => {
+test("Historical actual detailed prerequisite failures remain failed: trace loss, long names and genuine record overflow are not erased", async () => {
   const multi = await proof("detailed-blink-type-control"), single = await proof("single-detailed-blink-type-control"), bounded = await proof("bounded-detailed-blink-type-control");
   for (const p of [multi, single, bounded]) {
     await verifyPins(p); assert.match(p.status, /^failed-/); assert.equal(p.typeFieldsAvailable, false);
@@ -48,7 +49,7 @@ test("actual detailed prerequisite failures remain failed: trace loss, long name
   assert.equal(single.trace.dumps.length, 1); assert.equal(bounded.trace.dumps.length, 1);
   assert.equal(single.syntheticAllocationBytes, 0); assert.equal(bounded.nativeObserverStarted, false);
 });
-test("actual bounded schema check proves field availability and over-512 cardinality without claiming a retained type inventory", async () => {
+test("Historical actual bounded schema check proves field availability and over-512 cardinality without claiming a retained type inventory", async () => {
   const p = await proof("detailed-blink-type-schema"); await verifyPins(p);
   assert.equal(p.status, "completed-detailed-blink-type-schema-control"); assert.equal(p.schemaFieldsInspected, true);
   assert.equal(p.trace.trace.dataLossOccurred, false); assert.equal(p.trace.trace.overflow, false);

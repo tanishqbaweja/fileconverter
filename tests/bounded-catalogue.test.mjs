@@ -1,5 +1,5 @@
+import { readPreCatalogueUi } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import { runInNewContext } from "node:vm";
 import test from "node:test";
@@ -35,8 +35,8 @@ test("search finds every exact profile id and format without exposing private or
   for (const page of [-100, NaN, Infinity]) assert.equal(cataloguePage("", page).page, 0);
   assert.equal(cataloguePage("", 100000).page, cataloguePage("", 0).pages - 1);
 });
-test("private overlay changes only catalogue; production sources remain frozen", async () => {
-  const source = await readFile("app/converter/ConverterApp.tsx", "utf8"), result = makeBoundedCatalogueApp(source);
+test("historical private overlay changes only catalogue against its immutable pre-integration source", async () => {
+  const source = await readPreCatalogueUi("app/converter/ConverterApp.tsx"), result = makeBoundedCatalogueApp(source);
   let reversed = result.generated;
   for (const [before, after] of result.edits.toReversed()) reversed = reversed.replace(after, before);
   assert.ok(reversed.includes(result.originalSection)); assert.equal(result.conversionSettingsChanged, false);

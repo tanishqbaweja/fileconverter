@@ -1,5 +1,56 @@
 # Remaining work audit
 
+## 2026-10-21 - Bounded production catalogue integrated; MPEG-2 memory still FAILED
+
+The actual app now mounts `PublishedFormatsCatalogue`, at most24 display cards,
+with128-character bounded search and keyboard-accessible pagination. All405
+published routes remain available in registry order. Stateless article/child
+slots are reused; no codec/settings/registry or other conversion-control/lifecycle
+change. Live unit tests reverse the exact app/component/CSS edits and compare
+every current card with the previous markup. Two actual production-browser cases
+(1280x720 and390x844) visited all17pages/405routes, verified every label/ID,
+zero new articles on pagination (three removed on final page), search/no-match/
+exact-ID/reset, keyboard controls and no horizontal overflow. Both screenshots
+visually reviewed headlessly. This is real UI integration, NOT a claimed native
+speed/memory fix or codec promotion.
+
+The same native-runtime fixture still produces identical585266B/96frame MPEG-2
+output, full native decode,SSIM.985963, retained AAC packet hash/title/language,
+64KiB read/write/queue and one pending write;zero forbidden requests. BUT peak
+complete-tree incremental private memory is345.87890625MiB: FAILED unchanged250.
+Corrected observation windows now really span8.397/8.407seconds, not the older
+~0.4s last-five interval. All379native samples valid. Old/this runs are not a
+paired performance comparison; UI exercises and observer setup differ.
+
+The retained Playwright trace has287screencast frames/528snapshots/10500253B,
+versus5/11/1992986B in the earlier diagnostic. Observer perturbation is a
+hypothesis, NOT proven cause or bytes deducted. The smoke also runs its backend
+worker alongside the app bootstrap worker; it still does not prove the normal
+job dispatcher, actual UI progress or staged-save retirement. Next integrate
+explicit MPEG-2 into that real lifecycle, then gather typed process/realm and
+observer evidence before another memory acceptance run. Do not rerun unchanged
+conversions until green or reopen rejected LTO/full-cold experiments.
+
+Current proof: `evidence/2026-10-21-production-catalogue-integration-cycle.json`.
+Production builds, whole lint/TypeScript,449-file portable1343PASS/0fail/0skip
+(107364.1028ms), and18actual production Chrome privacy/offline tests PASS(1.1m).
+First privacy CLI launch failed before tests because local Wrangler was absent
+from PATH; corrected only launch environment.405-public registry audit PASS.
+All235prior hosted roots retained;611root files=449portable+162qualifications,
+not implied passed. Two old terminal live-source equalities are preserved intact
+in explicit qualification; their portable tests validate actual archived249/256
+executed preimages. Other historical UI recipes/receipts use exactly three
+hash-pinned immutable preimages, not today's edited UI; no receipt hash changed.
+Initial whole suite1312pass/31fail/27files and focused79pass/2fail stay recorded.
+New current-source/UI tests never use those adapters for live acceptance.
+
+All converted outputs/fixtures/native staging/browser profiles from the smoke
+removed; recorded roots absent. Privacy profile absent. Protected original
+2958573265B/SHA31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34
+verified unchanged after both browser cycles. Useful failure traces/screenshots
+remain inside repository. No full original/scaling/headed/manual/current whole-
+project acceptance, fresh hosted CI or new public route claimed.
+
 ## 2026-10-20 - Explicit MPEG-2 runtime implemented; real output valid, memory gate FAILED
 
 Added `workers/mpeg2-split-runtime.ts` and explicit profile40 in production

@@ -1,12 +1,13 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 const root = path.resolve(import.meta.dirname, ".."), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const proofPath = "evidence/2026-10-08T08-50-53-044Z-mpeg2-matrix-golden-validation.json";
 
-test("new headed private matrix conversion goldens/decoded PCM/timelines/recovery remain exact", async () => {
+test("Historical new headed private matrix conversion goldens/decoded PCM/timelines/recovery remain exact", async () => {
   const bytes = await readFile(path.join(root, proofPath)); assert.ok(bytes.length < 32768);
   const p = JSON.parse(bytes); assert.equal(p.status, "passed-5-of-5-private-regression"); assert.equal(p.conversions.length, 3);
   for (const r of p.conversions) {
@@ -23,7 +24,7 @@ test("new headed private matrix conversion goldens/decoded PCM/timelines/recover
   assert.equal(p.elapsedBrowserTestSeconds, null); assert.equal(p.completeChromiumMemoryAcceptance, false); assert.equal(p.originalFullSourceAcceptance, false); assert.equal(p.publicAcceptance, false);
 });
 
-test("actual real-output UI and six reviewed screenshot hashes retained; labels cannot certify private codec", async () => {
+test("Historical actual real-output UI and six reviewed screenshot hashes retained; labels cannot certify private codec", async () => {
   const p = JSON.parse(await readFile(path.join(root, proofPath)));
   assert.deepEqual(p.matrixUiObservations.map(r => r.jobState), ["complete", "complete", "complete", "error", "running", "cancelled"]);
   assert.ok(p.matrixUiObservations[4].outputBytes > 32768);
@@ -42,7 +43,7 @@ test("actual real-output UI and six reviewed screenshot hashes retained; labels 
   const record = e.reports[0], raw = await readFile(path.join(root, record.path)); assert.equal(raw.length, record.bytes); assert.equal(sha(raw), record.sha256);
 });
 
-test("compact freeze fixes report assembly only, preserving failed source and unchanged32KiB cap", async () => {
+test("Historical compact freeze fixes report assembly only, preserving failed source and unchanged32KiB cap", async () => {
   const failed = JSON.parse(await readFile(path.join(root, "evidence/mpeg2-matrix-golden-freeze-size-failure-2026-10-08.json")));
   assert.equal(failed.status, "failed-independent-freeze-summary-size-cap");
   for (const [file, hash] of Object.entries(failed.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), hash, file);

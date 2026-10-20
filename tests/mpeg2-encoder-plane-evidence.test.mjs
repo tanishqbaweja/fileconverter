@@ -1,5 +1,6 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
-import { access, readFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import path from "node:path";
 import { gunzipSync } from "node:zlib";
 import test from "node:test";
@@ -14,7 +15,7 @@ async function restore(row) {
   const restored = gunzipSync(compressed, { maxOutputLength: 8388608 }); assert.equal(restored.length, row.restoredBytes);
   assert.equal(sha(restored), row.restoredSha256); return restored;
 }
-test("Actual changed encoder Wasm lifecycle succeeds with real fixed memory/source reversal/80 selectors/200000 reuses, not browser-memory acceptance", async () => {
+test("Historical Actual changed encoder Wasm lifecycle succeeds with real fixed memory/source reversal/80 selectors/200000 reuses, not browser-memory acceptance", async () => {
   verifyEncoderPlaneBuildEvidence(build, branch);
   assert.equal(build.encoderManifest.artifacts["split-encoder.wasm"], "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee");
   assert.equal(build.encoderManifest.artifacts["split-encoder.mjs"], "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e");
@@ -23,7 +24,7 @@ test("Actual changed encoder Wasm lifecycle succeeds with real fixed memory/sour
   assert.equal(build.collectorSourceSha256, sha(await read("scripts/collect-mpeg2-encoder-plane-build.mjs")));
   for (const field of ["originalRead", "originalOomResolved", "speedImprovementProven", "publicAcceptance"]) assert.equal(build[field], false);
 });
-test("Actual production-browser three conversions match prior pixel/output/audio/clock goldens and two adverse recoveries; protected original/source pins/cleanup unchanged", async () => {
+test("Historical Actual production-browser three conversions match prior pixel/output/audio/clock goldens and two adverse recoveries; protected original/source pins/cleanup unchanged", async () => {
   assert.equal(golden.status, "five-headless-goldens-byte-exact-and-recovery-passed"); assert.equal(golden.failure, null);
   assert.equal(golden.build.sha256, sha(buildBytes));
   const archived = JSON.parse(await restore(golden.generatedArchive));
@@ -42,7 +43,7 @@ test("Actual production-browser three conversions match prior pixel/output/audio
   for (const row of golden.cleanup.helpers.launchRecords) assert.equal(row.absence.status, "owned-identity-absent");
   for (const field of ["completeChromiumMemoryAcceptance", "originalFullSourceAcceptance", "publicAcceptance", "conversionSpeedAcceptance"]) assert.equal(golden[field], false);
 });
-test("Only exact redundant compiled-tool archive removed after local hash verification; pinned tools remain recoverable for full stress", async () => {
+test("Historical Only exact redundant compiled-tool archive removed after local hash verification; pinned tools remain recoverable for full stress", async () => {
   const cleanup = JSON.parse(await read("evidence/mpeg2-encoder-plane-hosted-cleanup-38044000567.json"));
   assert.equal(cleanup.buildProofSha256, sha(buildBytes)); assert.equal(cleanup.exactArtifactId, build.artifact.id);
   assert.equal(cleanup.after.total_count, 0); assert.equal(cleanup.localToolsVerified, true);
@@ -50,7 +51,7 @@ test("Only exact redundant compiled-tool archive removed after local hash verifi
   assert.equal(cleanup.ownedRuntimeRemoved, true); assert.equal(cleanup.originalReadOrChanged, false);
   assert.equal(cleanup.sourceSha256, sha(await read("scripts/cleanup-encoder-plane-hosted-artifact.mjs")));
 });
-test("One redundant raw browser report removed only after byte-exact lossless recovery; original evidence unchanged and compact archive available", async () => {
+test("Historical One redundant raw browser report removed only after byte-exact lossless recovery; original evidence unchanged and compact archive available", async () => {
   const compact = JSON.parse(await read("evidence/mpeg2-encoder-plane-golden-compaction-2026-10-10.json"));
   assert.equal(compact.exactByteRecoveryVerifiedBeforeRemoval, true); assert.equal(compact.rawRemoved.sha256, golden.report.sha256);
   assert.deepEqual(compact.retained, golden.report.archive); await restore(compact.retained);

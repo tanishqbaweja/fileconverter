@@ -1,12 +1,13 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
 import { summarizeJsAllocation } from "../scripts/lib/bounded-js-allocation.mjs";
 const read = file => readFile(new URL(`../${file}`, import.meta.url)), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const proof = JSON.parse(await read("evidence/mpeg2-js-progress-terminal-2026-10-08.json"));
-test("Actual cancelled progress run retains exact raw/source/profile archives and served-script bindings", async () => {
+test("Historical Actual cancelled progress run retains exact raw/source/profile archives and served-script bindings", async () => {
   for (const [file, digest] of Object.entries(proof.sourcePins)) assert.equal(sha(await read(file)), digest, file);
   assert.equal(sha(await read(proof.verifier.path)), proof.verifier.sha256);
   const compressed = await read(proof.compressedReport.path); assert.equal(sha(compressed), proof.compressedReport.sha256);
@@ -28,7 +29,7 @@ test("Actual cancelled progress run retains exact raw/source/profile archives an
   assert.ok(proof.records.at(-1).bundleBindings.some(row => /capability-strip/.test(row.context)));
   assert.ok(proof.records.at(-1).bundleBindings.some(row => /media-plan-stream/.test(row.context)));
 });
-test("Partial measured memory and naturally collected allocations cannot certify the original or sampler lifetime", () => {
+test("Historical Partial measured memory and naturally collected allocations cannot certify the original or sampler lifetime", () => {
   assert.equal(proof.observedPeakPrivateBytes, 465039360);
   assert.equal(proof.blankBaseline.privateBytes, 242888704);
   assert.equal((proof.observedPeakPrivateBytes - proof.blankBaseline.privateBytes) / 1048576, 211.859375);

@@ -1,13 +1,14 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+
 import path from "node:path";
 import test from "node:test";
 const root = path.resolve(import.meta.dirname, "..");
 const load = async name => JSON.parse(await readFile(path.join(root, `evidence/${name}-2026-10-07.json`)));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 
-test("actual original failure precedes any detailed trace and preserves unchanged complete-tree gate", async () => {
+test("Historical actual original failure precedes any detailed trace and preserves unchanged complete-tree gate", async () => {
   const p = await load("mpeg2-failure-only-attribution"), c = p.nativeFailureCapture, e = c.firstFailure;
   assert.equal(p.completeOriginalConversion, false); assert.equal(p.limitMiB, 250);
   assert.equal(p.blankBaseline.privateBytes, 238407680); assert.equal(p.startupSettlement.minimumMs, 300000);
@@ -29,7 +30,7 @@ test("actual original failure precedes any detailed trace and preserves unchange
   for (const [name, source] of Object.entries(p.generatedSources)) assert.equal(sha(source), p.generatedSourceHashes[name]);
 });
 
-test("unsuccessful actual Chromium dump and subsequent summary failure are NEVER accepted as allocation attribution", async () => {
+test("Historical unsuccessful actual Chromium dump and subsequent summary failure are NEVER accepted as allocation attribution", async () => {
   const p = await load("mpeg2-failure-only-attribution"), a = await load("mpeg2-failure-only-analysis");
   assert.equal(a.input.sha256, sha(await readFile(path.join(root, a.input.path))));
   const session = p.attribution.sessions[0], trace = session.trace, dump = trace.dumps[0];

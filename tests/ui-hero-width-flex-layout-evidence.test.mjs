@@ -1,6 +1,7 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
@@ -9,7 +10,7 @@ const root = path.resolve(import.meta.dirname, ".."), sha = b => createHash("sha
 const prefix = "evidence/2026-10-08T11-39-44-157Z-ui-hero-width-flex-layout";
 const read = async suffix => JSON.parse(await readFile(path.join(root, prefix + suffix + ".json")));
 
-test("actual corrected hero pair preserves all405cards/controls and nine responsive geometries", async () => {
+test("Historical actual corrected hero pair preserves all405cards/controls and nine responsive geometries", async () => {
   const p = await read("");
   assert.equal(p.status, "paired-hero-width-layout-geometry-pass-not-public-acceptance"); assert.equal(p.failure, null);
   assert.equal(p.geometry.length, 9);
@@ -35,7 +36,7 @@ test("actual corrected hero pair preserves all405cards/controls and nine respons
   for (const [file, hash] of Object.entries(p.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), hash, file);
 });
 
-test("allocation diagnostics remain distinct from continuous whole-browser or speed acceptance", async () => {
+test("Historical allocation diagnostics remain distinct from continuous whole-browser or speed acceptance", async () => {
   const a = await read("-analysis"), [grid, flex] = a.modes;
   assert.equal(a.candidateGeometryAccepted, true);
   assert.equal(grid.embedderGrowthBytes, 8458752); assert.equal(flex.embedderGrowthBytes, 3955720);
@@ -54,7 +55,7 @@ test("allocation diagnostics remain distinct from continuous whole-browser or sp
   for (const [file, hash] of Object.entries(prep.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), hash, file);
 });
 
-test("corrected pair lossless archives reconstruct exact raw joins after guarded removal", async () => {
+test("Historical corrected pair lossless archives reconstruct exact raw joins after guarded removal", async () => {
   const p = await read(""), c = await read("-compaction");
   assert.equal(c.status, "verified-lossless-ui-hero-width-raw-report-compaction"); assert.equal(c.reports.length, 2);
   for (const [i, r] of c.reports.entries()) {

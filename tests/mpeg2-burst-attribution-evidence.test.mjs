@@ -1,10 +1,11 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+
 import test from "node:test";
 const read = file => readFile(new URL(`../${file}`, import.meta.url));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
-test("actual changed diagnostic retains full ten-process failed peak and lower same-instance baseline", async () => {
+test("Historical actual changed diagnostic retains full ten-process failed peak and lower same-instance baseline", async () => {
   const p = JSON.parse(await read("evidence/mpeg2-burst-attribution-2026-10-07.json"));
   const peak = p.finalPreConversionAndConversionNativePeak;
   assert.equal(peak.privateBytes, 540237824); assert.equal(peak.processes.length, 10);
@@ -20,7 +21,7 @@ test("actual changed diagnostic retains full ten-process failed peak and lower s
   assert.equal(p.lastPreCancellationMetrics.peakPendingOperations, 1);
   assert.equal(p.splitFinalSamples[0].frames, 1356); assert.equal(p.splitFinalSamples[0].closed, true);
 });
-test("fast dump request is not immediate peak attribution; all GUIDs/delays/provider caveats are retained", async () => {
+test("Historical fast dump request is not immediate peak attribution; all GUIDs/delays/provider caveats are retained", async () => {
   const p = JSON.parse(await read("evidence/mpeg2-burst-attribution-2026-10-07.json"));
   assert.equal(p.trace.trace.dataLossOccurred, false); assert.equal(p.trace.trace.overflow, false);
   assert.equal(p.nativeBursts.events.length, 4); assert.equal(p.joinedDumps.length, 2);
@@ -34,7 +35,7 @@ test("fast dump request is not immediate peak attribution; all GUIDs/delays/prov
   assert.equal(p.originalUninstrumentedFailureCause, null); assert.equal(p.publicAcceptance, false);
   for (const [file, digest] of Object.entries(p.sourcePins)) assert.equal(sha(await read(file)), digest, file);
 });
-test("immediate root-absence failure is not rewritten by later verified cleanup/source preservation", async () => {
+test("Historical immediate root-absence failure is not rewritten by later verified cleanup/source preservation", async () => {
   const p = JSON.parse(await read("evidence/mpeg2-burst-attribution-2026-10-07.json"));
   assert.equal(p.cleanup.sampledChromeRootStopped, false); assert.match(p.cleanup.errors[0], /Owned Chrome root/);
   assert.equal(p.cleanup.conversionQuiescence.terminalState, "cancelled");
@@ -45,7 +46,7 @@ test("immediate root-absence failure is not rewritten by later verified cleanup/
   assert.equal(p.source.sha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
   assert.equal(Object.keys(p.restoredAssetPins).length, 6); assert.equal(p.privateAssetsAbsent.length, 9);
 });
-test("actual summary-only blank control retains heap child metrics and exactly executed generated sources", async () => {
+test("Historical actual summary-only blank control retains heap child metrics and exactly executed generated sources", async () => {
   const p = JSON.parse(await read("evidence/complete-blink-heap-control-2026-10-07.json"));
   assert.equal(p.status, "completed-brief-blink-heap-control"); assert.equal(p.heapFieldsAvailable, true);
   assert.equal(p.noForcedGc, true); assert.equal(p.noTraceModeOrBufferChange, true);

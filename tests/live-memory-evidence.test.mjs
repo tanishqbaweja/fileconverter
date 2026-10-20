@@ -1,5 +1,6 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
 import { sha } from "../scripts/lib/stable-ui-headless-baseline-recipe.mjs";
@@ -10,7 +11,7 @@ const read=async file=>{
     return gunzipSync(await readFile(new URL(`../${file}.gz`,import.meta.url)),{maxOutputLength:2*1048576});}
 };
 const proof=JSON.parse(await read("evidence/2026-10-08T22-41-09-984Z-live-memory-analysis.json"));
-test("Actual live light snapshots reconstruct without inventing failure-time, causal, full-output or acceptance evidence",async()=>{
+test("Historical Actual live light snapshots reconstruct without inventing failure-time, causal, full-output or acceptance evidence",async()=>{
   const receiptBytes=await read(proof.receipt.path);assert.equal(sha(receiptBytes),proof.receipt.sha256);
   const e=JSON.parse(receiptBytes);assert.equal(sha(await read(proof.verifier.path)),proof.verifier.sha256);
   for(const[file,hash]of Object.entries(e.sourcePins))assert.equal(sha(await read(file)),hash,file);
@@ -44,7 +45,7 @@ test("Actual live light snapshots reconstruct without inventing failure-time, ca
   assert.equal(proof.completeOriginalConversions,0);assert.equal(proof.terminalPendingMetrics,null);
   for(const key of ["nativeAllocationCauseProven","publicAcceptance","originalFullSourceAcceptance","conversionSpeedAcceptance","completeChromiumMemoryAcceptance"])assert.equal(proof[key],false);
 });
-test("Two terminal proof originals are retained byte-exact in compact archives, not converted copies",async()=>{
+test("Historical Two terminal proof originals are retained byte-exact in compact archives, not converted copies",async()=>{
   const compact=JSON.parse(await read("evidence/2026-10-08T22-41-09-984Z-live-memory-compaction.json"));
   assert.equal(sha(await read(compact.compactor.path)),compact.compactor.sha256);assert.equal(compact.records.length,2);
   let saved=0;for(const row of compact.records){

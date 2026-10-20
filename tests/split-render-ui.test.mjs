@@ -1,12 +1,12 @@
+import { readPreCatalogueUi } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import ts from "typescript";
 import { makeSplitRenderUiSource } from "../scripts/lib/split-render-ui-recipe.mjs";
-const root=path.resolve(import.meta.dirname,".."),original=await readFile(path.join(root,"app/converter/ConverterApp.tsx"),"utf8");
+const root=path.resolve(import.meta.dirname,".."),original=await readPreCatalogueUi("app/converter/ConverterApp.tsx");
 const candidate=makeSplitRenderUiSource(original,root);
-test("Private render decomposition preserves exact model body and exposes no fabricated memory or speed acceptance",()=>{
+test("Historical Private render decomposition preserves exact model body and exposes no fabricated memory or speed acceptance",()=>{
   assert.equal(candidate.sections.length,15);assert.equal(candidate.newReactComponentBoundaries,0);
   assert.equal(candidate.hooksHandlersAndLifecycleUnchanged,true);assert.equal(candidate.markupChanged,false);
   for(const key of ["nativeAllocationCauseProven","publicAcceptance","conversionSpeedAcceptance","completeChromiumMemoryAcceptance"])assert.equal(candidate[key],false);

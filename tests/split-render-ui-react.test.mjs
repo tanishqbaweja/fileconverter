@@ -1,6 +1,6 @@
+import { readPreCatalogueUi } from "./helpers/historical-published-ui.mjs";
 // Real React/actual display source. Model fixtures test UI equivalence, NOT converter progress or outputs.
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { registerHooks } from "node:module";
@@ -12,7 +12,7 @@ import { renderToStaticMarkup } from "react-dom/server";
 import ts from "typescript";
 import { makeSplitRenderUiSource } from "../scripts/lib/split-render-ui-recipe.mjs";
 const root=path.resolve(import.meta.dirname,".."),app=path.join(root,"app/converter/ConverterApp.tsx");
-const original=await readFile(app,"utf8"),candidate=makeSplitRenderUiSource(original,root);
+const original=await readPreCatalogueUi("app/converter/ConverterApp.tsx"),candidate=makeSplitRenderUiSource(original,root);
 const parsed=ts.createSourceFile(app,original,ts.ScriptTarget.Latest,true,ts.ScriptKind.TSX);
 const imports=new Map([["react",React],["react/jsx-runtime",jsxRuntime]]);
 // Node's built-in TS stripping preserves actual modules; resolve only the
@@ -49,13 +49,13 @@ const after=compile(candidate.source,"module.exports.UnitView=renderConverterPag
 let initial;
 renderToStaticMarkup(React.createElement(after.UnitModel,{observe:model=>{initial=model;}}));assert.ok(initial);
 const markup=(View,model)=>renderToStaticMarkup(React.createElement(View,model));
-test("Actual whole component SSR, all405 cards and original DOM match after custom-hook/render decomposition",()=>{
+test("Historical Actual whole component SSR, all405 cards and original DOM match after custom-hook/render decomposition",()=>{
   const originalHtml=renderToStaticMarkup(React.createElement(before.ConverterApp));
   const candidateHtml=renderToStaticMarkup(React.createElement(after.ConverterApp));
   assert.equal(candidateHtml,originalHtml);
   assert.equal((candidateHtml.match(/<article/g)??[]).length,405);
 });
-test("Original complete display equals helpers for changing source, encoding controls, running/error/cancel and storage fixture models",()=>{
+test("Historical Original complete display equals helpers for changing source, encoding controls, running/error/cancel and storage fixture models",()=>{
   const selectedProfile=imports.get("../../lib/capability-registry").conversionProfiles.find(row=>row.id==="mkv-to-mp4");assert.ok(selectedProfile);
   const selected={...initial,file:{name:"UNIT_ONLY_café.mkv",size:1234567,type:"video/x-matroska",lastModified:0},inputFormat:"mkv",batchFiles:[{}],
     totalInputBytes:1234567,selectedProfile,profiles:[selectedProfile],featureReady:true,workerStarting:false,sourceInspectionStatus:"inspecting"};

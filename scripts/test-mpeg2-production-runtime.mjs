@@ -18,6 +18,8 @@ import { queryProcessIdentity, observeOwnedProcessExit } from "./lib/owned-proce
 import { startChromiumMemoryMonitor } from "./lib/persistent-chromium-memory.mjs";
 import { stableWindow } from "./lib/chromium-private-memory.mjs";
 import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
+import { verifyProductionCatalogue } from "./lib/production-catalogue-check.mjs";
+import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -81,6 +83,8 @@ try {
   report.sources = {};
   for (const file of ["workers/media-remux.ts", "workers/mpeg2-split-runtime.ts", "workers/random-access-destination.ts",
     "tests/browser/fixtures/mpeg2-production-runtime.worker.ts", "scripts/test-mpeg2-production-runtime.mjs",
+    "scripts/lib/production-catalogue-check.mjs", "app/converter/ConverterApp.tsx", "app/converter/PublishedFormatsCatalogue.tsx",
+    "app/globals.css", "lib/published-catalogue.ts", "lib/capability-registry.ts",
     ...["session", "frame-bridge", "frame-layout", "frame-properties", "packet-bridge"].map(suffix => "scripts/lib/mpeg2-split-" + suffix + ".mjs")]) {
     report.sources[file] = sha(await readFile(path.join(root, file)));
   }
@@ -124,6 +128,10 @@ try {
   assert.equal(response.status(), 200, "Production app route must load before file selection");
   const headers = response.headers(); assert.equal(headers["cross-origin-opener-policy"], "same-origin");
   assert.equal(headers["cross-origin-embedder-policy"], "require-corp"); assert.ok(headers["content-security-policy"]);
+  const screenshotDirectory = path.join(root, "output/playwright", report.startedAt.replaceAll(":", "-") + "-catalogue");
+  await mkdir(screenshotDirectory);
+  report.catalogueUi = await verifyProductionCatalogue(page, conversionProfiles.filter(profile => profile.public && profile.automatedTestStatus === "passed")
+    .map(profile => ({ id: profile.id, route: profile.route, inputLabel: formatById(profile.input).label, outputLabel: formatById(profile.output).label })), screenshotDirectory);
   await page.locator('input[type="file"]').first().setInputFiles(fixture);
   await page.waitForFunction(() => document.querySelector('[data-testid="media-inspection-status"]')?.textContent.includes("These stream facts came from bounded local header reads"));
   // Observe the genuine loaded-site idle phase rather than starting conversion

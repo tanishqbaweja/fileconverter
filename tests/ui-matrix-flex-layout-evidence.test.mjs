@@ -1,6 +1,7 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { access } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
@@ -10,7 +11,7 @@ const root = path.resolve(import.meta.dirname, ".."), sha = bytes => createHash(
 const prefix = "evidence/2026-10-08T08-38-48-399Z-ui-matrix-flex-layout";
 const read = async suffix => JSON.parse(await readFile(path.join(root, prefix + suffix + ".json")));
 
-test("actual current-Chrome matrix pair preserves405cards and nine responsive geometries", async () => {
+test("Historical actual current-Chrome matrix pair preserves405cards and nine responsive geometries", async () => {
   const p = await read("");
   assert.equal(p.status, "paired-matrix-layout-geometry-pass-not-public-acceptance");
   assert.equal(p.geometry.length, 9); assert.ok(p.geometry.every(g => g.sameMarkup && g.sameControls && g.pass && g.maxDifferenceCssPixels <= .016));
@@ -27,7 +28,7 @@ test("actual current-Chrome matrix pair preserves405cards and nine responsive ge
   }
 });
 
-test("static Blink savings do not disguise unchanged selection growth or certify whole-browser memory", async () => {
+test("Historical static Blink savings do not disguise unchanged selection growth or certify whole-browser memory", async () => {
   const a = await read("-analysis"), [grid, flex] = a.modes;
   assert.equal(a.status, "verified-terminal-matrix-layout-pair-not-public-acceptance");
   assert.equal(grid.gridTrackGrowthBytes, 209280); assert.equal(flex.gridTrackGrowthBytes, 209280);
@@ -43,7 +44,7 @@ test("static Blink savings do not disguise unchanged selection growth or certify
   for (const [file, hash] of Object.entries(a.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), hash, file);
 });
 
-test("two compact archives reconstruct exact raw allocation traces after verified removal", async () => {
+test("Historical two compact archives reconstruct exact raw allocation traces after verified removal", async () => {
   const p = await read(""), c = await read("-compaction");
   assert.equal(c.status, "verified-lossless-ui-matrix-raw-report-compaction"); assert.equal(c.reports.length, 2);
   for (const [i, r] of c.reports.entries()) {

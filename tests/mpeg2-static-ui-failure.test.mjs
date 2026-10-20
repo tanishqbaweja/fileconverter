@@ -1,10 +1,11 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+
 import test from "node:test";
 const read = file => readFile(new URL(`../${file}`, import.meta.url));
 const proof = JSON.parse(await read("evidence/mpeg2-static-ui-original-failure-2026-10-07.json"));
-test("Static UI reuse does not turn a late native original memory failure into acceptance", () => {
+test("Historical Static UI reuse does not turn a late native original memory failure into acceptance", () => {
   assert.equal(proof.status, "failed-strict-original-memory-after-static-ui-reuse");
   assert.equal(proof.incrementalPrivateMiB, 260.52734375); assert.equal(proof.limitMiB, 250);
   assert.equal(proof.fullPeak.privateBytes, 507424768); assert.equal(proof.blankBaseline.privateBytes, 234242048);
@@ -19,7 +20,7 @@ test("Static UI reuse does not turn a late native original memory failure into a
     "fullOriginalAudioValidation", "baselineChanged", "codecQualityChanged", "heapLimitRaised", "conversionSpeedAcceptance"]) assert.equal(proof[key], false, key);
   assert.equal(proof.processesExcluded, 0); assert.equal(proof.uiCpuImprovementRetained, true);
 });
-test("Native peak renderer identity is retained without guessing a late-sampled allocation cause", () => {
+test("Historical Native peak renderer identity is retained without guessing a late-sampled allocation cause", () => {
   assert.equal(proof.rendererAttribution.nativePeakProcess.pid, 38208);
   assert.equal(proof.rendererAttribution.nativePeakProcess.privateBytes, 255291392);
   assert.equal(proof.rendererAttribution.matchingLaterCimIdentity.type, "renderer");
@@ -32,7 +33,7 @@ test("Native peak renderer identity is retained without guessing a late-sampled 
     assert.notEqual(pair.cim.utilitySubtype, "on_device_model.mojom.OnDeviceModelService");
   }
 });
-test("Late rejection keeps fixed queues/heaps, actual cancellation cleanup and zero full audio certification", async () => {
+test("Historical Late rejection keeps fixed queues/heaps, actual cancellation cleanup and zero full audio certification", async () => {
   for (const [file, digest] of Object.entries(proof.sourcePins)) assert.equal(createHash("sha256").update(await read(file)).digest("hex"), digest, file);
   assert.equal(proof.aggregateWasmMemoryBytes, 50331648); assert.equal(proof.lastPreCancellationMetrics.peakWasmMemoryBytes, 50331648);
   assert.equal(proof.lastPreCancellationMetrics.peakQueuedBytes, 65536); assert.equal(proof.lastPreCancellationMetrics.peakPendingOperations, 1);

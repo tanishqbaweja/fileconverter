@@ -1,7 +1,8 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { readFile } from "node:fs/promises";
+
 import { Writable } from "node:stream";
 import { pipeline } from "node:stream/promises";
 import { createGunzip } from "node:zlib";
@@ -13,7 +14,7 @@ const analysis=JSON.parse(await readFile(new URL("../evidence/mpeg2-abort-precon
 const compaction=JSON.parse(await readFile(new URL("../evidence/mpeg2-abort-preconversion-compaction-2026-10-08.json",import.meta.url)));
 const golden=JSON.parse(await readFile(new URL("../evidence/mpeg2-abort-golden-regression-2026-10-08.json",import.meta.url)));
 
-test("terminal route-based harness failure is BEFORE conversion, not OOM, a partial encode or memory acceptance",()=>{
+test("Historical terminal route-based harness failure is BEFORE conversion, not OOM, a partial encode or memory acceptance",()=>{
   assert.equal(proof.rawStatus,"failed"); assert.match(proof.failure.message,/abortDiagnostic.staticAssets.length > 0/);
   assert.equal(proof.runs[0].state,null); assert.equal(proof.runs[0].independentValidation,null);
   assert.deepEqual(proof.abortDiagnostic.records,[]); assert.deepEqual(proof.abortDiagnostic.staticAssets,[]);
@@ -27,13 +28,13 @@ test("terminal route-based harness failure is BEFORE conversion, not OOM, a part
   assert.equal(proof.originalFullSourceMemoryAcceptance,false); assert.equal(proof.publicAcceptance,false);
 });
 
-test("all failed-driver, analyzer, compactor and changed browser prerequisite source pins remain exact",async()=>{
+test("Historical all failed-driver, analyzer, compactor and changed browser prerequisite source pins remain exact",async()=>{
   assert.equal(sha(proof.generatedSource),proof.generatedSourceSha256);
   for(const report of[proof,analysis,compaction,golden])for(const[file,hash]of Object.entries(report.sourcePins))
     assert.equal(sha(await readFile(new URL(`../${file}`,import.meta.url))),hash,file);
 });
 
-test("failed report reconstructs byte-for-byte from its tiny verified archive without full report buffering",async()=>{
+test("Historical failed report reconstructs byte-for-byte from its tiny verified archive without full report buffering",async()=>{
   assert.deepEqual(compaction.raw,proof.rawReport); assert.equal(compaction.uncompressedRawRemoved,true);
   assert.equal(compaction.archive.bytes,50064); assert.equal(compaction.raw.bytes,1725570);
   const hash=createHash("sha256");let count=0;
@@ -44,7 +45,7 @@ test("failed report reconstructs byte-for-byte from its tiny verified archive wi
   assert.equal(count,proof.rawReport.bytes); assert.equal(hash.digest("hex"),proof.rawReport.sha256);
 });
 
-test("staged actual-browser hook prerequisite preserves all three exact goldens plus both cleanup/recovery cases",()=>{
+test("Historical staged actual-browser hook prerequisite preserves all three exact goldens plus both cleanup/recovery cases",()=>{
   assert.equal(golden.status,"passed-5-of-5-private-regression"); assert.equal(golden.conversions.length,3);
   assert.equal(golden.elapsedBrowserTestSeconds,26.1); assert.equal(golden.recovery.length,2);
   assert.equal(golden.emptyCleanupInventories,5); assert.equal(golden.privateAdditionsAbsent,true);

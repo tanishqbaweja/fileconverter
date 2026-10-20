@@ -17,6 +17,13 @@ also remains unexecuted. Exact scope/failures/next action in
 `evidence/2026-10-20-mpeg2-production-runtime-cycle.json`. B04 remains OPEN; do not
 repeat unchanged full/cold or LTO gates or interpret valid output as promotion.
 
+October21 increment: actual catalogue now bounds mounted cards to24 while real
+desktop/mobile checks retain all405routes.1343portable units and18privacy/
+offline tests pass. Correct8-second windows now executed; native-runtime smoke
+still FAILS345.87890625MiB after catalogue navigation. No promotion or memory
+optimization claim. Normal job dispatch/staged retirement and memory attribution
+remain next; exact scope `evidence/2026-10-21-production-catalogue-integration-cycle.json`.
+
 ## Ordered blockers and exact exit evidence
 
 | ID | Work to close | Evidence required to close it |

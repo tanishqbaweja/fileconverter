@@ -1,6 +1,6 @@
+import { readPreCatalogueUi } from "./helpers/historical-published-ui.mjs";
 // Component-only React rendering; not a simulated conversion or browser acceptance.
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { runInNewContext } from "node:vm";
 import { createElement, Fragment, useMemo, useState } from "react";
@@ -10,7 +10,7 @@ import ts from "typescript";
 import { formatById, conversionProfiles } from "../lib/capability-registry.ts";
 import { makeStableProgressUiSource, STABLE_PROGRESS_UI_DEPENDENCIES } from "../scripts/lib/stable-progress-ui-recipe.mjs";
 
-const baseline = await readFile(new URL("../app/converter/ConverterApp.tsx", import.meta.url), "utf8");
+const baseline = await readPreCatalogueUi("app/converter/ConverterApp.tsx");
 const candidate = makeStableProgressUiSource(baseline);
 const parse = text => ts.createSourceFile("ConverterApp.tsx", text, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
 const before = parse(baseline), after = parse(candidate);
@@ -66,7 +66,7 @@ const equalMarkup = state => {
   assert.equal(optimized, original); return optimized;
 };
 
-test("Real React output matches original for absent, changing, batch, error and every inspection category", () => {
+test("Historical Real React output matches original for absent, changing, batch, error and every inspection category", () => {
   assert.equal(equalMarkup(initial), '<div class="capability-strip"></div>');
   const selected = { ...initial, file: { name: "UNIT_ONLY_café.mkv", type: "video/x-matroska", lastModified: 1700000000000 },
     inputFormat: "mkv", batchFiles: [{}], totalInputBytes: 1048577, sourceInspectionStatus: "inspecting" };
@@ -89,7 +89,7 @@ test("Real React output matches original for absent, changing, batch, error and 
   assert.ok(!equalMarkup({ ...selected, file: null }).includes("source-inspection"));
 });
 
-test("Real React output matches changed selector, blocking stream plans and browser capability disclosures", () => {
+test("Historical Real React output matches changed selector, blocking stream plans and browser capability disclosures", () => {
   const profiles = conversionProfiles.filter(profile => profile.public && profile.input === "mkv").slice(0, 3);
   assert.equal(profiles.length, 3);
   assert.ok(equalMarkup({ ...initial, profiles }).includes(`value="${profiles[0].id}"`));
@@ -109,7 +109,7 @@ test("Real React output matches changed selector, blocking stream plans and brow
   assert.ok(!equalMarkup({ ...capable, selectedProfile: null, mediaProfile: false }).includes("Image decoder:"));
 });
 
-test("Actual React rerenders reuse unchanged trees and refresh every relevant source/profile/batch/capability input", () => {
+test("Historical Actual React rerenders reuse unchanged trees and refresh every relevant source/profile/batch/capability input", () => {
   const shared = { ...initial, file: { name: "UNIT_ONLY_a.mkv", type: "video/x-matroska", lastModified: 1700000000000 },
     inputFormat: "mkv", batchFiles: [{}], totalInputBytes: 1234, profiles: conversionProfiles.filter(profile => profile.public && profile.input === "mkv").slice(0, 2),
     capabilities: { secure: true, workers: true, wasm: true, imageDecoderTypes: {} },

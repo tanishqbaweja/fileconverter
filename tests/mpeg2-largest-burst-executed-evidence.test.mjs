@@ -1,12 +1,13 @@
+import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+
 import path from "node:path";
 import test from "node:test";
 import { joinMicrosecondNativeTypes } from "../scripts/lib/microsecond-native-type-join.mjs";
 const root = path.resolve(import.meta.dirname, ".."), sha = value => createHash("sha256").update(value).digest("hex");
 const load = async name => JSON.parse(await readFile(path.join(root, `evidence/${name}-2026-10-07.json`)));
-test("actual changed original preserves busy failure/all ten peak processes and complete two independently closed traces", async () => {
+test("Historical actual changed original preserves busy failure/all ten peak processes and complete two independently closed traces", async () => {
   const p = await load("mpeg2-largest-burst-attribution");
   assert.equal(p.failure.message, "Diagnostic callback unavailable or busy; record failure rather than queue requests");
   assert.equal(p.finalNativeIncrementalPrivateMiB, 259.26953125); assert.equal(p.finalNativePeak.processes.length, 10);
@@ -26,7 +27,7 @@ test("actual changed original preserves busy failure/all ten peak processes and 
   for (const [file, digest] of Object.entries(p.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), digest, file);
   for (const [name, source] of Object.entries(p.generatedSources)) assert.equal(sha(source), p.generatedSourceHashes[name]);
 });
-test("actual microsecond-only derivative recovers type identity without rewriting the original empty exact-string join", async () => {
+test("Historical actual microsecond-only derivative recovers type identity without rewriting the original empty exact-string join", async () => {
   const p = await load("mpeg2-largest-burst-attribution"), a = await load("mpeg2-largest-burst-analysis");
   assert.deepEqual(p.largestTypeChanges[0].joined, []);
   assert.deepEqual(a.joined, joinMicrosecondNativeTypes(p.attribution.sessions.map(s => s.trace)));
@@ -38,7 +39,7 @@ test("actual microsecond-only derivative recovers type identity without rewritin
   assert.equal(a.originalUninstrumentedFailureCause, null); assert.equal(a.noNewConversion, true);
   for (const [file, digest] of Object.entries(a.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), digest, file);
 });
-test("actual failed PID-only cleanup assumption is archived; identity-aware retry proves independent cleanup without killing replacement", async () => {
+test("Historical actual failed PID-only cleanup assumption is archived; identity-aware retry proves independent cleanup without killing replacement", async () => {
   const failed = await load("mpeg2-largest-burst-analysis-pid-only-failure"), a = await load("mpeg2-largest-burst-analysis");
   assert.equal(sha(failed.executedSource), failed.executedSourceSha256);
   assert.equal(failed.observedCurrent[0].pid, failed.historicalNativeIdentity.pid);
