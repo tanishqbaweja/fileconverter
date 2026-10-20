@@ -1,5 +1,18 @@
 # Remaining work audit
 
+## 2026-10-21 - Fresh hosted integration regression PASS; release gaps unchanged
+
+Actual code80e571125f4120bdd25238cb323cafff21a14d3d pushed; hosted39482225002
+SUCCESS with inspected logs/steps: clean npm-ci, registry/inventory, whole lint/
+TypeScript, production build/literal npm-test1349PASS/0fail/1skip(38332.424399ms)
+and18privacy/offline browser tests PASS35.9s, Node24.22.0, post-cleanup success.
+Local1350PASS/0skip includes protected-original inspection. Exact receipt
+`evidence/2026-10-21-mpeg2-job-hosted-success.json`. No162private qualifications,
+separate conversion/audio-destination suites or engine rebuilds counted passed.
+The real integration now works but352.19921875MiB still FAILS250. Final UI/planner,
+memory attribution/recovery, scaling and all other open blockers remain required;
+32npm advisories still unresolved. This is not goal or public-route completion.
+
 ## 2026-10-21 - Actual MPEG-2 backend job/lifecycle integrated; memory gate still FAILS
 
 The main conversion worker now dispatches the explicit unpublished MPEG-2 job,

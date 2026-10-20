@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Fresh hosted MPEG-2 lifecycle code verification PASS
+
+Pushed80e571125f4120bdd25238cb323cafff21a14d3d. Hosted39482225002/verify118833434104
+terminal SUCCESS: clean npm-ci, registry/inventory audits, whole lint/TypeScript,
+production build/literal npm-test1349PASS/0fail/1skip in38332.424399ms, followed
+by18headless privacy/offline tests PASS35.9s. Node24.22.0; job steps/log counts/
+post-cleanup inspected. Local all1350PASS/0skip includes protected original.
+450portable files/162qualification files; all235prior hosted files retained.
+Separate conversion/audio-destination/rebuild jobs and private qualification
+not run or implied passed.32dependency advisories still unresolved. Memory
+352.19921875MiB still FAILS250; MPEG-2 remains unpublished. Exact receipt
+`evidence/2026-10-21-mpeg2-job-hosted-success.json`. No full-project closure.
+
 ## 2026-10-21 - Real MPEG-2 job dispatch/staged retirement integrated; memory FAIL
 
 Explicit unpublished `mkv-to-mp4-mpeg2` now enters the actual conversion worker,

@@ -33,6 +33,10 @@ This closes backend dispatch/handoff only. Final selector/planner/settings/
 preservation, memory attribution/recovery, scaling and promotion remain OPEN.
 Local1350portable tests/18privacy-offline tests pass; exact cycle receipt
 `evidence/2026-10-21-mpeg2-job-integration-cycle.json`. No unchanged long run repeated.
+Fresh hosted39482225002 at80e5711 SUCCESS: clean install, lint/TS/build/npm-test
+1349pass/0fail/1skip and18privacy/offline tests35.9s. Receipt
+`evidence/2026-10-21-mpeg2-job-hosted-success.json`. Memory failure and B02-B09
+stay open; skipped private/conversion/rebuild jobs are not counted passed.
 
 ## Ordered blockers and exact exit evidence
 

@@ -1,0 +1,222 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-21",
+  "scope": "Fresh hosted portable-verify for actual MPEG-2 backend/lifecycle integration; not native conversion or route promotion",
+  "status": "success",
+  "codeCommit": "80e571125f4120bdd25238cb323cafff21a14d3d",
+  "runId": 39482225002,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39482225002",
+  "node": "24.22.0",
+  "platform": "Ubuntu hosted runner",
+  "job": {
+    "completedAt": "2026-10-20T19:20:42Z",
+    "conclusion": "success",
+    "databaseId": 118833434104,
+    "name": "verify",
+    "startedAt": "2026-10-20T19:17:49Z",
+    "status": "completed",
+    "steps": [
+      {
+        "completedAt": "2026-10-20T19:17:50Z",
+        "conclusion": "success",
+        "name": "Set up job",
+        "number": 1,
+        "startedAt": "2026-10-20T19:17:49Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:18:06Z",
+        "conclusion": "success",
+        "name": "Run actions/checkout@v4",
+        "number": 2,
+        "startedAt": "2026-10-20T19:17:50Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:18:14Z",
+        "conclusion": "success",
+        "name": "Run actions/setup-node@v4",
+        "number": 3,
+        "startedAt": "2026-10-20T19:18:06Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:18:32Z",
+        "conclusion": "success",
+        "name": "Run npm ci",
+        "number": 4,
+        "startedAt": "2026-10-20T19:18:14Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:18:56Z",
+        "conclusion": "success",
+        "name": "Run npx playwright install --with-deps chromium",
+        "number": 5,
+        "startedAt": "2026-10-20T19:18:32Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:18:56Z",
+        "conclusion": "success",
+        "name": "Audit public route evidence",
+        "number": 6,
+        "startedAt": "2026-10-20T19:18:56Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:18:56Z",
+        "conclusion": "success",
+        "name": "Audit complete unit inventory (private qualification not executed here)",
+        "number": 7,
+        "startedAt": "2026-10-20T19:18:56Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:19:15Z",
+        "conclusion": "success",
+        "name": "Run npm run lint",
+        "number": 8,
+        "startedAt": "2026-10-20T19:18:56Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:19:20Z",
+        "conclusion": "success",
+        "name": "Run npx tsc --noEmit --incremental false",
+        "number": 9,
+        "startedAt": "2026-10-20T19:19:15Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:20:03Z",
+        "conclusion": "success",
+        "name": "Run npm test",
+        "number": 10,
+        "startedAt": "2026-10-20T19:19:20Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:20:39Z",
+        "conclusion": "success",
+        "name": "Run network privacy and offline browser tests",
+        "number": 11,
+        "startedAt": "2026-10-20T19:20:03Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:20:39Z",
+        "conclusion": "skipped",
+        "name": "Upload verification failure evidence",
+        "number": 12,
+        "startedAt": "2026-10-20T19:20:39Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:20:39Z",
+        "conclusion": "success",
+        "name": "Post Run actions/setup-node@v4",
+        "number": 23,
+        "startedAt": "2026-10-20T19:20:39Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:20:40Z",
+        "conclusion": "success",
+        "name": "Post Run actions/checkout@v4",
+        "number": 24,
+        "startedAt": "2026-10-20T19:20:39Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-20T19:20:40Z",
+        "conclusion": "success",
+        "name": "Complete job",
+        "number": 25,
+        "startedAt": "2026-10-20T19:20:40Z",
+        "status": "completed"
+      }
+    ],
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39482225002/job/118833434104"
+  },
+  "inspection": {
+    "metadataTerminalSuccess": true,
+    "logInspected": true,
+    "npmCi": {
+      "status": "passed",
+      "advisories": {
+        "total": 32,
+        "critical": 1,
+        "high": 24,
+        "moderate": 6,
+        "low": 1
+      },
+      "advisoriesResolved": false
+    },
+    "registryInventory": "passed",
+    "wholeLint": "passed",
+    "wholeTypeScript": "passed",
+    "productionBuildAndLiteralNpmTest": "passed",
+    "portable": {
+      "files": 450,
+      "tests": 1350,
+      "passed": 1349,
+      "failed": 0,
+      "skipped": 1,
+      "durationMs": 38332.424399
+    },
+    "skipScope": "One skip in hosted run. Local all1350 pass includes protected-original inspection; test.mkv intentionally remains untracked. No new skip added.",
+    "privacyOffline": {
+      "passed": 18,
+      "durationSeconds": 35.9
+    },
+    "postCleanup": "success",
+    "inventory": {
+      "allRootFiles": 612,
+      "portable": 450,
+      "qualification": 162,
+      "protectedPriorHostedPortableFiles": 235
+    }
+  },
+  "jobsNotSelected": [
+    {
+      "name": "Browser conversions (${{ matrix.suite }})",
+      "status": "skipped"
+    },
+    {
+      "name": "audio-destination-scopes",
+      "status": "skipped"
+    },
+    {
+      "name": "Reproduce non-Docker ${{ matrix.id }}",
+      "status": "skipped"
+    },
+    {
+      "name": "engine-matrix",
+      "status": "skipped"
+    }
+  ],
+  "notCovered": [
+    "162 prerequisite-bound private qualification files",
+    "Separate browser-conversion and audio-destination jobs",
+    "Published engine rebuilds",
+    "MPEG-2 native memory acceptance, full original or scaling stress",
+    "Final planner/settings/preservation integration",
+    "Full project completion"
+  ],
+  "unchangedFailure": {
+    "scope": "Local real production MPEG-2 job smoke",
+    "incrementalPrivateMiB": 352.19921875,
+    "limitMiB": 250,
+    "publicRoute": false,
+    "receipt": "evidence/2026-10-21-mpeg2-job-integration-cycle.json"
+  },
+  "localRegression": {
+    "tests": 1350,
+    "passed": 1350,
+    "failed": 0,
+    "skipped": 0,
+    "privacyOfflinePassed": 18
+  },
+  "followup": "Documentation/receipt-only commit may reference this code result only while production/test/engine/dependency sources remain identical."
+}
