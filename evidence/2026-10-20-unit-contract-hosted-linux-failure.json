@@ -1,0 +1,104 @@
+{
+  "status": "hosted-linux-default-exposes-eight-portability-failures-not-accepted",
+  "run": {
+    "id": 39411679700,
+    "job": 118590720894,
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39411679700/job/118590720894",
+    "commit": "60a1b56703e310e56e23ae9ca9c87db6f6c91856",
+    "jobConclusion": "failure",
+    "overallRunTerminal": false
+  },
+  "jobLogEndpoint": "repos/tanishqbaweja/fileconverter/actions/jobs/118590720894/logs",
+  "source": "Completed job's direct logs API; gh run view --log was unavailable while other jobs remained live.",
+  "failures": [
+    {
+      "failed": "changed production worker typechecks in the real project and bundles without writing private assets",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/exclusive-staged-writer.test.mjs",
+      "message": "\u001b[91merror\u001b[0m\u001b[90m TS6053: \u001b[0mFile '/home/runner/work/fileconverter/fileconverter/work/recovery-discovery-unit-dmETYU/candidate.spec.ts' not found.\n  The file is in the program because:\n    Root file specified for compilation\n\n\n1 !== 0\n"
+    },
+    {
+      "failed": "trace failure detaches, one pending operation rejects overlap, settle waits for closure",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/lifecycle-allocation-attribution.test.mjs",
+      "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '.'\n- 'H:\\\\repo/outputs/reports'\n"
+    },
+    {
+      "failed": "actual no-Docker compiled core/source/build joins and fixed32+16MiB pass without becoming original failure resolution",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/mpeg2-allocation-attempt-build-evidence.test.mjs",
+      "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\mpeg2-allocation-attempt-38138821153/LICENSE.ffmpeg'"
+    },
+    {
+      "failed": "actual hosted diagnostic compiles 82 requests and preserves encoder/fixed heaps, not browser acceptance",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/mpeg2-late-slot-build-evidence.test.mjs",
+      "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\mpeg2-split-pipeline-37739125738/within-mpeg2-split.wasm'"
+    },
+    {
+      "failed": "actual tool collection pins source/branch workflow and removes only fresh download, not reusable tools",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/mpeg2-late-slot-build-evidence.test.mjs",
+      "message": "ENOENT: no such file or directory, open 'H:\\Github Repositories\\fileconverter\\work\\mpeg2-split-pipeline-37739125738/LICENSE.ffmpeg'"
+    },
+    {
+      "failed": "compile and execute real C diagnostic under synthetic host dispatch; ten cases including recursion with finally cleanup",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/mpeg2-realloc-attempt.test.mjs",
+      "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ Error: spawnSync H:/LLVM-MinGW/llvm-mingw-20260616-ucrt-x86_64/bin/clang.exe ENOENT\n+     at Object.spawnSync (node:internal/child_process:1160:20)\n+     at spawnSync (node:child_process:928:24)\n+     at wrapped (file:///home/runner/work/fileconverter/fileconverter/scripts/lib/hidden-unit-subprocesses.mjs:21:58)\n+     at TestContext.<anonymous> (file:///home/runner/work/fileconverter/fileconverter/tests/mpeg2-realloc-attempt.test.mjs:41:19)\n+     at async Test.run (node:internal/test_runner/test:1409:7)\n+     at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n+   code: 'ENOENT',\n+   errno: -2,\n+   path: 'H:/LLVM-MinGW/llvm-mingw-20260616-ucrt-x86_64/bin/clang.exe',\n+   spawnargs: [\n+     '-std=c11',\n+     '-O2',\n+     '-Wall',\n+     '-Wextra',\n+     '-Werror',\n+     '-UNDEBUG',\n+     '-static',\n+     '/home/runner/work/fileconverter/fileconverter/media/ffmpeg/mpeg2-realloc-attempt-smoke.c',\n+     '-o',\n+     '/home/runner/work/fileconverter/fileconverter/work/native-realloc-control-vQFql8/realloc-control.exe'\n+   ],\n+   syscall: 'spawnSync H:/LLVM-MinGW/llvm-mingw-20260616-ucrt-x86_64/bin/clang.exe'\n+ }\n- undefined\n"
+    },
+    {
+      "failed": "six same-page diagnostic repeats preserve complete independent validation and fixed memory",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/repeat-startup-diagnostic.test.mjs",
+      "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe'\n- '/home/runner/work/fileconverter/fileconverter/C:/Program Files/Google/Chrome/Application/chrome.exe'\n"
+    },
+    {
+      "failed": "actual sealed suite changes only unique paths and new runtime version",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/updated-chrome-media.test.mjs",
+      "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ 'C:\\\\Program Files\\\\Google\\\\Chrome\\\\Application\\\\chrome.exe'\n- '/home/runner/work/fileconverter/fileconverter/C:/Program Files/Google/Chrome/Application/chrome.exe'\n"
+    }
+  ],
+  "summary": {
+    "success": false,
+    "counts": {
+      "tests": 1326,
+      "failed": 8,
+      "passed": 1317,
+      "cancelled": 0,
+      "skipped": 1,
+      "todo": 0,
+      "topLevel": 1326,
+      "suites": 0
+    },
+    "duration_ms": 48314.991099
+  },
+  "localWindowsReceipt": "evidence/2026-10-20T10-57-44-912Z-clean-checkout-unit-probe.json",
+  "localWindowsCounts": {
+    "passed": 1325,
+    "failed": 0,
+    "skipped": 1,
+    "durationMs": 148917.343
+  },
+  "localWindowsDependencyIsolationLimitation": "Tracked checkout had no local private work/test.mkv, but two tests followed recorded absolute H: native-artifact paths into the original workspace. Its pass was not proof of portable independence. Native checks are now explicitly separated with original-workspace guards.",
+  "fixes": [
+    "Exclude only generated work/output/outputs/dist from TypeScript root discovery; retain actual app/lib/workers/browser-test inclusion and add a regression guard against concurrent disappearing scratch files.",
+    "Use host-native paths in synthetic lifecycle test and a host C compiler for the ten-case realloc synthetic smoke; preserve all substantive C assertions and Windows static linking.",
+    "Validate serialized Windows Chrome pins with path.win32 on every inspection host, retain Windows-only actual binary inspection and all version/hash/identity/path rejection guards.",
+    "Keep archived build/source/collector metadata checks portable. Preserve actual native-artifact assertions in two explicit qualification files with original repository work path guards.",
+    "Apply hidden subprocess preload to direct node --test through the owned command wrapper as well as the programmatic unit runner."
+  ],
+  "newInventory": {
+    "all": 605,
+    "portable": 447,
+    "qualification": 158,
+    "priorHostedFilesKeptPortable": 235
+  },
+  "securityFollowup": {
+    "npmCiReportedVulnerabilities": {
+      "low": 1,
+      "moderate": 6,
+      "high": 24,
+      "critical": 1,
+      "total": 32
+    },
+    "status": "Requires dependency/advisory and shipped-runtime reachability triage under B08; no claim these are harmless or fixed, no automatic audit fix."
+  },
+  "nativeOrProductionConversionCodeChanged": false,
+  "memoryQualityPrivacyAndValidationThresholdsChanged": false,
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false
+}

@@ -26,7 +26,7 @@ test("stale, duplicate, invalid, prior-public or production-import exceptions ca
 });
 test("actual manifest retains every one of235 prior hosted files plus current public worker/cache/save checks",async()=>{
   const root=path.resolve(import.meta.dirname,".."),plan=await loadUnitSuitePlan(root);
-  assert.equal(plan.protectedPriorHostedFiles,235);assert.equal(plan.qualification.length,156);
+  assert.equal(plan.protectedPriorHostedFiles,235);assert.equal(plan.qualification.length,158);
   for(const file of ["worker-lifecycle","compiled-codec-cache","staged-save-runtime","staged-worker-coordinator",
     "encoder-plane-quality-browser","encoder-plane-bitrate-browser","encoder-plane-recovery-browser","readonly-preflight-unit"])
     assert.ok(plan.portable.includes(`tests/${file}.test.mjs`),file);
@@ -44,4 +44,16 @@ test("actual manifest retains every one of235 prior hosted files plus current pu
   assert.ok(plan.qualification.includes("tests/encoder-plane-current-source-qualification.test.mjs"));
   await assert.rejects(promisify(execFile)(process.execPath,["scripts/run-unit-suite.mjs","portable","--skip-private"],
     {cwd:root,windowsHide:true,timeout:10000,maxBuffer:4096}),error=>error.code===1);
+});
+test("focused CI dispatch keeps normal full gates and does not call unselected browser/engine jobs passed",async()=>{
+  const workflow=await readFile(new URL("../.github/workflows/ci.yml",import.meta.url),"utf8");
+  assert.match(workflow,/branches: \["main"\]/);assert.match(workflow,/  pull_request:/);
+  const condition=job=>workflow.match(new RegExp("^  "+job+":\\r?\\n    if: ([^\\r\\n]+)","m"))?.[1];
+  assert.match(condition("verify"),/inputs\.engine == 'portable-verify'/);
+  assert.match(condition("engine-matrix"),/inputs\.engine != 'portable-verify'/);
+  assert.doesNotMatch(condition("browser-conversions"),/portable-verify/);
+  for(const job of ["verify","browser-conversions"]) {
+    assert.match(condition(job),/github\.event_name != 'workflow_dispatch'/);
+    assert.match(condition(job),/inputs\.engine == 'all'/);assert.match(condition(job),/inputs\.engine == 'verify-only'/);
+  }
 });

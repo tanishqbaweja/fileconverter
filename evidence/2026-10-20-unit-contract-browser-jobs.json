@@ -1,0 +1,23 @@
+{
+  "run": { "id": 39411679700, "commit": "60a1b56703e310e56e23ae9ca9c87db6f6c91856", "status": "completed", "conclusion": "failure", "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39411679700" },
+  "verificationJob": { "id": 118590720894, "conclusion": "failure", "failedUnitCases": 8, "privacyOfflineNotReached": true },
+  "browserJobs": [
+    { "id": 118590721141, "suite": "media-remux", "conclusion": "success", "passed": 554, "duration": "11.5m" },
+    { "id": 118590721160, "suite": "audio-destination-scopes", "conclusion": "success", "passed": 8, "duration": "26.2s" },
+    { "id": 118590721224, "suite": "image-conversions", "conclusion": "success", "passed": 153, "duration": "4.6m" },
+    { "id": 118590721314, "suite": "audio-source-metadata", "conclusion": "success", "passed": 9, "duration": "28.8s" },
+    { "id": 118590721383, "suite": "streaming-conversions", "conclusion": "success", "passed": 238, "duration": "3.7m" }
+  ],
+  "totalBrowserPassed": 962,
+  "evidence": "Actual terminal job metadata and each completed jobs/{id}/logs summary, not inferred from queued jobs or unchanged snapshots.",
+  "independentValidators": true,
+  "headedOrManualCoverage": false,
+  "freshWholeTreeMemoryAcceptance": false,
+  "engineRebuildJobsSelected": false,
+  "fixesAfterRun": { "focusedPassed": 29, "focusedFailed": 0, "focusedSkipped": 0, "durationMs": 20381.6224, "fullTypeScriptPassed": true, "changedFileLintPassed": true },
+  "protectedBrowserPathsUnchangedAfterFixes": ["app", "lib", "workers", "public", "tests/browser", "vite.config.ts", "package-lock.json"],
+  "typescriptChange": "Exclude generated work/output/outputs/dist from root discovery, retain public app/lib/workers/browser tests; regression-tested. No browser-runtime source or Wasm change.",
+  "nextRun": "portable-verify: fresh committed npm-ci/lint/TypeScript/build/units/privacy-offline only. Preserve complete default/all/verify-only gates and reuse these matching browser results within their actual scope; unselected jobs are not passed.",
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false
+}

@@ -1,6 +1,34 @@
 # Tested conversion ledger
 
-## 2026-10-20 - Portable/private contract implemented; final clean check pending
+## 2026-10-20 - Windows clean source PASS, Linux reveals eight portability failures
+
+Windows tracked60a1b56 checkout build/units1325pass/0fail/1explicit optional
+original skip,148917.343ms, checkout/runtime removed. Exact inventory hash and
+important limitation in `evidence/2026-10-20-unit-contract-local-cycle.json`: two
+native checks could reach recorded absolute paths in original H: worktree, so
+this was not independent portability proof. Actual hosted39411679700/verify
+failed8cases/1317pass/1skip, after npm-ci/lint/TS/build PASS; privacy not reached.
+`evidence/2026-10-20-unit-contract-hosted-linux-failure.json` preserves every
+failure and correction. Private native assertions moved intact behind explicit
+original-workspace qualification guards; portable archived evidence remains.
+605files=447portable+158qualification, all235prior hosted root units retained.
+
+Fixed generated scratch/TypeScript discovery race, cross-platform path fixture,
+native synthetic-C compiler choice and Windows-pin serialization semantics.
+Actual Windows inspection/version/hash/identity/memory/quality guards unchanged.
+New scratch inclusion guard initially failed only its Windows path comparison;
+fixed canonicalization then17focused PASS/0skip/3987.778ms. Full local TypeScript
+and changed lint PASS. Corrected committed hosted rerun pending; B01 still OPEN,
+not full-project acceptance. All five original browser jobs now SUCCESS:962tests
+(554media/153image/238streaming/9source-tags/8destination), actual job summaries
+in `evidence/2026-10-20-unit-contract-browser-jobs.json`. Overall run remains
+failed due to eight unit failures. Final focused29PASS/0skip/20381.6224ms; CI scope
+guard4PASS/0skip. Focused portable-verify dispatch preserves full normal gates,
+avoids unchanged11.5min media rerun and never claims unselected jobs passed.
+npm-ci32advisories require B08 triage
+(1critical/24high/6moderate/1low), not assumed harmless or automatically fixed.
+
+## Historical checkpoint: Portable/private contract; final clean check then pending
 
 All602root test files remain runnable:446portable/156explicit prerequisite-bound
 qualification files. `npm test` builds then portable; `test:qualification` runs

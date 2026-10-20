@@ -4,13 +4,14 @@ on:
   workflow_dispatch:
     inputs:
       engine:
-        description: Exact non-Docker engine comparison to run
+        description: Verification scope or exact non-Docker engine comparison
         required: true
         default: all
         type: choice
         options:
           - all
           - verify-only
+          - portable-verify
           - audio-destination-scopes
           - reproduce-only
           - ffmpeg-remux
@@ -34,7 +35,7 @@ permissions:
 
 jobs:
   engine-matrix:
-    if: github.event_name != 'workflow_dispatch' || (inputs.engine != 'verify-only' && inputs.engine != 'audio-destination-scopes')
+    if: github.event_name != 'workflow_dispatch' || (inputs.engine != 'verify-only' && inputs.engine != 'portable-verify' && inputs.engine != 'audio-destination-scopes')
     runs-on: ubuntu-latest
     outputs:
       engines: ${{ steps.manifest.outputs.engines }}
@@ -154,7 +155,7 @@ jobs:
             "$GITHUB_WORKSPACE/work/"*-nondocker-output
 
   verify:
-    if: github.event_name != 'workflow_dispatch' || inputs.engine == 'all' || inputs.engine == 'verify-only'
+    if: github.event_name != 'workflow_dispatch' || inputs.engine == 'all' || inputs.engine == 'verify-only' || inputs.engine == 'portable-verify'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:

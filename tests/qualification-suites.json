@@ -128,6 +128,8 @@
       "id": "private-artifacts",
       "reason": "Requires untracked private native build artifacts and/or full qualification reports identified by the original test. Absence must fail qualification, not become a passed or silently skipped unit test.",
       "files": [
+        "tests/allocation-attempt-native-qualification.test.mjs",
+        "tests/late-slot-native-qualification.test.mjs",
         "tests/lto-native-composition-qualification.test.mjs",
         "tests/alignment16-first-malloc-capacity.test.mjs",
         "tests/allocation-attempt-abort-control.test.mjs",

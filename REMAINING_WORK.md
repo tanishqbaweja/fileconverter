@@ -1,6 +1,43 @@
 # Remaining work audit
 
-## 2026-10-20 - Explicit portable/private test contract implemented; clean verification next
+## 2026-10-20 - Windows checkout PASS; actual hosted Linux failures corrected, recheck next
+
+Tracked Windows checkout60a1b56 build/units1325PASS/0FAIL/1existing original-
+fixture skip in148917.343ms; exact receipt in
+`evidence/2026-10-20-unit-contract-local-cycle.json`, checkout/runtime removed.
+Its pass alone was NOT proof of independence: hosted Linux exposed two native
+checks following recorded absolute H: artifact paths into the original worktree.
+Those checks now have explicit qualification files/original-workspace guards;
+portable archived metadata/preimages/collector/source-reconstruction checks stay
+in the normal suite. No old native assertion or hash discarded/rewritten.
+
+Hosted39411679700/verify at60a1b56 failed8cases (1317pass/1skip) after successful
+npm-ci/lint/TypeScript/build; privacy step was not reached. Exact failures and
+fixes `evidence/2026-10-20-unit-contract-hosted-linux-failure.json`. Fixed generated
+scratch inclusion racing TypeScript root discovery (work/output/outputs/dist only
+excluded; app/lib/workers/browser tests still required), host-path fixture,
+Linux C compiler selection with identical ten-case recursion assertions, and
+serialized Windows-pin validation using explicit win32 semantics while actual
+binary inspection remains Windows-only/all identity guards retained. New scratch
+exclusion test initially needed Windows path canonicalization; corrected without
+dropping any public source.158qualification/447portable/605total files; all235
+prior hosted units retained. Direct unit wrapper now propagates hidden subprocess
+preload too. No production/browser conversion engine/threshold changed.
+
+Initial focused pass28/29 exposed only that new fixture-path assertion; corrected
+seven-file17PASS/0skip in3987.778ms. Full local TypeScript and changed-file lint
+pass. Final focused29PASS/0fail/0skip/20381.6224ms; CI scope guard4PASS/0skip.
+All five original browser jobs now terminal SUCCESS,962tests (554media/153image/
+238streaming/9source-tags/8destination-scopes), actual job logs inspected. Overall
+run remains failed due to verify, not relabelled passed. Exact scope in
+`evidence/2026-10-20-unit-contract-browser-jobs.json`. New portable-verify dispatch
+reruns corrected npm-ci/lint/TS/build/units/privacy without repeating unchanged
+11.5min media/other conversion suites or engines; main/pull/all/verify-only gates
+unchanged. B01 pending fresh hosted result. npm-ci reported32advisories (1critical,
+24high/6moderate/1low): B08 needs exact advisory/reachability triage, not a claim
+they are harmless or an automatic audit-fix mutation.
+
+## Historical checkpoint: Explicit portable/private contract; clean verification then pending
 
 `npm test` still builds production, then invokes the new portable unit runner.
 The complete602-file root inventory is partitioned446portable/156explicit
@@ -13609,7 +13646,7 @@ zero artifacts. This includes the corrected non-media inspection disclosure.
 | T-07 | Three-run same-session repeatability, cleanup recovery, clean-session repeats, and failure artifact retention for major profiles | Partially implemented | New private JSPI MPEG-2 now has two independently audited fresh sessions with three validated full originals each; all six identical outputs below250MiB. Exact evidence: `evidence/2026-10-20-jspi-cold-repeat-independent-analysis.json` and `evidence/2026-10-20-jspi-cold-repeat-cycle.json`. Null sample failures and bounded recovery drift explicitly retained; owned outputs/scratch/births absent. Historical public evidence retained within its actual scope. | Do not repeat unchanged cold/full qualification. Close new-route scaling, production topology/integration and remaining cleanup-retention coverage. Private cold repeat does not certify every public profile on the final release. |
 | T-08 | Timestamped JSON, CSV, and readable HTML memory reports with graphs                                                                                                                         | Verified complete                                                                                    | `scripts/memory-profile.mjs` and compact retained reports                                                                                                                                                                                                                                                                                                                                                                                                                  | Preserve compact reports while deleting payloads.                                                                                                                    |
 | T-09 | Every published binary is pinned, reproducible, and auditable from source                                                                                                                   | Verified complete                                                                                    | `scripts/engine-reproducibility-manifest.mjs` audits all 11 published engine directories and supplies an executable exact no-Docker recipe for each. Hosted run `33297796443`, TIFF rerun `33298467168`, and clean AVIF-encoder publication run `33311548748` prove every directory against pinned Emscripten 6.0.4; `evidence/non-docker-all-engine-repro-2026-08-30.json` records job IDs, sources, hashes, AVIF cache diagnosis, browser re-certification, and cleanup. | Keep each fail-independent exact comparison mandatory whenever its source or published bytes change.                                                                 |
-| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | Historical hosted CI `37684741516` passed at `bb45f39bd6081cf5fe8598dec43a080fedd4ef3b` on October7, not current HEAD. Actual clean committed checkout build passes; default unit suite1770tests/1564pass/204fail/2skip at5c4946c. Exact per-file inventory/causes and four focused portability/worker corrections: `evidence/2026-10-20-unit-portability-triage.json`. All33focused corrected tests pass; unchanged default remains failing on historical/private prerequisites. Published-engine evidence reusable only for matching bytes/sources. | Close explicit portable/private test prerequisites without hiding public regressions or skipping qualifications. Verify documented default on committed clean checkout and hosted release commit. B01/B08 remain open. |
+| T-10 | CI runs unit, production build, small browser, network privacy, validators, and reproducibility checks | Partially implemented | Windows tracked checkout60a1b56 build/portable units1325pass/0fail/1explicit original skip, but hosted39411679700 verify disproved full portability:8fail/1317pass/1skip; privacy not reached. Exact causes/fixes in `evidence/2026-10-20-unit-contract-hosted-linux-failure.json`. All235prior hosted root units retained;605files partition447portable/158explicit qualification, full union runnable. No private suite implied passed. Local lint/TS pass; committed corrected hosted recheck pending. | Inspect corrected committed default/hosted terminal jobs and close B01 without hiding regressions. Triage32dependency advisories and complete B08 final release/reproduction plus all other original gates. |
 | T-11 | Detailed README covers architecture, copies, limits, storage, privacy, compatibility, fidelity, licensing, builds, tests, and measured results                                              | Verified complete for current implementation                                                         | `README.md` documents all named areas and links the generated route ledger                                                                                                                                                                                                                                                                                                                                                                                                 | Update it whenever remaining work changes behavior or evidence.                                                                                                      |
 
 | T-12 | Broader headed-browser review across every major category and important failure flow | Verified complete for representative required categories/flows | The September headed audits plus `evidence/headed-category-expansion-2026-10-03.json` cover media, audio, static/animated image, archive, compression, data, office/document, ebook and subtitles; batch, direct destination, cancellation, write failure, quota, permission, reload, cleanup and keyboard review. Seven added success flows include normal-page DOCX/GZIP destination selection and independent Unicode output validation. Chrome 154 passed protected 2.96 GB source cancellation with staging/partial-output deletion. The audit found and fixed stale previous-job warnings; the focused regression and all 18 privacy/offline cases passed. | Maintain representative headed review as UI/engine families change. Native OS picker dialogs and exhaustive per-profile manual review are not claimed; independent validators and process-tree memory gates remain separate. |

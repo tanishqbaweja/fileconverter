@@ -1,0 +1,172 @@
+{
+  "recordedAt": "2026-10-20T11:00:34.039Z",
+  "commit": "60a1b56703e310e56e23ae9ca9c87db6f6c91856",
+  "committedPackageSha256": "d45eff20fc2cd35c075be91ee4029358f2e489903ef8499ce8b78325e87cdd05",
+  "defaultUnitCommandUnchanged": true,
+  "unitCommand": "node scripts/run-unit-suite.mjs portable",
+  "actualTrackedCheckoutWithoutUntrackedWorkOrTestMkv": true,
+  "dependenciesReusedFromAncestor": true,
+  "npmCiOrHostedLinuxResult": false,
+  "productionBuildPassed": true,
+  "unitExit": {
+    "code": 0,
+    "signal": null
+  },
+  "inventory": {
+    "path": "outputs/reports/2026-10-20T10-57-44-912Z-clean-checkout-unit.json",
+    "sha256": "247cc4561910bb92dfbd25a45478db750556fd9f6bba52797ae441f0fe55dba4"
+  },
+  "failingFiles": [],
+  "skippedCases": 1,
+  "summary": {
+    "success": true,
+    "counts": {
+      "tests": 1326,
+      "failed": 0,
+      "passed": 1325,
+      "cancelled": 0,
+      "skipped": 1,
+      "todo": 0,
+      "topLevel": 1326,
+      "suites": 0
+    },
+    "duration_ms": 148917.343
+  },
+  "commands": [
+    {
+      "executable": "git",
+      "args": [
+        "worktree",
+        "add",
+        "--detach",
+        "H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-zudwsM\\checkout",
+        "HEAD"
+      ],
+      "cwd": "H:\\Github Repositories\\fileconverter",
+      "windowsHide": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "stdout": {
+        "totalBytes": 97,
+        "retainedBytes": 97,
+        "limit": 65536,
+        "tailBase64": "SEVBRCBpcyBub3cgYXQgNjBhMWI1NiBTZXBhcmF0ZSBwb3J0YWJsZSB1bml0cyBmcm9tIGV4cGxpY2l0IHByaXZhdGUgcXVhbGlmaWNhdGlvbiBwcmVyZXF1aXNpdGVzCg=="
+      },
+      "stderr": {
+        "totalBytes": 3306,
+        "retainedBytes": 3306,
+        "limit": 65536,
+        "tailBase64": "UHJlcGFyaW5nIHdvcmt0cmVlIChkZXRhY2hlZCBIRUFEIDYwYTFiNTYpClVwZGF0aW5nIGZpbGVzOiAgMTElICg1NDAvNDY4MykNVXBkYXRpbmcgZmlsZXM6ICAxMiUgKDU2Mi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDEzJSAoNjA5LzQ2ODMpDVVwZGF0aW5nIGZpbGVzOiAgMTQlICg2NTYvNDY4MykNVXBkYXRpbmcgZmlsZXM6ICAxNSUgKDcwMy80NjgzKQ1VcGRhdGluZyBmaWxlczogIDE2JSAoNzUwLzQ2ODMpDVVwZGF0aW5nIGZpbGVzOiAgMTclICg3OTcvNDY4MykNVXBkYXRpbmcgZmlsZXM6ICAxOCUgKDg0My80NjgzKQ1VcGRhdGluZyBmaWxlczogIDE5JSAoODkwLzQ2ODMpDVVwZGF0aW5nIGZpbGVzOiAgMjAlICg5MzcvNDY4MykNVXBkYXRpbmcgZmlsZXM6ICAyMSUgKDk4NC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDIyJSAoMTAzMS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDIzJSAoMTA3OC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDIzJSAoMTEwNi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDI0JSAoMTEyNC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDI1JSAoMTE3MS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDI2JSAoMTIxOC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDI3JSAoMTI2NS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDI4JSAoMTMxMi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDI5JSAoMTM1OS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDMwJSAoMTQwNS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDMxJSAoMTQ1Mi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDMyJSAoMTQ5OS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDMzJSAoMTU0Ni80NjgzKQ1VcGRhdGluZyBmaWxlczogIDM0JSAoMTU5My80NjgzKQ1VcGRhdGluZyBmaWxlczogIDM0JSAoMTYyNi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDM1JSAoMTY0MC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDM2JSAoMTY4Ni80NjgzKQ1VcGRhdGluZyBmaWxlczogIDM3JSAoMTczMy80NjgzKQ1VcGRhdGluZyBmaWxlczogIDM4JSAoMTc4MC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDM5JSAoMTgyNy80NjgzKQ1VcGRhdGluZyBmaWxlczogIDQwJSAoMTg3NC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDQxJSAoMTkyMS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDQyJSAoMTk2Ny80NjgzKQ1VcGRhdGluZyBmaWxlczogIDQyJSAoMjAwMy80NjgzKQ1VcGRhdGluZyBmaWxlczogIDQzJSAoMjAxNC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDQ0JSAoMjA2MS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDQ1JSAoMjEwOC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDQ2JSAoMjE1NS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDQ3JSAoMjIwMi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDQ4JSAoMjI0OC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDQ5JSAoMjI5NS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDUwJSAoMjM0Mi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDUwJSAoMjM3MC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDUxJSAoMjM4OS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDUyJSAoMjQzNi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDUzJSAoMjQ4Mi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDU0JSAoMjUyOS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDU1JSAoMjU3Ni80NjgzKQ1VcGRhdGluZyBmaWxlczogIDU2JSAoMjYyMy80NjgzKQ1VcGRhdGluZyBmaWxlczogIDU3JSAoMjY3MC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDU3JSAoMjY4Ni80NjgzKQ1VcGRhdGluZyBmaWxlczogIDU4JSAoMjcxNy80NjgzKQ1VcGRhdGluZyBmaWxlczogIDU5JSAoMjc2My80NjgzKQ1VcGRhdGluZyBmaWxlczogIDYwJSAoMjgxMC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDYxJSAoMjg1Ny80NjgzKQ1VcGRhdGluZyBmaWxlczogIDYyJSAoMjkwNC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDYzJSAoMjk1MS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDYzJSAoMjk1Mi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDY0JSAoMjk5OC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDY1JSAoMzA0NC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDY2JSAoMzA5MS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDY3JSAoMzEzOC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDY4JSAoMzE4NS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDY5JSAoMzIzMi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDcwJSAoMzI3OS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDcxJSAoMzMyNS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDcyJSAoMzM3Mi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDczJSAoMzQxOS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDc0JSAoMzQ2Ni80NjgzKQ1VcGRhdGluZyBmaWxlczogIDc1JSAoMzUxMy80NjgzKQ1VcGRhdGluZyBmaWxlczogIDc1JSAoMzU1MS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDc2JSAoMzU2MC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDc3JSAoMzYwNi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDc4JSAoMzY1My80NjgzKQ1VcGRhdGluZyBmaWxlczogIDc5JSAoMzcwMC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDgwJSAoMzc0Ny80NjgzKQ1VcGRhdGluZyBmaWxlczogIDgxJSAoMzc5NC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDgyJSAoMzg0MS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDgzJSAoMzg4Ny80NjgzKQ1VcGRhdGluZyBmaWxlczogIDg0JSAoMzkzNC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDg1JSAoMzk4MS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDg2JSAoNDAyOC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDg3JSAoNDA3NS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDg4JSAoNDEyMi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDg5JSAoNDE2OC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDkwJSAoNDIxNS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDkxJSAoNDI2Mi80NjgzKQ1VcGRhdGluZyBmaWxlczogIDkyJSAoNDMwOS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDkyJSAoNDMxMS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDkzJSAoNDM1Ni80NjgzKQ1VcGRhdGluZyBmaWxlczogIDk0JSAoNDQwMy80NjgzKQ1VcGRhdGluZyBmaWxlczogIDk1JSAoNDQ0OS80NjgzKQ1VcGRhdGluZyBmaWxlczogIDk2JSAoNDQ5Ni80NjgzKQ1VcGRhdGluZyBmaWxlczogIDk3JSAoNDU0My80NjgzKQ1VcGRhdGluZyBmaWxlczogIDk4JSAoNDU5MC80NjgzKQ1VcGRhdGluZyBmaWxlczogIDk5JSAoNDYzNy80NjgzKQ1VcGRhdGluZyBmaWxlczogMTAwJSAoNDY4My80NjgzKQ1VcGRhdGluZyBmaWxlczogMTAwJSAoNDY4My80NjgzKSwgZG9uZS4K"
+      }
+    },
+    {
+      "executable": "git",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-zudwsM\\checkout",
+      "windowsHide": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "stdout": {
+        "totalBytes": 41,
+        "retainedBytes": 41,
+        "limit": 65536,
+        "tailBase64": "NjBhMWI1NjcwM2UzMTBlNTZlMjNhZTljYTljODdkYjZmNmM5MTg1Ngo="
+      },
+      "stderr": {
+        "totalBytes": 0,
+        "retainedBytes": 0,
+        "limit": 65536,
+        "tailBase64": ""
+      }
+    },
+    {
+      "executable": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "H:\\Github Repositories\\fileconverter\\node_modules\\vinext\\dist\\cli.js",
+        "build"
+      ],
+      "cwd": "H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-zudwsM\\checkout",
+      "windowsHide": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "stdout": {
+        "totalBytes": 1048,
+        "retainedBytes": 1048,
+        "limit": 65536,
+        "tailBase64": "CiAgdmluZXh0IGJ1aWxkICAoVml0ZSA4LjAuMTMpCgpbMS81XSBhbmFseXplIGNsaWVudCByZWZlcmVuY2VzLi4uChtbMksNdHJhbnNmb3JtaW5nLi4u4pyTIDEzMiBtb2R1bGVzIHRyYW5zZm9ybWVkLgpyZW5kZXJpbmcgY2h1bmtzLi4uCuKckyBidWlsdCBpbiAxLjcycwpbMi81XSBhbmFseXplIHNlcnZlciByZWZlcmVuY2VzLi4uChtbMksNdHJhbnNmb3JtaW5nLi4u4pyTIDU4IG1vZHVsZXMgdHJhbnNmb3JtZWQuCnJlbmRlcmluZyBjaHVua3MuLi4K4pyTIGJ1aWx0IGluIDE2NG1zClszLzVdIGJ1aWxkIHJzYyBlbnZpcm9ubWVudC4uLgobWzJLDXRyYW5zZm9ybWluZy4uLuKckyAxMzggbW9kdWxlcyB0cmFuc2Zvcm1lZC4KcmVuZGVyaW5nIGNodW5rcy4uLgpjb21wdXRpbmcgZ3ppcCBzaXplLi4uCuKckyBidWlsdCBpbiAxLjM0cwpbNC81XSBidWlsZCBjbGllbnQgZW52aXJvbm1lbnQuLi4KG1sySw10cmFuc2Zvcm1pbmcuLi7inJMgNjYgbW9kdWxlcyB0cmFuc2Zvcm1lZC4KcmVuZGVyaW5nIGNodW5rcy4uLgpjb21wdXRpbmcgZ3ppcCBzaXplLi4uCuKckyBidWlsdCBpbiAxLjA4cwpbNS81XSBidWlsZCBzc3IgZW52aXJvbm1lbnQuLi4KG1sySw10cmFuc2Zvcm1pbmcuLi7inJMgNjQgbW9kdWxlcyB0cmFuc2Zvcm1lZC4KcmVuZGVyaW5nIGNodW5rcy4uLgpjb21wdXRpbmcgZ3ppcCBzaXplLi4uCuKckyBidWlsdCBpbiA0MjBtcwobWzBtCiAgUm91dGUgKGFwcCkKICDilIAgPyAvCgogID8gVW5rbm93bgoKICA/IFNvbWUgcm91dGVzIGNvdWxkIG5vdCBiZSBjbGFzc2lmaWVkLiB2aW5leHQgY3VycmVudGx5IHVzZXMgc3RhdGljIGFuYWx5c2lzCiAgICBhbmQgY2Fubm90IGRldGVjdCBkeW5hbWljIEFQSSB1c2FnZSAoaGVhZGVycygpLCBjb29raWVzKCksIGV0Yy4pIGF0IGJ1aWxkIHRpbWUuCiAgICBBdXRvbWF0aWMgY2xhc3NpZmljYXRpb24gd2lsbCBiZSBpbXByb3ZlZCBpbiBhIGZ1dHVyZSByZWxlYXNlLgoKICBCdWlsZCBjb21wbGV0ZS4gUnVuIGB2aW5leHQgc3RhcnRgIHRvIHN0YXJ0IHRoZSBwcm9kdWN0aW9uIHNlcnZlci4KCg=="
+      },
+      "stderr": {
+        "totalBytes": 0,
+        "retainedBytes": 0,
+        "limit": 65536,
+        "tailBase64": ""
+      }
+    },
+    {
+      "executable": "C:\\Program Files\\nodejs\\node.exe",
+      "args": [
+        "scripts/run-unit-suite.mjs",
+        "portable",
+        "--reporter=file:///H:/Github%20Repositories/fileconverter/scripts/lib/unit-inventory-reporter.mjs"
+      ],
+      "cwd": "H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-zudwsM\\checkout",
+      "windowsHide": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "stdout": {
+        "totalBytes": 569,
+        "retainedBytes": 569,
+        "limit": 65536,
+        "tailBase64": "eyJzdWl0ZSI6InBvcnRhYmxlIiwic2VsZWN0ZWRGaWxlcyI6NDQ2LCJhbGxGaWxlcyI6NjAyLCJwb3J0YWJsZUZpbGVzIjo0NDYsInF1YWxpZmljYXRpb25GaWxlcyI6MTU2LCJwcmlvckhvc3RlZEZpbGVzS2VwdFBvcnRhYmxlIjoyMzUsInF1YWxpZmljYXRpb25TdGF0dXMiOiJzZXBhcmF0ZS1wcmVyZXF1aXNpdGUtYm91bmQtY2hlY2tzLW5vdC1pbXBsaWVkLXBhc3NlZCIsInB1YmxpY0FjY2VwdGFuY2UiOmZhbHNlfQp7InJlcG9ydCI6Ikg6XFxHaXRodWIgUmVwb3NpdG9yaWVzXFxmaWxlY29udmVydGVyXFxvdXRwdXRzXFxyZXBvcnRzXFwyMDI2LTEwLTIwVDEwLTU3LTQ0LTkxMlotY2xlYW4tY2hlY2tvdXQtdW5pdC5qc29uIiwiZmlsZXMiOjQ0NiwiZmFpbGluZ0ZpbGVzIjowLCJza2lwcGVkQ2FzZXMiOjEsInN1bW1hcnkiOnsic3VjY2VzcyI6dHJ1ZSwiY291bnRzIjp7InRlc3RzIjoxMzI2LCJmYWlsZWQiOjAsInBhc3NlZCI6MTMyNSwiY2FuY2VsbGVkIjowLCJza2lwcGVkIjoxLCJ0b2RvIjowLCJ0b3BMZXZlbCI6MTMyNiwic3VpdGVzIjowfSwiZHVyYXRpb25fbXMiOjE0ODkxNy4zNDN9fQo="
+      },
+      "stderr": {
+        "totalBytes": 0,
+        "retainedBytes": 0,
+        "limit": 65536,
+        "tailBase64": ""
+      }
+    },
+    {
+      "executable": "git",
+      "args": [
+        "worktree",
+        "remove",
+        "--force",
+        "H:\\Github Repositories\\fileconverter\\work\\clean-checkout-unit-zudwsM\\checkout"
+      ],
+      "cwd": "H:\\Github Repositories\\fileconverter",
+      "windowsHide": true,
+      "exit": {
+        "code": 0,
+        "signal": null
+      },
+      "stdout": {
+        "totalBytes": 0,
+        "retainedBytes": 0,
+        "limit": 65536,
+        "tailBase64": ""
+      },
+      "stderr": {
+        "totalBytes": 0,
+        "retainedBytes": 0,
+        "limit": 65536,
+        "tailBase64": ""
+      }
+    }
+  ],
+  "checkoutRemoved": true,
+  "runtimeRemoved": true,
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false
+}

@@ -1,0 +1,23 @@
+{
+  "status": "windows-tracked-checkout-build-units-passed-not-independent-portability-acceptance",
+  "commit": "60a1b56703e310e56e23ae9ca9c87db6f6c91856",
+  "receipt": "evidence/2026-10-20T10-57-44-912Z-clean-checkout-unit-probe.json",
+  "inventory": { "path": "outputs/reports/2026-10-20T10-57-44-912Z-clean-checkout-unit.json", "bytes": 249190, "sha256": "247cc4561910bb92dfbd25a45478db750556fd9f6bba52797ae441f0fe55dba4" },
+  "productionBuildPassed": true,
+  "counts": { "tests": 1326, "passed": 1325, "failed": 0, "skipped": 1, "cancelled": 0 },
+  "durationMs": 148917.343,
+  "skip": { "file": "tests/media-source-inspection.test.mjs", "reason": "Protected original test.mkv intentionally not copied into tracked checkout", "notCountedAsPassed": true },
+  "dependencyIsolationLimitation": "Two supposedly portable tests could read recorded absolute native-artifact paths in the original H: workspace. The later hosted Linux failure disproves this run as complete dependency-portability evidence. Those native checks have now been separated and original-workspace guarded; do not erase the first failure or claim this proves current Linux/default CI.",
+  "dependenciesReusedFromAncestor": true,
+  "npmCiOrHostedLinuxClaimed": false,
+  "checkoutRemoved": true,
+  "runtimeRemoved": true,
+  "fullLocalLintPassedAt60a1b56": true,
+  "fullLocalTypeScriptPassedAt60a1b56": true,
+  "publicEvidenceInventory": { "passed": 405, "entries": 405, "pending": 0, "nonpassing": 0, "pdf": 0 },
+  "publishedEngineManifestDirectories": 12,
+  "actualEngineRebuildsOrNewMemoryStressClaimed": false,
+  "subsequentHostedFailure": "evidence/2026-10-20-unit-contract-hosted-linux-failure.json",
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false
+}

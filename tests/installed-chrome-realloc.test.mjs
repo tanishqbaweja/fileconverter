@@ -7,13 +7,14 @@ import { assertInstalledChromePinsEqual,validateInstalledChromePin } from "../sc
 import { makeInstalledChromeControlCaller,makeInstalledChromeControlBrowserRecipe,makeInstalledChromeMediaCallerFromJournaled } from "../scripts/lib/installed-chrome-realloc-recipe.mjs";
 const root=path.resolve(import.meta.dirname,".."),read=name=>readFile(path.join(root,name),"utf8");
 const rejection=JSON.parse(await read("evidence/2026-10-14T15-12-33-678Z-realloc-chrome-pin-rejection.json"));
-function pin() {const version=rejection.installed.version,base=path.resolve("C:/Program Files/Google/Chrome/Application");return {version,
-  launcher:{path:path.join(base,"chrome.exe"),bytes:rejection.installed.bytes,sha256:rejection.installed.launcherSha256,identity:{dev:"1",ino:"2",birthtimeNs:"3",mtimeNs:"4"}},
-  library:{path:path.join(base,version,"chrome.dll"),bytes:rejection.installed.libraryBytes,sha256:rejection.installed.librarySha256,identity:{dev:"1",ino:"5",birthtimeNs:"6",mtimeNs:"7"}}};}
+function pin() {const version=rejection.installed.version,base=path.win32.resolve("C:/Program Files/Google/Chrome/Application");return {version,
+  launcher:{path:path.win32.join(base,"chrome.exe"),bytes:rejection.installed.bytes,sha256:rejection.installed.launcherSha256,identity:{dev:"1",ino:"2",birthtimeNs:"3",mtimeNs:"4"}},
+  library:{path:path.win32.join(base,version,"chrome.dll"),bytes:rejection.installed.libraryBytes,sha256:rejection.installed.librarySha256,identity:{dev:"1",ino:"5",birthtimeNs:"6",mtimeNs:"7"}}};}
 function syntax(text) {const value=spawnSync(process.execPath,["--check","--input-type=module"],{input:text,encoding:"utf8",windowsHide:true,timeout:5000});assert.equal(value.status,0,value.stderr);}
 test("exact before/after binary version/hash/identity guard rejects stale version, DLL path, SHA, size and replacement",()=>{
   const before=pin();validateInstalledChromePin(before);assertInstalledChromePinsEqual(before,structuredClone(before));
-  for(const mutate of [value=>value.version="154.0.8037.98",value=>value.launcher.sha256="0".repeat(64),value=>value.library.bytes++,value=>value.library.identity.ino="8",value=>value.library.path=before.launcher.path]){
+  for(const mutate of [value=>value.version="154.0.8037.98",value=>value.launcher.sha256="0".repeat(64),value=>value.library.bytes++,value=>value.library.identity.ino="8",value=>value.library.path=before.launcher.path,
+    value=>value.launcher.path="/tmp/chrome.exe"]){
     const changed=structuredClone(before);mutate(changed);assert.throws(()=>assertInstalledChromePinsEqual(before,changed));}
 });
 test("fresh installed-Chrome actual fatal driver/worker/caller retain same native/128-source/privacy/birth/normal-close/finally gates",async()=>{

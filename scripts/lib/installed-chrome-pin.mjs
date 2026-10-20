@@ -6,7 +6,9 @@ import { createReadStream } from "node:fs";
 import { lstat,realpath } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
-const exec=promisify(execFile),launcher=path.resolve("C:/Program Files/Google/Chrome/Application/chrome.exe");
+// The serialized identity is explicitly a Windows Chrome pin, even when an
+// archived receipt is inspected on Linux. Actual inspection remains Windows-only.
+const exec=promisify(execFile),launcher=path.win32.resolve("C:/Program Files/Google/Chrome/Application/chrome.exe");
 async function installedVersion() {
   const {stdout}=await exec("powershell.exe",["-NoProfile","-NonInteractive","-Command","$ErrorActionPreference='Stop'; (Get-Item -LiteralPath 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe').VersionInfo.ProductVersion"],
     {windowsHide:true,timeout:5000,maxBuffer:16384});
@@ -28,7 +30,7 @@ export async function inspectInstalledChromePin() {
 }
 export function validateInstalledChromePin(pin) {
   assert.match(pin.version,/^\d+\.\d+\.\d+\.\d+$/);assert.equal(pin.launcher.path,launcher);
-  assert.equal(pin.library.path,path.join(path.dirname(launcher),pin.version,"chrome.dll"));
+  assert.equal(pin.library.path,path.win32.join(path.win32.dirname(launcher),pin.version,"chrome.dll"));
   for(const row of [pin.launcher,pin.library]){assert.ok(Number.isSafeInteger(row.bytes)&&row.bytes>0&&row.bytes<=1073741824);assert.match(row.sha256,/^[0-9a-f]{64}$/);
     assert.deepEqual(Object.keys(row.identity).sort(),["birthtimeNs","dev","ino","mtimeNs"]);
     for(const value of Object.values(row.identity))assert.match(value,/^[0-9]+$/);}

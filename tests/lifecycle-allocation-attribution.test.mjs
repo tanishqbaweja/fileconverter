@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { EventEmitter } from "node:events";
 import test from "node:test";
+import path from "node:path";
 import { summarizeLifecycleTrace, createLifecycleAttribution } from "../scripts/lib/lifecycle-allocation-attribution.mjs";
 const trace = () => ({ traceEvents: [
   { name: "process_name", pid: 1, args: { name: "Renderer" } },
@@ -20,7 +21,8 @@ test("real GUID interval selects deep V8 allocator bytes, no overlapping sum or 
 test("trace failure detaches, one pending operation rejects overlap, settle waits for closure", async () => {
   let release, detach = 0; const barrier = new Promise(resolve => { release = resolve; });
   const session = new EventEmitter(); session.send = async () => { throw new Error("injected trace error"); }; session.detach = async () => { detach++; };
-  const observer = createLifecycleAttribution({ root: "H:\\repo", reportBase: "H:\\repo\\outputs\\reports\\test",
+  const root = path.resolve(import.meta.dirname,"..");
+  const observer = createLifecycleAttribution({ root, reportBase: path.join(root,"outputs/reports/test"),
     createSession: async () => session, getProcesses: async () => { await barrier; return []; }, getRealms: async () => ({}), getState: async () => ({}) });
   const first = observer.capture("loaded"); await assert.rejects(observer.capture("overlap"));
   let settled = false; const waiting = observer.settle().then(() => { settled = true; });

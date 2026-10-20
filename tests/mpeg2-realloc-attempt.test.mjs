@@ -36,9 +36,9 @@ test("all nested builder routes select new diagnostic, retain prior gates and pa
 test("compile and execute real C diagnostic under synthetic host dispatch; ten cases including recursion with finally cleanup", async () => {
   const runtime = await createOwnedRuntimeScratch("native-realloc-control-");
   try {
-    const compiler = "H:/LLVM-MinGW/llvm-mingw-20260616-ucrt-x86_64/bin/clang.exe";
-    const executable = path.join(runtime.directory, "realloc-control.exe");
-    const built = spawnSync(compiler, ["-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-UNDEBUG", "-static",
+    const compiler = process.platform === "win32" ? "H:/LLVM-MinGW/llvm-mingw-20260616-ucrt-x86_64/bin/clang.exe" : "cc";
+    const executable = path.join(runtime.directory, process.platform === "win32" ? "realloc-control.exe" : "realloc-control");
+    const built = spawnSync(compiler, ["-std=c11", "-O2", "-Wall", "-Wextra", "-Werror", "-UNDEBUG", ...(process.platform === "win32" ? ["-static"] : []),
       path.join(root, "media/ffmpeg/mpeg2-realloc-attempt-smoke.c"), "-o", executable],
       { cwd: root, env: runtime.env, windowsHide: true, encoding: "utf8", timeout: 30000 });
     assert.equal(built.error, undefined); assert.equal(built.status, 0, built.stderr);

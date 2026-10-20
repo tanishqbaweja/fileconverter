@@ -2486,6 +2486,14 @@ fresh appropriate tests. A portable-unit pass does not imply private qualificati
 current-browser stress, network/privacy, browser conversion, engine reproduction
 or full-project acceptance. Those remain separately required where applicable.
 
+CI dispatch `portable-verify` runs npm-ci, the complete unit inventory, lint,
+TypeScript, production build/portable units and privacy/offline browser tests.
+It does not rerun the five unchanged conversion suites or rebuild engines.
+`verify-only` retains all six verification/browser jobs; `all`, pushes to main
+and pull requests retain the full configured gates. Use the focused dispatch
+only when matching retained browser/engine evidence is appropriate, and report
+its unselected jobs as unexecuted rather than passed.
+
 The committed extended TIFF fixtures are reproducible with native FFmpeg and
 the pinned Python packages in `scripts/requirements-tiff-fixtures.txt`.
 `npm run fixtures:images` regenerates the small correctness matrix;
