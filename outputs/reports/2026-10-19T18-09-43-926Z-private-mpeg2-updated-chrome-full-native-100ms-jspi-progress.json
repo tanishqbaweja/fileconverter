@@ -1,0 +1,14 @@
+{
+  "recordedAt": "2026-10-20T08:51:31.513Z",
+  "number": 3,
+  "jobState": "running",
+  "phase": "Copying staged MP4 to selected destination",
+  "inputBytes": 2958543907,
+  "outputBytes": 4657774592,
+  "elapsedMs": 14292253.615136743,
+  "estimatedRemainingMs": 142,
+  "estimateBasis": "Production progress inputBytes/elapsed; approximate, not a completion or validation claim",
+  "peakIncrementalPrivateMiB": 187.80078125,
+  "independentlyValidatedRuns": 2,
+  "publicAcceptance": false
+}

@@ -1,0 +1,260 @@
+{
+  "recordedAt": "2026-10-20T10:33:42.681Z",
+  "status": "cold-repeat-audited-disposable-artifacts-removed",
+  "audit": {
+    "path": "evidence/2026-10-20-jspi-cold-repeat-independent-analysis.json",
+    "sha256": "1d7b108ad87ba8988abefe872b5bb9d2d3885b4d23a89c22dec9ca75ca510f7d"
+  },
+  "terminal": {
+    "path": "evidence/2026-10-19T18-08-46-161Z-jspi-ssim-full-terminal.json",
+    "sha256": "33df921700983bfae918b44b8c2b360a1a51b1d7c81dfec9813bba837853b8c6"
+  },
+  "coldRepeat": {
+    "status": "two-independent-clean-three-run-full-original-sessions-verified",
+    "previousBrowserRoot": {
+      "pid": 35908,
+      "parentPid": 22916,
+      "type": "browser",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-18T23:57:08.9440610Z",
+      "privateBytes": 58224640,
+      "rssBytes": 36110336,
+      "creationFileTime": "134368414289440612"
+    },
+    "currentBrowserRoot": {
+      "pid": 26412,
+      "parentPid": 38508,
+      "type": "browser",
+      "utilitySubtype": null,
+      "sandboxType": null,
+      "createdAt": "2026-10-19T18:10:09.3475140Z",
+      "privateBytes": 52568064,
+      "rssBytes": 47951872,
+      "creationFileTime": "134369070093475142"
+    },
+    "previousSessionFinishedBeforeNewBrowserCreated": true,
+    "freshProfileAndOwnedHarnessDirectories": true,
+    "same868SourcesNativeManifestBrowserAndProtectedOriginal": true,
+    "priorSession": [
+      {
+        "number": 1,
+        "outputBytes": 6414309978,
+        "outputSha256": "2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e",
+        "frames": 296160,
+        "ssim": 0.989565,
+        "maximumTimestampErrorSeconds": 0.00031300000000555883,
+        "elapsedMs": 15561872.484687507,
+        "incrementalPrivateMiB": 223.6484375,
+        "conversionSamples": 142851,
+        "recoveryPrivateBytes": 360296448,
+        "recoveryAboveLoadedMiB": 15.90625
+      },
+      {
+        "number": 2,
+        "outputBytes": 6414309978,
+        "outputSha256": "2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e",
+        "frames": 296160,
+        "ssim": 0.989565,
+        "maximumTimestampErrorSeconds": 0.00031300000000555883,
+        "elapsedMs": 15269432.244873047,
+        "incrementalPrivateMiB": 213.41015625,
+        "conversionSamples": 140181,
+        "recoveryPrivateBytes": 372342784,
+        "recoveryAboveLoadedMiB": 27.39453125
+      },
+      {
+        "number": 3,
+        "outputBytes": 6414309978,
+        "outputSha256": "2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e",
+        "frames": 296160,
+        "ssim": 0.989565,
+        "maximumTimestampErrorSeconds": 0.00031300000000555883,
+        "elapsedMs": 14278026.45488286,
+        "incrementalPrivateMiB": 193.375,
+        "conversionSamples": 131080,
+        "recoveryPrivateBytes": 375709696,
+        "recoveryAboveLoadedMiB": 30.60546875
+      }
+    ],
+    "coldSession": [
+      {
+        "number": 1,
+        "outputBytes": 6414309978,
+        "outputSha256": "2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e",
+        "frames": 296160,
+        "ssim": 0.989565,
+        "maximumTimestampErrorSeconds": 0.00031300000000555883,
+        "elapsedMs": 15820320.09503907,
+        "incrementalPrivateMiB": 226.83203125,
+        "conversionSamples": 143940,
+        "recoveryPrivateBytes": 361127936,
+        "recoveryAboveLoadedMiB": 19.16015625
+      },
+      {
+        "number": 2,
+        "outputBytes": 6414309978,
+        "outputSha256": "2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e",
+        "frames": 296160,
+        "ssim": 0.989565,
+        "maximumTimestampErrorSeconds": 0.00031300000000555883,
+        "elapsedMs": 16463344.369814456,
+        "incrementalPrivateMiB": 209.0625,
+        "conversionSamples": 149524,
+        "recoveryPrivateBytes": 367738880,
+        "recoveryAboveLoadedMiB": 25.46484375
+      },
+      {
+        "number": 3,
+        "outputBytes": 6414309978,
+        "outputSha256": "2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e",
+        "frames": 296160,
+        "ssim": 0.989565,
+        "maximumTimestampErrorSeconds": 0.00031300000000555883,
+        "elapsedMs": 14317915.375136733,
+        "incrementalPrivateMiB": 187.80078125,
+        "conversionSamples": 130234,
+        "recoveryPrivateBytes": 373407744,
+        "recoveryAboveLoadedMiB": 30.87109375
+      }
+    ],
+    "completeFullOutputs": 6,
+    "outputBytesEach": 6414309978,
+    "outputSha256": "2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e",
+    "currentWorstIncrementalPrivateMiB": 226.83203125,
+    "priorWorstIncrementalPrivateMiB": 223.6484375,
+    "sameSessionThreeRunsVerifiedInEachSession": true,
+    "independentColdSessionRepeatVerified": true,
+    "nativeAvailability": {
+      "intervalMs": 100,
+      "acquisitionCount": 504917,
+      "validSamples": 504913,
+      "unavailableSamples": 4,
+      "exceptions": [
+        {
+          "sequence": 251,
+          "timestamp": "2026-10-19T18:10:40.4534579Z",
+          "phase": "blank-startup-settle",
+          "privateBytes": null,
+          "rssBytes": null,
+          "processRows": null,
+          "sampleError": "OpenProcess 25104",
+          "isolatedFailureInCompletePhaseCounts": true
+        },
+        {
+          "sequence": 165073,
+          "timestamp": "2026-10-19T23:12:26.9999951Z",
+          "phase": "validation-1",
+          "privateBytes": null,
+          "rssBytes": null,
+          "processRows": null,
+          "sampleError": "OpenProcess 34108",
+          "isolatedFailureInCompletePhaseCounts": true
+        },
+        {
+          "sequence": 183750,
+          "timestamp": "2026-10-19T23:47:08.8987739Z",
+          "phase": "conversion-2",
+          "privateBytes": null,
+          "rssBytes": null,
+          "processRows": null,
+          "sampleError": "Toolhelp snapshot",
+          "isolatedFailureInCompletePhaseCounts": true
+        },
+        {
+          "sequence": 493372,
+          "timestamp": "2026-10-20T09:14:41.3097201Z",
+          "phase": "validation-3",
+          "privateBytes": null,
+          "rssBytes": null,
+          "processRows": null,
+          "sampleError": "OpenProcess 8852",
+          "isolatedFailureInCompletePhaseCounts": true
+        }
+      ],
+      "unavailableCimRetained": [
+        {
+          "timestamp": "2026-10-20T08:31:12.226Z",
+          "phase": "conversion-3",
+          "privateBytes": null,
+          "rssBytes": null,
+          "sampleErrorSha256": "466e0d94152a07bc9df57f78e7214d90d02e4623d46755f52ed90acd4e34f757",
+          "nativePhaseValidSamples": 130234,
+          "nativePhaseUnavailableSamples": 0
+        },
+        {
+          "timestamp": "2026-10-20T08:45:35.225Z",
+          "phase": "conversion-3",
+          "privateBytes": null,
+          "rssBytes": null,
+          "sampleErrorSha256": "466e0d94152a07bc9df57f78e7214d90d02e4623d46755f52ed90acd4e34f757",
+          "nativePhaseValidSamples": 130234,
+          "nativePhaseUnavailableSamples": 0
+        }
+      ],
+      "perRun": [
+        {
+          "number": 1,
+          "validSamples": 143940,
+          "unavailableSamples": 0
+        },
+        {
+          "number": 2,
+          "validSamples": 149524,
+          "unavailableSamples": 1
+        },
+        {
+          "number": 3,
+          "validSamples": 130234,
+          "unavailableSamples": 0
+        }
+      ],
+      "missingValuesPreservedAsNullAndExcludedFromPeaks": true,
+      "noSyntheticSamplesOrZeroFill": true,
+      "original250MiBLimitAndSamplingCadenceChanged": false,
+      "limitation": "The next acquisition resumes after each isolated failure by the complete phase/sequence counts; exact neighbouring100ms timestamps are not retained after graph-ring eviction. Missing is unavailable, never proof of zero memory."
+    },
+    "cleanupRecoveryGuardPassed": true,
+    "zeroRetainedGrowthProven": false,
+    "generalSpeedGainProven": false,
+    "scalingAcceptance": false,
+    "publicAcceptance": false,
+    "fullProjectAcceptance": false
+  },
+  "allNineAuditSourcePreimagesVerified": true,
+  "ownedBirthsStillAbsent": 41,
+  "scratchPathsStillAbsent": [
+    "H:\\Github Repositories\\fileconverter\\work\\recorded-timeline-full-wrapper-f9UvW2",
+    "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-media-7mr1rV",
+    "H:\\Github Repositories\\fileconverter\\work\\jspi-ssim-full-caller-DCRgtF",
+    "H:\\Github Repositories\\fileconverter\\work\\allocation-attempt-full-runtime-yb6KKH",
+    "H:\\Github Repositories\\fileconverter\\work\\packet-cache-supervised-BE4PSb"
+  ],
+  "removed": [
+    {
+      "path": "outputs/reports/2026-10-19T18-09-43-926Z-private-mpeg2-updated-chrome-full-native-100ms-trace.zip",
+      "bytes": 2156418,
+      "sha256": "e3eff77e6398785436ce2a8f6555a75934d55f1fa74d3d6ddaeea19530e9a040"
+    },
+    {
+      "path": "outputs/reports/2026-10-19T18-09-43-926Z-private-mpeg2-updated-chrome-full-native-100ms-native-checkpoint.json",
+      "bytes": 43061,
+      "sha256": "07ed5a3980955360e45715b0b1caeba8efe4bd2adb27278ad32e58f35f609c3b"
+    }
+  ],
+  "removedBytes": 2199479,
+  "nativeCheckpoint": {
+    "path": "outputs/reports/2026-10-19T18-09-43-926Z-private-mpeg2-updated-chrome-full-native-100ms-native-checkpoint.json.gz",
+    "bytes": 6233,
+    "sha256": "cd831b1350ec5b6a730d60bc3143f6a4a63cd35b4ab34edd73b1cceadb67d0eb",
+    "restoredBytes": 43061,
+    "restoredSha256": "07ed5a3980955360e45715b0b1caeba8efe4bd2adb27278ad32e58f35f609c3b"
+  },
+  "recovery": "Successful trace permanently removed; compact reports, raw SSIM, frame timelines and lossless native checkpoint retained. Converted outputs already removed by the harness.",
+  "original": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false
+}

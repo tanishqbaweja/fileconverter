@@ -1,6 +1,31 @@
 # Tested conversion ledger
 
-## 2026-10-20 - Cold full run2 PASS209.0625MiB;2of3 only, run3 LIVE
+## 2026-10-20 - Independent cold three-full repeat PASS; no unchanged rerun
+
+Two distinct clean Chromium/profile sessions, three real protected-original
+transcodes each, now independently verified. Every output6414309978B/SHA
+2b1277805033e824425ba0542de83d486c967d2755952ac30b57ce5c5d08024e,
+296160frames/.989565SSIM/.00031300000000555883s maximum timestamp error.
+Cold session whole-tree incremental peaks226.83203125/209.0625/187.80078125MiB;
+same-instance lower stable blank, unchanged250MiB limit and all processes.
+Run times15820320.095/16463344.370/14317915.375ms, no paired speed claim.
+Loaded-idle recovery+19.16015625/+25.46484375/+30.87109375MiB, not zero growth.
+Complete native504917acquisitions/504913valid/4null failures (conversion [0,1,0]);
+two missing CIM queries in run3 have continuous independent native coverage.
+No missing sample became zero. Nine focused tests/zero skips, six-file lint PASS.
+Audit assumptions corrected for actual isolated unavailable samples and revisited
+blank phase; historical/runtime guards and all thresholds unchanged.
+
+Audit `evidence/2026-10-20-jspi-cold-repeat-independent-analysis.json` checks868
+source pins, exact four runtime derivations, assets/native manifest, checkpoints,
+raw SSIM and complete frame timelines. Final owned cleanup proof
+`evidence/2026-10-20-jspi-cold-repeat-cycle.json`:41 births/5 scratch paths absent,
+2199479B disposable successful trace/raw checkpoint permanently removed,6233B
+lossless checkpoint retained; converted outputs deleted and original unchanged.
+Session terminal09:36:38Z. Cold repeat gate CLOSED; scaling/real UI integration/
+cleanup-retention/public promotion/full project remain OPEN. Next B01, not LTO.
+
+## Historical checkpoint: Cold full run2 PASS209.0625MiB;2of3 only, run3 then LIVE
 
 Actual6414309978B/SHA2b127780...08024e/296160frames/native full decode/audio/
 artwork/metadata/SSIM.989565/max timestamp error.00031300000000555883s passed.

@@ -16,7 +16,7 @@ route. Published and private codecs must stay clearly separate.
 | B01 | Restore reproducible clean-checkout verification at the release commit. | Inventory default tests requiring local/private assets or Windows-only evidence. Supply explicitly verified prerequisites or separate private qualification suites transparently; preserve every public unit, browser, privacy, validator and published-engine reproduction gate. Run the documented unit command and hosted verification from a clean checkout. A private suite not executed must remain unverified, never labelled passed. |
 | B02 | Account for fresh H.264, AV1, MPEG-2 and legally conditional HEVC video output. | For each codec: implement a real published bounded route and pass all original promotion gates, or retain a defensible exact technical/legal/quality/memory unsupported decision after genuine investigation. Source decoding, packet copy, image AVIF encoding, a native build or private short fixture is not fresh video-output acceptance. |
 | B03 | Account for source AV1/VP8/VP9 genuine decode/re-encode coverage. | The published media manifest currently contains none of those software decoders. Implement suitable bounded routes/fallbacks, or investigate and document exact unsupported profiles. Existing WebM/IVF stream-copy paths remain valid but do not close decode coverage. |
-| B04 | Finish qualification and real integration of the private MPEG-2 route. | Finish the live independent cold three-run session and post-source/ownership audit; preserve the prior full-session evidence. Complete new-route scaling toward 10 GB with valid media and flat whole-tree memory. Integrate actual planning/inspection/settings/preservation exclusions/progress/worker cleanup and public evidence consistently. Correct the private inherited `Lossless remux` label. Reuse byte-identical native evidence; do not claim an injected private adapter proves the final UI/route. |
+| B04 | Finish qualification and real integration of the private MPEG-2 route. | Independent cold repeat and post-source/ownership audit CLOSED: two fresh three-full sessions, six identical validated outputs, unchanged250MiB guard; see `evidence/2026-10-20-jspi-cold-repeat-independent-analysis.json`. Do not rerun that unchanged gate. Still complete new-route scaling toward 10 GB with valid media and flat whole-tree memory; investigate explicit retained cleanup drift. Integrate actual planning/inspection/settings/preservation exclusions/progress/worker cleanup and public evidence consistently. Correct private inherited `Lossless remux` label. Reuse matching native evidence; injected private adapter does not prove final UI/route. |
 | B05 | Finish representable audio metadata/artwork coverage (M-08). | Independently compare broader Ogg/Opus comments, AIFF destination aliases, other representable fields and practical destination artwork. Preserve compatible data or issue accurate bounded, destination-specific exclusions. Seven common tags and MP3/FLAC cover art are an already-verified subset, not all metadata. |
 | B06 | Close current-release whole-tree memory and telemetry coverage (P-06/A-09). | Pin the release's installed stable browser. For public profiles and new topologies, reconcile native/CIM peaks and all attributable Chromium processes against the same-instance lower stable blank. Complete remaining harness telemetry and repository-owned scratch adoption; verify unavailable samples, backpressure, cleanup and measurement perturbation. Historical 405-route evidence is reusable only for what its source/browser/input scope actually proves. Never omit a process or increase the baseline. |
 | B07 | Close release browser/capability and interaction coverage. | Verify the final app on installed/practically testable Chrome, Edge, Brave and Opera; explicitly record unavailable variants/features. Recheck changed controls, direct destination, cancel/fail/reload/batch/storage flows headlessly with actual outputs and logs. Preserve historical headed evidence but do not relabel headless evidence as headed; the user's current headless-only instruction applies. |
@@ -49,17 +49,18 @@ completion of the live test alone cannot close this project.
   Seven paths under `app/`, `lib/` and `workers/` differ from the inspected hosted
   CI commit; no `public/` paths differ. Reconcile source and engine evidence
   explicitly rather than treating an old “all 11” description as current proof.
-- The independent cold run is an existing owned process, not a new experiment.
-  Its exact supervisor and checkpoint are linked from
-  `evidence/2026-10-19-jspi-cold-session-launch.json` and
-  `evidence/2026-10-20-jspi-cold-run1-checkpoint.json`.
+- The independent cold run is terminal and independently audited. Exact source,
+  native/content/memory/repeat results are sealed in
+  `evidence/2026-10-20-jspi-cold-repeat-independent-analysis.json`; final cleanup
+  in `evidence/2026-10-20-jspi-cold-repeat-cycle.json`. No conversion is live.
 
 ## Work discipline and stop conditions
 
-1. While the long test is live, do not edit any of its 868 frozen source files.
-   `package.json` is frozen; `.github/workflows/ci.yml` is not, but changing only
-   CI to hide a broken default command would not close B01.
-2. Finish or diagnose that exact owned run; never duplicate it after a timeout.
+1. The long test's868 executed source pins are archived and independently sealed.
+   Preserve those historical bytes/evidence; new release work may now change
+   current sources, but must identify which acceptance evidence it invalidates.
+   Changing only CI to hide a broken default command would not close B01.
+2. Never duplicate a specific owned run after an observation timeout.
    Use estimated-completion interruptible sleeps, not repeated model polling.
 3. Do not start another codec optimization without a concrete bottleneck,
    defined identical-input/settings comparison, and original acceptance gates.
