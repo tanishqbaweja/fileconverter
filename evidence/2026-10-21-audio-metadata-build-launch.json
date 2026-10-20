@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-21",
+  "scope": "Actual in-progress private metadata-only Wasm build, not native/browser/promotion success",
+  "statusAtInspection": "in_progress",
+  "implementationCommit": "71004fe7a2e7794ea17558db59c81265c737fbce",
+  "buildCommit": "e29cc08e11c448337f284328040e8177a0e62988",
+  "buildBranch": "codex/audio-text-metadata-20261021",
+  "workflow": ".github/workflows/reproduce-ffmpeg-nondocker.yml",
+  "input": {
+    "core": "within-remux"
+  },
+  "runId": 39517752087,
+  "jobId": 118953896038,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39517752087",
+  "createdAt": "2026-10-20T23:52:01Z",
+  "stepsAtInspection": [
+    {
+      "completedAt": "2026-10-20T23:52:06Z",
+      "conclusion": "success",
+      "name": "Set up job",
+      "number": 1,
+      "startedAt": "2026-10-20T23:52:06Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-20T23:52:23Z",
+      "conclusion": "success",
+      "name": "Run actions/checkout@v4",
+      "number": 2,
+      "startedAt": "2026-10-20T23:52:06Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-20T23:52:37Z",
+      "conclusion": "success",
+      "name": "Install native build prerequisites",
+      "number": 3,
+      "startedAt": "2026-10-20T23:52:23Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "2026-10-20T23:53:03Z",
+      "conclusion": "success",
+      "name": "Install pinned Emscripten SDK without Docker",
+      "number": 4,
+      "startedAt": "2026-10-20T23:52:37Z",
+      "status": "completed"
+    },
+    {
+      "completedAt": "0001-01-01T00:00:00Z",
+      "conclusion": "",
+      "name": "Rebuild and compare requested FFmpeg module(s)",
+      "number": 5,
+      "startedAt": "2026-10-20T23:53:03Z",
+      "status": "in_progress"
+    }
+  ],
+  "sdk": {
+    "emscripten": "6.0.4",
+    "emsdkCommit": "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
+    "setupPassed": true,
+    "dockerUsed": false
+  },
+  "workflowDerivation": {
+    "changedOnlyOnBuildBranch": true,
+    "edits": 2,
+    "mainWorkflowSha256": "cda0b434adc7dd36109b4a2cc63fe726a507889cf6d1c0f5862d5d78dbf5c965",
+    "buildWorkflowSha256": "46fc147541c93a660dae457378e3a08cc7b6c28ddeed25b281d81e1e512bb059",
+    "mainWorkflowUnchanged": true,
+    "existingStepNameIsNotPublishedReproductionProof": true,
+    "artifactName": "private-audio-metadata-39517752087",
+    "artifactRetentionDays": 1
+  },
+  "localCleanup": {
+    "firstCheckoutFailedOnWindowsLongPaths": true,
+    "failedCheckoutAutomaticallyRemovedByGitAndAbsenceConfirmed": true,
+    "retryUsedPerCommandCoreLongpathsOnly": true,
+    "systemSettingsChanged": false,
+    "temporaryCheckout": "work/audio-metadata-build-baeb67f9b49f41348a3366901d989795",
+    "temporaryCheckoutRemoved": true,
+    "cleanCommitAndDirectoryBirthCheckedBeforeRemoval": true,
+    "protectedOriginalNeverCopiedIntoWorktree": true,
+    "sourceRecoverableAtBuildCommit": true,
+    "mainWorktreeCleanAtLaunch": true
+  },
+  "publicEngineChanged": false,
+  "browserFixVerified": false,
+  "compilationSucceeded": false,
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false,
+  "nextAction": "Resume this exact run/job; observation timeout is not failure. On terminal success inspect source/build manifest/artifact hashes and declared Wasm limits, then test actual candidate against the25-field production-browser cases with identical fixture hashes. Do not restart the build because of a wait timeout."
+}

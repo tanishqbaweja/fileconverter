@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Actual private bounded audio metadata Wasm build started
+
+Source71004fe pushed to media-options. Isolated build-branche29cc08 at
+codex/audio-text-metadata-20261021 changes only19workflow lines/two reversible
+dispatch/upload edits. Actual registered no-Docker run39517752087/job118953896038
+is IN PROGRESS at inspection; pinned Emscripten6.0.4 setup passed, compilation
+active. This is not a successful compile, public reproduction, browser fix or
+promotion claim. Exact source/run/workflow hashes and resume instruction:
+`evidence/2026-10-21-audio-metadata-build-launch.json`.
+Initial local checkout failed on Windows filename length and Git automatically
+removed it; retry used per-command core.longpaths only, no system setting change.
+Clean/birth-checked temporary checkout removed after push; source recoverable
+ate29cc08. Protected original was never copied into that checkout. Main workflow,
+public C/artifacts and normal app remain unchanged. Resume the exact live run,
+never restart solely because an observation deadline expires. Estimate15-30min
+for SDK/dependency/compiler work; artifact retention1day, not browser acceptance.
+
 ## 2026-10-21 - Broader audio tags: real loss confirmed; bounded native candidate implemented
 
 Six actual production-UI/headless installed Chrome155.0.8059.85 checks with25

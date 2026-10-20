@@ -1,5 +1,18 @@
 # Remaining work audit
 
+## 2026-10-21 - Private audio metadata compilation genuinely live
+
+Implementation71004fe pushed. Private build-branche29cc08/corewithin-remux now
+running actual no-Docker workflow39517752087/job118953896038; SDK6.0.4 passed,
+compile step active at inspection. No compile/browser-fix/promotion acceptance.
+Resume that exact run and inspect terminal result/artifact/source/heap hashes,
+then run the changed core in the25-field real production-browser cases with the
+baseline's identical bitexact source hashes. Do not repeat the unchanged stock
+failures or restart the build after an observation timeout. Main public C,
+engines, app and registered-workflow bytes unchanged. Temporary local checkout
+removed with clean/head/birth checks; source safely pushed, original never copied.
+Exact live-handle receipt `evidence/2026-10-21-audio-metadata-build-launch.json`.
+
 ## 2026-10-21 - B05 broader text-field loss isolated; real native merge implementation ready
 
 Actual headless current Chrome25-field test: four FLAC/Ogg/Opus destination paths
