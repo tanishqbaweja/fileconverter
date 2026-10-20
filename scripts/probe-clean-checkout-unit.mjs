@@ -1,4 +1,4 @@
-// Run the actual committed default unit glob without untracked work or original media.
+// Run the actual committed default unit selection without untracked work or original media.
 // Dependencies are reused from the ancestor checkout; this is not npm-ci evidence.
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
@@ -32,16 +32,20 @@ try {
   assert.equal(added.exit.code, 0, Buffer.from(added.stderr.tailBase64,"base64").toString()); registered = true;
   const commit = await run("git", ["rev-parse", "HEAD"], checkout); assert.equal(commit.exit.code, 0);
   const packageBytes = await readFile(path.join(checkout, "package.json")), packageJson = JSON.parse(packageBytes);
-  assert.equal(packageJson.scripts["test:unit"], "node --test tests/*.test.mjs");
+  const unitCommand = packageJson.scripts["test:unit"];
+  assert.ok(["node --test tests/*.test.mjs", "node scripts/run-unit-suite.mjs portable"].includes(unitCommand));
   console.log(JSON.stringify({ stage: "clean-committed-checkout-created", checkout, commit: Buffer.from(commit.stdout.tailBase64,"base64").toString().trim() }));
   const build = await run(process.execPath, [path.join(root,"node_modules/vinext/dist/cli.js"), "build"], checkout);
   assert.equal(build.exit.code, 0, Buffer.from(build.stderr.tailBase64,"base64").toString());
-  console.log(JSON.stringify({ stage: "production-build-passed-running-default-unit-glob", concurrency: 2 }));
-  const tested = await run(process.execPath, ["--test", "--test-concurrency=2", "--test-reporter=" + pathToFileURL(path.join(root,"scripts/lib/unit-inventory-reporter.mjs")).href, "tests/*.test.mjs"], checkout);
+  console.log(JSON.stringify({ stage: "production-build-passed-running-committed-default-unit-command", unitCommand, concurrency: 2 }));
+  const reporter = "--test-reporter=" + pathToFileURL(path.join(root,"scripts/lib/unit-inventory-reporter.mjs")).href;
+  const tested = await run(process.execPath, unitCommand === "node --test tests/*.test.mjs" ?
+    ["--test", "--test-concurrency=2", reporter, "tests/*.test.mjs"] :
+    ["scripts/run-unit-suite.mjs", "portable", reporter.replace("--test-reporter=", "--reporter=")], checkout);
   const unit = JSON.parse(await readFile(output));
   assert.equal(unit.allEventsConsumed, true);
   report = { recordedAt: new Date().toISOString(), commit: Buffer.from(commit.stdout.tailBase64,"base64").toString().trim(),
-    committedPackageSha256: sha(packageBytes), defaultUnitCommandUnchanged: true,
+    committedPackageSha256: sha(packageBytes), defaultUnitCommandUnchanged: true, unitCommand,
     actualTrackedCheckoutWithoutUntrackedWorkOrTestMkv: true, dependenciesReusedFromAncestor: true,
     npmCiOrHostedLinuxResult: false, productionBuildPassed: true, unitExit: tested.exit,
     inventory: { path: path.relative(root,output).replaceAll("\\","/"), sha256: sha(await readFile(output)) },

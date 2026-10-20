@@ -173,6 +173,9 @@ jobs:
       - name: Audit public route evidence
         run: npm run audit:public-evidence:manifest
 
+      - name: Audit complete unit inventory (private qualification not executed here)
+        run: npm run test:unit:inventory
+
       - run: npm run lint
       - run: npx tsc --noEmit --incremental false
       - run: npm test

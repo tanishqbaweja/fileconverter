@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+## 2026-10-20 - Portable/private contract implemented; final clean check pending
+
+All602root test files remain runnable:446portable/156explicit prerequisite-bound
+qualification files. `npm test` builds then portable; `test:qualification` runs
+private checks, `test:unit:all` full union, `test:unit:inventory` lists membership
+and reasons. All235previous hosted root unit files protected portable; new tests
+default portable. No blanket missing-input skip or source/quality/memory change.
+First portable current-tree run1327cases/1324pass/3fail/0skip/130163.379ms and exit1
+correctly exposed mixed historical/current/native assertions. Current-source
+checks moved intact into explicit qualification, native LTO composition moved
+without its old availability skip; portable archived preimages/negative-quality/
+recovery proofs retained, no historical hash rewritten. Focused16PASS/0skip/
+1021.0906ms. Hidden Node/native children, callback/promise/failure behavior,
+complete disjoint selection and preservation of prior gates are tested. README
+and CI disclose private qualification not executed by hosted portable units.
+Committed clean-checkout default/hosted verification still pending, B01 OPEN.
+
 ## 2026-10-20 - Real clean-checkout default-unit failure inventoried; four tests fixed
 
 Tracked checkout of5c4946c, no private work/test.mkv: production build PASS;

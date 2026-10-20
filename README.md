@@ -2455,6 +2455,37 @@ npm test
 npm run test:browser
 ```
 
+`npm test` builds the production application and runs the portable unit suite.
+Every root `tests/*.test.mjs` file is portable by default. The explicit exceptions
+in `tests/qualification-suites.json` are historical/private qualification checks
+with original-workspace, byte-exact source, native-build, protected-original or
+installed-browser prerequisites. They are not silently skipped or reported as
+passed by the portable command. All 235 root unit files from the last inspected
+successful hosted CI remain portable, including the updated worker lifecycle
+audit. New production-importing tests cannot be moved into qualification by the
+contract validator.
+
+```powershell
+npm run test:unit             # Portable units; build first for rendered-HTML tests
+npm run test:qualification    # Explicit prerequisite-bound checks; missing inputs fail
+npm run test:unit:all         # Complete union of both suites, not a reduced glob
+npm run test:unit:inventory   # Every selected file and qualification prerequisite group
+```
+
+The runner uses two isolated test processes at a time, enforces hidden Windows
+subprocesses (including Node's test children), and owns/cleans its repository-local
+temporary runtime. Existing explicit optional-fixture skips remain reported as
+skips, never passed coverage. Historical qualifiers must retain their actual
+source/receipt hashes: Git's LF serialization is not interchangeable with the
+CRLF bytes used in some recorded private experiments. Do not rewrite a historical
+hash, downgrade the installed browser, copy `test.mkv` into CI, rebuild a rejected
+experiment, or repeat an accepted multi-hour conversion merely to make an old
+qualification test green. Reuse its verified archived preimages/artifacts only
+within that evidence's real scope; qualify changed/current release behavior with
+fresh appropriate tests. A portable-unit pass does not imply private qualification,
+current-browser stress, network/privacy, browser conversion, engine reproduction
+or full-project acceptance. Those remain separately required where applicable.
+
 The committed extended TIFF fixtures are reproducible with native FFmpeg and
 the pinned Python packages in `scripts/requirements-tiff-fixtures.txt`.
 `npm run fixtures:images` regenerates the small correctness matrix;

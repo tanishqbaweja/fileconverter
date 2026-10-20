@@ -24,10 +24,10 @@ test("actual browser quality failure has numeric pre-assertion diagnostics and d
   assert.ok(executed.generated.spec.includes('expect(ordinalSsim).toBeGreaterThanOrEqual(0.98);'));
   assert.equal(executed.generated.stage.includes('mapped[9] = 4000000'), false, "Actual baseline used unchanged default controls");
 });
-test("retained source, current source and cleanup evidence agree", async () => {
+test("retained source preimages and recorded cleanup evidence agree without claiming current-source identity", async () => {
   assert.deepEqual(proof.sourcePins, proof.postSourcePins); assert.deepEqual(executed.sourcePins, proof.sourcePins);
   for (const [file, expected] of Object.entries(proof.sourcePins)) {
-    assert.equal(sha(await read(file)), expected, file); assert.equal(sha(executed.sources[file]), expected, file);
+    assert.equal(sha(executed.sources[file]), expected, file);
   }
   assert.deepEqual(proof.protectedPre, proof.protectedPost);
   assert.equal(proof.cleanup.ownedWrapperAbsent, true); assert.deepEqual(proof.cleanup.newFixtureDirsRemaining, []);

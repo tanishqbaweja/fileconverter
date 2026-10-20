@@ -1,5 +1,35 @@
 # Remaining work audit
 
+## 2026-10-20 - Explicit portable/private test contract implemented; clean verification next
+
+`npm test` still builds production, then invokes the new portable unit runner.
+The complete602-file root inventory is partitioned446portable/156explicit
+qualification files. All235 root unit files from last hosted CI remain portable;
+new tests portable by default, stale/duplicate exceptions, prior-public removal
+and production-importing exceptions rejected. `test:qualification` runs all
+prerequisite-bound assertions; `test:unit:all` preserves the complete union.
+No skip filters, missing-input-as-success or production capability change.
+CI now prints the complete inventory, explicitly not claiming private execution.
+README documents original-byte/absolute-root/native/protected-original/browser
+prerequisites, preserving historical receipts rather than rewriting hashes.
+
+First current-tree portable run1327cases/1324pass/3fail/0skip in130163.379ms
+correctly exited1. It exposed two mixed historical/current-source checks after
+the legitimate CLI-test edits and one native composition assertion previously
+conditional on local work presence. Split those live-workspace/native checks
+into explicit qualification files, preserving original assertions and removing
+the artifact-dependent silent skip. Archived preimages/content/quality/cleanup
+checks remain portable with truthful historical-only names; no original hash
+changed. Existing unavailable-original fixture skip stays explicit. Six focused
+files16PASS/0skip/1021.0906ms cover fixes and runner contract. Hidden subprocess
+preload includes Node test children and nested helpers; native return/promise/
+callback/failure semantics tested. Test scratch owned in finally. Production
+engine/browser-runtime bytes unchanged; historical browser evidence is not
+relabeled current-release acceptance by test/package changes.
+
+Next commit this contract, run its actual clean checkout default, inspect every
+failure, then run hosted verification. B01 and full project not yet accepted.
+
 ## 2026-10-20 - Actual clean-checkout unit inventory; worker coverage regression fixed
 
 B01 now has a real isolated tracked checkout result, not just a missing-work

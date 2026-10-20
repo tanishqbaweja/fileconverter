@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { access,readFile } from "node:fs/promises";
+import { readFile } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
 import path from "node:path";
 import test from "node:test";
@@ -24,18 +24,4 @@ test("actual decoder is larger; typed function IDs and relocated guard slots are
   assert.equal(proof.layout._gm_.address,408936);assert.equal(proof.layout.within_refstruct_abort_words.address,1913344);
   assert.equal(proof.oldIndicesOrAddressesMustNotBeReused,true);assert.equal(proof.actualRuntimeFatalRequalified,false);
   assert.equal(proof.browserCompositionMustKeepEncoderSha256,"a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee");
-});
-let available=true;try{await access(path.join(root,"work/mpeg2-lto-39279724223/within-mpeg2-split.wasm"));}catch{available=false;}
-test("local private composition verifies actual new decoder and preserves qualified plane encoder; no browser acceptance",{skip:!available},async()=>{
-  process.env.WITHIN_DURATION_DRAIN_CONTROL_RECEIPT="evidence/2026-10-15T10-37-24-961Z-duration-drain-browser-control-executed-sources.json";
-  const {loadLtoBrowserNative,makeLtoBrowserComposition,ltoBrowserNativeDerivation}=await import("../scripts/lib/lto-browser-native.mjs");
-  const native=await loadLtoBrowserNative(root);assert.equal(native.envelope.sourceCount,138);
-  assert.equal(native.proof.layout._gm_.address,408936);assert.equal(native.functions.length,11);
-  const composition=await makeLtoBrowserComposition(root);
-  assert.equal(composition.files["split-encoder.wasm"].sha256,proof.browserCompositionMustKeepEncoderSha256);
-  assert.equal(composition.files["within-mpeg2-split.wasm"].sha256,proof.decoder.sha256);
-  assert.equal(composition.manifest.libraryLto.onlyDecoderLibrariesChanged,true);
-  let restored=ltoBrowserNativeDerivation.generated;
-  for(const [before,after]of ltoBrowserNativeDerivation.edits.toReversed())restored=restored.replace(after,before);
-  assert.equal(restored,(await read("scripts/lib/jspi-browser-native.mjs")).toString());
 });

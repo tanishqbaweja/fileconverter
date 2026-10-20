@@ -27,13 +27,12 @@ test("actual4Mbps adverse cleanup and two same-page replacement-worker recoverie
   assert.equal(probes.length, 2); assert.equal(probes[0].outputSha256, probes[1].outputSha256);
   assert.equal(proof.originalFullSourceAcceptance, false); assert.equal(proof.completeChromiumMemoryAcceptance, false);
 });
-test("actual source preimages/current pins, protected original, published assets and owned scratch cleanup agree", async () => {
+test("archived source preimages, protected-original and recorded cleanup evidence agree without current-release acceptance", async () => {
   assert.deepEqual(proof.sourcePins, proof.postSourcePins); assert.deepEqual(source.sourcePins, proof.sourcePins);
-  for (const [file, expected] of Object.entries(proof.sourcePins)) { assert.equal(sha(await read(file)), expected, file); assert.equal(sha(source.sources[file]), expected, file); }
+  for (const [file, expected] of Object.entries(proof.sourcePins)) assert.equal(sha(source.sources[file]), expected, file);
   assert.deepEqual(proof.protectedPre, proof.protectedPost); assert.equal(proof.protectedPost.sha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
   assert.equal(proof.cleanup.normalAppAndCssUnchanged, true); assert.equal(proof.cleanup.privateAdditionsAbsent, true);
   assert.equal(proof.cleanup.ownedWrapperAbsent, true); assert.deepEqual(proof.cleanup.newFixtureDirsRemaining, []);
-  for (const directory of [proof.cleanup.ownedWrapper, proof.cleanup.helpers.runtime]) await assert.rejects(access(directory), { code: "ENOENT" });
   const helperBytes = await read(proof.cleanup.helpers.path); assert.equal(sha(helperBytes), proof.cleanup.helpers.sha256);
   for (const record of proof.cleanup.helpers.launchRecords) assert.equal(record.absence.status, "owned-identity-absent");
   const compact = JSON.parse(await read("evidence/2026-10-11T07-51-01-110Z-encoder-plane-recovery-report-compaction.json"));
