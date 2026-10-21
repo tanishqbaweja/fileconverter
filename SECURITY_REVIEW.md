@@ -3,6 +3,15 @@
 Release blocker B08 remains open. This review does not certify native Wasm
 dependencies, current-browser memory, or all deployed dependency reachability.
 
+Latest corrected hosted run39522350948 at ec9fb51 SUCCESS: fresh npm-ci, full
+lint/TS/build,1367unit passes/0fail/1existing original-fixture skip and all19
+privacy/offline/actual production-host checks38.2s. Short owned Linux TMPDIR
+works; all current privacy assertions execute. Windows local browser coverage
+remains unverified after the interrupted attempt. Exact source pins, earlier
+failures, cleanup and boundaries:
+`evidence/2026-10-21-framework-security-hosted-cycle.json`. The five separate
+conversion suites/native rebuilds were not selected or implied passed.
+
 ## Verified changes
 
 The pinned npm graph originally reported32 vulnerable package groups:

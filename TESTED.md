@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Corrected framework/security hosted cycle SUCCESS
+
+Run39522350948/job118968926451 at ec9fb51: clean npm-ci, public consistency/unit
+inventory, lint/TypeScript/build, literal npm-test1367PASS/0fail/1existing hosted
+original-fixture skip (1368cases,43026.054376ms), then all19privacy/offline/real
+production-host checks PASS38.2s. Corrected short owned temp path works on Linux;
+unchanged privacy/conversion assertions execute. Fresh install confirms28
+advisories/0critical; remaining21high/6moderate/1low are still OPEN. Native Wasm,
+separate five conversion suites, Windows memory/headed/current full-project
+acceptance not selected or inferred.235prior roots retained,454portable files,
+162explicit qualification files unexecuted. Protected original hash unchanged;
+disposable local interrupted media/profile/runtime/cache/artifacts removed.
+Exact source/job/step pins, earlier failures and next named gates:
+`evidence/2026-10-21-framework-security-hosted-cycle.json`. B08/full goal OPEN.
+
 ## 2026-10-21 - Framework hosted clean install/units and real endpoint PASS; Unix socket setup corrected
 
 CI39521876873/4c23e4e: clean npm-ci, registry/inventory, lint/TypeScript/build and

@@ -55,6 +55,13 @@ public engines unchanged. Exact proof/next gates
 
 ## Ordered blockers and exact exit evidence
 
+Corrected B08 hosted39522350948/ec9fb51 SUCCESS: clean npm-ci/lint/TS/build,
+1367pass/0fail/1original-fixture skip and all19privacy/offline/production-host
+checks38.2s. Exact failure/correction/source/cleanup proof:
+`evidence/2026-10-21-framework-security-hosted-cycle.json`. Remaining28advisories,
+five changed-runtime conversion suites, native/current-memory/full release gates
+keep B08 and other blockers OPEN. Do not repeat these unchanged successful gates.
+
 B08 targeted increment: Next16.4.2/React19.2.8 removes critical framework
 advisory groups; fresh audit32→28 (0critical/21high/6moderate/1low). Server image
 optimizer removed, host submission methods refused without body reads. Focused

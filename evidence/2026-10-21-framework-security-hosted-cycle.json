@@ -1,0 +1,373 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-21",
+  "status": "targeted-framework-and-host-hardening-verified-on-hosted-linux-not-full-project",
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false,
+  "hosted": {
+    "runId": 39522350948,
+    "jobId": 118968926451,
+    "headSha": "ec9fb511f272352c0641ebf7ad72562350c14142",
+    "conclusion": "success",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39522350948",
+    "jobs": [
+      {
+        "completedAt": "2026-10-21T00:39:40Z",
+        "conclusion": "success",
+        "databaseId": 118968926451,
+        "name": "verify",
+        "startedAt": "2026-10-21T00:36:41Z",
+        "status": "completed",
+        "steps": [
+          {
+            "completedAt": "2026-10-21T00:36:43Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "startedAt": "2026-10-21T00:36:42Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:36:52Z",
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "startedAt": "2026-10-21T00:36:43Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:36:53Z",
+            "conclusion": "success",
+            "name": "Run actions/setup-node@v4",
+            "number": 3,
+            "startedAt": "2026-10-21T00:36:52Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:37:18Z",
+            "conclusion": "success",
+            "name": "Run npm ci",
+            "number": 4,
+            "startedAt": "2026-10-21T00:36:53Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:37:38Z",
+            "conclusion": "success",
+            "name": "Run npx playwright install --with-deps chromium",
+            "number": 5,
+            "startedAt": "2026-10-21T00:37:18Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:37:38Z",
+            "conclusion": "success",
+            "name": "Audit public route evidence",
+            "number": 6,
+            "startedAt": "2026-10-21T00:37:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:37:39Z",
+            "conclusion": "success",
+            "name": "Audit complete unit inventory (private qualification not executed here)",
+            "number": 7,
+            "startedAt": "2026-10-21T00:37:38Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:38:02Z",
+            "conclusion": "success",
+            "name": "Run npm run lint",
+            "number": 8,
+            "startedAt": "2026-10-21T00:37:39Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:38:08Z",
+            "conclusion": "success",
+            "name": "Run npx tsc --noEmit --incremental false",
+            "number": 9,
+            "startedAt": "2026-10-21T00:38:02Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:38:56Z",
+            "conclusion": "success",
+            "name": "Run npm test",
+            "number": 10,
+            "startedAt": "2026-10-21T00:38:08Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:39:35Z",
+            "conclusion": "success",
+            "name": "Run network privacy and offline browser tests",
+            "number": 11,
+            "startedAt": "2026-10-21T00:38:56Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:39:35Z",
+            "conclusion": "skipped",
+            "name": "Upload verification failure evidence",
+            "number": 12,
+            "startedAt": "2026-10-21T00:39:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:39:37Z",
+            "conclusion": "success",
+            "name": "Post Run actions/setup-node@v4",
+            "number": 23,
+            "startedAt": "2026-10-21T00:39:35Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:39:38Z",
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 24,
+            "startedAt": "2026-10-21T00:39:37Z",
+            "status": "completed"
+          },
+          {
+            "completedAt": "2026-10-21T00:39:38Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 25,
+            "startedAt": "2026-10-21T00:39:38Z",
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39522350948/job/118968926451"
+      },
+      {
+        "completedAt": "2026-10-21T00:36:39Z",
+        "conclusion": "skipped",
+        "databaseId": 118968927685,
+        "name": "Reproduce non-Docker ${{ matrix.id }}",
+        "startedAt": "2026-10-21T00:36:40Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39522350948/job/118968927685"
+      },
+      {
+        "completedAt": "2026-10-21T00:36:39Z",
+        "conclusion": "skipped",
+        "databaseId": 118968927777,
+        "name": "Browser conversions (${{ matrix.suite }})",
+        "startedAt": "2026-10-21T00:36:40Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39522350948/job/118968927777"
+      },
+      {
+        "completedAt": "2026-10-21T00:36:39Z",
+        "conclusion": "skipped",
+        "databaseId": 118968927779,
+        "name": "audio-destination-scopes",
+        "startedAt": "2026-10-21T00:36:40Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39522350948/job/118968927779"
+      },
+      {
+        "completedAt": "2026-10-21T00:36:39Z",
+        "conclusion": "skipped",
+        "databaseId": 118968927921,
+        "name": "engine-matrix",
+        "startedAt": "2026-10-21T00:36:40Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39522350948/job/118968927921"
+      }
+    ]
+  },
+  "executedGitSourcePins": {
+    "package.json": "f0060a45cb296f6ae2cdb3d13a5fe01ad9dd8a09fbd52482a794e35eaaad55af",
+    "package-lock.json": "ca66882fe8690ea932354e9c357e6c073a08e24d1ed3ebc28dc2638c020560b9",
+    "worker/index.ts": "2ad99b8d975f954cf1757bcdbcbbac11dc33845fe79cb43308fc6b8014c0a8a9",
+    "lib/static-host-request-policy.ts": "e699ea329425e935279410b7dc3a5bcd0d6ea1b522962f4a128d1ec1b197e4ad",
+    "tests/browser/privacy-offline.spec.ts": "3cf518ffd0d244bec985664bf5eadd670cf2dacd98754a40cbdb2417b0ddfc7e",
+    "tests/browser/static-host-policy.spec.ts": "9587f432302a1bebd73bc1be19a2d5175d824fbb42ae126f0317a8a64bad29a6",
+    "tests/static-host-request-policy.test.mjs": "beffb588ca74446ff9d0bcb6f6f686c0eedcefbfcae18979b2a46759f4c4ce8f",
+    ".github/workflows/ci.yml": "2774771a70800a96c7368982fdaa365ffc8b2027a2ed3dafae362ffa96d30d65",
+    "tests/helpers/historical-published-ui.mjs": "75a0f48750515557c68429a33313a60f8688661a8087b64f63302566ce65a23a",
+    "tests/ui-matrix-regression.test.mjs": "a5cb2972ca7f27183e4306088ca78a7179fc98cdbd85a96cdb1bad6e5d2eee57",
+    "fixtures/source/pre-safety-privacy-suite-2026-10-21.json": "ee5c6280b5a1d4609f94638141a498b0d6ec8b2970f74e0f7996803dcc33e3c5"
+  },
+  "changes": {
+    "framework": {
+      "next": {
+        "before": "16.2.12",
+        "after": "16.4.2"
+      },
+      "react": {
+        "before": "19.2.6",
+        "after": "19.2.8"
+      },
+      "reactDom": {
+        "before": "19.2.6",
+        "after": "19.2.8"
+      },
+      "reactServerDomWebpack": {
+        "before": "19.2.6",
+        "after": "19.2.8"
+      }
+    },
+    "automaticAuditFix": false,
+    "forcedPeers": false,
+    "frameworkReplaced": false,
+    "serverImageTransformerRemoved": true,
+    "requestBodiesNotReadForRefusedMethods": true,
+    "nonGetHeadMethodsRefused": 405,
+    "imageOptimizerEndpointsRefused": 404,
+    "securityHeadersRetained": true,
+    "windowsRamGuardInsideSetupBeforeProfileAndBrowser": true,
+    "ownedFinallyCleanedScratch": true,
+    "linuxSocketPathGuardBytes": 108,
+    "shortOwnedPrefix": "po-",
+    "publicCodecWasmChanged": false
+  },
+  "verification": {
+    "cleanNpmCi": "passed on fresh Linux runner",
+    "publicRegistryConsistency": "passed, not new current-browser certification for405 profiles",
+    "unitInventory": {
+      "portableFiles": 454,
+      "qualificationFilesNotExecuted": 162,
+      "priorHostedRootFilesRetained": 235
+    },
+    "lint": "passed",
+    "typescript": "passed --noEmit --incremental false",
+    "productionBuild": "passed inside literal npm test",
+    "portableUnits": {
+      "tests": 1368,
+      "passed": 1367,
+      "failed": 0,
+      "skipped": 1,
+      "skipReason": "Existing original test.mkv fixture absent in hosted checkout; no newly added skips",
+      "durationMs": 43026.054376
+    },
+    "browserPrivacyOfflineAndProductionHost": {
+      "passed": 19,
+      "failed": 0,
+      "durationSeconds": 38.2,
+      "platform": "Hosted Linux bundled Playwright Chromium, headless",
+      "windowsBrowserQualification": false,
+      "headedManualCoverage": false
+    },
+    "separateFiveBrowserConversionSuites": "not selected; require changed-runtime regression coverage",
+    "nativeEngineReproduction": "not selected; no new reproduction claim",
+    "processTreeMemoryAcceptance": false,
+    "performanceOptimizationAcceptance": false
+  },
+  "securityAudit": {
+    "baseline": {
+      "total": 32,
+      "critical": 1,
+      "high": 24,
+      "moderate": 6,
+      "low": 1,
+      "report": "evidence/2026-10-21-dependency-audit-baseline.json"
+    },
+    "after": {
+      "total": 28,
+      "critical": 0,
+      "high": 21,
+      "moderate": 6,
+      "low": 1,
+      "report": "evidence/2026-10-21-dependency-audit-after-framework.json"
+    },
+    "alsoConfirmedByFreshHostedInstall": true,
+    "removedPackageAdvisoryGroups": [
+      "next",
+      "react-server-dom-webpack",
+      "postcss",
+      "nanoid"
+    ],
+    "remainingReachabilityReviewAndRemediationOpen": true,
+    "review": "SECURITY_REVIEW.md",
+    "wasmDependencySecurityAcceptance": false
+  },
+  "failedAttemptsPreserved": [
+    {
+      "kind": "local npm application",
+      "error": "UNKNOWN/-4094 opening package-lock.json in save phase",
+      "installedVersionsIndependentlyVerified": true,
+      "npmLsExitCode": 0,
+      "extraneousOptionalEntries": 4,
+      "cleanLockQualifiedBySubsequentHostedNpmCi": true
+    },
+    {
+      "kind": "local broad units before historical source correction",
+      "report": "outputs/reports/2026-10-21-framework-security-units.json",
+      "tests": 1367,
+      "passed": 1366,
+      "failed": 1,
+      "skipped": 0,
+      "cause": "Oct6 historical receipt comparing its exact old privacy-suite source to refactored current source",
+      "correction": "Exact58962-byte348cc0aa... preimage archived only for that explicitly historical test; original receipt hashes and assertions unchanged; current live suite still executes in CI"
+    },
+    {
+      "kind": "local browser preflight incorrectly continued through PowerShell",
+      "freePhysicalBytes": 1097490432,
+      "freeVirtualBytes": 3983065088,
+      "requiredPhysicalAndVirtualBytes": 2147483648,
+      "scope": "Interrupted, not accepted browser coverage",
+      "ownedStoppedLauncher": {
+        "pid": 42652,
+        "parentPid": 43072,
+        "createdAt": "2026-10-21T00:25:22.1869700Z",
+        "identityCheckedBeforeTaskkill": true,
+        "exitIndependentlyObserved": true
+      },
+      "fix": "Memory assertion moved inside actual Windows privacy beforeAll, before any runtime/browser creation"
+    },
+    {
+      "kind": "hosted Linux startup",
+      "runId": 39521876873,
+      "headSha": "4c23e4e39e69a403784f79108668e0d859432e1d",
+      "result": "failure",
+      "unitPassed": 1367,
+      "unitFailed": 0,
+      "unitSkipped": 1,
+      "productionHostPolicyPassed": 1,
+      "privacySetupFailed": 1,
+      "privacyDidNotRun": 17,
+      "cause": "Exact Chromium fatal Socket path too long under long repository-owned TMPDIR",
+      "fix": "Short po- owned prefix and explicit Linux byte-length guard",
+      "subsequentExactChangedRunSucceeded": true
+    }
+  ],
+  "cleanup": {
+    "unrelatedApplicationsClosed": false,
+    "disposableOwnedDirectoriesRemoved": [
+      "work/privacy-offline-jUm5up",
+      "work/repository-node-command-MZyZpU",
+      "work/npm-security-audit-cache-20261021",
+      "output/playwright/2026-10-21-framework-security-regression"
+    ],
+    "resolvedPathBirthAndIdentityChecked": true,
+    "interruptedArtifactsRemoved": {
+      "files": 913,
+      "bytes": 61816876,
+      "recoverable": false
+    },
+    "retainedConvertedCopiesFromThisCycle": 0,
+    "protectedOriginal": {
+      "path": "test.mkv",
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+      "verifiedUnchanged": true,
+      "notUsedThisCycle": true
+    },
+    "usefulCompactReportsAndSmallStaticCodePreimagesRetained": true
+  },
+  "nextActions": [
+    "Do not repeat unchanged successful clean-install/unit/privacy/API gates or the failed long-prefix setup.",
+    "Qualify the separate production-browser conversion suites against the changed framework runtime; their older962-case result is not current evidence.",
+    "Complete remaining28 advisory exposure review and compatible remediation; native Wasm security/reproduction remains separately scoped.",
+    "Continue B02-B09/full54 requirements, including missing video capabilities, audio metadata promotion gates and unchanged250MiB whole-tree acceptance. No laptop stress/browser run below its physical/virtual2GiB guard."
+  ]
+}
