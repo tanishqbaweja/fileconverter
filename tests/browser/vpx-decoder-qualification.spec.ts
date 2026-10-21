@@ -12,7 +12,9 @@ import { startOwnedProductionTestServer } from "../../scripts/lib/owned-producti
 import { createOwnedRuntimeScratch, finishOwnedCleanup } from "../../scripts/lib/owned-runtime-scratch.mjs";
 import { inspectStressHostMemory } from "../../scripts/lib/host-memory-preflight.mjs";
 import { startChromiumMemoryMonitor } from "../../scripts/lib/persistent-chromium-memory.mjs";
-import { stableWindow } from "../../scripts/lib/chromium-private-memory.mjs";
+import { sampleChromiumTree, stableWindow } from "../../scripts/lib/chromium-private-memory.mjs";
+import { annotateNativeProcessTypes, connectPlaywrightRealmSampler } from "../../scripts/lib/chromium-attribution.mjs";
+import { captureLiveMemoryInfra } from "../../scripts/lib/live-memory-infra.mjs";
 import { inspectInstalledChromePin, assertInstalledChromePinsEqual } from "../../scripts/lib/installed-chrome-pin.mjs";
 import type { VideoConversionOptions } from "../../lib/media-conversion-options";
 import type { VpxQualificationResult } from "../../lib/vpx-qualification-job";
@@ -43,6 +45,23 @@ let validationTarget: Awaited<ReturnType<typeof open>> | undefined;
 let monitor: Awaited<ReturnType<typeof startChromiumMemoryMonitor>> | undefined;
 let monitorTimer: ReturnType<typeof setInterval> | undefined, monitorBusy = false;
 let pendingSample = Promise.resolve(), monitorFailure: unknown, blankBaseline: { privateBytes: number } | undefined;
+const diagnoseAllocations = process.env.WITHIN_VPX_ALLOCATION_DIAGNOSTIC === "1";
+report.allocationDiagnostics = { enabled: diagnoseAllocations, checkpointLimit: 8, targetLimit: 16,
+  pendingCdpLimit: 64, maximumCdpReplyBytes: 1048576, maximumLightTraceBytes: 8388608,
+  postMeasurementDumpOnly: true, forcedGc: false, processTreeFormulaChanged: false };
+let browserRootPid: number | undefined;
+let realmSampler: Awaited<ReturnType<typeof connectPlaywrightRealmSampler>> | undefined;
+const attribution = { scope: "Up to8 bounded process/realm checkpoints, not exact heap peaks or replacement private bytes",
+  references: [] as Array<Record<string, unknown>>, realms: [] as Array<Record<string, unknown>> };
+async function captureAttribution(label: string) {
+  if (!diagnoseAllocations || !realmSampler || !browserRootPid || attribution.references.length >= 8) return;
+  const startedAt = new Date().toISOString();
+  const [os, realms] = await Promise.allSettled([sampleChromiumTree(browserRootPid), realmSampler.sample()]);
+  attribution.references.push({ label, startedAt, completedAt: new Date().toISOString(),
+    tree: os.status === "fulfilled" ? os.value : null, error: os.status === "rejected" ? String(os.reason).slice(0, 512) : null });
+  attribution.realms.push({ label, startedAt, completedAt: new Date().toISOString(),
+    sample: realms.status === "fulfilled" ? realms.value : null, error: realms.status === "rejected" ? String(realms.reason).slice(0, 512) : null });
+}
 const phases = [{ phase: "blank", at: Date.now() }];
 const samples: Array<{ privateBytes: number | null; rssBytes: number | null; phase: string; timestamp: string; elapsedMs: number }> = [];
 const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
@@ -87,7 +106,8 @@ test.beforeAll(async () => {
     "tests/browser/vpx-decoder-qualification.spec.ts", "scripts/lib/vpx-decoder-artifact.mjs", "scripts/lib/vpx-postbuild-recovery.mjs", "scripts/lib/owned-production-test-server.mjs",
     "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs", "scripts/lib/windows-tree-monitor.ps1",
     "scripts/lib/small-aac-copy-fidelity.mjs", "scripts/lib/pcm-prefix-diagnostic.mjs", "scripts/lib/copied-audio-timing.mjs",
-    "scripts/lib/small-mp4-sample-duration.mjs"])
+    "scripts/lib/small-mp4-sample-duration.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
+    "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs"])
     sourcePins[file] = sha(await readFile(path.join(root, file)));
   report.executedSourcePins = sourcePins;
   if (process.platform === "win32") { browserPin = await inspectInstalledChromePin(); report.browserPin = browserPin; }
@@ -137,8 +157,8 @@ test.beforeAll(async () => {
   if (process.platform === "win32") {
     const session = await context.browser()!.newBrowserCDPSession();
     const info = await session.send("SystemInfo.getProcessInfo"); await session.detach();
-    const rootPid = info.processInfo.find(entry => entry.type === "browser")?.id;
-    expect(rootPid).toBeTruthy(); monitor = await startChromiumMemoryMonitor(rootPid!, runtime.directory, 100);
+    browserRootPid = info.processInfo.find(entry => entry.type === "browser")?.id;
+    expect(browserRootPid).toBeTruthy(); monitor = await startChromiumMemoryMonitor(browserRootPid!, runtime.directory, 100);
     const observations: typeof samples = [], stable: Array<{ privateBytes: number }> = [];
     for (let attempt = 0; attempt < 20; attempt++) {
       await pause(2100); await drainMemory(); observations.push(samples.at(-1)!);
@@ -150,6 +170,10 @@ test.beforeAll(async () => {
     report.blankBaseline = blankBaseline;
     monitorTimer = setInterval(() => { if (monitorBusy) return; monitorBusy = true;
       pendingSample = drainMemory().catch(error => { monitorFailure ??= error; }).finally(() => { monitorBusy = false; }); }, 500);
+    if (diagnoseAllocations) {
+      realmSampler = await connectPlaywrightRealmSampler(context.browser()!, server.baseURL);
+      await captureAttribution("stable-blank");
+    }
   }
   await context.route("**/*", async route => {
     const request = route.request(), url = new URL(request.url());
@@ -169,12 +193,14 @@ test.beforeAll(async () => {
   expect(headers["cross-origin-embedder-policy"]).toBe("require-corp"); expect(headers["content-security-policy"]).toBeTruthy();
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
   expect(await page.evaluate(async () => { const names = []; for await (const [name] of (await navigator.storage.getDirectory()).entries()) names.push(name); return names; })).toEqual([]);
+  await captureAttribution("loaded-ready");
 });
 
 async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault?: "write", preCancelled = false, wrongProfile = false, multi = false) {
   const source = path.join(runtime!.directory, codec + (multi ? "-multi" : "") + ".mkv");
   await page.locator('input[type="file"]').first().setInputFiles(source);
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
+  await captureAttribution("before-conversion-" + (conversionOrdinal + 1));
   const eventStart = workerEvents.length;
   const ordinal = ++conversionOrdinal, startedAt = Date.now(), conversionPhase = "conversion-" + codec + "-" + ordinal;
   phase(conversionPhase);
@@ -196,6 +222,7 @@ async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault
   const endedAt = Date.now(); phase("recovery");
   rows.push({ codec, multi, options: options ?? "automatic", fault: fault ?? null, preCancelled, wrongProfile, sourceBytes: (await lstat(source)).size,
     sourceSha256: await hashFile(source), conversionWindow: { ordinal, startedAt, endedAt, phase: conversionPhase }, result, workerEvents: workerEvents.slice(eventStart) });
+  await captureAttribution("after-conversion-" + ordinal);
   return { result, source, events: workerEvents.slice(eventStart) };
 }
 
@@ -290,6 +317,7 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
       expect(Math.abs(Number(converted.chapters[0][field]) - Number(original.chapters[0][field]))).toBeLessThan(0.002);
     rows.push({ codec, options: options ?? "automatic", independentValidation: { fullDecode: true, frames, fps, ssim, audioPacketsIdentical: true,
       sourceBytes: (await lstat(source)).size, outputBytes: (await lstat(output)).size, outputSha256: await hashFile(output) } });
+    await captureAttribution("after-validation-" + conversionOrdinal);
   } finally { validationTarget = undefined; await target.close().catch(() => {}); await rm(output, { force: true }); }
 }
 
@@ -322,6 +350,18 @@ test("complete same-instance Chromium tree remains within250MiB over clean blank
   const incrementalPrivateMiB = (peak - blankBaseline!.privateBytes) / 1048576;
   report.primaryIncrementalPrivateMiB = incrementalPrivateMiB; report.memoryAcceptance = incrementalPrivateMiB <= 250;
   report.memoryLimitation = "Small private backend qualification only; not large-file, final planner/UI or public profile acceptance.";
+  if (diagnoseAllocations) {
+    // The native baseline/peak are finalized before this perturbing light dump.
+    // Every process still counts; allocator counters are never subtracted.
+    await monitor!.close(); monitor = undefined;
+    annotateNativeProcessTypes(samples, attribution.references, browserRootPid);
+    report.attribution = attribution;
+    try {
+      report.postMeasurementAllocators = await captureLiveMemoryInfra({ session: await context!.browser()!.newBrowserCDPSession(),
+        phase: "after-conversion-observer-stopped", processes: (attribution.references.at(-1)?.tree as { processes?: unknown[] } | null)?.processes ?? null,
+        archivePath: reportFile.replace(/\.json$/, "-post-measurement-memory.json.gz") });
+    } catch (error) { report.postMeasurementAllocators = { status: "unavailable", error: String(error).slice(0, 1024), acceptanceMetric: false }; }
+  }
   expect(incrementalPrivateMiB, "All Chromium descendants count; no heap substitution, GC or loaded baseline subtraction").toBeLessThanOrEqual(250);
 });
 
@@ -344,9 +384,9 @@ test.afterAll(async () => {
   cleanup.push(async () => {
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
-    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 23;
+    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 27;
     report.installedChromeBinaryPinsVerified = browserPin ? true : null;
-    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 23 && Boolean(browserPin);
+    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 27 && Boolean(browserPin);
   });
   if (assetIdentity) cleanup.push(async () => {
     const current = await lstat(assetDirectory); expect(current.dev).toBe(assetIdentity!.dev); expect(current.ino).toBe(assetIdentity!.ino);
@@ -356,6 +396,10 @@ test.afterAll(async () => {
   if (runtime) cleanup.push(() => runtime!.close());
   try {
     clearInterval(monitorTimer); await pendingSample;
+    realmSampler?.close();
+    if (diagnoseAllocations && browserRootPid) {
+      annotateNativeProcessTypes(samples, attribution.references, browserRootPid); report.attribution = attribution;
+    }
     await finishOwnedCleanup([
       async () => { if (monitor) { try { await drainMemory(); } finally { await monitor.close(); monitor = undefined; } } },
       async () => { if (context) { await context.close(); context = undefined; } },
