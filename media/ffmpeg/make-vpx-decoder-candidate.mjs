@@ -1,0 +1,12 @@
+import assert from "node:assert/strict";
+import { readFile, realpath, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { makeVpxDecoderLibraries } from "./vpx-decoder-candidate.mjs";
+const root = path.resolve(import.meta.dirname, "../.."), build = path.join(root, "work/ffmpeg-nondocker-build");
+assert.equal(process.argv.length, 4);
+assert.equal(path.resolve(process.argv[2]), path.join(build, "build-libraries.sh"));
+assert.equal(path.resolve(process.argv[3]), path.join(build, "build-libraries.vpx.sh"));
+assert.equal(await realpath(build), build);
+const derived = makeVpxDecoderLibraries(await readFile(process.argv[2], "utf8"));
+await writeFile(process.argv[3], derived.generated, { flag: "wx" });
+console.log(JSON.stringify({ generatedLibrariesSha256: derived.generatedSha256, edits: derived.edits.length, publicAcceptance: false }));

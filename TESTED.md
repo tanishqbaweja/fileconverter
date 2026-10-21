@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Private VP8/VP9 CPU decoder implementation prepared; no binary/browser acceptance yet
+
+B03: published FFmpeg build lacks VP8/VP9 software decoding although it can
+packet-copy those codecs and encode them. Added an exact private configuration
+derivative: two edits add only native FFmpeg vp8/vp9 decoders and parsers. C
+wrapper, libvpx encoder-only build, codec options, AVIO/backpressure, thread counts,
+linker and32/96MiB Wasm limits remain unchanged. Native components exist in pinned
+FFmpeg8.1.2 source; no new dependency, codec algorithm or hardware-only fallback.
+AV1 software decoding remains unimplemented; no new public route/registry change.
+
+Private no-Docker builder authenticates original configure/recipe/source hashes,
+preserves exact dependency/cleanup/link steps, and must inspect actual compiled C,
+config_components.h and Wasm limits before writing its private manifest. Five
+reversible orchestration edits, two configure edits, two isolated build-workflow
+edits. Only the private branch may receive changed workflow bytes; main recipes
+and public engines remain exact. Focused4tests/lint PASS, not a successful build.
+Next: actual private compilation, audit actual source/component/binary hashes,
+then real production-browser VP8/VP9 decode/re-encode with independent content,
+fidelity, memory/repeat/recovery/scaling gates. No B03 or full-goal closure.
+
 ## 2026-10-21 - Corrected framework/security hosted cycle SUCCESS
 
 Run39522350948/job118968926451 at ec9fb51: clean npm-ci, public consistency/unit

@@ -1,5 +1,20 @@
 # Remaining work audit
 
+## 2026-10-21 - B03 private native VP8/VP9 decode configuration implemented
+
+Exact configure derivative enables two missing FFmpeg CPU decoders/parsers,
+keeping C wrapper/encoding/I/O/thread/link/heap bounds unchanged. Pinned FFmpeg
+source already supplies them; no external codec dependency added. Source-authenticated
+no-Docker builder must verify actual components, compiled wrapper hash and public-
+matching Wasm limits; actual compile/browser/fidelity/memory/promotion pending.
+Four focused units/lint pass. Main recipes/public artifacts/registry unchanged.
+AV1 and all other B02-B09/full54 requirements remain open. Private helper/source
+files are implementation, not advertised support or a successful browser test.
+
+Separately, changed-framework full browser regression39522918843/be28fd7 is live:
+five original suites through production UI/workers and independent validators,
+no native rebuild. Keep its exact run/job handles; do not restart on timeout.
+
 ## 2026-10-21 - Security implementation now freshly hosted-qualified, not full release acceptance
 
 Corrected39522350948/ec9fb51 SUCCESS: clean npm-ci/lint/TS/build,1367unit
