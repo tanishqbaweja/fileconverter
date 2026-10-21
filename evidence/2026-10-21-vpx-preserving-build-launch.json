@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "scope": "actual private no-Docker preservation-core build, not successful compilation or browser acceptance",
+  "statusAtInspection": "in_progress",
+  "run": 39577826452,
+  "job": 119147665652,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39577826452",
+  "branch": "codex/vpx-preserving-20261021",
+  "buildCommit": "6f9043c3813325070d2653da29002216ee8a6961",
+  "implementationParent": "41d1e51c1e60579d893e145690a44e78a1e51792",
+  "privateWorkflowSha256": "8d201ce4f88c38ac0fa693ac821a8bc2a460a45068b25a34b3c33a257b999ef8",
+  "mainWorkflowUnchanged": true,
+  "isolatedGitIndexRemoved": true,
+  "extraCheckoutOrTestMkvCopy": false,
+  "pushedImplementationRemote": "refs/heads/media-options",
+  "pinnedEmscripten": "6.0.4",
+  "sdkStep": "success",
+  "actualCompilationStep": "in_progress",
+  "priorSameCoreBuildSeconds": 445,
+  "roughBuildEstimateMinutes": "7-10 total; not a full-project ETA",
+  "artifactExpectedName": "private-vpx-preserving-39577826452",
+  "retentionDays": 1,
+  "publicAcceptance": false,
+  "next": [
+    "Resume this exact run/job; do not restart because a wait or log read times out",
+    "Inspect terminal build result and actual source/Wasm/ABI/config/heap artifact pins",
+    "Only on success, download once inside owned repo work directory and run the changed candidate against the preserved AAC-loss fixture/assertion",
+    "Keep the whole-tree250MiB requirement and all original54 requirements; no promotion from a native build or small codec test"
+  ]
+}

@@ -2,6 +2,13 @@
 
 ## 2026-10-21 - VPX actual production integration reveals compatible-AAC loss; private native correction implemented
 
+Implementation41d1e51 is pushed to media-options. Exact changed-core no-Docker
+build39577826452/job119147665652 is genuinely live at private6f9043c3; SDK6.0.4
+passed, compilation active. Resume this exact handle, not a replacement build.
+Private Git-index staging removed without another checkout/test.mkv copy. Native
+compile/browser fix/public acceptance remain pending. Launch/ETA/source proof:
+`evidence/2026-10-21-vpx-preserving-build-launch.json`.
+
 Private VP8/VP9 profiles now dispatch through the real app coordinator/main worker,
 bounded source inspection, duration-based quota estimate, canonical decoder loader,
 actual12-argument general ABI and closed-stage retirement before the Wasm-free saver.

@@ -2,6 +2,11 @@
 
 ## 2026-10-21 - Real VP8 browser integration diagnoses audio loss, not a promoted route
 
+Actual changed preservation-core build39577826452/job119147665652 is live at
+private6f9043c3 after pushed implementation41d1e51. Pinned SDK passes; compilation
+not yet terminal and no browser-fix claim. Launch record contains the exact handle:
+`evidence/2026-10-21-vpx-preserving-build-launch.json`.
+
 Actual private production coordinator/worker/AVIO/staged-save job on Chrome155:
 VP8 Matroska91331B → MPEG4 MP4493022B, native Wasm32MiB, codec worker retired before
 save, one pending write. Independent stream assertion FAILS because existing native
