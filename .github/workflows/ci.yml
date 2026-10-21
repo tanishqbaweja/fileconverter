@@ -245,6 +245,10 @@ jobs:
           if-no-files-found: ignore
 
   audio-destination-scopes:
+    name: Private VPX chapter diagnosis (not Windows memory or full CI)
+    permissions:
+      contents: read
+      actions: read
     if: github.event_name == 'workflow_dispatch' && inputs.engine == 'audio-destination-scopes'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -254,6 +258,7 @@ jobs:
       WRANGLER_SEND_METRICS: "false"
       NEXT_TELEMETRY_DISABLED: "1"
       WITHIN_TEST_VIDEO: "off"
+      WITHIN_VPX_CANDIDATE_DIRECTORY: ${{ github.workspace }}/work/vpx-timing-39581181533
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -268,20 +273,34 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
 
-      - name: Run only genuine browser destination-scope checks
+      - name: Fetch immutable sources of the already compiled private artifact
+        run: git fetch --no-tags --depth=1 origin b53061ba87a310b986ab79a6e12a080a33f58fd5
+
+      - uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ github.token }}
+          run-id: 39581181533
+          name: ffmpeg-nondocker-mismatch-39581181533
+          path: work/vpx-timing-39581181533
+
+      - name: Audit existing compiled bytes and the exact post-build declaration correction
+        run: |
+          node --input-type=module -e 'import {recoverVpxSpecialistManifest} from "./scripts/lib/vpx-postbuild-recovery.mjs"; import {auditVpxDecoderArtifact} from "./scripts/lib/vpx-decoder-artifact.mjs"; await recoverVpxSpecialistManifest("work/vpx-timing-39581181533"); const a = await auditVpxDecoderArtifact("work/vpx-timing-39581181533"); console.log(JSON.stringify({recovery:a.recovery,abi:a.abi,inventory:a.inventory,memoryLimits:a.memoryLimits}));'
+
+      - name: Run only genuine private VPX chapter preservation and diagnosis
         shell: bash
         run: |
           task_browser_tmp="$(mktemp -d "$GITHUB_WORKSPACE/work/t.XXXXXX")"
           trap 'rm -rf -- "$task_browser_tmp"' EXIT
           TMPDIR="$task_browser_tmp" TEMP="$task_browser_tmp" TMP="$task_browser_tmp" \
-            npx playwright test tests/browser/audio-destination-scopes.spec.ts
+            npx playwright test --config playwright.vpx.config.ts --grep 'genuine decode retains both compatible audio tracks'
 
       - name: Retain compact scope results, never generated media
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: audio-destination-scopes-${{ github.run_id }}
-          path: output/playwright/audio-destination-scopes-*.json
+          name: private-vpx-chapters-${{ github.run_id }}
+          path: output/playwright/vpx-decoder-qualification-*.json
           if-no-files-found: warn
           retention-days: 1
 
@@ -289,9 +308,9 @@ jobs:
         if: always()
         shell: bash
         run: |
-          for task_path in "$GITHUB_WORKSPACE/work/audio-scope-npm-cache" "$GITHUB_WORKSPACE/work/audio-scope-browsers"; do
+          for task_path in "$GITHUB_WORKSPACE/work/audio-scope-npm-cache" "$GITHUB_WORKSPACE/work/audio-scope-browsers" "$GITHUB_WORKSPACE/work/vpx-timing-39581181533"; do
             case "$task_path" in
-              "$GITHUB_WORKSPACE/work/audio-scope-npm-cache"|"$GITHUB_WORKSPACE/work/audio-scope-browsers") ;;
+              "$GITHUB_WORKSPACE/work/audio-scope-npm-cache"|"$GITHUB_WORKSPACE/work/audio-scope-browsers"|"$GITHUB_WORKSPACE/work/vpx-timing-39581181533") ;;
               *) exit 2 ;;
             esac
             test ! -L "$task_path"
