@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Chapter-end native build SUCCESS; unchanged video source and changed mux bytes verified
+
+39623553380/bf973f73 SUCCESS;43source/16artifact/C/MOV/config/12i32/32–96MiB audit
+PASS. Wrapper232c1f53 unchanged; actual MOV26b81d80 and Wasm4652706B/SHAa9cf4aca.
+Absolute chapter fragment origin is compiled; quality/threads/I/O/video timing
+unchanged. Not browser/memory/public acceptance. Original multi-track with physical
+duration reader and exact audio/video/chapter guards next, no rebuild/eight-case
+repeat. `evidence/2026-10-21-vpx-chapter-end-native-build.json`.
+
 ## 2026-10-21 - Material chapter-end build running; exact original-source validation is next
 
 39623553380/job119302973371 atbf973f73 is live, parent77f8390. Changed MOV expected

@@ -2,6 +2,8 @@
   "schemaVersion": 1,
   "scope": "material chapter absolute-fragment correction with unchanged video wrapper; not browser acceptance",
   "statusAtInspection": "in_progress",
+  "terminalConclusion": "success",
+  "terminalProof": "evidence/2026-10-21-vpx-chapter-end-native-build.json",
   "run": 39623553380,
   "job": 119302973371,
   "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39623553380",

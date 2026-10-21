@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "scope": "material chapter-end Wasm compilation and actual source/artifact audit only; original multi-track browser validation pending",
+  "run": 39623553380,
+  "job": 119302973371,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39623553380",
+  "commit": "bf973f730eac6264c997900b228edb708ff2b58f",
+  "implementationParent": "77f8390ce04b62f0f640ae448e66f940550a5c30",
+  "conclusion": "success",
+  "audit": {
+    "sourcePins": 43,
+    "artifactPins": 16,
+    "wrapperSha256Unchanged": "232c1f532e18fcfd2a24760ab1807bc8438653ad852fb8b8c31aa53d273853cd",
+    "muxSha256": "26b81d801f494d98e17300e78aa6fed8d84085e175556ad14f0cff8f07c88feb",
+    "manifestSha256": "d7a0a786da6108b171c28890ccbabea8a28ac81e0e9adb3d0f6ff8f17d50c6ea",
+    "actualAbi": "bindingZ,12xi32 parameters,1xi32 result",
+    "sharedWasmInitialPages": 512,
+    "sharedWasmMaximumPages": 1536,
+    "memoryLimitsRaised": false,
+    "chapterAbsoluteTimeline": true,
+    "qualityThreadsIoAndAlreadyVerifiedVideoTimingCodeUnchanged": true,
+    "unchangedSpecialistInventoryIndependentlyVerified": true,
+    "av1Implemented": false
+  },
+  "artifact": {
+    "id": 12355758430,
+    "name": "private-vpx-timeline-39623553380",
+    "archiveBytes": 1604624,
+    "digest": "sha256:ccefdceb9ee2f72de1deda938e8b1842bd059b0935becb91e63fab3262296cd9",
+    "directory": "work/vpx-chapter-end-39623553380",
+    "identity": { "dev": "1887170595", "ino": "27021597766510223", "birthtimeNs": "1792595911254389700" },
+    "wasmBytes": 4652706,
+    "wasmSha256": "a9cf4acaaf0bc3fcf94fcaef06af9eb3b0488aa65c19462ecf76f6afb45d0689",
+    "mjsSha256": "041d608304b42883be28e8c61e2459b6c77f0d9b6b02b4768de72feb836360e6",
+    "reusableStaticToolNotConvertedMedia": true
+  },
+  "next": "Run only original multi-track source with serialized AAC duration and exact PCM/trim/clock/video/chapter guards; no rebuild",
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "fullGoalComplete": false
+}

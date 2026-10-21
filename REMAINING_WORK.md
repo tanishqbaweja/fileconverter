@@ -1,5 +1,15 @@
 # Remaining work audit
 
+## 2026-10-21 - Actual chapter-end native build terminal SUCCESS; focused original-source check next
+
+39623553380/bf973f73 SUCCESS;43source/16artifact actual C/MOV/config/ABI/32–96MiB
+audit PASS. Wrapper232c1f53 unchanged, MOV26b81d80, Wasm4652706B/SHAa9cf4aca.
+Quality/threads/I/O/video timeline code unchanged; absolute chapter origin compiled.
+No browser fix claim until original multi-track case validates physical duration,
+complete PCM/trim/1ms clocks/video and2ms chapter start/end. Reuse existing artifact;
+do not rebuild or repeat eight unchanged passed cases now. Full54/B02-B09/memory/
+scaling/public integration OPEN. `evidence/2026-10-21-vpx-chapter-end-native-build.json`.
+
 ## 2026-10-21 - Actual chapter-end native build live; no unchanged success repeats
 
 39623553380/job119302973371 atbf973f73 is compiling the material absolute chapter
