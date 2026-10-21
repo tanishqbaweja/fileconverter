@@ -1,5 +1,10 @@
 # Remaining work audit
 
+2026-10-21 next material diagnostic prepared: bounded periodic250ms/one-pending
+realm observations through late jobs, not only the first two conversions.8focused/
+TS/lint pass; actual instrumented sequence next. Original full-tree/clean blank/
+250MiB/quality/privacy/cleanup gates unchanged; no claimed memory correction.
+
 Final cycle checkpoint:16focused/TS/lint pass including sync+async hardware-only
 fallback guards. Five local owned runtime roots/private asset stage verified gone;
 test.mkv full-stream size/SHA exact, retained native43/16audit pass. No unresolved

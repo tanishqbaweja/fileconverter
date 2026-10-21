@@ -21,6 +21,7 @@ import type { VpxQualificationResult } from "../../lib/vpx-qualification-job";
 import type { StartConversionMessage } from "../../lib/conversion-protocol";
 import { validateSmallCopiedAac } from "../../scripts/lib/small-aac-copy-fidelity.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "../../scripts/lib/bounded-validation-chunk.mjs";
+import { createBoundedPeriodicRealmObserver } from "../../scripts/lib/bounded-periodic-realm-observer.mjs";
 
 const root = path.resolve(import.meta.dirname, "../.."), exec = promisify(execFile);
 const sha = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
@@ -55,16 +56,17 @@ report.allocationDiagnostics = { enabled: diagnoseAllocations, checkpointLimit: 
   postMeasurementDumpOnly: true, forcedGc: false, processTreeFormulaChanged: false };
 let browserRootPid: number | undefined;
 let realmSampler: Awaited<ReturnType<typeof connectPlaywrightRealmSampler>> | undefined;
+let realmObserver: ReturnType<typeof createBoundedPeriodicRealmObserver> | undefined;
 const attribution = { scope: "Up to8 bounded process/realm checkpoints, not exact heap peaks or replacement private bytes",
   references: [] as Array<Record<string, unknown>>, realms: [] as Array<Record<string, unknown>> };
 async function captureAttribution(label: string) {
   if (!diagnoseAllocations || !realmSampler || !browserRootPid || attribution.references.length >= 8) return;
   const startedAt = new Date().toISOString();
-  const [os, realms] = await Promise.allSettled([sampleChromiumTree(browserRootPid), realmSampler.sample()]);
+  const [os, realms] = await Promise.allSettled([sampleChromiumTree(browserRootPid), realmObserver!.observe()]);
   attribution.references.push({ label, startedAt, completedAt: new Date().toISOString(),
     tree: os.status === "fulfilled" ? os.value : null, error: os.status === "rejected" ? String(os.reason).slice(0, 512) : null });
   attribution.realms.push({ label, startedAt, completedAt: new Date().toISOString(),
-    sample: realms.status === "fulfilled" ? realms.value : null, error: realms.status === "rejected" ? String(realms.reason).slice(0, 512) : null });
+    observation: realms.status === "fulfilled" ? realms.value : null, error: realms.status === "rejected" ? String(realms.reason).slice(0, 512) : null });
 }
 const phases = [{ phase: "blank", at: Date.now() }];
 const samples: Array<{ privateBytes: number | null; rssBytes: number | null; phase: string; timestamp: string; elapsedMs: number }> = [];
@@ -112,7 +114,7 @@ test.beforeAll(async () => {
     "scripts/lib/small-aac-copy-fidelity.mjs", "scripts/lib/pcm-prefix-diagnostic.mjs", "scripts/lib/copied-audio-timing.mjs",
     "scripts/lib/small-mp4-sample-duration.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "lib/browser-capabilities.ts",
-    "scripts/lib/bounded-validation-chunk.mjs"])
+    "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/bounded-periodic-realm-observer.mjs"])
     sourcePins[file] = sha(await readFile(path.join(root, file)));
   report.executedSourcePins = sourcePins;
   if (process.platform === "win32") { browserPin = await inspectInstalledChromePin(); report.browserPin = browserPin; }
@@ -184,7 +186,9 @@ test.beforeAll(async () => {
       pendingSample = drainMemory().catch(error => { monitorFailure ??= error; }).finally(() => { monitorBusy = false; }); }, 500);
     if (diagnoseAllocations) {
       realmSampler = await connectPlaywrightRealmSampler(context.browser()!, server.baseURL);
+      realmObserver = createBoundedPeriodicRealmObserver({ sample: () => realmSampler!.sample(), readPhase: () => phases.at(-1)!.phase });
       await captureAttribution("stable-blank");
+      realmObserver.start();
     }
   }
   await context.route("**/*", async route => {
@@ -366,6 +370,7 @@ test("complete same-instance Chromium tree remains within250MiB over clean blank
   if (diagnoseAllocations) {
     // The native baseline/peak are finalized before this perturbing light dump.
     // Every process still counts; allocator counters are never subtracted.
+    await realmObserver?.stop(); report.periodicRealmObservations = realmObserver?.report();
     await monitor!.close(); monitor = undefined;
     annotateNativeProcessTypes(samples, attribution.references, browserRootPid);
     report.attribution = attribution;
@@ -397,9 +402,9 @@ test.afterAll(async () => {
   cleanup.push(async () => {
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
-    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 29;
+    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 30;
     report.installedChromeBinaryPinsVerified = browserPin ? true : null;
-    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 29 && Boolean(browserPin);
+    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 30 && Boolean(browserPin);
   });
   if (assetIdentity) cleanup.push(async () => {
     const current = await lstat(assetDirectory); expect(current.dev).toBe(assetIdentity!.dev); expect(current.ino).toBe(assetIdentity!.ino);
@@ -409,6 +414,7 @@ test.afterAll(async () => {
   if (runtime) cleanup.push(() => runtime!.close());
   try {
     clearInterval(monitorTimer); await pendingSample;
+    await realmObserver?.stop(); report.periodicRealmObservations = realmObserver?.report();
     realmSampler?.close();
     if (diagnoseAllocations && browserRootPid) {
       annotateNativeProcessTypes(samples, attribution.references, browserRootPid); report.attribution = attribution;

@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-10-21 late-job attribution prepared: periodic250ms CDP realm observations,
+single-flight,256-entry ring/16targets per sample/128realm identities/16KiB metadata
+cap. Missing/detached values remain null; no GC/page evaluation/private-byte
+replacement or process filtering.8focused/TS/lint pass. Actual full-sequence
+diagnostic pending; no production memory fix/qualification claimed.30source pins
+will include this observer. Prior attachment-off failure rules out attachments
+as the remaining remedy; this run gathers previously absent late-job evidence.
+
 Final cycle safety: protected test.mkv2958573265B/SHA31f36695 freshly full-stream
 verified, never converted this cycle. All5local run-specific runtime roots and
 private asset stage independently verified absent; each owned server exit/pins
