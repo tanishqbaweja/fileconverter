@@ -1,0 +1,253 @@
+{
+  "schemaVersion": 1,
+  "scope": "Real app-lifetime static-module reuse, full private sequence; memory still fails",
+  "implementationCommit": "d1d0e08ef1138ecf54062c9ca46ecf97e1394826",
+  "suite": "9PASS/1FAIL48.6s",
+  "browser": "155.0.8059.85",
+  "staticCompilation": {
+    "coldCompiles": 1,
+    "reuses": 7
+  },
+  "outputsIdenticalToPreviousSequence": true,
+  "outputs": [
+    {
+      "codec": "vp8",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.993273,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 91331,
+      "outputBytes": 525916,
+      "outputSha256": "84fc5477bdb0dc97995782f77827a3e5bcedfcaa6a694cad5980910083389ae1"
+    },
+    {
+      "codec": "vp8",
+      "options": {
+        "codec": "mpeg4",
+        "maxWidth": 320,
+        "bitRateBps": 4000000,
+        "frameRateFps": 15,
+        "quality": "balanced"
+      },
+      "fullDecode": true,
+      "frames": 30,
+      "fps": 15,
+      "ssim": 0.986054,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 91331,
+      "outputBytes": 112270,
+      "outputSha256": "a36ff4fec77bc5defbe1b529a06d20aa71cfe146b07021516d73236a383303eb"
+    },
+    {
+      "codec": "vp9",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.996114,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 438626,
+      "outputBytes": 593687,
+      "outputSha256": "1e8dc6e85e1337c025f9d6fca1e5bbab0ab4cf7df56079e260d9312cd42dec19"
+    },
+    {
+      "codec": "vp9",
+      "options": {
+        "codec": "mpeg4",
+        "maxWidth": 320,
+        "bitRateBps": 4000000,
+        "frameRateFps": 15,
+        "quality": "balanced"
+      },
+      "fullDecode": true,
+      "frames": 30,
+      "fps": 15,
+      "ssim": 0.98829,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 438626,
+      "outputBytes": 108167,
+      "outputSha256": "15f0912f97349e82cc47d7eb8d5cd2daa4bc0fe0e00cfc672f44de987465d496"
+    },
+    {
+      "codec": "vp8",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.993273,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 123374,
+      "outputBytes": 559403,
+      "outputSha256": "6d845ec63901e6124d47ee33121c8c905c6f816b0b8fd97accc4a57109620e13"
+    },
+    {
+      "codec": "vp8",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.993273,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 91331,
+      "outputBytes": 525916,
+      "outputSha256": "84fc5477bdb0dc97995782f77827a3e5bcedfcaa6a694cad5980910083389ae1"
+    }
+  ],
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 232579072,
+    "spreadBytes": 1662976,
+    "rssBytes": 478908416,
+    "firstTimestamp": "2026-10-21T16:37:27.9288722Z",
+    "lastTimestamp": "2026-10-21T16:37:36.3262952Z",
+    "sampleCount": 8,
+    "minimumElapsedMs": 8000
+  },
+  "incrementalPrivateMiB": 283.05859375,
+  "perJobObservedTimes": [
+    {
+      "ordinal": 1,
+      "codec": "vp8",
+      "multi": false,
+      "options": "automatic",
+      "sourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "baselineSourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "beforeMs": 441.46013671159744,
+      "afterMs": 479.4598437547684,
+      "cacheHit": false,
+      "coldCompile": true
+    },
+    {
+      "ordinal": 2,
+      "codec": "vp8",
+      "multi": false,
+      "options": {
+        "codec": "mpeg4",
+        "maxWidth": 320,
+        "bitRateBps": 4000000,
+        "frameRateFps": 15,
+        "quality": "balanced"
+      },
+      "sourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "baselineSourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "beforeMs": 445.650107383728,
+      "afterMs": 334.80005860328674,
+      "cacheHit": true,
+      "coldCompile": false
+    },
+    {
+      "ordinal": 3,
+      "codec": "vp9",
+      "multi": false,
+      "options": "automatic",
+      "sourceSha256": "510ae98f64059f69d5346bd45455fc21093149946ac4cb59649486edf5cf22a3",
+      "baselineSourceSha256": "510ae98f64059f69d5346bd45455fc21093149946ac4cb59649486edf5cf22a3",
+      "beforeMs": 523.6649316549301,
+      "afterMs": 462.3949121236801,
+      "cacheHit": true,
+      "coldCompile": false
+    },
+    {
+      "ordinal": 4,
+      "codec": "vp9",
+      "multi": false,
+      "options": {
+        "codec": "mpeg4",
+        "maxWidth": 320,
+        "bitRateBps": 4000000,
+        "frameRateFps": 15,
+        "quality": "balanced"
+      },
+      "sourceSha256": "510ae98f64059f69d5346bd45455fc21093149946ac4cb59649486edf5cf22a3",
+      "baselineSourceSha256": "510ae98f64059f69d5346bd45455fc21093149946ac4cb59649486edf5cf22a3",
+      "beforeMs": 509.12531250715256,
+      "afterMs": 392.7449804544449,
+      "cacheHit": true,
+      "coldCompile": false
+    },
+    {
+      "ordinal": 5,
+      "codec": "vp8",
+      "multi": true,
+      "options": "automatic",
+      "sourceSha256": "1705c9399cd4cb8112665e305ee4716b7544a465467713ab334f735457f47672",
+      "baselineSourceSha256": "1705c9399cd4cb8112665e305ee4716b7544a465467713ab334f735457f47672",
+      "beforeMs": 482.2701855301857,
+      "afterMs": 376.10500979423523,
+      "cacheHit": true,
+      "coldCompile": false
+    },
+    {
+      "ordinal": 6,
+      "codec": "vp8",
+      "multi": false,
+      "options": "automatic",
+      "sourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "baselineSourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "beforeMs": 2.994999945163727,
+      "afterMs": 3.4649999737739563,
+      "cacheHit": false,
+      "coldCompile": false
+    },
+    {
+      "ordinal": 7,
+      "codec": "vp8",
+      "multi": false,
+      "options": "automatic",
+      "sourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "baselineSourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "beforeMs": 182.86500000953674,
+      "afterMs": 200.7750000357628,
+      "cacheHit": true,
+      "coldCompile": false
+    },
+    {
+      "ordinal": 8,
+      "codec": "vp9",
+      "multi": false,
+      "options": "automatic",
+      "sourceSha256": "510ae98f64059f69d5346bd45455fc21093149946ac4cb59649486edf5cf22a3",
+      "baselineSourceSha256": "510ae98f64059f69d5346bd45455fc21093149946ac4cb59649486edf5cf22a3",
+      "beforeMs": 490.2198632955551,
+      "afterMs": 396.23996090888977,
+      "cacheHit": true,
+      "coldCompile": false
+    },
+    {
+      "ordinal": 9,
+      "codec": "vp8",
+      "multi": false,
+      "options": "automatic",
+      "sourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "baselineSourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "beforeMs": 513.6898632645607,
+      "afterMs": 409.370156288147,
+      "cacheHit": true,
+      "coldCompile": false
+    }
+  ],
+  "caveat": "One before/after sequence per implementation, not a repeated paired speed benchmark. Cold job regresses; several warm jobs improve. Not globally fastest or memory-qualified.",
+  "pins": true,
+  "sourcePinCount": 32,
+  "cleanup": true,
+  "server": {
+    "identity": {
+      "pid": 17016,
+      "parentPid": 38432,
+      "createdAt": "2026-10-21T16:37:17.0252150Z"
+    },
+    "ownedRootAbsent": true
+  },
+  "forbiddenRequests": [],
+  "report": {
+    "path": "output/playwright/vpx-decoder-qualification-2026-10-21T16-37-09.591Z.json",
+    "bytes": 1795905,
+    "sha256": "6aaea2ef42beeab50168cec4b62972d9da777560769b17196d8d359a73a5c082"
+  },
+  "next": "Use bounded fresh manifest checks on hits instead of re-fetching/re-hashing the entire static binary. Cold/changed binary remains hash-verified; all original guards unchanged.",
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "fullGoalComplete": false
+}

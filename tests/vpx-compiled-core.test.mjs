@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { build } from "esbuild";
+import { createHash } from "node:crypto";
 import { prepareVpxCompiledCore, validateVpxCompiledCore } from "../lib/vpx-compiled-core.ts";
 const bundled = await build({ entryPoints: ["workers/vpx-core-loader.ts"], bundle: true, format: "esm", platform: "node", write: false });
 const { loadVpxDecoderCore } = await import("data:text/javascript;base64," + Buffer.from(bundled.outputFiles[0].contents).toString("base64"));
@@ -8,16 +9,21 @@ const { loadVpxDecoderCore } = await import("data:text/javascript;base64," + Buf
 // Tiny valid Wasm that imports/exports memory: static test code, not a codec or
 // conversion proof. Reusing the module must never share its instance memories.
 const wasm = new Uint8Array([0,97,115,109,1,0,0,0,2,16,1,3,101,110,118,6,109,101,109,111,114,121,2,1,1,2,7,10,1,6,109,101,109,111,114,121,2,0]);
-const fetchCode = async () => new Response(wasm, { headers: { "content-length": String(wasm.length) } });
+const manifest = bytes => ({ engine: "within-remux-private-vpx-timeline", artifacts: { "within-remux.wasm": createHash("sha256").update(bytes).digest("hex") } });
+const responseFor = bytes => new Response(bytes, { headers: { "content-length": String(bytes.length) } });
+const staticFetcher = (bytes = wasm) => async url => url.endsWith(".json")
+  ? responseFor(new TextEncoder().encode(JSON.stringify(manifest(bytes)))) : responseFor(bytes);
+const fetchCode = staticFetcher();
 
-test("static code is rehashed, compiled once and reused only for identical bytes", async () => {
-  let compilations = 0, fetches = 0;
+test("static release manifest is checked every job; identical cached code is neither fetched nor recompiled", async () => {
+  let compilations = 0, fetches = 0, binaryFetches = 0; const signals = [];
   const compile = async bytes => { compilations++; return WebAssembly.compile(bytes); };
-  const fetcher = async (url, options) => { assert.equal(url, "/engines/vpx/within-remux.wasm"); assert.ok(options.signal); fetches++; return fetchCode(); };
+  const fetcher = async (url, options) => { assert.ok(options.signal); assert.equal(options.cache, "no-store"); signals.push(options.signal); fetches++; if (url.endsWith(".wasm")) binaryFetches++; return fetchCode(url); };
   const first = await prepareVpxCompiledCore(undefined, fetcher, compile); assert.equal(first.cacheHit, false);
   const second = await prepareVpxCompiledCore(first.core, fetcher, compile); assert.equal(second.cacheHit, true);
-  assert.equal(second.core.module, first.core.module); assert.equal(compilations, 1); assert.equal(fetches, 2);
-  const changed = await prepareVpxCompiledCore(first.core, async () => new Response(new Uint8Array([0,97,115,109,1,0,0,0])), compile);
+  assert.equal(second.core.module, first.core.module); assert.equal(compilations, 1); assert.equal(fetches, 3); assert.equal(binaryFetches, 1);
+  assert.ok(signals.every(signal => signal.aborted), "Completed static fetches release their cancellation resources");
+  const changed = await prepareVpxCompiledCore(first.core, staticFetcher(new Uint8Array([0,97,115,109,1,0,0,0])), compile);
   assert.equal(changed.cacheHit, false); assert.equal(compilations, 2); assert.notEqual(changed.core.sha256, first.core.sha256);
 });
 
@@ -53,6 +59,19 @@ test("bounded static fetch rejects excess, truncation and unavailable assets wit
     new Response(wasm, { headers: { "content-length": String(wasm.length - 1) } }),
     new Response(wasm, { headers: { "content-length": String(wasm.length + 1) } }),
     new Response(new Uint8Array(7))])
-    await assert.rejects(prepareVpxCompiledCore(undefined, async () => response, compile));
+    await assert.rejects(prepareVpxCompiledCore(undefined, async url => url.endsWith(".json") ? fetchCode(url) : response, compile));
   assert.equal(compiled, false);
+  await assert.rejects(prepareVpxCompiledCore(undefined, async url => url.endsWith(".json") ? fetchCode(url) : responseFor(new Uint8Array([0,97,115,109,1,0,0,0]))), /manifest/);
+  await assert.rejects(prepareVpxCompiledCore(undefined, async () => new Response("{}")), /manifest/);
+  await assert.rejects(prepareVpxCompiledCore(undefined, async () => new Response("x", { headers: { "content-length": "65537" } })), /bound/);
+});
+
+test("unavailable/changed manifests never authorize stale code, and decoded HTTP bodies use decoded bounds", async () => {
+  const first = await prepareVpxCompiledCore(undefined, fetchCode);
+  await assert.rejects(prepareVpxCompiledCore(first.core, async () => new Response("{}")), /manifest/);
+  const changed = staticFetcher(new Uint8Array([0,97,115,109,1,0,0,0]));
+  await assert.rejects(prepareVpxCompiledCore(first.core, async url => url.endsWith(".json") ? changed(url) : fetchCode(url)), /match/);
+  const decoded = await prepareVpxCompiledCore(undefined, async url => url.endsWith(".json") ? fetchCode(url)
+    : new Response(wasm, { headers: { "content-encoding": "gzip", "content-length": "8" } }));
+  assert.equal(decoded.core.sha256, first.core.sha256);
 });

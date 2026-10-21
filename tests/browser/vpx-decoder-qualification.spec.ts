@@ -43,6 +43,7 @@ let context: BrowserContext | undefined, page: Page;
 let browserLaunched = false;
 let conversionOrdinal = 0;
 const staticCompilation = { coldCompiles: 0, reuses: 0 };
+const staticCodeRequests = { manifests: 0, wasm: 0 };
 let env: NodeJS.ProcessEnv, assetIdentity: Awaited<ReturnType<typeof lstat>> | undefined;
 let audit: Awaited<ReturnType<typeof auditVpxDecoderArtifact>>;
 let browserPin: Awaited<ReturnType<typeof inspectInstalledChromePin>> | undefined;
@@ -127,7 +128,7 @@ test.beforeAll(async () => {
   await exec(process.execPath, ["node_modules/vinext/dist/cli.js", "build"],
     { cwd: root, env, windowsHide: true, timeout: 180_000, maxBuffer: 4 * 1024 ** 2 });
   await mkdir(assetDirectory); assetIdentity = await lstat(assetDirectory);
-  for (const [file, hash] of Object.entries(audit.deliveredArtifacts)) {
+  for (const [file, hash] of Object.entries({ ...audit.deliveredArtifacts, "build-manifest.json": audit.manifestSha256 })) {
     await copyFile(path.join(audit.directory, file), path.join(assetDirectory, file));
     expect(sha(await readFile(path.join(assetDirectory, file)))).toBe(hash);
   }
@@ -148,7 +149,7 @@ test.beforeAll(async () => {
     "-c", "copy", "-c:a:1", "aac", "-b:a:1", "128k", "-metadata:s:a:0", "language=eng", "-metadata:s:a:1", "language=hin",
     "-fflags", "+bitexact", "-flags:a", "+bitexact", path.join(runtime.directory, "vp8-multi.mkv")]);
   server = await startOwnedProductionTestServer({ root, directory: runtime.directory, env, port: 3231 });
-  for (const [file, hash] of Object.entries(audit.deliveredArtifacts)) {
+  for (const [file, hash] of Object.entries({ ...audit.deliveredArtifacts, "build-manifest.json": audit.manifestSha256 })) {
     const response = await fetch(server.baseURL + "/engines/vpx/" + file);
     expect(response.status).toBe(200); expect(sha(new Uint8Array(await response.arrayBuffer()))).toBe(hash); // Static tool asset, never media.
   }
@@ -197,7 +198,11 @@ test.beforeAll(async () => {
     const request = route.request(), url = new URL(request.url());
     const invalid = url.origin !== server!.baseURL || !["GET", "HEAD"].includes(request.method()) || request.postData() !== null || /(?:vp8|vp9)\.mkv/.test(url.href);
     if (invalid) { if (forbiddenRequests.length < 32) forbiddenRequests.push(request.method() + " " + url.href.slice(0, 256)); await route.abort(); }
-    else await route.continue();
+    else {
+      if (url.pathname === "/engines/vpx/build-manifest.json") staticCodeRequests.manifests++;
+      if (url.pathname === "/engines/vpx/within-remux.wasm") staticCodeRequests.wasm++;
+      await route.continue();
+    }
   });
   page.on("console", message => { if (logs.length === 32) logs.shift(); logs.push(message.type() + ":" + message.text().slice(0, 512)); });
   page.on("pageerror", error => { if (logs.length === 32) logs.shift(); logs.push("pageerror:" + error.message.slice(0, 512)); });
@@ -371,6 +376,8 @@ test("real conversion recovers after rejection, pre-cancel and destination failu
 test("complete same-instance Chromium tree remains within250MiB over clean blank", async () => {
   test.skip(process.platform !== "win32", "Primary Windows private-memory sampler unavailable here; correctness is not memory acceptance");
   clearInterval(monitorTimer); await pendingSample; await drainMemory();
+  expect(staticCodeRequests.wasm).toBe(staticCompilation.coldCompiles);
+  expect(staticCodeRequests.manifests).toBe(staticCompilation.coldCompiles + staticCompilation.reuses);
   expect(monitorFailure).toBeUndefined(); expect(blankBaseline).toBeTruthy();
   const active = samples.filter(sample => sample.phase !== "blank" && sample.privateBytes !== null);
   expect(active.length).toBeGreaterThan(0);
@@ -419,7 +426,8 @@ test.afterAll(async () => {
   });
   if (assetIdentity) cleanup.push(async () => {
     const current = await lstat(assetDirectory); expect(current.dev).toBe(assetIdentity!.dev); expect(current.ino).toBe(assetIdentity!.ino);
-    for (const [file, hash] of Object.entries(audit.deliveredArtifacts)) expect(sha(await readFile(path.join(assetDirectory, file)))).toBe(hash);
+    for (const [file, hash] of Object.entries({ ...audit.deliveredArtifacts, "build-manifest.json": audit.manifestSha256 }))
+      expect(sha(await readFile(path.join(assetDirectory, file)))).toBe(hash);
     await rm(assetDirectory, { recursive: true });
   });
   if (runtime) cleanup.push(() => runtime!.close());
@@ -440,6 +448,7 @@ test.afterAll(async () => {
   finally { report.logs = logs; report.forbiddenRequests = forbiddenRequests; report.workerEvents = workerEvents;
     report.validationTransport = validationTransport;
     report.staticCompilation = staticCompilation;
+    report.staticCodeRequests = staticCodeRequests;
     report.memorySamples = samples; report.memoryPhases = phases;
     report.monitorFailure = monitorFailure ? String(monitorFailure).slice(0, 2048) : null;
     await mkdir(path.dirname(reportFile), { recursive: true }); await writeFile(reportFile, JSON.stringify(report, null, 2) + "\n"); }

@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-10-21 bounded manifest-driven static code reuse implemented/25focused+TS+
+lint pass. Real request count assertions will verify only one binary fetch per
+cold/changed artifact; no stale manifest fallback. Same native/settings/fidelity/
+250MiB guards, real full sequence next. No accepted memory/speed/public claim yet.
+
+2026-10-21 app lifetime cache actually works1compile/7reuses;d1d0e08 full sequence
+9PASS/1FAIL48.6s, all6outputs identical, memory still FAIL283.05859375MiB. Next
+candidate avoids multi-MiB re-fetch/hash on cache hits using a fresh bounded
+manifest check and verified binary only on cold/changed hash. Existing quality/
+content/whole-tree/250MiB guards unchanged; actual request counters now enforce
+reuse. No public acceptance/full54 closure. Exact actual result/observed timings:
+`evidence/2026-10-21-vpx-app-lifetime-cache-result.json`.
+
 2026-10-21 first compiled-cache integrationb484ee7 rejected8PASS/2FAIL: cache owner
 dies on app coordinator replacement, and fast encode phase is masked by compile
 progress. Original assertions preserved. App-lifetime static slot+real phase fix

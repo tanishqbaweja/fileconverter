@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-10-21 manifest-driven reuse prepared: fresh<=64KiB static manifest per job,
+full<=16MiB static code fetch/hash/compile only on cold/changed digest. No user
+data/instance memory cached. Explicit15s request timers/readers aborted/released;
+decoded HTTP bodies use decoded-byte bound, not compressed Content-Length.
+25focused/TS/lint pass, including stale/invalid/changed manifest and code hash
+rejection plus exact memory isolation. Actual binary/manifest request counts now
+required in unchanged full-tree gate. Production browser retest pending.
+
+2026-10-21 actual app-lifetime cached1compile/7reuses atd1d0e08;9PASS/1FAIL48.6s,
+all6independently validated outputs identical to prior uncached sequence.32pins/
+privacy/cleanup pass. Memory still FAIL283.05859375MiB; cache is NOT qualified.
+Observed warm jobs improve but cold regresses; one sequence is not a repeated
+speed benchmark. Next remove full-Wasm refetch/hash on hits: bounded64KiB fresh
+manifest check; compile/hash exact code only on cold/changed asset. Actual sidecar
+staged and hash-verified; real manifest/binary request counters asserted.24focused/
+TS/lint pass before final no-store option; real retest pending, no public promotion.
+`evidence/2026-10-21-vpx-app-lifetime-cache-result.json`.
+
 2026-10-21 firstb484ee7 static-code candidate8PASS/2FAIL1.4min, not full coherence.
 VP8 control completes but compilation phase masks throttled decoding phase, so
 original phase guard fails before validation; Playwright restarts worker/session.
