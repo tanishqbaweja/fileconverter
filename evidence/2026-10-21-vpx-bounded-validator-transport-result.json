@@ -1,0 +1,143 @@
+{
+  "schemaVersion": 1,
+  "implementationCommit": "c2282d2be892cb42fc9340285f512515d8fa7d15",
+  "scope": "Same full private sequence with exact bounded-per-chunk validator serialization, not engine optimization",
+  "status": "9PASS/1FAIL47.7s",
+  "browser": "155.0.8059.85",
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 237502464,
+    "spreadBytes": 1617920,
+    "rssBytes": 487038976,
+    "firstTimestamp": "2026-10-21T16:01:58.0927062Z",
+    "lastTimestamp": "2026-10-21T16:02:06.5085614Z",
+    "sampleCount": 8,
+    "minimumElapsedMs": 8000
+  },
+  "incrementalPrivateMiB": 326.91015625,
+  "transport": {
+    "mode": "one-base64-string-per-at-most64KiB-chunk-not-whole-file-base64",
+    "chunks": 41,
+    "totalDecodedBytes": 2425359,
+    "maximumDecodedChunkBytes": 65536,
+    "maximumEncodedCharacters": 87384,
+    "pending": 0,
+    "peakPending": 1,
+    "fileDataOverHttp": false,
+    "completeOutputBuffered": false
+  },
+  "outputsIdenticalToPriorSequence": true,
+  "outputs": [
+    {
+      "codec": "vp8",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.993273,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 91331,
+      "outputBytes": 525916,
+      "outputSha256": "84fc5477bdb0dc97995782f77827a3e5bcedfcaa6a694cad5980910083389ae1"
+    },
+    {
+      "codec": "vp8",
+      "options": {
+        "codec": "mpeg4",
+        "maxWidth": 320,
+        "bitRateBps": 4000000,
+        "frameRateFps": 15,
+        "quality": "balanced"
+      },
+      "fullDecode": true,
+      "frames": 30,
+      "fps": 15,
+      "ssim": 0.986054,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 91331,
+      "outputBytes": 112270,
+      "outputSha256": "a36ff4fec77bc5defbe1b529a06d20aa71cfe146b07021516d73236a383303eb"
+    },
+    {
+      "codec": "vp9",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.996114,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 438626,
+      "outputBytes": 593687,
+      "outputSha256": "1e8dc6e85e1337c025f9d6fca1e5bbab0ab4cf7df56079e260d9312cd42dec19"
+    },
+    {
+      "codec": "vp9",
+      "options": {
+        "codec": "mpeg4",
+        "maxWidth": 320,
+        "bitRateBps": 4000000,
+        "frameRateFps": 15,
+        "quality": "balanced"
+      },
+      "fullDecode": true,
+      "frames": 30,
+      "fps": 15,
+      "ssim": 0.98829,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 438626,
+      "outputBytes": 108167,
+      "outputSha256": "15f0912f97349e82cc47d7eb8d5cd2daa4bc0fe0e00cfc672f44de987465d496"
+    },
+    {
+      "codec": "vp8",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.993273,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 123374,
+      "outputBytes": 559403,
+      "outputSha256": "6d845ec63901e6124d47ee33121c8c905c6f816b0b8fd97accc4a57109620e13"
+    },
+    {
+      "codec": "vp8",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.993273,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 91331,
+      "outputBytes": 525916,
+      "outputSha256": "84fc5477bdb0dc97995782f77827a3e5bcedfcaa6a694cad5980910083389ae1"
+    }
+  ],
+  "pins": true,
+  "sourcePinCount": 29,
+  "cleanup": true,
+  "server": {
+    "identity": {
+      "pid": 34916,
+      "parentPid": 40004,
+      "createdAt": "2026-10-21T16:01:47.1414440Z"
+    },
+    "ownedRootAbsent": true
+  },
+  "unavailableSamples": 0,
+  "forbiddenRequests": [],
+  "report": {
+    "path": "output/playwright/vpx-decoder-qualification-2026-10-21T16-01-40.371Z.json",
+    "bytes": 1731392,
+    "sha256": "85647d5f6f966545f9a883119a3759becad99cdcef1ca3f3b9e93967cb149372"
+  },
+  "interpretation": [
+    "Transport is bounded and content-exact but does not resolve accumulated memory",
+    "Early observed main allocated JS heap remains near10MiB while late renderer private peaks329199616B; checkpoint scope does not establish the late allocation cause",
+    "Never substitute the177MiB one-job pass for this full-sequence failure"
+  ],
+  "next": "One same-source/same-input/output observer control with allocation attachments disabled; keep native OS sampler/full tree/blank/formula/validators unchanged",
+  "memoryAcceptance": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false
+}

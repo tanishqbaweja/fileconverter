@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+Final cycle safety: protected test.mkv2958573265B/SHA31f36695 freshly full-stream
+verified, never converted this cycle. All5local run-specific runtime roots and
+private asset stage independently verified absent; each owned server exit/pins
+confirmed. Retained native43source/16artifact audit passes. Final16focused/TS/
+targeted lint pass, including synchronous/asynchronous software-hint rejection
+fallback; no expensive unchanged browser rerun for that guard-only correction.
+All work headless/no Docker/no unrelated apps closed. Full goal remains incomplete.
+`evidence/2026-10-21-vpx-memory-cycle-final-safety.json`.
+
+2026-10-21 c2282d2 observer control: optional allocation attachments OFF, unchanged
+native100ms all-process sampler/lower same-instance blank/exact validators.
+9PASS/1FAIL45.9s,345.63671875MiB memory FAIL. All6outputs match attachment-on case;
+29source/browser pins/privacy/owned cleanup pass. Additional realm attachments
+are NOT the remaining memory fix; no unchanged repeat. Late-job allocation evidence
+is next, not guessed source changes. Exact baseline/report/digests/results:
+`evidence/2026-10-21-vpx-allocation-attachment-off-control.json`.
+
+2026-10-21 c2282d2 bounded transport full sequence9PASS/1FAIL47.7s; all6outputs
+identical to prior run.41chunks/2425359decoded B,64KiB reads/87384wire chars max,
+one pending/terminal0; no whole-file buffering/HTTP. Memory FAIL326.91015625MiB;
+29pins/privacy/cleanup pass,0unavailable. No engine speed or memory-fix claim.
+Next diagnostic-attachment-off control, not unchanged retry or threshold change.
+`evidence/2026-10-21-vpx-bounded-validator-transport-result.json`.
+
 ## 2026-10-21 - First coherent corrected-core nine-case correctness PASS; accumulated memory FAIL
 
 6a8f7ef8 installed Windows155 uninterrupted full sequence9PASS/1FAIL59.9s. All4

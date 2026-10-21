@@ -1,0 +1,139 @@
+{
+  "schemaVersion": 1,
+  "scope": "Same-source allocation-attachment-off observer control; native100ms whole-tree sampler and all validators unchanged",
+  "implementationCommit": "c2282d2be892cb42fc9340285f512515d8fa7d15",
+  "status": "9PASS/1FAIL45.9s",
+  "browser": "155.0.8059.85",
+  "observer": {
+    "enabled": false,
+    "checkpointLimit": 8,
+    "targetLimit": 16,
+    "pendingCdpLimit": 64,
+    "maximumCdpReplyBytes": 1048576,
+    "maximumLightTraceBytes": 8388608,
+    "postMeasurementDumpOnly": true,
+    "forcedGc": false,
+    "processTreeFormulaChanged": false
+  },
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 232402944,
+    "spreadBytes": 1654784,
+    "rssBytes": 480915456,
+    "firstTimestamp": "2026-10-21T16:05:12.2496770Z",
+    "lastTimestamp": "2026-10-21T16:05:20.7587004Z",
+    "sampleCount": 8,
+    "minimumElapsedMs": 8000
+  },
+  "incrementalPrivateMiB": 345.63671875,
+  "phasePeaks": [
+    {
+      "phase": "blank",
+      "validSamples": 175,
+      "privateBytes": 262721536,
+      "incrementalMiB": 28.9140625
+    },
+    {
+      "phase": "loaded",
+      "validSamples": 4,
+      "privateBytes": 300118016,
+      "incrementalMiB": 64.578125
+    },
+    {
+      "phase": "conversion-vp8-1",
+      "validSamples": 6,
+      "privateBytes": 440422400,
+      "incrementalMiB": 198.3828125
+    },
+    {
+      "phase": "independent-validation",
+      "validSamples": 63,
+      "privateBytes": 549396480,
+      "incrementalMiB": 302.30859375
+    },
+    {
+      "phase": "conversion-vp8-2",
+      "validSamples": 4,
+      "privateBytes": 422776832,
+      "incrementalMiB": 181.5546875
+    },
+    {
+      "phase": "conversion-vp9-3",
+      "validSamples": 5,
+      "privateBytes": 496881664,
+      "incrementalMiB": 252.2265625
+    },
+    {
+      "phase": "conversion-vp9-4",
+      "validSamples": 5,
+      "privateBytes": 513077248,
+      "incrementalMiB": 267.671875
+    },
+    {
+      "phase": "conversion-vp8-5",
+      "validSamples": 5,
+      "privateBytes": 425840640,
+      "incrementalMiB": 184.4765625
+    },
+    {
+      "phase": "recovery",
+      "validSamples": 9,
+      "privateBytes": 540770304,
+      "incrementalMiB": 294.08203125
+    },
+    {
+      "phase": "conversion-vp8-7",
+      "validSamples": 2,
+      "privateBytes": 415162368,
+      "incrementalMiB": 174.29296875
+    },
+    {
+      "phase": "conversion-vp9-8",
+      "validSamples": 4,
+      "privateBytes": 550604800,
+      "incrementalMiB": 303.4609375
+    },
+    {
+      "phase": "conversion-vp8-9",
+      "validSamples": 4,
+      "privateBytes": 594829312,
+      "incrementalMiB": 345.63671875
+    }
+  ],
+  "allSixOutputsIdenticalToAttachmentOnControl": true,
+  "transport": {
+    "mode": "one-base64-string-per-at-most64KiB-chunk-not-whole-file-base64",
+    "chunks": 41,
+    "totalDecodedBytes": 2425359,
+    "maximumDecodedChunkBytes": 65536,
+    "maximumEncodedCharacters": 87384,
+    "pending": 0,
+    "peakPending": 1,
+    "fileDataOverHttp": false,
+    "completeOutputBuffered": false
+  },
+  "sourcePinCount": 29,
+  "pins": true,
+  "cleanup": true,
+  "server": {
+    "identity": {
+      "pid": 26376,
+      "parentPid": 32432,
+      "createdAt": "2026-10-21T16:05:00.6499770Z"
+    },
+    "ownedRootAbsent": true
+  },
+  "forbiddenRequests": [],
+  "unavailableSamples": 0,
+  "report": {
+    "path": "output\\playwright\\vpx-decoder-qualification-2026-10-21T16-04-52.611Z.json",
+    "bytes": 1163891,
+    "sha256": "39e70aefa6495914d58d787972140c89483bc32273482e500e80a09488fe70a1"
+  },
+  "conclusion": "Removing optional allocation attachments does not resolve the repeated-job memory failure. Do not blame that observer or repeat this unchanged control.",
+  "next": "Add bounded late-job/in-conversion realm/native allocation observations to separate live codec memory from post-retirement renderer retention; preserve every current correctness/input/quality/memory gate.",
+  "memoryAcceptance": false,
+  "publicAcceptance": false,
+  "largeFileCoverage": false,
+  "fullGoalComplete": false
+}

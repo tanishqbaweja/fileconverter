@@ -1,5 +1,13 @@
 # Release closure — original scope, not a reduced MVP
 
+B06 repeated-job memory remains OPEN after two explicit controls: bounded exact-
+byte validator transport326.91015625MiB and allocation-attachment-off345.63671875MiB
+both FAIL despite all9correctness cases/all6outputs passing identically. They do
+not resolve renderer growth. Do not rerun these unchanged controls. Next bounded
+late-job/in-conversion allocation evidence, then a source-specific correction.
+Startup GPU fix/single-case177MiB pass retained, not whole-project acceptance.
+`evidence/2026-10-21-vpx-allocation-attachment-off-control.json`.
+
 B03 whole corrected-core9private correctness/control/terminal cases now PASS in
 one Windows155 session. B06 accumulated memory still FAIL346.515625MiB, despite
 177.0234375MiB paired single-case PASS. GPU fix retained; late renderer growth

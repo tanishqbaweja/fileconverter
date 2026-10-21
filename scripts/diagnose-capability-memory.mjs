@@ -124,12 +124,14 @@ try {
 finally {
   clearInterval(timer); await pending;
   try {
-    await finishOwnedCleanup([
-      async () => { if (monitor) { try { await drain(); } finally { await monitor.close(); monitor = undefined; } } },
-      async () => { if (context) { await context.close(); context = undefined; } },
-      async () => { if (server) { await new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve())); server = undefined; } },
-    ]);
-    if (runtime) await runtime.close(); report.disposableDataRemoved = true;
+    try {
+      await finishOwnedCleanup([
+        async () => { if (monitor) { try { await drain(); } finally { await monitor.close(); monitor = undefined; } } },
+        async () => { if (context) { await context.close(); context = undefined; } },
+        async () => { if (server) { await new Promise((resolve, reject) => server.close(error => error ? reject(error) : resolve())); server = undefined; } },
+      ]);
+    } finally { if (runtime) await runtime.close(); }
+    report.disposableDataRemoved = true;
   } catch (error) { report.failures.push(String(error)); process.exitCode = 1; }
   if (browserRootPid) annotateNativeProcessTypes(samples, references, browserRootPid);
   report.finishedAt = new Date().toISOString(); report.stages = stages; report.samples = samples; report.forbiddenRequests = forbiddenRequests;

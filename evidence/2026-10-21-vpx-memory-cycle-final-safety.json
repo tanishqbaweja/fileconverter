@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-21T16:08:56.281Z",
+  "protectedOriginal": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "fullStreamingHashVerified": true,
+    "notConvertedThisCycle": true
+  },
+  "localBrowserRuns": [
+    {
+      "report": "vpx-decoder-qualification-2026-10-21T15-41-25.261Z.json",
+      "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\vd-rn4enz",
+      "verifiedAbsent": true,
+      "ownedServerAbsent": true
+    },
+    {
+      "report": "vpx-decoder-qualification-2026-10-21T15-53-11.881Z.json",
+      "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\vd-uIgtN3",
+      "verifiedAbsent": true,
+      "ownedServerAbsent": true
+    },
+    {
+      "report": "vpx-decoder-qualification-2026-10-21T15-55-49.221Z.json",
+      "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\vd-tuujYU",
+      "verifiedAbsent": true,
+      "ownedServerAbsent": true
+    },
+    {
+      "report": "vpx-decoder-qualification-2026-10-21T16-01-40.371Z.json",
+      "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\vd-Jh4gML",
+      "verifiedAbsent": true,
+      "ownedServerAbsent": true
+    },
+    {
+      "report": "vpx-decoder-qualification-2026-10-21T16-04-52.611Z.json",
+      "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\vd-tjWNdN",
+      "verifiedAbsent": true,
+      "ownedServerAbsent": true
+    }
+  ],
+  "currentPrivateAssetStageAbsent": true,
+  "retainedNativeArtifact": {
+    "directory": "H:\\Github Repositories\\fileconverter\\work\\vpx-chapter-end-39623553380",
+    "manifestSha256": "d7a0a786da6108b171c28890ccbabea8a28ac81e0e9adb3d0f6ff8f17d50c6ea",
+    "sourcePinsVerified": 43,
+    "artifactPinsVerified": 16
+  },
+  "finalChecks": {
+    "focusedTests": 16,
+    "failed": 0,
+    "skipped": 0,
+    "typeScript": "pass",
+    "targetedLint": "pass",
+    "syncAndAsyncUnsupportedSoftwareHintFallback": "unit-tested",
+    "diagnosticFinallyAttemptsRuntimeCleanupEvenIfOtherCleanupFails": true
+  },
+  "noNativeRebuild": true,
+  "noDocker": true,
+  "noUnrelatedProcessesClosed": true,
+  "headlessOnly": true,
+  "goalComplete": false
+}

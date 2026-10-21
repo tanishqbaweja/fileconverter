@@ -1,5 +1,31 @@
 # Remaining work audit
 
+Final cycle checkpoint:16focused/TS/lint pass including sync+async hardware-only
+fallback guards. Five local owned runtime roots/private asset stage verified gone;
+test.mkv full-stream size/SHA exact, retained native43/16audit pass. No unresolved
+live test/job handle. Next investigate late-job/in-conversion renderer allocation;
+do not repeat rejected transport/attachment controls or claim goal acceptance.
+`evidence/2026-10-21-vpx-memory-cycle-final-safety.json`.
+
+## 2026-10-21 - Allocation attachments excluded as the repeated-job memory cause
+
+Samec2282d2 source/inputs/settings/output validators with optional allocation
+attachments OFF still gives9PASS/1FAIL45.9s and345.63671875MiB whole-tree increment.
+All6outputs exactly match attachment-on control;29pins/privacy/cleanup pass.
+Do not repeat this unchanged observer control or blame attachments as the fix.
+Retain genuine startup GPU fix and177MiB single-case result in exact scope, not
+overall acceptance. Next bounded late-job/in-conversion realm/native attribution
+must distinguish live codec allocations and retired-worker renderer retention.
+Full54/B02-B09/repeat/scaling/UI/public memory gates OPEN.
+`evidence/2026-10-21-vpx-allocation-attachment-off-control.json`.
+
+2026-10-21 bounded validator transport actualc2282d2:9PASS/1FAIL47.7s, all6outputs
+byte-identical to prior sequence,41bounded chunks/2425359B/64KiB max/one pending.
+Full-tree memory still FAIL326.91015625MiB. This is NOT the remaining memory fix.
+29pins/privacy/cleanup pass; next one observer-only control disables allocation
+attachments while retaining native OS sampler/full tree/lower clean blank/validators.
+`evidence/2026-10-21-vpx-bounded-validator-transport-result.json`.
+
 ## 2026-10-21 - Whole private sequence9PASS; accumulated memory still FAIL346.515625MiB
 
 All9VP8/VP9 default/control/multi-track/reject/pre-cancel/write-failure/recovery

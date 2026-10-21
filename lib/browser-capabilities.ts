@@ -122,10 +122,15 @@ export async function videoEncoderSupport(): Promise<boolean> {
     { codec: "vp09.00.10.08", width: 16, height: 16, bitrate: 100_000, framerate: 1 },
     { codec: "avc1.42001e", width: 16, height: 16, bitrate: 100_000, framerate: 1 },
   ];
-  const probe = (configuration: VideoEncoderConfig) =>
-    VideoEncoder.isConfigSupported(configuration)
-      .then((result) => result.supported === true)
-      .catch(() => false);
+  const probe = async (configuration: VideoEncoderConfig): Promise<boolean> => {
+    try {
+      return (await VideoEncoder.isConfigSupported(configuration)).supported === true;
+    } catch {
+      // Older implementations can reject an unfamiliar preference either
+      // synchronously or through the returned promise. Both retain fallback.
+      return false;
+    }
+  };
   // This startup flag asks whether ANY encoder is functional, not whether a
   // particular hardware encoder is available. Default-preference queries can
   // initialize a large GPU-driver allocation even for CPU-only conversions.

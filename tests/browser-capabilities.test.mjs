@@ -155,13 +155,14 @@ test("startup probes software functionality first without initializing unneeded 
 test("hardware-only availability and rejected software hints retain the original functional fallback", async () => {
   const original = Object.getOwnPropertyDescriptor(globalThis, "VideoEncoder");
   try {
-    for (const mode of ["unsupported", "rejected", "all-unavailable"]) {
+    for (const mode of ["unsupported", "rejected", "sync-rejected", "all-unavailable"]) {
       const calls = [];
       Object.defineProperty(globalThis, "VideoEncoder", { configurable: true, value: class {
-        static async isConfigSupported(configuration) {
+        static isConfigSupported(configuration) {
           calls.push(configuration);
-          if (configuration.hardwareAcceleration && mode === "rejected") throw new Error("Software hint unavailable");
-          return { supported: mode !== "all-unavailable" && !configuration.hardwareAcceleration && configuration.codec === "avc1.42001e" };
+          if (configuration.hardwareAcceleration && mode === "sync-rejected") throw new Error("Software hint unavailable");
+          if (configuration.hardwareAcceleration && mode === "rejected") return Promise.reject(new Error("Software hint unavailable"));
+          return Promise.resolve({ supported: mode !== "all-unavailable" && !configuration.hardwareAcceleration && configuration.codec === "avc1.42001e" });
         }
       } });
       assert.equal(await videoEncoderSupport(), mode !== "all-unavailable");
