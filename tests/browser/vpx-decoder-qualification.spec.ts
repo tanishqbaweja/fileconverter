@@ -32,6 +32,7 @@ const report: Record<string, unknown> = { scope: "private-production-coordinator
 let runtime: Awaited<ReturnType<typeof createOwnedRuntimeScratch>> | undefined;
 let server: Awaited<ReturnType<typeof startOwnedProductionTestServer>> | undefined;
 let context: BrowserContext | undefined, page: Page;
+let browserLaunched = false;
 let env: NodeJS.ProcessEnv, assetIdentity: Awaited<ReturnType<typeof lstat>> | undefined;
 let audit: Awaited<ReturnType<typeof auditVpxDecoderArtifact>>;
 let browserPin: Awaited<ReturnType<typeof inspectInstalledChromePin>> | undefined;
@@ -77,11 +78,11 @@ test.beforeAll(async () => {
     report.hostMemory = { freePhysicalBytes: physical, freeVirtualBytes: physical + swap, safeToStart: true };
   }
   const disk = await statfs(root); expect(disk.bavail * disk.bsize).toBeGreaterThanOrEqual(2 * 1024 ** 3);
-  audit = await auditVpxDecoderArtifact(process.env.WITHIN_VPX_CANDIDATE_DIRECTORY ?? path.join(root, "work/vpx-decoders-39523641019")); report.artifact = audit;
+  audit = await auditVpxDecoderArtifact(process.env.WITHIN_VPX_CANDIDATE_DIRECTORY ?? path.join(root, "work/vpx-timing-39581181533")); report.artifact = audit;
   for (const file of ["app/converter/ConverterApp.tsx", "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/vpx-core-loader.ts",
     "workers/random-access-destination.ts", "workers/staged-save.worker.ts", "workers/staged-save-runtime.ts", "lib/staged-worker-coordinator.ts",
     "lib/staged-copy-protocol.ts", "lib/vpx-decoder-policy.ts", "lib/media-native-arguments.ts", "lib/vpx-qualification-job.ts",
-    "tests/browser/vpx-decoder-qualification.spec.ts", "scripts/lib/vpx-decoder-artifact.mjs", "scripts/lib/owned-production-test-server.mjs",
+    "tests/browser/vpx-decoder-qualification.spec.ts", "scripts/lib/vpx-decoder-artifact.mjs", "scripts/lib/vpx-postbuild-recovery.mjs", "scripts/lib/owned-production-test-server.mjs",
     "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs", "scripts/lib/windows-tree-monitor.ps1"])
     sourcePins[file] = sha(await readFile(path.join(root, file)));
   report.executedSourcePins = sourcePins;
@@ -122,6 +123,7 @@ test.beforeAll(async () => {
   context = await chromium.launchPersistentContext(path.join(runtime.directory, "profile"), {
     executablePath: browserPin?.launcher.path ?? (process.platform === "win32" && existsSync(installed) ? installed : chromium.executablePath()),
     headless: true, env, serviceWorkers: "block" });
+  browserLaunched = true;
   report.browserVersion = context.browser()?.version() ?? null;
   page = context.pages()[0] ?? await context.newPage();
   await page.exposeFunction("receiveVpxValidationChunk", async (chunk: number[]) => {
@@ -308,7 +310,9 @@ test.afterAll(async () => {
   cleanup.push(async () => {
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
-    report.executedSourcesAndBrowserPinsVerified = true;
+    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 19;
+    report.installedChromeBinaryPinsVerified = browserPin ? true : null;
+    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 19 && Boolean(browserPin);
   });
   if (assetIdentity) cleanup.push(async () => {
     const current = await lstat(assetDirectory); expect(current.dev).toBe(assetIdentity!.dev); expect(current.ino).toBe(assetIdentity!.ino);

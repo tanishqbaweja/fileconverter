@@ -115,7 +115,7 @@ export function verifyVpxSpecialistComponents(source) {
     ["enabledDemuxers", "DEMUXER", ["matroska"], ["matroska"]],
     ["enabledMuxers", "MUXER", ["mp4", "mov"], ["mp4"]],
     ["enabledParsers", "PARSER", ["aac", "aac_latm", "ac3", "vp8", "vp9"], ["vp8", "vp9"]],
-    ["enabledBitstreamFilters", "BSF", ["aac_adtstoasc"], ["aac_adtstoasc"]],
+    ["enabledBitstreamFilters", "BSF", ["aac_adtstoasc", "vp9_superframe", "vp9_superframe_split"], ["aac_adtstoasc"]],
   ]) {
     const names = [...source.matchAll(new RegExp("^#define CONFIG_([A-Z0-9_]+)_" + suffix + " 1$", "gm"))].map(match => match[1].toLowerCase()).sort();
     assert.ok(names.length > 0 && names.every(name => allowed.includes(name)), "Undeclared specialist component: " + key + ":" + names);

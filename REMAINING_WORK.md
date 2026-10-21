@@ -1,5 +1,38 @@
 # Remaining work audit
 
+## 2026-10-21 - Both software decoders now genuinely pass browser fidelity/controls; chapter and memory still fail
+
+Four real production coordinator/worker/AVIO/staged-save cases PASS: VP8 and VP9,
+default and combined nondefault controls.48frames/24fps or30frames/15fps, expected
+dimensions, exact frame intervals, unchanged AAC packets AND decoded PCM hashes,
+full independent decode, SSIM.993273/.986054/.996114/.988290 (threshold.98), title/
+language,256KiB native/512KiB save bounds, one write, retired codec and scratch0.
+This closes the specific CPU-decoder/12-argument/timing/priming small-case checks,
+not B03/public acceptance or the whole54 requirements. No speedup/global-fastest claim.
+
+The actual specialist Wasm is4651708B vs11054537B broad core with the same32–96MiB
+heap limits/settings.39581181533/b53061ba compiler succeeded; workflow FAILS only
+because the post-build allowlist omitted two automatic VP9 BSFs. Exact declaration
+correction and independent40source/15artifact/compiled C/config/ABI/heap audit reuse
+the already built bytes, retaining raw manifest and immutable build provenance.
+The failed job is NOT relabelled green; no identical Wasm rebuild was done.
+
+Fifth real case FAILS: two AAC tracks/languages survive, but source chapter start
+0.5s becomes0s (end1.5s/title survive); later multi-track hash assertions not reached.
+Five following checks not executed. Five-job whole-tree observation including
+independent-validation transport peaks389.1875MiB over stable blank, so memory
+remains noncompliant; not a paired one-job before/after comparison. Latest local
+terminal-only attempt is refused before browser launch at~.725GiB free physical
+RAM; no guard bypass or application closure. Four unexecuted terminal/recovery
+cases prepared for a hosted headless runner, not Windows memory/chapter certification.
+
+All disposable media/profiles/scratch/private dist assets removed;13 observed
+Chromium births independently absent. Protected original size/SHA unchanged.
+Two obsolete owned native-tool directories22996347B removed after identity/hash
+checks; current small candidate retained.16 focused tests/TypeScript/lint PASS.
+Exact full scope/proof/failures/cleanup/next gates:
+`evidence/2026-10-21-vpx-specialist-browser-cycle.json`.
+
 ## 2026-10-21 - Changed native audio preservation works; exact MP4 timing remains a real failure
 
 Correctionca45ff1 is pushed. Changed presentation/specialist build39581181533 /

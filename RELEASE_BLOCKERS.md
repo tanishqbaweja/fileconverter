@@ -1,5 +1,16 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 specific progress: four genuine CPU VP8/VP9→MPEG4 default/control browser
+cases now pass full decode,SSIM>=.98, exact frame timing and decoded-AAC identity.
+B03 still OPEN: chapter-start preservation fails.5→0, terminal/recovery and scaling/
+final integration/public gates incomplete. B06 OPEN: five-job+validation whole-tree
+observation389.1875MiB exceeds250; smaller Wasm does not prove memory acceptance.
+Native compilation succeeded but job39581181533 remains failed for an audit-only
+dependency declaration; already compiled bytes independently recovered/verified,
+not rebuilt or labelled green. Newest local browser launch denied by RAM guard;
+hosted alternative limited to four unexecuted terminal cases. Full54 unchanged.
+`evidence/2026-10-21-vpx-specialist-browser-cycle.json`.
+
 B03 newer proof: changed audio-preserving native build39577826452 SUCCESS and
 same-input browser decode/AAC packet preservation/full decode/SSIM>=.98 pass, but
 strict timing FAILS21.077ms, AAC decoded frames differ94→95, and memory FAILS at

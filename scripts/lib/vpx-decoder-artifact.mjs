@@ -7,28 +7,39 @@ import { makeVpxDecoderBuildWorkflow } from "./vpx-decoder-build-workflow.mjs";
 import { readWasmMemoryLimits } from "./wasm-memory-limits.mjs";
 import { readEmscriptenExportAbi } from "./wasm-export-abi.mjs";
 import { makeVpxPreservingSource, makeVpxPreservingRecipe, makeVpxPreservingWorkflow, makeVpxPreservingLibraries, verifyVpxSpecialistComponents } from "../../media/ffmpeg/vpx-preserving-candidate.mjs";
+import { reverseVpxAuditDeclarationCorrection, verifyVpxRecoveryProvenance } from "./vpx-postbuild-recovery.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const readTool = async file => { const info = await lstat(file); assert.ok(info.isFile() && !info.isSymbolicLink() && info.size <= 32 * 1024 ** 2); return readFile(file); };
 export async function auditVpxDecoderArtifact(input) {
   const directory = await realpath(path.resolve(input)), work = await realpath(path.join(root, "work"));
   assert.equal(path.dirname(directory), work); assert.equal(directory.toLowerCase(), path.resolve(input).toLowerCase());
-  const raw = await readTool(path.join(directory, "build-manifest.json")); assert.ok(raw.length <= 2 * 1024 ** 2);
+  let manifestName = "build-manifest.json";
+  try { await lstat(path.join(directory, "qualification-manifest.json")); manifestName = "qualification-manifest.json"; }
+  catch (error) { if (error.code !== "ENOENT") throw error; }
+  const raw = await readTool(path.join(directory, manifestName)); assert.ok(raw.length <= 2 * 1024 ** 2);
   const manifest = JSON.parse(raw), pub = JSON.parse(await readTool(path.join(root, "public/engines/remux/build-manifest.json")));
   const specialist = manifest.engine === "within-remux-private-vpx-preserving-specialist";
   const preserving = specialist || manifest.engine === "within-remux-private-vpx-preserving";
   assert.ok(preserving || manifest.engine === "within-remux-private-vpx-software-decoders");
   const candidate = manifest.candidate; assert.equal(candidate.configureEdits, specialist ? 3 : 2);
+  const recovery = candidate.postBuildAuditRecovery;
+  if (manifestName === "qualification-manifest.json") {
+    assert.ok(specialist && recovery); verifyVpxRecoveryProvenance(recovery);
+    assert.equal(sha(await readTool(path.join(directory, "build-manifest.json"))), recovery.originalManifestSha256);
+  } else assert.equal(recovery, undefined);
   assert.equal(candidate.wrapperChanged, preserving);
   for (const flag of ["encoderSettingsChanged", "ioChanged", "memoryLimitsRaised", "browserDecodeVerified", "publicAcceptance"]) assert.equal(candidate[flag], false, flag);
   assert.ok(Object.keys(manifest.sources).length > 10 && Object.keys(manifest.sources).length <= 128);
   assert.ok(Object.keys(manifest.artifacts).length > 3 && Object.keys(manifest.artifacts).length <= 64);
   for (const [file, expected] of Object.entries(manifest.artifacts)) {
-    assert.match(file, /^(?:[A-Za-z0-9_-][A-Za-z0-9_.-]*\.(?:mjs|wasm|sh|c|h)|LICENSE\.[A-Za-z0-9_.-]+)$/);
+    assert.match(file, /^(?:[A-Za-z0-9_-][A-Za-z0-9_.-]*\.(?:mjs|wasm|sh|c|h)|build-manifest\.json|LICENSE\.[A-Za-z0-9_.-]+)$/);
     assert.equal(sha(await readTool(path.join(directory, file))), expected, file);
   }
   for (const [file, expected] of Object.entries(manifest.sources)) {
     assert.match(file, /^(?:media|scripts|\.github)\/[A-Za-z0-9_./-]+$/); assert.ok(!file.split("/").includes(".."));
-    const bytes = await readTool(path.join(root, file)), actual = file === ".github/workflows/reproduce-ffmpeg-nondocker.yml"
+    let bytes = await readTool(path.join(root, file));
+    if (recovery && file === "media/ffmpeg/vpx-preserving-candidate.mjs") bytes = Buffer.from(reverseVpxAuditDeclarationCorrection(bytes.toString()));
+    const actual = file === ".github/workflows/reproduce-ffmpeg-nondocker.yml"
       ? (preserving ? makeVpxPreservingWorkflow(bytes.toString()) : makeVpxDecoderBuildWorkflow(bytes.toString())).generatedSha256 : sha(bytes);
     assert.equal(actual, expected, "Build source changed: " + file);
   }
@@ -72,7 +83,7 @@ export async function auditVpxDecoderArtifact(input) {
   assert.deepEqual(memoryLimits, candidate.wasmMemoryLimits);
   const abi = readEmscriptenExportAbi(mjs.toString(), wasm);
   assert.equal(abi.parameterCount, 12); assert.deepEqual(abi.parameters, Array(12).fill(127)); assert.deepEqual(abi.results, [127]);
-  return { directory, preserving, specialist, inventory, manifestSha256: sha(raw), components, abi, memoryLimits, compiledSourceSha256: candidate.compiledSourceSha256,
+  return { directory, preserving, specialist, inventory, recovery: recovery ?? null, manifestSha256: sha(raw), components, abi, memoryLimits, compiledSourceSha256: candidate.compiledSourceSha256,
     sourcePinsVerified: Object.keys(manifest.sources).length, artifactPinsVerified: Object.keys(manifest.artifacts).length,
     deliveredArtifacts: { "within-remux.mjs": sha(mjs), "within-remux.wasm": sha(wasm) }, publicAcceptance: false, browserDecodeVerified: false };
 }

@@ -2,6 +2,8 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { makeVpxPreservingSource, makeVpxPreservingRecipe, makeVpxPreservingWorkflow, makeVpxPreservingLibraries, verifyVpxSpecialistComponents } from "../media/ffmpeg/vpx-preserving-candidate.mjs";
+import { reverseVpxAuditDeclarationCorrection, verifyVpxRecoveryProvenance } from "../scripts/lib/vpx-postbuild-recovery.mjs";
+import { makeVpxTerminalRecoveryWorkflow } from "../scripts/lib/vpx-terminal-recovery-workflow.mjs";
 
 const source = await readFile("media/ffmpeg/within_remux.c", "utf8");
 test("private preservation recipe changes only bounded MP4 audio/chapter policy, not codecs/I/O/heap", async () => {
@@ -33,9 +35,28 @@ test("specialist configure retains the exact route codecs/settings while removin
   assert.equal(libraries.edits.length, 1); assert.match(libraries.generated, /DECODER_CONFIGURE_FLAGS=\(--enable-decoder=aac,vp8,vp9\)/);
   assert.match(libraries.generated, /ENCODER_CONFIGURE_FLAGS=\(--enable-encoder=mpeg4\)/);
   assert.match(libraries.generated, /ENABLED_DEMUXERS=matroska\nENABLED_MUXERS=mp4/);
-  const config = ["AAC_DECODER", "VP8_DECODER", "VP9_DECODER", "MPEG4_ENCODER", "H263_ENCODER", "MATROSKA_DEMUXER", "MP4_MUXER", "AAC_PARSER", "VP8_PARSER", "VP9_PARSER", "AAC_ADTSTOASC_BSF"].map(name => `#define CONFIG_${name} 1`).join("\n");
+  const config = ["AAC_DECODER", "VP8_DECODER", "VP9_DECODER", "MPEG4_ENCODER", "H263_ENCODER", "MATROSKA_DEMUXER", "MP4_MUXER", "AAC_PARSER", "VP8_PARSER", "VP9_PARSER", "AAC_ADTSTOASC_BSF", "VP9_SUPERFRAME_BSF", "VP9_SUPERFRAME_SPLIT_BSF"].map(name => `#define CONFIG_${name} 1`).join("\n");
   assert.deepEqual(verifyVpxSpecialistComponents(config).enabledDecoders, ["aac", "vp8", "vp9"]);
   for (const component of ["HEVC_DECODER", "LIBVPX_VP9_ENCODER", "AVI_DEMUXER", "WEBM_MUXER"])
     assert.throws(() => verifyVpxSpecialistComponents(config + `\n#define CONFIG_${component} 1`));
   assert.throws(() => verifyVpxSpecialistComponents(config.replace("CONFIG_VP9_DECODER 1", "CONFIG_VP9_DECODER 0")));
+});
+test("post-build recovery permits only the exact dependency declaration and cannot relabel workflow or bytes", async () => {
+  const current = await readFile("media/ffmpeg/vpx-preserving-candidate.mjs", "utf8");
+  const reversed = reverseVpxAuditDeclarationCorrection(current);
+  assert.notEqual(reversed, current); assert.throws(() => reverseVpxAuditDeclarationCorrection(reversed));
+  const valid = { run: 39581181533, job: 119158907067, buildCommit: "b53061ba87a310b986ab79a6e12a080a33f58fd5",
+    workflowConclusion: "failure", compiledBytesRebuiltOrModified: false, originalManifestFile: "build-manifest.json",
+    originalManifestSha256: "0".repeat(64), allowedSourceCorrection: "exact-two-VP9-automatic-BSF-declarations-only" };
+  verifyVpxRecoveryProvenance(valid);
+  for (const change of [{ workflowConclusion: "success" }, { compiledBytesRebuiltOrModified: true }, { run: 1 }, { originalManifestFile: "other" }])
+    assert.throws(() => verifyVpxRecoveryProvenance({ ...valid, ...change }));
+});
+test("hosted recovery selects exactly four unexecuted terminal cases and retains source/artifact/cleanup guards", async () => {
+  const source = await readFile(".github/workflows/ci.yml", "utf8"), workflow = makeVpxTerminalRecoveryWorkflow(source);
+  assert.equal(workflow.selectedCases, 4); assert.equal(workflow.publicAcceptance, false); assert.equal(workflow.memoryAcceptance, false);
+  assert.match(workflow.generated, /39581181533/); assert.match(workflow.generated, /recoverVpxSpecialistManifest/);
+  assert.match(workflow.generated, /run-id: 39581181533/); assert.match(workflow.generated, /actions: read/);
+  assert.match(workflow.generated, /private-vpx-terminal-/); assert.match(workflow.generated, /retention-days: 1/);
+  assert.throws(() => makeVpxTerminalRecoveryWorkflow(source + "\n"));
 });

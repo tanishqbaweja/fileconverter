@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Four genuine VP8/VP9 decode/encode and control cases PASS; no public promotion
+
+Actual production app coordinator/worker/AVIO/staged-save: VP8/VP9 default plus
+320px/4Mbps/15fps/balanced controls all pass full independent decode, exact frame
+counts/intervals/dimensions, original AAC packets and decoded PCM hashes, metadata,
+SSIM.993273/.986054/.996114/.988290 >=.98, one pending write and original bounds.
+Specific timing/priming defect fixed in these small cases. Specialist Wasm4.65MB
+vs broad11.05MB; no validated speedup or large-file/public-support claim.
+
+Compiler39581181533 succeeded; workflow remains FAIL at its post-build declaration
+of two automatic VP9 BSFs. Exact audit-only correction plus40source/15artifact/
+actual C/config/ABI/heap verification recovers existing bytes without rebuilding
+or altering Wasm or its original manifest. Fifth case chapter start.5→0 FAILS;
+multi-AAC hashes and following five checks not reached. Five-job+validation whole-
+tree observation389.1875MiB FAILS250, not a paired one-job memory comparison.
+Terminal-only local follow-up blocked safely before launch by~.725GiB free physical
+RAM; four unexecuted cases prepared for hosted correctness, not memory acceptance.
+
+16 focused tests/TypeScript/lint pass. Disposable media/profiles/scratch/dist assets
+removed;13 observed Chrome births absent. Original SHA/size unchanged. Removed
+22.996MB obsolete owned tool copies, retain only current small candidate. Full proof:
+`evidence/2026-10-21-vpx-specialist-browser-cycle.json`.
+
 ## 2026-10-21 - AAC-preserving native core genuinely browser-tested; timing blocks acceptance
 
 Pushed correctionca45ff1; actual changed presentation/specialist no-Docker build
