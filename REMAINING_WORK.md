@@ -1,5 +1,18 @@
 # Remaining work audit
 
+## 2026-10-21 - Actual changed exact-AAC build running; independent zero-start comparison ready
+
+39591655669/job119193842017 atb59180ed is live; resume exact handle, do not replace
+on timeout. Build source parent91e784f, wrapperbc03d60b/MOVf927c6e1 expected. Main
+workflow unchanged; isolated Git index removed, no original-fixture copy. Current
+validator recognizes only explicit source header padding with observed PTS/DTS/
+stream-header0 for the new zero-start fallback, preserving all old negative checks.
+Output trim still observed; raw PCM/counts/packet hashes/original1ms clocks plus
+audible-origin equality mandatory. Chapter2ms assertion retained after audio checks.
+20focused tests/TS/lint pass. Changed artifact/browser/chapter/memory/scaling gates
+pending; full54/B02-B09 remain OPEN. Exact live proof/next:
+`evidence/2026-10-21-vpx-exact-aac-build-launch.json`.
+
 ## 2026-10-21 - Evidence-directed zero-start AAC native correction implemented privately
 
 Separate vpx-aac helper/CLI/builder derives authenticated wrapper and existing

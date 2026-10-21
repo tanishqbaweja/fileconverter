@@ -42,3 +42,20 @@ test("track selection is explicitly bounded before file access or a native decod
   for (const audioOrdinal of [-1, 8, 0.5, null, "1"])
     await assert.rejects(validateSmallCopiedAac("not-read", "not-read", { audioOrdinal }), /audioOrdinal/);
 });
+test("the independently recorded zero-start source retains its exact header trim and audible origin", () => {
+  const before = probe(), after = probe(true, true);
+  for (const p of [before, after]) { p.packets[0].pts_time = "0"; p.packets[0].dts_time = "0";
+    p.packets[1].pts_time = "0.021333"; p.packets[1].dts_time = "0.021333"; }
+  before.streams[0].start_time = "0.000000";
+  const source = readSmallAacTrim(before, "source"), output = readSmallAacTrim(after, "output");
+  assert.equal(source.trimProvenance, "explicit-Matroska-initial_padding-at-observed-zero-start");
+  const result = validateSmallAacEvidence(source, output, pcm(), pcm());
+  assert.equal(result.sourceAudibleStartSeconds, 1024 / 48000);
+  assert.equal(result.sourceAudibleStartSeconds, result.outputAudibleStartSeconds);
+  const missing = structuredClone(before); delete missing.streams[0].start_time;
+  assert.throws(() => readSmallAacTrim(missing, "source"), /corroborated/);
+  const shifted = structuredClone(output); shifted.audibleStartSeconds += 0.002;
+  assert.throws(() => validateSmallAacEvidence(source, shifted, pcm(), pcm()), /origin changed/);
+  const noOutputTrim = structuredClone(after); delete noOutputTrim.packets[0].side_data_list;
+  assert.throws(() => validateSmallAacEvidence(source, readSmallAacTrim(noOutputTrim, "output"), pcm(), pcm()), /Leading trim changed/);
+});

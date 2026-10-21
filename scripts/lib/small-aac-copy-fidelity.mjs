@@ -25,16 +25,22 @@ export function readSmallAacTrim(probe, role) {
   assert.ok(Array.isArray(packets) && packets.length >= 2 && packets.length <= 512);
   const header = integer(stream.initial_padding, "initial_padding", rate), first = skipEntry(packets[0], rate);
   const firstPts = Number(packets[0].pts_time); assert.ok(typeof packets[0].pts_time === "string" && Number.isFinite(firstPts));
+  const firstDts = Number(packets[0].dts_time); assert.ok(typeof packets[0].dts_time === "string" && Number.isFinite(firstDts));
+  assert.equal(firstDts, firstPts, "AAC fixture must not reorder its first packet");
+  const negativePreroll = Math.abs(firstPts + header / rate) <= 0.001;
+  const observedZeroStart = firstPts === 0 && typeof stream.start_time === "string" && Number(stream.start_time) === 0;
   let leading = first?.skip ?? 0, headerFallbackUsed = false;
   if (first && header > 0) assert.equal(first.skip, header, "Conflicting header/packet priming");
   if (!first && header > 0) {
     // Older FFprobe exposes Matroska CodecDelay as initial_padding but does not
-    // attach Skip Samples to packet1. Its negative preroll must corroborate it.
+    // attach Skip Samples to packet1. Accept the independently reproduced
+    // negative-preroll or explicit zero-start layout, never guessed offsets.
     assert.equal(role, "source", "No inferred trim for output MP4");
-    assert.ok(Math.abs(firstPts + header / rate) <= 0.001, "Header priming is not corroborated by source preroll");
+    assert.ok(negativePreroll || observedZeroStart, "Header priming needs corroborated negative preroll or observed zero start");
     leading = header; headerFallbackUsed = true;
   }
-  if (leading > 0) assert.ok(Math.abs(firstPts + leading / rate) <= 0.001, "Only known zero-origin AAC priming fixtures are covered");
+  if (leading > 0 && firstPts < 0)
+    assert.ok(Math.abs(firstPts + leading / rate) <= 0.001, "Negative AAC preroll disagrees with declared trim");
   for (let i = 1; i < packets.length; i++) {
     const entry = skipEntry(packets[i], rate); assert.equal(entry?.skip ?? 0, 0, "Interior decoder trim/discontinuity unsupported by this fixture validator");
     if (i !== packets.length - 1) assert.equal(entry?.tail ?? 0, 0, "Interior discard metadata");
@@ -48,12 +54,16 @@ export function readSmallAacTrim(probe, role) {
       { side_data_type: "Skip Samples", skip_samples: leading, discard_padding: 0 }] } : packet;
   });
   return { rate, channels: stream.channels, streamIndex: stream.index, leading, trailing, headerPadding: header,
+    firstPtsSeconds: firstPts, audibleStartSeconds: firstPts + leading / rate,
     observedPacketSkip: first?.skip ?? null, headerFallbackUsed, semanticPackets,
-    trimProvenance: headerFallbackUsed ? "explicit-Matroska-initial_padding-plus-negative-preroll" : "observed-packet-Skip-Samples" };
+    trimProvenance: headerFallbackUsed ? observedZeroStart ? "explicit-Matroska-initial_padding-at-observed-zero-start" :
+      "explicit-Matroska-initial_padding-plus-negative-preroll" : "observed-packet-Skip-Samples" };
 }
 export function validateSmallAacEvidence(source, output, sourcePcm, outputPcm) {
   assert.equal(output.rate, source.rate); assert.equal(output.channels, source.channels);
   assert.equal(output.leading, source.leading, "Leading trim changed"); assert.equal(output.trailing, source.trailing, "Trailing trim changed");
+  assert.ok(Number.isFinite(source.audibleStartSeconds) && Number.isFinite(output.audibleStartSeconds));
+  assert.ok(Math.abs(source.audibleStartSeconds - output.audibleStartSeconds) <= 0.001, "Audible source/output origin changed");
   const clocks = validateCopiedAudioTiming(source.semanticPackets, output.semanticPackets, [source.streamIndex], [output.streamIndex]);
   assert.deepEqual(output.semanticPackets.map(packet => packet.data_hash), source.semanticPackets.map(packet => packet.data_hash), "Encoded AAC packet content changed");
   for (const [metadata, pcm] of [[source, sourcePcm], [output, outputPcm]]) {
@@ -74,6 +84,7 @@ export function validateSmallAacEvidence(source, output, sourcePcm, outputPcm) {
     completeRawPcmSha256: sourcePcm.rawSha256,
     audiblePcmSha256: source.trailing === 0 ? sourcePcm.afterDeclaredPrefixSha256 : null,
     sourceTrimProvenance: source.trimProvenance, outputTrimProvenance: output.trimProvenance,
+    sourceAudibleStartSeconds: source.audibleStartSeconds, outputAudibleStartSeconds: output.audibleStartSeconds,
     noContentToleranceOrOffsetSearch: true, largeFileAcceptance: false };
 }
 async function checkedFile(file) {

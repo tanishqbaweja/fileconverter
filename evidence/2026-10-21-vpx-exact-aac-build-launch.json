@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "scope": "changed isolated private VPX AAC edit-list build; not browser/memory/public acceptance",
+  "statusAtInspection": "in_progress",
+  "run": 39591655669,
+  "job": 119193842017,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39591655669",
+  "branch": "codex/vpx-exact-aac-20261021",
+  "commit": "b59180eda300a8a4823068dc4133faa99b7331ed",
+  "implementationParent": "91e784fead5c90abd5eecf92b2a0106ed03799e9",
+  "workflowSha256": "78b5342468ef4858bef80b32b3f0b4dc43de918297aab505e0e320f2d086091e",
+  "wrapperExpectedSha256": "bc03d60bf81f44d900b196b0872da93ba443c746dfe8ef21b63d58eec1c30463",
+  "muxExpectedSha256": "f927c6e1919a17186cade3b67565f4f418c3247b464e92f4f0a9eaeafdac1d6e",
+  "expectedArtifact": "private-vpx-aac-39591655669",
+  "roughTotalMinutes": "6-8 based on previous6m22s build",
+  "mainWorkflowUnchanged": true,
+  "isolatedGitIndexRemoved": true,
+  "headless": true,
+  "docker": false,
+  "validatorPreparation": {
+    "sourceEvidence": "evidence/2026-10-21-vpx-multitrack-source-hosted.json",
+    "explicitZeroStartAndHeaderTrimNowRecognized": true,
+    "zeroStartRequiresFirstPtsDtsAndStreamHeaderStartAllZero": true,
+    "outputTrimMustStillBeObservedNeverInferred": true,
+    "completeRawPcmHashCountsAndPacketHashesRequired": true,
+    "packetClockToleranceSeconds": 0.001,
+    "chapterToleranceSeconds": 0.002,
+    "audibleOriginComparisonAdded": true,
+    "chapterAssertionMovedAfterAudioValidationNotRemoved": true,
+    "focusedTests": { "passed": 20, "failed": 0, "skipped": 0 },
+    "typescript": "pass",
+    "focusedLint": "pass"
+  },
+  "next": [
+    "Resume exact live run/job after estimated compilation, never restart on observation timeout",
+    "Inspect terminal result and audit actual wrapper/mux source, config, ABI, source/artifact pins and unchanged memory limits",
+    "Use actual changed Wasm through production browser pipeline on original default VP8/VP9 and original two-track source",
+    "Keep all content/clock/trim/chapter/memory assertions; inspect chapter evidence if it still fails"
+  ],
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "fullGoalComplete": false
+}

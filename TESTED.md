@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Changed exact-AAC native build live; zero-start fidelity checks prepared
+
+Actual39591655669/job119193842017 at privateb59180ed is compiling the material
+wrapper/MOV change, not rebuilding old bytes. Main implementation91e784f pushed.
+Explicit source header1024 at independently observed PTS/DTS/stream start0 is now
+recognized by small validator; output trim must still be observed. Complete raw
+PCM/count/packet hash/1ms clocks retained, audible-origin comparison added. Original
+2ms chapter guard now follows audio checks so its failure cannot hide both-track
+fidelity.20focused/TS/lint PASS; browser/new native artifact acceptance pending.
+`evidence/2026-10-21-vpx-exact-aac-build-launch.json` has exact live handle/next.
+
 ## 2026-10-21 - Private exact AAC edit-list implementation prepared, not yet compiled
 
 New isolated VPX candidate retains zero/positive first AAC packet clocks, validates

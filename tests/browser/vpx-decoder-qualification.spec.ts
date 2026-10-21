@@ -243,8 +243,6 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
       expect(converted.streams.every(stream => ["mpeg4", "aac", "bin_data"].includes(stream.codec_name))).toBe(true);
       expect(converted.streams.filter(stream => stream.codec_type === "audio").map(stream => stream.tags?.language)).toEqual(["eng", "hin"]);
       expect(converted.chapters).toHaveLength(1); expect(converted.chapters[0].tags.title).toBe(original.chapters[0].tags.title);
-      for (const field of ["start_time", "end_time"] as const)
-        expect(Math.abs(Number(converted.chapters[0][field]) - Number(original.chapters[0][field]))).toBeLessThan(0.002);
     } else expect(converted.streams.map(stream => stream.codec_name)).toEqual(["mpeg4", "aac"]);
     expect(Number(converted.streams[0].nb_read_frames)).toBe(frames);
     expect(converted.streams[0].width).toBe(options ? 320 : 480); expect(converted.streams[0].height).toBe(options ? 180 : 270);
@@ -270,6 +268,10 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
       rows.push({ codec, multi, exactAacSampleAndTrimValidation: exactAac });
       expect(exactAac.status, "Every track requires exact PCM/packet bytes, declared trim and1ms clocks").toBe("passed-small-AAC-LC-fixture");
     }
+    // Keep the original chapter guard. Audio checks precede it so a chapter
+    // failure no longer hides whether both original AAC tracks are preserved.
+    if (multi) for (const field of ["start_time", "end_time"] as const)
+      expect(Math.abs(Number(converted.chapters[0][field]) - Number(original.chapters[0][field]))).toBeLessThan(0.002);
     rows.push({ codec, options: options ?? "automatic", independentValidation: { fullDecode: true, frames, fps, ssim, audioPacketsIdentical: true,
       sourceBytes: (await lstat(source)).size, outputBytes: (await lstat(output)).size, outputSha256: await hashFile(output) } });
   } finally { validationTarget = undefined; await target.close().catch(() => {}); await rm(output, { force: true }); }
