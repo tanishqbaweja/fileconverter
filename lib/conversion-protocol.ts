@@ -2,6 +2,7 @@ import type {
   AudioConversionOptions,
   VideoConversionOptions,
 } from "./media-conversion-options";
+import type { VpxCompiledCore } from "./vpx-compiled-core";
 
 export interface ConversionMetrics {
   inputBytes: number;
@@ -58,6 +59,8 @@ export interface StartConversionMessage {
     | { mode: "opfs-test"; name: string };
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;
+  /** Coordinator-owned static code only; never caller-provided user data. */
+  vpxCompiledCore?: VpxCompiledCore;
   /** Lets synchronous Wasm observe cancellation before its worker can process another message. */
   cancellationBuffer?: SharedArrayBuffer;
   /** Localhost-only Playwright fault injection; never sent for user destinations. */

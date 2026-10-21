@@ -15,11 +15,13 @@ import { inspectInstalledChromePin, assertInstalledChromePinsEqual } from "./lib
 import { startChromiumMemoryMonitor } from "./lib/persistent-chromium-memory.mjs";
 import { sampleChromiumTree, stableWindow } from "./lib/chromium-private-memory.mjs";
 import { annotateNativeProcessTypes } from "./lib/chromium-attribution.mjs";
+import { auditVpxDecoderArtifact } from "./lib/vpx-decoder-artifact.mjs";
 
 const root = path.resolve(import.meta.dirname, ".."), flags = process.argv.slice(2);
-assert.ok(flags.length <= 1 && flags.every(x => x === "--software-video-probe" || x === "--software-canvas-probe"));
+assert.ok(flags.length <= 1 && flags.every(x => ["--software-video-probe", "--software-canvas-probe", "--wasm-worker-lifecycle", "--codec-worker-lifecycle"].includes(x)));
 assert.equal(process.platform, "win32", "This experiment uses the actual Windows private-memory observer");
 const variant = flags[0]?.slice(2) ?? "original-probes";
+const wasmLifecycle = variant === "wasm-worker-lifecycle" || variant === "codec-worker-lifecycle";
 const sourceFile = path.join(root, "lib/browser-capabilities.ts"), source = await readFile(sourceFile, "utf8");
 const sha = x => createHash("sha256").update(x).digest("hex");
 const start = source.indexOf("  let offscreenCanvas = false;"), end = source.indexOf("  const [opfs, storageEstimate", start);
@@ -46,6 +48,8 @@ const report = { schemaVersion: 1, scope: "Inert-page capability allocation expe
   browserFlagsChanged: false, forcedGc: false, publicAcceptance: false, conversionCoverage: false, failures: [] };
 const samples = [], references = [], stages = [], phases = [{ phase: "blank", at: Date.now() }], forbiddenRequests = [];
 let runtime, context, server, monitor, timer, pending = Promise.resolve(), busy = false, failure, browserRootPid;
+let nativeCore;
+const workerEvents = [];
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const phase = label => phases.push({ phase: label, at: Date.now() });
 async function drain() {
@@ -66,14 +70,25 @@ try {
   report.host = await inspectStressHostMemory(); assert.equal(report.host.safeToStart, true);
   const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 2 * 1024 ** 3);
   report.browserPin = await inspectInstalledChromePin();
+  const resources = new Map([["/", body], ["/probe.js", moduleBytes]]);
+  if (wasmLifecycle) {
+    report.scope = "Bare shared-Wasm-memory versus actual codec-factory worker retirement; no media or codec entrypoint invoked";
+    nativeCore = await auditVpxDecoderArtifact(path.join(root, "work/vpx-chapter-end-39623553380"));
+    report.nativeCore = { manifestSha256: nativeCore.manifestSha256, deliveredArtifacts: nativeCore.deliveredArtifacts,
+      memoryLimits: nativeCore.memoryLimits, sourcePinsVerified: nativeCore.sourcePinsVerified, artifactPinsVerified: nativeCore.artifactPinsVerified };
+    assert.deepEqual(nativeCore.memoryLimits, [{ imported: true, initialPages: 512, maximumPages: 1536, shared: true }]);
+    for (const name of ["within-remux.mjs", "within-remux.wasm"]) resources.set("/" + name, await readFile(path.join(nativeCore.directory, name)));
+    resources.set("/memory-worker.js", Buffer.from('globalThis.heldMemory = new WebAssembly.Memory({ initial: 512, maximum: 1536, shared: true }); const bytes = new Uint8Array(heldMemory.buffer); for (let at = 0; at < bytes.length; at += 4096) bytes[at] = 1; postMessage({ kind: "shared-memory-only", liveBytes: bytes.length, initialPages: 512, maximumPages: 1536 });'));
+    resources.set("/core-worker.js", Buffer.from('import factory from "/within-remux.mjs"; globalThis.heldCore = await factory({ locateFile: name => "/" + name, withinBridge: { message() {}, cancelled() { return false; } }, print() {}, printErr() {} }); postMessage({ kind: "actual-core-factory-only-no-conversion", initialized: true, liveBytes: null, heapObservation: "Factory does not export HEAPU8; no guessed heap length" });'));
+  }
   runtime = await createOwnedRuntimeScratch("capability-memory-");
   server = createServer((request, response) => {
     const valid = ["GET", "HEAD"].includes(request.method);
-    const resource = request.url === "/" ? body : request.url === "/probe.js" ? moduleBytes : null;
+    const resource = resources.get(request.url) ?? null;
     response.writeHead(valid && resource ? 200 : 404, {
-      "Content-Type": request.url === "/probe.js" ? "text/javascript; charset=utf-8" : "text/html; charset=utf-8",
+      "Content-Type": request.url?.endsWith(".wasm") ? "application/wasm" : /\.(?:m?js)$/.test(request.url) ? "text/javascript; charset=utf-8" : "text/html; charset=utf-8",
       "Cross-Origin-Opener-Policy": "same-origin", "Cross-Origin-Embedder-Policy": "require-corp",
-      "Content-Security-Policy": "default-src 'none'; script-src 'self'; connect-src 'self'; style-src 'none'",
+      "Content-Security-Policy": "default-src 'none'; script-src 'self' 'wasm-unsafe-eval'; worker-src 'self'; connect-src 'self'; style-src 'none'",
       "Cache-Control": "no-store",
     });
     response.end(request.method === "HEAD" ? undefined : resource ?? "Not found");
@@ -84,6 +99,10 @@ try {
     executablePath: report.browserPin.launcher.path, headless: true, env: runtime.env, serviceWorkers: "block",
   });
   const page = context.pages()[0] ?? await context.newPage();
+  page.on("worker", worker => {
+    assert.ok(workerEvents.length < 64); workerEvents.push({ type: "created", at: Date.now(), url: worker.url() });
+    worker.once("close", () => { assert.ok(workerEvents.length < 64); workerEvents.push({ type: "closed", at: Date.now(), url: worker.url() }); });
+  });
   report.browserVersion = context.browser().version();
   const cdp = await context.browser().newBrowserCDPSession(), info = await cdp.send("SystemInfo.getProcessInfo"); await cdp.detach();
   browserRootPid = info.processInfo.find(x => x.type === "browser")?.id; assert.ok(browserRootPid);
@@ -107,7 +126,32 @@ try {
   phase("inert-page"); assert.equal((await page.goto(origin)).status(), 200);
   await page.evaluate(async () => { window.__capabilityDiagnostic = await import("/probe.js"); });
   await pause(2100); await checkpoint("inert-page-before-probes");
-  for (const method of ["canvasProbe", "videoEncoderSupport", "audioEncoderSupport", "imageDecoderSupport"]) {
+  if (wasmLifecycle) for (const kind of variant === "codec-worker-lifecycle" ? ["core"] : ["memory", "core"]) for (let index = 1; index <= 9; index++) {
+    phase(kind + "-worker-" + index);
+    const [worker, result] = await Promise.all([page.waitForEvent("worker", { timeout: 10000 }), page.evaluate(async kind => {
+      if (globalThis.__memoryDiagnosticWorker) throw new Error("Only one diagnostic worker may be live");
+      const worker = new Worker("/" + kind + "-worker.js", { type: "module" }); globalThis.__memoryDiagnosticWorker = worker;
+      let timer;
+      try { return await new Promise((resolve, reject) => {
+        timer = setTimeout(() => reject(new Error("Diagnostic worker initialization deadline")), 10000);
+        worker.onmessage = event => resolve(event.data); worker.onerror = event => reject(new Error(event.message));
+      }); } finally { clearTimeout(timer); }
+    }, kind)]);
+    if (kind === "memory") assert.equal(result.liveBytes, 33554432);
+    else { assert.equal(result.initialized, true); assert.equal(result.liveBytes, null); }
+    await pause(800);
+    if (index === 1 || (kind === "core" && index === 9)) await checkpoint(kind + "-" + index + "-live", result);
+    const closed = new Promise(resolve => worker.once("close", resolve));
+    await page.evaluate(() => { globalThis.__memoryDiagnosticWorker.terminate(); globalThis.__memoryDiagnosticWorker = null; });
+    let exitTimer;
+    try { await Promise.race([closed, new Promise((_, reject) => { exitTimer = setTimeout(() => reject(new Error("Owned diagnostic worker exit unverified")), 5000); })]); }
+    finally { clearTimeout(exitTimer); }
+    phase(kind + "-retired-" + index); await pause(400);
+    if (index === 9) await checkpoint(kind + "-" + index + "-retired");
+    const last = samples.at(-1)?.privateBytes;
+    assert.ok(last === null || (Number.isFinite(last) && last < 1024 ** 3), "Stop the allocation diagnosis at1GiB, never exhaust the host");
+  }
+  for (const method of wasmLifecycle ? [] : ["canvasProbe", "videoEncoderSupport", "audioEncoderSupport", "imageDecoderSupport"]) {
     phase(method);
     const result = await page.evaluate(async method => {
       let timer;
@@ -119,6 +163,7 @@ try {
   clearInterval(timer); await pending; await drain(); assert.equal(failure, undefined);
   assert.equal(forbiddenRequests.length, 0); assert.equal(sha(await readFile(sourceFile)), report.sourceSha256);
   assertInstalledChromePinsEqual(report.browserPin, await inspectInstalledChromePin());
+  if (nativeCore) assert.equal((await auditVpxDecoderArtifact(nativeCore.directory)).manifestSha256, nativeCore.manifestSha256);
   report.sourceAndBrowserPinsVerified = true; report.status = "completed-diagnostic-not-route-acceptance";
 } catch (error) { report.status = "failed"; report.failures.push(String(error.stack ?? error)); process.exitCode = 1; }
 finally {
@@ -135,6 +180,7 @@ finally {
   } catch (error) { report.failures.push(String(error)); process.exitCode = 1; }
   if (browserRootPid) annotateNativeProcessTypes(samples, references, browserRootPid);
   report.finishedAt = new Date().toISOString(); report.stages = stages; report.samples = samples; report.forbiddenRequests = forbiddenRequests;
+  report.workerEvents = workerEvents;
   report.unavailableSamples = samples.filter(x => x.privateBytes === null).length;
   await mkdir(path.dirname(reportFile), { recursive: true }); await writeFile(reportFile, JSON.stringify(report, null, 2) + "\n");
   console.log(JSON.stringify({ report: reportFile, status: report.status, variant, stages: stages.map(x => ({

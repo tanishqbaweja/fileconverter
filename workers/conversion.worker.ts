@@ -4169,7 +4169,13 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       const sourceCodec = assertVpxSource(profileId, inspection);
       requiredScratchBytes = estimateVpxStageBytes(file.size, inspection?.durationSeconds ?? null, options);
       const { loadVpxDecoderCore } = await import("./vpx-core-loader");
-      vpxDecoderCore = await loadVpxDecoderCore(sourceCodec);
+      vpxDecoderCore = await loadVpxDecoderCore(sourceCodec, undefined, {
+        cached: message.vpxCompiledCore,
+        prepared(core, cacheHit) {
+          workerScope.postMessage({ type: "vpx-compiled-core", jobId, core });
+          emitProgress(jobId, cacheHit ? "Reusing compiled VPX code" : "Compiled VPX code", metrics, startedAt, true);
+        },
+      });
     }
     if (isMpeg2Job) {
       const { assertMpeg2SplitOptions } = await import("./mpeg2-split-runtime");

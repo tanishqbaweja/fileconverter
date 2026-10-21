@@ -114,7 +114,8 @@ test.beforeAll(async () => {
     "scripts/lib/small-aac-copy-fidelity.mjs", "scripts/lib/pcm-prefix-diagnostic.mjs", "scripts/lib/copied-audio-timing.mjs",
     "scripts/lib/small-mp4-sample-duration.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "lib/browser-capabilities.ts",
-    "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/bounded-periodic-realm-observer.mjs"])
+    "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/bounded-periodic-realm-observer.mjs",
+    "lib/vpx-compiled-core.ts", "lib/conversion-protocol.ts"])
     sourcePins[file] = sha(await readFile(path.join(root, file)));
   report.executedSourcePins = sourcePins;
   if (process.platform === "win32") { browserPin = await inspectInstalledChromePin(); report.browserPin = browserPin; }
@@ -402,9 +403,9 @@ test.afterAll(async () => {
   cleanup.push(async () => {
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
-    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 30;
+    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 32;
     report.installedChromeBinaryPinsVerified = browserPin ? true : null;
-    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 30 && Boolean(browserPin);
+    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 32 && Boolean(browserPin);
   });
   if (assetIdentity) cleanup.push(async () => {
     const current = await lstat(assetDirectory); expect(current.dev).toBe(assetIdentity!.dev); expect(current.ino).toBe(assetIdentity!.ino);

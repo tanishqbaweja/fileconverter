@@ -1,0 +1,526 @@
+{
+  "schemaVersion": 1,
+  "scope": "Late actual-conversion heap observations plus isolated memory/core-factory lifecycle diagnoses, not public acceptance",
+  "implementationCommit": "36c73a4f402b0d216f1f6c08e09c32d24a14fd57",
+  "conversionSuite": "9PASS/1FAIL53.1s",
+  "incrementalPrivateMiB": 325.2578125,
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 230674432,
+    "spreadBytes": 1572864,
+    "rssBytes": 479268864,
+    "firstTimestamp": "2026-10-21T16:12:19.5220435Z",
+    "lastTimestamp": "2026-10-21T16:12:27.9326976Z",
+    "sampleCount": 8,
+    "minimumElapsedMs": 8000
+  },
+  "realmObservations": {
+    "scope": "Bounded sampled realm observations, not guaranteed exact realm peaks or replacement native private bytes",
+    "intervalMs": 250,
+    "capacity": 256,
+    "maximumPendingOperations": 1,
+    "maximumTargetsPerSample": 16,
+    "maximumObservedRealmIdentities": 128,
+    "maximumSampleMetadataBytes": 16384,
+    "totalSamples": 77,
+    "skippedTicks": 2,
+    "droppedSamples": 0,
+    "observedPeaks": [
+      {
+        "targetId": "9B5348E44F5A2E553FF3512AAE2E8D9A",
+        "type": "page",
+        "url": "about:blank",
+        "usedJSHeapBytes": 8996592,
+        "allocatedJSHeapBytes": 15482880,
+        "embedderHeapUsedBytes": 18778904,
+        "backingStorageBytes": 3938685,
+        "usedJSHeapBytesObservedAt": 1792599167964,
+        "allocatedJSHeapBytesObservedAt": 1792599167700,
+        "embedderHeapUsedBytesObservedAt": 1792599167964,
+        "backingStorageBytesObservedAt": 1792599167700
+      },
+      {
+        "targetId": "AE2667F11EBAED714C0A31701295AF95",
+        "type": "worker",
+        "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+        "usedJSHeapBytes": 1103276,
+        "allocatedJSHeapBytes": 2359296,
+        "embedderHeapUsedBytes": 838088,
+        "backingStorageBytes": 731774,
+        "usedJSHeapBytesObservedAt": 1792599152442,
+        "allocatedJSHeapBytesObservedAt": 1792599152442,
+        "embedderHeapUsedBytesObservedAt": 1792599152442,
+        "backingStorageBytesObservedAt": 1792599152442
+      },
+      {
+        "targetId": "CEABE0C8BF915A5D0F91257A2D593FBC",
+        "type": "worker",
+        "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+        "usedJSHeapBytes": 1097996,
+        "allocatedJSHeapBytes": 2359296,
+        "embedderHeapUsedBytes": 773712,
+        "backingStorageBytes": 732208,
+        "usedJSHeapBytesObservedAt": 1792599155862,
+        "allocatedJSHeapBytesObservedAt": 1792599155862,
+        "embedderHeapUsedBytesObservedAt": 1792599152958,
+        "backingStorageBytesObservedAt": 1792599155862
+      },
+      {
+        "targetId": "010FB7E49CE2939AA137917664506130",
+        "type": "worker",
+        "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+        "usedJSHeapBytes": 1147480,
+        "allocatedJSHeapBytes": 2359296,
+        "embedderHeapUsedBytes": 773712,
+        "backingStorageBytes": 731774,
+        "usedJSHeapBytesObservedAt": 1792599158869,
+        "allocatedJSHeapBytesObservedAt": 1792599158869,
+        "embedderHeapUsedBytesObservedAt": 1792599156393,
+        "backingStorageBytesObservedAt": 1792599158869
+      },
+      {
+        "targetId": "3EB81741610CF053C9E29EE8982BFC7D",
+        "type": "worker",
+        "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+        "usedJSHeapBytes": 1095808,
+        "allocatedJSHeapBytes": 2359296,
+        "embedderHeapUsedBytes": 821224,
+        "backingStorageBytes": 732208,
+        "usedJSHeapBytesObservedAt": 1792599160663,
+        "allocatedJSHeapBytesObservedAt": 1792599160663,
+        "embedderHeapUsedBytesObservedAt": 1792599160663,
+        "backingStorageBytesObservedAt": 1792599160663
+      },
+      {
+        "targetId": "634EA8120F9D6006EEFD265E88FBA0BC",
+        "type": "worker",
+        "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+        "usedJSHeapBytes": 1132272,
+        "allocatedJSHeapBytes": 2359296,
+        "embedderHeapUsedBytes": 856728,
+        "backingStorageBytes": 731774,
+        "usedJSHeapBytesObservedAt": 1792599163019,
+        "allocatedJSHeapBytesObservedAt": 1792599163019,
+        "embedderHeapUsedBytesObservedAt": 1792599163019,
+        "backingStorageBytesObservedAt": 1792599163019
+      },
+      {
+        "targetId": "A0101EE61DFE3A1997639219345C2213",
+        "type": "worker",
+        "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+        "usedJSHeapBytes": 508868,
+        "allocatedJSHeapBytes": 1572864,
+        "embedderHeapUsedBytes": 773712,
+        "backingStorageBytes": 362580,
+        "usedJSHeapBytesObservedAt": 1792599163816,
+        "allocatedJSHeapBytesObservedAt": 1792599163816,
+        "embedderHeapUsedBytesObservedAt": 1792599163816,
+        "backingStorageBytesObservedAt": 1792599163816
+      },
+      {
+        "targetId": "41091A35BA2F3C86F7CE41B89FDD4B88",
+        "type": "worker",
+        "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+        "usedJSHeapBytes": 758504,
+        "allocatedJSHeapBytes": 2097152,
+        "embedderHeapUsedBytes": 773712,
+        "backingStorageBytes": 731561,
+        "usedJSHeapBytesObservedAt": 1792599165906,
+        "allocatedJSHeapBytesObservedAt": 1792599165906,
+        "embedderHeapUsedBytesObservedAt": 1792599165906,
+        "backingStorageBytesObservedAt": 1792599165906
+      },
+      {
+        "targetId": "F9996C219B77305CC2CBCD2C1C0AE52F",
+        "type": "worker",
+        "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+        "usedJSHeapBytes": 1119832,
+        "allocatedJSHeapBytes": 2359296,
+        "embedderHeapUsedBytes": 773712,
+        "backingStorageBytes": 731774,
+        "usedJSHeapBytesObservedAt": 1792599166685,
+        "allocatedJSHeapBytesObservedAt": 1792599166685,
+        "embedderHeapUsedBytesObservedAt": 1792599166420,
+        "backingStorageBytesObservedAt": 1792599166685
+      },
+      {
+        "targetId": "E4F0EB1A060D707DCF1D84C97F40E002",
+        "type": "worker",
+        "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+        "usedJSHeapBytes": 1095292,
+        "allocatedJSHeapBytes": 2359296,
+        "embedderHeapUsedBytes": 773712,
+        "backingStorageBytes": 731774,
+        "usedJSHeapBytesObservedAt": 1792599167449,
+        "allocatedJSHeapBytesObservedAt": 1792599167449,
+        "embedderHeapUsedBytesObservedAt": 1792599167186,
+        "backingStorageBytesObservedAt": 1792599167449
+      },
+      {
+        "targetId": "2FF760032DBB82F9E40D63D4163C70E3",
+        "type": "worker",
+        "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+        "usedJSHeapBytes": 508868,
+        "allocatedJSHeapBytes": 1572864,
+        "embedderHeapUsedBytes": 773712,
+        "backingStorageBytes": 362580,
+        "usedJSHeapBytesObservedAt": 1792599167964,
+        "allocatedJSHeapBytesObservedAt": 1792599167964,
+        "embedderHeapUsedBytesObservedAt": 1792599167964,
+        "backingStorageBytesObservedAt": 1792599167964
+      }
+    ],
+    "forcedGc": false
+  },
+  "report": {
+    "path": "output/playwright/vpx-decoder-qualification-2026-10-21T16-12-00.269Z.json",
+    "bytes": 1924169,
+    "sha256": "aac2ecaa3c5c09a4eb5a50bb61fb1719437208b4679bb132ff310e5590046d3e"
+  },
+  "sourcePinCount": 30,
+  "pins": true,
+  "cleanup": true,
+  "lifecycle": [
+    {
+      "file": "output/playwright/2026-10-21T16-18-05.580Z-capability-memory-wasm-worker-lifecycle.json",
+      "bytes": 1124464,
+      "sha256": "29124a22c3d73ca59a8521cb68431ee52da57c2ec43481685515b10ee6b8ee6d",
+      "status": "failed",
+      "failures": [
+        "page.evaluate: Error: Uncaught TypeError: Cannot read properties of undefined (reading 'buffer')\n    at worker.onerror (eval at evaluate (:311:30), <anonymous>:7:91)\n    at H:\\Github Repositories\\fileconverter\\scripts\\diagnose-capability-memory.mjs:131:103"
+      ],
+      "stages": [
+        {
+          "label": "stable-blank",
+          "result": null,
+          "privateBytes": 233766912,
+          "gpuPrivateBytes": 85594112,
+          "error": null
+        },
+        {
+          "label": "inert-page-before-probes",
+          "result": null,
+          "privateBytes": 254865408,
+          "gpuPrivateBytes": 102043648,
+          "error": null
+        },
+        {
+          "label": "memory-1-live",
+          "result": {
+            "kind": "shared-memory-only",
+            "liveBytes": 33554432,
+            "initialPages": 512,
+            "maximumPages": 1536
+          },
+          "privateBytes": 293642240,
+          "gpuPrivateBytes": 102014976,
+          "error": null
+        },
+        {
+          "label": "memory-9-retired",
+          "result": null,
+          "privateBytes": 238514176,
+          "gpuPrivateBytes": 88997888,
+          "error": null
+        }
+      ],
+      "events": [
+        {
+          "type": "created",
+          "at": 1792599510344,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599511661,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599512077,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599512898,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599513308,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599514129,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599514543,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599515359,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599515773,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599516593,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599517002,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599517823,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599518236,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599519059,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599519471,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599520291,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599520705,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599521514,
+          "url": "http://127.0.0.1:56026/memory-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599522440,
+          "url": "http://127.0.0.1:56026/core-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599522495,
+          "url": "http://127.0.0.1:56026/core-worker.js"
+        }
+      ],
+      "cleanup": true,
+      "pinsVerified": null,
+      "nativeCore": {
+        "manifestSha256": "d7a0a786da6108b171c28890ccbabea8a28ac81e0e9adb3d0f6ff8f17d50c6ea",
+        "deliveredArtifacts": {
+          "within-remux.mjs": "041d608304b42883be28e8c61e2459b6c77f0d9b6b02b4768de72feb836360e6",
+          "within-remux.wasm": "a9cf4acaaf0bc3fcf94fcaef06af9eb3b0488aa65c19462ecf76f6afb45d0689"
+        },
+        "memoryLimits": [
+          {
+            "imported": true,
+            "initialPages": 512,
+            "maximumPages": 1536,
+            "shared": true
+          }
+        ],
+        "sourcePinsVerified": 43,
+        "artifactPinsVerified": 16
+      }
+    },
+    {
+      "file": "output/playwright/2026-10-21T16-20-45.230Z-capability-memory-codec-worker-lifecycle.json",
+      "bytes": 1216532,
+      "sha256": "caddcbc99709b3f74e71aabc16075d26dbad08749c29625d23dc96e8eb820823",
+      "status": "completed-diagnostic-not-route-acceptance",
+      "failures": [],
+      "stages": [
+        {
+          "label": "stable-blank",
+          "result": null,
+          "privateBytes": 235040768,
+          "gpuPrivateBytes": 86925312,
+          "error": null
+        },
+        {
+          "label": "inert-page-before-probes",
+          "result": null,
+          "privateBytes": 256499712,
+          "gpuPrivateBytes": 102825984,
+          "error": null
+        },
+        {
+          "label": "core-1-live",
+          "result": {
+            "kind": "actual-core-factory-only-no-conversion",
+            "initialized": true,
+            "liveBytes": null,
+            "heapObservation": "Factory does not export HEAPU8; no guessed heap length"
+          },
+          "privateBytes": 321990656,
+          "gpuPrivateBytes": 102670336,
+          "error": null
+        },
+        {
+          "label": "core-9-live",
+          "result": {
+            "kind": "actual-core-factory-only-no-conversion",
+            "initialized": true,
+            "liveBytes": null,
+            "heapObservation": "Factory does not export HEAPU8; no guessed heap length"
+          },
+          "privateBytes": 302653440,
+          "gpuPrivateBytes": 89329664,
+          "error": null
+        },
+        {
+          "label": "core-9-retired",
+          "result": null,
+          "privateBytes": 244822016,
+          "gpuPrivateBytes": 89329664,
+          "error": null
+        }
+      ],
+      "events": [
+        {
+          "type": "created",
+          "at": 1792599669510,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599671150,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599671563,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599672709,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599673117,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599674031,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599674442,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599675591,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599676001,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599677149,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599677572,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599678426,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599678836,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599679892,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599680302,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599681191,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "created",
+          "at": 1792599681608,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        },
+        {
+          "type": "closed",
+          "at": 1792599682980,
+          "url": "http://127.0.0.1:56844/core-worker.js"
+        }
+      ],
+      "cleanup": true,
+      "pinsVerified": true,
+      "nativeCore": {
+        "manifestSha256": "d7a0a786da6108b171c28890ccbabea8a28ac81e0e9adb3d0f6ff8f17d50c6ea",
+        "deliveredArtifacts": {
+          "within-remux.mjs": "041d608304b42883be28e8c61e2459b6c77f0d9b6b02b4768de72feb836360e6",
+          "within-remux.wasm": "a9cf4acaaf0bc3fcf94fcaef06af9eb3b0488aa65c19462ecf76f6afb45d0689"
+        },
+        "memoryLimits": [
+          {
+            "imported": true,
+            "initialPages": 512,
+            "maximumPages": 1536,
+            "shared": true
+          }
+        ],
+        "sourcePinsVerified": 43,
+        "artifactPinsVerified": 16
+      }
+    }
+  ],
+  "conclusions": [
+    "77periodic samples/0ring drops observe page allocated heap<=15482880B and worker<=2359296B, not an explanation for late312MiB renderer private",
+    "Nine bare shared32–96MiB memory workers retire without comparable accumulation",
+    "First lifecycle diagnostic fails after completed bare-memory portion on unavailable HEAPU8 export; retained failed, no guessed heap values",
+    "Corrected core-only diagnostic initializes/retires nine actual audited factories without comparable growth and invokes no conversion entrypoint",
+    "Growth appears when real codec work executes, not simply allocating shared memory or initializing the factory; exact native allocation cause still unproven"
+  ],
+  "next": "Controlled private compiled-module reuse candidate: one static-code module shared across fresh workers, independently allocated memories and unchanged codec/settings/I/O; measure exact-output full sequence before retaining/promotion",
+  "memoryAcceptance": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false
+}

@@ -1,5 +1,7 @@
 import type { StartConversionMessage, WorkerRequest, WorkerResponse } from "./conversion-protocol";
 import { validateStagedCopyHandoff, type StagedJobIdentity, type StagedSaveRequest } from "./staged-copy-protocol";
+import { isVpxDecoderProfile } from "./vpx-decoder-policy";
+import { validateVpxCompiledCore, type VpxCompiledCore } from "./vpx-compiled-core";
 
 /** A bounded lifecycle owner, not a conversion engine or memory-measurement API. */
 export class StagedWorkerCoordinator extends EventTarget implements Worker {
@@ -13,6 +15,8 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
   private job: StagedJobIdentity | null = null;
   private pending: StartConversionMessage | StagedSaveRequest | null = null;
   private pendingCancel = false;
+  private vpxCompiledCore: VpxCompiledCore | null = null;
+  private vpxPreparedJobId: string | null = null;
 
   constructor(private readonly conversionFactory: () => Worker, private readonly saveFactory: () => Worker) {
     super(); this.install("conversion");
@@ -26,6 +30,7 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
     if (worker) { worker.onmessage = null; worker.onerror = null; worker.onmessageerror = null; worker.terminate(); }
   }
   private fail(error: unknown): void {
+    this.vpxCompiledCore = null; this.vpxPreparedJobId = null;
     this.pending = null; this.pendingCancel = false; this.job = null; this.stopActive();
     const message = (error instanceof Error ? error.message : String(error)).slice(0, 512);
     const event = new ErrorEvent("error", { message, cancelable: true });
@@ -57,6 +62,13 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
           // its worker, File, heaps or closures across the subsequent copy.
           this.stopActive(); this.pending = request; this.install("save"); return;
         }
+        if (value?.type === "vpx-compiled-core") {
+          if (role !== "conversion" || !this.job || !isVpxDecoderProfile(this.job.profileId) || value.jobId !== this.job.jobId ||
+              this.vpxPreparedJobId === value.jobId || Object.keys(value).sort().join(",") !== "core,jobId,type")
+            throw new Error("Unexpected static VPX code handoff");
+          this.vpxCompiledCore = validateVpxCompiledCore(value.core); this.vpxPreparedJobId = value.jobId;
+          return; // Never forward static code to the UI, saver, logs or results.
+        }
         if (!this.job || value?.jobId !== this.job.jobId) return;
         if (!["progress", "warning", "complete", "cancelled", "error"].includes(value.type)) throw new Error("Unexpected worker response");
         if (["complete", "cancelled", "error"].includes(value.type)) this.job = null;
@@ -77,18 +89,23 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
       return;
     }
     if (message.type !== "start" || this.job || this.pending) throw new Error("Only one conversion may be active");
-    const queued = this.role === "save" || !this.ready ? structuredClone(message) : null;
+    if ("vpxCompiledCore" in message) throw new Error("Static VPX code is owned by the coordinator, not its caller");
+    const forwarded = this.vpxCompiledCore && isVpxDecoderProfile(message.profileId)
+      ? { ...message, vpxCompiledCore: this.vpxCompiledCore } : message;
+    const queued = this.role === "save" || !this.ready ? structuredClone(forwarded) : null;
+    this.vpxPreparedJobId = null;
     this.job = { jobId: message.jobId, profileId: message.profileId, sourceBytes: message.file.size,
       destination: { ...message.destination }, cancellationBuffer: message.cancellationBuffer, testFault: message.testFault };
     try {
       if (this.role === "save") { this.stopActive(); this.pending = queued; this.install("conversion"); }
-      else if (this.ready) this.active!.postMessage(message);
+      else if (this.ready) this.active!.postMessage(forwarded);
       else this.pending = queued;
     } catch (error) { this.fail(error); throw error; }
   }
   terminate(): void {
     if (this.disposed) return;
     this.disposed = true; this.pending = null; this.pendingCancel = false; this.job = null; this.stopActive();
+    this.vpxCompiledCore = null; this.vpxPreparedJobId = null;
     this.onmessage = null; this.onerror = null; this.onmessageerror = null;
   }
 }

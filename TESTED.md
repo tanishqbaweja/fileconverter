@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+2026-10-21 private compiled-code reuse candidate implemented: coordinator owns at
+most one WebAssembly.Module descriptor, not an instance/memory/File/output; never
+forwarded to saver/UI/results and cleared on disposal/protocol failure. Exact
+static Wasm bytes rehashed per job, bounded16MiB code fetch/15s deadline, compile
+only on miss/changed bytes. Every worker still creates fresh32–96MiB imports via
+unchanged Emscripten factory.23focused tests pass, including cache/memory isolation,
+asset mutation/bounds, foreign/duplicate/payload rejection and staged retirement;
+targeted lint passes. Actual same-input/output/timing/memory/throughput test next.
+No Wasm rebuild or public profile change; no optimization acceptance claim yet.
+
+2026-10-21 late sampler36c73a4:9PASS/1FAIL53.1s;325.2578125MiB full-tree FAIL,30pins/
+cleanup pass.77periodic CDP observations/2skipped ticks/0ring drops show page<=15MiB
+allocated JS, workers<=3MiB. Separate9bare shared-memory workers release; actual
+9core-factory workers also retire without growth when no codec entrypoint runs.
+Initial lifecycle run retained FAIL after completed bare-memory stages because
+HEAPU8 is not exported; corrected core-only telemetry remains null, not guessed.
+All owned scratch removed. Next bounded static compiled-code reuse experiment;
+not proven allocation cause/engine optimization or acceptance yet. No unchanged
+bare-memory repeat. `evidence/2026-10-21-vpx-late-realm-and-lifecycle-diagnosis.json`.
+
 2026-10-21 late-job attribution prepared: periodic250ms CDP realm observations,
 single-flight,256-entry ring/16targets per sample/128realm identities/16KiB metadata
 cap. Missing/detached values remain null; no GC/page evaluation/private-byte

@@ -81,6 +81,7 @@ export interface RemuxFactoryOptions {
   locateFile: (path: string) => string;
   print: (text: string) => void;
   printErr: (text: string) => void;
+  instantiateWasm?: (imports: WebAssembly.Imports, receive: (instance: WebAssembly.Instance, module: WebAssembly.Module) => void) => WebAssembly.Exports;
 }
 
 type RemuxModuleFactory = (options: RemuxFactoryOptions) => Promise<RemuxModule>;

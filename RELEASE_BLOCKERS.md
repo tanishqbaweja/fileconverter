@@ -1,5 +1,13 @@
 # Release closure — original scope, not a reduced MVP
 
+B06 late periodic observations confirm small observed JS heaps despite325.2578125
+MiB full-tree failure. Nine bare memories and nine actual codec factories retire
+without comparable growth when codec work is absent. Initial HEAPU8 telemetry error
+retained, missing heap length not invented. Next one bounded private static-code
+reuse candidate; fresh worker memories/native settings/I/O unchanged.23focused/
+TS/lint pass, real browser result pending. No public or full54 acceptance.
+`evidence/2026-10-21-vpx-late-realm-and-lifecycle-diagnosis.json`.
+
 B06 repeated-job memory remains OPEN after two explicit controls: bounded exact-
 byte validator transport326.91015625MiB and allocation-attachment-off345.63671875MiB
 both FAIL despite all9correctness cases/all6outputs passing identically. They do

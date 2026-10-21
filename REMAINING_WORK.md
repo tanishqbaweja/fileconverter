@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-10-21 next changed candidate: reuse only one static compiled VPX module across
+fresh workers, never their memories/user data. Bounded static fetch+rehash per job
+prevents stale asset reuse.23focused/lint pass; full production-browser correctness/
+memory/speed evidence pending. Same native bytes/settings/I/O/fidelity gates.
+This investigates repeated native code compilation without asserting an unproved
+allocation cause. Full54/B02-B09/scaling/public integration remain OPEN.
+
+2026-10-21 late attribution actual36c73a4:9PASS/1FAIL53.1s/325.2578125MiB.77periodic
+observations/0ring drops see page allocated<=15MiB, worker<=3MiB while late renderer
+exceeds312MiB. Bare32–96MiB memory retirement and9actual core-factory initialization/
+retirement show no comparable growth without conversion. First lifecycle telemetry
+export error retained as FAIL; corrected core-only run leaves heap unavailable/null.
+Next controlled private compiled-code reuse candidate, preserving separate fresh
+memories/all native settings/I/O; test actual same-output sequence. Native allocation
+cause not conclusively attributed, no promotion/full54 closure. Exact reports:
+`evidence/2026-10-21-vpx-late-realm-and-lifecycle-diagnosis.json`.
+
 2026-10-21 next material diagnostic prepared: bounded periodic250ms/one-pending
 realm observations through late jobs, not only the first two conversions.8focused/
 TS/lint pass; actual instrumented sequence next. Original full-tree/clean blank/
