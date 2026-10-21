@@ -1,5 +1,23 @@
 # Remaining work audit
 
+## 2026-10-21 - Exact sample-fidelity recovery closes its small terminal gate
+
+Changed-validator hosted39589025192/4da2ae53 SUCCESS4PASS/0FAIL16.1s. Prior source-
+guard/pre-cancel/write-fault cases precede real VP8→MPEG4+Aac recovery. Every95AAC
+packet hash identical; complete raw PCM97280samples/hash09950a34 identical BEFORE
+trim, exact1024leading/0tail on both, audible96256/hash74114f4f. Original1ms clocks
+and full video decode48frames24fps/SSIM.993273 pass. Explicit source header priming
+vs output observed packet trim validated, no guessed alignment. Old raw-default
+hash mismatch retained; prior failed run not rewritten.22source pins verified.
+Wasm reused unchanged; fresh install/TS/audit/build pass. Disposable data removed,
+owned server absent, zero forbidden requests; only32KB JSON retained. B03 still
+requires chapter preservation/final integration/scaling; B06 memory still fails.
+Full54/B02-B09 remain OPEN. `evidence/2026-10-21-aac-fidelity-browser-recovery.json`.
+Next discriminating chapter-only browser check now retains at most96x512-character
+native mux/edit-list trace lines and a separate ignore-editlist diagnostic BEFORE
+the original2ms chapter assertion. This instrumentation changes no production
+engine or chapter acceptance, and avoids rerunning the four passing terminal cases.
+
 ## 2026-10-21 - Exact hosted AAC cause established; explicit fidelity validator implemented
 
 Source-only39587206156 SUCCESS: same91398B/SHAa49c5268 source,97280 decoded samples;

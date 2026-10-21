@@ -1,5 +1,13 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 bounded recovery gate now PASS:39589025192/4da2ae53,4PASS/0FAIL16.1s. Actual
+VP8→MPEG4+Aac output preserves95AAC packet hashes,97280raw PCM samples/hash09950a34
+before trim, exact1024leading/0tail and96256audible samples/hash74114f4f. Video full
+decode/timing/SSIM.993273 pass. Prior three terminal cases/cleanup pass in sequence.
+22source pins verified; no Wasm rebuild, public or memory promotion. B03 chapter
+timing and B06 memory remain OPEN, as do B02-B09/full54. Exact immutable proof:
+`evidence/2026-10-21-aac-fidelity-browser-recovery.json`.
+
 B03 diagnosis: source-only39587206156 SUCCESS proves the hosted default-decode
 hash mismatch is precisely the source's declared1024-sample AAC priming. Exact
 96256-sample/hash74114f4f result matches recorded browser MP4. New bounded validator

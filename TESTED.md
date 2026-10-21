@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Genuine browser recovery now passes exact raw AAC samples and declared trim
+
+Hosted39589025192/4da2ae53 SUCCESS:4PASS/0FAIL16.1s, after fresh install/TS/audit/
+production build. Same source91398B/SHAa49c5268 produces525734B/SHA45706215 MP4,
+full native decode48frames/24fps/SSIM.993273 and95identical AAC packet hashes.
+Both raw decodes97280samples/hash09950a34, both trim1024leading/0trailing, audible
+96256/hash74114f4f. No content tolerance/offset search or dropped sample accepted.
+22executed source pins verified; default-decode discrepancy and old failed run
+retained. Source rejection, pre-cancel and bounded write-fault cleanup precede
+successful recovery. All disposable media/profiles/scratch removed; server absent,
+zero forbidden requests; only32125B JSON downloaded. Reused Wasm, no rebuild.
+Not mid-conversion cancel, Windows memory, chapters, large-file or public acceptance.
+`evidence/2026-10-21-aac-fidelity-browser-recovery.json`.
+
 ## 2026-10-21 - Hosted source diagnosis proves declared AAC priming accounts for the exact mismatch
 
 Source-only39587206156 SUCCESS recreates exact91398B/SHAa49c5268 failing input.

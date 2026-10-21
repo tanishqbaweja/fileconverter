@@ -229,6 +229,15 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
     const fps = options ? 15 : 24, frames = options ? 30 : 48;
     expect(original.streams.find(stream => stream.codec_type === "video")!.codec_name).toBe(codec);
     if (multi) {
+      // Preserve bounded independent mux/edit-list evidence BEFORE a chapter
+      // assertion fails. This is diagnosis, never permission to retime chapters.
+      const trace = await native(["-v", "trace", "-show_chapters", "-of", "json", output], "ffprobe");
+      const chapterTrace = trace.stderr.split(/\r?\n/).filter(line =>
+        /type:'(?:elst|chpl|tfdt|tfhd|trun|stts|mdhd|tkhd|chap)'|edit_count|duration=.*time=|Processing st:|time_offset/.test(line));
+      rows.push({ codec, multi, chapterDiagnosis: { traceBytes: Buffer.byteLength(trace.stderr),
+        matchingLines: chapterTrace.length, lines: chapterTrace.slice(0, 96).map(line => line.slice(0, 512)),
+        ignoreEditListProbe: JSON.parse((await native(["-v", "error", "-ignore_editlist", "1", "-show_chapters", "-show_streams", "-of", "json", output], "ffprobe")).stdout),
+        assertionToleranceSecondsUnchanged: 0.002, notChapterAcceptance: true } });
       expect(converted.streams.filter(stream => stream.codec_type === "video").map(stream => stream.codec_name)).toEqual(["mpeg4"]);
       expect(converted.streams.filter(stream => stream.codec_type === "audio").map(stream => stream.codec_name)).toEqual(["aac", "aac"]);
       expect(converted.streams.every(stream => ["mpeg4", "aac", "bin_data"].includes(stream.codec_name))).toBe(true);
