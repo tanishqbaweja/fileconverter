@@ -2,6 +2,11 @@
 
 ## 2026-10-21 - AAC-preserving native core genuinely browser-tested; timing blocks acceptance
 
+Pushed correctionca45ff1; actual changed presentation/specialist no-Docker build
+39581181533/job119158907067 live at privateb53061ba. SDK passes; native/browser
+acceptance pending. Exact resume/provenance:
+`evidence/2026-10-21-vpx-timing-build-launch.json`.
+
 Build39577826452/6f9043c3 SUCCESS and actual40source/14artifact/12-argument/32–96MiB
 audit PASS. Identical VP8 fixture91331B now produces MPEG4+Aac525439B:48frames,
 same encoded AAC packet hashes/title/language, full native decode and SSIM>=.98.

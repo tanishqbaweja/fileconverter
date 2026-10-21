@@ -2,6 +2,12 @@
 
 ## 2026-10-21 - Changed native audio preservation works; exact MP4 timing remains a real failure
 
+Correctionca45ff1 is pushed. Changed presentation/specialist build39581181533 /
+job119158907067 genuinely live at privateb53061ba; pinned SDK passes, compilation
+active. No native/browser fix acceptance yet. Resume this exact handle. Private
+Git-index staging removed without another checkout/original fixture copy; main
+registered workflow stays unchanged. `evidence/2026-10-21-vpx-timing-build-launch.json`.
+
 No-Docker39577826452/6f9043c3 SUCCESS; actual40source/14artifact/compiled C/ABI/
 32–96MiB audit passes. Same SHA-pinned VP8 input now yields MPEG4+Aac, identical
 AAC packet hashes,48frames, preserved title/language, full independent decode and
