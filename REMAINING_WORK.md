@@ -1,5 +1,19 @@
 # Remaining work audit
 
+## 2026-10-21 - Changed timeline core compiling; historical memory remains a real conversion failure
+
+39618541054/job119285558135 atd9830fc7 is live (14:44UTC inspection), material
+wrapper/MOV timeline change from pushedc56ac4c. Resume same handle; expected6–8min
+total, never replace on observation timeout. Per-job ordinal/start/end/phase labels
+and phase timeline now retained; TS/lint pass. Original memory calculation and
+process coverage unchanged. Read-only historical Windows155 reanalysis shows
+conversion-labelled peaks542990336/622424064B over232558592B blank also exceed250,
+not just independent-validation peak640651264B. Same-codec groups merge jobs and
+cannot identify allocation cause; original389.1875MiB failure retained. No test
+rerun, optimization, current-new-core or memory acceptance claim. Native audit,
+real unchanged fixtures/controls/multi-track/terminal/raw-duration/quality gates
+next, plus memory/scaling/public/full54. `evidence/2026-10-21-vpx-timeline-build-launch.json`.
+
 ## 2026-10-21 - Joint native video-origin and chapter-track correction prepared
 
 Explicit WITHIN_PRIVATE_VPX_TIMELINE variant now derives from exact AAC candidate.

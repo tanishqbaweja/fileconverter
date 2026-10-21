@@ -34,6 +34,7 @@ let runtime: Awaited<ReturnType<typeof createOwnedRuntimeScratch>> | undefined;
 let server: Awaited<ReturnType<typeof startOwnedProductionTestServer>> | undefined;
 let context: BrowserContext | undefined, page: Page;
 let browserLaunched = false;
+let conversionOrdinal = 0;
 let env: NodeJS.ProcessEnv, assetIdentity: Awaited<ReturnType<typeof lstat>> | undefined;
 let audit: Awaited<ReturnType<typeof auditVpxDecoderArtifact>>;
 let browserPin: Awaited<ReturnType<typeof inspectInstalledChromePin>> | undefined;
@@ -174,7 +175,8 @@ async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault
   await page.locator('input[type="file"]').first().setInputFiles(source);
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
   const eventStart = workerEvents.length;
-  phase("conversion-" + codec);
+  const ordinal = ++conversionOrdinal, startedAt = Date.now(), conversionPhase = "conversion-" + codec + "-" + ordinal;
+  phase(conversionPhase);
   const result = await page.evaluate(async ({ codec, options, fault, preCancelled, wrongProfile }) => {
     const file = document.querySelector<HTMLInputElement>('input[type="file"]')!.files![0];
     const directory = await navigator.storage.getDirectory(), outputName = "vpx-qualification-output.mp4";
@@ -190,9 +192,9 @@ async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault
       new Promise<never>((_, reject) => { timer = setTimeout(() => { Atomics.store(new Int32Array(cancellationBuffer), 0, 1); reject(new Error("Private VPX job exceeded60s")); }, 60_000); })]);
     } finally { clearTimeout(timer); }
   }, { codec, options, fault, preCancelled, wrongProfile }) as VpxQualificationResult;
-  phase("recovery");
+  const endedAt = Date.now(); phase("recovery");
   rows.push({ codec, multi, options: options ?? "automatic", fault: fault ?? null, preCancelled, wrongProfile, sourceBytes: (await lstat(source)).size,
-    sourceSha256: await hashFile(source), result, workerEvents: workerEvents.slice(eventStart) });
+    sourceSha256: await hashFile(source), conversionWindow: { ordinal, startedAt, endedAt, phase: conversionPhase }, result, workerEvents: workerEvents.slice(eventStart) });
   return { result, source, events: workerEvents.slice(eventStart) };
 }
 
@@ -361,6 +363,7 @@ test.afterAll(async () => {
     await finishOwnedCleanup(cleanup); report.disposableDataRemoved = true;
   }
   finally { report.logs = logs; report.forbiddenRequests = forbiddenRequests; report.workerEvents = workerEvents;
-    report.memorySamples = samples; report.monitorFailure = monitorFailure ? String(monitorFailure).slice(0, 2048) : null;
+    report.memorySamples = samples; report.memoryPhases = phases;
+    report.monitorFailure = monitorFailure ? String(monitorFailure).slice(0, 2048) : null;
     await mkdir(path.dirname(reportFile), { recursive: true }); await writeFile(reportFile, JSON.stringify(report, null, 2) + "\n"); }
 });

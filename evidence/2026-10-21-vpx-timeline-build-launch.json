@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "scope": "material private source-video/chapter timeline build; not browser or memory acceptance",
+  "statusAtInspection": "in_progress",
+  "inspectedAt": "2026-10-21T14:44:00Z",
+  "run": 39618541054,
+  "job": 119285558135,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39618541054",
+  "branch": "codex/vpx-timeline-20261021",
+  "commit": "d9830fc7d829b331a30e1ccf78d4a2e4ec4f869d",
+  "implementationParent": "c56ac4c18c82fe7d040690065a8a3768c4ac3fd6",
+  "workflowSha256": "b6ca98d65b10ad71e4a427dffa2a624d3dd4acff6c5cb2d6e4d0d56dd90d0579",
+  "wrapperExpectedSha256": "232c1f532e18fcfd2a24760ab1807bc8438653ad852fb8b8c31aa53d273853cd",
+  "muxExpectedSha256": "f94ed7456b1b9ca096cb348db009f49174008a4bfbf4173f64ab83bd4de81157",
+  "expectedArtifact": "private-vpx-timeline-39618541054",
+  "estimatedTotalMinutes": "6-8 based on prior changed build6m23s",
+  "encoderTimebaseChangeDeclared": "1/60000; quality/bitrate/GOP/threads unchanged",
+  "mainWorkflowUnchanged": true,
+  "isolatedIndexRemoved": true,
+  "extraCheckoutOrOriginalFixtureCopy": false,
+  "headless": true,
+  "docker": false,
+  "newTelemetry": {
+    "perJobOrdinalStartEndAndUniquePhaseLabels": true,
+    "phaseTimelineRetained": true,
+    "samplingBaselineProcessInclusionAnd250MiBGateUnchanged": true,
+    "typescript": "pass",
+    "focusedLint": "pass"
+  },
+  "historicalMemoryReanalysisWithoutRerun": {
+    "scope": "old Windows155 five-job observation only, not a measurement of this new candidate",
+    "report": "output/playwright/vpx-decoder-qualification-2026-10-21T10-12-16.373Z.json",
+    "blankBaselineBytes": 232558592,
+    "phaseGroups": {
+      "loaded": { "samples": 4, "unavailable": 0, "peakPrivateBytes": 299479040 },
+      "conversion-vp8": { "samples": 15, "unavailable": 0, "peakPrivateBytes": 542990336 },
+      "conversion-vp9": { "samples": 12, "unavailable": 0, "peakPrivateBytes": 622424064 },
+      "independent-validation": { "samples": 109, "unavailable": 0, "peakPrivateBytes": 640651264 },
+      "recovery": { "samples": 1, "unavailable": 0, "peakPrivateBytes": 462458880 }
+    },
+    "conversionLabelledPhasesAlsoExceed250MiB": true,
+    "cannotBlameOnlyValidationTransport": true,
+    "sameCodecGroupsCombineSeveralJobsAndDoNotIdentifyCausalAllocation": true,
+    "original389_1875MiBFailureNotReplacedBySmallerMetric": true
+  },
+  "next": [
+    "Resume exact run/job, never restart because an observation times out",
+    "Audit actual changed wrapper/MOV/config/ABI/memory limits and explicit encoder-timebase delta",
+    "Run unchanged real source/control/multi-track/terminal cases with complete validators; retain raw-duration evidence",
+    "Continue original whole-tree250MiB/current-browser/scaling/public-integration/full54 requirements"
+  ],
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "fullGoalComplete": false
+}
