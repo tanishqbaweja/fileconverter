@@ -1,5 +1,24 @@
 # Remaining work audit
 
+## 2026-10-21 - Five browser failures recovered; two missing CPU decoders genuinely compiled privately
+
+Actual8-case recovery39524846673/a038dec0 PASS16.7s covers all five failures plus
+three positive direct-save controls with original validators/bounds/cleanup.
+No production runtime/publicWasm/framework change; full failed run remains
+957PASS/5FAIL, separate recovery is not a fictitious single962-pass run. Matching
+four successful suites reusable. Exact proof/failures/scopes:
+`evidence/2026-10-21-media-focused-recovery-cycle.json`.
+
+B03 private VP8/VP9 native build39523641019/eb2ea0fe now independently audited:
+38source/13artifact hashes, actual decoder/parser configuration and unchanged C,
+encoder settings/I/O/threads/32–96MiB Wasm limits. This closes private compile/
+static audit only. General12-argument vs specialist9-argument ABI integration,
+real browser decode/re-encode, content/fidelity,250MiB/repeat/recovery/scaling and
+public promotion remain required. AV1 and all other full54 requirements stay
+open. Artifact/static source/ownership proof and precise next gates:
+`evidence/2026-10-21-vpx-decoder-native-cycle.json`. Both private Git-index
+staging runtimes removed; no extra checkout/test.mkv copy or local conversion.
+
 ## 2026-10-21 - Browser regression identifies five test races/locator failures; no unchanged full repeat
 
 39522918843/be28fd7 terminal FAIL:957PASS/5FAIL across five genuine production

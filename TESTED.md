@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Eight real recovery cases PASS; actual VP8/VP9 native artifact independently audited
+
+Focused39524846673/a038dec0 completed SUCCESS: exactly8cases PASS16.7s, including
+all five previous failures and three direct-save controls. Original production
+UI/worker and independent validators execute; native/content/size/buffer/queue/
+cleanup assertions unchanged. Four waits no longer accept initial idle; route
+notice assertion selects the actual notice. No increased deadline, skipped
+failure or production app/Wasm/package change. Full prior run stays957PASS/5FAIL;
+focused recovery is not relabelled a single fresh962-pass execution. Four passing
+suites remain reusable for identical production sources. Exact proof:
+`evidence/2026-10-21-media-focused-recovery-cycle.json` and original failure JSON.
+
+No-Docker VPX39523641019/eb2ea0fe SUCCESS independently audited:38source pins,
+13artifacts, actual VP8/VP9 native decoder/parser components, exactly two configure
+edits, compiled C SHAff8926c9... unchanged. Actual Wasm11054537B/SHA0172d780...
+initial32MiB/max96MiB match public limits; encoder settings/AVIO/backpressure
+unchanged. Retain small reusable static tool at work/vpx-decoders-39523641019,
+not converted media. Private branch made through finally-cleaned isolated Git
+index; no extra checkout or protected original copy. Build and static audit are
+NOT real browser decode/re-encode,250MiB, speed, fidelity/repeat/scaling/promotion
+acceptance. AV1 still missing. Exact components/hashes/limits/next gates:
+`evidence/2026-10-21-vpx-decoder-native-cycle.json`.
+
 ## 2026-10-21 - Changed-runtime five-suite browser run:957PASS/5FAIL; focused recovery prepared
 
 Run39522918843/be28fd7 completed: media549PASS/5FAIL in7.0min; image153PASS3.6min,

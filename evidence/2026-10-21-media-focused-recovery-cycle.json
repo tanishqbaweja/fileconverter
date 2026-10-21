@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-21",
+  "status": "five-browser-regression-failures-recovered-by-eight-real-focused-cases-not-full-project-acceptance",
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false,
+  "originalRun": {
+    "id": 39522918843,
+    "headSha": "be28fd7b22ad707f11621da4e20a7908231697aa",
+    "conclusion": "failure",
+    "passed": 957,
+    "failed": 5,
+    "evidence": "evidence/2026-10-21-framework-browser-regression-failures.json"
+  },
+  "focusedRun": {
+    "run": {
+      "conclusion": "success",
+      "headSha": "a038dec0515814bafd1c6513ba059690525e7b81",
+      "jobs": [
+        {
+          "completedAt": "2026-10-21T01:03:21Z",
+          "conclusion": "success",
+          "databaseId": 118976964024,
+          "name": "Focused media synchronization recovery (eight cases, not full CI)",
+          "startedAt": "2026-10-21T01:01:31Z",
+          "status": "completed",
+          "steps": [
+            {
+              "completedAt": "2026-10-21T01:01:33Z",
+              "conclusion": "success",
+              "name": "Set up job",
+              "number": 1,
+              "startedAt": "2026-10-21T01:01:32Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:01:50Z",
+              "conclusion": "success",
+              "name": "Run actions/checkout@v4",
+              "number": 2,
+              "startedAt": "2026-10-21T01:01:33Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:01:51Z",
+              "conclusion": "success",
+              "name": "Run actions/setup-node@v4",
+              "number": 3,
+              "startedAt": "2026-10-21T01:01:50Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:01:51Z",
+              "conclusion": "success",
+              "name": "Run mkdir -p work",
+              "number": 4,
+              "startedAt": "2026-10-21T01:01:51Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:02:15Z",
+              "conclusion": "success",
+              "name": "Run npm ci",
+              "number": 5,
+              "startedAt": "2026-10-21T01:01:51Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:02:23Z",
+              "conclusion": "success",
+              "name": "Check TypeScript semantics before browser execution",
+              "number": 6,
+              "startedAt": "2026-10-21T01:02:15Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:02:44Z",
+              "conclusion": "success",
+              "name": "Run npx playwright install --with-deps chromium",
+              "number": 7,
+              "startedAt": "2026-10-21T01:02:23Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:03:00Z",
+              "conclusion": "success",
+              "name": "Run sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg",
+              "number": 8,
+              "startedAt": "2026-10-21T01:02:44Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:03:18Z",
+              "conclusion": "success",
+              "name": "Run eight genuine media recovery checks, not full-suite acceptance",
+              "number": 9,
+              "startedAt": "2026-10-21T01:03:00Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:03:18Z",
+              "conclusion": "skipped",
+              "name": "Retain focused media failure traces only",
+              "number": 10,
+              "startedAt": "2026-10-21T01:03:18Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:03:18Z",
+              "conclusion": "success",
+              "name": "Remove owned browser dependencies and caches",
+              "number": 11,
+              "startedAt": "2026-10-21T01:03:18Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:03:18Z",
+              "conclusion": "success",
+              "name": "Post Run actions/setup-node@v4",
+              "number": 21,
+              "startedAt": "2026-10-21T01:03:18Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:03:18Z",
+              "conclusion": "success",
+              "name": "Post Run actions/checkout@v4",
+              "number": 22,
+              "startedAt": "2026-10-21T01:03:18Z",
+              "status": "completed"
+            },
+            {
+              "completedAt": "2026-10-21T01:03:18Z",
+              "conclusion": "success",
+              "name": "Complete job",
+              "number": 23,
+              "startedAt": "2026-10-21T01:03:18Z",
+              "status": "completed"
+            }
+          ],
+          "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39524846673/job/118976964024"
+        },
+        {
+          "completedAt": "2026-10-21T01:01:29Z",
+          "conclusion": "skipped",
+          "databaseId": 118976965203,
+          "name": "Browser conversions (${{ matrix.suite }})",
+          "startedAt": "2026-10-21T01:01:29Z",
+          "status": "completed",
+          "steps": [],
+          "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39524846673/job/118976965203"
+        },
+        {
+          "completedAt": "2026-10-21T01:01:29Z",
+          "conclusion": "skipped",
+          "databaseId": 118976965411,
+          "name": "verify",
+          "startedAt": "2026-10-21T01:01:29Z",
+          "status": "completed",
+          "steps": [],
+          "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39524846673/job/118976965411"
+        },
+        {
+          "completedAt": "2026-10-21T01:01:29Z",
+          "conclusion": "skipped",
+          "databaseId": 118976965489,
+          "name": "engine-matrix",
+          "startedAt": "2026-10-21T01:01:29Z",
+          "status": "completed",
+          "steps": [],
+          "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39524846673/job/118976965489"
+        },
+        {
+          "completedAt": "2026-10-21T01:01:29Z",
+          "conclusion": "skipped",
+          "databaseId": 118976965670,
+          "name": "Reproduce non-Docker ${{ matrix.id }}",
+          "startedAt": "2026-10-21T01:01:29Z",
+          "status": "completed",
+          "steps": [],
+          "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39524846673/job/118976965670"
+        }
+      ],
+      "status": "completed",
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39524846673"
+    },
+    "summaries": [
+      "2026-10-21T01:03:07.7138844Z Running 8 tests using 1 worker",
+      "2026-10-21T01:03:17.9967679Z   8 passed (16.7s)"
+    ],
+    "executedAssertionsUnchangedExceptStrongerTerminalWaitAndExactNotice": true,
+    "scope": "Eight actual production-browser recovery cases, not full CI or memory acceptance"
+  },
+  "changes": {
+    "implementationCommit": "9b4a3b19932984f213109475ff6b7448efff7a3b",
+    "productionAppWorkerAndPublicWasmChanged": false,
+    "packageAndFrameworkPinsChanged": false,
+    "mainCiWorkflowChanged": false,
+    "terminalWaitSites": 4,
+    "terminalStates": [
+      "complete",
+      "error",
+      "cancelled"
+    ],
+    "initialIdleNoLongerAccepted": true,
+    "completionAssertionsUnchanged": true,
+    "timeLimitSeconds": 60,
+    "outputCodecContentFidelityBufferBackpressureAndCleanupAssertionsUnchanged": true,
+    "routeNoticeUsesExistingSpecificTestId": true,
+    "selectedCases": 8,
+    "originalFailuresCovered": 5,
+    "positiveDirectSaveControls": 3
+  },
+  "privateCi": {
+    "branch": "codex/media-sync-20261021",
+    "headSha": "a038dec0515814bafd1c6513ba059690525e7b81",
+    "parent": "9b4a3b19932984f213109475ff6b7448efff7a3b",
+    "workflowSha256": "c927c852f3b7310a8ffce908202cd87113d3dd08ee3b79ac09f15fdc2e618832",
+    "reversibleWorkflowEdits": 4,
+    "scope": "Finite eight-case recovery, not a replacement/default/full CI pass",
+    "originalFrameworkInstallValidatorAndCleanupStepsRetained": true,
+    "isolatedGitIndexScratchRemoved": true,
+    "temporaryRepositoryCheckoutCreated": false,
+    "protectedOriginalCopied": false
+  },
+  "verification": {
+    "focusedPortableUnits": 6,
+    "focusedPortableFailures": 0,
+    "focusedPortableSkips": 0,
+    "typescript": "passed",
+    "focusedLint": "passed",
+    "focusedBrowserPassed": 8,
+    "focusedBrowserFailed": 0,
+    "focusedBrowserDurationSeconds": 16.7,
+    "platform": "Hosted Linux bundled Chromium headless",
+    "headedOrManualCoverage": false,
+    "windowsFullTreeMemoryAcceptance": false,
+    "nativeEngineReproduction": false,
+    "wholeDefaultSuiteOnNewestHelperCommit": "not rerun; matching current production runtime passed on prior hosted code, new helpers separately focused-tested"
+  },
+  "evidenceReuse": {
+    "sameProductionRuntimeSourceAsOriginalBrowserRun": true,
+    "checkedPaths": [
+      "app",
+      "lib",
+      "workers",
+      "worker",
+      "public",
+      "package.json",
+      "package-lock.json",
+      "vite.config.ts"
+    ],
+    "originalFourPassingBrowserSuitesReusedWithinMatchingScope": true,
+    "notReportedAsOneFresh962PassRun": true,
+    "originalFailedRunAndFailureArtifactReferencesRetained": true
+  },
+  "remaining": [
+    "VP8/VP9 native candidate compiled/audited, but actual browser decode/re-encode and all original promotion gates remain open.",
+    "General core12-argument ABI vs legacy9-argument specialists requires explicit correct runtime integration; see separate actual-binary inventory.",
+    "B02-B09/full54 requirements,28dependency advisory exposure/remediation and250MiB whole-tree memory remain open. No unchanged full554-case diagnostic rerun."
+  ]
+}

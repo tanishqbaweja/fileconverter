@@ -55,6 +55,17 @@ public engines unchanged. Exact proof/next gates
 
 ## Ordered blockers and exact exit evidence
 
+Latest B03/B08 increment: VPX39523641019/eb2ea0fe compiles real native CPU VP8/VP9
+decoders/parsers; independent38source/13artifact audit verifies unchanged C/
+encoder/I/O/thread/32–96MiB heap settings. Private only, no browser decode or
+promotion yet; AV1 remains missing. Exact receipt
+`evidence/2026-10-21-vpx-decoder-native-cycle.json`. Changed-runtime browser run
+39522918843 has957PASS/5FAIL; all five failures recovered by exact eight-case
+39524846673/a038dec0 PASS16.7s with stronger terminal polling/exact notice locator
+and unchanged validators. No production source changes; not one fresh962-pass
+run. Receipt `evidence/2026-10-21-media-focused-recovery-cycle.json`. All original
+memory/native-video/audio/compatibility/security/full-scope blockers remain OPEN.
+
 Corrected B08 hosted39522350948/ec9fb51 SUCCESS: clean npm-ci/lint/TS/build,
 1367pass/0fail/1original-fixture skip and all19privacy/offline/production-host
 checks38.2s. Exact failure/correction/source/cleanup proof:

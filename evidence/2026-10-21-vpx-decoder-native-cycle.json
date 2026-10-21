@@ -1,0 +1,400 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-21",
+  "status": "private-native-vp8-vp9-cpu-decoder-build-and-static-audit-pass-browser-qualification-pending",
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false,
+  "publicEngineChanged": false,
+  "nativeBuild": {
+    "runId": 39523641019,
+    "jobId": 118973141935,
+    "branch": "codex/vpx-decoders-20261021",
+    "headSha": "eb2ea0fe4da8626fdac9d5282d69024424ae59a1",
+    "parent": "dfca2f6167664a676eb5f3ad81ecbde2c0abc263",
+    "conclusion": "success",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39523641019",
+    "startedAt": "2026-10-21T00:49:35Z",
+    "updatedAt": "2026-10-21T00:57:00Z",
+    "steps": [
+      {
+        "completedAt": "2026-10-21T00:49:40Z",
+        "conclusion": "success",
+        "name": "Set up job",
+        "number": 1,
+        "startedAt": "2026-10-21T00:49:39Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:50:02Z",
+        "conclusion": "success",
+        "name": "Run actions/checkout@v4",
+        "number": 2,
+        "startedAt": "2026-10-21T00:49:40Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:50:18Z",
+        "conclusion": "success",
+        "name": "Install native build prerequisites",
+        "number": 3,
+        "startedAt": "2026-10-21T00:50:02Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:50:39Z",
+        "conclusion": "success",
+        "name": "Install pinned Emscripten SDK without Docker",
+        "number": 4,
+        "startedAt": "2026-10-21T00:50:18Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:52Z",
+        "conclusion": "success",
+        "name": "Rebuild and compare requested FFmpeg module(s)",
+        "number": 5,
+        "startedAt": "2026-10-21T00:50:39Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "success",
+        "name": "Retain private VPX software decoder candidate",
+        "number": 6,
+        "startedAt": "2026-10-21T00:56:52Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "skipped",
+        "name": "Retain private H264 candidate and corresponding sources",
+        "number": 7,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "skipped",
+        "name": "Retain corresponding source and configure diagnostics separately",
+        "number": 8,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "skipped",
+        "name": "Retain private MPEG2 candidate",
+        "number": 9,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "skipped",
+        "name": "Retain MPEG2 corresponding source separately",
+        "number": 10,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "skipped",
+        "name": "Retain synthetic split frame contract only",
+        "number": 11,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "skipped",
+        "name": "Retain synthetic split properties contract only",
+        "number": 12,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "skipped",
+        "name": "Retain private separate encoder and initialization contract",
+        "number": 13,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "skipped",
+        "name": "Retain private split production pipeline",
+        "number": 14,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "skipped",
+        "name": "Retain private aligned-reuse split candidate",
+        "number": 15,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "skipped",
+        "name": "Retain private arithmetic report only",
+        "number": 16,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "skipped",
+        "name": "Retain mismatched artifacts for bounded diagnosis",
+        "number": 17,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:54Z",
+        "conclusion": "skipped",
+        "name": "Retain private SAD arithmetic report only",
+        "number": 18,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:57Z",
+        "conclusion": "success",
+        "name": "Remove repository-local build data",
+        "number": 19,
+        "startedAt": "2026-10-21T00:56:54Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:57Z",
+        "conclusion": "success",
+        "name": "Post Run actions/checkout@v4",
+        "number": 38,
+        "startedAt": "2026-10-21T00:56:57Z",
+        "status": "completed"
+      },
+      {
+        "completedAt": "2026-10-21T00:56:57Z",
+        "conclusion": "success",
+        "name": "Complete job",
+        "number": 39,
+        "startedAt": "2026-10-21T00:56:57Z",
+        "status": "completed"
+      }
+    ],
+    "dockerUsed": false,
+    "privateChangedBuildNotPublicReproduction": true,
+    "existingStepNameDoesNotMeanPublicByteComparison": true
+  },
+  "artifact": {
+    "id": 12312074089,
+    "name": "private-vpx-decoders-39523641019",
+    "compressedBytes": 3616757,
+    "archiveDigest": "sha256:821ad4781b94c53786b12a847d6a56360ead9c5ef066efa34025f0cf861f19d4",
+    "retentionDays": 1,
+    "downloadedDirectory": "work/vpx-decoders-39523641019",
+    "retainedAsSmallReusableStaticCodecTool": true,
+    "notConvertedMedia": true
+  },
+  "independentArtifactAudit": {
+    "status": "passed-independent-static-artifact-audit-not-browser-or-memory-acceptance",
+    "directory": "H:\\Github Repositories\\fileconverter\\work\\vpx-decoders-39523641019",
+    "manifestSha256": "00c28640d83b0ce473d26b6fc55de3b638e26678adcba21b551bd34f6bd9d201",
+    "buildSourcePinsVerified": 38,
+    "artifactPinsVerified": 13,
+    "artifactFiles": [
+      {
+        "file": "LICENSE.lame",
+        "bytes": 25281,
+        "sha256": "e64f9c5a18f56828c10a575df13ade641aa3af4512a7afe6c411256943b57aaf"
+      },
+      {
+        "file": "LICENSE.lame-linking",
+        "bytes": 503,
+        "sha256": "5c1f8d44f1eacbea3e1c31ff6ee11a4e1690ccbed4ee4af16de3b6eb61dc69a8"
+      },
+      {
+        "file": "LICENSE.libogg",
+        "bytes": 1466,
+        "sha256": "d2ab5758336489da61c12cc5bb757da5339c4ae9001f9bb0562b4370249af814"
+      },
+      {
+        "file": "LICENSE.libtheora",
+        "bytes": 1470,
+        "sha256": "8417fad7da775735564e209484a2e011e0fa201e94f01fdbee6e4977e478e6fc"
+      },
+      {
+        "file": "LICENSE.libvorbis",
+        "bytes": 1470,
+        "sha256": "ec1815db59fcd302846df949d7424876cb2e2dc5ed1606c5fb0b36787b1cf43a"
+      },
+      {
+        "file": "LICENSE.opencore-amr",
+        "bytes": 10271,
+        "sha256": "8b3f1762349248d444ab9acbafe73941254e36e1064954da56bb9ddbd5873ddb"
+      },
+      {
+        "file": "LICENSE.opus",
+        "bytes": 1945,
+        "sha256": "01e1167d54a096d123cf6dfbbeb19587278845c6481d2d66d545669846079551"
+      },
+      {
+        "file": "build-libraries.base.sh",
+        "bytes": 3202,
+        "sha256": "6414ea37233cf82ebb4cbac2352061ed830befbdf7eb395988b7c1e2d187f6cf"
+      },
+      {
+        "file": "build-libraries.vpx.sh",
+        "bytes": 3218,
+        "sha256": "3480ba1cbac6e815988396a8bf4f05b2efe0edd4c57bb4ce2244472a959229f7"
+      },
+      {
+        "file": "config_components.h",
+        "bytes": 75831,
+        "sha256": "7a4a94018ce64dd640dabc997a893f843f3482845e5574096b25684080b5acb5"
+      },
+      {
+        "file": "within-remux.mjs",
+        "bytes": 45700,
+        "sha256": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1"
+      },
+      {
+        "file": "within-remux.wasm",
+        "bytes": 11054537,
+        "sha256": "0172d78014380633a3a35db75c8ceec8083cd5f39f9d2adb9d90e9b6e59d5f76"
+      },
+      {
+        "file": "within_remux.vpx.c",
+        "bytes": 168948,
+        "sha256": "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd"
+      }
+    ],
+    "sourcePins": {
+      "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+      "media/ffmpeg/vpx-decoder-candidate.mjs": "fff0499778dac0a055d57311c7f55855dc9f4222fb4b6d97fabdb5330d4bf223",
+      "media/ffmpeg/make-vpx-decoder-candidate.mjs": "b99be7508d6f24500b10f115afdd9c6faf688499bd7f0a7a4663acdd83a91a3b",
+      "media/ffmpeg/build-vpx-decoder-candidate.mjs": "b6a8d7cc3775f23b6e60bbac5e6353cef138779d3f80f1dc69b5051e0c270a75",
+      "media/ffmpeg/reproduce-nondocker.sh": "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e",
+      "media/ffmpeg/build-remux.sh": "904f06e36b2a3ee4509a7cb8faeda3a375314ffd5d1fd119017eb90ad0bb3a9e",
+      "media/ffmpeg/build-libraries.sh": "6414ea37233cf82ebb4cbac2352061ed830befbdf7eb395988b7c1e2d187f6cf",
+      "media/ffmpeg/wasm-pkg-config.sh": "2d72728fc32bf856f3f46f525f1fe48f91126304e42d16175b1e527b701f6998",
+      "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+      "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+      "scripts/lib/vpx-decoder-build-workflow.mjs": "c897f1c3b9f2a39172c7a546928edb89db0a50708be12a1fefe218aba3515a45",
+      ".github/workflows/reproduce-ffmpeg-nondocker.yml": "de8e8188a35aa1a0c996d5f9442f2f5d439b844a0d74b7e5c4575bdb3f5210ca",
+      "media/ffmpeg/build-lame.sh": "12089e665699250514741677b7358b8207b099317d1e671ec908171b90b83913",
+      "media/ffmpeg/build-ogg.sh": "8dda87254f43bcea0125e2f1e0464ddf3db237776bf807e2fd60c343793de38f",
+      "media/ffmpeg/build-opencore-amr.sh": "37fde3e50eec823b6fdc8c2dda1b8d47547dbcd0d74844a618ce1ebbdb9d4185",
+      "media/ffmpeg/build-opus.sh": "76fe92ffba0e6ea011be0998de78ef76431874bb6c7c5b7336b6f84d4d23a0fb",
+      "media/ffmpeg/build-vorbis.sh": "9559bbcd2ab8f4b57a8c4248573c08b4724c3ccd3b2533fa283b83a5d13522a7",
+      "media/ffmpeg/build-vpx.sh": "11bb4bb4d9650e82ec47a3b7ae4f6ca0c45b21261fc306e012594cd880a7dc7c",
+      "media/ffmpeg/patches/amr-bounded-packets.patch": "cdfa17008d34716c1b16783cd4677647bb4b6c211628fa5adff22be450b711d5",
+      "media/ffmpeg/patches/audio-options-source.patch": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
+      "media/ffmpeg/patches/avi-bounded-index.patch": "0b6771caab27b60763d57a42086e4e7fa1addfb4e72e95294d0859a90af08732",
+      "media/ffmpeg/patches/direct-mp4-only-source.patch": "935505aad24d5b5a8cbf693b3d4a3e3b6442843c7b0a931b444c422f48f17764",
+      "media/ffmpeg/patches/direct-published-source.patch": "514c6b9a4c1f59d865ad457c510b3d06cba7ae6f8f68f7a7a25097945db1a212",
+      "media/ffmpeg/patches/direct-source-79e4db.patch": "e9b140d5999d3b90a555023825b831210520cccbb328810b3d73521d1e80d5bd",
+      "media/ffmpeg/patches/hevc-decoder-uncached-frame-buffers.patch": "fef319d0497683a45a09959e12d524fa1dc46356f7a17f0f7c8c89f5b20699b0",
+      "media/ffmpeg/patches/matroska-artwork-source.patch": "f2d7b2e9dbfdc8204e88e8a68305fa205262391127b9fb9175d5bfaf2a1821bf",
+      "media/ffmpeg/patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
+      "media/ffmpeg/patches/mov-bounded-custom-metadata.patch": "b0bcd47e5997073071f06da3f093f08940536035c75888b4a18bce0fc2c7ecff",
+      "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch": "f6c9ab0dfe0a918e6e197f779d77b58b4f7e0e525ba4e72d6ed6375a5ed3381a",
+      "media/ffmpeg/patches/mov-fragmented-cover-metadata-only.patch": "2e0da9a1978ce31858117c91d6349b0a933e1fa4a0d4de1e0d459054e567210b",
+      "media/ffmpeg/patches/mp4-webm-opus-priming-source.patch": "c2f56a458552e3d0bac647c26de0042eebb62e6d2eb4054ac8574fed6b908da2",
+      "media/ffmpeg/patches/mpeg2-encoder-pool-release-diagnostic.patch": "e8925b20f9e87d2eaecf77fedd030547416679ad0afce4300feef5265ed70d92",
+      "media/ffmpeg/patches/mpeg2-encoder-uncached-accessories.patch": "095c43cf7f636209be78d32cbedec1beacfa30c0d50978954d70bcf5abf9f645",
+      "media/ffmpeg/patches/mpeg2-encoder-uncached-frame-buffers.patch": "d06563699a8747c429bdcc9432657a38c4a5c03446e2530a108cce10cae336ee",
+      "media/ffmpeg/patches/openh264-force-intra-wasm.patch": "aa2292dee4498598d4ef7ec28b8fe92b07150360f66a64d9ea1f5d99caeef55f",
+      "media/ffmpeg/patches/refstruct-readonly-pool-diagnostic.patch": "18e5a8889c2675a419757eb04ed6aa2c9a9730a7e4f9300e059e9e53da3d1280",
+      "media/ffmpeg/patches/specialist-source-79e4db.patch": "5b6f5276b396b129c1229a05ad53a6f1a4c76c9bf7bdc08953ad890181207941",
+      "media/ffmpeg/patches/theora-source.patch": "903f48bdc2b06db90b378c60f006fe110880e47684102340f99ddb5f02a15dde"
+    },
+    "candidate": {
+      "addedSoftwareDecoders": [
+        "vp8",
+        "vp9"
+      ],
+      "addedParsers": [
+        "vp8",
+        "vp9"
+      ],
+      "av1Implemented": false,
+      "publicAcceptance": false,
+      "compiledSourceSha256": "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd",
+      "generatedLibrariesSha256": "3480ba1cbac6e815988396a8bf4f05b2efe0edd4c57bb4ce2244472a959229f7",
+      "generatedRecipeSha256": "1c3acbde687d1062eb93c7405555097f7678c6b28dae682cdeaf6692afaf4402",
+      "configureEdits": 2,
+      "wrapperChanged": false,
+      "encoderSettingsChanged": false,
+      "ioChanged": false,
+      "wasmMemoryLimits": [
+        {
+          "imported": true,
+          "initialPages": 512,
+          "maximumPages": 1536,
+          "shared": true
+        }
+      ],
+      "memoryLimitsRaised": false,
+      "browserDecodeVerified": false
+    },
+    "components": {
+      "addedSoftwareDecoders": [
+        "vp8",
+        "vp9"
+      ],
+      "addedParsers": [
+        "vp8",
+        "vp9"
+      ],
+      "av1Implemented": false,
+      "publicAcceptance": false
+    },
+    "actualWasmMemoryLimits": [
+      {
+        "imported": true,
+        "initialPages": 512,
+        "maximumPages": 1536,
+        "shared": true
+      }
+    ],
+    "encoderAndCodecSettingsUnchanged": true,
+    "ioAndBackpressureUnchanged": true,
+    "publicAcceptance": false,
+    "browserDecodeVerified": false,
+    "av1Implemented": false,
+    "independentAuditScope": "Actual compiled C/configuration and static binary hashes/limits; no media conversion or Wasm instance outside browser"
+  },
+  "scopeLimits": [
+    "Actual FFmpeg native CPU VP8/VP9 decoder/parser components configured and compiled; no browser media conversion yet.",
+    "No AV1 decoder, new public profile, fallback planner/UI integration, quality/fidelity, speed, repeat/recovery, scaling or250MiB acceptance.",
+    "Compiled C/encoder options/codec thread counts, AVIO/backpressure and actual32/96MiB Wasm limits unchanged.",
+    "Inherited top-level encoder inventory describes the public multi-core family; it does not certify every family encoder as callable in this private general core.",
+    "Private artifact uses the12-argument general remux ABI; do not rename/stage as a9-argument specialist."
+  ],
+  "localVerification": {
+    "focusedCandidateUnitsPassed": 4,
+    "combinedCandidateAndMediaRecoveryUnitsPassed": 6,
+    "typescriptPassed": true,
+    "focusedLintPassed": true,
+    "fullPortableSuiteRerun": false
+  },
+  "localCleanup": {
+    "isolatedGitIndexScratchRemoved": true,
+    "temporaryRepositoryCheckoutCreated": false,
+    "protectedOriginalCopied": false,
+    "protectedOriginalBytes": 2958573265,
+    "protectedOriginalSha256VerifiedUnchanged": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "mainWorkflowUnchanged": true,
+    "mainPublicRecipesAndBinariesUnchanged": true
+  },
+  "nextActions": [
+    "Resume focused real media regression39524846673 rather than repeating the unchanged554-case full suite.",
+    "Verify explicit general-core12-argument call handling against actual production worker before adding a private VP8/VP9 decode/re-encode qualification route.",
+    "Run actual production-browser decoding/re-encoding and independent content/fidelity validators. Native FFmpeg may only create fixtures and validate outputs, never convert for the app.",
+    "Keep candidate private through original whole-tree memory, repeat, terminal-path cleanup and scaling gates; continue missing AV1 and B02-B09/full54 requirements."
+  ]
+}
