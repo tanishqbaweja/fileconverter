@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-10-21 first compiled-cache integrationb484ee7 rejected8PASS/2FAIL: cache owner
+dies on app coordinator replacement, and fast encode phase is masked by compile
+progress. Original assertions preserved. App-lifetime static slot+real phase fix
+and24focused/TS/lint pass; fresh actual sequence next. No speedup/memory acceptance
+claim from split-session258.28125MiB failure. Full54/B02-B09 remain OPEN.
+`evidence/2026-10-21-vpx-first-compiled-cache-result.json`.
+
 2026-10-21 next changed candidate: reuse only one static compiled VPX module across
 fresh workers, never their memories/user data. Bounded static fetch+rehash per job
 prevents stale asset reuse.23focused/lint pass; full production-browser correctness/

@@ -1,0 +1,246 @@
+{
+  "schemaVersion": 1,
+  "scope": "First static-module candidate atb484ee7; failed reporting/lifetime integration, not a coherent memory pass",
+  "implementationCommit": "b484ee70fd49961198b2afc3882cdf297596f73e",
+  "suite": "8PASS/2FAIL1.4minutes",
+  "sessions": [
+    {
+      "report": {
+        "path": "output\\playwright\\vpx-decoder-qualification-2026-10-21T16-31-47.135Z.json",
+        "bytes": 899353,
+        "sha256": "2b54c094e1460c16726f3a4ab5690f0cf5f7eff9c5c26de559655233540c69e0"
+      },
+      "tests": [
+        {
+          "test": "genuine CPU vp8 decode to MPEG4 with default settings",
+          "status": "passed",
+          "error": null
+        },
+        {
+          "test": "genuine CPU vp8 decode preserves nondefault12-argument video controls",
+          "status": "failed",
+          "error": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoContain\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // indexOf\u001b[22m\n\nExpected value: \u001b[32m\"Decoding VP8 (CPU) / encoding MPEG-4 MP4\"\u001b[39m\nReceived array: \u001b[31m[\"Inspecting VPX source\", \"Worker started\", \"Destination opened\", \"Compiled VPX code\", \"Copying staged MP4 to selected destination\", \"Complete\"]\u001b[39m"
+        }
+      ],
+      "incrementalPrivateMiB": null,
+      "compilationPhases": [
+        {
+          "codec": "vp8",
+          "phases": [
+            "Inspecting VPX source",
+            "Worker started",
+            "Destination opened",
+            "Compiled VPX code",
+            "Decoding VP8 (CPU) / encoding MPEG-4 MP4",
+            "Copying staged MP4 to selected destination",
+            "Complete"
+          ]
+        },
+        {
+          "codec": "vp8",
+          "phases": [
+            "Inspecting VPX source",
+            "Worker started",
+            "Destination opened",
+            "Compiled VPX code",
+            "Copying staged MP4 to selected destination",
+            "Complete"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "fullDecode": true,
+          "frames": 48,
+          "fps": 24,
+          "ssim": 0.993273,
+          "audioPacketsIdentical": true,
+          "sourceBytes": 91331,
+          "outputBytes": 525916,
+          "outputSha256": "84fc5477bdb0dc97995782f77827a3e5bcedfcaa6a694cad5980910083389ae1"
+        }
+      ],
+      "pins": true,
+      "cleanup": true
+    },
+    {
+      "report": {
+        "path": "output\\playwright\\vpx-decoder-qualification-2026-10-21T16-32-24.419Z.json",
+        "bytes": 1676948,
+        "sha256": "0d8c9a4f83ef869eddf0e900dbd85d83387bd6259a585523855f476f95f2ad20"
+      },
+      "tests": [
+        {
+          "test": "genuine CPU vp9 decode to MPEG4 with default settings",
+          "status": "passed",
+          "error": null
+        },
+        {
+          "test": "genuine CPU vp9 decode preserves nondefault12-argument video controls",
+          "status": "passed",
+          "error": null
+        },
+        {
+          "test": "genuine decode retains both compatible audio tracks, their packet hashes/languages and chapter timing",
+          "status": "passed",
+          "error": null
+        },
+        {
+          "test": "mismatched source rejected before encoding",
+          "status": "passed",
+          "error": null
+        },
+        {
+          "test": "pre-cancelled job cleans up without claiming mid-conversion cancellation coverage",
+          "status": "passed",
+          "error": null
+        },
+        {
+          "test": "bounded selected-destination write failure aborts and removes stage",
+          "status": "passed",
+          "error": null
+        },
+        {
+          "test": "real conversion recovers after rejection, pre-cancel and destination failure",
+          "status": "passed",
+          "error": null
+        },
+        {
+          "test": "complete same-instance Chromium tree remains within250MiB over clean blank",
+          "status": "failed",
+          "error": "Error: All Chromium descendants count; no heap substitution, GC or loaded baseline subtraction\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m250\u001b[39m\nReceived:    \u001b[31m258.28125\u001b[39m"
+        }
+      ],
+      "incrementalPrivateMiB": 258.28125,
+      "compilationPhases": [
+        {
+          "codec": "vp9",
+          "phases": [
+            "Inspecting VPX source",
+            "Worker started",
+            "Destination opened",
+            "Compiled VPX code",
+            "Decoding VP9 (CPU) / encoding MPEG-4 MP4",
+            "Copying staged MP4 to selected destination",
+            "Complete"
+          ]
+        },
+        {
+          "codec": "vp9",
+          "phases": [
+            "Inspecting VPX source",
+            "Worker started",
+            "Destination opened",
+            "Compiled VPX code",
+            "Decoding VP9 (CPU) / encoding MPEG-4 MP4",
+            "Copying staged MP4 to selected destination",
+            "Complete"
+          ]
+        },
+        {
+          "codec": "vp8",
+          "phases": [
+            "Inspecting VPX source",
+            "Worker started",
+            "Destination opened",
+            "Compiled VPX code",
+            "Decoding VP8 (CPU) / encoding MPEG-4 MP4",
+            "Copying staged MP4 to selected destination",
+            "Complete"
+          ]
+        },
+        {
+          "codec": "vp8",
+          "phases": [
+            "Inspecting VPX source"
+          ]
+        },
+        {
+          "codec": "vp8",
+          "phases": [
+            "Inspecting VPX source",
+            "Worker started",
+            "Destination opened",
+            "Compiled VPX code"
+          ]
+        },
+        {
+          "codec": "vp9",
+          "phases": [
+            "Inspecting VPX source",
+            "Worker started",
+            "Destination opened",
+            "Compiled VPX code",
+            "Decoding VP9 (CPU) / encoding MPEG-4 MP4",
+            "Copying staged MP4 to selected destination"
+          ]
+        },
+        {
+          "codec": "vp8",
+          "phases": [
+            "Inspecting VPX source",
+            "Worker started",
+            "Destination opened",
+            "Compiled VPX code",
+            "Decoding VP8 (CPU) / encoding MPEG-4 MP4",
+            "Copying staged MP4 to selected destination",
+            "Complete"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "fullDecode": true,
+          "frames": 48,
+          "fps": 24,
+          "ssim": 0.996114,
+          "audioPacketsIdentical": true,
+          "sourceBytes": 438626,
+          "outputBytes": 593687,
+          "outputSha256": "1e8dc6e85e1337c025f9d6fca1e5bbab0ab4cf7df56079e260d9312cd42dec19"
+        },
+        {
+          "fullDecode": true,
+          "frames": 30,
+          "fps": 15,
+          "ssim": 0.98829,
+          "audioPacketsIdentical": true,
+          "sourceBytes": 438626,
+          "outputBytes": 108167,
+          "outputSha256": "15f0912f97349e82cc47d7eb8d5cd2daa4bc0fe0e00cfc672f44de987465d496"
+        },
+        {
+          "fullDecode": true,
+          "frames": 48,
+          "fps": 24,
+          "ssim": 0.993273,
+          "audioPacketsIdentical": true,
+          "sourceBytes": 123374,
+          "outputBytes": 559403,
+          "outputSha256": "6d845ec63901e6124d47ee33121c8c905c6f816b0b8fd97accc4a57109620e13"
+        },
+        {
+          "fullDecode": true,
+          "frames": 48,
+          "fps": 24,
+          "ssim": 0.993273,
+          "audioPacketsIdentical": true,
+          "sourceBytes": 91331,
+          "outputBytes": 525916,
+          "outputSha256": "84fc5477bdb0dc97995782f77827a3e5bcedfcaa6a694cad5980910083389ae1"
+        }
+      ],
+      "pins": true,
+      "cleanup": true
+    }
+  ],
+  "failures": [
+    "Fast VP8 control conversion completes but new compilation phase masks throttled native decoding phase; original phase guard fails before full independent validation",
+    "App replaces entire coordinator at each terminal result, so coordinator-owned code cache is destroyed between separate jobs; all observed preparations cold",
+    "After test-worker restart, memory still fails258.28125MiB; not full-nine same-instance acceptance"
+  ],
+  "correction": "Move bounded static-code slot into app worker-effect lifetime, dispose on app unmount/protocol failure. Force real native phase after factory initialization. Add real cold/reuse counters plus replacement-lifetime unit guard;24focused and TS pass.",
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "fullGoalComplete": false
+}

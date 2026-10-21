@@ -1,7 +1,7 @@
 import type { StartConversionMessage, WorkerRequest, WorkerResponse } from "./conversion-protocol";
 import { validateStagedCopyHandoff, type StagedJobIdentity, type StagedSaveRequest } from "./staged-copy-protocol";
 import { isVpxDecoderProfile } from "./vpx-decoder-policy";
-import { validateVpxCompiledCore, type VpxCompiledCore } from "./vpx-compiled-core";
+import { validateVpxCompiledCore, type VpxCompiledCore, type VpxCompiledCoreSlot } from "./vpx-compiled-core";
 
 /** A bounded lifecycle owner, not a conversion engine or memory-measurement API. */
 export class StagedWorkerCoordinator extends EventTarget implements Worker {
@@ -18,7 +18,8 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
   private vpxCompiledCore: VpxCompiledCore | null = null;
   private vpxPreparedJobId: string | null = null;
 
-  constructor(private readonly conversionFactory: () => Worker, private readonly saveFactory: () => Worker) {
+  constructor(private readonly conversionFactory: () => Worker, private readonly saveFactory: () => Worker,
+    private readonly staticCodeSlot?: VpxCompiledCoreSlot) {
     super(); this.install("conversion");
   }
   private emit(message: WorkerResponse): void {
@@ -31,6 +32,7 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
   }
   private fail(error: unknown): void {
     this.vpxCompiledCore = null; this.vpxPreparedJobId = null;
+    this.staticCodeSlot?.clear();
     this.pending = null; this.pendingCancel = false; this.job = null; this.stopActive();
     const message = (error instanceof Error ? error.message : String(error)).slice(0, 512);
     const event = new ErrorEvent("error", { message, cancelable: true });
@@ -67,6 +69,7 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
               this.vpxPreparedJobId === value.jobId || Object.keys(value).sort().join(",") !== "core,jobId,type")
             throw new Error("Unexpected static VPX code handoff");
           this.vpxCompiledCore = validateVpxCompiledCore(value.core); this.vpxPreparedJobId = value.jobId;
+          this.staticCodeSlot?.set(this.vpxCompiledCore);
           return; // Never forward static code to the UI, saver, logs or results.
         }
         if (!this.job || value?.jobId !== this.job.jobId) return;
@@ -90,8 +93,9 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
     }
     if (message.type !== "start" || this.job || this.pending) throw new Error("Only one conversion may be active");
     if ("vpxCompiledCore" in message) throw new Error("Static VPX code is owned by the coordinator, not its caller");
-    const forwarded = this.vpxCompiledCore && isVpxDecoderProfile(message.profileId)
-      ? { ...message, vpxCompiledCore: this.vpxCompiledCore } : message;
+    const cached = this.staticCodeSlot?.get() ?? this.vpxCompiledCore;
+    const forwarded = cached && isVpxDecoderProfile(message.profileId)
+      ? { ...message, vpxCompiledCore: cached } : message;
     const queued = this.role === "save" || !this.ready ? structuredClone(forwarded) : null;
     this.vpxPreparedJobId = null;
     this.job = { jobId: message.jobId, profileId: message.profileId, sourceBytes: message.file.size,
@@ -110,6 +114,6 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
   }
 }
 
-export function createStagedWorkerCoordinator(conversion: () => Worker, save: () => Worker): Worker {
-  return new StagedWorkerCoordinator(conversion, save);
+export function createStagedWorkerCoordinator(conversion: () => Worker, save: () => Worker, staticCodeSlot?: VpxCompiledCoreSlot): Worker {
+  return new StagedWorkerCoordinator(conversion, save, staticCodeSlot);
 }

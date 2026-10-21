@@ -3,6 +3,21 @@
 export const VPX_STATIC_WASM_URL = "/engines/vpx/within-remux.wasm";
 export const VPX_STATIC_WASM_MAXIMUM_BYTES = 16 * 1024 * 1024;
 export interface VpxCompiledCore { module: WebAssembly.Module; sha256: string; byteLength: number }
+export interface VpxCompiledCoreSlot {
+  get(): VpxCompiledCore | null;
+  set(value: VpxCompiledCore): void;
+  clear(): void;
+  dispose(): void;
+}
+export function createVpxCompiledCoreSlot(): VpxCompiledCoreSlot {
+  let core: VpxCompiledCore | null = null, disposed = false;
+  return {
+    get: () => core,
+    set(value) { if (disposed) throw new Error("Static code owner is disposed"); core = validateVpxCompiledCore(value); },
+    clear() { core = null; },
+    dispose() { core = null; disposed = true; },
+  };
+}
 
 export function validateVpxCompiledCore(value: unknown): VpxCompiledCore {
   if (!value || typeof value !== "object" || Object.keys(value).sort().join(",") !== "byteLength,module,sha256")

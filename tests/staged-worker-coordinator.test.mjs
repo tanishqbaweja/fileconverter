@@ -3,9 +3,9 @@ import { build } from "esbuild";
 import path from "node:path";
 import test from "node:test";
 const root = path.resolve(import.meta.dirname, "..");
-const bundle = await build({ stdin: { contents: 'export { StagedWorkerCoordinator } from "./lib/staged-worker-coordinator.ts"; export { validateStagedCopyHandoff } from "./lib/staged-copy-protocol.ts";',
+const bundle = await build({ stdin: { contents: 'export { StagedWorkerCoordinator } from "./lib/staged-worker-coordinator.ts"; export { validateStagedCopyHandoff } from "./lib/staged-copy-protocol.ts"; export { createVpxCompiledCoreSlot } from "./lib/vpx-compiled-core.ts";',
   loader: "ts", resolveDir: root }, bundle: true, format: "esm", platform: "node", write: false });
-const { StagedWorkerCoordinator, validateStagedCopyHandoff } = await import("data:text/javascript;base64," + Buffer.from(bundle.outputFiles[0].contents).toString("base64"));
+const { StagedWorkerCoordinator, validateStagedCopyHandoff, createVpxCompiledCoreSlot } = await import("data:text/javascript;base64," + Buffer.from(bundle.outputFiles[0].contents).toString("base64"));
 if (!globalThis.ErrorEvent) globalThis.ErrorEvent = class extends Event { constructor(type, options) { super(type, options); this.message = options.message; } };
 class FakeWorker {
   onmessage = null; onerror = null; onmessageerror = null; messages = []; terminated = false;
@@ -31,7 +31,7 @@ function fixture(options = {}) {
     assert.equal(encoders.at(-1).terminated, true, "Retire codec before creating saver");
     if (options.failSaveFactory) throw new Error("Save startup failure");
     const worker = new FakeWorker(); savers.push(worker); return worker;
-  });
+  }, options.staticCodeSlot);
   owner.onmessage = ({ data }) => events.push(data); owner.onerror = event => errors.push(event.message);
   return { owner, encoders, savers, events, errors };
 }
@@ -72,6 +72,17 @@ test("caller-owned, foreign, duplicated and payload-bearing static code handoffs
   assert.throws(() => f.owner.postMessage({ ...job, vpxCompiledCore: staticCode() }), /owned by the coordinator/);
   f.owner.postMessage(job); const value = { type: "vpx-compiled-core", jobId: job.jobId, core: staticCode() };
   f.encoders[0].emit(value); f.encoders[0].emit(value); assert.equal(f.errors.length, 1); f.owner.terminate();
+});
+
+test("app-owned static code survives complete coordinator replacement but not owner disposal", () => {
+  const slot = createVpxCompiledCoreSlot(), first = fixture({ staticCodeSlot: slot }), job = start("vpx1", "mkv-vp8-to-mp4-mpeg4");
+  first.encoders[0].emit({ type: "ready" }); first.owner.postMessage(job);
+  first.encoders[0].emit({ type: "vpx-compiled-core", jobId: job.jobId, core: staticCode() }); first.owner.terminate();
+  assert.ok(slot.get().module instanceof WebAssembly.Module);
+  const second = fixture({ staticCodeSlot: slot }); second.encoders[0].emit({ type: "ready" });
+  second.owner.postMessage(start("vpx2", "mkv-vp9-to-mp4-mpeg4"));
+  assert.equal(second.encoders[0].messages[0].vpxCompiledCore.sha256, "a".repeat(64)); second.owner.terminate();
+  slot.dispose(); assert.equal(slot.get(), null); assert.throws(() => slot.set(staticCode()), /disposed/);
 });
 test("handoff queue is one descriptor; cancellation during save startup is forwarded before normal work advances", () => {
   const f = fixture(), request = start(); f.encoders[0].emit({ type: "ready" }); f.owner.postMessage(request); f.encoders[0].emit(handoff(request));

@@ -693,6 +693,10 @@ export async function runMediaRemux({
       },
     });
     assertActive();
+    // Factory/compilation messages can supersede the phase while initializing.
+    // Force the genuine native-work phase even when encoding finishes within
+    // the normal progress-throttle interval.
+    emitProgress(jobId, phase, metrics, startedAt, true);
 
     const usesCertifiedSpecialistAbi =
       !vpxDecoderCore && moduleUrl !== REMUX_MODULE_URL && (

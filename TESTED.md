@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-21 firstb484ee7 static-code candidate8PASS/2FAIL1.4min, not full coherence.
+VP8 control completes but compilation phase masks throttled decoding phase, so
+original phase guard fails before validation; Playwright restarts worker/session.
+App replaces entire coordinator on terminal, discarding coordinator-owned cache:
+observed preparations all cold. Second session memory FAIL258.28125MiB, not all9
+same-instance result. Fixed app-lifetime one-entry static slot/unmount disposal,
+forced actual native phase after initialization, added real cold/reuse assertions.
+24focused/TS/lint pass. Changed integration retest pending; no performance/public
+acceptance. `evidence/2026-10-21-vpx-first-compiled-cache-result.json`.
+
 2026-10-21 private compiled-code reuse candidate implemented: coordinator owns at
 most one WebAssembly.Module descriptor, not an instance/memory/File/output; never
 forwarded to saver/UI/results and cleared on disposal/protocol failure. Exact

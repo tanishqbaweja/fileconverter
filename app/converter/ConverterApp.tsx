@@ -2,6 +2,7 @@
 
 import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";
 import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";
+import { createVpxCompiledCoreSlot } from "../../lib/vpx-compiled-core";
 import { runMpeg2QualificationJob, validateMpeg2QualificationRequest, type Mpeg2QualificationResult } from "../../lib/mpeg2-qualification-job";
 import { isVpxDecoderProfile } from "../../lib/vpx-decoder-policy";
 import { runVpxQualificationJob, validateVpxQualificationRequest } from "../../lib/vpx-qualification-job";
@@ -568,6 +569,9 @@ export function ConverterApp() {
   useEffect(() => {
     let disposed = false;
     let replacementTimer = 0;
+    // Retain only immutable static code across coordinator replacement. Worker
+    // instances, memories and all user-file/destination state still retire.
+    const staticCodeSlot = createVpxCompiledCoreSlot();
 
     const beginBatchItem = async (
       worker: Worker,
@@ -703,6 +707,7 @@ export function ConverterApp() {
       const worker = createStagedWorkerCoordinator(
         () => new Worker(new URL("../../workers/conversion.worker.ts", import.meta.url), { name: "within-conversion" }),
         () => new Worker(new URL("../../workers/staged-save.worker.ts", import.meta.url), { name: "within-final-save" }),
+        staticCodeSlot,
       );
       workerRef.current = worker;
       worker.onmessage = async (event: MessageEvent<WorkerResponse>) => {
@@ -867,6 +872,7 @@ export function ConverterApp() {
       beginBatchItemRef.current = null;
       window.clearTimeout(replacementTimer);
       workerRef.current?.terminate();
+      staticCodeSlot.dispose();
       workerRef.current = null;
       cancellationSignalRef.current = null;
     };

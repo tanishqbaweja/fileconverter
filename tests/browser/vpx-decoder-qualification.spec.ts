@@ -42,6 +42,7 @@ let server: Awaited<ReturnType<typeof startOwnedProductionTestServer>> | undefin
 let context: BrowserContext | undefined, page: Page;
 let browserLaunched = false;
 let conversionOrdinal = 0;
+const staticCompilation = { coldCompiles: 0, reuses: 0 };
 let env: NodeJS.ProcessEnv, assetIdentity: Awaited<ReturnType<typeof lstat>> | undefined;
 let audit: Awaited<ReturnType<typeof auditVpxDecoderArtifact>>;
 let browserPin: Awaited<ReturnType<typeof inspectInstalledChromePin>> | undefined;
@@ -239,6 +240,13 @@ async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault
   const endedAt = Date.now(); phase("recovery");
   rows.push({ codec, multi, options: options ?? "automatic", fault: fault ?? null, preCancelled, wrongProfile, sourceBytes: (await lstat(source)).size,
     sourceSha256: await hashFile(source), conversionWindow: { ordinal, startedAt, endedAt, phase: conversionPhase }, result, workerEvents: workerEvents.slice(eventStart) });
+  if (result.phases.includes("Compiled VPX code")) {
+    staticCompilation.coldCompiles++;
+    expect(staticCompilation.coldCompiles, "Same pinned asset must survive actual app coordinator replacement").toBe(1);
+  }
+  if (result.phases.includes("Reusing compiled VPX code")) {
+    expect(staticCompilation.coldCompiles).toBe(1); staticCompilation.reuses++;
+  }
   await captureAttribution("after-conversion-" + ordinal);
   return { result, source, events: workerEvents.slice(eventStart) };
 }
@@ -247,6 +255,8 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
   const { result, source, events } = await run(codec, options, undefined, false, false, multi);
   expect(result.type, JSON.stringify(result)).toBe("complete");
   expect(result.phases).toContain(`Decoding ${codec.toUpperCase()} (CPU) / encoding MPEG-4 MP4`);
+  expect(result.phases.some(phase => phase === "Compiled VPX code" || phase === "Reusing compiled VPX code"),
+    "Actual private factory must report observed cold compilation or code reuse").toBe(true);
   expect(result.phases).toContain("Copying staged MP4 to selected destination");
   const nativeMetrics = result.nativeMetrics!; expect(nativeMetrics).toBeTruthy();
   expect(nativeMetrics.wasmMemoryBytes).toBeGreaterThanOrEqual(32 * 1024 ** 2);
@@ -429,6 +439,7 @@ test.afterAll(async () => {
   }
   finally { report.logs = logs; report.forbiddenRequests = forbiddenRequests; report.workerEvents = workerEvents;
     report.validationTransport = validationTransport;
+    report.staticCompilation = staticCompilation;
     report.memorySamples = samples; report.memoryPhases = phases;
     report.monitorFailure = monitorFailure ? String(monitorFailure).slice(0, 2048) : null;
     await mkdir(path.dirname(reportFile), { recursive: true }); await writeFile(reportFile, JSON.stringify(report, null, 2) + "\n"); }
