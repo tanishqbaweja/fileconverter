@@ -1,0 +1,286 @@
+{
+  "schemaVersion": 1,
+  "scope": "All9private VP8/VP9 correctness/control/terminal cases in one uninterrupted Windows155 instance, plus accumulated memory test",
+  "implementationCommit": "6a8f7ef84a2077df3880a48086a00f8136a934f9",
+  "status": "9PASS/1FAIL59.9s",
+  "browser": "155.0.8059.85",
+  "tests": [
+    {
+      "test": "genuine CPU vp8 decode to MPEG4 with default settings",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "test": "genuine CPU vp8 decode preserves nondefault12-argument video controls",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "test": "genuine CPU vp9 decode to MPEG4 with default settings",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "test": "genuine CPU vp9 decode preserves nondefault12-argument video controls",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "test": "genuine decode retains both compatible audio tracks, their packet hashes/languages and chapter timing",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "test": "mismatched source rejected before encoding",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "test": "pre-cancelled job cleans up without claiming mid-conversion cancellation coverage",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "test": "bounded selected-destination write failure aborts and removes stage",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "test": "real conversion recovers after rejection, pre-cancel and destination failure",
+      "status": "passed",
+      "error": null
+    },
+    {
+      "test": "complete same-instance Chromium tree remains within250MiB over clean blank",
+      "status": "failed",
+      "error": "Error: All Chromium descendants count; no heap substitution, GC or loaded baseline subtraction\n\n\u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBeLessThanOrEqual\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m)\u001b[22m\n\nExpected: <= \u001b[32m250\u001b[39m\nReceived:    \u001b[31m346.515625\u001b[39m"
+    }
+  ],
+  "outputs": [
+    {
+      "codec": "vp8",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.993273,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 91331,
+      "outputBytes": 525916,
+      "outputSha256": "84fc5477bdb0dc97995782f77827a3e5bcedfcaa6a694cad5980910083389ae1"
+    },
+    {
+      "codec": "vp8",
+      "options": {
+        "codec": "mpeg4",
+        "maxWidth": 320,
+        "bitRateBps": 4000000,
+        "frameRateFps": 15,
+        "quality": "balanced"
+      },
+      "fullDecode": true,
+      "frames": 30,
+      "fps": 15,
+      "ssim": 0.986054,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 91331,
+      "outputBytes": 112270,
+      "outputSha256": "a36ff4fec77bc5defbe1b529a06d20aa71cfe146b07021516d73236a383303eb"
+    },
+    {
+      "codec": "vp9",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.996114,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 438626,
+      "outputBytes": 593687,
+      "outputSha256": "1e8dc6e85e1337c025f9d6fca1e5bbab0ab4cf7df56079e260d9312cd42dec19"
+    },
+    {
+      "codec": "vp9",
+      "options": {
+        "codec": "mpeg4",
+        "maxWidth": 320,
+        "bitRateBps": 4000000,
+        "frameRateFps": 15,
+        "quality": "balanced"
+      },
+      "fullDecode": true,
+      "frames": 30,
+      "fps": 15,
+      "ssim": 0.98829,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 438626,
+      "outputBytes": 108167,
+      "outputSha256": "15f0912f97349e82cc47d7eb8d5cd2daa4bc0fe0e00cfc672f44de987465d496"
+    },
+    {
+      "codec": "vp8",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.993273,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 123374,
+      "outputBytes": 559403,
+      "outputSha256": "6d845ec63901e6124d47ee33121c8c905c6f816b0b8fd97accc4a57109620e13"
+    },
+    {
+      "codec": "vp8",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.993273,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 91331,
+      "outputBytes": 525916,
+      "outputSha256": "84fc5477bdb0dc97995782f77827a3e5bcedfcaa6a694cad5980910083389ae1"
+    }
+  ],
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 231882752,
+    "spreadBytes": 1736704,
+    "rssBytes": 479219712,
+    "firstTimestamp": "2026-10-21T15:56:09.8910044Z",
+    "lastTimestamp": "2026-10-21T15:56:18.2986300Z",
+    "sampleCount": 8,
+    "minimumElapsedMs": 8000
+  },
+  "incrementalPrivateMiB": 346.515625,
+  "phasePeaks": [
+    {
+      "phase": "blank",
+      "samples": 180,
+      "privateBytes": 263036928,
+      "incrementalMiB": 29.7109375,
+      "gpuPrivateBytes": 100687872,
+      "largestRendererPrivateBytes": 44879872
+    },
+    {
+      "phase": "loaded",
+      "samples": 13,
+      "privateBytes": 308039680,
+      "incrementalMiB": 72.62890625,
+      "gpuPrivateBytes": 124010496,
+      "largestRendererPrivateBytes": 52326400
+    },
+    {
+      "phase": "conversion-vp8-1",
+      "samples": 4,
+      "privateBytes": 393396224,
+      "incrementalMiB": 154.03125,
+      "gpuPrivateBytes": 125698048,
+      "largestRendererPrivateBytes": 135942144
+    },
+    {
+      "phase": "recovery",
+      "samples": 20,
+      "privateBytes": 533291008,
+      "incrementalMiB": 287.4453125,
+      "gpuPrivateBytes": 119816192,
+      "largestRendererPrivateBytes": 289001472
+    },
+    {
+      "phase": "independent-validation",
+      "samples": 155,
+      "privateBytes": 530903040,
+      "incrementalMiB": 285.16796875,
+      "gpuPrivateBytes": 120356864,
+      "largestRendererPrivateBytes": 285806592
+    },
+    {
+      "phase": "conversion-vp8-2",
+      "samples": 4,
+      "privateBytes": 440930304,
+      "incrementalMiB": 199.36328125,
+      "gpuPrivateBytes": 125788160,
+      "largestRendererPrivateBytes": 183635968
+    },
+    {
+      "phase": "conversion-vp9-3",
+      "samples": 5,
+      "privateBytes": 491040768,
+      "incrementalMiB": 247.15234375,
+      "gpuPrivateBytes": 120705024,
+      "largestRendererPrivateBytes": 231133184
+    },
+    {
+      "phase": "conversion-vp9-4",
+      "samples": 5,
+      "privateBytes": 495624192,
+      "incrementalMiB": 251.5234375,
+      "gpuPrivateBytes": 120356864,
+      "largestRendererPrivateBytes": 251637760
+    },
+    {
+      "phase": "conversion-vp8-5",
+      "samples": 5,
+      "privateBytes": 440741888,
+      "incrementalMiB": 199.18359375,
+      "gpuPrivateBytes": 118038528,
+      "largestRendererPrivateBytes": 197926912
+    },
+    {
+      "phase": "conversion-vp8-7",
+      "samples": 2,
+      "privateBytes": 398622720,
+      "incrementalMiB": 159.015625,
+      "gpuPrivateBytes": 117411840,
+      "largestRendererPrivateBytes": 156041216
+    },
+    {
+      "phase": "conversion-vp9-8",
+      "samples": 4,
+      "privateBytes": 513642496,
+      "incrementalMiB": 268.70703125,
+      "gpuPrivateBytes": 118439936,
+      "largestRendererPrivateBytes": 270843904
+    },
+    {
+      "phase": "conversion-vp8-9",
+      "samples": 4,
+      "privateBytes": 595230720,
+      "incrementalMiB": 346.515625,
+      "gpuPrivateBytes": 119824384,
+      "largestRendererPrivateBytes": 349790208
+    }
+  ],
+  "sourcePinCount": 28,
+  "pins": true,
+  "unavailableSamples": 1,
+  "cleanup": true,
+  "server": {
+    "identity": {
+      "pid": 46832,
+      "parentPid": 14252,
+      "createdAt": "2026-10-21T15:55:58.5799630Z"
+    },
+    "ownedRootAbsent": true
+  },
+  "forbiddenRequests": [],
+  "report": {
+    "path": "output/playwright/vpx-decoder-qualification-2026-10-21T15-55-49.221Z.json",
+    "bytes": 1997145,
+    "sha256": "7f4456a62fb944e45821472b34cf788f206528f51dc7f0795a58a3c1eee4ba9b"
+  },
+  "postMeasurementTrace": {
+    "path": "H:\\Github Repositories\\fileconverter\\output\\playwright\\vpx-decoder-qualification-2026-10-21T15-55-49.221Z-post-measurement-memory.json.gz",
+    "bytes": 68312,
+    "sha256": "ddaee606f51fcde5b5c9bf64fd1d41fbd853983b0fdebcf35bbbcc702d322f8d",
+    "restoredBytes": 953142,
+    "restoredSha256": "781dd13058f764f97b6b9e5a14f1d3544b06406d5a0066ca1d556599a88b1be5"
+  },
+  "interpretation": "GPU remains roughly114–120MiB in conversion, unlike original236MiB. Later renderer peaks grow to333.5859375MiB. Bounded64KiB numeric-array validation transport creates many per-byte JS values; its contribution versus engine/lifecycle is not yet proven.",
+  "next": "Replace only independent-validator per-byte JSON arrays with exact canonical bounded-per-chunk strings; no full-output buffer/HTTP and unchanged output validators/250MiB formula. Compare same full sequence.",
+  "productionAllocationFixStillRetained": true,
+  "memoryAcceptance": false,
+  "publicAcceptance": false,
+  "largeFileCoverage": false,
+  "fullGoalComplete": false
+}

@@ -20,6 +20,7 @@ import type { VideoConversionOptions } from "../../lib/media-conversion-options"
 import type { VpxQualificationResult } from "../../lib/vpx-qualification-job";
 import type { StartConversionMessage } from "../../lib/conversion-protocol";
 import { validateSmallCopiedAac } from "../../scripts/lib/small-aac-copy-fidelity.mjs";
+import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "../../scripts/lib/bounded-validation-chunk.mjs";
 
 const root = path.resolve(import.meta.dirname, "../.."), exec = promisify(execFile);
 const sha = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
@@ -27,6 +28,9 @@ const hashFile = async (file: string) => { const hash = createHash("sha256");
   for await (const chunk of createReadStream(file)) hash.update(chunk); return hash.digest("hex"); };
 const reportFile = path.join(root, `output/playwright/vpx-decoder-qualification-${new Date().toISOString().replaceAll(":", "-")}.json`);
 const rows: Array<Record<string, unknown>> = [], forbiddenRequests: string[] = [];
+const validationTransport = { mode: "one-base64-string-per-at-most64KiB-chunk-not-whole-file-base64", chunks: 0,
+  totalDecodedBytes: 0, maximumDecodedChunkBytes: 0, maximumEncodedCharacters: 0, pending: 0, peakPending: 0,
+  fileDataOverHttp: false, completeOutputBuffered: false };
 const logs: string[] = [], workerEvents: Array<{ type: string; url: string; at: number }> = [];
 const report: Record<string, unknown> = { scope: "private-production-coordinator-CPU-decode-and-MPEG4-encode-small-fixtures",
   publicAcceptance: false, uiPlannerCoverage: false, scalingCoverage: false, headedCoverage: false,
@@ -107,7 +111,8 @@ test.beforeAll(async () => {
     "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs", "scripts/lib/windows-tree-monitor.ps1",
     "scripts/lib/small-aac-copy-fidelity.mjs", "scripts/lib/pcm-prefix-diagnostic.mjs", "scripts/lib/copied-audio-timing.mjs",
     "scripts/lib/small-mp4-sample-duration.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
-    "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "lib/browser-capabilities.ts"])
+    "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "lib/browser-capabilities.ts",
+    "scripts/lib/bounded-validation-chunk.mjs"])
     sourcePins[file] = sha(await readFile(path.join(root, file)));
   report.executedSourcePins = sourcePins;
   if (process.platform === "win32") { browserPin = await inspectInstalledChromePin(); report.browserPin = browserPin; }
@@ -150,9 +155,16 @@ test.beforeAll(async () => {
   browserLaunched = true;
   report.browserVersion = context.browser()?.version() ?? null;
   page = context.pages()[0] ?? await context.newPage();
-  await page.exposeFunction("receiveVpxValidationChunk", async (chunk: number[]) => {
-    expect(Array.isArray(chunk) && chunk.length > 0 && chunk.length <= 65536).toBe(true);
-    expect(validationTarget, "No validation destination is active").toBeTruthy(); await validationTarget!.write(Buffer.from(chunk));
+  await context.addInitScript({ content: "Object.defineProperty(globalThis, '__WITHIN_ENCODE_VALIDATION_CHUNK__', { value: (" + encodeBoundedValidationChunk.toString() + ") });" });
+  await page.exposeFunction("receiveVpxValidationChunk", async (chunk: string) => {
+    const bytes = decodeBoundedValidationChunk(chunk);
+    expect(validationTarget, "No validation destination is active").toBeTruthy();
+    expect(validationTransport.pending).toBe(0); validationTransport.pending = 1; validationTransport.peakPending = 1;
+    try {
+      await validationTarget!.write(bytes); validationTransport.chunks++; validationTransport.totalDecodedBytes += bytes.length;
+      validationTransport.maximumDecodedChunkBytes = Math.max(validationTransport.maximumDecodedChunkBytes, bytes.length);
+      validationTransport.maximumEncodedCharacters = Math.max(validationTransport.maximumEncodedCharacters, chunk.length);
+    } finally { validationTransport.pending = 0; }
   });
   if (process.platform === "win32") {
     const session = await context.browser()!.newBrowserCDPSession();
@@ -250,7 +262,8 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
         const directory = await navigator.storage.getDirectory(), handle = await directory.getFileHandle("vpx-qualification-output.mp4");
         const reader = (await handle.getFile()).stream().getReader({ mode: "byob" }); let buffer = new Uint8Array(65536);
         try { for (;;) { const { done, value } = await reader.read(buffer); if (done) break;
-          await (window as unknown as { receiveVpxValidationChunk(chunk: number[]): Promise<void> }).receiveVpxValidationChunk(Array.from(value)); buffer = new Uint8Array(value.buffer); } }
+          const bridge = window as unknown as { __WITHIN_ENCODE_VALIDATION_CHUNK__(chunk: Uint8Array): string; receiveVpxValidationChunk(chunk: string): Promise<void> };
+          await bridge.receiveVpxValidationChunk(bridge.__WITHIN_ENCODE_VALIDATION_CHUNK__(value)); buffer = new Uint8Array(value.buffer); } }
         finally { await reader.cancel(); }
       });
     await target.close();
@@ -384,9 +397,9 @@ test.afterAll(async () => {
   cleanup.push(async () => {
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
-    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 28;
+    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 29;
     report.installedChromeBinaryPinsVerified = browserPin ? true : null;
-    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 28 && Boolean(browserPin);
+    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 29 && Boolean(browserPin);
   });
   if (assetIdentity) cleanup.push(async () => {
     const current = await lstat(assetDirectory); expect(current.dev).toBe(assetIdentity!.dev); expect(current.ino).toBe(assetIdentity!.ino);
@@ -408,6 +421,7 @@ test.afterAll(async () => {
     await finishOwnedCleanup(cleanup); report.disposableDataRemoved = true;
   }
   finally { report.logs = logs; report.forbiddenRequests = forbiddenRequests; report.workerEvents = workerEvents;
+    report.validationTransport = validationTransport;
     report.memorySamples = samples; report.memoryPhases = phases;
     report.monitorFailure = monitorFailure ? String(monitorFailure).slice(0, 2048) : null;
     await mkdir(path.dirname(reportFile), { recursive: true }); await writeFile(reportFile, JSON.stringify(report, null, 2) + "\n"); }

@@ -1,5 +1,31 @@
 # Tested conversion ledger
 
+## 2026-10-21 - First coherent corrected-core nine-case correctness PASS; accumulated memory FAIL
+
+6a8f7ef8 installed Windows155 uninterrupted full sequence9PASS/1FAIL59.9s. All4
+default/control and multi-track cases plus4terminal/recovery cases pass with
+original independent content/timing/quality/chapter/cleanup guards. Memory test
+FAILS346.515625MiB:595230720B peak minus231882752B lower stable clean blank.
+28pins/privacy/cleanup pass;1unavailable sample remains null. GPU fix persists;
+renderer accumulation now dominates. No new public/repeat/scaling acceptance.
+Bounded validator transport correction prepared (numeric arrays→one canonical
+base64 string per<=64KiB chunk, never whole-file; one pending disk write),16focused/
+TS/lint pass. Cause/effect on accumulated memory not claimed until actual retest.
+`evidence/2026-10-21-vpx-coherent-sequence-memory.json`.
+
+## 2026-10-21 - Measured startup allocation fix: same-input small conversion177.0234375MiB PASS
+
+6a8f7ef8 installed Chrome155 paired retest2PASS39.4s. Input123374B/SHA1705c939
+and output559403B/SHA6d845ec6 exactly match failed6f21734a run; same native core,
+encoder settings, diagnostics, full-tree sampler and250MiB formula. Baseline
+232804352B/peak418426880B gives177.0234375MiB versus prior289.40234375MiB,
+112.37890625MiB observed reduction across fresh sessions. No global speed claim.
+All exact AAC/trim/1ms video clocks/2ms chapters/full decode/SSIM.993273 pass.
+28source/installed browser pins/privacy/owned cleanup pass, no unavailable samples.
+Not large-file/repeated-job/final UI/public or complete B06 acceptance. Next full
+private sequence tests accumulated memory after this material production change.
+`evidence/2026-10-21-software-first-capability-memory-result.json`.
+
 ## 2026-10-21 - Capability probe isolates GPU allocation, preserves hardware-only fallback
 
 Finite inert-page actual-function diagnostics on installed Chrome155: original

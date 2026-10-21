@@ -1,5 +1,21 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 whole corrected-core9private correctness/control/terminal cases now PASS in
+one Windows155 session. B06 accumulated memory still FAIL346.515625MiB, despite
+177.0234375MiB paired single-case PASS. GPU fix retained; late renderer growth
+requires distinguishing validator numeric-array transport from engine lifecycle.
+Changing only bounded exact-byte validation transport next; no smaller fixture,
+omitted process, baseline/GC/threshold/quality change. Full54/B02-B09 OPEN.
+`evidence/2026-10-21-vpx-coherent-sequence-memory.json`.
+
+B06 first material current-Chrome allocation fix verified:6a8f7ef8 same-input/
+settings/output small private VPX case passes177.0234375MiB (was289.40234375MiB).
+Software-first real capability query avoids unnecessary GPU initialization while
+retaining original hardware-only fallback. Full tree/lower clean blank/250MiB and
+all fidelity guards unchanged.2PASS39.4s,28source/browser pins/privacy/cleanup pass.
+Not repeat/scaling/all-public/final UI acceptance; B02-B09/full54 remain OPEN.
+`evidence/2026-10-21-software-first-capability-memory-result.json`.
+
 B06 actual corrected VPX Windows155 check FAILS289.40234375MiB:534827008B full-tree
 peak over231366656B lower stable same-instance blank. B03 original multi-track
 correctness passes locally too;27source/browser pins/privacy/cleanup pass. GPU

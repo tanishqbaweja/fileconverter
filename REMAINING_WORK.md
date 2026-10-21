@@ -1,5 +1,28 @@
 # Remaining work audit
 
+## 2026-10-21 - Whole private sequence9PASS; accumulated memory still FAIL346.515625MiB
+
+All9VP8/VP9 default/control/multi-track/reject/pre-cancel/write-failure/recovery
+cases pass on same current candidate in one uninterrupted Windows155 session.
+Memory remains FAIL:595230720B over231882752B blank =346.515625MiB. GPU stays near
+114–120MiB while late renderer peak reaches333.59MiB; startup fix remains genuine,
+not sufficient for accumulated-job acceptance. Exact per-case outputs retained.
+Next changed observer transport preserves64KiB reads/one write/exact bytes but
+avoids per-byte numeric JSON objects; no full-file base64/HTTP or weakened validator.
+16focused/TS/lint pass; actual full-sequence retest pending. B02-B09/full54 OPEN.
+`evidence/2026-10-21-vpx-coherent-sequence-memory.json`.
+
+## 2026-10-21 - Startup GPU allocation corrected; paired small-case memory now177.0234375MiB PASS
+
+Installed Chrome155 actual same-input/output/settings2PASS39.4s at6a8f7ef8.
+Full tree418426880B minus lower stable232804352B clean blank =177.0234375MiB,
+down from289.40234375MiB before software-first functional capability detection.
+All audio/video/chapter/content guards and28source/browser pins/privacy/cleanup
+pass; native build unchanged. Hardware-only fallback retained. No threshold,
+baseline/process/quality change or global-speed claim. Full coherent private
+sequence and accumulated-memory check next; full54/B02-B09/scaling/UI/public gates
+still OPEN. `evidence/2026-10-21-software-first-capability-memory-result.json`.
+
 ## 2026-10-21 - Eager video-capability GPU initialization isolated; software-first detection implemented
 
 Two fresh Chrome155 inert-page experiments execute pinned actual capability

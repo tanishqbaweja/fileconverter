@@ -1,0 +1,364 @@
+{
+  "schemaVersion": 1,
+  "scope": "Paired same-input/settings/output production-browser checks in fresh installed Chrome155 instances; small private backend only",
+  "cases": [
+    {
+      "role": "original-default-probes",
+      "implementationCommit": "6f21734a9ac9ed4784254106cea90afc39986699",
+      "browser": "155.0.8059.85",
+      "sourceBytes": 123374,
+      "sourceSha256": "1705c9399cd4cb8112665e305ee4716b7544a465467713ab334f735457f47672",
+      "validation": {
+        "fullDecode": true,
+        "frames": 48,
+        "fps": 24,
+        "ssim": 0.993273,
+        "audioPacketsIdentical": true,
+        "sourceBytes": 123374,
+        "outputBytes": 559403,
+        "outputSha256": "6d845ec63901e6124d47ee33121c8c905c6f816b0b8fd97accc4a57109620e13"
+      },
+      "blankBaseline": {
+        "stable": true,
+        "privateBytes": 231366656,
+        "spreadBytes": 1777664,
+        "rssBytes": 478199808,
+        "firstTimestamp": "2026-10-21T15:41:49.0768296Z",
+        "lastTimestamp": "2026-10-21T15:41:57.5742338Z",
+        "sampleCount": 8,
+        "minimumElapsedMs": 8000
+      },
+      "incrementalPrivateMiB": 289.40234375,
+      "memoryAcceptance": false,
+      "metrics": {
+        "inputBytes": 123374,
+        "outputBytes": 559403,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 524288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 524288,
+        "elapsedMs": 457.95998042821884,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 4,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0,
+        "scratchBytes": 0,
+        "peakScratchBytes": 559403,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288
+      },
+      "nativeMetrics": {
+        "inputBytes": 123374,
+        "outputBytes": 0,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 262144,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 262144,
+        "elapsedMs": 421.25,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0,
+        "scratchBytes": 559403,
+        "peakScratchBytes": 559403
+      },
+      "phasePeaks": [
+        {
+          "phase": "blank",
+          "validSamples": 182,
+          "peakPrivateBytes": 246509568,
+          "gpuPrivateBytes": 100249600
+        },
+        {
+          "phase": "loaded",
+          "validSamples": 16,
+          "peakPrivateBytes": 420859904,
+          "gpuPrivateBytes": 235634688
+        },
+        {
+          "phase": "conversion-vp8-1",
+          "validSamples": 5,
+          "peakPrivateBytes": 534827008,
+          "gpuPrivateBytes": 248389632
+        },
+        {
+          "phase": "recovery",
+          "validSamples": 6,
+          "peakPrivateBytes": 443510784,
+          "gpuPrivateBytes": 249937920
+        },
+        {
+          "phase": "independent-validation",
+          "validSamples": 46,
+          "peakPrivateBytes": 459100160,
+          "gpuPrivateBytes": 248692736
+        }
+      ],
+      "audio": [
+        {
+          "ordinal": 0,
+          "status": "passed-small-AAC-LC-fixture",
+          "packets": 95,
+          "rawSamples": 97280,
+          "audibleSamples": 96256,
+          "rawSha256": "1e0cac3ee3985efd6069001621e0dcbb079aab4aa7227fd273f2bdb21ec28a2b",
+          "audibleSha256": "0293fc3f2c5f705d9669cb5d55013bea5c388f36f5e2afac6bbc56490d2007e6",
+          "leadingSamples": 1024,
+          "trailingSamples": 0,
+          "clocks": [
+            {
+              "sourceStreamIndex": 1,
+              "outputStreamIndex": 1,
+              "packets": 95,
+              "maximumPtsErrorSeconds": 0.00033299999999999996,
+              "maximumDtsErrorSeconds": 0.00033299999999999996,
+              "maximumDurationErrorSeconds": 0.0009999999999999974,
+              "initialSkipSamples": 1024
+            }
+          ]
+        },
+        {
+          "ordinal": 1,
+          "status": "passed-small-AAC-LC-fixture",
+          "packets": 95,
+          "rawSamples": 97280,
+          "audibleSamples": 96256,
+          "rawSha256": "f1b7b646d53246fcacb92a61254ed0c444f05a326838eb4e833aff18ee5fd43e",
+          "audibleSha256": "abce503e51a531cb25214550781608d20e35dbed8230106888982ca016faa9ba",
+          "leadingSamples": 1024,
+          "trailingSamples": 0,
+          "clocks": [
+            {
+              "sourceStreamIndex": 2,
+              "outputStreamIndex": 2,
+              "packets": 95,
+              "maximumPtsErrorSeconds": 0.00033299999999999996,
+              "maximumDtsErrorSeconds": 0.00033299999999999996,
+              "maximumDurationErrorSeconds": 0.0009999999999999974,
+              "initialSkipSamples": 1024
+            }
+          ]
+        }
+      ],
+      "sourcePinCount": 27,
+      "pinsVerified": true,
+      "unavailableSamples": 1,
+      "cleanup": true,
+      "server": {
+        "identity": {
+          "pid": 31880,
+          "parentPid": 42756,
+          "createdAt": "2026-10-21T15:41:37.5355930Z"
+        },
+        "ownedRootAbsent": true
+      },
+      "forbiddenRequests": [],
+      "report": {
+        "path": "output/playwright/vpx-decoder-qualification-2026-10-21T15-41-25.261Z.json",
+        "bytes": 1351479,
+        "sha256": "209aab87d51362867ae749491edda38e0de062fd4e98f50890099af16638bedd"
+      },
+      "postMeasurementTrace": {
+        "path": "H:\\Github Repositories\\fileconverter\\output\\playwright\\vpx-decoder-qualification-2026-10-21T15-41-25.261Z-post-measurement-memory.json.gz",
+        "bytes": 70321,
+        "sha256": "baafaacba14db1028d771d6d4d211ec1ff809673298a5996f7518fb8a635d352",
+        "restoredBytes": 972063,
+        "restoredSha256": "734ce7d48dca62ddcf464cdebaf80601c673455cee81d716fb77e52a5b98aa6e"
+      }
+    },
+    {
+      "role": "software-first",
+      "implementationCommit": "6a8f7ef84a2077df3880a48086a00f8136a934f9",
+      "browser": "155.0.8059.85",
+      "sourceBytes": 123374,
+      "sourceSha256": "1705c9399cd4cb8112665e305ee4716b7544a465467713ab334f735457f47672",
+      "validation": {
+        "fullDecode": true,
+        "frames": 48,
+        "fps": 24,
+        "ssim": 0.993273,
+        "audioPacketsIdentical": true,
+        "sourceBytes": 123374,
+        "outputBytes": 559403,
+        "outputSha256": "6d845ec63901e6124d47ee33121c8c905c6f816b0b8fd97accc4a57109620e13"
+      },
+      "blankBaseline": {
+        "stable": true,
+        "privateBytes": 232804352,
+        "spreadBytes": 1921024,
+        "rssBytes": 478953472,
+        "firstTimestamp": "2026-10-21T15:53:30.2989484Z",
+        "lastTimestamp": "2026-10-21T15:53:38.7055531Z",
+        "sampleCount": 8,
+        "minimumElapsedMs": 8000
+      },
+      "incrementalPrivateMiB": 177.0234375,
+      "memoryAcceptance": true,
+      "metrics": {
+        "inputBytes": 123374,
+        "outputBytes": 559403,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 524288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 524288,
+        "elapsedMs": 453.22488284111023,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 4,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0,
+        "scratchBytes": 0,
+        "peakScratchBytes": 559403,
+        "maxScratchReadChunkBytes": 524288,
+        "maxScratchWriteChunkBytes": 524288
+      },
+      "nativeMetrics": {
+        "inputBytes": 123374,
+        "outputBytes": 0,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 262144,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 262144,
+        "elapsedMs": 418.0050000548363,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0,
+        "scratchBytes": 559403,
+        "peakScratchBytes": 559403
+      },
+      "phasePeaks": [
+        {
+          "phase": "blank",
+          "validSamples": 179,
+          "peakPrivateBytes": 248070144,
+          "gpuPrivateBytes": 100052992
+        },
+        {
+          "phase": "loaded",
+          "validSamples": 14,
+          "peakPrivateBytes": 305455104,
+          "gpuPrivateBytes": 122785792
+        },
+        {
+          "phase": "conversion-vp8-1",
+          "validSamples": 4,
+          "peakPrivateBytes": 418426880,
+          "gpuPrivateBytes": 124698624
+        },
+        {
+          "phase": "recovery",
+          "validSamples": 5,
+          "peakPrivateBytes": 314052608,
+          "gpuPrivateBytes": 125325312
+        },
+        {
+          "phase": "independent-validation",
+          "validSamples": 38,
+          "peakPrivateBytes": 332230656,
+          "gpuPrivateBytes": 124678144
+        }
+      ],
+      "audio": [
+        {
+          "ordinal": 0,
+          "status": "passed-small-AAC-LC-fixture",
+          "packets": 95,
+          "rawSamples": 97280,
+          "audibleSamples": 96256,
+          "rawSha256": "1e0cac3ee3985efd6069001621e0dcbb079aab4aa7227fd273f2bdb21ec28a2b",
+          "audibleSha256": "0293fc3f2c5f705d9669cb5d55013bea5c388f36f5e2afac6bbc56490d2007e6",
+          "leadingSamples": 1024,
+          "trailingSamples": 0,
+          "clocks": [
+            {
+              "sourceStreamIndex": 1,
+              "outputStreamIndex": 1,
+              "packets": 95,
+              "maximumPtsErrorSeconds": 0.00033299999999999996,
+              "maximumDtsErrorSeconds": 0.00033299999999999996,
+              "maximumDurationErrorSeconds": 0.0009999999999999974,
+              "initialSkipSamples": 1024
+            }
+          ]
+        },
+        {
+          "ordinal": 1,
+          "status": "passed-small-AAC-LC-fixture",
+          "packets": 95,
+          "rawSamples": 97280,
+          "audibleSamples": 96256,
+          "rawSha256": "f1b7b646d53246fcacb92a61254ed0c444f05a326838eb4e833aff18ee5fd43e",
+          "audibleSha256": "abce503e51a531cb25214550781608d20e35dbed8230106888982ca016faa9ba",
+          "leadingSamples": 1024,
+          "trailingSamples": 0,
+          "clocks": [
+            {
+              "sourceStreamIndex": 2,
+              "outputStreamIndex": 2,
+              "packets": 95,
+              "maximumPtsErrorSeconds": 0.00033299999999999996,
+              "maximumDtsErrorSeconds": 0.00033299999999999996,
+              "maximumDurationErrorSeconds": 0.0009999999999999974,
+              "initialSkipSamples": 1024
+            }
+          ]
+        }
+      ],
+      "sourcePinCount": 28,
+      "pinsVerified": true,
+      "unavailableSamples": 0,
+      "cleanup": true,
+      "server": {
+        "identity": {
+          "pid": 41344,
+          "parentPid": 29920,
+          "createdAt": "2026-10-21T15:53:19.0193900Z"
+        },
+        "ownedRootAbsent": true
+      },
+      "forbiddenRequests": [],
+      "report": {
+        "path": "output/playwright/vpx-decoder-qualification-2026-10-21T15-53-11.881Z.json",
+        "bytes": 1296924,
+        "sha256": "678a0d3054251849e44d64161670533625d07f2f365febff81208689c3d25e88"
+      },
+      "postMeasurementTrace": {
+        "path": "H:\\Github Repositories\\fileconverter\\output\\playwright\\vpx-decoder-qualification-2026-10-21T15-53-11.881Z-post-measurement-memory.json.gz",
+        "bytes": 70501,
+        "sha256": "aac2bbdb6b34ebafbf1b43f76812874ae5960b7e6cbfbce8700d967e8add4fe0",
+        "restoredBytes": 973411,
+        "restoredSha256": "450f5026ca198f83451dbb871b2c75ff85027100a7e793f92eeca8bebf0ccd40"
+      }
+    }
+  ],
+  "measuredIncrementalReductionMiB": 112.37890625,
+  "limitMiBUnchanged": 250,
+  "sameWasmAndEncoderSettings": true,
+  "globalSpeedGainProven": false,
+  "baselineProcessesExcluded": false,
+  "loadedBaselineSubstitution": false,
+  "forcedGc": false,
+  "conversionCorrectnessPassed": true,
+  "smallCaseMemoryAcceptance": true,
+  "publicAcceptance": false,
+  "largeFileAcceptance": false,
+  "allRealmPeakAcceptance": false,
+  "fullGoalComplete": false,
+  "next": "Full coherent private VP8/VP9 sequence for accumulated-memory/terminal/control coverage, then repeat/scaling/final UI gates"
+}
