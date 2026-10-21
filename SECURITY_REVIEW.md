@@ -85,6 +85,14 @@ historical test only; its receipt pins/assertions remain unchanged. Focused8pass
 after this correction. Live acceptance always runs today's suite, never archived
 source. Final full-suite/current hosted results remain separately required.
 
+Hosted39521876873 at4c23e4e passes clean npm-ci, lint/TS/build and all1368unit
+cases (1367pass/0fail/1original-fixture skip). Its actual production-host endpoint
+check passes. Privacy setup FAILS before browsing: Chromium's Unix singleton
+socket exceeds Linux's108-byte limit under the long owned TMPDIR;17other privacy
+tests do not run. The owned prefix is shortened to `po-` and an explicit Linux
+socket-path check added. No outside-repository fallback, assertion removal or
+browser flag change. A new hosted run is required for this specific correction.
+
 Evidence:
 
 - `evidence/2026-10-21-dependency-audit-baseline.json`

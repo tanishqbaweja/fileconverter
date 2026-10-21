@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Framework hosted clean install/units and real endpoint PASS; Unix socket setup corrected
+
+CI39521876873/4c23e4e: clean npm-ci, registry/inventory, lint/TypeScript/build and
+1367pass/0fail/1original-fixture skip (1368cases,38436.167434ms) PASS. Actual
+production-worker endpoint policy PASS. Privacy suite FAILS in Chromium startup:
+long repository-owned TMPDIR makes SingletonSocket exceed Linux108-byte limit;
+one setup failure,17not run. Not a conversion failure or privacy-suite pass.
+Shortened owned prefix to po- and added byte-length check before browser launch;
+all current assertions, headless mode, Windows RAM guard and finally cleanup
+retained. Named correction requires a new hosted run, not an unchanged retry.
+Interrupted local run's913disposable artifacts/61816876B also removed after
+resolved-path/directory-birth/identity checks; compact failure evidence retained.
+
 ## 2026-10-21 - Targeted dependency/security implementation; fresh hosted qualification required
 
 Prior df2be32 hosted39520477124 SUCCESS: clean install/registry/inventory/lint/

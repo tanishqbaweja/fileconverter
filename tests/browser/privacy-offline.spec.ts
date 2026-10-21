@@ -183,7 +183,13 @@ test.beforeAll(async () => {
     const memory = await inspectStressHostMemory();
     expect(memory.safeToStart, JSON.stringify(memory)).toBe(true);
   }
-  runtime = await createOwnedRuntimeScratch("privacy-offline-");
+  // Chromium adds its singleton socket below TMPDIR. A short owned prefix
+  // keeps the full Linux socket path below108 bytes on the hosted checkout.
+  runtime = await createOwnedRuntimeScratch("po-");
+  if (process.platform === "linux") {
+    const socketPath = path.join(runtime.directory, "org.chromium.Chromium.XXXXXX", "SingletonSocket");
+    expect(Buffer.byteLength(socketPath), "Repository path is too long for Chromium's Unix socket").toBeLessThan(108);
+  }
   context = await chromium.launchPersistentContext(path.join(runtime.directory, "profile"), {
     executablePath: chromePath,
     headless: true,

@@ -1,5 +1,16 @@
 # Remaining work audit
 
+## 2026-10-21 - New security code hosted gates partly pass; Linux browser scratch path corrected
+
+39521876873/4c23e4e verifies clean npm-ci/lint/TS/build and1367pass/0fail/1original
+skip, plus real production endpoint refusals. Privacy suite cannot launch Chromium
+because the long owned TMPDIR exceeds Linux singleton-socket path length;17cases
+not run. Prefix shortened to po- and explicit108-byte Linux socket guard added,
+keeping repository confinement, Windows2GiB guard, headless mode and unchanged
+privacy/conversion assertions. New hosted qualification pending for this exact
+correction; B08/full goal still open. Old local interrupted artifacts61.8MB
+removed with ownership checks; protected original hash unchanged.
+
 ## 2026-10-21 - B08 critical framework advisory removed; host narrowed to read-only application delivery
 
 Exact Next16.4.2 +React/DOM/RSC19.2.8 pins, compatible lock derivation and removal
