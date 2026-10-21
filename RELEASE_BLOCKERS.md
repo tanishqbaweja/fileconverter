@@ -1,5 +1,13 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 source diagnosis39590445802 SUCCESS identifies exact rejected source layout:
+AAC track1 has initial_padding1024 at firstDTS0; track2 starts-21ms. Current private
+negative-preroll-only guard cannot handle track1. Next use precise AAC edit-list
+priming without clock/content changes, audited/built/tested for this actual core;
+existing related MPEG2 patch is guidance, not transferable acceptance. Chapter and
+memory remain failures, no public promotion or original-scope reduction. Exact:
+`evidence/2026-10-21-vpx-multitrack-source-hosted.json`.
+
 B03 chapter-only diagnosis39589635671/24e45d21 FAILS before output on a distinct
 hosted source's AAC priming-layout guard. Chapter trace/assertion not reached;
 Windows.5→0 chapter failure remains uncorrected. Both actual source hashes pinned

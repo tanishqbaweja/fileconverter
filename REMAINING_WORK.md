@@ -1,5 +1,20 @@
 # Remaining work audit
 
+## 2026-10-21 - Hosted source timestamp layout now known; next native change is evidence-directed
+
+Source-only39590445802/4a1916a4 SUCCESS reproduces exact123559B/SHA44a80ddb.
+AAC1:95packets/header1024/firstPTS=DTS0; AAC2:95/header1024/firstPTS=DTS-21ms.
+Current wrapper's strictly negative-preroll condition therefore rejects track1.
+This identifies the specific missing zero/positive-start priming capability, not
+a chapter fix. Chapter source.5→1.5 remains intact. Source fixtures finally removed;
+only compact metadata retained, no browser/rebuild/output conversion. New source
+inspector hashes through64KiB stream after file-size check. Next derive a private
+exact edit-list-priming candidate using the already investigated AAC mux patch,
+without moving packet clocks or discarding samples. Independently audit/build only
+that material change, then validate both original fixtures/tracks. Chapter trace,
+memory389.1875MiB/250, integration/scaling and full54/B02-B09 still OPEN. Proof:
+`evidence/2026-10-21-vpx-multitrack-source-hosted.json`.
+
 ## 2026-10-21 - Chapter diagnostic exposes a separate hosted source-layout refusal
 
 One-case39589635671/24e45d21 FAILS: exact123559B/SHA44a80ddb source is refused by

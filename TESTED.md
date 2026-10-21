@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Exact hosted two-track source identifies the priming guard mismatch
+
+Source-only39590445802/4a1916a4 SUCCESS recreates123559B/SHA44a80ddb exactly. Both
+AAC tracks have95packets/header1024, but first track startsPTS/DTS0 while second
+starts-21ms. The current private wrapper requires negative preroll for skip>0;
+this directly explains its refusal. Chapter.5→1.5 is intact in the input. No
+browser/output/Wasm rebuild or chapter pass claimed. Disposable fixtures removed;
+only compact metadata downloaded. Existing private MPEG2 exact AAC edit-list patch
+has relevant positive/rounded-DTS proof, but must be separately applied/audited/
+built/validated for VPX. Do not shift/drop samples or replace this failing input.
+`evidence/2026-10-21-vpx-multitrack-source-hosted.json`.
+
 ## 2026-10-21 - Chapter-only hosted diagnosis stops at a different AAC source-layout rejection
 
 39589635671/24e45d21 FAILS before output: source123559B/SHA44a80ddb triggers exact

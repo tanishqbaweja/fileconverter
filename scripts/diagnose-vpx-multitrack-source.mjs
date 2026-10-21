@@ -3,7 +3,8 @@
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdir, readFile, statfs, writeFile } from "node:fs/promises";
+import { createReadStream } from "node:fs";
+import { lstat, mkdir, statfs, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
@@ -29,12 +30,14 @@ try {
     "-f", "ffmetadata", "-i", metadata, "-map", "0:v", "-map", "0:a", "-map", "1:a", "-map_metadata", "0", "-map_chapters", "2",
     "-c", "copy", "-c:a:1", "aac", "-b:a:1", "128k", "-metadata:s:a:0", "language=eng", "-metadata:s:a:1", "language=hin",
     "-fflags", "+bitexact", "-flags:a", "+bitexact", file]);
-  const bytes = await readFile(file); assert.ok(bytes.length < 256 * 1024);
-  const hash = createHash("sha256").update(bytes).digest("hex");
+  const info = await lstat(file); assert.ok(info.isFile() && !info.isSymbolicLink() && info.size < 256 * 1024);
+  const digest = createHash("sha256");
+  for await (const chunk of createReadStream(file, { highWaterMark: 65536 })) digest.update(chunk);
+  const hash = digest.digest("hex");
   const known = { "1705c9399cd4cb8112665e305ee4716b7544a465467713ab334f735457f47672": 123374,
     "44a80ddbf4cafddd5b70513c8dc5de94c700903839ddacc366d310015fa84b17": 123559 };
-  assert.equal(bytes.length, known[hash], "Different input cannot diagnose the recorded Windows/hosted failure");
-  report.fixture = { bytes: bytes.length, sha256: hash, matchesRecordedBrowserSourceExactly: true };
+  assert.equal(info.size, known[hash], "Different input cannot diagnose the recorded Windows/hosted failure");
+  report.fixture = { bytes: info.size, sha256: hash, matchesRecordedBrowserSourceExactly: true };
   const probe = JSON.parse((await native("ffprobe", ["-v", "error", "-select_streams", "a", "-show_streams", "-show_packets", "-show_chapters", "-show_format", "-of", "json", file])).stdout);
   assert.equal(probe.streams.length, 2); assert.ok(probe.packets.length <= 256);
   report.chapters = probe.chapters; report.formatStartTime = probe.format.start_time;

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "scope": "exact hosted source-only inspection identifies the earlier browser's priming-layout refusal, not chapter or conversion acceptance",
+  "run": 39590445802,
+  "job": 119189781627,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39590445802",
+  "conclusion": "success",
+  "commit": "4a1916a469e129b6455a9edfd8c3fe349b76c183",
+  "implementationParent": "218087f3f8a1b334a7da8a0def7eebb0045a009a",
+  "privateWorkflowSha256": "e9edd6372e5981e9be91ddb4200f1ccdb2408b65d989c0a9d817aeda15e2c7c3",
+  "nativeValidator": "FFmpeg6.1.1-3ubuntu5",
+  "source": { "bytes": 123559, "sha256": "44a80ddbf4cafddd5b70513c8dc5de94c700903839ddacc366d310015fa84b17", "matchesRejectedBrowserFixtureExactly": true },
+  "audioTracks": [
+    { "index": 1, "language": "eng", "packets": 95, "initialPadding": 1024, "firstPtsSeconds": 0, "firstDtsSeconds": 0, "packetSkipMetadata": "absent" },
+    { "index": 2, "language": "hin", "packets": 95, "initialPadding": 1024, "firstPtsSeconds": -0.021, "firstDtsSeconds": -0.021, "packetSkipMetadata": "absent" }
+  ],
+  "chapter": { "startSeconds": 0.5, "endSeconds": 1.5, "title": "VPX chapitre café" },
+  "identifiedGuardMismatch": {
+    "source": "media/ffmpeg/vpx-preserving-candidate.mjs",
+    "currentPrivateWrapperRequires": "For nonzero first AAC skip, DTS must be strictly negative and match negative skip duration within one source tick",
+    "actualFirstAudioTrackViolates": "First DTS is0 while explicit source initial_padding is1024",
+    "safeFailureWasAppropriateButCapabilityIsStillMissing": true,
+    "doNotShiftPacketsOrDiscardPrimingToObtainPass": true,
+    "existingRelatedSolutionToInvestigate": "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch",
+    "relatedPriorBrowserProof": "evidence/mpeg2-aac-priming-passed-duration-failure-2026-10-05.json",
+    "relatedProofIsNotAcceptanceForThisCoreOrSource": true
+  },
+  "artifact": {
+    "id": 12342220722,
+    "name": "vpx-multitrack-source-39590445802",
+    "archiveBytes": 1077,
+    "digest": "sha256:bb13993c1bff79272d19cb6726e50ad8cbe6ba20cb2b4d30a3b2e9f037bfb614",
+    "report": "outputs/reports/vpx-multi-source-39590445802/vpx-multitrack-source-2026-10-21T11-14-59.209Z.json",
+    "reportSha256": "6c15faff84439190f94ca2f8538c9a9011122d50f60afd286b7d71901e145dfd"
+  },
+  "cleanup": { "disposableGeneratedFixturesRemoved": true, "browserLaunched": false, "wasmRebuilt": false, "convertedMediaDownloaded": false },
+  "next": [
+    "Derive an independently audited private candidate that applies exact sample-precision AAC edit-list priming for zero/positive first DTS without changing packet clocks/content",
+    "Reuse the existing narrowly scoped AAC mux patch and its source-authentication method where applicable, not the MPEG2 binary or its acceptance claims",
+    "Build only the actually changed native candidate, retain original failed sources/assertions, and validate both tracks' raw PCM, exact trim and original clocks",
+    "Once the original multi-track input completes, inspect actual chapter edit-list/fragment evidence before deciding a chapter fix",
+    "Continue memory attribution/compliance, final integration/scaling and every original requirement; no public promotion"
+  ],
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "chapterFailureStillOpen": true,
+  "fullGoalComplete": false
+}
