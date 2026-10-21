@@ -1,0 +1,80 @@
+{
+  "scope": "Actual static exported function types; no Wasm instance, media conversion or binary edits",
+  "results": [
+    {
+      "name": "within-remux",
+      "mjsSha256": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+      "wasmSha256": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+      "exportName": "ma",
+      "signature": {
+        "params": [
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127
+        ],
+        "results": [
+          127
+        ]
+      },
+      "parameterCount": 12
+    },
+    {
+      "name": "within-vp9",
+      "mjsSha256": "b41c6975377602ccaeb3b21ff717199c2287989a438d45306a6a1ef756cb9c33",
+      "wasmSha256": "cb5f5e15eeb08a06bd5f032dfdb72358ae1df116dd9adc3d57ad7e6f5b385fed",
+      "exportName": "ma",
+      "signature": {
+        "params": [
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127
+        ],
+        "results": [
+          127
+        ]
+      },
+      "parameterCount": 9
+    },
+    {
+      "name": "within-mpeg4",
+      "mjsSha256": "e4ad237087a65321c6f7829c38784dd9811a6bded4f6bff1b3e50a1d1c9fcd6c",
+      "wasmSha256": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
+      "exportName": "ma",
+      "signature": {
+        "params": [
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127
+        ],
+        "results": [
+          127
+        ]
+      },
+      "parameterCount": 9
+    }
+  ],
+  "status": "actual-exported-ABI-inventory-not-conversion-acceptance",
+  "publicAcceptance": false,
+  "nextAction": "The private general-core VP8/VP9 candidate has the12-argument general ABI. Do not stage it as a nine-argument specialist. Verify general-core video argument selection, including the existing singleThreadVideoCore path, before qualified decode/re-encode controls; no nondefault-control browser reproduction in this static inspection."
+}

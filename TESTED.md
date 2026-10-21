@@ -1,5 +1,31 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Changed-runtime five-suite browser run:957PASS/5FAIL; focused recovery prepared
+
+Run39522918843/be28fd7 completed: media549PASS/5FAIL in7.0min; image153PASS3.6min,
+streaming238PASS2.3min, source metadata9PASS27.4s, destination scopes8PASS19.4s.
+Five failures stay recorded. Three direct-audio checks poll not-running and can
+accept initial idle before the worker starts; later actual state is running.
+Two planner checks ambiguously select both automatic-route notice and catalogue
+status. Repaired four polling sites to accept only complete/error/cancelled,
+retaining the exact60s deadlines, subsequent complete assertions, actual output,
+independent validators and cleanup. Notice assertion now selects its exact
+existing test ID; wording and catalogue accessibility unchanged. Not a native or
+output corruption fix. No full-suite pass inferred from957successful cases.
+
+Focused6units/TypeScript/lint PASS for this recovery and VPX preparation. New
+reversible private CI derivation selects exactly the five failed cases and three
+positive direct-save controls (eight total), reusing original production tests/
+validator/setup/cleanup. Main CI workflow unchanged; this is not all-suite CI.
+No unchanged554-test repeat. Actual focused hosted recovery still pending.
+
+VPX no-Docker build39523641019/eb2ea0fe is now SUCCESS; download/audit pending
+before binary/browser claims. Static actual-binary inspection separately shows
+general remux12arguments versus certified VP9/MPEG4 specialists9. Do NOT swap
+candidate under a specialist's incompatible ABI. Explicit general-core video
+argument selection needs verification before private browser qualification.
+Exact static hashes/types: `evidence/2026-10-21-media-core-abi-inventory.json`.
+
 ## 2026-10-21 - Private VP8/VP9 CPU decoder implementation prepared; no binary/browser acceptance yet
 
 B03: published FFmpeg build lacks VP8/VP9 software decoding although it can

@@ -3289,7 +3289,7 @@ async function runMediaRoute(
 
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 60_000 })
-      .not.toBe("running");
+      .toMatch(/^(complete|error|cancelled)$/);
     const state = await currentState();
     expect(state.jobState, state.error ?? state.phase).toBe("complete");
     expect(state.opfsName).toBeTruthy();
@@ -3673,7 +3673,7 @@ async function runSmallDirectAudioRoute(
     await startEnabledConversion();
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 60_000 })
-      .not.toBe("running");
+      .toMatch(/^(complete|error|cancelled)$/);
 
     const state = await currentState();
     expect(state.jobState, state.error ?? state.phase).toBe("complete");
@@ -3803,7 +3803,7 @@ test("browser FFmpeg AVIO writes a valid MP4 through bounded private staging", a
       .not.toBe("idle");
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 60_000 })
-      .not.toBe("running");
+      .toMatch(/^(complete|error|cancelled)$/);
 
     const state = await currentState();
     expect(state.jobState, state.error ?? state.phase).toBe("complete");
@@ -3939,7 +3939,7 @@ test("browser FFmpeg coalesces PCM packets for a bounded direct WAV save", async
     await startEnabledConversion();
     await expect
       .poll(async () => (await currentState()).jobState, { timeout: 60_000 })
-      .not.toBe("running");
+      .toMatch(/^(complete|error|cancelled)$/);
 
     const state = await currentState();
     expect(state.jobState, state.error ?? state.phase).toBe("complete");
@@ -4709,7 +4709,7 @@ for (const route of [
     await expect(plan.locator(".conversion-plan-blocker")).toHaveCount(0);
     await expect(plan).toContainText("Re-encode");
     await expect(page.locator('[data-testid="convert-button"]')).toBeEnabled();
-    await expect(page.getByRole("status")).toContainText(
+    await expect(page.getByTestId("automatic-route-notice")).toContainText(
       `automatically selected the certified ${route.fallbackProfileId}`,
     );
   });

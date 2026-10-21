@@ -1,5 +1,23 @@
 # Remaining work audit
 
+## 2026-10-21 - Browser regression identifies five test races/locator failures; no unchanged full repeat
+
+39522918843/be28fd7 terminal FAIL:957PASS/5FAIL across five genuine production
+browser/independent-validator suites. Three tests prematurely accept initial
+idle with not-running polling; two status locators match both route notice and
+new catalogue status. Original assertions/output validators/60s bounds retained;
+four polling sites now require actual terminal state and route notice locator
+is exact. Six focused units/TS/lint pass. Eight-case private hosted recovery
+derivation implemented (five failed +three direct-save controls), not a substitute
+for whole-project acceptance. Reuse matching passed evidence; do not repeat554
+unchanged media cases as diagnosis. B07/B08 remain open until actual recovery.
+
+B03 no-Docker compilation39523641019/eb2ea0fe SUCCESS. Actual artifact audit
+and real VP8/VP9 decode/re-encode/fidelity/memory/recovery/scaling/promotion still
+pending. General-core actual exported ABI has12arguments, specialists9; source-
+aware explicit loader/argument handling needed, not a filename swap. AV1 remains
+missing; original54requirements and all other blockers unchanged.
+
 ## 2026-10-21 - B03 private native VP8/VP9 decode configuration implemented
 
 Exact configure derivative enables two missing FFmpeg CPU decoders/parsers,
