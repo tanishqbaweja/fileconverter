@@ -160,6 +160,9 @@ jobs:
               WITHIN_H264_SAD_SIMD="${{ inputs.h264_sad_simd || '0' }}" \
               WITHIN_H264_ALLOCATOR_DIAGNOSTIC="${{ inputs.h264_allocator_diagnostic || '0' }}" \
               WITHIN_KEEP_H264_CANDIDATE=1 bash media/ffmpeg/build-h264-candidate.sh
+          elif test "${{ inputs.core }}" = within-remux; then
+            export PATH="$(dirname "$EMSDK_NODE"):$PATH"
+            node media/ffmpeg/build-vpx-decoder-candidate.mjs
           elif test "${{ inputs.core }}" = within-mpeg2-split-contract; then
             export PATH="$(dirname "$EMSDK_NODE"):$PATH"
             bash media/ffmpeg/verify-mpeg2-split-frame.sh
@@ -185,6 +188,23 @@ jobs:
           else
             bash media/ffmpeg/reproduce-nondocker.sh
           fi
+
+      - name: Retain private VPX software decoder candidate
+        if: success() && inputs.core == 'within-remux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: private-vpx-decoders-${{ github.run_id }}
+          path: |
+            work/ffmpeg-nondocker-output/within-remux.mjs
+            work/ffmpeg-nondocker-output/within-remux.wasm
+            work/ffmpeg-nondocker-output/within_remux.vpx.c
+            work/ffmpeg-nondocker-output/build-libraries.base.sh
+            work/ffmpeg-nondocker-output/build-libraries.vpx.sh
+            work/ffmpeg-nondocker-output/config_components.h
+            work/ffmpeg-nondocker-output/build-manifest.json
+            work/ffmpeg-nondocker-output/LICENSE.*
+          if-no-files-found: error
+          retention-days: 1
 
       - name: Retain private H264 candidate and corresponding sources
         if: success() && inputs.core == 'within-h264-candidate'
