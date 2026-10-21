@@ -1,5 +1,12 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 timeline39620150626 FAIL8PASS/1FAIL41.1s. Four defaults/controls and four
+terminal/recovery cases pass; original multi-track all48video PTS exactly match,
+resolving.021→0 shift. Chapter start.5 fixed but end1.5→1.0 still wrong. AAC1 exact
+fidelity pass; AAC2 first duration absent even from unedited probe, needs serialized
+container proof, not guessed value. Prepare that plus chapter absolute timeline
+correction before next changed-core run. `evidence/2026-10-21-vpx-timeline-browser-result.json`.
+
 B03 combined video/chapter timeline native39618541054/d9830fc7 SUCCESS; actual
 43source/16artifact/C/MOV/config/ABI/32–96MiB audit PASS. Wasm4652707B/SHAe89d9aa9.
 Real browser/quality/timestamps/chapters/raw-duration/recovery still pending;

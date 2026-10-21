@@ -1,5 +1,22 @@
 # Remaining work audit
 
+## 2026-10-21 - Real changed-core qualification8PASS/1FAIL; original video shift genuinely resolved
+
+39620150626/909506b3 terminal FAIL8PASS/1FAIL41.1s. VP8/VP9 default/control cases
+pass full independent decode/quality/raw AAC samples/trim/packet hashes/1ms clocks/
+I/O/worker retirement. Four terminal/recovery cases also pass after Playwright's
+failure restart in a separate clean session. Original multi-track source retains
+all48video PTS exactly (first.021→.021), independently asserted from retained
+native probe frames; SSIM.993340. AAC1 zero-start exact fidelity passes. AAC2 first
+duration remains absent even in unedited FFprobe; no zero/guess/substitution used.
+Chapter start now.5 but end is1.0 instead of1.5; original2ms guard remains. Need
+bounded serialized MP4 tfhd/trun/trex first-sample duration evidence and a chapter
+absolute fragment timeline correction. Prepare both before another browser run;
+reuse eight passing cases and unchanged video code. Both sessions source/cleanup/
+owned-server absence/zero forbidden requests verified; compact JSON only. Memory,
+large-file/new-route scaling/public integration/full54/B02-B09 remain OPEN.
+`evidence/2026-10-21-vpx-timeline-browser-result.json`.
+
 ## 2026-10-21 - Nine actual timeline browser cases running on audited existing bytes
 
 39620150626/909506b3 is live, parent0c11c4a; all nine private correctness/controls/

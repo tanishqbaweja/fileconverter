@@ -2,6 +2,8 @@
   "schemaVersion": 1,
   "scope": "nine real private production-browser correctness/control/multi-track/terminal cases; not Windows memory or full CI",
   "statusAtInspection": "in_progress",
+  "terminalConclusion": "failure",
+  "terminalProof": "evidence/2026-10-21-vpx-timeline-browser-result.json",
   "run": 39620150626,
   "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39620150626",
   "branch": "codex/vpx-timeline-browser-20261021",

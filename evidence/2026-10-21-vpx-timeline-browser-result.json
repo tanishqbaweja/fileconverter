@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "scope": "nine real private timeline correctness/control/terminal cases; eight pass, original multi-track remains unaccepted",
+  "run": 39620150626,
+  "job": 119291154473,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39620150626",
+  "commit": "909506b35a7111808dba0809be13a763776ce5d3",
+  "implementationParent": "0c11c4a445cee69949b5fbc7f2cd1b8c2eb91455",
+  "workflowSha256": "27035f8659d223be9df0beb98433e9f8072d6ddb6ddf3bcaaf59e2f73444a431",
+  "conclusion": "failure",
+  "suite": { "passed": 8, "failed": 1, "seconds": 41.1 },
+  "browser": "Chromium151.0.7922.34 headless hosted Ubuntu",
+  "nativeArtifactReusedWithoutRebuild": 39618541054,
+  "wasmSha256": "e89d9aa967878148e957d92edb983dc0b6644113b6e3750f1fc75501bb8f1164",
+  "passingConversions": [
+    { "codec": "vp8", "settings": "default", "frames": 48, "fps": 24, "ssim": 0.993273, "outputBytes": 525990, "outputSha256": "be237d7e6339f7e243c7fa4780aa2c221cfcc169fe399ecb4b40ddb65c0190a2" },
+    { "codec": "vp8", "settings": "320px/4Mbps/15fps/balanced", "frames": 30, "fps": 15, "ssim": 0.986054, "outputBytes": 112344, "outputSha256": "8bcfe5c9ce7a0b1b78fe296e891ed28a7cb1c938b9ef6078390dd2a03db0d48c" },
+    { "codec": "vp9", "settings": "default", "frames": 48, "fps": 24, "ssim": 0.996114, "outputBytes": 593761, "outputSha256": "9c1c8d2262aa506635c43a2d28e90adda9614bccf5ef43c53e8251adbdc8cff2" },
+    { "codec": "vp9", "settings": "320px/4Mbps/15fps/balanced", "frames": 30, "fps": 15, "ssim": 0.98829, "outputBytes": 108241, "outputSha256": "ef96d95bccf5933fc04c52a8bc02cd74f840316cc4c9665ceabb78951aabcc25" }
+  ],
+  "passingTerminalCases": [
+    "Mismatched source rejected before encoding",
+    "Pre-cancelled cleanup, not mid-conversion cancellation",
+    "Bounded selected-destination write failure removes stage and clears pending operations",
+    "Real VP8 conversion recovers after those preceding three cases"
+  ],
+  "passingChecks": {
+    "fullIndependentDecode": true,
+    "originalSsimThreshold": 0.98,
+    "videoTimestampsAndIntervalsWithin1ms": true,
+    "allAacPacketHashesAndRawPcmSamplesTrimAudibleOrigins": true,
+    "nativeReadWriteBytesMaximum": 262144,
+    "saveChunkBytesMaximum": 524288,
+    "outstandingWritesMaximum": 1,
+    "finalWasmScratchPendingOperations": 0,
+    "codecWorkerClosedBeforeSaverCreated": true
+  },
+  "originalMultiTrack": {
+    "sourceSha256": "44a80ddbf4cafddd5b70513c8dc5de94c700903839ddacc366d310015fa84b17",
+    "browserConversionCompletes": true,
+    "fullVideoAndAudioDecode": true,
+    "videoFrames": 48,
+    "ssim": 0.99334,
+    "sourceFirstVideoPtsSeconds": 0.021,
+    "outputFirstVideoPtsSeconds": 0.021,
+    "all48VideoTimestampsMaximumErrorSeconds": 0,
+    "videoTimestampsIndependentlyAssertedFromRetainedNativeProbeData": true,
+    "zeroStartAudioTrackExactSamplePacketTrimAndClockChecks": "pass",
+    "secondAudioTrackFailure": "First duration unavailable in both normal and ignore-editlist FFprobe packet output",
+    "rawFirstPacketDtsSeconds": 0,
+    "rawSecondPacketDtsSeconds": 0.021333,
+    "rawPacketDurationNotGuessedFromThoseTimestamps": true,
+    "fullSecondTrackFidelityAcceptance": false,
+    "sourceChapter": { "startSeconds": 0.5, "endSeconds": 1.5, "title": "VPX chapitre café" },
+    "outputChapter": { "startSeconds": 0.5, "endSeconds": 1, "title": "VPX chapitre café" },
+    "chapterStartCorrectedButEndStillWrong": true,
+    "original2msChapterThresholdRetained": true,
+    "wholeMultiTrackCaseAccepted": false
+  },
+  "artifact": {
+    "id": 12353823876,
+    "name": "private-vpx-timeline-browser-39620150626",
+    "archiveBytes": 19117,
+    "digest": "sha256:2e0006d5581e02620120fcd5ce99b2e1051949950f5cbf021eceb5415054eaca",
+    "reports": [
+      { "path": "output/playwright/vpx-timeline-39620150626/vpx-decoder-qualification-2026-10-21T14-50-40.916Z.json", "bytes": 145112, "sha256": "ef9411f4d043f357857226b28e5c4e89ff3f55a9bdc4c383283ff447b766fba0", "scope": "four passing default/control cases then failing multi-track" },
+      { "path": "output/playwright/vpx-timeline-39620150626/vpx-decoder-qualification-2026-10-21T14-51-06.812Z.json", "bytes": 37323, "sha256": "a3486317a296e331099983ee68087d7955b6c2eccd22970b5eb5bece32c68613", "scope": "fresh Playwright worker/session after failure; four terminal cases and recovery pass" }
+    ]
+  },
+  "cleanup": {
+    "bothSessionsDisposableMediaProfilesScratchRemoved": true,
+    "bothOwnedServerRootsAbsent": true,
+    "bothExecutedSourcePinSetsVerified": 22,
+    "forbiddenRequests": 0,
+    "convertedMediaDownloaded": false
+  },
+  "next": [
+    "Read the serialized first AAC sample duration from bounded MP4 tfhd/trun/trex metadata; no guessed duration or weakened comparison",
+    "Correct the chapter track's absolute fragment timeline so the original positive start and end survive independent readers",
+    "Prepare both changes before another browser run; do not repeat the eight passing cases or rebuild unchanged video code",
+    "Retain original source, quality/clock/chapter/memory limits and every full-scope blocker"
+  ],
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "headedCoverage": false,
+  "fullGoalComplete": false
+}

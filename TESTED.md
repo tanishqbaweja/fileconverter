@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+## 2026-10-21 - New timeline core:8PASS/1FAIL; exact video origin fixed, chapter end and duration evidence remain
+
+39620150626/909506b3 FAIL8PASS/1FAIL41.1s. Four VP8/VP9 defaults/controls pass real
+decode/encode, full independent decode,48/30frames, SSIM.993273/.986054/.996114/
+.988290, exact AAC packet/raw PCM/trim/origin,1ms video timing and bounded I/O.
+All four terminal/recovery cases pass in a fresh session after the failed case;
+not one uninterrupted nine-case session. Original multi-track now preserves all
+48video timestamps EXACTLY, first.021→.021 (independently asserted from retained
+native probe data), SSIM.993340. Zero-start AAC1 exact checks pass. AAC2 first
+duration absent even with ignore-editlist: raw-DTS gap is not guessed duration.
+Chapter start.5 now correct, but end1.5→1.0 FAILS. No whole multi-track acceptance.
+Both sessions cleanup/source pins/server absence/zero forbidden requests pass;
+only compact JSON retained. Next bounded serialized tfhd/trun/trex duration proof
+and chapter absolute timeline correction together; no unchanged successful repeats.
+`evidence/2026-10-21-vpx-timeline-browser-result.json`.
+
 ## 2026-10-21 - Nine changed-core browser cases dispatched, not yet accepted
 
 Actual39620150626/909506b3 is live for all nine private correctness/control/multi-
