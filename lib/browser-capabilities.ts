@@ -110,7 +110,7 @@ async function imageDecoderSupport(): Promise<Record<string, boolean>> {
   return support;
 }
 
-async function videoEncoderSupport(): Promise<boolean> {
+export async function videoEncoderSupport(): Promise<boolean> {
   if (
     typeof VideoEncoder !== "function" ||
     typeof VideoEncoder.isConfigSupported !== "function"
@@ -122,14 +122,20 @@ async function videoEncoderSupport(): Promise<boolean> {
     { codec: "vp09.00.10.08", width: 16, height: 16, bitrate: 100_000, framerate: 1 },
     { codec: "avc1.42001e", width: 16, height: 16, bitrate: 100_000, framerate: 1 },
   ];
-  const results = await Promise.all(
-    configurations.map((configuration) =>
-      VideoEncoder.isConfigSupported(configuration)
-        .then((result) => result.supported === true)
-        .catch(() => false),
-    ),
-  );
-  return results.some(Boolean);
+  const probe = (configuration: VideoEncoderConfig) =>
+    VideoEncoder.isConfigSupported(configuration)
+      .then((result) => result.supported === true)
+      .catch(() => false);
+  // This startup flag asks whether ANY encoder is functional, not whether a
+  // particular hardware encoder is available. Default-preference queries can
+  // initialize a large GPU-driver allocation even for CPU-only conversions.
+  // Ask software first; preserve the original queries for hardware-only support.
+  // Actual encoding paths must still probe their exact requested configuration.
+  const software = await Promise.all(configurations.map((configuration) =>
+    probe({ ...configuration, hardwareAcceleration: "prefer-software" }),
+  ));
+  if (software.some(Boolean)) return true;
+  return (await Promise.all(configurations.map(probe))).some(Boolean);
 }
 
 async function audioEncoderSupport(): Promise<boolean> {

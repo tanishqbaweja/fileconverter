@@ -3,6 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 import {
   browserRequirementSatisfied,
+  videoEncoderSupport,
 } from "../lib/browser-capabilities.ts";
 import { conversionProfiles } from "../lib/capability-registry.ts";
 
@@ -132,4 +133,46 @@ test("capability detection performs bounded functional probes instead of presenc
   assert.match(app, /browserRequirementSatisfied\(requirement, capabilities, inputMimeType\)/);
   assert.match(app, /data-testid="capability-blocker"/);
   assert.doesNotMatch(app, /function capabilitySnapshot/);
+});
+
+test("startup probes software functionality first without initializing unneeded hardware queries", async () => {
+  const original = Object.getOwnPropertyDescriptor(globalThis, "VideoEncoder"), calls = [];
+  try {
+    Object.defineProperty(globalThis, "VideoEncoder", { configurable: true, value: class {
+      static async isConfigSupported(configuration) { calls.push(configuration); return { supported: configuration.codec === "vp8" }; }
+    } });
+    assert.equal(await videoEncoderSupport(), true);
+    assert.equal(calls.length, 3);
+    assert.ok(calls.every(x => x.hardwareAcceleration === "prefer-software"));
+    assert.deepEqual(calls.map(x => x.codec), ["vp8", "vp09.00.10.08", "avc1.42001e"]);
+    assert.ok(calls.every(x => x.width === 16 && x.height === 16 && x.bitrate === 100_000 && x.framerate === 1));
+  } finally {
+    if (original) Object.defineProperty(globalThis, "VideoEncoder", original);
+    else delete globalThis.VideoEncoder;
+  }
+});
+
+test("hardware-only availability and rejected software hints retain the original functional fallback", async () => {
+  const original = Object.getOwnPropertyDescriptor(globalThis, "VideoEncoder");
+  try {
+    for (const mode of ["unsupported", "rejected", "all-unavailable"]) {
+      const calls = [];
+      Object.defineProperty(globalThis, "VideoEncoder", { configurable: true, value: class {
+        static async isConfigSupported(configuration) {
+          calls.push(configuration);
+          if (configuration.hardwareAcceleration && mode === "rejected") throw new Error("Software hint unavailable");
+          return { supported: mode !== "all-unavailable" && !configuration.hardwareAcceleration && configuration.codec === "avc1.42001e" };
+        }
+      } });
+      assert.equal(await videoEncoderSupport(), mode !== "all-unavailable");
+      assert.equal(calls.length, 6);
+      assert.ok(calls.slice(0, 3).every(x => x.hardwareAcceleration === "prefer-software"));
+      assert.ok(calls.slice(3).every(x => !("hardwareAcceleration" in x)));
+    }
+    Object.defineProperty(globalThis, "VideoEncoder", { configurable: true, value: undefined });
+    assert.equal(await videoEncoderSupport(), false);
+  } finally {
+    if (original) Object.defineProperty(globalThis, "VideoEncoder", original);
+    else delete globalThis.VideoEncoder;
+  }
 });

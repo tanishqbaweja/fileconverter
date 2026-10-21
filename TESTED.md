@@ -1,5 +1,31 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Capability probe isolates GPU allocation, preserves hardware-only fallback
+
+Finite inert-page actual-function diagnostics on installed Chrome155: original
+video-support query stage GPU104599552→212443136B; software-preferred variant
+103784448→90664960B, both report functional video support. Canvas had no comparable
+jump; audio/image results and compact per-phase OS evidence retained. Both fresh
+profiles/scratch removed, source/browser pins verified. No user media or conversion
+in these diagnostics. Production software-first+original hardware-capable fallback
+implemented,14focused tests pass (initial two mock shape failures corrected to
+constructors matching real VideoEncoder). TS passes. Actual same-input production
+memory/correctness retest pending; no public/memory/speed promotion yet.
+`evidence/2026-10-21-capability-gpu-allocation-diagnosis.json`.
+
+## 2026-10-21 - Current Chrome155 corrected multi-track PASS, whole-tree memory FAIL
+
+Local6f21734a:1PASS/1FAIL46.9s; real123374B/SHA1705c939 fixture→559403B/SHA6d845ec6,
+48frames/24fps/SSIM.993273, full decode/both exact AAC/trim/clocks/video PTS/chapters
+pass. Native peak534827008B minus lower stable same-instance231366656B blank is
+289.40234375MiB, above250. Conversion itself peaks, not only validation export.
+GPU already grows before encoding; bounded implementation captures5real OS/realm
+pairs, no GC or excluded process. One unavailable sample stays null.
+Post-observer light dump retained separately; counters overlap/not acceptance.
+27source/installed binary pins/privacy/owned cleanup pass. No public promotion,
+large-file/speed comparison or full54 closure. Exact evidence/next hypothesis:
+`evidence/2026-10-21-vpx-current-windows-memory.json`.
+
 Post-cleanup retained-candidate default:24focused tests/0fail/0skip, TypeScript
 and targeted browser-spec lint pass. This is not a fresh full unit/browser suite.
 

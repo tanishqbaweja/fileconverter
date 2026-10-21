@@ -1,5 +1,30 @@
 # Remaining work audit
 
+## 2026-10-21 - Eager video-capability GPU initialization isolated; software-first detection implemented
+
+Two fresh Chrome155 inert-page experiments execute pinned actual capability
+functions. Default video-support queries raise GPU private104599552→212443136B;
+software-preferred queries still return true without that jump (103784448→90664960B).
+Canvas/audio/image stages retained; no app conversion/public qualification claim.
+Production detector now tries same3software configurations first, retaining all3
+original default queries if none work, so hardware-only capability is not removed.
+Actual encoders/settings/native binary unchanged.14focused tests/TS pass; exact
+same-input production-browser memory/correctness retest next. Full54/B02-B09 OPEN.
+`evidence/2026-10-21-capability-gpu-allocation-diagnosis.json`.
+
+## 2026-10-21 - Corrected VPX passes installed Windows155 correctness; memory fails289.40234375MiB
+
+6f21734a finite two-test local cycle:1PASS/1FAIL46.9s. Original two-audio-track
+fixture on native Windows validates real MPEG4 encode/48video PTS/both exact AAC
+PCM/trim/clocks and chapters. Whole-tree peak534827008B minus clean231366656B
+blank FAILS289.40234375MiB. All descendants/unavailable1sample retained;27source
+and installed browser pins/cleanup/privacy pass. GPU grows from82.84MiB blank to
+224.72MiB loaded-phase peak before encoding; initiating API not yet proven.
+Next isolate actual capability probes on inert same-origin page, not blind codec
+or baseline changes. This is not an improvement comparison with earlier five-job
+389MiB scope. B02-B09/full54/current-memory/scaling/public remain OPEN.
+`evidence/2026-10-21-vpx-current-windows-memory.json`.
+
 2026-10-21 cleanup completed:16924625B of three obsolete native tool copies removed;
 four compact pinned manifests archived, current candidate retained/audited43/16.
 Original test.mkv size/hash/identity/mtime unchanged before/after. Private test

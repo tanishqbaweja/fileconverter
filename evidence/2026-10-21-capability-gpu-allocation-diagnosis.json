@@ -1,0 +1,187 @@
+{
+  "schemaVersion": 1,
+  "scope": "Actual pinned capability functions on inert same-origin page; not conversion/memory acceptance",
+  "cases": [
+    {
+      "variant": "original-probes",
+      "status": "completed-diagnostic-not-route-acceptance",
+      "browser": "155.0.8059.85",
+      "sourceSha256": "162f5484e2bb4e171e5533c044a25f6cb57f159549776be03137b68019ac31b3",
+      "moduleSha256": "208815a561985bf47a51d39c308fb36c434042cb04cc891d4b255f9fa632fb18",
+      "blankBaseline": {
+        "stable": true,
+        "privateBytes": 229441536,
+        "spreadBytes": 36864,
+        "rssBytes": 475688960,
+        "firstTimestamp": "2026-10-21T15:47:45.8122027Z",
+        "lastTimestamp": "2026-10-21T15:47:54.3287870Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "stages": [
+        {
+          "label": "stable-blank",
+          "result": null,
+          "privateBytes": 229441536,
+          "gpuPrivateBytes": 85827584,
+          "error": null
+        },
+        {
+          "label": "inert-page-before-probes",
+          "result": null,
+          "privateBytes": 255156224,
+          "gpuPrivateBytes": 104816640,
+          "error": null
+        },
+        {
+          "label": "canvasProbe",
+          "result": true,
+          "privateBytes": 254971904,
+          "gpuPrivateBytes": 104599552,
+          "error": null
+        },
+        {
+          "label": "videoEncoderSupport",
+          "result": true,
+          "privateBytes": 365817856,
+          "gpuPrivateBytes": 212443136,
+          "error": null
+        },
+        {
+          "label": "audioEncoderSupport",
+          "result": true,
+          "privateBytes": 335523840,
+          "gpuPrivateBytes": 189816832,
+          "error": null
+        },
+        {
+          "label": "imageDecoderSupport",
+          "result": {
+            "image/avif": true,
+            "image/gif": true,
+            "image/heic": false,
+            "image/heic-sequence": false,
+            "image/heif": false,
+            "image/heif-sequence": false,
+            "image/jpeg": true,
+            "image/png": true,
+            "image/webp": true,
+            "image/x-adobe-dng": false,
+            "image/x-canon-cr2": false,
+            "image/x-nikon-nef": false,
+            "image/x-sony-arw": false
+          },
+          "privateBytes": 300986368,
+          "gpuPrivateBytes": 155017216,
+          "error": null
+        }
+      ],
+      "sourceAndBrowserPinsVerified": true,
+      "disposableDataRemoved": true,
+      "unavailableSamples": 0,
+      "forbiddenRequests": [],
+      "report": {
+        "path": "output/playwright/2026-10-21T15-47-33.119Z-capability-memory-original-probes.json",
+        "bytes": 1125085,
+        "sha256": "c2f76c66fcb8b319a3b148fd64acc3f458146b06e6c32d353d129ee94d97c03b"
+      }
+    },
+    {
+      "variant": "software-video-probe",
+      "status": "completed-diagnostic-not-route-acceptance",
+      "browser": "155.0.8059.85",
+      "sourceSha256": "162f5484e2bb4e171e5533c044a25f6cb57f159549776be03137b68019ac31b3",
+      "moduleSha256": "941c1d36c7824051743d1dde9b9e19b7455ee6d8e545fc043c9ecbdb88ac4580",
+      "blankBaseline": {
+        "stable": true,
+        "privateBytes": 231350272,
+        "spreadBytes": 65536,
+        "rssBytes": 476372992,
+        "firstTimestamp": "2026-10-21T15:48:48.4874910Z",
+        "lastTimestamp": "2026-10-21T15:48:56.9961307Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "stages": [
+        {
+          "label": "stable-blank",
+          "result": null,
+          "privateBytes": 231350272,
+          "gpuPrivateBytes": 86941696,
+          "error": null
+        },
+        {
+          "label": "inert-page-before-probes",
+          "result": null,
+          "privateBytes": 250376192,
+          "gpuPrivateBytes": 104030208,
+          "error": null
+        },
+        {
+          "label": "canvasProbe",
+          "result": true,
+          "privateBytes": 250159104,
+          "gpuPrivateBytes": 103784448,
+          "error": null
+        },
+        {
+          "label": "videoEncoderSupport",
+          "result": true,
+          "privateBytes": 240009216,
+          "gpuPrivateBytes": 90664960,
+          "error": null
+        },
+        {
+          "label": "audioEncoderSupport",
+          "result": true,
+          "privateBytes": 232235008,
+          "gpuPrivateBytes": 90669056,
+          "error": null
+        },
+        {
+          "label": "imageDecoderSupport",
+          "result": {
+            "image/avif": true,
+            "image/gif": true,
+            "image/heic": false,
+            "image/heic-sequence": false,
+            "image/heif": false,
+            "image/heif-sequence": false,
+            "image/jpeg": true,
+            "image/png": true,
+            "image/webp": true,
+            "image/x-adobe-dng": false,
+            "image/x-canon-cr2": false,
+            "image/x-nikon-nef": false,
+            "image/x-sony-arw": false
+          },
+          "privateBytes": 232501248,
+          "gpuPrivateBytes": 90669056,
+          "error": null
+        }
+      ],
+      "sourceAndBrowserPinsVerified": true,
+      "disposableDataRemoved": true,
+      "unavailableSamples": 1,
+      "forbiddenRequests": [],
+      "report": {
+        "path": "output/playwright/2026-10-21T15-48-36.046Z-capability-memory-software-video-probe.json",
+        "bytes": 1115479,
+        "sha256": "f386be4522f4d2cc509c26b280333a3df9acd6aa724c3e677236f902146e381f"
+      }
+    }
+  ],
+  "conclusion": "Default encoder-support queries initiate a large GPU-private increase; software-preferred queries return true without that increase on installed Chrome155. Canvas probe did not cause a comparable increase in this experiment.",
+  "productionCorrection": "Probe same three configurations with prefer-software first; if none succeed, retain all three original default-preference queries for hardware-only support. No encoder configuration/codec/output settings change.",
+  "tests": {
+    "focusedPassed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "typeScript": "pass",
+    "targetedLint": "pass-after-all-corrections",
+    "nativeArtifactRebuildRequired": false
+  },
+  "productionConversionRetest": "pending",
+  "publicAcceptance": false,
+  "fullGoalComplete": false
+}

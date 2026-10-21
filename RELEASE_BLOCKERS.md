@@ -1,5 +1,13 @@
 # Release closure — original scope, not a reduced MVP
 
+B06 actual corrected VPX Windows155 check FAILS289.40234375MiB:534827008B full-tree
+peak over231366656B lower stable same-instance blank. B03 original multi-track
+correctness passes locally too;27source/browser pins/privacy/cleanup pass. GPU
+loaded-phase peak224.72MiB versus82.84MiB blank motivates isolating eager capability
+probes before a production fix. Five bounded realm observations are not all-realm
+peaks or a substitute metric. Full54/B02-B09 remain OPEN; no public promotion.
+`evidence/2026-10-21-vpx-current-windows-memory.json`.
+
 B03 original multi-track correctness PASS:39624811908/4110f722,1PASS/0FAIL12.9s.
 All48video timestamps exact; both95AAC packets/raw97280samples/trim1024/audible
 96256samples and1ms clocks pass. Chapter start/end.5–1.5/title now pass original2ms

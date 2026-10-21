@@ -1,0 +1,613 @@
+{
+  "schemaVersion": 1,
+  "scope": "Installed Windows155 corrected VPX multi-track correctness and unchanged whole-tree memory gate",
+  "status": "1PASS/1FAIL46.9s",
+  "implementationCommit": "6f21734a9ac9ed4784254106cea90afc39986699",
+  "browser": "155.0.8059.85",
+  "sourceSha256": "1705c9399cd4cb8112665e305ee4716b7544a465467713ab334f735457f47672",
+  "validation": {
+    "fullDecode": true,
+    "frames": 48,
+    "fps": 24,
+    "ssim": 0.993273,
+    "audioPacketsIdentical": true,
+    "sourceBytes": 123374,
+    "outputBytes": 559403,
+    "outputSha256": "6d845ec63901e6124d47ee33121c8c905c6f816b0b8fd97accc4a57109620e13"
+  },
+  "audio": [
+    {
+      "ordinal": 0,
+      "clocks": [
+        {
+          "sourceStreamIndex": 1,
+          "outputStreamIndex": 1,
+          "packets": 95,
+          "maximumPtsErrorSeconds": 0.00033299999999999996,
+          "maximumDtsErrorSeconds": 0.00033299999999999996,
+          "maximumDurationErrorSeconds": 0.0009999999999999974,
+          "initialSkipSamples": 1024
+        }
+      ],
+      "rawSamples": 97280,
+      "audibleSamples": 96256,
+      "leadingSamples": 1024,
+      "trailingSamples": 0,
+      "rawSha256": "1e0cac3ee3985efd6069001621e0dcbb079aab4aa7227fd273f2bdb21ec28a2b",
+      "audibleSha256": "0293fc3f2c5f705d9669cb5d55013bea5c388f36f5e2afac6bbc56490d2007e6"
+    },
+    {
+      "ordinal": 1,
+      "clocks": [
+        {
+          "sourceStreamIndex": 2,
+          "outputStreamIndex": 2,
+          "packets": 95,
+          "maximumPtsErrorSeconds": 0.00033299999999999996,
+          "maximumDtsErrorSeconds": 0.00033299999999999996,
+          "maximumDurationErrorSeconds": 0.0009999999999999974,
+          "initialSkipSamples": 1024
+        }
+      ],
+      "rawSamples": 97280,
+      "audibleSamples": 96256,
+      "leadingSamples": 1024,
+      "trailingSamples": 0,
+      "rawSha256": "f1b7b646d53246fcacb92a61254ed0c444f05a326838eb4e833aff18ee5fd43e",
+      "audibleSha256": "abce503e51a531cb25214550781608d20e35dbed8230106888982ca016faa9ba"
+    }
+  ],
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 231366656,
+    "spreadBytes": 1777664,
+    "rssBytes": 478199808,
+    "firstTimestamp": "2026-10-21T15:41:49.0768296Z",
+    "lastTimestamp": "2026-10-21T15:41:57.5742338Z",
+    "sampleCount": 8,
+    "minimumElapsedMs": 8000
+  },
+  "incrementalPrivateMiB": 289.40234375,
+  "limitMiB": 250,
+  "phasePeaks": [
+    {
+      "phase": "blank",
+      "validSamples": 182,
+      "privateBytes": 246509568,
+      "incrementalMiB": 14.44140625,
+      "processes": [
+        {
+          "pid": 11944,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.8739136Z",
+          "type": "gpu-process",
+          "privateBytes": 100249600,
+          "rssBytes": 123142144
+        },
+        {
+          "pid": 15524,
+          "parentPid": 42756,
+          "createdAt": "2026-10-21T15:41:39.5325386Z",
+          "type": "browser",
+          "privateBytes": 44068864,
+          "rssBytes": 131993600
+        },
+        {
+          "pid": 30260,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:40.0203658Z",
+          "type": "renderer",
+          "privateBytes": 18014208,
+          "rssBytes": 49577984
+        },
+        {
+          "pid": 30792,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.9368843Z",
+          "type": "utility",
+          "privateBytes": 8204288,
+          "rssBytes": 18452480
+        },
+        {
+          "pid": 33092,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.9791596Z",
+          "type": "renderer",
+          "privateBytes": 45092864,
+          "rssBytes": 86417408
+        },
+        {
+          "pid": 37996,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.5883724Z",
+          "type": "unknown",
+          "privateBytes": 2641920,
+          "rssBytes": 10379264
+        },
+        {
+          "pid": 42332,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.8826554Z",
+          "type": "utility",
+          "privateBytes": 12881920,
+          "rssBytes": 39309312
+        },
+        {
+          "pid": 43576,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:40.0122909Z",
+          "type": "renderer",
+          "privateBytes": 15355904,
+          "rssBytes": 32198656
+        }
+      ]
+    },
+    {
+      "phase": "loaded",
+      "validSamples": 16,
+      "privateBytes": 420859904,
+      "incrementalMiB": 180.71484375,
+      "processes": [
+        {
+          "pid": 11944,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.8739136Z",
+          "type": "gpu-process",
+          "privateBytes": 235634688,
+          "rssBytes": 230526976
+        },
+        {
+          "pid": 15524,
+          "parentPid": 42756,
+          "createdAt": "2026-10-21T15:41:39.5325386Z",
+          "type": "browser",
+          "privateBytes": 50184192,
+          "rssBytes": 143749120
+        },
+        {
+          "pid": 30792,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.9368843Z",
+          "type": "utility",
+          "privateBytes": 8212480,
+          "rssBytes": 18702336
+        },
+        {
+          "pid": 33092,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.9791596Z",
+          "type": "renderer",
+          "privateBytes": 43732992,
+          "rssBytes": 85295104
+        },
+        {
+          "pid": 37996,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.5883724Z",
+          "type": "unknown",
+          "privateBytes": 2641920,
+          "rssBytes": 10379264
+        },
+        {
+          "pid": 40004,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:42:00.6570107Z",
+          "type": "renderer",
+          "privateBytes": 16396288,
+          "rssBytes": 31948800
+        },
+        {
+          "pid": 42332,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.8826554Z",
+          "type": "utility",
+          "privateBytes": 13291520,
+          "rssBytes": 40656896
+        },
+        {
+          "pid": 43576,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:40.0122909Z",
+          "type": "renderer",
+          "privateBytes": 50765824,
+          "rssBytes": 106078208
+        }
+      ]
+    },
+    {
+      "phase": "conversion-vp8-1",
+      "validSamples": 5,
+      "privateBytes": 534827008,
+      "incrementalMiB": 289.40234375,
+      "processes": [
+        {
+          "pid": 11944,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.8739136Z",
+          "type": "gpu-process",
+          "privateBytes": 248389632,
+          "rssBytes": 244346880
+        },
+        {
+          "pid": 15524,
+          "parentPid": 42756,
+          "createdAt": "2026-10-21T15:41:39.5325386Z",
+          "type": "browser",
+          "privateBytes": 47759360,
+          "rssBytes": 142077952
+        },
+        {
+          "pid": 30792,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.9368843Z",
+          "type": "utility",
+          "privateBytes": 8212480,
+          "rssBytes": 18702336
+        },
+        {
+          "pid": 33092,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.9791596Z",
+          "type": "renderer",
+          "privateBytes": 43732992,
+          "rssBytes": 85295104
+        },
+        {
+          "pid": 37996,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.5883724Z",
+          "type": "unknown",
+          "privateBytes": 2641920,
+          "rssBytes": 10379264
+        },
+        {
+          "pid": 40004,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:42:00.6570107Z",
+          "type": "renderer",
+          "privateBytes": 16396288,
+          "rssBytes": 31948800
+        },
+        {
+          "pid": 42332,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.8826554Z",
+          "type": "utility",
+          "privateBytes": 13344768,
+          "rssBytes": 40763392
+        },
+        {
+          "pid": 43576,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:40.0122909Z",
+          "type": "renderer",
+          "privateBytes": 154349568,
+          "rssBytes": 174465024
+        }
+      ]
+    },
+    {
+      "phase": "recovery",
+      "validSamples": 6,
+      "privateBytes": 443510784,
+      "incrementalMiB": 202.31640625,
+      "processes": [
+        {
+          "pid": 11944,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.8739136Z",
+          "type": "gpu-process",
+          "privateBytes": 249937920,
+          "rssBytes": 245788672
+        },
+        {
+          "pid": 15524,
+          "parentPid": 42756,
+          "createdAt": "2026-10-21T15:41:39.5325386Z",
+          "type": "browser",
+          "privateBytes": 47869952,
+          "rssBytes": 142417920
+        },
+        {
+          "pid": 30792,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.9368843Z",
+          "type": "utility",
+          "privateBytes": 8212480,
+          "rssBytes": 18702336
+        },
+        {
+          "pid": 33092,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.9791596Z",
+          "type": "renderer",
+          "privateBytes": 43732992,
+          "rssBytes": 85295104
+        },
+        {
+          "pid": 37996,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.5883724Z",
+          "type": "unknown",
+          "privateBytes": 2641920,
+          "rssBytes": 10379264
+        },
+        {
+          "pid": 40004,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:42:00.6570107Z",
+          "type": "renderer",
+          "privateBytes": 16396288,
+          "rssBytes": 32063488
+        },
+        {
+          "pid": 42332,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.8826554Z",
+          "type": "utility",
+          "privateBytes": 13381632,
+          "rssBytes": 40820736
+        },
+        {
+          "pid": 43576,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:40.0122909Z",
+          "type": "renderer",
+          "privateBytes": 61337600,
+          "rssBytes": 121577472
+        }
+      ]
+    },
+    {
+      "phase": "independent-validation",
+      "validSamples": 46,
+      "privateBytes": 459100160,
+      "incrementalMiB": 217.18359375,
+      "processes": [
+        {
+          "pid": 11944,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.8739136Z",
+          "type": "gpu-process",
+          "privateBytes": 248692736,
+          "rssBytes": 244441088
+        },
+        {
+          "pid": 15524,
+          "parentPid": 42756,
+          "createdAt": "2026-10-21T15:41:39.5325386Z",
+          "type": "browser",
+          "privateBytes": 47239168,
+          "rssBytes": 142127104
+        },
+        {
+          "pid": 30792,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.9368843Z",
+          "type": "utility",
+          "privateBytes": 8212480,
+          "rssBytes": 18702336
+        },
+        {
+          "pid": 33092,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.9791596Z",
+          "type": "renderer",
+          "privateBytes": 43732992,
+          "rssBytes": 85295104
+        },
+        {
+          "pid": 37996,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.5883724Z",
+          "type": "unknown",
+          "privateBytes": 2641920,
+          "rssBytes": 10379264
+        },
+        {
+          "pid": 40004,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:42:00.6570107Z",
+          "type": "renderer",
+          "privateBytes": 16396288,
+          "rssBytes": 32063488
+        },
+        {
+          "pid": 42332,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:39.8826554Z",
+          "type": "utility",
+          "privateBytes": 13398016,
+          "rssBytes": 40837120
+        },
+        {
+          "pid": 43576,
+          "parentPid": 15524,
+          "createdAt": "2026-10-21T15:41:40.0122909Z",
+          "type": "renderer",
+          "privateBytes": 78786560,
+          "rssBytes": 138108928
+        }
+      ]
+    }
+  ],
+  "unavailableSamples": 1,
+  "checkpointCount": 5,
+  "realms": [
+    {
+      "label": "stable-blank",
+      "startedAt": "2026-10-21T15:41:59.719Z",
+      "completedAt": "2026-10-21T15:42:00.594Z",
+      "sample": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "06CA1438DA8C28A94A44C90C32072143",
+            "type": "page",
+            "url": "about:blank",
+            "usedJSHeapBytes": 700328,
+            "allocatedJSHeapBytes": 1310720,
+            "embedderHeapUsedBytes": 1384568,
+            "backingStorageBytes": 98,
+            "error": null
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "label": "loaded-ready",
+      "startedAt": "2026-10-21T15:42:00.979Z",
+      "completedAt": "2026-10-21T15:42:01.669Z",
+      "sample": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "98880DC969C4ADED3226ADE8C1469133",
+            "type": "worker",
+            "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+            "usedJSHeapBytes": 508868,
+            "allocatedJSHeapBytes": 1572864,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 362580,
+            "error": null
+          },
+          {
+            "targetId": "06CA1438DA8C28A94A44C90C32072143",
+            "type": "page",
+            "url": "http://127.0.0.1:3231/?test=1",
+            "usedJSHeapBytes": 3127288,
+            "allocatedJSHeapBytes": 4775936,
+            "embedderHeapUsedBytes": 3418304,
+            "backingStorageBytes": 614987,
+            "error": null
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "label": "before-conversion-1",
+      "startedAt": "2026-10-21T15:42:01.778Z",
+      "completedAt": "2026-10-21T15:42:02.345Z",
+      "sample": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "98880DC969C4ADED3226ADE8C1469133",
+            "type": "worker",
+            "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+            "usedJSHeapBytes": 508868,
+            "allocatedJSHeapBytes": 1572864,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 362580,
+            "error": null
+          },
+          {
+            "targetId": "06CA1438DA8C28A94A44C90C32072143",
+            "type": "page",
+            "url": "http://127.0.0.1:3231/?test=1",
+            "usedJSHeapBytes": 4280280,
+            "allocatedJSHeapBytes": 6930432,
+            "embedderHeapUsedBytes": 3927592,
+            "backingStorageBytes": 683695,
+            "error": null
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "label": "after-conversion-1",
+      "startedAt": "2026-10-21T15:42:02.818Z",
+      "completedAt": "2026-10-21T15:42:03.537Z",
+      "sample": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "06CA1438DA8C28A94A44C90C32072143",
+            "type": "page",
+            "url": "http://127.0.0.1:3231/?test=1",
+            "usedJSHeapBytes": 5349968,
+            "allocatedJSHeapBytes": 8142848,
+            "embedderHeapUsedBytes": 5920808,
+            "backingStorageBytes": 684519,
+            "error": null
+          }
+        ]
+      },
+      "error": null
+    },
+    {
+      "label": "after-validation-1",
+      "startedAt": "2026-10-21T15:42:07.979Z",
+      "completedAt": "2026-10-21T15:42:08.538Z",
+      "sample": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "72F0A1D164EE106F57D33AA9ABB4C735",
+            "type": "worker",
+            "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+            "usedJSHeapBytes": 508868,
+            "allocatedJSHeapBytes": 1572864,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 362580,
+            "error": null
+          },
+          {
+            "targetId": "06CA1438DA8C28A94A44C90C32072143",
+            "type": "page",
+            "url": "http://127.0.0.1:3231/?test=1",
+            "usedJSHeapBytes": 7439484,
+            "allocatedJSHeapBytes": 17473536,
+            "embedderHeapUsedBytes": 5920808,
+            "backingStorageBytes": 750059,
+            "error": null
+          }
+        ]
+      },
+      "error": null
+    }
+  ],
+  "postMeasurementDump": {
+    "status": "captured-live-light-memory-diagnostic",
+    "archive": {
+      "path": "H:\\Github Repositories\\fileconverter\\output\\playwright\\vpx-decoder-qualification-2026-10-21T15-41-25.261Z-post-measurement-memory.json.gz",
+      "bytes": 70321,
+      "sha256": "baafaacba14db1028d771d6d4d211ec1ff809673298a5996f7518fb8a635d352",
+      "restoredBytes": 972063,
+      "restoredSha256": "734ce7d48dca62ddcf464cdebaf80601c673455cee81d716fb77e52a5b98aa6e"
+    },
+    "perturbsMemory": true,
+    "acceptanceMetric": false
+  },
+  "report": {
+    "path": "output/playwright/vpx-decoder-qualification-2026-10-21T15-41-25.261Z.json",
+    "bytes": 1351479,
+    "sha256": "209aab87d51362867ae749491edda38e0de062fd4e98f50890099af16638bedd"
+  },
+  "pins": true,
+  "sourcePinCount": 27,
+  "cleanup": true,
+  "server": {
+    "identity": {
+      "pid": 31880,
+      "parentPid": 42756,
+      "createdAt": "2026-10-21T15:41:37.5355930Z"
+    },
+    "ownedRootAbsent": true
+  },
+  "forbidden": [],
+  "conclusions": [
+    "Actual conversion peak534827008B over231366656B blank fails289.40234375MiB; independent validation is not the only cause",
+    "GPU process rises from82.84MiB blank to224.72MiB loaded-phase peak and236.88MiB conversion peak; initiating API not yet proven",
+    "Bounded realm checkpoints are not exact peaks or replacement metrics",
+    "Different fixture/session/job selection from earlier389MiB; not an optimization comparison"
+  ],
+  "next": "Isolate capability probes on inert same-origin page before changing production allocation policy",
+  "memoryAcceptance": false,
+  "publicAcceptance": false,
+  "largeFileCoverage": false,
+  "fullGoalComplete": false
+}
