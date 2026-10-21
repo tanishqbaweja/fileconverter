@@ -2,6 +2,8 @@
   "schemaVersion": 1,
   "scope": "changed isolated private VPX AAC edit-list build; not browser/memory/public acceptance",
   "statusAtInspection": "in_progress",
+  "terminalConclusion": "success",
+  "terminalProof": "evidence/2026-10-21-vpx-exact-aac-native-build.json",
   "run": 39591655669,
   "job": 119193842017,
   "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39591655669",

@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Exact AAC native build succeeds and actual bytes independently audit
+
+39591655669/b59180ed SUCCESS6m23s. Actual43source/16artifact/C/MOV/config/12i32 ABI/
+shared32–96MiB audit PASS. Wasm4652041B/SHA520445ef, unchanged encoder/settings/I/O/
+threads/heap limits; original candidate remains separate. No browser or public
+claim yet. Next original VP8/VP9 defaults plus original multi-track source through
+production coordinator/worker. Added source-vs-output video timestamp checks at
+unchanged1ms: regular intervals alone miss a constant shift. TS/focused lint PASS.
+`evidence/2026-10-21-vpx-exact-aac-native-build.json`.
+
 ## 2026-10-21 - Changed exact-AAC native build live; zero-start fidelity checks prepared
 
 Actual39591655669/job119193842017 at privateb59180ed is compiling the material

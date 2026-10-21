@@ -256,7 +256,10 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
       `[0:v:0]${selection}settb=1/1,setpts=N[ref];[1:v:0]settb=1/1,setpts=N[out];[ref][out]ssim`, "-an", "-f", "null", "-"]);
     const ssim = Number(/All:([0-9.]+)/.exec(comparison.stderr)?.[1]); expect(ssim).toBeGreaterThanOrEqual(0.98);
     const timing = JSON.parse((await native(["-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "json", output], "ffprobe")).stdout) as { frames: Array<{ best_effort_timestamp_time: string }> };
-    rows.push({ codec, multi, validationBeforeTimingAssertion: { fullDecode: true, frames, fps, ssim, audioPacketsIdentical: true, frameTimes: timing.frames } });
+    const sourceTiming = JSON.parse((await native(["-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "json", source], "ffprobe")).stdout) as { frames: Array<{ best_effort_timestamp_time: string }> };
+    expect(sourceTiming.frames.length).toBe(48);
+    rows.push({ codec, multi, validationBeforeTimingAssertion: { fullDecode: true, frames, fps, ssim, audioPacketsIdentical: true,
+      sourceFrameTimes: sourceTiming.frames, frameTimes: timing.frames } });
     expect(timing.frames.length).toBe(frames);
     for (let i = 1; i < frames; i++) expect(Math.abs(Number(timing.frames[i].best_effort_timestamp_time) - Number(timing.frames[i - 1].best_effort_timestamp_time) - 1 / fps)).toBeLessThan(0.001);
     const decodedAudioHash = async (file: string) => (await native(["-v", "error", "-i", file, "-map", "0:a", "-c:a", "pcm_s16le", "-f", "streamhash", "-hash", "sha256", "pipe:1"])).stdout.trim();
@@ -270,6 +273,10 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
     }
     // Keep the original chapter guard. Audio checks precede it so a chapter
     // failure no longer hides whether both original AAC tracks are preserved.
+    // Comparing intervals alone misses a constant shift of the entire video.
+    for (let i = 0; i < (options ? 1 : frames); i++)
+      expect(Math.abs(Number(timing.frames[i].best_effort_timestamp_time) - Number(sourceTiming.frames[i].best_effort_timestamp_time)),
+        "Preserve source video timeline, not just regular output intervals").toBeLessThan(0.001);
     if (multi) for (const field of ["start_time", "end_time"] as const)
       expect(Math.abs(Number(converted.chapters[0][field]) - Number(original.chapters[0][field]))).toBeLessThan(0.002);
     rows.push({ codec, options: options ?? "automatic", independentValidation: { fullDecode: true, frames, fps, ssim, audioPacketsIdentical: true,

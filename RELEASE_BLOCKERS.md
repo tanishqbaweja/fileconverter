@@ -1,5 +1,11 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 actual exact-AAC native build39591655669/b59180ed SUCCESS.43source/16artifact
+and actual C/MOV/config/12i32/shared32–96MiB audit PASS; Wasm4652041B/SHA520445ef.
+Production-browser content/trim/timestamps/chapters and250MiB/scaling still pending.
+Source-to-output video timestamps now required too, not only regular intervals.
+No public or full-scope closure. `evidence/2026-10-21-vpx-exact-aac-native-build.json`.
+
 B03 zero-start AAC correction now implemented as a separately audited private
 candidate, reusing exact MOV edit-list priming patch without moving zero/positive
 packet clocks.12focused/TS/lint/Bash syntax pass; original candidate audit remains

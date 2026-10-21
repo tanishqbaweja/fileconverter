@@ -1,5 +1,17 @@
 # Remaining work audit
 
+## 2026-10-21 - Changed AAC native build terminal SUCCESS; real browser qualification next
+
+39591655669/b59180ed SUCCESS6m23s;43source/16artifact actual C/MOV/config/ABI/heap
+audit PASS. Wasm4652041B/SHA520445ef, shared32–96MiB unchanged. No browser/content/
+chapter/memory acceptance from compilation. Reuse this artifact, not another build.
+Next original VP8/VP9 defaults and original failing two-track input. Validator now
+also compares actual source/output video timestamps at1ms, not only intervals;
+original2ms chapter, complete raw PCM/count/trim/packet identity guards retained.
+TS/focused lint PASS. Small static candidate retained explicitly; no converted media
+downloaded. Full54/B02-B09 remain OPEN. Exact provenance/hash/ownership/next:
+`evidence/2026-10-21-vpx-exact-aac-native-build.json`.
+
 ## 2026-10-21 - Actual changed exact-AAC build running; independent zero-start comparison ready
 
 39591655669/job119193842017 atb59180ed is live; resume exact handle, do not replace
