@@ -15,6 +15,35 @@ function skipEntry(packet, rate) {
   if (!entries.length) return null;
   return { skip: integer(entries[0].skip_samples, "skip_samples", rate), tail: integer(entries[0].discard_padding, "discard_padding", rate) };
 }
+export function withObservedPrerollDuration(probe, rawProbe) {
+  // A fully trimmed AAC preroll packet may lack a presentation duration in
+  // FFprobe. Recover it ONLY from an independent unedited read of the SAME
+  // packet sequence, never infer1024/rate or remove a known duration check.
+  for (const value of [probe, rawProbe]) {
+    assert.equal(value.format.format_name, "mov,mp4,m4a,3gp,3g2,mj2");
+    assert.equal(value.streams.length, 1); assert.equal(value.streams[0].codec_name, "aac");
+    assert.equal(value.streams[0].profile, "LC");
+    assert.ok(value.packets.length >= 2 && value.packets.length <= 512);
+  }
+  assert.equal(probe.streams[0].sample_rate, rawProbe.streams[0].sample_rate);
+  assert.equal(probe.streams[0].channels, rawProbe.streams[0].channels);
+  const first = probe.packets[0], rawFirst = rawProbe.packets[0], rate = Number(probe.streams[0].sample_rate);
+  assert.ok(first.duration_time == null && Number(first.pts_time) < 0);
+  assert.equal(skipEntry(first, rate)?.skip, 1024); assert.equal(skipEntry(first, rate)?.tail, 0);
+  assert.equal(probe.packets.length, rawProbe.packets.length);
+  for (let index = 0; index < probe.packets.length; index++) {
+    assert.match(probe.packets[index].data_hash, /^SHA256:[a-f0-9]{64}$/);
+    assert.equal(rawProbe.packets[index].data_hash, probe.packets[index].data_hash, "Raw duration probe changed packet content/order");
+  }
+  assert.ok(typeof rawFirst.duration_time === "string" && rawFirst.duration_time.length > 0);
+  const duration = Number(rawFirst.duration_time);
+  assert.ok(Number.isFinite(duration) && duration > 0 && Math.abs(duration - 1024 / rate) <= 1 / rate,
+    "Observed raw preroll duration unavailable or inconsistent with this AAC-LC fixture");
+  return { probe: { ...probe, packets: [{ ...first, duration_time: rawFirst.duration_time }, ...probe.packets.slice(1)] },
+    evidence: { originalPresentationDurationSeconds: null, observedRawDurationSeconds: duration,
+      packetSha256: first.data_hash, identicalPacketCount: probe.packets.length,
+      provenance: "same-file-ignore-editlist-native-packet-duration-not-an-inferred-value" } };
+}
 export function readSmallAacTrim(probe, role) {
   assert.ok(role === "source" || role === "output");
   assert.equal(probe.format.format_name, role === "source" ? "matroska,webm" : "mov,mp4,m4a,3gp,3g2,mj2");
@@ -118,17 +147,25 @@ async function manualPcm(file, metadata, output, env, audioOrdinal) {
 export async function validateSmallCopiedAac(sourceFile, outputFile, { env = process.env, audioOrdinal = 0 } = {}) {
   integer(audioOrdinal, "audioOrdinal", 7);
   const source = await checkedFile(sourceFile), output = await checkedFile(outputFile);
-  const probe = async file => JSON.parse((await promisify(execFile)("ffprobe", ["-v", "error", "-select_streams", "a:" + audioOrdinal,
+  const probe = async (file, raw = false) => JSON.parse((await promisify(execFile)("ffprobe", ["-v", "error", ...(raw ? ["-ignore_editlist", "1"] : []), "-select_streams", "a:" + audioOrdinal,
     "-show_streams", "-show_packets", "-show_format", "-show_data_hash", "sha256", "-of", "json", file],
   { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 512 * 1024 })).stdout);
-  const sourceProbe = await probe(source), outputProbe = await probe(output);
+  const sourceProbe = await probe(source), originalOutputProbe = await probe(output);
+  let outputProbe = originalOutputProbe, rawOutputProbe, durationEvidence = null, beforePcm, afterPcm;
   let stage = "declared-trim-metadata";
   try {
+    if (sourceProbe.packets?.[0]?.duration_time != null && originalOutputProbe.packets?.[0]?.duration_time == null) {
+      stage = "observed-raw-preroll-duration";
+      rawOutputProbe = await probe(output, true);
+      const observed = withObservedPrerollDuration(originalOutputProbe, rawOutputProbe);
+      outputProbe = observed.probe; durationEvidence = observed.evidence;
+    }
+    stage = "declared-trim-metadata";
     const before = readSmallAacTrim(sourceProbe, "source"), after = readSmallAacTrim(outputProbe, "output");
     stage = "manual-raw-PCM";
-    const beforePcm = await manualPcm(source, before, false, env, audioOrdinal), afterPcm = await manualPcm(output, after, true, env, audioOrdinal);
+    beforePcm = await manualPcm(source, before, false, env, audioOrdinal); afterPcm = await manualPcm(output, after, true, env, audioOrdinal);
     stage = "exact-content-trim-and-clock-comparison";
-    return { ...validateSmallAacEvidence(before, after, beforePcm, afterPcm), audioOrdinal, sourcePcm: beforePcm, outputPcm: afterPcm,
+    return { ...validateSmallAacEvidence(before, after, beforePcm, afterPcm), audioOrdinal, sourcePcm: beforePcm, outputPcm: afterPcm, durationEvidence,
       sourceTrim: { ...before, semanticPackets: undefined }, outputTrim: { ...after, semanticPackets: undefined } };
   } catch (error) {
     // Preserve bounded metadata when an assertion fails; no need to repeat a
@@ -140,7 +177,8 @@ export async function validateSmallCopiedAac(sourceFile, outputFile, { env = pro
         pts_time: packet.pts_time, dts_time: packet.dts_time, duration_time: packet.duration_time, data_hash: packet.data_hash,
         side_data_list: (packet.side_data_list ?? []).slice(0, 4).map(side => ({ side_data_type: side.side_data_type,
           skip_samples: side.skip_samples, discard_padding: side.discard_padding })) })) });
-    Object.defineProperty(error, "aacFixtureEvidence", { value: { stage, audioOrdinal, source: edges(sourceProbe), output: edges(outputProbe) } });
+    Object.defineProperty(error, "aacFixtureEvidence", { value: { stage, audioOrdinal, source: edges(sourceProbe), output: edges(originalOutputProbe),
+      rawOutput: rawOutputProbe ? edges(rawOutputProbe) : null, sourcePcm: beforePcm ?? null, outputPcm: afterPcm ?? null, durationEvidence } });
     throw error;
   }
 }

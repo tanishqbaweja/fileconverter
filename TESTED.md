@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Zero-start AAC exact fidelity now browser-proved; second track duration remains unavailable
+
+39593795332/f8600a82 terminal FAIL, but previously refused zero-start track now
+passes95packet hashes, complete97280raw samples/hash09950a34, exact1024trim/0tail,
+audible96256/hash74114f4f and every clock/origin within1ms. Second track stops on
+FFprobe's absent first presentation duration; missing is not0 or a fidelity pass.
+Bounded source/output edges retained. Independent raw ignore-editlist duration
+probe implemented: only actually observed duration on identical packet sequence
+can fill the fully trimmed first packet; original timing helper unchanged.16focused/
+TS/lint PASS; real raw-duration execution pending. No unchanged build/default repeat.
+Video.021→0 and chapter.5→0 still fail.22source pins/cleanup/server absence pass;
+only49.6KB JSON retained. `evidence/2026-10-21-vpx-zero-start-aac-passed-duration-unavailable.json`.
+
 ## 2026-10-21 - Changed AAC core: two default fidelity cases PASS; original multi-track now completes but is not accepted
 
 39592729950/833d1515 terminal FAIL2PASS/1FAIL23.5s. Both defaults full-decode48frames,

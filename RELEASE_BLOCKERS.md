@@ -1,5 +1,12 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 zero-start AAC track now genuinely passes exact95packet hashes/97280raw samples/
+1024trim/96256audible samples/1ms clocks in39593795332. Whole case FAILS because
+AAC2 first packet duration is unavailable. Independent raw packet duration probe
+implemented without weakening original timing helper; actual execution pending.
+Next combine native video origin and chapter-track initialization corrections.
+Memory/full54 remain OPEN. `evidence/2026-10-21-vpx-zero-start-aac-passed-duration-unavailable.json`.
+
 B03 new-core browser39592729950 FAIL2PASS/1FAIL23.5s: both defaults pass complete
 video/AAC sample/trim/timestamp checks; original two-track native refusal resolved
 and actual output completes/full-decodes. All-track PCM acceptance stops at output

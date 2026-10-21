@@ -1,5 +1,22 @@
 # Remaining work audit
 
+## 2026-10-21 - Original zero-start audio fully passes exact content/trim/clocks; remaining native timeline work identified
+
+39593795332/f8600a82 FAIL: zero-start AAC1 now independently passes all95packet
+hashes/raw97280samples/hash09950a34/exact1024skip/0tail/audible96256/hash74114f4f,
+with original1ms clock and audible-origin guards. AAC2 has95packets and observed
+1024skip but first output duration absent in normal FFprobe; full acceptance stops.
+Do not skip the duration check. Independent same-file ignore-editlist packet probe
+now supplies a duration ONLY if actually observed and every packet hash/count/order
+matches; fallback limited to the fully trimmed first negative1024skip AAC-LC packet.
+No guessed/zero duration. Raw digest evidence retained on future assertions.
+16focused/TS/lint pass; browser exercise pending. Reuse existing good defaults and
+native AAC fix. Next material native change should address source video.021→0 and
+extra chapter-track missing NOPTS initialization/.5→0 together, then validate that
+changed core with new raw-duration evidence. No need for another unchanged build.
+Cleanup/server absence/22source pins pass; only49.6KB JSON retained. Full54/B02-B09
+remain OPEN. `evidence/2026-10-21-vpx-zero-start-aac-passed-duration-unavailable.json`.
+
 ## 2026-10-21 - Actual new-core browser evidence: native refusal fixed, two independent fidelity defaults pass
 
 39592729950/833d1515 FAIL2PASS/1FAIL23.5s. VP8/VP9 defaults pass full video decode,

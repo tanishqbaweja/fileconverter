@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { readSmallAacTrim, validateSmallAacEvidence, validateSmallCopiedAac } from "../scripts/lib/small-aac-copy-fidelity.mjs";
+import { readSmallAacTrim, validateSmallAacEvidence, validateSmallCopiedAac, withObservedPrerollDuration } from "../scripts/lib/small-aac-copy-fidelity.mjs";
 const hash = "a".repeat(64);
 function probe(output = false, packetTrim = false) {
   return { format: { format_name: output ? "mov,mp4,m4a,3gp,3g2,mj2" : "matroska,webm" },
@@ -73,4 +73,21 @@ test("an observed MOV trim with a submillisecond negative packet retains the zer
   assert.throws(() => validateSmallAacEvidence(source, readSmallAacTrim(shifted, "output"), pcm(), pcm()));
   const lostTrim = structuredClone(after); lostTrim.packets[0].side_data_list[0].skip_samples = 16;
   assert.throws(() => validateSmallAacEvidence(source, readSmallAacTrim(lostTrim, "output"), pcm(), pcm()), /Leading trim changed/);
+});
+test("a missing preroll duration is supplied only by an observed unedited duration on an identical packet sequence", () => {
+  const original = probe(true, true), raw = structuredClone(original);
+  raw.packets[0].duration_time = "0.021333";
+  const observed = withObservedPrerollDuration(original, raw);
+  assert.equal(observed.probe.packets[0].duration_time, "0.021333");
+  assert.equal(observed.evidence.originalPresentationDurationSeconds, null);
+  assert.equal(original.packets[0].duration_time, undefined);
+  for (const mutate of [p => { delete p.packets[0].duration_time; }, p => { p.packets[0].duration_time = "0"; },
+    p => { p.packets[0].duration_time = "0.020"; }, p => { p.packets[1].data_hash = "SHA256:" + "c".repeat(64); },
+    p => { p.packets.pop(); }]) {
+    const changed = structuredClone(raw); mutate(changed); assert.throws(() => withObservedPrerollDuration(original, changed));
+  }
+  const noTrim = structuredClone(original); noTrim.packets[0].side_data_list[0].skip_samples = 16;
+  assert.throws(() => withObservedPrerollDuration(noTrim, raw));
+  const alreadyKnown = structuredClone(original); alreadyKnown.packets[0].duration_time = "0.021333";
+  assert.throws(() => withObservedPrerollDuration(alreadyKnown, raw));
 });
