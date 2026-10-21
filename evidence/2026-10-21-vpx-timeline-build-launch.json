@@ -2,6 +2,8 @@
   "schemaVersion": 1,
   "scope": "material private source-video/chapter timeline build; not browser or memory acceptance",
   "statusAtInspection": "in_progress",
+  "terminalConclusion": "success",
+  "terminalProof": "evidence/2026-10-21-vpx-timeline-native-build.json",
   "inspectedAt": "2026-10-21T14:44:00Z",
   "run": 39618541054,
   "job": 119285558135,

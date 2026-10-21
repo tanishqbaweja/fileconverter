@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Combined video/chapter timeline Wasm genuinely compiled and independently audited
+
+39618541054/d9830fc7 SUCCESS; actual43source/16artifact/C/MOV/config/12i32/shared
+32–96MiB audit PASS. Wasm4652707B/SHAe89d9aa9. Explicit video timing timebase60000
+and chapter sentinel init compiled; quality/bitrate/GOP/threads/I/O unchanged.
+Not browser/content/memory/public acceptance. Next nine original correctness/
+controls/multi-track/terminal cases on same bytes, no rebuild. Exact scope/identity:
+`evidence/2026-10-21-vpx-timeline-native-build.json`.
+
 ## 2026-10-21 - Combined timeline build live; per-job memory attribution improved without changing the gate
 
 Actual39618541054/job119285558135 atd9830fc7 is compiling the material C/MOV

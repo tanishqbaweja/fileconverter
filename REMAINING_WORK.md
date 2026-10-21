@@ -1,5 +1,17 @@
 # Remaining work audit
 
+## 2026-10-21 - Actual combined timeline native build SUCCESS; nine real small cases next
+
+39618541054/d9830fc7 SUCCESS. Actual wrapper/MOV/config/12i32/shared32–96MiB and
+43source/16artifact audit PASS; Wasm4652707B/SHAe89d9aa9. Video timestamp clock60000
+and chapter NOPTS init compiled with precise AAC trim retained. Encoder timing
+change declared; quality/bitrate/GOP/threads/I/O/heap unchanged. Compilation does
+not prove the fix. Run nine original private correctness/control/multi-track/
+terminal cases and independent raw-duration/content/clock/chapter validators,
+excluding unavailable hosted Windows memory test. No identical native rebuild.
+Full54/B02-B09/memory/scaling/public integration OPEN. Exact static tool ownership:
+`evidence/2026-10-21-vpx-timeline-native-build.json`.
+
 ## 2026-10-21 - Changed timeline core compiling; historical memory remains a real conversion failure
 
 39618541054/job119285558135 atd9830fc7 is live (14:44UTC inspection), material

@@ -1,5 +1,10 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 combined video/chapter timeline native39618541054/d9830fc7 SUCCESS; actual
+43source/16artifact/C/MOV/config/ABI/32–96MiB audit PASS. Wasm4652707B/SHAe89d9aa9.
+Real browser/quality/timestamps/chapters/raw-duration/recovery still pending;
+memory/full54 remain OPEN. `evidence/2026-10-21-vpx-timeline-native-build.json`.
+
 B03 joint source-video/chapter-track timing correction implemented as explicit
 private timeline variant. Native PTS preservation and extra-track NOPTS init,
 declared MPEG4 timebase1/60000, unchanged quality/threads/I/O/heap.24focused/lint/
