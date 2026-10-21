@@ -1,5 +1,13 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 new-core browser39592729950 FAIL2PASS/1FAIL23.5s: both defaults pass complete
+video/AAC sample/trim/timestamp checks; original two-track native refusal resolved
+and actual output completes/full-decodes. All-track PCM acceptance stops at output
+MOV-origin validator assumption, separately corrected without weakening exact
+content/trim/clock guards; focused rerun pending. Actual video.021→0 and chapter
+.5→0 remain native defects; chapter edit list lacks500ms gap. B03/B06/full54 stay
+OPEN. `evidence/2026-10-21-vpx-exact-aac-browser-result.json`.
+
 B03 actual exact-AAC native build39591655669/b59180ed SUCCESS.43source/16artifact
 and actual C/MOV/config/12i32/shared32–96MiB audit PASS; Wasm4652041B/SHA520445ef.
 Production-browser content/trim/timestamps/chapters and250MiB/scaling still pending.

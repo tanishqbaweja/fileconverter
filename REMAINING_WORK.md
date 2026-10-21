@@ -1,5 +1,24 @@
 # Remaining work audit
 
+## 2026-10-21 - Actual new-core browser evidence: native refusal fixed, two independent fidelity defaults pass
+
+39592729950/833d1515 FAIL2PASS/1FAIL23.5s. VP8/VP9 defaults pass full video decode,
+SSIM>=.98, original video clocks1ms and complete raw AAC samples/trim/hashes. Same
+failing two-track source now genuinely converts559351B, full-decodes and preserves
+both encoded AAC hashes/languages, but all-track raw PCM comparison stops at a
+validator output-origin assumption. Output MOV may round a zero-start packet
+slightly negative while retaining1024sample edit-list trim and nonzero audible
+origin. Output-only correction keeps observed trim/all sample/packet/1ms clock/
+audible-origin guards; bounded failed metadata edges now retained to avoid repeats.
+12focused/TS/lint pass; rerun only the original multi-track case, no native rebuild.
+The real report also independently confirms two remaining native defects: source
+video firstPTS.021→output0; chapter.5→0 with no500ms gap in chapter-track edit list.
+Source initialization shows extra chapter track lacks regular-track NOPTS timing
+initialization. Diagnose/implement these together after exact audio result; do not
+remove assertions/change input.22source pins/cleanup/server absence pass, no media
+downloaded. Full54/B02-B09 unchanged. Exact proof:
+`evidence/2026-10-21-vpx-exact-aac-browser-result.json`.
+
 ## 2026-10-21 - Changed AAC native build terminal SUCCESS; real browser qualification next
 
 39591655669/b59180ed SUCCESS6m23s;43source/16artifact actual C/MOV/config/ABI/heap

@@ -267,9 +267,15 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
     rows.push({ codec, multi, rawDefaultDecoderComparison: { source: sourceDecodedAudio, output: outputDecodedAudio,
       identical: sourceDecodedAudio === outputDecodedAudio, note: "Retained diagnostic; old Matroska decoder may leave declared priming in these default samples." } });
     for (let audioOrdinal = 0; audioOrdinal < original.streams.filter(stream => stream.codec_type === "audio").length; audioOrdinal++) {
-      const exactAac = await validateSmallCopiedAac(source, output, { env, audioOrdinal });
-      rows.push({ codec, multi, exactAacSampleAndTrimValidation: exactAac });
-      expect(exactAac.status, "Every track requires exact PCM/packet bytes, declared trim and1ms clocks").toBe("passed-small-AAC-LC-fixture");
+      try {
+        const exactAac = await validateSmallCopiedAac(source, output, { env, audioOrdinal });
+        rows.push({ codec, multi, exactAacSampleAndTrimValidation: exactAac });
+        expect(exactAac.status, "Every track requires exact PCM/packet bytes, declared trim and1ms clocks").toBe("passed-small-AAC-LC-fixture");
+      } catch (error) {
+        rows.push({ codec, multi, audioOrdinal, aacValidationFailure: String(error).slice(0, 1024),
+          aacFixtureEvidence: (error as { aacFixtureEvidence?: unknown }).aacFixtureEvidence ?? null });
+        throw error;
+      }
     }
     // Keep the original chapter guard. Audio checks precede it so a chapter
     // failure no longer hides whether both original AAC tracks are preserved.

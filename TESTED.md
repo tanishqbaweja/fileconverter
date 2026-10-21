@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Changed AAC core: two default fidelity cases PASS; original multi-track now completes but is not accepted
+
+39592729950/833d1515 terminal FAIL2PASS/1FAIL23.5s. Both defaults full-decode48frames,
+SSIM.993273/.996114, source-vs-output video timestamps1ms,95AAC packet hashes,
+raw97280/hash09950a34 and exact1024trim/audible96256/hash74114f4f PASS. Original
+123559B/SHA44a80ddb two-track conversion now completes559351B; full decode/both
+encoded AAC hashes/languages pass. Exact audio validator stops at a source-zero-
+origin assumption applied to output MOV trim. All-track raw PCM proof NOT reached.
+New output-only assumption correction retains actual Skip Samples/1ms clocks/raw
+PCM/trim/audible-origin checks;12focused/TS/lint pass, multi-only rerun pending.
+Actual diagnostics also prove video start.021→0 and chapter start.5→0 remain wrong;
+chapter track edit list lacks500ms gap. No public/memory/speed claim.22source pins,
+cleanup/server absence/zero forbidden requests pass; only90KB report retained.
+`evidence/2026-10-21-vpx-exact-aac-browser-result.json`.
+
 ## 2026-10-21 - Exact AAC native build succeeds and actual bytes independently audit
 
 39591655669/b59180ed SUCCESS6m23s. Actual43source/16artifact/C/MOV/config/12i32 ABI/

@@ -39,7 +39,11 @@ export function readSmallAacTrim(probe, role) {
     assert.ok(negativePreroll || observedZeroStart, "Header priming needs corroborated negative preroll or observed zero start");
     leading = header; headerFallbackUsed = true;
   }
-  if (leading > 0 && firstPts < 0)
+  // MOV's millisecond movie edit list can round a zero-start source packet
+  // slightly negative while retaining an explicit, nonzero audible origin.
+  // Do not impose the source's zero-origin preroll restriction on that output:
+  // its OBSERVED trim, every clock, audible origin and every sample are checked.
+  if (role === "source" && leading > 0 && firstPts < 0)
     assert.ok(Math.abs(firstPts + leading / rate) <= 0.001, "Negative AAC preroll disagrees with declared trim");
   for (let i = 1; i < packets.length; i++) {
     const entry = skipEntry(packets[i], rate); assert.equal(entry?.skip ?? 0, 0, "Interior decoder trim/discontinuity unsupported by this fixture validator");
@@ -117,8 +121,26 @@ export async function validateSmallCopiedAac(sourceFile, outputFile, { env = pro
   const probe = async file => JSON.parse((await promisify(execFile)("ffprobe", ["-v", "error", "-select_streams", "a:" + audioOrdinal,
     "-show_streams", "-show_packets", "-show_format", "-show_data_hash", "sha256", "-of", "json", file],
   { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 512 * 1024 })).stdout);
-  const before = readSmallAacTrim(await probe(source), "source"), after = readSmallAacTrim(await probe(output), "output");
-  const beforePcm = await manualPcm(source, before, false, env, audioOrdinal), afterPcm = await manualPcm(output, after, true, env, audioOrdinal);
-  return { ...validateSmallAacEvidence(before, after, beforePcm, afterPcm), audioOrdinal, sourcePcm: beforePcm, outputPcm: afterPcm,
-    sourceTrim: { ...before, semanticPackets: undefined }, outputTrim: { ...after, semanticPackets: undefined } };
+  const sourceProbe = await probe(source), outputProbe = await probe(output);
+  let stage = "declared-trim-metadata";
+  try {
+    const before = readSmallAacTrim(sourceProbe, "source"), after = readSmallAacTrim(outputProbe, "output");
+    stage = "manual-raw-PCM";
+    const beforePcm = await manualPcm(source, before, false, env, audioOrdinal), afterPcm = await manualPcm(output, after, true, env, audioOrdinal);
+    stage = "exact-content-trim-and-clock-comparison";
+    return { ...validateSmallAacEvidence(before, after, beforePcm, afterPcm), audioOrdinal, sourcePcm: beforePcm, outputPcm: afterPcm,
+      sourceTrim: { ...before, semanticPackets: undefined }, outputTrim: { ...after, semanticPackets: undefined } };
+  } catch (error) {
+    // Preserve bounded metadata when an assertion fails; no need to repeat a
+    // conversion merely to recover its first packet or distinguish input/output.
+    const edges = value => ({ format: value.format?.format_name, packetCount: value.packets?.length,
+      streams: value.streams?.slice(0, 1).map(stream => ({ index: stream.index, initial_padding: stream.initial_padding,
+        sample_rate: stream.sample_rate, channels: stream.channels, start_time: stream.start_time, time_base: stream.time_base })),
+      packets: [...(value.packets?.slice(0, 2) ?? []), ...(value.packets?.slice(-1) ?? [])].map(packet => ({
+        pts_time: packet.pts_time, dts_time: packet.dts_time, duration_time: packet.duration_time, data_hash: packet.data_hash,
+        side_data_list: (packet.side_data_list ?? []).slice(0, 4).map(side => ({ side_data_type: side.side_data_type,
+          skip_samples: side.skip_samples, discard_padding: side.discard_padding })) })) });
+    Object.defineProperty(error, "aacFixtureEvidence", { value: { stage, audioOrdinal, source: edges(sourceProbe), output: edges(outputProbe) } });
+    throw error;
+  }
 }

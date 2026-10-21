@@ -59,3 +59,18 @@ test("the independently recorded zero-start source retains its exact header trim
   const noOutputTrim = structuredClone(after); delete noOutputTrim.packets[0].side_data_list;
   assert.throws(() => validateSmallAacEvidence(source, readSmallAacTrim(noOutputTrim, "output"), pcm(), pcm()), /Leading trim changed/);
 });
+test("an observed MOV trim with a submillisecond negative packet retains the zero-start source's nonzero audible origin", () => {
+  const before = probe(), after = probe(true, true);
+  before.streams[0].start_time = "0.000000";
+  before.packets[0].pts_time = before.packets[0].dts_time = "0";
+  after.packets[0].pts_time = after.packets[0].dts_time = "-0.000333";
+  for (const p of [before, after]) p.packets[1].pts_time = p.packets[1].dts_time = "0.021333";
+  const source = readSmallAacTrim(before, "source"), output = readSmallAacTrim(after, "output");
+  const result = validateSmallAacEvidence(source, output, pcm(), pcm());
+  assert.ok(result.outputAudibleStartSeconds > 0.02);
+  assert.ok(Math.abs(result.outputAudibleStartSeconds - result.sourceAudibleStartSeconds) < 0.001);
+  const shifted = structuredClone(after); shifted.packets[0].pts_time = shifted.packets[0].dts_time = "-0.002";
+  assert.throws(() => validateSmallAacEvidence(source, readSmallAacTrim(shifted, "output"), pcm(), pcm()));
+  const lostTrim = structuredClone(after); lostTrim.packets[0].side_data_list[0].skip_samples = 16;
+  assert.throws(() => validateSmallAacEvidence(source, readSmallAacTrim(lostTrim, "output"), pcm(), pcm()), /Leading trim changed/);
+});
