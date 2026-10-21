@@ -36,6 +36,7 @@ export async function auditVpxDecoderArtifact(input) {
   if (timeline) {
     assert.equal(candidate.encoderQualitySettingsChanged, false); assert.equal(candidate.encoderTimebaseChanged, true);
     assert.equal(candidate.preserveVideoTimeline, true); assert.equal(candidate.chapterTimingInitialized, true);
+    assert.equal(candidate.chapterAbsoluteTimeline, true);
     assert.equal(candidate.videoTimescale, 60000);
   }
   assert.ok(Object.keys(manifest.sources).length > 10 && Object.keys(manifest.sources).length <= 128);

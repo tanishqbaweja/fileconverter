@@ -91,3 +91,16 @@ test("a missing preroll duration is supplied only by an observed unedited durati
   const alreadyKnown = structuredClone(original); alreadyKnown.packets[0].duration_time = "0.021333";
   assert.throws(() => withObservedPrerollDuration(alreadyKnown, raw));
 });
+test("an absent native raw duration may use serialized duration only with matching track count timescale and first decode origin", () => {
+  const original = probe(true, true), raw = structuredClone(original);
+  for (const p of [original, raw]) p.streams[0].id = "0x3";
+  raw.packets[0].dts = 0;
+  const serialized = { trackId: 3, timeScale: 48000, packetCount: 2, firstDecodeTimeTicks: 0, sampleDurationTicks: 1024,
+    sourceBox: "tfhd", initialSampleTablesEmpty: true, mediaPayloadBytesRead: 0 };
+  const result = withObservedPrerollDuration(original, raw, serialized);
+  assert.equal(Number(result.probe.packets[0].duration_time), 1024 / 48000);
+  assert.match(result.evidence.provenance, /serialized-fragment/);
+  for (const mutation of [{ trackId: 2 }, { timeScale: 44100 }, { packetCount: 3 }, { firstDecodeTimeTicks: 1024 },
+    { sampleDurationTicks: 0 }, { initialSampleTablesEmpty: false }, { sourceBox: "guessed" }])
+    assert.throws(() => withObservedPrerollDuration(original, raw, { ...serialized, ...mutation }));
+});

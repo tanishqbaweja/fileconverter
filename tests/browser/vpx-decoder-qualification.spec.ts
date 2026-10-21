@@ -86,7 +86,8 @@ test.beforeAll(async () => {
     "lib/staged-copy-protocol.ts", "lib/vpx-decoder-policy.ts", "lib/media-native-arguments.ts", "lib/vpx-qualification-job.ts",
     "tests/browser/vpx-decoder-qualification.spec.ts", "scripts/lib/vpx-decoder-artifact.mjs", "scripts/lib/vpx-postbuild-recovery.mjs", "scripts/lib/owned-production-test-server.mjs",
     "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs", "scripts/lib/windows-tree-monitor.ps1",
-    "scripts/lib/small-aac-copy-fidelity.mjs", "scripts/lib/pcm-prefix-diagnostic.mjs", "scripts/lib/copied-audio-timing.mjs"])
+    "scripts/lib/small-aac-copy-fidelity.mjs", "scripts/lib/pcm-prefix-diagnostic.mjs", "scripts/lib/copied-audio-timing.mjs",
+    "scripts/lib/small-mp4-sample-duration.mjs"])
     sourcePins[file] = sha(await readFile(path.join(root, file)));
   report.executedSourcePins = sourcePins;
   if (process.platform === "win32") { browserPin = await inspectInstalledChromePin(); report.browserPin = browserPin; }
@@ -343,9 +344,9 @@ test.afterAll(async () => {
   cleanup.push(async () => {
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
-    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 22;
+    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 23;
     report.installedChromeBinaryPinsVerified = browserPin ? true : null;
-    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 22 && Boolean(browserPin);
+    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 23 && Boolean(browserPin);
   });
   if (assetIdentity) cleanup.push(async () => {
     const current = await lstat(assetDirectory); expect(current.dev).toBe(assetIdentity!.dev); expect(current.ino).toBe(assetIdentity!.ino);

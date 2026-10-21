@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "scope": "serialized first-sample duration validator plus material chapter absolute-timeline correction; browser acceptance pending",
+  "motivation": "evidence/2026-10-21-vpx-timeline-browser-result.json",
+  "serializedDurationReader": {
+    "source": "scripts/lib/small-mp4-sample-duration.mjs",
+    "physicalFields": ["tkhd track id", "mdhd timescale", "empty initial stts/stsz", "mvex/trex default duration", "tfhd default duration", "trun sample duration", "tfdt first decode origin"],
+    "maximumFixtureBytes": 2097152,
+    "maximumReadBytes": 64,
+    "maximumMetadataBytes": 262144,
+    "maximumBoxes": 4096,
+    "maximumTrackPackets": 512,
+    "mediaPayloadBytesRead": 0,
+    "nativePacketCountTrackIdTimescaleAndFirstDecodeOriginMustMatch": true,
+    "packetHashesRawPcmTrimAndOriginal1msTimingHelperStillRequired": true,
+    "durationNeverGuessedFromDtsOrSamples": true,
+    "missingNativeDurationRemainsRecordedAsNull": true
+  },
+  "nativeGeneratedValidatorReference": {
+    "scope": "independent parser reference fixture only, not an application conversion",
+    "fixtureBytes": 2995,
+    "nativePackets": 6,
+    "serializedDurationTicks": 1024,
+    "timeScale": 48000,
+    "sourceBox": "trun",
+    "sourceFieldOffset": 828,
+    "metadataBytesRead": 310,
+    "largestReadBytes": 20,
+    "mediaPayloadBytesRead": 0,
+    "fixtureRemovedInFinally": true,
+    "initialPreflightFoundAndCorrectedSyntheticFixtureAndReaderMdexTypoToActualMvex": true
+  },
+  "chapterCorrection": {
+    "source": "media/ffmpeg/vpx-aac-candidate.mjs",
+    "fragmentedMp4ExtraChapterTrackOnly": true,
+    "absoluteFragmentDecodeOrigin": true,
+    "initialStartDtsAndCts": 0,
+    "initialFragmentDiscontinuity": 1,
+    "positiveFirstChapterPacketMustNotBeResetToZero": true,
+    "targetOriginalChapter": { "startSeconds": 0.5, "endSeconds": 1.5 },
+    "originalChapterToleranceSeconds": 0.002,
+    "wrapperSha256Unchanged": "232c1f532e18fcfd2a24760ab1807bc8438653ad852fb8b8c31aa53d273853cd",
+    "muxSha256": "26b81d801f494d98e17300e78aa6fed8d84085e175556ad14f0cff8f07c88feb",
+    "recipeSha256Unchanged": "84d7651562a8145f52f76844718d1c187880142b8b15a5e568ff1c75a6af02b4",
+    "videoEncoderQualityClocksThreadsBuffersAndMemoryLimitsChangedByThisCorrection": false
+  },
+  "verification": { "focusedTestsPassed": 27, "failed": 0, "skipped": 0, "typescript": "pass", "focusedLint": "pass", "executedBrowserSourcePinCountNowRequired": 23 },
+  "next": "Compile only the materially changed chapter muxer and run original multi-track case with physical duration evidence; no unchanged default/control/terminal repeats",
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "fullGoalComplete": false
+}

@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Serialized AAC duration and chapter absolute-timeline correction prepared together
+
+New independent small-MP4 reader uses <=64B reads/256KiB total metadata, zero media
+payload; validates track/timebase/empty initial tables/tfdt/packet count and reads
+actual trun/tfhd/trex duration. No DTS-gap or1024/rate guess; original timing helper
+still unchanged. Real native-generated2995B reference verifies6packets/1024ticks,
+310metadata bytes/largest20B; fixture finally removed. That preflight caught the
+synthetic mdex typo, corrected to actual mvex before browser use. Chapter-only
+native correction now stores absolute fragment origin with first discontinuity;
+target.5→1.5 and2ms guard retained. Wrapper/video code SHA232c1f53 unchanged, new
+MOV SHA26b81d80.27focused/TS/lint pass; compile/browser/physical-duration acceptance
+pending. `evidence/2026-10-21-vpx-chapter-end-and-duration-preparation.json`.
+
 ## 2026-10-21 - New timeline core:8PASS/1FAIL; exact video origin fixed, chapter end and duration evidence remain
 
 39620150626/909506b3 FAIL8PASS/1FAIL41.1s. Four VP8/VP9 defaults/controls pass real

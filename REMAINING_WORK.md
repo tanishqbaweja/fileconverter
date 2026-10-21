@@ -1,5 +1,21 @@
 # Remaining work audit
 
+## 2026-10-21 - Both remaining multi-track failures now addressed in one prepared cycle
+
+Bounded serialized MP4 first-sample duration reader implemented: actual trun/tfhd/
+trex fields, strict selected track/timebase/first tfdt/count/empty stts-stsz, <=64B
+reads/256KiB metadata/2MiB fixture, no media payload. Raw/native absence remains null;
+no guessed duration or original1ms helper change. Real native-generated reference
+passes6packets/1024ticks with310metadata bytes, then finally removed; actual mvex
+name corrected after preflight rejected synthetic mdex typo. Chapter absolute
+fragment origin/discontinuity correction implemented for extra fragmented MP4
+track, targeting original.5→1.5 with unchanged2ms guard. Video wrapper SHA232c1f53
+unchanged, MOV now26b81d80.27focused/TS/lint PASS, browser-source pins now23.
+Compile only changed muxer candidate, then original multi-track case with actual
+serialized duration proof. No need to repeat eight passing unchanged cases now.
+Full54/B02-B09/memory/scaling/public integration remain OPEN. Exact scope:
+`evidence/2026-10-21-vpx-chapter-end-and-duration-preparation.json`.
+
 ## 2026-10-21 - Real changed-core qualification8PASS/1FAIL; original video shift genuinely resolved
 
 39620150626/909506b3 terminal FAIL8PASS/1FAIL41.1s. VP8/VP9 default/control cases

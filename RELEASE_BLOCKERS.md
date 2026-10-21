@@ -1,5 +1,12 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 serialized duration reader and chapter absolute-fragment correction prepared
+together; actual2995B native validator reference verifies physical duration without
+payload/DTS guessing, fixture removed.27focused/TS/lint pass. Original video wrapper
+unchanged; only extra chapter-track mux policy changes. Compile/real multi-track/
+2ms chapters/PCM/1ms clocks/memory acceptance pending. Exact proof:
+`evidence/2026-10-21-vpx-chapter-end-and-duration-preparation.json`.
+
 B03 timeline39620150626 FAIL8PASS/1FAIL41.1s. Four defaults/controls and four
 terminal/recovery cases pass; original multi-track all48video PTS exactly match,
 resolving.021→0 shift. Chapter start.5 fixed but end1.5→1.0 still wrong. AAC1 exact

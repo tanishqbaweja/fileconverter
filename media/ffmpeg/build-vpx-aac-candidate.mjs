@@ -65,6 +65,7 @@ try {
       delayedMoov: derived.delayedMoov, exactAacPriming: derived.exactAacPriming, exactAacEditList: true,
       muxSourceSha256: mux.generatedSha256, muxParentSha256: mux.parentSha256, muxPatchSha256: VPX_AAC_PATCH_SHA256,
       preserveVideoTimeline: timeline, videoTimescale: timeline ? derived.videoTimescale : null, chapterTimingInitialized: timeline,
+      chapterAbsoluteTimeline: timeline,
       encoderSettingsChanged: timeline, encoderQualitySettingsChanged: false, encoderTimebaseChanged: timeline,
       ioChanged: false, wasmMemoryLimits: limits, memoryLimitsRaised: false,
       browserDecodeVerified: false, publicAcceptance: false } }, null, 2) + "\n");

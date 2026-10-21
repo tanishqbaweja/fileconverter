@@ -149,15 +149,15 @@ export function makeVpxTimelineMuxSource(source, patch) {
   const base = makeVpxAacMuxSource(source, patch);
   const before = "    track->mode = mov->mode;\n    track->tag = MKTAG('t','e','x','t');\n";
   const after = "    track->mode = mov->mode;\n" +
-    "    // The extra chapter track bypasses regular-stream timing init. Without\n" +
-    "    // these sentinels its first positive DTS is mistaken for a continuation\n" +
-    "    // from zero and the chapter's initial gap disappears in fragments.\n" +
+    "    // Keep the chapter track's absolute origin in tfdt. An empty edit\n" +
+    "    // otherwise makes readers confuse its duration with its final end.\n" +
+    "    // Discontinuity prevents first-fragment continuation from zero.\n" +
     "    if (mov->mode == MODE_MP4 && (mov->flags & FF_MOV_FLAG_FRAGMENT)) {\n" +
-    "        track->start_dts = AV_NOPTS_VALUE;\n        track->start_cts = AV_NOPTS_VALUE;\n" +
+    "        track->start_dts = 0;\n        track->start_cts = 0;\n        track->frag_discont = 1;\n" +
     "        track->end_pts = AV_NOPTS_VALUE;\n        track->dts_shift = AV_NOPTS_VALUE;\n    }\n" +
     "    track->tag = MKTAG('t','e','x','t');\n";
   const changed = exact(base.generated, [[before, after]]);
-  return { ...base, ...changed, edits: [...base.edits, ...changed.edits], chapterTimingInitialized: true };
+  return { ...base, ...changed, edits: [...base.edits, ...changed.edits], chapterTimingInitialized: true, chapterAbsoluteTimeline: true };
 }
 export function makeVpxTimelineRecipe(source) {
   const base = makeVpxAacRecipe(source).generated;

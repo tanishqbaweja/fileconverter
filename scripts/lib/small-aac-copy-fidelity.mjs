@@ -7,6 +7,7 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { createPcmPrefixDiagnostic } from "./pcm-prefix-diagnostic.mjs";
 import { validateCopiedAudioTiming } from "./copied-audio-timing.mjs";
+import { readSmallMp4SampleDuration } from "./small-mp4-sample-duration.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), MAX_FILE = 2 * 1024 ** 2;
 const integer = (value, label, max) => { assert.ok(Number.isSafeInteger(value) && value >= 0 && value <= max, label + " unavailable/outside fixture bounds"); return value; };
 function skipEntry(packet, rate) {
@@ -15,7 +16,7 @@ function skipEntry(packet, rate) {
   if (!entries.length) return null;
   return { skip: integer(entries[0].skip_samples, "skip_samples", rate), tail: integer(entries[0].discard_padding, "discard_padding", rate) };
 }
-export function withObservedPrerollDuration(probe, rawProbe) {
+export function withObservedPrerollDuration(probe, rawProbe, serialized = null) {
   // A fully trimmed AAC preroll packet may lack a presentation duration in
   // FFprobe. Recover it ONLY from an independent unedited read of the SAME
   // packet sequence, never infer1024/rate or remove a known duration check.
@@ -35,14 +36,26 @@ export function withObservedPrerollDuration(probe, rawProbe) {
     assert.match(probe.packets[index].data_hash, /^SHA256:[a-f0-9]{64}$/);
     assert.equal(rawProbe.packets[index].data_hash, probe.packets[index].data_hash, "Raw duration probe changed packet content/order");
   }
-  assert.ok(typeof rawFirst.duration_time === "string" && rawFirst.duration_time.length > 0);
-  const duration = Number(rawFirst.duration_time);
+  let duration, provenance;
+  if (serialized === null) {
+    assert.ok(typeof rawFirst.duration_time === "string" && rawFirst.duration_time.length > 0);
+    duration = Number(rawFirst.duration_time); provenance = "same-file-ignore-editlist-native-packet-duration-not-an-inferred-value";
+  } else {
+    assert.ok(rawFirst.duration_time == null, "Do not replace an observed native duration");
+    assert.equal(serialized.packetCount, probe.packets.length); assert.equal(serialized.timeScale, rate);
+    assert.equal(serialized.initialSampleTablesEmpty, true); assert.equal(serialized.mediaPayloadBytesRead, 0);
+    assert.ok(["trun", "tfhd", "trex"].includes(serialized.sourceBox));
+    assert.match(rawProbe.streams[0].id, /^0x[0-9a-f]+$/i); assert.equal(serialized.trackId, Number(rawProbe.streams[0].id));
+    assert.equal(serialized.firstDecodeTimeTicks, rawFirst.dts);
+    integer(serialized.sampleDurationTicks, "serialized duration", rate); assert.ok(serialized.sampleDurationTicks > 0);
+    duration = serialized.sampleDurationTicks / serialized.timeScale; provenance = "same-file-serialized-fragment-sample-duration-not-an-inferred-value";
+  }
   assert.ok(Number.isFinite(duration) && duration > 0 && Math.abs(duration - 1024 / rate) <= 1 / rate,
     "Observed raw preroll duration unavailable or inconsistent with this AAC-LC fixture");
-  return { probe: { ...probe, packets: [{ ...first, duration_time: rawFirst.duration_time }, ...probe.packets.slice(1)] },
+  return { probe: { ...probe, packets: [{ ...first, duration_time: String(duration) }, ...probe.packets.slice(1)] },
     evidence: { originalPresentationDurationSeconds: null, observedRawDurationSeconds: duration,
       packetSha256: first.data_hash, identicalPacketCount: probe.packets.length,
-      provenance: "same-file-ignore-editlist-native-packet-duration-not-an-inferred-value" } };
+      provenance, serialized } };
 }
 export function readSmallAacTrim(probe, role) {
   assert.ok(role === "source" || role === "output");
@@ -151,13 +164,20 @@ export async function validateSmallCopiedAac(sourceFile, outputFile, { env = pro
     "-show_streams", "-show_packets", "-show_format", "-show_data_hash", "sha256", "-of", "json", file],
   { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 512 * 1024 })).stdout);
   const sourceProbe = await probe(source), originalOutputProbe = await probe(output);
-  let outputProbe = originalOutputProbe, rawOutputProbe, durationEvidence = null, beforePcm, afterPcm;
+  let outputProbe = originalOutputProbe, rawOutputProbe, durationEvidence = null, beforePcm, afterPcm, serialized = null;
   let stage = "declared-trim-metadata";
   try {
     if (sourceProbe.packets?.[0]?.duration_time != null && originalOutputProbe.packets?.[0]?.duration_time == null) {
       stage = "observed-raw-preroll-duration";
       rawOutputProbe = await probe(output, true);
-      const observed = withObservedPrerollDuration(originalOutputProbe, rawOutputProbe);
+      if (rawOutputProbe.packets?.[0]?.duration_time == null) {
+        stage = "serialized-first-sample-duration";
+        const stream = rawOutputProbe.streams[0]; assert.match(stream.id, /^0x[0-9a-f]+$/i);
+        assert.equal(stream.time_base, "1/" + stream.sample_rate);
+        serialized = await readSmallMp4SampleDuration(output, { trackId: Number(stream.id), timeScale: Number(stream.sample_rate),
+          expectedPackets: rawOutputProbe.packets.length, firstDtsTicks: rawOutputProbe.packets[0].dts });
+      }
+      const observed = withObservedPrerollDuration(originalOutputProbe, rawOutputProbe, serialized);
       outputProbe = observed.probe; durationEvidence = observed.evidence;
     }
     stage = "declared-trim-metadata";
@@ -178,7 +198,7 @@ export async function validateSmallCopiedAac(sourceFile, outputFile, { env = pro
         side_data_list: (packet.side_data_list ?? []).slice(0, 4).map(side => ({ side_data_type: side.side_data_type,
           skip_samples: side.skip_samples, discard_padding: side.discard_padding })) })) });
     Object.defineProperty(error, "aacFixtureEvidence", { value: { stage, audioOrdinal, source: edges(sourceProbe), output: edges(originalOutputProbe),
-      rawOutput: rawOutputProbe ? edges(rawOutputProbe) : null, sourcePcm: beforePcm ?? null, outputPcm: afterPcm ?? null, durationEvidence } });
+      rawOutput: rawOutputProbe ? edges(rawOutputProbe) : null, sourcePcm: beforePcm ?? null, outputPcm: afterPcm ?? null, durationEvidence, serialized } });
     throw error;
   }
 }
