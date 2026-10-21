@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 import { execFile } from "node:child_process";
 import { createHash, randomUUID } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { mkdir, open, stat, writeFile } from "node:fs/promises";
+import { appendFile, lstat, mkdir, open, readFile, realpath, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { createOwnedRuntimeScratch } from "../../scripts/lib/owned-runtime-scratch.mjs";
@@ -24,7 +24,8 @@ const cases = [
   { source: "ogg", destination: "flac" }, { source: "opus", destination: "flac" },
 ] as const;
 const codecs = { flac: "flac", ogg: "libvorbis", opus: "libopus" };
-test.use({ channel: "chrome", headless: true });
+test.use({ channel: "chrome", headless: true,
+  connectOptions: process.env.WITHIN_AUDIO_METADATA_WS_ENDPOINT ? { wsEndpoint: process.env.WITHIN_AUDIO_METADATA_WS_ENDPOINT } : undefined });
 
 async function hashFile(file: string) {
   const hash = createHash("sha256");
@@ -55,10 +56,25 @@ for (const conversion of cases) {
       }
     });
     try {
+      const candidatePath = process.env.WITHIN_AUDIO_METADATA_CANDIDATE_RECEIPT;
+      let candidate = null;
+      if (candidatePath) {
+        const resolved = await realpath(candidatePath), work = await realpath(path.join(root, "work"));
+        expect(resolved.startsWith(work + path.sep)).toBe(true); expect((await stat(resolved)).size).toBeLessThan(65536);
+        candidate = JSON.parse(await readFile(resolved, "utf8"));
+        expect(candidate.scope).toBe("audited-private-native-metadata-candidate-not-promotion"); expect(candidate.publicAcceptance).toBe(false);
+        report.privateCandidate = candidate;
+        const identity = await lstat(runtime.directory, { bigint: true });
+        await appendFile(path.join(path.dirname(resolved), "case-leases.jsonl"), JSON.stringify({ directory: runtime.directory,
+          dev: identity.dev.toString(), ino: identity.ino.toString() }) + "\n");
+      }
+      const engineDirectory = candidate ? "dist/client/engines/remux" : "public/engines/remux";
       for (const file of ["tests/browser/audio-expanded-metadata.spec.ts", "scripts/lib/scoped-audio-tag-validation.mjs",
-        "media/ffmpeg/within_remux.c", "public/engines/remux/within-remux.mjs", "public/engines/remux/within-remux.wasm"])
+        "media/ffmpeg/within_remux.c", `${engineDirectory}/within-remux.mjs`, `${engineDirectory}/within-remux.wasm`])
         pins[file] = await hashFile(path.join(root, file));
       report.sourcePins = pins;
+      if (candidate) for (const file of ["within-remux.mjs", "within-remux.wasm"])
+        expect(pins[`${engineDirectory}/${file}`]).toBe(candidate.deliveredArtifacts[file]);
       // Fixture generation only. All conversion below goes through the app UI.
       await native(["-v", "error", "-f", "lavfi", "-i", "sine=frequency=997:sample_rate=48000:duration=2",
         "-c:a", codecs[conversion.source], "-threads", "1", ...Object.entries(tags).flatMap(([key, value]) => ["-metadata", `${key}=${value}`]),
@@ -66,6 +82,11 @@ for (const conversion of cases) {
       const inputProbe = await probe(input), sourceTags = validateScopedAudioTags(inputProbe, tags,
         { scope: conversion.source === "flac" ? "format" : "audio-stream" });
       report.source = { bytes: (await stat(input)).size, sha256: await hashFile(input), probe: inputProbe, tags: sourceTags };
+      if (candidate) {
+        expect((report.source as { sha256: string }).sha256).toBe(candidate.fixtures[conversion.source].sha256);
+        expect((await stat(input)).size).toBe(candidate.fixtures[conversion.source].bytes);
+        report.identicalBaselineFixtureVerified = true;
+      }
       expect((await stat(input)).size).toBeLessThan(1024 * 1024);
       expect(sourceTags.status, JSON.stringify(sourceTags)).toBe("passed");
 
@@ -130,7 +151,8 @@ for (const conversion of cases) {
         for (const file of Object.keys(pins)) postPins[file] = await hashFile(path.join(root, file));
         report.postSourcePins = postPins; const pinsUnchanged = Object.keys(pins).length === 5 && Object.entries(pins).every(([file, hash]) => postPins[file] === hash);
         report.sourcePinsUnchanged = pinsUnchanged;
-        if (verified && cleanupVerified && pinsUnchanged) report.status = "passed-small-expanded-metadata-check";
+        if (verified && cleanupVerified && pinsUnchanged) report.status = process.env.WITHIN_AUDIO_METADATA_CANDIDATE_RECEIPT
+          ? "passed-private-candidate-metadata-check" : "passed-small-expanded-metadata-check";
         report.finishedAt = new Date().toISOString();
         await mkdir(path.join(root, "output/playwright"), { recursive: true });
         const json = JSON.stringify(report, null, 2) + "\n"; expect(Buffer.byteLength(json)).toBeLessThan(262144);

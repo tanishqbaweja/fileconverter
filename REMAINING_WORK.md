@@ -1,5 +1,37 @@
 # Remaining work audit
 
+## 2026-10-21 - Actual changed Wasm/browser text-metadata fix verified privately; memory still fails
+
+The previously live build39517752087 is terminal SUCCESS at e29cc08. Its40
+source pins/12 artifacts, three exact C edits and unchanged actual32/96MiB Wasm
+limits are audited. Six same-input real production-browser cases now preserve
+all25 fields, including both previously failing Vorbis/Opus to FLAC paths;
+all six actual outputs independently fully decode. This closes the specific
+private25-field loss reproduction/fix check, not B05 or public promotion.
+
+New finite owned/headless qualifier retains exact fixture hashes/assertions,
+strict buffers/backpressure, source pins, current-browser identity and whole-tree
+measurement. It FAILS250MiB at580.828125MiB over stable clean same-instance blank,
+with17processes at peak. All unknown descendants count. Six successive browser
+contexts plus retained blank page/trace lifecycle are not a one-page performance
+comparison or causal proof about the native merge. No change to the memory
+formula, public engines or registry. Do not repeat the unchanged stock loss tests,
+completed build or failed six-context control; preserve proof and investigate
+typed process/lifecycle ownership for the next memory candidate.
+
+Browser fixtures/outputs/scratch/profiles removed, OPFS empty, generated stock
+engine restored and owned roots absent. Retain only small reusable static native
+candidate and compact/raw proof. Exact evidence and further required gates:
+`evidence/2026-10-21-audio-metadata-browser-cycle.json`. Still required before
+promotion: sample fidelity, repeated-value serialization, aliases/artwork,
+metadata-budget/cancel/write-failure recovery, repeats/stress and conforming
+whole-tree memory. Full54requirements and B02-B09 remain unchanged/open.
+Focused9PASS, whole453-file portable1363PASS/0skip; TypeScript/focused lint PASS.
+All235prior hosted files retained;162qualifications unexecuted. Independent
+cleanup audit finds all36observed Chromium births absent. Protected original
+size/SHA unchanged. Neither local units nor the private native build replaces
+final current-commit hosted/browser/security/reproducibility acceptance.
+
 ## 2026-10-21 - Private audio metadata compilation genuinely live
 
 Implementation71004fe pushed. Private build-branche29cc08/corewithin-remux now

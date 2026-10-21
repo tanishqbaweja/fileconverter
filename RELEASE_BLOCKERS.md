@@ -55,6 +55,17 @@ public engines unchanged. Exact proof/next gates
 
 ## Ordered blockers and exact exit evidence
 
+Latest B05 qualification: completed no-Docker Wasm build39517752087 audited
+(40source/12artifact pins, exactly three C edits, unchanged32/96MiB Wasm limits).
+All six same-input actual browser cases preserve25/25 tags and fully decode,
+including both previously failing FLAC destinations. Private text-field fix
+verified; public engines unchanged. Six-context whole-tree memory FAILS
+580.828125MiB/250, all unknown descendants counted; no causal allocation or
+speedup claim. Disposable media/profiles removed, stock generated assets
+restored, owned roots absent. Exact proof/next gates:
+`evidence/2026-10-21-audio-metadata-browser-cycle.json`. B05/B06 stay OPEN;
+do not repeat the unchanged build, stock loss tests or six-context memory control.
+
 | ID | Work to close | Evidence required to close it |
 | --- | --- | --- |
 | B01 | CLOSED — reproducible portable/private test contract freshly verified. | Hosted39476719118/a83c3a7 SUCCESS: npm-ci, inventory, lint, TS, build, literal npm-test1342pass/0fail/1existing untracked-original skip and18privacy/offline browser tests45.5s. All235prior hosted root units portable;611files partition449portable/162explicit prerequisite-bound qualification, complete union runnable. Local1343pass/0skip includes protected-original inspection. Exact proof `evidence/2026-10-21-production-catalogue-hosted-success.json`. Separate conversion suites/private qualifications/rebuilds were not selected or counted passed. Older962browser results are historical after current UI/runtime edits; this does not close B02-B09/full project. |

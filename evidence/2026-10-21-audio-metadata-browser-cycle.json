@@ -1,0 +1,1349 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-21",
+  "status": "private-wasm-six-metadata-cases-pass-complete-tree-memory-fails-no-promotion",
+  "publicAcceptance": false,
+  "fullProjectAcceptance": false,
+  "publicEngineChanged": false,
+  "privateBuild": {
+    "runId": 39517752087,
+    "jobId": 118953896038,
+    "commit": "e29cc08e11c448337f284328040e8177a0e62988",
+    "conclusion": "success",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39517752087",
+    "dockerUsed": false,
+    "sourcePinsVerified": 40,
+    "artifactPinsVerified": 12,
+    "manifestSha256": "803158ef0f67bd8285c16a1a6e6769c9802316a4b101a833d34715682e3ace66",
+    "core": {
+      "parentSha256": "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd",
+      "compiledSourceSha256": "9f44b9470ef3da0773483bdeccd2efe44213070ccbb8582fbd5f1c26c4304ea5",
+      "helperSha256": "85da9b964bb50ffa8fd3a93b073d4c2369a13034549cef4fd552c5fc82d0bf28",
+      "memoryLimits": [
+        {
+          "imported": true,
+          "initialPages": 512,
+          "maximumPages": 1536,
+          "shared": true
+        }
+      ],
+      "allowedSourceEdits": 3,
+      "publicAcceptance": false
+    },
+    "deliveredArtifacts": {
+      "within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+      "within-remux.wasm": "5f9d011db228670dada9bc8ff3263428fd2053f29c3fb9a2fe89151b155c1c6e"
+    }
+  },
+  "browser": {
+    "version": "155.0.8059.85",
+    "pin": {
+      "version": "155.0.8059.85",
+      "launcher": {
+        "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+        "bytes": 4720792,
+        "sha256": "de999bce6a1c954df71a8f15bf751b336172f55ac1a0325bb0580cbc2121268c",
+        "identity": {
+          "dev": "1386679384",
+          "ino": "16607023626188588",
+          "birthtimeNs": "1792461766435316100",
+          "mtimeNs": "1792034219406347000"
+        }
+      },
+      "library": {
+        "path": "C:\\Program Files\\Google\\Chrome\\Application\\155.0.8059.85\\chrome.dll",
+        "bytes": 302363288,
+        "sha256": "e68448d4469e6a3b598cfce48e656a5579decac014407eb4c4967d0677fed2fb",
+        "identity": {
+          "dev": "1386679384",
+          "ino": "16607023626188596",
+          "birthtimeNs": "1792461766454341200",
+          "mtimeNs": "1792034223618740000"
+        }
+      }
+    },
+    "headless": true,
+    "manualHeadedCoverage": false
+  },
+  "rawReport": {
+    "path": "outputs/reports/2026-10-21T00-11-22.647Z-audio-metadata-browser-candidate.json",
+    "sha256": "5dfe72574e42f5bf6311f87b61695147da66e529656e7ee406f1c1dd4b23c304",
+    "bytes": 1797588
+  },
+  "executedSourcePins": {
+    "scripts/test-audio-metadata-candidate.mjs": "c5971c7c111b133c2460a5f304450e8ac9a08a99a945e3a75ebd96f7e5cff950",
+    "scripts/lib/audio-metadata-artifact.mjs": "ae643cecf4fbb09968dd8ed54cad062ecdfd9df4cb0f59e65c9c76c13328c39e",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "tests/browser/audio-expanded-metadata.spec.ts": "4d8cc6201d66172002d3c3c3eac2b4d7e34674cec48ff2ca509bf6762d1ee14a",
+    "playwright.config.ts": "e1ebd9e54b5baf85227edf021b1190dca2788c226ea39209c4e22915ce9d0a84"
+  },
+  "result": {
+    "casesPassed": 6,
+    "metadataFixVerifiedForSixSmallCases": true,
+    "scope": "25 exact text fields on six small production-UI conversions; not artwork, duplicate serialization, aliases, fidelity, stress, speed or promotion acceptance",
+    "suiteStartedAt": "2026-10-21T00:12:04.991Z",
+    "suiteFinishedAt": "2026-10-21T00:12:28.478Z"
+  },
+  "cases": [
+    {
+      "profileId": "flac-to-ogg",
+      "rawReport": "output/playwright/audio-expanded-metadata-flac-to-ogg-c7c40119-774a-4d9a-ab94-20cb9d668fdb.json",
+      "rawReportSha256": "f0535ee0f5afd93ca26e50b441831d84854b425f3b512c9002565522ce22fbb6",
+      "source": {
+        "bytes": 37086,
+        "sha256": "bceca191b7b40164857884b4c95ac5b2b78e0c4969f3fad391b7c421adcc36bc"
+      },
+      "output": {
+        "bytes": 8031,
+        "sha256": "388379f3068d2505a648d7bb2785003a5b67e93f0808483f9dcff51e78549c87",
+        "preservedFields": 25,
+        "fullIndependentDecode": true
+      },
+      "metrics": {
+        "inputBytes": 37086,
+        "outputBytes": 8031,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 4212,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 37086,
+        "maxWriteChunkBytes": 4212,
+        "elapsedMs": 870.8949999809265,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "identicalBaselineFixture": true,
+      "sourcePinsUnchanged": true,
+      "disposableMediaRemoved": true,
+      "opfsEmpty": true
+    },
+    {
+      "profileId": "flac-to-opus",
+      "rawReport": "output/playwright/audio-expanded-metadata-flac-to-opus-5ab4758b-b786-41c5-8d96-b1fd2fb500f6.json",
+      "rawReportSha256": "af6ce416867bd50c2f4548bd13e724e27c93e32ef4deb7faea93125cecfacae8",
+      "source": {
+        "bytes": 37086,
+        "sha256": "bceca191b7b40164857884b4c95ac5b2b78e0c4969f3fad391b7c421adcc36bc"
+      },
+      "output": {
+        "bytes": 16942,
+        "sha256": "5588a5a60664e40675de7bdcf3b314303cb01e3652d0100ff41972e9b21e128a",
+        "preservedFields": 25,
+        "fullIndependentDecode": true
+      },
+      "metrics": {
+        "inputBytes": 37086,
+        "outputBytes": 16942,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 7989,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 37086,
+        "maxWriteChunkBytes": 7989,
+        "elapsedMs": 711.1850000023842,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "identicalBaselineFixture": true,
+      "sourcePinsUnchanged": true,
+      "disposableMediaRemoved": true,
+      "opfsEmpty": true
+    },
+    {
+      "profileId": "ogg-to-flac",
+      "rawReport": "output/playwright/audio-expanded-metadata-ogg-to-flac-01c1d10f-91d0-451f-91bf-576a933b49b5.json",
+      "rawReportSha256": "8c30b115a54e467d1f21ca95c5b9bd14da1429bfa7d63a71371860b647665b01",
+      "source": {
+        "bytes": 8054,
+        "sha256": "56595f3313d5bfae78b0bf168e059359fa947d92ae00646aebd7ae14fe8fd208"
+      },
+      "output": {
+        "bytes": 36064,
+        "sha256": "7358a87ed26547958d4b96bed4eca794044b1ec93cac6fdac89e9f4fb37eba17",
+        "preservedFields": 25,
+        "fullIndependentDecode": true
+      },
+      "metrics": {
+        "inputBytes": 8054,
+        "outputBytes": 36064,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 8974,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 8054,
+        "maxWriteChunkBytes": 8974,
+        "elapsedMs": 493.8299999833107,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "identicalBaselineFixture": true,
+      "sourcePinsUnchanged": true,
+      "disposableMediaRemoved": true,
+      "opfsEmpty": true
+    },
+    {
+      "profileId": "ogg-to-opus",
+      "rawReport": "output/playwright/audio-expanded-metadata-ogg-to-opus-44f6e0d1-f08b-4d38-bb8a-fa35727b4147.json",
+      "rawReportSha256": "91b38393f250a4bb0b51c27a39b2d50ef4d43d52e0c5daedeaf469d0382b5f3a",
+      "source": {
+        "bytes": 8054,
+        "sha256": "56595f3313d5bfae78b0bf168e059359fa947d92ae00646aebd7ae14fe8fd208"
+      },
+      "output": {
+        "bytes": 16941,
+        "sha256": "4258d00cdde54310ff3f841c80bca223004a4ea2b6eac6672e092d1aa0517cb5",
+        "preservedFields": 25,
+        "fullIndependentDecode": true
+      },
+      "metrics": {
+        "inputBytes": 8054,
+        "outputBytes": 16941,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 7962,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 8054,
+        "maxWriteChunkBytes": 7962,
+        "elapsedMs": 623.1900000572205,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "identicalBaselineFixture": true,
+      "sourcePinsUnchanged": true,
+      "disposableMediaRemoved": true,
+      "opfsEmpty": true
+    },
+    {
+      "profileId": "opus-to-flac",
+      "rawReport": "output/playwright/audio-expanded-metadata-opus-to-flac-585eb3ec-2455-4f77-bf62-9be3e1d8defb.json",
+      "rawReportSha256": "765ac00d3c6df08500ed02354fca6c36bc5ce8598360971f4c17555a40b8a262",
+      "source": {
+        "bytes": 20466,
+        "sha256": "28908beaea1fdad025d0c6604b5dcf0dcdafccff7f3a877852c34bd930ff4c1e"
+      },
+      "output": {
+        "bytes": 38410,
+        "sha256": "1f21e4abf7f1ef52ea2a2170d989f1a7b9fd8e0fc2681e46f7e31ffaeb7e95a8",
+        "preservedFields": 25,
+        "fullIndependentDecode": true
+      },
+      "metrics": {
+        "inputBytes": 20466,
+        "outputBytes": 38410,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 8974,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 20466,
+        "maxWriteChunkBytes": 8974,
+        "elapsedMs": 510.0149999856949,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "identicalBaselineFixture": true,
+      "sourcePinsUnchanged": true,
+      "disposableMediaRemoved": true,
+      "opfsEmpty": true
+    },
+    {
+      "profileId": "opus-to-ogg",
+      "rawReport": "output/playwright/audio-expanded-metadata-opus-to-ogg-dc865c3d-b667-4044-80fe-bb30988f5150.json",
+      "rawReportSha256": "4dfe5a20fa24f9db11f1ce2ea2014ca9406f4c627f489b24a9e7df0702e5d897",
+      "source": {
+        "bytes": 20466,
+        "sha256": "28908beaea1fdad025d0c6604b5dcf0dcdafccff7f3a877852c34bd930ff4c1e"
+      },
+      "output": {
+        "bytes": 8382,
+        "sha256": "5659d2af02cefa89cb6930303561892e67f0f71805beb35a867dc2d2d261526b",
+        "preservedFields": 25,
+        "fullIndependentDecode": true
+      },
+      "metrics": {
+        "inputBytes": 20466,
+        "outputBytes": 8382,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 4236,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 20466,
+        "maxWriteChunkBytes": 4236,
+        "elapsedMs": 659.9950000047684,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "identicalBaselineFixture": true,
+      "sourcePinsUnchanged": true,
+      "disposableMediaRemoved": true,
+      "opfsEmpty": true
+    }
+  ],
+  "memory": {
+    "scope": "small six-context suite only, not scaling/repeat/current whole-project acceptance",
+    "formula": "peak complete Chromium process-tree private bytes minus stable clean blank same-instance baseline",
+    "baseline": {
+      "stable": true,
+      "privateBytes": 231538688,
+      "spreadBytes": 2101248,
+      "rssBytes": 476155904,
+      "firstTimestamp": "2026-10-21T00:11:54.3000634Z",
+      "lastTimestamp": "2026-10-21T00:12:02.7985758Z",
+      "sampleCount": 8,
+      "minimumElapsedMs": 8000
+    },
+    "baselineTopology": "One retained clean blank page; test contexts subsequently open in the same Chromium instance. All processes remain counted; no baseline replacement or GC.",
+    "peak": {
+      "sequence": 301,
+      "timestamp": "2026-10-21T00:12:18.0019725Z",
+      "completedAt": "2026-10-21T00:12:18.0276808Z",
+      "sampleError": null,
+      "nativeElapsedMs": 25.1336,
+      "privateBytes": 840581120,
+      "rssBytes": 1419177984,
+      "processes": [
+        {
+          "pid": 2416,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:14.0935169Z",
+          "creationFileTime": "134370151340935169",
+          "executableName": "chrome.exe",
+          "privateBytes": 64147456,
+          "rssBytes": 125669376,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 2920,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:16.7697738Z",
+          "creationFileTime": "134370151367697738",
+          "executableName": "chrome.exe",
+          "privateBytes": 109621248,
+          "rssBytes": 129912832,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 14908,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:16.7841056Z",
+          "creationFileTime": "134370151367841056",
+          "executableName": "chrome.exe",
+          "privateBytes": 18329600,
+          "rssBytes": 51519488,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 22176,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:43.4592695Z",
+          "creationFileTime": "134370151034592695",
+          "executableName": "chrome.exe",
+          "privateBytes": 8241152,
+          "rssBytes": 19755008,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 24764,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:44.6493419Z",
+          "creationFileTime": "134370151046493419",
+          "executableName": "chrome.exe",
+          "privateBytes": 18649088,
+          "rssBytes": 47013888,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 28212,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:14.0541061Z",
+          "creationFileTime": "134370151340541061",
+          "executableName": "chrome.exe",
+          "privateBytes": 16285696,
+          "rssBytes": 45182976,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 33940,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:16.7341683Z",
+          "creationFileTime": "134370151367341683",
+          "executableName": "chrome.exe",
+          "privateBytes": 41783296,
+          "rssBytes": 79310848,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 35436,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:17.3014389Z",
+          "creationFileTime": "134370151373014389",
+          "executableName": "chrome.exe",
+          "privateBytes": 6860800,
+          "rssBytes": 10985472,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 38488,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:44.5784932Z",
+          "creationFileTime": "134370151045784932",
+          "executableName": "chrome.exe",
+          "privateBytes": 35201024,
+          "rssBytes": 79015936,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 38616,
+          "parentPid": 46652,
+          "createdAt": "2026-10-21T00:11:42.9610668Z",
+          "creationFileTime": "134370151029610668",
+          "executableName": "chrome.exe",
+          "privateBytes": 58839040,
+          "rssBytes": 157859840,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 40656,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:07.7990980Z",
+          "creationFileTime": "134370151277990980",
+          "executableName": "chrome.exe",
+          "privateBytes": 45891584,
+          "rssBytes": 87261184,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41176,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:43.4132506Z",
+          "creationFileTime": "134370151034132506",
+          "executableName": "chrome.exe",
+          "privateBytes": 306610176,
+          "rssBytes": 309637120,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 43792,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:43.0335513Z",
+          "creationFileTime": "134370151030335513",
+          "executableName": "chrome.exe",
+          "privateBytes": 2527232,
+          "rssBytes": 10326016,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 44300,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:07.8620318Z",
+          "creationFileTime": "134370151278620318",
+          "executableName": "chrome.exe",
+          "privateBytes": 7733248,
+          "rssBytes": 41074688,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 46456,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:43.4230745Z",
+          "creationFileTime": "134370151034230745",
+          "executableName": "chrome.exe",
+          "privateBytes": 17637376,
+          "rssBytes": 47058944,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 46580,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:07.8385133Z",
+          "creationFileTime": "134370151278385133",
+          "executableName": "chrome.exe",
+          "privateBytes": 62406656,
+          "rssBytes": 124895232,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 46956,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:14.1063803Z",
+          "creationFileTime": "134370151341063803",
+          "executableName": "chrome.exe",
+          "privateBytes": 19816448,
+          "rssBytes": 52699136,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ],
+      "elapsedMs": 55354
+    },
+    "incrementalPrivateMiB": 580.828125,
+    "limitMiB": 250,
+    "result": "failed",
+    "validSamples": 396,
+    "unavailableSampleCount": 0,
+    "intervalMs": 100,
+    "notes": [
+      "All unknown descendants counted. No GC, flags, process exclusions or baseline replacement.",
+      "Retained blank page plus six test contexts; peak includes lifecycle/trace/validation overhead. Not comparable to a one-page production run or causal proof that metadata merge increased memory.",
+      "No allocation cause proven. Do not relabel private-process types from size or omit retired descendants."
+    ]
+  },
+  "cleanup": {
+    "observations": [
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 16936,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:44.6310236Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:38.656Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1429,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 22176,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:43.4592695Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:39.168Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 511,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 24764,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:44.6493419Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:39.658Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 490,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 38488,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:44.5784932Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:40.300Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 642,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 38616,
+          "parentPid": 46652,
+          "createdAt": "2026-10-21T00:11:42.9610668Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:40.835Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 535,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 41176,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:43.4132506Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:41.482Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 647,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 43792,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:43.0335513Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:42.173Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 691,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 46456,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:43.4230745Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:42.684Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 511,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 42612,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:46.9723661Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:43.727Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1043,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 42864,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:11:47.0441050Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:44.963Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1236,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 40656,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:07.7990980Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:45.492Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 529,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 44300,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:07.8620318Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:45.956Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 464,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 46580,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:07.8385133Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:46.580Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 625,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 25136,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:09.5950504Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:47.142Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 561,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 19072,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:13.4428118Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:47.622Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 480,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 30008,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:13.4250975Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:48.181Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 559,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 2416,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:14.0935169Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:48.700Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 519,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 28212,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:14.0541061Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:49.153Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 453,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 46956,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:14.1063803Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:49.619Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 466,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 22764,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:14.5280278Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:50.408Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 790,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 2920,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:16.7697738Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:51.721Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1312,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 14908,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:16.7841056Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:52.722Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1001,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 33940,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:16.7341683Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:53.241Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 519,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 35436,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:17.3014389Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:53.836Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 595,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 38192,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:19.6543080Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:54.350Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 514,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 45572,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:19.6704410Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:54.867Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 517,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 41144,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:19.9739179Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:55.641Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 774,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 30004,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:20.6949908Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:56.176Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 535,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 45580,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:23.6114083Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:56.744Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 568,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 33480,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:23.8720279Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:57.372Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 628,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 44036,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:23.8867662Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:58.063Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 691,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 44068,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:24.5818014Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:14:58.868Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 805,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 6076,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:26.3564304Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:15:00.129Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1261,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 30264,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:26.3466358Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:15:01.756Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1627,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 46748,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:26.3121381Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:15:02.534Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 778,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 18168,
+          "parentPid": 38616,
+          "createdAt": "2026-10-21T00:12:26.6227915Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-21T00:15:03.268Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 734,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    ],
+    "allOwnedRootsAbsent": true,
+    "stockGeneratedEngineRestored": true,
+    "candidateFixturesOutputsProfilesScratchRemoved": true,
+    "publicFilesNeverWritten": true,
+    "observedChromiumBirths": 36,
+    "allObservedChromiumBirthsAbsent": true
+  },
+  "nextActions": [
+    "Do not rebuild the identical candidate or repeat stock metadata-loss checks.",
+    "Before public promotion, verify sample fidelity, duplicate-value serialization, destination-specific aliases/artwork, cancel/write-failure/budget rejection and repeated/stress cleanup.",
+    "Investigate current-browser whole-tree memory with actual typed ownership/lifecycle observations; do not repeat unchanged six-context control or reduce acceptance formula.",
+    "Continue B02-B09 and full54-row audit; no full-goal closure."
+  ],
+  "verification": {
+    "focusedUnits": {
+      "passed": 9,
+      "failed": 0,
+      "skipped": 0
+    },
+    "portableUnits": {
+      "files": 453,
+      "passed": 1363,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 98202.6949,
+      "report": "outputs/reports/2026-10-21-audio-metadata-browser-units.json",
+      "priorHostedFilesKeptPortable": 235,
+      "qualificationFilesNotExecuted": 162
+    },
+    "typescript": "passed --noEmit --incremental false",
+    "eslint": "passed for four changed JavaScript/TypeScript sources",
+    "productionBuild": "passed inside finite browser qualifier",
+    "hostedCIForThisCommit": "not yet run; private native build is not whole-project CI"
+  },
+  "protectedOriginal": {
+    "path": "H:\\Github Repositories\\fileconverter\\test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "notUsedOrModifiedThisCycle": true,
+    "sizeAndSha256VerifiedAfterCycle": true
+  }
+}

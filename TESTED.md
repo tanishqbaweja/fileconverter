@@ -1,5 +1,49 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Candidate Wasm preserves all25 tags in six real browser conversions; memory FAILS
+
+Private no-Docker build39517752087/job118953896038 at e29cc08 completed SUCCESS.
+Downloaded static artifact audited against40 build-source pins and12 artifact
+hashes; compiled C contains exactly three metadata-only edits. Actual Wasm
+initial32MiB/maximum96MiB, codec/settings/I/O/thread limits match public bytes.
+Public C/engines/registry remain unchanged; generated dist assets restored after
+the qualification. Do not restart this completed build or repeat stock failures.
+
+Actual installed headless Chrome155.0.8059.85, production UI/worker/custom AVIO/
+OPFS: six cases PASS in21.8s. All25 exact Unicode/music/custom fields preserved,
+including Vorbis/Opus to FLAC previously losing18. Same bitexact source hashes
+as baseline, candidate asset pins checked before/after, genuine output codecs
+and full independent native decodes pass. Wrong-value negative controls fail as
+required. No native conversion or output-tag repair. All cases have one pending
+write at most, read maximum37086B/write and queue maximum8974B, peak observed
+Wasm32MiB. These small inputs do NOT establish large-file/fidelity acceptance.
+
+Original whole-tree memory gate FAILS580.828125MiB above lower stable blank
+baseline231538688B (peak840581120B),396valid/0unavailable100ms samples. Peak has
+17Chromium processes, including all unknown descendants. Retained blank page
+plus six successive test contexts includes tracing/lifecycle/validator overhead;
+not a one-page comparison or proof that the merge increased memory. No GC,
+process exclusions, baseline replacement or threshold change. No allocation
+cause, speedup, recovery/scaling or public-promotion claim. Do not rerun this
+unchanged six-context control; the next memory investigation needs typed
+ownership/lifecycle observations, retaining the exact original metric.
+
+All six disposable fixture/output/scratch directories removed and OPFS empty;
+three owned launch roots independently absent, generated stock assets restored.
+Small static candidate retained under work/audio-metadata-39517752087 for later
+qualification, not a converted copy. Raw report:
+`outputs/reports/2026-10-21T00-11-22.647Z-audio-metadata-browser-candidate.json`.
+Compact source/build/browser/cleanup evidence:
+`evidence/2026-10-21-audio-metadata-browser-cycle.json`.
+Independent post-run audit verifies all36observed Chromium birth identities
+absent. Protected original2958573265B/SHA31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34
+unchanged. Focused9PASS; TypeScript and focused lint PASS. Whole453-file portable
+suite1363PASS/0fail/0skip in98202.6949ms,235prior hosted files retained;162explicit
+qualification files not executed or implied passed. Inventory proof:
+`outputs/reports/2026-10-21-audio-metadata-browser-units.json`.
+Duplicate serialization, AIFF aliases, artwork, sample fidelity, terminal paths,
+repeat/stress/current memory and promotion remain OPEN; B02-B09 not closed.
+
 ## 2026-10-21 - Actual private bounded audio metadata Wasm build started
 
 Source71004fe pushed to media-options. Isolated build-branche29cc08 at
