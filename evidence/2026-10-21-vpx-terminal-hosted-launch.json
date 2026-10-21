@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "scope": "four previously unexecuted private terminal/recovery browser scenarios; not full CI, chapter or Windows memory acceptance",
+  "statusAtInspection": "in_progress",
+  "run": 39585095646,
+  "job": 119171920923,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39585095646",
+  "branch": "codex/vpx-terminal-20261021",
+  "commit": "075fa6d43e87f3b62cef71b7741a22adb9a8b347",
+  "implementationParent": "e06f43e7526a86eaf182f00598e46b54d3ec833f",
+  "privateCiWorkflowSha256": "b61e307514c51a8460d126835fdb4e093e75f9383cb9eb9e846180d05e9b6d95",
+  "selectedCases": [
+    "mismatched source rejected before encoding",
+    "pre-cancelled job cleans up without claiming mid-conversion cancellation coverage",
+    "bounded selected-destination write failure aborts and removes stage",
+    "real conversion recovers after rejection, pre-cancel and destination failure"
+  ],
+  "nativeArtifactRunReusedWithoutRebuild": 39581181533,
+  "nativeBytesNotModified": true,
+  "compiledSourceCommitFetchedExplicitly": "b53061ba87a310b986ab79a6e12a080a33f58fd5",
+  "mainCiWorkflowUnchanged": true,
+  "isolatedGitIndexRemoved": true,
+  "extraCheckoutOrOriginalFixtureCopy": false,
+  "headless": true,
+  "docker": false,
+  "roughJobEstimateMinutes": "3-5 total for clean install, audit, production build and four small scenarios",
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "chapterFailureStillOpen": true,
+  "next": [
+    "Resume this exact run/job; do not restart because an observation expires",
+    "Inspect terminal result and raw job logs; do not use workflow green to imply skipped build/reproduction/full suites ran",
+    "Read compact private-vpx-terminal artifact only; no generated media should be retained",
+    "If scenarios pass, close only their exact terminal cases; pre-cancel is not mid-conversion cancellation",
+    "Continue the genuine chapter preservation and current-browser whole-tree memory failures plus all original54 requirements"
+  ]
+}

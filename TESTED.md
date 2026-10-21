@@ -2,6 +2,11 @@
 
 ## 2026-10-21 - Four genuine VP8/VP9 decode/encode and control cases PASS; no public promotion
 
+Pushed proof/recoverye06f43e. Four previously unexecuted terminal cases are now
+running in exact private hosted39585095646/job119171920923 at075fa6d4; native
+artifact reused, not rebuilt. No completion/Windows memory/chapter claim. Exact
+scope and resume handle: `evidence/2026-10-21-vpx-terminal-hosted-launch.json`.
+
 Actual production app coordinator/worker/AVIO/staged-save: VP8/VP9 default plus
 320px/4Mbps/15fps/balanced controls all pass full independent decode, exact frame
 counts/intervals/dimensions, original AAC packets and decoded PCM hashes, metadata,

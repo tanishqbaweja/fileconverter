@@ -2,6 +2,13 @@
 
 ## 2026-10-21 - Both software decoders now genuinely pass browser fidelity/controls; chapter and memory still fail
 
+Pushed implementation/proofe06f43e. Exact four-case private hosted recovery
+39585095646/job119171920923 is genuinely live at075fa6d4, reusing actual compiled
+artifact39581181533 without another native rebuild. Original CI remains unchanged;
+private Git-index staging removed without another checkout/original fixture copy.
+No terminal-case pass, chapter or Windows memory claim yet. Resume this exact
+handle: `evidence/2026-10-21-vpx-terminal-hosted-launch.json`.
+
 Four real production coordinator/worker/AVIO/staged-save cases PASS: VP8 and VP9,
 default and combined nondefault controls.48frames/24fps or30frames/15fps, expected
 dimensions, exact frame intervals, unchanged AAC packets AND decoded PCM hashes,
