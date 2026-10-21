@@ -1,4 +1,4 @@
-import { readPreCatalogueUi } from "./helpers/historical-published-ui.mjs";
+import { readPreCatalogueUi, readPreSafetyPrivacySuite } from "./helpers/historical-published-ui.mjs";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
@@ -7,7 +7,8 @@ import test from "node:test";
 import { makeStaticUiOriginalDriver } from "../scripts/lib/mpeg2-static-ui-original-recipe.mjs";
 const root = path.resolve(import.meta.dirname, "..");
 const archivedUi = new Set(["app/converter/ConverterApp.tsx", "app/converter/PublishedFormatsCatalogue.tsx", "app/globals.css"]);
-const read = async file => archivedUi.has(file) ? Buffer.from(await readPreCatalogueUi(file)) : readFile(path.join(root, file));
+const read = async file => file === "tests/browser/privacy-offline.spec.ts" ? Buffer.from(await readPreSafetyPrivacySuite())
+  : archivedUi.has(file) ? Buffer.from(await readPreCatalogueUi(file)) : readFile(path.join(root, file));
 const golden = JSON.parse(await read("evidence/ui-matrix-golden-regression-2026-10-07.json"));
 const privacy = JSON.parse(await read("evidence/ui-privacy-offline-2026-10-06T21-40-31-968Z.json"));
 test("Historical UI change retains five real private conversion/recovery goldens, not original/fulltree acceptance", async () => {

@@ -1,14 +1,15 @@
 import { chromium, expect, test, type BrowserContext, type Page } from "@playwright/test";
 import { existsSync } from "node:fs";
-import { mkdir, rm } from "node:fs/promises";
 import path from "node:path";
+import { createOwnedRuntimeScratch } from "../../scripts/lib/owned-runtime-scratch.mjs";
+import { inspectStressHostMemory } from "../../scripts/lib/host-memory-preflight.mjs";
 
 const projectRoot = path.resolve(import.meta.dirname, "..", "..");
 const testPort = process.env.WITHIN_TEST_PORT ?? "3000";
 const baseURL =
   process.env.WITHIN_TEST_BASE_URL ?? `http://127.0.0.1:${testPort}`;
 const expectedOrigin = new URL(baseURL).origin;
-const profileRoot = path.join(projectRoot, "work", "playwright-profile-privacy");
+let runtime: Awaited<ReturnType<typeof createOwnedRuntimeScratch>> | undefined;
 const installedChromePath =
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const chromePath =
@@ -178,11 +179,15 @@ async function waitForWorker() {
 }
 
 test.beforeAll(async () => {
-  await rm(profileRoot, { recursive: true, force: true });
-  await mkdir(profileRoot, { recursive: true });
-  context = await chromium.launchPersistentContext(profileRoot, {
+  if (process.platform === "win32") {
+    const memory = await inspectStressHostMemory();
+    expect(memory.safeToStart, JSON.stringify(memory)).toBe(true);
+  }
+  runtime = await createOwnedRuntimeScratch("privacy-offline-");
+  context = await chromium.launchPersistentContext(path.join(runtime.directory, "profile"), {
     executablePath: chromePath,
     headless: true,
+    env: runtime.env,
     baseURL,
     serviceWorkers: "allow",
   });
@@ -201,9 +206,12 @@ test.beforeAll(async () => {
 });
 
 test.afterAll(async () => {
-  await context?.setOffline(false);
-  await context?.close();
-  await rm(profileRoot, { recursive: true, force: true });
+  try {
+    await context?.setOffline(false);
+  } finally {
+    try { await context?.close(); }
+    finally { await runtime?.close(); }
+  }
 });
 
 test("functional browser capability probes pass in production Chrome", async () => {

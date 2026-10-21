@@ -34,6 +34,17 @@ export async function readPreMpeg2JobWorker() {
   return source.toString("utf8");
 }
 
+export async function readPreSafetyPrivacySuite() {
+  const archive = JSON.parse(await readFile(new URL("../../fixtures/source/pre-safety-privacy-suite-2026-10-21.json", import.meta.url), "utf8"));
+  const hash = "348cc0aa666d382255a7b00fa0bca89300bf1aedef21fa4e61fc7e41802c8f5c";
+  assert.equal(archive.schemaVersion, 1); assert.equal(archive.path, "tests/browser/privacy-offline.spec.ts");
+  assert.equal(archive.bytes, 58962); assert.equal(archive.sha256, hash);
+  const compressed = Buffer.from(archive.gzipBase64, "base64"); assert.ok(compressed.length <= 16384);
+  const source = gunzipSync(compressed, { maxOutputLength: 65536 });
+  assert.equal(source.length, archive.bytes); assert.equal(createHash("sha256").update(source).digest("hex"), hash);
+  return source.toString("utf8");
+}
+
 // Explicit adapter for historical evidence tests: the three immutable UI
 // preimages and the exact pre-MPEG2 job worker are archived. Other source pins keep
 // their original filesystem reads and assertions. Never use for live acceptance.

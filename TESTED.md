@@ -1,5 +1,40 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Targeted dependency/security implementation; fresh hosted qualification required
+
+Prior df2be32 hosted39520477124 SUCCESS: clean install/registry/inventory/lint/
+TypeScript/build/literal npm-test1362pass/0fail/1original-fixture skip, then18
+privacy/offline cases34.5s. This validates the prior code, NOT the following edits.
+
+Baseline npm audit32groups (1critical/24high/6moderate/1low). Exact Next16.4.2
+and matching React/DOM/RSC19.2.8 pins remove Next/RSC/PostCSS/nanoid findings;
+fresh audit28groups (0critical/21high/6moderate/1low). No automatic audit fix,
+major framework replacement, forced peers or native-engine changes. Remaining
+findings and actual exposure investigation stay open, not dismissed as dev-only.
+Unused server image transformer removed; host refuses submissions405 without
+reading bodies and image optimizer endpoints404 while retaining security headers.
+
+Focused8tests PASS (five current policy/safety +three historical receipt tests),
+TypeScript and changed-source lint PASS. Local broad suite1366pass/1fail/0skip
+before correction: old Oct6 privacy-source hash compared to current refactored
+suite. Exact58962B/hash348cc0aa... preimage archived for that explicitly historical
+test only, preserving its assertions/receipt. Current live suite is never replaced
+with the archive. No whole-suite pass inferred; fresh hosted run still required.
+
+Local browser attempt interrupted/not counted: free physical RAM~1.02GiB failed
+the external2GiB preflight, but PowerShell incorrectly continued the chain.
+Exact owned launcher42652/birth00:25:22.1869700UTC checked before stopping tree.
+Privacy setup now checks Windows host memory before profile/browser creation and
+uses fresh identity-owned runtime with finally cleanup, not a fixed-profile sweep.
+Owned disposable profile/runtime/npm cache removed; unrelated programs untouched.
+Npm application had also failed lock-save with UNKNOWN/-4094 after installing the
+four expected versions. npm-ls exits0/no missing or invalid root deps; fresh Linux
+npm-ci still required. No Windows full-browser result, memory or speed claim.
+
+Full details, versions/advisory IDs, remaining28groups, qualification scope and
+failures: `SECURITY_REVIEW.md` plus baseline/after-framework audit JSON evidence.
+B08 remains OPEN; B02-B07/B09 and original54requirements unchanged.
+
 ## 2026-10-21 - Candidate Wasm preserves all25 tags in six real browser conversions; memory FAILS
 
 Private no-Docker build39517752087/job118953896038 at e29cc08 completed SUCCESS.

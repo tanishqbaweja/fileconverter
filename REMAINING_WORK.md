@@ -1,5 +1,29 @@
 # Remaining work audit
 
+## 2026-10-21 - B08 critical framework advisory removed; host narrowed to read-only application delivery
+
+Exact Next16.4.2 +React/DOM/RSC19.2.8 pins, compatible lock derivation and removal
+of unused server image transformation implemented. Non-GET/HEAD requests now
+refused without body consumption; framework image optimizers refused, normal
+application/assets and security headers preserved. Audit32→28groups, critical1→0;
+remaining21high/6moderate/1low require exposure review/compatible fixes. No claim
+that dependency labels prove safety. Details and every remaining package group:
+`SECURITY_REVIEW.md` and exact baseline/after-framework JSON audits.
+
+Focused8tests/TypeScript/lint PASS. Broad local1366pass/1fail before correcting
+historical Oct6 source comparison with its exact archived preimage; no assertions
+or historical receipt pins changed. Fresh CI for new dependencies/worker/safety
+still needed; prior df2be32 CI39520477124 passed but does not validate these edits.
+One local browser attempt was stopped after a failed external RAM guard incorrectly
+continued through PowerShell. Not accepted coverage. Guard now inside Windows
+suite setup before any profile/Chromium creation; new owned finally-cleaned
+runtime replaces old fixed-profile deletion. Owned interrupted scratch and npm
+cache cleaned; unrelated processes untouched. Npm install lock-save UNKNOWN error
+also remains explicitly recorded; installed versions/npm-ls checked, clean Linux
+npm-ci must qualify the checked-in lock. No full/current-browser memory, speed,
+native reproduction or B08/full-goal closure. Do not rerun laptop browser tests
+while free physical/virtual RAM is below2GiB; use hosted headless checks instead.
+
 ## 2026-10-21 - Actual changed Wasm/browser text-metadata fix verified privately; memory still fails
 
 The previously live build39517752087 is terminal SUCCESS at e29cc08. Its40

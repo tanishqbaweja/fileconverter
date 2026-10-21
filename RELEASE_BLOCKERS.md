@@ -55,6 +55,14 @@ public engines unchanged. Exact proof/next gates
 
 ## Ordered blockers and exact exit evidence
 
+B08 targeted increment: Next16.4.2/React19.2.8 removes critical framework
+advisory groups; fresh audit32→28 (0critical/21high/6moderate/1low). Server image
+optimizer removed, host submission methods refused without body reads. Focused
+policy/safety/history8PASS/TS/lint; full new hosted qualification pending. Local
+RAM-guard launch-chain mistake stopped/recorded; Windows guard now in setup and
+scratch identity-owned. Exact remaining packages, npm lock-save failure and
+historical-source correction: `SECURITY_REVIEW.md`. B08 stays OPEN.
+
 Latest B05 qualification: completed no-Docker Wasm build39517752087 audited
 (40source/12artifact pins, exactly three C edits, unchanged32/96MiB Wasm limits).
 All six same-input actual browser cases preserve25/25 tags and fully decode,
