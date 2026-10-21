@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Windows AAC source behavior independently measured; hosted cause still unproven
+
+Source-only native diagnostic recreates91331B/SHA6e2baa02. Normal decode96256
+samples/hash0293fc3f; manual decoder trim97280, minus declared1024 gives the exact
+same96256/hash0293fc3f. No browser conversion, source/output substitution, equality
+threshold change or route acceptance. Fixture/scratch finally-cleaned, only compact
+metadata/counts/hashes retained.19 focused tests PASS. Hosted source inspection is
+the next discriminating check; do not rerun unchanged browser/three passed faults.
+`evidence/2026-10-21-aac-source-diagnosis-local.json`.
+
 ## 2026-10-21 - Three real terminal scenarios pass; additional fixture's decoded audio still fails
 
 Hosted39585095646/075fa6d4 terminal FAIL:3PASS/1FAIL15.4s. Source guard, pre-cancel

@@ -1,5 +1,19 @@
 # Remaining work audit
 
+## 2026-10-21 - Exact source-only AAC diagnostic, no browser or Wasm repeat
+
+Windows native source fixture recreates the original91331B/SHA6e2baa02 exactly.
+Normal PCM96256samples/hash0293fc3f matches recorded browser output. Explicit
+manual-skip decode yields97280samples; removing exactly the header/packet-declared
+1024-sample prefix produces the same96256/hash0293fc3f. This establishes local
+validator behavior, NOT the hosted mismatch's cause or a new fidelity pass.
+New bounded diagnostic hashes streaming PCM with no retention/search; cap2MiB,
+chunk256KiB. All native generated source/scratch removed in finally, only compact
+proof retained.19 focused tests pass; public/worker/native engines/registry and
+existing equality assertion unchanged. Next: source-only hosted comparison, no
+browser or expensive rebuild. Full54/B02-B09 unchanged/open. Exact scope:
+`evidence/2026-10-21-aac-source-diagnosis-local.json`.
+
 ## 2026-10-21 - Hosted terminal result:3PASS,1real sample-fidelity comparison FAIL
 
 Exact39585095646/075fa6d4 is terminal FAIL, not live. Three genuine scenarios

@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "scope": "independent native inspection of a deterministic source fixture only; not a browser conversion or fidelity acceptance",
+  "publicAcceptance": false,
+  "sourceFixtureRecreatedExactly": {
+    "bytes": 91331,
+    "sha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9"
+  },
+  "validator": "ffmpeg/ffprobe N-122712-g7e3781e3ca-20260211 Windows",
+  "sourceMetadata": { "sampleRate": 48000, "channels": 1, "initialPaddingSamples": 1024, "firstPacketPtsMs": -21, "firstPacketSkipSamples": 1024, "lastPacketDiscardSamples": 0 },
+  "normalDecode": {
+    "samplesPerChannel": 96256,
+    "pcm16Sha256": "0293fc3f2c5f705d9669cb5d55013bea5c388f36f5e2afac6bbc56490d2007e6",
+    "matchesRecordedWindowsBrowserOutput": true
+  },
+  "manualSkipDecode": {
+    "samplesPerChannel": 97280,
+    "pcm16Sha256": "1e0cac3ee3985efd6069001621e0dcbb079aab4aa7227fd273f2bdb21ec28a2b",
+    "afterExactlyDeclared1024LeadingSamples": {
+      "samplesPerChannel": 96256,
+      "pcm16Sha256": "0293fc3f2c5f705d9669cb5d55013bea5c388f36f5e2afac6bbc56490d2007e6",
+      "matchesNormalSourceAndRecordedWindowsOutput": true
+    }
+  },
+  "limits": { "maximumDecodedFixtureBytes": 2097152, "maximumChunkBytes": 262144, "largestObservedChunkBytes": 65536, "retainedPcmBytes": 0 },
+  "rawReport": "outputs/reports/aac-source-priming-2026-10-21T10-42-49.762Z.json",
+  "fixtureAndScratchRemovedInFinally": true,
+  "productionWorkersPublicWasmRegistryAndFidelityAssertionsChanged": false,
+  "primarySemanticsReference": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavcodec/codec_par.h",
+  "next": "Run the exact same source-only inspection with the hosted validator and its91398-byte source. Only independent sample/metadata evidence may justify a validator correction; do not assume the cause or rerun the unchanged browser failure.",
+  "focusedTests": { "passed": 19, "failed": 0, "skipped": 0 },
+  "fullGoalComplete": false
+}
