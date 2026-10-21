@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Material chapter-end build running; exact original-source validation is next
+
+39623553380/job119302973371 atbf973f73 is live, parent77f8390. Changed MOV expected
+26b81d80, unchanged video wrapper232c1f53. This is a material chapter timeline
+build, not an unchanged rebuild or accepted output. Resume exact handle after
+estimated6–8min total; inspect actual bytes before original multi-track case with
+physical duration evidence. Eight passing unchanged cases reusable in exact scope.
+`evidence/2026-10-21-vpx-chapter-end-build-launch.json`.
+
 ## 2026-10-21 - Serialized AAC duration and chapter absolute-timeline correction prepared together
 
 New independent small-MP4 reader uses <=64B reads/256KiB total metadata, zero media

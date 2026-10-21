@@ -1,5 +1,16 @@
 # Remaining work audit
 
+## 2026-10-21 - Actual chapter-end native build live; no unchanged success repeats
+
+39623553380/job119302973371 atbf973f73 is compiling the material absolute chapter
+timeline correction, parent77f8390. Same wrapper232c1f53, expected MOV26b81d80.
+Main workflow unchanged; isolated index removed, no original-fixture copy. Resume
+exact handle after estimated6–8min total; never restart on observation timeout.
+Audit actual artifact, then original multi-track source with serialized duration/
+exact PCM/trim/1ms video/2ms chapter guards. Reuse eight already-passing unchanged
+cases in their exact scope; no global/public/memory acceptance. Full54/B02-B09 stay
+OPEN. `evidence/2026-10-21-vpx-chapter-end-build-launch.json`.
+
 ## 2026-10-21 - Both remaining multi-track failures now addressed in one prepared cycle
 
 Bounded serialized MP4 first-sample duration reader implemented: actual trun/tfhd/

@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "scope": "material chapter absolute-fragment correction with unchanged video wrapper; not browser acceptance",
+  "statusAtInspection": "in_progress",
+  "run": 39623553380,
+  "job": 119302973371,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39623553380",
+  "branch": "codex/vpx-chapter-end-20261021",
+  "commit": "bf973f730eac6264c997900b228edb708ff2b58f",
+  "implementationParent": "77f8390ce04b62f0f640ae448e66f940550a5c30",
+  "workflowSha256": "b6ca98d65b10ad71e4a427dffa2a624d3dd4acff6c5cb2d6e4d0d56dd90d0579",
+  "startedAt": "2026-10-21T15:12:32Z",
+  "expectedArtifact": "private-vpx-timeline-39623553380",
+  "wrapperExpectedSha256Unchanged": "232c1f532e18fcfd2a24760ab1807bc8438653ad852fb8b8c31aa53d273853cd",
+  "muxExpectedSha256": "26b81d801f494d98e17300e78aa6fed8d84085e175556ad14f0cff8f07c88feb",
+  "estimatedTotalMinutes": "6-8 based on previous native builds; observation timeout is not terminal or permission to restart",
+  "mainWorkflowUnchanged": true,
+  "isolatedIndexRemoved": true,
+  "headless": true,
+  "docker": false,
+  "next": [
+    "Resume exact run/job; audit actual changed mux and unchanged wrapper/config/ABI/heap/quality/threads/I/O",
+    "Run only the original multi-track source with real serialized duration evidence and unchanged full sample/video/chapter checks",
+    "Do not repeat eight unchanged passed cases or claim memory/public/large-file acceptance",
+    "Delete obsolete owned static tools only after replacement is browser-qualified and ownership/hashes are rechecked"
+  ],
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "fullGoalComplete": false
+}
