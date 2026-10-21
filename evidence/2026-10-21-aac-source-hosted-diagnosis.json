@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "scope": "exact independent source-only priming diagnosis and bounded validator correction; browser recovery rerun pending",
+  "run": 39587206156,
+  "job": 119178962581,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39587206156",
+  "conclusion": "success",
+  "commit": "bc543a961c1bd5bec2eeb01c0eed5710d0bf3bdf",
+  "implementationParent": "bfc327310bfc486f9b6fb0d2813d04796a08953e",
+  "privateWorkflowSha256": "f0f15e010161ca02040f83c09c3f09ac875e78c34513446542540871d390f56f",
+  "nativeValidator": "FFmpeg/FFprobe 6.1.1-3ubuntu5, Ubuntu gcc13",
+  "fixture": {
+    "bytes": 91398,
+    "sha256": "a49c52682e4cfc6d43c317792122e57d5f8487610740769263f91fea868cde80",
+    "matchesFailedBrowserSourceExactly": true
+  },
+  "sourceMetadata": {
+    "sampleRate": 48000,
+    "channels": 1,
+    "packets": 95,
+    "initialPaddingSamples": 1024,
+    "firstPtsSeconds": -0.021,
+    "firstPacketSkipSamples": null,
+    "note": "This FFprobe exposes explicit header padding but does not attach packet Skip Samples; missing packet metadata was not reported as an observed zero."
+  },
+  "normalAndManualDecode": {
+    "samplesPerChannel": 97280,
+    "rawPcm16Sha256": "09950a34aef7448f035dfed455adbdd89d4503809f89f8a6653a3bde5ea1c770",
+    "afterExactlyDeclared1024Samples": {
+      "samplesPerChannel": 96256,
+      "pcm16Sha256": "74114f4fafb61584ccde4c5f7057371484fbd4df69fbd9bf97fbf5ce2a22604d",
+      "equalsRecordedBrowserMp4DefaultDecode": true
+    }
+  },
+  "artifact": {
+    "id": 12340556349,
+    "name": "aac-source-diagnosis-39587206156",
+    "archiveBytes": 1227,
+    "digest": "sha256:cebc0f008435cc87c4036e6cff2295928dc2bbda13dc615ef9b4034d3d83f1f9",
+    "downloadedReport": "outputs/reports/aac-source-39587206156/aac-source-priming-2026-10-21T10-48-37.226Z.json",
+    "reportSha256": "e6a801c918dd997e64e94b5937aff447e29fb02ac6ec5a62615ab3a0b6a9ed39"
+  },
+  "validatorCorrection": {
+    "source": "scripts/lib/small-aac-copy-fidelity.mjs",
+    "scope": "AAC-LC Matroska-to-MP4 small fixtures only, up to8 separately selected tracks",
+    "required": [
+      "Exact per-track AAC packet SHA256/order/count",
+      "Original1ms per-packet PTS/DTS/duration guard, unchanged helper",
+      "Exact leading/trailing trim; source header fallback only when explicit initial_padding and negative preroll corroborate it",
+      "Output MP4 trim must be observed, never inferred",
+      "Complete raw manual PCM hash and sample count equality before trim",
+      "Exact hash after metadata-declared prefix, with no offset search or content tolerance",
+      "Raw AAC-LC fixture sample count equals packet count times1024, detecting implicit decoder trim"
+    ],
+    "limits": { "inputFileBytes": 2097152, "packetsPerTrack": 512, "decodedPcmBytes": 2097152, "pcmChunkBytes": 262144, "retainedPcmBytes": 0 },
+    "originalDefaultDecodeComparisonRetainedAsDiagnostic": true,
+    "independentOutputEditListProbedBeforeRawDecodeIgnoresImplicitEditing": true,
+    "noProductionCWorkerWasmRegistryChange": true,
+    "focusedTests": { "passed": 10, "failed": 0, "skipped": 0 },
+    "typescript": "pass",
+    "focusedLint": "pass",
+    "portableInventory": { "files": 461, "qualificationFiles": 162, "allFiles": 623, "inventoryOnlyNotSuiteExecution": true }
+  },
+  "disposableNativeFixtureRemoved": true,
+  "downloadedMediaBytes": 0,
+  "browserRecoveryRerunPending": true,
+  "priorFailedBrowserRunRemainsFailed": 39585095646,
+  "primarySemanticsReference": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavcodec/codec_par.h",
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "chapterFailureStillOpen": true,
+  "fullGoalComplete": false
+}

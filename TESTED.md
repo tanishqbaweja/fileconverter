@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Hosted source diagnosis proves declared AAC priming accounts for the exact mismatch
+
+Source-only39587206156 SUCCESS recreates exact91398B/SHAa49c5268 failing input.
+FFmpeg6.1.1 decodes97280samples, retaining the explicit1024-sample header padding.
+Removing only those declared samples gives96256/hash74114f4f, exactly the recorded
+browser MP4 decode. No native conversion replaced the browser. New bounded small-
+fixture validator requires complete raw PCM hash/count equality, exact declared
+trim, every encoded packet hash and unchanged1ms clocks, for each audio track.
+Original default-decode mismatch remains diagnostic; old browser run remains FAIL.
+10 focused tests/TS/lint PASS;461portable/162qualification inventory, not full run.
+Changed-validator four-case recovery sequence pending; chapter/memory/full54 OPEN.
+`evidence/2026-10-21-aac-source-hosted-diagnosis.json`.
+
 ## 2026-10-21 - Windows AAC source behavior independently measured; hosted cause still unproven
 
 Source-only native diagnostic recreates91331B/SHA6e2baa02. Normal decode96256

@@ -1,5 +1,13 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 diagnosis: source-only39587206156 SUCCESS proves the hosted default-decode
+hash mismatch is precisely the source's declared1024-sample AAC priming. Exact
+96256-sample/hash74114f4f result matches recorded browser MP4. New bounded validator
+requires complete raw PCM identity plus exact trim/packet bytes/original1ms clocks;
+old mismatch retained, old browser run stays FAIL.10focused/TS/lint pass; changed-
+validator recovery browser sequence pending. No production/Wasm/public promotion,
+chapter/memory/full54 closure. `evidence/2026-10-21-aac-source-hosted-diagnosis.json`.
+
 B03 terminal increment: hosted39585095646/075fa6d4 completed3PASS/1FAIL, not live.
 Codec rejection, pre-cancel and bounded write-failure cleanup pass. Real recovery
 conversion completes/full-decodes/preserves video timing and encoded AAC, but

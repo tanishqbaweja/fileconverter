@@ -1,5 +1,20 @@
 # Remaining work audit
 
+## 2026-10-21 - Exact hosted AAC cause established; explicit fidelity validator implemented
+
+Source-only39587206156 SUCCESS: same91398B/SHAa49c5268 source,97280 decoded samples;
+header-declared1024-sample priming removal yields96256/hash74114f4f, exactly the
+already recorded browser MP4 hash. This diagnoses the older native decoder, not
+a new browser acceptance. New small AAC-LC validator compares all raw PCM bytes/
+counts, exact trim and every packet hash with original1ms timing guard; no offset
+search/content tolerance. Probe actual output editing before raw manual decoding.
+Every audio track selected separately.10 focused tests/TS/lint PASS. Inventory
+461portable/162qualification/623total; no fresh whole-suite claim. Hosted browser
+recovery sequence must rerun with changed validator and preceding fault cases.
+No Wasm rebuild or production engine/public registry change. Full54/B02-B09 stay
+OPEN, especially chapter.5→0 and observed389.1875MiB/250. Exact compact proof:
+`evidence/2026-10-21-aac-source-hosted-diagnosis.json`.
+
 ## 2026-10-21 - Exact source-only AAC diagnostic, no browser or Wasm repeat
 
 Windows native source fixture recreates the original91331B/SHA6e2baa02 exactly.

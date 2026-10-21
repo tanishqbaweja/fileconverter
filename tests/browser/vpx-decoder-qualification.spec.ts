@@ -17,6 +17,7 @@ import { inspectInstalledChromePin, assertInstalledChromePinsEqual } from "../..
 import type { VideoConversionOptions } from "../../lib/media-conversion-options";
 import type { VpxQualificationResult } from "../../lib/vpx-qualification-job";
 import type { StartConversionMessage } from "../../lib/conversion-protocol";
+import { validateSmallCopiedAac } from "../../scripts/lib/small-aac-copy-fidelity.mjs";
 
 const root = path.resolve(import.meta.dirname, "../.."), exec = promisify(execFile);
 const sha = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
@@ -83,7 +84,8 @@ test.beforeAll(async () => {
     "workers/random-access-destination.ts", "workers/staged-save.worker.ts", "workers/staged-save-runtime.ts", "lib/staged-worker-coordinator.ts",
     "lib/staged-copy-protocol.ts", "lib/vpx-decoder-policy.ts", "lib/media-native-arguments.ts", "lib/vpx-qualification-job.ts",
     "tests/browser/vpx-decoder-qualification.spec.ts", "scripts/lib/vpx-decoder-artifact.mjs", "scripts/lib/vpx-postbuild-recovery.mjs", "scripts/lib/owned-production-test-server.mjs",
-    "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs", "scripts/lib/windows-tree-monitor.ps1"])
+    "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs", "scripts/lib/windows-tree-monitor.ps1",
+    "scripts/lib/small-aac-copy-fidelity.mjs", "scripts/lib/pcm-prefix-diagnostic.mjs", "scripts/lib/copied-audio-timing.mjs"])
     sourcePins[file] = sha(await readFile(path.join(root, file)));
   report.executedSourcePins = sourcePins;
   if (process.platform === "win32") { browserPin = await inspectInstalledChromePin(); report.browserPin = browserPin; }
@@ -252,8 +254,13 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
     for (let i = 1; i < frames; i++) expect(Math.abs(Number(timing.frames[i].best_effort_timestamp_time) - Number(timing.frames[i - 1].best_effort_timestamp_time) - 1 / fps)).toBeLessThan(0.001);
     const decodedAudioHash = async (file: string) => (await native(["-v", "error", "-i", file, "-map", "0:a", "-c:a", "pcm_s16le", "-f", "streamhash", "-hash", "sha256", "pipe:1"])).stdout.trim();
     const sourceDecodedAudio = await decodedAudioHash(source), outputDecodedAudio = await decodedAudioHash(output);
-    rows.push({ codec, multi, decodedAudio: { source: sourceDecodedAudio, output: outputDecodedAudio } });
-    expect(outputDecodedAudio, "Copied AAC payloads alone do not prove preserved priming/sample fidelity").toBe(sourceDecodedAudio);
+    rows.push({ codec, multi, rawDefaultDecoderComparison: { source: sourceDecodedAudio, output: outputDecodedAudio,
+      identical: sourceDecodedAudio === outputDecodedAudio, note: "Retained diagnostic; old Matroska decoder may leave declared priming in these default samples." } });
+    for (let audioOrdinal = 0; audioOrdinal < original.streams.filter(stream => stream.codec_type === "audio").length; audioOrdinal++) {
+      const exactAac = await validateSmallCopiedAac(source, output, { env, audioOrdinal });
+      rows.push({ codec, multi, exactAacSampleAndTrimValidation: exactAac });
+      expect(exactAac.status, "Every track requires exact PCM/packet bytes, declared trim and1ms clocks").toBe("passed-small-AAC-LC-fixture");
+    }
     rows.push({ codec, options: options ?? "automatic", independentValidation: { fullDecode: true, frames, fps, ssim, audioPacketsIdentical: true,
       sourceBytes: (await lstat(source)).size, outputBytes: (await lstat(output)).size, outputSha256: await hashFile(output) } });
   } finally { validationTarget = undefined; await target.close().catch(() => {}); await rm(output, { force: true }); }
@@ -310,9 +317,9 @@ test.afterAll(async () => {
   cleanup.push(async () => {
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
-    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 19;
+    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 22;
     report.installedChromeBinaryPinsVerified = browserPin ? true : null;
-    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 19 && Boolean(browserPin);
+    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 22 && Boolean(browserPin);
   });
   if (assetIdentity) cleanup.push(async () => {
     const current = await lstat(assetDirectory); expect(current.dev).toBe(assetIdentity!.dev); expect(current.ino).toBe(assetIdentity!.ino);
