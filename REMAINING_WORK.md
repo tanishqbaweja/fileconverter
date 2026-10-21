@@ -1,5 +1,27 @@
 # Remaining work audit
 
+## 2026-10-21 - Changed native audio preservation works; exact MP4 timing remains a real failure
+
+No-Docker39577826452/6f9043c3 SUCCESS; actual40source/14artifact/compiled C/ABI/
+32–96MiB audit passes. Same SHA-pinned VP8 input now yields MPEG4+Aac, identical
+AAC packet hashes,48frames, preserved title/language, full independent decode and
+SSIM>=.98. However strict unchanged frame-interval assertion FAILS by21.077ms;
+output AAC decoded-frame count also differs94→95. Nine other cases NOT executed.
+Whole-tree memory still FAILS at296.12890625MiB; all unknown processes included.
+
+Pinned upstream MOV source identifies the empty-moov/no-edit-list make-zero path
+that stretches the first video sample. Independent same-hash source inspection
+confirms AAC starts-21ms with1024 skip samples at48kHz. New private correction
+implements delayed moov/edit lists, bounded1MiB/1s fragments and exact first AAC
+priming, refusing unsupported layouts. A route-specific component configuration
+removes unrelated codecs without changing this route's input/output/settings or
+public cores. Actual changed build/browser/timing/sample fidelity/memory proof
+pending;14 focused tests/TypeScript/lint PASS. No improvement/public claim yet.
+All disposable media/profiles/scratch/dist assets removed; all11 observed Chrome
+births independently absent. Do not repeat the unchanged timing-failing core.
+Exact artifact/failure/source diagnosis/next gates:
+`evidence/2026-10-21-vpx-preservation-timing-cycle.json`.
+
 ## 2026-10-21 - VPX actual production integration reveals compatible-AAC loss; private native correction implemented
 
 Implementation41d1e51 is pushed to media-options. Exact changed-core no-Docker

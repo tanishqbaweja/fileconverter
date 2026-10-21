@@ -1,5 +1,13 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 newer proof: changed audio-preserving native build39577826452 SUCCESS and
+same-input browser decode/AAC packet preservation/full decode/SSIM>=.98 pass, but
+strict timing FAILS21.077ms, AAC decoded frames differ94→95, and memory FAILS at
+296.12890625MiB. B03/B06 remain OPEN. Source-authenticated delayed-moov/edit-list/
+exact-priming and route-specific codec candidate implemented, not yet compiled or
+browser accepted. No unchanged failed-core repeat or source/output narrowing.
+`evidence/2026-10-21-vpx-preservation-timing-cycle.json` records exact scope/next.
+
 B03 latest: source-specific private VP8/VP9 production dispatch and actual12-vs9
 ABI integration implemented. Real Chrome155 VP8→MPEG4 job completes, but independent
 stream check FAILS because profile4 drops compatible AAC; whole-tree observation

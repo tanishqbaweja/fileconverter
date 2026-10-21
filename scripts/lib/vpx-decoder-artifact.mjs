@@ -6,7 +6,7 @@ import { makeVpxDecoderLibraries, makeVpxDecoderBuildRecipe, verifyVpxDecoderCom
 import { makeVpxDecoderBuildWorkflow } from "./vpx-decoder-build-workflow.mjs";
 import { readWasmMemoryLimits } from "./wasm-memory-limits.mjs";
 import { readEmscriptenExportAbi } from "./wasm-export-abi.mjs";
-import { makeVpxPreservingSource, makeVpxPreservingRecipe, makeVpxPreservingWorkflow } from "../../media/ffmpeg/vpx-preserving-candidate.mjs";
+import { makeVpxPreservingSource, makeVpxPreservingRecipe, makeVpxPreservingWorkflow, makeVpxPreservingLibraries, verifyVpxSpecialistComponents } from "../../media/ffmpeg/vpx-preserving-candidate.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const readTool = async file => { const info = await lstat(file); assert.ok(info.isFile() && !info.isSymbolicLink() && info.size <= 32 * 1024 ** 2); return readFile(file); };
 export async function auditVpxDecoderArtifact(input) {
@@ -14,9 +14,10 @@ export async function auditVpxDecoderArtifact(input) {
   assert.equal(path.dirname(directory), work); assert.equal(directory.toLowerCase(), path.resolve(input).toLowerCase());
   const raw = await readTool(path.join(directory, "build-manifest.json")); assert.ok(raw.length <= 2 * 1024 ** 2);
   const manifest = JSON.parse(raw), pub = JSON.parse(await readTool(path.join(root, "public/engines/remux/build-manifest.json")));
-  const preserving = manifest.engine === "within-remux-private-vpx-preserving";
+  const specialist = manifest.engine === "within-remux-private-vpx-preserving-specialist";
+  const preserving = specialist || manifest.engine === "within-remux-private-vpx-preserving";
   assert.ok(preserving || manifest.engine === "within-remux-private-vpx-software-decoders");
-  const candidate = manifest.candidate; assert.equal(candidate.configureEdits, 2);
+  const candidate = manifest.candidate; assert.equal(candidate.configureEdits, specialist ? 3 : 2);
   assert.equal(candidate.wrapperChanged, preserving);
   for (const flag of ["encoderSettingsChanged", "ioChanged", "memoryLimitsRaised", "browserDecodeVerified", "publicAcceptance"]) assert.equal(candidate[flag], false, flag);
   assert.ok(Object.keys(manifest.sources).length > 10 && Object.keys(manifest.sources).length <= 128);
@@ -33,7 +34,7 @@ export async function auditVpxDecoderArtifact(input) {
   }
   const base = (await readTool(path.join(directory, "build-libraries.base.sh"))).toString();
   assert.equal(base, (await readTool(path.join(root, "media/ffmpeg/build-libraries.sh"))).toString());
-  const libraries = makeVpxDecoderLibraries(base);
+  const libraries = specialist ? makeVpxPreservingLibraries(base) : makeVpxDecoderLibraries(base);
   assert.equal((await readTool(path.join(directory, "build-libraries.vpx.sh"))).toString(), libraries.generated);
   assert.equal(candidate.generatedLibrariesSha256, libraries.generatedSha256);
   const recipeSource = (await readTool(path.join(root, "media/ffmpeg/reproduce-nondocker.sh"))).toString();
@@ -43,14 +44,25 @@ export async function auditVpxDecoderArtifact(input) {
     const derived = makeVpxPreservingSource((await readTool(path.join(directory, "within_remux.vpx-base.c"))).toString());
     assert.equal(compiled.toString(), derived.generated); assert.equal(candidate.preservationParentSha256, VPX_COMPILED_WRAPPER_SHA256);
     assert.equal(candidate.preservationSourceEdits, derived.edits.length);
-    for (const key of ["maxStreams", "maxChapters", "maxInterleaveUs"]) assert.equal(candidate[key], derived[key]);
+    for (const key of ["maxStreams", "maxChapters", "maxInterleaveUs", "maxFragmentBytes", "maxFragmentUs", "delayedMoov", "exactAacPriming"])
+      assert.equal(candidate[key], derived[key]);
   } else assert.equal(sha(compiled), VPX_COMPILED_WRAPPER_SHA256);
   assert.equal(candidate.compiledSourceSha256, sha(compiled));
   const components = verifyVpxDecoderComponents((await readTool(path.join(directory, "config_components.h"))).toString());
-  assert.deepEqual(manifest.enabledDecoders, [...pub.enabledDecoders, "vp8", "vp9"]);
-  assert.deepEqual(manifest.enabledParsers, [...pub.enabledParsers, "vp8", "vp9"]);
+  let inventory = null;
+  if (specialist) {
+    assert.deepEqual(manifest.profiles, ["mkv-vp8-to-mp4-mpeg4", "mkv-vp9-to-mp4-mpeg4"]);
+    assert.deepEqual(manifest.modules[0].profiles, manifest.profiles);
+    inventory = verifyVpxSpecialistComponents((await readTool(path.join(directory, "config_components.h"))).toString());
+    assert.deepEqual(candidate.specialistComponentInventory, inventory);
+    for (const [key, names] of Object.entries(inventory)) assert.deepEqual(manifest[key], names);
+  } else {
+    assert.deepEqual(manifest.enabledDecoders, [...pub.enabledDecoders, "vp8", "vp9"]);
+    assert.deepEqual(manifest.enabledParsers, [...pub.enabledParsers, "vp8", "vp9"]);
+    assert.deepEqual(manifest.enabledEncoders, pub.enabledEncoders);
+  }
   for (const key of ["ffmpegVersion", "ffmpegSourceSha256", "initialWasmMemoryBytes", "maximumWasmMemoryBytes", "avioInputBufferBytes", "avioOutputBufferBytes",
-    "outstandingWrites", "audioFifoMaximumQueuedSamples", "enabledEncoders", "audioEncoderOptions", "videoEncoderOptions", "audioArtworkOptions", "aacEncoderOptions", "opusEncoderOptions", "vorbisEncoderOptions", "mp3EncoderOptions"])
+    "outstandingWrites", "audioFifoMaximumQueuedSamples", "audioEncoderOptions", "videoEncoderOptions", "audioArtworkOptions", "aacEncoderOptions", "opusEncoderOptions", "vorbisEncoderOptions", "mp3EncoderOptions"])
     assert.deepEqual(manifest[key], pub[key], key);
   assert.equal(manifest.modules.length, 1); assert.equal(manifest.modules[0].name, "within-remux");
   assert.equal(manifest.modules[0].videoCodecThreads, 1); assert.equal(manifest.modules[0].wasmPthreadPoolSize, 0);
@@ -60,7 +72,7 @@ export async function auditVpxDecoderArtifact(input) {
   assert.deepEqual(memoryLimits, candidate.wasmMemoryLimits);
   const abi = readEmscriptenExportAbi(mjs.toString(), wasm);
   assert.equal(abi.parameterCount, 12); assert.deepEqual(abi.parameters, Array(12).fill(127)); assert.deepEqual(abi.results, [127]);
-  return { directory, preserving, manifestSha256: sha(raw), components, abi, memoryLimits, compiledSourceSha256: candidate.compiledSourceSha256,
+  return { directory, preserving, specialist, inventory, manifestSha256: sha(raw), components, abi, memoryLimits, compiledSourceSha256: candidate.compiledSourceSha256,
     sourcePinsVerified: Object.keys(manifest.sources).length, artifactPinsVerified: Object.keys(manifest.artifacts).length,
     deliveredArtifacts: { "within-remux.mjs": sha(mjs), "within-remux.wasm": sha(wasm) }, publicAcceptance: false, browserDecodeVerified: false };
 }

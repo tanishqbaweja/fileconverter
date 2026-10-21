@@ -2,6 +2,8 @@
   "schemaVersion": 1,
   "scope": "actual private no-Docker preservation-core build, not successful compilation or browser acceptance",
   "statusAtInspection": "in_progress",
+  "terminalStatus": "success",
+  "terminalProofAndBrowserFailure": "evidence/2026-10-21-vpx-preservation-timing-cycle.json",
   "run": 39577826452,
   "job": 119147665652,
   "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39577826452",

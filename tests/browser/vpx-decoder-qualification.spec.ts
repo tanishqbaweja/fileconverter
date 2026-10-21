@@ -1,4 +1,4 @@
-// Private backend qualification, not public selector, memory or stress acceptance.
+// Private backend qualification, not public selector or large-file/stress acceptance.
 import { chromium, expect, test, type BrowserContext, type Page } from "@playwright/test";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -13,6 +13,7 @@ import { createOwnedRuntimeScratch, finishOwnedCleanup } from "../../scripts/lib
 import { inspectStressHostMemory } from "../../scripts/lib/host-memory-preflight.mjs";
 import { startChromiumMemoryMonitor } from "../../scripts/lib/persistent-chromium-memory.mjs";
 import { stableWindow } from "../../scripts/lib/chromium-private-memory.mjs";
+import { inspectInstalledChromePin, assertInstalledChromePinsEqual } from "../../scripts/lib/installed-chrome-pin.mjs";
 import type { VideoConversionOptions } from "../../lib/media-conversion-options";
 import type { VpxQualificationResult } from "../../lib/vpx-qualification-job";
 import type { StartConversionMessage } from "../../lib/conversion-protocol";
@@ -27,12 +28,14 @@ const logs: string[] = [], workerEvents: Array<{ type: string; url: string; at: 
 const report: Record<string, unknown> = { scope: "private-production-coordinator-CPU-decode-and-MPEG4-encode-small-fixtures",
   publicAcceptance: false, uiPlannerCoverage: false, scalingCoverage: false, headedCoverage: false,
   primaryIncrementalPrivateMiB: null, memoryAcceptance: false,
-  memoryLimitation: "This correctness gate does not measure the required same-instance whole-tree private-memory baseline/peak; Wasm metrics cannot replace it.", rows };
+  memoryLimitation: "Primary memory gate not yet completed. The Windows sampler is unavailable on other platforms; Wasm metrics cannot replace it.", rows };
 let runtime: Awaited<ReturnType<typeof createOwnedRuntimeScratch>> | undefined;
 let server: Awaited<ReturnType<typeof startOwnedProductionTestServer>> | undefined;
 let context: BrowserContext | undefined, page: Page;
 let env: NodeJS.ProcessEnv, assetIdentity: Awaited<ReturnType<typeof lstat>> | undefined;
 let audit: Awaited<ReturnType<typeof auditVpxDecoderArtifact>>;
+let browserPin: Awaited<ReturnType<typeof inspectInstalledChromePin>> | undefined;
+const sourcePins: Record<string, string> = {};
 let validationTarget: Awaited<ReturnType<typeof open>> | undefined;
 let monitor: Awaited<ReturnType<typeof startChromiumMemoryMonitor>> | undefined;
 let monitorTimer: ReturnType<typeof setInterval> | undefined, monitorBusy = false;
@@ -52,9 +55,10 @@ const assetDirectory = path.join(root, "dist/client/engines/vpx");
 const controls: VideoConversionOptions = { codec: "mpeg4", maxWidth: 320, bitRateBps: 4_000_000, frameRateFps: 15, quality: "balanced" };
 const native = (args: string[], executable = "ffmpeg") => exec(executable, args,
   { cwd: root, env, windowsHide: true, timeout: 120_000, maxBuffer: 4 * 1024 ** 2 });
-const probe = async (file: string) => JSON.parse((await native(["-v", "error", "-count_frames", "-show_streams", "-show_format", "-of", "json", file], "ffprobe")).stdout) as {
+const probe = async (file: string) => JSON.parse((await native(["-v", "error", "-count_frames", "-show_streams", "-show_format", "-show_chapters", "-of", "json", file], "ffprobe")).stdout) as {
   streams: Array<{ codec_type: string; codec_name: string; width?: number; height?: number; nb_read_frames?: string; tags?: Record<string, string> }>;
   format: { duration: string; tags: Record<string, string> };
+  chapters: Array<{ start_time: string; end_time: string; tags: Record<string, string> }>;
 };
 test.skip(process.env.WITHIN_PRIVATE_VPX_QUALIFICATION !== "1",
   "Private native candidate requires explicit playwright.vpx.config.ts; not a public support gate");
@@ -74,6 +78,14 @@ test.beforeAll(async () => {
   }
   const disk = await statfs(root); expect(disk.bavail * disk.bsize).toBeGreaterThanOrEqual(2 * 1024 ** 3);
   audit = await auditVpxDecoderArtifact(process.env.WITHIN_VPX_CANDIDATE_DIRECTORY ?? path.join(root, "work/vpx-decoders-39523641019")); report.artifact = audit;
+  for (const file of ["app/converter/ConverterApp.tsx", "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/vpx-core-loader.ts",
+    "workers/random-access-destination.ts", "workers/staged-save.worker.ts", "workers/staged-save-runtime.ts", "lib/staged-worker-coordinator.ts",
+    "lib/staged-copy-protocol.ts", "lib/vpx-decoder-policy.ts", "lib/media-native-arguments.ts", "lib/vpx-qualification-job.ts",
+    "tests/browser/vpx-decoder-qualification.spec.ts", "scripts/lib/vpx-decoder-artifact.mjs", "scripts/lib/owned-production-test-server.mjs",
+    "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs", "scripts/lib/windows-tree-monitor.ps1"])
+    sourcePins[file] = sha(await readFile(path.join(root, file)));
+  report.executedSourcePins = sourcePins;
+  if (process.platform === "win32") { browserPin = await inspectInstalledChromePin(); report.browserPin = browserPin; }
   runtime = await createOwnedRuntimeScratch("vd-");
   env = { ...runtime.env, WRANGLER_SEND_METRICS: "false", NEXT_TELEMETRY_DISABLED: "1",
     NODE_OPTIONS: [process.env.NODE_OPTIONS ?? "", "--import=" + pathToFileURL(path.join(root, "scripts/lib/hidden-unit-subprocesses.mjs")).href].filter(Boolean).join(" ") };
@@ -93,6 +105,14 @@ test.beforeAll(async () => {
       "-metadata:s:a:0", "language=eng", "-fflags", "+bitexact", "-flags:v", "+bitexact", "-flags:a", "+bitexact",
       path.join(runtime.directory, codec + ".mkv")]);
   }
+  if (process.platform === "win32") expect(await hashFile(path.join(runtime.directory, "vp8.mkv")),
+    "Keep the actual AAC-loss reproduction input identical for the changed-core comparison").toBe("6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9");
+  const chapterMetadata = path.join(runtime.directory, "chapters.ffmetadata");
+  await writeFile(chapterMetadata, ";FFMETADATA1\n[CHAPTER]\nTIMEBASE=1/1000\nSTART=500\nEND=1500\ntitle=VPX chapitre café\n");
+  await native(["-v", "error", "-i", path.join(runtime.directory, "vp8.mkv"), "-f", "lavfi", "-i", "sine=frequency=440:sample_rate=48000:duration=2",
+    "-f", "ffmetadata", "-i", chapterMetadata, "-map", "0:v", "-map", "0:a", "-map", "1:a", "-map_metadata", "0", "-map_chapters", "2",
+    "-c", "copy", "-c:a:1", "aac", "-b:a:1", "128k", "-metadata:s:a:0", "language=eng", "-metadata:s:a:1", "language=hin",
+    "-fflags", "+bitexact", "-flags:a", "+bitexact", path.join(runtime.directory, "vp8-multi.mkv")]);
   server = await startOwnedProductionTestServer({ root, directory: runtime.directory, env, port: 3231 });
   for (const [file, hash] of Object.entries(audit.deliveredArtifacts)) {
     const response = await fetch(server.baseURL + "/engines/vpx/" + file);
@@ -100,7 +120,7 @@ test.beforeAll(async () => {
   }
   const installed = "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
   context = await chromium.launchPersistentContext(path.join(runtime.directory, "profile"), {
-    executablePath: process.platform === "win32" && existsSync(installed) ? installed : chromium.executablePath(),
+    executablePath: browserPin?.launcher.path ?? (process.platform === "win32" && existsSync(installed) ? installed : chromium.executablePath()),
     headless: true, env, serviceWorkers: "block" });
   report.browserVersion = context.browser()?.version() ?? null;
   page = context.pages()[0] ?? await context.newPage();
@@ -145,8 +165,8 @@ test.beforeAll(async () => {
   expect(await page.evaluate(async () => { const names = []; for await (const [name] of (await navigator.storage.getDirectory()).entries()) names.push(name); return names; })).toEqual([]);
 });
 
-async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault?: "write", preCancelled = false, wrongProfile = false) {
-  const source = path.join(runtime!.directory, codec + ".mkv");
+async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault?: "write", preCancelled = false, wrongProfile = false, multi = false) {
+  const source = path.join(runtime!.directory, codec + (multi ? "-multi" : "") + ".mkv");
   await page.locator('input[type="file"]').first().setInputFiles(source);
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
   const eventStart = workerEvents.length;
@@ -167,13 +187,13 @@ async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault
     } finally { clearTimeout(timer); }
   }, { codec, options, fault, preCancelled, wrongProfile }) as VpxQualificationResult;
   phase("recovery");
-  rows.push({ codec, options: options ?? "automatic", fault: fault ?? null, preCancelled, wrongProfile, sourceBytes: (await lstat(source)).size,
+  rows.push({ codec, multi, options: options ?? "automatic", fault: fault ?? null, preCancelled, wrongProfile, sourceBytes: (await lstat(source)).size,
     sourceSha256: await hashFile(source), result, workerEvents: workerEvents.slice(eventStart) });
   return { result, source, events: workerEvents.slice(eventStart) };
 }
 
-async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions) {
-  const { result, source, events } = await run(codec, options);
+async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, multi = false) {
+  const { result, source, events } = await run(codec, options, undefined, false, false, multi);
   expect(result.type, JSON.stringify(result)).toBe("complete");
   expect(result.phases).toContain(`Decoding ${codec.toUpperCase()} (CPU) / encoding MPEG-4 MP4`);
   expect(result.phases).toContain("Copying staged MP4 to selected destination");
@@ -204,12 +224,20 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions) 
     rows.push({ codec, options: options ?? "automatic", sourceProbe: original, outputProbe: converted });
     const fps = options ? 15 : 24, frames = options ? 30 : 48;
     expect(original.streams.find(stream => stream.codec_type === "video")!.codec_name).toBe(codec);
-    expect(converted.streams.map(stream => stream.codec_name)).toEqual(["mpeg4", "aac"]);
+    if (multi) {
+      expect(converted.streams.filter(stream => stream.codec_type === "video").map(stream => stream.codec_name)).toEqual(["mpeg4"]);
+      expect(converted.streams.filter(stream => stream.codec_type === "audio").map(stream => stream.codec_name)).toEqual(["aac", "aac"]);
+      expect(converted.streams.every(stream => ["mpeg4", "aac", "bin_data"].includes(stream.codec_name))).toBe(true);
+      expect(converted.streams.filter(stream => stream.codec_type === "audio").map(stream => stream.tags?.language)).toEqual(["eng", "hin"]);
+      expect(converted.chapters).toHaveLength(1); expect(converted.chapters[0].tags.title).toBe(original.chapters[0].tags.title);
+      for (const field of ["start_time", "end_time"] as const)
+        expect(Math.abs(Number(converted.chapters[0][field]) - Number(original.chapters[0][field]))).toBeLessThan(0.002);
+    } else expect(converted.streams.map(stream => stream.codec_name)).toEqual(["mpeg4", "aac"]);
     expect(Number(converted.streams[0].nb_read_frames)).toBe(frames);
     expect(converted.streams[0].width).toBe(options ? 320 : 480); expect(converted.streams[0].height).toBe(options ? 180 : 270);
     expect(converted.streams[1].tags?.language).toBe("eng"); expect(converted.format.tags.title).toBe(original.format.tags.title);
     expect(Math.abs(Number(converted.format.duration) - Number(original.format.duration))).toBeLessThan(0.08);
-    await native(["-v", "error", "-xerror", "-i", output, "-f", "null", "-"]);
+    await native(["-v", "error", "-xerror", "-i", output, "-map", "0:v", "-map", "0:a", "-f", "null", "-"]);
     const audioHash = async (file: string) => (await native(["-v", "error", "-i", file, "-map", "0:a", "-c", "copy", "-f", "streamhash", "-hash", "sha256", "pipe:1"])).stdout.trim();
     expect(await audioHash(output)).toBe(await audioHash(source));
     const selection = options ? "select='eq(n,0)+gt(floor(n*15/24),floor((n-1)*15/24))',scale=320:180:flags=bilinear," : "";
@@ -217,8 +245,13 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions) 
       `[0:v:0]${selection}settb=1/1,setpts=N[ref];[1:v:0]settb=1/1,setpts=N[out];[ref][out]ssim`, "-an", "-f", "null", "-"]);
     const ssim = Number(/All:([0-9.]+)/.exec(comparison.stderr)?.[1]); expect(ssim).toBeGreaterThanOrEqual(0.98);
     const timing = JSON.parse((await native(["-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "json", output], "ffprobe")).stdout) as { frames: Array<{ best_effort_timestamp_time: string }> };
+    rows.push({ codec, multi, validationBeforeTimingAssertion: { fullDecode: true, frames, fps, ssim, audioPacketsIdentical: true, frameTimes: timing.frames } });
     expect(timing.frames.length).toBe(frames);
     for (let i = 1; i < frames; i++) expect(Math.abs(Number(timing.frames[i].best_effort_timestamp_time) - Number(timing.frames[i - 1].best_effort_timestamp_time) - 1 / fps)).toBeLessThan(0.001);
+    const decodedAudioHash = async (file: string) => (await native(["-v", "error", "-i", file, "-map", "0:a", "-c:a", "pcm_s16le", "-f", "streamhash", "-hash", "sha256", "pipe:1"])).stdout.trim();
+    const sourceDecodedAudio = await decodedAudioHash(source), outputDecodedAudio = await decodedAudioHash(output);
+    rows.push({ codec, multi, decodedAudio: { source: sourceDecodedAudio, output: outputDecodedAudio } });
+    expect(outputDecodedAudio, "Copied AAC payloads alone do not prove preserved priming/sample fidelity").toBe(sourceDecodedAudio);
     rows.push({ codec, options: options ?? "automatic", independentValidation: { fullDecode: true, frames, fps, ssim, audioPacketsIdentical: true,
       sourceBytes: (await lstat(source)).size, outputBytes: (await lstat(output)).size, outputSha256: await hashFile(output) } });
   } finally { validationTarget = undefined; await target.close().catch(() => {}); await rm(output, { force: true }); }
@@ -228,6 +261,7 @@ for (const codec of ["vp8", "vp9"] as const) {
   test(`genuine CPU ${codec} decode to MPEG4 with default settings`, async () => validate(codec));
   test(`genuine CPU ${codec} decode preserves nondefault12-argument video controls`, async () => validate(codec, controls));
 }
+test("genuine decode retains both compatible audio tracks, their packet hashes/languages and chapter timing", async () => validate("vp8", undefined, true));
 test("mismatched source rejected before encoding", async () => {
   const { result } = await run("vp8", undefined, undefined, false, true);
   expect(result.type).toBe("error"); if (result.type === "error") expect(result.message).toContain("matching VP8 or VP9");
@@ -261,16 +295,21 @@ test.afterEach(async ({}, testInfo) => {
   const names = await page.evaluate(async () => {
     const directory = await navigator.storage.getDirectory(), names: string[] = [];
     for await (const [name] of directory.entries()) names.push(name);
-    const stages = names.filter(name => name.startsWith("within-stage-mkv-vp"));
+    const unexpected = names.filter(name => name !== "vpx-qualification-output.mp4");
     try { await directory.removeEntry("vpx-qualification-output.mp4"); } catch (error) { if (!(error instanceof DOMException && error.name === "NotFoundError")) throw error; }
     // Failed cleanup is an assertion, not swept away and called successful.
-    return stages;
+    return unexpected;
   });
   expect(names, "production terminal paths must remove their own stages").toEqual([]);
   expect(forbiddenRequests).toEqual([]);
 });
 test.afterAll(async () => {
   const cleanup: Array<() => Promise<unknown>> = [];
+  cleanup.push(async () => {
+    for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
+    if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
+    report.executedSourcesAndBrowserPinsVerified = true;
+  });
   if (assetIdentity) cleanup.push(async () => {
     const current = await lstat(assetDirectory); expect(current.dev).toBe(assetIdentity!.dev); expect(current.ino).toBe(assetIdentity!.ino);
     for (const [file, hash] of Object.entries(audit.deliveredArtifacts)) expect(sha(await readFile(path.join(assetDirectory, file)))).toBe(hash);
@@ -280,7 +319,7 @@ test.afterAll(async () => {
   try {
     clearInterval(monitorTimer); await pendingSample;
     await finishOwnedCleanup([
-      async () => { if (monitor) { await drainMemory(); await monitor.close(); monitor = undefined; } },
+      async () => { if (monitor) { try { await drainMemory(); } finally { await monitor.close(); monitor = undefined; } } },
       async () => { if (context) { await context.close(); context = undefined; } },
       async () => { if (server) { report.serverCleanup = await server.close(); server = undefined; } },
     ]);

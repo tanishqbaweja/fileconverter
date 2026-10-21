@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+## 2026-10-21 - AAC-preserving native core genuinely browser-tested; timing blocks acceptance
+
+Build39577826452/6f9043c3 SUCCESS and actual40source/14artifact/12-argument/32–96MiB
+audit PASS. Identical VP8 fixture91331B now produces MPEG4+Aac525439B:48frames,
+same encoded AAC packet hashes/title/language, full native decode and SSIM>=.98.
+Strict frame timing FAILS by21.077ms; AAC decoded-frame counts94→95 also prevent
+sample-fidelity acceptance. Nine further checks not executed. Whole-tree peak
+296.12890625MiB FAILS250; no faster/large-file/public/full-goal claim.
+
+Exact upstream mux/source-priming diagnosis and private bounded presentation/
+route-specific-core correction implemented;14 focused tests/TypeScript/lint pass,
+changed native build and browser proof pending. Disposable data removed; all11
+observed Chrome births independently absent. Full immutable proof and next gates:
+`evidence/2026-10-21-vpx-preservation-timing-cycle.json`.
+
 ## 2026-10-21 - Real VP8 browser integration diagnoses audio loss, not a promoted route
 
 Actual changed preservation-core build39577826452/job119147665652 is live at

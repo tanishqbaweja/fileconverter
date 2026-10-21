@@ -6,15 +6,15 @@ import { access, readFile, readdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { createOwnedRuntimeScratch } from "../../scripts/lib/owned-runtime-scratch.mjs";
 import { readWasmMemoryLimits } from "../../scripts/lib/wasm-memory-limits.mjs";
-import { makeVpxDecoderLibraries, verifyVpxDecoderComponents, VPX_COMPILED_WRAPPER_SHA256 } from "./vpx-decoder-candidate.mjs";
-import { makeVpxPreservingSource, makeVpxPreservingRecipe } from "./vpx-preserving-candidate.mjs";
+import { verifyVpxDecoderComponents, VPX_COMPILED_WRAPPER_SHA256 } from "./vpx-decoder-candidate.mjs";
+import { makeVpxPreservingSource, makeVpxPreservingRecipe, makeVpxPreservingLibraries, verifyVpxSpecialistComponents } from "./vpx-preserving-candidate.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), output = path.join(root, "work/ffmpeg-nondocker-output");
 const sha = value => createHash("sha256").update(value).digest("hex"), read = file => readFile(path.join(root, file));
 assert.equal(process.platform, "linux");
 assert.equal(sha(await read("media/ffmpeg/build-remux.sh")), "904f06e36b2a3ee4509a7cb8faeda3a375314ffd5d1fd119017eb90ad0bb3a9e");
 for (const directory of [output, path.join(root, "work/ffmpeg-nondocker-build")]) await assert.rejects(access(directory), { code: "ENOENT" });
 const recipe = makeVpxPreservingRecipe((await read("media/ffmpeg/reproduce-nondocker.sh")).toString());
-const libraries = makeVpxDecoderLibraries((await read("media/ffmpeg/build-libraries.sh")).toString());
+const libraries = makeVpxPreservingLibraries((await read("media/ffmpeg/build-libraries.sh")).toString());
 const runtime = await createOwnedRuntimeScratch("vpx-preserving-builder-");
 try {
   await writeFile(path.join(runtime.directory, "package.json"), '{"type":"commonjs"}\n', { flag: "wx" });
@@ -26,7 +26,8 @@ try {
   const compiled = await readFile(path.join(output, "within_remux.vpx.c"), "utf8"); assert.equal(compiled, derived.generated);
   assert.equal(sha(base), VPX_COMPILED_WRAPPER_SHA256);
   assert.equal(await readFile(path.join(output, "build-libraries.vpx.sh"), "utf8"), libraries.generated);
-  const components = verifyVpxDecoderComponents(await readFile(path.join(output, "config_components.h"), "utf8"));
+  const config = await readFile(path.join(output, "config_components.h"), "utf8");
+  const components = verifyVpxDecoderComponents(config), inventory = verifyVpxSpecialistComponents(config);
   const limits = readWasmMemoryLimits(await readFile(path.join(output, "within-remux.wasm")));
   assert.deepEqual(limits, readWasmMemoryLimits(await read("public/engines/remux/within-remux.wasm")));
   const original = JSON.parse(await readFile(path.join(output, "build-manifest.json"))), sources = {}, artifacts = {};
@@ -43,13 +44,16 @@ try {
     assert.ok(entry.isFile() && !entry.isSymbolicLink());
     if (entry.name !== "build-manifest.json") artifacts[entry.name] = sha(await readFile(path.join(output, entry.name)));
   }
-  await writeFile(path.join(output, "build-manifest.json"), JSON.stringify({ ...original, engine: "within-remux-private-vpx-preserving",
-    modules: original.modules.filter(row => row.name === "within-remux"), sources, artifacts,
-    enabledDecoders: [...original.enabledDecoders, "vp8", "vp9"], enabledParsers: [...original.enabledParsers, "vp8", "vp9"],
+  const profiles = ["mkv-vp8-to-mp4-mpeg4", "mkv-vp9-to-mp4-mpeg4"];
+  await writeFile(path.join(output, "build-manifest.json"), JSON.stringify({ ...original, engine: "within-remux-private-vpx-preserving-specialist",
+    modules: original.modules.filter(row => row.name === "within-remux").map(row => ({ ...row, profiles })), sources, artifacts,
+    ...inventory, profiles,
     candidate: { ...components, compiledSourceSha256: sha(compiled), generatedLibrariesSha256: libraries.generatedSha256,
-      generatedRecipeSha256: recipe.generatedSha256, configureEdits: 2, wrapperChanged: true,
+      generatedRecipeSha256: recipe.generatedSha256, configureEdits: 3, wrapperChanged: true, specialistComponentInventory: inventory,
       preservationSourceEdits: derived.edits.length, preservationParentSha256: derived.parentSha256,
       maxStreams: derived.maxStreams, maxChapters: derived.maxChapters, maxInterleaveUs: derived.maxInterleaveUs,
+      maxFragmentBytes: derived.maxFragmentBytes, maxFragmentUs: derived.maxFragmentUs,
+      delayedMoov: derived.delayedMoov, exactAacPriming: derived.exactAacPriming,
       encoderSettingsChanged: false, ioChanged: false, wasmMemoryLimits: limits, memoryLimitsRaised: false,
       browserDecodeVerified: false, publicAcceptance: false } }, null, 2) + "\n");
 } finally { await runtime.close(); }
