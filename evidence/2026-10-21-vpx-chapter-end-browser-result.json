@@ -1,0 +1,440 @@
+{
+  "schemaVersion": 1,
+  "scope": "Original two-audio-track VP8 production-browser conversion; focused correctness pass, not whole-suite or public acceptance",
+  "run": 39624811908,
+  "job": 119307234747,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39624811908",
+  "commit": "4110f72228cd03c55846ed075b3526be08eaa587",
+  "implementationParent": "de131f36b7f24820bc73e71901c89d4eb3802491",
+  "workflowSha256": "663fe02fef55f08b0eae52053393819d60604aafb0c84b12b82a0a0a1e1a9883",
+  "conclusion": "success",
+  "suite": {
+    "passed": 1,
+    "failed": 0,
+    "seconds": 12.9,
+    "unselectedPassingCasesNotRerun": 8
+  },
+  "browser": {
+    "version": "151.0.7922.34",
+    "platform": "hosted Ubuntu",
+    "headless": true,
+    "installedWindowsCoverage": false
+  },
+  "reusedNativeBuild": 39623553380,
+  "artifact": {
+    "directory": "/home/runner/work/fileconverter/fileconverter/work/vpx-chapter-end-39623553380",
+    "preserving": true,
+    "specialist": true,
+    "exactAac": true,
+    "timeline": true,
+    "inventory": {
+      "enabledDecoders": [
+        "aac",
+        "vp8",
+        "vp9"
+      ],
+      "enabledEncoders": [
+        "h263",
+        "mpeg4"
+      ],
+      "enabledDemuxers": [
+        "matroska"
+      ],
+      "enabledMuxers": [
+        "mov",
+        "mp4"
+      ],
+      "enabledParsers": [
+        "aac",
+        "ac3",
+        "vp8",
+        "vp9"
+      ],
+      "enabledBitstreamFilters": [
+        "aac_adtstoasc",
+        "vp9_superframe",
+        "vp9_superframe_split"
+      ]
+    },
+    "recovery": null,
+    "manifestSha256": "d7a0a786da6108b171c28890ccbabea8a28ac81e0e9adb3d0f6ff8f17d50c6ea",
+    "components": {
+      "addedSoftwareDecoders": [
+        "vp8",
+        "vp9"
+      ],
+      "addedParsers": [
+        "vp8",
+        "vp9"
+      ],
+      "av1Implemented": false,
+      "publicAcceptance": false
+    },
+    "abi": {
+      "symbol": "_within_remux",
+      "exportName": "Z",
+      "parameters": [
+        127,
+        127,
+        127,
+        127,
+        127,
+        127,
+        127,
+        127,
+        127,
+        127,
+        127,
+        127
+      ],
+      "results": [
+        127
+      ],
+      "parameterCount": 12
+    },
+    "memoryLimits": [
+      {
+        "imported": true,
+        "initialPages": 512,
+        "maximumPages": 1536,
+        "shared": true
+      }
+    ],
+    "compiledSourceSha256": "232c1f532e18fcfd2a24760ab1807bc8438653ad852fb8b8c31aa53d273853cd",
+    "sourcePinsVerified": 43,
+    "artifactPinsVerified": 16,
+    "deliveredArtifacts": {
+      "within-remux.mjs": "041d608304b42883be28e8c61e2459b6c77f0d9b6b02b4768de72feb836360e6",
+      "within-remux.wasm": "a9cf4acaaf0bc3fcf94fcaef06af9eb3b0488aa65c19462ecf76f6afb45d0689"
+    },
+    "publicAcceptance": false,
+    "browserDecodeVerified": false
+  },
+  "source": {
+    "bytes": 123559,
+    "sha256": "44a80ddbf4cafddd5b70513c8dc5de94c700903839ddacc366d310015fa84b17"
+  },
+  "validation": {
+    "fullDecode": true,
+    "frames": 48,
+    "fps": 24,
+    "ssim": 0.99334,
+    "audioPacketsIdentical": true,
+    "sourceBytes": 123559,
+    "outputBytes": 562217,
+    "outputSha256": "31e62f3891a9b057342221c8a83e96c74a16e92cb922fe5fef4a27b03d7807b2"
+  },
+  "videoTimeline": {
+    "sourceFirstPtsSeconds": 0.021,
+    "outputFirstPtsSeconds": 0.021,
+    "comparedFrames": 48,
+    "maximumTimestampErrorSeconds": 0
+  },
+  "chapters": {
+    "source": [
+      {
+        "id": 1,
+        "time_base": "1/1000000000",
+        "start": 500000000,
+        "start_time": "0.500000",
+        "end": 1500000000,
+        "end_time": "1.500000",
+        "tags": {
+          "title": "VPX chapitre café"
+        }
+      }
+    ],
+    "output": [
+      {
+        "id": 0,
+        "time_base": "1/1000",
+        "start": 500,
+        "start_time": "0.500000",
+        "end": 1500,
+        "end_time": "1.500000",
+        "tags": {
+          "title": "VPX chapitre café"
+        }
+      }
+    ],
+    "unchangedToleranceSeconds": 0.002
+  },
+  "audioLanguages": [
+    "eng",
+    "hin"
+  ],
+  "exactAudio": [
+    {
+      "status": "passed-small-AAC-LC-fixture",
+      "clocks": [
+        {
+          "sourceStreamIndex": 1,
+          "outputStreamIndex": 1,
+          "packets": 95,
+          "maximumPtsErrorSeconds": 0.00033300000000013874,
+          "maximumDtsErrorSeconds": 0.00033300000000013874,
+          "maximumDurationErrorSeconds": 0.00033299999999999996,
+          "initialSkipSamples": 1024
+        }
+      ],
+      "leadingSamples": 1024,
+      "trailingSamples": 0,
+      "rawDecodedSamplesPerChannel": 97280,
+      "audibleSamplesPerChannel": 96256,
+      "completeRawPcmSha256": "09950a34aef7448f035dfed455adbdd89d4503809f89f8a6653a3bde5ea1c770",
+      "audiblePcmSha256": "74114f4fafb61584ccde4c5f7057371484fbd4df69fbd9bf97fbf5ce2a22604d",
+      "sourceTrimProvenance": "explicit-Matroska-initial_padding-at-observed-zero-start",
+      "outputTrimProvenance": "observed-packet-Skip-Samples",
+      "sourceAudibleStartSeconds": 0.021333333333333333,
+      "outputAudibleStartSeconds": 0.021000333333333333,
+      "noContentToleranceOrOffsetSearch": true,
+      "largeFileAcceptance": false,
+      "audioOrdinal": 0,
+      "sourcePcm": {
+        "channels": 1,
+        "bytesPerSample": 2,
+        "decodedBytes": 194560,
+        "decodedSamplesPerChannel": 97280,
+        "rawSha256": "09950a34aef7448f035dfed455adbdd89d4503809f89f8a6653a3bde5ea1c770",
+        "declaredLeadingSamples": 1024,
+        "afterDeclaredPrefixSamplesPerChannel": 96256,
+        "afterDeclaredPrefixSha256": "74114f4fafb61584ccde4c5f7057371484fbd4df69fbd9bf97fbf5ce2a22604d",
+        "largestChunkBytes": 18432,
+        "retainedPcmBytes": 0,
+        "scope": "diagnosis-only-not-a-fidelity-pass-or-automatic-trim-policy"
+      },
+      "outputPcm": {
+        "channels": 1,
+        "bytesPerSample": 2,
+        "decodedBytes": 194560,
+        "decodedSamplesPerChannel": 97280,
+        "rawSha256": "09950a34aef7448f035dfed455adbdd89d4503809f89f8a6653a3bde5ea1c770",
+        "declaredLeadingSamples": 1024,
+        "afterDeclaredPrefixSamplesPerChannel": 96256,
+        "afterDeclaredPrefixSha256": "74114f4fafb61584ccde4c5f7057371484fbd4df69fbd9bf97fbf5ce2a22604d",
+        "largestChunkBytes": 6144,
+        "retainedPcmBytes": 0,
+        "scope": "diagnosis-only-not-a-fidelity-pass-or-automatic-trim-policy"
+      },
+      "durationEvidence": null,
+      "sourceTrim": {
+        "rate": 48000,
+        "channels": 1,
+        "streamIndex": 1,
+        "leading": 1024,
+        "trailing": 0,
+        "headerPadding": 1024,
+        "firstPtsSeconds": 0,
+        "audibleStartSeconds": 0.021333333333333333,
+        "observedPacketSkip": null,
+        "headerFallbackUsed": true,
+        "trimProvenance": "explicit-Matroska-initial_padding-at-observed-zero-start"
+      },
+      "outputTrim": {
+        "rate": 48000,
+        "channels": 1,
+        "streamIndex": 1,
+        "leading": 1024,
+        "trailing": 0,
+        "headerPadding": 0,
+        "firstPtsSeconds": -0.000333,
+        "audibleStartSeconds": 0.021000333333333333,
+        "observedPacketSkip": 1024,
+        "headerFallbackUsed": false,
+        "trimProvenance": "observed-packet-Skip-Samples"
+      }
+    },
+    {
+      "status": "passed-small-AAC-LC-fixture",
+      "clocks": [
+        {
+          "sourceStreamIndex": 2,
+          "outputStreamIndex": 2,
+          "packets": 95,
+          "maximumPtsErrorSeconds": 0.00033299999999999996,
+          "maximumDtsErrorSeconds": 0.00033299999999999996,
+          "maximumDurationErrorSeconds": 0.0003333333333333313,
+          "initialSkipSamples": 1024
+        }
+      ],
+      "leadingSamples": 1024,
+      "trailingSamples": 0,
+      "rawDecodedSamplesPerChannel": 97280,
+      "audibleSamplesPerChannel": 96256,
+      "completeRawPcmSha256": "22e3aa573f6c3d426ac7a729f5bf4d2a32b14f933c7b0a8f7a9db0bbe8791eb2",
+      "audiblePcmSha256": "4e0fd0d95fdb9976b02600413dd0ed19a27dfa3b22a4ce83b6697e2cc3c20f11",
+      "sourceTrimProvenance": "explicit-Matroska-initial_padding-plus-negative-preroll",
+      "outputTrimProvenance": "observed-packet-Skip-Samples",
+      "sourceAudibleStartSeconds": 0.0003333333333333313,
+      "outputAudibleStartSeconds": 3.3333333333135373e-7,
+      "noContentToleranceOrOffsetSearch": true,
+      "largeFileAcceptance": false,
+      "audioOrdinal": 1,
+      "sourcePcm": {
+        "channels": 1,
+        "bytesPerSample": 2,
+        "decodedBytes": 194560,
+        "decodedSamplesPerChannel": 97280,
+        "rawSha256": "22e3aa573f6c3d426ac7a729f5bf4d2a32b14f933c7b0a8f7a9db0bbe8791eb2",
+        "declaredLeadingSamples": 1024,
+        "afterDeclaredPrefixSamplesPerChannel": 96256,
+        "afterDeclaredPrefixSha256": "4e0fd0d95fdb9976b02600413dd0ed19a27dfa3b22a4ce83b6697e2cc3c20f11",
+        "largestChunkBytes": 6144,
+        "retainedPcmBytes": 0,
+        "scope": "diagnosis-only-not-a-fidelity-pass-or-automatic-trim-policy"
+      },
+      "outputPcm": {
+        "channels": 1,
+        "bytesPerSample": 2,
+        "decodedBytes": 194560,
+        "decodedSamplesPerChannel": 97280,
+        "rawSha256": "22e3aa573f6c3d426ac7a729f5bf4d2a32b14f933c7b0a8f7a9db0bbe8791eb2",
+        "declaredLeadingSamples": 1024,
+        "afterDeclaredPrefixSamplesPerChannel": 96256,
+        "afterDeclaredPrefixSha256": "4e0fd0d95fdb9976b02600413dd0ed19a27dfa3b22a4ce83b6697e2cc3c20f11",
+        "largestChunkBytes": 10240,
+        "retainedPcmBytes": 0,
+        "scope": "diagnosis-only-not-a-fidelity-pass-or-automatic-trim-policy"
+      },
+      "durationEvidence": {
+        "originalPresentationDurationSeconds": null,
+        "observedRawDurationSeconds": 0.021333333333333333,
+        "packetSha256": "SHA256:b9fc3dd121baa8c08de3819f89f17b5c35cab29ed9a8a0f68cc30a1711ca6332",
+        "identicalPacketCount": 95,
+        "provenance": "same-file-serialized-fragment-sample-duration-not-an-inferred-value",
+        "serialized": {
+          "sampleDurationTicks": 1024,
+          "timeScale": 48000,
+          "trackId": 3,
+          "firstDecodeTimeTicks": 0,
+          "sourceBox": "trun",
+          "sourceFieldOffset": 3316,
+          "packetCount": 95,
+          "initialSampleTablesEmpty": true,
+          "metadataBytesRead": 1021,
+          "largestReadBytes": 20,
+          "mediaPayloadBytesRead": 0,
+          "scope": "serialized-small-fragmented-MP4-duration-only-not-a-conversion-or-large-file-pass"
+        }
+      },
+      "sourceTrim": {
+        "rate": 48000,
+        "channels": 1,
+        "streamIndex": 2,
+        "leading": 1024,
+        "trailing": 0,
+        "headerPadding": 1024,
+        "firstPtsSeconds": -0.021,
+        "audibleStartSeconds": 0.0003333333333333313,
+        "observedPacketSkip": null,
+        "headerFallbackUsed": true,
+        "trimProvenance": "explicit-Matroska-initial_padding-plus-negative-preroll"
+      },
+      "outputTrim": {
+        "rate": 48000,
+        "channels": 1,
+        "streamIndex": 2,
+        "leading": 1024,
+        "trailing": 0,
+        "headerPadding": 0,
+        "firstPtsSeconds": -0.021333,
+        "audibleStartSeconds": 3.3333333333135373e-7,
+        "observedPacketSkip": 1024,
+        "headerFallbackUsed": false,
+        "trimProvenance": "observed-packet-Skip-Samples"
+      }
+    }
+  ],
+  "metrics": {
+    "inputBytes": 123559,
+    "outputBytes": 562217,
+    "queuedBytes": 0,
+    "peakQueuedBytes": 524288,
+    "pendingOperations": 0,
+    "peakPendingOperations": 1,
+    "maxReadChunkBytes": 65536,
+    "maxWriteChunkBytes": 524288,
+    "elapsedMs": 481.4999414062477,
+    "wasmMemoryBytes": 0,
+    "peakWasmMemoryBytes": 33554432,
+    "wasmMemories": {},
+    "sharedArrayBufferBytes": 4,
+    "activeWorkerCount": 1,
+    "imageWorkingBytes": 0,
+    "scratchBytes": 0,
+    "peakScratchBytes": 562217,
+    "maxScratchReadChunkBytes": 524288,
+    "maxScratchWriteChunkBytes": 524288
+  },
+  "nativeMetrics": {
+    "inputBytes": 123559,
+    "outputBytes": 0,
+    "queuedBytes": 0,
+    "peakQueuedBytes": 262144,
+    "pendingOperations": 0,
+    "peakPendingOperations": 1,
+    "maxReadChunkBytes": 65536,
+    "maxWriteChunkBytes": 262144,
+    "elapsedMs": 442.24000000000524,
+    "wasmMemoryBytes": 33554432,
+    "peakWasmMemoryBytes": 33554432,
+    "wasmMemories": {},
+    "sharedArrayBufferBytes": 33554436,
+    "activeWorkerCount": 1,
+    "imageWorkingBytes": 0,
+    "scratchBytes": 562217,
+    "peakScratchBytes": 562217
+  },
+  "workerEvents": [
+    {
+      "type": "closed",
+      "url": "http://127.0.0.1:3231/assets/conversion.worker-DJf4xHgB.js",
+      "at": 1792596159159
+    },
+    {
+      "type": "created",
+      "url": "http://127.0.0.1:3231/assets/staged-save.worker-D2PhXO0R.js",
+      "at": 1792596159172
+    },
+    {
+      "type": "closed",
+      "url": "http://127.0.0.1:3231/assets/staged-save.worker-D2PhXO0R.js",
+      "at": 1792596159191
+    }
+  ],
+  "report": {
+    "path": "output/playwright/vpx-chapter-end-39624811908/vpx-decoder-qualification-2026-10-21T15-22-29.844Z.json",
+    "bytes": 52112,
+    "sha256": "632b41794c74ad0c1ec6946695918e062b54efb1609525f716b7bc510a47e803",
+    "artifactId": 12356855983,
+    "artifactName": "private-vpx-chapter-end-browser-39624811908",
+    "archiveBytes": 8133,
+    "archiveDigest": "sha256:e7295de29f751741d57401527baf435d97573a5ac6391ab6711d6a1212a0277e"
+  },
+  "cleanup": {
+    "server": {
+      "identity": {
+        "pid": 4371,
+        "parentPid": 4277,
+        "startTicks": "12191"
+      },
+      "ownedRootAbsent": true
+    },
+    "disposableDataRemoved": true,
+    "executedSourcesVerified": true,
+    "executedSourcePinCount": 23,
+    "forbiddenRequests": [],
+    "convertedMediaDownloaded": false
+  },
+  "caveats": [
+    "Previous nine-case run remains 8PASS/1FAIL; this is one focused pass on corrected chapter mux bytes, not a fresh nine-case pass",
+    "Complete Chromium-tree memory unavailable on this hosted platform; Wasm32MiB is not250MiB acceptance",
+    "No global-fastest benchmark, large-file scaling, final UI/planner, AV1 or public promotion established"
+  ],
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "primaryIncrementalPrivateMiB": null,
+  "scalingCoverage": false,
+  "headedCoverage": false,
+  "fullGoalComplete": false
+}

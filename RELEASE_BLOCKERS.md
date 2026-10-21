@@ -1,5 +1,14 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 original multi-track correctness PASS:39624811908/4110f722,1PASS/0FAIL12.9s.
+All48video timestamps exact; both95AAC packets/raw97280samples/trim1024/audible
+96256samples and1ms clocks pass. Chapter start/end.5–1.5/title now pass original2ms
+guard. AAC2 duration independently read from physical trun1024ticks, not inferred.
+23pins/privacy/cleanup pass. Reused39623553380; no rebuild or unchanged8case repeat.
+Not Windows memory/scaling/final UI/AV1/public qualification. B02-B09/full54 OPEN;
+current-release whole-tree250MiB failure remains next decisive gate. Exact receipt:
+`evidence/2026-10-21-vpx-chapter-end-browser-result.json`.
+
 B03 serialized duration reader and chapter absolute-fragment correction prepared
 together; actual2995B native validator reference verifies physical duration without
 payload/DTS guessing, fixture removed.27focused/TS/lint pass. Original video wrapper

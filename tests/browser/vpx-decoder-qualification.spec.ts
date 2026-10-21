@@ -80,7 +80,7 @@ test.beforeAll(async () => {
     report.hostMemory = { freePhysicalBytes: physical, freeVirtualBytes: physical + swap, safeToStart: true };
   }
   const disk = await statfs(root); expect(disk.bavail * disk.bsize).toBeGreaterThanOrEqual(2 * 1024 ** 3);
-  audit = await auditVpxDecoderArtifact(process.env.WITHIN_VPX_CANDIDATE_DIRECTORY ?? path.join(root, "work/vpx-timing-39581181533")); report.artifact = audit;
+  audit = await auditVpxDecoderArtifact(process.env.WITHIN_VPX_CANDIDATE_DIRECTORY ?? path.join(root, "work/vpx-chapter-end-39623553380")); report.artifact = audit;
   for (const file of ["app/converter/ConverterApp.tsx", "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/vpx-core-loader.ts",
     "workers/random-access-destination.ts", "workers/staged-save.worker.ts", "workers/staged-save-runtime.ts", "lib/staged-worker-coordinator.ts",
     "lib/staged-copy-protocol.ts", "lib/vpx-decoder-policy.ts", "lib/media-native-arguments.ts", "lib/vpx-qualification-job.ts",

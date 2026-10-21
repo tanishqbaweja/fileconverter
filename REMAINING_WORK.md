@@ -1,5 +1,23 @@
 # Remaining work audit
 
+2026-10-21 cleanup completed:16924625B of three obsolete native tool copies removed;
+four compact pinned manifests archived, current candidate retained/audited43/16.
+Original test.mkv size/hash/identity/mtime unchanged before/after. Private test
+default now selects retained candidate. No memory/public/full54 closure implied.
+`evidence/2026-10-21-vpx-obsolete-tools-cleanup.json`.
+
+## 2026-10-21 - Focused original two-track conversion now PASS; memory is next
+
+39624811908/4110f722 SUCCESS1PASS/0FAIL12.9s on reused39623553380 native artifact.
+Original multi-track source/48video timestamps/both exact95AAC packet sequences/
+97280raw samples/1024trim/96256audible samples/1ms clocks and.5–1.5s chapter
+preservation now independently pass. Serialized physical AAC2 duration observed,
+not guessed: trun1024ticks/48kHz,1021metadata bytes,0media payload bytes.23source
+pins/privacy/owned cleanup pass. Older8passing cases retained in their exact scope;
+no invented nine-pass run. B03 still needs AV1/final integration/scaling/public gates;
+B06 Windows whole-tree250MiB remains unresolved. All54/B02-B09 stay applicable.
+`evidence/2026-10-21-vpx-chapter-end-browser-result.json`.
+
 ## 2026-10-21 - Actual chapter-end native build terminal SUCCESS; focused original-source check next
 
 39623553380/bf973f73 SUCCESS;43source/16artifact actual C/MOV/config/ABI/32–96MiB

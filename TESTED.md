@@ -1,5 +1,32 @@
 # Tested conversion ledger
 
+Post-cleanup retained-candidate default:24focused tests/0fail/0skip, TypeScript
+and targeted browser-spec lint pass. This is not a fresh full unit/browser suite.
+
+2026-10-21 cleanup: removed three explicitly identified obsolete VPX tool copies,
+16924625B total, after every artifact hash/exact file set and bigint directory
+identity verification. Four compact manifests archived under outputs/reports.
+Current browser-proved candidate retained and43/16audit passes before/after.
+Protected test.mkv2958573265B/SHA31f36695 independently streamed before/after,
+identity/mtime unchanged. No originals or conversion proof deleted; generated
+tools can be rebuilt from pins (not retained in trash). Exact targets/receipt:
+`evidence/2026-10-21-vpx-obsolete-tools-cleanup.json`.
+
+## 2026-10-21 - Original two-track browser case PASS; chapter end and exact AAC duration verified
+
+Hosted39624811908/4110f722 SUCCESS, focused1PASS/0FAIL12.9s. Reused actual
+39623553380 native bytes without rebuilding. Original123559B/SHA44a80ddb source
+produces562217B/SHA31e62f38 MPEG4+bothAAC; full independent decode,48frames/24fps,
+SSIM.993340 and all48video PTS exact (maximum error0). Both95-packet audio tracks
+preserve packet hashes,97280raw samples and exact1024trim/96256audible samples,
+PCM hashes and1ms clocks. Chapters preserve.5–1.5s/title within unchanged2ms.
+AAC2 absent presentation duration remains null; actual serialized trun1024ticks
+at48kHz proves duration using1021metadata bytes/20B reads/zero media payload.
+23source pins/cleanup/server absence/privacy pass. Earlier8passes belong to their
+own binary/run, not a fresh nine-case pass. Hosted Chromium151 is not Windows155
+memory acceptance. Full54/B02-B09/current-memory/scaling/UI/public gates OPEN.
+`evidence/2026-10-21-vpx-chapter-end-browser-result.json`.
+
 ## 2026-10-21 - Chapter-end native build SUCCESS; unchanged video source and changed mux bytes verified
 
 39623553380/bf973f73 SUCCESS;43source/16artifact/C/MOV/config/12i32/32–96MiB audit

@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "status": "completed",
+  "scope": "Three explicitly identified obsolete native tool copies, not user media",
+  "totalBytesRemoved": 16924625,
+  "removed": [
+    { "directory": "work/vpx-timing-39581181533", "bytes": 5187579, "dev": "1887170595", "ino": "3096224749723182", "birthtimeNs": "1792577435090921700", "qualificationManifestSha256": "f74aa913a2497b59f11abb4f78cfca9f219105da802bea785b5e8a9eaacecc58" },
+    { "directory": "work/vpx-aac-39591655669", "bytes": 5867112, "dev": "1887170595", "ino": "2814749773036155", "birthtimeNs": "1792582248652798400", "manifestSha256": "003307831f6c47979e1776ee48d9685965528a31188beefe4658b4c97502f7b2" },
+    { "directory": "work/vpx-timeline-39618541054", "bytes": 5869934, "dev": "1887170595", "ino": "24206848003089295", "birthtimeNs": "1792593994352063700", "manifestSha256": "b3086b72467664a17e9e6a318c8d3c143b59492b51b2a2822d553f80346b465f" }
+  ],
+  "archivedManifests": [
+    { "path": "outputs/reports/vpx-retired-manifests-7J11Vp/vpx-timing-39581181533--build-manifest.json", "bytes": 12559, "sha256": "37bb34cb852d2a72784f1aa93cb67ae5e63c64395c314badc1c51976f5e6b012" },
+    { "path": "outputs/reports/vpx-retired-manifests-7J11Vp/vpx-timing-39581181533--qualification-manifest.json", "bytes": 15290, "sha256": "f74aa913a2497b59f11abb4f78cfca9f219105da802bea785b5e8a9eaacecc58" },
+    { "path": "outputs/reports/vpx-retired-manifests-7J11Vp/vpx-aac-39591655669--build-manifest.json", "bytes": 15521, "sha256": "003307831f6c47979e1776ee48d9685965528a31188beefe4658b4c97502f7b2" },
+    { "path": "outputs/reports/vpx-retired-manifests-7J11Vp/vpx-timeline-39618541054--build-manifest.json", "bytes": 15699, "sha256": "b3086b72467664a17e9e6a318c8d3c143b59492b51b2a2822d553f80346b465f" }
+  ],
+  "safety": {
+    "canonicalDirectChildrenOfApprovedWork": true,
+    "allEntriesRegularAndNonSymlink": true,
+    "exactManifestFileSetsAndEveryArtifactHashVerified": true,
+    "bigintIdentityAndHashesRecheckedImmediatelyBeforeRemoval": true,
+    "allThreeRemovedRootsVerifiedAbsent": true,
+    "broadSweepPerformed": false
+  },
+  "protectedOriginal": {
+    "path": "test.mkv", "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "streamedBeforeAndAfterHashesMatch": true,
+    "identitySizeBirthAndModificationTimeUnchanged": true
+  },
+  "retainedCandidate": {
+    "directory": "work/vpx-chapter-end-39623553380",
+    "manifestSha256": "d7a0a786da6108b171c28890ccbabea8a28ac81e0e9adb3d0f6ff8f17d50c6ea",
+    "beforeAndAfterAudit": "43 source and16 artifact pins verified"
+  },
+  "recovery": "Generated binaries deleted, not moved to trash. Rebuild from pinned historical source/build recipes and archived manifests; conversion proof and original retained."
+}
