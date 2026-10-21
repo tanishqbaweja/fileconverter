@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Three real terminal scenarios pass; additional fixture's decoded audio still fails
+
+Hosted39585095646/075fa6d4 terminal FAIL:3PASS/1FAIL15.4s. Source guard, pre-cancel
+cleanup and one bounded destination-write failure/stage cleanup pass. Recovery
+really encodes VP8→MPEG4+Aac, full-decodes48frames, preserves timing/encoded AAC
+packets and SSIM.993273, but decoded PCM equality fails. Source bytes/hash/native
+fixture generation and Chromium151 differ from the Windows155 four passing cases;
+not a contradiction or proof that either fixture establishes universal fidelity.
+Cause remains unproven; exact assertion is retained. Source95decoded AAC frames
+vs output94 and priming/start-time data recorded for bounded diagnosis.
+
+Fresh install/TS/artifact audit/production build pass; native Wasm not rebuilt.
+Generated media/profiles/scratch/dependencies cleaned; only28675B JSON downloaded.
+No Windows memory, chapter, large-file, public or full-goal acceptance. Exact proof:
+`evidence/2026-10-21-vpx-terminal-hosted-result.json`.
+
 ## 2026-10-21 - Four genuine VP8/VP9 decode/encode and control cases PASS; no public promotion
 
 Pushed proof/recoverye06f43e. Four previously unexecuted terminal cases are now

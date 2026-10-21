@@ -1,5 +1,14 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 terminal increment: hosted39585095646/075fa6d4 completed3PASS/1FAIL, not live.
+Codec rejection, pre-cancel and bounded write-failure cleanup pass. Real recovery
+conversion completes/full-decodes/preserves video timing and encoded AAC, but
+decoded-audio equality fails for its different fixture/validator scope. Cause
+unproven; do not weaken equality or call recovery fully qualified. Chapter and
+Windows memory failures remain open, along with original54/B02-B09. Reuse passing
+evidence and diagnose sample counts/priming metadata rather than rerunning it.
+`evidence/2026-10-21-vpx-terminal-hosted-result.json`.
+
 B03 specific progress: four genuine CPU VP8/VP9→MPEG4 default/control browser
 cases now pass full decode,SSIM>=.98, exact frame timing and decoded-AAC identity.
 B03 still OPEN: chapter-start preservation fails.5→0, terminal/recovery and scaling/

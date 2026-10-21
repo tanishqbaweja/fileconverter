@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "scope": "four genuine private terminal/recovery cases only; not Windows memory, chapter, current-stable compatibility or full CI acceptance",
+  "run": 39585095646,
+  "job": 119171920923,
+  "commit": "075fa6d43e87f3b62cef71b7741a22adb9a8b347",
+  "conclusion": "failure",
+  "passed": 3,
+  "failed": 1,
+  "browserSeconds": 15.4,
+  "browserVersion": "151.0.7922.34",
+  "pinnedWindows155ResultsNotRelabelledCrossBrowserAcceptance": true,
+  "freshInstallTypeScriptNativeArtifactAuditAndProductionBuild": "passed",
+  "nativeWasmRebuilt": false,
+  "nativeBytes": "cb557470209ddb21d379ec5a48149741defeb604df686d15ff5a77ed9ad86c1d",
+  "passingScenarios": [
+    { "name": "matching source-codec guard", "result": "error before native allocation or encoding", "nativeMetrics": null },
+    { "name": "pre-cancelled job", "result": "cancelled", "scratchBytes": 0, "midConversionCancellationNotProven": true },
+    { "name": "bounded selected-destination write failure", "result": "error after one524288-byte write", "scratchBytes": 0, "pendingOperations": 0, "finalWasmBytes": 0, "peakWasmMiB": 32 }
+  ],
+  "recoveryScenario": {
+    "status": "browser conversion completes but decoded-audio equality assertion fails",
+    "sourceBytes": 91398,
+    "sourceSha256": "a49c52682e4cfc6d43c317792122e57d5f8487610740769263f91fea868cde80",
+    "differentFromWindowsFixture": true,
+    "outputBytes": 525734,
+    "browserElapsedMs": 612.6401464843657,
+    "sourceCodec": "vp8",
+    "outputVideoCodec": "mpeg4",
+    "outputAudioCodec": "aac",
+    "frames": 48,
+    "fps": 24,
+    "frameIntervalsPassed": true,
+    "independentFullDecodePassed": true,
+    "ssim": 0.993273,
+    "ssimThreshold": 0.98,
+    "encodedAacPacketHashesIdentical": true,
+    "sourceDecodedPcm16Sha256": "09950a34aef7448f035dfed455adbdd89d4503809f89f8a6653a3bde5ea1c770",
+    "outputDecodedPcm16Sha256": "74114f4fafb61584ccde4c5f7057371484fbd4df69fbd9bf97fbf5ce2a22604d",
+    "decodedAudioEqualityPassed": false,
+    "sourceAudioProbe": { "initialPadding": 1024, "startSeconds": -0.021, "decodedFrames": 95 },
+    "outputAudioProbe": { "initialPadding": 0, "startSeconds": 0, "decodedFrames": 94 },
+    "causeNotYetProven": true,
+    "nextDiagnosis": "Compare bounded PCM frame/sample counts and container priming/end-padding metadata, plus validator-version behavior. Do not assume worker contamination, trailing padding, or validator bug, and do not remove the exact fidelity assertion without independent proof."
+  },
+  "rawProof": {
+    "artifactId": 12338678742,
+    "artifactName": "private-vpx-terminal-39585095646",
+    "archiveBytes": 5955,
+    "archiveDigest": "sha256:f3ca8d0a5fdc9d1c70ecb73fb01411aa838cb1d6bfe36a43422955b119892f3b",
+    "report": "output/playwright/vpx-terminal-39585095646/vpx-decoder-qualification-2026-10-21T10-32-25.345Z.json",
+    "reportBytes": 28675,
+    "reportSha256": "775a09a6470f06f14619b3520cc869ff4a26ffc2a1a6568f56b1df42da9f5dda",
+    "sourcePinsVerified": true,
+    "windowsBinaryMemoryPins": null
+  },
+  "cleanup": {
+    "disposableMediaProfilesAndScratchRemoved": true,
+    "ownedServerRootAbsent": true,
+    "hostedCandidateDependenciesAndCachesRemoved": true,
+    "retainedLocally": "compact28675-byte JSON report only; no media downloaded"
+  },
+  "nonCoverage": {
+    "windows250MiBAcceptance": false,
+    "chapterFailureClosed": false,
+    "fullUiPlannerAcceptance": false,
+    "stressScalingAcceptance": false,
+    "publicAcceptance": false,
+    "fullOriginalGoalComplete": false
+  },
+  "remaining": [
+    "Preserve chapter start0.5s instead of silently changing it to0",
+    "Diagnose this additional AAC decoded-sample comparison under its actual source/validator/browser scope",
+    "Fix retained/repeated-job complete-Chromium memory excess without omitting processes or weakening the formula",
+    "Actual mid-conversion cancellation, quota/permission/reload/batch and larger-file qualification remain required",
+    "All full54 requirements and B02-B09 remain open; do not repeat the three unchanged passing terminal scenarios as diagnosis"
+  ]
+}

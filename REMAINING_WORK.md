@@ -1,5 +1,25 @@
 # Remaining work audit
 
+## 2026-10-21 - Hosted terminal result:3PASS,1real sample-fidelity comparison FAIL
+
+Exact39585095646/075fa6d4 is terminal FAIL, not live. Three genuine scenarios
+pass: mismatched codec rejected before native allocation, pre-cancel cleanup,
+and one bounded selected-destination write failure with stage/Wasm/pending0.
+Recovery then completes real VP8→MPEG4+Aac with valid48frames/timing/full decode/
+SSIM.993273 and identical AAC packets, but decoded PCM hashes differ. Hosted
+fixture91398B/SHAa49c5268 differs from Windows91331B/SHA6e2baa02; bundled Chromium
+151 also differs from pinned Windows155. Source AAC probe95frames/start-.021s
+versus MP494/start0 is a diagnosis lead, not proven native/validator cause.
+Do not relabel this as full recovery/fidelity success or remove the assertion.
+
+Native artifact reused without rebuilding. Fresh install/TS/audit/build pass;
+media/profiles/scratch/candidate/browser caches removed. Only28675B compact proof
+downloaded. No Windows memory/chapter/full-public acceptance. Original full54 and
+B02-B09 remain open. Preserve the three passing scenarios; next work should
+diagnose exact sample counts/priming/end-padding/validator behavior, chapter timing
+and repeated-job whole-tree memory, not unchanged successful repetitions.
+`evidence/2026-10-21-vpx-terminal-hosted-result.json`.
+
 ## 2026-10-21 - Both software decoders now genuinely pass browser fidelity/controls; chapter and memory still fail
 
 Pushed implementation/proofe06f43e. Exact four-case private hosted recovery
