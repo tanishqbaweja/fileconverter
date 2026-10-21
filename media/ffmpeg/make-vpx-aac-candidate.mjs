@@ -1,0 +1,14 @@
+import assert from "node:assert/strict";
+import { readFile, realpath, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { makeVpxAacSource, makeVpxAacMuxSource } from "./vpx-aac-candidate.mjs";
+const root = path.resolve(import.meta.dirname, "../.."), build = path.join(root, "work/ffmpeg-nondocker-build");
+assert.equal(await realpath(build), build);
+const mux = process.argv[2] === "--mux"; assert.equal(process.argv.length, mux ? 4 : 3);
+const file = path.resolve(process.argv[mux ? 3 : 2]);
+assert.equal(file, path.join(build, mux ? "ffmpeg/libavformat/movenc.c" : "within_remux.c"));
+const input = await readFile(file, "utf8");
+const derived = mux ? makeVpxAacMuxSource(input, await readFile(path.join(root, "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch"), "utf8")) : makeVpxAacSource(input);
+if (mux) await writeFile(path.join(build, "movenc.vpx-base.c"), input, { flag: "wx" });
+await writeFile(file, derived.generated);
+console.log(JSON.stringify({ mux, sourceSha256: derived.generatedSha256, edits: derived.edits.length, publicAcceptance: false }));

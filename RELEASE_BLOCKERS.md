@@ -1,5 +1,11 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 zero-start AAC correction now implemented as a separately audited private
+candidate, reusing exact MOV edit-list priming patch without moving zero/positive
+packet clocks.12focused/TS/lint/Bash syntax pass; original candidate audit remains
+valid. Changed compilation/browser/chapter/memory acceptance pending; no public
+promotion. `evidence/2026-10-21-vpx-exact-aac-preparation.json`.
+
 B03 source diagnosis39590445802 SUCCESS identifies exact rejected source layout:
 AAC track1 has initial_padding1024 at firstDTS0; track2 starts-21ms. Current private
 negative-preroll-only guard cannot handle track1. Next use precise AAC edit-list

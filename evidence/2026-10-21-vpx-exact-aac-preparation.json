@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "scope": "private implementation for exact zero/positive-start AAC edit-list priming; compilation/browser/memory acceptance pending",
+  "motivatingFailure": "evidence/2026-10-21-vpx-multitrack-source-hosted.json",
+  "implementation": {
+    "helper": "media/ffmpeg/vpx-aac-candidate.mjs",
+    "builder": "media/ffmpeg/build-vpx-aac-candidate.mjs",
+    "cli": "media/ffmpeg/make-vpx-aac-candidate.mjs",
+    "originalPreservingHelperBuilderAndCandidateUnchanged": true,
+    "zeroOrPositiveFirstAacPacketClocksShifted": false,
+    "existingNegativePrerollSubMillisecondCorrectionRetained": true,
+    "strictConflictingHeaderPacketTrimMalformedMetadataMissingClocksAndOneSecondCaps": true,
+    "samplePrecisionTrimRepresentedInMp4EditList": true,
+    "encoderSettingsBuffersThreadsAndMemoryLimitsChanged": false
+  },
+  "authenticatedNativeDerivation": {
+    "wrapperParentSha256": "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd",
+    "wrapperSha256": "bc03d60bf81f44d900b196b0872da93ba443c746dfe8ef21b63d58eec1c30463",
+    "wrapperEdits": 8,
+    "muxParentSha256": "d7aa80a99efecf757100dbd6d9d7adb84d263cbeed0603873206975405907068",
+    "muxSha256": "f927c6e1919a17186cade3b67565f4f418c3247b464e92f4f0a9eaeafdac1d6e",
+    "existingPatch": "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch",
+    "patchSha256": "f6c9ab0dfe0a918e6e197f779d77b58b4f7e0e525ba4e72d6ed6375a5ed3381a",
+    "muxExactReversibleHunks": 2,
+    "recipeSha256": "2e6e5f2c42d05df2473a57dc32e3d8b7d987714b606009e9ff9edb52b865ed7e",
+    "upstreamSourceFetchedAndAuthenticated": true,
+    "upstream": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/movenc.c",
+    "recipeBashSyntax": "pass"
+  },
+  "regression": {
+    "focusedTests": { "passed": 12, "failed": 0, "skipped": 0 },
+    "typescript": "pass",
+    "focusedLint": "pass",
+    "existingCandidateStillAudits": { "sourcePins": 40, "artifactPins": 15, "wasmSha256": "cb557470209ddb21d379ec5a48149741defeb604df686d15ff5a77ed9ad86c1d" }
+  },
+  "newNativeCompilationPending": true,
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "chapterFailureStillOpen": true,
+  "fullGoalComplete": false
+}

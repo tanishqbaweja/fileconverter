@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Private exact AAC edit-list implementation prepared, not yet compiled
+
+New isolated VPX candidate retains zero/positive first AAC packet clocks, validates
+explicit header/packet trim and keeps old negative-preroll tick correction. Uses
+existing exact AAC MOV patch, two exact reversible hunks on authenticated upstream
+SHA d7aa80a9→f927c6e1; actual wrapper ff8926c9→bc03d60b. No encoder/buffer/thread/
+heap changes or public promotion.12focused tests/TS/lint/Bash syntax PASS; original
+candidate still independently audits40sources/15artifacts and unchanged Wasm.
+Changed native compile/browser/chapter/memory/scaling gates pending. Full proof:
+`evidence/2026-10-21-vpx-exact-aac-preparation.json`.
+
 ## 2026-10-21 - Exact hosted two-track source identifies the priming guard mismatch
 
 Source-only39590445802/4a1916a4 SUCCESS recreates123559B/SHA44a80ddb exactly. Both

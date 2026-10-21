@@ -1,5 +1,18 @@
 # Remaining work audit
 
+## 2026-10-21 - Evidence-directed zero-start AAC native correction implemented privately
+
+Separate vpx-aac helper/CLI/builder derives authenticated wrapper and existing
+exact MOV edit-list patch without changing original preserving sources/candidate.
+Zero/positive first DTS stays unchanged; conflicting or malformed trim/unavailable
+clocks are refused; old bounded negative-preroll precision retained. Actual mux
+source SHA d7aa80a9→f927c6e1 and wrapper ff8926c9→bc03d60b, exact reversible edits.
+12focused tests/TS/lint/Bash syntax PASS. Old candidate40source/15artifact audit
+still passes. No buffers/encoder/threads/heap change. Compile only this material
+change next; both original multi-track source cases and chapter2ms/audio1ms/raw
+PCM/trim assertions must remain. Chapter/memory/full54/B02-B09 still OPEN.
+`evidence/2026-10-21-vpx-exact-aac-preparation.json`.
+
 ## 2026-10-21 - Hosted source timestamp layout now known; next native change is evidence-directed
 
 Source-only39590445802/4a1916a4 SUCCESS reproduces exact123559B/SHA44a80ddb.
