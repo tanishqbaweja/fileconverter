@@ -245,6 +245,7 @@ jobs:
           if-no-files-found: ignore
 
   audio-destination-scopes:
+    name: Focused media synchronization recovery (eight cases, not full CI)
     if: github.event_name == 'workflow_dispatch' && inputs.engine == 'audio-destination-scopes'
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -268,21 +269,21 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
 
-      - name: Run only genuine browser destination-scope checks
+      - name: Run eight genuine media recovery checks, not full-suite acceptance
         shell: bash
         run: |
           task_browser_tmp="$(mktemp -d "$GITHUB_WORKSPACE/work/t.XXXXXX")"
           trap 'rm -rf -- "$task_browser_tmp"' EXIT
           TMPDIR="$task_browser_tmp" TEMP="$task_browser_tmp" TMP="$task_browser_tmp" \
-            npx playwright test tests/browser/audio-destination-scopes.spec.ts
+            npx playwright test tests/browser/media-remux.spec.ts --grep 'browser FFmpeg (coalesces PCM packets for a bounded direct WAV save|flushes (a bounded direct (M4A|FLAC) save correctly|coalesced AIFF PCM through a bounded direct save|bounded (AMR-NB|MP3) packets through a direct save))|browser planner automatically replaces incompatible'
 
-      - name: Retain compact scope results, never generated media
-        if: always()
+      - name: Retain focused media failure traces only
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: audio-destination-scopes-${{ github.run_id }}
-          path: output/playwright/audio-destination-scopes-*.json
-          if-no-files-found: warn
+          name: focused-media-regression-${{ github.run_id }}
+          path: output/playwright/artifacts
+          if-no-files-found: ignore
           retention-days: 1
 
       - name: Remove owned browser dependencies and caches
