@@ -1,5 +1,12 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 chapter-only diagnosis39589635671/24e45d21 FAILS before output on a distinct
+hosted source's AAC priming-layout guard. Chapter trace/assertion not reached;
+Windows.5→0 chapter failure remains uncorrected. Both actual source hashes pinned
+for native fixture-only inspection, local negative-preroll/skip1024 confirmed on
+both tracks. Inspect hosted layout next; do not repeat unchanged browser/build.
+`evidence/2026-10-21-vpx-chapter-diagnosis-rejected-source.json`.
+
 B03 bounded recovery gate now PASS:39589025192/4da2ae53,4PASS/0FAIL16.1s. Actual
 VP8→MPEG4+Aac output preserves95AAC packet hashes,97280raw PCM samples/hash09950a34
 before trim, exact1024leading/0tail and96256audible samples/hash74114f4f. Video full

@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Chapter-only hosted diagnosis stops at a different AAC source-layout rejection
+
+39589635671/24e45d21 FAILS before output: source123559B/SHA44a80ddb triggers exact
+AAC priming-layout safety refusal. No chapter trace or new chapter acceptance was
+reached. Windows123374B/SHA1705c939 chapter.5→0 failure remains separate/open.
+Both local audio tracks recreated with95packets, initial_padding1024, firstPTS-21ms
+and observed skip1024. Native source-only inspection script now pins both exact
+fixtures; local run/lint pass and generated media finally removed. Hosted source
+layout inspection next, no unchanged browser/Wasm repeat. Failed browser cleanup/
+22source pins pass;9.6KB report only. `evidence/2026-10-21-vpx-chapter-diagnosis-rejected-source.json`.
+
 ## 2026-10-21 - Genuine browser recovery now passes exact raw AAC samples and declared trim
 
 Hosted39589025192/4da2ae53 SUCCESS:4PASS/0FAIL16.1s, after fresh install/TS/audit/

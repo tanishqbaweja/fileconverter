@@ -1,5 +1,18 @@
 # Remaining work audit
 
+## 2026-10-21 - Chapter diagnostic exposes a separate hosted source-layout refusal
+
+One-case39589635671/24e45d21 FAILS: exact123559B/SHA44a80ddb source is refused by
+AAC timestamp/priming guard before output. Chapter trace not reached; original
+2ms assertion and Windows chapter.5→0 failure unchanged. Do not infer a mux fix or
+weaken the guard. New source-only diagnostic recreates/pins both actual fixtures.
+Windows123374B/SHA1705c939 recreation passes: both tracks95packets/header1024/
+firstPTS-21ms/observed skip1024; chapter.5→1.5. Local fixture/scratch finally removed,
+lint pass. Hosted source layout still needs inspection without another browser.
+Browser run22source pins/cleanup/server absence/zero forbidden requests verified;
+only9591B JSON downloaded. Reused Wasm without rebuild; full54/B02-B09 remain OPEN.
+`evidence/2026-10-21-vpx-chapter-diagnosis-rejected-source.json`.
+
 ## 2026-10-21 - Exact sample-fidelity recovery closes its small terminal gate
 
 Changed-validator hosted39589025192/4da2ae53 SUCCESS4PASS/0FAIL16.1s. Prior source-
