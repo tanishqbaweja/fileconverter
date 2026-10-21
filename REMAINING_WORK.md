@@ -1,5 +1,15 @@
 # Remaining work audit
 
+## 2026-10-21 - Nine actual timeline browser cases running on audited existing bytes
+
+39620150626/909506b3 is live, parent0c11c4a; all nine private correctness/controls/
+multi-track/terminal cases selected except unavailable hosted Windows memory.
+No native rebuild, extra checkout or protected-original copy. Main CI unchanged,
+isolated index removed. Original content/video/audio/trim/chapter guards and new
+observed raw-duration requirement retained. Wait estimated3–5min and resume exact
+run; no acceptance claimed before terminal evidence. Full54/B02-B09 stay OPEN.
+`evidence/2026-10-21-vpx-timeline-browser-launch.json`.
+
 ## 2026-10-21 - Actual combined timeline native build SUCCESS; nine real small cases next
 
 39618541054/d9830fc7 SUCCESS. Actual wrapper/MOV/config/12i32/shared32–96MiB and

@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Nine changed-core browser cases dispatched, not yet accepted
+
+Actual39620150626/909506b3 is live for all nine private correctness/control/multi-
+track/terminal cases, excluding unavailable hosted Windows memory. Uses audited
+39618541054 timeline bytes unchanged; no rebuild or protected-original copy. Main
+CI unchanged; isolated index removed. Original fixtures/content/clock/chapter/
+raw-duration guards retained. Resume exact run and inspect terminal proof, no
+restart on observation timeout. `evidence/2026-10-21-vpx-timeline-browser-launch.json`.
+
 ## 2026-10-21 - Combined video/chapter timeline Wasm genuinely compiled and independently audited
 
 39618541054/d9830fc7 SUCCESS; actual43source/16artifact/C/MOV/config/12i32/shared
