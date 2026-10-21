@@ -98,3 +98,79 @@ export function makeVpxAacWorkflow(source) {
       "            work/ffmpeg-nondocker-output/movenc.vpx-base.c\n            work/ffmpeg-nondocker-output/movenc.vpx-aac.c\n"],
   ]);
 }
+
+// Material timeline correction, separately selected from the already measured
+// AAC-only candidate. No extra frame queues, allocations or codec threads.
+export function makeVpxTimelineSource(source, options) {
+  const base = makeVpxAacSource(source, options);
+  const edits = [
+    ["  int64_t next_pts;\n  int frame_rate_limited;\n",
+      "  int64_t next_pts;\n  int preserve_source_timestamps;\n  AVRational input_time_base;\n" +
+      "  int64_t first_source_pts;\n  int frame_rate_limited;\n"],
+    ["    frame_to_encode->pts = pipeline->next_pts++;\n", `    if (pipeline->preserve_source_timestamps) {
+      const int64_t source_pts = pipeline->decoded_frame->best_effort_timestamp;
+      if (source_pts == AV_NOPTS_VALUE || pipeline->input_time_base.num <= 0 ||
+          pipeline->input_time_base.den <= 0) {
+        within_message(2, "Source video timestamps are unavailable; refusing to invent a timeline.");
+        av_frame_unref(pipeline->decoded_frame);
+        return AVERROR_INVALIDDATA;
+      }
+      if (pipeline->first_source_pts == AV_NOPTS_VALUE)
+        pipeline->first_source_pts = source_pts;
+      if (pipeline->frame_rate_limited) {
+        frame_to_encode->pts = av_rescale_q(pipeline->first_source_pts,
+            pipeline->input_time_base, pipeline->encoder->time_base) +
+            av_rescale_q(pipeline->next_pts++, av_inv_q(pipeline->encoder->framerate),
+                         pipeline->encoder->time_base);
+      } else {
+        frame_to_encode->pts = av_rescale_q(source_pts, pipeline->input_time_base,
+                                           pipeline->encoder->time_base);
+      }
+    } else {
+      frame_to_encode->pts = pipeline->next_pts++;
+    }
+`],
+    ["  encoder->time_base = av_inv_q(frame_rate);\n  encoder->framerate = frame_rate;\n",
+      "  // MPEG4's time increment denominator must fit16bits.60000 preserves\n" +
+      "  // millisecond Matroska offsets and divides all offered output rates.\n" +
+      "  encoder->time_base = webm ? av_inv_q(frame_rate) : (AVRational){1, 60000};\n  encoder->framerate = frame_rate;\n"],
+    ["      .next_pts = 0,\n      .frame_rate_limited = av_cmp_q(frame_rate, source_frame_rate) < 0,\n",
+      "      .next_pts = 0,\n      .preserve_source_timestamps = !webm,\n" +
+      "      .input_time_base = input_stream->time_base,\n      .first_source_pts = AV_NOPTS_VALUE,\n" +
+      "      .frame_rate_limited = av_cmp_q(frame_rate, source_frame_rate) < 0,\n"],
+    ['          : "The MPEG-4 profile normalizes variable frame timing to the "\n            "source average frame rate.");\n',
+      '          : "MPEG-4 preserves source timestamps; requested frame-rate "\n' +
+      '            "reduction uses a source-aligned output clock.");\n'],
+  ];
+  const changed = exact(base.generated, edits);
+  return { ...base, ...changed, edits: [...base.edits, ...changed.edits], preserveVideoTimeline: true, videoTimescale: 60000 };
+}
+export function makeVpxTimelineMuxSource(source, patch) {
+  const base = makeVpxAacMuxSource(source, patch);
+  const before = "    track->mode = mov->mode;\n    track->tag = MKTAG('t','e','x','t');\n";
+  const after = "    track->mode = mov->mode;\n" +
+    "    // The extra chapter track bypasses regular-stream timing init. Without\n" +
+    "    // these sentinels its first positive DTS is mistaken for a continuation\n" +
+    "    // from zero and the chapter's initial gap disappears in fragments.\n" +
+    "    if (mov->mode == MODE_MP4 && (mov->flags & FF_MOV_FLAG_FRAGMENT)) {\n" +
+    "        track->start_dts = AV_NOPTS_VALUE;\n        track->start_cts = AV_NOPTS_VALUE;\n" +
+    "        track->end_pts = AV_NOPTS_VALUE;\n        track->dts_shift = AV_NOPTS_VALUE;\n    }\n" +
+    "    track->tag = MKTAG('t','e','x','t');\n";
+  const changed = exact(base.generated, [[before, after]]);
+  return { ...base, ...changed, edits: [...base.edits, ...changed.edits], chapterTimingInitialized: true };
+}
+export function makeVpxTimelineRecipe(source) {
+  const base = makeVpxAacRecipe(source).generated;
+  return exact(base, [
+    ['make-vpx-aac-candidate.mjs" "${BUILD_ROOT}/within_remux.c"', 'make-vpx-aac-candidate.mjs" --timeline "${BUILD_ROOT}/within_remux.c"'],
+    ['make-vpx-aac-candidate.mjs" --mux "${BUILD_ROOT}/ffmpeg/libavformat/movenc.c"',
+      'make-vpx-aac-candidate.mjs" --mux-timeline "${BUILD_ROOT}/ffmpeg/libavformat/movenc.c"'],
+  ]);
+}
+export function makeVpxTimelineWorkflow(source) {
+  const base = makeVpxAacWorkflow(source).generated;
+  return exact(base, [
+    ["node media/ffmpeg/build-vpx-aac-candidate.mjs", "WITHIN_PRIVATE_VPX_TIMELINE=1 node media/ffmpeg/build-vpx-aac-candidate.mjs"],
+    ["name: private-vpx-aac-${{ github.run_id }}", "name: private-vpx-timeline-${{ github.run_id }}"],
+  ]);
+}

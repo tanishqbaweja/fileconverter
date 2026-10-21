@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "scope": "combined private video-origin/chapter-timing correction, not compiled or browser/memory acceptance yet",
+  "motivation": [
+    "evidence/2026-10-21-vpx-exact-aac-browser-result.json",
+    "evidence/2026-10-21-vpx-zero-start-aac-passed-duration-unavailable.json"
+  ],
+  "implementation": {
+    "variant": "WITHIN_PRIVATE_VPX_TIMELINE=1",
+    "helper": "media/ffmpeg/vpx-aac-candidate.mjs",
+    "builder": "media/ffmpeg/build-vpx-aac-candidate.mjs",
+    "distinctArtifactPrefix": "private-vpx-timeline-",
+    "preservesDecodedVideoBestEffortTimestamps": true,
+    "missingVideoTimestampsSafelyRefused": true,
+    "requestedFrameRateReductionAlignedToFirstSourceTimestamp": true,
+    "mpeg4EncoderTimebase": "1/60000",
+    "encoderTimebaseChangedAndDeclared": true,
+    "qualityBitrateGopThreadsUnchanged": true,
+    "noAdditionalFrameAllocationOrQueue": true,
+    "chapterTrackTimingSentinelsInitialized": ["start_dts", "start_cts", "end_pts", "dts_shift"],
+    "chapterCorrectionRestrictedToFragmentedMp4ExtraChapterTrack": true,
+    "aacPreciseTrimCorrectionRetained": true,
+    "originalPreservingCandidateStillSeparate": true,
+    "buffersIoAndWasmLimitsChanged": false
+  },
+  "authenticatedDerivation": {
+    "wrapperParentSha256": "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd",
+    "wrapperSha256": "232c1f532e18fcfd2a24760ab1807bc8438653ad852fb8b8c31aa53d273853cd",
+    "wrapperEdits": 13,
+    "muxParentSha256": "d7aa80a99efecf757100dbd6d9d7adb84d263cbeed0603873206975405907068",
+    "muxSha256": "f94ed7456b1b9ca096cb348db009f49174008a4bfbf4173f64ab83bd4de81157",
+    "muxEdits": "two existing exact AAC patch hunks plus one exact chapter-track initialization",
+    "recipeSha256": "84d7651562a8145f52f76844718d1c187880142b8b15a5e568ff1c75a6af02b4",
+    "bashSyntax": "pass",
+    "mpeg4PrimarySource": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavcodec/mpeg4videoenc.c",
+    "mpeg4DenominatorGuardActuallyInspected": "avctx->time_base.den > (1 <<16)-1 rejects;60000 is within the limit and divides15/24/25/30fps"
+  },
+  "regression": {
+    "focusedTests": { "passed": 24, "failed": 0, "skipped": 0 },
+    "focusedLint": "pass",
+    "typescript": "pass",
+    "originalPreservingCandidateStillAudits": { "sources": 40, "artifacts": 15 },
+    "aacOnlyBinaryEvidenceRemainsHistoricalAtItsExactSourceCommit": true,
+    "doNotClaimCurrentSourceQualificationForOldAacOnly43PinsAfterBuilderHelperEvolution": true
+  },
+  "next": [
+    "Compile this materially changed timeline variant once with the pinned no-Docker SDK",
+    "Audit actual generated wrapper/mux/config/ABI/limits and declared encoder-timebase delta",
+    "Use unchanged original multi-track source and exact raw audio/sample/trim/video/chapter guards",
+    "Run the independent raw duration probe on the same output instead of weakening missing-duration checks",
+    "Retain original250MiB and full-scope gates; no public promotion from small hosted correctness"
+  ],
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "fullGoalComplete": false
+}

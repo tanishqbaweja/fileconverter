@@ -9,13 +9,16 @@ import { readWasmMemoryLimits } from "../../scripts/lib/wasm-memory-limits.mjs";
 import { readEmscriptenExportAbi } from "../../scripts/lib/wasm-export-abi.mjs";
 import { verifyVpxDecoderComponents, VPX_COMPILED_WRAPPER_SHA256 } from "./vpx-decoder-candidate.mjs";
 import { makeVpxPreservingLibraries, verifyVpxSpecialistComponents } from "./vpx-preserving-candidate.mjs";
-import { makeVpxAacSource, makeVpxAacMuxSource, makeVpxAacRecipe, VPX_AAC_PATCH_SHA256 } from "./vpx-aac-candidate.mjs";
+import { makeVpxAacSource, makeVpxAacMuxSource, makeVpxAacRecipe, makeVpxTimelineSource, makeVpxTimelineMuxSource, makeVpxTimelineRecipe, VPX_AAC_PATCH_SHA256 } from "./vpx-aac-candidate.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), output = path.join(root, "work/ffmpeg-nondocker-output");
 const sha = value => createHash("sha256").update(value).digest("hex"), read = file => readFile(path.join(root, file));
 assert.equal(process.platform, "linux");
+assert.ok([undefined, "0", "1"].includes(process.env.WITHIN_PRIVATE_VPX_TIMELINE));
+const timeline = process.env.WITHIN_PRIVATE_VPX_TIMELINE === "1";
+const deriveSource = timeline ? makeVpxTimelineSource : makeVpxAacSource, deriveMux = timeline ? makeVpxTimelineMuxSource : makeVpxAacMuxSource;
 assert.equal(sha(await read("media/ffmpeg/build-remux.sh")), "904f06e36b2a3ee4509a7cb8faeda3a375314ffd5d1fd119017eb90ad0bb3a9e");
 for (const directory of [output, path.join(root, "work/ffmpeg-nondocker-build")]) await assert.rejects(access(directory), { code: "ENOENT" });
-const recipe = makeVpxAacRecipe((await read("media/ffmpeg/reproduce-nondocker.sh")).toString());
+const recipe = (timeline ? makeVpxTimelineRecipe : makeVpxAacRecipe)((await read("media/ffmpeg/reproduce-nondocker.sh")).toString());
 const libraries = makeVpxPreservingLibraries((await read("media/ffmpeg/build-libraries.sh")).toString());
 const runtime = await createOwnedRuntimeScratch("vpx-aac-builder-");
 try {
@@ -24,10 +27,10 @@ try {
   const child = spawn("bash", [script], { cwd: root, windowsHide: true, stdio: "inherit", env: { ...runtime.env,
     WITHIN_BUILD_CORE_FILTER: "within-remux", WITHIN_KEEP_NONDOCKER_OUTPUT: "1", WITHIN_VPX_DECODER_SCRIPT_DIR: path.join(root, "media/ffmpeg") } });
   await new Promise((resolve, reject) => { child.once("error", reject); child.once("exit", (code, signal) => code === 0 ? resolve() : reject(new Error(`Private AAC build exit ${code}/${signal}`))); });
-  const base = await readFile(path.join(output, "within_remux.vpx-base.c"), "utf8"), derived = makeVpxAacSource(base);
+  const base = await readFile(path.join(output, "within_remux.vpx-base.c"), "utf8"), derived = deriveSource(base);
   const compiled = await readFile(path.join(output, "within_remux.vpx.c"), "utf8"); assert.equal(compiled, derived.generated);
   assert.equal(sha(base), VPX_COMPILED_WRAPPER_SHA256);
-  const mux = makeVpxAacMuxSource(await readFile(path.join(output, "movenc.vpx-base.c"), "utf8"),
+  const mux = deriveMux(await readFile(path.join(output, "movenc.vpx-base.c"), "utf8"),
     (await read("media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch")).toString());
   assert.equal(await readFile(path.join(output, "movenc.vpx-aac.c"), "utf8"), mux.generated);
   assert.equal(await readFile(path.join(output, "build-libraries.vpx.sh"), "utf8"), libraries.generated);
@@ -52,7 +55,7 @@ try {
     if (entry.name !== "build-manifest.json") artifacts[entry.name] = sha(await readFile(path.join(output, entry.name)));
   }
   const profiles = ["mkv-vp8-to-mp4-mpeg4", "mkv-vp9-to-mp4-mpeg4"];
-  await writeFile(path.join(output, "build-manifest.json"), JSON.stringify({ ...original, engine: "within-remux-private-vpx-aac-editlist",
+  await writeFile(path.join(output, "build-manifest.json"), JSON.stringify({ ...original, engine: timeline ? "within-remux-private-vpx-timeline" : "within-remux-private-vpx-aac-editlist",
     modules: original.modules.filter(row => row.name === "within-remux").map(row => ({ ...row, profiles })), sources, artifacts, ...inventory, profiles,
     candidate: { ...components, compiledSourceSha256: sha(compiled), generatedLibrariesSha256: libraries.generatedSha256,
       generatedRecipeSha256: recipe.generatedSha256, configureEdits: 3, wrapperChanged: true, specialistComponentInventory: inventory,
@@ -61,6 +64,8 @@ try {
       maxFragmentBytes: derived.maxFragmentBytes, maxFragmentUs: derived.maxFragmentUs,
       delayedMoov: derived.delayedMoov, exactAacPriming: derived.exactAacPriming, exactAacEditList: true,
       muxSourceSha256: mux.generatedSha256, muxParentSha256: mux.parentSha256, muxPatchSha256: VPX_AAC_PATCH_SHA256,
-      encoderSettingsChanged: false, ioChanged: false, wasmMemoryLimits: limits, memoryLimitsRaised: false,
+      preserveVideoTimeline: timeline, videoTimescale: timeline ? derived.videoTimescale : null, chapterTimingInitialized: timeline,
+      encoderSettingsChanged: timeline, encoderQualitySettingsChanged: false, encoderTimebaseChanged: timeline,
+      ioChanged: false, wasmMemoryLimits: limits, memoryLimitsRaised: false,
       browserDecodeVerified: false, publicAcceptance: false } }, null, 2) + "\n");
 } finally { await runtime.close(); }

@@ -1,5 +1,20 @@
 # Remaining work audit
 
+## 2026-10-21 - Joint native video-origin and chapter-track correction prepared
+
+Explicit WITHIN_PRIVATE_VPX_TIMELINE variant now derives from exact AAC candidate.
+Preserve decoded best_effort PTS instead of zero-origin counter; requested frame-
+rate reduction remains source-aligned. Use MPEG4 encoder timebase1/60000 (declared
+timing-setting change), within actual upstream16-bit limit. Initialize the extra
+fragmented MP4 chapter track's NOPTS fields so positive first DTS is not treated as
+continuation from0. No new frame queue/allocation or quality/bitrate/GOP/thread/
+I/O/heap change.24focused/lint/Bash syntax pass, authenticated wrapper232c1f53 /
+MOVf94ed745. Original preserving40source/15artifact audit still valid. AAC-only
+43-source proof remains historical at its source commit after helper evolution.
+Compile changed variant once, audit actual bytes, then exercise unchanged original
+source with raw-duration/PCM/trim/video1ms/chapter2ms guards. Full54/B02-B09 and
+250MiB compliance stay OPEN. `evidence/2026-10-21-vpx-timeline-preparation.json`.
+
 ## 2026-10-21 - Original zero-start audio fully passes exact content/trim/clocks; remaining native timeline work identified
 
 39593795332/f8600a82 FAIL: zero-start AAC1 now independently passes all95packet

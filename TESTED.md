@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Combined private video/chapter timeline correction implemented, compilation pending
+
+Separate explicit timeline variant preserves decoded video PTS, aligns requested
+frame-rate reduction to source origin, and initializes extra fragmented MP4 chapter
+track timing sentinels like regular streams. MPEG4 timebase changes to1/60000;
+this encoder timing change is DECLARED, not called unchanged settings. Quality/
+bitrate/GOP/threads/I/O/heap stay unchanged, no frame allocation/queue added.
+Actual reversible wrapper13edits SHA232c1f53 and MOV3edits SHA f94ed745 prepared;
+24focused/lint/Bash syntax pass. Original preserving40source/15artifact audit still
+passes. AAC-only binary proof remains historical at its own source commit, not
+current-source qualification after helper/builder evolution. Native/browser/raw-
+duration/chapter/memory acceptance pending. `evidence/2026-10-21-vpx-timeline-preparation.json`.
+
 ## 2026-10-21 - Zero-start AAC exact fidelity now browser-proved; second track duration remains unavailable
 
 39593795332/f8600a82 terminal FAIL, but previously refused zero-start track now

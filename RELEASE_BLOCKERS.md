@@ -1,5 +1,11 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 joint source-video/chapter-track timing correction implemented as explicit
+private timeline variant. Native PTS preservation and extra-track NOPTS init,
+declared MPEG4 timebase1/60000, unchanged quality/threads/I/O/heap.24focused/lint/
+Bash syntax pass; compile/real browser/raw-duration/chapter/memory acceptance
+pending. `evidence/2026-10-21-vpx-timeline-preparation.json`.
+
 B03 zero-start AAC track now genuinely passes exact95packet hashes/97280raw samples/
 1024trim/96256audible samples/1ms clocks in39593795332. Whole case FAILS because
 AAC2 first packet duration is unavailable. Independent raw packet duration probe
