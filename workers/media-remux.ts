@@ -10,6 +10,9 @@ import {
 } from "../lib/media-conversion-options";
 import type { RandomAccessDestination } from "./random-access-destination";
 import type { Mpeg2SplitCore } from "./mpeg2-split-runtime";
+import type { VpxDecoderCore } from "./vpx-core-loader";
+import { vpxCodecForProfile } from "../lib/vpx-decoder-policy";
+import { mediaNativeArguments } from "../lib/media-native-arguments";
 
 const REMUX_MODULE_URL = "/engines/remux/within-remux.mjs";
 const REMUX_WASM_URL = "/engines/remux/within-remux.wasm";
@@ -89,6 +92,7 @@ export interface MediaRemuxOptions {
   remuxProfile: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30 | 31 | 32 | 33 | 34 | 35 | 36 | 37 | 38 | 39 | 40;
   /** Unpublished MPEG-2 integration. Never substitutes for a remux/audio core. */
   mpeg2SplitCore?: Mpeg2SplitCore;
+  vpxDecoderCore?: VpxDecoderCore;
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;
   lowMemoryVideoCore?: boolean;
@@ -127,6 +131,7 @@ export async function runMediaRemux({
   writable,
   remuxProfile,
   mpeg2SplitCore,
+  vpxDecoderCore,
   audioOptions,
   videoOptions,
   lowMemoryVideoCore = false,
@@ -140,6 +145,10 @@ export async function runMediaRemux({
   emitProgress,
   post,
 }: MediaRemuxOptions): Promise<void> {
+  if (vpxDecoderCore && (remuxProfile !== 4 || vpxDecoderCore.abi !== "general-12" ||
+      vpxCodecForProfile(profileId) !== vpxDecoderCore.sourceCodec || mpeg2SplitCore || aiffSpecialistCore || lowMemoryVideoCore || singleThreadVideoCore)) {
+    throw new Error("VPX requires its explicit private video profile and general12-argument core.");
+  }
   if ((remuxProfile === 40) !== Boolean(mpeg2SplitCore)) {
     throw new Error("The MPEG-2 split core requires its explicit native profile 40.");
   }
@@ -175,7 +184,9 @@ export async function runMediaRemux({
       remuxProfile === 10 ||
       remuxProfile === 11);
   const phase =
-    remuxProfile === 40
+    vpxDecoderCore
+      ? `Decoding ${vpxDecoderCore.sourceCodec} (CPU) / encoding MPEG-4 MP4`
+    : remuxProfile === 40
       ? "Encoding MPEG-2 MP4"
     : remuxProfile === 1
       ? "Lossless remux"
@@ -283,7 +294,7 @@ export async function runMediaRemux({
       ? null
       : synchronousFileReader;
   const threadedWorkerPoolSize =
-    useSingleThreadVideoCore
+    vpxDecoderCore || useSingleThreadVideoCore
       ? 0
       : useWebmQualityCore
       ? WEBM_QUALITY_WORKER_POOL_SIZE
@@ -642,7 +653,9 @@ export async function runMediaRemux({
         ? VP9_MODULE_URL
         : REMUX_MODULE_URL;
   const wasmUrl =
-    aiffSpecialistCore
+    vpxDecoderCore
+      ? vpxDecoderCore.wasmUrl
+    : aiffSpecialistCore
       ? AIFF_WASM_URL
     : remuxProfile === 39
       ? THEORA_WASM_URL
@@ -659,7 +672,9 @@ export async function runMediaRemux({
       : remuxProfile === 10 || remuxProfile === 11
         ? VP9_WASM_URL
         : REMUX_WASM_URL;
-  const imported = mpeg2Runtime && mpeg2SplitCore
+  const imported = vpxDecoderCore
+    ? { default: vpxDecoderCore.factory }
+    : mpeg2Runtime && mpeg2SplitCore
     ? { default: (options: RemuxFactoryOptions) =>
         mpeg2Runtime.createMpeg2SplitRuntime(options, mpeg2SplitCore) }
     : (await import(
@@ -679,6 +694,7 @@ export async function runMediaRemux({
     assertActive();
 
     const usesCertifiedSpecialistAbi =
+      !vpxDecoderCore && moduleUrl !== REMUX_MODULE_URL && (
       useDirectRemuxCore ||
       useSingleThreadVideoCore ||
       useWebmQualityCore ||
@@ -686,7 +702,7 @@ export async function runMediaRemux({
       remuxProfile === 5 ||
       remuxProfile === 7 ||
       remuxProfile === 10 ||
-      remuxProfile === 11;
+      remuxProfile === 11);
     const videoArguments = [
       videoCodecCode(videoOptions?.codec ?? "automatic"),
       videoOptions?.maxWidth ?? 0,
@@ -694,24 +710,10 @@ export async function runMediaRemux({
       videoOptions?.frameRateFps ?? 0,
       videoQualityCode(videoOptions?.quality ?? "automatic"),
     ];
-    const arguments_ = usesCertifiedSpecialistAbi
-      ? [
-          remuxProfile,
-          audioOptions?.bitRateBps ?? 0,
-          audioOptions?.sampleRateHz ?? 0,
-          audioOptions?.channels ?? 0,
-          ...videoArguments,
-        ]
-      : [
-          remuxProfile,
-          audioOptions?.bitRateBps ?? 0,
-          audioOptions?.sampleRateHz ?? 0,
-          audioOptions?.channels ?? 0,
-          audioCodecCode(audioOptions?.codec ?? "automatic"),
-          audioCompressionCode(audioOptions?.compression ?? "automatic"),
-          audioQualityCode(audioOptions?.quality ?? "automatic"),
-          ...videoArguments,
-        ];
+    const arguments_ = mediaNativeArguments(remuxProfile,
+      [audioOptions?.bitRateBps ?? 0, audioOptions?.sampleRateHz ?? 0, audioOptions?.channels ?? 0],
+      [audioCodecCode(audioOptions?.codec ?? "automatic"), audioCompressionCode(audioOptions?.compression ?? "automatic"), audioQualityCode(audioOptions?.quality ?? "automatic")],
+      videoArguments, usesCertifiedSpecialistAbi ? "legacy-specialist-9" : "general-12");
     const result = await engineModule.ccall(
       aiffSpecialistCore ? "within_aiff" : "within_remux",
       "number",

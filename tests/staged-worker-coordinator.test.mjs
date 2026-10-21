@@ -110,3 +110,13 @@ test("MPEG-2 owns the exact closed stage and retires the encoder before save; cr
     assert.equal(f.savers.length, 0); assert.equal(f.errors.length, 1); f.owner.terminate();
   }
 });
+
+test("both private VPX profiles retain exact stage ownership and retire codec before a Wasm-free saver", () => {
+  for (const profileId of ["mkv-vp8-to-mp4-mpeg4", "mkv-vp9-to-mp4-mpeg4"]) {
+    const f = fixture(), request = start("vpx-job", profileId);
+    f.encoders[0].emit({ type: "ready" }); f.owner.postMessage(request); f.encoders[0].emit(handoff(request));
+    assert.equal(f.encoders[0].terminated, true); assert.equal(f.savers.length, 1);
+    f.savers[0].emit({ type: "ready" }); assert.equal(f.savers[0].messages[0].profileId, profileId);
+    assert.equal(f.savers[0].messages[0].file, undefined); f.owner.terminate();
+  }
+});

@@ -1,5 +1,14 @@
 # Release closure — original scope, not a reduced MVP
 
+B03 latest: source-specific private VP8/VP9 production dispatch and actual12-vs9
+ABI integration implemented. Real Chrome155 VP8→MPEG4 job completes, but independent
+stream check FAILS because profile4 drops compatible AAC; whole-tree observation
+also FAILS250MiB at290.26171875MiB. Do not narrow the fixture or accept video-only
+output as preservation. Six-edit bounded private audio/chapter correction implemented;
+changed native compilation and same-input browser validation pending. No public
+engine/registry change or full54 closure. Exact proof/cleanup/failures/next gates:
+`evidence/2026-10-21-vpx-production-integration-cycle.json`.
+
 This is the current short work queue. The original specification and all 54
 requirement rows in `REMAINING_WORK.md` still apply. This file does not declare
 them complete, turn missing implementations into unsupported profiles, lower a

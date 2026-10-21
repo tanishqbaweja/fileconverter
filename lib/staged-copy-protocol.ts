@@ -1,10 +1,11 @@
 import type { ConversionMetrics, StartConversionMessage, TestFault } from "./conversion-protocol";
 import { MPEG2_JOB_PROFILE } from "./mpeg2-stage-policy";
+import { isVpxDecoderProfile, type VpxDecoderProfile } from "./vpx-decoder-policy";
 
-export type StagedCopyProfile = "mkv-to-mp4" | typeof MPEG2_JOB_PROFILE;
+export type StagedCopyProfile = "mkv-to-mp4" | typeof MPEG2_JOB_PROFILE | VpxDecoderProfile;
 
 export function isOwnedCompletedStage(profileId: string, stagingName: string, jobId: string): boolean {
-  return (profileId === "mkv-to-mp4" || profileId === MPEG2_JOB_PROFILE) &&
+  return (profileId === "mkv-to-mp4" || profileId === MPEG2_JOB_PROFILE || isVpxDecoderProfile(profileId)) &&
     typeof jobId === "string" && /^[A-Za-z0-9-]+$/.test(jobId) &&
     typeof stagingName === "string" && stagingName.length <= 160 &&
     stagingName === `within-stage-${profileId}-${jobId}`;

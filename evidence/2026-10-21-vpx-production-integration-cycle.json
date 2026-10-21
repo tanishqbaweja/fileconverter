@@ -1,0 +1,135 @@
+{
+  "schemaVersion": 1,
+  "scope": "private VP8/VP9 production coordinator integration and genuine AAC-loss diagnosis, not route promotion",
+  "publicAcceptance": false,
+  "fullGoalComplete": false,
+  "productionChanges": {
+    "actualAppCoordinator": true,
+    "sourceSpecificPrivateProfiles": ["mkv-vp8-to-mp4-mpeg4", "mkv-vp9-to-mp4-mpeg4"],
+    "boundedMatroskaSourceInspection": true,
+    "quotaEstimateUsesInspectedDurationAndSelectedBitrate": true,
+    "generalAbiArguments": 12,
+    "legacySpecialistAbiArguments": 9,
+    "codecWorkerRetiredBeforeWasmFreeSaver": true,
+    "publicRegistryOrWasmChanged": false,
+    "publicGeneralCoreNondefaultControlRegressionStillRequired": true
+  },
+  "nativeArtifact": {
+    "buildRun": 39523641019,
+    "directory": "work/vpx-decoders-39523641019",
+    "manifestSha256": "00c28640d83b0ce473d26b6fc55de3b638e26678adcba21b551bd34f6bd9d201",
+    "sourcePinsVerified": 38,
+    "artifactPinsVerified": 13,
+    "actualExportedParameters": 12,
+    "initialWasmMiB": 32,
+    "maximumWasmMiB": 96,
+    "av1Implemented": false
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "status": "harness setup failed before any conversion",
+      "cause": "Playwright skip callback second parameter was undefined",
+      "correction": "Explicit private-config environment marker; no default browser fixtures or automatic trace/video",
+      "conversionRows": 0,
+      "disposableDataRemoved": true,
+      "ownedServerRootAbsent": true
+    },
+    {
+      "attempt": 2,
+      "status": "genuine browser job completed but independent stream preservation assertion failed",
+      "selectedScope": "nine named private checks; stopped after first real failure, eight not executed",
+      "browserVersion": "155.0.8059.85",
+      "inputCodec": "vp8",
+      "outputCodecIndependentlyObserved": "mpeg4",
+      "inputBytes": 91331,
+      "inputSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "outputBytes": 493022,
+      "browserElapsedMs": 944.9850390553474,
+      "cause": "Native profile4 is intentionally video-only and omits compatible source AAC; it cannot qualify the new preservation-required private route unchanged",
+      "assertionRetained": "Expected mpeg4 and aac; independently probed output contained mpeg4 only",
+      "fullDecodeOrSsimAcceptance": false,
+      "speedComparisonOrLargeFileAcceptance": false,
+      "rawReport": "output/playwright/vpx-decoder-qualification.json",
+      "rawReportBytes": 738279,
+      "rawReportSha256": "58fb6ea39ff38903bedf482dd888c6029aa54917acf894941e8f7032eec98b42",
+      "memory": {
+        "intervalMs": 100,
+        "validSamples": 213,
+        "unavailableSamples": 0,
+        "stableCleanSameInstanceBlankPrivateBytes": 237522944,
+        "peakWholeTreePrivateBytes": 541884416,
+        "peakPhase": "conversion-vp8",
+        "incrementalPrivateMiB": 290.26171875,
+        "requiredMaximumMiB": 250,
+        "compliant": false,
+        "allUnknownDescendantsIncluded": true,
+        "nineCaseMemoryGateExecuted": false
+      },
+      "cleanup": {
+        "disposableMediaProfilesAndScratchRemoved": true,
+        "temporaryPrivateDistAssetsRemoved": true,
+        "ownedServerRootAbsent": true,
+        "independentObservedChromiumBirthsAbsent": 11,
+        "unrelatedProcessesKilled": false
+      }
+    }
+  ],
+  "preservationCorrection": {
+    "status": "implemented source derivative; actual native build and browser requalification pending",
+    "source": "media/ffmpeg/vpx-preserving-candidate.mjs",
+    "builder": "media/ffmpeg/build-vpx-preserving-candidate.mjs",
+    "actualCompiledParentSha256": "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd",
+    "derivedCompiledSourceSha256": "ad30941ab17c5c0f9eb97f2ba655a132fd6d5e3a8f3eec6cb77fa54fec5fae56",
+    "reversibleNativeEdits": 6,
+    "maximumSourceStreams": 64,
+    "maximumChapters": 1024,
+    "maximumInterleaveMicroseconds": 1000000,
+    "policy": "Copy every MP4-compatible source audio stream without re-encoding; refuse incompatible audio rather than discard it; copy bounded chapters",
+    "encoderSettingsChanged": false,
+    "ioOrWasmLimitsRaised": false,
+    "unchangedFailedCandidateMustNotBeRetested": true
+  },
+  "verification": {
+    "initialFocusedIntegrationAndAbiTests": { "passed": 29, "failed": 0, "skipped": 0 },
+    "nativePreservationAndRelatedFocusedTests": { "passed": 17, "failed": 0, "skipped": 0 },
+    "portableSuite": {
+      "files": 459,
+      "qualificationFilesNotRun": 162,
+      "priorHostedFilesRetained": 235,
+      "passed": 1384,
+      "failed": 4,
+      "skipped": 0,
+      "milliseconds": 89810.046,
+      "failures": [
+        "staging allowlist source assertion needs the two exact new private profiles",
+        "catalogue historical reverse comparison needs the two exact new private imports removed",
+        "historical overlay TypeScript lacks the newer qualification bridge type",
+        "worker retained-state inventory needs the stateless new loader counted"
+      ],
+      "corrections": "Retain all old assertions/preimage hashes; explicitly account for new private code and keep modern test-only bridge typing local",
+      "focusedRecovery": {
+        "passed": 38,
+        "failed": 0,
+        "skipped": 0,
+        "milliseconds": 11168.8398,
+        "scope": "all four failing test files plus private VPX integration; original assertions and historical preimage pins retained",
+        "notRelabelledSingleFreshWholeSuitePass": true
+      }
+    }
+  },
+  "protectedOriginal": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "unchanged": true
+  },
+  "remaining": [
+    "Compile and audit the changed preservation core without Docker; do not call source changes a browser fix",
+    "Repeat identical fixture/settings on changed core, including VP9, controls, audio hashes, independent full decode and SSIM",
+    "Actual cancel/write-failure/recovery and cleanup checks; distinguish pre-cancel from mid-conversion cancellation",
+    "Resolve current-browser whole-tree memory excess without weakening formula or omitting processes",
+    "Final planner/selector, preservation/disclosures, repeats and multi-gigabyte scaling before public promotion",
+    "AV1 and every other original54 requirement/B02-B09 remain open"
+  ]
+}

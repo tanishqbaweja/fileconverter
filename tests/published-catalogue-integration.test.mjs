@@ -29,6 +29,8 @@ test("current application mounts the bounded component with explicit lifecycle a
   const end = oldApp.indexOf("\n  return (\n    <main>", begin);
   assert.ok(begin > 0 && end > begin);
   const restored = app.replace('import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";\n', "")
+    .replace('import { isVpxDecoderProfile } from "../../lib/vpx-decoder-policy";\n', "")
+    .replace('import { runVpxQualificationJob, validateVpxQualificationRequest } from "../../lib/vpx-qualification-job";\n', "")
     .replace('import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";\n', "")
     .replace('import { runMpeg2QualificationJob, validateMpeg2QualificationRequest, type Mpeg2QualificationResult } from "../../lib/mpeg2-qualification-job";\n', "")
     .replace('  StartConversionMessage,\n', "")

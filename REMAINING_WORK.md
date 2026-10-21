@@ -1,5 +1,31 @@
 # Remaining work audit
 
+## 2026-10-21 - VPX actual production integration reveals compatible-AAC loss; private native correction implemented
+
+Private VP8/VP9 profiles now dispatch through the real app coordinator/main worker,
+bounded source inspection, duration-based quota estimate, canonical decoder loader,
+actual12-argument general ABI and closed-stage retirement before the Wasm-free saver.
+Static actual-binary ABI tests distinguish general12 from legacy9; public engines/
+registry remain unchanged. Genuine headless Chrome155 VP8 job produces MPEG4, but
+independent stream assertion FAILS: compatible source AAC is omitted by existing
+video-only native profile4. Keep this failure/fixture/assertion; do not remove audio
+to obtain a passing decoder demonstration. Eight other private cases not executed.
+
+Actual100ms whole-tree observation also exceeds250MiB:290.26171875MiB over the lower
+stable same-instance clean blank. No full decode/SSIM/scaling/speed/public acceptance.
+All disposable media/profile/scratch/private dist assets removed; independent audit
+finds all11 observed Chromium births absent. Original source size/hash unchanged.
+
+New six-edit private native derivative copies all compatible MP4 audio streams and
+bounded chapters, refuses incompatible audio instead of dropping it, and keeps
+encoder settings/AVIO/heap limits unchanged. Actual no-Docker compilation and
+same-input browser requalification still required.17 focused tests PASS; whole459-
+file portable run1384PASS/4FAIL identifies four explicit integration inventory/
+historical-source/typing assertions. All four files plus VPX integration now38PASS/
+0FAIL/0skip; not relabelled one fresh whole-suite pass. TypeScript/focused lint pass.
+Original54 requirements and B02-B09 remain OPEN. Exact failure/evidence/next gates:
+`evidence/2026-10-21-vpx-production-integration-cycle.json`.
+
 ## 2026-10-21 - Five browser failures recovered; two missing CPU decoders genuinely compiled privately
 
 Actual8-case recovery39524846673/a038dec0 PASS16.7s covers all five failures plus

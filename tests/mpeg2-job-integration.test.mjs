@@ -87,7 +87,7 @@ test("qualification rejects non-owned/public/direct jobs and releases listeners 
 test("actual dispatcher selects explicit profile40 and closed-stage handoff while the route remains unpublished", async () => {
   const worker = await readFile("workers/conversion.worker.ts", "utf8"), app = await readFile("app/converter/ConverterApp.tsx", "utf8");
   assert.match(worker, /if \(isMpeg2Job\) \{\s*await runMediaRemux\([\s\S]*?remuxProfile: 40, mpeg2SplitCore/);
-  const close = worker.slice(worker.indexOf("        if (profileId === MPEG2_JOB_PROFILE) {"), worker.indexOf("        finalWritable = await finalHandle.createWritable"));
+  const close = worker.slice(worker.indexOf("        if (profileId === MPEG2_JOB_PROFILE || isVpxDecoderProfile(profileId)) {"), worker.indexOf("        finalWritable = await finalHandle.createWritable"));
   assert.match(close, /stageClosed: true/); assert.match(close, /workerScope.postMessage\(handoff\)/); assert.match(close, /await new Promise<void>\(\(\) => {}\)/);
   assert.match(app, /const worker = createStagedWorkerCoordinator\(/);
   assert.match(app, /if \(!testMode\) return;\s*const lifetime = new AbortController\(\);\s*window\.__WITHIN_TEST__ =/);

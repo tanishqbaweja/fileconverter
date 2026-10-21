@@ -16,6 +16,8 @@ import {
   DEFAULT_VIDEO_CONVERSION_OPTIONS,
 } from "../lib/media-conversion-options";
 import { MPEG2_JOB_PROFILE, estimateMpeg2StageBytes } from "../lib/mpeg2-stage-policy";
+import { isVpxDecoderProfile, validateVpxVideoOptions, assertVpxSource, estimateVpxStageBytes } from "../lib/vpx-decoder-policy";
+import type { VpxDecoderCore } from "./vpx-core-loader";
 import type { StagedCopyHandoff } from "../lib/staged-copy-protocol";
 import type { Mpeg2SplitCore } from "./mpeg2-split-runtime";
 import {
@@ -519,6 +521,7 @@ async function openStagedDirectDestination(
       profileId !== "mpeg-ts-to-avi" &&
       profileId !== "mkv-to-mp4" &&
       profileId !== MPEG2_JOB_PROFILE &&
+      !isVpxDecoderProfile(profileId) &&
       profileId !== "avi-to-3gp" &&
       profileId !== "avi-to-mpeg-ts" &&
       profileId !== "m2v-to-ogv") ||
@@ -642,7 +645,7 @@ async function openStagedDirectDestination(
           true,
         );
 
-        if (profileId === MPEG2_JOB_PROFILE) {
+        if (profileId === MPEG2_JOB_PROFILE || isVpxDecoderProfile(profileId)) {
           const handoff: StagedCopyHandoff = {
             type: "staged-copy-handoff", jobId, profileId, stagingName, stageClosed: true,
             jobStartedEpochMs: performance.timeOrigin + startedAt, metrics: { ...metrics },
@@ -4153,8 +4156,21 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
 
   try {
     const isMpeg2Job = profileId === MPEG2_JOB_PROFILE;
+    const isVpxJob = isVpxDecoderProfile(profileId);
+    let vpxDecoderCore: VpxDecoderCore | undefined;
     let mpeg2SplitCore: Mpeg2SplitCore | undefined;
     let requiredScratchBytes: number | undefined;
+    if (isVpxJob) {
+      const options = validateVpxVideoOptions(message.audioOptions, message.videoOptions);
+      if (message.destination.mode !== "staged-handle") throw new Error("The private VPX route requires bounded selected-destination staging.");
+      emitProgress(jobId, "Inspecting VPX source", metrics, startedAt, true);
+      const { inspectMediaSource } = await import("../lib/media-source-inspection");
+      const inspection = await inspectMediaSource(file, "mkv");
+      const sourceCodec = assertVpxSource(profileId, inspection);
+      requiredScratchBytes = estimateVpxStageBytes(file.size, inspection?.durationSeconds ?? null, options);
+      const { loadVpxDecoderCore } = await import("./vpx-core-loader");
+      vpxDecoderCore = await loadVpxDecoderCore(sourceCodec);
+    }
     if (isMpeg2Job) {
       const { assertMpeg2SplitOptions } = await import("./mpeg2-split-runtime");
       assertMpeg2SplitOptions(message.audioOptions, message.videoOptions);
@@ -4168,11 +4184,11 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       const { loadMpeg2SplitCore } = await import("./mpeg2-core-loader");
       mpeg2SplitCore = await loadMpeg2SplitCore();
     }
-    const audioOptions = isMpeg2Job ? message.audioOptions ?? DEFAULT_AUDIO_CONVERSION_OPTIONS : validateAudioConversionOptions(
+    const audioOptions = isMpeg2Job || isVpxJob ? message.audioOptions ?? DEFAULT_AUDIO_CONVERSION_OPTIONS : validateAudioConversionOptions(
       audioOptionProfileForId(profileId),
       message.audioOptions,
     );
-    const videoOptionsProfile = videoOptionProfileForId(profileId) ?? {
+    const videoOptionsProfile = videoOptionProfileForId(isVpxJob ? "mkv-to-mp4-mpeg4" : profileId) ?? {
       engine: "unsupported",
       output: "unsupported",
     };
@@ -4419,6 +4435,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     if (isMpeg2Job) {
       await runMediaRemux({ file, profileId, writable: destination.writable, audioOptions, videoOptions,
         remuxProfile: 40, mpeg2SplitCore, jobId, metrics, startedAt, isCancelled, emitProgress, post });
+    } else if (isVpxJob) {
+      await runMediaRemux({ file, profileId, writable: destination.writable, audioOptions, videoOptions,
+        remuxProfile: 4, vpxDecoderCore, forceAsynchronousInput: true, jobId, metrics, startedAt, isCancelled, emitProgress, post });
     } else if (compressionTranscode) {
       const compressedDestination = destination.writable;
       await runCompressionTranscode({

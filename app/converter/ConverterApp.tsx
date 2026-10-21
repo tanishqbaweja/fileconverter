@@ -3,6 +3,8 @@
 import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";
 import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";
 import { runMpeg2QualificationJob, validateMpeg2QualificationRequest, type Mpeg2QualificationResult } from "../../lib/mpeg2-qualification-job";
+import { isVpxDecoderProfile } from "../../lib/vpx-decoder-policy";
+import { runVpxQualificationJob, validateVpxQualificationRequest } from "../../lib/vpx-qualification-job";
 import {
   conversionProfiles,
   detectFormat,
@@ -979,7 +981,8 @@ export function ConverterApp() {
     const lifetime = new AbortController();
     window.__WITHIN_TEST__ = {
       runQualificationJob: async request => {
-        validateMpeg2QualificationRequest(request);
+        const vpx = isVpxDecoderProfile(request.profileId);
+        if (vpx) validateVpxQualificationRequest(request); else validateMpeg2QualificationRequest(request);
         const worker = workerRef.current;
         if (!worker || jobIdRef.current || activeBatchRef.current || testBridgeStateRef.current?.workerStatus !== "ready") {
           throw new Error("The application conversion lifecycle is not ready.");
@@ -988,8 +991,8 @@ export function ConverterApp() {
         activeOpfsNameRef.current = request.destination.mode === "staged-handle" ? request.destination.stagingName : null;
         cancellationSignalRef.current = new Int32Array(request.cancellationBuffer!);
         setJobState("running"); setError(null); setWarnings([]); setMetrics({ ...EMPTY_METRICS });
-        setPhase("Starting MPEG-2 qualification");
-        try { return await runMpeg2QualificationJob(worker, request, lifetime.signal); }
+        setPhase(vpx ? "Starting VPX qualification" : "Starting MPEG-2 qualification");
+        try { return await (vpx ? runVpxQualificationJob(worker, request, lifetime.signal) : runMpeg2QualificationJob(worker, request, lifetime.signal)); }
         catch (error) {
           if (jobIdRef.current === request.jobId) {
             jobIdRef.current = null; activeOpfsNameRef.current = null; cancellationSignalRef.current = null;

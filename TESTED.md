@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+## 2026-10-21 - Real VP8 browser integration diagnoses audio loss, not a promoted route
+
+Actual private production coordinator/worker/AVIO/staged-save job on Chrome155:
+VP8 Matroska91331B → MPEG4 MP4493022B, native Wasm32MiB, codec worker retired before
+save, one pending write. Independent stream assertion FAILS because existing native
+video-only profile4 omits compatible AAC. Full-decode/SSIM acceptance not reached;
+remaining eight named checks not run.100ms all-descendant private-memory peak is
+290.26171875MiB above stable clean same-instance blank, exceeding unchanged250MiB.
+This is genuine conversion/failure diagnosis, NOT acceptable preservation/memory,
+large-file support, speed optimization, public promotion or full-project completion.
+
+Private bounded audio/chapter preservation derivative implemented, not yet compiled
+or browser-proved. Public Wasm/registry untouched.29 initial focused integration/ABI
+passes;17 subsequent preservation-related focused passes. Whole459-file portable
+run1384PASS/4FAIL; all four inventory/historical-source/typing failures corrected,
+their four files plus VPX integration38PASS/0FAIL/0skip11.17s. Not relabelled a fresh
+whole-suite pass. Disposable media/OPFS profile/scratch/private dist assets
+removed; all11 observed Chromium births independently absent. Full receipt:
+`evidence/2026-10-21-vpx-production-integration-cycle.json`.
+
 ## 2026-10-21 - Eight real recovery cases PASS; actual VP8/VP9 native artifact independently audited
 
 Focused39524846673/a038dec0 completed SUCCESS: exactly8cases PASS16.7s, including

@@ -33,7 +33,7 @@ test("the current-browser MKV/MP4/MOV/3GP/MPEG-TS-to-AVI, MKV-to-MP4, AVI-to-3GP
   assert.match(app, /name\?\.startsWith\("within-stage-"\)/);
   assert.match(worker, /destination\.mode === "staged-handle"/);
   assert.match(worker, /stagingName\.startsWith\(`within-stage-\$\{profileId\}-`\)/);
-  assert.match(worker, /profileId !== "mp4-to-avi" &&\s*profileId !== "mov-to-avi" &&\s*profileId !== "3gp-to-avi" &&\s*profileId !== "mkv-to-avi" &&\s*profileId !== "mpeg-ts-to-avi" &&\s*profileId !== "mkv-to-mp4" &&\s*profileId !== MPEG2_JOB_PROFILE &&\s*profileId !== "avi-to-3gp" &&\s*profileId !== "avi-to-mpeg-ts"/);
+  assert.match(worker, /profileId !== "mp4-to-avi" &&\s*profileId !== "mov-to-avi" &&\s*profileId !== "3gp-to-avi" &&\s*profileId !== "mkv-to-avi" &&\s*profileId !== "mpeg-ts-to-avi" &&\s*profileId !== "mkv-to-mp4" &&\s*profileId !== MPEG2_JOB_PROFILE &&\s*!isVpxDecoderProfile\(profileId\) &&\s*profileId !== "avi-to-3gp" &&\s*profileId !== "avi-to-mpeg-ts"/);
 });
 
 test("staged MP4-to-AVI checks quota, bounds copy memory, and cleans every terminal path", () => {
