@@ -1,4 +1,5 @@
 import { readHistoricalUiOrArtifact as readFile } from "./helpers/historical-published-ui.mjs";
+import { readPreDuringWorkLiveMemory } from "./helpers/historical-live-memory.mjs";
 import assert from "node:assert/strict";
 
 import test from "node:test";
@@ -6,6 +7,8 @@ import { gunzipSync } from "node:zlib";
 import { sha } from "../scripts/lib/stable-ui-headless-baseline-recipe.mjs";
 import { summarizeLiveMemory } from "../scripts/lib/live-memory-infra.mjs";
 const read=async file=>{
+  if (file === "scripts/lib/live-memory-infra.mjs" || file === "tests/live-memory-infra.test.mjs")
+    return readPreDuringWorkLiveMemory(file);
   try{return await readFile(new URL(`../${file}`,import.meta.url));}
   catch(error){if(error.code!=="ENOENT"||!file.endsWith(".json"))throw error;
     return gunzipSync(await readFile(new URL(`../${file}.gz`,import.meta.url)),{maxOutputLength:2*1048576});}
@@ -55,4 +58,11 @@ test("Historical Two terminal proof originals are retained byte-exact in compact
     await assert.rejects(readFile(new URL(`../${row.original.path}`,import.meta.url)),{code:"ENOENT"});
   }
   assert.equal(saved,compact.totalBytesSaved);assert.equal(compact.semanticsChanged,false);assert.equal(compact.newBrowserRuns,0);
+});
+
+test("historical live-memory preimages are narrowly pinned and never substitute for current live behavior", async () => {
+  await assert.rejects(readPreDuringWorkLiveMemory("workers/media-remux.ts"), /two explicit/);
+  const old = await readPreDuringWorkLiveMemory("scripts/lib/live-memory-infra.mjs");
+  const current = await readFile(new URL("../scripts/lib/live-memory-infra.mjs", import.meta.url));
+  assert.notEqual(sha(old), sha(current));
 });

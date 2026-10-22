@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-10-22 second portable CI39706586845/76b802a FAIL:1423pass/1fail/1skip.
+The previous App restoration correction passes; only the historical124-source
+live-memory audit fails on two deliberately changed trace helper/test files.
+Exact pre-change bytes from8945d9f are now archived with their original SHA256s;
+only the historical audit reads them. Current capture tests still use current
+source; historical hashes/trace reconstruction/false acceptance flags unchanged.
+13focused tests/0fail/0skip,TypeScript and targeted lint PASS. Corrected full CI
+and hosted three-case VP8-prefix/VP9 allocator diagnostic pending. The latter
+reuses39623553380 (no rebuild), keeps unavailable Linux OS-memory values null,
+and cannot qualify Windows memory or promote a profile. No unchanged full9 run.
+`evidence/2026-10-22-portable-trace-ci-historical-source-failure.json`.
+
 2026-10-22 portable CI39705362189/8945d9f FAIL:1421pass/1fail/1existing original skip,
 628inventory=466portable+162unexecuted qualification files. Clean install/public
 compact audit/inventory/lint/TS/production build pass; privacy/offline not reached.

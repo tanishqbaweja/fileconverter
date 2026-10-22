@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-22 second portable CI39706586845:1423pass/1fail/1skip; App source guard
+now passes. Narrow historical trace-source archive correction preserves all124
+original source hashes and exact trace assertions; live tests use current code.
+13focused/TS/lint pass, corrected hosted portable CI pending. Three-case hosted
+trace workflow prepared, reusing39623553380 with no core rebuild; Linux process
+identities have null private/RSS/birth data and are not Windows memory acceptance.
+Full54/B02-B09 and282.91015625MiB failure remain OPEN; no private route promotion.
+`evidence/2026-10-22-portable-trace-ci-historical-source-failure.json`.
+
 2026-10-22 CI39705362189 failed one exact-source App integration unit (1421pass/
 1fail/1existing skip). Unique reversible code-owner integration hunks corrected,
 27focused pass; full historical source equality/card405checks preserved. Privacy/

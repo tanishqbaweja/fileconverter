@@ -250,7 +250,17 @@ async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault
   let result: VpxQualificationResult | undefined;
   if (duringAllocatorTrace && ordinal === 3 && codec === "vp9") {
     phase("preparing-vp9-allocator-trace");
-    const reference = await sampleChromiumTree(browserRootPid!);
+    let reference: { processes: unknown[] };
+    if (process.platform === "win32") reference = await sampleChromiumTree(browserRootPid!);
+    else {
+      const identitySession = await context!.browser()!.newBrowserCDPSession();
+      try {
+        const info = await identitySession.send("SystemInfo.getProcessInfo");
+        reference = { processes: info.processInfo.map(entry => ({ pid: entry.id, type: entry.type,
+          privateBytes: null, rssBytes: null, createdAt: null, parentPid: null })) };
+        report.inConversionProcessReference = "CDP identities only, not complete OS-tree/private/RSS/birth evidence; unavailable stays null";
+      } finally { await identitySession.detach(); }
+    }
     try {
       report.inConversionAllocationTrace = await captureLiveMemoryInfra({ session: await context!.browser()!.newBrowserCDPSession(),
         phase: "first-vp9-native-work", processes: reference.processes,
@@ -445,6 +455,10 @@ test.afterEach(async ({}, testInfo) => {
 test.afterAll(async () => {
   const cleanup: Array<() => Promise<unknown>> = [];
   cleanup.push(async () => {
+    if (browserLaunched) {
+      expect(staticCodeRequests.wasm).toBe(staticCompilation.coldCompiles);
+      expect(staticCodeRequests.manifests).toBe(staticCompilation.coldCompiles + staticCompilation.reuses);
+    }
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
     report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 32;

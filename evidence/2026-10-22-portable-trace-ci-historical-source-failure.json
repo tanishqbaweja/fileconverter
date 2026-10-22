@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "run": 39706586845,
+  "job": 119587939864,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39706586845",
+  "head": "76b802ad2a7bce2449ec90c8088fe8671b93e490",
+  "scope": "Portable verification; native reproduction and conversion matrices unselected",
+  "conclusion": "failure",
+  "units": { "tests": 1425, "passed": 1423, "failed": 1, "skipped": 1, "seconds": 54.683559636 },
+  "previousUiRegressionCorrectionPassed": true,
+  "failedTest": "Historical Actual live light snapshots reconstruct without inventing failure-time, causal, full-output or acceptance evidence",
+  "cause": "Historical124-source receipt reads two newly changed trace helper/test files as if they were the old bytes",
+  "mismatchAudit": {
+    "sourcePinsChecked": 124,
+    "onlyMismatches": ["scripts/lib/live-memory-infra.mjs", "tests/live-memory-infra.test.mjs"]
+  },
+  "correction": "Archive exact pre-change bytes from8945d9f with original hashes; narrowly select them only in the historical report audit. Keep current live unit tests using current source. No historical expected hash/report/acceptance flag changed.",
+  "focusedCorrectionVerification": { "tests": 13, "passed": 13, "failed": 0, "skipped": 0, "typescript": "passed", "targetedLint": "passed", "fullPortableRetest": "pending" },
+  "privacyOfflineReached": false,
+  "qualificationUnitsExecuted": false,
+  "nativeEngineRebuildsExecuted": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false
+}
