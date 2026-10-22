@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-10-22 material private memory correction: JSPI Windows155 full9+memory gate
+10PASS57.5s/190.6953125MiB, down92.21484375MiB from prior282.91015625MiB with all6
+outputs/independent validations exactly identical.32source/browser pins/privacy/
+cleanup pass; no tracing during conversion, raised budget or process omission.
+Portable CI1432pass/1skip+19browser PASS. This closes only the first small changed-
+engine sequence gate, not B03/B06 or full54. Next same/fresh-session repeats,
+new-route large/near10GB scaling and final planner/UI/options/disclosure/failure
+integration; keep private until all required gates pass. No speed claim from mixed
+one-pass timings; preserve exact native bytes, do not rebuild/retrace unchanged.
+`evidence/2026-10-22-vpx-jspi-browser-result.json`.
+
 2026-10-22 JSPI native39710372299 SUCCESS and actual47source/17artifact/12i32/
 shared32–96MiB/link/glue audit PASS. C/mux/component bytes match Asyncify exactly;
 no browser/throughput/memory acceptance yet. Next actual full9correctness/recovery

@@ -1,5 +1,15 @@
 # Release closure — original scope, not a reduced MVP
 
+B03/B06 material progress2026-10-22: actual JSPI candidate Windows1559correctness/
+control/terminal/recovery +memory10PASS57.5s at190.6953125MiB, prior Asyncify
+282.91015625MiB. All6outputs exactly identical;32source/browser pins/privacy/
+cleanup PASS. First small-sequence memory failure is corrected for this candidate,
+not global B06/public acceptance. Same/fresh-session repeats, new-route scaling,
+final UI/planner/settings/disclosure and broader browser gates still OPEN. No
+overall speed win proven. Portable changed-runtime CI39710409415 passes1432units
+(1skip) and19privacy/offline tests. Do not repeat unchanged native build/traces.
+`evidence/2026-10-22-vpx-jspi-browser-result.json`.
+
 2026-10-22 portable CI39707983428/0a5be08 now SUCCESS1426pass/0fail/1skip and
 19privacy/offline/static-host tests; native reproduction/qualification unselected.
 Subsequent opt-in diagnostic work passes21focused/TS/lint, not another full CI.

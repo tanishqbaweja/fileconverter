@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "run": 39710409415,
+  "job": 119600133891,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39710409415",
+  "head": "be902bd9c0780f52c579b06a34fd80803008b9d2",
+  "conclusion": "success",
+  "scope": "Portable CI for changed private JSPI runtime support; native/qualification matrices unselected",
+  "units": { "tests": 1433, "passed": 1432, "failed": 0, "skipped": 1, "milliseconds": 56995.665601 },
+  "privacyOfflineStaticHostBrowserTests": { "passed": 19, "failed": 0, "seconds": 43.9 },
+  "productionBuild": "passed",
+  "lint": "passed",
+  "typescript": "passed",
+  "qualificationUnitsExecuted": false,
+  "nativeReproductionMatricesExecuted": false,
+  "fullGoalComplete": false
+}

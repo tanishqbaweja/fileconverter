@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-22 actual JSPI Windows155 full sequence10PASS57.5s at768d9f5. Correctness/
+controls/multi-track/terminal/recovery and full-tree memory PASS190.6953125MiB
+(431677440peak minus231718912lower stable same-instance blank),59.3046875MiB
+headroom. Prior Asyncify282.91015625MiB: observed92.21484375MiB reduction with all6
+independent-validation objects/output hashes EXACTLY identical. All32source+
+browser pins/privacy/owned cleanup pass,330samples/0unavailable,1compile/7reuse/
+1binary/8manifest. No in-conversion trace/GC/process exclusion/baseline change;
+optional allocator dump only after peak finalized and sampler closed. Timings
+mixed (VP9 default346.66→317.03ms, cold VP8464.48→479.33ms): NOT a speed win or
+repeat benchmark. Portable CI39710409415/be902bd SUCCESS1432pass/0fail/1skip plus
+19privacy/offline/static-host PASS. Native matrices unselected. Next named repeat,
+scaling and final UI/planner gates; no unchanged trace/native rebuild. Still no
+public promotion/full54 closure. `evidence/2026-10-22-vpx-jspi-browser-result.json`
+and `evidence/2026-10-22-vpx-jspi-portable-ci-success.json`.
+
 2026-10-22 actual JSPI native39710372299 SUCCESS. Actual47source/17artifact/
 generated-link-builder-recipe/12xi32 ABI/shared32–96MiB audit PASS. Compiled C,
 MOV mux and component header byte-identical to timeline core. JSPI APIs present,
