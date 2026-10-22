@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-10-22 JSPI native39710372299 SUCCESS and actual47source/17artifact/12i32/
+shared32–96MiB/link/glue audit PASS. C/mux/component bytes match Asyncify exactly;
+no browser/throughput/memory acceptance yet. Next actual full9correctness/recovery
+plus unchanged complete-tree250MiB gate, tracing OFF. Full54/B02-B09 still OPEN.
+`evidence/2026-10-22-vpx-jspi-native-build.json`.
+
+2026-10-22 actual changed JSPI native build39710372299/4f6c3de LIVE and changed
+runtime portable CI39710409415/be902bd queued. Native wrapper/mux/settings/heap/
+I/O unchanged; acceptance remains unproven. Await these exact handles, then
+audit actual compiled exports/pins/limits and run production browser comparison.
+`evidence/2026-10-22-vpx-jspi-build-launch.json`.
+
 2026-10-22 JSPI candidate builder/recipe/private workflow/native audit wired;
 original corrected C/mux/settings/heap/I/O retained, no public core mutation.
 Stable API gate prevents unsafe cold/cache fallback. Focused/TS/lint/generated

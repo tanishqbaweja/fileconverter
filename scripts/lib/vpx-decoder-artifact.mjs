@@ -109,6 +109,10 @@ export async function auditVpxDecoderArtifact(input) {
       engineManagedStackBytes: null, engineManagedMemoryIncludedInPrimaryMetric: true,
       browserFlagsChanged: false, codecSettingsChanged: false, speedGainProven: false, memoryAcceptance: false });
     assert.ok(mjs.toString().includes("WebAssembly.Suspending") && mjs.toString().includes("WebAssembly.promising"));
+    // Release exports can be minified; names alone cannot prove absence of
+    // Asyncify. Check its actual glue bindings as well as the exact link flags.
+    for (const binding of ["asyncify_start_unwind", "asyncify_stop_unwind", "asyncify_start_rewind", "asyncify_stop_rewind"])
+      assert.equal(mjs.toString().includes(binding), false, "JSPI glue retains an Asyncify binding: " + binding);
     assert.deepEqual(WebAssembly.Module.exports(new WebAssembly.Module(wasm)).filter(row => /asyncify_(start|stop)_(unwind|rewind)/.test(row.name)), []);
   }
   assert.deepEqual(memoryLimits, readWasmMemoryLimits(await readTool(path.join(root, "public/engines/remux/within-remux.wasm"))));

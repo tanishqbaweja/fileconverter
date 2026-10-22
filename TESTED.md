@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-10-22 actual JSPI native39710372299 SUCCESS. Actual47source/17artifact/
+generated-link-builder-recipe/12xi32 ABI/shared32–96MiB audit PASS. Compiled C,
+MOV mux and component header byte-identical to timeline core. JSPI APIs present,
+Asyncify unwind/rewind glue bindings absent (minified export names not sole
+proof). Wasm3938753B/SHA c5b50c29, unchanged settings/threads/AVIO. Download
+scratch removed; one explicitly reusable small tool retained, no media copied.
+Browser correctness/memory/speed unproven; next full unchanged9+memory gate.
+`evidence/2026-10-22-vpx-jspi-native-build.json`.
+
+2026-10-22 actual JSPI native build39710372299/4f6c3de LIVE, portable CI39710409415
+queued atbe902bd. Private branch differs only in native workflow; main local
+HEAD/workflows unchanged and owned index removed.22focused/TS/lint/generated
+JS+Bash syntax and retained Asyncify43/16audit PASS. No native/browser/speed/
+memory acceptance before actual terminal results. Track these handles, never
+redispatch on timeout. `evidence/2026-10-22-vpx-jspi-build-launch.json`.
+
 2026-10-22 suspension-only VPX JSPI builder now wired as a separate private
 variant: corrected timeline/AAC C and MOV mux, codec inventory/settings, AVIO,
 one-write backpressure and32–96MiB heap unchanged. Exact reversible3link flags,
