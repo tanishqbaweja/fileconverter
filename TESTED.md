@@ -1,5 +1,30 @@
 # Tested conversion ledger
 
+Final cache cycle:40focused tests/0fail/0skip, TypeScript and targeted lint pass.
+All5actual local run roots/private asset stage independently verified absent;
+owned Chrome birth identities absent (PID reuse distinguished, no kill). No
+capability-diagnostic runtime children remain. Protected test.mkv full-stream
+2958573265B/SHA31f36695 verified, never converted this cycle; retained native43/16
+audit passes. Post-browser guard-only changes make diagnostic peaks atomic, URL
+labels explicit, and asset cleanup use bigint birth/inode+canonical exact-file-set
+checks; no unchanged browser replay for these guards. Actual memory282.91015625MiB
+FAIL remains authoritative. Next bounded first-VP9 live allocator trace, not cached-
+code qualification or public promotion. `evidence/2026-10-22-vpx-code-cache-final-safety.json`.
+
+## 2026-10-21 - Manifest-driven reuse actual1binary fetch/1compile/7reuses; memory still FAIL
+
+2790843 full installed Chrome155 sequence9PASS/1FAIL48.7s. Actual one static Wasm
+download/one compile/eight manifest checks/seven code reuses, despite app retiring
+each coordinator. All6independent outputs match previous exact hashes/SSIM/audio/
+trim/clock/chapter guards.32source/browser pins/privacy/cleanup pass. Full-tree
+memory FAIL282.91015625MiB; shared static code is counted, not excluded. Not a
+qualified route/global-fastest benchmark. No unchanged cache/refetch retry; next
+bounded live allocator trace around first VP9 with original VP8 prefix retained.
+Observer guard-only cleanup now rejects invalid samples atomically and labels
+first/last seen realm URL, not a misleading persistent about:blank URL; new unit
+guard added, no conversion rerun for that metadata-only correction.
+`evidence/2026-10-21-vpx-manifest-reuse-result.json`.
+
 2026-10-21 manifest-driven reuse prepared: fresh<=64KiB static manifest per job,
 full<=16MiB static code fetch/hash/compile only on cold/changed digest. No user
 data/instance memory cached. Explicit15s request timers/readers aborted/released;

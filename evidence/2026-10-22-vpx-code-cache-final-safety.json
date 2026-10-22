@@ -1,0 +1,245 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-10-22T01:21:15.726Z",
+  "scope": "Cycle cleanup and protected-original verification, not release completion",
+  "protectedOriginal": {
+    "path": "test.mkv",
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "fullStreamVerified": true,
+    "notConvertedThisCycle": true
+  },
+  "localBrowserRuns": [
+    {
+      "report": "output/playwright/vpx-decoder-qualification-2026-10-21T16-12-00.269Z.json",
+      "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\vd-Y8tow5",
+      "verifiedAbsent": true,
+      "server": {
+        "identity": {
+          "pid": 45576,
+          "parentPid": 37896,
+          "createdAt": "2026-10-21T16:12:08.1082320Z"
+        },
+        "ownedRootAbsent": true
+      },
+      "chromeIdentity": {
+        "pid": 4552,
+        "parentPid": 37896,
+        "createdAt": "2026-10-21T16:12:09.7870201Z"
+      }
+    },
+    {
+      "report": "output\\playwright\\vpx-decoder-qualification-2026-10-21T16-31-47.135Z.json",
+      "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\vd-wCK0On",
+      "verifiedAbsent": true,
+      "server": {
+        "identity": {
+          "pid": 35872,
+          "parentPid": 18860,
+          "createdAt": "2026-10-21T16:31:54.0673770Z"
+        },
+        "ownedRootAbsent": true
+      },
+      "chromeIdentity": {
+        "pid": 18760,
+        "parentPid": 18860,
+        "createdAt": "2026-10-21T16:31:55.7081662Z"
+      }
+    },
+    {
+      "report": "output\\playwright\\vpx-decoder-qualification-2026-10-21T16-32-24.419Z.json",
+      "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\vd-qZyKTP",
+      "verifiedAbsent": true,
+      "server": {
+        "identity": {
+          "pid": 33292,
+          "parentPid": 6024,
+          "createdAt": "2026-10-21T16:32:31.3150960Z"
+        },
+        "ownedRootAbsent": true
+      },
+      "chromeIdentity": {
+        "pid": 20836,
+        "parentPid": 6024,
+        "createdAt": "2026-10-21T16:32:32.6899312Z"
+      }
+    },
+    {
+      "report": "output/playwright/vpx-decoder-qualification-2026-10-21T16-37-09.591Z.json",
+      "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\vd-z18X0F",
+      "verifiedAbsent": true,
+      "server": {
+        "identity": {
+          "pid": 17016,
+          "parentPid": 38432,
+          "createdAt": "2026-10-21T16:37:17.0252150Z"
+        },
+        "ownedRootAbsent": true
+      },
+      "chromeIdentity": {
+        "pid": 18968,
+        "parentPid": 38432,
+        "createdAt": "2026-10-21T16:37:18.6745837Z"
+      }
+    },
+    {
+      "report": "output/playwright/vpx-decoder-qualification-2026-10-21T16-46-20.768Z.json",
+      "ownedRuntime": "H:\\Github Repositories\\fileconverter\\work\\vd-PfrqzV",
+      "verifiedAbsent": true,
+      "server": {
+        "identity": {
+          "pid": 9552,
+          "parentPid": 19220,
+          "createdAt": "2026-10-21T16:46:28.5281840Z"
+        },
+        "ownedRootAbsent": true
+      },
+      "chromeIdentity": {
+        "pid": 31896,
+        "parentPid": 19220,
+        "createdAt": "2026-10-21T16:46:30.6305837Z"
+      }
+    }
+  ],
+  "ownedChromeExitObservations": [
+    {
+      "report": "output/playwright/vpx-decoder-qualification-2026-10-21T16-12-00.269Z.json",
+      "exit": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 4552,
+          "parentPid": 37896,
+          "createdAt": "2026-10-21T16:12:09.7870201Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-22T01:21:08.729Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 583,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    },
+    {
+      "report": "output\\playwright\\vpx-decoder-qualification-2026-10-21T16-31-47.135Z.json",
+      "exit": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 18760,
+          "parentPid": 18860,
+          "createdAt": "2026-10-21T16:31:55.7081662Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-22T01:21:08.719Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 559,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    },
+    {
+      "report": "output\\playwright\\vpx-decoder-qualification-2026-10-21T16-32-24.419Z.json",
+      "exit": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 20836,
+          "parentPid": 6024,
+          "createdAt": "2026-10-21T16:32:32.6899312Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-22T01:21:08.717Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 545,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    },
+    {
+      "report": "output/playwright/vpx-decoder-qualification-2026-10-21T16-37-09.591Z.json",
+      "exit": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 18968,
+          "parentPid": 38432,
+          "createdAt": "2026-10-21T16:37:18.6745837Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-22T01:21:09.201Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1010,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    },
+    {
+      "report": "output/playwright/vpx-decoder-qualification-2026-10-21T16-46-20.768Z.json",
+      "exit": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 31896,
+          "parentPid": 19220,
+          "createdAt": "2026-10-21T16:46:30.6305837Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-22T01:21:09.224Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 781,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    }
+  ],
+  "privateAssetStageAbsent": true,
+  "noRemainingCapabilityDiagnosticRuntimeChildren": true,
+  "retainedNativeCore": {
+    "manifestSha256": "d7a0a786da6108b171c28890ccbabea8a28ac81e0e9adb3d0f6ff8f17d50c6ea",
+    "sources": 43,
+    "artifacts": 16
+  },
+  "finalFocusedChecks": {
+    "passed": 40,
+    "failed": 0,
+    "skipped": 0,
+    "typeScript": "pass",
+    "targetedLint": "pass",
+    "postBrowserChanges": "Only atomic diagnostic metadata/URL labels and bigint exact-file-set cleanup guards; no engine/settings change, browser not rerun for these guards"
+  },
+  "noUnrelatedProcessesKilled": true,
+  "noDocker": true,
+  "headlessOnly": true,
+  "fullGoalComplete": false
+}

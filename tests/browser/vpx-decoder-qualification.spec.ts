@@ -2,8 +2,8 @@
 import { chromium, expect, test, type BrowserContext, type Page } from "@playwright/test";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
-import { createReadStream, existsSync } from "node:fs";
-import { copyFile, lstat, mkdir, open, readFile, rm, statfs, writeFile } from "node:fs/promises";
+import { createReadStream, existsSync, type BigIntStats } from "node:fs";
+import { copyFile, lstat, mkdir, open, readFile, readdir, realpath, rm, statfs, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { promisify } from "node:util";
@@ -44,7 +44,7 @@ let browserLaunched = false;
 let conversionOrdinal = 0;
 const staticCompilation = { coldCompiles: 0, reuses: 0 };
 const staticCodeRequests = { manifests: 0, wasm: 0 };
-let env: NodeJS.ProcessEnv, assetIdentity: Awaited<ReturnType<typeof lstat>> | undefined;
+let env: NodeJS.ProcessEnv, assetIdentity: BigIntStats | undefined;
 let audit: Awaited<ReturnType<typeof auditVpxDecoderArtifact>>;
 let browserPin: Awaited<ReturnType<typeof inspectInstalledChromePin>> | undefined;
 const sourcePins: Record<string, string> = {};
@@ -127,7 +127,9 @@ test.beforeAll(async () => {
   if (process.platform === "linux") expect(Buffer.byteLength(path.join(runtime.directory, "org.chromium.Chromium.XXXXXX", "SingletonSocket"))).toBeLessThan(108);
   await exec(process.execPath, ["node_modules/vinext/dist/cli.js", "build"],
     { cwd: root, env, windowsHide: true, timeout: 180_000, maxBuffer: 4 * 1024 ** 2 });
-  await mkdir(assetDirectory); assetIdentity = await lstat(assetDirectory);
+  await mkdir(assetDirectory); assetIdentity = await lstat(assetDirectory, { bigint: true });
+  expect(assetIdentity.isDirectory() && !assetIdentity.isSymbolicLink()).toBe(true);
+  expect(await realpath(assetDirectory)).toBe(assetDirectory);
   for (const [file, hash] of Object.entries({ ...audit.deliveredArtifacts, "build-manifest.json": audit.manifestSha256 })) {
     await copyFile(path.join(audit.directory, file), path.join(assetDirectory, file));
     expect(sha(await readFile(path.join(assetDirectory, file)))).toBe(hash);
@@ -425,8 +427,13 @@ test.afterAll(async () => {
     report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 32 && Boolean(browserPin);
   });
   if (assetIdentity) cleanup.push(async () => {
-    const current = await lstat(assetDirectory); expect(current.dev).toBe(assetIdentity!.dev); expect(current.ino).toBe(assetIdentity!.ino);
-    for (const [file, hash] of Object.entries({ ...audit.deliveredArtifacts, "build-manifest.json": audit.manifestSha256 }))
+    const current = await lstat(assetDirectory, { bigint: true });
+    expect(current.isDirectory() && !current.isSymbolicLink()).toBe(true);
+    expect(await realpath(assetDirectory)).toBe(assetDirectory);
+    expect(current.dev).toBe(assetIdentity!.dev); expect(current.ino).toBe(assetIdentity!.ino); expect(current.birthtimeNs).toBe(assetIdentity!.birthtimeNs);
+    const expected = { ...audit.deliveredArtifacts, "build-manifest.json": audit.manifestSha256 };
+    expect((await readdir(assetDirectory)).sort(), "Never delete an unexpected user entry").toEqual(Object.keys(expected).sort());
+    for (const [file, hash] of Object.entries(expected))
       expect(sha(await readFile(path.join(assetDirectory, file)))).toBe(hash);
     await rm(assetDirectory, { recursive: true });
   });

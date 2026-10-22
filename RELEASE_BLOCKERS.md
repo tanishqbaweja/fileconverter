@@ -1,5 +1,12 @@
 # Release closure — original scope, not a reduced MVP
 
+B06 current2790843 manifest-reuse sequence9PASS/1FAIL48.7s: verified1Wasm download,
+1compile/7reuses/8manifest checks across actual app replacement, all6outputs
+identical,32pins/privacy/cleanup pass. Memory still FAIL282.91015625MiB. Private
+candidate not promoted; do not repeat unchanged reuse controls. Next bounded live
+allocator trace for first VP9 peak with same preceding VP8 context. Full54/B02-B09
+remain OPEN. `evidence/2026-10-21-vpx-manifest-reuse-result.json`.
+
 B06 late periodic observations confirm small observed JS heaps despite325.2578125
 MiB full-tree failure. Nine bare memories and nine actual codec factories retire
 without comparable growth when codec work is absent. Initial HEAPU8 telemetry error

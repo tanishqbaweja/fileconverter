@@ -19,15 +19,23 @@ export function createBoundedPeriodicRealmObserver({ sample, readPhase, interval
         value = await sample();
         assert.ok(value && typeof value.targetsAvailable === "boolean");
         assert.ok(value.targets === null || (Array.isArray(value.targets) && value.targets.length <= 16));
+        assert.equal(value.targetsAvailable, Array.isArray(value.targets));
         assert.ok(Buffer.byteLength(JSON.stringify(value)) <= 16384, "Realm observation metadata cap");
+        const ids = new Set();
         for (const target of value.targets ?? []) {
           assert.ok(typeof target.targetId === "string" && target.targetId.length <= 128);
+          assert.ok(typeof target.url === "string" && target.url.length <= 2048);
+          assert.equal(ids.has(target.targetId), false); ids.add(target.targetId);
+        }
+        assert.ok(peaks.size + [...ids].filter(id => !peaks.has(id)).length <= 128, "Observed realm identity cap");
+        // Validate the entire observation before committing ANY derived peaks.
+        for (const target of value.targets ?? []) {
           if (!peaks.has(target.targetId)) {
-            assert.ok(peaks.size < 128, "Observed realm identity cap");
-            peaks.set(target.targetId, { targetId: target.targetId, type: target.type, url: String(target.url).slice(0, 2048),
+            peaks.set(target.targetId, { targetId: target.targetId, type: target.type, firstSeenUrl: target.url,
               usedJSHeapBytes: null, allocatedJSHeapBytes: null, embedderHeapUsedBytes: null, backingStorageBytes: null });
           }
           const peak = peaks.get(target.targetId);
+          peak.lastSeenUrl = target.url;
           for (const field of ["usedJSHeapBytes", "allocatedJSHeapBytes", "embedderHeapUsedBytes", "backingStorageBytes"]) {
             const number = target[field];
             if (typeof number === "number" && Number.isFinite(number) && number >= 0 && (peak[field] === null || number > peak[field])) {

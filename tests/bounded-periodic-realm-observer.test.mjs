@@ -30,6 +30,11 @@ test("unavailable, invalid and excessive realm data is bounded and never convert
   assert.deepEqual((await observer.observe()).sample, { targetsAvailable: false, targets: null });
   assert.equal((await observer.observe()).sample, null); assert.equal((await observer.observe()).sample, null);
   assert.deepEqual(observer.report().observedPeaks, []); await observer.stop();
+  const invalidTail = createBoundedPeriodicRealmObserver({ sample: async () => ({ targetsAvailable: true,
+    targets: [target(999).targets[0], { targetId: 42, url: "invalid" }] }), readPhase: () => "late-job" });
+  assert.equal((await invalidTail.observe()).sample, null);
+  assert.deepEqual(invalidTail.report().observedPeaks, [], "Invalid tail cannot publish partial valid-looking peaks");
+  await invalidTail.stop();
   assert.throws(() => createBoundedPeriodicRealmObserver({ sample() {}, readPhase() {}, intervalMs: 1 }));
   assert.throws(() => createBoundedPeriodicRealmObserver({ sample() {}, readPhase() {}, capacity: 257 }));
 });

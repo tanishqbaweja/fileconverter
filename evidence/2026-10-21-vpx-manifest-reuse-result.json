@@ -1,0 +1,346 @@
+{
+  "schemaVersion": 1,
+  "implementationCommit": "279084304fb0bfa8565f62dc6e398cf86720ccbd",
+  "scope": "Actual manifest-driven static-module reuse and bounded single-binary fetch across full private sequence",
+  "suite": "9PASS/1FAIL48.7s",
+  "browser": "155.0.8059.85",
+  "staticCompilation": {
+    "coldCompiles": 1,
+    "reuses": 7
+  },
+  "staticCodeRequests": {
+    "manifests": 8,
+    "wasm": 1
+  },
+  "allSixValidatedOutputsIdentical": true,
+  "outputs": [
+    {
+      "codec": "vp8",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.993273,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 91331,
+      "outputBytes": 525916,
+      "outputSha256": "84fc5477bdb0dc97995782f77827a3e5bcedfcaa6a694cad5980910083389ae1"
+    },
+    {
+      "codec": "vp8",
+      "options": {
+        "codec": "mpeg4",
+        "maxWidth": 320,
+        "bitRateBps": 4000000,
+        "frameRateFps": 15,
+        "quality": "balanced"
+      },
+      "fullDecode": true,
+      "frames": 30,
+      "fps": 15,
+      "ssim": 0.986054,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 91331,
+      "outputBytes": 112270,
+      "outputSha256": "a36ff4fec77bc5defbe1b529a06d20aa71cfe146b07021516d73236a383303eb"
+    },
+    {
+      "codec": "vp9",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.996114,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 438626,
+      "outputBytes": 593687,
+      "outputSha256": "1e8dc6e85e1337c025f9d6fca1e5bbab0ab4cf7df56079e260d9312cd42dec19"
+    },
+    {
+      "codec": "vp9",
+      "options": {
+        "codec": "mpeg4",
+        "maxWidth": 320,
+        "bitRateBps": 4000000,
+        "frameRateFps": 15,
+        "quality": "balanced"
+      },
+      "fullDecode": true,
+      "frames": 30,
+      "fps": 15,
+      "ssim": 0.98829,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 438626,
+      "outputBytes": 108167,
+      "outputSha256": "15f0912f97349e82cc47d7eb8d5cd2daa4bc0fe0e00cfc672f44de987465d496"
+    },
+    {
+      "codec": "vp8",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.993273,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 123374,
+      "outputBytes": 559403,
+      "outputSha256": "6d845ec63901e6124d47ee33121c8c905c6f816b0b8fd97accc4a57109620e13"
+    },
+    {
+      "codec": "vp8",
+      "options": "automatic",
+      "fullDecode": true,
+      "frames": 48,
+      "fps": 24,
+      "ssim": 0.993273,
+      "audioPacketsIdentical": true,
+      "sourceBytes": 91331,
+      "outputBytes": 525916,
+      "outputSha256": "84fc5477bdb0dc97995782f77827a3e5bcedfcaa6a694cad5980910083389ae1"
+    }
+  ],
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 230359040,
+    "spreadBytes": 1703936,
+    "rssBytes": 478720000,
+    "firstTimestamp": "2026-10-21T16:46:40.0696745Z",
+    "lastTimestamp": "2026-10-21T16:46:48.4799019Z",
+    "sampleCount": 8,
+    "minimumElapsedMs": 8000
+  },
+  "incrementalPrivateMiB": 282.91015625,
+  "primaryPeak": {
+    "timestamp": "2026-10-21T16:46:59.4054162Z",
+    "phase": "independent-validation",
+    "privateBytes": 527011840,
+    "rssBytes": 771993600,
+    "jobOrdinal": 3,
+    "codec": "vp9",
+    "processes": [
+      {
+        "pid": 20436,
+        "parentPid": 31896,
+        "createdAt": "2026-10-21T16:46:30.9595203Z",
+        "creationFileTime": "134370747909595203",
+        "executableName": "chrome.exe",
+        "privateBytes": 124993536,
+        "rssBytes": 149708800,
+        "type": "gpu-process",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 26432,
+        "parentPid": 31896,
+        "createdAt": "2026-10-21T16:46:30.8409965Z",
+        "creationFileTime": "134370747908409965",
+        "executableName": "chrome.exe",
+        "privateBytes": 2650112,
+        "rssBytes": 10379264,
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 28052,
+        "parentPid": 31896,
+        "createdAt": "2026-10-21T16:46:30.9676610Z",
+        "creationFileTime": "134370747909676610",
+        "executableName": "chrome.exe",
+        "privateBytes": 13754368,
+        "rssBytes": 41205760,
+        "type": "utility",
+        "utilitySubtype": "network.mojom.NetworkService",
+        "sandboxType": "none"
+      },
+      {
+        "pid": 30148,
+        "parentPid": 31896,
+        "createdAt": "2026-10-21T16:46:31.0641604Z",
+        "creationFileTime": "134370747910641604",
+        "executableName": "chrome.exe",
+        "privateBytes": 271974400,
+        "rssBytes": 292229120,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 31896,
+        "parentPid": 19220,
+        "createdAt": "2026-10-21T16:46:30.6305837Z",
+        "creationFileTime": "134370747906305837",
+        "executableName": "chrome.exe",
+        "privateBytes": 46759936,
+        "rssBytes": 142802944,
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 40668,
+        "parentPid": 31896,
+        "createdAt": "2026-10-21T16:46:31.0316477Z",
+        "creationFileTime": "134370747910316477",
+        "executableName": "chrome.exe",
+        "privateBytes": 43204608,
+        "rssBytes": 84787200,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 45516,
+        "parentPid": 31896,
+        "createdAt": "2026-10-21T16:46:51.2712757Z",
+        "creationFileTime": "134370748112712757",
+        "executableName": "chrome.exe",
+        "privateBytes": 15360000,
+        "rssBytes": 32055296,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 45844,
+        "parentPid": 31896,
+        "createdAt": "2026-10-21T16:46:30.9915357Z",
+        "creationFileTime": "134370747909915357",
+        "executableName": "chrome.exe",
+        "privateBytes": 8314880,
+        "rssBytes": 18825216,
+        "type": "utility",
+        "utilitySubtype": "storage.mojom.StorageService",
+        "sandboxType": "service"
+      }
+    ]
+  },
+  "observedJobTimes": [
+    {
+      "ordinal": 1,
+      "codec": "vp8",
+      "multi": false,
+      "options": "automatic",
+      "sourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "cacheHit": false,
+      "elapsedMs": 464.48004883527756,
+      "nativeElapsedMs": 431.14999997615814
+    },
+    {
+      "ordinal": 2,
+      "codec": "vp8",
+      "multi": false,
+      "options": {
+        "codec": "mpeg4",
+        "maxWidth": 320,
+        "bitRateBps": 4000000,
+        "frameRateFps": 15,
+        "quality": "balanced"
+      },
+      "sourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "cacheHit": true,
+      "elapsedMs": 217.2852343916893,
+      "nativeElapsedMs": 184.76500004529953
+    },
+    {
+      "ordinal": 3,
+      "codec": "vp9",
+      "multi": false,
+      "options": "automatic",
+      "sourceSha256": "510ae98f64059f69d5346bd45455fc21093149946ac4cb59649486edf5cf22a3",
+      "cacheHit": true,
+      "elapsedMs": 346.6551757454872,
+      "nativeElapsedMs": 309.9150000214577
+    },
+    {
+      "ordinal": 4,
+      "codec": "vp9",
+      "multi": false,
+      "options": {
+        "codec": "mpeg4",
+        "maxWidth": 320,
+        "bitRateBps": 4000000,
+        "frameRateFps": 15,
+        "quality": "balanced"
+      },
+      "sourceSha256": "510ae98f64059f69d5346bd45455fc21093149946ac4cb59649486edf5cf22a3",
+      "cacheHit": true,
+      "elapsedMs": 216.67001950740814,
+      "nativeElapsedMs": 184.05500000715256
+    },
+    {
+      "ordinal": 5,
+      "codec": "vp8",
+      "multi": true,
+      "options": "automatic",
+      "sourceSha256": "1705c9399cd4cb8112665e305ee4716b7544a465467713ab334f735457f47672",
+      "cacheHit": true,
+      "elapsedMs": 208.3800488114357,
+      "nativeElapsedMs": 178.3949999809265
+    },
+    {
+      "ordinal": 6,
+      "codec": "vp8",
+      "multi": false,
+      "options": "automatic",
+      "sourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "cacheHit": false,
+      "elapsedMs": 2.850000023841858,
+      "nativeElapsedMs": null
+    },
+    {
+      "ordinal": 7,
+      "codec": "vp8",
+      "multi": false,
+      "options": "automatic",
+      "sourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "cacheHit": true,
+      "elapsedMs": 39.33499997854233,
+      "nativeElapsedMs": null
+    },
+    {
+      "ordinal": 8,
+      "codec": "vp9",
+      "multi": false,
+      "options": "automatic",
+      "sourceSha256": "510ae98f64059f69d5346bd45455fc21093149946ac4cb59649486edf5cf22a3",
+      "cacheHit": true,
+      "elapsedMs": 227.02991211414337,
+      "nativeElapsedMs": 200.26500004529953
+    },
+    {
+      "ordinal": 9,
+      "codec": "vp8",
+      "multi": false,
+      "options": "automatic",
+      "sourceSha256": "6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9",
+      "cacheHit": true,
+      "elapsedMs": 211.91028320789337,
+      "nativeElapsedMs": 180.21000003814697
+    }
+  ],
+  "pins": true,
+  "sourcePinCount": 32,
+  "cleanup": true,
+  "server": {
+    "identity": {
+      "pid": 9552,
+      "parentPid": 19220,
+      "createdAt": "2026-10-21T16:46:28.5281840Z"
+    },
+    "ownedRootAbsent": true
+  },
+  "forbiddenRequests": [],
+  "unavailableNativeSamples": 0,
+  "report": {
+    "path": "output\\playwright\\vpx-decoder-qualification-2026-10-21T16-46-20.768Z.json",
+    "bytes": 1775378,
+    "sha256": "ba88efc537b7ed243ca43fef6a7e801f43d99ea670fddb0dcdb271457d7db527"
+  },
+  "conclusion": "Actual code-cache reuse and one binary fetch are established; all correctness guards pass, but full-tree memory still exceeds250MiB. Do not rerun unchanged cache/fetch controls or call this qualified/global fastest.",
+  "next": "One bounded allocator trace during the first VP9 job with preceding VP8 default/control context retained; investigate remaining native/lazy-code allocation without changing inputs/quality/baseline/threshold.",
+  "publicAcceptance": false,
+  "memoryAcceptance": false,
+  "fullGoalComplete": false
+}

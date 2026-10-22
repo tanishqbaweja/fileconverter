@@ -1,5 +1,22 @@
 # Remaining work audit
 
+Cache cycle final safety:40focused/TS/lint pass,5owned runtime roots/Chrome birth
+identities and private asset stage absent. Original test.mkv full SHA/size exact;
+retained native43/16audit passes. Guard-only telemetry/cleanup hardening after
+last browser run, no engine/settings change. No live job handle; next first-VP9
+bounded live allocator trace preserves VP8 prefix. Full54/B02-B09 and282.91015625
+MiB failure still OPEN. `evidence/2026-10-22-vpx-code-cache-final-safety.json`.
+
+## 2026-10-21 - Real static-code reuse verified; remaining peak needs live allocator attribution
+
+2790843:9PASS/1FAIL48.7s, actual1binary fetch/1compile/8manifest checks/7reuses,
+all6outputs identical/32pins/privacy/cleanup pass. Memory still FAIL282.91015625
+MiB. Do not repeat these unchanged cache/refetch controls or promote private route.
+Next bounded live allocator trace during first VP9 while preserving preceding
+VP8 default/control jobs, source/settings/output/fidelity/full-tree/250MiB guards.
+Full54/B02-B09/scaling/browser/public acceptance remain OPEN. Exact peak/ordinal:
+`evidence/2026-10-21-vpx-manifest-reuse-result.json`.
+
 2026-10-21 bounded manifest-driven static code reuse implemented/25focused+TS+
 lint pass. Real request count assertions will verify only one binary fetch per
 cold/changed artifact; no stale manifest fallback. Same native/settings/fidelity/
