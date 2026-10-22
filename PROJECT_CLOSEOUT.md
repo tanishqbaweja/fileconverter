@@ -1,0 +1,75 @@
+# Original-scope closeout plan
+
+This is an execution order, not a completion claim or a calendar promise. The
+original specification and `REMAINING_WORK.md`'s 54 requirement rows remain the
+acceptance contract. Private engines are not public supported profiles.
+
+## 1. Finish the current media qualification path
+
+1. Resolve the first 1080p/128+MiB VP8/VP9 stage's observer failure. Retain exact
+   output/quality checks, full-tree 250MiB formula and null unavailable samples.
+   A corrected teardown must remove owned data even when observation fails.
+2. Implement bounded, lossless memory-sample journaling before tests that can
+   exceed the current 6,000-sample in-memory ceiling. A smaller ring that silently
+   drops peaks is not a substitute. Validate journal completeness and actual
+   readback/peak calculation without retaining media.
+3. Qualify progressively larger real sources, including >4GB and approaching
+   10GB, through the same production coordinator/worker/disk-output path. Check
+   disk/RAM first; preserve `test.mkv`. Delete each owned output/fixture after its
+   independent validation, including failures. Compare size/memory/time graphs.
+4. Complete final selector, planner, options, stream/metadata disclosures and
+   terminal/recovery integration for qualified VP8/VP9 and MPEG-2 paths. Reuse the
+   already-passed matching native, small-repeat and MPEG-2 full-original gates;
+   rerun only coverage affected by the integration or a changed engine.
+
+Exit evidence: B03/B04/B06 applicable original gates and public promotion
+checklist all satisfied. The 36 small VPX conversions and six MPEG-2 full-original
+conversions are existing evidence, not tasks to repeat unchanged.
+
+## 2. Close the remaining capability gaps
+
+| Blocker | Remaining decision/work | Exit evidence |
+| --- | --- | --- |
+| B02/B03 | Fresh H.264/AV1/MPEG-2 output, AV1 software decode and legally conditional HEVC; remaining named practical combinations. | Reuse each exact candidate's recorded diagnosis. Implement and qualify the production route, or document an exact measured technical/quality/memory/legal unsupported decision. A build, packet copy or failed first attempt does not close a fresh encoding requirement. |
+| B05 | Broader representable audio fields and destination artwork. | Reuse the private 25-field text-preservation result; finish memory-safe production integration, independent field/art comparisons, accurate destination exclusions and applicable stress/recovery gates. Do not repeat unchanged stock-loss demonstrations. |
+| Full audit | Remaining image/RAW/HEIF, archive, subtitle, ebook, data and office requirements. | Reconcile every applicable original named item with its current implementation/validated evidence or defensible exact unsupported decision. Existing representative support must not be treated as every theoretical format pair. |
+
+Do not narrow the scope to today's public registry. Do not label a profile
+unsupported solely to end an inconvenient investigation.
+
+## 3. Release qualification and handoff
+
+1. B07: final changed flows on practically available current Chrome, Edge, Brave
+   and Opera, headless only. Record missing browsers/features and unperformed
+   manual/OS-dialog coverage accurately. Include direct destination, storage,
+   permissions, batch, reload, cancellation and write-failure cleanup.
+2. B08: current dependency/security reachability review and proportionate fixes;
+   coherent final lint, TypeScript, build, portable units, browser conversion,
+   independent validators, privacy/offline, registry and source/artifact-matched
+   published-engine reproducibility gates. No Docker or blind dependency fixes.
+3. B09: reconcile all 54 original requirement rows, README/UI/registry/tests and
+   recorded limitations. Verify original size/SHA, zero disposable owned media,
+   pushed remote commit, and exact memory/throughput/browser results.
+
+## Rules that prevent another open-ended test loop
+
+- Before each expensive run, record the exact missing exit evidence or changed
+  hypothesis it will test. A previous failure alone is not a rerun justification.
+- Bind every result to executed source, engine, browser, settings and input;
+  preserve historical results without pretending they qualify changed code.
+- Diagnose a failed gate with bounded evidence, then make an evidence-directed
+  change. Do not alternate unchanged builds, traces and controls indefinitely.
+- Stop starting further conversions after known observation failure. Preserve
+  the error and attempt all safe owned cleanup phases; never delete a live or
+  ownership-unverified profile to make the cleanup check pass.
+- Keep a passing gate closed until a relevant dependency changes. Update
+  `TESTED.md` and `REMAINING_WORK.md` after a meaningful cycle.
+- Compare speed on identical inputs/settings with correctness, fidelity,
+  privacy, memory and cleanup unchanged. Do not claim a provable global fastest
+  implementation or use native conversion in place of browser execution.
+- Use the previous actual runtime to estimate waits. Avoid short-interval
+  manual polling; notifications should concern a result, failure or needed action.
+
+A defensible finish-date estimate requires the remaining codec feasibility and
+large-file memory gates to be resolved. Until then, "several more weeks,
+potentially longer" is only a low-confidence planning judgment.

@@ -2,27 +2,42 @@
 // reader. At most one bounded stdout chunk plus a bounded unfinished line.
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
+import { setImmediate as nextEventLoopTurn } from "node:timers/promises";
+
+// Async-generator yields alone only schedule microtasks when a stdout chunk
+// already contains many complete lines. Let pending observer pipe I/O and its
+// timers run between bounded groups, including with Playwright step assertions
+// in the consumer. This never drops/reorders lines or changes converter code.
+export async function* boundedUtf8Lines(chunks) {
+  const decoder = new TextDecoder("utf-8", { fatal: true }); let pending = "", linesThisTurn = 0;
+  for await (const chunk of chunks) {
+    assert.ok(chunk instanceof Uint8Array && chunk.length <= 262144); pending += decoder.decode(chunk, { stream: true });
+    let newline;
+    while ((newline = pending.indexOf("\n")) >= 0) {
+      const line = pending.slice(0, newline).replace(/\r$/, ""); pending = pending.slice(newline + 1);
+      assert.ok(Buffer.byteLength(line) <= 4096, "Native validator line exceeded4KiB");
+      if (line) {
+        yield line;
+        if (++linesThisTurn === 32) { linesThisTurn = 0; await nextEventLoopTurn(); }
+      }
+    }
+    assert.ok(Buffer.byteLength(pending) <= 4096, "Unfinished native validator line exceeded4KiB");
+  }
+  pending += decoder.decode(); assert.ok(Buffer.byteLength(pending) <= 4096); if (pending.trim()) yield pending.trim();
+}
+
 /** @param {string} command @param {string[]} args @param {{ cwd?: string, env?: NodeJS.ProcessEnv, timeoutMs?: number }} options */
 export async function* boundedNativeLines(command, args, { cwd, env = process.env, timeoutMs = 600000 } = {}) {
   assert.ok(["ffprobe", "ffmpeg"].includes(command));
   assert.ok(Number.isSafeInteger(timeoutMs) && timeoutMs > 0 && timeoutMs <= 7200000);
-  const controller = new AbortController(), decoder = new TextDecoder("utf-8", { fatal: true });
+  const controller = new AbortController();
   const child = spawn(command, args, { cwd, env, windowsHide: true, signal: controller.signal, stdio: ["ignore", "pipe", "pipe"] });
-  let stderr = "", pending = "";
+  let stderr = "";
   const exit = new Promise((resolve, reject) => { child.once("error", reject); child.once("close", resolve); }); exit.catch(() => {});
   child.stderr.on("data", bytes => { stderr = (stderr + bytes.toString()).slice(-8192); });
   const timer = setTimeout(() => controller.abort(), timeoutMs);
   try {
-    for await (const chunk of child.stdout) {
-      assert.ok(chunk.length <= 262144); pending += decoder.decode(chunk, { stream: true });
-      let newline;
-      while ((newline = pending.indexOf("\n")) >= 0) {
-        const line = pending.slice(0, newline).replace(/\r$/, ""); pending = pending.slice(newline + 1);
-        assert.ok(Buffer.byteLength(line) <= 4096, "Native validator line exceeded4KiB"); if (line) yield line;
-      }
-      assert.ok(Buffer.byteLength(pending) <= 4096, "Unfinished native validator line exceeded4KiB");
-    }
-    pending += decoder.decode(); assert.ok(Buffer.byteLength(pending) <= 4096); if (pending.trim()) yield pending.trim();
+    for await (const line of boundedUtf8Lines(child.stdout)) yield line;
     assert.equal(await exit, 0, stderr);
   } finally {
     clearTimeout(timer); if (child.exitCode === null && child.signalCode === null) controller.abort(); await exit.catch(() => {});

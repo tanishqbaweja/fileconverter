@@ -2,9 +2,11 @@
   "status": "correctness-passed-memory-unavailable-not-accepted",
   "sourceCommit": "d7a140c",
   "report": {
-    "path": "output/playwright/vpx-decoder-qualification-2026-10-22T06-22-30.105Z.json",
-    "bytes": 5124052,
-    "sha256": "040c3c7ebfa7692fe5f7262fd6c7115c7a46cd3b576be73e51f70e0740f62c68"
+    "path": "output/playwright/vpx-decoder-qualification-2026-10-22T06-22-30.105Z.json.gz",
+    "bytes": 100293,
+    "sha256": "b6834a2020c74efdf646b266ba559a0502d0b1cffadf069b11530bb3914f1758",
+    "restoredBytes": 5124052,
+    "restoredSha256": "040c3c7ebfa7692fe5f7262fd6c7115c7a46cd3b576be73e51f70e0740f62c68"
   },
   "historicalExecutedSourcePinsVerifiedAgainstGitObject": 38,
   "scope": "First genuine 1080p 128-256 MiB stage only; not repeated stress, near-10GiB, final UI or public acceptance",

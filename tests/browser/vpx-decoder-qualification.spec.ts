@@ -29,6 +29,7 @@ import { makeVpxRepeatPlan } from "../../scripts/lib/vpx-repeat-plan.mjs";
 import { vpxScalePlan, assertVpxMemoryGateCoverage } from "../../scripts/lib/vpx-scale-plan.mjs";
 import { validateLargeCopiedAac } from "../../scripts/lib/large-aac-copy-fidelity.mjs";
 import { boundedNativeLines } from "../../scripts/lib/bounded-native-lines.mjs";
+import { compareStreamingVideoClocks } from "../../scripts/lib/streaming-video-clock-fidelity.mjs";
 
 const root = path.resolve(import.meta.dirname, "../.."), exec = promisify(execFile);
 const sha = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
@@ -95,7 +96,8 @@ async function captureAttribution(label: string) {
 const phases = [{ phase: "blank", at: Date.now() }];
 const observerTransport = { requests: 0, failures: 0, maximumRequestMs: 0, maximumBatchSamples: 0,
   lastObserverCpuMs: null as number | null, lastReceivedSequence: null as number | null,
-  lastSampleAt: null as string | null, lastFailure: null as Record<string, unknown> | null };
+  lastSampleAt: null as string | null, firstFailure: null as Record<string, unknown> | null,
+  lastFailure: null as Record<string, unknown> | null, longestRequest: null as Record<string, unknown> | null };
 const samples: Array<{ privateBytes: number | null; rssBytes: number | null; phase: string; timestamp: string; elapsedMs: number }> = [];
 const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const phase = (value: string) => phases.push({ phase: value, at: Date.now() });
@@ -109,8 +111,16 @@ async function drainMemory() {
     observerTransport.failures++;
     observerTransport.lastFailure = { at: new Date().toISOString(), phase: phases.at(-1)?.phase, elapsedMs,
       eventLoopActiveMs: loop.active, eventLoopIdleMs: loop.idle, error: describeOwnedCleanupError(error) };
+    observerTransport.firstFailure ??= observerTransport.lastFailure;
     throw error;
-  } finally { observerTransport.maximumRequestMs = Math.max(observerTransport.maximumRequestMs, performance.now() - started); }
+  } finally {
+    const elapsedMs = performance.now() - started;
+    if (elapsedMs > observerTransport.maximumRequestMs) {
+      const loop = performance.eventLoopUtilization(utilization);
+      observerTransport.longestRequest = { elapsedMs, eventLoopActiveMs: loop.active, eventLoopIdleMs: loop.idle, at: new Date().toISOString() };
+      observerTransport.maximumRequestMs = elapsedMs;
+    }
+  }
   observerTransport.maximumBatchSamples = Math.max(observerTransport.maximumBatchSamples, batch.samples.length);
   observerTransport.lastObserverCpuMs = batch.observerCpuMs;
   observerTransport.lastReceivedSequence = batch.samples.at(-1)?.sequence ?? observerTransport.lastReceivedSequence;
@@ -170,7 +180,8 @@ test.beforeAll(async () => {
     "lib/vpx-compiled-core.ts", "lib/conversion-protocol.ts", "scripts/lib/vpx-repeat-plan.mjs", "scripts/lib/vpx-scale-plan.mjs",
     "scripts/lib/large-aac-copy-fidelity.mjs", "scripts/lib/large-mp4-first-sample-duration.mjs",
     "scripts/lib/streaming-pcm-trim-digest.mjs", "scripts/lib/bounded-native-lines.mjs",
-    "scripts/lib/phased-owned-cleanup.mjs", "scripts/lib/bounded-cleanup-error.mjs", "scripts/lib/windows-tree-monitor.cs"])
+    "scripts/lib/phased-owned-cleanup.mjs", "scripts/lib/bounded-cleanup-error.mjs", "scripts/lib/windows-tree-monitor.cs",
+    "scripts/lib/streaming-video-clock-fidelity.mjs"])
     sourcePins[file] = sha(await readFile(path.join(root, file)));
   report.executedSourcePins = sourcePins;
   if (process.platform === "win32") { browserPin = await inspectInstalledChromePin(); report.browserPin = browserPin; }
@@ -499,17 +510,8 @@ async function validateScaleOutput(codec: "vp8" | "vp9", source: string, output:
   evidence.stage = "all-frame-timestamps";
   const times = (file: string) => boundedNativeLines("ffprobe", ["-v", "error", "-select_streams", "v:0", "-show_frames",
     "-show_entries", "frame=best_effort_timestamp_time", "-of", "compact", file], { cwd: root, env, timeoutMs: plan.nativeDeadlineMs });
-  const before = times(source)[Symbol.asyncIterator](), after = times(output)[Symbol.asyncIterator](); let count = 0, maximumError = 0;
-  try {
-    for (;;) {
-      const [a, b] = await Promise.all([before.next(), after.next()]); expect(a.done).toBe(b.done); if (a.done) break;
-      const timestamp = (line: string) => { const match = /^frame\|best_effort_timestamp_time=(-?[0-9.]+)/.exec(line); expect(match).toBeTruthy();
-        const value = Number(match![1]); expect(Number.isFinite(value)).toBe(true); return value; };
-      const error = Math.abs(timestamp(a.value) - timestamp(b.value!)); maximumError = Math.max(maximumError, error);
-      expect(error).toBeLessThan(0.001); expect(++count).toBeLessThanOrEqual(frames);
-    }
-  } finally { await Promise.allSettled([before.return?.(), after.return?.()]); }
-  expect(count).toBe(frames); evidence.frames = count; evidence.maximumVideoPtsErrorSeconds = maximumError;
+  const clocks = await compareStreamingVideoClocks(times(source), times(output), frames);
+  evidence.frames = clocks.frames; evidence.maximumVideoPtsErrorSeconds = clocks.maximumVideoPtsErrorSeconds;
   evidence.stage = "exact-all-packet-PCM-trim-and-audio-clocks";
   try { evidence.audio = await validateLargeCopiedAac(source, output, { env }); }
   catch (error) { evidence.audioFailure = String(error).slice(0, 2048);
@@ -517,7 +519,7 @@ async function validateScaleOutput(codec: "vp8" | "vp9", source: string, output:
   evidence.stage = "passed";
   rows.push({ codec, options: "automatic", independentValidation: { fullDecode: true, frames, fps: plan.frameRate, width: plan.width, height: plan.height,
     ssim, audioPacketsIdentical: true, sourceBytes: (await lstat(source)).size, outputBytes: (await lstat(output)).size,
-    outputSha256: await hashFile(output), maximumVideoPtsErrorSeconds: maximumError, largeFileStage: plan.name, near10GiBAcceptance: false } });
+    outputSha256: await hashFile(output), maximumVideoPtsErrorSeconds: clocks.maximumVideoPtsErrorSeconds, largeFileStage: plan.name, near10GiBAcceptance: false } });
 }
 
 for (const codec of ["vp8", "vp9"] as const) {
@@ -618,9 +620,9 @@ test.afterAll(async () => {
     }
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
-    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 41;
+    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 42;
     report.installedChromeBinaryPinsVerified = browserPin ? true : null;
-    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 41 && Boolean(browserPin);
+    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 42 && Boolean(browserPin);
   };
   const cleanup: Array<() => Promise<unknown>> = [];
   if (assetIdentity) cleanup.push(async () => {

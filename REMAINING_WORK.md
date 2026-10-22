@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-22 observer diagnostic1d72341 reproduces timeout but automatic owned-file
+cleanup now PASSES;41source/browser pins and independent root/process absence
+verified. Actual Playwright synthetic clock loop blocks I/O9.437s; lightweight
+same-all-frame assertions +32line event-loop yielding take23.888ms and service
+I/O at frame32.19focused/TS/lint and actual scheduler control PASS. This is a
+validator correction, not conversion speed/memory acceptance. Next corrected
+first-volume gate, unchanged native/settings/250MiB/5s timeout. Lossless reports
+9.77MB->194030B, original fresh SHA exact. Finite order: `PROJECT_CLOSEOUT.md`.
+`evidence/2026-10-22-vpx-observer-starvation-diagnosis.json`.
+
 2026-10-22 first real-volume1080p gate: both actual128+MiB browser conversions
 passed full content/SSIM/timestamp/exact AAC-PCM checks, but native memory observer
 timed out before VP9, so stage NOT accepted. Cleanup sequencing defect left355MiB;

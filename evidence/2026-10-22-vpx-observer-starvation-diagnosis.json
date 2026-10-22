@@ -1,0 +1,65 @@
+{
+  "status": "validator-event-loop-starvation-reproduced-and-corrected-control-passed",
+  "diagnosticSourceCommit": "1d72341",
+  "diagnosticReport": {
+    "path": "output/playwright/vpx-decoder-qualification-2026-10-22T06-45-27.940Z.json.gz",
+    "bytes": 93737,
+    "sha256": "3583eefd7a5bf01649f7ddc6800c8666961a6cb1b331fda161a452d45e2be7d5",
+    "restoredBytes": 4645819,
+    "restoredSha256": "d7b73855b51379dc04521a86e5be9a9bf785b37e92fd800b6bfedd17dfd6fe61"
+  },
+  "browserResult": {
+    "passed": 1,
+    "failed": 1,
+    "notRun": 1,
+    "scope": "VP8 volume correctness passed; VP9 rejected before conversion after observer failure; memory acceptance not reached",
+    "nativeObserverTimeoutMsUnchanged": 5000,
+    "maximumObserverRequestMs": 14579.492200000008,
+    "receivedSamples": 1233,
+    "maximumBatchSamples": 20,
+    "lastObserverCpuMs": 17468.75,
+    "executedSourcePins": 41,
+    "executedSourceAndBrowserPinsVerified": true,
+    "memoryAcceptance": false
+  },
+  "cleanup": {
+    "observerFailureRemainsFailure": true,
+    "executedSourceVerification": "passed",
+    "disposableFilePhase": "passed",
+    "runtimeAbsent": true,
+    "privateAssetStageAbsent": true,
+    "serverAbsent": true,
+    "recordedBrowserIdentities": 13,
+    "recordedBrowserIdentitiesStillAlive": 0,
+    "protectedOriginalBytes": 2958573265,
+    "freshProtectedOriginalSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "controls": {
+    "outsideTestRunner": { "frames": 1923, "originalElapsedMs": 410.6054, "observerIoServicedDuringLoop": false },
+    "actualPlaywrightOriginalAssertions": { "frames": 1923, "elapsedMs": 9437.0441, "observerIoServicedDuringLoop": false, "firstIoAtFrame": 1923 },
+    "actualPlaywrightCorrectedValidator": { "frames": 1923, "elapsedMs": 23.887800000000425, "observerIoServicedDuringLoop": true, "firstIoAtFrame": 32 },
+    "correctedControlPassed": true,
+    "scope": "Synthetic clock-validation scheduling only. Not browser conversion throughput, full memory acceptance or a global speed claim.",
+    "causeCaveat": "Control proves a validator starvation mechanism longer than the five-second observer timeout. Full corrected volume run must verify its removal in the original failing path."
+  },
+  "correction": {
+    "everyFrameStillChecked": true,
+    "strictVideoClockToleranceSeconds": 0.001,
+    "noSampledValidationOrDroppedRows": true,
+    "nativeLineProducerYieldsEveryLines": 32,
+    "maximumNativeChunkBytes": 262144,
+    "maximumNativeLineBytes": 4096,
+    "playwrightPerFrameReporterStepsReplacedWithNativeAssertions": true,
+    "nativeConverterUnchanged": true,
+    "observerTimeoutUnchanged": true,
+    "primaryMemoryLimitMiB": 250,
+    "firstObserverFailureNowPreserved": true,
+    "focusedTestsPassed": 19,
+    "typescript": "passed",
+    "lint": "passed",
+    "correctedActualVolumeRun": "pending"
+  },
+  "reportCompaction": { "rawBytes": 9769871, "losslessArchiveBytes": 194030, "exactRestorationVerifiedBeforeRawRemoval": true },
+  "publicAcceptance": false,
+  "near10GiBAcceptance": false
+}
