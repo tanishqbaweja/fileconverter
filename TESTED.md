@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-22 corrected actual1080p128+MiB stage5de267b:2correctness PASS/1memory FAIL
+365.15625MiB. VP8/VP9 outputs229511881/176892464B, full decode/SSIM.998013/.99813/
+all frame clocks/exact AAC+PCM+trim PASS. Observer fixed:2247samples/0unavailable,
+maxgap114ms,456requests/0failures/max28.208ms;42pins/all4cleanup phases/independent
+root absence/original SHA exact. Unknown249MiB child born at browser age180.356s
+dominates peak; similar prior blank-only burst is a lead, not permission to omit
+it or change baseline. Next identify actual child; no unchanged codec/gate replay.
+`evidence/2026-10-22-vpx-first-volume-memory-result.json`.
+
 2026-10-22 actual validator starvation reproduced without media: original
 Playwright1923-frame checks block queued I/O9.437s; corrected exact-all-frame
 native assertions +32line yielding23.888ms, first I/O frame32.19focused/TS/lint
@@ -7207,6 +7216,13 @@ Hero correction final checkpoint: combined CURRENT836/836unit PASS5723.9312ms in
 - **2026-09-28 JPEG XL inspection worker lifecycle extension:** The static worker audit now inventories 32 production TypeScript worker modules and all three message loops. The JPEG XL inspection loop has no mutable module-scoped job state, caps error responses at 2,048 characters, closes itself after its one terminal response, and is also terminated by the caller on success, error, cancellation, or the 30-second deadline. The audit passes within the 248/248 unit suite.
 - **2026-09-27 bounded archive/package source inspection:** ZIP, DOCX, XLSX, PPTX, ODT, ODS, ODP, and EPUB read only the 65,557-byte ZIP tail plus at most a 1 MiB central-directory prefix. TAR performs at most 256 isolated 512-byte header reads while skipping payloads; GZIP/BZIP2/XZ wrappers read at most 64 KiB plus an eight-byte GZIP trailer; 7Z reads its 32-byte start header plus one next-header marker. The panel reports bounded entry/size/compression/encryption/path-safety and package facts without decompressing payloads or displaying names. Eight ZIP-based families, TAR/TAR.GZ/TAR.BZ2/TAR.XZ/7Z, raw GZIP/BZIP2/XZ, unsafe ZIP/TAR, an in-memory 20,000-entry oversized ZIP directory, and a 1,024-entry TAR passed the focused production-Chromium gate 1/1. The ZIP stress stopped at exactly 1,114,133 bytes; TAR stopped at exactly 131,072 header bytes and both qualified incomplete counts. Exact scope and cleanup are in `evidence/package-source-inspection-2026-09-27.json`.
 <!-- BEGIN MANUAL TEST LOG -->
+2026-10-22 actual corrected first-volume2correctness PASS/1memory FAIL365.15625MiB;
+observer fixed2247samples/0missing/max114ms gap/0requestsfailed/28.208ms maxreply.
+42pins/all4cleanup phases/owned absence/original SHA exact. Unknown249MiB child
+at browser age180.356s resembles prior blank-only181.252s burst; cause unproven.
+Next bounded actual subtype capture, not unchanged conversion/native replay,
+baseline change or process exclusion. evidence/2026-10-22-vpx-first-volume-memory-result.json.
+
 2026-10-22 actual test-runner clock loop starves observer I/O9.437s; corrected
 all-frame native assertions +32line yielding23.888ms/first I/O frame32.19focused/
 TS/lint/scheduler-control PASS. Not conversion throughput/memory acceptance.

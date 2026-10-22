@@ -1,0 +1,84 @@
+{
+  "status": "correctness-and-observation-pass-primary-memory-fails",
+  "sourceCommit": "5de267b",
+  "browserVersion": "155.0.8059.85",
+  "report": {
+    "path": "output/playwright/vpx-decoder-qualification-2026-10-22T06-57-16.010Z.json.gz",
+    "bytes": 180420,
+    "sha256": "1b35bcaa69b821907b7287f1f1e93d341fdb063dd4ffda6d7f31169141d272bc",
+    "restoredBytes": 8611082,
+    "restoredSha256": "afdd2883d79ca8ab50e369f9eb6118293dbce30f41853a38a48dc06f65be0e95"
+  },
+  "scope": "First genuine 1080p 128-256MiB VP8/VP9 browser stage, not repeated stress, near10GiB, final UI or public acceptance",
+  "passedTests": 2,
+  "failedTests": 1,
+  "elapsedMinutesApproximately": 4.9,
+  "results": [
+    { "codec": "vp8", "sourceBytes": 168029737, "sourceSha256": "ada061be507ffe24f14b97863dc6ddec9aeec458f6964626e0bab4adc240aa25", "outputBytes": 229511881, "outputSha256": "6acc061644ef79f0ad771884a2d24f5007ddf52743bddcb091b6bd8cb25df850", "browserElapsedMs": 59926.53499996662, "frames": 1923, "ssim": 0.998013, "peakWasmBytes": 33554432 },
+    { "codec": "vp9", "sourceBytes": 171947687, "sourceSha256": "b10ec8707942dc9fd4c23263802b0c358f73d7a5fccd1106cc2132cc00b5146d", "outputBytes": 176892464, "outputSha256": "63e37738d3e0e25a8188e434498027c34019040b65110ae5d9d4376828f800d5", "browserElapsedMs": 40711.6650390625, "frames": 1475, "ssim": 0.99813, "peakWasmBytes": 41943040 }
+  ],
+  "allVideoClocksExactAndFullIndependentDecodeAndExactAacPcmTrimPassed": true,
+  "observer": {
+    "samples": 2247,
+    "unavailableSamples": 0,
+    "maximumSampleGapMs": 114,
+    "requests": 456,
+    "failures": 0,
+    "maximumRequestMs": 28.207900000001246,
+    "timeoutMsUnchanged": 5000,
+    "validatorStarvationCorrectionConfirmedInOriginalFailingPath": true
+  },
+  "blankPrivateBytes": 235053056,
+  "peakPrivateBytes": 617947136,
+  "incrementalPrivateMiB": 365.15625,
+  "primaryLimitMiB": 250,
+  "memoryAcceptance": false,
+  "peak": {
+    "sequence": 1642,
+    "timestamp": "2026-10-22T07:00:59.9746108Z",
+    "phase": "conversion-vp9-2",
+    "browserAgeMs": 181383,
+    "processCount": 9,
+    "largestProcess": { "pid": 32916, "parentPid": 44956, "creationFileTime": "134371260589478319", "createdAt": "2026-10-22T07:00:58.9478319Z", "type": "unknown", "privateBytes": 260968448, "birthBrowserAgeMs": 180356, "observedSamples": 10 },
+    "vp8PhaseIncrementalPeakMiB": 200.9765625,
+    "noProcessOmitted": true
+  },
+  "startupCorrelation": {
+    "priorEvidence": "evidence/persistent-chromium-memory-2026-10-04.json",
+    "priorBrowserVersion": "154.0.8037.93",
+    "priorBlankInputs": 0,
+    "priorBlankConversions": 0,
+    "priorBlankPeakBrowserAgeMs": 181252,
+    "priorUnknownChildPrivateBytes": 277286912,
+    "priorUnknownChildObservedSamples": 10,
+    "inference": "A startup-scheduled Chromium child is a concrete lead because the prior no-conversion control has a similar short-lived burst at the same browser age. Current child purpose/allocation cause remains unproven.",
+    "nextAction": "Identify the actual short-lived child by birth-matched command-line/subtype metadata, using the known startup timing and bounded read-only capture. Do not replay unchanged codec builds, traces, small repeats or full conversion gates.",
+    "noBaselineIncreaseOrDelayedMeasurementOrProcessExclusionAuthorizedByThisCorrelation": true
+  },
+  "postMeasurementTrace": {
+    "path": "output/playwright/vpx-decoder-qualification-2026-10-22T06-57-16.010Z-post-measurement-memory.json.gz",
+    "bytes": 66976,
+    "sha256": "fa5f7f81819cd0777f0419c49fcddbf1e06fa69cdd5993b656349fd67da933ef",
+    "restoredBytes": 942850,
+    "restoredSha256": "1ecea05828a974a033e63d9596204377352e6c2f29454c7297d223124bc0fe29",
+    "doesNotIdentifyExitedPeakChild": true,
+    "acceptanceMetric": false
+  },
+  "executedSourcePins": 42,
+  "executedSourceAndInstalledBrowserPinsVerified": true,
+  "cleanup": {
+    "allFourPhasesPassed": true,
+    "runtimeAbsent": true,
+    "privateAssetStageAbsent": true,
+    "serverAbsent": true,
+    "recordedBrowserIdentities": 15,
+    "recordedBrowserIdentitiesStillAlive": 0,
+    "protectedOriginalBytes": 2958573265,
+    "freshProtectedOriginalSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "performanceCaveat": "Validation scheduling improvement is not conversion speedup. VP8 fixtures differ between runs, so their elapsed times are not a matched optimization benchmark.",
+  "regression": { "focusedTestsPassed": 30, "failed": 0, "skipped": 0, "includesLosslessIncidentArchivesAndExistingSmallRepeatEvidence": true, "typescriptAfterImplementation": "passed", "changedSourceLint": "passed", "finalDiffCheck": "passed", "fullCurrentHostedCi": "pending" },
+  "publicAcceptance": false,
+  "near10GiBAcceptance": false,
+  "fullGoalComplete": false
+}

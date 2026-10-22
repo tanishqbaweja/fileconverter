@@ -57,7 +57,7 @@
     "focusedTestsPassed": 19,
     "typescript": "passed",
     "lint": "passed",
-    "correctedActualVolumeRun": "pending"
+    "correctedActualVolumeRun": "Observation corrected:2247 samples/0unavailable/0request failures/max28.208ms; actual primary memory FAIL365.15625MiB, see evidence/2026-10-22-vpx-first-volume-memory-result.json"
   },
   "reportCompaction": { "rawBytes": 9769871, "losslessArchiveBytes": 194030, "exactRestorationVerifiedBeforeRawRemoval": true },
   "publicAcceptance": false,

@@ -6,9 +6,15 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## 1. Finish the current media qualification path
 
-1. Resolve the first 1080p/128+MiB VP8/VP9 stage's observer failure. Retain exact
-   output/quality checks, full-tree 250MiB formula and null unavailable samples.
-   A corrected teardown must remove owned data even when observation fails.
+1. Observer starvation and teardown sequencing are now corrected in the actual
+   first1080p128+MiB path:2correctness PASS,2247samples/0unavailable, all cleanup
+   phases PASS. The revealed real memory result still FAILS365.15625MiB. Identify
+   the short-lived248.88MiB Chromium child born at browser age180.356s, using
+   bounded birth-matched metadata capture. Existing blank control has a similar
+   burst at181.252s with no input/conversion, a lead rather than a proven cause.
+   Do not raise the baseline, delay measurement, omit that process or rebuild
+   unchanged codecs on the strength of the correlation. Retain exact quality,
+   full-tree250MiB and null unavailable samples throughout the correction.
 2. Implement bounded, lossless memory-sample journaling before tests that can
    exceed the current 6,000-sample in-memory ceiling. A smaller ring that silently
    drops peaks is not a substitute. Validate journal completeness and actual

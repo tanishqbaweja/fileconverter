@@ -1,5 +1,20 @@
 # Remaining work audit
 
+Closeout checkpoint after current volume failure:30focused/0fail/0skip including
+all3lossless incident archives and retained small-repeat evidence PASS; TS/lint/
+diff checks PASS. Codec/settings/current failed365.15625MiB unchanged. No live
+local conversion remains; disposable owned data absent, original fresh full SHA
+exact. Next changed bounded process-identity diagnostic, not baseline/codec edits.
+
+2026-10-22 changed validator5de267b actual first-volume2correctness PASS, memory
+FAIL365.15625MiB. Observer FIX VERIFIED:2247samples/0missing,114ms max gap,456
+requests/0failures/max28.208ms;42source/browser pins/all4cleanup phases and
+independent owned absence/original fresh SHA PASS. Peak includes unknown249MiB
+child born at browser age180.356s; older no-conversion blank control has similar
+child burst at181.252s. Cause unproven; next bounded birth-matched subtype capture,
+not codec rebuild or unchanged gate replay. Baseline/250MiB/all processes retained.
+`evidence/2026-10-22-vpx-first-volume-memory-result.json`.
+
 2026-10-22 observer diagnostic1d72341 reproduces timeout but automatic owned-file
 cleanup now PASSES;41source/browser pins and independent root/process absence
 verified. Actual Playwright synthetic clock loop blocks I/O9.437s; lightweight
