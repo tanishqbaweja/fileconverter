@@ -1,0 +1,55 @@
+{
+  "scope": "private-small-fixture-same-and-fresh-session-repeatability",
+  "head": "f83fcec98f4a4ebbcc2ab5374f47be6b99204b1d",
+  "ownSourceSha256": "8bdb1671f95e6a8dc2ab4acc5aabec17047c344dfb77020b08a4581d1d756116",
+  "sessions": [
+    {
+      "session": 1,
+      "exitCode": 0,
+      "reports": [
+        "vpx-decoder-qualification-2026-10-22T02-38-48.562Z.json"
+      ],
+      "passed": true,
+      "reportBytes": 3537871,
+      "reportSha256": "0e1da9cf00764854ae8d2556d1c825f11c78bcd055959869eb6fe933c497fb37",
+      "incrementalPrivateMiB": 183.2265625,
+      "browserIdentity": "43368:134371103492899171",
+      "browserVersion": "155.0.8059.85",
+      "maximumCleanupDeltaFromLoadedMiB": 41.2421875
+    },
+    {
+      "session": 2,
+      "exitCode": 0,
+      "reports": [
+        "vpx-decoder-qualification-2026-10-22T02-40-36.547Z.json"
+      ],
+      "passed": true,
+      "reportBytes": 3511442,
+      "reportSha256": "140984ab83fc24ec2b95216ff0b63cbc232f63ce3d54fe9b138839333d78c8cf",
+      "incrementalPrivateMiB": 199.43359375,
+      "browserIdentity": "13828:134371104468591602",
+      "browserVersion": "155.0.8059.85",
+      "maximumCleanupDeltaFromLoadedMiB": 48.0859375
+    },
+    {
+      "session": 3,
+      "exitCode": 0,
+      "reports": [
+        "vpx-decoder-qualification-2026-10-22T02-42-13.080Z.json"
+      ],
+      "passed": true,
+      "reportBytes": 3391805,
+      "reportSha256": "62116198de8253f4dc507b2220f71b0660e5e67b1da62cddbc52274fd149003f",
+      "incrementalPrivateMiB": 197.4765625,
+      "browserIdentity": "33344:134371105430119898",
+      "browserVersion": "155.0.8059.85",
+      "maximumCleanupDeltaFromLoadedMiB": 45.5703125
+    }
+  ],
+  "allThreePassed": true,
+  "largeFileAcceptance": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false,
+  "nativeManifestSha256": "8faeaa7c1a0034be20875befe95d6940de70a25f6b974e9173945ceaf463742d",
+  "driverScratchRemoved": true
+}

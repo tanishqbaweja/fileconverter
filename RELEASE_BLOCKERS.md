@@ -1,5 +1,14 @@
 # Release closure — original scope, not a reduced MVP
 
+2026-10-22 current private JSPI small repeat gate PASS:39checks/36conversions
+across3fresh Windows155 sessions,3runs per VP8/VP9 default/control. Worst primary
+199.43359375MiB, cleanup48.0859375MiB over loaded idle. Exact per-variant hashes,
+33source/browser pins/owned cleanup/privacy pass. B03/B06 remain OPEN for new-
+route scaling, final UI/planner/settings/disclosures and broader browser gates;
+small repeats are not large-file stress/global memory or speed acceptance.
+No unchanged native rebuild, allocator trace or repeat-gate replay needed.
+`evidence/2026-10-22-vpx-jspi-repeat-result.json`.
+
 B03/B06 material progress2026-10-22: actual JSPI candidate Windows1559correctness/
 control/terminal/recovery +memory10PASS57.5s at190.6953125MiB, prior Asyncify
 282.91015625MiB. All6outputs exactly identical;32source/browser pins/privacy/

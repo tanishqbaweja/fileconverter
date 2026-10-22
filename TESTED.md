@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-22 JSPI repeat gatef83fcec SUCCESS39checks/36genuine conversions:3runs
+each VP8/VP9 default/control in each of3fresh installed Windows155 sessions.
+Primary full-tree peaks183.2265625/199.43359375/197.4765625MiB; cleanup maxima
+41.2421875/48.0859375/45.5703125MiB over loaded idle (existing96MiB diagnostic,
+never substituted for clean blank). All per-variant input/output hashes match,
+33source/browser pins each rechecked,0missing samples/forbidden requests,
+1compile/11reuse/1binary/12manifest each. All3runtime/browser birth identities,
+private stage/driver scratch independently absent; native47/17audit still PASS.
+Three post-measurement traces exactly reconstructed; no forced GC/in-work trace.
+Raw10,441,118B reports losslessly archived to282,515B and removed, exactly
+recoverable; compact originals/traces/journal retained, no converted media kept.
+This is SMALL repeat acceptance only, not stress/public/full54 or speed win.
+Next new-route scaling/throughput and final UI/planner gates, no unchanged native
+build/trace/repeat gate. `evidence/2026-10-22-vpx-jspi-repeat-result.json`.
+
 2026-10-22 named repeat gate prepared: exactly3runs each VP8/VP9 default/control,
 12real conversions +memory gate per fresh session; three serial fresh sessions
 via owned hidden driver. Reuses original validators/native47/17artifact, adds no

@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-22 small same/fresh-session repeat gate CLOSED for current JSPI variant:
+39checks PASS/36real conversions,3reps of4codec/settings variants in3fresh
+Windows155 sessions. Worst full-tree199.43359375MiB and cleanup48.0859375MiB
+over loaded idle; same inputs/output hashes,33source/browser pins,privacy and
+independent owned cleanup pass. Raw originals losslessly compacted, no media
+kept. This does NOT close B03/B06/full54: large-file/near10GB scaling, throughput
+comparison, final UI/planner/settings/preservation disclosures and broader
+browser coverage still OPEN. Reuse current native and completed repeat evidence.
+`evidence/2026-10-22-vpx-jspi-repeat-result.json`.
+
 2026-10-22 next uncovered gate implemented, not yet achieved: three same-session
 repetitions per VP8/VP9 default/control across three fresh browsers (36outputs).
 Original native bytes/settings/validators and250MiB formula unchanged; cleanup
