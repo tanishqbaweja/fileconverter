@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-22 suspension-only VPX JSPI builder now wired as a separate private
+variant: corrected timeline/AAC C and MOV mux, codec inventory/settings, AVIO,
+one-write backpressure and32–96MiB heap unchanged. Exact reversible3link flags,
+generated builder/recipe/workflow/source pins, explicit stable-API gate for cold
+and cached code, and native no-Asyncify export check implemented.22focused/TS/
+lint and generated JS+Bash syntax checks PASS;
+original43source/16artifact Asyncify audit still PASS. Native build/browser
+comparison pending; no speed/memory/public acceptance or full-scope closure.
+
 2026-10-22 opt-in Wasm compilation trace64b0891 Windows1553PASS43.7s:213Wasm
 events include145lazy and29top-tier events during first VP9; exact outputs match
 previous Windows trace. One active-request light dump,8MiB/15s bounds unchanged;

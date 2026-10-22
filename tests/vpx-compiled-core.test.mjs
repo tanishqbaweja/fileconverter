@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { build } from "esbuild";
 import { createHash } from "node:crypto";
-import { prepareVpxCompiledCore, validateVpxCompiledCore } from "../lib/vpx-compiled-core.ts";
+import { prepareVpxCompiledCore, validateVpxCompiledCore, assertVpxJspiSupport } from "../lib/vpx-compiled-core.ts";
 const bundled = await build({ entryPoints: ["workers/vpx-core-loader.ts"], bundle: true, format: "esm", platform: "node", write: false });
 const { loadVpxDecoderCore } = await import("data:text/javascript;base64," + Buffer.from(bundled.outputFiles[0].contents).toString("base64"));
 
@@ -14,6 +14,28 @@ const responseFor = bytes => new Response(bytes, { headers: { "content-length": 
 const staticFetcher = (bytes = wasm) => async url => url.endsWith(".json")
   ? responseFor(new TextEncoder().encode(JSON.stringify(manifest(bytes)))) : responseFor(bytes);
 const fetchCode = staticFetcher();
+
+test("private JSPI capability check requires both stable APIs without flags or unsafe fallback", () => {
+  for (const runtime of [{}, { Suspending() {} }, { promising() {} }, { Suspending: true, promising() {} }])
+    assert.throws(() => assertVpxJspiSupport(runtime), /requires stable/);
+  assert.doesNotThrow(() => assertVpxJspiSupport({ Suspending() {}, promising() {} }));
+});
+
+test("JSPI manifest gates both cold and cached static code before an unsupported runtime can start", async () => {
+  const first = await prepareVpxCompiledCore(undefined, fetchCode);
+  let binaryFetches = 0;
+  const jspiFetch = async url => {
+    if (url.endsWith(".json")) return responseFor(new TextEncoder().encode(JSON.stringify({ ...manifest(wasm), engine: "within-remux-private-vpx-jspi" })));
+    binaryFetches++; return responseFor(wasm);
+  };
+  const supported = typeof WebAssembly.Suspending === "function" && typeof WebAssembly.promising === "function";
+  for (const cached of [undefined, first.core]) {
+    const operation = prepareVpxCompiledCore(cached, jspiFetch);
+    if (supported) assert.equal((await operation).cacheHit, Boolean(cached));
+    else await assert.rejects(operation, /requires stable/);
+  }
+  assert.equal(binaryFetches, supported ? 1 : 0);
+});
 
 test("static release manifest is checked every job; identical cached code is neither fetched nor recompiled", async () => {
   let compilations = 0, fetches = 0, binaryFetches = 0; const signals = [];

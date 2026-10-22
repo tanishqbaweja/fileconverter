@@ -9,6 +9,8 @@ import { readEmscriptenExportAbi } from "./wasm-export-abi.mjs";
 import { makeVpxPreservingSource, makeVpxPreservingRecipe, makeVpxPreservingWorkflow, makeVpxPreservingLibraries, verifyVpxSpecialistComponents } from "../../media/ffmpeg/vpx-preserving-candidate.mjs";
 import { reverseVpxAuditDeclarationCorrection, verifyVpxRecoveryProvenance } from "./vpx-postbuild-recovery.mjs";
 import { makeVpxAacSource, makeVpxAacMuxSource, makeVpxAacRecipe, makeVpxAacWorkflow, makeVpxTimelineSource, makeVpxTimelineMuxSource, makeVpxTimelineRecipe, makeVpxTimelineWorkflow } from "../../media/ffmpeg/vpx-aac-candidate.mjs";
+import { makeVpxJspiLink } from "../../media/ffmpeg/vpx-jspi-candidate.mjs";
+import { makeVpxJspiRecipe, makeVpxJspiWorkflow, makeVpxJspiBuilder } from "../../media/ffmpeg/vpx-jspi-build-recipe.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const readTool = async file => { const info = await lstat(file); assert.ok(info.isFile() && !info.isSymbolicLink() && info.size <= 32 * 1024 ** 2); return readFile(file); };
 export async function auditVpxDecoderArtifact(input) {
@@ -19,7 +21,8 @@ export async function auditVpxDecoderArtifact(input) {
   catch (error) { if (error.code !== "ENOENT") throw error; }
   const raw = await readTool(path.join(directory, manifestName)); assert.ok(raw.length <= 2 * 1024 ** 2);
   const manifest = JSON.parse(raw), pub = JSON.parse(await readTool(path.join(root, "public/engines/remux/build-manifest.json")));
-  const timeline = manifest.engine === "within-remux-private-vpx-timeline";
+  const jspi = manifest.engine === "within-remux-private-vpx-jspi";
+  const timeline = jspi || manifest.engine === "within-remux-private-vpx-timeline";
   const exactAac = timeline || manifest.engine === "within-remux-private-vpx-aac-editlist";
   const specialist = exactAac || manifest.engine === "within-remux-private-vpx-preserving-specialist";
   const preserving = specialist || manifest.engine === "within-remux-private-vpx-preserving";
@@ -50,7 +53,7 @@ export async function auditVpxDecoderArtifact(input) {
     let bytes = await readTool(path.join(root, file));
     if (recovery && file === "media/ffmpeg/vpx-preserving-candidate.mjs") bytes = Buffer.from(reverseVpxAuditDeclarationCorrection(bytes.toString()));
     const actual = file === ".github/workflows/reproduce-ffmpeg-nondocker.yml"
-      ? (timeline ? makeVpxTimelineWorkflow(bytes.toString()) : exactAac ? makeVpxAacWorkflow(bytes.toString()) : preserving ? makeVpxPreservingWorkflow(bytes.toString()) : makeVpxDecoderBuildWorkflow(bytes.toString())).generatedSha256 : sha(bytes);
+      ? (jspi ? makeVpxJspiWorkflow(bytes.toString()) : timeline ? makeVpxTimelineWorkflow(bytes.toString()) : exactAac ? makeVpxAacWorkflow(bytes.toString()) : preserving ? makeVpxPreservingWorkflow(bytes.toString()) : makeVpxDecoderBuildWorkflow(bytes.toString())).generatedSha256 : sha(bytes);
     assert.equal(actual, expected, "Build source changed: " + file);
   }
   const base = (await readTool(path.join(directory, "build-libraries.base.sh"))).toString();
@@ -59,7 +62,7 @@ export async function auditVpxDecoderArtifact(input) {
   assert.equal((await readTool(path.join(directory, "build-libraries.vpx.sh"))).toString(), libraries.generated);
   assert.equal(candidate.generatedLibrariesSha256, libraries.generatedSha256);
   const recipeSource = (await readTool(path.join(root, "media/ffmpeg/reproduce-nondocker.sh"))).toString();
-  assert.equal(candidate.generatedRecipeSha256, (timeline ? makeVpxTimelineRecipe(recipeSource) : exactAac ? makeVpxAacRecipe(recipeSource) : preserving ? makeVpxPreservingRecipe(recipeSource) : makeVpxDecoderBuildRecipe(recipeSource)).generatedSha256);
+  assert.equal(candidate.generatedRecipeSha256, (jspi ? makeVpxJspiRecipe(recipeSource) : timeline ? makeVpxTimelineRecipe(recipeSource) : exactAac ? makeVpxAacRecipe(recipeSource) : preserving ? makeVpxPreservingRecipe(recipeSource) : makeVpxDecoderBuildRecipe(recipeSource)).generatedSha256);
   const compiled = await readTool(path.join(directory, "within_remux.vpx.c"));
   if (preserving) {
     const derive = timeline ? makeVpxTimelineSource : exactAac ? makeVpxAacSource : makeVpxPreservingSource;
@@ -98,11 +101,21 @@ export async function auditVpxDecoderArtifact(input) {
   assert.equal(manifest.modules[0].videoCodecThreads, 1); assert.equal(manifest.modules[0].wasmPthreadPoolSize, 0);
   const wasm = await readTool(path.join(directory, "within-remux.wasm")), mjs = await readTool(path.join(directory, "within-remux.mjs"));
   const memoryLimits = readWasmMemoryLimits(wasm);
+  if (jspi) {
+    const link = makeVpxJspiLink((await readTool(path.join(root, "media/ffmpeg/build-remux.sh"))).toString());
+    assert.equal((await readTool(path.join(directory, "build-remux.vpx-jspi.sh"))).toString(), link.generated);
+    assert.equal(candidate.generatedBuilderSha256, makeVpxJspiBuilder((await readTool(path.join(root, "media/ffmpeg/build-vpx-aac-candidate.mjs"))).toString()).generatedSha256);
+    assert.deepEqual(candidate.jspi, { suspensionOnly: true, asyncifyInstrumentationRemoved: true,
+      engineManagedStackBytes: null, engineManagedMemoryIncludedInPrimaryMetric: true,
+      browserFlagsChanged: false, codecSettingsChanged: false, speedGainProven: false, memoryAcceptance: false });
+    assert.ok(mjs.toString().includes("WebAssembly.Suspending") && mjs.toString().includes("WebAssembly.promising"));
+    assert.deepEqual(WebAssembly.Module.exports(new WebAssembly.Module(wasm)).filter(row => /asyncify_(start|stop)_(unwind|rewind)/.test(row.name)), []);
+  }
   assert.deepEqual(memoryLimits, readWasmMemoryLimits(await readTool(path.join(root, "public/engines/remux/within-remux.wasm"))));
   assert.deepEqual(memoryLimits, candidate.wasmMemoryLimits);
   const abi = readEmscriptenExportAbi(mjs.toString(), wasm);
   assert.equal(abi.parameterCount, 12); assert.deepEqual(abi.parameters, Array(12).fill(127)); assert.deepEqual(abi.results, [127]);
-  return { directory, preserving, specialist, exactAac, timeline, inventory, recovery: recovery ?? null, manifestSha256: sha(raw), components, abi, memoryLimits, compiledSourceSha256: candidate.compiledSourceSha256,
+  return { directory, preserving, specialist, exactAac, timeline, jspi, inventory, recovery: recovery ?? null, manifestSha256: sha(raw), components, abi, memoryLimits, compiledSourceSha256: candidate.compiledSourceSha256,
     sourcePinsVerified: Object.keys(manifest.sources).length, artifactPinsVerified: Object.keys(manifest.artifacts).length,
     deliveredArtifacts: { "within-remux.mjs": sha(mjs), "within-remux.wasm": sha(wasm) }, publicAcceptance: false, browserDecodeVerified: false };
 }

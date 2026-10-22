@@ -10,6 +10,10 @@ export interface VpxCompiledCoreSlot {
   clear(): void;
   dispose(): void;
 }
+export function assertVpxJspiSupport(runtime: { Suspending?: unknown; promising?: unknown } = WebAssembly as unknown as { Suspending?: unknown; promising?: unknown }): void {
+  if (typeof runtime.Suspending !== "function" || typeof runtime.promising !== "function")
+    throw new Error("The private VPX JSPI engine requires stable WebAssembly promising/Suspending support; no unsafe fallback is available.");
+}
 export function createVpxCompiledCoreSlot(): VpxCompiledCoreSlot {
   let core: VpxCompiledCore | null = null, disposed = false;
   return {
@@ -66,8 +70,9 @@ export async function prepareVpxCompiledCore(cached?: VpxCompiledCore, fetchStat
   const manifestBytes = await readStaticBytes(VPX_STATIC_MANIFEST_URL, 65536, fetchStatic);
   const manifest = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(manifestBytes));
   const expected = manifest?.artifacts?.["within-remux.wasm"];
-  if (manifest?.engine !== "within-remux-private-vpx-timeline" || typeof expected !== "string" || !/^[a-f0-9]{64}$/.test(expected))
+  if (!["within-remux-private-vpx-timeline", "within-remux-private-vpx-jspi"].includes(manifest?.engine) || typeof expected !== "string" || !/^[a-f0-9]{64}$/.test(expected))
     throw new Error("Private VPX static manifest is invalid");
+  if (manifest.engine === "within-remux-private-vpx-jspi") assertVpxJspiSupport();
   // A verified module belongs to the manifest's release. Retain that safe code
   // rather than refetching multi-megabyte bytes on every job. On a manifest hash
   // change, fetch and verify the new body before replacing the one-entry cache.

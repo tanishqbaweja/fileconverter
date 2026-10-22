@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-10-22 JSPI candidate builder/recipe/private workflow/native audit wired;
+original corrected C/mux/settings/heap/I/O retained, no public core mutation.
+Stable API gate prevents unsafe cold/cache fallback. Focused/TS/lint/generated
+syntax PASS; unchanged Asyncify artifact43/16audit retained. Next actual changed
+native build, then exact byte/ABI/heap audit and production-browser comparison.
+Full54/B02-B09 and prior282.91015625MiB failure remain OPEN.
+
 2026-10-22 Windows155 compilation trace3PASS43.7s/byte-identical outputs shows
 145lazy/29top-tier events during VP9 with material overlapping native V8/Wasm
 counters; exact per-function bytes unavailable. All32source/browser pins/trace
