@@ -9,7 +9,8 @@ import { vpxScalePlan, assertVpxMemoryGateCoverage } from "../scripts/lib/vpx-sc
 const hash = "SHA256:" + "a".repeat(64);
 test("first scaling stage requires genuine128MiB1080p sources and cannot claim10GiB acceptance", () => {
   const plan = vpxScalePlan("1080p-128m"); assert.equal(plan.minimumSourceBytes, 128 * 1024 ** 2);
-  assert.equal(plan.width, 1920); assert.equal(plan.height, 1080); assert.equal(plan.durationSeconds * plan.frameRate, 960);
+  assert.equal(plan.width, 1920); assert.equal(plan.height, 1080); assert.equal(plan.seedDurationSeconds * plan.frameRate, 960);
+  assert.equal(plan.targetSourceBytes, 160 * 1024 ** 2);
   assert.equal(plan.near10GiBAcceptance, false); assert.ok(Object.isFrozen(plan));
   assert.equal(vpxScalePlan(undefined), null); assert.equal(vpxScalePlan("0"), null); assert.throws(() => vpxScalePlan("small"));
 });

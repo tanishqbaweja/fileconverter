@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "head": "0fa735fca15b5b49930033c27b066b305d0ec378",
+  "report": { "file": "output/playwright/vpx-decoder-qualification-2026-10-22T03-29-41.434Z.json", "bytes": 9623, "sha256": "a2839b9ca90570fb099cb7cad4d400c713634d6c7cee65dc4b6d677b8782618b" },
+  "conclusion": "Fixture preparation rejected before browser launch",
+  "observedVp8FixtureBytesFromCli": 83977133,
+  "requiredMinimumBytes": 134217728,
+  "browserConversions": 0,
+  "conversionOrMemoryAcceptance": false,
+  "disposableDataRemoved": true,
+  "correction": "Encode a real video-only seed, packet-copy loop it into a finalized160MiB Matroska with fresh continuous AAC audio, and independently read actual duration/frame count. Keep128MiB minimum, geometry/default encoder settings and quality gates unchanged. No truncate/sparse construction or repeated AAC priming at loop boundaries.",
+  "focusedVerification": { "passed": 17, "failed": 0, "typescript": "passed", "lint": "passed" },
+  "engineRebuilt": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false
+}

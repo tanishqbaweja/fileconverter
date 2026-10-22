@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-10-22 first source size failed128MiB preparation floor; rejected before
+browser, no scaling proof. Byte-targeted real-video/fresh-continuous-AAC fixture
+construction corrected,17focused/TS/lint PASS. Next actual corrected initial
+volume gate; original near10GiB/UI/full54 scope and native bytes unchanged.
+`evidence/2026-10-22-vpx-scale-fixture-size-rejection.json`.
+
+2026-10-22 new long-validator cross-check now actually PASS2tests37.7s on real
+small browser output, agreeing with trusted prior validator and retaining missing
+first source presentation duration as null. No inferred duration/trim/PCM match.
+38source/browser pins/cleanup pass. First real128MiB1080p stage now executing,
+not yet acceptance; full near10GiB/UI/full54 scope unchanged and incomplete.
+`evidence/2026-10-22-vpx-large-validator-cross-success.json`.
+
 2026-10-22 long-validator integration found and corrected a source fully-trimmed
 first-packet duration assumption. Native probe confirms unavailable presentation
 duration, not corrupted browser output; exact raw/audible samples and observed

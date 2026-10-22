@@ -167,7 +167,8 @@ test.beforeAll(async () => {
     expect(sha(await readFile(path.join(assetDirectory, file)))).toBe(hash);
   }
   for (const codec of ["vp8", "vp9"]) {
-    const seconds = scalePlan?.durationSeconds ?? 2, width = scalePlan?.width ?? 480, height = scalePlan?.height ?? 270;
+    const seconds = scalePlan?.seedDurationSeconds ?? 2, width = scalePlan?.width ?? 480, height = scalePlan?.height ?? 270;
+    const fixture = path.join(runtime.directory, codec + ".mkv"), seed = scalePlan ? path.join(runtime.directory, codec + "-seed.mkv") : fixture;
     await native(["-v", "error", "-nostdin", "-f", "lavfi", "-i", `testsrc2=size=${width}x${height}:rate=24:duration=${seconds}`,
       "-f", "lavfi", "-i", `sine=frequency=997:sample_rate=48000:duration=${seconds}`, "-map", "0:v", "-map", "1:a",
       "-c:v", codec === "vp8" ? "libvpx" : "libvpx-vp9", "-deadline", "good", "-cpu-used", "4", "-threads:v", "1",
@@ -176,9 +177,18 @@ test.beforeAll(async () => {
         ...(codec === "vp9" ? ["-row-mt", "1", "-tile-columns", "2"] : [])] : ["-b:v", "0", "-crf", "4"]),
       "-c:a", "aac", "-b:a", "128k", "-metadata", "title=VPX café 音楽",
       "-metadata:s:a:0", "language=eng", "-fflags", "+bitexact", "-flags:v", "+bitexact", "-flags:a", "+bitexact",
-      path.join(runtime.directory, codec + ".mkv")]);
+      ...(scalePlan ? ["-an"] : []), seed]);
     if (scalePlan) {
-      const bytes = (await lstat(path.join(runtime.directory, codec + ".mkv"))).size;
+      // Real packet-copy fixture construction only. Generate continuous AAC
+      // rather than repeating encoder priming/trim metadata at loop boundaries.
+      // -fs finalizes complete muxed packets; never truncate/pad/sparsify a file.
+      try {
+        await native(["-v", "error", "-nostdin", "-stream_loop", "-1", "-i", seed,
+          "-f", "lavfi", "-i", "sine=frequency=997:sample_rate=48000", "-map", "0:v:0", "-map", "1:a:0",
+          "-c:v", "copy", "-c:a", "aac", "-b:a", "128k", "-metadata", "title=VPX café 音楽", "-metadata:s:a:0", "language=eng",
+          "-fflags", "+bitexact", "-flags:a", "+bitexact", "-fs", String(scalePlan.targetSourceBytes), "-f", "matroska", fixture]);
+      } finally { await rm(seed, { force: true }); }
+      const bytes = (await lstat(fixture)).size;
       expect(bytes).toBeGreaterThanOrEqual(scalePlan.minimumSourceBytes); expect(bytes).toBeLessThanOrEqual(scalePlan.maximumSourceBytes);
     }
   }
@@ -450,8 +460,12 @@ async function validateScaleOutput(codec: "vp8" | "vp9", source: string, output:
   expect(original.streams.map(stream => stream.codec_name)).toEqual([codec, "aac"]);
   expect(converted.streams.map(stream => stream.codec_name)).toEqual(["mpeg4", "aac"]);
   expect(converted.streams[0].width).toBe(plan.width); expect(converted.streams[0].height).toBe(plan.height);
-  const frames = plan.durationSeconds * plan.frameRate;
-  expect(Number(original.streams[0].nb_read_frames)).toBe(frames); expect(Number(converted.streams[0].nb_read_frames)).toBe(frames);
+  const frames = Number(original.streams[0].nb_read_frames), duration = Number(original.format.duration);
+  // The byte-targeted final mux may end part-way through a seed cycle. Check
+  // its independently decoded count, not the seed's unrelated fixed length.
+  expect(Number.isSafeInteger(frames) && frames >= plan.frameRate).toBe(true);
+  expect(Number.isFinite(duration) && duration > 0 && duration <= plan.maximumDurationSeconds).toBe(true);
+  expect(Number(converted.streams[0].nb_read_frames)).toBe(frames);
   expect(converted.streams[1].tags?.language).toBe("eng"); expect(converted.format.tags.title).toBe(original.format.tags.title);
   expect(Math.abs(Number(converted.format.duration) - Number(original.format.duration))).toBeLessThan(0.08);
   evidence.stage = "full-independent-decode";

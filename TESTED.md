@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+2026-10-22 initial volume attempt correctly HELD before browser:40s VP8 source
+83977133B <134217728B floor. No conversion/memory/scaling acceptance; all owned
+data removed. Corrected creator targets160MiB via real video packet-copy loops
+and fresh continuous AAC (no repeated priming), independently probes actual
+duration/frame count and keeps original128MiB/1080p/default/quality gates.
+17focused/TS/lint PASS; actual corrected volume stage next, no engine rebuild.
+`evidence/2026-10-22-vpx-scale-fixture-size-rejection.json`.
+
+2026-10-22 corrected long-validator browser cross-check0fa735f SUCCESS2tests/
+37.7s: trusted small validator and streamed95packets/raw97280/audible96256samples
+agree exactly. One fully-trimmed source presentation duration remains null;
+94available durations/95PTS+DTS/observed1024trim and actual serialized1024ticks
+pass. Metadata407B read/max20B, no payload; PCM chunks<=61440B/retained0.38source/
+browser pins/cleanup pass.158.03125MiB small one-case gate, NOT scaling proof.
+Actual128MiB1080p stage launched using unchanged native; terminal result pending.
+`evidence/2026-10-22-vpx-large-validator-cross-success.json`.
+
 2026-10-22 actual new-validator cross-check FAIL after trusted small validator
 PASS. Source-only native probe proves packet0's presentation duration absent in
 both JSON/compact because observed1024-sample AAC-LC frame is wholly trimmed.

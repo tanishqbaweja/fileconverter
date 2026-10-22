@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "head": "0fa735f",
+  "scope": "New long-validator integration on one known-conforming small production-browser output, not scaling",
+  "report": {
+    "file": "output/playwright/vpx-decoder-qualification-2026-10-22T03-27-12.498Z.json",
+    "bytes": 1243090,
+    "sha256": "ce6892445347c3fa1d544f8f2c0e6eabe10c003035ae7b586e8e7df2c12d3785"
+  },
+  "tests": {
+    "passed": 2,
+    "failed": 0,
+    "seconds": 37.7
+  },
+  "observedIncrementalPrivateMiB": 158.03125,
+  "streamingAudio": {
+    "status": "passed-bounded-stream-AAC-LC",
+    "packetCount": 95,
+    "leadingSamples": 1024,
+    "trailingSamples": 0,
+    "maximumPtsErrorSeconds": 0.00033299999999999996,
+    "maximumDtsErrorSeconds": 0.00033299999999999996,
+    "maximumDurationErrorSeconds": 0.0009999999999999974,
+    "durationComparedPackets": 94,
+    "sourceUnavailablePresentationDurations": 1,
+    "sourceFirstPresentationDurationSeconds": null,
+    "packetBytesIdentical": true,
+    "maximumRetainedPackets": 8,
+    "rate": 48000,
+    "channels": 1,
+    "rawSamplesPerChannel": 97280,
+    "audibleSamplesPerChannel": 96256,
+    "rawPcmSha256": "1e0cac3ee3985efd6069001621e0dcbb079aab4aa7227fd273f2bdb21ec28a2b",
+    "audiblePcmSha256": "0293fc3f2c5f705d9669cb5d55013bea5c388f36f5e2afac6bbc56490d2007e6",
+    "retainedPcmBytes": 0,
+    "noOffsetSearchOrContentTolerance": true,
+    "serializedFirstDuration": {
+      "sampleDurationTicks": 1024,
+      "timeScale": 48000,
+      "trackId": 2,
+      "firstDecodeTimeTicks": 0,
+      "sourceBox": "trun",
+      "sourceFieldOffset": 1714,
+      "metadataBytesRead": 407,
+      "largestReadBytes": 20,
+      "mediaPayloadBytesRead": 0,
+      "scope": "first-fragment-duration-only-not-whole-output-acceptance"
+    },
+    "maximumPcmChunkBytes": 61440
+  },
+  "sourceAndBrowserPinsVerified": true,
+  "disposableDataRemoved": true,
+  "nativeRebuilt": false,
+  "largeFileAcceptance": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false
+}
