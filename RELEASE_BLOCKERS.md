@@ -1,5 +1,15 @@
 # Release closure — original scope, not a reduced MVP
 
+2026-10-22 portable CI39707983428/0a5be08 now SUCCESS1426pass/0fail/1skip and
+19privacy/offline/static-host tests; native reproduction/qualification unselected.
+Subsequent opt-in diagnostic work passes21focused/TS/lint, not another full CI.
+Actual Windows original-prefix traces3PASS each isolate concurrent native V8/Wasm
+allocation and145lazy/29top-tier events, not exact function bytes or a leak.
+Next compare a separately audited JSPI suspension-only core; three-flag link
+derivation prepared, no build/benchmark yet. Do not rerun unchanged traces or
+mark B03/B06/public acceptance; prior nonperturbed282.91015625MiB failure stands.
+`evidence/2026-10-22-vpx-wasm-compilation-diagnosis.json`.
+
 B06 current2790843 manifest-reuse sequence9PASS/1FAIL48.7s: verified1Wasm download,
 1compile/7reuses/8manifest checks across actual app replacement, all6outputs
 identical,32pins/privacy/cleanup pass. Memory still FAIL282.91015625MiB. Private

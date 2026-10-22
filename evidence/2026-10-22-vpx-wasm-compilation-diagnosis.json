@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "head": "64b0891",
+  "scope": "Installed Windows Chrome155, same VP8 prefix/first VP9 with opt-in bounded Wasm compilation trace",
+  "tests": { "passed": 3, "failed": 0, "seconds": 43.7 },
+  "report": { "file": "output/playwright/vpx-decoder-qualification-2026-10-22T02-01-46.389Z.json", "bytes": 1530614, "sha256": "b513fb59644755d7348b18ed5fdebd3a9b7e2281ff6e55cb07bbe92a62b18443" },
+  "trace": { "file": "output/playwright/vpx-decoder-qualification-2026-10-22T02-01-46.389Z-during-vp9-memory.json.gz", "bytes": 76313, "sha256": "c83517c369c84edd0b1ae56a64e5847fdd277100ca23a55a10e4a44e4038b8d3", "restoredBytes": 1033652, "restoredSha256": "d9f4a184b92f91b8f1e5f3a919e8c1231986d3a22842eddba0755c690d3cb0c5", "summaryReconstructedExactly": true, "allEvents": 458, "wasmEvents": 213, "lazyCompilationEvents": 145, "topTierCompilationEvents": 29, "executeCompilationUnitsEvents": 37, "syncInstantiateEvents": 1, "compilationChunkFinishedEvents": 1, "dumps": 1, "workRunningAtRequest": true, "dataLossOccurred": false },
+  "observation": { "rendererPid": 35448, "mainHeapSize": 10240000, "mainMallocSize": 27625416, "workersMallocSize": 70817848, "rendererMallocSize": 124708416, "note": "Counters overlap and are not summed; compilation events establish concurrent compilation activity, not exact per-function allocation bytes. Release binary has no name section; static symbol lookup is unavailable, not fabricated." },
+  "outputsByteIdenticalToPreviousWindowsTrace": true,
+  "sourcePinsVerified": 32,
+  "installedBrowserPinsVerified": true,
+  "runtimeAndPrivateStageVerifiedAbsent": ["work/vd-94pQUr", "work/vd-rsTVqv", "dist/client/engines/vpx"],
+  "ownedBrowserRoots": [
+    { "pid": 24092, "creationFileTime": "134371077902530698", "absent": true },
+    { "pid": 46772, "creationFileTime": "134371081160939419", "absent": true }
+  ],
+  "cleanupQuery": "Read-only CIM query succeeded with an empty array; initial empty-pipeline JSON parse error was corrected and rechecked, not interpreted as absence.",
+  "original": { "file": "test.mkv", "bytes": 2958573265, "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34", "fullHashFreshlyVerified": true, "convertedThisCycle": false },
+  "retainedNativeAudit": { "sourcePins": 43, "artifactPins": 16, "passed": true },
+  "candidate": { "file": "media/ffmpeg/vpx-jspi-candidate.mjs", "status": "three-flag suspension-only link derivation prepared, not integrated into builder or built", "codecSettingsChanged": false, "nativeWrapperChanged": false, "ioCallbacksChanged": false, "wasmMemoryLimitsChanged": false, "browserFlagsChanged": false, "speedGainProven": false, "memoryAcceptance": false },
+  "focusedVerification": { "tests": 21, "passed": 21, "failed": 0, "skipped": 0, "typescript": "passed", "targetedLint": "passed" },
+  "primaryIncrementalPrivateMiB": null,
+  "memoryAcceptance": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false,
+  "next": "Integrate a distinct audited private JSPI build using unchanged timeline wrapper/mux/settings/heap/I/O; compare actual identical outputs and full-tree memory before keeping it. No further unchanged allocator trace or original full9 replay until material engine change."
+}

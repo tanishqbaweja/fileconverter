@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-22 opt-in Wasm compilation trace64b0891 Windows1553PASS43.7s:213Wasm
+events include145lazy and29top-tier events during first VP9; exact outputs match
+previous Windows trace. One active-request light dump,8MiB/15s bounds unchanged;
+native counters overlap/no per-function allocation attribution. Release binary
+has no names (lookup unavailable, not inferred). Trace hashes/exact reconstruction/
+32source+browser pins/cleanup PASS. Two owned browser birth identities/runtimes
+and private stage independently absent. Original test.mkv2958573265B/full SHA
+31f36695 verified unchanged; retained native43/16audit PASS. Suspension-only JSPI
+three-flag link derivation+two guards prepared, NOT integrated/built/benchmarked.
+21focused/TS/lint PASS; no public promotion or memory/speed acceptance. Next
+distinct audited native JSPI comparison, no unchanged trace/full9 replay.
+`evidence/2026-10-22-vpx-wasm-compilation-diagnosis.json`.
+
 2026-10-22 installed Windows155 original-prefix live trace3PASS52.0s. Two dumps
 requested while VP9 callback active; second completes after conversion/retirement.
 Trace gzip/decoded hashes and exact summary reconstructed;32source/browser pins,

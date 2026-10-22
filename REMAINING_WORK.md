@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-22 Windows155 compilation trace3PASS43.7s/byte-identical outputs shows
+145lazy/29top-tier events during VP9 with material overlapping native V8/Wasm
+counters; exact per-function bytes unavailable. All32source/browser pins/trace
+reconstruction/owned cleanup PASS; original full SHA preserved. Three-flag JSPI
+link derivation guarded and21focused/TS/lint PASS, but builder integration/native
+audit/build/browser comparison still required. Next that changed private engine,
+not further unchanged traces. Keep full54/B02-B09 and nonperturbed282.91015625MiB
+failure OPEN; no promotion or proof of speed/memory gain.
+`evidence/2026-10-22-vpx-wasm-compilation-diagnosis.json`.
+
 2026-10-22 original-prefix Windows live trace3PASS52.0s; two active-request dumps
 show substantial native V8/Wasm malloc despite small JS heaps. Second completes
 after worker retirement, counters overlap; no proven leak/function cause or
