@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-10-22 named repeat gate prepared: exactly3runs each VP8/VP9 default/control,
+12real conversions +memory gate per fresh session; three serial fresh sessions
+via owned hidden driver. Reuses original validators/native47/17artifact, adds no
+codec change. Existing96MiB cleanup-from-loaded diagnostic checked after each
+owned stage removal; original clean-blank250MiB metric still counts every phase.
+16focused/TS/lint PASS, dry listing exactly13tests. Actual repeat results pending;
+not large-file/public or full54 acceptance. No unchanged native build/trace.
+
 2026-10-22 actual JSPI Windows155 full sequence10PASS57.5s at768d9f5. Correctness/
 controls/multi-track/terminal/recovery and full-tree memory PASS190.6953125MiB
 (431677440peak minus231718912lower stable same-instance blank),59.3046875MiB

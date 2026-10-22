@@ -22,6 +22,7 @@ import type { StartConversionMessage } from "../../lib/conversion-protocol";
 import { validateSmallCopiedAac } from "../../scripts/lib/small-aac-copy-fidelity.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "../../scripts/lib/bounded-validation-chunk.mjs";
 import { createBoundedPeriodicRealmObserver } from "../../scripts/lib/bounded-periodic-realm-observer.mjs";
+import { makeVpxRepeatPlan } from "../../scripts/lib/vpx-repeat-plan.mjs";
 
 const root = path.resolve(import.meta.dirname, "../.."), exec = promisify(execFile);
 const sha = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
@@ -55,6 +56,11 @@ let pendingSample = Promise.resolve(), monitorFailure: unknown, blankBaseline: {
 const diagnoseAllocations = process.env.WITHIN_VPX_ALLOCATION_DIAGNOSTIC === "1";
 const duringAllocatorTrace = process.env.WITHIN_VPX_DURING_ALLOCATOR_TRACE === "1";
 const traceWasmCompilation = process.env.WITHIN_VPX_WASM_COMPILATION_TRACE === "1";
+const repeatPlan = makeVpxRepeatPlan(process.env.WITHIN_VPX_REPEAT_QUALIFICATION);
+report.repeatability = { enabled: repeatPlan.length > 0, cases: repeatPlan,
+  cleanupAllowanceFromLoadedMiB: 96, largeFileStressAcceptance: false };
+const repeatCleanup: Array<Record<string, unknown>> = [];
+let repeatLoadedPrivateBytes: number | undefined;
 report.inConversionDiagnosticOnly = duringAllocatorTrace;
 report.wasmCompilationDiagnosticOnly = duringAllocatorTrace && traceWasmCompilation;
 report.allocationDiagnostics = { enabled: diagnoseAllocations, checkpointLimit: 8, targetLimit: 16,
@@ -84,6 +90,17 @@ async function drainMemory() {
   for (const sample of batch.samples) samples.push({ ...sample,
     phase: phases.findLast(value => value.at <= Date.parse(sample.timestamp))?.phase ?? "unavailable",
     elapsedMs: Date.parse(sample.timestamp) - phases[0].at });
+}
+async function settleRepeatPrivate(label: string) {
+  phase(label);
+  // Reuse the existing native sampler; never introduce concurrent OS queries,
+  // force collection, or substitute this diagnostic baseline for clean blank.
+  for (let attempt = 0; attempt < 12; attempt++) {
+    await pause(500); await pendingSample;
+    const window = stableWindow(samples.filter(sample => sample.phase === label), 2000);
+    if (window) return window;
+  }
+  throw new Error("Repeat cleanup private-memory window did not stabilize within6s");
 }
 const assetDirectory = path.join(root, "dist/client/engines/vpx");
 const controls: VideoConversionOptions = { codec: "mpeg4", maxWidth: 320, bitRateBps: 4_000_000, frameRateFps: 15, quality: "balanced" };
@@ -121,7 +138,7 @@ test.beforeAll(async () => {
     "scripts/lib/small-mp4-sample-duration.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "lib/browser-capabilities.ts",
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/bounded-periodic-realm-observer.mjs",
-    "lib/vpx-compiled-core.ts", "lib/conversion-protocol.ts"])
+    "lib/vpx-compiled-core.ts", "lib/conversion-protocol.ts", "scripts/lib/vpx-repeat-plan.mjs"])
     sourcePins[file] = sha(await readFile(path.join(root, file)));
   report.executedSourcePins = sourcePins;
   if (process.platform === "win32") { browserPin = await inspectInstalledChromePin(); report.browserPin = browserPin; }
@@ -223,6 +240,10 @@ test.beforeAll(async () => {
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
   expect(await page.evaluate(async () => { const names = []; for await (const [name] of (await navigator.storage.getDirectory()).entries()) names.push(name); return names; })).toEqual([]);
   await captureAttribution("loaded-ready");
+  if (repeatPlan.length && monitor) {
+    const loaded = await settleRepeatPrivate("repeat-loaded-idle");
+    repeatLoadedPrivateBytes = loaded.privateBytes; report.repeatLoadedIdle = loaded;
+  }
 });
 
 async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault?: "write", preCancelled = false, wrongProfile = false, multi = false) {
@@ -397,6 +418,10 @@ for (const codec of ["vp8", "vp9"] as const) {
   test(`genuine CPU ${codec} decode to MPEG4 with default settings`, async () => validate(codec));
   test(`genuine CPU ${codec} decode preserves nondefault12-argument video controls`, async () => validate(codec, controls));
 }
+for (const item of repeatPlan) {
+  test(`same-session repeatability ${item.codec} ${item.settings} run${item.repetition}of3`, async () =>
+    validate(item.codec as "vp8" | "vp9", item.settings === "controls" ? controls : undefined));
+}
 test("genuine decode retains both compatible audio tracks, their packet hashes/languages and chapter timing", async () => validate("vp8", undefined, true));
 test("mismatched source rejected before encoding", async () => {
   const { result } = await run("vp8", undefined, undefined, false, true);
@@ -418,6 +443,11 @@ test("complete same-instance Chromium tree remains within250MiB over clean blank
   expect(staticCodeRequests.wasm).toBe(staticCompilation.coldCompiles);
   expect(staticCodeRequests.manifests).toBe(staticCompilation.coldCompiles + staticCompilation.reuses);
   expect(monitorFailure).toBeUndefined(); expect(blankBaseline).toBeTruthy();
+  if (repeatPlan.length) {
+    expect(conversionOrdinal, "Repeat gate must select only the12repeat cases and memory test").toBe(12);
+    expect(repeatCleanup).toHaveLength(12);
+    expect(staticCompilation).toEqual({ coldCompiles: 1, reuses: 11 });
+  }
   const active = samples.filter(sample => sample.phase !== "blank" && sample.privateBytes !== null);
   expect(active.length).toBeGreaterThan(0);
   const peak = Math.max(...active.map(sample => sample.privateBytes!));
@@ -453,6 +483,14 @@ test.afterEach(async ({}, testInfo) => {
   });
   expect(names, "production terminal paths must remove their own stages").toEqual([]);
   expect(forbiddenRequests).toEqual([]);
+  if (repeatPlan.length && testInfo.title.startsWith("same-session repeatability") && monitor) {
+    const settled = await settleRepeatPrivate("repeat-cleanup-" + conversionOrdinal);
+    expect(repeatLoadedPrivateBytes).toBeDefined();
+    const deltaFromLoadedMiB = (settled.privateBytes - repeatLoadedPrivateBytes!) / 1048576;
+    repeatCleanup.push({ ordinal: conversionOrdinal, test: testInfo.title, ...settled, deltaFromLoadedMiB });
+    report.repeatCleanup = repeatCleanup;
+    expect(deltaFromLoadedMiB, "Existing96MiB cleanup allowance, never the primary250MiB baseline").toBeLessThanOrEqual(96);
+  }
 });
 test.afterAll(async () => {
   const cleanup: Array<() => Promise<unknown>> = [];
@@ -463,9 +501,9 @@ test.afterAll(async () => {
     }
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
-    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 32;
+    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 33;
     report.installedChromeBinaryPinsVerified = browserPin ? true : null;
-    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 32 && Boolean(browserPin);
+    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 33 && Boolean(browserPin);
   });
   if (assetIdentity) cleanup.push(async () => {
     const current = await lstat(assetDirectory, { bigint: true });

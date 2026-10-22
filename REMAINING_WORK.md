@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-10-22 next uncovered gate implemented, not yet achieved: three same-session
+repetitions per VP8/VP9 default/control across three fresh browsers (36outputs).
+Original native bytes/settings/validators and250MiB formula unchanged; cleanup
+uses existing96MiB diagnostic allowance without replacing clean blank.16focused/
+TS/lint and13-test listing PASS. Await actual serial runs, then inspect matching
+inputs/output hashes/complete tree/cleanup; no scaling/public/full54 claim.
+
 2026-10-22 material private memory correction: JSPI Windows155 full9+memory gate
 10PASS57.5s/190.6953125MiB, down92.21484375MiB from prior282.91015625MiB with all6
 outputs/independent validations exactly identical.32source/browser pins/privacy/
