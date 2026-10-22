@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-10-22 large-stage harness and bounded long AAC/PCM/MP4-duration validators
+implemented; original small-helper caps not raised.1080p40s128–256MiB source
+stage retains defaults/quality/clock/memory gates; no actual scaling claim yet.
+Next actual new-validator browser cross-check then genuine initial volume gate.
+Native47/17bytes unchanged; near10GiB/final UI/full54 requirements stay OPEN.
+
 2026-10-22 small same/fresh-session repeat gate CLOSED for current JSPI variant:
 39checks PASS/36real conversions,3reps of4codec/settings variants in3fresh
 Windows155 sessions. Worst full-tree199.43359375MiB and cleanup48.0859375MiB

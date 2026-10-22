@@ -23,6 +23,9 @@ import { validateSmallCopiedAac } from "../../scripts/lib/small-aac-copy-fidelit
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "../../scripts/lib/bounded-validation-chunk.mjs";
 import { createBoundedPeriodicRealmObserver } from "../../scripts/lib/bounded-periodic-realm-observer.mjs";
 import { makeVpxRepeatPlan } from "../../scripts/lib/vpx-repeat-plan.mjs";
+import { vpxScalePlan } from "../../scripts/lib/vpx-scale-plan.mjs";
+import { validateLargeCopiedAac } from "../../scripts/lib/large-aac-copy-fidelity.mjs";
+import { boundedNativeLines } from "../../scripts/lib/bounded-native-lines.mjs";
 
 const root = path.resolve(import.meta.dirname, "../.."), exec = promisify(execFile);
 const sha = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
@@ -57,6 +60,12 @@ const diagnoseAllocations = process.env.WITHIN_VPX_ALLOCATION_DIAGNOSTIC === "1"
 const duringAllocatorTrace = process.env.WITHIN_VPX_DURING_ALLOCATOR_TRACE === "1";
 const traceWasmCompilation = process.env.WITHIN_VPX_WASM_COMPILATION_TRACE === "1";
 const repeatPlan = makeVpxRepeatPlan(process.env.WITHIN_VPX_REPEAT_QUALIFICATION);
+const scalePlan = vpxScalePlan(process.env.WITHIN_VPX_SCALE_QUALIFICATION);
+const crossCheckLargeValidator = process.env.WITHIN_VPX_LARGE_VALIDATOR_CROSS_CHECK === "1";
+if (scalePlan && repeatPlan.length) throw new Error("Small repeat and large scale gates must not be mixed");
+report.scaleQualification = scalePlan;
+report.largeValidatorCrossCheck = crossCheckLargeValidator;
+if (scalePlan) report.scope = "private-first1080p128MiB-production-browser-stage-not-complete10GiB-scaling";
 report.repeatability = { enabled: repeatPlan.length > 0, cases: repeatPlan,
   cleanupAllowanceFromLoadedMiB: 96, largeFileStressAcceptance: false };
 const repeatCleanup: Array<Record<string, unknown>> = [];
@@ -105,7 +114,7 @@ async function settleRepeatPrivate(label: string) {
 const assetDirectory = path.join(root, "dist/client/engines/vpx");
 const controls: VideoConversionOptions = { codec: "mpeg4", maxWidth: 320, bitRateBps: 4_000_000, frameRateFps: 15, quality: "balanced" };
 const native = (args: string[], executable = "ffmpeg") => exec(executable, args,
-  { cwd: root, env, windowsHide: true, timeout: 120_000, maxBuffer: 4 * 1024 ** 2 });
+  { cwd: root, env, windowsHide: true, timeout: scalePlan?.nativeDeadlineMs ?? 120_000, maxBuffer: 4 * 1024 ** 2 });
 const probe = async (file: string) => JSON.parse((await native(["-v", "error", "-count_frames", "-show_streams", "-show_format", "-show_chapters", "-of", "json", file], "ffprobe")).stdout) as {
   streams: Array<{ codec_type: string; codec_name: string; width?: number; height?: number; nb_read_frames?: string; tags?: Record<string, string> }>;
   format: { duration: string; tags: Record<string, string> };
@@ -115,7 +124,7 @@ test.skip(process.env.WITHIN_PRIVATE_VPX_QUALIFICATION !== "1",
   "Private native candidate requires explicit playwright.vpx.config.ts; not a public support gate");
 
 test.beforeAll(async () => {
-  test.setTimeout(240_000);
+  test.setTimeout(scalePlan ? 600000 : 240_000);
   // Guard INSIDE setup, before builds, runtime, profile or browser creation.
   if (process.platform === "win32") {
     report.hostMemory = await inspectStressHostMemory();
@@ -138,7 +147,9 @@ test.beforeAll(async () => {
     "scripts/lib/small-mp4-sample-duration.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "lib/browser-capabilities.ts",
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/bounded-periodic-realm-observer.mjs",
-    "lib/vpx-compiled-core.ts", "lib/conversion-protocol.ts", "scripts/lib/vpx-repeat-plan.mjs"])
+    "lib/vpx-compiled-core.ts", "lib/conversion-protocol.ts", "scripts/lib/vpx-repeat-plan.mjs", "scripts/lib/vpx-scale-plan.mjs",
+    "scripts/lib/large-aac-copy-fidelity.mjs", "scripts/lib/large-mp4-first-sample-duration.mjs",
+    "scripts/lib/streaming-pcm-trim-digest.mjs", "scripts/lib/bounded-native-lines.mjs"])
     sourcePins[file] = sha(await readFile(path.join(root, file)));
   report.executedSourcePins = sourcePins;
   if (process.platform === "win32") { browserPin = await inspectInstalledChromePin(); report.browserPin = browserPin; }
@@ -156,21 +167,31 @@ test.beforeAll(async () => {
     expect(sha(await readFile(path.join(assetDirectory, file)))).toBe(hash);
   }
   for (const codec of ["vp8", "vp9"]) {
-    await native(["-v", "error", "-f", "lavfi", "-i", "testsrc2=size=480x270:rate=24:duration=2",
-      "-f", "lavfi", "-i", "sine=frequency=997:sample_rate=48000:duration=2", "-map", "0:v", "-map", "1:a",
+    const seconds = scalePlan?.durationSeconds ?? 2, width = scalePlan?.width ?? 480, height = scalePlan?.height ?? 270;
+    await native(["-v", "error", "-nostdin", "-f", "lavfi", "-i", `testsrc2=size=${width}x${height}:rate=24:duration=${seconds}`,
+      "-f", "lavfi", "-i", `sine=frequency=997:sample_rate=48000:duration=${seconds}`, "-map", "0:v", "-map", "1:a",
       "-c:v", codec === "vp8" ? "libvpx" : "libvpx-vp9", "-deadline", "good", "-cpu-used", "4", "-threads:v", "1",
-      "-b:v", "0", "-crf", "4", "-c:a", "aac", "-b:a", "128k", "-metadata", "title=VPX café 音楽",
+      ...(scalePlan ? ["-deadline", "realtime", "-cpu-used", "8", "-threads:v", "2", "-b:v", scalePlan.fixtureBitRate,
+        "-minrate", scalePlan.fixtureBitRate, "-maxrate", scalePlan.fixtureBitRate, "-bufsize", "20M", "-undershoot-pct", "0", "-overshoot-pct", "0",
+        ...(codec === "vp9" ? ["-row-mt", "1", "-tile-columns", "2"] : [])] : ["-b:v", "0", "-crf", "4"]),
+      "-c:a", "aac", "-b:a", "128k", "-metadata", "title=VPX café 音楽",
       "-metadata:s:a:0", "language=eng", "-fflags", "+bitexact", "-flags:v", "+bitexact", "-flags:a", "+bitexact",
       path.join(runtime.directory, codec + ".mkv")]);
+    if (scalePlan) {
+      const bytes = (await lstat(path.join(runtime.directory, codec + ".mkv"))).size;
+      expect(bytes).toBeGreaterThanOrEqual(scalePlan.minimumSourceBytes); expect(bytes).toBeLessThanOrEqual(scalePlan.maximumSourceBytes);
+    }
   }
-  if (process.platform === "win32") expect(await hashFile(path.join(runtime.directory, "vp8.mkv")),
+  if (process.platform === "win32" && !scalePlan) expect(await hashFile(path.join(runtime.directory, "vp8.mkv")),
     "Keep the actual AAC-loss reproduction input identical for the changed-core comparison").toBe("6e2baa02fe7d9469a2bd84dc516caa995a697eead2ad9f23eb3de2ecd2c74ab9");
+  if (!scalePlan) {
   const chapterMetadata = path.join(runtime.directory, "chapters.ffmetadata");
   await writeFile(chapterMetadata, ";FFMETADATA1\n[CHAPTER]\nTIMEBASE=1/1000\nSTART=500\nEND=1500\ntitle=VPX chapitre café\n");
   await native(["-v", "error", "-i", path.join(runtime.directory, "vp8.mkv"), "-f", "lavfi", "-i", "sine=frequency=440:sample_rate=48000:duration=2",
     "-f", "ffmetadata", "-i", chapterMetadata, "-map", "0:v", "-map", "0:a", "-map", "1:a", "-map_metadata", "0", "-map_chapters", "2",
     "-c", "copy", "-c:a:1", "aac", "-b:a:1", "128k", "-metadata:s:a:0", "language=eng", "-metadata:s:a:1", "language=hin",
     "-fflags", "+bitexact", "-flags:a", "+bitexact", path.join(runtime.directory, "vp8-multi.mkv")]);
+  }
   server = await startOwnedProductionTestServer({ root, directory: runtime.directory, env, port: 3231 });
   for (const [file, hash] of Object.entries({ ...audit.deliveredArtifacts, "build-manifest.json": audit.manifestSha256 })) {
     const response = await fetch(server.baseURL + "/engines/vpx/" + file);
@@ -255,7 +276,7 @@ async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault
   const ordinal = ++conversionOrdinal, startedAt = Date.now(), conversionPhase = "conversion-" + codec + "-" + ordinal;
   let actualStartedAt = startedAt, actualEndedAt: number | undefined;
   phase(conversionPhase);
-  const execute = async () => await page.evaluate(async ({ codec, options, fault, preCancelled, wrongProfile }) => {
+  const execute = async () => await page.evaluate(async ({ codec, options, fault, preCancelled, wrongProfile, deadline }) => {
     const file = document.querySelector<HTMLInputElement>('input[type="file"]')!.files![0];
     const directory = await navigator.storage.getDirectory(), outputName = "vpx-qualification-output.mp4";
     const handle = await directory.getFileHandle(outputName, { create: true });
@@ -267,9 +288,9 @@ async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault
       return await Promise.race([bridge.runQualificationJob({ type: "start", jobId, profileId, file,
         videoOptions: options, testFault: fault, cancellationBuffer,
         destination: { mode: "staged-handle", handle, stagingName: `within-stage-${profileId}-${jobId}` } }),
-      new Promise<never>((_, reject) => { timer = setTimeout(() => { Atomics.store(new Int32Array(cancellationBuffer), 0, 1); reject(new Error("Private VPX job exceeded60s")); }, 60_000); })]);
+      new Promise<never>((_, reject) => { timer = setTimeout(() => { Atomics.store(new Int32Array(cancellationBuffer), 0, 1); reject(new Error("Private VPX job exceeded explicit deadline")); }, deadline); })]);
     } finally { clearTimeout(timer); }
-  }, { codec, options, fault, preCancelled, wrongProfile }) as VpxQualificationResult;
+  }, { codec, options, fault, preCancelled, wrongProfile, deadline: scalePlan?.browserDeadlineMs ?? 60000 }) as VpxQualificationResult;
   let result: VpxQualificationResult | undefined;
   if (duringAllocatorTrace && ordinal === 3 && codec === "vp9") {
     phase("preparing-vp9-allocator-trace");
@@ -344,6 +365,7 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
     await target.close();
     const original = await probe(source), converted = await probe(output);
     rows.push({ codec, options: options ?? "automatic", sourceProbe: original, outputProbe: converted });
+    if (scalePlan) { await validateScaleOutput(codec, source, output, original, converted); return; }
     const fps = options ? 15 : 24, frames = options ? 30 : 48;
     expect(original.streams.find(stream => stream.codec_type === "video")!.codec_name).toBe(codec);
     if (multi) {
@@ -389,6 +411,11 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
         const exactAac = await validateSmallCopiedAac(source, output, { env, audioOrdinal });
         rows.push({ codec, multi, exactAacSampleAndTrimValidation: exactAac });
         expect(exactAac.status, "Every track requires exact PCM/packet bytes, declared trim and1ms clocks").toBe("passed-small-AAC-LC-fixture");
+        if (crossCheckLargeValidator && audioOrdinal === 0) {
+          const crossCheck = await validateLargeCopiedAac(source, output, { env });
+          rows.push({ codec, largeValidatorSmallCrossCheck: crossCheck });
+          expect(crossCheck.status).toBe("passed-bounded-stream-AAC-LC");
+        }
       } catch (error) {
         rows.push({ codec, multi, audioOrdinal, aacValidationFailure: String(error).slice(0, 1024),
           aacFixtureEvidence: (error as { aacFixtureEvidence?: unknown }).aacFixtureEvidence ?? null });
@@ -414,6 +441,48 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
   } finally { validationTarget = undefined; await target.close().catch(() => {}); await rm(output, { force: true }); }
 }
 
+async function validateScaleOutput(codec: "vp8" | "vp9", source: string, output: string,
+  original: Awaited<ReturnType<typeof probe>>, converted: Awaited<ReturnType<typeof probe>>) {
+  const plan = scalePlan!;
+  const evidence: Record<string, unknown> = { codec, scope: "first1080p128MiB-stage-not10GiB-or-public-acceptance", stage: "structure" };
+  rows.push({ scaleValidation: evidence });
+  expect(original.streams.map(stream => stream.codec_name)).toEqual([codec, "aac"]);
+  expect(converted.streams.map(stream => stream.codec_name)).toEqual(["mpeg4", "aac"]);
+  expect(converted.streams[0].width).toBe(plan.width); expect(converted.streams[0].height).toBe(plan.height);
+  const frames = plan.durationSeconds * plan.frameRate;
+  expect(Number(original.streams[0].nb_read_frames)).toBe(frames); expect(Number(converted.streams[0].nb_read_frames)).toBe(frames);
+  expect(converted.streams[1].tags?.language).toBe("eng"); expect(converted.format.tags.title).toBe(original.format.tags.title);
+  expect(Math.abs(Number(converted.format.duration) - Number(original.format.duration))).toBeLessThan(0.08);
+  evidence.stage = "full-independent-decode";
+  await native(["-v", "error", "-xerror", "-i", output, "-map", "0:v", "-map", "0:a", "-f", "null", "-"]); evidence.fullDecode = true;
+  evidence.stage = "all-frame-quality";
+  const comparison = await native(["-v", "info", "-i", source, "-i", output, "-filter_complex",
+    "[0:v:0]settb=1/1,setpts=N[ref];[1:v:0]settb=1/1,setpts=N[out];[ref][out]ssim", "-an", "-f", "null", "-"]);
+  const ssim = Number(/All:([0-9.]+)/.exec(comparison.stderr)?.[1]); evidence.ssim = ssim; expect(ssim).toBeGreaterThanOrEqual(0.98);
+  evidence.stage = "all-frame-timestamps";
+  const times = (file: string) => boundedNativeLines("ffprobe", ["-v", "error", "-select_streams", "v:0", "-show_frames",
+    "-show_entries", "frame=best_effort_timestamp_time", "-of", "compact", file], { cwd: root, env, timeoutMs: plan.nativeDeadlineMs });
+  const before = times(source)[Symbol.asyncIterator](), after = times(output)[Symbol.asyncIterator](); let count = 0, maximumError = 0;
+  try {
+    for (;;) {
+      const [a, b] = await Promise.all([before.next(), after.next()]); expect(a.done).toBe(b.done); if (a.done) break;
+      const timestamp = (line: string) => { const match = /^frame\|best_effort_timestamp_time=(-?[0-9.]+)/.exec(line); expect(match).toBeTruthy();
+        const value = Number(match![1]); expect(Number.isFinite(value)).toBe(true); return value; };
+      const error = Math.abs(timestamp(a.value) - timestamp(b.value!)); maximumError = Math.max(maximumError, error);
+      expect(error).toBeLessThan(0.001); expect(++count).toBeLessThanOrEqual(frames);
+    }
+  } finally { await Promise.allSettled([before.return?.(), after.return?.()]); }
+  expect(count).toBe(frames); evidence.frames = count; evidence.maximumVideoPtsErrorSeconds = maximumError;
+  evidence.stage = "exact-all-packet-PCM-trim-and-audio-clocks";
+  try { evidence.audio = await validateLargeCopiedAac(source, output, { env }); }
+  catch (error) { evidence.audioFailure = String(error).slice(0, 2048);
+    evidence.packetEdges = (error as { aacPacketEdges?: unknown }).aacPacketEdges ?? null; throw error; }
+  evidence.stage = "passed";
+  rows.push({ codec, options: "automatic", independentValidation: { fullDecode: true, frames, fps: plan.frameRate, width: plan.width, height: plan.height,
+    ssim, audioPacketsIdentical: true, sourceBytes: (await lstat(source)).size, outputBytes: (await lstat(output)).size,
+    outputSha256: await hashFile(output), maximumVideoPtsErrorSeconds: maximumError, largeFileStage: plan.name, near10GiBAcceptance: false } });
+}
+
 for (const codec of ["vp8", "vp9"] as const) {
   test(`genuine CPU ${codec} decode to MPEG4 with default settings`, async () => validate(codec));
   test(`genuine CPU ${codec} decode preserves nondefault12-argument video controls`, async () => validate(codec, controls));
@@ -421,6 +490,11 @@ for (const codec of ["vp8", "vp9"] as const) {
 for (const item of repeatPlan) {
   test(`same-session repeatability ${item.codec} ${item.settings} run${item.repetition}of3`, async () =>
     validate(item.codec as "vp8" | "vp9", item.settings === "controls" ? controls : undefined));
+}
+if (scalePlan) for (const codec of ["vp8", "vp9"] as const) {
+  test(`genuine1080p128m ${codec} default scaling stage`, async () => {
+    test.setTimeout(scalePlan.browserDeadlineMs); await validate(codec);
+  });
 }
 test("genuine decode retains both compatible audio tracks, their packet hashes/languages and chapter timing", async () => validate("vp8", undefined, true));
 test("mismatched source rejected before encoding", async () => {
@@ -453,7 +527,9 @@ test("complete same-instance Chromium tree remains within250MiB over clean blank
   const peak = Math.max(...active.map(sample => sample.privateBytes!));
   const incrementalPrivateMiB = (peak - blankBaseline!.privateBytes) / 1048576;
   report.primaryIncrementalPrivateMiB = incrementalPrivateMiB; report.memoryAcceptance = incrementalPrivateMiB <= 250 && !duringAllocatorTrace;
-  report.memoryLimitation = "Small private backend qualification only; not large-file, final planner/UI or public profile acceptance.";
+  report.memoryLimitation = scalePlan
+    ? "First1080p128MiB stage only, not repeated stress/near10GiB/final UI/planner/public acceptance."
+    : "Small private backend qualification only; not large-file, final planner/UI or public profile acceptance.";
   if (diagnoseAllocations) {
     // The native baseline/peak are finalized before this perturbing light dump.
     // Every process still counts; allocator counters are never subtracted.
@@ -501,9 +577,9 @@ test.afterAll(async () => {
     }
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
-    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 33;
+    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 38;
     report.installedChromeBinaryPinsVerified = browserPin ? true : null;
-    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 33 && Boolean(browserPin);
+    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 38 && Boolean(browserPin);
   });
   if (assetIdentity) cleanup.push(async () => {
     const current = await lstat(assetDirectory, { bigint: true });

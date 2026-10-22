@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-22 first real-volume VPX scale stage prepared, not executed:1080p40s
+VP8/VP9+Aac sources128–256MiB, original default output geometry/settings and
+SSIM>=.98/1ms clocks unchanged. Independent long AAC validation streams every
+packet and raw/audible PCM;<=4KiB lines/256KiB chunks, no packet/PCM collection.
+Serialized first MP4 duration reads<=64B/262KiB metadata and no media payload;
+old2MiB small-validator guards remain exact.14focused checks and TS pass before
+added scale-plan guard. Three-case browser listing correct. Cross-check new
+validator once against known-conforming small browser output before expensive
+fixture stage; neither that check nor virtual metadata units are scaling proof.
+
 2026-10-22 JSPI repeat gatef83fcec SUCCESS39checks/36genuine conversions:3runs
 each VP8/VP9 default/control in each of3fresh installed Windows155 sessions.
 Primary full-tree peaks183.2265625/199.43359375/197.4765625MiB; cleanup maxima
