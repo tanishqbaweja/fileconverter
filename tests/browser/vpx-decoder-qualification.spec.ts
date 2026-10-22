@@ -23,7 +23,7 @@ import { validateSmallCopiedAac } from "../../scripts/lib/small-aac-copy-fidelit
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "../../scripts/lib/bounded-validation-chunk.mjs";
 import { createBoundedPeriodicRealmObserver } from "../../scripts/lib/bounded-periodic-realm-observer.mjs";
 import { makeVpxRepeatPlan } from "../../scripts/lib/vpx-repeat-plan.mjs";
-import { vpxScalePlan } from "../../scripts/lib/vpx-scale-plan.mjs";
+import { vpxScalePlan, assertVpxMemoryGateCoverage } from "../../scripts/lib/vpx-scale-plan.mjs";
 import { validateLargeCopiedAac } from "../../scripts/lib/large-aac-copy-fidelity.mjs";
 import { boundedNativeLines } from "../../scripts/lib/bounded-native-lines.mjs";
 
@@ -62,7 +62,7 @@ const traceWasmCompilation = process.env.WITHIN_VPX_WASM_COMPILATION_TRACE === "
 const repeatPlan = makeVpxRepeatPlan(process.env.WITHIN_VPX_REPEAT_QUALIFICATION);
 const scalePlan = vpxScalePlan(process.env.WITHIN_VPX_SCALE_QUALIFICATION);
 const crossCheckLargeValidator = process.env.WITHIN_VPX_LARGE_VALIDATOR_CROSS_CHECK === "1";
-if (scalePlan && repeatPlan.length) throw new Error("Small repeat and large scale gates must not be mixed");
+if (scalePlan && (repeatPlan.length || crossCheckLargeValidator)) throw new Error("Small repeat/cross-check and large scale gates must not be mixed");
 report.scaleQualification = scalePlan;
 report.largeValidatorCrossCheck = crossCheckLargeValidator;
 if (scalePlan) report.scope = "private-first1080p128MiB-production-browser-stage-not-complete10GiB-scaling";
@@ -513,6 +513,10 @@ test("bounded selected-destination write failure aborts and removes stage", asyn
 test("real conversion recovers after rejection, pre-cancel and destination failure", async () => validate("vp8"));
 test("complete same-instance Chromium tree remains within250MiB over clean blank", async () => {
   test.skip(process.platform !== "win32", "Primary Windows private-memory sampler unavailable here; correctness is not memory acceptance");
+  assertVpxMemoryGateCoverage({ conversionCount: conversionOrdinal,
+    independentOutputCount: rows.filter(row => row.independentValidation).length,
+    crossCheckCount: rows.filter(row => (row.largeValidatorSmallCrossCheck as { status?: string } | undefined)?.status === "passed-bounded-stream-AAC-LC").length,
+    crossCheck: crossCheckLargeValidator, repeat: repeatPlan.length > 0, scale: Boolean(scalePlan) });
   clearInterval(monitorTimer); await pendingSample; await drainMemory();
   expect(staticCodeRequests.wasm).toBe(staticCompilation.coldCompiles);
   expect(staticCodeRequests.manifests).toBe(staticCompilation.coldCompiles + staticCompilation.reuses);

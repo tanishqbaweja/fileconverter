@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-22 first cross-check launch rejected as qualification: anchored grep
+selected only memory test,0conversions/0outputs. CLI's loaded-only65.28515625MiB
+is NOT converter evidence. Corrected unanchored listing2tests; memory gate now
+requires real independently validated output and exact explicit mode coverage.
+16focused/TS/lint PASS, actual cross-check still pending. Native unchanged.
+`evidence/2026-10-22-vpx-empty-selection-rejected.json`.
+
 2026-10-22 first real-volume VPX scale stage prepared, not executed:1080p40s
 VP8/VP9+Aac sources128–256MiB, original default output geometry/settings and
 SSIM>=.98/1ms clocks unchanged. Independent long AAC validation streams every

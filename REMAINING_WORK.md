@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-10-22 cross-check selection mistake found and rejected, not accepted as
+memory/conversion proof:0outputs. Added empty/incomplete-selection gate and
+verified corrected listing2tests;16focused/TS/lint PASS. Next actual single-output
+streaming-validator cross-check, then genuine128MiB1080p stage. No native rebuild.
+`evidence/2026-10-22-vpx-empty-selection-rejected.json`.
+
 2026-10-22 large-stage harness and bounded long AAC/PCM/MP4-duration validators
 implemented; original small-helper caps not raised.1080p40s128–256MiB source
 stage retains defaults/quality/clock/memory gates; no actual scaling claim yet.

@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "head": "d052ce6",
+  "report": { "file": "output/playwright/vpx-decoder-qualification-2026-10-22T03-15-58.632Z.json", "bytes": 1166861, "sha256": "b6527892ef33b8354d5813352f790f97ec323104e1b4668ebb11d6d487c53cd5" },
+  "commandProblem": "Anchoring grep at the beginning of the human test title excluded the conversion because Playwright also searches file/project text",
+  "selectedTests": 1,
+  "conversions": 0,
+  "independentlyValidatedOutputs": 0,
+  "rawCliResult": "one memory-only test passed",
+  "rawLoadedOnlyIncrementalPrivateMiB": 65.28515625,
+  "acceptedAsConversionOrValidatorEvidence": false,
+  "disposableDataRemoved": true,
+  "correction": "Unanchored exact conversion phrase; dry listing proves2tests. Memory gate now rejects zero real/validated conversions and incomplete explicit cross/repeat/scale modes before setting acceptance.",
+  "focusedVerification": { "passed": 16, "failed": 0, "typescript": "passed", "lint": "passed" },
+  "engineRebuilt": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false
+}

@@ -5,13 +5,21 @@ import { parseCompactAacPacket } from "../scripts/lib/bounded-native-lines.mjs";
 import { createStreamingPcmTrimDigest } from "../scripts/lib/streaming-pcm-trim-digest.mjs";
 import { compareStreamingAacPackets } from "../scripts/lib/large-aac-copy-fidelity.mjs";
 import { inspectLargeMp4FirstSample } from "../scripts/lib/large-mp4-first-sample-duration.mjs";
-import { vpxScalePlan } from "../scripts/lib/vpx-scale-plan.mjs";
+import { vpxScalePlan, assertVpxMemoryGateCoverage } from "../scripts/lib/vpx-scale-plan.mjs";
 const hash = "SHA256:" + "a".repeat(64);
 test("first scaling stage requires genuine128MiB1080p sources and cannot claim10GiB acceptance", () => {
   const plan = vpxScalePlan("1080p-128m"); assert.equal(plan.minimumSourceBytes, 128 * 1024 ** 2);
   assert.equal(plan.width, 1920); assert.equal(plan.height, 1080); assert.equal(plan.durationSeconds * plan.frameRate, 960);
   assert.equal(plan.near10GiBAcceptance, false); assert.ok(Object.isFrozen(plan));
   assert.equal(vpxScalePlan(undefined), null); assert.equal(vpxScalePlan("0"), null); assert.throws(() => vpxScalePlan("small"));
+});
+test("memory gate rejects zero conversions and incomplete explicit cross/repeat/scale selections", () => {
+  for (const input of [{ conversionCount: 0, independentOutputCount: 0 }, { conversionCount: 1, independentOutputCount: 0 },
+    { conversionCount: 1, independentOutputCount: 1, crossCheck: true }, { conversionCount: 1, independentOutputCount: 1, scale: true },
+    { conversionCount: 12, independentOutputCount: 11, repeat: true }]) assert.throws(() => assertVpxMemoryGateCoverage(input));
+  assert.doesNotThrow(() => assertVpxMemoryGateCoverage({ conversionCount: 1, independentOutputCount: 1, crossCheck: true, crossCheckCount: 1 }));
+  assert.doesNotThrow(() => assertVpxMemoryGateCoverage({ conversionCount: 2, independentOutputCount: 2, scale: true }));
+  assert.doesNotThrow(() => assertVpxMemoryGateCoverage({ conversionCount: 12, independentOutputCount: 12, repeat: true }));
 });
 test("bounded packet parser accepts real FFprobe prefixed trim fields and rejects unavailable/coerced data", () => {
   const line = `packet|stream_index=1|pts_time=-0.021333|dts_time=-0.021333|dts=-1024|duration_time=N/A|data_hash=${hash}|side_datum/skip_samples:side_data_type=Skip Samples|side_datum/skip_samples:skip_samples=1024|side_datum/skip_samples:discard_padding=0`;
