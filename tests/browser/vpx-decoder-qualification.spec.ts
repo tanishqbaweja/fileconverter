@@ -54,7 +54,9 @@ let monitorTimer: ReturnType<typeof setInterval> | undefined, monitorBusy = fals
 let pendingSample = Promise.resolve(), monitorFailure: unknown, blankBaseline: { privateBytes: number } | undefined;
 const diagnoseAllocations = process.env.WITHIN_VPX_ALLOCATION_DIAGNOSTIC === "1";
 const duringAllocatorTrace = process.env.WITHIN_VPX_DURING_ALLOCATOR_TRACE === "1";
+const traceWasmCompilation = process.env.WITHIN_VPX_WASM_COMPILATION_TRACE === "1";
 report.inConversionDiagnosticOnly = duringAllocatorTrace;
+report.wasmCompilationDiagnosticOnly = duringAllocatorTrace && traceWasmCompilation;
 report.allocationDiagnostics = { enabled: diagnoseAllocations, checkpointLimit: 8, targetLimit: 16,
   pendingCdpLimit: 64, maximumCdpReplyBytes: 1048576, maximumLightTraceBytes: 8388608,
   postMeasurementDumpOnly: true, forcedGc: false, processTreeFormulaChanged: false };
@@ -263,7 +265,7 @@ async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault
     }
     try {
       report.inConversionAllocationTrace = await captureLiveMemoryInfra({ session: await context!.browser()!.newBrowserCDPSession(),
-        phase: "first-vp9-native-work", processes: reference.processes,
+        phase: "first-vp9-native-work", processes: reference.processes, wasmCompilation: traceWasmCompilation,
         archivePath: reportFile.replace(/\.json$/, "-during-vp9-memory.json.gz"), during: async () => {
           actualStartedAt = Date.now(); phase(conversionPhase);
           result = await execute(); actualEndedAt = Date.now(); phase("post-vp9-allocator-trace-export");

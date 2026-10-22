@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "scope": "Same VP8 default/control prefix and first VP9, bounded light allocator trace; diagnostic only",
+  "head": "0a5be08a3b8575051541aae350ccd0fd50f012dd",
+  "tests": { "passed": 3, "failed": 0, "seconds": 52.0 },
+  "browser": "155.0.8059.85",
+  "report": { "file": "output/playwright/vpx-decoder-qualification-2026-10-22T01-56-13.868Z.json", "bytes": 1971737, "sha256": "31d11ea81b0926be4fad9105c5d4b842a72eec17727b5b1808607a1285f21ed5" },
+  "trace": { "file": "output/playwright/vpx-decoder-qualification-2026-10-22T01-56-13.868Z-during-vp9-memory.json.gz", "bytes": 125844, "sha256": "acc9dd1a4f56c7e4e154d619bf7d0cf71d827df24f0043a1151b92a14536a8ce", "restoredBytes": 1945248, "restoredSha256": "2538e44e4cbbe2b74afa494f3cda048e03013f506c7735c66c2bf868738983ff", "summaryReconstructedExactly": true, "dumps": 2, "bothRequestedWhileWorkRunning": true, "secondDumpCompletedAfterConversion": true, "dataLossOccurred": false },
+  "observations": [
+    { "phase": "first-vp9-native-work-1", "rendererPid": 30244, "mainHeapSize": 10764288, "mainMallocSize": 14088388, "workersHeapSize": 2359296, "workersMallocSize": 63379480, "rendererMallocSize": 114100720, "mallocBucket40960Size": 73072640 },
+    { "phase": "first-vp9-native-work-2", "rendererPid": 30244, "mainHeapSize": 10764288, "mainMallocSize": 88565820, "workersPresent": false, "rendererMallocSize": 147024496, "mallocBucket40960Size": 104570880 }
+  ],
+  "interpretation": "Native V8/Wasm allocator activity is material while JS heaps stay small. Counters overlap, main/worker values are not summed, and a dump requested during work may finish after retirement. No allocation stack or exact function attribution yet.",
+  "nativeCoreRebuilt": false,
+  "sourcePinsVerified": 32,
+  "installedBrowserBinaryPinsVerified": true,
+  "forbiddenRequests": 0,
+  "runtimeVerifiedAbsent": "work/vd-94pQUr",
+  "privateAssetStageVerifiedAbsent": true,
+  "ownedServerAbsent": true,
+  "primaryIncrementalPrivateMiB": null,
+  "memoryAcceptance": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false,
+  "next": "Add bounded opt-in v8.wasm compilation events to distinguish compilation from codec working memory before selecting an engine change."
+}

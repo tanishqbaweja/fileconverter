@@ -30,10 +30,11 @@ export function summarizeLiveMemory(trace, rows) {
   assert.ok(Buffer.byteLength(JSON.stringify(basic)) <= LIVE_MEMORY_LIMITS.maximumSummaryBytes);
   return basic;
 }
-/** @param {{ session: any, phase: string, processes: any, archivePath: string, during?: () => Promise<unknown>, captureMs?: number }} options */
+/** @param {{ session: any, phase: string, processes: any, archivePath: string, during?: () => Promise<unknown>, captureMs?: number, wasmCompilation?: boolean }} options */
 export async function captureLiveMemoryInfra({ session, phase, processes, archivePath, during = undefined,
-  captureMs = LIVE_MEMORY_LIMITS.maximumCaptureMs }) {
+  captureMs = LIVE_MEMORY_LIMITS.maximumCaptureMs, wasmCompilation = false }) {
   assert.match(phase, /^[a-z0-9-]{1,96}$/);
+  assert.equal(typeof wasmCompilation, "boolean");
   assert.ok(Number.isFinite(captureMs) && captureMs > 0 && captureMs <= LIVE_MEMORY_LIMITS.maximumCaptureMs);
   const row = { phase, timestamp: new Date().toISOString(), processes, memoryDump: null };
   const rows = []; let dumpTimer, dumpPending = Promise.resolve(), dumpBusy = false, dumpFailure = null, workRunning = false;
@@ -48,7 +49,7 @@ export async function captureLiveMemoryInfra({ session, phase, processes, archiv
   const operation = (async () => {
     await session.send("Tracing.start", { transferMode: "ReturnAsStream", traceConfig: {
       recordMode: "recordUntilFull", traceBufferSizeInKb: LIVE_MEMORY_LIMITS.traceBufferKiB,
-      includedCategories: ["disabled-by-default-memory-infra"], excludedCategories: ["*"],
+      includedCategories: ["disabled-by-default-memory-infra", ...(wasmCompilation ? ["v8.wasm", "v8.wasm.detailed"] : [])], excludedCategories: ["*"],
       memoryDumpConfig: { allowed_dump_modes: ["light"], triggers: [] } } }); started = true;
     try {
       if (during) {
@@ -88,7 +89,8 @@ export async function captureLiveMemoryInfra({ session, phase, processes, archiv
     return { status: "captured-live-light-memory-diagnostic", row: rows[0], rows, summary,
       archive: { path: archivePath, bytes: archive.length, sha256: sha(archive), restoredBytes: raw.length, restoredSha256: sha(raw) },
       limits: LIVE_MEMORY_LIMITS, dataLossOccurred: false, perturbsMemory: true,
-      allocationStackAttribution: false, acceptanceMetric: false, summedAllocatorTotal: null };
+      allocationStackAttribution: false, wasmCompilationEventsIncluded: wasmCompilation,
+      acceptanceMetric: false, summedAllocatorTotal: null };
   })();
   try {
     return await Promise.race([operation, new Promise((_, reject) => {

@@ -1,5 +1,31 @@
 # Tested conversion ledger
 
+2026-10-22 installed Windows155 original-prefix live trace3PASS52.0s. Two dumps
+requested while VP9 callback active; second completes after conversion/retirement.
+Trace gzip/decoded hashes and exact summary reconstructed;32source/browser pins,
+privacy/owned server/runtime/private-stage cleanup PASS. Main JS heap10.76MB and
+worker heap2.36MB stay small while native V8/Wasm malloc rises materially; counters
+overlap and do not establish a leak/function cause. No memory acceptance. Next
+bounded opt-in Wasm compilation events, not blind codec rebuild/full9 repeat.
+`evidence/2026-10-22-vpx-live-memory-windows-result.json`.
+
+2026-10-22 corrected portable CI39707983428/0a5be08 SUCCESS:1426pass/0fail/1skip,
+19privacy/offline/static-host browser tests PASS; clean install, public audit,
+inventory, lint, TS, production build PASS. Native reproduction/qualification
+matrices unselected. Private trace39707986603 SUCCESS3cases15.4s, Linux151 only:
+one dump requested and completed within first VP9 window;32source pins/cleanup/
+privacy pass,1compile/2reuse/1binary/3manifest. Worker malloc43.62MB versus heap
+2.36MB observed, overlapping/not sum/private acceptance. Windows cause unproven.
+Only report+gzip trace downloaded (551890B), no media; download scratch removed.
+`evidence/2026-10-22-portable-trace-ci-success.json` and
+`evidence/2026-10-22-vpx-live-memory-hosted-result.json`.
+
+2026-10-22 changed-source runs actually LIVE: portable39707983428 at0a5be08,
+private three-case allocator trace39707986603 at1a5b0be. Private commit differs
+only in CI workflow; main HEAD/workflow unchanged, temporary owned Git index
+removed. Existing native artifact verified unexpired; no rebuild. Terminal
+results pending, not acceptance. `evidence/2026-10-22-vpx-live-memory-hosted-launch.json`.
+
 2026-10-22 second portable CI39706586845/76b802a FAIL:1423pass/1fail/1skip.
 The previous App restoration correction passes; only the historical124-source
 live-memory audit fails on two deliberately changed trace helper/test files.

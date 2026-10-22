@@ -16,7 +16,7 @@ test("Live memory counter projection retains overlapping V8 worker and malloc ca
   assert.equal(LIVE_MEMORY_LIMITS.maximumCaptureMs,15000);
 });
 
-test("mock-only during-work trace serializes bounded light dumps and retains independent dump identities", async () => {
+for (const wasmCompilation of [false, true]) test(`mock-only during-work trace serializes bounded light dumps; compilation events=${wasmCompilation}`, async () => {
   const runtime = await createOwnedRuntimeScratch("live-memory-unit-"), session = new EventEmitter(), calls = [];
   let sequence = 0, active = 0, maximumActive = 0;
   session.send = async (method, params) => {
@@ -35,7 +35,10 @@ test("mock-only during-work trace serializes bounded light dumps and retains ind
   session.detach = async () => calls.push({ method: "detach" });
   try {
     const result = await captureLiveMemoryInfra({ session, phase: "mock-work", processes: [], archivePath: path.join(runtime.directory, "trace.json.gz"),
-      during: () => new Promise(resolve => setTimeout(resolve, 380)) });
+      during: () => new Promise(resolve => setTimeout(resolve, 380)), wasmCompilation });
+    assert.deepEqual(calls.find(call => call.method === "Tracing.start").params.traceConfig.includedCategories,
+      ["disabled-by-default-memory-infra", ...(wasmCompilation ? ["v8.wasm", "v8.wasm.detailed"] : [])]);
+    assert.equal(result.wasmCompilationEventsIncluded, wasmCompilation);
     assert.ok(result.rows.length >= 1 && result.rows.length <= 4); assert.equal(maximumActive, 1);
     assert.ok(result.rows.some(row => row.workRunningAtRequest)); assert.equal(result.summary.length, result.rows.length);
     assert.equal(result.acceptanceMetric, false); assert.equal(result.perturbsMemory, true); assert.equal(calls.at(-1).method, "detach");

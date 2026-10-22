@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "run": 39707983428,
+  "job": 119592421374,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39707983428",
+  "head": "0a5be08a3b8575051541aae350ccd0fd50f012dd",
+  "conclusion": "success",
+  "scope": "Portable verification, not native reproduction or conversion qualification matrices",
+  "completedAt": "2026-10-22T01:53:47Z",
+  "units": { "tests": 1427, "passed": 1426, "failed": 0, "skipped": 1, "milliseconds": 55031.185403 },
+  "privacyOfflineStaticHostBrowserTests": { "passed": 19, "failed": 0, "seconds": 41.5 },
+  "cleanInstall": "passed",
+  "publicCompactEvidenceAudit": "passed",
+  "completeUnitInventoryAudit": "passed",
+  "lint": "passed",
+  "typescript": "passed",
+  "productionBuild": "passed",
+  "qualificationUnitsExecuted": false,
+  "nativeEngineRebuildsExecuted": false,
+  "windowsMemoryAcceptance": false,
+  "fullGoalComplete": false
+}

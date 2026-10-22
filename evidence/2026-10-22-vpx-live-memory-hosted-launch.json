@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "launchedAt": "2026-10-22T01:50:26.112Z",
+  "parent": "0a5be08a3b8575051541aae350ccd0fd50f012dd",
+  "privateCommit": "1a5b0be7a68f340bd7323d0da1a8586b83bfcf12",
+  "branch": "codex/vpx-live-memory-20261022",
+  "workflowSha256": "99bb91e015a98882c01a06ea55ed899b136104f14e8df45787b64530335111e1",
+  "run": 39707986603,
+  "portableVerificationRun": 39707983428,
+  "observedStatus": "in_progress",
+  "nativeBuildReused": 39623553380,
+  "nativeArtifact": { "id": 12355758430, "name": "private-vpx-timeline-39623553380", "bytes": 1604624, "digest": "sha256:ccefdceb9ee2f72de1deda938e8b1842bd059b0935becb91e63fab3262296cd9", "expiredAtPreflight": false },
+  "selectedCases": ["VP8 default", "VP8 controls", "VP9 default with bounded live allocator trace"],
+  "wasmRebuild": false,
+  "diagnosticOnly": true,
+  "windowsMemoryAcceptance": false,
+  "publicAcceptance": false,
+  "localHeadUnchangedByPrivateBranch": true,
+  "mainWorkflowUnchanged": true,
+  "privateBranchDiff": [".github/workflows/ci.yml"],
+  "temporaryOwnedGitIndexRemoved": true,
+  "fullGoalComplete": false
+}

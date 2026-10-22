@@ -1,5 +1,29 @@
 # Remaining work audit
 
+2026-10-22 original-prefix Windows live trace3PASS52.0s; two active-request dumps
+show substantial native V8/Wasm malloc despite small JS heaps. Second completes
+after worker retirement, counters overlap; no proven leak/function cause or
+memory acceptance. Exact trace reconstruction/32source+browser pins/cleanup PASS.
+Next bounded Wasm compilation category, then evidence-directed engine change.
+Full54/B02-B09 and prior nonperturbed282.91015625MiB failure remain OPEN.
+`evidence/2026-10-22-vpx-live-memory-windows-result.json`.
+
+2026-10-22 portable CI39707983428 SUCCESS1426pass/0fail/1skip plus19browser
+privacy/offline/static-host PASS; lint/TS/build/public-audit/inventory PASS.
+Private hosted trace39707986603 SUCCESS3cases/one live first-VP9 dump; trace/source
+and cleanup evidence retained, no media download/native rebuild. Linux151 worker
+malloc is materially larger than worker heap; counters overlap and do not prove
+Windows allocation cause or250MiB acceptance. Next original-prefix Windows live
+trace when host safety passes. Full54/B02-B09 and282.91015625MiB failure OPEN.
+`evidence/2026-10-22-portable-trace-ci-success.json` and
+`evidence/2026-10-22-vpx-live-memory-hosted-result.json`.
+
+2026-10-22 actual live handles: portable CI39707983428/0a5be08 and private
+three-case trace39707986603/1a5b0be. Reuse exact existing native artifact; no
+rebuild/full9 retry. Await terminal results on these handles, never redispatch
+on observation delay. Windows memory/full54 acceptance remains unproven.
+`evidence/2026-10-22-vpx-live-memory-hosted-launch.json`.
+
 2026-10-22 second portable CI39706586845:1423pass/1fail/1skip; App source guard
 now passes. Narrow historical trace-source archive correction preserves all124
 original source hashes and exact trace assertions; live tests use current code.
