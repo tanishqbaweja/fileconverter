@@ -58,6 +58,15 @@ test("streamed AAC compares every packet beyond512 with unchanged content/trim/1
   for (const change of [row => { row.hash = "different"; }, row => { row.pts += 0.01; }, row => { row.skip = 1; }])
     await assert.rejects(compareStreamingAacPackets(packets(false), packets(true, change), { beforeStream: stream, afterStream: { ...stream, initial_padding: 0 } }));
 });
+test("wholly trimmed first AAC-LC presentation duration stays unavailable; interior absence is never guessed", async () => {
+  async function* missingFirst() { let index = 0; for await (const packet of packets(false)) { if (index++ === 0) packet.duration = null; yield packet; } }
+  const options = { beforeStream: stream, afterStream: { ...stream, initial_padding: 0 }, firstDuration: { rawPacketHash: "0", seconds: 1024 / 48000 } };
+  const result = await compareStreamingAacPackets(missingFirst(), packets(true), options);
+  assert.equal(result.sourceFirstPresentationDurationSeconds, null); assert.equal(result.sourceUnavailablePresentationDurations, 1);
+  assert.equal(result.durationComparedPackets, 599); assert.equal(result.leadingSamples, 1024);
+  await assert.rejects(compareStreamingAacPackets(missingFirst(), packets(true), { ...options, beforeStream: { ...stream, initial_padding: 0 } }));
+  await assert.rejects(compareStreamingAacPackets(packets(false, row => { row.duration = null; }), packets(true), options), /Interior/);
+});
 const words = (...values) => { const data = Buffer.alloc(values.length * 4); values.forEach((value, i) => data.writeUInt32BE(value, i * 4)); return data; };
 const box = (type, ...payload) => { const body = Buffer.concat(payload); return Buffer.concat([words(body.length + 8), Buffer.from(type), body]); };
 function metadata({ explicit = false, tfhdDefault = true } = {}) {

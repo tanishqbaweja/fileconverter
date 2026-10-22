@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-10-22 long-validator integration found and corrected a source fully-trimmed
+first-packet duration assumption. Native probe confirms unavailable presentation
+duration, not corrupted browser output; exact raw/audible samples and observed
+trim still mandatory.17focused/TS/lint PASS; actual corrected cross-check and
+real128MiB stage still pending. No native codec/settings change/full54 closure.
+`evidence/2026-10-22-vpx-large-validator-cross-failure.json`.
+
 2026-10-22 cross-check selection mistake found and rejected, not accepted as
 memory/conversion proof:0outputs. Added empty/incomplete-selection gate and
 verified corrected listing2tests;16focused/TS/lint PASS. Next actual single-output

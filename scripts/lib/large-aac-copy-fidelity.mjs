@@ -25,7 +25,7 @@ export async function compareStreamingAacPackets(beforeIterable, afterIterable, 
   const before = beforeIterable[Symbol.asyncIterator](), after = afterIterable[Symbol.asyncIterator]();
   const rate = Number(beforeStream.sample_rate); assert.equal(Number(afterStream.sample_rate), rate);
   assert.equal(beforeStream.channels, afterStream.channels); let count = 0, firstBefore, firstAfter, lastBefore, lastAfter;
-  let maxPts = 0, maxDts = 0, maxDuration = 0, currentBefore, currentAfter;
+  let maxPts = 0, maxDts = 0, maxDuration = null, currentBefore, currentAfter, durationComparedPackets = 0, sourceUnavailablePresentationDurations = 0;
   try {
     for (;;) {
       const [a, b] = await Promise.all([before.next(), after.next()]); assert.equal(a.done, b.done, "AAC packet count changed"); if (a.done) break;
@@ -35,10 +35,24 @@ export async function compareStreamingAacPackets(beforeIterable, afterIterable, 
       if (count === 1) { firstBefore = x; firstAfter = y;
         if (y.duration === null) { assert.equal(firstDuration.rawPacketHash, y.hash); y.duration = firstDuration.seconds; }
       } else { assert.equal(x.skip, 0); assert.equal(y.skip, 0); assert.equal(lastBefore.tail, 0); assert.equal(lastAfter.tail, 0); }
-      assert.ok(Number.isFinite(x.duration) && x.duration > 0 && Number.isFinite(y.duration) && y.duration > 0, "Packet duration unavailable");
-      const pts = Math.abs(y.pts - x.pts), dts = Math.abs(y.dts - x.dts), duration = Math.abs(y.duration - x.duration);
-      assert.ok(pts <= tolerance && dts <= tolerance && duration <= tolerance, "AAC packet clock changed");
-      maxPts = Math.max(maxPts, pts); maxDts = Math.max(maxDts, dts); maxDuration = Math.max(maxDuration, duration);
+      assert.ok(Number.isFinite(y.duration) && y.duration > 0, "Output packet duration unavailable");
+      const pts = Math.abs(y.pts - x.pts), dts = Math.abs(y.dts - x.dts);
+      assert.ok(pts <= tolerance && dts <= tolerance, "AAC packet clock changed");
+      maxPts = Math.max(maxPts, pts); maxDts = Math.max(maxDts, dts);
+      if (x.duration === null) {
+        // A wholly trimmed first AAC-LC frame has no presentation duration in
+        // current FFprobe JSON OR compact output. Keep it unavailable, never
+        // invent one from DTS differences. Require exact observed1024-sample
+        // trim on both files plus the actual serialized matching coded frame.
+        assert.equal(count, 1, "Interior source duration unavailable");
+        assert.equal(leading(x, beforeStream, "source"), 1024); assert.equal(leading(y, afterStream, "output"), 1024);
+        assert.equal(firstDuration.rawPacketHash, x.hash); assert.equal(firstDuration.seconds, 1024 / rate);
+        sourceUnavailablePresentationDurations++;
+      } else {
+        assert.ok(Number.isFinite(x.duration) && x.duration > 0, "Source packet duration unavailable");
+        const duration = Math.abs(y.duration - x.duration); assert.ok(duration <= tolerance, "AAC packet duration changed");
+        maxDuration = Math.max(maxDuration ?? 0, duration); durationComparedPackets++;
+      }
       lastBefore = x; lastAfter = y;
     }
   } catch (error) {
@@ -49,6 +63,8 @@ export async function compareStreamingAacPackets(beforeIterable, afterIterable, 
   assert.ok(Math.abs(firstBefore.pts + start / rate - firstAfter.pts - outputStart / rate) <= tolerance);
   return { packetCount: count, leadingSamples: start, trailingSamples: lastBefore.tail,
     maximumPtsErrorSeconds: maxPts, maximumDtsErrorSeconds: maxDts, maximumDurationErrorSeconds: maxDuration,
+    durationComparedPackets, sourceUnavailablePresentationDurations,
+    sourceFirstPresentationDurationSeconds: firstBefore.duration,
     packetBytesIdentical: true, maximumRetainedPackets: 8, rate, channels: beforeStream.channels };
 }
 async function checked(file) {

@@ -418,7 +418,8 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
         }
       } catch (error) {
         rows.push({ codec, multi, audioOrdinal, aacValidationFailure: String(error).slice(0, 1024),
-          aacFixtureEvidence: (error as { aacFixtureEvidence?: unknown }).aacFixtureEvidence ?? null });
+          aacFixtureEvidence: (error as { aacFixtureEvidence?: unknown }).aacFixtureEvidence ?? null,
+          packetEdges: (error as { aacPacketEdges?: unknown }).aacPacketEdges ?? null });
         throw error;
       }
     }

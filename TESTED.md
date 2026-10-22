@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-22 actual new-validator cross-check FAIL after trusted small validator
+PASS. Source-only native probe proves packet0's presentation duration absent in
+both JSON/compact because observed1024-sample AAC-LC frame is wholly trimmed.
+Correction leaves source duration null and permits only that first fully trimmed
+frame with exact observed trim and serialized matching coded sample; interior
+durations/PCM/packets/1ms clocks unchanged.17focused/TS/lint PASS. Small/large
+helpers remain separately bounded; actual corrected cross-check next, no engine
+rebuild or128MiB claim. `evidence/2026-10-22-vpx-large-validator-cross-failure.json`.
+
 2026-10-22 first cross-check launch rejected as qualification: anchored grep
 selected only memory test,0conversions/0outputs. CLI's loaded-only65.28515625MiB
 is NOT converter evidence. Corrected unanchored listing2tests; memory gate now

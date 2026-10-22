@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "head": "5f072e0",
+  "report": {
+    "file": "output/playwright/vpx-decoder-qualification-2026-10-22T03-19-53.919Z.json",
+    "bytes": 833126,
+    "sha256": "a4613b4decf05e76db9aa118f10ae183b58237c1e9dcca90c697c1e7b4bf2cbd"
+  },
+  "conclusion": "validator integration failure, not engine regression",
+  "trustedSmallValidatorPassed": true,
+  "largeValidatorFailure": "Required a presentation duration for the fully trimmed first source AAC-LC packet",
+  "sourceOnlyProbe": {
+    "packets": 95,
+    "missingDurationPackets": [
+      0
+    ],
+    "bothCompactAndJsonAgree": true,
+    "firstPtsSeconds": -0.021,
+    "observedSkipSamples": 1024,
+    "packetSha256": "ba9e0e6cdaba7dcd7f1c73261ad88993a7051d0ae782676de1080e90e0b7e3c0",
+    "fixtureRemoved": true
+  },
+  "correction": "Leave that source presentation duration null; permit only fully trimmed first frame with matching observed1024 skip on both files and actual serialized matching coded sample. All interior durations remain required, exact PCM/packet/trim and1ms clocks unchanged.",
+  "focusedVerification": {
+    "passed": 17,
+    "failed": 0,
+    "typescript": "passed",
+    "lint": "passed"
+  },
+  "nativeRebuilt": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false
+}
