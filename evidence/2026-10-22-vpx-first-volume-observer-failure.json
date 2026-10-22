@@ -1,0 +1,80 @@
+{
+  "status": "correctness-passed-memory-unavailable-not-accepted",
+  "sourceCommit": "d7a140c",
+  "report": {
+    "path": "output/playwright/vpx-decoder-qualification-2026-10-22T06-22-30.105Z.json",
+    "bytes": 5124052,
+    "sha256": "040c3c7ebfa7692fe5f7262fd6c7115c7a46cd3b576be73e51f70e0740f62c68"
+  },
+  "historicalExecutedSourcePinsVerifiedAgainstGitObject": 38,
+  "scope": "First genuine 1080p 128-256 MiB stage only; not repeated stress, near-10GiB, final UI or public acceptance",
+  "browserVersion": "155.0.8059.85",
+  "results": [
+    {
+      "codec": "vp8",
+      "sourceBytes": 168080773,
+      "sourceSha256": "ef9cffdd9ae0be3347cb920f82fbf39c648a7ac584dd7747a25f70333067d730",
+      "outputBytes": 229606839,
+      "outputSha256": "a0ae16cf4742606ef4c50216f6f45ec094e3bfdb2b67f2a5d3b1801bd616f870",
+      "browserElapsedMs": 62419.3852930069,
+      "frames": 1923,
+      "ssim": 0.998013,
+      "maximumVideoPtsErrorSeconds": 0,
+      "aacPackets": 3752
+    },
+    {
+      "codec": "vp9",
+      "sourceBytes": 171947687,
+      "sourceSha256": "b10ec8707942dc9fd4c23263802b0c358f73d7a5fccd1106cc2132cc00b5146d",
+      "outputBytes": 176892464,
+      "outputSha256": "63e37738d3e0e25a8188e434498027c34019040b65110ae5d9d4376828f800d5",
+      "browserElapsedMs": 41369.374863266945,
+      "frames": 1475,
+      "ssim": 0.99813,
+      "maximumVideoPtsErrorSeconds": 0,
+      "aacPackets": 2877
+    }
+  ],
+  "fullIndependentDecodeQualityAllVideoClocksAndExactAacPcmTrimPassed": true,
+  "primaryIncrementalPrivateMiB": null,
+  "memoryAcceptance": false,
+  "monitorFailure": "Native observer response timed out",
+  "monitorCause": null,
+  "receivedSamples": 1364,
+  "lastReceivedSampleAt": "2026-10-22T06:25:51.5177332Z",
+  "coverageCaveat": "Observer failed during first output validation, before VP9 conversion. Recorded maxima cannot establish complete-stage memory acceptance.",
+  "cleanupIncident": {
+    "cause": "Observer drain error escaped process-cleanup aggregate before the later filesystem-cleanup group was called",
+    "manualRemediationVerified": true,
+    "removedBytes": 372536860,
+    "removedFiles": 836,
+    "observedBrowserIdentities": 14,
+    "recordedBrowserIdentitiesStillAlive": 0,
+    "liveRuntimeProcessReferences": 0,
+    "removedDirectories": [
+      { "path": "work/vd-WTgS7Q", "dev": "1887170595", "ino": "3940649679940214", "birthNs": "1792650151951775500" },
+      { "path": "dist/client/engines/vpx", "dev": "1887170595", "ino": "2814749773100572", "birthNs": "1792650164781905100" }
+    ],
+    "sourceSizeHashesAndExactAssetHashesVerifiedBeforeDeletion": true,
+    "noSymlinksOrUnexpectedTopLevelEntries": true,
+    "outputsRecoverableByRegeneration": true,
+    "originalModified": false,
+    "originalBytesAfterRemediation": 2958573265,
+    "freshOriginalHashInThisIncident": false
+  },
+  "correction": {
+    "orderedCleanupPhasesAttemptedDespitePriorErrors": true,
+    "originalFailuresStillFailTest": true,
+    "runtimeDeletionRequiresBrowserAndServerClosure": true,
+    "boundedObserverTimingDiagnosticsAdded": true,
+    "noFurtherConversionAfterKnownObserverFailure": true,
+    "nativeCodecBytesAndMemoryThresholdAndTimeoutUnchanged": true,
+    "focusedTests": { "passed": 21, "failed": 0, "skipped": 0 },
+    "typescript": "passed",
+    "lint": "passed",
+    "changedHarnessBrowserRun": "pending"
+  },
+  "publicAcceptance": false,
+  "near10GiBAcceptance": false,
+  "globalSpeedClaim": false
+}

@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-22 first real-volume1080p gate: both actual128+MiB browser conversions
+passed full content/SSIM/timestamp/exact AAC-PCM checks, but native memory observer
+timed out before VP9, so stage NOT accepted. Cleanup sequencing defect left355MiB;
+exact owned identities/media+asset hashes/process absence verified, data removed.
+Ordered error-preserving cleanup phases and timing/fail-fast diagnostics added;
+21focused/TS/lint PASS. Observer cause not yet established, timeout/250MiB/native
+bytes unchanged. Next one diagnostic run of this failed stage, not small repeats.
+`evidence/2026-10-22-vpx-first-volume-observer-failure.json`.
+
 2026-10-22 first source size failed128MiB preparation floor; rejected before
 browser, no scaling proof. Byte-targeted real-video/fresh-continuous-AAC fixture
 construction corrected,17focused/TS/lint PASS. Next actual corrected initial

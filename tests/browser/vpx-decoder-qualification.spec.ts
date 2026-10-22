@@ -9,7 +9,10 @@ import { pathToFileURL } from "node:url";
 import { promisify } from "node:util";
 import { auditVpxDecoderArtifact } from "../../scripts/lib/vpx-decoder-artifact.mjs";
 import { startOwnedProductionTestServer } from "../../scripts/lib/owned-production-test-server.mjs";
-import { createOwnedRuntimeScratch, finishOwnedCleanup } from "../../scripts/lib/owned-runtime-scratch.mjs";
+import { createOwnedRuntimeScratch } from "../../scripts/lib/owned-runtime-scratch.mjs";
+import { finishOwnedCleanupPhases } from "../../scripts/lib/phased-owned-cleanup.mjs";
+import { describeOwnedCleanupError } from "../../scripts/lib/bounded-cleanup-error.mjs";
+import { performance } from "node:perf_hooks";
 import { inspectStressHostMemory } from "../../scripts/lib/host-memory-preflight.mjs";
 import { startChromiumMemoryMonitor } from "../../scripts/lib/persistent-chromium-memory.mjs";
 import { sampleChromiumTree, stableWindow } from "../../scripts/lib/chromium-private-memory.mjs";
@@ -90,12 +93,29 @@ async function captureAttribution(label: string) {
     observation: realms.status === "fulfilled" ? realms.value : null, error: realms.status === "rejected" ? String(realms.reason).slice(0, 512) : null });
 }
 const phases = [{ phase: "blank", at: Date.now() }];
+const observerTransport = { requests: 0, failures: 0, maximumRequestMs: 0, maximumBatchSamples: 0,
+  lastObserverCpuMs: null as number | null, lastReceivedSequence: null as number | null,
+  lastSampleAt: null as string | null, lastFailure: null as Record<string, unknown> | null };
 const samples: Array<{ privateBytes: number | null; rssBytes: number | null; phase: string; timestamp: string; elapsedMs: number }> = [];
 const pause = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 const phase = (value: string) => phases.push({ phase: value, at: Date.now() });
 async function drainMemory() {
   if (!monitor) return;
-  const batch = await monitor.drain(); expect(samples.length + batch.samples.length).toBeLessThanOrEqual(6000);
+  const started = performance.now(), utilization = performance.eventLoopUtilization(); observerTransport.requests++;
+  let batch: Awaited<ReturnType<typeof monitor.drain>>;
+  try { batch = await monitor.drain(); }
+  catch (error) {
+    const elapsedMs = performance.now() - started, loop = performance.eventLoopUtilization(utilization);
+    observerTransport.failures++;
+    observerTransport.lastFailure = { at: new Date().toISOString(), phase: phases.at(-1)?.phase, elapsedMs,
+      eventLoopActiveMs: loop.active, eventLoopIdleMs: loop.idle, error: describeOwnedCleanupError(error) };
+    throw error;
+  } finally { observerTransport.maximumRequestMs = Math.max(observerTransport.maximumRequestMs, performance.now() - started); }
+  observerTransport.maximumBatchSamples = Math.max(observerTransport.maximumBatchSamples, batch.samples.length);
+  observerTransport.lastObserverCpuMs = batch.observerCpuMs;
+  observerTransport.lastReceivedSequence = batch.samples.at(-1)?.sequence ?? observerTransport.lastReceivedSequence;
+  observerTransport.lastSampleAt = batch.samples.at(-1)?.timestamp ?? observerTransport.lastSampleAt;
+  expect(samples.length + batch.samples.length).toBeLessThanOrEqual(6000);
   for (const sample of batch.samples) samples.push({ ...sample,
     phase: phases.findLast(value => value.at <= Date.parse(sample.timestamp))?.phase ?? "unavailable",
     elapsedMs: Date.parse(sample.timestamp) - phases[0].at });
@@ -149,7 +169,8 @@ test.beforeAll(async () => {
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/bounded-periodic-realm-observer.mjs",
     "lib/vpx-compiled-core.ts", "lib/conversion-protocol.ts", "scripts/lib/vpx-repeat-plan.mjs", "scripts/lib/vpx-scale-plan.mjs",
     "scripts/lib/large-aac-copy-fidelity.mjs", "scripts/lib/large-mp4-first-sample-duration.mjs",
-    "scripts/lib/streaming-pcm-trim-digest.mjs", "scripts/lib/bounded-native-lines.mjs"])
+    "scripts/lib/streaming-pcm-trim-digest.mjs", "scripts/lib/bounded-native-lines.mjs",
+    "scripts/lib/phased-owned-cleanup.mjs", "scripts/lib/bounded-cleanup-error.mjs", "scripts/lib/windows-tree-monitor.cs"])
     sourcePins[file] = sha(await readFile(path.join(root, file)));
   report.executedSourcePins = sourcePins;
   if (process.platform === "win32") { browserPin = await inspectInstalledChromePin(); report.browserPin = browserPin; }
@@ -240,7 +261,7 @@ test.beforeAll(async () => {
     blankBaseline = stable.reduce((lower, next) => next.privateBytes < lower.privateBytes ? next : lower);
     report.blankBaseline = blankBaseline;
     monitorTimer = setInterval(() => { if (monitorBusy) return; monitorBusy = true;
-      pendingSample = drainMemory().catch(error => { monitorFailure ??= error; }).finally(() => { monitorBusy = false; }); }, 500);
+      pendingSample = drainMemory().catch(error => { monitorFailure ??= error; clearInterval(monitorTimer); }).finally(() => { monitorBusy = false; }); }, 500);
     if (diagnoseAllocations) {
       realmSampler = await connectPlaywrightRealmSampler(context.browser()!, server.baseURL);
       realmObserver = createBoundedPeriodicRealmObserver({ sample: () => realmSampler!.sample(), readPhase: () => phases.at(-1)!.phase });
@@ -278,6 +299,7 @@ test.beforeAll(async () => {
 });
 
 async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault?: "write", preCancelled = false, wrongProfile = false, multi = false) {
+  if (monitorFailure) throw monitorFailure; // Do not start another expensive conversion with known missing memory coverage.
   const source = path.join(runtime!.directory, codec + (multi ? "-multi" : "") + ".mkv");
   await page.locator('input[type="file"]').first().setInputFiles(source);
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
@@ -588,18 +610,19 @@ test.afterEach(async ({}, testInfo) => {
   }
 });
 test.afterAll(async () => {
-  const cleanup: Array<() => Promise<unknown>> = [];
-  cleanup.push(async () => {
+  const cleanupPhases: Array<{ name: string; status: string; error?: unknown }> = [];
+  const verifyExecutedSources = async () => {
     if (browserLaunched) {
       expect(staticCodeRequests.wasm).toBe(staticCompilation.coldCompiles);
       expect(staticCodeRequests.manifests).toBe(staticCompilation.coldCompiles + staticCompilation.reuses);
     }
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
-    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 38;
+    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 41;
     report.installedChromeBinaryPinsVerified = browserPin ? true : null;
-    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 38 && Boolean(browserPin);
-  });
+    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 41 && Boolean(browserPin);
+  };
+  const cleanup: Array<() => Promise<unknown>> = [];
   if (assetIdentity) cleanup.push(async () => {
     const current = await lstat(assetDirectory, { bigint: true });
     expect(current.isDirectory() && !current.isSymbolicLink()).toBe(true);
@@ -611,22 +634,35 @@ test.afterAll(async () => {
       expect(sha(await readFile(path.join(assetDirectory, file)))).toBe(hash);
     await rm(assetDirectory, { recursive: true });
   });
-  if (runtime) cleanup.push(() => runtime!.close());
+  if (runtime) cleanup.push(async () => {
+    expect(context, "Do not delete a profile whose browser closure is unverified").toBeUndefined();
+    expect(server, "Do not delete runtime while owned server closure is unverified").toBeUndefined();
+    await runtime!.close();
+  });
   try {
-    clearInterval(monitorTimer); await pendingSample;
-    await realmObserver?.stop(); report.periodicRealmObservations = realmObserver?.report();
-    realmSampler?.close();
-    if (diagnoseAllocations && browserRootPid) {
-      annotateNativeProcessTypes(samples, attribution.references, browserRootPid); report.attribution = attribution;
-    }
-    await finishOwnedCleanup([
-      async () => { if (monitor) { try { await drainMemory(); } finally { await monitor.close(); monitor = undefined; } } },
+    await finishOwnedCleanupPhases([
+      { name: "observation-finalization", actions: [async () => {
+        clearInterval(monitorTimer); await pendingSample;
+        try { await realmObserver?.stop(); report.periodicRealmObservations = realmObserver?.report(); }
+        finally { realmSampler?.close(); }
+        if (diagnoseAllocations && browserRootPid) {
+          annotateNativeProcessTypes(samples, attribution.references, browserRootPid); report.attribution = attribution;
+        }
+      }] },
+      { name: "process-closure", actions: [
+      async () => { if (monitor) { try { await drainMemory(); } catch (error) { monitorFailure ??= error; throw error; }
+        finally { await monitor.close(); monitor = undefined; } } },
       async () => { if (context) { await context.close(); context = undefined; } },
       async () => { if (server) { report.serverCleanup = await server.close(); server = undefined; } },
-    ]);
-    await finishOwnedCleanup(cleanup); report.disposableDataRemoved = true;
+      ] },
+      { name: "executed-source-verification", actions: [verifyExecutedSources] },
+      { name: "disposable-files", actions: cleanup },
+    ], cleanupPhases);
   }
   finally { report.logs = logs; report.forbiddenRequests = forbiddenRequests; report.workerEvents = workerEvents;
+    report.cleanupPhases = cleanupPhases;
+    report.disposableDataRemoved = cleanupPhases.some(phase => phase.name === "disposable-files" && phase.status === "passed");
+    report.observerTransport = observerTransport;
     report.validationTransport = validationTransport;
     report.staticCompilation = staticCompilation;
     report.staticCodeRequests = staticCodeRequests;

@@ -1,5 +1,13 @@
 # Release closure — original scope, not a reduced MVP
 
+2026-10-22 B03/B06 first1080p128+MiB conversions both pass independent correctness,
+but observer timeout leaves memory incomplete and stage unaccepted.355MiB owned
+leftovers removed after exact identity/hash/process audit; teardown now attempts
+ordered filesystem cleanup despite observer/pin failures, retaining errors and
+guarding live profiles.21focused/TS/lint PASS; one changed diagnostic run pending.
+Do not replay closed small repeat/native gates or claim near10GiB/public success.
+`evidence/2026-10-22-vpx-first-volume-observer-failure.json`.
+
 2026-10-22 current private JSPI small repeat gate PASS:39checks/36conversions
 across3fresh Windows155 sessions,3runs per VP8/VP9 default/control. Worst primary
 199.43359375MiB, cleanup48.0859375MiB over loaded idle. Exact per-variant hashes,

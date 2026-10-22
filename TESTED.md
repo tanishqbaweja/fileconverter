@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-22 real1080p first-volume gate: VP8 168080773B->229606839B/62.42s and
+VP9 171947687B->176892464B/41.37s are genuine browser decode/re-encode. Both pass
+full decode, SSIM.998013/.998130, all frame clocks and exact AAC packet/PCM/trim
+checks. Overall FAIL: native observer timed out before VP9; no complete memory
+acceptance.355MiB owned leftovers safely removed; phased cleanup now preserves
+failures while attempting filesystem cleanup.21focused/TS/lint PASS; changed
+diagnostic run pending, native/quality/250MiB/timeout unchanged.
+`evidence/2026-10-22-vpx-first-volume-observer-failure.json`.
+
 2026-10-22 initial volume attempt correctly HELD before browser:40s VP8 source
 83977133B <134217728B floor. No conversion/memory/scaling acceptance; all owned
 data removed. Corrected creator targets160MiB via real video packet-copy loops
@@ -7190,6 +7199,13 @@ Hero correction final checkpoint: combined CURRENT836/836unit PASS5723.9312ms in
 - **2026-09-28 JPEG XL inspection worker lifecycle extension:** The static worker audit now inventories 32 production TypeScript worker modules and all three message loops. The JPEG XL inspection loop has no mutable module-scoped job state, caps error responses at 2,048 characters, closes itself after its one terminal response, and is also terminated by the caller on success, error, cancellation, or the 30-second deadline. The audit passes within the 248/248 unit suite.
 - **2026-09-27 bounded archive/package source inspection:** ZIP, DOCX, XLSX, PPTX, ODT, ODS, ODP, and EPUB read only the 65,557-byte ZIP tail plus at most a 1 MiB central-directory prefix. TAR performs at most 256 isolated 512-byte header reads while skipping payloads; GZIP/BZIP2/XZ wrappers read at most 64 KiB plus an eight-byte GZIP trailer; 7Z reads its 32-byte start header plus one next-header marker. The panel reports bounded entry/size/compression/encryption/path-safety and package facts without decompressing payloads or displaying names. Eight ZIP-based families, TAR/TAR.GZ/TAR.BZ2/TAR.XZ/7Z, raw GZIP/BZIP2/XZ, unsafe ZIP/TAR, an in-memory 20,000-entry oversized ZIP directory, and a 1,024-entry TAR passed the focused production-Chromium gate 1/1. The ZIP stress stopped at exactly 1,114,133 bytes; TAR stopped at exactly 131,072 header bytes and both qualified incomplete counts. Exact scope and cleanup are in `evidence/package-source-inspection-2026-09-27.json`.
 <!-- BEGIN MANUAL TEST LOG -->
+2026-10-22 first real128+MiB1080p VP8/VP9 browser conversions pass independent
+correctness but overall memory gate FAILS native observer timeout before VP9.
+355MiB verified owned leftovers removed; error-preserving phased cleanup and
+bounded timing/fail-fast diagnostics added,21focused/TS/lint PASS. No memory,
+near10GiB or public acceptance. One changed diagnostic run next, no small-repeat
+or unchanged native rebuild. See evidence/2026-10-22-vpx-first-volume-observer-failure.json.
+
 - **2026-09-25 raw MPEG-2-to-OGV initial memory rejection:** The earlier direct-save path genuinely decoded the 136,166,136-byte MPEG-2 source to an independently validated 86,555,131-byte Ogg/Theora file, but reached **250.125 MiB** versus the unchanged 250 MiB process-tree limit in 204.207 seconds. OPFS passed once at 242.988 MiB in 197.210 seconds. The same exact output SHA-256, 11,904 frames, 496-second duration, full decode, and SSIM 0.826148 rule out extension renaming. The first validation exposed a fixture-only frame-rate error: FFprobe estimated 25 fps, whereas the encoded sequence header and generator were 24 fps; both generators and the manifest were corrected without changing the large source bytes. See `evidence/m2v-to-ogv-candidate-2026-09-25.json` for exact hashes and rejected results. No Docker command was used.
 
 - **2026-09-25 hosted clean-checkout verification:** Pushed commit `8284475` passed [no-Docker verify-only run 36052482467](https://github.com/tanishqbaweja/fileconverter/actions/runs/36052482467): production build, lint, TypeScript, 244 unit tests, 15 privacy/offline browser tests, 153 image, 238 streaming, and 553 media tests with independent validators. Four jobs passed with zero retained Actions artifacts. Exact unchanged engine reproduction remained separately evidenced by run 36002113153; broader original-specification work remained open.
