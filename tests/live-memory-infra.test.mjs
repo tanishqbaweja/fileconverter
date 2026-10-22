@@ -15,6 +15,43 @@ test("Live memory counter projection retains overlapping V8 worker and malloc ca
   assert.equal(row.summedAllocatorTotal,null);assert.equal(row.acceptanceMetric,false);
   assert.equal(LIVE_MEMORY_LIMITS.maximumCaptureMs,15000);
 });
+
+test("mock-only during-work trace serializes bounded light dumps and retains independent dump identities", async () => {
+  const runtime = await createOwnedRuntimeScratch("live-memory-unit-"), session = new EventEmitter(), calls = [];
+  let sequence = 0, active = 0, maximumActive = 0;
+  session.send = async (method, params) => {
+    calls.push({ method, params });
+    if (method === "Tracing.requestMemoryDump") {
+      active++; maximumActive = Math.max(maximumActive, active); const id = ++sequence;
+      await new Promise(resolve => setTimeout(resolve, 15)); active--; return { success: true, dumpGuid: "0x" + id };
+    }
+    if (method === "Tracing.end") queueMicrotask(() => session.emit("Tracing.tracingComplete", { stream: "fake", dataLossOccurred: false }));
+    if (method === "IO.read") return { data: JSON.stringify({ traceEvents: Array.from({ length: sequence }, (_, i) => [
+      { name: "GlobalMemoryDump", ph: "b", pid: 1, id2: { local: String(i) }, ts: 10 + i * 30, args: { dump_guid: "0x" + (i + 1) } },
+      { name: "GlobalMemoryDump", ph: "e", pid: 1, id2: { local: String(i) }, ts: 20 + i * 30 },
+      { ph: "v", pid: 2, ts: 15 + i * 30, args: { dumps: { allocators: {} } } },
+    ]).flat() }), eof: true };
+  };
+  session.detach = async () => calls.push({ method: "detach" });
+  try {
+    const result = await captureLiveMemoryInfra({ session, phase: "mock-work", processes: [], archivePath: path.join(runtime.directory, "trace.json.gz"),
+      during: () => new Promise(resolve => setTimeout(resolve, 380)) });
+    assert.ok(result.rows.length >= 1 && result.rows.length <= 4); assert.equal(maximumActive, 1);
+    assert.ok(result.rows.some(row => row.workRunningAtRequest)); assert.equal(result.summary.length, result.rows.length);
+    assert.equal(result.acceptanceMetric, false); assert.equal(result.perturbsMemory, true); assert.equal(calls.at(-1).method, "detach");
+  } finally { await runtime.close(); }
+});
+
+test("mock-only missing trace completion cannot hang cleanup or leave event listeners", async () => {
+  const session = new EventEmitter(), calls = [];
+  session.send = async method => { calls.push(method); if (method === "Tracing.requestMemoryDump") return { success: true, dumpGuid: "0x1" }; };
+  session.detach = async () => calls.push("detach");
+  const started = Date.now();
+  await assert.rejects(captureLiveMemoryInfra({ session, phase: "mock-deadline", processes: [], archivePath: "not-written",
+    captureMs: 15 }), /deadline/);
+  assert.ok(Date.now() - started < 2000); assert.ok(calls.includes("Tracing.end")); assert.ok(calls.includes("detach"));
+  assert.equal(session.listenerCount("Tracing.tracingComplete"), 0);
+});
 for(const overflow of [false,true])test(`Mock-only live trace ${overflow?"rejects oversized replies":"archives exact bytes"} and closes/detaches`,async()=>{
   const runtime=await createOwnedRuntimeScratch("live-memory-unit-");
   const calls=[],session=new EventEmitter();

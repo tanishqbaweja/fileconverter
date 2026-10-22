@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-22 CI39705362189 failed one exact-source App integration unit (1421pass/
+1fail/1existing skip). Unique reversible code-owner integration hunks corrected,
+27focused pass; full historical source equality/card405checks preserved. Privacy/
+offline not reached, reproduction/matrices unselected. Corrected portable CI next.
+First-VP9 live allocator trace prepared with max4single-flight light dumps/8MiB/
+15s and explicit no-acceptance flag; original VP8 prefix/inputs/settings/fidelity
+retained. No core rebuild/threshold change/full54 closure.
+`evidence/2026-10-22-portable-cache-checkpoint-ci-failure.json`.
+
 Cache cycle final safety:40focused/TS/lint pass,5owned runtime roots/Chrome birth
 identities and private asset stage absent. Original test.mkv full SHA/size exact;
 retained native43/16audit passes. Guard-only telemetry/cleanup hardening after

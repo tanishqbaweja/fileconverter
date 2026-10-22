@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-22 portable CI39705362189/8945d9f FAIL:1421pass/1fail/1existing original skip,
+628inventory=466portable+162unexecuted qualification files. Clean install/public
+compact audit/inventory/lint/TS/production build pass; privacy/offline not reached.
+Failure is exact historical App restoration missing4reviewed code-owner hunks.
+Corrected unique reversible hunks+forward roundtrip+full old-source equality kept;
+27focused pass. Native rebuilds/conversion matrices not selected. Exact receipt:
+`evidence/2026-10-22-portable-cache-checkpoint-ci-failure.json`.
+
+Opt-in first-VP9 allocator trace prepared: max4single-flight80ms light dumps,
+8MiB trace/15s capture/diagnostic trace reads<=256KiB; conversion input and output
+bounds unchanged.7focused capture/realm tests,TS/lint pass after optional
+callback typing correction. Setup, real conversion and post-trace export have
+separate native phase timestamps; tracing explicitly prevents memory acceptance.
+Next execute original VP8 default/control prefix+VP9 default, not unchanged full9.
+
 Final cache cycle:40focused tests/0fail/0skip, TypeScript and targeted lint pass.
 All5actual local run roots/private asset stage independently verified absent;
 owned Chrome birth identities absent (PID reuse distinguished, no kill). No

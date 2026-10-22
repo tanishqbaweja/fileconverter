@@ -25,10 +25,34 @@ const articleHtml = html => (html.match(/<article\b[^>]*>[\s\S]*?<\/article>/g) 
   card.replace(/ data-profile-id="[^"]+"/, "").replaceAll("<!-- -->", ""));
 
 test("current application mounts the bounded component with explicit lifecycle and localhost qualification integration", () => {
+  // Account for ONLY the reviewed static-code owner integration. Each hunk is
+  // unique and reversible; the complete historical UI comparison below remains
+  // mandatory and still catches every unrelated change.
+  const codeOwnerEdits = [
+    ['import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";\nimport { createVpxCompiledCoreSlot } from "../../lib/vpx-compiled-core";\n',
+      'import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";\n'],
+    ['    let replacementTimer = 0;\n    // Retain only immutable static code across coordinator replacement. Worker\n    // instances, memories and all user-file/destination state still retire.\n    const staticCodeSlot = createVpxCompiledCoreSlot();\n',
+      '    let replacementTimer = 0;\n'],
+    ['        () => new Worker(new URL("../../workers/staged-save.worker.ts", import.meta.url), { name: "within-final-save" }),\n        staticCodeSlot,\n      );',
+      '        () => new Worker(new URL("../../workers/staged-save.worker.ts", import.meta.url), { name: "within-final-save" }),\n      );'],
+    ['      workerRef.current?.terminate();\n      staticCodeSlot.dispose();\n      workerRef.current = null;',
+      '      workerRef.current?.terminate();\n      workerRef.current = null;'],
+  ];
+  let withoutCodeOwner = app;
+  for (const [current, historical] of codeOwnerEdits) {
+    assert.equal(withoutCodeOwner.split(current).length, 2, "Unique exact code-owner hunk");
+    withoutCodeOwner = withoutCodeOwner.replace(current, historical);
+  }
+  let reconstructed = withoutCodeOwner;
+  for (const [current, historical] of [...codeOwnerEdits].reverse()) {
+    assert.equal(reconstructed.split(historical).length, 2, "Unique exact reverse code-owner hunk");
+    reconstructed = reconstructed.replace(historical, current);
+  }
+  assert.equal(reconstructed, app);
   const begin = oldApp.indexOf("  // The compiled registry is immutable; progress must not rebuild its static display.");
   const end = oldApp.indexOf("\n  return (\n    <main>", begin);
   assert.ok(begin > 0 && end > begin);
-  const restored = app.replace('import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";\n', "")
+  const restored = withoutCodeOwner.replace('import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";\n', "")
     .replace('import { isVpxDecoderProfile } from "../../lib/vpx-decoder-policy";\n', "")
     .replace('import { runVpxQualificationJob, validateVpxQualificationRequest } from "../../lib/vpx-qualification-job";\n', "")
     .replace('import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";\n', "")

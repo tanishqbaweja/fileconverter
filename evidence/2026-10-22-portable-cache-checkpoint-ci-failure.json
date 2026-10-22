@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "run": 39705362189,
+  "job": 119584021512,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39705362189",
+  "head": "8945d9fcab2033ed9fff84a45cd674f9b83e4f77",
+  "scope": "Existing portable-verify workflow; native reproduction and conversion matrices deliberately unselected",
+  "conclusion": "failure",
+  "unitInventory": { "allFiles": 628, "portableFiles": 466, "qualificationFiles": 162, "protectedPriorHostedFiles": 235 },
+  "units": { "tests": 1423, "passed": 1421, "failed": 1, "skipped": 1, "seconds": 55.723578496 },
+  "passedStages": ["clean dependency install", "public compact-evidence audit", "complete unit inventory", "lint", "TypeScript", "production build"],
+  "failedStage": "npm test unit stage",
+  "failedTest": "tests/published-catalogue-integration.test.mjs: current application mounts the bounded component with explicit lifecycle and localhost qualification integration",
+  "cause": "Exact historical-UI restoration does not yet reverse the four reviewed app-lifetime static code-owner additions",
+  "correction": "Four unique explicit reversible cache-owner hunks, forward round-trip equality and full original historical source comparison all required; no arbitrary diff acceptance",
+  "focusedCorrectionChecks": { "passed": 27, "failed": 0, "skipped": 0 },
+  "privacyOfflineReached": false,
+  "nativeEngineRebuildsExecuted": false,
+  "qualificationUnitsExecuted": false,
+  "memoryAcceptance": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false
+}

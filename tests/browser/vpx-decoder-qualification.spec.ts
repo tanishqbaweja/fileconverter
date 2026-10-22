@@ -53,6 +53,8 @@ let monitor: Awaited<ReturnType<typeof startChromiumMemoryMonitor>> | undefined;
 let monitorTimer: ReturnType<typeof setInterval> | undefined, monitorBusy = false;
 let pendingSample = Promise.resolve(), monitorFailure: unknown, blankBaseline: { privateBytes: number } | undefined;
 const diagnoseAllocations = process.env.WITHIN_VPX_ALLOCATION_DIAGNOSTIC === "1";
+const duringAllocatorTrace = process.env.WITHIN_VPX_DURING_ALLOCATOR_TRACE === "1";
+report.inConversionDiagnosticOnly = duringAllocatorTrace;
 report.allocationDiagnostics = { enabled: diagnoseAllocations, checkpointLimit: 8, targetLimit: 16,
   pendingCdpLimit: 64, maximumCdpReplyBytes: 1048576, maximumLightTraceBytes: 8388608,
   postMeasurementDumpOnly: true, forcedGc: false, processTreeFormulaChanged: false };
@@ -228,8 +230,9 @@ async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault
   await captureAttribution("before-conversion-" + (conversionOrdinal + 1));
   const eventStart = workerEvents.length;
   const ordinal = ++conversionOrdinal, startedAt = Date.now(), conversionPhase = "conversion-" + codec + "-" + ordinal;
+  let actualStartedAt = startedAt, actualEndedAt: number | undefined;
   phase(conversionPhase);
-  const result = await page.evaluate(async ({ codec, options, fault, preCancelled, wrongProfile }) => {
+  const execute = async () => await page.evaluate(async ({ codec, options, fault, preCancelled, wrongProfile }) => {
     const file = document.querySelector<HTMLInputElement>('input[type="file"]')!.files![0];
     const directory = await navigator.storage.getDirectory(), outputName = "vpx-qualification-output.mp4";
     const handle = await directory.getFileHandle(outputName, { create: true });
@@ -244,9 +247,26 @@ async function run(codec: "vp8" | "vp9", options?: VideoConversionOptions, fault
       new Promise<never>((_, reject) => { timer = setTimeout(() => { Atomics.store(new Int32Array(cancellationBuffer), 0, 1); reject(new Error("Private VPX job exceeded60s")); }, 60_000); })]);
     } finally { clearTimeout(timer); }
   }, { codec, options, fault, preCancelled, wrongProfile }) as VpxQualificationResult;
-  const endedAt = Date.now(); phase("recovery");
+  let result: VpxQualificationResult | undefined;
+  if (duringAllocatorTrace && ordinal === 3 && codec === "vp9") {
+    phase("preparing-vp9-allocator-trace");
+    const reference = await sampleChromiumTree(browserRootPid!);
+    try {
+      report.inConversionAllocationTrace = await captureLiveMemoryInfra({ session: await context!.browser()!.newBrowserCDPSession(),
+        phase: "first-vp9-native-work", processes: reference.processes,
+        archivePath: reportFile.replace(/\.json$/, "-during-vp9-memory.json.gz"), during: async () => {
+          actualStartedAt = Date.now(); phase(conversionPhase);
+          result = await execute(); actualEndedAt = Date.now(); phase("post-vp9-allocator-trace-export");
+        } });
+    } catch (error) {
+      report.inConversionAllocationTrace = { status: "unavailable", error: String(error).slice(0, 2048), acceptanceMetric: false };
+      if (!result) throw error;
+    }
+  } else result = await execute();
+  if (!result) throw new Error("The actual production conversion did not return a result");
+  const endedAt = actualEndedAt ?? Date.now(); phase("recovery");
   rows.push({ codec, multi, options: options ?? "automatic", fault: fault ?? null, preCancelled, wrongProfile, sourceBytes: (await lstat(source)).size,
-    sourceSha256: await hashFile(source), conversionWindow: { ordinal, startedAt, endedAt, phase: conversionPhase }, result, workerEvents: workerEvents.slice(eventStart) });
+    sourceSha256: await hashFile(source), conversionWindow: { ordinal, startedAt: actualStartedAt, endedAt, phase: conversionPhase }, result, workerEvents: workerEvents.slice(eventStart) });
   if (result.phases.includes("Compiled VPX code")) {
     staticCompilation.coldCompiles++;
     expect(staticCompilation.coldCompiles, "Same pinned asset must survive actual app coordinator replacement").toBe(1);
@@ -352,6 +372,11 @@ async function validate(codec: "vp8" | "vp9", options?: VideoConversionOptions, 
       expect(Math.abs(Number(converted.chapters[0][field]) - Number(original.chapters[0][field]))).toBeLessThan(0.002);
     rows.push({ codec, options: options ?? "automatic", independentValidation: { fullDecode: true, frames, fps, ssim, audioPacketsIdentical: true,
       sourceBytes: (await lstat(source)).size, outputBytes: (await lstat(output)).size, outputSha256: await hashFile(output) } });
+    if (duringAllocatorTrace && conversionOrdinal === 3 && codec === "vp9") {
+      const trace = report.inConversionAllocationTrace as { status: string; rows?: Array<{ workRunningAtRequest?: boolean }> };
+      expect(trace.status, "Allocator evidence cannot be silently treated as available").toBe("captured-live-light-memory-diagnostic");
+      expect(trace.rows?.some(row => row.workRunningAtRequest), "At least one dump request must actually overlap conversion").toBe(true);
+    }
     await captureAttribution("after-validation-" + conversionOrdinal);
   } finally { validationTarget = undefined; await target.close().catch(() => {}); await rm(output, { force: true }); }
 }
@@ -385,7 +410,7 @@ test("complete same-instance Chromium tree remains within250MiB over clean blank
   expect(active.length).toBeGreaterThan(0);
   const peak = Math.max(...active.map(sample => sample.privateBytes!));
   const incrementalPrivateMiB = (peak - blankBaseline!.privateBytes) / 1048576;
-  report.primaryIncrementalPrivateMiB = incrementalPrivateMiB; report.memoryAcceptance = incrementalPrivateMiB <= 250;
+  report.primaryIncrementalPrivateMiB = incrementalPrivateMiB; report.memoryAcceptance = incrementalPrivateMiB <= 250 && !duringAllocatorTrace;
   report.memoryLimitation = "Small private backend qualification only; not large-file, final planner/UI or public profile acceptance.";
   if (diagnoseAllocations) {
     // The native baseline/peak are finalized before this perturbing light dump.
