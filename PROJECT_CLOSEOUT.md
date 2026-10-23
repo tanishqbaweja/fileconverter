@@ -59,6 +59,13 @@ acceptance contract. Private engines are not public supported profiles.
    an invented preservation claim. Final private selector/options, broader
    preservation and original/scale/browser gates remain open; do not replay the
    completed tiny planning check unchanged.
+   One private selector/plan/actual Convert-button flow now passes at ca797b2:
+   genuine12s HEVC-to-MPEG-2 with AAC copying,288 independently checked frames,
+   full-tree238.3359375MiB and verified cleanup. Private qualification profiles
+   have a separate collection in the same registry, are never automatic
+   fallbacks and remain hidden from normal public selection. Headless directory
+   adapter is not native OS-picker/manual coverage; options, broader private UI
+   failure/batch/preservation and original/scale/browser gates remain open.
 
 Exit evidence: B03/B04/B06 applicable original gates and public promotion
 checklist all satisfied. The 36 small VPX conversions and six MPEG-2 full-original

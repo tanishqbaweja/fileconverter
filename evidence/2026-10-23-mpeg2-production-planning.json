@@ -408,8 +408,11 @@
     "run": 39974129420,
     "job": 120484199963,
     "head": "a35654ef9109efe50c023ed63ac405b29c0c1317",
-    "lastObservedStatus": "in_progress",
-    "lastObservedStep": "Run npx playwright install --with-deps chromium",
+    "lastObservedStatus": "completed",
+    "conclusion": "success",
+    "units": { "passed": 1476, "failed": 0, "skipped": 1, "durationMs": 57983.826978 },
+    "privacyOfflineBrowser": { "passed": 19, "durationSeconds": 42.9 },
+    "nativeReproductionAndPrivateMatricesExecuted": false,
     "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39974129420",
     "acceptanceClaim": false
   },

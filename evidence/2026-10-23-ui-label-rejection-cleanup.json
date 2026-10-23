@@ -1,0 +1,22 @@
+{
+  "scope": "Resolved CSS capitalization assertion rejected before any conversion; not memory/conversion acceptance",
+  "conversions": 0,
+  "archive": {
+    "file": "outputs/reports/2026-10-23T15-18-01.112Z-mpeg2-production-runtime.json.gz",
+    "bytes": 27054,
+    "sha256": "67e5f385790dc2d471d0cd2eb75eb28536f0c118b7105c548beeebafc083d621",
+    "restoredBytes": 1288784,
+    "restoredSha256": "84ec7d3f3e111cb0506f294c6d6ce7e432c4d63a05872d09e946937b4db51ae8"
+  },
+  "traceRemoved": {
+    "file": "output/playwright/2026-10-23T15-18-01.112Z-mpeg2-runtime-failure.zip",
+    "bytes": 45910,
+    "sha256": "5b8debe342b431ca97423471365c09a1a6d07492d4f4129213f926b26ec6879a",
+    "recoverable": false,
+    "reason": "Resolved display-capitalization assertion; exact diagnostic report retained, obsolete trace not useful"
+  },
+  "rawReportExactlyRecoverable": true,
+  "originalUnchanged": true,
+  "ownedCleanupPassed": true,
+  "publicAcceptance": false
+}

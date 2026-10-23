@@ -1,5 +1,26 @@
 # Tested conversion ledger
 
+2026-10-23 actual private UI ca797b2 PASS: selected explicitly private MPEG-2,
+real pre-conversion MPEG-2/AAC-copy DOM plan, actual Convert button, native work,
+retired codec and staged directory save (isolated OPFS selected-handle adapter).
+Genuine12s HEVC1509169B->MPEG-2 MP41824414B/SHAa1d0bb32...,288frames/full native
+decode/SSIM.985745/max.313ms all clocks/audio packet hash/title/language PASS.
+Native48MiB/64KiB read/write/queue, one pending op; saver512KiB/one op, scratch0.
+Whole-tree238.3359375MiB/406samples/0missing,39source/browser pins and original
+full before/after SHA verified. Owned processes/scratch/assets independently
+absent; outputs/fixtures/profiles deleted. Raw1850585B->62125B gzip exact, screenshot
+reviewed (lower AAC row checked via DOM, not falsely claimed in viewport).
+One private flow only: no full UI matrix/native OS picker/headed/manual/batch/
+quota/permission/reload/scaling/public acceptance.107focused/TS/lint PASS.
+`evidence/2026-10-23-mpeg2-private-ui.json`. Resolved CSS-only rejected run stays
+0conversions:1288784B raw->27054B exact gzip; obsolete45910B trace removed, trace
+not recoverable, diagnostic report is. No disposable native/media copies kept.
+
+Hosted39977176216/098d1bd SUCCESS1478units/0fail/1skip48.91s+19privacy/offline
+38.2s; production app/lib/workers/public unchanged since that head, verified git
+diff. Later UI capitalization fix and evidence-only additions separately checked
+locally. Native/private/conversion matrices unselected, not implied passed.
+
 2026-10-23 first actual UI attempt098d1bd stopped before conversion at a case-
 sensitive test assertion: visible CSS renders COPY while semantic label is Copy.
 Correct MPEG-2/AAC plan was displayed; case-insensitive word/content check now

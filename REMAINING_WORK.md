@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-10-23 one actual private UI flow now VERIFIED atca797b2: private selector,
+rendered MPEG-2/AAC-copy plan and real Convert button use production staged
+directory path (headless isolated OPFS handle, NOT native OS picker).12s real
+HEVC1509169B->1824414B MPEG-2/288frames/full decode/SSIM.985745/max.313ms clocks/
+audio hash/title/language PASS. Full-tree238.3359375MiB/406samples/0missing,
+native48MiB/64KiB queue+saver512KiB/one op, original full SHA/39source/browser pins
+and owned processes/scratch/assets absence PASS. No disposable media retained;
+raw1.85MB->62KB exact gzip,107focused/TS/lint PASS. UI screenshot reviewed; lower
+AAC row verified through DOM rather than invented viewport/manual evidence.
+`evidence/2026-10-23-mpeg2-private-ui.json`. Prior CSS assertion failure correctly
+kept at0conversions and losslessly compacted27KB; obsolete46KB trace deleted.
+Hosted39977176216/098d1bd SUCCESS1478units+19privacy/offline; production paths
+unchanged since that head, later test/evidence changes local only. Private
+candidate stays pending/hidden normally, public count405 unchanged. Full private
+UI/options/preservation matrix, quota/permission/reload/batch, original/scale and
+broader browser gates remain OPEN; earlier365.15625MiB failure unchanged.
+
 2026-10-23 UI attempt098d1bd failed before conversion only at CSS uppercase COPY
 versus case-sensitive Copy assertion. Plan content correct; semantic check now
 ignores display capitalization.0outputs/no memory proof. Original full SHA and

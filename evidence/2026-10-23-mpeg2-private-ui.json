@@ -1,0 +1,292 @@
+{
+  "schemaVersion": 1,
+  "head": "ca797b2e16a25adb7b8834484b61bc614de342a0",
+  "scope": "Actual private selector, rendered stream plan and Convert-button staged-directory conversion; headless12s fixture, not manual/OS-picker/full UI matrix/stress/public acceptance",
+  "startedAt": "2026-10-23T15:20:06.309Z",
+  "finishedAt": "2026-10-23T15:21:10.902Z",
+  "archive": {
+    "file": "outputs/reports/2026-10-23T15-20-06.309Z-mpeg2-production-runtime.json.gz",
+    "bytes": 62125,
+    "sha256": "c61b69b7e634cfe1bfa8fb8f5973ab8badf0da8243caaeca809477d945ec053d",
+    "restoredBytes": 1850585,
+    "restoredSha256": "256a73e19fe1bcbe3efb47062c817a9a9bf983f0d1a3e81468f5c72cd981e9ab"
+  },
+  "sourcePins": 39,
+  "currentSourcePinsIndependentlyRechecked": true,
+  "native": [
+    {
+      "source": "work\\mpeg2-jspi-39072949964\\within-mpeg2-split.mjs",
+      "sha256": "d4ec481a93a1b087c96aa11948ab9a98ccf6d09237ed143c022bf76bf6c31506",
+      "bytes": 65707
+    },
+    {
+      "source": "work\\mpeg2-jspi-39072949964\\within-mpeg2-split.wasm",
+      "sha256": "4f3954a3cbbd5012c811fa380402981d29ac298d46422d1bc0fa40a6b9368d57",
+      "bytes": 5715985
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.mjs",
+      "sha256": "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e",
+      "bytes": 68202
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.wasm",
+      "sha256": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee",
+      "bytes": 675411
+    }
+  ],
+  "staticRequests": {
+    "manifests": 1,
+    "decoder": 1,
+    "encoder": 1
+  },
+  "codeManifest": {
+    "bytes": 318,
+    "sha256": "4e75fe139ee58451ce6960194e09a8842d4842b5fe4428ca3426913d2412a711",
+    "value": {
+      "schemaVersion": 1,
+      "engine": "within-mpeg2-split-jspi",
+      "decoderMemoryBytes": 33554432,
+      "encoderMemoryBytes": 16777216,
+      "artifacts": {
+        "decoder.wasm": "4f3954a3cbbd5012c811fa380402981d29ac298d46422d1bc0fa40a6b9368d57",
+        "encoder.wasm": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee"
+      },
+      "publicAcceptance": false
+    }
+  },
+  "results": [
+    {
+      "repetition": 1,
+      "elapsedMs": 1118.180146485567,
+      "phases": [
+        "Opening destination",
+        "Planning MPEG-2 streams",
+        "Destination opened",
+        "Compiled MPEG-2 code",
+        "Encoding MPEG-2 MP4",
+        "Copying staged MP4 to selected destination",
+        "Saved"
+      ],
+      "output": {
+        "bytes": 1824414,
+        "sha256": "a1d0bb32cce81569c33cbd6bb25577da62cdfdd572e11af659a67804ee3313db",
+        "codec": "mpeg2video",
+        "frames": 288,
+        "ssim": 0.985745,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=caf26726aa80c6ceeb541e7cc94fe98194764f5d93ab7fcd8327357475b2f888",
+        "titlePreserved": true,
+        "languagePreserved": true,
+        "videoClocks": {
+          "frames": 288,
+          "maximumVideoPtsErrorSeconds": 0.00031300000000022976
+        }
+      },
+      "nativeWasmBytes": 50331648,
+      "nativePeakQueuedBytes": 65536,
+      "saverPeakQueuedBytes": 524288,
+      "nativePendingOperations": 1,
+      "saverPendingOperations": 1
+    }
+  ],
+  "memory": {
+    "primaryLimitMiB": 250,
+    "blankPrivateBytes": 236367872,
+    "peakPrivateBytes": 486281216,
+    "incrementalPrivateMiB": 238.3359375,
+    "allNonblankPhasesIncluded": true,
+    "completeProcessTreeRecomputed": true,
+    "samples": 406,
+    "validSamples": 406,
+    "unavailableSamples": 0,
+    "unavailableSamplePhases": [],
+    "maximumValidSampleGapMs": 112,
+    "loadedPeakIncrementalPrivateMiB": 165.93359375
+  },
+  "uiQualification": {
+    "privateSelector": true,
+    "realPlanVisible": true,
+    "publicAcceptance": false,
+    "screenshots": [
+      "output\\playwright\\2026-10-23T15-20-06.309Z-catalogue\\mpeg2-private-plan.png"
+    ],
+    "finalUiMatrixCoverage": false,
+    "nativeOsPickerCovered": false,
+    "observedRunning": true,
+    "actualConvertButton": true,
+    "nativeWorkObserved": true,
+    "finalWorkerReady": true,
+    "destinationAdapter": "production directory output using isolated OPFS handle",
+    "sourceDimensionsAndTimingOptionsOnly": true
+  },
+  "uiScreenshots": [
+    {
+      "file": "output/playwright/2026-10-23T15-20-06.309Z-catalogue/mpeg2-private-plan.png",
+      "bytes": 199716,
+      "sha256": "e24ce1c765da925832b32d49eae9e7a3fc3964c86166d7ae603dd6da8fdc9f0b",
+      "scope": "headless viewport screenshot; lower plan rows may be outside viewport and are separately checked via DOM"
+    }
+  ],
+  "forbiddenRequests": 0,
+  "originalUnchanged": true,
+  "cleanup": {
+    "processObservations": [
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 36392,
+          "parentPid": 37140,
+          "createdAt": "2026-10-23T15:20:16.8746780Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T15:21:05.368Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 356,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 36672,
+          "parentPid": 37140,
+          "createdAt": "2026-10-23T15:20:18.3635080Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T15:21:05.754Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 386,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 37268,
+          "parentPid": 37140,
+          "createdAt": "2026-10-23T15:20:19.1807050Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T15:21:06.117Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 363,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    ],
+    "disposableOutputDeleted": true,
+    "generatedDirectoriesRemoved": [
+      "dist\\client\\engines\\mpeg2"
+    ],
+    "scratchRemoved": "work\\mpeg2-production-runtime-WDhLvM",
+    "allOwnedProcessesAbsent": true
+  },
+  "independentProcessChecks": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 36392,
+        "parentPid": 37140,
+        "createdAt": "2026-10-23T15:20:16.8746780Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-23T15:24:27.667Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 411,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 36672,
+        "parentPid": 37140,
+        "createdAt": "2026-10-23T15:20:18.3635080Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-23T15:24:28.064Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 397,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 37268,
+        "parentPid": 37140,
+        "createdAt": "2026-10-23T15:20:19.1807050Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-23T15:24:28.465Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 401,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "convertedOutputsFixturesProfilesAndPrivateAssetsIndependentlyAbsent": true,
+  "rawReportLosslesslyRecoverable": true,
+  "rawOriginalRemovedAfterExactReconstruction": true,
+  "globalSpeedClaim": false,
+  "causalSpeedComparison": false,
+  "largeFileAcceptance": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false,
+  "hostedPortableRegression": {
+    "run": 39977176216,
+    "head": "098d1bdf8f51f88c9879cd25ff3817427680cd30",
+    "status": "completed",
+    "conclusion": "success",
+    "units": { "passed": 1478, "failed": 0, "skipped": 1, "durationMs": 48911.614167 },
+    "privacyOfflineBrowser": { "passed": 19, "durationSeconds": 38.2 },
+    "productionAppLibWorkerAndPublicPathsUnchangedSinceThisHead": true,
+    "laterChanges": "UI assertion capitalization and evidence/test-only additions;107 focused local tests passed",
+    "nativeReproductionAndPrivateMatricesExecuted": false
+  },
+  "priorRejectedAttempt": "evidence/2026-10-23-ui-label-rejection-cleanup.json",
+  "next": "Reuse this one-case private UI selector/plan/button/staged-directory proof plus completed backend/recovery gates. Remaining broader UI/options/preservation, quota/permission/reload/batch, original/large-source and browser gates stay open. Prior volume memory failure is unchanged."
+}

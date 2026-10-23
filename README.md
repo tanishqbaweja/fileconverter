@@ -805,6 +805,22 @@ software video decoder: their certified copy/wrapping/extraction paths do not
 establish a re-encode fallback, and separate image codecs do not supply one.
 The source-bound inventory is
 [`evidence/media-output-encoder-inventory-2026-10-03.json`](evidence/media-output-encoder-inventory-2026-10-03.json).
+
+An unpublished MPEG-2 qualification profile now uses the actual selector, stream
+plan and Convert button in localhost test mode. It remains absent from normal
+public selection and automatic fallback. Its current settings are fixed at
+4 Mbps, source dimensions and constant source timing; compatible companion
+streams are checked for copying rather than silently discarded. It stages into
+quota-checked browser-private storage, retires the codec worker, then copies to
+the selected destination with one backpressured 512 KiB buffer. The headless
+directory adapter is not native OS-picker or manual coverage. The 12-second UI
+case independently validated 288 frames and measured 238.34 MiB incremental
+whole-Chromium private memory; this is not original-file/near-10 GB or public
+acceptance. See
+[`evidence/2026-10-23-mpeg2-private-ui.json`](evidence/2026-10-23-mpeg2-private-ui.json).
+Do not promote this profile until its remaining options, preservation, recovery,
+scaling and browser gates pass.
+
 These are explicit M-04 implementation/feasibility gaps, not new measured
 unsupported decisions. An isolated OpenH264 Wasm candidate now performs genuine
 H.264 encoding with validated timing, quality, audio and metadata on small
