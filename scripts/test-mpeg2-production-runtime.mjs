@@ -224,7 +224,7 @@ try {
   if (ui) {
     await page.getByTestId("format-select").selectOption("mkv-to-mp4-mpeg2");
     assert.match(await page.getByTestId("media-plan-stream-0").innerText(), /MPEG-2.*4 Mbps/);
-    assert.match(await page.getByTestId("media-plan-stream-1").innerText(), /Copy.*AAC/s);
+    assert.match(await page.getByTestId("media-plan-stream-1").innerText(), /Copy.*AAC/is);
     assert.match(await page.locator('[data-testid="format-select"] option:checked').innerText(), /private qualification/);
     report.uiQualification = { privateSelector: true, realPlanVisible: true, publicAcceptance: false,
       screenshots: [], finalUiMatrixCoverage: false, nativeOsPickerCovered: false };

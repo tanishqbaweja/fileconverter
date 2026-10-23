@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-10-23 UI attempt098d1bd failed before conversion only at CSS uppercase COPY
+versus case-sensitive Copy assertion. Plan content correct; semantic check now
+ignores display capitalization.0outputs/no memory proof. Original full SHA and
+all owned cleanup verified. Corrected one UI run next, no app/native/settings or
+threshold change; retain failed attempt instead of counting it as conversion.
+Earlier planning CI39974129420/a35654e now SUCCESS1476units/0fail/1skip and
+19privacy/offline PASS; later098d1bd hosted regression separately dispatched.
+
 2026-10-23 private UI implementation ready: explicitly unpublished pending MPEG-2
 profile in separate central-registry qualification collection; released profile
 and published-engine manifest contracts unchanged. Normal selector excludes it,

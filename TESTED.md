@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-23 first actual UI attempt098d1bd stopped before conversion at a case-
+sensitive test assertion: visible CSS renders COPY while semantic label is Copy.
+Correct MPEG-2/AAC plan was displayed; case-insensitive word/content check now
+retains the same semantic requirement.0conversions/no memory acceptance claim.
+All process/scratch/assets cleanup and protected original full hash PASS.
+`outputs/reports/2026-10-23T15-18-01.112Z-mpeg2-production-runtime.json`.
+Next one corrected UI execution; no native/app/quality/budget change.
+
+Earlier planning checkpoint hosted39974129420/a35654e SUCCESS1476unitsPASS/
+0fail/1skip57.98s,19privacy/offlinePASS42.9s. Long browser installation was not
+a hung conversion; terminal result independently checked. Later UI checkpoint
+098d1bd has its own dispatched hosted regression, not implied passed yet.
+
 2026-10-23 private MPEG-2 UI path implemented, actual UI run pending: central
 registry now separates unpublished qualification profiles from released-engine
 profiles; normal selector still hides candidate, localhost test selector labels
