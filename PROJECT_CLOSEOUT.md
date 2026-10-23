@@ -27,6 +27,11 @@ acceptance contract. Private engines are not public supported profiles.
    Reuse `native-memory-peaks.mjs` for bounded phase/graph summaries and preserve
    `durable-native-memory-journal.mjs`'s honest crash-checkpoint-only scope. Its
    coalesced snapshots are not an existing lossless raw-sample journal.
+   Implemented2026-10-23: scale harness now uses a single-append NDJSON stream,
+   existing full-stream peak tracker,3,000sample diagnostic tail and verified gzip
+   replay before raw removal.7,001synthetic records and29actual Windows Node-tree
+   samples pass; this is not browser stress/memory acceptance. Fresh production
+   browser execution of the changed harness and large-source qualification remain.
 3. Qualify progressively larger real sources, including >4GB and approaching
    10GB, through the same production coordinator/worker/disk-output path. Check
    disk/RAM first; preserve `test.mkv`. Delete each owned output/fixture after its

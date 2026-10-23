@@ -1,5 +1,18 @@
 # Remaining work audit
 
+Journal checkpoint final regression48PASS/0fail/0skip, TS/lint PASS; original
+full fresh SHA/2958573265B exact and owned synthetic/probe scratch absent. No
+large conversion rerun or browser-memory pass claimed. Full original54/B02-B09
+remain open; reuse these completed instrumentation gates without replaying them.
+
+2026-10-23 actual journal593227a Windows probe PASS29native Node-tree records,
+0unavailable/112ms maxgap, eight source pins/all4cleanup phases verified. Streamed
+raw+gzip replay exact29520B->1613B, raw/scratch independently absent. No browser,
+media or original read. Scale harness now journal-backed (bounded tail is not
+peak source), but fresh actual browser qualification still pending and prior
+365.15625MiB failure unchanged. `docs/native-memory-journals.md` explains scope.
+`evidence/2026-10-23-lossless-native-journal.json`.
+
 2026-10-23 lossless native journal companion implemented and wired to scale
 harness: every row to bounded disk writes, single pending batch, existing phase/
 graph tracker reused, streamed gzip and exact replay before raw removal.7001

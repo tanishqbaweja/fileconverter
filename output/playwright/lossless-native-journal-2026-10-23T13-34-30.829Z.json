@@ -1,0 +1,588 @@
+{
+  "status": "passed-native-journal-check",
+  "scope": "Actual Windows owned Node-tree observation only, not Chromium conversion/memory/scaling qualification",
+  "rootPid": 37296,
+  "sourcePins": {
+    "scripts/qualify-lossless-native-journal.mjs": "af6c3f1bc379a56e94b65c50db5812884504ec8468a811e05568d0501e2aac9e",
+    "scripts/lib/lossless-native-memory-journal.mjs": "b4df3a2813ef7af76e1034d101ed4968885051b4063e3f2a1f5742df0a301990",
+    "scripts/lib/native-memory-peaks.mjs": "8c5ba7e97adb2349b8e97568dd51f35680c58b78f0ecdcb8e2a59a3eec503596",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/phased-owned-cleanup.mjs": "3696e2b2a6c19078b9f9f9aa8202ed858a397420086c5624373c07af725bf47d"
+  },
+  "receipt": {
+    "file": "H:\\Github Repositories\\fileconverter\\output\\playwright\\lossless-native-journal-2026-10-23T13-34-30.829Z.ndjson.gz",
+    "rootPid": 37296,
+    "bytes": 29520,
+    "sha256": "bbbd138fa7377277e1a4ac4c0e08b07a95fc6257bc9620244ef27119db673c32",
+    "records": 29,
+    "identity": {
+      "dev": "1887170595",
+      "ino": "3096224747346082",
+      "birthtimeNs": "1792762474486646900",
+      "mtimeNs": "1792762474491285300"
+    },
+    "summary": {
+      "count": 29,
+      "maximumAcquisitionGapMs": 112,
+      "rootCreationFileTime": "134372360707794680",
+      "native": {
+        "intervalMs": 100,
+        "scope": "All owned Chromium descendants; unknown types counted; native observer is not a converter or speed proof",
+        "sequence": 29,
+        "lastAcquiredAt": 1792762474345,
+        "observerCpuFirstMs": 375,
+        "observerCpuLastMs": 578.125,
+        "observerCpuDeltaMs": 203.125,
+        "limits": {
+          "identities": 512,
+          "phases": 128,
+          "transitions": 256,
+          "graphBuckets": 4096,
+          "unavailableExamplesPerAggregate": 8
+        },
+        "graphBucketDurationMs": 1000,
+        "graphBucketsEvicted": 0,
+        "rowColumns": [
+          "sequence",
+          "timestamp",
+          "phase",
+          "privateBytes",
+          "rssBytes",
+          "nativeElapsedMs",
+          "sampleError",
+          "processRows"
+        ],
+        "processRowColumns": [
+          "identityIndex",
+          "privateBytes",
+          "rssBytes"
+        ],
+        "identities": [
+          {
+            "pid": 25952,
+            "parentPid": 37296,
+            "createdAt": "2026-10-23T13:34:30.8387555Z",
+            "creationFileTime": "134372360708387555",
+            "executableName": "powershell.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 35728,
+            "parentPid": 25952,
+            "createdAt": "2026-10-23T13:34:30.8502065Z",
+            "creationFileTime": "134372360708502065",
+            "executableName": "conhost.exe",
+            "type": "unknown",
+            "utilitySubtype": null,
+            "sandboxType": null
+          },
+          {
+            "pid": 37296,
+            "parentPid": 35748,
+            "createdAt": "2026-10-23T13:34:30.7794680Z",
+            "creationFileTime": "134372360707794680",
+            "executableName": "node.exe",
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null
+          }
+        ],
+        "transitions": [
+          {
+            "phase": "native-journal-probe",
+            "at": 1792762471307
+          }
+        ],
+        "phases": [
+          {
+            "phase": "native-journal-probe",
+            "firstSequence": 1,
+            "lastSequence": 29,
+            "validSamples": 29,
+            "unavailableSamples": 0,
+            "peak": [
+              29,
+              "2026-10-23T13:34:34.3450070Z",
+              "native-journal-probe",
+              134217728,
+              158425088,
+              11.539900000000001,
+              null,
+              [
+                [
+                  0,
+                  70897664,
+                  82681856
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61972480,
+                  67641344
+                ]
+              ]
+            ],
+            "rssPeak": [
+              29,
+              "2026-10-23T13:34:34.3450070Z",
+              "native-journal-probe",
+              134217728,
+              158425088,
+              11.539900000000001,
+              null,
+              [
+                [
+                  0,
+                  70897664,
+                  82681856
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61972480,
+                  67641344
+                ]
+              ]
+            ],
+            "last": [
+              29,
+              "2026-10-23T13:34:34.3450070Z",
+              "native-journal-probe",
+              134217728,
+              158425088,
+              11.539900000000001,
+              null,
+              [
+                [
+                  0,
+                  70897664,
+                  82681856
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61972480,
+                  67641344
+                ]
+              ]
+            ],
+            "unavailableExamples": []
+          }
+        ],
+        "graphBuckets": [
+          {
+            "phase": "native-journal-probe",
+            "firstSequence": 1,
+            "lastSequence": 7,
+            "validSamples": 7,
+            "unavailableSamples": 0,
+            "peak": [
+              6,
+              "2026-10-23T13:34:31.8423576Z",
+              "native-journal-probe",
+              132812800,
+              156790784,
+              9.4208,
+              null,
+              [
+                [
+                  0,
+                  69808128,
+                  81567744
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61657088,
+                  67121152
+                ]
+              ]
+            ],
+            "rssPeak": [
+              6,
+              "2026-10-23T13:34:31.8423576Z",
+              "native-journal-probe",
+              132812800,
+              156790784,
+              9.4208,
+              null,
+              [
+                [
+                  0,
+                  69808128,
+                  81567744
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61657088,
+                  67121152
+                ]
+              ]
+            ],
+            "last": [
+              7,
+              "2026-10-23T13:34:31.9512047Z",
+              "native-journal-probe",
+              132812800,
+              156790784,
+              8.832600000000001,
+              null,
+              [
+                [
+                  0,
+                  69808128,
+                  81567744
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61657088,
+                  67121152
+                ]
+              ]
+            ],
+            "unavailableExamples": [],
+            "second": 1792762471
+          },
+          {
+            "phase": "native-journal-probe",
+            "firstSequence": 8,
+            "lastSequence": 16,
+            "validSamples": 9,
+            "unavailableSamples": 0,
+            "peak": [
+              11,
+              "2026-10-23T13:34:32.3840417Z",
+              "native-journal-probe",
+              132853760,
+              156852224,
+              9.5915,
+              null,
+              [
+                [
+                  0,
+                  69808128,
+                  81567744
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61698048,
+                  67182592
+                ]
+              ]
+            ],
+            "rssPeak": [
+              14,
+              "2026-10-23T13:34:32.7115592Z",
+              "native-journal-probe",
+              132825088,
+              156864512,
+              10.0785,
+              null,
+              [
+                [
+                  0,
+                  69779456,
+                  81575936
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61698048,
+                  67186688
+                ]
+              ]
+            ],
+            "last": [
+              16,
+              "2026-10-23T13:34:32.9278382Z",
+              "native-journal-probe",
+              132825088,
+              156864512,
+              8.6819,
+              null,
+              [
+                [
+                  0,
+                  69779456,
+                  81575936
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61698048,
+                  67186688
+                ]
+              ]
+            ],
+            "unavailableExamples": [],
+            "second": 1792762472
+          },
+          {
+            "phase": "native-journal-probe",
+            "firstSequence": 17,
+            "lastSequence": 25,
+            "validSamples": 9,
+            "unavailableSamples": 0,
+            "peak": [
+              25,
+              "2026-10-23T13:34:33.9087920Z",
+              "native-journal-probe",
+              133492736,
+              157593600,
+              11.242700000000001,
+              null,
+              [
+                [
+                  0,
+                  70172672,
+                  81960960
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61972480,
+                  67530752
+                ]
+              ]
+            ],
+            "rssPeak": [
+              25,
+              "2026-10-23T13:34:33.9087920Z",
+              "native-journal-probe",
+              133492736,
+              157593600,
+              11.242700000000001,
+              null,
+              [
+                [
+                  0,
+                  70172672,
+                  81960960
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61972480,
+                  67530752
+                ]
+              ]
+            ],
+            "last": [
+              25,
+              "2026-10-23T13:34:33.9087920Z",
+              "native-journal-probe",
+              133492736,
+              157593600,
+              11.242700000000001,
+              null,
+              [
+                [
+                  0,
+                  70172672,
+                  81960960
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61972480,
+                  67530752
+                ]
+              ]
+            ],
+            "unavailableExamples": [],
+            "second": 1792762473
+          },
+          {
+            "phase": "native-journal-probe",
+            "firstSequence": 26,
+            "lastSequence": 29,
+            "validSamples": 4,
+            "unavailableSamples": 0,
+            "peak": [
+              29,
+              "2026-10-23T13:34:34.3450070Z",
+              "native-journal-probe",
+              134217728,
+              158425088,
+              11.539900000000001,
+              null,
+              [
+                [
+                  0,
+                  70897664,
+                  82681856
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61972480,
+                  67641344
+                ]
+              ]
+            ],
+            "rssPeak": [
+              29,
+              "2026-10-23T13:34:34.3450070Z",
+              "native-journal-probe",
+              134217728,
+              158425088,
+              11.539900000000001,
+              null,
+              [
+                [
+                  0,
+                  70897664,
+                  82681856
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61972480,
+                  67641344
+                ]
+              ]
+            ],
+            "last": [
+              29,
+              "2026-10-23T13:34:34.3450070Z",
+              "native-journal-probe",
+              134217728,
+              158425088,
+              11.539900000000001,
+              null,
+              [
+                [
+                  0,
+                  70897664,
+                  82681856
+                ],
+                [
+                  1,
+                  1347584,
+                  8101888
+                ],
+                [
+                  2,
+                  61972480,
+                  67641344
+                ]
+              ]
+            ],
+            "unavailableExamples": [],
+            "second": 1792762474
+          }
+        ]
+      }
+    },
+    "limits": {
+      "recordBytes": 262144,
+      "readChunkBytes": 65536,
+      "fileBytes": 8589934592,
+      "batchSamples": 256,
+      "pendingAppends": 1,
+      "encodedRecords": 1
+    },
+    "maximumRecordBytes": 1028,
+    "complete": true,
+    "conversionAcceptance": false,
+    "readbackVerified": true,
+    "archiveBytes": 1613,
+    "archiveSha256": "4a15291a5ea7431d6732d3bfb63a50d785ebd397ca4b6406ebb6a11d0294898f",
+    "rawFile": "H:\\Github Repositories\\fileconverter\\output\\playwright\\lossless-native-journal-2026-10-23T13-34-30.829Z.ndjson",
+    "rawIdentity": {
+      "dev": "1887170595",
+      "ino": "3377699724056732",
+      "birthtimeNs": "1792762471308630800",
+      "mtimeNs": "1792762474442043300"
+    },
+    "rawRemoved": true
+  },
+  "cleanupPhases": [
+    {
+      "name": "observers",
+      "status": "passed"
+    },
+    {
+      "name": "journal-retention",
+      "status": "passed"
+    },
+    {
+      "name": "source-verification",
+      "status": "passed"
+    },
+    {
+      "name": "disposable-files",
+      "status": "passed"
+    }
+  ],
+  "runtime": "H:\\Github Repositories\\fileconverter\\work\\journal-native-w48jOm",
+  "failure": null,
+  "publicAcceptance": false,
+  "conversionAcceptance": false,
+  "generatedMediaBytes": 0,
+  "originalReadOrModified": false
+}

@@ -9,7 +9,7 @@ const row = sequence => ({ sequence, timestamp: new Date(1700000000000 + sequenc
   nativeElapsedMs: 1, sampleError: null, phase: "conversion-synthetic", privateBytes: sequence === 2 ? 900 : 100, rssBytes: 1000,
   processes: [{ pid: 1, parentPid: 10, createdAt: "2023-01-01T00:00:00Z", creationFileTime: "133444444444444444", executableName: "synthetic.exe", privateBytes: sequence === 2 ? 900 : 100, rssBytes: 1000 }] });
 const batch = rows => ({ overflow: false, observerCpuMs: 10, samples: rows });
-test("7001 real journal records preserve every sample and early peak beyond the old6000 cap with bounded streamed gzip/readback", async () => {
+test("7001 real journal records preserve every sample and early peak beyond the old6000 cap with bounded streamed gzip/readback", { timeout: 30000 }, async () => {
   const runtime = await createOwnedRuntimeScratch("journal-unit-"); let journal;
   try {
     journal = await createLosslessNativeMemoryJournal(1, path.join(runtime.directory, "samples.ndjson"));

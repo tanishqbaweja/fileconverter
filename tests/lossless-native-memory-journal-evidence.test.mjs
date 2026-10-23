@@ -1,0 +1,24 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import test from "node:test";
+import { replayLosslessNativeMemoryJournal } from "../scripts/lib/lossless-native-memory-journal.mjs";
+const read = file => readFile(new URL("../" + file, import.meta.url));
+const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+test("actual Windows journal archive replays every native row on portable runners without claiming browser conversion", async () => {
+  const evidence = JSON.parse(await read("evidence/2026-10-23-lossless-native-journal.json"));
+  const reportBytes = await read(evidence.report.path); assert.equal(reportBytes.length, evidence.report.bytes); assert.equal(sha(reportBytes), evidence.report.sha256);
+  const report = JSON.parse(reportBytes), zip = await read(evidence.archive.path);
+  assert.equal(zip.length, evidence.archive.bytes); assert.equal(sha(zip), evidence.archive.sha256);
+  const receipt = { ...report.receipt, file: fileURLToPath(new URL("../" + evidence.archive.path, import.meta.url)) };
+  const replay = await replayLosslessNativeMemoryJournal(receipt);
+  assert.equal(replay.verified, true); assert.equal(replay.records, 29); assert.equal(receipt.sha256, evidence.archive.restoredSha256);
+  assert.equal(receipt.bytes, evidence.archive.restoredBytes); assert.equal(replay.summary.native.phases[0].validSamples, 29);
+  assert.equal(replay.summary.native.phases[0].unavailableSamples, 0); assert.equal(replay.summary.rootCreationFileTime, evidence.actualProbe.rootCreationFileTime);
+  assert.equal(replay.summary.maximumAcquisitionGapMs, 112); assert.ok(report.cleanupPhases.every(row => row.status === "passed"));
+  assert.equal(Object.keys(report.sourcePins).length, 8); assert.equal(receipt.rawRemoved, true); assert.equal(receipt.readbackVerified, true);
+  assert.equal(report.generatedMediaBytes, 0); assert.equal(report.originalReadOrModified, false);
+  assert.equal(report.conversionAcceptance, false); assert.equal(evidence.publicAcceptance, false); assert.equal(evidence.near10GiBAcceptance, false);
+  assert.equal(evidence.fullGoalComplete, false);
+});

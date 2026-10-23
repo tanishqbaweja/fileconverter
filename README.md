@@ -290,6 +290,10 @@ end-to-end A/B are recorded in
 
 ## Bounded-memory architecture
 
+Long-run test measurement uses a bounded, lossless disk journal; the diagnostic
+RAM tail is not the peak source. See [native memory journals](docs/native-memory-journals.md)
+for limits, streamed replay, cleanup and the distinction from conversion acceptance.
+
 ```text
 Browser File
   -> bounded worker slice/BYOB reader (<= 256 KiB)

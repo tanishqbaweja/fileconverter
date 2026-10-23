@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-23 journal checkpoint48focused PASS/0fail/0skip, TS/lint PASS; exact fresh
+original SHA/size and owned synthetic/probe cleanup verified. No changed-harness
+browser or large-file acceptance claim. `evidence/2026-10-23-lossless-native-journal.json`.
+
+2026-10-23 actual Windows lossless-journal probe593227a PASS29native Node-tree
+records/0unavailable/maxgap112ms/eight source pins/all4cleanup phases. Exact
+streamed raw/gzip replay29520B->1613B; raw and runtime independently absent.
+No browser/media/original read; not browser memory or near10GB acceptance. Scale
+harness integrated; full changed-browser gate remains pending,365.15625MiB OPEN.
+`evidence/2026-10-23-lossless-native-journal.json`.
+
 2026-10-23 lossless native journal/scale integration16focused PASS, TS/lint PASS.
 7001synthetic records (not media/stress conversion) retain early true peak and
 null sample, exact streamed raw/gzip replay, corrupt/gap/overflow/root-reuse/disk
@@ -7240,6 +7251,16 @@ Hero correction final checkpoint: combined CURRENT836/836unit PASS5723.9312ms in
 - **2026-09-28 JPEG XL inspection worker lifecycle extension:** The static worker audit now inventories 32 production TypeScript worker modules and all three message loops. The JPEG XL inspection loop has no mutable module-scoped job state, caps error responses at 2,048 characters, closes itself after its one terminal response, and is also terminated by the caller on success, error, cancellation, or the 30-second deadline. The audit passes within the 248/248 unit suite.
 - **2026-09-27 bounded archive/package source inspection:** ZIP, DOCX, XLSX, PPTX, ODT, ODS, ODP, and EPUB read only the 65,557-byte ZIP tail plus at most a 1 MiB central-directory prefix. TAR performs at most 256 isolated 512-byte header reads while skipping payloads; GZIP/BZIP2/XZ wrappers read at most 64 KiB plus an eight-byte GZIP trailer; 7Z reads its 32-byte start header plus one next-header marker. The panel reports bounded entry/size/compression/encryption/path-safety and package facts without decompressing payloads or displaying names. Eight ZIP-based families, TAR/TAR.GZ/TAR.BZ2/TAR.XZ/7Z, raw GZIP/BZIP2/XZ, unsafe ZIP/TAR, an in-memory 20,000-entry oversized ZIP directory, and a 1,024-entry TAR passed the focused production-Chromium gate 1/1. The ZIP stress stopped at exactly 1,114,133 bytes; TAR stopped at exactly 131,072 header bytes and both qualified incomplete counts. Exact scope and cleanup are in `evidence/package-source-inspection-2026-09-27.json`.
 <!-- BEGIN MANUAL TEST LOG -->
+2026-10-23 final journal checkpoint48focused/0fail/0skip, TS/lint PASS. Fresh
+original SHA/size exact; synthetic/probe scratch absent. No browser/large-profile
+acceptance. evidence/2026-10-23-lossless-native-journal.json.
+
+2026-10-23 actual Windows journal probe29Node-tree native records/0unavailable/
+112ms maxgap/eight source pins/allcleanupPASS. Streamed replay29520B->1613B;
+raw/runtime absent. No media/browser/original read; no memory/scaling acceptance.
+Changed scale harness integrated;365.15625MiB failure OPEN.
+evidence/2026-10-23-lossless-native-journal.json.
+
 2026-10-23 journal16focused/TS/lint PASS.7001synthetic records—not video stress—
 prove lossless early peak/null retention, bounded gzip/replay and failures. Wired
 scale primary peak to full journal, not3000sample diagnostic tail. Initial unsafe
