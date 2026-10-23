@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-10-23 lossless native journal companion implemented and wired to scale
+harness: every row to bounded disk writes, single pending batch, existing phase/
+graph tracker reused, streamed gzip and exact replay before raw removal.7001
+synthetic records preserve early peak/null sample beyond6000; incomplete data
+retained byte-exactly but never accepted.3000sample RAM tail is diagnostic only;
+primary scale peak comes from full stream, final conversion-end coverage checked.
+16focused/TS/lint PASS; actual Windows observer probe next, no media conversion.
+Rejected FileHandle/non-auto-closing WriteStream compaction deadlocked; only
+birth-verified owned test worker stopped,3.37MB synthetic data verified/removed.
+Explicit bounded file writes replace it. Prior365.15625MiB failure unchanged.
+
 2026-10-22 timed child captured on blank installed Chrome155: exact native birth
 identifies on_device_model.mojom.OnDeviceModelService,259301376B/247.289MiB,
 10samples, birth age180.237s.1709samples/0missing,10source/browser pins/all4cleanup

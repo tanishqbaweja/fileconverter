@@ -30,6 +30,7 @@ import { vpxScalePlan, assertVpxMemoryGateCoverage } from "../../scripts/lib/vpx
 import { validateLargeCopiedAac } from "../../scripts/lib/large-aac-copy-fidelity.mjs";
 import { boundedNativeLines } from "../../scripts/lib/bounded-native-lines.mjs";
 import { compareStreamingVideoClocks } from "../../scripts/lib/streaming-video-clock-fidelity.mjs";
+import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "../../scripts/lib/lossless-native-memory-journal.mjs";
 
 const root = path.resolve(import.meta.dirname, "../.."), exec = promisify(execFile);
 const sha = (bytes: Uint8Array) => createHash("sha256").update(bytes).digest("hex");
@@ -58,6 +59,10 @@ let browserPin: Awaited<ReturnType<typeof inspectInstalledChromePin>> | undefine
 const sourcePins: Record<string, string> = {};
 let validationTarget: Awaited<ReturnType<typeof open>> | undefined;
 let monitor: Awaited<ReturnType<typeof startChromiumMemoryMonitor>> | undefined;
+type NativeJournal = Awaited<ReturnType<typeof createLosslessNativeMemoryJournal>>;
+let nativeJournal: NativeJournal | undefined;
+let nativeJournalReceipt: Awaited<ReturnType<NativeJournal["close"]>> | undefined;
+let totalNativeSamples = 0;
 let monitorTimer: ReturnType<typeof setInterval> | undefined, monitorBusy = false;
 let pendingSample = Promise.resolve(), monitorFailure: unknown, blankBaseline: { privateBytes: number } | undefined;
 const diagnoseAllocations = process.env.WITHIN_VPX_ALLOCATION_DIAGNOSTIC === "1";
@@ -125,10 +130,14 @@ async function drainMemory() {
   observerTransport.lastObserverCpuMs = batch.observerCpuMs;
   observerTransport.lastReceivedSequence = batch.samples.at(-1)?.sequence ?? observerTransport.lastReceivedSequence;
   observerTransport.lastSampleAt = batch.samples.at(-1)?.timestamp ?? observerTransport.lastSampleAt;
-  expect(samples.length + batch.samples.length).toBeLessThanOrEqual(6000);
-  for (const sample of batch.samples) samples.push({ ...sample,
+  const labelled: typeof samples = [];
+  for (const sample of batch.samples) labelled.push({ ...sample,
     phase: phases.findLast(value => value.at <= Date.parse(sample.timestamp))?.phase ?? "unavailable",
     elapsedMs: Date.parse(sample.timestamp) - phases[0].at });
+  if (nativeJournal) await nativeJournal.appendBatch({ ...batch, samples: labelled });
+  else expect(samples.length + labelled.length).toBeLessThanOrEqual(6000);
+  totalNativeSamples += labelled.length; samples.push(...labelled);
+  if (nativeJournal && samples.length > 3000) samples.splice(0, samples.length - 3000); // Complete immutable rows remain in the journal.
 }
 async function settleRepeatPrivate(label: string) {
   phase(label);
@@ -181,7 +190,7 @@ test.beforeAll(async () => {
     "scripts/lib/large-aac-copy-fidelity.mjs", "scripts/lib/large-mp4-first-sample-duration.mjs",
     "scripts/lib/streaming-pcm-trim-digest.mjs", "scripts/lib/bounded-native-lines.mjs",
     "scripts/lib/phased-owned-cleanup.mjs", "scripts/lib/bounded-cleanup-error.mjs", "scripts/lib/windows-tree-monitor.cs",
-    "scripts/lib/streaming-video-clock-fidelity.mjs"])
+    "scripts/lib/streaming-video-clock-fidelity.mjs", "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/native-memory-peaks.mjs"])
     sourcePins[file] = sha(await readFile(path.join(root, file)));
   report.executedSourcePins = sourcePins;
   if (process.platform === "win32") { browserPin = await inspectInstalledChromePin(); report.browserPin = browserPin; }
@@ -262,6 +271,10 @@ test.beforeAll(async () => {
     const info = await session.send("SystemInfo.getProcessInfo"); await session.detach();
     browserRootPid = info.processInfo.find(entry => entry.type === "browser")?.id;
     expect(browserRootPid).toBeTruthy(); monitor = await startChromiumMemoryMonitor(browserRootPid!, runtime.directory, 100);
+    if (scalePlan) {
+      await mkdir(path.dirname(reportFile), { recursive: true });
+      nativeJournal = await createLosslessNativeMemoryJournal(browserRootPid!, reportFile.replace(/\.json$/, "-native-memory.ndjson"));
+    }
     const observations: typeof samples = [], stable: Array<{ privateBytes: number }> = [];
     for (let attempt = 0; attempt < 20; attempt++) {
       await pause(2100); await drainMemory(); observations.push(samples.at(-1)!);
@@ -567,7 +580,15 @@ test("complete same-instance Chromium tree remains within250MiB over clean blank
   }
   const active = samples.filter(sample => sample.phase !== "blank" && sample.privateBytes !== null);
   expect(active.length).toBeGreaterThan(0);
-  const peak = Math.max(...active.map(sample => sample.privateBytes!));
+  const journalPeaks = nativeJournal?.peaksExcept(["blank"]);
+  const peak = journalPeaks ? journalPeaks.peak!.privateBytes : Math.max(...active.map(sample => sample.privateBytes!));
+  if (nativeJournal) {
+    expect(journalPeaks!.peak, "Full lossless journal, not bounded tail, must supply the actual simultaneous peak").toBeTruthy();
+    await monitor!.close(); monitor = undefined;
+    nativeJournalReceipt = await nativeJournal.close();
+    const lastConversionEnd = Math.max(...rows.map(row => (row.conversionWindow as { endedAt?: number } | undefined)?.endedAt ?? -Infinity));
+    expect(nativeJournalReceipt.summary.native.lastAcquiredAt, "Journal must cover through the actual final conversion, not only a prefix").toBeGreaterThanOrEqual(lastConversionEnd);
+  }
   const incrementalPrivateMiB = (peak - blankBaseline!.privateBytes) / 1048576;
   report.primaryIncrementalPrivateMiB = incrementalPrivateMiB; report.memoryAcceptance = incrementalPrivateMiB <= 250 && !duringAllocatorTrace;
   report.memoryLimitation = scalePlan
@@ -577,7 +598,7 @@ test("complete same-instance Chromium tree remains within250MiB over clean blank
     // The native baseline/peak are finalized before this perturbing light dump.
     // Every process still counts; allocator counters are never subtracted.
     await realmObserver?.stop(); report.periodicRealmObservations = realmObserver?.report();
-    await monitor!.close(); monitor = undefined;
+    if (monitor) { await monitor.close(); monitor = undefined; }
     annotateNativeProcessTypes(samples, attribution.references, browserRootPid);
     report.attribution = attribution;
     try {
@@ -620,9 +641,9 @@ test.afterAll(async () => {
     }
     for (const [file, hash] of Object.entries(sourcePins)) expect(sha(await readFile(path.join(root, file))), "Executed source changed: " + file).toBe(hash);
     if (browserPin) assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
-    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 42;
+    report.executedSourcesVerified = browserLaunched && Object.keys(sourcePins).length === 44;
     report.installedChromeBinaryPinsVerified = browserPin ? true : null;
-    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 42 && Boolean(browserPin);
+    report.executedSourcesAndBrowserPinsVerified = browserLaunched && Object.keys(sourcePins).length === 44 && Boolean(browserPin);
   };
   const cleanup: Array<() => Promise<unknown>> = [];
   if (assetIdentity) cleanup.push(async () => {
@@ -657,6 +678,15 @@ test.afterAll(async () => {
       async () => { if (context) { await context.close(); context = undefined; } },
       async () => { if (server) { report.serverCleanup = await server.close(); server = undefined; } },
       ] },
+      { name: "native-journal-retention", actions: [async () => {
+        if (!nativeJournal) return;
+        try { nativeJournalReceipt ??= await nativeJournal.close(); }
+        catch (error) {
+          report.nativeMemoryJournal = await compactLosslessNativeMemoryJournal(await nativeJournal.failedReceipt());
+          throw error;
+        }
+        report.nativeMemoryJournal = await compactLosslessNativeMemoryJournal(nativeJournalReceipt);
+      }] },
       { name: "executed-source-verification", actions: [verifyExecutedSources] },
       { name: "disposable-files", actions: cleanup },
     ], cleanupPhases);
@@ -665,6 +695,9 @@ test.afterAll(async () => {
     report.cleanupPhases = cleanupPhases;
     report.disposableDataRemoved = cleanupPhases.some(phase => phase.name === "disposable-files" && phase.status === "passed");
     report.observerTransport = observerTransport;
+    report.nativeSampleRetention = { totalObserved: totalNativeSamples, retainedTailSamples: samples.length,
+      tailOnly: totalNativeSamples > samples.length, losslessJournalEnabled: Boolean(nativeJournal), tailLimit: nativeJournal ? 3000 : 6000,
+      tailIsNeverTheLongRunPeakSource: Boolean(nativeJournal) };
     report.validationTransport = validationTransport;
     report.staticCompilation = staticCompilation;
     report.staticCodeRequests = staticCodeRequests;

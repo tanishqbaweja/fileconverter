@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-10-23 lossless native journal/scale integration16focused PASS, TS/lint PASS.
+7001synthetic records (not media/stress conversion) retain early true peak and
+null sample, exact streamed raw/gzip replay, corrupt/gap/overflow/root-reuse/disk
+failures refused, raw removed only after verified archive. Existing bounded
+native peak tracker reused; old checkpoint stays explicitly non-lossless.
+Rejected stream/handle shutdown hang recorded; owned test worker/synthetic3.37MB
+cleaned safely, replaced by bounded explicit writes. Actual Windows probe next.
+
 2026-10-22 precise blank startup diagnostic b93b1aa identifies Chrome155 utility
 on_device_model.mojom.OnDeviceModelService by PID/parent/exact100ns birth:
 259301376B/247.289MiB,10samples, born180.237s.1709native samples/0missing,30bounded
@@ -7232,6 +7240,12 @@ Hero correction final checkpoint: combined CURRENT836/836unit PASS5723.9312ms in
 - **2026-09-28 JPEG XL inspection worker lifecycle extension:** The static worker audit now inventories 32 production TypeScript worker modules and all three message loops. The JPEG XL inspection loop has no mutable module-scoped job state, caps error responses at 2,048 characters, closes itself after its one terminal response, and is also terminated by the caller on success, error, cancellation, or the 30-second deadline. The audit passes within the 248/248 unit suite.
 - **2026-09-27 bounded archive/package source inspection:** ZIP, DOCX, XLSX, PPTX, ODT, ODS, ODP, and EPUB read only the 65,557-byte ZIP tail plus at most a 1 MiB central-directory prefix. TAR performs at most 256 isolated 512-byte header reads while skipping payloads; GZIP/BZIP2/XZ wrappers read at most 64 KiB plus an eight-byte GZIP trailer; 7Z reads its 32-byte start header plus one next-header marker. The panel reports bounded entry/size/compression/encryption/path-safety and package facts without decompressing payloads or displaying names. Eight ZIP-based families, TAR/TAR.GZ/TAR.BZ2/TAR.XZ/7Z, raw GZIP/BZIP2/XZ, unsafe ZIP/TAR, an in-memory 20,000-entry oversized ZIP directory, and a 1,024-entry TAR passed the focused production-Chromium gate 1/1. The ZIP stress stopped at exactly 1,114,133 bytes; TAR stopped at exactly 131,072 header bytes and both qualified incomplete counts. Exact scope and cleanup are in `evidence/package-source-inspection-2026-09-27.json`.
 <!-- BEGIN MANUAL TEST LOG -->
+2026-10-23 journal16focused/TS/lint PASS.7001synthetic records—not video stress—
+prove lossless early peak/null retention, bounded gzip/replay and failures. Wired
+scale primary peak to full journal, not3000sample diagnostic tail. Initial unsafe
+FileHandle/WriteStream close hang rejected; owned worker and3.37MB synthetic data
+cleaned. Actual Windows observer probe pending;365.15625MiB browser failure OPEN.
+
 2026-10-22 blank155startup utility identified by exact native birth:
 on_device_model.mojom.OnDeviceModelService247.289MiB/10samples/180.237s age.
 1709samples/0missing,30queries/10pins/allcleanup and owned absencePASS. No app/
