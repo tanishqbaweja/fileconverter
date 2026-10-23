@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-23 first --controls16fa570 browser gate failed before save: native
+encoding reached handoff but new scalar-audit object was outside strict metric
+schema.0accepted outputs/no memory/control acceptance. Original full SHA and all
+owned cleanup PASS. Fixed handoff validates/deep-copies exactly7native scalars
+only for MPEG-2; no extra media/memory/symbol/cross-profile payload permitted,
+32key limit unchanged.85focused/TS/lint PASS; one changed browser retry next.
+Same native bytes/defaults/control requests/quality/250MiB. Prior portable
+39981244558/16fa570 green is recorded separately, not browser acceptance.
+
 2026-10-23 real native inspection found controls are supported by existing
 encoder and decoder, but production JS restricted them. Backend now passes
 allowlisted resize/bitrate/FPS/quality, audits actual AVCodecContext values against

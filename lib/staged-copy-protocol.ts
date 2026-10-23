@@ -44,6 +44,20 @@ export interface StagedJobIdentity {
 
 function invalid(): never { throw new TypeError("Invalid completed-stage handoff"); }
 const count = (value: unknown): value is number => Number.isSafeInteger(value) && (value as number) >= 0;
+function encoderSettings(value: unknown): NonNullable<ConversionMetrics["mpeg2EncoderSettings"]> {
+  if (!value || typeof value !== "object" || Reflect.ownKeys(value).map(String).sort().join(",") !==
+      "bitRateBps,frameRateDenominator,frameRateNumerator,height,qmax,qmin,width") invalid();
+  const source = value as NonNullable<ConversionMetrics["mpeg2EncoderSettings"]>;
+  const result = { width: source.width, height: source.height, frameRateNumerator: source.frameRateNumerator,
+    frameRateDenominator: source.frameRateDenominator, bitRateBps: source.bitRateBps, qmin: source.qmin, qmax: source.qmax };
+  if (!Object.values(result).every(count) || result.width < 2 || result.width > 4096 || result.width % 2 ||
+      result.height < 2 || result.height > 2160 || result.height % 2 ||
+      result.frameRateNumerator < 1 || result.frameRateNumerator > 0x7fffffff ||
+      result.frameRateDenominator < 1 || result.frameRateDenominator > 0x7fffffff ||
+      ![300000, 600000, 1000000, 2000000, 4000000].includes(result.bitRateBps) ||
+      ![[8, 31], [4, 20], [2, 12]].some(([min, max]) => result.qmin === min && result.qmax === max)) invalid();
+  return result;
+}
 const numericFields = new Set([
   "inputBytes", "outputBytes", "queuedBytes", "peakQueuedBytes", "pendingOperations", "peakPendingOperations",
   "maxReadChunkBytes", "maxWriteChunkBytes", "wasmMemoryBytes", "peakWasmMemoryBytes", "codecWorkingBytes", "peakCodecWorkingBytes",
@@ -60,11 +74,18 @@ export function validateStagedCopyHandoff(value: unknown, job: StagedJobIdentity
     !Number.isFinite(handoff.jobStartedEpochMs) || handoff.jobStartedEpochMs <= 0 || handoff.jobStartedEpochMs > nowEpochMs + 1000)
     invalid();
   const original = handoff.metrics;
-  if (!original || typeof original !== "object" || Object.keys(original).length > 32) invalid();
+  if (!original || typeof original !== "object" || Reflect.ownKeys(original).length > 32 ||
+      Reflect.ownKeys(original).some(key => typeof key !== "string")) invalid();
+  let settings: ConversionMetrics["mpeg2EncoderSettings"];
   for (const [key, field] of Object.entries(original)) {
     if (key === "elapsedMs") { if (!Number.isFinite(field) || field < 0) invalid(); }
+    else if (key === "mpeg2EncoderSettings") {
+      if (job.profileId !== MPEG2_JOB_PROFILE) invalid();
+      settings = encoderSettings(field);
+    }
     else if (key === "wasmMemories") {
-      if (!field || typeof field !== "object" || Array.isArray(field) || Object.keys(field).length > 16) invalid();
+      if (!field || typeof field !== "object" || Array.isArray(field) || Reflect.ownKeys(field).length > 16 ||
+          Reflect.ownKeys(field).some(key => typeof key !== "string")) invalid();
       for (const [name, bytes] of Object.entries(field)) if (name.length > 64 || !count(bytes)) invalid();
     } else if (!numericFields.has(key) || !count(field)) invalid();
   }
@@ -80,7 +101,7 @@ export function validateStagedCopyHandoff(value: unknown, job: StagedJobIdentity
     // Never trust a destination supplied by the retiring worker: retain the
     // original user-selected handle from the host's start request instead.
     handle: job.destination.handle, jobStartedEpochMs: handoff.jobStartedEpochMs,
-    metrics: { ...original, wasmMemories: { ...original.wasmMemories } }, cancellationBuffer: job.cancellationBuffer,
+    metrics: { ...original, wasmMemories: { ...original.wasmMemories }, ...(settings ? { mpeg2EncoderSettings: settings } : {}) }, cancellationBuffer: job.cancellationBuffer,
     testFault: job.testFault === "worker-crash" ? undefined : job.testFault,
   };
 }

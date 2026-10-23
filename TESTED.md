@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-10-23 first --controls16fa570 actual run FAILED at completed-stage handoff:
+new bounded encoder-settings object was correctly rejected by the old numeric-
+only schema. Default native encoding reached handoff;0accepted/validated outputs,
+no control/memory acceptance. All owned cleanup and original full SHA PASS.
+`outputs/reports/2026-10-23T15-46-35.345Z-mpeg2-production-runtime.json`.
+Handoff now admits exactly seven sanitized positive/bounded native scalars only
+for MPEG-2, with geometry/bitrate/quantizer/rational checks. Unknown/nested media,
+Wasm memories, symbol payloads and cross-profile settings remain rejected;32key
+limit unchanged, settings deep-copied.85focused/TS/lint PASS. Retry this changed
+handoff gate once; unchanged native pair/controls/quality/250MiB remain required.
+Portable39981244558/16fa570 SUCCESS does not negate this real browser failure.
+
 2026-10-23 production control tuple/settings audit implemented, browser pending:
 existing exact native pair already accepts bounded bitrate/width/FPS/quantizer
 fields and compares actual AVCodecContext to config. No native rebuild. Shared

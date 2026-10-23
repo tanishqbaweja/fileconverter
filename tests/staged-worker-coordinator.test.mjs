@@ -78,6 +78,30 @@ test("only closed stage transfers, original codec worker is retired first, no so
   assert.equal(f.events.at(-1).type, "complete"); f.owner.terminate(); assert.equal(f.savers[0].terminated, true);
 });
 
+test("MPEG-2 encoder audit handoff contains only sanitized bounded native scalars, never hidden media or cross-profile claims", () => {
+  const request = start("audit", "mkv-to-mp4-mpeg2"), row = handoff(request), now = performance.timeOrigin + performance.now();
+  const settings = { width: 320, height: 180, frameRateNumerator: 15, frameRateDenominator: 1, bitRateBps: 1000000, qmin: 2, qmax: 12 };
+  row.metrics.mpeg2EncoderSettings = settings;
+  const job = { ...request, sourceBytes: 100 };
+  const valid = validateStagedCopyHandoff(row, job, now);
+  assert.deepEqual(valid.metrics.mpeg2EncoderSettings, settings); assert.notEqual(valid.metrics.mpeg2EncoderSettings, settings);
+  for (const change of [v => { v.output = new File(["hidden"], "payload"); }, v => { v.width = 321; }, v => { v.height = 2162; },
+    v => { v.frameRateDenominator = 0; }, v => { v.frameRateNumerator = 2147483648; }, v => { v.bitRateBps = 123456; },
+    v => { v.qmin = 3; }, v => { v.qmax = new WebAssembly.Memory({ initial: 1 }); }, v => { v[Symbol("hidden")] = new Uint8Array(8); }]) {
+    const value = { ...settings }; change(value);
+    assert.throws(() => validateStagedCopyHandoff({ ...row, metrics: { ...row.metrics, mpeg2EncoderSettings: value } }, job, now), /Invalid completed-stage/);
+  }
+  for (const profile of ["mkv-to-mp4", "mkv-vp8-to-mp4-mpeg4"]) {
+    const other = start("audit", profile), foreign = handoff(other); foreign.metrics.mpeg2EncoderSettings = settings;
+    assert.throws(() => validateStagedCopyHandoff(foreign, { ...other, sourceBytes: 100 }, now), /Invalid completed-stage/);
+  }
+  for (const hidden of ["metrics", "wasmMemories"]) {
+    const value = handoff(request); value.metrics.mpeg2EncoderSettings = settings;
+    (hidden === "metrics" ? value.metrics : value.metrics.wasmMemories)[Symbol("payload")] = new File(["x"], "must-not-transfer");
+    assert.throws(() => validateStagedCopyHandoff(value, job, now), /Invalid completed-stage/);
+  }
+});
+
 test("one private static module survives codec retirement, never reaches saver/UI and is cleared on disposal", () => {
   const f = fixture(), first = start("vpx1", "mkv-vp8-to-mp4-mpeg4"), core = staticCode();
   f.encoders[0].emit({ type: "ready" }); f.owner.postMessage(first);
