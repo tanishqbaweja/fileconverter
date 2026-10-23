@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "run": 39738858806,
+  "job": 119690953647,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39738858806",
+  "head": "ee5ab3c22761d982595d4c8620f3ac0962b758ba",
+  "conclusion": "success",
+  "completedAt": "2026-10-22T07:16:38Z",
+  "scope": "Portable changed volume-validator/cleanup code and retained failure evidence; not large-file memory acceptance or later startup-child diagnostic",
+  "units": { "tests": 1455, "passed": 1454, "failed": 0, "skipped": 1, "milliseconds": 48124.448747 },
+  "inventory": { "allFiles": 637, "portableFiles": 475, "qualificationFiles": 162, "priorHostedFilesKeptPortable": 235 },
+  "privacyOfflineStaticHostBrowserTests": { "passed": 19, "failed": 0, "seconds": 39.2 },
+  "productionBuild": "passed",
+  "lint": "passed",
+  "typescript": "passed",
+  "publicEvidenceAudit": "passed",
+  "qualificationUnitsExecuted": false,
+  "nativeReproductionMatricesExecuted": false,
+  "conversionMatrixExecuted": false,
+  "primaryMemoryFailureStillOpenMiB": 365.15625,
+  "fullGoalComplete": false
+}

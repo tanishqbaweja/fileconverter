@@ -77,7 +77,7 @@
     "freshProtectedOriginalSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
   },
   "performanceCaveat": "Validation scheduling improvement is not conversion speedup. VP8 fixtures differ between runs, so their elapsed times are not a matched optimization benchmark.",
-  "regression": { "focusedTestsPassed": 30, "failed": 0, "skipped": 0, "includesLosslessIncidentArchivesAndExistingSmallRepeatEvidence": true, "typescriptAfterImplementation": "passed", "changedSourceLint": "passed", "finalDiffCheck": "passed", "fullCurrentHostedCi": "pending" },
+  "regression": { "focusedTestsPassed": 30, "failed": 0, "skipped": 0, "includesLosslessIncidentArchivesAndExistingSmallRepeatEvidence": true, "typescriptAfterImplementation": "passed", "changedSourceLint": "passed", "finalDiffCheck": "passed", "fullCurrentHostedCi": "39738858806/ee5ab3c SUCCESS1454pass/0fail/1skip+19privacy/offline; see evidence/2026-10-22-volume-validator-portable-ci-success.json, not memory acceptance" },
   "publicAcceptance": false,
   "near10GiBAcceptance": false,
   "fullGoalComplete": false

@@ -1,0 +1,32 @@
+// Historical diagnostic evidence, not fresh conversion or ordinary-Chrome acceptance.
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import { gunzipSync } from "node:zlib";
+import test from "node:test";
+import { joinStartupChildMetadata } from "../scripts/lib/chromium-startup-child-capture.mjs";
+const read = file => readFile(new URL("../" + file, import.meta.url));
+const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+test("actual blank-page AI child is birth-matched, fully retained and never substituted for conversion memory acceptance", async () => {
+  const evidence = JSON.parse(await read("evidence/2026-10-22-chromium-startup-model-service.json"));
+  const bytes = await read(evidence.report.path); assert.equal(bytes.length, evidence.report.bytes); assert.equal(sha(bytes), evidence.report.sha256);
+  const report = JSON.parse(bytes), zip = await read(evidence.archive.path);
+  assert.equal(zip.length, evidence.archive.bytes); assert.equal(sha(zip), evidence.archive.sha256);
+  const raw = gunzipSync(zip, { maxOutputLength: 8 * 1048576 });
+  assert.equal(raw.length, evidence.archive.restoredBytes); assert.equal(sha(raw), evidence.archive.restoredSha256);
+  const retained = JSON.parse(raw); assert.equal(retained.samples.length, 1709);
+  assert.ok(retained.samples.every(sample => sample.privateBytes !== null && sample.privateBytes === sample.processes.reduce((sum, row) => sum + row.privateBytes, 0)));
+  const children = joinStartupChildMetadata(retained.samples, retained.metadataEvents, report.browserIdentity.pid, report.browserCreationFileTime);
+  assert.deepEqual(children, report.children);
+  assert.equal(children.length, 1); const child = children[0];
+  assert.equal(child.utilitySubtype, "on_device_model.mojom.OnDeviceModelService");
+  assert.equal(child.creationFileTime, evidence.capture.childCreationFileTime); assert.equal(child.nativeIdentityMatched, true);
+  assert.equal(child.observedSamples, 10); assert.equal(child.peakNativePrivateBytes, 259301376);
+  assert.match(child.commandLine, /--utility-sub-type=on_device_model\.mojom\.OnDeviceModelService/);
+  assert.equal(report.inputFilesSelected, 0); assert.equal(report.conversionsPerformed, 0); assert.equal(report.originalRead, false);
+  assert.ok(report.cleanupPhases.every(row => row.status === "passed")); assert.equal(report.disposableDataRemoved, true);
+  assert.equal(report.browserExit.status, "owned-identity-absent"); assert.equal(report.executedSourcesAndBrowserVerified, true);
+  assert.equal(Object.keys(report.sourcePins).length, 10);
+  assert.ok(Object.values(evidence.decisions).every(value => value === true));
+  assert.equal(evidence.publicAcceptance, false); assert.equal(evidence.primaryConversionMemoryAcceptance, false); assert.equal(evidence.fullGoalComplete, false);
+});

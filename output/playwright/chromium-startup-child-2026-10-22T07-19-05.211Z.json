@@ -1,0 +1,175 @@
+{
+  "scope": "Blank-browser startup child identity only; no conversion, application, new acceptance baseline or public acceptance",
+  "publicAcceptance": false,
+  "conversionsPerformed": 0,
+  "inputFilesSelected": 0,
+  "originalRead": false,
+  "limits": {
+    "beginMs": 178000,
+    "endMs": 188000,
+    "maximumQueries": 32,
+    "maximumMetadataRows": 32,
+    "maximumSamples": 2200,
+    "maximumStdoutBytes": 524288
+  },
+  "sourcePins": {
+    "scripts/diagnose-chromium-startup-child.mjs": "ebc8039cbf01eebdb0e76445f8c769a3d2ba5ac7091aba40483c1df88870dfdf",
+    "scripts/lib/chromium-startup-child-metadata.ps1": "06e561f3b0d5b7a24791c4fb00bf5d8d4cc87f6276d9c3767033b83d063acc4b",
+    "scripts/lib/chromium-startup-child-capture.mjs": "78dea397d64afd5550e496b52373435402e3dc43ea412e24fc0adbf414be7ebf",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/windows-tree-monitor.ps1": "2543a62cd40d9d9f9067f51f69097d69afecf1f687aa95fabe3b16534bb619aa",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/phased-owned-cleanup.mjs": "3696e2b2a6c19078b9f9f9aa8202ed858a397420086c5624373c07af725bf47d",
+    "scripts/lib/owned-process-exit-observation.mjs": "28ce533aadde74271d432c4223be516901bdc9a5850a77a4312d78ed31d75cb9",
+    "scripts/lib/installed-chrome-pin.mjs": "45bbe9015f9645cc9205cec6728fa108996662da697884a36fe7e87e4d0ddd9f"
+  },
+  "cleanupPhases": [
+    {
+      "name": "observer-closure",
+      "status": "passed"
+    },
+    {
+      "name": "process-closure",
+      "status": "passed"
+    },
+    {
+      "name": "executed-source-verification",
+      "status": "passed"
+    },
+    {
+      "name": "disposable-files",
+      "status": "passed"
+    }
+  ],
+  "host": {
+    "acquiredAt": "2026-10-22T07:19:05.9646736Z",
+    "freePhysicalBytes": 4268662784,
+    "freeVirtualBytes": 8125591552,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "browserPin": {
+    "version": "155.0.8059.85",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4720792,
+      "sha256": "de999bce6a1c954df71a8f15bf751b336172f55ac1a0325bb0580cbc2121268c",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "16607023626188588",
+        "birthtimeNs": "1792461766435316100",
+        "mtimeNs": "1792034219406347000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\155.0.8059.85\\chrome.dll",
+      "bytes": 302363288,
+      "sha256": "e68448d4469e6a3b598cfce48e656a5579decac014407eb4c4967d0677fed2fb",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "16607023626188596",
+        "birthtimeNs": "1792461766454341200",
+        "mtimeNs": "1792034223618740000"
+      }
+    }
+  },
+  "runtime": "H:\\Github Repositories\\fileconverter\\work\\startup-child-xSGmWG",
+  "browserVersion": "155.0.8059.85",
+  "browserIdentity": {
+    "pid": 13176,
+    "parentPid": 32548,
+    "createdAt": "2026-10-22T07:19:07.0548800Z"
+  },
+  "browserCreationFileTime": "134371271470548805",
+  "helperIdentity": {
+    "pid": 39048,
+    "parentPid": 32548,
+    "createdAt": "2026-10-22T07:19:09.0354920Z"
+  },
+  "children": [
+    {
+      "event": "child",
+      "pid": 35536,
+      "parentPid": 13176,
+      "createdAt": "2026-10-22T07:22:07.2921632Z",
+      "creationFileTime": "134371273272921632",
+      "queryStartedAt": "2026-10-22T07:22:07.4129953Z",
+      "observedAt": "2026-10-22T07:22:07.6184037Z",
+      "type": "utility",
+      "utilitySubtype": "on_device_model.mojom.OnDeviceModelService",
+      "sandboxType": "on_device_model_execution",
+      "commandLine": "\"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\" --type=utility --utility-sub-type=on_device_model.mojom.OnDeviceModelService --lang=en-US --service-sandbox-type=on_device_model_execution --no-sandbox --mute-audio --video-capture-use-gpu-memory-buffer --noerrdialogs --user-data-dir=\"H:\\Github Repositories\\fileconverter\\work\\startup-child-xSGmWG\\profile\" --no-pre-read-main-dll --field-trial-handle=1816,i,14970151382533782302,4428913122736898524,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=1824,i,16845154733293585948,3604197606178116740,4 --trace-process-track-uuid=3190708999430457380 --mojo-platform-channel-handle=1020 /prefetch:14",
+      "nativeIdentityMatched": true,
+      "observedSamples": 10,
+      "firstNativeSequence": 1638,
+      "lastNativeSequence": 1647,
+      "peakNativePrivateBytes": 259301376
+    }
+  ],
+  "status": "captured-startup-child-identity-not-conversion-acceptance",
+  "browserExit": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 13176,
+      "parentPid": 32548,
+      "createdAt": "2026-10-22T07:19:07.0548800Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-10-22T07:22:15.965Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 489,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "executedSourcesAndBrowserVerified": true,
+  "disposableDataRemoved": true,
+  "samples": 1709,
+  "unavailableSamples": 0,
+  "metadataEvents": [
+    {
+      "event": "ready",
+      "windowStartMs": 178000,
+      "windowEndMs": 188000,
+      "maximumQueries": 32
+    },
+    {
+      "event": "child",
+      "pid": 35536,
+      "parentPid": 13176,
+      "createdAt": "2026-10-22T07:22:07.2921632Z",
+      "creationFileTime": "134371273272921632",
+      "queryStartedAt": "2026-10-22T07:22:07.4129953Z",
+      "observedAt": "2026-10-22T07:22:07.6184037Z",
+      "type": "utility",
+      "utilitySubtype": "on_device_model.mojom.OnDeviceModelService",
+      "sandboxType": "on_device_model_execution",
+      "commandLine": "\"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\" --type=utility --utility-sub-type=on_device_model.mojom.OnDeviceModelService --lang=en-US --service-sandbox-type=on_device_model_execution --no-sandbox --mute-audio --video-capture-use-gpu-memory-buffer --noerrdialogs --user-data-dir=\"H:\\Github Repositories\\fileconverter\\work\\startup-child-xSGmWG\\profile\" --no-pre-read-main-dll --field-trial-handle=1816,i,14970151382533782302,4428913122736898524,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,BoundaryEventDispatchTracksNodeRemoval,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=1824,i,16845154733293585948,3604197606178116740,4 --trace-process-track-uuid=3190708999430457380 --mojo-platform-channel-handle=1020 /prefetch:14"
+    },
+    {
+      "event": "complete",
+      "queries": 30,
+      "rows": 1,
+      "completedAt": "2026-10-22T07:22:15.0621481Z"
+    }
+  ],
+  "peakPrivateBytes": 478846976,
+  "archive": {
+    "path": "output/playwright/chromium-startup-child-2026-10-22T07-19-05.211Z-raw.json.gz",
+    "bytes": 60310,
+    "sha256": "54609779c1c1a1bce1bac4402198d459b1a3cc4e6dae90d5dc667db83bda53be",
+    "restoredBytes": 3750231,
+    "restoredSha256": "9a2a89674e42590d4ed5cc469d3bd1322cb4f7f358f78f52fb45bcc7a1b4b50e"
+  }
+}

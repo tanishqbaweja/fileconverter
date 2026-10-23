@@ -15,10 +15,18 @@ acceptance contract. Private engines are not public supported profiles.
    Do not raise the baseline, delay measurement, omit that process or rebuild
    unchanged codecs on the strength of the correlation. Retain exact quality,
    full-tree250MiB and null unavailable samples throughout the correction.
+   The changed blank-page capture now identifies a matching startup burst as
+   `on_device_model.mojom.OnDeviceModelService` (247.289MiB, exact native birth,
+   no app/input). The original conversion child remains unknown in its historical
+   report and its365.15625MiB result remains failed; no browser flags/prefs,
+   measurement delay, baseline increase or process exclusion has been applied.
 2. Implement bounded, lossless memory-sample journaling before tests that can
    exceed the current 6,000-sample in-memory ceiling. A smaller ring that silently
    drops peaks is not a substitute. Validate journal completeness and actual
    readback/peak calculation without retaining media.
+   Reuse `native-memory-peaks.mjs` for bounded phase/graph summaries and preserve
+   `durable-native-memory-journal.mjs`'s honest crash-checkpoint-only scope. Its
+   coalesced snapshots are not an existing lossless raw-sample journal.
 3. Qualify progressively larger real sources, including >4GB and approaching
    10GB, through the same production coordinator/worker/disk-output path. Check
    disk/RAM first; preserve `test.mkv`. Delete each owned output/fixture after its

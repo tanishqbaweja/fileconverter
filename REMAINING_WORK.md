@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-10-22 timed child captured on blank installed Chrome155: exact native birth
+identifies on_device_model.mojom.OnDeviceModelService,259301376B/247.289MiB,
+10samples, birth age180.237s.1709samples/0missing,10source/browser pins/all4cleanup
+phases and independent owned absence PASS; zero app/input/conversion/media.
+Upstream startup-performance scheduling is consistent; earlier conversion child
+remains unknown in its original report,365.15625MiB failure still OPEN. No AI
+flags/prefs, baseline delay/increase, process subtraction or CfT substitution.
+Do not repeat unchanged codec builds/traces for this browser-startup burst.
+`evidence/2026-10-22-chromium-startup-model-service.json`.
+
+2026-10-22 portable CI39738858806/ee5ab3c SUCCESS:1454unitsPASS/0fail/1skip and
+19privacy/offline/static-host browserPASS39.2s; build/lint/TS/public audit/inventory
+PASS. Separate162qualification files/native reproduction/conversion matrices not
+executed. This validates changed validator/cleanup checkpoint, not later startup
+diagnostic or365.15625MiB memory acceptance. Do not repeat this unchanged gate.
+`evidence/2026-10-22-volume-validator-portable-ci-success.json`.
+
 2026-10-22 next changed diagnostic prepared: same headless Chrome launch on blank
 page, no media/site/native rebuild/baseline acceptance change. Capture only owned
 direct-child command-line/subtype in known178–188s startup window, max32queries,

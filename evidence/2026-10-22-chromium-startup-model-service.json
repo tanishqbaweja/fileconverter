@@ -1,0 +1,70 @@
+{
+  "status": "blank-browser-startup-child-identified-by-exact-native-birth",
+  "sourceCommit": "b93b1aa",
+  "report": {
+    "path": "output/playwright/chromium-startup-child-2026-10-22T07-19-05.211Z.json",
+    "bytes": 8243,
+    "sha256": "f34932f87c3b17fbf7cb69f353f33b0c2f5edd605065a5016ea8fea08c5e0996"
+  },
+  "archive": {
+    "path": "output/playwright/chromium-startup-child-2026-10-22T07-19-05.211Z-raw.json.gz",
+    "bytes": 60310,
+    "sha256": "54609779c1c1a1bce1bac4402198d459b1a3cc4e6dae90d5dc667db83bda53be",
+    "restoredBytes": 3750231,
+    "restoredSha256": "9a2a89674e42590d4ed5cc469d3bd1322cb4f7f358f78f52fb45bcc7a1b4b50e"
+  },
+  "browserVersion": "155.0.8059.85",
+  "scope": "Same Playwright installed-Chrome headless launch, about:blank only; no production app, input or conversion. Not a replacement/later/larger acceptance baseline.",
+  "capture": {
+    "browserPid": 13176,
+    "childPid": 35536,
+    "childCreationFileTime": "134371273272921632",
+    "type": "utility",
+    "utilitySubtype": "on_device_model.mojom.OnDeviceModelService",
+    "sandboxType": "on_device_model_execution",
+    "birthBrowserAgeMs": 180237.2827,
+    "peakNativePrivateBytes": 259301376,
+    "peakNativePrivateMiB": 247.2890625,
+    "observedNativeSamples": 10,
+    "nativeIdentityMatched": true,
+    "metadataQueries": 30,
+    "metadataWindowMs": [178000, 188000],
+    "allNativeSamples": 1709,
+    "unavailableSamples": 0,
+    "executedSourcePins": 10,
+    "executedSourceAndBrowserPinsVerified": true
+  },
+  "upstreamContext": [
+    {
+      "url": "https://raw.githubusercontent.com/chromium/chromium/main/components/optimization_guide/core/optimization_guide_features.cc",
+      "finding": "GetOnDeviceStartupMetricDelay uses a three-minute default. This is consistent with the observed runtime age."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/chromium/chromium/main/components/optimization_guide/core/model_execution/performance_class.cc",
+      "finding": "PerformanceClassifier schedules device/performance evaluation after that delay. Version-cached classification and a Chrome-for-Testing build branch are present, so those environments cannot silently replace cold installed-Chrome qualification."
+    }
+  ],
+  "upstreamVersionCaveat": "Current upstream source is context, not a verified source checkout for installed155.0.8059.85. Actual blank runtime command line and exact native birth establish this captured child's identity independently.",
+  "priorFailureCaveat": "The exited child in the earlier365.15625MiB conversion failure remains labelled unknown in its original report. Matching age/lifetime/size plus this blank-page reproduction support an on-device-service hypothesis, not retrospective exact-PID proof.",
+  "decisions": {
+    "prior365MiBFailureRemainsOpen": true,
+    "noProcessOmittedOrBytesSubtracted": true,
+    "noBaselineIncreaseOrMeasurementDelay": true,
+    "noBrowserAiFlagOrPolicyOrCachedPerformancePrefChanged": true,
+    "noUnchangedCodecBuildOrConversionGateReplay": true,
+    "noChromeForTestingResultMayQualifyDefaultInstalledChrome": true
+  },
+  "cleanup": {
+    "allFourPhasesPassed": true,
+    "browserOwnedIdentityAbsent": true,
+    "helperOwnedIdentityAbsent": true,
+    "runtimeDirectoryIndependentlyAbsent": true,
+    "inputFilesSelected": 0,
+    "conversionsPerformed": 0,
+    "originalReadOrModified": false,
+    "generatedMediaBytes": 0
+  },
+  "publicAcceptance": false,
+  "primaryConversionMemoryAcceptance": false,
+  "fullGoalComplete": false
+}

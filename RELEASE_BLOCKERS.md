@@ -1,5 +1,14 @@
 # Release closure — original scope, not a reduced MVP
 
+2026-10-22 startup identity increment: blank Chrome155 exact native birth+command
+line proves on_device_model.mojom.OnDeviceModelService247.289MiB at180.237s,
+10samples. No app/input/conversion;10pins/all4cleanup phases/owned absence pass.
+This supports the earlier peak hypothesis without retroactively relabelling its
+unknown child.365.15625MiB/default-browser gate remains failed. No flags/prefs,
+cached classification, delayed/larger baseline, omitted process or CfT replacement.
+Portable CI39738858806/ee5ab3c1454+19PASS is separate from this changed diagnostic.
+`evidence/2026-10-22-chromium-startup-model-service.json`.
+
 2026-10-22 current first-volume5de267b: both128+MiB1080p correctness gates PASS;
 primary full-tree FAIL365.15625MiB. Actual observer correction proven2247samples,
 0missing/failed requests/max28.208ms, all4cleanup phases/42source+browser pins and
