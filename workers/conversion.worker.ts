@@ -4188,7 +4188,13 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       const inspection = await inspectMediaSource(file, "mkv");
       requiredScratchBytes = estimateMpeg2StageBytes(file.size, inspection?.durationSeconds ?? null);
       const { loadMpeg2SplitCore } = await import("./mpeg2-core-loader");
-      mpeg2SplitCore = await loadMpeg2SplitCore();
+      mpeg2SplitCore = await loadMpeg2SplitCore(undefined, {
+        cached: message.mpeg2CompiledCore,
+        prepared(core, cacheHit) {
+          workerScope.postMessage({ type: "mpeg2-compiled-core", jobId, core });
+          emitProgress(jobId, cacheHit ? "Reusing compiled MPEG-2 code" : "Compiled MPEG-2 code", metrics, startedAt, true);
+        },
+      });
     }
     const audioOptions = isMpeg2Job || isVpxJob ? message.audioOptions ?? DEFAULT_AUDIO_CONVERSION_OPTIONS : validateAudioConversionOptions(
       audioOptionProfileForId(profileId),

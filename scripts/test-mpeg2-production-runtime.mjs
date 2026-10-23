@@ -20,14 +20,18 @@ import { annotateNativeProcessTypes, connectPlaywrightRealmSampler } from "./lib
 import { captureLiveMemoryInfra } from "./lib/live-memory-infra.mjs";
 import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
 import { verifyProductionCatalogue } from "./lib/production-catalogue-check.mjs";
+import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
+import { compareStreamingVideoClocks } from "./lib/streaming-video-clock-fidelity.mjs";
+import { boundedNativeLines } from "./lib/bounded-native-lines.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators"].includes(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators", "--cache-repeats"].includes(flag)));
 assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
 assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
+const repetitions = flags.has("--cache-repeats") ? 3 : 1;
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const chunk of createReadStream(file)) hash.update(chunk); return hash.digest("hex"); };
@@ -35,6 +39,8 @@ const report = { scope: "production-MPEG2-dispatch-and-staged-lifecycle-small-fi
   publicAcceptance: false, uiPlannerCoverage: false, largeFileCoverage: false, speedComparison: false, standaloneWorker: false, failures: [] };
 report.observer = { allocationDiagnostics: diagnose, screenshots: !eventsOnly, snapshots: !eventsOnly, sources: true,
   controlScope: eventsOnly ? "events-only observer comparison, not route promotion" : "existing full screenshot/snapshot trace" };
+report.cacheQualification = { repetitions, sameSource: true, outputHashes: [], results: [], globalSpeedClaim: false };
+const staticRequests = { manifests: 0, decoder: 0, encoder: 0 }; report.staticRequests = staticRequests;
 const runtime = await createOwnedRuntimeScratch("mpeg2-production-runtime-");
 const env = { ...runtime.env, NODE_OPTIONS: [process.env.NODE_OPTIONS ?? "", "--import=" + pathToFileURL(path.join(root, "scripts/lib/hidden-unit-subprocesses.mjs")).href].filter(Boolean).join(" "),
   NEXT_TELEMETRY_DISABLED: "1", WRANGLER_SEND_METRICS: "false" };
@@ -54,7 +60,7 @@ const captureAttribution = async label => {
     error: realms.status === "rejected" ? String(realms.reason).slice(0, 512) : null });
 };
 const browserLogs = [];
-let serverLog = "", output, browserPin, originalHash, work, monitorBusy = false, tracing = false;
+let serverLog = "", output, browserPin, originalHash, work, monitorBusy = false, tracing = false, validationTarget;
 const snapshot = async () => {
   const batch = await monitor.drain();
   assert.ok(samples.length + batch.samples.length <= 3000, "Bounded short-test sample cap");
@@ -95,10 +101,17 @@ try {
     if (pages) assert.deepEqual(readWasmMemoryLimits(bytes), [{ imported: true, initialPages: pages, maximumPages: pages, shared: true }]);
     await copyFile(sourcePath, path.join(assetDirectory, file)); report.native.push({ source: path.relative(root, sourcePath), sha256: expected, bytes: bytes.length });
   }
+  const codeManifest = { schemaVersion: 1, engine: "within-mpeg2-split-jspi", decoderMemoryBytes: 33554432, encoderMemoryBytes: 16777216,
+    artifacts: { "decoder.wasm": report.native.find(row => row.source.endsWith("within-mpeg2-split.wasm")).sha256,
+      "encoder.wasm": report.native.find(row => row.source.endsWith("split-encoder.wasm")).sha256 }, publicAcceptance: false };
+  const manifestBytes = Buffer.from(JSON.stringify(codeManifest) + "\n");
+  await writeFile(path.join(assetDirectory, "build-manifest.json"), manifestBytes, { flag: "wx" });
+  report.codeManifest = { bytes: manifestBytes.length, sha256: sha(manifestBytes), value: codeManifest };
   report.sources = {};
   for (const file of ["workers/media-remux.ts", "workers/mpeg2-split-runtime.ts", "workers/random-access-destination.ts",
     "workers/conversion.worker.ts", "workers/mpeg2-core-loader.ts", "workers/staged-save.worker.ts", "workers/staged-save-runtime.ts",
-    "lib/staged-worker-coordinator.ts", "lib/staged-copy-protocol.ts", "lib/mpeg2-stage-policy.ts", "lib/mpeg2-qualification-job.ts",
+    "lib/staged-worker-coordinator.ts", "lib/staged-copy-protocol.ts", "lib/mpeg2-stage-policy.ts", "lib/mpeg2-qualification-job.ts", "lib/mpeg2-compiled-core.ts",
+    "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/streaming-video-clock-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs",
     "scripts/test-mpeg2-production-runtime.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",
     "scripts/lib/chromium-private-memory.mjs", "scripts/lib/persistent-chromium-memory.mjs",
@@ -128,6 +141,7 @@ try {
   browserRootPid = browserIdentity.pid;
   browser = await chromium.connect(browserServer.wsEndpoint());
   context = await browser.newContext({ serviceWorkers: "block" });
+  await context.addInitScript({ content: "Object.defineProperty(globalThis, '__WITHIN_ENCODE_RUNTIME_CHUNK__', { value: (" + encodeBoundedValidationChunk.toString() + ") });" });
   const page = await context.newPage();
   report.workerEvents = [];
   page.on("worker", worker => {
@@ -148,7 +162,11 @@ try {
   if (diagnose) { realmSampler = await connectPlaywrightRealmSampler(browser, base); await captureAttribution("stable-blank"); }
   await context.tracing.start({ screenshots: !eventsOnly, snapshots: !eventsOnly, sources: true }); tracing = true;
   changePhase("loaded");
-  context.on("request", request => { if (!request.url().startsWith(base + "/") || request.method() !== "GET" || request.postData() !== null) {
+  context.on("request", request => {
+    if (request.url() === base + "/engines/mpeg2/build-manifest.json") staticRequests.manifests++;
+    if (request.url() === base + "/engines/mpeg2/decoder.wasm") staticRequests.decoder++;
+    if (request.url() === base + "/engines/mpeg2/encoder.wasm") staticRequests.encoder++;
+    if (!request.url().startsWith(base + "/") || request.method() !== "GET" || request.postData() !== null) {
     forbiddenRequests.push({ method: request.method(), url: request.url().slice(0, 256) }); } });
   const response = await page.goto(base + "/?test=1");
   assert.equal(response.status(), 200, "Production app route must load before file selection");
@@ -180,6 +198,10 @@ try {
     monitorBusy = true;
     monitorPending = snapshot().catch(error => { monitorFailure ??= error; }).finally(() => { monitorBusy = false; });
   }, 500);
+  await page.exposeFunction("receiveRuntimeOutput", async chunk => { assert.ok(validationTarget); await validationTarget.write(decodeBoundedValidationChunk(chunk)); });
+  for (let repetition = 1; repetition <= repetitions; repetition++) {
+  if (monitorFailure) throw monitorFailure;
+  await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
   changePhase("conversion");
   [report.conversion] = await Promise.all([page.evaluate(async () => {
     const file = document.querySelector('input[type="file"]').files[0];
@@ -195,18 +217,13 @@ try {
           reject(new Error("Production job conversion timeout")); }, 60000); }),
       ]);
     } finally { clearTimeout(timeout); }
-  }).then(result => { changePhase("recovery"); return result; }), captureAttribution("conversion")]);
-  clearInterval(monitorTimer); await monitorPending; await snapshot();
-  await captureAttribution("post-completion"); await snapshot();
-  await monitor.close(); monitor = null; changePhase("validation");
-  if (diagnose) {
-    annotateNativeProcessTypes(samples, attribution.references, browserRootPid);
-    report.attribution = attribution; report.diagnosticMemorySamples = samples;
-  }
+  }).then(result => { changePhase("recovery"); return result; }), repetition === 1 ? captureAttribution("conversion") : Promise.resolve()]);
+  await monitorPending; await snapshot(); changePhase("validation");
   assert.equal(report.conversion.type, "complete", JSON.stringify(report.conversion));
   assert.ok(report.conversion.phases.includes("Inspecting MPEG-2 source"));
   assert.ok(report.conversion.phases.includes("Encoding MPEG-2 MP4"));
   assert.ok(report.conversion.phases.includes("Copying staged MP4 to selected destination"));
+  assert.ok(report.conversion.phases.includes(repetition === 1 ? "Compiled MPEG-2 code" : "Reusing compiled MPEG-2 code"));
   const nativeMetrics = report.conversion.nativeMetrics;
   assert.equal(nativeMetrics.wasmMemoryBytes, 50331648); assert.ok(nativeMetrics.maxReadChunkBytes <= 262144);
   assert.ok(nativeMetrics.maxWriteChunkBytes <= 262144); assert.ok(nativeMetrics.peakQueuedBytes <= 262144);
@@ -219,15 +236,15 @@ try {
   assert.ok(report.workerEvents.some(event => event.type === "created" && event.url.includes("staged-save.worker")));
   const file = await open(output, "wx");
   try {
-    await page.exposeFunction("receiveRuntimeOutput", async chunk => { assert.ok(Array.isArray(chunk) && chunk.length <= 65536); await file.write(Buffer.from(chunk)); });
+    validationTarget = file;
     await page.evaluate(async () => {
       const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle("mpeg2-runtime-output.mp4"), file = await handle.getFile();
       const reader = file.stream().getReader({ mode: "byob" }); let buffer = new Uint8Array(65536);
       try { for (;;) { const { done, value } = await reader.read(buffer); if (done) break;
-        await window.receiveRuntimeOutput(Array.from(value)); buffer = new Uint8Array(value.buffer); } }
+        await window.receiveRuntimeOutput(window.__WITHIN_ENCODE_RUNTIME_CHUNK__(value)); buffer = new Uint8Array(value.buffer); } }
       finally { await reader.cancel(); await root.removeEntry("mpeg2-runtime-output.mp4"); }
     });
-  } finally { await file.close(); }
+  } finally { validationTarget = undefined; await file.close(); }
   const probe = async file => JSON.parse((await native(["-v", "error", "-count_frames", "-show_streams", "-show_format", "-of", "json", file], "ffprobe")).stdout);
   const source = await probe(fixture), converted = await probe(output);
   assert.equal(source.streams[0].codec_name, "hevc"); assert.equal(converted.streams[0].codec_name, "mpeg2video");
@@ -240,12 +257,28 @@ try {
   const comparison = await native(["-v", "info", "-i", fixture, "-i", output, "-filter_complex",
     "[0:v:0]settb=1/1,setpts=N[ref];[1:v:0]settb=1/1,setpts=N[out];[ref][out]ssim", "-an", "-f", "null", "-"]);
   const ssim = Number(/All:([0-9.]+)/.exec(comparison.stderr)?.[1]); assert.ok(ssim >= 0.98, `SSIM ${ssim}`);
+  const times = file => boundedNativeLines("ffprobe", ["-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "compact", file], { cwd: root, env });
+  const videoClocks = await compareStreamingVideoClocks(times(fixture), times(output), 96);
   report.output = { bytes: (await lstat(output)).size, sha256: await hashFile(output), codec: "mpeg2video", frames: 96, ssim, fullNativeDecodePassed: true,
-    copiedAudioPacketHash: await audioHash(output), titlePreserved: true, languagePreserved: true };
+    copiedAudioPacketHash: await audioHash(output), titlePreserved: true, languagePreserved: true, videoClocks };
+  report.cacheQualification.outputHashes.push(report.output.sha256);
+  report.cacheQualification.results.push({ repetition, conversion: report.conversion, output: report.output });
+  await rm(output);
+  }
+  assert.equal(new Set(report.cacheQualification.outputHashes).size, 1);
+  assert.deepEqual(staticRequests, { manifests: repetitions, decoder: 1, encoder: 1 });
+  clearInterval(monitorTimer); await monitorPending; await snapshot();
+  await captureAttribution("post-completion"); await snapshot();
+  await monitor.close(); monitor = null;
+  if (diagnose) {
+    annotateNativeProcessTypes(samples, attribution.references, browserRootPid);
+    report.attribution = attribution; report.diagnosticMemorySamples = samples;
+  }
   assert.equal(forbiddenRequests.length, 0); report.forbiddenRequests = forbiddenRequests;
   const conversionSamples = samples.filter(sample => sample.phase === "conversion" && sample.privateBytes !== null);
   assert.ok(conversionSamples.length > 0);
-  const peak = conversionSamples.reduce((peak, sample) => sample.privateBytes > peak.privateBytes ? sample : peak);
+  const activeSamples = samples.filter(sample => sample.phase !== "blank" && sample.privateBytes !== null);
+  const peak = activeSamples.reduce((peak, sample) => sample.privateBytes > peak.privateBytes ? sample : peak);
   report.memory = { scope: "small-runtime-integration-only-not-large-file-or-public-profile-acceptance", intervalMs: 100,
     validSamples: samples.filter(sample => sample.privateBytes !== null).length, unavailableSamples: samples.filter(sample => sample.privateBytes === null),
     conversionSamples: conversionSamples.length, peak, incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 };

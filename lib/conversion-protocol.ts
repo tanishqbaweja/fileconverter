@@ -3,6 +3,7 @@ import type {
   VideoConversionOptions,
 } from "./media-conversion-options";
 import type { VpxCompiledCore } from "./vpx-compiled-core";
+import type { Mpeg2CompiledCore } from "./mpeg2-compiled-core";
 
 export interface ConversionMetrics {
   inputBytes: number;
@@ -61,6 +62,8 @@ export interface StartConversionMessage {
   videoOptions?: VideoConversionOptions;
   /** Coordinator-owned static code only; never caller-provided user data. */
   vpxCompiledCore?: VpxCompiledCore;
+  /** Coordinator-owned immutable MPEG-2 code pair, never caller media/state. */
+  mpeg2CompiledCore?: Mpeg2CompiledCore;
   /** Lets synchronous Wasm observe cancellation before its worker can process another message. */
   cancellationBuffer?: SharedArrayBuffer;
   /** Localhost-only Playwright fault injection; never sent for user destinations. */

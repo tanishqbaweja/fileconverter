@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-10-23 next implementation cycle: actual production MPEG-2 loader now uses
+hash-bound immutable compiled-code reuse with fresh instances/memories per job,
+coordinator-only handoff and prior-engine eviction.47focused/TypeScript PASS;
+lint issue corrected, final lint pending. Three-job actual production runtime
+check next: same native pair/source/settings, strict clock/SSIM/audio-packet
+validation, manifest each job/binary once, complete tree250MiB and cleanup.
+Older experimental-cache recovery failures are not closed by this change.
+No native rebuild, public promotion or large-file proof; full54/B02-B09 open.
+Previous status-only ETA turn made no implementation progress; this cycle
+revalidated worktree/live state and advances the unfinished production route.
+
+Journal checkpoint hosted CI39964087922/0f3fc51 SUCCESS independently checked:
+1465unitsPASS/0fail/1skip,19privacy/offlinePASS34.5s. Native/private/conversion
+matrix unselected; existing365.15625MiB memory failure unchanged.
+
 Journal checkpoint final regression48PASS/0fail/0skip, TS/lint PASS; original
 full fresh SHA/2958573265B exact and owned synthetic/probe scratch absent. No
 large conversion rerun or browser-memory pass claimed. Full original54/B02-B09

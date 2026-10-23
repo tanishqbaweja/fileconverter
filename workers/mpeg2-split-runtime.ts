@@ -30,7 +30,7 @@ type SplitSession = ReturnType<typeof createMpeg2SplitSession>;
 
 export interface Mpeg2SplitCore {
   decoderFactory: (options: RemuxFactoryOptions & { withinSplit: SplitSession }) => Promise<Mpeg2DecoderCore>;
-  encoderFactory: (options: Pick<RemuxFactoryOptions, "locateFile" | "print" | "printErr">) => Promise<Mpeg2EncoderCore>;
+  encoderFactory: (options: Pick<RemuxFactoryOptions, "locateFile" | "print" | "printErr" | "instantiateWasm">) => Promise<Mpeg2EncoderCore>;
   decoderWasmUrl: string;
   encoderWasmUrl: string;
 }

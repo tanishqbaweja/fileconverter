@@ -2,6 +2,8 @@ import type { StartConversionMessage, WorkerRequest, WorkerResponse } from "./co
 import { validateStagedCopyHandoff, type StagedJobIdentity, type StagedSaveRequest } from "./staged-copy-protocol";
 import { isVpxDecoderProfile } from "./vpx-decoder-policy";
 import { validateVpxCompiledCore, type VpxCompiledCore, type VpxCompiledCoreSlot } from "./vpx-compiled-core";
+import { validateMpeg2CompiledCore, type Mpeg2CompiledCore, type Mpeg2CompiledCoreSlot } from "./mpeg2-compiled-core";
+import { MPEG2_JOB_PROFILE } from "./mpeg2-stage-policy";
 
 /** A bounded lifecycle owner, not a conversion engine or memory-measurement API. */
 export class StagedWorkerCoordinator extends EventTarget implements Worker {
@@ -17,9 +19,11 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
   private pendingCancel = false;
   private vpxCompiledCore: VpxCompiledCore | null = null;
   private vpxPreparedJobId: string | null = null;
+  private mpeg2CompiledCore: Mpeg2CompiledCore | null = null;
+  private mpeg2PreparedJobId: string | null = null;
 
   constructor(private readonly conversionFactory: () => Worker, private readonly saveFactory: () => Worker,
-    private readonly staticCodeSlot?: VpxCompiledCoreSlot) {
+    private readonly staticCodeSlot?: VpxCompiledCoreSlot, private readonly mpeg2CodeSlot?: Mpeg2CompiledCoreSlot) {
     super(); this.install("conversion");
   }
   private emit(message: WorkerResponse): void {
@@ -33,6 +37,7 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
   private fail(error: unknown): void {
     this.vpxCompiledCore = null; this.vpxPreparedJobId = null;
     this.staticCodeSlot?.clear();
+    this.mpeg2CompiledCore = null; this.mpeg2PreparedJobId = null; this.mpeg2CodeSlot?.clear();
     this.pending = null; this.pendingCancel = false; this.job = null; this.stopActive();
     const message = (error instanceof Error ? error.message : String(error)).slice(0, 512);
     const event = new ErrorEvent("error", { message, cancelable: true });
@@ -72,6 +77,13 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
           this.staticCodeSlot?.set(this.vpxCompiledCore);
           return; // Never forward static code to the UI, saver, logs or results.
         }
+        if (value?.type === "mpeg2-compiled-core") {
+          if (role !== "conversion" || !this.job || this.job.profileId !== MPEG2_JOB_PROFILE || value.jobId !== this.job.jobId ||
+              this.mpeg2PreparedJobId === value.jobId || Object.keys(value).sort().join(",") !== "core,jobId,type")
+            throw new Error("Unexpected static MPEG-2 code handoff");
+          this.mpeg2CompiledCore = validateMpeg2CompiledCore(value.core); this.mpeg2PreparedJobId = value.jobId;
+          this.mpeg2CodeSlot?.set(this.mpeg2CompiledCore); return;
+        }
         if (!this.job || value?.jobId !== this.job.jobId) return;
         if (!["progress", "warning", "complete", "cancelled", "error"].includes(value.type)) throw new Error("Unexpected worker response");
         if (["complete", "cancelled", "error"].includes(value.type)) this.job = null;
@@ -92,12 +104,19 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
       return;
     }
     if (message.type !== "start" || this.job || this.pending) throw new Error("Only one conversion may be active");
-    if ("vpxCompiledCore" in message) throw new Error("Static VPX code is owned by the coordinator, not its caller");
+    if ("vpxCompiledCore" in message || "mpeg2CompiledCore" in message) throw new Error("Static codec code is owned by the coordinator, not its caller");
+    // Keep static code for only the currently selected private engine. Avoid
+    // accumulating a VPX module plus a MPEG-2 pair across mixed-format jobs.
+    if (!isVpxDecoderProfile(message.profileId)) { this.vpxCompiledCore = null; this.staticCodeSlot?.clear(); }
+    if (message.profileId !== MPEG2_JOB_PROFILE) { this.mpeg2CompiledCore = null; this.mpeg2CodeSlot?.clear(); }
     const cached = this.staticCodeSlot?.get() ?? this.vpxCompiledCore;
+    const mpeg2Cached = this.mpeg2CodeSlot?.get() ?? this.mpeg2CompiledCore;
     const forwarded = cached && isVpxDecoderProfile(message.profileId)
-      ? { ...message, vpxCompiledCore: cached } : message;
+      ? { ...message, vpxCompiledCore: cached } : mpeg2Cached && message.profileId === MPEG2_JOB_PROFILE
+        ? { ...message, mpeg2CompiledCore: mpeg2Cached } : message;
     const queued = this.role === "save" || !this.ready ? structuredClone(forwarded) : null;
     this.vpxPreparedJobId = null;
+    this.mpeg2PreparedJobId = null;
     this.job = { jobId: message.jobId, profileId: message.profileId, sourceBytes: message.file.size,
       destination: { ...message.destination }, cancellationBuffer: message.cancellationBuffer, testFault: message.testFault };
     try {
@@ -110,10 +129,11 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
     if (this.disposed) return;
     this.disposed = true; this.pending = null; this.pendingCancel = false; this.job = null; this.stopActive();
     this.vpxCompiledCore = null; this.vpxPreparedJobId = null;
+    this.mpeg2CompiledCore = null; this.mpeg2PreparedJobId = null;
     this.onmessage = null; this.onerror = null; this.onmessageerror = null;
   }
 }
 
-export function createStagedWorkerCoordinator(conversion: () => Worker, save: () => Worker, staticCodeSlot?: VpxCompiledCoreSlot): Worker {
-  return new StagedWorkerCoordinator(conversion, save, staticCodeSlot);
+export function createStagedWorkerCoordinator(conversion: () => Worker, save: () => Worker, staticCodeSlot?: VpxCompiledCoreSlot, mpeg2CodeSlot?: Mpeg2CompiledCoreSlot): Worker {
+  return new StagedWorkerCoordinator(conversion, save, staticCodeSlot, mpeg2CodeSlot);
 }

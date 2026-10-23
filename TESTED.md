@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-23 production MPEG-2 compiled-code integration prepared:47focused tests
+PASS and TypeScript PASS; lint naming issue corrected, final lint pending.
+Hash-bound decoder/encoder modules reuse immutable code only, fresh per-job
+instances/memories, coordinator-only handoff and mixed-engine eviction. Earlier
+experimental-cache memory/recovery failures remain failures; this is not a
+memory cure claim. Next one actual three-job production-runtime cycle using
+the unchanged qualified native pair; independent output/clock/SSIM/audio hash,
+one binary fetch each, manifest each job, full-tree250MiB and cleanup gates.
+No native rebuild, public promotion or large-file acceptance claim.
+
+Portable hosted CI39964087922/0f3fc51 SUCCESS:1465PASS/0fail/1skip and19privacy/
+offline browserPASS34.5s; native/private/conversion-matrix gates unselected.
+This closes the journal checkpoint regression, not later MPEG-2 changes or
+the existing365.15625MiB volume failure.
+
 2026-10-23 journal checkpoint48focused PASS/0fail/0skip, TS/lint PASS; exact fresh
 original SHA/size and owned synthetic/probe cleanup verified. No changed-harness
 browser or large-file acceptance claim. `evidence/2026-10-23-lossless-native-journal.json`.

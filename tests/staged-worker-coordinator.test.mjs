@@ -3,9 +3,9 @@ import { build } from "esbuild";
 import path from "node:path";
 import test from "node:test";
 const root = path.resolve(import.meta.dirname, "..");
-const bundle = await build({ stdin: { contents: 'export { StagedWorkerCoordinator } from "./lib/staged-worker-coordinator.ts"; export { validateStagedCopyHandoff } from "./lib/staged-copy-protocol.ts"; export { createVpxCompiledCoreSlot } from "./lib/vpx-compiled-core.ts";',
+const bundle = await build({ stdin: { contents: 'export { StagedWorkerCoordinator } from "./lib/staged-worker-coordinator.ts"; export { validateStagedCopyHandoff } from "./lib/staged-copy-protocol.ts"; export { createVpxCompiledCoreSlot } from "./lib/vpx-compiled-core.ts"; export { createMpeg2CompiledCoreSlot } from "./lib/mpeg2-compiled-core.ts";',
   loader: "ts", resolveDir: root }, bundle: true, format: "esm", platform: "node", write: false });
-const { StagedWorkerCoordinator, validateStagedCopyHandoff, createVpxCompiledCoreSlot } = await import("data:text/javascript;base64," + Buffer.from(bundle.outputFiles[0].contents).toString("base64"));
+const { StagedWorkerCoordinator, validateStagedCopyHandoff, createVpxCompiledCoreSlot, createMpeg2CompiledCoreSlot } = await import("data:text/javascript;base64," + Buffer.from(bundle.outputFiles[0].contents).toString("base64"));
 if (!globalThis.ErrorEvent) globalThis.ErrorEvent = class extends Event { constructor(type, options) { super(type, options); this.message = options.message; } };
 class FakeWorker {
   onmessage = null; onerror = null; onmessageerror = null; messages = []; terminated = false;
@@ -25,16 +25,47 @@ function start(jobId = "job-1", profileId = "mkv-to-mp4") {
 const handoff = request => ({ type: "staged-copy-handoff", jobId: request.jobId, profileId: request.profileId,
   stagingName: request.destination.stagingName, stageClosed: true, jobStartedEpochMs: performance.timeOrigin + performance.now() - 100, metrics: metrics() });
 const staticCode = () => ({ module: new WebAssembly.Module(new Uint8Array([0,97,115,109,1,0,0,0])), sha256: "a".repeat(64), byteLength: 8 });
+const mpeg2Code = () => ({ decoder: staticCode().module, encoder: staticCode().module,
+  binding: "a".repeat(64) + ":" + "b".repeat(64), decoderBytes: 8, encoderBytes: 8 });
 function fixture(options = {}) {
   const encoders = [], savers = [], events = [], errors = [];
   const owner = new StagedWorkerCoordinator(() => { const worker = new FakeWorker(); encoders.push(worker); return worker; }, () => {
     assert.equal(encoders.at(-1).terminated, true, "Retire codec before creating saver");
     if (options.failSaveFactory) throw new Error("Save startup failure");
     const worker = new FakeWorker(); savers.push(worker); return worker;
-  }, options.staticCodeSlot);
+  }, options.staticCodeSlot, options.mpeg2CodeSlot);
   owner.onmessage = ({ data }) => events.push(data); owner.onerror = event => errors.push(event.message);
   return { owner, encoders, savers, events, errors };
 }
+
+test("MPEG-2 pair survives worker/coordinator replacement, never reaches saver, and mixed routes evict the prior engine", () => {
+  const vpxSlot = createVpxCompiledCoreSlot(), mpeg2Slot = createMpeg2CompiledCoreSlot(); vpxSlot.set(staticCode());
+  const f = fixture({ staticCodeSlot: vpxSlot, mpeg2CodeSlot: mpeg2Slot }), job = start("mpeg-a", "mkv-to-mp4-mpeg2"), core = mpeg2Code();
+  f.encoders[0].emit({ type: "ready" }); f.owner.postMessage(job); assert.equal(vpxSlot.get(), null);
+  f.encoders[0].emit({ type: "mpeg2-compiled-core", jobId: job.jobId, core }); assert.equal(mpeg2Slot.get().binding, core.binding);
+  assert.equal(f.events.some(row => row.type === "mpeg2-compiled-core"), false);
+  f.encoders[0].emit(handoff(job)); f.savers[0].emit({ type: "ready" }); assert.equal(f.savers[0].messages[0].mpeg2CompiledCore, undefined);
+  f.savers[0].emit({ type: "complete", jobId: job.jobId, metrics: metrics() }); f.owner.terminate();
+  const next = fixture({ staticCodeSlot: vpxSlot, mpeg2CodeSlot: mpeg2Slot }), second = start("mpeg-b", "mkv-to-mp4-mpeg2");
+  next.encoders[0].emit({ type: "ready" }); next.owner.postMessage(second);
+  assert.equal(next.encoders[0].messages[0].mpeg2CompiledCore.binding, core.binding);
+  next.encoders[0].emit({ type: "error", jobId: second.jobId, metrics: metrics(), message: "terminal test" });
+  const vpx = start("vpx-next", "mkv-vp8-to-mp4-mpeg4"); next.owner.postMessage(vpx); assert.equal(mpeg2Slot.get(), null);
+  next.owner.terminate(); vpxSlot.dispose(); mpeg2Slot.dispose();
+});
+
+test("MPEG-2 caller/foreign/duplicate or payload-bearing cache messages fail closed", () => {
+  const f = fixture(); f.encoders[0].emit({ type: "ready" });
+  assert.throws(() => f.owner.postMessage({ ...start("bad", "mkv-to-mp4-mpeg2"), mpeg2CompiledCore: mpeg2Code() }), /coordinator/); f.owner.terminate();
+  for (const mutate of [row => { row.jobId = "other"; }, row => { row.extra = new Uint8Array(4); }, row => { row.core.decoder = new WebAssembly.Memory({ initial: 1 }); }]) {
+    const slot = createMpeg2CompiledCoreSlot(), f = fixture({ mpeg2CodeSlot: slot }), job = start("m1", "mkv-to-mp4-mpeg2");
+    f.encoders[0].emit({ type: "ready" }); f.owner.postMessage(job); const row = { type: "mpeg2-compiled-core", jobId: job.jobId, core: mpeg2Code() }; mutate(row);
+    f.encoders[0].emit(row); assert.equal(f.errors.length, 1); assert.equal(slot.get(), null); f.owner.terminate();
+  }
+  const duplicate = fixture(), job = start("dup", "mkv-to-mp4-mpeg2"); duplicate.encoders[0].emit({ type: "ready" }); duplicate.owner.postMessage(job);
+  const row = { type: "mpeg2-compiled-core", jobId: job.jobId, core: mpeg2Code() }; duplicate.encoders[0].emit(row); duplicate.encoders[0].emit(row);
+  assert.equal(duplicate.errors.length, 1); duplicate.owner.terminate();
+});
 test("only closed stage transfers, original codec worker is retired first, no source File or heaps enter saver", () => {
   const f = fixture(), request = start(); f.encoders[0].emit({ type: "ready" }); f.owner.postMessage(request);
   const value = handoff(request); value.handle = { attacker: true }; f.encoders[0].emit(value);
