@@ -58,11 +58,14 @@ test("qualification observes the real lifecycle with bounded diagnostics, ignore
     const pending = runMpeg2QualificationJob(worker, job, control.signal);
     assert.equal(worker.requests[0], job); assert.equal(worker.listeners, 2);
     worker.emit({ type: "ready" }); worker.emit({ type: "complete", jobId: "other", metrics: {} });
+    const plan = { streams: [], blockingReasons: [], metadataSummary: "private bounded plan" };
+    worker.emit({ type: "progress", jobId: job.jobId, phase: "Planning MPEG-2 streams", metrics: {}, mediaPlan: plan });
     for (let i = 0; i < 100; i++) worker.emit({ type: "progress", jobId: job.jobId, phase: i + "x".repeat(300), metrics: {} });
     worker.emit({ type: "progress", jobId: job.jobId, phase: "Encoding MPEG-2 MP4", metrics: { wasmMemoryBytes: 50331648 } });
     worker.emit({ type: "progress", jobId: job.jobId, phase: "Copying staged MP4 to selected destination", metrics: { wasmMemoryBytes: 0 } });
     worker.emit({ type: terminal, jobId: job.jobId, metrics: { wasmMemoryBytes: 0 } });
     const result = await pending;
+    assert.deepEqual(result.plan, plan);
     assert.equal(result.type, terminal); assert.equal(result.phases.length, 32); assert.ok(result.phases.every(phase => phase.length <= 256));
     assert.equal(result.nativeMetrics.wasmMemoryBytes, 50331648); assert.equal(worker.listeners, 0);
   }
@@ -86,6 +89,11 @@ test("qualification rejects non-owned/public/direct jobs and releases listeners 
 
 test("actual dispatcher selects explicit profile40 and closed-stage handoff while the route remains unpublished", async () => {
   const worker = await readFile("workers/conversion.worker.ts", "utf8"), app = await readFile("app/converter/ConverterApp.tsx", "utf8");
+  const preflight = worker.slice(worker.indexOf('    if (isMpeg2Job) {'), worker.indexOf('    const audioOptions = isMpeg2Job'));
+  assert.match(preflight, /planMpeg2Conversion\(inspection/); assert.match(preflight, /if \(mediaPlan.blockingReasons.length\) throw/);
+  assert.ok(preflight.indexOf("planMpeg2Conversion(inspection") < preflight.indexOf("loadMpeg2SplitCore(undefined"));
+  const vpx = worker.slice(worker.indexOf('    if (isVpxJob) {'), worker.indexOf('    if (isMpeg2Job) {'));
+  assert.equal(vpx.includes("planMpeg2Conversion"), false, "MPEG-2 preflight must not alter VPX settings or jobs");
   assert.match(worker, /if \(isMpeg2Job\) \{\s*await runMediaRemux\([\s\S]*?remuxProfile: 40, mpeg2SplitCore/);
   const close = worker.slice(worker.indexOf("        if (profileId === MPEG2_JOB_PROFILE || isVpxDecoderProfile(profileId)) {"), worker.indexOf("        finalWritable = await finalHandle.createWritable"));
   assert.match(close, /stageClosed: true/); assert.match(close, /workerScope.postMessage\(handoff\)/); assert.match(close, /await new Promise<void>\(\(\) => {}\)/);

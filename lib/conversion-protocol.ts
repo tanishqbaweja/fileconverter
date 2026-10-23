@@ -83,6 +83,8 @@ export type WorkerResponse =
       type: "progress";
       jobId: string;
       phase: string;
+      /** Bounded local stream preview; never a complete inventory or qualification claim. */
+      mediaPlan?: import("./media-conversion-plan").MediaConversionPlan;
       metrics: ConversionMetrics;
     }
   | { type: "warning"; jobId: string; message: string }

@@ -2,14 +2,15 @@
 // The qualified native binaries remain separate, lazily supplied modules. This
 // owner replaces the experimental profile-1 -> profile-6 remux substitution.
 import { createMpeg2SplitSession } from "../scripts/lib/mpeg2-split-session.mjs";
-import type { AudioConversionOptions, VideoConversionOptions } from "../lib/media-conversion-options";
+import { MPEG2_VIDEO_BIT_RATE_BPS } from "../lib/mpeg2-stage-policy";
+export { assertMpeg2Options as assertMpeg2SplitOptions } from "../lib/mpeg2-stage-policy";
 import type { RemuxBridge, RemuxFactoryOptions, RemuxModule } from "./media-remux";
 
 const DECODER_BYTES = 32 * 1024 * 1024;
 const ENCODER_BYTES = 16 * 1024 * 1024;
 const NATIVE_STACK_BYTES = 256 * 1024;
 const MAX_AVIO_BYTES = 256 * 1024;
-const BIT_RATE = 4_000_000;
+const BIT_RATE = MPEG2_VIDEO_BIT_RATE_BPS;
 
 interface FixedCore {
   HEAPU8: Uint8Array;
@@ -33,22 +34,6 @@ export interface Mpeg2SplitCore {
   encoderFactory: (options: Pick<RemuxFactoryOptions, "locateFile" | "print" | "printErr" | "instantiateWasm">) => Promise<Mpeg2EncoderCore>;
   decoderWasmUrl: string;
   encoderWasmUrl: string;
-}
-
-// Native resizing/FPS/quality variants need their own production qualification.
-// Until integrated, reject them explicitly; never silently discard a UI choice.
-export function assertMpeg2SplitOptions(
-  audio?: AudioConversionOptions,
-  video?: VideoConversionOptions,
-): void {
-  if (audio && (audio.codec !== "automatic" || audio.compression !== "automatic" ||
-      audio.bitRateBps !== 0 || audio.sampleRateHz !== 0 || audio.channels !== 0 || audio.quality !== "automatic")) {
-    throw new Error("MPEG-2 currently copies compatible audio; audio re-encoding settings are not implemented for this route.");
-  }
-  if (video && (video.codec !== "automatic" || video.maxWidth !== 0 ||
-      (video.bitRateBps !== 0 && video.bitRateBps !== BIT_RATE) || video.frameRateFps !== 0 || video.quality !== "automatic")) {
-    throw new Error("MPEG-2 currently requires source dimensions/timing, 4 Mbps and automatic quality; other settings are not yet qualified.");
-  }
 }
 
 function fixedHeap(core: FixedCore, bytes: number): Uint8Array {

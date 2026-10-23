@@ -1,4 +1,5 @@
 import type { ConversionProfile } from "./capability-registry";
+import { assertMpeg2Options, MPEG2_JOB_PROFILE } from "./mpeg2-stage-policy.ts";
 import type {
   MediaSourceInspection,
   SourceStreamInspection,
@@ -10,7 +11,7 @@ import {
   type VideoConversionOptions,
 } from "./media-conversion-options.ts";
 
-export type MediaPlanAction = "copy" | "re-encode" | "exclude" | "reject";
+export type MediaPlanAction = "copy" | "re-encode" | "exclude" | "reject" | "verify";
 
 export interface MediaStreamPlan {
   streamIndex: number;
@@ -694,12 +695,54 @@ function planVideoReencode(
   });
 }
 
+/** Private production route. This preview is not registry publication or a
+ * claim that the bounded header scan sees every stream, tag or attachment. */
+export function planMpeg2Conversion(
+  inspection: MediaSourceInspection,
+  audioOptions?: AudioConversionOptions,
+  videoOptions?: VideoConversionOptions,
+): MediaConversionPlan {
+  const blockingReasons: string[] = [];
+  try { assertMpeg2Options(audioOptions, videoOptions); }
+  catch (error) { blockingReasons.push((error instanceof Error ? error.message : String(error)).slice(0, 512)); }
+  const inspected = sourceStreams(inspection);
+  if (inspected.length > 32) blockingReasons.push("MPEG-2 permits at most 32 source streams; oversized inventories are rejected, not silently truncated.");
+  let selected = false;
+  const streams = inspected.slice(0, 32).map((stream, index) => {
+    const codec = normalizedCodec(stream.codec);
+    // Exact decoder inventory of the current private native build, including
+    // FFmpeg's H.263/VP3 dependencies. This is not an AV1 software decoder.
+    if (stream.mediaType === "video" && !selected) {
+      selected = true;
+      if (!["H.264", "HEVC", "MPEG-4 Part 2", "MPEG-2 Video", "Theora", "VP8", "VP9", "H.263", "VP3"].includes(codec)) {
+        blockingReasons.push(`The private MPEG-2 engine has no ${codec.slice(0, 128)} video decoder.`);
+        return planItem({ ...stream, codec: stream.codec.slice(0, 128) }, index, "reject", "No matching native decoder; the destination will not be opened.");
+      }
+      for (const [name, value, maximum] of [["width", stream.width, 4096], ["height", stream.height, 2160]] as const) {
+        if (value !== null && (!Number.isSafeInteger(value) || value < 2 || value > maximum || value % 2))
+          blockingReasons.push(`MPEG-2 source ${name} must be even and between 2 and ${maximum}; no undisclosed crop or resize is allowed.`);
+      }
+      return planItem({ ...stream, codec: stream.codec.slice(0, 128) }, index, "re-encode",
+        "The first video stream is decoded and encoded as MPEG-2 at 4 Mbps, source dimensions and constant source timing. Native checks refuse VFR, full-range input or changing dimensions; 8-bit pixel-format conversion can be lossy. Other controls remain unqualified.");
+    }
+    if (stream.mediaType === "audio" && ["AAC", "MP3", "ALAC"].includes(codec))
+      return planItem({ ...stream, codec: stream.codec.slice(0, 128) }, index, "copy",
+        "This compatible audio stream is packet-copied, not re-encoded. Native MP4 validation remains authoritative; timestamps and priming still require independent output checks. No audio encoding setting is ignored.");
+    return planItem({ ...stream, codec: stream.codec.slice(0, 128) }, index, "verify",
+      "The native muxer checks this companion stream for standards-compliant MP4 packet copying. If it cannot be represented, an explicit exclusion warning is emitted. No additional video, audio or subtitle encoder is implied.");
+  });
+  if (!selected) blockingReasons.push("MPEG-2 conversion requires a video stream from bounded source inspection.");
+  return { streams, blockingReasons: [...new Set(blockingReasons)], metadataSummary:
+    "Private MPEG-2 route; not public or large-file acceptance. This bounded header preview is not a complete metadata inventory. The native muxer handles compatible tags, languages, chapters and stream side data and warns about nonrepresentable streams. Encoder provenance is relabelled for freshly encoded video. Attachments/artwork have an 8 MiB aggregate guard; text metadata has 4096-entry/2 MiB guards and chapters a 1024-entry guard. Destination-specific preservation still requires independent qualification." };
+}
+
 export function planMediaConversion(
   profile: ConversionProfile,
   inspection: MediaSourceInspection,
   audioOptions?: AudioConversionOptions,
   videoOptions?: VideoConversionOptions,
 ): MediaConversionPlan | null {
+  if (profile.id === MPEG2_JOB_PROFILE) return planMpeg2Conversion(inspection, audioOptions, videoOptions);
   if (
     profile.engine !== "ffmpeg-remux" &&
     profile.engine !== "ffmpeg-audio" &&

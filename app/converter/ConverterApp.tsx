@@ -249,6 +249,7 @@ function mediaPlanActionLabel(action: MediaPlanAction): string {
   if (action === "copy") return "Copy";
   if (action === "re-encode") return "Re-encode";
   if (action === "reject") return "Reject";
+  if (action === "verify") return "Native check";
   return "Exclude";
 }
 

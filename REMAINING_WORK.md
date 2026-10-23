@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-10-23 next concrete capability integration: production MPEG-2 stream plan
+now distinguishes real MPEG-2 encoding/compatible companion audio copy/deferred
+native compatibility from generic first-video-only MPEG-4/audio exclusion.
+Native-build decoder inventory,32stream bound/known dimension limits and shared
+option guards; unknown header fields remain subject to native checks. Plans
+blocked before codec/destination, emitted over bounded actual progress and
+retained by qualification observer. Registry remains unpublished; full private
+selector/options/metadata qualification still OPEN.66focused/TS/lint PASS;
+one changed --planning browser gate next (valid output+AV1 preflight rejection).
+Earlier production recovery gate is reused, not repeated. Previous turn was
+concrete production-browser recovery/evidence progress, not a status-only turn.
+
 2026-10-23 production MPEG-2 cancellation/write-failure recovery gate CLOSED for
 small fixtures at5e67254: real in-flight Cancel button/6.545ms terminal, old
 worker retired, existing destination preserved and stage absent; final-save

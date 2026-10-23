@@ -29,6 +29,8 @@ test("current application mounts the bounded component with explicit lifecycle a
   // unique and reversible; the complete historical UI comparison below remains
   // mandatory and still catches every unrelated change.
   const codeOwnerEdits = [
+    ['  if (action === "reject") return "Reject";\n  if (action === "verify") return "Native check";\n',
+      '  if (action === "reject") return "Reject";\n'],
     ['import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";\nimport { createVpxCompiledCoreSlot } from "../../lib/vpx-compiled-core";\nimport { createMpeg2CompiledCoreSlot } from "../../lib/mpeg2-compiled-core";\n',
       'import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";\n'],
     ['    let replacementTimer = 0;\n    // Retain only immutable static code across coordinator replacement. Worker\n    // instances, memories and all user-file/destination state still retire.\n    const staticCodeSlot = createVpxCompiledCoreSlot();\n    const mpeg2CodeSlot = createMpeg2CompiledCoreSlot();\n',

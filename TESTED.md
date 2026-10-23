@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-23 production MPEG-2 preflight implemented: route-specific plan for
+first-video4Mbps/CFR/native decoder inventory, compatible companion audio copying
+and explicit deferred native checks for other streams; no generic MPEG-4/audio
+exclusion claim. Shared option guard prevents planner/runtime drift. Blocking
+plans stop before code/destination; bounded plan goes through actual progress/
+qualification lifecycle. General planner recognizes private id but registry
+still does not publish it. Native-check label added; exact historical UI diff
+comparison retained.66focused/TS/lint PASS. Initial focused import/shared-result
+typing issues corrected before browser execution; VPX preflight unchanged by
+explicit regression guard. Next --planning actual successful HEVC conversion
+with plan plus AV1 no-decoder rejection before writes. Same native/thresholds;
+no repeat of closed three-job/recovery gates and no new UI/scale/public claim.
+
 2026-10-23 actual5e67254 production MPEG-2 recovery gate PASS4cases: in-flight
 real Cancel button after196608read/1390written, terminal6.545ms later, existing
 destination unchanged/stage absent/old codec worker retired; validated retry;

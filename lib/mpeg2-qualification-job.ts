@@ -1,11 +1,14 @@
 import type { ConversionMetrics, StartConversionMessage, WorkerResponse } from "./conversion-protocol";
 import { MPEG2_JOB_PROFILE } from "./mpeg2-stage-policy";
 import { isOwnedCompletedStage } from "./staged-copy-protocol";
+import type { MediaConversionPlan } from "./media-conversion-plan";
 
 type TerminalResponse = Extract<WorkerResponse, { type: "complete" | "cancelled" | "error" }>;
 export type Mpeg2QualificationResult = TerminalResponse & {
   phases: string[];
   nativeMetrics: ConversionMetrics | null;
+  /** MPEG-2 jobs expose this; the shared bridge's VPX results may omit it. */
+  plan?: MediaConversionPlan | null;
 };
 
 export function validateMpeg2QualificationRequest(request: StartConversionMessage): void {
@@ -28,6 +31,7 @@ export async function runMpeg2QualificationJob(worker: Worker, request: StartCon
   signal.throwIfAborted();
   const phases: string[] = [];
   let nativeMetrics: ConversionMetrics | null = null;
+  let plan: MediaConversionPlan | null = null;
   let onMessage: EventListener, onError: EventListener, onAbort: () => void;
   try {
     return await new Promise<Mpeg2QualificationResult>((resolve, reject) => {
@@ -35,6 +39,7 @@ export async function runMpeg2QualificationJob(worker: Worker, request: StartCon
         const message = (event as MessageEvent<WorkerResponse>).data;
         if (message.type === "ready" || message.jobId !== request.jobId) return;
         if (message.type === "progress") {
+          if (message.mediaPlan) plan = message.mediaPlan;
           const phase = message.phase.slice(0, 256);
           if (phases.at(-1) !== phase) {
             if (phases.length === 32) phases.shift();
@@ -42,7 +47,7 @@ export async function runMpeg2QualificationJob(worker: Worker, request: StartCon
           }
           if (phase === "Encoding MPEG-2 MP4") nativeMetrics = { ...message.metrics, wasmMemories: { ...message.metrics.wasmMemories } };
         } else if (message.type === "complete" || message.type === "cancelled" || message.type === "error") {
-          resolve({ ...message, phases, nativeMetrics });
+          resolve({ ...message, phases, nativeMetrics, plan });
         }
       };
       onError = event => reject(new Error((event as ErrorEvent).message || "Qualification worker failed."));

@@ -4,6 +4,7 @@ import { conversionProfiles } from "../lib/capability-registry.ts";
 import {
   mediaOutputFamily,
   planMediaConversion,
+  planMpeg2Conversion,
   selectAutomaticMediaProfile,
 } from "../lib/media-conversion-plan.ts";
 
@@ -51,6 +52,43 @@ function inspection(streams, metadataSignals = []) {
     maximumInspectionBytes: 1024,
   };
 }
+
+test("private MPEG-2 plan encodes first video, copies each compatible audio and defers other streams without silent exclusion", () => {
+  const source = inspection([stream("video", "HEVC/H.265"), stream("audio", "AAC"), stream("audio", "MP3"),
+    stream("subtitle", "ASS subtitle"), stream("video", "AV1"), stream("audio", "unknown")], ["Attachments", "Chapters", "Tags"]);
+  const plan = planMpeg2Conversion(source);
+  assert.deepEqual(plan.blockingReasons, []);
+  assert.deepEqual(plan.streams.map(row => row.action), ["re-encode", "copy", "copy", "verify", "verify", "verify"]);
+  assert.match(plan.streams[0].detail, /MPEG-2.*4 Mbps.*source dimensions/);
+  assert.match(plan.streams[0].detail, /VFR.*full-range.*changing dimensions/);
+  assert.match(plan.streams[1].detail, /not re-encoded/); assert.match(plan.streams[3].detail, /explicit exclusion warning/);
+  assert.match(plan.metadataSummary, /not a complete metadata inventory/); assert.match(plan.metadataSummary, /8 MiB.*4096-entry\/2 MiB.*1024-entry/);
+  const privateProfile = { id: "mkv-to-mp4-mpeg2", input: "mkv", output: "mp4", engine: "ffmpeg-video", route: "re-encode", public: false };
+  assert.deepEqual(planMediaConversion(privateProfile, source), plan);
+  assert.equal(conversionProfiles.some(candidate => candidate.id === privateProfile.id), false, "This plan does not publish a route");
+});
+
+test("private MPEG-2 preflight rejects unavailable decoding, known invalid geometry, absent video and excessive stream counts", () => {
+  assert.match(planMpeg2Conversion(inspection([stream("video", "AV1")])).blockingReasons.join(" "), /no AV1 video decoder/);
+  assert.ok(planMpeg2Conversion(inspection([stream("audio", "AAC")])).blockingReasons.some(reason => /requires a video/.test(reason)));
+  for (const geometry of [{ width: 1919 }, { height: 1081 }, { width: 4098 }, { height: 2162 }, { width: 1 }])
+    assert.ok(planMpeg2Conversion(inspection([{ ...stream("video", "HEVC"), ...geometry }])).blockingReasons.length > 0);
+  const unknown = { ...stream("video", "HEVC"), width: null, height: null, frameRate: null };
+  assert.deepEqual(planMpeg2Conversion(inspection([unknown])).blockingReasons, [], "Unavailable header fields remain subject to native checks, not invented values");
+  const oversized = planMpeg2Conversion(inspection(Array.from({ length: 33 }, () => stream("video", "HEVC"))));
+  assert.equal(oversized.streams.length, 32); assert.match(oversized.blockingReasons.join(" "), /not silently truncated/);
+});
+
+test("private MPEG-2 options match runtime guards and refuse unsupported settings instead of describing defaults", () => {
+  const source = inspection([stream("video", "H.264/AVC")]);
+  const automatic = { codec: "automatic", maxWidth: 0, bitRateBps: 0, frameRateFps: 0, quality: "automatic" };
+  assert.deepEqual(planMpeg2Conversion(source, undefined, { ...automatic, bitRateBps: 4000000 }).blockingReasons, []);
+  for (const change of [{ maxWidth: 320 }, { bitRateBps: 2000000 }, { frameRateFps: 24 }, { codec: "mpeg4" }, { quality: "higher" }])
+    assert.ok(planMpeg2Conversion(source, undefined, { ...automatic, ...change }).blockingReasons.length > 0);
+  assert.match(planMpeg2Conversion(source, { codec: "aac" }).blockingReasons.join(" "), /audio re-encoding settings are not implemented/);
+  for (const codec of ["H.264/AVC", "HEVC/H.265", "MPEG-4 Part 2", "MPEG-2 Video", "Theora", "VP8", "VP9", "H.263", "VP3"])
+    assert.deepEqual(planMpeg2Conversion(inspection([stream("video", codec)])).blockingReasons, [], codec);
+});
 
 test("MP4 stream-copy plan distinguishes copied, excluded, and rejecting streams", () => {
   const plan = planMediaConversion(

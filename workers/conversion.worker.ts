@@ -4186,6 +4186,12 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       emitProgress(jobId, "Inspecting MPEG-2 source", metrics, startedAt, true);
       const { inspectMediaSource } = await import("../lib/media-source-inspection");
       const inspection = await inspectMediaSource(file, "mkv");
+      if (!inspection) throw new Error("MPEG-2 source inspection is unavailable; no destination was opened.");
+      const { planMpeg2Conversion } = await import("../lib/media-conversion-plan");
+      const mediaPlan = planMpeg2Conversion(inspection, message.audioOptions, message.videoOptions);
+      post({ type: "progress", jobId, phase: "Planning MPEG-2 streams", metrics: { ...metrics }, mediaPlan });
+      if (mediaPlan.blockingReasons.length) throw new Error(mediaPlan.blockingReasons.join(" "));
+      post({ type: "warning", jobId, message: mediaPlan.metadataSummary });
       requiredScratchBytes = estimateMpeg2StageBytes(file.size, inspection?.durationSeconds ?? null);
       const { loadMpeg2SplitCore } = await import("./mpeg2-core-loader");
       mpeg2SplitCore = await loadMpeg2SplitCore(undefined, {

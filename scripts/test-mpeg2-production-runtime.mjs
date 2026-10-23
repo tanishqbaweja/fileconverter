@@ -27,13 +27,18 @@ import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators", "--cache-repeats", "--recovery"].includes(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--planning"].includes(flag)));
 assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
 assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
 const recovery = flags.has("--recovery");
+const planning = flags.has("--planning");
+assert.ok(Number(recovery) + Number(planning) + Number(flags.has("--cache-repeats")) <= 1, "Select one finite qualification gate");
 assert.ok(!recovery || !flags.has("--cache-repeats"), "Recovery is a separate missing gate, not an unchanged repeat run");
-const cases = recovery ? [
+const cases = planning ? [
+  { name: "planned-native-conversion", expected: "complete" },
+  { name: "unavailable-decoder-preflight", expected: "error", preflightRejection: true },
+] : recovery ? [
   { name: "in-flight-cancel", expected: "cancelled", cancelDuringEncoding: true },
   { name: "recover-after-cancel", expected: "complete" },
   { name: "final-write-failure", expected: "error", testFault: "write" },
@@ -47,7 +52,9 @@ const report = { scope: "production-MPEG2-dispatch-and-staged-lifecycle-small-fi
   publicAcceptance: false, uiPlannerCoverage: false, largeFileCoverage: false, speedComparison: false, standaloneWorker: false, failures: [] };
 report.observer = { allocationDiagnostics: diagnose, screenshots: !eventsOnly, snapshots: !eventsOnly, sources: true,
   controlScope: eventsOnly ? "events-only observer comparison, not route promotion" : "existing full screenshot/snapshot trace" };
-report.cacheQualification = { repetitions, sameSource: !recovery, outputHashes: [], results: [], globalSpeedClaim: false };
+report.cacheQualification = { repetitions, sameSource: !recovery && !planning, outputHashes: [], results: [], globalSpeedClaim: false };
+if (planning) report.planningQualification = { cases: [], completed: false, rejectedBeforeDestinationOrCode: false,
+  finalUiSelectorCoverage: false, publicAcceptance: false };
 if (recovery) report.recoveryQualification = { cases: [], completed: false, nativeDuringEncodingCancellation: false,
   destinationRollback: false, noStagesAfterEachTerminal: false, publicAcceptance: false };
 const staticRequests = { manifests: 0, decoder: 0, encoder: 0 }; report.staticRequests = staticRequests;
@@ -95,6 +102,12 @@ try {
     "-metadata", "title=MPEG-2 café 音楽", "-metadata:s:a:0", "language=eng", "-avoid_negative_ts", "make_zero", fixture]);
   report.fixture = { bytes: (await lstat(fixture)).size, sha256: await hashFile(fixture), video: "hevc", width: 320, height: 240, frames: 96 };
   const cancellationFixture = path.join(work, "cancellation-source.mkv");
+  const rejectedFixture = path.join(work, "unavailable-decoder.mkv");
+  if (planning) {
+    await native(["-v", "error", "-f", "lavfi", "-i", "testsrc2=size=320x240:rate=24:duration=1",
+      "-c:v", "libaom-av1", "-cpu-used", "8", "-threads", "1", "-crf", "32", "-b:v", "0", rejectedFixture]);
+    report.rejectedFixture = { bytes: (await lstat(rejectedFixture)).size, sha256: await hashFile(rejectedFixture), video: "av1", frames: 24 };
+  }
   if (recovery) {
     // Long enough to observe real output before clicking the production Cancel
     // button. This is genuine encoded media, not a delay inside the converter.
@@ -133,6 +146,7 @@ try {
   for (const file of ["workers/media-remux.ts", "workers/mpeg2-split-runtime.ts", "workers/random-access-destination.ts",
     "workers/conversion.worker.ts", "workers/mpeg2-core-loader.ts", "workers/staged-save.worker.ts", "workers/staged-save-runtime.ts",
     "lib/staged-worker-coordinator.ts", "lib/staged-copy-protocol.ts", "lib/mpeg2-stage-policy.ts", "lib/mpeg2-qualification-job.ts", "lib/mpeg2-compiled-core.ts",
+    "lib/media-conversion-plan.ts", "lib/media-source-inspection.ts", "lib/media-conversion-options.ts", "lib/conversion-protocol.ts",
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/streaming-video-clock-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs",
     "scripts/test-mpeg2-production-runtime.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",
@@ -224,8 +238,8 @@ try {
   for (let repetition = 1; repetition <= repetitions; repetition++) {
   const testCase = cases[repetition - 1];
   if (monitorFailure) throw monitorFailure;
-  if (recovery && repetition <= 2) {
-    await page.locator('input[type="file"]').first().setInputFiles(testCase.cancelDuringEncoding ? cancellationFixture : fixture);
+  if ((recovery && repetition <= 2) || (planning && repetition === 2)) {
+    await page.locator('input[type="file"]').first().setInputFiles(testCase.preflightRejection ? rejectedFixture : testCase.cancelDuringEncoding ? cancellationFixture : fixture);
     await page.waitForFunction(() => document.querySelector('[data-testid="media-inspection-status"]')?.textContent.includes("These stream facts came from bounded local header reads"));
   }
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
@@ -275,9 +289,27 @@ try {
   report.conversion = execution.result;
   await monitorPending; await snapshot(); changePhase("validation");
   if (recovery) report.recoveryQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
+  if (planning) report.planningQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
   assert.equal(report.conversion.type, testCase.expected, JSON.stringify(report.conversion));
   assert.deepEqual(execution.stageNames, [], "Owned media stage must be removed before terminal completion");
   assert.ok(report.conversion.phases.includes("Inspecting MPEG-2 source"));
+  if (planning) {
+    assert.ok(report.conversion.plan, "Actual production worker must emit its bounded stream plan");
+    if (testCase.preflightRejection) {
+      assert.match(report.conversion.message, /no AV1 video decoder/);
+      assert.ok(report.conversion.plan.blockingReasons.length > 0);
+      assert.equal(execution.destinationUnchanged, true);
+      for (const phase of ["Destination opened", "Worker started", "Compiled MPEG-2 code", "Reusing compiled MPEG-2 code", "Encoding MPEG-2 MP4"])
+        assert.equal(report.conversion.phases.includes(phase), false, "Preflight rejection must precede " + phase);
+      assert.equal(report.conversion.nativeMetrics, null);
+      assert.equal(report.conversion.metrics.peakPendingOperations, 0); assert.equal(report.conversion.metrics.outputBytes, 0);
+      assert.deepEqual(staticRequests, { manifests: 1, decoder: 1, encoder: 1 });
+      continue;
+    }
+    assert.deepEqual(report.conversion.plan.blockingReasons, []);
+    assert.deepEqual(report.conversion.plan.streams.map(row => row.action), ["re-encode", "copy"]);
+    assert.match(report.conversion.plan.streams[0].detail, /MPEG-2.*4 Mbps/);
+  }
   assert.ok(report.conversion.phases.includes("Encoding MPEG-2 MP4"));
   if (testCase.expected !== "cancelled") assert.ok(report.conversion.phases.includes("Copying staged MP4 to selected destination"));
   assert.ok(report.conversion.phases.includes(repetition === 1 ? "Compiled MPEG-2 code" : "Reusing compiled MPEG-2 code"));
@@ -340,11 +372,13 @@ try {
   report.cacheQualification.outputHashes.push(report.output.sha256);
   report.cacheQualification.results.push({ repetition, conversion: report.conversion, output: report.output });
   if (recovery) report.recoveryQualification.cases.at(-1).independentOutput = report.output;
+  if (planning) report.planningQualification.cases.at(-1).independentOutput = report.output;
   await rm(output);
   }
-  assert.equal(report.cacheQualification.results.length, recovery ? 2 : repetitions);
+  assert.equal(report.cacheQualification.results.length, planning ? 1 : recovery ? 2 : repetitions);
   assert.equal(new Set(report.cacheQualification.outputHashes).size, 1);
-  assert.deepEqual(staticRequests, { manifests: repetitions, decoder: 1, encoder: 1 });
+  assert.deepEqual(staticRequests, { manifests: planning ? 1 : repetitions, decoder: 1, encoder: 1 });
+  if (planning) Object.assign(report.planningQualification, { completed: true, rejectedBeforeDestinationOrCode: true });
   if (recovery) Object.assign(report.recoveryQualification, { completed: true, nativeDuringEncodingCancellation: true,
     destinationRollback: true, noStagesAfterEachTerminal: true });
   clearInterval(monitorTimer); await monitorPending; await snapshot();
