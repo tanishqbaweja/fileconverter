@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-23 next missing gate prepared: --recovery runs actual MPEG-2 cancellation
+after native read/write via production Cancel button, successful validated retry,
+final saver write-failure/unchanged existing destination, then validated retry.
+Each terminal must delete owned stages; failed-job worker retirement observed.
+Last native48MiB cancellation metric stays48 until retirement, never faked zero;
+saver terminal owns0Wasm. Same native/code settings/full-tree250MiB retained.
+41focused PASS, driver syntax/lint PASS; actual headless run next, not acceptance.
+Prior completed tiny3repeat and portable gates are reused without replay.
+
 2026-10-23 corrected hosted39970086669/509d649 SUCCESS:1472unitsPASS/0fail/1skip
 55.12s,19privacy/offline browserPASS42.3s; lint/TS/build PASS.24-case targeted
 catalogue/cache followup PASS plus earlier48focused PASS. No codec/browser

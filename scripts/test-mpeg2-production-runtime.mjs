@@ -27,11 +27,19 @@ import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators", "--cache-repeats"].includes(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators", "--cache-repeats", "--recovery"].includes(flag)));
 assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
 assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
-const repetitions = flags.has("--cache-repeats") ? 3 : 1;
+const recovery = flags.has("--recovery");
+assert.ok(!recovery || !flags.has("--cache-repeats"), "Recovery is a separate missing gate, not an unchanged repeat run");
+const cases = recovery ? [
+  { name: "in-flight-cancel", expected: "cancelled", cancelDuringEncoding: true },
+  { name: "recover-after-cancel", expected: "complete" },
+  { name: "final-write-failure", expected: "error", testFault: "write" },
+  { name: "recover-after-write-failure", expected: "complete" },
+] : Array.from({ length: flags.has("--cache-repeats") ? 3 : 1 }, (_, index) => ({ name: `complete-${index + 1}`, expected: "complete" }));
+const repetitions = cases.length;
 const pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const chunk of createReadStream(file)) hash.update(chunk); return hash.digest("hex"); };
@@ -39,7 +47,9 @@ const report = { scope: "production-MPEG2-dispatch-and-staged-lifecycle-small-fi
   publicAcceptance: false, uiPlannerCoverage: false, largeFileCoverage: false, speedComparison: false, standaloneWorker: false, failures: [] };
 report.observer = { allocationDiagnostics: diagnose, screenshots: !eventsOnly, snapshots: !eventsOnly, sources: true,
   controlScope: eventsOnly ? "events-only observer comparison, not route promotion" : "existing full screenshot/snapshot trace" };
-report.cacheQualification = { repetitions, sameSource: true, outputHashes: [], results: [], globalSpeedClaim: false };
+report.cacheQualification = { repetitions, sameSource: !recovery, outputHashes: [], results: [], globalSpeedClaim: false };
+if (recovery) report.recoveryQualification = { cases: [], completed: false, nativeDuringEncodingCancellation: false,
+  destinationRollback: false, noStagesAfterEachTerminal: false, publicAcceptance: false };
 const staticRequests = { manifests: 0, decoder: 0, encoder: 0 }; report.staticRequests = staticRequests;
 const runtime = await createOwnedRuntimeScratch("mpeg2-production-runtime-");
 const env = { ...runtime.env, NODE_OPTIONS: [process.env.NODE_OPTIONS ?? "", "--import=" + pathToFileURL(path.join(root, "scripts/lib/hidden-unit-subprocesses.mjs")).href].filter(Boolean).join(" "),
@@ -84,6 +94,18 @@ try {
     "pools=none:frame-threads=1:wpp=0:bframes=2:keyint=48:scenecut=0:log-level=error", "-c:a", "aac", "-b:a", "128k",
     "-metadata", "title=MPEG-2 café 音楽", "-metadata:s:a:0", "language=eng", "-avoid_negative_ts", "make_zero", fixture]);
   report.fixture = { bytes: (await lstat(fixture)).size, sha256: await hashFile(fixture), video: "hevc", width: 320, height: 240, frames: 96 };
+  const cancellationFixture = path.join(work, "cancellation-source.mkv");
+  if (recovery) {
+    // Long enough to observe real output before clicking the production Cancel
+    // button. This is genuine encoded media, not a delay inside the converter.
+    await native(["-v", "error", "-f", "lavfi", "-i", "testsrc2=size=320x240:rate=24:duration=12",
+      "-f", "lavfi", "-i", "sine=frequency=997:sample_rate=48000:duration=12", "-map", "0:v", "-map", "1:a",
+      "-c:v", "libx265", "-preset", "ultrafast", "-crf", "18", "-threads:v", "1", "-x265-params",
+      "pools=none:frame-threads=1:wpp=0:bframes=2:keyint=48:scenecut=0:log-level=error", "-c:a", "aac", "-b:a", "128k",
+      "-avoid_negative_ts", "make_zero", cancellationFixture]);
+    report.cancellationFixture = { bytes: (await lstat(cancellationFixture)).size, sha256: await hashFile(cancellationFixture),
+      frames: 288, durationSeconds: 12, video: "hevc", width: 320, height: 240 };
+  }
   await exec(process.execPath, ["node_modules/vinext/dist/cli.js", "build"], { cwd: root, env, windowsHide: true, timeout: 180000, maxBuffer: 4 * 1024 ** 2 });
   const assetsParent = path.join(root, "dist/client/engines");
   // Exact fixed directory URL is worker-owned, created exclusively; never replace
@@ -200,38 +222,92 @@ try {
   }, 500);
   await page.exposeFunction("receiveRuntimeOutput", async chunk => { assert.ok(validationTarget); await validationTarget.write(decodeBoundedValidationChunk(chunk)); });
   for (let repetition = 1; repetition <= repetitions; repetition++) {
+  const testCase = cases[repetition - 1];
   if (monitorFailure) throw monitorFailure;
+  if (recovery && repetition <= 2) {
+    await page.locator('input[type="file"]').first().setInputFiles(testCase.cancelDuringEncoding ? cancellationFixture : fixture);
+    await page.waitForFunction(() => document.querySelector('[data-testid="media-inspection-status"]')?.textContent.includes("These stream facts came from bounded local header reads"));
+  }
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
+  const workerEventStart = report.workerEvents.length;
   changePhase("conversion");
-  [report.conversion] = await Promise.all([page.evaluate(async () => {
+  const [execution] = await Promise.all([page.evaluate(async testCase => {
     const file = document.querySelector('input[type="file"]').files[0];
     const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle("mpeg2-runtime-output.mp4", { create: true });
+    const sentinel = "existing destination must survive";
+    const existing = await handle.createWritable(); await existing.write(sentinel); await existing.close();
     const jobId = crypto.randomUUID(), cancellationBuffer = new SharedArrayBuffer(4);
     const job = { type: "start", jobId, profileId: "mkv-to-mp4-mpeg2", file,
-      destination: { mode: "staged-handle", handle, stagingName: `within-stage-mkv-to-mp4-mpeg2-${jobId}` }, cancellationBuffer };
-    let timeout;
+      destination: { mode: "staged-handle", handle, stagingName: `within-stage-mkv-to-mp4-mpeg2-${jobId}` }, cancellationBuffer,
+      ...(testCase.testFault ? { testFault: testCase.testFault } : {}) };
+    let timeout, cancellationTimer, cancellation = null;
+    if (testCase.cancelDuringEncoding) cancellationTimer = setInterval(() => {
+      const state = window.__WITHIN_TEST__.getState();
+      if (cancellation || state.jobState !== "running" || state.phase !== "Encoding MPEG-2 MP4" ||
+          state.metrics.inputBytes <= 0 || state.metrics.outputBytes <= 0) return;
+      const button = document.querySelector("button.cancel");
+      if (!(button instanceof HTMLButtonElement) || button.disabled) return;
+      cancellation = { inputBytes: state.metrics.inputBytes, outputBytes: state.metrics.outputBytes,
+        wasmMemoryBytes: state.metrics.wasmMemoryBytes, phase: state.phase, requestedAt: performance.now(),
+        mechanism: "production Cancel safely button after observed native media read/write" };
+      button.click();
+    }, 16);
     try {
-      return await Promise.race([
+      const result = await Promise.race([
         window.__WITHIN_TEST__.runQualificationJob(job),
         new Promise((_, reject) => { timeout = setTimeout(() => { Atomics.store(new Int32Array(cancellationBuffer), 0, 1);
           reject(new Error("Production job conversion timeout")); }, 60000); }),
       ]);
-    } finally { clearTimeout(timeout); }
-  }).then(result => { changePhase("recovery"); return result; }), repetition === 1 ? captureAttribution("conversion") : Promise.resolve()]);
+      if (cancellation) cancellation.finishedAt = performance.now();
+      const stageNames = [];
+      for await (const name of root.keys()) if (name.startsWith("within-stage-mkv-to-mp4-mpeg2-")) {
+        if (stageNames.length >= 8) throw new Error("Unexpected stage accumulation"); stageNames.push(name);
+      }
+      let destinationUnchanged = null;
+      if (result.type !== "complete") {
+        const destination = await handle.getFile();
+        destinationUnchanged = destination.size === sentinel.length && await destination.slice(0, 128).text() === sentinel;
+        await root.removeEntry("mpeg2-runtime-output.mp4");
+      }
+      return { result, cancellation, stageNames, destinationUnchanged };
+    } finally { clearTimeout(timeout); clearInterval(cancellationTimer); }
+  }, testCase).then(result => { changePhase("recovery"); return result; }), repetition === 1 ? captureAttribution("conversion") : Promise.resolve()]);
+  report.conversion = execution.result;
   await monitorPending; await snapshot(); changePhase("validation");
-  assert.equal(report.conversion.type, "complete", JSON.stringify(report.conversion));
+  if (recovery) report.recoveryQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
+  assert.equal(report.conversion.type, testCase.expected, JSON.stringify(report.conversion));
+  assert.deepEqual(execution.stageNames, [], "Owned media stage must be removed before terminal completion");
   assert.ok(report.conversion.phases.includes("Inspecting MPEG-2 source"));
   assert.ok(report.conversion.phases.includes("Encoding MPEG-2 MP4"));
-  assert.ok(report.conversion.phases.includes("Copying staged MP4 to selected destination"));
+  if (testCase.expected !== "cancelled") assert.ok(report.conversion.phases.includes("Copying staged MP4 to selected destination"));
   assert.ok(report.conversion.phases.includes(repetition === 1 ? "Compiled MPEG-2 code" : "Reusing compiled MPEG-2 code"));
   const nativeMetrics = report.conversion.nativeMetrics;
   assert.equal(nativeMetrics.wasmMemoryBytes, 50331648); assert.ok(nativeMetrics.maxReadChunkBytes <= 262144);
   assert.ok(nativeMetrics.maxWriteChunkBytes <= 262144); assert.ok(nativeMetrics.peakQueuedBytes <= 262144);
   assert.equal(nativeMetrics.peakPendingOperations, 1);
   const metrics = report.conversion.metrics;
-  assert.equal(metrics.wasmMemoryBytes, 0); assert.equal(metrics.peakWasmMemoryBytes, 50331648); assert.equal(metrics.scratchBytes, 0);
+  // Cancellation reports its last native allocation before the application
+  // retires that worker; do not relabel that value as zero. A saver terminal
+  // genuinely owns no Wasm. The complete-tree observer remains authoritative.
+  assert.equal(metrics.wasmMemoryBytes, testCase.expected === "cancelled" ? 50331648 : 0);
+  assert.equal(metrics.peakWasmMemoryBytes, 50331648); assert.equal(metrics.scratchBytes, 0);
   assert.ok(metrics.maxWriteChunkBytes <= 524288); assert.ok(metrics.peakQueuedBytes <= 524288);
   assert.equal(metrics.peakPendingOperations, 1); assert.equal(metrics.pendingOperations, 0);
+  assert.equal(metrics.queuedBytes, 0);
+  if (testCase.expected !== "complete") {
+    assert.equal(execution.destinationUnchanged, true, "Cancelled/failed job must not overwrite the existing destination");
+    if (testCase.cancelDuringEncoding) {
+      assert.ok(execution.cancellation, "Cancellation must occur during actual processing, not before start");
+      assert.ok(execution.cancellation.inputBytes > 0 && execution.cancellation.outputBytes > 0);
+      assert.equal(execution.cancellation.wasmMemoryBytes, 50331648);
+      assert.ok(execution.cancellation.finishedAt - execution.cancellation.requestedAt < 5000, "Native cancellation response exceeded5s");
+    } else assert.match(report.conversion.message, /destination rejected a bounded write/i);
+    await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
+    const retiredRole = testCase.expected === "cancelled" ? "conversion.worker" : "staged-save.worker";
+    assert.ok(report.workerEvents.slice(workerEventStart).some(event => event.type === "closed" && event.url.includes(retiredRole)), "Failed job worker must retire before recovery");
+    report.recoveryQualification.cases.at(-1).terminalWorkerRetired = true;
+    continue;
+  }
   assert.ok(report.workerEvents.some(event => event.type === "closed" && event.url.includes("conversion.worker")));
   assert.ok(report.workerEvents.some(event => event.type === "created" && event.url.includes("staged-save.worker")));
   const file = await open(output, "wx");
@@ -263,10 +339,14 @@ try {
     copiedAudioPacketHash: await audioHash(output), titlePreserved: true, languagePreserved: true, videoClocks };
   report.cacheQualification.outputHashes.push(report.output.sha256);
   report.cacheQualification.results.push({ repetition, conversion: report.conversion, output: report.output });
+  if (recovery) report.recoveryQualification.cases.at(-1).independentOutput = report.output;
   await rm(output);
   }
+  assert.equal(report.cacheQualification.results.length, recovery ? 2 : repetitions);
   assert.equal(new Set(report.cacheQualification.outputHashes).size, 1);
   assert.deepEqual(staticRequests, { manifests: repetitions, decoder: 1, encoder: 1 });
+  if (recovery) Object.assign(report.recoveryQualification, { completed: true, nativeDuringEncodingCancellation: true,
+    destinationRollback: true, noStagesAfterEachTerminal: true });
   clearInterval(monitorTimer); await monitorPending; await snapshot();
   await captureAttribution("post-completion"); await snapshot();
   await monitor.close(); monitor = null;

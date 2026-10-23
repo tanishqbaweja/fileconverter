@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-23 recovery gate prepared in existing production MPEG-2 driver, not a
+second converter: cancel after actual native media read/write using real Cancel
+button, independently validated retry, final saver write failure with existing
+destination rollback, then validated retry. Stage absence and failed worker
+retirement required; native cancellation's last48MiB metric not relabelled zero.
+41focused+syntax/lint PASS; actual execution pending. Same native/full-tree250MiB
+and all validation thresholds retained. Previous goal turn made concrete code/
+browser-evidence/hosted-regression progress; completed gates stay closed.
+
 2026-10-23 MPEG-2 integration checkpoint portable regression CLOSED at509d649:
 hosted39970086669 SUCCESS1472units/0fail/1skip,19privacy/offline browserPASS;
 lint/TS/build PASS.24-case targeted catalogue/cache followup also PASS; earlier
