@@ -100,5 +100,11 @@ test("actual dispatcher selects explicit profile40 and closed-stage handoff whil
   assert.match(app, /const worker = createStagedWorkerCoordinator\(/);
   assert.match(app, /if \(!testMode\) return;\s*const lifetime = new AbortController\(\);\s*window\.__WITHIN_TEST__ =/);
   assert.match(app, /if \(jobIdRef.current \|\| activeBatchRef.current \|\| workerRef.current !== worker\) return;/);
-  const registry = await readFile("lib/capability-registry.ts", "utf8"); assert.equal(registry.includes(MPEG2_JOB_PROFILE), false);
+  const { conversionProfiles, privateQualificationProfiles, publicProfilesFor } = await import("../lib/capability-registry.ts");
+  assert.equal(conversionProfiles.some(profile => profile.id === MPEG2_JOB_PROFILE), false, "Unpublished assets must not borrow the published-core manifest");
+  const candidate = privateQualificationProfiles.find(profile => profile.id === MPEG2_JOB_PROFILE);
+  assert.ok(candidate); assert.equal(candidate.public, false); assert.equal(candidate.automatedTestStatus, "pending");
+  assert.equal(candidate.maxTestedBytes, null);
+  assert.equal(publicProfilesFor("mkv").some(profile => profile.id === MPEG2_JOB_PROFILE), false);
+  assert.equal(publicProfilesFor("mkv", true).some(profile => profile.id === MPEG2_JOB_PROFILE), true);
 });

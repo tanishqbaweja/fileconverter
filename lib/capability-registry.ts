@@ -2348,6 +2348,13 @@ export const formats = [
     mimeTypes: ["video/mp4"],
     category: "video",
   },
+  {
+    id: "mp4-mpeg2",
+    label: "MP4 (MPEG-2 video, private qualification)",
+    extensions: ["mp4"],
+    mimeTypes: ["video/mp4"],
+    category: "video",
+  },
 ] as const satisfies readonly FormatDefinition[];
 
 const recordProfiles = [
@@ -6305,11 +6312,38 @@ export function detectFormat(file: Pick<File, "name" | "type">): string {
   );
 }
 
+// Same registry authority, separate unpublished asset/qualification lifecycle.
+// Never add these profiles to published-engine manifests or automatic fallback
+// selection until their full promotion gates have actually passed.
+export const privateQualificationProfiles: readonly ConversionProfile[] = [{
+  id: "mkv-to-mp4-mpeg2",
+  input: "mkv",
+  output: "mp4-mpeg2",
+  engine: "ffmpeg-video",
+  route: "re-encode",
+  browserRequirements: ["WebAssembly", "WebAssembly JSPI", "Web Workers", "SharedArrayBuffer", "cross-origin isolation", "Origin Private File System", "File System Access"],
+  cpuClass: "high",
+  memoryClass: "bounded-medium",
+  metadataLimitations: [
+    "Private qualification only: original-source, large-file, broader preservation and browser gates remain open; this is not public support.",
+    "The first video stream is re-encoded. Compatible companion streams may be copied; native MP4 checks explicitly warn about nonrepresentable streams. Bounded inspection is not a complete metadata inventory.",
+    "Source-compatible tags, language, chapters and side data are handled by the native muxer, but destination-specific preservation still requires independent qualification.",
+    "Conversion uses quota-preflighted browser-private staging. The codec worker retires before one backpressured 512 KiB buffer copies the stage to the selected destination; temporary data is deleted on terminal paths.",
+  ],
+  fidelityLimitations: [
+    "Current fixed settings are MPEG-2 at 4 Mbps, source dimensions, constant source timing and automatic quantizer limits. Resize, frame-rate, other quality/bitrate and audio re-encoding choices are not yet qualified.",
+    "Full-range input, changing dimensions and variable frame timing are refused; conversion to the encoder's 8-bit pixel format can be lossy.",
+  ],
+  maxTestedBytes: null,
+  automatedTestStatus: "pending",
+  public: false,
+}];
+
 export function publicProfilesFor(
   input: string,
   includePending = false,
 ): readonly ConversionProfile[] {
-  return conversionProfiles.filter(
+  return (includePending ? [...conversionProfiles, ...privateQualificationProfiles] : conversionProfiles).filter(
     (profile) =>
       (profile.input === input ||
         (profile.id === "gzip-compress" && input !== "gzip") ||

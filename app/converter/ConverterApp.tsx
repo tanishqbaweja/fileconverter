@@ -4,6 +4,7 @@ import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";
 import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";
 import { createVpxCompiledCoreSlot } from "../../lib/vpx-compiled-core";
 import { createMpeg2CompiledCoreSlot } from "../../lib/mpeg2-compiled-core";
+import { MPEG2_JOB_PROFILE } from "../../lib/mpeg2-stage-policy";
 import { runMpeg2QualificationJob, validateMpeg2QualificationRequest, type Mpeg2QualificationResult } from "../../lib/mpeg2-qualification-job";
 import { isVpxDecoderProfile } from "../../lib/vpx-decoder-policy";
 import { runVpxQualificationJob, validateVpxQualificationRequest } from "../../lib/vpx-qualification-job";
@@ -627,7 +628,8 @@ export function ConverterApp() {
           batch.profile.id !== "mkv-to-mp4" &&
           batch.profile.id !== "avi-to-3gp" &&
           batch.profile.id !== "avi-to-mpeg-ts" &&
-          batch.profile.id !== "m2v-to-ogv"
+          batch.profile.id !== "m2v-to-ogv" &&
+          batch.profile.id !== MPEG2_JOB_PROFILE
         ) {
           activeOpfsNameRef.current = null;
           return { mode: "handle", handle };
@@ -636,7 +638,7 @@ export function ConverterApp() {
         activeOpfsNameRef.current = stagingName;
         return { mode: "staged-handle", handle, stagingName };
       };
-      if (batch.testMode && !batch.testDirectoryMode) {
+      if (batch.testMode && !batch.testDirectoryMode && batch.profile.id !== MPEG2_JOB_PROFILE) {
         destination = {
           mode: "opfs-test",
           name: `within-test-${batch.profile.id}-${batch.runId}-${index + 1}`,
@@ -1228,7 +1230,7 @@ export function ConverterApp() {
         : undefined,
       outputNames: batchOutputNames(files, selectedProfile),
       destinationHandle,
-      destinationDirectoryHandle: testDirectoryMode
+      destinationDirectoryHandle: testDirectoryMode || (testMode && selectedProfile.id === MPEG2_JOB_PROFILE)
         ? await navigator.storage.getDirectory()
         : destinationDirectoryHandle,
       testMode,

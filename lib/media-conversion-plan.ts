@@ -54,7 +54,7 @@ const VIDEO_REENCODE_DECODER_CODECS = new Set([
 ]);
 
 export function mediaOutputFamily(output: string): string {
-  if (output === "mp4-mpeg4") return "mp4";
+  if (output === "mp4-mpeg4" || output === "mp4-mpeg2") return "mp4";
   if (output === "webm-vp9" || output === "webm-av1") return "webm";
   return output;
 }
@@ -847,6 +847,7 @@ export function selectAutomaticMediaProfile(
   ) {
     for (const candidate of candidates) {
       if (
+        !candidate.public || candidate.automatedTestStatus !== "passed" ||
         candidate.id === selectedProfile.id ||
         candidate.input !== selectedProfile.input ||
         candidate.route !== "stream-copy" ||
@@ -879,6 +880,7 @@ export function selectAutomaticMediaProfile(
 
   for (const candidate of candidates) {
     if (
+      !candidate.public || candidate.automatedTestStatus !== "passed" ||
       candidate.id === selectedProfile.id ||
       candidate.input !== selectedProfile.input ||
       candidate.route !== "re-encode" ||

@@ -29,6 +29,14 @@ test("current application mounts the bounded component with explicit lifecycle a
   // unique and reversible; the complete historical UI comparison below remains
   // mandatory and still catches every unrelated change.
   const codeOwnerEdits = [
+    ['import { createMpeg2CompiledCoreSlot } from "../../lib/mpeg2-compiled-core";\nimport { MPEG2_JOB_PROFILE } from "../../lib/mpeg2-stage-policy";\n',
+      'import { createMpeg2CompiledCoreSlot } from "../../lib/mpeg2-compiled-core";\n'],
+    ['          batch.profile.id !== "m2v-to-ogv" &&\n          batch.profile.id !== MPEG2_JOB_PROFILE\n',
+      '          batch.profile.id !== "m2v-to-ogv"\n'],
+    ['      if (batch.testMode && !batch.testDirectoryMode && batch.profile.id !== MPEG2_JOB_PROFILE) {',
+      '      if (batch.testMode && !batch.testDirectoryMode) {'],
+    ['      destinationDirectoryHandle: testDirectoryMode || (testMode && selectedProfile.id === MPEG2_JOB_PROFILE)\n',
+      '      destinationDirectoryHandle: testDirectoryMode\n'],
     ['  if (action === "reject") return "Reject";\n  if (action === "verify") return "Native check";\n',
       '  if (action === "reject") return "Reject";\n'],
     ['import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";\nimport { createVpxCompiledCoreSlot } from "../../lib/vpx-compiled-core";\nimport { createMpeg2CompiledCoreSlot } from "../../lib/mpeg2-compiled-core";\n',

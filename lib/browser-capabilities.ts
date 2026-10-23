@@ -25,6 +25,8 @@ const IMAGE_DECODER_MIME_TYPES = [
 export interface BrowserCapabilities {
   secure: boolean;
   wasm: boolean;
+  /** Stable JSPI API presence; each private engine still validates execution. */
+  wasmJspi?: boolean;
   wasmSimd: boolean;
   workers: boolean;
   fileSystemAccess: boolean;
@@ -212,6 +214,8 @@ export async function detectBrowserCapabilities(): Promise<BrowserCapabilities> 
   return {
     secure: window.isSecureContext,
     wasm,
+    wasmJspi: wasm && typeof (WebAssembly as unknown as { Suspending?: unknown }).Suspending === "function" &&
+      typeof (WebAssembly as unknown as { promising?: unknown }).promising === "function",
     wasmSimd,
     workers: typeof Worker === "function",
     fileSystemAccess: typeof window.showSaveFilePicker === "function",
@@ -240,6 +244,8 @@ export function browserRequirementSatisfied(
   switch (requirement) {
     case "WebAssembly":
       return capabilities.wasm;
+    case "WebAssembly JSPI":
+      return capabilities.wasm && capabilities.wasmJspi === true;
     case "Web Workers":
       return capabilities.workers;
     case "File System Access":

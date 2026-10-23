@@ -65,7 +65,8 @@ test("private MPEG-2 plan encodes first video, copies each compatible audio and 
   assert.match(plan.metadataSummary, /not a complete metadata inventory/); assert.match(plan.metadataSummary, /8 MiB.*4096-entry\/2 MiB.*1024-entry/);
   const privateProfile = { id: "mkv-to-mp4-mpeg2", input: "mkv", output: "mp4", engine: "ffmpeg-video", route: "re-encode", public: false };
   assert.deepEqual(planMediaConversion(privateProfile, source), plan);
-  assert.equal(conversionProfiles.some(candidate => candidate.id === privateProfile.id), false, "This plan does not publish a route");
+  assert.equal(conversionProfiles.some(candidate => candidate.id === privateProfile.id && candidate.public), false, "This plan does not publish a route");
+  assert.equal(mediaOutputFamily("mp4-mpeg2"), "mp4");
 });
 
 test("private MPEG-2 preflight rejects unavailable decoding, known invalid geometry, absent video and excessive stream counts", () => {
@@ -88,6 +89,16 @@ test("private MPEG-2 options match runtime guards and refuse unsupported setting
   assert.match(planMpeg2Conversion(source, { codec: "aac" }).blockingReasons.join(" "), /audio re-encoding settings are not implemented/);
   for (const codec of ["H.264/AVC", "HEVC/H.265", "MPEG-4 Part 2", "MPEG-2 Video", "Theora", "VP8", "VP9", "H.263", "VP3"])
     assert.deepEqual(planMpeg2Conversion(inspection([stream("video", codec)])).blockingReasons, [], codec);
+});
+
+test("automatic fallback never selects a private or pending encoding candidate even if it can parse the source", async () => {
+  const { privateQualificationProfiles } = await import("../lib/capability-registry.ts");
+  const candidate = privateQualificationProfiles.find(profile => profile.id === "mkv-to-mp4-mpeg2"); assert.ok(candidate);
+  for (const unpublished of [candidate, { ...candidate, public: true }, { ...candidate, automatedTestStatus: "passed" }]) {
+    const selected = profile("mkv-to-mp4"), source = inspection([stream("video", "VP9"), stream("audio", "AAC")]);
+    const result = selectAutomaticMediaProfile(selected, [unpublished], source);
+    assert.equal(result.changed, false); assert.equal(result.profile.id, selected.id);
+  }
 });
 
 test("MP4 stream-copy plan distinguishes copied, excluded, and rejecting streams", () => {

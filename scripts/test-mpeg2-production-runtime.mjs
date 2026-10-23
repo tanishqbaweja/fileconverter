@@ -23,17 +23,19 @@ import { verifyProductionCatalogue } from "./lib/production-catalogue-check.mjs"
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { compareStreamingVideoClocks } from "./lib/streaming-video-clock-fidelity.mjs";
 import { boundedNativeLines } from "./lib/bounded-native-lines.mjs";
+import { runMpeg2UiJob } from "./lib/mpeg2-ui-job.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--planning"].includes(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--planning", "--ui"].includes(flag)));
 assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
 assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
 const recovery = flags.has("--recovery");
 const planning = flags.has("--planning");
-assert.ok(Number(recovery) + Number(planning) + Number(flags.has("--cache-repeats")) <= 1, "Select one finite qualification gate");
+const ui = flags.has("--ui");
+assert.ok(Number(recovery) + Number(planning) + Number(ui) + Number(flags.has("--cache-repeats")) <= 1, "Select one finite qualification gate");
 assert.ok(!recovery || !flags.has("--cache-repeats"), "Recovery is a separate missing gate, not an unchanged repeat run");
 const cases = planning ? [
   { name: "planned-native-conversion", expected: "complete" },
@@ -78,6 +80,7 @@ const captureAttribution = async label => {
 };
 const browserLogs = [];
 let serverLog = "", output, browserPin, originalHash, work, monitorBusy = false, tracing = false, validationTarget;
+let browserOutputName = "mpeg2-runtime-output.mp4";
 const snapshot = async () => {
   const batch = await monitor.drain();
   assert.ok(samples.length + batch.samples.length <= 3000, "Bounded short-test sample cap");
@@ -95,12 +98,13 @@ try {
   work = runtime.directory;
   const native = (args, executable = "ffmpeg") => exec(executable, args, { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 4 * 1024 ** 2 });
   const fixture = path.join(work, "source.mkv"); output = path.join(work, "output.mp4");
-  await native(["-v", "error", "-f", "lavfi", "-i", "testsrc2=size=320x240:rate=24:duration=4",
-    "-f", "lavfi", "-i", "sine=frequency=997:sample_rate=48000:duration=4", "-map", "0:v", "-map", "1:a",
+  const fixtureSeconds = ui ? 12 : 4;
+  await native(["-v", "error", "-f", "lavfi", "-i", `testsrc2=size=320x240:rate=24:duration=${fixtureSeconds}`,
+    "-f", "lavfi", "-i", `sine=frequency=997:sample_rate=48000:duration=${fixtureSeconds}`, "-map", "0:v", "-map", "1:a",
     "-c:v", "libx265", "-preset", "ultrafast", "-crf", "18", "-threads:v", "1", "-x265-params",
     "pools=none:frame-threads=1:wpp=0:bframes=2:keyint=48:scenecut=0:log-level=error", "-c:a", "aac", "-b:a", "128k",
     "-metadata", "title=MPEG-2 café 音楽", "-metadata:s:a:0", "language=eng", "-avoid_negative_ts", "make_zero", fixture]);
-  report.fixture = { bytes: (await lstat(fixture)).size, sha256: await hashFile(fixture), video: "hevc", width: 320, height: 240, frames: 96 };
+  report.fixture = { bytes: (await lstat(fixture)).size, sha256: await hashFile(fixture), video: "hevc", width: 320, height: 240, frames: fixtureSeconds * 24 };
   const cancellationFixture = path.join(work, "cancellation-source.mkv");
   const rejectedFixture = path.join(work, "unavailable-decoder.mkv");
   if (planning) {
@@ -147,6 +151,7 @@ try {
     "workers/conversion.worker.ts", "workers/mpeg2-core-loader.ts", "workers/staged-save.worker.ts", "workers/staged-save-runtime.ts",
     "lib/staged-worker-coordinator.ts", "lib/staged-copy-protocol.ts", "lib/mpeg2-stage-policy.ts", "lib/mpeg2-qualification-job.ts", "lib/mpeg2-compiled-core.ts",
     "lib/media-conversion-plan.ts", "lib/media-source-inspection.ts", "lib/media-conversion-options.ts", "lib/conversion-protocol.ts",
+    "lib/browser-capabilities.ts", "scripts/lib/mpeg2-ui-job.mjs",
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/streaming-video-clock-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs",
     "scripts/test-mpeg2-production-runtime.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",
@@ -204,7 +209,7 @@ try {
     if (request.url() === base + "/engines/mpeg2/encoder.wasm") staticRequests.encoder++;
     if (!request.url().startsWith(base + "/") || request.method() !== "GET" || request.postData() !== null) {
     forbiddenRequests.push({ method: request.method(), url: request.url().slice(0, 256) }); } });
-  const response = await page.goto(base + "/?test=1");
+  const response = await page.goto(base + (ui ? "/?test=1&directory=1" : "/?test=1"));
   assert.equal(response.status(), 200, "Production app route must load before file selection");
   const headers = response.headers(); assert.equal(headers["cross-origin-opener-policy"], "same-origin");
   assert.equal(headers["cross-origin-embedder-policy"], "require-corp"); assert.ok(headers["content-security-policy"]);
@@ -216,6 +221,16 @@ try {
   await page.locator('input[type="file"]').first().setInputFiles(fixture);
   await page.waitForFunction(() => document.querySelector('[data-testid="media-inspection-status"]')?.textContent.includes("These stream facts came from bounded local header reads"));
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
+  if (ui) {
+    await page.getByTestId("format-select").selectOption("mkv-to-mp4-mpeg2");
+    assert.match(await page.getByTestId("media-plan-stream-0").innerText(), /MPEG-2.*4 Mbps/);
+    assert.match(await page.getByTestId("media-plan-stream-1").innerText(), /Copy.*AAC/s);
+    assert.match(await page.locator('[data-testid="format-select"] option:checked').innerText(), /private qualification/);
+    report.uiQualification = { privateSelector: true, realPlanVisible: true, publicAcceptance: false,
+      screenshots: [], finalUiMatrixCoverage: false, nativeOsPickerCovered: false };
+    const screenshot = path.join(screenshotDirectory, "mpeg2-private-plan.png");
+    await page.screenshot({ path: screenshot, fullPage: false }); report.uiQualification.screenshots.push(path.relative(root, screenshot));
+  }
   // Observe the genuine loaded-site idle phase rather than starting conversion
   // during initial navigation/React rendering. Never subtract this baseline,
   // invoke GC, omit a process, or replace the lower blank baseline above.
@@ -245,7 +260,7 @@ try {
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
   const workerEventStart = report.workerEvents.length;
   changePhase("conversion");
-  const [execution] = await Promise.all([page.evaluate(async testCase => {
+  const [execution] = await Promise.all([ui ? page.evaluate(runMpeg2UiJob).then(value => { changePhase("recovery"); return value; }) : page.evaluate(async testCase => {
     const file = document.querySelector('input[type="file"]').files[0];
     const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle("mpeg2-runtime-output.mp4", { create: true });
     const sentinel = "existing destination must survive";
@@ -287,12 +302,13 @@ try {
     } finally { clearTimeout(timeout); clearInterval(cancellationTimer); }
   }, testCase).then(result => { changePhase("recovery"); return result; }), repetition === 1 ? captureAttribution("conversion") : Promise.resolve()]);
   report.conversion = execution.result;
+  if (ui) { browserOutputName = execution.destinationName; Object.assign(report.uiQualification, execution.uiEvidence); }
   await monitorPending; await snapshot(); changePhase("validation");
   if (recovery) report.recoveryQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
   if (planning) report.planningQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
   assert.equal(report.conversion.type, testCase.expected, JSON.stringify(report.conversion));
   assert.deepEqual(execution.stageNames, [], "Owned media stage must be removed before terminal completion");
-  assert.ok(report.conversion.phases.includes("Inspecting MPEG-2 source"));
+  if (!ui) assert.ok(report.conversion.phases.includes("Inspecting MPEG-2 source"));
   if (planning) {
     assert.ok(report.conversion.plan, "Actual production worker must emit its bounded stream plan");
     if (testCase.preflightRejection) {
@@ -311,8 +327,10 @@ try {
     assert.match(report.conversion.plan.streams[0].detail, /MPEG-2.*4 Mbps/);
   }
   assert.ok(report.conversion.phases.includes("Encoding MPEG-2 MP4"));
-  if (testCase.expected !== "cancelled") assert.ok(report.conversion.phases.includes("Copying staged MP4 to selected destination"));
-  assert.ok(report.conversion.phases.includes(repetition === 1 ? "Compiled MPEG-2 code" : "Reusing compiled MPEG-2 code"));
+  if (!ui) {
+    if (testCase.expected !== "cancelled") assert.ok(report.conversion.phases.includes("Copying staged MP4 to selected destination"));
+    assert.ok(report.conversion.phases.includes(repetition === 1 ? "Compiled MPEG-2 code" : "Reusing compiled MPEG-2 code"));
+  }
   const nativeMetrics = report.conversion.nativeMetrics;
   assert.equal(nativeMetrics.wasmMemoryBytes, 50331648); assert.ok(nativeMetrics.maxReadChunkBytes <= 262144);
   assert.ok(nativeMetrics.maxWriteChunkBytes <= 262144); assert.ok(nativeMetrics.peakQueuedBytes <= 262144);
@@ -345,18 +363,18 @@ try {
   const file = await open(output, "wx");
   try {
     validationTarget = file;
-    await page.evaluate(async () => {
-      const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle("mpeg2-runtime-output.mp4"), file = await handle.getFile();
+    await page.evaluate(async browserOutputName => {
+      const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle(browserOutputName), file = await handle.getFile();
       const reader = file.stream().getReader({ mode: "byob" }); let buffer = new Uint8Array(65536);
       try { for (;;) { const { done, value } = await reader.read(buffer); if (done) break;
         await window.receiveRuntimeOutput(window.__WITHIN_ENCODE_RUNTIME_CHUNK__(value)); buffer = new Uint8Array(value.buffer); } }
-      finally { await reader.cancel(); await root.removeEntry("mpeg2-runtime-output.mp4"); }
-    });
+      finally { await reader.cancel(); await root.removeEntry(browserOutputName); }
+    }, browserOutputName);
   } finally { validationTarget = undefined; await file.close(); }
   const probe = async file => JSON.parse((await native(["-v", "error", "-count_frames", "-show_streams", "-show_format", "-of", "json", file], "ffprobe")).stdout);
   const source = await probe(fixture), converted = await probe(output);
   assert.equal(source.streams[0].codec_name, "hevc"); assert.equal(converted.streams[0].codec_name, "mpeg2video");
-  assert.equal(Number(converted.streams[0].nb_read_frames), 96); assert.equal(converted.streams[0].width, 320); assert.equal(converted.streams[0].height, 240);
+  assert.equal(Number(converted.streams[0].nb_read_frames), report.fixture.frames); assert.equal(converted.streams[0].width, 320); assert.equal(converted.streams[0].height, 240);
   assert.equal(converted.streams[1].codec_name, "aac"); assert.equal(converted.streams[1].tags.language, "eng");
   assert.equal(converted.format.tags.title, source.format.tags.title);
   const audioHash = async file => (await native(["-v", "error", "-i", file, "-map", "0:a", "-c", "copy", "-f", "streamhash", "-hash", "sha256", "pipe:1"])).stdout.trim();
@@ -366,8 +384,8 @@ try {
     "[0:v:0]settb=1/1,setpts=N[ref];[1:v:0]settb=1/1,setpts=N[out];[ref][out]ssim", "-an", "-f", "null", "-"]);
   const ssim = Number(/All:([0-9.]+)/.exec(comparison.stderr)?.[1]); assert.ok(ssim >= 0.98, `SSIM ${ssim}`);
   const times = file => boundedNativeLines("ffprobe", ["-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "compact", file], { cwd: root, env });
-  const videoClocks = await compareStreamingVideoClocks(times(fixture), times(output), 96);
-  report.output = { bytes: (await lstat(output)).size, sha256: await hashFile(output), codec: "mpeg2video", frames: 96, ssim, fullNativeDecodePassed: true,
+  const videoClocks = await compareStreamingVideoClocks(times(fixture), times(output), report.fixture.frames);
+  report.output = { bytes: (await lstat(output)).size, sha256: await hashFile(output), codec: "mpeg2video", frames: report.fixture.frames, ssim, fullNativeDecodePassed: true,
     copiedAudioPacketHash: await audioHash(output), titlePreserved: true, languagePreserved: true, videoClocks };
   report.cacheQualification.outputHashes.push(report.output.sha256);
   report.cacheQualification.results.push({ repetition, conversion: report.conversion, output: report.output });

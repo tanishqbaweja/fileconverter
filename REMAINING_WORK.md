@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-10-23 private UI implementation ready: explicitly unpublished pending MPEG-2
+profile in separate central-registry qualification collection; released profile
+and published-engine manifest contracts unchanged. Normal selector excludes it,
+localhost test selector includes it. Production start now uses its necessary
+staged selected destination; JSPI capability mapping fails closed. Fixed settings
+and unqualified controls disclosed. Candidate insertion exposed automatic
+fallback selecting uncertified profiles; real production filter now requires
+public+passed, with regression test.106focused/TS/lint/syntax PASS. Actual --ui
+button/selector/plan/directory-adapter conversion next; current UI completion
+NOT claimed. No native rebuild, public route/count change or large-file proof.
+
 2026-10-23 actual a35654e backend-planning integration gate CLOSED for small
 fixtures: valid HEVC job emits real MPEG-2/AAC-copy plan and unchanged validated
 585266B/96frames/SSIM.985963/max.313ms output. AV1-source no-decoder rejection

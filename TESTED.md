@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-23 private MPEG-2 UI path implemented, actual UI run pending: central
+registry now separates unpublished qualification profiles from released-engine
+profiles; normal selector still hides candidate, localhost test selector labels
+it private/pending. Shared stage path uses selected handle (isolated directory
+adapter in headless tests), not invalid opfs-test mode. JSPI requirement mapped
+explicitly; fixed unqualified controls remain absent with accurate disclosure.
+Initial registry tests correctly rejected putting a pending private engine into
+the release array/manifest. Separate private registry preserves those original
+gates. Automatic fallback now explicitly requires public+passed (new guard test),
+never selecting a pending/private route.106focused/TS/lint/syntax PASS.
+Next actual --ui selector/plan/Convert button/staged-save test on genuine12s
+HEVC fixture, all288frames independently validated; no qualification-job bypass,
+native rebuild, public promotion, prior tiny/recovery replay or threshold change.
+
 2026-10-23 a35654e actual production planning gate PASS: real HEVC conversion
 emits MPEG-2 re-encode/AAC-copy plan before native work; same585266B/SHAa9ede23c...
 output/96frames/full decode/SSIM.985963/max.313ms clocks/audio hash/title/language.

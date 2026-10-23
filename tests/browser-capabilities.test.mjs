@@ -5,11 +5,12 @@ import {
   browserRequirementSatisfied,
   videoEncoderSupport,
 } from "../lib/browser-capabilities.ts";
-import { conversionProfiles } from "../lib/capability-registry.ts";
+import { conversionProfiles, privateQualificationProfiles } from "../lib/capability-registry.ts";
 
 const completeCapabilities = {
   secure: true,
   wasm: true,
+  wasmJspi: true,
   wasmSimd: true,
   workers: true,
   fileSystemAccess: true,
@@ -43,12 +44,13 @@ const requirementNames = [
   "Web Crypto",
   "Web Workers",
   "WebAssembly",
+  "WebAssembly JSPI",
   "cross-origin isolation",
 ];
 
 test("every registry browser requirement has an exact functional mapping", () => {
   const used = [...new Set(
-    conversionProfiles.flatMap((profile) => profile.browserRequirements),
+    [...conversionProfiles, ...privateQualificationProfiles].flatMap((profile) => profile.browserRequirements),
   )].sort();
   assert.deepEqual(used, requirementNames);
   for (const requirement of used) {
@@ -66,6 +68,9 @@ test("every registry browser requirement has an exact functional mapping", () =>
 });
 
 test("requirement mapping distinguishes codecs, compression formats, and storage", () => {
+  assert.equal(browserRequirementSatisfied("WebAssembly JSPI", { ...completeCapabilities, wasmJspi: false }), false);
+  assert.equal(browserRequirementSatisfied("WebAssembly JSPI", { ...completeCapabilities, wasmJspi: undefined }), false);
+  assert.equal(browserRequirementSatisfied("WebAssembly JSPI", { ...completeCapabilities, wasm: false }), false);
   const withoutRawDeflate = {
     ...completeCapabilities,
     compressionDeflateRaw: false,
