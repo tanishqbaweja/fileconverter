@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-10-23 corrected hosted39970086669/509d649 SUCCESS:1472unitsPASS/0fail/1skip
+55.12s,19privacy/offline browserPASS42.3s; lint/TS/build PASS.24-case targeted
+catalogue/cache followup PASS plus earlier48focused PASS. No codec/browser
+integration rerun after test-only correction. Native/private/matrix suites
+unselected, not implied passed. Existing volume365.15625MiB remains failed.
+`evidence/2026-10-23-mpeg2-integration-portable-ci.json`. Next missing actual
+production cancellation/write-failure recovery, not unchanged small-repeat gate.
+
 2026-10-23 bac29ef actual production MPEG-2 reuse cycle PASS3real conversions:
 all585266B/SHAa9ede23c... identical,96frames/full decode/SSIM.985963, video clocks
 max.313ms, AAC packet hash/title/language preserved.3manifest/1decoder/1encoder

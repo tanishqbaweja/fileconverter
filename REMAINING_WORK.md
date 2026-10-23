@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-23 MPEG-2 integration checkpoint portable regression CLOSED at509d649:
+hosted39970086669 SUCCESS1472units/0fail/1skip,19privacy/offline browserPASS;
+lint/TS/build PASS.24-case targeted catalogue/cache followup also PASS; earlier
+failed historical-hunk run retained, full historical UI equality still enforced.
+No native/private/matrix coverage implied; no app source change since actual
+three-job small239.5703125MiB run. Next missing real production cancellation/
+write-failure recovery and final preservation/planner/settings integration;
+large/original-scale/browser gates and full54/B02-B09 remain open.
+`evidence/2026-10-23-mpeg2-integration-portable-ci.json`.
+
 2026-10-23 bac29ef actual small production MPEG-2 integration gate CLOSED:
 3genuine conversions/identical585266B outputs, full decode/SSIM.985963/96video
 clocks max.313ms/AAC packet hash/title/language PASS. Manifest3/binaries1each,

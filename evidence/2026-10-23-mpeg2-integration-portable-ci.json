@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "scope": "Hosted portable regression of production MPEG-2 immutable-code integration and retained small-browser evidence",
+  "head": "509d649add87174347bff032382ce2a9088c6d83",
+  "run": 39970086669,
+  "job": 120470158040,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39970086669",
+  "conclusion": "success",
+  "completedAt": "2026-10-23T14:33:07Z",
+  "units": { "tests": 1473, "passed": 1472, "failed": 0, "skipped": 1, "durationMs": 55117.386302 },
+  "privacyOfflineBrowser": { "passed": 19, "durationSeconds": 42.3 },
+  "lint": "passed",
+  "typescript": "passed",
+  "productionBuild": "passed",
+  "previousFailedRun": {
+    "run": 39969300110,
+    "head": "bac29efcb877d920bc854e9b682b57c32d9d44f6",
+    "passed": 1470,
+    "failed": 1,
+    "skipped": 1,
+    "cause": "Historical catalogue source comparison still expected VPX-only lifecycle hunks",
+    "correction": "Exact reversible MPEG-2 owner hunks added; full historical UI comparison retained",
+    "privacyOfflineExecuted": false
+  },
+  "separateWindowsBrowserEvidence": "evidence/2026-10-23-mpeg2-compiled-runtime.json",
+  "nativeReproductionExecuted": false,
+  "privateQualificationSuiteExecutedInHostedRun": false,
+  "conversionMatricesExecutedInHostedRun": false,
+  "largeFileAcceptance": false,
+  "publicPromotion": false,
+  "fullGoalComplete": false
+}
