@@ -72,14 +72,14 @@ test("explicit MPEG-2 entry maps only profile40, reports aggregate heaps, and cl
   await assert.rejects(invoke(owner), /closed/);
 });
 
-test("native entry refuses remux/FLAC/9-argument substitutions and unimplemented settings", async () => {
+test("native entry refuses remux/FLAC/9-argument substitutions and non-allowlisted settings", async () => {
   const f = fixture(), owner = await createMpeg2SplitRuntime(f.options, f.cores);
   try {
     for (const values of [[1, ...args.slice(1)], [6, ...args.slice(1)], args.slice(0, 9),
-      args.map((value, i) => i === 1 ? 128000 : value), args.map((value, i) => i === 9 ? 2000000 : value),
-      args.map((value, i) => i === 11 ? 3 : value), args.map((value, i) => i === 8 ? NaN : value),
+      args.map((value, i) => i === 1 ? 128000 : value), args.map((value, i) => i === 9 ? 123456 : value),
+      args.map((value, i) => i === 11 ? 4 : value), args.map((value, i) => i === 8 ? NaN : value),
       Object.assign(new Array(12), { 0: 40, 9: 4000000 })]) {
-      await assert.rejects(invoke(owner, values), /explicit profile/);
+      await assert.rejects(invoke(owner, values), /explicit profile|Unsupported private MPEG-2/);
     }
     await assert.rejects(owner.ccall("wrong", "number", args.map(() => "number"), args, { async: true }), /ABI/);
     assert.equal(f.seen.length, 0);
@@ -91,12 +91,29 @@ test("unsupported audio/video choices are errors, not silently ignored UI values
   assert.doesNotThrow(() => assertMpeg2SplitOptions());
   assert.doesNotThrow(() => assertMpeg2SplitOptions(audio, video));
   assert.doesNotThrow(() => assertMpeg2SplitOptions(audio, { ...video, bitRateBps: 4000000 }));
+  assert.doesNotThrow(() => assertMpeg2SplitOptions(audio, { ...video, maxWidth: 320, bitRateBps: 1000000, frameRateFps: 15, quality: "higher" }));
   for (const [key, value] of Object.entries({ codec: "aac", compression: "lossy", bitRateBps: 128000,
     sampleRateHz: 48000, channels: 2, quality: "higher" })) {
     assert.throws(() => assertMpeg2SplitOptions({ ...audio, [key]: value }, video), /copies compatible audio/);
   }
-  for (const [key, value] of Object.entries({ codec: "vp9", maxWidth: 640, bitRateBps: 2000000, frameRateFps: 24, quality: "higher" })) {
-    assert.throws(() => assertMpeg2SplitOptions(audio, { ...video, [key]: value }), /not yet qualified/);
+  for (const [key, value] of Object.entries({ codec: "vp9", maxWidth: 641, bitRateBps: 123456, frameRateFps: 23, quality: "unknown" })) {
+    assert.throws(() => assertMpeg2SplitOptions(audio, { ...video, [key]: value }), /Unsupported private MPEG-2/);
+  }
+});
+
+test("requested native controls survive the tuple and actual configuration audit; drift still fails closed", async () => {
+  const requested = args.map((value, index) => ({ 8: 320, 9: 1000000, 10: 15, 11: 3 }[index] ?? value));
+  const make = () => {
+    const f = fixture({ run: f => f.decoderOptions.withinSplit.call(0, f.decoder.HEAPU8, 1024, 131072) >= 0 ? 0 : -1 });
+    for (const [offset, value] of [[4, 320], [8, 180], [20, 15], [24, 15], [32, 1000000], [36, 2], [40, 12]]) f.wire.setUint32(offset, value, true);
+    return f;
+  };
+  const f = make(); await invoke(await createMpeg2SplitRuntime(f.options, f.cores), requested);
+  assert.deepEqual(f.seen[0][3], [6, ...requested.slice(1)]); assert.equal(f.closed(), 1);
+  for (const [offset, wrong] of [[32, 4000000], [36, 4], [4, 640], [24, 24]]) {
+    const bad = make(); bad.wire.setUint32(offset, wrong, true);
+    await assert.rejects(invoke(await createMpeg2SplitRuntime(bad.options, bad.cores), requested), /Actual MPEG-2 native encoder settings/);
+    assert.equal(bad.closed(), 1);
   }
 });
 
@@ -202,7 +219,7 @@ test("production dispatch rejects absent/wrong core bindings and unsupported set
   const f = fixture(), media = mediaOptions(f);
   await assert.rejects(runMediaRemux({ ...media.options, mpeg2SplitCore: undefined }), /explicit native profile/);
   for (const remuxProfile of [1, 6, 39]) await assert.rejects(runMediaRemux({ ...media.options, remuxProfile }), /explicit native profile/);
-  await assert.rejects(runMediaRemux({ ...media.options, videoOptions: { ...video, maxWidth: 640 } }), /not yet qualified/);
+  await assert.rejects(runMediaRemux({ ...media.options, videoOptions: { ...video, maxWidth: 641 } }), /Unsupported private MPEG-2/);
   await assert.rejects(runMediaRemux({ ...media.options, audioOptions: { ...audio, codec: "aac" } }), /copies compatible audio/);
   await assert.rejects(runMediaRemux({ ...media.options, singleThreadVideoCore: true }), /another codec/);
   assert.equal(f.factoryCalls(), 0);

@@ -17,6 +17,9 @@ export interface ConversionMetrics {
   elapsedMs: number;
   wasmMemoryBytes?: number;
   peakWasmMemoryBytes?: number;
+  /** Actual MPEG-2 AVCodecContext fields after native settings-match succeeds. */
+  mpeg2EncoderSettings?: { width: number; height: number; frameRateNumerator: number; frameRateDenominator: number;
+    bitRateBps: number; qmin: number; qmax: number };
   wasmMemories?: Record<string, number>;
   codecWorkingBytes?: number;
   peakCodecWorkingBytes?: number;

@@ -12,6 +12,8 @@ const { runMpeg2QualificationJob, validateMpeg2QualificationRequest } = await lo
 
 test("MPEG-2 quota plans from duration/selected bitrate, not compressed source size alone", () => {
   assert.equal(estimateMpeg2StageBytes(497032, 4), 497032 + 2500000 + 16777216);
+  assert.equal(estimateMpeg2StageBytes(497032, 4, 1000000), 497032 + 625000 + 16777216);
+  assert.throws(() => estimateMpeg2StageBytes(497032, 4, 123456), /bitrate/);
   assert.equal(estimateMpeg2StageBytes(2958573265, 12340), 10687850481);
   const larger = estimateMpeg2StageBytes(10_000_000_000, 12340 * 4);
   assert.ok(larger > 40_000_000_000);

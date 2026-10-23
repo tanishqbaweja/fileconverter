@@ -2,15 +2,16 @@
 // The qualified native binaries remain separate, lazily supplied modules. This
 // owner replaces the experimental profile-1 -> profile-6 remux substitution.
 import { createMpeg2SplitSession } from "../scripts/lib/mpeg2-split-session.mjs";
-import { MPEG2_VIDEO_BIT_RATE_BPS } from "../lib/mpeg2-stage-policy";
+import { mapMpeg2NativeArguments, mpeg2QuantizerBounds } from "../lib/mpeg2-stage-policy";
+import { VIDEO_QUALITIES } from "../lib/media-conversion-options";
 export { assertMpeg2Options as assertMpeg2SplitOptions } from "../lib/mpeg2-stage-policy";
 import type { RemuxBridge, RemuxFactoryOptions, RemuxModule } from "./media-remux";
+import type { ConversionMetrics } from "../lib/conversion-protocol";
 
 const DECODER_BYTES = 32 * 1024 * 1024;
 const ENCODER_BYTES = 16 * 1024 * 1024;
 const NATIVE_STACK_BYTES = 256 * 1024;
 const MAX_AVIO_BYTES = 256 * 1024;
-const BIT_RATE = MPEG2_VIDEO_BIT_RATE_BPS;
 
 interface FixedCore {
   HEAPU8: Uint8Array;
@@ -55,15 +56,7 @@ function assetUrl(url: string): string {
 }
 
 function nativeArguments(args: readonly number[]): number[] {
-  if (!Array.isArray(args) || args.length !== 12 || args[0] !== 40 ||
-      Array.from(args).some((value, index) => !Number.isSafeInteger(value) ||
-        (index > 0 && index !== 9 && value !== 0)) || (args[9] !== 0 && args[9] !== BIT_RATE)) {
-    throw new Error("MPEG-2 requires explicit profile 40 and its twelve supported arguments.");
-  }
-  const mapped = [...args];
-  mapped[0] = 6; // Private native kernel sentinel, NOT production FLAC profile 6.
-  mapped[9] = BIT_RATE;
-  return mapped;
+  return mapMpeg2NativeArguments(args);
 }
 
 export async function createMpeg2SplitRuntime(options: RemuxFactoryOptions, cores: Mpeg2SplitCore) {
@@ -79,6 +72,8 @@ export async function createMpeg2SplitRuntime(options: RemuxFactoryOptions, core
   let session: SplitSession | null = null;
   let decoderHeap: Uint8Array | null = null, encoderHeap: Uint8Array | null = null;
   let activeCalls = 0, calls = 0, failedCalls = 0, closed = false;
+  let selectedControls: { widthCap: number; bitrate: number; frameRateCap: number; qmin: number; qmax: number } | null = null;
+  let auditedSettings: ConversionMetrics["mpeg2EncoderSettings"];
   let activeIo = false, maximumMediaAvioWriteBytes = 0;
   let retainedBridge: RemuxBridge | null = options.withinBridge;
   const assertActive = () => {
@@ -113,6 +108,7 @@ export async function createMpeg2SplitRuntime(options: RemuxFactoryOptions, core
       encoderHeap = decoderHeap = null;
       session = null;
       retainedBridge = null;
+      selectedControls = null;
     }
   };
   const disposeAfterFailure = (error: unknown): never => {
@@ -127,6 +123,7 @@ export async function createMpeg2SplitRuntime(options: RemuxFactoryOptions, core
     assertActive();
     const open = encoder._within_split_encoder_open.bind(encoder);
     encoder._within_split_encoder_open = () => {
+      if (!selectedControls) throw new Error("MPEG-2 encoder requires a validated native control tuple");
       const result = open();
       if (result >= 0) {
         // Audit actual native AVCodecContext, not only requested JS arguments.
@@ -138,9 +135,14 @@ export async function createMpeg2SplitRuntime(options: RemuxFactoryOptions, core
         const word = (index: number) => wire.getUint32(index * 4, true);
         if (encoder!._within_split_encoder_settings_match() !== 1 || word(0) !== 1 ||
             word(1) < 2 || word(1) > 4096 || word(1) % 2 || word(2) < 2 || word(2) > 2160 || word(2) % 2 ||
-            word(3) > 1 || !word(6) || !word(7) || word(8) !== BIT_RATE || word(9) !== 4 || word(10) !== 20) {
+            word(3) > 1 || !word(6) || !word(7) || word(8) !== selectedControls.bitrate ||
+            word(9) !== selectedControls.qmin || word(10) !== selectedControls.qmax ||
+            (selectedControls.widthCap > 0 && word(1) > selectedControls.widthCap) ||
+            (selectedControls.frameRateCap > 0 && word(6) > selectedControls.frameRateCap * word(7))) {
           throw new Error("Actual MPEG-2 native encoder settings differ from the selected policy.");
         }
+        auditedSettings = Object.freeze({ width: word(1), height: word(2), frameRateNumerator: word(6), frameRateDenominator: word(7),
+          bitRateBps: word(8), qmin: word(9), qmax: word(10) });
       }
       return result;
     };
@@ -165,7 +167,8 @@ export async function createMpeg2SplitRuntime(options: RemuxFactoryOptions, core
         progress(sample) {
           assertHeaps();
           if (sample.wasmMemoryBytes !== DECODER_BYTES) throw new Error("MPEG-2 decoder memory report mismatch.");
-          bridge.progress({ ...sample, wasmMemoryBytes: DECODER_BYTES + ENCODER_BYTES });
+          bridge.progress({ ...sample, wasmMemoryBytes: DECODER_BYTES + ENCODER_BYTES,
+            ...(auditedSettings ? { mpeg2EncoderSettings: auditedSettings } : {}) });
         },
       },
     });
@@ -188,6 +191,8 @@ export async function createMpeg2SplitRuntime(options: RemuxFactoryOptions, core
         throw new Error("Invalid MPEG-2 native call ABI.");
       }
       assertActive(); assertHeaps();
+      const [qmin, qmax] = mpeg2QuantizerBounds(VIDEO_QUALITIES[mapped[11]]);
+      selectedControls = { widthCap: mapped[8], bitrate: mapped[9], frameRateCap: mapped[10], qmin, qmax };
       calls++; activeCalls = 1;
       let result: number;
       try { result = await decoder!.ccall(name, type, types, mapped, settings); }

@@ -46,6 +46,7 @@ export interface RemuxProgress {
   mediaTimeUs: number;
   durationUs: number;
   wasmMemoryBytes: number;
+  mpeg2EncoderSettings?: ConversionMetrics["mpeg2EncoderSettings"];
 }
 
 export interface RemuxBridge {
@@ -625,6 +626,7 @@ export async function runMediaRemux({
       );
       metrics.outputBytes = Math.max(metrics.outputBytes, progress.outputSize);
       metrics.wasmMemoryBytes = progress.wasmMemoryBytes;
+      if (progress.mpeg2EncoderSettings) metrics.mpeg2EncoderSettings = { ...progress.mpeg2EncoderSettings };
       metrics.sharedArrayBufferBytes =
         progress.wasmMemoryBytes + writerSharedBytes + cancellationSharedBytes;
       metrics.peakWasmMemoryBytes = Math.max(

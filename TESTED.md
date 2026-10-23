@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-23 production control tuple/settings audit implemented, browser pending:
+existing exact native pair already accepts bounded bitrate/width/FPS/quantizer
+fields and compares actual AVCodecContext to config. No native rebuild. Shared
+private policy now carries requested controls through explicit profile40->6,
+retains automatic4Mbps/q4–20, rejects codec/audio substitutions and invalid enums.
+Actual native fields are audited against requested values before progress exposes
+seven scalar settings; selected quota estimate and plan reflect controls.
+61focused/TS/lint/syntax PASS, including tuple survival and drift rejection.
+Older Oct5 control success is an older unsplit candidate, not reused as current
+browser acceptance. Next --controls: same640x360@24fps4s source/default96frames
+then320x180@15fps1Mbps/higher60frames, independent selected-frame bilinear SSIM
+>=.98, strict<1ms requested output clock and exact copied AAC hash. No speed A/B,
+UI-control, public/scaling or completed-gate replay claim; original untouched.
+
 2026-10-23 actual private UI ca797b2 PASS: selected explicitly private MPEG-2,
 real pre-conversion MPEG-2/AAC-copy DOM plan, actual Convert button, native work,
 retired codec and staged directory save (isolated OPFS selected-handle adapter).

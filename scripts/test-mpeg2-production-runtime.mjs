@@ -24,20 +24,25 @@ import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./li
 import { compareStreamingVideoClocks } from "./lib/streaming-video-clock-fidelity.mjs";
 import { boundedNativeLines } from "./lib/bounded-native-lines.mjs";
 import { runMpeg2UiJob } from "./lib/mpeg2-ui-job.mjs";
+import { mpeg2ControlReference, sourceMpeg2ControlClock, expectedMpeg2ControlClocks } from "./lib/mpeg2-control-reference.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--planning", "--ui"].includes(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--planning", "--ui", "--controls"].includes(flag)));
 assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
 assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
 const recovery = flags.has("--recovery");
 const planning = flags.has("--planning");
 const ui = flags.has("--ui");
-assert.ok(Number(recovery) + Number(planning) + Number(ui) + Number(flags.has("--cache-repeats")) <= 1, "Select one finite qualification gate");
+const controls = flags.has("--controls");
+assert.ok(Number(recovery) + Number(planning) + Number(ui) + Number(controls) + Number(flags.has("--cache-repeats")) <= 1, "Select one finite qualification gate");
 assert.ok(!recovery || !flags.has("--cache-repeats"), "Recovery is a separate missing gate, not an unchanged repeat run");
-const cases = planning ? [
+const cases = controls ? [
+  { name: "unchanged-default-policy", expected: "complete" },
+  { name: "requested-controls", expected: "complete", videoOptions: { codec: "automatic", maxWidth: 320, bitRateBps: 1000000, frameRateFps: 15, quality: "higher" } },
+] : planning ? [
   { name: "planned-native-conversion", expected: "complete" },
   { name: "unavailable-decoder-preflight", expected: "error", preflightRejection: true },
 ] : recovery ? [
@@ -57,6 +62,7 @@ report.observer = { allocationDiagnostics: diagnose, screenshots: !eventsOnly, s
 report.cacheQualification = { repetitions, sameSource: !recovery && !planning, outputHashes: [], results: [], globalSpeedClaim: false };
 if (planning) report.planningQualification = { cases: [], completed: false, rejectedBeforeDestinationOrCode: false,
   finalUiSelectorCoverage: false, publicAcceptance: false };
+if (controls) report.controlsQualification = { cases: [], completed: false, sameNativeBytes: true, uiControlsCovered: false, publicAcceptance: false, speedComparison: false };
 if (recovery) report.recoveryQualification = { cases: [], completed: false, nativeDuringEncodingCancellation: false,
   destinationRollback: false, noStagesAfterEachTerminal: false, publicAcceptance: false };
 const staticRequests = { manifests: 0, decoder: 0, encoder: 0 }; report.staticRequests = staticRequests;
@@ -99,12 +105,13 @@ try {
   const native = (args, executable = "ffmpeg") => exec(executable, args, { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 4 * 1024 ** 2 });
   const fixture = path.join(work, "source.mkv"); output = path.join(work, "output.mp4");
   const fixtureSeconds = ui ? 12 : 4;
-  await native(["-v", "error", "-f", "lavfi", "-i", `testsrc2=size=320x240:rate=24:duration=${fixtureSeconds}`,
+  const fixtureWidth = controls ? 640 : 320, fixtureHeight = controls ? 360 : 240;
+  await native(["-v", "error", "-f", "lavfi", "-i", `testsrc2=size=${fixtureWidth}x${fixtureHeight}:rate=24:duration=${fixtureSeconds}`,
     "-f", "lavfi", "-i", `sine=frequency=997:sample_rate=48000:duration=${fixtureSeconds}`, "-map", "0:v", "-map", "1:a",
     "-c:v", "libx265", "-preset", "ultrafast", "-crf", "18", "-threads:v", "1", "-x265-params",
     "pools=none:frame-threads=1:wpp=0:bframes=2:keyint=48:scenecut=0:log-level=error", "-c:a", "aac", "-b:a", "128k",
     "-metadata", "title=MPEG-2 café 音楽", "-metadata:s:a:0", "language=eng", "-avoid_negative_ts", "make_zero", fixture]);
-  report.fixture = { bytes: (await lstat(fixture)).size, sha256: await hashFile(fixture), video: "hevc", width: 320, height: 240, frames: fixtureSeconds * 24 };
+  report.fixture = { bytes: (await lstat(fixture)).size, sha256: await hashFile(fixture), video: "hevc", width: fixtureWidth, height: fixtureHeight, frames: fixtureSeconds * 24 };
   const cancellationFixture = path.join(work, "cancellation-source.mkv");
   const rejectedFixture = path.join(work, "unavailable-decoder.mkv");
   if (planning) {
@@ -152,6 +159,7 @@ try {
     "lib/staged-worker-coordinator.ts", "lib/staged-copy-protocol.ts", "lib/mpeg2-stage-policy.ts", "lib/mpeg2-qualification-job.ts", "lib/mpeg2-compiled-core.ts",
     "lib/media-conversion-plan.ts", "lib/media-source-inspection.ts", "lib/media-conversion-options.ts", "lib/conversion-protocol.ts",
     "lib/browser-capabilities.ts", "scripts/lib/mpeg2-ui-job.mjs",
+    "scripts/lib/mpeg2-control-reference.mjs",
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/streaming-video-clock-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs",
     "scripts/test-mpeg2-production-runtime.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",
@@ -269,6 +277,7 @@ try {
     const job = { type: "start", jobId, profileId: "mkv-to-mp4-mpeg2", file,
       destination: { mode: "staged-handle", handle, stagingName: `within-stage-mkv-to-mp4-mpeg2-${jobId}` }, cancellationBuffer,
       ...(testCase.testFault ? { testFault: testCase.testFault } : {}) };
+    if (testCase.videoOptions) job.videoOptions = testCase.videoOptions;
     let timeout, cancellationTimer, cancellation = null;
     if (testCase.cancelDuringEncoding) cancellationTimer = setInterval(() => {
       const state = window.__WITHIN_TEST__.getState();
@@ -373,28 +382,41 @@ try {
   } finally { validationTarget = undefined; await file.close(); }
   const probe = async file => JSON.parse((await native(["-v", "error", "-count_frames", "-show_streams", "-show_format", "-of", "json", file], "ffprobe")).stdout);
   const source = await probe(fixture), converted = await probe(output);
+  const reference = controls ? mpeg2ControlReference(source.streams[0], testCase.videoOptions) : null;
   assert.equal(source.streams[0].codec_name, "hevc"); assert.equal(converted.streams[0].codec_name, "mpeg2video");
-  assert.equal(Number(converted.streams[0].nb_read_frames), report.fixture.frames); assert.equal(converted.streams[0].width, 320); assert.equal(converted.streams[0].height, 240);
+  assert.equal(Number(converted.streams[0].nb_read_frames), reference?.frames ?? report.fixture.frames);
+  assert.equal(converted.streams[0].width, reference?.width ?? fixtureWidth); assert.equal(converted.streams[0].height, reference?.height ?? fixtureHeight);
+  if (reference) {
+    const actual = report.conversion.metrics.mpeg2EncoderSettings;
+    assert.deepEqual(actual, { width: reference.width, height: reference.height, frameRateNumerator: reference.frameRate,
+      frameRateDenominator: 1, bitRateBps: reference.bitrate, qmin: reference.qmin, qmax: reference.qmax });
+    assert.equal(converted.streams[0].avg_frame_rate, reference.frameRate + "/1");
+    assert.equal(converted.streams[0].display_aspect_ratio, source.streams[0].display_aspect_ratio);
+  }
   assert.equal(converted.streams[1].codec_name, "aac"); assert.equal(converted.streams[1].tags.language, "eng");
   assert.equal(converted.format.tags.title, source.format.tags.title);
   const audioHash = async file => (await native(["-v", "error", "-i", file, "-map", "0:a", "-c", "copy", "-f", "streamhash", "-hash", "sha256", "pipe:1"])).stdout.trim();
   assert.equal(await audioHash(output), await audioHash(fixture));
   await native(["-v", "error", "-xerror", "-i", output, "-f", "null", "-"]);
   const comparison = await native(["-v", "info", "-i", fixture, "-i", output, "-filter_complex",
-    "[0:v:0]settb=1/1,setpts=N[ref];[1:v:0]settb=1/1,setpts=N[out];[ref][out]ssim", "-an", "-f", "null", "-"]);
+    `[0:v:0]${reference?.referenceFilter ?? ""}settb=1/1,setpts=N[ref];[1:v:0]settb=1/1,setpts=N[out];[ref][out]ssim`, "-an", "-f", "null", "-"]);
   const ssim = Number(/All:([0-9.]+)/.exec(comparison.stderr)?.[1]); assert.ok(ssim >= 0.98, `SSIM ${ssim}`);
   const times = file => boundedNativeLines("ffprobe", ["-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "compact", file], { cwd: root, env });
-  const videoClocks = await compareStreamingVideoClocks(times(fixture), times(output), report.fixture.frames);
-  report.output = { bytes: (await lstat(output)).size, sha256: await hashFile(output), codec: "mpeg2video", frames: report.fixture.frames, ssim, fullNativeDecodePassed: true,
+  const clockReference = reference ? expectedMpeg2ControlClocks(await sourceMpeg2ControlClock(times(fixture)), reference) : times(fixture);
+  const videoClocks = await compareStreamingVideoClocks(clockReference, times(output), reference?.frames ?? report.fixture.frames);
+  report.output = { bytes: (await lstat(output)).size, sha256: await hashFile(output), codec: "mpeg2video", frames: reference?.frames ?? report.fixture.frames, ssim, fullNativeDecodePassed: true,
     copiedAudioPacketHash: await audioHash(output), titlePreserved: true, languagePreserved: true, videoClocks };
   report.cacheQualification.outputHashes.push(report.output.sha256);
   report.cacheQualification.results.push({ repetition, conversion: report.conversion, output: report.output });
   if (recovery) report.recoveryQualification.cases.at(-1).independentOutput = report.output;
   if (planning) report.planningQualification.cases.at(-1).independentOutput = report.output;
+  if (controls) report.controlsQualification.cases.push({ name: testCase.name, requested: testCase.videoOptions ?? "automatic", reference,
+    actualNativeSettings: report.conversion.metrics.mpeg2EncoderSettings, output: report.output, conversion: report.conversion });
   await rm(output);
   }
   assert.equal(report.cacheQualification.results.length, planning ? 1 : recovery ? 2 : repetitions);
-  assert.equal(new Set(report.cacheQualification.outputHashes).size, 1);
+  assert.equal(new Set(report.cacheQualification.outputHashes).size, controls ? 2 : 1);
+  if (controls) { assert.equal(report.controlsQualification.cases.length, 2); report.controlsQualification.completed = true; }
   assert.deepEqual(staticRequests, { manifests: planning ? 1 : repetitions, decoder: 1, encoder: 1 });
   if (planning) Object.assign(report.planningQualification, { completed: true, rejectedBeforeDestinationOrCode: true });
   if (recovery) Object.assign(report.recoveryQualification, { completed: true, nativeDuringEncodingCancellation: true,

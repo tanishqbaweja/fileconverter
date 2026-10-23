@@ -84,8 +84,13 @@ test("private MPEG-2 options match runtime guards and refuse unsupported setting
   const source = inspection([stream("video", "H.264/AVC")]);
   const automatic = { codec: "automatic", maxWidth: 0, bitRateBps: 0, frameRateFps: 0, quality: "automatic" };
   assert.deepEqual(planMpeg2Conversion(source, undefined, { ...automatic, bitRateBps: 4000000 }).blockingReasons, []);
-  for (const change of [{ maxWidth: 320 }, { bitRateBps: 2000000 }, { frameRateFps: 24 }, { codec: "mpeg4" }, { quality: "higher" }])
+  for (const change of [{ maxWidth: 641 }, { bitRateBps: 123456 }, { frameRateFps: 23 }, { codec: "mpeg4" }, { quality: "unknown" }])
     assert.ok(planMpeg2Conversion(source, undefined, { ...automatic, ...change }).blockingReasons.length > 0);
+  const controlled = planMpeg2Conversion(source, undefined, { ...automatic, maxWidth: 320, bitRateBps: 1000000, frameRateFps: 15, quality: "higher" });
+  assert.deepEqual(controlled.blockingReasons, []);
+  assert.match(controlled.streams[0].detail, /1 Mbps.*320px no-upscale.*15 fps no-upconvert.*higher quantizer/);
+  assert.deepEqual(planMpeg2Conversion(inspection([{ ...stream("video", "HEVC"), width: 1919 }]), undefined,
+    { ...automatic, maxWidth: 320 }).blockingReasons, [], "Explicit resizing can handle an odd source without undisclosed cropping");
   assert.match(planMpeg2Conversion(source, { codec: "aac" }).blockingReasons.join(" "), /audio re-encoding settings are not implemented/);
   for (const codec of ["H.264/AVC", "HEVC/H.265", "MPEG-4 Part 2", "MPEG-2 Video", "Theora", "VP8", "VP9", "H.263", "VP3"])
     assert.deepEqual(planMpeg2Conversion(inspection([stream("video", codec)])).blockingReasons, [], codec);

@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-10-23 real native inspection found controls are supported by existing
+encoder and decoder, but production JS restricted them. Backend now passes
+allowlisted resize/bitrate/FPS/quality, audits actual AVCodecContext values against
+each request and exposes bounded scalar settings. Default4Mbps/q4–20 unchanged;
+audio/codec substitution still rejected. Plan and quota reflect selection.
+61focused/TS/lint/syntax PASS; no native rebuild or original/media access yet.
+Next one actual two-output --controls gate on identical real640x360 source:
+default96frames and explicit320x180/15fps/1Mbps/higher60frames, same native heaps,
+selected-reference SSIM>=.98 and requested-clock<1ms/packet hashes/full250MiB.
+Old Oct5 control proof is not current-pipeline acceptance. UI controls remain
+unexposed pending actual qualification; full54 and all scale/browser gates open.
+Previous turn made actual private UI/CI/evidence progress, not a status restatement.
+
 2026-10-23 one actual private UI flow now VERIFIED atca797b2: private selector,
 rendered MPEG-2/AAC-copy plan and real Convert button use production staged
 directory path (headless isolated OPFS handle, NOT native OS picker).12s real

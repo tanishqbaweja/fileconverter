@@ -719,11 +719,16 @@ export function planMpeg2Conversion(
         return planItem({ ...stream, codec: stream.codec.slice(0, 128) }, index, "reject", "No matching native decoder; the destination will not be opened.");
       }
       for (const [name, value, maximum] of [["width", stream.width, 4096], ["height", stream.height, 2160]] as const) {
-        if (value !== null && (!Number.isSafeInteger(value) || value < 2 || value > maximum || value % 2))
-          blockingReasons.push(`MPEG-2 source ${name} must be even and between 2 and ${maximum}; no undisclosed crop or resize is allowed.`);
+        const resizing = videoOptions?.maxWidth && (stream.width === null || stream.width > videoOptions.maxWidth);
+        if (value !== null && (!Number.isSafeInteger(value) || value < 2 || value > maximum || (!resizing && value % 2)))
+          blockingReasons.push(`MPEG-2 source ${name} must fit the native 2–${maximum} limit and unscaled output must be even; no undisclosed crop or resize is allowed.`);
       }
+      const width = videoOptions?.maxWidth ? `an explicit ${videoOptions.maxWidth}px no-upscale width cap` : "source dimensions";
+      const rate = videoOptions?.frameRateFps ? `an explicit ${videoOptions.frameRateFps} fps no-upconvert cap` : "constant source timing";
+      const bitrate = (videoOptions?.bitRateBps || 4_000_000) / 1_000_000;
+      const quality = videoOptions?.quality ?? "automatic";
       return planItem({ ...stream, codec: stream.codec.slice(0, 128) }, index, "re-encode",
-        "The first video stream is decoded and encoded as MPEG-2 at 4 Mbps, source dimensions and constant source timing. Native checks refuse VFR, full-range input or changing dimensions; 8-bit pixel-format conversion can be lossy. Other controls remain unqualified.");
+        `The first video stream is decoded and encoded as MPEG-2 at ${bitrate} Mbps, ${width} and ${rate}, with ${quality} quantizer policy. Native checks refuse VFR, full-range input or changing dimensions; 8-bit pixel-format conversion can be lossy. Non-default controls remain qualification-only until their browser gates pass.`);
     }
     if (stream.mediaType === "audio" && ["AAC", "MP3", "ALAC"].includes(codec))
       return planItem({ ...stream, codec: stream.codec.slice(0, 128) }, index, "copy",

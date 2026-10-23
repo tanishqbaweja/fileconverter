@@ -4192,7 +4192,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       post({ type: "progress", jobId, phase: "Planning MPEG-2 streams", metrics: { ...metrics }, mediaPlan });
       if (mediaPlan.blockingReasons.length) throw new Error(mediaPlan.blockingReasons.join(" "));
       post({ type: "warning", jobId, message: mediaPlan.metadataSummary });
-      requiredScratchBytes = estimateMpeg2StageBytes(file.size, inspection?.durationSeconds ?? null);
+      requiredScratchBytes = estimateMpeg2StageBytes(file.size, inspection.durationSeconds, message.videoOptions?.bitRateBps);
       const { loadMpeg2SplitCore } = await import("./mpeg2-core-loader");
       mpeg2SplitCore = await loadMpeg2SplitCore(undefined, {
         cached: message.mpeg2CompiledCore,
