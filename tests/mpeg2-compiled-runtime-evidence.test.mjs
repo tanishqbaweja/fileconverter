@@ -35,3 +35,45 @@ test("historical production MPEG-2 reuse preserves all three real outputs and wh
   assert.equal(report.cleanup.allOwnedProcessesAbsent, true); assert.equal(report.protectedOriginalUnchanged, true);
   for (const key of ["globalSpeedClaim", "causalSpeedComparison", "largeFileAcceptance", "publicAcceptance", "fullGoalComplete"]) assert.equal(receipt[key], false);
 });
+
+test("historical actual MPEG-2 cancellation/write failure preserve destination, clean stages and recover without losing missing samples", async () => {
+  const receipt = JSON.parse(await read("evidence/2026-10-23-mpeg2-production-recovery.json"));
+  assert.match(receipt.archive.file, /^outputs\/reports\/[0-9TZ.-]+-mpeg2-production-runtime\.json\.gz$/);
+  const archive = await read(receipt.archive.file); assert.equal(sha(archive), receipt.archive.sha256); assert.equal(archive.length, receipt.archive.bytes);
+  const raw = gunzipSync(archive, { maxOutputLength: 4 * 1048576 });
+  assert.equal(raw.length, receipt.archive.restoredBytes); assert.equal(sha(raw), receipt.archive.restoredSha256);
+  const report = JSON.parse(raw); assert.deepEqual(report.failures, []); assert.equal(report.executedSourcesAndBrowserPinsVerified, true);
+  assert.deepEqual(report.staticRequests, { manifests: 4, decoder: 1, encoder: 1 });
+  const gate = report.recoveryQualification; assert.deepEqual(gate, receipt.recoveryQualification);
+  assert.equal(gate.completed, true); assert.equal(gate.nativeDuringEncodingCancellation, true);
+  assert.equal(gate.destinationRollback, true); assert.equal(gate.noStagesAfterEachTerminal, true);
+  assert.deepEqual(gate.cases.map(row => row.result.type), ["cancelled", "complete", "error", "complete"]);
+  for (const row of gate.cases) {
+    assert.deepEqual(row.stageNames, []); assert.equal(row.result.metrics.scratchBytes, 0);
+    assert.equal(row.result.metrics.pendingOperations, 0); assert.equal(row.result.metrics.queuedBytes, 0);
+    assert.ok(row.result.metrics.peakQueuedBytes <= 524288); assert.equal(row.result.metrics.peakPendingOperations, 1);
+    if (row.result.type !== "complete") { assert.equal(row.destinationUnchanged, true); assert.equal(row.terminalWorkerRetired, true); }
+    else {
+      assert.equal(row.independentOutput.sha256, "a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13");
+      assert.equal(row.independentOutput.fullNativeDecodePassed, true); assert.ok(row.independentOutput.ssim >= 0.98);
+      assert.equal(row.independentOutput.videoClocks.frames, 96); assert.ok(row.independentOutput.videoClocks.maximumVideoPtsErrorSeconds < 0.001);
+    }
+  }
+  const cancellation = gate.cases[0].cancellation;
+  assert.equal(cancellation.mechanism, "production Cancel safely button after observed native media read/write");
+  assert.ok(cancellation.inputBytes > 0 && cancellation.outputBytes > 0); assert.equal(cancellation.wasmMemoryBytes, 50331648);
+  assert.ok(cancellation.finishedAt - cancellation.requestedAt < 5000);
+  assert.equal(gate.cases[0].result.metrics.wasmMemoryBytes, 50331648); assert.equal(gate.cases[2].result.metrics.wasmMemoryBytes, 0);
+  assert.match(gate.cases[2].result.message, /destination rejected a bounded write/i);
+  const available = report.diagnosticMemorySamples.filter(sample => sample.privateBytes !== null);
+  const unavailable = report.diagnosticMemorySamples.filter(sample => sample.privateBytes === null);
+  assert.equal(unavailable.length, 1); assert.equal(unavailable[0].phase, "loaded"); assert.equal(unavailable[0].rssBytes, null);
+  assert.deepEqual(unavailable, report.memory.unavailableSamples); assert.equal(available.length, report.memory.validSamples);
+  assert.equal(receipt.memory.unavailableSamples, 1); assert.equal(receipt.memory.validSamples, available.length);
+  for (const sample of available) assert.equal(sample.privateBytes, sample.processes.reduce((sum, row) => sum + row.privateBytes, 0));
+  const peak = Math.max(...available.filter(sample => sample.phase !== "blank").map(sample => sample.privateBytes));
+  assert.equal((peak - report.blankBaseline.privateBytes) / 1048576, receipt.memory.incrementalPrivateMiB);
+  assert.ok(receipt.memory.incrementalPrivateMiB <= 250); assert.deepEqual(report.forbiddenRequests, []);
+  assert.equal(report.protectedOriginalUnchanged, true); assert.equal(report.cleanup.allOwnedProcessesAbsent, true);
+  for (const key of ["globalSpeedClaim", "causalSpeedComparison", "largeFileAcceptance", "publicAcceptance", "fullGoalComplete"]) assert.equal(receipt[key], false);
+});

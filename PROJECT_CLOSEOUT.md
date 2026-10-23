@@ -46,6 +46,12 @@ acceptance contract. Private engines are not public supported profiles.
    closes that integration smoke only; recovery, original/large-source scaling,
    planner/settings/disclosures and public promotion remain open. Do not replay
    this completed small gate unchanged or infer a causal speedup from warm jobs.
+   Small production cancellation/write-failure recovery now also passes at
+   5e67254: real Cancel button during native I/O, both failures preserve existing
+   destination/delete stage/retire worker, and two retries independently validate.
+   Complete-tree227.23828125MiB; one loaded null sample retained, no conversion
+   missing samples. Quota/permission/reload/batch, full-original/large-source,
+   planner/settings/disclosures and broader browser qualification remain open.
 
 Exit evidence: B03/B04/B06 applicable original gates and public promotion
 checklist all satisfied. The 36 small VPX conversions and six MPEG-2 full-original

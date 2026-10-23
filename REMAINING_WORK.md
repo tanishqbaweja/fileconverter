@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-10-23 production MPEG-2 cancellation/write-failure recovery gate CLOSED for
+small fixtures at5e67254: real in-flight Cancel button/6.545ms terminal, old
+worker retired, existing destination preserved and stage absent; final-save
+write-fault after512KiB also rolls back/removes stage/retires saver. Both retries
+independently validate identical585266B MPEG-2 outputs/96frames/SSIM.985963/video
+clocks max.313ms/AAC packet hash/title/language. Full-tree227.23828125MiB <=250,
+423records/1loaded null honestly retained/no conversion missing/maxgap216ms.
+Same native/settings/code cache4manifest/1binary each;42focused+lint/syntax PASS.
+Original full hash,33source pins and owned process/scratch/assets absence checked.
+Raw1.93MB compacted losslessly64KB; no disposable media retained. Exact receipt
+`evidence/2026-10-23-mpeg2-production-recovery.json`. Reuse this closed gate, not
+another unchanged tiny recovery run. Remaining production planner/options/stream
+disclosures, quota/permission/reload/batch and full-original/large-source/browser
+gates stay OPEN, as do earlier365.15625MiB failure and full54/B02-B09. Production
+app/native sources unchanged since green hosted509d649; this driver/evidence
+cycle has focused local and actual browser proof, not a new hosted-CI claim.
+
 2026-10-23 recovery gate prepared in existing production MPEG-2 driver, not a
 second converter: cancel after actual native media read/write using real Cancel
 button, independently validated retry, final saver write failure with existing

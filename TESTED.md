@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-10-23 actual5e67254 production MPEG-2 recovery gate PASS4cases: in-flight
+real Cancel button after196608read/1390written, terminal6.545ms later, existing
+destination unchanged/stage absent/old codec worker retired; validated retry;
+real final saver write-fault after524288B with destination rollback/stage cleanup/
+saver retirement; validated retry. Both complete outputs identical585266B/SHA
+a9ede23c.../96frames/full decode/SSIM.985963/max.313ms video clocks/AAC hash/title/
+language PASS. Same native pair/settings,4manifest/1decoder/1encoder requests.
+Full-tree all-nonblank peak227.23828125MiB <=250,423records/422available/1loaded
+null preserved; no conversion missing samples, max valid gap216ms. Cancellation
+terminal last Wasm metric remains48MiB, never zeroed; worker retirement separate.
+All33executed pins, original full before/after hash and owned processes/scratch/
+assets absence verified. Raw1925995B->64193B gzip losslessly reconstructed then
+raw removed; generated media already deleted.42focused/lint/syntax PASS.
+`evidence/2026-10-23-mpeg2-production-recovery.json`. Small diagnostic recovery
+only: no quota/permission/reload/batch/full-original/scaling/public acceptance or
+causal speed proof. Earlier volume365.15625MiB FAIL unchanged; don't rerun this
+completed cancellation/write-failure gate unchanged.
+
 2026-10-23 next missing gate prepared: --recovery runs actual MPEG-2 cancellation
 after native read/write via production Cancel button, successful validated retry,
 final saver write-failure/unchanged existing destination, then validated retry.
