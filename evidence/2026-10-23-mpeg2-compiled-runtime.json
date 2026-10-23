@@ -1,0 +1,319 @@
+{
+  "schemaVersion": 1,
+  "head": "bac29efcb877d920bc854e9b682b57c32d9d44f6",
+  "scope": "Three small actual production MPEG-2 conversions with immutable code reuse; not public promotion, stress, or causal speed comparison",
+  "startedAt": "2026-10-23T14:23:24.766Z",
+  "finishedAt": "2026-10-23T14:24:44.385Z",
+  "archive": {
+    "file": "outputs/reports/2026-10-23T14-23-24.766Z-mpeg2-production-runtime.json.gz",
+    "bytes": 61878,
+    "sha256": "acfc9a92b10f49b036aaaabeb95a681b16311943a88faab5bbffe154eeef5513",
+    "restoredBytes": 1858342,
+    "restoredSha256": "d30072fcbb127b348b1e14650afcb346413b0225091ee393611f7eb7918cf4a6"
+  },
+  "sourcePins": 33,
+  "currentSourcePinsIndependentlyRechecked": true,
+  "native": [
+    {
+      "source": "work\\mpeg2-jspi-39072949964\\within-mpeg2-split.mjs",
+      "sha256": "d4ec481a93a1b087c96aa11948ab9a98ccf6d09237ed143c022bf76bf6c31506",
+      "bytes": 65707
+    },
+    {
+      "source": "work\\mpeg2-jspi-39072949964\\within-mpeg2-split.wasm",
+      "sha256": "4f3954a3cbbd5012c811fa380402981d29ac298d46422d1bc0fa40a6b9368d57",
+      "bytes": 5715985
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.mjs",
+      "sha256": "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e",
+      "bytes": 68202
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.wasm",
+      "sha256": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee",
+      "bytes": 675411
+    }
+  ],
+  "staticRequests": {
+    "manifests": 3,
+    "decoder": 1,
+    "encoder": 1
+  },
+  "codeManifest": {
+    "bytes": 318,
+    "sha256": "4e75fe139ee58451ce6960194e09a8842d4842b5fe4428ca3426913d2412a711",
+    "value": {
+      "schemaVersion": 1,
+      "engine": "within-mpeg2-split-jspi",
+      "decoderMemoryBytes": 33554432,
+      "encoderMemoryBytes": 16777216,
+      "artifacts": {
+        "decoder.wasm": "4f3954a3cbbd5012c811fa380402981d29ac298d46422d1bc0fa40a6b9368d57",
+        "encoder.wasm": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee"
+      },
+      "publicAcceptance": false
+    }
+  },
+  "results": [
+    {
+      "repetition": 1,
+      "elapsedMs": 585.0900585949421,
+      "phases": [
+        "Inspecting MPEG-2 source",
+        "Worker started",
+        "Destination opened",
+        "Compiled MPEG-2 code",
+        "Encoding MPEG-2 MP4",
+        "Copying staged MP4 to selected destination",
+        "Complete"
+      ],
+      "output": {
+        "bytes": 585266,
+        "sha256": "a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13",
+        "codec": "mpeg2video",
+        "frames": 96,
+        "ssim": 0.985963,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+        "titlePreserved": true,
+        "languagePreserved": true,
+        "videoClocks": {
+          "frames": 96,
+          "maximumVideoPtsErrorSeconds": 0.00031300000000022976
+        }
+      },
+      "nativeWasmBytes": 50331648,
+      "nativePeakQueuedBytes": 65536,
+      "saverPeakQueuedBytes": 524288,
+      "nativePendingOperations": 1,
+      "saverPendingOperations": 1
+    },
+    {
+      "repetition": 2,
+      "elapsedMs": 292.18000000715256,
+      "phases": [
+        "Inspecting MPEG-2 source",
+        "Worker started",
+        "Destination opened",
+        "Reusing compiled MPEG-2 code",
+        "Encoding MPEG-2 MP4",
+        "Copying staged MP4 to selected destination",
+        "Complete"
+      ],
+      "output": {
+        "bytes": 585266,
+        "sha256": "a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13",
+        "codec": "mpeg2video",
+        "frames": 96,
+        "ssim": 0.985963,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+        "titlePreserved": true,
+        "languagePreserved": true,
+        "videoClocks": {
+          "frames": 96,
+          "maximumVideoPtsErrorSeconds": 0.00031300000000022976
+        }
+      },
+      "nativeWasmBytes": 50331648,
+      "nativePeakQueuedBytes": 65536,
+      "saverPeakQueuedBytes": 524288,
+      "nativePendingOperations": 1,
+      "saverPendingOperations": 1
+    },
+    {
+      "repetition": 3,
+      "elapsedMs": 285.7151269465685,
+      "phases": [
+        "Inspecting MPEG-2 source",
+        "Worker started",
+        "Destination opened",
+        "Reusing compiled MPEG-2 code",
+        "Encoding MPEG-2 MP4",
+        "Copying staged MP4 to selected destination",
+        "Complete"
+      ],
+      "output": {
+        "bytes": 585266,
+        "sha256": "a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13",
+        "codec": "mpeg2video",
+        "frames": 96,
+        "ssim": 0.985963,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+        "titlePreserved": true,
+        "languagePreserved": true,
+        "videoClocks": {
+          "frames": 96,
+          "maximumVideoPtsErrorSeconds": 0.00031300000000022976
+        }
+      },
+      "nativeWasmBytes": 50331648,
+      "nativePeakQueuedBytes": 65536,
+      "saverPeakQueuedBytes": 524288,
+      "nativePendingOperations": 1,
+      "saverPendingOperations": 1
+    }
+  ],
+  "memory": {
+    "primaryLimitMiB": 250,
+    "blankPrivateBytes": 237142016,
+    "peakPrivateBytes": 488349696,
+    "incrementalPrivateMiB": 239.5703125,
+    "allNonblankPhasesIncluded": true,
+    "completeProcessTreeRecomputed": true,
+    "samples": 407,
+    "unavailableSamples": 0,
+    "loadedPeakIncrementalPrivateMiB": 147.22265625
+  },
+  "forbiddenRequests": 0,
+  "originalUnchanged": true,
+  "cleanup": {
+    "processObservations": [
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 38036,
+          "parentPid": 29768,
+          "createdAt": "2026-10-23T14:23:47.8954820Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T14:24:38.785Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 386,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 34376,
+          "parentPid": 29768,
+          "createdAt": "2026-10-23T14:23:50.5915360Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T14:24:39.179Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 393,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 13260,
+          "parentPid": 29768,
+          "createdAt": "2026-10-23T14:23:52.0470530Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T14:24:39.581Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 402,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    ],
+    "disposableOutputDeleted": true,
+    "generatedDirectoriesRemoved": [
+      "dist\\client\\engines\\mpeg2"
+    ],
+    "scratchRemoved": "work\\mpeg2-production-runtime-HyL0fA",
+    "allOwnedProcessesAbsent": true
+  },
+  "independentProcessChecks": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 38036,
+        "parentPid": 29768,
+        "createdAt": "2026-10-23T14:23:47.8954820Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-23T14:27:19.410Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 420,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 34376,
+        "parentPid": 29768,
+        "createdAt": "2026-10-23T14:23:50.5915360Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-23T14:27:19.868Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 457,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 13260,
+        "parentPid": 29768,
+        "createdAt": "2026-10-23T14:23:52.0470530Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-23T14:27:20.378Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 510,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "convertedOutputsFixturesProfilesAndPrivateAssetsIndependentlyAbsent": true,
+  "rawReportLosslesslyRecoverable": true,
+  "rawOriginalRemovedAfterExactReconstruction": true,
+  "globalSpeedClaim": false,
+  "causalSpeedComparison": false,
+  "largeFileAcceptance": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false,
+  "next": "Reuse this completed small integration gate. Remaining original-source/stress/recovery, production planner/options/disclosures and broader browser gates stay open. Prior volume memory failure is unchanged."
+}

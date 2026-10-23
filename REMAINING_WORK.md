@@ -1,5 +1,21 @@
 # Remaining work audit
 
+2026-10-23 bac29ef actual small production MPEG-2 integration gate CLOSED:
+3genuine conversions/identical585266B outputs, full decode/SSIM.985963/96video
+clocks max.313ms/AAC packet hash/title/language PASS. Manifest3/binaries1each,
+fresh48MiB native heaps,407native samples/0missing; full-tree all-nonblank peak
+239.5703125MiB <=250. No causal speed/memory-cure/public/stress claim; prior
+365.15625MiB volume failure unchanged.48focused/lint PASS; exact report retained
+61878B gzip instead1.86MB raw, owned scratch/assets/process absence and original
+hash independently verified. `evidence/2026-10-23-mpeg2-compiled-runtime.json`.
+Reuse this completed gate; next missing recovery/original-scale/planner/settings/
+disclosure/browser work, not another unchanged tiny conversion.
+
+Hosted39969300110/bac29ef failed only catalogue historical owner-hunk comparison
+(1470PASS/1fail/1skip); build/lint/TS PASS, privacy not reached. Exact reversible
+MPEG-2 owner hunks added without removing full historical UI equality. Targeted
+correction and fresh hosted portable regression pending, original54still open.
+
 2026-10-23 next implementation cycle: actual production MPEG-2 loader now uses
 hash-bound immutable compiled-code reuse with fresh instances/memories per job,
 coordinator-only handoff and prior-engine eviction.47focused/TypeScript PASS;

@@ -40,6 +40,12 @@ acceptance contract. Private engines are not public supported profiles.
    terminal/recovery integration for qualified VP8/VP9 and MPEG-2 paths. Reuse the
    already-passed matching native, small-repeat and MPEG-2 full-original gates;
    rerun only coverage affected by the integration or a changed engine.
+   Production immutable-code integration now passes its three small actual jobs
+   at bac29ef: identical independently validated outputs, manifest each job/code
+   once, full-tree239.5703125MiB, owned cleanup and original hash verified. This
+   closes that integration smoke only; recovery, original/large-source scaling,
+   planner/settings/disclosures and public promotion remain open. Do not replay
+   this completed small gate unchanged or infer a causal speedup from warm jobs.
 
 Exit evidence: B03/B04/B06 applicable original gates and public promotion
 checklist all satisfied. The 36 small VPX conversions and six MPEG-2 full-original

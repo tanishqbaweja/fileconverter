@@ -25,17 +25,17 @@ const articleHtml = html => (html.match(/<article\b[^>]*>[\s\S]*?<\/article>/g) 
   card.replace(/ data-profile-id="[^"]+"/, "").replaceAll("<!-- -->", ""));
 
 test("current application mounts the bounded component with explicit lifecycle and localhost qualification integration", () => {
-  // Account for ONLY the reviewed static-code owner integration. Each hunk is
+  // Account for ONLY the reviewed VPX/MPEG-2 static-code owner integration. Each hunk is
   // unique and reversible; the complete historical UI comparison below remains
   // mandatory and still catches every unrelated change.
   const codeOwnerEdits = [
-    ['import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";\nimport { createVpxCompiledCoreSlot } from "../../lib/vpx-compiled-core";\n',
+    ['import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";\nimport { createVpxCompiledCoreSlot } from "../../lib/vpx-compiled-core";\nimport { createMpeg2CompiledCoreSlot } from "../../lib/mpeg2-compiled-core";\n',
       'import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";\n'],
-    ['    let replacementTimer = 0;\n    // Retain only immutable static code across coordinator replacement. Worker\n    // instances, memories and all user-file/destination state still retire.\n    const staticCodeSlot = createVpxCompiledCoreSlot();\n',
+    ['    let replacementTimer = 0;\n    // Retain only immutable static code across coordinator replacement. Worker\n    // instances, memories and all user-file/destination state still retire.\n    const staticCodeSlot = createVpxCompiledCoreSlot();\n    const mpeg2CodeSlot = createMpeg2CompiledCoreSlot();\n',
       '    let replacementTimer = 0;\n'],
-    ['        () => new Worker(new URL("../../workers/staged-save.worker.ts", import.meta.url), { name: "within-final-save" }),\n        staticCodeSlot,\n      );',
+    ['        () => new Worker(new URL("../../workers/staged-save.worker.ts", import.meta.url), { name: "within-final-save" }),\n        staticCodeSlot,\n        mpeg2CodeSlot,\n      );',
       '        () => new Worker(new URL("../../workers/staged-save.worker.ts", import.meta.url), { name: "within-final-save" }),\n      );'],
-    ['      workerRef.current?.terminate();\n      staticCodeSlot.dispose();\n      workerRef.current = null;',
+    ['      workerRef.current?.terminate();\n      staticCodeSlot.dispose();\n      mpeg2CodeSlot.dispose();\n      workerRef.current = null;',
       '      workerRef.current?.terminate();\n      workerRef.current = null;'],
   ];
   let withoutCodeOwner = app;

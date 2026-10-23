@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+2026-10-23 bac29ef actual production MPEG-2 reuse cycle PASS3real conversions:
+all585266B/SHAa9ede23c... identical,96frames/full decode/SSIM.985963, video clocks
+max.313ms, AAC packet hash/title/language preserved.3manifest/1decoder/1encoder
+requests; fresh worker heaps aggregate48MiB, one pending write.407native samples/
+0missing, all-process/all-nonblank peak239.5703125MiB <=250; loaded peak147.223.
+Small diagnostic integration only, NOT stress/public/recovery acceptance. Cold
+observed585.09ms, warm292.18/285.72ms; not controlled A/B or global speed proof.
+All33source pins/current sources, original before/after hash, owned process and
+scratch/assets absence independently rechecked.1858342B raw archived61878B with
+exact reconstruction then raw removed; media/profile/scratch already deleted.
+`evidence/2026-10-23-mpeg2-compiled-runtime.json`.48focused+lint PASS.
+
+Hosted39969300110/bac29ef FAIL1/1470PASS/1skip: historical catalogue comparison
+still expected VPX-only four lifecycle hunks. Corrected exact reversible hunks
+for both cache owners; complete historical UI equality/assertions retained.
+No conversion/native source or threshold changed; targeted correction next.
+
 2026-10-23 production MPEG-2 compiled-code integration prepared:47focused tests
 PASS and TypeScript PASS; lint naming issue corrected, final lint pending.
 Hash-bound decoder/encoder modules reuse immutable code only, fresh per-job
