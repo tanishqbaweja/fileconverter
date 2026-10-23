@@ -1,0 +1,417 @@
+{
+  "schemaVersion": 1,
+  "head": "a35654ef9109efe50c023ed63ac405b29c0c1317",
+  "scope": "Actual production MPEG-2 stream planning and unavailable-decoder preflight before code/destination; small fixture, not final UI/stress/public acceptance",
+  "startedAt": "2026-10-23T14:57:50.293Z",
+  "finishedAt": "2026-10-23T14:58:55.572Z",
+  "archive": {
+    "file": "outputs/reports/2026-10-23T14-57-50.293Z-mpeg2-production-runtime.json.gz",
+    "bytes": 62382,
+    "sha256": "01c839a9e4c6ab705a520a5a06ab343e7d4ce020977400b001905e6d2b27bd3c",
+    "restoredBytes": 1812719,
+    "restoredSha256": "7d6a3ca9a5a79be69875879b431e7ce742df28283f37497aad136e92e807f985"
+  },
+  "sourcePins": 37,
+  "currentSourcePinsIndependentlyRechecked": true,
+  "native": [
+    {
+      "source": "work\\mpeg2-jspi-39072949964\\within-mpeg2-split.mjs",
+      "sha256": "d4ec481a93a1b087c96aa11948ab9a98ccf6d09237ed143c022bf76bf6c31506",
+      "bytes": 65707
+    },
+    {
+      "source": "work\\mpeg2-jspi-39072949964\\within-mpeg2-split.wasm",
+      "sha256": "4f3954a3cbbd5012c811fa380402981d29ac298d46422d1bc0fa40a6b9368d57",
+      "bytes": 5715985
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.mjs",
+      "sha256": "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e",
+      "bytes": 68202
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.wasm",
+      "sha256": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee",
+      "bytes": 675411
+    }
+  ],
+  "staticRequests": {
+    "manifests": 1,
+    "decoder": 1,
+    "encoder": 1
+  },
+  "codeManifest": {
+    "bytes": 318,
+    "sha256": "4e75fe139ee58451ce6960194e09a8842d4842b5fe4428ca3426913d2412a711",
+    "value": {
+      "schemaVersion": 1,
+      "engine": "within-mpeg2-split-jspi",
+      "decoderMemoryBytes": 33554432,
+      "encoderMemoryBytes": 16777216,
+      "artifacts": {
+        "decoder.wasm": "4f3954a3cbbd5012c811fa380402981d29ac298d46422d1bc0fa40a6b9368d57",
+        "encoder.wasm": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee"
+      },
+      "publicAcceptance": false
+    }
+  },
+  "results": [
+    {
+      "repetition": 1,
+      "elapsedMs": 582.2097949236631,
+      "phases": [
+        "Inspecting MPEG-2 source",
+        "Planning MPEG-2 streams",
+        "Worker started",
+        "Destination opened",
+        "Compiled MPEG-2 code",
+        "Encoding MPEG-2 MP4",
+        "Copying staged MP4 to selected destination",
+        "Complete"
+      ],
+      "output": {
+        "bytes": 585266,
+        "sha256": "a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13",
+        "codec": "mpeg2video",
+        "frames": 96,
+        "ssim": 0.985963,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+        "titlePreserved": true,
+        "languagePreserved": true,
+        "videoClocks": {
+          "frames": 96,
+          "maximumVideoPtsErrorSeconds": 0.00031300000000022976
+        }
+      },
+      "nativeWasmBytes": 50331648,
+      "nativePeakQueuedBytes": 65536,
+      "saverPeakQueuedBytes": 524288,
+      "nativePendingOperations": 1,
+      "saverPendingOperations": 1
+    }
+  ],
+  "memory": {
+    "primaryLimitMiB": 250,
+    "blankPrivateBytes": 238137344,
+    "peakPrivateBytes": 477962240,
+    "incrementalPrivateMiB": 228.71484375,
+    "allNonblankPhasesIncluded": true,
+    "completeProcessTreeRecomputed": true,
+    "samples": 391,
+    "validSamples": 391,
+    "unavailableSamples": 0,
+    "unavailableSamplePhases": [],
+    "maximumValidSampleGapMs": 127,
+    "loadedPeakIncrementalPrivateMiB": 155.33203125
+  },
+  "planningQualification": {
+    "cases": [
+      {
+        "name": "planned-native-conversion",
+        "expected": "complete",
+        "result": {
+          "type": "complete",
+          "jobId": "ac6b5e7b-589c-46e5-8da1-8d28633baf03",
+          "metrics": {
+            "inputBytes": 497032,
+            "outputBytes": 585266,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 524288,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 524288,
+            "elapsedMs": 582.2097949236631,
+            "wasmMemoryBytes": 0,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 4,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0,
+            "scratchBytes": 0,
+            "peakScratchBytes": 585266,
+            "maxScratchReadChunkBytes": 524288,
+            "maxScratchWriteChunkBytes": 524288
+          },
+          "phases": [
+            "Inspecting MPEG-2 source",
+            "Planning MPEG-2 streams",
+            "Worker started",
+            "Destination opened",
+            "Compiled MPEG-2 code",
+            "Encoding MPEG-2 MP4",
+            "Copying staged MP4 to selected destination",
+            "Complete"
+          ],
+          "nativeMetrics": {
+            "inputBytes": 458752,
+            "outputBytes": 426179,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 65536,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 65536,
+            "elapsedMs": 510.5249999910593,
+            "wasmMemoryBytes": 50331648,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 50331652,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0
+          },
+          "plan": {
+            "streams": [
+              {
+                "streamIndex": 0,
+                "mediaType": "video",
+                "codec": "HEVC/H.265",
+                "action": "re-encode",
+                "detail": "The first video stream is decoded and encoded as MPEG-2 at 4 Mbps, source dimensions and constant source timing. Native checks refuse VFR, full-range input or changing dimensions; 8-bit pixel-format conversion can be lossy. Other controls remain unqualified."
+              },
+              {
+                "streamIndex": 1,
+                "mediaType": "audio",
+                "codec": "AAC",
+                "action": "copy",
+                "detail": "This compatible audio stream is packet-copied, not re-encoded. Native MP4 validation remains authoritative; timestamps and priming still require independent output checks. No audio encoding setting is ignored."
+              }
+            ],
+            "blockingReasons": [],
+            "metadataSummary": "Private MPEG-2 route; not public or large-file acceptance. This bounded header preview is not a complete metadata inventory. The native muxer handles compatible tags, languages, chapters and stream side data and warns about nonrepresentable streams. Encoder provenance is relabelled for freshly encoded video. Attachments/artwork have an 8 MiB aggregate guard; text metadata has 4096-entry/2 MiB guards and chapters a 1024-entry guard. Destination-specific preservation still requires independent qualification."
+          }
+        },
+        "cancellation": null,
+        "stageNames": [],
+        "destinationUnchanged": null,
+        "independentOutput": {
+          "bytes": 585266,
+          "sha256": "a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13",
+          "codec": "mpeg2video",
+          "frames": 96,
+          "ssim": 0.985963,
+          "fullNativeDecodePassed": true,
+          "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+          "titlePreserved": true,
+          "languagePreserved": true,
+          "videoClocks": {
+            "frames": 96,
+            "maximumVideoPtsErrorSeconds": 0.00031300000000022976
+          }
+        }
+      },
+      {
+        "name": "unavailable-decoder-preflight",
+        "expected": "error",
+        "result": {
+          "type": "error",
+          "jobId": "1c2c854b-5fc9-4798-9d07-8b9a8a3cd4b1",
+          "message": "The private MPEG-2 engine has no AV1 video decoder.",
+          "metrics": {
+            "inputBytes": 0,
+            "outputBytes": 0,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 0,
+            "pendingOperations": 0,
+            "peakPendingOperations": 0,
+            "maxReadChunkBytes": 0,
+            "maxWriteChunkBytes": 0,
+            "elapsedMs": 3.439999997615814,
+            "wasmMemoryBytes": 0,
+            "peakWasmMemoryBytes": 0,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 4,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0
+          },
+          "phases": [
+            "Inspecting MPEG-2 source",
+            "Planning MPEG-2 streams"
+          ],
+          "nativeMetrics": null,
+          "plan": {
+            "streams": [
+              {
+                "streamIndex": 0,
+                "mediaType": "video",
+                "codec": "AV1",
+                "action": "reject",
+                "detail": "No matching native decoder; the destination will not be opened."
+              }
+            ],
+            "blockingReasons": [
+              "The private MPEG-2 engine has no AV1 video decoder."
+            ],
+            "metadataSummary": "Private MPEG-2 route; not public or large-file acceptance. This bounded header preview is not a complete metadata inventory. The native muxer handles compatible tags, languages, chapters and stream side data and warns about nonrepresentable streams. Encoder provenance is relabelled for freshly encoded video. Attachments/artwork have an 8 MiB aggregate guard; text metadata has 4096-entry/2 MiB guards and chapters a 1024-entry guard. Destination-specific preservation still requires independent qualification."
+          }
+        },
+        "cancellation": null,
+        "stageNames": [],
+        "destinationUnchanged": true
+      }
+    ],
+    "completed": true,
+    "rejectedBeforeDestinationOrCode": true,
+    "finalUiSelectorCoverage": false,
+    "publicAcceptance": false
+  },
+  "forbiddenRequests": 0,
+  "originalUnchanged": true,
+  "cleanup": {
+    "processObservations": [
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 35700,
+          "parentPid": 37756,
+          "createdAt": "2026-10-23T14:58:02.6908740Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T14:58:50.190Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 371,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 38044,
+          "parentPid": 37756,
+          "createdAt": "2026-10-23T14:58:04.2441990Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T14:58:50.566Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 376,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 39792,
+          "parentPid": 37756,
+          "createdAt": "2026-10-23T14:58:05.3402370Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T14:58:50.949Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 383,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    ],
+    "disposableOutputDeleted": true,
+    "generatedDirectoriesRemoved": [
+      "dist\\client\\engines\\mpeg2"
+    ],
+    "scratchRemoved": "work\\mpeg2-production-runtime-pztqwp",
+    "allOwnedProcessesAbsent": true
+  },
+  "independentProcessChecks": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 35700,
+        "parentPid": 37756,
+        "createdAt": "2026-10-23T14:58:02.6908740Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-23T15:00:22.345Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 366,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 38044,
+        "parentPid": 37756,
+        "createdAt": "2026-10-23T14:58:04.2441990Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-23T15:00:22.702Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 356,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 39792,
+        "parentPid": 37756,
+        "createdAt": "2026-10-23T14:58:05.3402370Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-23T15:00:23.059Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 357,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "convertedOutputsFixturesProfilesAndPrivateAssetsIndependentlyAbsent": true,
+  "rawReportLosslesslyRecoverable": true,
+  "rawOriginalRemovedAfterExactReconstruction": true,
+  "globalSpeedClaim": false,
+  "causalSpeedComparison": false,
+  "largeFileAcceptance": false,
+  "publicAcceptance": false,
+  "fullGoalComplete": false,
+  "hostedPortableRegression": {
+    "run": 39974129420,
+    "job": 120484199963,
+    "head": "a35654ef9109efe50c023ed63ac405b29c0c1317",
+    "lastObservedStatus": "in_progress",
+    "lastObservedStep": "Run npx playwright install --with-deps chromium",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/39974129420",
+    "acceptanceClaim": false
+  },
+  "next": "Reuse the completed small integration, cancellation/write-failure recovery and backend-planning gates. Private selector/options/full-fidelity disclosures, quota/permission/reload/batch, original/large-source and broader browser gates remain open. Prior volume memory failure is unchanged."
+}

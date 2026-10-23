@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-10-23 actual a35654e backend-planning integration gate CLOSED for small
+fixtures: valid HEVC job emits real MPEG-2/AAC-copy plan and unchanged validated
+585266B/96frames/SSIM.985963/max.313ms output. AV1-source no-decoder rejection
+occurs before code loading or destination writes; existing destination/staging
+cleanup pass. This identifies current build limitation, NOT global AV1 exclusion.
+Full-tree228.71484375MiB/391samples/0missing,37source pins/original full SHA/owned
+process and scratch/asset absence verified.67focused/TS/lint PASS; hosted
+39974129420 pending.1.81MB raw losslessly retained62KB, no disposable media.
+`evidence/2026-10-23-mpeg2-production-planning.json`. Final private selector and
+controls, broad preservation, quota/permission/reload/batch, original/scale and
+browser qualification remain OPEN. No public profile/count change; full54 and
+earlier365.15625MiB volume failure unchanged. No replay of closed small gates.
+
 2026-10-23 next concrete capability integration: production MPEG-2 stream plan
 now distinguishes real MPEG-2 encoding/compatible companion audio copy/deferred
 native compatibility from generic first-video-only MPEG-4/audio exclusion.

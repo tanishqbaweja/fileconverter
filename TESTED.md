@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-23 a35654e actual production planning gate PASS: real HEVC conversion
+emits MPEG-2 re-encode/AAC-copy plan before native work; same585266B/SHAa9ede23c...
+output/96frames/full decode/SSIM.985963/max.313ms clocks/audio hash/title/language.
+Real AV1 fixture rejected before Worker started/Destination opened/code loading:
+no native metrics/0output/0pending writes, original destination unchanged and
+stage absent. Private native build lacks AV1 decoder, not a global unsupported
+decision.37executed pins/current sources verified; same native settings/250MiB.
+391native samples/0missing/full-tree228.71484375MiB; original full before/after
+SHA and owned process/scratch/assets absence independently checked. Raw1812719B
+losslessly archived62382B then removed; disposable media already deleted.
+67focused/TS/lint PASS, hosted39974129420 still running. Exact receipt:
+`evidence/2026-10-23-mpeg2-production-planning.json`. Backend/generic-planner
+integration only; final private UI selector/options/preservation/scaling/public
+gates stay open. Reuse this passing gate without an unchanged browser replay.
+
 2026-10-23 production MPEG-2 preflight implemented: route-specific plan for
 first-video4Mbps/CFR/native decoder inventory, compatible companion audio copying
 and explicit deferred native checks for other streams; no generic MPEG-4/audio

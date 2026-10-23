@@ -10,9 +10,11 @@ import { createGunzip, createGzip } from "node:zlib";
 import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mjs";
 
 const root = path.resolve(import.meta.dirname, ".."), MiB = 1048576;
-assert.ok(process.argv.length === 2 || (process.argv.length === 3 && process.argv[2] === "--recovery"));
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && ["--recovery", "--planning"].includes(process.argv[2])));
 const recovery = process.argv[2] === "--recovery";
-const input = recovery ? "outputs/reports/2026-10-23T14-39-37.327Z-mpeg2-production-runtime.json"
+const planning = process.argv[2] === "--planning";
+const input = planning ? "outputs/reports/2026-10-23T14-57-50.293Z-mpeg2-production-runtime.json"
+  : recovery ? "outputs/reports/2026-10-23T14-39-37.327Z-mpeg2-production-runtime.json"
   : "outputs/reports/2026-10-23T14-23-24.766Z-mpeg2-production-runtime.json";
 const rawPath = path.join(root, input), archivePath = rawPath + ".gz";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
@@ -24,9 +26,9 @@ assert.equal(report.status, "passed-small-allocation-diagnostic-not-route-promot
 assert.deepEqual(report.failures, []); assert.equal(report.publicAcceptance, false);
 assert.equal(report.executedSourcesAndBrowserPinsVerified, true);
 for (const [file, hash] of Object.entries(report.sources)) assert.equal(sha(await readFile(path.join(root, file))), hash);
-assert.equal(report.cacheQualification.results.length, recovery ? 2 : 3);
+assert.equal(report.cacheQualification.results.length, planning ? 1 : recovery ? 2 : 3);
 assert.equal(new Set(report.cacheQualification.outputHashes).size, 1);
-assert.deepEqual(report.staticRequests, { manifests: recovery ? 4 : 3, decoder: 1, encoder: 1 });
+assert.deepEqual(report.staticRequests, { manifests: planning ? 1 : recovery ? 4 : 3, decoder: 1, encoder: 1 });
 const samples = report.diagnosticMemorySamples;
 const available = samples.filter(sample => sample.privateBytes !== null), unavailable = samples.filter(sample => sample.privateBytes === null);
 assert.ok(available.length > 0); assert.equal(available.length, report.memory.validSamples);
@@ -38,6 +40,20 @@ const peak = available.filter(sample => sample.phase !== "blank").reduce((a, b) 
 const incrementalPrivateMiB = (peak.privateBytes - report.blankBaseline.privateBytes) / MiB;
 assert.equal(incrementalPrivateMiB, report.memory.incrementalPrivateMiB); assert.ok(incrementalPrivateMiB <= 250);
 assert.equal(report.protectedOriginalUnchanged, true); assert.deepEqual(report.forbiddenRequests, []);
+if (planning) {
+  const gate = report.planningQualification;
+  assert.equal(gate.completed, true); assert.equal(gate.rejectedBeforeDestinationOrCode, true);
+  assert.equal(gate.finalUiSelectorCoverage, false); assert.equal(gate.publicAcceptance, false);
+  assert.deepEqual(gate.cases.map(row => row.result.type), ["complete", "error"]);
+  const [converted, rejected] = gate.cases;
+  assert.deepEqual(converted.result.plan.streams.map(row => row.action), ["re-encode", "copy"]);
+  assert.deepEqual(converted.result.plan.blockingReasons, []);
+  assert.equal(converted.independentOutput.sha256, "a9ede23c2164a31f59e1d1fed9aa60ae43de2ee0928229c3e588e9865aedbb13");
+  assert.match(rejected.result.message, /no AV1 video decoder/); assert.equal(rejected.destinationUnchanged, true);
+  assert.deepEqual(rejected.stageNames, []); assert.equal(rejected.result.nativeMetrics, null);
+  assert.deepEqual(rejected.result.phases, ["Inspecting MPEG-2 source", "Planning MPEG-2 streams"]);
+  assert.equal(rejected.result.metrics.outputBytes, 0); assert.equal(rejected.result.metrics.peakPendingOperations, 0);
+}
 if (recovery) {
   const gate = report.recoveryQualification;
   for (const key of ["completed", "nativeDuringEncodingCancellation", "destinationRollback", "noStagesAfterEachTerminal"]) assert.equal(gate[key], true);
@@ -80,8 +96,10 @@ for (const key of ["dev", "ino", "size", "mtimeNs"]) assert.equal(current[key], 
 assert.equal(sha(await readFile(rawPath)), sha(raw));
 const archiveBytes = await readFile(archivePath); assert.ok(archiveBytes.length < raw.length);
 const receipt = {
-  schemaVersion: 1, head: recovery ? "5e67254902f435e5f57c0e602692ed51cc1b3171" : "bac29efcb877d920bc854e9b682b57c32d9d44f6",
-  scope: recovery ? "Actual in-flight production cancellation, final-write rollback and two independently validated recoveries; small fixture, not stress/public acceptance"
+  schemaVersion: 1, head: planning ? "a35654ef9109efe50c023ed63ac405b29c0c1317"
+    : recovery ? "5e67254902f435e5f57c0e602692ed51cc1b3171" : "bac29efcb877d920bc854e9b682b57c32d9d44f6",
+  scope: planning ? "Actual production MPEG-2 stream planning and unavailable-decoder preflight before code/destination; small fixture, not final UI/stress/public acceptance"
+    : recovery ? "Actual in-flight production cancellation, final-write rollback and two independently validated recoveries; small fixture, not stress/public acceptance"
     : "Three small actual production MPEG-2 conversions with immutable code reuse; not public promotion, stress, or causal speed comparison",
   startedAt: report.startedAt, finishedAt: report.finishedAt,
   archive: { file: input + ".gz", bytes: archiveBytes.length, sha256: sha(archiveBytes), restoredBytes, restoredSha256: sha(raw) },
@@ -98,13 +116,15 @@ const receipt = {
     maximumValidSampleGapMs: available.slice(1).reduce((peak, sample, index) => Math.max(peak, Date.parse(sample.timestamp) - Date.parse(available[index].timestamp)), 0),
     loadedPeakIncrementalPrivateMiB: report.loadedPeakIncrementalPrivateMiB },
   ...(recovery ? { recoveryQualification: report.recoveryQualification } : {}),
+  ...(planning ? { planningQualification: report.planningQualification } : {}),
   forbiddenRequests: 0, originalUnchanged: true, cleanup: report.cleanup, independentProcessChecks,
   convertedOutputsFixturesProfilesAndPrivateAssetsIndependentlyAbsent: true,
   rawReportLosslesslyRecoverable: true, rawOriginalRemovedAfterExactReconstruction: true,
   globalSpeedClaim: false, causalSpeedComparison: false, largeFileAcceptance: false, publicAcceptance: false, fullGoalComplete: false,
-  next: "Reuse this completed small integration gate. Remaining original-source/stress/recovery, production planner/options/disclosures and broader browser gates stay open. Prior volume memory failure is unchanged."
+  next: "Reuse the completed small integration, cancellation/write-failure recovery and backend-planning gates. Private selector/options/full-fidelity disclosures, quota/permission/reload/batch, original/large-source and broader browser gates remain open. Prior volume memory failure is unchanged."
 };
-const destination = path.join(root, recovery ? "evidence/2026-10-23-mpeg2-production-recovery.json" : "evidence/2026-10-23-mpeg2-compiled-runtime.json");
+const destination = path.join(root, planning ? "evidence/2026-10-23-mpeg2-production-planning.json"
+  : recovery ? "evidence/2026-10-23-mpeg2-production-recovery.json" : "evidence/2026-10-23-mpeg2-compiled-runtime.json");
 await writeFile(destination, JSON.stringify(receipt, null, 2) + "\n", { flag: "wx" });
 await unlink(rawPath); await assert.rejects(access(rawPath), { code: "ENOENT" });
 console.log(JSON.stringify({ receipt: path.relative(root, destination), archiveBytes: archiveBytes.length, restoredBytes, incrementalPrivateMiB, results: receipt.results.map(row => ({ repetition: row.repetition, elapsedMs: row.elapsedMs })) }));

@@ -52,6 +52,13 @@ acceptance contract. Private engines are not public supported profiles.
    Complete-tree227.23828125MiB; one loaded null sample retained, no conversion
    missing samples. Quota/permission/reload/batch, full-original/large-source,
    planner/settings/disclosures and broader browser qualification remain open.
+   Backend stream planning now also passes at a35654e: actual MPEG-2/AAC-copy
+   plan before valid conversion and actual AV1 no-decoder rejection before
+   codec/destination work; identical independently validated output and full-tree
+   228.71484375MiB. Unknown companion compatibility remains a native check, not
+   an invented preservation claim. Final private selector/options, broader
+   preservation and original/scale/browser gates remain open; do not replay the
+   completed tiny planning check unchanged.
 
 Exit evidence: B03/B04/B06 applicable original gates and public promotion
 checklist all satisfied. The 36 small VPX conversions and six MPEG-2 full-original
