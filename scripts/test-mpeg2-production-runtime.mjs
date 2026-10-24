@@ -22,7 +22,7 @@ import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
 import { verifyProductionCatalogue } from "./lib/production-catalogue-check.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { compareStreamingVideoClocks } from "./lib/streaming-video-clock-fidelity.mjs";
-import { boundedNativeLines } from "./lib/bounded-native-lines.mjs";
+import { boundedNativeLines, parseCompactAacPacket } from "./lib/bounded-native-lines.mjs";
 import { runMpeg2UiJob } from "./lib/mpeg2-ui-job.mjs";
 import { selectMpeg2UiControls } from "./lib/mpeg2-ui-controls.mjs";
 import { mpeg2ControlReference, sourceMpeg2ControlClock, expectedMpeg2ControlClocks } from "./lib/mpeg2-control-reference.mjs";
@@ -30,12 +30,16 @@ import { loadMpeg2RuntimeNative } from "./lib/mpeg2-runtime-native-selection.mjs
 import { mpeg2ControlFixtureArguments } from "./lib/mpeg2-control-fixture.mjs";
 import { createBoundedVisualObserver } from "./lib/bounded-visual-observer.mjs";
 import { mpeg2StorageRecoveryCases, assertMpeg2StorageFailure } from "./lib/mpeg2-storage-recovery.mjs";
+import { MPEG2_ORIGINAL_GATE, assertMpeg2OriginalStructure, compareOriginalAacPackets } from "./lib/mpeg2-original-gate.mjs";
+import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls", "--ui-batch"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls", "--ui-batch", "--original"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
 const uiControls = flags.has("--ui-controls");
+const fullOriginal = flags.has("--original");
+assert.ok(!fullOriginal || (!flags.has("--ui") && !flags.has("--controls") && flags.has("--bounded-visual-capture")), "Original is one explicit full-file production gate");
 const uiBatch = flags.has("--ui-batch");
 assert.ok(!uiBatch || (!flags.has("--ui") && !uiControls && !flags.has("--controls") && flags.has("--bounded-visual-capture")), "UI batch is one finite actual-button gate");
 const storageRecovery = flags.has("--storage-recovery");
@@ -44,17 +48,17 @@ assert.ok(!uiControls || (!flags.has("--ui") && !flags.has("--controls") && flag
 const scaledBuildFlags = [...flags].filter(flag => flag.startsWith("--scaled-properties-build="));
 assert.ok(scaledBuildFlags.length <= 1);
 const scaledBuildRunId = scaledBuildFlags.length ? scaledBuildFlags[0].split("=")[1] : null;
-assert.ok(scaledBuildRunId === null || flags.has("--controls") || uiControls || storageRecovery || uiBatch, "Changed scaler core is explicit qualification only, not implicit route promotion");
+assert.ok(scaledBuildRunId === null || flags.has("--controls") || uiControls || storageRecovery || uiBatch || fullOriginal, "Changed scaler core is explicit qualification only, not implicit route promotion");
 assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
 assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
 const boundedVisual = flags.has("--bounded-visual-capture"), continuousVisual = !eventsOnly && !boundedVisual;
-assert.ok(!boundedVisual || (diagnose && (flags.has("--controls") || uiControls || storageRecovery || uiBatch) && !eventsOnly), "Bounded visual observer is one explicit finite gate, not implicit acceptance");
+assert.ok(!boundedVisual || (diagnose && (flags.has("--controls") || uiControls || storageRecovery || uiBatch || fullOriginal) && !eventsOnly), "Bounded visual observer is one explicit finite gate, not implicit acceptance");
 const recovery = flags.has("--recovery") || storageRecovery;
 const planning = flags.has("--planning");
-const ui = flags.has("--ui") || uiControls || uiBatch;
+const ui = flags.has("--ui") || uiControls || uiBatch || fullOriginal;
 const controls = flags.has("--controls") || uiControls;
-assert.ok(Number(recovery) + Number(planning) + Number(ui && !uiControls && !uiBatch) + Number(controls && !uiControls) + Number(uiControls) + Number(uiBatch) + Number(flags.has("--cache-repeats")) <= 1, "Select one finite qualification gate");
+assert.ok(Number(recovery) + Number(planning) + Number(ui && !uiControls && !uiBatch && !fullOriginal) + Number(controls && !uiControls) + Number(uiControls) + Number(uiBatch) + Number(fullOriginal) + Number(flags.has("--cache-repeats")) <= 1, "Select one finite qualification gate");
 assert.ok(!recovery || !flags.has("--cache-repeats"), "Recovery is a separate missing gate, not an unchanged repeat run");
 const cases = controls ? [
   { name: "unchanged-default-policy", expected: "complete" },
@@ -74,6 +78,7 @@ const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const chunk of createReadStream(file)) hash.update(chunk); return hash.digest("hex"); };
 const report = { scope: "production-MPEG2-dispatch-and-staged-lifecycle-small-fixture-not-public-acceptance", startedAt: new Date().toISOString(),
   publicAcceptance: false, uiPlannerCoverage: false, largeFileCoverage: false, speedComparison: false, standaloneWorker: false, failures: [] };
+if (fullOriginal) report.scope = "one-exact-full-original-through-current-production-UI-and-native-pipeline-not-repeat-stress-or-public-acceptance";
 report.observer = { allocationDiagnostics: diagnose, screenshots: continuousVisual, snapshots: continuousVisual, sources: true,
   boundedVisualCapture: boundedVisual, controlScope: boundedVisual ? "bounded real-state visual evidence, not route promotion"
     : eventsOnly ? "events-only observer comparison, not route promotion" : "existing full screenshot/snapshot trace" };
@@ -85,6 +90,8 @@ if (uiControls) report.uiControlsQualification = { cases: [], completed: false, 
 if (uiBatch) report.uiBatchQualification = { completed: false, inputFiles: 2, actualConvertButton: false, outputs: [],
   sameFilenameCollisionCovered: true, terminalMetricsScope: "final batch item only; native work observed separately for each index",
   nativeOsPickerCovered: false, publicAcceptance: false };
+if (fullOriginal) report.originalQualification = { ...MPEG2_ORIGINAL_GATE, completed: false, currentProductionPipeline: true,
+  actualConvertButton: false, nativeOsPickerCovered: false, near10GBScalingCovered: false };
 if (recovery) report.recoveryQualification = { cases: [], completed: false, nativeDuringEncodingCancellation: false,
   destinationRollback: false, noStagesAfterEachTerminal: false, publicAcceptance: false };
 if (storageRecovery) report.storageRecoveryQualification = { completed: false, faultInjection: true, actualQuotaExhaustion: false,
@@ -95,7 +102,7 @@ const env = { ...runtime.env, NODE_OPTIONS: [process.env.NODE_OPTIONS ?? "", "--
   NEXT_TELEMETRY_DISABLED: "1", WRANGLER_SEND_METRICS: "false" };
 const generated = [], processIdentities = [], samples = [], baselineWindows = [], blankObservations = [], forbiddenRequests = [];
 let server, serverIdentity, browserServer, browser, context, monitor, monitorTimer, monitorPending = Promise.resolve(), monitorFailure, realmSampler, browserRootPid;
-let visualObserver;
+let visualObserver, nativeJournal;
 const phaseChanges = [{ phase: "blank", at: Date.parse(report.startedAt) }];
 const changePhase = phase => { phaseChanges.push({ phase, at: Date.now() }); };
 const attribution = { references: [], realms: [], scope: "bounded diagnostic observations, not exact realm-heap peaks or replacement private bytes" };
@@ -114,10 +121,27 @@ let serverLog = "", output, browserPin, originalHash, work, monitorBusy = false,
 let browserOutputName = "mpeg2-runtime-output.mp4";
 const snapshot = async () => {
   const batch = await monitor.drain();
-  assert.ok(samples.length + batch.samples.length <= 3000, "Bounded short-test sample cap");
-  for (const sample of batch.samples) samples.push({ ...sample,
+  const annotated = batch.samples.map(sample => ({ ...sample,
     phase: phaseChanges.findLast(change => change.at <= Date.parse(sample.timestamp))?.phase ?? "unavailable",
-    elapsedMs: Date.parse(sample.timestamp) - Date.parse(report.startedAt) });
+    elapsedMs: Date.parse(sample.timestamp) - Date.parse(report.startedAt) }));
+  if (nativeJournal) await nativeJournal.appendBatch({ ...batch, samples: annotated });
+  if (!fullOriginal) assert.ok(samples.length + annotated.length <= 3000, "Bounded short-test sample cap");
+  samples.push(...annotated);
+  if (fullOriginal && samples.length > 128) samples.splice(0, samples.length - 128);
+};
+const recordObservedMemory = () => {
+  if (!report.blankBaseline) return;
+  const available = samples.filter(sample => sample.privateBytes !== null);
+  const active = samples.filter(sample => sample.phase !== "blank" && sample.privateBytes !== null);
+  const all = nativeJournal?.peaksExcept([]), retained = nativeJournal?.peaksExcept(["blank"]);
+  const peak = retained?.peak ?? active.reduce((a, b) => !a || a.privateBytes < b.privateBytes ? b : a, null);
+  if (!peak) return;
+  report.memory = { scope: fullOriginal ? "one-current-production-full-original-attempt-not-repeat-stress-or-public-acceptance" : "small-runtime-integration-only-not-large-file-or-public-profile-acceptance",
+    intervalMs: 100, validSamples: all?.validSamples ?? available.length,
+    unavailableSamples: samples.filter(s => s.privateBytes === null), unavailableListIsTailOnly: fullOriginal,
+    unavailableSampleCount: all?.unavailableSamples ?? samples.filter(s => s.privateBytes === null).length,
+    conversionSamples: nativeJournal ? null : samples.filter(s => s.phase === "conversion" && s.privateBytes !== null).length,
+    fullHistoryInLosslessJournal: fullOriginal, peak, incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 };
 };
 try {
   const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 32 * 1024 ** 3);
@@ -129,16 +153,18 @@ try {
   originalHash = await hashFile(path.join(root, "test.mkv"));
   assert.equal(originalHash, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
   work = runtime.directory;
-  const native = (args, executable = "ffmpeg") => exec(executable, args, { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 4 * 1024 ** 2 });
-  const fixture = path.join(work, "source.mkv"); output = path.join(work, "output.mp4");
+  const native = (args, executable = "ffmpeg") => exec(executable, args, { cwd: root, env, windowsHide: true, timeout: fullOriginal ? MPEG2_ORIGINAL_GATE.validatorDeadlineMs : 120000, maxBuffer: 4 * 1024 ** 2 });
+  const fixture = fullOriginal ? path.join(root, "test.mkv") : path.join(work, "source.mkv"); output = path.join(work, "output.mp4");
   const fixtureSeconds = ui && !uiControls && !uiBatch ? 12 : 4;
-  const fixtureWidth = controls || storageRecovery || uiBatch ? 640 : 320, fixtureHeight = controls || storageRecovery || uiBatch ? 360 : 240;
-  await native(controls || storageRecovery || uiBatch ? mpeg2ControlFixtureArguments(fixture) : ["-v", "error", "-f", "lavfi", "-i", `testsrc2=size=${fixtureWidth}x${fixtureHeight}:rate=24:duration=${fixtureSeconds}`,
+  const fixtureWidth = fullOriginal ? MPEG2_ORIGINAL_GATE.width : controls || storageRecovery || uiBatch ? 640 : 320,
+    fixtureHeight = fullOriginal ? MPEG2_ORIGINAL_GATE.height : controls || storageRecovery || uiBatch ? 360 : 240;
+  if (!fullOriginal) await native(controls || storageRecovery || uiBatch ? mpeg2ControlFixtureArguments(fixture) : ["-v", "error", "-f", "lavfi", "-i", `testsrc2=size=${fixtureWidth}x${fixtureHeight}:rate=24:duration=${fixtureSeconds}`,
     "-f", "lavfi", "-i", `sine=frequency=997:sample_rate=48000:duration=${fixtureSeconds}`, "-map", "0:v", "-map", "1:a",
     "-c:v", "libx265", "-preset", "ultrafast", "-crf", "18", "-threads:v", "1", "-x265-params",
     "pools=none:frame-threads=1:wpp=0:bframes=2:keyint=48:scenecut=0:log-level=error", "-c:a", "aac", "-b:a", "128k",
     "-metadata", "title=MPEG-2 café 音楽", "-metadata:s:a:0", "language=eng", "-avoid_negative_ts", "make_zero", fixture]);
-  report.fixture = { bytes: (await lstat(fixture)).size, sha256: await hashFile(fixture), video: "hevc", width: fixtureWidth, height: fixtureHeight, frames: fixtureSeconds * 24 };
+  report.fixture = { bytes: (await lstat(fixture)).size, sha256: fullOriginal ? originalHash : await hashFile(fixture), video: "hevc", width: fixtureWidth, height: fixtureHeight,
+    frames: fullOriginal ? MPEG2_ORIGINAL_GATE.frames : fixtureSeconds * 24, completeOriginal: fullOriginal };
   const cancellationFixture = path.join(work, "cancellation-source.mkv");
   const rejectedFixture = path.join(work, "unavailable-decoder.mkv");
   if (planning) {
@@ -187,6 +213,7 @@ try {
     "scripts/lib/mpeg2-control-fixture.mjs",
     "scripts/lib/bounded-visual-observer.mjs",
     "scripts/lib/mpeg2-storage-recovery.mjs",
+    "scripts/lib/mpeg2-original-gate.mjs", "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/native-memory-peaks.mjs",
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/streaming-video-clock-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs",
     "scripts/test-mpeg2-production-runtime.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",
@@ -226,6 +253,10 @@ try {
   });
   page.on("console", message => { if (browserLogs.length === 32) browserLogs.shift(); browserLogs.push({ type: message.type(), text: message.text().slice(0, 512) }); });
   page.on("pageerror", error => { if (browserLogs.length === 32) browserLogs.shift(); browserLogs.push({ type: "pageerror", text: error.message.slice(0, 512) }); });
+  if (fullOriginal) {
+    const directory = path.join(root, "output/playwright"); await mkdir(directory, { recursive: true });
+    nativeJournal = await createLosslessNativeMemoryJournal(browserIdentity.pid, path.join(directory, report.startedAt.replaceAll(":", "-") + "-mpeg2-original-memory.ndjson"));
+  }
   monitor = await startChromiumMemoryMonitor(browserIdentity.pid, work, 100);
   const monitorIdentity = await queryProcessIdentity(monitor.pid); assert.ok(monitorIdentity); processIdentities.push(monitorIdentity);
   for (let attempt = 0; attempt < 20; attempt++) {
@@ -284,12 +315,29 @@ try {
     if (stable) { report.loadedIdle = stable; break; }
   }
   assert.ok(report.loadedIdle, "Stable loaded-site idle observation unavailable");
-  report.loadedPeakIncrementalPrivateMiB = (Math.max(...loadedSamples.filter(sample => sample.privateBytes !== null).map(sample => sample.privateBytes)) - report.blankBaseline.privateBytes) / 1048576;
+  report.loadedPeakIncrementalPrivateMiB = ((nativeJournal?.peaksExcept(["blank"]).peak?.privateBytes ?? Math.max(...loadedSamples.filter(sample => sample.privateBytes !== null).map(sample => sample.privateBytes))) - report.blankBaseline.privateBytes) / 1048576;
   await captureAttribution("loaded-after-catalogue");
   monitorTimer = setInterval(() => {
     if (monitorBusy) return;
     monitorBusy = true;
-    monitorPending = snapshot().catch(error => { monitorFailure ??= error; }).finally(() => { monitorBusy = false; });
+    monitorPending = snapshot().then(async () => {
+      if (fullOriginal && !report.earlyMemoryFailure) {
+        const peak = nativeJournal.peaksExcept(["blank"]).peak;
+        if (peak && (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 > 250) {
+          report.earlyMemoryFailure = { peak, incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576,
+            reason: "Stop spending hours on a known failed primary memory gate; no threshold, baseline or process exclusion change" };
+          const observations = await Promise.allSettled([captureAttribution("memory-limit-failure"), page.evaluate(() => {
+            const state = window.__WITHIN_TEST__?.getState(), cancel = document.querySelector("button.cancel");
+            const requested = state?.jobState === "running" && cancel instanceof HTMLButtonElement && !cancel.disabled;
+            if (requested) cancel.click();
+            return { requested, phase: state?.phase ?? null, inputBytes: state?.metrics?.inputBytes ?? null,
+              outputBytes: state?.metrics?.outputBytes ?? null, wasmMemoryBytes: state?.metrics?.wasmMemoryBytes ?? null };
+          })]);
+          report.earlyMemoryFailure.cancellation = observations[1].status === "fulfilled" ? observations[1].value : { unavailable: String(observations[1].reason).slice(0, 512) };
+          throw new Error("Full-original complete-browser incremental private memory exceeded250MiB");
+        }
+      }
+    }).catch(error => { monitorFailure ??= error; }).finally(() => { monitorBusy = false; });
   }, 500);
   await page.exposeFunction("receiveRuntimeOutput", async chunk => { assert.ok(validationTarget); await validationTarget.write(decodeBoundedValidationChunk(chunk)); });
   for (let repetition = 1; repetition <= repetitions; repetition++) {
@@ -301,19 +349,20 @@ try {
   }
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
   let selectedUiOptions = null;
-  if (uiControls || uiBatch) {
+  if (uiControls || uiBatch || fullOriginal) {
     const form = await selectMpeg2UiControls(page, testCase.videoOptions); selectedUiOptions = form.selected;
     if (uiControls) {
       const capture = await visualObserver.capture(`case-${repetition}-options`);
       assert.equal(capture.regionInViewport, true, "Actual options must be visible in their bounded screenshot");
       report.uiControlsQualification.cases.push({ name: testCase.name, form, screenshot: capture.file });
-    } else report.uiBatchQualification.form = form;
+    } else if (uiBatch) report.uiBatchQualification.form = form;
+    else report.originalQualification.form = form;
   }
   const workerEventStart = report.workerEvents.length;
   changePhase("conversion");
   const visualLifetime = new AbortController();
   const visualWork = !storageRecovery || testCase.testFault ? visualObserver?.observeNativeWork(`case-${repetition}-native`, visualLifetime.signal) : undefined;
-  const tasks = [ui ? (uiBatch ? page.evaluate(runMpeg2UiJob, { batchSize: 2, options: selectedUiOptions }) : page.evaluate(runMpeg2UiJob, selectedUiOptions)).then(value => { changePhase("recovery"); return value; }) : page.evaluate(async testCase => {
+  const tasks = [ui ? (fullOriginal ? page.evaluate(runMpeg2UiJob, { fullOriginal: true, options: selectedUiOptions }) : uiBatch ? page.evaluate(runMpeg2UiJob, { batchSize: 2, options: selectedUiOptions }) : page.evaluate(runMpeg2UiJob, selectedUiOptions)).then(value => { changePhase("recovery"); return value; }) : page.evaluate(async testCase => {
     const file = document.querySelector('input[type="file"]').files[0];
     const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle("mpeg2-runtime-output.mp4", { create: true });
     const sentinel = "existing destination must survive";
@@ -365,6 +414,7 @@ try {
   if (uiControls) report.uiControlsQualification.cases.at(-1).actualButtonEvidence = execution.uiEvidence;
   if (uiBatch) Object.assign(report.uiBatchQualification, { actualConvertButton: execution.uiEvidence.actualConvertButton,
     actualButtonEvidence: execution.uiEvidence, destinationNames: execution.destinationNames, nativeBatchItems: execution.nativeBatchItems });
+  if (fullOriginal) Object.assign(report.originalQualification, { actualConvertButton: execution.uiEvidence.actualConvertButton, actualButtonEvidence: execution.uiEvidence });
   await monitorPending; await snapshot(); changePhase("validation");
   if (recovery) report.recoveryQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
   if (planning) report.planningQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
@@ -437,11 +487,13 @@ try {
       finally { await reader.cancel(); await root.removeEntry(browserOutputName); }
     }, outputNameToValidate);
   } finally { validationTarget = undefined; await file.close(); }
-  const probe = async file => JSON.parse((await native(["-v", "error", "-count_frames", "-show_streams", "-show_format", "-of", "json", file], "ffprobe")).stdout);
+  const probe = async file => JSON.parse((await native(["-v", "error", ...fullOriginal ? [] : ["-count_frames"], "-show_streams", "-show_format", "-show_chapters", "-of", "json", file], "ffprobe")).stdout);
   const source = await probe(fixture), converted = await probe(output);
   const reference = controls || storageRecovery || uiBatch ? mpeg2ControlReference(source.streams[0], testCase.videoOptions) : null;
   assert.equal(source.streams[0].codec_name, "hevc"); assert.equal(converted.streams[0].codec_name, "mpeg2video");
-  assert.equal(Number(converted.streams[0].nb_read_frames), reference?.frames ?? report.fixture.frames);
+  // Full original is frame-counted by the independent streaming all-frame
+  // clock comparison below, avoiding a redundant complete native decode here.
+  if (!fullOriginal) assert.equal(Number(converted.streams[0].nb_read_frames), reference?.frames ?? report.fixture.frames);
   assert.equal(converted.streams[0].width, reference?.width ?? fixtureWidth); assert.equal(converted.streams[0].height, reference?.height ?? fixtureHeight);
   if (reference) {
     const actual = report.conversion.metrics.mpeg2EncoderSettings;
@@ -450,15 +502,28 @@ try {
     assert.equal(converted.streams[0].avg_frame_rate, reference.frameRate + "/1");
     assert.equal(converted.streams[0].display_aspect_ratio, source.streams[0].display_aspect_ratio);
   }
-  assert.equal(converted.streams[1].codec_name, "aac"); assert.equal(converted.streams[1].tags.language, "eng");
-  assert.equal(converted.format.tags.title, source.format.tags.title);
+  assert.equal(converted.streams[1].codec_name, "aac");
+  if (fullOriginal) report.originalQualification.structure = assertMpeg2OriginalStructure(source, converted, report.conversion.warnings);
+  else { assert.equal(converted.streams[1].tags.language, "eng"); assert.equal(converted.format.tags.title, source.format.tags.title); }
   const audioHash = async file => (await native(["-v", "error", "-i", file, "-map", "0:a", "-c", "copy", "-f", "streamhash", "-hash", "sha256", "pipe:1"])).stdout.trim();
   assert.equal(await audioHash(output), await audioHash(fixture));
+  if (fullOriginal) {
+    const art = async (file, index) => (await native(["-v", "error", "-i", file, "-map", `0:${index}`, "-c", "copy", "-f", "streamhash", "-hash", "sha256", "pipe:1"])).stdout.trim();
+    const before = await art(fixture, 3), after = await art(output, 2); assert.equal(after, before);
+    report.originalQualification.artworkPacketHash = after;
+    const packets = file => (async function* () {
+      for await (const line of boundedNativeLines("ffprobe", ["-v", "error", "-select_streams", "a:0", "-show_packets", "-show_entries",
+        "packet=stream_index,pts_time,dts_time,dts,duration_time,data_hash:packet_side_data=side_data_type,skip_samples,discard_padding",
+        "-show_data_hash", "sha256", "-of", "compact", file], { cwd: root, env, timeoutMs: MPEG2_ORIGINAL_GATE.validatorDeadlineMs })) yield parseCompactAacPacket(line);
+    })();
+    report.originalQualification.aacPackets = await compareOriginalAacPackets(packets(fixture), packets(output));
+  }
   await native(["-v", "error", "-xerror", "-i", output, "-f", "null", "-"]);
   const comparison = await native(["-v", "info", "-i", fixture, "-i", output, "-filter_complex",
     `[0:v:0]${reference?.referenceFilter ?? ""}settb=1/1,setpts=N[ref];[1:v:0]settb=1/1,setpts=N[out];[ref][out]ssim`, "-an", "-f", "null", "-"]);
   const ssim = Number(/All:([0-9.]+)/.exec(comparison.stderr)?.[1]); assert.ok(ssim >= 0.98, `SSIM ${ssim}`);
-  const times = file => boundedNativeLines("ffprobe", ["-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "compact", file], { cwd: root, env });
+  const times = file => boundedNativeLines("ffprobe", ["-v", "error", "-select_streams", "v:0", "-show_frames", "-show_entries", "frame=best_effort_timestamp_time", "-of", "compact", file], { cwd: root, env,
+    timeoutMs: fullOriginal ? MPEG2_ORIGINAL_GATE.validatorDeadlineMs : 600000 });
   const clockReference = reference ? expectedMpeg2ControlClocks(await sourceMpeg2ControlClock(times(fixture)), reference) : times(fixture);
   const videoClocks = await compareStreamingVideoClocks(clockReference, times(output), reference?.frames ?? report.fixture.frames);
   report.output = { bytes: (await lstat(output)).size, sha256: await hashFile(output), codec: "mpeg2video", frames: reference?.frames ?? report.fixture.frames, ssim, fullNativeDecodePassed: true,
@@ -466,6 +531,7 @@ try {
   report.cacheQualification.outputHashes.push(report.output.sha256);
   report.cacheQualification.results.push({ repetition, conversion: report.conversion, output: report.output });
   if (uiBatch) report.uiBatchQualification.outputs.push({ name: outputNameToValidate, ...report.output });
+  if (fullOriginal) { report.originalQualification.output = report.output; report.originalQualification.completed = true; report.largeFileCoverage = true; }
   if (recovery) report.recoveryQualification.cases.at(-1).independentOutput = report.output;
   if (planning) report.planningQualification.cases.at(-1).independentOutput = report.output;
   if (controls) report.controlsQualification.cases.push({ name: testCase.name, requested: testCase.videoOptions ?? "automatic", reference,
@@ -505,13 +571,9 @@ try {
     report.attribution = attribution; report.diagnosticMemorySamples = samples;
   }
   assert.equal(forbiddenRequests.length, 0); report.forbiddenRequests = forbiddenRequests;
-  const conversionSamples = samples.filter(sample => sample.phase === "conversion" && sample.privateBytes !== null);
-  assert.ok(conversionSamples.length > 0);
-  const activeSamples = samples.filter(sample => sample.phase !== "blank" && sample.privateBytes !== null);
-  const peak = activeSamples.reduce((peak, sample) => sample.privateBytes > peak.privateBytes ? sample : peak);
-  report.memory = { scope: "small-runtime-integration-only-not-large-file-or-public-profile-acceptance", intervalMs: 100,
-    validSamples: samples.filter(sample => sample.privateBytes !== null).length, unavailableSamples: samples.filter(sample => sample.privateBytes === null),
-    conversionSamples: conversionSamples.length, peak, incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 };
+  if (!fullOriginal) assert.ok(samples.some(sample => sample.phase === "conversion" && sample.privateBytes !== null));
+  else assert.ok(nativeJournal.peaksExcept(["blank", "loaded", "validation", "recovery"]).validSamples > 0);
+  recordObservedMemory();
   assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
   for (const [file, hash] of Object.entries(report.sources)) assert.equal(sha(await readFile(path.join(root, file))), hash, "Executed source changed: " + file);
   report.executedSourcesAndBrowserPinsVerified = true;
@@ -529,7 +591,8 @@ try {
     } catch (error) { report.postMeasurementAllocators = { status: "unavailable", error: String(error).slice(0, 1024), acceptanceMetric: false }; }
   }
   assert.ok(report.memory.incrementalPrivateMiB <= 250);
-  report.status = diagnose ? "passed-small-allocation-diagnostic-not-route-promotion" : "passed-small-production-runtime-integration";
+  report.status = fullOriginal ? "passed-one-full-original-production-attempt-not-repeat-stress-or-public-acceptance"
+    : diagnose ? "passed-small-allocation-diagnostic-not-route-promotion" : "passed-small-production-runtime-integration";
 } catch (error) {
   report.status = "failed"; report.failures.push(String(error.stack ?? error)); report.serverLog = serverLog;
   if (error instanceof AggregateError) for (const detail of error.errors) report.failures.push(String(detail.stack ?? detail));
@@ -538,6 +601,17 @@ try {
   if (visualObserver) report.boundedVisualObservation = visualObserver.summary();
   clearInterval(monitorTimer); await monitorPending;
   realmSampler?.close();
+  if (fullOriginal && nativeJournal) {
+    try {
+      if (monitor) { await snapshot(); await monitor.close(); monitor = null; }
+      recordObservedMemory();
+      const receipt = await nativeJournal.close();
+      report.losslessMemoryJournal = await compactLosslessNativeMemoryJournal(receipt);
+      report.diagnosticMemoryTailOnly = true;
+      report.diagnosticMemoryTailLimit = 128;
+      if (report.memory) assert.ok(report.memory.incrementalPrivateMiB <= 250);
+    } catch (error) { report.failures.push("Full-original lossless memory finalization: " + String(error.stack ?? error)); report.status = "failed"; process.exitCode = 1; }
+  }
   if (diagnose) {
     annotateNativeProcessTypes(samples, attribution.references, browserRootPid);
     report.attribution = attribution; report.diagnosticMemorySamples = samples;

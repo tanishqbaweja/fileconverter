@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-10-24 next principal gate ready: exact full test.mkv through current actual
+production selector/options/button/AVIO/staged saver, not earlier frozen candidate
+drivers or another tiny smoke. --original has6h deadline, full independent video/
+AAC/metadata/artwork/exclusion validators,128row diagnostic tail plus lossless
+all-native journal, and early real Cancel on known primary250MiB failure.
+34focused/lint/syntax PASS including lossless journal guards; actual browser
+qualification pending. Existing exact
+test.mkv read-only probe reconfirms1920x804 HEVC/24fps, AAC, SubRip, PNG cover,
+12340.096s. Earlier full transcodes4–4.6h inform ETA, not a new speed claim.
+Current source/production original acceptance and repeat/near10GB remain open;
+SubRip conversion remains missing although exclusion must be honestly disclosed.
+Previous40069941157/6bbbaaa CI confirmed SUCCESS; no unchanged small gates replayed.
+
 2026-10-24 real two-file UI batch gate CLOSED at15059fc: same real canonical
 file selected twice, one actual Convert click, native indices0+1 observed, distinct
 source.mp4/source-2.mp4 independently validated (each1,002,730B/96frames/exact

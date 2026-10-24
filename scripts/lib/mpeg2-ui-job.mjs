@@ -3,11 +3,17 @@
 export async function runMpeg2UiJob(expectedOptions = null) {
   const phases = []; let nativeMetrics = null, observedRunning = false;
   const expectedBatchSize = expectedOptions?.batchSize ?? 1;
+  const fullOriginal = expectedOptions?.fullOriginal === true;
   if (![1, 2].includes(expectedBatchSize)) throw new Error("Only finite one/two-file UI qualification is allowed");
   expectedOptions = expectedOptions?.options ?? expectedOptions;
   const nativeBatchItems = new Map();
   const bridge = window.__WITHIN_TEST__;
   if (bridge?.getState().selectedProfileId !== "mkv-to-mp4-mpeg2") throw new Error("Private MPEG-2 profile is not selected");
+  if (fullOriginal) {
+    const files = document.querySelector('input[type="file"]')?.files;
+    if (expectedBatchSize !== 1 || files?.length !== 1 || files[0].name !== "test.mkv" || files[0].size !== 2958573265)
+      throw new Error("Full-original qualification must use the exact complete test.mkv");
+  }
   let selectedOptions = null;
   if (expectedOptions) {
     const value = id => document.querySelector(`[data-testid="${id}"]`)?.value;
@@ -19,9 +25,12 @@ export async function runMpeg2UiJob(expectedOptions = null) {
   if (!(button instanceof HTMLButtonElement) || button.disabled) throw new Error("Actual Convert button is not enabled");
   const state = await new Promise((resolve, reject) => {
     let timer;
-    const timeout = setTimeout(() => { clearInterval(timer); reject(new Error("Actual UI conversion exceeded60s")); }, 60000);
+    const timeout = setTimeout(() => { clearInterval(timer); reject(new Error(fullOriginal ? "Full-original UI conversion exceeded6h" : "Actual UI conversion exceeded60s")); }, fullOriginal ? 21600000 : 60000);
     timer = setInterval(() => {
       const current = bridge.getState();
+      if (current.jobState === "error" && current.workerStatus === "ready") {
+        clearTimeout(timeout); clearInterval(timer); reject(new Error(current.error || "Actual UI conversion failed")); return;
+      }
       if (current.jobState === "running") observedRunning = true;
       if (current.phase && phases.at(-1) !== current.phase) {
         if (phases.length === 32) phases.shift(); phases.push(current.phase);
@@ -35,7 +44,7 @@ export async function runMpeg2UiJob(expectedOptions = null) {
       if (observedRunning && ["complete", "cancelled", "error"].includes(current.jobState) && current.workerStatus === "ready") {
         clearTimeout(timeout); clearInterval(timer); resolve(current);
       }
-    }, 16);
+    }, fullOriginal ? 250 : 16);
     button.click();
   });
   if (!observedRunning) throw new Error("UI never observed an active conversion");
@@ -51,7 +60,7 @@ export async function runMpeg2UiJob(expectedOptions = null) {
   for await (const name of root.keys()) if (name.startsWith("within-stage-mkv-to-mp4-mpeg2-")) {
     if (stageNames.length === 8) throw new Error("Unexpected stage accumulation"); stageNames.push(name);
   }
-  return { result: { type: state.jobState, metrics: state.metrics, phases, nativeMetrics,
+  return { result: { type: state.jobState, metrics: state.metrics, phases, nativeMetrics, warnings: state.warnings ?? [],
     observationScope: "actual UI state, not fabricated raw worker messages; terminal metrics describe final batch item" }, stageNames, destinationName,
     destinationNames: state.batchOutputNames, nativeBatchItems: [...nativeBatchItems.values()],
     uiEvidence: { observedRunning, actualConvertButton: true, nativeWorkObserved: true,

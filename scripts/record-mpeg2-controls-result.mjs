@@ -9,6 +9,7 @@ import { promisify } from "node:util";
 import { gzipSync, gunzipSync } from "node:zlib";
 import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mjs";
 import { assertMpeg2StorageFailure, mpeg2StorageRecoveryCases } from "./lib/mpeg2-storage-recovery.mjs";
+import { replayLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile);
 assert.equal(process.argv.length, 4);
 const [relative, head] = process.argv.slice(2);
@@ -17,17 +18,20 @@ assert.match(head, /^[a-f0-9]{40}$/);
 const rawPath = path.join(root, relative), archivePath = rawPath + ".gz";
 await assert.rejects(access(archivePath), { code: "ENOENT" });
 const identity = await lstat(rawPath, { bigint: true });
-assert.ok(identity.isFile() && !identity.isSymbolicLink() && identity.size > 0n && identity.size <= 4n * 1048576n);
+assert.ok(identity.isFile() && !identity.isSymbolicLink() && identity.size > 0n && identity.size <= 32n * 1048576n);
 assert.equal(await realpath(rawPath), rawPath);
 const raw = await readFile(rawPath), report = JSON.parse(raw), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const storageRecovery = Boolean(report.storageRecoveryQualification);
 const uiBatch = Boolean(report.uiBatchQualification);
-const qualification = storageRecovery ? report.recoveryQualification : uiBatch ? report.uiBatchQualification : report.controlsQualification;
+const fullOriginal = Boolean(report.originalQualification), expectedOutputCount = fullOriginal ? 1 : 2;
+assert.ok(fullOriginal || raw.length <= 4 * 1048576);
+const qualification = fullOriginal ? report.originalQualification : storageRecovery ? report.recoveryQualification : uiBatch ? report.uiBatchQualification : report.controlsQualification;
 const receiptPath = path.join(root, "evidence", path.basename(relative).replace("-mpeg2-production-runtime.json",
-  storageRecovery ? "-mpeg2-storage-recovery-result.json" : uiBatch ? "-mpeg2-ui-batch-result.json" : "-mpeg2-controls-result.json"));
+  fullOriginal ? "-mpeg2-original-result.json" : storageRecovery ? "-mpeg2-storage-recovery-result.json" : uiBatch ? "-mpeg2-ui-batch-result.json" : "-mpeg2-controls-result.json"));
 await assert.rejects(access(receiptPath), { code: "ENOENT" });
 assert.equal(report.publicAcceptance, false); assert.ok(qualification);
-assert.ok(report.status === "failed" || report.status === "passed-small-allocation-diagnostic-not-route-promotion");
+assert.ok(report.status === "failed" || report.status === "passed-small-allocation-diagnostic-not-route-promotion" ||
+  (fullOriginal && report.status === "passed-one-full-original-production-attempt-not-repeat-stress-or-public-acceptance"));
 assert.equal(report.protectedOriginalUnchanged, true); assert.equal(report.cleanup.allOwnedProcessesAbsent, true);
 assert.equal(report.cleanup.disposableOutputDeleted, true);
 const sourceEntries = Object.entries(report.sources); assert.ok(sourceEntries.length > 0 && sourceEntries.length <= 128);
@@ -46,7 +50,8 @@ for (const directory of [report.cleanup.scratchRemoved, ...report.cleanup.genera
   assert.ok(target.startsWith(path.join(root, "work") + path.sep) || target.startsWith(path.join(root, "dist/client/engines") + path.sep));
   await assert.rejects(access(target), { code: "ENOENT" });
 }
-const completed = storageRecovery ? qualification.cases.filter(c => c.independentOutput).map(c => ({ name: c.name, conversion: c.result,
+const completed = fullOriginal ? qualification.output ? [{ name: "complete-test.mkv-current-production", conversion: report.conversion,
+  actualNativeSettings: report.conversion.metrics.mpeg2EncoderSettings, output: qualification.output }] : [] : storageRecovery ? qualification.cases.filter(c => c.independentOutput).map(c => ({ name: c.name, conversion: c.result,
   actualNativeSettings: c.result.metrics.mpeg2EncoderSettings, output: c.independentOutput })) : uiBatch ? qualification.outputs.map(output => ({ name: output.name,
   conversion: report.conversion, actualNativeSettings: report.conversion.metrics.mpeg2EncoderSettings, output })) : qualification.cases;
 assert.ok(Array.isArray(completed) && completed.length <= 2);
@@ -62,10 +67,10 @@ if (report.status === "failed") {
   // A visual assertion may fail after every storage case but before the final
   // completion marker. Preserve that false marker, never fabricate acceptance.
   if (storageRecovery) assert.ok(!qualification.completed || completed.length === 2);
-  else assert.equal(qualification.completed, completed.length === 2);
+  else assert.equal(qualification.completed, completed.length === expectedOutputCount);
 }
 else {
-  assert.equal(qualification.completed, true); assert.equal(completed.length, 2); assert.deepEqual(report.failures, []);
+  assert.equal(qualification.completed, true); assert.equal(completed.length, expectedOutputCount); assert.deepEqual(report.failures, []);
   assert.ok(report.memory.incrementalPrivateMiB <= 250); assert.equal(report.executedSourcesAndBrowserPinsVerified, true);
   if (storageRecovery) {
     assert.equal(report.storageRecoveryQualification.completed, true);
@@ -87,7 +92,7 @@ else {
 }
 const compressed = gzipSync(raw, { level: 9 });
 await writeFile(archivePath, compressed, { flag: "wx" });
-assert.deepEqual(gunzipSync(await readFile(archivePath), { maxOutputLength: 4 * 1048576 }), raw);
+assert.deepEqual(gunzipSync(await readFile(archivePath), { maxOutputLength: (fullOriginal ? 32 : 4) * 1048576 }), raw);
 const allocation = report.postMeasurementAllocators;
 let allocationArchive = null;
 if (allocation?.archive) {
@@ -111,6 +116,13 @@ if (visual) {
   assert.equal(bytes, visual.totalBytes);
 }
 let independentlyRecomputedObservedMemory = null;
+let losslessNativeJournalReplayVerified = false;
+if (fullOriginal && report.losslessMemoryJournal) {
+  const replay = await replayLosslessNativeMemoryJournal(report.losslessMemoryJournal);
+  assert.equal(replay.verified, true); losslessNativeJournalReplayVerified = true;
+  const peakPrivateBytes = Math.max(...replay.summary.native.phases.filter(p => p.phase !== "blank" && p.peak).map(p => p.peak[3]));
+  assert.equal((peakPrivateBytes - report.blankBaseline.privateBytes) / 1048576, report.memory.incrementalPrivateMiB);
+}
 if (storageRecovery && report.diagnosticMemorySamples && report.blankBaseline) {
   const samples = report.diagnosticMemorySamples, valid = samples.filter(s => s.privateBytes !== null);
   assert.ok(samples.length > 0 && samples.length <= 3000);
@@ -125,7 +137,8 @@ if (storageRecovery && report.diagnosticMemorySamples && report.blankBaseline) {
     originalRunAccepted: report.status !== "failed" };
 }
 const receipt = { schemaVersion: 1, head, status: report.status, startedAt: report.startedAt, finishedAt: report.finishedAt,
-  scope: uiBatch ? "One real Convert-button two-file batch with duplicate source names and independently validated outputs; terminal metrics describe final item only; not large-file, OS-picker, all batch failures or public acceptance"
+  scope: fullOriginal ? "One exact full-original current-production attempt, including failures; not repeated stress, near10GB, OS-picker or public acceptance"
+    : uiBatch ? "One real Convert-button two-file batch with duplicate source names and independently validated outputs; terminal metrics describe final item only; not large-file, OS-picker, all batch failures or public acceptance"
     : storageRecovery ? "Injected quota/permission failure after real native conversion and one bounded final write, followed by two validated retries; not actual OS revocation, disk exhaustion, UI button, scale or public acceptance"
     : report.uiControlsQualification
     ? "Actual private form controls and Convert-button production path; small fixture, not full UI/OS-picker/stress or public acceptance"
@@ -136,6 +149,9 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
   uiControlsQualification: report.uiControlsQualification ?? null,
   uiQualification: report.uiQualification ?? null,
   uiBatchQualification: report.uiBatchQualification ?? null,
+  originalQualification: report.originalQualification ?? null,
+  losslessMemoryJournal: report.losslessMemoryJournal ?? null,
+  losslessNativeJournalReplayVerified,
   recoveryQualification: report.recoveryQualification ?? null,
   storageRecoveryQualification: report.storageRecoveryQualification ?? null,
   observer: report.observer, diagnosticObserverOnly: report.observer.controlScope === "events-only observer comparison, not route promotion",

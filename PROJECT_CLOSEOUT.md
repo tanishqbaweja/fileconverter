@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Next principal run: --original through current real production UI/AVIO/staged
+saver on exact2,958,573,265B test.mkv. Full-original mode now implemented with6h
+deadline, exact source/full content and metadata validators, all-native lossless
+journal and automatic Cancel if a primary250MiB failure becomes known.34focused/
+lint/syntax PASS, actual run pending. This is a changed production-integration
+gate, not a replay of the six old native-candidate full conversions. Keep all
+repeat/near10GB/preservation/reload/browser/full54 release requirements open.
+
 Current: real two-file UI batch gate also CLOSED at15059fc: one button/native
 indices0+1/two independent canonical valid outputs, whole-tree244.93359375MiB,
 424valid samples and owned cleanup. Actual native/Saved2files images reviewed.

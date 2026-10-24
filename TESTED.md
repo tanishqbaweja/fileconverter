@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-10-24 full-original current-production gate implemented, NOT yet executed:
+--original selects exact complete test.mkv directly (2,958,573,265B/SHA31f36695...),
+not a generated/cropped copy; original1920x804/24fps/default4Mbps and real Convert
+button. Deadline6h, matching earlier actual4.0–4.6h full native attempts; native
+validators have bounded2h deadlines. Every100ms native record is losslessly
+journaled/replayed, with only128diagnostic rows in memory; all processes and
+lower same-instance blank baseline retained. Known>250MiB peak triggers actual
+Cancel and preserves failure instead of spending hours on a failed gate.
+Independent full source/output296160-frame clocks, SSIM>=.98/full decode, every
+AAC packet's bytes/order/clocks/trim/duration, format/stream tags/dispositions,
+colour/geometry, PNG packet hash and actual SubRip-exclusion warning required.
+SubRip->MP4 subtitle conversion itself remains unimplemented, not quietly
+relabelled supported.34focused/lint/syntax PASS including7001record lossless
+journal corruption/overflow/sequence/disk/replay guards; no browser acceptance
+inferred from those synthetic units.
+Prior40069941157/6bbbaaa portable CI independently SUCCESS. Actual original run
+and repeated/near10GB/browser/final54 acceptance remain OPEN.
+
 2026-10-24 actual --ui-batch15059fc PASS small scope: one real Convert click for
 two identical-name canonical HEVC files, native work independently observed for
 indices0+1 and two distinct valid MP4s. Each96frames/full decode/SSIM.989061/<1ms
