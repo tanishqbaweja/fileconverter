@@ -61,7 +61,7 @@ const nativeProfile = flags.has("--native-allocation-profile");
 assert.ok(!failureAllocators || (fullOriginal && diagnose && !flags.has("--post-measurement-allocators")), "Failure allocator dump is a separate bounded original diagnosis");
 assert.ok(!nativeProfile || (fullOriginal && diagnose && !failureAllocators && !flags.has("--post-measurement-allocators")), "Native sampling is one finite non-acceptance diagnosis");
 assert.ok(!flags.has("--protocol-method-counts") || nativeProfile, "Protocol names are a separate finite native-profile diagnosis only");
-assert.ok(!flags.has("--bounded-network-observer") || nativeProfile, "Bounded network body retention is a finite native-profile diagnosis, not acceptance");
+assert.ok(!flags.has("--bounded-network-observer") || fullOriginal, "Bounded network body retention is explicit original-file observation only");
 const boundedVisual = flags.has("--bounded-visual-capture"), continuousVisual = !eventsOnly && !boundedVisual;
 assert.ok(!boundedVisual || (diagnose && (flags.has("--controls") || uiControls || storageRecovery || uiBatch || fullOriginal) && !eventsOnly), "Bounded visual observer is one explicit finite gate, not implicit acceptance");
 const recovery = flags.has("--recovery") || storageRecovery;
@@ -113,6 +113,7 @@ const env = { ...runtime.env, NODE_OPTIONS: [process.env.NODE_OPTIONS ?? "", "--
 const generated = [], processIdentities = [], samples = [], baselineWindows = [], blankObservations = [], forbiddenRequests = [];
 let server, serverIdentity, browserServer, browser, context, monitor, monitorTimer, monitorPending = Promise.resolve(), monitorFailure, realmSampler, browserRootPid;
 let visualObserver, nativeJournal, snapshotPending, rendererNativeProfile, protocolCounter, boundedNetworkObserver;
+let networkRequestsObserved = 0;
 const phaseChanges = [{ phase: "blank", at: Date.parse(report.startedAt) }];
 const changePhase = phase => { phaseChanges.push({ phase, at: Date.now() }); };
 const attribution = { references: [], realms: [], scope: "bounded diagnostic observations, not exact realm-heap peaks or replacement private bytes" };
@@ -216,7 +217,7 @@ try {
     assert.match(source, /this\._protocolLogger\("send", message\);\s+this\._transport\.send\(message\);/);
     const probe = internal.server.createPlaywright({ sdkLanguage: "javascript", isServer: true });
     boundedNetworkObserver = installBoundedNetworkObserver(Object.getPrototypeOf(probe.chromium));
-    report.boundedNetworkObserverBinding = { playwrightVersion: internal.getPlaywrightVersion(), bundleSha256: sha(source), diagnosticOnly: true };
+    report.boundedNetworkObserverBinding = { playwrightVersion: internal.getPlaywrightVersion(), bundleSha256: sha(source), diagnosticOnly: nativeProfile };
   }
   if (flags.has("--protocol-method-counts")) {
     const bundlePath = path.join(root, "node_modules/playwright-core/lib/coreBundle.js");
@@ -357,6 +358,7 @@ try {
   await context.tracing.start({ screenshots: continuousVisual, snapshots: continuousVisual, sources: true }); tracing = true;
   changePhase("loaded");
   context.on("request", request => {
+    networkRequestsObserved++;
     if (request.url() === base + "/engines/mpeg2/build-manifest.json") staticRequests.manifests++;
     if (request.url() === base + "/engines/mpeg2/decoder.wasm") staticRequests.decoder++;
     if (request.url() === base + "/engines/mpeg2/encoder.wasm") staticRequests.encoder++;
@@ -726,9 +728,17 @@ try {
     } },
   ]).catch(error => { report.failures.push(String(error)); report.status = "failed"; process.exitCode = 1; });
   if (boundedNetworkObserver) {
-    try { report.boundedNetworkObserver = boundedNetworkObserver.summary(); boundedNetworkObserver.close(); }
+    try {
+      report.boundedNetworkObserver = boundedNetworkObserver.summary(); boundedNetworkObserver.close();
+      assert.ok(report.boundedNetworkObserver.networkEnables >= 3, "Page and worker network observation must remain enabled");
+      assert.equal(report.boundedNetworkObserver.networkDisabled, false);
+      assert.ok(networkRequestsObserved > 0, "Request metadata observation unavailable");
+    }
     catch (error) { report.failures.push("Network observer cleanup: " + String(error)); report.status = "failed"; process.exitCode = 1; }
   }
+  report.networkObservation = { requestsObserved: networkRequestsObserved, forbiddenRequests, sameOriginGetOnly: forbiddenRequests.length === 0,
+    responseBodiesRequestedForPrivacy: false, bodyRetentionLimitsDoNotDisableEvents: Boolean(boundedNetworkObserver) };
+  if (forbiddenRequests.length) { report.failures.push("Forbidden network request observed, including on a failed conversion"); report.status = "failed"; process.exitCode = 1; }
   for (const identity of processIdentities) cleanup.push(await observeOwnedProcessExit(identity));
   try {
     if (originalHash) { assert.equal((await lstat(path.join(root, "test.mkv"))).size, 2958573265);

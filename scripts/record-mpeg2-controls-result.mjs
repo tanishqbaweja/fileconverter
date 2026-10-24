@@ -208,6 +208,7 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
   protocolMethodObserverBinding: report.protocolMethodObserverBinding ?? null,
   boundedNetworkObserver: report.boundedNetworkObserver ?? null,
   boundedNetworkObserverBinding: report.boundedNetworkObserverBinding ?? null,
+  networkObservation: report.networkObservation ?? null,
   postMeasurementAllocationScope: allocation ? { status: allocation.status, acceptanceMetric: allocation.acceptanceMetric,
     perturbsMemory: allocation.perturbsMemory, allocationStackAttribution: allocation.allocationStackAttribution } : null,
   completedCases: completed.map(entry => ({ name: entry.name, requested: entry.requested, reference: entry.reference,

@@ -6,6 +6,17 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Bounded inspector85416e9 finite comparison changed all3network enables;
+both large Base64-sized samples disappeared while raw codec bytes/metadata
+events remained. Supports inspector-body attribution; no exact private savings
+or complete output.247.5703125MiB/508valid rows/0missing,15sactualCancel,
+original/owned cleanup PASS.40,928B report and1,228B native sample archives.
+Next --original --bounded-network-observer WITHOUT native profiler/method logger:
+one changed full production source/UI/AVIO/save/independent full validation,
+early Cancel if known250MiB failure; keep all process coverage/quality/privacy.
+Do not repeat this finite diagnostic or previously closed small gates unchanged.
+`evidence/2026-10-24-bounded-network-observer-analysis.json`.
+
 0bcc89c protocol-count diagnostic terminal:1,090sends/0unavailable names/no
 body-source-bytecode fetch commands. Explicit-fetch hypothesis rejected for
 this run. Native duplicate codec-size samples persist;253.77734375MiB FAIL,

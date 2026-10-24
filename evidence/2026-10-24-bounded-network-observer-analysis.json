@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "scope": "Controlled observer-body retention comparison on exact original; not completed conversion or public acceptance",
+  "defaultObserverReceipt": "evidence/2026-10-24T07-59-01.635Z-mpeg2-original-result.json",
+  "boundedObserverReceipt": "evidence/2026-10-24T08-08-38.405Z-mpeg2-original-result.json",
+  "boundedExecutedHead": "85416e960490a4a7551e159761de7a46ade15bf5",
+  "defaultObservedMethods": 1090,
+  "boundedObservedMethods": 1089,
+  "unavailableMethodNamesBothRuns": 0,
+  "networkEnableCommandsBothRuns": 3,
+  "boundedNetworkEnableCommandsRewritten": 3,
+  "limits": { "maxTotalBufferSize": 1048576, "maxResourceBufferSize": 131072 },
+  "rawCodecLengthSamplesPresentBothRuns": [5716027, 675411],
+  "base64SizedSamplesPresentDefaultAbsentBounded": [7621384, 900560],
+  "nativeSampleCountDefault": 19,
+  "nativeSampleCountBounded": 16,
+  "interpretation": "Changing only automation response-body retention removed both large Base64-sized native samples while raw codec-sized samples and network events remained. This supports inspector-body buffering as the source of those duplicate representations; unresolved stacks still do not identify exact native functions. It does not prove zero allocations or exact private-memory savings.",
+  "privateMemorySavingsCausallyQuantified": false,
+  "fullOriginalConversionCompleted": false,
+  "shortDiagnosticIncrementalPrivateMiB": 247.5703125,
+  "losslessNativeRows": 508,
+  "unavailableNativeRows": 0,
+  "nativeSamplingProfilerWillBeRemovedFromNextFullRun": true,
+  "originalHashAndOwnedCleanupPassed": true,
+  "publicAcceptance": false,
+  "sources": [
+    "https://raw.githubusercontent.com/chromium/chromium/main/third_party/blink/renderer/core/inspector/inspector_network_agent.cc",
+    "https://raw.githubusercontent.com/chromium/chromium/main/third_party/blink/renderer/core/inspector/network_resources_data.cc",
+    "https://raw.githubusercontent.com/ChromeDevTools/devtools-protocol/master/pdl/domains/Network.pdl"
+  ],
+  "next": "One changed full-original production UI/worker/AVIO/save/independent-validation run with bounded automation body storage, no native allocation profiler or method logger; unchanged full-tree formula, source, quality, native artifacts, privacy events and early Cancel on known memory failure."
+}

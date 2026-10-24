@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-10-24 bounded inspector85416e9 actually rewrote all3Network.enable
+commands;1,089method names/0unavailable, network metadata and native I/O
+remained live. Both7,621,384B/900,560B samples disappeared while raw decoder/
+encoder samples remained. Supports automatic inspector-body attribution, not
+symbolized function proof or exact private savings.16samples/4modules;
+508lossless native rows/0missing,247.5703125MiB finite15s diagnostic,0outputs,
+NOT full-original acceptance. Original/owned cleanup PASS. Raw1,199,888B retained
+40,928B gzip; native6,437B retained1,228B gzip. Analysis:
+`evidence/2026-10-24-bounded-network-observer-analysis.json`.
+CI40076886173/85416e9 independently SUCCESS. Next changed full-original run
+keeps bounded inspector body storage but removes native sampling/method logging;
+request events/privacy/full-tree250MiB/native quality/source/validators unchanged.
+No completed small gate replay, native rebuild, GC or baseline delay.23focused
+tests PASS, full-original result pending. All54/B02-B09 remain open.
+
 2026-10-24 protocol diagnostic0bcc89c is terminal FAILED253.77734375MiB,
 423lossless valid rows/0missing,0complete outputs, actual Cancel/original SHA/
 owned cleanup PASS.1,090commands/0unavailable names; no getResponseBody,

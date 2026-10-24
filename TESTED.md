@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-24 bounded network observer85416e9 finite diagnostic:3/3Network.enable
+commands limited1MiB total/128KiB resource, metadata events stay enabled;
+1,089methods/0unavailable. Both Base64-sized codec native samples disappeared,
+raw byte-sized samples remain. Supports automatic inspector-buffer attribution;
+no symbolized-function or exact private-savings claim.16samples/4modules;
+508valid lossless rows/0missing,247.5703125MiB short perturbed observation, real
+Cancel at15s/0complete outputs/NO acceptance. Original SHA/owned cleanup PASS.
+Raw1,199,888B exact40,928B gzip, native6,437B exact1,228B gzip, raw removed.
+`evidence/2026-10-24-bounded-network-observer-analysis.json`.
+23focused tests PASS. Next full-original qualification without native sampling
+or method logging; same actual production path/codec/fidelity/250MiB formula.
+
+
 2026-10-24 protocol diagnostic0bcc89c:1,090outgoing CDP commands/0unavailable
 names, no explicit response-body/script-source/Wasm-bytecode fetch. Reject that
 hypothesis for this execution.19native samples still contain raw/Base64-sized
