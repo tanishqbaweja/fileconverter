@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-10-24 previous cycle made concrete native/browser/fixture progress; now
+bounded visual observation implemented rather than repeating unchanged flags.
+Explicit controls-only mode caps5PNGs/16MiB, one capture/no queue, viewport pixel
+bound, scalar UI facts/no DOM retention and honest pre/post native-state scope.
+Source/native/terminal visuals supplement unchanged full content/clock/audio,
+privacy/catalogue/cleanup and complete-process250MiB checks. No forced GC,
+conversion delays, process omissions or baseline changes.21focused/syntax PASS;
+actual changed-observer browser validation pending, old274MiB failure and all
+full54/scale/public/UI-control release gates stay OPEN. Reuse repaired native.
+Previous6eaa3e8 portable40052473771 independently confirmed SUCCESS1496units/
+0fail/1skip+19privacy/offline43.9s; not a pass for this newly changed observer.
+
 2026-10-24 finite observer-control diagnosis completed: events-only231.9921875MiB,
 same app/harness/native/browser pins and validated output hashes,406samples/0null.
 Full-capture274.25390625MiB failure is NOT closed by this diagnostic. One variant

@@ -27,11 +27,12 @@ import { runMpeg2UiJob } from "./lib/mpeg2-ui-job.mjs";
 import { mpeg2ControlReference, sourceMpeg2ControlClock, expectedMpeg2ControlClocks } from "./lib/mpeg2-control-reference.mjs";
 import { loadMpeg2RuntimeNative } from "./lib/mpeg2-runtime-native-selection.mjs";
 import { mpeg2ControlFixtureArguments } from "./lib/mpeg2-control-fixture.mjs";
+import { createBoundedVisualObserver } from "./lib/bounded-visual-observer.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--planning", "--ui", "--controls"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--planning", "--ui", "--controls"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
 const scaledBuildFlags = [...flags].filter(flag => flag.startsWith("--scaled-properties-build="));
 assert.ok(scaledBuildFlags.length <= 1);
 const scaledBuildRunId = scaledBuildFlags.length ? scaledBuildFlags[0].split("=")[1] : null;
@@ -39,6 +40,8 @@ assert.ok(scaledBuildRunId === null || flags.has("--controls"), "Changed scaler 
 assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
 assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
+const boundedVisual = flags.has("--bounded-visual-capture"), continuousVisual = !eventsOnly && !boundedVisual;
+assert.ok(!boundedVisual || (diagnose && flags.has("--controls") && !eventsOnly), "Bounded visual observer is one explicit controls gate, not implicit acceptance");
 const recovery = flags.has("--recovery");
 const planning = flags.has("--planning");
 const ui = flags.has("--ui");
@@ -63,8 +66,9 @@ const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const chunk of createReadStream(file)) hash.update(chunk); return hash.digest("hex"); };
 const report = { scope: "production-MPEG2-dispatch-and-staged-lifecycle-small-fixture-not-public-acceptance", startedAt: new Date().toISOString(),
   publicAcceptance: false, uiPlannerCoverage: false, largeFileCoverage: false, speedComparison: false, standaloneWorker: false, failures: [] };
-report.observer = { allocationDiagnostics: diagnose, screenshots: !eventsOnly, snapshots: !eventsOnly, sources: true,
-  controlScope: eventsOnly ? "events-only observer comparison, not route promotion" : "existing full screenshot/snapshot trace" };
+report.observer = { allocationDiagnostics: diagnose, screenshots: continuousVisual, snapshots: continuousVisual, sources: true,
+  boundedVisualCapture: boundedVisual, controlScope: boundedVisual ? "bounded real-state visual evidence, not route promotion"
+    : eventsOnly ? "events-only observer comparison, not route promotion" : "existing full screenshot/snapshot trace" };
 report.cacheQualification = { repetitions, sameSource: !recovery && !planning, outputHashes: [], results: [], globalSpeedClaim: false };
 if (planning) report.planningQualification = { cases: [], completed: false, rejectedBeforeDestinationOrCode: false,
   finalUiSelectorCoverage: false, publicAcceptance: false };
@@ -77,6 +81,7 @@ const env = { ...runtime.env, NODE_OPTIONS: [process.env.NODE_OPTIONS ?? "", "--
   NEXT_TELEMETRY_DISABLED: "1", WRANGLER_SEND_METRICS: "false" };
 const generated = [], processIdentities = [], samples = [], baselineWindows = [], blankObservations = [], forbiddenRequests = [];
 let server, serverIdentity, browserServer, browser, context, monitor, monitorTimer, monitorPending = Promise.resolve(), monitorFailure, realmSampler, browserRootPid;
+let visualObserver;
 const phaseChanges = [{ phase: "blank", at: Date.parse(report.startedAt) }];
 const changePhase = phase => { phaseChanges.push({ phase, at: Date.now() }); };
 const attribution = { references: [], realms: [], scope: "bounded diagnostic observations, not exact realm-heap peaks or replacement private bytes" };
@@ -165,6 +170,7 @@ try {
     "scripts/lib/mpeg2-control-reference.mjs",
     "scripts/lib/mpeg2-runtime-native-selection.mjs",
     "scripts/lib/mpeg2-control-fixture.mjs",
+    "scripts/lib/bounded-visual-observer.mjs",
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/streaming-video-clock-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs",
     "scripts/test-mpeg2-production-runtime.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",
@@ -214,7 +220,7 @@ try {
   assert.ok(baselineWindows.length >= 2, "Stable same-instance blank baseline unavailable");
   report.blankBaseline = baselineWindows.reduce((lower, next) => next.privateBytes < lower.privateBytes ? next : lower);
   if (diagnose) { realmSampler = await connectPlaywrightRealmSampler(browser, base); await captureAttribution("stable-blank"); }
-  await context.tracing.start({ screenshots: !eventsOnly, snapshots: !eventsOnly, sources: true }); tracing = true;
+  await context.tracing.start({ screenshots: continuousVisual, snapshots: continuousVisual, sources: true }); tracing = true;
   changePhase("loaded");
   context.on("request", request => {
     if (request.url() === base + "/engines/mpeg2/build-manifest.json") staticRequests.manifests++;
@@ -234,6 +240,10 @@ try {
   await page.locator('input[type="file"]').first().setInputFiles(fixture);
   await page.waitForFunction(() => document.querySelector('[data-testid="media-inspection-status"]')?.textContent.includes("These stream facts came from bounded local header reads"));
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
+  if (boundedVisual) {
+    visualObserver = await createBoundedVisualObserver({ page, directory: path.join(screenshotDirectory, "bounded-visual") });
+    await visualObserver.capture("source-ready");
+  }
   if (ui) {
     await page.getByTestId("format-select").selectOption("mkv-to-mp4-mpeg2");
     assert.match(await page.getByTestId("media-plan-stream-0").innerText(), /MPEG-2.*4 Mbps/);
@@ -273,7 +283,9 @@ try {
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
   const workerEventStart = report.workerEvents.length;
   changePhase("conversion");
-  const [execution] = await Promise.all([ui ? page.evaluate(runMpeg2UiJob).then(value => { changePhase("recovery"); return value; }) : page.evaluate(async testCase => {
+  const visualLifetime = new AbortController();
+  const visualWork = visualObserver?.observeNativeWork(`case-${repetition}-native`, visualLifetime.signal);
+  const tasks = [ui ? page.evaluate(runMpeg2UiJob).then(value => { changePhase("recovery"); return value; }) : page.evaluate(async testCase => {
     const file = document.querySelector('input[type="file"]').files[0];
     const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle("mpeg2-runtime-output.mp4", { create: true });
     const sentinel = "existing destination must survive";
@@ -314,13 +326,19 @@ try {
       }
       return { result, cancellation, stageNames, destinationUnchanged };
     } finally { clearTimeout(timeout); clearInterval(cancellationTimer); }
-  }, testCase).then(result => { changePhase("recovery"); return result; }), repetition === 1 ? captureAttribution("conversion") : Promise.resolve()]);
+  }, testCase).then(result => { changePhase("recovery"); return result; }), repetition === 1 ? captureAttribution("conversion") : Promise.resolve()];
+  tasks[0] = tasks[0].finally(() => visualLifetime.abort());
+  const outcomes = await Promise.allSettled([...tasks, visualWork]);
+  const taskErrors = outcomes.filter(outcome => outcome.status === "rejected").map(outcome => outcome.reason);
+  if (taskErrors.length) throw new AggregateError(taskErrors, "Conversion or bounded observation failed");
+  const execution = outcomes[0].value;
   report.conversion = execution.result;
   if (ui) { browserOutputName = execution.destinationName; Object.assign(report.uiQualification, execution.uiEvidence); }
   await monitorPending; await snapshot(); changePhase("validation");
   if (recovery) report.recoveryQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
   if (planning) report.planningQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
   assert.equal(report.conversion.type, testCase.expected, JSON.stringify(report.conversion));
+  if (visualObserver) await visualObserver.capture(`case-${repetition}-terminal`);
   assert.deepEqual(execution.stageNames, [], "Owned media stage must be removed before terminal completion");
   if (!ui) assert.ok(report.conversion.phases.includes("Inspecting MPEG-2 source"));
   if (planning) {
@@ -422,6 +440,10 @@ try {
   assert.equal(report.cacheQualification.results.length, planning ? 1 : recovery ? 2 : repetitions);
   assert.equal(new Set(report.cacheQualification.outputHashes).size, controls ? 2 : 1);
   if (controls) { assert.equal(report.controlsQualification.cases.length, 2); report.controlsQualification.completed = true; }
+  if (visualObserver) {
+    report.boundedVisualObservation = visualObserver.summary();
+    assert.ok(report.boundedVisualObservation.captures.some(capture => capture.nativeStateAroundScreenshot), "Actual active native UI screenshot was not verified");
+  }
   assert.deepEqual(staticRequests, { manifests: planning ? 1 : repetitions, decoder: 1, encoder: 1 });
   if (planning) Object.assign(report.planningQualification, { completed: true, rejectedBeforeDestinationOrCode: true });
   if (recovery) Object.assign(report.recoveryQualification, { completed: true, nativeDuringEncodingCancellation: true,
@@ -458,8 +480,10 @@ try {
   report.status = diagnose ? "passed-small-allocation-diagnostic-not-route-promotion" : "passed-small-production-runtime-integration";
 } catch (error) {
   report.status = "failed"; report.failures.push(String(error.stack ?? error)); report.serverLog = serverLog;
+  if (error instanceof AggregateError) for (const detail of error.errors) report.failures.push(String(detail.stack ?? detail));
   report.failureMemorySamples = samples; process.exitCode = 1;
 } finally {
+  if (visualObserver) report.boundedVisualObservation = visualObserver.summary();
   clearInterval(monitorTimer); await monitorPending;
   realmSampler?.close();
   if (diagnose) {

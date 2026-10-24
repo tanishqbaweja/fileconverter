@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-24 bounded visual observer implemented for one explicit --controls gate:
+max5viewport PNGs/4MiB each/16MiB total, one active/no queue, scalar real-state
+records/no retained DOM handles. Source-ready + native + terminal per case;
+active screenshot coverage only if native UI state remains active around capture.
+Ended-during-capture is recorded honestly, not faked by slowing conversion.
+Oversized/failed owned files cleaned by inode identity; all concurrent job,
+attribution and observer errors retained. Existing catalogue/UI/content/audio/
+timing/privacy/cleanup assertions and all-nonblank complete-tree250MiB formula
+unchanged; old full-capture274MiB failure not erased.21focused/driver syntax PASS,
+one actual changed-observer test next on shared byte-reproducible HEVC fixture
+and same repaired core/qualified encoder. No native rebuild, app/public change
+or memory/visual equivalence qualification yet; original54/scale remain open.
+Previous head6eaa3e8 hosted40052473771 SUCCESS1496units/0fail/1skip and19privacy/
+offline PASS43.9s, independent of this newly changed observer/browser gate.
+
 2026-10-24 one finite events-only observer diagnosis at50c2954: same app/harness,
 native and installed-browser pins, requested settings and byte-identical valid
 output pair; whole-tree231.9921875MiB/406samples/0unavailable. Canonical full
