@@ -1,5 +1,29 @@
 # Remaining work audit
 
+Latest verification:24focused PASS/lint/diff checks PASS; CI40077261726 on
+executed ea099d9 SUCCESS. Fresh independent test.mkv SHA remains
+31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34.
+
+2026-10-24 unprofiled current-production original ea099d9 still FAILS
+301.6640625MiB. Bounded inspector active3enables/0disables/0body requests;
+17actual metadata request events all same-origin GET,0forbidden. No native
+allocation profiler or method logger.911valid lossless rows/0missing; actual
+Cancel after32,794,177B input/33,236,372B output,0complete outputs. Original SHA,
+owned cleanup and independent journal/peak replay PASS. Raw1,347,730B retained
+44,687B exact gzip, redundant raw removed. Receipt:
+`evidence/2026-10-24T08-14-29.695Z-mpeg2-original-result.json`.
+Peak seq906 at08:16:25.910Z:530.0078125MiB tree minus228.34375MiB stable blank.
+Browser104.06640625MiB/renderer229.80859375MiB/GPU120.77734375MiB; next row
+browser44.75390625/renderer117.69140625MiB. Those transient native private bytes
+remain counted. No new180s AI child in this failure; browser age99.64s, around
+56s after conversion-phase start. Cause of synchronized transient growth is
+unproven; removed inspector duplicates did not resolve full-file memory.
+Next examine this late native/browser growth with existing journal and bounded
+allocation capture at the known failure;15s diagnostic would miss it. No
+unchanged full-original rerun, baseline delay, GC, process omission, lower
+quality or speculative CSS/native rebuild. All54/B02-B09 remain open. No timer
+automation was created: the test was already terminal before scheduling.
+
 2026-10-24 bounded inspector85416e9 actually rewrote all3Network.enable
 commands;1,089method names/0unavailable, network metadata and native I/O
 remained live. Both7,621,384B/900,560B samples disappeared while raw decoder/

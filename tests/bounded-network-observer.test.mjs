@@ -66,3 +66,27 @@ test("actual bounded inspector run loses both Base64-sized samples, not raw code
   assert.equal(receipt.memory.incrementalPrivateMiB, 247.5703125);
   assert.equal(receipt.protectedOriginalUnchangedAtExecution, true); assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true);
 });
+test("subsequent unprofiled original failure remains failed with full native peak and live privacy events", async () => {
+  const root = new URL("../", import.meta.url), sha = b => createHash("sha256").update(b).digest("hex");
+  const receipt = JSON.parse(await readFile(new URL("evidence/2026-10-24T08-14-29.695Z-mpeg2-original-result.json", root)));
+  const packed = await readFile(new URL(receipt.archive.path, root)); assert.equal(sha(packed), receipt.archive.sha256);
+  const bytes = gunzipSync(packed); assert.equal(sha(bytes), receipt.archive.restoredSha256); const r = JSON.parse(bytes);
+  const journal = await readFile(new URL("output/playwright/2026-10-24T08-14-29.695Z-mpeg2-original-memory.ndjson.gz", root));
+  assert.equal(sha(journal), receipt.losslessMemoryJournal.archiveSha256);
+  const records = gunzipSync(journal); assert.equal(sha(records), receipt.losslessMemoryJournal.sha256);
+  const samples = records.toString().trim().split("\n").map(row => JSON.parse(row).sample);
+  assert.equal(samples.length, 911); assert.ok(samples.every((s, i) => s.sequence === i + 1 && s.privateBytes !== null));
+  for (const s of samples) assert.equal(s.privateBytes, s.processes.reduce((n, p) => n + p.privateBytes, 0));
+  const peak = samples.filter(s => s.phase !== "blank").reduce((a, b) => a.privateBytes > b.privateBytes ? a : b);
+  assert.equal(peak.sequence, 906); assert.equal((peak.privateBytes - r.blankBaseline.privateBytes) / 1048576, 301.6640625);
+  assert.equal(receipt.memory.incrementalPrivateMiB, 301.6640625); assert.equal(receipt.memory.unavailableSampleCount, 0);
+  assert.equal(receipt.nativeAllocationProfile, null); assert.equal(receipt.nativeProfileDiagnosticOnly, false);
+  assert.equal(receipt.boundedNetworkObserverBinding.diagnosticOnly, false);
+  assert.equal(receipt.boundedNetworkObserver.networkEnables, 3); assert.equal(receipt.boundedNetworkObserver.networkDisables, 0);
+  assert.equal(receipt.boundedNetworkObserver.bodyRequestsMade, 0);
+  assert.equal(receipt.networkObservation.requestsObserved, 17); assert.deepEqual(receipt.networkObservation.forbiddenRequests, []);
+  assert.equal(receipt.networkObservation.sameOriginGetOnly, true);
+  assert.equal(r.earlyMemoryFailure.cancellation.requested, true); assert.ok(r.earlyMemoryFailure.cancellation.outputBytes > 32 * 1000000);
+  assert.equal(receipt.completedCases.length, 0); assert.equal(receipt.overallGatePassed, false);
+  assert.equal(receipt.protectedOriginalUnchangedAtExecution, true); assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true);
+});

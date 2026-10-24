@@ -6,6 +6,18 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Latest unprofiled original ea099d9 FAILED301.6640625MiB/911valid lossless rows/
+0missing, actual native Cancel after33.24MBoutput,0completed outputs. Stable
+blank228.34375MiB/tree peak530.0078125MiB; browser/renderer transient growth
+around56s into conversion, no new AI child. All bytes counted, cause unproven.
+Bounded inspector retained network events:17same-origin GET/0forbidden;
+3enables/0disables/0body requests. Original SHA/owned cleanup/replay PASS;
+44,687B raw archive retained, raw removed. Timer not created because terminal.
+Next bounded native allocation window must reach this late failure (15s misses
+it), using existing native journal first; no unchanged original rerun or
+speculative layout/native changes. Full54/B02-B09 still open. Receipt:
+`evidence/2026-10-24T08-14-29.695Z-mpeg2-original-result.json`.
+
 Bounded inspector85416e9 finite comparison changed all3network enables;
 both large Base64-sized samples disappeared while raw codec bytes/metadata
 events remained. Supports inspector-body attribution; no exact private savings

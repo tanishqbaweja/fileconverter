@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+Latest verification:24focused PASS/lint/diff checks PASS; exact executed
+ea099d9 portable CI40077261726 SUCCESS. Independent original SHA recheck PASS.
+
+2026-10-24 unprofiled exact-original ea099d9 FAIL301.6640625MiB after actual
+32,794,177B read/33,236,372B encoded output; Cancel/0complete outputs.911valid
+lossless native samples/0missing, peak independently replayed. Browser+renderer
+transient private growth remains, despite bounded inspector (3enables/0disables/
+0body requests) and all17network requests same-origin GET. Native allocator
+profiler/method logger absent. Original full SHA and owned media/profile/process
+cleanup PASS. Raw1,347,730B retained44,687B gzip, redundant raw removed.
+`evidence/2026-10-24T08-14-29.695Z-mpeg2-original-result.json`.
+Short247.57MiB comparison is NOT full-original acceptance or causal savings.
+Known peak occurred roughly56s into conversion phase, so a15s sampler cannot
+diagnose it; next bounded allocation window must cover that actual failure.
+
+
 2026-10-24 bounded network observer85416e9 finite diagnostic:3/3Network.enable
 commands limited1MiB total/128KiB resource, metadata events stay enabled;
 1,089methods/0unavailable. Both Base64-sized codec native samples disappeared,
