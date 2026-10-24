@@ -82,3 +82,11 @@ test("quality comparison explicitly exercises existing UI higher setting without
   assert.match(source, /report.cases.every\(c => c.status === "passed-small-private-fidelity-and-metadata-case"\)/);
   assert.doesNotMatch(source, /minimumPsnrDb:\s*(?:[0-5]?\d)(?:\D|$)/);
 });
+test("remaining repeated-metadata gate selects only five untested cases and verifies each rewritten input has unchanged complete PCM", async () => {
+  const source = await readFile(new URL("../scripts/test-audio-metadata-production-runtime.mjs", import.meta.url), "utf8");
+  assert.match(source, /--remaining-repeated-audio/);
+  assert.match(source, /AUDIO_METADATA_FIDELITY_CASES.slice\(1, 6\).map\(c => \(\{ \.\.\.c, repeated: true \}\)\)/);
+  assert.match(source, /appendOggFixtureComments\(bytes, source, AUDIO_REPEATED_COMMENTS\)/);
+  assert.match(source, /sourcePcmUnchanged: await compareNativeAudioPcm\(original, repeatedFile, \{ cwd: root, env, lossless: true \}\)/);
+  assert.match(source, /report.repeatedFixtures\[conversion.source\]/);
+});

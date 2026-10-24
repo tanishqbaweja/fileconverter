@@ -6,6 +6,17 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+V2 retry SUCCESS/audit47source15artifact pins. Actual14-59-06.074Z browser
+7/8PASS; wholeFAILED solely unchanged automatic Vorbis59.7717dB<60 (higher
+61.0654PASS). Repeated FLAC-to-Ogg now TWO distinct ordered values; exact FLAC/
+25fields/96,000samples preserved. Small lifecycle200.33203125MiB/438valid/
+1blank NULL sample, disk/privacy/original/owned cleanup/stage restore PASS.
+Close completed eight-case gate, no unchanged rerun. Next ONLY five untested
+repeated-key routes via --remaining-repeated-audio, same audited engine/no build.
+New tiny Ogg/Opus fixture rewrite must preserve complete decoded PCM before use;
+31focused/lint PASS, actual five pending. B05 artwork/quality/recovery/stress and
+full54/release remain OPEN; no public or general memory acceptance claim.
+
 V2 attempt1 failed ONLY dependency transport (curl35 reset), cleanup PASS/no
 compile artifact. One same-source retry of40103321797 confirmed queued14:47:53Z;
 next observation~14:57Z. Do not redispatch or repeat parser-only browser run.

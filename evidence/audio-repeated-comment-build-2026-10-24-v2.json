@@ -1,6 +1,6 @@
 {
   "recordedAt": "2026-10-24T14:37:10.834Z",
-  "status": "build-confirmed-live",
+  "status": "compiled-artifact-audited-browser-repair-unverified",
   "branch": "codex/audio-repeated-comments-20261024-v2",
   "parent": "2665538db68a278caf2d81646b2d03258d66ad07",
   "commit": "2b76b15449a6f8c2eb6cc1740fb02a13f48df646",
@@ -25,15 +25,15 @@
   "noDocker": true,
   "dispatchedAt": "2026-10-24T14:37:23.791Z",
   "run": {
-    "conclusion": "",
+    "conclusion": "success",
     "createdAt": "2026-10-24T14:37:25Z",
     "databaseId": 40103321797,
     "headSha": "2b76b15449a6f8c2eb6cc1740fb02a13f48df646",
-    "status": "queued",
-    "updatedAt": "2026-10-24T14:47:53Z",
+    "status": "completed",
+    "updatedAt": "2026-10-24T14:56:00Z",
     "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40103321797"
   },
-  "lastObservedAt": "2026-10-24T14:47:54.755Z",
+  "lastObservedAt": "2026-10-24T14:56:51.052Z",
   "attempt1": {
     "conclusion": "failure-before-compilation",
     "completedAt": "2026-10-24T14:39:53Z",
@@ -46,5 +46,21 @@
   },
   "singleRetryIntentRecordedBeforeAction": true,
   "retryReason": "One retry of confirmed terminal dependency-transport failure, same immutable source; not a conversion replay or code-failure retry",
-  "maximumTransportRetriesThisCycle": 1
+  "maximumTransportRetriesThisCycle": 1,
+  "collected": {
+    "directory": "work/audio-repeated-metadata-40103321797",
+    "bytes": 10435313,
+    "manifestSha256": "dadb5f342e41401c6b050079b743003250b9e1f35ade62b80d89e419071c2625",
+    "buildSourcePins": 47,
+    "artifactPins": 15,
+    "upstream": {
+      "originalSha256": "a11ec3562e733f21565c491ab56b7f1d4a6865fc1ddbdc372ed9cb29b13ca7fb",
+      "compiledSha256": "56d2ebdef4c79bbc7174dfb9492e2040066854770f64f8ec096cd53a190e4e15",
+      "sourceEdits": 1,
+      "publicAcceptance": false
+    },
+    "immutableExecutedSourcesVerified": true,
+    "hostedCleanupPassed": true,
+    "publicAcceptance": false
+  }
 }

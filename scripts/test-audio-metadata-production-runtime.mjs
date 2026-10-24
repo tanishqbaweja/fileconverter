@@ -15,6 +15,7 @@ import { chromium } from "playwright";
 import { auditAudioMetadataArtifact } from "./lib/audio-metadata-artifact.mjs";
 import { AUDIO_METADATA_TAGS, AUDIO_METADATA_FIDELITY_CASES, AUDIO_REPEATED_COMMENTS, audioMetadataFixtureArguments } from "./lib/audio-metadata-fidelity-fixture.mjs";
 import { appendFlacFixtureComments, readAudioCommentEntries } from "./lib/audio-comment-validation.mjs";
+import { appendOggFixtureComments } from "./lib/audio-repeated-comment-fixture.mjs";
 import { compareNativeAudioPcm } from "./lib/streaming-audio-fidelity.mjs";
 import { validateScopedAudioTags } from "./lib/scoped-audio-tag-validation.mjs";
 import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runtime-scratch.mjs";
@@ -28,21 +29,25 @@ import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mj
 import { verifyOpfsDiskBacking } from "./lib/opfs-disk-backing-proof.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && process.argv[3] === "--compare-vorbis-quality"), "Pass the audited private candidate and optional explicit quality comparison");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
 const qualityComparison = process.argv[3] === "--compare-vorbis-quality";
-const selectedCases = qualityComparison ? [...AUDIO_METADATA_FIDELITY_CASES, { source: "opus", destination: "ogg", quality: "higher" }] : AUDIO_METADATA_FIDELITY_CASES;
+const remainingRepeated = process.argv[3] === "--remaining-repeated-audio";
+const selectedCases = remainingRepeated ? AUDIO_METADATA_FIDELITY_CASES.slice(1, 6).map(c => ({ ...c, repeated: true }))
+  : qualityComparison ? [...AUDIO_METADATA_FIDELITY_CASES, { source: "opus", destination: "ogg", quality: "higher" }] : AUDIO_METADATA_FIDELITY_CASES;
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(r => setTimeout(r, ms));
 const runtime = await createOwnedRuntimeScratch("audio-metadata-production-"), env = { ...runtime.env, WRANGLER_SEND_METRICS: "false", NEXT_TELEMETRY_DISABLED: "1" };
 const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: "failed-or-incomplete", scope: "seven small private production-UI audio fidelity/tag/duplicate cases in one normal page",
   publicAcceptance: false, fullMetadataAcceptance: false, artworkAcceptance: false, scalingAcceptance: false, headedCoverage: false,
   cases: [], failures: [], network: { observedRequests: 0, forbidden: [], nativeGlueRequests: 0, nativeWasmRequests: 0 }, nativeConversionUsed: false };
 if (qualityComparison) report.scope += "; plus explicit same-fixture higher-quality Vorbis control (not a default change or speed proof)";
+if (remainingRepeated) report.scope = "five NEW repeated-comment route cases, excluding the already-passed FLAC-to-Ogg duplicate gate; not stress or promotion";
 const stamp = report.startedAt.replaceAll(":", "-"), sha = b => createHash("sha256").update(b).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 1048576 })) hash.update(b); return hash.digest("hex"); };
 const native = (args, executable = "ffmpeg") => execute(executable, args, { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 131072 });
 const probeAudio = async file => JSON.parse((await native(["-v", "error", "-show_entries", "stream=index,codec_type,codec_name,sample_rate,channels:stream_tags:format=duration:format_tags", "-of", "json", file], "ffprobe")).stdout);
 const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scripts/lib/audio-metadata-artifact.mjs", "scripts/lib/audio-metadata-fidelity-fixture.mjs",
   "scripts/lib/audio-comment-validation.mjs", "scripts/lib/streaming-audio-fidelity.mjs", "scripts/lib/scoped-audio-tag-validation.mjs",
+  "scripts/lib/audio-repeated-comment-fixture.mjs",
   "scripts/lib/bounded-network-observer.mjs", "scripts/lib/opfs-disk-backing-proof.mjs", "scripts/lib/bounded-validation-chunk.mjs",
   "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/native-memory-peaks.mjs", "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs",
   "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts", "lib/browser-capabilities.ts", "lib/capability-registry.ts",
@@ -79,12 +84,18 @@ try {
     const hash = await hashFile(file); assert.equal(hash, report.artifact.fixtures[source].sha256); assert.equal(bytes, report.artifact.fixtures[source].bytes);
     report.fixtures[source] = { bytes, sha256: hash };
   }
-  const repeatedFile = path.join(runtime.directory, "source-repeated.flac");
-  await writeFile(repeatedFile, appendFlacFixtureComments(await readFile(path.join(runtime.directory, "source.flac")), AUDIO_REPEATED_COMMENTS), { flag: "wx" });
-  report.repeatedFixture = { bytes: (await lstat(repeatedFile)).size, sha256: await hashFile(repeatedFile),
-    sourcePcmUnchanged: await compareNativeAudioPcm(path.join(runtime.directory, "source.flac"), repeatedFile, { cwd: root, env, lossless: true }) };
-  const repeatedSource = await readAudioCommentEntries(repeatedFile, "flac");
-  assert.deepEqual(repeatedSource.entries.filter(s => s.split("=", 1)[0].toLowerCase() === "custom_repeat"), AUDIO_REPEATED_COMMENTS);
+  report.repeatedFixtures = {};
+  for (const source of remainingRepeated ? ["flac", "ogg", "opus"] : ["flac"]) {
+    const original = path.join(runtime.directory, "source." + source), repeatedFile = path.join(runtime.directory, "source-repeated." + source);
+    const bytes = await readFile(original), generated = source === "flac" ? appendFlacFixtureComments(bytes, AUDIO_REPEATED_COMMENTS)
+      : appendOggFixtureComments(bytes, source, AUDIO_REPEATED_COMMENTS);
+    await writeFile(repeatedFile, generated, { flag: "wx" });
+    report.repeatedFixtures[source] = { bytes: (await lstat(repeatedFile)).size, sha256: await hashFile(repeatedFile),
+      sourcePcmUnchanged: await compareNativeAudioPcm(original, repeatedFile, { cwd: root, env, lossless: true }) };
+    const repeatedSource = await readAudioCommentEntries(repeatedFile, source);
+    assert.deepEqual(repeatedSource.entries.filter(s => s.split("=", 1)[0].toLowerCase() === "custom_repeat"), AUDIO_REPEATED_COMMENTS);
+  }
+  report.repeatedFixture = report.repeatedFixtures.flac;
   await execute(process.execPath, ["node_modules/vinext/dist/cli.js", "build"], { cwd: root, env, windowsHide: true, timeout: 180000, maxBuffer: 4 * 1024 ** 2 });
   for (const file of ["within-remux.mjs", "within-remux.wasm"]) {
     const target = path.join(root, "dist/client/engines/remux", file), backup = path.join(runtime.directory, "original-" + file), original = sha(await readFile(target));
@@ -137,14 +148,14 @@ try {
   report.screenshots = [];
   for (const [index, conversion] of selectedCases.entries()) {
     if (monitorFailure) throw monitorFailure;
-    const profileId = `${conversion.source}-to-${conversion.destination}`, input = conversion.repeated ? repeatedFile : path.join(runtime.directory, "source." + conversion.source),
+    const profileId = `${conversion.source}-to-${conversion.destination}`, input = path.join(runtime.directory, (conversion.repeated ? "source-repeated." : "source.") + conversion.source),
       output = path.join(runtime.directory, `output-${index}.${conversion.destination}`);
     const row = { name: profileId + (conversion.repeated ? "-repeated-values" : "") + (conversion.quality ? "-" + conversion.quality : ""),
       profileId, requestedQuality: conversion.quality ?? "automatic", repeated: Boolean(conversion.repeated), status: "failed", failures: [] }; report.cases.push(row);
     let outputIdentity, entryName;
     try {
       const sourceProbe = await probeAudio(input); const tags = validateScopedAudioTags(sourceProbe, AUDIO_METADATA_TAGS, { scope: conversion.source === "flac" ? "format" : "audio-stream" }); assert.equal(tags.status, "passed");
-      row.source = { ...report.fixtures[conversion.source], ...(conversion.repeated ? report.repeatedFixture : {}), tags };
+      row.source = { ...report.fixtures[conversion.source], ...(conversion.repeated ? report.repeatedFixtures[conversion.source] : {}), tags };
       phase("case-" + index); await page.locator('[data-testid="file-input"]').setInputFiles(input); await page.locator('[data-testid="format-select"]').selectOption(profileId);
       await page.waitForFunction(() => !document.querySelector('[data-testid="convert-button"]')?.disabled && window.__WITHIN_TEST__?.getState().workerStatus === "ready");
       if (conversion.quality) {

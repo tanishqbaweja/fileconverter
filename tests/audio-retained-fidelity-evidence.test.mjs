@@ -65,3 +65,24 @@ test("changed real browser gate proves exact FLAC and existing higher-quality co
   const journal = await readFile(new URL(next.losslessJournal.file, root)); assert.equal(sha(journal), next.losslessJournal.archiveSha256);
   assert.equal(sha(gunzipSync(journal, { maxOutputLength: 8 * 1048576 })), next.losslessJournal.sha256);
 });
+test("combined native parser/wrapper repair preserves both repeated values in the real browser without concealing unchanged automatic quality failure", async () => {
+  const next = JSON.parse(await readFile(new URL("evidence/2026-10-24T14-59-06.074Z-audio-metadata-fidelity-result.json", root)));
+  assert.equal(next.status, "failed"); assert.equal(next.publicAcceptance, false); assert.equal(next.cases.length, 8);
+  assert.equal(next.cases.filter(c => c.status === "passed-small-private-fidelity-and-metadata-case").length, 7);
+  assert.equal(next.artifactManifestSha256, "dadb5f342e41401c6b050079b743003250b9e1f35ade62b80d89e419071c2625");
+  const repeated = next.cases.find(c => c.name === "flac-to-ogg-repeated-values");
+  assert.equal(repeated.status, "passed-small-private-fidelity-and-metadata-case");
+  assert.deepEqual(repeated.repeatedValues, ["CUSTOM_REPEAT=Premier 音楽", "CUSTOM_REPEAT=Deuxième café"]);
+  assert.deepEqual(next.cases.filter(c => c.status === "failed").map(c => c.name), ["opus-to-ogg"]);
+  assert.ok(next.cases.find(c => c.name === "opus-to-ogg").fidelity.psnrDb < 60);
+  assert.equal(next.memory.incrementalPrivateMiB, 200.33203125); assert.equal(next.memory.validSamples, 438); assert.equal(next.memory.unavailableSamples, 1);
+  assert.ok(next.protectedOriginalUnchanged); assert.ok(Object.values(next.cleanup).every(Boolean));
+  for (const c of next.cases) { assert.equal(c.tagsPreserved, 25); assert.equal(c.fidelity.samples, 96000); assert.ok(c.disposableOutputRemoved); }
+  const archive = await readFile(new URL(next.archive.path, root)); assert.equal(sha(archive), next.archive.sha256);
+  assert.equal(sha(gunzipSync(archive, { maxOutputLength: 1048576 })), next.archive.restoredSha256);
+  const journal = await readFile(new URL(next.losslessJournal.file, root)); assert.equal(sha(journal), next.losslessJournal.archiveSha256);
+  assert.equal(sha(gunzipSync(journal, { maxOutputLength: 8 * 1048576 })), next.losslessJournal.sha256);
+  const rows = gunzipSync(journal, { maxOutputLength: 8 * 1048576 }).toString().trim().split("\n").map(JSON.parse);
+  const missing = rows.filter(r => r.sample?.privateBytes === null);
+  assert.equal(missing.length, 1); assert.equal(missing[0].sample.phase, "blank"); assert.match(missing[0].sample.sampleError, /OpenProcess/);
+});

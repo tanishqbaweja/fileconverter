@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+V2 actual14-59-06.074Z browser gate7/8 PASS, wholeFAILED only automatic Vorbis
+quality59.7717387dB<60; higher61.065405dB PASS. Parser+bounded stream copy now
+preserves TWO ordered Unicode duplicate entries in real FLAC-to-Ogg output,
+all25tags/96,000samples each and exact FLAC cases PASS. Audited47source/15artifact
+pins, unchanged Wasm. Whole-tree small lifecycle200.33203125MiB/438valid samples;
+1blank OpenProcess sample retainedNULL/excluded, not zero. Exact439row journal,
+raw23,540B gzip, physical disk/privacy/original/owned cleanup/restoration PASS.
+No public/stress/artwork/full metadata acceptance. Headless terminal image
+reviewed.31focused/lint PASS. New fixture-only Ogg/Opus duplicate rewriter and
+remaining-five scope prepared with PCM-identical generated-source requirement;
+actual five novel repeated-key route checks next, NOT unchanged eight-case replay.
+
 V2 build40103321797 attempt1 failed source download (curl35 reset), NOT compile
 or browser gate; hosted cleanup PASS. One same-source failed-job retry confirmed
 queued14:47:53Z; next estimate~14:57Z. CI40103319573/2665538 SUCCESS. Removed

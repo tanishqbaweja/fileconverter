@@ -1,5 +1,26 @@
 # Remaining work audit
 
+Latest B05 v2 retry now SUCCESS, audited47source/15artifact pins against actual
+2b76b15. Actual14-59-06.074Z production-browser gate:7/8 small cases PASS,
+whole statusFAILED solely unchanged automatic Opus-to-Vorbis59.7717387dB<60.
+Higher control61.065405dB still passes, no default/threshold/codec change.
+Repeated FLAC-to-Ogg now genuinely PASS: TWO separate ordered Unicode comment
+entries (8,097B), all25tags/96,000samples and exact FLAC cases preserved. Raw
+archive193,115B retained23,540B gzip plus exact439-row journal. Native coverage
+438valid/1unavailable: the one OpenProcess blank-phase sample stays NULL and is
+excluded, never zero; active samples available. Small lifecycle200.33203125MiB,
+physical disk proof/privacy/original SHA/all owned birth cleanup/stage restore
+PASS. Not stress/artwork/public/full-metadata acceptance. Terminal screenshot
+reviewed headlessly. Keep this eight-case gate closed; do not replay unchanged.
+Next ONLY five previously untested repeated-key routes: FLAC-to-Opus,
+Ogg-to-Opus, Opus-to-Ogg, Ogg-to-FLAC, Opus-to-FLAC. New small-fixture-only Ogg
+comment rewrite preserves setup/audio packets/page fields and recalculates CRC;
+actual complete decoded PCM equality is required BEFORE browser launch. Separate
+--remaining-repeated-audio scope excludes completed FLAC-to-Ogg gate and does
+not rerun baseline/higher cases.31focused checks/lint PASS; actual five pending.
+Reuse same audited native engine, no new compile or Chrome setting change.
+Full54/B05 artwork/quality/recovery/stress/release remain OPEN.
+
 V2 attempt1 (40103321797/2b76b15) terminal FAIL before compilation: dependency
 curl35 connection reset after94s; hosted owned-data cleanup PASS/no artifact.
 ONE evidence-directed transport retry of SAME run/source now confirmed queued
