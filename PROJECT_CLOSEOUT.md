@@ -6,6 +6,21 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Actual B05 normal-page gate now terminal FAILED, not pending: seven genuine
+outputs/25 tags/96,000 samples each,209.54296875MiB small lifecycle/667valid rows,
+0missing; physical disk proof/privacy/original/owned cleanup/asset restore PASS.
+Opus-to-Ogg59.77173dB fails60dB and repeated comments fold into one value. Native
+scalar-reference probe exactly matches BOTH retained browser FLAC PCM hashes,
+isolating previous13/22 one-unit differences to default native SIMD arithmetic.
+Original failed receipt remains failed. Strict exact PCM/60dB thresholds stay.
+Next changed implementation: isolated native duplicate-parser patch compile,
+then focused browser serialization check; source-only patch is NOT a repair
+claim. Reuse completed seven-case evidence, not an unchanged expensive replay.
+Quality/artwork/recovery/stress/public promotion and original54 still OPEN.
+Changed builder/isolated-workflow derivative and optional exact upstream-source
+audit implemented;23focused tests/lint/TypeScript and reused40pin old artifact
+audit PASS. Native compile not yet dispatched; no browser repair claim.
+
 B05 work resumes independently of pending Chrome configuration choice. New
 single-page/normal-context audio gate reuses audited candidate39517752087 and
 exact old source fixtures, adds full PCM comparison and a genuine repeated-key

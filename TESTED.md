@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-10-24 B05 actual normal-page seven-case run FAILED (receipt13-50-10.413Z).
+Seven real conversions:25 tags each/96,000 PCM samples;209.54296875MiB whole-tree
+small-lifecycle peak/667valid samples/0missing, disk proof/privacy/owned cleanup/
+original SHA/public untouched/staged restore PASS. NOT stress/public acceptance.
+Opus-to-Ogg59.771730391806905dB fails60dB; genuine repeated comments folded into
+"Premier 音楽;Deuxième café". Preserve both failures. Native reference probe
+14-06-23.031Z proves scalar decoding of both exact historical Ogg/Opus fixtures
+matches retained browser FLAC PCM hashes exactly; previous default native SIMD
+reference differed by13/22 one-unit samples. This is reference correction, not
+relaxed equality or a new passing browser run. Reversible source-only parser
+patch/build derivative added; actual native compile/browser repair still pending.
+Original report205,356B retained25,406B gzip plus exact667-row compressed journal;
+no disposable conversion/profile data retained. Full B05/original scope open.
+Changed native compile/workflow/artifact-audit derivative:23focused tests PASS,
+lint/TypeScript PASS; existing39517752087 still audits40source/12artifact pins.
+Retained two terminal screenshots reviewed headlessly, not headed validation.
+Native duplicate-parser repair remains uncompiled and browser-unverified.
+
 B05 new bounded fidelity/serialization validators:16focused unit/source checks
 PASS/lint PASS. Actual single-normal-context seven-case production gate ready,
 not yet executed. Reuses candidate39517752087 and exact25-field source hashes;

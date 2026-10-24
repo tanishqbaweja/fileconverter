@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-24T13:57:09.266Z",
+  "scope": "Native reference-decoder diagnostic; no new browser conversion or changed acceptance policy",
+  "receipt": "evidence/2026-10-24T13-50-10.413Z-audio-metadata-fidelity-result.json",
+  "receiptSha256": "a21c0d5ff4e0d8085fa1bd588cd4aa7392907c2fac0b2b7aab5e5716bdae9066",
+  "cases": [
+    {
+      "source": "ogg",
+      "retainedDefaultNativeSha256": "59d7cfe9ee7485297ec851e60b81f13ac90b99fdf0ddd3f3b21e458ac87dac64",
+      "retainedBrowserFlacPcmSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+      "variants": [
+        {
+          "name": "default",
+          "pcmSha256": "59d7cfe9ee7485297ec851e60b81f13ac90b99fdf0ddd3f3b21e458ac87dac64",
+          "matchesRetainedBrowserPcm": false
+        },
+        {
+          "name": "scalar",
+          "pcmSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+          "matchesRetainedBrowserPcm": true
+        },
+        {
+          "name": "scalar-bitexact",
+          "pcmSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+          "matchesRetainedBrowserPcm": true
+        }
+      ]
+    },
+    {
+      "source": "opus",
+      "retainedDefaultNativeSha256": "f53efc4527ad5a6d60a090808dd63ca4de73a4bbb04f92fa0e833516d1a93af0",
+      "retainedBrowserFlacPcmSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+      "variants": [
+        {
+          "name": "default",
+          "pcmSha256": "f53efc4527ad5a6d60a090808dd63ca4de73a4bbb04f92fa0e833516d1a93af0",
+          "matchesRetainedBrowserPcm": false
+        },
+        {
+          "name": "scalar",
+          "pcmSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+          "matchesRetainedBrowserPcm": true
+        },
+        {
+          "name": "scalar-bitexact",
+          "pcmSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+          "matchesRetainedBrowserPcm": true
+        }
+      ]
+    }
+  ],
+  "fullMetadataAcceptance": false,
+  "browserFlagsChanged": false,
+  "nativeVersion": "ffmpeg version N-122712-g7e3781e3ca-20260211 Copyright (c) 2000-2026 the FFmpeg developers",
+  "ownedFixtureScratchRemoved": true,
+  "finishedAt": "2026-10-24T13:57:09.882Z"
+}

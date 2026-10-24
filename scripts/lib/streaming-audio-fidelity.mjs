@@ -39,13 +39,16 @@ export async function compareNativeAudioPcm(source, output, options = {}) {
   const { cwd, env = process.env, ...policy } = options, children = [], controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 30000);
   const decode = file => {
-    const child = spawn("ffmpeg", ["-v", "error", "-xerror", "-nostdin", "-i", file, "-map", "0:a:0", "-c:a", "pcm_s16le", "-f", "s16le", "pipe:1"],
+    // Match the scalar FFmpeg decoder/resampler arithmetic used by this Wasm
+    // build. The recorded native reference probe proves exact retained FLAC PCM
+    // hashes; do not relax equality to hide platform SIMD rounding differences.
+    const child = spawn("ffmpeg", ["-v", "error", "-xerror", "-nostdin", "-cpuflags", "0", "-i", file, "-map", "0:a:0", "-c:a", "pcm_s16le", "-f", "s16le", "pipe:1"],
       { cwd, env, windowsHide: true, signal: controller.signal, stdio: ["ignore", "pipe", "pipe"] });
     let stderr = ""; child.stderr.on("data", b => { stderr = (stderr + b.toString()).slice(-8192); });
     const closed = new Promise((resolve, reject) => { child.once("error", reject); child.once("close", code => code === 0 ? resolve() : reject(new Error("Independent audio decoder failed: " + stderr))); });
     closed.catch(() => {}); children.push({ child, closed }); return child.stdout;
   };
-  try { const result = await comparePcm16(decode(source), decode(output), policy); await Promise.all(children.map(c => c.closed)); return result; }
-  catch (error) { if (error.fidelity) { await Promise.all(children.map(c => c.closed)); error.fullIndependentDecodePassed = true; } throw error; }
+  try { const result = await comparePcm16(decode(source), decode(output), policy); await Promise.all(children.map(c => c.closed)); return { ...result, referenceDecoderCpu: "scalar-no-SIMD" }; }
+  catch (error) { if (error.fidelity) { await Promise.all(children.map(c => c.closed)); error.fullIndependentDecodePassed = true; error.fidelity.referenceDecoderCpu = "scalar-no-SIMD"; } throw error; }
   finally { clearTimeout(timer); for (const { child } of children) if (child.exitCode === null && child.signalCode === null) controller.abort(); await Promise.allSettled(children.map(c => c.closed)); }
 }

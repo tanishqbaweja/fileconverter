@@ -1,0 +1,355 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "e82e9a78efd6e0f114a4057afb338234a2e803af",
+  "status": "failed",
+  "scope": "seven small private production-UI audio fidelity/tag/duplicate cases in one normal page",
+  "publicAcceptance": false,
+  "fullMetadataAcceptance": false,
+  "archive": {
+    "path": "outputs/reports/2026-10-24T13-50-10.413Z-audio-metadata-production-runtime.json.gz",
+    "bytes": 25406,
+    "sha256": "4d0fdd0fd0855c196672493898c236f29bfebfe389baca50fc2bb2ef11046363",
+    "restoredBytes": 205356,
+    "restoredSha256": "96ebad48dc2f9575543d0959efed6060f2d2129f4fc5f7cbdc18f713b88c5f42"
+  },
+  "sourcePins": 21,
+  "artifactManifestSha256": "803158ef0f67bd8285c16a1a6e6769c9802316a4b101a833d34715682e3ace66",
+  "diskProof": {
+    "status": "exact-browser-canary-independently-found-on-disk",
+    "browserBytes": 64,
+    "physicalBytes": 64,
+    "sha256": "93ced33c5f07abc43dcafc694ef7164b6b8702b9f6dfa76fc12e4a41e9808f5f",
+    "physicalFile": "work\\audio-metadata-production-Z4B2fK\\chrome-profile\\Default\\File System\\000\\t\\00\\00000001",
+    "profileDirectory": "work\\audio-metadata-production-Z4B2fK\\chrome-profile",
+    "inspectedEntries": 5,
+    "maximumReadBytes": 65,
+    "provesThisContextOpfsBacking": true,
+    "provesConversionAcceptance": false,
+    "canaryRemovedInFinally": true
+  },
+  "memory": {
+    "scope": "seven-small-case lifecycle only, not stress acceptance",
+    "limitMiB": 250,
+    "intervalMs": 100,
+    "peak": {
+      "sequence": 612,
+      "timestamp": "2026-10-24T13:51:45.8999144Z",
+      "phase": "case-4",
+      "privateBytes": 459530240,
+      "rssBytes": 742907904,
+      "nativeElapsedMs": 38.8023,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 10212,
+          "parentPid": 33256,
+          "createdAt": "2026-10-24T13:50:38.0550995Z",
+          "creationFileTime": "134373234380550995",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 159244288,
+          "rssBytes": 192770048
+        },
+        {
+          "pid": 15088,
+          "parentPid": 33256,
+          "createdAt": "2026-10-24T13:50:37.9321135Z",
+          "creationFileTime": "134373234379321135",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 159301632,
+          "rssBytes": 183914496
+        },
+        {
+          "pid": 29904,
+          "parentPid": 33256,
+          "createdAt": "2026-10-24T13:50:37.9408606Z",
+          "creationFileTime": "134373234379408606",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 13893632,
+          "rssBytes": 41922560
+        },
+        {
+          "pid": 32164,
+          "parentPid": 33256,
+          "createdAt": "2026-10-24T13:50:37.6515170Z",
+          "creationFileTime": "134373234376515170",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2539520,
+          "rssBytes": 10301440
+        },
+        {
+          "pid": 33256,
+          "parentPid": 22096,
+          "createdAt": "2026-10-24T13:50:37.6161948Z",
+          "creationFileTime": "134373234376161948",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 45019136,
+          "rssBytes": 142639104
+        },
+        {
+          "pid": 34588,
+          "parentPid": 33256,
+          "createdAt": "2026-10-24T13:50:38.0188317Z",
+          "creationFileTime": "134373234380188317",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 45019136,
+          "rssBytes": 87617536
+        },
+        {
+          "pid": 37304,
+          "parentPid": 33256,
+          "createdAt": "2026-10-24T13:50:38.0612685Z",
+          "creationFileTime": "134373234380612685",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 17997824,
+          "rssBytes": 48615424
+        },
+        {
+          "pid": 42100,
+          "parentPid": 33256,
+          "createdAt": "2026-10-24T13:51:21.9139296Z",
+          "creationFileTime": "134373234819139296",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8048640,
+          "rssBytes": 15380480
+        },
+        {
+          "pid": 43928,
+          "parentPid": 33256,
+          "createdAt": "2026-10-24T13:50:37.9746772Z",
+          "creationFileTime": "134373234379746772",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8466432,
+          "rssBytes": 19746816
+        }
+      ]
+    },
+    "incrementalPrivateMiB": 209.54296875,
+    "validSamples": 667,
+    "unavailableSamples": 0,
+    "fullHistoryInLosslessJournal": true
+  },
+  "cases": [
+    {
+      "name": "flac-to-ogg",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 398,
+        "squaredError": 101218070,
+        "psnrDb": 60.07913050922228,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "6a95b7817a602d156d6ff9d6f0f46b61aa95724888657525152611a169cad6f7",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1
+      },
+      "outputBytes": 8031,
+      "outputSha256": "388379f3068d2505a648d7bb2785003a5b67e93f0808483f9dcff51e78549c87",
+      "tagsPreserved": 25,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908461,
+        "psnrDb": 66.16824208014049,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8c2e8a071971e90261d72af885d609d72715c3d59ef258812221b2ee4fac1198",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1
+      },
+      "outputBytes": 16942,
+      "outputSha256": "5588a5a60664e40675de7bdcf3b314303cb01e3652d0100ff41972e9b21e128a",
+      "tagsPreserved": 25,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "ogg-to-opus",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 205,
+        "squaredError": 29594018,
+        "psnrDb": 65.41967169337292,
+        "sourceSha256": "59d7cfe9ee7485297ec851e60b81f13ac90b99fdf0ddd3f3b21e458ac87dac64",
+        "outputSha256": "c5888753aaccfe2fc00a23886399e94734556c6a6e34dabdf37a8a467112d9af",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1
+      },
+      "outputBytes": 16941,
+      "outputSha256": "4258d00cdde54310ff3f841c80bca223004a4ea2b6eac6672e092d1aa0517cb5",
+      "tagsPreserved": 25,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-ogg",
+      "status": "failed",
+      "failures": [
+        "Error: Audio PSNR59.771730391806905dB below60dB"
+      ],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 455,
+        "squaredError": 108642078,
+        "psnrDb": 59.771730391806905,
+        "sourceSha256": "f53efc4527ad5a6d60a090808dd63ca4de73a4bbb04f92fa0e833516d1a93af0",
+        "outputSha256": "608b96525a701b8cdd4d9d2cc1ef301c3115e234861fa95b1cf14dcc477d3666",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1
+      },
+      "outputBytes": 8382,
+      "outputSha256": "5659d2af02cefa89cb6930303561892e67f0f71805beb35a867dc2d2d261526b",
+      "tagsPreserved": 25,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "ogg-to-flac",
+      "status": "failed",
+      "failures": [
+        "Error: Lossless destination changed canonical PCM samples"
+      ],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 1,
+        "squaredError": 13,
+        "psnrDb": 128.99227750652167,
+        "sourceSha256": "59d7cfe9ee7485297ec851e60b81f13ac90b99fdf0ddd3f3b21e458ac87dac64",
+        "outputSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+        "minimumPsnrDb": 60,
+        "losslessRequired": true,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1
+      },
+      "outputBytes": 36064,
+      "outputSha256": "7358a87ed26547958d4b96bed4eca794044b1ec93cac6fdac89e9f4fb37eba17",
+      "tagsPreserved": 25,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-flac",
+      "status": "failed",
+      "failures": [
+        "Error: Lossless destination changed canonical PCM samples"
+      ],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 1,
+        "squaredError": 22,
+        "psnrDb": 126.70748422136798,
+        "sourceSha256": "f53efc4527ad5a6d60a090808dd63ca4de73a4bbb04f92fa0e833516d1a93af0",
+        "outputSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+        "minimumPsnrDb": 60,
+        "losslessRequired": true,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1
+      },
+      "outputBytes": 38410,
+      "outputSha256": "1f21e4abf7f1ef52ea2a2170d989f1a7b9fd8e0fc2681e46f7e31ffaeb7e95a8",
+      "tagsPreserved": 25,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-ogg-repeated-values",
+      "status": "failed",
+      "failures": [
+        "Repeated comment values were folded, overwritten or reordered"
+      ],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 398,
+        "squaredError": 101218070,
+        "psnrDb": 60.07913050922228,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "6a95b7817a602d156d6ff9d6f0f46b61aa95724888657525152611a169cad6f7",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1
+      },
+      "outputBytes": 8079,
+      "outputSha256": "c4a5f93d1b14486ca75d5d625122945c555dd9ff2092490a0c644fe05fdca2c0",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽;Deuxième café"
+      ],
+      "disposableOutputRemoved": true
+    }
+  ],
+  "losslessJournal": {
+    "file": "output/playwright/2026-10-24T13-50-10.413Z-audio-fidelity-memory.ndjson.gz",
+    "records": 667,
+    "sha256": "413ab45130946dc718f970c460cabbb21ccd6587044a545227d57c12d17b1ed2",
+    "archiveSha256": "d1afd9f7ef28d7eececd6fdc35bd01bb5668e84dc16f3310430a1c8ca99c490b",
+    "complete": true
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(report.cases.every(c => c.status === \"passed-small-private-fidelity-and-metadata-case\"))\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:192:48\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+  ],
+  "network": {
+    "observedRequests": 32,
+    "forbidden": [],
+    "nativeGlueRequests": 7,
+    "nativeWasmRequests": 7
+  },
+  "cleanup": {
+    "allRecordedBirthsAbsent": true,
+    "publishedAssetsNeverChanged": true,
+    "stagedPrivateAssetsRestored": true,
+    "ownedProfileFixturesOutputsRemoved": true
+  },
+  "protectedOriginalUnchanged": true
+}

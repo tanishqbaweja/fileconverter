@@ -5,6 +5,8 @@ import { lstat, readFile, realpath } from "node:fs/promises";
 import path from "node:path";
 import { makeAudioTextMetadataCandidate, AUDIO_METADATA_PARENT_SHA256 } from "../../media/ffmpeg/audio-text-metadata-candidate.mjs";
 import { makeAudioMetadataBuildWorkflow } from "./audio-metadata-build-workflow.mjs";
+import { makeAudioRepeatedCommentBuildWorkflow } from "./audio-repeated-comment-build-workflow.mjs";
+import { makeAudioRepeatedCommentCandidate } from "../../media/ffmpeg/audio-repeated-comment-candidate.mjs";
 import { readWasmMemoryLimits } from "./wasm-memory-limits.mjs";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const root = path.resolve(import.meta.dirname, "../..");
@@ -37,6 +39,15 @@ export function verifyAudioMetadataCore({ manifest, parent, compiled, helper, me
     helperSha256: candidate.helperSha256, memoryLimits, allowedSourceEdits: 3, publicAcceptance: false };
 }
 
+export function verifyAudioRepeatedCommentSource({ parent, compiled, receipt, manifestReceipt, archiveSha256 }) {
+  const derived = makeAudioRepeatedCommentCandidate(parent, { sourceArchiveSha256: archiveSha256 });
+  assert.equal(compiled, derived.generated, "Only the declared upstream comment-parser edit may be compiled");
+  const { generated: ignoredGenerated, edits, ...expected } = derived;
+  assert.ok(ignoredGenerated); assert.deepEqual(receipt, { ...expected, sourceEdits: edits.length });
+  assert.deepEqual(manifestReceipt, receipt);
+  return { originalSha256: derived.originalSha256, compiledSha256: derived.generatedSha256, sourceEdits: 1, publicAcceptance: false };
+}
+
 export async function auditAudioMetadataArtifact(candidateDirectory) {
   const directory = path.resolve(candidateDirectory), work = await realpath(path.join(root, "work"));
   const canonical = text => process.platform === "win32" ? text.toLowerCase() : text;
@@ -56,8 +67,9 @@ export async function auditAudioMetadataArtifact(candidateDirectory) {
   for (const [file, expected] of Object.entries(manifest.sources)) {
     assert.match(file, /^(?:media|scripts|\.github)\/[A-Za-z0-9_./-]+$/); assert.ok(!file.split("/").includes(".."));
     const actual = await readTool(path.join(root, file));
+    const workflow = manifest.candidate.upstreamCommentPatch ? makeAudioRepeatedCommentBuildWorkflow : makeAudioMetadataBuildWorkflow;
     const actualHash = file === ".github/workflows/reproduce-ffmpeg-nondocker.yml"
-      ? makeAudioMetadataBuildWorkflow(actual.toString()).generatedSha256 : sha(actual);
+      ? workflow(actual.toString()).generatedSha256 : sha(actual);
     assert.equal(actualHash, expected, "Executed build source changed: " + file);
   }
   const [parent, compiled, helper, wasm, publicWasm, publicManifest] = await Promise.all([
@@ -67,6 +79,15 @@ export async function auditAudioMetadataArtifact(candidateDirectory) {
   ]);
   const core = verifyAudioMetadataCore({ manifest, parent: parent.toString(), compiled: compiled.toString(), helper: helper.toString(),
     memoryLimits: readWasmMemoryLimits(wasm), publicMemoryLimits: readWasmMemoryLimits(publicWasm), publicManifest: JSON.parse(publicManifest) });
+  if (manifest.candidate.upstreamCommentPatch) {
+    for (const file of ["oggparsevorbis.parent.c", "oggparsevorbis.repeated.c", "audio-repeated-comment-source.json"])
+      assert.match(manifest.artifacts[file], /^[a-f0-9]{64}$/, file);
+    core.upstreamCommentPatch = verifyAudioRepeatedCommentSource({
+      parent: (await readTool(path.join(directory, "oggparsevorbis.parent.c"))).toString(),
+      compiled: (await readTool(path.join(directory, "oggparsevorbis.repeated.c"))).toString(),
+      receipt: JSON.parse(await readTool(path.join(directory, "audio-repeated-comment-source.json"))),
+      manifestReceipt: manifest.candidate.upstreamCommentPatch, archiveSha256: manifest.ffmpegSourceSha256 });
+  }
   const baseline = JSON.parse(await readFile(path.join(root, "evidence/2026-10-21-audio-metadata-candidate-cycle.json"), "utf8"));
   const fixtures = {};
   for (const item of baseline.baseline.cases) {

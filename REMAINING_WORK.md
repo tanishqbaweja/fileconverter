@@ -1,5 +1,29 @@
 # Remaining work audit
 
+2026-10-24 B05 actual seven-case normal production-UI run is terminal FAILED,
+not pending: evidence/2026-10-24T13-50-10.413Z-audio-metadata-fidelity-result.json.
+All seven genuine outputs retain25 fields/96,000 decoded samples; physical
+disk proof, privacy, original SHA, staged-asset restore and owned cleanup PASS.
+Small seven-case lifecycle209.54296875MiB/667valid rows/0missing does NOT prove
+stress/public acceptance. Opus-to-Vorbis59.771730391806905dB fails unchanged60dB
+floor; repeated comments are actually folded into one semicolon-joined value.
+Two apparent FLAC exactness failures are now isolated to native SIMD reference
+rounding: source-pinned14-06-23.031Z audio-pcm-reference report regenerates exact
+historical source hashes and scalar native decoding matches BOTH retained
+browser FLAC PCM hashes exactly. Validator now uses scalar reference, retaining
+strict sample equality; original failed receipt is never rewritten as passed.
+Reversible duplicate-comment upstream parser patch is source-only; compile and
+real browser validation still required. New recipe must insert before the one
+initial library compile, not every substring occurrence in specialist branches.
+No unchanged seven-case replay, public promotion, codec/heap/browser flag change.
+Next: isolated private native compile, focused repeated-field recheck; quality,
+artwork/aliases/recovery/stress and original54/release scope remain OPEN.
+Changed compile driver and independently audited optional upstream preimage/
+compiled-source/receipt path now implemented without changing old40 build pins
+or canonical workflow/public assets.23focused tests, focused lint, TypeScript
+and old40-source/12-artifact audit PASS. Both retained terminal screenshots
+reviewed headlessly (Saved states), not manual or native-picker evidence.
+
 B05 next changed gate implemented: one normal production page/context, existing
 audited audio candidate39517752087 (40build-source/12artifact pins unchanged).
 Six original25-field fixtures must keep exact historical hashes; new full PCM16
