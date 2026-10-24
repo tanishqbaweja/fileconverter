@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+Both rejected controls reports now retained losslessly at54,602B and50,972B
+instead of5,381,619B raw. Exact gzip readback/bytes/SHA verified before removing
+only redundant raw JSON; diagnostics remain recoverable. Each report's sources
+independently matched its historical executed Git head, all4native files matched
+and owned birth-identified processes/scratch/assets independently absent.
+Compact receipts `evidence/2026-10-23T15-46-35.345Z-mpeg2-controls-result.json`
+and `evidence/2026-10-23T15-52-18.420Z-mpeg2-controls-result.json` keep FAILED,
+0/1validated default outputs, no control/memory/public acceptance. Earlier raw
+`.json` references below now resolve by restoring the corresponding `.json.gz`.
+
 Changed native build40048810064 is actually IN_PROGRESS at955d3e6 on isolated
 `codex/mpeg2-scaled-properties-20261024`; no Docker/canonical workflow/main change.
 Source changeed2f07e pushed to remote media-options. Production driver now accepts

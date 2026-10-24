@@ -1,5 +1,13 @@
 # Remaining work audit
 
+Rejected Oct23 control attempts losslessly archived (50,972B/54,602B) after exact
+readback, historical Git-source/native hash matching and independent owned
+process/scratch absence checks. Removed only redundant5,381,619B raw JSON;
+both are recoverable from matching outputs/reports/*.json.gz. Compact evidence:
+`evidence/2026-10-23T15-46-35.345Z-mpeg2-controls-result.json` and
+`evidence/2026-10-23T15-52-18.420Z-mpeg2-controls-result.json`. Failures retained
+as failures,0/1validated defaults; control/memory/full54 qualification still open.
+
 2026-10-24 targeted repaired-core build40048810064 confirmed IN_PROGRESS at
 955d3e6 (isolated workflow-only commit, canonical/main unchanged). ed2f07e pushed
 to media-options. Explicit --controls-only collected-build selection now rechecks

@@ -1,0 +1,200 @@
+{
+  "schemaVersion": 1,
+  "head": "16fa57043f1850471b9ebf318db3dd18049b6377",
+  "status": "failed",
+  "startedAt": "2026-10-23T15:46:35.345Z",
+  "finishedAt": "2026-10-23T15:47:55.296Z",
+  "scope": "Finite real production MPEG-2 controls gate, including failures; not UI-control, scale or public acceptance",
+  "archive": {
+    "path": "outputs/reports/2026-10-23T15-46-35.345Z-mpeg2-production-runtime.json.gz",
+    "bytes": 50972,
+    "sha256": "10d5cb3228f4f1ecca8272da6fb617e601cdc5218804af333230b1bb5f8af8e7",
+    "restoredBytes": 2688222,
+    "restoredSha256": "90cf3d68a15e35ec8f514e52c10bac266b4ebda25dcbafdcb0259e138586be16"
+  },
+  "sourcePins": 40,
+  "recordedSourcesMatchHistoricalGitHead": true,
+  "native": [
+    {
+      "source": "work\\mpeg2-jspi-39072949964\\within-mpeg2-split.mjs",
+      "sha256": "d4ec481a93a1b087c96aa11948ab9a98ccf6d09237ed143c022bf76bf6c31506",
+      "bytes": 65707
+    },
+    {
+      "source": "work\\mpeg2-jspi-39072949964\\within-mpeg2-split.wasm",
+      "sha256": "4f3954a3cbbd5012c811fa380402981d29ac298d46422d1bc0fa40a6b9368d57",
+      "bytes": 5715985
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.mjs",
+      "sha256": "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e",
+      "bytes": 68202
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.wasm",
+      "sha256": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee",
+      "bytes": 675411
+    }
+  ],
+  "scaledPropertiesBuild": null,
+  "fixture": {
+    "bytes": 786910,
+    "sha256": "9edb10d52227898aa025f8871835c800adae79c87999b87146841830766eae4a",
+    "video": "hevc",
+    "width": 640,
+    "height": 360,
+    "frames": 96
+  },
+  "completedCases": [],
+  "completed": false,
+  "lastTerminal": {
+    "message": null,
+    "metrics": null
+  },
+  "failures": [
+    "page.evaluate: Error: Invalid completed-stage handoff\n    at Ft.s (http://127.0.0.1:3217/assets/ConverterApp-DDLCfBFq.js:1:194170)\n    at Ft.fail (http://127.0.0.1:3217/assets/ConverterApp-DDLCfBFq.js:1:189481)\n    at t.onmessage (http://127.0.0.1:3217/assets/ConverterApp-DDLCfBFq.js:1:191333)\n    at H:\\Github Repositories\\fileconverter\\scripts\\test-mpeg2-production-runtime.mjs:271:141"
+  ],
+  "memory": null,
+  "protectedOriginalUnchangedAtExecution": true,
+  "cleanup": {
+    "processObservations": [
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 33896,
+          "parentPid": 29364,
+          "createdAt": "2026-10-23T15:47:03.0302100Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T15:47:49.569Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 352,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 22056,
+          "parentPid": 29364,
+          "createdAt": "2026-10-23T15:47:05.2968830Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T15:47:49.981Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 412,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 32940,
+          "parentPid": 29364,
+          "createdAt": "2026-10-23T15:47:06.4275740Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T15:47:50.361Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 380,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    ],
+    "disposableOutputDeleted": true,
+    "generatedDirectoriesRemoved": [
+      "dist\\client\\engines\\mpeg2"
+    ],
+    "scratchRemoved": "work\\mpeg2-production-runtime-MDPEeW",
+    "allOwnedProcessesAbsent": true
+  },
+  "independentCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 33896,
+        "parentPid": 29364,
+        "createdAt": "2026-10-23T15:47:03.0302100Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T01:18:19.464Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 385,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 22056,
+        "parentPid": 29364,
+        "createdAt": "2026-10-23T15:47:05.2968830Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T01:18:19.876Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 412,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 32940,
+        "parentPid": 29364,
+        "createdAt": "2026-10-23T15:47:06.4275740Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T01:18:20.264Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 388,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "publicAcceptance": false,
+  "speedComparison": false,
+  "rawLosslesslyRecoverable": true
+}

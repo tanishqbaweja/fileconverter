@@ -1,0 +1,266 @@
+{
+  "schemaVersion": 1,
+  "head": "e65c020a51d25c0438735c0dc39a91ee54633878",
+  "status": "failed",
+  "startedAt": "2026-10-23T15:52:18.420Z",
+  "finishedAt": "2026-10-23T15:53:22.862Z",
+  "scope": "Finite real production MPEG-2 controls gate, including failures; not UI-control, scale or public acceptance",
+  "archive": {
+    "path": "outputs/reports/2026-10-23T15-52-18.420Z-mpeg2-production-runtime.json.gz",
+    "bytes": 54602,
+    "sha256": "aed75e136261fdee5f817b3bfc1555e588bf279ddb04b29e85ef5fc751ad0922",
+    "restoredBytes": 2693397,
+    "restoredSha256": "9ea7c7eeba0df1dbbb9ce6167ce06ae9e67fcb8d62e1a787f67ee9fd8dd18731"
+  },
+  "sourcePins": 40,
+  "recordedSourcesMatchHistoricalGitHead": true,
+  "native": [
+    {
+      "source": "work\\mpeg2-jspi-39072949964\\within-mpeg2-split.mjs",
+      "sha256": "d4ec481a93a1b087c96aa11948ab9a98ccf6d09237ed143c022bf76bf6c31506",
+      "bytes": 65707
+    },
+    {
+      "source": "work\\mpeg2-jspi-39072949964\\within-mpeg2-split.wasm",
+      "sha256": "4f3954a3cbbd5012c811fa380402981d29ac298d46422d1bc0fa40a6b9368d57",
+      "bytes": 5715985
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.mjs",
+      "sha256": "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e",
+      "bytes": 68202
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.wasm",
+      "sha256": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee",
+      "bytes": 675411
+    }
+  ],
+  "scaledPropertiesBuild": null,
+  "fixture": {
+    "bytes": 786910,
+    "sha256": "83a7d841cf722f4a8babc5e5fececf738c94216746d04e4e150e9a220ae51718",
+    "video": "hevc",
+    "width": 640,
+    "height": 360,
+    "frames": 96
+  },
+  "completedCases": [
+    {
+      "name": "unchanged-default-policy",
+      "requested": "automatic",
+      "reference": {
+        "width": 640,
+        "height": 360,
+        "frames": 96,
+        "frameRate": 24,
+        "bitrate": 4000000,
+        "qmin": 4,
+        "qmax": 20,
+        "referenceFilter": ""
+      },
+      "actualNativeSettings": {
+        "width": 640,
+        "height": 360,
+        "frameRateNumerator": 24,
+        "frameRateDenominator": 1,
+        "bitRateBps": 4000000,
+        "qmin": 4,
+        "qmax": 20
+      },
+      "output": {
+        "bytes": 1002738,
+        "sha256": "5bb6592e59cca09e455183576de58b267a203af69abca529b1705913d8f1cb46",
+        "codec": "mpeg2video",
+        "frames": 96,
+        "ssim": 0.989061,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+        "titlePreserved": true,
+        "languagePreserved": true,
+        "videoClocks": {
+          "frames": 96,
+          "maximumVideoPtsErrorSeconds": 0.000021333333333428683
+        }
+      }
+    }
+  ],
+  "completed": false,
+  "lastTerminal": {
+    "type": "error",
+    "message": "[mp4 @ 0x242300] track 1: codec frame size is not set | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | MPEG-2 candidate failed: File too large",
+    "metrics": {
+      "inputBytes": 262144,
+      "outputBytes": 78536,
+      "queuedBytes": 0,
+      "peakQueuedBytes": 65536,
+      "pendingOperations": 0,
+      "peakPendingOperations": 1,
+      "maxReadChunkBytes": 65536,
+      "maxWriteChunkBytes": 65536,
+      "elapsedMs": 140.39499999582767,
+      "wasmMemoryBytes": 50331648,
+      "peakWasmMemoryBytes": 50331648,
+      "wasmMemories": {},
+      "sharedArrayBufferBytes": 50331652,
+      "activeWorkerCount": 1,
+      "imageWorkingBytes": 0,
+      "mpeg2EncoderSettings": {
+        "width": 320,
+        "height": 180,
+        "frameRateNumerator": 15,
+        "frameRateDenominator": 1,
+        "bitRateBps": 1000000,
+        "qmin": 2,
+        "qmax": 12
+      },
+      "scratchBytes": 0
+    }
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: {\"type\":\"error\",\"jobId\":\"56b21075-4e78-4fb2-bbc0-cddde4501058\",\"message\":\"[mp4 @ 0x242300] track 1: codec frame size is not set | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | [mpeg2video @ 0xb2b90] warning, too many B-frames in a row | MPEG-2 candidate failed: File too large\",\"metrics\":{\"inputBytes\":262144,\"outputBytes\":78536,\"queuedBytes\":0,\"peakQueuedBytes\":65536,\"pendingOperations\":0,\"peakPendingOperations\":1,\"maxReadChunkBytes\":65536,\"maxWriteChunkBytes\":65536,\"elapsedMs\":140.39499999582767,\"wasmMemoryBytes\":50331648,\"peakWasmMemoryBytes\":50331648,\"wasmMemories\":{},\"sharedArrayBufferBytes\":50331652,\"activeWorkerCount\":1,\"imageWorkingBytes\":0,\"mpeg2EncoderSettings\":{\"width\":320,\"height\":180,\"frameRateNumerator\":15,\"frameRateDenominator\":1,\"bitRateBps\":1000000,\"qmin\":2,\"qmax\":12},\"scratchBytes\":0},\"phases\":[\"Inspecting MPEG-2 source\",\"Planning MPEG-2 streams\",\"Worker started\",\"Destination opened\",\"Reusing compiled MPEG-2 code\",\"Encoding MPEG-2 MP4\"],\"nativeMetrics\":{\"inputBytes\":0,\"outputBytes\":0,\"queuedBytes\":0,\"peakQueuedBytes\":0,\"pendingOperations\":0,\"peakPendingOperations\":0,\"maxReadChunkBytes\":0,\"maxWriteChunkBytes\":0,\"elapsedMs\":30.980000004172325,\"wasmMemoryBytes\":0,\"peakWasmMemoryBytes\":0,\"wasmMemories\":{},\"sharedArrayBufferBytes\":4,\"activeWorkerCount\":1,\"imageWorkingBytes\":0},\"plan\":{\"streams\":[{\"streamIndex\":0,\"mediaType\":\"video\",\"codec\":\"HEVC/H.265\",\"action\":\"re-encode\",\"detail\":\"The first video stream is decoded and encoded as MPEG-2 at 1 Mbps, an explicit 320px no-upscale width cap and an explicit 15 fps no-upconvert cap, with higher quantizer policy. Native checks refuse VFR, full-range input or changing dimensions; 8-bit pixel-format conversion can be lossy. Non-default controls remain qualification-only until their browser gates pass.\"},{\"streamIndex\":1,\"mediaType\":\"audio\",\"codec\":\"AAC\",\"action\":\"copy\",\"detail\":\"This compatible audio stream is packet-copied, not re-encoded. Native MP4 validation remains authoritative; timestamps and priming still require independent output checks. No audio encoding setting is ignored.\"}],\"blockingReasons\":[],\"metadataSummary\":\"Private MPEG-2 route; not public or large-file acceptance. This bounded header preview is not a complete metadata inventory. The native muxer handles compatible tags, languages, chapters and stream side data and warns about nonrepresentable streams. Encoder provenance is relabelled for freshly encoded video. Attachments/artwork have an 8 MiB aggregate guard; text metadata has 4096-entry/2 MiB guards and chapters a 1024-entry guard. Destination-specific preservation still requires independent qualification.\"}}\n+ actual - expected\n\n+ 'error'\n- 'complete'\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-mpeg2-production-runtime.mjs:318:10\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+  ],
+  "memory": null,
+  "protectedOriginalUnchangedAtExecution": true,
+  "cleanup": {
+    "processObservations": [
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 34348,
+          "parentPid": 37116,
+          "createdAt": "2026-10-23T15:52:32.0797390Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T15:53:17.188Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 356,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 37464,
+          "parentPid": 37116,
+          "createdAt": "2026-10-23T15:52:33.7952150Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T15:53:17.552Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 364,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 35640,
+          "parentPid": 37116,
+          "createdAt": "2026-10-23T15:52:34.8105700Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-23T15:53:17.910Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 358,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    ],
+    "disposableOutputDeleted": true,
+    "generatedDirectoriesRemoved": [
+      "dist\\client\\engines\\mpeg2"
+    ],
+    "scratchRemoved": "work\\mpeg2-production-runtime-knntuV",
+    "allOwnedProcessesAbsent": true
+  },
+  "independentCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 34348,
+        "parentPid": 37116,
+        "createdAt": "2026-10-23T15:52:32.0797390Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T01:18:10.084Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 383,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 37464,
+        "parentPid": 37116,
+        "createdAt": "2026-10-23T15:52:33.7952150Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T01:18:10.467Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 382,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 35640,
+        "parentPid": 37116,
+        "createdAt": "2026-10-23T15:52:34.8105700Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T01:18:10.876Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 409,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "publicAcceptance": false,
+  "speedComparison": false,
+  "rawLosslesslyRecoverable": true
+}
