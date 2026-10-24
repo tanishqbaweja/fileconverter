@@ -6,6 +6,12 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Exact-size loader a68bdd8 original trial still FAILS251.5859375MiB,408valid
+lossless rows/no missing, actual native Cancel and original/owned cleanup PASS.
+No complete output or causal savings/public acceptance. Next one changed
+original run tests actual progress-panel layout/paint containment, preserving
+source/codec/quality/limits and every displayed diagnostic; memory effect pending.
+
 Latest original d38c241 reaches native work then primary memory FAIL260.10546875
 MiB; automatic real Cancel and owned cleanup PASS,0complete outputs.392lossless
 native rows retained/replayed; one loaded null, no conversion nulls. Original

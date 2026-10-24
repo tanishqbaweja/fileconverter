@@ -124,3 +124,24 @@ test("actual original reaches native work, fails260MiB gate and cancels with com
   assert.equal(receipt.protectedOriginalUnchangedAtExecution, true); assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true);
   assert.equal(receipt.cleanup.disposableOutputDeleted, true);
 });
+test("exact-size loader original attempt still fails251MiB; do not turn a lower observation into acceptance or causal savings", async () => {
+  const root = new URL("../", import.meta.url), hash = b => createHash("sha256").update(b).digest("hex");
+  const receipt = JSON.parse(await readFile(new URL("evidence/2026-10-24T07-07-06.295Z-mpeg2-original-result.json", root)));
+  const packed = await readFile(new URL(receipt.archive.path, root)); assert.equal(hash(packed), receipt.archive.sha256);
+  const r = JSON.parse(gunzipSync(packed));
+  assert.deepEqual(r.codeManifest.value.artifactBytes, { "decoder.wasm": 5716027, "encoder.wasm": 675411 });
+  const j = receipt.losslessMemoryJournal, archive = await readFile(new URL("output/playwright/2026-10-24T07-07-06.295Z-mpeg2-original-memory.ndjson.gz", root));
+  assert.equal(hash(archive), j.archiveSha256); const bytes = gunzipSync(archive); assert.equal(hash(bytes), j.sha256);
+  const samples = bytes.toString("utf8").trim().split("\n").map(s => JSON.parse(s).sample);
+  assert.equal(samples.length, 408); assert.ok(samples.every((s, i) => s.sequence === i + 1 && s.privateBytes !== null));
+  for (const s of samples) assert.equal(s.privateBytes, s.processes.reduce((n, p) => n + p.privateBytes, 0));
+  const peak = samples.filter(s => s.phase !== "blank").reduce((a, b) => a.privateBytes > b.privateBytes ? a : b);
+  assert.equal((peak.privateBytes - r.blankBaseline.privateBytes) / 1048576, 251.5859375);
+  assert.equal(receipt.memory.incrementalPrivateMiB, 251.5859375); assert.equal(receipt.memory.unavailableSampleCount, 0);
+  assert.equal(receipt.overallGatePassed, false); assert.equal(receipt.completedCases.length, 0);
+  assert.equal(receipt.originalQualification.completed, false); assert.equal(receipt.publicAcceptance, false);
+  assert.equal(r.earlyMemoryFailure.cancellation.requested, true);
+  assert.ok(r.earlyMemoryFailure.cancellation.inputBytes > 0 && r.earlyMemoryFailure.cancellation.outputBytes > 0);
+  assert.equal(receipt.protectedOriginalUnchangedAtExecution, true); assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true);
+  assert.equal(receipt.losslessNativeJournalReplayVerified, true); assert.equal(receipt.speedComparison, false);
+});

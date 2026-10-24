@@ -720,6 +720,7 @@ h1 em {
 }
 
 .progress-panel {
+  contain: layout paint;
   background: #20231f;
   border-radius: 0.8rem;
   color: white;

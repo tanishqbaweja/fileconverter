@@ -142,7 +142,11 @@ test("all405 current registry cards retain exactly the old rendered content and 
 
 test("historical preimages keep their recorded hashes and cannot silently read current UI", async () => {
   assert.notEqual(app, oldApp); assert.notEqual(component, oldComponent);
-  const css = normalize(await readFile("app/globals.css", "utf8")), oldCss = normalize(await readPreCatalogueUi("app/globals.css"));
+  const currentCss = normalize(await readFile("app/globals.css", "utf8")), oldCss = normalize(await readPreCatalogueUi("app/globals.css"));
+  const isolatedProgress = "\n.progress-panel {\n  contain: layout paint;\n", historicalProgress = "\n.progress-panel {\n";
+  assert.equal(currentCss.split(isolatedProgress).length - 1, 1);
+  const css = currentCss.replace(isolatedProgress, historicalProgress);
+  assert.equal(css.replace(historicalProgress, isolatedProgress), currentCss);
   const begin = css.indexOf("\n.catalogue-search {"), end = css.indexOf("\nfooter {", begin);
   assert.ok(begin > 0 && end > begin); assert.equal(css.slice(0, begin) + css.slice(end), oldCss);
   await assert.rejects(readPreCatalogueUi("workers/media-remux.ts"), /three explicit historical UI sources/);

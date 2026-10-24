@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-10-24 exact-asset-size original a68bdd8 remains FAIL251.5859375MiB.408valid
+lossless rows/0missing, actual native cancellation/owned cleanup/original full
+SHA pass,0complete outputs. Lower single observation is not causal savings or
+original/public qualification.35,240B report +21,464B native gzip retained, raw
+copies removed. `evidence/2026-10-24T07-07-06.295Z-mpeg2-original-result.json`.
+Next actual product optimization is layout/paint containment on the existing
+progress panel, no size containment/hidden diagnostics or codec/I/O changes.
+One exact reversible CSS hunk preserves full historical stylesheet comparison;
+18focused/lint PASS; actual browser memory/appearance validation pending. Full54
+remain open. Previous40072812201/a68bdd8 CI independently confirmed SUCCESS.
+
 2026-10-24 corrected current production original attempt d38c241 now reaches
 native decode/encode but FAILS260.10546875MiB. Real Cancel after positive native
 read/write/native48MiB;0complete outputs/no promotion. Exact original SHA and

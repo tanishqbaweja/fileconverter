@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-24 exact-size loader original attempt a68bdd8 still FAILS251.5859375MiB
+(not acceptance/causal savings versus260.10546875). Same original/native/settings,
+new manifest5716027B+675411B. Real Cancel after2227704B read/1076864B output,
+native48MiB;0complete outputs.408valid native rows/0missing losslessly retained
+and replayed, original full SHA/owned cleanup PASS.1,144,436B raw retained35,240B
+gzip; native journal21,464B gzip. Redundant raws removed. Receipt:
+`evidence/2026-10-24T07-07-06.295Z-mpeg2-original-result.json`.
+Next concrete product change: `.progress-panel { contain: layout paint; }`
+isolates changing metrics from ancestor layout/paint without hiding content,
+size containment, codec changes or changed thresholds. Exact historical CSS
+equality remains after one unique reversible property hunk; all405cards unchanged.
+18focused/lint PASS. Memory effect not measured; next one changed original run,
+not unchanged repeats. Previous40072812201/a68bdd8 portable CI confirmed SUCCESS.
+
 2026-10-24 corrected --originald38c241 reached actual native work, then FAILED
 whole-browser260.10546875MiB. Guard clicked real Cancel during Encoding with
 319670B read/95475B written and native48MiB, avoiding a known-failed4h run.
