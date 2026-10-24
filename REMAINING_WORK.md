@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-24 global allocator diagnostic b0f7b32 unavailable (8s deadline). First
+failure250.96875MiB; later primary274.23046875MiB includes tracing overhead and
+must not be compared as uninstrumented performance.509valid lossless samples,
+original SHA/owned cleanup PASS,0complete outputs.41,681B raw archive retained.
+Next finite renderer native-allocation sampling API, not another global dump:
+256KiB interval/2MiB metadata/4096samples/128frames,3s API bound, stop/detach,
+15s maximum diagnostic work window; reports renderer-only sampled allocations
+and raw stack strings without assuming symbols/private totals.15mock/source
+checks PASS; actual availability and allocation cause still unverified.
+
 2026-10-24 progress isolation2c4d641 original still FAIL250.41015625MiB, actual
 Cancel/cleanup/original hash pass,0complete outputs. Lower single value is not
 causal savings or qualification. Lossless34,233B report retained, raw removed.

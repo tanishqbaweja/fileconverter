@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-24 global live-light allocator request b0f7b32 TIMED OUT8s, not a cause
+diagnosis. First already-failed250.96875MiB, full measured peak274.23046875MiB
+includes diagnostic perturbation (not product regression/savings comparison).
+509valid lossless rows/0missing and native Cancel/owned cleanup/original hash
+PASS.0complete outputs. Raw1,258,305B retained41,681B gzip, redundant raw gone.
+`evidence/2026-10-24T07-20-24.140Z-mpeg2-original-result.json`.
+Next separate --native-allocation-profile uses CDP Memory.startSampling/
+getSamplingProfile, not global dump/GC/pressure controls. Renderer-only native
+samples256KiB interval, metadata2MiB/4096samples/128frames hard caps,3s per API,
+stop/detach in finally. Stops at memory failure or finite15s diagnostic window.
+Stacks may be addresses; no symbolization/full-tree/private-total claim.15focused
+PASS; actual Chrome profile availability/utility pending. No repeating timeout.
+
 2026-10-24 progress containment original2c4d641 still FAILED250.41015625MiB;
 native Cancel/owned cleanup/original hash PASS,0complete outputs. Narrowly lower
 single observation does not prove savings or acceptance. Lossless report34,233B

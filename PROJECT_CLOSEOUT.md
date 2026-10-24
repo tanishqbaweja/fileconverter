@@ -6,6 +6,12 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Global live-light dump b0f7b32 timed out, no allocator diagnosis; primary first
+failed250.96875MiB, measured274.23046875MiB includes diagnostic overhead. Original
+and owned cleanup PASS. Next finite --native-allocation-profile uses renderer
+native sampling (not global tracing),256KiB interval/2MiB cap/3s calls/15s work
+window and explicit sampled/unsymbolized scope. Actual cause remains unproven.
+
 Progress containment2c4d641 still fails250.41015625MiB on original,0complete
 outputs; original/owned cleanup PASS. Next bounded --memory-failure-allocators
 diagnosis captures live allocator categories before cancelling the known-failed

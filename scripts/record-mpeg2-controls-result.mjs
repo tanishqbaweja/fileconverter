@@ -11,6 +11,7 @@ import { gzipSync, gunzipSync } from "node:zlib";
 import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mjs";
 import { assertMpeg2StorageFailure, mpeg2StorageRecoveryCases } from "./lib/mpeg2-storage-recovery.mjs";
 import { replayLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
+import { validateNativeAllocationProfile } from "./lib/native-allocation-profile.mjs";
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile);
 assert.equal(process.argv.length, 4);
 const [relative, head] = process.argv.slice(2);
@@ -131,6 +132,16 @@ if (report.failureMemoryAllocators?.archive) {
   const restored = gunzipSync(packed, { maxOutputLength: 8 * 1048576 }); assert.equal(restored.length, record.restoredBytes); assert.equal(sha(restored), record.restoredSha256);
   failureAllocationArchive = { ...record, path: path.relative(root, target).replaceAll(path.sep, "/"), recordedAbsolutePath: record.path };
 }
+let nativeAllocationArchive = null;
+if (report.nativeAllocationProfile?.archive) {
+  const diagnostic = report.nativeAllocationProfile, record = diagnostic.archive, target = path.resolve(root, record.path);
+  assert.ok(target.startsWith(path.join(root, "output/playwright") + path.sep));
+  assert.equal(diagnostic.acceptanceMetric, false); assert.equal(diagnostic.perturbsMemory, true); assert.equal(diagnostic.processTreeCoverage, false);
+  const packed = await readFile(target); assert.equal(packed.length, record.bytes); assert.equal(sha(packed), record.sha256);
+  const restored = gunzipSync(packed, { maxOutputLength: 2 * 1048576 }); assert.equal(restored.length, record.restoredBytes); assert.equal(sha(restored), record.restoredSha256);
+  const profile = validateNativeAllocationProfile(JSON.parse(restored).profile); assert.equal(profile.samples.length, diagnostic.samples);
+  nativeAllocationArchive = { ...record, path: path.relative(root, target).replaceAll(path.sep, "/"), recordedAbsolutePath: record.path };
+}
 const visual = report.boundedVisualObservation ?? null;
 if (visual) {
   assert.ok(visual.maximumCaptures <= 7 && visual.captures.length <= visual.maximumCaptures && visual.attempts <= visual.maximumCaptures && visual.totalBytes <= 16 * 1048576);
@@ -189,6 +200,10 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
   failureAllocationArchive,
   failureAllocationScope: report.failureMemoryAllocators ? { status: report.failureMemoryAllocators.status, acceptanceMetric: false,
     perturbsMemory: true, allocationStackAttribution: false, primaryGateHadAlreadyFailed: true } : null,
+  nativeAllocationArchive,
+  nativeAllocationProfile: report.nativeAllocationProfile ?? null,
+  nativeProfileDiagnosticOnly: report.nativeProfileDiagnosticOnly ?? false,
+  nativeProfileFiniteStop: report.nativeProfileFiniteStop ?? null,
   postMeasurementAllocationScope: allocation ? { status: allocation.status, acceptanceMetric: allocation.acceptanceMetric,
     perturbsMemory: allocation.perturbsMemory, allocationStackAttribution: allocation.allocationStackAttribution } : null,
   completedCases: completed.map(entry => ({ name: entry.name, requested: entry.requested, reference: entry.reference,

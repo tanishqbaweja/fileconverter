@@ -67,6 +67,9 @@ test("full-original mode binds exact source and long deadline, journals all nati
   assert.match(driver, /phase: "after-known-budget-failure-before-native-cancel"/);
   assert.ok(driver.indexOf('phase: "after-known-budget-failure-before-native-cancel"') < driver.indexOf("if (requested) cancel.click()"));
   assert.match(driver, /processes: peak.processes, captureMs: 8000/);
+  assert.match(driver, /Date.now\(\) - Date.parse\(rendererNativeProfile.startedAt\) >= 15000/);
+  assert.match(driver, /report.nativeProfileDiagnosticOnly = true/);
+  assert.ok(driver.indexOf("await rendererNativeProfile.capture()") < driver.indexOf("if (requested) cancel.click()"));
   assert.match(driver, /compactLosslessNativeMemoryJournal\(coverageFailure/);
   assert.match(driver, /\{ \.\.\.receipt, complete: false, conversionAcceptance: false, failure: coverageFailure \}/);
   assert.ok(driver.indexOf("startActiveMonitor(page);") < driver.indexOf("await page.goto("));
