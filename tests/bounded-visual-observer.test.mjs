@@ -56,7 +56,7 @@ test("total bytes, approved location, viewport pixels and immutable upper limits
   const observer = await createBoundedVisualObserver({ page: f.page, directory: output, maximumTotalBytes: png.length });
   await observer.capture("first"); await assert.rejects(observer.capture("second"), /total exceeds/); assert.equal((await readdir(output)).length, 1);
   await assert.rejects(createBoundedVisualObserver({ page: f.page, directory: path.resolve("work/not-approved") }), /approved repository/);
-  await assert.rejects(createBoundedVisualObserver({ page: f.page, directory: path.join(directory, "too-many"), maximumCaptures: 6 }));
+  await assert.rejects(createBoundedVisualObserver({ page: f.page, directory: path.join(directory, "too-many"), maximumCaptures: 8 }));
   const huge = await createBoundedVisualObserver({ page: fixture({ viewportSize: () => ({ width: 9999, height: 9999 }) }).page, directory: path.join(directory, "huge") });
   await assert.rejects(huge.capture("huge")); assert.deepEqual(await readdir(path.join(directory, "huge")), []);
 }));
@@ -88,4 +88,13 @@ test("visible progress requires the rendered native phase and an in-viewport reg
   const hidden = await createBoundedVisualObserver({ page: wrong.page, directory: path.join(directory, "hidden") });
   const invisible = await hidden.capture("case-native", active);
   assert.equal(invisible.nativeStateAroundScreenshot, true); assert.equal(invisible.nativeProgressVisuallyInViewport, false);
+}));
+test("real-form gate may use seven bounded captures without changing the default five or total byte budget", async () => sandbox(async directory => {
+  const f = fixture(), panel = { scrollIntoViewIfNeeded: async () => {}, boundingBox: async () => ({ x: 0, y: 0, width: 1, height: 1 }) };
+  f.page.getByTestId = id => { assert.equal(id, "video-encoding-options"); return panel; };
+  const observer = await createBoundedVisualObserver({ page: f.page, directory: path.join(directory, "controls"), maximumCaptures: 7 });
+  const shot = await observer.capture("case-1-options"); assert.equal(shot.focusedRegion, "video-options"); assert.equal(shot.regionInViewport, true);
+  assert.equal(observer.summary().maximumCaptures, 7); assert.equal(observer.summary().maximumTotalBytes, 16 * 1048576);
+  const baseline = await createBoundedVisualObserver({ page: f.page, directory: path.join(directory, "baseline") });
+  assert.equal(baseline.summary().maximumCaptures, 5);
 }));

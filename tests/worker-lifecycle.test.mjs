@@ -3,6 +3,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import ts from "typescript";
+import { STAGED_SAVE_COPY_CHUNK_BYTES } from "../lib/resource-limits.ts";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const workersRoot = path.join(projectRoot, "workers");
@@ -184,7 +185,8 @@ test("the only message-loop entrypoints have bounded responses and terminal clea
   assert.match(saveWorker, /\.finally\(\(\) => { active = null; cancelled = false; }\)/);
   assert.doesNotMatch(saveWorker, /setInterval\s*\(/);
   const saveRuntime = source("workers/staged-save-runtime.ts");
-  assert.match(saveRuntime, /const copyPhase = .*?copyChunkBytes = 512 \* 1024/);
+  assert.equal(STAGED_SAVE_COPY_CHUNK_BYTES, 512 * 1024);
+  assert.match(saveRuntime, /const copyPhase = .*?copyChunkBytes = STAGED_SAVE_COPY_CHUNK_BYTES/);
   assert.match(saveRuntime, /metrics\.pendingOperations = 1;.*?await finalWritable\.write\(value\);.*?finally\s*{\s*metrics\.queuedBytes = 0;\s*metrics\.pendingOperations = 0;/s);
   assert.match(saveRuntime, /await finalWritable\?\.abort\(error\)/);
   assert.match(saveRuntime, /await removeStage\(\)/);

@@ -6331,7 +6331,7 @@ export const privateQualificationProfiles: readonly ConversionProfile[] = [{
     "Conversion uses quota-preflighted browser-private staging. The codec worker retires before one backpressured 512 KiB buffer copies the stage to the selected destination; temporary data is deleted on terminal paths.",
   ],
   fidelityLimitations: [
-    "Current fixed settings are MPEG-2 at 4 Mbps, source dimensions, constant source timing and automatic quantizer limits. Resize, frame-rate, other quality/bitrate and audio re-encoding choices are not yet qualified.",
+    "Private qualification controls expose bounded width, bitrate, frame-rate caps and quantizer policies. Automatic retains MPEG-2 at 4 Mbps, source dimensions and constant source timing. Broader memory, fidelity and browser qualification remains open; compatible audio is copied, not re-encoded.",
     "Full-range input, changing dimensions and variable frame timing are refused; conversion to the encoder's 8-bit pixel format can be lossy.",
   ],
   maxTestedBytes: null,

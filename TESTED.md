@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-10-24 actual private MPEG-2 option form implemented: shared bounded width/
+bitrate/FPS/quality controls, fixed disabled Automatic(MPEG-2) codec, explicit
+qualification-only wording instead of certified claims. Selection already resets
+defaults; planner and production start now receive the selected settings. Private
+registry remains pending/publicfalse/maxnull and normal published405 unchanged.
+Generic validation rejects MPEG-4/VPx/Theora substitution for this exact route;
+historical full-UI equality remains after seven exact reversible option hunks.
+45focused/TypeScript/lint PASS. New --ui-controls uses real select events,
+rendered-plan/readback guards and actual Convert button for default+requested
+cases on canonical byte-exact source; same native pair/quality/full-tree250MiB.
+Bounded observer default5 unchanged, explicit UI cap7/16MiB permits option PNGs.
+Actual browser UI gate pending; no native rebuild or public/scale claim.
+
+Previous hosted40055040855/dbe3538 FAILED one stale source-literal assertion:
+1505unitsPASS/1fail/1skip, privacy not reached. Saver moved its unchanged512KiB
+value to shared constant; lifecycle test now asserts exact constant AND its use,
+retaining all response/cleanup/queue checks. Focused correction PASS; do not
+rerun conversions or alter copy limits to satisfy that textual failure.
+
 2026-10-24 corrected bounded visual gate at7f6730d PASS small scope: both
 native-phase PNGs visibly show real Encoding MPEG-2/read/write/48MiB/ffmpeg-video
 and are fully inside viewport; Saved image reviewed too. Matching private

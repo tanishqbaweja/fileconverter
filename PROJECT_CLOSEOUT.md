@@ -6,9 +6,10 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
-Next: implement the actual private MPEG-2 option controls and real Convert-button
-integration using the already-correct backend and bounded observer, then finish
-the applicable recovery/original/scale/browser gates below. No public promotion.
+Current: private MPEG-2 option controls and real Convert-button integration are
+implemented; next run the finite actual-form --ui-controls gate on canonical
+input with the existing repaired core and bounded observer, then finish the
+applicable recovery/original/scale/browser gates below. No public promotion.
 Closed small checks to reuse: repaired scaler/native build40050006861, exact
 fixture generation, bounded visible-progress230.640625MiB at7f6730d, and recorded
 small cancellation/write-failure/planning/code-cache checks. Do not replay these

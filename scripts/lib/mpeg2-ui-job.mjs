@@ -1,9 +1,16 @@
 // Observe the real application button/lifecycle. No alternate converter, worker,
 // native helper, generated progress, or production I/O interception.
-export async function runMpeg2UiJob() {
+export async function runMpeg2UiJob(expectedOptions = null) {
   const phases = []; let nativeMetrics = null, observedRunning = false;
   const bridge = window.__WITHIN_TEST__;
   if (bridge?.getState().selectedProfileId !== "mkv-to-mp4-mpeg2") throw new Error("Private MPEG-2 profile is not selected");
+  let selectedOptions = null;
+  if (expectedOptions) {
+    const value = id => document.querySelector(`[data-testid="${id}"]`)?.value;
+    selectedOptions = { codec: value("video-codec-select"), maxWidth: Number(value("video-width-select")), bitRateBps: Number(value("video-bitrate-select")),
+      frameRateFps: Number(value("video-frame-rate-select")), quality: value("video-quality-select") };
+    if (JSON.stringify(selectedOptions) !== JSON.stringify(expectedOptions)) throw new Error("Actual form options differ from requested UI case");
+  }
   const button = document.querySelector('[data-testid="convert-button"]');
   if (!(button instanceof HTMLButtonElement) || button.disabled) throw new Error("Actual Convert button is not enabled");
   const state = await new Promise((resolve, reject) => {
@@ -38,5 +45,6 @@ export async function runMpeg2UiJob() {
     observationScope: "actual UI state, not fabricated raw worker messages" }, stageNames, destinationName,
     uiEvidence: { observedRunning, actualConvertButton: true, nativeWorkObserved: true,
       finalWorkerReady: state.workerStatus === "ready", destinationAdapter: "production directory output using isolated OPFS handle",
-      nativeOsPickerCovered: false, sourceDimensionsAndTimingOptionsOnly: true } };
+      nativeOsPickerCovered: false, selectedOptions, optionsReadFromActualForm: selectedOptions !== null,
+      sourceDimensionsAndTimingOptionsOnly: !selectedOptions || (selectedOptions.maxWidth === 0 && selectedOptions.frameRateFps === 0 && selectedOptions.bitRateBps === 0 && selectedOptions.quality === "automatic") } };
 }

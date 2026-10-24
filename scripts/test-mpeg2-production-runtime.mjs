@@ -24,6 +24,7 @@ import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./li
 import { compareStreamingVideoClocks } from "./lib/streaming-video-clock-fidelity.mjs";
 import { boundedNativeLines } from "./lib/bounded-native-lines.mjs";
 import { runMpeg2UiJob } from "./lib/mpeg2-ui-job.mjs";
+import { selectMpeg2UiControls } from "./lib/mpeg2-ui-controls.mjs";
 import { mpeg2ControlReference, sourceMpeg2ControlClock, expectedMpeg2ControlClocks } from "./lib/mpeg2-control-reference.mjs";
 import { loadMpeg2RuntimeNative } from "./lib/mpeg2-runtime-native-selection.mjs";
 import { mpeg2ControlFixtureArguments } from "./lib/mpeg2-control-fixture.mjs";
@@ -32,21 +33,23 @@ import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--planning", "--ui", "--controls"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--planning", "--ui", "--controls", "--ui-controls"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
+const uiControls = flags.has("--ui-controls");
+assert.ok(!uiControls || (!flags.has("--ui") && !flags.has("--controls") && flags.has("--bounded-visual-capture")), "UI controls is one bounded real-form gate");
 const scaledBuildFlags = [...flags].filter(flag => flag.startsWith("--scaled-properties-build="));
 assert.ok(scaledBuildFlags.length <= 1);
 const scaledBuildRunId = scaledBuildFlags.length ? scaledBuildFlags[0].split("=")[1] : null;
-assert.ok(scaledBuildRunId === null || flags.has("--controls"), "Changed scaler core is for the finite controls gate, not implicit route promotion");
+assert.ok(scaledBuildRunId === null || flags.has("--controls") || uiControls, "Changed scaler core is for the finite controls gate, not implicit route promotion");
 assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
 assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
 const boundedVisual = flags.has("--bounded-visual-capture"), continuousVisual = !eventsOnly && !boundedVisual;
-assert.ok(!boundedVisual || (diagnose && flags.has("--controls") && !eventsOnly), "Bounded visual observer is one explicit controls gate, not implicit acceptance");
+assert.ok(!boundedVisual || (diagnose && (flags.has("--controls") || uiControls) && !eventsOnly), "Bounded visual observer is one explicit controls gate, not implicit acceptance");
 const recovery = flags.has("--recovery");
 const planning = flags.has("--planning");
-const ui = flags.has("--ui");
-const controls = flags.has("--controls");
-assert.ok(Number(recovery) + Number(planning) + Number(ui) + Number(controls) + Number(flags.has("--cache-repeats")) <= 1, "Select one finite qualification gate");
+const ui = flags.has("--ui") || uiControls;
+const controls = flags.has("--controls") || uiControls;
+assert.ok(Number(recovery) + Number(planning) + Number(ui && !uiControls) + Number(controls && !uiControls) + Number(uiControls) + Number(flags.has("--cache-repeats")) <= 1, "Select one finite qualification gate");
 assert.ok(!recovery || !flags.has("--cache-repeats"), "Recovery is a separate missing gate, not an unchanged repeat run");
 const cases = controls ? [
   { name: "unchanged-default-policy", expected: "complete" },
@@ -73,6 +76,7 @@ report.cacheQualification = { repetitions, sameSource: !recovery && !planning, o
 if (planning) report.planningQualification = { cases: [], completed: false, rejectedBeforeDestinationOrCode: false,
   finalUiSelectorCoverage: false, publicAcceptance: false };
 if (controls) report.controlsQualification = { cases: [], completed: false, sameNativeBytes: true, uiControlsCovered: false, publicAcceptance: false, speedComparison: false };
+if (uiControls) report.uiControlsQualification = { cases: [], completed: false, actualConvertButton: false, publicAcceptance: false, nativeOsPickerCovered: false };
 if (recovery) report.recoveryQualification = { cases: [], completed: false, nativeDuringEncodingCancellation: false,
   destinationRollback: false, noStagesAfterEachTerminal: false, publicAcceptance: false };
 const staticRequests = { manifests: 0, decoder: 0, encoder: 0 }; report.staticRequests = staticRequests;
@@ -117,7 +121,7 @@ try {
   work = runtime.directory;
   const native = (args, executable = "ffmpeg") => exec(executable, args, { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 4 * 1024 ** 2 });
   const fixture = path.join(work, "source.mkv"); output = path.join(work, "output.mp4");
-  const fixtureSeconds = ui ? 12 : 4;
+  const fixtureSeconds = ui && !uiControls ? 12 : 4;
   const fixtureWidth = controls ? 640 : 320, fixtureHeight = controls ? 360 : 240;
   await native(controls ? mpeg2ControlFixtureArguments(fixture) : ["-v", "error", "-f", "lavfi", "-i", `testsrc2=size=${fixtureWidth}x${fixtureHeight}:rate=24:duration=${fixtureSeconds}`,
     "-f", "lavfi", "-i", `sine=frequency=997:sample_rate=48000:duration=${fixtureSeconds}`, "-map", "0:v", "-map", "1:a",
@@ -167,6 +171,7 @@ try {
     "lib/staged-worker-coordinator.ts", "lib/staged-copy-protocol.ts", "lib/mpeg2-stage-policy.ts", "lib/mpeg2-qualification-job.ts", "lib/mpeg2-compiled-core.ts",
     "lib/media-conversion-plan.ts", "lib/media-source-inspection.ts", "lib/media-conversion-options.ts", "lib/conversion-protocol.ts",
     "lib/browser-capabilities.ts", "scripts/lib/mpeg2-ui-job.mjs",
+    "scripts/lib/mpeg2-ui-controls.mjs",
     "scripts/lib/mpeg2-control-reference.mjs",
     "scripts/lib/mpeg2-runtime-native-selection.mjs",
     "scripts/lib/mpeg2-control-fixture.mjs",
@@ -242,8 +247,8 @@ try {
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
   if (boundedVisual) {
     await page.getByTestId("format-select").selectOption("mkv-to-mp4-mpeg2");
-    visualObserver = await createBoundedVisualObserver({ page, directory: path.join(screenshotDirectory, "bounded-visual") });
-    await visualObserver.capture("source-ready");
+    visualObserver = await createBoundedVisualObserver({ page, directory: path.join(screenshotDirectory, "bounded-visual"), maximumCaptures: uiControls ? 7 : 5 });
+    if (!uiControls) await visualObserver.capture("source-ready");
   }
   if (ui) {
     await page.getByTestId("format-select").selectOption("mkv-to-mp4-mpeg2");
@@ -252,8 +257,10 @@ try {
     assert.match(await page.locator('[data-testid="format-select"] option:checked').innerText(), /private qualification/);
     report.uiQualification = { privateSelector: true, realPlanVisible: true, publicAcceptance: false,
       screenshots: [], finalUiMatrixCoverage: false, nativeOsPickerCovered: false };
-    const screenshot = path.join(screenshotDirectory, "mpeg2-private-plan.png");
-    await page.screenshot({ path: screenshot, fullPage: false }); report.uiQualification.screenshots.push(path.relative(root, screenshot));
+    if (!uiControls) {
+      const screenshot = path.join(screenshotDirectory, "mpeg2-private-plan.png");
+      await page.screenshot({ path: screenshot, fullPage: false }); report.uiQualification.screenshots.push(path.relative(root, screenshot));
+    }
   }
   // Observe the genuine loaded-site idle phase rather than starting conversion
   // during initial navigation/React rendering. Never subtract this baseline,
@@ -282,11 +289,18 @@ try {
     await page.waitForFunction(() => document.querySelector('[data-testid="media-inspection-status"]')?.textContent.includes("These stream facts came from bounded local header reads"));
   }
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
+  let selectedUiOptions = null;
+  if (uiControls) {
+    const form = await selectMpeg2UiControls(page, testCase.videoOptions); selectedUiOptions = form.selected;
+    const capture = await visualObserver.capture(`case-${repetition}-options`);
+    assert.equal(capture.regionInViewport, true, "Actual options must be visible in their bounded screenshot");
+    report.uiControlsQualification.cases.push({ name: testCase.name, form, screenshot: capture.file });
+  }
   const workerEventStart = report.workerEvents.length;
   changePhase("conversion");
   const visualLifetime = new AbortController();
   const visualWork = visualObserver?.observeNativeWork(`case-${repetition}-native`, visualLifetime.signal);
-  const tasks = [ui ? page.evaluate(runMpeg2UiJob).then(value => { changePhase("recovery"); return value; }) : page.evaluate(async testCase => {
+  const tasks = [ui ? page.evaluate(runMpeg2UiJob, selectedUiOptions).then(value => { changePhase("recovery"); return value; }) : page.evaluate(async testCase => {
     const file = document.querySelector('input[type="file"]').files[0];
     const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle("mpeg2-runtime-output.mp4", { create: true });
     const sentinel = "existing destination must survive";
@@ -335,6 +349,7 @@ try {
   const execution = outcomes[0].value;
   report.conversion = execution.result;
   if (ui) { browserOutputName = execution.destinationName; Object.assign(report.uiQualification, execution.uiEvidence); }
+  if (uiControls) report.uiControlsQualification.cases.at(-1).actualButtonEvidence = execution.uiEvidence;
   await monitorPending; await snapshot(); changePhase("validation");
   if (recovery) report.recoveryQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
   if (planning) report.planningQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
@@ -440,7 +455,14 @@ try {
   }
   assert.equal(report.cacheQualification.results.length, planning ? 1 : recovery ? 2 : repetitions);
   assert.equal(new Set(report.cacheQualification.outputHashes).size, controls ? 2 : 1);
-  if (controls) { assert.equal(report.controlsQualification.cases.length, 2); report.controlsQualification.completed = true; }
+  if (controls) { assert.equal(report.controlsQualification.cases.length, 2); report.controlsQualification.completed = true;
+    if (uiControls) {
+      assert.equal(report.uiControlsQualification.cases.length, 2);
+      report.uiControlsQualification.actualConvertButton = report.uiControlsQualification.cases.every(c =>
+        c.form.realSelectEvents && c.actualButtonEvidence?.actualConvertButton && c.actualButtonEvidence?.optionsReadFromActualForm && c.actualButtonEvidence?.nativeWorkObserved);
+      assert.equal(report.uiControlsQualification.actualConvertButton, true);
+      report.controlsQualification.uiControlsCovered = true; report.uiControlsQualification.completed = true;
+    } }
   if (visualObserver) {
     report.boundedVisualObservation = visualObserver.summary();
     assert.ok(report.boundedVisualObservation.captures.some(capture => capture.nativeProgressVisuallyInViewport), "Actual active native progress was not visibly verified");

@@ -275,6 +275,7 @@ export function supportsVideoEncodingOptions(
     (profile.output === "webm" ||
       profile.output === "webm-vp9" ||
       profile.output === "mp4-mpeg4" ||
+      profile.output === "mp4-mpeg2" ||
       profile.output === "ogv")
   );
 }
@@ -282,6 +283,7 @@ export function supportsVideoEncodingOptions(
 export function videoOptionProfileForId(
   profileId: string,
 ): { engine: string; output: string } | null {
+  if (profileId === "mkv-to-mp4-mpeg2") return { engine: "ffmpeg-video", output: "mp4-mpeg2" };
   const codec =
     VIDEO_PROFILE_DEFAULT_CODEC_BY_ID[
       profileId as keyof typeof VIDEO_PROFILE_DEFAULT_CODEC_BY_ID
@@ -310,14 +312,17 @@ export function validateVideoConversionOptions(
   }
   const webm = profile.output === "webm" || profile.output === "webm-vp9";
   const ogv = profile.output === "ogv";
+  const mpeg2 = profile.output === "mp4-mpeg2";
   if (
     options.codec !== "automatic" &&
-    ((webm && options.codec !== "vp8" && options.codec !== "vp9") ||
+    (mpeg2 || (webm && options.codec !== "vp8" && options.codec !== "vp9") ||
       (ogv && options.codec !== "theora") ||
       (!webm && !ogv && options.codec !== "mpeg4"))
   ) {
     throw new Error(
-      webm
+      mpeg2
+        ? "The private MPEG-2 route uses its fixed automatic MPEG-2 codec; codec substitution is not supported."
+        : webm
         ? "WebM codec must be automatic, VP8, or VP9."
         : ogv
           ? "OGV codec must be automatic or Theora."

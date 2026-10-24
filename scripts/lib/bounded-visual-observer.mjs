@@ -5,7 +5,7 @@ import { createReadStream } from "node:fs";
 import { lstat, mkdir, open, realpath, unlink } from "node:fs/promises";
 import path from "node:path";
 const approved = path.resolve(import.meta.dirname, "../../output/playwright");
-const MAX_CAPTURES = 5, MAX_IMAGE_BYTES = 4 * 1048576, MAX_TOTAL_BYTES = 16 * 1048576;
+const MAX_CAPTURES = 7, MAX_IMAGE_BYTES = 4 * 1048576, MAX_TOTAL_BYTES = 16 * 1048576;
 const nativeState = state => state?.jobState === "running" && state.selectedProfileId === "mkv-to-mp4-mpeg2" && state.phase === "Encoding MPEG-2 MP4" &&
   state.wasmMemoryBytes === 50331648 && state.inputBytes > 0 && state.outputBytes > 0;
 async function scalarState(page) {
@@ -17,7 +17,7 @@ async function scalarState(page) {
       wasmMemoryBytes: state.metrics?.wasmMemoryBytes ?? null };
   });
 }
-export async function createBoundedVisualObserver({ page, directory, maximumCaptures = MAX_CAPTURES,
+export async function createBoundedVisualObserver({ page, directory, maximumCaptures = 5,
   maximumImageBytes = MAX_IMAGE_BYTES, maximumTotalBytes = MAX_TOTAL_BYTES }) {
   assert.ok(Number.isInteger(maximumCaptures) && maximumCaptures > 0 && maximumCaptures <= MAX_CAPTURES);
   assert.ok(Number.isInteger(maximumImageBytes) && maximumImageBytes > 0 && maximumImageBytes <= MAX_IMAGE_BYTES);
@@ -40,8 +40,13 @@ export async function createBoundedVisualObserver({ page, directory, maximumCapt
       assert.ok(viewport && viewport.width > 0 && viewport.height > 0 && viewport.width <= 1280 && viewport.height <= 844 && viewport.width * viewport.height <= 1280 * 720);
       const reservation = await open(file, "wx"); try { identity = await reservation.stat({ bigint: true }); } finally { await reservation.close(); }
       const focusProgress = label.endsWith("-native") || label.endsWith("-terminal");
+      const focusOptions = label.endsWith("-options");
       let region = null, renderedBefore = null, renderedAfter = null;
       const progressPanel = focusProgress ? page.locator(".progress-panel") : null;
+      if (focusOptions) {
+        const optionsPanel = page.getByTestId("video-encoding-options");
+        await optionsPanel.scrollIntoViewIfNeeded({ timeout: 5000 }); region = await optionsPanel.boundingBox();
+      }
       if (progressPanel) {
         await progressPanel.scrollIntoViewIfNeeded({ timeout: 5000 });
         region = await progressPanel.boundingBox();
@@ -63,7 +68,7 @@ export async function createBoundedVisualObserver({ page, directory, maximumCapt
       const record = { label, file: path.relative(path.resolve(approved, "../.."), file).replaceAll(path.sep, "/"),
         bytes: Number(info.size), sha256: hash.digest("hex"), viewport, startedAt, finishedAt: new Date().toISOString(),
         before, after, observedNativeState, nativeStateAroundScreenshot: nativeState(before) && nativeState(after),
-        focusedRegion: progressPanel ? "progress-panel" : null, region, regionInViewport, renderedBefore, renderedAfter,
+        focusedRegion: progressPanel ? "progress-panel" : focusOptions ? "video-options" : null, region, regionInViewport, renderedBefore, renderedAfter,
         nativeProgressVisuallyInViewport: nativeState(before) && nativeState(after) && regionInViewport &&
           renderedBefore === before.phase && renderedAfter === after.phase };
       totalBytes += record.bytes; captures.push(record); return structuredClone(record);

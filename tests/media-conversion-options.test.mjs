@@ -26,6 +26,18 @@ const aacProfile = { id: "wav-to-aac", engine: "ffmpeg-audio", output: "aac" };
 const opusProfile = { id: "wav-to-opus", engine: "ffmpeg-audio", output: "opus" };
 const flacProfile = { id: "wav-to-flac", engine: "ffmpeg-audio", output: "flac" };
 const amrProfile = { id: "wav-to-amr", engine: "ffmpeg-audio", output: "amr" };
+test("private MPEG-2 controls preserve selected bounded values and never substitute an unrelated codec", () => {
+  const profile = videoOptionProfileForId("mkv-to-mp4-mpeg2");
+  assert.deepEqual(profile, { engine: "ffmpeg-video", output: "mp4-mpeg2" });
+  assert.equal(supportsVideoEncodingOptions(profile), true);
+  const selected = { codec: "automatic", maxWidth: 320, bitRateBps: 1000000, frameRateFps: 15, quality: "higher" };
+  assert.deepEqual(validateVideoConversionOptions(profile, selected), selected);
+  assert.deepEqual(validateVideoConversionOptions(profile), DEFAULT_VIDEO_CONVERSION_OPTIONS);
+  for (const codec of ["mpeg4", "vp8", "vp9", "theora"]) assert.throws(() => validateVideoConversionOptions(profile, { ...selected, codec }), /fixed automatic MPEG-2/);
+  for (const bad of [{ maxWidth: 1920 }, { frameRateFps: 60 }, { bitRateBps: 9000000 }, { quality: "unbounded" }])
+    assert.throws(() => validateVideoConversionOptions(profile, { ...selected, ...bad }));
+  assert.equal(conversionProfiles.some(p => p.id === "mkv-to-mp4-mpeg2"), false);
+});
 
 test("MP3 encoding options default to the certified automatic policy", () => {
   assert.deepEqual(

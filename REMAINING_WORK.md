@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-10-24 private option UI integration now implemented (not yet browser-proven):
+real shared width/bitrate/FPS/quality form, fixed Automatic(MPEG-2) codec and
+qualification-only descriptions. Planner/start carry selected values; other
+codecs are rejected. Public405/registry pending/publicfalse unchanged.45focused/
+TS/lint PASS, full historical UI comparison retained through exact reversible
+private-option hunks. New finite --ui-controls/default+requested actual button
+gate next, canonical source/repaired core/qualified encoder, unchanged validators
+and whole-tree250MiB. UI-specific cap7viewport PNGs/16MiB, default5 unchanged.
+No new native build or public/original-scale acceptance inferred.
+Prior40055040855/dbe3538 CI failed only stale inline512KiB source assertion
+(1505PASS/1fail/1skip); exact shared value+usage now checked, queue/cleanup guards
+unchanged, focused correction passed. Privacy step had not run. Fresh coherent
+CI after this material UI change remains required; do not replay media for that
+textual failure. Full54/B02-B09 remain open.
+
 2026-10-24 small bounded visual gate now CLOSED at7f6730d: actual private-profile
 native phase/counters visible and verified in both in-viewport PNGs; Saved image
 reviewed.5images/674042B. Exact same source/output hashes and independent96/60frame

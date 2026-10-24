@@ -73,7 +73,7 @@ if (allocation?.archive) {
 }
 const visual = report.boundedVisualObservation ?? null;
 if (visual) {
-  assert.ok(visual.captures.length <= 5 && visual.attempts <= 5 && visual.totalBytes <= 16 * 1048576);
+  assert.ok(visual.maximumCaptures <= 7 && visual.captures.length <= visual.maximumCaptures && visual.attempts <= visual.maximumCaptures && visual.totalBytes <= 16 * 1048576);
   let bytes = 0;
   for (const capture of visual.captures) {
     const target = path.resolve(root, capture.file); assert.ok(target.startsWith(path.join(root, "output/playwright") + path.sep));
@@ -83,10 +83,14 @@ if (visual) {
   assert.equal(bytes, visual.totalBytes);
 }
 const receipt = { schemaVersion: 1, head, status: report.status, startedAt: report.startedAt, finishedAt: report.finishedAt,
-  scope: "Finite real production MPEG-2 controls gate, including failures; not UI-control, scale or public acceptance",
+  scope: report.uiControlsQualification
+    ? "Actual private form controls and Convert-button production path; small fixture, not full UI/OS-picker/stress or public acceptance"
+    : "Finite real production MPEG-2 controls gate, including failures; not UI-control, scale or public acceptance",
   archive: { path: relative + ".gz", bytes: compressed.length, sha256: sha(compressed), restoredBytes: raw.length, restoredSha256: sha(raw) },
   sourcePins: sourceEntries.length, recordedSourcesMatchHistoricalGitHead: true, native: report.native,
   scaledPropertiesBuild: report.scaledPropertiesBuild ?? null, fixture: report.fixture,
+  uiControlsQualification: report.uiControlsQualification ?? null,
+  uiQualification: report.uiQualification ?? null,
   observer: report.observer, diagnosticObserverOnly: report.observer.controlScope === "events-only observer comparison, not route promotion",
   boundedVisualObservation: visual,
   boundedVisibleProgressVerified: visual ? visual.captures.some(capture => capture.nativeProgressVisuallyInViewport === true) : false,

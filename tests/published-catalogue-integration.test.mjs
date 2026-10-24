@@ -25,10 +25,22 @@ const articleHtml = html => (html.match(/<article\b[^>]*>[\s\S]*?<\/article>/g) 
   card.replace(/ data-profile-id="[^"]+"/, "").replaceAll("<!-- -->", ""));
 
 test("current application mounts the bounded component with explicit lifecycle and localhost qualification integration", () => {
-  // Account for ONLY the reviewed VPX/MPEG-2 static-code owner integration. Each hunk is
+  // Account for ONLY reviewed lifecycle/private-option integration. Each hunk is
   // unique and reversible; the complete historical UI comparison below remains
   // mandatory and still catches every unrelated change.
   const codeOwnerEdits = [
+    ['    supportsVideoEncodingOptions(selectedProfile);\n  const privateMpeg2Options = selectedProfile?.id === MPEG2_JOB_PROFILE;\n',
+      '    supportsVideoEncodingOptions(selectedProfile);\n'],
+    ['              {videoEncodingOptionsEnabled ? (\n                <fieldset\n                  data-testid="video-encoding-options"\n',
+      '              {videoEncodingOptionsEnabled ? (\n                <fieldset\n'],
+    ['                    {privateMpeg2Options\n                      ? "Qualification-only controls: automatic retains the current private MPEG-2 policy; broader memory and fidelity gates remain open."\n                      : "Automatic retains the fastest certified profile."} Width and\n',
+      '                    Automatic retains the fastest certified profile. Width and\n'],
+    ['                        data-testid="video-codec-select"\n                        disabled={privateMpeg2Options}\n', '                        data-testid="video-codec-select"\n'],
+    ['                          Automatic ({privateMpeg2Options\n                            ? "MPEG-2"\n                            : selectedProfile?.output === "webm-vp9"\n',
+      '                          Automatic ({selectedProfile?.output === "webm-vp9"\n'],
+    ['                        {privateMpeg2Options ? null : selectedProfile?.output === "ogv" ? (', '                        {selectedProfile?.output === "ogv" ? ('],
+    ['                        <option value="automatic">{privateMpeg2Options ? "Automatic (current private policy)" : "Automatic (fastest certified)"}</option>',
+      '                        <option value="automatic">Automatic (fastest certified)</option>'],
     ['import { createMpeg2CompiledCoreSlot } from "../../lib/mpeg2-compiled-core";\nimport { MPEG2_JOB_PROFILE } from "../../lib/mpeg2-stage-policy";\n',
       'import { createMpeg2CompiledCoreSlot } from "../../lib/mpeg2-compiled-core";\n'],
     ['          batch.profile.id !== "m2v-to-ogv" &&\n          batch.profile.id !== MPEG2_JOB_PROFILE\n',

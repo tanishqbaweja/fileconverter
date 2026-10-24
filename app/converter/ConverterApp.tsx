@@ -473,6 +473,7 @@ export function ConverterApp() {
   );
   const videoEncodingOptionsEnabled =
     supportsVideoEncodingOptions(selectedProfile);
+  const privateMpeg2Options = selectedProfile?.id === MPEG2_JOB_PROFILE;
   const mediaConversionPlan = useMemo(
     () =>
       selectedProfile && sourceMediaInspection
@@ -2115,12 +2116,15 @@ export function ConverterApp() {
 
               {videoEncodingOptionsEnabled ? (
                 <fieldset
+                  data-testid="video-encoding-options"
                   className="encoding-options"
                   disabled={jobState === "running"}
                 >
                   <legend>Video encoding options</legend>
                   <p>
-                    Automatic retains the fastest certified profile. Width and
+                    {privateMpeg2Options
+                      ? "Qualification-only controls: automatic retains the current private MPEG-2 policy; broader memory and fidelity gates remain open."
+                      : "Automatic retains the fastest certified profile."} Width and
                     frame rate are no-upscale caps; the encoder never invents
                     resolution or frames above the source.
                   </p>
@@ -2129,6 +2133,7 @@ export function ConverterApp() {
                       <span>Codec</span>
                       <select
                         data-testid="video-codec-select"
+                        disabled={privateMpeg2Options}
                         value={videoOptions.codec}
                         onChange={(event) => {
                           const codec =
@@ -2158,7 +2163,9 @@ export function ConverterApp() {
                         }}
                       >
                         <option value="automatic">
-                          Automatic ({selectedProfile?.output === "webm-vp9"
+                          Automatic ({privateMpeg2Options
+                            ? "MPEG-2"
+                            : selectedProfile?.output === "webm-vp9"
                             ? "VP9"
                             : selectedProfile?.output === "webm"
                               ? "VP8"
@@ -2166,7 +2173,7 @@ export function ConverterApp() {
                                 ? "Theora"
                               : "MPEG-4 Part 2"})
                         </option>
-                        {selectedProfile?.output === "ogv" ? (
+                        {privateMpeg2Options ? null : selectedProfile?.output === "ogv" ? (
                           <option value="theora">Theora</option>
                         ) : selectedProfile?.output === "webm" ||
                           selectedProfile?.output === "webm-vp9" ? (
@@ -2258,7 +2265,7 @@ export function ConverterApp() {
                           }))
                         }
                       >
-                        <option value="automatic">Automatic (fastest certified)</option>
+                        <option value="automatic">{privateMpeg2Options ? "Automatic (current private policy)" : "Automatic (fastest certified)"}</option>
                         <option value="smaller">Smaller file</option>
                         <option value="balanced">Balanced</option>
                         <option value="higher">Higher visual quality</option>
