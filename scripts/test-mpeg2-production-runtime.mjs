@@ -29,23 +29,26 @@ import { mpeg2ControlReference, sourceMpeg2ControlClock, expectedMpeg2ControlClo
 import { loadMpeg2RuntimeNative } from "./lib/mpeg2-runtime-native-selection.mjs";
 import { mpeg2ControlFixtureArguments } from "./lib/mpeg2-control-fixture.mjs";
 import { createBoundedVisualObserver } from "./lib/bounded-visual-observer.mjs";
+import { mpeg2StorageRecoveryCases, assertMpeg2StorageFailure } from "./lib/mpeg2-storage-recovery.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--planning", "--ui", "--controls", "--ui-controls"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
 const uiControls = flags.has("--ui-controls");
+const storageRecovery = flags.has("--storage-recovery");
+assert.ok(!storageRecovery || (!flags.has("--recovery") && flags.has("--bounded-visual-capture")), "Storage recovery is one finite bounded fault-injection gate");
 assert.ok(!uiControls || (!flags.has("--ui") && !flags.has("--controls") && flags.has("--bounded-visual-capture")), "UI controls is one bounded real-form gate");
 const scaledBuildFlags = [...flags].filter(flag => flag.startsWith("--scaled-properties-build="));
 assert.ok(scaledBuildFlags.length <= 1);
 const scaledBuildRunId = scaledBuildFlags.length ? scaledBuildFlags[0].split("=")[1] : null;
-assert.ok(scaledBuildRunId === null || flags.has("--controls") || uiControls, "Changed scaler core is for the finite controls gate, not implicit route promotion");
+assert.ok(scaledBuildRunId === null || flags.has("--controls") || uiControls || storageRecovery, "Changed scaler core is explicit qualification only, not implicit route promotion");
 assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
 assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
 const boundedVisual = flags.has("--bounded-visual-capture"), continuousVisual = !eventsOnly && !boundedVisual;
-assert.ok(!boundedVisual || (diagnose && (flags.has("--controls") || uiControls) && !eventsOnly), "Bounded visual observer is one explicit controls gate, not implicit acceptance");
-const recovery = flags.has("--recovery");
+assert.ok(!boundedVisual || (diagnose && (flags.has("--controls") || uiControls || storageRecovery) && !eventsOnly), "Bounded visual observer is one explicit finite gate, not implicit acceptance");
+const recovery = flags.has("--recovery") || storageRecovery;
 const planning = flags.has("--planning");
 const ui = flags.has("--ui") || uiControls;
 const controls = flags.has("--controls") || uiControls;
@@ -57,7 +60,7 @@ const cases = controls ? [
 ] : planning ? [
   { name: "planned-native-conversion", expected: "complete" },
   { name: "unavailable-decoder-preflight", expected: "error", preflightRejection: true },
-] : recovery ? [
+] : storageRecovery ? mpeg2StorageRecoveryCases() : recovery ? [
   { name: "in-flight-cancel", expected: "cancelled", cancelDuringEncoding: true },
   { name: "recover-after-cancel", expected: "complete" },
   { name: "final-write-failure", expected: "error", testFault: "write" },
@@ -79,6 +82,8 @@ if (controls) report.controlsQualification = { cases: [], completed: false, same
 if (uiControls) report.uiControlsQualification = { cases: [], completed: false, actualConvertButton: false, publicAcceptance: false, nativeOsPickerCovered: false };
 if (recovery) report.recoveryQualification = { cases: [], completed: false, nativeDuringEncodingCancellation: false,
   destinationRollback: false, noStagesAfterEachTerminal: false, publicAcceptance: false };
+if (storageRecovery) report.storageRecoveryQualification = { completed: false, faultInjection: true, actualQuotaExhaustion: false,
+  actualOsPermissionRevocation: false, actualConvertButton: false, nativeOsPickerCovered: false, publicAcceptance: false };
 const staticRequests = { manifests: 0, decoder: 0, encoder: 0 }; report.staticRequests = staticRequests;
 const runtime = await createOwnedRuntimeScratch("mpeg2-production-runtime-");
 const env = { ...runtime.env, NODE_OPTIONS: [process.env.NODE_OPTIONS ?? "", "--import=" + pathToFileURL(path.join(root, "scripts/lib/hidden-unit-subprocesses.mjs")).href].filter(Boolean).join(" "),
@@ -122,8 +127,8 @@ try {
   const native = (args, executable = "ffmpeg") => exec(executable, args, { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 4 * 1024 ** 2 });
   const fixture = path.join(work, "source.mkv"); output = path.join(work, "output.mp4");
   const fixtureSeconds = ui && !uiControls ? 12 : 4;
-  const fixtureWidth = controls ? 640 : 320, fixtureHeight = controls ? 360 : 240;
-  await native(controls ? mpeg2ControlFixtureArguments(fixture) : ["-v", "error", "-f", "lavfi", "-i", `testsrc2=size=${fixtureWidth}x${fixtureHeight}:rate=24:duration=${fixtureSeconds}`,
+  const fixtureWidth = controls || storageRecovery ? 640 : 320, fixtureHeight = controls || storageRecovery ? 360 : 240;
+  await native(controls || storageRecovery ? mpeg2ControlFixtureArguments(fixture) : ["-v", "error", "-f", "lavfi", "-i", `testsrc2=size=${fixtureWidth}x${fixtureHeight}:rate=24:duration=${fixtureSeconds}`,
     "-f", "lavfi", "-i", `sine=frequency=997:sample_rate=48000:duration=${fixtureSeconds}`, "-map", "0:v", "-map", "1:a",
     "-c:v", "libx265", "-preset", "ultrafast", "-crf", "18", "-threads:v", "1", "-x265-params",
     "pools=none:frame-threads=1:wpp=0:bframes=2:keyint=48:scenecut=0:log-level=error", "-c:a", "aac", "-b:a", "128k",
@@ -136,7 +141,7 @@ try {
       "-c:v", "libaom-av1", "-cpu-used", "8", "-threads", "1", "-crf", "32", "-b:v", "0", rejectedFixture]);
     report.rejectedFixture = { bytes: (await lstat(rejectedFixture)).size, sha256: await hashFile(rejectedFixture), video: "av1", frames: 24 };
   }
-  if (recovery) {
+  if (recovery && !storageRecovery) {
     // Long enough to observe real output before clicking the production Cancel
     // button. This is genuine encoded media, not a delay inside the converter.
     await native(["-v", "error", "-f", "lavfi", "-i", "testsrc2=size=320x240:rate=24:duration=12",
@@ -176,6 +181,7 @@ try {
     "scripts/lib/mpeg2-runtime-native-selection.mjs",
     "scripts/lib/mpeg2-control-fixture.mjs",
     "scripts/lib/bounded-visual-observer.mjs",
+    "scripts/lib/mpeg2-storage-recovery.mjs",
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/streaming-video-clock-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs",
     "scripts/test-mpeg2-production-runtime.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",
@@ -247,7 +253,7 @@ try {
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
   if (boundedVisual) {
     await page.getByTestId("format-select").selectOption("mkv-to-mp4-mpeg2");
-    visualObserver = await createBoundedVisualObserver({ page, directory: path.join(screenshotDirectory, "bounded-visual"), maximumCaptures: uiControls ? 7 : 5 });
+    visualObserver = await createBoundedVisualObserver({ page, directory: path.join(screenshotDirectory, "bounded-visual"), maximumCaptures: uiControls || storageRecovery ? 7 : 5 });
     if (!uiControls) await visualObserver.capture("source-ready");
   }
   if (ui) {
@@ -299,7 +305,7 @@ try {
   const workerEventStart = report.workerEvents.length;
   changePhase("conversion");
   const visualLifetime = new AbortController();
-  const visualWork = visualObserver?.observeNativeWork(`case-${repetition}-native`, visualLifetime.signal);
+  const visualWork = !storageRecovery || testCase.testFault ? visualObserver?.observeNativeWork(`case-${repetition}-native`, visualLifetime.signal) : undefined;
   const tasks = [ui ? page.evaluate(runMpeg2UiJob, selectedUiOptions).then(value => { changePhase("recovery"); return value; }) : page.evaluate(async testCase => {
     const file = document.querySelector('input[type="file"]').files[0];
     const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle("mpeg2-runtime-output.mp4", { create: true });
@@ -399,7 +405,8 @@ try {
       assert.ok(execution.cancellation.inputBytes > 0 && execution.cancellation.outputBytes > 0);
       assert.equal(execution.cancellation.wasmMemoryBytes, 50331648);
       assert.ok(execution.cancellation.finishedAt - execution.cancellation.requestedAt < 5000, "Native cancellation response exceeded5s");
-    } else assert.match(report.conversion.message, /destination rejected a bounded write/i);
+    } else if (storageRecovery) assertMpeg2StorageFailure(testCase, execution);
+    else assert.match(report.conversion.message, /destination rejected a bounded write/i);
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
     const retiredRole = testCase.expected === "cancelled" ? "conversion.worker" : "staged-save.worker";
     assert.ok(report.workerEvents.slice(workerEventStart).some(event => event.type === "closed" && event.url.includes(retiredRole)), "Failed job worker must retire before recovery");
@@ -421,7 +428,7 @@ try {
   } finally { validationTarget = undefined; await file.close(); }
   const probe = async file => JSON.parse((await native(["-v", "error", "-count_frames", "-show_streams", "-show_format", "-of", "json", file], "ffprobe")).stdout);
   const source = await probe(fixture), converted = await probe(output);
-  const reference = controls ? mpeg2ControlReference(source.streams[0], testCase.videoOptions) : null;
+  const reference = controls || storageRecovery ? mpeg2ControlReference(source.streams[0], testCase.videoOptions) : null;
   assert.equal(source.streams[0].codec_name, "hevc"); assert.equal(converted.streams[0].codec_name, "mpeg2video");
   assert.equal(Number(converted.streams[0].nb_read_frames), reference?.frames ?? report.fixture.frames);
   assert.equal(converted.streams[0].width, reference?.width ?? fixtureWidth); assert.equal(converted.streams[0].height, reference?.height ?? fixtureHeight);
@@ -469,8 +476,9 @@ try {
   }
   assert.deepEqual(staticRequests, { manifests: planning ? 1 : repetitions, decoder: 1, encoder: 1 });
   if (planning) Object.assign(report.planningQualification, { completed: true, rejectedBeforeDestinationOrCode: true });
-  if (recovery) Object.assign(report.recoveryQualification, { completed: true, nativeDuringEncodingCancellation: true,
+  if (recovery) Object.assign(report.recoveryQualification, { completed: true, nativeDuringEncodingCancellation: !storageRecovery,
     destinationRollback: true, noStagesAfterEachTerminal: true });
+  if (storageRecovery) report.storageRecoveryQualification.completed = true;
   clearInterval(monitorTimer); await monitorPending; await snapshot();
   await captureAttribution("post-completion"); await snapshot();
   await monitor.close(); monitor = null;

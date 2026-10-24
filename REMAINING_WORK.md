@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-24 next finite gate implemented: --storage-recovery uses the repaired
+core/canonical real fixture for quota error+retry and permission error+retry.
+Existing production fault injection occurs only after a real512KiB final write;
+checks require native48MiB work, destination rollback, zero stage/queue/pending,
+retired saver, and independent complete-output validators for both retries.
+Seven bounded source/native/terminal PNGs at most; exact whole-tree250MiB remains.
+This is explicitly injected failure coverage, not actual OS revocation or disk
+exhaustion, UI button, reload, batch or public acceptance.22focused/TypeScript/
+lint PASS; host physical/virtual/disk preflight safe, actual execution next.
+
 2026-10-24 actual private MPEG-2 form/Convert controls gate is now CLOSED, not
 merely implemented: two settings sets independently validated through real
 select events/plans/button/production output, exact canonical output hashes.

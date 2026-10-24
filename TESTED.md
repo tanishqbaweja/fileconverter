@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-24 storage-failure gate added (not yet actual-browser verified): finite
+quota/retry/permission/retry through existing production coordinator/AVIO/staged
+save. Actual native reads/writes and one final512KiB write required before each
+injected failure, with rollback/stage removal/retired worker guards. Same repaired
+decoder/qualified encoder, canonical fixture and independent retry validators,
+bounded7PNG observer and unchanged250MiB formula. No OS revocation/disk-full or
+UI/reload/batch/public coverage claimed.22focused/TypeScript/lint PASS. Next run
+only this missing changed gate; host physical/virtual/disk preflight safe.
+
 2026-10-24 actual private option UI gate CLOSED at ac0c773: real select events,
 form readback, matching rendered plans and actual Convert button for defaults
 and320px/1Mbps/15fps/higher. Real production browser outputs independently pass
