@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-10-24 targeted repaired-core build40048810064 confirmed IN_PROGRESS at
+955d3e6 (isolated workflow-only commit, canonical/main unchanged). ed2f07e pushed
+to media-options. Explicit --controls-only collected-build selection now rechecks
+source/proof/branch hashes, fixed memory and symbolic native EFBIG proof while
+retaining qualified a4ba... encoder/default bindings.21focused followup PASS.
+Successful hosted build/collection and one changed browser controls gate remain
+next; no claim that native probe or hosted build closes production acceptance.
+
 2026-10-24 previous user-ETA turn was status-only/no implementation progress.
 Current next safe action is concrete native scaler-property correction, not
 another unchanged browser test. Actual installed avutil probe reproduces17entry

@@ -25,11 +25,16 @@ import { compareStreamingVideoClocks } from "./lib/streaming-video-clock-fidelit
 import { boundedNativeLines } from "./lib/bounded-native-lines.mjs";
 import { runMpeg2UiJob } from "./lib/mpeg2-ui-job.mjs";
 import { mpeg2ControlReference, sourceMpeg2ControlClock, expectedMpeg2ControlClocks } from "./lib/mpeg2-control-reference.mjs";
+import { loadMpeg2RuntimeNative } from "./lib/mpeg2-runtime-native-selection.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--planning", "--ui", "--controls"].includes(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--planning", "--ui", "--controls"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
+const scaledBuildFlags = [...flags].filter(flag => flag.startsWith("--scaled-properties-build="));
+assert.ok(scaledBuildFlags.length <= 1);
+const scaledBuildRunId = scaledBuildFlags.length ? scaledBuildFlags[0].split("=")[1] : null;
+assert.ok(scaledBuildRunId === null || flags.has("--controls"), "Changed scaler core is for the finite controls gate, not implicit route promotion");
 assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
 assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
@@ -97,6 +102,8 @@ const snapshot = async () => {
 try {
   const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 32 * 1024 ** 3);
   report.hostMemory = await inspectStressHostMemory(); assert.equal(report.hostMemory.safeToStart, true);
+  const selectedNative = await loadMpeg2RuntimeNative(root, scaledBuildRunId);
+  report.scaledPropertiesBuild = selectedNative.proof;
   browserPin = await inspectInstalledChromePin(); report.browser = browserPin;
   assert.equal((await lstat(path.join(root, "test.mkv"))).size, 2958573265);
   originalHash = await hashFile(path.join(root, "test.mkv"));
@@ -137,12 +144,7 @@ try {
   const assetDirectory = path.join(assetsParent, "mpeg2"); await mkdir(assetDirectory);
   generated.push({ directory: assetDirectory, identity: await lstat(assetDirectory, { bigint: true }) });
   report.native = [];
-  for (const [file, directory, source, expected, pages] of [
-    ["decoder.mjs", "mpeg2-jspi-39072949964", "within-mpeg2-split.mjs", "d4ec481a93a1b087c96aa11948ab9a98ccf6d09237ed143c022bf76bf6c31506"],
-    ["decoder.wasm", "mpeg2-jspi-39072949964", "within-mpeg2-split.wasm", "4f3954a3cbbd5012c811fa380402981d29ac298d46422d1bc0fa40a6b9368d57", 512],
-    ["encoder.mjs", "mpeg2-encoder-planes-38044000567", "split-encoder.mjs", "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e"],
-    ["encoder.wasm", "mpeg2-encoder-planes-38044000567", "split-encoder.wasm", "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee", 256],
-  ]) {
+  for (const [file, directory, source, expected, pages] of selectedNative.rows) {
     const sourcePath = path.join(root, "work", directory, source), bytes = await readFile(sourcePath); assert.equal(sha(bytes), expected);
     if (pages) assert.deepEqual(readWasmMemoryLimits(bytes), [{ imported: true, initialPages: pages, maximumPages: pages, shared: true }]);
     await copyFile(sourcePath, path.join(assetDirectory, file)); report.native.push({ source: path.relative(root, sourcePath), sha256: expected, bytes: bytes.length });
@@ -160,6 +162,7 @@ try {
     "lib/media-conversion-plan.ts", "lib/media-source-inspection.ts", "lib/media-conversion-options.ts", "lib/conversion-protocol.ts",
     "lib/browser-capabilities.ts", "scripts/lib/mpeg2-ui-job.mjs",
     "scripts/lib/mpeg2-control-reference.mjs",
+    "scripts/lib/mpeg2-runtime-native-selection.mjs",
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/streaming-video-clock-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs",
     "scripts/test-mpeg2-production-runtime.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",

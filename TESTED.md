@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+Changed native build40048810064 is actually IN_PROGRESS at955d3e6 on isolated
+`codex/mpeg2-scaled-properties-20261024`; no Docker/canonical workflow/main change.
+Source changeed2f07e pushed to remote media-options. Production driver now accepts
+an explicit numeric scaled-property build only for --controls, rechecks collected
+build/source/branch hashes and lifecycle proof, and retains the exact qualified
+a4ba... encoder (NOT the different encoder emitted by combined builds). Default
+binding unchanged.21focused followup PASS; browser gate awaits successful build.
+Host preflight01:15UTC:5.60GiB physical/8.93GiB virtual and1331GiB disk available;
+recheck at actual browser launch. Do not rerun an unchanged browser gate meanwhile.
+
 2026-10-24 resized-frame defect now reproduced with actual installed avutil:
 17 repeated property copies accumulate17side-data entries and the unchanged
 production16entry wire guard returns EFBIG. Replacement first frees old side data
