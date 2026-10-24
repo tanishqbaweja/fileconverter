@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-10-24 first actual bounded observer fa3497d: both outputs fully validated,
+whole-tree239.15625MiB/356samples/0missing; fixed source786823B/SHAe70b76ca...
+matches actual determinism proof.5PNGs/908659B with2native state intervals,
+default1002730B/96frames/SHA11a53d67..., controlled333519B/60frames/SHA189bced2...,
+same SSIM.989061/.995891/audio hash/all clocks/title/language. Outputs are8B
+smaller with the changed source; exact byte-difference cause is not attributed,
+and there is no old output equality or
+causal speed claim. Original full SHA and owned cleanup independently verified;
+raw1.31MB retained32,306B exact gzip, redundant raw only removed.
+Image QA found progress was below viewport; scalar active-state readings do NOT
+prove visible progress. Also backend hook left public default profile selected.
+Keep visual qualification OPEN: `evidence/2026-10-24-mpeg2-bounded-visual-initial-review.json`.
+Correction now selects matching private profile and scrolls actual progress into
+view, with rendered phase+bounds+real native state before/after PNG required.
+No conversion delay/forced GC/engine/quality/accounting change.27focused/syntax
+PASS; one changed framing retry next, not an unchanged conversion or native build.
+Old274MiB, full54, scale, manual/OS-picker and public/UI-controls gates stay open.
+
 2026-10-24 bounded visual observer implemented for one explicit --controls gate:
 max5viewport PNGs/4MiB each/16MiB total, one active/no queue, scalar real-state
 records/no retained DOM handles. Source-ready + native + terminal per case;

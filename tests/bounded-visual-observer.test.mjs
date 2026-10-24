@@ -7,8 +7,8 @@ import { fileURLToPath } from "node:url";
 import { createBoundedVisualObserver } from "../scripts/lib/bounded-visual-observer.mjs";
 const approved = fileURLToPath(new URL("../output/playwright", import.meta.url));
 const png = Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII=", "base64");
-const active = { jobState: "running", phase: "Encoding MPEG-2 MP4", workerStatus: "ready", inputBytes: 65536, outputBytes: 128, wasmMemoryBytes: 50331648 };
-const terminal = { jobState: "complete", phase: "Saved", workerStatus: "ready", inputBytes: 65536, outputBytes: 512, wasmMemoryBytes: 0 };
+const active = { jobState: "running", phase: "Encoding MPEG-2 MP4", workerStatus: "ready", selectedProfileId: "mkv-to-mp4-mpeg2", inputBytes: 65536, outputBytes: 128, wasmMemoryBytes: 50331648 };
+const terminal = { jobState: "complete", phase: "Saved", workerStatus: "ready", selectedProfileId: "mkv-to-mp4-mpeg2", inputBytes: 65536, outputBytes: 512, wasmMemoryBytes: 0 };
 async function sandbox(run) {
   await mkdir(approved, { recursive: true }); const directory = await mkdtemp(path.join(approved, "bounded-visual-unit-"));
   const identity = await lstat(directory, { bigint: true });
@@ -22,6 +22,8 @@ async function sandbox(run) {
 function fixture(overrides = {}) {
   let state = active;
   const page = { viewportSize: () => ({ width: 1, height: 1 }), evaluate: async () => structuredClone(state),
+    locator: () => ({ scrollIntoViewIfNeeded: async () => {}, boundingBox: async () => ({ x: 0, y: 0, width: 1, height: 1 }),
+      locator: () => ({ innerText: async () => state.phase }) }),
     screenshot: async ({ path: file, fullPage, scale }) => { assert.equal(fullPage, false); assert.equal(scale, "css"); await writeFile(file, png); }, ...overrides };
   return { page, setState(next) { state = next; } };
 }
@@ -61,8 +63,9 @@ test("total bytes, approved location, viewport pixels and immutable upper limits
 test("a job ending during screenshot is not relabelled as active visual coverage; ended jobs never wait60s", async () => sandbox(async directory => {
   const f = fixture({ screenshot: async ({ path: file }) => { f.setState(terminal); await writeFile(file, png); } });
   const observer = await createBoundedVisualObserver({ page: f.page, directory: path.join(directory, "captures") });
-  const controller = new AbortController(), row = await observer.observeNativeWork("native", controller.signal);
+  const controller = new AbortController(), row = await observer.observeNativeWork("case-native", controller.signal);
   assert.deepEqual(row.observedNativeState, active); assert.equal(row.nativeStateAroundScreenshot, false);
+  assert.equal(row.nativeProgressVisuallyInViewport, false);
   controller.abort(); const missing = await observer.observeNativeWork("ended", controller.signal);
   assert.equal(missing.nativeWorkObserved, false); assert.equal(missing.reason, "job-ended-before-capture");
 }));
@@ -73,6 +76,16 @@ test("bounded evidence does not remove independent content/privacy checks or low
   assert.match(driver, /assert.equal\(forbiddenRequests.length, 0\)/);
   assert.match(driver, /sample.phase !== "blank" && sample.privateBytes !== null/);
   assert.match(driver, /peak.privateBytes - report.blankBaseline.privateBytes/); assert.match(driver, /report.memory.incrementalPrivateMiB <= 250/);
-  assert.match(driver, /Actual active native UI screenshot was not verified/);
+  assert.match(driver, /Actual active native progress was not visibly verified/);
   assert.match(driver, /report.boundedVisualObservation = visualObserver.summary\(\)/);
 });
+test("visible progress requires the rendered native phase and an in-viewport region, not just running state", async () => sandbox(async directory => {
+  const f = fixture(), observer = await createBoundedVisualObserver({ page: f.page, directory: path.join(directory, "captures") });
+  const row = await observer.capture("case-native", active);
+  assert.equal(row.regionInViewport, true); assert.equal(row.nativeProgressVisuallyInViewport, true);
+  const wrong = fixture({ locator: () => ({ scrollIntoViewIfNeeded: async () => {}, boundingBox: async () => ({ x: 0, y: 5, width: 1, height: 1 }),
+    locator: () => ({ innerText: async () => active.phase }) }) });
+  const hidden = await createBoundedVisualObserver({ page: wrong.page, directory: path.join(directory, "hidden") });
+  const invisible = await hidden.capture("case-native", active);
+  assert.equal(invisible.nativeStateAroundScreenshot, true); assert.equal(invisible.nativeProgressVisuallyInViewport, false);
+}));

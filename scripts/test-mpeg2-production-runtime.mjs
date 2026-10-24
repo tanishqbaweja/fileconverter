@@ -241,6 +241,7 @@ try {
   await page.waitForFunction(() => document.querySelector('[data-testid="media-inspection-status"]')?.textContent.includes("These stream facts came from bounded local header reads"));
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
   if (boundedVisual) {
+    await page.getByTestId("format-select").selectOption("mkv-to-mp4-mpeg2");
     visualObserver = await createBoundedVisualObserver({ page, directory: path.join(screenshotDirectory, "bounded-visual") });
     await visualObserver.capture("source-ready");
   }
@@ -442,7 +443,7 @@ try {
   if (controls) { assert.equal(report.controlsQualification.cases.length, 2); report.controlsQualification.completed = true; }
   if (visualObserver) {
     report.boundedVisualObservation = visualObserver.summary();
-    assert.ok(report.boundedVisualObservation.captures.some(capture => capture.nativeStateAroundScreenshot), "Actual active native UI screenshot was not verified");
+    assert.ok(report.boundedVisualObservation.captures.some(capture => capture.nativeProgressVisuallyInViewport), "Actual active native progress was not visibly verified");
   }
   assert.deepEqual(staticRequests, { manifests: planning ? 1 : repetitions, decoder: 1, encoder: 1 });
   if (planning) Object.assign(report.planningQualification, { completed: true, rejectedBeforeDestinationOrCode: true });

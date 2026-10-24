@@ -71,12 +71,25 @@ if (allocation?.archive) {
   assert.equal(allocation.acceptanceMetric, false); assert.equal(allocation.perturbsMemory, true);
   allocationArchive = { ...allocation.archive, path: path.relative(root, target).replaceAll(path.sep, "/"), recordedAbsolutePath: allocation.archive.path };
 }
+const visual = report.boundedVisualObservation ?? null;
+if (visual) {
+  assert.ok(visual.captures.length <= 5 && visual.attempts <= 5 && visual.totalBytes <= 16 * 1048576);
+  let bytes = 0;
+  for (const capture of visual.captures) {
+    const target = path.resolve(root, capture.file); assert.ok(target.startsWith(path.join(root, "output/playwright") + path.sep));
+    const picture = await readFile(target); assert.equal(picture.length, capture.bytes); assert.equal(sha(picture), capture.sha256);
+    assert.ok(picture.length <= 4 * 1048576); bytes += picture.length;
+  }
+  assert.equal(bytes, visual.totalBytes);
+}
 const receipt = { schemaVersion: 1, head, status: report.status, startedAt: report.startedAt, finishedAt: report.finishedAt,
   scope: "Finite real production MPEG-2 controls gate, including failures; not UI-control, scale or public acceptance",
   archive: { path: relative + ".gz", bytes: compressed.length, sha256: sha(compressed), restoredBytes: raw.length, restoredSha256: sha(raw) },
   sourcePins: sourceEntries.length, recordedSourcesMatchHistoricalGitHead: true, native: report.native,
   scaledPropertiesBuild: report.scaledPropertiesBuild ?? null, fixture: report.fixture,
   observer: report.observer, diagnosticObserverOnly: report.observer.controlScope === "events-only observer comparison, not route promotion",
+  boundedVisualObservation: visual,
+  boundedVisibleProgressVerified: visual ? visual.captures.some(capture => capture.nativeProgressVisuallyInViewport === true) : false,
   postMeasurementAllocationArchive: allocationArchive,
   postMeasurementAllocationScope: allocation ? { status: allocation.status, acceptanceMetric: allocation.acceptanceMetric,
     perturbsMemory: allocation.perturbsMemory, allocationStackAttribution: allocation.allocationStackAttribution } : null,

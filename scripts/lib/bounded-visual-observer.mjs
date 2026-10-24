@@ -6,13 +6,13 @@ import { lstat, mkdir, open, realpath, unlink } from "node:fs/promises";
 import path from "node:path";
 const approved = path.resolve(import.meta.dirname, "../../output/playwright");
 const MAX_CAPTURES = 5, MAX_IMAGE_BYTES = 4 * 1048576, MAX_TOTAL_BYTES = 16 * 1048576;
-const nativeState = state => state?.jobState === "running" && state.phase === "Encoding MPEG-2 MP4" &&
+const nativeState = state => state?.jobState === "running" && state.selectedProfileId === "mkv-to-mp4-mpeg2" && state.phase === "Encoding MPEG-2 MP4" &&
   state.wasmMemoryBytes === 50331648 && state.inputBytes > 0 && state.outputBytes > 0;
 async function scalarState(page) {
   return page.evaluate(() => {
     const state = window.__WITHIN_TEST__?.getState();
     if (!state) throw new Error("Real application state unavailable");
-    return { jobState: state.jobState, phase: String(state.phase).slice(0, 160), workerStatus: state.workerStatus,
+    return { jobState: state.jobState, phase: String(state.phase).slice(0, 160), workerStatus: state.workerStatus, selectedProfileId: state.selectedProfileId,
       inputBytes: state.metrics?.inputBytes ?? null, outputBytes: state.metrics?.outputBytes ?? null,
       wasmMemoryBytes: state.metrics?.wasmMemoryBytes ?? null };
   });
@@ -39,8 +39,17 @@ export async function createBoundedVisualObserver({ page, directory, maximumCapt
       const viewport = page.viewportSize();
       assert.ok(viewport && viewport.width > 0 && viewport.height > 0 && viewport.width <= 1280 && viewport.height <= 844 && viewport.width * viewport.height <= 1280 * 720);
       const reservation = await open(file, "wx"); try { identity = await reservation.stat({ bigint: true }); } finally { await reservation.close(); }
+      const focusProgress = label.endsWith("-native") || label.endsWith("-terminal");
+      let region = null, renderedBefore = null, renderedAfter = null;
+      const progressPanel = focusProgress ? page.locator(".progress-panel") : null;
+      if (progressPanel) {
+        await progressPanel.scrollIntoViewIfNeeded({ timeout: 5000 });
+        region = await progressPanel.boundingBox();
+        renderedBefore = await progressPanel.locator(".progress-topline strong").innerText();
+      }
       const before = await scalarState(page), startedAt = new Date().toISOString();
       await page.screenshot({ path: file, type: "png", fullPage: false, scale: "css", timeout: 5000 });
+      if (progressPanel) renderedAfter = await progressPanel.locator(".progress-topline strong").innerText();
       const after = await scalarState(page), info = await lstat(file, { bigint: true });
       assert.equal(info.dev, identity.dev); assert.equal(info.ino, identity.ino); assert.equal(info.isSymbolicLink(), false);
       assert.ok(info.size > 24n && info.size <= BigInt(maximumImageBytes), "Screenshot exceeds fixed byte budget");
@@ -50,9 +59,13 @@ export async function createBoundedVisualObserver({ page, directory, maximumCapt
       assert.equal(header.subarray(0, 8).toString("hex"), "89504e470d0a1a0a"); assert.equal(header.toString("ascii", 12, 16), "IHDR");
       assert.equal(header.readUInt32BE(16), viewport.width); assert.equal(header.readUInt32BE(20), viewport.height);
       const hash = createHash("sha256"); for await (const bytes of createReadStream(file, { highWaterMark: 65536 })) hash.update(bytes);
+      const regionInViewport = !!region && region.x >= 0 && region.y >= 0 && region.x + region.width <= viewport.width + 1 && region.y + region.height <= viewport.height + 1;
       const record = { label, file: path.relative(path.resolve(approved, "../.."), file).replaceAll(path.sep, "/"),
         bytes: Number(info.size), sha256: hash.digest("hex"), viewport, startedAt, finishedAt: new Date().toISOString(),
-        before, after, observedNativeState, nativeStateAroundScreenshot: nativeState(before) && nativeState(after) };
+        before, after, observedNativeState, nativeStateAroundScreenshot: nativeState(before) && nativeState(after),
+        focusedRegion: progressPanel ? "progress-panel" : null, region, regionInViewport, renderedBefore, renderedAfter,
+        nativeProgressVisuallyInViewport: nativeState(before) && nativeState(after) && regionInViewport &&
+          renderedBefore === before.phase && renderedAfter === after.phase };
       totalBytes += record.bytes; captures.push(record); return structuredClone(record);
     } catch (error) {
       try { if (identity) {

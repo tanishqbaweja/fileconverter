@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-10-24 bounded observer first actual run: valid default96frames+requested
+60frames, SSIM/clock/audio/title/language/full decode pass; whole-tree239.15625MiB,
+356samples/0missing. Source matches byteexact proof, original full SHA and owned
+cleanup pass.32,306B lossless raw archive/5small PNGs retained. Review caught
+off-screen progress and unmatched public selector in backend-hook screenshots;
+do NOT call visual equivalence/private selector/UI controls qualified from state
+alone. `evidence/2026-10-24-mpeg2-bounded-visual-initial-review.json`.
+Specific correction selects actual private profile and captures the scrolled
+progress panel with in-viewport bounds/rendered phase/native-state guards.
+27focused/syntax PASS; one changed visual retry next. No native rebuild or
+threshold/quality/baseline/process change; old274MiB/full54/scale remain open.
+
 2026-10-24 previous cycle made concrete native/browser/fixture progress; now
 bounded visual observation implemented rather than repeating unchanged flags.
 Explicit controls-only mode caps5PNGs/16MiB, one capture/no queue, viewport pixel

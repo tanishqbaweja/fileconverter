@@ -1,0 +1,15 @@
+{
+  "receipt": "evidence/2026-10-24T02-11-52.528Z-mpeg2-controls-result.json",
+  "scope": "Headless image review of first bounded-observer run; no headed/manual/native-picker coverage",
+  "inspectedLabels": ["case-1-native", "case-2-terminal"],
+  "finding": "Images show the top of the converter; the actual progress panel is below the viewport. Native state was correctly sampled around captures, but that does not prove visually visible progress. This backend qualification hook also left the public default selector selected, so these images do not qualify the private selector/planner/controls.",
+  "contentValidationPassed": true,
+  "incrementalPrivateMiB": 239.15625,
+  "nativeStateObservationPassed": true,
+  "visibleProgressVerified": false,
+  "fullVisualEquivalenceVerified": false,
+  "correctiveChange": "Select matching private profile and focus the actual progress panel; require in-viewport bounds and rendered phase before/after capture, without delaying conversion or changing accounting.",
+  "publicAcceptance": false,
+  "largeFileAcceptance": false,
+  "headedCoverage": false
+}

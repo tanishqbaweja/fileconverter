@@ -91,3 +91,18 @@ test("events-only diagnostic preserves the full-capture failure and does not pre
   assert.equal(receipts[1].postMeasurementAllocationScope.acceptanceMetric, false);
   assert.equal(receipts[1].postMeasurementAllocationScope.allocationStackAttribution, false);
 });
+test("first bounded run retains genuine content/memory results but not off-screen visual coverage", async () => {
+  const review = JSON.parse(await readFile(new URL("evidence/2026-10-24-mpeg2-bounded-visual-initial-review.json", root)));
+  const receipt = JSON.parse(await readFile(new URL(review.receipt, root))), packed = await readFile(new URL(receipt.archive.path, root));
+  assert.equal(sha(packed), receipt.archive.sha256);
+  const bytes = gunzipSync(packed, { maxOutputLength: 4 * 1048576 }); assert.equal(sha(bytes), receipt.archive.restoredSha256);
+  const raw = JSON.parse(bytes), visuals = receipt.boundedVisualObservation;
+  assert.equal(receipt.memory.incrementalPrivateMiB, 239.15625); assert.equal(raw.diagnosticMemorySamples.length, 356);
+  assert.equal(raw.memory.unavailableSamples.length, 0); assert.equal(receipt.completedCases.length, 2);
+  assert.equal(receipt.fixture.sha256, "e70b76ca98594c4626024a68ad7886e3a9751e4fa1c9e124b616a7ff67e6b740");
+  assert.equal(visuals.captures.length, 5); assert.equal(visuals.totalBytes, 908659);
+  for (const capture of visuals.captures) { const picture = await readFile(new URL(capture.file, root)); assert.equal(sha(picture), capture.sha256); assert.equal(picture.length, capture.bytes); }
+  assert.equal(visuals.captures.filter(c => c.nativeStateAroundScreenshot).length, 2);
+  assert.equal(receipt.boundedVisibleProgressVerified, false); assert.equal(review.visibleProgressVerified, false);
+  assert.equal(review.fullVisualEquivalenceVerified, false); assert.equal(review.headedCoverage, false); assert.equal(review.publicAcceptance, false);
+});
