@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-10-24 resized-property repair is actual-browser correctness VERIFIED, not
+memory/public qualification: default1002738B/96frames identical SHA5bb6592e...;
+requested320x180/15fps/1Mbps/higher333527B/60frames/SSIM.995891/full decode/all
+clocks/AAC hash/title/language PASS at7e614dc. Whole-tree274.25390625MiB FAIL,
+410samples/0missing; peak during unchanged default before controlled conversion,
+large renderer/GPU growth already present after catalogue; cause not yet proven.
+No threshold/baseline/process/quality change. Original full SHA/owned cleanup
+independently verified. Raw2.94MB losslessly retained60,427B, redundant raw removed.
+`evidence/2026-10-24T01-38-25.488Z-mpeg2-controls-result.json`.
+Correct native40050006861 successful and source-bound collected:142pins, actual
+Wasm17->EFBIG then1000bounded replacements; source/pixels/B-policy unchanged.
+New decoder753f30ec..., qualified encodera4ba... unchanged, heaps32+16MiB fixed.
+Portable40050158139/7e614dc SUCCESS1492units/0fail/1skip+19privacy/offline43.5s.
+Next one observer-control diagnosis of renderer/GPU growth (same app/native/
+settings/validators/formula), not an unchanged rebuild or profile promotion.
+Private UI controls remain unexposed; large-file/broader browser/full54 open.
+
 2026-10-24 dispatch correction:40048810064's SUCCESS was workflow core=all, not
 the private repaired core (missing required dispatch input).0private artifacts;
 collector correctly rejected before download. No native/browser repair pass.

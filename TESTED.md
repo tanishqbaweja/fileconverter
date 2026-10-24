@@ -1,5 +1,26 @@
 # Tested conversion ledger
 
+2026-10-24 actual repaired-core controls gate7e614dc: both real browser outputs
+independently VALID, but whole-tree memory FAILED274.25390625MiB (limit250).
+Default1002738B/96frames/SHA5bb6592e... remains byte-identical to e65c020;
+requested320x180@15fps/1Mbps/q2-12 ->333527B/60frames/SHA945e6f77..., SSIM.995891,
+full decode/all clocks max.0214ms/AAC packet hash/title/language PASS. Actual
+requested native settings match. This fixes the resize EFBIG, not public/scale/
+UI-control/memory acceptance.410native samples/0unavailable, peak in first default
+conversion before controlled case; renderer209.738MiB/GPU170.410MiB dominate.
+Native heaps remain48MiB, bounded I/O/one write. No browser flags/baseline/process
+exclusions or quality changes. Original full before/after SHA and independent
+owned process/media/profile/stage cleanup PASS.2.94MB raw->60,427B exact gzip;
+only redundant raw removed, full diagnostics recoverable. Compact receipt
+`evidence/2026-10-24T01-38-25.488Z-mpeg2-controls-result.json`.
+Native build40050006861 actually passed/collected:142sources rechecked,
+32MiB decoder SHA753f30ec..., unchanged qualified a4ba... encoder selected.
+Actual Wasm avutil17copies ->EFBIG(-22);1000replacements stay1 with source/pixel/
+B-policy preservation. `evidence/mpeg2-scaled-properties-build-40050006861.json`.
+Latest portable40050158139/7e614dc SUCCESS1492units/0fail/1skip+19privacy/offline
+43.5s. Next bounded observer-causality control, not unchanged native rebuild or
+browser acceptance rerun; controls remain unexposed pending full memory pass.
+
 2026-10-24 correction:40048810064 succeeded only for default workflow core=all,
 NOT repaired private MPEG-2. I omitted its required input;0private artifacts and
 collector rejected before download. No native/browser repair acceptance. Preserve

@@ -47,7 +47,12 @@ for (const entry of completed) {
   assert.ok(entry.output.ssim >= 0.98); assert.equal(entry.output.fullNativeDecodePassed, true);
   assert.ok(entry.output.videoClocks.maximumVideoPtsErrorSeconds < 0.001);
 }
-if (report.status === "failed") { assert.equal(report.controlsQualification.completed, false); assert.ok(report.failures.length > 0); }
+if (report.status === "failed") {
+  assert.ok(report.failures.length > 0);
+  // Valid files can still fail the whole-browser memory gate. Never turn a
+  // content-complete/memory-failed run into either no conversion or acceptance.
+  assert.equal(report.controlsQualification.completed, completed.length === 2);
+}
 else {
   assert.equal(report.controlsQualification.completed, true); assert.equal(completed.length, 2); assert.deepEqual(report.failures, []);
   assert.ok(report.memory.incrementalPrivateMiB <= 250); assert.equal(report.executedSourcesAndBrowserPinsVerified, true);
@@ -62,7 +67,7 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
   scaledPropertiesBuild: report.scaledPropertiesBuild ?? null, fixture: report.fixture,
   completedCases: completed.map(entry => ({ name: entry.name, requested: entry.requested, reference: entry.reference,
     actualNativeSettings: entry.actualNativeSettings, output: entry.output })),
-  completed: report.controlsQualification.completed, lastTerminal: { type: report.conversion?.type,
+  completed: report.controlsQualification.completed, overallGatePassed: report.status !== "failed", lastTerminal: { type: report.conversion?.type,
     message: report.conversion?.message ?? null, metrics: report.conversion?.metrics ?? null }, failures: report.failures,
   memory: report.memory ?? null, protectedOriginalUnchangedAtExecution: true, cleanup: report.cleanup,
   independentCleanup, publicAcceptance: false, speedComparison: false, rawLosslesslyRecoverable: true };

@@ -72,6 +72,12 @@ acceptance contract. Private engines are not public supported profiles.
    without changing pixels, metadata limits or B-picture policy. New reversible
    native build+actual Wasm probe is the next gate, followed by one changed
    production controls run. This is not yet browser repair/control qualification.
+   Oct24 changed browser run now validates both default and requested resized/
+   FPS/bitrate/quality outputs, but fails whole-tree274.25390625MiB. Peak predates
+   requested control case and is dominated by renderer/GPU growth. Resize EFBIG
+   correctness is repaired; memory/UI-controls/public qualification remains open.
+   Diagnose the captured renderer/GPU growth with one bounded observer control;
+   do not rebuild native unchanged or repeat the same acceptance run blindly.
 
 Exit evidence: B03/B04/B06 applicable original gates and public promotion
 checklist all satisfied. The 36 small VPX conversions and six MPEG-2 full-original
