@@ -64,6 +64,9 @@ test("full-original mode binds exact source and long deadline, journals all nati
   assert.match(driver, /nativeJournal\.peaksExcept\(\["blank"\]\)/);
   assert.match(driver, /incrementalPrivateMiB.*250|privateBytes.*1048576 > 250/s);
   assert.match(driver, /if \(requested\) cancel.click\(\)/);
+  assert.match(driver, /phase: "after-known-budget-failure-before-native-cancel"/);
+  assert.ok(driver.indexOf('phase: "after-known-budget-failure-before-native-cancel"') < driver.indexOf("if (requested) cancel.click()"));
+  assert.match(driver, /processes: peak.processes, captureMs: 8000/);
   assert.match(driver, /compactLosslessNativeMemoryJournal\(coverageFailure/);
   assert.match(driver, /\{ \.\.\.receipt, complete: false, conversionAcceptance: false, failure: coverageFailure \}/);
   assert.ok(driver.indexOf("startActiveMonitor(page);") < driver.indexOf("await page.goto("));
@@ -144,4 +147,20 @@ test("exact-size loader original attempt still fails251MiB; do not turn a lower 
   assert.ok(r.earlyMemoryFailure.cancellation.inputBytes > 0 && r.earlyMemoryFailure.cancellation.outputBytes > 0);
   assert.equal(receipt.protectedOriginalUnchangedAtExecution, true); assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true);
   assert.equal(receipt.losslessNativeJournalReplayVerified, true); assert.equal(receipt.speedComparison, false);
+});
+test("progress isolation still fails the exact limit with complete386-record evidence", async () => {
+  const root = new URL("../", import.meta.url), hash = b => createHash("sha256").update(b).digest("hex");
+  const receipt = JSON.parse(await readFile(new URL("evidence/2026-10-24T07-13-40.577Z-mpeg2-original-result.json", root)));
+  const packed = await readFile(new URL(receipt.archive.path, root)); assert.equal(hash(packed), receipt.archive.sha256);
+  const reportBytes = gunzipSync(packed); assert.equal(hash(reportBytes), receipt.archive.restoredSha256); const r = JSON.parse(reportBytes);
+  const j = receipt.losslessMemoryJournal, archive = await readFile(new URL("output/playwright/2026-10-24T07-13-40.577Z-mpeg2-original-memory.ndjson.gz", root));
+  assert.equal(hash(archive), j.archiveSha256); const bytes = gunzipSync(archive); assert.equal(hash(bytes), j.sha256);
+  const rows = bytes.toString("utf8").trim().split("\n").map(line => JSON.parse(line).sample);
+  assert.equal(rows.length, 386); assert.ok(rows.every((s, i) => s.sequence === i + 1 && s.privateBytes !== null));
+  for (const s of rows) assert.equal(s.privateBytes, s.processes.reduce((n, p) => n + p.privateBytes, 0));
+  const peak = rows.filter(s => s.phase !== "blank").reduce((a, b) => a.privateBytes > b.privateBytes ? a : b);
+  assert.equal((peak.privateBytes - r.blankBaseline.privateBytes) / 1048576, 250.41015625);
+  assert.equal(receipt.overallGatePassed, false); assert.equal(receipt.completedCases.length, 0);
+  assert.equal(r.earlyMemoryFailure.cancellation.requested, true); assert.equal(receipt.publicAcceptance, false);
+  assert.equal(receipt.protectedOriginalUnchangedAtExecution, true); assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true);
 });

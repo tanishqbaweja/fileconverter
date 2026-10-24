@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-24 progress containment original2c4d641 still FAILED250.41015625MiB;
+native Cancel/owned cleanup/original hash PASS,0complete outputs. Narrowly lower
+single observation does not prove savings or acceptance. Lossless report34,233B
+retained, raw removed. `evidence/2026-10-24T07-13-40.577Z-mpeg2-original-result.json`.
+Next one bounded allocator diagnosis at the first known failure, BEFORE retiring
+native worker, to distinguish native/V8/malloc/partition/GPU contributions.
+Explicit --memory-failure-allocators/8s cap; sampling/full-tree formula continues
+including diagnostic perturbation. Trace is non-acceptance, overlapping counters
+not summed and not allocation stacks. No further cosmetic changes without this
+evidence. Previous portable40073303260/2c4d641 independently SUCCESS.
+
 2026-10-24 exact-size loader original attempt a68bdd8 still FAILS251.5859375MiB
 (not acceptance/causal savings versus260.10546875). Same original/native/settings,
 new manifest5716027B+675411B. Real Cancel after2227704B read/1076864B output,

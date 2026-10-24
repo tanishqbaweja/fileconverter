@@ -122,6 +122,15 @@ if (allocation?.archive) {
   assert.equal(allocation.acceptanceMetric, false); assert.equal(allocation.perturbsMemory, true);
   allocationArchive = { ...allocation.archive, path: path.relative(root, target).replaceAll(path.sep, "/"), recordedAbsolutePath: allocation.archive.path };
 }
+let failureAllocationArchive = null;
+if (report.failureMemoryAllocators?.archive) {
+  const diagnostic = report.failureMemoryAllocators, record = diagnostic.archive, target = path.resolve(root, record.path);
+  assert.ok(target.startsWith(path.join(root, "output/playwright") + path.sep));
+  assert.equal(diagnostic.acceptanceMetric, false); assert.equal(diagnostic.perturbsMemory, true); assert.equal(diagnostic.allocationStackAttribution, false);
+  const packed = await readFile(target); assert.equal(packed.length, record.bytes); assert.equal(sha(packed), record.sha256);
+  const restored = gunzipSync(packed, { maxOutputLength: 8 * 1048576 }); assert.equal(restored.length, record.restoredBytes); assert.equal(sha(restored), record.restoredSha256);
+  failureAllocationArchive = { ...record, path: path.relative(root, target).replaceAll(path.sep, "/"), recordedAbsolutePath: record.path };
+}
 const visual = report.boundedVisualObservation ?? null;
 if (visual) {
   assert.ok(visual.maximumCaptures <= 7 && visual.captures.length <= visual.maximumCaptures && visual.attempts <= visual.maximumCaptures && visual.totalBytes <= 16 * 1048576);
@@ -177,6 +186,9 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
   boundedVisualObservation: visual,
   boundedVisibleProgressVerified: visual ? visual.captures.some(capture => capture.nativeProgressVisuallyInViewport === true) : false,
   postMeasurementAllocationArchive: allocationArchive,
+  failureAllocationArchive,
+  failureAllocationScope: report.failureMemoryAllocators ? { status: report.failureMemoryAllocators.status, acceptanceMetric: false,
+    perturbsMemory: true, allocationStackAttribution: false, primaryGateHadAlreadyFailed: true } : null,
   postMeasurementAllocationScope: allocation ? { status: allocation.status, acceptanceMetric: allocation.acceptanceMetric,
     perturbsMemory: allocation.perturbsMemory, allocationStackAttribution: allocation.allocationStackAttribution } : null,
   completedCases: completed.map(entry => ({ name: entry.name, requested: entry.requested, reference: entry.reference,

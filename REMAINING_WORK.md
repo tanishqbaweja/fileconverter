@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-24 progress isolation2c4d641 original still FAIL250.41015625MiB, actual
+Cancel/cleanup/original hash pass,0complete outputs. Lower single value is not
+causal savings or qualification. Lossless34,233B report retained, raw removed.
+`evidence/2026-10-24T07-13-40.577Z-mpeg2-original-result.json`. Next one bounded
+live allocator dump BEFORE native cancellation at the known memory failure.
+8s cap, full native sampling/formula remains, all perturbation counted; explicitly
+diagnostic-only/no summed overlapping counters or allocation-stack claim. Use
+that evidence before further UI/native changes. Full54 remain OPEN.
+
 2026-10-24 exact-asset-size original a68bdd8 remains FAIL251.5859375MiB.408valid
 lossless rows/0missing, actual native cancellation/owned cleanup/original full
 SHA pass,0complete outputs. Lower single observation is not causal savings or

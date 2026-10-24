@@ -36,7 +36,7 @@ import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls", "--ui-batch", "--original"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--memory-failure-allocators", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls", "--ui-batch", "--original"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
 const uiControls = flags.has("--ui-controls");
 const fullOriginal = flags.has("--original");
 assert.ok(!fullOriginal || (!flags.has("--ui") && !flags.has("--controls") && flags.has("--bounded-visual-capture")), "Original is one explicit full-file production gate");
@@ -52,6 +52,8 @@ assert.ok(scaledBuildRunId === null || flags.has("--controls") || uiControls || 
 assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
 assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
+const failureAllocators = flags.has("--memory-failure-allocators");
+assert.ok(!failureAllocators || (fullOriginal && diagnose && !flags.has("--post-measurement-allocators")), "Failure allocator dump is a separate bounded original diagnosis");
 const boundedVisual = flags.has("--bounded-visual-capture"), continuousVisual = !eventsOnly && !boundedVisual;
 assert.ok(!boundedVisual || (diagnose && (flags.has("--controls") || uiControls || storageRecovery || uiBatch || fullOriginal) && !eventsOnly), "Bounded visual observer is one explicit finite gate, not implicit acceptance");
 const recovery = flags.has("--recovery") || storageRecovery;
@@ -157,6 +159,18 @@ const startActiveMonitor = page => {
         if (peak && (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 > 250) {
           report.earlyMemoryFailure = { peak, incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576,
             reason: "Stop spending hours on a known failed primary memory gate; no threshold, baseline or process exclusion change" };
+          if (failureAllocators) {
+            // The primary gate has already failed. Keep recording its true
+            // complete-tree peak, including perturbation; never turn this
+            // diagnostic into a passing memory/speed or allocation-stack claim.
+            report.memoryFailureDiagnosticPerturbsMeasurement = true;
+            try {
+              report.failureMemoryAllocators = await captureLiveMemoryInfra({ session: await browser.newBrowserCDPSession(),
+                phase: "after-known-budget-failure-before-native-cancel", processes: peak.processes, captureMs: 8000,
+                archivePath: path.join(root, "output/playwright", report.startedAt.replaceAll(":", "-") + "-original-failure-allocators.json.gz") });
+            } catch (error) { report.failureMemoryAllocators = { status: "unavailable", error: String(error).slice(0, 1024),
+              acceptanceMetric: false, perturbsMemory: true }; }
+          }
           const observations = await Promise.allSettled([captureAttribution("memory-limit-failure"), page.evaluate(() => {
             const state = window.__WITHIN_TEST__?.getState(), cancel = document.querySelector("button.cancel");
             const requested = state?.jobState === "running" && cancel instanceof HTMLButtonElement && !cancel.disabled;
