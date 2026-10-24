@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+First normal launch acd6f35 stopped on optional Browser.getBrowserCommandLine
+before conversion/disk proof. No automation flag added: remove that optional
+query and record root birth identity immediately. Failed receipt explicitly
+corrects incomplete cleanup-root coverage (server only, browser birth absent).
+32focused/lint PASS; prior CI40097138439/acd6f35 SUCCESS. Next one corrected
+normal-context physical-canary/original gate; no conversion result claimed yet.
+
 Late diagnostic20d88d1 terminal300.0703125MiBFAIL/934valid rows/0missing,
 16renderer native samples and empty browser profile;0outputs/cleanup PASS.
 Found concrete test-context mismatch: browser.newContext is incognito and

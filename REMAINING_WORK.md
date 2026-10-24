@@ -1,5 +1,21 @@
 # Remaining work audit
 
+Latest correction:32focused tests/lint/diff PASS. CI40097138439/acd6f35
+independently SUCCESS; this does not pass the failed local setup or disk proof.
+
+acd6f35 first normal-context attempt stopped BEFORE sampling/conversion because
+Browser.getBrowserCommandLine requires an automation flag not enabled by this
+installed browser.0outputs/memorynull/no disk proof,6,070B exact raw archive.
+No browser flag added. Optional query removed; root PID+birth now recorded
+immediately from SystemInfo/native identity before further inspection. The
+receipt corrects the raw cleanup overclaim: only server birth was recorded;
+browser birth-identity absence is UNVERIFIED despite API close/owned scratch
+removal. Original unchanged. Receipt:
+`evidence/2026-10-24T13-12-26.461Z-mpeg2-original-result.json`.
+Normal context still must pass physical64B canary and unchanged full-original
+native/quality/full-tree gates. Next one corrected setup run, not changed codec,
+repeat late trace, service flags or retroactive cleanup/acceptance claim.
+
 Normal-context correction preflight:31focused PASS (including all405 unchanged
 catalogue card contents/order), TypeScript --noEmit PASS, lint PASS. Actual
 disk-backed original run remains the next gate, not yet acceptance evidence.

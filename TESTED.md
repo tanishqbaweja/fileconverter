@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+acd6f35 normal-context setup FAILED before conversion: optional command-line
+CDP query unavailable without --enable-automation.0outputs/memorynull/disk proof
+not reached. Raw18,105B retained6,070B gzip and raw removed; original unchanged.
+Historical raw cleanup boolean only covered one recorded server identity, not
+browser birth; receipt now explicitly marks complete ownership coverage false.
+Optional query removed without adding flags; browser birth identity recorded
+earlier before any further setup. Next corrected physical-canary/original gate.
+
+
 20d88d1 actual late native diagnosis FAIL300.0703125MiB/934valid rows/0missing/
 0outputs. Renderer16samples, browser0samples explicitly empty/uninformative.
 Native Cancel/original full SHA/owned cleanup PASS. Raw1,374,708B losslessly

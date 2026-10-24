@@ -47,6 +47,7 @@ const independentCleanup = [];
 for (const observation of report.cleanup.processObservations) {
   const result = await observeOwnedProcessExit(observation.identity); assert.equal(result.status, "owned-identity-absent"); independentCleanup.push(result);
 }
+if (fullOriginal && report.status !== "failed") assert.ok(independentCleanup.length >= 3, "Successful original qualification requires server/browser/monitor birth identities");
 for (const directory of [report.cleanup.scratchRemoved, ...report.cleanup.generatedDirectoriesRemoved]) {
   const target = path.resolve(root, directory);
   assert.ok(target.startsWith(path.join(root, "work") + path.sep) || target.startsWith(path.join(root, "dist/client/engines") + path.sep));
@@ -221,7 +222,10 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
     actualNativeSettings: entry.actualNativeSettings, output: entry.output })),
   completed: qualification.completed, overallGatePassed: report.status !== "failed", lastTerminal: { type: report.conversion?.type,
     message: report.conversion?.message ?? null, metrics: report.conversion?.metrics ?? null }, failures: report.failures,
-  memory: report.memory ?? null, protectedOriginalUnchangedAtExecution: true, cleanup: report.cleanup,
+  memory: report.memory ?? null, protectedOriginalUnchangedAtExecution: true,
+  cleanup: { ...report.cleanup, reportedAllOwnedProcessesAbsent: report.cleanup.allOwnedProcessesAbsent,
+    rootIdentityCoverageComplete: fullOriginal ? independentCleanup.length >= 3 : null,
+    allOwnedProcessesAbsent: report.cleanup.allOwnedProcessesAbsent && (!fullOriginal || independentCleanup.length >= 3) },
   independentlyRecomputedObservedMemory,
   independentCleanup, publicAcceptance: false, speedComparison: false, rawLosslesslyRecoverable: true };
 await writeFile(receiptPath, JSON.stringify(receipt, null, 2) + "\n", { flag: "wx" });

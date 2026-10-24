@@ -1,0 +1,209 @@
+{
+  "schemaVersion": 1,
+  "head": "acd6f35c0417a77ce2cf3f6813f94fdc9ec94d4e",
+  "status": "failed",
+  "startedAt": "2026-10-24T13:12:26.461Z",
+  "finishedAt": "2026-10-24T13:13:00.653Z",
+  "scope": "One exact full-original current-production attempt, including failures; not repeated stress, near10GB, OS-picker or public acceptance",
+  "archive": {
+    "path": "outputs/reports/2026-10-24T13-12-26.461Z-mpeg2-production-runtime.json.gz",
+    "bytes": 6070,
+    "sha256": "229b40ac6471919d277060c8945a4c300872d3e49d85ba30eacb8376952845c9",
+    "restoredBytes": 18105,
+    "restoredSha256": "73ad9febfe059885a513e4223d029b32fa0c8e0d0367e5a7c5b95ee56f9e920d"
+  },
+  "sourcePins": 52,
+  "recordedSourcesMatchHistoricalGitHead": true,
+  "native": [
+    {
+      "source": "work\\mpeg2-scaled-properties-40050006861\\within-mpeg2-split.mjs",
+      "sha256": "d4ec481a93a1b087c96aa11948ab9a98ccf6d09237ed143c022bf76bf6c31506",
+      "bytes": 65707
+    },
+    {
+      "source": "work\\mpeg2-scaled-properties-40050006861\\within-mpeg2-split.wasm",
+      "sha256": "753f30ec607f64312b73121160ce46df14c5a712f0cb21bbc9e9da5292414017",
+      "bytes": 5716027
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.mjs",
+      "sha256": "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e",
+      "bytes": 68202
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.wasm",
+      "sha256": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee",
+      "bytes": 675411
+    }
+  ],
+  "scaledPropertiesBuild": {
+    "path": "evidence/mpeg2-scaled-properties-build-40050006861.json",
+    "sha256": "17077055747d67d3c519807311b1aa0291df316ecaca3fcfe573a8549492dab1",
+    "runId": "40050006861",
+    "executedHead": "955d3e61d0e867d99901ab244f8c4eda9b8d4620",
+    "allBuildSourcesRechecked": true,
+    "buildSourceCount": 142,
+    "encoderUnchanged": true,
+    "publicAcceptance": false
+  },
+  "fixture": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "video": "hevc",
+    "width": 1920,
+    "height": 804,
+    "frames": 296160,
+    "completeOriginal": true
+  },
+  "uiControlsQualification": null,
+  "uiQualification": null,
+  "uiBatchQualification": null,
+  "originalQualification": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "width": 1920,
+    "height": 804,
+    "frames": 296160,
+    "frameRate": "24/1",
+    "maximumConversionMs": 21600000,
+    "validatorDeadlineMs": 7200000,
+    "publicAcceptance": false,
+    "repeatedStressAcceptance": false,
+    "completed": false,
+    "currentProductionPipeline": true,
+    "actualConvertButton": false,
+    "nativeOsPickerCovered": false,
+    "near10GBScalingCovered": false
+  },
+  "losslessMemoryJournal": null,
+  "losslessNativeJournalReplayVerified": false,
+  "incompleteLosslessMemoryJournal": null,
+  "recoveryQualification": null,
+  "storageRecoveryQualification": null,
+  "observer": {
+    "allocationDiagnostics": true,
+    "screenshots": false,
+    "snapshots": false,
+    "sources": true,
+    "boundedVisualCapture": true,
+    "controlScope": "bounded real-state visual evidence, not route promotion"
+  },
+  "diagnosticObserverOnly": false,
+  "boundedVisualObservation": null,
+  "boundedVisibleProgressVerified": false,
+  "postMeasurementAllocationArchive": null,
+  "failureAllocationArchive": null,
+  "failureAllocationScope": null,
+  "nativeAllocationArchive": null,
+  "browserNativeAllocationArchive": null,
+  "browserNativeAllocationProfile": null,
+  "nativeProfileWindowMs": null,
+  "storageContext": null,
+  "nativeAllocationProfile": null,
+  "nativeProfileDiagnosticOnly": false,
+  "nativeProfileFiniteStop": null,
+  "protocolMethodCounts": null,
+  "protocolMethodObserverBinding": null,
+  "boundedNetworkObserver": {
+    "scope": "automation-only response-body buffer limits; request/response events remain enabled",
+    "launches": 1,
+    "launchMethod": "_innerLaunchWithRetries",
+    "networkEnables": 1,
+    "limits": {
+      "maxTotalBufferSize": 1048576,
+      "maxResourceBufferSize": 131072
+    },
+    "vendorFilesModified": false,
+    "browserFlagsChanged": false,
+    "networkDisabled": false,
+    "networkDisables": 0,
+    "bodyRequestsMade": 0,
+    "acceptanceMetric": false
+  },
+  "boundedNetworkObserverBinding": {
+    "playwrightVersion": "1.62.1",
+    "bundleSha256": "9393fa79e1c67c74edc26b610d65a4f7ed73d345a762465cc88340a33a2454ac",
+    "diagnosticOnly": false
+  },
+  "networkObservation": {
+    "requestsObserved": 0,
+    "forbiddenRequests": [],
+    "sameOriginGetOnly": true,
+    "responseBodiesRequestedForPrivacy": false,
+    "bodyRetentionLimitsDoNotDisableEvents": true
+  },
+  "postMeasurementAllocationScope": null,
+  "completedCases": [],
+  "completed": false,
+  "overallGatePassed": false,
+  "lastTerminal": {
+    "message": null,
+    "metrics": null
+  },
+  "failures": [
+    "cdpSession.send: Protocol error (Browser.getBrowserCommandLine): Command line not returned because --enable-automation not set.\n    at H:\\Github Repositories\\fileconverter\\scripts\\test-mpeg2-production-runtime.mjs:350:45",
+    "Network observer cleanup: AssertionError [ERR_ASSERTION]: Page and worker network observation must remain enabled"
+  ],
+  "memory": null,
+  "protectedOriginalUnchangedAtExecution": true,
+  "cleanup": {
+    "processObservations": [
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 41004,
+          "parentPid": 37108,
+          "createdAt": "2026-10-24T13:12:51.0908820Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-24T13:12:55.115Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 467,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    ],
+    "disposableOutputDeleted": true,
+    "generatedDirectoriesRemoved": [
+      "dist\\client\\engines\\mpeg2"
+    ],
+    "scratchRemoved": "work\\mpeg2-production-runtime-IK6LUw",
+    "allOwnedProcessesAbsent": false,
+    "reportedAllOwnedProcessesAbsent": true,
+    "rootIdentityCoverageComplete": false
+  },
+  "independentlyRecomputedObservedMemory": null,
+  "independentCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 41004,
+        "parentPid": 37108,
+        "createdAt": "2026-10-24T13:12:51.0908820Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T13:16:20.905Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 545,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "publicAcceptance": false,
+  "speedComparison": false,
+  "rawLosslesslyRecoverable": true
+}

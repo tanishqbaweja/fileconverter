@@ -338,7 +338,7 @@ try {
     await pause(500);
   }
   assert.equal(ready, true, serverLog);
-  let launchedBrowserPid, profileDirectory;
+  let launchedBrowserPid, profileDirectory, browserIdentity;
   if (persistentOpfsContext) {
     profileDirectory = path.join(work, "chrome-profile"); await mkdir(profileDirectory);
     context = await chromium.launchPersistentContext(profileDirectory, { executablePath: browserPin.launcher.path, headless: true, env, serviceWorkers: "block" });
@@ -347,19 +347,19 @@ try {
     try {
       const info = await identitySession.send("SystemInfo.getProcessInfo"), roots = info.processInfo.filter(row => row.type === "browser");
       assert.equal(roots.length, 1); launchedBrowserPid = Number(roots[0].id); assert.ok(Number.isSafeInteger(launchedBrowserPid) && launchedBrowserPid > 0);
-      const command = await identitySession.send("Browser.getBrowserCommandLine");
-      assert.ok(command.arguments.includes("--user-data-dir=" + profileDirectory)); assert.ok(!command.arguments.includes("--incognito"));
+      browserIdentity = await queryProcessIdentity(launchedBrowserPid); assert.ok(browserIdentity); processIdentities.push(browserIdentity);
       report.storageContext = { mode: "fresh-persistent-normal-context", ownedProfile: path.relative(root, profileDirectory),
-        browserPidFromCdp: launchedBrowserPid, explicitIncognitoFlag: false, diskBackingVerified: false };
+        browserPidFromCdp: launchedBrowserPid, birthIdentity: browserIdentity, incognitoContextRequested: false,
+        commandLineRequested: false, diskBackingVerified: false };
     } finally { await identitySession.detach(); }
   } else {
     browserServer = await chromium.launchServer({ executablePath: browserPin.launcher.path, headless: true, env });
     launchedBrowserPid = browserServer.process().pid;
+    browserIdentity = await queryProcessIdentity(launchedBrowserPid); assert.ok(browserIdentity); processIdentities.push(browserIdentity);
     browser = await chromium.connect(browserServer.wsEndpoint());
     context = await browser.newContext({ serviceWorkers: "block" });
     report.storageContext = { mode: "isolated-incognito-context", diskBackingVerified: false, opfsMayBeMemoryBacked: true };
   }
-  const browserIdentity = await queryProcessIdentity(launchedBrowserPid); assert.ok(browserIdentity); processIdentities.push(browserIdentity);
   browserRootPid = browserIdentity.pid;
   await context.addInitScript({ content: "Object.defineProperty(globalThis, '__WITHIN_ENCODE_RUNTIME_CHUNK__', { value: (" + encodeBoundedValidationChunk.toString() + ") });" });
   assert.ok(context.pages().length <= 1); const page = context.pages()[0] ?? await context.newPage();
