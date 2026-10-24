@@ -66,6 +66,12 @@ acceptance contract. Private engines are not public supported profiles.
    fallbacks and remain hidden from normal public selection. Headless directory
    adapter is not native OS-picker/manual coverage; options, broader private UI
    failure/batch/preservation and original/scale/browser gates remain open.
+   Requested controls subsequently reached native settings correctly but resize
+   failed EFBIG. Actual avutil probe reproduced stale side-data accumulation on
+   the reused scaler frame; bounded replacement passed1000synthetic iterations
+   without changing pixels, metadata limits or B-picture policy. New reversible
+   native build+actual Wasm probe is the next gate, followed by one changed
+   production controls run. This is not yet browser repair/control qualification.
 
 Exit evidence: B03/B04/B06 applicable original gates and public promotion
 checklist all satisfied. The 36 small VPX conversions and six MPEG-2 full-original

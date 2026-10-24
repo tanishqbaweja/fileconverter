@@ -1,5 +1,28 @@
 # Remaining work audit
 
+2026-10-24 previous user-ETA turn was status-only/no implementation progress.
+Current next safe action is concrete native scaler-property correction, not
+another unchanged browser test. Actual installed avutil probe reproduces17entry
+accumulation/EFBIG and verifies1000bounded replacements with unchanged pixels,
+source properties and B-picture policy; old dictionary is removed. Probe report
+`evidence/2026-10-24T01-12-11.883Z-mpeg2-scaled-properties-native.json`.
+New reversible source/build/collector derivative retains fixed heaps, original
+kernel/builders,16side-data/64KiB guards, codec/settings/I/O, and unchanged separate
+encoder gates. Same actual Wasm avutil probe added before changed core compile.
+13focused/TS/lint PASS; build and production browser repair NOT yet verified.
+No user media touched; all owned compiler/executable scratch removed.
+
+Oct23 second e65c020 controls run passed default1002738B/96frames/SSIM.989061/
+full decode/clock/AAC hash/title/language but requested320x180@15fps/1Mbps/higher
+failed EFBIG after actual requested settings matched.0validated controlled
+outputs; overall memory/control/UI release acceptance remains OPEN. Native
+reproduction identifies a concrete lifecycle bug, not yet browser repair or
+proof that B-frame warnings share the same cause. Original full SHA and all
+owned process/media/profile/stage cleanup PASS; raw report retained under
+`outputs/reports/2026-10-23T15-52-18.420Z-mpeg2-production-runtime.json`.
+Hosted39982031065/e65c020 independently confirmed SUCCESS; not a control pass.
+Keep completed unchanged integration gates closed and original54/B02-B09 open.
+
 2026-10-23 first --controls16fa570 browser gate failed before save: native
 encoding reached handoff but new scalar-audit object was outside strict metric
 schema.0accepted outputs/no memory/control acceptance. Original full SHA and all

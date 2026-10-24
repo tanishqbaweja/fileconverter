@@ -1,5 +1,32 @@
 # Tested conversion ledger
 
+2026-10-24 resized-frame defect now reproduced with actual installed avutil:
+17 repeated property copies accumulate17side-data entries and the unchanged
+production16entry wire guard returns EFBIG. Replacement first frees old side data
+and dictionary, then copies current properties;1000iterations stay at1entry,
+preserve source/pixel bytes/storage/references and remove stale metadata. B-frame
+picture policy is deliberately unchanged. Symbolic EFBIG checked portably rather
+than assuming Windows errno numbers in Wasm. Latest synthetic native proof:
+`evidence/2026-10-24T01-12-11.883Z-mpeg2-scaled-properties-native.json`.
+Earlier warning-only compile failure and earlier successful probe retained.
+No media conversion or native FFmpeg substitution; owned executable scratch gone.
+New reversible JSPI build derivative changes only scaler-property call+include;
+original pinned kernel/builders and property limits stay byte-identical. It adds
+the same real Wasm avutil regression before compile and source-bound collection.
+13focused tests/TypeScript/lint PASS; hosted build/browser repair still pending.
+
+Second real e65c020 --controls run (Oct23) passed default independently:
+1002738B/96frames/SSIM.989061/max.0214ms clock error/AAC hash/title/language/full
+decode. Requested320x180@15fps/1Mbps/q2-12 matched actual native settings, but
+FAILED EFBIG after262144B input/78536B partial output; no validated control output,
+overall memory acceptance or UI-control release. Browser warnings also mention
+B-frames; those are not proven to be the EFBIG cause or silently changed here.
+`outputs/reports/2026-10-23T15-52-18.420Z-mpeg2-production-runtime.json`.
+Original full SHA and owned process/output/profile/stage cleanup all PASS.
+Portable39982031065/e65c020 SUCCESS is separate, not browser-control acceptance.
+Next changed native build then one production controls gate, not an unchanged
+browser/default rerun. Full54/B02-B09/original-scale/public gates remain open.
+
 2026-10-23 first --controls16fa570 actual run FAILED at completed-stage handoff:
 new bounded encoder-settings object was correctly rejected by the old numeric-
 only schema. Default native encoding reached handoff;0accepted/validated outputs,

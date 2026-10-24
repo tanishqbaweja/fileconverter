@@ -1,0 +1,21 @@
+{
+  "scope": "Actual installed libavutil API/property-wire behavior; no media/browser conversion or native-core rebuild",
+  "startedAt": "2026-10-23T15:59:47.969Z",
+  "publicAcceptance": false,
+  "sources": {
+    "media/ffmpeg/mpeg2-scaled-frame-properties.h": "537f2a398e32135a6baba4d8f0fe40c2e832e2e8b063bafe895315077784a0fc",
+    "media/ffmpeg/mpeg2-split-frame-properties.h": "d5591df913d50ac261c72846666efa0c27c28b996b4b44343fd060081e864a02",
+    "media/ffmpeg/mpeg2-candidate.c": "67d3b8299a9e695ea68f96fdcc51d3f5ba5a694547b3f8288e740990c5f7eac0",
+    "tests/native/mpeg2-scaled-frame-properties.c": "d33bc2243d1c9bcd07a1921bf29eb6a99728651c45b638434b61ecc7985a3524",
+    "scripts/check-mpeg2-scaled-properties-native.mjs": "fdac9e604995330700e61e1a0ba655e9a2fd8f1067811f3381f5783e48929b0c"
+  },
+  "native": {
+    "H:/LLVM-MinGW/llvm-mingw-20260616-ucrt-x86_64/bin/clang.exe": "a8b7a614eeadd9105f814be3701a7f312cda4cea51751b75b408c16100c94e85",
+    "C:\\ffmpeg\\include\\libavutil\\frame.h": "b6fe14ba96dd0541bfb7c9c26ba97eb3acdbd051fba87f854fc1b8fb147a8922",
+    "C:\\ffmpeg\\bin\\avutil-60.dll": "c4090c00550653c1a9c908a0231ab5c741a97ff00638411fd142bba86d788226"
+  },
+  "status": "failed",
+  "failure": "Error: Command failed: H:/LLVM-MinGW/llvm-mingw-20260616-ucrt-x86_64/bin/clang.exe tests/native/mpeg2-scaled-frame-properties.c -std=c11 -Wall -Wextra -Werror -Wno-unused-function -O2 -IC:\\ffmpeg\\include C:\\ffmpeg\\lib\\libavutil.dll.a -o H:\\Github Repositories\\fileconverter\\work\\mpeg2-scaled-properties-native-Q4Id3h\\probe.exe\nIn file included from tests/native/mpeg2-scaled-frame-properties.c:7:\r\ntests/native/../../media/ffmpeg/mpeg2-split-frame-properties.h:98:56: error: comparison of integers of different signs: 'const int' and 'unsigned int' [-Werror,-Wsign-compare]\r\n   98 |     if (frame->nb_side_data < 0 || frame->nb_side_data > WITHIN_SPLIT_PROPS_SIDE_LIMIT ||\r\n      |                                    ~~~~~~~~~~~~~~~~~~~ ^ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\r\ntests/native/../../media/ffmpeg/mpeg2-split-frame-properties.h:223:72: error: comparison of integers of different signs: 'const uint32_t' (aka 'const unsigned int') and 'int' [-Werror,-Wsign-compare]\r\n  223 |         AV_RL32(wire + 12) != destination->width || AV_RL32(wire + 16) != destination->height ||\r\n      |                                                     ~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~~~~~~~~~~\r\ntests/native/../../media/ffmpeg/mpeg2-split-frame-properties.h:223:28: error: comparison of integers of different signs: 'const uint32_t' (aka 'const unsigned int') and 'int' [-Werror,-Wsign-compare]\r\n  223 |         AV_RL32(wire + 12) != destination->width || AV_RL32(wire + 16) != destination->height ||\r\n      |         ~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~~~~~~~~~\r\n3 errors generated.\r\n\n    at genericNodeError (node:internal/errors:985:15)\n    at wrappedFn (node:internal/errors:539:14)\n    at ChildProcess.exithandler (node:child_process:417:12)\n    at ChildProcess.emit (node:events:508:28)\n    at maybeClose (node:internal/child_process:1101:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:305:5)",
+  "scratchRemoved": true,
+  "finishedAt": "2026-10-23T15:59:50.918Z"
+}

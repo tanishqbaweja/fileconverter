@@ -1,0 +1,34 @@
+{
+  "scope": "Actual installed libavutil API/property-wire behavior; no media/browser conversion or native-core rebuild",
+  "startedAt": "2026-10-24T01:02:12.847Z",
+  "publicAcceptance": false,
+  "sources": {
+    "media/ffmpeg/mpeg2-scaled-frame-properties.h": "537f2a398e32135a6baba4d8f0fe40c2e832e2e8b063bafe895315077784a0fc",
+    "media/ffmpeg/mpeg2-split-frame-properties.h": "d5591df913d50ac261c72846666efa0c27c28b996b4b44343fd060081e864a02",
+    "media/ffmpeg/mpeg2-candidate.c": "67d3b8299a9e695ea68f96fdcc51d3f5ba5a694547b3f8288e740990c5f7eac0",
+    "tests/native/mpeg2-scaled-frame-properties.c": "d3a4088066e977f887a761a01c8fe23d28933d5ff644910f49b9e01e7b611dba",
+    "scripts/check-mpeg2-scaled-properties-native.mjs": "824c729bf38355ded9aba0725530dc6cb0727cac9ab2d55827d8703159281435"
+  },
+  "native": {
+    "H:/LLVM-MinGW/llvm-mingw-20260616-ucrt-x86_64/bin/clang.exe": "a8b7a614eeadd9105f814be3701a7f312cda4cea51751b75b408c16100c94e85",
+    "C:\\ffmpeg\\include\\libavutil\\frame.h": "b6fe14ba96dd0541bfb7c9c26ba97eb3acdbd051fba87f854fc1b8fb147a8922",
+    "C:\\ffmpeg\\bin\\avutil-60.dll": "c4090c00550653c1a9c908a0231ab5c741a97ff00638411fd142bba86d788226"
+  },
+  "behavior": {
+    "status": "passed-native-scaled-property-lifecycle",
+    "libavutilVersion": 3938404,
+    "oldCopies": 17,
+    "oldSideData": 17,
+    "oldWireResult": -27,
+    "correctedCopies": 1000,
+    "maximumCorrectedSideData": 1,
+    "pixelStorageAndBytesUnchanged": true,
+    "sourcePropertiesPreserved": true,
+    "staleDictionaryRemoved": true,
+    "bFramePolicyUnchanged": true,
+    "mediaConversions": 0
+  },
+  "status": "passed",
+  "scratchRemoved": true,
+  "finishedAt": "2026-10-24T01:02:16.781Z"
+}
