@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-24 next actual-UI batch gate implemented: --ui-batch selects the same
+real canonical source twice (duplicate names), uses one actual Convert click,
+requires native work at each batch index, two distinct nonempty outputs and no
+stages. Both destinations independently decoded/frame/clock/SSIM/audio/metadata
+validated via bounded export; final metrics explicitly describe last item only.
+Static manifests twice/code binaries once required, repaired core unchanged.
+28focused/lint PASS; real browser run next, not broad batch failure/reload/
+original-scale coverage. Previous portable40069191378/ac99383 now SUCCESS.
+
 2026-10-24 actual storage fault/retry functional coverage VERIFIED at ac99383,
 but whole run remains FAILED for missing active screenshot: file reselection
 reset visible profile to public while backend qualification correctly used MPEG-2.

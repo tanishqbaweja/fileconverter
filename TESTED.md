@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-24 real two-file UI batch gate implemented, browser proof pending:
+same canonical file selected twice, one actual button, native observations for
+indices0+1, distinct outputs, separate independent validators, no stages, bounded
+observer and complete-tree250MiB. One/two-file helper keeps terminal metrics
+scoped to final item and rejects collisions/missing native work. No media replay
+for previous storage screenshot failure; this tests missing real batch sequencing.
+28focused/lint PASS; prior portable40069191378/ac99383 independently SUCCESS,
+not evidence that this changed batch driver has executed.
+
 2026-10-24 actual storage recovery at ac99383: injected quota/permission errors
 after512KiB real final write both rollback existing destination, delete stage and
 retire saver. Both retry outputs independently match canonical11a53d67...,

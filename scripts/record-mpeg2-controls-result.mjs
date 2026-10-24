@@ -21,9 +21,10 @@ assert.ok(identity.isFile() && !identity.isSymbolicLink() && identity.size > 0n 
 assert.equal(await realpath(rawPath), rawPath);
 const raw = await readFile(rawPath), report = JSON.parse(raw), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const storageRecovery = Boolean(report.storageRecoveryQualification);
-const qualification = storageRecovery ? report.recoveryQualification : report.controlsQualification;
+const uiBatch = Boolean(report.uiBatchQualification);
+const qualification = storageRecovery ? report.recoveryQualification : uiBatch ? report.uiBatchQualification : report.controlsQualification;
 const receiptPath = path.join(root, "evidence", path.basename(relative).replace("-mpeg2-production-runtime.json",
-  storageRecovery ? "-mpeg2-storage-recovery-result.json" : "-mpeg2-controls-result.json"));
+  storageRecovery ? "-mpeg2-storage-recovery-result.json" : uiBatch ? "-mpeg2-ui-batch-result.json" : "-mpeg2-controls-result.json"));
 await assert.rejects(access(receiptPath), { code: "ENOENT" });
 assert.equal(report.publicAcceptance, false); assert.ok(qualification);
 assert.ok(report.status === "failed" || report.status === "passed-small-allocation-diagnostic-not-route-promotion");
@@ -46,7 +47,8 @@ for (const directory of [report.cleanup.scratchRemoved, ...report.cleanup.genera
   await assert.rejects(access(target), { code: "ENOENT" });
 }
 const completed = storageRecovery ? qualification.cases.filter(c => c.independentOutput).map(c => ({ name: c.name, conversion: c.result,
-  actualNativeSettings: c.result.metrics.mpeg2EncoderSettings, output: c.independentOutput })) : qualification.cases;
+  actualNativeSettings: c.result.metrics.mpeg2EncoderSettings, output: c.independentOutput })) : uiBatch ? qualification.outputs.map(output => ({ name: output.name,
+  conversion: report.conversion, actualNativeSettings: report.conversion.metrics.mpeg2EncoderSettings, output })) : qualification.cases;
 assert.ok(Array.isArray(completed) && completed.length <= 2);
 for (const entry of completed) {
   assert.equal(entry.conversion.type, "complete"); assert.ok(entry.output.bytes > 0);
@@ -75,6 +77,12 @@ else {
       assert.equal(entry.name, cases[index].name); assert.equal(entry.result.type, cases[index].expected);
       if (cases[index].testFault) { assertMpeg2StorageFailure(cases[index], entry); assert.equal(entry.terminalWorkerRetired, true); }
     }
+  }
+  if (uiBatch) {
+    assert.equal(qualification.actualConvertButton, true); assert.equal(qualification.actualButtonEvidence.completedBatchItems, 2);
+    assert.equal(qualification.nativeBatchItems.length, 2); assert.deepEqual(qualification.nativeBatchItems.map(i => i.index).sort(), [0, 1]);
+    assert.equal(new Set(qualification.outputs.map(o => o.name.toLowerCase())).size, 2);
+    assert.equal(qualification.nativeOsPickerCovered, false);
   }
 }
 const compressed = gzipSync(raw, { level: 9 });
@@ -117,7 +125,8 @@ if (storageRecovery && report.diagnosticMemorySamples && report.blankBaseline) {
     originalRunAccepted: report.status !== "failed" };
 }
 const receipt = { schemaVersion: 1, head, status: report.status, startedAt: report.startedAt, finishedAt: report.finishedAt,
-  scope: storageRecovery ? "Injected quota/permission failure after real native conversion and one bounded final write, followed by two validated retries; not actual OS revocation, disk exhaustion, UI button, scale or public acceptance"
+  scope: uiBatch ? "One real Convert-button two-file batch with duplicate source names and independently validated outputs; terminal metrics describe final item only; not large-file, OS-picker, all batch failures or public acceptance"
+    : storageRecovery ? "Injected quota/permission failure after real native conversion and one bounded final write, followed by two validated retries; not actual OS revocation, disk exhaustion, UI button, scale or public acceptance"
     : report.uiControlsQualification
     ? "Actual private form controls and Convert-button production path; small fixture, not full UI/OS-picker/stress or public acceptance"
     : "Finite real production MPEG-2 controls gate, including failures; not UI-control, scale or public acceptance",
@@ -126,6 +135,7 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
   scaledPropertiesBuild: report.scaledPropertiesBuild ?? null, fixture: report.fixture,
   uiControlsQualification: report.uiControlsQualification ?? null,
   uiQualification: report.uiQualification ?? null,
+  uiBatchQualification: report.uiBatchQualification ?? null,
   recoveryQualification: report.recoveryQualification ?? null,
   storageRecoveryQualification: report.storageRecoveryQualification ?? null,
   observer: report.observer, diagnosticObserverOnly: report.observer.controlScope === "events-only observer comparison, not route promotion",

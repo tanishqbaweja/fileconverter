@@ -34,25 +34,27 @@ import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls", "--ui-batch"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
 const uiControls = flags.has("--ui-controls");
+const uiBatch = flags.has("--ui-batch");
+assert.ok(!uiBatch || (!flags.has("--ui") && !uiControls && !flags.has("--controls") && flags.has("--bounded-visual-capture")), "UI batch is one finite actual-button gate");
 const storageRecovery = flags.has("--storage-recovery");
 assert.ok(!storageRecovery || (!flags.has("--recovery") && flags.has("--bounded-visual-capture")), "Storage recovery is one finite bounded fault-injection gate");
 assert.ok(!uiControls || (!flags.has("--ui") && !flags.has("--controls") && flags.has("--bounded-visual-capture")), "UI controls is one bounded real-form gate");
 const scaledBuildFlags = [...flags].filter(flag => flag.startsWith("--scaled-properties-build="));
 assert.ok(scaledBuildFlags.length <= 1);
 const scaledBuildRunId = scaledBuildFlags.length ? scaledBuildFlags[0].split("=")[1] : null;
-assert.ok(scaledBuildRunId === null || flags.has("--controls") || uiControls || storageRecovery, "Changed scaler core is explicit qualification only, not implicit route promotion");
+assert.ok(scaledBuildRunId === null || flags.has("--controls") || uiControls || storageRecovery || uiBatch, "Changed scaler core is explicit qualification only, not implicit route promotion");
 assert.ok(!flags.has("--events-only-trace") || flags.has("--diagnose-allocations"), "Observer control is diagnostic-only, never route promotion");
 assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-allocations"));
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
 const boundedVisual = flags.has("--bounded-visual-capture"), continuousVisual = !eventsOnly && !boundedVisual;
-assert.ok(!boundedVisual || (diagnose && (flags.has("--controls") || uiControls || storageRecovery) && !eventsOnly), "Bounded visual observer is one explicit finite gate, not implicit acceptance");
+assert.ok(!boundedVisual || (diagnose && (flags.has("--controls") || uiControls || storageRecovery || uiBatch) && !eventsOnly), "Bounded visual observer is one explicit finite gate, not implicit acceptance");
 const recovery = flags.has("--recovery") || storageRecovery;
 const planning = flags.has("--planning");
-const ui = flags.has("--ui") || uiControls;
+const ui = flags.has("--ui") || uiControls || uiBatch;
 const controls = flags.has("--controls") || uiControls;
-assert.ok(Number(recovery) + Number(planning) + Number(ui && !uiControls) + Number(controls && !uiControls) + Number(uiControls) + Number(flags.has("--cache-repeats")) <= 1, "Select one finite qualification gate");
+assert.ok(Number(recovery) + Number(planning) + Number(ui && !uiControls && !uiBatch) + Number(controls && !uiControls) + Number(uiControls) + Number(uiBatch) + Number(flags.has("--cache-repeats")) <= 1, "Select one finite qualification gate");
 assert.ok(!recovery || !flags.has("--cache-repeats"), "Recovery is a separate missing gate, not an unchanged repeat run");
 const cases = controls ? [
   { name: "unchanged-default-policy", expected: "complete" },
@@ -80,6 +82,9 @@ if (planning) report.planningQualification = { cases: [], completed: false, reje
   finalUiSelectorCoverage: false, publicAcceptance: false };
 if (controls) report.controlsQualification = { cases: [], completed: false, sameNativeBytes: true, uiControlsCovered: false, publicAcceptance: false, speedComparison: false };
 if (uiControls) report.uiControlsQualification = { cases: [], completed: false, actualConvertButton: false, publicAcceptance: false, nativeOsPickerCovered: false };
+if (uiBatch) report.uiBatchQualification = { completed: false, inputFiles: 2, actualConvertButton: false, outputs: [],
+  sameFilenameCollisionCovered: true, terminalMetricsScope: "final batch item only; native work observed separately for each index",
+  nativeOsPickerCovered: false, publicAcceptance: false };
 if (recovery) report.recoveryQualification = { cases: [], completed: false, nativeDuringEncodingCancellation: false,
   destinationRollback: false, noStagesAfterEachTerminal: false, publicAcceptance: false };
 if (storageRecovery) report.storageRecoveryQualification = { completed: false, faultInjection: true, actualQuotaExhaustion: false,
@@ -126,9 +131,9 @@ try {
   work = runtime.directory;
   const native = (args, executable = "ffmpeg") => exec(executable, args, { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 4 * 1024 ** 2 });
   const fixture = path.join(work, "source.mkv"); output = path.join(work, "output.mp4");
-  const fixtureSeconds = ui && !uiControls ? 12 : 4;
-  const fixtureWidth = controls || storageRecovery ? 640 : 320, fixtureHeight = controls || storageRecovery ? 360 : 240;
-  await native(controls || storageRecovery ? mpeg2ControlFixtureArguments(fixture) : ["-v", "error", "-f", "lavfi", "-i", `testsrc2=size=${fixtureWidth}x${fixtureHeight}:rate=24:duration=${fixtureSeconds}`,
+  const fixtureSeconds = ui && !uiControls && !uiBatch ? 12 : 4;
+  const fixtureWidth = controls || storageRecovery || uiBatch ? 640 : 320, fixtureHeight = controls || storageRecovery || uiBatch ? 360 : 240;
+  await native(controls || storageRecovery || uiBatch ? mpeg2ControlFixtureArguments(fixture) : ["-v", "error", "-f", "lavfi", "-i", `testsrc2=size=${fixtureWidth}x${fixtureHeight}:rate=24:duration=${fixtureSeconds}`,
     "-f", "lavfi", "-i", `sine=frequency=997:sample_rate=48000:duration=${fixtureSeconds}`, "-map", "0:v", "-map", "1:a",
     "-c:v", "libx265", "-preset", "ultrafast", "-crf", "18", "-threads:v", "1", "-x265-params",
     "pools=none:frame-threads=1:wpp=0:bframes=2:keyint=48:scenecut=0:log-level=error", "-c:a", "aac", "-b:a", "128k",
@@ -248,7 +253,7 @@ try {
   await mkdir(screenshotDirectory);
   report.catalogueUi = await verifyProductionCatalogue(page, conversionProfiles.filter(profile => profile.public && profile.automatedTestStatus === "passed")
     .map(profile => ({ id: profile.id, route: profile.route, inputLabel: formatById(profile.input).label, outputLabel: formatById(profile.output).label })), screenshotDirectory);
-  await page.locator('input[type="file"]').first().setInputFiles(fixture);
+  await page.locator('input[type="file"]').first().setInputFiles(uiBatch ? [fixture, fixture] : fixture);
   await page.waitForFunction(() => document.querySelector('[data-testid="media-inspection-status"]')?.textContent.includes("These stream facts came from bounded local header reads"));
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
   if (boundedVisual) {
@@ -263,7 +268,7 @@ try {
     assert.match(await page.locator('[data-testid="format-select"] option:checked').innerText(), /private qualification/);
     report.uiQualification = { privateSelector: true, realPlanVisible: true, publicAcceptance: false,
       screenshots: [], finalUiMatrixCoverage: false, nativeOsPickerCovered: false };
-    if (!uiControls) {
+    if (!uiControls && !uiBatch) {
       const screenshot = path.join(screenshotDirectory, "mpeg2-private-plan.png");
       await page.screenshot({ path: screenshot, fullPage: false }); report.uiQualification.screenshots.push(path.relative(root, screenshot));
     }
@@ -296,17 +301,19 @@ try {
   }
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready" && window.__WITHIN_TEST__?.getState().jobState !== "running");
   let selectedUiOptions = null;
-  if (uiControls) {
+  if (uiControls || uiBatch) {
     const form = await selectMpeg2UiControls(page, testCase.videoOptions); selectedUiOptions = form.selected;
-    const capture = await visualObserver.capture(`case-${repetition}-options`);
-    assert.equal(capture.regionInViewport, true, "Actual options must be visible in their bounded screenshot");
-    report.uiControlsQualification.cases.push({ name: testCase.name, form, screenshot: capture.file });
+    if (uiControls) {
+      const capture = await visualObserver.capture(`case-${repetition}-options`);
+      assert.equal(capture.regionInViewport, true, "Actual options must be visible in their bounded screenshot");
+      report.uiControlsQualification.cases.push({ name: testCase.name, form, screenshot: capture.file });
+    } else report.uiBatchQualification.form = form;
   }
   const workerEventStart = report.workerEvents.length;
   changePhase("conversion");
   const visualLifetime = new AbortController();
   const visualWork = !storageRecovery || testCase.testFault ? visualObserver?.observeNativeWork(`case-${repetition}-native`, visualLifetime.signal) : undefined;
-  const tasks = [ui ? page.evaluate(runMpeg2UiJob, selectedUiOptions).then(value => { changePhase("recovery"); return value; }) : page.evaluate(async testCase => {
+  const tasks = [ui ? (uiBatch ? page.evaluate(runMpeg2UiJob, { batchSize: 2, options: selectedUiOptions }) : page.evaluate(runMpeg2UiJob, selectedUiOptions)).then(value => { changePhase("recovery"); return value; }) : page.evaluate(async testCase => {
     const file = document.querySelector('input[type="file"]').files[0];
     const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle("mpeg2-runtime-output.mp4", { create: true });
     const sentinel = "existing destination must survive";
@@ -356,6 +363,8 @@ try {
   report.conversion = execution.result;
   if (ui) { browserOutputName = execution.destinationName; Object.assign(report.uiQualification, execution.uiEvidence); }
   if (uiControls) report.uiControlsQualification.cases.at(-1).actualButtonEvidence = execution.uiEvidence;
+  if (uiBatch) Object.assign(report.uiBatchQualification, { actualConvertButton: execution.uiEvidence.actualConvertButton,
+    actualButtonEvidence: execution.uiEvidence, destinationNames: execution.destinationNames, nativeBatchItems: execution.nativeBatchItems });
   await monitorPending; await snapshot(); changePhase("validation");
   if (recovery) report.recoveryQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
   if (planning) report.planningQualification.cases.push({ name: testCase.name, expected: testCase.expected, ...execution });
@@ -415,6 +424,8 @@ try {
   }
   assert.ok(report.workerEvents.some(event => event.type === "closed" && event.url.includes("conversion.worker")));
   assert.ok(report.workerEvents.some(event => event.type === "created" && event.url.includes("staged-save.worker")));
+  const outputNamesToValidate = uiBatch ? execution.destinationNames : [browserOutputName];
+  for (const outputNameToValidate of outputNamesToValidate) {
   const file = await open(output, "wx");
   try {
     validationTarget = file;
@@ -424,11 +435,11 @@ try {
       try { for (;;) { const { done, value } = await reader.read(buffer); if (done) break;
         await window.receiveRuntimeOutput(window.__WITHIN_ENCODE_RUNTIME_CHUNK__(value)); buffer = new Uint8Array(value.buffer); } }
       finally { await reader.cancel(); await root.removeEntry(browserOutputName); }
-    }, browserOutputName);
+    }, outputNameToValidate);
   } finally { validationTarget = undefined; await file.close(); }
   const probe = async file => JSON.parse((await native(["-v", "error", "-count_frames", "-show_streams", "-show_format", "-of", "json", file], "ffprobe")).stdout);
   const source = await probe(fixture), converted = await probe(output);
-  const reference = controls || storageRecovery ? mpeg2ControlReference(source.streams[0], testCase.videoOptions) : null;
+  const reference = controls || storageRecovery || uiBatch ? mpeg2ControlReference(source.streams[0], testCase.videoOptions) : null;
   assert.equal(source.streams[0].codec_name, "hevc"); assert.equal(converted.streams[0].codec_name, "mpeg2video");
   assert.equal(Number(converted.streams[0].nb_read_frames), reference?.frames ?? report.fixture.frames);
   assert.equal(converted.streams[0].width, reference?.width ?? fixtureWidth); assert.equal(converted.streams[0].height, reference?.height ?? fixtureHeight);
@@ -454,13 +465,15 @@ try {
     copiedAudioPacketHash: await audioHash(output), titlePreserved: true, languagePreserved: true, videoClocks };
   report.cacheQualification.outputHashes.push(report.output.sha256);
   report.cacheQualification.results.push({ repetition, conversion: report.conversion, output: report.output });
+  if (uiBatch) report.uiBatchQualification.outputs.push({ name: outputNameToValidate, ...report.output });
   if (recovery) report.recoveryQualification.cases.at(-1).independentOutput = report.output;
   if (planning) report.planningQualification.cases.at(-1).independentOutput = report.output;
   if (controls) report.controlsQualification.cases.push({ name: testCase.name, requested: testCase.videoOptions ?? "automatic", reference,
     actualNativeSettings: report.conversion.metrics.mpeg2EncoderSettings, output: report.output, conversion: report.conversion });
   await rm(output);
   }
-  assert.equal(report.cacheQualification.results.length, planning ? 1 : recovery ? 2 : repetitions);
+  }
+  assert.equal(report.cacheQualification.results.length, uiBatch ? 2 : planning ? 1 : recovery ? 2 : repetitions);
   assert.equal(new Set(report.cacheQualification.outputHashes).size, controls ? 2 : 1);
   if (controls) { assert.equal(report.controlsQualification.cases.length, 2); report.controlsQualification.completed = true;
     if (uiControls) {
@@ -473,7 +486,13 @@ try {
   if (visualObserver) {
     report.boundedVisualObservation = visualObserver.summary();
   }
-  assert.deepEqual(staticRequests, { manifests: planning ? 1 : repetitions, decoder: 1, encoder: 1 });
+  assert.deepEqual(staticRequests, { manifests: uiBatch ? 2 : planning ? 1 : repetitions, decoder: 1, encoder: 1 });
+  if (uiBatch) {
+    assert.equal(report.uiBatchQualification.outputs.length, 2);
+    assert.equal(new Set(report.uiBatchQualification.outputs.map(o => o.name.toLowerCase())).size, 2);
+    assert.deepEqual(report.uiBatchQualification.nativeBatchItems.map(i => i.index).sort(), [0, 1]);
+    report.uiBatchQualification.completed = true;
+  }
   if (planning) Object.assign(report.planningQualification, { completed: true, rejectedBeforeDestinationOrCode: true });
   if (recovery) Object.assign(report.recoveryQualification, { completed: true, nativeDuringEncodingCancellation: !storageRecovery,
     destinationRollback: true, noStagesAfterEachTerminal: true });

@@ -24,7 +24,7 @@ test("actual UI gate uses the real Convert observer, deterministic input and ori
   const ui = await readFile(new URL("../scripts/lib/mpeg2-ui-job.mjs", import.meta.url), "utf8");
   assert.match(driver, /const ui = flags.has\("--ui"\) \|\| uiControls/);
   assert.match(driver, /page.evaluate\(runMpeg2UiJob, selectedUiOptions\)/); assert.match(driver, /selectMpeg2UiControls\(page, testCase.videoOptions\)/);
-  assert.match(driver, /ui && !uiControls \? 12 : 4/); assert.match(driver, /mpeg2ControlFixtureArguments\(fixture\)/);
+  assert.match(driver, /ui && !uiControls && !uiBatch \? 12 : 4/); assert.match(driver, /mpeg2ControlFixtureArguments\(fixture\)/);
   assert.match(ui, /button.click\(\)/); assert.match(ui, /Actual form options differ/); assert.doesNotMatch(ui, /runQualificationJob\(/);
   assert.match(driver, /assert.ok\(ssim >= 0.98/); assert.match(driver, /report.memory.incrementalPrivateMiB <= 250/);
 });
