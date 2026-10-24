@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+B05 work resumes independently of pending Chrome configuration choice. New
+single-page/normal-context audio gate reuses audited candidate39517752087 and
+exact old source fixtures, adds full PCM comparison and a genuine repeated-key
+fixture with bounded binary comment/CRC validation. Physical disk canary,
+unchanged full-tree250MiB/lossless journaling/privacy/cleanup required.16focused/
+lint PASS, actual run next; old580MiB six-context failure stays failed. No public
+promotion, rebuild, changed browser service flags, quality or scope reduction.
+
 Normal context efa48ab disk proof PASS, actual62.4MBnative output, but full
 original FAIL434.8515625MiB/1,685valid rows/0missing. Model service229.21MiB
 identified by exact PID/parent/birth at180.18s browser age, fully counted. No

@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+B05 new bounded fidelity/serialization validators:16focused unit/source checks
+PASS/lint PASS. Actual single-normal-context seven-case production gate ready,
+not yet executed. Reuses candidate39517752087 and exact25-field source hashes;
+adds full decoded PCM checks (no trimming/alignment, exact FLAC/>=60dB lossy)
+and raw repeated-comment values in a seventh valid, PCM-identical FLAC fixture.
+Only native fixture generation and independent output inspection/decoding are
+allowed. No native browser-output conversion, codec rebuild, public promotion or
+claim that small tests prove stress/artwork/full-metadata acceptance.
+
+
 Latest evidence/source/UI checks:33focused PASS, TypeScript/lint PASS; normal
 native-progress image reviewed headlessly, not headed/manual OS-dialog coverage.
 

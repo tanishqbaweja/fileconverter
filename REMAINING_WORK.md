@@ -1,5 +1,21 @@
 # Remaining work audit
 
+B05 next changed gate implemented: one normal production page/context, existing
+audited audio candidate39517752087 (40build-source/12artifact pins unchanged).
+Six original25-field fixtures must keep exact historical hashes; new full PCM16
+comparison rejects unequal lengths/no alignment/trimming, requires exact PCM
+for FLAC and>=60dB PSNR otherwise. A seventh small FLAC fixture adds two genuine
+CUSTOM_REPEAT entries while native decode proves audio unchanged. Independent
+bounded FLAC/Ogg/Opus comment parser inspects raw repeated values and Ogg CRC;
+FFprobe's folded dictionary cannot hide serialization loss. Physical OPFS canary,
+whole-tree250MiB from same clean blank, lossless native journal, real Convert,
+bounded validation transfer, immediate per-output cleanup, owned profile/root/
+all recorded child-birth cleanup and public-asset restoration required. No new
+native build, changed codec policy, browser service flags or public promotion.
+16focused checks/lint PASS; actual browser fidelity/repeated-value run pending.
+The old six-context580.828MiB failure remains failed, not a matched speed/memory
+comparison. Original/full stress and B05 artwork/aliases/recovery remain open.
+
 Latest retained-evidence gate:33focused tests PASS, TypeScript/lint PASS and
 native progress screenshot reviewed headlessly. No manual/native-picker claim.
 
