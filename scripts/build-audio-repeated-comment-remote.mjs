@@ -11,9 +11,9 @@ import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { makeAudioRepeatedCommentBuildWorkflow } from "./lib/audio-repeated-comment-build-workflow.mjs";
 import { auditAudioMetadataArtifact, validateAudioMetadataArtifactName } from "./lib/audio-metadata-artifact.mjs";
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), sha = b => createHash("sha256").update(b).digest("hex");
-const branch = "codex/audio-repeated-comments-20261024", repository = "tanishqbaweja/fileconverter";
+const branch = "codex/audio-repeated-comments-20261024-v2", repository = "tanishqbaweja/fileconverter";
 const workflowPath = ".github/workflows/reproduce-ffmpeg-nondocker.yml", workflowName = "reproduce-ffmpeg-nondocker.yml";
-const receiptPath = path.join(root, "evidence/audio-repeated-comment-build-2026-10-24.json");
+const receiptPath = path.join(root, "evidence/audio-repeated-comment-build-2026-10-24-v2.json");
 assert.equal(process.argv.length, 3); assert.ok(["prepare", "dispatch", "observe", "collect"].includes(process.argv[2]));
 const runtime = await createOwnedRuntimeScratch("audio-repeated-remote-");
 try {

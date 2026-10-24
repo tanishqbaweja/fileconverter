@@ -7,6 +7,7 @@ import { makeAudioTextMetadataCandidate, AUDIO_METADATA_PARENT_SHA256 } from "..
 import { makeAudioMetadataBuildWorkflow } from "./audio-metadata-build-workflow.mjs";
 import { makeAudioRepeatedCommentBuildWorkflow } from "./audio-repeated-comment-build-workflow.mjs";
 import { makeAudioRepeatedCommentCandidate } from "../../media/ffmpeg/audio-repeated-comment-candidate.mjs";
+import { makeAudioCommentWrapperCandidate } from "../../media/ffmpeg/audio-comment-wrapper-candidate.mjs";
 import { readWasmMemoryLimits } from "./wasm-memory-limits.mjs";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const root = path.resolve(import.meta.dirname, "../..");
@@ -22,10 +23,12 @@ export function verifyAudioMetadataCore({ manifest, parent, compiled, helper, me
   assert.equal(manifest.engine, "within-remux-private-bounded-audio-metadata");
   const candidate = manifest.candidate;
   for (const flag of ["codecSettingsChanged", "ioChanged", "memoryLimitsRaised", "browserFixVerified", "publicAcceptance"]) assert.equal(candidate[flag], false, flag);
-  assert.equal(candidate.allowedSourceEdits, 3); assert.equal(candidate.originalMasterSha256, AUDIO_METADATA_PARENT_SHA256);
+  assert.ok([3, 4].includes(candidate.allowedSourceEdits)); assert.equal(candidate.originalMasterSha256, AUDIO_METADATA_PARENT_SHA256);
+  if (candidate.allowedSourceEdits === 4) assert.ok(candidate.upstreamCommentPatch, "The fourth-edit variant also requires audited parser preservation");
   assert.equal(candidate.parentSha256, sha(parent)); assert.equal(candidate.compiledSourceSha256, sha(compiled)); assert.equal(candidate.helperSha256, sha(helper));
-  const derived = makeAudioTextMetadataCandidate(parent, helper, { expectedParentSha256: candidate.parentSha256 });
-  assert.equal(compiled, derived.generated, "Actual compiled source must contain only the three declared metadata edits");
+  const derive = candidate.allowedSourceEdits === 4 ? makeAudioCommentWrapperCandidate : makeAudioTextMetadataCandidate;
+  const derived = derive(parent, helper, { expectedParentSha256: candidate.parentSha256 });
+  assert.equal(compiled, derived.generated, "Actual compiled source must contain only the declared metadata edits");
   assert.deepEqual(memoryLimits, publicMemoryLimits); assert.deepEqual(candidate.wasmMemoryLimits, memoryLimits);
   assert.equal(manifest.modules.length, 1); assert.equal(manifest.modules[0].name, "within-remux");
   const publicCore = publicManifest.modules.find(core => core.name === "within-remux");
@@ -36,7 +39,7 @@ export function verifyAudioMetadataCore({ manifest, parent, compiled, helper, me
     "audioEncoderOptions", "audioArtworkOptions", "aacEncoderOptions", "opusEncoderOptions", "vorbisEncoderOptions", "mp3EncoderOptions"])
     assert.deepEqual(manifest[key], publicManifest[key], key);
   return { parentSha256: candidate.parentSha256, compiledSourceSha256: candidate.compiledSourceSha256,
-    helperSha256: candidate.helperSha256, memoryLimits, allowedSourceEdits: 3, publicAcceptance: false };
+    helperSha256: candidate.helperSha256, memoryLimits, allowedSourceEdits: candidate.allowedSourceEdits, publicAcceptance: false };
 }
 
 export function verifyAudioRepeatedCommentSource({ parent, compiled, receipt, manifestReceipt, archiveSha256 }) {

@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { verifyAudioMetadataCore, validateAudioMetadataArtifactName } from "../scripts/lib/audio-metadata-artifact.mjs";
 import { makeAudioTextMetadataCandidate } from "../media/ffmpeg/audio-text-metadata-candidate.mjs";
+import { makeAudioCommentWrapperCandidate } from "../media/ffmpeg/audio-comment-wrapper-candidate.mjs";
 const sha = text => createHash("sha256").update(text).digest("hex");
 const parent = await readFile("media/ffmpeg/within_remux.c", "utf8"), helper = await readFile("media/ffmpeg/audio-text-metadata.h", "utf8");
 const candidate = makeAudioTextMetadataCandidate(parent, helper), publicManifest = JSON.parse(await readFile("public/engines/remux/build-manifest.json"));
@@ -20,6 +21,15 @@ function fixture() {
 test("artifact audit accepts actual checked metadata derivation, not a codec/browser/memory acceptance claim", () => {
   const result = verifyAudioMetadataCore(fixture()); assert.equal(result.publicAcceptance, false);
   assert.equal(result.allowedSourceEdits, 3); assert.deepEqual(result.memoryLimits, limits);
+});
+test("four-edit core audit allows only exact bounded Ogg wrapper composition with required upstream parser variant", () => {
+  const f = fixture(), fourth = makeAudioCommentWrapperCandidate(parent, helper);
+  f.compiled = fourth.generated; f.manifest.candidate.compiledSourceSha256 = fourth.generatedSha256;
+  f.manifest.candidate.allowedSourceEdits = 4; f.manifest.candidate.upstreamCommentPatch = { separatelyAudited: true };
+  assert.equal(verifyAudioMetadataCore(f).allowedSourceEdits, 4);
+  const missing = structuredClone(f); delete missing.manifest.candidate.upstreamCommentPatch; assert.throws(() => verifyAudioMetadataCore(missing));
+  f.compiled += "\nint unrelated;\n"; f.manifest.candidate.compiledSourceSha256 = sha(f.compiled);
+  assert.throws(() => verifyAudioMetadataCore(f));
 });
 test("artifact audit rejects changed code even with re-signed hashes, increased heaps, thread/codec/I/O changes or false promotion flags", () => {
   for (const change of [

@@ -5,6 +5,8 @@ import { makeAudioRepeatedCommentCandidate, AUDIO_COMMENT_FFMPEG_ARCHIVE_SHA256 
 import { makeAudioRepeatedCommentBuildRecipe } from "../media/ffmpeg/audio-repeated-comment-build-recipe.mjs";
 import { makeAudioRepeatedCommentBuildWorkflow } from "../scripts/lib/audio-repeated-comment-build-workflow.mjs";
 import { verifyAudioRepeatedCommentSource } from "../scripts/lib/audio-metadata-artifact.mjs";
+import { makeAudioCommentWrapperCandidate } from "../media/ffmpeg/audio-comment-wrapper-candidate.mjs";
+import { makeAudioTextMetadataCandidate } from "../media/ffmpeg/audio-text-metadata-candidate.mjs";
 const original = `static int vorbis_parse_single_comment(void) {
     } else if (!ogm_chapter(as, t, v)) {
         (*updates)++;
@@ -35,6 +37,10 @@ test("private derivative patches authenticated dependency source BEFORE compilat
   assert.ok(patchAt > r.generated.indexOf('patch --directory="${BUILD_ROOT}/ffmpeg" --strip=1 < amr-bounded-packets.patch'));
   assert.ok(patchAt < r.generated.indexOf('\n./build-libraries.sh\n'));
   assert.equal(r.publicAcceptance, false);
+  const paired = makeAudioRepeatedCommentBuildRecipe(source, { preserveStreamComments: true });
+  assert.equal(paired.extraEdits.length, 2);
+  assert.ok(paired.generated.indexOf('node "${SCRIPT_DIR}/make-audio-comment-wrapper-candidate.mjs"') < paired.generated.indexOf('cp -- "${BUILD_ROOT}/within_remux.metadata.c" "${BUILD_ROOT}/within_remux.c"'));
+  assert.ok(paired.generated.indexOf('make-audio-comment-wrapper-candidate.mjs') < paired.generated.indexOf('WITHIN_BUILD_CORE_FILTER=within-remux ./build-remux.sh'));
 });
 test("isolated workflow selects changed builder and retains exact upstream preimage, compiled source and receipt", async () => {
   const source = await readFile(new URL("../.github/workflows/reproduce-ffmpeg-nondocker.yml", import.meta.url), "utf8");
@@ -53,4 +59,15 @@ test("upstream audit derives exact patch and rejects re-signed unrelated edits, 
     f => { f.manifestReceipt.publicAcceptance = true; }, f => { f.archiveSha256 = "0".repeat(64); }]) {
     const f = structuredClone(fixture); change(f); assert.throws(() => verifyAudioRepeatedCommentSource(f));
   }
+});
+test("fourth scoped wrapper edit preserves Ogg stream-first precedence and bounded duplicate copy; all other code reverses exactly", async () => {
+  const parent = await readFile(new URL("../media/ffmpeg/within_remux.c", import.meta.url), "utf8");
+  const helper = await readFile(new URL("../media/ffmpeg/audio-text-metadata.h", import.meta.url), "utf8");
+  const base = makeAudioTextMetadataCandidate(parent, helper), result = makeAudioCommentWrapperCandidate(parent, helper);
+  assert.equal(result.allowedSourceEdits, 4); assert.equal(result.threeEditSourceSha256, base.generatedSha256);
+  assert.equal(result.generated.replace(result.extraEdits[0][1], result.extraEdits[0][0]), base.generated);
+  assert.match(result.extraEdits[0][1], /if \(opus_output \|\| vorbis_output\)/);
+  assert.match(result.extraEdits[0][1], /&output_stream->metadata, input_stream->metadata,\s*input_format->metadata/);
+  assert.match(result.extraEdits[0][1], /if \(result < 0\).*\{/s);
+  assert.equal(result.browserFixVerified, false); assert.equal(result.codecSettingsChanged, false); assert.equal(result.memoryLimitsRaised, false);
 });

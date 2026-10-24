@@ -1,5 +1,30 @@
 # Remaining work audit
 
+Latest B05 changed native/browser cycle14-26-14.083Z is terminal FAILED,6/8
+small cases pass. Native build40101765105/db6bba8 SUCCESS in476s;45source/15
+artifact pins and immutable executed source/heap/upstream parser audit PASS.
+Both exact FLAC PCM cases now pass with scalar reference. Existing higher
+Opus-to-Vorbis UI control passes61.06540502039469dB/11,425B versus automatic
+59.771738706572265dB/8,382B FAIL; same input/no default change/no single-small-
+timing speed claim. All25tags/96,000samples retained; complete-tree small-run
+210.13671875MiB/493valid/0missing, physical disk/privacy/original/cleanup PASS.
+Parser-only duplicate fix is INSUFFICIENT: output now only second value, rather
+than semicolon-joined pair. Exact compiled wrapper still uses av_dict_copy(...,0)
+for Ogg stream tags. Actual installed native libavutil reproduces last-value
+loss; stream-first bounded merge plus Ogg DONT_OVERWRITE keeps both in order
+and all prior allocation/4096-entry/2MiB tests pass (14-35-18.927Z native report).
+Fourth reversible wrapper edit now wired before link, scoped only Opus/Vorbis,
+retaining stream precedence, codec/I/O/heap limits and fail-before-header behavior.
+27focused/lint/native checks PASS. Next compilev2 on a NEW isolated branch,
+then changed browser check; no replay of parser-only engine. Old45 build pins
+are historical (builder/recipe now changed), not falsely current-source reuse.
+Original40-pin baseline helpers remain untouched. Both failed receipts/archives
+are retained; no public promotion/stress/artwork/default-quality acceptance.
+Full54/release gates remain OPEN; pending Chrome configuration choice unchanged.
+Optional upstream archive inspection timed out45s; partial10.75MB and owned
+scratch removed. Official8.1.2 metadata.c inspected separately: distinct-value
+conversion already uses MULTIKEY|DEDUP, so no speculative metadata.c patch.
+
 2026-10-24 B05 actual seven-case normal production-UI run is terminal FAILED,
 not pending: evidence/2026-10-24T13-50-10.413Z-audio-metadata-fidelity-result.json.
 All seven genuine outputs retain25 fields/96,000 decoded samples; physical

@@ -6,6 +6,19 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Latest changed B05 build40101765105 SUCCESS/audit45source15artifact pins;
+actual14-26-14.083Z browser gate FAILED6/8,210.13671875MiB/493valid/0missing.
+Exact FLAC cases now PASS. Existing higher Vorbis61.0654dB PASS versus unchanged
+automatic59.7717dB FAIL60; no default change or tiny-timing speed claim. Parser
+patch alone leaves only second repeated value: compiled wrapper plain dictionary
+copy is a second concrete loss point. Real native dictionary check reproduces
+it; bounded stream-first copy plus Ogg default merge retains both ordered values.
+Fourth scoped wrapper edit now wired before link, no codec/I/O/heap changes;
+27focused/lint/native checks PASS. Next NEW isolated v2 compile, not unchanged
+parser-only replay, then actual browser serialization check. Failed receipts
+unchanged,25tags/96,000samples each and original/privacy/owned cleanup PASS.
+Full54/artwork/stress/public promotion/default-quality/Chrome issue remain open.
+
 Actual B05 normal-page gate now terminal FAILED, not pending: seven genuine
 outputs/25 tags/96,000 samples each,209.54296875MiB small lifecycle/667valid rows,
 0missing; physical disk proof/privacy/original/owned cleanup/asset restore PASS.

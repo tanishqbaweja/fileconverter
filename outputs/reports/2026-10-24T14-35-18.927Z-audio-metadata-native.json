@@ -1,0 +1,32 @@
+{
+  "startedAt": "2026-10-24T14:35:18.927Z",
+  "scope": "Real installed libavutil dictionary behavior, not browser/codec/memory/promotion acceptance",
+  "publicAcceptance": false,
+  "sources": {
+    "tests/native/audio-text-metadata.c": "3cb94404f8cdd112f1b1134522f18cb8ee095df6bdfd547affd846b7be8bc11f",
+    "media/ffmpeg/audio-text-metadata.h": "85da9b964bb50ffa8fd3a93b073d4c2369a13034549cef4fd552c5fc82d0bf28",
+    "scripts/check-audio-text-metadata-native.mjs": "2a10d70fe3b7c14843f2de633fb569d6e48600b1f6db282c25ff1eac955aa565"
+  },
+  "native": {
+    "compilerSha256": "a8b7a614eeadd9105f814be3701a7f312cda4cea51751b75b408c16100c94e85",
+    "dictionaryHeaderSha256": "b8b7abebb6e5ab5ffa70b8463df52c96d4e774aa2d5574bebbc02f6031e62ad8",
+    "libavutilDllSha256": "c4090c00550653c1a9c908a0231ab5c741a97ff00638411fd142bba86d788226"
+  },
+  "behavior": {
+    "status": "passed-native-dictionary-behavior",
+    "fields": 25,
+    "plainCopyDuplicateLossReproduced": true,
+    "boundedCopyRestoresDistinctValues": true,
+    "duplicateValuesPreserved": true,
+    "containerPrecedence": true,
+    "emptyValues": true,
+    "entryAndByteBounds": true,
+    "allocationFailureAtomic": true,
+    "libavutilVersion": 3938404,
+    "ffmpegVersion": "N-122712-g7e3781e3ca-20260211",
+    "browserConversionVerified": false
+  },
+  "status": "passed",
+  "ownedCompilerOutputAndScratchRemoved": true,
+  "finishedAt": "2026-10-24T14:35:19.206Z"
+}

@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+Latest actual B05 cycle14-26-14.083Z FAILED6/8, not public acceptance. New native
+40101765105 compiled/audited45source/15artifact pins. Exact Ogg/Opus-to-FLAC PCM
+now PASS. Same Opus input: automatic Vorbis59.771738706572265dB FAIL60dB;
+existing higher option61.06540502039469dB PASS (8,382B vs11,425B; tiny timings
+not throughput/speed proof). All eight real outputs have25tags/96,000samples;
+whole-tree small lifecycle210.13671875MiB/493valid/0missing and privacy/physical
+disk/original/owned cleanup/asset restore PASS. Repeated entry still FAILED,
+now last value only: parser repair alone cannot undo wrapper plain-copy loss.
+Actual libavutil native14-35-18.927Z reproduces copy loss and proves bounded
+stream-first merge plus later Ogg default merge retains both values/order;
+atomic allocation/budget checks still PASS. Fourth metadata-only wrapper edit
+wired into private v2 recipe/auditor;27focused/lint/native checks PASS. Actual
+v2 compile/browser qualification pending. Receipt/raw23,407B gzip/exact493row
+journal retained; terminal repeated-case screenshot reviewed headlessly.
+No unchanged replay/default-quality change, public promotion or stress claim.
+
 2026-10-24 B05 actual normal-page seven-case run FAILED (receipt13-50-10.413Z).
 Seven real conversions:25 tags each/96,000 PCM samples;209.54296875MiB whole-tree
 small-lifecycle peak/667valid samples/0missing, disk proof/privacy/owned cleanup/
