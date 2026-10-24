@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-24 dispatch correction:40048810064's SUCCESS was workflow core=all, not
+the private repaired core (missing required dispatch input).0private artifacts;
+collector correctly rejected before download. No native/browser repair pass.
+Checked helper now explicitly selects within-mpeg2-aligned-reuse and remote
+branch head; first correct run40050006861 confirmed IN_PROGRESS at955d3e6/01:29UTC.
+Do not rerun all or count wrong-scope success. Await this exact run, collect its
+source/actual Wasm proof, then run one changed --controls browser gate. Full54
+and memory/scale/control qualification remain open. Actual portable40049071062
+at ed17743 SUCCESS1489units/0fail/1skip+19privacy/offline43.7s, separate scope.
+
 Rejected Oct23 control attempts losslessly archived (50,972B/54,602B) after exact
 readback, historical Git-source/native hash matching and independent owned
 process/scratch absence checks. Removed only redundant5,381,619B raw JSON;

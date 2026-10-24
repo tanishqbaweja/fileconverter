@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-24 correction:40048810064 succeeded only for default workflow core=all,
+NOT repaired private MPEG-2. I omitted its required input;0private artifacts and
+collector rejected before download. No native/browser repair acceptance. Preserve
+this rejected dispatch, do NOT rerun all. Added checked dispatch helper that
+requires exact branch head and explicitly sends core=within-mpeg2-aligned-reuse.
+First correctly scoped run40050006861 confirmed IN_PROGRESS at955d3e6,01:29UTC.
+`evidence/mpeg2-scaled-properties-dispatch-2026-10-24.json`. No browser rerun yet.
+Hosted portable40049071062/ed17743 SUCCESS1489units/0fail/1skip and19privacy/offline
+PASS43.7s; later recorder/dispatch changes have focused local checks, not that CI.
+
 Both rejected controls reports now retained losslessly at54,602B and50,972B
 instead of5,381,619B raw. Exact gzip readback/bytes/SHA verified before removing
 only redundant raw JSON; diagnostics remain recoverable. Each report's sources

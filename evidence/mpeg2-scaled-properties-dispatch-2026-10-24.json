@@ -1,0 +1,38 @@
+{
+  "recordedAt": "2026-10-24T01:29:28.602Z",
+  "dispatchedAt": "2026-10-24T01:29:15.048Z",
+  "args": [
+    "workflow",
+    "run",
+    "reproduce-ffmpeg-nondocker.yml",
+    "--repo",
+    "tanishqbaweja/fileconverter",
+    "--ref",
+    "codex/mpeg2-scaled-properties-20261024",
+    "-f",
+    "core=within-mpeg2-aligned-reuse"
+  ],
+  "branch": "codex/mpeg2-scaled-properties-20261024",
+  "head": "955d3e61d0e867d99901ab244f8c4eda9b8d4620",
+  "requestedCore": "within-mpeg2-aligned-reuse",
+  "run": {
+    "conclusion": "",
+    "createdAt": "2026-10-24T01:29:17Z",
+    "databaseId": 40050006861,
+    "event": "workflow_dispatch",
+    "headSha": "955d3e61d0e867d99901ab244f8c4eda9b8d4620",
+    "status": "in_progress",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40050006861"
+  },
+  "buildAcceptance": false,
+  "browserConversions": 0,
+  "publicAcceptance": false,
+  "priorWrongScope": {
+    "runId": "40048810064",
+    "actualInput": "all (workflow default)",
+    "conclusion": "success",
+    "privateArtifacts": 0,
+    "qualifiedRepairedCore": false,
+    "collectorRejectedBeforeDownload": true
+  }
+}
