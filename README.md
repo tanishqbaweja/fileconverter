@@ -8,6 +8,15 @@ or conversion endpoint.
 
 PDF input, PDF output, and PDF tooling are intentionally out of scope.
 
+Large-file jobs using browser-private temporary storage require a normal browser
+window. Chromium can keep Private/Incognito filesystem contents in RAM; those
+modes are not qualified for large-file OPFS staging. This is separate from the
+site's privacy promise: files remain on the device in a normal window too.
+The original-file qualification harness can verify actual disk backing with
+`--persistent-opfs-context`: a fresh repository-owned normal profile and an
+independent 64-byte on-disk canary, removed in `finally`. API success alone is
+not treated as proof. This does not imply that pending large-file gates pass.
+
 ## Verified public routes
 
 The selector and published matrix are generated from

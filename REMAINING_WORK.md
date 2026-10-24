@@ -1,5 +1,27 @@
 # Remaining work audit
 
+Normal-context correction preflight:31focused PASS (including all405 unchanged
+catalogue card contents/order), TypeScript --noEmit PASS, lint PASS. Actual
+disk-backed original run remains the next gate, not yet acceptance evidence.
+
+20d88d1 late-window execution now terminal FAIL300.0703125MiB/934valid
+lossless rows/0missing/0complete outputs. Renderer samples16; browser profile
+empty0samples (not absence of allocations). Cancel/original SHA/owned cleanup
+PASS. Raw1,374,708B retained46,828B gzip; separate native/browser archives.
+CI40096107199/20d88d1 SUCCESS. Analysis:
+`evidence/2026-10-24-opfs-context-diagnosis.json`.
+Concrete context mismatch found: this harness browser.newContext is incognito;
+Chromium source explicitly uses a memory filesystem delegate there, versus disk
+delegate for normal mode. Earlier failed measurements remain failed; precise
+attribution of every transient byte is not claimed. Normal-mode qualification
+now uses a fresh owned persistent context, verifies launch/profile PID identity
+and independently finds an exact64B OPFS canary on disk (65B maximum read), then
+removes canary in finally. Same browser/native/quality/process formula; no GC,
+delayed baseline or service-disabling flags. UI/README warn that private-mode
+OPFS staging is not qualified for large files. Broad registry/browser scope
+audit remains open. Next one changed normal-context original gate; no repeated
+15s/late native trace or unchanged codec rebuild. Actual disk proof/run pending.
+
 Late diagnostic now implemented: --native-profile-late-window requires native
 sampling plus already-verified bounded network body observation. It captures
 at the unchanged250MiB failure or120s ceiling instead of stopping at15s before

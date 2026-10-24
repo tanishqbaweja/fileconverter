@@ -6,6 +6,17 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Late diagnostic20d88d1 terminal300.0703125MiBFAIL/934valid rows/0missing,
+16renderer native samples and empty browser profile;0outputs/cleanup PASS.
+Found concrete test-context mismatch: browser.newContext is incognito and
+Chromium source uses in-memory OPFS there. Next normal-context original run
+uses same browser/native/quality/full-tree formula, fresh owned persistent
+profile, exact64B browser canary independently located on disk/removed finally.
+No native profiler/default flags to disable services, no delayed blank baseline
+or retrospective pass. UI/README warn large OPFS jobs require normal windows.
+`evidence/2026-10-24-opfs-context-diagnosis.json`. All original/repeat/near10GB/
+broader browser/release gates remain open until actual normal-mode evidence.
+
 Late native diagnostic prepared: --native-profile-late-window caps work120s
 instead of15s and captures at unchanged250MiB failure. Requires original/native
 sampling/bounded network observer; captures renderer and already-collected

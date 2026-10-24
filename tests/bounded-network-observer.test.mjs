@@ -37,6 +37,17 @@ test("invalid launch surfaces are rejected, and network target cap fails explici
     assert.throws(() => log("send", { method: "Network.enable" }), /target bound/);
   } finally { observer.close(); }
 });
+test("persistent launch hook preserves all five launch arguments and exact prototype identity on close", () => {
+  const prototype = { _innerLaunchWithRetries(progress, options, persistent, logger, directory) {
+    assert.equal(directory, "owned-profile"); assert.deepEqual(persistent, { serviceWorkers: "block" });
+    const message = { method: "Network.enable", params: {} }; logger("send", message); return message;
+  } }, descriptor = Object.getOwnPropertyDescriptor(prototype, "_innerLaunchWithRetries");
+  const child = Object.create(prototype), observer = installBoundedNetworkObserver(child, "_innerLaunchWithRetries");
+  try { assert.deepEqual(child._innerLaunchWithRetries({}, {}, { serviceWorkers: "block" }, undefined, "owned-profile").params, NETWORK_OBSERVER_LIMITS); }
+  finally { observer.close(); }
+  assert.deepEqual(Object.getOwnPropertyDescriptor(prototype, "_innerLaunchWithRetries"), descriptor);
+  assert.equal(Object.hasOwn(child, "_innerLaunchWithRetries"), false);
+});
 test("installed Playwright preserves protocol callback before transport send and forwards the launch callback", async () => {
   const source = await readFile(new URL("../node_modules/playwright-core/lib/coreBundle.js", import.meta.url), "utf8");
   assert.match(source, /this\._protocolLogger\("send", message\);\s+this\._transport\.send\(message\);/);

@@ -206,6 +206,7 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
   browserNativeAllocationArchive,
   browserNativeAllocationProfile: report.browserNativeAllocationProfile ?? null,
   nativeProfileWindowMs: report.nativeProfileWindowMs ?? null,
+  storageContext: report.storageContext ?? null,
   nativeAllocationProfile: report.nativeAllocationProfile ?? null,
   nativeProfileDiagnosticOnly: report.nativeProfileDiagnosticOnly ?? false,
   nativeProfileFiniteStop: report.nativeProfileFiniteStop ?? null,

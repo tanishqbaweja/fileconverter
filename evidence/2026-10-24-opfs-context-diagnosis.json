@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "scope": "Storage-context source diagnosis after late original failure; persistent browser comparison still pending",
+  "latestReceipt": "evidence/2026-10-24T12-57-51.161Z-mpeg2-original-result.json",
+  "executedHead": "20d88d122deca9bdbbfb89d1856264135081e2ba",
+  "incrementalPrivateMiB": 300.0703125,
+  "losslessNativeRows": 934,
+  "missingRows": 0,
+  "rendererNativeSamples": 16,
+  "browserNativeSamples": 0,
+  "browserProfileEmptyIsNotAbsenceOfAllocations": true,
+  "testContextFact": "The executed harness calls browser.newContext(), which creates an incognito context; OPFS API success did not prove physical disk backing.",
+  "chromiumSourceFact": "ObfuscatedFileUtil selects ObfuscatedFileUtilMemoryDelegate for is_incognito and ObfuscatedFileUtilDiskDelegate otherwise. The incognito synchronous file delegate also uses a different IPC write path.",
+  "sources": [
+    "https://raw.githubusercontent.com/chromium/chromium/main/storage/browser/file_system/obfuscated_file_util.cc",
+    "https://raw.githubusercontent.com/chromium/chromium/main/storage/browser/file_system/sandbox_file_system_backend_delegate.cc",
+    "https://raw.githubusercontent.com/chromium/chromium/main/third_party/blink/renderer/modules/file_system_access/file_system_access_incognito_file_delegate.cc"
+  ],
+  "exactInstalledBrowserSourceTagFetched": false,
+  "everyTransientAllocationCausallyAttributed": false,
+  "earlierFailedMeasurementsRemainFailed": true,
+  "normalProfileAcceptanceProven": false,
+  "next": "Fresh headless normal persistent context under owned work directory, same installed browser/native/codec/quality/full-tree formula. First independently locate a64-byte OPFS canary on physical disk, remove it in finally, then run exact original without allocation sampler. Add UI/README warning that Private/Incognito OPFS staging is not qualified for large files. No baseline delay, browser flags to disable services, omitted processes or fallback native conversion."
+}

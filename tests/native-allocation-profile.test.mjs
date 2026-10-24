@@ -97,3 +97,18 @@ test("browser profile timeout or invalid shape detaches without starting samplin
     assert.equal(detached, true);
   }
 });
+test("actual late failure retains16 renderer samples and explicitly empty browser samples, never a solved-allocation claim", async () => {
+  const root = new URL("../", import.meta.url), receipt = JSON.parse(await readFile(new URL("evidence/2026-10-24T12-57-51.161Z-mpeg2-original-result.json", root)));
+  assert.equal(receipt.nativeProfileWindowMs, 120000); assert.equal(receipt.nativeProfileDiagnosticOnly, true);
+  assert.equal(receipt.nativeAllocationProfile.samples, 16); assert.equal(receipt.browserNativeAllocationProfile.samples, 0);
+  assert.equal(receipt.browserNativeAllocationProfile.emptyProfileDoesNotProveNoAllocations, true);
+  for (const key of ["nativeAllocationArchive", "browserNativeAllocationArchive"]) {
+    const archive = receipt[key], packed = await readFile(new URL(archive.path, root));
+    assert.equal(createHash("sha256").update(packed).digest("hex"), archive.sha256);
+    const bytes = gunzipSync(packed); assert.equal(createHash("sha256").update(bytes).digest("hex"), archive.restoredSha256);
+    validateNativeAllocationProfile(JSON.parse(bytes).profile);
+  }
+  assert.equal(receipt.memory.incrementalPrivateMiB, 300.0703125); assert.equal(receipt.memory.validSamples, 934);
+  assert.equal(receipt.memory.unavailableSampleCount, 0); assert.equal(receipt.overallGatePassed, false);
+  assert.equal(receipt.completedCases.length, 0); assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true);
+});

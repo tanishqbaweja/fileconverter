@@ -2556,6 +2556,11 @@ export function ConverterApp() {
         <div className="storage-card">
           <div>
             <strong>App-owned temporary storage</strong>
+            <p data-testid="opfs-private-mode-notice">
+              Use a normal browser window for large jobs. Private/Incognito
+              browser storage can be RAM-backed and is not qualified for
+              large-file temporary storage. Your files still stay on this device.
+            </p>
             <p>
               {cleanupMessage} User-selected destination files are never included
               in this cleanup.

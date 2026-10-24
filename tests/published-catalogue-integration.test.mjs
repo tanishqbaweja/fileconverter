@@ -29,6 +29,8 @@ test("current application mounts the bounded component with explicit lifecycle a
   // unique and reversible; the complete historical UI comparison below remains
   // mandatory and still catches every unrelated change.
   const codeOwnerEdits = [
+    ['            <strong>App-owned temporary storage</strong>\n            <p data-testid="opfs-private-mode-notice">\n              Use a normal browser window for large jobs. Private/Incognito\n              browser storage can be RAM-backed and is not qualified for\n              large-file temporary storage. Your files still stay on this device.\n            </p>\n',
+      '            <strong>App-owned temporary storage</strong>\n'],
     ['    supportsVideoEncodingOptions(selectedProfile);\n  const privateMpeg2Options = selectedProfile?.id === MPEG2_JOB_PROFILE;\n',
       '    supportsVideoEncodingOptions(selectedProfile);\n'],
     ['              {videoEncodingOptionsEnabled ? (\n                <fieldset\n                  data-testid="video-encoding-options"\n',

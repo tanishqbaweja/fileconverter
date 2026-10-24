@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+20d88d1 actual late native diagnosis FAIL300.0703125MiB/934valid rows/0missing/
+0outputs. Renderer16samples, browser0samples explicitly empty/uninformative.
+Native Cancel/original full SHA/owned cleanup PASS. Raw1,374,708B losslessly
+retained46,828B gzip. CI40096107199 exact source SUCCESS. Source investigation
+found harness incognito context and Chromium's in-memory OPFS backend; this is
+not normal-mode disk-backed qualification. All old failures remain failures.
+`evidence/2026-10-24-opfs-context-diagnosis.json`. Fresh normal-context mode,
+bounded physical canary proof and explicit UI/README private-mode warning are
+implemented; actual changed original execution still pending. No native rebuild,
+quality/baseline/formula changes or claim that all transient bytes are solved.
+
 Late-window sampler implemented for the actual56s original failure:120s maximum,
 early capture/cancel on the unchanged250MiB failure, renderer+already-collected
 browser sample metadata,3s per command, strict2MiB archives. Diagnostic-only;

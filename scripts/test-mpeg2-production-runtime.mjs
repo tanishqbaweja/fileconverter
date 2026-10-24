@@ -36,13 +36,16 @@ import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal }
 import { startNativeAllocationProfile, captureBrowserNativeAllocationProfile, NATIVE_PROFILE_LIMITS } from "./lib/native-allocation-profile.mjs";
 import { installProtocolMethodCounts } from "./lib/protocol-method-counts.mjs";
 import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mjs";
+import { verifyOpfsDiskBacking } from "./lib/opfs-disk-backing-proof.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--memory-failure-allocators", "--native-allocation-profile", "--native-profile-late-window", "--protocol-method-counts", "--bounded-network-observer", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls", "--ui-batch", "--original"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--memory-failure-allocators", "--native-allocation-profile", "--native-profile-late-window", "--persistent-opfs-context", "--protocol-method-counts", "--bounded-network-observer", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls", "--ui-batch", "--original"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
 const uiControls = flags.has("--ui-controls");
 const fullOriginal = flags.has("--original");
+const persistentOpfsContext = flags.has("--persistent-opfs-context");
+assert.ok(!persistentOpfsContext || (fullOriginal && flags.has("--bounded-network-observer")), "Disk-backed context qualification is an explicit original-file mode");
 assert.ok(!fullOriginal || (!flags.has("--ui") && !flags.has("--controls") && flags.has("--bounded-visual-capture")), "Original is one explicit full-file production gate");
 const uiBatch = flags.has("--ui-batch");
 assert.ok(!uiBatch || (!flags.has("--ui") && !uiControls && !flags.has("--controls") && flags.has("--bounded-visual-capture")), "UI batch is one finite actual-button gate");
@@ -224,7 +227,7 @@ try {
     const source = await readFile(bundlePath, "utf8");
     assert.match(source, /this\._protocolLogger\("send", message\);\s+this\._transport\.send\(message\);/);
     const probe = internal.server.createPlaywright({ sdkLanguage: "javascript", isServer: true });
-    boundedNetworkObserver = installBoundedNetworkObserver(Object.getPrototypeOf(probe.chromium));
+    boundedNetworkObserver = installBoundedNetworkObserver(Object.getPrototypeOf(probe.chromium), persistentOpfsContext ? "_innerLaunchWithRetries" : "launch");
     report.boundedNetworkObserverBinding = { playwrightVersion: internal.getPlaywrightVersion(), bundleSha256: sha(source), diagnosticOnly: nativeProfile };
   }
   if (flags.has("--protocol-method-counts")) {
@@ -309,6 +312,7 @@ try {
     "scripts/lib/native-allocation-profile.mjs",
     "scripts/lib/protocol-method-counts.mjs",
     "scripts/lib/bounded-network-observer.mjs",
+    "scripts/lib/opfs-disk-backing-proof.mjs",
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/streaming-video-clock-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs",
     "scripts/test-mpeg2-production-runtime.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",
@@ -334,13 +338,31 @@ try {
     await pause(500);
   }
   assert.equal(ready, true, serverLog);
-  browserServer = await chromium.launchServer({ executablePath: browserPin.launcher.path, headless: true, env });
-  const browserIdentity = await queryProcessIdentity(browserServer.process().pid); assert.ok(browserIdentity); processIdentities.push(browserIdentity);
+  let launchedBrowserPid, profileDirectory;
+  if (persistentOpfsContext) {
+    profileDirectory = path.join(work, "chrome-profile"); await mkdir(profileDirectory);
+    context = await chromium.launchPersistentContext(profileDirectory, { executablePath: browserPin.launcher.path, headless: true, env, serviceWorkers: "block" });
+    browser = context.browser(); assert.ok(browser, "Persistent context must expose its genuine browser");
+    const identitySession = await browser.newBrowserCDPSession();
+    try {
+      const info = await identitySession.send("SystemInfo.getProcessInfo"), roots = info.processInfo.filter(row => row.type === "browser");
+      assert.equal(roots.length, 1); launchedBrowserPid = Number(roots[0].id); assert.ok(Number.isSafeInteger(launchedBrowserPid) && launchedBrowserPid > 0);
+      const command = await identitySession.send("Browser.getBrowserCommandLine");
+      assert.ok(command.arguments.includes("--user-data-dir=" + profileDirectory)); assert.ok(!command.arguments.includes("--incognito"));
+      report.storageContext = { mode: "fresh-persistent-normal-context", ownedProfile: path.relative(root, profileDirectory),
+        browserPidFromCdp: launchedBrowserPid, explicitIncognitoFlag: false, diskBackingVerified: false };
+    } finally { await identitySession.detach(); }
+  } else {
+    browserServer = await chromium.launchServer({ executablePath: browserPin.launcher.path, headless: true, env });
+    launchedBrowserPid = browserServer.process().pid;
+    browser = await chromium.connect(browserServer.wsEndpoint());
+    context = await browser.newContext({ serviceWorkers: "block" });
+    report.storageContext = { mode: "isolated-incognito-context", diskBackingVerified: false, opfsMayBeMemoryBacked: true };
+  }
+  const browserIdentity = await queryProcessIdentity(launchedBrowserPid); assert.ok(browserIdentity); processIdentities.push(browserIdentity);
   browserRootPid = browserIdentity.pid;
-  browser = await chromium.connect(browserServer.wsEndpoint());
-  context = await browser.newContext({ serviceWorkers: "block" });
   await context.addInitScript({ content: "Object.defineProperty(globalThis, '__WITHIN_ENCODE_RUNTIME_CHUNK__', { value: (" + encodeBoundedValidationChunk.toString() + ") });" });
-  const page = await context.newPage();
+  assert.ok(context.pages().length <= 1); const page = context.pages()[0] ?? await context.newPage();
   report.workerEvents = [];
   page.on("worker", worker => {
     const record = type => { assert.ok(report.workerEvents.length < 32); report.workerEvents.push({ type, url: worker.url(), at: new Date().toISOString() }); };
@@ -375,6 +397,10 @@ try {
   const response = await page.goto(base + (ui ? "/?test=1&directory=1" : "/?test=1"));
   assert.equal(response.status(), 200, "Production app route must load before file selection");
   const headers = response.headers(); assert.equal(headers["cross-origin-opener-policy"], "same-origin");
+  if (persistentOpfsContext) {
+    report.storageContext.diskProof = await verifyOpfsDiskBacking(page, profileDirectory);
+    report.storageContext.diskBackingVerified = true;
+  }
   assert.equal(headers["cross-origin-embedder-policy"], "require-corp"); assert.ok(headers["content-security-policy"]);
   await captureAttribution("loaded-before-catalogue");
   const screenshotDirectory = path.join(root, "output/playwright", report.startedAt.replaceAll(":", "-") + "-catalogue");
