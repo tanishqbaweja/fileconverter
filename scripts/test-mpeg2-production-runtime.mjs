@@ -33,14 +33,14 @@ import { createBoundedVisualObserver } from "./lib/bounded-visual-observer.mjs";
 import { mpeg2StorageRecoveryCases, assertMpeg2StorageFailure } from "./lib/mpeg2-storage-recovery.mjs";
 import { MPEG2_ORIGINAL_GATE, assertMpeg2OriginalStructure, compareOriginalAacPackets, selectExactLocalOriginal } from "./lib/mpeg2-original-gate.mjs";
 import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
-import { startNativeAllocationProfile } from "./lib/native-allocation-profile.mjs";
+import { startNativeAllocationProfile, captureBrowserNativeAllocationProfile, NATIVE_PROFILE_LIMITS } from "./lib/native-allocation-profile.mjs";
 import { installProtocolMethodCounts } from "./lib/protocol-method-counts.mjs";
 import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--memory-failure-allocators", "--native-allocation-profile", "--protocol-method-counts", "--bounded-network-observer", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls", "--ui-batch", "--original"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--memory-failure-allocators", "--native-allocation-profile", "--native-profile-late-window", "--protocol-method-counts", "--bounded-network-observer", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls", "--ui-batch", "--original"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
 const uiControls = flags.has("--ui-controls");
 const fullOriginal = flags.has("--original");
 assert.ok(!fullOriginal || (!flags.has("--ui") && !flags.has("--controls") && flags.has("--bounded-visual-capture")), "Original is one explicit full-file production gate");
@@ -58,6 +58,9 @@ assert.ok(!flags.has("--post-measurement-allocators") || flags.has("--diagnose-a
 const diagnose = flags.has("--diagnose-allocations"), eventsOnly = flags.has("--events-only-trace");
 const failureAllocators = flags.has("--memory-failure-allocators");
 const nativeProfile = flags.has("--native-allocation-profile");
+const lateNativeProfile = flags.has("--native-profile-late-window");
+assert.ok(!lateNativeProfile || (nativeProfile && flags.has("--bounded-network-observer")), "Late diagnostic requires native sampling and already-verified bounded network observation");
+const nativeProfileWindowMs = lateNativeProfile ? NATIVE_PROFILE_LIMITS.lateWindowMs : NATIVE_PROFILE_LIMITS.shortWindowMs;
 assert.ok(!failureAllocators || (fullOriginal && diagnose && !flags.has("--post-measurement-allocators")), "Failure allocator dump is a separate bounded original diagnosis");
 assert.ok(!nativeProfile || (fullOriginal && diagnose && !failureAllocators && !flags.has("--post-measurement-allocators")), "Native sampling is one finite non-acceptance diagnosis");
 assert.ok(!flags.has("--protocol-method-counts") || nativeProfile, "Protocol names are a separate finite native-profile diagnosis only");
@@ -112,7 +115,7 @@ const env = { ...runtime.env, NODE_OPTIONS: [process.env.NODE_OPTIONS ?? "", "--
   NEXT_TELEMETRY_DISABLED: "1", WRANGLER_SEND_METRICS: "false" };
 const generated = [], processIdentities = [], samples = [], baselineWindows = [], blankObservations = [], forbiddenRequests = [];
 let server, serverIdentity, browserServer, browser, context, monitor, monitorTimer, monitorPending = Promise.resolve(), monitorFailure, realmSampler, browserRootPid;
-let visualObserver, nativeJournal, snapshotPending, rendererNativeProfile, protocolCounter, boundedNetworkObserver;
+let visualObserver, nativeJournal, snapshotPending, rendererNativeProfile, protocolCounter, boundedNetworkObserver, browserNativeSession;
 let networkRequestsObserved = 0;
 const phaseChanges = [{ phase: "blank", at: Date.parse(report.startedAt) }];
 const changePhase = phase => { phaseChanges.push({ phase, at: Date.now() }); };
@@ -166,16 +169,21 @@ const startActiveMonitor = page => {
       if (fullOriginal && !report.earlyMemoryFailure && !report.nativeProfileFiniteStop) {
         const peak = nativeJournal.peaksExcept(["blank"]).peak;
         const budgetExceeded = peak && (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 > 250;
-        const nativeProfileDue = rendererNativeProfile && phaseChanges.at(-1).phase === "conversion" && Date.now() - Date.parse(rendererNativeProfile.startedAt) >= 15000;
+        const nativeProfileDue = rendererNativeProfile && phaseChanges.at(-1).phase === "conversion" && Date.now() - Date.parse(rendererNativeProfile.startedAt) >= nativeProfileWindowMs;
         if (peak && (budgetExceeded || nativeProfileDue)) {
           const stop = { peak, incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576,
             reason: budgetExceeded ? "Stop spending hours on a known failed primary memory gate; no threshold, baseline or process exclusion change"
-              : "Finite native sampling diagnostic intentionally cancels after15s; not full-original qualification" };
+              : `Finite native sampling diagnostic intentionally cancels after${nativeProfileWindowMs / 1000}s; not full-original qualification` };
           if (budgetExceeded) report.earlyMemoryFailure = stop; else report.nativeProfileFiniteStop = stop;
           if (rendererNativeProfile) {
-            try { report.nativeAllocationProfile = await rendererNativeProfile.capture(); }
-            catch (error) { report.nativeAllocationProfile = { status: "unavailable", error: String(error).slice(0, 1024), acceptanceMetric: false, perturbsMemory: true }; }
-            finally { rendererNativeProfile = null; }
+            const captures = await Promise.allSettled([rendererNativeProfile.capture(), browserNativeSession
+              ? captureBrowserNativeAllocationProfile(browserNativeSession,
+                path.join(root, "output/playwright", report.startedAt.replaceAll(":", "-") + "-original-browser-native-profile.json.gz")) : Promise.resolve(null)]);
+            rendererNativeProfile = null; browserNativeSession = null;
+            for (const [index, key] of ["nativeAllocationProfile", "browserNativeAllocationProfile"].entries()) {
+              const result = captures[index];
+              report[key] = result.status === "fulfilled" ? result.value : { status: "unavailable", error: String(result.reason).slice(0, 1024), acceptanceMetric: false, perturbsMemory: true };
+            }
           }
           if (failureAllocators) {
             // The primary gate has already failed. Keep recording its true
@@ -409,8 +417,10 @@ try {
   await captureAttribution("loaded-after-catalogue");
   if (nativeProfile) {
     report.nativeProfileDiagnosticOnly = true;
+    report.nativeProfileWindowMs = nativeProfileWindowMs;
     rendererNativeProfile = await startNativeAllocationProfile(await context.newCDPSession(page),
       path.join(root, "output/playwright", report.startedAt.replaceAll(":", "-") + "-original-native-profile.json.gz"));
+    if (lateNativeProfile) browserNativeSession = await context.newCDPSession(page);
   }
   await page.exposeFunction("receiveRuntimeOutput", async chunk => { assert.ok(validationTarget); await validationTarget.write(decodeBoundedValidationChunk(chunk)); });
   for (let repetition = 1; repetition <= repetitions; repetition++) {
@@ -677,6 +687,10 @@ try {
   if (rendererNativeProfile) {
     try { await rendererNativeProfile.close(); rendererNativeProfile = null; }
     catch (error) { report.failures.push("Native profile cleanup: " + String(error)); report.status = "failed"; process.exitCode = 1; }
+  }
+  if (browserNativeSession) {
+    try { await browserNativeSession.detach(); browserNativeSession = null; }
+    catch (error) { report.failures.push("Browser native session cleanup: " + String(error)); report.status = "failed"; process.exitCode = 1; }
   }
   if (protocolCounter) {
     try { report.protocolMethodCounts = protocolCounter.summary(); protocolCounter.close(); }

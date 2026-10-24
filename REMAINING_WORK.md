@@ -1,5 +1,17 @@
 # Remaining work audit
 
+Late diagnostic now implemented: --native-profile-late-window requires native
+sampling plus already-verified bounded network body observation. It captures
+at the unchanged250MiB failure or120s ceiling instead of stopping at15s before
+the known56s failure. Renderer and already-collected browser samples captured
+concurrently,3s per protocol command,2MiB/4096sample archive caps, strict shape/
+hash/gzip readback and detached sessions in finally. Empty browser samples
+explicitly do not prove no allocations; no browser sampling start/GC/pressure
+or native rebuild. Full-tree peaks remain counted and diagnostic-only. Next one
+changed finite run on exact original, not another unprofiled acceptance replay.
+26focused tests PASS/lint PASS. Updated source-contract tests retain explicit
+capture-before-Cancel checks and distinguish short15s/late120s windows.
+
 Latest verification:24focused PASS/lint/diff checks PASS; CI40077261726 on
 executed ea099d9 SUCCESS. Fresh independent test.mkv SHA remains
 31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34.

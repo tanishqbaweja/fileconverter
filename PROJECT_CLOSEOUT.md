@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Late native diagnostic prepared: --native-profile-late-window caps work120s
+instead of15s and captures at unchanged250MiB failure. Requires original/native
+sampling/bounded network observer; captures renderer and already-collected
+browser samples concurrently with3s per API/2MiB strict archive caps. Empty
+browser profile explicitly not evidence of no allocations.26focused tests PASS,
+lint PASS; actual changed diagnostic pending. No native rebuild, source/quality/
+baseline/threshold changes or replay of previously passed tiny gates.
+
 Latest unprofiled original ea099d9 FAILED301.6640625MiB/911valid lossless rows/
 0missing, actual native Cancel after33.24MBoutput,0completed outputs. Stable
 blank228.34375MiB/tree peak530.0078125MiB; browser/renderer transient growth

@@ -132,16 +132,18 @@ if (report.failureMemoryAllocators?.archive) {
   const restored = gunzipSync(packed, { maxOutputLength: 8 * 1048576 }); assert.equal(restored.length, record.restoredBytes); assert.equal(sha(restored), record.restoredSha256);
   failureAllocationArchive = { ...record, path: path.relative(root, target).replaceAll(path.sep, "/"), recordedAbsolutePath: record.path };
 }
-let nativeAllocationArchive = null;
-if (report.nativeAllocationProfile?.archive) {
-  const diagnostic = report.nativeAllocationProfile, record = diagnostic.archive, target = path.resolve(root, record.path);
+async function retainNativeProfile(diagnostic) {
+  if (!diagnostic?.archive) return null;
+  const record = diagnostic.archive, target = path.resolve(root, record.path);
   assert.ok(target.startsWith(path.join(root, "output/playwright") + path.sep));
   assert.equal(diagnostic.acceptanceMetric, false); assert.equal(diagnostic.perturbsMemory, true); assert.equal(diagnostic.processTreeCoverage, false);
   const packed = await readFile(target); assert.equal(packed.length, record.bytes); assert.equal(sha(packed), record.sha256);
   const restored = gunzipSync(packed, { maxOutputLength: 2 * 1048576 }); assert.equal(restored.length, record.restoredBytes); assert.equal(sha(restored), record.restoredSha256);
   const profile = validateNativeAllocationProfile(JSON.parse(restored).profile); assert.equal(profile.samples.length, diagnostic.samples);
-  nativeAllocationArchive = { ...record, path: path.relative(root, target).replaceAll(path.sep, "/"), recordedAbsolutePath: record.path };
+  return { ...record, path: path.relative(root, target).replaceAll(path.sep, "/"), recordedAbsolutePath: record.path };
 }
+const nativeAllocationArchive = await retainNativeProfile(report.nativeAllocationProfile);
+const browserNativeAllocationArchive = await retainNativeProfile(report.browserNativeAllocationProfile);
 const visual = report.boundedVisualObservation ?? null;
 if (visual) {
   assert.ok(visual.maximumCaptures <= 7 && visual.captures.length <= visual.maximumCaptures && visual.attempts <= visual.maximumCaptures && visual.totalBytes <= 16 * 1048576);
@@ -201,6 +203,9 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
   failureAllocationScope: report.failureMemoryAllocators ? { status: report.failureMemoryAllocators.status, acceptanceMetric: false,
     perturbsMemory: true, allocationStackAttribution: false, primaryGateHadAlreadyFailed: true } : null,
   nativeAllocationArchive,
+  browserNativeAllocationArchive,
+  browserNativeAllocationProfile: report.browserNativeAllocationProfile ?? null,
+  nativeProfileWindowMs: report.nativeProfileWindowMs ?? null,
   nativeAllocationProfile: report.nativeAllocationProfile ?? null,
   nativeProfileDiagnosticOnly: report.nativeProfileDiagnosticOnly ?? false,
   nativeProfileFiniteStop: report.nativeProfileFiniteStop ?? null,

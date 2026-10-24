@@ -1,5 +1,11 @@
 # Tested conversion ledger
 
+Late-window sampler implemented for the actual56s original failure:120s maximum,
+early capture/cancel on the unchanged250MiB failure, renderer+already-collected
+browser sample metadata,3s per command, strict2MiB archives. Diagnostic-only;
+no native/quality/input/baseline changes. Actual run pending. Empty browser
+samples cannot establish absence of browser allocations.
+
 Latest verification:24focused PASS/lint/diff checks PASS; exact executed
 ea099d9 portable CI40077261726 SUCCESS. Independent original SHA recheck PASS.
 

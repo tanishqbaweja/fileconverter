@@ -5,7 +5,7 @@ import { createHash, randomUUID } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
-import { NATIVE_PROFILE_LIMITS, startNativeAllocationProfile, validateNativeAllocationProfile } from "../scripts/lib/native-allocation-profile.mjs";
+import { NATIVE_PROFILE_LIMITS, startNativeAllocationProfile, validateNativeAllocationProfile, captureBrowserNativeAllocationProfile } from "../scripts/lib/native-allocation-profile.mjs";
 const profile = () => ({ samples: [{ size: 1024, total: 262144, stack: ["0x123", "allocator-function"] }],
   modules: [{ name: "owned-browser-module", uuid: "pinned", baseAddress: "0x100", size: 4096 }] });
 const target = () => fileURLToPath(new URL(`../output/playwright/2026-10-24T00-00-${randomUUID().replaceAll(/[a-f]/g, "0")}-original-native-profile.json.gz`, import.meta.url));
@@ -68,4 +68,32 @@ test("actual native samples preserve unresolved stacks and exact codec-size matc
   assert.equal(receipt.nativeAllocationProfile.symbolizedStacksVerified, false);
   assert.equal(analysis.causalSavingsVerified, false); assert.equal(analysis.publicAcceptance, false);
   assert.equal(receipt.protectedOriginalUnchangedAtExecution, true); assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true);
+});
+test("late diagnostic covers the known56s failure but is bounded at120s, remains diagnostic, and archives browser samples separately", async () => {
+  assert.equal(NATIVE_PROFILE_LIMITS.shortWindowMs, 15000); assert.equal(NATIVE_PROFILE_LIMITS.lateWindowMs, 120000);
+  const harness = await readFile(new URL("../scripts/test-mpeg2-production-runtime.mjs", import.meta.url), "utf8");
+  assert.match(harness, /!lateNativeProfile \|\| \(nativeProfile && flags.has\("--bounded-network-observer"\)\)/);
+  assert.match(harness, /Date\.now\(\) - Date\.parse\(rendererNativeProfile.startedAt\) >= nativeProfileWindowMs/);
+  assert.match(harness, /report.nativeProfileDiagnosticOnly = true/);
+  assert.match(harness, /budgetExceeded \|\| nativeProfileDue/);
+  assert.match(harness, /Promise.allSettled\(\[rendererNativeProfile.capture\(\), browserNativeSession/);
+  const file = target().replace("-original-native-profile", "-original-browser-native-profile");
+  const calls = []; let detached = false, owned = null;
+  try {
+    const result = await captureBrowserNativeAllocationProfile({ async send(method) { calls.push(method); return { profile: { samples: [], modules: [] } }; },
+      async detach() { detached = true; } }, file);
+    owned = await lstat(file, { bigint: true });
+    assert.deepEqual(calls, ["Memory.getBrowserSamplingProfile"]); assert.equal(detached, true);
+    assert.equal(result.samplingStartedByThisObserver, false); assert.equal(result.emptyProfileDoesNotProveNoAllocations, true);
+    assert.equal(result.status, "empty-native-allocation-samples"); assert.equal(result.acceptanceMetric, false);
+    assert.deepEqual(JSON.parse(gunzipSync(await readFile(file))).profile, { samples: [], modules: [] });
+  } finally { if (owned) { const current = await lstat(file, { bigint: true }); assert.equal(current.dev, owned.dev); assert.equal(current.ino, owned.ino); await unlink(file); } }
+});
+test("browser profile timeout or invalid shape detaches without starting sampling, GC or memory pressure", async () => {
+  for (const reply of [() => new Promise(() => {}), () => ({ profile: { samples: [], modules: [], unbounded: true } })]) {
+    let detached = false;
+    await assert.rejects(captureBrowserNativeAllocationProfile({ send: reply, async detach() { detached = true; } },
+      target().replace("-original-native-profile", "-original-browser-native-profile"), { deadlineMs: 5 }));
+    assert.equal(detached, true);
+  }
 });
