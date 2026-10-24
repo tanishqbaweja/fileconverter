@@ -6,6 +6,19 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Latest five NEW repeated cases15-05-16.297Z: both values retained in all, ordered
+Ogg/Opus pairs preserved, but2FLAC pairs reversed/FAILED; same automatic quality
+failure persists. Small198.9765625MiB/413valid/0missing/cleanup+original PASS.
+Primary mux.c/native proof isolates encoder replacement swapping last dict entry.
+Bounded atomic reserved-tail helper tested with actual libavutil: order survives
+muxer rewrite/removal, OOM atomic,4096entry/2MiB limits, already-ordered no-copy
+path. V3 six-edit derivative/recipe/auditor and four-case FLAC-only scope ready.
+Next one changed native compile, then affected FLAC canonical/repeated cases;
+do NOT replay closed Ogg/Opus cases or unchanged automatic-quality failure.
+Full54/B05 artwork/quality/recovery/stress/public promotion stay OPEN.
+37focused/lint/TypeScript/diff PASS; CI40105373108 on4502e47 SUCCESS. V3 compile
+not yet dispatched, so no FLAC ordering repair/browser acceptance claimed.
+
 V2 retry SUCCESS/audit47source15artifact pins. Actual14-59-06.074Z browser
 7/8PASS; wholeFAILED solely unchanged automatic Vorbis59.7717dB<60 (higher
 61.0654PASS). Repeated FLAC-to-Ogg now TWO distinct ordered values; exact FLAC/

@@ -1,0 +1,18 @@
+import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
+import { readFile, realpath, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { makeAudioCommentWrapperCandidate } from "./audio-comment-wrapper-candidate.mjs";
+import { makeAudioMuxerOrderCandidate } from "./audio-muxer-order-candidate.mjs";
+import { AUDIO_METADATA_PARENT_SHA256 } from "./audio-text-metadata-candidate.mjs";
+const root = path.resolve(import.meta.dirname, "../.."), build = path.join(root, "work/ffmpeg-nondocker-build");
+assert.equal(process.argv.length, 2); assert.equal(await realpath(build), build);
+const sha = b => createHash("sha256").update(b).digest("hex");
+assert.equal(sha(await readFile(path.join(build, "within_remux.current.c"))), AUDIO_METADATA_PARENT_SHA256);
+const parent = await readFile(path.join(build, "within_remux.parent.c"), "utf8"), helper = await readFile(new URL("./audio-text-metadata.h", import.meta.url), "utf8");
+const orderHelper = await readFile(new URL("./audio-muxer-metadata-order.h", import.meta.url), "utf8");
+const options = { expectedParentSha256: "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd" };
+const before = makeAudioCommentWrapperCandidate(parent, helper, options), candidate = makeAudioMuxerOrderCandidate(parent, helper, orderHelper, options);
+const target = path.join(build, "within_remux.metadata.c"); assert.equal(await realpath(target), target);
+assert.equal(await readFile(target, "utf8"), before.generated); await writeFile(target, candidate.generated);
+console.log(JSON.stringify({ scope: candidate.scope, parentSha256: candidate.parentSha256, generatedSha256: candidate.generatedSha256, allowedSourceEdits: 6, publicAcceptance: false }));

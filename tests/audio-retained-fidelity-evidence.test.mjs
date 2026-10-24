@@ -86,3 +86,33 @@ test("combined native parser/wrapper repair preserves both repeated values in th
   const missing = rows.filter(r => r.sample?.privateBytes === null);
   assert.equal(missing.length, 1); assert.equal(missing[0].sample.phase, "blank"); assert.match(missing[0].sample.sampleError, /OpenProcess/);
 });
+test("five new repeated-input routes retain both values but FLAC order failures and unchanged automatic quality remain explicit", async () => {
+  const next = JSON.parse(await readFile(new URL("evidence/2026-10-24T15-05-16.297Z-audio-metadata-fidelity-result.json", root)));
+  assert.equal(next.status, "failed"); assert.equal(next.publicAcceptance, false); assert.equal(next.cases.length, 5);
+  assert.equal(next.memory.incrementalPrivateMiB, 198.9765625); assert.equal(next.memory.validSamples, 413); assert.equal(next.memory.unavailableSamples, 0);
+  const ordered = ["CUSTOM_REPEAT=Premier 音楽", "CUSTOM_REPEAT=Deuxième café"];
+  for (const row of next.cases) {
+    assert.equal(row.tagsPreserved, 25); assert.equal(row.fidelity.samples, 96000); assert.ok(row.disposableOutputRemoved);
+    if (row.name.includes("to-flac")) {
+      assert.equal(row.status, "failed"); assert.equal(row.fidelity.exact, true);
+      assert.deepEqual(row.repeatedValues, ordered.toReversed()); assert.ok(row.failures.some(s => /reordered/.test(s)));
+    } else { assert.deepEqual(row.repeatedValues, ordered); }
+  }
+  assert.deepEqual(next.cases.filter(c => c.status === "passed-small-private-fidelity-and-metadata-case").map(c => c.name),
+    ["flac-to-opus-repeated-values", "ogg-to-opus-repeated-values"]);
+  assert.ok(next.protectedOriginalUnchanged); assert.ok(Object.values(next.cleanup).every(Boolean));
+  const archive = await readFile(new URL(next.archive.path, root)); assert.equal(sha(archive), next.archive.sha256);
+  const unpacked = gunzipSync(archive, { maxOutputLength: 1048576 }); assert.equal(sha(unpacked), next.archive.restoredSha256);
+  const report = JSON.parse(unpacked);
+  for (const fixture of Object.values(report.repeatedFixtures)) assert.equal(fixture.sourcePcmUnchanged.exact, true);
+  const journal = await readFile(new URL(next.losslessJournal.file, root)); assert.equal(sha(journal), next.losslessJournal.archiveSha256);
+  assert.equal(sha(gunzipSync(journal, { maxOutputLength: 8 * 1048576 })), next.losslessJournal.sha256);
+});
+test("actual native dictionary probe reproduces muxer ordering swap and bounded atomic repair, not browser repair acceptance", async () => {
+  const report = JSON.parse(await readFile(new URL("outputs/reports/2026-10-24T15-13-05.779Z-audio-metadata-native.json", root)));
+  assert.equal(report.status, "passed"); assert.equal(report.publicAcceptance, false); assert.equal(report.behavior.browserConversionVerified, false);
+  for (const key of ["muxerEncoderSwapReproduced", "reservedTailPreservesUserValueOrder", "reservedTailAtomicAndBounded", "alreadyOrderedSkipsAllocation"])
+    assert.equal(report.behavior[key], true);
+  assert.equal(report.ownedCompilerOutputAndScratchRemoved, true);
+  const file = "media/ffmpeg/audio-muxer-metadata-order.h"; assert.equal(sha(await readFile(new URL(file, root))), report.sources[file]);
+});

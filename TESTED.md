@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+Five NEW repeated routes15-05-16.297Z:2complete PASS; Opus-to-Ogg ordered values
+preserved but known quality FAIL;2FLAC exact audio/both values preserved but
+ORDER REVERSED/FAILED. Whole small lifecycle198.9765625MiB/413valid/0missing;
+25tags/96,000samples each, rewritten inputs PCM-identical, disk/privacy/original/
+owned cleanup/restore PASS. FLAC reversal traced to muxer encoder dictionary
+replacement swapping last entry: primary mux.c and actual native15-13-05.779Z
+reproduce it. New bounded atomic reserved-tail partition passes native ordered
+values/encoded_by/reserved-prefix/OOM/4096entry/2MiB/no-copy-fast-path checks.
+V3 six-edit metadata-only derivative/build/auditor and FLAC-only four-case gate
+implemented; compile/browser repair pending. Old failures stay failed, no new
+quality default or threshold, no public/stress/artwork acceptance.
+37focused unit/evidence checks, lint and TypeScript PASS. Actual source4502e47
+CI40105373108 SUCCESS. V3 compiled/browser verification is still pending.
+
 V2 actual14-59-06.074Z browser gate7/8 PASS, wholeFAILED only automatic Vorbis
 quality59.7717387dB<60; higher61.065405dB PASS. Parser+bounded stream copy now
 preserves TWO ordered Unicode duplicate entries in real FLAC-to-Ogg output,

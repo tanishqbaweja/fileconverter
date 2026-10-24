@@ -16,7 +16,7 @@ try {
   const compiler = "H:\\LLVM-MinGW\\llvm-mingw-20260616-ucrt-x86_64\\bin\\clang.exe";
   const sdk = "C:\\ffmpeg";
   report.sources = {};
-  for (const file of ["tests/native/audio-text-metadata.c", "media/ffmpeg/audio-text-metadata.h", "scripts/check-audio-text-metadata-native.mjs"])
+  for (const file of ["tests/native/audio-text-metadata.c", "media/ffmpeg/audio-text-metadata.h", "media/ffmpeg/audio-muxer-metadata-order.h", "scripts/check-audio-text-metadata-native.mjs"])
     report.sources[file] = sha(await readFile(path.join(root, file)));
   report.native = { compilerSha256: sha(await readFile(compiler)), dictionaryHeaderSha256: sha(await readFile(path.join(sdk, "include/libavutil/dict.h"))),
     libavutilDllSha256: sha(await readFile(path.join(sdk, "bin/avutil-60.dll"))) };

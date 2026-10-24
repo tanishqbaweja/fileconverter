@@ -29,10 +29,12 @@ import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mj
 import { verifyOpfsDiskBacking } from "./lib/opfs-disk-backing-proof.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
 const qualityComparison = process.argv[3] === "--compare-vorbis-quality";
 const remainingRepeated = process.argv[3] === "--remaining-repeated-audio";
-const selectedCases = remainingRepeated ? AUDIO_METADATA_FIDELITY_CASES.slice(1, 6).map(c => ({ ...c, repeated: true }))
+const flacOrderRepair = process.argv[3] === "--flac-order-repair";
+const selectedCases = flacOrderRepair ? [...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6), ...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6).map(c => ({ ...c, repeated: true }))]
+  : remainingRepeated ? AUDIO_METADATA_FIDELITY_CASES.slice(1, 6).map(c => ({ ...c, repeated: true }))
   : qualityComparison ? [...AUDIO_METADATA_FIDELITY_CASES, { source: "opus", destination: "ogg", quality: "higher" }] : AUDIO_METADATA_FIDELITY_CASES;
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(r => setTimeout(r, ms));
 const runtime = await createOwnedRuntimeScratch("audio-metadata-production-"), env = { ...runtime.env, WRANGLER_SEND_METRICS: "false", NEXT_TELEMETRY_DISABLED: "1" };
@@ -41,6 +43,7 @@ const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: 
   cases: [], failures: [], network: { observedRequests: 0, forbidden: [], nativeGlueRequests: 0, nativeWasmRequests: 0 }, nativeConversionUsed: false };
 if (qualityComparison) report.scope += "; plus explicit same-fixture higher-quality Vorbis control (not a default change or speed proof)";
 if (remainingRepeated) report.scope = "five NEW repeated-comment route cases, excluding the already-passed FLAC-to-Ogg duplicate gate; not stress or promotion";
+if (flacOrderRepair) report.scope = "four FLAC-only changed muxer-order cases: two canonical plus two repeated inputs; not replay of closed Ogg cases or stress acceptance";
 const stamp = report.startedAt.replaceAll(":", "-"), sha = b => createHash("sha256").update(b).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 1048576 })) hash.update(b); return hash.digest("hex"); };
 const native = (args, executable = "ffmpeg") => execute(executable, args, { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 131072 });
@@ -85,7 +88,7 @@ try {
     report.fixtures[source] = { bytes, sha256: hash };
   }
   report.repeatedFixtures = {};
-  for (const source of remainingRepeated ? ["flac", "ogg", "opus"] : ["flac"]) {
+  for (const source of remainingRepeated || flacOrderRepair ? ["flac", "ogg", "opus"] : ["flac"]) {
     const original = path.join(runtime.directory, "source." + source), repeatedFile = path.join(runtime.directory, "source-repeated." + source);
     const bytes = await readFile(original), generated = source === "flac" ? appendFlacFixtureComments(bytes, AUDIO_REPEATED_COMMENTS)
       : appendOggFixtureComments(bytes, source, AUDIO_REPEATED_COMMENTS);

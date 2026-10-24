@@ -1,5 +1,29 @@
 # Remaining work audit
 
+Latest five NEW cases15-05-16.297Z completed: FLAC-to-Opus/Ogg-to-Opus repeated
+cases PASS; Opus-to-Ogg retains correct ordered pair but known automatic quality
+still FAILS. Both FLAC destinations retain BOTH values and exact PCM but reverse
+the pair, correctly FAILED. All25tags/96,000samples, source fixture complete PCM
+unchanged,413valid/0missing/198.9765625MiB small lifecycle, privacy/disk/original/
+owned cleanup/asset restore PASS. No replay of closed canonical/higher cases.
+Concrete cause of FLAC order now primary-source/native verified: mux.c rewrites
+encoder via av_dict_set, which swaps the dictionary's last entry into its old
+slot. Raw output starts with second custom value exactly as native reproduction.
+New bounded atomic stable partition moves only encoder/encoder-* to tail before
+FLAC header; metadata strings capped2MiB/4096entries, original dict intact on
+OOM, already-ordered fast path skips allocation. Actual native15-13-05.779Z
+PASS for swap reproduction, preserved order, reserved-prefix cleanup, original
+encoded_by preservation, allocation failure and both budgets. Not browser proof.
+V3 builder/recipe/auditor now compose exactly6 reversible metadata wrapper edits
+plus existing upstream parser edit, no codec/I/O/heap/quality change. Next one
+isolated compile then ONLY four affected FLAC cases (two canonical/two repeated)
+using --flac-order-repair. Keep successful Ogg/Opus serialization gates closed.
+Full54/B05 artwork/quality/recovery/stress/public qualification remain OPEN.
+Verification:37focused tests PASS, focused lint/TypeScript/diff checks PASS;
+CI40105373108/4502e47 SUCCESS. Source/fixture helpers preserve old40-pin baseline,
+but the47-pin v2 recipe is now historical because v3 builder changed. Reuse
+recorded Ogg/Opus results, do not falsely relabel v2 as current-source compilation.
+
 Latest B05 v2 retry now SUCCESS, audited47source/15artifact pins against actual
 2b76b15. Actual14-59-06.074Z production-browser gate:7/8 small cases PASS,
 whole statusFAILED solely unchanged automatic Opus-to-Vorbis59.7717387dB<60.

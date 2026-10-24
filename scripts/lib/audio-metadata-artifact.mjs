@@ -8,6 +8,7 @@ import { makeAudioMetadataBuildWorkflow } from "./audio-metadata-build-workflow.
 import { makeAudioRepeatedCommentBuildWorkflow } from "./audio-repeated-comment-build-workflow.mjs";
 import { makeAudioRepeatedCommentCandidate } from "../../media/ffmpeg/audio-repeated-comment-candidate.mjs";
 import { makeAudioCommentWrapperCandidate } from "../../media/ffmpeg/audio-comment-wrapper-candidate.mjs";
+import { makeAudioMuxerOrderCandidate } from "../../media/ffmpeg/audio-muxer-order-candidate.mjs";
 import { readWasmMemoryLimits } from "./wasm-memory-limits.mjs";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const root = path.resolve(import.meta.dirname, "../..");
@@ -19,15 +20,18 @@ const readTool = async file => {
   return readFile(file);
 };
 
-export function verifyAudioMetadataCore({ manifest, parent, compiled, helper, memoryLimits, publicMemoryLimits, publicManifest }) {
+export function verifyAudioMetadataCore({ manifest, parent, compiled, helper, muxerOrderHelper, memoryLimits, publicMemoryLimits, publicManifest }) {
   assert.equal(manifest.engine, "within-remux-private-bounded-audio-metadata");
   const candidate = manifest.candidate;
   for (const flag of ["codecSettingsChanged", "ioChanged", "memoryLimitsRaised", "browserFixVerified", "publicAcceptance"]) assert.equal(candidate[flag], false, flag);
-  assert.ok([3, 4].includes(candidate.allowedSourceEdits)); assert.equal(candidate.originalMasterSha256, AUDIO_METADATA_PARENT_SHA256);
-  if (candidate.allowedSourceEdits === 4) assert.ok(candidate.upstreamCommentPatch, "The fourth-edit variant also requires audited parser preservation");
+  assert.ok([3, 4, 6].includes(candidate.allowedSourceEdits)); assert.equal(candidate.originalMasterSha256, AUDIO_METADATA_PARENT_SHA256);
+  if (candidate.allowedSourceEdits >= 4) assert.ok(candidate.upstreamCommentPatch, "Wrapper variants also require audited parser preservation");
   assert.equal(candidate.parentSha256, sha(parent)); assert.equal(candidate.compiledSourceSha256, sha(compiled)); assert.equal(candidate.helperSha256, sha(helper));
   const derive = candidate.allowedSourceEdits === 4 ? makeAudioCommentWrapperCandidate : makeAudioTextMetadataCandidate;
-  const derived = derive(parent, helper, { expectedParentSha256: candidate.parentSha256 });
+  const derived = candidate.allowedSourceEdits === 6
+    ? makeAudioMuxerOrderCandidate(parent, helper, muxerOrderHelper, { expectedParentSha256: candidate.parentSha256 })
+    : derive(parent, helper, { expectedParentSha256: candidate.parentSha256 });
+  if (candidate.allowedSourceEdits === 6) assert.equal(candidate.muxerOrderHelperSha256, sha(muxerOrderHelper));
   assert.equal(compiled, derived.generated, "Actual compiled source must contain only the declared metadata edits");
   assert.deepEqual(memoryLimits, publicMemoryLimits); assert.deepEqual(candidate.wasmMemoryLimits, memoryLimits);
   assert.equal(manifest.modules.length, 1); assert.equal(manifest.modules[0].name, "within-remux");
@@ -81,6 +85,7 @@ export async function auditAudioMetadataArtifact(candidateDirectory) {
     readTool(path.join(root, "public/engines/remux/within-remux.wasm")), readTool(path.join(root, "public/engines/remux/build-manifest.json")),
   ]);
   const core = verifyAudioMetadataCore({ manifest, parent: parent.toString(), compiled: compiled.toString(), helper: helper.toString(),
+    muxerOrderHelper: manifest.candidate.allowedSourceEdits === 6 ? (await readTool(path.join(root, "media/ffmpeg/audio-muxer-metadata-order.h"))).toString() : undefined,
     memoryLimits: readWasmMemoryLimits(wasm), publicMemoryLimits: readWasmMemoryLimits(publicWasm), publicManifest: JSON.parse(publicManifest) });
   if (manifest.candidate.upstreamCommentPatch) {
     for (const file of ["oggparsevorbis.parent.c", "oggparsevorbis.repeated.c", "audio-repeated-comment-source.json"])
