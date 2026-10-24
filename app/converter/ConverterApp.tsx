@@ -2163,15 +2163,13 @@ export function ConverterApp() {
                         }}
                       >
                         <option value="automatic">
-                          Automatic ({privateMpeg2Options
-                            ? "MPEG-2"
-                            : selectedProfile?.output === "webm-vp9"
+                          {privateMpeg2Options ? "MPEG-2 (fixed)" : `Automatic (${selectedProfile?.output === "webm-vp9"
                             ? "VP9"
                             : selectedProfile?.output === "webm"
                               ? "VP8"
                               : selectedProfile?.output === "ogv"
                                 ? "Theora"
-                              : "MPEG-4 Part 2"})
+                              : "MPEG-4 Part 2"})`}
                         </option>
                         {privateMpeg2Options ? null : selectedProfile?.output === "ogv" ? (
                           <option value="theora">Theora</option>
@@ -2265,10 +2263,10 @@ export function ConverterApp() {
                           }))
                         }
                       >
-                        <option value="automatic">{privateMpeg2Options ? "Automatic (current private policy)" : "Automatic (fastest certified)"}</option>
+                        <option value="automatic">{privateMpeg2Options ? "Automatic" : "Automatic (fastest certified)"}</option>
                         <option value="smaller">Smaller file</option>
                         <option value="balanced">Balanced</option>
-                        <option value="higher">Higher visual quality</option>
+                        <option value="higher">{privateMpeg2Options ? "Higher quality" : "Higher visual quality"}</option>
                       </select>
                     </label>
                   </div>

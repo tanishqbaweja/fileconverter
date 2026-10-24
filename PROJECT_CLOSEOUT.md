@@ -6,10 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
-Current: private MPEG-2 option controls and real Convert-button integration are
-implemented; next run the finite actual-form --ui-controls gate on canonical
-input with the existing repaired core and bounded observer, then finish the
-applicable recovery/original/scale/browser gates below. No public promotion.
+Current: private MPEG-2 actual-form controls and Convert-button gate is CLOSED
+at ac0c773: two validated canonical outputs, whole-tree247.5625MiB with narrow
+margin, bounded real option/native screenshots and independently verified owned
+cleanup. Review: evidence/2026-10-24-mpeg2-ui-controls-review.json. Next finish
+missing production quota/permission/reload/batch and preservation, then the
+applicable original/scale/browser gates below. Do not replay this passing small
+controls gate unchanged. No public promotion or broad memory qualification.
 Closed small checks to reuse: repaired scaler/native build40050006861, exact
 fixture generation, bounded visible-progress230.640625MiB at7f6730d, and recorded
 small cancellation/write-failure/planning/code-cache checks. Do not replay these

@@ -1,5 +1,19 @@
 # Remaining work audit
 
+2026-10-24 actual private MPEG-2 form/Convert controls gate is now CLOSED, not
+merely implemented: two settings sets independently validated through real
+select events/plans/button/production output, exact canonical output hashes.
+Whole-tree247.5625MiB (narrow2.4375MiB margin),448records/one honestly null loaded
+sample/no conversion nulls; six bounded reviewed PNGs814840B. Original full SHA,
+source44/native142 bindings and independent owned cleanup PASS. Lossless38,371B
+raw archive retained; redundant1.63MB JSON removed. Compact review:
+`evidence/2026-10-24-mpeg2-ui-controls-review.json`. Later label-only polish passes
+six focused tests, no media replay. Hosted40056479358/ac0c773 SUCCESS incl19
+privacy/offline tests; not a stress/public or later-source qualification.
+Next missing production quota/permission/reload/batch and preservation gates,
+then applicable original/large-source/browser gates. Do not replay passed small
+controls/native/observer work unchanged. Full54/B02-B09 remain OPEN.
+
 2026-10-24 private option UI integration now implemented (not yet browser-proven):
 real shared width/bitrate/FPS/quality form, fixed Automatic(MPEG-2) codec and
 qualification-only descriptions. Planner/start carry selected values; other

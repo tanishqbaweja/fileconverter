@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "receipt": "evidence/2026-10-24T02-59-51.108Z-mpeg2-controls-result.json",
+  "executedHead": "ac0c773a54a539b80049da5327b677955f2200b1",
+  "scope": "Two small actual-form and Convert-button production conversions, not public or stress qualification",
+  "actualFormAndButtonVerified": true,
+  "visibleNativeProgressVerified": true,
+  "reviewedImages": [
+    "output/playwright/2026-10-24T02-59-51.108Z-catalogue/bounded-visual/04-case-2-options.png",
+    "output/playwright/2026-10-24T02-59-51.108Z-catalogue/bounded-visual/05-case-2-native.png"
+  ],
+  "incrementalPrivateMiB": 247.5625,
+  "memoryHeadroomMiB": 2.4375,
+  "memoryRecords": 448,
+  "unavailableLoadedRecords": 1,
+  "unavailableConversionRecords": 0,
+  "memoryMarginIsNarrow": true,
+  "captionPolishAfterExecution": "Private fixed-codec and quality labels shortened after images revealed clipping; no option values, events, native settings or conversion behaviour changed. No new media run claimed for label-only edits.",
+  "priorMemoryFailuresRemainRecorded": true,
+  "headless": true,
+  "headedCoverage": false,
+  "nativeOsPickerCovered": false,
+  "allOptionCombinationsCovered": false,
+  "largeFileCoverage": false,
+  "publicAcceptance": false,
+  "speedComparison": false,
+  "next": "Missing production quota/permission/reload/batch and preservation gates, then applicable original/large-source and browser qualification; do not repeat this passing small controls gate unchanged."
+}

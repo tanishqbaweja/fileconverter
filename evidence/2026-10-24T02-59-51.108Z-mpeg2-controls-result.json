@@ -1,0 +1,852 @@
+{
+  "schemaVersion": 1,
+  "head": "ac0c773a54a539b80049da5327b677955f2200b1",
+  "status": "passed-small-allocation-diagnostic-not-route-promotion",
+  "startedAt": "2026-10-24T02:59:51.108Z",
+  "finishedAt": "2026-10-24T03:01:14.147Z",
+  "scope": "Actual private form controls and Convert-button production path; small fixture, not full UI/OS-picker/stress or public acceptance",
+  "archive": {
+    "path": "outputs/reports/2026-10-24T02-59-51.108Z-mpeg2-production-runtime.json.gz",
+    "bytes": 38371,
+    "sha256": "3aa941acdcf53f483d4f958099e9a5044522984ae04b416253e77a3bd524f3d3",
+    "restoredBytes": 1632391,
+    "restoredSha256": "87d88da3b416503acbec9b228cb53b81b54e784203454e4cd8f10510bdf11ab7"
+  },
+  "sourcePins": 44,
+  "recordedSourcesMatchHistoricalGitHead": true,
+  "native": [
+    {
+      "source": "work\\mpeg2-scaled-properties-40050006861\\within-mpeg2-split.mjs",
+      "sha256": "d4ec481a93a1b087c96aa11948ab9a98ccf6d09237ed143c022bf76bf6c31506",
+      "bytes": 65707
+    },
+    {
+      "source": "work\\mpeg2-scaled-properties-40050006861\\within-mpeg2-split.wasm",
+      "sha256": "753f30ec607f64312b73121160ce46df14c5a712f0cb21bbc9e9da5292414017",
+      "bytes": 5716027
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.mjs",
+      "sha256": "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e",
+      "bytes": 68202
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.wasm",
+      "sha256": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee",
+      "bytes": 675411
+    }
+  ],
+  "scaledPropertiesBuild": {
+    "path": "evidence/mpeg2-scaled-properties-build-40050006861.json",
+    "sha256": "17077055747d67d3c519807311b1aa0291df316ecaca3fcfe573a8549492dab1",
+    "runId": "40050006861",
+    "executedHead": "955d3e61d0e867d99901ab244f8c4eda9b8d4620",
+    "allBuildSourcesRechecked": true,
+    "buildSourceCount": 142,
+    "encoderUnchanged": true,
+    "publicAcceptance": false
+  },
+  "fixture": {
+    "bytes": 786823,
+    "sha256": "e70b76ca98594c4626024a68ad7886e3a9751e4fa1c9e124b616a7ff67e6b740",
+    "video": "hevc",
+    "width": 640,
+    "height": 360,
+    "frames": 96
+  },
+  "uiControlsQualification": {
+    "cases": [
+      {
+        "name": "unchanged-default-policy",
+        "form": {
+          "selected": {
+            "codec": "automatic",
+            "maxWidth": 0,
+            "bitRateBps": 0,
+            "frameRateFps": 0,
+            "quality": "automatic"
+          },
+          "realSelectEvents": true,
+          "codecLockedToMpeg2": true,
+          "planText": "RE-ENCODE\nStream 1: HEVC/H.265\nThe first video stream is decoded and encoded as MPEG-2 at 4 Mbps, source dimensions and constant source timing, with automatic quantizer policy. Native checks refuse VFR, full-range input or changing dimensions; 8-bit pixel-format conversion can be lossy. Non-default controls remain qualification-only until their browser gates pass.",
+          "publicAcceptance": false
+        },
+        "screenshot": "output/playwright/2026-10-24T02-59-51.108Z-catalogue/bounded-visual/01-case-1-options.png",
+        "actualButtonEvidence": {
+          "observedRunning": true,
+          "actualConvertButton": true,
+          "nativeWorkObserved": true,
+          "finalWorkerReady": true,
+          "destinationAdapter": "production directory output using isolated OPFS handle",
+          "nativeOsPickerCovered": false,
+          "selectedOptions": {
+            "codec": "automatic",
+            "maxWidth": 0,
+            "bitRateBps": 0,
+            "frameRateFps": 0,
+            "quality": "automatic"
+          },
+          "optionsReadFromActualForm": true,
+          "sourceDimensionsAndTimingOptionsOnly": true
+        }
+      },
+      {
+        "name": "requested-controls",
+        "form": {
+          "selected": {
+            "codec": "automatic",
+            "maxWidth": 320,
+            "bitRateBps": 1000000,
+            "frameRateFps": 15,
+            "quality": "higher"
+          },
+          "realSelectEvents": true,
+          "codecLockedToMpeg2": true,
+          "planText": "RE-ENCODE\nStream 1: HEVC/H.265\nThe first video stream is decoded and encoded as MPEG-2 at 1 Mbps, an explicit 320px no-upscale width cap and an explicit 15 fps no-upconvert cap, with higher quantizer policy. Native checks refuse VFR, full-range input or changing dimensions; 8-bit pixel-format conversion can be lossy. Non-default controls remain qualification-only until their browser gates pass.",
+          "publicAcceptance": false
+        },
+        "screenshot": "output/playwright/2026-10-24T02-59-51.108Z-catalogue/bounded-visual/04-case-2-options.png",
+        "actualButtonEvidence": {
+          "observedRunning": true,
+          "actualConvertButton": true,
+          "nativeWorkObserved": true,
+          "finalWorkerReady": true,
+          "destinationAdapter": "production directory output using isolated OPFS handle",
+          "nativeOsPickerCovered": false,
+          "selectedOptions": {
+            "codec": "automatic",
+            "maxWidth": 320,
+            "bitRateBps": 1000000,
+            "frameRateFps": 15,
+            "quality": "higher"
+          },
+          "optionsReadFromActualForm": true,
+          "sourceDimensionsAndTimingOptionsOnly": false
+        }
+      }
+    ],
+    "completed": true,
+    "actualConvertButton": true,
+    "publicAcceptance": false,
+    "nativeOsPickerCovered": false
+  },
+  "uiQualification": {
+    "privateSelector": true,
+    "realPlanVisible": true,
+    "publicAcceptance": false,
+    "screenshots": [],
+    "finalUiMatrixCoverage": false,
+    "nativeOsPickerCovered": false,
+    "observedRunning": true,
+    "actualConvertButton": true,
+    "nativeWorkObserved": true,
+    "finalWorkerReady": true,
+    "destinationAdapter": "production directory output using isolated OPFS handle",
+    "selectedOptions": {
+      "codec": "automatic",
+      "maxWidth": 320,
+      "bitRateBps": 1000000,
+      "frameRateFps": 15,
+      "quality": "higher"
+    },
+    "optionsReadFromActualForm": true,
+    "sourceDimensionsAndTimingOptionsOnly": false
+  },
+  "observer": {
+    "allocationDiagnostics": true,
+    "screenshots": false,
+    "snapshots": false,
+    "sources": true,
+    "boundedVisualCapture": true,
+    "controlScope": "bounded real-state visual evidence, not route promotion"
+  },
+  "diagnosticObserverOnly": false,
+  "boundedVisualObservation": {
+    "scope": "Bounded real-state headless evidence, not full UI/manual or profile qualification",
+    "maximumCaptures": 7,
+    "maximumImageBytes": 4194304,
+    "maximumTotalBytes": 16777216,
+    "attempts": 6,
+    "totalBytes": 814840,
+    "captures": [
+      {
+        "label": "case-1-options",
+        "file": "output/playwright/2026-10-24T02-59-51.108Z-catalogue/bounded-visual/01-case-1-options.png",
+        "bytes": 191585,
+        "sha256": "e0ab80e1afd309c9fd044d0bc465e2642e09a309f22549eae9305f7b590e952a",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-10-24T03:00:58.619Z",
+        "finishedAt": "2026-10-24T03:00:58.739Z",
+        "before": {
+          "jobState": "idle",
+          "phase": "Ready",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": null,
+          "outputBytes": null,
+          "wasmMemoryBytes": null
+        },
+        "after": {
+          "jobState": "idle",
+          "phase": "Ready",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": null,
+          "outputBytes": null,
+          "wasmMemoryBytes": null
+        },
+        "observedNativeState": null,
+        "nativeStateAroundScreenshot": false,
+        "focusedRegion": "video-options",
+        "region": {
+          "x": 689,
+          "y": 482.46875,
+          "width": 495.609375,
+          "height": 237.125
+        },
+        "regionInViewport": true,
+        "renderedBefore": null,
+        "renderedAfter": null,
+        "nativeProgressVisuallyInViewport": false
+      },
+      {
+        "label": "case-1-native",
+        "file": "output/playwright/2026-10-24T02-59-51.108Z-catalogue/bounded-visual/02-case-1-native.png",
+        "bytes": 103796,
+        "sha256": "5749b55b0271e4973f9f50dcd1528ec333f448930a810a39aa8353378db49fed",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-10-24T03:00:59.852Z",
+        "finishedAt": "2026-10-24T03:00:59.958Z",
+        "before": {
+          "jobState": "running",
+          "phase": "Encoding MPEG-2 MP4",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": 458752,
+          "outputBytes": 236085,
+          "wasmMemoryBytes": 50331648
+        },
+        "after": {
+          "jobState": "running",
+          "phase": "Encoding MPEG-2 MP4",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": 524288,
+          "outputBytes": 466519,
+          "wasmMemoryBytes": 50331648
+        },
+        "observedNativeState": {
+          "jobState": "running",
+          "phase": "Encoding MPEG-2 MP4",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": 327680,
+          "outputBytes": 236085,
+          "wasmMemoryBytes": 50331648
+        },
+        "nativeStateAroundScreenshot": true,
+        "focusedRegion": "progress-panel",
+        "region": {
+          "x": 689,
+          "y": 236.84375,
+          "width": 495.609375,
+          "height": 246.078125
+        },
+        "regionInViewport": true,
+        "renderedBefore": "Encoding MPEG-2 MP4",
+        "renderedAfter": "Encoding MPEG-2 MP4",
+        "nativeProgressVisuallyInViewport": true
+      },
+      {
+        "label": "case-1-terminal",
+        "file": "output/playwright/2026-10-24T02-59-51.108Z-catalogue/bounded-visual/03-case-1-terminal.png",
+        "bytes": 102505,
+        "sha256": "ffbcac24c1e2ba75a3a9de38eb65c6e3192c7c1ffd848f34824bd26ed651426c",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-10-24T03:01:00.637Z",
+        "finishedAt": "2026-10-24T03:01:00.730Z",
+        "before": {
+          "jobState": "complete",
+          "phase": "Saved",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": 786823,
+          "outputBytes": 1002730,
+          "wasmMemoryBytes": 0
+        },
+        "after": {
+          "jobState": "complete",
+          "phase": "Saved",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": 786823,
+          "outputBytes": 1002730,
+          "wasmMemoryBytes": 0
+        },
+        "observedNativeState": null,
+        "nativeStateAroundScreenshot": false,
+        "focusedRegion": "progress-panel",
+        "region": {
+          "x": 689,
+          "y": 236.84375,
+          "width": 495.609375,
+          "height": 246.078125
+        },
+        "regionInViewport": true,
+        "renderedBefore": "Saved",
+        "renderedAfter": "Saved",
+        "nativeProgressVisuallyInViewport": false
+      },
+      {
+        "label": "case-2-options",
+        "file": "output/playwright/2026-10-24T02-59-51.108Z-catalogue/bounded-visual/04-case-2-options.png",
+        "bytes": 210656,
+        "sha256": "7db42d706e897ba19641d65dc57b1e0b9bd7a231264a1994573194ada7fc0b6e",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-10-24T03:01:02.336Z",
+        "finishedAt": "2026-10-24T03:01:02.444Z",
+        "before": {
+          "jobState": "complete",
+          "phase": "Saved",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": 786823,
+          "outputBytes": 1002730,
+          "wasmMemoryBytes": 0
+        },
+        "after": {
+          "jobState": "complete",
+          "phase": "Saved",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": 786823,
+          "outputBytes": 1002730,
+          "wasmMemoryBytes": 0
+        },
+        "observedNativeState": null,
+        "nativeStateAroundScreenshot": false,
+        "focusedRegion": "video-options",
+        "region": {
+          "x": 689,
+          "y": 241.46875,
+          "width": 495.609375,
+          "height": 237.125
+        },
+        "regionInViewport": true,
+        "renderedBefore": null,
+        "renderedAfter": null,
+        "nativeProgressVisuallyInViewport": false
+      },
+      {
+        "label": "case-2-native",
+        "file": "output/playwright/2026-10-24T02-59-51.108Z-catalogue/bounded-visual/05-case-2-native.png",
+        "bytes": 103748,
+        "sha256": "92f83b2cdf1daed71b04c61847432acf2071253c83048e2b009f6adef963a6f2",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-10-24T03:01:02.755Z",
+        "finishedAt": "2026-10-24T03:01:02.828Z",
+        "before": {
+          "jobState": "running",
+          "phase": "Encoding MPEG-2 MP4",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": 262144,
+          "outputBytes": 1513,
+          "wasmMemoryBytes": 50331648
+        },
+        "after": {
+          "jobState": "running",
+          "phase": "Encoding MPEG-2 MP4",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": 458752,
+          "outputBytes": 144064,
+          "wasmMemoryBytes": 50331648
+        },
+        "observedNativeState": {
+          "jobState": "running",
+          "phase": "Encoding MPEG-2 MP4",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": 262144,
+          "outputBytes": 1513,
+          "wasmMemoryBytes": 50331648
+        },
+        "nativeStateAroundScreenshot": true,
+        "focusedRegion": "progress-panel",
+        "region": {
+          "x": 689,
+          "y": 236.84375,
+          "width": 495.609375,
+          "height": 246.078125
+        },
+        "regionInViewport": true,
+        "renderedBefore": "Encoding MPEG-2 MP4",
+        "renderedAfter": "Encoding MPEG-2 MP4",
+        "nativeProgressVisuallyInViewport": true
+      },
+      {
+        "label": "case-2-terminal",
+        "file": "output/playwright/2026-10-24T02-59-51.108Z-catalogue/bounded-visual/06-case-2-terminal.png",
+        "bytes": 102550,
+        "sha256": "5c3fbd6a60759327f3968c5b9555e947987fa051448913837cdfbcdd84c5737d",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-10-24T03:01:03.331Z",
+        "finishedAt": "2026-10-24T03:01:03.407Z",
+        "before": {
+          "jobState": "complete",
+          "phase": "Saved",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": 786823,
+          "outputBytes": 333519,
+          "wasmMemoryBytes": 0
+        },
+        "after": {
+          "jobState": "complete",
+          "phase": "Saved",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": 786823,
+          "outputBytes": 333519,
+          "wasmMemoryBytes": 0
+        },
+        "observedNativeState": null,
+        "nativeStateAroundScreenshot": false,
+        "focusedRegion": "progress-panel",
+        "region": {
+          "x": 689,
+          "y": 236.84375,
+          "width": 495.609375,
+          "height": 246.078125
+        },
+        "regionInViewport": true,
+        "renderedBefore": "Saved",
+        "renderedAfter": "Saved",
+        "nativeProgressVisuallyInViewport": false
+      }
+    ],
+    "unavailable": [],
+    "maximumConcurrentCaptures": 1,
+    "queuesRetained": 0,
+    "domHandlesRetained": 0,
+    "continuousScreenshots": false,
+    "continuousDomSnapshots": false,
+    "noForcedGcOrConversionDelays": true,
+    "publicAcceptance": false
+  },
+  "boundedVisibleProgressVerified": true,
+  "postMeasurementAllocationArchive": null,
+  "postMeasurementAllocationScope": null,
+  "completedCases": [
+    {
+      "name": "unchanged-default-policy",
+      "requested": "automatic",
+      "reference": {
+        "width": 640,
+        "height": 360,
+        "frames": 96,
+        "frameRate": 24,
+        "bitrate": 4000000,
+        "qmin": 4,
+        "qmax": 20,
+        "referenceFilter": ""
+      },
+      "actualNativeSettings": {
+        "width": 640,
+        "height": 360,
+        "frameRateNumerator": 24,
+        "frameRateDenominator": 1,
+        "bitRateBps": 4000000,
+        "qmin": 4,
+        "qmax": 20
+      },
+      "output": {
+        "bytes": 1002730,
+        "sha256": "11a53d672a155d12630bd0bc9fb39f012db05ce1ed4abebfe178a3b679451886",
+        "codec": "mpeg2video",
+        "frames": 96,
+        "ssim": 0.989061,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+        "titlePreserved": true,
+        "languagePreserved": true,
+        "videoClocks": {
+          "frames": 96,
+          "maximumVideoPtsErrorSeconds": 0.000021333333333428683
+        }
+      }
+    },
+    {
+      "name": "requested-controls",
+      "requested": {
+        "codec": "automatic",
+        "maxWidth": 320,
+        "bitRateBps": 1000000,
+        "frameRateFps": 15,
+        "quality": "higher"
+      },
+      "reference": {
+        "width": 320,
+        "height": 180,
+        "frames": 60,
+        "frameRate": 15,
+        "bitrate": 1000000,
+        "qmin": 2,
+        "qmax": 12,
+        "referenceFilter": "select='eq(n,0)+gt(floor(n*15/24),floor((n-1)*15/24))',scale=320:180:flags=bilinear,"
+      },
+      "actualNativeSettings": {
+        "width": 320,
+        "height": 180,
+        "frameRateNumerator": 15,
+        "frameRateDenominator": 1,
+        "bitRateBps": 1000000,
+        "qmin": 2,
+        "qmax": 12
+      },
+      "output": {
+        "bytes": 333519,
+        "sha256": "189bced2d7f07556b0041ac60f5b3d4d306ce732175d2a456d9c9f846a25bf09",
+        "codec": "mpeg2video",
+        "frames": 60,
+        "ssim": 0.995891,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+        "titlePreserved": true,
+        "languagePreserved": true,
+        "videoClocks": {
+          "frames": 60,
+          "maximumVideoPtsErrorSeconds": 0.000021333333333650728
+        }
+      }
+    }
+  ],
+  "completed": true,
+  "overallGatePassed": true,
+  "lastTerminal": {
+    "type": "complete",
+    "message": null,
+    "metrics": {
+      "inputBytes": 786823,
+      "outputBytes": 333519,
+      "queuedBytes": 0,
+      "peakQueuedBytes": 333519,
+      "pendingOperations": 0,
+      "peakPendingOperations": 1,
+      "maxReadChunkBytes": 65536,
+      "maxWriteChunkBytes": 333519,
+      "elapsedMs": 530.5148535072803,
+      "wasmMemoryBytes": 0,
+      "peakWasmMemoryBytes": 50331648,
+      "wasmMemories": {},
+      "sharedArrayBufferBytes": 4,
+      "activeWorkerCount": 1,
+      "imageWorkingBytes": 0,
+      "mpeg2EncoderSettings": {
+        "width": 320,
+        "height": 180,
+        "frameRateNumerator": 15,
+        "frameRateDenominator": 1,
+        "bitRateBps": 1000000,
+        "qmin": 2,
+        "qmax": 12
+      },
+      "scratchBytes": 0,
+      "peakScratchBytes": 333519,
+      "maxScratchReadChunkBytes": 333519,
+      "maxScratchWriteChunkBytes": 333519
+    }
+  },
+  "failures": [],
+  "memory": {
+    "scope": "small-runtime-integration-only-not-large-file-or-public-profile-acceptance",
+    "intervalMs": 100,
+    "validSamples": 447,
+    "unavailableSamples": [
+      {
+        "sequence": 189,
+        "timestamp": "2026-10-24T03:00:36.9893435Z",
+        "completedAt": "2026-10-24T03:00:37.0080049Z",
+        "sampleError": "OpenProcess 3360",
+        "nativeElapsedMs": 18.582700000000003,
+        "privateBytes": null,
+        "rssBytes": null,
+        "processes": null,
+        "phase": "loaded",
+        "elapsedMs": 45881
+      }
+    ],
+    "conversionSamples": 25,
+    "peak": {
+      "sequence": 398,
+      "timestamp": "2026-10-24T03:00:59.5130145Z",
+      "completedAt": "2026-10-24T03:00:59.5548949Z",
+      "sampleError": null,
+      "nativeElapsedMs": 41.987700000000004,
+      "privateBytes": 496119808,
+      "rssBytes": 743747584,
+      "processes": [
+        {
+          "pid": 15032,
+          "parentPid": 19204,
+          "createdAt": "2026-10-24T03:00:14.9098190Z",
+          "creationFileTime": "134372844149098190",
+          "executableName": "chrome.exe",
+          "privateBytes": 168255488,
+          "rssBytes": 192024576,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 19204,
+          "parentPid": 1732,
+          "createdAt": "2026-10-24T03:00:14.2837180Z",
+          "creationFileTime": "134372844142837180",
+          "executableName": "chrome.exe",
+          "privateBytes": 49856512,
+          "rssBytes": 148176896,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 28640,
+          "parentPid": 19204,
+          "createdAt": "2026-10-24T03:00:14.9179968Z",
+          "creationFileTime": "134372844149179968",
+          "executableName": "chrome.exe",
+          "privateBytes": 14561280,
+          "rssBytes": 41984000,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none"
+        },
+        {
+          "pid": 30612,
+          "parentPid": 19204,
+          "createdAt": "2026-10-24T03:00:36.9683996Z",
+          "creationFileTime": "134372844369683996",
+          "executableName": "chrome.exe",
+          "privateBytes": 15548416,
+          "rssBytes": 32165888,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 31036,
+          "parentPid": 19204,
+          "createdAt": "2026-10-24T03:00:14.3985081Z",
+          "creationFileTime": "134372844143985081",
+          "executableName": "chrome.exe",
+          "privateBytes": 2551808,
+          "rssBytes": 9846784,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 36612,
+          "parentPid": 19204,
+          "createdAt": "2026-10-24T03:00:15.0104839Z",
+          "creationFileTime": "134372844150104839",
+          "executableName": "chrome.exe",
+          "privateBytes": 8146944,
+          "rssBytes": 18907136,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service"
+        },
+        {
+          "pid": 38344,
+          "parentPid": 19204,
+          "createdAt": "2026-10-24T03:00:16.1470221Z",
+          "creationFileTime": "134372844161470221",
+          "executableName": "chrome.exe",
+          "privateBytes": 201371648,
+          "rssBytes": 221401088,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 39484,
+          "parentPid": 19204,
+          "createdAt": "2026-10-24T03:00:16.1080915Z",
+          "creationFileTime": "134372844161080915",
+          "executableName": "chrome.exe",
+          "privateBytes": 35827712,
+          "rssBytes": 79241216,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ],
+      "phase": "conversion",
+      "elapsedMs": 68405
+    },
+    "incrementalPrivateMiB": 247.5625
+  },
+  "protectedOriginalUnchangedAtExecution": true,
+  "cleanup": {
+    "processObservations": [
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 21912,
+          "parentPid": 1732,
+          "createdAt": "2026-10-24T03:00:11.4390500Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-24T03:01:07.474Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 608,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 19204,
+          "parentPid": 1732,
+          "createdAt": "2026-10-24T03:00:14.2837180Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-24T03:01:08.004Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 530,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 18252,
+          "parentPid": 1732,
+          "createdAt": "2026-10-24T03:00:16.2446310Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-24T03:01:08.511Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 507,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    ],
+    "disposableOutputDeleted": true,
+    "generatedDirectoriesRemoved": [
+      "dist\\client\\engines\\mpeg2"
+    ],
+    "scratchRemoved": "work\\mpeg2-production-runtime-HFr5hD",
+    "allOwnedProcessesAbsent": true
+  },
+  "independentCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 21912,
+        "parentPid": 1732,
+        "createdAt": "2026-10-24T03:00:11.4390500Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T03:10:53.060Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 380,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 19204,
+        "parentPid": 1732,
+        "createdAt": "2026-10-24T03:00:14.2837180Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T03:10:53.445Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 384,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 18252,
+        "parentPid": 1732,
+        "createdAt": "2026-10-24T03:00:16.2446310Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T03:10:53.832Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 387,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "publicAcceptance": false,
+  "speedComparison": false,
+  "rawLosslesslyRecoverable": true
+}

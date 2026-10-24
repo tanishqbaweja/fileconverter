@@ -7,7 +7,7 @@ function fixture(unsupportedCodec = false) {
   const values = { "format-select": "mkv-to-mp4-mpeg2", "video-codec-select": "automatic", "video-width-select": "0", "video-bitrate-select": "0",
     "video-frame-rate-select": "0", "video-quality-select": "automatic" }, events = [];
   const page = { getByTestId(id) { return { inputValue: async () => values[id], isDisabled: async () => true,
-    locator: () => ({ count: async () => unsupportedCodec ? 2 : 1, innerText: async () => "Automatic (MPEG-2)" }),
+    locator: () => ({ count: async () => unsupportedCodec ? 2 : 1, innerText: async () => "MPEG-2 (fixed)" }),
     selectOption: async value => { events.push([id, value]); values[id] = value; },
     innerText: async () => id === "media-plan-stream-1" ? "COPY AAC" : id === "video-encoding-options" ? "Qualification-only controls" : "MPEG-2 encoding plan" }; },
     waitForFunction: async () => {} };

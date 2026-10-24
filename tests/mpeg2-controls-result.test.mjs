@@ -4,6 +4,59 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
 const root = new URL("../", import.meta.url), sha = bytes => createHash("sha256").update(bytes).digest("hex");
+test("actual private form and Convert controls evidence is source-bound, lossless and narrowly scoped", async () => {
+  const review = JSON.parse(await readFile(new URL("evidence/2026-10-24-mpeg2-ui-controls-review.json", root)));
+  const receipt = JSON.parse(await readFile(new URL(review.receipt, root))), packed = await readFile(new URL(receipt.archive.path, root));
+  assert.equal(packed.length, receipt.archive.bytes); assert.equal(sha(packed), receipt.archive.sha256);
+  const bytes = gunzipSync(packed, { maxOutputLength: 4 * 1048576 });
+  assert.equal(bytes.length, receipt.archive.restoredBytes); assert.equal(sha(bytes), receipt.archive.restoredSha256);
+  const raw = JSON.parse(bytes), ui = raw.uiControlsQualification;
+  assert.equal(receipt.head, review.executedHead); assert.equal(receipt.sourcePins, 44);
+  assert.equal(receipt.recordedSourcesMatchHistoricalGitHead, true);
+  assert.deepEqual(receipt.uiControlsQualification, ui); assert.equal(ui.completed, true); assert.equal(ui.actualConvertButton, true);
+  assert.equal(ui.cases.length, 2);
+  for (const [index, c] of ui.cases.entries()) {
+    assert.equal(c.form.realSelectEvents, true); assert.equal(c.form.codecLockedToMpeg2, true);
+    assert.deepEqual(c.actualButtonEvidence.selectedOptions, c.form.selected);
+    for (const key of ["observedRunning", "actualConvertButton", "nativeWorkObserved", "finalWorkerReady", "optionsReadFromActualForm"])
+      assert.equal(c.actualButtonEvidence[key], true);
+    assert.equal(c.actualButtonEvidence.nativeOsPickerCovered, false);
+    assert.equal(c.actualButtonEvidence.sourceDimensionsAndTimingOptionsOnly, index === 0);
+  }
+  assert.deepEqual(ui.cases[1].form.selected, { codec: "automatic", maxWidth: 320, bitRateBps: 1000000, frameRateFps: 15, quality: "higher" });
+  assert.match(ui.cases[1].form.planText, /1 Mbps.*320px.*15 fps.*higher/s);
+  assert.equal(receipt.fixture.sha256, "e70b76ca98594c4626024a68ad7886e3a9751e4fa1c9e124b616a7ff67e6b740");
+  const prior = JSON.parse(await readFile(new URL("evidence/2026-10-24T02-19-53.495Z-mpeg2-controls-result.json", root)));
+  assert.deepEqual(receipt.completedCases.map(c => c.output.sha256), prior.completedCases.map(c => c.output.sha256));
+  assert.deepEqual(receipt.completedCases.map(c => c.output.frames), [96, 60]);
+  for (const c of receipt.completedCases) {
+    assert.equal(c.output.fullNativeDecodePassed, true); assert.ok(c.output.ssim >= 0.98);
+    assert.ok(c.output.videoClocks.maximumVideoPtsErrorSeconds < 0.001);
+    assert.equal(c.output.titlePreserved, true); assert.equal(c.output.languagePreserved, true);
+    assert.equal(c.output.copiedAudioPacketHash, receipt.completedCases[0].output.copiedAudioPacketHash);
+  }
+  const samples = raw.diagnosticMemorySamples, valid = samples.filter(s => s.privateBytes !== null);
+  assert.equal(samples.length, 448); assert.equal(valid.length, 447);
+  for (const s of valid) assert.equal(s.privateBytes, s.processes.reduce((n, p) => n + p.privateBytes, 0));
+  const peak = valid.filter(s => s.phase !== "blank").reduce((a, b) => a.privateBytes > b.privateBytes ? a : b);
+  assert.equal((peak.privateBytes - raw.blankBaseline.privateBytes) / 1048576, 247.5625);
+  assert.equal(receipt.memory.incrementalPrivateMiB, review.incrementalPrivateMiB);
+  assert.equal(raw.memory.unavailableSamples.length, 1); assert.equal(raw.memory.unavailableSamples[0].privateBytes, null);
+  assert.equal(raw.memory.unavailableSamples[0].phase, "loaded"); assert.equal(raw.memory.unavailableSamples[0].sampleError, "OpenProcess 3360");
+  assert.equal(samples.filter(s => s.phase === "conversion" && s.privateBytes === null).length, 0);
+  const visual = receipt.boundedVisualObservation;
+  assert.equal(visual.captures.length, 6); assert.equal(visual.totalBytes, 814840); assert.equal(visual.maximumCaptures, 7);
+  assert.equal(visual.unavailable.length, 0); assert.equal(visual.captures.filter(c => c.nativeProgressVisuallyInViewport).length, 2);
+  for (const c of visual.captures) {
+    const png = await readFile(new URL(c.file, root)); assert.equal(png.length, c.bytes); assert.equal(sha(png), c.sha256);
+    assert.equal(c.regionInViewport, true);
+  }
+  assert.deepEqual(raw.forbiddenRequests, []); assert.equal(raw.protectedOriginalUnchanged, true);
+  assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true); assert.equal(receipt.cleanup.disposableOutputDeleted, true);
+  assert.equal(review.actualFormAndButtonVerified, true); assert.equal(review.memoryMarginIsNarrow, true);
+  assert.equal(review.largeFileCoverage, false); assert.equal(review.headedCoverage, false);
+  assert.equal(receipt.publicAcceptance, false); assert.equal(review.publicAcceptance, false);
+});
 for (const [stamp, outputs] of [["2026-10-23T15-46-35.345Z", 0], ["2026-10-23T15-52-18.420Z", 1]]) {
   test(`actual rejected controls attempt ${stamp} is lossless, source-bound and not accepted`, async () => {
     const receipt = JSON.parse(await readFile(new URL(`evidence/${stamp}-mpeg2-controls-result.json`, root)));

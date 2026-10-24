@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-10-24 actual private option UI gate CLOSED at ac0c773: real select events,
+form readback, matching rendered plans and actual Convert button for defaults
+and320px/1Mbps/15fps/higher. Real production browser outputs independently pass
+96/60frames, full decode, SSIM>=.98, <1ms clocks, AAC packets, title/language;
+byte-identical canonical outputs to prior backend controls. Whole-tree247.5625MiB
+has only2.4375MiB margin;448records/447valid, one loaded OpenProcess3360 null,
+no conversion nulls. Six in-viewport PNGs814840B; option/native images reviewed.
+Original full SHA and independent owned process/media/profile/stage cleanup PASS.
+Raw1,632,391B exactly recoverable from38,371B gzip; redundant raw removed.
+`evidence/2026-10-24-mpeg2-ui-controls-review.json`. Post-run private labels only
+shortened to avoid clipping; six focused UI/historical equality tests PASS.
+Hosted40056479358/ac0c773 SUCCESS including19privacy/offline43.1s; not coverage
+for later label polish. No stress/all-options/manual/native-picker/public claim.
+Do not replay this passing small gate unchanged. Next storage/reload/batch and
+preservation/original/scale/browser qualification; full54/B02-B09 remain open.
+
 2026-10-24 actual private MPEG-2 option form implemented: shared bounded width/
 bitrate/FPS/quality controls, fixed disabled Automatic(MPEG-2) codec, explicit
 qualification-only wording instead of certified claims. Selection already resets
