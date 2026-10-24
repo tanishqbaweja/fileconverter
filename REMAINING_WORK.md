@@ -23,6 +23,16 @@ compiled-source/receipt path now implemented without changing old40 build pins
 or canonical workflow/public assets.23focused tests, focused lint, TypeScript
 and old40-source/12-artifact audit PASS. Both retained terminal screenshots
 reviewed headlessly (Saved states), not manual or native-picker evidence.
+Private compile40101765105 now confirmed in progress on isolated db6bba8
+(parent616809c), explicit within-remux selector/no Docker. Comparable prior
+build497s; estimated9min, not a repeated conversion. Canonical workflow/HEAD/
+index/main unchanged. Collector verifies immutable dispatched source pins,
+exact optional upstream derivation, Wasm limits and owned download cleanup.
+Next changed browser gate preserves all seven cases and optionally adds one
+same-fixture existing higher Vorbis quality selection; automatic failure stays
+visible, no default/threshold change or single-small-timing speed claim.
+24focused tests and changed-harness/collector lint PASS; actual compile/gate
+result still pending. This does not resolve large-original Chrome memory gate.
 
 B05 next changed gate implemented: one normal production page/context, existing
 audited audio candidate39517752087 (40build-source/12artifact pins unchanged).

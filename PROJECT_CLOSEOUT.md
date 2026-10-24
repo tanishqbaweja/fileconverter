@@ -20,6 +20,11 @@ Quality/artwork/recovery/stress/public promotion and original54 still OPEN.
 Changed builder/isolated-workflow derivative and optional exact upstream-source
 audit implemented;23focused tests/lint/TypeScript and reused40pin old artifact
 audit PASS. Native compile not yet dispatched; no browser repair claim.
+Subsequently dispatched explicit within-remux build40101765105/db6bba8; live
+remote handle confirmed, prior matched build497s/estimated9min. Collector checks
+immutable build pins and exact upstream preimage/source/receipt before reuse.
+24focused tests/lint PASS; next changed browser gate also compares existing
+higher Vorbis control on identical fixture without changing automatic policy.
 
 B05 work resumes independently of pending Chrome configuration choice. New
 single-page/normal-context audio gate reuses audited candidate39517752087 and

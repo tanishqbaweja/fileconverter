@@ -28,12 +28,15 @@ import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mj
 import { verifyOpfsDiskBacking } from "./lib/opfs-disk-backing-proof.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 
-assert.equal(process.argv.length, 3, "Pass the existing repository-owned private native candidate directory");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && process.argv[3] === "--compare-vorbis-quality"), "Pass the audited private candidate and optional explicit quality comparison");
+const qualityComparison = process.argv[3] === "--compare-vorbis-quality";
+const selectedCases = qualityComparison ? [...AUDIO_METADATA_FIDELITY_CASES, { source: "opus", destination: "ogg", quality: "higher" }] : AUDIO_METADATA_FIDELITY_CASES;
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(r => setTimeout(r, ms));
 const runtime = await createOwnedRuntimeScratch("audio-metadata-production-"), env = { ...runtime.env, WRANGLER_SEND_METRICS: "false", NEXT_TELEMETRY_DISABLED: "1" };
 const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: "failed-or-incomplete", scope: "seven small private production-UI audio fidelity/tag/duplicate cases in one normal page",
   publicAcceptance: false, fullMetadataAcceptance: false, artworkAcceptance: false, scalingAcceptance: false, headedCoverage: false,
   cases: [], failures: [], network: { observedRequests: 0, forbidden: [], nativeGlueRequests: 0, nativeWasmRequests: 0 }, nativeConversionUsed: false };
+if (qualityComparison) report.scope += "; plus explicit same-fixture higher-quality Vorbis control (not a default change or speed proof)";
 const stamp = report.startedAt.replaceAll(":", "-"), sha = b => createHash("sha256").update(b).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 1048576 })) hash.update(b); return hash.digest("hex"); };
 const native = (args, executable = "ffmpeg") => execute(executable, args, { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 131072 });
@@ -58,7 +61,7 @@ const snapshot = async () => {
 const recordMemory = () => {
   if (!journal || !report.blankBaseline) return;
   const all = journal.peaksExcept([]), active = journal.peaksExcept(["blank"]);
-  if (active.peak) report.memory = { scope: "seven-small-case lifecycle only, not stress acceptance", limitMiB: 250, intervalMs: 100,
+  if (active.peak) report.memory = { scope: "selected-small-case lifecycle only, not stress acceptance", limitMiB: 250, intervalMs: 100,
     peak: active.peak, incrementalPrivateMiB: (active.peak.privateBytes - report.blankBaseline.privateBytes) / 1048576,
     validSamples: all.validSamples, unavailableSamples: all.unavailableSamples, fullHistoryInLosslessJournal: true };
 };
@@ -132,20 +135,26 @@ try {
     const stable = stableWindow(loaded, 8000); if (stable) { report.loadedIdle = stable; break; } }
   assert.ok(report.loadedIdle);
   report.screenshots = [];
-  for (const [index, conversion] of AUDIO_METADATA_FIDELITY_CASES.entries()) {
+  for (const [index, conversion] of selectedCases.entries()) {
     if (monitorFailure) throw monitorFailure;
     const profileId = `${conversion.source}-to-${conversion.destination}`, input = conversion.repeated ? repeatedFile : path.join(runtime.directory, "source." + conversion.source),
       output = path.join(runtime.directory, `output-${index}.${conversion.destination}`);
-    const row = { name: profileId + (conversion.repeated ? "-repeated-values" : ""), profileId, repeated: Boolean(conversion.repeated), status: "failed", failures: [] }; report.cases.push(row);
+    const row = { name: profileId + (conversion.repeated ? "-repeated-values" : "") + (conversion.quality ? "-" + conversion.quality : ""),
+      profileId, requestedQuality: conversion.quality ?? "automatic", repeated: Boolean(conversion.repeated), status: "failed", failures: [] }; report.cases.push(row);
     let outputIdentity, entryName;
     try {
       const sourceProbe = await probeAudio(input); const tags = validateScopedAudioTags(sourceProbe, AUDIO_METADATA_TAGS, { scope: conversion.source === "flac" ? "format" : "audio-stream" }); assert.equal(tags.status, "passed");
       row.source = { ...report.fixtures[conversion.source], ...(conversion.repeated ? report.repeatedFixture : {}), tags };
       phase("case-" + index); await page.locator('[data-testid="file-input"]').setInputFiles(input); await page.locator('[data-testid="format-select"]').selectOption(profileId);
       await page.waitForFunction(() => !document.querySelector('[data-testid="convert-button"]')?.disabled && window.__WITHIN_TEST__?.getState().workerStatus === "ready");
+      if (conversion.quality) {
+        await page.locator('[data-testid="audio-quality-select"]').selectOption(conversion.quality);
+        assert.equal(await page.locator('[data-testid="audio-quality-select"]').inputValue(), conversion.quality);
+      }
       const startedAt = Date.now(); await page.locator('[data-testid="convert-button"]').click();
       await page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState ?? ""), null, { timeout: 60000 });
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState()); row.browserElapsedMs = Date.now() - startedAt; row.browserState = state; entryName = state.opfsName;
+      assert.equal(state.audioOptions.quality, row.requestedQuality, "Actual production job must retain the requested quality selection");
       assert.equal(state.jobState, "complete", state.error ?? state.phase); assert.ok(entryName);
       for (const count of [state.metrics.maxReadChunkBytes, state.metrics.maxWriteChunkBytes, state.metrics.peakQueuedBytes]) assert.ok(count <= 262144);
       assert.ok(state.metrics.peakPendingOperations <= 1); assert.equal(state.metrics.pendingOperations, 0);
@@ -189,8 +198,8 @@ try {
   phase("recovery"); await pause(2100); await snapshot(); recordMemory();
   assert.deepEqual(report.network.forbidden, []); assert.deepEqual(await pins(), report.sources); assertInstalledChromePinsEqual(report.browser, await inspectInstalledChromePin());
   assert.ok(report.network.nativeGlueRequests > 0 && report.network.nativeWasmRequests > 0, "Fresh context must request the staged audited native assets");
-  assert.equal(report.cases.length, 7); assert.ok(report.cases.every(c => c.status === "passed-small-private-fidelity-and-metadata-case"));
-  assert.ok(report.memory.incrementalPrivateMiB <= 250); report.status = "passed-seven-small-private-cases-not-promotion";
+  assert.equal(report.cases.length, selectedCases.length); assert.ok(report.cases.every(c => c.status === "passed-small-private-fidelity-and-metadata-case"));
+  assert.ok(report.memory.incrementalPrivateMiB <= 250); report.status = "passed-selected-small-private-cases-not-promotion";
 } catch (error) { report.status = "failed"; report.failures.push(String(error.stack ?? error).slice(0, 8192)); }
 finally {
   clearInterval(monitorTimer); await pending;
@@ -232,7 +241,8 @@ finally {
   const receipt = { schemaVersion: 1, executedHead: report.executedHead, status: report.status, scope: report.scope, publicAcceptance: false, fullMetadataAcceptance: false,
     archive: { path: path.relative(root, archive).replaceAll(path.sep, "/"), bytes: packed.length, sha256: sha(packed), restoredBytes: raw.length, restoredSha256: sha(raw) },
     sourcePins: Object.keys(report.sources ?? {}).length, artifactManifestSha256: report.artifact?.manifestSha256, diskProof: report.diskProof,
-    memory: report.memory, cases: report.cases.map(c => ({ name: c.name, status: c.status, failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
+    memory: report.memory, cases: report.cases.map(c => ({ name: c.name, status: c.status, requestedQuality: c.requestedQuality, browserElapsedMs: c.browserElapsedMs,
+      failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, disposableOutputRemoved: c.disposableOutputRemoved })),
     losslessJournal: report.losslessMemoryJournal ? { file: path.relative(root, report.losslessMemoryJournal.file).replaceAll(path.sep, "/"), records: report.losslessMemoryJournal.records,
       sha256: report.losslessMemoryJournal.sha256, archiveSha256: report.losslessMemoryJournal.archiveSha256, complete: report.losslessMemoryJournal.complete } : null,

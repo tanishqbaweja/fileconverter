@@ -17,6 +17,11 @@ Changed native compile/workflow/artifact-audit derivative:23focused tests PASS,
 lint/TypeScript PASS; existing39517752087 still audits40source/12artifact pins.
 Retained two terminal screenshots reviewed headlessly, not headed validation.
 Native duplicate-parser repair remains uncompiled and browser-unverified.
+Private compile40101765105/db6bba8 confirmed live; same pinned no-Docker SDK/
+dependency recipe, only metadata parser/library patch changes.24focused tests/
+changed runner lint PASS. Optional eighth case exercises existing higher-quality
+UI control against same Opus fixture; automatic case/60dB/exact FLAC retained.
+No new passing browser result or default-quality/speed claim yet.
 
 B05 new bounded fidelity/serialization validators:16focused unit/source checks
 PASS/lint PASS. Actual single-normal-context seven-case production gate ready,

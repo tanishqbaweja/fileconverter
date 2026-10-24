@@ -74,3 +74,11 @@ test("finite production gate uses one real page/context, pinned candidate, physi
   assert.match(source, /row.disposableOutputRemoved = true/); assert.match(source, /await runtime.close\(\)/);
   assert.match(source, /publicAcceptance: false/); assert.match(source, /artworkAcceptance: false/);
 });
+test("quality comparison explicitly exercises existing UI higher setting without replacing automatic or weakening any case", async () => {
+  const source = await readFile(new URL("../scripts/test-audio-metadata-production-runtime.mjs", import.meta.url), "utf8");
+  assert.match(source, /--compare-vorbis-quality/);
+  assert.match(source, /\[\.\.\.AUDIO_METADATA_FIDELITY_CASES, \{ source: "opus", destination: "ogg", quality: "higher" \}\]/);
+  assert.match(source, /audio-quality-select.*selectOption\(conversion.quality\)/);
+  assert.match(source, /report.cases.every\(c => c.status === "passed-small-private-fidelity-and-metadata-case"\)/);
+  assert.doesNotMatch(source, /minimumPsnrDb:\s*(?:[0-5]?\d)(?:\D|$)/);
+});

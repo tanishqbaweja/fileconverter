@@ -3,16 +3,18 @@ import "./lib/hidden-unit-subprocesses.mjs";
 import assert from "node:assert/strict";
 import { execFile, spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
-import { access, readFile, writeFile } from "node:fs/promises";
+import { constants } from "node:fs";
+import { access, copyFile, lstat, mkdir, readFile, readdir, realpath, rm, statfs, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { makeAudioRepeatedCommentBuildWorkflow } from "./lib/audio-repeated-comment-build-workflow.mjs";
+import { auditAudioMetadataArtifact, validateAudioMetadataArtifactName } from "./lib/audio-metadata-artifact.mjs";
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), sha = b => createHash("sha256").update(b).digest("hex");
 const branch = "codex/audio-repeated-comments-20261024", repository = "tanishqbaweja/fileconverter";
 const workflowPath = ".github/workflows/reproduce-ffmpeg-nondocker.yml", workflowName = "reproduce-ffmpeg-nondocker.yml";
 const receiptPath = path.join(root, "evidence/audio-repeated-comment-build-2026-10-24.json");
-assert.equal(process.argv.length, 3); assert.ok(["prepare", "dispatch", "observe"].includes(process.argv[2]));
+assert.equal(process.argv.length, 3); assert.ok(["prepare", "dispatch", "observe", "collect"].includes(process.argv[2]));
 const runtime = await createOwnedRuntimeScratch("audio-repeated-remote-");
 try {
   const call = async (binary, args, env = runtime.env) => (await execute(binary, args, { cwd: root, env,
@@ -69,6 +71,54 @@ try {
       receipt.run = runs[0]; receipt.status = runs[0].status === "completed" ? "build-terminal-" + runs[0].conclusion : "build-confirmed-live";
     }
     receipt.lastObservedAt = new Date().toISOString(); await writeFile(receiptPath, JSON.stringify(receipt, null, 2) + "\n");
+    if (process.argv[2] === "collect") {
+      assert.equal(receipt.run?.status, "completed"); assert.equal(receipt.run.conclusion, "success");
+      const runId = String(receipt.run.databaseId); assert.match(runId, /^[0-9]{8,}$/);
+      const detail = JSON.parse(await gh(["run", "view", runId, "--repo", repository, "--json", "headSha,status,conclusion,jobs"]));
+      assert.equal(detail.headSha, receipt.commit); assert.equal(detail.jobs.length, 1);
+      for (const name of ["Retain private bounded audio metadata candidate", "Remove repository-local build data"])
+        assert.equal(detail.jobs[0].steps.find(step => step.name === name)?.conclusion, "success");
+      const listing = JSON.parse(await gh(["api", `repos/${repository}/actions/runs/${runId}/artifacts`]));
+      assert.equal(listing.total_count, 1); const artifact = listing.artifacts[0];
+      assert.equal(artifact.name, "private-audio-metadata-" + runId); assert.equal(artifact.expired, false);
+      assert.equal(artifact.workflow_run.head_sha, receipt.commit); assert.equal(String(artifact.workflow_run.id), runId);
+      assert.ok(artifact.size_in_bytes > 0 && artifact.size_in_bytes <= 16 * 1048576);
+      const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 64 * 1048576);
+      const download = path.join(runtime.directory, "tools"), cache = path.join(root, "work", "audio-repeated-metadata-" + runId);
+      await assert.rejects(access(cache), { code: "ENOENT" });
+      await gh(["run", "download", runId, "--repo", repository, "--name", artifact.name, "--dir", download]);
+      const names = await readdir(download); assert.equal(names.length, 16); let total = 0;
+      for (const file of names) {
+        validateAudioMetadataArtifactName(file); const info = await lstat(path.join(download, file));
+        assert.ok(info.isFile() && !info.isSymbolicLink() && info.size > 0 && info.size <= 16 * 1048576); total += info.size;
+      }
+      assert.ok(total <= 24 * 1048576);
+      const audit = await auditAudioMetadataArtifact(download); assert.ok(audit.core.upstreamCommentPatch);
+      assert.deepEqual(names.toSorted(), ["build-manifest.json", ...Object.keys(audit.artifactPins)].toSorted());
+      for (const [file, expected] of Object.entries(audit.buildSourcePins)) {
+        const { stdout } = await execute("git", ["show", `${receipt.commit}:${file}`], { cwd: root, env: runtime.env,
+          windowsHide: true, encoding: "buffer", timeout: 30000, maxBuffer: 2097152 });
+        assert.equal(sha(stdout), expected, "Immutable dispatched source: " + file);
+      }
+      let identity, complete = false;
+      try {
+        await mkdir(cache); identity = await lstat(cache, { bigint: true }); assert.equal(await realpath(cache), cache);
+        for (const file of names) await copyFile(path.join(download, file), path.join(cache, file), constants.COPYFILE_EXCL);
+        const retained = await auditAudioMetadataArtifact(cache); assert.equal(retained.manifestSha256, audit.manifestSha256);
+        receipt.collected = { directory: path.relative(root, cache).replaceAll(path.sep, "/"), bytes: total,
+          manifestSha256: audit.manifestSha256, buildSourcePins: Object.keys(audit.buildSourcePins).length,
+          artifactPins: Object.keys(audit.artifactPins).length, upstream: audit.core.upstreamCommentPatch,
+          immutableExecutedSourcesVerified: true, hostedCleanupPassed: true, publicAcceptance: false };
+        receipt.status = "compiled-artifact-audited-browser-repair-unverified";
+        await writeFile(receiptPath, JSON.stringify(receipt, null, 2) + "\n"); complete = true;
+      } finally {
+        if (identity && !complete) {
+          assert.equal(path.dirname(cache), path.join(root, "work")); const current = await lstat(cache, { bigint: true });
+          assert.ok(current.isDirectory() && !current.isSymbolicLink()); assert.equal(await realpath(cache), cache);
+          assert.equal(current.dev, identity.dev); assert.equal(current.ino, identity.ino); await rm(cache, { recursive: true });
+        }
+      }
+    }
     console.log(JSON.stringify(receipt));
   }
 } finally { await runtime.close(); await assert.rejects(access(runtime.directory), { code: "ENOENT" }); }
