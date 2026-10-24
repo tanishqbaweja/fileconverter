@@ -6,6 +6,16 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Latest original d38c241 reaches native work then primary memory FAIL260.10546875
+MiB; automatic real Cancel and owned cleanup PASS,0complete outputs.392lossless
+native rows retained/replayed; one loaded null, no conversion nulls. Original
+unchanged. Renderer/GPU growth observed, precise allocator cause unproven.
+Private loader now supports exact verified static-asset capacities to remove
+16MiB fallback over-reservation for compressed/lengthless codec transport.
+Focused/TypeScript/lint PASS, actual effect not measured. Next one changed
+original qualification with same native/settings/quality/full-tree250MiB; no
+unchanged rebuild, baseline/threshold changes or replay of passing tiny gates.
+
 First current --original attempt9e4a94b ended before conversion on observer
 queue overflow during remote file setup;0outputs/no acceptance, original SHA and
 owned cleanup PASS. Failure and partial journal losslessly retained. Correction

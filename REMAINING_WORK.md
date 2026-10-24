@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-10-24 corrected current production original attempt d38c241 now reaches
+native decode/encode but FAILS260.10546875MiB. Real Cancel after positive native
+read/write/native48MiB;0complete outputs/no promotion. Exact original SHA and
+all owned media/profile/stage/process cleanup PASS.392lossless rows/391valid/
+one loaded null/no conversion null, native replay and peak independently pass.
+Report34,316B+journal19,956B gzip retained, redundant raw metadata removed.
+`evidence/2026-10-24T06-53-22.603Z-mpeg2-original-result.json`. Renderer/GPU growth
+observed, allocation cause still unproven; no process omitted/baseline changed.
+Current exact-size static-asset optimization removes potential two16MiB fallback
+backing reservations for5.45MiB decoder/.64MiB encoder on compressed/lengthless
+transport, while keeping hashes/EOF/cache checks and unchanged native settings.
+47focused/TypeScript/lint PASS; browser memory/speed effect unverified. Next one
+changed original gate, not more unchanged tiny tests/native rebuilds. Full54,
+repeat/near10GB/reload/preservation/browser release requirements remain OPEN.
+
 2026-10-24 actual original9e4a94b held FAILED before conversion: slow remote
 file setup overflowed native queue because timer started after setup.0outputs,
 no original or memory acceptance. Original full SHA/owned cleanup independently

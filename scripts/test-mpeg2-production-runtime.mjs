@@ -229,6 +229,8 @@ try {
     await copyFile(sourcePath, path.join(assetDirectory, file)); report.native.push({ source: path.relative(root, sourcePath), sha256: expected, bytes: bytes.length });
   }
   const codeManifest = { schemaVersion: 1, engine: "within-mpeg2-split-jspi", decoderMemoryBytes: 33554432, encoderMemoryBytes: 16777216,
+    artifactBytes: { "decoder.wasm": report.native.find(row => row.source.endsWith("within-mpeg2-split.wasm")).bytes,
+      "encoder.wasm": report.native.find(row => row.source.endsWith("split-encoder.wasm")).bytes },
     artifacts: { "decoder.wasm": report.native.find(row => row.source.endsWith("within-mpeg2-split.wasm")).sha256,
       "encoder.wasm": report.native.find(row => row.source.endsWith("split-encoder.wasm")).sha256 }, publicAcceptance: false };
   const manifestBytes = Buffer.from(JSON.stringify(codeManifest) + "\n");

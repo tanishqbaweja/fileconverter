@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-10-24 corrected --originald38c241 reached actual native work, then FAILED
+whole-browser260.10546875MiB. Guard clicked real Cancel during Encoding with
+319670B read/95475B written and native48MiB, avoiding a known-failed4h run.
+0complete outputs/no original/public acceptance. Exact original selected through
+same-host DOM adapter with no remote input copy. All392native observations
+losslessly retained/replayed (391valid/one loaded OpenProcess38344 null; no
+conversion nulls). Native rows count every process; raw peak recomputes exactly.
+Renderer198.45MiB/GPU168.50MiB dominate; captured JS realms small, not allocation
+stacks or proof of cause. Original full SHA and independent owned cleanup PASS.
+Raw1,139,438B retained34,316B gzip; journal886,121B retained19,956B gzip. Redundant
+raws removed. `evidence/2026-10-24T06-53-22.603Z-mpeg2-original-result.json`.
+Portable40071978548/d38c241 SUCCESS; separate scope, not full-original acceptance.
+
+Concrete loader optimization now implemented, browser effect NOT measured:
+private manifest supplies hash-verified decoded codec byte lengths; compressed/
+lengthless fetches allocate exact5,716,027B+675,411B instead of two16MiB backing
+buffers. Headers/EOF/cached lengths checked; old manifests remain compatible.
+Unit tests prove exact backing capacity for both transport cases and reject
+truncation/overflow/header/cache drift;47focused/TypeScript/lint PASS. Native
+artifacts/heaps/codec/quality/I/O unchanged. No causal memory or speed claim;
+next one changed original qualification, not an unchanged rebuild or flag flip.
+
 2026-10-24 first --original9e4a94b FAILED before conversion,0outputs: remote
 Playwright file-selection setup outlasted observer queue while the drain timer
 started only after setup. No primary memory/content acceptance. Original full

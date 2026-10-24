@@ -28,6 +28,33 @@ test("production pair compiles only cold/changed code and checks the manifest on
   const updated = await prepareMpeg2CompiledCore(first.core, changed.fetchStatic, compile);
   assert.deepEqual(updated.compiledRoles, ["decoder"]); assert.equal(calls, 3); assert.equal(updated.core.encoder, first.core.encoder);
 });
+test("verified asset lengths bound backing allocations even for compressed or lengthless HTTP, without changing compiled code", async () => {
+  for (const headers of [{}, { "content-encoding": "gzip", "content-length": "16" }]) {
+    const fixture = assets(); fixture.manifest.artifactBytes = { "decoder.wasm": wasm.length, "encoder.wasm": wasm.length };
+    const fetchStatic = url => url.endsWith(".json") ? fixture.fetchStatic(url) : Promise.resolve(new Response(wasm, { headers }));
+    const lengths = [], compile = bytes => { lengths.push(bytes.buffer.byteLength); assert.equal(bytes.byteLength, wasm.length); return WebAssembly.compile(bytes); };
+    const first = await prepareMpeg2CompiledCore(undefined, fetchStatic, compile);
+    assert.deepEqual(lengths, [wasm.length, wasm.length]);
+    const second = await prepareMpeg2CompiledCore(first.core, fetchStatic, compile);
+    assert.equal(second.cacheHit, true); assert.equal(second.core.decoder, first.core.decoder); assert.equal(lengths.length, 2);
+    fixture.manifest.artifactBytes["decoder.wasm"]++;
+    await assert.rejects(prepareMpeg2CompiledCore(first.core, fetchStatic, compile), /byte length conflicts/);
+    await assert.rejects(prepareMpeg2CompiledCore(undefined, fetchStatic, compile), /length changed/);
+  }
+});
+test("manifest size guards refuse under/overflow, missing roles, extra keys and false uncompressed lengths", async () => {
+  for (const artifactBytes of [{ "decoder.wasm": 7, "encoder.wasm": wasm.length },
+    { "decoder.wasm": 16777217, "encoder.wasm": wasm.length }, { "decoder.wasm": wasm.length },
+    { "decoder.wasm": wasm.length, "encoder.wasm": wasm.length, hidden: 8 }]) {
+    const fixture = assets(); fixture.manifest.artifactBytes = artifactBytes;
+    await assert.rejects(prepareMpeg2CompiledCore(undefined, fixture.fetchStatic), /manifest byte lengths/);
+  }
+  const fixture = assets(); fixture.manifest.artifactBytes = { "decoder.wasm": wasm.length + 1, "encoder.wasm": wasm.length };
+  await assert.rejects(prepareMpeg2CompiledCore(undefined, fixture.fetchStatic), /length conflicts/);
+  fixture.manifest.artifactBytes["decoder.wasm"] = wasm.length - 1;
+  const noLength = url => url.endsWith(".json") ? fixture.fetchStatic(url) : Promise.resolve(new Response(wasm));
+  await assert.rejects(prepareMpeg2CompiledCore(undefined, noLength), /exceeded/);
+});
 test("code slots reject File/memory/instances, symbol payloads, coercible bindings and dispose safely", async () => {
   const { core } = await prepareMpeg2CompiledCore(undefined, assets().fetchStatic);
   for (const mutate of [v => { v.decoder = new WebAssembly.Memory({ initial: 1 }); }, v => { v.encoder = {}; },

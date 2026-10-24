@@ -27,7 +27,7 @@ export function createMpeg2CompiledCoreSlot(): Mpeg2CompiledCoreSlot {
   return { get: () => core, set(value) { if (disposed) throw new Error("Static MPEG-2 owner is disposed"); core = validateMpeg2CompiledCore(value); },
     clear() { core = null; }, dispose() { core = null; disposed = true; } };
 }
-async function staticBytes(url: string, maximum: number, fetchStatic: typeof fetch): Promise<Uint8Array<ArrayBuffer>> {
+async function staticBytes(url: string, maximum: number, fetchStatic: typeof fetch, expectedBytes?: number): Promise<Uint8Array<ArrayBuffer>> {
   const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 15000);
   let reader: ReadableStreamDefaultReader<Uint8Array<ArrayBuffer>> | undefined;
   try {
@@ -38,12 +38,18 @@ async function staticBytes(url: string, maximum: number, fetchStatic: typeof fet
     if (declared !== null && (!Number.isSafeInteger(declared) || declared < 2 || declared > maximum)) {
       await response.body.cancel().catch(() => {}); throw new Error("Static MPEG-2 asset length exceeds its bound");
     }
-    const bytes = new Uint8Array(declared ?? maximum); reader = response.body.getReader(); let at = 0;
+    if (expectedBytes !== undefined && declared !== null && declared !== expectedBytes) {
+      await response.body.cancel().catch(() => {}); throw new Error("Static MPEG-2 asset length conflicts with its manifest");
+    }
+    // These are fixed website codec assets, never a user-file buffer. Compressed
+    // or chunked HTTP headers must not force two16MiB backing allocations when
+    // the independently hashed manifest gives the exact decoded byte lengths.
+    const bytes = new Uint8Array(expectedBytes ?? declared ?? maximum); reader = response.body.getReader(); let at = 0;
     for (;;) { const { done, value } = await reader.read(); if (done) break;
       if (value.byteLength > bytes.byteLength - at) throw new Error("Static MPEG-2 asset exceeded its declared bound");
       bytes.set(value, at); at += value.byteLength;
     }
-    if (at < 2 || (declared !== null && at !== declared)) throw new Error("Static MPEG-2 asset length changed");
+    if (at < 2 || (declared !== null && at !== declared) || (expectedBytes !== undefined && at !== expectedBytes)) throw new Error("Static MPEG-2 asset length changed");
     return bytes.subarray(0, at);
   } finally { try { await reader?.cancel().catch(() => {}); reader?.releaseLock(); } finally { clearTimeout(timer); controller.abort(); } }
 }
@@ -58,10 +64,20 @@ export async function prepareMpeg2CompiledCore(cached?: Mpeg2CompiledCore, fetch
       manifest.decoderMemoryBytes !== 33554432 || manifest.encoderMemoryBytes !== 16777216 ||
       typeof decoderHash !== "string" || !/^[a-f0-9]{64}$/.test(decoderHash) || typeof encoderHash !== "string" || !/^[a-f0-9]{64}$/.test(encoderHash))
     throw new Error("Private static MPEG-2 manifest is invalid");
+  const lengths = manifest.artifactBytes;
+  if (lengths !== undefined && (!lengths || typeof lengths !== "object" ||
+      Reflect.ownKeys(lengths).map(String).sort().join(",") !== "decoder.wasm,encoder.wasm" ||
+      !Object.values(lengths).every(value => Number.isSafeInteger(value) && (value as number) >= 8 && (value as number) <= 16 * 1024 * 1024)))
+    throw new Error("Private static MPEG-2 manifest byte lengths are invalid");
   const old = cached?.binding.split(":"), compiledRoles: string[] = [];
   const role = async (name: "decoder" | "encoder", hash: string, index: number) => {
-    if (cached && old?.[index] === hash) return { module: cached[name], bytes: cached[name === "decoder" ? "decoderBytes" : "encoderBytes"] };
-    const bytes = await staticBytes(`/engines/mpeg2/${name}.wasm`, 16 * 1024 * 1024, fetchStatic);
+    const expectedBytes = lengths?.[`${name}.wasm`] as number | undefined;
+    if (cached && old?.[index] === hash) {
+      const bytes = cached[name === "decoder" ? "decoderBytes" : "encoderBytes"];
+      if (expectedBytes !== undefined && expectedBytes !== bytes) throw new Error("Cached MPEG-2 byte length conflicts with its manifest");
+      return { module: cached[name], bytes };
+    }
+    const bytes = await staticBytes(`/engines/mpeg2/${name}.wasm`, 16 * 1024 * 1024, fetchStatic, expectedBytes);
     const digest = Array.from(new Uint8Array(await crypto.subtle.digest("SHA-256", bytes)), byte => byte.toString(16).padStart(2, "0")).join("");
     if (digest !== hash) throw new Error("Private MPEG-2 code does not match its static manifest");
     const compiled = await compile(bytes); compiledRoles.push(name); return { module: compiled, bytes: bytes.length };
