@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+First current --original attempt9e4a94b ended before conversion on observer
+queue overflow during remote file setup;0outputs/no acceptance, original SHA and
+owned cleanup PASS. Failure and partial journal losslessly retained. Correction
+starts continuous sampling before navigation/input and selects exact local file
+through existing DOM input instead of remote transfer; one coalesced drain, no
+sample loss/limit/baseline/native-setting changes. Run this changed original
+gate next; do not repeat the failed setup or previously passed small gates.
+
 Next principal run: --original through current real production UI/AVIO/staged
 saver on exact2,958,573,265B test.mkv. Full-original mode now implemented with6h
 deadline, exact source/full content and metadata validators, all-native lossless

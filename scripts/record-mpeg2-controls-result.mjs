@@ -3,13 +3,14 @@ import "./lib/hidden-unit-subprocesses.mjs";
 import assert from "node:assert/strict";
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
+import { createReadStream } from "node:fs";
 import { access, lstat, readFile, realpath, unlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { gzipSync, gunzipSync } from "node:zlib";
 import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mjs";
 import { assertMpeg2StorageFailure, mpeg2StorageRecoveryCases } from "./lib/mpeg2-storage-recovery.mjs";
-import { replayLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
+import { replayLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile);
 assert.equal(process.argv.length, 4);
 const [relative, head] = process.argv.slice(2);
@@ -90,6 +91,23 @@ else {
     assert.equal(qualification.nativeOsPickerCovered, false);
   }
 }
+let incompleteLosslessMemoryJournal = null;
+if (fullOriginal && !report.losslessMemoryJournal && report.status === "failed") {
+  const file = path.join(root, "output/playwright", report.startedAt.replaceAll(":", "-") + "-mpeg2-original-memory.ndjson");
+  const info = await lstat(file, { bigint: true }).catch(error => { if (error.code !== "ENOENT") throw error; return null; });
+  if (info) {
+    assert.ok(info.isFile() && !info.isSymbolicLink() && info.size <= 8n * 1024n ** 3n); assert.equal(await realpath(file), file);
+    const digest = createHash("sha256"); let bytes = 0;
+    for await (const chunk of createReadStream(file, { highWaterMark: 65536 })) { bytes += chunk.length; digest.update(chunk); }
+    assert.equal(bytes, Number(info.size));
+    const rootPid = report.diagnosticMemorySamples.flatMap(s => s.processes ?? []).find(p => p.type === "browser")?.pid;
+    assert.ok(Number.isSafeInteger(rootPid) && rootPid > 0);
+    const partial = { file, rootPid, bytes, sha256: digest.digest("hex"), complete: false, conversionAcceptance: false,
+      identity: Object.fromEntries(["dev", "ino", "birthtimeNs", "mtimeNs"].map(key => [key, String(info[key])])),
+      records: null, summary: null, failure: "Observer coverage failed before journal finalization; preserve bytes, never claim complete sampling" };
+    incompleteLosslessMemoryJournal = await compactLosslessNativeMemoryJournal(partial);
+  }
+}
 const compressed = gzipSync(raw, { level: 9 });
 await writeFile(archivePath, compressed, { flag: "wx" });
 assert.deepEqual(gunzipSync(await readFile(archivePath), { maxOutputLength: (fullOriginal ? 32 : 4) * 1048576 }), raw);
@@ -117,7 +135,7 @@ if (visual) {
 }
 let independentlyRecomputedObservedMemory = null;
 let losslessNativeJournalReplayVerified = false;
-if (fullOriginal && report.losslessMemoryJournal) {
+if (fullOriginal && report.losslessMemoryJournal?.complete !== false && report.losslessMemoryJournal) {
   const replay = await replayLosslessNativeMemoryJournal(report.losslessMemoryJournal);
   assert.equal(replay.verified, true); losslessNativeJournalReplayVerified = true;
   const peakPrivateBytes = Math.max(...replay.summary.native.phases.filter(p => p.phase !== "blank" && p.peak).map(p => p.peak[3]));
@@ -152,6 +170,7 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
   originalQualification: report.originalQualification ?? null,
   losslessMemoryJournal: report.losslessMemoryJournal ?? null,
   losslessNativeJournalReplayVerified,
+  incompleteLosslessMemoryJournal,
   recoveryQualification: report.recoveryQualification ?? null,
   storageRecoveryQualification: report.storageRecoveryQualification ?? null,
   observer: report.observer, diagnosticObserverOnly: report.observer.controlScope === "events-only observer comparison, not route promotion",

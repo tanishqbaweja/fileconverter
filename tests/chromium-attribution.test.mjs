@@ -73,11 +73,20 @@ test("actual smoke labels native snapshots by acquisition time, not a later drai
   visit(tree); assert.ok(initializer);
   const at = Date.parse("2026-10-20T00:00:00.000Z"), samples = [];
   const input = [500, 1500, 2500].map(ms => ({ timestamp: new Date(at + ms).toISOString(), privateBytes: 300, rssBytes: 500 }));
-  const snapshot = runInNewContext("(" + initializer + ")", { assert, samples, monitor: { drain: async () => ({ samples: input }) },
+  const snapshot = runInNewContext("(" + initializer + ")", { assert, samples, snapshotPending: null, nativeJournal: null, fullOriginal: false, monitor: { drain: async () => ({ samples: input }) },
     phaseChanges: [{ phase: "blank", at }, { phase: "loaded", at: at + 1000 }, { phase: "conversion", at: at + 2000 }],
     report: { startedAt: new Date(at).toISOString() } });
-  await snapshot(); assert.deepEqual(samples.map(s => s.phase), ["blank", "loaded", "conversion"]);
+  await Promise.all([snapshot(), snapshot()]); assert.deepEqual(samples.map(s => s.phase), ["blank", "loaded", "conversion"]);
   assert.deepEqual(samples.map(s => s.privateBytes), [300, 300, 300]);
+  const tail = [], journaled = [];
+  const longInput = Array.from({ length: 200 }, (_, i) => ({ timestamp: new Date(at + 2500 + i).toISOString(), privateBytes: i === 0 ? 900 : 300, rssBytes: 500 }));
+  const originalSnapshot = runInNewContext("(" + initializer + ")", { assert, samples: tail, snapshotPending: null, fullOriginal: true,
+    nativeJournal: { appendBatch: async batch => { journaled.push(...batch.samples); } },
+    monitor: { drain: async () => ({ samples: longInput }) },
+    phaseChanges: [{ phase: "blank", at }, { phase: "conversion", at: at + 2000 }], report: { startedAt: new Date(at).toISOString() } });
+  await originalSnapshot(); assert.equal(journaled.length, 200); assert.equal(tail.length, 128);
+  assert.equal(journaled[0].privateBytes, 900); assert.equal(tail[0].privateBytes, 300);
+  assert.ok(journaled.every(s => s.phase === "conversion"));
   assert.ok(source.indexOf("await monitor.close(); monitor = null;") < source.indexOf("report.postMeasurementAllocators = await captureLiveMemoryInfra"));
   assert.ok(source.indexOf("report.executedSourcesAndBrowserPinsVerified = true") < source.indexOf("assert.ok(report.memory.incrementalPrivateMiB <= 250)"));
 });

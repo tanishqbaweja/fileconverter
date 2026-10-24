@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-10-24 actual original9e4a94b held FAILED before conversion: slow remote
+file setup overflowed native queue because timer started after setup.0outputs,
+no original or memory acceptance. Original full SHA/owned cleanup independently
+PASS; lossless21,909B report +8,611B explicitly incomplete180blank-row journal
+retained and redundant raw metadata removed. Receipt:
+`evidence/2026-10-24T06-37-29.552Z-mpeg2-original-result.json`.
+Evidence-directed correction drains continuously before input/navigation, shares
+one concurrent drain promise, and selects exact local original through CDP's
+existing production file input (no remote3GB test copy; actual File/change/UI/
+worker/AVIO path unchanged). Existing CI snapshot double now supplies new
+closure globals and verifies200journal rows/128tail. Changed original retry next;
+do not infer codec, memory or conversion failure from pre-conversion setup.
+
 2026-10-24 next principal gate ready: exact full test.mkv through current actual
 production selector/options/button/AVIO/staged saver, not earlier frozen candidate
 drivers or another tiny smoke. --original has6h deadline, full independent video/

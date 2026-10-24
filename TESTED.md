@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-24 first --original9e4a94b FAILED before conversion,0outputs: remote
+Playwright file-selection setup outlasted observer queue while the drain timer
+started only after setup. No primary memory/content acceptance. Original full
+SHA and all owned processes/scratch/profile/assets cleanup PASS.924,551B raw
+losslessly retained21,909B; incomplete180blank-record407,669B journal retained
+8,611B gzip explicitlycompletefalse/no replay acceptance. Redundant raws removed.
+`evidence/2026-10-24T06-37-29.552Z-mpeg2-original-result.json`.
+Changed harness starts continuous drain before navigation/input, coalesces only
+concurrent drain requests (never drops acquired samples), and uses same-host
+DOM.setFileInputFiles on existing production input to avoid remote upload/copy.
+Converter/native settings unchanged. CI40070938121 failed only old extracted
+snapshot double missing new closure globals (1521PASS/1fail/1skip); test now
+checks both short acquisition-phase labels and200journal rows/128tail retention.
+Original retry must use these concrete corrections, not repeat unchanged setup.
+
 2026-10-24 full-original current-production gate implemented, NOT yet executed:
 --original selects exact complete test.mkv directly (2,958,573,265B/SHA31f36695...),
 not a generated/cropped copy; original1920x804/24fps/default4Mbps and real Convert

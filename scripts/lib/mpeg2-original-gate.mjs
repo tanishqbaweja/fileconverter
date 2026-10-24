@@ -1,5 +1,23 @@
 // Exact full original, not a generated replacement or a claim of public support.
 import assert from "node:assert/strict";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+export async function selectExactLocalOriginal(page, file) {
+  assert.equal(path.resolve(file), fileURLToPath(new URL("../../test.mkv", import.meta.url)), "Only repository original input is permitted");
+  const session = await page.context().newCDPSession(page);
+  try {
+    const { root } = await session.send("DOM.getDocument", { depth: 0 });
+    const { nodeId } = await session.send("DOM.querySelector", { nodeId: root.nodeId, selector: 'input[type="file"]' });
+    assert.ok(Number.isSafeInteger(nodeId) && nodeId > 0, "Production input element unavailable");
+    await session.send("DOM.setFileInputFiles", { nodeId, files: [file] });
+    await page.waitForFunction(() => {
+      const files = document.querySelector('input[type="file"]')?.files;
+      return files?.length === 1 && files[0].name === "test.mkv" && files[0].size === 2958573265;
+    });
+    return { mechanism: "DOM.setFileInputFiles on existing production input; same-host OS-picker adapter only",
+      remotePlaywrightUpload: false, sourceCopyCreated: false, completeOriginalSelected: true, alternateConversionPath: false };
+  } finally { await session.detach(); }
+}
 export const MPEG2_ORIGINAL_GATE = Object.freeze({ bytes: 2958573265,
   sha256: "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
   width: 1920, height: 804, frames: 296160, frameRate: "24/1", maximumConversionMs: 21600000,

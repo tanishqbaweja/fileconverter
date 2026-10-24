@@ -30,7 +30,7 @@ import { loadMpeg2RuntimeNative } from "./lib/mpeg2-runtime-native-selection.mjs
 import { mpeg2ControlFixtureArguments } from "./lib/mpeg2-control-fixture.mjs";
 import { createBoundedVisualObserver } from "./lib/bounded-visual-observer.mjs";
 import { mpeg2StorageRecoveryCases, assertMpeg2StorageFailure } from "./lib/mpeg2-storage-recovery.mjs";
-import { MPEG2_ORIGINAL_GATE, assertMpeg2OriginalStructure, compareOriginalAacPackets } from "./lib/mpeg2-original-gate.mjs";
+import { MPEG2_ORIGINAL_GATE, assertMpeg2OriginalStructure, compareOriginalAacPackets, selectExactLocalOriginal } from "./lib/mpeg2-original-gate.mjs";
 import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
@@ -102,7 +102,7 @@ const env = { ...runtime.env, NODE_OPTIONS: [process.env.NODE_OPTIONS ?? "", "--
   NEXT_TELEMETRY_DISABLED: "1", WRANGLER_SEND_METRICS: "false" };
 const generated = [], processIdentities = [], samples = [], baselineWindows = [], blankObservations = [], forbiddenRequests = [];
 let server, serverIdentity, browserServer, browser, context, monitor, monitorTimer, monitorPending = Promise.resolve(), monitorFailure, realmSampler, browserRootPid;
-let visualObserver, nativeJournal;
+let visualObserver, nativeJournal, snapshotPending;
 const phaseChanges = [{ phase: "blank", at: Date.parse(report.startedAt) }];
 const changePhase = phase => { phaseChanges.push({ phase, at: Date.now() }); };
 const attribution = { references: [], realms: [], scope: "bounded diagnostic observations, not exact realm-heap peaks or replacement private bytes" };
@@ -120,6 +120,8 @@ const browserLogs = [];
 let serverLog = "", output, browserPin, originalHash, work, monitorBusy = false, tracing = false, validationTarget;
 let browserOutputName = "mpeg2-runtime-output.mp4";
 const snapshot = async () => {
+  if (snapshotPending) return snapshotPending;
+  snapshotPending = (async () => {
   const batch = await monitor.drain();
   const annotated = batch.samples.map(sample => ({ ...sample,
     phase: phaseChanges.findLast(change => change.at <= Date.parse(sample.timestamp))?.phase ?? "unavailable",
@@ -128,6 +130,8 @@ const snapshot = async () => {
   if (!fullOriginal) assert.ok(samples.length + annotated.length <= 3000, "Bounded short-test sample cap");
   samples.push(...annotated);
   if (fullOriginal && samples.length > 128) samples.splice(0, samples.length - 128);
+  })().finally(() => { snapshotPending = null; });
+  return snapshotPending;
 };
 const recordObservedMemory = () => {
   if (!report.blankBaseline) return;
@@ -142,6 +146,35 @@ const recordObservedMemory = () => {
     unavailableSampleCount: all?.unavailableSamples ?? samples.filter(s => s.privateBytes === null).length,
     conversionSamples: nativeJournal ? null : samples.filter(s => s.phase === "conversion" && s.privateBytes !== null).length,
     fullHistoryInLosslessJournal: fullOriginal, peak, incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 };
+};
+const startActiveMonitor = page => {
+  monitorTimer = setInterval(() => {
+    if (monitorBusy) return;
+    monitorBusy = true;
+    monitorPending = snapshot().then(async () => {
+      if (fullOriginal && !report.earlyMemoryFailure) {
+        const peak = nativeJournal.peaksExcept(["blank"]).peak;
+        if (peak && (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 > 250) {
+          report.earlyMemoryFailure = { peak, incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576,
+            reason: "Stop spending hours on a known failed primary memory gate; no threshold, baseline or process exclusion change" };
+          const observations = await Promise.allSettled([captureAttribution("memory-limit-failure"), page.evaluate(() => {
+            const state = window.__WITHIN_TEST__?.getState(), cancel = document.querySelector("button.cancel");
+            const requested = state?.jobState === "running" && cancel instanceof HTMLButtonElement && !cancel.disabled;
+            if (requested) cancel.click();
+            return { requested, phase: state?.phase ?? null, inputBytes: state?.metrics?.inputBytes ?? null,
+              outputBytes: state?.metrics?.outputBytes ?? null, wasmMemoryBytes: state?.metrics?.wasmMemoryBytes ?? null };
+          })]);
+          report.earlyMemoryFailure.cancellation = observations[1].status === "fulfilled" ? observations[1].value : { unavailable: String(observations[1].reason).slice(0, 512) };
+          if (!report.earlyMemoryFailure.cancellation.requested) {
+            // This is the exact owned browser connection, not a PID-wide sweep.
+            // Stop a failed loading/selection phase even before a Cancel exists.
+            await browser.close();
+          }
+          throw new Error("Full-original complete-browser incremental private memory exceeded250MiB");
+        }
+      }
+    }).catch(error => { monitorFailure ??= error; }).finally(() => { monitorBusy = false; });
+  }, 500);
 };
 try {
   const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 32 * 1024 ** 3);
@@ -267,6 +300,7 @@ try {
   assert.ok(baselineWindows.length >= 2, "Stable same-instance blank baseline unavailable");
   report.blankBaseline = baselineWindows.reduce((lower, next) => next.privateBytes < lower.privateBytes ? next : lower);
   if (diagnose) { realmSampler = await connectPlaywrightRealmSampler(browser, base); await captureAttribution("stable-blank"); }
+  startActiveMonitor(page);
   await context.tracing.start({ screenshots: continuousVisual, snapshots: continuousVisual, sources: true }); tracing = true;
   changePhase("loaded");
   context.on("request", request => {
@@ -284,7 +318,8 @@ try {
   await mkdir(screenshotDirectory);
   report.catalogueUi = await verifyProductionCatalogue(page, conversionProfiles.filter(profile => profile.public && profile.automatedTestStatus === "passed")
     .map(profile => ({ id: profile.id, route: profile.route, inputLabel: formatById(profile.input).label, outputLabel: formatById(profile.output).label })), screenshotDirectory);
-  await page.locator('input[type="file"]').first().setInputFiles(uiBatch ? [fixture, fixture] : fixture);
+  if (fullOriginal) report.originalQualification.inputAdapter = await selectExactLocalOriginal(page, fixture);
+  else await page.locator('input[type="file"]').first().setInputFiles(uiBatch ? [fixture, fixture] : fixture);
   await page.waitForFunction(() => document.querySelector('[data-testid="media-inspection-status"]')?.textContent.includes("These stream facts came from bounded local header reads"));
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
   if (boundedVisual) {
@@ -317,28 +352,6 @@ try {
   assert.ok(report.loadedIdle, "Stable loaded-site idle observation unavailable");
   report.loadedPeakIncrementalPrivateMiB = ((nativeJournal?.peaksExcept(["blank"]).peak?.privateBytes ?? Math.max(...loadedSamples.filter(sample => sample.privateBytes !== null).map(sample => sample.privateBytes))) - report.blankBaseline.privateBytes) / 1048576;
   await captureAttribution("loaded-after-catalogue");
-  monitorTimer = setInterval(() => {
-    if (monitorBusy) return;
-    monitorBusy = true;
-    monitorPending = snapshot().then(async () => {
-      if (fullOriginal && !report.earlyMemoryFailure) {
-        const peak = nativeJournal.peaksExcept(["blank"]).peak;
-        if (peak && (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 > 250) {
-          report.earlyMemoryFailure = { peak, incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576,
-            reason: "Stop spending hours on a known failed primary memory gate; no threshold, baseline or process exclusion change" };
-          const observations = await Promise.allSettled([captureAttribution("memory-limit-failure"), page.evaluate(() => {
-            const state = window.__WITHIN_TEST__?.getState(), cancel = document.querySelector("button.cancel");
-            const requested = state?.jobState === "running" && cancel instanceof HTMLButtonElement && !cancel.disabled;
-            if (requested) cancel.click();
-            return { requested, phase: state?.phase ?? null, inputBytes: state?.metrics?.inputBytes ?? null,
-              outputBytes: state?.metrics?.outputBytes ?? null, wasmMemoryBytes: state?.metrics?.wasmMemoryBytes ?? null };
-          })]);
-          report.earlyMemoryFailure.cancellation = observations[1].status === "fulfilled" ? observations[1].value : { unavailable: String(observations[1].reason).slice(0, 512) };
-          throw new Error("Full-original complete-browser incremental private memory exceeded250MiB");
-        }
-      }
-    }).catch(error => { monitorFailure ??= error; }).finally(() => { monitorBusy = false; });
-  }, 500);
   await page.exposeFunction("receiveRuntimeOutput", async chunk => { assert.ok(validationTarget); await validationTarget.write(decodeBoundedValidationChunk(chunk)); });
   for (let repetition = 1; repetition <= repetitions; repetition++) {
   const testCase = cases[repetition - 1];
@@ -602,13 +615,22 @@ try {
   clearInterval(monitorTimer); await monitorPending;
   realmSampler?.close();
   if (fullOriginal && nativeJournal) {
+    let coverageFailure = null;
+    if (monitor) {
+      try { await snapshot(); } catch (error) { coverageFailure = String(error.stack ?? error); }
+      try { await monitor.close(); monitor = null; } catch (error) { coverageFailure ??= String(error.stack ?? error); }
+    }
     try {
-      if (monitor) { await snapshot(); await monitor.close(); monitor = null; }
       recordObservedMemory();
       const receipt = await nativeJournal.close();
-      report.losslessMemoryJournal = await compactLosslessNativeMemoryJournal(receipt);
+      report.losslessMemoryJournal = await compactLosslessNativeMemoryJournal(coverageFailure
+        ? { ...receipt, complete: false, conversionAcceptance: false, failure: coverageFailure } : receipt);
       report.diagnosticMemoryTailOnly = true;
       report.diagnosticMemoryTailLimit = 128;
+      if (coverageFailure) {
+        if (report.memory) { report.memory.coverageComplete = false; report.memory.fullHistoryInLosslessJournal = false; }
+        throw new Error("Native observer coverage unavailable: " + coverageFailure);
+      }
       if (report.memory) assert.ok(report.memory.incrementalPrivateMiB <= 250);
     } catch (error) { report.failures.push("Full-original lossless memory finalization: " + String(error.stack ?? error)); report.status = "failed"; process.exitCode = 1; }
   }

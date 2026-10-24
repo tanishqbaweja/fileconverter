@@ -1,0 +1,342 @@
+{
+  "schemaVersion": 1,
+  "head": "9e4a94bc17d6ce617ccaa90e9e9a8f9a7f297745",
+  "status": "failed",
+  "startedAt": "2026-10-24T06:37:29.552Z",
+  "finishedAt": "2026-10-24T06:43:21.008Z",
+  "scope": "One exact full-original current-production attempt, including failures; not repeated stress, near10GB, OS-picker or public acceptance",
+  "archive": {
+    "path": "outputs/reports/2026-10-24T06-37-29.552Z-mpeg2-production-runtime.json.gz",
+    "bytes": 21909,
+    "sha256": "636f2d56c7cdf7e16a1b68222385cb2a9a3766571a685ef8d6444352bfbb1aa6",
+    "restoredBytes": 924551,
+    "restoredSha256": "d5ee42c7ff3638e73450d2c8b5fe9aa269ce842b768f3eccd492e8b5eb036143"
+  },
+  "sourcePins": 48,
+  "recordedSourcesMatchHistoricalGitHead": true,
+  "native": [
+    {
+      "source": "work\\mpeg2-scaled-properties-40050006861\\within-mpeg2-split.mjs",
+      "sha256": "d4ec481a93a1b087c96aa11948ab9a98ccf6d09237ed143c022bf76bf6c31506",
+      "bytes": 65707
+    },
+    {
+      "source": "work\\mpeg2-scaled-properties-40050006861\\within-mpeg2-split.wasm",
+      "sha256": "753f30ec607f64312b73121160ce46df14c5a712f0cb21bbc9e9da5292414017",
+      "bytes": 5716027
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.mjs",
+      "sha256": "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e",
+      "bytes": 68202
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.wasm",
+      "sha256": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee",
+      "bytes": 675411
+    }
+  ],
+  "scaledPropertiesBuild": {
+    "path": "evidence/mpeg2-scaled-properties-build-40050006861.json",
+    "sha256": "17077055747d67d3c519807311b1aa0291df316ecaca3fcfe573a8549492dab1",
+    "runId": "40050006861",
+    "executedHead": "955d3e61d0e867d99901ab244f8c4eda9b8d4620",
+    "allBuildSourcesRechecked": true,
+    "buildSourceCount": 142,
+    "encoderUnchanged": true,
+    "publicAcceptance": false
+  },
+  "fixture": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "video": "hevc",
+    "width": 1920,
+    "height": 804,
+    "frames": 296160,
+    "completeOriginal": true
+  },
+  "uiControlsQualification": null,
+  "uiQualification": {
+    "privateSelector": true,
+    "realPlanVisible": true,
+    "publicAcceptance": false,
+    "screenshots": [
+      "output\\playwright\\2026-10-24T06-37-29.552Z-catalogue\\mpeg2-private-plan.png"
+    ],
+    "finalUiMatrixCoverage": false,
+    "nativeOsPickerCovered": false
+  },
+  "uiBatchQualification": null,
+  "originalQualification": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "width": 1920,
+    "height": 804,
+    "frames": 296160,
+    "frameRate": "24/1",
+    "maximumConversionMs": 21600000,
+    "validatorDeadlineMs": 7200000,
+    "publicAcceptance": false,
+    "repeatedStressAcceptance": false,
+    "completed": false,
+    "currentProductionPipeline": true,
+    "actualConvertButton": false,
+    "nativeOsPickerCovered": false,
+    "near10GBScalingCovered": false
+  },
+  "losslessMemoryJournal": null,
+  "losslessNativeJournalReplayVerified": false,
+  "incompleteLosslessMemoryJournal": {
+    "file": "H:\\Github Repositories\\fileconverter\\output\\playwright\\2026-10-24T06-37-29.552Z-mpeg2-original-memory.ndjson.gz",
+    "rootPid": 18940,
+    "bytes": 407669,
+    "sha256": "508fa10287be9031f4bf5f2e03817689e24032ad3815593bdcda68a6a44354d3",
+    "complete": false,
+    "conversionAcceptance": false,
+    "identity": {
+      "dev": "1887170595",
+      "ino": "20266198327370325",
+      "birthtimeNs": "1792824550724265300",
+      "mtimeNs": "1792824550731891100"
+    },
+    "records": null,
+    "summary": null,
+    "failure": "Observer coverage failed before journal finalization; preserve bytes, never claim complete sampling",
+    "archiveBytes": 8611,
+    "archiveSha256": "a9679793d699ed60ccef51e0a983861a77a5dd6dcdefd5911316cb279403aee8",
+    "rawFile": "H:\\Github Repositories\\fileconverter\\output\\playwright\\2026-10-24T06-37-29.552Z-mpeg2-original-memory.ndjson",
+    "rawIdentity": {
+      "dev": "1887170595",
+      "ino": "15481123720429553",
+      "birthtimeNs": "1792823877881426000",
+      "mtimeNs": "1792823897834921700"
+    },
+    "rawRemoved": true,
+    "readbackVerified": true
+  },
+  "recoveryQualification": null,
+  "storageRecoveryQualification": null,
+  "observer": {
+    "allocationDiagnostics": true,
+    "screenshots": false,
+    "snapshots": false,
+    "sources": true,
+    "boundedVisualCapture": true,
+    "controlScope": "bounded real-state visual evidence, not route promotion"
+  },
+  "diagnosticObserverOnly": false,
+  "boundedVisualObservation": {
+    "scope": "Bounded real-state headless evidence, not full UI/manual or profile qualification",
+    "maximumCaptures": 5,
+    "maximumImageBytes": 4194304,
+    "maximumTotalBytes": 16777216,
+    "attempts": 1,
+    "totalBytes": 176689,
+    "captures": [
+      {
+        "label": "source-ready",
+        "file": "output/playwright/2026-10-24T06-37-29.552Z-catalogue/bounded-visual/01-source-ready.png",
+        "bytes": 176689,
+        "sha256": "feaaea89915765a419cca8ac12679b06983a147f2647b3d5673a3d5c2ddee11c",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-10-24T06:43:08.269Z",
+        "finishedAt": "2026-10-24T06:43:08.381Z",
+        "before": {
+          "jobState": "idle",
+          "phase": "Ready",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": null,
+          "outputBytes": null,
+          "wasmMemoryBytes": null
+        },
+        "after": {
+          "jobState": "idle",
+          "phase": "Ready",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": null,
+          "outputBytes": null,
+          "wasmMemoryBytes": null
+        },
+        "observedNativeState": null,
+        "nativeStateAroundScreenshot": false,
+        "focusedRegion": null,
+        "region": null,
+        "regionInViewport": false,
+        "renderedBefore": null,
+        "renderedAfter": null,
+        "nativeProgressVisuallyInViewport": false
+      }
+    ],
+    "unavailable": [],
+    "maximumConcurrentCaptures": 1,
+    "queuesRetained": 0,
+    "domHandlesRetained": 0,
+    "continuousScreenshots": false,
+    "continuousDomSnapshots": false,
+    "noForcedGcOrConversionDelays": true,
+    "publicAcceptance": false
+  },
+  "boundedVisibleProgressVerified": false,
+  "postMeasurementAllocationArchive": null,
+  "postMeasurementAllocationScope": null,
+  "completedCases": [],
+  "completed": false,
+  "overallGatePassed": false,
+  "lastTerminal": {
+    "message": null,
+    "metrics": null
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: Native observer queue overflow; memory coverage is unavailable\n\ntrue !== false\n\n    at validateNativeBatch (file:///H:/Github%20Repositories/fileconverter/scripts/lib/persistent-chromium-memory.mjs:10:10)\n    at Object.drain (file:///H:/Github%20Repositories/fileconverter/scripts/lib/persistent-chromium-memory.mjs:87:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async snapshot (file:///H:/Github%20Repositories/fileconverter/scripts/test-mpeg2-production-runtime.mjs:123:17)\n    at async file:///H:/Github%20Repositories/fileconverter/scripts/test-mpeg2-production-runtime.mjs:312:24",
+    "Full-original lossless memory finalization: AssertionError [ERR_ASSERTION]: Native observer queue overflow; memory coverage is unavailable\n\ntrue !== false\n\n    at validateNativeBatch (file:///H:/Github%20Repositories/fileconverter/scripts/lib/persistent-chromium-memory.mjs:10:10)\n    at Object.drain (file:///H:/Github%20Repositories/fileconverter/scripts/lib/persistent-chromium-memory.mjs:87:18)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async snapshot (file:///H:/Github%20Repositories/fileconverter/scripts/test-mpeg2-production-runtime.mjs:123:17)\n    at async file:///H:/Github%20Repositories/fileconverter/scripts/test-mpeg2-production-runtime.mjs:606:22"
+  ],
+  "memory": null,
+  "protectedOriginalUnchangedAtExecution": true,
+  "cleanup": {
+    "processObservations": [
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 32204,
+          "parentPid": 16200,
+          "createdAt": "2026-10-24T06:37:54.5922520Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-24T06:43:11.857Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 404,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 18940,
+          "parentPid": 16200,
+          "createdAt": "2026-10-24T06:37:56.8275080Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-24T06:43:13.326Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 1469,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 9784,
+          "parentPid": 16200,
+          "createdAt": "2026-10-24T06:37:57.8885870Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-24T06:43:13.718Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 392,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    ],
+    "disposableOutputDeleted": true,
+    "generatedDirectoriesRemoved": [
+      "dist\\client\\engines\\mpeg2"
+    ],
+    "scratchRemoved": "work\\mpeg2-production-runtime-EJFzs2",
+    "allOwnedProcessesAbsent": true
+  },
+  "independentlyRecomputedObservedMemory": null,
+  "independentCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 32204,
+        "parentPid": 16200,
+        "createdAt": "2026-10-24T06:37:54.5922520Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T06:49:09.894Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 378,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 18940,
+        "parentPid": 16200,
+        "createdAt": "2026-10-24T06:37:56.8275080Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T06:49:10.358Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 464,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 9784,
+        "parentPid": 16200,
+        "createdAt": "2026-10-24T06:37:57.8885870Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T06:49:10.717Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 359,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "publicAcceptance": false,
+  "speedComparison": false,
+  "rawLosslesslyRecoverable": true
+}

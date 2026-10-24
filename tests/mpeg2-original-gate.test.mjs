@@ -2,7 +2,22 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { MPEG2_ORIGINAL_GATE, assertMpeg2OriginalStructure, compareOriginalAacPackets } from "../scripts/lib/mpeg2-original-gate.mjs";
+import { MPEG2_ORIGINAL_GATE, assertMpeg2OriginalStructure, compareOriginalAacPackets, selectExactLocalOriginal } from "../scripts/lib/mpeg2-original-gate.mjs";
+import { fileURLToPath } from "node:url";
+import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
+test("local original picker adapter selects existing DOM input without remote transfer and always detaches", async () => {
+  const calls = []; let detached = false;
+  const page = { context: () => ({ newCDPSession: async () => ({ send: async (method, params) => {
+    calls.push({ method, params }); return method === "DOM.getDocument" ? { root: { nodeId: 1 } } : method === "DOM.querySelector" ? { nodeId: 2 } : {};
+  }, detach: async () => { detached = true; } }) }), waitForFunction: async () => {} };
+  const file = fileURLToPath(new URL("../test.mkv", import.meta.url));
+  const result = await selectExactLocalOriginal(page, file);
+  assert.deepEqual(calls.map(c => c.method), ["DOM.getDocument", "DOM.querySelector", "DOM.setFileInputFiles"]);
+  assert.deepEqual(calls.at(-1).params, { nodeId: 2, files: [file] }); assert.equal(detached, true);
+  assert.equal(result.remotePlaywrightUpload, false); assert.equal(result.sourceCopyCreated, false); assert.equal(result.alternateConversionPath, false);
+  await assert.rejects(selectExactLocalOriginal(page, file + ".copy"));
+});
 function fixture() {
   const disposition = { default: 1, forced: 1, hearing_impaired: 0, visual_impaired: 0, comment: 0, original: 0 };
   const video = { codec_name: "hevc", width: 1920, height: 804, avg_frame_rate: "24/1", sample_aspect_ratio: "1:1", display_aspect_ratio: "160:67",
@@ -49,11 +64,34 @@ test("full-original mode binds exact source and long deadline, journals all nati
   assert.match(driver, /nativeJournal\.peaksExcept\(\["blank"\]\)/);
   assert.match(driver, /incrementalPrivateMiB.*250|privateBytes.*1048576 > 250/s);
   assert.match(driver, /if \(requested\) cancel.click\(\)/);
-  assert.match(driver, /compactLosslessNativeMemoryJournal\(receipt\)/);
+  assert.match(driver, /compactLosslessNativeMemoryJournal\(coverageFailure/);
+  assert.match(driver, /\{ \.\.\.receipt, complete: false, conversionAcceptance: false, failure: coverageFailure \}/);
+  assert.ok(driver.indexOf("startActiveMonitor(page);") < driver.indexOf("await page.goto("));
+  assert.match(driver, /await selectExactLocalOriginal\(page, fixture\)/);
   assert.match(driver, /assertMpeg2OriginalStructure\(source, converted, report.conversion.warnings\)/);
   assert.match(driver, /compareOriginalAacPackets\(packets\(fixture\), packets\(output\)\)/);
   assert.match(driver, /assert.ok\(ssim >= 0.98/); assert.match(driver, /compareStreamingVideoClocks\(clockReference, times\(output\)/);
   assert.match(ui, /files\[0\].name !== "test.mkv" \|\| files\[0\].size !== 2958573265/);
   assert.match(ui, /fullOriginal \? 21600000 : 60000/); assert.match(ui, /fullOriginal \? 250 : 16/);
   assert.equal(MPEG2_ORIGINAL_GATE.maximumConversionMs, 21600000); assert.equal(MPEG2_ORIGINAL_GATE.publicAcceptance, false);
+});
+test("first original attempt preserves observer overflow and partial journal without claiming conversion or memory acceptance", async () => {
+  const root = new URL("../", import.meta.url), hash = b => createHash("sha256").update(b).digest("hex");
+  const r = JSON.parse(await readFile(new URL("evidence/2026-10-24T06-37-29.552Z-mpeg2-original-result.json", root)));
+  const packed = await readFile(new URL(r.archive.path, root)); assert.equal(hash(packed), r.archive.sha256);
+  const bytes = gunzipSync(packed); assert.equal(hash(bytes), r.archive.restoredSha256);
+  const raw = JSON.parse(bytes); assert.equal(raw.status, "failed"); assert.equal(r.completedCases.length, 0);
+  assert.equal(r.originalQualification.completed, false); assert.equal(r.memory, null); assert.equal(r.overallGatePassed, false);
+  assert.match(raw.failures[0], /Native observer queue overflow/); assert.equal(raw.conversion, undefined);
+  const partial = r.incompleteLosslessMemoryJournal;
+  assert.equal(partial.complete, false); assert.equal(partial.rawRemoved, true); assert.equal(partial.readbackVerified, true);
+  assert.equal(r.losslessNativeJournalReplayVerified, false);
+  const archive = await readFile(new URL("output/playwright/2026-10-24T06-37-29.552Z-mpeg2-original-memory.ndjson.gz", root));
+  assert.equal(hash(archive), partial.archiveSha256);
+  const restored = gunzipSync(archive); assert.equal(hash(restored), partial.sha256); assert.equal(restored.length, partial.bytes);
+  const rows = restored.toString("utf8").trim().split("\n").map(s => JSON.parse(s).sample);
+  assert.equal(rows.length, 180); assert.ok(rows.every((row, i) => row.sequence === i + 1 && row.phase === "blank"));
+  assert.equal(r.recordedSourcesMatchHistoricalGitHead, true); assert.equal(r.sourcePins, 48);
+  assert.equal(r.protectedOriginalUnchangedAtExecution, true); assert.equal(r.cleanup.allOwnedProcessesAbsent, true);
+  assert.equal(r.cleanup.disposableOutputDeleted, true); assert.equal(r.publicAcceptance, false);
 });
