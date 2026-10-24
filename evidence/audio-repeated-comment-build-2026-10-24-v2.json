@@ -30,8 +30,21 @@
     "databaseId": 40103321797,
     "headSha": "2b76b15449a6f8c2eb6cc1740fb02a13f48df646",
     "status": "queued",
-    "updatedAt": "2026-10-24T14:37:25Z",
+    "updatedAt": "2026-10-24T14:47:53Z",
     "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40103321797"
   },
-  "lastObservedAt": "2026-10-24T14:37:26.747Z"
+  "lastObservedAt": "2026-10-24T14:47:54.755Z",
+  "attempt1": {
+    "conclusion": "failure-before-compilation",
+    "completedAt": "2026-10-24T14:39:53Z",
+    "failedJobId": 120899755177,
+    "stage": "dependency download during native recipe",
+    "curlExitCode": 35,
+    "error": "Recv failure: Connection reset by peer",
+    "compiledArtifactCreated": false,
+    "hostedCleanupStep": "success"
+  },
+  "singleRetryIntentRecordedBeforeAction": true,
+  "retryReason": "One retry of confirmed terminal dependency-transport failure, same immutable source; not a conversion replay or code-failure retry",
+  "maximumTransportRetriesThisCycle": 1
 }

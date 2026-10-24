@@ -34,6 +34,16 @@
     "updatedAt": "2026-10-24T14:24:28Z",
     "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40101765105"
   },
+  "supersededReusableToolCleanup": {
+    "directory": "work/audio-repeated-metadata-40101765105",
+    "removedAt": "2026-10-24T14:48:48.386Z",
+    "removedBytes": 10434441,
+    "exactOwnedManifestAndEveryArtifactHashVerified": true,
+    "directoryIdentityRecheckedBeforeRecursiveRemoval": true,
+    "reason": "Parser-only candidate conclusively fails repeated-field gate; wrapper-copy repair now supersedes it. No unchanged replay is planned.",
+    "retainedReportsAndOriginalUntouched": true,
+    "recoverability": "Rebuild from immutable source db6bba82f590132542b6b1e2de9cf70a16f02cf5 if genuinely needed"
+  },
   "collected": {
     "directory": "work/audio-repeated-metadata-40101765105",
     "bytes": 10434441,

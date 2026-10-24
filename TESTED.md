@@ -1,5 +1,11 @@
 # Tested conversion ledger
 
+V2 build40103321797 attempt1 failed source download (curl35 reset), NOT compile
+or browser gate; hosted cleanup PASS. One same-source failed-job retry confirmed
+queued14:47:53Z; next estimate~14:57Z. CI40103319573/2665538 SUCCESS. Removed
+superseded parser-only cache10,434,441B after exact16file/manifest/hash/identity
+checks; retained reports/original untouched. V2 repair remains unverified.
+
 Latest actual B05 cycle14-26-14.083Z FAILED6/8, not public acceptance. New native
 40101765105 compiled/audited45source/15artifact pins. Exact Ogg/Opus-to-FLAC PCM
 now PASS. Same Opus input: automatic Vorbis59.771738706572265dB FAIL60dB;

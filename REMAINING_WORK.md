@@ -1,5 +1,16 @@
 # Remaining work audit
 
+V2 attempt1 (40103321797/2b76b15) terminal FAIL before compilation: dependency
+curl35 connection reset after94s; hosted owned-data cleanup PASS/no artifact.
+ONE evidence-directed transport retry of SAME run/source now confirmed queued
+14:47:53Z. Failed attempt recorded in build receipt, no new dispatch/branch or
+code-failure replay. Expected next observation~14:57Z, not frequent polling.
+CI40103319573/2665538 SUCCESS;27focused/native checks PASS, actual v2 browser
+repair still unverified. Superseded parser-only private cache10,434,441B removed
+14:48:48Z after exact manifest/all artifact hashes and directory identity checks;
+compact historical reports/source commit retained, original untouched. Reusable
+old40-pin baseline remains available. Full goal OPEN; no blocker/complete claim.
+
 Latest B05 changed native/browser cycle14-26-14.083Z is terminal FAILED,6/8
 small cases pass. Native build40101765105/db6bba8 SUCCESS in476s;45source/15
 artifact pins and immutable executed source/heap/upstream parser audit PASS.

@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+V2 attempt1 failed ONLY dependency transport (curl35 reset), cleanup PASS/no
+compile artifact. One same-source retry of40103321797 confirmed queued14:47:53Z;
+next observation~14:57Z. Do not redispatch or repeat parser-only browser run.
+CI40103319573/2665538 SUCCESS. Superseded private parser-only cache10.43MB
+verified and removed; evidence/original retained. Actual v2 compile/browser
+repair still pending;27focused/native checks passed, full scope remains OPEN.
+
 Latest changed B05 build40101765105 SUCCESS/audit45source15artifact pins;
 actual14-26-14.083Z browser gate FAILED6/8,210.13671875MiB/493valid/0missing.
 Exact FLAC cases now PASS. Existing higher Vorbis61.0654dB PASS versus unchanged
