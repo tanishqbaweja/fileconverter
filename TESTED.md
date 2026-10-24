@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+Latest evidence/source/UI checks:33focused PASS, TypeScript/lint PASS; normal
+native-progress image reviewed headlessly, not headed/manual OS-dialog coverage.
+
+efa48ab fresh normal OPFS physical64B canary PASS; actual source preserved,
+46,425,665B read/62,399,011B output before Cancel. Full gate FAIL434.8515625MiB,
+1,685valid native rows/0missing/0complete outputs. Actual on-device model child
+PID21720/parent32712/birth .003924 identified by native+CIM identity at browser
+age180.18s;229.21484375MiB at peak stays counted. Earlier-time244.1953125MiB is
+diagnostic only, not a pass. Original SHA/owned roots/profile/stage cleanup PASS.
+Raw1,689,059B retained54,825B gzip. Exact source CI40097500963 SUCCESS.
+`evidence/2026-10-24-normal-opfs-original-analysis.json`. No browser flag/pref,
+baseline delay, omitted process or native/quality change. Do not repeat this
+default-runtime long job unchanged; independent remaining product work follows.
+
+
 acd6f35 normal-context setup FAILED before conversion: optional command-line
 CDP query unavailable without --enable-automation.0outputs/memorynull/disk proof
 not reached. Raw18,105B retained6,070B gzip and raw removed; original unchanged.

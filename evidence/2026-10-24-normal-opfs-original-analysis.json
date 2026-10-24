@@ -1,0 +1,34 @@
+{
+  "schemaVersion": 1,
+  "receipt": "evidence/2026-10-24T13-17-30.289Z-mpeg2-original-result.json",
+  "executedHead": "efa48abb0319b37587a1f519a42d964171f655a8",
+  "scope": "Exact original in a fresh normal context with independently proven OPFS disk backing; full gate still failed",
+  "physicalCanaryBytes": 64,
+  "diskBackingVerified": true,
+  "canaryRemoved": true,
+  "wholeRunIncrementalPrivateMiB": 434.8515625,
+  "losslessNativeSamples": 1685,
+  "unavailableSamples": 0,
+  "nativeCancellation": { "inputBytes": 46425665, "outputBytes": 62399011, "wasmMemoryBytes": 50331648 },
+  "completeOutputs": 0,
+  "onDeviceModelChild": {
+    "pid": 21720,
+    "parentPid": 32712,
+    "nativeCreatedAt": "2026-10-24T13:20:45.0039247Z",
+    "cimCreatedAt": "2026-10-24T13:20:45.0039240Z",
+    "browserAgeAtBirthSeconds": 180.18,
+    "utilitySubtype": "on_device_model.mojom.OnDeviceModelService",
+    "privateMiBAtWholeTreePeak": 229.21484375,
+    "includedInPrimaryResult": true
+  },
+  "earlierTimeIntervalDiagnostic": {
+    "scope": "Time before this child was born; every existing process counted; NOT an accepted result or replacement metric",
+    "nativeSamples": 1234,
+    "peakIncrementalPrivateMiB": 244.1953125,
+    "primaryFormulaOrBaselineChanged": false
+  },
+  "normalModeFullOriginalAcceptance": false,
+  "exactCausalPrivateSavingsQuantified": false,
+  "originalHashAndOwnedRecordedRootCleanupPassed": true,
+  "next": "Do not repeat unchanged long original tests. Keep default-profile failure and250MiB full-tree formula. User has been asked whether a separately configured no-model-service runtime may be investigated; no such flags/settings change is authorized or applied yet. Continue other remaining product requirements meanwhile."
+}

@@ -6,6 +6,15 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Normal context efa48ab disk proof PASS, actual62.4MBnative output, but full
+original FAIL434.8515625MiB/1,685valid rows/0missing. Model service229.21MiB
+identified by exact PID/parent/birth at180.18s browser age, fully counted. No
+default-runtime long rerun, flags/prefs/exclusion/baseline changes. User asked
+about a separately configured runtime, not yet authorized. Original/owned
+cleanup PASS;54,825B report retained. Other original work (next B05 audio)
+continues; full original/scale/browser gates stay open. Analysis:
+`evidence/2026-10-24-normal-opfs-original-analysis.json`.
+
 First normal launch acd6f35 stopped on optional Browser.getBrowserCommandLine
 before conversion/disk proof. No automation flag added: remove that optional
 query and record root birth identity immediately. Failed receipt explicitly

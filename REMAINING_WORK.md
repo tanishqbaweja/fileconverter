@@ -1,5 +1,26 @@
 # Remaining work audit
 
+Latest retained-evidence gate:33focused tests PASS, TypeScript/lint PASS and
+native progress screenshot reviewed headlessly. No manual/native-picker claim.
+
+efa48ab normal context now proves actual OPFS disk backing: exact64B browser
+canary physically found under owned Default/File System, removed finally. Real
+native input46,425,665B/output62,399,011B, fixed48MiB Wasm. Full original still
+FAIL434.8515625MiB/1,685lossless valid rows/0missing/0complete outputs. At browser
+age180.18s actual child21720/parent32712/native+CIMbirth .003924 matched
+on_device_model.mojom.OnDeviceModelService;229.21484375MiB at whole-tree peak.
+It remains in the primary result; no flags/prefs/GC/baseline delay/process
+exclusion. Before its birth1,234conversion rows peaked244.1953125MiB over the
+same blank, a time-interval diagnostic NOT acceptance or replacement formula.
+Original SHA/owned recorded roots/profile/stage cleanup PASS. Raw1,689,059B
+retained54,825B exact gzip, redundant raw removed. CI40097500963/efa48ab SUCCESS.
+`evidence/2026-10-24-normal-opfs-original-analysis.json`.
+Do not rerun unchanged long media tests on this default browser expecting a
+different startup-service result. User asked whether a separate configured
+runtime is authorized; no authorization/flags/settings applied yet. Continue
+other original requirements, including B05 audio production integration/fidelity/
+repeated values/artwork, while keeping full original/stress/browser gates open.
+
 Latest correction:32focused tests/lint/diff PASS. CI40097138439/acd6f35
 independently SUCCESS; this does not pass the failed local setup or disk proof.
 
