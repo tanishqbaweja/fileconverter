@@ -24,6 +24,11 @@ Full54/release gates remain OPEN; pending Chrome configuration choice unchanged.
 Optional upstream archive inspection timed out45s; partial10.75MB and owned
 scratch removed. Official8.1.2 metadata.c inspected separately: distinct-value
 conversion already uses MULTIKEY|DEDUP, so no speculative metadata.c patch.
+V2 compile now dispatched and remote handle40103321797 confirmed queued on
+2b76b15 (parent2665538), branch codex/audio-repeated-comments-20261024-v2.
+Dispatch14:37:25Z; estimated next check14:46Z based on476-497s prior builds.
+No changed browser test can start until success plus47-source/15-artifact audit.
+Observe/collect THIS handle; do not restart because of an observation timeout.
 
 2026-10-24 B05 actual seven-case normal production-UI run is terminal FAILED,
 not pending: evidence/2026-10-24T13-50-10.413Z-audio-metadata-fidelity-result.json.

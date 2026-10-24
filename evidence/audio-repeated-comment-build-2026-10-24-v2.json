@@ -1,0 +1,37 @@
+{
+  "recordedAt": "2026-10-24T14:37:10.834Z",
+  "status": "build-confirmed-live",
+  "branch": "codex/audio-repeated-comments-20261024-v2",
+  "parent": "2665538db68a278caf2d81646b2d03258d66ad07",
+  "commit": "2b76b15449a6f8c2eb6cc1740fb02a13f48df646",
+  "tree": "6430054380b869425646c5cc42157944e51249c5",
+  "workflow": {
+    "path": ".github/workflows/reproduce-ffmpeg-nondocker.yml",
+    "canonicalSha256": "cda0b434adc7dd36109b4a2cc63fe726a507889cf6d1c0f5862d5d78dbf5c965",
+    "generatedSha256": "091805a24ea6692163dd76ab80a5f33b5db6856ca26665d38a65f71b16747c47",
+    "gitBlob": "3c367b43818f10077e05e634933ef6d610fdca60"
+  },
+  "canonicalHeadIndexAndWorkflowUnchanged": true,
+  "mainUnchanged": true,
+  "remoteVerified": true,
+  "noCheckoutOrMediaCopyCreated": true,
+  "priorComparableBuild": {
+    "runId": 39517752087,
+    "elapsedSeconds": 497
+  },
+  "estimatedBuildMinutes": 9,
+  "browserConversions": 0,
+  "publicAcceptance": false,
+  "noDocker": true,
+  "dispatchedAt": "2026-10-24T14:37:23.791Z",
+  "run": {
+    "conclusion": "",
+    "createdAt": "2026-10-24T14:37:25Z",
+    "databaseId": 40103321797,
+    "headSha": "2b76b15449a6f8c2eb6cc1740fb02a13f48df646",
+    "status": "queued",
+    "updatedAt": "2026-10-24T14:37:25Z",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40103321797"
+  },
+  "lastObservedAt": "2026-10-24T14:37:26.747Z"
+}

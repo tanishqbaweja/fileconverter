@@ -18,6 +18,9 @@ Fourth scoped wrapper edit now wired before link, no codec/I/O/heap changes;
 parser-only replay, then actual browser serialization check. Failed receipts
 unchanged,25tags/96,000samples each and original/privacy/owned cleanup PASS.
 Full54/artwork/stress/public promotion/default-quality/Chrome issue remain open.
+Next changed compile is now actual remote run40103321797/2b76b15, confirmed
+queued14:37:25Z; estimated14:46Z completion window. Observe existing handle,
+then audit and genuine browser recheck; never redispatch on observation timeout.
 
 Actual B05 normal-page gate now terminal FAILED, not pending: seven genuine
 outputs/25 tags/96,000 samples each,209.54296875MiB small lifecycle/667valid rows,

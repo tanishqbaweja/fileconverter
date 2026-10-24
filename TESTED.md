@@ -15,6 +15,8 @@ wired into private v2 recipe/auditor;27focused/lint/native checks PASS. Actual
 v2 compile/browser qualification pending. Receipt/raw23,407B gzip/exact493row
 journal retained; terminal repeated-case screenshot reviewed headlessly.
 No unchanged replay/default-quality change, public promotion or stress claim.
+V2 metadata parser+bounded-stream-copy compile40103321797/2b76b15 now confirmed
+queued; actual compiled/browser repair remains pending, estimated~9min.
 
 2026-10-24 B05 actual normal-page seven-case run FAILED (receipt13-50-10.413Z).
 Seven real conversions:25 tags each/96,000 PCM samples;209.54296875MiB whole-tree
