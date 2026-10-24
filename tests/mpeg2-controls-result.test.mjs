@@ -106,3 +106,35 @@ test("first bounded run retains genuine content/memory results but not off-scree
   assert.equal(receipt.boundedVisibleProgressVerified, false); assert.equal(review.visibleProgressVerified, false);
   assert.equal(review.fullVisualEquivalenceVerified, false); assert.equal(review.headedCoverage, false); assert.equal(review.publicAcceptance, false);
 });
+test("corrected bounded run verifies visible native progress without hiding loaded nulls or prior failures", async () => {
+  const review = JSON.parse(await readFile(new URL("evidence/2026-10-24-mpeg2-bounded-visual-review.json", root)));
+  const receipt = JSON.parse(await readFile(new URL(review.receipt, root))), packed = await readFile(new URL(receipt.archive.path, root));
+  assert.equal(sha(packed), receipt.archive.sha256); const bytes = gunzipSync(packed, { maxOutputLength: 4 * 1048576 });
+  assert.equal(bytes.length, receipt.archive.restoredBytes); assert.equal(sha(bytes), receipt.archive.restoredSha256);
+  const r = JSON.parse(bytes), samples = r.diagnosticMemorySamples, available = samples.filter(s => s.privateBytes !== null);
+  assert.equal(samples.length, 417); assert.equal(available.length, 416);
+  for (const s of available) assert.equal(s.privateBytes, s.processes.reduce((n, p) => n + p.privateBytes, 0));
+  assert.equal(r.memory.unavailableSamples.length, 1); assert.equal(r.memory.unavailableSamples[0].privateBytes, null);
+  assert.equal(r.memory.unavailableSamples[0].phase, "loaded"); assert.equal(r.memory.unavailableSamples[0].sampleError, "OpenProcess 4084");
+  assert.equal(samples.filter(s => s.phase === "conversion" && s.privateBytes === null).length, 0);
+  const peak = available.filter(s => s.phase !== "blank").reduce((a, b) => a.privateBytes > b.privateBytes ? a : b);
+  assert.equal((peak.privateBytes - r.blankBaseline.privateBytes) / 1048576, 230.640625);
+  assert.equal(receipt.memory.incrementalPrivateMiB, 230.640625); assert.equal(receipt.boundedVisibleProgressVerified, true);
+  const visual = receipt.boundedVisualObservation;
+  assert.equal(visual.captures.length, 5); assert.equal(visual.totalBytes, 674042); assert.equal(visual.unavailable.length, 0);
+  const natives = visual.captures.filter(c => c.nativeProgressVisuallyInViewport); assert.equal(natives.length, 2);
+  for (const capture of visual.captures) {
+    const png = await readFile(new URL(capture.file, root)); assert.equal(png.length, capture.bytes); assert.equal(sha(png), capture.sha256);
+  }
+  for (const capture of natives) {
+    assert.equal(capture.regionInViewport, true); assert.equal(capture.before.selectedProfileId, "mkv-to-mp4-mpeg2");
+    assert.equal(capture.renderedBefore, "Encoding MPEG-2 MP4"); assert.equal(capture.renderedAfter, "Encoding MPEG-2 MP4");
+    assert.equal(capture.before.wasmMemoryBytes, 50331648); assert.ok(capture.before.inputBytes > 0 && capture.before.outputBytes > 0);
+  }
+  const first = JSON.parse(await readFile(new URL("evidence/2026-10-24T02-11-52.528Z-mpeg2-controls-result.json", root)));
+  assert.equal(receipt.fixture.sha256, first.fixture.sha256);
+  assert.deepEqual(receipt.completedCases.map(c => c.output.sha256), first.completedCases.map(c => c.output.sha256));
+  assert.equal(receipt.protectedOriginalUnchangedAtExecution, true); assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true);
+  assert.equal(review.visibleProgressVerified, true); assert.equal(review.privateUiOptionsCovered, false);
+  assert.equal(review.priorFullCapture274MiBFailureStillRecorded, true); assert.equal(review.publicAcceptance, false);
+});

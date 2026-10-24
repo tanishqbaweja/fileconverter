@@ -1,0 +1,22 @@
+{
+  "receipt": "evidence/2026-10-24T02-19-53.495Z-mpeg2-controls-result.json",
+  "scope": "Reviewed bounded headless progress evidence for small production-backed jobs; not full private UI/options/manual/OS-picker, scale or public qualification",
+  "inspectedLabels": ["case-1-native", "case-2-native", "case-2-terminal"],
+  "finding": "Both native captures visibly show Encoding MPEG-2 MP4, real read/write counters, ffmpeg-video, one worker, zero queued bytes and 48 MiB peak Wasm. Terminal capture visibly shows Saved and the actual controlled output size. Test-only qualification warnings are visible. The separate copy-buffer warning incorrectly said256KiB; corrected afterwards from the saver's shared512KiB constant without changing I/O.",
+  "visibleProgressVerified": true,
+  "nativeCapturesFullyInViewport": 2,
+  "captures": 5,
+  "imageBytes": 674042,
+  "incrementalPrivateMiB": 230.640625,
+  "sampleCount": 417,
+  "validSamples": 416,
+  "unavailable": { "phase": "loaded", "error": "OpenProcess 4084", "retainedAsNull": true, "conversionSamplesUnavailable": 0 },
+  "sameInputFileAndOutputHashesAsFirstBoundedRun": true,
+  "causalSpeedOrMemoryGainProven": false,
+  "priorFullCapture274MiBFailureStillRecorded": true,
+  "privateUiOptionsCovered": false,
+  "headedCoverage": false,
+  "nativeOsPickerCovered": false,
+  "largeFileAcceptance": false,
+  "publicAcceptance": false
+}

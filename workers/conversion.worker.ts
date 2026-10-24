@@ -24,6 +24,7 @@ import {
   MAX_PROGRESS_PHASE_CHARS,
   MAX_WORKER_RESPONSE_TEXT_CHARS,
   MIN_PROGRESS_INTERVAL_MS,
+  STAGED_SAVE_COPY_CHUNK_BYTES,
 } from "../lib/resource-limits";
 import {
   createZipDataDescriptor,
@@ -754,7 +755,7 @@ async function openStagedDirectDestination(
     type: "warning",
     jobId,
     message:
-      `${profileId} uses bounded private-storage staging for fast random-access muxing, then copies through one ${copyChunkBytes / 1024} KiB buffer to the selected destination and deletes the temporary file.`,
+      `${profileId} uses bounded private-storage staging for fast random-access muxing, then copies through one ${(profileId === MPEG2_JOB_PROFILE || isVpxDecoderProfile(profileId) ? STAGED_SAVE_COPY_CHUNK_BYTES : copyChunkBytes) / 1024} KiB buffer to the selected destination and deletes the temporary file.`,
   });
   return { writable, handlesTestFault: testFault !== undefined };
 }

@@ -4,6 +4,18 @@ This is an execution order, not a completion claim or a calendar promise. The
 original specification and `REMAINING_WORK.md`'s 54 requirement rows remain the
 acceptance contract. Private engines are not public supported profiles.
 
+## Current execution point — 2026-10-24
+
+Next: implement the actual private MPEG-2 option controls and real Convert-button
+integration using the already-correct backend and bounded observer, then finish
+the applicable recovery/original/scale/browser gates below. No public promotion.
+Closed small checks to reuse: repaired scaler/native build40050006861, exact
+fixture generation, bounded visible-progress230.640625MiB at7f6730d, and recorded
+small cancellation/write-failure/planning/code-cache checks. Do not replay these
+unchanged. Prior365MiB/274MiB failures remain recorded, not retrospectively fixed.
+Chronological details below provide context; older "next" statements for those
+closed checks are superseded by this execution point. All54 requirements remain.
+
 ## 1. Finish the current media qualification path
 
 1. Observer starvation and teardown sequencing are now corrected in the actual
@@ -85,6 +97,14 @@ acceptance contract. Private engines are not public supported profiles.
    future runs. Implement bounded visual observation while keeping all UI,
    fidelity/privacy/native-process checks, then qualify the changed integration.
    Do not alternate unchanged observer flags or rebuild the same native core.
+   Oct24 bounded capture is now implemented and visually verified for both real
+   native cases:230.640625MiB/417samples with1loaded null retained, five small
+   viewport images, identical deterministic source/output hashes. First framing
+   attempt remains explicitly partial, prior274MiB remains a scoped historical
+   failure. Shared512KiB save/disclosure constant corrects the reviewed stale
+   warning without changing I/O. Reuse this small observation gate; next finish
+   actual private option UI integration, then applicable original/scale/recovery/
+   browser gates. This is not public or multi-gigabyte qualification.
 
 Exit evidence: B03/B04/B06 applicable original gates and public promotion
 checklist all satisfied. The 36 small VPX conversions and six MPEG-2 full-original

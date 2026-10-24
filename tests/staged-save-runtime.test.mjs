@@ -8,8 +8,11 @@ import { build } from "esbuild";
 import ts from "typescript";
 import { makeStagedHandoffApp, makeStagedHandoffWorker } from "../scripts/lib/staged-worker-handoff-recipe.mjs";
 const root = path.resolve(import.meta.dirname, "..");
-const compiled = await build({ entryPoints: [path.join(root, "workers/staged-save-runtime.ts")], bundle: true, format: "esm", platform: "node", write: false });
-const { runStagedSave } = await import("data:text/javascript;base64," + Buffer.from(compiled.outputFiles[0].contents).toString("base64"));
+const compiled = await build({ entryPoints: [path.join(root, "workers/staged-save-runtime.ts"), path.join(root, "lib/resource-limits.ts")],
+  outdir: "unused", bundle: true, format: "esm", platform: "node", write: false });
+const importCompiled = async name => import("data:text/javascript;base64," + Buffer.from(compiled.outputFiles.find(file => file.path.endsWith(name)).contents).toString("base64"));
+const { runStagedSave } = await importCompiled("staged-save-runtime.js");
+const { STAGED_SAVE_COPY_CHUNK_BYTES } = await importCompiled("resource-limits.js");
 function fixture(options = {}) {
   const bytes = new Uint8Array(1048576 + 17); for (let i = 0; i < bytes.length; i++) bytes[i] = i & 255;
   const trace = [], responses = [], writes = [], readBuffers = new Set(); let cancelled = Boolean(options.cancelInitially), readClosed = false, pending = 0, maximumPending = 0;
@@ -43,6 +46,16 @@ test("Wasm-free save preserves exact bytes and original fixed-buffer backpressur
   const last = f.responses.at(-1); assert.equal(last.type, "complete"); assert.equal(last.metrics.outputBytes, f.bytes.length);
   assert.equal(last.metrics.scratchBytes, 0); assert.equal(last.metrics.wasmMemoryBytes, 0); assert.equal(last.metrics.peakWasmMemoryBytes, 50331648);
   assert.equal(last.metrics.sharedArrayBufferBytes, 4); assert.equal(last.metrics.elapsedMs, 2000); assert.equal(last.metrics.pendingOperations, 0);
+});
+test("separate-saver disclosure and real buffer share512KiB without changing other staged profiles", async () => {
+  assert.equal(STAGED_SAVE_COPY_CHUNK_BYTES, 524288);
+  const worker = await readFile(path.join(root, "workers/conversion.worker.ts"), "utf8");
+  const saver = await readFile(path.join(root, "workers/staged-save-runtime.ts"), "utf8");
+  assert.match(worker, /profileId === MPEG2_JOB_PROFILE \|\| isVpxDecoderProfile\(profileId\) \? STAGED_SAVE_COPY_CHUNK_BYTES : copyChunkBytes/);
+  assert.match(saver, /copyChunkBytes = STAGED_SAVE_COPY_CHUNK_BYTES/);
+  const f = fixture({ profileId: "mkv-to-mp4-mpeg2" }); await runStagedSave(f.message, f.context);
+  assert.deepEqual(f.writes, [STAGED_SAVE_COPY_CHUNK_BYTES, STAGED_SAVE_COPY_CHUNK_BYTES, 17]);
+  assert.equal(f.maximumPending(), 1); assert.equal(f.readBuffers.size, 1);
 });
 test("cancellation before copying or after one write closes owned resources and never falsely completes", async () => {
   for (const options of [{ cancelInitially: true }, { cancelAfterWrite: true }]) {

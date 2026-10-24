@@ -1,6 +1,6 @@
 import type { ConversionMetrics, WorkerResponse } from "../lib/conversion-protocol";
 import { isOwnedCompletedStage, type StagedSaveRequest } from "../lib/staged-copy-protocol";
-import { MIN_PROGRESS_INTERVAL_MS } from "../lib/resource-limits";
+import { MIN_PROGRESS_INTERVAL_MS, STAGED_SAVE_COPY_CHUNK_BYTES } from "../lib/resource-limits";
 
 export async function runStagedSave(message: StagedSaveRequest, options: {
   storage: Pick<StorageManager, "getDirectory">;
@@ -13,7 +13,7 @@ export async function runStagedSave(message: StagedSaveRequest, options: {
   const metrics: ConversionMetrics = { ...message.metrics, wasmMemoryBytes: 0, wasmMemories: {},
     sharedArrayBufferBytes: message.cancellationBuffer?.byteLength ?? 0, activeWorkerCount: 1 };
   const jobId = message.jobId, startedAt = message.jobStartedEpochMs - clock.origin;
-  const copyPhase = "Copying staged MP4 to selected destination", copyChunkBytes = 512 * 1024;
+  const copyPhase = "Copying staged MP4 to selected destination", copyChunkBytes = STAGED_SAVE_COPY_CHUNK_BYTES;
   let root: FileSystemDirectoryHandle | null = null, readAccess: FileSystemSyncAccessHandle | null = null;
   let finalWritable: FileSystemWritableFileStream | null = null;
   let stageOwned = false;

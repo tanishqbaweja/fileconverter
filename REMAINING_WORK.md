@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-10-24 small bounded visual gate now CLOSED at7f6730d: actual private-profile
+native phase/counters visible and verified in both in-viewport PNGs; Saved image
+reviewed.5images/674042B. Exact same source/output hashes and independent96/60frame
+content/timing/AAC/title/language checks pass; whole-tree230.640625MiB.417samples,
+1loaded null honestly retained/no conversion nulls. Original full SHA and owned
+process/stage/media/profile absence independently pass;35,958B lossless archive.
+`evidence/2026-10-24-mpeg2-bounded-visual-review.json`. Older off-screen and274MiB
+results stay retained, no causal/large-file/public claim. Do not repeat this
+small gate unchanged. Next real private option UI integration plus applicable
+original/scale/recovery/browser qualification, not more native rebuilds/flag flips.
+Reviewed warning incorrectly advertised256KiB while saver uses512KiB; shared
+constant now keeps saver/disclosure aligned without changing buffers/copy policy.
+45focused incl historical TypeScript PASS; current final regression pending.
+This does not close original54/B02-B09 or public/UI-control promotion.
+
 2026-10-24 bounded observer first actual run: valid default96frames+requested
 60frames, SSIM/clock/audio/title/language/full decode pass; whole-tree239.15625MiB,
 356samples/0missing. Source matches byteexact proof, original full SHA and owned

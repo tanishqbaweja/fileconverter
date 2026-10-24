@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-10-24 corrected bounded visual gate at7f6730d PASS small scope: both
+native-phase PNGs visibly show real Encoding MPEG-2/read/write/48MiB/ffmpeg-video
+and are fully inside viewport; Saved image reviewed too. Matching private
+selector, five PNGs/674042B, one capture/no DOM history; actual UI controls/real
+Convert button/manual/native-picker remain NOT covered by this backend-hook gate.
+Exact same input SHAe70b76ca... and output SHAs11a53d67.../189bced2... as previous
+bounded run; both96/60frames, full decode/SSIM/clock/AAC packet/title/language pass.
+Whole-tree230.640625MiB;417samples/416valid/1loaded OpenProcess4084 null retained,
+no unavailable conversion samples. No zero substitution or excluded process.
+Original full SHA and independent owned process/media/profile/stage absence pass;
+1,527,210B raw retained35,958B exact gzip, redundant raw removed. Review:
+`evidence/2026-10-24-mpeg2-bounded-visual-review.json`.
+Earlier off-screen239MiB and full-capture274MiB reports remain honestly scoped;
+no causal memory/speed cure or public/original/large-file qualification inferred.
+Do not replay this passed small observer gate unchanged. Next actual private
+option UI integration and applicable original/scale/recovery/browser gates.
+Image review also found stale256KiB save warning versus actual512KiB saver.
+Warning and saver now share512KiB constant; actual copy loop/buffer/one-write
+policy unchanged, other profiles retain their own limits.45focused (including
+historical-overlay TypeScript)/syntax pass; initial unit-only extensionless-TS
+import was corrected to the existing bundler approach, not a production change.
+
 2026-10-24 first actual bounded observer fa3497d: both outputs fully validated,
 whole-tree239.15625MiB/356samples/0missing; fixed source786823B/SHAe70b76ca...
 matches actual determinism proof.5PNGs/908659B with2native state intervals,
