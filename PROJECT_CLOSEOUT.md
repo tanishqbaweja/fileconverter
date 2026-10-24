@@ -6,6 +6,18 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+0bcc89c protocol-count diagnostic terminal:1,090sends/0unavailable names/no
+body-source-bytecode fetch commands. Explicit-fetch hypothesis rejected for
+this run. Native duplicate codec-size samples persist;253.77734375MiB FAIL,
+423valid rows/0missing/0outputs; all original/owned cleanup PASS.38,757B report
+retained and raw removed. Chromium NetworkResourcesData auto body buffering is
+a distinct source-supported lead. Next finite15s native-profile comparison
+limits only automation Network.enable body storage1MiB total/128KiB resource,
+keeps request/response events/privacy/processes/native/quality/formula unchanged,
+records exact pinned runtime launch-hook coverage and restores it after close.
+No vendor edits/GC/browser flags/public promotion. Do not repeat explicit-fetch
+diagnosis or treat this finite comparison as full-original acceptance.
+
 Actual finite native profile8991dff captured15samples/4modules; no symbolization
 or complete output.245.953125MiB is diagnostic only. Exact codec raw sizes and
 base64-length+12 matches are a lead, not a proven source. HAR was disabled by

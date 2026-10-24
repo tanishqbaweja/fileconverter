@@ -1,6 +1,7 @@
 // Method-name diagnostics only; no real browser/protocol evidence here.
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFile } from "node:fs/promises";
 import { installProtocolMethodCounts } from "../scripts/lib/protocol-method-counts.mjs";
 test("protocol names are counted without retaining parameters, bodies, URLs or source strings and restore exactly", () => {
   const forwarded = [], logger = { isEnabled: () => false, log: (...args) => forwarded.push(args) }, old = { ...logger };
@@ -25,4 +26,16 @@ test("method caps and unavailable names are explicit rather than silently called
   logger.log("protocol", "SEND malformed");
   assert.equal(Object.keys(actual.summary().methods).length, 128); assert.equal(actual.summary().unavailableMethodNames, 3);
   actual.close();
+});
+test("actual finite observer rejects explicit body-fetch hypothesis only after complete method-name coverage", async () => {
+  const receipt = JSON.parse(await readFile(new URL("../evidence/2026-10-24T07-59-01.635Z-mpeg2-original-result.json", import.meta.url)));
+  const counts = receipt.protocolMethodCounts;
+  assert.equal(counts.sends, 1090); assert.equal(counts.unavailableMethodNames, 0);
+  assert.equal(Object.values(counts.methods).reduce((a, b) => a + b, 0), counts.sends);
+  assert.equal(counts.methods["Network.enable"], 3);
+  for (const method of ["Network.getResponseBody", "Debugger.getScriptSource", "Debugger.getWasmBytecode"])
+    assert.equal(counts.methods[method] ?? 0, 0);
+  assert.equal(receipt.overallGatePassed, false); assert.equal(receipt.completedCases.length, 0);
+  assert.equal(receipt.nativeAllocationProfile.samples, 19);
+  assert.equal(receipt.protectedOriginalUnchangedAtExecution, true); assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true);
 });

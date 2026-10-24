@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-10-24 protocol diagnostic0bcc89c is terminal FAILED253.77734375MiB,
+423lossless valid rows/0missing,0complete outputs, actual Cancel/original SHA/
+owned cleanup PASS.1,090commands/0unavailable names; no getResponseBody,
+getScriptSource or getWasmBytecode commands. This rejects the explicit CDP
+body-fetch hypothesis for this run, not all inspector buffering.19native samples
+still include the same raw/Base64-sized codec allocations.38,757B exact raw gzip
+retained; redundant raw removed. Receipt:
+`evidence/2026-10-24T07-59-01.635Z-mpeg2-original-result.json`.
+CI40076251521/0bcc89c independently SUCCESS. Chromium NetworkResourcesData source
+shows automatic binary-body encoding at load completion with Network enabled;
+Playwright enables it with default storage limits. Next one finite diagnostic
+bounds automation-only response storage to1MiB total/128KiB per resource before
+Network.enable is sent, keeping all events/privacy checks/full process formula,
+same static assets/native/source/quality and15s finite cancellation. No vendor
+file/browser flag changes, GC or acceptance claim. Verify hook coverage and
+sample disappearance before treating this lead as a cause. All54/B02-B09 open.
+
 2026-10-24 native profile8991dff succeeded15samples/4modules, unresolved addresses;
 intentional15s cancellation/0complete outputs.245.953125MiB short perturbed value
 is NOT memory/full-original acceptance. Original/owned cleanup PASS.1,307B exact

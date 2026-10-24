@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-24 protocol diagnostic0bcc89c:1,090outgoing CDP commands/0unavailable
+names, no explicit response-body/script-source/Wasm-bytecode fetch. Reject that
+hypothesis for this execution.19native samples still contain raw/Base64-sized
+codec allocations; no stack symbolization or causal savings proven. Whole-tree
+253.77734375MiB FAIL/423valid rows/0missing/0complete outputs. Actual Cancel,
+original full SHA and independent owned cleanup PASS. Raw1,166,799B losslessly
+retained38,757B gzip; raw removed. Receipt:
+`evidence/2026-10-24T07-59-01.635Z-mpeg2-original-result.json`.
+CI40076251521 SUCCESS for exact0bcc89c. Next diagnostic bounds automatic CDP
+network-body retention while preserving metadata events/privacy/full native
+memory. Chromium source permits automatic encoding without getResponseBody;
+this is a new evidence-based hypothesis, not a claim that HAR caused it.
+
+
 2026-10-24 native allocation API8991dff actually captured15samples/4modules,
 raw7,852B exactly retained1,307B gzip. Finite15s native work then actual Cancel,
 0complete outputs/NOT full-original acceptance. Observed245.953125MiB is a
