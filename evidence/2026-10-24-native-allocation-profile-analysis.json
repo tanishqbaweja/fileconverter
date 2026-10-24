@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "receipt": "evidence/2026-10-24T07-36-22.067Z-mpeg2-original-result.json",
+  "executedHead": "8991dff79bb94bee4ddfa40ddb2014bd76fe581d",
+  "scope": "Finite renderer-native sampling on exact original; intentionally cancelled, no complete output or acceptance",
+  "nativeSamples": 15,
+  "nativeModules": 4,
+  "stackStringsAreAddresses": true,
+  "symbolizedStacksVerified": false,
+  "observedIncrementalPrivateMiB": 245.953125,
+  "fullOriginalAcceptance": false,
+  "publicAcceptance": false,
+  "causalSavingsVerified": false,
+  "sampleSizeMatches": [
+    { "role": "decoder", "codecBytes": 5716027, "sampleBytesMatchingRawLength": 5716027, "base64Characters": 7621372, "sampleBytesMatchingBase64Plus12": 7621384 },
+    { "role": "encoder", "codecBytes": 675411, "sampleBytesMatchingRawLength": 675411, "base64Characters": 900548, "sampleBytesMatchingBase64Plus12": 900560 }
+  ],
+  "interpretation": "The exact size matches are a lead for duplicate codec representations, not proof of object type, allocator function, or instrumentation causality.",
+  "inspectedLocalPlaywrightSource": "Tracing starts HAR body capture only when snapshots=true; this run used snapshots=false. Do not falsely blame HAR content capture from size matches alone.",
+  "symbolDownload": { "compressedStoredBytes": 1061798189, "downloaded": false, "reason": "Avoid an unnecessary gigabyte symbol download while a bounded protocol-method check can test the instrumentation hypothesis." },
+  "next": "Count owned Playwright CDP method names during one finite native-profile run; no request parameters, bodies, filenames, URLs or source strings retained. Verify observer saw sends before interpreting zero body-fetch counts."
+}

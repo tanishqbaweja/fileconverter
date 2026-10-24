@@ -9,6 +9,7 @@ import { copyFile, lstat, mkdir, open, readFile, realpath, rm, statfs, writeFile
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { promisify } from "node:util";
+import { createRequire } from "node:module";
 import { chromium } from "playwright";
 import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runtime-scratch.mjs";
 import { inspectStressHostMemory } from "./lib/host-memory-preflight.mjs";
@@ -33,11 +34,12 @@ import { mpeg2StorageRecoveryCases, assertMpeg2StorageFailure } from "./lib/mpeg
 import { MPEG2_ORIGINAL_GATE, assertMpeg2OriginalStructure, compareOriginalAacPackets, selectExactLocalOriginal } from "./lib/mpeg2-original-gate.mjs";
 import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
 import { startNativeAllocationProfile } from "./lib/native-allocation-profile.mjs";
+import { installProtocolMethodCounts } from "./lib/protocol-method-counts.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
 const flags = new Set(process.argv.slice(2));
-assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--memory-failure-allocators", "--native-allocation-profile", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls", "--ui-batch", "--original"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
+assert.ok(flags.size === process.argv.length - 2 && [...flags].every(flag => ["--diagnose-allocations", "--events-only-trace", "--bounded-visual-capture", "--post-measurement-allocators", "--memory-failure-allocators", "--native-allocation-profile", "--protocol-method-counts", "--cache-repeats", "--recovery", "--storage-recovery", "--planning", "--ui", "--controls", "--ui-controls", "--ui-batch", "--original"].includes(flag) || /^--scaled-properties-build=[0-9]{8,}$/.test(flag)));
 const uiControls = flags.has("--ui-controls");
 const fullOriginal = flags.has("--original");
 assert.ok(!fullOriginal || (!flags.has("--ui") && !flags.has("--controls") && flags.has("--bounded-visual-capture")), "Original is one explicit full-file production gate");
@@ -57,6 +59,7 @@ const failureAllocators = flags.has("--memory-failure-allocators");
 const nativeProfile = flags.has("--native-allocation-profile");
 assert.ok(!failureAllocators || (fullOriginal && diagnose && !flags.has("--post-measurement-allocators")), "Failure allocator dump is a separate bounded original diagnosis");
 assert.ok(!nativeProfile || (fullOriginal && diagnose && !failureAllocators && !flags.has("--post-measurement-allocators")), "Native sampling is one finite non-acceptance diagnosis");
+assert.ok(!flags.has("--protocol-method-counts") || nativeProfile, "Protocol names are a separate finite native-profile diagnosis only");
 const boundedVisual = flags.has("--bounded-visual-capture"), continuousVisual = !eventsOnly && !boundedVisual;
 assert.ok(!boundedVisual || (diagnose && (flags.has("--controls") || uiControls || storageRecovery || uiBatch || fullOriginal) && !eventsOnly), "Bounded visual observer is one explicit finite gate, not implicit acceptance");
 const recovery = flags.has("--recovery") || storageRecovery;
@@ -107,7 +110,7 @@ const env = { ...runtime.env, NODE_OPTIONS: [process.env.NODE_OPTIONS ?? "", "--
   NEXT_TELEMETRY_DISABLED: "1", WRANGLER_SEND_METRICS: "false" };
 const generated = [], processIdentities = [], samples = [], baselineWindows = [], blankObservations = [], forbiddenRequests = [];
 let server, serverIdentity, browserServer, browser, context, monitor, monitorTimer, monitorPending = Promise.resolve(), monitorFailure, realmSampler, browserRootPid;
-let visualObserver, nativeJournal, snapshotPending, rendererNativeProfile;
+let visualObserver, nativeJournal, snapshotPending, rendererNativeProfile, protocolCounter;
 const phaseChanges = [{ phase: "blank", at: Date.parse(report.startedAt) }];
 const changePhase = phase => { phaseChanges.push({ phase, at: Date.now() }); };
 const attribution = { references: [], realms: [], scope: "bounded diagnostic observations, not exact realm-heap peaks or replacement private bytes" };
@@ -203,6 +206,13 @@ const startActiveMonitor = page => {
   }, 500);
 };
 try {
+  if (flags.has("--protocol-method-counts")) {
+    const bundlePath = path.join(root, "node_modules/playwright-core/lib/coreBundle.js");
+    const internal = createRequire(import.meta.url)(bundlePath);
+    protocolCounter = installProtocolMethodCounts(internal.utils.debugLogger);
+    report.protocolMethodObserverBinding = { playwrightVersion: internal.getPlaywrightVersion(), bundleSha256: sha(await readFile(bundlePath)),
+      localVendorFilesModified: false, browserFlagsChanged: false };
+  }
   const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 32 * 1024 ** 3);
   report.hostMemory = await inspectStressHostMemory(); assert.equal(report.hostMemory.safeToStart, true);
   const selectedNative = await loadMpeg2RuntimeNative(root, scaledBuildRunId);
@@ -276,6 +286,7 @@ try {
     "scripts/lib/mpeg2-storage-recovery.mjs",
     "scripts/lib/mpeg2-original-gate.mjs", "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/native-memory-peaks.mjs",
     "scripts/lib/native-allocation-profile.mjs",
+    "scripts/lib/protocol-method-counts.mjs",
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/streaming-video-clock-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs",
     "scripts/test-mpeg2-production-runtime.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",
@@ -651,6 +662,10 @@ try {
   if (rendererNativeProfile) {
     try { await rendererNativeProfile.close(); rendererNativeProfile = null; }
     catch (error) { report.failures.push("Native profile cleanup: " + String(error)); report.status = "failed"; process.exitCode = 1; }
+  }
+  if (protocolCounter) {
+    try { report.protocolMethodCounts = protocolCounter.summary(); protocolCounter.close(); }
+    catch (error) { report.failures.push("Protocol observer cleanup: " + String(error)); report.status = "failed"; process.exitCode = 1; }
   }
   if (fullOriginal && nativeJournal) {
     let coverageFailure = null;

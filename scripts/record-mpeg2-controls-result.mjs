@@ -204,6 +204,8 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
   nativeAllocationProfile: report.nativeAllocationProfile ?? null,
   nativeProfileDiagnosticOnly: report.nativeProfileDiagnosticOnly ?? false,
   nativeProfileFiniteStop: report.nativeProfileFiniteStop ?? null,
+  protocolMethodCounts: report.protocolMethodCounts ?? null,
+  protocolMethodObserverBinding: report.protocolMethodObserverBinding ?? null,
   postMeasurementAllocationScope: allocation ? { status: allocation.status, acceptanceMetric: allocation.acceptanceMetric,
     perturbsMemory: allocation.perturbsMemory, allocationStackAttribution: allocation.allocationStackAttribution } : null,
   completedCases: completed.map(entry => ({ name: entry.name, requested: entry.requested, reference: entry.reference,

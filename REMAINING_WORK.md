@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-10-24 native profile8991dff succeeded15samples/4modules, unresolved addresses;
+intentional15s cancellation/0complete outputs.245.953125MiB short perturbed value
+is NOT memory/full-original acceptance. Original/owned cleanup PASS.1,307B exact
+profile/39,864B raw gzip retained, redundant raw removed. Exact raw codec sizes
+and base64-length+12 sample matches suggest duplicate representations but do
+not identify functions/cause. HAR snapshots werefalse; do not falsely blame HAR.
+`evidence/2026-10-24-native-allocation-profile-analysis.json`. Next finite
+protocol-method observer counts only command names (no payload/URL/source/body
+retention or vendor modifications) to test the instrumentation hypothesis.
+All original54/release gates remain open; no repeated unchanged acceptance run.
+
 2026-10-24 global allocator diagnostic b0f7b32 unavailable (8s deadline). First
 failure250.96875MiB; later primary274.23046875MiB includes tracing overhead and
 must not be compared as uninstrumented performance.509valid lossless samples,

@@ -6,6 +6,12 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+Actual finite native profile8991dff captured15samples/4modules; no symbolization
+or complete output.245.953125MiB is diagnostic only. Exact codec raw sizes and
+base64-length+12 matches are a lead, not a proven source. HAR was disabled by
+snapshots=false. Next bounded protocol-method-name observer tests whether body
+fetches/script-bytecode requests occur; no payload retention/vendor changes.
+
 Global live-light dump b0f7b32 timed out, no allocator diagnosis; primary first
 failed250.96875MiB, measured274.23046875MiB includes diagnostic overhead. Original
 and owned cleanup PASS. Next finite --native-allocation-profile uses renderer

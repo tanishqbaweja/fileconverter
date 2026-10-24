@@ -49,3 +49,23 @@ test("unsupported/deadline/profile-shape failures always stop and detach; arbitr
   await assert.rejects(startNativeAllocationProfile(session(), fileURLToPath(new URL("../test.mkv", import.meta.url))));
   assert.equal(NATIVE_PROFILE_LIMITS.rawBytes, 2097152);
 });
+test("actual native samples preserve unresolved stacks and exact codec-size matches without claiming memory acceptance", async () => {
+  const root = new URL("../", import.meta.url), hash = b => createHash("sha256").update(b).digest("hex");
+  const analysis = JSON.parse(await readFile(new URL("evidence/2026-10-24-native-allocation-profile-analysis.json", root)));
+  const receipt = JSON.parse(await readFile(new URL(analysis.receipt, root))), archive = receipt.nativeAllocationArchive;
+  const packed = await readFile(new URL(archive.path, root)); assert.equal(hash(packed), archive.sha256);
+  const bytes = gunzipSync(packed); assert.equal(hash(bytes), archive.restoredSha256);
+  const p = validateNativeAllocationProfile(JSON.parse(bytes).profile);
+  assert.equal(p.samples.length, 15); assert.equal(p.modules.length, 4);
+  for (const row of analysis.sampleSizeMatches) {
+    assert.ok(p.samples.some(s => s.size === row.codecBytes));
+    assert.equal(Math.ceil(row.codecBytes / 3) * 4, row.base64Characters);
+    assert.equal(row.base64Characters + 12, row.sampleBytesMatchingBase64Plus12);
+    assert.ok(p.samples.some(s => s.size === row.sampleBytesMatchingBase64Plus12));
+  }
+  assert.equal(receipt.nativeProfileDiagnosticOnly, true); assert.equal(receipt.overallGatePassed, false);
+  assert.equal(receipt.nativeProfileFiniteStop.cancellation.requested, true); assert.equal(receipt.completedCases.length, 0);
+  assert.equal(receipt.nativeAllocationProfile.symbolizedStacksVerified, false);
+  assert.equal(analysis.causalSavingsVerified, false); assert.equal(analysis.publicAcceptance, false);
+  assert.equal(receipt.protectedOriginalUnchangedAtExecution, true); assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true);
+});

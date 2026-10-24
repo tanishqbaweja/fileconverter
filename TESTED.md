@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-24 native allocation API8991dff actually captured15samples/4modules,
+raw7,852B exactly retained1,307B gzip. Finite15s native work then actual Cancel,
+0complete outputs/NOT full-original acceptance. Observed245.953125MiB is a
+perturbed short diagnostic, not a qualified memory result. Original/owned cleanup
+PASS. Raw1,192,402B retained39,864B gzip, redundant raw gone. Analysis:
+`evidence/2026-10-24-native-allocation-profile-analysis.json`. Raw addresses are
+not symbolized functions. Sizes exactly match decoder/encoder raw byte lengths
+and ceil(bytes/3)*4+12, a duplicate-representation lead, not proven source/cause.
+Pinned Playwright HAR starts only with snapshots=true (this usedfalse), so do
+not misattribute to HAR.1,061,798,189B symbol download avoided. Next one finite
+protocol-method-count diagnostic using owned Node logger only, no vendor writes,
+request params/bodies/URLs/source strings retained; verify nonzero sends before
+interpreting absent body-fetch methods. No native/quality/threshold change.
+
 2026-10-24 global live-light allocator request b0f7b32 TIMED OUT8s, not a cause
 diagnosis. First already-failed250.96875MiB, full measured peak274.23046875MiB
 includes diagnostic perturbation (not product regression/savings comparison).
