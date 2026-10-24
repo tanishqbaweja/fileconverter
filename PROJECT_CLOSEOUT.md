@@ -6,7 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
-Current: private MPEG-2 actual-form controls and Convert-button gate is CLOSED
+Current: real two-file UI batch gate also CLOSED at15059fc: one button/native
+indices0+1/two independent canonical valid outputs, whole-tree244.93359375MiB,
+424valid samples and owned cleanup. Actual native/Saved2files images reviewed.
+`evidence/2026-10-24T06-18-35.419Z-mpeg2-ui-batch-result.json`. Next missing
+reload/preservation and production original/large-source qualification, broader
+batch failures/browser matrix. Do not replay passing tiny gates unchanged.
+Private MPEG-2 actual-form controls and Convert-button gate is CLOSED
 at ac0c773: two validated canonical outputs, whole-tree247.5625MiB with narrow
 margin, bounded real option/native screenshots and independently verified owned
 cleanup. Review: evidence/2026-10-24-mpeg2-ui-controls-review.json. Next finish

@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-10-24 real two-file UI batch gate CLOSED at15059fc: same real canonical
+file selected twice, one actual Convert click, native indices0+1 observed, distinct
+source.mp4/source-2.mp4 independently validated (each1,002,730B/96frames/exact
+SHA11a53d67.../SSIM.989061/clocks/AAC/title/language). Code binaries fetched once,
+manifests twice; final metrics explicitly last item only. Whole-tree244.93359375
+MiB/424valid records/0missing; narrow margin, not stress qualification. Three
+small PNGs399224B, native and Saved2files images reviewed. Original full SHA,
+network privacy, source45/native142 bindings and independent owned cleanup PASS.
+Raw1,536,937B exactly retained35,557B gzip; redundant raw removed. Receipt:
+`evidence/2026-10-24T06-18-35.419Z-mpeg2-ui-batch-result.json`.
+29focused/lint PASS after evidence retention. Do not replay successful small
+batch/controls/storage functional work unchanged; final portable regression next.
+Next missing reload/preservation and production original/large-source qualification,
+broader batch failures/browser matrix; full54/B02-B09 remain OPEN.
+
 2026-10-24 next actual-UI batch gate implemented: --ui-batch selects the same
 real canonical source twice (duplicate names), uses one actual Convert click,
 requires native work at each batch index, two distinct nonempty outputs and no

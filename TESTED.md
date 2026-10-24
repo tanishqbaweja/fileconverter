@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-10-24 actual --ui-batch15059fc PASS small scope: one real Convert click for
+two identical-name canonical HEVC files, native work independently observed for
+indices0+1 and two distinct valid MP4s. Each96frames/full decode/SSIM.989061/<1ms
+clocks/AAC/title/language, exact1,002,730B/SHA11a53d67... . Whole-tree244.93359375
+MiB/424samples/0missing;3bounded PNGs399224B, actual native/Saved2files reviewed.
+Manifest2/binaries1each; last metrics not mislabelled as per-item/aggregate.
+Original full SHA, network/source pins and independent owned stage/media/profile/
+process absence PASS. Raw1,536,937B losslessly archived35,557B, redundant JSON gone.
+`evidence/2026-10-24T06-18-35.419Z-mpeg2-ui-batch-result.json`. No broad batch
+failure/reload/native-picker/stress/public acceptance.29focused/lint PASS after
+retaining evidence; reuse this small gate. Final portable regression next.
+
 2026-10-24 real two-file UI batch gate implemented, browser proof pending:
 same canonical file selected twice, one actual button, native observations for
 indices0+1, distinct outputs, separate independent validators, no stages, bounded

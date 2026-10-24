@@ -1,6 +1,8 @@
 // DOM/state doubles only; these do not execute codecs or prove browser support.
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
 import test from "node:test";
 import { runMpeg2UiJob } from "../scripts/lib/mpeg2-ui-job.mjs";
 const options = { codec: "automatic", maxWidth: 0, bitRateBps: 0, frameRateFps: 0, quality: "automatic" };
@@ -53,4 +55,42 @@ test("batch driver sends one actual UI job and independently validates both dest
   assert.match(source, /outputs.push\(\{ name: outputNameToValidate, \.\.\.report.output \}\)/);
   assert.match(source, /manifests: uiBatch \? 2/);
   assert.match(source, /assert.ok\(ssim >= 0.98/); assert.match(source, /report.memory.incrementalPrivateMiB <= 250/);
+});
+test("actual two-file button batch has two independent valid outputs, complete memory accounting and verified cleanup", async () => {
+  const root = new URL("../", import.meta.url), hash = b => createHash("sha256").update(b).digest("hex");
+  const receipt = JSON.parse(await readFile(new URL("evidence/2026-10-24T06-18-35.419Z-mpeg2-ui-batch-result.json", root)));
+  const packed = await readFile(new URL(receipt.archive.path, root)); assert.equal(hash(packed), receipt.archive.sha256);
+  assert.equal(packed.length, receipt.archive.bytes);
+  const bytes = gunzipSync(packed, { maxOutputLength: 4 * 1048576 }); assert.equal(hash(bytes), receipt.archive.restoredSha256);
+  assert.equal(bytes.length, receipt.archive.restoredBytes);
+  const r = JSON.parse(bytes), batch = receipt.uiBatchQualification;
+  assert.equal(receipt.head, "15059fc54f6f392bdb41a7bcee130c1178c31092"); assert.equal(receipt.sourcePins, 45);
+  assert.equal(receipt.recordedSourcesMatchHistoricalGitHead, true); assert.deepEqual(batch, r.uiBatchQualification);
+  assert.equal(batch.completed, true); assert.equal(batch.actualConvertButton, true);
+  assert.equal(batch.actualButtonEvidence.completedBatchItems, 2); assert.equal(batch.actualButtonEvidence.finalWorkerReady, true);
+  assert.deepEqual(batch.destinationNames, ["source.mp4", "source-2.mp4"]);
+  assert.deepEqual(batch.nativeBatchItems.map(i => i.index), [0, 1]);
+  for (const item of batch.nativeBatchItems) { assert.ok(item.inputBytes > 0 && item.outputBytes > 0); assert.equal(item.wasmMemoryBytes, 50331648); }
+  assert.equal(batch.outputs.length, 2);
+  for (const output of batch.outputs) {
+    assert.equal(output.sha256, "11a53d672a155d12630bd0bc9fb39f012db05ce1ed4abebfe178a3b679451886");
+    assert.equal(output.bytes, 1002730); assert.equal(output.frames, 96); assert.equal(output.fullNativeDecodePassed, true);
+    assert.ok(output.ssim >= 0.98); assert.ok(output.videoClocks.maximumVideoPtsErrorSeconds < 0.001);
+    assert.equal(output.titlePreserved, true); assert.equal(output.languagePreserved, true);
+    assert.equal(output.copiedAudioPacketHash, batch.outputs[0].copiedAudioPacketHash);
+  }
+  assert.deepEqual(r.staticRequests, { manifests: 2, decoder: 1, encoder: 1 });
+  assert.equal(r.diagnosticMemorySamples.length, 424); assert.equal(r.memory.unavailableSamples.length, 0);
+  for (const s of r.diagnosticMemorySamples) assert.equal(s.privateBytes, s.processes.reduce((n, p) => n + p.privateBytes, 0));
+  const peak = r.diagnosticMemorySamples.filter(s => s.phase !== "blank").reduce((a, b) => a.privateBytes > b.privateBytes ? a : b);
+  assert.equal((peak.privateBytes - r.blankBaseline.privateBytes) / 1048576, 244.93359375);
+  assert.equal(receipt.memory.incrementalPrivateMiB, 244.93359375);
+  const visual = receipt.boundedVisualObservation; assert.equal(visual.captures.length, 3); assert.equal(visual.totalBytes, 399224);
+  const native = visual.captures.find(c => c.nativeProgressVisuallyInViewport); assert.equal(native.before.selectedProfileId, "mkv-to-mp4-mpeg2");
+  assert.equal(visual.captures.at(-1).before.phase, "Saved 2 files"); assert.equal(visual.captures.at(-1).regionInViewport, true);
+  for (const c of visual.captures) { const image = await readFile(new URL(c.file, root)); assert.equal(hash(image), c.sha256); assert.equal(image.length, c.bytes); }
+  assert.deepEqual(r.forbiddenRequests, []); assert.deepEqual(r.failures, []);
+  assert.equal(r.protectedOriginalUnchanged, true); assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true);
+  assert.equal(receipt.cleanup.disposableOutputDeleted, true); assert.equal(receipt.overallGatePassed, true);
+  assert.equal(receipt.publicAcceptance, false); assert.equal(batch.nativeOsPickerCovered, false);
 });
