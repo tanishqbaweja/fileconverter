@@ -11,7 +11,13 @@ at ac0c773: two validated canonical outputs, whole-tree247.5625MiB with narrow
 margin, bounded real option/native screenshots and independently verified owned
 cleanup. Review: evidence/2026-10-24-mpeg2-ui-controls-review.json. Next finish
 missing production quota/permission/reload/batch and preservation, then the
-applicable original/scale/browser gates below. Do not replay this passing small
+applicable original/scale/browser gates below. Quota/permission injected-fault
+rollback, stage removal and both validated retries now have actual functional
+evidence at ac99383. Whole run FAILED visual guard;412raw observations recompute
+228.51953125MiB, not a finalized acceptance report. Avoid redundant input reset;
+persist primary memory before visual assertions. Next real UI batch/reload and
+preservation, not four repeated storage cases just for screenshots.
+Do not replay this passing small
 controls gate unchanged. No public promotion or broad memory qualification.
 Closed small checks to reuse: repaired scaler/native build40050006861, exact
 fixture generation, bounded visible-progress230.640625MiB at7f6730d, and recorded

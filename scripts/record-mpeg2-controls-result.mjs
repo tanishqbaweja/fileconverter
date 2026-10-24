@@ -8,19 +8,24 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { gzipSync, gunzipSync } from "node:zlib";
 import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mjs";
+import { assertMpeg2StorageFailure, mpeg2StorageRecoveryCases } from "./lib/mpeg2-storage-recovery.mjs";
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile);
 assert.equal(process.argv.length, 4);
 const [relative, head] = process.argv.slice(2);
 assert.match(relative, /^outputs\/reports\/[0-9TZ.-]+-mpeg2-production-runtime\.json$/);
 assert.match(head, /^[a-f0-9]{40}$/);
 const rawPath = path.join(root, relative), archivePath = rawPath + ".gz";
-const receiptPath = path.join(root, "evidence", path.basename(relative).replace("-mpeg2-production-runtime.json", "-mpeg2-controls-result.json"));
-await assert.rejects(access(receiptPath), { code: "ENOENT" }); await assert.rejects(access(archivePath), { code: "ENOENT" });
+await assert.rejects(access(archivePath), { code: "ENOENT" });
 const identity = await lstat(rawPath, { bigint: true });
 assert.ok(identity.isFile() && !identity.isSymbolicLink() && identity.size > 0n && identity.size <= 4n * 1048576n);
 assert.equal(await realpath(rawPath), rawPath);
 const raw = await readFile(rawPath), report = JSON.parse(raw), sha = bytes => createHash("sha256").update(bytes).digest("hex");
-assert.equal(report.publicAcceptance, false); assert.ok(report.controlsQualification);
+const storageRecovery = Boolean(report.storageRecoveryQualification);
+const qualification = storageRecovery ? report.recoveryQualification : report.controlsQualification;
+const receiptPath = path.join(root, "evidence", path.basename(relative).replace("-mpeg2-production-runtime.json",
+  storageRecovery ? "-mpeg2-storage-recovery-result.json" : "-mpeg2-controls-result.json"));
+await assert.rejects(access(receiptPath), { code: "ENOENT" });
+assert.equal(report.publicAcceptance, false); assert.ok(qualification);
 assert.ok(report.status === "failed" || report.status === "passed-small-allocation-diagnostic-not-route-promotion");
 assert.equal(report.protectedOriginalUnchanged, true); assert.equal(report.cleanup.allOwnedProcessesAbsent, true);
 assert.equal(report.cleanup.disposableOutputDeleted, true);
@@ -40,7 +45,8 @@ for (const directory of [report.cleanup.scratchRemoved, ...report.cleanup.genera
   assert.ok(target.startsWith(path.join(root, "work") + path.sep) || target.startsWith(path.join(root, "dist/client/engines") + path.sep));
   await assert.rejects(access(target), { code: "ENOENT" });
 }
-const completed = report.controlsQualification.cases;
+const completed = storageRecovery ? qualification.cases.filter(c => c.independentOutput).map(c => ({ name: c.name, conversion: c.result,
+  actualNativeSettings: c.result.metrics.mpeg2EncoderSettings, output: c.independentOutput })) : qualification.cases;
 assert.ok(Array.isArray(completed) && completed.length <= 2);
 for (const entry of completed) {
   assert.equal(entry.conversion.type, "complete"); assert.ok(entry.output.bytes > 0);
@@ -51,11 +57,25 @@ if (report.status === "failed") {
   assert.ok(report.failures.length > 0);
   // Valid files can still fail the whole-browser memory gate. Never turn a
   // content-complete/memory-failed run into either no conversion or acceptance.
-  assert.equal(report.controlsQualification.completed, completed.length === 2);
+  // A visual assertion may fail after every storage case but before the final
+  // completion marker. Preserve that false marker, never fabricate acceptance.
+  if (storageRecovery) assert.ok(!qualification.completed || completed.length === 2);
+  else assert.equal(qualification.completed, completed.length === 2);
 }
 else {
-  assert.equal(report.controlsQualification.completed, true); assert.equal(completed.length, 2); assert.deepEqual(report.failures, []);
+  assert.equal(qualification.completed, true); assert.equal(completed.length, 2); assert.deepEqual(report.failures, []);
   assert.ok(report.memory.incrementalPrivateMiB <= 250); assert.equal(report.executedSourcesAndBrowserPinsVerified, true);
+  if (storageRecovery) {
+    assert.equal(report.storageRecoveryQualification.completed, true);
+    assert.equal(report.storageRecoveryQualification.faultInjection, true);
+    assert.equal(report.storageRecoveryQualification.actualQuotaExhaustion, false);
+    assert.equal(report.storageRecoveryQualification.actualOsPermissionRevocation, false);
+    const cases = mpeg2StorageRecoveryCases(); assert.equal(qualification.cases.length, cases.length);
+    for (const [index, entry] of qualification.cases.entries()) {
+      assert.equal(entry.name, cases[index].name); assert.equal(entry.result.type, cases[index].expected);
+      if (cases[index].testFault) { assertMpeg2StorageFailure(cases[index], entry); assert.equal(entry.terminalWorkerRetired, true); }
+    }
+  }
 }
 const compressed = gzipSync(raw, { level: 9 });
 await writeFile(archivePath, compressed, { flag: "wx" });
@@ -82,8 +102,23 @@ if (visual) {
   }
   assert.equal(bytes, visual.totalBytes);
 }
+let independentlyRecomputedObservedMemory = null;
+if (storageRecovery && report.diagnosticMemorySamples && report.blankBaseline) {
+  const samples = report.diagnosticMemorySamples, valid = samples.filter(s => s.privateBytes !== null);
+  assert.ok(samples.length > 0 && samples.length <= 3000);
+  for (const sample of valid) assert.equal(sample.privateBytes, sample.processes.reduce((n, p) => n + p.privateBytes, 0));
+  const active = valid.filter(s => s.phase !== "blank"); assert.ok(active.length > 0);
+  const peak = active.reduce((a, b) => a.privateBytes > b.privateBytes ? a : b);
+  independentlyRecomputedObservedMemory = { scope: "Recomputed from retained observations only; does not change failed run status or prove missing post-completion coverage",
+    records: samples.length, validRecords: valid.length, unavailableRecords: samples.length - valid.length,
+    unavailableConversionRecords: samples.filter(s => s.phase === "conversion" && s.privateBytes === null).length,
+    blankPrivateBytes: report.blankBaseline.privateBytes, peakPrivateBytes: peak.privateBytes, peakPhase: peak.phase,
+    incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576,
+    originalRunAccepted: report.status !== "failed" };
+}
 const receipt = { schemaVersion: 1, head, status: report.status, startedAt: report.startedAt, finishedAt: report.finishedAt,
-  scope: report.uiControlsQualification
+  scope: storageRecovery ? "Injected quota/permission failure after real native conversion and one bounded final write, followed by two validated retries; not actual OS revocation, disk exhaustion, UI button, scale or public acceptance"
+    : report.uiControlsQualification
     ? "Actual private form controls and Convert-button production path; small fixture, not full UI/OS-picker/stress or public acceptance"
     : "Finite real production MPEG-2 controls gate, including failures; not UI-control, scale or public acceptance",
   archive: { path: relative + ".gz", bytes: compressed.length, sha256: sha(compressed), restoredBytes: raw.length, restoredSha256: sha(raw) },
@@ -91,6 +126,8 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
   scaledPropertiesBuild: report.scaledPropertiesBuild ?? null, fixture: report.fixture,
   uiControlsQualification: report.uiControlsQualification ?? null,
   uiQualification: report.uiQualification ?? null,
+  recoveryQualification: report.recoveryQualification ?? null,
+  storageRecoveryQualification: report.storageRecoveryQualification ?? null,
   observer: report.observer, diagnosticObserverOnly: report.observer.controlScope === "events-only observer comparison, not route promotion",
   boundedVisualObservation: visual,
   boundedVisibleProgressVerified: visual ? visual.captures.some(capture => capture.nativeProgressVisuallyInViewport === true) : false,
@@ -99,9 +136,10 @@ const receipt = { schemaVersion: 1, head, status: report.status, startedAt: repo
     perturbsMemory: allocation.perturbsMemory, allocationStackAttribution: allocation.allocationStackAttribution } : null,
   completedCases: completed.map(entry => ({ name: entry.name, requested: entry.requested, reference: entry.reference,
     actualNativeSettings: entry.actualNativeSettings, output: entry.output })),
-  completed: report.controlsQualification.completed, overallGatePassed: report.status !== "failed", lastTerminal: { type: report.conversion?.type,
+  completed: qualification.completed, overallGatePassed: report.status !== "failed", lastTerminal: { type: report.conversion?.type,
     message: report.conversion?.message ?? null, metrics: report.conversion?.metrics ?? null }, failures: report.failures,
   memory: report.memory ?? null, protectedOriginalUnchangedAtExecution: true, cleanup: report.cleanup,
+  independentlyRecomputedObservedMemory,
   independentCleanup, publicAcceptance: false, speedComparison: false, rawLosslesslyRecoverable: true };
 await writeFile(receiptPath, JSON.stringify(receipt, null, 2) + "\n", { flag: "wx" });
 const current = await lstat(rawPath, { bigint: true });

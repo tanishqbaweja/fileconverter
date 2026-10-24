@@ -1,6 +1,8 @@
 // Synthetic evidence validation only; actual browser results are separate.
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
 import test from "node:test";
 import { mpeg2StorageRecoveryCases, assertMpeg2StorageFailure } from "../scripts/lib/mpeg2-storage-recovery.mjs";
 function fixture(fault) {
@@ -37,4 +39,40 @@ test("actual storage driver retains production path, validators, fixed native se
   assert.match(source, /nativeDuringEncodingCancellation: !storageRecovery/);
   assert.match(source, /assert.ok\(ssim >= 0.98/); assert.match(source, /report.memory.incrementalPrivateMiB <= 250/);
   assert.match(source, /assert.equal\(await audioHash\(output\), await audioHash\(fixture\)\)/);
+  assert.match(source, /recovery && !storageRecovery && repetition <= 2/);
+  assert.ok(source.indexOf("report.memory = {") < source.indexOf('"Actual active native progress was not visibly verified"'));
+  assert.ok(source.indexOf("report.executedSourcesAndBrowserPinsVerified = true") < source.indexOf('"Actual active native progress was not visibly verified"'));
+});
+test("actual storage faults and retries remain verified evidence without relabelling failed visual acceptance", async () => {
+  const root = new URL("../", import.meta.url), hash = b => createHash("sha256").update(b).digest("hex");
+  const receipt = JSON.parse(await readFile(new URL("evidence/2026-10-24T06-11-09.036Z-mpeg2-storage-recovery-result.json", root)));
+  const packed = await readFile(new URL(receipt.archive.path, root)); assert.equal(hash(packed), receipt.archive.sha256);
+  const bytes = gunzipSync(packed, { maxOutputLength: 4 * 1048576 }); assert.equal(hash(bytes), receipt.archive.restoredSha256);
+  const r = JSON.parse(bytes), cases = mpeg2StorageRecoveryCases();
+  assert.equal(r.status, "failed"); assert.equal(receipt.overallGatePassed, false); assert.equal(receipt.memory, null);
+  assert.match(r.failures[0], /Actual active native progress was not visibly verified/);
+  assert.equal(r.recoveryQualification.cases.length, 4);
+  for (const [index, c] of r.recoveryQualification.cases.entries()) {
+    assert.equal(c.name, cases[index].name); assert.equal(c.result.type, cases[index].expected);
+    if (cases[index].testFault) { assertMpeg2StorageFailure(cases[index], c); assert.equal(c.terminalWorkerRetired, true); }
+    else {
+      assert.equal(c.independentOutput.sha256, "11a53d672a155d12630bd0bc9fb39f012db05ce1ed4abebfe178a3b679451886");
+      assert.equal(c.independentOutput.frames, 96); assert.ok(c.independentOutput.ssim >= 0.98);
+      assert.ok(c.independentOutput.videoClocks.maximumVideoPtsErrorSeconds < 0.001);
+      assert.equal(c.independentOutput.fullNativeDecodePassed, true);
+      assert.equal(c.independentOutput.titlePreserved, true); assert.equal(c.independentOutput.languagePreserved, true);
+    }
+  }
+  assert.equal(receipt.recordedSourcesMatchHistoricalGitHead, true); assert.equal(receipt.sourcePins, 45);
+  const samples = r.diagnosticMemorySamples; assert.equal(samples.length, 412);
+  for (const s of samples) { assert.notEqual(s.privateBytes, null); assert.equal(s.privateBytes, s.processes.reduce((n, p) => n + p.privateBytes, 0)); }
+  const peak = samples.filter(s => s.phase !== "blank").reduce((a, b) => a.privateBytes > b.privateBytes ? a : b);
+  assert.equal((peak.privateBytes - r.blankBaseline.privateBytes) / 1048576, 228.51953125);
+  assert.equal(receipt.independentlyRecomputedObservedMemory.incrementalPrivateMiB, 228.51953125);
+  assert.equal(receipt.independentlyRecomputedObservedMemory.originalRunAccepted, false);
+  assert.equal(receipt.cleanup.allOwnedProcessesAbsent, true); assert.equal(receipt.protectedOriginalUnchangedAtExecution, true);
+  assert.equal(receipt.storageRecoveryQualification.faultInjection, true);
+  assert.equal(receipt.storageRecoveryQualification.actualQuotaExhaustion, false);
+  assert.equal(receipt.storageRecoveryQualification.actualOsPermissionRevocation, false);
+  assert.equal(receipt.boundedVisibleProgressVerified, false); assert.equal(receipt.publicAcceptance, false);
 });

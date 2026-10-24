@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-10-24 actual storage fault/retry functional coverage VERIFIED at ac99383,
+but whole run remains FAILED for missing active screenshot: file reselection
+reset visible profile to public while backend qualification correctly used MPEG-2.
+Quota and permission errors each occurred after a real512KiB final write; both
+preserved existing destination, deleted stage and retired saver. Both immediate
+retries independently pass canonical1,002,730B/SHA11a53d67.../96frames, SSIM,
+clocks, audio/title/language.412valid retained native observations independently
+recompute228.51953125MiB, but no completed primary memory report/visual acceptance
+is invented. Full raw2,967,080B retained losslessly62,536B; redundant JSON removed.
+`evidence/2026-10-24T06-11-09.036Z-mpeg2-storage-recovery-result.json`.
+Harness corrected to avoid redundant storage input reset and persist primary
+memory/privacy/source evidence before visual-only assertion. No media rerun just
+for screenshots. Next genuine missing real-UI batch/reload/preservation and
+original/scale/browser gates; physical exhaustion/OS-dialog revocation unverified.
+
 2026-10-24 next finite gate implemented: --storage-recovery uses the repaired
 core/canonical real fixture for quota error+retry and permission error+retry.
 Existing production fault injection occurs only after a real512KiB final write;

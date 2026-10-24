@@ -1,0 +1,998 @@
+{
+  "schemaVersion": 1,
+  "head": "ac993833357ff20332e174594159a26729e3cc2b",
+  "status": "failed",
+  "startedAt": "2026-10-24T06:11:09.036Z",
+  "finishedAt": "2026-10-24T06:12:38.799Z",
+  "scope": "Injected quota/permission failure after real native conversion and one bounded final write, followed by two validated retries; not actual OS revocation, disk exhaustion, UI button, scale or public acceptance",
+  "archive": {
+    "path": "outputs/reports/2026-10-24T06-11-09.036Z-mpeg2-production-runtime.json.gz",
+    "bytes": 62536,
+    "sha256": "89e12e9e30d075142fddf7b1fdc0361c5759e10420a9f44778a022bd51ee0416",
+    "restoredBytes": 2967080,
+    "restoredSha256": "3869e8393f80ae34853a8b7150e91135627987aa8fb09c1edc88813f27ac57ca"
+  },
+  "sourcePins": 45,
+  "recordedSourcesMatchHistoricalGitHead": true,
+  "native": [
+    {
+      "source": "work\\mpeg2-scaled-properties-40050006861\\within-mpeg2-split.mjs",
+      "sha256": "d4ec481a93a1b087c96aa11948ab9a98ccf6d09237ed143c022bf76bf6c31506",
+      "bytes": 65707
+    },
+    {
+      "source": "work\\mpeg2-scaled-properties-40050006861\\within-mpeg2-split.wasm",
+      "sha256": "753f30ec607f64312b73121160ce46df14c5a712f0cb21bbc9e9da5292414017",
+      "bytes": 5716027
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.mjs",
+      "sha256": "00c0d1b4435e9294c6784e9ccaf196f171caa3c9cc3d4c7a4aab1a47c6d8bb5e",
+      "bytes": 68202
+    },
+    {
+      "source": "work\\mpeg2-encoder-planes-38044000567\\split-encoder.wasm",
+      "sha256": "a4ba6225414ca7a658d349ae81926e5ed040fa73be4540fe8a7adf7656fe1cee",
+      "bytes": 675411
+    }
+  ],
+  "scaledPropertiesBuild": {
+    "path": "evidence/mpeg2-scaled-properties-build-40050006861.json",
+    "sha256": "17077055747d67d3c519807311b1aa0291df316ecaca3fcfe573a8549492dab1",
+    "runId": "40050006861",
+    "executedHead": "955d3e61d0e867d99901ab244f8c4eda9b8d4620",
+    "allBuildSourcesRechecked": true,
+    "buildSourceCount": 142,
+    "encoderUnchanged": true,
+    "publicAcceptance": false
+  },
+  "fixture": {
+    "bytes": 786823,
+    "sha256": "e70b76ca98594c4626024a68ad7886e3a9751e4fa1c9e124b616a7ff67e6b740",
+    "video": "hevc",
+    "width": 640,
+    "height": 360,
+    "frames": 96
+  },
+  "uiControlsQualification": null,
+  "uiQualification": null,
+  "recoveryQualification": {
+    "cases": [
+      {
+        "name": "final-quota-failure",
+        "expected": "error",
+        "result": {
+          "type": "error",
+          "jobId": "b797b29c-0680-4f05-af4c-caa9a38f2e86",
+          "message": "The destination ran out of quota after a bounded write.",
+          "metrics": {
+            "inputBytes": 786823,
+            "outputBytes": 524288,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 524288,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 524288,
+            "elapsedMs": 844.3447949290276,
+            "wasmMemoryBytes": 0,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 4,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0,
+            "mpeg2EncoderSettings": {
+              "width": 640,
+              "height": 360,
+              "frameRateNumerator": 24,
+              "frameRateDenominator": 1,
+              "bitRateBps": 4000000,
+              "qmin": 4,
+              "qmax": 20
+            },
+            "scratchBytes": 0,
+            "peakScratchBytes": 1002730,
+            "maxScratchReadChunkBytes": 524288,
+            "maxScratchWriteChunkBytes": 524288
+          },
+          "phases": [
+            "Inspecting MPEG-2 source",
+            "Planning MPEG-2 streams",
+            "Worker started",
+            "Destination opened",
+            "Compiled MPEG-2 code",
+            "Encoding MPEG-2 MP4",
+            "Copying staged MP4 to selected destination"
+          ],
+          "nativeMetrics": {
+            "inputBytes": 720896,
+            "outputBytes": 729994,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 65536,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 65536,
+            "elapsedMs": 765.9449999928474,
+            "wasmMemoryBytes": 50331648,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 50331652,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0,
+            "mpeg2EncoderSettings": {
+              "width": 640,
+              "height": 360,
+              "frameRateNumerator": 24,
+              "frameRateDenominator": 1,
+              "bitRateBps": 4000000,
+              "qmin": 4,
+              "qmax": 20
+            }
+          },
+          "plan": {
+            "streams": [
+              {
+                "streamIndex": 0,
+                "mediaType": "video",
+                "codec": "HEVC/H.265",
+                "action": "re-encode",
+                "detail": "The first video stream is decoded and encoded as MPEG-2 at 4 Mbps, source dimensions and constant source timing, with automatic quantizer policy. Native checks refuse VFR, full-range input or changing dimensions; 8-bit pixel-format conversion can be lossy. Non-default controls remain qualification-only until their browser gates pass."
+              },
+              {
+                "streamIndex": 1,
+                "mediaType": "audio",
+                "codec": "AAC",
+                "action": "copy",
+                "detail": "This compatible audio stream is packet-copied, not re-encoded. Native MP4 validation remains authoritative; timestamps and priming still require independent output checks. No audio encoding setting is ignored."
+              }
+            ],
+            "blockingReasons": [],
+            "metadataSummary": "Private MPEG-2 route; not public or large-file acceptance. This bounded header preview is not a complete metadata inventory. The native muxer handles compatible tags, languages, chapters and stream side data and warns about nonrepresentable streams. Encoder provenance is relabelled for freshly encoded video. Attachments/artwork have an 8 MiB aggregate guard; text metadata has 4096-entry/2 MiB guards and chapters a 1024-entry guard. Destination-specific preservation still requires independent qualification."
+          }
+        },
+        "cancellation": null,
+        "stageNames": [],
+        "destinationUnchanged": true,
+        "terminalWorkerRetired": true
+      },
+      {
+        "name": "recover-after-quota-failure",
+        "expected": "complete",
+        "result": {
+          "type": "complete",
+          "jobId": "f3fcd3c8-4044-4af7-ae3a-39cc855327b3",
+          "metrics": {
+            "inputBytes": 786823,
+            "outputBytes": 1002730,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 524288,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 524288,
+            "elapsedMs": 619.9547753632069,
+            "wasmMemoryBytes": 0,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 4,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0,
+            "mpeg2EncoderSettings": {
+              "width": 640,
+              "height": 360,
+              "frameRateNumerator": 24,
+              "frameRateDenominator": 1,
+              "bitRateBps": 4000000,
+              "qmin": 4,
+              "qmax": 20
+            },
+            "scratchBytes": 0,
+            "peakScratchBytes": 1002730,
+            "maxScratchReadChunkBytes": 524288,
+            "maxScratchWriteChunkBytes": 524288
+          },
+          "phases": [
+            "Inspecting MPEG-2 source",
+            "Planning MPEG-2 streams",
+            "Worker started",
+            "Destination opened",
+            "Reusing compiled MPEG-2 code",
+            "Encoding MPEG-2 MP4",
+            "Copying staged MP4 to selected destination",
+            "Complete"
+          ],
+          "nativeMetrics": {
+            "inputBytes": 786432,
+            "outputBytes": 729994,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 65536,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 65536,
+            "elapsedMs": 554.3350000083447,
+            "wasmMemoryBytes": 50331648,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 50331652,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0,
+            "mpeg2EncoderSettings": {
+              "width": 640,
+              "height": 360,
+              "frameRateNumerator": 24,
+              "frameRateDenominator": 1,
+              "bitRateBps": 4000000,
+              "qmin": 4,
+              "qmax": 20
+            }
+          },
+          "plan": {
+            "streams": [
+              {
+                "streamIndex": 0,
+                "mediaType": "video",
+                "codec": "HEVC/H.265",
+                "action": "re-encode",
+                "detail": "The first video stream is decoded and encoded as MPEG-2 at 4 Mbps, source dimensions and constant source timing, with automatic quantizer policy. Native checks refuse VFR, full-range input or changing dimensions; 8-bit pixel-format conversion can be lossy. Non-default controls remain qualification-only until their browser gates pass."
+              },
+              {
+                "streamIndex": 1,
+                "mediaType": "audio",
+                "codec": "AAC",
+                "action": "copy",
+                "detail": "This compatible audio stream is packet-copied, not re-encoded. Native MP4 validation remains authoritative; timestamps and priming still require independent output checks. No audio encoding setting is ignored."
+              }
+            ],
+            "blockingReasons": [],
+            "metadataSummary": "Private MPEG-2 route; not public or large-file acceptance. This bounded header preview is not a complete metadata inventory. The native muxer handles compatible tags, languages, chapters and stream side data and warns about nonrepresentable streams. Encoder provenance is relabelled for freshly encoded video. Attachments/artwork have an 8 MiB aggregate guard; text metadata has 4096-entry/2 MiB guards and chapters a 1024-entry guard. Destination-specific preservation still requires independent qualification."
+          }
+        },
+        "cancellation": null,
+        "stageNames": [],
+        "destinationUnchanged": null,
+        "independentOutput": {
+          "bytes": 1002730,
+          "sha256": "11a53d672a155d12630bd0bc9fb39f012db05ce1ed4abebfe178a3b679451886",
+          "codec": "mpeg2video",
+          "frames": 96,
+          "ssim": 0.989061,
+          "fullNativeDecodePassed": true,
+          "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+          "titlePreserved": true,
+          "languagePreserved": true,
+          "videoClocks": {
+            "frames": 96,
+            "maximumVideoPtsErrorSeconds": 0.000021333333333428683
+          }
+        }
+      },
+      {
+        "name": "final-permission-failure",
+        "expected": "error",
+        "result": {
+          "type": "error",
+          "jobId": "faa71c8d-fda4-4872-b2a8-4d38608ec01a",
+          "message": "Destination permission was revoked after a bounded write.",
+          "metrics": {
+            "inputBytes": 786823,
+            "outputBytes": 524288,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 524288,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 524288,
+            "elapsedMs": 599.3801367282867,
+            "wasmMemoryBytes": 0,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 4,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0,
+            "mpeg2EncoderSettings": {
+              "width": 640,
+              "height": 360,
+              "frameRateNumerator": 24,
+              "frameRateDenominator": 1,
+              "bitRateBps": 4000000,
+              "qmin": 4,
+              "qmax": 20
+            },
+            "scratchBytes": 0,
+            "peakScratchBytes": 1002730,
+            "maxScratchReadChunkBytes": 524288,
+            "maxScratchWriteChunkBytes": 524288
+          },
+          "phases": [
+            "Inspecting MPEG-2 source",
+            "Planning MPEG-2 streams",
+            "Worker started",
+            "Destination opened",
+            "Reusing compiled MPEG-2 code",
+            "Encoding MPEG-2 MP4",
+            "Copying staged MP4 to selected destination"
+          ],
+          "nativeMetrics": {
+            "inputBytes": 786432,
+            "outputBytes": 729994,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 65536,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 65536,
+            "elapsedMs": 550.8199999928474,
+            "wasmMemoryBytes": 50331648,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 50331652,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0,
+            "mpeg2EncoderSettings": {
+              "width": 640,
+              "height": 360,
+              "frameRateNumerator": 24,
+              "frameRateDenominator": 1,
+              "bitRateBps": 4000000,
+              "qmin": 4,
+              "qmax": 20
+            }
+          },
+          "plan": {
+            "streams": [
+              {
+                "streamIndex": 0,
+                "mediaType": "video",
+                "codec": "HEVC/H.265",
+                "action": "re-encode",
+                "detail": "The first video stream is decoded and encoded as MPEG-2 at 4 Mbps, source dimensions and constant source timing, with automatic quantizer policy. Native checks refuse VFR, full-range input or changing dimensions; 8-bit pixel-format conversion can be lossy. Non-default controls remain qualification-only until their browser gates pass."
+              },
+              {
+                "streamIndex": 1,
+                "mediaType": "audio",
+                "codec": "AAC",
+                "action": "copy",
+                "detail": "This compatible audio stream is packet-copied, not re-encoded. Native MP4 validation remains authoritative; timestamps and priming still require independent output checks. No audio encoding setting is ignored."
+              }
+            ],
+            "blockingReasons": [],
+            "metadataSummary": "Private MPEG-2 route; not public or large-file acceptance. This bounded header preview is not a complete metadata inventory. The native muxer handles compatible tags, languages, chapters and stream side data and warns about nonrepresentable streams. Encoder provenance is relabelled for freshly encoded video. Attachments/artwork have an 8 MiB aggregate guard; text metadata has 4096-entry/2 MiB guards and chapters a 1024-entry guard. Destination-specific preservation still requires independent qualification."
+          }
+        },
+        "cancellation": null,
+        "stageNames": [],
+        "destinationUnchanged": true,
+        "terminalWorkerRetired": true
+      },
+      {
+        "name": "recover-after-permission-failure",
+        "expected": "complete",
+        "result": {
+          "type": "complete",
+          "jobId": "15154040-2572-4a0b-92f0-5f71f65088d8",
+          "metrics": {
+            "inputBytes": 786823,
+            "outputBytes": 1002730,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 524288,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 524288,
+            "elapsedMs": 626.830156236887,
+            "wasmMemoryBytes": 0,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 4,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0,
+            "mpeg2EncoderSettings": {
+              "width": 640,
+              "height": 360,
+              "frameRateNumerator": 24,
+              "frameRateDenominator": 1,
+              "bitRateBps": 4000000,
+              "qmin": 4,
+              "qmax": 20
+            },
+            "scratchBytes": 0,
+            "peakScratchBytes": 1002730,
+            "maxScratchReadChunkBytes": 524288,
+            "maxScratchWriteChunkBytes": 524288
+          },
+          "phases": [
+            "Inspecting MPEG-2 source",
+            "Planning MPEG-2 streams",
+            "Worker started",
+            "Destination opened",
+            "Reusing compiled MPEG-2 code",
+            "Encoding MPEG-2 MP4",
+            "Copying staged MP4 to selected destination",
+            "Complete"
+          ],
+          "nativeMetrics": {
+            "inputBytes": 786432,
+            "outputBytes": 729994,
+            "queuedBytes": 0,
+            "peakQueuedBytes": 65536,
+            "pendingOperations": 0,
+            "peakPendingOperations": 1,
+            "maxReadChunkBytes": 65536,
+            "maxWriteChunkBytes": 65536,
+            "elapsedMs": 553.6899999976158,
+            "wasmMemoryBytes": 50331648,
+            "peakWasmMemoryBytes": 50331648,
+            "wasmMemories": {},
+            "sharedArrayBufferBytes": 50331652,
+            "activeWorkerCount": 1,
+            "imageWorkingBytes": 0,
+            "mpeg2EncoderSettings": {
+              "width": 640,
+              "height": 360,
+              "frameRateNumerator": 24,
+              "frameRateDenominator": 1,
+              "bitRateBps": 4000000,
+              "qmin": 4,
+              "qmax": 20
+            }
+          },
+          "plan": {
+            "streams": [
+              {
+                "streamIndex": 0,
+                "mediaType": "video",
+                "codec": "HEVC/H.265",
+                "action": "re-encode",
+                "detail": "The first video stream is decoded and encoded as MPEG-2 at 4 Mbps, source dimensions and constant source timing, with automatic quantizer policy. Native checks refuse VFR, full-range input or changing dimensions; 8-bit pixel-format conversion can be lossy. Non-default controls remain qualification-only until their browser gates pass."
+              },
+              {
+                "streamIndex": 1,
+                "mediaType": "audio",
+                "codec": "AAC",
+                "action": "copy",
+                "detail": "This compatible audio stream is packet-copied, not re-encoded. Native MP4 validation remains authoritative; timestamps and priming still require independent output checks. No audio encoding setting is ignored."
+              }
+            ],
+            "blockingReasons": [],
+            "metadataSummary": "Private MPEG-2 route; not public or large-file acceptance. This bounded header preview is not a complete metadata inventory. The native muxer handles compatible tags, languages, chapters and stream side data and warns about nonrepresentable streams. Encoder provenance is relabelled for freshly encoded video. Attachments/artwork have an 8 MiB aggregate guard; text metadata has 4096-entry/2 MiB guards and chapters a 1024-entry guard. Destination-specific preservation still requires independent qualification."
+          }
+        },
+        "cancellation": null,
+        "stageNames": [],
+        "destinationUnchanged": null,
+        "independentOutput": {
+          "bytes": 1002730,
+          "sha256": "11a53d672a155d12630bd0bc9fb39f012db05ce1ed4abebfe178a3b679451886",
+          "codec": "mpeg2video",
+          "frames": 96,
+          "ssim": 0.989061,
+          "fullNativeDecodePassed": true,
+          "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+          "titlePreserved": true,
+          "languagePreserved": true,
+          "videoClocks": {
+            "frames": 96,
+            "maximumVideoPtsErrorSeconds": 0.000021333333333428683
+          }
+        }
+      }
+    ],
+    "completed": false,
+    "nativeDuringEncodingCancellation": false,
+    "destinationRollback": false,
+    "noStagesAfterEachTerminal": false,
+    "publicAcceptance": false
+  },
+  "storageRecoveryQualification": {
+    "completed": false,
+    "faultInjection": true,
+    "actualQuotaExhaustion": false,
+    "actualOsPermissionRevocation": false,
+    "actualConvertButton": false,
+    "nativeOsPickerCovered": false,
+    "publicAcceptance": false
+  },
+  "observer": {
+    "allocationDiagnostics": true,
+    "screenshots": false,
+    "snapshots": false,
+    "sources": true,
+    "boundedVisualCapture": true,
+    "controlScope": "bounded real-state visual evidence, not route promotion"
+  },
+  "diagnosticObserverOnly": false,
+  "boundedVisualObservation": {
+    "scope": "Bounded real-state headless evidence, not full UI/manual or profile qualification",
+    "maximumCaptures": 7,
+    "maximumImageBytes": 4194304,
+    "maximumTotalBytes": 16777216,
+    "attempts": 5,
+    "totalBytes": 765588,
+    "captures": [
+      {
+        "label": "source-ready",
+        "file": "output/playwright/2026-10-24T06-11-09.036Z-catalogue/bounded-visual/01-source-ready.png",
+        "bytes": 182610,
+        "sha256": "d090fba9b746dc22b28336a121c54bf7320d056aeec91f61968d1a78b5614cb4",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-10-24T06:12:06.383Z",
+        "finishedAt": "2026-10-24T06:12:06.493Z",
+        "before": {
+          "jobState": "idle",
+          "phase": "Ready",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": null,
+          "outputBytes": null,
+          "wasmMemoryBytes": null
+        },
+        "after": {
+          "jobState": "idle",
+          "phase": "Ready",
+          "workerStatus": "ready",
+          "selectedProfileId": "mkv-to-mp4-mpeg2",
+          "inputBytes": null,
+          "outputBytes": null,
+          "wasmMemoryBytes": null
+        },
+        "observedNativeState": null,
+        "nativeStateAroundScreenshot": false,
+        "focusedRegion": null,
+        "region": null,
+        "regionInViewport": false,
+        "renderedBefore": null,
+        "renderedAfter": null,
+        "nativeProgressVisuallyInViewport": false
+      },
+      {
+        "label": "case-1-terminal",
+        "file": "output/playwright/2026-10-24T06-11-09.036Z-catalogue/bounded-visual/02-case-1-terminal.png",
+        "bytes": 148679,
+        "sha256": "9b7c815a5fa78d00897f010b22aa4f7e57173171c5aadc85a7d28d3708581f07",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-10-24T06:12:27.032Z",
+        "finishedAt": "2026-10-24T06:12:27.107Z",
+        "before": {
+          "jobState": "error",
+          "phase": "Stopped safely",
+          "workerStatus": "starting",
+          "selectedProfileId": "mkv-to-mp4",
+          "inputBytes": 786823,
+          "outputBytes": 524288,
+          "wasmMemoryBytes": 0
+        },
+        "after": {
+          "jobState": "error",
+          "phase": "Stopped safely",
+          "workerStatus": "starting",
+          "selectedProfileId": "mkv-to-mp4",
+          "inputBytes": 786823,
+          "outputBytes": 524288,
+          "wasmMemoryBytes": 0
+        },
+        "observedNativeState": null,
+        "nativeStateAroundScreenshot": false,
+        "focusedRegion": "progress-panel",
+        "region": {
+          "x": 689,
+          "y": 236.640625,
+          "width": 495.609375,
+          "height": 246.078125
+        },
+        "regionInViewport": true,
+        "renderedBefore": "Stopped safely",
+        "renderedAfter": "Stopped safely",
+        "nativeProgressVisuallyInViewport": false
+      },
+      {
+        "label": "case-2-terminal",
+        "file": "output/playwright/2026-10-24T06-11-09.036Z-catalogue/bounded-visual/03-case-2-terminal.png",
+        "bytes": 142857,
+        "sha256": "11fbf91778fa871496e2ff0eaf43560a8d5b36acf2ba0a0c9043fe2ea04cbbfc",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-10-24T06:12:28.011Z",
+        "finishedAt": "2026-10-24T06:12:28.078Z",
+        "before": {
+          "jobState": "complete",
+          "phase": "Saved",
+          "workerStatus": "starting",
+          "selectedProfileId": "mkv-to-mp4",
+          "inputBytes": 786823,
+          "outputBytes": 1002730,
+          "wasmMemoryBytes": 0
+        },
+        "after": {
+          "jobState": "complete",
+          "phase": "Saved",
+          "workerStatus": "starting",
+          "selectedProfileId": "mkv-to-mp4",
+          "inputBytes": 786823,
+          "outputBytes": 1002730,
+          "wasmMemoryBytes": 0
+        },
+        "observedNativeState": null,
+        "nativeStateAroundScreenshot": false,
+        "focusedRegion": "progress-panel",
+        "region": {
+          "x": 689,
+          "y": 236.640625,
+          "width": 495.609375,
+          "height": 246.078125
+        },
+        "regionInViewport": true,
+        "renderedBefore": "Saved",
+        "renderedAfter": "Saved",
+        "nativeProgressVisuallyInViewport": false
+      },
+      {
+        "label": "case-3-terminal",
+        "file": "output/playwright/2026-10-24T06-11-09.036Z-catalogue/bounded-visual/04-case-3-terminal.png",
+        "bytes": 148588,
+        "sha256": "87e88937146635dcc73196a3e66d34e05fa3cd61f15c585b4bf7673d52f264d8",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-10-24T06:12:29.682Z",
+        "finishedAt": "2026-10-24T06:12:29.749Z",
+        "before": {
+          "jobState": "error",
+          "phase": "Stopped safely",
+          "workerStatus": "starting",
+          "selectedProfileId": "mkv-to-mp4",
+          "inputBytes": 786823,
+          "outputBytes": 524288,
+          "wasmMemoryBytes": 0
+        },
+        "after": {
+          "jobState": "error",
+          "phase": "Stopped safely",
+          "workerStatus": "starting",
+          "selectedProfileId": "mkv-to-mp4",
+          "inputBytes": 786823,
+          "outputBytes": 524288,
+          "wasmMemoryBytes": 0
+        },
+        "observedNativeState": null,
+        "nativeStateAroundScreenshot": false,
+        "focusedRegion": "progress-panel",
+        "region": {
+          "x": 689,
+          "y": 236.640625,
+          "width": 495.609375,
+          "height": 246.078125
+        },
+        "regionInViewport": true,
+        "renderedBefore": "Stopped safely",
+        "renderedAfter": "Stopped safely",
+        "nativeProgressVisuallyInViewport": false
+      },
+      {
+        "label": "case-4-terminal",
+        "file": "output/playwright/2026-10-24T06-11-09.036Z-catalogue/bounded-visual/05-case-4-terminal.png",
+        "bytes": 142854,
+        "sha256": "48390ae7fa6a7fb3a1c837f796b1a00512b29633c16bb6cc5a636d16b27ffb9a",
+        "viewport": {
+          "width": 1280,
+          "height": 720
+        },
+        "startedAt": "2026-10-24T06:12:30.580Z",
+        "finishedAt": "2026-10-24T06:12:30.671Z",
+        "before": {
+          "jobState": "complete",
+          "phase": "Saved",
+          "workerStatus": "starting",
+          "selectedProfileId": "mkv-to-mp4",
+          "inputBytes": 786823,
+          "outputBytes": 1002730,
+          "wasmMemoryBytes": 0
+        },
+        "after": {
+          "jobState": "complete",
+          "phase": "Saved",
+          "workerStatus": "starting",
+          "selectedProfileId": "mkv-to-mp4",
+          "inputBytes": 786823,
+          "outputBytes": 1002730,
+          "wasmMemoryBytes": 0
+        },
+        "observedNativeState": null,
+        "nativeStateAroundScreenshot": false,
+        "focusedRegion": "progress-panel",
+        "region": {
+          "x": 689,
+          "y": 236.640625,
+          "width": 495.609375,
+          "height": 246.078125
+        },
+        "regionInViewport": true,
+        "renderedBefore": "Saved",
+        "renderedAfter": "Saved",
+        "nativeProgressVisuallyInViewport": false
+      }
+    ],
+    "unavailable": [
+      {
+        "label": "case-1-native",
+        "reason": "job-ended-before-capture",
+        "nativeWorkObserved": false
+      },
+      {
+        "label": "case-3-native",
+        "reason": "job-ended-before-capture",
+        "nativeWorkObserved": false
+      }
+    ],
+    "maximumConcurrentCaptures": 1,
+    "queuesRetained": 0,
+    "domHandlesRetained": 0,
+    "continuousScreenshots": false,
+    "continuousDomSnapshots": false,
+    "noForcedGcOrConversionDelays": true,
+    "publicAcceptance": false
+  },
+  "boundedVisibleProgressVerified": false,
+  "postMeasurementAllocationArchive": null,
+  "postMeasurementAllocationScope": null,
+  "completedCases": [
+    {
+      "name": "recover-after-quota-failure",
+      "actualNativeSettings": {
+        "width": 640,
+        "height": 360,
+        "frameRateNumerator": 24,
+        "frameRateDenominator": 1,
+        "bitRateBps": 4000000,
+        "qmin": 4,
+        "qmax": 20
+      },
+      "output": {
+        "bytes": 1002730,
+        "sha256": "11a53d672a155d12630bd0bc9fb39f012db05ce1ed4abebfe178a3b679451886",
+        "codec": "mpeg2video",
+        "frames": 96,
+        "ssim": 0.989061,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+        "titlePreserved": true,
+        "languagePreserved": true,
+        "videoClocks": {
+          "frames": 96,
+          "maximumVideoPtsErrorSeconds": 0.000021333333333428683
+        }
+      }
+    },
+    {
+      "name": "recover-after-permission-failure",
+      "actualNativeSettings": {
+        "width": 640,
+        "height": 360,
+        "frameRateNumerator": 24,
+        "frameRateDenominator": 1,
+        "bitRateBps": 4000000,
+        "qmin": 4,
+        "qmax": 20
+      },
+      "output": {
+        "bytes": 1002730,
+        "sha256": "11a53d672a155d12630bd0bc9fb39f012db05ce1ed4abebfe178a3b679451886",
+        "codec": "mpeg2video",
+        "frames": 96,
+        "ssim": 0.989061,
+        "fullNativeDecodePassed": true,
+        "copiedAudioPacketHash": "0,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14",
+        "titlePreserved": true,
+        "languagePreserved": true,
+        "videoClocks": {
+          "frames": 96,
+          "maximumVideoPtsErrorSeconds": 0.000021333333333428683
+        }
+      }
+    }
+  ],
+  "completed": false,
+  "overallGatePassed": false,
+  "lastTerminal": {
+    "type": "complete",
+    "message": null,
+    "metrics": {
+      "inputBytes": 786823,
+      "outputBytes": 1002730,
+      "queuedBytes": 0,
+      "peakQueuedBytes": 524288,
+      "pendingOperations": 0,
+      "peakPendingOperations": 1,
+      "maxReadChunkBytes": 65536,
+      "maxWriteChunkBytes": 524288,
+      "elapsedMs": 626.830156236887,
+      "wasmMemoryBytes": 0,
+      "peakWasmMemoryBytes": 50331648,
+      "wasmMemories": {},
+      "sharedArrayBufferBytes": 4,
+      "activeWorkerCount": 1,
+      "imageWorkingBytes": 0,
+      "mpeg2EncoderSettings": {
+        "width": 640,
+        "height": 360,
+        "frameRateNumerator": 24,
+        "frameRateDenominator": 1,
+        "bitRateBps": 4000000,
+        "qmin": 4,
+        "qmax": 20
+      },
+      "scratchBytes": 0,
+      "peakScratchBytes": 1002730,
+      "maxScratchReadChunkBytes": 524288,
+      "maxScratchWriteChunkBytes": 524288
+    }
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: Actual active native progress was not visibly verified\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-mpeg2-production-runtime.mjs:475:12"
+  ],
+  "memory": null,
+  "protectedOriginalUnchangedAtExecution": true,
+  "cleanup": {
+    "processObservations": [
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 5464,
+          "parentPid": 8232,
+          "createdAt": "2026-10-24T06:11:42.8707480Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-24T06:12:33.000Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 412,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 18220,
+          "parentPid": 8232,
+          "createdAt": "2026-10-24T06:11:45.4379550Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-24T06:12:33.404Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 404,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      },
+      {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 37984,
+          "parentPid": 8232,
+          "createdAt": "2026-10-24T06:11:46.6066500Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-24T06:12:33.838Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 434,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    ],
+    "disposableOutputDeleted": true,
+    "generatedDirectoriesRemoved": [
+      "dist\\client\\engines\\mpeg2"
+    ],
+    "scratchRemoved": "work\\mpeg2-production-runtime-DBCb0U",
+    "allOwnedProcessesAbsent": true
+  },
+  "independentlyRecomputedObservedMemory": {
+    "scope": "Recomputed from retained observations only; does not change failed run status or prove missing post-completion coverage",
+    "records": 412,
+    "validRecords": 412,
+    "unavailableRecords": 0,
+    "unavailableConversionRecords": 0,
+    "blankPrivateBytes": 237445120,
+    "peakPrivateBytes": 477065216,
+    "peakPhase": "conversion",
+    "incrementalPrivateMiB": 228.51953125,
+    "originalRunAccepted": false
+  },
+  "independentCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 5464,
+        "parentPid": 8232,
+        "createdAt": "2026-10-24T06:11:42.8707480Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T06:14:01.831Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 421,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 18220,
+        "parentPid": 8232,
+        "createdAt": "2026-10-24T06:11:45.4379550Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T06:14:02.246Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 413,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 37984,
+        "parentPid": 8232,
+        "createdAt": "2026-10-24T06:11:46.6066500Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-24T06:14:02.709Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 463,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "publicAcceptance": false,
+  "speedComparison": false,
+  "rawLosslesslyRecoverable": true
+}

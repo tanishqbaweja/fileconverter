@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-24 actual storage recovery at ac99383: injected quota/permission errors
+after512KiB real final write both rollback existing destination, delete stage and
+retire saver. Both retry outputs independently match canonical11a53d67...,
+1,002,730B/96frames, SSIM.989061/<1ms clocks/exactAAC/title/language. Original full
+SHA and independent owned cleanup PASS. Whole run remains FAILED visual guard:
+file reset changed visible selector, no active screenshot.412valid raw samples
+recompute228.51953125MiB but primary report was not finalized; no relabelled pass.
+2,967,080B raw exactly archived62,536B, redundant raw removed. Receipt:
+`evidence/2026-10-24T06-11-09.036Z-mpeg2-storage-recovery-result.json`.
+Correction avoids redundant input reset and moves visual assertion after primary
+memory/privacy/source persistence. Do not replay four functional cases just to
+obtain a screenshot; next actual missing batch/reload gate. No physical quota/OS
+permission/native-picker/public or multi-gigabyte acceptance claim.
+
 2026-10-24 storage-failure gate added (not yet actual-browser verified): finite
 quota/retry/permission/retry through existing production coordinator/AVIO/staged
 save. Actual native reads/writes and one final512KiB write required before each

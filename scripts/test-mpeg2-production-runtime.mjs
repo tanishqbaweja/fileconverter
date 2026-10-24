@@ -290,7 +290,7 @@ try {
   for (let repetition = 1; repetition <= repetitions; repetition++) {
   const testCase = cases[repetition - 1];
   if (monitorFailure) throw monitorFailure;
-  if ((recovery && repetition <= 2) || (planning && repetition === 2)) {
+  if ((recovery && !storageRecovery && repetition <= 2) || (planning && repetition === 2)) {
     await page.locator('input[type="file"]').first().setInputFiles(testCase.preflightRejection ? rejectedFixture : testCase.cancelDuringEncoding ? cancellationFixture : fixture);
     await page.waitForFunction(() => document.querySelector('[data-testid="media-inspection-status"]')?.textContent.includes("These stream facts came from bounded local header reads"));
   }
@@ -472,7 +472,6 @@ try {
     } }
   if (visualObserver) {
     report.boundedVisualObservation = visualObserver.summary();
-    assert.ok(report.boundedVisualObservation.captures.some(capture => capture.nativeProgressVisuallyInViewport), "Actual active native progress was not visibly verified");
   }
   assert.deepEqual(staticRequests, { manifests: planning ? 1 : repetitions, decoder: 1, encoder: 1 });
   if (planning) Object.assign(report.planningQualification, { completed: true, rejectedBeforeDestinationOrCode: true });
@@ -497,6 +496,9 @@ try {
   assertInstalledChromePinsEqual(browserPin, await inspectInstalledChromePin());
   for (const [file, hash] of Object.entries(report.sources)) assert.equal(sha(await readFile(path.join(root, file))), hash, "Executed source changed: " + file);
   report.executedSourcesAndBrowserPinsVerified = true;
+  // Persist all memory/privacy/source evidence before a visual-only assertion.
+  // A late observation failure must not erase the primary measurements.
+  if (visualObserver) assert.ok(report.boundedVisualObservation.captures.some(capture => capture.nativeProgressVisuallyInViewport), "Actual active native progress was not visibly verified");
   if (flags.has("--post-measurement-allocators")) {
     // The primary native observer is already stopped and its baseline/peak are
     // immutable. This bounded, perturbing dump is ONLY retained-allocation
