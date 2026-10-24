@@ -62,3 +62,32 @@ test("repaired native controls produce two real validated files but retain the w
   assert.equal(actual.correctedCopies, 1000); assert.equal(actual.maximumCorrectedSideData, 1); assert.equal(actual.mediaConversions, 0);
   assert.equal(receipt.scaledPropertiesBuild.buildSourceCount, 142); assert.equal(receipt.scaledPropertiesBuild.encoderUnchanged, true);
 });
+test("events-only diagnostic preserves the full-capture failure and does not pretend to be an identical-input speed A/B", async () => {
+  const comparison = JSON.parse(await readFile(new URL("evidence/2026-10-24-mpeg2-controls-observer-comparison.json", root)));
+  const receipts = [], raw = [];
+  for (const variant of [comparison.fullCapture, comparison.eventsOnly]) {
+    const receipt = JSON.parse(await readFile(new URL(variant.receipt, root))), archive = await readFile(new URL(receipt.archive.path, root));
+    assert.equal(sha(archive), receipt.archive.sha256);
+    const bytes = gunzipSync(archive, { maxOutputLength: 4 * 1048576 }); assert.equal(sha(bytes), receipt.archive.restoredSha256);
+    const r = JSON.parse(bytes); receipts.push(receipt); raw.push(r);
+    assert.equal(receipt.memory.incrementalPrivateMiB, variant.incrementalPrivateMiB); assert.equal(r.status, variant.status);
+    assert.equal(r.observer.screenshots, variant.screenshots); assert.equal(r.observer.snapshots, variant.snapshots);
+    assert.equal(r.diagnosticMemorySamples.length, variant.samples); assert.equal(r.memory.unavailableSamples.length, 0);
+    for (const s of r.diagnosticMemorySamples) assert.equal(s.privateBytes, s.processes.reduce((n, p) => n + p.privateBytes, 0));
+    assert.equal(r.protectedOriginalUnchanged, true); assert.equal(r.cleanup.allOwnedProcessesAbsent, true);
+  }
+  assert.deepEqual(raw[0].sources, raw[1].sources); assert.deepEqual(raw[0].native, raw[1].native); assert.deepEqual(raw[0].browser, raw[1].browser);
+  const cases = raw.map(r => r.controlsQualification.cases);
+  assert.deepEqual(cases[0].map(c => c.output.sha256), cases[1].map(c => c.output.sha256));
+  assert.deepEqual(cases[0].map(c => c.actualNativeSettings), cases[1].map(c => c.actualNativeSettings));
+  assert.deepEqual(raw.map(r => r.fixture.sha256), comparison.inputFileHashes); assert.notEqual(...comparison.inputFileHashes);
+  assert.equal(comparison.identicalInputFileBytes, false); assert.equal(comparison.globalSpeedClaim, false);
+  assert.equal(comparison.fullCaptureMemoryFailureStillOpen, true); assert.equal(comparison.publicAcceptance, false);
+  assert.equal(receipts[1].diagnosticObserverOnly, true); assert.equal(receipts[1].overallGatePassed, true); assert.equal(receipts[1].publicAcceptance, false);
+  const allocation = receipts[1].postMeasurementAllocationArchive, packed = await readFile(new URL(allocation.path, root));
+  assert.equal(sha(packed), allocation.sha256); assert.equal(packed.length, allocation.bytes);
+  const restored = gunzipSync(packed, { maxOutputLength: 8 * 1048576 }); assert.equal(sha(restored), allocation.restoredSha256);
+  assert.equal(restored.length, allocation.restoredBytes);
+  assert.equal(receipts[1].postMeasurementAllocationScope.acceptanceMetric, false);
+  assert.equal(receipts[1].postMeasurementAllocationScope.allocationStackAttribution, false);
+});

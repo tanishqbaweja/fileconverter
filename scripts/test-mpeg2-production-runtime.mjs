@@ -26,6 +26,7 @@ import { boundedNativeLines } from "./lib/bounded-native-lines.mjs";
 import { runMpeg2UiJob } from "./lib/mpeg2-ui-job.mjs";
 import { mpeg2ControlReference, sourceMpeg2ControlClock, expectedMpeg2ControlClocks } from "./lib/mpeg2-control-reference.mjs";
 import { loadMpeg2RuntimeNative } from "./lib/mpeg2-runtime-native-selection.mjs";
+import { mpeg2ControlFixtureArguments } from "./lib/mpeg2-control-fixture.mjs";
 import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
 
 const root = path.resolve(import.meta.dirname, ".."), exec = promisify(execFile);
@@ -113,7 +114,7 @@ try {
   const fixture = path.join(work, "source.mkv"); output = path.join(work, "output.mp4");
   const fixtureSeconds = ui ? 12 : 4;
   const fixtureWidth = controls ? 640 : 320, fixtureHeight = controls ? 360 : 240;
-  await native(["-v", "error", "-f", "lavfi", "-i", `testsrc2=size=${fixtureWidth}x${fixtureHeight}:rate=24:duration=${fixtureSeconds}`,
+  await native(controls ? mpeg2ControlFixtureArguments(fixture) : ["-v", "error", "-f", "lavfi", "-i", `testsrc2=size=${fixtureWidth}x${fixtureHeight}:rate=24:duration=${fixtureSeconds}`,
     "-f", "lavfi", "-i", `sine=frequency=997:sample_rate=48000:duration=${fixtureSeconds}`, "-map", "0:v", "-map", "1:a",
     "-c:v", "libx265", "-preset", "ultrafast", "-crf", "18", "-threads:v", "1", "-x265-params",
     "pools=none:frame-threads=1:wpp=0:bframes=2:keyint=48:scenecut=0:log-level=error", "-c:a", "aac", "-b:a", "128k",
@@ -163,6 +164,7 @@ try {
     "lib/browser-capabilities.ts", "scripts/lib/mpeg2-ui-job.mjs",
     "scripts/lib/mpeg2-control-reference.mjs",
     "scripts/lib/mpeg2-runtime-native-selection.mjs",
+    "scripts/lib/mpeg2-control-fixture.mjs",
     "scripts/lib/bounded-validation-chunk.mjs", "scripts/lib/streaming-video-clock-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs",
     "scripts/test-mpeg2-production-runtime.mjs", "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs",
     "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",

@@ -78,6 +78,13 @@ acceptance contract. Private engines are not public supported profiles.
    correctness is repaired; memory/UI-controls/public qualification remains open.
    Diagnose the captured renderer/GPU growth with one bounded observer control;
    do not rebuild native unchanged or repeat the same acceptance run blindly.
+   The one events-only control completed at231.9921875MiB with identical valid
+   outputs; it is diagnostic-only and does not close274MiB/full qualification.
+   Same recipe but differing input-file hashes prevented strict paired claims;
+   shared bitexact source generation is now actually byte/packet verified for
+   future runs. Implement bounded visual observation while keeping all UI,
+   fidelity/privacy/native-process checks, then qualify the changed integration.
+   Do not alternate unchanged observer flags or rebuild the same native core.
 
 Exit evidence: B03/B04/B06 applicable original gates and public promotion
 checklist all satisfied. The 36 small VPX conversions and six MPEG-2 full-original

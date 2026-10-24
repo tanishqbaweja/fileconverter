@@ -1,5 +1,30 @@
 # Tested conversion ledger
 
+2026-10-24 one finite events-only observer diagnosis at50c2954: same app/harness,
+native and installed-browser pins, requested settings and byte-identical valid
+output pair; whole-tree231.9921875MiB/406samples/0unavailable. Canonical full
+capture274.25390625MiB failure remains OPEN, no public/UI-control/scale acceptance.
+Comparison is consistent with observer overhead, NOT causal/statistical savings
+or a speed A/B: input recipes match but file hashes differ (explicitly recorded).
+Post-measurement light allocation dump after primary observer stopped is marked
+perturbing/non-acceptance/no allocation stacks; overlapping allocator counters
+are NOT summed. Source/native hashes, original full SHA and independent owned
+process/media/profile/stage absence verified.1,878,882B raw retained64,159B exact
+gzip;70,822B allocation archive readback/SHA verified, redundant raw only removed.
+`evidence/2026-10-24-mpeg2-controls-observer-comparison.json` and
+`evidence/2026-10-24T01-46-01.689Z-mpeg2-controls-result.json`.
+No more unchanged observer flips/native rebuilds. Next observation design must
+retain UI/content/privacy checks and complete-tree250MiB, with bounded visual
+capture instead of treating a diagnostic pass as promotion.
+
+Fixture determinism corrected for FUTURE controls runs: shared generator adds
+bitexact mux metadata, same HEVC/AAC640x360/24fps/96frames/CRF18/metadata recipe.
+Two actual native synthetic generations match786823B/SHAe70b76ca... and both
+video/AAC packet hashes; all streams/frames/title/language independently probed,
+owned sources immediately deleted. No native user-media/browser conversion and
+no browser rerun for this generator-only correction. Historical runs unchanged.
+`evidence/2026-10-24T01-55-26.270Z-mpeg2-control-fixture-determinism.json`.
+
 2026-10-24 actual repaired-core controls gate7e614dc: both real browser outputs
 independently VALID, but whole-tree memory FAILED274.25390625MiB (limit250).
 Default1002738B/96frames/SHA5bb6592e... remains byte-identical to e65c020;

@@ -60,11 +60,26 @@ else {
 const compressed = gzipSync(raw, { level: 9 });
 await writeFile(archivePath, compressed, { flag: "wx" });
 assert.deepEqual(gunzipSync(await readFile(archivePath), { maxOutputLength: 4 * 1048576 }), raw);
+const allocation = report.postMeasurementAllocators;
+let allocationArchive = null;
+if (allocation?.archive) {
+  const target = path.resolve(root, allocation.archive.path);
+  assert.ok(target.startsWith(path.join(root, "output/playwright") + path.sep));
+  const packed = await readFile(target); assert.equal(packed.length, allocation.archive.bytes); assert.equal(sha(packed), allocation.archive.sha256);
+  const restored = gunzipSync(packed, { maxOutputLength: 8 * 1048576 });
+  assert.equal(restored.length, allocation.archive.restoredBytes); assert.equal(sha(restored), allocation.archive.restoredSha256);
+  assert.equal(allocation.acceptanceMetric, false); assert.equal(allocation.perturbsMemory, true);
+  allocationArchive = { ...allocation.archive, path: path.relative(root, target).replaceAll(path.sep, "/"), recordedAbsolutePath: allocation.archive.path };
+}
 const receipt = { schemaVersion: 1, head, status: report.status, startedAt: report.startedAt, finishedAt: report.finishedAt,
   scope: "Finite real production MPEG-2 controls gate, including failures; not UI-control, scale or public acceptance",
   archive: { path: relative + ".gz", bytes: compressed.length, sha256: sha(compressed), restoredBytes: raw.length, restoredSha256: sha(raw) },
   sourcePins: sourceEntries.length, recordedSourcesMatchHistoricalGitHead: true, native: report.native,
   scaledPropertiesBuild: report.scaledPropertiesBuild ?? null, fixture: report.fixture,
+  observer: report.observer, diagnosticObserverOnly: report.observer.controlScope === "events-only observer comparison, not route promotion",
+  postMeasurementAllocationArchive: allocationArchive,
+  postMeasurementAllocationScope: allocation ? { status: allocation.status, acceptanceMetric: allocation.acceptanceMetric,
+    perturbsMemory: allocation.perturbsMemory, allocationStackAttribution: allocation.allocationStackAttribution } : null,
   completedCases: completed.map(entry => ({ name: entry.name, requested: entry.requested, reference: entry.reference,
     actualNativeSettings: entry.actualNativeSettings, output: entry.output })),
   completed: report.controlsQualification.completed, overallGatePassed: report.status !== "failed", lastTerminal: { type: report.conversion?.type,

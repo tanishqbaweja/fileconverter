@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-10-24 finite observer-control diagnosis completed: events-only231.9921875MiB,
+same app/harness/native/browser pins and validated output hashes,406samples/0null.
+Full-capture274.25390625MiB failure is NOT closed by this diagnostic. One variant
+per clean instance and differing input-file hashes prevent a strict causal/speed
+A/B claim. Post-observer allocator dump is explicitly perturbing/non-acceptance,
+not peak stacks; counter overlaps are not summed. All owned cleanup/original
+full SHA independently verified. Lossless raw64,159B+allocation70,822B retained;
+only redundant1.88MB raw removed. Comparison and all scope caveats:
+`evidence/2026-10-24-mpeg2-controls-observer-comparison.json`.
+Future control fixture generator now byte-reproducible: two actual synthetic
+640x360/96frame HEVC/AAC sources match bytes and packet hashes, metadata/frames
+probed and both immediately deleted. Shared bitexact generation wired into the
+existing production driver; old results not relabelled, no browser rerun yet.
+Next bounded visual-observer implementation must retain all UI/content/privacy
+checks and exact whole-tree250MiB accounting; do not repeat unchanged flag flips
+or promote from diagnostic-only232MiB. Private controls/full54/scale remain open.
+
 2026-10-24 resized-property repair is actual-browser correctness VERIFIED, not
 memory/public qualification: default1002738B/96frames identical SHA5bb6592e...;
 requested320x180/15fps/1Mbps/higher333527B/60frames/SSIM.995891/full decode/all

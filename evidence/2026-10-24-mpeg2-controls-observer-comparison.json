@@ -1,0 +1,48 @@
+{
+  "scope": "One finite observer comparison, not a speed benchmark, statistical causal attribution, profile promotion or large-file qualification",
+  "fullCapture": {
+    "receipt": "evidence/2026-10-24T01-38-25.488Z-mpeg2-controls-result.json",
+    "incrementalPrivateMiB": 274.25390625,
+    "status": "failed",
+    "screenshots": true,
+    "snapshots": true,
+    "samples": 410,
+    "unavailable": 0
+  },
+  "eventsOnly": {
+    "receipt": "evidence/2026-10-24T01-46-01.689Z-mpeg2-controls-result.json",
+    "incrementalPrivateMiB": 231.9921875,
+    "status": "passed-small-allocation-diagnostic-not-route-promotion",
+    "screenshots": false,
+    "snapshots": false,
+    "samples": 406,
+    "unavailable": 0
+  },
+  "sameAppAndHarnessSourcePins": true,
+  "sameNativeAssetPins": true,
+  "sameBrowserPins": true,
+  "sameRequestedSettings": true,
+  "sameValidatedOutputHashes": true,
+  "sameInputRecipeAndDimensions": true,
+  "identicalInputFileBytes": false,
+  "inputFileHashes": [
+    "39d6c9ba91aabb2c0dcede79a35f026685addfcfd8c558f81f3a15ee8b517446",
+    "b13a75d9929eb2a3e6a34475fae3fe00c04a9332fc0a27c89367b9fa9cd5d2ef"
+  ],
+  "interpretation": "Consistent with observer overhead, not proof of exact causal savings: one run per variant in different clean browser instances, and generated fixture file hashes differ. Both independently validated output pairs are byte-identical. No app/native optimization was applied in this comparison.",
+  "postMeasurementAllocationCapture": {
+    "scope": "Light dump only after primary native observer stopped; perturbing diagnosis, not peak allocation stacks or acceptance bytes",
+    "acceptanceMetric": false,
+    "allocationStackAttribution": false
+  },
+  "primaryLimitMiB": 250,
+  "primaryFormulaChanged": false,
+  "processesExcluded": false,
+  "baselineRaised": false,
+  "browserFlagsChanged": false,
+  "fullCaptureMemoryFailureStillOpen": true,
+  "globalSpeedClaim": false,
+  "publicAcceptance": false,
+  "largeFileAcceptance": false,
+  "fullGoalComplete": false
+}

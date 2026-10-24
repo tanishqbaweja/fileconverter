@@ -1,0 +1,37 @@
+{
+  "startedAt": "2026-10-24T01:55:26.270Z",
+  "scope": "Native synthetic source generation only; not user-media/browser conversion or performance acceptance",
+  "generatedFixtures": [
+    {
+      "bytes": 786823,
+      "sha256": "e70b76ca98594c4626024a68ad7886e3a9751e4fa1c9e124b616a7ff67e6b740",
+      "streams": [
+        "hevc",
+        "aac"
+      ],
+      "width": 640,
+      "height": 360,
+      "frames": 96,
+      "packets": "0,v,SHA256=49c6a6fc3979eef7bf528506fdd0bee0c5b719d4f8165e8903e08cf9aee07129\n1,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14"
+    },
+    {
+      "bytes": 786823,
+      "sha256": "e70b76ca98594c4626024a68ad7886e3a9751e4fa1c9e124b616a7ff67e6b740",
+      "streams": [
+        "hevc",
+        "aac"
+      ],
+      "width": 640,
+      "height": 360,
+      "frames": 96,
+      "packets": "0,v,SHA256=49c6a6fc3979eef7bf528506fdd0bee0c5b719d4f8165e8903e08cf9aee07129\n1,a,SHA256=dcb30df9c3d558061d428b84c2846f7b5891cf7a908a1d4e3681fe8071e1bd14"
+    }
+  ],
+  "browserConversions": 0,
+  "originalRead": false,
+  "publicAcceptance": false,
+  "generatorSha256": "64bc5bec31e9e4c0cb77504345498fbabb6443294ea06cab82b27ad9be6fc3b9",
+  "nativeVersion": "ffmpeg version N-122712-g7e3781e3ca-20260211 Copyright (c) 2000-2026 the FFmpeg developers",
+  "status": "passed-byte-identical-generated-fixtures",
+  "scratchRemoved": true
+}
