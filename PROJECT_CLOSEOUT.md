@@ -6,6 +6,11 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-24
 
+V3 compile now actual live40106367463/b450fd9, started15:18:26Z; expected next
+observation~15:27Z. Observe same handle, then collect/audit50source15artifact pins
+and --flac-order-repair four affected cases.37focused/native/lint/TypeScript
+PASS; actual compiled/browser order repair not claimed. No unchanged Ogg replay.
+
 Latest five NEW repeated cases15-05-16.297Z: both values retained in all, ordered
 Ogg/Opus pairs preserved, but2FLAC pairs reversed/FAILED; same automatic quality
 failure persists. Small198.9765625MiB/413valid/0missing/cleanup+original PASS.

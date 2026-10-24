@@ -1,5 +1,10 @@
 # Tested conversion ledger
 
+V3 actual build40106367463/b450fd9 confirmed live15:19:02Z, started15:18:26Z;
+expected next check~15:27Z. Source8849c12 pushed,37focused/native/lint/TypeScript
+PASS. Actual compile/browser FLAC ordering repair still UNVERIFIED; same fixed
+limits, no Docker/Chrome setting/public default change. Next four FLAC-only cases.
+
 Five NEW repeated routes15-05-16.297Z:2complete PASS; Opus-to-Ogg ordered values
 preserved but known quality FAIL;2FLAC exact audio/both values preserved but
 ORDER REVERSED/FAILED. Whole small lifecycle198.9765625MiB/413valid/0missing;

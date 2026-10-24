@@ -1,5 +1,13 @@
 # Remaining work audit
 
+V3 source now pushed8849c12; isolated build40106367463/b450fd9 confirmed live
+15:19:02Z (started15:18:26Z), no Docker. Expected observation~15:27Z using
+prior476-497s actual builds, not frequent polling. Next observe/collect THIS
+handle, audit50source/15artifact pins/6wrapper+1parser edits and unchanged heap,
+then run --flac-order-repair ONLY four affected cases. Do not redispatch on
+timeout or replay closed Ogg/Opus/canonical/higher gates. Actual repair remains
+unverified until compiled artifact and real browser results; full goal OPEN.
+
 Latest five NEW cases15-05-16.297Z completed: FLAC-to-Opus/Ogg-to-Opus repeated
 cases PASS; Opus-to-Ogg retains correct ordered pair but known automatic quality
 still FAILS. Both FLAC destinations retain BOTH values and exact PCM but reverse
