@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-25 actual02-54-12.283Z artwork+extended metadata browser gate PASS4/4:
+Ogg/Opus inputs, PNG/JPEG covers, FLAC outputs;25tags/two correctly ordered
+Unicode values/96,000 exact PCM samples. Complete source/output cover packet
+SHA/size/attached disposition/64x64 geometry/independent image decode PASS.
+Small-lifecycle whole-tree184.71484375MiB,471valid/0missing, native lossless
+journal retained. Disk/privacy/original SHA/owned process and media cleanup/
+staged asset restoration PASS. Source23pins and existing50source/15artifact
+V3 audited; unchanged32/96MiB native heap. Raw153,113B retained20,779B gzip,
+four headless screenshots (last reviewed); not headed or OS-dialog evidence.
+Only this small combined gate CLOSED; full B05/artwork/budgets/recovery/stress/
+public promotion/full54 still OPEN. No changed Chrome/default/quality threshold.
+46focused regression tests/ESLint/TypeScript/diff checks PASS; retained proof
+test recomputes full-tree formula from all471 lossless per-process samples,
+verifies raw/archive/screenshot hashes and source/output image equality.
+
 2026-10-25 new artwork/25-field/ordered-duplicate gate source:30focused unit
 tests PASS, focused ESLint/diff checks PASS. Four Ogg/Opus-to-FLAC PNG/JPEG
 cases added without replay of closed text-only gates. Exact cover packet SHA/

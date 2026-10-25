@@ -1,5 +1,24 @@
 # Remaining work audit
 
+2026-10-25 actual combined artwork run02-54-12.283Z PASS4/4: Ogg/Opus-to-FLAC
+with both PNG and JPEG, all25tags, two Unicode values in original order and
+all96,000 sample-exact PCM samples. Independent source/output complete cover
+packet hashes/lengths/disposition/64x64 geometry and real image decode PASS.
+Full-tree small lifecycle184.71484375MiB,471valid/0missing; exact lossless journal,
+disk-backed OPFS/privacy/protected original/all recorded owned births gone/
+disposable media removed/staged assets restored PASS. Raw153,113B retained as
+20,779B gzip; headless terminal screenshot reviewed. This closes ONLY these
+four small combined cases; DO NOT replay unchanged. Not full B05/artwork-budget/
+recovery/stress/promotion or full54 acceptance. Automatic Vorbis quality remains
+failed; representable artwork on other destinations, metadata aliases/budgets
+and recovery/stress remain OPEN. Next inspect those concrete gaps and extend
+coverage/implementation without rebuilding unchanged V3 or altering Chrome.
+Receipt: evidence/2026-10-25T02-54-12.283Z-audio-metadata-fidelity-result.json.
+46focused regression tests, focused ESLint, TypeScript --noEmit and diff checks
+PASS. Retained-evidence regression independently restores/hashes raw report,
+checks all471 sequential native samples and their full per-process sums, and
+recomputes the unchanged baseline-to-peak formula. Owned scratch absence checked.
+
 2026-10-25 next B05 gate implemented, browser result still UNVERIFIED: explicit
 --artwork-metadata selects four NEW Ogg/Opus-to-FLAC combinations with PNG/JPEG,
 all25 fields and two ordered repeated Unicode values. Small input-only picture

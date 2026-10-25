@@ -6,6 +6,20 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Actual combined artwork02-54-12.283Z PASS4/4, not pending: PNG/JPEG covers in
+Ogg/Opus-to-FLAC,25fields/two ordered Unicode values/96,000 exact audio samples.
+Independent complete cover hashes/lengths/disposition/dimensions/decode PASS.
+Small full-tree184.71484375MiB/471valid/0missing; disk/privacy/original/owned
+media+process cleanup/stage restore PASS. Compact20,779B report and lossless
+journal retained; headless screenshot reviewed. Close this four-case gate only;
+no unchanged replay. Next B05 representable destination artwork, aliases,
+metadata/artwork budgets and recovery/stress; existing automatic quality and
+all full54/release gates OPEN. No new native build or runtime exception needed
+for the just-completed cases. Receipt in evidence/2026-10-25T02-54-12.283Z-*
+46focused/lint/TypeScript/diff checks PASS; retained evidence test independently
+recomputes native process totals/baseline-to-peak and authenticates raw journal,
+cover equality and screenshot hashes. Owned scratch absence independently checked.
+
 New explicit --artwork-metadata gate is ready for four PNG/JPEG +25 tags +two
 ordered-value Ogg/Opus-to-FLAC production cases.30focused/lint/diff checks PASS;
 actual combined artwork browser result still UNVERIFIED. Uses existing V3,
