@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "predeclaredAt": "2026-10-25T09:40:21Z",
+  "status": "prepared-not-started",
+  "scope": "matched private production-browser max-cover serializer experiment, not long-file/scaling/public acceptance",
+  "order": "A/B/B/A",
+  "qualificationFlag": "--artwork-benchmark-physical-validation",
+  "warmupJobsPerRun": 1,
+  "measuredJobsPerRun": 6,
+  "allJobsCountForCorrectnessMemoryPrivacyCleanup": true,
+  "inputSha256": "301d7332823f17f346eea802409d6459199056b59a2d8d17ba8bef6c40f1f919",
+  "outputControlSha256": "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3",
+  "primaryLimitMiB": 250,
+  "comparisonRequiresZeroUnavailableSamplesPerRun": true,
+  "noRerunToSelectFasterOrPassingResults": true,
+  "stopOnFailedQualification": true,
+  "baseline": {
+    "directory": "work/audio-ogg-artwork-40156938341",
+    "manifestSha256": "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c",
+    "sourceEdits": 10
+  },
+  "candidate": {
+    "directory": "work/audio-ogg-artwork-lower-copy-40161703799",
+    "manifestSha256": "6457c3499800db5d8275d08ead789637546c68e8d75fc4ccf21b893eeba57609",
+    "sourceEdits": 14
+  },
+  "runs": [
+    { "position": 0, "engine": "baseline", "status": "not-started" },
+    { "position": 1, "engine": "candidate", "status": "not-started" },
+    { "position": 2, "engine": "candidate", "status": "not-started" },
+    { "position": 3, "engine": "baseline", "status": "not-started" }
+  ],
+  "priorOldValidationFailuresRemainFailed": true,
+  "publicAcceptance": false,
+  "longFileSpeedVerified": false,
+  "fastestClaim": false
+}

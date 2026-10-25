@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-25 new corrected-backend performance bracket predeclared09:40:21Z
+in evidence/audio-artwork-serializer-bracket-2026-10-25-v1.json: A/B/B/A,
+four fresh default headless Chrome contexts, each one warmup+six timed jobs.
+Baseline10/candidate14 immutable artifacts re-audited; same source/input/UI/
+settings/full validators/entire tree250MiB and zero-missing comparison gate.
+Stop on failed qualification; no selective retries. This is a changed validator
+protocol justified by measured output-copy pressure, NOT unchanged baseline
+replay. Actual bracket unverified.222d1b1 CI40181182302 SUCCESS.
+
 2026-10-25 lower-copy14 engine IO09-29-03.243Z PASS3/3 under repaired
 observer: real UI cancel after positive native IO, existing localhost error
 AFTER real47B header write, then exact-control4MiB cover conversion in SAME

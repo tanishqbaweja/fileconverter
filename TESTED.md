@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-25 A/B/B/A max-cover serializer benchmark predeclared09:40:21Z,
+actual four runs UNVERIFIED. Corrected physical-OPFS validation and birth-aware
+observer, one warmup/six measured jobs each, unchanged quality/memory/privacy/
+cleanup. No cherry-pick retries; existing failures remain failed. Baseline10
+56source/15artifact and candidate14 62source/15artifact re-audit PASS.
+222d1b1 portable CI40181182302 SUCCESS.
+
 2026-10-25 lower-copy14 IO09-29-03.243Z PASS3/3: real midstream UI cancel,
 47B real write then injected error, same-page exact4MiB-artwork recovery.
 Primary219.21875MiB/476valid0missing; actual32MiB heap and47B write metrics;

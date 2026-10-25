@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Next actual measurement predeclared09:40:21Z: four clean-context max-cover
+benchmark runs A/B/B/A, corrected identical physical-validation backend and
+birth-aware observer, full source/browser/quality/output/memory/privacy/cleanup
+gates and no selective retries. Prior failures retained; no speed claim yet.
+Plan evidence/audio-artwork-serializer-bracket-2026-10-25-v1.json; cached10/14
+engines re-audited, no native rebuild.222d1b1 CI40181182302 SUCCESS.
+
 Changed14-engine IO09-29-03.243Z PASS3/3,219.21875MiB/476valid0missing:
 UI cancel/after-real-write fault/exact same-page cover+metadata+PCM recovery.
 No retained partials, all16owned births/scratch gone, original unchanged.
