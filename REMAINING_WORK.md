@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-10-25 lower-copy14 engine IO09-29-03.243Z PASS3/3 under repaired
+observer: real UI cancel after positive native IO, existing localhost error
+AFTER real47B header write, then exact-control4MiB cover conversion in SAME
+page/context without stale state. Both partial inventories empty/recovered
+worker; actual32MiB Wasm/47B attempted-write telemetry retained. Full image/
+pixels/25tags/repeats/96kPCM and whole-tree219.21875MiB/476valid/0missing PASS.
+All16owned births absent/profile/fixtures/outputs restored+removed/original
+unchanged. This closes CHANGED-engine small IO recovery only, not real OS
+picker/quota/permission faults, long repeats/stress/full B05/promotion/speed.
+Next predeclare matched A/B/B/A on corrected identical validation backend;
+never compare old-CDP failures as qualified speed controls.111 focused
+regressions/lint/TypeScript/diff PASS; headless error/recovery UI reviewed.
+Independent original SHA/size and absence of owned profiles rechecked.
+Full54 scope OPEN.
+
 2026-10-25 physical-validation candidate09-24-27.551Z PASS7/7,204.98828125MiB
 observed full-tree peak,510valid/1unavailable (511lossless rows; null retained).
 35source pins; seven unique logical/physical outputs each matched by size and

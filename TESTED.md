@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-25 lower-copy14 IO09-29-03.243Z PASS3/3: real midstream UI cancel,
+47B real write then injected error, same-page exact4MiB-artwork recovery.
+Primary219.21875MiB/476valid0missing; actual32MiB heap and47B write metrics;
+empty interrupted OPFS/recovered worker/no stale errors, full cover/pixels/
+metadata/repeats/PCM controls and all16owned births+scratch cleanup PASS.
+Headless only; no OS quota/permission/full scaling/public or speed acceptance.
+111 focused regressions/lint/TypeScript/diff PASS; error/recovery screenshots
+reviewed, original SHA/size and owned-profile absence independently rechecked.
+
 2026-10-25 physical-backed validation09-24-27.551Z PASS7/7:204.98828125MiB,
 510valid/1missing/511rows (null preserved),35source pins. Seven distinct actual
 browser OPFS outputs size/three4KiB samples uniquely mapped; no converted copy.

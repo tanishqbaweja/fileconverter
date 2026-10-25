@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Changed14-engine IO09-29-03.243Z PASS3/3,219.21875MiB/476valid0missing:
+UI cancel/after-real-write fault/exact same-page cover+metadata+PCM recovery.
+No retained partials, all16owned births/scratch gone, original unchanged.
+Next identical corrected-backend A/B/B/A performance bracket. Public/long
+stress/OS destination faults/full54 scope remain OPEN; no speed win claimed.
+111 focused/lint/TypeScript/diff PASS, headless UI reviewed, original hash/
+size and owned-profile absence independently confirmed.
+
 Physical validation09-24-27.551Z PASS7jobs/204.9883MiB/510valid1missing.
 All native full validators unchanged, no output copies; size/three4KiB unique
 logical/physical bindings for7 distinct outputs; backing growth only12,365B

@@ -127,3 +127,37 @@ test("retained changed IO gate proves actual Wasm and failed-write telemetry, cl
     assert.equal(bytes.byteLength, screenshot.bytes); assert.equal(sha(bytes), screenshot.sha256);
   }
 });
+
+test("actual lower-copy fourteen-edit engine passes real UI interruptions and same-page exact recovery under the birth-aware whole-tree observer", async () => {
+  const root = new URL("../", import.meta.url), sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const receipt = JSON.parse(await readFile(new URL("evidence/2026-10-25T09-29-03.243Z-audio-metadata-fidelity-result.json", root)));
+  assert.equal(receipt.status, "passed-selected-small-private-cases-not-promotion"); assert.equal(receipt.publicAcceptance, false);
+  assert.equal(receipt.memory.incrementalPrivateMiB, 219.21875); assert.equal(receipt.memory.validSamples, 476); assert.equal(receipt.memory.unavailableSamples, 0);
+  assert.equal(receipt.sourcePins, 35); assert.equal(receipt.cases.length, 3);
+  const archive = await readFile(new URL(receipt.archive.path, root)); assert.equal(sha(archive), receipt.archive.sha256);
+  const raw = gunzipSync(archive, { maxOutputLength: 1048576 }); assert.equal(sha(raw), receipt.archive.restoredSha256);
+  const report = JSON.parse(raw); assert.equal(report.artifact.core.allowedSourceEdits, 14);
+  for (const row of report.cases.slice(0, 2)) {
+    assert.equal(row.status, "passed-private-audio-interruption-case");
+    const proof = validateAudioInterruption(row.interruption, row.browserState,
+      { beforeCancel: row.beforeCancel, storageBefore: row.storageBefore, storageAfter: row.storageAfter });
+    assert.equal(proof.outputAcceptance, false); assert.equal(proof.publicAcceptance, false);
+    assert.equal(row.browserState.metrics.peakWasmMemoryBytes, 33554432);
+  }
+  assert.equal(report.cases[1].browserState.metrics.maxWriteChunkBytes, 47); assert.equal(report.cases[1].browserState.metrics.outputBytes, 0);
+  const recovery = receipt.cases[2]; assert.equal(recovery.status, "passed-small-private-fidelity-and-metadata-case");
+  assert.equal(recovery.outputSha256, "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3");
+  assert.equal(recovery.artwork.bytes, 4194304); assert.equal(recovery.artwork.decodedRgbaSha256, "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba");
+  assert.equal(recovery.tagsPreserved, 25); assert.equal(recovery.repeatedValues.length, 2);
+  assert.equal(recovery.fidelity.samples, 96000); assert.ok(recovery.fidelity.psnrDb >= 60);
+  assert.deepEqual(recovery.samePageIoRecovery, { bothInterruptionsPassed: true, noContextOrPageRecreation: true, noStaleErrorOrWarning: true });
+  assert.ok(report.cases.every(row => row.disposableOutputRemoved)); assert.ok(Object.values(receipt.cleanup).every(Boolean)); assert.equal(receipt.protectedOriginalUnchanged, true);
+  assert.equal(report.processCleanup.length, 16); assert.ok(report.processCleanup.every(row => row.status === "owned-identity-absent"));
+  const journal = await readFile(new URL(receipt.losslessJournal.file, root)); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  const decoded = gunzipSync(journal, { maxOutputLength: 8 * 1048576 }); assert.equal(sha(decoded), receipt.losslessJournal.sha256);
+  const samples = decoded.toString().trim().split("\n").map(line => JSON.parse(line).sample); assert.equal(samples.length, 476);
+  for (const sample of samples) { assert.equal(sample.sampleError, null); assert.equal(sample.privateBytes, sample.processes.reduce((total, process) => total + process.privateBytes, 0)); }
+  const peak = Math.max(...samples.filter(sample => sample.phase !== "blank").map(sample => sample.privateBytes));
+  assert.equal((peak - report.blankBaseline.privateBytes) / 1048576, receipt.memory.incrementalPrivateMiB);
+  for (const screenshot of report.screenshots) assert.equal(sha(await readFile(new URL(screenshot.path, root))), screenshot.sha256);
+});
