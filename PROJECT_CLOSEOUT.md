@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+First baseline repeat04-25-42.002Z FAILED251.59765625MiB at6/7jobs despite
+six exact outputs.510valid/1missing, null preserved, cleanup PASS. No unchanged
+baseline/bracket replay or speed acceptance. Native child growth observed,
+allocation cause not established. Candidate40161703799/e361f463 SUCCESS,
+audited62source/15artifact; next run CHANGED lower-copy engine on same7-job
+workload. Strict comparator11focused checks PASS; b07880b CI40161702180 green.
+
 Live private build40161703799/e361f463, dispatched04:23:22Z, comparable310s;
 do not restart. Matched benchmark scope source ready: warmup+six real jobs,
 bracket four clean-context runs A/B/B/A, strict control output/full PCM/image/

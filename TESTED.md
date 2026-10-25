@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-25 repeated original baseline04-25-42.002Z FAILED whole-tree
+251.59765625MiB after6/7jobs. Six exact-control outputs/4MiB images/pixels/
+25tags/repeats/96kPCM and owned cleanup PASS, NOT a passed benchmark.
+510valid/1unavailable (511lossless rows), missing process query retained null.
+No unchanged retry, shortened sequence or qualified speed claim. Comparator
+guards chronology/equal sources/browser/settings/all28outputs/cleanup/formula;
+11new focused checks PASS, including rejection of this actual failed baseline.
+New candidate40161703799/e361f463 compiled/audited62sources15artifacts with
+unchanged32-96MiB heap; first candidate browser sequence still UNVERIFIED.
+b07880b portable CI40161702180 SUCCESS (not the newer harness commit).
+
 2026-10-25 lower-copy source27focused/TypeScript/lint/diff PASS. Hosted
 build40161703799/e361f463 confirmed LIVE, not compiled/accepted yet. Added
 matched real-production benchmark mode (one warmup/six measurements with all

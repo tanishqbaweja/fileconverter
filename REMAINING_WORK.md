@@ -1,5 +1,19 @@
 # Remaining work audit
 
+2026-10-25 first repeated baseline04-25-42.002Z FAILED at251.59765625MiB
+after six exact accepted outputs; planned seven-job run stopped by unchanged
+250MiB gate.510valid/1unavailable native records (511total); failed query is
+null/OpenProcess, never zero. Largest observed child PID18560 grows from
+134.375MiB first case to198.289MiB sixth; fixed32MiB Wasm/bounded IO cannot
+substitute for whole-tree result. Precise allocation cause NOT yet proven.
+All output/image/pixels/25tags/repeats/PCM and owned cleanup PASS; retain failure.
+Abort remaining unchanged baseline/bracket runs: no qualified browser speed
+claim, no reducing repeat count or raising baseline/limit. Strict comparison
+now rejects failed runs, chronology/source/browser/quality/output/cleanup
+changes and missing samples. Private candidate build40161703799/e361f463
+SUCCESS, audited62sources/15artifacts/10,449,553B, same32-96MiB heap. Next
+qualify this genuinely CHANGED candidate once against same repeated workload.
+
 2026-10-25 private lower-copy build40161703799 confirmed LIVE at04:23:34Z,
 immutable e361f463/b07880b parent; estimate6min from310s comparable build.
 No redispatch. Matched browser scope now prepares one warmup+six identical

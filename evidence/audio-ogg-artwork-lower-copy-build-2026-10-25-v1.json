@@ -1,6 +1,6 @@
 {
   "recordedAt": "2026-10-25T04:23:17.294Z",
-  "status": "build-confirmed-live",
+  "status": "compiled-artifact-audited-browser-repair-unverified",
   "branch": "codex/audio-ogg-artwork-lower-copy-20261025-v1",
   "parent": "b07880ba35459752a5d849114f278f9b4ece9d06",
   "commit": "e361f463ca1af9d2238f2466ddbbb817fb8c7142",
@@ -24,14 +24,30 @@
   "publicAcceptance": false,
   "noDocker": true,
   "dispatchedAt": "2026-10-25T04:23:22.788Z",
-  "lastObservedAt": "2026-10-25T04:23:34.476Z",
+  "lastObservedAt": "2026-10-25T04:29:36.891Z",
   "run": {
-    "conclusion": "",
+    "conclusion": "success",
     "createdAt": "2026-10-25T04:23:25Z",
     "databaseId": 40161703799,
     "headSha": "e361f463ca1af9d2238f2466ddbbb817fb8c7142",
-    "status": "in_progress",
-    "updatedAt": "2026-10-25T04:23:29Z",
+    "status": "completed",
+    "updatedAt": "2026-10-25T04:28:56Z",
     "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40161703799"
+  },
+  "collected": {
+    "directory": "work/audio-ogg-artwork-lower-copy-40161703799",
+    "bytes": 10449553,
+    "manifestSha256": "6457c3499800db5d8275d08ead789637546c68e8d75fc4ccf21b893eeba57609",
+    "buildSourcePins": 62,
+    "artifactPins": 15,
+    "upstream": {
+      "originalSha256": "a11ec3562e733f21565c491ab56b7f1d4a6865fc1ddbdc372ed9cb29b13ca7fb",
+      "compiledSha256": "56d2ebdef4c79bbc7174dfb9492e2040066854770f64f8ec096cd53a190e4e15",
+      "sourceEdits": 1,
+      "publicAcceptance": false
+    },
+    "immutableExecutedSourcesVerified": true,
+    "hostedCleanupPassed": true,
+    "publicAcceptance": false
   }
 }
