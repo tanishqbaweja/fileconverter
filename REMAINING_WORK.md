@@ -1,5 +1,21 @@
 # Remaining work audit
 
+2026-10-25 build40156938341/f80c504 confirmed live03:06:31Z, dispatched
+03:05:43Z from879dcbe; expected observation around03:14:45Z (prior8-minute
+builds). No redispatch on timeout. V3/previous combined gate CI40156422119
+SUCCESS verified for d6dfe09. Eight NEW Ogg/Opus destination cases prepared:
+FLAC-to-Ogg/Opus, Ogg-to-Opus and Opus-to-Ogg, PNG/JPEG,25fields/two values,
+front/back cover role and Unicode description, complete image hash/decode and
+PCM comparison. Opus-to-Ogg uses the existing explicit higher UI setting;
+automatic-quality failure remains OPEN, not repaired or hidden by this scope.
+FLAC metadata inspector fixed to seek over non-text blocks after file-length
+validation, not reject4MiB covers under its separate2MiB TEXT bound. Unit
+fixture with real4MiB payload reads fewer than128bytes; truncated/oversized
+text/invalid kind/excess headers rejected. Input-only small FLAC picture
+constructor preserves all existing metadata/audio bytes.55focused unit tests,
+then25changed focused tests/lint, TypeScript and diff checks PASS. Actual new
+Wasm/browser results remain UNVERIFIED pending THIS build's artifact.
+
 2026-10-25 next B05 implementation: reversible private Ogg/Opus cover serializer
 adds FLAC PICTURE comments, NOT unsupported JPEG/PNG media tracks. Existing
 MP3/FLAC behavior, codec/settings/I/O,32/96MiB heap and public selector unchanged.

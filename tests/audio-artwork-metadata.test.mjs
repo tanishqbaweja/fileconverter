@@ -3,7 +3,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
-import { AUDIO_ARTWORK_METADATA_CASES, audioArtworkFixtureComment, validateAudioArtworkPacket } from "../scripts/lib/audio-artwork-validation.mjs";
+import { AUDIO_ARTWORK_METADATA_CASES, AUDIO_OGG_ARTWORK_CASES, audioArtworkFixtureComment, audioArtworkFixturePicture, appendFlacArtworkFixture, validateAudioArtworkPacket } from "../scripts/lib/audio-artwork-validation.mjs";
 const expected = { codec: "png", width: 64, height: 64, bytes: 128, sha256: "a".repeat(64) };
 const probe = () => ({ streams: [{ index: 0, codec_type: "audio" }, { index: 1, codec_type: "video", codec_name: "png", width: 64, height: 64, disposition: { attached_pic: 1 } }] });
 const packets = () => ({ packets: [{ stream_index: 1, size: "128", data_hash: "SHA256:" + expected.sha256 }] });
@@ -45,12 +45,47 @@ test("independent cover validator requires exactly one complete, correctly attac
 test("real artwork gate preserves all existing fidelity, process-memory, privacy and cleanup constraints", async () => {
   const source = await readFile(new URL("../scripts/test-audio-metadata-production-runtime.mjs", import.meta.url), "utf8");
   assert.match(source, /--artwork-metadata/); assert.match(source, /artworkMetadata \? AUDIO_ARTWORK_METADATA_CASES/);
-  assert.match(source, /\.\.\.AUDIO_REPEATED_COMMENTS, audioArtworkFixtureComment\(bytes, codec\)/);
+  assert.match(source, /\.\.\.AUDIO_REPEATED_COMMENTS, audioArtworkFixtureComment\(bytes, codec, pictureOptions\)/);
   assert.match(source, /row.artwork = await inspectArtwork\(output, outputProbe/);
   assert.match(source, /sourcePcmUnchanged: await compareNativeAudioPcm\(original, file, \{ cwd: root, env, lossless: true \}\)/);
   assert.match(source, /"-show_data_hash", "sha256"/); assert.match(source, /"-xerror"/);
   assert.match(source, /active.peak.privateBytes - report.blankBaseline.privateBytes/);
   assert.match(source, /artworkAcceptance: false/); assert.match(source, /await runtime.close\(\)/);
+});
+test("new eight-case cover gate exercises Ogg/Opus destinations and preserves the explicit known-quality distinction", () => {
+  assert.equal(AUDIO_OGG_ARTWORK_CASES.length, 8);
+  for (const row of AUDIO_OGG_ARTWORK_CASES) {
+    assert.ok(["ogg", "opus"].includes(row.destination)); assert.ok(row.repeated); assert.ok(["png", "mjpeg"].includes(row.artwork));
+    assert.equal(row.quality, row.source === "opus" ? "higher" : undefined);
+  }
+});
+test("small FLAC picture fixture preserves every existing metadata byte and audio byte, changing only the last-block flag", () => {
+  const metadata = Buffer.from("unchanged metadata"), header = Buffer.alloc(4); header[0] = 0x84; header.writeUIntBE(metadata.length, 1, 3);
+  const audio = Buffer.from("all original encoded audio bytes"), source = Buffer.concat([Buffer.from("fLaC"), header, metadata, audio]);
+  const image = Buffer.alloc(128); Buffer.from("89504e470d0a1a0a", "hex").copy(image); const picture = audioArtworkFixturePicture(image, "png");
+  const output = appendFlacArtworkFixture(source, picture), pictureAt = 8 + metadata.length;
+  assert.equal(output[4], 4); assert.equal(source[4], 0x84); assert.deepEqual(output.subarray(8, pictureAt), metadata);
+  assert.equal(output[pictureAt], 0x86); assert.equal(output.readUIntBE(pictureAt + 1, 3), picture.length);
+  assert.deepEqual(output.subarray(pictureAt + 4, pictureAt + 4 + picture.length), picture);
+  assert.deepEqual(output.subarray(pictureAt + 4 + picture.length), audio);
+  assert.throws(() => appendFlacArtworkFixture(Buffer.alloc(1048577), picture));
+  assert.throws(() => appendFlacArtworkFixture(source.subarray(0, 12), picture));
+  assert.throws(() => appendFlacArtworkFixture(source, Buffer.alloc(65633)));
+});
+test("fixture and independent output validator preserve picture role and Unicode description as well as bytes", () => {
+  const bytes = Buffer.alloc(128); Buffer.from("89504e470d0a1a0a", "hex").copy(bytes);
+  const description = "Arrière café — 音楽", picture = audioArtworkFixturePicture(bytes, "png", { pictureType: 4, description });
+  assert.equal(picture.readUInt32BE(0), 4); const at = 8 + picture.readUInt32BE(4);
+  assert.equal(picture.readUInt32BE(at), Buffer.byteLength(description));
+  assert.equal(picture.subarray(at + 4, at + 4 + Buffer.byteLength(description)).toString(), description);
+  assert.throws(() => audioArtworkFixturePicture(bytes, "png", { description: "x".repeat(4096) }));
+  assert.throws(() => audioArtworkFixturePicture(bytes, "png", { description: "bad\0text" }));
+  const observed = probe(), wanted = { ...expected, pictureRole: "Cover (back)", description };
+  observed.streams[1].tags = { comment: wanted.pictureRole, title: description };
+  assert.equal(validateAudioArtworkPacket(observed, packets(), wanted).description, description);
+  observed.streams[1].tags.comment = "Cover (front)"; assert.throws(() => validateAudioArtworkPacket(observed, packets(), wanted));
+  observed.streams[1].tags.comment = wanted.pictureRole; observed.streams[1].tags.title = "changed";
+  assert.throws(() => validateAudioArtworkPacket(observed, packets(), wanted));
 });
 test("retained real production run proves four exact covers with complete audio/tags and full-tree journal, not broad acceptance", async () => {
   const root = new URL("../", import.meta.url), sha = b => createHash("sha256").update(b).digest("hex");

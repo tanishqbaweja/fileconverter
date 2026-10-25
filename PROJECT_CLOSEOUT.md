@@ -6,6 +6,15 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Build40156938341/f80c504 live03:06:31Z, dispatched03:05:43Z; next observation
+~03:14:45Z, no redispatch. Eight genuinely NEW Ogg/Opus cover cases prepared
+with front/back roles/Unicode descriptions and unchanged image/PCM/memory
+validation. Existing explicit higher setting for Opus-to-Ogg is NOT an
+automatic-quality fix. Bounded FLAC inspector now seeks over non-text blocks;
+real4MiB payload/<128bytes read unit check plus negative bounds PASS.55focused
+regression then25changed tests/lint/TypeScript/diff PASS. d6dfe09 CI passed.
+Next collect/audit THIS successful native build, then production browser gate.
+
 Next B05 Ogg/Opus cover implementation now has bounded atomic serializer and
 ten-edit derivative of the verified V3 source. Actual installed SDK serializer
 probe03-02-15.645Z PASS, including4MiB image/4096dimension, role/description,

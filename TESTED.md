@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-25 changed fixture/inspection gates PASS:55focused tests then25changed
+focused tests/lint, TypeScript/diff checks. FLAC comment inspector now skips
+real4MiB non-text payload with<128bytes read; unchanged2MiB text/128header/
+total read limits, file-length/truncation checks and owned finally cleanup.
+New eight-case Ogg/Opus cover scope prepared, also front/back role/Unicode
+description checks, without altering known automatic-quality failure. Actual
+private build40156938341/f80c504 live03:06:31Z; not browser proof. Existing
+d6dfe09 CI40156422119 SUCCESS; no repeated closed FLAC/Ogg text gate.
+
 2026-10-25 native Ogg picture serializer03-02-15.645Z PASS: actual installed
 libavutil encode/decode/dictionary calls verify complete PNG/JPEG image bytes,
 picture role/Unicode description and ordered repeated tags. Real exact4MiB/

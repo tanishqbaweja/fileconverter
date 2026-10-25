@@ -1,0 +1,37 @@
+{
+  "recordedAt": "2026-10-25T03:05:42.016Z",
+  "status": "build-confirmed-live",
+  "branch": "codex/audio-ogg-artwork-20261025-v1",
+  "parent": "879dcbe9d762ca7fd6ce0d8eb9416466ed675ade",
+  "commit": "f80c504b208acc194159f71f393ceae1efd30dbc",
+  "tree": "2520635eeb8f77cce8446555327448475f9e9690",
+  "workflow": {
+    "path": ".github/workflows/reproduce-ffmpeg-nondocker.yml",
+    "canonicalSha256": "cda0b434adc7dd36109b4a2cc63fe726a507889cf6d1c0f5862d5d78dbf5c965",
+    "generatedSha256": "3cf60d9964cd3fb7775eb198b7eadbd414e23225803455dd8ea6454fd6093719",
+    "gitBlob": "50d579f60862c6e17f8a55e57ec6d8f3bc80de36"
+  },
+  "canonicalHeadIndexAndWorkflowUnchanged": true,
+  "mainUnchanged": true,
+  "remoteVerified": true,
+  "noCheckoutOrMediaCopyCreated": true,
+  "priorComparableBuild": {
+    "runId": 39517752087,
+    "elapsedSeconds": 497
+  },
+  "estimatedBuildMinutes": 9,
+  "browserConversions": 0,
+  "publicAcceptance": false,
+  "noDocker": true,
+  "dispatchedAt": "2026-10-25T03:05:43.773Z",
+  "lastObservedAt": "2026-10-25T03:06:31.944Z",
+  "run": {
+    "conclusion": "",
+    "createdAt": "2026-10-25T03:05:46Z",
+    "databaseId": 40156938341,
+    "headSha": "f80c504b208acc194159f71f393ceae1efd30dbc",
+    "status": "in_progress",
+    "updatedAt": "2026-10-25T03:05:50Z",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40156938341"
+  }
+}

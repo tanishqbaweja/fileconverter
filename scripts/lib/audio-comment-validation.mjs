@@ -59,10 +59,19 @@ export async function readAudioCommentEntries(file, format) {
     readBytes += size; return bytes; };
   try {
     if (format === "flac") {
-      assert.equal((await read(0, 4)).toString(), "fLaC"); let at = 4;
+      const info = await reader.stat(); assert.ok(info.isFile() && Number.isSafeInteger(info.size));
+      assert.equal((await read(0, 4)).toString(), "fLaC"); let at = 4, skippedPayloadBytes = 0;
       for (let block = 0; block < COMMENT_LIMITS.blocks; block++) {
-        const header = await read(at, 4), size = header.readUIntBE(1, 3); assert.ok(size <= COMMENT_LIMITS.bytes);
-        if ((header[0] & 127) === 4) return { ...parseVorbisCommentBlock(await read(at + 4, size)), readBytes, format };
+        const header = await read(at, 4), size = header.readUIntBE(1, 3), kind = header[0] & 127;
+        assert.notEqual(kind, 127, "Invalid FLAC metadata kind");
+        assert.ok(at + 4 + size <= info.size, "Truncated FLAC metadata payload");
+        if (kind === 4) {
+          assert.ok(size <= COMMENT_LIMITS.bytes, "FLAC text metadata exceeds its unchanged byte bound");
+          return { ...parseVorbisCommentBlock(await read(at + 4, size)), readBytes, skippedPayloadBytes, format };
+        }
+        // A picture/padding block is not text. Seek over it without allocating
+        // or reading it; native image/structural validators cover its contents.
+        skippedPayloadBytes += size;
         at += 4 + size; if (header[0] & 128) break;
       }
     } else {

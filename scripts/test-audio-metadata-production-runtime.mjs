@@ -16,7 +16,7 @@ import { auditAudioMetadataArtifact } from "./lib/audio-metadata-artifact.mjs";
 import { AUDIO_METADATA_TAGS, AUDIO_METADATA_FIDELITY_CASES, AUDIO_REPEATED_COMMENTS, audioMetadataFixtureArguments } from "./lib/audio-metadata-fidelity-fixture.mjs";
 import { appendFlacFixtureComments, readAudioCommentEntries } from "./lib/audio-comment-validation.mjs";
 import { appendOggFixtureComments } from "./lib/audio-repeated-comment-fixture.mjs";
-import { AUDIO_ARTWORK_METADATA_CASES, audioArtworkFixtureComment, validateAudioArtworkPacket } from "./lib/audio-artwork-validation.mjs";
+import { AUDIO_ARTWORK_METADATA_CASES, AUDIO_OGG_ARTWORK_CASES, audioArtworkFixtureComment, audioArtworkFixturePicture, appendFlacArtworkFixture, validateAudioArtworkPacket } from "./lib/audio-artwork-validation.mjs";
 import { compareNativeAudioPcm } from "./lib/streaming-audio-fidelity.mjs";
 import { validateScopedAudioTags } from "./lib/scoped-audio-tag-validation.mjs";
 import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runtime-scratch.mjs";
@@ -30,12 +30,13 @@ import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mj
 import { verifyOpfsDiskBacking } from "./lib/opfs-disk-backing-proof.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
 const qualityComparison = process.argv[3] === "--compare-vorbis-quality";
 const remainingRepeated = process.argv[3] === "--remaining-repeated-audio";
 const flacOrderRepair = process.argv[3] === "--flac-order-repair";
 const artworkMetadata = process.argv[3] === "--artwork-metadata";
-const selectedCases = artworkMetadata ? AUDIO_ARTWORK_METADATA_CASES : flacOrderRepair ? [...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6), ...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6).map(c => ({ ...c, repeated: true }))]
+const oggArtwork = process.argv[3] === "--ogg-artwork", withArtwork = artworkMetadata || oggArtwork;
+const selectedCases = oggArtwork ? AUDIO_OGG_ARTWORK_CASES : artworkMetadata ? AUDIO_ARTWORK_METADATA_CASES : flacOrderRepair ? [...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6), ...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6).map(c => ({ ...c, repeated: true }))]
   : remainingRepeated ? AUDIO_METADATA_FIDELITY_CASES.slice(1, 6).map(c => ({ ...c, repeated: true }))
   : qualityComparison ? [...AUDIO_METADATA_FIDELITY_CASES, { source: "opus", destination: "ogg", quality: "higher" }] : AUDIO_METADATA_FIDELITY_CASES;
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(r => setTimeout(r, ms));
@@ -47,6 +48,10 @@ if (qualityComparison) report.scope += "; plus explicit same-fixture higher-qual
 if (remainingRepeated) report.scope = "five NEW repeated-comment route cases, excluding the already-passed FLAC-to-Ogg duplicate gate; not stress or promotion";
 if (flacOrderRepair) report.scope = "four FLAC-only changed muxer-order cases: two canonical plus two repeated inputs; not replay of closed Ogg cases or stress acceptance";
 if (artworkMetadata) report.scope = "four NEW Ogg/Opus-to-FLAC cases combining 25 tags, ordered repeated values and exact PNG/JPEG covers; not full artwork/budget/stress acceptance";
+if (oggArtwork) {
+  report.scope = "eight NEW Ogg/Opus destination cover cases with PNG/JPEG, 25 tags and ordered values; Opus-to-Vorbis uses the existing explicit higher selection, not a default-quality repair or speed proof";
+  report.automaticVorbisQualityRepaired = false;
+}
 const stamp = report.startedAt.replaceAll(":", "-"), sha = b => createHash("sha256").update(b).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 1048576 })) hash.update(b); return hash.digest("hex"); };
 const native = (args, executable = "ffmpeg") => execute(executable, args, { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 131072 });
@@ -109,18 +114,23 @@ try {
     assert.deepEqual(repeatedSource.entries.filter(s => s.split("=", 1)[0].toLowerCase() === "custom_repeat"), AUDIO_REPEATED_COMMENTS);
   }
   report.repeatedFixture = report.repeatedFixtures.flac;
-  if (artworkMetadata) {
+  if (withArtwork) {
     report.artworkImages = {}; report.artworkFixtures = {};
     for (const codec of ["png", "mjpeg"]) {
       const image = path.join(runtime.directory, "cover." + (codec === "png" ? "png" : "jpg"));
       await native(["-v", "error", "-f", "lavfi", "-i", "color=c=0x2457d6:s=64x64:d=0.04", "-frames:v", "1", "-c:v", codec,
         "-threads", "1", "-fflags", "+bitexact", "-flags:v", "+bitexact", "-f", "image2", image]);
       const imageSize = (await lstat(image)).size; assert.ok(imageSize > 8 && imageSize <= 65536);
-      const bytes = await readFile(image), expected = { codec, width: 64, height: 64, bytes: bytes.length, sha256: sha(bytes) };
+      const pictureOptions = oggArtwork ? { pictureType: codec === "png" ? 3 : 4, description: codec === "png" ? "表紙 — Front cover" : "Pochette arrière café — 音楽" } : undefined;
+      const bytes = await readFile(image), expected = { codec, width: 64, height: 64, bytes: bytes.length, sha256: sha(bytes),
+        ...(pictureOptions ? { pictureRole: pictureOptions.pictureType === 3 ? "Cover (front)" : "Cover (back)", description: pictureOptions.description } : {}) };
       report.artworkImages[codec] = expected;
-      for (const source of ["ogg", "opus"]) {
+      for (const source of oggArtwork ? ["flac", "ogg", "opus"] : ["ogg", "opus"]) {
         const original = path.join(runtime.directory, "source." + source), file = path.join(runtime.directory, `source-artwork-${codec}.${source}`);
-        const generated = appendOggFixtureComments(await readFile(original), source, [...AUDIO_REPEATED_COMMENTS, audioArtworkFixtureComment(bytes, codec)]);
+        const sourceBytes = await readFile(original);
+        const generated = source === "flac"
+          ? appendFlacArtworkFixture(appendFlacFixtureComments(sourceBytes, AUDIO_REPEATED_COMMENTS), audioArtworkFixturePicture(bytes, codec, pictureOptions))
+          : appendOggFixtureComments(sourceBytes, source, [...AUDIO_REPEATED_COMMENTS, audioArtworkFixtureComment(bytes, codec, pictureOptions)]);
         await writeFile(file, generated, { flag: "wx" });
         const comments = await readAudioCommentEntries(file, source);
         assert.deepEqual(comments.entries.filter(s => s.split("=", 1)[0].toLowerCase() === "custom_repeat"), AUDIO_REPEATED_COMMENTS);
