@@ -6,6 +6,15 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+First actual IO sequence03-58-45.506Z FAILED, retained: cancellation after
+positive IO passes; real destination/header failure cleans up but reports
+Wasm/max-write0 before first C progress, causing strict proof failure and
+aggregate recovery failure. Actual full-tree195.78515625MiB/468valid/0missing,
+disk/privacy/original/owned cleanup PASS. Fix production telemetry to observe
+native input-view backing memory before IO and sync attempted-write size;
+no thresholds relaxed or native core rebuild.26focused/lint/TypeScript/diff
+PASS. Next rerun this CHANGED IO sequence only. Failed receipt stays failed.
+
 New --audio-io-recovery scope ready, actual cases UNVERIFIED: UI cancel after
 positive native input/output on180s fixture, injected after-write error on
 4MiB cover, then fully validated success in SAME page. Empty partial inventory/

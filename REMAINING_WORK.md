@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-10-25 first IO run03-58-45.506Z FAILED, retained unchanged: UI cancel
+after262,144B read/125,899B written PASS and partial OPFS removed, but real
+native47B header-write injection reports Wasm/max-write diagnostics as0 before
+first C progress. Error is actual destination rejection +Audio header I/O
+error; no fake successful conversion. Final valid output/image/pixel/audio
+matches control but correctly fails aggregate recovery dependency. Whole-tree
+195.78515625MiB/468valid/0missing and owned cleanup/original/privacy PASS.
+Concrete cause: Wasm metrics were set only by later C progress callback; sync
+max-write counted only returned successful calls. Production fix now observes
+the REAL backing buffer of both native AVIO input views before reads (no
+allocation/copy/guessed heap), preserves larger combined peaks, and counts
+attempted sync write buffer before calling destination. Primary process-tree
+formula/strict32MiB interruption proof unchanged. Actual WebAssembly.Memory
+growth/shared-vs-unshared unit checks +26focused/lint/TypeScript/diff PASS.
+Next rerun ONLY affected IO sequence after these instrumentation changes;
+do not rerun closed metadata/artwork matrix or rebuild unchanged native core.
+
 2026-10-25 new --audio-io-recovery gate prepared; actual browser result remains
 UNVERIFIED. One normal production page:180s generated FLAC cancelled through
 real Cancel safely button ONLY after positive input AND output progress;

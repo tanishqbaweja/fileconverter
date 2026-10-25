@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-25 IO run03-58-45.506Z FAILED (preserved): genuine post-progress UI
+cancel PASS; first native47B header write rejects as expected and partial is
+removed, but diagnostics falsely report Wasm/max-write0 before C progress.
+Final valid output matches control, yet recovery dependency correctly fails.
+Small full-tree195.78515625MiB/468valid/0missing, privacy/original/owned cleanup
+PASS, not a passed gate. Source cause confirmed: heap set only in later native
+progress; sync max-write only on success. Fix observes actual AVIO input view
+backing buffer and attempted sync write size before failures, with no guessed
+heap, buffer copies, codec/I/O/memory-limit changes.26focused/lint/TypeScript/
+diff checks PASS; changed real-browser IO gate still UNVERIFIED until rerun.
+
 2026-10-25 private audio IO interruption/recovery source31focused/lint/
 TypeScript/diff checks PASS. Cancellation requires real input/output progress
 before UI action; error model is existing localhost injection AFTER real write,

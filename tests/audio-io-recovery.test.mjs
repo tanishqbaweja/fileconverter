@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { gunzipSync } from "node:zlib";
 import { validateAudioInterruption } from "../scripts/lib/audio-io-recovery-validation.mjs";
 const metrics = { peakWasmMemoryBytes: 33554432, inputBytes: 262144, outputBytes: 4096, queuedBytes: 0, pendingOperations: 0,
   peakPendingOperations: 1, peakQueuedBytes: 4096, maxReadChunkBytes: 262144, maxWriteChunkBytes: 4096 };
@@ -42,4 +44,24 @@ test("real browser gate uses existing URL fault handling, UI cancel after progre
   assert.equal(source.split("chromium.launchPersistentContext(").length - 1, 1);
   assert.match(source, /passed-private-audio-interruption-case/); assert.match(source, /compareNativeAudioPcm\(input, output/);
   assert.match(source, /active.peak.privateBytes - report.blankBaseline.privateBytes/); assert.match(source, /await runtime.close\(\)/);
+});
+test("retained first IO gate stays failed: real native header error had a falsely zero uninitialized Wasm diagnostic", async () => {
+  const root = new URL("../", import.meta.url), sha = b => createHash("sha256").update(b).digest("hex");
+  const receipt = JSON.parse(await readFile(new URL("evidence/2026-10-25T03-58-45.506Z-audio-metadata-fidelity-result.json", root)));
+  assert.equal(receipt.status, "failed"); assert.equal(receipt.publicAcceptance, false); assert.equal(receipt.cases.length, 3);
+  assert.equal(receipt.cases[0].status, "passed-private-audio-interruption-case");
+  assert.equal(receipt.cases[1].status, "failed"); assert.equal(receipt.cases[2].status, "failed");
+  assert.equal(receipt.memory.incrementalPrivateMiB, 195.78515625); assert.equal(receipt.memory.validSamples, 468); assert.equal(receipt.memory.unavailableSamples, 0);
+  const archive = await readFile(new URL(receipt.archive.path, root)); assert.equal(sha(archive), receipt.archive.sha256);
+  const raw = gunzipSync(archive, { maxOutputLength: 1048576 }); assert.equal(sha(raw), receipt.archive.restoredSha256);
+  const report = JSON.parse(raw), cancellation = report.cases[0], failure = report.cases[1];
+  assert.ok(cancellation.beforeCancel.metrics.inputBytes > 0 && cancellation.beforeCancel.metrics.outputBytes > 0);
+  assert.equal(failure.browserState.jobState, "error"); assert.match(failure.browserState.error, /destination rejected a bounded write.*Audio header write failed: I\/O error/);
+  assert.equal(failure.browserState.metrics.peakWasmMemoryBytes, 0); assert.equal(failure.browserState.metrics.maxWriteChunkBytes, 0);
+  assert.equal(failure.browserState.metrics.peakQueuedBytes, 47); assert.deepEqual(failure.storageAfter, []);
+  assert.ok(receipt.protectedOriginalUnchanged); assert.ok(Object.values(receipt.cleanup).every(Boolean));
+  const journal = await readFile(new URL(receipt.losslessJournal.file, root)); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  assert.equal(sha(gunzipSync(journal, { maxOutputLength: 8 * 1048576 })), receipt.losslessJournal.sha256);
+  const validator = await readFile(new URL("scripts/lib/audio-io-recovery-validation.mjs", root), "utf8");
+  assert.match(validator, /metrics.peakWasmMemoryBytes >= 33554432/); // Fix observation, never relax proof.
 });

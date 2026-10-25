@@ -13,6 +13,7 @@ import type { Mpeg2SplitCore } from "./mpeg2-split-runtime";
 import type { VpxDecoderCore } from "./vpx-core-loader";
 import { vpxCodecForProfile } from "../lib/vpx-decoder-policy";
 import { mediaNativeArguments } from "../lib/media-native-arguments";
+import { observeNativeInputMemory } from "../lib/native-input-memory-observation";
 
 const REMUX_MODULE_URL = "/engines/remux/within-remux.mjs";
 const REMUX_WASM_URL = "/engines/remux/within-remux.wasm";
@@ -373,6 +374,9 @@ export async function runMediaRemux({
       metrics.peakPendingOperations,
       metrics.pendingOperations,
     );
+    // The buffer exists even when the destination rejects this operation.
+    // Match the asynchronous adapter's attempt-time maximum, not a false zero.
+    metrics.maxWriteChunkBytes = Math.max(metrics.maxWriteChunkBytes, source.byteLength);
     let completed: boolean;
     try {
       completed = writable.writeSync!({
@@ -414,6 +418,7 @@ export async function runMediaRemux({
     readSync: synchronousInputReader
       ? (offset, destination) => {
           assertActive();
+          observeNativeInputMemory(metrics, destination, writerSharedBytes + cancellationSharedBytes);
           assertBoundedChunk(destination.byteLength, "Input read");
           if (!Number.isSafeInteger(offset) || offset < 0) {
             throw new Error(`FFmpeg requested an invalid input offset: ${offset}.`);
@@ -430,6 +435,7 @@ export async function runMediaRemux({
       : undefined,
     async read(offset, destination) {
       assertActive();
+      observeNativeInputMemory(metrics, destination, writerSharedBytes + cancellationSharedBytes);
       assertBoundedChunk(destination.byteLength, "Input read");
       if (!Number.isSafeInteger(offset) || offset < 0) {
         throw new Error(`FFmpeg requested an invalid input offset: ${offset}.`);
