@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-10-25 automatic-q7 first runtime10-46-04.322Z FAILED on validator-only
+>=12KiB precondition; all4actual outputs smaller. Automatic UI/nativearg3 and
+visible notice proved, NOT content/fidelity. Receipt/raw/journal retainedFAILED.
+Small physical binding now exhaustive over<=12KiB in <=4096B chunks, not weaker
+sampling or full-output allocation; large binding and all other gates unchanged.
+90focused/public404proof audit/lint/TypeScript PASS. Next rerun all4because
+independent validation was incomplete; route remains private pending.
+
 2026-10-25 quality policy source integration83focused PASS; public-evidence
 manifest strict audit404public/404proofs/one hidden pending/no public nonpassing
 or PDF. Previous stale count/pending/source-contract test failures corrected

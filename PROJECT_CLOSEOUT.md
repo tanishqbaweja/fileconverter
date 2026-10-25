@@ -6,6 +6,12 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+First4automatic jobs10-46-04.322Z FAILED exclusively at small-output binder
+minimum, before independent content validation. All4real UI automatic/nativearg3
+and notice proved; no fidelity claim. Corrected read-only binder compares EVERY
+byte of<=12KiB in <=4KiB chunks; historical large3sample policy unchanged.
+90focused/audit/lint/TS PASS. Rerun4changed-validation cases, preserve firstFAILED.
+
 Automatic Opus-to-Vorbis repair source implemented, browser UNVERIFIED.
 Exact native33+route+automatic now uses existing q7 code3; explicit settings and
 all other routes unchanged. UI discloses quality/size/speed implications. Exact

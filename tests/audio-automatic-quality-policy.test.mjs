@@ -5,6 +5,8 @@ import { audioQualityCode, automaticVorbisQualityNotice, OPUS_VORBIS_AUTOMATIC_Q
   resolveAudioQualityArgument } from "../lib/media-conversion-options.ts";
 import { mediaNativeArguments } from "../lib/media-native-arguments.ts";
 import { conversionProfiles, publicProfilesFor } from "../lib/capability-registry.ts";
+import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
 
 test("only automatic Opus-to-Vorbis native33 uses the previously verified q7 code through the actual ABI", () => {
   assert.deepEqual(resolveAudioQualityArgument("opus-to-ogg", 33, "automatic"),
@@ -53,4 +55,23 @@ test("browser gate requests genuine AUTOMATIC jobs and proves actual call argume
   assert.match(source, /assert.deepEqual\(state.metrics.audioQualityArgument, \{ requested: "automatic", nativeCode: 3, automaticPolicy: "opus-to-vorbis-q7" \}\)/);
   assert.match(source, /row.automaticQualityNoticeVisible = true/); assert.match(source, /compareNativeAudioPcm\(input, output/);
   assert.ok(source.includes("4db863292dcd76fbcf364a4986120ac9bc39d155a774d730376128058565f4db"));
+});
+test("first automatic browser run remains failed on the validation-only small-file precondition, not falsely accepted from terminal state", async () => {
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const receipt = JSON.parse(await readFile("evidence/2026-10-25T10-46-04.322Z-audio-metadata-fidelity-result.json"));
+  assert.equal(receipt.status, "failed"); assert.equal(receipt.cases.length, 4); assert.equal(receipt.publicAcceptance, false);
+  const packed = await readFile(receipt.archive.path); assert.equal(sha(packed), receipt.archive.sha256);
+  const raw = gunzipSync(packed, { maxOutputLength: 1048576 }); assert.equal(sha(raw), receipt.archive.restoredSha256);
+  const report = JSON.parse(raw); assert.equal(report.automaticVorbisQualityRepaired, "unverified-until-all-four-cases-pass");
+  for (const row of report.cases) {
+    assert.equal(row.status, "failed"); assert.equal(row.browserState.jobState, "complete"); assert.equal(row.automaticQualityNoticeVisible, true);
+    assert.deepEqual(row.actualAutomaticQualityArgument, { requested: "automatic", nativeCode: 3, automaticPolicy: "opus-to-vorbis-q7" });
+    assert.match(row.failures[0], /expectedBytes >= 3 \* limits.sampleBytes/);
+    assert.ok(row.browserState.metrics.outputBytes > 0 && row.browserState.metrics.outputBytes < 12288);
+    assert.equal(row.output, undefined); assert.equal(row.fidelity, undefined); assert.equal(row.disposableOutputRemoved, true);
+  }
+  assert.equal(receipt.memory.incrementalPrivateMiB, 170.01953125); assert.equal(receipt.memory.validSamples, 462); assert.equal(receipt.memory.unavailableSamples, 0);
+  const journal = await readFile(receipt.losslessJournal.file); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  assert.equal(sha(gunzipSync(journal, { maxOutputLength: 8 * 1048576 })), receipt.losslessJournal.sha256);
+  assert.ok(Object.values(receipt.cleanup).every(Boolean)); assert.equal(receipt.protectedOriginalUnchanged, true);
 });

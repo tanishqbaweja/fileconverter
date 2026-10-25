@@ -8,11 +8,11 @@ import { bindOpfsOutputValidationBacking, assertOpfsOutputValidationBackingUncha
 import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 
-async function fixture(run) {
+async function fixture(run, size = 131072) {
   const runtime = await createOwnedRuntimeScratch("opfs-validation-backing-unit-");
   try {
     const profile = path.join(runtime.directory, "profile"), storage = path.join(profile, "Default", "File System", "000", "t", "00");
-    await mkdir(storage, { recursive: true }); const bytes = Buffer.alloc(131072);
+    await mkdir(storage, { recursive: true }); const bytes = Buffer.alloc(size);
     for (let index = 0; index < bytes.length; index++) bytes[index] = (index * 79 + (index >> 7)) & 255;
     const file = path.join(storage, "00000002"); await writeFile(file, bytes, { flag: "wx" });
     // Synthetic unit adapter only; not real OPFS or conversion acceptance.
@@ -33,6 +33,27 @@ test("synthetic binding unit proves unique size/range match and unchanged identi
     await assertOpfsOutputValidationBackingUnchanged(result);
     await writeFile(file, Buffer.alloc(bytes.length + 1)); await assert.rejects(assertOpfsOutputValidationBackingUnchanged(result));
   });
+});
+
+test("small outputs compare EVERY byte in nonoverlapping <=4KiB chunks, with no full buffer/export or weaker binding", async () => {
+  for (const size of [1, 4095, 4096, 4097, 11425, 12287, 12288]) {
+    await fixture(async ({ profile, file, bytes, page }) => {
+      const result = await bindOpfsOutputValidationBacking(page, profile, "within-test-unit-binding", size), proof = result.proof;
+      assert.equal(result.file, file); assert.equal(proof.bindingMode, "every-output-byte-in-bounded-nonoverlapping-chunks");
+      assert.equal(proof.allOutputBytesCompared, true); assert.equal(proof.totalBrowserSampleBytes, size);
+      assert.ok(proof.maximumBrowserSampleBytes <= 4096); assert.equal(proof.maximumHostProbeBufferBytes, 4096);
+      assert.equal(proof.samples.length, Math.ceil(size / 4096));
+      let covered = 0;
+      for (const sample of proof.samples) { assert.equal(sample.offset, covered); assert.ok(sample.bytes > 0 && sample.bytes <= 4096); covered += sample.bytes; }
+      assert.equal(covered, size); assert.equal(proof.convertedCopyCreated, false); assert.equal(proof.fullContentAndFidelityValidationStillRequired, true);
+      await assertOpfsOutputValidationBackingUnchanged(result);
+      for (const offset of new Set([0, Math.floor(size / 2), size - 1])) {
+        const changed = Buffer.from(bytes); changed[offset] ^= 1; await writeFile(file, changed);
+        await assert.rejects(bindOpfsOutputValidationBacking(page, profile, "within-test-unit-binding", size), /unique/);
+      }
+      await assert.rejects(bindOpfsOutputValidationBacking(page, profile, "within-test-unit-binding", 0));
+    }, size);
+  }
 });
 
 test("ambiguous physical files, changed sampled bytes, invalid logical names and oversized validation scopes fail rather than guess", async () => {

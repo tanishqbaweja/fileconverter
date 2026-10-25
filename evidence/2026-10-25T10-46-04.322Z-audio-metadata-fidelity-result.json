@@ -1,0 +1,248 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "083640efd5b4545a6f1e9f988ce036cd13afac76",
+  "status": "failed",
+  "scope": "four NEW automatic Opus-to-Vorbis jobs: canonical/repeated/PNG/JPEG, unchanged60dB full-PCM gate; actual native quality argument3/q7 and visible automatic policy; not a higher-selector control, stress, speed or public requalification",
+  "publicAcceptance": false,
+  "fullMetadataAcceptance": false,
+  "archive": {
+    "path": "outputs/reports/2026-10-25T10-46-04.322Z-audio-metadata-production-runtime.json.gz",
+    "bytes": 21453,
+    "sha256": "1d34d3bde535f71e654920ed151013fa57849fbd30f546481ce979543eb65352",
+    "restoredBytes": 135845,
+    "restoredSha256": "fe5fa40c6e82a6c78b63ac967d3220f57a962fc48ab4039292fecae5aaac905c"
+  },
+  "sourcePins": 42,
+  "artifactManifestSha256": "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c",
+  "diskProof": {
+    "status": "exact-browser-canary-independently-found-on-disk",
+    "browserBytes": 64,
+    "physicalBytes": 64,
+    "sha256": "1656ea2833df6ec7c3d10453d015ed77291ed7f13a00808d9c6694d0399908ee",
+    "physicalFile": "work\\audio-metadata-production-kDJc3A\\chrome-profile\\Default\\File System\\000\\t\\00\\00000001",
+    "profileDirectory": "work\\audio-metadata-production-kDJc3A\\chrome-profile",
+    "inspectedEntries": 5,
+    "maximumReadBytes": 65,
+    "provesThisContextOpfsBacking": true,
+    "provesConversionAcceptance": false,
+    "canaryRemovedInFinally": true
+  },
+  "memory": {
+    "scope": "selected-small-case lifecycle only, not stress acceptance",
+    "limitMiB": 250,
+    "intervalMs": 100,
+    "peak": {
+      "sequence": 427,
+      "timestamp": "2026-10-25T10:47:13.1886403Z",
+      "phase": "case-1",
+      "privateBytes": 423055360,
+      "rssBytes": 675299328,
+      "nativeElapsedMs": 15.455400000000001,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 21272,
+          "parentPid": 26400,
+          "createdAt": "2026-10-25T10:46:25.4978396Z",
+          "creationFileTime": "134373987854978396",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8146944,
+          "rssBytes": 18673664
+        },
+        {
+          "pid": 25572,
+          "parentPid": 26400,
+          "createdAt": "2026-10-25T10:46:25.5396826Z",
+          "creationFileTime": "134373987855396826",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 35827712,
+          "rssBytes": 79069184
+        },
+        {
+          "pid": 25648,
+          "parentPid": 26400,
+          "createdAt": "2026-10-25T10:46:25.5722256Z",
+          "creationFileTime": "134373987855722256",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 144093184,
+          "rssBytes": 168890368
+        },
+        {
+          "pid": 26400,
+          "parentPid": 28188,
+          "createdAt": "2026-10-25T10:46:25.1626462Z",
+          "creationFileTime": "134373987851626462",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 46981120,
+          "rssBytes": 144310272
+        },
+        {
+          "pid": 33368,
+          "parentPid": 26400,
+          "createdAt": "2026-10-25T10:46:46.1680718Z",
+          "creationFileTime": "134373988061680718",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 17887232,
+          "rssBytes": 34607104
+        },
+        {
+          "pid": 38892,
+          "parentPid": 26400,
+          "createdAt": "2026-10-25T10:46:25.4656840Z",
+          "creationFileTime": "134373987854656840",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 13844480,
+          "rssBytes": 41742336
+        },
+        {
+          "pid": 42204,
+          "parentPid": 26400,
+          "createdAt": "2026-10-25T10:46:25.1935923Z",
+          "creationFileTime": "134373987851935923",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2523136,
+          "rssBytes": 10354688
+        },
+        {
+          "pid": 44276,
+          "parentPid": 26400,
+          "createdAt": "2026-10-25T10:46:25.4597306Z",
+          "creationFileTime": "134373987854597306",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 153751552,
+          "rssBytes": 177651712
+        }
+      ]
+    },
+    "incrementalPrivateMiB": 170.01953125,
+    "validSamples": 462,
+    "unavailableSamples": 0,
+    "fullHistoryInLosslessJournal": true
+  },
+  "memoryObserverOwnership": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 0,
+    "proofs": [],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false
+  },
+  "cases": [
+    {
+      "name": "opus-to-ogg",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 565,
+      "actualAutomaticQualityArgument": {
+        "requested": "automatic",
+        "nativeCode": 3,
+        "automaticPolicy": "opus-to-vorbis-q7"
+      },
+      "automaticQualityNoticeVisible": true,
+      "failures": [
+        "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(Number.isSafeInteger(expectedBytes) && expectedBytes >= 3 * limits.sampleBytes && expectedBytes <= 8 * 1048576)\n\n    at bindOpfsOutputValidationBacking (file:///H:/Github%20Repositories/fileconverter/scripts/lib/opfs-output-validation-backing.mjs:21:10)\n    at async file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:431:27"
+      ],
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-ogg-repeated-values",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 342,
+      "actualAutomaticQualityArgument": {
+        "requested": "automatic",
+        "nativeCode": 3,
+        "automaticPolicy": "opus-to-vorbis-q7"
+      },
+      "automaticQualityNoticeVisible": true,
+      "failures": [
+        "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(Number.isSafeInteger(expectedBytes) && expectedBytes >= 3 * limits.sampleBytes && expectedBytes <= 8 * 1048576)\n\n    at bindOpfsOutputValidationBacking (file:///H:/Github%20Repositories/fileconverter/scripts/lib/opfs-output-validation-backing.mjs:21:10)\n    at async file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:431:27"
+      ],
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-ogg-repeated-values-png-cover-automatic",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 166,
+      "actualAutomaticQualityArgument": {
+        "requested": "automatic",
+        "nativeCode": 3,
+        "automaticPolicy": "opus-to-vorbis-q7"
+      },
+      "automaticQualityNoticeVisible": true,
+      "failures": [
+        "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(Number.isSafeInteger(expectedBytes) && expectedBytes >= 3 * limits.sampleBytes && expectedBytes <= 8 * 1048576)\n\n    at bindOpfsOutputValidationBacking (file:///H:/Github%20Repositories/fileconverter/scripts/lib/opfs-output-validation-backing.mjs:21:10)\n    at async file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:431:27"
+      ],
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-ogg-repeated-values-mjpeg-cover-automatic",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 205,
+      "actualAutomaticQualityArgument": {
+        "requested": "automatic",
+        "nativeCode": 3,
+        "automaticPolicy": "opus-to-vorbis-q7"
+      },
+      "automaticQualityNoticeVisible": true,
+      "failures": [
+        "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(Number.isSafeInteger(expectedBytes) && expectedBytes >= 3 * limits.sampleBytes && expectedBytes <= 8 * 1048576)\n\n    at bindOpfsOutputValidationBacking (file:///H:/Github%20Repositories/fileconverter/scripts/lib/opfs-output-validation-backing.mjs:21:10)\n    at async file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:431:27"
+      ],
+      "interruption": null,
+      "disposableOutputRemoved": true
+    }
+  ],
+  "losslessJournal": {
+    "file": "output/playwright/2026-10-25T10-46-04.322Z-audio-fidelity-memory.ndjson.gz",
+    "records": 462,
+    "sha256": "90299d25dd71219139d273efb9dbc19abe340a9d9a02289fff732a50fc167689",
+    "archiveSha256": "2ea41432ad95b910812af081b0acfe5cedf317836117e1d281b735b65b586cc2",
+    "complete": true
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(report.cases.every(row => row.status === \"passed-small-private-fidelity-and-metadata-case\" && row.actualAutomaticQualityArgument?.nativeCode === 3))\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:520:12\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+  ],
+  "network": {
+    "observedRequests": 23,
+    "forbidden": [],
+    "nativeGlueRequests": 4,
+    "nativeWasmRequests": 4
+  },
+  "cleanup": {
+    "allRecordedBirthsAbsent": true,
+    "publishedAssetsNeverChanged": true,
+    "stagedPrivateAssetsRestored": true,
+    "ownedProfileFixturesOutputsRemoved": true
+  },
+  "protectedOriginalUnchanged": true
+}

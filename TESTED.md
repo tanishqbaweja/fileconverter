@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-25 first automatic-q7 browser gate10-46-04.322Z FAILED unchanged:
+all4real jobs complete/automatic selected/nativearg3/notice visible, but independent
+physical binder required>=12288B and outputs11425/11491/11843/11927B. NO
+independent output/PCM acceptance claimed. Full-tree170.0195MiB/462valid0missing,
+15owned births absent/original/assets/scratch cleanup PASS. Fixed validator-only
+small-output binding to compare EVERY byte in <=3 nonoverlapping <=4096B chunks;
+large3x4096sampling unchanged. Unit tests at1/4095/4096/4097/11425/12287/12288B
+prove full coverage and reject altered start/middle/end.90focused/audit/lint/
+TypeScript PASS; four changed-validation jobs must rerun, no native rebuild.
+
 2026-10-25 quality-policy integration initially failed stale route-total/
 pending-route and harness-source assertions after the exact q7 route was held
 private. Updated ONLY the measured transition:404public profiles/404indexed

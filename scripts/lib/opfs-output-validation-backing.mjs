@@ -1,6 +1,7 @@
 // Read-only independent validation of a finished browser output, never native
 // conversion. Bind an actual logical OPFS entry to its unique physical backing
-// using size plus three sampled ranges. No converted copy, full buffer, or
+// using size plus three sampled ranges (or EVERY byte of a <=12KiB output,
+// in <=4KiB nonoverlapping chunks). No converted copy, full buffer, or
 // filename-based guess. Existing full-output/audio/image validators still run.
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
@@ -18,8 +19,10 @@ export async function bindOpfsOutputValidationBacking(page, profileDirectory, en
   assert.equal(await realpath(profileDirectory), profileDirectory); const directoryInfo = await lstat(profileDirectory);
   assert.ok(directoryInfo.isDirectory() && !directoryInfo.isSymbolicLink());
   assert.ok(typeof entryName === "string" && entryName.startsWith("within-test-") && entryName.length <= 240 && !/[\\/]/.test(entryName));
-  assert.ok(Number.isSafeInteger(expectedBytes) && expectedBytes >= 3 * limits.sampleBytes && expectedBytes <= 8 * 1048576);
-  const ranges = [0, Math.floor((expectedBytes - limits.sampleBytes) / 2), expectedBytes - limits.sampleBytes];
+  assert.ok(Number.isSafeInteger(expectedBytes) && expectedBytes > 0 && expectedBytes <= 8 * 1048576);
+  const completeSmallOutput = expectedBytes <= limits.sampleRanges * limits.sampleBytes;
+  const ranges = completeSmallOutput ? Array.from({ length: Math.ceil(expectedBytes / limits.sampleBytes) }, (_, index) => index * limits.sampleBytes)
+    : [0, Math.floor((expectedBytes - limits.sampleBytes) / 2), expectedBytes - limits.sampleBytes];
   const browser = await page.evaluate(async ({ name, size, ranges, sampleBytes }) => {
     const directory = await navigator.storage.getDirectory(), entries = [];
     for await (const [entry, handle] of directory.entries()) {
@@ -34,9 +37,10 @@ export async function bindOpfsOutputValidationBacking(page, profileDirectory, en
       encoded: window.__WITHIN_AUDIO_VALIDATION_CHUNK__(new Uint8Array(await file.slice(offset, offset + sampleBytes).arrayBuffer())) });
     return { bytes: file.size, samples };
   }, { name: entryName, size: expectedBytes, ranges, sampleBytes: limits.sampleBytes });
-  assert.equal(browser.bytes, expectedBytes); assert.equal(browser.samples.length, limits.sampleRanges);
+  assert.equal(browser.bytes, expectedBytes); assert.equal(browser.samples.length, ranges.length); assert.ok(ranges.length <= limits.sampleRanges);
   const samples = browser.samples.map((sample, index) => {
-    assert.equal(sample.offset, ranges[index]); const bytes = decodeBoundedValidationChunk(sample.encoded); assert.equal(bytes.length, limits.sampleBytes);
+    assert.equal(sample.offset, ranges[index]); const bytes = decodeBoundedValidationChunk(sample.encoded);
+    assert.equal(bytes.length, Math.min(limits.sampleBytes, expectedBytes - sample.offset));
     return { offset: sample.offset, bytes: bytes.length, sha256: sha(bytes) };
   });
   let visited = 0, sizeCandidates = 0; const matches = [], buffer = Buffer.alloc(limits.sampleBytes);
@@ -55,8 +59,8 @@ export async function bindOpfsOutputValidationBacking(page, profileDirectory, en
         let matchesAll = true;
         for (const sample of samples) {
           let used = 0;
-          while (used < buffer.length) { const count = (await reader.read(buffer, used, buffer.length - used, sample.offset + used)).bytesRead; assert.ok(count > 0); used += count; }
-          if (sha(buffer) !== sample.sha256) { matchesAll = false; break; }
+          while (used < sample.bytes) { const count = (await reader.read(buffer, used, sample.bytes - used, sample.offset + used)).bytesRead; assert.ok(count > 0); used += count; }
+          if (sha(buffer.subarray(0, sample.bytes)) !== sample.sha256) { matchesAll = false; break; }
         }
         assert.deepEqual(identity(await reader.stat({ bigint: true })), identity(before));
         if (matchesAll) matches.push({ file, identity: identity(before) });
@@ -68,7 +72,9 @@ export async function bindOpfsOutputValidationBacking(page, profileDirectory, en
   const match = matches[0];
   return { file: match.file, proof: { scope: "read-only-independent-validation-of-finished-browser-OPFS-output",
     physicalFile: path.relative(root, match.file).replaceAll(path.sep, "/"), logicalBytes: expectedBytes, physicalIdentity: match.identity,
-    samples, totalBrowserSampleBytes: limits.sampleBytes * limits.sampleRanges, maximumBrowserSampleBytes: limits.sampleBytes,
+    samples, totalBrowserSampleBytes: samples.reduce((total, sample) => total + sample.bytes, 0), maximumBrowserSampleBytes: Math.max(...samples.map(sample => sample.bytes)),
+    bindingMode: completeSmallOutput ? "every-output-byte-in-bounded-nonoverlapping-chunks" : "three-fixed-sampled-ranges",
+    allOutputBytesCompared: completeSmallOutput,
     maximumHostProbeBufferBytes: buffer.length, inspectedEntries: visited, sizeCandidates,
     uniqueLogicalEntry: true, uniquePhysicalMatch: true, convertedCopyCreated: false, nativeConversionUsed: false,
     fullContentAndFidelityValidationStillRequired: true } };
