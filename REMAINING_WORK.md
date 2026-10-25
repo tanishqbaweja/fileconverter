@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-25 candidate14 with repaired observer09-11-56.851Z FAILED primary
+251.0625MiB at5/7jobs,506valid/0missing,34actual source pins. All five exact
+control outputs/image bytes/pixels/tags/repeats/full PCM PASS; owned cleanup/
+original/restoration PASS. Working observer is NOT a converter memory fix;
+lower-copy serializer does not prove whole-process improvement. No promotion
+or speed win. Next changed diagnostic run separates real terminal, bounded
+CDP validation export, independent validation and cleanup with page-realm-only
+heap snapshots/native sample IDs. ALL phases remain in same primary total;
+no forced GC/cooldown/threshold changes. Allocation cause still unproven.
+
 2026-10-25 birth-aware observer native09-09-43.886Z PASS: actual protected
 csrss1740 query denied, WMI microsecond birth interval proves synthetic stale
 parent relation; real owned private-memory read succeeds, unexcluded unreadable

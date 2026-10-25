@@ -6,6 +6,12 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Working observer candidate09-11-56.851Z FAILED251.0625MiB after5of7 jobs;
+five exact-control/fidelity/artwork/metadata outputs,506valid/0missing, owned
+cleanup/original PASS. Do NOT promote/retry unchanged/claim native speed as
+browser gain. Next stage/heap diagnostics localize conversion-vs-validation
+allocations; keep entire nonblank lifecycle in unchanged250MiB gate.
+
 Birth-aware observer native09-09-43.886Z PASS (denied protected read, proven
 stale relation, uncertain unreadable remains failed, real40MiB child6samples,
 exit null/owned cleanup). Historical source frozen; nine reversible ownership

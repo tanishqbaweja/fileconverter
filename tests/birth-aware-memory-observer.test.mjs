@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
 import { makeBirthAwareMemoryObserver, ORIGINAL_WINDOWS_OBSERVER_SHA256 } from "../scripts/lib/birth-aware-memory-observer-source.mjs";
 import { validateBirthOwnershipProofs } from "../scripts/lib/birth-aware-chromium-memory.mjs";
 const source = await readFile("scripts/lib/windows-tree-monitor.cs", "utf8"), helper = await readFile("scripts/lib/windows-process-birth-proof.cs", "utf8");
@@ -71,4 +72,35 @@ test("production browser gate now pins every observer source and retains birth p
   assert.match(runtime, /report.memoryObserverOwnership = monitor.ownershipSummary\(\)/);
   assert.match(runtime, /active.peak.privateBytes - report.blankBaseline.privateBytes/);
   assert.match(runtime, /assert.ok\(windows.length >= 2\)/);
+});
+
+test("first working-observer candidate run retains five genuine exact outputs but stays FAILED at251.0625MiB, not accepted optimization", async () => {
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const receipt = JSON.parse(await readFile("evidence/2026-10-25T09-11-56.851Z-audio-metadata-fidelity-result.json"));
+  assert.equal(receipt.status, "failed"); assert.equal(receipt.memory.incrementalPrivateMiB, 251.0625);
+  assert.equal(receipt.memory.validSamples, 506); assert.equal(receipt.memory.unavailableSamples, 0); assert.equal(receipt.sourcePins, 34);
+  assert.equal(receipt.cases.length, 5);
+  assert.ok(receipt.cases.every(row => row.status === "passed-small-private-fidelity-and-metadata-case" && row.disposableOutputRemoved
+    && row.outputSha256 === "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3"));
+  assert.equal(receipt.memoryObserverOwnership.generatedSourceSha256, makeBirthAwareMemoryObserver(source, helper).generatedSha256);
+  assert.equal(receipt.memoryObserverOwnership.memoryFormulaChanged, false); assert.equal(receipt.memoryObserverOwnership.processNameOrSandboxExclusions, false);
+  const archive = await readFile(receipt.archive.path); assert.equal(sha(archive), receipt.archive.sha256);
+  const raw = gunzipSync(archive, { maxOutputLength: 1048576 }); assert.equal(sha(raw), receipt.archive.restoredSha256);
+  const report = JSON.parse(raw); assert.equal(report.artifact.core.allowedSourceEdits, 14);
+  assert.ok(Object.values(report.cleanup).every(Boolean)); assert.equal(report.protectedOriginalUnchanged, true);
+  assert.ok(report.processCleanup.every(row => row.status === "owned-identity-absent"));
+  const journal = await readFile(receipt.losslessJournal.file); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  const decoded = gunzipSync(journal, { maxOutputLength: 8 * 1048576 }); assert.equal(sha(decoded), receipt.losslessJournal.sha256);
+  const samples = decoded.toString().trim().split("\n").map(line => JSON.parse(line).sample); assert.equal(samples.length, 506);
+  for (const sample of samples) assert.equal(sample.privateBytes, sample.processes.reduce((total, process) => total + process.privateBytes, 0));
+  const peak = Math.max(...samples.filter(sample => sample.phase !== "blank").map(sample => sample.privateBytes));
+  assert.equal((peak - report.blankBaseline.privateBytes) / 1048576, receipt.memory.incrementalPrivateMiB);
+});
+
+test("new allocation diagnostics separate validation/export without filtering it out of the primary process-tree gate", async () => {
+  const runtime = await readFile("scripts/test-audio-metadata-production-runtime.mjs", "utf8");
+  assert.match(runtime, /pageRealmOnlyNotWorkerOrProcessMemory: true/); assert.match(runtime, /noForcedGcOrArtificialCooldown: true/);
+  assert.match(runtime, /Runtime.getHeapUsage/); assert.match(runtime, /-validation-export/); assert.match(runtime, /-independent-validation/);
+  assert.match(runtime, /journal.peaksExcept\(\["blank"\]\)/);
+  assert.doesNotMatch(runtime, /HeapProfiler.collectGarbage|Memory\.forciblyPurgeJavaScriptMemory/);
 });

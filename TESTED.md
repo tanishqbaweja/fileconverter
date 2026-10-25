@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-25 candidate runtime09-11-56.851Z FAILED251.0625MiB at5/7, despite
+five fully accepted control outputs.506valid/0missing and34source pins now
+prove observer works; whole-process footprint still fails. Exact cover/pixels/
+25tags/repeats/PCM and owned cleanup/original PASS. No faster/public claim.
+Next instrumented stages distinguish conversion from validation-export growth;
+all phases still count; page-heap diagnostics not substitute process memory.
+
 2026-10-25 native birth-aware observer09-09-43.886Z PASS: actual denied
 protected-process access and conservative stale-parent birth proof; owned read
 passes; unproven unreadable still fails.40MiB real owned child observed6times,

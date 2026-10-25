@@ -114,7 +114,7 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "lib/native-input-memory-observation.ts",
   "lib/media-conversion-options.ts", "app/converter/ConverterApp.tsx", "app/globals.css"];
 const pins = async () => Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, sha(await readFile(path.join(root, file)))])));
-let browser, context, server, serverIdentity, monitor, journal, observer, monitorTimer, pending = Promise.resolve(), snapshotPending, monitorFailure, busy = false, serverLog = "", originalHash;
+let browser, context, server, serverIdentity, monitor, journal, observer, monitorTimer, benchmarkSession, pending = Promise.resolve(), snapshotPending, monitorFailure, busy = false, serverLog = "", originalHash;
 const identities = [], staged = [], tail = [], phases = [{ phase: "blank", at: Date.now() }];
 const phase = name => phases.push({ phase: name, at: Date.now() });
 const snapshot = async () => {
@@ -238,6 +238,7 @@ try {
     const identity = await queryProcessIdentity(Number(roots[0].id)); assert.ok(identity); identities.push(identity); report.browserBirth = identity;
   } finally { await identitySession.detach(); }
   assert.ok(context.pages().length <= 1); const page = context.pages()[0] ?? await context.newPage();
+  if (artworkBenchmark) benchmarkSession = await context.newCDPSession(page);
   await context.addInitScript({ content: "Object.defineProperty(globalThis, '__WITHIN_AUDIO_VALIDATION_CHUNK__', { value: (" + encodeBoundedValidationChunk.toString() + ") });" });
   context.on("request", request => { report.network.observedRequests++;
     if (request.url() === base + "/engines/remux/within-remux.mjs") report.network.nativeGlueRequests++;
@@ -269,6 +270,14 @@ try {
     }
     return entries.sort((a, b) => a.name.localeCompare(b.name));
   });
+  const validationCheckpoint = async () => {
+    await snapshot(); const sample = tail.findLast(value => value.privateBytes !== null);
+    const heap = await benchmarkSession.send("Runtime.getHeapUsage");
+    assert.ok(Number.isFinite(heap.usedSize) && Number.isFinite(heap.totalSize));
+    return { at: new Date().toISOString(), pageRealmHeap: heap, pageRealmOnlyNotWorkerOrProcessMemory: true,
+      nativeSample: sample ? { sequence: sample.sequence, timestamp: sample.timestamp, phase: sample.phase, privateBytes: sample.privateBytes } : null,
+      primaryStillIncludesAllNonblankPhases: true, noForcedGcOrArtificialCooldown: true };
+  };
   const screenshot = async (conversion, index, row) => {
     const directory = path.join(root, "output/playwright", stamp + "-audio-fidelity"); await mkdir(directory, { recursive: true });
     await page.locator(".progress-panel").scrollIntoViewIfNeeded(); const file = path.join(directory, `case-${index}-terminal.png`);
@@ -334,6 +343,10 @@ try {
       assert.ok(state.metrics.peakPendingOperations <= 1); assert.equal(state.metrics.pendingOperations, 0);
       const size = await page.evaluate(async name => (await (await (await navigator.storage.getDirectory()).getFileHandle(name)).getFile()).size, entryName);
       assert.ok(size > 0 && size < (extendedArtworkInspection ? 8 * 1048576 : 1048576), "Only explicit finite artwork-boundary cases may export over1MiB");
+      if (artworkBenchmark) {
+        row.validationDiagnostics = { terminal: await validationCheckpoint() };
+        phase("case-" + index + "-validation-export");
+      }
       const writer = await open(output, "wx"); outputIdentity = await writer.stat({ bigint: true });
       try { for (let offset = 0; offset < size; offset += 65536) {
         const encoded = await page.evaluate(async ({ name, offset, count }) => {
@@ -343,6 +356,7 @@ try {
         const bytes = decodeBoundedValidationChunk(encoded); assert.equal(bytes.length, Math.min(65536, size - offset)); let at = 0;
         while (at < bytes.length) { const n = (await writer.write(bytes, at, bytes.length - at, offset + at)).bytesWritten; assert.ok(n > 0); at += n; }
       } } finally { await writer.close(); }
+      if (artworkBenchmark) { row.validationDiagnostics.afterExport = await validationCheckpoint(); phase("case-" + index + "-independent-validation"); }
       const outputProbe = await probeAudio(output);
       if (!conversion.artwork || conversion.expectedExclusion) assert.equal(outputProbe.streams.length, 1);
       const audio = outputProbe.streams.find(stream => stream.codec_type === "audio"); assert.ok(audio);
@@ -380,6 +394,7 @@ try {
         try { assert.deepEqual(row.repeatedValues, AUDIO_REPEATED_COMMENTS); } catch { row.failures.push("Repeated comment values were folded, overwritten or reordered"); }
       }
       row.status = row.failures.length ? "failed" : "passed-small-private-fidelity-and-metadata-case";
+      if (artworkBenchmark) row.validationDiagnostics.afterValidation = await validationCheckpoint();
       }
       if (artworkBenchmark ? index === 0 || index === selectedCases.length - 1 : index === 0 || conversion.repeated || conversion.interruption) await screenshot(conversion, index, row);
     } catch (error) { row.failures.push(String(error.stack ?? error).slice(0, 4096)); }
@@ -388,6 +403,7 @@ try {
       if (outputIdentity) { const current = await lstat(output, { bigint: true }); assert.equal(current.dev, outputIdentity.dev); assert.equal(current.ino, outputIdentity.ino); await unlink(output); }
       row.disposableOutputRemoved = true;
     }
+    if (artworkBenchmark && row.validationDiagnostics) row.validationDiagnostics.afterCleanup = await validationCheckpoint();
     await snapshot(); recordMemory(); if (report.memory.incrementalPrivateMiB > 250) throw new Error("Whole Chromium250MiB gate failed; retain completed fidelity evidence without promotion");
   }
   phase("recovery"); await pause(2100); await snapshot(); recordMemory();
@@ -411,6 +427,7 @@ finally {
   }
   if (monitorFailure) { report.failures.push(String(monitorFailure)); report.status = "failed"; }
   if (report.memory?.incrementalPrivateMiB > 250 || report.network.forbidden.length) report.status = "failed";
+  if (benchmarkSession) await benchmarkSession.detach().catch(error => { report.failures.push("Diagnostic session close: " + String(error)); report.status = "failed"; });
   await finishOwnedCleanup([
     async () => { if (monitor) await monitor.close(); }, async () => { if (context) await context.close(); else if (browser) await browser.close(); },
     async () => { if (server && server.exitCode === null) { assert.deepEqual(await queryProcessIdentity(server.pid), serverIdentity);
@@ -440,6 +457,7 @@ finally {
     sourcePins: Object.keys(report.sources ?? {}).length, artifactManifestSha256: report.artifact?.manifestSha256, diskProof: report.diskProof,
     memory: report.memory, memoryObserverOwnership: report.memoryObserverOwnership, benchmark: report.benchmark, cases: report.cases.map(c => ({ name: c.name, status: c.status, requestedQuality: c.requestedQuality, browserElapsedMs: c.browserElapsedMs,
       engineElapsedMs: c.engineElapsedMs, benchmarkIteration: c.benchmarkIteration, benchmarkWarmup: c.benchmarkWarmup,
+      validationDiagnostics: c.validationDiagnostics,
       failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags?.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, artwork: c.artwork,
       streamingPictureInspection: c.streamingPictureInspection,
