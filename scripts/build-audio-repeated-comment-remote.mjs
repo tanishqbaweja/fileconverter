@@ -10,20 +10,24 @@ import { promisify } from "node:util";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { makeAudioRepeatedCommentBuildWorkflow } from "./lib/audio-repeated-comment-build-workflow.mjs";
 import { makeAudioOggArtworkBuildWorkflow } from "./lib/audio-ogg-artwork-build-workflow.mjs";
+import { makeAudioOggArtworkLowerCopyBuildWorkflow } from "./lib/audio-ogg-artwork-lower-copy-build-workflow.mjs";
 import { auditAudioMetadataArtifact, validateAudioMetadataArtifactName } from "./lib/audio-metadata-artifact.mjs";
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), sha = b => createHash("sha256").update(b).digest("hex");
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && process.argv[3] === "--ogg-artwork"));
-const oggArtwork = process.argv[3] === "--ogg-artwork";
-const branch = oggArtwork ? "codex/audio-ogg-artwork-20261025-v1" : "codex/audio-repeated-comments-20261024-v3", repository = "tanishqbaweja/fileconverter";
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--ogg-artwork", "--ogg-artwork-lower-copy"].includes(process.argv[3])));
+const lowerCopy = process.argv[3] === "--ogg-artwork-lower-copy", oggArtwork = lowerCopy || process.argv[3] === "--ogg-artwork";
+const branch = lowerCopy ? "codex/audio-ogg-artwork-lower-copy-20261025-v1"
+  : oggArtwork ? "codex/audio-ogg-artwork-20261025-v1" : "codex/audio-repeated-comments-20261024-v3", repository = "tanishqbaweja/fileconverter";
 const workflowPath = ".github/workflows/reproduce-ffmpeg-nondocker.yml", workflowName = "reproduce-ffmpeg-nondocker.yml";
-const receiptPath = path.join(root, oggArtwork ? "evidence/audio-ogg-artwork-build-2026-10-25-v1.json" : "evidence/audio-repeated-comment-build-2026-10-24-v3.json");
+const receiptPath = path.join(root, lowerCopy ? "evidence/audio-ogg-artwork-lower-copy-build-2026-10-25-v1.json"
+  : oggArtwork ? "evidence/audio-ogg-artwork-build-2026-10-25-v1.json" : "evidence/audio-repeated-comment-build-2026-10-24-v3.json");
 assert.ok(["prepare", "dispatch", "observe", "collect"].includes(process.argv[2]));
 const runtime = await createOwnedRuntimeScratch("audio-repeated-remote-");
 try {
   const call = async (binary, args, env = runtime.env) => (await execute(binary, args, { cwd: root, env,
     windowsHide: true, timeout: 30000, maxBuffer: 1048576 })).stdout.trim();
   const git = (args, env) => call("git", args, env), gh = args => call(process.platform === "win32" ? "D:/Program Files/GitHub CLI/gh.exe" : "gh", args);
-  const canonical = await readFile(path.join(root, workflowPath), "utf8"), generated = (oggArtwork ? makeAudioOggArtworkBuildWorkflow : makeAudioRepeatedCommentBuildWorkflow)(canonical);
+  const canonical = await readFile(path.join(root, workflowPath), "utf8"), generated = (lowerCopy ? makeAudioOggArtworkLowerCopyBuildWorkflow
+    : oggArtwork ? makeAudioOggArtworkBuildWorkflow : makeAudioRepeatedCommentBuildWorkflow)(canonical);
   const list = async () => JSON.parse(await gh(["run", "list", "--repo", repository, "--workflow", workflowName, "--branch", branch,
     "--event", "workflow_dispatch", "--limit", "10", "--json", "databaseId,headSha,status,conclusion,createdAt,updatedAt,url"]));
   if (process.argv[2] === "prepare") {
@@ -52,7 +56,7 @@ try {
     const report = { recordedAt: new Date().toISOString(), status: "isolated-build-branch-pushed-not-dispatched", branch, parent, commit, tree,
       workflow: { path: workflowPath, canonicalSha256: sha(canonical), generatedSha256: generated.generatedSha256, gitBlob: blob },
       canonicalHeadIndexAndWorkflowUnchanged: true, mainUnchanged: true, remoteVerified: true, noCheckoutOrMediaCopyCreated: true,
-      priorComparableBuild: { runId: 39517752087, elapsedSeconds: 497 }, estimatedBuildMinutes: 9,
+      priorComparableBuild: lowerCopy ? { runId: 40156938341, elapsedSeconds: 310 } : { runId: 39517752087, elapsedSeconds: 497 }, estimatedBuildMinutes: lowerCopy ? 6 : 9,
       browserConversions: 0, publicAcceptance: false, noDocker: true };
     await writeFile(receiptPath, JSON.stringify(report, null, 2) + "\n", { flag: "wx" });
     console.log(JSON.stringify(report));
@@ -87,7 +91,7 @@ try {
       assert.equal(artifact.workflow_run.head_sha, receipt.commit); assert.equal(String(artifact.workflow_run.id), runId);
       assert.ok(artifact.size_in_bytes > 0 && artifact.size_in_bytes <= 16 * 1048576);
       const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 64 * 1048576);
-      const download = path.join(runtime.directory, "tools"), cache = path.join(root, "work", (oggArtwork ? "audio-ogg-artwork-" : "audio-repeated-metadata-") + runId);
+      const download = path.join(runtime.directory, "tools"), cache = path.join(root, "work", (lowerCopy ? "audio-ogg-artwork-lower-copy-" : oggArtwork ? "audio-ogg-artwork-" : "audio-repeated-metadata-") + runId);
       await assert.rejects(access(cache), { code: "ENOENT" });
       await gh(["run", "download", runId, "--repo", repository, "--name", artifact.name, "--dir", download]);
       const names = await readdir(download); assert.equal(names.length, 16); let total = 0;

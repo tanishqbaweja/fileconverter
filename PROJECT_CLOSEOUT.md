@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Current optimization: private lower-copy Ogg picture serializer, NOT promoted.
+Native04-21-54.520Z220 exact cases/OOM/cleanup PASS,4,194,381B fewer explicit
+temporary allocations plus<=4140B stack;4MiB native paired median1.3648x/8of8.
+No browser speed/full-tree savings claim. All56 baseline build files unchanged;
+next compile14-edit private derivative once, audit, then identical hash-pinned
+browser comparison and affected fidelity/IO recovery. Same SDK/codec/thread/
+32-96MiB heap/AVIO/privacy/formula.020031b CI40161017375 SUCCESS. Full goal OPEN.
+
 Changed IO gate04-06-15.912Z PASS3/3: actual UI cancel after positive IO,
 existing localhost rejection after real47B header write, accepted4MiB recovery
 in same page/context. Actual32MiB Wasm and attempted-write telemetry repaired;

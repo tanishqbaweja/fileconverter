@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-25 matched native SERIALIZER-ONLY lower-copy probe04-21-54.520Z
+PASS220 differential cases/atomic OOM/cleanup; no native media conversion.
+Exact instrumented allocation bytes9,786,890 ->5,592,509 plus fixed<=4140B
+header/bridge stack.4MiB8paired alternating batches: median25.998/19.0491ms
+per8calls,1.3648x, candidate faster8/8.128B case only1.0251x/6of8; native
+64KiB2.7821x/8of8; timings are not browser conversion performance evidence.
+Baseline helper and all56 build inputs frozen;14-edit private core derivation
+and unchanged recipe/heap audit prepared. Browser correctness/memory/speed/
+recovery and public promotion UNVERIFIED.020031b portable CI40161017375 PASS.
+
 2026-10-25 changed IO gate04-06-15.912Z PASS3/3, private small scope only.
 UI cancellation after262,144B read/116,726B written; real47B header write
 followed by existing localhost fault; valid4MiB-artwork conversion afterward

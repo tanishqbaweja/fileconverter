@@ -1,0 +1,265 @@
+{
+  "startedAt": "2026-10-25T04:21:54.520Z",
+  "scope": "paired serializer-only allocation/timing, NOT browser conversion speed or acceptance",
+  "publicAcceptance": false,
+  "browserConversionVerified": false,
+  "nativeMediaConversionUsed": false,
+  "derivation": {
+    "baselineSha256": "aa4c4f2d3f3432116e2dcfa02625446c0de8a1a6af0ea409f3c96cdbff6ac6ff",
+    "candidateSha256": "b13c4d59bab2936fab05e4667b9020c56d5050c9240147e0c0f123561e94a56b",
+    "reversibleEdits": 4,
+    "maximumHeaderStackBytes": 4137,
+    "maximumBridgeStackBytes": 3
+  },
+  "sources": {
+    "tests/native/audio-ogg-artwork-lower-copy.c": "0b5d85609dff2489a7a57e40a2d9d04b265a12d5ed721ba049216f10a9af795c",
+    "media/ffmpeg/audio-ogg-artwork.h": "aa4c4f2d3f3432116e2dcfa02625446c0de8a1a6af0ea409f3c96cdbff6ac6ff",
+    "media/ffmpeg/audio-text-metadata.h": "85da9b964bb50ffa8fd3a93b073d4c2369a13034549cef4fd552c5fc82d0bf28",
+    "media/ffmpeg/audio-ogg-artwork-lower-copy-candidate.mjs": "bbca567317d7191cf39b6684b591b385c5f6a1af4b09e6d7c6de2cec8666b0ef",
+    "scripts/benchmark-audio-ogg-artwork-lower-copy-native.mjs": "1f11528783f48d1e24c54a68a5cff6d25da54a064ea460803b3a979433d17deb"
+  },
+  "native": {
+    "compilerSha256": "a8b7a614eeadd9105f814be3701a7f312cda4cea51751b75b408c16100c94e85",
+    "libavutilDllSha256": "c4090c00550653c1a9c908a0231ab5c741a97ff00638411fd142bba86d788226"
+  },
+  "behavior": {
+    "status": "passed-matched-native-serializer-only",
+    "exactDifferentialCases": 220,
+    "atomicOomBoth": true,
+    "baselineExplicitAllocationBytes": 9786890,
+    "candidateExplicitAllocationBytes": 5592509,
+    "baselineAllocationCalls": 2,
+    "candidateAllocationCalls": 1,
+    "measurements": [
+      {
+        "imageBytes": 128,
+        "iterations": 2048,
+        "round": 0,
+        "order": "AB",
+        "baselineMs": 2.0951,
+        "candidateMs": 1.7412
+      },
+      {
+        "imageBytes": 128,
+        "iterations": 2048,
+        "round": 1,
+        "order": "BA",
+        "baselineMs": 1.7775,
+        "candidateMs": 1.7387
+      },
+      {
+        "imageBytes": 128,
+        "iterations": 2048,
+        "round": 2,
+        "order": "AB",
+        "baselineMs": 1.8033,
+        "candidateMs": 1.9855
+      },
+      {
+        "imageBytes": 128,
+        "iterations": 2048,
+        "round": 3,
+        "order": "BA",
+        "baselineMs": 2.0031,
+        "candidateMs": 1.986
+      },
+      {
+        "imageBytes": 128,
+        "iterations": 2048,
+        "round": 4,
+        "order": "AB",
+        "baselineMs": 1.8351,
+        "candidateMs": 1.7742
+      },
+      {
+        "imageBytes": 128,
+        "iterations": 2048,
+        "round": 5,
+        "order": "BA",
+        "baselineMs": 1.7831,
+        "candidateMs": 1.731
+      },
+      {
+        "imageBytes": 128,
+        "iterations": 2048,
+        "round": 6,
+        "order": "AB",
+        "baselineMs": 1.7956,
+        "candidateMs": 1.775
+      },
+      {
+        "imageBytes": 128,
+        "iterations": 2048,
+        "round": 7,
+        "order": "BA",
+        "baselineMs": 1.8501,
+        "candidateMs": 2.8046
+      },
+      {
+        "imageBytes": 65536,
+        "iterations": 64,
+        "round": 0,
+        "order": "AB",
+        "baselineMs": 4.631,
+        "candidateMs": 1.6975
+      },
+      {
+        "imageBytes": 65536,
+        "iterations": 64,
+        "round": 1,
+        "order": "BA",
+        "baselineMs": 7.0183,
+        "candidateMs": 1.7074
+      },
+      {
+        "imageBytes": 65536,
+        "iterations": 64,
+        "round": 2,
+        "order": "AB",
+        "baselineMs": 7.167,
+        "candidateMs": 2.8075
+      },
+      {
+        "imageBytes": 65536,
+        "iterations": 64,
+        "round": 3,
+        "order": "BA",
+        "baselineMs": 4.741,
+        "candidateMs": 1.725
+      },
+      {
+        "imageBytes": 65536,
+        "iterations": 64,
+        "round": 4,
+        "order": "AB",
+        "baselineMs": 4.5904,
+        "candidateMs": 1.6278
+      },
+      {
+        "imageBytes": 65536,
+        "iterations": 64,
+        "round": 5,
+        "order": "BA",
+        "baselineMs": 5.523,
+        "candidateMs": 1.6084
+      },
+      {
+        "imageBytes": 65536,
+        "iterations": 64,
+        "round": 6,
+        "order": "AB",
+        "baselineMs": 4.5325,
+        "candidateMs": 2.2291
+      },
+      {
+        "imageBytes": 65536,
+        "iterations": 64,
+        "round": 7,
+        "order": "BA",
+        "baselineMs": 4.8083,
+        "candidateMs": 2.1461
+      },
+      {
+        "imageBytes": 4194304,
+        "iterations": 8,
+        "round": 0,
+        "order": "AB",
+        "baselineMs": 26.0647,
+        "candidateMs": 18.45
+      },
+      {
+        "imageBytes": 4194304,
+        "iterations": 8,
+        "round": 1,
+        "order": "BA",
+        "baselineMs": 25.0333,
+        "candidateMs": 18.7898
+      },
+      {
+        "imageBytes": 4194304,
+        "iterations": 8,
+        "round": 2,
+        "order": "AB",
+        "baselineMs": 27.9419,
+        "candidateMs": 18.6649
+      },
+      {
+        "imageBytes": 4194304,
+        "iterations": 8,
+        "round": 3,
+        "order": "BA",
+        "baselineMs": 26.7521,
+        "candidateMs": 18.8951
+      },
+      {
+        "imageBytes": 4194304,
+        "iterations": 8,
+        "round": 4,
+        "order": "AB",
+        "baselineMs": 25.3508,
+        "candidateMs": 20.0585
+      },
+      {
+        "imageBytes": 4194304,
+        "iterations": 8,
+        "round": 5,
+        "order": "BA",
+        "baselineMs": 25.7063,
+        "candidateMs": 19.2031
+      },
+      {
+        "imageBytes": 4194304,
+        "iterations": 8,
+        "round": 6,
+        "order": "AB",
+        "baselineMs": 26.1889,
+        "candidateMs": 19.3782
+      },
+      {
+        "imageBytes": 4194304,
+        "iterations": 8,
+        "round": 7,
+        "order": "BA",
+        "baselineMs": 25.9313,
+        "candidateMs": 19.9273
+      }
+    ],
+    "browserConversionVerified": false,
+    "consumed": 3054960
+  },
+  "timing": [
+    {
+      "imageBytes": 128,
+      "iterationsPerBatch": 2048,
+      "pairedBatches": 8,
+      "baselineMedianBatchMs": 1.8192,
+      "candidateMedianBatchMs": 1.7746,
+      "medianBatchSpeedup": 1.0251324242082722,
+      "candidateFasterBatches": 6,
+      "scope": "native-serializer-only-not-browser-speed"
+    },
+    {
+      "imageBytes": 65536,
+      "iterationsPerBatch": 64,
+      "pairedBatches": 8,
+      "baselineMedianBatchMs": 4.774649999999999,
+      "candidateMedianBatchMs": 1.7162000000000002,
+      "medianBatchSpeedup": 2.782105815173056,
+      "candidateFasterBatches": 8,
+      "scope": "native-serializer-only-not-browser-speed"
+    },
+    {
+      "imageBytes": 4194304,
+      "iterationsPerBatch": 8,
+      "pairedBatches": 8,
+      "baselineMedianBatchMs": 25.997999999999998,
+      "candidateMedianBatchMs": 19.0491,
+      "medianBatchSpeedup": 1.364788887663984,
+      "candidateFasterBatches": 8,
+      "scope": "native-serializer-only-not-browser-speed"
+    }
+  ],
+  "status": "passed-differential-allocation-and-native-timing-probe-browser-unverified",
+  "ownedCompilerOutputAndScratchRemoved": true,
+  "finishedAt": "2026-10-25T04:21:55.580Z"
+}

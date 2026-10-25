@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-10-25 lower-copy artwork experiment native04-21-54.520Z PASS220 exact
+serializer comparisons (both MIME lengths, all base64 residues/tiny payloads,
+Unicode/roles/4095B descriptions/maximum4137B header/4MiB image), atomic OOM.
+Private four-edit helper derivative removes image-sized binary block+copy;
+existing libavutil encoder handles aligned prefix/three-byte bridge/image.
+Explicit instrumented allocations9,786,890 ->5,592,509B (4,194,381B saved),
+plus fixed4140B maximum stack.4MiB native eight-pair alternating-order median
+25.998 ->19.0491ms per8calls,1.3648x, faster8/8; NOT browser throughput or
+full-tree memory savings. Original56 build sources/current engine unchanged.
+New14-edit private core/recipe/workflow/audit ready with same codec/I/O/heap;
+actual Wasm compile and matched production-browser qualification UNVERIFIED.
+Keep existing public UI/registry unchanged. Prior020031b CI40161017375 SUCCESS.
+
 2026-10-25 changed IO sequence04-06-15.912Z PASS3/3 private small cases:
 real midstream UI cancel, existing localhost error AFTER real47B header write,
 then accepted4MiB cover conversion in SAME page/context. Actual AVIO memory
