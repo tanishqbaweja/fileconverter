@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-25 diagnostic7job09-17-12.730Z PASS240.81640625MiB/556valid/0missing;
+all7 exact-control outputs/fidelity/covers/metadata, cleanup/original PASS.
+Case1-4 export adds exactlyone5,633,796B output in page backing storage each;
+case5 natural GC reduces it. No forcedGC/phase exclusion and prior failures
+remain failed. Native14 candidate not repeatably qualified/faster/promoted.
+Prepared read-only physical OPFS validation: unique logical/file size +three
+4KiB byte probes, still full hash/independent decode/PCM checks, no output copy.
+25focused/lint/TypeScript/diff PASS; browser backing binding UNVERIFIED.
+
 2026-10-25 candidate runtime09-11-56.851Z FAILED251.0625MiB at5/7, despite
 five fully accepted control outputs.506valid/0missing and34source pins now
 prove observer works; whole-process footprint still fails. Exact cover/pixels/

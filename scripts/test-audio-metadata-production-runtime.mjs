@@ -33,14 +33,16 @@ import { stableWindow } from "./lib/chromium-private-memory.mjs";
 import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
 import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mjs";
 import { verifyOpfsDiskBacking } from "./lib/opfs-disk-backing-proof.mjs";
+import { bindOpfsOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "./lib/opfs-output-validation-backing.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
 const qualityComparison = process.argv[3] === "--compare-vorbis-quality";
 const remainingRepeated = process.argv[3] === "--remaining-repeated-audio";
 const flacOrderRepair = process.argv[3] === "--flac-order-repair";
 const artworkMetadata = process.argv[3] === "--artwork-metadata";
-const artworkBenchmark = process.argv[3] === "--artwork-serializer-benchmark";
+const physicalValidation = process.argv[3] === "--artwork-benchmark-physical-validation";
+const artworkBenchmark = process.argv[3] === "--artwork-serializer-benchmark" || physicalValidation;
 const artworkBudget = process.argv[3] === "--artwork-byte-budget" || artworkBenchmark;
 const audioIoRecovery = process.argv[3] === "--audio-io-recovery";
 const artworkRejection = process.argv[3] === "--artwork-rejection-recovery", extendedArtworkInspection = artworkBudget || artworkRejection || audioIoRecovery;
@@ -79,6 +81,7 @@ if (artworkBenchmark) {
     comparisonRequiresSeparateBracketedBaselineAndCandidateRuns: true,
     browserElapsedMetric: "host wall clock from real UI click to observed terminal state",
     engineElapsedMetric: "actual production job metrics.elapsedMs at terminal; not serializer-only CPU time" };
+  report.benchmark.validationBackend = physicalValidation ? "unique-byte-bound-physical-OPFS-no-output-copy" : "bounded-CDP-export-copy";
 }
 if (artworkRejection) report.scope = "three NEW same-page cases: valid one-byte-over/one-pixel-over covers excluded with visible exact warnings, then accepted4MiB recovery; not cancellation/write-failure/full recovery/stress acceptance";
 if (audioIoRecovery) report.scope = "three NEW same-page real-UI jobs: midstream180s-fixture cancellation, localhost injected error AFTER real artwork-header write, accepted4MiB recovery; not OS-picker/direct-destination/quota/permission/stress acceptance";
@@ -110,6 +113,7 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/native-memory-peaks.mjs", "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs",
   "scripts/lib/birth-aware-chromium-memory.mjs", "scripts/lib/birth-aware-memory-observer-source.mjs", "scripts/lib/windows-tree-monitor.cs",
   "scripts/lib/windows-process-birth-proof.cs", "scripts/lib/windows-tree-monitor-birth-aware.ps1",
+  "scripts/lib/opfs-output-validation-backing.mjs",
   "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts", "lib/browser-capabilities.ts", "lib/capability-registry.ts",
   "lib/native-input-memory-observation.ts",
   "lib/media-conversion-options.ts", "app/converter/ConverterApp.tsx", "app/globals.css"];
@@ -290,7 +294,8 @@ try {
     if (monitorFailure) throw monitorFailure;
     const profileId = `${conversion.source}-to-${conversion.destination}`, input = path.join(runtime.directory, conversion.interruption === "cancel" ? "source-cancel.flac" : conversion.artwork
       ? `source-artwork-${conversion.artwork}.${conversion.source}` : (conversion.repeated ? "source-repeated." : "source.") + conversion.source),
-      output = path.join(runtime.directory, `output-${index}.${conversion.destination}`);
+      outputCopy = path.join(runtime.directory, `output-${index}.${conversion.destination}`);
+    let output = outputCopy, physicalBinding;
     const row = { name: profileId + (conversion.repeated ? "-repeated-values" : "") + (conversion.artwork ? "-" + conversion.artwork + "-cover" : "") + (conversion.quality ? "-" + conversion.quality : "")
       + (conversion.expectedExclusion ? "-expected-exclusion" : "") + (conversion.recoveryAfterExclusions ? "-same-page-recovery" : "")
       + (conversion.interruption ? "-" + conversion.interruption : "") + (conversion.recoveryAfterIo ? "-after-io-interruptions" : "")
@@ -347,6 +352,10 @@ try {
         row.validationDiagnostics = { terminal: await validationCheckpoint() };
         phase("case-" + index + "-validation-export");
       }
+      if (physicalValidation) {
+        physicalBinding = await bindOpfsOutputValidationBacking(page, profile, entryName, size); output = physicalBinding.file;
+        row.physicalValidation = physicalBinding.proof;
+      } else {
       const writer = await open(output, "wx"); outputIdentity = await writer.stat({ bigint: true });
       try { for (let offset = 0; offset < size; offset += 65536) {
         const encoded = await page.evaluate(async ({ name, offset, count }) => {
@@ -356,6 +365,7 @@ try {
         const bytes = decodeBoundedValidationChunk(encoded); assert.equal(bytes.length, Math.min(65536, size - offset)); let at = 0;
         while (at < bytes.length) { const n = (await writer.write(bytes, at, bytes.length - at, offset + at)).bytesWritten; assert.ok(n > 0); at += n; }
       } } finally { await writer.close(); }
+      }
       if (artworkBenchmark) { row.validationDiagnostics.afterExport = await validationCheckpoint(); phase("case-" + index + "-independent-validation"); }
       const outputProbe = await probeAudio(output);
       if (!conversion.artwork || conversion.expectedExclusion) assert.equal(outputProbe.streams.length, 1);
@@ -395,6 +405,7 @@ try {
       }
       row.status = row.failures.length ? "failed" : "passed-small-private-fidelity-and-metadata-case";
       if (artworkBenchmark) row.validationDiagnostics.afterValidation = await validationCheckpoint();
+      if (physicalBinding) await assertOpfsOutputValidationBackingUnchanged(physicalBinding);
       }
       if (artworkBenchmark ? index === 0 || index === selectedCases.length - 1 : index === 0 || conversion.repeated || conversion.interruption) await screenshot(conversion, index, row);
     } catch (error) { row.failures.push(String(error.stack ?? error).slice(0, 4096)); }
@@ -458,6 +469,7 @@ finally {
     memory: report.memory, memoryObserverOwnership: report.memoryObserverOwnership, benchmark: report.benchmark, cases: report.cases.map(c => ({ name: c.name, status: c.status, requestedQuality: c.requestedQuality, browserElapsedMs: c.browserElapsedMs,
       engineElapsedMs: c.engineElapsedMs, benchmarkIteration: c.benchmarkIteration, benchmarkWarmup: c.benchmarkWarmup,
       validationDiagnostics: c.validationDiagnostics,
+      physicalValidation: c.physicalValidation,
       failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags?.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, artwork: c.artwork,
       streamingPictureInspection: c.streamingPictureInspection,

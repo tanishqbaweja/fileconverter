@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Diagnostic7job candidate09-17-12.730Z passed240.8164MiB,556valid/0missing;
+earlier failures still constrain repeatability. Exact output-sized ArrayBuffer
+growth during validation export (5,633,796B/job cases1-4, then naturalGC) now
+measured. Next qualify explicit no-copy physical-OPFS validation backend after
+size/three-range/unique-entry binding; keep full native validation and ALL
+nonblank phases in250MiB total. Not a production memory or browser speed fix.
+
 Working observer candidate09-11-56.851Z FAILED251.0625MiB after5of7 jobs;
 five exact-control/fidelity/artwork/metadata outputs,506valid/0missing, owned
 cleanup/original PASS. Do NOT promote/retry unchanged/claim native speed as

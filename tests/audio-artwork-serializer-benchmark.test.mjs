@@ -16,7 +16,7 @@ function syntheticReports() {
     artworkAcceptance: false, scalingAcceptance: false, headedCoverage: false, nativeConversionUsed: false,
     artifact: { core: { allowedSourceEdits: edits }, manifestSha256: edits === 10 ? "baseline" : "candidate" },
     sources: { "test-only-synthetic": "same" }, browser: { testOnly: true },
-    benchmark: { warmupJobs: 1, measuredJobs: 6, warmupExcludedOnlyFromTimingNotCorrectnessOrMemory: true },
+    benchmark: { warmupJobs: 1, measuredJobs: 6, warmupExcludedOnlyFromTimingNotCorrectnessOrMemory: true, validationBackend: "bounded-CDP-export-copy" },
     failures: [], network: { forbidden: [] }, protectedOriginalUnchanged: true,
     cleanup: { allRecordedBirthsAbsent: true, publishedAssetsNeverChanged: true, stagedPrivateAssetsRestored: true, ownedProfileFixturesOutputsRemoved: true },
     processCleanup: [{ status: "owned-identity-absent" }], diskProof: { provesThisContextOpfsBacking: true },
@@ -56,7 +56,9 @@ test("changing order, source, browser, quality, output, warmup fidelity, limits,
     r => { r[1].cases[1].output.sha256 = "other"; }, r => { r[1].cleanup.ownedProfileFixturesOutputsRemoved = false; },
     r => { r[1].memory.incrementalPrivateMiB = 251; }, r => { r[1].memory.unavailableSamples = 1; },
     r => { r[1].cases.pop(); }, r => { r[1].cases[2].browserState.metrics.peakQueuedBytes = 262145; },
-    r => { r[1].cases[0].benchmarkWarmup = false; }, r => { r[1].cases[1].engineElapsedMs = 1; }]) {
+    r => { r[1].cases[0].benchmarkWarmup = false; }, r => { r[1].cases[1].engineElapsedMs = 1; },
+    r => { r[1].benchmark.validationBackend = "unique-byte-bound-physical-OPFS-no-output-copy"; },
+    r => { for (const row of r) row.benchmark.validationBackend = "unique-byte-bound-physical-OPFS-no-output-copy"; }]) {
     const reports = syntheticReports(); mutate(reports); assert.throws(() => summarizeArtworkSerializerBenchmarks(reports));
   }
 });

@@ -28,6 +28,8 @@ export function summarizeArtworkSerializerBenchmarks(reports) {
     assert.deepEqual(report.sources, reports[0].sources, "All production/harness source pins must be identical across the comparison");
     assert.deepEqual(report.browser, reports[0].browser, "Same installed browser binary/version/birth identity pins");
     assert.equal(report.benchmark.warmupJobs, 1); assert.equal(report.benchmark.measuredJobs, 6);
+    assert.deepEqual(report.benchmark, reports[0].benchmark, "Validation backend and timing instrumentation must also match");
+    assert.ok(["bounded-CDP-export-copy", "unique-byte-bound-physical-OPFS-no-output-copy"].includes(report.benchmark.validationBackend));
     assert.equal(report.benchmark.warmupExcludedOnlyFromTimingNotCorrectnessOrMemory, true);
     assert.equal(report.cases.length, 7); assert.deepEqual(report.failures, []); assert.deepEqual(report.network.forbidden, []);
     assert.equal(report.protectedOriginalUnchanged, true); assert.ok(Object.values(report.cleanup).every(value => value === true));
@@ -52,6 +54,13 @@ export function summarizeArtworkSerializerBenchmarks(reports) {
       assert.equal(row.fidelity.samples, 96000); assert.equal(row.fidelity.outputSha256, pcmSha); assert.equal(row.fidelity.minimumPsnrDb, 60);
       assert.ok(row.fidelity.psnrDb >= 60); assert.equal(row.fullIndependentDecode, true); assert.equal(row.disposableOutputRemoved, true);
       assert.equal(row.browserState.error, null); assert.deepEqual(row.browserState.warnings, []);
+      if (report.benchmark.validationBackend === "unique-byte-bound-physical-OPFS-no-output-copy") {
+        const proof = row.physicalValidation; assert.ok(proof);
+        assert.equal(proof.uniqueLogicalEntry, true); assert.equal(proof.uniquePhysicalMatch, true);
+        assert.equal(proof.convertedCopyCreated, false); assert.equal(proof.nativeConversionUsed, false);
+        assert.equal(proof.logicalBytes, row.output.bytes); assert.equal(proof.maximumBrowserSampleBytes, 4096);
+        assert.equal(proof.totalBrowserSampleBytes, 12288); assert.equal(proof.samples.length, 3);
+      }
       const metrics = row.browserState.metrics;
       for (const key of ["maxReadChunkBytes", "maxWriteChunkBytes", "peakQueuedBytes"]) assert.ok(metrics[key] > 0 && metrics[key] <= 262144);
       assert.equal(metrics.queuedBytes, 0); assert.equal(metrics.pendingOperations, 0); assert.equal(metrics.peakPendingOperations, 1);

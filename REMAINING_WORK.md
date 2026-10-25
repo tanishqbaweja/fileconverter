@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-10-25 stage-diagnostic candidate09-17-12.730Z PASS7/7 at240.81640625MiB,
+556valid/0missing. All exact output/image/pixels/tags/repeats/full PCM and owned
+cleanup/original PASS; final headless screenshot reviewed. NOT repeatability,
+speed/promotion or erasure of prior251MiB failures. Measured page ArrayBuffer
+backing grows EXACTLY5,633,796B during each export in cases1-4, equal to one
+output, until natural GC drops it in case5. This proves validator-side temporary
+pressure, not that all growth comes from validation or production is fixed.
+Next explicit physical-validation mode binds the unique completed logical OPFS
+entry to one physical backing by size +three4096B ranges; native validators
+read it directly, no converted output copy/full browser export. Full output SHA,
+structure/image/pixels/PCM and entire process-tree lifecycle gates unchanged.
+25focused/lint/TypeScript/diff PASS; real physical-binding browser proof pending.
+
 2026-10-25 candidate14 with repaired observer09-11-56.851Z FAILED primary
 251.0625MiB at5/7jobs,506valid/0missing,34actual source pins. All five exact
 control outputs/image bytes/pixels/tags/repeats/full PCM PASS; owned cleanup/
