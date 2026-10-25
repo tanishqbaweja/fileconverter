@@ -1,5 +1,11 @@
 # Tested conversion ledger
 
+2026-10-25 lower-copy source27focused/TypeScript/lint/diff PASS. Hosted
+build40161703799/e361f463 confirmed LIVE, not compiled/accepted yet. Added
+matched real-production benchmark mode (one warmup/six measurements with all
+seven outputs/fidelity/whole-tree/cleanup checked), pending A/B/B/A runs.
+26changed source checks PASS; original byte-boundary selector/test preserved.
+
 2026-10-25 matched native SERIALIZER-ONLY lower-copy probe04-21-54.520Z
 PASS220 differential cases/atomic OOM/cleanup; no native media conversion.
 Exact instrumented allocation bytes9,786,890 ->5,592,509 plus fixed<=4140B

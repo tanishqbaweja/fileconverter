@@ -35,12 +35,13 @@ import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mj
 import { verifyOpfsDiskBacking } from "./lib/opfs-disk-backing-proof.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
 const qualityComparison = process.argv[3] === "--compare-vorbis-quality";
 const remainingRepeated = process.argv[3] === "--remaining-repeated-audio";
 const flacOrderRepair = process.argv[3] === "--flac-order-repair";
 const artworkMetadata = process.argv[3] === "--artwork-metadata";
-const artworkBudget = process.argv[3] === "--artwork-byte-budget";
+const artworkBenchmark = process.argv[3] === "--artwork-serializer-benchmark";
+const artworkBudget = process.argv[3] === "--artwork-byte-budget" || artworkBenchmark;
 const audioIoRecovery = process.argv[3] === "--audio-io-recovery";
 const artworkRejection = process.argv[3] === "--artwork-rejection-recovery", extendedArtworkInspection = artworkBudget || artworkRejection || audioIoRecovery;
 const oggArtwork = process.argv[3] === "--ogg-artwork", withArtwork = artworkMetadata || oggArtwork;
@@ -52,7 +53,9 @@ const selectedCases = audioIoRecovery ? [
   { source: "flac", destination: "opus", repeated: true, artwork: "png-over-bytes", expectedExclusion: true },
   { source: "flac", destination: "opus", repeated: true, artwork: "png-over-dimension", expectedExclusion: true },
   { source: "flac", destination: "opus", repeated: true, artwork: "png-budget", recoveryAfterExclusions: true },
-] : artworkBudget ? [{ source: "flac", destination: "opus", repeated: true, artwork: "png-budget" }]
+] : artworkBenchmark ? Array.from({ length: 7 }, (_, index) => ({ source: "flac", destination: "opus", repeated: true, artwork: "png-budget",
+  benchmarkIteration: index, benchmarkWarmup: index === 0 }))
+  : artworkBudget ? [{ source: "flac", destination: "opus", repeated: true, artwork: "png-budget" }]
   : oggArtwork ? AUDIO_OGG_ARTWORK_CASES : artworkMetadata ? AUDIO_ARTWORK_METADATA_CASES : flacOrderRepair ? [...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6), ...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6).map(c => ({ ...c, repeated: true }))]
   : remainingRepeated ? AUDIO_METADATA_FIDELITY_CASES.slice(1, 6).map(c => ({ ...c, repeated: true }))
   : qualityComparison ? [...AUDIO_METADATA_FIDELITY_CASES, { source: "opus", destination: "ogg", quality: "higher" }] : AUDIO_METADATA_FIDELITY_CASES;
@@ -70,6 +73,13 @@ if (oggArtwork) {
   report.automaticVorbisQualityRepaired = false;
 }
 if (artworkBudget) report.scope = "one NEW exact4MiB real PNG cover FLAC-to-Opus byte-budget case; unchanged text/codec/quality/memory limits; not repeat/scaling/promotion acceptance";
+if (artworkBenchmark) {
+  report.scope = "matched serializer experiment: one explicit warmup plus six identical exact4MiB-artwork FLAC-to-Opus jobs in one normal headless production page; not long-file/stress/scaling/fastest/public acceptance";
+  report.benchmark = { warmupJobs: 1, measuredJobs: 6, warmupExcludedOnlyFromTimingNotCorrectnessOrMemory: true,
+    comparisonRequiresSeparateBracketedBaselineAndCandidateRuns: true,
+    browserElapsedMetric: "host wall clock from real UI click to observed terminal state",
+    engineElapsedMetric: "actual production job metrics.elapsedMs at terminal; not serializer-only CPU time" };
+}
 if (artworkRejection) report.scope = "three NEW same-page cases: valid one-byte-over/one-pixel-over covers excluded with visible exact warnings, then accepted4MiB recovery; not cancellation/write-failure/full recovery/stress acceptance";
 if (audioIoRecovery) report.scope = "three NEW same-page real-UI jobs: midstream180s-fixture cancellation, localhost injected error AFTER real artwork-header write, accepted4MiB recovery; not OS-picker/direct-destination/quota/permission/stress acceptance";
 const stamp = report.startedAt.replaceAll(":", "-"), sha = b => createHash("sha256").update(b).digest("hex");
@@ -272,8 +282,10 @@ try {
       output = path.join(runtime.directory, `output-${index}.${conversion.destination}`);
     const row = { name: profileId + (conversion.repeated ? "-repeated-values" : "") + (conversion.artwork ? "-" + conversion.artwork + "-cover" : "") + (conversion.quality ? "-" + conversion.quality : "")
       + (conversion.expectedExclusion ? "-expected-exclusion" : "") + (conversion.recoveryAfterExclusions ? "-same-page-recovery" : "")
-      + (conversion.interruption ? "-" + conversion.interruption : "") + (conversion.recoveryAfterIo ? "-after-io-interruptions" : ""),
-      profileId, requestedQuality: conversion.quality ?? "automatic", repeated: Boolean(conversion.repeated), interruption: conversion.interruption ?? null, status: "failed", failures: [] }; report.cases.push(row);
+      + (conversion.interruption ? "-" + conversion.interruption : "") + (conversion.recoveryAfterIo ? "-after-io-interruptions" : "")
+      + (artworkBenchmark ? "-benchmark-" + conversion.benchmarkIteration : ""),
+      profileId, requestedQuality: conversion.quality ?? "automatic", repeated: Boolean(conversion.repeated), interruption: conversion.interruption ?? null,
+      ...(artworkBenchmark ? { benchmarkIteration: conversion.benchmarkIteration, benchmarkWarmup: conversion.benchmarkWarmup } : {}), status: "failed", failures: [] }; report.cases.push(row);
     let outputIdentity, entryName;
     try {
       const sourceProbe = await probeAudio(input); const tags = validateScopedAudioTags(sourceProbe, AUDIO_METADATA_TAGS, { scope: conversion.source === "flac" ? "format" : "audio-stream" }); assert.equal(tags.status, "passed");
@@ -299,6 +311,7 @@ try {
       await page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState ?? ""), null, { timeout: 60000 });
       if (conversion.interruption) await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState()); row.browserElapsedMs = Date.now() - startedAt; row.browserState = state; entryName = state.opfsName;
+      if (artworkBenchmark) { assert.ok(Number.isFinite(state.metrics.elapsedMs) && state.metrics.elapsedMs > 0); row.engineElapsedMs = state.metrics.elapsedMs; }
       assert.equal(state.audioOptions.quality, row.requestedQuality, "Actual production job must retain the requested quality selection");
       if (conversion.interruption) {
         row.storageAfter = await storageSnapshot(); row.interruptionProof = validateAudioInterruption(conversion.interruption, state,
@@ -333,6 +346,7 @@ try {
       const audio = outputProbe.streams.find(stream => stream.codec_type === "audio"); assert.ok(audio);
       assert.equal(audio.codec_name, conversion.destination === "ogg" ? "vorbis" : conversion.destination); assert.equal(Number(audio.sample_rate), 48000); assert.equal(audio.channels, 1);
       row.output = { bytes: size, sha256: await hashFile(output), probe: outputProbe };
+      if (artworkBenchmark) assert.equal(row.output.sha256, "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3", "Every benchmark job must match the complete accepted output control");
       if (conversion.artwork && !conversion.expectedExclusion) {
         try { row.artwork = await inspectArtwork(output, outputProbe, report.artworkImages[conversion.artwork]); }
         catch (error) { row.failures.push("Embedded cover validation: " + String(error)); }
@@ -365,7 +379,7 @@ try {
       }
       row.status = row.failures.length ? "failed" : "passed-small-private-fidelity-and-metadata-case";
       }
-      if (index === 0 || conversion.repeated || conversion.interruption) await screenshot(conversion, index, row);
+      if (artworkBenchmark ? index === 0 || index === selectedCases.length - 1 : index === 0 || conversion.repeated || conversion.interruption) await screenshot(conversion, index, row);
     } catch (error) { row.failures.push(String(error.stack ?? error).slice(0, 4096)); }
     finally {
       if (entryName) await page.evaluate(async name => { await (await navigator.storage.getDirectory()).removeEntry(name); }, entryName);
@@ -422,7 +436,8 @@ finally {
   const receipt = { schemaVersion: 1, executedHead: report.executedHead, status: report.status, scope: report.scope, publicAcceptance: false, fullMetadataAcceptance: false,
     archive: { path: path.relative(root, archive).replaceAll(path.sep, "/"), bytes: packed.length, sha256: sha(packed), restoredBytes: raw.length, restoredSha256: sha(raw) },
     sourcePins: Object.keys(report.sources ?? {}).length, artifactManifestSha256: report.artifact?.manifestSha256, diskProof: report.diskProof,
-    memory: report.memory, cases: report.cases.map(c => ({ name: c.name, status: c.status, requestedQuality: c.requestedQuality, browserElapsedMs: c.browserElapsedMs,
+    memory: report.memory, benchmark: report.benchmark, cases: report.cases.map(c => ({ name: c.name, status: c.status, requestedQuality: c.requestedQuality, browserElapsedMs: c.browserElapsedMs,
+      engineElapsedMs: c.engineElapsedMs, benchmarkIteration: c.benchmarkIteration, benchmarkWarmup: c.benchmarkWarmup,
       failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags?.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, artwork: c.artwork,
       streamingPictureInspection: c.streamingPictureInspection,

@@ -6,6 +6,12 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Live private build40161703799/e361f463, dispatched04:23:22Z, comparable310s;
+do not restart. Matched benchmark scope source ready: warmup+six real jobs,
+bracket four clean-context runs A/B/B/A, strict control output/full PCM/image/
+metadata/process-memory/privacy/cleanup for every job. Actual browser timings
+and changed candidate IO recovery UNVERIFIED.27+26focused/TypeScript/lint PASS.
+
 Current optimization: private lower-copy Ogg picture serializer, NOT promoted.
 Native04-21-54.520Z220 exact cases/OOM/cleanup PASS,4,194,381B fewer explicit
 temporary allocations plus<=4140B stack;4MiB native paired median1.3648x/8of8.

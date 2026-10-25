@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-10-25 private lower-copy build40161703799 confirmed LIVE at04:23:34Z,
+immutable e361f463/b07880b parent; estimate6min from310s comparable build.
+No redispatch. Matched browser scope now prepares one warmup+six identical
+4MiB-cover jobs per fresh normal Chrome context, both UI-wall and production
+job elapsed metrics, every job independently validated/cleaned and counted
+in full-tree memory. Planned bracket A/B/B/A (baseline/candidate/candidate/
+baseline) keeps all production source pins/browser/input/settings identical.
+26focused checks PASS after retaining old one-case boundary selector unchanged;
+initial source-shape assertion failure was fixed without changing that test.
+Actual four-run browser timing and candidate IO recovery still UNVERIFIED.
+
 2026-10-25 lower-copy artwork experiment native04-21-54.520Z PASS220 exact
 serializer comparisons (both MIME lengths, all base64 residues/tiny payloads,
 Unicode/roles/4095B descriptions/maximum4137B header/4MiB image), atomic OOM.

@@ -106,3 +106,16 @@ test("retained native measurements prove explicit allocation savings and 220 exa
   for (const [file, expected] of Object.entries(report.sources))
     assert.equal(createHash("sha256").update(await readFile(file)).digest("hex"), expected);
 });
+
+test("matched browser scope measures real UI and engine timings without excluding warmup memory, fidelity, privacy or cleanup", async () => {
+  const source = await readFile("scripts/test-audio-metadata-production-runtime.mjs", "utf8");
+  assert.match(source, /--artwork-serializer-benchmark/);
+  assert.match(source, /artworkBenchmark \? Array.from\(\{ length: 7 \}/);
+  assert.match(source, /benchmarkWarmup: index === 0/);
+  assert.match(source, /warmupExcludedOnlyFromTimingNotCorrectnessOrMemory: true/);
+  assert.match(source, /row.engineElapsedMs = state.metrics.elapsedMs/);
+  assert.match(source, /Every benchmark job must match the complete accepted output control/);
+  assert.match(source, /compareNativeAudioPcm\(input, output/);
+  assert.match(source, /active.peak.privateBytes - report.blankBaseline.privateBytes/);
+  assert.match(source, /await runtime.close\(\)/);
+});
