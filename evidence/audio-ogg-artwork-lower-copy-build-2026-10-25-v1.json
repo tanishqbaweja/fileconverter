@@ -1,5 +1,12 @@
 {
   "recordedAt": "2026-10-25T04:23:17.294Z",
+  "postBuildDecision": {
+    "comparison": "outputs/reports/2026-10-25T09-48-25.204Z-audio-artwork-serializer-browser-comparison.json",
+    "outcome": "no-consistent-browser-speed-gain; baseline-retained",
+    "publicPromotion": false,
+    "cacheCleanupReceipt": "evidence/audio-ogg-artwork-lower-copy-cache-cleanup-2026-10-25-v1.json",
+    "sourceRecipeAndReportsRetained": true
+  },
   "status": "compiled-artifact-audited-browser-repair-unverified",
   "branch": "codex/audio-ogg-artwork-lower-copy-20261025-v1",
   "parent": "b07880ba35459752a5d849114f278f9b4ece9d06",

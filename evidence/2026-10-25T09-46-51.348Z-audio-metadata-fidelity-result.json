@@ -1,0 +1,1461 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "5d1294163eb8bcc004b7c0706fc089d23a5973a7",
+  "status": "passed-selected-small-private-cases-not-promotion",
+  "scope": "matched serializer experiment: one explicit warmup plus six identical exact4MiB-artwork FLAC-to-Opus jobs in one normal headless production page; not long-file/stress/scaling/fastest/public acceptance",
+  "publicAcceptance": false,
+  "fullMetadataAcceptance": false,
+  "archive": {
+    "path": "outputs/reports/2026-10-25T09-46-51.348Z-audio-metadata-production-runtime.json.gz",
+    "bytes": 26824,
+    "sha256": "52c1805fa156e580bbf8a4e16f0e0568fd6bb5b98e3ac4e244c14b706c37c425",
+    "restoredBytes": 246582,
+    "restoredSha256": "28503eb2f3aa7e1bf4d04193069ecb242c3f65f331ca2762a3c642eb9d40e09b"
+  },
+  "sourcePins": 35,
+  "artifactManifestSha256": "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c",
+  "diskProof": {
+    "status": "exact-browser-canary-independently-found-on-disk",
+    "browserBytes": 64,
+    "physicalBytes": 64,
+    "sha256": "d76b3b1722b94c6a6d4ee20b6c1ad76a440046af24a13926dcf7dc7d6dfd3455",
+    "physicalFile": "work\\audio-metadata-production-xVf9k6\\chrome-profile\\Default\\File System\\000\\t\\00\\00000001",
+    "profileDirectory": "work\\audio-metadata-production-xVf9k6\\chrome-profile",
+    "inspectedEntries": 5,
+    "maximumReadBytes": 65,
+    "provesThisContextOpfsBacking": true,
+    "provesConversionAcceptance": false,
+    "canaryRemovedInFinally": true
+  },
+  "memory": {
+    "scope": "selected-small-case lifecycle only, not stress acceptance",
+    "limitMiB": 250,
+    "intervalMs": 100,
+    "peak": {
+      "sequence": 458,
+      "timestamp": "2026-10-25T09:47:52.4695398Z",
+      "phase": "case-4",
+      "privateBytes": 462831616,
+      "rssBytes": 740212736,
+      "nativeElapsedMs": 14.7903,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 11588,
+          "parentPid": 28280,
+          "createdAt": "2026-10-25T09:47:01.5551383Z",
+          "creationFileTime": "134373952215551383",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8122368,
+          "rssBytes": 18661376
+        },
+        {
+          "pid": 21272,
+          "parentPid": 28280,
+          "createdAt": "2026-10-25T09:47:01.5956512Z",
+          "creationFileTime": "134373952215956512",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 34926592,
+          "rssBytes": 78577664
+        },
+        {
+          "pid": 24872,
+          "parentPid": 28280,
+          "createdAt": "2026-10-25T09:47:21.9738630Z",
+          "creationFileTime": "134373952419738630",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 14987264,
+          "rssBytes": 31744000
+        },
+        {
+          "pid": 27228,
+          "parentPid": 28280,
+          "createdAt": "2026-10-25T09:47:01.5153268Z",
+          "creationFileTime": "134373952215153268",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 13836288,
+          "rssBytes": 41844736
+        },
+        {
+          "pid": 28280,
+          "parentPid": 33180,
+          "createdAt": "2026-10-25T09:47:01.3773863Z",
+          "creationFileTime": "134373952213773863",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 48222208,
+          "rssBytes": 146178048
+        },
+        {
+          "pid": 28912,
+          "parentPid": 28280,
+          "createdAt": "2026-10-25T09:47:01.5070556Z",
+          "creationFileTime": "134373952215070556",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 163811328,
+          "rssBytes": 188391424
+        },
+        {
+          "pid": 36196,
+          "parentPid": 28280,
+          "createdAt": "2026-10-25T09:47:01.6275467Z",
+          "creationFileTime": "134373952216275467",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 176394240,
+          "rssBytes": 224460800
+        },
+        {
+          "pid": 42812,
+          "parentPid": 28280,
+          "createdAt": "2026-10-25T09:47:01.3901009Z",
+          "creationFileTime": "134373952213901009",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2531328,
+          "rssBytes": 10354688
+        }
+      ]
+    },
+    "incrementalPrivateMiB": 211.515625,
+    "validSamples": 509,
+    "unavailableSamples": 0,
+    "fullHistoryInLosslessJournal": true
+  },
+  "memoryObserverOwnership": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 0,
+    "proofs": [],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false
+  },
+  "benchmark": {
+    "warmupJobs": 1,
+    "measuredJobs": 6,
+    "warmupExcludedOnlyFromTimingNotCorrectnessOrMemory": true,
+    "comparisonRequiresSeparateBracketedBaselineAndCandidateRuns": true,
+    "browserElapsedMetric": "host wall clock from real UI click to observed terminal state",
+    "engineElapsedMetric": "actual production job metrics.elapsedMs at terminal; not serializer-only CPU time",
+    "validationBackend": "unique-byte-bound-physical-OPFS-no-output-copy"
+  },
+  "cases": [
+    {
+      "name": "flac-to-opus-repeated-values-png-budget-cover-benchmark-0",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 556,
+      "engineElapsedMs": 516.1350000202656,
+      "benchmarkIteration": 0,
+      "benchmarkWarmup": true,
+      "validationDiagnostics": {
+        "terminal": {
+          "at": "2026-10-25T09:47:48.228Z",
+          "pageRealmHeap": {
+            "usedSize": 5548552,
+            "totalSize": 8671232,
+            "embedderHeapUsedSize": 4881944,
+            "backingStorageSize": 630474
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 419,
+            "timestamp": "2026-10-25T09:47:48.2066164Z",
+            "phase": "case-0",
+            "privateBytes": 372641792
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterExport": {
+          "at": "2026-10-25T09:47:48.247Z",
+          "pageRealmHeap": {
+            "usedSize": 6039744,
+            "totalSize": 9195520,
+            "embedderHeapUsedSize": 5021536,
+            "backingStorageSize": 659231
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 419,
+            "timestamp": "2026-10-25T09:47:48.2066164Z",
+            "phase": "case-0",
+            "privateBytes": 372641792
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterValidation": {
+          "at": "2026-10-25T09:47:48.862Z",
+          "pageRealmHeap": {
+            "usedSize": 6087136,
+            "totalSize": 9195520,
+            "embedderHeapUsedSize": 5812272,
+            "backingStorageSize": 659231
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 424,
+            "timestamp": "2026-10-25T09:47:48.7500576Z",
+            "phase": "case-0-independent-validation",
+            "privateBytes": 334663680
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterCleanup": {
+          "at": "2026-10-25T09:47:48.931Z",
+          "pageRealmHeap": {
+            "usedSize": 4946504,
+            "totalSize": 7884800,
+            "embedderHeapUsedSize": 5732912,
+            "backingStorageSize": 659363
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 425,
+            "timestamp": "2026-10-25T09:47:48.8615312Z",
+            "phase": "case-0-independent-validation",
+            "privateBytes": 335224832
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        }
+      },
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-xVf9k6/chrome-profile/Default/File System/000/t/00/00000002",
+        "logicalBytes": 5633796,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "4222124656745805",
+          "size": "5633796",
+          "birthtimeNs": "1792921667704491900",
+          "mtimeNs": "1792921668190211100"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "136a4c00d8981f8a5e7a33da48ae769955e371d3bd404ba0c1cac92c4da7dddf"
+          },
+          {
+            "offset": 2814850,
+            "bytes": 4096,
+            "sha256": "6d239f9af0681737775d330d43339e20f6588fb6154b061e937b4eafa66aa65b"
+          },
+          {
+            "offset": 5629700,
+            "bytes": 4096,
+            "sha256": "41e5ab10f15e586915167030f28ccd41e209661d8e0ecfc9f23b6860a3598814"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908360,
+        "psnrDb": 66.16825969015325,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8386388f4a65fdeac269a12b9cfa6224a4673656dfebfaa21c91c4bbd2e153c2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 5633796,
+      "outputSha256": "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 1023,
+        "height": 1023,
+        "bytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "pictureRole": "Cover (front)",
+        "description": "Couverture maximale café — 音楽",
+        "rgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true,
+        "decodedRgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba"
+      },
+      "streamingPictureInspection": {
+        "type": 3,
+        "mime": "image/png",
+        "description": "Couverture maximale café — 音楽",
+        "width": 1023,
+        "height": 1023,
+        "depth": 0,
+        "colors": 0,
+        "imageBytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "encodedBytes": 5592508,
+        "readBytes": 5617639,
+        "maximumReadBytes": 65025,
+        "pages": 88,
+        "maximumBase64ChunkBytes": 16384,
+        "maximumDecodedChunkBytes": 12288,
+        "pageBufferBytes": 65307,
+        "completePacketOrImageBufferAllocated": false,
+        "textBytes": 800
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus-repeated-values-png-budget-cover-benchmark-1",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 365,
+      "engineElapsedMs": 184.78499999642372,
+      "benchmarkIteration": 1,
+      "benchmarkWarmup": false,
+      "validationDiagnostics": {
+        "terminal": {
+          "at": "2026-10-25T09:47:49.373Z",
+          "pageRealmHeap": {
+            "usedSize": 5124352,
+            "totalSize": 8146944,
+            "embedderHeapUsedSize": 6574344,
+            "backingStorageSize": 659524
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 429,
+            "timestamp": "2026-10-25T09:47:49.2988985Z",
+            "phase": "case-1",
+            "privateBytes": 426127360
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterExport": {
+          "at": "2026-10-25T09:47:49.392Z",
+          "pageRealmHeap": {
+            "usedSize": 5602260,
+            "totalSize": 8671232,
+            "embedderHeapUsedSize": 6480744,
+            "backingStorageSize": 671889
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 429,
+            "timestamp": "2026-10-25T09:47:49.2988985Z",
+            "phase": "case-1",
+            "privateBytes": 426127360
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterValidation": {
+          "at": "2026-10-25T09:47:50.008Z",
+          "pageRealmHeap": {
+            "usedSize": 5646136,
+            "totalSize": 8671232,
+            "embedderHeapUsedSize": 7404080,
+            "backingStorageSize": 671889
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 435,
+            "timestamp": "2026-10-25T09:47:49.9545785Z",
+            "phase": "case-1-independent-validation",
+            "privateBytes": 346378240
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterCleanup": {
+          "at": "2026-10-25T09:47:50.013Z",
+          "pageRealmHeap": {
+            "usedSize": 5648292,
+            "totalSize": 8671232,
+            "embedderHeapUsedSize": 7404080,
+            "backingStorageSize": 671889
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 435,
+            "timestamp": "2026-10-25T09:47:49.9545785Z",
+            "phase": "case-1-independent-validation",
+            "privateBytes": 346378240
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        }
+      },
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-xVf9k6/chrome-profile/Default/File System/000/t/00/00000003",
+        "logicalBytes": 5633796,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "4503599633456461",
+          "size": "5633796",
+          "birthtimeNs": "1792921669174922700",
+          "mtimeNs": "1792921669337235500"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "136a4c00d8981f8a5e7a33da48ae769955e371d3bd404ba0c1cac92c4da7dddf"
+          },
+          {
+            "offset": 2814850,
+            "bytes": 4096,
+            "sha256": "6d239f9af0681737775d330d43339e20f6588fb6154b061e937b4eafa66aa65b"
+          },
+          {
+            "offset": 5629700,
+            "bytes": 4096,
+            "sha256": "41e5ab10f15e586915167030f28ccd41e209661d8e0ecfc9f23b6860a3598814"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908360,
+        "psnrDb": 66.16825969015325,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8386388f4a65fdeac269a12b9cfa6224a4673656dfebfaa21c91c4bbd2e153c2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 5633796,
+      "outputSha256": "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 1023,
+        "height": 1023,
+        "bytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "pictureRole": "Cover (front)",
+        "description": "Couverture maximale café — 音楽",
+        "rgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true,
+        "decodedRgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba"
+      },
+      "streamingPictureInspection": {
+        "type": 3,
+        "mime": "image/png",
+        "description": "Couverture maximale café — 音楽",
+        "width": 1023,
+        "height": 1023,
+        "depth": 0,
+        "colors": 0,
+        "imageBytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "encodedBytes": 5592508,
+        "readBytes": 5617639,
+        "maximumReadBytes": 65025,
+        "pages": 88,
+        "maximumBase64ChunkBytes": 16384,
+        "maximumDecodedChunkBytes": 12288,
+        "pageBufferBytes": 65307,
+        "completePacketOrImageBufferAllocated": false,
+        "textBytes": 800
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus-repeated-values-png-budget-cover-benchmark-2",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 225,
+      "engineElapsedMs": 202.09000000357628,
+      "benchmarkIteration": 2,
+      "benchmarkWarmup": false,
+      "validationDiagnostics": {
+        "terminal": {
+          "at": "2026-10-25T09:47:50.310Z",
+          "pageRealmHeap": {
+            "usedSize": 5318984,
+            "totalSize": 8933376,
+            "embedderHeapUsedSize": 8155192,
+            "backingStorageSize": 672038
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 438,
+            "timestamp": "2026-10-25T09:47:50.2828322Z",
+            "phase": "case-2",
+            "privateBytes": 423829504
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterExport": {
+          "at": "2026-10-25T09:47:50.326Z",
+          "pageRealmHeap": {
+            "usedSize": 5791396,
+            "totalSize": 8933376,
+            "embedderHeapUsedSize": 8149816,
+            "backingStorageSize": 684403
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 438,
+            "timestamp": "2026-10-25T09:47:50.2828322Z",
+            "phase": "case-2",
+            "privateBytes": 423829504
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterValidation": {
+          "at": "2026-10-25T09:47:50.931Z",
+          "pageRealmHeap": {
+            "usedSize": 5833456,
+            "totalSize": 8933376,
+            "embedderHeapUsedSize": 8833912,
+            "backingStorageSize": 684403
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 443,
+            "timestamp": "2026-10-25T09:47:50.8269896Z",
+            "phase": "case-2-independent-validation",
+            "privateBytes": 349560832
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterCleanup": {
+          "at": "2026-10-25T09:47:50.937Z",
+          "pageRealmHeap": {
+            "usedSize": 5835688,
+            "totalSize": 8933376,
+            "embedderHeapUsedSize": 8833912,
+            "backingStorageSize": 684403
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 443,
+            "timestamp": "2026-10-25T09:47:50.8269896Z",
+            "phase": "case-2-independent-validation",
+            "privateBytes": 349560832
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        }
+      },
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-xVf9k6/chrome-profile/Default/File System/000/t/00/00000004",
+        "logicalBytes": 5633796,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "4785074610167117",
+          "size": "5633796",
+          "birthtimeNs": "1792921670089534000",
+          "mtimeNs": "1792921670273261300"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "136a4c00d8981f8a5e7a33da48ae769955e371d3bd404ba0c1cac92c4da7dddf"
+          },
+          {
+            "offset": 2814850,
+            "bytes": 4096,
+            "sha256": "6d239f9af0681737775d330d43339e20f6588fb6154b061e937b4eafa66aa65b"
+          },
+          {
+            "offset": 5629700,
+            "bytes": 4096,
+            "sha256": "41e5ab10f15e586915167030f28ccd41e209661d8e0ecfc9f23b6860a3598814"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908360,
+        "psnrDb": 66.16825969015325,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8386388f4a65fdeac269a12b9cfa6224a4673656dfebfaa21c91c4bbd2e153c2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 5633796,
+      "outputSha256": "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 1023,
+        "height": 1023,
+        "bytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "pictureRole": "Cover (front)",
+        "description": "Couverture maximale café — 音楽",
+        "rgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true,
+        "decodedRgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba"
+      },
+      "streamingPictureInspection": {
+        "type": 3,
+        "mime": "image/png",
+        "description": "Couverture maximale café — 音楽",
+        "width": 1023,
+        "height": 1023,
+        "depth": 0,
+        "colors": 0,
+        "imageBytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "encodedBytes": 5592508,
+        "readBytes": 5617639,
+        "maximumReadBytes": 65025,
+        "pages": 88,
+        "maximumBase64ChunkBytes": 16384,
+        "maximumDecodedChunkBytes": 12288,
+        "pageBufferBytes": 65307,
+        "completePacketOrImageBufferAllocated": false,
+        "textBytes": 800
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus-repeated-values-png-budget-cover-benchmark-3",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 365,
+      "engineElapsedMs": 187.5300000011921,
+      "benchmarkIteration": 3,
+      "benchmarkWarmup": false,
+      "validationDiagnostics": {
+        "terminal": {
+          "at": "2026-10-25T09:47:51.375Z",
+          "pageRealmHeap": {
+            "usedSize": 6438456,
+            "totalSize": 9195520,
+            "embedderHeapUsedSize": 9578560,
+            "backingStorageSize": 684552
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 447,
+            "timestamp": "2026-10-25T09:47:51.2665666Z",
+            "phase": "case-3",
+            "privateBytes": 425467904
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterExport": {
+          "at": "2026-10-25T09:47:51.396Z",
+          "pageRealmHeap": {
+            "usedSize": 5285312,
+            "totalSize": 9981952,
+            "embedderHeapUsedSize": 9831376,
+            "backingStorageSize": 696917
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 448,
+            "timestamp": "2026-10-25T09:47:51.3765101Z",
+            "phase": "case-3-validation-export",
+            "privateBytes": 402661376
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterValidation": {
+          "at": "2026-10-25T09:47:52.066Z",
+          "pageRealmHeap": {
+            "usedSize": 5329780,
+            "totalSize": 9981952,
+            "embedderHeapUsedSize": 10653080,
+            "backingStorageSize": 696917
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 454,
+            "timestamp": "2026-10-25T09:47:52.0327443Z",
+            "phase": "case-3-independent-validation",
+            "privateBytes": 356335616
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterCleanup": {
+          "at": "2026-10-25T09:47:52.071Z",
+          "pageRealmHeap": {
+            "usedSize": 5332020,
+            "totalSize": 9981952,
+            "embedderHeapUsedSize": 10653080,
+            "backingStorageSize": 696917
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 454,
+            "timestamp": "2026-10-25T09:47:52.0327443Z",
+            "phase": "case-3-independent-validation",
+            "privateBytes": 356335616
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        }
+      },
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-xVf9k6/chrome-profile/Default/File System/000/t/00/00000005",
+        "logicalBytes": 5633796,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "5066549586877773",
+          "size": "5633796",
+          "birthtimeNs": "1792921671172939900",
+          "mtimeNs": "1792921671342547700"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "136a4c00d8981f8a5e7a33da48ae769955e371d3bd404ba0c1cac92c4da7dddf"
+          },
+          {
+            "offset": 2814850,
+            "bytes": 4096,
+            "sha256": "6d239f9af0681737775d330d43339e20f6588fb6154b061e937b4eafa66aa65b"
+          },
+          {
+            "offset": 5629700,
+            "bytes": 4096,
+            "sha256": "41e5ab10f15e586915167030f28ccd41e209661d8e0ecfc9f23b6860a3598814"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908360,
+        "psnrDb": 66.16825969015325,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8386388f4a65fdeac269a12b9cfa6224a4673656dfebfaa21c91c4bbd2e153c2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 5633796,
+      "outputSha256": "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 1023,
+        "height": 1023,
+        "bytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "pictureRole": "Cover (front)",
+        "description": "Couverture maximale café — 音楽",
+        "rgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true,
+        "decodedRgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba"
+      },
+      "streamingPictureInspection": {
+        "type": 3,
+        "mime": "image/png",
+        "description": "Couverture maximale café — 音楽",
+        "width": 1023,
+        "height": 1023,
+        "depth": 0,
+        "colors": 0,
+        "imageBytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "encodedBytes": 5592508,
+        "readBytes": 5617639,
+        "maximumReadBytes": 65025,
+        "pages": 88,
+        "maximumBase64ChunkBytes": 16384,
+        "maximumDecodedChunkBytes": 12288,
+        "pageBufferBytes": 65307,
+        "completePacketOrImageBufferAllocated": false,
+        "textBytes": 800
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus-repeated-values-png-budget-cover-benchmark-4",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 375,
+      "engineElapsedMs": 193.61499997973442,
+      "benchmarkIteration": 4,
+      "benchmarkWarmup": false,
+      "validationDiagnostics": {
+        "terminal": {
+          "at": "2026-10-25T09:47:52.518Z",
+          "pageRealmHeap": {
+            "usedSize": 5978704,
+            "totalSize": 9981952,
+            "embedderHeapUsedSize": 11383296,
+            "backingStorageSize": 697068
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 458,
+            "timestamp": "2026-10-25T09:47:52.4695398Z",
+            "phase": "case-4",
+            "privateBytes": 462831616
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterExport": {
+          "at": "2026-10-25T09:47:52.539Z",
+          "pageRealmHeap": {
+            "usedSize": 6456612,
+            "totalSize": 10244096,
+            "embedderHeapUsedSize": 11421120,
+            "backingStorageSize": 709433
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 458,
+            "timestamp": "2026-10-25T09:47:52.4695398Z",
+            "phase": "case-4",
+            "privateBytes": 462831616
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterValidation": {
+          "at": "2026-10-25T09:47:53.228Z",
+          "pageRealmHeap": {
+            "usedSize": 6510868,
+            "totalSize": 10244096,
+            "embedderHeapUsedSize": 12204304,
+            "backingStorageSize": 709433
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 464,
+            "timestamp": "2026-10-25T09:47:53.1211787Z",
+            "phase": "case-4-independent-validation",
+            "privateBytes": 362999808
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterCleanup": {
+          "at": "2026-10-25T09:47:53.235Z",
+          "pageRealmHeap": {
+            "usedSize": 6513024,
+            "totalSize": 10244096,
+            "embedderHeapUsedSize": 12204304,
+            "backingStorageSize": 709433
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 464,
+            "timestamp": "2026-10-25T09:47:53.1211787Z",
+            "phase": "case-4-independent-validation",
+            "privateBytes": 362999808
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        }
+      },
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-xVf9k6/chrome-profile/Default/File System/000/t/00/00000006",
+        "logicalBytes": 5633796,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "5629499540299085",
+          "size": "5633796",
+          "birthtimeNs": "1792921672311844200",
+          "mtimeNs": "1792921672479123200"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "136a4c00d8981f8a5e7a33da48ae769955e371d3bd404ba0c1cac92c4da7dddf"
+          },
+          {
+            "offset": 2814850,
+            "bytes": 4096,
+            "sha256": "6d239f9af0681737775d330d43339e20f6588fb6154b061e937b4eafa66aa65b"
+          },
+          {
+            "offset": 5629700,
+            "bytes": 4096,
+            "sha256": "41e5ab10f15e586915167030f28ccd41e209661d8e0ecfc9f23b6860a3598814"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908360,
+        "psnrDb": 66.16825969015325,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8386388f4a65fdeac269a12b9cfa6224a4673656dfebfaa21c91c4bbd2e153c2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 5633796,
+      "outputSha256": "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 1023,
+        "height": 1023,
+        "bytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "pictureRole": "Cover (front)",
+        "description": "Couverture maximale café — 音楽",
+        "rgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true,
+        "decodedRgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba"
+      },
+      "streamingPictureInspection": {
+        "type": 3,
+        "mime": "image/png",
+        "description": "Couverture maximale café — 音楽",
+        "width": 1023,
+        "height": 1023,
+        "depth": 0,
+        "colors": 0,
+        "imageBytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "encodedBytes": 5592508,
+        "readBytes": 5617639,
+        "maximumReadBytes": 65025,
+        "pages": 88,
+        "maximumBase64ChunkBytes": 16384,
+        "maximumDecodedChunkBytes": 12288,
+        "pageBufferBytes": 65307,
+        "completePacketOrImageBufferAllocated": false,
+        "textBytes": 800
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus-repeated-values-png-budget-cover-benchmark-5",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 199,
+      "engineElapsedMs": 176.5,
+      "benchmarkIteration": 5,
+      "benchmarkWarmup": false,
+      "validationDiagnostics": {
+        "terminal": {
+          "at": "2026-10-25T09:47:53.509Z",
+          "pageRealmHeap": {
+            "usedSize": 5447988,
+            "totalSize": 10768384,
+            "embedderHeapUsedSize": 12789280,
+            "backingStorageSize": 709582
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 467,
+            "timestamp": "2026-10-25T09:47:53.4473705Z",
+            "phase": "case-5",
+            "privateBytes": 438005760
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterExport": {
+          "at": "2026-10-25T09:47:53.526Z",
+          "pageRealmHeap": {
+            "usedSize": 5923152,
+            "totalSize": 10768384,
+            "embedderHeapUsedSize": 12787304,
+            "backingStorageSize": 721947
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 467,
+            "timestamp": "2026-10-25T09:47:53.4473705Z",
+            "phase": "case-5",
+            "privateBytes": 438005760
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterValidation": {
+          "at": "2026-10-25T09:47:54.171Z",
+          "pageRealmHeap": {
+            "usedSize": 5964944,
+            "totalSize": 10768384,
+            "embedderHeapUsedSize": 13477000,
+            "backingStorageSize": 721947
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 473,
+            "timestamp": "2026-10-25T09:47:54.1007947Z",
+            "phase": "case-5-independent-validation",
+            "privateBytes": 366276608
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterCleanup": {
+          "at": "2026-10-25T09:47:54.174Z",
+          "pageRealmHeap": {
+            "usedSize": 5967100,
+            "totalSize": 10768384,
+            "embedderHeapUsedSize": 13477000,
+            "backingStorageSize": 721947
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 473,
+            "timestamp": "2026-10-25T09:47:54.1007947Z",
+            "phase": "case-5-independent-validation",
+            "privateBytes": 366276608
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        }
+      },
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-xVf9k6/chrome-profile/Default/File System/000/t/00/00000007",
+        "logicalBytes": 5633796,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "5910974517009741",
+          "size": "5633796",
+          "birthtimeNs": "1792921673320456800",
+          "mtimeNs": "1792921673481215000"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "136a4c00d8981f8a5e7a33da48ae769955e371d3bd404ba0c1cac92c4da7dddf"
+          },
+          {
+            "offset": 2814850,
+            "bytes": 4096,
+            "sha256": "6d239f9af0681737775d330d43339e20f6588fb6154b061e937b4eafa66aa65b"
+          },
+          {
+            "offset": 5629700,
+            "bytes": 4096,
+            "sha256": "41e5ab10f15e586915167030f28ccd41e209661d8e0ecfc9f23b6860a3598814"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908360,
+        "psnrDb": 66.16825969015325,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8386388f4a65fdeac269a12b9cfa6224a4673656dfebfaa21c91c4bbd2e153c2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 5633796,
+      "outputSha256": "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 1023,
+        "height": 1023,
+        "bytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "pictureRole": "Cover (front)",
+        "description": "Couverture maximale café — 音楽",
+        "rgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true,
+        "decodedRgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba"
+      },
+      "streamingPictureInspection": {
+        "type": 3,
+        "mime": "image/png",
+        "description": "Couverture maximale café — 音楽",
+        "width": 1023,
+        "height": 1023,
+        "depth": 0,
+        "colors": 0,
+        "imageBytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "encodedBytes": 5592508,
+        "readBytes": 5617639,
+        "maximumReadBytes": 65025,
+        "pages": 88,
+        "maximumBase64ChunkBytes": 16384,
+        "maximumDecodedChunkBytes": 12288,
+        "pageBufferBytes": 65307,
+        "completePacketOrImageBufferAllocated": false,
+        "textBytes": 800
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus-repeated-values-png-budget-cover-benchmark-6",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 360,
+      "engineElapsedMs": 183.6400000154972,
+      "benchmarkIteration": 6,
+      "benchmarkWarmup": false,
+      "validationDiagnostics": {
+        "terminal": {
+          "at": "2026-10-25T09:47:54.604Z",
+          "pageRealmHeap": {
+            "usedSize": 6577352,
+            "totalSize": 10768384,
+            "embedderHeapUsedSize": 14500776,
+            "backingStorageSize": 722096
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 477,
+            "timestamp": "2026-10-25T09:47:54.5370567Z",
+            "phase": "case-6",
+            "privateBytes": 441679872
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterExport": {
+          "at": "2026-10-25T09:47:54.623Z",
+          "pageRealmHeap": {
+            "usedSize": 7050112,
+            "totalSize": 10768384,
+            "embedderHeapUsedSize": 14498640,
+            "backingStorageSize": 734461
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 477,
+            "timestamp": "2026-10-25T09:47:54.5370567Z",
+            "phase": "case-6",
+            "privateBytes": 441679872
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterValidation": {
+          "at": "2026-10-25T09:47:55.262Z",
+          "pageRealmHeap": {
+            "usedSize": 5539900,
+            "totalSize": 10768384,
+            "embedderHeapUsedSize": 15284512,
+            "backingStorageSize": 734461
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 483,
+            "timestamp": "2026-10-25T09:47:55.1887955Z",
+            "phase": "case-6-independent-validation",
+            "privateBytes": 370065408
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        },
+        "afterCleanup": {
+          "at": "2026-10-25T09:47:55.317Z",
+          "pageRealmHeap": {
+            "usedSize": 5599912,
+            "totalSize": 10768384,
+            "embedderHeapUsedSize": 15269624,
+            "backingStorageSize": 734461
+          },
+          "pageRealmOnlyNotWorkerOrProcessMemory": true,
+          "nativeSample": {
+            "sequence": 484,
+            "timestamp": "2026-10-25T09:47:55.2986263Z",
+            "phase": "case-6-independent-validation",
+            "privateBytes": 382078976
+          },
+          "primaryStillIncludesAllNonblankPhases": true,
+          "noForcedGcOrArtificialCooldown": true
+        }
+      },
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-xVf9k6/chrome-profile/Default/File System/000/t/00/00000008",
+        "logicalBytes": 5633796,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "6192449493720397",
+          "size": "5633796",
+          "birthtimeNs": "1792921674409416600",
+          "mtimeNs": "1792921674574533600"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "136a4c00d8981f8a5e7a33da48ae769955e371d3bd404ba0c1cac92c4da7dddf"
+          },
+          {
+            "offset": 2814850,
+            "bytes": 4096,
+            "sha256": "6d239f9af0681737775d330d43339e20f6588fb6154b061e937b4eafa66aa65b"
+          },
+          {
+            "offset": 5629700,
+            "bytes": 4096,
+            "sha256": "41e5ab10f15e586915167030f28ccd41e209661d8e0ecfc9f23b6860a3598814"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908360,
+        "psnrDb": 66.16825969015325,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8386388f4a65fdeac269a12b9cfa6224a4673656dfebfaa21c91c4bbd2e153c2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 5633796,
+      "outputSha256": "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 1023,
+        "height": 1023,
+        "bytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "pictureRole": "Cover (front)",
+        "description": "Couverture maximale café — 音楽",
+        "rgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true,
+        "decodedRgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba"
+      },
+      "streamingPictureInspection": {
+        "type": 3,
+        "mime": "image/png",
+        "description": "Couverture maximale café — 音楽",
+        "width": 1023,
+        "height": 1023,
+        "depth": 0,
+        "colors": 0,
+        "imageBytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "encodedBytes": 5592508,
+        "readBytes": 5617639,
+        "maximumReadBytes": 65025,
+        "pages": 88,
+        "maximumBase64ChunkBytes": 16384,
+        "maximumDecodedChunkBytes": 12288,
+        "pageBufferBytes": 65307,
+        "completePacketOrImageBufferAllocated": false,
+        "textBytes": 800
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    }
+  ],
+  "losslessJournal": {
+    "file": "output/playwright/2026-10-25T09-46-51.348Z-audio-fidelity-memory.ndjson.gz",
+    "records": 509,
+    "sha256": "9675b6ff197eccabef610cf905def36dd8d3cbda7f348bab381ae220ec8808ff",
+    "archiveSha256": "6f460e48490ce72ffdfee7e21e103ec575bbaee9fac71f9ff41d4c77211fc977",
+    "complete": true
+  },
+  "failures": [],
+  "network": {
+    "observedRequests": 32,
+    "forbidden": [],
+    "nativeGlueRequests": 7,
+    "nativeWasmRequests": 7
+  },
+  "cleanup": {
+    "allRecordedBirthsAbsent": true,
+    "publishedAssetsNeverChanged": true,
+    "stagedPrivateAssetsRestored": true,
+    "ownedProfileFixturesOutputsRemoved": true
+  },
+  "protectedOriginalUnchanged": true
+}

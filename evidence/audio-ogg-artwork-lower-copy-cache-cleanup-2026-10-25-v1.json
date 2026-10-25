@@ -1,0 +1,40 @@
+{
+  "recordedAt": "2026-10-25T09:52:19.378Z",
+  "status": "removed-exact-owned-nonwinning-cache",
+  "directory": "work/audio-ogg-artwork-lower-copy-40161703799",
+  "bytes": 10449553,
+  "manifestSha256": "6457c3499800db5d8275d08ead789637546c68e8d75fc4ccf21b893eeba57609",
+  "files": [
+    "LICENSE.lame",
+    "LICENSE.lame-linking",
+    "LICENSE.libogg",
+    "LICENSE.libtheora",
+    "LICENSE.libvorbis",
+    "LICENSE.opencore-amr",
+    "LICENSE.opus",
+    "audio-repeated-comment-source.json",
+    "build-manifest.json",
+    "config_components.h",
+    "oggparsevorbis.parent.c",
+    "oggparsevorbis.repeated.c",
+    "within-remux.mjs",
+    "within-remux.wasm",
+    "within_remux.metadata.c",
+    "within_remux.parent.c"
+  ],
+  "identity": {
+    "dev": "1887170595",
+    "ino": "7599824377267766",
+    "birthtimeNs": "1792902597684898300"
+  },
+  "reason": "closed-nonwinning-browser-speed-experiment; baseline-retained",
+  "sourceAndReportsRetained": true,
+  "recovery": {
+    "buildRun": 40161703799,
+    "buildCommit": "e361f463ca1af9d2238f2466ddbbb817fb8c7142",
+    "rebuildRecipe": "media/ffmpeg/build-audio-ogg-artwork-lower-copy-candidate.mjs"
+  },
+  "publicAssetsTouched": false,
+  "protectedOriginalTouched": false,
+  "removedAt": "2026-10-25T09:52:19.386Z"
+}

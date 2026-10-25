@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "predeclaredAt": "2026-10-25T09:40:21Z",
-  "status": "prepared-not-started",
+  "status": "complete-no-consistent-browser-speedup",
   "scope": "matched private production-browser max-cover serializer experiment, not long-file/scaling/public acceptance",
   "order": "A/B/B/A",
   "qualificationFlag": "--artwork-benchmark-physical-validation",
@@ -25,11 +25,25 @@
     "sourceEdits": 14
   },
   "runs": [
-    { "position": 0, "engine": "baseline", "status": "not-started" },
-    { "position": 1, "engine": "candidate", "status": "not-started" },
-    { "position": 2, "engine": "candidate", "status": "not-started" },
-    { "position": 3, "engine": "baseline", "status": "not-started" }
+    { "position": 0, "engine": "baseline", "status": "qualified-seven-jobs", "toolSessionId": 11741,
+      "receipt": "evidence/2026-10-25T09-41-29.182Z-audio-metadata-fidelity-result.json", "incrementalPrivateMiB": 193.45703125, "validSamples": 513, "unavailableSamples": 0 },
+    { "position": 1, "engine": "candidate", "status": "qualified-seven-jobs", "toolSessionId": 64509,
+      "receipt": "evidence/2026-10-25T09-43-14.749Z-audio-metadata-fidelity-result.json", "incrementalPrivateMiB": 203.7109375, "validSamples": 509, "unavailableSamples": 0 },
+    { "position": 2, "engine": "candidate", "status": "qualified-seven-jobs", "toolSessionId": 26572,
+      "receipt": "evidence/2026-10-25T09-45-02.570Z-audio-metadata-fidelity-result.json", "incrementalPrivateMiB": 202.64453125, "validSamples": 513, "unavailableSamples": 0 },
+    { "position": 3, "engine": "baseline", "status": "qualified-seven-jobs", "toolSessionId": 83440,
+      "receipt": "evidence/2026-10-25T09-46-51.348Z-audio-metadata-fidelity-result.json", "incrementalPrivateMiB": 211.515625, "validSamples": 509, "unavailableSamples": 0 }
   ],
+  "comparison": "outputs/reports/2026-10-25T09-48-25.204Z-audio-artwork-serializer-browser-comparison.json",
+  "outcome": "speed-hypothesis-not-supported-on-this-fixture",
+  "selectedEngine": "baseline",
+  "baselineMedianEngineMs": 189.1325000077486,
+  "candidateMedianEngineMs": 190.43750001490116,
+  "engineSpeedup": 0.993147358020083,
+  "bracketMedianSpeedups": [1.0294516540459715, 0.9643967258853974],
+  "all28OutputsValidated": true,
+  "all2044MemorySamplesValid": true,
+  "candidateSourceAndEvidenceRetainedForAuditOnly": true,
   "priorOldValidationFailuresRemainFailed": true,
   "publicAcceptance": false,
   "longFileSpeedVerified": false,

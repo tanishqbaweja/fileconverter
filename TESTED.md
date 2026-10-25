@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-25 actual predeclared A/B/B/A comparison09-48-25.204Z CLOSED:
+4clean contexts*7jobs=28 exact/fidelity/picture/metadata outputs;2044valid0missing
+whole-tree samples. Peaks193.4570/203.7109/202.6445/211.5156MiB, cleanup PASS.
+Identical35source/browser/input/settings/new physical validation conditions.
+Engine median189.1325 ->190.4375ms,0.9931x; pair directions disagree1.0295x/
+0.9644x. NO consistent browser speed win; not fastest/long-file/public proof.
+Native serializer improvement remains native-only. Baseline10 retained,
+candidate not selected/promoted; close hypothesis without selective reruns.
+Exact audited16-file candidate cache10,449,553B removed; static sources,
+reports and pinned40161703799/e361f463 recovery recipe retained. Baseline
+engine/public files/original untouched. Four final headless screens reviewed.
+114 focused regression/lint/TypeScript/diff checks PASS; comparison and all
+four lossless journals authenticated by regression tests. Full scope OPEN.
+
 2026-10-25 A/B/B/A max-cover serializer benchmark predeclared09:40:21Z,
 actual four runs UNVERIFIED. Corrected physical-OPFS validation and birth-aware
 observer, one warmup/six measured jobs each, unchanged quality/memory/privacy/

@@ -6,6 +6,16 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Matched bracket09-48-25.204Z complete, NO consistent browser speed gain:
+baseline189.1325ms/candidate190.4375ms, opposite bracket ratios1.0295/0.9644.
+All28 outputs and2044native samples qualified, primary193.46-211.52MiB with
+all cleanup/original intact. Keep baseline10; no unchanged replay or promotion.
+Exact owned14-tool cache10,449,553B removed after audit; source/proof and
+pinned rebuild retained. Baseline10 stays available; public assets untouched.
+Next substantive B05 byte/field-budget failure/limit coverage; full54 scope OPEN.
+114 focused/lint/TypeScript/diff PASS; final UI/cleanup/original independently
+reviewed. No new public capability or production speed claim from this bracket.
+
 Next actual measurement predeclared09:40:21Z: four clean-context max-cover
 benchmark runs A/B/B/A, corrected identical physical-validation backend and
 birth-aware observer, full source/browser/quality/output/memory/privacy/cleanup

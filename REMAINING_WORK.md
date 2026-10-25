@@ -1,5 +1,24 @@
 # Remaining work audit
 
+2026-10-25 corrected-backend A/B/B/A CLOSED, no browser speed win:
+09-41-29 /09-43-14 /09-45-02 /09-46-51 all7jobs PASS;28 exact-control outputs,
+2044valid/0missing native samples, same35source/browser/input/settings/physical
+validation pins. Primary peaks193.4570/203.7109/202.6445/211.5156MiB. Full
+output/image/pixels/25tags/repeats/96kPCM and all owned cleanup/original PASS.
+Engine median189.1325ms baseline vs190.4375ms candidate (0.9931x); opposite
+brackets1.0295x/0.9644x; UI wall365/361.5ms is not consistent engine benefit.
+Native1.36x serializer microbenchmark does NOT translate to conversion gain.
+Keep baseline10; do not promote/retry unchanged hypothesis. Candidate sources/
+reports retained for audit, no longer needed10,449,553B experimental cache
+removed after exact16-file/identity/hash/62source audit (cleanup receipt in
+evidence/audio-ogg-artwork-lower-copy-cache-cleanup-2026-10-25-v1.json).
+Recover from pinned40161703799/e361f463 build/recipe; no public assets or
+original media touched; baseline cache kept. This closes this speed
+experiment only; next B05 metadata byte/field budgets and original54 open work.
+114 focused regression/lint/TypeScript/diff checks PASS; all four final
+headless screens reviewed, owned profile absence/original hash independently
+checked. No experimental engine code or public support profile promoted.
+
 2026-10-25 new corrected-backend performance bracket predeclared09:40:21Z
 in evidence/audio-artwork-serializer-bracket-2026-10-25-v1.json: A/B/B/A,
 four fresh default headless Chrome contexts, each one warmup+six timed jobs.

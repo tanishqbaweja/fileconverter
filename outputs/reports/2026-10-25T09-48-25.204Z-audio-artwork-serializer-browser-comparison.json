@@ -1,0 +1,147 @@
+{
+  "startedAt": "2026-10-25T09:48:25.204Z",
+  "status": "compared-four-qualified-small-browser-runs-not-promotion",
+  "order": "A/B/B/A",
+  "runs": [
+    {
+      "position": 0,
+      "engine": "baseline",
+      "measuredJobs": 6,
+      "engineMedianMs": 193.55750000476837,
+      "browserWallMedianMs": 366.5,
+      "incrementalPrivateMiB": 193.45703125,
+      "validMemorySamples": 513,
+      "manifestSha256": "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c"
+    },
+    {
+      "position": 1,
+      "engine": "lower-copy",
+      "measuredJobs": 6,
+      "engineMedianMs": 188.02000001072884,
+      "browserWallMedianMs": 365.5,
+      "incrementalPrivateMiB": 203.7109375,
+      "validMemorySamples": 509,
+      "manifestSha256": "6457c3499800db5d8275d08ead789637546c68e8d75fc4ccf21b893eeba57609"
+    },
+    {
+      "position": 2,
+      "engine": "lower-copy",
+      "measuredJobs": 6,
+      "engineMedianMs": 193.0300000011921,
+      "browserWallMedianMs": 359.5,
+      "incrementalPrivateMiB": 202.64453125,
+      "validMemorySamples": 513,
+      "manifestSha256": "6457c3499800db5d8275d08ead789637546c68e8d75fc4ccf21b893eeba57609"
+    },
+    {
+      "position": 3,
+      "engine": "baseline",
+      "measuredJobs": 6,
+      "engineMedianMs": 186.1574999988079,
+      "browserWallMedianMs": 362.5,
+      "incrementalPrivateMiB": 211.515625,
+      "validMemorySamples": 509,
+      "manifestSha256": "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c"
+    }
+  ],
+  "measuredJobsPerEngine": 12,
+  "warmupsPerEngine": 2,
+  "validatedOutputs": 28,
+  "engineTiming": {
+    "baselineMedianMs": 189.1325000077486,
+    "candidateMedianMs": 190.43750001490116,
+    "observedMedianSpeedup": 0.993147358020083,
+    "bracketMedianSpeedups": [
+      1.0294516540459715,
+      0.9643967258853974
+    ]
+  },
+  "browserWallTiming": {
+    "baselineMedianMs": 365,
+    "candidateMedianMs": 361.5,
+    "observedMedianSpeedup": 1.0096818810511756
+  },
+  "conclusion": "no-consistent-end-to-end-engine-speedup-demonstrated-on-this-fixture",
+  "equalInputsSettingsSourcesAndBrowser": true,
+  "allOutputsExactControl": true,
+  "publicAcceptance": false,
+  "longFileSpeedVerified": false,
+  "scalingAcceptance": false,
+  "fastestClaim": false,
+  "headedCoverage": false,
+  "wholeProcessSavingsInferredFromSerializerAllocation": false,
+  "evidence": [
+    {
+      "receipt": "evidence/2026-10-25T09-41-29.182Z-audio-metadata-fidelity-result.json",
+      "receiptSha256": "0f16a0a700130e7ee652c19cc8f628ddcfa6ba4ede99595c423dd7f33ba65e8b",
+      "archive": {
+        "path": "outputs/reports/2026-10-25T09-41-29.182Z-audio-metadata-production-runtime.json.gz",
+        "bytes": 26909,
+        "sha256": "65f08e46c1dd10edcc202cf17bc1ffc50a3fed153df9509b88eb46745bc7a236",
+        "restoredBytes": 249355,
+        "restoredSha256": "e78c19df641f8288a67663cb3941dffeae480413ba30cc6c94a2d11a666f47a8"
+      },
+      "losslessJournal": {
+        "file": "output/playwright/2026-10-25T09-41-29.182Z-audio-fidelity-memory.ndjson.gz",
+        "records": 513,
+        "sha256": "e969b9c5415300f61bcafd1a9bad9cd025866ad74aade67fe044602ef66a6990",
+        "archiveSha256": "0ec3b73ff10f7859262b79dd8215070d51fb3462969f6fb71dca010624d31805",
+        "complete": true
+      }
+    },
+    {
+      "receipt": "evidence/2026-10-25T09-43-14.749Z-audio-metadata-fidelity-result.json",
+      "receiptSha256": "984f50e719a63d3fa34d8032047dc9147bb1936d4145b564907970bc1ac679d9",
+      "archive": {
+        "path": "outputs/reports/2026-10-25T09-43-14.749Z-audio-metadata-production-runtime.json.gz",
+        "bytes": 26737,
+        "sha256": "2c842f3de02c8897637216a355e85f9748abd2adcc3537cf87910b9c539206b6",
+        "restoredBytes": 243542,
+        "restoredSha256": "43ea6778562494697da8750596261d0c8943edea645cc269e41c7cdecffe6e18"
+      },
+      "losslessJournal": {
+        "file": "output/playwright/2026-10-25T09-43-14.749Z-audio-fidelity-memory.ndjson.gz",
+        "records": 509,
+        "sha256": "3ed145220ed51a8ea587d7792d682cdaded7192f3b4dba468fe2e69299f12b47",
+        "archiveSha256": "f375b1a2b778c789f6323820667b3bcf79db5f768bd97bb5df4e75caa6b3bd17",
+        "complete": true
+      }
+    },
+    {
+      "receipt": "evidence/2026-10-25T09-45-02.570Z-audio-metadata-fidelity-result.json",
+      "receiptSha256": "b89397decd08f6b143b517f714d8b922538771951374bddcdf700f460aef24d0",
+      "archive": {
+        "path": "outputs/reports/2026-10-25T09-45-02.570Z-audio-metadata-production-runtime.json.gz",
+        "bytes": 26880,
+        "sha256": "a36f80228f6a760fba0e0e9d96b39818611601cfe2f4cdcac5dc8bec05868503",
+        "restoredBytes": 248759,
+        "restoredSha256": "15613b8e36d396f1cd4243a46c7b6d42356421ef92ac19f2cd627c0b5d7e2414"
+      },
+      "losslessJournal": {
+        "file": "output/playwright/2026-10-25T09-45-02.570Z-audio-fidelity-memory.ndjson.gz",
+        "records": 513,
+        "sha256": "a655e81ffe8661fe88d3cdd14c566abd5b9fb268c1bc8253565c78df9a0fc58e",
+        "archiveSha256": "6001d2ae06babb10225fd323fa8059a21a70f903c647bc27587d3779ec02e79a",
+        "complete": true
+      }
+    },
+    {
+      "receipt": "evidence/2026-10-25T09-46-51.348Z-audio-metadata-fidelity-result.json",
+      "receiptSha256": "3547c438d9a6b3c6db33ff3835a3d1d71156b38c93a2789a8bcd54f3405322d4",
+      "archive": {
+        "path": "outputs/reports/2026-10-25T09-46-51.348Z-audio-metadata-production-runtime.json.gz",
+        "bytes": 26824,
+        "sha256": "52c1805fa156e580bbf8a4e16f0e0568fd6bb5b98e3ac4e244c14b706c37c425",
+        "restoredBytes": 246582,
+        "restoredSha256": "28503eb2f3aa7e1bf4d04193069ecb242c3f65f331ca2762a3c642eb9d40e09b"
+      },
+      "losslessJournal": {
+        "file": "output/playwright/2026-10-25T09-46-51.348Z-audio-fidelity-memory.ndjson.gz",
+        "records": 509,
+        "sha256": "9675b6ff197eccabef610cf905def36dd8d3cbda7f348bab381ae220ec8808ff",
+        "archiveSha256": "6f460e48490ce72ffdfee7e21e103ec575bbaee9fac71f9ff41d4c77211fc977",
+        "complete": true
+      }
+    }
+  ]
+}
