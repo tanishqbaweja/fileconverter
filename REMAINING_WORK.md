@@ -1,5 +1,19 @@
 # Remaining work audit
 
+2026-10-25 genuinely new field-budget gate prepared:4095 text+1 exact4MiB
+cover (total4096),4096 text+cover rejection,4097 text rejection, valid same-page
+recovery. Generated INPUT-only constructor changes only the comment block,
+preserves original FLAC audio/picture bytes and pins canonical source hashes; native full PCM input
+decode verifies all three inputs before browser. Native FFprobe diagnostic
+projection remains canonical25 tags within128tag/131072B capture limits; all
+thousands of added Unicode fields independently compared from raw output
+comments (unchanged4096/2MiB reader cap), not hidden behind projected counts.
+Expected native errors require32MiB observed Wasm/zero output/empty OPFS/
+recovered worker; not completed outputs.24focused/lint/TypeScript/syntax PASS;
+actual four-case runtime still UNVERIFIED. Reuse original10-edit engine56/15,
+no rebuild or limit changes. Separate exact TEXT BYTE boundary remains OPEN.
+189aefc CI40182713534 SUCCESS; full original54 scope unchanged.
+
 2026-10-25 corrected-backend A/B/B/A CLOSED, no browser speed win:
 09-41-29 /09-43-14 /09-45-02 /09-46-51 all7jobs PASS;28 exact-control outputs,
 2044valid/0missing native samples, same35source/browser/input/settings/physical

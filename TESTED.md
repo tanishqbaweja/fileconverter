@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-25 new metadata-field boundary/rejection/recovery source24focused/
+lint/TypeScript/syntax checks PASS. Exact4095text+cover=4096;4096text+cover
+and4097text expected native errors/empty OPFS/recovered worker; final exact
+control recovery in SAME page. Three fixed generated fixtures preserve audio
+and real4MiB image; canonical native tag projection does not replace raw full
+field-order/value/image/PCM checks. Existing reader/native limits unchanged.
+Actual browser proof UNVERIFIED; exact2MiB text-byte boundary still OPEN.
+189aefc portable CI40182713534 SUCCESS.
+
 2026-10-25 actual predeclared A/B/B/A comparison09-48-25.204Z CLOSED:
 4clean contexts*7jobs=28 exact/fidelity/picture/metadata outputs;2044valid0missing
 whole-tree samples. Peaks193.4570/203.7109/202.6445/211.5156MiB, cleanup PASS.

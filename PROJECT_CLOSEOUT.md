@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Next four-case metadata-field gate implemented (actual runtime unverified):
+4095text+cover exact4096, one-over cover and4097text native rejection, same-page
+valid recovery. Native canonical25-tag projection bounded; raw comment parser
+checks every added Unicode field/order plus all image/PCM controls. Generated
+inputs preserve every FLAC audio byte and are fully independently decoded.
+24focused/lint/TypeScript/syntax PASS; original10-edit native cache reused,
+no limit/rebuild/codec changes. Separate byte boundary and full54 remain OPEN.
+
 Matched bracket09-48-25.204Z complete, NO consistent browser speed gain:
 baseline189.1325ms/candidate190.4375ms, opposite bracket ratios1.0295/0.9644.
 All28 outputs and2044native samples qualified, primary193.46-211.52MiB with
