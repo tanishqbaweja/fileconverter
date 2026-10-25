@@ -6,6 +6,23 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Actual exact4MiB PNG byte-boundary03-32-37.015Z PASS, no longer pending:
+1023x1023 real high-entropy RGBA, full image/pixel SHA/25tags/two ordered
+values/96,000audio samples/66.1683dB and same-control decoded audio PASS.
+Small full-tree159.18359375MiB/438valid/0missing,32MiB Wasm, boundedIO/oneop;
+88page streaming metadata/picture inspection; privacy/disk/original/all16
+owned births gone/media+profile cleanup/restore PASS. Compact18,719B report,
+lossless journal and reviewed headless image retained. Byte/pixel hashes pinned.
+CLOSE this boundary only; next one-byte-over and unsafe-dimension explicit
+exclusion/warnings +same-page recovery before applicable repeats/long stress.
+Keep current56-source native baseline unchanged for matched allocation/speed
+work. Single541ms/tiny2s audio is NOT fastest or large-media evidence.
+5010b85 CI40157876817 SUCCESS; full54/public promotion still OPEN.
+68focused regression/lint/diff and TypeScript PASS. Retained boundary proof
+test verifies438-row journal/process sums/formula, raw/image/pixel/PCM hashes
+and bounded IO/inspection. Owned profile independently absent, no input/output
+copies retained. Next explicit exclusion/recovery cases remain unperformed.
+
 Separate streaming picture inspection now implemented/tested (7new unit cases):
 one65,307B page,16KiB base64/12KiB decode chunks, image SHA incrementally;
 2MiB text/4096fields unchanged, one4MiB picture separate,128pages/8MiB total

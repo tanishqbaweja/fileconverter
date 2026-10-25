@@ -1,5 +1,30 @@
 # Remaining work audit
 
+2026-10-25 actual exact4MiB artwork boundary03-32-37.015Z PASS1/1: real
+1023x1023 RGBA PNG (4,188,425B compressed pixels/5,810B ancillary padding),
+4,231,536B generated FLAC input ->5,633,796B genuine browser Opus output.
+Complete embedded image bytes/native full-pixel SHA, role/Unicode description,
+25tags/two ordered values/96,000PCM samples PASS; decoded audio equals previous
+same-settings control,66.1683dB >=60. Browser job541ms (one tiny2s audio sample,
+NOT fastest/general speed proof). Full-tree small boundary159.18359375MiB,
+438valid/0missing, observed Wasm32MiB, maxread256KiB/write+queue65,307B/oneop.
+Independent Ogg inspection reads5,617,639B over88pages with16KiB base64/12KiB
+decode chunks;800B charged text, no full picture/packet allocation. Privacy,
+physical OPFS/protected original/16owned births gone/media/profile cleanup/
+staged assets restored PASS. Raw106,595B retained18,719B gzip plus journal/
+one headless screenshot reviewed. CLOSE this byte boundary, NOT full artwork/
+repeat/stress/public/full54 acceptance. No unchanged replay. PNG byte/pixel
+hashes now pinned before future matched optimization runs. Next actual one-
+byte-over-limit and unsafe-dimension exclusion/warning +same-page recovery,
+then matched allocation/speed work and applicable long-file stress. Keep
+current56 build sources/cache unchanged for matched baseline; no native rebuild
+was needed. Prior5010b85 CI40157876817 SUCCESS verified.
+68focused regression tests/lint/diff checks PASS; TypeScript PASS. Retained
+boundary test restores/hashes raw report, all438 native rows/process sums and
+baseline-to-peak formula, source/output image and full-pixel hashes, control
+PCM equality, bounded production IO and streaming inspector metrics. Owned
+profile absence independently checked. No new media/fixture copies retained.
+
 2026-10-25 B05 large-cover gate preparation: separate streaming Ogg picture
 inspector uses one65,307B page buffer,16KiB base64/12KiB decoded chunks and
 incremental image SHA. Text retains2MiB/4096entries/64pages without artwork;

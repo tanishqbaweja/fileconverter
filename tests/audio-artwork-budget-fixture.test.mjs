@@ -18,6 +18,8 @@ test("maximum-artwork input recipe is deterministic, hash-pinned, scoped to owne
   assert.match(source, /sourceInfo.size === 37086/); assert.match(source, /bceca191b7b40164857884b4c95ac5b2b78e0c4969f3fad391b7c421adcc36bc/);
   assert.match(source, /maximumBytes = 4194304/); assert.match(source, /width = 1023, height = 1023/);
   assert.match(source, /state = 0x6d2b79f5/); assert.match(source, /paddingBytes < 65536/);
+  assert.match(source, /82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f/);
+  assert.match(source, /4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba/);
   assert.equal(source.match(/flag: "wx"/g).length, 2); assert.doesNotMatch(source, /test\.mkv|\brm\(|\bspawn\(/);
 });
 test("one new browser byte-boundary gate retains full pipeline and validates decoded pixels plus streaming picture bytes", async () => {

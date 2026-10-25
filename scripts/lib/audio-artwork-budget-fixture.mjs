@@ -38,6 +38,11 @@ export async function createAudioArtworkBudgetFixture(directory) {
   // entire file is real high-entropy compressed RGBA, not filler/sparse media.
   parts.push(chunk("npAD", Buffer.alloc(paddingBytes)), chunk("IEND", Buffer.alloc(0)));
   const image = Buffer.concat(parts); assert.equal(image.length, maximumBytes);
+  // Pin the independently decoded first browser fixture before any future
+  // matched optimization run; a different host zlib must not change inputs.
+  assert.equal(sha(image), "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f");
+  const rgbaSha256 = pixels.digest("hex");
+  assert.equal(rgbaSha256, "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba");
   const imagePath = path.join(directory, "cover-budget.png"); await writeFile(imagePath, image, { flag: "wx" });
   const description = "Couverture maximale café — 音楽", mime = Buffer.from("image/png"), title = Buffer.from(description);
   const picture = Buffer.concat([word(3), word(mime.length), mime, word(title.length), title, word(width), word(height), word(32), word(0), word(image.length), image]);
@@ -55,7 +60,7 @@ export async function createAudioArtworkBudgetFixture(directory) {
   const file = path.join(directory, "source-artwork-png-budget.flac"); await writeFile(file, generated, { flag: "wx" });
   return { file, imagePath, bytes: generated.length, sha256: sha(generated),
     expected: { codec: "png", width, height, bytes: image.length, sha256: sha(image), pictureRole: "Cover (front)", description,
-      rgbaSha256: pixels.digest("hex") },
+      rgbaSha256 },
     recipe: { width, height, realCompressedPixelBytes: compressed.length, privateAncillaryPaddingBytes: paddingBytes,
       imageBytes: maximumBytes, noSparsePlaceholder: true, nativeConversionUsed: false } };
 }

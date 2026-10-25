@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-10-25 actual03-32-37.015Z exact4MiB PNG cover PASS:1023x1023 real RGBA,
+4,188,425B compressed pixels +5,810B private ancillary padding; no sparse
+placeholder.4,231,536B FLAC input/5,633,796B browser Opus output,541ms single
+job (not global/fastest proof). Exact image/native full pixel hashes, role/
+description,25tags/two ordered Unicode values/96,000 full audio samples PASS;
+decoded audio equals previous automatic control,66.1683dB >=60. Full-tree
+159.18359375MiB/438valid/0missing,32MiB Wasm, maxread256KiB/write+queue65,307B/
+oneop. Streaming picture validation88pages/16KiB base64/12KiB decoded chunks,
+800B text; no full-picture allocation. Privacy/disk/original/16births gone/
+media+profile cleanup/asset restore PASS. Raw106,595B ->18,719B gzip/journal/
+one headless screenshot retained/reviewed. Close ONLY this exact byte bound;
+over-limit/dimension warnings/recovery/repeats/stress/promotion remain OPEN.
+Prior5010b85 CI40157876817 SUCCESS. Future benchmark image/pixel hashes pinned.
+68focused regression/lint/diff and TypeScript checks PASS. Retained boundary
+test recomputes438 complete native process totals/formula, authenticates
+raw/journal/image hashes and verifies real decoded pixel/PCM equality and
+IO/inspection bounds. Owned profile absence independently checked.
+
 2026-10-25 streaming Ogg artwork inspector7unit cases PASS, including exact
 2MiB aggregate text +4MiB picture, bounded page/base64/decode buffers and
 incremental hash, correct fields before/after picture, CRC/framing/UTF8/
