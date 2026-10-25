@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-25 new artwork exclusion/recovery source27focused/lint/diff checks
+PASS: real4097x1 PNG decoded/CRC/pixel hash verified in portable unit test;
+one-byte-over constructor accepts only pinned4MiB image and changes ancillary
+padding/CRC, never IDAT. Separate diagnostic validator cannot certify rejected
+inputs as supported outputs. Output check requires one audio/no image/hidden
+picture comments and exact bound warning; same-page final recovery requires
+no stale warning. Actual three production conversions remain UNVERIFIED.
+No native rebuild, public promotion, quality or Chrome constraint change.
+
 2026-10-25 actual03-32-37.015Z exact4MiB PNG cover PASS:1023x1023 real RGBA,
 4,188,425B compressed pixels +5,810B private ancillary padding; no sparse
 placeholder.4,231,536B FLAC input/5,633,796B browser Opus output,541ms single

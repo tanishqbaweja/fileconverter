@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-10-25 next B05 exclusion/recovery gate implemented, actual browser result
+still UNVERIFIED: valid PNG at4MiB+1 byte and valid4097x1 PNG, both embedded in
+the canonical25-field/repeated-value FLAC source, then original accepted4MiB
+cover in the SAME production page. Inputs independently checked as valid
+out-of-policy inputs (never accepted converter outputs), including all decoded
+pixel hashes/full PCM. Outputs must be audio only with no hidden picture tag,
+exact bounded-artwork exclusion warning visible in UI,25tags/two values/full
+audio fidelity. Accepted recovery must keep exact cover/pixels and show no
+stale warning. Existing byte-boundary repeat is justified ONLY as new post-
+exclusion recovery, not unchanged standalone replay.27focused tests/lint/diff
+checks PASS, including real4097x1 PNG inflate/CRC/pixel tests and negative
+validation guards. No changed native code/build/limits/quality/browser flags;
+full memory/privacy/cleanup contracts retained. Next run explicit
+--artwork-rejection-recovery against current audited engine40156938341.
+
 2026-10-25 actual exact4MiB artwork boundary03-32-37.015Z PASS1/1: real
 1023x1023 RGBA PNG (4,188,425B compressed pixels/5,810B ancillary padding),
 4,231,536B generated FLAC input ->5,633,796B genuine browser Opus output.

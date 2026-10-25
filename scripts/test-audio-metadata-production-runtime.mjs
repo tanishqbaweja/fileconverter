@@ -18,6 +18,8 @@ import { appendFlacFixtureComments, readAudioCommentEntries } from "./lib/audio-
 import { appendOggFixtureComments } from "./lib/audio-repeated-comment-fixture.mjs";
 import { AUDIO_ARTWORK_METADATA_CASES, AUDIO_OGG_ARTWORK_CASES, audioArtworkFixtureComment, audioArtworkFixturePicture, appendFlacArtworkFixture, validateAudioArtworkPacket, validateBudgetedAudioArtworkPacket } from "./lib/audio-artwork-validation.mjs";
 import { createAudioArtworkBudgetFixture } from "./lib/audio-artwork-budget-fixture.mjs";
+import { createAudioArtworkRejectionFixtures } from "./lib/audio-artwork-rejection-fixture.mjs";
+import { ARTWORK_BUDGET_EXCLUSION_WARNING, validateGeneratedRejectedArtwork, validateArtworkBudgetExclusion } from "./lib/audio-artwork-rejection-validation.mjs";
 import { readOggPictureComments } from "./lib/ogg-picture-comment-inspection.mjs";
 import { compareNativeAudioPcm } from "./lib/streaming-audio-fidelity.mjs";
 import { validateScopedAudioTags } from "./lib/scoped-audio-tag-validation.mjs";
@@ -32,14 +34,19 @@ import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mj
 import { verifyOpfsDiskBacking } from "./lib/opfs-disk-backing-proof.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
 const qualityComparison = process.argv[3] === "--compare-vorbis-quality";
 const remainingRepeated = process.argv[3] === "--remaining-repeated-audio";
 const flacOrderRepair = process.argv[3] === "--flac-order-repair";
 const artworkMetadata = process.argv[3] === "--artwork-metadata";
 const artworkBudget = process.argv[3] === "--artwork-byte-budget";
+const artworkRejection = process.argv[3] === "--artwork-rejection-recovery", extendedArtworkInspection = artworkBudget || artworkRejection;
 const oggArtwork = process.argv[3] === "--ogg-artwork", withArtwork = artworkMetadata || oggArtwork;
-const selectedCases = artworkBudget ? [{ source: "flac", destination: "opus", repeated: true, artwork: "png-budget" }]
+const selectedCases = artworkRejection ? [
+  { source: "flac", destination: "opus", repeated: true, artwork: "png-over-bytes", expectedExclusion: true },
+  { source: "flac", destination: "opus", repeated: true, artwork: "png-over-dimension", expectedExclusion: true },
+  { source: "flac", destination: "opus", repeated: true, artwork: "png-budget", recoveryAfterExclusions: true },
+] : artworkBudget ? [{ source: "flac", destination: "opus", repeated: true, artwork: "png-budget" }]
   : oggArtwork ? AUDIO_OGG_ARTWORK_CASES : artworkMetadata ? AUDIO_ARTWORK_METADATA_CASES : flacOrderRepair ? [...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6), ...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6).map(c => ({ ...c, repeated: true }))]
   : remainingRepeated ? AUDIO_METADATA_FIDELITY_CASES.slice(1, 6).map(c => ({ ...c, repeated: true }))
   : qualityComparison ? [...AUDIO_METADATA_FIDELITY_CASES, { source: "opus", destination: "ogg", quality: "higher" }] : AUDIO_METADATA_FIDELITY_CASES;
@@ -57,14 +64,16 @@ if (oggArtwork) {
   report.automaticVorbisQualityRepaired = false;
 }
 if (artworkBudget) report.scope = "one NEW exact4MiB real PNG cover FLAC-to-Opus byte-budget case; unchanged text/codec/quality/memory limits; not repeat/scaling/promotion acceptance";
+if (artworkRejection) report.scope = "three NEW same-page cases: valid one-byte-over/one-pixel-over covers excluded with visible exact warnings, then accepted4MiB recovery; not cancellation/write-failure/full recovery/stress acceptance";
 const stamp = report.startedAt.replaceAll(":", "-"), sha = b => createHash("sha256").update(b).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 1048576 })) hash.update(b); return hash.digest("hex"); };
 const native = (args, executable = "ffmpeg") => execute(executable, args, { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 131072 });
 const probeAudio = async file => JSON.parse((await native(["-v", "error", "-show_entries", "stream=index,codec_type,codec_name,sample_rate,channels,width,height:stream_disposition=attached_pic:stream_tags:format=duration:format_tags", "-of", "json", file], "ffprobe")).stdout);
-const inspectArtwork = async (file, probe, expected) => {
+const inspectArtwork = async (file, probe, expected, generatedRejectedInput = false) => {
   const packets = JSON.parse((await native(["-v", "error", "-select_streams", "v:0", "-show_packets", "-show_data_hash", "sha256",
     "-show_entries", "packet=stream_index,size,data_hash", "-of", "json", file], "ffprobe")).stdout);
-  const result = (artworkBudget ? validateBudgetedAudioArtworkPacket : validateAudioArtworkPacket)(probe, packets, expected);
+  const result = generatedRejectedInput ? validateGeneratedRejectedArtwork(probe, packets, expected)
+    : (extendedArtworkInspection ? validateBudgetedAudioArtworkPacket : validateAudioArtworkPacket)(probe, packets, expected);
   if (expected.rgbaSha256) {
     const decoded = (await native(["-nostdin", "-v", "error", "-xerror", "-i", file, "-map", "0:v:0", "-frames:v", "1",
       "-c:v", "rawvideo", "-pix_fmt", "rgba", "-threads", "1", "-f", "hash", "-hash", "sha256", "-"])).stdout.trim();
@@ -78,6 +87,7 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "scripts/lib/audio-comment-validation.mjs", "scripts/lib/streaming-audio-fidelity.mjs", "scripts/lib/scoped-audio-tag-validation.mjs",
   "scripts/lib/audio-repeated-comment-fixture.mjs", "scripts/lib/audio-artwork-validation.mjs",
   "scripts/lib/audio-artwork-budget-fixture.mjs", "scripts/lib/ogg-picture-comment-inspection.mjs",
+  "scripts/lib/audio-artwork-rejection-fixture.mjs", "scripts/lib/audio-artwork-rejection-validation.mjs",
   "scripts/lib/bounded-network-observer.mjs", "scripts/lib/opfs-disk-backing-proof.mjs", "scripts/lib/bounded-validation-chunk.mjs",
   "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/native-memory-peaks.mjs", "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs",
   "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts", "lib/browser-capabilities.ts", "lib/capability-registry.ts",
@@ -132,6 +142,16 @@ try {
     report.artworkFixtures = { "flac-png-budget": { bytes: fixture.bytes, sha256: fixture.sha256,
       sourcePcmUnchanged: await compareNativeAudioPcm(path.join(runtime.directory, "source.flac"), fixture.file, { cwd: root, env, lossless: true }),
       artwork: await inspectArtwork(fixture.file, await probeAudio(fixture.file), fixture.expected) } };
+  }
+  if (artworkRejection) {
+    const fixtures = await createAudioArtworkRejectionFixtures(runtime.directory);
+    report.artworkImages = {}; report.artworkFixtures = {}; report.artworkBudgetRecipe = fixtures.accepted.recipe;
+    for (const [key, fixture, rejected] of [["png-over-bytes", fixtures.overBytes, true], ["png-over-dimension", fixtures.overDimension, true], ["png-budget", fixtures.accepted, false]]) {
+      report.artworkImages[key] = fixture.expected;
+      report.artworkFixtures["flac-" + key] = { bytes: fixture.bytes, sha256: fixture.sha256,
+        sourcePcmUnchanged: await compareNativeAudioPcm(path.join(runtime.directory, "source.flac"), fixture.file, { cwd: root, env, lossless: true }),
+        artwork: await inspectArtwork(fixture.file, await probeAudio(fixture.file), fixture.expected, rejected) };
+    }
   }
   if (withArtwork) {
     report.artworkImages = {}; report.artworkFixtures = {};
@@ -214,7 +234,8 @@ try {
     const profileId = `${conversion.source}-to-${conversion.destination}`, input = path.join(runtime.directory, conversion.artwork
       ? `source-artwork-${conversion.artwork}.${conversion.source}` : (conversion.repeated ? "source-repeated." : "source.") + conversion.source),
       output = path.join(runtime.directory, `output-${index}.${conversion.destination}`);
-    const row = { name: profileId + (conversion.repeated ? "-repeated-values" : "") + (conversion.artwork ? "-" + conversion.artwork + "-cover" : "") + (conversion.quality ? "-" + conversion.quality : ""),
+    const row = { name: profileId + (conversion.repeated ? "-repeated-values" : "") + (conversion.artwork ? "-" + conversion.artwork + "-cover" : "") + (conversion.quality ? "-" + conversion.quality : "")
+      + (conversion.expectedExclusion ? "-expected-exclusion" : "") + (conversion.recoveryAfterExclusions ? "-same-page-recovery" : ""),
       profileId, requestedQuality: conversion.quality ?? "automatic", repeated: Boolean(conversion.repeated), status: "failed", failures: [] }; report.cases.push(row);
     let outputIdentity, entryName;
     try {
@@ -232,10 +253,16 @@ try {
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState()); row.browserElapsedMs = Date.now() - startedAt; row.browserState = state; entryName = state.opfsName;
       assert.equal(state.audioOptions.quality, row.requestedQuality, "Actual production job must retain the requested quality selection");
       assert.equal(state.jobState, "complete", state.error ?? state.phase); assert.ok(entryName);
+      if (conversion.expectedExclusion) {
+        assert.ok(state.warnings.includes(ARTWORK_BUDGET_EXCLUSION_WARNING));
+        await page.getByText(ARTWORK_BUDGET_EXCLUSION_WARNING, { exact: true }).first().waitFor({ state: "visible", timeout: 5000 });
+        assert.equal(await page.getByText(ARTWORK_BUDGET_EXCLUSION_WARNING, { exact: true }).first().isVisible(), true);
+        row.exclusionWarningVisible = true;
+      }
       for (const count of [state.metrics.maxReadChunkBytes, state.metrics.maxWriteChunkBytes, state.metrics.peakQueuedBytes]) assert.ok(count <= 262144);
       assert.ok(state.metrics.peakPendingOperations <= 1); assert.equal(state.metrics.pendingOperations, 0);
       const size = await page.evaluate(async name => (await (await (await navigator.storage.getDirectory()).getFileHandle(name)).getFile()).size, entryName);
-      assert.ok(size > 0 && size < (artworkBudget ? 8 * 1048576 : 1048576), "Only the explicit finite artwork-byte case may export over1MiB");
+      assert.ok(size > 0 && size < (extendedArtworkInspection ? 8 * 1048576 : 1048576), "Only explicit finite artwork-boundary cases may export over1MiB");
       const writer = await open(output, "wx"); outputIdentity = await writer.stat({ bigint: true });
       try { for (let offset = 0; offset < size; offset += 65536) {
         const encoded = await page.evaluate(async ({ name, offset, count }) => {
@@ -246,11 +273,11 @@ try {
         while (at < bytes.length) { const n = (await writer.write(bytes, at, bytes.length - at, offset + at)).bytesWritten; assert.ok(n > 0); at += n; }
       } } finally { await writer.close(); }
       const outputProbe = await probeAudio(output);
-      if (!conversion.artwork) assert.equal(outputProbe.streams.length, 1);
+      if (!conversion.artwork || conversion.expectedExclusion) assert.equal(outputProbe.streams.length, 1);
       const audio = outputProbe.streams.find(stream => stream.codec_type === "audio"); assert.ok(audio);
       assert.equal(audio.codec_name, conversion.destination === "ogg" ? "vorbis" : conversion.destination); assert.equal(Number(audio.sample_rate), 48000); assert.equal(audio.channels, 1);
       row.output = { bytes: size, sha256: await hashFile(output), probe: outputProbe };
-      if (conversion.artwork) {
+      if (conversion.artwork && !conversion.expectedExclusion) {
         try { row.artwork = await inspectArtwork(output, outputProbe, report.artworkImages[conversion.artwork]); }
         catch (error) { row.failures.push("Embedded cover validation: " + String(error)); }
       }
@@ -258,12 +285,18 @@ try {
       if (row.output.tags.status !== "passed") row.failures.push("One or more25metadata fields lost or changed");
       try { row.fidelity = await compareNativeAudioPcm(input, output, { cwd: root, env, lossless: conversion.destination === "flac" }); row.fullIndependentDecode = true; }
       catch (error) { row.fidelity = error.fidelity ?? null; row.fullIndependentDecode = error.fullIndependentDecodePassed ?? false; row.failures.push(String(error)); }
-      const comments = artworkBudget ? await readOggPictureComments(output, conversion.destination) : await readAudioCommentEntries(output, conversion.destination); row.binaryComments = comments;
-      if (artworkBudget) {
+      const comments = extendedArtworkInspection ? await readOggPictureComments(output, conversion.destination) : await readAudioCommentEntries(output, conversion.destination); row.binaryComments = comments;
+      if (conversion.expectedExclusion) row.artworkExclusion = validateArtworkBudgetExclusion(outputProbe, comments, state.warnings);
+      if (extendedArtworkInspection && !conversion.expectedExclusion) {
         const expected = report.artworkImages[conversion.artwork]; assert.equal(comments.pictures.length, 1);
         assert.equal(comments.pictures[0].imageBytes, expected.bytes); assert.equal(comments.pictures[0].sha256, expected.sha256);
         assert.equal(comments.pictures[0].description, expected.description);
         row.streamingPictureInspection = { ...comments.pictures[0], ...comments.metrics, textBytes: comments.textBytes };
+      }
+      if (conversion.recoveryAfterExclusions) {
+        assert.equal(state.warnings.includes(ARTWORK_BUDGET_EXCLUSION_WARNING), false, "No stale exclusion warning on accepted recovery job");
+        assert.equal(index, 2); assert.ok(report.cases.slice(0, 2).every(c => c.status === "passed-small-private-fidelity-and-metadata-case" && c.artworkExclusion?.outputPictures === 0));
+        row.samePageRecovery = { twoPreviousExclusionsPassed: true, noContextOrPageRecreation: true, noStaleExclusionWarning: true };
       }
       if (conversion.repeated) {
         row.repeatedValues = comments.entries.filter(s => s.split("=", 1)[0].toLowerCase() === "custom_repeat");
@@ -272,6 +305,7 @@ try {
       if (index === 0 || conversion.repeated) {
         const directory = path.join(root, "output/playwright", stamp + "-audio-fidelity"); await mkdir(directory, { recursive: true });
         await page.locator(".progress-panel").scrollIntoViewIfNeeded(); const file = path.join(directory, `case-${index}-terminal.png`);
+        if (conversion.expectedExclusion) await page.getByText(ARTWORK_BUDGET_EXCLUSION_WARNING, { exact: true }).first().scrollIntoViewIfNeeded();
         await page.screenshot({ path: file, fullPage: false }); const bytes = await readFile(file); assert.ok(bytes.length <= 4 * 1048576);
         report.screenshots.push({ path: path.relative(root, file).replaceAll(path.sep, "/"), bytes: bytes.length, sha256: sha(bytes), headedCoverage: false });
       }
@@ -334,6 +368,7 @@ finally {
       failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags?.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, artwork: c.artwork,
       streamingPictureInspection: c.streamingPictureInspection,
+      artworkExclusion: c.artworkExclusion, exclusionWarningVisible: c.exclusionWarningVisible, samePageRecovery: c.samePageRecovery,
       disposableOutputRemoved: c.disposableOutputRemoved })),
     losslessJournal: report.losslessMemoryJournal ? { file: path.relative(root, report.losslessMemoryJournal.file).replaceAll(path.sep, "/"), records: report.losslessMemoryJournal.records,
       sha256: report.losslessMemoryJournal.sha256, archiveSha256: report.losslessMemoryJournal.archiveSha256, complete: report.losslessMemoryJournal.complete } : null,

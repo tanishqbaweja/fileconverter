@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Next explicit --artwork-rejection-recovery source ready: valid4MiB+1 byte and
+4097x1 inputs excluded with exact visible limit warning, then accepted4MiB
+cover recovery in the SAME page. Complete tags/PCM/pixels and unchanged native
+memory/privacy/owned cleanup required.27focused/lint/diff checks PASS; actual
+browser gate UNVERIFIED. Native56-source engine unchanged; reuse40156938341.
+Not cancellation/write-failure/quota/permission/full recovery or stress proof.
+
 Actual exact4MiB PNG byte-boundary03-32-37.015Z PASS, no longer pending:
 1023x1023 real high-entropy RGBA, full image/pixel SHA/25tags/two ordered
 values/96,000audio samples/66.1683dB and same-control decoded audio PASS.

@@ -25,10 +25,10 @@ test("maximum-artwork input recipe is deterministic, hash-pinned, scoped to owne
 test("one new browser byte-boundary gate retains full pipeline and validates decoded pixels plus streaming picture bytes", async () => {
   const source = await readFile("scripts/test-audio-metadata-production-runtime.mjs", "utf8");
   assert.match(source, /--artwork-byte-budget/); assert.match(source, /artworkBudget \? \[\{ source: "flac", destination: "opus", repeated: true, artwork: "png-budget" \}\]/);
-  assert.match(source, /artworkBudget \? 8 \* 1048576 : 1048576/);
+  assert.match(source, /extendedArtworkInspection \? 8 \* 1048576 : 1048576/);
   assert.match(source, /file.slice\(offset, offset \+ count\).arrayBuffer\(\)/); assert.doesNotMatch(source, /file.arrayBuffer\(\)/);
   assert.match(source, /"-pix_fmt", "rgba", "-threads", "1", "-f", "hash"/);
-  assert.match(source, /artworkBudget \? await readOggPictureComments\(output, conversion.destination\)/);
+  assert.match(source, /extendedArtworkInspection \? await readOggPictureComments\(output, conversion.destination\)/);
   assert.match(source, /assert.equal\(comments.pictures\[0\].sha256, expected.sha256\)/);
   assert.match(source, /active.peak.privateBytes - report.blankBaseline.privateBytes/); assert.match(source, /await runtime.close\(\)/);
 });
