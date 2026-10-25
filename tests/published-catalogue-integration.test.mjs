@@ -29,6 +29,11 @@ test("current application mounts the bounded component with explicit lifecycle a
   // unique and reversible; the complete historical UI comparison below remains
   // mandatory and still catches every unrelated change.
   const codeOwnerEdits = [
+    ['  audioCompressionForCodec,\n  automaticVorbisQualityNotice,\n', '  audioCompressionForCodec,\n'],
+    ['                              ? automaticVorbisQualityNotice(selectedProfile?.id, "automatic")\n                                ? "Automatic (Vorbis quality 7)"\n                                : "Automatic (fastest certified)"\n',
+      '                              ? "Automatic (fastest certified)"\n'],
+    ['                  </div>\n                  {automaticVorbisQualityNotice(selectedProfile?.id, audioOptions.quality) ? (\n                    <p data-testid="audio-automatic-quality-notice" role="status">\n                      {automaticVorbisQualityNotice(selectedProfile?.id, audioOptions.quality)}\n                    </p>\n                  ) : null}\n                </fieldset>\n              ) : null}\n\n              {videoEncodingOptionsEnabled ? (',
+      '                  </div>\n                </fieldset>\n              ) : null}\n\n              {videoEncodingOptionsEnabled ? ('],
     ['            <strong>App-owned temporary storage</strong>\n            <p data-testid="opfs-private-mode-notice">\n              Use a normal browser window for large jobs. Private/Incognito\n              browser storage can be RAM-backed and is not qualified for\n              large-file temporary storage. Your files still stay on this device.\n            </p>\n',
       '            <strong>App-owned temporary storage</strong>\n'],
     ['    supportsVideoEncodingOptions(selectedProfile);\n  const privateMpeg2Options = selectedProfile?.id === MPEG2_JOB_PROFILE;\n',
@@ -109,7 +114,7 @@ test("current component reuses only stateless display slots and preserves the te
   assert.doesNotMatch(card, /<(?:input|button|select|textarea|[A-Z])\b|\bon[A-Z]\w*=|\bref=|dangerouslySetInnerHTML/);
 });
 
-test("all405 current registry cards retain exactly the old rendered content and order over bounded pages", () => {
+test("all404 current public registry cards retain exactly the old rendered content and order over bounded pages; q7 candidate stays hidden", () => {
   const tree = ts.createSourceFile("old.tsx", oldApp, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
   let expression, formatter;
   const visit = node => {
@@ -133,7 +138,8 @@ test("all405 current registry cards retain exactly the old rendered content and 
   for (let page = 0; page < cataloguePage("", 0).pages; page++) {
     const cards = articleHtml(render("", page)); assert.ok(cards.length > 0 && cards.length <= 24); observed.push(...cards);
   }
-  assert.equal(expected.length, 405); assert.deepEqual(observed, expected);
+  assert.equal(expected.length, 404); assert.deepEqual(observed, expected);
+  assert.equal(published.some(profile => profile.id === "opus-to-ogg"), false);
   for (const query of ["PNG", "NO_MATCH_音楽", "   "]) {
     const html = render(query, 0), view = cataloguePage(query, 0);
     assert.equal(articleHtml(html).length, view.profiles.length);

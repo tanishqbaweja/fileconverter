@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-10-25 first hosted policy CI40186814224 FAILED on4stale visibility/UI
+contracts, not browser conversions; 1671pass/1skip/4fail. Corrected three exact
+reversible UI deltas, current404cards and explicit hidden pending route in two
+old harness contracts; full historical-source/SSR/content/order assertions stay
+mandatory.66targeted/lint/diff-check PASS. Retry hosted portable CI; do not replay
+closed automatic browser jobs or claim first CI passed.
+
 2026-10-25 quality repair evidence/source regression195tests/30files PASS,
 lint/TS/diff-check PASS. Retained tests authenticate old q4failure/highercontrol,
 new real automatic argument/output/PCM/metadata/cover hashes, exhaustive small

@@ -49,11 +49,14 @@ const after=compile(candidate.source,"module.exports.UnitView=renderConverterPag
 let initial;
 renderToStaticMarkup(React.createElement(after.UnitModel,{observe:model=>{initial=model;}}));assert.ok(initial);
 const markup=(View,model)=>renderToStaticMarkup(React.createElement(View,model));
-test("Historical Actual whole component SSR, all405 cards and original DOM match after custom-hook/render decomposition",()=>{
+test("Historical whole component SSR against current404 public profiles and original DOM match after custom-hook/render decomposition",()=>{
   const originalHtml=renderToStaticMarkup(React.createElement(before.ConverterApp));
   const candidateHtml=renderToStaticMarkup(React.createElement(after.ConverterApp));
   assert.equal(candidateHtml,originalHtml);
-  assert.equal((candidateHtml.match(/<article/g)??[]).length,405);
+  assert.equal((candidateHtml.match(/<article/g)??[]).length,404);
+  const profiles=imports.get("../../lib/capability-registry").conversionProfiles;
+  assert.equal(profiles.filter(profile=>profile.public&&profile.automatedTestStatus==="passed").length,404);
+  assert.equal(profiles.find(profile=>profile.id==="opus-to-ogg").public,false);
 });
 test("Historical Original complete display equals helpers for changing source, encoding controls, running/error/cancel and storage fixture models",()=>{
   const selectedProfile=imports.get("../../lib/capability-registry").conversionProfiles.find(row=>row.id==="mkv-to-mp4");assert.ok(selectedProfile);

@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-25 27ffc08 portable CI40186814224 FAILED4/1676 (1671passed,1skipped):
+destination-scope public assumption and3catalogue/UI historical checks still
+expected405public cards/pre-policy UI. Corrected exact q7 pending exception,
+current404-card counts, and ONLY3unique reversible UI-disclosure hunks; complete
+historical source/SSR/pagination/order comparisons and all other field checks
+remain.66targeted tests/lint/diff-check PASS. No conversion rerun; next CI retry.
+
 2026-10-25 automatic-policy closeout195focused tests/30files PASS, lint/
 TypeScript/diff-check PASS. First wider run194/195 found a stale metadata-unit
 assumption that all six implemented routes were public; corrected to require

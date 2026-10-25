@@ -6,6 +6,12 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+27ffc08 portable CI40186814224 FAILED4stale UI/public-status contracts;
+corrected only exact policy-disclosure hunks and404public/onepending expectations.
+Full source/SSR/render-order comparisons unchanged;66targeted/lint PASS. Retry
+CI on test-contract correction; actual4automatic conversion proof remains valid
+and must not be replayed unchanged. Next substantive gate still q7stress/IO.
+
 Automatic-quality SMALL repair10-50-22.365Z PASS4: actual automatic UI/native
 arg3, full96kPCM61.0654>=60,25tags/repeats/PNG/JPEG correct; whole-tree
 189.8672MiB/411valid1loadedNULL/32MiB heaps, complete cleanup/privacy/original.

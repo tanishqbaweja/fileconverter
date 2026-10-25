@@ -5,15 +5,17 @@ import ts from "typescript";
 import { conversionProfiles } from "../lib/capability-registry.ts";
 
 const source = await readFile(new URL("./browser/audio-destination-scopes.spec.ts", import.meta.url), "utf8");
-test("new destination-scope harness targets eight existing public implementations", () => {
+test("destination-scope harness retains eight implemented routes, with only changed q7 candidate private pending requalification", () => {
   const rows = [...source.matchAll(/\{ source: "(\w+)", destination: "(\w+)" \}/g)];
   assert.equal(rows.length, 8);
   const ids = rows.map(row => `${row[1]}-to-${row[2]}`);
   assert.equal(new Set(ids).size, 8);
   for (const id of ids) {
     const profile = conversionProfiles.find(candidate => candidate.id === id);
-    assert.ok(profile?.public, id);
-    assert.equal(profile.automatedTestStatus, "passed", id);
+    assert.ok(profile, id);
+    if (id === "opus-to-ogg") {
+      assert.equal(profile.public, false); assert.equal(profile.automatedTestStatus, "pending"); assert.equal(profile.maxTestedBytes, null);
+    } else { assert.equal(profile.public, true, id); assert.equal(profile.automatedTestStatus, "passed", id); }
   }
 });
 test("scope checks cannot merge tags or substitute another stream", () => {
