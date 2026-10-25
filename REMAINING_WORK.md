@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-10-25 changed IO sequence04-06-15.912Z PASS3/3 private small cases:
+real midstream UI cancel, existing localhost error AFTER real47B header write,
+then accepted4MiB cover conversion in SAME page/context. Actual AVIO memory
+observation fixes the former zero diagnostic:32MiB Wasm/32MiB+4B shared and
+47B attempted write recorded before early header failure. Both interruptions
+leave independently empty OPFS and recover worker; no stale error/warning on
+success. Exact output SHA/image bytes/RGBA/25tags/two ordered values/96k PCM
+match boundary control;66.1683dB>=60. Whole-tree171.4765625MiB/472valid/0missing;
+privacy/original/restoration/all15 owned births absent and disposable cleanup
+PASS. Headless error/recovery screenshots reviewed. Earlier03-58 failed gate
+remains FAILED. Not OS selected-destination/quota/permission, stress, public,
+full metadata or fastest-conversion acceptance.81 focused regressions, lint,
+TypeScript and diff checks PASS. Native core not rebuilt. Next: B05 metadata
+budgets/destination faults and matched speed/stress, not closed matrix reruns.
+
 2026-10-25 first IO run03-58-45.506Z FAILED, retained unchanged: UI cancel
 after262,144B read/125,899B written PASS and partial OPFS removed, but real
 native47B header-write injection reports Wasm/max-write diagnostics as0 before

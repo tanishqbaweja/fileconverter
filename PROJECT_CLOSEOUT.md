@@ -6,6 +6,18 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Changed IO gate04-06-15.912Z PASS3/3: actual UI cancel after positive IO,
+existing localhost rejection after real47B header write, accepted4MiB recovery
+in same page/context. Actual32MiB Wasm and attempted-write telemetry repaired;
+strict proof unchanged. Independently empty interrupted OPFS/recovered worker,
+exact accepted output/image/pixels/metadata/PCM control and no stale warnings.
+Whole-tree171.4765625MiB/472valid/0missing; privacy/original/restoration/all15
+owned process births absent/disposable cleanup PASS. Headless error/recovery
+screens reviewed. Previous failure remains failed. B05 remains PARTIAL:
+OS/destination faults, broader metadata budgets/aliases, matched speed/stress
+and public promotion still open.81 focused/lint/TypeScript/diff checks PASS;
+native core unchanged. All54 original requirement rows remain scope.
+
 First actual IO sequence03-58-45.506Z FAILED, retained: cancellation after
 positive IO passes; real destination/header failure cleans up but reports
 Wasm/max-write0 before first C progress, causing strict proof failure and

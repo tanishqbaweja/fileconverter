@@ -65,3 +65,65 @@ test("retained first IO gate stays failed: real native header error had a falsel
   const validator = await readFile(new URL("scripts/lib/audio-io-recovery-validation.mjs", root), "utf8");
   assert.match(validator, /metrics.peakWasmMemoryBytes >= 33554432/); // Fix observation, never relax proof.
 });
+
+test("retained changed IO gate proves actual Wasm and failed-write telemetry, cleanup and same-page fidelity recovery without promotion", async () => {
+  const root = new URL("../", import.meta.url), sha = b => createHash("sha256").update(b).digest("hex");
+  const receipt = JSON.parse(await readFile(new URL("evidence/2026-10-25T04-06-15.912Z-audio-metadata-fidelity-result.json", root)));
+  assert.equal(receipt.executedHead, "cc9bb35486384af1068c49a05dcb7b4d669a117f");
+  assert.equal(receipt.status, "passed-selected-small-private-cases-not-promotion");
+  assert.equal(receipt.publicAcceptance, false); assert.equal(receipt.fullMetadataAcceptance, false);
+  assert.equal(receipt.memory.incrementalPrivateMiB, 171.4765625);
+  assert.equal(receipt.memory.validSamples, 472); assert.equal(receipt.memory.unavailableSamples, 0);
+  assert.deepEqual(receipt.failures, []); assert.equal(receipt.sourcePins, 29);
+  const archive = await readFile(new URL(receipt.archive.path, root));
+  assert.equal(archive.byteLength, receipt.archive.bytes); assert.equal(sha(archive), receipt.archive.sha256);
+  const raw = gunzipSync(archive, { maxOutputLength: 1048576 });
+  assert.equal(raw.byteLength, receipt.archive.restoredBytes); assert.equal(sha(raw), receipt.archive.restoredSha256);
+  const report = JSON.parse(raw), [cancellation, failure, recovery] = report.cases;
+  assert.equal(report.cases.length, 3); assert.equal(report.nativeConversionUsed, false);
+  assert.equal(report.scalingAcceptance, false); assert.equal(report.headedCoverage, false);
+  for (const row of [cancellation, failure]) {
+    assert.equal(row.status, "passed-private-audio-interruption-case");
+    assert.deepEqual(row.storageBefore, []); assert.deepEqual(row.storageAfter, []);
+    const checked = validateAudioInterruption(row.interruption, row.browserState,
+      { beforeCancel: row.beforeCancel, storageBefore: row.storageBefore, storageAfter: row.storageAfter });
+    assert.equal(checked.outputAcceptance, false); assert.equal(checked.publicAcceptance, false);
+    assert.equal(row.browserState.metrics.peakWasmMemoryBytes, 33554432);
+    assert.equal(row.browserState.metrics.sharedArrayBufferBytes, 33554436);
+  }
+  assert.equal(cancellation.beforeCancel.metrics.inputBytes, 262144);
+  assert.equal(cancellation.beforeCancel.metrics.outputBytes, 116726);
+  assert.equal(failure.browserState.metrics.maxWriteChunkBytes, 47);
+  assert.equal(failure.browserState.metrics.peakQueuedBytes, 47);
+  assert.equal(failure.browserState.metrics.outputBytes, 0); // Failed write is not acknowledged output.
+  assert.equal(failure.interruptionErrorVisible, true);
+  assert.equal(recovery.status, "passed-small-private-fidelity-and-metadata-case");
+  assert.deepEqual(recovery.samePageIoRecovery,
+    { bothInterruptionsPassed: true, noContextOrPageRecreation: true, noStaleErrorOrWarning: true });
+  assert.equal(recovery.browserState.error, null); assert.deepEqual(recovery.browserState.warnings, []);
+  const accepted = receipt.cases[2];
+  assert.equal(accepted.outputBytes, 5633796);
+  assert.equal(accepted.outputSha256, "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3");
+  assert.equal(accepted.tagsPreserved, 25); assert.equal(accepted.repeatedValues.length, 2);
+  assert.equal(accepted.artwork.bytes, 4194304);
+  assert.equal(accepted.artwork.sha256, "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f");
+  assert.equal(accepted.artwork.decodedRgbaSha256, accepted.artwork.rgbaSha256);
+  assert.equal(accepted.fidelity.samples, 96000); assert.equal(accepted.fidelity.minimumPsnrDb, 60);
+  assert.ok(accepted.fidelity.psnrDb >= accepted.fidelity.minimumPsnrDb);
+  assert.ok(report.cases.every(row => row.disposableOutputRemoved));
+  assert.equal(report.processCleanup.length, 15);
+  assert.ok(report.processCleanup.every(row => row.status === "owned-identity-absent"));
+  assert.ok(receipt.protectedOriginalUnchanged); assert.ok(Object.values(receipt.cleanup).every(Boolean));
+  assert.deepEqual(receipt.network.forbidden, []);
+  const journal = await readFile(new URL(receipt.losslessJournal.file, root));
+  assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  const samples = gunzipSync(journal, { maxOutputLength: 8 * 1048576 });
+  assert.equal(sha(samples), receipt.losslessJournal.sha256);
+  assert.equal(samples.toString("utf8").trim().split("\n").length, 472);
+  assert.equal(report.screenshots.length, 3);
+  for (const screenshot of report.screenshots) {
+    assert.equal(screenshot.headedCoverage, false);
+    const bytes = await readFile(new URL(screenshot.path, root));
+    assert.equal(bytes.byteLength, screenshot.bytes); assert.equal(sha(bytes), screenshot.sha256);
+  }
+});

@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-25 changed IO gate04-06-15.912Z PASS3/3, private small scope only.
+UI cancellation after262,144B read/116,726B written; real47B header write
+followed by existing localhost fault; valid4MiB-artwork conversion afterward
+without page/context recreation. Both interruptions remove partial OPFS;
+worker recovers. Fixed diagnostics observe actual32MiB Wasm and47B attempted
+write rather than guessed/zero metrics. Recovery preserves exact control
+output/image/RGBA/25tags/two ordered values/all96k PCM (66.1683dB>=60).
+Whole-tree171.4765625MiB/472valid/0missing; privacy/disk/original/restoration/
+all15 owned births absent/disposable cleanup PASS. Raw gzip/lossless journal/
+three screenshots retained; error and recovered UI reviewed headlessly.
+Initial03-58 failure stays failed. No OS permission/quota, direct destination,
+stress/full metadata/public promotion or fastest-performance claim.81 focused
+regressions, lint, TypeScript and diff checks PASS; native core unchanged.
+
 2026-10-25 IO run03-58-45.506Z FAILED (preserved): genuine post-progress UI
 cancel PASS; first native47B header write rejects as expected and partial is
 removed, but diagnostics falsely report Wasm/max-write0 before C progress.
