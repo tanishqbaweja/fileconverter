@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+2026-10-25 automatic-policy closeout195focused tests/30files PASS, lint/
+TypeScript/diff-check PASS. First wider run194/195 found a stale metadata-unit
+assumption that all six implemented routes were public; corrected to require
+the exact Opus-to-Ogg candidate private/pending/null tested size and all five
+others public/passed. Full25-field loss detection/six-route coverage unchanged.
+Hosted portable CI to run on pushed passing browser evidence; not full stress.
+
+2026-10-25 automatic-q7 changed-validation10-50-22.365Z PASS4 actual
+AUTOMATIC jobs (2d42439): plain/repeated/PNG/JPEG, visible notice/nativearg3,
+ALL96kPCM61.065405dB>=60,25tags/repeated order/exact picture packets/native
+image decode. Canonical output4db863... matches retained q7 control, while
+oldq4 failure staysfailed; this is now an actual automatic policy change, not
+a renamed higher control. Every small output byte bound to physical OPFS in
+<=4096B chunks/no converted copy. Full normal-Chrome tree189.8671875MiB,
+411valid/1loaded-phaseNULL (birth query unavailable, not zero),32MiB heaps.
+42source pins/15owned births absent/privacy/original/assets/owned cleanup PASS;
+all4headless screenshots reviewed. SMALL automatic-quality defect CLOSED;
+exact route remains private pending new q7 repeat/stress/IO recovery. No fastest
+or public qualification claim. First failed binder run retained unchanged.
+
 2026-10-25 first automatic-q7 browser gate10-46-04.322Z FAILED unchanged:
 all4real jobs complete/automatic selected/nativearg3/notice visible, but independent
 physical binder required>=12288B and outputs11425/11491/11843/11927B. NO

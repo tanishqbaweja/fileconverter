@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Automatic-quality SMALL repair10-50-22.365Z PASS4: actual automatic UI/native
+arg3, full96kPCM61.0654>=60,25tags/repeats/PNG/JPEG correct; whole-tree
+189.8672MiB/411valid1loadedNULL/32MiB heaps, complete cleanup/privacy/original.
+Small output whole-byte physical binding now verified. Original failed binder
+run remains failed. Exact Opus-to-Vorbis profile PRIVATE/PENDING; next new q7
+repeat/stress/IO recovery, not closed small/budget/serializer replays. No engine
+rebuild was needed for this existing native setting. Full54 still OPEN.
+
 First4automatic jobs10-46-04.322Z FAILED exclusively at small-output binder
 minimum, before independent content validation. All4real UI automatic/nativearg3
 and notice proved; no fidelity claim. Corrected read-only binder compares EVERY

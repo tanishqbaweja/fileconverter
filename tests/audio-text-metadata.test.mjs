@@ -42,7 +42,7 @@ test("existing workflow changes only private core dispatch/artifact upload on th
   assert.equal(reversed, original); assert.equal(recipe.edits.length, 2); assert.equal(recipe.publicAcceptance, false);
   assert.equal(recipe.originalSdkDependencyAndCleanupStepsRetained, true); assert.match(recipe.generated, /retention-days: 1/);
 });
-test("expanded real-browser cases exercise six existing routes with25 exact fields and cannot pass after metadata loss", async () => {
+test("expanded real-browser cases retain six implemented routes including the exact private q7 candidate, with25 fields and strict loss detection", async () => {
   const text = await readFile("tests/browser/audio-expanded-metadata.spec.ts", "utf8");
   const tree = ts.createSourceFile("audio.ts", text, ts.ScriptTarget.Latest, true); let expression;
   const visit = node => { if (ts.isVariableDeclaration(node) && node.name.getText(tree) === "tags") expression = node.initializer.getText(tree); ts.forEachChild(node, visit); };
@@ -53,7 +53,12 @@ test("expanded real-browser cases exercise six existing routes with25 exact fiel
   const failed = validateScopedAudioTags({ format: { tags: limited } }, tags, { scope: "format" });
   assert.equal(failed.status, "failed"); assert.equal(failed.fields.filter(field => field.status === "missing").length, 18);
   const routes = [...text.matchAll(/\{ source: "(\w+)", destination: "(\w+)" \}/g)]; assert.equal(routes.length, 6);
-  for (const row of routes) assert.ok(conversionProfiles.some(profile => profile.id === `${row[1]}-to-${row[2]}` && profile.public));
+  for (const row of routes) {
+    const profile = conversionProfiles.find(profile => profile.id === `${row[1]}-to-${row[2]}`); assert.ok(profile);
+    if (profile.id === "opus-to-ogg") {
+      assert.equal(profile.public, false); assert.equal(profile.automatedTestStatus, "pending"); assert.equal(profile.maxTestedBytes, null);
+    } else { assert.equal(profile.public, true); assert.equal(profile.automatedTestStatus, "passed"); }
+  }
   assert.ok(text.indexOf('report.fullIndependentDecode = true') < text.indexOf('expect(outputTags.status'));
   assert.ok(text.includes("file.slice(offset, offset + count).arrayBuffer()")); assert.ok(!text.includes("file.arrayBuffer()"));
   assert.match(text, /await runtime.close\(\)/); assert.match(text, /fullMetadataAcceptance: false/);

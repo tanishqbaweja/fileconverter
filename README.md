@@ -53,7 +53,13 @@ existing quality-7 setting for this exact route; explicit quality selections and
 other routes are unchanged. The interface discloses that this may be slower and
 produce larger files than Balanced, and cannot restore source losses. Prior
 quality-4 large-file evidence is historical, not qualification for quality 7.
-The new policy still needs its own production-browser and repeat/stress gates.
+Four new production-browser automatic cases (plain/repeated tags, PNG/JPEG
+covers) passed full 96,000-sample comparison at 61.0654 dB, with exact metadata
+and covers, in `evidence/2026-10-25T10-50-22.365Z-audio-metadata-fidelity-result.json`.
+The complete Chrome peak was 189.8672 MiB incremental private memory; one loaded
+phase sample was unavailable and remains null (411 valid samples). This is
+small-case evidence only, not a speed claim or large-file qualification. Public
+repeat/stress/cancellation/write-failure/recovery gates for q7 remain pending.
 
 The video matrix also includes measured H.264/AAC packet-copy routes among the
 published MKV, MP4, MOV, 3GP, MPEG-TS, and FLV pairs. These routes avoid

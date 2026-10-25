@@ -1,5 +1,24 @@
 # Remaining work audit
 
+2026-10-25 quality repair evidence/source regression195tests/30files PASS,
+lint/TS/diff-check PASS. Retained tests authenticate old q4failure/highercontrol,
+new real automatic argument/output/PCM/metadata/cover hashes, exhaustive small
+physical binding,412native journal rows incl one honest loadedNULL, and4screens.
+No unchanged conversion replay. Next hosted portable CI then new q7-specific
+repeat/stress/IO-recovery qualification; exact route staysprivate pending.
+
+2026-10-25 automatic Opus-to-Vorbis SMALL defect CLOSED by actual four
+AUTOMATIC jobs10-50-22.365Z/2d42439: fullPCM61.065405dB/96k samples,
+25tags/repeats/order/exact PNG/JPEG/native image decode, canonical full hash
+matches retained q7 higher control. Real UI staysautomatic/notice visible and
+nativecall qualityarg3; oldq4 failure retained. Whole-tree189.8671875MiB,
+411valid/1loadedNULL sample honestly retained;32MiB heaps/42pins/15owned
+births absent/privacy/original/assets/scratch cleanup PASS. All4screens reviewed.
+Every small output byte independently bound in <=4KiB chunks. Route stays
+private/pending and active publicproof index404 entries; next q7-specific
+repeat/stress/cancellation/write-failure/recovery, not closed small replay.
+Broader B05 metadata/destinations/performance and full54 remain OPEN.
+
 2026-10-25 automatic-q7 first runtime10-46-04.322Z FAILED on validator-only
 >=12KiB precondition; all4actual outputs smaller. Automatic UI/nativearg3 and
 visible notice proved, NOT content/fidelity. Receipt/raw/journal retainedFAILED.

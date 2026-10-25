@@ -4,6 +4,8 @@
   "profileId": "opus-to-ogg",
   "status": "private-pending-changed-automatic-quality-requalification",
   "publicAcceptance": false,
+  "smallAutomaticRepairReceipt": "evidence/2026-10-25T10-50-22.365Z-audio-metadata-fidelity-result.json",
+  "smallAutomaticRepairStatus": "four cases passed; not public repeat/stress/recovery requalification",
   "priorQuality4EvidenceHistoricalOnly": {
     "profileId": "opus-to-ogg",
     "maxTestedBytes": 147964541,
