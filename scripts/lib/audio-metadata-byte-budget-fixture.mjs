@@ -55,8 +55,11 @@ export async function createAudioMetadataByteBudgetFixtures(directory) {
   for (const key of ["dev", "ino", "size", "mtimeNs"]) assert.equal(before[key], after[key]);
   assert.equal(sha(bytes), "4f32dbbd37bbe08ce3d4cd2be84bc764017198b1c5ee6ac65d9a5ddfce74174b");
   const output = {};
+  const inputPins = { exact: "e341f49a0fd2267d7cec957c44216970dd93c9bc621b9010cdcf10e4a8861ca5",
+    over: "6c1878e7e3dbf1560bf92effd6d4036faf5ac1b185ac323750b9637893a2223f" };
   for (const [key, delta] of [["exact", 0], ["over", 1]]) {
     const result = makeGeneratedFlacByteBudget(bytes, delta), file = path.join(directory, "source-text-bytes-" + key + ".flac");
+    assert.equal(sha(result.generated), inputPins[key], "Retain exact independently decoded first byte-boundary inputs");
     await writeFile(file, result.generated, { flag: "wx" });
     output[key] = { file, bytes: result.generated.length, sha256: sha(result.generated), expectedAddedEntries: result.expectedAddedEntries, summary: result.summary };
   }

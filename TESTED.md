@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-25 post-byte-gate regression129focused tests/27files PASS;
+changed-source lint/TypeScript/diff-check PASS. Full raw report/journal/3screen
+hashes retained and tested; exact input hashes now enforced. No browser replay.
+
+2026-10-25 text-BYTE runtime10-29-39.709Z PASS3: exact2097152 native bytes
+accepted/all1024 fillers+canonical25/repeats/order+96kPCM66.1683dB, raw serialized
+2100342B. One byte over safely rejected with precise visible error/zero partials,
+then SAME-page exact5633796B cover control.32MiB heaps/177.53515625MiB tree/
+465valid0missing;40pins/15owned births gone/privacy/original/cleanup PASS.
+Three headless screenshots reviewed; input hashes pinned for future changes.
+Exact bytes/fields closed for SMALL PRIVATE FLAC-to-Opus only; broad B05,
+long repeats/stress/public promotion/full54 still OPEN. No codec rebuild.
+
 2026-10-25 field-count40e3354 portable CI40184554630 SUCCESS (not native/full
 browser matrix). New text-BYTE source tests distinguish exact native dictionary
 UTF8+bothNULs from separately bounded wire framing; historical serialized2MiB

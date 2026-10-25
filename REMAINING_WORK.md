@@ -1,5 +1,21 @@
 # Remaining work audit
 
+2026-10-25 byte-gate closeout129focused tests/27files, lint/TypeScript/
+diff-check PASS. Next portable CI on pushed evidence; no unchanged reruns.
+
+2026-10-25 exact TEXT-BYTE gate10-29-39.709Z PASS3 (491b50e):2097152
+native UTF8 key/value+twoNUL bytes accepted with ALL1024 added fields/order,
+canonical25/repeats/96kPCM66.1683dB. Output2125674B SHA179f9ddd...;
+serialized text2100342B explicitly separate from native2097152B. Input
+2097153 native bytes genuinely rejects/zero output/empty OPFS/visible precise
+error/recovered worker. SAME-page final4MiBcover exacte008.../image/pixels/PCM
+PASS. All actual heaps32MiB<=96MiB max, full normal-Chrome tree177.53515625MiB/
+465valid0missing;40pins/15owned births absent/privacy/original/asset restoration/
+owned scratch cleanup PASS. All3headless screenshots reviewed. First generated
+input hashes pinned. SMALL PRIVATE byte-boundary/recovery CLOSED; no stress,
+all-route metadata, public promotion, or full54 completion claim. Next B05
+remaining aliases/destinations/default-quality and applicable repeat/stress.
+
 2026-10-25 new native text-BYTE gate prepared, runtime UNVERIFIED:
 exact2097152 vs2097153 UTF8 key/value+two-NUL bytes,1051fields incl canonical25
 and ordered repeats/1024 deterministic Unicode fillers, then same-page control.

@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Exact native TEXT-BYTE boundary10-29-39.709Z PASS3 (491b50e):2097152
+accepted/all1024 fillers/canonical/repeats/order/fullPCM,2097153 rejected safely,
+same-page exactcovercontrol recovery.32MiB heaps/177.5352MiB full-tree/
+465valid0missing;40pins/15owned births absent/privacy/original/cleanup PASS.
+Small PRIVATE byte+field boundaries now closed; do NOT rerun unchanged. B05
+still needs remaining aliases/destinations/default quality and stress/promotion;
+all original54 requirements remain in scope. No engine rebuild required here.
+
 Text-byte gate now implemented, NOT browser-proven: exact2097152 dictionary
 bytes, one-byte-over rejection, same-page exact cover control.1051fields,
 all1024added fields/order plus canonical/repeated tags and fullPCM validation.
