@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-10-25",
+  "profileId": "opus-to-ogg",
+  "status": "private-pending-changed-automatic-quality-requalification",
+  "publicAcceptance": false,
+  "priorQuality4EvidenceHistoricalOnly": {
+    "profileId": "opus-to-ogg",
+    "maxTestedBytes": 147964541,
+    "repeatableEvidence": {
+      "report": "2026-08-13T00-41-07-345Z-opus-to-ogg-stress.json",
+      "reportSha256": "ef8808779cf136a155902900277ba8917b539ab1079ea1c9382991ad4bb21ee0",
+      "runs": 3,
+      "sourceBytes": 147964541,
+      "incrementalPrivateMiB": 159.81640625
+    },
+    "maximumSizeEvidence": {
+      "report": "2026-08-13T00-41-07-345Z-opus-to-ogg-stress.json",
+      "reportSha256": "ef8808779cf136a155902900277ba8917b539ab1079ea1c9382991ad4bb21ee0",
+      "runs": 3,
+      "sourceBytes": 147964541,
+      "incrementalPrivateMiB": 159.81640625
+    }
+  },
+  "failedQuality4Receipt": "evidence/2026-10-24T14-59-06.074Z-audio-metadata-fidelity-result.json",
+  "priorExplicitQuality7ControlReceipt": "evidence/2026-10-24T14-59-06.074Z-audio-metadata-fidelity-result.json",
+  "newAutomaticNativeQualityCode": 3,
+  "newAutomaticVorbisQuality": 7,
+  "scope": "Old q4 proof must not be reused to certify changed q7 settings; explicit choices and other routes unchanged",
+  "requiresBeforePublic": [
+    "production-browser actual automatic output and complete fidelity validation",
+    "repeatable stress and complete process-tree memory <=250MiB",
+    "success/cancellation/write-failure/cleanup recovery",
+    "registry/README/UI/public proof-index consistency"
+  ]
+}

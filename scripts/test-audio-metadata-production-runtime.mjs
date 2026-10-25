@@ -39,8 +39,10 @@ import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mj
 import { verifyOpfsDiskBacking } from "./lib/opfs-disk-backing-proof.mjs";
 import { bindOpfsOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "./lib/opfs-output-validation-backing.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
+import { OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE } from "../lib/media-conversion-options.ts";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+const automaticVorbisRepair = process.argv[3] === "--vorbis-automatic-quality-repair";
 const qualityComparison = process.argv[3] === "--compare-vorbis-quality";
 const remainingRepeated = process.argv[3] === "--remaining-repeated-audio";
 const flacOrderRepair = process.argv[3] === "--flac-order-repair";
@@ -49,13 +51,16 @@ const metadataFieldRejectOnly = process.argv[3] === "--metadata-field-rejection-
 const metadataFieldBudget = process.argv[3] === "--metadata-field-budget-recovery" || metadataFieldRejectOnly;
 const metadataByteBudget = process.argv[3] === "--metadata-text-byte-budget-recovery";
 const metadataBudget = metadataFieldBudget || metadataByteBudget;
-const physicalValidation = process.argv[3] === "--artwork-benchmark-physical-validation" || metadataBudget;
+const physicalValidation = process.argv[3] === "--artwork-benchmark-physical-validation" || metadataBudget || automaticVorbisRepair;
 const artworkBenchmark = process.argv[3] === "--artwork-serializer-benchmark" || process.argv[3] === "--artwork-benchmark-physical-validation";
 const artworkBudget = process.argv[3] === "--artwork-byte-budget" || artworkBenchmark || metadataBudget;
 const audioIoRecovery = process.argv[3] === "--audio-io-recovery";
 const artworkRejection = process.argv[3] === "--artwork-rejection-recovery", extendedArtworkInspection = artworkBudget || artworkRejection || audioIoRecovery;
-const oggArtwork = process.argv[3] === "--ogg-artwork", withArtwork = artworkMetadata || oggArtwork;
-const selectedCases = metadataByteBudget ? [
+const oggArtwork = process.argv[3] === "--ogg-artwork" || automaticVorbisRepair, withArtwork = artworkMetadata || oggArtwork;
+const selectedCases = automaticVorbisRepair ? [
+  { source: "opus", destination: "ogg" }, { source: "opus", destination: "ogg", repeated: true },
+  ...AUDIO_OGG_ARTWORK_CASES.filter(value => value.source === "opus").map(value => ({ ...value, quality: "automatic" })),
+] : metadataByteBudget ? [
   { source: "flac", destination: "opus", repeated: true, byteBudget: "exact" },
   { source: "flac", destination: "opus", repeated: true, byteBudget: "over", metadataFailure: "text-bytes" },
   { source: "flac", destination: "opus", repeated: true, artwork: "png-budget", recoveryAfterBytes: true },
@@ -105,6 +110,10 @@ if (audioIoRecovery) report.scope = "three NEW same-page real-UI jobs: midstream
 if (metadataFieldBudget) report.scope = "four NEW field-budget jobs: exact4095text+1cover, one-over cover and4097text native rejections, same-page valid recovery; unchanged2MiB/4096 limits, not byte-budget/stress/promotion acceptance";
 if (metadataFieldRejectOnly) report.scope = "three changed error-explanation jobs only: native cover/text field rejections and same-page exact recovery; prior exact4096 output not replayed; not byte-budget/stress/public acceptance";
 if (metadataByteBudget) report.scope = "three NEW native text-byte jobs: exact2097152 UTF8 key/value+NUL bytes, one-byte-over native rejection, same-page control recovery; serialization overhead separately bounded, historical reader/engine limits unchanged; not stress/public acceptance";
+if (automaticVorbisRepair) {
+  report.scope = "four NEW automatic Opus-to-Vorbis jobs: canonical/repeated/PNG/JPEG, unchanged60dB full-PCM gate; actual native quality argument3/q7 and visible automatic policy; not a higher-selector control, stress, speed or public requalification";
+  report.automaticVorbisQualityRepaired = "unverified-until-all-four-cases-pass";
+}
 const stamp = report.startedAt.replaceAll(":", "-"), sha = b => createHash("sha256").update(b).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 1048576 })) hash.update(b); return hash.digest("hex"); };
 const native = (args, executable = "ffmpeg") => execute(executable, args, { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 131072 });
@@ -139,6 +148,7 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "scripts/lib/opfs-output-validation-backing.mjs",
   "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts", "lib/browser-capabilities.ts", "lib/capability-registry.ts",
   "lib/native-input-memory-observation.ts",
+  "lib/conversion-protocol.ts", "lib/media-native-arguments.ts",
   "lib/audio-metadata-budget-error.ts",
   "lib/media-conversion-options.ts", "app/converter/ConverterApp.tsx", "app/globals.css"];
 const pins = async () => Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, sha(await readFile(path.join(root, file)))])));
@@ -174,7 +184,7 @@ try {
     report.fixtures[source] = { bytes, sha256: hash };
   }
   report.repeatedFixtures = {};
-  for (const source of remainingRepeated || flacOrderRepair ? ["flac", "ogg", "opus"] : ["flac"]) {
+  for (const source of remainingRepeated || flacOrderRepair || automaticVorbisRepair ? ["flac", "ogg", "opus"] : ["flac"]) {
     const original = path.join(runtime.directory, "source." + source), repeatedFile = path.join(runtime.directory, "source-repeated." + source);
     const bytes = await readFile(original), generated = source === "flac" ? appendFlacFixtureComments(bytes, AUDIO_REPEATED_COMMENTS)
       : appendOggFixtureComments(bytes, source, AUDIO_REPEATED_COMMENTS);
@@ -361,6 +371,12 @@ try {
         await page.locator('[data-testid="audio-quality-select"]').selectOption(conversion.quality);
         assert.equal(await page.locator('[data-testid="audio-quality-select"]').inputValue(), conversion.quality);
       }
+      if (automaticVorbisRepair) {
+        assert.equal(await page.locator('[data-testid="audio-quality-select"]').inputValue(), "automatic");
+        await page.getByTestId("audio-automatic-quality-notice").waitFor({ state: "visible" });
+        assert.equal(await page.getByTestId("audio-automatic-quality-notice").textContent(), OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE);
+        row.automaticQualityNoticeVisible = true;
+      }
       if (conversion.interruption || conversion.metadataFailure) { row.storageBefore = await storageSnapshot(); assert.deepEqual(row.storageBefore, []); }
       const startedAt = Date.now(); await page.locator('[data-testid="convert-button"]').click();
       if (conversion.interruption === "cancel") {
@@ -375,6 +391,11 @@ try {
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState()); row.browserElapsedMs = Date.now() - startedAt; row.browserState = state; entryName = state.opfsName;
       if (artworkBenchmark) { assert.ok(Number.isFinite(state.metrics.elapsedMs) && state.metrics.elapsedMs > 0); row.engineElapsedMs = state.metrics.elapsedMs; }
       assert.equal(state.audioOptions.quality, row.requestedQuality, "Actual production job must retain the requested quality selection");
+      if (automaticVorbisRepair) {
+        assert.equal(state.audioOptions.quality, "automatic");
+        assert.deepEqual(state.metrics.audioQualityArgument, { requested: "automatic", nativeCode: 3, automaticPolicy: "opus-to-vorbis-q7" });
+        row.actualAutomaticQualityArgument = state.metrics.audioQualityArgument;
+      }
       if (conversion.metadataFailure) {
         row.storageAfter = await storageSnapshot();
         row.metadataFailureProof = conversion.metadataFailure === "text-bytes"
@@ -426,6 +447,7 @@ try {
       const audio = outputProbe.streams.find(stream => stream.codec_type === "audio"); assert.ok(audio);
       assert.equal(audio.codec_name, conversion.destination === "ogg" ? "vorbis" : conversion.destination); assert.equal(Number(audio.sample_rate), 48000); assert.equal(audio.channels, 1);
       row.output = { bytes: size, sha256: await hashFile(output), probe: outputProbe };
+      if (automaticVorbisRepair && index === 0) assert.equal(row.output.sha256, "4db863292dcd76fbcf364a4986120ac9bc39d155a774d730376128058565f4db", "New actual AUTOMATIC call must match the retained full higher/q7 output control");
       if (artworkBenchmark) assert.equal(row.output.sha256, "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3", "Every benchmark job must match the complete accepted output control");
       if (conversion.artwork && !conversion.expectedExclusion) {
         try { row.artwork = await inspectArtwork(output, outputProbe, report.artworkImages[conversion.artwork]); }
@@ -494,6 +516,10 @@ try {
   assert.deepEqual(report.network.forbidden, []); assert.deepEqual(await pins(), report.sources); assertInstalledChromePinsEqual(report.browser, await inspectInstalledChromePin());
   assert.ok(report.network.nativeGlueRequests > 0 && report.network.nativeWasmRequests > 0, "Fresh context must request the staged audited native assets");
   assert.equal(report.cases.length, selectedCases.length);
+  if (automaticVorbisRepair) {
+    assert.ok(report.cases.every(row => row.status === "passed-small-private-fidelity-and-metadata-case" && row.actualAutomaticQualityArgument?.nativeCode === 3));
+    report.automaticVorbisQualityRepaired = "passed-four-small-private-automatic-cases-not-public-requalification";
+  }
   assert.ok(metadataBudget ? report.cases.every(c => c.metadataFailure ? c.status === (c.metadataFailure === "text-bytes" ? "passed-private-metadata-byte-rejection-case" : "passed-private-metadata-field-rejection-case") : c.status === "passed-small-private-fidelity-and-metadata-case")
     : audioIoRecovery ? report.cases.every(c => c.interruption ? c.status === "passed-private-audio-interruption-case" : c.status === "passed-small-private-fidelity-and-metadata-case")
     : report.cases.every(c => c.status === "passed-small-private-fidelity-and-metadata-case"));
@@ -547,6 +573,7 @@ finally {
       metadataFailure: c.metadataFailure, metadataFailureProof: c.metadataFailureProof, metadataErrorVisible: c.metadataErrorVisible,
       exactFieldBoundary: c.exactFieldBoundary, samePageMetadataRecovery: c.samePageMetadataRecovery,
       exactTextByteBoundary: c.exactTextByteBoundary, samePageByteRecovery: c.samePageByteRecovery,
+      actualAutomaticQualityArgument: c.actualAutomaticQualityArgument, automaticQualityNoticeVisible: c.automaticQualityNoticeVisible,
       failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags?.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, artwork: c.artwork,
       streamingPictureInspection: c.streamingPictureInspection,

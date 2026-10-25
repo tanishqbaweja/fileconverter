@@ -140,7 +140,7 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   const publicMedia = conversionProfiles.filter(
     (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
   );
-  assert.equal(publicMedia.length, 276);
+  assert.equal(publicMedia.length, 275); // Opus-to-Vorbis q7 awaits its own qualification.
   for (const profile of publicMedia) {
     const metadata = profile.metadataLimitations.join(" ");
     const allLimitations = [
@@ -194,13 +194,16 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   }
 });
 
-test("registry has no stale pending candidates and keeps failed evidence hidden", () => {
+test("registry has only the explicit changed Opus-Vorbis policy pending and keeps failed evidence hidden", () => {
   assert.deepEqual(
     conversionProfiles
       .filter((profile) => profile.automatedTestStatus === "pending")
       .map((profile) => profile.id),
-    [],
+    ["opus-to-ogg"],
   );
+  const changed = conversionProfiles.find(profile => profile.id === "opus-to-ogg");
+  assert.equal(changed.public, false); assert.equal(changed.maxTestedBytes, null);
+  assert.ok(changed.metadataLimitations.some(value => value.includes("quality 7") && value.includes("pending")));
   const promoted = conversionProfiles.find(
     (profile) => profile.id === "mp4-to-webm-av1",
   );

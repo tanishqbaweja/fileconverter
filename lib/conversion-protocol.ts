@@ -15,6 +15,8 @@ export interface ConversionMetrics {
   maxReadChunkBytes: number;
   maxWriteChunkBytes: number;
   elapsedMs: number;
+  /** Actual ccall quality argument, not a native AVCodecContext measurement. */
+  audioQualityArgument?: { requested: AudioConversionOptions["quality"]; nativeCode: number; automaticPolicy: "opus-to-vorbis-q7" | null };
   wasmMemoryBytes?: number;
   peakWasmMemoryBytes?: number;
   /** Actual MPEG-2 AVCodecContext fields after native settings-match succeeds. */

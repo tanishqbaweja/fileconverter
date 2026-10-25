@@ -910,7 +910,9 @@ function standaloneVorbisOutputProfile(
     aiff: "signed 16-bit big-endian PCM AIFF",
     opus: "Opus in Ogg",
   }[input];
-  const evidence = standaloneVorbisOutputEvidence[input];
+  // Old Opus q4 stress evidence cannot qualify a changed automatic q7 policy.
+  // Keep the exact route private until new repeat/stress/recovery evidence exists.
+  const evidence = input === "opus" ? null : standaloneVorbisOutputEvidence[input];
   return {
     id: `${input}-to-ogg`,
     input,
@@ -929,11 +931,15 @@ function standaloneVorbisOutputProfile(
       `The certified input codec is ${sourceCodec}.`,
       "Only the first audio stream is converted; chapters, artwork, attachments, and additional streams are explicitly excluded.",
       "Compatible text tags are copied into Vorbis comments where possible; stream language and container-specific fields may not be retained.",
-      "Output uses the measured quality-4 reference libvorbis VBR profile and at most two channels.",
+      input === "opus"
+        ? "Automatic now uses reference libvorbis quality 7; the previous quality-4 default failed the additional-generation fidelity gate. Public requalification is pending; at most two channels."
+        : "Output uses the measured quality-4 reference libvorbis VBR profile and at most two channels.",
     ],
     fidelityLimitations: [
       `${sourceCodec} is decoded and lossily encoded as Vorbis; source sample rates through 48 kHz are preserved and higher rates are capped at 48 kHz.`,
-      "Reference libvorbis quality 4 was retained after comparative speed, output-size, and ASDR testing rejected FFmpeg's slower experimental native encoder and the lower-fidelity quality-3 setting.",
+      input === "opus"
+        ? "The existing quality-7 control passed a small full-PCM comparison where quality 4 failed; this is not a fastest-policy or large-file memory claim. Explicit quality choices remain unchanged."
+        : "Reference libvorbis quality 4 was retained after comparative speed, output-size, and ASDR testing rejected FFmpeg's slower experimental native encoder and the lower-fidelity quality-3 setting.",
     ],
     maxTestedBytes: evidence,
     automatedTestStatus: evidence === null ? "pending" : "passed",

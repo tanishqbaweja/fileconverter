@@ -485,6 +485,24 @@ export function audioQualityCode(quality: AudioQuality): number {
         : 0;
 }
 
+export const OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE =
+  "Automatic uses Vorbis quality 7 for Opus input to limit additional generation loss. " +
+  "It may be slower and produce a larger file than Balanced; it cannot restore source losses.";
+
+export function automaticVorbisQualityNotice(profileId: string | undefined, quality: AudioQuality): string | null {
+  return profileId === "opus-to-ogg" && quality === "automatic" ? OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE : null;
+}
+
+/** The exact quality argument sent through the existing general12 native ABI.
+ * q4 failed this route's unchanged fidelity gate; existing q7 passed. Keep
+ * explicit choices and every other route unchanged. This is not a speed claim.
+ */
+export function resolveAudioQualityArgument(profileId: string, nativeProfile: number, quality: AudioQuality) {
+  const repairedAutomatic = nativeProfile === 33 && automaticVorbisQualityNotice(profileId, quality) !== null;
+  return { requested: quality, nativeCode: repairedAutomatic ? 3 : audioQualityCode(quality),
+    automaticPolicy: repairedAutomatic ? "opus-to-vorbis-q7" as const : null };
+}
+
 export function audioCompressionCode(compression: AudioCompressionMode): number {
   return compression === "lossy" ? 1 : compression === "lossless" ? 2 : 0;
 }

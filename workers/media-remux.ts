@@ -2,7 +2,7 @@ import type { ConversionMetrics, WorkerResponse } from "../lib/conversion-protoc
 import {
   audioCodecCode,
   audioCompressionCode,
-  audioQualityCode,
+  resolveAudioQualityArgument,
   videoCodecCode,
   videoQualityCode,
   type AudioConversionOptions,
@@ -724,10 +724,13 @@ export async function runMediaRemux({
       videoOptions?.frameRateFps ?? 0,
       videoQualityCode(videoOptions?.quality ?? "automatic"),
     ];
+    const qualityArgument = resolveAudioQualityArgument(profileId, remuxProfile, audioOptions?.quality ?? "automatic");
     const arguments_ = mediaNativeArguments(remuxProfile,
       [audioOptions?.bitRateBps ?? 0, audioOptions?.sampleRateHz ?? 0, audioOptions?.channels ?? 0],
-      [audioCodecCode(audioOptions?.codec ?? "automatic"), audioCompressionCode(audioOptions?.compression ?? "automatic"), audioQualityCode(audioOptions?.quality ?? "automatic")],
+      [audioCodecCode(audioOptions?.codec ?? "automatic"), audioCompressionCode(audioOptions?.compression ?? "automatic"), qualityArgument.nativeCode],
       videoArguments, usesCertifiedSpecialistAbi ? "legacy-specialist-9" : "general-12");
+    // Record exactly the argument used by this call, not inferred encoder state.
+    if (!usesCertifiedSpecialistAbi) metrics.audioQualityArgument = qualityArgument;
     const result = await engineModule.ccall(
       aiffSpecialistCore ? "within_aiff" : "within_remux",
       "number",

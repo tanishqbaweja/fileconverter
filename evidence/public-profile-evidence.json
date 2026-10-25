@@ -5422,24 +5422,6 @@
       }
     },
     {
-      "profileId": "opus-to-ogg",
-      "maxTestedBytes": 147964541,
-      "repeatableEvidence": {
-        "report": "2026-08-13T00-41-07-345Z-opus-to-ogg-stress.json",
-        "reportSha256": "ef8808779cf136a155902900277ba8917b539ab1079ea1c9382991ad4bb21ee0",
-        "runs": 3,
-        "sourceBytes": 147964541,
-        "incrementalPrivateMiB": 159.81640625
-      },
-      "maximumSizeEvidence": {
-        "report": "2026-08-13T00-41-07-345Z-opus-to-ogg-stress.json",
-        "reportSha256": "ef8808779cf136a155902900277ba8917b539ab1079ea1c9382991ad4bb21ee0",
-        "runs": 3,
-        "sourceBytes": 147964541,
-        "incrementalPrivateMiB": 159.81640625
-      }
-    },
-    {
       "profileId": "opus-to-wav",
       "maxTestedBytes": 40289464,
       "repeatableEvidence": {

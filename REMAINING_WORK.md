@@ -1,5 +1,24 @@
 # Remaining work audit
 
+2026-10-25 quality policy source integration83focused PASS; public-evidence
+manifest strict audit404public/404proofs/one hidden pending/no public nonpassing
+or PDF. Previous stale count/pending/source-contract test failures corrected
+without changing conversion/fidelity/memory assertions. Historical q4 stress
+entry preserved in evidence/opus-vorbis-quality-policy-transition-2026-10-25.json;
+active proof index/README/TESTED agree. Four NEW automatic browser jobs pending.
+
+2026-10-25 automatic Opus-to-Vorbis quality repair implemented, runtime
+UNVERIFIED: exact route/native33/automatic argument now3=>existing nativeq7;
+all explicit choices and other profiles unchanged (matrix unit checks). Actual
+ccall argument recorded separately from native AVCodecContext observation.
+UI names q7 and discloses possible size/speed cost/no restored losses. Oldq4
+59.7717dB<60 and higher61.0654 control retained, not relabelled. Since old
+147964541B q4 stress proof cannot qualify changed settings, exact route is now
+private/pending with maxTestedBytes null; README/public-selector agree. New
+four-job gate canonical/repeated/PNG/JPEG requests AUTOMATIC throughout,
+requires visible notice/real arg3/full96kPCM>=60/25tags/repeats/exact covers.
+No native build/IO/heap/codec-library changes. Broader B05/full54 remain OPEN.
+
 2026-10-25 7e4999c portable CI40185233762 SUCCESS incl privacy/offline.
 Byte/field gates CLOSED for this private small profile; no replay unchanged.
 Next concrete B05 defect: automatic Opus-to-Vorbis59.7717dB<60 versus explicit

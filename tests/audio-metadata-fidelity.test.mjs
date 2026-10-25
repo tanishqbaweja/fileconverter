@@ -93,5 +93,5 @@ test("remaining repeated-metadata gate selects only five untested cases and veri
 test("FLAC ordering repair gate checks affected canonical and repeated inputs without replaying closed Ogg conversion/quality cases", async () => {
   const source = await readFile(new URL("../scripts/test-audio-metadata-production-runtime.mjs", import.meta.url), "utf8");
   assert.match(source, /--flac-order-repair/); assert.match(source, /flacOrderRepair \? \[\.\.\.AUDIO_METADATA_FIDELITY_CASES.slice\(4, 6\)/);
-  assert.match(source, /remainingRepeated \|\| flacOrderRepair \? \["flac", "ogg", "opus"\]/);
+  assert.match(source, /remainingRepeated \|\| flacOrderRepair \|\| automaticVorbisRepair \? \["flac", "ogg", "opus"\]/);
 });

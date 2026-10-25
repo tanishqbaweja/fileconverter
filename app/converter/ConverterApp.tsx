@@ -60,6 +60,7 @@ import {
   VIDEO_MAX_WIDTHS,
   audioCodecForProfile,
   audioCompressionForCodec,
+  automaticVorbisQualityNotice,
   normalizeAudioConversionOptionsForCodec,
   audioSampleRatesForCodec,
   supportsAudioEncodingOptions,
@@ -2100,7 +2101,9 @@ export function ConverterApp() {
                             }
                           >
                             {quality === "automatic"
-                              ? "Automatic (fastest certified)"
+                              ? automaticVorbisQualityNotice(selectedProfile?.id, "automatic")
+                                ? "Automatic (Vorbis quality 7)"
+                                : "Automatic (fastest certified)"
                               : quality === "smaller"
                                 ? "Smaller file"
                                 : quality === "balanced"
@@ -2111,6 +2114,11 @@ export function ConverterApp() {
                       </select>
                     </label>
                   </div>
+                  {automaticVorbisQualityNotice(selectedProfile?.id, audioOptions.quality) ? (
+                    <p data-testid="audio-automatic-quality-notice" role="status">
+                      {automaticVorbisQualityNotice(selectedProfile?.id, audioOptions.quality)}
+                    </p>
+                  ) : null}
                 </fieldset>
               ) : null}
 

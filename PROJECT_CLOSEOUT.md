@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Automatic Opus-to-Vorbis repair source implemented, browser UNVERIFIED.
+Exact native33+route+automatic now uses existing q7 code3; explicit settings and
+all other routes unchanged. UI discloses quality/size/speed implications. Exact
+route private/pending (oldq4 public stress evidence does not qualify q7).
+Next execute four NEW automatic jobs canonical/repeated/PNG/JPEG with full
+PCM>=60 and retained controls, whole-tree memory/cleanup/privacy. No rebuild.
+
 7e4999c portable CI40185233762 SUCCESS. Byte/field source+evidence checks
 closed (129focused/local lint/TS; hosted portable/privacy/offline). Next focused
 implementation target: failed automatic Opus-to-Vorbis quality, not replaying

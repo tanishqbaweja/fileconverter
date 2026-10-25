@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-25 quality-policy integration initially failed stale route-total/
+pending-route and harness-source assertions after the exact q7 route was held
+private. Updated ONLY the measured transition:404public profiles/404indexed
+proofs, one exact hidden pending Opus-to-Ogg, other public metadata checks intact.
+Historical q4 proof moved out of active public index into explicit transition
+receipt, not deleted or reused for q7.83focused tests/public-evidence manifest
+audit/lint/TypeScript/syntax/diff-check now PASS. Four automatic UI jobs next.
+
+2026-10-25 automatic-quality source25focused tests PASS: exact Opus-to-Ogg
+native33/automatic maps to q7 code3; all explicit/other profile/native argument
+combinations unchanged. UI disclosure, exact-route private/pending state and
+maxTestedBytes null verified. Lint/TypeScript/syntax PASS. New four-UI-job
+gate wired; actual browser proof UNVERIFIED. Oldq4 failed and explicitq7 passed
+receipts retained as historical evidence, not an automatic repair claim.
+
 2026-10-25 byte-boundary evidence commit7e4999c portable CI40185233762
 SUCCESS: inventory/public-route evidence/lint/TypeScript/unit/privacy/offline.
 Native rebuild/full browser matrix intentionally not run by portable mode.
@@ -8256,8 +8271,8 @@ Hero correction final checkpoint: combined CURRENT836/836unit PASS5723.9312ms in
 
 ## Current totals
 
-- Public passed conversion profiles: **405**
-- Public profiles with retained successful Chrome stress evidence: **405**
+- Public passed conversion profiles: **404**
+- Public profiles with retained successful Chrome stress evidence: **404**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
