@@ -64,8 +64,12 @@ export async function createAudioMetadataFieldBudgetFixtures(directory) {
   const repeated = await readGenerated("source-repeated.flac");
   assert.ok(repeated.length < 1048576); assert.ok(audioTail(repeated).equals(audioTail(canonical)));
   const output = {};
+  const inputPins = { cover4095: "095224a17630cd844ae180114bfe70cdae786c92ccf67bcf26ea5839e1938440",
+    cover4096: "d2821187f985518b0df23668b5bbbb86563144814d21cc09cb806f99b557aa91",
+    text4097: "5885d8dad0679f07ffc0c3d844337a725ac36f46b5d21a89eaca1535a30f3192" };
   for (const [key, source, count] of [["cover4095", cover, 4095], ["cover4096", cover, 4096], ["text4097", repeated, 4097]]) {
     const result = makeGeneratedFlacFieldBudget(source, count), file = path.join(directory, "source-fields-" + key + ".flac");
+    assert.equal(sha(result.generated), inputPins[key], "Retain the independently validated first generated field-budget bytes");
     await writeFile(file, result.generated, { flag: "wx" });
     output[key] = { file, bytes: result.generated.length, sha256: sha(result.generated), expectedAddedEntries: result.expectedAddedEntries, summary: result.summary };
   }

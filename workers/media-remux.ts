@@ -14,6 +14,7 @@ import type { VpxDecoderCore } from "./vpx-core-loader";
 import { vpxCodecForProfile } from "../lib/vpx-decoder-policy";
 import { mediaNativeArguments } from "../lib/media-native-arguments";
 import { observeNativeInputMemory } from "../lib/native-input-memory-observation";
+import { explainAudioMetadataBudgetError } from "../lib/audio-metadata-budget-error";
 
 const REMUX_MODULE_URL = "/engines/remux/within-remux.mjs";
 const REMUX_WASM_URL = "/engines/remux/within-remux.wasm";
@@ -748,7 +749,7 @@ export async function runMediaRemux({
     }
     if (result !== 0) {
       throw new Error(
-        engineErrors.join(" | ") || `FFmpeg remux failed with code ${result}.`,
+        explainAudioMetadataBudgetError(engineErrors.join(" | ") || `FFmpeg remux failed with code ${result}.`),
       );
     }
   } finally {

@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-25 field-budget10-10-43.561Z aggregate FAILED: exact4096 incl4MiB
+cover PASS (all4068 added fields/order/25canonical/repeats/pixels/PCM), actual
+88MiB Wasm/221.3046875MiB whole-tree/505valid0missing. Both over-limit inputs
+fail natively with0output/empty OPFS; second expected-label mismatch fails
+validator/recovery dependency. Prior aggregate remains failed. Actual error
+confirmed in pinned Ogg wrapper, not broadening to arbitrary failures.
+Production friendly metadata-budget explanation added for exact two native
+ENOSPC sites only; next changed rejection/recovery3jobs, no exact-boundary replay.
+
 2026-10-25 new metadata-field boundary/rejection/recovery source24focused/
 lint/TypeScript/syntax checks PASS. Exact4095text+cover=4096;4096text+cover
 and4097text expected native errors/empty OPFS/recovered worker; final exact

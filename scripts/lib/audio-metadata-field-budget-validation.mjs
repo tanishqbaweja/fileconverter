@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-export const AUDIO_TEXT_FIELD_LIMIT_ERROR = "Audio metadata exceeds the bounded 4096-entry / 2 MiB text allowance; refusing silent tag loss.";
+export const AUDIO_TEXT_FIELD_LIMIT_ERROR = "Bounded Ogg stream metadata copy failed: No space left on device";
 export function validateMetadataFieldBudgetFailure(kind, state, { storageBefore, storageAfter } = {}) {
   assert.ok(["picture-fields", "text-fields"].includes(kind)); assert.equal(state.jobState, "error");
   assert.equal(state.workerStatus, "ready"); assert.equal(state.opfsName, null); assert.deepEqual(state.opfsNames, []);

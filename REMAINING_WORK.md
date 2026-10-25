@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-10-25 first field-budget run10-10-43.561Z FAILED, retained unchanged:
+exact4095text+1cover4096 output PASS with ALL4068 added Unicode values/order,
+25canonical/repeats/4MiB image/pixels/96kPCM; actual88MiB Wasm (<=96MiB max),
+whole-tree221.3046875MiB/505valid0missing. Cover-one-over rejects and cleans up.
+4097text also genuinely rejects/cleans up, but validator expected common-copy
+label; actual audited Ogg wrapper emits "Bounded Ogg stream metadata copy
+failed: No space left on device". Recovery output correct but correctly fails
+dependency. No relaxed limit or fabricated passing aggregate. Added precise
+production error explanation for ONLY two known metadata-construction ENOSPC
+sites; preserve native detail and never relabel real disk/quota/permission/
+allocation errors. Next rerun ONLY two changed rejections +recovery; exact4096
+success is closed and must not be replayed. Original three input hashes pinned.
+
 2026-10-25 genuinely new field-budget gate prepared:4095 text+1 exact4MiB
 cover (total4096),4096 text+cover rejection,4097 text rejection, valid same-page
 recovery. Generated INPUT-only constructor changes only the comment block,

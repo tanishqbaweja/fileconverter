@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
 import { makeGeneratedFlacFieldBudget, fieldBudgetAddedEntries } from "../scripts/lib/audio-metadata-field-budget-fixture.mjs";
 import { parseVorbisCommentBlock, COMMENT_LIMITS } from "../scripts/lib/audio-comment-validation.mjs";
 import { AUDIO_TEXT_FIELD_LIMIT_ERROR, validateMetadataFieldBudgetFailure, validateExactMetadataFieldBoundary } from "../scripts/lib/audio-metadata-field-budget-validation.mjs";
@@ -66,4 +68,28 @@ test("real four-job gate selects exact/over-limit/recovery inputs, projects only
   assert.match(source, /passed-private-metadata-field-rejection-case/); assert.match(source, /bindOpfsOutputValidationBacking/);
   assert.equal(source.split("chromium.launchPersistentContext(").length - 1, 1);
   assert.match(source, /active.peak.privateBytes - report.blankBaseline.privateBytes/);
+});
+
+test("first real gate stays FAILED for wrong expected Ogg rejection label, while exact4096 output and real native rejections remain visible", async () => {
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const receipt = JSON.parse(await readFile("evidence/2026-10-25T10-10-43.561Z-audio-metadata-fidelity-result.json"));
+  assert.equal(receipt.status, "failed"); assert.equal(receipt.cases.length, 4);
+  assert.equal(receipt.memory.incrementalPrivateMiB, 221.3046875); assert.equal(receipt.memory.validSamples, 505); assert.equal(receipt.memory.unavailableSamples, 0);
+  const archive = await readFile(receipt.archive.path); assert.equal(sha(archive), receipt.archive.sha256);
+  const raw = gunzipSync(archive, { maxOutputLength: 1048576 }); assert.equal(sha(raw), receipt.archive.restoredSha256);
+  const report = JSON.parse(raw), boundary = report.cases[0], rejected = report.cases[2];
+  assert.equal(boundary.status, "passed-small-private-fidelity-and-metadata-case");
+  assert.equal(boundary.binaryComments.entries.length, 4095); assert.equal(boundary.binaryComments.pictures.length, 1);
+  assert.equal(boundary.exactFieldBoundary.allAddedFieldsPreserved, 4068);
+  assert.equal(boundary.output.sha256, "82d2b3e88f7a1ff7484777ad95c35fb5901086da8e322c61d444be3447197723");
+  assert.equal(boundary.browserState.metrics.peakWasmMemoryBytes, 92274688); // Actual88MiB, unchanged96MiB maximum.
+  assert.equal(boundary.artwork.bytes, 4194304); assert.equal(boundary.fidelity.samples, 96000); assert.ok(boundary.fidelity.psnrDb >= 60);
+  assert.equal(rejected.status, "failed"); assert.equal(rejected.browserState.error, AUDIO_TEXT_FIELD_LIMIT_ERROR);
+  assert.equal(rejected.browserState.jobState, "error"); assert.equal(rejected.browserState.metrics.outputBytes, 0); assert.deepEqual(rejected.storageAfter, []);
+  assert.equal(report.cases[3].status, "failed"); assert.equal(report.cases[3].output.sha256, "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3");
+  assert.ok(Object.values(receipt.cleanup).every(Boolean)); assert.equal(receipt.protectedOriginalUnchanged, true);
+  const journal = await readFile(receipt.losslessJournal.file); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  assert.equal(sha(gunzipSync(journal, { maxOutputLength: 8 * 1048576 })), receipt.losslessJournal.sha256);
+  const wrapper = await readFile("media/ffmpeg/audio-comment-wrapper-candidate.mjs", "utf8");
+  assert.match(wrapper, /Bounded Ogg stream metadata copy failed/);
 });

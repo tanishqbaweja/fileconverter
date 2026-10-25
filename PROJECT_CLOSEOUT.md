@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+First field gate10-10-43.561Z FAILED on expected-label mismatch, not silent
+loss: exact4096 fields incl4MiB image PASS/all4068 added fields/full controls;
+88MiB actual heap/221.3047MiB full-tree/505valid0missing. Both limit errors
+cleaned; actual Ogg-stream copy label differs from common-copy expectation.
+Preserve failure. Accurate metadata ENOSPC explanation now added; next only
+two changed rejection cases +same-page recovery. Do not replay closed4096case.
+
 Next four-case metadata-field gate implemented (actual runtime unverified):
 4095text+cover exact4096, one-over cover and4097text native rejection, same-page
 valid recovery. Native canonical25-tag projection bounded; raw comment parser
