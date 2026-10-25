@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-25 new artwork/25-field/ordered-duplicate gate source:30focused unit
+tests PASS, focused ESLint/diff checks PASS. Four Ogg/Opus-to-FLAC PNG/JPEG
+cases added without replay of closed text-only gates. Exact cover packet SHA/
+size, attached disposition, dimensions and independent image decode required;
+same full PCM, process tree, privacy and owned cleanup gates. Browser coverage
+of these NEW combined cases is still UNVERIFIED until the actual run. No
+promotion/quality/default/Chrome configuration change. CI40155833512 for
+075500d SUCCESS verified; this is prior-code CI, not new artwork browser proof.
+
 2026-10-25 actual V3 FLAC-order gate02-38-29.173Z PASS4/4:25fields/96,000 exact
 PCM samples, both Unicode duplicate values in original order. Small whole-tree
 187.7890625MiB/427valid/0missing; disk/privacy/original/all owned cleanup/restore

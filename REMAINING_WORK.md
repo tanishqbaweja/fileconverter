@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-10-25 next B05 gate implemented, browser result still UNVERIFIED: explicit
+--artwork-metadata selects four NEW Ogg/Opus-to-FLAC combinations with PNG/JPEG,
+all25 fields and two ordered repeated Unicode values. Small input-only picture
+construction has64KiB image/1MiB fixture bounds. Independent validation requires
+exactly one attached picture, exact complete packet size/SHA-256,64x64 geometry
+and a real image decode, alongside the unchanged full96,000-sample PCM check.
+30focused tests/lint/diff checks PASS. Host preflight PASS10.456GB physical/
+17.441GB virtual; no browser settings/process/formula change. Next execute once
+against existing audited V3; no new native build, public promotion or stress
+claim. Previous075500d CI40155833512 SUCCESS verified from GitHub state.
+
 2026-10-25 V3 actual FLAC-only gate02-38-29.173Z PASS4/4: two canonical and two
 repeated Ogg/Opus inputs keep all25tags/96,000 sample-exact PCM samples; both
 repeated values now survive in original order.50-source/15-artifact audit and

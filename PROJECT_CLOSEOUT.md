@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+New explicit --artwork-metadata gate is ready for four PNG/JPEG +25 tags +two
+ordered-value Ogg/Opus-to-FLAC production cases.30focused/lint/diff checks PASS;
+actual combined artwork browser result still UNVERIFIED. Uses existing V3,
+independent exact image packet/hash/decode and unchanged PCM/memory/privacy/
+cleanup contracts. Next execute this new gate once. Previous075500d CI passed
+(40155833512); full original scope remains OPEN.
+
 V3 four affected FLAC cases now actual PASS (02-38-29.173Z): all25fields,
 96,000 sample-exact PCM samples and TWO ordered Unicode values retained.
 Small full-tree187.7890625MiB/427valid/0missing, disk/privacy/original/owned
