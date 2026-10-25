@@ -1,0 +1,27 @@
+{
+  "startedAt": "2026-10-25T09:08:55.606Z",
+  "scope": "real observer/native ownership only; no browser or conversion acceptance",
+  "publicAcceptance": false,
+  "samples": [],
+  "sources": {
+    "scripts/test-birth-aware-memory-observer.mjs": "9950a1dda9f2a7de657817778d17140a940c99b185c682626daef7aebe26f309",
+    "scripts/test-windows-birth-proof.ps1": "8aa9cecaab4da3ee213d7c4204da1b12db093f7bb030facc93fad2240686229f",
+    "scripts/lib/birth-aware-memory-observer-source.mjs": "d18e33afa344b68da2f93da4193ddb2c5b09cff911f12bedb0185be0f42fc314",
+    "scripts/lib/windows-process-birth-proof.cs": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "scripts/lib/windows-tree-monitor-birth-aware.ps1": "0610b562ef521dd6948b90c7973d0e87dc46052aeb95240b9929a9f36980aede",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3"
+  },
+  "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+  "status": "failed",
+  "failure": "Error: Command failed: powershell.exe -NoProfile -NonInteractive -File scripts/test-windows-birth-proof.ps1 -SourcePath H:\\Github Repositories\\fileconverter\\work\\birth-aware-observer-probe-qbvhbB\\guard-probe.cs -SourceSha256 26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f\nH:\\Github Repositories\\fileconverter\\scripts\\test-windows-birth-proof.ps1 : The term 'Get-FileHash' is not recognized \r\nas the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was \r\nincluded, verify that the path is correct and try again.\r\n    + CategoryInfo          : ObjectNotFound: (Get-FileHash:String) [test-windows-birth-proof.ps1], CommandNotFoundExc \r\n   eption\r\n    + FullyQualifiedErrorId : CommandNotFoundException,test-windows-birth-proof.ps1\r\n \r\n\n    at genericNodeError (node:internal/errors:985:15)\n    at wrappedFn (node:internal/errors:539:14)\n    at ChildProcess.exithandler (node:child_process:417:12)\n    at ChildProcess.emit (node:events:508:28)\n    at maybeClose (node:internal/child_process:1101:16)\n    at ChildProcess._handle.onexit (node:internal/child_process:305:5)",
+  "processCleanup": [],
+  "cleanup": {
+    "allOwnedBirthsAbsent": true,
+    "ownedScratchRemoved": true,
+    "mediaCreated": false,
+    "unrelatedApplicationsClosed": false
+  },
+  "finishedAt": "2026-10-25T09:08:56.004Z"
+}

@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-10-25 birth-aware observer native09-09-43.886Z PASS: actual protected
+csrss1740 query denied, WMI microsecond birth interval proves synthetic stale
+parent relation; real owned private-memory read succeeds, unexcluded unreadable
+process still throws. Real40MiB short-lived owned child captured6samples;
+sibling/observer excluded by actual tree ownership; root exit stays null;
+owned identities/scratch cleaned. Original source-bound observer kept intact.
+New exact reversible derivative checks native birth BEFORE private counters;
+on denied handle only independent birth proof can exclude; uncertainty fails
+whole sample. Conservatively preserves ten100ns ticks per WMI microsecond.
+First probe failed because inherited Windows PowerShell lacked Get-FileHash;
+changed to streaming .NET hash and direct WMI APIs, no module/settings edits.
+Production harness now uses new observer, pins all five new/native sources
+and retains bounded ownership proofs. Actual changed candidate7job rerun
+still UNVERIFIED; prior251.5977MiB/389null failures unchanged. Full goal OPEN.
+
 2026-10-25 changed candidate attempt04-31-11.950Z FAILED BEFORE converter
 load:389/389 native samples unavailable/null, no blank baseline, zero jobs or
 asset requests. Host safety passed (~10.24GiB physical/15.38GiB virtual free).

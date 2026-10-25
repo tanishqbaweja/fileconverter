@@ -1,0 +1,1482 @@
+{
+  "startedAt": "2026-10-25T09:09:43.886Z",
+  "scope": "real observer/native ownership only; no browser or conversion acceptance",
+  "publicAcceptance": false,
+  "samples": [
+    {
+      "sequence": 1,
+      "timestamp": "2026-10-25T09:09:45.6410285Z",
+      "completedAt": "2026-10-25T09:09:45.6535717Z",
+      "sampleError": null,
+      "nativeElapsedMs": 12.474400000000001,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 2,
+      "timestamp": "2026-10-25T09:09:45.7470872Z",
+      "completedAt": "2026-10-25T09:09:45.7551043Z",
+      "sampleError": null,
+      "nativeElapsedMs": 9.2537,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 3,
+      "timestamp": "2026-10-25T09:09:45.8564350Z",
+      "completedAt": "2026-10-25T09:09:45.8649960Z",
+      "sampleError": null,
+      "nativeElapsedMs": 8.938600000000001,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 4,
+      "timestamp": "2026-10-25T09:09:45.9651237Z",
+      "completedAt": "2026-10-25T09:09:45.9728558Z",
+      "sampleError": null,
+      "nativeElapsedMs": 8.4014,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 5,
+      "timestamp": "2026-10-25T09:09:46.0732962Z",
+      "completedAt": "2026-10-25T09:09:46.0808149Z",
+      "sampleError": null,
+      "nativeElapsedMs": 8.4448,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 6,
+      "timestamp": "2026-10-25T09:09:46.1818149Z",
+      "completedAt": "2026-10-25T09:09:46.1903719Z",
+      "sampleError": null,
+      "nativeElapsedMs": 9.287,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 7,
+      "timestamp": "2026-10-25T09:09:46.2904713Z",
+      "completedAt": "2026-10-25T09:09:46.2983392Z",
+      "sampleError": null,
+      "nativeElapsedMs": 8.7405,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 8,
+      "timestamp": "2026-10-25T09:09:46.3995746Z",
+      "completedAt": "2026-10-25T09:09:46.4086064Z",
+      "sampleError": null,
+      "nativeElapsedMs": 9.0657,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 9,
+      "timestamp": "2026-10-25T09:09:46.5079747Z",
+      "completedAt": "2026-10-25T09:09:46.5163148Z",
+      "sampleError": null,
+      "nativeElapsedMs": 8.5134,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 10,
+      "timestamp": "2026-10-25T09:09:46.6171342Z",
+      "completedAt": "2026-10-25T09:09:46.6252584Z",
+      "sampleError": null,
+      "nativeElapsedMs": 8.3409,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 11,
+      "timestamp": "2026-10-25T09:09:46.7281804Z",
+      "completedAt": "2026-10-25T09:09:46.7355369Z",
+      "sampleError": null,
+      "nativeElapsedMs": 8.659,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 12,
+      "timestamp": "2026-10-25T09:09:46.8377302Z",
+      "completedAt": "2026-10-25T09:09:46.8469853Z",
+      "sampleError": null,
+      "nativeElapsedMs": 9.207,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 13,
+      "timestamp": "2026-10-25T09:09:46.9475876Z",
+      "completedAt": "2026-10-25T09:09:46.9564733Z",
+      "sampleError": null,
+      "nativeElapsedMs": 9.1928,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 14,
+      "timestamp": "2026-10-25T09:09:47.0551955Z",
+      "completedAt": "2026-10-25T09:09:47.0641122Z",
+      "sampleError": null,
+      "nativeElapsedMs": 8.849400000000001,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 15,
+      "timestamp": "2026-10-25T09:09:47.1629377Z",
+      "completedAt": "2026-10-25T09:09:47.1719695Z",
+      "sampleError": null,
+      "nativeElapsedMs": 9.8947,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 16,
+      "timestamp": "2026-10-25T09:09:47.2718977Z",
+      "completedAt": "2026-10-25T09:09:47.2809345Z",
+      "sampleError": null,
+      "nativeElapsedMs": 9.186300000000001,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 17,
+      "timestamp": "2026-10-25T09:09:47.3831695Z",
+      "completedAt": "2026-10-25T09:09:47.3893395Z",
+      "sampleError": null,
+      "nativeElapsedMs": 6.8971,
+      "privateBytes": 23937024,
+      "rssBytes": 57925632,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22577152,
+          "rssBytes": 49807360,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 18,
+      "timestamp": "2026-10-25T09:09:47.4929833Z",
+      "completedAt": "2026-10-25T09:09:47.5026719Z",
+      "sampleError": null,
+      "nativeElapsedMs": 10.0687,
+      "privateBytes": 28327936,
+      "rssBytes": 92274688,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41512,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:47.4941866Z",
+          "creationFileTime": "134373929874941866",
+          "executableName": "node.exe",
+          "privateBytes": 3792896,
+          "rssBytes": 30793728,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22724608,
+          "rssBytes": 50315264,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41936,
+          "parentPid": 41512,
+          "createdAt": "2026-10-25T09:09:47.4998096Z",
+          "creationFileTime": "134373929874998096",
+          "executableName": "conhost.exe",
+          "privateBytes": 450560,
+          "rssBytes": 3047424,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 19,
+      "timestamp": "2026-10-25T09:09:47.6029811Z",
+      "completedAt": "2026-10-25T09:09:47.6123322Z",
+      "sampleError": null,
+      "nativeElapsedMs": 9.839500000000001,
+      "privateBytes": 89772032,
+      "rssBytes": 157818880,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41512,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:47.4941866Z",
+          "creationFileTime": "134373929874941866",
+          "executableName": "node.exe",
+          "privateBytes": 64331776,
+          "rssBytes": 91275264,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22724608,
+          "rssBytes": 50315264,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41936,
+          "parentPid": 41512,
+          "createdAt": "2026-10-25T09:09:47.4998096Z",
+          "creationFileTime": "134373929874998096",
+          "executableName": "conhost.exe",
+          "privateBytes": 1355776,
+          "rssBytes": 8110080,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 20,
+      "timestamp": "2026-10-25T09:09:47.7108251Z",
+      "completedAt": "2026-10-25T09:09:47.7183411Z",
+      "sampleError": null,
+      "nativeElapsedMs": 7.929,
+      "privateBytes": 89772032,
+      "rssBytes": 157818880,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41512,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:47.4941866Z",
+          "creationFileTime": "134373929874941866",
+          "executableName": "node.exe",
+          "privateBytes": 64331776,
+          "rssBytes": 91275264,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22724608,
+          "rssBytes": 50315264,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41936,
+          "parentPid": 41512,
+          "createdAt": "2026-10-25T09:09:47.4998096Z",
+          "creationFileTime": "134373929874998096",
+          "executableName": "conhost.exe",
+          "privateBytes": 1355776,
+          "rssBytes": 8110080,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 21,
+      "timestamp": "2026-10-25T09:09:47.8213563Z",
+      "completedAt": "2026-10-25T09:09:47.8283904Z",
+      "sampleError": null,
+      "nativeElapsedMs": 7.6092,
+      "privateBytes": 89772032,
+      "rssBytes": 157818880,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41512,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:47.4941866Z",
+          "creationFileTime": "134373929874941866",
+          "executableName": "node.exe",
+          "privateBytes": 64331776,
+          "rssBytes": 91275264,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22724608,
+          "rssBytes": 50315264,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41936,
+          "parentPid": 41512,
+          "createdAt": "2026-10-25T09:09:47.4998096Z",
+          "creationFileTime": "134373929874998096",
+          "executableName": "conhost.exe",
+          "privateBytes": 1355776,
+          "rssBytes": 8110080,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 22,
+      "timestamp": "2026-10-25T09:09:47.9286778Z",
+      "completedAt": "2026-10-25T09:09:47.9366664Z",
+      "sampleError": null,
+      "nativeElapsedMs": 8.4014,
+      "privateBytes": 89772032,
+      "rssBytes": 157818880,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41512,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:47.4941866Z",
+          "creationFileTime": "134373929874941866",
+          "executableName": "node.exe",
+          "privateBytes": 64331776,
+          "rssBytes": 91275264,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22724608,
+          "rssBytes": 50315264,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41936,
+          "parentPid": 41512,
+          "createdAt": "2026-10-25T09:09:47.4998096Z",
+          "creationFileTime": "134373929874998096",
+          "executableName": "conhost.exe",
+          "privateBytes": 1355776,
+          "rssBytes": 8110080,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 23,
+      "timestamp": "2026-10-25T09:09:48.0382804Z",
+      "completedAt": "2026-10-25T09:09:48.0474489Z",
+      "sampleError": null,
+      "nativeElapsedMs": 9.245000000000001,
+      "privateBytes": 89772032,
+      "rssBytes": 157818880,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41512,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:47.4941866Z",
+          "creationFileTime": "134373929874941866",
+          "executableName": "node.exe",
+          "privateBytes": 64331776,
+          "rssBytes": 91275264,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22724608,
+          "rssBytes": 50315264,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41936,
+          "parentPid": 41512,
+          "createdAt": "2026-10-25T09:09:47.4998096Z",
+          "creationFileTime": "134373929874998096",
+          "executableName": "conhost.exe",
+          "privateBytes": 1355776,
+          "rssBytes": 8110080,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 24,
+      "timestamp": "2026-10-25T09:09:48.1474904Z",
+      "completedAt": "2026-10-25T09:09:48.1565460Z",
+      "sampleError": null,
+      "nativeElapsedMs": 9.344100000000001,
+      "privateBytes": 89772032,
+      "rssBytes": 157818880,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41512,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:47.4941866Z",
+          "creationFileTime": "134373929874941866",
+          "executableName": "node.exe",
+          "privateBytes": 64331776,
+          "rssBytes": 91275264,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22724608,
+          "rssBytes": 50315264,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41936,
+          "parentPid": 41512,
+          "createdAt": "2026-10-25T09:09:47.4998096Z",
+          "creationFileTime": "134373929874998096",
+          "executableName": "conhost.exe",
+          "privateBytes": 1355776,
+          "rssBytes": 8110080,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 25,
+      "timestamp": "2026-10-25T09:09:48.2554954Z",
+      "completedAt": "2026-10-25T09:09:48.2660528Z",
+      "sampleError": null,
+      "nativeElapsedMs": 10.6341,
+      "privateBytes": 24432640,
+      "rssBytes": 58580992,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 23072768,
+          "rssBytes": 50462720,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 26,
+      "timestamp": "2026-10-25T09:09:48.3644544Z",
+      "completedAt": "2026-10-25T09:09:48.3756257Z",
+      "sampleError": null,
+      "nativeElapsedMs": 12.139700000000001,
+      "privateBytes": 24432640,
+      "rssBytes": 58580992,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 23072768,
+          "rssBytes": 50462720,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 27,
+      "timestamp": "2026-10-25T09:09:48.4731165Z",
+      "completedAt": "2026-10-25T09:09:48.4862078Z",
+      "sampleError": null,
+      "nativeElapsedMs": 13.0001,
+      "privateBytes": 24432640,
+      "rssBytes": 58580992,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 23072768,
+          "rssBytes": 50462720,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 28,
+      "timestamp": "2026-10-25T09:09:48.5821215Z",
+      "completedAt": "2026-10-25T09:09:48.6003077Z",
+      "sampleError": null,
+      "nativeElapsedMs": 18.881500000000003,
+      "privateBytes": 24432640,
+      "rssBytes": 58580992,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 23072768,
+          "rssBytes": 50462720,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 29,
+      "timestamp": "2026-10-25T09:09:48.6907814Z",
+      "completedAt": "2026-10-25T09:09:48.7084350Z",
+      "sampleError": null,
+      "nativeElapsedMs": 17.810200000000002,
+      "privateBytes": 24432640,
+      "rssBytes": 58580992,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 23072768,
+          "rssBytes": 50462720,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 30,
+      "timestamp": "2026-10-25T09:09:48.8011627Z",
+      "completedAt": "2026-10-25T09:09:48.8127239Z",
+      "sampleError": null,
+      "nativeElapsedMs": 12.110800000000001,
+      "privateBytes": 24432640,
+      "rssBytes": 58580992,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 23072768,
+          "rssBytes": 50462720,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 31,
+      "timestamp": "2026-10-25T09:09:48.9100169Z",
+      "completedAt": "2026-10-25T09:09:48.9210176Z",
+      "sampleError": null,
+      "nativeElapsedMs": 11.2642,
+      "privateBytes": 24432640,
+      "rssBytes": 58580992,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 23072768,
+          "rssBytes": 50462720,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 32,
+      "timestamp": "2026-10-25T09:09:49.0205912Z",
+      "completedAt": "2026-10-25T09:09:49.0328367Z",
+      "sampleError": null,
+      "nativeElapsedMs": 12.4059,
+      "privateBytes": 24432640,
+      "rssBytes": 58580992,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8118272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 23072768,
+          "rssBytes": 50462720,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 33,
+      "timestamp": "2026-10-25T09:09:49.1287601Z",
+      "completedAt": "2026-10-25T09:09:49.1423879Z",
+      "sampleError": null,
+      "nativeElapsedMs": 14.1835,
+      "privateBytes": 23568384,
+      "rssBytes": 58171392,
+      "processes": [
+        {
+          "pid": 16544,
+          "parentPid": 41912,
+          "createdAt": "2026-10-25T09:09:44.8936686Z",
+          "creationFileTime": "134373929848936686",
+          "executableName": "conhost.exe",
+          "privateBytes": 1359872,
+          "rssBytes": 8204288,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 41912,
+          "parentPid": 17664,
+          "createdAt": "2026-10-25T09:09:44.8888018Z",
+          "creationFileTime": "134373929848888018",
+          "executableName": "node.exe",
+          "privateBytes": 22208512,
+          "rssBytes": 49967104,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    {
+      "sequence": 34,
+      "timestamp": "2026-10-25T09:09:49.2376449Z",
+      "completedAt": "2026-10-25T09:09:49.2486619Z",
+      "sampleError": "Owned root exited",
+      "nativeElapsedMs": 11.8064,
+      "privateBytes": null,
+      "rssBytes": null,
+      "processes": null
+    },
+    {
+      "sequence": 35,
+      "timestamp": "2026-10-25T09:09:49.3467080Z",
+      "completedAt": "2026-10-25T09:09:49.3584832Z",
+      "sampleError": "Owned root exited",
+      "nativeElapsedMs": 12.5298,
+      "privateBytes": null,
+      "rssBytes": null,
+      "processes": null
+    },
+    {
+      "sequence": 36,
+      "timestamp": "2026-10-25T09:09:49.4561151Z",
+      "completedAt": "2026-10-25T09:09:49.4683547Z",
+      "sampleError": "Owned root exited",
+      "nativeElapsedMs": 11.862400000000001,
+      "privateBytes": null,
+      "rssBytes": null,
+      "processes": null
+    }
+  ],
+  "sources": {
+    "scripts/test-birth-aware-memory-observer.mjs": "9950a1dda9f2a7de657817778d17140a940c99b185c682626daef7aebe26f309",
+    "scripts/test-windows-birth-proof.ps1": "5ff9520c78c5be5b98590b6f94e1d8e3fb149231c7cebe8e90e85b98ee4fcb5d",
+    "scripts/lib/birth-aware-memory-observer-source.mjs": "d18e33afa344b68da2f93da4193ddb2c5b09cff911f12bedb0185be0f42fc314",
+    "scripts/lib/windows-process-birth-proof.cs": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "scripts/lib/windows-tree-monitor-birth-aware.ps1": "cc2bd8b1cfeae4f98668d32e47afdc65039fb35489d6247db1071568b3259278",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d",
+    "scripts/lib/windows-tree-monitor.cs": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "scripts/lib/persistent-chromium-memory.mjs": "3ca33771608a9863494352f639d31c176f0307c94c8d66725351e9cc2738eef3"
+  },
+  "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+  "nativeGuard": {
+    "status": "passed-real-native-birth-guard-probe",
+    "protectedPid": 1740,
+    "protectedName": "csrss.exe",
+    "protectedQueryActuallyDenied": true,
+    "protectedBirthEarliest": "134371376304836060",
+    "protectedBirthLatest": "134371376304836069",
+    "ownBirth": "134373929838964219",
+    "proof": {
+      "pid": 1740,
+      "parentPid": 44468,
+      "earliestFileTime": "134371376304836060",
+      "latestFileTime": "134371376304836069",
+      "boundaryFileTime": "134373929838964219",
+      "source": "Win32_Process.CreationDate",
+      "reason": "predates-current-parent",
+      "observations": 1
+    },
+    "realOwnedMemoryRead": true,
+    "unexcludedUnreadableStillFails": true,
+    "microsecondIntervalBoundaries": true,
+    "invalidBirthAndPidRejected": true,
+    "syntheticParentLinkOnly": true,
+    "conversionAcceptance": false,
+    "noApplicationsClosed": true
+  },
+  "descendantPid": 41512,
+  "allocatedChildSamples": 6,
+  "observerCpuDeltaMs": 234.375,
+  "ownership": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 0,
+    "proofs": [],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false
+  },
+  "status": "passed-birth-aware-observer-native-and-child-smoke",
+  "processCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 41912,
+        "parentPid": 17664,
+        "createdAt": "2026-10-25T09:09:44.8888010Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-25T09:09:49.925Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 358,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 40868,
+        "parentPid": 17664,
+        "createdAt": "2026-10-25T09:09:47.0593270Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-25T09:09:50.282Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 357,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 40928,
+        "parentPid": 17664,
+        "createdAt": "2026-10-25T09:09:45.3281520Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-25T09:09:50.593Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 311,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "cleanup": {
+    "allOwnedBirthsAbsent": true,
+    "ownedScratchRemoved": true,
+    "mediaCreated": false,
+    "unrelatedApplicationsClosed": false
+  },
+  "finishedAt": "2026-10-25T09:09:50.596Z"
+}

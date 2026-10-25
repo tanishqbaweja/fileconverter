@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Birth-aware observer native09-09-43.886Z PASS (denied protected read, proven
+stale relation, uncertain unreadable remains failed, real40MiB child6samples,
+exit null/owned cleanup). Historical source frozen; nine reversible ownership
+edits +new bounded WMI proof helper retain all counters/formula/queues. Browser
+harness adopted and all observer sources pinned; next rerun private candidate
+seven-job workload once under repaired observer. Prior failures remain failed.
+5fe3a6f CI40162544539 SUCCESS; full54 requirement scope still OPEN.
+
 Candidate attempt04-31-11.950Z never loaded converter:389 unavailable/null
 OpenProcess1740 samples, no baseline/jobs. Read-only CIM identifies protected
 Oct22 csrss.exe/parent1560; observer performs candidate Read before birth-order

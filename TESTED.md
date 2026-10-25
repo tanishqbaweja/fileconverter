@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-25 native birth-aware observer09-09-43.886Z PASS: actual denied
+protected-process access and conservative stale-parent birth proof; owned read
+passes; unproven unreadable still fails.40MiB real owned child observed6times,
+unrelated sibling/observer not attributed; exit samples null; owned cleanup PASS.
+Observer-only, no conversion/public acceptance. Original sampler sources remain
+byte-identical for historical evidence. First native attempt09-08-55 failed
+missing inherited Get-FileHash; resolved with .NET streaming hash/direct WMI.
+New production harness adoption/native source pins/proof retention implemented;
+candidate runtime still UNVERIFIED.5fe3a6f CI40162544539 SUCCESS.
+
 2026-10-25 candidate14 first runtime04-31-11.950Z failed pre-converter:
 no loaded assets/jobs/blank baseline;389 samples all null/OpenProcess1740,
 not0MiB. Host memory safe, compiled62source/15artifact audit passed. CIM1740

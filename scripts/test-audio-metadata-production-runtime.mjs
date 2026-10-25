@@ -28,7 +28,7 @@ import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runti
 import { inspectStressHostMemory } from "./lib/host-memory-preflight.mjs";
 import { inspectInstalledChromePin, assertInstalledChromePinsEqual } from "./lib/installed-chrome-pin.mjs";
 import { queryProcessIdentity, observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mjs";
-import { startChromiumMemoryMonitor } from "./lib/persistent-chromium-memory.mjs";
+import { startChromiumMemoryMonitor } from "./lib/birth-aware-chromium-memory.mjs";
 import { stableWindow } from "./lib/chromium-private-memory.mjs";
 import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
 import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mjs";
@@ -108,6 +108,8 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "scripts/lib/audio-io-recovery-validation.mjs",
   "scripts/lib/bounded-network-observer.mjs", "scripts/lib/opfs-disk-backing-proof.mjs", "scripts/lib/bounded-validation-chunk.mjs",
   "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/native-memory-peaks.mjs", "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs",
+  "scripts/lib/birth-aware-chromium-memory.mjs", "scripts/lib/birth-aware-memory-observer-source.mjs", "scripts/lib/windows-tree-monitor.cs",
+  "scripts/lib/windows-process-birth-proof.cs", "scripts/lib/windows-tree-monitor-birth-aware.ps1",
   "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts", "lib/browser-capabilities.ts", "lib/capability-registry.ts",
   "lib/native-input-memory-observation.ts",
   "lib/media-conversion-options.ts", "app/converter/ConverterApp.tsx", "app/globals.css"];
@@ -400,7 +402,7 @@ finally {
   clearInterval(monitorTimer); await pending;
   if (monitor && journal) {
     let coverageFailure = null;
-    try { await snapshot(); recordMemory(); } catch (error) { coverageFailure = String(error); }
+    try { await snapshot(); recordMemory(); report.memoryObserverOwnership = monitor.ownershipSummary(); } catch (error) { coverageFailure = String(error); }
     try { await monitor.close(); monitor = null; } catch (error) { coverageFailure ??= String(error); }
     try { const receipt = await journal.close(); report.losslessMemoryJournal = await compactLosslessNativeMemoryJournal(coverageFailure
       ? { ...receipt, complete: false, failure: coverageFailure, conversionAcceptance: false } : receipt);
@@ -436,7 +438,7 @@ finally {
   const receipt = { schemaVersion: 1, executedHead: report.executedHead, status: report.status, scope: report.scope, publicAcceptance: false, fullMetadataAcceptance: false,
     archive: { path: path.relative(root, archive).replaceAll(path.sep, "/"), bytes: packed.length, sha256: sha(packed), restoredBytes: raw.length, restoredSha256: sha(raw) },
     sourcePins: Object.keys(report.sources ?? {}).length, artifactManifestSha256: report.artifact?.manifestSha256, diskProof: report.diskProof,
-    memory: report.memory, benchmark: report.benchmark, cases: report.cases.map(c => ({ name: c.name, status: c.status, requestedQuality: c.requestedQuality, browserElapsedMs: c.browserElapsedMs,
+    memory: report.memory, memoryObserverOwnership: report.memoryObserverOwnership, benchmark: report.benchmark, cases: report.cases.map(c => ({ name: c.name, status: c.status, requestedQuality: c.requestedQuality, browserElapsedMs: c.browserElapsedMs,
       engineElapsedMs: c.engineElapsedMs, benchmarkIteration: c.benchmarkIteration, benchmarkWarmup: c.benchmarkWarmup,
       failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags?.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, artwork: c.artwork,
