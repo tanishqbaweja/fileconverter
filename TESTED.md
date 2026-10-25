@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-25 field-count40e3354 portable CI40184554630 SUCCESS (not native/full
+browser matrix). New text-BYTE source tests distinguish exact native dictionary
+UTF8+bothNULs from separately bounded wire framing; historical serialized2MiB
+reader still rejects exact-native fixture.13focused PASS before harness wiring,
+31focused/lint/TypeScript/syntax PASS after wiring, including NUL/source-contract
+negatives. Actual3-job byte-boundary browser gate UNVERIFIED.
+
 2026-10-25 post-field-gate regression:123focused tests across26files PASS,
 changed-source lint/TypeScript/diff-check PASS. Retained regressions authenticate
 both the failed first gate and changed passing run, raw/journal/screenshot

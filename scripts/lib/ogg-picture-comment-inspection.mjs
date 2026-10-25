@@ -122,7 +122,27 @@ async function picture(cursor, length, metrics) {
   return { type, mime, description, width, height, depth, colors, imageBytes, sha256: hash.digest("hex"), encodedBytes: length };
 }
 
-export async function readOggPictureComments(file, format) {
+// The historical public inspection policy counts serialized text bytes, including
+// framing. Keep that policy byte-for-byte unchanged. The separately named native
+// dictionary probe below charges UTF8 key/value bytes + both NULs instead, exactly
+// as audio-text-metadata.h does. Neither policy accepts an arbitrary larger cap.
+const nativeKeys = new Map([["tracknumber", "track"], ["description", "comment"],
+  ["albumartist", "album_artist"], ["discnumber", "disc"]]);
+export const NATIVE_TEXT_INSPECTION_LIMITS = Object.freeze({
+  dictionaryBytes: COMMENT_LIMITS.bytes, entries: COMMENT_LIMITS.entries, vendorBytes: 1024,
+  // Each serialized entry replaces two NULs with '=' and a 4-byte length (+3).
+  // The four known Vorbis aliases add at most six ASCII key bytes per entry.
+  // Prefix/vendor/count/framing have <=16 fixed bytes, vendor separately <=1024.
+  wireBytes: COMMENT_LIMITS.bytes + 9 * COMMENT_LIMITS.entries + 1024 + 16,
+});
+export const nativeVorbisFieldKey = key => nativeKeys.get(key.toLowerCase()) ?? key;
+export const nativeVorbisEntryBytes = entry => {
+  const at = entry.indexOf("="); assert.ok(at > 0);
+  return Buffer.byteLength(nativeVorbisFieldKey(entry.slice(0, at))) + Buffer.byteLength(entry.slice(at + 1)) + 2;
+};
+export function readOggPictureComments(file, format) { return inspectOggComments(file, format, false); }
+export function readOggNativeTextBudgetComments(file, format) { return inspectOggComments(file, format, true); }
+async function inspectOggComments(file, format, nativeBudget) {
   assert.ok(["ogg", "opus"].includes(format)); const reader = await open(file, "r");
   const metrics = { readBytes: 0, maximumReadBytes: 0, pages: 0, maximumBase64ChunkBytes: 0, maximumDecodedChunkBytes: 0,
     pageBufferBytes: LIMIT.pageBytes, completePacketOrImageBufferAllocated: false };
@@ -133,27 +153,42 @@ export async function readOggPictureComments(file, format) {
     const identifier = new Cursor(iterator, LIMIT.identifierBytes), magic = format === "opus" ? "OpusHead" : "\x01vorbis";
     assert.equal((await identifier.exact(magic.length)).toString(), magic);
     while (await identifier.chunk()) { /* Bounded identification tail only. */ }
-    const cursor = new Cursor(iterator, COMMENT_LIMITS.bytes + maximumEncodedBytes), prefix = format === "opus" ? "OpusTags" : "\x03vorbis";
+    const textLimit = nativeBudget ? NATIVE_TEXT_INSPECTION_LIMITS.wireBytes : COMMENT_LIMITS.bytes;
+    const cursor = new Cursor(iterator, nativeBudget ? textLimit : COMMENT_LIMITS.bytes + maximumEncodedBytes), prefix = format === "opus" ? "OpusTags" : "\x03vorbis";
     assert.equal((await cursor.exact(prefix.length)).toString(), prefix);
-    let textBytes = prefix.length;
-    const charge = size => { textBytes += size; assert.ok(textBytes <= COMMENT_LIMITS.bytes, "Unchanged text metadata byte bound exceeded"); };
+    let textBytes = prefix.length, nativeDictionaryBytes = 0;
+    const charge = size => { textBytes += size; assert.ok(textBytes <= textLimit, "Unchanged text metadata byte bound exceeded"); };
     const vendorBytes = await cursor.word(); charge(4 + vendorBytes);
+    if (nativeBudget) assert.ok(vendorBytes <= NATIVE_TEXT_INSPECTION_LIMITS.vendorBytes, "Native probe vendor bound exceeded");
     const vendor = utf8(await cursor.exact(vendorBytes)), count = await cursor.word(); charge(4);
     assert.ok(count <= COMMENT_LIMITS.entries, "Unchanged comment entry bound exceeded");
     const entries = [], pictures = [];
     for (let index = 0; index < count; index++) {
       const length = await cursor.word(); charge(4);
       assert.ok(length > 0 && length <= COMMENT_LIMITS.bytes + maximumEncodedBytes);
-      const key = await cursor.key(Math.min(length, COMMENT_LIMITS.bytes - textBytes)); charge(key.length + 1);
+      const key = await cursor.key(Math.min(length, textLimit - textBytes)); charge(key.length + 1);
       const remaining = length - key.length - 1; assert.ok(remaining >= 0);
       if (key.toLowerCase() === "metadata_block_picture") {
+        assert.equal(nativeBudget, false, "Native text-only probe must not accept picture data");
         assert.ok(pictures.length < LIMIT.pictures, "Picture count bound exceeded");
         pictures.push(await picture(cursor, remaining, metrics));
-      } else { charge(remaining); entries.push(key + "=" + utf8(await cursor.exact(remaining))); }
+      } else {
+        charge(remaining);
+        // All accepted field names are ASCII. Count bytes before allocating or
+        // decoding the value, including both native terminators, not characters.
+        if (nativeBudget) {
+          nativeDictionaryBytes += Buffer.byteLength(nativeVorbisFieldKey(key)) + remaining + 2;
+          assert.ok(nativeDictionaryBytes <= NATIVE_TEXT_INSPECTION_LIMITS.dictionaryBytes, "Native dictionary text byte bound exceeded");
+        }
+        const value = utf8(await cursor.exact(remaining));
+        if (nativeBudget) assert.ok(!value.includes("\0"), "Native dictionary value cannot contain embedded NUL");
+        entries.push(key + "=" + value);
+      }
     }
     if (format === "ogg") { charge(1); assert.equal((await cursor.exact(1))[0], 1, "Invalid Vorbis framing bit"); await cursor.end(); }
     else { let padding; while ((padding = await cursor.chunk())) charge(padding.length); }
     if (!pictures.length) assert.ok(metrics.pages <= COMMENT_LIMITS.pages, "Text-only page bound remains unchanged");
-    return { format, vendor, entries, pictures, textBytes, metrics, pictureFieldsReportedSeparately: true };
+    return { format, vendor, entries, pictures, textBytes, metrics, pictureFieldsReportedSeparately: true,
+      ...(nativeBudget ? { nativeDictionaryBytes, policy: "native-UTF8-key-value-plus-two-NULs", wireBytesLimit: textLimit } : {}) };
   } finally { try { await iterator?.return(); } finally { await reader.close(); } }
 }

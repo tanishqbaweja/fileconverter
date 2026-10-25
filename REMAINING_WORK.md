@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-10-25 new native text-BYTE gate prepared, runtime UNVERIFIED:
+exact2097152 vs2097153 UTF8 key/value+two-NUL bytes,1051fields incl canonical25
+and ordered repeats/1024 deterministic Unicode fillers, then same-page control.
+Generated INPUT-only rewrite normalizes four known Vorbis aliases so native
+key lengths are explicit; original compressed-audio suffix byte-identical,
+native fullPCM and canonical25-tag projection required before browser. New
+separately named text-only inspector shares bounded streaming Ogg framing but
+charges native dictionary<=2MiB/4096; fixed overhead<=9bytes/entry+1024vendor+
+16framing, rejects pictures/NUL/oversized vendor/over-budget. Historical
+serialized2MiB policy unchanged and still rejects same exact-native fixture.
+No engine rebuild/limits/quality changes. Field-count CI40184554630 SUCCESS.
+
 2026-10-25 field-gate closeout source/evidence regression123tests/26files,
 lint/TypeScript/diff-check PASS. Portable CI to run on pushed evidence commit;
 not a native rebuild or large-profile/full-browser-matrix acceptance.

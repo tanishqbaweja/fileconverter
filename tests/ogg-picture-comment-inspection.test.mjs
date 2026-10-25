@@ -5,7 +5,8 @@ import { lstat, open, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { COMMENT_LIMITS, oggPageCrc } from "../scripts/lib/audio-comment-validation.mjs";
-import { readOggPictureComments, OGG_PICTURE_INSPECTION_LIMITS as LIMIT } from "../scripts/lib/ogg-picture-comment-inspection.mjs";
+import { readOggPictureComments, readOggNativeTextBudgetComments, nativeVorbisEntryBytes, NATIVE_TEXT_INSPECTION_LIMITS,
+  OGG_PICTURE_INSPECTION_LIMITS as LIMIT } from "../scripts/lib/ogg-picture-comment-inspection.mjs";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const word = (n, big = false) => { const b = Buffer.alloc(4); if (big) b.writeUInt32BE(n); else b.writeUInt32LE(n); return b; };
@@ -67,6 +68,37 @@ test("ordinary text and duplicate order match the existing policy, including emp
       const file = path.join(directory, "text." + format), fields = ["TITLE=音楽", "REPEAT=one", "REPEAT=two", "EMPTY="];
       await fixture(file, format, commentPacket(format, fields, { tail: format === "opus" ? Buffer.from([0xff, 1, 0]) : Buffer.alloc(0) }));
       const result = await readOggPictureComments(file, format); assert.deepEqual(result.entries, fields); assert.deepEqual(result.pictures, []);
+    }
+  });
+});
+
+test("explicit native dictionary probe accepts exact UTF8+NUL bytes separately from bounded framing; historical policy stays unchanged", async () => {
+  assert.equal(nativeVorbisEntryBytes("TRACKNUMBER=é音"), 5 + 5 + 2);
+  assert.equal(nativeVorbisEntryBytes("DESCRIPTION=é音"), 7 + 5 + 2);
+  assert.equal(nativeVorbisEntryBytes("ALBUMARTIST=é音"), 12 + 5 + 2);
+  assert.equal(nativeVorbisEntryBytes("DISCNUMBER=é音"), 4 + 5 + 2);
+  await owned(async directory => {
+    const fields = ["TRACKNUMBER=3/9", "DESCRIPTION=café 音楽", "REPEAT=first", "REPEAT=second", "A=", "B="];
+    const fixed = fields.reduce((n, entry) => n + nativeVorbisEntryBytes(entry), 0), available = 2097152 - fixed;
+    fields[4] += "x".repeat(Math.floor(available / 2)); fields[5] += "y".repeat(available - Math.floor(available / 2));
+    for (const format of ["opus", "ogg"]) {
+      const file = path.join(directory, "native-exact." + format); await fixture(file, format, commentPacket(format, fields));
+      const result = await readOggNativeTextBudgetComments(file, format);
+      assert.equal(result.nativeDictionaryBytes, 2097152); assert.deepEqual(result.entries, fields); assert.deepEqual(result.pictures, []);
+      assert.ok(result.textBytes > 2097152 && result.textBytes <= NATIVE_TEXT_INSPECTION_LIMITS.wireBytes);
+      assert.equal(result.metrics.pageBufferBytes, 65307); assert.ok(result.metrics.pages <= 64);
+      assert.equal(result.metrics.completePacketOrImageBufferAllocated, false);
+      await assert.rejects(readOggPictureComments(file, format), /text metadata byte bound/);
+      const over = path.join(directory, "native-over." + format); await fixture(over, format, commentPacket(format, [...fields.slice(0, -1), fields.at(-1) + "z"]));
+      await assert.rejects(readOggNativeTextBudgetComments(over, format), /Native dictionary text byte bound/);
+    }
+    for (const [name, packet] of [
+      ["vendor", commentPacket("opus", [], { vendor: Buffer.alloc(1025, 120) })],
+      ["picture", commentPacket("opus", ["METADATA_BLOCK_PICTURE=" + picture(Buffer.alloc(128))])],
+      ["count", commentPacket("opus", [], { count: 4097 })],
+      ["nul", commentPacket("opus", ["TITLE=before\0after"])],
+    ]) {
+      const file = path.join(directory, name + ".opus"); await fixture(file, "opus", packet); await assert.rejects(readOggNativeTextBudgetComments(file, "opus"));
     }
   });
 });

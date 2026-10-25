@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Text-byte gate now implemented, NOT browser-proven: exact2097152 dictionary
+bytes, one-byte-over rejection, same-page exact cover control.1051fields,
+all1024added fields/order plus canonical/repeated tags and fullPCM validation.
+Native dictionary charging and serialized framing are distinct fixed limits;
+historical inspector/engine caps unchanged. No rebuild. Field-count CI40184554630
+SUCCESS. Next execute these3 NEW jobs only, not previous boundary/bracket tests.
+
 Changed field-limit rejection/recovery10-20-28.689Z PASS3: visible precise
 metadata errors/zero partials/worker recovery, then exact control in SAME page.
 206.1992MiB/472valid0missing,38pins,15owned births absent, full cleanup and

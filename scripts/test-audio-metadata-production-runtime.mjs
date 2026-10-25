@@ -20,10 +20,12 @@ import { AUDIO_ARTWORK_METADATA_CASES, AUDIO_OGG_ARTWORK_CASES, audioArtworkFixt
 import { createAudioArtworkBudgetFixture } from "./lib/audio-artwork-budget-fixture.mjs";
 import { createAudioArtworkRejectionFixtures } from "./lib/audio-artwork-rejection-fixture.mjs";
 import { ARTWORK_BUDGET_EXCLUSION_WARNING, validateGeneratedRejectedArtwork, validateArtworkBudgetExclusion } from "./lib/audio-artwork-rejection-validation.mjs";
-import { readOggPictureComments } from "./lib/ogg-picture-comment-inspection.mjs";
+import { readOggPictureComments, readOggNativeTextBudgetComments } from "./lib/ogg-picture-comment-inspection.mjs";
 import { validateAudioInterruption } from "./lib/audio-io-recovery-validation.mjs";
 import { createAudioMetadataFieldBudgetFixtures } from "./lib/audio-metadata-field-budget-fixture.mjs";
 import { validateMetadataFieldBudgetFailure, validateExactMetadataFieldBoundary } from "./lib/audio-metadata-field-budget-validation.mjs";
+import { createAudioMetadataByteBudgetFixtures } from "./lib/audio-metadata-byte-budget-fixture.mjs";
+import { validateMetadataTextByteBudgetFailure, validateExactNativeTextByteBoundary } from "./lib/audio-metadata-byte-budget-validation.mjs";
 import { compareNativeAudioPcm } from "./lib/streaming-audio-fidelity.mjs";
 import { validateScopedAudioTags } from "./lib/scoped-audio-tag-validation.mjs";
 import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runtime-scratch.mjs";
@@ -38,20 +40,26 @@ import { verifyOpfsDiskBacking } from "./lib/opfs-disk-backing-proof.mjs";
 import { bindOpfsOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "./lib/opfs-output-validation-backing.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
 const qualityComparison = process.argv[3] === "--compare-vorbis-quality";
 const remainingRepeated = process.argv[3] === "--remaining-repeated-audio";
 const flacOrderRepair = process.argv[3] === "--flac-order-repair";
 const artworkMetadata = process.argv[3] === "--artwork-metadata";
 const metadataFieldRejectOnly = process.argv[3] === "--metadata-field-rejection-recovery";
 const metadataFieldBudget = process.argv[3] === "--metadata-field-budget-recovery" || metadataFieldRejectOnly;
-const physicalValidation = process.argv[3] === "--artwork-benchmark-physical-validation" || metadataFieldBudget;
+const metadataByteBudget = process.argv[3] === "--metadata-text-byte-budget-recovery";
+const metadataBudget = metadataFieldBudget || metadataByteBudget;
+const physicalValidation = process.argv[3] === "--artwork-benchmark-physical-validation" || metadataBudget;
 const artworkBenchmark = process.argv[3] === "--artwork-serializer-benchmark" || process.argv[3] === "--artwork-benchmark-physical-validation";
-const artworkBudget = process.argv[3] === "--artwork-byte-budget" || artworkBenchmark || metadataFieldBudget;
+const artworkBudget = process.argv[3] === "--artwork-byte-budget" || artworkBenchmark || metadataBudget;
 const audioIoRecovery = process.argv[3] === "--audio-io-recovery";
 const artworkRejection = process.argv[3] === "--artwork-rejection-recovery", extendedArtworkInspection = artworkBudget || artworkRejection || audioIoRecovery;
 const oggArtwork = process.argv[3] === "--ogg-artwork", withArtwork = artworkMetadata || oggArtwork;
-const selectedCases = metadataFieldBudget ? [
+const selectedCases = metadataByteBudget ? [
+  { source: "flac", destination: "opus", repeated: true, byteBudget: "exact" },
+  { source: "flac", destination: "opus", repeated: true, byteBudget: "over", metadataFailure: "text-bytes" },
+  { source: "flac", destination: "opus", repeated: true, artwork: "png-budget", recoveryAfterBytes: true },
+] : metadataFieldBudget ? [
   { source: "flac", destination: "opus", repeated: true, artwork: "png-budget", fieldBudget: "cover4095" },
   { source: "flac", destination: "opus", repeated: true, artwork: "png-budget", fieldBudget: "cover4096", metadataFailure: "picture-fields" },
   { source: "flac", destination: "opus", repeated: true, fieldBudget: "text4097", metadataFailure: "text-fields" },
@@ -96,10 +104,11 @@ if (artworkRejection) report.scope = "three NEW same-page cases: valid one-byte-
 if (audioIoRecovery) report.scope = "three NEW same-page real-UI jobs: midstream180s-fixture cancellation, localhost injected error AFTER real artwork-header write, accepted4MiB recovery; not OS-picker/direct-destination/quota/permission/stress acceptance";
 if (metadataFieldBudget) report.scope = "four NEW field-budget jobs: exact4095text+1cover, one-over cover and4097text native rejections, same-page valid recovery; unchanged2MiB/4096 limits, not byte-budget/stress/promotion acceptance";
 if (metadataFieldRejectOnly) report.scope = "three changed error-explanation jobs only: native cover/text field rejections and same-page exact recovery; prior exact4096 output not replayed; not byte-budget/stress/public acceptance";
+if (metadataByteBudget) report.scope = "three NEW native text-byte jobs: exact2097152 UTF8 key/value+NUL bytes, one-byte-over native rejection, same-page control recovery; serialization overhead separately bounded, historical reader/engine limits unchanged; not stress/public acceptance";
 const stamp = report.startedAt.replaceAll(":", "-"), sha = b => createHash("sha256").update(b).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 1048576 })) hash.update(b); return hash.digest("hex"); };
 const native = (args, executable = "ffmpeg") => execute(executable, args, { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 131072 });
-const projectedTags = metadataFieldBudget ? "=" + Object.keys(AUDIO_METADATA_TAGS).join(",") : "";
+const projectedTags = metadataBudget ? "=" + Object.keys(AUDIO_METADATA_TAGS).join(",") : "";
 const probeAudio = async file => JSON.parse((await native(["-v", "error", "-show_entries", "stream=index,codec_type,codec_name,sample_rate,channels,width,height:stream_disposition=attached_pic:stream_tags" + projectedTags + ":format=duration:format_tags" + projectedTags, "-of", "json", file], "ffprobe")).stdout);
 const inspectArtwork = async (file, probe, expected, generatedRejectedInput = false) => {
   const packets = JSON.parse((await native(["-v", "error", "-select_streams", "v:0", "-show_packets", "-show_data_hash", "sha256",
@@ -122,6 +131,7 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "scripts/lib/audio-artwork-rejection-fixture.mjs", "scripts/lib/audio-artwork-rejection-validation.mjs",
   "scripts/lib/audio-io-recovery-validation.mjs",
   "scripts/lib/audio-metadata-field-budget-fixture.mjs", "scripts/lib/audio-metadata-field-budget-validation.mjs",
+  "scripts/lib/audio-metadata-byte-budget-fixture.mjs", "scripts/lib/audio-metadata-byte-budget-validation.mjs",
   "scripts/lib/bounded-network-observer.mjs", "scripts/lib/opfs-disk-backing-proof.mjs", "scripts/lib/bounded-validation-chunk.mjs",
   "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/native-memory-peaks.mjs", "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs",
   "scripts/lib/birth-aware-chromium-memory.mjs", "scripts/lib/birth-aware-memory-observer-source.mjs", "scripts/lib/windows-tree-monitor.cs",
@@ -132,7 +142,7 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "lib/audio-metadata-budget-error.ts",
   "lib/media-conversion-options.ts", "app/converter/ConverterApp.tsx", "app/globals.css"];
 const pins = async () => Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, sha(await readFile(path.join(root, file)))])));
-let browser, context, server, serverIdentity, monitor, journal, observer, monitorTimer, benchmarkSession, fieldFixtures, pending = Promise.resolve(), snapshotPending, monitorFailure, busy = false, serverLog = "", originalHash;
+let browser, context, server, serverIdentity, monitor, journal, observer, monitorTimer, benchmarkSession, fieldFixtures, byteFixtures, pending = Promise.resolve(), snapshotPending, monitorFailure, busy = false, serverLog = "", originalHash;
 const identities = [], staged = [], tail = [], phases = [{ phase: "blank", at: Date.now() }];
 const phase = name => phases.push({ phase: name, at: Date.now() });
 const snapshot = async () => {
@@ -201,6 +211,15 @@ try {
         sourcePcmUnchanged: await compareNativeAudioPcm(path.join(runtime.directory, "source.flac"), fixture.file, { cwd: root, env, lossless: true }) };
     }
     report.metadataFieldProbeProjection = { scope: "native FFprobe canonical25 tags only; all added fields checked separately from binary comments", maximumNativeBufferBytes: 131072 };
+  }
+  if (metadataByteBudget) {
+    byteFixtures = await createAudioMetadataByteBudgetFixtures(runtime.directory); report.metadataByteFixtures = {};
+    for (const [key, fixture] of Object.entries(byteFixtures)) {
+      assert.equal(validateScopedAudioTags(await probeAudio(fixture.file), AUDIO_METADATA_TAGS, { scope: "format" }).status, "passed");
+      report.metadataByteFixtures[key] = { bytes: fixture.bytes, sha256: fixture.sha256, summary: fixture.summary,
+        sourcePcmUnchanged: await compareNativeAudioPcm(path.join(runtime.directory, "source.flac"), fixture.file, { cwd: root, env, lossless: true }) };
+    }
+    report.metadataByteProbeProjection = { scope: "native canonical25 tags only; all1024 boundary fields independently checked from raw output", maximumNativeBufferBytes: 131072 };
   }
   if (artworkRejection) {
     const fixtures = await createAudioArtworkRejectionFixtures(runtime.directory);
@@ -315,7 +334,7 @@ try {
   };
   for (const [index, conversion] of selectedCases.entries()) {
     if (monitorFailure) throw monitorFailure;
-    const profileId = `${conversion.source}-to-${conversion.destination}`, input = conversion.fieldBudget ? fieldFixtures[conversion.fieldBudget].file : path.join(runtime.directory, conversion.interruption === "cancel" ? "source-cancel.flac" : conversion.artwork
+    const profileId = `${conversion.source}-to-${conversion.destination}`, input = conversion.byteBudget ? byteFixtures[conversion.byteBudget].file : conversion.fieldBudget ? fieldFixtures[conversion.fieldBudget].file : path.join(runtime.directory, conversion.interruption === "cancel" ? "source-cancel.flac" : conversion.artwork
       ? `source-artwork-${conversion.artwork}.${conversion.source}` : (conversion.repeated ? "source-repeated." : "source.") + conversion.source),
       outputCopy = path.join(runtime.directory, `output-${index}.${conversion.destination}`);
     let output = outputCopy, physicalBinding;
@@ -326,12 +345,14 @@ try {
       profileId, requestedQuality: conversion.quality ?? "automatic", repeated: Boolean(conversion.repeated), interruption: conversion.interruption ?? null,
       ...(artworkBenchmark ? { benchmarkIteration: conversion.benchmarkIteration, benchmarkWarmup: conversion.benchmarkWarmup } : {}), status: "failed", failures: [] }; report.cases.push(row);
     if (metadataFieldBudget) { row.name += "-" + (conversion.fieldBudget ?? "metadata-recovery"); row.metadataFailure = conversion.metadataFailure ?? null; }
+    if (metadataByteBudget) { row.name += "-text-bytes-" + (conversion.byteBudget ?? "recovery"); row.metadataFailure = conversion.metadataFailure ?? null; }
     let outputIdentity, entryName;
     try {
       const sourceProbe = await probeAudio(input); const tags = validateScopedAudioTags(sourceProbe, AUDIO_METADATA_TAGS, { scope: conversion.source === "flac" ? "format" : "audio-stream" }); assert.equal(tags.status, "passed");
       row.source = { ...report.fixtures[conversion.source], ...(conversion.repeated ? report.repeatedFixtures[conversion.source] : {}), tags };
       if (conversion.artwork) row.source = { ...report.artworkFixtures[conversion.source + "-" + conversion.artwork], tags };
       if (conversion.fieldBudget) row.source = { ...report.metadataFieldFixtures[conversion.fieldBudget], tags };
+      if (conversion.byteBudget) row.source = { ...report.metadataByteFixtures[conversion.byteBudget], tags };
       if (conversion.interruption === "cancel") row.source = { ...report.cancellationFixture, tags };
       if (audioIoRecovery) await page.evaluate(fault => { history.replaceState(null, "", "/?test=1" + (fault ? "&fault=write" : "")); }, conversion.interruption === "write");
       phase("case-" + index); await page.locator('[data-testid="file-input"]').setInputFiles(input); await page.locator('[data-testid="format-select"]').selectOption(profileId);
@@ -356,10 +377,12 @@ try {
       assert.equal(state.audioOptions.quality, row.requestedQuality, "Actual production job must retain the requested quality selection");
       if (conversion.metadataFailure) {
         row.storageAfter = await storageSnapshot();
-        row.metadataFailureProof = validateMetadataFieldBudgetFailure(conversion.metadataFailure, state, { storageBefore: row.storageBefore, storageAfter: row.storageAfter });
+        row.metadataFailureProof = conversion.metadataFailure === "text-bytes"
+          ? validateMetadataTextByteBudgetFailure(state, { storageBefore: row.storageBefore, storageAfter: row.storageAfter })
+          : validateMetadataFieldBudgetFailure(conversion.metadataFailure, state, { storageBefore: row.storageBefore, storageAfter: row.storageAfter });
         if (metadataFieldRejectOnly) assert.match(state.error, /^The tags and cover exceed a bounded metadata limit/);
         await page.getByText(state.error, { exact: true }).first().waitFor({ state: "visible", timeout: 5000 }); row.metadataErrorVisible = true;
-        row.status = "passed-private-metadata-field-rejection-case";
+        row.status = conversion.metadataFailure === "text-bytes" ? "passed-private-metadata-byte-rejection-case" : "passed-private-metadata-field-rejection-case";
       } else if (conversion.interruption) {
         row.storageAfter = await storageSnapshot(); row.interruptionProof = validateAudioInterruption(conversion.interruption, state,
           { beforeCancel: row.beforeCancel, storageBefore: row.storageBefore, storageAfter: row.storageAfter });
@@ -412,9 +435,10 @@ try {
       if (row.output.tags.status !== "passed") row.failures.push("One or more25metadata fields lost or changed");
       try { row.fidelity = await compareNativeAudioPcm(input, output, { cwd: root, env, lossless: conversion.destination === "flac" }); row.fullIndependentDecode = true; }
       catch (error) { row.fidelity = error.fidelity ?? null; row.fullIndependentDecode = error.fullIndependentDecodePassed ?? false; row.failures.push(String(error)); }
-      const comments = extendedArtworkInspection ? await readOggPictureComments(output, conversion.destination) : await readAudioCommentEntries(output, conversion.destination); row.binaryComments = comments;
+      const comments = conversion.byteBudget ? await readOggNativeTextBudgetComments(output, conversion.destination)
+        : extendedArtworkInspection ? await readOggPictureComments(output, conversion.destination) : await readAudioCommentEntries(output, conversion.destination); row.binaryComments = comments;
       if (conversion.expectedExclusion) row.artworkExclusion = validateArtworkBudgetExclusion(outputProbe, comments, state.warnings);
-      if (extendedArtworkInspection && !conversion.expectedExclusion) {
+      if (extendedArtworkInspection && !conversion.expectedExclusion && conversion.artwork) {
         const expected = report.artworkImages[conversion.artwork]; assert.equal(comments.pictures.length, 1);
         assert.equal(comments.pictures[0].imageBytes, expected.bytes); assert.equal(comments.pictures[0].sha256, expected.sha256);
         assert.equal(comments.pictures[0].description, expected.description);
@@ -435,6 +459,14 @@ try {
         try { assert.deepEqual(row.repeatedValues, AUDIO_REPEATED_COMMENTS); } catch { row.failures.push("Repeated comment values were folded, overwritten or reordered"); }
       }
       if (conversion.fieldBudget) row.exactFieldBoundary = validateExactMetadataFieldBoundary(comments, fieldFixtures[conversion.fieldBudget]);
+      if (conversion.byteBudget) row.exactTextByteBoundary = validateExactNativeTextByteBoundary(comments, byteFixtures[conversion.byteBudget]);
+      if (conversion.recoveryAfterBytes) {
+        assert.equal(state.error, null); assert.deepEqual(state.warnings, []);
+        assert.equal(row.output.sha256, "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3");
+        assert.equal(report.cases[0].status, "passed-small-private-fidelity-and-metadata-case");
+        assert.equal(report.cases[1].status, "passed-private-metadata-byte-rejection-case");
+        row.samePageByteRecovery = { exactByteBoundaryAndOneOverRejectionPassed: true, noPageOrContextRecreation: true, noStaleErrorOrWarning: true };
+      }
       if (conversion.recoveryAfterMetadata) {
         assert.equal(state.error, null); assert.deepEqual(state.warnings, []);
         assert.equal(row.output.sha256, "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3");
@@ -462,7 +494,7 @@ try {
   assert.deepEqual(report.network.forbidden, []); assert.deepEqual(await pins(), report.sources); assertInstalledChromePinsEqual(report.browser, await inspectInstalledChromePin());
   assert.ok(report.network.nativeGlueRequests > 0 && report.network.nativeWasmRequests > 0, "Fresh context must request the staged audited native assets");
   assert.equal(report.cases.length, selectedCases.length);
-  assert.ok(metadataFieldBudget ? report.cases.every(c => c.metadataFailure ? c.status === "passed-private-metadata-field-rejection-case" : c.status === "passed-small-private-fidelity-and-metadata-case")
+  assert.ok(metadataBudget ? report.cases.every(c => c.metadataFailure ? c.status === (c.metadataFailure === "text-bytes" ? "passed-private-metadata-byte-rejection-case" : "passed-private-metadata-field-rejection-case") : c.status === "passed-small-private-fidelity-and-metadata-case")
     : audioIoRecovery ? report.cases.every(c => c.interruption ? c.status === "passed-private-audio-interruption-case" : c.status === "passed-small-private-fidelity-and-metadata-case")
     : report.cases.every(c => c.status === "passed-small-private-fidelity-and-metadata-case"));
   assert.ok(report.memory.incrementalPrivateMiB <= 250); report.status = "passed-selected-small-private-cases-not-promotion";
@@ -514,6 +546,7 @@ finally {
       physicalValidation: c.physicalValidation,
       metadataFailure: c.metadataFailure, metadataFailureProof: c.metadataFailureProof, metadataErrorVisible: c.metadataErrorVisible,
       exactFieldBoundary: c.exactFieldBoundary, samePageMetadataRecovery: c.samePageMetadataRecovery,
+      exactTextByteBoundary: c.exactTextByteBoundary, samePageByteRecovery: c.samePageByteRecovery,
       failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags?.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, artwork: c.artwork,
       streamingPictureInspection: c.streamingPictureInspection,
