@@ -1,5 +1,24 @@
 # Remaining work audit
 
+2026-10-25 next B05 implementation: reversible private Ogg/Opus cover serializer
+adds FLAC PICTURE comments, NOT unsupported JPEG/PNG media tracks. Existing
+MP3/FLAC behavior, codec/settings/I/O,32/96MiB heap and public selector unchanged.
+4MiB image/4096side/16Mpixels and4096entries retained; text2MiB and description
+4096B bounds, staged atomic replacement, binary buffer freed and encoded value
+ownership transferred once. Exact image bytes, role/Unicode description and
+ordered duplicates preserved in actual installed SDK probe03-02-15.645Z PASS,
+including real4MiB allocation, invalid limits/collision/role and allocator
+failure atomicity. Native serialization only, NOT media/browser acceptance.
+New ten-edit candidate, recipe/workflow derivative and artifact audit are ready
+for isolated no-Docker compilation. No changes to old50 build-source pins; V3
+remains reusable. Browser Ogg/Opus artwork/quality/budgets/stress stay UNVERIFIED.
+Primary format/implementation references: RFC9639 section8.8; FFmpeg n8.1.2
+libavformat/oggenc.c (supported stream codecs and comment writing),
+flac_picture.c (picture metadata exposure). No changed public capability claim.
+Final serializer probe03-05-03.192Z also rejects invalid standard32x32 icon
+geometry, PASS.31focused/lint/diff checks and independent unchanged V3 audit
+PASS50sources/15artifacts. Native report is source-pinned; browser still pending.
+
 2026-10-25 actual combined artwork run02-54-12.283Z PASS4/4: Ogg/Opus-to-FLAC
 with both PNG and JPEG, all25tags, two Unicode values in original order and
 all96,000 sample-exact PCM samples. Independent source/output complete cover

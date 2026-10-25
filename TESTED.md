@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-25 native Ogg picture serializer03-02-15.645Z PASS: actual installed
+libavutil encode/decode/dictionary calls verify complete PNG/JPEG image bytes,
+picture role/Unicode description and ordered repeated tags. Real exact4MiB/
+4096x4096 boundary allocation passes; oversize/dimension/description/field/
+collision/unknown-role and atomic allocator failure checks pass. Owned compiler
+output/scratch removed. This is NOT native media conversion or browser proof.
+Private ten-edit candidate and reproducible build/audit composition added for
+new Ogg/Opus destination artwork; public source/engines/routes unchanged.
+References: https://www.rfc-editor.org/rfc/rfc9639.html#section-8.8 and
+https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/oggenc.c
+Actual Wasm compilation/browser correctness/memory/quality remain UNVERIFIED.
+Final changed serializer03-05-03.192Z PASS adds strict32x32 PNG icon-role
+conformance.31focused/lint/diff checks PASS; exact V3 audit remains50sources/
+15artifacts. Compact native proofs retained; no browser/artwork promotion.
+
 2026-10-25 actual02-54-12.283Z artwork+extended metadata browser gate PASS4/4:
 Ogg/Opus inputs, PNG/JPEG covers, FLAC outputs;25tags/two correctly ordered
 Unicode values/96,000 exact PCM samples. Complete source/output cover packet

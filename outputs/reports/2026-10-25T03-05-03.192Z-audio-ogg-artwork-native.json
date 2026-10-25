@@ -1,0 +1,28 @@
+{
+  "startedAt": "2026-10-25T03:05:03.192Z",
+  "scope": "real installed libavutil picture serialization, NOT a native converter or browser acceptance",
+  "publicAcceptance": false,
+  "sources": {
+    "tests/native/audio-ogg-artwork.c": "496221eaaeea97190aeab01a2244e9b494ae81d71a110bd78b7295c05629ce16",
+    "media/ffmpeg/audio-ogg-artwork.h": "aa4c4f2d3f3432116e2dcfa02625446c0de8a1a6af0ea409f3c96cdbff6ac6ff",
+    "media/ffmpeg/audio-text-metadata.h": "85da9b964bb50ffa8fd3a93b073d4c2369a13034549cef4fd552c5fc82d0bf28",
+    "scripts/check-audio-ogg-artwork-native.mjs": "f8910106ae824475dece326fe33f256b91b7e0c1bc7f3f1d491fe53b61f8db41"
+  },
+  "native": {
+    "compilerSha256": "a8b7a614eeadd9105f814be3701a7f312cda4cea51751b75b408c16100c94e85",
+    "libavutilDllSha256": "c4090c00550653c1a9c908a0231ab5c741a97ff00638411fd142bba86d788226"
+  },
+  "behavior": {
+    "status": "passed-native-Ogg-picture-serialization",
+    "exactImageBytes": true,
+    "roleAndUnicodeDescription": true,
+    "orderedTextDuplicates": true,
+    "atomicAllocatorFailures": true,
+    "imageAndDimensionAndEntryBounds": true,
+    "exactMaximumImageBytes": 4194304,
+    "browserConversionVerified": false
+  },
+  "status": "passed",
+  "ownedCompilerOutputAndScratchRemoved": true,
+  "finishedAt": "2026-10-25T03:05:03.430Z"
+}

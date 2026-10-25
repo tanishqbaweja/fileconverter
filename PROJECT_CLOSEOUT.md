@@ -6,6 +6,17 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Next B05 Ogg/Opus cover implementation now has bounded atomic serializer and
+ten-edit derivative of the verified V3 source. Actual installed SDK serializer
+probe03-02-15.645Z PASS, including4MiB image/4096dimension, role/description,
+ordered tags, allocation failures and cleanup. NOT browser proof. Isolated
+compile recipe/workflow/audit prepared; public code/codec/I/O/heap unchanged.
+Next compile once, audit actual ten-edit artifact, then genuinely NEW Ogg/Opus
+cover routes through production UI with unchanged quality/memory/privacy gates.
+Keep V3 and closed four-case FLAC artwork evidence; no unchanged replay.
+Latest native probe03-05-03.192Z PASS also checks standard icon geometry.
+31focused/lint/diff checks PASS; original V3 audit still passes50/15pins.
+
 Actual combined artwork02-54-12.283Z PASS4/4, not pending: PNG/JPEG covers in
 Ogg/Opus-to-FLAC,25fields/two ordered Unicode values/96,000 exact audio samples.
 Independent complete cover hashes/lengths/disposition/dimensions/decode PASS.
