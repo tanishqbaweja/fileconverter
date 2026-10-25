@@ -6,6 +6,15 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+New --audio-io-recovery scope ready, actual cases UNVERIFIED: UI cancel after
+positive native input/output on180s fixture, injected after-write error on
+4MiB cover, then fully validated success in SAME page. Empty partial inventory/
+recovered worker/zeroIO backlog required; interrupted cases cannot masquerade
+as successful outputs.31focused/lint/TypeScript/diff PASS. No new native build
+or browser exception. Next execute using40156938341. Actual OS/direct-picker/
+quota/permission and metadata-budget failures/long stress remain separate OPEN
+gates, never inferred from localhost fault injection.
+
 Actual artwork exclusions +same-page recovery03-45-04.486Z PASS3/3, not pending:
 valid4MiB+1 and4097x1 inputs, exact visible warning/audio-only output,25tags/
 two Unicode values/96,000 full audio samples; accepted4MiB recovery keeps

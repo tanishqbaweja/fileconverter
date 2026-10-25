@@ -1,5 +1,19 @@
 # Remaining work audit
 
+2026-10-25 new --audio-io-recovery gate prepared; actual browser result remains
+UNVERIFIED. One normal production page:180s generated FLAC cancelled through
+real Cancel safely button ONLY after positive input AND output progress;
+existing localhost fault=write throws AFTER a real bounded4MiB-cover output
+write; then accepted4MiB recovery. Interrupted jobs have distinct non-output-
+acceptance status, must recover worker/zero pending+queued bytes/no OPFS partial
+entries. Fault is injected IO, NOT actual OS destination/permission failure.
+Success still needs25tags/two values/exact image/pixels/full PCM and no stale
+error. history.replaceState changes existing localhost test query only; no
+page/context recreation or new production fault hook.31focused/lint/TypeScript/
+diff checks PASS. Original native56 sources/heap/codec/quality unchanged; use
+cached40156938341. Next execute this finite gate once. Metadata-budget failure,
+actual selected-destination faults/quota/permissions/long stress remain OPEN.
+
 2026-10-25 actual exclusion/recovery03-45-04.486Z PASS3/3: valid4MiB+1 byte
 and4097x1 source PNGs independently decoded/hash-verified, deliberately treated
 as out-of-policy INPUTS only. Each browser output has one audio stream/no
