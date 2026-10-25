@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Separate streaming picture inspection now implemented/tested (7new unit cases):
+one65,307B page,16KiB base64/12KiB decode chunks, image SHA incrementally;
+2MiB text/4096fields unchanged, one4MiB picture separate,128pages/8MiB total
+reads. Exact simultaneous budgets and corrupt/malformed/oversized attacks PASS.
+Next single real4MiB/1023x1023 PNG FLAC-to-Opus production gate prepared;
+full native RGBA pixel hash +PCM and unchanged full-tree250MiB required.
+Actual browser proof pending; reuse engine40156938341 without native rebuild.
+
 Actual new Ogg/Opus cover gate03-16-02.860Z PASS8/8: exact PNG/JPEG bytes,
 front/back role/Unicode description,25fields/two ordered values and96,000PCM
 samples. All decoded outputs equal earlier matched-setting controls. Small

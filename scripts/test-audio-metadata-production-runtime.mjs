@@ -16,7 +16,9 @@ import { auditAudioMetadataArtifact } from "./lib/audio-metadata-artifact.mjs";
 import { AUDIO_METADATA_TAGS, AUDIO_METADATA_FIDELITY_CASES, AUDIO_REPEATED_COMMENTS, audioMetadataFixtureArguments } from "./lib/audio-metadata-fidelity-fixture.mjs";
 import { appendFlacFixtureComments, readAudioCommentEntries } from "./lib/audio-comment-validation.mjs";
 import { appendOggFixtureComments } from "./lib/audio-repeated-comment-fixture.mjs";
-import { AUDIO_ARTWORK_METADATA_CASES, AUDIO_OGG_ARTWORK_CASES, audioArtworkFixtureComment, audioArtworkFixturePicture, appendFlacArtworkFixture, validateAudioArtworkPacket } from "./lib/audio-artwork-validation.mjs";
+import { AUDIO_ARTWORK_METADATA_CASES, AUDIO_OGG_ARTWORK_CASES, audioArtworkFixtureComment, audioArtworkFixturePicture, appendFlacArtworkFixture, validateAudioArtworkPacket, validateBudgetedAudioArtworkPacket } from "./lib/audio-artwork-validation.mjs";
+import { createAudioArtworkBudgetFixture } from "./lib/audio-artwork-budget-fixture.mjs";
+import { readOggPictureComments } from "./lib/ogg-picture-comment-inspection.mjs";
 import { compareNativeAudioPcm } from "./lib/streaming-audio-fidelity.mjs";
 import { validateScopedAudioTags } from "./lib/scoped-audio-tag-validation.mjs";
 import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runtime-scratch.mjs";
@@ -30,13 +32,15 @@ import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mj
 import { verifyOpfsDiskBacking } from "./lib/opfs-disk-backing-proof.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
 const qualityComparison = process.argv[3] === "--compare-vorbis-quality";
 const remainingRepeated = process.argv[3] === "--remaining-repeated-audio";
 const flacOrderRepair = process.argv[3] === "--flac-order-repair";
 const artworkMetadata = process.argv[3] === "--artwork-metadata";
+const artworkBudget = process.argv[3] === "--artwork-byte-budget";
 const oggArtwork = process.argv[3] === "--ogg-artwork", withArtwork = artworkMetadata || oggArtwork;
-const selectedCases = oggArtwork ? AUDIO_OGG_ARTWORK_CASES : artworkMetadata ? AUDIO_ARTWORK_METADATA_CASES : flacOrderRepair ? [...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6), ...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6).map(c => ({ ...c, repeated: true }))]
+const selectedCases = artworkBudget ? [{ source: "flac", destination: "opus", repeated: true, artwork: "png-budget" }]
+  : oggArtwork ? AUDIO_OGG_ARTWORK_CASES : artworkMetadata ? AUDIO_ARTWORK_METADATA_CASES : flacOrderRepair ? [...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6), ...AUDIO_METADATA_FIDELITY_CASES.slice(4, 6).map(c => ({ ...c, repeated: true }))]
   : remainingRepeated ? AUDIO_METADATA_FIDELITY_CASES.slice(1, 6).map(c => ({ ...c, repeated: true }))
   : qualityComparison ? [...AUDIO_METADATA_FIDELITY_CASES, { source: "opus", destination: "ogg", quality: "higher" }] : AUDIO_METADATA_FIDELITY_CASES;
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(r => setTimeout(r, ms));
@@ -52,6 +56,7 @@ if (oggArtwork) {
   report.scope = "eight NEW Ogg/Opus destination cover cases with PNG/JPEG, 25 tags and ordered values; Opus-to-Vorbis uses the existing explicit higher selection, not a default-quality repair or speed proof";
   report.automaticVorbisQualityRepaired = false;
 }
+if (artworkBudget) report.scope = "one NEW exact4MiB real PNG cover FLAC-to-Opus byte-budget case; unchanged text/codec/quality/memory limits; not repeat/scaling/promotion acceptance";
 const stamp = report.startedAt.replaceAll(":", "-"), sha = b => createHash("sha256").update(b).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 1048576 })) hash.update(b); return hash.digest("hex"); };
 const native = (args, executable = "ffmpeg") => execute(executable, args, { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 131072 });
@@ -59,13 +64,20 @@ const probeAudio = async file => JSON.parse((await native(["-v", "error", "-show
 const inspectArtwork = async (file, probe, expected) => {
   const packets = JSON.parse((await native(["-v", "error", "-select_streams", "v:0", "-show_packets", "-show_data_hash", "sha256",
     "-show_entries", "packet=stream_index,size,data_hash", "-of", "json", file], "ffprobe")).stdout);
-  const result = validateAudioArtworkPacket(probe, packets, expected);
+  const result = (artworkBudget ? validateBudgetedAudioArtworkPacket : validateAudioArtworkPacket)(probe, packets, expected);
+  if (expected.rgbaSha256) {
+    const decoded = (await native(["-nostdin", "-v", "error", "-xerror", "-i", file, "-map", "0:v:0", "-frames:v", "1",
+      "-c:v", "rawvideo", "-pix_fmt", "rgba", "-threads", "1", "-f", "hash", "-hash", "sha256", "-"])).stdout.trim();
+    assert.equal(decoded, "SHA256=" + expected.rgbaSha256, "All independently decoded image pixels must match");
+    return { ...result, independentImageDecode: true, decodedRgbaSha256: expected.rgbaSha256 };
+  }
   await native(["-nostdin", "-v", "error", "-xerror", "-i", file, "-map", "0:v:0", "-frames:v", "1", "-f", "null", "-"]);
   return { ...result, independentImageDecode: true };
 };
 const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scripts/lib/audio-metadata-artifact.mjs", "scripts/lib/audio-metadata-fidelity-fixture.mjs",
   "scripts/lib/audio-comment-validation.mjs", "scripts/lib/streaming-audio-fidelity.mjs", "scripts/lib/scoped-audio-tag-validation.mjs",
   "scripts/lib/audio-repeated-comment-fixture.mjs", "scripts/lib/audio-artwork-validation.mjs",
+  "scripts/lib/audio-artwork-budget-fixture.mjs", "scripts/lib/ogg-picture-comment-inspection.mjs",
   "scripts/lib/bounded-network-observer.mjs", "scripts/lib/opfs-disk-backing-proof.mjs", "scripts/lib/bounded-validation-chunk.mjs",
   "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/native-memory-peaks.mjs", "scripts/lib/persistent-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs",
   "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts", "lib/browser-capabilities.ts", "lib/capability-registry.ts",
@@ -114,6 +126,13 @@ try {
     assert.deepEqual(repeatedSource.entries.filter(s => s.split("=", 1)[0].toLowerCase() === "custom_repeat"), AUDIO_REPEATED_COMMENTS);
   }
   report.repeatedFixture = report.repeatedFixtures.flac;
+  if (artworkBudget) {
+    const fixture = await createAudioArtworkBudgetFixture(runtime.directory); report.artworkImages = { "png-budget": fixture.expected };
+    report.artworkBudgetRecipe = fixture.recipe;
+    report.artworkFixtures = { "flac-png-budget": { bytes: fixture.bytes, sha256: fixture.sha256,
+      sourcePcmUnchanged: await compareNativeAudioPcm(path.join(runtime.directory, "source.flac"), fixture.file, { cwd: root, env, lossless: true }),
+      artwork: await inspectArtwork(fixture.file, await probeAudio(fixture.file), fixture.expected) } };
+  }
   if (withArtwork) {
     report.artworkImages = {}; report.artworkFixtures = {};
     for (const codec of ["png", "mjpeg"]) {
@@ -215,7 +234,8 @@ try {
       assert.equal(state.jobState, "complete", state.error ?? state.phase); assert.ok(entryName);
       for (const count of [state.metrics.maxReadChunkBytes, state.metrics.maxWriteChunkBytes, state.metrics.peakQueuedBytes]) assert.ok(count <= 262144);
       assert.ok(state.metrics.peakPendingOperations <= 1); assert.equal(state.metrics.pendingOperations, 0);
-      const size = await page.evaluate(async name => (await (await (await navigator.storage.getDirectory()).getFileHandle(name)).getFile()).size, entryName); assert.ok(size > 0 && size < 1048576);
+      const size = await page.evaluate(async name => (await (await (await navigator.storage.getDirectory()).getFileHandle(name)).getFile()).size, entryName);
+      assert.ok(size > 0 && size < (artworkBudget ? 8 * 1048576 : 1048576), "Only the explicit finite artwork-byte case may export over1MiB");
       const writer = await open(output, "wx"); outputIdentity = await writer.stat({ bigint: true });
       try { for (let offset = 0; offset < size; offset += 65536) {
         const encoded = await page.evaluate(async ({ name, offset, count }) => {
@@ -238,7 +258,13 @@ try {
       if (row.output.tags.status !== "passed") row.failures.push("One or more25metadata fields lost or changed");
       try { row.fidelity = await compareNativeAudioPcm(input, output, { cwd: root, env, lossless: conversion.destination === "flac" }); row.fullIndependentDecode = true; }
       catch (error) { row.fidelity = error.fidelity ?? null; row.fullIndependentDecode = error.fullIndependentDecodePassed ?? false; row.failures.push(String(error)); }
-      const comments = await readAudioCommentEntries(output, conversion.destination); row.binaryComments = comments;
+      const comments = artworkBudget ? await readOggPictureComments(output, conversion.destination) : await readAudioCommentEntries(output, conversion.destination); row.binaryComments = comments;
+      if (artworkBudget) {
+        const expected = report.artworkImages[conversion.artwork]; assert.equal(comments.pictures.length, 1);
+        assert.equal(comments.pictures[0].imageBytes, expected.bytes); assert.equal(comments.pictures[0].sha256, expected.sha256);
+        assert.equal(comments.pictures[0].description, expected.description);
+        row.streamingPictureInspection = { ...comments.pictures[0], ...comments.metrics, textBytes: comments.textBytes };
+      }
       if (conversion.repeated) {
         row.repeatedValues = comments.entries.filter(s => s.split("=", 1)[0].toLowerCase() === "custom_repeat");
         try { assert.deepEqual(row.repeatedValues, AUDIO_REPEATED_COMMENTS); } catch { row.failures.push("Repeated comment values were folded, overwritten or reordered"); }
@@ -307,6 +333,7 @@ finally {
     memory: report.memory, cases: report.cases.map(c => ({ name: c.name, status: c.status, requestedQuality: c.requestedQuality, browserElapsedMs: c.browserElapsedMs,
       failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags?.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, artwork: c.artwork,
+      streamingPictureInspection: c.streamingPictureInspection,
       disposableOutputRemoved: c.disposableOutputRemoved })),
     losslessJournal: report.losslessMemoryJournal ? { file: path.relative(root, report.losslessMemoryJournal.file).replaceAll(path.sep, "/"), records: report.losslessMemoryJournal.records,
       sha256: report.losslessMemoryJournal.sha256, archiveSha256: report.losslessMemoryJournal.archiveSha256, complete: report.losslessMemoryJournal.complete } : null,

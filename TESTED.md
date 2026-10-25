@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-25 streaming Ogg artwork inspector7unit cases PASS, including exact
+2MiB aggregate text +4MiB picture, bounded page/base64/decode buffers and
+incremental hash, correct fields before/after picture, CRC/framing/UTF8/
+base64/geometry/length/count/truncation/page-attack rejection. Owned unit
+scratch gone; metadata-only fixture tests are NOT media conversion proof.
+19existing focused tests/lint PASS. New single exact4MiB real-PNG cover gate
+prepared for current private engine; actual browser boundary result UNVERIFIED.
+Requires independent full RGBA pixel hash and96,000sample PCM, same250MiB
+whole-tree formula, bounded64KiB local validation transfer and owned cleanup.
+
 2026-10-25 actual new Ogg/Opus cover browser gate03-16-02.860Z PASS8/8:
 FLAC-to-Ogg/Opus, Ogg-to-Opus, Opus-to-Ogg (explicit higher on last route),
 PNG/JPEG covers,25tags/two ordered Unicode values/complete96,000sample PCM.

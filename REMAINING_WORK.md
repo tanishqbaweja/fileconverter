@@ -1,5 +1,23 @@
 # Remaining work audit
 
+2026-10-25 B05 large-cover gate preparation: separate streaming Ogg picture
+inspector uses one65,307B page buffer,16KiB base64/12KiB decoded chunks and
+incremental image SHA. Text retains2MiB/4096entries/64pages without artwork;
+one4MiB picture has separate128page/8MiB-total-read caps. Exact2MiB text plus
+4MiB image unit case PASS, with repeated order and no budget reset across
+pictures. Malformed CRC/sequence/serial/continuation/BOS, counts, aggregate
+text, MIME/type/dimensions/UTF8/base64/truncation/tails/duplicate pictures and
+empty-page attacks rejected; all unit scratch removed finally.7new unit cases
+PASS plus19existing focused/lint checks. These metadata-only unit fixtures are
+NOT genuine media/browser proof. Next explicit --artwork-byte-budget case
+uses a deterministic1023x1023 real high-entropy RGBA PNG at exact4MiB, nearly
+all compressed pixel data plus<64KiB private ancillary padding, not sparse
+placeholder. Canonical FLAC fixture is size/SHA-pinned before adding cover.
+Native source/output pixel SHA and complete PCM required, output export only
+this finite scope permits up to8MiB through unchanged64KiB chunks. New actual
+browser result still UNVERIFIED; use current audited build40156938341, no
+native rebuild or changed Chrome/quality/heap/primary memory formula.
+
 2026-10-25 actual Ogg/Opus artwork run03-16-02.860Z PASS8/8: four new source/
 destination routes xPNG/JPEG,25tags, two ordered Unicode values, exact image
 bytes plus front/back roles/Unicode descriptions and independent image decode.

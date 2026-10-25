@@ -47,6 +47,13 @@ export function validateAudioArtworkPacket(probe, packets, expected) {
   assert.ok(expected && ["png", "mjpeg"].includes(expected.codec));
   assert.equal(expected.width, 64); assert.equal(expected.height, 64);
   assert.ok(Number.isSafeInteger(expected.bytes) && expected.bytes > 8 && expected.bytes <= 65536);
+  return validateBudgetedAudioArtworkPacket(probe, packets, expected);
+}
+export function validateBudgetedAudioArtworkPacket(probe, packets, expected) {
+  assert.ok(expected && ["png", "mjpeg"].includes(expected.codec));
+  assert.ok(Number.isSafeInteger(expected.width) && expected.width > 0 && expected.width <= 4096);
+  assert.ok(Number.isSafeInteger(expected.height) && expected.height > 0 && expected.height <= 4096 && expected.width * expected.height <= 16 * 1048576);
+  assert.ok(Number.isSafeInteger(expected.bytes) && expected.bytes > 8 && expected.bytes <= 4 * 1048576);
   assert.match(expected.sha256, /^[a-f0-9]{64}$/);
   assert.ok(Array.isArray(probe?.streams)); assert.equal(probe.streams.length, 2, "Exactly audio plus one cover required");
   const audio = probe.streams.filter(s => s.codec_type === "audio"), pictures = probe.streams.filter(s => s.codec_type === "video");
