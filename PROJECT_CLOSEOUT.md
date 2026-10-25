@@ -6,6 +6,12 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+7e4999c portable CI40185233762 SUCCESS. Byte/field source+evidence checks
+closed (129focused/local lint/TS; hosted portable/privacy/offline). Next focused
+implementation target: failed automatic Opus-to-Vorbis quality, not replaying
+closed byte/field/bracket tests. Higher control remains only a control until a
+real default-policy change and focused browser proof exist. Original54 OPEN.
+
 Exact native TEXT-BYTE boundary10-29-39.709Z PASS3 (491b50e):2097152
 accepted/all1024 fillers/canonical/repeats/order/fullPCM,2097153 rejected safely,
 same-page exactcovercontrol recovery.32MiB heaps/177.5352MiB full-tree/

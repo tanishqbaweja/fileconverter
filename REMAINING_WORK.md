@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-10-25 7e4999c portable CI40185233762 SUCCESS incl privacy/offline.
+Byte/field gates CLOSED for this private small profile; no replay unchanged.
+Next concrete B05 defect: automatic Opus-to-Vorbis59.7717dB<60 versus explicit
+higher61.0654dB; inspect actual quality argument policy and prove any proposed
+repair through production browser without relabelling the higher control as
+an automatic fix. No current default change, public promotion, or full54 closeout.
+
 2026-10-25 byte-gate closeout129focused tests/27files, lint/TypeScript/
 diff-check PASS. Next portable CI on pushed evidence; no unchanged reruns.
 

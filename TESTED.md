@@ -1,5 +1,11 @@
 # Tested conversion ledger
 
+2026-10-25 byte-boundary evidence commit7e4999c portable CI40185233762
+SUCCESS: inventory/public-route evidence/lint/TypeScript/unit/privacy/offline.
+Native rebuild/full browser matrix intentionally not run by portable mode.
+Read-only local closeout found no audio-metadata-production-* or owned
+repository-node-command-* scratch directories; worktree clean before this note.
+
 2026-10-25 post-byte-gate regression129focused tests/27files PASS;
 changed-source lint/TypeScript/diff-check PASS. Full raw report/journal/3screen
 hashes retained and tested; exact input hashes now enforced. No browser replay.
