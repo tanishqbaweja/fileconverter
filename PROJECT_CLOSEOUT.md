@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Candidate attempt04-31-11.950Z never loaded converter:389 unavailable/null
+OpenProcess1740 samples, no baseline/jobs. Read-only CIM identifies protected
+Oct22 csrss.exe/parent1560; observer performs candidate Read before birth-order
+guard, causing stale reused-parent attribution failure. Next repair observer
+ownership-before-private-read with real/native tests; never exclude unproven/
+owned inaccessible Chrome children or manufacture zeros. Candidate compiled,
+not browser-qualified; previous251.5977MiB baseline failure remains failed.
+
 First baseline repeat04-25-42.002Z FAILED251.59765625MiB at6/7jobs despite
 six exact outputs.510valid/1missing, null preserved, cleanup PASS. No unchanged
 baseline/bracket replay or speed acceptance. Native child growth observed,

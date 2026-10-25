@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "0175cae231e9f90b5077dad68be53444085dcd08",
+  "status": "failed",
+  "scope": "matched serializer experiment: one explicit warmup plus six identical exact4MiB-artwork FLAC-to-Opus jobs in one normal headless production page; not long-file/stress/scaling/fastest/public acceptance",
+  "publicAcceptance": false,
+  "fullMetadataAcceptance": false,
+  "archive": {
+    "path": "outputs/reports/2026-10-25T04-31-11.950Z-audio-metadata-production-runtime.json.gz",
+    "bytes": 16372,
+    "sha256": "a5c0937e5d7708713e53a0f712d90558c69ad0b5088705364bc8bf41cafd0421",
+    "restoredBytes": 70955,
+    "restoredSha256": "f90c345342cae2cd34110d6d86ef23cb6a562a335d7e9b8538abfbf04a54e593"
+  },
+  "sourcePins": 29,
+  "artifactManifestSha256": "6457c3499800db5d8275d08ead789637546c68e8d75fc4ccf21b893eeba57609",
+  "benchmark": {
+    "warmupJobs": 1,
+    "measuredJobs": 6,
+    "warmupExcludedOnlyFromTimingNotCorrectnessOrMemory": true,
+    "comparisonRequiresSeparateBracketedBaselineAndCandidateRuns": true,
+    "browserElapsedMetric": "host wall clock from real UI click to observed terminal state",
+    "engineElapsedMetric": "actual production job metrics.elapsedMs at terminal; not serializer-only CPU time"
+  },
+  "cases": [],
+  "losslessJournal": {
+    "file": "output/playwright/2026-10-25T04-31-11.950Z-audio-fidelity-memory.ndjson.gz",
+    "records": 389,
+    "sha256": "70b38bc8ebe6011d38909a76305756eb90da0a2373d924626cbe0f00dacb084a",
+    "archiveSha256": "5381d3db5b611c9fb8034689fb308e694a4d0a0b2cf3db992c6e0e2338b37218",
+    "complete": true
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(windows.length >= 2)\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:253:10"
+  ],
+  "network": {
+    "observedRequests": 0,
+    "forbidden": [],
+    "nativeGlueRequests": 0,
+    "nativeWasmRequests": 0
+  },
+  "cleanup": {
+    "allRecordedBirthsAbsent": true,
+    "publishedAssetsNeverChanged": true,
+    "stagedPrivateAssetsRestored": true,
+    "ownedProfileFixturesOutputsRemoved": true
+  },
+  "protectedOriginalUnchanged": true
+}

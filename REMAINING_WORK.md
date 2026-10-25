@@ -1,5 +1,21 @@
 # Remaining work audit
 
+2026-10-25 changed candidate attempt04-31-11.950Z FAILED BEFORE converter
+load:389/389 native samples unavailable/null, no blank baseline, zero jobs or
+asset requests. Host safety passed (~10.24GiB physical/15.38GiB virtual free).
+Every sample error OpenProcess1740. Read-only CIM identifies1740 as csrss.exe,
+created2026-10-22, parent1560; observer follows numeric parents then calls
+Read() BEFORE checking child.created < parent.created. Thus a protected old
+process whose parent PID was reused prevents the stale-parent guard executing.
+No unstable-baseline/zero-memory/conversion-failure claim. Original source
+trace retained, all owned cleanup/original PASS;62/15 engine build still valid.
+NEXT fix birth-aware candidate ownership BEFORE private-memory read, retaining
+unavailable/null for unproven or genuinely owned unreadable descendants, then
+test observer and rerun candidate. Do not omit Chromium children/alter baseline
+formula or replay unchanged six-output baseline failure. Pin native observer
+C#/PowerShell sources in future runtime reports too.93 focused regressions,
+lint/TypeScript/diff PASS. Browser speed OPEN; no optimization promoted.
+
 2026-10-25 first repeated baseline04-25-42.002Z FAILED at251.59765625MiB
 after six exact accepted outputs; planned seven-job run stopped by unchanged
 250MiB gate.510valid/1unavailable native records (511total); failed query is

@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import test from "node:test";
+import { readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
 import { loadArtworkSerializerBenchmark, summarizeArtworkSerializerBenchmarks } from "../scripts/lib/audio-artwork-serializer-benchmark.mjs";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -75,4 +78,22 @@ test("actual first repeated baseline remains FAILED at251.59765625MiB despite si
   assert.ok(report.failures.some(message => message.includes("Whole Chromium250MiB gate failed")));
   assert.throws(() => summarizeArtworkSerializerBenchmarks([report, report, report, report]));
   assert.ok(Object.values(report.cleanup).every(Boolean));
+});
+
+test("first lower-copy attempt never reached the converter: all389 OS samples stay null and no measured baseline or conversion acceptance is invented", async () => {
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const receipt = JSON.parse(await readFile(path.join(root, "evidence/2026-10-25T04-31-11.950Z-audio-metadata-fidelity-result.json")));
+  assert.equal(receipt.status, "failed"); assert.deepEqual(receipt.cases, []); assert.equal(receipt.memory, undefined);
+  const archive = await readFile(path.join(root, receipt.archive.path)); assert.equal(sha(archive), receipt.archive.sha256);
+  const raw = gunzipSync(archive, { maxOutputLength: 1048576 }); assert.equal(sha(raw), receipt.archive.restoredSha256);
+  const report = JSON.parse(raw); assert.equal(report.blankBaseline, undefined); assert.equal(report.artifact.core.allowedSourceEdits, 14);
+  assert.equal(report.hostMemory.safeToStart, true); assert.equal(report.network.observedRequests, 0);
+  assert.ok(report.failures.some(message => message.includes("windows.length >= 2")));
+  const journal = await readFile(path.join(root, receipt.losslessJournal.file)); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  const decoded = gunzipSync(journal, { maxOutputLength: 8 * 1048576 }); assert.equal(sha(decoded), receipt.losslessJournal.sha256);
+  const samples = decoded.toString().trim().split("\n").map(line => JSON.parse(line).sample); assert.equal(samples.length, 389);
+  assert.ok(samples.every(sample => sample.phase === "blank" && sample.sampleError === "OpenProcess 1740"
+    && sample.privateBytes === null && sample.rssBytes === null && sample.processes === null));
+  assert.equal(report.publicAcceptance, false); assert.equal(report.scalingAcceptance, false);
+  assert.equal(report.protectedOriginalUnchanged, true); assert.ok(Object.values(report.cleanup).every(Boolean));
 });

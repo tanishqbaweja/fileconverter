@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-25 candidate14 first runtime04-31-11.950Z failed pre-converter:
+no loaded assets/jobs/blank baseline;389 samples all null/OpenProcess1740,
+not0MiB. Host memory safe, compiled62source/15artifact audit passed. CIM1740
+is protected csrss.exe bornOct22/parent1560. Sampler reads candidates before
+its stale-parent creation guard, so PID reuse can poison every observation.
+This is a concrete instrumentation cause, NOT converter speed/fidelity proof.
+Owned cleanup/original PASS. Preserve failed receipt/raw/lossless journal;
+next fix ownership-before-memory and validate observer; no unchanged retries.
+93 focused regression/lint/TypeScript/diff checks PASS; no optimization promoted.
+
 2026-10-25 repeated original baseline04-25-42.002Z FAILED whole-tree
 251.59765625MiB after6/7jobs. Six exact-control outputs/4MiB images/pixels/
 25tags/repeats/96kPCM and owned cleanup PASS, NOT a passed benchmark.
