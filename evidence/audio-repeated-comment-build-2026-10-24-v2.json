@@ -47,6 +47,16 @@
   "singleRetryIntentRecordedBeforeAction": true,
   "retryReason": "One retry of confirmed terminal dependency-transport failure, same immutable source; not a conversion replay or code-failure retry",
   "maximumTransportRetriesThisCycle": 1,
+  "supersededReusableToolCleanup": {
+    "directory": "work/audio-repeated-metadata-40103321797",
+    "removedAt": "2026-10-25T02:45:44.599Z",
+    "removedBytes": 10435313,
+    "exactOwnedManifestAndEveryArtifactHashVerified": true,
+    "directoryIdentityRecheckedBeforeRecursiveRemoval": true,
+    "reason": "V3 replaces v2 and its affected FLAC cases now pass; completed Ogg/Opus results remain recorded and need no unchanged replay",
+    "originalAndRetainedReportsUntouched": true,
+    "recoverability": "Rebuild from immutable source 2b76b15449a6f8c2eb6cc1740fb02a13f48df646 if genuinely needed"
+  },
   "collected": {
     "directory": "work/audio-repeated-metadata-40103321797",
     "bytes": 10435313,

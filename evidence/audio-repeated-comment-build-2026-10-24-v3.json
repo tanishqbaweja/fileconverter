@@ -1,6 +1,6 @@
 {
   "recordedAt": "2026-10-24T15:18:12.999Z",
-  "status": "build-confirmed-live",
+  "status": "compiled-artifact-audited-browser-repair-unverified",
   "branch": "codex/audio-repeated-comments-20261024-v3",
   "parent": "8849c12b3743cd1f5387e28f4acff5a57bcd1ae5",
   "commit": "b450fd980b35ea4342b1a6b63ecee2ca65ace4bc",
@@ -24,14 +24,30 @@
   "publicAcceptance": false,
   "noDocker": true,
   "dispatchedAt": "2026-10-24T15:18:24.487Z",
-  "lastObservedAt": "2026-10-24T15:19:02.245Z",
+  "lastObservedAt": "2026-10-24T15:27:29.968Z",
   "run": {
-    "conclusion": "",
+    "conclusion": "success",
     "createdAt": "2026-10-24T15:18:26Z",
     "databaseId": 40106367463,
     "headSha": "b450fd980b35ea4342b1a6b63ecee2ca65ace4bc",
-    "status": "in_progress",
-    "updatedAt": "2026-10-24T15:18:30Z",
+    "status": "completed",
+    "updatedAt": "2026-10-24T15:26:40Z",
     "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40106367463"
+  },
+  "collected": {
+    "directory": "work/audio-repeated-metadata-40106367463",
+    "bytes": 10439270,
+    "manifestSha256": "8c41ff5ae5fc98c4eb9775d2247d0a99f403b3a3501d63c0592f5520e9164f06",
+    "buildSourcePins": 50,
+    "artifactPins": 15,
+    "upstream": {
+      "originalSha256": "a11ec3562e733f21565c491ab56b7f1d4a6865fc1ddbdc372ed9cb29b13ca7fb",
+      "compiledSha256": "56d2ebdef4c79bbc7174dfb9492e2040066854770f64f8ec096cd53a190e4e15",
+      "sourceEdits": 1,
+      "publicAcceptance": false
+    },
+    "immutableExecutedSourcesVerified": true,
+    "hostedCleanupPassed": true,
+    "publicAcceptance": false
   }
 }

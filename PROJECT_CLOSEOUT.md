@@ -4,7 +4,29 @@ This is an execution order, not a completion claim or a calendar promise. The
 original specification and `REMAINING_WORK.md`'s 54 requirement rows remain the
 acceptance contract. Private engines are not public supported profiles.
 
-## Current execution point — 2026-10-24
+## Current execution point — 2026-10-25
+
+V3 four affected FLAC cases now actual PASS (02-38-29.173Z): all25fields,
+96,000 sample-exact PCM samples and TWO ordered Unicode values retained.
+Small full-tree187.7890625MiB/427valid/0missing, disk/privacy/original/owned
+cleanup/stage restore PASS;50source15artifact pins/unchanged32-96MiB heap.
+CLOSE private text/ordering repair; do not replay closed Ogg/Opus/FLAC checks.
+Next B05 artwork/tag interplay, aliases/budget/recovery and applicable stress.
+Fixture generator lifecycle hardened/tested with four real small inputs and
+overwrite rejection/owned cleanup; no new browser artwork acceptance claimed.
+Superseded v2 cache10.435MB verified/deleted, compact reports/sources retained.
+Automatic Vorbis quality failure/full54/browser/release gates remain OPEN.
+41focused/lint/TypeScript PASS; next genuinely new artwork/tag interplay cases
+reuse audited v3, with independent image-byte/PCM validation and unchanged
+memory/recovery requirements. No repeat of closed text-only gates.
+
+User explicitly chose "Keep constraints; continue other work" for Chrome model
+service. No disabled-service profile/flags/preferences, process exclusion,
+baseline or250MiB formula change is authorized. Preserve434.8515625MiB default
+failure; no longer waiting for that choice and do not ask it again. Continue
+other original-scope work. Decision: evidence/2026-10-25-browser-constraints-decision.json.
+V3 build40106367463 SUCCESS/audited50source15artifact pins; next actual four
+FLAC-only production-browser ordering/PCM/tag/memory/cleanup checks.
 
 V3 compile now actual live40106367463/b450fd9, started15:18:26Z; expected next
 observation~15:27Z. Observe same handle, then collect/audit50source15artifact pins

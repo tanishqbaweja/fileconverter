@@ -1,5 +1,38 @@
 # Remaining work audit
 
+2026-10-25 V3 actual FLAC-only gate02-38-29.173Z PASS4/4: two canonical and two
+repeated Ogg/Opus inputs keep all25tags/96,000 sample-exact PCM samples; both
+repeated values now survive in original order.50-source/15-artifact audit and
+unchanged32MiB initial/96MiB max heap PASS. Small-lifecycle full-tree187.7890625MiB,
+427valid/0missing, physical OPFS disk proof/privacy/full original SHA/all recorded
+owned births gone/staged assets restored PASS. Raw141,412B retained19,916B gzip
+plus exact427row journal; headless terminal screenshot reviewed. CLOSE this
+private ordering repair gate; do not replay it unchanged. This is not B05/full
+metadata/artwork/stress/public acceptance; automatic Vorbis quality failure,
+aliases/budgets/recovery and full54/release gates remain OPEN.
+Next B05 artwork: existing fixture generator's fixed-directory deletion was
+replaced by uniquely owned scratch/env/hidden30s native calls/finally identity
+cleanup. Optional empty repo-work output directory forbids unknown overwrites.
+Actual02-44-47.088Z check generated four real small inputs, verified hashes/
+single64x64 PNG cover, rejected nonempty overwrite with unchanged hashes, and
+removed all owned inputs/copies. This tests FIXTURE lifecycle, not new browser
+artwork fidelity. Superseded v2 tool10,435,313B removed after exact16file/manifest/
+hash/directory identity verification; v3/old reusable baseline and reports kept.
+41focused/lint/TypeScript checks PASS, including retained fixture-lifecycle and
+user-decision evidence; no configured Chrome exception. Next genuine artwork/
+25-field/repeated-tag interplay on the audited v3 engine, with independent image
+packet hashes/decoding and applicable memory/recovery tests; no unchanged text
+replay or new native build without a concrete missing capability.
+
+2026-10-25 explicit user runtime decision: "Keep constraints; continue other
+work". No disabling Chrome model service, changed flags/preferences, excluded
+processes, inflated baseline or relaxed250MiB formula. Existing434.8515625MiB
+default-profile failure stays failed. Do not re-ask the same exception or replay
+unchanged long video test; this choice is no longer pending. Continue full
+original scope with other implementation/qualification. Decision receipt:
+evidence/2026-10-25-browser-constraints-decision.json. V3 compile succeeded and
+audits50source/15artifact pins; next four FLAC-only real production cases.
+
 V3 source now pushed8849c12; isolated build40106367463/b450fd9 confirmed live
 15:19:02Z (started15:18:26Z), no Docker. Expected observation~15:27Z using
 prior476-497s actual builds, not frequent polling. Next observe/collect THIS

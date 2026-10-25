@@ -116,3 +116,29 @@ test("actual native dictionary probe reproduces muxer ordering swap and bounded 
   assert.equal(report.ownedCompilerOutputAndScratchRemoved, true);
   const file = "media/ffmpeg/audio-muxer-metadata-order.h"; assert.equal(sha(await readFile(new URL(file, root))), report.sources[file]);
 });
+test("actual four-case FLAC gate verifies metadata order and exact full PCM after muxer fix without implying broad release acceptance", async () => {
+  const receipt = JSON.parse(await readFile(new URL("evidence/2026-10-25T02-38-29.173Z-audio-metadata-fidelity-result.json", root)));
+  assert.equal(receipt.status, "passed-selected-small-private-cases-not-promotion"); assert.equal(receipt.publicAcceptance, false);
+  assert.equal(receipt.fullMetadataAcceptance, false); assert.equal(receipt.cases.length, 4);
+  assert.equal(receipt.artifactManifestSha256, "8c41ff5ae5fc98c4eb9775d2247d0a99f403b3a3501d63c0592f5520e9164f06");
+  assert.equal(receipt.memory.incrementalPrivateMiB, 187.7890625); assert.equal(receipt.memory.validSamples, 427); assert.equal(receipt.memory.unavailableSamples, 0);
+  for (const row of receipt.cases) {
+    assert.equal(row.status, "passed-small-private-fidelity-and-metadata-case"); assert.equal(row.fidelity.exact, true);
+    assert.equal(row.fidelity.samples, 96000); assert.equal(row.tagsPreserved, 25); assert.ok(row.disposableOutputRemoved);
+    if (row.name.includes("repeated")) assert.deepEqual(row.repeatedValues, ["CUSTOM_REPEAT=Premier 音楽", "CUSTOM_REPEAT=Deuxième café"]);
+  }
+  assert.ok(receipt.protectedOriginalUnchanged); assert.ok(Object.values(receipt.cleanup).every(Boolean));
+  const archive = await readFile(new URL(receipt.archive.path, root)); assert.equal(sha(archive), receipt.archive.sha256);
+  assert.equal(sha(gunzipSync(archive, { maxOutputLength: 1048576 })), receipt.archive.restoredSha256);
+  const journal = await readFile(new URL(receipt.losslessJournal.file, root)); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  assert.equal(sha(gunzipSync(journal, { maxOutputLength: 8 * 1048576 })), receipt.losslessJournal.sha256);
+});
+test("explicit user decision keeps Chrome settings and complete-tree failure intact rather than authorizing a configured runtime exception", async () => {
+  const decision = JSON.parse(await readFile(new URL("evidence/2026-10-25-browser-constraints-decision.json", root)));
+  assert.equal(decision.answer, "Keep constraints; continue other work"); assert.equal(decision.disableChromeModelServiceAuthorized, false);
+  assert.equal(decision.browserFlagsOrPreferencesChanged, false); assert.equal(decision.memoryLimitMiB, 250);
+  assert.equal(decision.wholeProcessTreeAndOriginalBaselineFormulaRetained, true);
+  const failed = JSON.parse(await readFile(new URL(decision.defaultProfileFailureRetained, root)));
+  assert.equal(failed.wholeRunIncrementalPrivateMiB, decision.defaultProfileIncrementalPrivateMiB);
+  assert.equal(failed.normalModeFullOriginalAcceptance, false); assert.ok(failed.wholeRunIncrementalPrivateMiB > decision.memoryLimitMiB);
+});

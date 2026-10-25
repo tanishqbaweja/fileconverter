@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-25T02:44:47.088Z",
+  "status": "passed-fixture-generation-and-safe-lifecycle-not-browser-artwork-acceptance",
+  "scope": "Four small generated audio/artwork INPUT fixtures, protected output destination and owned scratch cleanup only",
+  "browserConversions": 0,
+  "nativeBrowserOutputConversionUsed": false,
+  "artworkAcceptance": false,
+  "publicAcceptance": false,
+  "sources": {
+    "scripts/check-audio-artwork-fixture-lifecycle.mjs": "1d6466879e4a90f393ffa60a82d63f6a5b14f509a2d2fb725cf6052d8287a445",
+    "scripts/generate-audio-artwork-fixture.mjs": "980bc9c0e639a2ca169844c37783aa17f6114f6b35145d72c1a18f70d4eaa83e",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5"
+  },
+  "fixtures": [
+    {
+      "name": "audio-source-artwork.m4a",
+      "bytes": 64973,
+      "sha256": "d635822fd1cf6d88596e7b86e0a06db2529d112a81097a246bac863b9d19682a",
+      "imageSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0"
+    },
+    {
+      "name": "audio-source-mp3-artwork.mp4",
+      "bytes": 18933,
+      "sha256": "1c71b2daa1581fd353ec355ff556ea776bad7727db9c51759da20f7f35dd72b2",
+      "imageSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0"
+    },
+    {
+      "name": "audio-source-vorbis-artwork.ogg",
+      "bytes": 13765,
+      "sha256": "e2675c1768a30b93175224ec149284936e9730c1d635e049df86740058e8eb21",
+      "imageSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0"
+    },
+    {
+      "name": "audio-source-opus-artwork.opus",
+      "bytes": 77830,
+      "sha256": "e5ce83fb9c86844e51ce479699c68ca5a746b8230277670a5a0814f85614c86e",
+      "imageSha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0"
+    }
+  ],
+  "generationElapsedMs": 863,
+  "nonemptyDestinationRejectedBeforeOverwrite": true,
+  "fixtureHashesUnchangedAfterRejectedCall": true,
+  "ownedGeneratedInputsAndCopiesRemoved": true,
+  "finishedAt": "2026-10-25T02:44:48.037Z"
+}

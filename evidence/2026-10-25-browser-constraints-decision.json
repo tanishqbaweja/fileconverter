@@ -1,0 +1,12 @@
+{
+  "recordedAt": "2026-10-25T02:37:38Z",
+  "source": "Explicit user reply to Chrome on-device-model runtime choice",
+  "answer": "Keep constraints; continue other work",
+  "disableChromeModelServiceAuthorized": false,
+  "browserFlagsOrPreferencesChanged": false,
+  "memoryLimitMiB": 250,
+  "wholeProcessTreeAndOriginalBaselineFormulaRetained": true,
+  "defaultProfileFailureRetained": "evidence/2026-10-24-normal-opfs-original-analysis.json",
+  "defaultProfileIncrementalPrivateMiB": 434.8515625,
+  "next": "Continue other original-scope implementation and qualification. Do not request the same runtime exception again or rerun the unchanged failed large-video gate."
+}

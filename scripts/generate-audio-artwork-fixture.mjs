@@ -1,14 +1,22 @@
+import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { execFile } from "node:child_process";
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { lstat, mkdir, readFile, readdir, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 import { fileURLToPath } from "node:url";
+import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 
-const execFileAsync = promisify(execFile);
+const args = process.argv.slice(2);
+assert.ok(args.length === 0 || (args.length === 2 && args[0] === "--fixture-dir"));
+const runtime = await createOwnedRuntimeScratch("audio-artwork-fixture-");
+const execute = promisify(execFile);
+const execFileAsync = (command, args, options) => execute(command, args, {
+  ...options, env: runtime.env, windowsHide: true, timeout: 30000,
+});
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const fixtureRoot = path.join(projectRoot, "fixtures", "media");
-const workRoot = path.join(projectRoot, "work", "audio-artwork-fixture");
+const fixtureRoot = args.length ? path.resolve(args[1]) : path.join(projectRoot, "fixtures", "media");
+const workRoot = runtime.directory;
 const fixturePath = path.join(fixtureRoot, "audio-source-artwork.m4a");
 const extractionFixturePath = path.join(
   fixtureRoot,
@@ -46,11 +54,15 @@ function metadataBlockPicture(artworkBytes) {
   ]).toString("base64");
 }
 
-await mkdir(fixtureRoot, { recursive: true });
-await rm(workRoot, { recursive: true, force: true });
-await mkdir(workRoot, { recursive: true });
-
 try {
+  if (args.length) {
+    const relative = path.relative(path.join(projectRoot, "work"), fixtureRoot);
+    assert.ok(relative && !relative.startsWith("..") && !path.isAbsolute(relative), "Custom fixtures must stay in repository work");
+    const info = await lstat(fixtureRoot); assert.ok(info.isDirectory() && !info.isSymbolicLink());
+    assert.equal(await realpath(fixtureRoot), fixtureRoot, "Fixture destination may not redirect elsewhere");
+    assert.equal((await readdir(fixtureRoot)).length, 0, "Fixture destination must be empty; never overwrite unknown data");
+  }
+  await mkdir(fixtureRoot, { recursive: true });
   await execFileAsync(
     "ffmpeg",
     [
@@ -390,5 +402,6 @@ try {
     `${fixturePath}\n${extractionFixturePath}\n${vorbisFixturePath}\n${opusFixturePath}\n`,
   );
 } finally {
-  await rm(workRoot, { recursive: true, force: true });
+  await runtime.close();
+  await assert.rejects(lstat(runtime.directory), { code: "ENOENT" });
 }

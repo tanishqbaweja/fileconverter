@@ -1,0 +1,281 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "1ea8224d8feb8b2d07668c354d81f48e67986da0",
+  "status": "passed-selected-small-private-cases-not-promotion",
+  "scope": "four FLAC-only changed muxer-order cases: two canonical plus two repeated inputs; not replay of closed Ogg cases or stress acceptance",
+  "publicAcceptance": false,
+  "fullMetadataAcceptance": false,
+  "archive": {
+    "path": "outputs/reports/2026-10-25T02-38-29.173Z-audio-metadata-production-runtime.json.gz",
+    "bytes": 19916,
+    "sha256": "fd1f87581531bae09bd2e20cec1ba4f90dd0d00de89021dba9bf449698e14e55",
+    "restoredBytes": 141412,
+    "restoredSha256": "92b87a096328c5f4a6bca366c12d494e9d8547f95d872de0a5ac085e9c8c4b00"
+  },
+  "sourcePins": 22,
+  "artifactManifestSha256": "8c41ff5ae5fc98c4eb9775d2247d0a99f403b3a3501d63c0592f5520e9164f06",
+  "diskProof": {
+    "status": "exact-browser-canary-independently-found-on-disk",
+    "browserBytes": 64,
+    "physicalBytes": 64,
+    "sha256": "882b9b63bc9017419dac47c4e2306065ca9b9e9f3d934337d54891bea608a327",
+    "physicalFile": "work\\audio-metadata-production-1kNzjS\\chrome-profile\\Default\\File System\\000\\t\\00\\00000001",
+    "profileDirectory": "work\\audio-metadata-production-1kNzjS\\chrome-profile",
+    "inspectedEntries": 5,
+    "maximumReadBytes": 65,
+    "provesThisContextOpfsBacking": true,
+    "provesConversionAcceptance": false,
+    "canaryRemovedInFinally": true
+  },
+  "memory": {
+    "scope": "selected-small-case lifecycle only, not stress acceptance",
+    "limitMiB": 250,
+    "intervalMs": 100,
+    "peak": {
+      "sequence": 394,
+      "timestamp": "2026-10-25T02:39:37.5341447Z",
+      "phase": "case-2",
+      "privateBytes": 436666368,
+      "rssBytes": 689418240,
+      "nativeElapsedMs": 11.8055,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 10788,
+          "parentPid": 43396,
+          "createdAt": "2026-10-25T02:38:53.0164292Z",
+          "creationFileTime": "134373695330164292",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 48758784,
+          "rssBytes": 144822272
+        },
+        {
+          "pid": 27072,
+          "parentPid": 10788,
+          "createdAt": "2026-10-25T02:38:53.4983085Z",
+          "creationFileTime": "134373695334983085",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 13918208,
+          "rssBytes": 41521152
+        },
+        {
+          "pid": 31204,
+          "parentPid": 10788,
+          "createdAt": "2026-10-25T02:38:53.5142795Z",
+          "creationFileTime": "134373695335142795",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8130560,
+          "rssBytes": 18280448
+        },
+        {
+          "pid": 33208,
+          "parentPid": 10788,
+          "createdAt": "2026-10-25T02:39:14.0733679Z",
+          "creationFileTime": "134373695540733679",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 15028224,
+          "rssBytes": 31387648
+        },
+        {
+          "pid": 35908,
+          "parentPid": 10788,
+          "createdAt": "2026-10-25T02:38:53.4747565Z",
+          "creationFileTime": "134373695334747565",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 156917760,
+          "rssBytes": 181067776
+        },
+        {
+          "pid": 42828,
+          "parentPid": 10788,
+          "createdAt": "2026-10-25T02:38:53.5652234Z",
+          "creationFileTime": "134373695335652234",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 34652160,
+          "rssBytes": 78008320
+        },
+        {
+          "pid": 43048,
+          "parentPid": 10788,
+          "createdAt": "2026-10-25T02:38:53.5968321Z",
+          "creationFileTime": "134373695335968321",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 156712960,
+          "rssBytes": 184492032
+        },
+        {
+          "pid": 44056,
+          "parentPid": 10788,
+          "createdAt": "2026-10-25T02:38:53.1280366Z",
+          "creationFileTime": "134373695331280366",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2547712,
+          "rssBytes": 9838592
+        }
+      ]
+    },
+    "incrementalPrivateMiB": 187.7890625,
+    "validSamples": 427,
+    "unavailableSamples": 0,
+    "fullHistoryInLosslessJournal": true
+  },
+  "cases": [
+    {
+      "name": "ogg-to-flac",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 525,
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": true,
+        "maximumAbsoluteError": 0,
+        "squaredError": 0,
+        "psnrDb": "infinity",
+        "sourceSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+        "outputSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+        "minimumPsnrDb": 60,
+        "losslessRequired": true,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 36064,
+      "outputSha256": "3b11dbc5c19617a81e86d78344c989e489821e73d5d1f4b269f744460ab3cc9c",
+      "tagsPreserved": 25,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-flac",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 313,
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": true,
+        "maximumAbsoluteError": 0,
+        "squaredError": 0,
+        "psnrDb": "infinity",
+        "sourceSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+        "outputSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+        "minimumPsnrDb": 60,
+        "losslessRequired": true,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 38410,
+      "outputSha256": "79a9e5e3d562336ca536d07cea1b9f1767344110cdf82209e3467f843787e52e",
+      "tagsPreserved": 25,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "ogg-to-flac-repeated-values",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 140,
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": true,
+        "maximumAbsoluteError": 0,
+        "squaredError": 0,
+        "psnrDb": "infinity",
+        "sourceSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+        "outputSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+        "minimumPsnrDb": 60,
+        "losslessRequired": true,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 36129,
+      "outputSha256": "cf855fadae7612249065db57f3ff28271ab8f681a23101820f26fca12fabaf4a",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-flac-repeated-values",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 414,
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": true,
+        "maximumAbsoluteError": 0,
+        "squaredError": 0,
+        "psnrDb": "infinity",
+        "sourceSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+        "outputSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+        "minimumPsnrDb": 60,
+        "losslessRequired": true,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 38475,
+      "outputSha256": "a2723829fb91df2356cc6ec827a261416787d9fbbd56b8784b5812330b31274a",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "disposableOutputRemoved": true
+    }
+  ],
+  "losslessJournal": {
+    "file": "output/playwright/2026-10-25T02-38-29.173Z-audio-fidelity-memory.ndjson.gz",
+    "records": 427,
+    "sha256": "073f7161b68c9cfabedc7e32fe12a1d31688261a216448f72ad8d6934f4ee5b5",
+    "archiveSha256": "acb7cb7e3154ccd278ae5d810c006c47503d0c74f256fa1ebbcef63ce4bf1a4f",
+    "complete": true
+  },
+  "failures": [],
+  "network": {
+    "observedRequests": 23,
+    "forbidden": [],
+    "nativeGlueRequests": 4,
+    "nativeWasmRequests": 4
+  },
+  "cleanup": {
+    "allRecordedBirthsAbsent": true,
+    "publishedAssetsNeverChanged": true,
+    "stagedPrivateAssetsRestored": true,
+    "ownedProfileFixturesOutputsRemoved": true
+  },
+  "protectedOriginalUnchanged": true
+}

@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-10-25 actual V3 FLAC-order gate02-38-29.173Z PASS4/4:25fields/96,000 exact
+PCM samples, both Unicode duplicate values in original order. Small whole-tree
+187.7890625MiB/427valid/0missing; disk/privacy/original/all owned cleanup/restore
+PASS.50source/15artifact pins and32/96MiB unchanged heap audited. Raw19,916B gzip
+plus exact427row journal retained; terminal image reviewed headlessly. Close
+this private repair, not public/stress/full B05 acceptance; existing automatic
+Vorbis quality/artwork/aliases/budgets/recovery/full54 remain open.
+User chose KEEP Chrome constraints, no disabled service/profile/baseline/process
+exclusion;434.8515625MiB default failure retained. Artwork fixture lifecycle
+02-44-47.088Z actual check PASS:4small inputs/64x64 PNG, nonempty destination
+rejected without overwrite, all generated inputs/copies removed. Native fixture
+generation only, not browser artwork proof. Superseded v2 cache10,435,313B
+verified/removed; source/reports remain reproducible.41focused/lint/TypeScript
+PASS, including retained-lifecycle/user-decision regression guards. Real browser
+artwork+extended-tag interplay remains next; fixture generation is not that proof.
+
 V3 actual build40106367463/b450fd9 confirmed live15:19:02Z, started15:18:26Z;
 expected next check~15:27Z. Source8849c12 pushed,37focused/native/lint/TypeScript
 PASS. Actual compile/browser FLAC ordering repair still UNVERIFIED; same fixed
