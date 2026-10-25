@@ -1,0 +1,334 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "191c3f3a63f1ae2ff4aead2482c4e03a1ceff73d",
+  "status": "passed-selected-small-private-cases-not-promotion",
+  "scope": "three changed error-explanation jobs only: native cover/text field rejections and same-page exact recovery; prior exact4096 output not replayed; not byte-budget/stress/public acceptance",
+  "publicAcceptance": false,
+  "fullMetadataAcceptance": false,
+  "archive": {
+    "path": "outputs/reports/2026-10-25T10-20-28.689Z-audio-metadata-production-runtime.json.gz",
+    "bytes": 22365,
+    "sha256": "e7bc52260bbfc02aff74ab9aa80cfa684906837b9aaeab4f33ab976291feac30",
+    "restoredBytes": 132329,
+    "restoredSha256": "c76ad33bb360778c009edfa562f0298103007fb6d24d856468798e7b384d9686"
+  },
+  "sourcePins": 38,
+  "artifactManifestSha256": "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c",
+  "diskProof": {
+    "status": "exact-browser-canary-independently-found-on-disk",
+    "browserBytes": 64,
+    "physicalBytes": 64,
+    "sha256": "601a2e88083058218e89cf4052664d5919d55fbcc0e3597ad6aaf86dab89cc81",
+    "physicalFile": "work\\audio-metadata-production-4saqBv\\chrome-profile\\Default\\File System\\000\\t\\00\\00000001",
+    "profileDirectory": "work\\audio-metadata-production-4saqBv\\chrome-profile",
+    "inspectedEntries": 5,
+    "maximumReadBytes": 65,
+    "provesThisContextOpfsBacking": true,
+    "provesConversionAcceptance": false,
+    "canaryRemovedInFinally": true
+  },
+  "memory": {
+    "scope": "selected-small-case lifecycle only, not stress acceptance",
+    "limitMiB": 250,
+    "intervalMs": 100,
+    "peak": {
+      "sequence": 424,
+      "timestamp": "2026-10-25T10:21:29.3760193Z",
+      "phase": "case-0",
+      "privateBytes": 461881344,
+      "rssBytes": 738009088,
+      "nativeElapsedMs": 13.1021,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 10276,
+          "parentPid": 35556,
+          "createdAt": "2026-10-25T10:20:42.1742547Z",
+          "creationFileTime": "134373972421742547",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8163328,
+          "rssBytes": 18677760
+        },
+        {
+          "pid": 13844,
+          "parentPid": 35556,
+          "createdAt": "2026-10-25T10:20:42.1427031Z",
+          "creationFileTime": "134373972421427031",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 141991936,
+          "rssBytes": 165761024
+        },
+        {
+          "pid": 15680,
+          "parentPid": 35556,
+          "createdAt": "2026-10-25T10:20:42.2516017Z",
+          "creationFileTime": "134373972422516017",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 192188416,
+          "rssBytes": 241201152
+        },
+        {
+          "pid": 23580,
+          "parentPid": 35556,
+          "createdAt": "2026-10-25T10:20:42.2158066Z",
+          "creationFileTime": "134373972422158066",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 38510592,
+          "rssBytes": 81821696
+        },
+        {
+          "pid": 35556,
+          "parentPid": 26944,
+          "createdAt": "2026-10-25T10:20:41.9703763Z",
+          "creationFileTime": "134373972419703763",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 49750016,
+          "rssBytes": 146776064
+        },
+        {
+          "pid": 35632,
+          "parentPid": 35556,
+          "createdAt": "2026-10-25T10:20:41.9971511Z",
+          "creationFileTime": "134373972419971511",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2539520,
+          "rssBytes": 10358784
+        },
+        {
+          "pid": 36136,
+          "parentPid": 35556,
+          "createdAt": "2026-10-25T10:20:42.1481173Z",
+          "creationFileTime": "134373972421481173",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 13676544,
+          "rssBytes": 41631744
+        },
+        {
+          "pid": 43536,
+          "parentPid": 35556,
+          "createdAt": "2026-10-25T10:21:02.6546255Z",
+          "creationFileTime": "134373972626546255",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 15060992,
+          "rssBytes": 31780864
+        }
+      ]
+    },
+    "incrementalPrivateMiB": 206.19921875,
+    "validSamples": 472,
+    "unavailableSamples": 0,
+    "fullHistoryInLosslessJournal": true
+  },
+  "memoryObserverOwnership": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 0,
+    "proofs": [],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false
+  },
+  "cases": [
+    {
+      "name": "flac-to-opus-repeated-values-png-budget-cover-cover4096",
+      "status": "passed-private-metadata-field-rejection-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 1145,
+      "metadataFailure": "picture-fields",
+      "metadataFailureProof": {
+        "status": "passed-private-metadata-field-rejection-and-cleanup",
+        "kind": "picture-fields",
+        "noRetainedPartials": true,
+        "workerRecovered": true,
+        "nativeLimitUnchanged": true,
+        "outputAcceptance": false,
+        "publicAcceptance": false
+      },
+      "metadataErrorVisible": true,
+      "failures": [],
+      "interruption": null,
+      "storageBefore": [],
+      "storageAfter": [],
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus-repeated-values-text4097",
+      "status": "passed-private-metadata-field-rejection-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 783,
+      "metadataFailure": "text-fields",
+      "metadataFailureProof": {
+        "status": "passed-private-metadata-field-rejection-and-cleanup",
+        "kind": "text-fields",
+        "noRetainedPartials": true,
+        "workerRecovered": true,
+        "nativeLimitUnchanged": true,
+        "outputAcceptance": false,
+        "publicAcceptance": false
+      },
+      "metadataErrorVisible": true,
+      "failures": [],
+      "interruption": null,
+      "storageBefore": [],
+      "storageAfter": [],
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus-repeated-values-png-budget-cover-metadata-recovery",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 208,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-4saqBv/chrome-profile/Default/File System/000/t/00/00000004",
+        "logicalBytes": 5633796,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "3940649680036179",
+          "size": "5633796",
+          "birthtimeNs": "1792923691101772000",
+          "mtimeNs": "1792923691267039000"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "136a4c00d8981f8a5e7a33da48ae769955e371d3bd404ba0c1cac92c4da7dddf"
+          },
+          {
+            "offset": 2814850,
+            "bytes": 4096,
+            "sha256": "6d239f9af0681737775d330d43339e20f6588fb6154b061e937b4eafa66aa65b"
+          },
+          {
+            "offset": 5629700,
+            "bytes": 4096,
+            "sha256": "41e5ab10f15e586915167030f28ccd41e209661d8e0ecfc9f23b6860a3598814"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "metadataFailure": null,
+      "samePageMetadataRecovery": {
+        "bothNativeRejectionsPassed": true,
+        "exactBoundaryIncludedInThisRun": false,
+        "noPageOrContextRecreation": true,
+        "noStaleErrorOrWarning": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908360,
+        "psnrDb": 66.16825969015325,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8386388f4a65fdeac269a12b9cfa6224a4673656dfebfaa21c91c4bbd2e153c2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 5633796,
+      "outputSha256": "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 1023,
+        "height": 1023,
+        "bytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "pictureRole": "Cover (front)",
+        "description": "Couverture maximale café — 音楽",
+        "rgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true,
+        "decodedRgbaSha256": "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba"
+      },
+      "streamingPictureInspection": {
+        "type": 3,
+        "mime": "image/png",
+        "description": "Couverture maximale café — 音楽",
+        "width": 1023,
+        "height": 1023,
+        "depth": 0,
+        "colors": 0,
+        "imageBytes": 4194304,
+        "sha256": "82018fd4354618bc019a1ca8ab9b4195b56ed477f976f6337b6d7e53cbcaf37f",
+        "encodedBytes": 5592508,
+        "readBytes": 5617639,
+        "maximumReadBytes": 65025,
+        "pages": 88,
+        "maximumBase64ChunkBytes": 16384,
+        "maximumDecodedChunkBytes": 12288,
+        "pageBufferBytes": 65307,
+        "completePacketOrImageBufferAllocated": false,
+        "textBytes": 800
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    }
+  ],
+  "losslessJournal": {
+    "file": "output/playwright/2026-10-25T10-20-28.689Z-audio-fidelity-memory.ndjson.gz",
+    "records": 472,
+    "sha256": "1662480c2ba719feaf9f2ad8b2b5e1adbb6cd99927f6a6a321b0eef82a7821ce",
+    "archiveSha256": "e8f45ce1911afcdadfa94d240f78a42bee6ea6b472a5b166d8aebbb592a9bd88",
+    "complete": true
+  },
+  "failures": [],
+  "network": {
+    "observedRequests": 20,
+    "forbidden": [],
+    "nativeGlueRequests": 3,
+    "nativeWasmRequests": 3
+  },
+  "cleanup": {
+    "allRecordedBirthsAbsent": true,
+    "publishedAssetsNeverChanged": true,
+    "stagedPrivateAssetsRestored": true,
+    "ownedProfileFixturesOutputsRemoved": true
+  },
+  "protectedOriginalUnchanged": true
+}

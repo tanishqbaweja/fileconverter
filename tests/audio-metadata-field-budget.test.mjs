@@ -93,3 +93,46 @@ test("first real gate stays FAILED for wrong expected Ogg rejection label, while
   const wrapper = await readFile("media/ffmpeg/audio-comment-wrapper-candidate.mjs", "utf8");
   assert.match(wrapper, /Bounded Ogg stream metadata copy failed/);
 });
+
+test("changed three-job gate proves visible precise errors, empty storage and exact same-page recovery without replaying the closed boundary", async () => {
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const receipt = JSON.parse(await readFile("evidence/2026-10-25T10-20-28.689Z-audio-metadata-fidelity-result.json"));
+  assert.equal(receipt.status, "passed-selected-small-private-cases-not-promotion");
+  assert.equal(receipt.publicAcceptance, false); assert.equal(receipt.fullMetadataAcceptance, false);
+  assert.equal(receipt.sourcePins, 38); assert.equal(receipt.cases.length, 3);
+  const archive = await readFile(receipt.archive.path); assert.equal(sha(archive), receipt.archive.sha256);
+  const raw = gunzipSync(archive, { maxOutputLength: 1048576 }); assert.equal(sha(raw), receipt.archive.restoredSha256);
+  const report = JSON.parse(raw);
+  assert.equal(report.nativeConversionUsed, false); assert.equal(report.headedCoverage, false);
+  assert.equal(report.sources["lib/audio-metadata-budget-error.ts"], sha(await readFile("lib/audio-metadata-budget-error.ts")));
+  assert.equal(receipt.memory.incrementalPrivateMiB, 206.19921875);
+  assert.equal((report.memory.peak.privateBytes - report.blankBaseline.privateBytes) / 1048576, receipt.memory.incrementalPrivateMiB);
+  assert.equal(receipt.memory.validSamples, 472); assert.equal(receipt.memory.unavailableSamples, 0);
+  for (const [index, kind] of ["picture-fields", "text-fields"].entries()) {
+    const row = report.cases[index];
+    assert.equal(row.status, "passed-private-metadata-field-rejection-case");
+    assert.equal(row.metadataErrorVisible, true);
+    assert.match(row.browserState.error, /^The tags and cover exceed a bounded metadata limit/);
+    validateMetadataFieldBudgetFailure(kind, row.browserState, { storageBefore: row.storageBefore, storageAfter: row.storageAfter });
+  }
+  assert.equal(report.cases[0].browserState.metrics.peakWasmMemoryBytes, 83886080);
+  assert.equal(report.cases[1].browserState.metrics.peakWasmMemoryBytes, 33554432);
+  const recovery = report.cases[2];
+  assert.equal(recovery.status, "passed-small-private-fidelity-and-metadata-case");
+  assert.deepEqual(recovery.samePageMetadataRecovery, { bothNativeRejectionsPassed: true, exactBoundaryIncludedInThisRun: false,
+    noPageOrContextRecreation: true, noStaleErrorOrWarning: true });
+  assert.equal(recovery.browserState.error, null); assert.deepEqual(recovery.browserState.warnings, []);
+  assert.equal(recovery.output.sha256, "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3");
+  assert.equal(recovery.fidelity.samples, 96000); assert.ok(recovery.fidelity.psnrDb >= 60);
+  assert.equal(recovery.artwork.bytes, 4194304); assert.equal(recovery.physicalValidation.convertedCopyCreated, false);
+  assert.equal(recovery.browserState.metrics.peakWasmMemoryBytes, 33554432);
+  assert.ok(report.cases.every(row => row.disposableOutputRemoved));
+  assert.deepEqual(receipt.network.forbidden, []); assert.ok(Object.values(receipt.cleanup).every(Boolean));
+  assert.equal(receipt.protectedOriginalUnchanged, true); assert.equal(report.processCleanup.length, 15);
+  const journal = await readFile(receipt.losslessJournal.file); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  assert.equal(sha(gunzipSync(journal, { maxOutputLength: 8 * 1048576 })), receipt.losslessJournal.sha256);
+  assert.equal(report.screenshots.length, 3);
+  for (const screenshot of report.screenshots) {
+    assert.equal(screenshot.headedCoverage, false); assert.equal(sha(await readFile(screenshot.path)), screenshot.sha256);
+  }
+});

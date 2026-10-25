@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-25 post-field-gate regression:123focused tests across26files PASS,
+changed-source lint/TypeScript/diff-check PASS. Retained regressions authenticate
+both the failed first gate and changed passing run, raw/journal/screenshot
+hashes, full-tree formula, actual heaps and exact recovered output. No expensive
+conversion replay for these source/evidence checks.
+
+2026-10-25 metadata-field rejection/recovery10-20-28.689Z PASS3 changed jobs:
+both native field limits visibly explained; zero output/empty storage/recovered
+worker, then SAME page exact5633796B control/25tags/repeats/4MiB pixels/96kPCM
+66.1683dB. Whole-tree206.19921875MiB/472valid0missing, heaps80/32/32MiB<=96.
+38pins/15owned process births gone/no network leaks/original unchanged/owned
+scratch cleanup PASS. All3headless screenshots reviewed.4096 success NOT
+replayed; first failed aggregate retained. Small PRIVATE count gate only,
+not exact2MiB byte-boundary/stress/public/full metadata acceptance.
+
 2026-10-25 field-budget10-10-43.561Z aggregate FAILED: exact4096 incl4MiB
 cover PASS (all4068 added fields/order/25canonical/repeats/pixels/PCM), actual
 88MiB Wasm/221.3046875MiB whole-tree/505valid0missing. Both over-limit inputs

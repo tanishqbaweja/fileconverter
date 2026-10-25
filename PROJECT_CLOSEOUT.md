@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Changed field-limit rejection/recovery10-20-28.689Z PASS3: visible precise
+metadata errors/zero partials/worker recovery, then exact control in SAME page.
+206.1992MiB/472valid0missing,38pins,15owned births absent, full cleanup and
+original hash PASS. Prior4096 success NOT replayed; failed first aggregate stays
+failed. SMALL PRIVATE field count gate closed via combined evidence. Next:
+exact2MiB native dictionary-byte boundary (distinct from serialized framing),
+then remaining B05 controls/coverage; no public promotion or full54 completion.
+
 First field gate10-10-43.561Z FAILED on expected-label mismatch, not silent
 loss: exact4096 fields incl4MiB image PASS/all4068 added fields/full controls;
 88MiB actual heap/221.3047MiB full-tree/505valid0missing. Both limit errors

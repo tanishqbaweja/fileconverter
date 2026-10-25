@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-10-25 field-gate closeout source/evidence regression123tests/26files,
+lint/TypeScript/diff-check PASS. Portable CI to run on pushed evidence commit;
+not a native rebuild or large-profile/full-browser-matrix acceptance.
+
+2026-10-25 changed rejection/recovery gate10-20-28.689Z PASS (191c3f3):
+ONLY cover4096/text4097 rejection +same-page valid recovery; prior4096 total
+boundary not replayed. Both exact native causes now visibly explained as
+metadata limits, zero output/empty OPFS/worker recovered. Final output5633796B
+SHAe00860de... exact control;25tags/repeats/4MiB image/decoded pixels/all96kPCM
+66.1683dB PASS. Full normal-Chrome tree206.19921875MiB/472valid0missing;
+actual heaps80/32/32MiB, unchanged96MiB maximum.38source pins; no native
+conversion/output copy/privacy violations.15owned births absent; original
+test.mkv hash and staged public assets unchanged; all disposable data removed.
+Three headless screenshots reviewed. Combined with first run's exact4096 case,
+SMALL PRIVATE field-count boundary/rejections/recovery is closed; first aggregate
+stays FAILED. Exact2MiB text-byte boundary, broad B05 and full54 remain OPEN.
+
 2026-10-25 first field-budget run10-10-43.561Z FAILED, retained unchanged:
 exact4095text+1cover4096 output PASS with ALL4068 added Unicode values/order,
 25canonical/repeats/4MiB image/pixels/96kPCM; actual88MiB Wasm (<=96MiB max),
