@@ -1,0 +1,513 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "43b390c5fd8dc7a4d700a996df092cd80367ecec",
+  "status": "passed-selected-small-private-cases-not-promotion",
+  "scope": "eight NEW Ogg/Opus destination cover cases with PNG/JPEG, 25 tags and ordered values; Opus-to-Vorbis uses the existing explicit higher selection, not a default-quality repair or speed proof",
+  "publicAcceptance": false,
+  "fullMetadataAcceptance": false,
+  "archive": {
+    "path": "outputs/reports/2026-10-25T03-16-02.860Z-audio-metadata-production-runtime.json.gz",
+    "bytes": 25281,
+    "sha256": "c5eb14775d0d073f34109cec03c75b561951d8eb2df4c43d7b8daa902302000c",
+    "restoredBytes": 217844,
+    "restoredSha256": "e1d766261cb6ae240f5e41b95cf9758b06acb3d0d5d33bbe302d5f2385a6c402"
+  },
+  "sourcePins": 23,
+  "artifactManifestSha256": "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c",
+  "diskProof": {
+    "status": "exact-browser-canary-independently-found-on-disk",
+    "browserBytes": 64,
+    "physicalBytes": 64,
+    "sha256": "1539b3bb1876d9fb4a07179aeb78d530c7ea6447b3302c8e91db138897885184",
+    "physicalFile": "work\\audio-metadata-production-CythXw\\chrome-profile\\Default\\File System\\000\\t\\00\\00000001",
+    "profileDirectory": "work\\audio-metadata-production-CythXw\\chrome-profile",
+    "inspectedEntries": 5,
+    "maximumReadBytes": 65,
+    "provesThisContextOpfsBacking": true,
+    "provesConversionAcceptance": false,
+    "canaryRemovedInFinally": true
+  },
+  "memory": {
+    "scope": "selected-small-case lifecycle only, not stress acceptance",
+    "limitMiB": 250,
+    "intervalMs": 100,
+    "peak": {
+      "sequence": 412,
+      "timestamp": "2026-10-25T03:17:05.3705624Z",
+      "phase": "case-5",
+      "privateBytes": 481165312,
+      "rssBytes": 729956352,
+      "nativeElapsedMs": 19.1521,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 17648,
+          "parentPid": 27356,
+          "createdAt": "2026-10-25T03:16:18.6438793Z",
+          "creationFileTime": "134373717786438793",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 167342080,
+          "rssBytes": 191729664
+        },
+        {
+          "pid": 22756,
+          "parentPid": 27356,
+          "createdAt": "2026-10-25T03:16:18.7846880Z",
+          "creationFileTime": "134373717787846880",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 36278272,
+          "rssBytes": 78987264
+        },
+        {
+          "pid": 26240,
+          "parentPid": 27356,
+          "createdAt": "2026-10-25T03:16:18.3811852Z",
+          "creationFileTime": "134373717783811852",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2543616,
+          "rssBytes": 9842688
+        },
+        {
+          "pid": 27356,
+          "parentPid": 16732,
+          "createdAt": "2026-10-25T03:16:18.2724087Z",
+          "creationFileTime": "134373717782724087",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 48947200,
+          "rssBytes": 145072128
+        },
+        {
+          "pid": 32812,
+          "parentPid": 27356,
+          "createdAt": "2026-10-25T03:16:36.0910102Z",
+          "creationFileTime": "134373717960910102",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 17833984,
+          "rssBytes": 34205696
+        },
+        {
+          "pid": 33368,
+          "parentPid": 27356,
+          "createdAt": "2026-10-25T03:16:18.8555515Z",
+          "creationFileTime": "134373717788555515",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 186048512,
+          "rssBytes": 210219008
+        },
+        {
+          "pid": 37148,
+          "parentPid": 27356,
+          "createdAt": "2026-10-25T03:16:18.6549687Z",
+          "creationFileTime": "134373717786549687",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 14016512,
+          "rssBytes": 41586688
+        },
+        {
+          "pid": 44760,
+          "parentPid": 27356,
+          "createdAt": "2026-10-25T03:16:18.6770512Z",
+          "creationFileTime": "134373717786770512",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8155136,
+          "rssBytes": 18313216
+        }
+      ]
+    },
+    "incrementalPrivateMiB": 230.7890625,
+    "validSamples": 455,
+    "unavailableSamples": 0,
+    "fullHistoryInLosslessJournal": true
+  },
+  "cases": [
+    {
+      "name": "flac-to-ogg-repeated-values-png-cover",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 705,
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 398,
+        "squaredError": 101218062,
+        "psnrDb": 60.0791308524768,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "d32db08260b14e299f8f0d6c193d0d8fc7fb5487ca38408b84af5ec5f3348852",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 8449,
+      "outputSha256": "ccec02f0a9e676197e9661df39a69c3d69605f8b25aa0f331b6c6d20f97d31f4",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 64,
+        "height": 64,
+        "bytes": 178,
+        "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+        "pictureRole": "Cover (front)",
+        "description": "表紙 — Front cover",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-ogg-repeated-values-mjpeg-cover",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 343,
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 398,
+        "squaredError": 101218062,
+        "psnrDb": 60.0791308524768,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "d32db08260b14e299f8f0d6c193d0d8fc7fb5487ca38408b84af5ec5f3348852",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 8533,
+      "outputSha256": "b40e812790fde36f95aa0a3cc19a1114a2f783aecbcd3ff669409e966b0af43f",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "mjpeg",
+        "width": 64,
+        "height": 64,
+        "bytes": 230,
+        "sha256": "c8529c5f01e676d41aa3da15ca5948b12a40f2aafb6aad09b3b5048b6f77ded9",
+        "pictureRole": "Cover (back)",
+        "description": "Pochette arrière café — 音楽",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus-repeated-values-png-cover",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 163,
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908360,
+        "psnrDb": 66.16825969015325,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8386388f4a65fdeac269a12b9cfa6224a4673656dfebfaa21c91c4bbd2e153c2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 17360,
+      "outputSha256": "fa99d5254cc40bb3d9dc1b8f2f745477f5c5828916b83b7ef7db64d1e1092d7f",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 64,
+        "height": 64,
+        "bytes": 178,
+        "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+        "pictureRole": "Cover (front)",
+        "description": "表紙 — Front cover",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus-repeated-values-mjpeg-cover",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 310,
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908360,
+        "psnrDb": 66.16825969015325,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8386388f4a65fdeac269a12b9cfa6224a4673656dfebfaa21c91c4bbd2e153c2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 17444,
+      "outputSha256": "148e2b4a0e668317f189bd8ce5ee5fe4d049a67a2eedd484819202af6ac99618",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "mjpeg",
+        "width": 64,
+        "height": 64,
+        "bytes": 230,
+        "sha256": "c8529c5f01e676d41aa3da15ca5948b12a40f2aafb6aad09b3b5048b6f77ded9",
+        "pictureRole": "Cover (back)",
+        "description": "Pochette arrière café — 音楽",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "ogg-to-opus-repeated-values-png-cover",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 977,
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 205,
+        "squaredError": 29594128,
+        "psnrDb": 65.41965555081863,
+        "sourceSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+        "outputSha256": "1420f8dfc14e29d3f4154760f7f32387b5e2e1e875d5ace914b327be47059ae2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 17359,
+      "outputSha256": "de99ecdcc86a6da63415af48434c7a2fe7b7aea161dcd7588241e6e6b50e3ad9",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 64,
+        "height": 64,
+        "bytes": 178,
+        "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+        "pictureRole": "Cover (front)",
+        "description": "表紙 — Front cover",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "ogg-to-opus-repeated-values-mjpeg-cover",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 164,
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 205,
+        "squaredError": 29594128,
+        "psnrDb": 65.41965555081863,
+        "sourceSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+        "outputSha256": "1420f8dfc14e29d3f4154760f7f32387b5e2e1e875d5ace914b327be47059ae2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 17443,
+      "outputSha256": "4b214e0baf8194643f8621be7fab4d9728cc0e8d499b6d07d24353307b004f59",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "mjpeg",
+        "width": 64,
+        "height": 64,
+        "bytes": 230,
+        "sha256": "c8529c5f01e676d41aa3da15ca5948b12a40f2aafb6aad09b3b5048b6f77ded9",
+        "pictureRole": "Cover (back)",
+        "description": "Pochette arrière café — 音楽",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-ogg-repeated-values-png-cover-higher",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "higher",
+      "browserElapsedMs": 348,
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 145,
+        "squaredError": 80654871,
+        "psnrDb": 61.06540502039469,
+        "sourceSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+        "outputSha256": "422a6ab44fdf0c223250f00fe76ce21c72e8a317f32a310812086f47419f777f",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 11843,
+      "outputSha256": "a7c954b7b54cd9512735f22eb31c442205d80fe88c5c2f93448ac9e0ceb70167",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 64,
+        "height": 64,
+        "bytes": 178,
+        "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+        "pictureRole": "Cover (front)",
+        "description": "表紙 — Front cover",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-ogg-repeated-values-mjpeg-cover-higher",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "higher",
+      "browserElapsedMs": 192,
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 145,
+        "squaredError": 80654871,
+        "psnrDb": 61.06540502039469,
+        "sourceSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+        "outputSha256": "422a6ab44fdf0c223250f00fe76ce21c72e8a317f32a310812086f47419f777f",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 11927,
+      "outputSha256": "0f01fcdc37070b8ceda7c19bc141a871e1e3e0f5cb52209325e2adfd2dc74a7c",
+      "tagsPreserved": 25,
+      "repeatedValues": [
+        "CUSTOM_REPEAT=Premier 音楽",
+        "CUSTOM_REPEAT=Deuxième café"
+      ],
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "mjpeg",
+        "width": 64,
+        "height": 64,
+        "bytes": 230,
+        "sha256": "c8529c5f01e676d41aa3da15ca5948b12a40f2aafb6aad09b3b5048b6f77ded9",
+        "pictureRole": "Cover (back)",
+        "description": "Pochette arrière café — 音楽",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "disposableOutputRemoved": true
+    }
+  ],
+  "losslessJournal": {
+    "file": "output/playwright/2026-10-25T03-16-02.860Z-audio-fidelity-memory.ndjson.gz",
+    "records": 455,
+    "sha256": "053d98c089ef0df60f01df14e36c6c70d95afbf81aac70e5ad8b888b94b9b8ae",
+    "archiveSha256": "61ede7998854475825fd0e99a0b21b60c1aa49f0b2bb170c727b7e3900e87a39",
+    "complete": true
+  },
+  "failures": [],
+  "network": {
+    "observedRequests": 35,
+    "forbidden": [],
+    "nativeGlueRequests": 8,
+    "nativeWasmRequests": 8
+  },
+  "cleanup": {
+    "allRecordedBirthsAbsent": true,
+    "publishedAssetsNeverChanged": true,
+    "stagedPrivateAssetsRestored": true,
+    "ownedProfileFixturesOutputsRemoved": true
+  },
+  "protectedOriginalUnchanged": true
+}

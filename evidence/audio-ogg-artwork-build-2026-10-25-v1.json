@@ -1,6 +1,6 @@
 {
   "recordedAt": "2026-10-25T03:05:42.016Z",
-  "status": "build-confirmed-live",
+  "status": "compiled-artifact-audited-selected-small-browser-cases-passed-not-promotion",
   "branch": "codex/audio-ogg-artwork-20261025-v1",
   "parent": "879dcbe9d762ca7fd6ce0d8eb9416466ed675ade",
   "commit": "f80c504b208acc194159f71f393ceae1efd30dbc",
@@ -20,18 +20,44 @@
     "elapsedSeconds": 497
   },
   "estimatedBuildMinutes": 9,
-  "browserConversions": 0,
+  "browserConversions": 8,
+  "browserQualification": {
+    "receipt": "evidence/2026-10-25T03-16-02.860Z-audio-metadata-fidelity-result.json",
+    "selectedCasesPassed": 8,
+    "incrementalPrivateMiB": 230.7890625,
+    "validSamples": 455,
+    "unavailableSamples": 0,
+    "automaticVorbisQualityRepaired": false,
+    "fullArtworkBudgetStressAcceptance": false,
+    "publicAcceptance": false
+  },
   "publicAcceptance": false,
   "noDocker": true,
   "dispatchedAt": "2026-10-25T03:05:43.773Z",
-  "lastObservedAt": "2026-10-25T03:06:31.944Z",
+  "lastObservedAt": "2026-10-25T03:15:25.145Z",
   "run": {
-    "conclusion": "",
+    "conclusion": "success",
     "createdAt": "2026-10-25T03:05:46Z",
     "databaseId": 40156938341,
     "headSha": "f80c504b208acc194159f71f393ceae1efd30dbc",
-    "status": "in_progress",
-    "updatedAt": "2026-10-25T03:05:50Z",
+    "status": "completed",
+    "updatedAt": "2026-10-25T03:10:56Z",
     "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40156938341"
+  },
+  "collected": {
+    "directory": "work/audio-ogg-artwork-40156938341",
+    "bytes": 10447398,
+    "manifestSha256": "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c",
+    "buildSourcePins": 56,
+    "artifactPins": 15,
+    "upstream": {
+      "originalSha256": "a11ec3562e733f21565c491ab56b7f1d4a6865fc1ddbdc372ed9cb29b13ca7fb",
+      "compiledSha256": "56d2ebdef4c79bbc7174dfb9492e2040066854770f64f8ec096cd53a190e4e15",
+      "sourceEdits": 1,
+      "publicAcceptance": false
+    },
+    "immutableExecutedSourcesVerified": true,
+    "hostedCleanupPassed": true,
+    "publicAcceptance": false
   }
 }

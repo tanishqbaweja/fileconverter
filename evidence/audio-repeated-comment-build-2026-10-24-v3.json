@@ -34,6 +34,17 @@
     "updatedAt": "2026-10-24T15:26:40Z",
     "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40106367463"
   },
+  "supersededReusableToolCleanup": {
+    "removedAt": "2026-10-25T03:18:57.834Z",
+    "directory": "work/audio-repeated-metadata-40106367463",
+    "bytesRemoved": 10439270,
+    "filesVerified": 16,
+    "exactApprovedPathRealpathIdentityAndAllHashesVerified": true,
+    "reason": "Superseded by actual audited Ogg/Opus artwork build40156938341 and eight passing new production cases; closed V3 reports retained",
+    "rebuildCommit": "b450fd980b35ea4342b1a6b63ecee2ca65ace4bc",
+    "protectedOriginalTouched": false,
+    "originalBaselineAndNewReusableToolRetained": true
+  },
   "collected": {
     "directory": "work/audio-repeated-metadata-40106367463",
     "bytes": 10439270,

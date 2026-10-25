@@ -1,5 +1,34 @@
 # Remaining work audit
 
+2026-10-25 actual Ogg/Opus artwork run03-16-02.860Z PASS8/8: four new source/
+destination routes xPNG/JPEG,25tags, two ordered Unicode values, exact image
+bytes plus front/back roles/Unicode descriptions and independent image decode.
+All96,000 PCM samples compared; decoded source AND output hashes exactly match
+earlier matched-setting controls (metadata addition does not alter audio).
+Full-tree small lifecycle230.7890625MiB/455valid/0missing,32MiB observed Wasm,
+one pending op, bounded queues/reads/writes; disk/privacy/original fullSHA/all
+16recorded owned births gone/media removed/stage restore PASS. Raw217,844B
+retained25,281B gzip plus lossless journal/eight screenshots; last reviewed
+headlessly. Audited actual build40156938341/f80c504 has56sources/15artifacts/
+ten reversible wrapper edits plus upstream parser; unchanged32/96MiB limits.
+CLOSE only these8small private cover cases. Automatic Opus-to-Vorbis quality
+still FAILED historically; two new such cases explicitly request higher and
+do NOT repair automatic. No speed/stress/full-artwork/promotion/full54 claim.
+Superseded V3 cache10,439,270B removed after exact path/identity/16file/hash
+verification; reports/rebuild source retained. New tool and original baseline
+remain reusable. CI40157289001/43b390c SUCCESS. Next B05 large artwork/text
+budgets, allocation optimization under matched settings, recovery/stress,
+other representable destinations and automatic-quality policy remain OPEN.
+57focused tests/lint/diff checks PASS; retained evidence recomputes all455
+process totals and unchanged baseline formula, authenticates raw/journal/image
+hashes and asserts matched-setting decoded PCM equality. Next large-artwork
+gate needs a separate streaming picture-aware Ogg comment inspector: existing
+text-only2MiB/64page reader must NOT simply have its text limits raised to fit
+base64 pictures. Native4MiB serializer allocation proof is not that browser
+budget proof. Keep current56 native build sources/cache unchanged as the
+matched baseline before investigating lower-copy serialization. No fastest
+conversion or large-cover memory claim is made from tiny cases.
+
 2026-10-25 build40156938341/f80c504 confirmed live03:06:31Z, dispatched
 03:05:43Z from879dcbe; expected observation around03:14:45Z (prior8-minute
 builds). No redispatch on timeout. V3/previous combined gate CI40156422119

@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+2026-10-25 actual new Ogg/Opus cover browser gate03-16-02.860Z PASS8/8:
+FLAC-to-Ogg/Opus, Ogg-to-Opus, Opus-to-Ogg (explicit higher on last route),
+PNG/JPEG covers,25tags/two ordered Unicode values/complete96,000sample PCM.
+Exact complete image packet SHA/size/role/Unicode description/decode PASS.
+Every decoded output hash equals earlier same-source/same-setting controls.
+Small full-tree230.7890625MiB/455valid/0missing; observed Wasm32MiB, maxoneop,
+bounded reads/writes/queues, privacy/disk/protected original/16owned births
+gone/media cleanup/stage restore PASS. Raw217,844B retained25,281B gzip,
+lossless native journal/eight headless images retained (last reviewed).
+Actual private build40156938341/f80c504 SUCCESS,56source/15artifact audit,
+ten scoped edits/upstream parser and unchanged32/96MiB memory limits PASS.
+CI40157289001/43b390c SUCCESS. Superseded V3 tool10,439,270B hash/identity-
+verified/removed; compact proof/source retained, current/baseline tools kept.
+No public promotion/full-artwork/stress/fastest proof: automatic Vorbis failed
+gate stays failed; existing explicit higher setting used, never relabelled.
+57focused tests/lint/diff checks PASS. New retained test authenticates complete
+455-row journal/process sums/formula and matched decoded control hashes. Large
+Ogg-cover budget proof still needs picture-aware bounded inspection without
+relaxing the2MiB text policy; native maximum allocation test is not browser proof.
+
 2026-10-25 changed fixture/inspection gates PASS:55focused tests then25changed
 focused tests/lint, TypeScript/diff checks. FLAC comment inspector now skips
 real4MiB non-text payload with<128bytes read; unchanged2MiB text/128header/

@@ -6,6 +6,25 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Actual new Ogg/Opus cover gate03-16-02.860Z PASS8/8: exact PNG/JPEG bytes,
+front/back role/Unicode description,25fields/two ordered values and96,000PCM
+samples. All decoded outputs equal earlier matched-setting controls. Small
+full-tree230.7890625MiB/455valid/0missing,32MiB observed Wasm, boundedIO/queue/
+oneop, privacy/disk/original/16owned births gone/media cleanup/restore PASS.
+Actual build40156938341/f80c504 audited56source/15artifact/ten wrapper edits,
+unchanged32-96MiB heap. Compact25,281B raw archive/journal/headless images
+retained. CLOSE these8private small cases only; no unchanged replay/promotion.
+Automatic Vorbis failure remains OPEN; two Opus-to-Vorbis cover cases use the
+existing explicit higher control. Next large artwork/text budgets, matched
+allocation/speed optimization, recovery/stress and other representable covers.
+V3 cache10,439,270B verified/removed; current engine and original baseline kept.
+CI40157289001/43b390c SUCCESS; full original54/release gates remain OPEN.
+57focused/lint/diff checks PASS. Next implement separate streaming picture-aware
+Ogg comment inspection before large-cover gate; do NOT raise text-only2MiB/
+64page limits to make5.6MiB base64 images fit. Current56 build sources/cache are
+the reusable matched baseline for later lower-copy serializer measurements.
+No genuine large-image/browser budget or fastest claim from tiny-input timing.
+
 Build40156938341/f80c504 live03:06:31Z, dispatched03:05:43Z; next observation
 ~03:14:45Z, no redispatch. Eight genuinely NEW Ogg/Opus cover cases prepared
 with front/back roles/Unicode descriptions and unchanged image/PCM/memory
