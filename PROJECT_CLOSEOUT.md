@@ -6,6 +6,22 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Actual artwork exclusions +same-page recovery03-45-04.486Z PASS3/3, not pending:
+valid4MiB+1 and4097x1 inputs, exact visible warning/audio-only output,25tags/
+two Unicode values/96,000 full audio samples; accepted4MiB recovery keeps
+identical full output/image/pixel hashes to prior boundary, no stale warning.
+Small full-tree195.12890625MiB/474valid/0missing,32MiB Wasm/boundedIO/oneop,
+disk/privacy/original/all15owned births gone/media+profile cleanup/restore
+PASS. Compact21,352B report/journal/three headless images retained (warning
+and recovery viewed). CLOSE this limited gate; no unchanged replay. Metadata
+budgets/failure recovery, cancellation, write-failure, permission/quota,
+repeats/long stress and full B05/release remain OPEN. Native56 source baseline
+unchanged; no rebuild/Chrome exception. ada0ad9 CI40159025806 SUCCESS.
+74focused regression/lint/diff and TypeScript PASS; retained proof authenticates
+474-row native journal/formula and exact warning/image/pixel/PCM/recovery facts.
+Owned scratch independently absent. Next real-pipeline metadata-budget failure,
+cancellation/write failure/recovery and applicable stress/speed gates remain.
+
 Next explicit --artwork-rejection-recovery source ready: valid4MiB+1 byte and
 4097x1 inputs excluded with exact visible limit warning, then accepted4MiB
 cover recovery in the SAME page. Complete tags/PCM/pixels and unchanged native

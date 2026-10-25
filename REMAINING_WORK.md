@@ -1,5 +1,32 @@
 # Remaining work audit
 
+2026-10-25 actual exclusion/recovery03-45-04.486Z PASS3/3: valid4MiB+1 byte
+and4097x1 source PNGs independently decoded/hash-verified, deliberately treated
+as out-of-policy INPUTS only. Each browser output has one audio stream/no
+hidden picture, exact visible limit/exclusion warning,25tags/two Unicode
+values/96,000 full PCM samples at66.1683dB. Same-page accepted4MiB recovery
+retains exact image/pixels and identical complete output SHA to earlier
+boundary, with no stale warning. All audio source/output PCM hashes equal
+matched prior control. Small full-tree195.12890625MiB/474valid/0missing,
+32MiB observed Wasm, bounded256KiB reads/65,307B max writes+queue/oneop;
+privacy/physical disk/originalSHA/all15recorded births gone/owned media/profile
+cleanup/stage restore PASS. Raw141,479B ->21,352B gzip plus lossless journal/
+three screenshots; warning and final recovery images reviewed headlessly.
+CLOSE this exclusion-and-following-job gate; no unchanged replay. NOT corrupt
+metadata/entry-byte-budget failure, cancellation, write-failure, permission,
+quota, long repeats/stress/full B05/public/full54 acceptance. Native56 sources
+unchanged/reused, no rebuild or Chrome exception. Priorada0ad9 CI40159025806
+SUCCESS. Next metadata budget/failure/recovery and applicable matched speed/
+allocation/stress work remain open; keep current native baseline unchanged.
+74focused regression/lint/diff and TypeScript checks PASS. Retained-evidence
+test restores/hashes report/journal/images, recomputes all474 process totals/
+unchanged baseline formula, proves real input pixel/PCM fidelity, visible exact
+warnings, zero output pictures and byte-identical accepted recovery. Owned
+scratch absence independently checked. Diagnostic result fields cannot be
+overridden by input objects to claim output/public acceptance. No extra media
+copies retained; next cancellation/write-failure and metadata-budget failures
+must use the real production pipeline, not stand-in native conversions.
+
 2026-10-25 next B05 exclusion/recovery gate implemented, actual browser result
 still UNVERIFIED: valid PNG at4MiB+1 byte and valid4097x1 PNG, both embedded in
 the canonical25-field/repeated-value FLAC source, then original accepted4MiB

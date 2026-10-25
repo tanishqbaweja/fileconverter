@@ -16,7 +16,7 @@ export function validateGeneratedRejectedArtwork(probe, packets, expected) {
   assert.equal(cover.tags.comment, expected.pictureRole); assert.equal(cover.tags.title, expected.description);
   assert.equal(packets.packets.length, 1); const packet = packets.packets[0]; assert.equal(packet.stream_index, cover.index);
   assert.equal(Number(packet.size), expected.bytes); assert.equal(packet.data_hash, "SHA256:" + expected.sha256);
-  return { status: "verified-generated-out-of-budget-input-not-output-acceptance", ...expected, publicAcceptance: false };
+  return { ...expected, status: "verified-generated-out-of-budget-input-not-output-acceptance", publicAcceptance: false };
 }
 export function validateArtworkBudgetExclusion(probe, comments, warnings) {
   assert.equal(probe.streams.length, 1); assert.equal(probe.streams[0].codec_type, "audio");

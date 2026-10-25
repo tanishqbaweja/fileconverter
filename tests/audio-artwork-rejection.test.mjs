@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { inflateSync } from "node:zlib";
+import { inflateSync, gunzipSync } from "node:zlib";
 import { makeOnePixelTooWidePng, makeOneByteOversizedPng } from "../scripts/lib/audio-artwork-rejection-fixture.mjs";
 import { ARTWORK_BUDGET_EXCLUSION_WARNING as warning, validateGeneratedRejectedArtwork, validateArtworkBudgetExclusion } from "../scripts/lib/audio-artwork-rejection-validation.mjs";
 const sha = b => createHash("sha256").update(b).digest("hex");
@@ -33,6 +33,8 @@ test("byte-overflow constructor accepts only the independently validated4MiB inp
 test("out-of-policy input inspection cannot certify an output or widen any converter acceptance threshold", () => {
   const result = validateGeneratedRejectedArtwork(probe(expected), packets(expected), expected);
   assert.equal(result.status, "verified-generated-out-of-budget-input-not-output-acceptance"); assert.equal(result.publicAcceptance, false);
+  const spoofed = validateGeneratedRejectedArtwork(probe(expected), packets(expected), { ...expected, status: "passed-output", publicAcceptance: true });
+  assert.equal(spoofed.status, result.status); assert.equal(spoofed.publicAcceptance, false);
   const wide = { ...expected, width: 4097, height: 1, bytes: 16469, rejectionBoundary: "dimension" };
   assert.equal(validateGeneratedRejectedArtwork(probe(wide), packets(wide), wide).publicAcceptance, false);
   for (const changed of [{ ...expected, bytes: 4194306 }, { ...expected, width: 1024 }, { ...wide, width: 4098 },
@@ -61,4 +63,58 @@ test("same-page browser sequence verifies two real exclusions, visible warnings,
   assert.match(source, /twoPreviousExclusionsPassed: true, noContextOrPageRecreation: true, noStaleExclusionWarning: true/);
   assert.match(source, /compareNativeAudioPcm\(input, output/); assert.match(source, /row.output.tags = validateScopedAudioTags/);
   assert.match(source, /active.peak.privateBytes - report.blankBaseline.privateBytes/); assert.match(source, /await runtime.close\(\)/);
+});
+test("actual limit exclusions and same-page recovery retain all audio/tags, warnings and lossless whole-tree evidence without promotion", async () => {
+  const root = new URL("../", import.meta.url);
+  const receipt = JSON.parse(await readFile(new URL("evidence/2026-10-25T03-45-04.486Z-audio-metadata-fidelity-result.json", root)));
+  assert.equal(receipt.status, "passed-selected-small-private-cases-not-promotion"); assert.equal(receipt.publicAcceptance, false);
+  assert.equal(receipt.fullMetadataAcceptance, false); assert.equal(receipt.cases.length, 3);
+  assert.equal(receipt.artifactManifestSha256, "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c");
+  assert.equal(receipt.memory.incrementalPrivateMiB, 195.12890625); assert.equal(receipt.memory.validSamples, 474);
+  assert.equal(receipt.memory.unavailableSamples, 0); assert.equal(receipt.losslessJournal.complete, true);
+  const archive = await readFile(new URL(receipt.archive.path, root)); assert.equal(sha(archive), receipt.archive.sha256);
+  const raw = gunzipSync(archive, { maxOutputLength: 1048576 }); assert.equal(sha(raw), receipt.archive.restoredSha256);
+  assert.equal(raw.length, receipt.archive.restoredBytes); const report = JSON.parse(raw);
+  for (const field of ["artworkAcceptance", "scalingAcceptance", "headedCoverage", "nativeConversionUsed"]) assert.equal(report[field], false);
+  assert.equal(report.artworkFixtures["flac-png-over-bytes"].artwork.bytes, 4194305);
+  assert.equal(report.artworkFixtures["flac-png-over-dimension"].artwork.width, 4097);
+  for (const [key, fixture] of Object.entries(report.artworkFixtures)) {
+    assert.equal(fixture.sourcePcmUnchanged.exact, true); assert.equal(fixture.artwork.independentImageDecode, true);
+    assert.equal(fixture.artwork.rgbaSha256, fixture.artwork.decodedRgbaSha256);
+    if (key !== "flac-png-budget") { assert.equal(fixture.artwork.status, "verified-generated-out-of-budget-input-not-output-acceptance"); assert.equal(fixture.artwork.publicAcceptance, false); }
+  }
+  const baseline = JSON.parse(await readFile(new URL("evidence/2026-10-25T03-32-37.015Z-audio-metadata-fidelity-result.json", root))).cases[0];
+  for (const [index, row] of receipt.cases.entries()) {
+    assert.equal(row.status, "passed-small-private-fidelity-and-metadata-case"); assert.equal(row.tagsPreserved, 25);
+    assert.equal(row.fidelity.samples, 96000); assert.ok(row.fidelity.psnrDb >= 60);
+    assert.equal(row.fidelity.sourceSha256, baseline.fidelity.sourceSha256); assert.equal(row.fidelity.outputSha256, baseline.fidelity.outputSha256);
+    assert.deepEqual(row.repeatedValues, ["CUSTOM_REPEAT=Premier 音楽", "CUSTOM_REPEAT=Deuxième café"]);
+    assert.deepEqual(row.failures, []); assert.ok(row.disposableOutputRemoved);
+    if (index < 2) {
+      assert.equal(row.exclusionWarningVisible, true); assert.equal(row.artworkExclusion.warning, warning); assert.equal(row.artworkExclusion.outputPictures, 0);
+      assert.equal(report.cases[index].output.probe.streams.length, 1); assert.deepEqual(report.cases[index].binaryComments.pictures, []);
+      assert.equal(row.artwork, undefined); assert.equal(row.outputBytes, 17008);
+    } else {
+      assert.ok(Object.values(row.samePageRecovery).every(Boolean)); assert.deepEqual(report.cases[index].browserState.warnings, []);
+      assert.equal(row.outputSha256, baseline.outputSha256); assert.deepEqual(row.artwork, baseline.artwork);
+      assert.equal(row.streamingPictureInspection.completePacketOrImageBufferAllocated, false);
+    }
+    const metrics = report.cases[index].browserState.metrics; assert.equal(metrics.peakWasmMemoryBytes, 33554432);
+    assert.equal(metrics.peakPendingOperations, 1); assert.equal(metrics.pendingOperations, 0); assert.equal(metrics.queuedBytes, 0);
+    for (const size of [metrics.maxReadChunkBytes, metrics.maxWriteChunkBytes, metrics.peakQueuedBytes]) assert.ok(size <= 262144);
+  }
+  assert.equal(receipt.cases[0].outputSha256, receipt.cases[1].outputSha256);
+  assert.ok(receipt.protectedOriginalUnchanged); assert.ok(Object.values(receipt.cleanup).every(Boolean));
+  assert.equal(receipt.diskProof.provesThisContextOpfsBacking, true); assert.deepEqual(receipt.network.forbidden, []); assert.deepEqual(receipt.failures, []);
+  assert.ok(report.processCleanup.every(p => p.status === "owned-identity-absent"));
+  const journal = await readFile(new URL(receipt.losslessJournal.file, root)); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  const unpacked = gunzipSync(journal, { maxOutputLength: 8 * 1048576 }); assert.equal(sha(unpacked), receipt.losslessJournal.sha256);
+  const samples = unpacked.toString().trim().split("\n").map(line => JSON.parse(line).sample); assert.equal(samples.length, 474);
+  for (const [index, sample] of samples.entries()) {
+    assert.equal(sample.sequence, index + 1); assert.equal(sample.sampleError, null);
+    assert.equal(sample.privateBytes, sample.processes.reduce((n, p) => n + p.privateBytes, 0));
+  }
+  const peak = Math.max(...samples.filter(s => s.phase !== "blank").map(s => s.privateBytes));
+  assert.equal((peak - report.blankBaseline.privateBytes) / 1048576, receipt.memory.incrementalPrivateMiB);
+  for (const screenshot of report.screenshots) assert.equal(sha(await readFile(new URL(screenshot.path, root))), screenshot.sha256);
 });

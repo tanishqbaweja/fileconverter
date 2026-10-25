@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-10-25 actual artwork exclusion/recovery03-45-04.486Z PASS3/3: valid
+4MiB+1 byte and4097x1 PNG inputs have native pixel/hash proof; outputs exclude
+picture with exact visible warning while preserving25tags/two values/full
+96,000sample audio. Following accepted4MiB job in SAME page has no stale
+warning; image/pixels/full output hash equal prior boundary. All decoded audio
+hashes equal automatic control (66.1683dB). Small full-tree195.12890625MiB/
+474valid/0missing,32MiB Wasm, boundedIO/oneop; disk/privacy/original/all15owned
+births gone/media+profile cleanup/stage restore PASS. Raw141,479B retained
+21,352B gzip plus exact journal/three images; warning+recovery images reviewed.
+No native rebuild/public promotion/Chrome change. Close only these limited
+exclusion/recovery cases; metadata budgets/cancel/write-failure/quota/permission/
+long repeats/stress/full54 remain OPEN. ada0ad9 CI40159025806 SUCCESS verified.
+74focused regression/lint/diff and TypeScript PASS. New retained test checks
+all474 full-process sums/formula and raw/journal/image hashes, independently
+decoded source pixels/PCM, exact visible warnings/absent output pictures and
+byte-identical recovery. Owned scratch absence independently checked; generated
+diagnostic status/public flags cannot be overridden into output acceptance.
+
 2026-10-25 new artwork exclusion/recovery source27focused/lint/diff checks
 PASS: real4097x1 PNG decoded/CRC/pixel hash verified in portable unit test;
 one-byte-over constructor accepts only pinned4MiB image and changes ancillary
