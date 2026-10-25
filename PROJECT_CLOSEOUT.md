@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-25
 
+Physical validation09-24-27.551Z PASS7jobs/204.9883MiB/510valid1missing.
+All native full validators unchanged, no output copies; size/three4KiB unique
+logical/physical bindings for7 distinct outputs; backing growth only12,365B
+per measured job. Validator correction, not conversion-speed claim. All owned
+cleanup/original PASS. Next candidate14 IO recovery, then matched new-backend
+bracket if coverage/gates allow. Prior failures remain failed; full goal OPEN.
+
 Diagnostic7job candidate09-17-12.730Z passed240.8164MiB,556valid/0missing;
 earlier failures still constrain repeatability. Exact output-sized ArrayBuffer
 growth during validation export (5,633,796B/job cases1-4, then naturalGC) now

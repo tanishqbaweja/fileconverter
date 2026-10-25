@@ -85,3 +85,42 @@ test("retained diagnostic7job pass proves validation exports retain one output w
   assert.equal((peak - report.blankBaseline.privateBytes) / 1048576, receipt.memory.incrementalPrivateMiB);
   assert.ok(Object.values(receipt.cleanup).every(Boolean)); assert.equal(receipt.protectedOriginalUnchanged, true);
 });
+
+test("actual physical-backed seven-job proof retains every full validator without converted copies and records its unavailable OS sample honestly", async () => {
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const receipt = JSON.parse(await readFile("evidence/2026-10-25T09-24-27.551Z-audio-metadata-fidelity-result.json"));
+  assert.equal(receipt.status, "passed-selected-small-private-cases-not-promotion"); assert.equal(receipt.publicAcceptance, false);
+  assert.equal(receipt.memory.incrementalPrivateMiB, 204.98828125); assert.equal(receipt.memory.validSamples, 510);
+  assert.equal(receipt.memory.unavailableSamples, 1); assert.equal(receipt.sourcePins, 35);
+  assert.equal(receipt.benchmark.validationBackend, "unique-byte-bound-physical-OPFS-no-output-copy");
+  const archive = await readFile(receipt.archive.path); assert.equal(sha(archive), receipt.archive.sha256);
+  const raw = gunzipSync(archive, { maxOutputLength: 1048576 }); assert.equal(sha(raw), receipt.archive.restoredSha256);
+  const report = JSON.parse(raw); assert.equal(report.cases.length, 7);
+  const backingFiles = new Set();
+  for (const row of report.cases) {
+    assert.equal(row.status, "passed-small-private-fidelity-and-metadata-case"); assert.equal(row.disposableOutputRemoved, true);
+    const proof = row.physicalValidation; assert.equal(proof.uniqueLogicalEntry, true); assert.equal(proof.uniquePhysicalMatch, true);
+    assert.equal(proof.convertedCopyCreated, false); assert.equal(proof.nativeConversionUsed, false);
+    assert.equal(proof.maximumBrowserSampleBytes, 4096); assert.equal(proof.totalBrowserSampleBytes, 12288);
+    assert.equal(proof.maximumHostProbeBufferBytes, 4096); assert.equal(proof.sizeCandidates, 1); assert.equal(proof.samples.length, 3);
+    assert.equal(proof.logicalBytes, 5633796); assert.equal(proof.physicalIdentity.size, "5633796"); backingFiles.add(proof.physicalFile);
+    assert.equal(row.output.sha256, "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3");
+    assert.equal(row.artwork.bytes, 4194304); assert.equal(row.artwork.decodedRgbaSha256, "4355f9c1980ad3aaf1f077d06e2b06e4d2c70f3d22143d6ed8e210203c7495ba");
+    assert.equal(row.output.tags.fields.filter(field => field.status === "preserved").length, 25);
+    assert.deepEqual(row.repeatedValues, ["CUSTOM_REPEAT=Premier 音楽", "CUSTOM_REPEAT=Deuxième café"]);
+    assert.equal(row.fidelity.samples, 96000); assert.ok(row.fidelity.psnrDb >= 60); assert.equal(row.fullIndependentDecode, true);
+    if (!row.benchmarkWarmup) assert.equal(row.validationDiagnostics.afterExport.pageRealmHeap.backingStorageSize
+      - row.validationDiagnostics.terminal.pageRealmHeap.backingStorageSize, 12365);
+  }
+  assert.equal(backingFiles.size, 7);
+  const journal = await readFile(receipt.losslessJournal.file); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  const decoded = gunzipSync(journal, { maxOutputLength: 8 * 1048576 }); assert.equal(sha(decoded), receipt.losslessJournal.sha256);
+  const samples = decoded.toString().trim().split("\n").map(line => JSON.parse(line).sample); assert.equal(samples.length, 511);
+  const valid = samples.filter(sample => sample.sampleError === null); assert.equal(valid.length, 510);
+  assert.ok(samples.filter(sample => sample.sampleError !== null).every(sample => sample.privateBytes === null && sample.rssBytes === null && sample.processes === null));
+  const peak = Math.max(...valid.filter(sample => sample.phase !== "blank").map(sample => sample.privateBytes));
+  assert.equal((peak - report.blankBaseline.privateBytes) / 1048576, receipt.memory.incrementalPrivateMiB);
+  assert.equal(report.processCleanup.length, 15); assert.ok(report.processCleanup.every(row => row.status === "owned-identity-absent"));
+  for (const screenshot of report.screenshots) assert.equal(sha(await readFile(screenshot.path)), screenshot.sha256);
+  assert.ok(Object.values(receipt.cleanup).every(Boolean)); assert.equal(receipt.protectedOriginalUnchanged, true);
+});

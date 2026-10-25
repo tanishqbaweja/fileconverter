@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-10-25 physical-validation candidate09-24-27.551Z PASS7/7,204.98828125MiB
+observed full-tree peak,510valid/1unavailable (511lossless rows; null retained).
+35source pins; seven unique logical/physical outputs each matched by size and
+three4KiB ranges. Full output control SHA, exact4MiB cover bytes/pixels,25tags,
+ordered repeats/all96k PCM unchanged. No local output copy; all15owned births/
+profile/OPFS/fixtures cleaned; original unchanged. Export-stage backing growth
+now12,365B per measured job vs5,633,796B in old export diagnostic. This is a
+VALIDATOR correction, not production-converter speed/memory optimization or
+qualified bracket/release/stress acceptance. Prior failed runs retained.
+Next changed candidate14 IO cancellation/write-fault/recovery gate, then
+matched A/B/B/A comparison only with identical new validation backend/source
+pins and full memory coverage. No unchanged old-backend baseline replay.
+
 2026-10-25 stage-diagnostic candidate09-17-12.730Z PASS7/7 at240.81640625MiB,
 556valid/0missing. All exact output/image/pixels/tags/repeats/full PCM and owned
 cleanup/original PASS; final headless screenshot reviewed. NOT repeatability,

@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-25 physical-backed validation09-24-27.551Z PASS7/7:204.98828125MiB,
+510valid/1missing/511rows (null preserved),35source pins. Seven distinct actual
+browser OPFS outputs size/three4KiB samples uniquely mapped; no converted copy.
+Every full output/image/pixel/tag/repeated-value/PCM control still passes.
+Measured export-stage backing delta12,365B/job, not one5,633,796B output.
+All15owned births absent/profile+fixtures+OPFS cleaned/original unchanged.
+This fixes test-export pressure, NOT proof of a faster production converter,
+full scaling or promotion. Changed14-engine IO recovery still unverified.
+
 2026-10-25 diagnostic7job09-17-12.730Z PASS240.81640625MiB/556valid/0missing;
 all7 exact-control outputs/fidelity/covers/metadata, cleanup/original PASS.
 Case1-4 export adds exactlyone5,633,796B output in page backing storage each;
