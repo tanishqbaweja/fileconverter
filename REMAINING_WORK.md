@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-26 — B08 asset forwarding now has actual6asset200/MIME proof at3771ef7f,
+but PUT500 persists after POST405. Fast preflight15-54-48-452Z correctly aborted
+before browser launch; not another full privacy pass. Routing alone is NOT the
+transport remedy. Source unit/body-unread/static-cache/header checks remain;
+Windows local full19gate staysOPEN. Next fresh current-source hosted pipeline
+to distinguish platform/runtime scope, then bounded Windows runtime diagnosis
+or compatible Cloudflare migration. No body-read/assertion/threshold weakening,
+unchanged browser sequence replay, memory/public/native or original54 closure.
+
 2026-10-26 — B08 worker-first-only hypothesis FAILED56ca93b4: bootstrap JS/CSS
 404, worker never ready. Intentional birth-verified stop and12native owned-tree
 absence/exact profile cleanup retained; no aggregate stats/pass invented. Fix

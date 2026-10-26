@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-26 — Corrected asset forwarding3771ef7f actual preflight15-54-48-452Z:
+all6referenced JS/CSS assets200 with correct MIME (repairs the observed404 gap).
+POST405/Allow GET,HEAD, but PUT still500. This rejects routing alone as a remedy
+for the original Windows transport failure; exact platform cause still unproved.
+Preflight stops BEFORE Chrome/Playwright launch, no repeated19-case sequence or
+invented browser stats. Only owned server birth existed; absence/runtime removal
+and full original before/after size/SHA pass. Keep thisFAILED receipt and both
+earlier failures; current complete Windows19-case qualification remainsOPEN.
+Next current-source hosted clean install/build/full portable/privacy comparison;
+olderf5e42543 hostedPASS does not qualify this changed Vite/forwarding source.
+
 2026-10-26 — Worker-first-only control56ca93b4 FAILED browser bootstrap:
 retained171,019B first complete trace proves generated JS/CSS404 and a dynamic
 module fetch failure; current Vinext does not forward these URLs automatically.

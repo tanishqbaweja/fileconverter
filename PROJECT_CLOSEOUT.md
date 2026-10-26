@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+3771ef7f forwarding control repairs all6bootstrap assets200/MIME, but exact
+PUT500 still fails local preflight after POST405. Chrome never launched; do not
+claim the complete current Windows19-case suite passed. Raw15-54-48-452Z and
+all original/owned-server cleanup proof retained. Next current-source hosted
+clean install/build/full portable/19privacy comparison, not another identical
+local sequence. Then isolate Windows runtime behavior or migrate compatible
+Cloudflare tooling, preserving refusal/body-unread and all other constraints.
+
 Worker-first-only56ca93b4 is CLOSED/REJECTED as incomplete: JS/CSS404, no UI
 worker startup. Failed run stopped after native birth/config validation,12owned
 identities absent/exact profile removed/full original unchanged; no full stats.

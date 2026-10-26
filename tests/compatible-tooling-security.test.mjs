@@ -121,3 +121,14 @@ test("worker-first-without-forwarding control stays failed and its deliberately 
     Buffer.from(bytes).toString().split("\n").filter(line => line.trim()).map(line => JSON.parse(line).snapshot));
   assert.ok(network.some(row => /\/assets\/.*\.js/.test(row?.request.url ?? "") && row.response?.status === 404));
 });
+test("forwarding repairs six actual bootstrap assets but the preflight correctly blocks the unchanged PUT500 before launching Chrome", async () => {
+  const report = await json("evidence/2026-10-26T15-54-48-452Z-owned-privacy-offline.json");
+  assert.equal(report.executedHead, "3771ef7ffb0f4e0343e8163aa8f0334446a4d5d0");
+  assert.equal(report.status, "failed"); assert.equal(report.stats, undefined); assert.equal(report.processBirths.runner, null);
+  assert.equal(report.assetPreflight.length, 6);
+  for (const asset of report.assetPreflight) { assert.equal(asset.status, 200); assert.match(asset.mime, /text\/(?:css|javascript)/); }
+  assert.deepEqual(report.methodPreflight, [{ method: "POST", status: 405, allow: "GET, HEAD" }, { method: "PUT", status: 500, allow: null }]);
+  assert.equal(report.processCleanup.length, 1); assert.equal(report.processCleanup[0].status, "owned-identity-absent");
+  assert.equal(report.ownedRuntimeRemoved, true); assert.deepEqual(report.protectedOriginalAfter, report.protectedOriginalBefore);
+  assert.equal(report.conversionMemoryAcceptance, false); assert.equal(report.publicPromotion, false);
+});

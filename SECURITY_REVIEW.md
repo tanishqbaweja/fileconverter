@@ -1,5 +1,18 @@
 # Dependency and hosting review
 
+## Current result — October 26
+
+Explicit forwarding fixes the actual six bootstrap asset responses (200 and
+correct MIME) at3771ef7f. PUT nevertheless still returns500 after correct POST405.
+Thus routing alone is not a proven remedy for the underlying Windows runtime/
+transport issue. The new preflight aborts before Chrome/Playwright launch;
+`evidence/2026-10-26T15-54-48-452Z-owned-privacy-offline.json` is FAILED with no
+browser summary, not19PASS. Its only owned server identity is absent, runtime
+removed and original full size/SHA unchanged. No refused body is read to hide
+the failure, and no assertion changes. Current hosted clean npm-ci/build/full
+portable/privacy verification is next; Windows qualification stays open. Earlier
+f5e42543's19PASS is historical evidence for that older source only.
+
 ## Worker-first integration correction — October 26
 
 The worker-first-only56ca93b4 control is rejected, not a fix by itself. Its

@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-26T15:54:48.453Z",
+  "status": "failed",
+  "scope": "Complete unchanged production privacy/offline/static-host browser specs; not process-memory, stress, OS-picker or native reproduction acceptance",
+  "headedCoverage": false,
+  "conversionMemoryAcceptance": false,
+  "publicPromotion": false,
+  "sourcePins": {
+    "package.json": "4e0afdcc71f91001de4eb703d99380b3dd78a7b52c442a9f2d8128c2b3c9c5cb",
+    "package-lock.json": "a8ab288744ea7ad6864f517e9d3cd748d8bb746ad40c70c903532b068afc0363",
+    "playwright.config.ts": "e1ebd9e54b5baf85227edf021b1190dca2788c226ea39209c4e22915ce9d0a84",
+    "tests/browser/privacy-offline.spec.ts": "3cf518ffd0d244bec985664bf5eadd670cf2dacd98754a40cbdb2417b0ddfc7e",
+    "tests/browser/static-host-policy.spec.ts": "9587f432302a1bebd73bc1be19a2d5175d824fbb42ae126f0317a8a64bad29a6",
+    "scripts/run-owned-privacy-offline.mjs": "e2175b28ee012cbe244cb9f0565d7e1d925ab529a578c6e22249058a748fb1f1",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee",
+    "lib/static-host-request-policy.ts": "e699ea329425e935279410b7dc3a5bcd0d6ea1b522962f4a128d1ec1b197e4ad",
+    "app/converter/ConverterApp.tsx": "7ae964f6acdc50f7746d3b04a3717f2a18563216af9a11910a5e3b8aae22b9f3",
+    "lib/capability-registry.ts": "d9f5ad4599db8b43a68acb311f16d652a9a74300c38a31f827c12590652e573b",
+    ".openai/hosting.json": "6f55e031b82f9a23029129a1a3fed515ae6d7da180e369c7b2b90ec248d06475",
+    "vite.config.ts": "f3f7edf25cb1e9a8d24629333bb7f1863686d237641a37077653402a6654a151"
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: PUT\n\n500 !== 405\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/run-owned-privacy-offline.mjs:91:12\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+  ],
+  "executedHead": "3771ef7ffb0f4e0343e8163aa8f0334446a4d5d0",
+  "hostMemory": {
+    "acquiredAt": "2026-10-26T15:54:49.0383497Z",
+    "freePhysicalBytes": 7058411520,
+    "freeVirtualBytes": 10812035072,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "assetRouting": {
+    "binding": "ASSETS",
+    "runWorkerFirst": true
+  },
+  "assetPreflight": [
+    {
+      "path": "/assets/index-nyqtQdFm.css",
+      "status": 200,
+      "mime": "text/css; charset=utf-8"
+    },
+    {
+      "path": "/assets/layout-segment-context-BopcxWxv.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "/assets/rolldown-runtime-XKyaHtl9.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "/assets/framework-DRChgpEG.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "/assets/index-9y5sB6zW.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "/assets/ConverterApp-oHSk1iRJ.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    }
+  ],
+  "methodPreflight": [
+    {
+      "method": "POST",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "PUT",
+      "status": 500,
+      "allow": null
+    }
+  ],
+  "processBirths": {
+    "server": {
+      "pid": 17476,
+      "parentPid": 27588,
+      "createdAt": "2026-10-26T15:54:56.6472020Z"
+    },
+    "runner": null
+  },
+  "processCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 17476,
+        "parentPid": 27588,
+        "createdAt": "2026-10-26T15:54:56.6472020Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:55:01.081Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 756,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "serverLog": "\n ⛅️ wrangler 4.92.0\n───────────────────\nYour Worker has access to the following bindings:\nBinding            Resource      Mode\nenv.ASSETS         Assets        local\n\nAttaching additional modules:\n┌─────────────────────────────────────────────────────┬───────────────┬─────────────┐\n│ Name                                                │ Type          │ Size        │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ resvg.wasm                                          │ compiled-wasm │ 1346.05 KiB │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/conversion.worker-CCZ-nVlb.js            │ esm           │ 381.44 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/ConverterApp-Drc2l1nP.js                 │ esm           │ 496.67 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/direct-file-writer.worker-Cd6e6fgR.js    │ esm           │ 1.72 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/error-boundary-C-_MPqYf.js               │ esm           │ 8.18 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/jxl-source-inspection-worker-BogpV0iH.js │ esm           │ 2.67 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/layout-segment-context-DJ93MGz0.js       │ esm           │ 1.68 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/staged-save.worker-CXNG5no9.js           │ esm           │ 3.82 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/index.js                                        │ esm           │ 570.99 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/__vite_rsc_assets_manifest.js                   │ esm           │ 1.09 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ __vite_rsc_assets_manifest.js                       │ esm           │ 1.09 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ Total (11 modules)                                  │               │ 2815.41 KiB │\n└─────────────────────────────────────────────────────┴───────────────┴─────────────┘\n⎔ Starting local server...\n[wrangler:info] ✨ Parsed 3 valid header rules.\n[wrangler:info] Ready on http://127.0.0.1:49994\n[wrangler:info] GET / 200 OK (171ms)\n[wrangler:info] GET / 200 OK (7ms)\n[wrangler:info] GET /assets/index-nyqtQdFm.css 200 OK (17ms)\n[wrangler:info] GET /assets/layout-segment-context-BopcxWxv.js 200 OK (30ms)\n[wrangler:info] GET /assets/rolldown-runtime-XKyaHtl9.js 200 OK (3ms)\n[wrangler:info] GET /assets/framework-DRChgpEG.js 200 OK (4ms)\n[wrangler:info] GET /assets/index-9y5sB6zW.js 200 OK (8ms)\n[wrangler:info] GET /assets/ConverterApp-oHSk1iRJ.js 200 OK (14ms)\n[wrangler:info] POST / 405 Method Not Allowed (11ms)\n\n\u001b[31mX \u001b[41;31m[\u001b[41;97mERROR\u001b[41;31m]\u001b[0m \u001b[1m\u001b[0m\n\n\n\u001b[32mIf you think this is a bug then please create an issue at https://github.com/cloudflare/workers-sdk/issues/new/choose\u001b[0m\n",
+  "runnerLog": "",
+  "ownedRuntimeRemoved": true,
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "finishedAt": "2026-10-26T15:55:03.850Z"
+}
