@@ -6,6 +6,8 @@
   "publicAcceptance": false,
   "smallAutomaticRepairReceipt": "evidence/2026-10-25T10-50-22.365Z-audio-metadata-fidelity-result.json",
   "smallAutomaticRepairStatus": "four cases passed; not public repeat/stress/recovery requalification",
+  "fullSizeRepeatReceipt": "evidence/2026-10-26T00-45-37.077Z-audio-metadata-fidelity-result.json",
+  "fullSizeRepeatStatus": "FAILED overall336.6484375MiB: first full147964541B-to65328275B case passed at222.265625MiB; second safety-cancelled on late owned Chrome child; third not attempted",
   "priorQuality4EvidenceHistoricalOnly": {
     "profileId": "opus-to-ogg",
     "maxTestedBytes": 147964541,

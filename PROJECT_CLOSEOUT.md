@@ -6,6 +6,15 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+47f947fe/00-45-37.077Z FAILED aggregate336.6484MiB: first FULL147.96MB
+q7 conversion completed59.19s to65.33MB/fully decoded220.8M samples/3tags,
+observed222.2656MiB, one256KiB input buffer568reads. Second safety-cancelled
+on a new owned263.59MiB Chrome child at180.147s; subtypeUNKNOWN here, counted.
+No third retry.1668valid1loadedNULL,17owned births gone/all cleanup/privacy/
+original PASS. Cold full-output proof closed, NOT repeated stability/public
+promotion. Next q7 IO/recovery and other B05/full54 work; do not rerun unchanged
+late-service tests or ask again to relax browser constraints.
+
 Targeted existing-BYOB input candidate206tests/lint/TS PASS. Only pending
 Opus-to-Ogg/native33 inputs>8MiB change; bounded explicit allocation counters,
 same256KiB/oneIO/32MiB actual core andunchanged q7. Actual memory fix NOT proven.

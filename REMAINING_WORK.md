@@ -1,5 +1,19 @@
 # Remaining work audit
 
+2026-10-26 changed BYOB00-45-37.077Z FAILED overall336.6484375MiB.
+Meaningful new cold evidence: exact147.96MB input ->65.33MB genuine Vorbis,
+59.1891s, full220.8M PCM sample comparison/no trimming,3tags, observed222.265625MiB
+whole-tree across conversion/validation/cleanup. Explicit input pool one256KiB
+allocation for568reads/3streamopens; actualWasm32MiB. Noise channelSDR10.9dB
+passes unchanged-6.5 criterion; PSNR28.5dB separately reported, not confused
+with60dB small-tone test. Second case cancelled when new owned Chrome child,
+born at180.147s, reached263.59MiB itself. Native trace records subtypeUNKNOWN;
+consistent timing is not subtype proof. All processes counted; no third retry.
+1668valid1loadedNULL/45pins/17births absent/privacy/original/assets/owned cleanup
+PASS. Profile remainsPRIVATE/PENDING. Do not replay closed cold success or
+unchanged late-process repeat failure; continue q7 IO/recovery and other full54
+work under unchanged constraints, capture roles opportunistically in future tests.
+
 2026-10-26 persistent-input candidate implemented/tested206focused,
 lint/TypeScript/diff-check PASS. Exact pending large Opus-to-Vorbis route only
 uses existing bounded BYOB instead of per-read FileReaderSync allocations;

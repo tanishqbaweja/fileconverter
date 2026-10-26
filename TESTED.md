@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-26 changed-reader00-45-37.077Z aggregate FAILED (47f947fe):
+first exact147964541B/2300s stereo q7 conversion PASS under observed222.265625MiB,
+65328275B Vorbis SHAae8bfc... in59.1891s. All220800000 decoded samples compared
+without alignment/trimming; PCM hashes64c934.../ef970d..., channelSDR10.9021/
+10.9018>=unchanged-6.5 floor, PSNR28.505dB reported separately (NOT tone60dB),
+3tags preserved. One explicit256KiB buffer/568reads/3opens/2seeks/oneinflight,
+32MiB Wasm; finished OPFS uniquely bound/read-only/fullnative validation/no copy.
+Second case safety-cancelled at global336.6484375MiB; a new owned Chrome child
+born180.147s after browser reached276393984B private, typeUNKNOWN in this trace.
+Do not label its subtype proven or omit it. No third replay.1668valid1loadedNULL,
+45pins/same installed Chrome155.0.8059.85 binaries as prior failure;17owned births
+gone/original/assets/scratch/privacy PASS; first screenshot reviewed. Aggregate
+staysfailed, exact profile PRIVATE/PENDING. This is one cold full-size pass,
+not repeated memory/speed/public acceptance or a fix for the late child.
+
 2026-10-26 targeted large-input BYOB candidate206tests/33files PASS,
 lint/TypeScript/diff-check PASS. Exact private Opus-to-Ogg/native33 only when
 input>8MiB uses existing seekable persistent reader; all smaller/other profiles

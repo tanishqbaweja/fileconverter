@@ -61,6 +61,20 @@ phase sample was unavailable and remains null (411 valid samples). This is
 small-case evidence only, not a speed claim or large-file qualification. Public
 repeat/stress/cancellation/write-failure/recovery gates for q7 remain pending.
 
+The new full-size check used the exact 147,964,541-byte, 2,300-second stereo
+Opus source. With persistent bounded BYOB input, its first browser conversion
+produced a genuine 65,328,275-byte Vorbis output in 59.2 seconds, with all
+220.8 million decoded samples compared, all three source tags preserved, and
+222.27 MiB peak full-Chrome incremental private memory. The existing noise
+fixture's channel SDR criterion passed at 10.90 dB; its separately reported
+PSNR was 28.51 dB, not the short tone's 60 dB criterion. The repeat gate still
+FAILED at 336.65 MiB when a new owned Chrome child appeared around 180 seconds
+and reached 263.59 MiB private memory itself; its subtype was not captured.
+It was counted, the next conversion was cancelled, and all disposable files
+were removed. See `evidence/2026-10-26T00-45-37.077Z-audio-metadata-fidelity-result.json`.
+This is one validated full-size case, not three-repeat stability, public
+qualification, a fastest-converter claim, or a fix for the late process.
+
 The video matrix also includes measured H.264/AAC packet-copy routes among the
 published MKV, MP4, MOV, 3GP, MPEG-TS, and FLV pairs. These routes avoid
 decode/re-encode work, use bounded selected-destination writes (with private
