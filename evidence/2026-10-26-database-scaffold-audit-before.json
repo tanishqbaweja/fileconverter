@@ -1,0 +1,2408 @@
+{
+  "schemaVersion": 1,
+  "scope": "npm lock dependency audit only; no runtime exploit, Wasm, conversion or memory certification",
+  "command": "npm audit --json --ignore-scripts --package-lock-only",
+  "startedAt": "2026-10-26T14:39:16.928Z",
+  "packageSha256": "f0060a45cb296f6ae2cdb3d13a5fe01ad9dd8a09fbd52482a794e35eaaad55af",
+  "lockSha256": "ca66882fe8690ea932354e9c357e6c073a08e24d1ed3ebc28dc2638c020560b9",
+  "packageEntries": {
+    "node_modules/@alloc/quick-lru": "9d48d2bf889f80720bdd93f6cb75b082caf7c0407aaa95178a5d0a1376ab5321",
+    "node_modules/@babel/code-frame": "9f2492d40bf7a5d547d1166d06143e61b85b88d49e3a73efa4aef453cad52e44",
+    "node_modules/@babel/compat-data": "fa6199e4960c9b1f812ebdb83306283e7e1ba151068121e23a0af3682b163823",
+    "node_modules/@babel/core": "c0d06d3351a86bf5da95a990fde0849374338dbe77f30b91d7099f2cfaca7dd2",
+    "node_modules/@babel/generator": "78ba7b20de1e7f9314ba4b8f34883abab8fb4163ed6b6f9056b3574417748cdc",
+    "node_modules/@babel/helper-compilation-targets": "24bbb9a598b92794a7be513d606bd0ff393f125585253d3fa9eef41933f2c030",
+    "node_modules/@babel/helper-globals": "31f0723d0ab6a04213fc649c83ce835608bc608d8517d8746d4cb170665abb0e",
+    "node_modules/@babel/helper-module-imports": "3d93e5f4d688db3439f7583b56a72c84a30e5b8a08643abe9f89b252c019ed4c",
+    "node_modules/@babel/helper-module-transforms": "e4993eb1f8699ffe7fad036c7138f630b5e0be64a51436be683770806c509ac8",
+    "node_modules/@babel/helper-string-parser": "3ba101faf35328ac441b7eb7f48692d66894c2c57c828bb349aaa11113d293c7",
+    "node_modules/@babel/helper-validator-identifier": "59cc0f8ad6fb52dcc87703ca3821e9da4d79f7a22f68151855b176ff5da7c54d",
+    "node_modules/@babel/helper-validator-option": "01dd1d9d52bd1317e4524f4065252b26075aef10444584800bcf6f2484246eb4",
+    "node_modules/@babel/helpers": "3144081fbe7d55894388e1f6a815e190eb5963e896dda94fa27b1d73fc6081fb",
+    "node_modules/@babel/parser": "8849147ec279f7fb142c1579bdb4179ed0e7bfef3e6c47dc9d58de3cddf317b2",
+    "node_modules/@babel/template": "d9b54e467f3daf0798654b6ee9b14bd9bba2fc29d7913fedcba7ae8a31f9a2ff",
+    "node_modules/@babel/traverse": "7d1233db0c839610404f793fc045ac1bf5ba67bc96908bdf9fc3f022778e5a91",
+    "node_modules/@babel/types": "62c180037683cb1a459ce1fcb536441db92421f87040379833dca257fbde130f",
+    "node_modules/@cloudflare/kv-asset-handler": "1f29a11911659710ccebc95a901d2ec67cf354abe76dab269b6bb580d8a5410f",
+    "node_modules/@cloudflare/unenv-preset": "4972ab049e2e7bc913f8d76f1eaf9bfaf41df1336eaea097f7900b05deee2406",
+    "node_modules/@cloudflare/vite-plugin": "2a25118713e1be766b3f0f7472df47ec42650c73c4fd1af40ea43dd0f452374f",
+    "node_modules/@cloudflare/workerd-darwin-64": "c9d9796e810a7f307b65c1c3b493e1cf169bedcc13a1571e8f1b6a92af5e7d1a",
+    "node_modules/@cloudflare/workerd-darwin-arm64": "b0b77f9178b6e263af89c6b55d74d6005bbdc62c3823e79362eae9e34a83b8c7",
+    "node_modules/@cloudflare/workerd-linux-64": "3d2a4decb67451e7dec7b5392e04ded29bef9b51873be5ea1f036a44ec3381f8",
+    "node_modules/@cloudflare/workerd-linux-arm64": "48fcb3ad4ddd782158776389d46e4762480315912c61d38068768d026b47cda1",
+    "node_modules/@cloudflare/workerd-windows-64": "12382a8c2804bd475d34e6b0a6cad4822b6c470bc2143cec31d114dd05effe99",
+    "node_modules/@cspotcode/source-map-support": "4cfdbb0fcebdb758800ee94b3c15c2ec458a5580c18048acf749f0e507849858",
+    "node_modules/@cspotcode/source-map-support/node_modules/@jridgewell/trace-mapping": "2bfd47e9cdcf194ab1bfbca1595ea7da7d6c9ab3c087cff47991de8c5ded29db",
+    "node_modules/@drizzle-team/brocli": "07bd979b04749cb9617d138f51057e3e0f467db5d0cdab513a1923fdec88c5d9",
+    "node_modules/@emnapi/core": "5922e011eca1259f38eaf6e6bdf330d8fb7e69dc1aac471ddbdbecfa8b7b708c",
+    "node_modules/@emnapi/runtime": "23d6a6d0de1430c61eadd33d207d3a606dfd111eaa8b8648e80172ac78cded6e",
+    "node_modules/@emnapi/wasi-threads": "b3ada0f8bfdeafcca9f376d1fc96be5f23cb31f50894d3c880bff81589ff2180",
+    "node_modules/@esbuild-kit/core-utils": "b15e34535f0cca9a51298f7275e48f5176908413c48fe97775c251899417174f",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/android-arm": "c9a3931a02a31e1f73ea54a3dfbb4590648de9707a879410f5793565ded785c4",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/android-arm64": "f3a803bb416b88310f492d7078002ac5c75a80c0da6b06e2ab798a95397eed91",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/android-x64": "947e9672633ffa7659f83f006e7f412a02e56bbf9ee507ed237060e0edab2193",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/darwin-arm64": "74c31714c2ba5648abba5bf119d36545f0d746595b03261a03d16ac9e3cfac46",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/darwin-x64": "db3f634de52bb1489370b1d550b5d21beeced3de15a1014e95d99124897ea031",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/freebsd-arm64": "4bfaa7a1df414ce933792f091caaa3c640c7ddfdad69f4837b7a5c778dbdbd49",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/freebsd-x64": "a7c47d4a2546c48ed22f5e73f8d94ccc8f08b6fe61f16859d6d12e5d3f25e174",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/linux-arm": "c821d47d6266bd6a552607e4968f65c66317af0e425b1d284a383a58840e1fca",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/linux-arm64": "44c773eb00411e50e3f360cd2c23e1bc40d4527b0f871fd300df466a7184e2be",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/linux-ia32": "3c9652591e58119aaaf94d8ff68a5dde38d832b4540c21e90b10076f64ad092e",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/linux-loong64": "126360bacc7e1ab60c44a7aa8c1ed29c8805f4e9812e4ba21026705d032c4d3f",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/linux-mips64el": "370364fc159c3cb0d1fe8a0ad4cdecb2dfb06c4b8d736cd293528975f019e670",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/linux-ppc64": "fe0c45c4b8457540abe3b4cd8976f54881637d46ba2ad9d8dc08a7ee102aec93",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/linux-riscv64": "a90d9919274d20d3730fe947420312af83719d7399445e494ba4629500d2ac16",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/linux-s390x": "31feb7f7d9e52afb2a3a5d6b87ee1b2ddce866a4b142a615cd29536f8c33503c",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/linux-x64": "7b9806daa1d80ddd0330cde3ebe9c9019e8abc639eb3575c3985e44a7228059e",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/netbsd-x64": "fa87098ddb600aba9834ce474ad1dd73be92c17ce0ffeb10679ce70984d85683",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/openbsd-x64": "8756eb1d9207dec71631bd89a35a4e1111cc8bf70f37ee3556a1e3185e410783",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/sunos-x64": "1e4f85a5f1fef0dbfc8709a306f6dcc9226cae9c235095d755bd351da6e2df71",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/win32-arm64": "d7963efac71dc672a1bb91597b5d2326e02f02848111dd6b4c317282bb13f1eb",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/win32-ia32": "4f49853bb82b4f950ef001aa049c8515d6a8a233e20164197aaa950e105a0556",
+    "node_modules/@esbuild-kit/core-utils/node_modules/@esbuild/win32-x64": "edfb85986855f20f1e3b790ba5f0d6ba1e8c890580ac8bbdab3f4da13f6d6a41",
+    "node_modules/@esbuild-kit/core-utils/node_modules/esbuild": "c2eb32707f3acdbbac057401da2b5a2ca573241ded05a67e0bf3588f6b11040a",
+    "node_modules/@esbuild-kit/esm-loader": "b53974f4db01613c835dc836bd1b3c816bd0b24da738ac48cef6effd11975730",
+    "node_modules/@esbuild/aix-ppc64": "2fed00914f6bc25979974789d7b451fcfa66dc871316b4aa6f36a6e67e88d689",
+    "node_modules/@esbuild/android-arm": "1a592056a8280a75140e6b45dc753f3150c32bf733af4dcf0ff8001f32ce3717",
+    "node_modules/@esbuild/android-arm64": "f29ab9b0d9bc315e6aa9a1a60ecbf82fdfbb89444a1658db602e4fcb37735fd6",
+    "node_modules/@esbuild/android-x64": "65566d86fce4c062704aa971eb685b3fe3d77d8d592761f97671911ceddfb179",
+    "node_modules/@esbuild/darwin-arm64": "7a004ccafe0a7569ea547cca5f8360a144d3bd532f85922a6fcb9584a2492bdd",
+    "node_modules/@esbuild/darwin-x64": "24cae8a09a44cb75248222284c1923f04982b1a1139f6ecbf2a0b92c7b833ac5",
+    "node_modules/@esbuild/freebsd-arm64": "0ffd2f44ff024e93c29793dd9b609ef2ff0fb717baf14cc9660481ac534a80dc",
+    "node_modules/@esbuild/freebsd-x64": "d3609f2745f17424d145691c17f0162ab96d814fdfb6e6ee6b26821ede7ddcb1",
+    "node_modules/@esbuild/linux-arm": "4fbc0e6fda6bded23418f2da2151db293a1686e13ee169ed4a8ac4b01ba30af4",
+    "node_modules/@esbuild/linux-arm64": "8ca6af14f81328b47326aa2638700c359ef44dac6110887a6eeb7531d16ad2b8",
+    "node_modules/@esbuild/linux-ia32": "e4732fda6d3d1223bca6989ad3f2c925a71574bb0dfd96deebf6952ac950ad04",
+    "node_modules/@esbuild/linux-loong64": "b139f4b90c1339c4b728eb059b45ffb987890553eac68492b1921764908fbc75",
+    "node_modules/@esbuild/linux-mips64el": "0a3a348199fa5128e54144d154ab57abb526b176b283480fc5b62fcd2b60a45c",
+    "node_modules/@esbuild/linux-ppc64": "50e9f5411881985980af89c298a9d2d5ee89baea2b7aa6afb9856dbf01789c16",
+    "node_modules/@esbuild/linux-riscv64": "a98bfd5ed5bc4e2b551c579fe68fc5dc3d879a3f83ae484c86510db722179a4d",
+    "node_modules/@esbuild/linux-s390x": "b1d86997c2fef15ffa3e2eb00c0b0ea100b43536498aaef8265210dd71bf8c10",
+    "node_modules/@esbuild/linux-x64": "70abb87b517eea13daff3519b8ba97cc2a6c40ff0b4f1faa1b82262475cf996f",
+    "node_modules/@esbuild/netbsd-arm64": "3e592b725194a5398cef36f43a4502091aa7600cce14379f676047a2b2ca26c8",
+    "node_modules/@esbuild/netbsd-x64": "e2679e232142eeab655539934efb3ac36e35ef0aee35acaa625d85fba1b37c18",
+    "node_modules/@esbuild/openbsd-arm64": "bdce9c0a7984eb47f89ea939c264b35a50ef67ce2e27e3a6ce615e14acff1ef2",
+    "node_modules/@esbuild/openbsd-x64": "161876a734d3374c54c88a2031dd536bb614c3f8e255b3851012ef6fe2e8dd9c",
+    "node_modules/@esbuild/openharmony-arm64": "8efe2adcc17eefd52b2840e46663250d2d0930c05f302bed76321a3651002325",
+    "node_modules/@esbuild/sunos-x64": "926e9ed6357c9dd52ad326a8a797695c7361c0f87aac3ca97e6e157f19994ee1",
+    "node_modules/@esbuild/win32-arm64": "7ad8a52b95e611605dde1d22fd414b19753b2be6baffe35ac0114745f80a3a94",
+    "node_modules/@esbuild/win32-ia32": "78e1cb83cd9b02aaeaab0dfe56285d45812ae9a7998a3d357c4d47d132dd8a0e",
+    "node_modules/@esbuild/win32-x64": "67fe3e87da3f228692113d9a55c3efd17ef32857d09f0f617c8c0d0cdc91de26",
+    "node_modules/@eslint-community/eslint-utils": "5db7a7b39e9934e9e49adeb1688899a0cc89c0f78d74bd74aedbbef358f8b7a3",
+    "node_modules/@eslint-community/eslint-utils/node_modules/eslint-visitor-keys": "2f20eb2d84afa1e76cc520401b4538d05f870289374edf45bd3e8eaf82ab2881",
+    "node_modules/@eslint-community/regexpp": "9416bf6469dbcb79d8853ce89088d55796d4ae43604d17c5f7fc9a59218169a0",
+    "node_modules/@eslint/config-array": "265d1c7870c72098d7655b4ca6e411ea06bef989442b8088f0d67f27a27abd82",
+    "node_modules/@eslint/config-helpers": "37890999ec42580eb61a80dc8937131e8a54f9ef94a0ef4bcee041bce81e12db",
+    "node_modules/@eslint/core": "9f0460b1cb96d46158478416d4bb21a0dfd3b4481524704eab7f7948eff6d1f8",
+    "node_modules/@eslint/eslintrc": "db9e6d1ecd91889f4f183069edb8eeeec2a9038b797b8d18e31b856abd4f9e6a",
+    "node_modules/@eslint/js": "7203fb7d365b1e4b02b7fa1fa9cc697a8552cc05fd2a5d9047b890655824eff8",
+    "node_modules/@eslint/object-schema": "3ee892ba322062c50b2081ae479e1dea3929c1c9a623ab41980abc6e7d78f7da",
+    "node_modules/@eslint/plugin-kit": "56e74735da8f11e14165ac0db7a10261f13194454f59504d78f33fe33ec5f5d7",
+    "node_modules/@humanfs/core": "d513e18260200e8c7575c64af2c822c2217dc9f9f240281eb48944b5f1cc0311",
+    "node_modules/@humanfs/node": "f13fe68eaefcdb1fe0563a23fb17d66eb6bf9ae5d032fbc843e5a3cc1a8a6723",
+    "node_modules/@humanfs/types": "8220474db17dec148655636b5da9156530f470d3bd03268c71710ef28c433800",
+    "node_modules/@humanwhocodes/module-importer": "7e58601b4d347d8ba4c9a1bf3087366cbfbca904f40504f8580253773b4616f0",
+    "node_modules/@humanwhocodes/retry": "ef59a55bb8253e07a83fad627e2c33971ee5f949188844f58b9688dddb439317",
+    "node_modules/@img/colour": "4cfad89849f72f75c89238f9983da0649ce91de6f9d39d4e389dd2fd74000b86",
+    "node_modules/@img/sharp-darwin-arm64": "43aa7e47ab123a0c69d074dcc45e666d2826026756020aa18239a51d00784a14",
+    "node_modules/@img/sharp-darwin-x64": "98fbc867f83f24fdafb89def6d968efe9273472bccaaf2414e9804e73e34aa0c",
+    "node_modules/@img/sharp-freebsd-wasm32": "8e178644a81e758c849a1225226bc725e56b0ed669a6dba6feb3b28a02bbb559",
+    "node_modules/@img/sharp-freebsd-wasm32/node_modules/@emnapi/runtime": "1284ce0b25f5a10167fe83f1a854b4e689d41c63f98bd36fbc5291adff49ca04",
+    "node_modules/@img/sharp-freebsd-wasm32/node_modules/@img/sharp-wasm32": "2135cb1f9f3f6b254a7c8d9d9be37c3bb30770a2f695a7c5f28303700cd89819",
+    "node_modules/@img/sharp-libvips-darwin-arm64": "b65f532500b624397f77b0213858015e4f523f480e95d1ae2347f0fafadb7755",
+    "node_modules/@img/sharp-libvips-darwin-x64": "f4daab2f4ce4c48e1e2a02b2b33e1b864ba7b5c249cd49c33354d93c208ff01a",
+    "node_modules/@img/sharp-libvips-linux-arm": "fe0af2d93380553b3e5a33f36e77417cea9f4c649930e688583319ad5b351477",
+    "node_modules/@img/sharp-libvips-linux-arm64": "98c9d177659343072cb33bc20c670b265c22437d9d5f6aa3eecb8d7eab8cde94",
+    "node_modules/@img/sharp-libvips-linux-ppc64": "d082266a9f70dc56e4a97bc9686795c2004b5c521a401705d0bb7bdf02148f77",
+    "node_modules/@img/sharp-libvips-linux-riscv64": "0d63bb13d6c1de1bf6e92117abbc313b920b97f8c7b8e3199971e97a3e4dacba",
+    "node_modules/@img/sharp-libvips-linux-s390x": "204be1ce332615fc262b19e06674882fd03b8ca78b3d309432d62e1d152f9b60",
+    "node_modules/@img/sharp-libvips-linux-x64": "718c1d42335436043379719df8bf459dd952c4198a841c0c1a781c7af7a3bba0",
+    "node_modules/@img/sharp-libvips-linuxmusl-arm64": "139626e50af8434a4e07e05946f03cda4c5acb1ba2e3c47856a53a6569da69a6",
+    "node_modules/@img/sharp-libvips-linuxmusl-x64": "a7c0108082e651cf119ed57930e702d81d7d9106250c96d75426b533458c69f6",
+    "node_modules/@img/sharp-linux-arm": "559a079c5c14f450cfd60862d9659fd3eefbf0793bc6413dcc7b47c363429dab",
+    "node_modules/@img/sharp-linux-arm64": "87e0d7eb49a946f26ee733557709178e5562e55e94147eb8dc368050b6b590bb",
+    "node_modules/@img/sharp-linux-ppc64": "aa463e988ad9218fdfe51b44d9d0b188eebfeef22463394d0d5187f35d709858",
+    "node_modules/@img/sharp-linux-riscv64": "97ceca1d371fd1118d69dfa0d0b68404e667d7db33ad886874b58948069c6fc8",
+    "node_modules/@img/sharp-linux-s390x": "c83ca077e1e0538518cb1194e2c24c3e56e8d5c7606980613e1959d4d82c3f08",
+    "node_modules/@img/sharp-linux-x64": "d31705ba47b2b895c03e092bcab2842494e704a9ee9c90554c56f870d1d3fdab",
+    "node_modules/@img/sharp-linuxmusl-arm64": "893d0236ce371f76134f0c6ebf0b12e9fc940fcc795b5f9f806a1f730cd80579",
+    "node_modules/@img/sharp-linuxmusl-x64": "9011fff9bdc0f8c46bf27ed5bf0edcf5d6963b910d2853686976e7f83a1327d8",
+    "node_modules/@img/sharp-wasm32": "e331d6d685f652dc4c4beb7cef5f4ea621a08ebd196e905931437118c2bd99c6",
+    "node_modules/@img/sharp-webcontainers-wasm32": "df5735aba533b63a13e10648bb4982e14f08c6fcbd5db5fa1ba30afd416f5fd0",
+    "node_modules/@img/sharp-webcontainers-wasm32/node_modules/@emnapi/runtime": "1284ce0b25f5a10167fe83f1a854b4e689d41c63f98bd36fbc5291adff49ca04",
+    "node_modules/@img/sharp-webcontainers-wasm32/node_modules/@img/sharp-wasm32": "2135cb1f9f3f6b254a7c8d9d9be37c3bb30770a2f695a7c5f28303700cd89819",
+    "node_modules/@img/sharp-win32-arm64": "64d739954e1a00b55882db24ce1875bed0997c1621afed85251e4ff25ec219a1",
+    "node_modules/@img/sharp-win32-ia32": "54b1ccfeee0d49a72e5cd96a2ea0f3690b4356a8811792d3a7f6e97c2bb4e91f",
+    "node_modules/@img/sharp-win32-x64": "c10604d0e6d79515763368f7342668001ba4b5469e55e5bf36a92228824ef496",
+    "node_modules/@jridgewell/gen-mapping": "1b0ba852e3a8db05088af2dd0140ee3bc9e85c7ef7b51a2cb2dc1a3a9727113a",
+    "node_modules/@jridgewell/remapping": "9fa894e33de24f280d51c362f0947f745283a0b25cc10ec34083e6f4c9acc258",
+    "node_modules/@jridgewell/resolve-uri": "d68c50c12f89798091a54be8ae9fabea0e0d8c92a34250c97720e4e5affb3ff6",
+    "node_modules/@jridgewell/source-map": "b745770521cb30044bfb60b96c1ac530e76aab7b06e5b0faea8dfb9ca7592687",
+    "node_modules/@jridgewell/sourcemap-codec": "864dfc0e5123ddb867965167ee4da0f8b7662051062f828c4d5c653eb6a288b8",
+    "node_modules/@jridgewell/trace-mapping": "588ac4de630a7f752919d0a9e367be7e35a32043adb1206a1b1d304bad530fbc",
+    "node_modules/@napi-rs/wasm-runtime": "085c55fac191761537593575ae710f7342024acbba53f2d42170f4645b0374a8",
+    "node_modules/@next/env": "3972cd050a5eeb37cc5b7bde483d9158fad17f6ac4ed8134e086eb1466d5e305",
+    "node_modules/@next/eslint-plugin-next": "0f4ac2767d1510ea9d158e795a71854e8dc1a1e768adf935c149a089b8250bbd",
+    "node_modules/@next/swc-darwin-arm64": "af9b0533cadaa6b253b8c15375ab16cf936aa592fbc87755f4976654eb198132",
+    "node_modules/@next/swc-darwin-x64": "75f20e46694242e46d30634406a1f18ed00cedb9091d284dcfd6866a1e91486e",
+    "node_modules/@next/swc-linux-arm64-gnu": "041d6c4e00dad71bd5cb57e3510eaf8a4f961d06e0215c58dab4eb66884b8108",
+    "node_modules/@next/swc-linux-arm64-musl": "ddd7352afd55bb4405a3f6844825887d0a40c5574ba02303c2daacdb4023315a",
+    "node_modules/@next/swc-linux-x64-gnu": "4a93c149d1da59520511dffe54b6d1d3d3915cd849320c583c94c79674bddef5",
+    "node_modules/@next/swc-linux-x64-musl": "38cd849dd13812d0dea8cdd4008e3b0fdce81520e542908d6a3e71d1d5ca0567",
+    "node_modules/@next/swc-win32-arm64-msvc": "647252018e0d1e2fbe403f3e7373d719c04b5e9cb5d2bc76ef99bb707893e641",
+    "node_modules/@next/swc-win32-x64-msvc": "676350dadbc2900f79b1bccf4d6c95fa6254d8d45e65cb8e37a0ce592699bb91",
+    "node_modules/@nodelib/fs.scandir": "c839dbce516dc50cdd994f0e608c453dfdfb6a31a405b0424c76d2c3eebcbb2f",
+    "node_modules/@nodelib/fs.stat": "d9196c4694dacb4a2d2aebb1fc00516b9bd91310de1f7debb0f997ceb231525e",
+    "node_modules/@nodelib/fs.walk": "6839928e551cf8c5294c02e4e45ba0471c616221addf0aade3bddece285ebbb5",
+    "node_modules/@nolyfill/is-core-module": "ffba1086a5fbd4c5923b245d4baecdef507e489679a4046f9e8a80514e89279b",
+    "node_modules/@oxc-project/types": "7aa6922b48619d4105cb9682c5e5e1201878fa05a45099bbc618b2d6e2c3d911",
+    "node_modules/@playwright/test": "1f5aa4dff7956257b968048fbcc38613ec19b9be19b969faf57bb23efc8c3ddc",
+    "node_modules/@poppinss/colors": "63caa5b1f090d793675f38e0f8a2d9eeb9dcbc07e5decca3f68c8e58709e03c9",
+    "node_modules/@poppinss/dumper": "e0ce748199c71872c9afeb70622a3653893ff92ef02c9d7407aac028d9cae3ff",
+    "node_modules/@poppinss/dumper/node_modules/supports-color": "06e5a936dc49ac5f48cebfba5ed5e5e0e5c54e6229496b0b190c535ec932b940",
+    "node_modules/@poppinss/exception": "e6b6b8f678a5c67f6f615968cf266289afe50584f91e38c861b28f60139b6401",
+    "node_modules/@resvg/resvg-wasm": "ad2b3434f32dc455aa9721cf7fa9d2c1d6885a4db644f553105c0218c1ba6150",
+    "node_modules/@rolldown/binding-android-arm64": "d1e6f55e03a7bfb90d1a785b742f5fef5b3e7f7c9c9849fb4de50c9ec1ac2687",
+    "node_modules/@rolldown/binding-darwin-arm64": "89cbac9f8fd040df07f264e1e607f5c7d7725b3da961cd7fe11738e80b24d034",
+    "node_modules/@rolldown/binding-darwin-x64": "88b564c15a26b1a641657ea8108f84ccae2273a6b7d8bb6b49bc3ff2cb8b0d11",
+    "node_modules/@rolldown/binding-freebsd-x64": "02dbb675d3acf590c5535d004f0e3d7521a3e14cf0e0ee424be66ca5f81fabf5",
+    "node_modules/@rolldown/binding-linux-arm-gnueabihf": "e222f690d2d62f3c0697797b8be71707c7c0e9d9a7933fee0dc9331813210777",
+    "node_modules/@rolldown/binding-linux-arm64-gnu": "c585e25b3ee399e70aa7b9f54b258dc44dba9e36e1f1cb9905324564aa23f6e8",
+    "node_modules/@rolldown/binding-linux-arm64-musl": "b0deab36d69c7c7610afd3d658e174c7d7170c6c06ce7619839a341d25871598",
+    "node_modules/@rolldown/binding-linux-ppc64-gnu": "10eb8dc2fa433418e1b925c03f813f3058cb00152fc83bc2450ed187763f9a63",
+    "node_modules/@rolldown/binding-linux-s390x-gnu": "8779e32a8eef27b9e295b0d091e6ff8e3e435443d8037b1c16bc7d9fc5fcf5b4",
+    "node_modules/@rolldown/binding-linux-x64-gnu": "6fb2367d1fa0b9b1e36d81b025a05f8908ffecaa2b1883817ab7a5ef68ddaa9e",
+    "node_modules/@rolldown/binding-linux-x64-musl": "8fec7ff63725399e943b7c43d976155ae631e02f7c8430f07f74b694d44d0fdd",
+    "node_modules/@rolldown/binding-openharmony-arm64": "afadcb10e940ff0f56d9fda25a94b3c8eb71e94e118cf7ad76646eb9878c5806",
+    "node_modules/@rolldown/binding-wasm32-wasi": "d45aaca484b7bcea5c9162596f66d88114a31d6e9c2e683d8af426e91c52c0fc",
+    "node_modules/@rolldown/binding-wasm32-wasi/node_modules/@napi-rs/wasm-runtime": "9bbd98253bf308e3fc44776661aee8260e89a4edecba0ef816153897b621061e",
+    "node_modules/@rolldown/binding-win32-arm64-msvc": "7fa7651bb87b9736260d10d16b76562ca2e9eaf2342979f7a972bec856d08302",
+    "node_modules/@rolldown/binding-win32-x64-msvc": "18e898aec5aa6e4917b47a0f170b2816e2353dec8729273d5e1a9789622627cf",
+    "node_modules/@rolldown/pluginutils": "e45fb2ca552230cb79a94de7c60fcaa547495cda51c29fbafc8188114e05876c",
+    "node_modules/@rtsao/scc": "288d7e61e49b90e31e675aabcb8350bf68672a9daee5d9ee8035c628d66c9a36",
+    "node_modules/@shuding/opentype.js": "233af1f25c24869a9084a9aa96ff953cd8f6bb5ad8a0bf075400e9ddaa324287",
+    "node_modules/@sindresorhus/is": "dd8df1fc510c3f15b60c7f2c6c30d32053643de5ff41f368ccacbef36abbc490",
+    "node_modules/@speed-highlight/core": "0cb80ffe833ba99321f603e2f441235399905acf90b040e1542091478f5228f7",
+    "node_modules/@swc/helpers": "642ceec977f6f7ab475b2b38f52cb993a2fd872ff423c30aabb31510d3ed5c79",
+    "node_modules/@tailwindcss/node": "4fa43d9f2b960af2d7f458a5e05b76319a124def0ac19f727a407013c11b3670",
+    "node_modules/@tailwindcss/oxide": "f5c3aeb55f8ed91a8964287b2d4deae43c3dac9d12888abe719c95790a9dcd84",
+    "node_modules/@tailwindcss/oxide-android-arm64": "ed8a4aaf9f4c776c66e0e3b9cc9d758b4e91417316fcbd16aca2cde2b92b7259",
+    "node_modules/@tailwindcss/oxide-darwin-arm64": "f4ce9bce2c35e0e496caf2390a21a51531a664c0cb531f00da9d34438024d7e5",
+    "node_modules/@tailwindcss/oxide-darwin-x64": "87556e8c9b6d4a2d9191d9017b7264ad72d6e84cb14241e8c9cd24725d221f56",
+    "node_modules/@tailwindcss/oxide-freebsd-x64": "61b73ef4fd78227d7deca6003bebb1a3d861093cc95010f12c8c9bfbe7f5eaaf",
+    "node_modules/@tailwindcss/oxide-linux-arm-gnueabihf": "74c367b52cfc42a8ee4aafaa23de60824601c064ae67fc6fdcd573fcb6fcec30",
+    "node_modules/@tailwindcss/oxide-linux-arm64-gnu": "0a2da15e228ac06efe77d1199e4f85700131c51da72481fda88145ca1aa0c06e",
+    "node_modules/@tailwindcss/oxide-linux-arm64-musl": "939552771790fdcc9b1350bd2dea284740588eac5060305d87a9d5587a7ded0c",
+    "node_modules/@tailwindcss/oxide-linux-x64-gnu": "256efa711b95339b9378092e246c3eff22b18a900ad8bb4e401d7c96e56b9b5d",
+    "node_modules/@tailwindcss/oxide-linux-x64-musl": "608f1b1d61ca8d10f6d5dc84332a329aadea523a6e683bd91bf05a84d96a18d5",
+    "node_modules/@tailwindcss/oxide-wasm32-wasi": "5a6e9b9d595dc5c3af50552fa02fcec1137866e0a9b9065844a0bb0afaf0e438",
+    "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@emnapi/core": "8f6aefdabdc38cc2c8ae4cb5ccd1e2567761a645389e68709f422414d10d3b39",
+    "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@emnapi/runtime": "f88facc1be0c1b0b83a60e8760b882edfd09b61995cbec3d34ee43aade573572",
+    "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@emnapi/wasi-threads": "24f7874675ef69855b2be11643f5d63cc94c240d6c4142cb98f650988274ea39",
+    "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@napi-rs/wasm-runtime": "f207be4434ec797c3ac812ccb911b0f4e870e50871d9b3bfb90eb16308c55397",
+    "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/@tybys/wasm-util": "485b09fdb6ca1976afd123ca5949644021165bdb7931a78a2280ddba70eb2962",
+    "node_modules/@tailwindcss/oxide-wasm32-wasi/node_modules/tslib": "1e6fd377e4bc3a94369bc438f07ee51c6158e8467c0c83987f9ee96f88c23daa",
+    "node_modules/@tailwindcss/oxide-win32-arm64-msvc": "d1f320101951e2bc81e85daadd4c517aa10f7a5b54bcc7a6c590a36d8bc48846",
+    "node_modules/@tailwindcss/oxide-win32-x64-msvc": "474b0cae9194df9d7280fbaccab4af98a0542e39c38996bb93da17946530995b",
+    "node_modules/@tailwindcss/postcss": "9ff31eca37500eb6385612db771735c7f609ed118b737604a1709b5ef0b049c1",
+    "node_modules/@tybys/wasm-util": "ff15d7c4fb35136d54924e34095953798f567024874d87fbd7295415ad2ff5dc",
+    "node_modules/@types/eslint": "cc0af0242c92bad5237411070de3fc8c87159297883a63453f85207e7c754ff2",
+    "node_modules/@types/eslint-scope": "89135e51d898238c01f49d64a816623e7779d4ef9e62d0bf7fcb45660609be41",
+    "node_modules/@types/estree": "eb60db43a9757286223656b53b7a7e9db4e050da8e0460004951505451abc4d4",
+    "node_modules/@types/json-schema": "f1a3ffe24413b6638c6a49e5da7a226c6e77fdb626780e20966b22411429b48e",
+    "node_modules/@types/json5": "e7a5183c11ed7cb5db651e405aef6b9cd1009208d43a53d086af879dc1c4c46d",
+    "node_modules/@types/node": "12bdf2e20821d726888c5be69e7df018ecd672da603587ab1132bf4088e136b4",
+    "node_modules/@types/react": "1abac39bc72ca6234d4cd1a83c1d8368c6cf9bc6be0003ae7366549ee5b05378",
+    "node_modules/@types/react-dom": "8ddf72be68a4ef3083a04d7ddbac3efbc456019de18d11843b9a4c42ffb458c4",
+    "node_modules/@typescript-eslint/eslint-plugin": "0de79e515ed654aa8a0b7216b11c1d04e3f5355b9e388bec695895bc99913092",
+    "node_modules/@typescript-eslint/eslint-plugin/node_modules/ignore": "ce354658c35293e05547f99dc75e30b25d9f3db5c0090063f31513761b836dee",
+    "node_modules/@typescript-eslint/parser": "bfed2ee51057bb1c8256556f2df5842bbb76c1dfec057fc837e9f8e66f391f19",
+    "node_modules/@typescript-eslint/project-service": "919da56da59203293112c48a34d334c8c4926443aea98dedc5269160f840ed76",
+    "node_modules/@typescript-eslint/scope-manager": "8781dff91c33f4d036c3c591f847c445bea2f20b1ba52418f297d04f403bc816",
+    "node_modules/@typescript-eslint/tsconfig-utils": "fe53a129afa52294b12f63d750527fbdf2f7e57dd092f87c30bc35330643476f",
+    "node_modules/@typescript-eslint/type-utils": "388638643a357022332a930603b14e2a54c6939d497127aa1e269c4157ca7572",
+    "node_modules/@typescript-eslint/types": "87c4d144467a522a05c5e6c9dcfd113313d9eeb5b041c5e7ea43b0f8b162edd9",
+    "node_modules/@typescript-eslint/typescript-estree": "ef9be756bce5d2682e046c87695c4098f7ce0377ef879bb1151ef94cc38fac0c",
+    "node_modules/@typescript-eslint/typescript-estree/node_modules/balanced-match": "e2f7e48dce5b776c09f408b8277ef1846672fbb41ed543ad97c249ee432ec7c6",
+    "node_modules/@typescript-eslint/typescript-estree/node_modules/brace-expansion": "5c3a4fa081022cb5fc2af1d51a5ac8a25cdf1d2e0b37a281df010babc7595a93",
+    "node_modules/@typescript-eslint/typescript-estree/node_modules/minimatch": "0dc97926fad65d4dbb67c5af6f32be4383261acfd77608260b912f04bdf2e602",
+    "node_modules/@typescript-eslint/typescript-estree/node_modules/semver": "85643b9ca0c96c4d629f536d85e835e5030878e1784b2f624b52cef9be69d3fd",
+    "node_modules/@typescript-eslint/utils": "3febb9fa92a53f1ea8acce681a51537a06291ab45928419277e80511096e035b",
+    "node_modules/@typescript-eslint/visitor-keys": "cf235ace0d448ee20ade41bf404a10f6d27b50c49ebdee94f52983b1230b02a6",
+    "node_modules/@typescript-eslint/visitor-keys/node_modules/eslint-visitor-keys": "ca33304d4214c52c1027a7b30f7e3e5a7997583ebba31b22ff1cee011e3f3271",
+    "node_modules/@unpic/core": "d1dfafbfef313e54c07c3e9e7c025aad72ea415d56d0dbe01f5f4c4ff50401b1",
+    "node_modules/@unpic/react": "166ba57e6654f19097230fe82eadfd805a99d0b0ed8254e4ce493ad8bf713761",
+    "node_modules/@unrs/resolver-binding-android-arm-eabi": "e20da6a91288187b7b4f4b927029b625b9004e893f60c5ccefe62fe8fa9f2a70",
+    "node_modules/@unrs/resolver-binding-android-arm64": "ffb57715665d5d3cc5fa96db53eb530cb53aea87d7460a3fb5f6b615786ada9c",
+    "node_modules/@unrs/resolver-binding-darwin-arm64": "e504de811aaeeb6b7c559f6c206cc893dc316e472081bdcf4b77dedd5d2b6697",
+    "node_modules/@unrs/resolver-binding-darwin-x64": "7d0fa1316beec39a87d723aafb776082288fd44a3f10d976ba5fa29bf5ee9021",
+    "node_modules/@unrs/resolver-binding-freebsd-x64": "4845dbeadc6f7ae102cf3e59632bc6dd81018b9cabcbd9c896eb2f4f2ca92401",
+    "node_modules/@unrs/resolver-binding-linux-arm-gnueabihf": "9b09c21d684d11d0a2006886a8e71766010bd77b6131bc5d3d4c8899aed3a907",
+    "node_modules/@unrs/resolver-binding-linux-arm-musleabihf": "fc13baccbc88af76a86e49bdcf9514d6d2e85b025a4769cf2dd49b99c61f6d6d",
+    "node_modules/@unrs/resolver-binding-linux-arm64-gnu": "b74a338c2b6a6bb7e8399e0afa8cd3b58e51d787c7452b6fefdcc49f9a88beee",
+    "node_modules/@unrs/resolver-binding-linux-arm64-musl": "e981e03c8faa262bfc350eda0104c498268667c4a5b11eb7c7e65dc2888b285a",
+    "node_modules/@unrs/resolver-binding-linux-ppc64-gnu": "a157fe49a2b5f9f62bbe0b4519d2f96683d19369eb1417f08c29ba365ff9ace3",
+    "node_modules/@unrs/resolver-binding-linux-riscv64-gnu": "403bbed4663c0637f4db1b2af78b878b55197386e0291fe8db10265c40d216a5",
+    "node_modules/@unrs/resolver-binding-linux-riscv64-musl": "0a83ba3d5cde837bdefb99b5eb14abf47b5d9b7ab85587639843a699d69b73b3",
+    "node_modules/@unrs/resolver-binding-linux-s390x-gnu": "4eb621d33c368f9e43de902e8b7ae41af7927191c23ab899bcd9af0046f71cbb",
+    "node_modules/@unrs/resolver-binding-linux-x64-gnu": "b6d5f5138c3b552548b781b4130c44bdde795ddbec8bb14dee3de99500c69c85",
+    "node_modules/@unrs/resolver-binding-linux-x64-musl": "036a26d8924e2134df6bf04897a1e804a2afb36ff5a9144466599657e8532434",
+    "node_modules/@unrs/resolver-binding-wasm32-wasi": "6e5fc7a1d67e6ab03124bdb3b485b86552aa789d6d2f043fb2f22cc705101533",
+    "node_modules/@unrs/resolver-binding-win32-arm64-msvc": "31879fe1e8f7df1c687725968721da2c22fd50f1065c96e0408f5dfeba9189fb",
+    "node_modules/@unrs/resolver-binding-win32-ia32-msvc": "5a5a26df7c7b517694fefd63fa60eef67d7a8c504b19bc5f4615523c4747e6fd",
+    "node_modules/@unrs/resolver-binding-win32-x64-msvc": "207cfbd264a0e4e386dbbd2cfedde025f0e667da650046356089bec558b29950",
+    "node_modules/@vercel/og": "704bc4a842a659b2b5e4d6f7cdf33cac510152c6b33252bcae1c04f81a92a486",
+    "node_modules/@vercel/og/node_modules/@resvg/resvg-wasm": "01010fd20df712bce39ee4b696098ee48ba770b63a7dc9fbac61e9d1495de62b",
+    "node_modules/@vitejs/plugin-react": "69fd7515c055d947a33d56e4275b0a15fa168ad628231fb7b665dc52f8bcb117",
+    "node_modules/@vitejs/plugin-rsc": "7e039f0f41f6ac6b332c2a5eb7a2270d3ec385ecf197efab1ab653c8d7883b4b",
+    "node_modules/@vitejs/plugin-rsc/node_modules/@rolldown/pluginutils": "d38af49aa6188f5cbd614057ac91486541e9bf7e991d0e80bd25aebd3c7e376e",
+    "node_modules/@webassemblyjs/ast": "ee2e7a897c0cd4240b8fc5c6a0168801f0ee9268f425f2d25e01e64c1d8789d1",
+    "node_modules/@webassemblyjs/floating-point-hex-parser": "8a0ca99e9f4af1340e5cb4685e14f9df5b2699e21b50ad33edd69fbff5763a35",
+    "node_modules/@webassemblyjs/helper-api-error": "449f01b4aa306fd11e0bb05acb0fb48592e097c46089c54e9c465f1c1f8a913a",
+    "node_modules/@webassemblyjs/helper-buffer": "3c09a6d63c5b3fa4875837178b79a3ed3eab4038c78136d5741fcd3e826f267e",
+    "node_modules/@webassemblyjs/helper-numbers": "98eecfa8ff486e0457c96f389130a424e637ff94850288b242c3dff50a9a2f8a",
+    "node_modules/@webassemblyjs/helper-wasm-bytecode": "96976abcf8b52f2f6f91977cee4228984d313f3c44ca438a58e28a9966c1e887",
+    "node_modules/@webassemblyjs/helper-wasm-section": "8abf74cf1fcedfbf1998c158528d1ed025a9f6a374ce711bb9411e70469e66ec",
+    "node_modules/@webassemblyjs/ieee754": "2e3d4f608d38f1dd6ff3d6961177fa4091d8cdb71ae4b29fa1f159a2a5690ca6",
+    "node_modules/@webassemblyjs/leb128": "1bb04b596902ae63bbfe942cd014b86685aeb2b1ea224bcfb240f0b02a35df3c",
+    "node_modules/@webassemblyjs/utf8": "95145a7d6ae7acf4a44840dc73ab58721bfcc808d896043d63c3b33688c36d56",
+    "node_modules/@webassemblyjs/wasm-edit": "b1809538e1e2a710c8b0e3d312a081d8547f919e6ce56a731bf7cebb814ac3f7",
+    "node_modules/@webassemblyjs/wasm-gen": "1e8e086fd73d6afdda98be0289fe1ba8c628a91d27e2e9215e3591ecde78429d",
+    "node_modules/@webassemblyjs/wasm-opt": "fad48cb6498768ecb043edd7df2fb6177093a1b48ddd6bfc4087d1cec35f8bcc",
+    "node_modules/@webassemblyjs/wasm-parser": "3b5685e12d85b42251411187ee5af42293b1d3acf8c6963bc4916ee10c570ab8",
+    "node_modules/@webassemblyjs/wast-printer": "a25adc914538b9cde7ccaa4fd38c1acf98cf562cab0c6bfca4990354ddd00b34",
+    "node_modules/@xtuc/ieee754": "4306b4e4dadbb02309ccfc7f7a6a1f0b76d7285293dc3be3180dd23493f632ba",
+    "node_modules/@xtuc/long": "ebb84620a1ff3b6ce81c1e35165379dbc99c0a63298b57b130a588b787cde88f",
+    "node_modules/acorn": "03bf7bb65de3d122b0a8ac113cfd97ebed730b1508717d94734fe847732cec8d",
+    "node_modules/acorn-import-phases": "8038e4d27cc9aac00239d533018ae3d967fcfed0d17802e9ae0f156d698c96e4",
+    "node_modules/acorn-jsx": "f1af1ec8167ed3d2150aa3212a9bc9aa419e0d43698582d95534ee84b4a9e37a",
+    "node_modules/acorn-loose": "cfdeacf0e112e86f75e6734d8bee0280d637b8088226a304e0e879acdd60a0ed",
+    "node_modules/ajv": "b2798db2a6edc58c614da4ef6df5327ba8eb76090a7b2d6de5d3937ceace5f44",
+    "node_modules/ajv-formats": "d4bd841684cd44e1e92334551eeb0a9ab28d8d9fadd6f041f0b27db5f2a0186b",
+    "node_modules/ajv-formats/node_modules/ajv": "be84dd46f9682e1fb3618a670b8d2e211b7dc478c4ec1d3c909a74d64269f423",
+    "node_modules/ajv-formats/node_modules/json-schema-traverse": "95f6e88033997f6fe97d066a835e56d1987c7204bcdf8e389029796e9e6d68c7",
+    "node_modules/ansi-styles": "e2a0586a816511cb96fa7edf4ea13a350b244bcfc91bc09e96dd134303724cea",
+    "node_modules/argparse": "b31502e015c3c5e6f91384b6913d268cf640be30bd5f1437791bc1a1036b6964",
+    "node_modules/aria-query": "50dde62396e6fa4f5d8ecf375d993fd5477a38946b90410677ac349debdf65b4",
+    "node_modules/array-buffer-byte-length": "95d331cfe1ae3976b5ebd00959764a6c7fc031d85883ac596a2c663b495efae3",
+    "node_modules/array-includes": "c3d20505c8f07534c12b4eca694ecf91fda2ae2918772c7d57910f26d9b905c1",
+    "node_modules/array.prototype.findlast": "99087d63c8196123872150c72069e3a7f28e99577dfb894e228f8f49b97cf383",
+    "node_modules/array.prototype.findlastindex": "df93ccec89efb48c15b59fad64f2ada1aeac7f5a0b77d9755dfa08d8c6aff6b3",
+    "node_modules/array.prototype.flat": "794ca344890ad27d550e1a54c7443ba50187a8a8a2d664e0aff0377503d1d013",
+    "node_modules/array.prototype.flatmap": "08a61630b04bc85bbb1bad59fe2ec73a9b44f60867c61b10ba90baef0f13b327",
+    "node_modules/array.prototype.tosorted": "9a0b73add4460e4f32dca53a257d744630e838725c3709415cc3c72b2c598732",
+    "node_modules/arraybuffer.prototype.slice": "b7fa4a13e466f8d39ef0fedf2fda8fa5acda5a4811b8d0fe75455ef9f7c5c885",
+    "node_modules/ast-types-flow": "baf558685c1edc9e78225862e68efbee38fd093b9620850126a9b53c2f9f9945",
+    "node_modules/async-function": "8da09f4e323bff0c28ca0d454abf42c6bf8030521f9fa67bac217a8356ffa14c",
+    "node_modules/available-typed-arrays": "863be3eef26ebe3b8b810e284be02194fea9683e00b8da984c736ada023caceb",
+    "node_modules/axe-core": "76a1a23240c9680d5e2b54192e0f7a24ce8ae6730990febac026fdb0b3f5a9b8",
+    "node_modules/axobject-query": "167e0e7922c3b71cba6a1c9051a2d114ef4b746e9384b006cb9a3d4b79b912db",
+    "node_modules/balanced-match": "307d6060811dee63ba845682790ead592a3c67e5ed4c2c824eda557e77ab2c4f",
+    "node_modules/base64-js": "d4fda48cba85a07255d9312d3fbf9c812d3c5a5e84239c252dcb62e34803e318",
+    "node_modules/baseline-browser-mapping": "0d7dbe1e3b68e8604ed301e17a0371c932894e7571f2c66df22020c23dbcabe1",
+    "node_modules/blake3-wasm": "414c503a508eec016274c2ad352d82e4fd27555459cbdca0ab72b476b09940b0",
+    "node_modules/brace-expansion": "0874bf5588fdcee94de8c57f25f668b8af24a4025906d1ee65c410ead892c69c",
+    "node_modules/braces": "e51ad3a4de3d524026f914722e8bffecf07a3e58a44295c20067e7910b03ade1",
+    "node_modules/browserslist": "e129aedc436cd6c01001f948e0e3ed53c8007bb82ee5f0dd4b3194f42c3e49f8",
+    "node_modules/buffer-from": "2491a7b7189ea034087e40a613ce70bdbca5cae90f3e0de8cfd01d63837159b6",
+    "node_modules/call-bind": "115fc050e6dcd2562f83cecfa6df3336e830d6c0fc738b423fab64e92d61e9f2",
+    "node_modules/call-bind-apply-helpers": "47b56ec5dc4c9f643faa881cf45f4e1942497b34f7247d6e76d613df275199dc",
+    "node_modules/call-bound": "3dba5b2b7616875ed22dbaad465031ad717aea7542129e8d35f1a36f3f53c5cc",
+    "node_modules/callsites": "4cfa3caf418a2f93e14078448f0c64ffdb8af3b4afd64f82064b9df7a4a89160",
+    "node_modules/camelize": "b7e8962194ccb1f39c8f9a47bd418e3f0ba6cb4b3231b39ef36ada13cc2026da",
+    "node_modules/caniuse-lite": "a2d1d841e6a6fa5e839c0620ee5ad5f2a01eb23f56df6574b33151aa1275fbef",
+    "node_modules/chalk": "db34aa573fd79d23646b4bfc14af4cf9655d59235546edc9ed57ab8112dd6897",
+    "node_modules/chrome-trace-event": "58dc80671ad0a8b3c2236bbe9ef80faed7ce2e7c9e0eded0499e3c2c42bc858e",
+    "node_modules/client-only": "c63d0b1bb1101fd51b270405f6dddfc893cfb35952798dd700cbb1c0dcc2ae4a",
+    "node_modules/color-convert": "2a897c206fbb18b5783195d774aaa4aec5270afb72f29a9dabca86e8b8e93e9c",
+    "node_modules/color-name": "c13be456dc1932813a90f54baaa098b6b604172d7d798bd6fd2fc3ecb672be0b",
+    "node_modules/commander": "db33a9729515795cc0efeee802eb9180c2f8f9aa89d894bd01d4d0ad94130d83",
+    "node_modules/concat-map": "8fec793752e493cda3cc51da38a28dd5a976845165da1300e396de3afb7d3662",
+    "node_modules/convert-source-map": "6ed2ced43c6b04687f5b2919afc9331cb575ea7d13995b04873815c3df8604a8",
+    "node_modules/cookie": "529a9fde49066dd1ca7c40f8f73dd875e3d774cc66badc5e0b7248b0a78aea80",
+    "node_modules/cross-spawn": "f13eee87f17961f0232dc5ca9aa0f4724832a47503ff61f383a05db16a2ed3b8",
+    "node_modules/css-background-parser": "3ab98b073b7b0805a86667300c3ccbe39b3f2d74a5ddad04d5f29ada69e7d640",
+    "node_modules/css-box-shadow": "ce751a7621923eab1a45c79e1d34a12ba3c89c1398e1b67106e0ec99e3e681e9",
+    "node_modules/css-color-keywords": "61dc0b68b161947d6b69d8ebd7f1caf20d4a529025ba2c139412e6bf3a63d380",
+    "node_modules/css-gradient-parser": "80afb7b2e958d929cd6f84d8e6db354f163df31402d7681ea6514a70728fa574",
+    "node_modules/css-to-react-native": "a0950abf149be2cbd8c8536aafc14ea92ef6530e0d8d02653034949e05107b8f",
+    "node_modules/csstype": "c543f01f0d0fe91a2699f77ee49b0953278d00a8c9df68a5e525f9640e2fd083",
+    "node_modules/damerau-levenshtein": "6f5e1ea8f2a34914d14d2dd8dab54e2900d08140b4d7dc044720527fb1042675",
+    "node_modules/data-view-buffer": "5d7842382334cb06f7c190078be044249d22216822c1c49d950f6828fe544d36",
+    "node_modules/data-view-byte-length": "5e9b0511081267b48b27fd757fd619f47d90614322e38a448524ac24ccc6ecc3",
+    "node_modules/data-view-byte-offset": "57c2dcfe4e6292676dcb605ce98c55554d78e6fedd799f8a72c4db014e52147a",
+    "node_modules/debug": "85a3ac7632180cd2524a3e03aeaa376a1e242c4d7a49158799aa335a33ab0094",
+    "node_modules/deep-is": "9e4e328e5a92271198e843a692948b8f05de3ba8e5e10574c4abd0ed2f716a8c",
+    "node_modules/define-data-property": "0a6dd3f84cb49dda4ffc597bbd155c7a9a551645d5ec570c7aa292b4d96a5782",
+    "node_modules/define-properties": "c30b1c1717a3e6c511cd230eb281258771882cb45c3d4755ad9040cb90d3afac",
+    "node_modules/detect-libc": "43b3f6202e1bdb5589e0b8380e1e6c90d568b147b48b5a7a5761aaca0c1bdc31",
+    "node_modules/doctrine": "e512ff5dd4acbc034e572bf16dc644188a5d53355747c99722a2c8e87b3a170c",
+    "node_modules/drizzle-kit": "97a0d98a3d268e329d04850838b3d2cf9d7173d35e51dd25a8e8143ed4037363",
+    "node_modules/drizzle-kit/node_modules/@esbuild/aix-ppc64": "6d2015047a368aeb106f2921b0e0ea9b2a454b8e575e4b64d55241a05687b31c",
+    "node_modules/drizzle-kit/node_modules/@esbuild/android-arm": "bd58aed05f458070ffbfa1b6ae77d7eb13aecac7b82aa330d15fdc3b2f03d44c",
+    "node_modules/drizzle-kit/node_modules/@esbuild/android-arm64": "e7e008d1a2cb2b337d0d2b5d1d8e7e17356e5aa11af8c8329a579ac3d3fa642d",
+    "node_modules/drizzle-kit/node_modules/@esbuild/android-x64": "c2446339a98bb9b927c01b9d6b2f79740321b23c8ac13806ada904d9322c2f74",
+    "node_modules/drizzle-kit/node_modules/@esbuild/darwin-arm64": "65a819c8d8c273a19e442d898d8c86edbe2660c792225031cdbf1974752b7145",
+    "node_modules/drizzle-kit/node_modules/@esbuild/darwin-x64": "87f00fe6ab61a6914333d0ee38a670d7f71611adc5b24ca7a5dd75fbe2966651",
+    "node_modules/drizzle-kit/node_modules/@esbuild/freebsd-arm64": "2b4d9f57726a620a3003c1d4b33c810466f9ef7ea963d925d13bd119fe6366c7",
+    "node_modules/drizzle-kit/node_modules/@esbuild/freebsd-x64": "d29f9032685bb1f97d90b063554ebd3b20e89d15df71e19e0ecd897cc47d6767",
+    "node_modules/drizzle-kit/node_modules/@esbuild/linux-arm": "12e76aadee9ebf042bb7e5dce888bbd35ae3d23ccc478a457ccc10a357040dca",
+    "node_modules/drizzle-kit/node_modules/@esbuild/linux-arm64": "a99ada85ce9062573628bf892c148781b1142e830ce827d985db6ad1f11b7dbc",
+    "node_modules/drizzle-kit/node_modules/@esbuild/linux-ia32": "ca1dd647c3ef8816e3dcfd6101505c7c7c8ac0eb5c1acc27d58eff50714e3071",
+    "node_modules/drizzle-kit/node_modules/@esbuild/linux-loong64": "59d1c76a36dd5a7a46081ee3513e1d61c472a0e04b6af51f4f231e46ba08a754",
+    "node_modules/drizzle-kit/node_modules/@esbuild/linux-mips64el": "ea85dbfdc783af4e67cdf649c959bf8cb11ad37f1788415a635b31f06ed1ea7a",
+    "node_modules/drizzle-kit/node_modules/@esbuild/linux-ppc64": "4ccda7ac236799cebfcd1e73ca902521483734d5d3b1bfcef5c9342a955ae6b5",
+    "node_modules/drizzle-kit/node_modules/@esbuild/linux-riscv64": "1deb45ec7233eaa067fce157af6039a3ccd52142077d203e1a00fe4c8401a9cb",
+    "node_modules/drizzle-kit/node_modules/@esbuild/linux-s390x": "0eb7939e1edc9074adbe0a07d3b8751d6dcb6184efe8a25cd6256ef5a2c507e5",
+    "node_modules/drizzle-kit/node_modules/@esbuild/linux-x64": "0a9c2adf2f27c62c4fb29000dc838a6e76dadc3ba241d1d504dec9a01ffad2d7",
+    "node_modules/drizzle-kit/node_modules/@esbuild/netbsd-arm64": "0628618a5200859a18494a89074e9d8062635b8bc5b2c9fda6e0cf4e1f73f138",
+    "node_modules/drizzle-kit/node_modules/@esbuild/netbsd-x64": "08153545dcd342c989a3fee85a31a043f465ea8de27a9a0c9619419aee579542",
+    "node_modules/drizzle-kit/node_modules/@esbuild/openbsd-arm64": "096fa9737b7b6e719ac30306150b89f1178b71617025f8e612f508cbc1b5e2d4",
+    "node_modules/drizzle-kit/node_modules/@esbuild/openbsd-x64": "c7a71a88397c4bbbdb3dcc8269ad191791c237ef489d05795357ab13c4d17979",
+    "node_modules/drizzle-kit/node_modules/@esbuild/openharmony-arm64": "5e3bc8e33220b5ae7b02871a073d6fa30fe37a6a42ef3744c2325e01ab892bbc",
+    "node_modules/drizzle-kit/node_modules/@esbuild/sunos-x64": "819511f4d4975e3a811748f3a69273a1a4153fa9c40c0baf08c9c7e900800c2d",
+    "node_modules/drizzle-kit/node_modules/@esbuild/win32-arm64": "0052da1306d63e0c8734615769f132c35922d40e07874cfdb69a90a146d3c714",
+    "node_modules/drizzle-kit/node_modules/@esbuild/win32-ia32": "be28beb6e8fe45f6c244e3f95431b8d1dbc6afce1bcbc01bd352e76b1f1b57fc",
+    "node_modules/drizzle-kit/node_modules/@esbuild/win32-x64": "0efef2c8473dcb195fa0b7e1d8304c1f917b9e752cf183c958d86242cc9eff0a",
+    "node_modules/drizzle-kit/node_modules/esbuild": "779144c85cc1ad255cc0548ed965f8fa52d3cc65361dd1c36577c514c135013f",
+    "node_modules/drizzle-orm": "a315a8d2cbdbe806e3e9f722315d6a9d0aa34a3bac32276cb9c93dac2a117ecc",
+    "node_modules/dunder-proto": "48a1205fd52b31b293027cfc0277f6730e07e85fddb29fc8803e82dbe5845dd5",
+    "node_modules/electron-to-chromium": "76fbb4d280d3c507cb1e596b071cbddba88101262b80a895bf276ae6728b1e5c",
+    "node_modules/emoji-regex": "357aff1873cb28715f127eeeb540e46b2bccb3add9d206e1a8773b5e142bb748",
+    "node_modules/emoji-regex-xs": "79431f717c46f485c7c93d6b6aa1c37718c001e3fe9f291152e0157fbb794318",
+    "node_modules/enhanced-resolve": "56a37240ff92f635b9ae391da82ccf1d3b57e9ade53301e2449c4eebd5c0b47e",
+    "node_modules/error-stack-parser-es": "5e84d87cf0a177e562e0db6b0a47e5b3e36fec06590599db84a3ee5b6a864323",
+    "node_modules/es-abstract": "1fe0a8224653f9e1c7d2973fa4d12f7d7c629e53e01c9b154335cf0df180b2ca",
+    "node_modules/es-define-property": "2eb7509bbb45dadc63e21ae417c6a758cc6e32d20508084690af3eb854f854ed",
+    "node_modules/es-errors": "5bb70d59dc93387bbdef9063069d28bfa52742a9f17d01188f215eb4ffa4fceb",
+    "node_modules/es-iterator-helpers": "ed18582797b8543c4ef4c1b1dea33f4ab88a2748a0cd246db0e487f9b213355b",
+    "node_modules/es-module-lexer": "a60c658a5b2a755c1bae8d27322194cebcb3410426f503bba79332369ef89587",
+    "node_modules/es-object-atoms": "6038e57e5859c34a2dd408868b7a1ee814b430a7d58b5a1123bfb057a1062a48",
+    "node_modules/es-set-tostringtag": "cb76fd12b5da2b49607ad199cf0bbe3a8e4d97a06816336379371ef343b89e0e",
+    "node_modules/es-shim-unscopables": "e78dadaa8aec5adf3595b14825aeb6b4a95426988fa780b2ccbb59c5cbf67fee",
+    "node_modules/es-to-primitive": "7f4821cbcfb832cb7115eb5009d097382a68bf914799c36d36c58abfc2a55463",
+    "node_modules/esbuild": "33952d882e9c030f910a13e578b5b9d204cd0925d21fffdbdac730d78ca6fa74",
+    "node_modules/escalade": "f15a6f83c8e9344c2db0c8e0499328369247c1ada9cecedc6f4e7e43e0a405e6",
+    "node_modules/escape-html": "f9f6d2f55a6d710203952661e0cfdcb6a8057c1ba01519ec142603ef42795def",
+    "node_modules/escape-string-regexp": "e325e7f5525205069320441825cf9e72a2daf44d03f6a9a7eeaa1dd5b7fc053b",
+    "node_modules/eslint": "d12edd19fa368ec87cae6cc05aafa843cb3a5dfa0992c44c1dc0acdff93744b1",
+    "node_modules/eslint-config-next": "8f27590253d9c5bdbc8e458259ae96c907a43713f32d71811003c08b88baa8e4",
+    "node_modules/eslint-config-next/node_modules/globals": "06ce55e27216d47be4fa1c9c7dc2b05acedf2838588cb1778ed1031ce63b34da",
+    "node_modules/eslint-import-resolver-node": "9b892913aaedb9a5dca41271f574e4d06a7b22fae8e30407e6e3ac7aed9544e2",
+    "node_modules/eslint-import-resolver-node/node_modules/debug": "72a09349c09d40eddbe62c3e09519b55e1f59cf2dbff2b5472524108f75444cc",
+    "node_modules/eslint-import-resolver-typescript": "7938b486bf400f194369ad88f0f8dec9ce3ca694393d082c8ac68dcdb6289a51",
+    "node_modules/eslint-module-utils": "1e276fc917e59c07ad2d3eae16242e3805ca24a0430ad9af5961c024fee82bd2",
+    "node_modules/eslint-module-utils/node_modules/debug": "72a09349c09d40eddbe62c3e09519b55e1f59cf2dbff2b5472524108f75444cc",
+    "node_modules/eslint-plugin-import": "ad5101f1c6238057827378da2cc18fea9c28de5b33f564299f896a9ad398927e",
+    "node_modules/eslint-plugin-import/node_modules/debug": "72a09349c09d40eddbe62c3e09519b55e1f59cf2dbff2b5472524108f75444cc",
+    "node_modules/eslint-plugin-jsx-a11y": "a1688b072729867ac579fc2869c5af74ea0b452eacc8dcfedffb4a06a24dd5ec",
+    "node_modules/eslint-plugin-react": "a1958e271ea8d2a9eea168e99ec47eb54b7068478863a28c5abd95818ab30816",
+    "node_modules/eslint-plugin-react-hooks": "51104c1568ead3712f52570e117278693bb9241b501007e7885c69b7792671d4",
+    "node_modules/eslint-scope": "a5037e007c216078c28d1d922e4ab20252a6e90866b0a96c12a2ca8b03e1c699",
+    "node_modules/eslint-visitor-keys": "809f3d22cfb4bc1425f08334c7d0b33cd39d223327a3f9688cacb6044af2cff9",
+    "node_modules/espree": "9c2d9a77300a6a1b9d2685a88e58665734719f7e8c7eb0f6ef6c675540843613",
+    "node_modules/esquery": "9faebc35b1dddbfaeffbec8d83b17d3b2cecd5fbae989f3979deb519f9582e72",
+    "node_modules/esrecurse": "612a9a61bb4a85cf82ba438a8520aa5ebb4ebd328d617fd48dfae457d146c930",
+    "node_modules/estraverse": "bb325ae1e91d230a7542627c0d2f8e6df9d68cea84f3463060265ee107d8e98a",
+    "node_modules/estree-walker": "13b24c83b3e7be653f29298a704731147a62414ed6dd33d59fd4b41a36030bcd",
+    "node_modules/esutils": "c3fa4853301f323bf998b2f58034e4c563802869ce2f02bb5a4eea5bb44b0552",
+    "node_modules/events": "e8623507a597d29d451e6f8d1b9a31ee48bca9d03cbe70a100ed3b404f4c5f35",
+    "node_modules/fast-deep-equal": "6a04b673e10c7a0bb84acdbb2bb107d7f6cda9d218f7dfd44491d34c92fa8ec2",
+    "node_modules/fast-glob": "878050b7cc12b4c14cbe59cb23ac1a10909eb03be1619e741ce27652b2c40ed2",
+    "node_modules/fast-glob/node_modules/glob-parent": "69f6d5bad53f7b43b0b5140cab1a155ab153ef9fcef2f2a3dbbaa0831794f116",
+    "node_modules/fast-json-stable-stringify": "78fa508226e3d44fc0b43be31171ebc98058296f5da01a3772334065288b3fb2",
+    "node_modules/fast-levenshtein": "c230dba08a78204daebec98afc2116cab5d2e0fa6f35889d0512994a93210732",
+    "node_modules/fast-uri": "420096b1e2b0911e286637fbecbc72cfa582a1de8c0ddb62642428d5b3288ba2",
+    "node_modules/fastq": "014b7a18a753e3bc97ef45a9a8a6b038da897f581e3af1e421bd258bdc650e67",
+    "node_modules/fflate": "4a345dcd2978448e12c03b6e3cd3fcadd14940c9c15115f8475c803ce0606df8",
+    "node_modules/file-entry-cache": "42e79c72d004be9f7bbf36c3b059823dfc63bee60c04d76df2b1256f5ba36b96",
+    "node_modules/fill-range": "fb2d6063099abb51298030f4596b8fe6db34e87f9f9f03e31d1ce26bd4dfcc8a",
+    "node_modules/find-up": "4293a0bda443da6eb3d8934ea51a5d26cbd6aa57709cd19dd2e3b8f848657ca8",
+    "node_modules/flat-cache": "3021290946a42198d2d93df1825d1cb405c5456ed81cf567d61dbec33a796b1a",
+    "node_modules/flatted": "05e4ffd8a5d4a2e19b848dde64fe811e0a898df592b14262017cd919986efe97",
+    "node_modules/for-each": "2ee7c5f360a95571ba6662bb8cc7bfc7717becb8bbc86149c5c00643b6c1cb4f",
+    "node_modules/fsevents": "3d12c4a3bc97824026497d52f31d9afd3ce3ac386ceaf50756a1a0031b442611",
+    "node_modules/function-bind": "20d2d67b2b3c256fa27af085d013a6ef5b228e76796a740484344720298618a0",
+    "node_modules/function.prototype.name": "228b9c41a453057e7c9d0530d644a131d6e5d423d537d1663b5926d349077a97",
+    "node_modules/functions-have-names": "13fdb4673170a20b59cd9d2e6d9223e524feda8f69ee3647f3b345209292add8",
+    "node_modules/generator-function": "d9ca5eeaf434947d3e225f473e3a3919a19496636862c0fedd35327e8af9937f",
+    "node_modules/gensync": "6b323d45ee1fdd456d3e3a967ef6e01a2cfdd78c9123c049ec3b00a79a8af296",
+    "node_modules/get-intrinsic": "8a09e400225d2e6ef3face6c41b9d45cca266bb71cac526b23951029e6a53890",
+    "node_modules/get-proto": "d44d5b8d1b7c4fe37de946e52477e9d45a2a4594a1699b44bcc9d51a081dd578",
+    "node_modules/get-symbol-description": "2cdd8d13152e9621c8e6496fe6986fdd3da87b2e9dc438611d5ce302494485f2",
+    "node_modules/get-tsconfig": "227c6eea6a5355170af0c7be5d52885f000697d6473c82924f88afda9c8ebc50",
+    "node_modules/glob-parent": "06c47d45dd2b7675808530ecf537f840803d9d91639acebf2d11127fdd7fd634",
+    "node_modules/glob-to-regexp": "256b267fa94235ad599c88a6a05c4ac7e67923f1cdf9e66a8ba267f6e0af9b2e",
+    "node_modules/globals": "d5364794086b0aaf59d8acc3467a8efb6e12a64777a2e6ec22c1428f32560f4c",
+    "node_modules/globalthis": "4ef6b925c4a872158ff7daafea3807b71fed5505d988c4b833104900033535f9",
+    "node_modules/globrex": "d0801fc97cd7e312596e08640b340f717d8279c009469f5a96bd3f477cd917e4",
+    "node_modules/gopd": "deb9a96d4a3d58bf610ec9b581077dc6b8df30b267b4a1910f572891b875ee56",
+    "node_modules/graceful-fs": "231223053b50bd6d9a0c63b77396846584a47e1cfcaf47b32e3f30ab4e5bc2e4",
+    "node_modules/has-bigints": "0a0107db627ffef04580dbb861a83214ce566815e92b999ff7776d65aff0d97d",
+    "node_modules/has-flag": "71729d98be1e0d66a84c2512afa70ac5f4a62142f9a3fd97484a69acf01d2cc3",
+    "node_modules/has-property-descriptors": "732d1558c0eefe564d898cdc79712c55093f3acdcbcb07187cd5066023b4e0a8",
+    "node_modules/has-proto": "2de4fb3ec464a78d34c89f534ec739a97cf2c521bf3d28f0c1dbf80cec2f1fa0",
+    "node_modules/has-symbols": "5907fe6664a387c04ff1d92283d000b037d22940a87eb0ebf6eb5ac7b11e5494",
+    "node_modules/has-tostringtag": "069ce658586dd66eeaed67518e5b7df8fe505854155c1e7827189d3a5095edbd",
+    "node_modules/hasown": "ec71b43ffc8c0d598743783332459d1b1aec93f856bd51f39125a35b89c78f67",
+    "node_modules/hermes-estree": "77c7b571b48c813805297e84cb344e442fd8c1ed68470f8e681f10a3de83d4f2",
+    "node_modules/hermes-parser": "90d61a4e089f6f89f88e40db77369c011c0e5063fb4e0fb26205ac5969516055",
+    "node_modules/hex-rgb": "c05ed490e279a4686e6dbd42b0eb0f82e71cbf764a40a1e686c19f61328e9e00",
+    "node_modules/ignore": "fcf3074ad7a0225d4e1f8fd8cae35c555f9aff28cacaf2f6c417e590b7c45b43",
+    "node_modules/image-size": "c491ba9f41e149cf9dde132379cc9725489fcce2b6c36fd7443e098b0fe81be9",
+    "node_modules/import-fresh": "e5c472370e17983156f60a9985d579479df981f7534028b87d08512a66a4dcc2",
+    "node_modules/imurmurhash": "a6e87eaab898973e6f005e6ada8a39ac0824ec10ff384b22b062a2391520f918",
+    "node_modules/internal-slot": "1095d2839e214753cd8c5c5367a49357d6f3a6be02c2f308780aa5449cf71820",
+    "node_modules/ipaddr.js": "c8068d381a0893222a54f693221ac84697bdc9db641e487ee599d221c28e9f49",
+    "node_modules/is-array-buffer": "ed6ebdded23d8452a3eb26870bee09c58591fbc93f0393a1fd43dd268d86e6d4",
+    "node_modules/is-async-function": "d6b7ea4a18d673759b1e2c3a762ee1b85a1ad4e1e69620340b867d16ff757f06",
+    "node_modules/is-bigint": "988f46c9a9c6c0579cf6363541848274c95a58962f61fcaeecd2aa7523b36b65",
+    "node_modules/is-boolean-object": "83b2c96e569e804db1960afdfb1938c70b0037a56fab8226534ec8266185d21b",
+    "node_modules/is-bun-module": "7f873db49f165d64c49d497ce1d67845e08fc855d53728e7305a3982feedfb7d",
+    "node_modules/is-bun-module/node_modules/semver": "85643b9ca0c96c4d629f536d85e835e5030878e1784b2f624b52cef9be69d3fd",
+    "node_modules/is-callable": "bb7cc8e6231a8338b1d092b14f9de870016c17023ef769d8b8519e51c9987080",
+    "node_modules/is-core-module": "390737d275f7516ac60370bbf61c4244f95339d431ad297a3807822c2e327ef9",
+    "node_modules/is-data-view": "2f249bbc2dc95a6a13403aa0e4d75f4eb1834a20cfe30d1647e0b523de488c62",
+    "node_modules/is-date-object": "b415a4a11c14818013e0ca9235ca7c637335bc586886f6bb993bdf6a2f03d1e8",
+    "node_modules/is-extglob": "551d37bd9005e72f4e7a20268c91f68f25c1d3277a0b78d9644d895785286d7b",
+    "node_modules/is-finalizationregistry": "5ebedb418442159030285ecce522062ecfbe603b59c0a7317a57d377b8db7b3c",
+    "node_modules/is-generator-function": "68f97062bfb17b04a69b2a45d78044204fcf76c78ff2d33b654e25d4c7885f8a",
+    "node_modules/is-glob": "4b7d153559e47de55594c1e4d1346eac307be071c9de1717fcdf149409e21a24",
+    "node_modules/is-map": "7d582c98ccafee366c3e9ffd0ab096cb5b8bbe84ffcba1057b4b582f12d9148c",
+    "node_modules/is-negative-zero": "08248860f8034f1632a2e3166ed6a4858aed6df96256a78db1c304484e0c6295",
+    "node_modules/is-number": "1fa80b2f3828f5d25581381ce9d7f125500e744eb2ae0ffb454304e6bfcb48fb",
+    "node_modules/is-number-object": "2bcd9ab392154232c1e4a5b247c92ee297a6da7932e9aa52ee29666d3edeaaab",
+    "node_modules/is-regex": "3ad9f80dea59c1b02de4ff5eb5306db0b84b3b00aa9f3a727b783f752890cde1",
+    "node_modules/is-set": "c6b6ba8983ac861aad73e4994c5376645859f6ad51bd12e448d03af8eb3803d8",
+    "node_modules/is-shared-array-buffer": "576f3753e35fb3c9f7c01da6a1268c0c583b6aac76d6474c7ad31a74cc71493f",
+    "node_modules/is-string": "22dc07497883bf0aeba33779743493b3000972ec0f1c85574bdd0b16479e8223",
+    "node_modules/is-symbol": "964d515fdb3204ef244f6913f7bd6880e5cf0c153beef7920a4af665da575ff2",
+    "node_modules/is-typed-array": "0c21c56247192db7d05324400acd33fba7c3edfc36c89b4b6db4688175237e85",
+    "node_modules/is-weakmap": "4cae9c113423d2fa7fde74f2b73b0496c9f3b6761d1be45ae6dbf661d4269066",
+    "node_modules/is-weakref": "40888c3aaa2f769c407d16cb3f7b26b6e9e2cd39751f05a8f079e98d1c857c0b",
+    "node_modules/is-weakset": "e34c2f3a04462c90092447e7066817e4503f79cc61dc83d6648833c66c1e5fb2",
+    "node_modules/isarray": "8d39eb12ae3039f17bf382d3dd4e7b330d88e54e3e071f615a41349071dc9869",
+    "node_modules/isexe": "5292b8710273fd6a64a7125b5363e69acf70f003e5860779b2868095538fdeee",
+    "node_modules/iterator.prototype": "bef30638e9d41ecca174607add8524c460334ff99fb95de38f31039ac3d9c56c",
+    "node_modules/jest-worker": "c206bc6aac21cfec0e3f5d09b3edebf13d9dbcd16893ca37b9266d1b172eb79c",
+    "node_modules/jest-worker/node_modules/supports-color": "3d774a4ed7be4e394d4bc64ac7209d5215baacf449efcad40750b2529fb89ec6",
+    "node_modules/jiti": "3f026904ab3d22da79a74158e95e6dcd90e07dc461f1f0f6c5eccaf121d0abb5",
+    "node_modules/js-tokens": "a7a96b6b19e7e333593e315c74505a34fcdc325f5d018f43911f651a01af375c",
+    "node_modules/js-yaml": "7365670362cf34aaf806278a8c84445348b0dfe8f6737ef2645443bed64f1da5",
+    "node_modules/jsesc": "6f80a891e217267f235b221a47541a25e15972a1f35e353c6548aedf0b0e72e1",
+    "node_modules/json-buffer": "dd7a0bb2328f353c9274510f57ec05b16ce47d8693eb01d8f0e649207540ce95",
+    "node_modules/json-schema-traverse": "32a1fee86d108d331f567e4322916dc2506d7c01e071e1134a3c5ffdb3607ac1",
+    "node_modules/json-stable-stringify-without-jsonify": "a04988337b3146bf834f020d398eaa4319eec06aaf7c30de7209ead2708a57f0",
+    "node_modules/json5": "38126f233fa588d456b810932fa167b4e260b4d36b9c26365961164561f8b218",
+    "node_modules/jsx-ast-utils": "ca55b2927d59eea85902bb3385a2a46c938a95cba73f99e64cfa3305380ebf03",
+    "node_modules/keyv": "4dd338bcd4d3f2a2e7a939cb96e7db4553a12518c207399cc3300dfe10af3a8b",
+    "node_modules/kleur": "f09cd860e2fcac48747fd510d51cf0193240a9187b1a63b3e303b7e9d65e218f",
+    "node_modules/language-subtag-registry": "ebcd4b2bade1d378cb160d57daf3c92480a9ec729487cb0e9e6b5143c883604c",
+    "node_modules/language-tags": "51bc2fae074abc839d1720c62d50bf3f2a4f9dbae7f83c96bef53088a2b824ca",
+    "node_modules/levn": "a5e13d7a2ac32088e40370791a5ee22948c638b5ed30ea0ab909c5e3f9297968",
+    "node_modules/lightningcss": "faa5639ec36b7a3924aa7fbdd56ac62055bbccc5440d137165e9bbd38bf2623d",
+    "node_modules/lightningcss-android-arm64": "97cc31a17157a567d0d1b076ee091d1b0d1ba366873c1e1752762b15431acd95",
+    "node_modules/lightningcss-darwin-arm64": "aeed48953a71b26f334da08a274ab95d5950a50aeba5fcc11de57111c85299b9",
+    "node_modules/lightningcss-darwin-x64": "a19ed8b01f7ca11f4ae0806147fa666e47dfc36e6234bf3e729fb8fa24693e09",
+    "node_modules/lightningcss-freebsd-x64": "7cb9a4f20fb580385b3c1d81b92eb96135bd401f798f109388f4d8eaf3822e11",
+    "node_modules/lightningcss-linux-arm-gnueabihf": "fe43c898eec5cf4546690dbcbbaf0d873421c6a53e066fb27de085706fa47ed8",
+    "node_modules/lightningcss-linux-arm64-gnu": "e18371d9f0c56b34605079b68fde31c5eea7891ceff321b83036018b5d7d3192",
+    "node_modules/lightningcss-linux-arm64-musl": "ccac71d1d08cd963c00c6b54fc9d12e10e8b94748ceb4211f49974923a73e51c",
+    "node_modules/lightningcss-linux-x64-gnu": "15538d3def2bf0c775b7e42afc8e40c7a071d3f59e4ccf9d7ce0eed0f8e9506d",
+    "node_modules/lightningcss-linux-x64-musl": "9523573463f6d34e2b4cafe3b0d110836517f462f1b8c8caf920b7a72b22b647",
+    "node_modules/lightningcss-win32-arm64-msvc": "059f0c9e4670eb752f6a5d632ad533a6e3236588409f83ca2710f8ff092347bc",
+    "node_modules/lightningcss-win32-x64-msvc": "fc4ff44f88860aa85ac30eba32bebcb17e859d2ad239c5beb8a2f746b9512eb6",
+    "node_modules/linebreak": "c623120c2c1c84bd9fd52b5bd50adb2d8d1f3b9773698599e4b246d40c6bda20",
+    "node_modules/loader-runner": "eaf4778ef8ad3bbcf728418e11ebdcf13f67af7feffb80dd4654b2af14338596",
+    "node_modules/locate-path": "e2f19fe1835404bd9c3bf64b3b98914bfa00e253c71168d920d788ee7bf8dea1",
+    "node_modules/lodash.merge": "27d1d5e7c739cd8eccb3ee2ab933367bd0c16a7e3832428345f7b30429175ade",
+    "node_modules/loose-envify": "30072790e1ff1a173902f96c542a3f14d39546d1b2a7fc0cc4fee6a95043fa9e",
+    "node_modules/lru-cache": "0ad04f14444e704255e986a31e7308ba65dcefb5bcd73bce144b35a9c1553574",
+    "node_modules/magic-string": "cfff2b175684e71ac34305cb3305047dd3d263fe42c4401fcf38242e732f9385",
+    "node_modules/math-intrinsics": "00321ee4d96f800a5a44b345c129be4576daf99c20fe30ccb368f592fad75e0e",
+    "node_modules/merge-stream": "b961fbcbee01663eba0b366620cdf9536797d502008243fc6907a2c69a28403d",
+    "node_modules/merge2": "d7f836b65a87a061f29dd8793bcac45aa92ee16369f44bb173520b16bef0dbc7",
+    "node_modules/micromatch": "7ce1f249de84d3757faae57f31218b2f925d0459b9050c0a6432de0129fd0482",
+    "node_modules/mime-db": "9e12e8af8fd9f69bbe5a130c57e21ce1c30eaf05cd7b4aebc5939972038e28da",
+    "node_modules/miniflare": "a5d7dbdedcdb3ce6638134ac188f715afed5cfa9fb53db299efa1fc0736a94f8",
+    "node_modules/minimatch": "0d93f295da3e8d211c8c5c6e5f0ca42aac33837aa50e32bce46de8ccf45f0f33",
+    "node_modules/minimist": "9fe00b84b1f9e07f66259ee532b0613ce054eb67d77744b268506749d64bb120",
+    "node_modules/ms": "badec9ad15f91c8139c2a9914327d60bb84c066aa33d3b0412d68c6c85f18ea5",
+    "node_modules/nanoid": "d58f005f4014e80bb2d3cb5fec2395ede6b4db16e3838f7b297c49523f1efca5",
+    "node_modules/napi-postinstall": "0dfad4b2ed14287aecb3965ce5d5e9ae1aef87221f80258a31d00e3f5f3f1852",
+    "node_modules/natural-compare": "85617f13e93e49bdf2e2335608331de5b1c7afd8ed983bb3248e24546635b988",
+    "node_modules/neo-async": "9e73223d11f87fabd5d2753f1c0d7d72ed9594f53b0ae4c1b0e3c6292a6f9ad3",
+    "node_modules/next": "e7a902574488a0e9bc409d3761165256950e83b7cf1f31bf3baa82631e65ab19",
+    "node_modules/next/node_modules/@img/sharp-darwin-arm64": "dc7796f80b7bc073cdc445ba6b5187334866d8a5c47d56713156c428e2ec7948",
+    "node_modules/next/node_modules/@img/sharp-darwin-x64": "9b735985152bc16eb6049b23f19c7fe33964c10ed64f046b5cc954aadf8aa9f5",
+    "node_modules/next/node_modules/@img/sharp-libvips-darwin-arm64": "453ca339ac979ce450079c232c9491738fb812233129d02cf96d23b23647a1d8",
+    "node_modules/next/node_modules/@img/sharp-libvips-darwin-x64": "c4b8c1cec2dc8253375bbf447b781e6bdd40536435941e060c70711c13632f27",
+    "node_modules/next/node_modules/@img/sharp-libvips-linux-arm": "46c17e8a2ec9f0dbc89d47af49815c6cf074280f541968264ee66c31f4876989",
+    "node_modules/next/node_modules/@img/sharp-libvips-linux-arm64": "febacb27edbf971d24e0fdbcb24e723adb5c4b0bb6b2ba3b654f950de690422d",
+    "node_modules/next/node_modules/@img/sharp-libvips-linux-ppc64": "8a1a4919181fb3f748b7821dfc026d547d0c5cb6b0f58401fd0a087e01592da1",
+    "node_modules/next/node_modules/@img/sharp-libvips-linux-riscv64": "a06cf1334698e20b2a77b63d334f650a50f543ade48acb3ab7017b3796299795",
+    "node_modules/next/node_modules/@img/sharp-libvips-linux-s390x": "9d5d3b710c0836670c11a7c333d00b222c3397737d9ca231215c66f5c103c502",
+    "node_modules/next/node_modules/@img/sharp-libvips-linux-x64": "7b919db2f6227378b6d801d9c19048f242563867c415a82a9acc64e6c4f6dfa9",
+    "node_modules/next/node_modules/@img/sharp-libvips-linuxmusl-arm64": "ad07b6c3eb1666107fdbe3100042b57417f6d9de117534f2c85800ade010b1fc",
+    "node_modules/next/node_modules/@img/sharp-libvips-linuxmusl-x64": "d5ca1cf08fb2a1d8854f4009ff089884937ad892f79157b901c015897aa0718a",
+    "node_modules/next/node_modules/@img/sharp-linux-arm": "3670325d7a50c99512d862e239fbc418fae3ef5dab7b74fc231b5221b792449e",
+    "node_modules/next/node_modules/@img/sharp-linux-arm64": "75eb953dc3e34bf779815251c475ce45a905d0ead5b82f2793caea70ddc2d52f",
+    "node_modules/next/node_modules/@img/sharp-linux-ppc64": "ad0ad28d28004e1182bd00d704797a6a580c2258385aebc46c3f85a45b48e688",
+    "node_modules/next/node_modules/@img/sharp-linux-riscv64": "c4aad7ed2008c0e36b9b8af7eb0bf1de69b0f53ae33e6fa82aa01e3ce9fe582d",
+    "node_modules/next/node_modules/@img/sharp-linux-s390x": "7ee8a2b0731ddf76bf7df23ca3986d8f2a0fb23e30f6e25f41a2c43dc53ded15",
+    "node_modules/next/node_modules/@img/sharp-linux-x64": "f18493c90f40b84e166b0d255277777a1aa02eff8d00373dd11c8d99c8a7c375",
+    "node_modules/next/node_modules/@img/sharp-linuxmusl-arm64": "909a1f3e2a92e7f58be5ac45878f08300127e34e2d0ca3a5a42b7f7a1236b5a9",
+    "node_modules/next/node_modules/@img/sharp-linuxmusl-x64": "9a58e3c6d9e375291f0a33a012705e3420d9d7c37ff72bfa8477344e858b12c3",
+    "node_modules/next/node_modules/@img/sharp-win32-arm64": "ddc4f0e783ea240ea71d618c21af7a5827ca104a6629120b0d1e818b8158ae37",
+    "node_modules/next/node_modules/@img/sharp-win32-ia32": "26c96d4aa3bf5998599df2f4ea354268a1ae115b642bcc5295064cb95a960d49",
+    "node_modules/next/node_modules/@img/sharp-win32-x64": "6a31f34ca23e0b386d4a74464b38019072518e51197123e28988d81544677e92",
+    "node_modules/next/node_modules/semver": "c5144e1a24de101fb29b1c7065e35fcda453f5976a3e29e4c5b7d2d8c2488669",
+    "node_modules/next/node_modules/sharp": "42460f3b3a621486d2ca2d9afe7b9e13a683a69240cc6a138c852225f0622494",
+    "node_modules/node-exports-info": "62c7630a8b2f87aa28ba1f4593f592b2908fbd1b11ee1bc8df265bc85058c3a3",
+    "node_modules/node-releases": "a40343bf68727a2161fa747b54659a603dfcd2199e728184a61820f8ef62ec47",
+    "node_modules/object-assign": "dd70f1264379896a638147be0ae544616f8890dd9ec0f16c4b8b45c8cdbbfd08",
+    "node_modules/object-inspect": "f32fe025114f65bfc1bb7d98138566180bf1fabe03e2de3e965cda76962a6a00",
+    "node_modules/object-keys": "9f91b4b0c86d02a4a7fcf0107a55c6986cceb159ddef7793e2aa5b2ae483ee8f",
+    "node_modules/object.assign": "2516bb0c4793f25535b4af56fea04b9563b29447e39b2c4f54f14d4df230b124",
+    "node_modules/object.entries": "93b85db1ef02a8046a93cc3a31b520ee946484162e7d245dd188461d46e170d4",
+    "node_modules/object.fromentries": "41d8ce6262cb8f162da4f4153755775a71bb42200749baeac19bece68f173823",
+    "node_modules/object.groupby": "e0e936286bc47ec3057af2b7db9906603c837956b34305986bb74458462e516d",
+    "node_modules/object.values": "7f202216ba42385af35951eb4bbfafeae0d723039816a7edf4437a931328374f",
+    "node_modules/optionator": "f68f3c21a790a0f44891b3d467a07b54b6bfd9aa04a93f883ee6928a0a1d1222",
+    "node_modules/own-keys": "fee00b1412680b7fc8014e7fae3b8c5c315f7812954b32d3e617c88e9b00752a",
+    "node_modules/p-limit": "e3fbf74b37bac041b4cce214096c672265f1f6bb956a0a5da59af9742db684a2",
+    "node_modules/p-locate": "dcfc1a3c4d18d4a0168f16f64cfec884476dd0d30ee7c5ea86a4c3d8e80e8dc5",
+    "node_modules/pako": "7b7e483e24c5fdd5cb65a5968983b5853a62438cf15a923a4c4c32353d958f71",
+    "node_modules/parent-module": "18e8c3fc9fa05c801f7b7ba69120ba75148eed3c2359dadb9cfd632bb3836512",
+    "node_modules/parse-css-color": "984ec460e3307c7359ea0ee9f977dee8440f8e9aa2a47bc189e4362c2a5b1dfc",
+    "node_modules/path-exists": "8695c9faff3bca69fda3d75d96c0cfb50ceeba7f0fa68324cf660a25da13caf7",
+    "node_modules/path-key": "c577f870f9b97499fc8a5179347d07a9dd76d1f3158a595a75adf7e19f8f2ea6",
+    "node_modules/path-parse": "1a753d99bbd08361b58880f678e8c10eea09fe93c6b162eed2bd66d7fa7e8955",
+    "node_modules/path-to-regexp": "584a99fc56176ccaee69e6f0ade4841799a28187ab2fe36f5bc3f868fc03b10e",
+    "node_modules/pathe": "594f94cd8303a452cada801e1119a3278277df05ccbe5dc2b15c8ace8f073351",
+    "node_modules/picocolors": "90ad2d12e4eb2bfc679ee260b2ce0dae4c63ae7271478f2bbacffe94ec8bd74f",
+    "node_modules/picomatch": "778f3f2afc04ca578cd35c3c4a1599990df9555bf78474eca0e171fa1a1f7941",
+    "node_modules/playwright": "d4c1ca6f1e0c74503d0035485a91a2bb970a539d1464882983a769cdab6fc07a",
+    "node_modules/playwright-core": "fc581df161d37e6acd0572893623ea55d315fd9114537ae8c4ddfe2bab6b9055",
+    "node_modules/playwright/node_modules/fsevents": "9d2cbd7ff4c94c80e7b854395b59b7c482b2503a5d0f62c55b40e90c7471300e",
+    "node_modules/possible-typed-array-names": "535c08bfc8a8b11e436c4034ad9c2a46375a7fdd289a853e0a6d7e1720c6b17c",
+    "node_modules/postcss": "a09c47a1a1b19fdee3d0d85a75d43380bb87c9a2c5ff311754e75f5665fd8c6a",
+    "node_modules/postcss-value-parser": "0cd68adcce8804f68717639b0b143f943a9e6ced452b367056724ddf0c1d447d",
+    "node_modules/prelude-ls": "ca3fabdf0dd642a1958d4e5cf59d7e16cbbca9822c11b51fee09b8931eb8cd37",
+    "node_modules/prop-types": "9e9ca12cf7bf746497151ad45f157823a81cdc8299253a9738999642819447c5",
+    "node_modules/punycode": "30de4fd35a562ba3cc6e4fa0f3ec72334b5e72a92b7a2398998a67f1791c7386",
+    "node_modules/queue-microtask": "b844fc3ca5cc81533d5ac34ae11d1008226896b0187ea3c6fc8e77d3e27fba4f",
+    "node_modules/react": "34660ce51f32ab2d088445070c29905cdc80d7b5c7b09233981b63078728c23c",
+    "node_modules/react-dom": "29d47b801d7c2b461f5d22e956e3d350e0b6da06c3fef5c92e45a920617764cf",
+    "node_modules/react-is": "e8a984065a80a3b3d7647af2ecd11af4c6754246f130d43e8ff92831b012ffc6",
+    "node_modules/react-server-dom-webpack": "64aa1456e92ab2bbe3326cfd3940a563c6cca6478679cc6125895049bf101b41",
+    "node_modules/reflect.getprototypeof": "94fd84b49add8af3268f273221c3107347c04fb248dbfe4cba1665dbbd6fd608",
+    "node_modules/regexp.prototype.flags": "6b9585ff8a556093965637824dd68b876e9ccfe40831c3fde2227c3753e665e5",
+    "node_modules/require-from-string": "2add4e0ffbfc9b22f130b81fa0d163960cfdf159a2e12217883e69b4b746457c",
+    "node_modules/resolve": "0e3a07844355dbef354bafd429522e10abb8660ecf2207106eb1d41007f48314",
+    "node_modules/resolve-from": "ffedb349d51d3743f69e3c1c287edda1524bddba71f5af3fe84e9b1930b8b4cc",
+    "node_modules/resolve-pkg-maps": "ca677e824682f08c26796bec9fceba05705fbb99ed95e30d03665b344f1e78ee",
+    "node_modules/reusify": "a0e19510a92c0c841e1504c68e9a36c7c33142f34a18faeec08e917b6cd18fc9",
+    "node_modules/rolldown": "4fca10b4f4a409a0cb85fba234873a822abbf22f2bf8e95152a4dffdfe89f34c",
+    "node_modules/run-parallel": "c1401b2be23dae980ca420f8ffa90d14df763084272d0a0589ced42ff907e90b",
+    "node_modules/safe-array-concat": "65c7bbc7af1b0443c4f0320c1a6fd49947aa68f64ca66572e78f7ba51106174d",
+    "node_modules/safe-push-apply": "e546cd3ec7a6105e389a5656d71a480311500c44dc8063fc401259e74a99b5a3",
+    "node_modules/safe-regex-test": "793b9042035e05ac5321ed155dd4b18bb4df8de8d4c14843c2d631b2df337545",
+    "node_modules/satori": "371c07b3270e1bf95b570fba65ce64105c82f9418bface61fe4a68771a32b6b3",
+    "node_modules/scheduler": "c257f341874cbc31c8d401800106aff63c83fbc6a7d4f8866f0dfc1c63050799",
+    "node_modules/schema-utils": "63efb8ae3a646559333b23231ce98dc5041b1db890f83a16eb5ef06f3eb7befb",
+    "node_modules/schema-utils/node_modules/ajv": "be84dd46f9682e1fb3618a670b8d2e211b7dc478c4ec1d3c909a74d64269f423",
+    "node_modules/schema-utils/node_modules/ajv-keywords": "e7707907e354908889595bf79dab0fee9dc1f6259982a1f734cc379314375f1f",
+    "node_modules/schema-utils/node_modules/json-schema-traverse": "95f6e88033997f6fe97d066a835e56d1987c7204bcdf8e389029796e9e6d68c7",
+    "node_modules/semver": "0b382a7a89d9860c97f0e7bf6fac22a62a6b08f50b8daf14f21bd9276bf88a53",
+    "node_modules/set-function-length": "ef2eff3e6955230d13d3ad1e0d4b81c3199d82f4ed60e838899d52edfef02b08",
+    "node_modules/set-function-name": "397f541139cb4e7a3e98a886094191e74abed4c222ce92468da76ba91b687f10",
+    "node_modules/set-proto": "01e2dbef88996e6145c82334355289be645899570b3997d8b1979ce7a42bcbb3",
+    "node_modules/sharp": "9d16ab418e2f09bcdc87b71ff97398458efcaffde23afd9e03d813582dcbf853",
+    "node_modules/sharp/node_modules/semver": "85643b9ca0c96c4d629f536d85e835e5030878e1784b2f624b52cef9be69d3fd",
+    "node_modules/shebang-command": "fa4559cb4c7b03d0c716b2e825795501774079580bc4c9f1d5571abc3dad7ca3",
+    "node_modules/shebang-regex": "e08675143de3c54aee59c31755f9372e7faaecf8de7aabbf2e3f9c485000c65a",
+    "node_modules/side-channel": "35d9d173b2e7071dc22ce539f2efa4f34e943874bb027c0a32499db7bcbbb755",
+    "node_modules/side-channel-list": "88b822e5f67e9ebc45b94f5ffa35cbaa3855c7a5b50c99eb95f15f4c095b6e2f",
+    "node_modules/side-channel-map": "c5c227a5c305ef4e7ac50a10f8932a6f075242f97aff67d3bb5fdf8abe23f367",
+    "node_modules/side-channel-weakmap": "6bdc4db6680ecaf560847c1d266408fb51e124d46ae4de73236f51627d37e119",
+    "node_modules/source-map": "c26c989f290ee7f9dd3d6f2c1e5874b89366528ca7a65672072c0e87ba90e175",
+    "node_modules/source-map-js": "3bda42f62a59ba36a383c944544bcd97f70a0a590cf1041df74e43e81afea64b",
+    "node_modules/source-map-support": "8f2af63ba32a82ddb4bed48c7c22051ce0fc9cb368439da43b1b1a3248405708",
+    "node_modules/srvx": "b22c08b82071a040f2bf381cc7427368472b7a3573f52dd522ffe5e78f38fe42",
+    "node_modules/stable-hash": "70ae63a8daac1b09a7eb6d17303294fad6bc96e5fd216dd49f0b3e6330e92466",
+    "node_modules/stop-iteration-iterator": "94ee9ed3c494c119f33e3de173920a09a5f165499101449c88e518861deb9083",
+    "node_modules/string.prototype.codepointat": "157113cb44e743fc746253bb034065eecbcab8736264500c2f77e0d2e452dd2b",
+    "node_modules/string.prototype.includes": "544e97ed30f806e86eda120a9bade6a87ed20a066d3934262d060fff1614280c",
+    "node_modules/string.prototype.matchall": "cda237664a9a50ab3e02111c32ee498f746d71df79c71f5914c5cc91f60ba8b5",
+    "node_modules/string.prototype.repeat": "65ada374d166407f86ead354b310e1ddba6392602e765daa982783293bb08897",
+    "node_modules/string.prototype.trim": "f0bc8ffdbdee31c52e3d8dec0ca9ace0e1d8fc187f382a21b1277bf141fd6c7f",
+    "node_modules/string.prototype.trimend": "065ae3daa99533b6b96f78ab251bdb6fd82b1c38bb83c482c6cc7872f9f9fd9f",
+    "node_modules/string.prototype.trimstart": "aac0a554796b3c8df6251aadcffaf11f3b1d687621630500e5dfaa8356c536be",
+    "node_modules/strip-bom": "f37e47def4900134af6bd65aa15035eae56f6cd0ca8adf3b2cbfc74a4ec8d1ba",
+    "node_modules/strip-json-comments": "7a9bb86c942b318b5b9252fb2873c80a91091c1c3cc652ae11919c67d1fc8eaf",
+    "node_modules/strip-literal": "22b9cbb0a69bfdc15be0d44706195cd2979974c79d7193c1289425d82f00fae8",
+    "node_modules/strip-literal/node_modules/js-tokens": "0c435c7240083192e5ce00b8a52cf362f0fddce3ff56e1dd741bf5ce456fc449",
+    "node_modules/styled-jsx": "901ee145b591c5ac066f01ca19200a25810cb77bedc253e334a5742d7618da5f",
+    "node_modules/supports-color": "22639ff4921bebafb24dbdfe8c9d21890a8ad5f6f65b41f7a12bf37c29c927de",
+    "node_modules/supports-preserve-symlinks-flag": "c4d4f9a82ca328b86f674e800b193ccd3ae37ea7b5a1ec9b10ea250c4ea58f9a",
+    "node_modules/tailwindcss": "36a1a1505e455d7741e97958b3aa076ca00b28784e1e37db24b29b16d5b8283c",
+    "node_modules/tapable": "99d7d311300e3124b0ebbc49daa78b355fb10c85f079a911a471da81c30def87",
+    "node_modules/terser": "7a166d86e31d66c5e935ffe035f7f1626f943b8ed36572cf9ce092254ecb64a8",
+    "node_modules/terser-webpack-plugin": "81d7668a97f6ae1ecb4d3721d24ab960dba22ed5e669518f6957191b0f51af77",
+    "node_modules/tiny-inflate": "e702d8d5edaa351d4d138480e7204fc5172689c245c3bb96938e41d879b03109",
+    "node_modules/tinyglobby": "06457a4d9325944c0e42cbf9587c6a9e61b50cd069b77c4c3b01283fd0758f8e",
+    "node_modules/tinyglobby/node_modules/fdir": "4e87c946793e0363c90bcf8332f7b5c7c3a13714d229f3aa6119b56367f7dd01",
+    "node_modules/tinyglobby/node_modules/picomatch": "989aeaa0a0ec619ed62ef80427babd92eeb55ffd27679149c08ceb66010886c1",
+    "node_modules/to-regex-range": "6945283f245e047485fd305d45ea942a24bcdb2f00cef23d64e5141dce363995",
+    "node_modules/ts-api-utils": "c9f3101c5d1ee5d26f93294bb9732e1ebb3932e0541a0cc19dea94191f581241",
+    "node_modules/tsconfck": "66d43f86118f01138c45d0f948c548cd461a8f6dcf74b5fd292416d04188b9d8",
+    "node_modules/tsconfig-paths": "795e6d00732859a38b0eb9f0564c5e78b564c9306bd358be3c545459d4975732",
+    "node_modules/tsconfig-paths/node_modules/json5": "0fee093a0cacfb515df7851c0e0b3800a21ef32db871d713216b663c67b75846",
+    "node_modules/tslib": "96cebed71f605f6e14f18424656451b51f57a08f46993d065798bbb31b14626d",
+    "node_modules/tsx": "18b87cff640d3f09c65aab26079e83efe67caa880c3400e1a775cdc96f71f164",
+    "node_modules/turbo-stream": "69ae0842d57401c8e953639cc099c73c3ae1e850bc109af4efe34cdda7a630ec",
+    "node_modules/type-check": "af03a8d5102f6b5fd4d695e7291e417c0a9adf16361f550fa09b83dc29631e97",
+    "node_modules/typed-array-buffer": "1206845d588e9520c74bf148a990502f234a36ddb01ed26c93b98fe0071128b6",
+    "node_modules/typed-array-byte-length": "24019fe7e7ae809f1a0c6a972c08ef89ce39a30f49295df3be51820830dffab5",
+    "node_modules/typed-array-byte-offset": "94efd3c1b69f99db199b7780186da1ff24c46f1e2bd8736e6f088301afae0c6e",
+    "node_modules/typed-array-length": "c85dbc2f70336282cf4ba55f18a9ba24462d85e6fa1c3db596a3e9449f68080f",
+    "node_modules/typescript": "ff7634f8ad22d3ddb93cdb578089e3bc06eb4ea20c7422f572cd722cb9598a14",
+    "node_modules/typescript-eslint": "26a5aec81a085baac045d29edd2db8f67f0460b1a88923c6473d9eb7e7e1c21d",
+    "node_modules/unbox-primitive": "035f0e94a198eb245bfe3be90aa5a06a2cc952d8853c2e8f99beabf8345aa4ce",
+    "node_modules/undici": "f9209f646fd6e018ab3cd2b46023d9939f237e43fd30e1a944056b9108c8e07e",
+    "node_modules/undici-types": "05d99fff52e1c400732ed724b6f6aa874f7628f2b8cfb8024c040e37adf6a28e",
+    "node_modules/unenv": "c0e788600e84bb2a1fd2ac04fb00d7c27966cd99d7094e184cc0c2c614e1da01",
+    "node_modules/unicode-trie": "bb10192c6f6b48973bfc00a17af9f03519124135ed662bf2161c245b3c420c1e",
+    "node_modules/unpic": "cf233473bb23f202e04266818438a5800b3c99ab264a75c978c12dc50f1ca79a",
+    "node_modules/unrs-resolver": "45309c55a4abbaa8bfea630c9ca6b76da1f2b258bd77d0bb6e53b8aea7b0db7c",
+    "node_modules/update-browserslist-db": "2fd6cc0596a6944f46aa7c4c5a1daafad2e6c3519668cb828950a21e0a12ed9f",
+    "node_modules/uri-js": "9f2cf2e57c9dbbe3ea68c979993bee9a2fb793e327f449656ec088ad11b3d0b5",
+    "node_modules/vinext": "e9b8f90079333e1b1b3ba6af83f4fe9d2c316a896ed835ecf6bf73949ed1cda1",
+    "node_modules/vite": "72732767a0071c918da3cbce8292deae5c4ae3f0dca08ed358fcee4a9d6938d4",
+    "node_modules/vite-plugin-commonjs": "768f5b94f51e7dce3bb97113a6e2805157e381377e6f4bd71080a8d4ece7e82f",
+    "node_modules/vite-plugin-dynamic-import": "227ce7c2528cede96a277f6daf69b2f4582cfe93c40f460188156284295bd124",
+    "node_modules/vite-plugin-dynamic-import/node_modules/es-module-lexer": "dd6ed5a51715b872cf459b72c107963045383b59ca2d916fc79a6242b2ac5f47",
+    "node_modules/vite-plugin-dynamic-import/node_modules/fast-glob": "ab9281c214cbc47d3e6f3a78738f756e1165d804d9fff2796ed99fd39c6f64d3",
+    "node_modules/vite-plugin-dynamic-import/node_modules/glob-parent": "69f6d5bad53f7b43b0b5140cab1a155ab153ef9fcef2f2a3dbbaa0831794f116",
+    "node_modules/vite-tsconfig-paths": "5810f2e1b4834f8d68b21fd36a8f25a1e733c88df935b5dd7580637de19d85cb",
+    "node_modules/vite/node_modules/lightningcss": "53315778a292578c97da8fe80c03f8001019348253c7939af4608c57363d98f3",
+    "node_modules/vite/node_modules/lightningcss-android-arm64": "324b74aab9087ebc5b565471c05bd63900ec765dd75271651d76d67cf231a8af",
+    "node_modules/vite/node_modules/lightningcss-darwin-arm64": "73d2cf65b7d928e8b87bf0992a069398890fadba1adf1e29057c1d0b257e167e",
+    "node_modules/vite/node_modules/lightningcss-darwin-x64": "ce8cd5d01299d67c5a1a8ba55e09acdfae559592f0043575a28063c7ced89cfc",
+    "node_modules/vite/node_modules/lightningcss-freebsd-x64": "1305f761bca8c8d0e347e7670511f3dc0f68f8a08e4c91ccf39809f5dfc226d9",
+    "node_modules/vite/node_modules/lightningcss-linux-arm-gnueabihf": "cfb77745fd9459dabf9aa5c44eb7849930c6ca0a455cd28ea0a2a2d848794692",
+    "node_modules/vite/node_modules/lightningcss-linux-arm64-gnu": "8f166db22ff44fde059d6287b84f6ae0aa066d4f3933d1c577d926be4c575f3c",
+    "node_modules/vite/node_modules/lightningcss-linux-arm64-musl": "0fc387a35e1faa597336f835d1c4af3167d778ff02f0ce78e7627ee9b7b2600c",
+    "node_modules/vite/node_modules/lightningcss-linux-x64-gnu": "11d43ad01fddac73877661ef128b41d165edbab8346f88f335ba07b76329a53b",
+    "node_modules/vite/node_modules/lightningcss-linux-x64-musl": "9bcac62b405b272e29133a635b8a5e84a32896186b484ef08f158ac1214c3da5",
+    "node_modules/vite/node_modules/lightningcss-win32-arm64-msvc": "60946e2e202056fcaa7f707182631dfe037a41bd94604fdaebb371a2d376210a",
+    "node_modules/vite/node_modules/lightningcss-win32-x64-msvc": "5a9018a9ba860f3340ac33c893207724e9975518dfbb635f0189ba687b7dbe46",
+    "node_modules/vite/node_modules/picomatch": "989aeaa0a0ec619ed62ef80427babd92eeb55ffd27679149c08ceb66010886c1",
+    "node_modules/vitefu": "969fd018fac6fc6b79988f36abe18fe4c9dea37738bb846d85e9178ddfcad571",
+    "node_modules/watchpack": "77b8c10fc681f0591cca72f9bcf16266cd55a6015dd73783ef24b507458660ab",
+    "node_modules/web-vitals": "b14bda448f9e342ae08b4883d53c9831a4517253f93f6883283e17e16e1875c8",
+    "node_modules/webpack": "ee44801846ecf87e02286a90d25ea5e7ff22a01115b3fb025b34e7f31467ecd1",
+    "node_modules/webpack-sources": "27a60f1efd47477c58c17fa06b795994b1cb8a841bee5768fcb6925927f9efd2",
+    "node_modules/webpack/node_modules/eslint-scope": "3074834e162234cea37c7f83e8ecdc3e3ec72abd8121f80af47329fa26c2f8f7",
+    "node_modules/webpack/node_modules/estraverse": "b3391e3bdf323c9bf650c0074d4ca70beb3cbec6231a19148bae5ebefbe70e6a",
+    "node_modules/which": "4aae27fd90e24c37d0729f96a103a85e5fa6826c3bfae7f5d6f3d551ac29b6aa",
+    "node_modules/which-boxed-primitive": "d0a21c16a9cf6c5135a8f2dde8e8bec48fdad4c030e2b03a1206325a8f721079",
+    "node_modules/which-builtin-type": "d8ce48de8453def12b6ba4551be808f2107130e027d14cc7216b7aa8d394c992",
+    "node_modules/which-collection": "57caa5ee4e2eb385be3f2d8761b0f31569644637370f8a57c8edc5aa68d31b38",
+    "node_modules/which-typed-array": "7c5b8bc6d4879d3698b55525b757dd7f3d62db9178449a2ce8097cd47ddb03be",
+    "node_modules/word-wrap": "e160627bccb6c1648bbe232eaa0bbaa29566532796467332a8bec0869e9fecdf",
+    "node_modules/workerd": "3f3df4d28da93743c43eed2a86c3225492010473f4f6839edaf03b3fe83c9ade",
+    "node_modules/wrangler": "2e9c36169c5f5fe6f524ab844178678a746e3b0c1b13f71bf16ebbbe15a3e8c1",
+    "node_modules/wrangler/node_modules/@esbuild/aix-ppc64": "5e65fb8dfb19209d3f09d0490b71525952b69da04485b71e1af2329fce8a4827",
+    "node_modules/wrangler/node_modules/@esbuild/android-arm": "22b9c1304a3af7223cb51c891b46f4bdb004cfbb3f91a98044601865583f23ec",
+    "node_modules/wrangler/node_modules/@esbuild/android-arm64": "c099859527c7330979384d30ce9263aed43d426f8759f341c4d6041df38efd28",
+    "node_modules/wrangler/node_modules/@esbuild/android-x64": "4ba1d04c3f4598b0ac710a7e7cb1af6f221a02418827e84ab61cf01b07117c2f",
+    "node_modules/wrangler/node_modules/@esbuild/darwin-arm64": "af3e446c205661ef475cdf1efb9d7d7d6ad82f5b967c1cc8597f111f3fd1497b",
+    "node_modules/wrangler/node_modules/@esbuild/darwin-x64": "fd6b67227e02bf74c76f5235a2430c4af41e0f04f0517ac21df79c7977378832",
+    "node_modules/wrangler/node_modules/@esbuild/freebsd-arm64": "7e4a656b3b33e6fe69f0cd861a2712a78bc0698f243df977bbfd89de00755369",
+    "node_modules/wrangler/node_modules/@esbuild/freebsd-x64": "959408efae5fa50598c7fcfe68b83c008e43d3e5d1abfea7a726a1569d22f3b8",
+    "node_modules/wrangler/node_modules/@esbuild/linux-arm": "83a292c4152c9956bb89c65a3e374e4e9648a474c6644914f9a5669a5df4a253",
+    "node_modules/wrangler/node_modules/@esbuild/linux-arm64": "56b13d28966bf10ef5cc6ea08212c6beb63aba076488f9568d6d2eec06470953",
+    "node_modules/wrangler/node_modules/@esbuild/linux-ia32": "37b150534e5889dbb0e47c28478d28e186973a194251b83c7f65d495eb848b44",
+    "node_modules/wrangler/node_modules/@esbuild/linux-loong64": "98a4a2116afab48d3e1f4aed673ae3d922ecfd17482e89f49541868ad31fb55b",
+    "node_modules/wrangler/node_modules/@esbuild/linux-mips64el": "974eac4b353053bce5532fd401859634295caca47c015d648b477ccf2e8b2443",
+    "node_modules/wrangler/node_modules/@esbuild/linux-ppc64": "902428702e6f8f4699845d957aefb63e47a73592c5682bce7c74c4b6c348bf2d",
+    "node_modules/wrangler/node_modules/@esbuild/linux-riscv64": "1daed7bfbf4efaf0e3157af6cb4c141895b1b77376604f9b7c96dff35ccec2e6",
+    "node_modules/wrangler/node_modules/@esbuild/linux-s390x": "a0fc8c34267abc5074b0ed9e80bbc5b9b5e074af4e130adf80c962477be07d96",
+    "node_modules/wrangler/node_modules/@esbuild/linux-x64": "9d5d4f38b2e0f80b2bfad7fdec33f28a8c8bc6dd397c735dbc1e414094dc52b5",
+    "node_modules/wrangler/node_modules/@esbuild/netbsd-arm64": "97bd91529f612ccc41b862d0a8ce1c1f5df562365c5c0d4f27ffb52700e6f9e5",
+    "node_modules/wrangler/node_modules/@esbuild/netbsd-x64": "da371c9b7a9c755c038ad7820927bd05bf28d87ea9d65922042222bd85b0908c",
+    "node_modules/wrangler/node_modules/@esbuild/openbsd-arm64": "dfab0e0fee00c88bc5f11e968b6334f8f80d0d1828e50d975e612eec129bb7b6",
+    "node_modules/wrangler/node_modules/@esbuild/openbsd-x64": "8fd3abe12c0ccf827877863b0b833486b3369ca82800afc423ca144242409e7d",
+    "node_modules/wrangler/node_modules/@esbuild/openharmony-arm64": "c2ab6573134872ede50ca3178865a769170864d7f26c6396d2d3ff58d38acb36",
+    "node_modules/wrangler/node_modules/@esbuild/sunos-x64": "7940a94b45a29e0b9138c3d80cd88e7dfadf342f2f963c8f301153cf2e02ed5d",
+    "node_modules/wrangler/node_modules/@esbuild/win32-arm64": "3157bb7fb116feef3839d1e9d284d3ce2fe8b76d6d1cb2b4981233ca83df6576",
+    "node_modules/wrangler/node_modules/@esbuild/win32-ia32": "15fb0000c902b5683e9a1cd8651206dcdce88abceadb83c148e0eff4177668fa",
+    "node_modules/wrangler/node_modules/@esbuild/win32-x64": "b40e0538d40cd453b03cfda22797c16496b80b37246f7f8ae0ca40d432404bce",
+    "node_modules/wrangler/node_modules/esbuild": "0b26b1c40e1c9fa5b2ad3031e45b1cb2ae469b7f6dec5208925b1d062422d56a",
+    "node_modules/ws": "d962451618c20b5210303fdda60bac84cb37467c5b3efcf081f74effaab856bc",
+    "node_modules/yallist": "3a85932685b46cc26e0c65c07f342a8f8461beeb0d870f47be0715d8fa61acd8",
+    "node_modules/yocto-queue": "707a5306633ac87c123d197653bb83ff33b037aa59b6886ac92832388c68567b",
+    "node_modules/yoga-layout": "ce099268c5df30d41e484acb70b7facd6443c50f16d42090a21795497cc79eaa",
+    "node_modules/youch": "9932416ad420636a26fd1cc25c8a3cda67decf3845c151bb08cb1da7503bfb55",
+    "node_modules/youch-core": "d0a1015137cfc6206344e0349f8bd3ea6229fd5b648b36a26072d7cbc09d0130",
+    "node_modules/zod": "ccfb734297855b2b195d63c23d0b09765e7a7bf00818397b09251d0d147a5011",
+    "node_modules/zod-validation-error": "f58dde48140747b8301e79b4535db9fe3151e36b1b545c34f641d608a1b91b3b"
+  },
+  "graphRoot": {
+    "name": "within-file-converter",
+    "version": "0.1.0",
+    "dependencies": {
+      "@resvg/resvg-wasm": "2.6.2",
+      "drizzle-orm": "0.45.2",
+      "next": "16.4.2",
+      "react": "19.2.8",
+      "react-dom": "19.2.8"
+    },
+    "devDependencies": {
+      "@cloudflare/vite-plugin": "1.37.1",
+      "@playwright/test": "1.62.1",
+      "@tailwindcss/postcss": "4.2.1",
+      "@types/node": "22.19.19",
+      "@types/react": "19.2.14",
+      "@types/react-dom": "19.2.3",
+      "@vitejs/plugin-react": "6.0.2",
+      "@vitejs/plugin-rsc": "0.5.26",
+      "drizzle-kit": "0.31.10",
+      "eslint": "9.39.4",
+      "eslint-config-next": "16.2.6",
+      "react-server-dom-webpack": "19.2.8",
+      "tailwindcss": "4.2.1",
+      "typescript": "5.9.3",
+      "vinext": "0.0.50",
+      "vite": "8.0.13",
+      "wrangler": "4.92.0"
+    },
+    "engines": {
+      "node": ">=22.13.0"
+    }
+  },
+  "cleanup": {
+    "ownedScratchRemoved": true
+  },
+  "auditExitCode": 1,
+  "audit": {
+    "auditReportVersion": 2,
+    "vulnerabilities": {
+      "@babel/core": {
+        "name": "@babel/core",
+        "severity": "low",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1123528,
+            "name": "@babel/core",
+            "dependency": "@babel/core",
+            "title": "@babel/core: Arbitrary File Read via sourceMappingURL Comment",
+            "url": "https://github.com/advisories/GHSA-4x5r-pxfx-6jf8",
+            "severity": "low",
+            "cwe": [
+              "CWE-22",
+              "CWE-200"
+            ],
+            "cvss": {
+              "score": 3.2,
+              "vectorString": "CVSS:3.1/AV:L/AC:H/PR:N/UI:N/S:C/C:L/I:N/A:N"
+            },
+            "range": "<=7.29.0"
+          }
+        ],
+        "effects": [],
+        "range": "<=7.29.0",
+        "nodes": [
+          "node_modules/@babel/core"
+        ],
+        "fixAvailable": true
+      },
+      "@cloudflare/vite-plugin": {
+        "name": "@cloudflare/vite-plugin",
+        "severity": "high",
+        "isDirect": true,
+        "via": [
+          "miniflare",
+          "wrangler",
+          "ws"
+        ],
+        "effects": [],
+        "range": "<=0.0.0-7b9716462 || 0.1.5 - 1.46.0",
+        "nodes": [
+          "node_modules/@cloudflare/vite-plugin"
+        ],
+        "fixAvailable": {
+          "name": "@cloudflare/vite-plugin",
+          "version": "1.65.0",
+          "isSemVerMajor": false
+        }
+      },
+      "@esbuild-kit/core-utils": {
+        "name": "@esbuild-kit/core-utils",
+        "severity": "moderate",
+        "isDirect": false,
+        "via": [
+          "esbuild"
+        ],
+        "effects": [
+          "@esbuild-kit/esm-loader"
+        ],
+        "range": "*",
+        "nodes": [
+          "node_modules/@esbuild-kit/core-utils"
+        ],
+        "fixAvailable": {
+          "name": "drizzle-kit",
+          "version": "0.18.1",
+          "isSemVerMajor": true
+        }
+      },
+      "@esbuild-kit/esm-loader": {
+        "name": "@esbuild-kit/esm-loader",
+        "severity": "moderate",
+        "isDirect": false,
+        "via": [
+          "@esbuild-kit/core-utils"
+        ],
+        "effects": [
+          "drizzle-kit"
+        ],
+        "range": "*",
+        "nodes": [
+          "node_modules/@esbuild-kit/esm-loader"
+        ],
+        "fixAvailable": {
+          "name": "drizzle-kit",
+          "version": "0.18.1",
+          "isSemVerMajor": true
+        }
+      },
+      "baseline-browser-mapping": {
+        "name": "baseline-browser-mapping",
+        "severity": "moderate",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1193686,
+            "name": "baseline-browser-mapping",
+            "dependency": "baseline-browser-mapping",
+            "title": "baseline-browser-mapping process termination on invalid input causes denial of service",
+            "url": "https://github.com/advisories/GHSA-w5vr-8v7q-w6rv",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-705"
+            ],
+            "cvss": {
+              "score": 0,
+              "vectorString": null
+            },
+            "range": ">=2.0.0 <2.11.0"
+          }
+        ],
+        "effects": [],
+        "range": ">=2.0.0 <2.11.0",
+        "nodes": [
+          "node_modules/baseline-browser-mapping"
+        ],
+        "fixAvailable": true
+      },
+      "brace-expansion": {
+        "name": "brace-expansion",
+        "severity": "high",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1123897,
+            "name": "brace-expansion",
+            "dependency": "brace-expansion",
+            "title": "brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups",
+            "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-407"
+            ],
+            "cvss": {
+              "score": 5.3,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+            },
+            "range": "<1.1.16"
+          },
+          {
+            "source": 1123898,
+            "name": "brace-expansion",
+            "dependency": "brace-expansion",
+            "title": "brace-expansion: DoS via exponential-time expansion of consecutive non-expanding {} groups",
+            "url": "https://github.com/advisories/GHSA-3jxr-9vmj-r5cp",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-407"
+            ],
+            "cvss": {
+              "score": 5.3,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+            },
+            "range": ">=3.0.0 <5.0.7"
+          },
+          {
+            "source": 1130588,
+            "name": "brace-expansion",
+            "dependency": "brace-expansion",
+            "title": "brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash",
+            "url": "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-770"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": "<1.1.17"
+          },
+          {
+            "source": 1130591,
+            "name": "brace-expansion",
+            "dependency": "brace-expansion",
+            "title": "brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash",
+            "url": "https://github.com/advisories/GHSA-mh99-v99m-4gvg",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-770"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=4.0.0 <5.0.8"
+          },
+          {
+            "source": 1130734,
+            "name": "brace-expansion",
+            "dependency": "brace-expansion",
+            "title": "brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation",
+            "url": "https://github.com/advisories/GHSA-rgw5-rvv9-x895",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-770"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=4.0.0 <5.0.9"
+          },
+          {
+            "source": 1130737,
+            "name": "brace-expansion",
+            "dependency": "brace-expansion",
+            "title": "brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation",
+            "url": "https://github.com/advisories/GHSA-rgw5-rvv9-x895",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-770"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": "<1.1.18"
+          },
+          {
+            "source": 1240100,
+            "name": "brace-expansion",
+            "dependency": "brace-expansion",
+            "title": "brace-expansion: Quadratic-time expansion of the `{a},b}` rewrite causes CPU denial of service",
+            "url": "https://github.com/advisories/GHSA-q2hr-2g5m-vwhr",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-400",
+              "CWE-407"
+            ],
+            "cvss": {
+              "score": 5.3,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+            },
+            "range": "<1.1.21"
+          },
+          {
+            "source": 1240103,
+            "name": "brace-expansion",
+            "dependency": "brace-expansion",
+            "title": "brace-expansion: Quadratic-time expansion of the `{a},b}` rewrite causes CPU denial of service",
+            "url": "https://github.com/advisories/GHSA-q2hr-2g5m-vwhr",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-400",
+              "CWE-407"
+            ],
+            "cvss": {
+              "score": 5.3,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+            },
+            "range": ">=4.0.0 <5.0.12"
+          },
+          {
+            "source": 1240104,
+            "name": "brace-expansion",
+            "dependency": "brace-expansion",
+            "title": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+            "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-674"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": "<1.1.20"
+          },
+          {
+            "source": 1240107,
+            "name": "brace-expansion",
+            "dependency": "brace-expansion",
+            "title": "brace-expansion: DoS via uncontrolled recursion on nested brace groups causing stack exhaustion",
+            "url": "https://github.com/advisories/GHSA-qhr7-859c-m2p7",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-674"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=4.0.0 <5.0.11"
+          },
+          {
+            "source": 1240108,
+            "name": "brace-expansion",
+            "dependency": "brace-expansion",
+            "title": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+            "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-674"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": "<1.1.19"
+          },
+          {
+            "source": 1240111,
+            "name": "brace-expansion",
+            "dependency": "brace-expansion",
+            "title": "brace-expansion: DoS via uncontrolled recursion in parseCommaParts causing stack exhaustion",
+            "url": "https://github.com/advisories/GHSA-6j4f-fj2g-mc7p",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-674"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=4.0.0 <5.0.10"
+          }
+        ],
+        "effects": [],
+        "range": "<=1.1.20 || 3.0.0 - 5.0.11",
+        "nodes": [
+          "node_modules/@typescript-eslint/typescript-estree/node_modules/brace-expansion",
+          "node_modules/brace-expansion"
+        ],
+        "fixAvailable": true
+      },
+      "browserslist": {
+        "name": "browserslist",
+        "severity": "high",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1153171,
+            "name": "browserslist",
+            "dependency": "browserslist",
+            "title": "Browserslist: Unbounded memory growth (no cache eviction) via distinct query results, leading to eventual OOM",
+            "url": "https://github.com/advisories/GHSA-c83g-rgw3-j3cx",
+            "severity": "high",
+            "cwe": [
+              "CWE-770"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": "<=4.28.6"
+          },
+          {
+            "source": 1153172,
+            "name": "browserslist",
+            "dependency": "browserslist",
+            "title": "Browserslist: Uncaught crash / prototype write via untrusted browserslist-stats.json custom stats (normalizeStats)",
+            "url": "https://github.com/advisories/GHSA-73wf-gq98-2v4g",
+            "severity": "high",
+            "cwe": [
+              "CWE-248",
+              "CWE-1321"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": "<=4.28.6"
+          }
+        ],
+        "effects": [],
+        "range": "<=4.28.6",
+        "nodes": [
+          "node_modules/browserslist"
+        ],
+        "fixAvailable": true
+      },
+      "drizzle-kit": {
+        "name": "drizzle-kit",
+        "severity": "moderate",
+        "isDirect": true,
+        "via": [
+          "@esbuild-kit/esm-loader"
+        ],
+        "effects": [],
+        "range": "0.19.0 - 1.0.0-beta.1-fd8bfcc",
+        "nodes": [
+          "node_modules/drizzle-kit"
+        ],
+        "fixAvailable": {
+          "name": "drizzle-kit",
+          "version": "0.18.1",
+          "isSemVerMajor": true
+        }
+      },
+      "esbuild": {
+        "name": "esbuild",
+        "severity": "moderate",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1102341,
+            "name": "esbuild",
+            "dependency": "esbuild",
+            "title": "esbuild enables any website to send any requests to the development server and read the response",
+            "url": "https://github.com/advisories/GHSA-67mh-4wv8-2f99",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-346"
+            ],
+            "cvss": {
+              "score": 5.3,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:N/A:N"
+            },
+            "range": "<=0.24.2"
+          },
+          {
+            "source": 1120680,
+            "name": "esbuild",
+            "dependency": "esbuild",
+            "title": "esbuild allows arbitrary file read when running the development server on Windows",
+            "url": "https://github.com/advisories/GHSA-g7r4-m6w7-qqqr",
+            "severity": "low",
+            "cwe": [
+              "CWE-22"
+            ],
+            "cvss": {
+              "score": 2.5,
+              "vectorString": "CVSS:3.1/AV:L/AC:H/PR:L/UI:N/S:U/C:N/I:L/A:N"
+            },
+            "range": ">=0.27.3 <0.28.1"
+          }
+        ],
+        "effects": [
+          "@esbuild-kit/core-utils",
+          "wrangler"
+        ],
+        "range": "<=0.24.2 || 0.27.3 - 0.28.0",
+        "nodes": [
+          "node_modules/@esbuild-kit/core-utils/node_modules/esbuild",
+          "node_modules/esbuild",
+          "node_modules/wrangler/node_modules/esbuild"
+        ],
+        "fixAvailable": {
+          "name": "drizzle-kit",
+          "version": "0.18.1",
+          "isSemVerMajor": true
+        }
+      },
+      "fast-uri": {
+        "name": "fast-uri",
+        "severity": "high",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1124064,
+            "name": "fast-uri",
+            "dependency": "fast-uri",
+            "title": "fast-uri vulnerable to host confusion via literal backslash authority delimiter",
+            "url": "https://github.com/advisories/GHSA-v2hh-gcrm-f6hx",
+            "severity": "high",
+            "cwe": [
+              "CWE-436"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+            },
+            "range": ">=3.0.0 <=3.1.3"
+          },
+          {
+            "source": 1130720,
+            "name": "fast-uri",
+            "dependency": "fast-uri",
+            "title": "fast-uri vulnerable to host confusion via backslash authority introducer",
+            "url": "https://github.com/advisories/GHSA-7p8r-x3mc-p8w7",
+            "severity": "high",
+            "cwe": [
+              "CWE-436"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+            },
+            "range": ">=3.0.0 <3.1.5"
+          },
+          {
+            "source": 1158524,
+            "name": "fast-uri",
+            "dependency": "fast-uri",
+            "title": "fast-uri vulnerable to server-side request forgery via malformed IPv6 normalization",
+            "url": "https://github.com/advisories/GHSA-f65p-4m7j-42xc",
+            "severity": "high",
+            "cwe": [
+              "CWE-20",
+              "CWE-918"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+            },
+            "range": ">=3.0.0 <3.1.6"
+          },
+          {
+            "source": 1158527,
+            "name": "fast-uri",
+            "dependency": "fast-uri",
+            "title": "fast-uri vulnerable to server-side request forgery via repeated hostname percent-decoding",
+            "url": "https://github.com/advisories/GHSA-fph4-wmhf-6fwf",
+            "severity": "high",
+            "cwe": [
+              "CWE-174",
+              "CWE-918"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+            },
+            "range": ">=3.1.2 <3.1.6"
+          },
+          {
+            "source": 1158530,
+            "name": "fast-uri",
+            "dependency": "fast-uri",
+            "title": "fast-uri vulnerable to host confusion via percent-encoded scheme normalization",
+            "url": "https://github.com/advisories/GHSA-jqff-g426-hqxp",
+            "severity": "high",
+            "cwe": [
+              "CWE-177"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+            },
+            "range": ">=3.0.0 <3.1.6"
+          },
+          {
+            "source": 1204921,
+            "name": "fast-uri",
+            "dependency": "fast-uri",
+            "title": "fast-uri vulnerable to host confusion via failed IDN canonicalization",
+            "url": "https://github.com/advisories/GHSA-4c8g-83qw-93j6",
+            "severity": "high",
+            "cwe": [
+              "CWE-436",
+              "CWE-551"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+            },
+            "range": ">=3.0.0 <3.1.3"
+          },
+          {
+            "source": 1239943,
+            "name": "fast-uri",
+            "dependency": "fast-uri",
+            "title": "fast-uri vulnerable to authority injection via an unvalidated port in serialize",
+            "url": "https://github.com/advisories/GHSA-qw65-cvwx-89v3",
+            "severity": "high",
+            "cwe": [
+              "CWE-116"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:H/A:N"
+            },
+            "range": ">=3.0.0 <3.1.7"
+          },
+          {
+            "source": 1240091,
+            "name": "fast-uri",
+            "dependency": "fast-uri",
+            "title": "fast-uri vulnerable to inconsistent host case normalization via percent-encoded octets",
+            "url": "https://github.com/advisories/GHSA-hrr3-gc8f-f4qj",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-178"
+            ],
+            "cvss": {
+              "score": 4.8,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N"
+            },
+            "range": ">=3.0.0 <3.1.8"
+          },
+          {
+            "source": 1243098,
+            "name": "fast-uri",
+            "dependency": "fast-uri",
+            "title": "fast-uri vulnerable to URI scheme spoofing via percent-encoded scheme decoding",
+            "url": "https://github.com/advisories/GHSA-w74x-v6f9-j3xg",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-172",
+              "CWE-180"
+            ],
+            "cvss": {
+              "score": 6.1,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:R/S:C/C:L/I:L/A:N"
+            },
+            "range": ">=3.0.0 <3.1.9"
+          },
+          {
+            "source": 1243101,
+            "name": "fast-uri",
+            "dependency": "fast-uri",
+            "title": "fast-uri vulnerable to improper path equivalence in relative reference normalization",
+            "url": "https://github.com/advisories/GHSA-xhq7-xmqj-769h",
+            "severity": "low",
+            "cwe": [
+              "CWE-41"
+            ],
+            "cvss": {
+              "score": 3.7,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+            },
+            "range": ">=3.0.0 <3.1.9"
+          },
+          {
+            "source": 1243107,
+            "name": "fast-uri",
+            "dependency": "fast-uri",
+            "title": "fast-uri vulnerable to scheme injection via an unescaped first-segment colon in suffix references",
+            "url": "https://github.com/advisories/GHSA-333x-w4r6-6crp",
+            "severity": "low",
+            "cwe": [
+              "CWE-41",
+              "CWE-116"
+            ],
+            "cvss": {
+              "score": 3.7,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+            },
+            "range": ">=3.0.0 <3.1.9"
+          }
+        ],
+        "effects": [],
+        "range": "3.0.0 - 3.1.8",
+        "nodes": [
+          "node_modules/fast-uri"
+        ],
+        "fixAvailable": true
+      },
+      "fflate": {
+        "name": "fflate",
+        "severity": "moderate",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1164783,
+            "name": "fflate",
+            "dependency": "fflate",
+            "title": "fflate unzipSync can enter an infinite loop when parsing malformed ZIP64 archives",
+            "url": "https://github.com/advisories/GHSA-px8p-9vwx-vf98",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-400"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=0.7.0 <0.7.5"
+          }
+        ],
+        "effects": [],
+        "range": "0.7.0 - 0.7.4",
+        "nodes": [
+          "node_modules/fflate"
+        ],
+        "fixAvailable": true
+      },
+      "image-size": {
+        "name": "image-size",
+        "severity": "high",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1239765,
+            "name": "image-size",
+            "dependency": "image-size",
+            "title": "image-size: JXL and HEIF parsers allow denial of service through infinite loops",
+            "url": "https://github.com/advisories/GHSA-5p2g-fcmc-qvqq",
+            "severity": "high",
+            "cwe": [
+              "CWE-835"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=1.2.0 <=2.0.2"
+          },
+          {
+            "source": 1239766,
+            "name": "image-size",
+            "dependency": "image-size",
+            "title": "image-size: ICNS parser allows denial of service through an infinite loop",
+            "url": "https://github.com/advisories/GHSA-w3rx-r6r6-pgpr",
+            "severity": "high",
+            "cwe": [
+              "CWE-835"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=0.6.3 <=2.0.2"
+          }
+        ],
+        "effects": [
+          "vinext"
+        ],
+        "range": "0.6.3 - 2.0.2",
+        "nodes": [
+          "node_modules/image-size"
+        ],
+        "fixAvailable": {
+          "name": "vinext",
+          "version": "1.3.1",
+          "isSemVerMajor": true
+        }
+      },
+      "js-yaml": {
+        "name": "js-yaml",
+        "severity": "high",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1121860,
+            "name": "js-yaml",
+            "dependency": "js-yaml",
+            "title": "JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
+            "url": "https://github.com/advisories/GHSA-h67p-54hq-rp68",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-407"
+            ],
+            "cvss": {
+              "score": 5.3,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L"
+            },
+            "range": ">=4.0.0 <=4.1.1"
+          },
+          {
+            "source": 1123911,
+            "name": "js-yaml",
+            "dependency": "js-yaml",
+            "title": "js-yaml: YAML merge-key chains can force quadratic CPU consumption",
+            "url": "https://github.com/advisories/GHSA-52cp-r559-cp3m",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-407"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=4.0.0 <4.3.0"
+          },
+          {
+            "source": 1138115,
+            "name": "js-yaml",
+            "dependency": "js-yaml",
+            "title": "JS-YAML: Quadratic CPU consumption in !!omap resolution (3.x and 4.x) — CVE-2026-59870 fix not backported",
+            "url": "https://github.com/advisories/GHSA-5p4m-2wfm-xmqj",
+            "severity": "high",
+            "cwe": [
+              "CWE-407"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=4.0.0 <4.3.1"
+          },
+          {
+            "source": 1193727,
+            "name": "js-yaml",
+            "dependency": "js-yaml",
+            "title": "js-yaml: maxTotalMergeKeys does not limit CPU use for empty merge sources",
+            "url": "https://github.com/advisories/GHSA-2883-xcg3-v3hh",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-407"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=4.0.0 <4.3.2"
+          }
+        ],
+        "effects": [],
+        "range": "4.0.0 - 4.3.1",
+        "nodes": [
+          "node_modules/js-yaml"
+        ],
+        "fixAvailable": true
+      },
+      "miniflare": {
+        "name": "miniflare",
+        "severity": "high",
+        "isDirect": false,
+        "via": [
+          "sharp",
+          "undici",
+          "ws"
+        ],
+        "effects": [
+          "@cloudflare/vite-plugin",
+          "wrangler"
+        ],
+        "range": "<=0.0.0-fff677e35 || 3.20250204.0 - 5.20260801.0-alpha",
+        "nodes": [
+          "node_modules/miniflare"
+        ],
+        "fixAvailable": {
+          "name": "@cloudflare/vite-plugin",
+          "version": "1.65.0",
+          "isSemVerMajor": false
+        }
+      },
+      "sharp": {
+        "name": "sharp",
+        "severity": "high",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1124066,
+            "name": "sharp",
+            "dependency": "sharp",
+            "title": "sharp inherited vulnerabilities in libvips: CVE-2026-33327, CVE-2026-33328, CVE-2026-35590, CVE-2026-35591",
+            "url": "https://github.com/advisories/GHSA-f88m-g3jw-g9cj",
+            "severity": "high",
+            "cwe": [
+              "CWE-1395"
+            ],
+            "cvss": {
+              "score": 0,
+              "vectorString": null
+            },
+            "range": "<0.35.0"
+          },
+          {
+            "source": 1193725,
+            "name": "sharp",
+            "dependency": "sharp",
+            "title": "sharp: Vulnerabilities in libheif: GHSA-g89c-p67h-r497 and GHSA-2jg2-4ch7-h545",
+            "url": "https://github.com/advisories/GHSA-rgj7-g3m4-5g8c",
+            "severity": "high",
+            "cwe": [
+              "CWE-122"
+            ],
+            "cvss": {
+              "score": 0,
+              "vectorString": null
+            },
+            "range": "<0.35.4"
+          },
+          {
+            "source": 1241331,
+            "name": "sharp",
+            "dependency": "sharp",
+            "title": "sharp : Vulnerability in librsvg dependency CVE-2026-96889",
+            "url": "https://github.com/advisories/GHSA-wq5f-xc86-pv6w",
+            "severity": "high",
+            "cwe": [
+              "CWE-416",
+              "CWE-1395"
+            ],
+            "cvss": {
+              "score": 0,
+              "vectorString": null
+            },
+            "range": "<0.35.5"
+          }
+        ],
+        "effects": [
+          "miniflare"
+        ],
+        "range": "<=0.35.5-rc.1",
+        "nodes": [
+          "node_modules/sharp"
+        ],
+        "fixAvailable": {
+          "name": "@cloudflare/vite-plugin",
+          "version": "1.65.0",
+          "isSemVerMajor": false
+        }
+      },
+      "source-map-js": {
+        "name": "source-map-js",
+        "severity": "high",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1241209,
+            "name": "source-map-js",
+            "dependency": "source-map-js",
+            "title": "source-map-js allows event-loop denial of service through indexed source-map section offsets",
+            "url": "https://github.com/advisories/GHSA-68fv-2mgg-jv7q",
+            "severity": "high",
+            "cwe": [
+              "CWE-1284"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=1.0.0 <1.2.2"
+          }
+        ],
+        "effects": [],
+        "range": "1.0.0 - 1.2.1",
+        "nodes": [
+          "node_modules/source-map-js"
+        ],
+        "fixAvailable": true
+      },
+      "undici": {
+        "name": "undici",
+        "severity": "high",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1121187,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to TLS certificate validation bypass via dropped requestTls in SOCKS5 ProxyAgent",
+            "url": "https://github.com/advisories/GHSA-vmh5-mc38-953g",
+            "severity": "high",
+            "cwe": [
+              "CWE-295"
+            ],
+            "cvss": {
+              "score": 7.4,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N"
+            },
+            "range": ">=7.23.0 <7.28.0"
+          },
+          {
+            "source": 1121241,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to HTTP header injection via Set-Cookie percent-decoding",
+            "url": "https://github.com/advisories/GHSA-p88m-4jfj-68fv",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-93"
+            ],
+            "cvss": {
+              "score": 5.9,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N"
+            },
+            "range": ">=7.0.0 <7.28.0"
+          },
+          {
+            "source": 1121244,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici WebSocket client vulnerable to denial of service via fragment count bypass",
+            "url": "https://github.com/advisories/GHSA-vxpw-j846-p89q",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-770"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=7.0.0 <7.28.0"
+          },
+          {
+            "source": 1121247,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to cross-origin request routing via SOCKS5 proxy pool reuse",
+            "url": "https://github.com/advisories/GHSA-hm92-r4w5-c3mj",
+            "severity": "high",
+            "cwe": [
+              "CWE-346"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:H/A:H"
+            },
+            "range": ">=7.23.0 <7.28.0"
+          },
+          {
+            "source": 1121254,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to Set-Cookie SameSite attribute downgrade via permissive substring matching",
+            "url": "https://github.com/advisories/GHSA-g8m3-5g58-fq7m",
+            "severity": "low",
+            "cwe": [
+              "CWE-183"
+            ],
+            "cvss": {
+              "score": 3.7,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+            },
+            "range": ">=7.0.0 <7.28.0"
+          },
+          {
+            "source": 1121428,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to cross-user information disclosure via shared cache whitespace bypass",
+            "url": "https://github.com/advisories/GHSA-pr7r-676h-xcf6",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-524"
+            ],
+            "cvss": {
+              "score": 5.9,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N"
+            },
+            "range": ">=7.0.0 <7.28.0"
+          },
+          {
+            "source": 1130715,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to downstream response desynchronization via retry interceptor",
+            "url": "https://github.com/advisories/GHSA-8xcm-r25x-g524",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-444"
+            ],
+            "cvss": {
+              "score": 4.8,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N"
+            },
+            "range": ">=7.0.0 <7.29.0"
+          },
+          {
+            "source": 1130718,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to cross-user information disclosure and parse-time crash via degenerate private cache directives",
+            "url": "https://github.com/advisories/GHSA-4cwx-7wf7-3272",
+            "severity": "high",
+            "cwe": [
+              "CWE-200",
+              "CWE-248",
+              "CWE-525"
+            ],
+            "cvss": {
+              "score": 7.4,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:H"
+            },
+            "range": ">=7.0.0 <7.29.0"
+          },
+          {
+            "source": 1130726,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to CRLF Injection via blob-like body 'type' property",
+            "url": "https://github.com/advisories/GHSA-m8rv-5g2x-5cg5",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-93"
+            ],
+            "cvss": {
+              "score": 4.2,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:L/I:L/A:N"
+            },
+            "range": ">=7.0.0 <7.29.0"
+          },
+          {
+            "source": 1130729,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to cross-user information disclosure via whitespace around equals in Cache-Control directives",
+            "url": "https://github.com/advisories/GHSA-jr45-8vmc-qm54",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-436",
+              "CWE-524"
+            ],
+            "cvss": {
+              "score": 5.9,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:N/A:N"
+            },
+            "range": ">=7.0.0 <7.29.0"
+          },
+          {
+            "source": 1130731,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to cookie attribute injection via unsanitized domain and unparsed setCookie fields",
+            "url": "https://github.com/advisories/GHSA-v3r7-h72x-cjcm",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-74"
+            ],
+            "cvss": {
+              "score": 4.8,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:N"
+            },
+            "range": ">=7.0.0 <7.29.0"
+          },
+          {
+            "source": 1137242,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to HTTP response queue poisoning via keep-alive socket reuse",
+            "url": "https://github.com/advisories/GHSA-35p6-xmwp-9g52",
+            "severity": "low",
+            "cwe": [
+              "CWE-367"
+            ],
+            "cvss": {
+              "score": 3.7,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+            },
+            "range": ">=7.0.0 <7.28.0"
+          },
+          {
+            "source": 1240036,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to Denial of Service via orphaned RetryHandler response body",
+            "url": "https://github.com/advisories/GHSA-pmjh-fq2x-6v4x",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-772"
+            ],
+            "cvss": {
+              "score": 5.9,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=7.11.0 <7.29.1"
+          },
+          {
+            "source": 1240038,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to downstream response splitting via retry interceptor",
+            "url": "https://github.com/advisories/GHSA-r53p-7pc4-xj5r",
+            "severity": "low",
+            "cwe": [
+              "CWE-444"
+            ],
+            "cvss": {
+              "score": 3.7,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+            },
+            "range": ">=7.0.0 <7.29.1"
+          },
+          {
+            "source": 1240041,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to Denial of Service via unrequested WebSocket subprotocol",
+            "url": "https://github.com/advisories/GHSA-rfgv-xxqx-mfg5",
+            "severity": "high",
+            "cwe": [
+              "CWE-248",
+              "CWE-252"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=7.0.0 <7.29.1"
+          },
+          {
+            "source": 1240044,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to Denial of Service via unbounded decompression of compressed responses",
+            "url": "https://github.com/advisories/GHSA-3xpg-4rpp-hhhm",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-770"
+            ],
+            "cvss": {
+              "score": 5.9,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=7.15.0 <7.29.1"
+          },
+          {
+            "source": 1240046,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to cross-user cookie disclosure via Set-Cookie caching in shared caches",
+            "url": "https://github.com/advisories/GHSA-2jfj-6hjv-fm6j",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-200",
+              "CWE-524"
+            ],
+            "cvss": {
+              "score": 6.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:L/A:N"
+            },
+            "range": ">=7.0.0 <7.29.1"
+          },
+          {
+            "source": 1240048,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to response truncation via oversized chunked responses in the dump interceptor",
+            "url": "https://github.com/advisories/GHSA-2gqq-gqf2-x968",
+            "severity": "low",
+            "cwe": [
+              "CWE-20",
+              "CWE-248"
+            ],
+            "cvss": {
+              "score": 3.7,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+            },
+            "range": ">=7.1.0 <7.29.1"
+          },
+          {
+            "source": 1240050,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to TLS certificate validation bypass via dropped connect options in BalancedPool",
+            "url": "https://github.com/advisories/GHSA-w293-vg96-wgc3",
+            "severity": "high",
+            "cwe": [
+              "CWE-295"
+            ],
+            "cvss": {
+              "score": 7.4,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:H/I:H/A:N"
+            },
+            "range": ">=7.24.1 <7.29.1"
+          },
+          {
+            "source": 1240052,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to caching and replay of unsafe HTTP method responses",
+            "url": "https://github.com/advisories/GHSA-8436-99hf-9mmv",
+            "severity": "low",
+            "cwe": [
+              "CWE-345"
+            ],
+            "cvss": {
+              "score": 3.7,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:L/A:N"
+            },
+            "range": ">=7.0.0 <7.29.1"
+          },
+          {
+            "source": 1240055,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to Denial of Service via WebSocketStream unclean close",
+            "url": "https://github.com/advisories/GHSA-rx4f-c7p8-82vq",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-248",
+              "CWE-754"
+            ],
+            "cvss": {
+              "score": 5.9,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=7.0.0 <7.29.1"
+          },
+          {
+            "source": 1243078,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to Denial of Service via unbounded memory in the EventSource parser",
+            "url": "https://github.com/advisories/GHSA-4qv8-2p9j-2685",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-770"
+            ],
+            "cvss": {
+              "score": 5.9,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=7.0.0 <7.30.1"
+          },
+          {
+            "source": 1243081,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to Subresource Integrity bypass via non-lowercase algorithm tokens",
+            "url": "https://github.com/advisories/GHSA-f72v-6w45-q472",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-178"
+            ],
+            "cvss": {
+              "score": 5.9,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:H/A:N"
+            },
+            "range": ">=7.15.0 <7.30.1"
+          },
+          {
+            "source": 1243113,
+            "name": "undici",
+            "dependency": "undici",
+            "title": "undici vulnerable to Denial of Service via unhandled error on excessive content-encodings",
+            "url": "https://github.com/advisories/GHSA-xjj6-f33q-929c",
+            "severity": "high",
+            "cwe": [
+              "CWE-248",
+              "CWE-459"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=7.18.0 <7.30.1"
+          }
+        ],
+        "effects": [
+          "miniflare"
+        ],
+        "range": "7.0.0 - 7.30.0",
+        "nodes": [
+          "node_modules/undici"
+        ],
+        "fixAvailable": {
+          "name": "@cloudflare/vite-plugin",
+          "version": "1.65.0",
+          "isSemVerMajor": false
+        }
+      },
+      "vinext": {
+        "name": "vinext",
+        "severity": "high",
+        "isDirect": true,
+        "via": [
+          "image-size"
+        ],
+        "effects": [],
+        "range": "0.0.46 - 1.0.0-beta.13",
+        "nodes": [
+          "node_modules/vinext"
+        ],
+        "fixAvailable": {
+          "name": "vinext",
+          "version": "1.3.1",
+          "isSemVerMajor": true
+        }
+      },
+      "vite": {
+        "name": "vite",
+        "severity": "high",
+        "isDirect": true,
+        "via": [
+          {
+            "source": 1120786,
+            "name": "vite",
+            "dependency": "vite",
+            "title": "launch-editor: NTLMv2 hash disclosure via UNC path handling on Windows",
+            "url": "https://github.com/advisories/GHSA-v6wh-96g9-6wx3",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-73",
+              "CWE-522"
+            ],
+            "cvss": {
+              "score": 0,
+              "vectorString": null
+            },
+            "range": ">=8.0.0 <=8.0.15"
+          },
+          {
+            "source": 1123527,
+            "name": "vite",
+            "dependency": "vite",
+            "title": "vite: `server.fs.deny` bypass on Windows alternate paths",
+            "url": "https://github.com/advisories/GHSA-fx2h-pf6j-xcff",
+            "severity": "high",
+            "cwe": [
+              "CWE-22",
+              "CWE-200"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+            },
+            "range": ">=8.0.0 <=8.0.15"
+          },
+          {
+            "source": 1242624,
+            "name": "vite",
+            "dependency": "vite",
+            "title": "launch-editor: escapeCmdArgs() omits % escaping on Windows",
+            "url": "https://github.com/advisories/GHSA-698v-4r3x-3vcv",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-78"
+            ],
+            "cvss": {
+              "score": 0,
+              "vectorString": null
+            },
+            "range": ">=8.0.0 <=8.1.5"
+          },
+          {
+            "source": 1242653,
+            "name": "vite",
+            "dependency": "vite",
+            "title": "launch-editor: Editor CLI flag misinterpretation causing arbitrary command execution for some editors",
+            "url": "https://github.com/advisories/GHSA-r825-w8mm-5pxw",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-88"
+            ],
+            "cvss": {
+              "score": 0,
+              "vectorString": null
+            },
+            "range": ">=8.0.0 <=8.1.5"
+          },
+          {
+            "source": 1242660,
+            "name": "vite",
+            "dependency": "vite",
+            "title": "launch-editor: `fs.existsSync()` existence check can be bypassed on Windows",
+            "url": "https://github.com/advisories/GHSA-587h-7wmj-h5pm",
+            "severity": "high",
+            "cwe": [
+              "CWE-77"
+            ],
+            "cvss": {
+              "score": 0,
+              "vectorString": null
+            },
+            "range": ">=8.0.0 <=8.1.5"
+          },
+          {
+            "source": 1242726,
+            "name": "vite",
+            "dependency": "vite",
+            "title": "Vite: Cross origin script execution through Vite custom middleware",
+            "url": "https://github.com/advisories/GHSA-9jrq-w75r-8gcw",
+            "severity": "low",
+            "cwe": [
+              "CWE-80"
+            ],
+            "cvss": {
+              "score": 0,
+              "vectorString": null
+            },
+            "range": ">=8.0.0 <=8.1.5"
+          },
+          {
+            "source": 1242732,
+            "name": "vite",
+            "dependency": "vite",
+            "title": "Vite: Files outside `server.fs.allow` could be served when project paths match system paths on non-Windows machine",
+            "url": "https://github.com/advisories/GHSA-rq7h-c2jc-7f22",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-22",
+              "CWE-284"
+            ],
+            "cvss": {
+              "score": 0,
+              "vectorString": null
+            },
+            "range": ">=8.0.0 <=8.1.5"
+          }
+        ],
+        "effects": [],
+        "range": "8.0.0 - 8.1.5",
+        "nodes": [
+          "node_modules/vite"
+        ],
+        "fixAvailable": {
+          "name": "vite",
+          "version": "8.3.5",
+          "isSemVerMajor": false
+        }
+      },
+      "wrangler": {
+        "name": "wrangler",
+        "severity": "high",
+        "isDirect": true,
+        "via": [
+          "esbuild",
+          "miniflare"
+        ],
+        "effects": [
+          "@cloudflare/vite-plugin"
+        ],
+        "range": "<=0.0.0-7ae5dd357 || 4.16.0 - 4.113.0",
+        "nodes": [
+          "node_modules/wrangler"
+        ],
+        "fixAvailable": {
+          "name": "@cloudflare/vite-plugin",
+          "version": "1.65.0",
+          "isSemVerMajor": false
+        }
+      },
+      "ws": {
+        "name": "ws",
+        "severity": "high",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1119108,
+            "name": "ws",
+            "dependency": "ws",
+            "title": "ws: Uninitialized memory disclosure",
+            "url": "https://github.com/advisories/GHSA-58qx-3vcg-4xpx",
+            "severity": "moderate",
+            "cwe": [
+              "CWE-908"
+            ],
+            "cvss": {
+              "score": 4.4,
+              "vectorString": "CVSS:3.1/AV:N/AC:H/PR:H/UI:N/S:U/C:H/I:N/A:N"
+            },
+            "range": ">=8.0.0 <8.20.1"
+          },
+          {
+            "source": 1123259,
+            "name": "ws",
+            "dependency": "ws",
+            "title": "ws: Memory exhaustion DoS from tiny fragments and data chunks",
+            "url": "https://github.com/advisories/GHSA-96hv-2xvq-fx4p",
+            "severity": "high",
+            "cwe": [
+              "CWE-400",
+              "CWE-770",
+              "CWE-1050"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": ">=8.0.0 <8.21.0"
+          }
+        ],
+        "effects": [
+          "@cloudflare/vite-plugin",
+          "miniflare"
+        ],
+        "range": "8.0.0 - 8.20.1",
+        "nodes": [
+          "node_modules/ws"
+        ],
+        "fixAvailable": {
+          "name": "@cloudflare/vite-plugin",
+          "version": "1.65.0",
+          "isSemVerMajor": false
+        }
+      },
+      "zod": {
+        "name": "zod",
+        "severity": "high",
+        "isDirect": false,
+        "via": [
+          {
+            "source": 1243066,
+            "name": "zod",
+            "dependency": "zod",
+            "title": "Zod can exhaust memory while validating oversized constrained collections",
+            "url": "https://github.com/advisories/GHSA-mrhx-c7xc-m3w5",
+            "severity": "high",
+            "cwe": [
+              "CWE-770"
+            ],
+            "cvss": {
+              "score": 7.5,
+              "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+            },
+            "range": "<4.6.6"
+          }
+        ],
+        "effects": [],
+        "range": "<4.6.6",
+        "nodes": [
+          "node_modules/zod"
+        ],
+        "fixAvailable": true
+      }
+    },
+    "metadata": {
+      "vulnerabilities": {
+        "info": 0,
+        "low": 1,
+        "moderate": 6,
+        "high": 15,
+        "critical": 0,
+        "total": 22
+      },
+      "dependencies": {
+        "prod": 23,
+        "dev": 681,
+        "optional": 250,
+        "peer": 45,
+        "peerOptional": 0,
+        "total": 743
+      }
+    }
+  },
+  "finishedAt": "2026-10-26T14:39:33.994Z"
+}

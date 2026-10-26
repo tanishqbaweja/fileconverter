@@ -1,4 +1,55 @@
-# Dependency and hosting review — October 21, 2026
+# Dependency and hosting review
+
+## October 26, 2026 — unused database scaffold removed
+
+B08 remains open. No application/CI import of Drizzle was found; `db:generate`
+referenced a nonexistent `db/schema.ts`, the preserved migration journal has no
+entries, and hosting metadata has null D1/R2 bindings. Removed the unused
+`drizzle-orm`/`drizzle-kit` direct dependencies, command and config. No schema,
+data, migration journal, hosting metadata, application worker or codec was
+deleted or changed. The config is recoverable from Git if ever needed.
+
+Pruning exposed existing test/analysis imports of esbuild that relied on its
+accidental presence via Drizzle. esbuild is now an explicit exact dev dependency
+at0.28.1 (formerly a transitive0.28.0). The registry version/integrity/Node>=18
+requirement and maintainer's Windows development-server patch were checked:
+[esbuild Windows advisory](https://github.com/evanw/esbuild/security/advisories/GHSA-g7r4-m6w7-qqqr).
+The removed0.18.20 subtree was affected by the separate
+[esbuild CORS advisory](https://github.com/evanw/esbuild/security/advisories/GHSA-67mh-4wv8-2f99).
+These are development-server findings, not evidence that converted files were
+uploaded or that an exploit was reachable in the deployed app.
+
+Fresh same-turn baseline:22reported package groups (0critical/15high/6moderate/
+1low). Final:19 (0critical/15high/2moderate/2low). Exactly three groups disappear:
+drizzle-kit, @esbuild-kit/esm-loader and @esbuild-kit/core-utils. The esbuild group
+remains LOW via Wrangler's distinct0.27.3 subtree; it is not falsely declared
+fixed globally. Counts are current audit responses, not a causal comparison to
+the October21 registry's older28-group result. Full reports:
+
+- `evidence/2026-10-26-database-scaffold-audit-before.json`
+- `evidence/2026-10-26-database-scaffold-audit-after.json` (intermediate prune,
+  before explicit esbuild; retained as such, not the final lock)
+- `evidence/2026-10-26-database-scaffold-audit-final.json`
+
+Final graph743->687entries:56unused entries removed, zero new paths,657retained
+entry objects unchanged,27explicit esbuild/platform artifacts updated to0.28.1,
+three unchanged-version/source/integrity packages only reclassified peer=true.
+No unrelated version sweep or npm audit fix/major downgrade/override. The audit
+records exact package/lock hashes and per-entry hashes. Audit scratch/cache is
+repository-owned and removed in finally; no conversion/user media is involved.
+20focused tests/lint/TypeScript pass. npm ls --all exits0 with no missing/invalid
+root dependency; the same four prior optional emnapi/wasm-util entries remain
+extraneous and were not swept. Clean hosted npm-ci/build/portable/privacy-offline
+checks are pending, not implied by the lock-only command.
+
+Windows npm first lock save failed UNKNOWN/-4094; exact state was checked before
+one successful lock-only retry. Applying the final installed graph again failed
+at its lock save, but installed esbuild independently reads0.28.1 and both Drizzle
+packages are absent; actual compiler tests pass. Do not call the failed command a
+successful clean install, change permissions, erase the lock, or retry blindly.
+Fresh hosted npm-ci is the acceptance gate for install reproducibility.
+
+## October 21, 2026 — framework/hosting review (historical)
 
 Release blocker B08 remains open. This review does not certify native Wasm
 dependencies, current-browser memory, or all deployed dependency reachability.

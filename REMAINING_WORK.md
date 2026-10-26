@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-10-26 — B08 database-scaffold subgap implemented: source audit proves no
+application/CI consumer and no schema; empty original journal preserved, hosting
+D1/R2 remainnull. Remove unusedDrizzle direct deps/command/config; explicitly
+pin actual esbuild consumer0.28.1 with Windows patch. Current audit22->19groups,
+three unused groups gone,657retained lock entries unchanged; other tooling
+advisories/runtime/native reachability remainOPEN.20focused/lint/TS PASS,
+npm ls exits0 with four prior optional extraneous entries, clean hostedCI
+pending. npm Windows save errors are not successful installs;
+installed compiler checked and CI must prove fresh npm-ci. No app/codec/public/
+memory/formula or Chrome service change, conversion rerun or original54 claim.
+
 2026-10-26 — Changed storage UI and historical-check fix now hosted-CI verified:
 40340144950/4d48386f SUCCESS1750portable+1skip,19privacy/offline browser,
 production build/lint/TS/404route audit. Prior195cafe8 CI failure retained. No

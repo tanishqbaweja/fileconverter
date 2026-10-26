@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+B08 independent work: remove demonstrably unused database scaffold while keeping
+empty migration journal/hosting metadata; explicit actual compiler dependency
+esbuild0.28.1. Audits22->19groups, three unused groups eliminated, other tooling
+findings remain.20focused tests/lint/TS and npm ls PASS (four prior optional
+extraneous entries retained); clean hosted npm-ci/build/portable/privacy next.
+Windows save failure is not a clean-install pass. This
+does not change codecs or solve memory/scaling; keep all Chrome constraints.
+
 Changed storage-error UI/recovery CLOSED by14-16-54.324Z/195cafe8: real quota
 failure shows clear summary and exact raw diagnostics in closed/opened/reclosed
 Technical details. SAME-page default-quota recovery preserves exact output,

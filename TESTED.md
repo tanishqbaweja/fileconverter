@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-10-26 — B08 unused database scaffold removed after source/consumer audit:
+no app/CI use, missing configured schema, preserved empty journal, D1/R2 null.
+Removed two unused direct deps/command/config; no data or app/codec change.
+Actual esbuild consumers now have exact explicit patched0.28.1 rather than an
+accidental Drizzle transitive dependency. Fresh before22audit groups -> final19;
+only drizzle-kit/@esbuild-kit loader/core groups disappear. Esbuild stillLOW
+through separate Wrangler0.27.3;15high remain, no clean-security claim. Graph
+743->687:56removed/0newpaths/657unchanged,27compiler artifacts updated and3peer
+flags only. Full before/intermediate/final audits retained with lock/entry pins.
+20focused tests/lint/TS PASS. npm ls --all exits0/no missing-invalid root deps,
+four prior optional extraneous entries retained, no sweep. Clean hostedCI pending. Windows npm UNKNOWN/-4094
+save failures retained as failures; one lock-only retry passed, installed
+compiler0.28.1/Drizzle absence independently checked. No Docker, permission/lock
+deletion, native build or conversion replay. Audit cache/scratch finallyremoved;
+only obsolete config deleted (Git recoverable), original migration journal kept.
+Final six scaffold tests also PASS, including unsafe/existing-label refusal
+before npm/scratch creation; historical audit reports cannot be overwritten or
+replayed accidentally. Final audited lock still matches its exact SHA.
+
 2026-10-26 — Follow-up CI40340144950 at4d48386f TERMINAL SUCCESS:1750portable
 PASS/0fail/1skip,19privacy/offline browser PASS34.2s, production build/lint/TS
 PASS,404public proof entries. Both former historical reconstruction failures
