@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+New standard-field alias/duplicate qualification prepared: six actual private
+production routes, track/comment/album_artist/disc require two raw separate
+unequal values;21other fields/fullPCM/physicalOPFS/wholeChrome/cleanup retained.
+RuntimeUNVERIFIED, no engine/quality change or native rebuild. Hypothesis:
+standard alias conversion may lose repetitions even though CUSTOM_REPEAT passes.
+Execute once after source checks; preserve failure and diagnose if confirmed.
+
 c7edd932 CI40254871875 SUCCESS;38focused/lint/TS locally,19privacy/offline
 browser checks in CI. Source/evidence pushed, owned runtime absent. This closes
 the q7 IO evidence cycle only. Next independent task: exact remaining metadata

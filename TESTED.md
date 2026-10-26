@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-26 NEW standard-field duplicate/alias gate prepared, runtimeUNVERIFIED.
+Six routes amongFLAC/Vorbis/Opus, four standard families track/TRACKNUMBER,
+comment/DESCRIPTION, album_artist/ALBUMARTIST, disc/DISCNUMBER: two unequal
+values per family, including literalsemicolon in real comment. INPUT rawentries
+and exactcompletePCM must prove rewrite leaves audio unchanged. OUTPUT validates
+all21other scalar tags PLUS four raw two-value groups; no probe dictionary join/
+semicolon splitting/expected-value trimming. Same private10editcore/quality/IO,
+full96kPCM>=60 (FLACexact),physicalOPFS/nooutputcopy,normalwholeChrome250MiB,
+allcleanup. This is NEW evidence, not replay of passed CUSTOM_REPEAT cases.
+No nativebuild/publicpromotion/stress/large-repeat acceptance implied.
+
 2026-10-26 c7edd932 source/evidence CI40254871875 SUCCESS: production
 build/lint/TypeScript/portable units/public404 proof audit and19network privacy/
 offline browser checks PASS.38focused local tests/lint/TS/diff-check PASS.

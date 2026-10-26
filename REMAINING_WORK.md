@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-26 next concrete B05 gap: repeated STANDARD metadata alias fields,
+not the already-passed custom duplicate key. New six-route gate prepared;
+runtimeUNVERIFIED. Raw binary entries must preserve both track/comment/
+album_artist/disc values separately (literalsemicolon catches fake splitting),
+plus21other scalar fields/fullPCM. Independent input rewrite check/unique
+physicalOPFS/unchangedprivatecore/normal250MiB/allcleanup retained. No false
+25-scalar-field claim: coverage reports21scalar+4multivalue semanticfields.
+Do not replay large-repeat failure or closed q7 IO gate; full54 remainsOPEN.
+
 2026-10-26 c7edd932 CI40254871875 SUCCESS (portable verification plus19
 privacy/offline browser checks),38focused/lint/TS/diff PASS locally. All code and
 compact evidence pushed; zero owned conversion runtime directories remain.
