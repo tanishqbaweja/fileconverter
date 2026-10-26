@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-26 persistent-input candidate implemented/tested206focused,
+lint/TypeScript/diff-check PASS. Exact pending large Opus-to-Vorbis route only
+uses existing bounded BYOB instead of per-read FileReaderSync allocations;
+small<=8MiB and all other policies unchanged. Reader counters record explicit
+backing allocations/reopens/read size/oneinflight, finite per-full-source
+assertions. No native rebuild/quality/IO-output/memory threshold changes.
+Memory hypothesis still UNVERIFIED; next real same147964541B/q7/three-run gate.
+Cleanup diagnostic waits worker-ready but no phase excluded from primary.
+
 2026-10-26 full147.96MB q7 gate00-31-01.120Z FAILED250.69921875MiB,
 not a small-file substitute. Safety-cancelled after11.3s/26.0MB read/11.3MB partial,
 no completed-output/fullPCM acceptance; exact source147964541B/ec870c... verified.

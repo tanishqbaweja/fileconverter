@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Targeted existing-BYOB input candidate206tests/lint/TS PASS. Only pending
+Opus-to-Ogg/native33 inputs>8MiB change; bounded explicit allocation counters,
+same256KiB/oneIO/32MiB actual core andunchanged q7. Actual memory fix NOT proven.
+Next changed full-size test; first250.6992MiB failure staysfailed. No engine
+rebuild or small-case replay. Cleanup measurement waits actual recovered worker,
+while primary still counts all phases; no hidden browser flags/processes.
+
 Full-size73be793c/00-31-01.120Z FAILED250.6992MiB at11.3s; safety-cancelled
 26MBread/11MBpartial, empty OPFS and full owned cleanup. No large output/fidelity
 acceptance. Wasm32MiB/256KiBreads/29519Bwrites/oneop,535valid1NULL; growth in

@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-10-26 targeted large-input BYOB candidate206tests/33files PASS,
+lint/TypeScript/diff-check PASS. Exact private Opus-to-Ogg/native33 only when
+input>8MiB uses existing seekable persistent reader; all smaller/other profiles
+unchanged. Explicit256KiB allocation/read/seek/inflight counters added; actual
+large gate requires<=4backing allocations across147.96MB, one read in flight.
+Counters are JS bookkeeping, not substituted for whole-Chrome memory. Native
+core/codec/quality/output/queues/limits unchanged. Post-cancel cleanup now waits
+for actual worker-ready before the same2.1s/96MiB diagnostic; primary counts
+EVERY phase and first failure staysfailed. Initial use-prefixed pure predicate
+triggered React-hook lint; renamed it, no lint rule disabled. Actual memory
+improvement UNVERIFIED; rerun justified by changed real input adapter, not retry.
+
 2026-10-26 FULL-SIZE q7 run00-31-01.120Z FAILED (73be793c): genuine
 147964541B/ec870c...2300s stereo input verified; first automatic q7 job exceeded
 primary250MiB at250.69921875 after11.3s, read26017563B/wrote11284458B partial.

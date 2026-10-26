@@ -15,6 +15,7 @@ import { vpxCodecForProfile } from "../lib/vpx-decoder-policy";
 import { mediaNativeArguments } from "../lib/media-native-arguments";
 import { observeNativeInputMemory } from "../lib/native-input-memory-observation";
 import { explainAudioMetadataBudgetError } from "../lib/audio-metadata-budget-error";
+import { requiresPersistentVorbisInput } from "../lib/audio-input-policy";
 
 const REMUX_MODULE_URL = "/engines/remux/within-remux.mjs";
 const REMUX_WASM_URL = "/engines/remux/within-remux.wasm";
@@ -276,13 +277,23 @@ export async function runMediaRemux({
     finally { inputReader = null; }
   };
   let inputReaderPosition = -1;
-  let inputBuffer = new Uint8Array(MAX_AVIO_CHUNK);
+  const persistentAudioInput = requiresPersistentVorbisInput(profileId, remuxProfile, file.size);
+  const audioInputTransport = persistentAudioInput ? {
+    strategy: "persistent-byob" as const, maximumBufferBytes: MAX_AVIO_CHUNK, readCalls: 0, streamOpens: 0, seekReopens: 0,
+    explicitBufferAllocations: 0, explicitAllocatedBufferBytes: 0, maximumReadBytes: 0, inFlight: 0, peakInFlight: 0,
+  } : undefined;
+  if (audioInputTransport) metrics.audioInputTransport = audioInputTransport;
+  const allocateInputBuffer = (): Uint8Array<ArrayBuffer> => {
+    if (audioInputTransport) { audioInputTransport.explicitBufferAllocations++; audioInputTransport.explicitAllocatedBufferBytes += MAX_AVIO_CHUNK; }
+    return new Uint8Array(MAX_AVIO_CHUNK);
+  };
+  let inputBuffer = allocateInputBuffer();
   const synchronousFileReader =
     typeof FileReaderSync === "function" ? new FileReaderSync() : null;
   // Large MKV remuxes use one persistent BYOB stream. Repeated synchronous
   // Blob slices make Chromium retain transient renderer buffers at scale.
   const synchronousInputReader =
-    forceAsynchronousInput ||
+    forceAsynchronousInput || persistentAudioInput ||
     remuxProfile === 1 ||
     (remuxProfile >= 19 && remuxProfile <= 21) ||
     remuxProfile === 23 ||
@@ -443,7 +454,13 @@ export async function runMediaRemux({
       }
       const end = Math.min(file.size, offset + destination.byteLength);
       if (end <= offset) return 0;
+      if (audioInputTransport) {
+        if (audioInputTransport.inFlight !== 0) throw new Error("Bounded audio input cannot have overlapping reads.");
+        audioInputTransport.inFlight = 1; audioInputTransport.peakInFlight = 1; audioInputTransport.readCalls++;
+      }
+      try {
       if (!inputReader || inputReaderPosition !== offset) {
+        if (audioInputTransport) { audioInputTransport.streamOpens++; if (inputReader) audioInputTransport.seekReopens++; }
         await inputReader?.cancel("FFmpeg input seek");
         inputReader = file
           .slice(offset)
@@ -452,7 +469,7 @@ export async function runMediaRemux({
         inputReaderPosition = offset;
       }
       if (inputBuffer.byteLength < destination.byteLength) {
-        inputBuffer = new Uint8Array(MAX_AVIO_CHUNK);
+        inputBuffer = allocateInputBuffer();
       }
       const { done, value } = await inputReader.read(
         inputBuffer.subarray(0, end - offset),
@@ -468,7 +485,8 @@ export async function runMediaRemux({
       inputBuffer =
         value.buffer.byteLength >= MAX_AVIO_CHUNK
           ? new Uint8Array(value.buffer)
-          : new Uint8Array(MAX_AVIO_CHUNK);
+          : allocateInputBuffer();
+      if (audioInputTransport) audioInputTransport.maximumReadBytes = Math.max(audioInputTransport.maximumReadBytes, value.byteLength);
       recordRead(value.byteLength);
       if (
         writable.writeSync &&
@@ -480,6 +498,7 @@ export async function runMediaRemux({
         assertActive();
       }
       return value.byteLength;
+      } finally { if (audioInputTransport) audioInputTransport.inFlight = 0; }
     },
     writeSync: writable.writeSync
       ? (offset, source) => {

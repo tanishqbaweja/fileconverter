@@ -161,6 +161,7 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "lib/native-input-memory-observation.ts",
   "lib/conversion-protocol.ts", "lib/media-native-arguments.ts",
   "lib/audio-metadata-budget-error.ts",
+  "lib/audio-input-policy.ts",
   "lib/media-conversion-options.ts", "app/converter/ConverterApp.tsx", "app/globals.css"];
 const pins = async () => Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, sha(await readFile(path.join(root, file)))])));
 let browser, context, activePage, server, serverIdentity, monitor, journal, observer, monitorTimer, benchmarkSession, fieldFixtures, byteFixtures, largeFixture, largeBudgetFailure, largeBudgetCancellationAttempted = false, pending = Promise.resolve(), snapshotPending, monitorFailure, busy = false, serverLog = "", originalHash;
@@ -439,6 +440,14 @@ try {
         row.actualAutomaticQualityArgument = state.metrics.audioQualityArgument;
       }
       if (largeBudgetFailure) throw new Error(largeBudgetFailure);
+      if (conversion.largeStereo && state.jobState === "complete") {
+        const transport = state.metrics.audioInputTransport; assert.equal(transport?.strategy, "persistent-byob");
+        assert.equal(transport.maximumBufferBytes, 262144); assert.ok(transport.readCalls > 0 && transport.streamOpens > 0);
+        assert.equal(transport.inFlight, 0); assert.equal(transport.peakInFlight, 1); assert.ok(transport.maximumReadBytes <= 262144);
+        assert.ok(transport.explicitBufferAllocations <= 4 && transport.explicitAllocatedBufferBytes <= 4 * 262144,
+          "Explicit input backing allocations must remain fixed for the entire147.96MB input");
+        row.actualInputTransport = transport;
+      }
       if (conversion.metadataFailure) {
         row.storageAfter = await storageSnapshot();
         row.metadataFailureProof = conversion.metadataFailure === "text-bytes"
@@ -561,6 +570,7 @@ try {
     }
     if (artworkBenchmark && row.validationDiagnostics) row.validationDiagnostics.afterCleanup = await validationCheckpoint();
     if (conversion.largeStereo) {
+      await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", null, { timeout: 15000 });
       await pause(2100); await snapshot(); const sample = tail.findLast(value => value.privateBytes !== null);
       assert.ok(sample); row.cleanupPrivateBytes = sample.privateBytes;
       row.cleanupDeltaFromLoadedMiB = (sample.privateBytes - report.loadedIdle.privateBytes) / 1048576;
@@ -634,6 +644,7 @@ finally {
       exactTextByteBoundary: c.exactTextByteBoundary, samePageByteRecovery: c.samePageByteRecovery,
       actualAutomaticQualityArgument: c.actualAutomaticQualityArgument, automaticQualityNoticeVisible: c.automaticQualityNoticeVisible,
       largeStereo: c.largeStereo, cleanupPrivateBytes: c.cleanupPrivateBytes, cleanupDeltaFromLoadedMiB: c.cleanupDeltaFromLoadedMiB,
+      actualInputTransport: c.actualInputTransport,
       failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags?.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, artwork: c.artwork,
       streamingPictureInspection: c.streamingPictureInspection,

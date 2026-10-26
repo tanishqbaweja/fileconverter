@@ -17,6 +17,9 @@ export interface ConversionMetrics {
   elapsedMs: number;
   /** Actual ccall quality argument, not a native AVCodecContext measurement. */
   audioQualityArgument?: { requested: AudioConversionOptions["quality"]; nativeCode: number; automaticPolicy: "opus-to-vorbis-q7" | null };
+  /** Explicit JS input-buffer bookkeeping only, never a substitute for process memory. */
+  audioInputTransport?: { strategy: "persistent-byob"; maximumBufferBytes: number; readCalls: number; streamOpens: number; seekReopens: number;
+    explicitBufferAllocations: number; explicitAllocatedBufferBytes: number; maximumReadBytes: number; inFlight: number; peakInFlight: number };
   wasmMemoryBytes?: number;
   peakWasmMemoryBytes?: number;
   /** Actual MPEG-2 AVCodecContext fields after native settings-match succeeds. */
