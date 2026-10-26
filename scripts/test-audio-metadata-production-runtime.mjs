@@ -37,12 +37,15 @@ import { stableWindow } from "./lib/chromium-private-memory.mjs";
 import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
 import { installBoundedNetworkObserver } from "./lib/bounded-network-observer.mjs";
 import { verifyOpfsDiskBacking } from "./lib/opfs-disk-backing-proof.mjs";
-import { bindOpfsOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "./lib/opfs-output-validation-backing.mjs";
+import { bindOpfsOutputValidationBacking, bindLargeAudioOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "./lib/opfs-output-validation-backing.mjs";
+import { createVorbisLargeFixture, VORBIS_LARGE_FIXTURE } from "./lib/vorbis-large-fixture.mjs";
+import { compareNativeLongAudioPcm } from "./lib/long-audio-fidelity.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE } from "../lib/media-conversion-options.ts";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
-const automaticVorbisRepair = process.argv[3] === "--vorbis-automatic-quality-repair";
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+const largeVorbisRepeat = process.argv[3] === "--vorbis-large-repeat";
+const automaticVorbisRepair = process.argv[3] === "--vorbis-automatic-quality-repair" || largeVorbisRepeat;
 const qualityComparison = process.argv[3] === "--compare-vorbis-quality";
 const remainingRepeated = process.argv[3] === "--remaining-repeated-audio";
 const flacOrderRepair = process.argv[3] === "--flac-order-repair";
@@ -56,8 +59,8 @@ const artworkBenchmark = process.argv[3] === "--artwork-serializer-benchmark" ||
 const artworkBudget = process.argv[3] === "--artwork-byte-budget" || artworkBenchmark || metadataBudget;
 const audioIoRecovery = process.argv[3] === "--audio-io-recovery";
 const artworkRejection = process.argv[3] === "--artwork-rejection-recovery", extendedArtworkInspection = artworkBudget || artworkRejection || audioIoRecovery;
-const oggArtwork = process.argv[3] === "--ogg-artwork" || automaticVorbisRepair, withArtwork = artworkMetadata || oggArtwork;
-const selectedCases = automaticVorbisRepair ? [
+const oggArtwork = process.argv[3] === "--ogg-artwork" || (automaticVorbisRepair && !largeVorbisRepeat), withArtwork = artworkMetadata || oggArtwork;
+const selectedCases = largeVorbisRepeat ? Array.from({ length: 3 }, (_, repeat) => ({ source: "opus", destination: "ogg", largeStereo: true, repeat })) : automaticVorbisRepair ? [
   { source: "opus", destination: "ogg" }, { source: "opus", destination: "ogg", repeated: true },
   ...AUDIO_OGG_ARTWORK_CASES.filter(value => value.source === "opus").map(value => ({ ...value, quality: "automatic" })),
 ] : metadataByteBudget ? [
@@ -114,6 +117,13 @@ if (automaticVorbisRepair) {
   report.scope = "four NEW automatic Opus-to-Vorbis jobs: canonical/repeated/PNG/JPEG, unchanged60dB full-PCM gate; actual native quality argument3/q7 and visible automatic policy; not a higher-selector control, stress, speed or public requalification";
   report.automaticVorbisQualityRepaired = "unverified-until-all-four-cases-pass";
 }
+if (largeVorbisRepeat) {
+  report.scope = "three NEW same-page full147964541B/2300s stereo-noise automatic q7 jobs; complete unaligned PCM plus unchanged legacy channel-SDR floor; normal complete-Chrome250MiB includes validation/cleanup/all services; no public/IO/cold-repeat/10GB qualification";
+  report.automaticVorbisQualityRepaired = "large-repeat-not-yet-qualified";
+  report.largeRepeatPlan = { runs: 3, inputBytes: VORBIS_LARGE_FIXTURE.bytes, durationSeconds: 2300, channels: 2,
+    expectedFramesPerChannel: 110400000, minimumChannelSdrDb: -6.5, separateSmallToneMinimumPsnrDbUnchanged: 60,
+    legacyCleanupDeltaLimitMiB: 96, stopOnFirstFailedConversionOrMemoryExcess: true, publicAcceptance: false };
+}
 const stamp = report.startedAt.replaceAll(":", "-"), sha = b => createHash("sha256").update(b).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 1048576 })) hash.update(b); return hash.digest("hex"); };
 const native = (args, executable = "ffmpeg") => execute(executable, args, { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 131072 });
@@ -146,13 +156,14 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "scripts/lib/birth-aware-chromium-memory.mjs", "scripts/lib/birth-aware-memory-observer-source.mjs", "scripts/lib/windows-tree-monitor.cs",
   "scripts/lib/windows-process-birth-proof.cs", "scripts/lib/windows-tree-monitor-birth-aware.ps1",
   "scripts/lib/opfs-output-validation-backing.mjs",
+  "scripts/lib/vorbis-large-fixture.mjs", "scripts/lib/long-audio-fidelity.mjs",
   "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts", "lib/browser-capabilities.ts", "lib/capability-registry.ts",
   "lib/native-input-memory-observation.ts",
   "lib/conversion-protocol.ts", "lib/media-native-arguments.ts",
   "lib/audio-metadata-budget-error.ts",
   "lib/media-conversion-options.ts", "app/converter/ConverterApp.tsx", "app/globals.css"];
 const pins = async () => Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, sha(await readFile(path.join(root, file)))])));
-let browser, context, server, serverIdentity, monitor, journal, observer, monitorTimer, benchmarkSession, fieldFixtures, byteFixtures, pending = Promise.resolve(), snapshotPending, monitorFailure, busy = false, serverLog = "", originalHash;
+let browser, context, activePage, server, serverIdentity, monitor, journal, observer, monitorTimer, benchmarkSession, fieldFixtures, byteFixtures, largeFixture, largeBudgetFailure, largeBudgetCancellationAttempted = false, pending = Promise.resolve(), snapshotPending, monitorFailure, busy = false, serverLog = "", originalHash;
 const identities = [], staged = [], tail = [], phases = [{ phase: "blank", at: Date.now() }];
 const phase = name => phases.push({ phase: name, at: Date.now() });
 const snapshot = async () => {
@@ -160,12 +171,24 @@ const snapshot = async () => {
   snapshotPending = (async () => { const batch = await monitor.drain();
     const samples = batch.samples.map(s => ({ ...s, phase: phases.findLast(p => p.at <= Date.parse(s.timestamp))?.phase ?? "unavailable" }));
     await journal.appendBatch({ ...batch, samples }); tail.push(...samples); if (tail.length > 128) tail.splice(0, tail.length - 128);
+    if (largeVorbisRepeat && report.blankBaseline && !largeBudgetFailure) {
+      const peak = journal.peaksExcept(["blank"]).peak;
+      if (peak && (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 > 250) {
+        largeBudgetFailure = "Full normal Chrome tree exceeded250MiB; keep every process and fail without rerunning unchanged";
+        if (activePage && !largeBudgetCancellationAttempted) {
+          largeBudgetCancellationAttempted = true;
+          try { if (await activePage.evaluate(() => window.__WITHIN_TEST__?.getState().jobState === "running"))
+            await activePage.getByRole("button", { name: "Cancel safely", exact: true }).click({ timeout: 5000 }); }
+          catch (error) { report.budgetCancellationDiagnostic = String(error).slice(0, 512); }
+        }
+      }
+    }
   })().finally(() => { snapshotPending = null; }); return snapshotPending;
 };
 const recordMemory = () => {
   if (!journal || !report.blankBaseline) return;
   const all = journal.peaksExcept([]), active = journal.peaksExcept(["blank"]);
-  if (active.peak) report.memory = { scope: "selected-small-case lifecycle only, not stress acceptance", limitMiB: 250, intervalMs: 100,
+  if (active.peak) report.memory = { scope: largeVorbisRepeat ? "full-size private automatic-q7 repeats including validation and cleanup; not public qualification" : "selected-small-case lifecycle only, not stress acceptance", limitMiB: 250, intervalMs: 100,
     peak: active.peak, incrementalPrivateMiB: (active.peak.privateBytes - report.blankBaseline.privateBytes) / 1048576,
     validSamples: all.validSamples, unavailableSamples: all.unavailableSamples, fullHistoryInLosslessJournal: true };
 };
@@ -195,6 +218,19 @@ try {
     assert.deepEqual(repeatedSource.entries.filter(s => s.split("=", 1)[0].toLowerCase() === "custom_repeat"), AUDIO_REPEATED_COMMENTS);
   }
   report.repeatedFixture = report.repeatedFixtures.flac;
+  if (largeVorbisRepeat) {
+    console.log(JSON.stringify({ stage: "generate-exact-full-size-input", bytes: VORBIS_LARGE_FIXTURE.bytes }));
+    largeFixture = await createVorbisLargeFixture(runtime.directory, env);
+    const probe = await probeAudio(largeFixture.file), audio = probe.streams.find(value => value.codec_type === "audio");
+    assert.equal(probe.streams.length, 1); assert.equal(audio.codec_name, "opus"); assert.equal(Number(audio.sample_rate), 48000); assert.equal(audio.channels, 2);
+    assert.ok(Math.abs(Number(probe.format.duration) - 2300.0065) < 0.00001);
+    assert.equal(validateScopedAudioTags(probe, largeFixture.expectedTags, { scope: "audio-stream" }).status, "passed");
+    const { file: ignoredFile, ...facts } = largeFixture; assert.ok(ignoredFile);
+    report.largeAudioFixture = { ...facts, probe };
+    report.longDecoderProbe = await compareNativeLongAudioPcm(path.join(runtime.directory, "source.opus"), path.join(runtime.directory, "source.opus"), { cwd: root, env, channels: 1, expectedFrames: 96000 });
+    assert.equal(report.longDecoderProbe.exact, true);
+    assert.equal(report.longDecoderProbe.sourceSha256, "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5");
+  }
   if (audioIoRecovery) {
     const args = audioMetadataFixtureArguments("flac", path.join(runtime.directory, "source-cancel.flac"));
     const signal = args.indexOf("sine=frequency=997:sample_rate=48000:duration=2"); assert.ok(signal > 0);
@@ -294,6 +330,7 @@ try {
     const identity = await queryProcessIdentity(Number(roots[0].id)); assert.ok(identity); identities.push(identity); report.browserBirth = identity;
   } finally { await identitySession.detach(); }
   assert.ok(context.pages().length <= 1); const page = context.pages()[0] ?? await context.newPage();
+  activePage = page;
   if (artworkBenchmark) benchmarkSession = await context.newCDPSession(page);
   await context.addInitScript({ content: "Object.defineProperty(globalThis, '__WITHIN_AUDIO_VALIDATION_CHUNK__', { value: (" + encodeBoundedValidationChunk.toString() + ") });" });
   context.on("request", request => { report.network.observedRequests++;
@@ -344,7 +381,8 @@ try {
   };
   for (const [index, conversion] of selectedCases.entries()) {
     if (monitorFailure) throw monitorFailure;
-    const profileId = `${conversion.source}-to-${conversion.destination}`, input = conversion.byteBudget ? byteFixtures[conversion.byteBudget].file : conversion.fieldBudget ? fieldFixtures[conversion.fieldBudget].file : path.join(runtime.directory, conversion.interruption === "cancel" ? "source-cancel.flac" : conversion.artwork
+    if (largeBudgetFailure) throw new Error(largeBudgetFailure);
+    const profileId = `${conversion.source}-to-${conversion.destination}`, input = conversion.largeStereo ? largeFixture.file : conversion.byteBudget ? byteFixtures[conversion.byteBudget].file : conversion.fieldBudget ? fieldFixtures[conversion.fieldBudget].file : path.join(runtime.directory, conversion.interruption === "cancel" ? "source-cancel.flac" : conversion.artwork
       ? `source-artwork-${conversion.artwork}.${conversion.source}` : (conversion.repeated ? "source-repeated." : "source.") + conversion.source),
       outputCopy = path.join(runtime.directory, `output-${index}.${conversion.destination}`);
     let output = outputCopy, physicalBinding;
@@ -356,13 +394,16 @@ try {
       ...(artworkBenchmark ? { benchmarkIteration: conversion.benchmarkIteration, benchmarkWarmup: conversion.benchmarkWarmup } : {}), status: "failed", failures: [] }; report.cases.push(row);
     if (metadataFieldBudget) { row.name += "-" + (conversion.fieldBudget ?? "metadata-recovery"); row.metadataFailure = conversion.metadataFailure ?? null; }
     if (metadataByteBudget) { row.name += "-text-bytes-" + (conversion.byteBudget ?? "recovery"); row.metadataFailure = conversion.metadataFailure ?? null; }
+    if (conversion.largeStereo) { row.name += "-large-stereo-repeat-" + conversion.repeat; row.largeStereo = true; }
     let outputIdentity, entryName;
     try {
-      const sourceProbe = await probeAudio(input); const tags = validateScopedAudioTags(sourceProbe, AUDIO_METADATA_TAGS, { scope: conversion.source === "flac" ? "format" : "audio-stream" }); assert.equal(tags.status, "passed");
+      const expectedTags = conversion.largeStereo ? largeFixture.expectedTags : AUDIO_METADATA_TAGS;
+      const sourceProbe = await probeAudio(input); const tags = validateScopedAudioTags(sourceProbe, expectedTags, { scope: conversion.source === "flac" ? "format" : "audio-stream" }); assert.equal(tags.status, "passed");
       row.source = { ...report.fixtures[conversion.source], ...(conversion.repeated ? report.repeatedFixtures[conversion.source] : {}), tags };
       if (conversion.artwork) row.source = { ...report.artworkFixtures[conversion.source + "-" + conversion.artwork], tags };
       if (conversion.fieldBudget) row.source = { ...report.metadataFieldFixtures[conversion.fieldBudget], tags };
       if (conversion.byteBudget) row.source = { ...report.metadataByteFixtures[conversion.byteBudget], tags };
+      if (conversion.largeStereo) row.source = { ...report.largeAudioFixture, tags };
       if (conversion.interruption === "cancel") row.source = { ...report.cancellationFixture, tags };
       if (audioIoRecovery) await page.evaluate(fault => { history.replaceState(null, "", "/?test=1" + (fault ? "&fault=write" : "")); }, conversion.interruption === "write");
       phase("case-" + index); await page.locator('[data-testid="file-input"]').setInputFiles(input); await page.locator('[data-testid="format-select"]').selectOption(profileId);
@@ -379,6 +420,7 @@ try {
       }
       if (conversion.interruption || conversion.metadataFailure) { row.storageBefore = await storageSnapshot(); assert.deepEqual(row.storageBefore, []); }
       const startedAt = Date.now(); await page.locator('[data-testid="convert-button"]').click();
+      if (conversion.largeStereo) console.log(JSON.stringify({ stage: "real-browser-large-conversion", repeat: index + 1, inputBytes: largeFixture.bytes, estimatedConversionSeconds: 70 }));
       if (conversion.interruption === "cancel") {
         await page.waitForFunction(() => { const state = window.__WITHIN_TEST__?.getState();
           return state?.jobState === "running" && state.metrics?.inputBytes > 0 && state.metrics?.outputBytes > 0;
@@ -386,16 +428,17 @@ try {
         row.beforeCancel = await page.evaluate(() => window.__WITHIN_TEST__.getState());
         await page.getByRole("button", { name: "Cancel safely", exact: true }).click();
       }
-      await page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState ?? ""), null, { timeout: 60000 });
+      await page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState ?? ""), null, { timeout: conversion.largeStereo ? 240000 : 60000 });
       if (conversion.interruption || conversion.metadataFailure) await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState()); row.browserElapsedMs = Date.now() - startedAt; row.browserState = state; entryName = state.opfsName;
-      if (artworkBenchmark) { assert.ok(Number.isFinite(state.metrics.elapsedMs) && state.metrics.elapsedMs > 0); row.engineElapsedMs = state.metrics.elapsedMs; }
+      if (artworkBenchmark || conversion.largeStereo) { assert.ok(Number.isFinite(state.metrics.elapsedMs) && state.metrics.elapsedMs > 0); row.engineElapsedMs = state.metrics.elapsedMs; }
       assert.equal(state.audioOptions.quality, row.requestedQuality, "Actual production job must retain the requested quality selection");
       if (automaticVorbisRepair) {
         assert.equal(state.audioOptions.quality, "automatic");
         assert.deepEqual(state.metrics.audioQualityArgument, { requested: "automatic", nativeCode: 3, automaticPolicy: "opus-to-vorbis-q7" });
         row.actualAutomaticQualityArgument = state.metrics.audioQualityArgument;
       }
+      if (largeBudgetFailure) throw new Error(largeBudgetFailure);
       if (conversion.metadataFailure) {
         row.storageAfter = await storageSnapshot();
         row.metadataFailureProof = conversion.metadataFailure === "text-bytes"
@@ -422,13 +465,14 @@ try {
       for (const count of [state.metrics.maxReadChunkBytes, state.metrics.maxWriteChunkBytes, state.metrics.peakQueuedBytes]) assert.ok(count <= 262144);
       assert.ok(state.metrics.peakPendingOperations <= 1); assert.equal(state.metrics.pendingOperations, 0);
       const size = await page.evaluate(async name => (await (await (await navigator.storage.getDirectory()).getFileHandle(name)).getFile()).size, entryName);
-      assert.ok(size > 0 && size < (extendedArtworkInspection ? 8 * 1048576 : 1048576), "Only explicit finite artwork-boundary cases may export over1MiB");
+      assert.ok(size > 0 && size < (conversion.largeStereo ? 256 * 1048576 : extendedArtworkInspection ? 8 * 1048576 : 1048576), "Only explicit finite qualification scopes may inspect larger finished outputs");
       if (artworkBenchmark) {
         row.validationDiagnostics = { terminal: await validationCheckpoint() };
         phase("case-" + index + "-validation-export");
       }
       if (physicalValidation) {
-        physicalBinding = await bindOpfsOutputValidationBacking(page, profile, entryName, size); output = physicalBinding.file;
+        physicalBinding = conversion.largeStereo ? await bindLargeAudioOutputValidationBacking(page, profile, entryName, size)
+          : await bindOpfsOutputValidationBacking(page, profile, entryName, size); output = physicalBinding.file;
         row.physicalValidation = physicalBinding.proof;
       } else {
       const writer = await open(output, "wx"); outputIdentity = await writer.stat({ bigint: true });
@@ -445,17 +489,22 @@ try {
       const outputProbe = await probeAudio(output);
       if (!conversion.artwork || conversion.expectedExclusion) assert.equal(outputProbe.streams.length, 1);
       const audio = outputProbe.streams.find(stream => stream.codec_type === "audio"); assert.ok(audio);
-      assert.equal(audio.codec_name, conversion.destination === "ogg" ? "vorbis" : conversion.destination); assert.equal(Number(audio.sample_rate), 48000); assert.equal(audio.channels, 1);
+      assert.equal(audio.codec_name, conversion.destination === "ogg" ? "vorbis" : conversion.destination); assert.equal(Number(audio.sample_rate), 48000); assert.equal(audio.channels, conversion.largeStereo ? 2 : 1);
       row.output = { bytes: size, sha256: await hashFile(output), probe: outputProbe };
-      if (automaticVorbisRepair && index === 0) assert.equal(row.output.sha256, "4db863292dcd76fbcf364a4986120ac9bc39d155a774d730376128058565f4db", "New actual AUTOMATIC call must match the retained full higher/q7 output control");
+      if (automaticVorbisRepair && !largeVorbisRepeat && index === 0) assert.equal(row.output.sha256, "4db863292dcd76fbcf364a4986120ac9bc39d155a774d730376128058565f4db", "New actual AUTOMATIC call must match the retained full higher/q7 output control");
+      if (conversion.largeStereo && index > 0) assert.equal(row.output.sha256, report.cases[0].output.sha256, "Full-size repeated outputs must be byte-identical");
       if (artworkBenchmark) assert.equal(row.output.sha256, "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3", "Every benchmark job must match the complete accepted output control");
       if (conversion.artwork && !conversion.expectedExclusion) {
         try { row.artwork = await inspectArtwork(output, outputProbe, report.artworkImages[conversion.artwork]); }
         catch (error) { row.failures.push("Embedded cover validation: " + String(error)); }
       }
-      row.output.tags = validateScopedAudioTags(outputProbe, AUDIO_METADATA_TAGS, { scope: conversion.destination === "flac" ? "format" : "audio-stream" });
-      if (row.output.tags.status !== "passed") row.failures.push("One or more25metadata fields lost or changed");
-      try { row.fidelity = await compareNativeAudioPcm(input, output, { cwd: root, env, lossless: conversion.destination === "flac" }); row.fullIndependentDecode = true; }
+      row.output.tags = validateScopedAudioTags(outputProbe, expectedTags, { scope: conversion.destination === "flac" ? "format" : "audio-stream" });
+      if (row.output.tags.status !== "passed") row.failures.push("One or more required metadata fields lost or changed");
+      try {
+        if (conversion.largeStereo) console.log(JSON.stringify({ stage: "full-independent-unaligned-PCM-and-legacy-SDR", repeat: index + 1, expectedSamples: 220800000, estimatedValidationSeconds: 30 }));
+        row.fidelity = conversion.largeStereo ? await compareNativeLongAudioPcm(input, output, { cwd: root, env, channels: 2, expectedFrames: 110400000 })
+          : await compareNativeAudioPcm(input, output, { cwd: root, env, lossless: conversion.destination === "flac" }); row.fullIndependentDecode = true;
+      }
       catch (error) { row.fidelity = error.fidelity ?? null; row.fullIndependentDecode = error.fullIndependentDecodePassed ?? false; row.failures.push(String(error)); }
       const comments = conversion.byteBudget ? await readOggNativeTextBudgetComments(output, conversion.destination)
         : extendedArtworkInspection ? await readOggPictureComments(output, conversion.destination) : await readAudioCommentEntries(output, conversion.destination); row.binaryComments = comments;
@@ -499,10 +548,11 @@ try {
           noPageOrContextRecreation: true, noStaleErrorOrWarning: true };
       }
       row.status = row.failures.length ? "failed" : "passed-small-private-fidelity-and-metadata-case";
+      if (conversion.largeStereo && !row.failures.length) row.status = "passed-full-size-private-q7-case-not-public-qualification";
       if (artworkBenchmark) row.validationDiagnostics.afterValidation = await validationCheckpoint();
       if (physicalBinding) await assertOpfsOutputValidationBackingUnchanged(physicalBinding);
       }
-      if (artworkBenchmark ? index === 0 || index === selectedCases.length - 1 : index === 0 || conversion.repeated || conversion.interruption) await screenshot(conversion, index, row);
+      if (artworkBenchmark ? index === 0 || index === selectedCases.length - 1 : index === 0 || conversion.repeated || conversion.interruption || conversion.largeStereo) await screenshot(conversion, index, row);
     } catch (error) { row.failures.push(String(error.stack ?? error).slice(0, 4096)); }
     finally {
       if (entryName) await page.evaluate(async name => { await (await navigator.storage.getDirectory()).removeEntry(name); }, entryName);
@@ -510,6 +560,14 @@ try {
       row.disposableOutputRemoved = true;
     }
     if (artworkBenchmark && row.validationDiagnostics) row.validationDiagnostics.afterCleanup = await validationCheckpoint();
+    if (conversion.largeStereo) {
+      await pause(2100); await snapshot(); const sample = tail.findLast(value => value.privateBytes !== null);
+      assert.ok(sample); row.cleanupPrivateBytes = sample.privateBytes;
+      row.cleanupDeltaFromLoadedMiB = (sample.privateBytes - report.loadedIdle.privateBytes) / 1048576;
+      assert.ok(row.cleanupDeltaFromLoadedMiB <= 96, "Unchanged legacy loaded-idle cleanup96MiB allowance exceeded");
+      console.log(JSON.stringify({ stage: "large-case-terminal-and-cleanup", repeat: index + 1, status: row.status, engineElapsedMs: row.engineElapsedMs, outputBytes: row.output?.bytes }));
+      if (row.status !== "passed-full-size-private-q7-case-not-public-qualification") throw new Error("First invalid large result retained; do not repeat it unchanged");
+    }
     await snapshot(); recordMemory(); if (report.memory.incrementalPrivateMiB > 250) throw new Error("Whole Chromium250MiB gate failed; retain completed fidelity evidence without promotion");
   }
   phase("recovery"); await pause(2100); await snapshot(); recordMemory();
@@ -517,13 +575,14 @@ try {
   assert.ok(report.network.nativeGlueRequests > 0 && report.network.nativeWasmRequests > 0, "Fresh context must request the staged audited native assets");
   assert.equal(report.cases.length, selectedCases.length);
   if (automaticVorbisRepair) {
-    assert.ok(report.cases.every(row => row.status === "passed-small-private-fidelity-and-metadata-case" && row.actualAutomaticQualityArgument?.nativeCode === 3));
-    report.automaticVorbisQualityRepaired = "passed-four-small-private-automatic-cases-not-public-requalification";
+    assert.ok(report.cases.every(row => row.status === (largeVorbisRepeat ? "passed-full-size-private-q7-case-not-public-qualification" : "passed-small-private-fidelity-and-metadata-case") && row.actualAutomaticQualityArgument?.nativeCode === 3));
+    report.automaticVorbisQualityRepaired = largeVorbisRepeat ? "passed-three-full-size-private-q7-repeats-not-public-qualification" : "passed-four-small-private-automatic-cases-not-public-requalification";
   }
-  assert.ok(metadataBudget ? report.cases.every(c => c.metadataFailure ? c.status === (c.metadataFailure === "text-bytes" ? "passed-private-metadata-byte-rejection-case" : "passed-private-metadata-field-rejection-case") : c.status === "passed-small-private-fidelity-and-metadata-case")
+  assert.ok(largeVorbisRepeat ? report.cases.every(c => c.status === "passed-full-size-private-q7-case-not-public-qualification") : metadataBudget ? report.cases.every(c => c.metadataFailure ? c.status === (c.metadataFailure === "text-bytes" ? "passed-private-metadata-byte-rejection-case" : "passed-private-metadata-field-rejection-case") : c.status === "passed-small-private-fidelity-and-metadata-case")
     : audioIoRecovery ? report.cases.every(c => c.interruption ? c.status === "passed-private-audio-interruption-case" : c.status === "passed-small-private-fidelity-and-metadata-case")
     : report.cases.every(c => c.status === "passed-small-private-fidelity-and-metadata-case"));
-  assert.ok(report.memory.incrementalPrivateMiB <= 250); report.status = "passed-selected-small-private-cases-not-promotion";
+  assert.ok(report.memory.incrementalPrivateMiB <= 250); report.status = largeVorbisRepeat
+    ? "passed-three-full-size-private-repeats-not-promotion" : "passed-selected-small-private-cases-not-promotion";
 } catch (error) { report.status = "failed"; report.failures.push(String(error.stack ?? error).slice(0, 8192)); }
 finally {
   clearInterval(monitorTimer); await pending;
@@ -574,6 +633,7 @@ finally {
       exactFieldBoundary: c.exactFieldBoundary, samePageMetadataRecovery: c.samePageMetadataRecovery,
       exactTextByteBoundary: c.exactTextByteBoundary, samePageByteRecovery: c.samePageByteRecovery,
       actualAutomaticQualityArgument: c.actualAutomaticQualityArgument, automaticQualityNoticeVisible: c.automaticQualityNoticeVisible,
+      largeStereo: c.largeStereo, cleanupPrivateBytes: c.cleanupPrivateBytes, cleanupDeltaFromLoadedMiB: c.cleanupDeltaFromLoadedMiB,
       failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags?.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, artwork: c.artwork,
       streamingPictureInspection: c.streamingPictureInspection,

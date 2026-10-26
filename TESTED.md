@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-26 full-size gate pre-execution52focused tests/lint/TypeScript/
+syntax/diff-check PASS. Actual3-job147.96MB automatic-q7 runtime pending;
+do not infer pass from source tests. Reuse audited56source/15artifact cache.
+
+2026-10-26 af86d20 CI40187121369 SUCCESS. Full-size automatic-q7 source/
+validator gate31focused PASS/lint/syntax PASS; actual runtime UNVERIFIED.
+Input fixed147964541B/ec870c.../2300s stereo,3same-page jobs. New complete
+PCM comparator boundedchunks/BigInt sums/declared frame count/no trimming,
+unchanged legacy ASDR-6.5 plus reportedPSNR; small60dB diagnostic unchanged.
+Physical stress binding separate256MiB scope with unchanged3x4KiB samples;
+historical8MiB helper rejection still tested. Runtime stops first invalid or
+whole-Chrome>250MiB result; every service still counted, disposal in finally.
+
 2026-10-25 27ffc08 portable CI40186814224 FAILED4/1676 (1671passed,1skipped):
 destination-scope public assumption and3catalogue/UI historical checks still
 expected405public cards/pre-policy UI. Corrected exact q7 pending exception,

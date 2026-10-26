@@ -12,14 +12,22 @@ const sha = value => createHash("sha256").update(value).digest("hex");
 const identity = info => Object.fromEntries(["dev", "ino", "size", "birthtimeNs", "mtimeNs"].map(key => [key, String(info[key])]));
 export const OPFS_VALIDATION_BACKING_LIMITS = Object.freeze({ sampleBytes: 4096, sampleRanges: 3, entries: 256, depth: 10, matchingSizeFiles: 8 });
 
-export async function bindOpfsOutputValidationBacking(page, profileDirectory, entryName, expectedBytes) {
+export function bindOpfsOutputValidationBacking(page, profileDirectory, entryName, expectedBytes) {
+  return bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, 8 * 1048576);
+}
+// Separate finite stress scope: only the caller's already-finished browser file
+// grows. Probe buffers/ranges/queues/identity and full validators do not change.
+export function bindLargeAudioOutputValidationBacking(page, profileDirectory, entryName, expectedBytes) {
+  return bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, 256 * 1048576);
+}
+async function bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, maximumBytes) {
   const root = path.resolve(import.meta.dirname, "../.."), work = path.join(root, "work"), limits = OPFS_VALIDATION_BACKING_LIMITS;
   profileDirectory = path.resolve(profileDirectory);
   const relative = path.relative(work, profileDirectory); assert.ok(relative && !relative.startsWith("..") && !path.isAbsolute(relative));
   assert.equal(await realpath(profileDirectory), profileDirectory); const directoryInfo = await lstat(profileDirectory);
   assert.ok(directoryInfo.isDirectory() && !directoryInfo.isSymbolicLink());
   assert.ok(typeof entryName === "string" && entryName.startsWith("within-test-") && entryName.length <= 240 && !/[\\/]/.test(entryName));
-  assert.ok(Number.isSafeInteger(expectedBytes) && expectedBytes > 0 && expectedBytes <= 8 * 1048576);
+  assert.ok(Number.isSafeInteger(expectedBytes) && expectedBytes > 0 && expectedBytes <= maximumBytes);
   const completeSmallOutput = expectedBytes <= limits.sampleRanges * limits.sampleBytes;
   const ranges = completeSmallOutput ? Array.from({ length: Math.ceil(expectedBytes / limits.sampleBytes) }, (_, index) => index * limits.sampleBytes)
     : [0, Math.floor((expectedBytes - limits.sampleBytes) / 2), expectedBytes - limits.sampleBytes];

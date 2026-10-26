@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, open, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 import { encodeBoundedValidationChunk } from "../scripts/lib/bounded-validation-chunk.mjs";
-import { bindOpfsOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "../scripts/lib/opfs-output-validation-backing.mjs";
+import { bindOpfsOutputValidationBacking, bindLargeAudioOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "../scripts/lib/opfs-output-validation-backing.mjs";
 import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 
@@ -55,6 +55,26 @@ test("small outputs compare EVERY byte in nonoverlapping <=4KiB chunks, with no 
     }, size);
   }
 });
+test("separate large-audio backing scope keeps historical8MiB rejection and exactly the same fixed probes, without a full buffer", async () => {
+  const runtime = await createOwnedRuntimeScratch("large-backing-unit-");
+  try {
+    const profile = path.join(runtime.directory, "profile"), storage = path.join(profile, "Default", "File System", "000"); await mkdir(storage, { recursive: true });
+    const size = 8 * 1048576 + 1, file = path.join(storage, "00000002"), writer = await open(file, "wx"), chunk = Buffer.alloc(65536);
+    try { for (let at = 0; at < size; at += chunk.length) await writer.write(chunk, 0, Math.min(chunk.length, size - at), at); }
+    finally { await writer.close(); }
+    const page = { async evaluate(callback, args) {
+      assert.equal(args.sampleBytes, 4096); assert.equal(args.ranges.length, 3);
+      return { bytes: size, samples: args.ranges.map(offset => ({ offset, encoded: encodeBoundedValidationChunk(Buffer.alloc(4096)) })) };
+    } };
+    await assert.rejects(bindOpfsOutputValidationBacking(page, profile, "within-test-large-binding", size));
+    const binding = await bindLargeAudioOutputValidationBacking(page, profile, "within-test-large-binding", size);
+    assert.equal(binding.file, file); assert.equal(binding.proof.totalBrowserSampleBytes, 12288);
+    assert.equal(binding.proof.maximumBrowserSampleBytes, 4096); assert.equal(binding.proof.maximumHostProbeBufferBytes, 4096);
+    assert.equal(binding.proof.convertedCopyCreated, false); assert.equal(binding.proof.allOutputBytesCompared, false);
+    assert.equal(binding.proof.fullContentAndFidelityValidationStillRequired, true); await assertOpfsOutputValidationBackingUnchanged(binding);
+    await assert.rejects(bindLargeAudioOutputValidationBacking(page, profile, "within-test-large-binding", 256 * 1048576 + 1));
+  } finally { await runtime.close(); }
+});
 
 test("ambiguous physical files, changed sampled bytes, invalid logical names and oversized validation scopes fail rather than guess", async () => {
   await fixture(async ({ profile, storage, bytes, page }) => {
@@ -76,7 +96,8 @@ test("physical mode is read-only validation after the same real production engin
   assert.doesNotMatch(helper, /copyFile|writeFile|avcodec|ffmpeg|fetch\(/);
   const runtime = await readFile("scripts/test-audio-metadata-production-runtime.mjs", "utf8");
   assert.match(runtime, /--artwork-benchmark-physical-validation/);
-  assert.match(runtime, /physicalBinding = await bindOpfsOutputValidationBacking/);
+  assert.match(runtime, /physicalBinding = conversion.largeStereo \? await bindLargeAudioOutputValidationBacking/);
+  assert.match(runtime, /: await bindOpfsOutputValidationBacking\(page, profile, entryName, size\)/);
   assert.match(runtime, /assertOpfsOutputValidationBackingUnchanged\(physicalBinding\)/);
   assert.match(runtime, /Every benchmark job must match the complete accepted output control/);
   assert.match(runtime, /compareNativeAudioPcm\(input, output/); assert.match(runtime, /journal.peaksExcept\(\["blank"\]\)/);

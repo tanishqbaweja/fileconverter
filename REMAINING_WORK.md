@@ -1,5 +1,26 @@
 # Remaining work audit
 
+2026-10-26 full-size pre-execution52focused/lint/TypeScript/syntax/diff-check
+PASS. Actual browser qualification next, using unchanged reusable10-edit core;
+new scope is not a replay of closed small metadata/quality tests.
+
+2026-10-26 af86d20 portable CI40187121369 SUCCESS (prior failed CI staysfailed).
+New FULL-SIZE q7 repeat gate prepared, runtime UNVERIFIED: exact historical
+147964541B/ec870c...2300s/48kHz stereo Opus generated only as INPUT inside
+fresh owned work; three real same-page automatic q7 jobs, identical output hashes,
+fixed reads/writes/queues, every normal Chrome process/service retained. Whole
+process primary250MiB unchanged; stop/cancel first excess or invalid result.
+New independent long decoder compares ALL220800000 signed16 samples without
+resampling/trimming/alignment, bounded262144B chunks, BigInt exact block sums,
+source/output PCM hashes/PSNR/channelSDR; also retains actual historical float
+ASDR filter/floor-6.5 and cleanup96MiB allowance. Small-tone60dB PSNR unchanged,
+not conflated with noise-SDR metric. Separate finite256MiB finished-output binding
+keeps default8MiB cap and identical3x4096probes, no converted copy/full buffers.
+31focused source/validator tests/lint/syntax PASS. First BigInt negative unit
+used a test cutoff below its actual-6.02dB result; corrected TEST cutoff to0dB,
+not production floor. Host preflight5.13GB physical/11.69GB virtual/freeH1.3TB
+PASS, rechecked by runtime. No native engine rebuild/public promotion/full54 claim.
+
 2026-10-25 first hosted policy CI40186814224 FAILED on4stale visibility/UI
 contracts, not browser conversions; 1671pass/1skip/4fail. Corrected three exact
 reversible UI deltas, current404cards and explicit hidden pending route in two

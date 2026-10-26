@@ -4,7 +4,15 @@ This is an execution order, not a completion claim or a calendar promise. The
 original specification and `REMAINING_WORK.md`'s 54 requirement rows remain the
 acceptance contract. Private engines are not public supported profiles.
 
-## Current execution point — 2026-10-25
+## Current execution point — 2026-10-26
+
+af86d20 portable CI40187121369 SUCCESS. New full147964541B/2300s stereo
+q7 repeat gate prepared:3same-page jobs, full220800000-sample strict decode
+plus unchanged actual legacyASDR floor, original250MiB complete normal-Chrome
+tree and96MiB cleanup diagnostic allowance. Fixed-buffer/BigInt independent
+validator and separate finite output-binding scope tested31focused/lint/syntax.
+Actual large runtime UNVERIFIED; stop first failure/cancel/cleanup, no unchanged
+replay or engine rebuild. Route staysPRIVATE/PENDING; original54 scope OPEN.
 
 27ffc08 portable CI40186814224 FAILED4stale UI/public-status contracts;
 corrected only exact policy-disclosure hunks and404public/onepending expectations.
