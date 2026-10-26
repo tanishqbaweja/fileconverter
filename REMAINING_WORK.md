@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-10-26 — Independent source-disclosure fix implemented: AIFF/AIFC metadata
+after SSND was previously missed. Bounded random-access chunk headers now expose
+it, with FORM containment/padding checks and unchanged fixed read/count budgets.
+57 source/planner tests pass after four new tests reproduced the old defect.
+Real AIFF/AIFC production UI evidence is still UNVERIFIED. No large-file,
+preservation, memory, engine, route-promotion or speed claim; M-08/M-09 remain
+partial overall, and the separate MP3 near-full-scale failure stays open.
+
 2026-10-26 — Source `7077dcb4` CI 40294184264 passed build/lint/TypeScript,
 1,723 portable tests (+1 skipped), 19 privacy/offline browser tests and the
 404-profile proof audit. Later evidence/regression `df8e4b1d`: 72 focused local

@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Independent source-disclosure fix: AIFF/AIFC now seeks past SSND to find
+trailing ID3/native metadata while reading only bounded headers. Four new
+tests reproduced the old omission; 58 focused source/planner/gate-contract
+tests pass with unchanged 256-chunk/256 KiB cumulative budgets and stricter
+FORM containment. Real AIFF/AIFC production UI check prepared, still UNVERIFIED.
+No conversion, metadata-preservation, speed, scaling or memory claim.
+
 Latest source CI: `7077dcb4` / 40294184264 SUCCESS (1,723 portable tests passed,
 1 skipped; 19 privacy/offline; build/lint/TypeScript/404-profile proof audit).
 Later retained recovery regression `df8e4b1d` has 72 focused local passes.

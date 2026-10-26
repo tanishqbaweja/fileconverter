@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-26 — AIFF/AIFC source inspection now seeks past SSND to discover
+trailing ID3/native metadata headers without reading audio or tag payloads.
+The 256-chunk and 256 KiB cumulative-read ceilings remain fixed; FORM extent,
+chunk containment and odd padding are validated. Four new regression tests
+failed on the original source; after the fix all 57 source/planner tests passed,
+including a no-payload 2 GiB logical-seek unit double (NOT a real stress fixture).
+Real 8-second AIFF/AIFC fixture + production UI gate prepared but not yet run.
+This changes source disclosure only, not codecs, metadata preservation, registry
+support, conversion speed, the MP3 clipping result or process-memory acceptance.
+
 2026-10-26 — Source `7077dcb4` CI 40294184264 SUCCESS: production build,
 lint, TypeScript, 404-public-profile evidence audit, 1,723 portable tests passed,
 1 skipped/0 failed (1,724 total), and 19 privacy/offline browser tests passed.

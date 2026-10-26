@@ -544,12 +544,15 @@ function aiffCodec(container: string, compression: string | null): string {
 
 async function inspectAiff(file: Blob): Promise<AudioSourceInspection> {
   let inspectedBytes = 0;
+  let formEnd = file.size;
   const read = async (offset: number, length: number): Promise<DataView> => {
     if (
+      !Number.isSafeInteger(offset) ||
+      !Number.isSafeInteger(length) ||
       offset < 0 ||
       length < 0 ||
-      offset + length > file.size ||
-      offset + length > MAX_AIFF_INSPECTION_BYTES
+      offset + length > formEnd ||
+      inspectedBytes + length > MAX_AIFF_INSPECTION_BYTES
     ) {
       throw new Error("The AIFF chunk table exceeds the bounded inspection ceiling.");
     }
@@ -565,6 +568,10 @@ async function inspectAiff(file: Blob): Promise<AudioSourceInspection> {
   if (ascii(form, 0, 4) !== "FORM" || !["AIFF", "AIFC"].includes(container)) {
     throw new Error("The selected file does not contain a valid AIFF/AIFC header.");
   }
+  formEnd = 8 + form.getUint32(4, false);
+  if (formEnd < 12 || formEnd > file.size) {
+    throw new Error("The declared AIFF FORM is invalid or truncated.");
+  }
 
   let channels: number | null = null;
   let sampleFrames: number | null = null;
@@ -574,8 +581,8 @@ async function inspectAiff(file: Blob): Promise<AudioSourceInspection> {
   const metadataSignals: string[] = [];
   const notes: string[] = [];
   let chunkCount = 0;
-  for (let offset = 12; offset + 8 <= file.size; ) {
-    if (offset + 8 > MAX_AIFF_INSPECTION_BYTES || chunkCount >= 256) {
+  for (let offset = 12; offset + 8 <= formEnd; ) {
+    if (inspectedBytes + 30 > MAX_AIFF_INSPECTION_BYTES || chunkCount >= 256) {
       notes.push("The AIFF chunk table exceeded the bounded inspection ceiling.");
       break;
     }
@@ -584,7 +591,10 @@ async function inspectAiff(file: Blob): Promise<AudioSourceInspection> {
     const id = ascii(header, 0, 4);
     const length = header.getUint32(4, false);
     const dataOffset = offset + 8;
-    if (dataOffset + length > file.size) break;
+    const next = dataOffset + length + (length & 1);
+    if (next > formEnd) {
+      throw new Error("An AIFF chunk exceeds its declared FORM boundary.");
+    }
     if (id === "COMM" && length >= 18) {
       const comm = await read(dataOffset, Math.min(length, 22));
       channels = comm.getUint16(0, false);
@@ -599,11 +609,9 @@ async function inspectAiff(file: Blob): Promise<AudioSourceInspection> {
       metadataSignals.push(
         ({ NAME: "Name", AUTH: "Author", ANNO: "Annotation", "(c) ": "Copyright", "ID3 ": "ID3 tag" } as Record<string, string>)[id],
       );
-    } else if (id === "SSND") {
-      break;
     }
-    const next = dataOffset + length + (length & 1);
-    if (next <= offset || next > file.size) break;
+    // SSND can precede ID3/native metadata. Seek past its payload; never read it.
+    // The ceiling bounds total bytes read, not the logical location of a header.
     offset = next;
   }
   if (!channels || !sampleFrames || !bitsPerSample || !sampleRateHz) {
