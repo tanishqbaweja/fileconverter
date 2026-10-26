@@ -1,0 +1,53 @@
+{
+  "recordedAt": "2026-10-26T09:41:09.699Z",
+  "status": "compiled-artifact-audited-browser-repair-unverified",
+  "branch": "codex/mp3-quantizer-search-20261026-v1",
+  "parent": "3092cab45405616ac3630541e1bdf3ddd8508cce",
+  "commit": "9ae95cf84d7f9d1f0e6435058d6b4000ca4e3b7f",
+  "tree": "216c44c60d96a4374d1def14ebb796aebba37223",
+  "workflow": {
+    "path": ".github/workflows/reproduce-ffmpeg-nondocker.yml",
+    "canonicalSha256": "cda0b434adc7dd36109b4a2cc63fe726a507889cf6d1c0f5862d5d78dbf5c965",
+    "generatedSha256": "1fdccdeae9d0fe65c832e46cbfaf0e41b4b3680c9a7d42130c751212391fbfec",
+    "gitBlob": "3b81d3432dc88dc22a0faa72062038e078f40dde"
+  },
+  "canonicalHeadIndexAndWorkflowUnchanged": true,
+  "mainUnchanged": true,
+  "remoteVerified": true,
+  "noCheckoutOrMediaCopyCreated": true,
+  "priorComparableBuild": {
+    "runId": 40156938341,
+    "elapsedSeconds": 310
+  },
+  "estimatedBuildMinutes": 6,
+  "browserConversions": 0,
+  "publicAcceptance": false,
+  "noDocker": true,
+  "dispatchedAt": "2026-10-26T09:41:31.512Z",
+  "lastObservedAt": "2026-10-26T09:48:22.179Z",
+  "run": {
+    "conclusion": "success",
+    "createdAt": "2026-10-26T09:41:33Z",
+    "databaseId": 40301509420,
+    "headSha": "9ae95cf84d7f9d1f0e6435058d6b4000ca4e3b7f",
+    "status": "completed",
+    "updatedAt": "2026-10-26T09:47:15Z",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40301509420"
+  },
+  "collected": {
+    "directory": "work/mp3-quantizer-search-40301509420",
+    "bytes": 10662116,
+    "manifestSha256": "f52fef89f75b9dcb25ec8f5442e8d73538779221cbac24bbd658d14bb6c87d7a",
+    "buildSourcePins": 66,
+    "artifactPins": 20,
+    "upstream": {
+      "originalSha256": "a11ec3562e733f21565c491ab56b7f1d4a6865fc1ddbdc372ed9cb29b13ca7fb",
+      "compiledSha256": "56d2ebdef4c79bbc7174dfb9492e2040066854770f64f8ec096cd53a190e4e15",
+      "sourceEdits": 1,
+      "publicAcceptance": false
+    },
+    "immutableExecutedSourcesVerified": true,
+    "hostedCleanupPassed": true,
+    "publicAcceptance": false
+  }
+}

@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-10-26 — New MP3 search build40301509420 actually SUCCEEDED and collected:
+66 source/20 artifact pins, exact11-edit source, level2 search, audited unity
+gain and unchanged Wasm/AVIO/thread/bitrate policies. Manifest f52fef89...c87d7a;
+10.66MB reusable tool cache only, not media. Browser clipping/quality/memory/
+speed still UNVERIFIED. Next exact failed0.999 mono/stereo canaries, not another
+build or a claim that the original clipping defect is fixed.
+
 2026-10-26 — ONE new MP3 search build40301509420 is confirmed running at
 immutable9ae95cf8 (separatecodex/mp3-quantizer-search-20261026-v1); no Docker,
 main/public changes or conversion outputs. Full positive11-edit source audit

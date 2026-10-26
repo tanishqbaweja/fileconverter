@@ -6,6 +6,12 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+MP3 search40301509420 build now SUCCESS and independently collected/audited:
+66 immutable-source/20 artifact pins, exact11 wrapper edits, level2 only versus
+level9 plus prior unity gain; unchanged bitrate/IO/threads/32–96MiB Wasm.
+Next two exact failed0.999 mono/stereo real-browser canaries. Clipping, CPU cost,
+memory and public acceptance are not proven by compilation. No new build needed.
+
 MP3 clipping: one evidence-directed new candidate is prepared, still uncompiled
 and browser-UNVERIFIED. Change only MP3 encoder search level9 to2, retaining
 the prior unity-gain patch and identical bitrate/rate/channels/threads/AVIO/heap.

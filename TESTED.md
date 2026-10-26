@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-10-26 — MP3 search build40301509420 TERMINAL SUCCESS at9ae95cf8;
+collected once into `work/mp3-quantizer-search-40301509420` (10,662,116 bytes
+of reusable native tools, not converted media). Manifest f52fef89...c87d7a,
+66 immutable executed-source pins,20 artifact pins/21 files, strict source-
+derived level2/search and unity-gain audits, unchanged32–96MiB Wasm limits and
+hosted cleanup all pass. Actual clipping/fidelity/speed/whole-Chrome memory
+remain unverified until the two browser canaries. No native converter used.
+
 2026-10-26 — MP3 search candidate build40301509420 CONFIRMED LIVE at
 isolated commit9ae95cf8/branchcodex/mp3-quantizer-search-20261026-v1. Main and
 canonical workflow unchanged; dispatch intent persisted before ONE dispatch.
