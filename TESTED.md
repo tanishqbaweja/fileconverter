@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+2026-10-26 — Follow-up CI40340144950 at4d48386f TERMINAL SUCCESS:1750portable
+PASS/0fail/1skip,19privacy/offline browser PASS34.2s, production build/lint/TS
+PASS,404public proof entries. Both former historical reconstruction failures
+fixed by exact reversible reviewed hunks, no frozen preimage/hash relaxation.
+`evidence/2026-10-26-storage-error-ui-ci.json`. Private stress/native reproduction
+were unselected, not implied passed. Later backlog-only documentation does not
+change converter code; no duplicate CI or conversion run needed for those edits.
+All five reconciled Oct24 reports' packed/raw SHA/length checks PASS without
+writing restored copies. Fresh protected-original check:2,958,573,265B SHA256
+31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34 unchanged.
+Latest UI runtime's15recorded births absent and owned profile directory absent;
+retained only compact reports/journal/screens, no disposable converted output.
+
+2026-10-26 — Read-only backlog reconciliation found stale B04/B05/B06 work
+instructions. Checked retained MPEG-2 controls02-59-51.108Z and batch06-18-35.419Z
+PASS scoped reports; storage06-11-09.036Z remains aggregateFAILED visual guard
+despite four functional rollback/retry cases. Current table now distinguishes
+these facts. Existing unprofiled original08-14-29.695Z911valid/0missing browser
+journal is not pending;301.6640625MiB/0outputs/no new AI child is stillFAILED.
+Later profiled13-17-30.289Z434.8515625MiB is diagnostic. Reuse closed matrices,
+do not replay or attribute all peaks to Chrome's startup service. Documentation
+only; no conversion/engine/acceptance change or original-scope completion.
+
 2026-10-26 — Changed storage-error UI/recovery CLOSED at195cafe8 by
 `evidence/2026-10-26T14-16-54.324Z-audio-metadata-fidelity-result.json`.
 Actual browser-origin quota interrupts genuine native work after1,835,008 input
@@ -17,7 +40,7 @@ Source195cafe8 CI40338659255 FAILED two historical UI reconstruction tests
 Fix records only exact reversible reviewed UI/style hunks; frozen preimages and
 whole-file comparison stay intact.28 focused tests PASS (including retained
 actual browser evidence and both formerly failed checks), ESLint/TypeScript/
-diff PASS. Follow-up hosted CI pending. Do not replay the nowclosed browser
+diff PASS. Follow-up hosted CI40340144950 now SUCCESS as recorded above. Do not replay the nowclosed browser
 quota conversion unchanged.
 
 2026-10-26 — Previously live source874391b1 CI40305797263 is now TERMINAL

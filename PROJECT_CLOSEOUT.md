@@ -13,9 +13,12 @@ PNG/25tags/repeats/all96000PCM66.1683dB; error UI gone.203.015625MiB wholeChrome
 408valid0missing/53pins/default services unchanged/all cleanup. Both HEADLESS
 screens reviewed, not headed/manual coverage. No replay or native rebuild.
 Source195cafe8 CI40338659255 failed two historical UI reconstruction checks;
-next reconcile only exact reversible reviewed UI/style hunks with original
-hashes/full comparisons intact.28 focused tests/lint/TypeScript/diff now PASS;
-follow-up hosted CI next. Original
+exact reversible reviewed UI/style hunks now reconciled with original hashes
+and full comparisons intact.28focused tests/lint/TypeScript/diff PASS;
+follow-up CI40340144950/4d48386f SUCCESS1750portable+1skip/19privacy-offline/
+production build/lint/TS/404route audit. Native reproduction/private stress
+unselected, not implicitly passed. Next select an independent remaining item
+from the reconciled release table, not a closed small gate. Original
 54 scope remains incomplete; keep Chrome services and250MiB formula unchanged.
 
 Real browser-origin OPFS quota + same-page recovery now CLOSED by10-20-39.819Z:
@@ -820,6 +823,20 @@ Chronological details below provide context; older "next" statements for those
 closed checks are superseded by this execution point. All54 requirements remain.
 
 ## 1. Finish the current media qualification path
+
+Current remaining evidence, superseding older imperatives in the chronological
+details below: production full-original memory/completion, new-route >4GB and
+near10GB scaling, reload and broader failure/preservation/browser coverage,
+then applicable public promotion. Private form-controls and actual two-file
+batch gates are CLOSED (02-59-51.108Z/247.5625MiB and06-18-35.419Z/244.93359375MiB).
+Injected quota/permission/retry has functional evidence but its aggregate visual
+guard FAILED; do not relabel it passed or replay four conversions for a picture.
+Actual production browser journal execution/replay is no longer missing:
+unprofiled original08-14-29.695Z has911valid/0missing rows, still301.6640625MiB
+FAILED with0outputs/no new AI child. The later profiled434.8515625MiB failure is
+diagnostic, not an alternative passing baseline. All services/formula unchanged.
+Use `RELEASE_BLOCKERS.md`'s current table for next-work selection, not older
+"next" statements. These scoped results do not close the original54 requirements.
 
 1. Observer starvation and teardown sequencing are now corrected in the actual
    first1080p128+MiB path:2correctness PASS,2247samples/0unavailable, all cleanup

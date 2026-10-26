@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "scope": "Hosted portable verification of retained storage-error UI evidence and exact historical reconstruction fix; not native reproduction or private stress qualification",
+  "repository": "tanishqbaweja/fileconverter",
+  "runId": 40340144950,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40340144950",
+  "executedHead": "4d48386f24cd76cac38b79feef16169358ca5f1b",
+  "status": "completed",
+  "conclusion": "success",
+  "productionBuild": "passed",
+  "lint": "passed",
+  "typeScript": "passed",
+  "portableUnits": { "total": 1751, "passed": 1750, "failed": 0, "skipped": 1 },
+  "networkPrivacyOfflineBrowser": { "passed": 19, "durationSeconds": 34.2 },
+  "publicRouteEvidenceEntries": 404,
+  "nativeReproductionExecuted": false,
+  "privateQualificationExecuted": false,
+  "publicPromotion": false,
+  "originalScopeComplete": false,
+  "priorRun": { "runId": 40338659255, "head": "195cafe8bc84ccd1bb71a8435988fbff9b4a772b", "conclusion": "failure", "portableFailed": 2, "cause": "Exact historical UI reconstruction did not yet account for the reviewed storage-error display hunks; frozen preimages and whole-source comparisons preserved in the fix" }
+}

@@ -1,5 +1,25 @@
 # Remaining work audit
 
+2026-10-26 — Changed storage UI and historical-check fix now hosted-CI verified:
+40340144950/4d48386f SUCCESS1750portable+1skip,19privacy/offline browser,
+production build/lint/TS/404route audit. Prior195cafe8 CI failure retained. No
+private stress/native reproduction/public promotion or original54 completion
+inferred. See `evidence/2026-10-26-storage-error-ui-ci.json`. Next select an
+independent remaining item from the reconciled release table; leave Chrome
+services/formula intact and do not rerun closed small quota/control/batch gates.
+
+2026-10-26 — Backlog reconciliation, no conversion replay: RELEASE_BLOCKERS B04
+now records actually closed MPEG-2 option UI247.5625MiB and two-file batch
+244.93359375MiB. Injected quota/permission has functional rollback/retry proof,
+but aggregate visual guard remains FAILED; never relabelled a pass. B05 now
+acknowledges closed25-tag/repeat/cover/PCM small matrices instead of describing
+only seven tags. B06 no longer calls actual browser lossless-journal execution
+pending: unprofiled original08-14-29.695Z has911valid/0missing rows, yet remains
+FAILED301.6640625MiB/0outputs/no new AI child. Separate profiled434.85MiB is
+diagnostic. Remaining original/scaling/clipping/preservation/browser/public
+gates stay open; no claim that startup service explains every failure. Current
+table supersedes older chronological "next" text. No source/threshold change.
+
 2026-10-26 — Storage-error presentation/recovery subgap CLOSED by actual changed
 UI evidence14-16-54.324Z/195cafe8: visible actionable summary, exact raw diagnostic
 in closed/opened/reclosed details, then no stale error after SAME-page validated
