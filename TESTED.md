@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-10-26 — MP3-specific cancellation/write-failure/recovery gate PASSED.
+`evidence/2026-10-26T08-41-16.887Z-audio-metadata-fidelity-result.json`
+(executed `7077dcb4`, same private audited engine; no native rebuild).
+Real 180-second FLAC input: 2,539,419 bytes, SHA-256 `3e2067ab...e217ee`.
+UI cancellation occurred after 524,288 input bytes and 348,321 encoded output
+bytes, not merely a header. The next job injected the existing localhost error
+after an actual 791-byte bounded write: the native muxer error was visible,
+zero bytes falsely acknowledged, no partial file or pending IO remained, and
+the worker recovered. Third job, SAME page/context: exact prior 34,048-byte
+MP3 SHA-256 `fd3c7015...dae293`, all 96,000 unaltered samples at 97.0623 dB,
+gain 0.9999564, 25 raw-ID3 fields and exact PNG/description preserved.
+Whole-Chrome peak 198.96484375 MiB; 466 valid/0 unavailable samples. All three
+headless screenshots reviewed; 15 owned process births gone, original and
+published assets unchanged, all owned media/profile/scratch removed. Compact
+receipt, raw report, full memory journal and screenshots retained. Not real
+OS/quota/permission/direct-picker faults, scaling or public acceptance. The
+separate near-full-scale clipping failure remains FAILED and private.
+
 2026-10-26 — Near-full-scale MP3 gate completed, aggregate FAILED.
 Report: `evidence/2026-10-26T08-27-17.345Z-audio-metadata-fidelity-result.json`
 (executed `54374e34`). At amplitude 0.99, mono and stereo passed. At 0.999,

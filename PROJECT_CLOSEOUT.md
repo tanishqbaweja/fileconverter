@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+MP3-specific payload cancellation/write-error/same-page recovery is now CLOSED
+by `08-41-16.887Z`: all three actual production-browser jobs passed, exact prior
+PNG/25-tag/full-PCM output restored; primary peak 198.96484375 MiB, 466 valid/
+0 unavailable samples, all owned cleanup. No unchanged replay or rebuild.
+Near-full-scale clipping remains FAILED; this is not a clipping remedy,
+real OS/direct-destination fault test, scaling gate or public promotion.
+
 Near-full-scale MP3 gate `08-27-17.345Z` FAILED: 0.99 mono/stereo passed;
 0.999 mono/stereo produced 1/11 float samples outside full scale, peaking at
 1.0007861853/1.0032424927. Integer PCM, tags, artwork, 196.60546875 MiB primary
@@ -828,7 +835,7 @@ conversions are existing evidence, not tasks to repeat unchanged.
 | Blocker | Remaining decision/work | Exit evidence |
 | --- | --- | --- |
 | B02/B03 | Fresh H.264/AV1/MPEG-2 output, AV1 software decode and legally conditional HEVC; remaining named practical combinations. | Reuse each exact candidate's recorded diagnosis. Implement and qualify the production route, or document an exact measured technical/quality/memory/legal unsupported decision. A build, packet copy or failed first attempt does not close a fresh encoding requirement. |
-| B05 | MP3 gain-policy clipping remedy remains open after actual near-full-scale failure; separate MP3 payload-cancel/write-error/recovery gate implemented, browser-UNVERIFIED. Then repeat/scaling, AIFF aliases and broader preservation. | Six small MP3 metadata/cover cases are closed. Gate 08-27-17.345Z now fails on 0.999 mono/stereo float overshoot (1/11 samples, peak 1.0032424927); 0.99, integer PCM, metadata, 196.61 MiB memory and cleanup passed. Preserve failure/private status; no unchanged replay or speculative attenuation rebuild. q7 336.65 MiB repeat failure remains private. No public promotion. |
+| B05 | MP3 gain-policy clipping remedy remains open after actual near-full-scale failure; separate MP3 payload-cancel/write-error/recovery gate now CLOSED by 08-41-16.887Z at 198.96484375 MiB, exact same-page PNG/25-tag/97.06 dB recovery and all cleanup. Then repeat/scaling, AIFF aliases and broader preservation. | Six small MP3 metadata/cover cases are closed. Gate 08-27-17.345Z now fails on 0.999 mono/stereo float overshoot (1/11 samples, peak 1.0032424927); 0.99, integer PCM, metadata, 196.61 MiB memory and cleanup passed. Preserve failure/private status; no unchanged replay or speculative attenuation rebuild. q7 336.65 MiB repeat failure remains private. No public promotion. |
 | Full audit | Remaining image/RAW/HEIF, archive, subtitle, ebook, data and office requirements. | Reconcile every applicable original named item with its current implementation/validated evidence or defensible exact unsupported decision. Existing representative support must not be treated as every theoretical format pair. |
 
 Do not narrow the scope to today's public registry. Do not label a profile
