@@ -1194,225 +1194,24 @@ static int configure_matroska_artwork_attachment(
   return 0;
 }
 
-#ifndef WITHIN_AUDIO_TEXT_METADATA_H
-#define WITHIN_AUDIO_TEXT_METADATA_H
-
-/* Preserve complete parsed dictionaries, not a seven-field allowlist. The
- * container retains the existing precedence over the selected audio stream.
- * Repeated values within the winning scope remain repeated dictionary entries.
- * Build atomically: allocation/budget failure leaves the caller's old dictionary
- * intact. This is metadata only; it never changes codec settings or audio data.
- */
-static int merge_bounded_audio_text_metadata(
+static int merge_common_audio_text_metadata(
     AVDictionary **destination, const AVDictionary *container_metadata,
     const AVDictionary *stream_metadata) {
-  const size_t maximum_bytes = 2 * 1024 * 1024;
-  const unsigned int maximum_entries = 4096;
-  const AVDictionary *scopes[] = {container_metadata, stream_metadata};
-  size_t bytes = 0;
-  unsigned int entries = 0;
-  AVDictionary *merged = NULL;
-  if (!destination) return AVERROR(EINVAL);
-
-  for (unsigned int scope = 0; scope < 2; scope++) {
-    const AVDictionaryEntry *entry = NULL;
-    while ((entry = av_dict_get(scopes[scope], "", entry, AV_DICT_IGNORE_SUFFIX))) {
-      if (++entries > maximum_entries) return AVERROR(ENOSPC);
-      const char *texts[] = {entry->key, entry->value};
-      for (unsigned int field = 0; field < 2; field++) {
-        if (!texts[field]) return AVERROR_INVALIDDATA;
-        const size_t remaining = maximum_bytes - bytes;
-        size_t length = 0;
-        while (length < remaining && texts[field][length]) length++;
-        if (length == remaining) return AVERROR(ENOSPC);
-        bytes += length + 1; /* Include both terminators in the text budget. */
-      }
+  static const char *keys[] = {
+      "title", "artist", "album", "genre", "date", "track", "comment"};
+  for (unsigned int index = 0; index < sizeof(keys) / sizeof(keys[0]); index++) {
+    AVDictionaryEntry *entry =
+        av_dict_get(container_metadata, keys[index], NULL, 0);
+    if (!entry) {
+      entry = av_dict_get(stream_metadata, keys[index], NULL, 0);
+    }
+    if (entry) {
+      const int result = av_dict_set(destination, keys[index], entry->value, 0);
+      if (result < 0) return result;
     }
   }
-
-  for (unsigned int scope = 0; scope < 2; scope++) {
-    const AVDictionaryEntry *entry = NULL;
-    while ((entry = av_dict_get(scopes[scope], "", entry, AV_DICT_IGNORE_SUFFIX))) {
-      if (scope == 1 && av_dict_get(container_metadata, entry->key, NULL, 0))
-        continue;
-      const int result = av_dict_set(&merged, entry->key, entry->value,
-                                     AV_DICT_MULTIKEY);
-      if (result < 0) {
-        av_dict_free(&merged);
-        return result;
-      }
-    }
-  }
-  av_dict_free(destination);
-  *destination = merged;
   return 0;
 }
-
-#endif
-
-#ifndef WITHIN_AUDIO_MUXER_METADATA_ORDER_H
-#define WITHIN_AUDIO_MUXER_METADATA_ORDER_H
-
-/* FFmpeg rewrites encoder and deletes encoder-* before writing a header.
- * Dictionary replacement swaps in the last entry, which otherwise reverses
- * repeated user values. Stable-partition only those reserved fields to the
- * tail. Their documented muxer rewriting remains unchanged. */
-static int audio_muxer_reserved_metadata_key(const char *key) {
-  const char name[] = "encoder";
-  for (unsigned int i = 0; name[i]; i++) {
-    unsigned char c = (unsigned char)key[i];
-    if (!c) return 0;
-    if (c >= 'A' && c <= 'Z') c += 'a' - 'A';
-    if (c != (unsigned char)name[i]) return 0;
-  }
-  return key[7] == 0 || key[7] == '-';
-}
-
-static int partition_bounded_audio_muxer_metadata(AVDictionary **metadata) {
-  if (!metadata) return AVERROR(EINVAL);
-  const size_t maximum_bytes = 2 * 1024 * 1024;
-  size_t bytes = 0;
-  unsigned int entries = 0;
-  int saw_reserved = 0, needs_reorder = 0;
-  const AVDictionaryEntry *entry = NULL;
-  while ((entry = av_dict_get(*metadata, "", entry, AV_DICT_IGNORE_SUFFIX))) {
-    if (++entries > 4096) return AVERROR(ENOSPC);
-    const char *texts[] = {entry->key, entry->value};
-    for (unsigned int field = 0; field < 2; field++) {
-      if (!texts[field]) return AVERROR_INVALIDDATA;
-      const size_t remaining = maximum_bytes - bytes;
-      size_t length = 0;
-      while (length < remaining && texts[field][length]) length++;
-      if (length == remaining) return AVERROR(ENOSPC);
-      bytes += length + 1;
-    }
-    const int reserved = audio_muxer_reserved_metadata_key(entry->key);
-    if (reserved) saw_reserved = 1;
-    else if (saw_reserved) needs_reorder = 1;
-  }
-  if (!needs_reorder) return 0; /* Already stable: no extra allocations. */
-
-  AVDictionary *ordered = NULL;
-  for (int reserved = 0; reserved <= 1; reserved++) {
-    entry = NULL;
-    while ((entry = av_dict_get(*metadata, "", entry, AV_DICT_IGNORE_SUFFIX))) {
-      if (audio_muxer_reserved_metadata_key(entry->key) != reserved) continue;
-      const int result = av_dict_set(&ordered, entry->key, entry->value,
-                                     AV_DICT_MULTIKEY);
-      if (result < 0) { av_dict_free(&ordered); return result; }
-    }
-  }
-  av_dict_free(metadata);
-  *metadata = ordered;
-  return 0;
-}
-#endif
-
-#ifndef WITHIN_AUDIO_OGG_ARTWORK_H
-#define WITHIN_AUDIO_OGG_ARTWORK_H
-
-#include <libavutil/base64.h>
-#include <libavutil/intreadwrite.h>
-#include <libavutil/mem.h>
-
-/* Ogg/Opus use a base64 FLAC PICTURE comment, not a PNG/JPEG media stream.
- * Called after the bounded text merge and existing image inspection. The image
- * budget remains 4 MiB / 4096 per side / 16 Mpixels, independent of audio size.
- * Text keeps its separate 2 MiB budget. One picture counts toward 4096 fields.
- * Stage every allocation and dictionary edit before replacing caller state.
- * FFmpeg exposes the picture role as comment and description as title; zero
- * depth/palette denotes unknown, never invented image properties (RFC 9639).
- */
-static int add_bounded_ogg_audio_artwork(AVDictionary **metadata,
-                                         const AVStream *artwork,
-                                         int width, int height) {
-  const int maximum_image_bytes = 4 * 1024 * 1024;
-  const size_t maximum_description_bytes = 4096;
-  if (!metadata || !artwork || !artwork->codecpar ||
-      !artwork->attached_pic.data || artwork->attached_pic.size <= 0 ||
-      artwork->attached_pic.size > maximum_image_bytes ||
-      width <= 0 || height <= 0 || width > 4096 || height > 4096 ||
-      (int64_t)width * height > 16 * 1024 * 1024)
-    return AVERROR(EINVAL);
-  const char *mime = artwork->codecpar->codec_id == AV_CODEC_ID_PNG
-                         ? "image/png"
-                         : artwork->codecpar->codec_id == AV_CODEC_ID_MJPEG
-                               ? "image/jpeg" : NULL;
-  if (!mime) return AVERROR(EINVAL);
-  /* Refuse ambiguous preexisting picture comments instead of silently replacing
-   * user metadata. The demuxer normally extracts valid pictures into streams. */
-  if (av_dict_get(*metadata, "METADATA_BLOCK_PICTURE", NULL, 0))
-    return AVERROR_INVALIDDATA;
-  if (av_dict_count(*metadata) >= 4096) return AVERROR(ENOSPC);
-
-  const AVDictionaryEntry *title = av_dict_get(artwork->metadata, "title", NULL, 0);
-  const char *description = title ? title->value : "";
-  if (!description) return AVERROR_INVALIDDATA;
-  size_t description_bytes = 0;
-  while (description_bytes < maximum_description_bytes &&
-         description[description_bytes]) description_bytes++;
-  if (description_bytes == maximum_description_bytes) return AVERROR(ENOSPC);
-  /* Standard ID3/FLAC picture roles, also used by the pinned FFmpeg demuxer. */
-  static const char *const roles[] = {
-      "Other", "32x32 pixels 'file icon'", "Other file icon", "Cover (front)",
-      "Cover (back)", "Leaflet page", "Media (e.g. label side of CD)",
-      "Lead artist/lead performer/soloist", "Artist/performer", "Conductor",
-      "Band/Orchestra", "Composer", "Lyricist/text writer", "Recording Location",
-      "During recording", "During performance", "Movie/video screen capture",
-      "A bright coloured fish", "Illustration", "Band/artist logotype",
-      "Publisher/Studio logotype"};
-  const AVDictionaryEntry *role = av_dict_get(artwork->metadata, "comment", NULL, 0);
-  unsigned int picture_type = 0;
-  if (role) {
-    if (!role->value) return AVERROR_INVALIDDATA;
-    int found = 0;
-    for (unsigned int index = 0; index < sizeof(roles) / sizeof(roles[0]); index++) {
-      if (!strcmp(role->value, roles[index])) { picture_type = index; found = 1; break; }
-    }
-    if (!found) return AVERROR_INVALIDDATA; /* Do not silently relabel artwork. */
-  }
-  if (picture_type == 1 && (width != 32 || height != 32 ||
-                            artwork->codecpar->codec_id != AV_CODEC_ID_PNG))
-    return AVERROR_INVALIDDATA;
-
-  AVDictionary *next = NULL;
-  int result = merge_bounded_audio_text_metadata(&next, *metadata, NULL);
-  if (result < 0) return result;
-  const size_t mime_bytes = strlen(mime);
-  const size_t block_bytes = 32 + mime_bytes + description_bytes +
-                             (size_t)artwork->attached_pic.size;
-  const size_t encoded_bytes = AV_BASE64_SIZE(block_bytes);
-  uint8_t *block = av_malloc(block_bytes);
-  char *encoded = NULL;
-  if (!block) { result = AVERROR(ENOMEM); goto cleanup; }
-  encoded = av_malloc(encoded_bytes);
-  if (!encoded) { result = AVERROR(ENOMEM); goto cleanup; }
-  uint8_t *at = block;
-  AV_WB32(at, picture_type); at += 4;
-  AV_WB32(at, mime_bytes); at += 4;
-  memcpy(at, mime, mime_bytes); at += mime_bytes;
-  AV_WB32(at, description_bytes); at += 4;
-  memcpy(at, description, description_bytes); at += description_bytes;
-  AV_WB32(at, width); at += 4; AV_WB32(at, height); at += 4;
-  AV_WB32(at, 0); at += 4; AV_WB32(at, 0); at += 4;
-  AV_WB32(at, artwork->attached_pic.size); at += 4;
-  memcpy(at, artwork->attached_pic.data, (size_t)artwork->attached_pic.size);
-  if (!av_base64_encode(encoded, (int)encoded_bytes, block, (int)block_bytes)) {
-    result = AVERROR_INVALIDDATA; goto cleanup;
-  }
-  /* av_dict_set owns/frees this value even on failure with DONT_STRDUP_VAL. */
-  char *owned_value = encoded; encoded = NULL;
-  result = av_dict_set(&next, "METADATA_BLOCK_PICTURE", owned_value,
-                       AV_DICT_DONT_STRDUP_VAL);
-  if (result < 0) goto cleanup;
-  av_dict_free(metadata); *metadata = next; next = NULL;
-cleanup:
-  av_free(block); av_free(encoded); av_dict_free(&next);
-  return result;
-}
-
-#endif
-
 
 static int within_audio_transcode(int profile, int requested_bit_rate,
                                   int requested_sample_rate,
@@ -1543,7 +1342,7 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
       continue;
     }
     if (stream->disposition & AV_DISPOSITION_ATTACHED_PIC) {
-      if (!mp3_output && !flac_output && !opus_output && !vorbis_output) {
+      if (!mp3_output && !flac_output) {
         within_message(
             1,
             "The source cover art is explicitly excluded because this bounded audio destination cannot represent it reliably.");
@@ -1554,7 +1353,7 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
       } else if (!supported_audio_artwork_codec(stream->codecpar->codec_id)) {
         within_message(
             1,
-            "The source cover art uses an unsupported image codec and is explicitly excluded; bounded MP3/FLAC/Ogg/Opus artwork accepts JPEG or PNG.");
+            "The source cover art uses an unsupported image codec and is explicitly excluded; bounded MP3/FLAC artwork accepts JPEG or PNG.");
       } else if (!bounded_audio_artwork_stream(stream)) {
         within_message(
             1,
@@ -1867,48 +1666,20 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
   if (result < 0) {
     goto cleanup;
   }
-  if (opus_output || vorbis_output) {
-    /* Preserve stream precedence and repeated winning-scope values before
-     * Ogg merges container defaults. Never reconstruct from the lossy copy. */
-    result = merge_bounded_audio_text_metadata(
-        &output_stream->metadata, input_stream->metadata,
-        input_format->metadata);
-    if (result < 0) {
-      report_av_error("Bounded Ogg stream metadata copy failed", result);
-      goto cleanup;
-    }
-  } else {
-    av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
-  }
+  av_dict_copy(&output_stream->metadata, input_stream->metadata, 0);
   av_dict_copy(&output_format->metadata, input_format->metadata, 0);
   if (mp3_output || flac_output) {
-    result = merge_bounded_audio_text_metadata(
+    result = merge_common_audio_text_metadata(
         &output_format->metadata, input_format->metadata,
         input_stream->metadata);
     if (result < 0) {
-      if (result == AVERROR(ENOSPC)) {
-        within_message(2, "Audio metadata exceeds the bounded 4096-entry / 2 MiB text allowance; refusing silent tag loss.");
-      } else {
-        report_av_error("Bounded audio metadata copy failed", result);
-      }
+      report_av_error("Common audio metadata copy failed", result);
       goto cleanup;
     }
   }
 
-  if (artwork_stream_index >= 0 && (opus_output || vorbis_output)) {
-    AVStream *cover = input_format->streams[artwork_stream_index];
-    int width = 0, height = 0;
-    if (!audio_artwork_dimensions(cover, &width, &height)) {
-      result = AVERROR_INVALIDDATA; goto cleanup;
-    }
-    result = add_bounded_ogg_audio_artwork(&output_stream->metadata, cover, width, height);
-    if (result < 0) {
-      report_av_error("Bounded Ogg cover serialization failed", result);
-      goto cleanup;
-    }
-  }
   AVStream *artwork_output_stream = NULL;
-  if (artwork_stream_index >= 0 && !opus_output && !vorbis_output) {
+  if (artwork_stream_index >= 0) {
     AVStream *artwork_input_stream =
         input_format->streams[artwork_stream_index];
     artwork_output_stream = avformat_new_stream(output_format, NULL);
@@ -1963,13 +1734,6 @@ static int within_audio_transcode(int profile, int requested_bit_rate,
     av_dict_set(&muxer_options, "movflags",
                 "empty_moov+default_base_moof", 0);
     av_dict_set(&muxer_options, "frag_duration", "5000000", 0);
-  }
-  if (flac_output) {
-    result = partition_bounded_audio_muxer_metadata(&output_format->metadata);
-    if (result < 0) {
-      report_av_error("Bounded FLAC metadata order preparation failed", result);
-      goto cleanup;
-    }
   }
   result = avformat_write_header(output_format, &muxer_options);
   av_dict_free(&muxer_options);

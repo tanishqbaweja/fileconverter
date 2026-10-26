@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-10-26 — ONE new MP3 search build40301509420 is confirmed running at
+immutable9ae95cf8 (separatecodex/mp3-quantizer-search-20261026-v1); no Docker,
+main/public changes or conversion outputs. Full positive11-edit source audit
+and8 tampering negatives now pass. Await this exact run, never restart from an
+observation timeout. Actual compile/clipping/memory/speed still unverified.
+
 2026-10-26 — MP3 clipping work resumes with one justified new private policy:
 LAME search level2 instead of fastest level9, same bitrate/input gain/IO/heap.
 Source and isolated no-Docker build/audit prepared; not compiled or accepted.

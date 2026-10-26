@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-26 — MP3 search candidate build40301509420 CONFIRMED LIVE at
+isolated commit9ae95cf8/branchcodex/mp3-quantizer-search-20261026-v1. Main and
+canonical workflow unchanged; dispatch intent persisted before ONE dispatch.
+Rationale: LAME's primary USAGE documents levels7–9 as skipping quantization-
+noise calculation; test level2 at identical bitrate/gain before claiming remedy.
+Reference: https://github.com/lameproject/lame/blob/master/USAGE .
+Local complete source audit now positively derives all11 edits, then rejects
+8 re-signed bitrate/search/policy/IO/heap/gain/source mutations. First negative
+test fixture accidentally shared expected/actual heap arrays; fixture corrected
+to independent copies, with no audit/acceptance threshold change.22 focused
+audit tests and lint pass. Retained C fixture is now the exact pre-metadata
+build parent; tests reconstruct ten metadata edits then the one search edit.
+Native compile and exact0.999 canaries remain UNVERIFIED. Do not redispatch.
+
 2026-10-26 — Evidence-directed MP3 quantizer-search candidate prepared, NOT
 compiled or browser-verified yet. Current level9 skips noise calculation per
 LAME's primary USAGE documentation; exact private wrapper changes ONLY MP3
