@@ -6,6 +6,12 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Latest source/evidence CI: `051ca908` / 40299236430 SUCCESS (1,730 portable
+tests passed, 1 skipped; 19 privacy/offline; build/lint/TypeScript/404-profile
+proof audit). AIFF source/UI subgap is closed, 59 focused local tests passed.
+No native/full qualification, speedup or public promotion implied. No disposable
+conversion media remains in the audited work/outputs/output directories.
+
 AIFF/AIFC trailing-metadata source-disclosure fix now CLOSED by real-input/UI
 gate `08-58-54-893Z`: production Chrome 155 reports ID3 after SSND with70/82
 bytes read, max22-byte slices. Independent probe/full input decode and both

@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-10-26 — AIFF source/evidence `051ca908` CI 40299236430 passed build,
+lint, TypeScript, 1,730 portable tests (+1 skipped), 19 privacy/offline browser
+tests and the unchanged 404-profile proof audit. 59 focused local tests and the
+two real source/UI cases passed separately. No native/full qualification or
+route promotion implied. Source-disclosure subgap closed; original-scope
+clipping, repeat/scaling, codec and release gaps remain open.
+
 2026-10-26 — Source-disclosure subgap CLOSED: `08-58-54-893Z` proves real AIFF
 and AIFC trailing-ID3 detection after SSND in production Chrome 155 UI. Total
 reads 70/82 bytes, each <=22; old matched-input source missed both tags. Native

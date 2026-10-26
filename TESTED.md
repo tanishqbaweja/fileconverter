@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-26 — AIFF source/evidence `051ca908` CI 40299236430 SUCCESS:
+1,730 portable tests passed, 1 skipped/0 failed (1,731 total); production build,
+lint, TypeScript, 404-public-profile proof audit and 19 privacy/offline browser
+tests passed. Native/full qualification jobs were not run. Local focused source/
+planner/retained-evidence tests: 59 passed; real production input-inspection gate
+already closed separately, not repeated by this result. Worktree changes pushed
+to `origin/media-options`; no engine rebuilt or route promoted.
+Read-only media inventory of work/outputs/output found no converted media
+copies. Two old retained-on-failure browser screen recordings total 302,771
+bytes; these are diagnostic artifacts, not conversion outputs, and remain with
+their traces/screenshots. Codec `LICENSE.opus` files are licenses, not media.
+This cycle's real AIFF/AIFC inputs and owned profile/scratch were deleted in finally.
+
 2026-10-26 — AIFF/AIFC trailing-metadata disclosure CLOSED by actual input/UI
 gate `evidence/2026-10-26T08-58-54-893Z-aiff-tail-inspection.json` at `c892d302`.
 Real 8-second PCM inputs: 768,296/768,314 bytes, independently probed and fully
