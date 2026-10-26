@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+07-58-26.361Z closes remainingFIVE privateMP3metadata/artwork cases:
+95.36-97.06dB full96kPCM each/25tags/rawID3/exactcovers/roles/descriptions,
+195.7109375MiB/425valid0NULL/15birthsabsent/allcleanup PASS. Samecompiledcore,
+exactoldinputs; earlier6failures stayFAILED. All5headlessscreens reviewed.
+Canary+matrix6smallcases closed; do not replay or rebuild. Next distinct
+high-amplitude clipping, MP3 IO/recovery, stress/publicintegration; full54OPEN.
+
 Remaining FIVE MP3 matrix prepared (--mp3-input-gain-matrix), browserUNVERIFIED:
 FLACJPEG,VorbisPNG/JPEG,OpusPNG/JPEG. ExcludesclosedFLACPNGcanary andunusedfixture;
 samecompiledcore40259508976, exactPCM pins/60dB/gain/25tags/rawID3/covers/memory.
@@ -797,7 +804,7 @@ conversions are existing evidence, not tasks to repeat unchanged.
 | Blocker | Remaining decision/work | Exit evidence |
 | --- | --- | --- |
 | B02/B03 | Fresh H.264/AV1/MPEG-2 output, AV1 software decode and legally conditional HEVC; remaining named practical combinations. | Reuse each exact candidate's recorded diagnosis. Implement and qualify the production route, or document an exact measured technical/quality/memory/legal unsupported decision. A build, packet copy or failed first attempt does not close a fresh encoding requirement. |
-| B05 | Expanded 25-field MP3-destination ID3 and PNG/JPEG coverage from FLAC/Vorbis/Opus; then AIFF aliases and other representable fields. | Reuse closed private 25-field FLAC/Vorbis/Opus cases, four standard duplicate families, cover/budget and q7 IO gates. Add independent raw ID3 inspection/full PCM for the distinct MP3 destinations, then applicable stress/direct-output/real-fault/public-integration gates. Failed 336.65 MiB q7 repeats remain failed/private. Do not repeat unchanged stock-loss or closed alias/IO demonstrations. |
+| B05 | Changed MP3-gain policy: high-amplitude clipping, MP3-specific IO/recovery and repeat/scaling; then AIFF aliases and broader destination preservation. | Six private MP3 source/cover cases now pass 25 scalar tags/raw ID3/full PCM at 95–97 dB, plus prior closed FLAC/Vorbis/Opus metadata, four duplicate families and cover/budget/q7 IO gates. Keep exact MP3 inputs/cases closed; test the distinct clipping/recovery/stress and public-integration gaps. Failed 336.65 MiB q7 repeats remain failed/private; no unchanged rebuild or stock-loss replay. |
 | Full audit | Remaining image/RAW/HEIF, archive, subtitle, ebook, data and office requirements. | Reconcile every applicable original named item with its current implementation/validated evidence or defensible exact unsupported decision. Existing representative support must not be treated as every theoretical format pair. |
 
 Do not narrow the scope to today's public registry. Do not label a profile
