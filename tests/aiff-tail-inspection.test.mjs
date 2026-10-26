@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { inspectMediaSource, MAX_AIFF_INSPECTION_BYTES } from "../lib/media-source-inspection.ts";
@@ -65,4 +66,43 @@ test("real-input gate checks independently valid trailing tags and production UI
   assert.match(source, /await runtime.close\(\)/); assert.match(source, /observeOwnedProcessExit\(browserIdentity\)/);
   assert.match(source, /conversionExecuted: false, nativeConversionUsed: false, publicProfilePromoted: false/);
   assert.doesNotMatch(source, /getByTestId\("convert-button"\)\.click|test\.mkv|--disable-features|--disable-gpu/);
+});
+
+test("retained real AIFF/AIFC source UI evidence proves trailing metadata with70/82 bytes read, not a conversion or scaling result", async () => {
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const report = JSON.parse(await readFile("evidence/2026-10-26T08-58-54-893Z-aiff-tail-inspection.json"));
+  assert.equal(report.executedHead, "c892d3025b10e3525d3f91baf047345019dbc7b2");
+  assert.equal(report.status, "passed-two-real-input-inspections-not-conversion-or-stress-acceptance");
+  assert.equal(report.conversionExecuted, false); assert.equal(report.nativeConversionUsed, false);
+  assert.equal(report.publicProfilePromoted, false); assert.equal(report.headedCoverage, false);
+  assert.equal(report.baseline.commit, "9fcfdb61");
+  assert.equal(report.baseline.sourceSha256, "38fc2e37d666939a32fb2e71868189c2b34426839c85a8a8fbe94e4451e1eca1");
+  assert.equal(report.sources["lib/media-source-inspection.ts"], "138a8ad52f29808317c5ea8a4f138a50801a5d870293dd278cbfc7ad62cc353f");
+  assert.equal(report.browser.version, "155.0.8059.85"); assert.equal(report.cases.length, 2);
+  const hashes = ["6e3e4c400440b4564957ad739c23218d9e1613fd1aaefefe241d086f7864980e", "90699cfb91cc69e22cb08ba66142e16596a7b67fc8184283ae68823f8dc09cbc"];
+  for (const [index, row] of report.cases.entries()) {
+    assert.equal(row.sha256, hashes[index]); assert.equal(row.bytes, [768296, 768314][index]);
+    assert.equal(row.decodedPcmSha256, "e176845c9f93e8912c41c2eff6750284e43310d8481d9ad1eb225461c18a6c16");
+    assert.equal(row.probe.streams[0].codec_name, index ? "pcm_s16le" : "pcm_s16be");
+    assert.equal(Number(row.probe.format.duration), 8);
+    for (const [name, value] of Object.entries(row.tags)) assert.equal(row.probe.format.tags[name], value);
+    const sound = row.headers.chunks.find(chunk => chunk.id === "SSND"), id3 = row.headers.chunks.find(chunk => chunk.id === "ID3 ");
+    assert.ok(id3.offset > sound.offset + sound.length); assert.equal(id3.offset, [768108, 768126][index]);
+    assert.equal(row.headers.noAudioPayloadRead, true);
+    assert.deepEqual(row.before.result.metadataSignals, ["Name", "Annotation"]);
+    assert.deepEqual(row.after.result.metadataSignals, ["Name", "Annotation", "ID3 tag"]);
+    assert.equal(row.after.result.inspectedBytes, [70, 82][index]);
+    assert.equal(row.after.result.inspectedBytes - row.before.result.inspectedBytes, 8);
+    assert.equal(row.after.result.maximumInspectionBytes, 262144); assert.equal(row.after.inputUnchanged, true);
+    assert.equal(row.ui.container, index ? "AIFC" : "AIFF"); assert.equal(row.ui.metadataSignals, "Name, Annotation, ID3 tag");
+    assert.equal(row.ui.inspectionRead, `${row.after.result.inspectedBytes} bytes (max 262,144)`); assert.equal(row.ui.state, "idle");
+    assert.deepEqual(row.ui.slices.map(read => [read.start, read.end]), row.after.reads);
+    assert.ok(row.ui.slices.every(read => read.bytes <= 22));
+    assert.equal(row.ui.slices.reduce((sum, read) => sum + read.bytes, 0), row.after.result.inspectedBytes);
+    assert.ok(row.ui.slices.every(read => read.end <= sound.offset + 8 || read.start >= id3.offset));
+  }
+  assert.equal(report.screenshots.length, 2);
+  for (const screenshot of report.screenshots) { assert.equal(screenshot.headedCoverage, false); assert.equal(sha(await readFile(screenshot.path)), screenshot.sha256); }
+  assert.deepEqual(report.network.forbidden, []); assert.equal(report.browserCleanup.status, "owned-identity-absent");
+  assert.equal(report.serverCleanup.ownedRootAbsent, true); assert.equal(report.ownedMediaProfileScratchRemoved, true); assert.deepEqual(report.failures, []);
 });

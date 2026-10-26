@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+AIFF/AIFC trailing-metadata source-disclosure fix now CLOSED by real-input/UI
+gate `08-58-54-893Z`: production Chrome 155 reports ID3 after SSND with70/82
+bytes read, max22-byte slices. Independent probe/full input decode and both
+reviewed headless screenshots retained; owned fixture/profile/server/browser
+cleanup passed. Do not replay. This is not conversion, metadata-preservation,
+process-memory, speed or scaling qualification; MP3 clipping remains open.
+
 Independent source-disclosure fix: AIFF/AIFC now seeks past SSND to find
 trailing ID3/native metadata while reading only bounded headers. Four new
 tests reproduced the old omission; 58 focused source/planner/gate-contract
@@ -847,7 +854,7 @@ conversions are existing evidence, not tasks to repeat unchanged.
 | Blocker | Remaining decision/work | Exit evidence |
 | --- | --- | --- |
 | B02/B03 | Fresh H.264/AV1/MPEG-2 output, AV1 software decode and legally conditional HEVC; remaining named practical combinations. | Reuse each exact candidate's recorded diagnosis. Implement and qualify the production route, or document an exact measured technical/quality/memory/legal unsupported decision. A build, packet copy or failed first attempt does not close a fresh encoding requirement. |
-| B05 | MP3 gain-policy clipping remedy remains open after actual near-full-scale failure; separate MP3 payload-cancel/write-error/recovery gate now CLOSED by 08-41-16.887Z at 198.96484375 MiB, exact same-page PNG/25-tag/97.06 dB recovery and all cleanup. Then repeat/scaling, AIFF aliases and broader preservation. | Six small MP3 metadata/cover cases are closed. Gate 08-27-17.345Z now fails on 0.999 mono/stereo float overshoot (1/11 samples, peak 1.0032424927); 0.99, integer PCM, metadata, 196.61 MiB memory and cleanup passed. Preserve failure/private status; no unchanged replay or speculative attenuation rebuild. q7 336.65 MiB repeat failure remains private. No public promotion. |
+| B05 | MP3 gain-policy clipping remedy remains open after actual near-full-scale failure; separate MP3 payload-cancel/write-error/recovery gate now CLOSED by 08-41-16.887Z at 198.96484375 MiB, exact same-page PNG/25-tag/97.06 dB recovery and all cleanup. Then repeat/scaling and broader preservation. AIFF private author-alias/ID3 small cases already passed in October; public memory qualification is still open. The separate AIFF/AIFC trailing-ID3 source-disclosure fix is now closed by 08-58-54-893Z, not metadata-preservation acceptance. | Six small MP3 metadata/cover cases are closed. Gate 08-27-17.345Z now fails on 0.999 mono/stereo float overshoot (1/11 samples, peak 1.0032424927); 0.99, integer PCM, metadata, 196.61 MiB memory and cleanup passed. Preserve failure/private status; no unchanged replay or speculative attenuation rebuild. q7 336.65 MiB repeat failure remains private. No public promotion. |
 | Full audit | Remaining image/RAW/HEIF, archive, subtitle, ebook, data and office requirements. | Reconcile every applicable original named item with its current implementation/validated evidence or defensible exact unsupported decision. Existing representative support must not be treated as every theoretical format pair. |
 
 Do not narrow the scope to today's public registry. Do not label a profile

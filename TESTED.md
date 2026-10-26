@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-26 — AIFF/AIFC trailing-metadata disclosure CLOSED by actual input/UI
+gate `evidence/2026-10-26T08-58-54-893Z-aiff-tail-inspection.json` at `c892d302`.
+Real 8-second PCM inputs: 768,296/768,314 bytes, independently probed and fully
+decoded; identical PCM SHA-256 `e176845c...a6c16`. ID3 chunks start at
+768,108/768,126, after SSND. Same-input old inspector missed them; new inspector
+and production Chrome 155.0.8059.85 UI report them using 70/82 bytes total,
+each slice <=22 bytes, zero audio/tag payload bytes. The extra work is exactly
+one 8-byte header read per fixture, not a measured speedup. Both headless
+screenshots reviewed. GET-only local assets, no forbidden request, browser/server
+roots verified absent, owned media/profile/scratch removed in finally.
+No conversion was started; no metadata-preservation, large-file, process-memory,
+engine or public-profile promotion claim. Do not replay this source gate unchanged.
+
 2026-10-26 — AIFF/AIFC source inspection now seeks past SSND to discover
 trailing ID3/native metadata headers without reading audio or tag payloads.
 The 256-chunk and 256 KiB cumulative-read ceilings remain fixed; FORM extent,

@@ -17,6 +17,19 @@ The original-file qualification harness can verify actual disk backing with
 independent 64-byte on-disk canary, removed in `finally`. API success alone is
 not treated as proof. This does not imply that pending large-file gates pass.
 
+## Bounded AIFF source inspection
+
+The source panel detects AIFF/AIFC metadata headers even when they follow the
+audio (`SSND`) chunk. It seeks past audio and tag payloads rather than reading
+them; the scan is limited to 256 chunks and 256 KiB of cumulative reads. FORM
+boundaries and odd-byte padding are checked. Real AIFF/AIFC inputs with trailing
+ID3 were verified in the production UI using 70/82 bytes of file reads, each
+slice at most 22 bytes. See
+`evidence/2026-10-26T08-58-54-893Z-aiff-tail-inspection.json`.
+Detecting a tag is not a claim that the selected destination preserves it;
+destination limitations still apply. This check is not conversion, throughput,
+multi-gigabyte scaling or process-memory qualification.
+
 ## Verified public routes
 
 The selector and published matrix are generated from

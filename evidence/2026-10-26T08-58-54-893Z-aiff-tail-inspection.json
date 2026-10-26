@@ -1,0 +1,646 @@
+{
+  "schemaVersion": 1,
+  "status": "passed-two-real-input-inspections-not-conversion-or-stress-acceptance",
+  "scope": "two real AIFF/AIFC trailing-ID3 input inspections in the production UI; NOT conversions, metadata-preservation, process-memory or stress qualification",
+  "conversionExecuted": false,
+  "nativeConversionUsed": false,
+  "publicProfilePromoted": false,
+  "headedCoverage": false,
+  "cases": [
+    {
+      "key": "aiff",
+      "bytes": 768296,
+      "sha256": "6e3e4c400440b4564957ad739c23218d9e1613fd1aaefefe241d086f7864980e",
+      "tags": {
+        "title": "Titre café — 音楽",
+        "artist": "Émile / कलाकार",
+        "album": "Album naïf",
+        "comment": "αβγ & <texte>",
+        "composer": "作曲者 Émile"
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "pcm_s16be",
+            "codec_long_name": "PCM signed 16-bit big-endian",
+            "codec_type": "audio",
+            "codec_tag_string": "[0][0][0][0]",
+            "codec_tag": "0x0000",
+            "sample_fmt": "s16",
+            "sample_rate": "48000",
+            "channels": 1,
+            "bits_per_sample": 16,
+            "initial_padding": 0,
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 384000,
+            "duration": "8.000000",
+            "bit_rate": "768000",
+            "nb_frames": "384000",
+            "disposition": {
+              "default": 0,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            }
+          }
+        ],
+        "format": {
+          "filename": "H:\\Github Repositories\\fileconverter\\work\\aiff-tail-inspection-lTroiR\\trailing-id3.aiff",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "aiff",
+          "format_long_name": "Audio IFF",
+          "start_time": "0.000000",
+          "duration": "8.000000",
+          "size": "768296",
+          "bit_rate": "768296",
+          "probe_score": 100,
+          "tags": {
+            "title": "Titre café — 音楽",
+            "comment": "αβγ & <texte>",
+            "artist": "Émile / कलाकार",
+            "album": "Album naïf",
+            "composer": "作曲者 Émile"
+          }
+        }
+      },
+      "decodedPcmSha256": "e176845c9f93e8912c41c2eff6750284e43310d8481d9ad1eb225461c18a6c16",
+      "headers": {
+        "container": "AIFF",
+        "chunks": [
+          {
+            "id": "NAME",
+            "offset": 12,
+            "length": 22
+          },
+          {
+            "id": "ANNO",
+            "offset": 42,
+            "length": 16
+          },
+          {
+            "id": "COMM",
+            "offset": 66,
+            "length": 18
+          },
+          {
+            "id": "SSND",
+            "offset": 92,
+            "length": 768008
+          },
+          {
+            "id": "ID3 ",
+            "offset": 768108,
+            "length": 180
+          }
+        ],
+        "readBytes": 62,
+        "maximumReadBytes": 12,
+        "noAudioPayloadRead": true
+      },
+      "before": {
+        "result": {
+          "mediaType": "audio",
+          "container": "AIFF",
+          "codec": "PCM (big-endian)",
+          "durationSeconds": 8,
+          "bitrateBps": 768000,
+          "sampleRateHz": 48000,
+          "channels": 1,
+          "channelLayout": "Mono",
+          "bitsPerSample": 16,
+          "metadataSignals": [
+            "Name",
+            "Annotation"
+          ],
+          "notes": [],
+          "inspectedBytes": 62,
+          "maximumInspectionBytes": 262144
+        },
+        "reads": [
+          [
+            0,
+            12
+          ],
+          [
+            12,
+            20
+          ],
+          [
+            42,
+            50
+          ],
+          [
+            66,
+            74
+          ],
+          [
+            74,
+            92
+          ],
+          [
+            92,
+            100
+          ]
+        ],
+        "allReadsBounded": true,
+        "inputUnchanged": true
+      },
+      "after": {
+        "result": {
+          "mediaType": "audio",
+          "container": "AIFF",
+          "codec": "PCM (big-endian)",
+          "durationSeconds": 8,
+          "bitrateBps": 768000,
+          "sampleRateHz": 48000,
+          "channels": 1,
+          "channelLayout": "Mono",
+          "bitsPerSample": 16,
+          "metadataSignals": [
+            "Name",
+            "Annotation",
+            "ID3 tag"
+          ],
+          "notes": [],
+          "inspectedBytes": 70,
+          "maximumInspectionBytes": 262144
+        },
+        "reads": [
+          [
+            0,
+            12
+          ],
+          [
+            12,
+            20
+          ],
+          [
+            42,
+            50
+          ],
+          [
+            66,
+            74
+          ],
+          [
+            74,
+            92
+          ],
+          [
+            92,
+            100
+          ],
+          [
+            768108,
+            768116
+          ]
+        ],
+        "allReadsBounded": true,
+        "inputUnchanged": true
+      },
+      "ui": {
+        "container": "AIFF",
+        "metadataSignals": "Name, Annotation, ID3 tag",
+        "inspectionRead": "70 bytes (max 262,144)",
+        "slices": [
+          {
+            "start": 0,
+            "end": 12,
+            "bytes": 12
+          },
+          {
+            "start": 12,
+            "end": 20,
+            "bytes": 8
+          },
+          {
+            "start": 42,
+            "end": 50,
+            "bytes": 8
+          },
+          {
+            "start": 66,
+            "end": 74,
+            "bytes": 8
+          },
+          {
+            "start": 74,
+            "end": 92,
+            "bytes": 18
+          },
+          {
+            "start": 92,
+            "end": 100,
+            "bytes": 8
+          },
+          {
+            "start": 768108,
+            "end": 768116,
+            "bytes": 8
+          }
+        ],
+        "state": "idle"
+      }
+    },
+    {
+      "key": "aifc",
+      "bytes": 768314,
+      "sha256": "90699cfb91cc69e22cb08ba66142e16596a7b67fc8184283ae68823f8dc09cbc",
+      "tags": {
+        "title": "Titre café — 音楽",
+        "artist": "Émile / कलाकार",
+        "album": "Album naïf",
+        "comment": "αβγ & <texte>",
+        "composer": "作曲者 Émile"
+      },
+      "probe": {
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "pcm_s16le",
+            "codec_long_name": "PCM signed 16-bit little-endian",
+            "codec_type": "audio",
+            "codec_tag_string": "sowt",
+            "codec_tag": "0x74776f73",
+            "sample_fmt": "s16",
+            "sample_rate": "48000",
+            "channels": 1,
+            "bits_per_sample": 16,
+            "initial_padding": 0,
+            "r_frame_rate": "0/0",
+            "avg_frame_rate": "0/0",
+            "time_base": "1/48000",
+            "start_pts": 0,
+            "start_time": "0.000000",
+            "duration_ts": 384000,
+            "duration": "8.000000",
+            "bit_rate": "768000",
+            "nb_frames": "384000",
+            "disposition": {
+              "default": 0,
+              "dub": 0,
+              "original": 0,
+              "comment": 0,
+              "lyrics": 0,
+              "karaoke": 0,
+              "forced": 0,
+              "hearing_impaired": 0,
+              "visual_impaired": 0,
+              "clean_effects": 0,
+              "attached_pic": 0,
+              "timed_thumbnails": 0,
+              "non_diegetic": 0,
+              "captions": 0,
+              "descriptions": 0,
+              "metadata": 0,
+              "dependent": 0,
+              "still_image": 0,
+              "multilayer": 0
+            }
+          }
+        ],
+        "format": {
+          "filename": "H:\\Github Repositories\\fileconverter\\work\\aiff-tail-inspection-lTroiR\\trailing-id3.aifc",
+          "nb_streams": 1,
+          "nb_programs": 0,
+          "nb_stream_groups": 0,
+          "format_name": "aiff",
+          "format_long_name": "Audio IFF",
+          "start_time": "0.000000",
+          "duration": "8.000000",
+          "size": "768314",
+          "bit_rate": "768314",
+          "probe_score": 100,
+          "tags": {
+            "title": "Titre café — 音楽",
+            "comment": "αβγ & <texte>",
+            "artist": "Émile / कलाकार",
+            "album": "Album naïf",
+            "composer": "作曲者 Émile"
+          }
+        }
+      },
+      "decodedPcmSha256": "e176845c9f93e8912c41c2eff6750284e43310d8481d9ad1eb225461c18a6c16",
+      "headers": {
+        "container": "AIFC",
+        "chunks": [
+          {
+            "id": "FVER",
+            "offset": 12,
+            "length": 4
+          },
+          {
+            "id": "NAME",
+            "offset": 24,
+            "length": 22
+          },
+          {
+            "id": "ANNO",
+            "offset": 54,
+            "length": 16
+          },
+          {
+            "id": "COMM",
+            "offset": 78,
+            "length": 24
+          },
+          {
+            "id": "SSND",
+            "offset": 110,
+            "length": 768008
+          },
+          {
+            "id": "ID3 ",
+            "offset": 768126,
+            "length": 180
+          }
+        ],
+        "readBytes": 70,
+        "maximumReadBytes": 12,
+        "noAudioPayloadRead": true
+      },
+      "before": {
+        "result": {
+          "mediaType": "audio",
+          "container": "AIFC",
+          "codec": "PCM (little-endian)",
+          "durationSeconds": 8,
+          "bitrateBps": 768000,
+          "sampleRateHz": 48000,
+          "channels": 1,
+          "channelLayout": "Mono",
+          "bitsPerSample": 16,
+          "metadataSignals": [
+            "Name",
+            "Annotation"
+          ],
+          "notes": [],
+          "inspectedBytes": 74,
+          "maximumInspectionBytes": 262144
+        },
+        "reads": [
+          [
+            0,
+            12
+          ],
+          [
+            12,
+            20
+          ],
+          [
+            24,
+            32
+          ],
+          [
+            54,
+            62
+          ],
+          [
+            78,
+            86
+          ],
+          [
+            86,
+            108
+          ],
+          [
+            110,
+            118
+          ]
+        ],
+        "allReadsBounded": true,
+        "inputUnchanged": true
+      },
+      "after": {
+        "result": {
+          "mediaType": "audio",
+          "container": "AIFC",
+          "codec": "PCM (little-endian)",
+          "durationSeconds": 8,
+          "bitrateBps": 768000,
+          "sampleRateHz": 48000,
+          "channels": 1,
+          "channelLayout": "Mono",
+          "bitsPerSample": 16,
+          "metadataSignals": [
+            "Name",
+            "Annotation",
+            "ID3 tag"
+          ],
+          "notes": [],
+          "inspectedBytes": 82,
+          "maximumInspectionBytes": 262144
+        },
+        "reads": [
+          [
+            0,
+            12
+          ],
+          [
+            12,
+            20
+          ],
+          [
+            24,
+            32
+          ],
+          [
+            54,
+            62
+          ],
+          [
+            78,
+            86
+          ],
+          [
+            86,
+            108
+          ],
+          [
+            110,
+            118
+          ],
+          [
+            768126,
+            768134
+          ]
+        ],
+        "allReadsBounded": true,
+        "inputUnchanged": true
+      },
+      "ui": {
+        "container": "AIFC",
+        "metadataSignals": "Name, Annotation, ID3 tag",
+        "inspectionRead": "82 bytes (max 262,144)",
+        "slices": [
+          {
+            "start": 0,
+            "end": 12,
+            "bytes": 12
+          },
+          {
+            "start": 12,
+            "end": 20,
+            "bytes": 8
+          },
+          {
+            "start": 24,
+            "end": 32,
+            "bytes": 8
+          },
+          {
+            "start": 54,
+            "end": 62,
+            "bytes": 8
+          },
+          {
+            "start": 78,
+            "end": 86,
+            "bytes": 8
+          },
+          {
+            "start": 86,
+            "end": 108,
+            "bytes": 22
+          },
+          {
+            "start": 110,
+            "end": 118,
+            "bytes": 8
+          },
+          {
+            "start": 768126,
+            "end": 768134,
+            "bytes": 8
+          }
+        ],
+        "state": "idle"
+      }
+    }
+  ],
+  "failures": [],
+  "network": {
+    "requests": 11,
+    "forbidden": []
+  },
+  "screenshots": [
+    {
+      "path": "output/playwright/2026-10-26T08-58-54-893Z-aiff-tail-aiff.png",
+      "sha256": "ae8abce5c36a5d41e71c692dd450d9f87a8b86799a0ba49a5cf99f3b211bb70c",
+      "headedCoverage": false
+    },
+    {
+      "path": "output/playwright/2026-10-26T08-58-54-893Z-aiff-tail-aifc.png",
+      "sha256": "2da316831c37a54e0f96a7b922f1c519fa4f0fd9061411b49bc45331dec6f6ce",
+      "headedCoverage": false
+    }
+  ],
+  "executedHead": "c892d3025b10e3525d3f91baf047345019dbc7b2",
+  "sources": {
+    "lib/media-source-inspection.ts": "138a8ad52f29808317c5ea8a4f138a50801a5d870293dd278cbfc7ad62cc353f",
+    "app/converter/ConverterApp.tsx": "01b484370bccc1bcd650f68789053e85beed0cb80559a6eaf7954c6e3ba398b3",
+    "scripts/validate-aiff-tail-inspection.mjs": "6efda62a05417c4c4fdd81f61fa5ca3bb5c7e4adea4e7095a3bcce312933b77d",
+    "scripts/lib/owned-production-test-server.mjs": "4b1afd23fbc8c0a0caa0f6f1b7980febb6411a8a2e06c58166698010694253a8",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/host-memory-preflight.mjs": "ec12db9e6ad0fae5509dd183dec7326d594c06d0071599b836cfeb5d25873cb8"
+  },
+  "hostMemory": {
+    "acquiredAt": "2026-10-26T08:58:55.5259569Z",
+    "freePhysicalBytes": 8183742464,
+    "freeVirtualBytes": 10828075008,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "browser": {
+    "version": "155.0.8059.85",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4720792,
+      "sha256": "de999bce6a1c954df71a8f15bf751b336172f55ac1a0325bb0580cbc2121268c",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "16607023626188588",
+        "birthtimeNs": "1792461766435316100",
+        "mtimeNs": "1792034219406347000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\155.0.8059.85\\chrome.dll",
+      "bytes": 302363288,
+      "sha256": "e68448d4469e6a3b598cfce48e656a5579decac014407eb4c4967d0677fed2fb",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "16607023626188596",
+        "birthtimeNs": "1792461766454341200",
+        "mtimeNs": "1792034223618740000"
+      }
+    }
+  },
+  "baseline": {
+    "commit": "9fcfdb61",
+    "sourceSha256": "38fc2e37d666939a32fb2e71868189c2b34426839c85a8a8fbe94e4451e1eca1",
+    "scope": "same input / old production inspector only, not old browser or speed comparison"
+  },
+  "browserBirth": {
+    "pid": 23812,
+    "parentPid": 43096,
+    "createdAt": "2026-10-26T08:59:08.3848320Z"
+  },
+  "serverCleanup": {
+    "identity": {
+      "pid": 39968,
+      "parentPid": 43096,
+      "createdAt": "2026-10-26T08:59:06.6160430Z"
+    },
+    "ownedRootAbsent": true
+  },
+  "browserCleanup": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 23812,
+      "parentPid": 43096,
+      "createdAt": "2026-10-26T08:59:08.3848320Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-10-26T08:59:12.757Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 464,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "ownedMediaProfileScratchRemoved": true,
+  "finishedAt": "2026-10-26T08:59:12.962Z"
+}
