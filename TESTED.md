@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-10-26 — Near-full-scale MP3 gate completed, aggregate FAILED.
+Report: `evidence/2026-10-26T08-27-17.345Z-audio-metadata-fidelity-result.json`
+(executed `54374e34`). At amplitude 0.99, mono and stereo passed. At 0.999,
+unclamped float decoding found 1 overshooting mono sample (peak 1.0007861853)
+and 11 stereo samples (peak 1.0032424927). All 96,000/192,000 integer samples
+still met the unchanged 60 dB floor (76.34–80.58 dB), unity-gain tolerance,
+25 tags, raw ID3 and exact PNG checks. Therefore integer PCM alone is not a
+clipping proof. Whole-tree incremental private memory: 196.60546875 MiB;
+427 valid/0 unavailable samples; privacy, original-file and all owned cleanup
+checks passed. Both failed-case headless screenshots reviewed; UI “Saved” is
+not qualification. Raw report, full memory journal and four screenshots retained.
+The private gain policy is NOT promoted. No tolerance, clamping, normalization,
+Chrome-service change or native rebuild was used. Do not replay these fixtures
+unchanged. A constant headroom tweak cannot be assumed to preserve the existing
+gain/quality constraints or prevent arbitrary-waveform overshoot.
+
+Next distinct gate implemented, browser execution still UNVERIFIED:
+`--mp3-io-recovery`: cancellation after >256 KiB input and >64 KiB audio output,
+existing injected error after a real bounded write, then same-page exact prior
+PNG/25-tag/complete-PCM recovery. Uses the same audited private engine, not a
+clipping remedy, actual OS/quota/permission fault, stress or public acceptance.
+
 2026-10-26 NEW near-full-scale MP3 gate prepared, runtimeUNVERIFIED:
 4genuine2s48kHz16bitFLAC INPUTS, mono/stereo at0.99/0.999, stereo997/1433Hz,
 25tags/PNG/Unicode description. Sourceartrewrite exactPCM and completef32

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { gunzipSync } from "node:zlib";
 import { inspectFloat32Peaks, validateNearFullScalePeaks, FLOAT_PEAK_LIMITS } from "../scripts/lib/audio-float-peak-validation.mjs";
 import { MP3_CLIPPING_CASES } from "../scripts/lib/mp3-clipping-fixture.mjs";
 const floats = values => { const bytes = Buffer.alloc(values.length * 4); values.forEach((value, index) => bytes.writeFloatLE(value, index * 4)); return bytes; };
@@ -50,4 +51,54 @@ test("real browser clipping gate uses four new files, actual patched core and co
   assert.match(source, /row.fidelity.samples, 96000 \* \(conversion.channels \?\? 1\)/);
   assert.match(source, /row.fidelity.minimumPsnrDb, 60/); assert.match(source, /if \(mp3Clipping\) continue/);
   assert.match(source, /active.peak.privateBytes - report.blankBaseline.privateBytes/); assert.match(source, /await runtime.close\(\)/);
+});
+
+test("retained near-full-scale browser gate stays failed despite passing integer PCM, tags, artwork and memory", async () => {
+  const root = new URL("../", import.meta.url), sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const receipt = JSON.parse(await readFile(new URL("evidence/2026-10-26T08-27-17.345Z-audio-metadata-fidelity-result.json", root)));
+  assert.equal(receipt.executedHead, "54374e3487e62c9190579b0436f8a86409e239fd");
+  assert.equal(receipt.status, "failed"); assert.equal(receipt.publicAcceptance, false); assert.equal(receipt.fullMetadataAcceptance, false);
+  assert.equal(receipt.sourcePins, 50); assert.equal(receipt.memory.incrementalPrivateMiB, 196.60546875);
+  assert.equal(receipt.memory.validSamples, 427); assert.equal(receipt.memory.unavailableSamples, 0);
+  const archive = await readFile(new URL(receipt.archive.path, root));
+  assert.equal(archive.length, receipt.archive.bytes); assert.equal(sha(archive), receipt.archive.sha256);
+  const raw = gunzipSync(archive, { maxOutputLength: 1048576 });
+  assert.equal(raw.length, receipt.archive.restoredBytes); assert.equal(sha(raw), receipt.archive.restoredSha256);
+  const report = JSON.parse(raw); assert.equal(report.nativeConversionUsed, false); assert.equal(report.headedCoverage, false);
+  assert.equal(report.scalingAcceptance, false); assert.equal(report.cases.length, 4);
+  const peaks = [0.9900926947593689, 1.0007861852645874, 0.9916956424713135, 1.0032424926757812];
+  for (const [index, row] of report.cases.entries()) {
+    const accepted = receipt.cases[index], fixture = report.clippingFixtures[MP3_CLIPPING_CASES[index].highAmplitude];
+    assert.equal(row.profileId, "flac-to-mp3"); assert.equal(row.source.sha256, fixture.sha256);
+    assert.equal(fixture.inputOnly, true); assert.equal(fixture.sourcePcmUnchanged.exact, true);
+    assert.equal(fixture.sourcePcmUnchanged.samples, 96000 * fixture.channels);
+    assert.equal(fixture.floatPeaks.beyondFullScale, 0); assert.equal(fixture.floatPeaks.atFullScale, 0);
+    assert.ok(fixture.floatPeaks.perChannel.every(channel => channel.peakAbsolute >= 0.98 && channel.peakAbsolute < 1));
+    assert.equal(accepted.decodedFloatPeaks.peakAbsolute, peaks[index]);
+    assert.equal(accepted.decodedFloatPeaks.beyondFullScale, [0, 1, 0, 11][index]);
+    assert.equal(accepted.decodedFloatPeaks.samples, 96000 * fixture.channels);
+    assert.equal(accepted.decodedFloatPeaks.allSamplesInspected, true);
+    assert.equal(accepted.decodedFloatPeaks.fullDecodedBufferAllocated, false);
+    const proof = validateNearFullScalePeaks(fixture.floatPeaks, row.decodedFloatPeaks);
+    assert.deepEqual(proof, row.nearFullScalePeakProof);
+    assert.equal(proof.status, index % 2 ? "failed" : "passed"); assert.equal(proof.toleranceAdded, false);
+    assert.equal(accepted.status, index % 2 ? "failed" : "passed-small-private-fidelity-and-metadata-case");
+    assert.equal(accepted.fidelity.minimumPsnrDb, 60); assert.ok(accepted.fidelity.psnrDb >= 60);
+    assert.ok(Math.abs(accepted.gainDiagnostic.leastSquaresGain - 1) <= 0.001);
+    assert.equal(accepted.tagsPreserved, 25); assert.equal(accepted.id3Metadata.status, "passed");
+    assert.equal(accepted.id3Metadata.artwork.status, "preserved");
+    assert.equal(accepted.actualAutomaticQualityArgument.nativeCode, 0);
+    assert.equal(accepted.failures.length, index % 2 ? 1 : 0);
+    assert.equal(row.disposableOutputRemoved, true);
+  }
+  assert.equal(report.processCleanup.length, 15); assert.ok(report.processCleanup.every(row => row.status === "owned-identity-absent"));
+  assert.equal(receipt.protectedOriginalUnchanged, true); assert.ok(Object.values(receipt.cleanup).every(Boolean));
+  assert.deepEqual(receipt.network.forbidden, []);
+  const journal = await readFile(new URL(receipt.losslessJournal.file, root)); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  const samples = gunzipSync(journal, { maxOutputLength: 8 * 1048576 }); assert.equal(sha(samples), receipt.losslessJournal.sha256);
+  assert.equal(samples.toString("utf8").trim().split("\n").length, 427);
+  for (const screenshot of report.screenshots) {
+    assert.equal(screenshot.headedCoverage, false); const bytes = await readFile(new URL(screenshot.path, root));
+    assert.equal(bytes.length, screenshot.bytes); assert.equal(sha(bytes), screenshot.sha256);
+  }
 });

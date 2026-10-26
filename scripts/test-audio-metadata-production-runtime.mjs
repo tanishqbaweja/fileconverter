@@ -48,10 +48,11 @@ import { MP3_CLIPPING_CASES, createMp3ClippingFixtures } from "./lib/mp3-clippin
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE } from "../lib/media-conversion-options.ts";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio", "--mp3-artwork-metadata", "--mp3-gain-diagnostic", "--mp3-input-gain-repair", "--mp3-input-gain-matrix", "--mp3-fullscale-clipping"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio", "--mp3-artwork-metadata", "--mp3-gain-diagnostic", "--mp3-input-gain-repair", "--mp3-input-gain-matrix", "--mp3-fullscale-clipping", "--mp3-io-recovery"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+const mp3IoRecovery = process.argv[3] === "--mp3-io-recovery";
 const mp3Clipping = process.argv[3] === "--mp3-fullscale-clipping";
 const mp3GainMatrix = process.argv[3] === "--mp3-input-gain-matrix";
-const mp3GainRepair = process.argv[3] === "--mp3-input-gain-repair" || mp3GainMatrix || mp3Clipping;
+const mp3GainRepair = process.argv[3] === "--mp3-input-gain-repair" || mp3GainMatrix || mp3Clipping || mp3IoRecovery;
 const mp3GainDiagnostic = process.argv[3] === "--mp3-gain-diagnostic";
 const mp3SingleCanary = mp3GainDiagnostic || (mp3GainRepair && !mp3GainMatrix);
 const mp3ArtworkMetadata = process.argv[3] === "--mp3-artwork-metadata" || mp3GainRepair || mp3GainDiagnostic;
@@ -74,7 +75,11 @@ const audioIoRecovery = process.argv[3] === "--audio-io-recovery";
 const artworkRejection = process.argv[3] === "--artwork-rejection-recovery", extendedArtworkInspection = artworkBudget || artworkRejection || audioIoRecovery;
 const oggArtwork = process.argv[3] === "--ogg-artwork" || (automaticVorbisRepair && !largeVorbisRepeat) || vorbisIoRecovery, withArtwork = artworkMetadata || oggArtwork || mp3ArtworkMetadata;
 const selectedCases = mp3GainMatrix ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork, gainRepair: true })))
-  .filter(row => !(row.source === "flac" && row.artwork === "png")) : mp3Clipping ? MP3_CLIPPING_CASES : mp3GainRepair ? [{ source: "flac", destination: "mp3", artwork: "png", gainRepair: true }] : mp3GainDiagnostic ? [{ source: "flac", destination: "mp3", artwork: "png", gainDiagnostic: true }] : mp3ArtworkMetadata ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork }))) : standardRepeatedAudio ? STANDARD_AUDIO_REPEAT_CASES : vorbisIoRecovery ? [
+  .filter(row => !(row.source === "flac" && row.artwork === "png")) : mp3Clipping ? MP3_CLIPPING_CASES : mp3IoRecovery ? [
+  { source: "flac", destination: "mp3", interruption: "cancel", payloadCancellation: true },
+  { source: "flac", destination: "mp3", artwork: "png", interruption: "write" },
+  { source: "flac", destination: "mp3", artwork: "png", gainRepair: true, recoveryAfterIo: true },
+] : mp3GainRepair ? [{ source: "flac", destination: "mp3", artwork: "png", gainRepair: true }] : mp3GainDiagnostic ? [{ source: "flac", destination: "mp3", artwork: "png", gainDiagnostic: true }] : mp3ArtworkMetadata ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork }))) : standardRepeatedAudio ? STANDARD_AUDIO_REPEAT_CASES : vorbisIoRecovery ? [
   { source: "opus", destination: "ogg", interruption: "cancel", byobCancellation: true },
   { source: "opus", destination: "ogg", repeated: true, artwork: "png", interruption: "write" },
   { source: "opus", destination: "ogg", repeated: true, artwork: "png", recoveryAfterIo: true },
@@ -123,6 +128,7 @@ if (mp3GainDiagnostic) report.scope = "one NEW instrumented automatic FLAC/PNG-t
 if (mp3GainRepair) report.scope = "one NEW automatic FLAC/PNG-to-MP3 canary using authenticated one-edit private LAME gain policy; unchanged60dB all96000PCM/25tags/exactcover/I/O/fulltree250MiB; not high-amplitude clipping, six-case matrix, stress, speed or public acceptance";
 if (mp3GainMatrix) report.scope = "FIVE remaining automatic MP3 gain-repair jobs: FLAC/JPEG plus Vorbis and Opus/PNG/JPEG, excluding closed FLAC/PNG canary; actual patched-core proof, all96000 unmodifiedPCM>=60dB, gain/25tags/rawID3/exactcover/wholeChrome250MiB/cleanup; not clipping/recovery/stress/public acceptance";
 if (mp3Clipping) report.scope = "four NEW near-full-scale2s mono/stereo FLAC-to-MP3 cases at0.99/0.999; independent full f32 decode exposes saturation/overshoot before integer clamping, unchanged60dB complete s16 comparison/tags/PNG/memory/cleanup; not every waveform, IO recovery, stress or public acceptance";
+if (mp3IoRecovery) report.scope = "three NEW same-page private gain-core MP3 jobs: cancel after real audio payload, injected error after real bounded write, then exact prior PNG/25-tag/full-PCM recovery; existing near-full-scale failures remain failed; not OS/quota/permission/direct-picker/stress/public acceptance";
 if (artworkBudget) report.scope = "one NEW exact4MiB real PNG cover FLAC-to-Opus byte-budget case; unchanged text/codec/quality/memory limits; not repeat/scaling/promotion acceptance";
 if (artworkBenchmark) {
   report.scope = "matched serializer experiment: one explicit warmup plus six identical exact4MiB-artwork FLAC-to-Opus jobs in one normal headless production page; not long-file/stress/scaling/fastest/public acceptance";
@@ -281,7 +287,7 @@ try {
     assert.equal(report.longDecoderProbe.exact, true);
     assert.equal(report.longDecoderProbe.sourceSha256, "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5");
   }
-  if (audioIoRecovery) {
+  if (audioIoRecovery || mp3IoRecovery) {
     const args = audioMetadataFixtureArguments("flac", path.join(runtime.directory, "source-cancel.flac"));
     const signal = args.indexOf("sine=frequency=997:sample_rate=48000:duration=2"); assert.ok(signal > 0);
     args[signal] = "sine=frequency=997:sample_rate=48000:duration=180"; await native(args);
@@ -489,7 +495,7 @@ try {
       if (conversion.interruption === "cancel") row.source = { ...report.cancellationFixture, tags };
       if (conversion.standardRepeated) row.source = { ...report.standardRepeatedFixtures[conversion.source], tags };
       if (conversion.highAmplitude) row.source = { ...report.clippingFixtures[conversion.highAmplitude], tags };
-      if (audioIoRecovery || vorbisIoRecovery) await page.evaluate(fault => { history.replaceState(null, "", "/?test=1" + (fault ? "&fault=write" : "")); }, conversion.interruption === "write");
+      if (audioIoRecovery || vorbisIoRecovery || mp3IoRecovery) await page.evaluate(fault => { history.replaceState(null, "", "/?test=1" + (fault ? "&fault=write" : "")); }, conversion.interruption === "write");
       phase("case-" + index); await page.locator('[data-testid="file-input"]').setInputFiles(input); await page.locator('[data-testid="format-select"]').selectOption(profileId);
       await page.waitForFunction(() => !document.querySelector('[data-testid="convert-button"]')?.disabled && window.__WITHIN_TEST__?.getState().workerStatus === "ready");
       if (conversion.quality) {
@@ -510,6 +516,10 @@ try {
           return state?.jobState === "running" && state.metrics?.inputBytes > 0 && state.metrics?.outputBytes > 0;
         }, null, { timeout: 30000 });
         if (conversion.byobCancellation) await page.waitForFunction(() => {
+          const state = window.__WITHIN_TEST__?.getState();
+          return state?.jobState === "running" && state.metrics?.inputBytes > 262144 && state.metrics?.outputBytes > 65536;
+        }, null, { timeout: 30000 });
+        if (conversion.payloadCancellation) await page.waitForFunction(() => {
           const state = window.__WITHIN_TEST__?.getState();
           return state?.jobState === "running" && state.metrics?.inputBytes > 262144 && state.metrics?.outputBytes > 65536;
         }, null, { timeout: 30000 });
@@ -546,6 +556,11 @@ try {
       } else if (conversion.interruption) {
         row.storageAfter = await storageSnapshot(); row.interruptionProof = validateAudioInterruption(conversion.interruption, state,
           { beforeCancel: row.beforeCancel, storageBefore: row.storageBefore, storageAfter: row.storageAfter });
+        if (conversion.payloadCancellation) {
+          assert.ok(row.beforeCancel.metrics.inputBytes > 262144 && row.beforeCancel.metrics.outputBytes > 65536);
+          row.payloadCancellationProof = { moreThanHeaderReadAndWritten: true, noRetainedPartialEntries: true,
+            outputAcceptance: false, publicAcceptance: false };
+        }
         if (conversion.byobCancellation) {
           const before = row.beforeCancel.metrics, transport = state.metrics.audioInputTransport;
           assert.ok(before.inputBytes > 262144 && before.outputBytes > 65536);
@@ -681,6 +696,13 @@ try {
         assert.equal(state.error, null); assert.deepEqual(state.warnings, []);
         assert.ok(report.cases.slice(0, 2).every(c => c.status === "passed-private-audio-interruption-case"));
         row.samePageIoRecovery = { bothInterruptionsPassed: true, noContextOrPageRecreation: true, noStaleErrorOrWarning: true };
+        if (mp3IoRecovery) {
+          assert.equal(row.output.sha256, "fd3c70154c11380dd727bd1e7b94d2a530b16deffa30aab36c012e5abcdae293");
+          assert.equal(report.cases[0].payloadCancellationProof?.moreThanHeaderReadAndWritten, true);
+          assert.equal(row.id3Metadata.status, "passed"); assert.ok(row.repairedGainProof.fullPcmQualityPassed);
+          row.samePageMp3IoRecovery = { payloadCancellationAndWriteFailurePassed: true, exactPriorPngOutputControl: true,
+            automaticNativeQualityCode: 0, clippingAcceptance: false, publicAcceptance: false };
+        }
         if (vorbisIoRecovery) {
           assert.equal(row.output.sha256, "a7c954b7b54cd9512735f22eb31c442205d80fe88c5c2f93448ac9e0ceb70167");
           assert.equal(report.cases[0].byobCancellationProof?.actualPersistentReadPath, true);
@@ -743,7 +765,7 @@ try {
     report.automaticVorbisQualityRepaired = largeVorbisRepeat ? "passed-three-full-size-private-q7-repeats-not-public-qualification" : "passed-four-small-private-automatic-cases-not-public-requalification";
   }
   assert.ok(largeVorbisRepeat ? report.cases.every(c => c.status === "passed-full-size-private-q7-case-not-public-qualification") : metadataBudget ? report.cases.every(c => c.metadataFailure ? c.status === (c.metadataFailure === "text-bytes" ? "passed-private-metadata-byte-rejection-case" : "passed-private-metadata-field-rejection-case") : c.status === "passed-small-private-fidelity-and-metadata-case")
-    : audioIoRecovery || vorbisIoRecovery ? report.cases.every(c => c.interruption ? c.status === "passed-private-audio-interruption-case" : c.status === "passed-small-private-fidelity-and-metadata-case")
+    : audioIoRecovery || vorbisIoRecovery || mp3IoRecovery ? report.cases.every(c => c.interruption ? c.status === "passed-private-audio-interruption-case" : c.status === "passed-small-private-fidelity-and-metadata-case")
     : report.cases.every(c => c.status === "passed-small-private-fidelity-and-metadata-case"));
   if (vorbisIoRecovery) report.vorbisIoRecovery = "passed-three-private-interruption-and-recovery-jobs-not-public-qualification";
   assert.ok(report.memory.incrementalPrivateMiB <= 250); report.status = largeVorbisRepeat
@@ -812,6 +834,7 @@ finally {
       artworkExclusion: c.artworkExclusion, exclusionWarningVisible: c.exclusionWarningVisible, samePageRecovery: c.samePageRecovery,
       interruption: c.interruption, interruptionProof: c.interruptionProof, interruptionErrorVisible: c.interruptionErrorVisible,
       storageBefore: c.storageBefore, storageAfter: c.storageAfter, samePageIoRecovery: c.samePageIoRecovery,
+      payloadCancellationProof: c.payloadCancellationProof, samePageMp3IoRecovery: c.samePageMp3IoRecovery,
       disposableOutputRemoved: c.disposableOutputRemoved })),
     losslessJournal: report.losslessMemoryJournal ? { file: path.relative(root, report.losslessMemoryJournal.file).replaceAll(path.sep, "/"), records: report.losslessMemoryJournal.records,
       sha256: report.losslessMemoryJournal.sha256, archiveSha256: report.losslessMemoryJournal.archiveSha256, complete: report.losslessMemoryJournal.complete } : null,

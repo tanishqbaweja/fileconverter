@@ -6,6 +6,16 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Near-full-scale MP3 gate `08-27-17.345Z` FAILED: 0.99 mono/stereo passed;
+0.999 mono/stereo produced 1/11 float samples outside full scale, peaking at
+1.0007861853/1.0032424927. Integer PCM, tags, artwork, 196.60546875 MiB primary
+memory, privacy and owned cleanup passed but cannot override the failure.
+Retain evidence and keep this gain policy private. No unchanged replay or
+speculative attenuation rebuild. Next separate implemented gate is MP3
+payload-cancellation, injected bounded-write error and exact same-page recovery
+(`--mp3-io-recovery`), still browser-UNVERIFIED. Clipping remedy, stress and
+public integration remain open; all Chrome services and original limits stay.
+
 New finite near-full-scale gate ready, runtimeUNVERIFIED:4mono/stereo tones
 0.99/0.999, completeunclamped f32source/output peaks + unchangedS16>=60dB/
 gain/25tags/PNG/normalwholeChrome250MiB/cleanup. Requires genuinelyunclipped
@@ -818,7 +828,7 @@ conversions are existing evidence, not tasks to repeat unchanged.
 | Blocker | Remaining decision/work | Exit evidence |
 | --- | --- | --- |
 | B02/B03 | Fresh H.264/AV1/MPEG-2 output, AV1 software decode and legally conditional HEVC; remaining named practical combinations. | Reuse each exact candidate's recorded diagnosis. Implement and qualify the production route, or document an exact measured technical/quality/memory/legal unsupported decision. A build, packet copy or failed first attempt does not close a fresh encoding requirement. |
-| B05 | Changed MP3-gain policy: high-amplitude clipping, MP3-specific IO/recovery and repeat/scaling; then AIFF aliases and broader destination preservation. | Six private MP3 source/cover cases now pass 25 scalar tags/raw ID3/full PCM at 95–97 dB, plus prior closed FLAC/Vorbis/Opus metadata, four duplicate families and cover/budget/q7 IO gates. Keep exact MP3 inputs/cases closed; test the distinct clipping/recovery/stress and public-integration gaps. Failed 336.65 MiB q7 repeats remain failed/private; no unchanged rebuild or stock-loss replay. |
+| B05 | MP3 gain-policy clipping remedy remains open after actual near-full-scale failure; separate MP3 payload-cancel/write-error/recovery gate implemented, browser-UNVERIFIED. Then repeat/scaling, AIFF aliases and broader preservation. | Six small MP3 metadata/cover cases are closed. Gate 08-27-17.345Z now fails on 0.999 mono/stereo float overshoot (1/11 samples, peak 1.0032424927); 0.99, integer PCM, metadata, 196.61 MiB memory and cleanup passed. Preserve failure/private status; no unchanged replay or speculative attenuation rebuild. q7 336.65 MiB repeat failure remains private. No public promotion. |
 | Full audit | Remaining image/RAW/HEIF, archive, subtitle, ebook, data and office requirements. | Reconcile every applicable original named item with its current implementation/validated evidence or defensible exact unsupported decision. Existing representative support must not be treated as every theoretical format pair. |
 
 Do not narrow the scope to today's public registry. Do not label a profile
