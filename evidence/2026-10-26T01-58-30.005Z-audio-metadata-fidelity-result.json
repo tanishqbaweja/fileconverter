@@ -1,0 +1,1974 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "03faecc74a676e1759a5b6d3e8f9f80275f84b35",
+  "status": "failed",
+  "scope": "six NEW private MP3 outputs from FLAC/Vorbis/Opus with25 scalar Unicode tags, PNG/JPEG front/back cover roles/descriptions, raw ID3v2.4 inspection, independent image/full PCM; no duplicate-ID3/stress/direct-picker/public qualification",
+  "publicAcceptance": false,
+  "fullMetadataAcceptance": false,
+  "archive": {
+    "path": "outputs/reports/2026-10-26T01-58-30.005Z-audio-metadata-production-runtime.json.gz",
+    "bytes": 27432,
+    "sha256": "05fc4e05ddfb8830a8af0c23e76d7aa706cf8ecf6501347b7c4613896d8a0cf2",
+    "restoredBytes": 233846,
+    "restoredSha256": "652a0748a50fb7a08319dfe87923f1b78c9309c64fff3998d1bd1350d4081e3b"
+  },
+  "sourcePins": 48,
+  "artifactManifestSha256": "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c",
+  "diskProof": {
+    "status": "exact-browser-canary-independently-found-on-disk",
+    "browserBytes": 64,
+    "physicalBytes": 64,
+    "sha256": "1fdb040e5a92a6e7a98477a6f93e84e8f433eb97b990a2352afbd66c830751f9",
+    "physicalFile": "work\\audio-metadata-production-PZ95Xy\\chrome-profile\\Default\\File System\\000\\t\\00\\00000001",
+    "profileDirectory": "work\\audio-metadata-production-PZ95Xy\\chrome-profile",
+    "inspectedEntries": 5,
+    "maximumReadBytes": 65,
+    "provesThisContextOpfsBacking": true,
+    "provesConversionAcceptance": false,
+    "canaryRemovedInFinally": true
+  },
+  "memory": {
+    "scope": "selected-small-case lifecycle only, not stress acceptance",
+    "limitMiB": 250,
+    "intervalMs": 100,
+    "peak": {
+      "sequence": 435,
+      "timestamp": "2026-10-26T01:59:34.7343784Z",
+      "phase": "case-2",
+      "privateBytes": 451010560,
+      "rssBytes": 705241088,
+      "nativeElapsedMs": 18.7192,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 8808,
+          "parentPid": 34964,
+          "createdAt": "2026-10-26T01:59:06.8175262Z",
+          "creationFileTime": "134374535468175262",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 15065088,
+          "rssBytes": 31752192
+        },
+        {
+          "pid": 23976,
+          "parentPid": 34964,
+          "createdAt": "2026-10-26T01:58:46.3775059Z",
+          "creationFileTime": "134374535263775059",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 158949376,
+          "rssBytes": 185208832
+        },
+        {
+          "pid": 25308,
+          "parentPid": 34964,
+          "createdAt": "2026-10-26T01:58:46.3485006Z",
+          "creationFileTime": "134374535263485006",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 35418112,
+          "rssBytes": 78745600
+        },
+        {
+          "pid": 29876,
+          "parentPid": 34964,
+          "createdAt": "2026-10-26T01:58:46.3085578Z",
+          "creationFileTime": "134374535263085578",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8130560,
+          "rssBytes": 18636800
+        },
+        {
+          "pid": 30692,
+          "parentPid": 34964,
+          "createdAt": "2026-10-26T01:58:46.2829232Z",
+          "creationFileTime": "134374535262829232",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 13963264,
+          "rssBytes": 41930752
+        },
+        {
+          "pid": 34964,
+          "parentPid": 8768,
+          "createdAt": "2026-10-26T01:58:46.1369134Z",
+          "creationFileTime": "134374535261369134",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 48910336,
+          "rssBytes": 145854464
+        },
+        {
+          "pid": 35420,
+          "parentPid": 34964,
+          "createdAt": "2026-10-26T01:58:46.1638287Z",
+          "creationFileTime": "134374535261638287",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2535424,
+          "rssBytes": 10313728
+        },
+        {
+          "pid": 41852,
+          "parentPid": 34964,
+          "createdAt": "2026-10-26T01:58:46.2772441Z",
+          "creationFileTime": "134374535262772441",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 168038400,
+          "rssBytes": 192798720
+        }
+      ]
+    },
+    "incrementalPrivateMiB": 201.62109375,
+    "validSamples": 492,
+    "unavailableSamples": 0,
+    "fullHistoryInLosslessJournal": true
+  },
+  "memoryObserverOwnership": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 0,
+    "proofs": [],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false
+  },
+  "cases": [
+    {
+      "name": "flac-to-mp3-png-cover",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 504,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-PZ95Xy/chrome-profile/Default/File System/000/t/00/00000002",
+        "logicalBytes": 34048,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "17169973582834845",
+          "size": "34048",
+          "birthtimeNs": "1792979972550952800",
+          "mtimeNs": "1792979972991738400"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "4c93b772f2112109629839f4dbc7da1d008d1fdef01ccdb58f97dcd6893a57ae"
+          },
+          {
+            "offset": 14976,
+            "bytes": 4096,
+            "sha256": "8d0610a459115fbf8309bc70ab1826524b855c7654c8187b5c53db5ef25bc23a"
+          },
+          {
+            "offset": 29952,
+            "bytes": 4096,
+            "sha256": "36f18d721202f277641b3b717f039d438d6c867e2912d18071ca0f56c7c08264"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "id3Metadata": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualValues": [
+              "Titre café — 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualValues": [
+              "Émile / कलाकार"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualValues": [
+              "Album naïf"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualValues": [
+              "Essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualValues": [
+              "2026"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualValues": [
+              "3/9"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualValues": [
+              "αβγ & <texte>"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "composer",
+            "expectedValue": "作曲者 Émile",
+            "actualValues": [
+              "作曲者 Émile"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValue": "Artiste collectif",
+            "actualValues": [
+              "Artiste collectif"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "performer",
+            "expectedValue": "Violon — 藝術家",
+            "actualValues": [
+              "Violon — 藝術家"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValue": "2/3",
+            "actualValues": [
+              "2/3"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "copyright",
+            "expectedValue": "© 2026 Example",
+            "actualValues": [
+              "© 2026 Example"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "publisher",
+            "expectedValue": "Éditions locales",
+            "actualValues": [
+              "Éditions locales"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "language",
+            "expectedValue": "fra",
+            "actualValues": [
+              "fra"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "isrc",
+            "expectedValue": "FR9ZZ2600001",
+            "actualValues": [
+              "FR9ZZ2600001"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "encoded_by",
+            "expectedValue": "Deterministic fixture",
+            "actualValues": [
+              "Deterministic fixture"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "lyrics",
+            "expectedValue": "Un vers\n第二行",
+            "actualValues": [
+              "Un vers\n第二行"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "license",
+            "expectedValue": "Licence d’essai",
+            "actualValues": [
+              "Licence d’essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "contact",
+            "expectedValue": "Contact local",
+            "actualValues": [
+              "Contact local"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "location",
+            "expectedValue": "Montréal",
+            "actualValues": [
+              "Montréal"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "organization",
+            "expectedValue": "Atelier α",
+            "actualValues": [
+              "Atelier α"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "custom_field",
+            "expectedValue": "Valeur libre 音楽",
+            "actualValues": [
+              "Valeur libre 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_gain",
+            "expectedValue": "-5.25 dB",
+            "actualValues": [
+              "-5.25 dB"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_peak",
+            "expectedValue": "0.800000",
+            "actualValues": [
+              "0.800000"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_album_gain",
+            "expectedValue": "-4.00 dB",
+            "actualValues": [
+              "-4.00 dB"
+            ],
+            "status": "preserved"
+          }
+        ],
+        "artwork": {
+          "status": "preserved",
+          "mime": "image/png",
+          "pictureType": 3,
+          "description": "表紙 — Front cover",
+          "bytes": 178,
+          "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0"
+        },
+        "rawFramesInspected": true,
+        "probeDictionaryNotSubstituted": true,
+        "publicAcceptance": false
+      },
+      "failures": [
+        "Error: Audio PSNR47.085711551628926dB below60dB"
+      ],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 211,
+        "squaredError": 2016507993,
+        "psnrDb": 47.085711551628926,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "0c6fb0ac28455fb8c0031cb59a9e018de2813ee119bf2edaf87a5614c0b95f8b",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 34048,
+      "outputSha256": "4710ff605bb185db713b003a3b985ced3094dde4ea0c4a01c81501f33571dcaf",
+      "tagsPreserved": 25,
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 64,
+        "height": 64,
+        "bytes": 178,
+        "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+        "pictureRole": "Cover (front)",
+        "description": "表紙 — Front cover",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-mp3-mjpeg-cover",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 430,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-PZ95Xy/chrome-profile/Default/File System/000/t/00/00000003",
+        "logicalBytes": 34113,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "19421773396520093",
+          "size": "34113",
+          "birthtimeNs": "1792979973795001100",
+          "mtimeNs": "1792979973921591900"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "fc56bab5c558ba662c914318cb68d34f3770cc63a68a9b9f27308ffa9e034f5f"
+          },
+          {
+            "offset": 15008,
+            "bytes": 4096,
+            "sha256": "9687b7398d72a5f50ceef0721bd408b7791c867c695b87d4791f5ac7fcffba86"
+          },
+          {
+            "offset": 30017,
+            "bytes": 4096,
+            "sha256": "36f18d721202f277641b3b717f039d438d6c867e2912d18071ca0f56c7c08264"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "id3Metadata": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualValues": [
+              "Titre café — 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualValues": [
+              "Émile / कलाकार"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualValues": [
+              "Album naïf"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualValues": [
+              "Essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualValues": [
+              "2026"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualValues": [
+              "3/9"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualValues": [
+              "αβγ & <texte>"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "composer",
+            "expectedValue": "作曲者 Émile",
+            "actualValues": [
+              "作曲者 Émile"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValue": "Artiste collectif",
+            "actualValues": [
+              "Artiste collectif"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "performer",
+            "expectedValue": "Violon — 藝術家",
+            "actualValues": [
+              "Violon — 藝術家"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValue": "2/3",
+            "actualValues": [
+              "2/3"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "copyright",
+            "expectedValue": "© 2026 Example",
+            "actualValues": [
+              "© 2026 Example"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "publisher",
+            "expectedValue": "Éditions locales",
+            "actualValues": [
+              "Éditions locales"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "language",
+            "expectedValue": "fra",
+            "actualValues": [
+              "fra"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "isrc",
+            "expectedValue": "FR9ZZ2600001",
+            "actualValues": [
+              "FR9ZZ2600001"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "encoded_by",
+            "expectedValue": "Deterministic fixture",
+            "actualValues": [
+              "Deterministic fixture"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "lyrics",
+            "expectedValue": "Un vers\n第二行",
+            "actualValues": [
+              "Un vers\n第二行"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "license",
+            "expectedValue": "Licence d’essai",
+            "actualValues": [
+              "Licence d’essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "contact",
+            "expectedValue": "Contact local",
+            "actualValues": [
+              "Contact local"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "location",
+            "expectedValue": "Montréal",
+            "actualValues": [
+              "Montréal"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "organization",
+            "expectedValue": "Atelier α",
+            "actualValues": [
+              "Atelier α"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "custom_field",
+            "expectedValue": "Valeur libre 音楽",
+            "actualValues": [
+              "Valeur libre 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_gain",
+            "expectedValue": "-5.25 dB",
+            "actualValues": [
+              "-5.25 dB"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_peak",
+            "expectedValue": "0.800000",
+            "actualValues": [
+              "0.800000"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_album_gain",
+            "expectedValue": "-4.00 dB",
+            "actualValues": [
+              "-4.00 dB"
+            ],
+            "status": "preserved"
+          }
+        ],
+        "artwork": {
+          "status": "preserved",
+          "mime": "image/jpeg",
+          "pictureType": 4,
+          "description": "Pochette arrière café — 音楽",
+          "bytes": 230,
+          "sha256": "c8529c5f01e676d41aa3da15ca5948b12a40f2aafb6aad09b3b5048b6f77ded9"
+        },
+        "rawFramesInspected": true,
+        "probeDictionaryNotSubstituted": true,
+        "publicAcceptance": false
+      },
+      "failures": [
+        "Error: Audio PSNR47.085711551628926dB below60dB"
+      ],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 211,
+        "squaredError": 2016507993,
+        "psnrDb": 47.085711551628926,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "0c6fb0ac28455fb8c0031cb59a9e018de2813ee119bf2edaf87a5614c0b95f8b",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 34113,
+      "outputSha256": "3380881cd83a4b8bba8808963a66d8e6edb05c40a10e3a337681cf3a06e25324",
+      "tagsPreserved": 25,
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "mjpeg",
+        "width": 64,
+        "height": 64,
+        "bytes": 230,
+        "sha256": "c8529c5f01e676d41aa3da15ca5948b12a40f2aafb6aad09b3b5048b6f77ded9",
+        "pictureRole": "Cover (back)",
+        "description": "Pochette arrière café — 音楽",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "ogg-to-mp3-png-cover",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 372,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-PZ95Xy/chrome-profile/Default/File System/000/t/00/00000004",
+        "logicalBytes": 34048,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "2251799819341237",
+          "size": "34048",
+          "birthtimeNs": "1792979974561585200",
+          "mtimeNs": "1792979974721617700"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "6b748d3cb1d923a687ee9d2e047abc5ec7763d75f0a44c8088d11c6f5be50b18"
+          },
+          {
+            "offset": 14976,
+            "bytes": 4096,
+            "sha256": "540e34f588abaf05dde3d620de543a393c5fee93c1cf152a911f242ac829103a"
+          },
+          {
+            "offset": 29952,
+            "bytes": 4096,
+            "sha256": "4771dae0731e7842ef613a58d2ea86eec2435d154a6d20e496043476911c234e"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "id3Metadata": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualValues": [
+              "Titre café — 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualValues": [
+              "Émile / कलाकार"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualValues": [
+              "Album naïf"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualValues": [
+              "Essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualValues": [
+              "2026"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualValues": [
+              "3/9"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualValues": [
+              "αβγ & <texte>"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "composer",
+            "expectedValue": "作曲者 Émile",
+            "actualValues": [
+              "作曲者 Émile"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValue": "Artiste collectif",
+            "actualValues": [
+              "Artiste collectif"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "performer",
+            "expectedValue": "Violon — 藝術家",
+            "actualValues": [
+              "Violon — 藝術家"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValue": "2/3",
+            "actualValues": [
+              "2/3"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "copyright",
+            "expectedValue": "© 2026 Example",
+            "actualValues": [
+              "© 2026 Example"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "publisher",
+            "expectedValue": "Éditions locales",
+            "actualValues": [
+              "Éditions locales"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "language",
+            "expectedValue": "fra",
+            "actualValues": [
+              "fra"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "isrc",
+            "expectedValue": "FR9ZZ2600001",
+            "actualValues": [
+              "FR9ZZ2600001"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "encoded_by",
+            "expectedValue": "Deterministic fixture",
+            "actualValues": [
+              "Deterministic fixture"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "lyrics",
+            "expectedValue": "Un vers\n第二行",
+            "actualValues": [
+              "Un vers\n第二行"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "license",
+            "expectedValue": "Licence d’essai",
+            "actualValues": [
+              "Licence d’essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "contact",
+            "expectedValue": "Contact local",
+            "actualValues": [
+              "Contact local"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "location",
+            "expectedValue": "Montréal",
+            "actualValues": [
+              "Montréal"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "organization",
+            "expectedValue": "Atelier α",
+            "actualValues": [
+              "Atelier α"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "custom_field",
+            "expectedValue": "Valeur libre 音楽",
+            "actualValues": [
+              "Valeur libre 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_gain",
+            "expectedValue": "-5.25 dB",
+            "actualValues": [
+              "-5.25 dB"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_peak",
+            "expectedValue": "0.800000",
+            "actualValues": [
+              "0.800000"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_album_gain",
+            "expectedValue": "-4.00 dB",
+            "actualValues": [
+              "-4.00 dB"
+            ],
+            "status": "preserved"
+          }
+        ],
+        "artwork": {
+          "status": "preserved",
+          "mime": "image/png",
+          "pictureType": 3,
+          "description": "表紙 — Front cover",
+          "bytes": 178,
+          "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0"
+        },
+        "rawFramesInspected": true,
+        "probeDictionaryNotSubstituted": true,
+        "publicAcceptance": false
+      },
+      "failures": [
+        "Error: Audio PSNR47.04090846376274dB below60dB"
+      ],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 218,
+        "squaredError": 2037418553,
+        "psnrDb": 47.04090846376274,
+        "sourceSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+        "outputSha256": "dfb36e7b87c0e15ab40aa3d02e3a54bebc6873956870010f8276782b13365fb2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 34048,
+      "outputSha256": "cc67fdf33c7f73063a29cec98ffec0f0b7f8a8e9e3f874419cd1457cc00d2e3e",
+      "tagsPreserved": 25,
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 64,
+        "height": 64,
+        "bytes": 178,
+        "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+        "pictureRole": "Cover (front)",
+        "description": "表紙 — Front cover",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "ogg-to-mp3-mjpeg-cover",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 168,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-PZ95Xy/chrome-profile/Default/File System/000/t/00/00000005",
+        "logicalBytes": 34113,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "5910974516579766",
+          "size": "34113",
+          "birthtimeNs": "1792979975401920300",
+          "mtimeNs": "1792979975535437500"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "5d5b253802a785ee1c9c070da94cdcd8fd37edfc32a165995965d28657126e26"
+          },
+          {
+            "offset": 15008,
+            "bytes": 4096,
+            "sha256": "580b97a3baab47751d6dbaa3ccbb56628f5e04eb94c956c18eb38bbade3d150f"
+          },
+          {
+            "offset": 30017,
+            "bytes": 4096,
+            "sha256": "4771dae0731e7842ef613a58d2ea86eec2435d154a6d20e496043476911c234e"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "id3Metadata": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualValues": [
+              "Titre café — 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualValues": [
+              "Émile / कलाकार"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualValues": [
+              "Album naïf"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualValues": [
+              "Essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualValues": [
+              "2026"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualValues": [
+              "3/9"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualValues": [
+              "αβγ & <texte>"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "composer",
+            "expectedValue": "作曲者 Émile",
+            "actualValues": [
+              "作曲者 Émile"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValue": "Artiste collectif",
+            "actualValues": [
+              "Artiste collectif"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "performer",
+            "expectedValue": "Violon — 藝術家",
+            "actualValues": [
+              "Violon — 藝術家"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValue": "2/3",
+            "actualValues": [
+              "2/3"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "copyright",
+            "expectedValue": "© 2026 Example",
+            "actualValues": [
+              "© 2026 Example"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "publisher",
+            "expectedValue": "Éditions locales",
+            "actualValues": [
+              "Éditions locales"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "language",
+            "expectedValue": "fra",
+            "actualValues": [
+              "fra"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "isrc",
+            "expectedValue": "FR9ZZ2600001",
+            "actualValues": [
+              "FR9ZZ2600001"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "encoded_by",
+            "expectedValue": "Deterministic fixture",
+            "actualValues": [
+              "Deterministic fixture"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "lyrics",
+            "expectedValue": "Un vers\n第二行",
+            "actualValues": [
+              "Un vers\n第二行"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "license",
+            "expectedValue": "Licence d’essai",
+            "actualValues": [
+              "Licence d’essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "contact",
+            "expectedValue": "Contact local",
+            "actualValues": [
+              "Contact local"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "location",
+            "expectedValue": "Montréal",
+            "actualValues": [
+              "Montréal"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "organization",
+            "expectedValue": "Atelier α",
+            "actualValues": [
+              "Atelier α"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "custom_field",
+            "expectedValue": "Valeur libre 音楽",
+            "actualValues": [
+              "Valeur libre 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_gain",
+            "expectedValue": "-5.25 dB",
+            "actualValues": [
+              "-5.25 dB"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_peak",
+            "expectedValue": "0.800000",
+            "actualValues": [
+              "0.800000"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_album_gain",
+            "expectedValue": "-4.00 dB",
+            "actualValues": [
+              "-4.00 dB"
+            ],
+            "status": "preserved"
+          }
+        ],
+        "artwork": {
+          "status": "preserved",
+          "mime": "image/jpeg",
+          "pictureType": 4,
+          "description": "Pochette arrière café — 音楽",
+          "bytes": 230,
+          "sha256": "c8529c5f01e676d41aa3da15ca5948b12a40f2aafb6aad09b3b5048b6f77ded9"
+        },
+        "rawFramesInspected": true,
+        "probeDictionaryNotSubstituted": true,
+        "publicAcceptance": false
+      },
+      "failures": [
+        "Error: Audio PSNR47.04090846376274dB below60dB"
+      ],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 218,
+        "squaredError": 2037418553,
+        "psnrDb": 47.04090846376274,
+        "sourceSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+        "outputSha256": "dfb36e7b87c0e15ab40aa3d02e3a54bebc6873956870010f8276782b13365fb2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 34113,
+      "outputSha256": "f323fe4db2441aa5cc76396aa9cb9bf2f93aa54d0724a052dac081d6c5bbd9eb",
+      "tagsPreserved": 25,
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "mjpeg",
+        "width": 64,
+        "height": 64,
+        "bytes": 230,
+        "sha256": "c8529c5f01e676d41aa3da15ca5948b12a40f2aafb6aad09b3b5048b6f77ded9",
+        "pictureRole": "Cover (back)",
+        "description": "Pochette arrière café — 音楽",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-mp3-png-cover",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 347,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-PZ95Xy/chrome-profile/Default/File System/000/t/00/00000006",
+        "logicalBytes": 34048,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "6755399446711733",
+          "size": "34048",
+          "birthtimeNs": "1792979976182799300",
+          "mtimeNs": "1792979976315409900"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "161ff728dc6d8d9dadb13c853d02884ec61224d98e0254a0d5a42dd3149daa24"
+          },
+          {
+            "offset": 14976,
+            "bytes": 4096,
+            "sha256": "bb476fe53a3dac47e067fb38de941c722ff8b8c42386b90af8a5f8f14c5cd742"
+          },
+          {
+            "offset": 29952,
+            "bytes": 4096,
+            "sha256": "7b911d1e22bde3e502f536b0be082e8d2c0a9d33336538f13523f74c9a782a51"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "id3Metadata": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualValues": [
+              "Titre café — 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualValues": [
+              "Émile / कलाकार"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualValues": [
+              "Album naïf"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualValues": [
+              "Essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualValues": [
+              "2026"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualValues": [
+              "3/9"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualValues": [
+              "αβγ & <texte>"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "composer",
+            "expectedValue": "作曲者 Émile",
+            "actualValues": [
+              "作曲者 Émile"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValue": "Artiste collectif",
+            "actualValues": [
+              "Artiste collectif"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "performer",
+            "expectedValue": "Violon — 藝術家",
+            "actualValues": [
+              "Violon — 藝術家"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValue": "2/3",
+            "actualValues": [
+              "2/3"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "copyright",
+            "expectedValue": "© 2026 Example",
+            "actualValues": [
+              "© 2026 Example"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "publisher",
+            "expectedValue": "Éditions locales",
+            "actualValues": [
+              "Éditions locales"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "language",
+            "expectedValue": "fra",
+            "actualValues": [
+              "fra"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "isrc",
+            "expectedValue": "FR9ZZ2600001",
+            "actualValues": [
+              "FR9ZZ2600001"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "encoded_by",
+            "expectedValue": "Deterministic fixture",
+            "actualValues": [
+              "Deterministic fixture"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "lyrics",
+            "expectedValue": "Un vers\n第二行",
+            "actualValues": [
+              "Un vers\n第二行"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "license",
+            "expectedValue": "Licence d’essai",
+            "actualValues": [
+              "Licence d’essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "contact",
+            "expectedValue": "Contact local",
+            "actualValues": [
+              "Contact local"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "location",
+            "expectedValue": "Montréal",
+            "actualValues": [
+              "Montréal"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "organization",
+            "expectedValue": "Atelier α",
+            "actualValues": [
+              "Atelier α"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "custom_field",
+            "expectedValue": "Valeur libre 音楽",
+            "actualValues": [
+              "Valeur libre 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_gain",
+            "expectedValue": "-5.25 dB",
+            "actualValues": [
+              "-5.25 dB"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_peak",
+            "expectedValue": "0.800000",
+            "actualValues": [
+              "0.800000"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_album_gain",
+            "expectedValue": "-4.00 dB",
+            "actualValues": [
+              "-4.00 dB"
+            ],
+            "status": "preserved"
+          }
+        ],
+        "artwork": {
+          "status": "preserved",
+          "mime": "image/png",
+          "pictureType": 3,
+          "description": "表紙 — Front cover",
+          "bytes": 178,
+          "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0"
+        },
+        "rawFramesInspected": true,
+        "probeDictionaryNotSubstituted": true,
+        "publicAcceptance": false
+      },
+      "failures": [
+        "Error: Audio PSNR47.083835859393595dB below60dB"
+      ],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 215,
+        "squaredError": 2017379099,
+        "psnrDb": 47.083835859393595,
+        "sourceSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+        "outputSha256": "3bad45bc1fa47cc4634d6dc76e89cbd9148bf8028e018581365d07cc55eb3548",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 34048,
+      "outputSha256": "68ac4c9f413f2bbeb683118ebc33c476fdea334fbf9aab66955e346d1616f6a5",
+      "tagsPreserved": 25,
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 64,
+        "height": 64,
+        "bytes": 178,
+        "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+        "pictureRole": "Cover (front)",
+        "description": "表紙 — Front cover",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-mp3-mjpeg-cover",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 969,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-PZ95Xy/chrome-profile/Default/File System/000/t/00/00000007",
+        "logicalBytes": 34113,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "11540474050792885",
+          "size": "34113",
+          "birthtimeNs": "1792979977624555000",
+          "mtimeNs": "1792979977765135000"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "f5cfa229540b5ef1d28c15080709f1ee555a2dceb5c2e018a19ad448ed8a6ba8"
+          },
+          {
+            "offset": 15008,
+            "bytes": 4096,
+            "sha256": "559f2f8fb9747e7f79610b37e2447db29d55b9265bb2d804eabc2b32d76cbed9"
+          },
+          {
+            "offset": 30017,
+            "bytes": 4096,
+            "sha256": "7b911d1e22bde3e502f536b0be082e8d2c0a9d33336538f13523f74c9a782a51"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "id3Metadata": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualValues": [
+              "Titre café — 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualValues": [
+              "Émile / कलाकार"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualValues": [
+              "Album naïf"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualValues": [
+              "Essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualValues": [
+              "2026"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualValues": [
+              "3/9"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualValues": [
+              "αβγ & <texte>"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "composer",
+            "expectedValue": "作曲者 Émile",
+            "actualValues": [
+              "作曲者 Émile"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValue": "Artiste collectif",
+            "actualValues": [
+              "Artiste collectif"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "performer",
+            "expectedValue": "Violon — 藝術家",
+            "actualValues": [
+              "Violon — 藝術家"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValue": "2/3",
+            "actualValues": [
+              "2/3"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "copyright",
+            "expectedValue": "© 2026 Example",
+            "actualValues": [
+              "© 2026 Example"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "publisher",
+            "expectedValue": "Éditions locales",
+            "actualValues": [
+              "Éditions locales"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "language",
+            "expectedValue": "fra",
+            "actualValues": [
+              "fra"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "isrc",
+            "expectedValue": "FR9ZZ2600001",
+            "actualValues": [
+              "FR9ZZ2600001"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "encoded_by",
+            "expectedValue": "Deterministic fixture",
+            "actualValues": [
+              "Deterministic fixture"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "lyrics",
+            "expectedValue": "Un vers\n第二行",
+            "actualValues": [
+              "Un vers\n第二行"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "license",
+            "expectedValue": "Licence d’essai",
+            "actualValues": [
+              "Licence d’essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "contact",
+            "expectedValue": "Contact local",
+            "actualValues": [
+              "Contact local"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "location",
+            "expectedValue": "Montréal",
+            "actualValues": [
+              "Montréal"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "organization",
+            "expectedValue": "Atelier α",
+            "actualValues": [
+              "Atelier α"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "custom_field",
+            "expectedValue": "Valeur libre 音楽",
+            "actualValues": [
+              "Valeur libre 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_gain",
+            "expectedValue": "-5.25 dB",
+            "actualValues": [
+              "-5.25 dB"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_peak",
+            "expectedValue": "0.800000",
+            "actualValues": [
+              "0.800000"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_album_gain",
+            "expectedValue": "-4.00 dB",
+            "actualValues": [
+              "-4.00 dB"
+            ],
+            "status": "preserved"
+          }
+        ],
+        "artwork": {
+          "status": "preserved",
+          "mime": "image/jpeg",
+          "pictureType": 4,
+          "description": "Pochette arrière café — 音楽",
+          "bytes": 230,
+          "sha256": "c8529c5f01e676d41aa3da15ca5948b12a40f2aafb6aad09b3b5048b6f77ded9"
+        },
+        "rawFramesInspected": true,
+        "probeDictionaryNotSubstituted": true,
+        "publicAcceptance": false
+      },
+      "failures": [
+        "Error: Audio PSNR47.083835859393595dB below60dB"
+      ],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 215,
+        "squaredError": 2017379099,
+        "psnrDb": 47.083835859393595,
+        "sourceSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+        "outputSha256": "3bad45bc1fa47cc4634d6dc76e89cbd9148bf8028e018581365d07cc55eb3548",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 34113,
+      "outputSha256": "b1a0fb5d41106317ea885c8d31d55afa5590e3d73d37c652376ee4198eff81a7",
+      "tagsPreserved": 25,
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "mjpeg",
+        "width": 64,
+        "height": 64,
+        "bytes": 230,
+        "sha256": "c8529c5f01e676d41aa3da15ca5948b12a40f2aafb6aad09b3b5048b6f77ded9",
+        "pictureRole": "Cover (back)",
+        "description": "Pochette arrière café — 音楽",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    }
+  ],
+  "losslessJournal": {
+    "file": "output/playwright/2026-10-26T01-58-30.005Z-audio-fidelity-memory.ndjson.gz",
+    "records": 492,
+    "sha256": "d3d52e875666665321390c63bcdf51d4ce1bd1229001320b5086429704459e9b",
+    "archiveSha256": "4d1df0da9f8ed2596943e9cc5fabd110066fd5fe08b2c492e15ce2395afe529d",
+    "complete": true
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(largeVorbisRepeat ? report.cases.every(c => c.status === \"passed-full-size-private-q7-case-not-public-qualification\") : metadataBudget ? report.cases.every(c => c.metadataFailure ? c.status === (c.metadataFailure === \"text-bytes\" ? \"passed-private-metadata-byte-rejection-case\" : \"passed-private-metadata-field-rejection-case\") : c.status === \"passed-small-private-fidelity-and-metadata-case\")\n    : audioIoRecovery || vorbisIoRecovery ? report.cases.every(c => c.interruption ? c.status === \"passed-private-audio-interruption-case\" : c.status === \"passed-small-private-fidelity-and-metadata-case\")\n    : report.cases.every(c => c.status === \"passed-small-private-fidelity-and-metadata-case\"))\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:666:10\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+  ],
+  "network": {
+    "observedRequests": 29,
+    "forbidden": [],
+    "nativeGlueRequests": 6,
+    "nativeWasmRequests": 6
+  },
+  "cleanup": {
+    "allRecordedBirthsAbsent": true,
+    "publishedAssetsNeverChanged": true,
+    "stagedPrivateAssetsRestored": true,
+    "ownedProfileFixturesOutputsRemoved": true
+  },
+  "protectedOriginalUnchanged": true
+}

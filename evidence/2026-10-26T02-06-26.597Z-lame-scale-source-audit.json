@@ -1,0 +1,856 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-26T02:06:26.597Z",
+  "status": "exact-pinned-source-inspected-not-browser-cause-proof",
+  "scope": "read-only exact-checksum-pinned LAME source gain/default inspection; not browser gain measurement or conversion acceptance",
+  "version": "4.0",
+  "expectedSha256": "3df5124d5ad3a98312ffd7ba6a9b36230e4f8a3e66d3ce0f425e336c32d216eb",
+  "files": [
+    {
+      "file": "libmp3lame/presets.c",
+      "bytes": 15592,
+      "sha256": "feb47d97b3014e201d52fa75930b02e18c18568caf6b2f9d9bb02a42a0313ec3",
+      "excerpts": [
+        {
+          "line": 207,
+          "text": "    gfp->internal_flags->cfg.minval = set->minval;"
+        },
+        {
+          "line": 208,
+          "text": "    {   /* take care of gain adjustments */"
+        },
+        {
+          "line": 209,
+          "text": "        double const x = fabs(gfp->scale);"
+        },
+        {
+          "line": 210,
+          "text": "        double const y = (x > 0.f) ? (10.f * log10(x)) : 0.f;"
+        },
+        {
+          "line": 211,
+          "text": "        gfp->internal_flags->cfg.ATHfixpoint = set->ath_fixpoint - y;"
+        },
+        {
+          "line": 214,
+          "text": ""
+        },
+        {
+          "line": 215,
+          "text": "static int"
+        },
+        {
+          "line": 216,
+          "text": "apply_abr_preset(lame_global_flags * gfp, int preset, int enforce)"
+        },
+        {
+          "line": 217,
+          "text": "{"
+        },
+        {
+          "line": 218,
+          "text": "    typedef struct {"
+        },
+        {
+          "line": 224,
+          "text": "        FLOAT   st_lrm;      /*short threshold */"
+        },
+        {
+          "line": 225,
+          "text": "        FLOAT   st_s;"
+        },
+        {
+          "line": 226,
+          "text": "        FLOAT   scale;"
+        },
+        {
+          "line": 227,
+          "text": "        FLOAT   masking_adj;"
+        },
+        {
+          "line": 228,
+          "text": "        FLOAT   ath_lower;"
+        },
+        {
+          "line": 239,
+          "text": "     */"
+        },
+        {
+          "line": 240,
+          "text": "    const abr_presets_t abr_switch_map[] = {        "
+        },
+        {
+          "line": 241,
+          "text": "    /* kbps  quant q_s safejoint nsmsfix st_lrm  st_s  scale   msk ath_lwr ath_curve  interch , sfscale */"
+        },
+        {
+          "line": 242,
+          "text": "      {  8,     9,  9,        0,      0,  6.60,  145,  0.95,    0,  -30.0,     11,    0.0012,        1}, /*   8, impossible to use in stereo */"
+        },
+        {
+          "line": 243,
+          "text": "      { 16,     9,  9,        0,      0,  6.60,  145,  0.95,    0,  -25.0,     11,    0.0010,        1}, /*  16 */"
+        },
+        {
+          "line": 291,
+          "text": ""
+        },
+        {
+          "line": 292,
+          "text": "    /* ABR seems to have big problems with clipping, especially at low bitrates */"
+        },
+        {
+          "line": 293,
+          "text": "    /* so we compensate for that here by using a scale value depending on bitrate */"
+        },
+        {
+          "line": 294,
+          "text": "    lame_set_scale(gfp, lame_get_scale(gfp) * abr_switch_map[r].scale);"
+        },
+        {
+          "line": 295,
+          "text": ""
+        },
+        {
+          "line": 296,
+          "text": "    SET_OPTION(maskingadjust, abr_switch_map[r].masking_adj, 0);"
+        },
+        {
+          "line": 318,
+          "text": ""
+        },
+        {
+          "line": 319,
+          "text": "int"
+        },
+        {
+          "line": 320,
+          "text": "apply_preset(lame_global_flags * gfp, int preset, int enforce)"
+        },
+        {
+          "line": 321,
+          "text": "{"
+        },
+        {
+          "line": 322,
+          "text": "    /*translate legacy presets */"
+        },
+        {
+          "line": 353,
+          "text": "            preset = 320;"
+        },
+        {
+          "line": 354,
+          "text": "            gfp->preset = preset;"
+        },
+        {
+          "line": 355,
+          "text": "            (void) apply_abr_preset(gfp, preset, enforce);"
+        },
+        {
+          "line": 356,
+          "text": "            lame_set_VBR(gfp, vbr_off);"
+        },
+        {
+          "line": 357,
+          "text": "            return preset;"
+        },
+        {
+          "line": 397,
+          "text": "    }"
+        },
+        {
+          "line": 398,
+          "text": "    if (8 <= preset && preset <= 320) {"
+        },
+        {
+          "line": 399,
+          "text": "        return apply_abr_preset(gfp, preset, enforce);"
+        },
+        {
+          "line": 400,
+          "text": "    }"
+        },
+        {
+          "line": 401,
+          "text": ""
+        }
+      ]
+    },
+    {
+      "file": "libmp3lame/lame.c",
+      "bytes": 85292,
+      "sha256": "cea1305685d8b669ddee2c7bc7e34ddb7ae0d3fe80b79072033cf9b9ee693e89",
+      "excerpts": [
+        {
+          "line": 676,
+          "text": "    }"
+        },
+        {
+          "line": 677,
+          "text": "    /* WORK IN PROGRESS */"
+        },
+        {
+          "line": 678,
+          "text": "    /* mapping VBR scale to internal VBR quality settings */"
+        },
+        {
+          "line": 679,
+          "text": "    if (gfp->samplerate_out == 0 && (cfg->vbr == vbr_mt || cfg->vbr == vbr_mtrh)) {"
+        },
+        {
+          "line": 680,
+          "text": "        float const qval = gfp->VBR_q + gfp->VBR_q_frac;"
+        },
+        {
+          "line": 993,
+          "text": "            }"
+        },
+        {
+          "line": 994,
+          "text": ""
+        },
+        {
+          "line": 995,
+          "text": "            (void) apply_preset(gfp, 500 - (gfp->VBR_q * 10), 0);"
+        },
+        {
+          "line": 996,
+          "text": "            /*  The newer VBR code supports only a limited"
+        },
+        {
+          "line": 997,
+          "text": "               subset of quality levels:"
+        },
+        {
+          "line": 1018,
+          "text": "    case vbr_rh:{"
+        },
+        {
+          "line": 1019,
+          "text": ""
+        },
+        {
+          "line": 1020,
+          "text": "            (void) apply_preset(gfp, 500 - (gfp->VBR_q * 10), 0);"
+        },
+        {
+          "line": 1021,
+          "text": ""
+        },
+        {
+          "line": 1022,
+          "text": "            /*  sfb21 extra only with MPEG-1 at higher sampling rates"
+        },
+        {
+          "line": 1055,
+          "text": "                (void) lame_set_VBR_mean_bitrate_kbps(gfp, gfp->brate);"
+        },
+        {
+          "line": 1056,
+          "text": "            /* second, set parameters depending on bitrate */"
+        },
+        {
+          "line": 1057,
+          "text": "            (void) apply_preset(gfp, gfp->VBR_mean_bitrate_kbps, 0);"
+        },
+        {
+          "line": 1058,
+          "text": "            gfp->VBR = cfg->vbr;"
+        },
+        {
+          "line": 1059,
+          "text": ""
+        },
+        {
+          "line": 1238,
+          "text": ""
+        },
+        {
+          "line": 1239,
+          "text": "        /* user selected scaling of the samples */"
+        },
+        {
+          "line": 1240,
+          "text": "        m[0][0] *= gfp->scale;"
+        },
+        {
+          "line": 1241,
+          "text": "        m[0][1] *= gfp->scale;"
+        },
+        {
+          "line": 1242,
+          "text": "        m[1][0] *= gfp->scale;"
+        },
+        {
+          "line": 1243,
+          "text": "        m[1][1] *= gfp->scale;"
+        },
+        {
+          "line": 1244,
+          "text": "        /* user selected scaling of the channel 0 (left) samples */"
+        },
+        {
+          "line": 1245,
+          "text": "        m[0][0] *= gfp->scale_left;"
+        },
+        {
+          "line": 1433,
+          "text": "    MSGF(gfc, \"\\nmisc:\\n\\n\");"
+        },
+        {
+          "line": 1434,
+          "text": ""
+        },
+        {
+          "line": 1435,
+          "text": "    MSGF(gfc, \"\\tscaling: %g\\n\", gfp->scale);"
+        },
+        {
+          "line": 1436,
+          "text": "    MSGF(gfc, \"\\tch0 (left) scaling: %g\\n\", gfp->scale_left);"
+        },
+        {
+          "line": 1437,
+          "text": "    MSGF(gfc, \"\\tch1 (right) scaling: %g\\n\", gfp->scale_right);"
+        },
+        {
+          "line": 1612,
+          "text": "    }"
+        },
+        {
+          "line": 1613,
+          "text": ""
+        },
+        {
+          "line": 1614,
+          "text": "    /* find the gain and scale change required for no clipping */"
+        },
+        {
+          "line": 1615,
+          "text": "    if (cfg->findPeakSample) {"
+        },
+        {
+          "line": 1616,
+          "text": "        rov->noclipGainChange = (int) ceil(log10(rov->PeakSample / 32767.0) * 20.0 * 10.0); /* round up */"
+        },
+        {
+          "line": 1922,
+          "text": "                         unsigned char *mp3buf, const int mp3buf_size)"
+        },
+        {
+          "line": 1923,
+          "text": "{"
+        },
+        {
+          "line": 1924,
+          "text": "    /* input is assumed to be normalized to +/- 32768 for full scale */"
+        },
+        {
+          "line": 1925,
+          "text": "    return lame_encode_buffer_template(gfp, pcm_l, pcm_r, nsamples, mp3buf, mp3buf_size, pcm_float_type, 1, 1.0);"
+        },
+        {
+          "line": 1926,
+          "text": "}"
+        },
+        {
+          "line": 1932,
+          "text": "                         unsigned char *mp3buf, const int mp3buf_size)"
+        },
+        {
+          "line": 1933,
+          "text": "{"
+        },
+        {
+          "line": 1934,
+          "text": "    /* input is assumed to be normalized to +/- 1.0 for full scale */"
+        },
+        {
+          "line": 1935,
+          "text": "    return lame_encode_buffer_template(gfp, pcm_l, pcm_r, nsamples, mp3buf, mp3buf_size, pcm_float_type, 1, 32767.0);"
+        },
+        {
+          "line": 1936,
+          "text": "}"
+        },
+        {
+          "line": 1942,
+          "text": "                         unsigned char *mp3buf, const int mp3buf_size)"
+        },
+        {
+          "line": 1943,
+          "text": "{"
+        },
+        {
+          "line": 1944,
+          "text": "    /* input is assumed to be normalized to +/- 1.0 for full scale */"
+        },
+        {
+          "line": 1945,
+          "text": "    return lame_encode_buffer_template(gfp, pcm, pcm+1, nsamples, mp3buf, mp3buf_size, pcm_float_type, 2, 32767.0);"
+        },
+        {
+          "line": 1946,
+          "text": "}"
+        },
+        {
+          "line": 1952,
+          "text": "                         unsigned char *mp3buf, const int mp3buf_size)"
+        },
+        {
+          "line": 1953,
+          "text": "{"
+        },
+        {
+          "line": 1954,
+          "text": "    /* input is assumed to be normalized to +/- 1.0 for full scale */"
+        },
+        {
+          "line": 1955,
+          "text": "    return lame_encode_buffer_template(gfp, pcm_l, pcm_r, nsamples, mp3buf, mp3buf_size, pcm_double_type, 1, 32767.0);"
+        },
+        {
+          "line": 1956,
+          "text": "}"
+        },
+        {
+          "line": 1962,
+          "text": "                         unsigned char *mp3buf, const int mp3buf_size)"
+        },
+        {
+          "line": 1963,
+          "text": "{"
+        },
+        {
+          "line": 1964,
+          "text": "    /* input is assumed to be normalized to +/- 1.0 for full scale */"
+        },
+        {
+          "line": 1965,
+          "text": "    return lame_encode_buffer_template(gfp, pcm, pcm+1, nsamples, mp3buf, mp3buf_size, pcm_double_type, 2, 32767.0);"
+        },
+        {
+          "line": 1966,
+          "text": "}"
+        },
+        {
+          "line": 1972,
+          "text": "                       unsigned char *mp3buf, const int mp3buf_size)"
+        },
+        {
+          "line": 1973,
+          "text": "{"
+        },
+        {
+          "line": 1974,
+          "text": "    /* input is assumed to be normalized to +/- MAX_INT for full scale */"
+        },
+        {
+          "line": 1975,
+          "text": "    FLOAT const norm = (1.0 / (1L << (8 * sizeof(int) - 16)));"
+        },
+        {
+          "line": 1976,
+          "text": "    return lame_encode_buffer_template(gfp, pcm_l, pcm_r, nsamples, mp3buf, mp3buf_size, pcm_int_type, 1, norm);"
+        },
+        {
+          "line": 1983,
+          "text": "                         unsigned char *mp3buf, const int mp3buf_size)"
+        },
+        {
+          "line": 1984,
+          "text": "{"
+        },
+        {
+          "line": 1985,
+          "text": "    /* input is assumed to be normalized to +/- MAX_LONG for full scale */"
+        },
+        {
+          "line": 1986,
+          "text": "    FLOAT const norm = (1.0 / (1L << (8 * sizeof(long) - 16)));"
+        },
+        {
+          "line": 1987,
+          "text": "    return lame_encode_buffer_template(gfp, pcm_l, pcm_r, nsamples, mp3buf, mp3buf_size, pcm_long_type, 1, norm);"
+        },
+        {
+          "line": 1994,
+          "text": "                        unsigned char *mp3buf, const int mp3buf_size)"
+        },
+        {
+          "line": 1995,
+          "text": "{"
+        },
+        {
+          "line": 1996,
+          "text": "    /* input is assumed to be normalized to +/- 32768 for full scale */"
+        },
+        {
+          "line": 1997,
+          "text": "    return lame_encode_buffer_template(gfp, pcm_l, pcm_r, nsamples, mp3buf, mp3buf_size, pcm_long_type, 1, 1.0);"
+        },
+        {
+          "line": 1998,
+          "text": "}"
+        },
+        {
+          "line": 2005,
+          "text": "                               unsigned char *mp3buf, int mp3buf_size)"
+        },
+        {
+          "line": 2006,
+          "text": "{"
+        },
+        {
+          "line": 2007,
+          "text": "    /* input is assumed to be normalized to +/- MAX_SHORT for full scale */"
+        },
+        {
+          "line": 2008,
+          "text": "    return lame_encode_buffer_template(gfp, pcm, pcm+1, nsamples, mp3buf, mp3buf_size, pcm_short_type, 2, 1.0);"
+        },
+        {
+          "line": 2009,
+          "text": "}"
+        },
+        {
+          "line": 2015,
+          "text": "                                   unsigned char *mp3buf, const int mp3buf_size)"
+        },
+        {
+          "line": 2016,
+          "text": "{"
+        },
+        {
+          "line": 2017,
+          "text": "    /* input is assumed to be normalized to +/- MAX(int) for full scale */"
+        },
+        {
+          "line": 2018,
+          "text": "    FLOAT const norm = (1.0 / (1L << (8 * sizeof(int)-16)));"
+        },
+        {
+          "line": 2019,
+          "text": "    return lame_encode_buffer_template(gfp, pcm, pcm + 1, nsamples, mp3buf, mp3buf_size, pcm_int_type, 2, norm);"
+        },
+        {
+          "line": 2446,
+          "text": "    gfp->attackthre_s = -1;"
+        },
+        {
+          "line": 2447,
+          "text": ""
+        },
+        {
+          "line": 2448,
+          "text": "    gfp->scale = 1;"
+        },
+        {
+          "line": 2449,
+          "text": "    gfp->scale_left = 1;"
+        },
+        {
+          "line": 2450,
+          "text": "    gfp->scale_right = 1;"
+        }
+      ]
+    },
+    {
+      "file": "libmp3lame/set_get.c",
+      "bytes": 54146,
+      "sha256": "b0ccfa976bbaadf3cae13332c00cb11e5354295f39c308c9f751972aef0ca7f3",
+      "excerpts": [
+        {
+          "line": 113,
+          "text": ""
+        },
+        {
+          "line": 114,
+          "text": ""
+        },
+        {
+          "line": 115,
+          "text": "/* scale the input by this amount before encoding (not used for decoding) */"
+        },
+        {
+          "line": 116,
+          "text": "int"
+        },
+        {
+          "line": 117,
+          "text": "lame_set_scale(lame_global_flags * gfp, float scale)"
+        },
+        {
+          "line": 118,
+          "text": "{"
+        },
+        {
+          "line": 119,
+          "text": "    if (is_lame_global_flags_valid(gfp)) {"
+        },
+        {
+          "line": 120,
+          "text": "        /* default = 1 */"
+        },
+        {
+          "line": 121,
+          "text": "        gfp->scale = scale;"
+        },
+        {
+          "line": 122,
+          "text": "        return 0;"
+        },
+        {
+          "line": 123,
+          "text": "    }"
+        },
+        {
+          "line": 129,
+          "text": "{"
+        },
+        {
+          "line": 130,
+          "text": "    if (is_lame_global_flags_valid(gfp)) {"
+        },
+        {
+          "line": 131,
+          "text": "        return gfp->scale;"
+        },
+        {
+          "line": 132,
+          "text": "    }"
+        },
+        {
+          "line": 133,
+          "text": "    return 0;"
+        },
+        {
+          "line": 135,
+          "text": ""
+        },
+        {
+          "line": 136,
+          "text": ""
+        },
+        {
+          "line": 137,
+          "text": "/* scale the channel 0 (left) input by this amount before "
+        },
+        {
+          "line": 138,
+          "text": "   encoding (not used for decoding) */"
+        },
+        {
+          "line": 139,
+          "text": "int"
+        },
+        {
+          "line": 140,
+          "text": "lame_set_scale_left(lame_global_flags * gfp, float scale)"
+        },
+        {
+          "line": 141,
+          "text": "{"
+        },
+        {
+          "line": 142,
+          "text": "    if (is_lame_global_flags_valid(gfp)) {"
+        },
+        {
+          "line": 143,
+          "text": "        /* default = 1 */"
+        },
+        {
+          "line": 144,
+          "text": "        gfp->scale_left = scale;"
+        },
+        {
+          "line": 145,
+          "text": "        return 0;"
+        },
+        {
+          "line": 146,
+          "text": "    }"
+        },
+        {
+          "line": 158,
+          "text": ""
+        },
+        {
+          "line": 159,
+          "text": ""
+        },
+        {
+          "line": 160,
+          "text": "/* scale the channel 1 (right) input by this amount before "
+        },
+        {
+          "line": 161,
+          "text": "   encoding (not used for decoding) */"
+        },
+        {
+          "line": 162,
+          "text": "int"
+        },
+        {
+          "line": 163,
+          "text": "lame_set_scale_right(lame_global_flags * gfp, float scale)"
+        },
+        {
+          "line": 164,
+          "text": "{"
+        },
+        {
+          "line": 165,
+          "text": "    if (is_lame_global_flags_valid(gfp)) {"
+        },
+        {
+          "line": 166,
+          "text": "        /* default = 1 */"
+        },
+        {
+          "line": 167,
+          "text": "        gfp->scale_right = scale;"
+        },
+        {
+          "line": 168,
+          "text": "        return 0;"
+        },
+        {
+          "line": 169,
+          "text": "    }"
+        },
+        {
+          "line": 1755,
+          "text": "}"
+        },
+        {
+          "line": 1756,
+          "text": ""
+        },
+        {
+          "line": 1757,
+          "text": "/* scalefactors scale */"
+        },
+        {
+          "line": 1758,
+          "text": "int"
+        },
+        {
+          "line": 1759,
+          "text": "lame_set_sfscale(lame_global_flags * gfp, int val)"
+        },
+        {
+          "line": 2183,
+          "text": ""
+        },
+        {
+          "line": 2184,
+          "text": "int"
+        },
+        {
+          "line": 2185,
+          "text": "lame_set_preset(lame_global_flags * gfp, int preset)"
+        },
+        {
+          "line": 2186,
+          "text": "{"
+        },
+        {
+          "line": 2187,
+          "text": "    if (is_lame_global_flags_valid(gfp)) {"
+        },
+        {
+          "line": 2188,
+          "text": "        gfp->preset = preset;"
+        },
+        {
+          "line": 2189,
+          "text": "        return apply_preset(gfp, preset, 1);"
+        },
+        {
+          "line": 2190,
+          "text": "    }"
+        },
+        {
+          "line": 2191,
+          "text": "    return -1;"
+        },
+        {
+          "line": 2282,
+          "text": ""
+        },
+        {
+          "line": 2283,
+          "text": "#if DEPRECATED_OR_OBSOLETE_CODE_REMOVED"
+        },
+        {
+          "line": 2284,
+          "text": "int CDECL lame_set_preset_expopts(lame_global_flags *, int);"
+        },
+        {
+          "line": 2285,
+          "text": "#else"
+        },
+        {
+          "line": 2286,
+          "text": "#endif"
+        },
+        {
+          "line": 2287,
+          "text": ""
+        },
+        {
+          "line": 2288,
+          "text": "int"
+        },
+        {
+          "line": 2289,
+          "text": "lame_set_preset_expopts(lame_global_flags * gfp, int preset_expopts)"
+        },
+        {
+          "line": 2290,
+          "text": "{"
+        },
+        {
+          "line": 2291,
+          "text": "    (void) gfp;"
+        },
+        {
+          "line": 2296,
+          "text": ""
+        },
+        {
+          "line": 2297,
+          "text": "int"
+        },
+        {
+          "line": 2298,
+          "text": "lame_set_preset_notune(lame_global_flags * gfp, int preset_notune)"
+        },
+        {
+          "line": 2299,
+          "text": "{"
+        },
+        {
+          "line": 2300,
+          "text": "    (void) gfp;"
+        }
+      ]
+    }
+  ],
+  "nativeConversionUsed": false,
+  "engineChanged": false,
+  "publicAcceptance": false,
+  "failures": [],
+  "recipeSha256": "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e",
+  "scriptSha256": "e0663fdd354fa93b5dd49f5dcb57fd5dc942a4337ef2ddbec54d49eaa4ba14aa",
+  "url": "https://downloads.sourceforge.net/project/lame/lame/4.0/lame-4.0.tar.gz",
+  "finalUrl": "https://excellmedia.dl.sourceforge.net/project/lame/lame/4.0/lame-4.0.tar.gz?viasf=1&fid=7f06f0d7faa1700d&e=1793066790&st=9YAa9HkP7FyzdnPTzi1Y1g",
+  "archive": {
+    "bytes": 1496810,
+    "sha256": "3df5124d5ad3a98312ffd7ba6a9b36230e4f8a3e66d3ce0f425e336c32d216eb"
+  },
+  "disposableOwnedSourceArchiveRemoved": true
+}

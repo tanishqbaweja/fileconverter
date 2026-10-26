@@ -6,6 +6,20 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Pinned LAME source audit02-06-26.597Z closed (exact4.0archive/hash,
+presets/init/set_get source hashes, cleanup PASS). Gain/preset path present,
+actual browser gain still UNMEASURED. Next implement bounded gain diagnostics
+alongside unchanged strictPCM and run only a newly instrumented representative
+automatic MP3 control; no normalization/alignment/correction in acceptance,
+no identical6-job replay or nativebuild before cause is measured.
+
+03faecc7 MP3 gate01-58-30.005Z FAILED6/6quality47.04-47.09dB<60 despite
+all25scalar tags/rawID3/exactPNG/JPEGroles/descriptions PASS.201.6211MiB,
+492valid0missing/48pins/15birthsabsent/allcleanup/original/privacy PASS.
+Record metadata subgate separately; do not call these accepted conversions.
+Next exact audio diagnosis: amplitude/gain and pinned LAME defaults, changed
+bounded diagnostic control only; no identicalsix-job replay or thresholdchange.
+
 New exact MP3/ID3 six-job gate prepared, runtimeUNVERIFIED:25scalar Unicode
 fields, PNG/JPEG/roles/descriptions, independent raw ID3v2.4 plus fullPCM/image
 and physicalOPFS validation. Reuse existing privatecore with unchanged native

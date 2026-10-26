@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+2026-10-26 pinned LAME source audit02-06-26.597Z SUCCESS: exact4.0
+archive1496810B/SHA3df512... matched originalbuildrecipe before bounded tar
+stdout-only inspection of presets.c/lame.c/set_get.c. Source confirms initial
+scale1, preset application and preset multiplication into gain; supports a
+gain hypothesis but DOES NOT prove actual browser gain or a fix. Three source
+hashes/excerpts retained; archive/owned scratch deletedfinally, no media/native
+conversion or engine modification. Next changed diagnostic must measure raw
+source/output power/cross-product on browser output, without normalizing audio
+or weakening60dB. Six identical MP3 jobs need not be rerununchanged.
+
+2026-10-26 MP3 gate01-58-30.005Z/03faecc7 FAILED6/6 on actualaudioquality:
+all96000samples compared withouttrim/resample/alignment; FLACsource47.085712dB,
+Vorbis47.040908,Opus47.083836 <unchanged60dB. PNG/JPEG pairs have identicalPCM,
+so artworktype is not the difference.25tags/27rawID3frames/exactPNG178B/JPEG230B/
+front-backroles/Unicode descriptions independently PASS allsix;1reusable4KiB
+ID3buffer/whole tag inspected, no convertedcopy. WholeChrome201.62109375MiB,
+492valid0missing/48pins/15birthsgone/allcleanup/original/assets/privacy PASS.
+Representative headless screenshots0and5reviewed; UI Saved is NOT audio quality
+acceptance. Preserve failedreceipt/raw/journal/all6screens/regression. Existing
+privateengine/automatic128k settings unchanged; not publicpromotion/fullM-08.
+Next diagnose audio gain/codec defaults from exactpinned source and a changed
+diagnostic control, not another identicalsix-job replay or lowering60dB.
+
 2026-10-26 NEW MP3-destination gate prepared, browserUNVERIFIED: six
 FLAC/Vorbis/Opus->MP3 jobs with25scalar Unicode fields plus PNGfront/JPEGback
 cover/Unicode description; source-fullPCM/cover validation before conversion.
