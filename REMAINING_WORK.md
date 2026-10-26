@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-26 NEW q7 IO gate CLOSED for its exact private scope, receipt
+01-28-48.427Z:3real UI jobs pass, actual>8MiB BYOB cancellation after147221B
+payload written/one256KiB pool/no outstanding reads/empty OPFS/recovered worker;
+injected native header-write error; SAME-page exacta7c954... PNG/25tags/repeats/
+96000PCM61.065405dB recovery.203.6015625MiB whole-tree,462valid1NULL,46pins,
+15ownedbirths absent/all cleanup/original/privacy PASS. Three headless screenshots
+reviewed; native OS dialogs/real faults still UNVERIFIED. No large-test substitute
+or public acceptance;336.6484MiB repeat failure remainsFAILED/private. Continue
+other B05/full54 work without replaying these closed cases or relaxing constraints.
+
 2026-10-26 q7-specific IO gate implemented, actual browser UNVERIFIED.
 New deterministic180s stereo512k INPUT >8MiB exercises current BYOB policy;
 source independently fully decoded17.28M samples, canonical25tags verified.

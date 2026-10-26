@@ -9,7 +9,8 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { AUDIO_METADATA_TAGS } from "./audio-metadata-fidelity-fixture.mjs";
 export const VORBIS_IO_FIXTURE_POLICY = Object.freeze({ durationSeconds: 180, sampleRate: 48000, channels: 2,
-  frames: 8640000, minimumBytesExclusive: 8 * 1048576, maximumBytes: 16 * 1048576 });
+  frames: 8640000, minimumBytesExclusive: 8 * 1048576, maximumBytes: 16 * 1048576,
+  bytes: 11581819, sha256: "245ca17005fb7841cb906393acc513d6c55618f5f57ae091d2662cd3509532f6" });
 export async function createVorbisIoFixture(directory, env) {
   const root = path.resolve(import.meta.dirname, "../.."), relative = path.relative(path.join(root, "work"), directory);
   assert.ok(relative && !relative.startsWith("..") && !path.isAbsolute(relative)); assert.equal(await realpath(directory), directory);
@@ -27,6 +28,9 @@ export async function createVorbisIoFixture(directory, env) {
   assert.ok(Number(before.size) > VORBIS_IO_FIXTURE_POLICY.minimumBytesExclusive && Number(before.size) <= VORBIS_IO_FIXTURE_POLICY.maximumBytes);
   const hash = createHash("sha256"); for await (const chunk of createReadStream(file, { highWaterMark: 1048576 })) hash.update(chunk);
   const after = await lstat(file, { bigint: true }); for (const key of ["dev", "ino", "size", "mtimeNs"]) assert.equal(after[key], before[key]);
-  return { file, bytes: Number(before.size), sha256: hash.digest("hex"), durationSeconds: 180, frames: 8640000, channels: 2,
+  const sha256 = hash.digest("hex");
+  assert.equal(Number(before.size), VORBIS_IO_FIXTURE_POLICY.bytes);
+  assert.equal(sha256, VORBIS_IO_FIXTURE_POLICY.sha256, "Deterministic cancellation input differs from independently validated browser receipt");
+  return { file, bytes: Number(before.size), sha256, durationSeconds: 180, frames: 8640000, channels: 2,
     inputOnly: true, qualificationScope: "new midstream cancellation input crossing8MiB BYOB threshold; not full-size stress acceptance" };
 }

@@ -6,6 +6,15 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+q7-specific IO/recovery CLOSED by01-28-48.427Z receipt:3real UI jobs, true
+>8MiB persistentBYOB midstream cancellation, native injected write-error and
+same-page exactPNG/25tags/repeats/full96kPCM recovery,203.6015625MiB fulltree,
+462valid1NULL,46pins/15ownedbirths gone/all cleanup PASS. Three headless images
+reviewed; no headed/OS fault/direct-picker claim. Do not rerun these unchanged.
+Full147.96MB repeats remainFAILED336.6484MiB, routePRIVATE/PENDING, full54OPEN.
+Next: remaining B05 metadata preservation/disclosure gaps and broader B02-B09,
+not another known late-child stress replay or threshold relaxation.
+
 New q7 IO gate ready (37focused/lint/syntax PASS, browser UNVERIFIED): actual
 >8MiB180s stereo input uses BYOB, cancel only after>64KiB output, then injected
 native write-failure and SAME-page exact PNG/25tags/repeats/fullPCM recovery.

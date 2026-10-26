@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-26 q7 IO/recovery browser gate PASSED (01-28-48.427Z,1df4f328):
+new real180s stereo Opus11581819B/SHA245ca170... fully decoded17.28M source
+samples before browser; cancellation clicked after655131B read/147221B written,
+actual persistentBYOB one262144B pool/6reads/oneinflight/final0, worker recovered,
+partial OPFS removed. Injected after-real-write fault reached native header I/O
+error, then SAME-page recovery produced exact11843B/SHAa7c954... Vorbis with25tags,
+two repeated Unicode values, exact64x64PNG and all96000PCM samples61.065405dB>=60.
+All3 actual automatic nativeargs3/UI notices verified. Whole-tree203.6015625MiB,
+462valid/1NULL samples (not zero),46pins;15ownedbirths absent/privacy/original/
+assets/scratch cleanup PASS. All3headless screenshots reviewed, headed UNVERIFIED.
+Raw/journal/screenshot hashes authenticated by regression; input bytes/hash now
+pinned to this receipt. No converted copy retained. Closes this IO gate ONLY:
+not OS quota/permission/direct picker/large repeats/public promotion;336.6484MiB
+repeat failure remainsFAILED and exact routePRIVATE/PENDING. Do not replay.
+
 2026-10-26 NEW q7 IO/recovery gate prepared, runtime UNVERIFIED:
 180s48kHz stereo512k Opus with25tags,8MiB<size<=16MiB, full17.28M-sample
 input-only decode; real UI cancel after>256KiB input AND>64KiB output using
