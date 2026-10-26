@@ -605,7 +605,7 @@ try {
         assert.equal(row.fidelity.sourceSha256, "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083");
         const gain = row.fidelity.amplitudeDiagnostic; assert.ok(gain?.acceptanceUsesUnmodifiedSamples);
         row.gainDiagnostic = gain; row.repairedGainProof = { exactOneSourceEditAudited: true, actualAutomaticNativeArgument: 0,
-          fullPcmQualityPassed: Number(row.fidelity.psnrDb) >= 60,
+          fullPcmQualityPassed: row.fidelity.psnrDb === "infinity" || row.fidelity.psnrDb >= 60,
           gainRestoredWithinOnePartPerThousand: Math.abs(gain.leastSquaresGain - 1) <= 0.001,
           audioNormalized: false, alignmentApplied: false, clippingAcceptance: false, publicAcceptance: false };
         if (!row.repairedGainProof.gainRestoredWithinOnePartPerThousand) row.failures.push("Private gain policy did not restore input amplitude");

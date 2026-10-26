@@ -1,6 +1,6 @@
 {
   "recordedAt": "2026-10-26T02:30:58.673Z",
-  "status": "build-confirmed-live",
+  "status": "compiled-artifact-audited-browser-repair-unverified",
   "branch": "codex/mp3-input-gain-20261026-v1",
   "parent": "6446f8a9d243c9b728aef1318dbaeb12f5ce579a",
   "commit": "d29e30b53942d4f7228e9b0d892210b5e02da9fe",
@@ -24,14 +24,30 @@
   "publicAcceptance": false,
   "noDocker": true,
   "dispatchedAt": "2026-10-26T02:31:18.056Z",
-  "lastObservedAt": "2026-10-26T02:35:02.222Z",
+  "lastObservedAt": "2026-10-26T02:38:33.152Z",
   "run": {
-    "conclusion": "",
+    "conclusion": "success",
     "createdAt": "2026-10-26T02:31:22Z",
     "databaseId": 40259508976,
     "headSha": "d29e30b53942d4f7228e9b0d892210b5e02da9fe",
-    "status": "in_progress",
-    "updatedAt": "2026-10-26T02:31:27Z",
+    "status": "completed",
+    "updatedAt": "2026-10-26T02:37:59Z",
     "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40259508976"
+  },
+  "collected": {
+    "directory": "work/mp3-input-gain-40259508976",
+    "bytes": 10480762,
+    "manifestSha256": "0af075248ab4515bf8b3aeab542e95478f71618b9060fc5affcd67dad101cd44",
+    "buildSourcePins": 61,
+    "artifactPins": 18,
+    "upstream": {
+      "originalSha256": "a11ec3562e733f21565c491ab56b7f1d4a6865fc1ddbdc372ed9cb29b13ca7fb",
+      "compiledSha256": "56d2ebdef4c79bbc7174dfb9492e2040066854770f64f8ec096cd53a190e4e15",
+      "sourceEdits": 1,
+      "publicAcceptance": false
+    },
+    "immutableExecutedSourcesVerified": true,
+    "hostedCleanupPassed": true,
+    "publicAcceptance": false
   }
 }

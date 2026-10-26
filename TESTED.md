@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-26 NEW nativegain build40259508976 terminalSUCCESS (~397s),
+d29e30b5; collectedwork/mp3-input-gain-40259508976 audited61immutable source/
+18artifactpins,10480762B,manifest0af075248ab4515bf8b3aeab542e95478f71618b9060fc5affcd67dad101cd44.
+ExactoneLAMEpreset edit verified from fulloriginal/generated source; wrapper
+metadata10edits unchanged, initial32MiB/max96MiB unchanged, actualcodecPolicy
+change explicitlyTRUE. Hosted ownedcleanupPASS. No sourcearchive or engine
+published; reusableprivatecore retained~10MiB, not a convertedcopy. Next one
+real patched-engine canary, fullquality/clipping/stress/public stillUNVERIFIED.
+
 2026-10-26 isolatednoDocker build40259508976 confirmedLIVE at02:35UTC,
 immutable source d29e30b53942d4f7228e9b0d892210b5e02da9fe on
 codex/mp3-input-gain-20261026-v1, parent6446f8a9. CanonicalHEAD/index/workflow/
