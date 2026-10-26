@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
+import { createHash } from "node:crypto";
 import path from "node:path";
 import test from "node:test";
 
@@ -75,4 +76,23 @@ test("owned browser wrapper keeps the complete original specs, headless operatio
   assert.match(source, /for \(const child of \[server, runner\]\)/);
   assert.match(source, /highWaterMark: 262144/); assert.match(source, /protectedOriginalBefore/); assert.match(source, /protectedOriginalAfter/);
   assert.match(source, /conversionMemoryAcceptance: false/); assert.match(source, /await runtime.close\(\)/);
+});
+test("first real changed-toolchain run stays failed: eighteen browser cases passed but PUT reached an internal hosting error", async () => {
+  const report = await json("evidence/2026-10-26T15-17-35-964Z-owned-privacy-offline.json");
+  assert.equal(report.executedHead, "36a70a02b32a1308e2a0deff250d67ec6df819a8");
+  assert.equal(report.status, "failed"); assert.equal(report.stats.expected, 18); assert.equal(report.stats.unexpected, 1);
+  assert.equal(report.stats.skipped, 0); assert.equal(report.ownedRuntimeRemoved, true);
+  assert.ok(report.processCleanup.every(row => row.status === "owned-identity-absent"));
+  assert.deepEqual(report.protectedOriginalAfter, report.protectedOriginalBefore);
+  assert.equal(report.protectedOriginalAfter.sha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
+  assert.equal(report.conversionMemoryAcceptance, false); assert.equal(report.headedCoverage, false);
+  const trace = await readFile("output/playwright/2026-10-26T15-17-35-964Z-privacy-failure/static-host-policy-product-8e5b5-rsion-while-serving-the-app/trace.zip");
+  assert.equal(trace.length, 9660); assert.equal(createHash("sha256").update(trace).digest("hex"), "ee7c6c16d09d8886b76f6cea583eb849949547995f3a47c0642116a0378b18f4");
+  const requireFromConsumer = createRequire(path.resolve("node_modules/@shuding/opentype.js/package.json"));
+  const files = requireFromConsumer("fflate").unzipSync(trace);
+  const network = Buffer.from(files["0-trace.network"]).toString().trim().split("\n").map(line => JSON.parse(line).snapshot);
+  assert.equal(network.find(row => row?.request.method === "POST").response.status, 405);
+  const put = network.find(row => row?.request.method === "PUT"); assert.equal(put.response.status, 500);
+  assert.equal(put.request.bodySize, 22); // Synthetic refusal control, not a user file.
+  assert.match(Buffer.from(files[`resources/${put.response.content._sha1}`]).toString(), /internal error.*reference[\s\S]*miniflare/);
 });

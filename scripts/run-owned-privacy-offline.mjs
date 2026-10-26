@@ -27,7 +27,7 @@ const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: 
   headedCoverage: false, conversionMemoryAcceptance: false, publicPromotion: false, sourcePins: {}, failures: [] };
 for (const file of ["package.json", "package-lock.json", "playwright.config.ts", "tests/browser/privacy-offline.spec.ts",
   "tests/browser/static-host-policy.spec.ts", "scripts/run-owned-privacy-offline.mjs", "worker/index.ts", "lib/static-host-request-policy.ts",
-  "app/converter/ConverterApp.tsx", "lib/capability-registry.ts", ".openai/hosting.json"])
+  "app/converter/ConverterApp.tsx", "lib/capability-registry.ts", ".openai/hosting.json", "vite.config.ts"])
   report.sourcePins[file] = sha(await readFile(path.join(root, file)));
 let runtime, server, runner, serverBirth, runnerBirth, serverLog = "", runnerLog = "", result;
 const stop = async (child, identity) => {
@@ -45,6 +45,9 @@ try {
   report.protectedOriginalBefore = { bytes: (await stat(originalFile)).size, sha256: await hashFile(originalFile) };
   assert.equal(report.protectedOriginalBefore.bytes, 2958573265); assert.equal(report.protectedOriginalBefore.sha256, originalSha);
   await access(path.join(root, "dist/server/wrangler.json"));
+  const builtConfig = JSON.parse(await readFile(path.join(root, "dist/server/wrangler.json")));
+  report.assetRouting = { binding: builtConfig.assets?.binding, runWorkerFirst: builtConfig.assets?.run_worker_first };
+  assert.deepEqual(report.assetRouting, { binding: "ASSETS", runWorkerFirst: true }, "Delivered hosting config must gate all requests before asset routing");
   runtime = await createOwnedRuntimeScratch("privacy-validation-");
   const port = await new Promise((resolve, reject) => { const socket = createServer(); socket.once("error", reject);
     socket.listen(0, "127.0.0.1", () => { const port = socket.address().port; socket.close(error => error ? reject(error) : resolve(port)); }); });

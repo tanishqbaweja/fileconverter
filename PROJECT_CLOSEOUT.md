@@ -6,6 +6,16 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+First actual changed-toolchain browser run36a70a02 FAILED hosting PUT500:
+18privacy/offline PASS; trace proves POST405, then platform internal error.
+Original full hash and all owned cleanup pass. Keep failure/trace; cause not
+proved to be Vite. Explicit ASSETS binding +worker-first policy now prepared,
+generated config verified/build/focused/TS/lint PASS. Next one changed19-case
+headless run, unchanged original spec/body-unread/405 requirements. This setting
+routes static requests through the existing worker before ASSETS if deployed;
+no deployment performed. Earlier CI40343246908/f5e42543 now SUCCESS1756+1skip/
+19privacy/clean npm-ci/build/lint/TS, not coverage of current Vite/routing.
+
 B08 compatible Vite/tooling batch: new audit19->9groups; actual local build,
 1757portable/5new focused/full lint/TS PASS. Run all19unchanged
 headless privacy/offline/static-host cases through prepared owned wrapper on

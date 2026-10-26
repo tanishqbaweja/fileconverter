@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+2026-10-26 — Changed Vite privacy run15-17-35-964Z/36a70a02 stays FAILED:
+18privacy/offline cases PASS43.6s, static-host refusal case FAILS PUT500 instead
+of405. Retained trace proves POST405 then PUT500/body22synthetic bytes and a
+Miniflare core internal-error reference; precise platform cause not yet proved.
+4image-optimizer GETs404 before failure. Both wrapper process births absent,
+owned runtime removed, full original size/SHA unchanged before/after. Compact
+report +9,660B trace retained; trace includes the exact1,937B error context.
+Removed2,033B redundant standalone context/last-run copies; no converted copies/profiles.
+Hypothesis-directed correction: explicit ASSETS binding +run_worker_first:true
+so application rejects nonstatic methods BEFORE platform asset dispatch. Build
+actually emits both settings;18focused +TS/lint PASS. Existing19browser specs
+and body-unread/405 assertions unchanged. Changed routing browser check next;
+do not relabel firstfailure or claim a Vite-specific cause from one Windows run.
+Separate earlier-source CI40343246908/f5e42543 now SUCCESS1756portable/1skip,
+19privacy/offline39.6s/clean npm-ci/build/lint/TS/404route audit. No restart;
+not proof for later Vite/routing. Result receipt separately retained.
+
 2026-10-26 — Targeted compatible tooling patch batch prepared: Vite8.3.5 plus
 ten audited tooling families within existing peer/consumer ranges; no overrides,
 blind audit fix or framework/Cloudflare migration. Exact baseline hash verified.

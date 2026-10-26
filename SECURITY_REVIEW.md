@@ -1,5 +1,32 @@
 # Dependency and hosting review
 
+## Current local hosting check — October 26
+
+Actual new-toolchain Windows run36a70a02 is18PASS/1FAIL, not19PASS. A9,660-byte
+retained Playwright trace proves POST405 then PUT500/Miniflare internal error;
+four optimizer endpoints correctly returned404. The precise platform cause is
+not proved, nor is a Vite regression established by this one Windows run.
+Report `evidence/2026-10-26T15-17-35-964Z-owned-privacy-offline.json` records
+exact source pins, full before/after protected-original identity and successful
+owned birth/scratch cleanup. Failure artifacts remain under the matching
+`output/playwright/*-privacy-failure` directory, no converted file copies.
+
+The generated deployment config had default asset-first routing and no ASSETS
+binding. New explicit `assets: { binding: "ASSETS", run_worker_first: true }`
+makes the existing refusal policy execute before asset handling and lets
+GET/HEAD use Vinext's existing ASSETS path. Build confirms the delivered flags;
+unit/type/lint checks pass. Actual changed hosting test remains pending. The
+original browser specs and body-unread/405 requirements are unchanged.
+[Cloudflare's routing contract](https://developers.cloudflare.com/workers/static-assets/binding/)
+supports this configuration; it does not prove the cause of the internal error.
+If deployed, worker-first changes which static requests invoke the edge worker;
+this work has not deployed anything or measured hosting cost/performance.
+
+Earlier-source40343246908/f5e42543 has now independently passed clean npm-ci,
+build/lint/TS,1756portable+1skip and19privacy/offline39.6s. No restarted run.
+`evidence/2026-10-26-database-scaffold-ci-result.json` closes that older install
+gate only. Vite/routing validation and remaining9advisories remain distinct.
+
 ## October 26, 2026 — compatible Vite/tooling patch batch
 
 Vite8.0.13 -> exact8.3.5, within the declared peers of current Vinext,

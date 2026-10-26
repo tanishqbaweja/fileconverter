@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "scope": "Terminal hosted portable verification of the earlier database cleanup source only, not later Vite/hosting edits",
+  "runId": 40343246908,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40343246908",
+  "executedHead": "f5e42543f3c369fe5037cb896281e0b010dca65c",
+  "status": "completed",
+  "conclusion": "success",
+  "cleanNpmCi": "passed",
+  "productionBuild": "passed",
+  "lint": "passed",
+  "typeScript": "passed",
+  "portableUnits": { "total": 1757, "passed": 1756, "failed": 0, "skipped": 1 },
+  "networkPrivacyOfflineBrowser": { "passed": 19, "durationSeconds": 39.6 },
+  "publicRouteEvidenceEntries": 404,
+  "nativeReproductionExecuted": false,
+  "privateStressExecuted": false,
+  "publicPromotion": false,
+  "originalScopeComplete": false,
+  "duplicateDispatchUsed": false
+}

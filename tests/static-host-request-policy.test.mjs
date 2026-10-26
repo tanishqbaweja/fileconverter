@@ -75,3 +75,10 @@ test("privacy browser safety is in setup, before owned profile/browser creation;
   assert.ok(Buffer.byteLength(hosted.replace("/po-XXXXXX/", "/privacy-offline-XXXXXX/")) >= 108);
   assert.match(await readFile(".github/workflows/ci.yml", "utf8"), /playwright test tests\/browser\/privacy-offline.spec.ts tests\/browser\/static-host-policy.spec.ts/);
 });
+test("production configuration routes every request through the static policy before the asset binding", async () => {
+  const config = await readFile("vite.config.ts", "utf8");
+  assert.match(config, /assets:\s*\{\s*binding:\s*"ASSETS",\s*run_worker_first:\s*true\s*\}/);
+  const driver = await readFile("scripts/run-owned-privacy-offline.mjs", "utf8");
+  assert.match(driver, /builtConfig.assets\?\.binding/); assert.match(driver, /builtConfig.assets\?\.run_worker_first/);
+  assert.match(driver, /Delivered hosting config must gate all requests before asset routing/);
+});

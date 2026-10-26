@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-26 — B08 first changed-toolchain local browser check FAILED one hosting
+case:18privacy/offline pass, synthetic PUT gets500 after POST405; retained trace
+and full original/cleanup proof in15-17-35-964Z. No worker body read/HTTP assertion
+relaxation. Add explicit ASSETS binding/worker-first routing, build confirms
+delivered settings, focused/TS/lint pass; actual changed routing gate next.
+This is a specific new configuration test, not an unchanged conversion replay.
+Earlier cleanup CI40343246908/f5e42543 is terminalSUCCESS1756+1skip/19privacy/
+clean install/build/lint/TS, not coverage of later Vite/asset policy. Nine current
+advisory groups and original media/native/release requirements remain open.
+
 2026-10-26 — B08 compatible-tooling subgap moves forward: exact Vite8.3.5 plus
 targeted transitive patches within declared ranges removes ten more advisory
 groups19->9 (8high/1low remain), no overrides/framework upgrade/native change.

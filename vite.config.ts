@@ -14,6 +14,9 @@ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 const localBindingConfig = {
   main: "./worker/index.ts",
   compatibility_flags: ["nodejs_compat"],
+  // Enforce the static-only policy before platform asset routing for every
+  // method. GET/HEAD can still use Vinext's direct ASSETS binding afterwards.
+  assets: { binding: "ASSETS", run_worker_first: true },
   d1_databases: d1
     ? [
         {
