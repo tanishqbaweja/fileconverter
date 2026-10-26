@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-10-26 — Database cleanup f5e42543 pushed to media-options. Exactly one
+changed portable CI40343246908 dispatched, attempt1, last authoritative state
+QUEUED/0jobs/no conclusion; no other active repository run. Not a clean npm-ci/
+hosted build/privacy PASS. Follow this exact handle, never restart from queue
+delay or observation timeout. Dispatch receipt:
+`evidence/2026-10-26-database-scaffold-ci-dispatch.json`. Local checks remain
+passed; no duplicate full local build/conversion/native build started.
+
 2026-10-26 — B08 unused database scaffold removed after source/consumer audit:
 no app/CI use, missing configured schema, preserved empty journal, D1/R2 null.
 Removed two unused direct deps/command/config; no data or app/codec change.

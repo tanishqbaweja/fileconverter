@@ -13,6 +13,9 @@ findings remain.20focused tests/lint/TS and npm ls PASS (four prior optional
 extraneous entries retained); clean hosted npm-ci/build/portable/privacy next.
 Windows save failure is not a clean-install pass. This
 does not change codecs or solve memory/scaling; keep all Chrome constraints.
+Source f5e42543 pushed; single CI40343246908 is last verified QUEUED/0jobs,
+attempt1/no conclusion. Follow that run to terminal before accepting fresh
+npm-ci/build/portable/privacy; do not redispatch from a queue/observation delay.
 
 Changed storage-error UI/recovery CLOSED by14-16-54.324Z/195cafe8: real quota
 failure shows clear summary and exact raw diagnostics in closed/opened/reclosed

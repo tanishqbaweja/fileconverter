@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "scope": "Dispatch and last verified queue state only, not CI acceptance",
+  "repository": "tanishqbaweja/fileconverter",
+  "runId": 40343246908,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40343246908",
+  "executedHead": "f5e42543f3c369fe5037cb896281e0b010dca65c",
+  "selection": "portable-verify",
+  "createdAt": "2026-10-26T14:49:24Z",
+  "runAttempt": 1,
+  "lastObservedStatus": "queued",
+  "lastObservedJobs": 0,
+  "conclusion": null,
+  "cleanInstallAccepted": false,
+  "nativeReproductionExecuted": false,
+  "privateStressExecuted": false,
+  "publicPromotion": false,
+  "originalScopeComplete": false,
+  "continuation": "Requery this exact run. Do not redispatch or interpret a long queue/observation timeout as termination."
+}

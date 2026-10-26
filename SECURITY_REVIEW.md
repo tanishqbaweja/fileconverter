@@ -48,6 +48,8 @@ at its lock save, but installed esbuild independently reads0.28.1 and both Drizz
 packages are absent; actual compiler tests pass. Do not call the failed command a
 successful clean install, change permissions, erase the lock, or retry blindly.
 Fresh hosted npm-ci is the acceptance gate for install reproducibility.
+The single dispatched run is40343246908 at f5e42543, last verified QUEUED with
+no jobs/conclusion (attempt1). It has not passed; follow that exact handle.
 
 ## October 21, 2026 — framework/hosting review (historical)
 

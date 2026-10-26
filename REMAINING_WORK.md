@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-10-26 — B08 cleanup source f5e42543 pushed. Single portable verification
+40343246908 is confirmed QUEUED,0jobs/attempt1/no conclusion. Clean npm-ci and
+hosted build/portable/privacy acceptance remains pending; local20focused plus
+six-scaffold guard checks/lint/TS/npm ls are not a substitute. Continue following
+the exact CI handle, no duplicate dispatch/restart or blocked/completion claim.
+Independent remaining19advisory groups and original media gates remain open.
+
 2026-10-26 — B08 database-scaffold subgap implemented: source audit proves no
 application/CI consumer and no schema; empty original journal preserved, hosting
 D1/R2 remainnull. Remove unusedDrizzle direct deps/command/config; explicitly
