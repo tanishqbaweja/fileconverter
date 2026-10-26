@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+47733236 CI40255876348 SUCCESS:1694portable pass/1skip, build/lint/TS/
+public-proof and19privacy/offline browser tests;36focused pass locally. All
+closed source/evidence pushed, no owned conversion runtime remains. Main M-08
+row and B05 plan now name NEXT distinct gap:25-tag MP3-destination ID3 plus
+PNG/JPEG covers from FLAC/Vorbis/Opus, with raw ID3 and fullPCM validation.
+No new nativebuild/public qualification/full54/large-repeat completion implied.
+
 Standard aliases/duplicates CLOSED for fourfamilies across sixexactroutes by
 01-43-03.703Z receipt:24groups/48values separate/inorder,21scalar/output,fullPCM
 pass,209.01953125MiB/476valid0NULL/47pins/16birthsabsent/allcleanup PASS.
@@ -720,7 +727,7 @@ conversions are existing evidence, not tasks to repeat unchanged.
 | Blocker | Remaining decision/work | Exit evidence |
 | --- | --- | --- |
 | B02/B03 | Fresh H.264/AV1/MPEG-2 output, AV1 software decode and legally conditional HEVC; remaining named practical combinations. | Reuse each exact candidate's recorded diagnosis. Implement and qualify the production route, or document an exact measured technical/quality/memory/legal unsupported decision. A build, packet copy or failed first attempt does not close a fresh encoding requirement. |
-| B05 | Broader representable audio fields and destination artwork. | Reuse the private 25-field text-preservation result; finish memory-safe production integration, independent field/art comparisons, accurate destination exclusions and applicable stress/recovery gates. Do not repeat unchanged stock-loss demonstrations. |
+| B05 | Expanded 25-field MP3-destination ID3 and PNG/JPEG coverage from FLAC/Vorbis/Opus; then AIFF aliases and other representable fields. | Reuse closed private 25-field FLAC/Vorbis/Opus cases, four standard duplicate families, cover/budget and q7 IO gates. Add independent raw ID3 inspection/full PCM for the distinct MP3 destinations, then applicable stress/direct-output/real-fault/public-integration gates. Failed 336.65 MiB q7 repeats remain failed/private. Do not repeat unchanged stock-loss or closed alias/IO demonstrations. |
 | Full audit | Remaining image/RAW/HEIF, archive, subtitle, ebook, data and office requirements. | Reconcile every applicable original named item with its current implementation/validated evidence or defensible exact unsupported decision. Existing representative support must not be treated as every theoretical format pair. |
 
 Do not narrow the scope to today's public registry. Do not label a profile
