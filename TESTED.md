@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-10-26 95057d2c CI40290260192 SUCCESS:1715portablepassed/1skip/
+0fail (1716total), build/lint/TS/public404-proof audit and19privacy/offline
+browser tests PASS.63focused/lint/TS/diff pass locally. Native40259508976
+build/audit separatelyPASS; portableCI does not imply clipping/IO/stress/full
+browsermatrix/publicpromotion. AllsixsmallrepairedMP3 cases closed, original
+failures retained. No owned conversionruntime remains; useful10.48MBprivate
+core retained for nextclipping/recovery gates, not a convertedcopy. Full54OPEN.
+
 2026-10-26 FIVE remainingMP3 cases07-58-26.361Z/d23b8cbf PASS on same
 auditedgaincore0af075...: FLAC/JPEG97.0623dB, VorbisPNG/JPEG95.3635,
 OpusPNG/JPEG95.3912, all96000unalteredPCM each, gainwithin0.001 ofunity,
