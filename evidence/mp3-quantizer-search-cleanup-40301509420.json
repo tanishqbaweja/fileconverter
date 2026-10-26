@@ -1,0 +1,15 @@
+{
+  "status": "rejected-private-tool-cache-removed-after-audited-failed-browser-canaries",
+  "directory": "work/mp3-quantizer-search-40301509420",
+  "files": 21,
+  "bytes": 10662116,
+  "manifestSha256": "f52fef89f75b9dcb25ec8f5442e8d73538779221cbac24bbd658d14bb6c87d7a",
+  "identity": { "dev": "1887170595", "ino": "9288674238780991" },
+  "allRecordedBrowserBirthsAbsent": true,
+  "compactManifestAndFailureReportsRetained": true,
+  "convertedMediaAlreadyRemovedByHarness": true,
+  "protectedOriginalNotTouched": true,
+  "noOtherDirectoryDeleted": true,
+  "removedAt": "2026-10-26T09:55:40.836Z",
+  "recovery": "Rebuild from retained immutable source; hosted build artifact was not deleted."
+}

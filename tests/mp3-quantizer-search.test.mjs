@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
+import { gunzipSync } from "node:zlib";
 import test from "node:test";
 import { runInNewContext } from "node:vm";
 import { MP3_CLIPPING_CASES } from "../scripts/lib/mp3-clipping-fixture.mjs";
@@ -97,4 +98,46 @@ test("new actual-browser gate selects exactly two previously failed full-scale i
   assert.match(source, /row.fidelity.minimumPsnrDb, 60/); assert.match(source, /Math.abs\(gain.leastSquaresGain - 1\) <= 0.001/);
   assert.match(source, /active.peak.privateBytes - report.blankBaseline.privateBytes/);
   assert.match(source, /assert.ok\(report.memory.incrementalPrivateMiB <= 250\)/);
+});
+test("actual level2 browser canaries remain rejected: worse full-scale peaks on exact prior inputs despite passing PCM, metadata and memory", async () => {
+  const receipt = JSON.parse(await readFile("evidence/2026-10-26T09-50-24.664Z-audio-metadata-fidelity-result.json"));
+  assert.equal(receipt.executedHead, "21daa3ff8d58dd9934a851adc10403869830ce37"); assert.equal(receipt.status, "failed");
+  assert.equal(receipt.publicAcceptance, false); assert.equal(receipt.fullMetadataAcceptance, false); assert.equal(receipt.sourcePins, 50);
+  const packed = await readFile(receipt.archive.path); assert.equal(sha(packed), receipt.archive.sha256); assert.equal(packed.length, receipt.archive.bytes);
+  const raw = gunzipSync(packed, { maxOutputLength: 1048576 }); assert.equal(sha(raw), receipt.archive.restoredSha256); assert.equal(raw.length, receipt.archive.restoredBytes);
+  const report = JSON.parse(raw), oldReceipt = JSON.parse(await readFile("evidence/2026-10-26T08-27-17.345Z-audio-metadata-fidelity-result.json"));
+  const oldReport = JSON.parse(gunzipSync(await readFile(oldReceipt.archive.path), { maxOutputLength: 1048576 }));
+  assert.equal(report.artifact.core.allowedSourceEdits, 11); assert.equal(report.artifact.core.mp3QuantizerSearchPolicy.compressionLevel, 2);
+  assert.equal(Object.keys(report.artifact.buildSourcePins).length, 66); assert.equal(Object.keys(report.artifact.artifactPins).length, 20);
+  assert.equal(report.cases.length, 2); assert.equal(report.nativeConversionUsed, false); assert.equal(report.headedCoverage, false);
+  const peaks = [1.0017679929733276, 1.0069200992584229], psnr = [62.148870973962985, 73.01384535020546];
+  for (const [index, row] of report.cases.entries()) {
+    const prior = oldReport.cases.find(c => c.name === row.name); assert.ok(prior); assert.equal(prior.status, "failed");
+    assert.equal(row.source.sha256, prior.source.sha256); assert.notEqual(row.output.sha256, prior.output.sha256);
+    assert.equal(row.output.bytes, [34048, 50560][index]); assert.equal(row.status, "failed"); assert.equal(row.failures.length, 1);
+    assert.match(row.failures[0], /float decode has saturation or overshoot/);
+    assert.equal(row.decodedFloatPeaks.peakAbsolute, peaks[index]); assert.equal(row.decodedFloatPeaks.beyondFullScale, [116, 12][index]);
+    assert.ok(row.decodedFloatPeaks.peakAbsolute > prior.decodedFloatPeaks.peakAbsolute);
+    assert.equal(row.decodedFloatPeaks.allSamplesInspected, true); assert.equal(row.decodedFloatPeaks.fullDecodedBufferAllocated, false);
+    assert.equal(row.nearFullScalePeakProof.status, "failed"); assert.equal(row.nearFullScalePeakProof.thresholdAbsolute, 1); assert.equal(row.nearFullScalePeakProof.toleranceAdded, false);
+    assert.equal(row.fidelity.samples, [96000, 192000][index]); assert.equal(row.fidelity.psnrDb, psnr[index]); assert.equal(row.fidelity.minimumPsnrDb, 60);
+    assert.ok(Math.abs(row.gainDiagnostic.leastSquaresGain - 1) <= 0.001); assert.equal(row.gainDiagnostic.audioNormalized, false);
+    assert.equal(row.output.tags.status, "passed"); assert.equal(row.id3Metadata.status, "passed"); assert.equal(row.id3Metadata.fields.length, 25);
+    assert.equal(row.id3Metadata.artwork.status, "preserved"); assert.equal(row.actualAutomaticQualityArgument.nativeCode, 0);
+    assert.equal(row.disposableOutputRemoved, true);
+  }
+  assert.equal(receipt.memory.incrementalPrivateMiB, 194.3359375); assert.equal(receipt.memory.validSamples, 413); assert.equal(receipt.memory.unavailableSamples, 0);
+  assert.equal(report.processCleanup.length, 16); assert.ok(report.processCleanup.every(c => c.status === "owned-identity-absent"));
+  assert.equal(receipt.protectedOriginalUnchanged, true); assert.ok(Object.values(receipt.cleanup).every(Boolean)); assert.deepEqual(receipt.network.forbidden, []);
+  const journal = await readFile(receipt.losslessJournal.file); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  const samples = gunzipSync(journal, { maxOutputLength: 8 * 1048576 }); assert.equal(sha(samples), receipt.losslessJournal.sha256);
+  const history = samples.toString().trim().split("\n").map(line => JSON.parse(line).sample); assert.equal(history.length, 413);
+  const peak = Math.max(...history.filter(sample => sample.phase !== "blank" && sample.privateBytes !== null).map(sample => sample.privateBytes));
+  assert.equal((peak - report.blankBaseline.privateBytes) / 1048576, receipt.memory.incrementalPrivateMiB);
+  for (const screen of report.screenshots) { assert.equal(screen.headedCoverage, false); assert.equal(sha(await readFile(screen.path)), screen.sha256); }
+  const manifestBytes = await readFile("evidence/mp3-quantizer-search-manifest-40301509420.json"); assert.equal(sha(manifestBytes), receipt.artifactManifestSha256);
+  const manifest = JSON.parse(manifestBytes); assert.equal(manifest.candidate.compiledSourceSha256, makeMp3QuantizerSearchCandidate(parent).generatedSha256);
+  const cleanup = JSON.parse(await readFile("evidence/mp3-quantizer-search-cleanup-40301509420.json"));
+  assert.equal(cleanup.manifestSha256, receipt.artifactManifestSha256); assert.equal(cleanup.files, 21); assert.equal(cleanup.bytes, 10662116);
+  assert.equal(cleanup.noOtherDirectoryDeleted, true); assert.equal(cleanup.compactManifestAndFailureReportsRetained, true);
 });

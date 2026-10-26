@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-10-26 — Level2 MP3-search candidate REJECTED by real browser gate
+`evidence/2026-10-26T09-50-24.664Z-audio-metadata-fidelity-result.json`,
+executed21daa3ff on exact old failed0.999 inputs, actual audited40301509420 core.
+Mono:116 float overshoots, peak1.001767993 (prior level9:1/1.000786185).
+Stereo:12 overshoots, peak1.006920099 (prior level9:11/1.003242493).
+All96000/192000 integer samples still pass60dB (62.1489/73.0138), gainwithin
+0.001/25tags/rawID3/exactPNG pass. Thus slower-search policy is NOT a clipping
+remedy; do not rerun/rebuild it or sweep other levels without a new hypothesis.
+Actual engine elapsed587.87/234.98ms; these two historical-control observations
+are NOT a matched speed benchmark. Primary wholeChrome194.3359375MiB,
+413valid/0unavailable/50pins/16birthsabsent/privacy/original/allcleanup PASS.
+Both headless screenshots reviewed. Raw archive, full journal, manifest and
+regression retain failure. Rejected local21-file tool cache10,662,116B removed
+after exact manifest/inventory/identity and terminal-browser checks; source and
+hosted artifact allow rebuilding, but no unchanged rebuild is justified.
+No converted media/profile/scratch remains. Public assets/404 routes unchanged.
+Source eaa4da9e CI40301962025 SUCCESS:1738portablepass/1skip,19privacy/offline,
+build/lint/TS/public-proof. Green CI does not override failed actual canaries.
+After retaining the failure/cleanup proof, all37 focused source/audit/prior-case/
+new-canary regression tests pass; lint/diff checks pass. This extra retained-
+failure regression is local evidence, not retroactively part of sourceCI.
+
 2026-10-26 — MP3 search build40301509420 TERMINAL SUCCESS at9ae95cf8;
 collected once into `work/mp3-quantizer-search-40301509420` (10,662,116 bytes
 of reusable native tools, not converted media). Manifest f52fef89...c87d7a,
