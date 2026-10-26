@@ -6,6 +6,11 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Latest source CI: `7077dcb4` / 40294184264 SUCCESS (1,723 portable tests passed,
+1 skipped; 19 privacy/offline; build/lint/TypeScript/404-profile proof audit).
+Later retained recovery regression `df8e4b1d` has 72 focused local passes.
+Both pushed; native/full qualification not implied. No owned runtime remains.
+
 MP3-specific payload cancellation/write-error/same-page recovery is now CLOSED
 by `08-41-16.887Z`: all three actual production-browser jobs passed, exact prior
 PNG/25-tag/full-PCM output restored; primary peak 198.96484375 MiB, 466 valid/

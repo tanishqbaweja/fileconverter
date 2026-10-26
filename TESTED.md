@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-26 — Source `7077dcb4` CI 40294184264 SUCCESS: production build,
+lint, TypeScript, 404-public-profile evidence audit, 1,723 portable tests passed,
+1 skipped/0 failed (1,724 total), and 19 privacy/offline browser tests passed.
+Native/full qualification jobs were skipped, not passed by implication.
+Subsequent recovery evidence/regression `df8e4b1d` passed all 72 focused tests
+locally; lint/TypeScript/diff checks passed. Both commits pushed to the requested
+GitHub repository's `media-options` branch. No owned conversion scratch remains.
+Keep near-full-scale clipping FAILED/private; recovery is CLOSED, full goal OPEN.
+
 2026-10-26 — MP3-specific cancellation/write-failure/recovery gate PASSED.
 `evidence/2026-10-26T08-41-16.887Z-audio-metadata-fidelity-result.json`
 (executed `7077dcb4`, same private audited engine; no native rebuild).

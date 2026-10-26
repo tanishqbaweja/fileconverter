@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-10-26 — Source `7077dcb4` CI 40294184264 passed build/lint/TypeScript,
+1,723 portable tests (+1 skipped), 19 privacy/offline browser tests and the
+404-profile proof audit. Later evidence/regression `df8e4b1d`: 72 focused local
+tests passed. Native/full qualification was not run by portable CI. Recovery
+is closed; clipping failure and all other original-scope gaps remain open.
+
 2026-10-26 — Distinct MP3 IO/recovery gate CLOSED by `08-41-16.887Z`:
 real UI payload cancellation, injected after-write muxer error and SAME-page
 exact prior PNG/25-tag/full-PCM recovery all passed. 198.96484375 MiB primary
