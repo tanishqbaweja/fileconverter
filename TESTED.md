@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-26 NEW near-full-scale MP3 gate prepared, runtimeUNVERIFIED:
+4genuine2s48kHz16bitFLAC INPUTS, mono/stereo at0.99/0.999, stereo997/1433Hz,
+25tags/PNG/Unicode description. Sourceartrewrite exactPCM and completef32
+sourcepeak>=0.98<1 required. Browser actualpatchedcore/automaticnative0, unchanged
+60dB complete96k/192kS16 quality/gain/tags/cover/memory; additional independent
+f32 output counts every sample beforeintegerclamping. No saturation orovershoot
+at absolute1 (notolerance).1held<=64KiBchunk+4bytecarry, nofulloutputbuffer.
+Nativeonlycreatesinputs/decodesfinishedoutput. Not universalwaveform,IO/stress/
+public acceptance; previouslyclosed6cases not replayed, no native rebuild.
+
 2026-10-26 95057d2c CI40290260192 SUCCESS:1715portablepassed/1skip/
 0fail (1716total), build/lint/TS/public404-proof audit and19privacy/offline
 browser tests PASS.63focused/lint/TS/diff pass locally. Native40259508976

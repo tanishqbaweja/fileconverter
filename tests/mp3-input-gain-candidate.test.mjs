@@ -68,7 +68,7 @@ test("remaining matrix executes exactly five new source/cover combinations and e
   const cases = JSON.parse(JSON.stringify(runInNewContext("(" + expression + ")", { mp3GainMatrix: true }, { timeout: 1000 })));
   assert.deepEqual(cases.map(row => [row.source, row.artwork]), [["flac", "mjpeg"], ["ogg", "png"], ["ogg", "mjpeg"], ["opus", "png"], ["opus", "mjpeg"]]);
   assert.ok(cases.every(row => row.destination === "mp3" && row.gainRepair));
-  assert.match(source, /mp3GainMatrix && !selectedCases.some/); assert.match(source, /row.fidelity.sourceSha256, sourcePcm\[conversion.source\]/);
+  assert.match(source, /mp3GainMatrix && !selectedCases.some/); assert.match(source, /: sourcePcm\[conversion.source\]/);
   assert.match(source, /actualAutomaticNativeArgument: 0/); assert.match(source, /row.fidelity.minimumPsnrDb, 60/);
 });
 test("actual patched browser canary passes97.06dB and restores unity gain with exact25tags/cover under167.90MiB, without promotion", async () => {

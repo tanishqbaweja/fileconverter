@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+New finite near-full-scale gate ready, runtimeUNVERIFIED:4mono/stereo tones
+0.99/0.999, completeunclamped f32source/output peaks + unchangedS16>=60dB/
+gain/25tags/PNG/normalwholeChrome250MiB/cleanup. Requires genuinelyunclipped
+high-amplitudeinput and strictlynooutput saturation/overshoot at1. Decoder
+64KiBchunks/4bytecarry, no fullbuffer. Reuseprivate40259508976, no rebuild.
+This is not universalclipping/IO/stress/publicqualification or sixoldcase replay.
+
 95057d2c CI40290260192 SUCCESS1715portablepass/1skip +19privacy/offline,
 build/lint/TS/public-proof.63focused localPASS. Nativegainbuild40259508976 and
 sixsmallbrowsercases separatelyverified; not clipping/IO/stress/release. Main

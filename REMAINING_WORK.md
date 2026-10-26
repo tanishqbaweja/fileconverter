@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-10-26 distinct clipping-sanity gate now implemented, actualbrowser
+UNVERIFIED:4near-full-scale mono/stereo0.99/0.999 inputs with25tags/PNG, full
+f32 peakinspection both source/output in boundedchunks. Keeps strictfullS16
+60dB/gain/metadata/wholeChrome250MiB gates; s16clamping cannot hide peaks.
+No clipping tolerance or postnormalization, no six-case replay/rebuild. Other
+waveforms,MP3 IO/recovery/stress/publicintegration and full54 remainOPEN.
+
 2026-10-26 source/evidence95057d2c CI40290260192 SUCCESS1715portablepass/
 1skip, build/lint/TS/public404-proof and19privacy/offline.63focused localPASS.
 ActualsixsmallrepairedMP3cases pass, NOT clipping/IO/stress/publicintegration.
