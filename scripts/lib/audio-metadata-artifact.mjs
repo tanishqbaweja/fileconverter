@@ -16,6 +16,8 @@ import { makeAudioOggArtworkLowerCopyBuildWorkflow } from "./audio-ogg-artwork-l
 import { readWasmMemoryLimits } from "./wasm-memory-limits.mjs";
 import { makeMp3InputGainCandidate, MP3_GAIN_ARCHIVE_SHA256 } from "../../media/ffmpeg/mp3-input-gain-candidate.mjs";
 import { makeMp3InputGainBuildWorkflow } from "./mp3-input-gain-build-workflow.mjs";
+import { makeMp3QuantizerSearchCore, makeMp3QuantizerSearchCandidate } from "../../media/ffmpeg/mp3-quantizer-search-candidate.mjs";
+import { makeMp3QuantizerSearchBuildWorkflow } from "./mp3-quantizer-search-build-workflow.mjs";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const root = path.resolve(import.meta.dirname, "../..");
 export function validateAudioMetadataArtifactName(file) {
@@ -32,19 +34,24 @@ export function verifyAudioMetadataCore({ manifest, parent, compiled, helper, mu
   const candidate = manifest.candidate;
   for (const flag of ["ioChanged", "memoryLimitsRaised", "browserFixVerified", "publicAcceptance"]) assert.equal(candidate[flag], false, flag);
   const gainPatch = Object.hasOwn(candidate, "upstreamLameGainPatch");
+  const quantizerSearch = Object.hasOwn(candidate, "mp3QuantizerSearchPolicy");
+  if (quantizerSearch) assert.equal(gainPatch, true, "Quantizer candidate also requires the exact audited unity-gain source");
   assert.equal(candidate.codecSettingsChanged, gainPatch, "Only an independently authenticated exact LAME input-gain patch may change codec policy");
   if (gainPatch) {
-    assert.equal(candidate.allowedSourceEdits, 10); assert.equal(manifest.lameSourceSha256, MP3_GAIN_ARCHIVE_SHA256);
+    assert.equal(candidate.allowedSourceEdits, quantizerSearch ? 11 : 10); assert.equal(manifest.lameSourceSha256, MP3_GAIN_ARCHIVE_SHA256);
     assert.equal(manifest.mp3InputGainPolicy, "preserve-caller-input-scale-without-preset-attenuation");
     const gainDerived = makeMp3InputGainCandidate(lameParent, { sourceArchiveSha256: manifest.lameSourceSha256 });
     assert.equal(lameCompiled, gainDerived.generated); const { generated: ignored, ...expected } = gainDerived; assert.ok(ignored);
     assert.deepEqual(lameReceipt, expected); assert.deepEqual(candidate.upstreamLameGainPatch, expected);
   }
-  assert.ok([3, 4, 6, 10, 14].includes(candidate.allowedSourceEdits)); assert.equal(candidate.originalMasterSha256, AUDIO_METADATA_PARENT_SHA256);
+  assert.ok([3, 4, 6, 10, 11, 14].includes(candidate.allowedSourceEdits)); assert.equal(candidate.originalMasterSha256, AUDIO_METADATA_PARENT_SHA256);
+  if (candidate.allowedSourceEdits === 11) assert.equal(quantizerSearch, true);
   if (candidate.allowedSourceEdits >= 4) assert.ok(candidate.upstreamCommentPatch, "Wrapper variants also require audited parser preservation");
   assert.equal(candidate.parentSha256, sha(parent)); assert.equal(candidate.compiledSourceSha256, sha(compiled)); assert.equal(candidate.helperSha256, sha(helper));
   const derive = candidate.allowedSourceEdits === 4 ? makeAudioCommentWrapperCandidate : makeAudioTextMetadataCandidate;
-  const derived = candidate.allowedSourceEdits === 14
+  const derived = candidate.allowedSourceEdits === 11
+    ? makeMp3QuantizerSearchCore(parent, helper, muxerOrderHelper, artworkHelper, { expectedParentSha256: candidate.parentSha256 })
+    : candidate.allowedSourceEdits === 14
     ? makeAudioOggArtworkLowerCopyCore(parent, helper, muxerOrderHelper, artworkHelper, { expectedParentSha256: candidate.parentSha256 })
     : candidate.allowedSourceEdits === 10
     ? makeAudioOggArtworkCandidate(parent, helper, muxerOrderHelper, artworkHelper, { expectedParentSha256: candidate.parentSha256 })
@@ -57,6 +64,7 @@ export function verifyAudioMetadataCore({ manifest, parent, compiled, helper, mu
     assert.equal(candidate.lowerCopyArtworkHelperSha256, derived.lowerCopyArtworkHelperSha256);
     assert.equal(candidate.lowerCopyParentCompiledSha256, derived.lowerCopyParentCompiledSha256);
   }
+  if (quantizerSearch) assert.deepEqual(candidate.mp3QuantizerSearchPolicy, derived.mp3QuantizerSearchPolicy);
   assert.equal(compiled, derived.generated, "Actual compiled source must contain only the declared metadata edits");
   assert.deepEqual(memoryLimits, publicMemoryLimits); assert.deepEqual(candidate.wasmMemoryLimits, memoryLimits);
   assert.equal(manifest.modules.length, 1); assert.equal(manifest.modules[0].name, "within-remux");
@@ -65,14 +73,18 @@ export function verifyAudioMetadataCore({ manifest, parent, compiled, helper, mu
   assert.equal(manifest.modules[0].videoCodecThreads, publicCore.videoCodecThreads);
   for (const key of ["ffmpegVersion", "ffmpegSourceSha256", "initialWasmMemoryBytes", "maximumWasmMemoryBytes",
     "avioInputBufferBytes", "avioOutputBufferBytes", "outstandingWrites", "audioFifoMaximumQueuedSamples",
-    "audioEncoderOptions", "aacEncoderOptions", "opusEncoderOptions", "vorbisEncoderOptions", "mp3EncoderOptions"])
+    "audioEncoderOptions", "aacEncoderOptions", "opusEncoderOptions", "vorbisEncoderOptions"])
     assert.deepEqual(manifest[key], publicManifest[key], key);
+  assert.deepEqual(manifest.mp3EncoderOptions, quantizerSearch
+    ? { ...publicManifest.mp3EncoderOptions, compressionLevel: 2 } : publicManifest.mp3EncoderOptions,
+  "Only the exactly derived level2 MP3 search setting may change");
   assert.deepEqual(manifest.audioArtworkOptions, candidate.allowedSourceEdits >= 10
     ? { ...publicManifest.audioArtworkOptions, supportedOutputs: [...publicManifest.audioArtworkOptions.supportedOutputs, "ogg", "opus"] }
     : publicManifest.audioArtworkOptions, "No other artwork budget/codec options may change");
   return { parentSha256: candidate.parentSha256, compiledSourceSha256: candidate.compiledSourceSha256,
     helperSha256: candidate.helperSha256, memoryLimits, allowedSourceEdits: candidate.allowedSourceEdits, publicAcceptance: false,
-    ...(gainPatch ? { upstreamLameGainPatch: lameReceipt, codecSettingsChanged: true } : {}) };
+    ...(gainPatch ? { upstreamLameGainPatch: lameReceipt, codecSettingsChanged: true } : {}),
+    ...(quantizerSearch ? { mp3QuantizerSearchPolicy: derived.mp3QuantizerSearchPolicy } : {}) };
 }
 
 export function verifyAudioRepeatedCommentSource({ parent, compiled, receipt, manifestReceipt, archiveSha256 }) {
@@ -103,7 +115,7 @@ export async function auditAudioMetadataArtifact(candidateDirectory) {
   for (const [file, expected] of Object.entries(manifest.sources)) {
     assert.match(file, /^(?:media|scripts|\.github)\/[A-Za-z0-9_./-]+$/); assert.ok(!file.split("/").includes(".."));
     const actual = await readTool(path.join(root, file));
-    const workflow = manifest.candidate.upstreamLameGainPatch ? makeMp3InputGainBuildWorkflow : manifest.candidate.allowedSourceEdits === 14 ? makeAudioOggArtworkLowerCopyBuildWorkflow
+    const workflow = manifest.candidate.mp3QuantizerSearchPolicy ? makeMp3QuantizerSearchBuildWorkflow : manifest.candidate.upstreamLameGainPatch ? makeMp3InputGainBuildWorkflow : manifest.candidate.allowedSourceEdits === 14 ? makeAudioOggArtworkLowerCopyBuildWorkflow
       : manifest.candidate.allowedSourceEdits === 10 ? makeAudioOggArtworkBuildWorkflow
       : manifest.candidate.upstreamCommentPatch ? makeAudioRepeatedCommentBuildWorkflow : makeAudioMetadataBuildWorkflow;
     const actualHash = file === ".github/workflows/reproduce-ffmpeg-nondocker.yml"
@@ -126,6 +138,13 @@ export async function auditAudioMetadataArtifact(candidateDirectory) {
     } : {}) });
   if (manifest.candidate.upstreamLameGainPatch) for (const file of ["lame-presets.parent.c", "lame-presets.input-gain.c", "mp3-input-gain-source.json"])
     assert.match(manifest.artifacts[file], /^[a-f0-9]{64}$/, "Missing exact LAME patch artifact binding: " + file);
+  if (manifest.candidate.mp3QuantizerSearchPolicy) {
+    for (const file of ["within_remux.pre-quantizer.c", "mp3-quantizer-search-source.json"])
+      assert.match(manifest.artifacts[file], /^[a-f0-9]{64}$/, "Missing exact quantizer patch artifact binding: " + file);
+    const { generated, ...policy } = makeMp3QuantizerSearchCandidate((await readTool(path.join(directory, "within_remux.pre-quantizer.c"))).toString());
+    assert.equal(generated, compiled.toString()); assert.deepEqual(policy, core.mp3QuantizerSearchPolicy);
+    assert.deepEqual(JSON.parse(await readTool(path.join(directory, "mp3-quantizer-search-source.json"))), policy);
+  }
   if (manifest.candidate.upstreamCommentPatch) {
     for (const file of ["oggparsevorbis.parent.c", "oggparsevorbis.repeated.c", "audio-repeated-comment-source.json"])
       assert.match(manifest.artifacts[file], /^[a-f0-9]{64}$/, file);

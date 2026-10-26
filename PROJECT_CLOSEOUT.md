@@ -6,6 +6,15 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+MP3 clipping: one evidence-directed new candidate is prepared, still uncompiled
+and browser-UNVERIFIED. Change only MP3 encoder search level9 to2, retaining
+the prior unity-gain patch and identical bitrate/rate/channels/threads/AVIO/heap.
+Exactly11 wrapper edits (ten prior metadata plus one search setting), strict
+preimage/policy audit and isolated no-Docker workflow.35 focused tests/lint/TS
+pass; both older candidate caches still audit unchanged. Next compile once,
+then two exact failed0.999 mono/stereo canaries with all old thresholds intact.
+No speculative attenuation, unchanged replay, quality fix or speedup claimed.
+
 Latest source/evidence CI: `051ca908` / 40299236430 SUCCESS (1,730 portable
 tests passed, 1 skipped; 19 privacy/offline; build/lint/TypeScript/404-profile
 proof audit). AIFF source/UI subgap is closed, 59 focused local tests passed.

@@ -1,0 +1,12 @@
+import assert from "node:assert/strict";
+import { readFile, realpath, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { makeMp3QuantizerSearchCandidate } from "./mp3-quantizer-search-candidate.mjs";
+const root = path.resolve(import.meta.dirname, "../.."), build = path.join(root, "work/ffmpeg-nondocker-build"), output = path.join(root, "work/ffmpeg-nondocker-output");
+assert.equal(process.platform, "linux"); assert.equal(process.argv.length, 2);
+assert.equal(await realpath(build), build); assert.equal(await realpath(output), output);
+const target = path.join(build, "within_remux.metadata.c"); assert.equal(await realpath(target), target);
+const parent = await readFile(target, "utf8"), { generated, ...policy } = makeMp3QuantizerSearchCandidate(parent);
+await writeFile(path.join(output, "within_remux.pre-quantizer.c"), parent, { flag: "wx" });
+await writeFile(path.join(output, "mp3-quantizer-search-source.json"), JSON.stringify(policy, null, 2) + "\n", { flag: "wx" });
+await writeFile(target, generated);

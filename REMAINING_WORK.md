@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-26 — MP3 clipping work resumes with one justified new private policy:
+LAME search level2 instead of fastest level9, same bitrate/input gain/IO/heap.
+Source and isolated no-Docker build/audit prepared; not compiled or accepted.
+Two exact previously failed0.999 mono/stereo input canaries will retain all
+existing float-peak, integer-fidelity, metadata, process-memory and cleanup
+thresholds. Old failure remains failed. No repeated unchanged build or speculative
+attenuation; CPU/speed impact must be measured before any retention/promotion.
+
+
 2026-10-26 — AIFF source/evidence `051ca908` CI 40299236430 passed build,
 lint, TypeScript, 1,730 portable tests (+1 skipped), 19 privacy/offline browser
 tests and the unchanged 404-profile proof audit. 59 focused local tests and the

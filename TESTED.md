@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-26 — Evidence-directed MP3 quantizer-search candidate prepared, NOT
+compiled or browser-verified yet. Current level9 skips noise calculation per
+LAME's primary USAGE documentation; exact private wrapper changes ONLY MP3
+compression/search level9 to2, retaining prior audited unity-gain patch, bitrate,
+sample rate, layout, threads, AVIO and Wasm limits. Eleven wrapper edits total:
+the existing ten metadata edits plus one search setting. Full reversible source,
+preimage/policy artifacts, isolated no-Docker workflow and strict audit prepared;
+old 56/15 and 61/18 candidate audits still pass unchanged. All35 focused
+source/audit/gate-contract tests, lint, TypeScript and diff checks pass. Source-only parent C retained for exact
+positive derivation, not media. Two-case gate selects ONLY exact previously
+failed0.999 mono/stereo inputs, with unchanged float1/S16>=60dB/gain/25tags/PNG/
+250MiB/cleanup; no quieter input or six-case replay. A quality fix may cost CPU;
+no speedup, clipping remedy, public promotion or goal completion claimed.
+
+
 2026-10-26 — AIFF source/evidence `051ca908` CI 40299236430 SUCCESS:
 1,730 portable tests passed, 1 skipped/0 failed (1,731 total); production build,
 lint, TypeScript, 404-public-profile proof audit and 19 privacy/offline browser

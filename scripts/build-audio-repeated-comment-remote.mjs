@@ -13,14 +13,16 @@ import { makeAudioOggArtworkBuildWorkflow } from "./lib/audio-ogg-artwork-build-
 import { makeAudioOggArtworkLowerCopyBuildWorkflow } from "./lib/audio-ogg-artwork-lower-copy-build-workflow.mjs";
 import { auditAudioMetadataArtifact, validateAudioMetadataArtifactName } from "./lib/audio-metadata-artifact.mjs";
 import { makeMp3InputGainBuildWorkflow } from "./lib/mp3-input-gain-build-workflow.mjs";
+import { makeMp3QuantizerSearchBuildWorkflow } from "./lib/mp3-quantizer-search-build-workflow.mjs";
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), sha = b => createHash("sha256").update(b).digest("hex");
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--ogg-artwork", "--ogg-artwork-lower-copy", "--mp3-input-gain"].includes(process.argv[3])));
-const mp3InputGain = process.argv[3] === "--mp3-input-gain";
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--ogg-artwork", "--ogg-artwork-lower-copy", "--mp3-input-gain", "--mp3-quantizer-search"].includes(process.argv[3])));
+const mp3QuantizerSearch = process.argv[3] === "--mp3-quantizer-search";
+const mp3InputGain = process.argv[3] === "--mp3-input-gain" || mp3QuantizerSearch;
 const lowerCopy = process.argv[3] === "--ogg-artwork-lower-copy", oggArtwork = lowerCopy || mp3InputGain || process.argv[3] === "--ogg-artwork";
-const branch = mp3InputGain ? "codex/mp3-input-gain-20261026-v1" : lowerCopy ? "codex/audio-ogg-artwork-lower-copy-20261025-v1"
+const branch = mp3QuantizerSearch ? "codex/mp3-quantizer-search-20261026-v1" : mp3InputGain ? "codex/mp3-input-gain-20261026-v1" : lowerCopy ? "codex/audio-ogg-artwork-lower-copy-20261025-v1"
   : oggArtwork ? "codex/audio-ogg-artwork-20261025-v1" : "codex/audio-repeated-comments-20261024-v3", repository = "tanishqbaweja/fileconverter";
 const workflowPath = ".github/workflows/reproduce-ffmpeg-nondocker.yml", workflowName = "reproduce-ffmpeg-nondocker.yml";
-const receiptPath = path.join(root, mp3InputGain ? "evidence/mp3-input-gain-build-2026-10-26-v1.json" : lowerCopy ? "evidence/audio-ogg-artwork-lower-copy-build-2026-10-25-v1.json"
+const receiptPath = path.join(root, mp3QuantizerSearch ? "evidence/mp3-quantizer-search-build-2026-10-26-v1.json" : mp3InputGain ? "evidence/mp3-input-gain-build-2026-10-26-v1.json" : lowerCopy ? "evidence/audio-ogg-artwork-lower-copy-build-2026-10-25-v1.json"
   : oggArtwork ? "evidence/audio-ogg-artwork-build-2026-10-25-v1.json" : "evidence/audio-repeated-comment-build-2026-10-24-v3.json");
 assert.ok(["prepare", "dispatch", "observe", "collect"].includes(process.argv[2]));
 const runtime = await createOwnedRuntimeScratch("audio-repeated-remote-");
@@ -28,7 +30,7 @@ try {
   const call = async (binary, args, env = runtime.env) => (await execute(binary, args, { cwd: root, env,
     windowsHide: true, timeout: 30000, maxBuffer: 1048576 })).stdout.trim();
   const git = (args, env) => call("git", args, env), gh = args => call(process.platform === "win32" ? "D:/Program Files/GitHub CLI/gh.exe" : "gh", args);
-  const canonical = await readFile(path.join(root, workflowPath), "utf8"), generated = (mp3InputGain ? makeMp3InputGainBuildWorkflow : lowerCopy ? makeAudioOggArtworkLowerCopyBuildWorkflow
+  const canonical = await readFile(path.join(root, workflowPath), "utf8"), generated = (mp3QuantizerSearch ? makeMp3QuantizerSearchBuildWorkflow : mp3InputGain ? makeMp3InputGainBuildWorkflow : lowerCopy ? makeAudioOggArtworkLowerCopyBuildWorkflow
     : oggArtwork ? makeAudioOggArtworkBuildWorkflow : makeAudioRepeatedCommentBuildWorkflow)(canonical);
   const list = async () => JSON.parse(await gh(["run", "list", "--repo", repository, "--workflow", workflowName, "--branch", branch,
     "--event", "workflow_dispatch", "--limit", "10", "--json", "databaseId,headSha,status,conclusion,createdAt,updatedAt,url"]));
@@ -93,10 +95,10 @@ try {
       assert.equal(artifact.workflow_run.head_sha, receipt.commit); assert.equal(String(artifact.workflow_run.id), runId);
       assert.ok(artifact.size_in_bytes > 0 && artifact.size_in_bytes <= 16 * 1048576);
       const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 64 * 1048576);
-      const download = path.join(runtime.directory, "tools"), cache = path.join(root, "work", (mp3InputGain ? "mp3-input-gain-" : lowerCopy ? "audio-ogg-artwork-lower-copy-" : oggArtwork ? "audio-ogg-artwork-" : "audio-repeated-metadata-") + runId);
+      const download = path.join(runtime.directory, "tools"), cache = path.join(root, "work", (mp3QuantizerSearch ? "mp3-quantizer-search-" : mp3InputGain ? "mp3-input-gain-" : lowerCopy ? "audio-ogg-artwork-lower-copy-" : oggArtwork ? "audio-ogg-artwork-" : "audio-repeated-metadata-") + runId);
       await assert.rejects(access(cache), { code: "ENOENT" });
       await gh(["run", "download", runId, "--repo", repository, "--name", artifact.name, "--dir", download]);
-      const names = await readdir(download); assert.equal(names.length, mp3InputGain ? 19 : 16); let total = 0;
+      const names = await readdir(download); assert.equal(names.length, mp3QuantizerSearch ? 21 : mp3InputGain ? 19 : 16); let total = 0;
       for (const file of names) {
         validateAudioMetadataArtifactName(file); const info = await lstat(path.join(download, file));
         assert.ok(info.isFile() && !info.isSymbolicLink() && info.size > 0 && info.size <= 16 * 1048576); total += info.size;

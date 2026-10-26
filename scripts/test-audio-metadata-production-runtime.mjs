@@ -48,9 +48,10 @@ import { MP3_CLIPPING_CASES, createMp3ClippingFixtures } from "./lib/mp3-clippin
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE } from "../lib/media-conversion-options.ts";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio", "--mp3-artwork-metadata", "--mp3-gain-diagnostic", "--mp3-input-gain-repair", "--mp3-input-gain-matrix", "--mp3-fullscale-clipping", "--mp3-io-recovery"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio", "--mp3-artwork-metadata", "--mp3-gain-diagnostic", "--mp3-input-gain-repair", "--mp3-input-gain-matrix", "--mp3-fullscale-clipping", "--mp3-io-recovery", "--mp3-quantizer-clipping"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
 const mp3IoRecovery = process.argv[3] === "--mp3-io-recovery";
-const mp3Clipping = process.argv[3] === "--mp3-fullscale-clipping";
+const mp3QuantizerClipping = process.argv[3] === "--mp3-quantizer-clipping";
+const mp3Clipping = process.argv[3] === "--mp3-fullscale-clipping" || mp3QuantizerClipping;
 const mp3GainMatrix = process.argv[3] === "--mp3-input-gain-matrix";
 const mp3GainRepair = process.argv[3] === "--mp3-input-gain-repair" || mp3GainMatrix || mp3Clipping || mp3IoRecovery;
 const mp3GainDiagnostic = process.argv[3] === "--mp3-gain-diagnostic";
@@ -75,7 +76,7 @@ const audioIoRecovery = process.argv[3] === "--audio-io-recovery";
 const artworkRejection = process.argv[3] === "--artwork-rejection-recovery", extendedArtworkInspection = artworkBudget || artworkRejection || audioIoRecovery;
 const oggArtwork = process.argv[3] === "--ogg-artwork" || (automaticVorbisRepair && !largeVorbisRepeat) || vorbisIoRecovery, withArtwork = artworkMetadata || oggArtwork || mp3ArtworkMetadata;
 const selectedCases = mp3GainMatrix ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork, gainRepair: true })))
-  .filter(row => !(row.source === "flac" && row.artwork === "png")) : mp3Clipping ? MP3_CLIPPING_CASES : mp3IoRecovery ? [
+  .filter(row => !(row.source === "flac" && row.artwork === "png")) : mp3Clipping ? MP3_CLIPPING_CASES.filter(row => !mp3QuantizerClipping || row.amplitude === 0.999) : mp3IoRecovery ? [
   { source: "flac", destination: "mp3", interruption: "cancel", payloadCancellation: true },
   { source: "flac", destination: "mp3", artwork: "png", interruption: "write" },
   { source: "flac", destination: "mp3", artwork: "png", gainRepair: true, recoveryAfterIo: true },
@@ -128,6 +129,7 @@ if (mp3GainDiagnostic) report.scope = "one NEW instrumented automatic FLAC/PNG-t
 if (mp3GainRepair) report.scope = "one NEW automatic FLAC/PNG-to-MP3 canary using authenticated one-edit private LAME gain policy; unchanged60dB all96000PCM/25tags/exactcover/I/O/fulltree250MiB; not high-amplitude clipping, six-case matrix, stress, speed or public acceptance";
 if (mp3GainMatrix) report.scope = "FIVE remaining automatic MP3 gain-repair jobs: FLAC/JPEG plus Vorbis and Opus/PNG/JPEG, excluding closed FLAC/PNG canary; actual patched-core proof, all96000 unmodifiedPCM>=60dB, gain/25tags/rawID3/exactcover/wholeChrome250MiB/cleanup; not clipping/recovery/stress/public acceptance";
 if (mp3Clipping) report.scope = "four NEW near-full-scale2s mono/stereo FLAC-to-MP3 cases at0.99/0.999; independent full f32 decode exposes saturation/overshoot before integer clamping, unchanged60dB complete s16 comparison/tags/PNG/memory/cleanup; not every waveform, IO recovery, stress or public acceptance";
+if (mp3QuantizerClipping) report.scope = "two changed-encoder-search canaries on exact failed0.999 mono/stereo INPUTS: private level2 versus prior level9, same bitrate/gain/automatic argument, unchanged full-float no-overshoot/full-S16>=60dB/25tags/PNG/fulltree250MiB/cleanup; no matrix, general clipping, speed or public acceptance";
 if (mp3IoRecovery) report.scope = "three NEW same-page private gain-core MP3 jobs: cancel after real audio payload, injected error after real bounded write, then exact prior PNG/25-tag/full-PCM recovery; existing near-full-scale failures remain failed; not OS/quota/permission/direct-picker/stress/public acceptance";
 if (artworkBudget) report.scope = "one NEW exact4MiB real PNG cover FLAC-to-Opus byte-budget case; unchanged text/codec/quality/memory limits; not repeat/scaling/promotion acceptance";
 if (artworkBenchmark) {
@@ -242,6 +244,12 @@ try {
   if (mp3GainRepair) {
     assert.equal(report.artifact.core.upstreamLameGainPatch?.sourceEdits, 1); assert.equal(report.artifact.core.codecSettingsChanged, true);
     assert.equal(report.artifact.core.upstreamLameGainPatch.bitRateAndQualityUnchanged, true);
+  }
+  if (mp3QuantizerClipping) {
+    assert.equal(report.artifact.core.allowedSourceEdits, 11);
+    assert.equal(report.artifact.core.mp3QuantizerSearchPolicy?.compressionLevel, 2);
+    assert.equal(report.artifact.core.mp3QuantizerSearchPolicy.inputGainUnchanged, true);
+    assert.equal(report.artifact.core.mp3QuantizerSearchPolicy.bitRateUnchanged, true);
   }
   report.fixtures = {};
   for (const source of ["flac", "ogg", "opus"]) {
@@ -376,6 +384,9 @@ try {
     clippingFixtures = await createMp3ClippingFixtures(runtime.directory, env, await readFile(path.join(runtime.directory, "cover.png")));
     report.clippingFixtures = {};
     for (const [key, fixture] of Object.entries(clippingFixtures)) {
+      if (mp3QuantizerClipping && key.endsWith("0999")) assert.equal(fixture.sha256,
+        key === "mono-0999" ? "88e1d99e1243e1143829774642b3bffa0224a520ef3842808229819bc281986c" : "d075217cae11d5793e2662eafcb80449c98aed493b9ffafee601cab2a22b6724",
+        "Changed search must use the exact failed full-scale input, never a quieter replacement");
       const probe = await probeAudio(fixture.file), audio = probe.streams.filter(value => value.codec_type === "audio");
       assert.equal(audio.length, 1); assert.equal(audio[0].codec_name, "flac"); assert.equal(audio[0].channels, fixture.channels);
       assert.equal(Number(audio[0].sample_rate), 48000); assert.equal(Number(probe.format.duration), 2);
