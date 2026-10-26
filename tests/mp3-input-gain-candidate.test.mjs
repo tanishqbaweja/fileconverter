@@ -40,3 +40,12 @@ test("artifact auditor cannot accept codec-policy changes without exact independ
     lameSourceSha256: MP3_GAIN_ARCHIVE_SHA256, mp3InputGainPolicy: "preserve-caller-input-scale-without-preset-attenuation",
     candidate: { ...candidate, allowedSourceEdits: 10, upstreamLameGainPatch: {} } }, lameParent: "fake", lameCompiled: "fake", lameReceipt: {} }));
 });
+test("new browser canary demands the actual changed engine, unchanged automatic argument and60dB fullPCM without claiming clipping/matrix acceptance", async () => {
+  const source = await readFile("scripts/test-audio-metadata-production-runtime.mjs", "utf8");
+  assert.match(source, /--mp3-input-gain-repair/); assert.match(source, /upstreamLameGainPatch\?\.sourceEdits, 1/);
+  assert.match(source, /report.artifact.core.codecSettingsChanged, true/);
+  assert.match(source, /gainRepair: true/); assert.match(source, /row.repairedGainProof/);
+  assert.match(source, /row.fidelity.minimumPsnrDb, 60/); assert.match(source, /actualAutomaticNativeArgument: 0/);
+  assert.match(source, /Math.abs\(gain.leastSquaresGain - 1\) <= 0.001/);
+  assert.match(source, /clippingAcceptance: false, publicAcceptance: false/);
+});

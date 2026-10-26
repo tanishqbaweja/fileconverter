@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-26 isolatednoDocker build40259508976 confirmedLIVE at02:35UTC,
+immutable source d29e30b53942d4f7228e9b0d892210b5e02da9fe on
+codex/mp3-input-gain-20261026-v1, parent6446f8a9. CanonicalHEAD/index/workflow/
+main/publicassets unchanged; no checkout/media copy. Expected~6min from02:31.
+Do not redispatch; observe this exactrun then collect/audit19files. New one-job
+actualpatchedengine canary prepared: authenticatedsourceedit, automatic/native0,
+all96kPCM>=60/gainwithin0.001/25tags/exactPNG/wholeChrome250MiB/cleanup. Actual
+newbrowserquality/clipping/stress stillUNVERIFIED; oldcontrol stillFAILED.
+
 2026-10-26 actualone-job02-18-02.215Z/4efbfa46 diagnostic CLOSED:
 same34048B/SHA4710ff... and both96000PCM digests/rawSSE2016507993 as priorfailure.
 Measured sourcePower804952295000/outputPower726391498901/cross764663642954,

@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+LIVE nativebuild40259508976 at02:35UTC (dispatch02:31, estimate6min), source
+d29e30b5, branchcodex/mp3-input-gain-20261026-v1. NoDocker/canonicalworkflow/
+publicassets untouched. Observe this exactjob, not a newdispatch. Newreal
+patched-core one-job canary ready; explicit sourcepatch, automaticnative0,
+unaltered96kPCM>=60/amplitude/tags/cover/memory required. Clipping/matrix/stress/
+publicqualification not implied. No current owned conversion runtime.
+
 02-18-02.215Z closes actual gain diagnosis: exactpriorMP3 bytes/96kPCM,
 gain0.949949/correlation0.999999985/>99.998%MSE gaincomponent. Raw47.09<60
 remainsFAILED;151.1914MiB/448valid0NULL/allcleanup PASS. Private authenticated

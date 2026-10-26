@@ -1,0 +1,37 @@
+{
+  "recordedAt": "2026-10-26T02:30:58.673Z",
+  "status": "build-confirmed-live",
+  "branch": "codex/mp3-input-gain-20261026-v1",
+  "parent": "6446f8a9d243c9b728aef1318dbaeb12f5ce579a",
+  "commit": "d29e30b53942d4f7228e9b0d892210b5e02da9fe",
+  "tree": "482970ad29daeda78be0932c9808f6d313e492af",
+  "workflow": {
+    "path": ".github/workflows/reproduce-ffmpeg-nondocker.yml",
+    "canonicalSha256": "cda0b434adc7dd36109b4a2cc63fe726a507889cf6d1c0f5862d5d78dbf5c965",
+    "generatedSha256": "bd5cf3ef985d9915f3df5ed89c3ece125d1e2bff518ff5aa70108c20d89f9d13",
+    "gitBlob": "9e10d2047b4a7108cb5afb28952ffaef73f783a7"
+  },
+  "canonicalHeadIndexAndWorkflowUnchanged": true,
+  "mainUnchanged": true,
+  "remoteVerified": true,
+  "noCheckoutOrMediaCopyCreated": true,
+  "priorComparableBuild": {
+    "runId": 40156938341,
+    "elapsedSeconds": 310
+  },
+  "estimatedBuildMinutes": 6,
+  "browserConversions": 0,
+  "publicAcceptance": false,
+  "noDocker": true,
+  "dispatchedAt": "2026-10-26T02:31:18.056Z",
+  "lastObservedAt": "2026-10-26T02:35:02.222Z",
+  "run": {
+    "conclusion": "",
+    "createdAt": "2026-10-26T02:31:22Z",
+    "databaseId": 40259508976,
+    "headSha": "d29e30b53942d4f7228e9b0d892210b5e02da9fe",
+    "status": "in_progress",
+    "updatedAt": "2026-10-26T02:31:27Z",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40259508976"
+  }
+}
