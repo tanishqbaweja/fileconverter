@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Display-only storage-error improvement prepared: a clear explanation for the
+observed SyncAccessHandle space/quota failure, exact raw diagnostics under
+closed Technical details, unrelated errors unchanged.23 focused tests/lint/TS
+PASS; changed actual-browser UI/recovery check next, with all old I/O/quality/
+whole-Chrome thresholds. Prior source874391b1 CI40305797263 now SUCCESS; that
+does not cover the newer UI source. No native rebuild or full-goal completion.
+
 Real browser-origin OPFS quota + same-page recovery now CLOSED by10-20-39.819Z:
 actual native write fails after1,043,199 output bytes at1,114,112B quota, no
 injection; normal quota restored, exactPNG/25tags/repeats/96000PCM recovery.

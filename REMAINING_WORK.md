@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-10-26 — Clearer storage-write error UI implemented, pending browser proof.
+Keep raw native diagnostics in state and collapsible details, show actionable
+plain-language guidance only for the observed SyncAccessHandle space/quota
+signature. No broad ENOSPC/metadata/permission reclassification or converter
+policy change. Next changed real-quota UI/recovery check under unchanged full-
+Chrome memory and independent output validation. Existing quota gate remains
+closed historically; this change needs UI-specific verification.
+
 2026-10-26 — Actual browser-origin quota subgap CLOSED by10-20-39.819Z:
 Chrome limit1,114,112B interrupts native output after1,043,199 acknowledged bytes
 and1,835,008 input bytes; no injected error. Empty partial storage/recoveredworker,

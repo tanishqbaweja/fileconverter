@@ -48,6 +48,7 @@ import { MP3_CLIPPING_CASES, createMp3ClippingFixtures } from "./lib/mp3-clippin
 import { REAL_OPFS_QUOTA_BYTES, REAL_OPFS_QUOTA_CASES, validateRealOpfsQuotaFailure } from "./lib/real-opfs-quota-validation.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE } from "../lib/media-conversion-options.ts";
+import { BROWSER_STORAGE_WRITE_ERROR_SUMMARY } from "../lib/conversion-error-presentation.ts";
 
 assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio", "--mp3-artwork-metadata", "--mp3-gain-diagnostic", "--mp3-input-gain-repair", "--mp3-input-gain-matrix", "--mp3-fullscale-clipping", "--mp3-io-recovery", "--mp3-quantizer-clipping", "--real-opfs-quota-recovery"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
 const realQuotaRecovery = process.argv[3] === "--real-opfs-quota-recovery";
@@ -202,6 +203,7 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "scripts/lib/id3-metadata-validation.mjs",
   "scripts/lib/audio-float-peak-validation.mjs", "scripts/lib/mp3-clipping-fixture.mjs",
   "scripts/lib/real-opfs-quota-validation.mjs",
+  "lib/conversion-error-presentation.ts", "app/converter/ConversionError.tsx",
   "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts", "lib/browser-capabilities.ts", "lib/capability-registry.ts",
   "lib/native-input-memory-observation.ts",
   "lib/conversion-protocol.ts", "lib/media-native-arguments.ts",
@@ -483,7 +485,8 @@ try {
     const directory = path.join(root, "output/playwright", stamp + "-audio-fidelity"); await mkdir(directory, { recursive: true });
     await page.locator(".progress-panel").scrollIntoViewIfNeeded(); const file = path.join(directory, `case-${index}-terminal.png`);
     if (conversion.expectedExclusion) await page.getByText(ARTWORK_BUDGET_EXCLUSION_WARNING, { exact: true }).first().scrollIntoViewIfNeeded();
-    if (conversion.interruption === "write" || conversion.metadataFailure || conversion.realQuotaFailure) await page.getByText(row.browserState.error, { exact: true }).first().scrollIntoViewIfNeeded();
+    if (conversion.realQuotaFailure) await page.getByTestId("conversion-error-summary").scrollIntoViewIfNeeded();
+    else if (conversion.interruption === "write" || conversion.metadataFailure) await page.getByText(row.browserState.error, { exact: true }).first().scrollIntoViewIfNeeded();
     await page.screenshot({ path: file, fullPage: false }); const bytes = await readFile(file); assert.ok(bytes.length <= 4 * 1048576);
     report.screenshots.push({ path: path.relative(root, file).replaceAll(path.sep, "/"), bytes: bytes.length, sha256: sha(bytes), headedCoverage: false });
   };
@@ -582,7 +585,15 @@ try {
         row.storageAfter = await storageSnapshot();
         row.realQuotaFailureProof = validateRealOpfsQuotaFailure(state, { quota: row.realBrowserQuota,
           storageBefore: row.storageBefore, storageAfter: row.storageAfter, faultParameterPresent: new URL(page.url()).searchParams.has("fault") });
-        await page.getByText(state.error, { exact: true }).first().waitFor({ state: "visible", timeout: 5000 });
+        const summary = page.getByTestId("conversion-error-summary"), details = page.getByTestId("conversion-error-details");
+        const nativeMessage = page.getByTestId("conversion-error-native-message");
+        await summary.waitFor({ state: "visible", timeout: 5000 }); assert.equal(await summary.textContent(), BROWSER_STORAGE_WRITE_ERROR_SUMMARY);
+        assert.equal(await nativeMessage.textContent(), state.error); assert.equal(await nativeMessage.isVisible(), false);
+        await details.locator("summary").click(); await nativeMessage.waitFor({ state: "visible" });
+        assert.equal(await nativeMessage.textContent(), state.error); await details.locator("summary").click();
+        assert.equal(await nativeMessage.isVisible(), false); assert.equal(await summary.isVisible(), true);
+        row.realQuotaErrorPresentation = { summary: BROWSER_STORAGE_WRITE_ERROR_SUMMARY, rawStateUnchanged: true,
+          nativeDetailExact: true, defaultCollapsed: true, expandCollapseVerified: true, summaryVisible: true };
         row.realQuotaErrorVisible = true; row.status = "passed-private-browser-enforced-quota-failure-case";
       } else if (conversion.metadataFailure) {
         row.storageAfter = await storageSnapshot();
@@ -752,6 +763,8 @@ try {
       if (conversion.recoveryAfterRealQuota) {
         assert.equal(index, 1); assert.equal(report.cases[0].status, "passed-private-browser-enforced-quota-failure-case");
         assert.equal(state.error, null); assert.deepEqual(state.warnings, []); assert.equal(row.fidelity.samples, 96000);
+        assert.equal(await page.getByTestId("conversion-error-summary").count(), 0);
+        assert.equal(await page.getByTestId("conversion-error-details").count(), 0);
         assert.equal(row.fidelity.minimumPsnrDb, 60); assert.equal(row.realBrowserQuota.overrideActive, false);
         assert.equal(row.output.sha256, "fa99d5254cc40bb3d9dc1b8f2f745477f5c5828916b83b7ef7db64d1e1092d7f", "Same-page recovery must match the complete independently decoded prior default-quota output");
         row.samePageRealQuotaRecovery = { actualQuotaFailurePassed: true, defaultQuotaRestored: true,
@@ -891,6 +904,7 @@ finally {
       storageBefore: c.storageBefore, storageAfter: c.storageAfter, samePageIoRecovery: c.samePageIoRecovery,
       payloadCancellationProof: c.payloadCancellationProof, samePageMp3IoRecovery: c.samePageMp3IoRecovery,
       realBrowserQuota: c.realBrowserQuota, realQuotaFailureProof: c.realQuotaFailureProof, realQuotaErrorVisible: c.realQuotaErrorVisible,
+      realQuotaErrorPresentation: c.realQuotaErrorPresentation,
       samePageRealQuotaRecovery: c.samePageRealQuotaRecovery,
       disposableOutputRemoved: c.disposableOutputRemoved })),
     losslessJournal: report.losslessMemoryJournal ? { file: path.relative(root, report.losslessMemoryJournal.file).replaceAll(path.sep, "/"), records: report.losslessMemoryJournal.records,

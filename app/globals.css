@@ -719,6 +719,21 @@ h1 em {
   margin: 0.7rem 0 0;
 }
 
+.conversion-error-summary {
+  margin: 0;
+}
+
+.conversion-error-details summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.conversion-error-details p {
+  margin: 0.5rem 0 0;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+
 .progress-panel {
   contain: layout paint;
   background: #20231f;

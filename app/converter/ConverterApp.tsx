@@ -1,6 +1,7 @@
 "use client";
 
 import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";
+import { ConversionError } from "./ConversionError";
 import { createStagedWorkerCoordinator } from "../../lib/staged-worker-coordinator";
 import { createVpxCompiledCoreSlot } from "../../lib/vpx-compiled-core";
 import { createMpeg2CompiledCoreSlot } from "../../lib/mpeg2-compiled-core";
@@ -1838,9 +1839,7 @@ export function ConverterApp() {
           ) : null}
 
           {error && !file ? (
-            <p className="error" role="alert">
-              {error}
-            </p>
+            <ConversionError message={error} />
           ) : null}
 
           {file && profiles.length === 0 ? (
@@ -2475,9 +2474,7 @@ export function ConverterApp() {
                 </p>
               ))}
               {error ? (
-                <p className="error" role="alert">
-                  {error}
-                </p>
+                <ConversionError message={error} />
               ) : null}
 
               {jobState === "running" ? (

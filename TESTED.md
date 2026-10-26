@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-10-26 — Previously live source874391b1 CI40305797263 is now TERMINAL
+SUCCESS, including production build/lint/TypeScript/portable/privacy-offline
+steps; public proof audit still404. No restart was used during slow dependency
+installation. This is historical source CI, not verification of later UI edits.
+New display-only storage explanation:23 focused tests/lint/TypeScript/diff PASS,
+including real React markup/escaping/default-closed details and unchanged raw
+error state. Actual changed browser presentation/recovery check remains pending.
+
+2026-10-26 — Storage-error UX improvement implemented, browserUNVERIFIED:
+observed SyncAccessHandle no-space/quota prefix gets a plain-language summary
+and closed Technical details disclosure with exact raw error. Only512 prefix
+characters examined; raw state/protocol/validators remain unchanged. Metadata,
+allocation, permission, generic ENOSPC and direct-writer errors stay unchanged.
+Both production error locations use the shared component; no codec/IO/limit or
+route changes. Real-quota gate now requires visible summary, exact native detail,
+open/close behavior and removal on successful recovery. This justifies a changed
+UI check, not replaying conversion/stress qualification unchanged.
+
 2026-10-26 — Browser-enforced OPFS quota + SAME-page recovery CLOSED by
 `evidence/2026-10-26T10-20-39.819Z-audio-metadata-fidelity-result.json`
 at2376f0a7, reusing unchanged56/15 audited engine. Fresh normal Chrome origin
