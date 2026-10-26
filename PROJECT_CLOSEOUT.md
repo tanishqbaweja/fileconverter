@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+6e37d986 portable CI40252291636 SUCCESS (1687passed/1skip, build/lint/TS/
+public-proof/privacy/offline). All committed code/evidence pushed. Original54
+still OPEN; q7 route staysPRIVATE/PENDING because full repeats fail336.6484MiB.
+Next targeted new gate: q7 real UI cancellation/write-failure/recovery, including
+large-input BYOB path. No unchanged cold-pass/late-child replay or constraint
+relaxation. Full native/browser matrix not covered by portable CI.
+
 47f947fe/00-45-37.077Z FAILED aggregate336.6484MiB: first FULL147.96MB
 q7 conversion completed59.19s to65.33MB/fully decoded220.8M samples/3tags,
 observed222.2656MiB, one256KiB input buffer568reads. Second safety-cancelled

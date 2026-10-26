@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-26 6e37d986 portable CI40252291636 SUCCESS: production build,
+lint/TypeScript/public404-proof audit/privacy/offline;1687unit passed/1skipped/
+0failed (1688total), qualification suites/native rebuild/full browser matrix
+not implied passed. Local focused source/evidence batches207tests/33files PASS.
+CI source success does NOT change failed336.6484MiB large-repeat aggregate or
+private/pending q7 status. No owned conversion runtime directories remain.
+
 2026-10-26 changed-reader00-45-37.077Z aggregate FAILED (47f947fe):
 first exact147964541B/2300s stereo q7 conversion PASS under observed222.265625MiB,
 65328275B Vorbis SHAae8bfc... in59.1891s. All220800000 decoded samples compared

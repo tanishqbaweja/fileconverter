@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-10-26 source/evidence closeout6e37d986 CI40252291636 SUCCESS:
+1687portable unit passed/1skip, build/lint/TS/public-proof audit/privacy/offline.
+Actual browser repeat remainsFAILED336.6484MiB; no reinterpretation/promotion.
+One full147.96MB-to65.33MB q7 cold result is validated, not repeated stability.
+Next meaningful in-scope work: exact q7 cancellation/write-failure/same-page
+recovery (include new>8MiB input adapter), then remaining B05/B02-B09/full54.
+Keep browser constraints; do not replay known late-child failure unchanged.
+
 2026-10-26 changed BYOB00-45-37.077Z FAILED overall336.6484375MiB.
 Meaningful new cold evidence: exact147.96MB input ->65.33MB genuine Vorbis,
 59.1891s, full220.8M PCM sample comparison/no trimming,3tags, observed222.265625MiB
