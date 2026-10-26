@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+bdcd349d CI40257668738 SUCCESS1701portablepass/1skip, build/lint/TS/
+public-proof/19privacy-offline;44focused PASS. Pushed failed MP3evidence and
+exactpinned-source audit, zero owned runtime/sourcedownload scratch. Next
+bounded gain/cross-product diagnostic under unchanged60dB: not a build or
+rerun of the identicalsix cases. Original54 remainsOPEN and browserfailures
+remainFAILED even though sourceCI is green.
+
 Pinned LAME source audit02-06-26.597Z closed (exact4.0archive/hash,
 presets/init/set_get source hashes, cleanup PASS). Gain/preset path present,
 actual browser gain still UNMEASURED. Next implement bounded gain diagnostics

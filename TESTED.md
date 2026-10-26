@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-26 bdcd349d portable CI40257668738 SUCCESS:1701passed/1skip/
+0failed (1702total), productionbuild/lint/TS/public404 audit and19privacy/
+offline browser checks PASS.44focused/lint/TS/diff pass locally. Private
+qualification/nativebuild/fullbrowsermatrix NOT run; MP3six-job quality gate
+remainsFAILED47dB<60. All evidence pushed; zero owned conversion/source-audit
+runtime directories. Next changed gain diagnostic, not another plain six-case run.
+
 2026-10-26 pinned LAME source audit02-06-26.597Z SUCCESS: exact4.0
 archive1496810B/SHA3df512... matched originalbuildrecipe before bounded tar
 stdout-only inspection of presets.c/lame.c/set_get.c. Source confirms initial
