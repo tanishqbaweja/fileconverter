@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-26 actualone-job02-18-02.215Z/4efbfa46 diagnostic CLOSED:
+same34048B/SHA4710ff... and both96000PCM digests/rawSSE2016507993 as priorfailure.
+Measured sourcePower804952295000/outputPower726391498901/cross764663642954,
+gain0.9499490189713665 (-0.445994dB), correlation0.9999999852464; gaincomponent
+accounts>99.998%ofrawSSE. No normalization/correction/trimming:47.085712dB<60
+staysFAILED.25tags/rawID3/exactPNGpass;151.19140625MiB/448valid0NULL/48pins/
+15birthsgone/allcleanup/original/assets/privacy PASS. Screenshotreviewed.
+No further unchanged gaincontrol needed. Private candidate now removes exactly
+one authenticated LAME4.0 preset multiplication; bitrate/quality/nativewrapper/
+IO/heap unchanged, codecPolicyChanged explicitlyTRUE. Old56source/15artifact
+core audit stillPASS.58focused/lint/TS/syntax/diff PASS; actual newcompile/
+fidelity/clipping/stress/public qualification UNVERIFIED. No publicassets changed.
+
 2026-10-26 NEW one-job MP3 gain diagnostic prepared, runtimeUNVERIFIED.
 Optional validator-only power/cross-product counters; fixed<=1048576S16samples
 keep integer sums safe, no sample modifications/normalization/alignment, same

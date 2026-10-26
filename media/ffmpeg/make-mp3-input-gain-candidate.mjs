@@ -1,0 +1,16 @@
+import assert from "node:assert/strict";
+import { lstat, readFile, realpath, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { makeMp3InputGainCandidate, MP3_GAIN_ARCHIVE_SHA256 } from "./mp3-input-gain-candidate.mjs";
+const root = path.resolve(import.meta.dirname, "../.."), expected = path.join(root, "work/ffmpeg-nondocker-build/lame/libmp3lame/presets.c");
+assert.equal(process.platform, "linux"); assert.equal(process.argv.length, 4);
+const source = path.resolve(process.argv[2]), output = path.resolve(process.argv[3]);
+assert.equal(source, expected); assert.equal(output, path.join(root, "work/ffmpeg-nondocker-output"));
+assert.equal(await realpath(source), source); assert.equal(await realpath(output), output);
+const info = await lstat(source); assert.ok(info.isFile() && !info.isSymbolicLink() && info.size < 1048576);
+const parent = await readFile(source, "utf8"), candidate = makeMp3InputGainCandidate(parent, { sourceArchiveSha256: MP3_GAIN_ARCHIVE_SHA256 });
+const { generated, ...receipt } = candidate;
+await writeFile(path.join(output, "lame-presets.parent.c"), parent, { flag: "wx" });
+await writeFile(path.join(output, "lame-presets.input-gain.c"), generated, { flag: "wx" });
+await writeFile(path.join(output, "mp3-input-gain-source.json"), JSON.stringify(receipt, null, 2) + "\n", { flag: "wx" });
+await writeFile(source, generated);

@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+02-18-02.215Z closes actual gain diagnosis: exactpriorMP3 bytes/96kPCM,
+gain0.949949/correlation0.999999985/>99.998%MSE gaincomponent. Raw47.09<60
+remainsFAILED;151.1914MiB/448valid0NULL/allcleanup PASS. Private authenticated
+one-line LAME preset-scale candidate/source/auditor/remote workflow ready,
+58focused/lint/TS/old56pin coreaudit PASS. codecSettingsChanged truthfullyTRUE;
+not metadata-only. No publicassets/canonicalrecipe/workflow changed. Next NEW
+nativebuild then realquality/high-amplitudeclipping/metadata/memory gates.
+
 One changed MP3gain diagnostic ready, runtimeUNVERIFIED. Optionalbounded raw
 power/cross-product accumulation within same independent fullPCM comparison;
 strict60dB/unaltereddata/digests/counts remain. Must match original4710ff.../
