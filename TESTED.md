@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-26 NEW q7 IO/recovery gate prepared, runtime UNVERIFIED:
+180s48kHz stereo512k Opus with25tags,8MiB<size<=16MiB, full17.28M-sample
+input-only decode; real UI cancel after>256KiB input AND>64KiB output using
+actual persistentBYOB, empty OPFS/recovered worker/no outstanding input read.
+Then existing localhost after-write fault on q7 PNG header, followed by SAME
+page exacta7c954... PNG/25tag/repeat/96kPCM>=60 recovery. Nativearg3/automatic
+notice checked all3jobs.37focused/lint/syntax PASS; no engine/production setting
+changes and no replay/relabel of failed147.96MB repeats. Not OS-fault/public/
+stress qualification. Existing206/207-source CI evidence remains historical.
+
 2026-10-26 6e37d986 portable CI40252291636 SUCCESS: production build,
 lint/TypeScript/public404-proof audit/privacy/offline;1687unit passed/1skipped/
 0failed (1688total), qualification suites/native rebuild/full browser matrix

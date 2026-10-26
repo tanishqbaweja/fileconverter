@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+New q7 IO gate ready (37focused/lint/syntax PASS, browser UNVERIFIED): actual
+>8MiB180s stereo input uses BYOB, cancel only after>64KiB output, then injected
+native write-failure and SAME-page exact PNG/25tags/repeats/fullPCM recovery.
+No production/native settings changed, all250MiB/queue/heap/fidelity/cleanup
+limits retained. Next execute these3 NEW jobs; not a large-repeat substitute,
+no unchanged late-child replay/public promotion/full54 completion claim.
+
 6e37d986 portable CI40252291636 SUCCESS (1687passed/1skip, build/lint/TS/
 public-proof/privacy/offline). All committed code/evidence pushed. Original54
 still OPEN; q7 route staysPRIVATE/PENDING because full repeats fail336.6484MiB.

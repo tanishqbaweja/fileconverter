@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-26 q7-specific IO gate implemented, actual browser UNVERIFIED.
+New deterministic180s stereo512k INPUT >8MiB exercises current BYOB policy;
+source independently fully decoded17.28M samples, canonical25tags verified.
+Midstream cancel requires>64KiB actual output, not just header bytes; native
+write-fault and exact same-page PNG/metadata/PCM recovery follow. Actual UI
+automatic/nativearg3 remains required; wrapper labels fault as injected, not
+OS quota/permission failure.37focused/lint/syntax PASS. Full-size repeat failure
+336.65MiB remains unchanged/private; this gate does not replace it. All54 OPEN.
+
 2026-10-26 source/evidence closeout6e37d986 CI40252291636 SUCCESS:
 1687portable unit passed/1skip, build/lint/TS/public-proof audit/privacy/offline.
 Actual browser repeat remainsFAILED336.6484MiB; no reinterpretation/promotion.
