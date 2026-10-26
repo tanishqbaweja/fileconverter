@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+One changed MP3gain diagnostic ready, runtimeUNVERIFIED. Optionalbounded raw
+power/cross-product accumulation within same independent fullPCM comparison;
+strict60dB/unaltereddata/digests/counts remain. Must match original4710ff.../
+96000PCM/rawSSE2016507993 and actualautomatic/nativearg0. No newnativebuild;
+run onlyonecontrol with neededPNG/FLACfixture, not unchangedsixcase sequence.
+No fitted/normalized result can count as conversion acceptance.
+
 bdcd349d CI40257668738 SUCCESS1701portablepass/1skip, build/lint/TS/
 public-proof/19privacy-offline;44focused PASS. Pushed failed MP3evidence and
 exactpinned-source audit, zero owned runtime/sourcedownload scratch. Next

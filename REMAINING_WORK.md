@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-10-26 next specific M-08 cause gate implemented, actualgainUNVERIFIED:
+one newlyinstrumented automaticFLAC/PNG->MP3 control, exactprioroutput/PCM/MSE
+pinned. Validator accumulates rawsourcepower/outputpower/cross-product alongside
+unchangedfull96kcomparison; optional fit is diagnosticONLY, cannot rescue60dB
+failure. No native/production change or sixcase replay. Measure then choose
+evidence-directed native fix; preserve original54 and everyfailedreceipt.
+
 2026-10-26 bdcd349d source CI40257668738 SUCCESS1701portablepass/1skip,
 build/lint/TS/public404 proof/19privacy-offline.44focused checks PASS. This
 does not relabel failed MP3 quality47dB or q7large-repeat336.65MiB. NewrawID3

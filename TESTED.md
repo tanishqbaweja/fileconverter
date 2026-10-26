@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-26 NEW one-job MP3 gain diagnostic prepared, runtimeUNVERIFIED.
+Optional validator-only power/cross-product counters; fixed<=1048576S16samples
+keep integer sums safe, no sample modifications/normalization/alignment, same
+60dB acceptance. New automaticFLAC/PNG control must match prior34048B/SHA4710ff...
+and both96000PCM hashes/rawSSE2016507993, then expose gain/RMS/correlation and
+diagnostic-only residual. Only this NEW instrumentation job, not six oldjobs.
+Generate only neededPNG/FLAC artwork input; reused10editengine/settings/IO/
+wholeChrome250MiB/cleanup unchanged. Prior47dB result remainsFAILED regardless
+of diagnostic fitting. Not enginefix, qualityacceptance/public or speedproof.
+
 2026-10-26 bdcd349d portable CI40257668738 SUCCESS:1701passed/1skip/
 0failed (1702total), productionbuild/lint/TS/public404 audit and19privacy/
 offline browser checks PASS.44focused/lint/TS/diff pass locally. Private

@@ -46,8 +46,9 @@ import { readId3Metadata, validateId3FixtureMetadata } from "./lib/id3-metadata-
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE } from "../lib/media-conversion-options.ts";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio", "--mp3-artwork-metadata"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
-const mp3ArtworkMetadata = process.argv[3] === "--mp3-artwork-metadata";
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio", "--mp3-artwork-metadata", "--mp3-gain-diagnostic"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+const mp3GainDiagnostic = process.argv[3] === "--mp3-gain-diagnostic";
+const mp3ArtworkMetadata = process.argv[3] === "--mp3-artwork-metadata" || mp3GainDiagnostic;
 const standardRepeatedAudio = process.argv[3] === "--standard-repeated-audio";
 const vorbisIoRecovery = process.argv[3] === "--vorbis-io-recovery";
 const largeVorbisRepeat = process.argv[3] === "--vorbis-large-repeat";
@@ -66,7 +67,7 @@ const artworkBudget = process.argv[3] === "--artwork-byte-budget" || artworkBenc
 const audioIoRecovery = process.argv[3] === "--audio-io-recovery";
 const artworkRejection = process.argv[3] === "--artwork-rejection-recovery", extendedArtworkInspection = artworkBudget || artworkRejection || audioIoRecovery;
 const oggArtwork = process.argv[3] === "--ogg-artwork" || (automaticVorbisRepair && !largeVorbisRepeat) || vorbisIoRecovery, withArtwork = artworkMetadata || oggArtwork || mp3ArtworkMetadata;
-const selectedCases = mp3ArtworkMetadata ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork }))) : standardRepeatedAudio ? STANDARD_AUDIO_REPEAT_CASES : vorbisIoRecovery ? [
+const selectedCases = mp3GainDiagnostic ? [{ source: "flac", destination: "mp3", artwork: "png", gainDiagnostic: true }] : mp3ArtworkMetadata ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork }))) : standardRepeatedAudio ? STANDARD_AUDIO_REPEAT_CASES : vorbisIoRecovery ? [
   { source: "opus", destination: "ogg", interruption: "cancel", byobCancellation: true },
   { source: "opus", destination: "ogg", repeated: true, artwork: "png", interruption: "write" },
   { source: "opus", destination: "ogg", repeated: true, artwork: "png", recoveryAfterIo: true },
@@ -111,6 +112,7 @@ if (oggArtwork) {
   report.automaticVorbisQualityRepaired = false;
 }
 if (mp3ArtworkMetadata) report.scope = "six NEW private MP3 outputs from FLAC/Vorbis/Opus with25 scalar Unicode tags, PNG/JPEG front/back cover roles/descriptions, raw ID3v2.4 inspection, independent image/full PCM; no duplicate-ID3/stress/direct-picker/public qualification";
+if (mp3GainDiagnostic) report.scope = "one NEW instrumented automatic FLAC/PNG-to-MP3 control pinning prior output bytes/PCM/MSE and recording unmodified whole-signal gain/power/cross-product; original60dB failure retained, no normalization/alignment/new engine/public or stress acceptance";
 if (artworkBudget) report.scope = "one NEW exact4MiB real PNG cover FLAC-to-Opus byte-budget case; unchanged text/codec/quality/memory limits; not repeat/scaling/promotion acceptance";
 if (artworkBenchmark) {
   report.scope = "matched serializer experiment: one explicit warmup plus six identical exact4MiB-artwork FLAC-to-Opus jobs in one normal headless production page; not long-file/stress/scaling/fastest/public acceptance";
@@ -322,7 +324,7 @@ try {
   }
   if (withArtwork) {
     report.artworkImages = {}; report.artworkFixtures = {};
-    for (const codec of ["png", "mjpeg"]) {
+    for (const codec of mp3GainDiagnostic ? ["png"] : ["png", "mjpeg"]) {
       const image = path.join(runtime.directory, "cover." + (codec === "png" ? "png" : "jpg"));
       await native(["-v", "error", "-f", "lavfi", "-i", "color=c=0x2457d6:s=64x64:d=0.04", "-frames:v", "1", "-c:v", codec,
         "-threads", "1", "-fflags", "+bitexact", "-flags:v", "+bitexact", "-f", "image2", image]);
@@ -331,7 +333,7 @@ try {
       const bytes = await readFile(image), expected = { codec, width: 64, height: 64, bytes: bytes.length, sha256: sha(bytes),
         ...(pictureOptions ? { pictureRole: pictureOptions.pictureType === 3 ? "Cover (front)" : "Cover (back)", description: pictureOptions.description } : {}) };
       report.artworkImages[codec] = expected;
-      for (const source of oggArtwork || mp3ArtworkMetadata ? ["flac", "ogg", "opus"] : ["ogg", "opus"]) {
+      for (const source of mp3GainDiagnostic ? ["flac"] : oggArtwork || mp3ArtworkMetadata ? ["flac", "ogg", "opus"] : ["ogg", "opus"]) {
         const original = path.join(runtime.directory, "source." + source), file = path.join(runtime.directory, `source-artwork-${codec}.${source}`);
         const sourceBytes = await readFile(original);
         const addedText = mp3ArtworkMetadata ? [] : AUDIO_REPEATED_COMMENTS;
@@ -559,6 +561,11 @@ try {
       const audio = outputProbe.streams.find(stream => stream.codec_type === "audio"); assert.ok(audio);
       assert.equal(audio.codec_name, conversion.destination === "ogg" ? "vorbis" : conversion.destination); assert.equal(Number(audio.sample_rate), 48000); assert.equal(audio.channels, conversion.largeStereo ? 2 : 1);
       row.output = { bytes: size, sha256: await hashFile(output), probe: outputProbe };
+      if (conversion.gainDiagnostic) {
+        assert.equal(row.output.bytes, 34048); assert.equal(row.output.sha256, "4710ff605bb185db713b003a3b985ced3094dde4ea0c4a01c81501f33571dcaf");
+        assert.deepEqual(state.metrics.audioQualityArgument, { requested: "automatic", nativeCode: 0, automaticPolicy: null });
+        row.actualAutomaticQualityArgument = state.metrics.audioQualityArgument;
+      }
       if (automaticVorbisRepair && !largeVorbisRepeat && index === 0) assert.equal(row.output.sha256, "4db863292dcd76fbcf364a4986120ac9bc39d155a774d730376128058565f4db", "New actual AUTOMATIC call must match the retained full higher/q7 output control");
       if (conversion.largeStereo && index > 0) assert.equal(row.output.sha256, report.cases[0].output.sha256, "Full-size repeated outputs must be byte-identical");
       if (artworkBenchmark) assert.equal(row.output.sha256, "e00860de6c495310697e32ad31a0fa859cd0c082e5b8921088e33c55f9db71f3", "Every benchmark job must match the complete accepted output control");
@@ -571,9 +578,16 @@ try {
       try {
         if (conversion.largeStereo) console.log(JSON.stringify({ stage: "full-independent-unaligned-PCM-and-legacy-SDR", repeat: index + 1, expectedSamples: 220800000, estimatedValidationSeconds: 30 }));
         row.fidelity = conversion.largeStereo ? await compareNativeLongAudioPcm(input, output, { cwd: root, env, channels: 2, expectedFrames: 110400000 })
-          : await compareNativeAudioPcm(input, output, { cwd: root, env, lossless: conversion.destination === "flac" }); row.fullIndependentDecode = true;
+          : await compareNativeAudioPcm(input, output, { cwd: root, env, lossless: conversion.destination === "flac", ...(conversion.gainDiagnostic ? { diagnoseGain: true } : {}) }); row.fullIndependentDecode = true;
       }
       catch (error) { row.fidelity = error.fidelity ?? null; row.fullIndependentDecode = error.fullIndependentDecodePassed ?? false; row.failures.push(String(error)); }
+      if (conversion.gainDiagnostic) {
+        assert.equal(row.fidelity.samples, 96000); assert.equal(row.fidelity.minimumPsnrDb, 60); assert.equal(row.fidelity.squaredError, 2016507993);
+        assert.equal(row.fidelity.sourceSha256, "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083");
+        assert.equal(row.fidelity.outputSha256, "0c6fb0ac28455fb8c0031cb59a9e018de2813ee119bf2edaf87a5614c0b95f8b");
+        assert.ok(row.fidelity.amplitudeDiagnostic?.acceptanceUsesUnmodifiedSamples); row.gainDiagnostic = row.fidelity.amplitudeDiagnostic;
+        row.sameRetainedAutomaticBytesAndUnmodifiedPcm = true;
+      }
       const comments = conversion.destination === "mp3" ? await readId3Metadata(output) : conversion.byteBudget ? await readOggNativeTextBudgetComments(output, conversion.destination)
         : extendedArtworkInspection ? await readOggPictureComments(output, conversion.destination) : await readAudioCommentEntries(output, conversion.destination); row.binaryComments = comments;
       if (conversion.destination === "mp3") {
@@ -724,6 +738,7 @@ finally {
       byobCancellationProof: c.byobCancellationProof, samePageVorbisIoRecovery: c.samePageVorbisIoRecovery,
       standardRepeatedValidation: c.standardRepeatedValidation, metadataCoverage: c.metadataCoverage,
       id3Metadata: c.id3Metadata,
+      gainDiagnostic: c.gainDiagnostic, sameRetainedAutomaticBytesAndUnmodifiedPcm: c.sameRetainedAutomaticBytesAndUnmodifiedPcm,
       failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags?.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, artwork: c.artwork,
       streamingPictureInspection: c.streamingPictureInspection,
