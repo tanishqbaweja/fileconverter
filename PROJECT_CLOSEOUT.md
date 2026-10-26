@@ -6,12 +6,17 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
-Display-only storage-error improvement prepared: a clear explanation for the
-observed SyncAccessHandle space/quota failure, exact raw diagnostics under
-closed Technical details, unrelated errors unchanged.23 focused tests/lint/TS
-PASS; changed actual-browser UI/recovery check next, with all old I/O/quality/
-whole-Chrome thresholds. Prior source874391b1 CI40305797263 now SUCCESS; that
-does not cover the newer UI source. No native rebuild or full-goal completion.
+Changed storage-error UI/recovery CLOSED by14-16-54.324Z/195cafe8: real quota
+failure shows clear summary and exact raw diagnostics in closed/opened/reclosed
+Technical details. SAME-page default-quota recovery preserves exact output,
+PNG/25tags/repeats/all96000PCM66.1683dB; error UI gone.203.015625MiB wholeChrome,
+408valid0missing/53pins/default services unchanged/all cleanup. Both HEADLESS
+screens reviewed, not headed/manual coverage. No replay or native rebuild.
+Source195cafe8 CI40338659255 failed two historical UI reconstruction checks;
+next reconcile only exact reversible reviewed UI/style hunks with original
+hashes/full comparisons intact.28 focused tests/lint/TypeScript/diff now PASS;
+follow-up hosted CI next. Original
+54 scope remains incomplete; keep Chrome services and250MiB formula unchanged.
 
 Real browser-origin OPFS quota + same-page recovery now CLOSED by10-20-39.819Z:
 actual native write fails after1,043,199 output bytes at1,114,112B quota, no

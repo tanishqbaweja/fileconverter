@@ -43,6 +43,14 @@ This covers browser-controlled origin quota, not physical disk exhaustion,
 OS permission revocation, the native destination picker or large-file promotion.
 The test override is reset in `finally` and is not used by the application.
 
+The observed browser-storage write failure now displays a plain-language
+explanation with its exact native diagnostic under closed “Technical details.”
+The changed UI's expand/collapse and same-page recovery were verified headlessly
+at 203.02 MiB whole-Chrome incremental private memory; normal Chrome services
+and the 250 MiB formula were unchanged. Evidence:
+`evidence/2026-10-26T14-16-54.324Z-audio-metadata-fidelity-result.json`.
+This is small-case UI/recovery evidence, not large-file qualification.
+
 ## Verified public routes
 
 The selector and published matrix are generated from

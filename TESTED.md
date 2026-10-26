@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+2026-10-26 — Changed storage-error UI/recovery CLOSED at195cafe8 by
+`evidence/2026-10-26T14-16-54.324Z-audio-metadata-fidelity-result.json`.
+Actual browser-origin quota interrupts genuine native work after1,835,008 input
+and1,043,199 output bytes. Friendly summary visible, exact raw diagnostic retained,
+Technical details default-closed and opened/closed in real UI. Restoring quota
+allows SAME-page exact17,360B Opus SHAfa99d525...092d7f,25tags/two repeats/exact
+PNG and all96000PCM66.1683dB>=60; stale error UI absent. Primary203.015625MiB,
+408valid/0missing/53pins/default Chrome services unchanged. All original/assets/
+privacy/owned media-profile/process cleanup PASS. Both HEADLESS screenshots
+reviewed; raw report and full memory journal retained. No native rebuild or
+disposable converted copies retained. Small private UI proof, not stress,
+physical disk/OS permission/direct picker, promotion or original-scope completion.
+Source195cafe8 CI40338659255 FAILED two historical UI reconstruction tests
+(1747pass/2fail/1skip); build/lint/TypeScript passed, privacy/offline skipped.
+Fix records only exact reversible reviewed UI/style hunks; frozen preimages and
+whole-file comparison stay intact.28 focused tests PASS (including retained
+actual browser evidence and both formerly failed checks), ESLint/TypeScript/
+diff PASS. Follow-up hosted CI pending. Do not replay the nowclosed browser
+quota conversion unchanged.
+
 2026-10-26 — Previously live source874391b1 CI40305797263 is now TERMINAL
 SUCCESS, including production build/lint/TypeScript/portable/privacy-offline
 steps; public proof audit still404. No restart was used during slow dependency

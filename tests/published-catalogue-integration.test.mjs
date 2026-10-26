@@ -29,6 +29,12 @@ test("current application mounts the bounded component with explicit lifecycle a
   // unique and reversible; the complete historical UI comparison below remains
   // mandatory and still catches every unrelated change.
   const codeOwnerEdits = [
+    ['import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";\nimport { ConversionError } from "./ConversionError";\n',
+      'import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";\n'],
+    ['          {error && !file ? (\n            <ConversionError message={error} />\n',
+      '          {error && !file ? (\n            <p className="error" role="alert">\n              {error}\n            </p>\n'],
+    ['              {error ? (\n                <ConversionError message={error} />\n',
+      '              {error ? (\n                <p className="error" role="alert">\n                  {error}\n                </p>\n'],
     ['  audioCompressionForCodec,\n  automaticVorbisQualityNotice,\n', '  audioCompressionForCodec,\n'],
     ['                              ? automaticVorbisQualityNotice(selectedProfile?.id, "automatic")\n                                ? "Automatic (Vorbis quality 7)"\n                                : "Automatic (fastest certified)"\n',
       '                              ? "Automatic (fastest certified)"\n'],
@@ -153,8 +159,13 @@ test("historical preimages keep their recorded hashes and cannot silently read c
   const currentCss = normalize(await readFile("app/globals.css", "utf8")), oldCss = normalize(await readPreCatalogueUi("app/globals.css"));
   const isolatedProgress = "\n.progress-panel {\n  contain: layout paint;\n", historicalProgress = "\n.progress-panel {\n";
   assert.equal(currentCss.split(isolatedProgress).length - 1, 1);
-  const css = currentCss.replace(isolatedProgress, historicalProgress);
-  assert.equal(css.replace(historicalProgress, isolatedProgress), currentCss);
+  const storageErrorStyles = '\n.conversion-error-summary {\n  margin: 0;\n}\n\n.conversion-error-details summary {\n  cursor: pointer;\n  font-weight: 600;\n}\n\n.conversion-error-details p {\n  margin: 0.5rem 0 0;\n  overflow-wrap: anywhere;\n  white-space: pre-wrap;\n}\n';
+  const styleAnchor = '\n.progress-panel {', insertion = storageErrorStyles + styleAnchor;
+  assert.equal(currentCss.split(insertion).length, 2, "Unique exact reviewed storage-error style insertion");
+  const withoutStorageError = currentCss.replace(insertion, styleAnchor);
+  assert.equal(withoutStorageError.replace(styleAnchor, insertion), currentCss);
+  const css = withoutStorageError.replace(isolatedProgress, historicalProgress);
+  assert.equal(css.replace(historicalProgress, isolatedProgress), withoutStorageError);
   const begin = css.indexOf("\n.catalogue-search {"), end = css.indexOf("\nfooter {", begin);
   assert.ok(begin > 0 && end > begin); assert.equal(css.slice(0, begin) + css.slice(end), oldCss);
   await assert.rejects(readPreCatalogueUi("workers/media-remux.ts"), /three explicit historical UI sources/);
