@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-10-26 — New browser-enforced OPFS quota gate prepared, runtimeUNVERIFIED.
+`--real-opfs-quota-recovery` uses Chromium's per-origin quota override in one
+fresh owned persistent profile; native production FLAC-to-Opus must fail AFTER
+actual input/output at1MiB quota, with no injected fault, zero retained partials
+or pending operations and recovered worker. Default quota is then restored;
+same-page PNG/25-tag/repeated/full96000PCM>=60dB recovery required. Finally
+resets the quota even after failure. Existing fulltree250MiB/native100ms/null
+rules and cleanup remain; no new native core/build or normal-browser service
+change. This is browser-origin quota coverage only, not physical disk filling,
+OS permission revocation, direct OS picker or public/stress qualification.
+Primary protocol semantics:
+https://chromium.googlesource.com/devtools/devtools-frontend/+/e2269160c6899e5abfe73d2274f211ef6e04bda1/third_party/blink/public/devtools_protocol/browser_protocol.json
+39 focused tests/TypeScript/lint/diff pass before browser execution. One stale
+MP3 source-contract assertion was updated for the additional shared fixture
+setup flag; existing MP3 case selection and retained real evidence still pass.
+
 2026-10-26 — Level2 MP3-search candidate REJECTED by real browser gate
 `evidence/2026-10-26T09-50-24.664Z-audio-metadata-fidelity-result.json`,
 executed21daa3ff on exact old failed0.999 inputs, actual audited40301509420 core.

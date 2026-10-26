@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Next distinct gate implemented, browser-UNVERIFIED: `--real-opfs-quota-recovery`
+must get a Chrome-enforced1MiB OPFS quota failure AFTER genuine native read/write
+(no error injection), restore defaults and prove same-page PNG/25-tag/repeated/
+full96000PCM recovery. Fixed whole-tree250MiB/100ms observer and finally cleanup
+remain.39 focused/TS/lint pass. Reuse existing56-source/15-artifact audio core;
+no rebuild, physical disk filling, OS permission claim or MP3 clipping remedy.
+
 MP3 level2-search hypothesis now CLOSED/REJECTED: real09-50-24.664Z canaries
 on exact prior0.999 inputs still fail, with worse1.001767993/1.006920099 float
 peaks (116/12 overshoots). PCM/gain/tags/PNG/194.3359375MiB/cleanup pass, not

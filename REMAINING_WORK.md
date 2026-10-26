@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-26 — Real browser-origin OPFS quota failure/recovery gate implemented,
+not yet run. Existing error-injection gates remain closed; this distinct case
+must obtain an actual native write failure under Chrome-enforced1MiB origin
+quota, then restore defaults and prove same-page metadata/PNG/full-PCM recovery.
+No write API/estimate stub or synthetic DOMException; quota reset also required
+in finally. Uses existing metadata core and unchanged wholeChrome250MiB gate.
+Physical disk exhaustion/OS permission revocation remain separate/unverified.
+No MP3 clipping repair or original-scope completion inferred.
+
 2026-10-26 — MP3 search-level2 hypothesis is CLOSED/REJECTED, not a remedy.
 Actual09-50-24.664Z on exact two failed inputs increases float peaks to
 1.001767993/1.006920099,116/12 overshooting samples. Strict PCM/gain/metadata

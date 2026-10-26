@@ -45,10 +45,12 @@ import { STANDARD_AUDIO_REPEAT_CASES, STANDARD_AUDIO_SCALAR_TAGS, makeStandardRe
 import { readId3Metadata, validateId3FixtureMetadata } from "./lib/id3-metadata-validation.mjs";
 import { decodeNativeFloatPeaks, validateNearFullScalePeaks } from "./lib/audio-float-peak-validation.mjs";
 import { MP3_CLIPPING_CASES, createMp3ClippingFixtures } from "./lib/mp3-clipping-fixture.mjs";
+import { REAL_OPFS_QUOTA_BYTES, REAL_OPFS_QUOTA_CASES, validateRealOpfsQuotaFailure } from "./lib/real-opfs-quota-validation.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE } from "../lib/media-conversion-options.ts";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio", "--mp3-artwork-metadata", "--mp3-gain-diagnostic", "--mp3-input-gain-repair", "--mp3-input-gain-matrix", "--mp3-fullscale-clipping", "--mp3-io-recovery", "--mp3-quantizer-clipping"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio", "--mp3-artwork-metadata", "--mp3-gain-diagnostic", "--mp3-input-gain-repair", "--mp3-input-gain-matrix", "--mp3-fullscale-clipping", "--mp3-io-recovery", "--mp3-quantizer-clipping", "--real-opfs-quota-recovery"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+const realQuotaRecovery = process.argv[3] === "--real-opfs-quota-recovery";
 const mp3IoRecovery = process.argv[3] === "--mp3-io-recovery";
 const mp3QuantizerClipping = process.argv[3] === "--mp3-quantizer-clipping";
 const mp3Clipping = process.argv[3] === "--mp3-fullscale-clipping" || mp3QuantizerClipping;
@@ -69,18 +71,18 @@ const metadataFieldRejectOnly = process.argv[3] === "--metadata-field-rejection-
 const metadataFieldBudget = process.argv[3] === "--metadata-field-budget-recovery" || metadataFieldRejectOnly;
 const metadataByteBudget = process.argv[3] === "--metadata-text-byte-budget-recovery";
 const metadataBudget = metadataFieldBudget || metadataByteBudget;
-const physicalValidation = process.argv[3] === "--artwork-benchmark-physical-validation" || metadataBudget || automaticVorbisRepair || vorbisIoRecovery || standardRepeatedAudio || mp3ArtworkMetadata;
+const physicalValidation = process.argv[3] === "--artwork-benchmark-physical-validation" || metadataBudget || automaticVorbisRepair || vorbisIoRecovery || standardRepeatedAudio || mp3ArtworkMetadata || realQuotaRecovery;
 const artworkBenchmark = process.argv[3] === "--artwork-serializer-benchmark" || process.argv[3] === "--artwork-benchmark-physical-validation";
 const artworkBudget = process.argv[3] === "--artwork-byte-budget" || artworkBenchmark || metadataBudget;
 const audioIoRecovery = process.argv[3] === "--audio-io-recovery";
 const artworkRejection = process.argv[3] === "--artwork-rejection-recovery", extendedArtworkInspection = artworkBudget || artworkRejection || audioIoRecovery;
-const oggArtwork = process.argv[3] === "--ogg-artwork" || (automaticVorbisRepair && !largeVorbisRepeat) || vorbisIoRecovery, withArtwork = artworkMetadata || oggArtwork || mp3ArtworkMetadata;
+const oggArtwork = process.argv[3] === "--ogg-artwork" || (automaticVorbisRepair && !largeVorbisRepeat) || vorbisIoRecovery, withArtwork = artworkMetadata || oggArtwork || mp3ArtworkMetadata || realQuotaRecovery;
 const selectedCases = mp3GainMatrix ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork, gainRepair: true })))
   .filter(row => !(row.source === "flac" && row.artwork === "png")) : mp3Clipping ? MP3_CLIPPING_CASES.filter(row => !mp3QuantizerClipping || row.amplitude === 0.999) : mp3IoRecovery ? [
   { source: "flac", destination: "mp3", interruption: "cancel", payloadCancellation: true },
   { source: "flac", destination: "mp3", artwork: "png", interruption: "write" },
   { source: "flac", destination: "mp3", artwork: "png", gainRepair: true, recoveryAfterIo: true },
-] : mp3GainRepair ? [{ source: "flac", destination: "mp3", artwork: "png", gainRepair: true }] : mp3GainDiagnostic ? [{ source: "flac", destination: "mp3", artwork: "png", gainDiagnostic: true }] : mp3ArtworkMetadata ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork }))) : standardRepeatedAudio ? STANDARD_AUDIO_REPEAT_CASES : vorbisIoRecovery ? [
+] : mp3GainRepair ? [{ source: "flac", destination: "mp3", artwork: "png", gainRepair: true }] : mp3GainDiagnostic ? [{ source: "flac", destination: "mp3", artwork: "png", gainDiagnostic: true }] : mp3ArtworkMetadata ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork }))) : standardRepeatedAudio ? STANDARD_AUDIO_REPEAT_CASES : realQuotaRecovery ? REAL_OPFS_QUOTA_CASES : vorbisIoRecovery ? [
   { source: "opus", destination: "ogg", interruption: "cancel", byobCancellation: true },
   { source: "opus", destination: "ogg", repeated: true, artwork: "png", interruption: "write" },
   { source: "opus", destination: "ogg", repeated: true, artwork: "png", recoveryAfterIo: true },
@@ -131,6 +133,7 @@ if (mp3GainMatrix) report.scope = "FIVE remaining automatic MP3 gain-repair jobs
 if (mp3Clipping) report.scope = "four NEW near-full-scale2s mono/stereo FLAC-to-MP3 cases at0.99/0.999; independent full f32 decode exposes saturation/overshoot before integer clamping, unchanged60dB complete s16 comparison/tags/PNG/memory/cleanup; not every waveform, IO recovery, stress or public acceptance";
 if (mp3QuantizerClipping) report.scope = "two changed-encoder-search canaries on exact failed0.999 mono/stereo INPUTS: private level2 versus prior level9, same bitrate/gain/automatic argument, unchanged full-float no-overshoot/full-S16>=60dB/25tags/PNG/fulltree250MiB/cleanup; no matrix, general clipping, speed or public acceptance";
 if (mp3IoRecovery) report.scope = "three NEW same-page private gain-core MP3 jobs: cancel after real audio payload, injected error after real bounded write, then exact prior PNG/25-tag/full-PCM recovery; existing near-full-scale failures remain failed; not OS/quota/permission/direct-picker/stress/public acceptance";
+if (realQuotaRecovery) report.scope = "two NEW real-UI jobs: browser-enforced1MiB origin quota must interrupt native FLAC-to-Opus after actual read/write without error injection, then restore default quota and validate same-page PNG/25-tag/repeated/fullPCM recovery; NOT physical disk exhaustion, OS permission revocation, stress or promotion";
 if (artworkBudget) report.scope = "one NEW exact4MiB real PNG cover FLAC-to-Opus byte-budget case; unchanged text/codec/quality/memory limits; not repeat/scaling/promotion acceptance";
 if (artworkBenchmark) {
   report.scope = "matched serializer experiment: one explicit warmup plus six identical exact4MiB-artwork FLAC-to-Opus jobs in one normal headless production page; not long-file/stress/scaling/fastest/public acceptance";
@@ -198,6 +201,7 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "scripts/lib/audio-standard-repeated-fixture.mjs",
   "scripts/lib/id3-metadata-validation.mjs",
   "scripts/lib/audio-float-peak-validation.mjs", "scripts/lib/mp3-clipping-fixture.mjs",
+  "scripts/lib/real-opfs-quota-validation.mjs",
   "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts", "lib/browser-capabilities.ts", "lib/capability-registry.ts",
   "lib/native-input-memory-observation.ts",
   "lib/conversion-protocol.ts", "lib/media-native-arguments.ts",
@@ -205,7 +209,7 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "lib/audio-input-policy.ts",
   "lib/media-conversion-options.ts", "app/converter/ConverterApp.tsx", "app/globals.css"];
 const pins = async () => Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, sha(await readFile(path.join(root, file)))])));
-let browser, context, activePage, server, serverIdentity, monitor, journal, observer, monitorTimer, benchmarkSession, fieldFixtures, byteFixtures, clippingFixtures, largeFixture, largeBudgetFailure, largeBudgetCancellationAttempted = false, pending = Promise.resolve(), snapshotPending, monitorFailure, busy = false, serverLog = "", originalHash;
+let browser, context, activePage, server, serverIdentity, monitor, journal, observer, monitorTimer, benchmarkSession, quotaSession, quotaOrigin, fieldFixtures, byteFixtures, clippingFixtures, largeFixture, largeBudgetFailure, largeBudgetCancellationAttempted = false, pending = Promise.resolve(), snapshotPending, monitorFailure, busy = false, serverLog = "", originalHash;
 const identities = [], staged = [], tail = [], phases = [{ phase: "blank", at: Date.now() }];
 const phase = name => phases.push({ phase: name, at: Date.now() });
 const snapshot = async () => {
@@ -295,7 +299,7 @@ try {
     assert.equal(report.longDecoderProbe.exact, true);
     assert.equal(report.longDecoderProbe.sourceSha256, "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5");
   }
-  if (audioIoRecovery || mp3IoRecovery) {
+  if (audioIoRecovery || mp3IoRecovery || realQuotaRecovery) {
     const args = audioMetadataFixtureArguments("flac", path.join(runtime.directory, "source-cancel.flac"));
     const signal = args.indexOf("sine=frequency=997:sample_rate=48000:duration=2"); assert.ok(signal > 0);
     args[signal] = "sine=frequency=997:sample_rate=48000:duration=180"; await native(args);
@@ -353,16 +357,16 @@ try {
   }
   if (withArtwork) {
     report.artworkImages = {}; report.artworkFixtures = {};
-    for (const codec of mp3SingleCanary ? ["png"] : ["png", "mjpeg"]) {
+    for (const codec of mp3SingleCanary || realQuotaRecovery ? ["png"] : ["png", "mjpeg"]) {
       const image = path.join(runtime.directory, "cover." + (codec === "png" ? "png" : "jpg"));
       await native(["-v", "error", "-f", "lavfi", "-i", "color=c=0x2457d6:s=64x64:d=0.04", "-frames:v", "1", "-c:v", codec,
         "-threads", "1", "-fflags", "+bitexact", "-flags:v", "+bitexact", "-f", "image2", image]);
       const imageSize = (await lstat(image)).size; assert.ok(imageSize > 8 && imageSize <= 65536);
-      const pictureOptions = oggArtwork || mp3ArtworkMetadata ? { pictureType: codec === "png" ? 3 : 4, description: codec === "png" ? "表紙 — Front cover" : "Pochette arrière café — 音楽" } : undefined;
+      const pictureOptions = oggArtwork || mp3ArtworkMetadata || realQuotaRecovery ? { pictureType: codec === "png" ? 3 : 4, description: codec === "png" ? "表紙 — Front cover" : "Pochette arrière café — 音楽" } : undefined;
       const bytes = await readFile(image), expected = { codec, width: 64, height: 64, bytes: bytes.length, sha256: sha(bytes),
         ...(pictureOptions ? { pictureRole: pictureOptions.pictureType === 3 ? "Cover (front)" : "Cover (back)", description: pictureOptions.description } : {}) };
       report.artworkImages[codec] = expected;
-      for (const source of mp3SingleCanary ? ["flac"] : oggArtwork || mp3ArtworkMetadata ? ["flac", "ogg", "opus"] : ["ogg", "opus"]) {
+      for (const source of mp3SingleCanary || realQuotaRecovery ? ["flac"] : oggArtwork || mp3ArtworkMetadata ? ["flac", "ogg", "opus"] : ["ogg", "opus"]) {
         if (mp3Clipping) continue; // Only the new full-scale inputs, not a replayed canonical carrier.
         if (mp3GainMatrix && !selectedCases.some(row => row.source === source && row.artwork === codec)) continue;
         const original = path.join(runtime.directory, "source." + source), file = path.join(runtime.directory, `source-artwork-${codec}.${source}`);
@@ -451,6 +455,13 @@ try {
   for (let i = 0; i < 30; i++) { await pause(2100); await snapshot(); loaded.push({ ...tail.at(-1), elapsedMs: Date.parse(tail.at(-1).timestamp) - Date.parse(report.browserBirth.createdAt) });
     const stable = stableWindow(loaded, 8000); if (stable) { report.loadedIdle = stable; break; } }
   assert.ok(report.loadedIdle);
+  if (realQuotaRecovery) {
+    quotaSession = await context.newCDPSession(page); quotaOrigin = base;
+    report.realQuotaControl = { mechanism: "Storage.overrideQuotaForOrigin in fresh owned profile only; browser enforces OPFS quota, no write method/error injection",
+      initial: await quotaSession.send("Storage.getUsageAndQuota", { origin: quotaOrigin }), quotaBytes: REAL_OPFS_QUOTA_BYTES,
+      physicalDiskExhausted: false, osPermissionRevocationTested: false, defaultBrowserServicesChanged: false };
+    assert.equal(report.realQuotaControl.initial.overrideActive, false);
+  }
   report.screenshots = [];
   const storageSnapshot = () => page.evaluate(async () => {
     const directory = await navigator.storage.getDirectory(), entries = [];
@@ -472,14 +483,14 @@ try {
     const directory = path.join(root, "output/playwright", stamp + "-audio-fidelity"); await mkdir(directory, { recursive: true });
     await page.locator(".progress-panel").scrollIntoViewIfNeeded(); const file = path.join(directory, `case-${index}-terminal.png`);
     if (conversion.expectedExclusion) await page.getByText(ARTWORK_BUDGET_EXCLUSION_WARNING, { exact: true }).first().scrollIntoViewIfNeeded();
-    if (conversion.interruption === "write" || conversion.metadataFailure) await page.getByText(row.browserState.error, { exact: true }).first().scrollIntoViewIfNeeded();
+    if (conversion.interruption === "write" || conversion.metadataFailure || conversion.realQuotaFailure) await page.getByText(row.browserState.error, { exact: true }).first().scrollIntoViewIfNeeded();
     await page.screenshot({ path: file, fullPage: false }); const bytes = await readFile(file); assert.ok(bytes.length <= 4 * 1048576);
     report.screenshots.push({ path: path.relative(root, file).replaceAll(path.sep, "/"), bytes: bytes.length, sha256: sha(bytes), headedCoverage: false });
   };
   for (const [index, conversion] of selectedCases.entries()) {
     if (monitorFailure) throw monitorFailure;
     if (largeBudgetFailure) throw new Error(largeBudgetFailure);
-    const profileId = `${conversion.source}-to-${conversion.destination}`, input = conversion.highAmplitude ? clippingFixtures[conversion.highAmplitude].file : conversion.standardRepeated ? path.join(runtime.directory, "source-standard-repeated." + conversion.source) : conversion.largeStereo ? largeFixture.file : conversion.byteBudget ? byteFixtures[conversion.byteBudget].file : conversion.fieldBudget ? fieldFixtures[conversion.fieldBudget].file : path.join(runtime.directory, conversion.interruption === "cancel" ? (vorbisIoRecovery ? "source-cancel.opus" : "source-cancel.flac") : conversion.artwork
+    const profileId = `${conversion.source}-to-${conversion.destination}`, input = conversion.highAmplitude ? clippingFixtures[conversion.highAmplitude].file : conversion.standardRepeated ? path.join(runtime.directory, "source-standard-repeated." + conversion.source) : conversion.largeStereo ? largeFixture.file : conversion.byteBudget ? byteFixtures[conversion.byteBudget].file : conversion.fieldBudget ? fieldFixtures[conversion.fieldBudget].file : path.join(runtime.directory, conversion.interruption === "cancel" || conversion.realQuotaFailure ? (vorbisIoRecovery ? "source-cancel.opus" : "source-cancel.flac") : conversion.artwork
       ? `source-artwork-${conversion.artwork}.${conversion.source}` : (conversion.repeated ? "source-repeated." : "source.") + conversion.source),
       outputCopy = path.join(runtime.directory, `output-${index}.${conversion.destination}`);
     let output = outputCopy, physicalBinding;
@@ -494,6 +505,8 @@ try {
     if (conversion.largeStereo) { row.name += "-large-stereo-repeat-" + conversion.repeat; row.largeStereo = true; }
     if (conversion.standardRepeated) { row.name += "-standard-repeated-aliases"; row.standardRepeated = true; }
     if (conversion.highAmplitude) { row.name += "-fullscale-" + conversion.highAmplitude; row.highAmplitude = conversion.highAmplitude; }
+    if (conversion.realQuotaFailure) row.name += "-browser-enforced-quota-failure";
+    if (conversion.recoveryAfterRealQuota) row.name += "-after-browser-quota-restoration";
     let outputIdentity, entryName;
     try {
       const expectedTags = conversion.standardRepeated ? STANDARD_AUDIO_SCALAR_TAGS : conversion.largeStereo ? largeFixture.expectedTags : AUDIO_METADATA_TAGS;
@@ -503,10 +516,19 @@ try {
       if (conversion.fieldBudget) row.source = { ...report.metadataFieldFixtures[conversion.fieldBudget], tags };
       if (conversion.byteBudget) row.source = { ...report.metadataByteFixtures[conversion.byteBudget], tags };
       if (conversion.largeStereo) row.source = { ...report.largeAudioFixture, tags };
-      if (conversion.interruption === "cancel") row.source = { ...report.cancellationFixture, tags };
+      if (conversion.interruption === "cancel" || conversion.realQuotaFailure) row.source = { ...report.cancellationFixture, tags };
       if (conversion.standardRepeated) row.source = { ...report.standardRepeatedFixtures[conversion.source], tags };
       if (conversion.highAmplitude) row.source = { ...report.clippingFixtures[conversion.highAmplitude], tags };
       if (audioIoRecovery || vorbisIoRecovery || mp3IoRecovery) await page.evaluate(fault => { history.replaceState(null, "", "/?test=1" + (fault ? "&fault=write" : "")); }, conversion.interruption === "write");
+      if (realQuotaRecovery) {
+        assert.equal(new URL(page.url()).searchParams.has("fault"), false);
+        if (conversion.realQuotaFailure) await quotaSession.send("Storage.overrideQuotaForOrigin", { origin: quotaOrigin, quotaSize: REAL_OPFS_QUOTA_BYTES });
+        else await quotaSession.send("Storage.overrideQuotaForOrigin", { origin: quotaOrigin });
+        row.realBrowserQuota = await quotaSession.send("Storage.getUsageAndQuota", { origin: quotaOrigin });
+        assert.equal(row.realBrowserQuota.overrideActive, Boolean(conversion.realQuotaFailure));
+        if (conversion.realQuotaFailure) assert.equal(row.realBrowserQuota.quota, REAL_OPFS_QUOTA_BYTES);
+        else assert.ok(row.realBrowserQuota.quota > REAL_OPFS_QUOTA_BYTES);
+      }
       phase("case-" + index); await page.locator('[data-testid="file-input"]').setInputFiles(input); await page.locator('[data-testid="format-select"]').selectOption(profileId);
       await page.waitForFunction(() => !document.querySelector('[data-testid="convert-button"]')?.disabled && window.__WITHIN_TEST__?.getState().workerStatus === "ready");
       if (conversion.quality) {
@@ -519,7 +541,7 @@ try {
         assert.equal(await page.getByTestId("audio-automatic-quality-notice").textContent(), OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE);
         row.automaticQualityNoticeVisible = true;
       }
-      if (conversion.interruption || conversion.metadataFailure) { row.storageBefore = await storageSnapshot(); assert.deepEqual(row.storageBefore, []); }
+      if (conversion.interruption || conversion.metadataFailure || conversion.realQuotaFailure) { row.storageBefore = await storageSnapshot(); assert.deepEqual(row.storageBefore, []); }
       const startedAt = Date.now(); await page.locator('[data-testid="convert-button"]').click();
       if (conversion.largeStereo) console.log(JSON.stringify({ stage: "real-browser-large-conversion", repeat: index + 1, inputBytes: largeFixture.bytes, estimatedConversionSeconds: 70 }));
       if (conversion.interruption === "cancel") {
@@ -538,7 +560,7 @@ try {
         await page.getByRole("button", { name: "Cancel safely", exact: true }).click();
       }
       await page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState ?? ""), null, { timeout: conversion.largeStereo ? 240000 : 60000 });
-      if (conversion.interruption || conversion.metadataFailure) await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
+      if (conversion.interruption || conversion.metadataFailure || conversion.realQuotaFailure) await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState()); row.browserElapsedMs = Date.now() - startedAt; row.browserState = state; entryName = state.opfsName;
       if (artworkBenchmark || conversion.largeStereo) { assert.ok(Number.isFinite(state.metrics.elapsedMs) && state.metrics.elapsedMs > 0); row.engineElapsedMs = state.metrics.elapsedMs; }
       assert.equal(state.audioOptions.quality, row.requestedQuality, "Actual production job must retain the requested quality selection");
@@ -556,7 +578,13 @@ try {
           "Explicit input backing allocations must remain fixed for the entire147.96MB input");
         row.actualInputTransport = transport;
       }
-      if (conversion.metadataFailure) {
+      if (conversion.realQuotaFailure) {
+        row.storageAfter = await storageSnapshot();
+        row.realQuotaFailureProof = validateRealOpfsQuotaFailure(state, { quota: row.realBrowserQuota,
+          storageBefore: row.storageBefore, storageAfter: row.storageAfter, faultParameterPresent: new URL(page.url()).searchParams.has("fault") });
+        await page.getByText(state.error, { exact: true }).first().waitFor({ state: "visible", timeout: 5000 });
+        row.realQuotaErrorVisible = true; row.status = "passed-private-browser-enforced-quota-failure-case";
+      } else if (conversion.metadataFailure) {
         row.storageAfter = await storageSnapshot();
         row.metadataFailureProof = conversion.metadataFailure === "text-bytes"
           ? validateMetadataTextByteBudgetFailure(state, { storageBefore: row.storageBefore, storageAfter: row.storageAfter })
@@ -721,6 +749,13 @@ try {
             automaticNativeQualityCode: 3, noPageOrContextRecreation: true, noStaleErrorOrWarning: true };
         }
       }
+      if (conversion.recoveryAfterRealQuota) {
+        assert.equal(index, 1); assert.equal(report.cases[0].status, "passed-private-browser-enforced-quota-failure-case");
+        assert.equal(state.error, null); assert.deepEqual(state.warnings, []); assert.equal(row.fidelity.samples, 96000);
+        assert.equal(row.fidelity.minimumPsnrDb, 60); assert.equal(row.realBrowserQuota.overrideActive, false);
+        row.samePageRealQuotaRecovery = { actualQuotaFailurePassed: true, defaultQuotaRestored: true,
+          noPageOrContextRecreation: true, noStaleErrorOrWarning: true, errorInjectionUsed: false, publicAcceptance: false };
+      }
       if (conversion.repeated) {
         row.repeatedValues = comments.entries.filter(s => s.split("=", 1)[0].toLowerCase() === "custom_repeat");
         try { assert.deepEqual(row.repeatedValues, AUDIO_REPEATED_COMMENTS); } catch { row.failures.push("Repeated comment values were folded, overwritten or reordered"); }
@@ -775,7 +810,7 @@ try {
     assert.ok(report.cases.every(row => row.status === (largeVorbisRepeat ? "passed-full-size-private-q7-case-not-public-qualification" : "passed-small-private-fidelity-and-metadata-case") && row.actualAutomaticQualityArgument?.nativeCode === 3));
     report.automaticVorbisQualityRepaired = largeVorbisRepeat ? "passed-three-full-size-private-q7-repeats-not-public-qualification" : "passed-four-small-private-automatic-cases-not-public-requalification";
   }
-  assert.ok(largeVorbisRepeat ? report.cases.every(c => c.status === "passed-full-size-private-q7-case-not-public-qualification") : metadataBudget ? report.cases.every(c => c.metadataFailure ? c.status === (c.metadataFailure === "text-bytes" ? "passed-private-metadata-byte-rejection-case" : "passed-private-metadata-field-rejection-case") : c.status === "passed-small-private-fidelity-and-metadata-case")
+  assert.ok(realQuotaRecovery ? report.cases.every((c, index) => c.status === (index === 0 ? "passed-private-browser-enforced-quota-failure-case" : "passed-small-private-fidelity-and-metadata-case")) : largeVorbisRepeat ? report.cases.every(c => c.status === "passed-full-size-private-q7-case-not-public-qualification") : metadataBudget ? report.cases.every(c => c.metadataFailure ? c.status === (c.metadataFailure === "text-bytes" ? "passed-private-metadata-byte-rejection-case" : "passed-private-metadata-field-rejection-case") : c.status === "passed-small-private-fidelity-and-metadata-case")
     : audioIoRecovery || vorbisIoRecovery || mp3IoRecovery ? report.cases.every(c => c.interruption ? c.status === "passed-private-audio-interruption-case" : c.status === "passed-small-private-fidelity-and-metadata-case")
     : report.cases.every(c => c.status === "passed-small-private-fidelity-and-metadata-case"));
   if (vorbisIoRecovery) report.vorbisIoRecovery = "passed-three-private-interruption-and-recovery-jobs-not-public-qualification";
@@ -784,6 +819,14 @@ try {
 } catch (error) { report.status = "failed"; report.failures.push(String(error.stack ?? error).slice(0, 8192)); }
 finally {
   clearInterval(monitorTimer); await pending;
+  if (quotaSession) {
+    try {
+      await quotaSession.send("Storage.overrideQuotaForOrigin", { origin: quotaOrigin });
+      report.realQuotaControl.final = await quotaSession.send("Storage.getUsageAndQuota", { origin: quotaOrigin });
+      assert.equal(report.realQuotaControl.final.overrideActive, false); report.realQuotaControl.restoredInFinally = true;
+    } catch (error) { report.failures.push("Quota restoration: " + String(error)); report.status = "failed"; }
+    finally { await quotaSession.detach().catch(error => { report.failures.push(String(error)); report.status = "failed"; }); }
+  }
   if (monitor && journal) {
     let coverageFailure = null;
     try { await snapshot(); recordMemory(); report.memoryObserverOwnership = monitor.ownershipSummary(); } catch (error) { coverageFailure = String(error); }
@@ -846,9 +889,12 @@ finally {
       interruption: c.interruption, interruptionProof: c.interruptionProof, interruptionErrorVisible: c.interruptionErrorVisible,
       storageBefore: c.storageBefore, storageAfter: c.storageAfter, samePageIoRecovery: c.samePageIoRecovery,
       payloadCancellationProof: c.payloadCancellationProof, samePageMp3IoRecovery: c.samePageMp3IoRecovery,
+      realBrowserQuota: c.realBrowserQuota, realQuotaFailureProof: c.realQuotaFailureProof, realQuotaErrorVisible: c.realQuotaErrorVisible,
+      samePageRealQuotaRecovery: c.samePageRealQuotaRecovery,
       disposableOutputRemoved: c.disposableOutputRemoved })),
     losslessJournal: report.losslessMemoryJournal ? { file: path.relative(root, report.losslessMemoryJournal.file).replaceAll(path.sep, "/"), records: report.losslessMemoryJournal.records,
       sha256: report.losslessMemoryJournal.sha256, archiveSha256: report.losslessMemoryJournal.archiveSha256, complete: report.losslessMemoryJournal.complete } : null,
+    realQuotaControl: report.realQuotaControl,
     failures: report.failures, network: report.network, cleanup: report.cleanup, protectedOriginalUnchanged: report.protectedOriginalUnchanged };
   const destination = path.join(root, "evidence", stamp + "-audio-metadata-fidelity-result.json"); await writeFile(destination, JSON.stringify(receipt, null, 2) + "\n", { flag: "wx" });
   console.log(JSON.stringify({ receipt: destination, status: report.status, cases: receipt.cases.map(c => ({ name: c.name, status: c.status, failures: c.failures })), memory: report.memory?.incrementalPrivateMiB, cleanup: report.cleanup }));

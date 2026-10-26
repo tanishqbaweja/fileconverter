@@ -24,7 +24,7 @@ test("MP3 recovery retains genuine audio progress, real production fault path an
   const source = await readFile("scripts/test-audio-metadata-production-runtime.mjs", "utf8");
   assert.match(source, /"--mp3-io-recovery"/);
   assert.match(source, /const mp3GainRepair = [^\n]+\|\| mp3IoRecovery/);
-  assert.match(source, /if \(audioIoRecovery \|\| mp3IoRecovery\)/);
+  assert.match(source, /if \(audioIoRecovery \|\| mp3IoRecovery \|\| realQuotaRecovery\)/);
   assert.match(source, /duration=180/);
   assert.match(source, /if \(conversion.payloadCancellation\) await page.waitForFunction/);
   assert.match(source, /state.metrics\?\.inputBytes > 262144 && state.metrics\?\.outputBytes > 65536/);
