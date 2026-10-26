@@ -1,0 +1,524 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "28db3a862b4ec254fd546247aaeded6b6d48f4ca",
+  "status": "passed-selected-small-private-cases-not-promotion",
+  "scope": "one NEW automatic FLAC/PNG-to-MP3 canary using authenticated one-edit private LAME gain policy; unchanged60dB all96000PCM/25tags/exactcover/I/O/fulltree250MiB; not high-amplitude clipping, six-case matrix, stress, speed or public acceptance",
+  "publicAcceptance": false,
+  "fullMetadataAcceptance": false,
+  "archive": {
+    "path": "outputs/reports/2026-10-26T02-40-50.659Z-audio-metadata-production-runtime.json.gz",
+    "bytes": 21375,
+    "sha256": "3ab3418e35aceaa43f8ca1c4ba77dac3af1878f0167f79ee0e86c88c5b2b268a",
+    "restoredBytes": 111161,
+    "restoredSha256": "01af221bb781454565d3f6575c2ca563df5643184f6a2010286030c22b69fd8c"
+  },
+  "sourcePins": 48,
+  "artifactManifestSha256": "0af075248ab4515bf8b3aeab542e95478f71618b9060fc5affcd67dad101cd44",
+  "diskProof": {
+    "status": "exact-browser-canary-independently-found-on-disk",
+    "browserBytes": 64,
+    "physicalBytes": 64,
+    "sha256": "294058504e7311293a4c94a701eb85cab4e3a15573cf74d9d15885c67ac9957a",
+    "physicalFile": "work\\audio-metadata-production-JxOWEB\\chrome-profile\\Default\\File System\\000\\t\\00\\00000001",
+    "profileDirectory": "work\\audio-metadata-production-JxOWEB\\chrome-profile",
+    "inspectedEntries": 5,
+    "maximumReadBytes": 65,
+    "provesThisContextOpfsBacking": true,
+    "provesConversionAcceptance": false,
+    "canaryRemovedInFinally": true
+  },
+  "memory": {
+    "scope": "selected-small-case lifecycle only, not stress acceptance",
+    "limitMiB": 250,
+    "intervalMs": 100,
+    "peak": {
+      "sequence": 361,
+      "timestamp": "2026-10-26T02:41:42.3747602Z",
+      "phase": "case-0",
+      "privateBytes": 418078720,
+      "rssBytes": 667099136,
+      "nativeElapsedMs": 16.6336,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 12408,
+          "parentPid": 44976,
+          "createdAt": "2026-10-26T02:41:01.5859719Z",
+          "creationFileTime": "134374560615859719",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 47464448,
+          "rssBytes": 146374656
+        },
+        {
+          "pid": 17124,
+          "parentPid": 12408,
+          "createdAt": "2026-10-26T02:41:01.9362707Z",
+          "creationFileTime": "134374560619362707",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 149811200,
+          "rssBytes": 173862912
+        },
+        {
+          "pid": 25412,
+          "parentPid": 12408,
+          "createdAt": "2026-10-26T02:41:02.0161051Z",
+          "creationFileTime": "134374560620161051",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 38031360,
+          "rssBytes": 81170432
+        },
+        {
+          "pid": 39904,
+          "parentPid": 12408,
+          "createdAt": "2026-10-26T02:41:01.9718152Z",
+          "creationFileTime": "134374560619718152",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8581120,
+          "rssBytes": 19234816
+        },
+        {
+          "pid": 40412,
+          "parentPid": 12408,
+          "createdAt": "2026-10-26T02:41:22.5669278Z",
+          "creationFileTime": "134374560825669278",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 16551936,
+          "rssBytes": 32243712
+        },
+        {
+          "pid": 43468,
+          "parentPid": 12408,
+          "createdAt": "2026-10-26T02:41:02.0469531Z",
+          "creationFileTime": "134374560620469531",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 141369344,
+          "rssBytes": 163041280
+        },
+        {
+          "pid": 45404,
+          "parentPid": 12408,
+          "createdAt": "2026-10-26T02:41:01.6268543Z",
+          "creationFileTime": "134374560616268543",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2535424,
+          "rssBytes": 9834496
+        },
+        {
+          "pid": 46228,
+          "parentPid": 12408,
+          "createdAt": "2026-10-26T02:41:01.9434206Z",
+          "creationFileTime": "134374560619434206",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 13733888,
+          "rssBytes": 41336832
+        }
+      ]
+    },
+    "incrementalPrivateMiB": 167.90234375,
+    "validSamples": 389,
+    "unavailableSamples": 0,
+    "fullHistoryInLosslessJournal": true
+  },
+  "memoryObserverOwnership": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 0,
+    "proofs": [],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false
+  },
+  "cases": [
+    {
+      "name": "flac-to-mp3-png-cover",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 477,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-JxOWEB/chrome-profile/Default/File System/000/t/00/00000002",
+        "logicalBytes": 34048,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "2251799819366881",
+          "size": "34048",
+          "birthtimeNs": "1792982501986419900",
+          "mtimeNs": "1792982502406704800"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "18c6c32fe36e951b34babbec41cc241c18d4ee12393132e85465873b507c5013"
+          },
+          {
+            "offset": 14976,
+            "bytes": 4096,
+            "sha256": "16a27cb33e8eafb7420e94e75cbbff552200063cdb4ced17ae9bdcd71a81eb15"
+          },
+          {
+            "offset": 29952,
+            "bytes": 4096,
+            "sha256": "76b405c68787438e9eb1b86852086a9042ee0bbf1bffb4e3e0ca2c1b3ef27412"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "actualAutomaticQualityArgument": {
+        "requested": "automatic",
+        "nativeCode": 0,
+        "automaticPolicy": null
+      },
+      "id3Metadata": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "title",
+            "expectedValue": "Titre café — 音楽",
+            "actualValues": [
+              "Titre café — 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "artist",
+            "expectedValue": "Émile / कलाकार",
+            "actualValues": [
+              "Émile / कलाकार"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album",
+            "expectedValue": "Album naïf",
+            "actualValues": [
+              "Album naïf"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "genre",
+            "expectedValue": "Essai",
+            "actualValues": [
+              "Essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "date",
+            "expectedValue": "2026",
+            "actualValues": [
+              "2026"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "track",
+            "expectedValue": "3/9",
+            "actualValues": [
+              "3/9"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValue": "αβγ & <texte>",
+            "actualValues": [
+              "αβγ & <texte>"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "composer",
+            "expectedValue": "作曲者 Émile",
+            "actualValues": [
+              "作曲者 Émile"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValue": "Artiste collectif",
+            "actualValues": [
+              "Artiste collectif"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "performer",
+            "expectedValue": "Violon — 藝術家",
+            "actualValues": [
+              "Violon — 藝術家"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValue": "2/3",
+            "actualValues": [
+              "2/3"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "copyright",
+            "expectedValue": "© 2026 Example",
+            "actualValues": [
+              "© 2026 Example"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "publisher",
+            "expectedValue": "Éditions locales",
+            "actualValues": [
+              "Éditions locales"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "language",
+            "expectedValue": "fra",
+            "actualValues": [
+              "fra"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "isrc",
+            "expectedValue": "FR9ZZ2600001",
+            "actualValues": [
+              "FR9ZZ2600001"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "encoded_by",
+            "expectedValue": "Deterministic fixture",
+            "actualValues": [
+              "Deterministic fixture"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "lyrics",
+            "expectedValue": "Un vers\n第二行",
+            "actualValues": [
+              "Un vers\n第二行"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "license",
+            "expectedValue": "Licence d’essai",
+            "actualValues": [
+              "Licence d’essai"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "contact",
+            "expectedValue": "Contact local",
+            "actualValues": [
+              "Contact local"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "location",
+            "expectedValue": "Montréal",
+            "actualValues": [
+              "Montréal"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "organization",
+            "expectedValue": "Atelier α",
+            "actualValues": [
+              "Atelier α"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "custom_field",
+            "expectedValue": "Valeur libre 音楽",
+            "actualValues": [
+              "Valeur libre 音楽"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_gain",
+            "expectedValue": "-5.25 dB",
+            "actualValues": [
+              "-5.25 dB"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_track_peak",
+            "expectedValue": "0.800000",
+            "actualValues": [
+              "0.800000"
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "replaygain_album_gain",
+            "expectedValue": "-4.00 dB",
+            "actualValues": [
+              "-4.00 dB"
+            ],
+            "status": "preserved"
+          }
+        ],
+        "artwork": {
+          "status": "preserved",
+          "mime": "image/png",
+          "pictureType": 3,
+          "description": "表紙 — Front cover",
+          "bytes": 178,
+          "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0"
+        },
+        "rawFramesInspected": true,
+        "probeDictionaryNotSubstituted": true,
+        "publicAcceptance": false
+      },
+      "gainDiagnostic": {
+        "sourcePower": 804952295000,
+        "outputPower": 804882085554,
+        "crossProduct": 804917180140,
+        "rawSquaredError": 20274,
+        "leastSquaresGain": 0.9999563764707323,
+        "gainDb": -0.0003789174257597481,
+        "rmsRatio": 0.9999563881130269,
+        "correlation": 0.9999999883571977,
+        "leastSquaresResidualSquaredError": 18742.165893554688,
+        "gainComponentSquaredError": 1531.8341229411517,
+        "acceptanceUsesUnmodifiedSamples": true,
+        "audioNormalized": false,
+        "alignmentApplied": false,
+        "thresholdChanged": false,
+        "diagnosticOnly": true
+      },
+      "repairedGainProof": {
+        "exactOneSourceEditAudited": true,
+        "actualAutomaticNativeArgument": 0,
+        "fullPcmQualityPassed": true,
+        "gainRestoredWithinOnePartPerThousand": true,
+        "audioNormalized": false,
+        "alignmentApplied": false,
+        "clippingAcceptance": false,
+        "publicAcceptance": false
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 34,
+        "squaredError": 20274,
+        "psnrDb": 97.06231660800464,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "6eaff52b90b396d8e9a8b4ac3a68eeb327e3141a18c5d8dc0dfcb147ef6858ef",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "amplitudeDiagnostic": {
+          "sourcePower": 804952295000,
+          "outputPower": 804882085554,
+          "crossProduct": 804917180140,
+          "rawSquaredError": 20274,
+          "leastSquaresGain": 0.9999563764707323,
+          "gainDb": -0.0003789174257597481,
+          "rmsRatio": 0.9999563881130269,
+          "correlation": 0.9999999883571977,
+          "leastSquaresResidualSquaredError": 18742.165893554688,
+          "gainComponentSquaredError": 1531.8341229411517,
+          "acceptanceUsesUnmodifiedSamples": true,
+          "audioNormalized": false,
+          "alignmentApplied": false,
+          "thresholdChanged": false,
+          "diagnosticOnly": true
+        },
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 34048,
+      "outputSha256": "fd3c70154c11380dd727bd1e7b94d2a530b16deffa30aab36c012e5abcdae293",
+      "tagsPreserved": 25,
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 64,
+        "height": 64,
+        "bytes": 178,
+        "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+        "pictureRole": "Cover (front)",
+        "description": "表紙 — Front cover",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "interruption": null,
+      "disposableOutputRemoved": true
+    }
+  ],
+  "losslessJournal": {
+    "file": "output/playwright/2026-10-26T02-40-50.659Z-audio-fidelity-memory.ndjson.gz",
+    "records": 389,
+    "sha256": "b2d3675c0d34aae382b6899889352ef1d1b0b08b82c076a8f36bfbec6cb96926",
+    "archiveSha256": "484dad4f2f01f5c82df0f37f73dae3227d540887ffd38e696a8a20b487e2152f",
+    "complete": true
+  },
+  "failures": [],
+  "network": {
+    "observedRequests": 14,
+    "forbidden": [],
+    "nativeGlueRequests": 1,
+    "nativeWasmRequests": 1
+  },
+  "cleanup": {
+    "allRecordedBirthsAbsent": true,
+    "publishedAssetsNeverChanged": true,
+    "stagedPrivateAssetsRestored": true,
+    "ownedProfileFixturesOutputsRemoved": true
+  },
+  "protectedOriginalUnchanged": true
+}

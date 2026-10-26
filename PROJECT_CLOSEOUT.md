@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+ONE newgaincanary02-40-50.659Z PASS97.0623dB versus47.0857dB, sameinput/
+automaticbitrate/quality/native0. All96kPCM unmodified, gain0.999956,25tags/
+exactPNG/rawID3,167.9023MiB/389valid0NULL/15birthsabsent/allcleanup PASS.
+Engine40259508976 remainsPRIVATE; oneLAMEpatch/fullnativeproof recorded.
+No publicasset replacement or clipping/matrix/stress acceptance. Next run only
+remainingFIVE MP3matrix cases plus separatehigh-amplitude clipping/IO/stress;
+reuseauditedcore, don'trebuild/replayclosedcanary or priorunchangedfailure.
+
 Build40259508976 terminalSUCCESS/397s, collectedauditedprivatecache
 work/mp3-input-gain-40259508976 (61source/18artifactpins/10.48MB),manifest0af075...
 ActualLAMEoneedit/fullparent/generatedtext verified, wrapper10edits/32-96MiB

@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-26 privateGAIN CANARY02-40-50.659Z/28db3a86 PASS: exactsame
+FLACsource/automaticnativearg0/34048B output, newSHAfd3c7015..., all96000
+unaltered PCM97.0623166dB>=unchanged60 vs old47.0857116dB. RawSSE20274 versus
+2016507993; gain0.9999563765 versus0.949949019. No postgain/normalization/
+alignment/resampling/trimming.25tags/rawID3/frontPNG178B/Unicode description/
+independent image PASS. WholeChrome167.90234375MiB,389valid0missing/48pins,
+15birthsgone/allcleanup/original/assets/privacy PASS. Full native61source/
+18artifact proof, oneLAMEedit. Screenshotcontent reviewed (exactpriorimagehash);
+UI Saved alone is notqualityproof. Original15.6KiB licensedCparent retained as
+unitfixture for exactpositive compilehash derivation; no convertedcopy retained.
+This closes ONE canary only. Remaining5matrix/highamplitudeclipping/IO/
+repeatstress/publicintegration remainOPEN; priorfailedsixcases/oldgain remain
+FAILED, publicengines untouched. Reusecompiled10.48MBprivatecore; no rebuild.
+61focused/lint/TypeScript/diff checks PASS locally; sourceCI not yet rerun.
+
 2026-10-26 NEW nativegain build40259508976 terminalSUCCESS (~397s),
 d29e30b5; collectedwork/mp3-input-gain-40259508976 audited61immutable source/
 18artifactpins,10480762B,manifest0af075248ab4515bf8b3aeab542e95478f71618b9060fc5affcd67dad101cd44.
