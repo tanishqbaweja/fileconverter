@@ -82,3 +82,27 @@ test("production configuration routes every request through the static policy be
   assert.match(driver, /builtConfig.assets\?\.binding/); assert.match(driver, /builtConfig.assets\?\.run_worker_first/);
   assert.match(driver, /Delivered hosting config must gate all requests before asset routing/);
 });
+test("worker-first static reads reach the actual asset binding before framework fallback, but refused methods never reach either", async () => {
+  const assetRequests = [], env = { ASSETS: { async fetch(request) {
+    assetRequests.push({ method: request.method, url: request.url });
+    const status = new URL(request.url).pathname.startsWith("/assets/") ? 200 : 404;
+    return new Response(request.method === "HEAD" ? null : status === 200 ? "static-code" : null,
+      { status, headers: { "content-type": "text/javascript", "cache-control": "public, max-age=31536000, immutable" } });
+  } } }, before = handlerCalls;
+  for (const method of ["GET", "HEAD"]) {
+    const response = await worker.fetch(new Request("https://app.local/assets/app.js", { method }), env, {});
+    assert.equal(response.status, 200); assert.equal(await response.text(), method === "HEAD" ? "" : "static-code");
+    assert.equal(response.headers.get("content-type"), "text/javascript");
+    assert.equal(response.headers.get("cache-control"), "public, max-age=31536000, immutable");
+    assert.equal(response.headers.get("cross-origin-embedder-policy"), "require-corp");
+  }
+  assert.equal(handlerCalls, before); assert.equal(assetRequests.length, 2);
+  for (const method of ["POST", "PUT", "PATCH", "DELETE", "OPTIONS"]) {
+    const request = new Request("https://app.local/assets/app.js", { method, body: "synthetic-control-only" });
+    const response = await worker.fetch(request, env, {}); assert.equal(response.status, 405); assert.equal(request.bodyUsed, false);
+  }
+  assert.equal(assetRequests.length, 2); assert.equal(handlerCalls, before);
+  const fallback = await worker.fetch(new Request("https://app.local/"), env, {});
+  assert.equal(fallback.status, 200); assert.equal(await fallback.text(), "application");
+  assert.equal(assetRequests.length, 3); assert.equal(handlerCalls, before + 1);
+});

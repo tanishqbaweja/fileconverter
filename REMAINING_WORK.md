@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-26 — B08 worker-first-only hypothesis FAILED56ca93b4: bootstrap JS/CSS
+404, worker never ready. Intentional birth-verified stop and12native owned-tree
+absence/exact profile cleanup retained; no aggregate stats/pass invented. Fix
+the actual forwarding gap: static GET/HEAD to ASSETS after refusal checks,404
+only to framework fallback. Build/21focused/lint/TS pass; cheap asset/method
+preflight and maxFailures1 now precede unchanged19-case acceptance to prevent
+known-failure loops. Full original SHA/owned runtime cleanup pass; no unrelated
+process touched. Next changed browser proof, not another identical routing run.
+
 2026-10-26 — B08 first changed-toolchain local browser check FAILED one hosting
 case:18privacy/offline pass, synthetic PUT gets500 after POST405; retained trace
 and full original/cleanup proof in15-17-35-964Z. No worker body read/HTTP assertion

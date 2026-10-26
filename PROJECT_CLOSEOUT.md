@@ -6,6 +6,15 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Worker-first-only56ca93b4 is CLOSED/REJECTED as incomplete: JS/CSS404, no UI
+worker startup. Failed run stopped after native birth/config validation,12owned
+identities absent/exact profile removed/full original unchanged; no full stats.
+Current correction explicitly forwards static reads to ASSETS AFTER refusal,
+404toframework only. Build/21focused/lint/TS pass; finish changed browser
+proof. Wrapper first checks actual bootstrap assets/method refusals and stops
+after first browser failure; all19original specs still required for acceptance.
+No unchanged rejected-run replay or public/media/memory completion claim.
+
 First actual changed-toolchain browser run36a70a02 FAILED hosting PUT500:
 18privacy/offline PASS; trace proves POST405, then platform internal error.
 Original full hash and all owned cleanup pass. Keep failure/trace; cause not

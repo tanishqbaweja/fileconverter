@@ -18,6 +18,12 @@ const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const rejected = rejectNonStaticRequest(request);
     if (rejected) return withSecurityHeaders(rejected);
+    // Worker-first routing must explicitly forward static reads. This Vinext
+    // version does not resolve every generated /assets URL on its own.
+    if (env.ASSETS) {
+      const asset = await env.ASSETS.fetch(request);
+      if (asset.status !== 404) return withSecurityHeaders(asset);
+    }
     return withSecurityHeaders(await handler.fetch(request, env, ctx));
   },
 };

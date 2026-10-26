@@ -1,5 +1,26 @@
 # Dependency and hosting review
 
+## Worker-first integration correction — October 26
+
+The worker-first-only56ca93b4 control is rejected, not a fix by itself. Its
+first retained complete trace (171,019B) shows generated JS/CSS404; this Vinext
+version does not automatically serve those paths through the binding. We
+stopped the repeatedly timed-out owned runner only after PID/parent/birth/config
+proof;12recorded native identities are absent and its exact profile identity
+was safely removed. Parent finally cleanup and full original before/after SHA
+pass. No complete test summary survives intentional stop, so no pass count is
+invented. Raw/stop receipts and representative complete trace remain.
+
+The application worker now rejects methods/image optimizers first, then uses
+the static ASSETS binding for GET/HEAD, falling back to framework only on404.
+Unit tests prove denied bodies remain unread, the binding and framework are not
+called on refusal, static content/cache/isolation headers survive, and missing
+assets still reach the page renderer. No server image or conversion endpoint.
+The owned browser wrapper now performs bounded asset200/MIME/method405/empty
+preflight before browser launch and sets maxFailures1. All19original browser
+specs still define acceptance; fail-fast never makes a partial run pass.
+Current build/21focused/lint/TS pass; actual changed browser proof pending.
+
 ## Current local hosting check — October 26
 
 Actual new-toolchain Windows run36a70a02 is18PASS/1FAIL, not19PASS. A9,660-byte

@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-10-26 — Worker-first-only control56ca93b4 FAILED browser bootstrap:
+retained171,019B first complete trace proves generated JS/CSS404 and a dynamic
+module fetch failure; current Vinext does not forward these URLs automatically.
+Stopped this known-failed runner (PID7700/parent16732/birth15:29:36.1017570Z)
+after exact launch/config/birth validation, not an unrelated app. Native proof
+12owned tree identities absent; one exact dev/ino/realpath-checked po-profile
+removed. Parent finally removed its runtime and verifies full original unchanged.
+No complete Playwright stats after stop; do not invent or relabel aggregate PASS.
+Raw report15-29-24-853Z +stop receipt15-37-39-034Z +representative trace retained.
+Correction: existing method/image refusal FIRST, explicit ASSETS.fetch for static
+GET/HEAD, framework fallback only on404. New units prove binding bypass never
+occurs for denied methods and preserves static bytes/cache/isolation headers.
+Wrapper now preflights bootstrap asset200/MIME and all5method405/empty controls
+before Chrome, caps HTML256KiB/32asset refs and fails fast on first browser error.
+This prevents repeating known timeouts; default acceptance still requires all19
+unchanged specs. No browser/profile/engine/quality threshold relaxed. Build and
+21focused/lint/TS pass; changed actual browser proof pending. Additional copied
+failure diagnostics total2,033,010B; a guarded prune request was rejected before
+execution, so no files were removed by that attempt. Only171,019B representative
+trace is being committed; remaining local diagnostic copies stay recorded, not
+misreported as converted media or successful pruning.
+
 2026-10-26 — Changed Vite privacy run15-17-35-964Z/36a70a02 stays FAILED:
 18privacy/offline cases PASS43.6s, static-host refusal case FAILS PUT500 instead
 of405. Retained trace proves POST405 then PUT500/body22synthetic bytes and a

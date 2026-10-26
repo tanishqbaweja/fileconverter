@@ -22,6 +22,14 @@ const hashFile = async file => { const digest = createHash("sha256");
   for await (const chunk of createReadStream(file, { highWaterMark: 262144 })) digest.update(chunk);
   return digest.digest("hex"); };
 const originalFile = path.join(root, "test.mkv"), originalSha = "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34";
+const readBoundedHtml = async response => {
+  const reader = response.body.getReader(), decoder = new TextDecoder(); let bytes = 0, text = "";
+  try {
+    for (;;) { const row = await reader.read(); if (row.done) break; bytes += row.value.byteLength;
+      assert.ok(bytes <= 262144, "Static application HTML preflight cap"); text += decoder.decode(row.value, { stream: true }); }
+    return text + decoder.decode();
+  } finally { await reader.cancel(); reader.releaseLock(); }
+};
 const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: "running",
   scope: "Complete unchanged production privacy/offline/static-host browser specs; not process-memory, stress, OS-picker or native reproduction acceptance",
   headedCoverage: false, conversionMemoryAcceptance: false, publicPromotion: false, sourcePins: {}, failures: [] };
@@ -60,13 +68,32 @@ try {
   let ready = false;
   for (let attempt = 0; attempt < 60; attempt++) {
     assert.equal(server.exitCode, null, serverLog);
-    try { if ((await fetch(origin)).ok) { ready = true; break; } } catch { /* bounded local startup */ }
+    try { const response = await fetch(origin, { signal: AbortSignal.timeout(2000) });
+      ready = response.ok; await response.body?.cancel(); if (ready) break;
+    } catch { /* bounded local startup */ }
     await new Promise(resolve => setTimeout(resolve, 500));
   }
   assert.ok(ready, serverLog || "Production server startup deadline");
+  // Catch broken bootstrap routing or method refusal before launching Chrome.
+  const htmlResponse = await fetch(origin, { signal: AbortSignal.timeout(10000) }); assert.equal(htmlResponse.status, 200);
+  const html = await readBoundedHtml(htmlResponse), assetPaths = [...new Set([...html.matchAll(/\b(?:src|href)="(\/assets\/[^"?#]+\.(?:js|css))"/g)].map(match => match[1]))];
+  assert.ok(assetPaths.length > 0 && assetPaths.length <= 32, "Bounded bootstrap asset preflight"); report.assetPreflight = [];
+  for (const assetPath of assetPaths) {
+    const response = await fetch(origin + assetPath, { signal: AbortSignal.timeout(10000) }), mime = response.headers.get("content-type");
+    report.assetPreflight.push({ path: assetPath, status: response.status, mime }); await response.body?.cancel();
+    assert.equal(response.status, 200, assetPath); assert.match(mime ?? "", assetPath.endsWith(".css") ? /text\/css/ : /javascript|ecmascript/);
+  }
+  report.methodPreflight = [];
+  for (const method of ["POST", "PUT", "PATCH", "DELETE", "OPTIONS"]) {
+    const response = await fetch(origin, { method, body: "synthetic-control-only", signal: AbortSignal.timeout(10000) });
+    report.methodPreflight.push({ method, status: response.status, allow: response.headers.get("allow") });
+    const body = await readBoundedHtml(response);
+    assert.equal(response.status, 405, method); assert.equal(response.headers.get("allow"), "GET, HEAD"); assert.equal(body, "");
+  }
   const resultFile = path.join(runtime.directory, "result.json"), configFile = path.join(runtime.directory, "playwright.config.mjs");
   await writeFile(configFile, `import base from ${JSON.stringify(pathToFileURL(path.join(root, "playwright.config.ts")).href)};
 export default {...base, testDir:${JSON.stringify(path.join(root, "tests/browser"))},
+maxFailures:1,
 testMatch:["**/privacy-offline.spec.ts","**/static-host-policy.spec.ts"],
 outputDir:${JSON.stringify(path.join(runtime.directory, "artifacts"))},
 reporter:[["line"],["json",{outputFile:${JSON.stringify(resultFile)}}]],

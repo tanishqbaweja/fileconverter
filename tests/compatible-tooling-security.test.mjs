@@ -71,6 +71,10 @@ test("owned browser wrapper keeps the complete original specs, headless operatio
   assert.doesNotMatch(source, /--grep|--headed|headless: false|\.replace\(/);
   assert.match(source, /result.stats.expected, 19/); assert.match(source, /result.stats.skipped, 0/);
   assert.match(source, /headless:true/); assert.match(source, /windowsHide: true/);
+  assert.match(source, /maxFailures:1/);
+  assert.ok(source.indexOf("report.methodPreflight = []") < source.indexOf('runner = spawn('));
+  assert.ok(source.indexOf("report.assetPreflight = []") < source.indexOf('runner = spawn('));
+  assert.match(source, /Static application HTML preflight cap/);
   assert.match(source, /queryReliableProcessIdentity\(child.pid\), identity/);
   assert.match(source, /observeOwnedProcessExit\(identity\)/);
   assert.match(source, /for \(const child of \[server, runner\]\)/);
@@ -95,4 +99,25 @@ test("first real changed-toolchain run stays failed: eighteen browser cases pass
   const put = network.find(row => row?.request.method === "PUT"); assert.equal(put.response.status, 500);
   assert.equal(put.request.bodySize, 22); // Synthetic refusal control, not a user file.
   assert.match(Buffer.from(files[`resources/${put.response.content._sha1}`]).toString(), /internal error.*reference[\s\S]*miniflare/);
+});
+test("worker-first-without-forwarding control stays failed and its deliberately stopped process tree/profile have native cleanup proof", async () => {
+  const report = await json("evidence/2026-10-26T15-29-24-853Z-owned-privacy-offline.json");
+  const stopped = await json("evidence/2026-10-26T15-37-39-034Z-owned-privacy-stop.json");
+  assert.equal(report.executedHead, "56ca93b45bf7aa87d6987d3b8a10aff11ba41072");
+  assert.equal(report.status, "failed"); assert.equal(report.stats, undefined); // No complete Playwright summary after intentional stop.
+  assert.deepEqual(report.assetRouting, { binding: "ASSETS", runWorkerFirst: true });
+  assert.equal(report.ownedRuntimeRemoved, true); assert.ok(report.processCleanup.every(row => row.status === "owned-identity-absent"));
+  assert.deepEqual(report.protectedOriginalAfter, report.protectedOriginalBefore);
+  assert.equal(stopped.status, "failed-runner-stopped-owned-tree-absent-recorded-profiles-removed");
+  assert.equal(stopped.expectedIdentity.pid, 7700); assert.equal(stopped.expectedIdentity.parentPid, 16732);
+  assert.equal(stopped.expectedIdentity.createdAt, "2026-10-26T15:29:36.1017570Z");
+  assert.equal(stopped.cleanup.length, 12); assert.ok(stopped.cleanup.every(row => row.status === "owned-identity-absent"));
+  assert.equal(stopped.profiles.length, 1); assert.equal(stopped.profiles[0].removed, true);
+  const trace = await readFile("output/playwright/2026-10-26T15-29-24-853Z-privacy-failure/privacy-offline-functional-69d73-s-pass-in-production-Chrome/trace.zip");
+  assert.equal(trace.length, 171019); assert.equal(createHash("sha256").update(trace).digest("hex"), "e59f4fd581cadeaa590f773c887b5fd5a7f8e2bf77ebf4404b2bfc9243a7742c");
+  const requireFromConsumer = createRequire(path.resolve("node_modules/@shuding/opentype.js/package.json"));
+  const files = requireFromConsumer("fflate").unzipSync(trace);
+  const network = Object.entries(files).filter(([name]) => name.endsWith(".network")).flatMap(([, bytes]) =>
+    Buffer.from(bytes).toString().split("\n").filter(line => line.trim()).map(line => JSON.parse(line).snapshot));
+  assert.ok(network.some(row => /\/assets\/.*\.js/.test(row?.request.url ?? "") && row.response?.status === 404));
 });

@@ -1,0 +1,350 @@
+{
+  "schemaVersion": 1,
+  "scope": "Stop one known-failed owned runner; never a conversion/acceptance pass",
+  "expectedIdentity": {
+    "pid": 7700,
+    "parentPid": 16732,
+    "createdAt": "2026-10-26T15:29:36.1017570Z"
+  },
+  "config": "H:\\Github Repositories\\fileconverter\\work\\privacy-validation-l7VNP2\\playwright.config.mjs",
+  "recordedAt": "2026-10-26T15:37:39.033Z",
+  "processTree": [
+    {
+      "pid": 7700,
+      "name": "node.exe",
+      "parentPid": 16732,
+      "createdAt": "2026-10-26T15:29:36.1017570Z"
+    },
+    {
+      "pid": 5312,
+      "name": "conhost.exe",
+      "parentPid": 7700,
+      "createdAt": "2026-10-26T15:29:36.1492350Z"
+    },
+    {
+      "pid": 10396,
+      "name": "node.exe",
+      "parentPid": 7700,
+      "createdAt": "2026-10-26T15:36:56.0396110Z"
+    },
+    {
+      "pid": 27704,
+      "name": "conhost.exe",
+      "parentPid": 10396,
+      "createdAt": "2026-10-26T15:36:56.0473810Z"
+    },
+    {
+      "pid": 36872,
+      "name": "chrome.exe",
+      "parentPid": 10396,
+      "createdAt": "2026-10-26T15:36:57.2893190Z"
+    },
+    {
+      "pid": 13112,
+      "name": "chrome.exe",
+      "parentPid": 36872,
+      "createdAt": "2026-10-26T15:36:57.3724430Z"
+    },
+    {
+      "pid": 41848,
+      "name": "chrome.exe",
+      "parentPid": 36872,
+      "createdAt": "2026-10-26T15:36:57.5917500Z"
+    },
+    {
+      "pid": 18264,
+      "name": "chrome.exe",
+      "parentPid": 36872,
+      "createdAt": "2026-10-26T15:36:57.6020010Z"
+    },
+    {
+      "pid": 15376,
+      "name": "chrome.exe",
+      "parentPid": 36872,
+      "createdAt": "2026-10-26T15:36:57.6471140Z"
+    },
+    {
+      "pid": 21724,
+      "name": "chrome.exe",
+      "parentPid": 36872,
+      "createdAt": "2026-10-26T15:36:57.7144260Z"
+    },
+    {
+      "pid": 44104,
+      "name": "chrome.exe",
+      "parentPid": 36872,
+      "createdAt": "2026-10-26T15:36:57.7545400Z"
+    },
+    {
+      "pid": 43988,
+      "name": "chrome.exe",
+      "parentPid": 36872,
+      "createdAt": "2026-10-26T15:36:58.2401210Z"
+    }
+  ],
+  "profiles": [
+    {
+      "path": "H:\\Github Repositories\\fileconverter\\work\\po-47koyL",
+      "dev": "1887170595",
+      "ino": "5066549581711571",
+      "browserIdentity": 36872,
+      "removed": true
+    }
+  ],
+  "cleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 7700,
+        "parentPid": 16732,
+        "createdAt": "2026-10-26T15:29:36.1017570Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:37:41.530Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 510,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 5312,
+        "parentPid": 7700,
+        "createdAt": "2026-10-26T15:29:36.1492350Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:37:42.037Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 507,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 10396,
+        "parentPid": 7700,
+        "createdAt": "2026-10-26T15:36:56.0396110Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:37:42.514Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 477,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 27704,
+        "parentPid": 10396,
+        "createdAt": "2026-10-26T15:36:56.0473810Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:37:43.022Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 508,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 36872,
+        "parentPid": 10396,
+        "createdAt": "2026-10-26T15:36:57.2893190Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:37:43.544Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 523,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 13112,
+        "parentPid": 36872,
+        "createdAt": "2026-10-26T15:36:57.3724430Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:37:44.015Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 470,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 41848,
+        "parentPid": 36872,
+        "createdAt": "2026-10-26T15:36:57.5917500Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:37:44.573Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 558,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 18264,
+        "parentPid": 36872,
+        "createdAt": "2026-10-26T15:36:57.6020010Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:37:45.061Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 488,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 15376,
+        "parentPid": 36872,
+        "createdAt": "2026-10-26T15:36:57.6471140Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:37:45.575Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 514,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 21724,
+        "parentPid": 36872,
+        "createdAt": "2026-10-26T15:36:57.7144260Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:37:46.142Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 567,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 44104,
+        "parentPid": 36872,
+        "createdAt": "2026-10-26T15:36:57.7545400Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:37:46.699Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 557,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 43988,
+        "parentPid": 36872,
+        "createdAt": "2026-10-26T15:36:58.2401210Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-26T15:37:47.287Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 588,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "status": "failed-runner-stopped-owned-tree-absent-recorded-profiles-removed",
+  "finishedAt": "2026-10-26T15:37:47.476Z"
+}
