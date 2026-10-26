@@ -30,6 +30,19 @@ Detecting a tag is not a claim that the selected destination preserves it;
 destination limitations still apply. This check is not conversion, throughput,
 multi-gigabyte scaling or process-memory qualification.
 
+## Tested storage-error recovery
+
+A real production-browser FLAC-to-Opus test exhausted a deliberately limited
+OPFS origin quota after 1,043,199 output bytes. No writer-error injection was
+used. The partial file was deleted, the worker recovered, and restoring the
+default quota allowed a same-page conversion preserving the tested audio,
+25 tags, repeated values and PNG cover. Complete-Chrome incremental private
+memory peaked at 186.27 MiB. Evidence:
+`evidence/2026-10-26T10-20-39.819Z-audio-metadata-fidelity-result.json`.
+This covers browser-controlled origin quota, not physical disk exhaustion,
+OS permission revocation, the native destination picker or large-file promotion.
+The test override is reset in `finally` and is not used by the application.
+
 ## Verified public routes
 
 The selector and published matrix are generated from

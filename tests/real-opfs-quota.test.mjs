@@ -73,3 +73,43 @@ test("first actual1MiB quota experiment stays failed: real47-byte header was rej
   assert.ok(Object.values(receipt.cleanup).every(Boolean)); assert.equal(receipt.protectedOriginalUnchanged, true);
   assert.deepEqual(receipt.network.forbidden, []); assert.ok(report.processCleanup.every(row => row.status === "owned-identity-absent"));
 });
+test("actual browser-enforced midstream OPFS quota failure and same-page exact PNG/metadata/PCM recovery pass under the unchanged whole-tree limit", async () => {
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const receipt = JSON.parse(await readFile("evidence/2026-10-26T10-20-39.819Z-audio-metadata-fidelity-result.json"));
+  assert.equal(receipt.executedHead, "2376f0a7f85c7439a76d522ab21e08f6198d7cb7"); assert.equal(receipt.status, "passed-selected-small-private-cases-not-promotion");
+  assert.equal(receipt.publicAcceptance, false); assert.equal(receipt.fullMetadataAcceptance, false); assert.equal(receipt.sourcePins, 51);
+  assert.equal(receipt.artifactManifestSha256, "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c");
+  const packed = await readFile(receipt.archive.path); assert.equal(sha(packed), receipt.archive.sha256); assert.equal(packed.length, receipt.archive.bytes);
+  const raw = gunzipSync(packed, { maxOutputLength: 1048576 }); assert.equal(sha(raw), receipt.archive.restoredSha256); assert.equal(raw.length, receipt.archive.restoredBytes);
+  const report = JSON.parse(raw), [failure, recovery] = report.cases; assert.equal(report.cases.length, 2);
+  assert.equal(report.nativeConversionUsed, false); assert.equal(report.headedCoverage, false); assert.equal(report.scalingAcceptance, false);
+  assert.equal(failure.status, "passed-private-browser-enforced-quota-failure-case"); assert.equal(failure.realBrowserQuota.quota, 1114112);
+  assert.equal(failure.browserState.metrics.inputBytes, 1835008); assert.equal(failure.browserState.metrics.outputBytes, 1043199);
+  assert.equal(failure.browserState.metrics.maxWriteChunkBytes, 9173); assert.equal(failure.realQuotaErrorVisible, true);
+  assert.deepEqual(validateRealOpfsQuotaFailure(failure.browserState, { quota: failure.realBrowserQuota,
+    storageBefore: failure.storageBefore, storageAfter: failure.storageAfter, faultParameterPresent: false }), failure.realQuotaFailureProof);
+  assert.equal(failure.realQuotaFailureProof.errorInjectionUsed, false); assert.equal(failure.realQuotaFailureProof.physicalDiskExhausted, false);
+  assert.match(failure.browserState.error, /FileSystemSyncAccessHandle.*No space available.*Audio frame encode or mux failed/);
+  assert.equal(recovery.status, "passed-small-private-fidelity-and-metadata-case"); assert.equal(recovery.realBrowserQuota.overrideActive, false);
+  assert.equal(recovery.output.bytes, 17360); assert.equal(recovery.output.sha256, "fa99d5254cc40bb3d9dc1b8f2f745477f5c5828916b83b7ef7db64d1e1092d7f");
+  assert.equal(recovery.output.tags.status, "passed"); assert.equal(recovery.output.tags.fields.length, 25);
+  assert.equal(recovery.fidelity.samples, 96000); assert.equal(recovery.fidelity.minimumPsnrDb, 60); assert.equal(recovery.fidelity.psnrDb, 66.16825969015325);
+  assert.deepEqual(recovery.repeatedValues, ["CUSTOM_REPEAT=Premier 音楽", "CUSTOM_REPEAT=Deuxième café"]);
+  assert.equal(recovery.artwork.bytes, 178); assert.equal(recovery.artwork.sha256, "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0");
+  assert.equal(recovery.artwork.description, "表紙 — Front cover"); assert.equal(recovery.artwork.independentImageDecode, true);
+  assert.deepEqual(recovery.samePageRealQuotaRecovery, { actualQuotaFailurePassed: true, defaultQuotaRestored: true,
+    noPageOrContextRecreation: true, noStaleErrorOrWarning: true, errorInjectionUsed: false, publicAcceptance: false });
+  assert.equal(receipt.realQuotaControl.restoredInFinally, true); assert.equal(receipt.realQuotaControl.initial.overrideActive, false);
+  assert.equal(receipt.realQuotaControl.final.overrideActive, false); assert.equal(receipt.realQuotaControl.final.quota, receipt.realQuotaControl.initial.quota);
+  assert.equal(receipt.realQuotaControl.defaultBrowserServicesChanged, false); assert.equal(receipt.memory.incrementalPrivateMiB, 186.2734375);
+  assert.equal(receipt.memory.validSamples, 407); assert.equal(receipt.memory.unavailableSamples, 0);
+  const journal = await readFile(receipt.losslessJournal.file); assert.equal(sha(journal), receipt.losslessJournal.archiveSha256);
+  const sampleBytes = gunzipSync(journal, { maxOutputLength: 8 * 1048576 }); assert.equal(sha(sampleBytes), receipt.losslessJournal.sha256);
+  const history = sampleBytes.toString().trim().split("\n").map(line => JSON.parse(line).sample); assert.equal(history.length, 407);
+  const peak = Math.max(...history.filter(sample => sample.phase !== "blank" && sample.privateBytes !== null).map(sample => sample.privateBytes));
+  assert.equal((peak - report.blankBaseline.privateBytes) / 1048576, receipt.memory.incrementalPrivateMiB);
+  assert.ok(report.cases.every(row => row.disposableOutputRemoved && row.failures.length === 0));
+  assert.equal(report.processCleanup.length, 16); assert.ok(report.processCleanup.every(row => row.status === "owned-identity-absent"));
+  assert.equal(report.screenshots.length, 2); for (const screen of report.screenshots) { assert.equal(screen.headedCoverage, false); assert.equal(sha(await readFile(screen.path)), screen.sha256); }
+  assert.ok(Object.values(receipt.cleanup).every(Boolean)); assert.equal(receipt.protectedOriginalUnchanged, true); assert.deepEqual(receipt.network.forbidden, []);
+});

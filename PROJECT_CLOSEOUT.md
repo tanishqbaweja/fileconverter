@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Real browser-origin OPFS quota + same-page recovery now CLOSED by10-20-39.819Z:
+actual native write fails after1,043,199 output bytes at1,114,112B quota, no
+injection; normal quota restored, exactPNG/25tags/repeats/96000PCM recovery.
+Primary186.2734375MiB/407valid0missing/16birthsabsent/allcleanup. Both headless
+screens reviewed. Do not replay or rebuild; initial header-only control remains
+FAILED. Physical disk/OS permission/direct picker/stress/public and MP3 clipping
+are not solved by this result. Full original scope remains active/incomplete.
+
 Real quota first control10-12-32.587Z FAILED:1MiB origin limit rejected the
 actual47-byte native header, with0 acknowledged output. Default quota and valid
 same-page recovery restored;181.63671875MiB/cleanup pass, not midstream proof.
@@ -898,7 +906,7 @@ conversions are existing evidence, not tasks to repeat unchanged.
 | Blocker | Remaining decision/work | Exit evidence |
 | --- | --- | --- |
 | B02/B03 | Fresh H.264/AV1/MPEG-2 output, AV1 software decode and legally conditional HEVC; remaining named practical combinations. | Reuse each exact candidate's recorded diagnosis. Implement and qualify the production route, or document an exact measured technical/quality/memory/legal unsupported decision. A build, packet copy or failed first attempt does not close a fresh encoding requirement. |
-| B05 | MP3 gain-policy clipping remedy remains open; the level2-search hypothesis is now CLOSED/REJECTED by09-50-24.664Z (worse peaks, not a remedy;10.66MB unused cache removed). No unchanged replay or blind search-level sweep; separate MP3 payload-cancel/write-error/recovery gate now CLOSED by 08-41-16.887Z at 198.96484375 MiB, exact same-page PNG/25-tag/97.06 dB recovery and all cleanup. Then repeat/scaling and broader preservation. AIFF private author-alias/ID3 small cases already passed in October; public memory qualification is still open. The separate AIFF/AIFC trailing-ID3 source-disclosure fix is now closed by 08-58-54-893Z, not metadata-preservation acceptance. | Six small MP3 metadata/cover cases are closed. Gate 08-27-17.345Z now fails on 0.999 mono/stereo float overshoot (1/11 samples, peak 1.0032424927); 0.99, integer PCM, metadata, 196.61 MiB memory and cleanup passed. Preserve failure/private status; no unchanged replay or speculative attenuation rebuild. q7 336.65 MiB repeat failure remains private. No public promotion. |
+| B05 | MP3 gain-policy clipping remedy remains open; the level2-search hypothesis is now CLOSED/REJECTED by09-50-24.664Z (worse peaks, not a remedy;10.66MB unused cache removed). No unchanged replay or blind search-level sweep; actual browser-origin quota/recovery is now CLOSED by10-20-39.819Z (186.2734375MiB, real native write failure, exact same-page recovery), not physical disk/OS permission coverage; separate MP3 payload-cancel/write-error/recovery gate now CLOSED by 08-41-16.887Z at 198.96484375 MiB, exact same-page PNG/25-tag/97.06 dB recovery and all cleanup. Then repeat/scaling and broader preservation. AIFF private author-alias/ID3 small cases already passed in October; public memory qualification is still open. The separate AIFF/AIFC trailing-ID3 source-disclosure fix is now closed by 08-58-54-893Z, not metadata-preservation acceptance. | Six small MP3 metadata/cover cases are closed. Gate 08-27-17.345Z now fails on 0.999 mono/stereo float overshoot (1/11 samples, peak 1.0032424927); 0.99, integer PCM, metadata, 196.61 MiB memory and cleanup passed. Preserve failure/private status; no unchanged replay or speculative attenuation rebuild. q7 336.65 MiB repeat failure remains private. No public promotion. |
 | Full audit | Remaining image/RAW/HEIF, archive, subtitle, ebook, data and office requirements. | Reconcile every applicable original named item with its current implementation/validated evidence or defensible exact unsupported decision. Existing representative support must not be treated as every theoretical format pair. |
 
 Do not narrow the scope to today's public registry. Do not label a profile

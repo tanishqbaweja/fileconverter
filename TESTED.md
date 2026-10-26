@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-10-26 — Browser-enforced OPFS quota + SAME-page recovery CLOSED by
+`evidence/2026-10-26T10-20-39.819Z-audio-metadata-fidelity-result.json`
+at2376f0a7, reusing unchanged56/15 audited engine. Fresh normal Chrome origin
+quota1,114,112B interrupted actual native FLAC-to-Opus AFTER1,835,008 input and
+1,043,199 acknowledged output bytes, with real SyncAccessHandle “No space”
+failure, no error injection. Partial output removed; worker ready; zero pending
+or queued bytes. Restored normal quota, SAME page: exact17,360B Opus SHAfa99d525
+...092d7f, all96000unalteredPCM66.1683dB>=60,25tags/two separate repeats/exact
+178B PNG/front role/Unicode description. Primary186.2734375MiB,407valid/0NULL,
+51pins/16birthsabsent/privacy/original/assets/owned media-profile cleanup PASS.
+Both headless screenshots reviewed; full raw/journal retained. Quota also reset
+and checked in finally. First1MiB/header-only experiment stays FAILED; no repeat
+of it or this nowclosed gate. Browser-origin quota != physical disk exhaustion,
+OS permission revocation or direct OS-picker coverage. No public/stress/MP3
+clipping/fastest or original54 completion claim; no new native build/copies.
+Post-evidence regression:86 focused audio/metadata/fidelity/audit/IO/quota tests
+PASS, lint/diff PASS. Source874391b1 CI40305797263 was last confirmed live in
+Playwright dependency installation, not passed. No duplicate CI/native run started.
+
 2026-10-26 — FIRST real browser quota experiment10-12-32.587Z/874391b1
 FAILED its intended midstream criterion: Chrome enforced the1MiB origin limit
 on the FIRST real47-byte SyncAccessHandle header write. Native input262144B,
