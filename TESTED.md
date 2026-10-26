@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-26 NEW MP3-destination gate prepared, browserUNVERIFIED: six
+FLAC/Vorbis/Opus->MP3 jobs with25scalar Unicode fields plus PNGfront/JPEGback
+cover/Unicode description; source-fullPCM/cover validation before conversion.
+Independent raw ID3v2.4 T*/APIC inspector: one reusable4096B readbuffer,
+128frames/8MiBtag/4096Btext-frame/4MiBpicture fixed finite gate, rejects flagged
+or other encodings/duplicate scalar frame identities, hashes exact picture bytes.
+Cross-check FFprobe scoped25fields, imagepacket/decode/full96000PCM>=60, unique
+physicalOPFS/nooutputcopy, sameprivatecore/automaticsettings/wholeChrome250MiB.
+This first MP3 gate intentionally has scalar tags, not a duplicate-ID3 claim.
+No nativeengine build/settings/production changes or publicpromotion implied.
+
 2026-10-26 47733236 CI40255876348 SUCCESS:1694portable units passed,
 1skipped/0failed (1695total), productionbuild/lint/TS/public404-proof audit,
 19privacy/offline browser tests PASS.36focused localtests/lint/TS/diff PASS.

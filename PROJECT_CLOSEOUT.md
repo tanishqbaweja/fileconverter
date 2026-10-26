@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+New exact MP3/ID3 six-job gate prepared, runtimeUNVERIFIED:25scalar Unicode
+fields, PNG/JPEG/roles/descriptions, independent raw ID3v2.4 plus fullPCM/image
+and physicalOPFS validation. Reuse existing privatecore with unchanged native
+codec/quality settings. ID3 inspector is bounded qualification-only, not general
+production parser; scalar gate does not imply repeated-ID3 support. Executeonce
+after focused checks, preserve failures; do not replay closed Ogg/FLAC cases.
+
 47733236 CI40255876348 SUCCESS:1694portable pass/1skip, build/lint/TS/
 public-proof and19privacy/offline browser tests;36focused pass locally. All
 closed source/evidence pushed, no owned conversion runtime remains. Main M-08

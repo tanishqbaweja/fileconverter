@@ -42,10 +42,12 @@ import { createVorbisLargeFixture, VORBIS_LARGE_FIXTURE } from "./lib/vorbis-lar
 import { compareNativeLongAudioPcm } from "./lib/long-audio-fidelity.mjs";
 import { createVorbisIoFixture } from "./lib/vorbis-io-fixture.mjs";
 import { STANDARD_AUDIO_REPEAT_CASES, STANDARD_AUDIO_SCALAR_TAGS, makeStandardRepeatedAudioFixture, validateStandardRepeatedAudioComments } from "./lib/audio-standard-repeated-fixture.mjs";
+import { readId3Metadata, validateId3FixtureMetadata } from "./lib/id3-metadata-validation.mjs";
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE } from "../lib/media-conversion-options.ts";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio", "--mp3-artwork-metadata"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+const mp3ArtworkMetadata = process.argv[3] === "--mp3-artwork-metadata";
 const standardRepeatedAudio = process.argv[3] === "--standard-repeated-audio";
 const vorbisIoRecovery = process.argv[3] === "--vorbis-io-recovery";
 const largeVorbisRepeat = process.argv[3] === "--vorbis-large-repeat";
@@ -58,13 +60,13 @@ const metadataFieldRejectOnly = process.argv[3] === "--metadata-field-rejection-
 const metadataFieldBudget = process.argv[3] === "--metadata-field-budget-recovery" || metadataFieldRejectOnly;
 const metadataByteBudget = process.argv[3] === "--metadata-text-byte-budget-recovery";
 const metadataBudget = metadataFieldBudget || metadataByteBudget;
-const physicalValidation = process.argv[3] === "--artwork-benchmark-physical-validation" || metadataBudget || automaticVorbisRepair || vorbisIoRecovery || standardRepeatedAudio;
+const physicalValidation = process.argv[3] === "--artwork-benchmark-physical-validation" || metadataBudget || automaticVorbisRepair || vorbisIoRecovery || standardRepeatedAudio || mp3ArtworkMetadata;
 const artworkBenchmark = process.argv[3] === "--artwork-serializer-benchmark" || process.argv[3] === "--artwork-benchmark-physical-validation";
 const artworkBudget = process.argv[3] === "--artwork-byte-budget" || artworkBenchmark || metadataBudget;
 const audioIoRecovery = process.argv[3] === "--audio-io-recovery";
 const artworkRejection = process.argv[3] === "--artwork-rejection-recovery", extendedArtworkInspection = artworkBudget || artworkRejection || audioIoRecovery;
-const oggArtwork = process.argv[3] === "--ogg-artwork" || (automaticVorbisRepair && !largeVorbisRepeat) || vorbisIoRecovery, withArtwork = artworkMetadata || oggArtwork;
-const selectedCases = standardRepeatedAudio ? STANDARD_AUDIO_REPEAT_CASES : vorbisIoRecovery ? [
+const oggArtwork = process.argv[3] === "--ogg-artwork" || (automaticVorbisRepair && !largeVorbisRepeat) || vorbisIoRecovery, withArtwork = artworkMetadata || oggArtwork || mp3ArtworkMetadata;
+const selectedCases = mp3ArtworkMetadata ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork }))) : standardRepeatedAudio ? STANDARD_AUDIO_REPEAT_CASES : vorbisIoRecovery ? [
   { source: "opus", destination: "ogg", interruption: "cancel", byobCancellation: true },
   { source: "opus", destination: "ogg", repeated: true, artwork: "png", interruption: "write" },
   { source: "opus", destination: "ogg", repeated: true, artwork: "png", recoveryAfterIo: true },
@@ -108,6 +110,7 @@ if (oggArtwork) {
   report.scope = "eight NEW Ogg/Opus destination cover cases with PNG/JPEG, 25 tags and ordered values; Opus-to-Vorbis uses the existing explicit higher selection, not a default-quality repair or speed proof";
   report.automaticVorbisQualityRepaired = false;
 }
+if (mp3ArtworkMetadata) report.scope = "six NEW private MP3 outputs from FLAC/Vorbis/Opus with25 scalar Unicode tags, PNG/JPEG front/back cover roles/descriptions, raw ID3v2.4 inspection, independent image/full PCM; no duplicate-ID3/stress/direct-picker/public qualification";
 if (artworkBudget) report.scope = "one NEW exact4MiB real PNG cover FLAC-to-Opus byte-budget case; unchanged text/codec/quality/memory limits; not repeat/scaling/promotion acceptance";
 if (artworkBenchmark) {
   report.scope = "matched serializer experiment: one explicit warmup plus six identical exact4MiB-artwork FLAC-to-Opus jobs in one normal headless production page; not long-file/stress/scaling/fastest/public acceptance";
@@ -173,6 +176,7 @@ const sourceFiles = ["scripts/test-audio-metadata-production-runtime.mjs", "scri
   "scripts/lib/vorbis-large-fixture.mjs", "scripts/lib/long-audio-fidelity.mjs",
   "scripts/lib/vorbis-io-fixture.mjs",
   "scripts/lib/audio-standard-repeated-fixture.mjs",
+  "scripts/lib/id3-metadata-validation.mjs",
   "workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts", "lib/browser-capabilities.ts", "lib/capability-registry.ts",
   "lib/native-input-memory-observation.ts",
   "lib/conversion-protocol.ts", "lib/media-native-arguments.ts",
@@ -323,19 +327,20 @@ try {
       await native(["-v", "error", "-f", "lavfi", "-i", "color=c=0x2457d6:s=64x64:d=0.04", "-frames:v", "1", "-c:v", codec,
         "-threads", "1", "-fflags", "+bitexact", "-flags:v", "+bitexact", "-f", "image2", image]);
       const imageSize = (await lstat(image)).size; assert.ok(imageSize > 8 && imageSize <= 65536);
-      const pictureOptions = oggArtwork ? { pictureType: codec === "png" ? 3 : 4, description: codec === "png" ? "表紙 — Front cover" : "Pochette arrière café — 音楽" } : undefined;
+      const pictureOptions = oggArtwork || mp3ArtworkMetadata ? { pictureType: codec === "png" ? 3 : 4, description: codec === "png" ? "表紙 — Front cover" : "Pochette arrière café — 音楽" } : undefined;
       const bytes = await readFile(image), expected = { codec, width: 64, height: 64, bytes: bytes.length, sha256: sha(bytes),
         ...(pictureOptions ? { pictureRole: pictureOptions.pictureType === 3 ? "Cover (front)" : "Cover (back)", description: pictureOptions.description } : {}) };
       report.artworkImages[codec] = expected;
-      for (const source of oggArtwork ? ["flac", "ogg", "opus"] : ["ogg", "opus"]) {
+      for (const source of oggArtwork || mp3ArtworkMetadata ? ["flac", "ogg", "opus"] : ["ogg", "opus"]) {
         const original = path.join(runtime.directory, "source." + source), file = path.join(runtime.directory, `source-artwork-${codec}.${source}`);
         const sourceBytes = await readFile(original);
+        const addedText = mp3ArtworkMetadata ? [] : AUDIO_REPEATED_COMMENTS;
         const generated = source === "flac"
-          ? appendFlacArtworkFixture(appendFlacFixtureComments(sourceBytes, AUDIO_REPEATED_COMMENTS), audioArtworkFixturePicture(bytes, codec, pictureOptions))
-          : appendOggFixtureComments(sourceBytes, source, [...AUDIO_REPEATED_COMMENTS, audioArtworkFixtureComment(bytes, codec, pictureOptions)]);
+          ? appendFlacArtworkFixture(appendFlacFixtureComments(sourceBytes, addedText), audioArtworkFixturePicture(bytes, codec, pictureOptions))
+          : appendOggFixtureComments(sourceBytes, source, [...addedText, audioArtworkFixtureComment(bytes, codec, pictureOptions)]);
         await writeFile(file, generated, { flag: "wx" });
         const comments = await readAudioCommentEntries(file, source);
-        assert.deepEqual(comments.entries.filter(s => s.split("=", 1)[0].toLowerCase() === "custom_repeat"), AUDIO_REPEATED_COMMENTS);
+        assert.deepEqual(comments.entries.filter(s => s.split("=", 1)[0].toLowerCase() === "custom_repeat"), addedText);
         report.artworkFixtures[source + "-" + codec] = { bytes: generated.length, sha256: sha(generated),
           sourcePcmUnchanged: await compareNativeAudioPcm(original, file, { cwd: root, env, lossless: true }),
           artwork: await inspectArtwork(file, await probeAudio(file), expected) };
@@ -561,7 +566,7 @@ try {
         try { row.artwork = await inspectArtwork(output, outputProbe, report.artworkImages[conversion.artwork]); }
         catch (error) { row.failures.push("Embedded cover validation: " + String(error)); }
       }
-      row.output.tags = validateScopedAudioTags(outputProbe, expectedTags, { scope: conversion.destination === "flac" ? "format" : "audio-stream" });
+      row.output.tags = validateScopedAudioTags(outputProbe, expectedTags, { scope: ["flac", "mp3"].includes(conversion.destination) ? "format" : "audio-stream" });
       if (row.output.tags.status !== "passed") row.failures.push("One or more required metadata fields lost or changed");
       try {
         if (conversion.largeStereo) console.log(JSON.stringify({ stage: "full-independent-unaligned-PCM-and-legacy-SDR", repeat: index + 1, expectedSamples: 220800000, estimatedValidationSeconds: 30 }));
@@ -569,8 +574,12 @@ try {
           : await compareNativeAudioPcm(input, output, { cwd: root, env, lossless: conversion.destination === "flac" }); row.fullIndependentDecode = true;
       }
       catch (error) { row.fidelity = error.fidelity ?? null; row.fullIndependentDecode = error.fullIndependentDecodePassed ?? false; row.failures.push(String(error)); }
-      const comments = conversion.byteBudget ? await readOggNativeTextBudgetComments(output, conversion.destination)
+      const comments = conversion.destination === "mp3" ? await readId3Metadata(output) : conversion.byteBudget ? await readOggNativeTextBudgetComments(output, conversion.destination)
         : extendedArtworkInspection ? await readOggPictureComments(output, conversion.destination) : await readAudioCommentEntries(output, conversion.destination); row.binaryComments = comments;
+      if (conversion.destination === "mp3") {
+        row.id3Metadata = validateId3FixtureMetadata(comments, expectedTags, report.artworkImages[conversion.artwork]);
+        if (row.id3Metadata.status !== "passed") row.failures.push("Raw ID3 text values or cover bytes/role/description lost or changed");
+      }
       if (conversion.standardRepeated) {
         row.standardRepeatedValidation = validateStandardRepeatedAudioComments(comments);
         if (row.standardRepeatedValidation.status !== "passed") row.failures.push("Standard metadata aliases lost, changed, folded or reordered independent values");
@@ -627,7 +636,7 @@ try {
       if (artworkBenchmark) row.validationDiagnostics.afterValidation = await validationCheckpoint();
       if (physicalBinding) await assertOpfsOutputValidationBackingUnchanged(physicalBinding);
       }
-      if (artworkBenchmark ? index === 0 || index === selectedCases.length - 1 : index === 0 || conversion.repeated || conversion.interruption || conversion.largeStereo || conversion.standardRepeated) await screenshot(conversion, index, row);
+      if (artworkBenchmark ? index === 0 || index === selectedCases.length - 1 : index === 0 || conversion.repeated || conversion.interruption || conversion.largeStereo || conversion.standardRepeated || mp3ArtworkMetadata) await screenshot(conversion, index, row);
     } catch (error) { row.failures.push(String(error.stack ?? error).slice(0, 4096)); }
     finally {
       if (entryName) await page.evaluate(async name => { await (await navigator.storage.getDirectory()).removeEntry(name); }, entryName);
@@ -714,6 +723,7 @@ finally {
       actualInputTransport: c.actualInputTransport,
       byobCancellationProof: c.byobCancellationProof, samePageVorbisIoRecovery: c.samePageVorbisIoRecovery,
       standardRepeatedValidation: c.standardRepeatedValidation, metadataCoverage: c.metadataCoverage,
+      id3Metadata: c.id3Metadata,
       failures: c.failures, fidelity: c.fidelity, outputBytes: c.output?.bytes, outputSha256: c.output?.sha256,
       tagsPreserved: c.output?.tags?.fields.filter(f => f.status === "preserved").length, repeatedValues: c.repeatedValues, artwork: c.artwork,
       streamingPictureInspection: c.streamingPictureInspection,

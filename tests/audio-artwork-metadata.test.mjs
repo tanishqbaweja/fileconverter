@@ -45,7 +45,8 @@ test("independent cover validator requires exactly one complete, correctly attac
 test("real artwork gate preserves all existing fidelity, process-memory, privacy and cleanup constraints", async () => {
   const source = await readFile(new URL("../scripts/test-audio-metadata-production-runtime.mjs", import.meta.url), "utf8");
   assert.match(source, /--artwork-metadata/); assert.match(source, /artworkMetadata \? AUDIO_ARTWORK_METADATA_CASES/);
-  assert.match(source, /\.\.\.AUDIO_REPEATED_COMMENTS, audioArtworkFixtureComment\(bytes, codec, pictureOptions\)/);
+  assert.match(source, /const addedText = mp3ArtworkMetadata \? \[\] : AUDIO_REPEATED_COMMENTS/);
+  assert.match(source, /\.\.\.addedText, audioArtworkFixtureComment\(bytes, codec, pictureOptions\)/);
   assert.match(source, /row.artwork = await inspectArtwork\(output, outputProbe/);
   assert.match(source, /sourcePcmUnchanged: await compareNativeAudioPcm\(original, file, \{ cwd: root, env, lossless: true \}\)/);
   assert.match(source, /"-show_data_hash", "sha256"/); assert.match(source, /"-xerror"/);

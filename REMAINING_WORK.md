@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-10-26 next M-08 MP3/ID3 gap has new source gate, runtimeUNVERIFIED:
+25scalar fields plus PNG/JPEG/roles/descriptions from FLAC/Vorbis/Opus, six
+actualbrowser jobs, raw ID3v2.4 framedmetadata/picturehash inspection + FFprobe/
+fullPCM/image checks. Fixed4KiB native inspection buffer, no converted copy,
+unchangedprivate10editcore/quality/memory/cleanup. Duplicate-ID3 frames separate
+and UNVERIFIED; other ID3 versions/flags outside this finite inspector are not
+mislabelled invalid conversions. Closed Ogg/FLAC alias and q7IO gates not replayed.
+
 2026-10-26 source/evidence47733236 CI40255876348 SUCCESS:1694portable
 units pass/1skip/0fail, build/lint/TS/public404 audit and19privacy/offline tests.
 36focused tests pass locally. Main M-08 row reconciled to actual exact-private
