@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Standard aliases/duplicates CLOSED for fourfamilies across sixexactroutes by
+01-43-03.703Z receipt:24groups/48values separate/inorder,21scalar/output,fullPCM
+pass,209.01953125MiB/476valid0NULL/47pins/16birthsabsent/allcleanup PASS.
+No nativechange/rebuildneeded. Sixheadlessscreens reviewed. Do not replay this
+case or leave these four aliases as generic pending work. Next substantive B05
+gap must name a different source/destination/preservation behavior; full-size
+repeats/realOSfaults/publicprivateengineintegration/full54 stillOPEN.
+
 New standard-field alias/duplicate qualification prepared: six actual private
 production routes, track/comment/album_artist/disc require two raw separate
 unequal values;21other fields/fullPCM/physicalOPFS/wholeChrome/cleanup retained.

@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-26 four standard alias families CLOSED for six exact private routes,
+01-43-03.703Z/bacd6ddb:24rawgroups/48independentvalues in order, literalsemicolon
+not split,21otherscalars/output preserved;full96kPCM>=60dB orFLACexact. No engine
+change needed.209.01953125MiB completeChrome,476valid0missing,47pins/16births
+gone/original/assets/privacy/disposablecleanup PASS; six headlessimagesreviewed.
+No new publicqualification or large-repeat result. Remaining B05: additional
+source/destination metadata/artwork/scope disclosures and applicable stress/
+real destinationfaults/publicintegration. These four aliases must not remain
+an undifferentiated next-task placeholder or be retestedunchanged. Full54OPEN.
+
 2026-10-26 next concrete B05 gap: repeated STANDARD metadata alias fields,
 not the already-passed custom duplicate key. New six-route gate prepared;
 runtimeUNVERIFIED. Raw binary entries must preserve both track/comment/

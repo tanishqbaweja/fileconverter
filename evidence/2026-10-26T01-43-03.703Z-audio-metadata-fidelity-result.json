@@ -1,0 +1,1120 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "bacd6ddbdcabe272f12b1ded576592f8541f6ec2",
+  "status": "passed-selected-small-private-cases-not-promotion",
+  "scope": "six NEW standard-key duplicate/alias cases: track, comment, album_artist, disc with separate unequal values (including literal semicolon), remaining21 scalar tags and full PCM; same private engine/physical OPFS/full Chrome accounting; not artwork/stress/public qualification",
+  "publicAcceptance": false,
+  "fullMetadataAcceptance": false,
+  "archive": {
+    "path": "outputs/reports/2026-10-26T01-43-03.703Z-audio-metadata-production-runtime.json.gz",
+    "bytes": 25958,
+    "sha256": "2a957f8b64fd217c6cdcf3baaedee6c77dfb2e051191119f181baabeb69e8127",
+    "restoredBytes": 198216,
+    "restoredSha256": "1887bd0e8a5dbcd592e2d3bba812af7f05eb332eca7881d0296791060d11e770"
+  },
+  "sourcePins": 47,
+  "artifactManifestSha256": "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c",
+  "diskProof": {
+    "status": "exact-browser-canary-independently-found-on-disk",
+    "browserBytes": 64,
+    "physicalBytes": 64,
+    "sha256": "29aa103641a6334cfbec383bb4e0bf059b7ed2fb23e150a7a78b30bc3a527157",
+    "physicalFile": "work\\audio-metadata-production-biwpMu\\chrome-profile\\Default\\File System\\000\\t\\00\\00000001",
+    "profileDirectory": "work\\audio-metadata-production-biwpMu\\chrome-profile",
+    "inspectedEntries": 5,
+    "maximumReadBytes": 65,
+    "provesThisContextOpfsBacking": true,
+    "provesConversionAcceptance": false,
+    "canaryRemovedInFinally": true
+  },
+  "memory": {
+    "scope": "selected-small-case lifecycle only, not stress acceptance",
+    "limitMiB": 250,
+    "intervalMs": 100,
+    "peak": {
+      "sequence": 449,
+      "timestamp": "2026-10-26T01:44:04.4544474Z",
+      "phase": "case-5",
+      "privateBytes": 463060992,
+      "rssBytes": 728055808,
+      "nativeElapsedMs": 15.938600000000001,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 3992,
+          "parentPid": 31528,
+          "createdAt": "2026-10-26T01:43:14.5239277Z",
+          "creationFileTime": "134374525945239277",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 34955264,
+          "rssBytes": 78512128
+        },
+        {
+          "pid": 9320,
+          "parentPid": 31528,
+          "createdAt": "2026-10-26T01:43:14.4587165Z",
+          "creationFileTime": "134374525944587165",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 13926400,
+          "rssBytes": 41910272
+        },
+        {
+          "pid": 25484,
+          "parentPid": 31528,
+          "createdAt": "2026-10-26T01:43:14.4833114Z",
+          "creationFileTime": "134374525944833114",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8118272,
+          "rssBytes": 18628608
+        },
+        {
+          "pid": 30528,
+          "parentPid": 31528,
+          "createdAt": "2026-10-26T01:43:14.5535337Z",
+          "creationFileTime": "134374525945535337",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 168382464,
+          "rssBytes": 204795904
+        },
+        {
+          "pid": 31528,
+          "parentPid": 2892,
+          "createdAt": "2026-10-26T01:43:14.2931777Z",
+          "creationFileTime": "134374525942931777",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 48885760,
+          "rssBytes": 146018304
+        },
+        {
+          "pid": 32168,
+          "parentPid": 31528,
+          "createdAt": "2026-10-26T01:43:14.4519370Z",
+          "creationFileTime": "134374525944519370",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 170795008,
+          "rssBytes": 195342336
+        },
+        {
+          "pid": 37444,
+          "parentPid": 31528,
+          "createdAt": "2026-10-26T01:43:14.3215038Z",
+          "creationFileTime": "134374525943215038",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2506752,
+          "rssBytes": 10301440
+        },
+        {
+          "pid": 46404,
+          "parentPid": 31528,
+          "createdAt": "2026-10-26T01:43:35.0209712Z",
+          "creationFileTime": "134374526150209712",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 15491072,
+          "rssBytes": 32546816
+        }
+      ]
+    },
+    "incrementalPrivateMiB": 209.01953125,
+    "validSamples": 476,
+    "unavailableSamples": 0,
+    "fullHistoryInLosslessJournal": true
+  },
+  "memoryObserverOwnership": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 0,
+    "proofs": [
+      {
+        "pid": 39368,
+        "parentPid": 25484,
+        "earliestFileTime": "134374252763073276",
+        "latestFileTime": "134374252763073276",
+        "boundaryFileTime": "134374525944833114",
+        "source": "GetProcessTimes",
+        "reason": "predates-current-parent",
+        "observations": 479
+      }
+    ],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false
+  },
+  "cases": [
+    {
+      "name": "flac-to-ogg-standard-repeated-aliases",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 573,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-biwpMu/chrome-profile/Default/File System/000/t/00/00000002",
+        "logicalBytes": 8168,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "37436171908143690",
+          "size": "8168",
+          "birthtimeNs": "1792979040773990300",
+          "mtimeNs": "1792979041277517500"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "ce67ee1da2744046bfca8827a2bcac195017e838ce70ae9d273d35e32ecfe6b6"
+          },
+          {
+            "offset": 4096,
+            "bytes": 4072,
+            "sha256": "737945cb9005395cbb55389000d5093d4aab1b7be66f2ff492fce7a4016bee7b"
+          }
+        ],
+        "totalBrowserSampleBytes": 8168,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "standardRepeatedValidation": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "track",
+            "expectedValues": [
+              "3/9",
+              "5/12"
+            ],
+            "entries": [
+              {
+                "key": "TRACKNUMBER",
+                "value": "3/9"
+              },
+              {
+                "key": "TRACKNUMBER",
+                "value": "5/12"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValues": [
+              "αβγ & <texte>",
+              "Deuxième; literal — टिप्पणी"
+            ],
+            "entries": [
+              {
+                "key": "DESCRIPTION",
+                "value": "αβγ & <texte>"
+              },
+              {
+                "key": "DESCRIPTION",
+                "value": "Deuxième; literal — टिप्पणी"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValues": [
+              "Artiste collectif",
+              "Second ensemble 音楽"
+            ],
+            "entries": [
+              {
+                "key": "ALBUMARTIST",
+                "value": "Artiste collectif"
+              },
+              {
+                "key": "ALBUMARTIST",
+                "value": "Second ensemble 音楽"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValues": [
+              "2/3",
+              "4/5"
+            ],
+            "entries": [
+              {
+                "key": "DISCNUMBER",
+                "value": "2/3"
+              },
+              {
+                "key": "DISCNUMBER",
+                "value": "4/5"
+              }
+            ],
+            "status": "preserved"
+          }
+        ],
+        "rawEntriesInspected": true,
+        "dictionarySummaryInsufficient": true,
+        "semicolonSplittingUsed": false,
+        "publicAcceptance": false
+      },
+      "metadataCoverage": {
+        "scalarFields": 21,
+        "repeatedFields": 4,
+        "totalSemanticFields": 25,
+        "allFieldsPreserved": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 398,
+        "squaredError": 101218062,
+        "psnrDb": 60.0791308524768,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "d32db08260b14e299f8f0d6c193d0d8fc7fb5487ca38408b84af5ec5f3348852",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 8168,
+      "outputSha256": "0374a390198b86b2fdf55147d259545cc9b0a70516286d67cd075ac5c4ca2205",
+      "tagsPreserved": 21,
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus-standard-repeated-aliases",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 303,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-biwpMu/chrome-profile/Default/File System/000/t/00/00000003",
+        "logicalBytes": 17079,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "37717646884854346",
+          "size": "17079",
+          "birthtimeNs": "1792979041797223500",
+          "mtimeNs": "1792979041909703800"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "bd8e7312bb258c4e47289e61e66f3eb28e08b1a25c480d29b5b9adc816117f5a"
+          },
+          {
+            "offset": 6491,
+            "bytes": 4096,
+            "sha256": "b201b2c3ee7a2ee5bd9d4e8cf7593305f184de23425bb1db70c70818e536c34f"
+          },
+          {
+            "offset": 12983,
+            "bytes": 4096,
+            "sha256": "87de098bba237f15693a248a5c545ad5b54139bac6e608f410130035b8a4e4e7"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "standardRepeatedValidation": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "track",
+            "expectedValues": [
+              "3/9",
+              "5/12"
+            ],
+            "entries": [
+              {
+                "key": "TRACKNUMBER",
+                "value": "3/9"
+              },
+              {
+                "key": "TRACKNUMBER",
+                "value": "5/12"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValues": [
+              "αβγ & <texte>",
+              "Deuxième; literal — टिप्पणी"
+            ],
+            "entries": [
+              {
+                "key": "DESCRIPTION",
+                "value": "αβγ & <texte>"
+              },
+              {
+                "key": "DESCRIPTION",
+                "value": "Deuxième; literal — टिप्पणी"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValues": [
+              "Artiste collectif",
+              "Second ensemble 音楽"
+            ],
+            "entries": [
+              {
+                "key": "ALBUMARTIST",
+                "value": "Artiste collectif"
+              },
+              {
+                "key": "ALBUMARTIST",
+                "value": "Second ensemble 音楽"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValues": [
+              "2/3",
+              "4/5"
+            ],
+            "entries": [
+              {
+                "key": "DISCNUMBER",
+                "value": "2/3"
+              },
+              {
+                "key": "DISCNUMBER",
+                "value": "4/5"
+              }
+            ],
+            "status": "preserved"
+          }
+        ],
+        "rawEntriesInspected": true,
+        "dictionarySummaryInsufficient": true,
+        "semicolonSplittingUsed": false,
+        "publicAcceptance": false
+      },
+      "metadataCoverage": {
+        "scalarFields": 21,
+        "repeatedFields": 4,
+        "totalSemanticFields": 25,
+        "allFieldsPreserved": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908360,
+        "psnrDb": 66.16825969015325,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8386388f4a65fdeac269a12b9cfa6224a4673656dfebfaa21c91c4bbd2e153c2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 17079,
+      "outputSha256": "14471ca2a572af04498ae0e9639f309a475e9ce970fc487b3c2148a44b3f6773",
+      "tagsPreserved": 21,
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "ogg-to-opus-standard-repeated-aliases",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 174,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-biwpMu/chrome-profile/Default/File System/000/t/00/00000004",
+        "logicalBytes": 17078,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "12384898980903369",
+          "size": "17078",
+          "birthtimeNs": "1792979042315473200",
+          "mtimeNs": "1792979042449144600"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "8102d2122f6bf146c5e2f612603fd023e4ba0e08b52eb92e00c9d2c67f9fa5a9"
+          },
+          {
+            "offset": 6491,
+            "bytes": 4096,
+            "sha256": "8f202aca5344c881072864aca70617928530802443ef3e5c58dd1420343dddec"
+          },
+          {
+            "offset": 12982,
+            "bytes": 4096,
+            "sha256": "447cf05710f02c267d9c8d6d34f46eb7d8f64c3a7b7a391fd26a8ea88e38b1d9"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "standardRepeatedValidation": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "track",
+            "expectedValues": [
+              "3/9",
+              "5/12"
+            ],
+            "entries": [
+              {
+                "key": "TRACKNUMBER",
+                "value": "3/9"
+              },
+              {
+                "key": "TRACKNUMBER",
+                "value": "5/12"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValues": [
+              "αβγ & <texte>",
+              "Deuxième; literal — टिप्पणी"
+            ],
+            "entries": [
+              {
+                "key": "DESCRIPTION",
+                "value": "αβγ & <texte>"
+              },
+              {
+                "key": "DESCRIPTION",
+                "value": "Deuxième; literal — टिप्पणी"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValues": [
+              "Artiste collectif",
+              "Second ensemble 音楽"
+            ],
+            "entries": [
+              {
+                "key": "ALBUMARTIST",
+                "value": "Artiste collectif"
+              },
+              {
+                "key": "ALBUMARTIST",
+                "value": "Second ensemble 音楽"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValues": [
+              "2/3",
+              "4/5"
+            ],
+            "entries": [
+              {
+                "key": "DISCNUMBER",
+                "value": "2/3"
+              },
+              {
+                "key": "DISCNUMBER",
+                "value": "4/5"
+              }
+            ],
+            "status": "preserved"
+          }
+        ],
+        "rawEntriesInspected": true,
+        "dictionarySummaryInsufficient": true,
+        "semicolonSplittingUsed": false,
+        "publicAcceptance": false
+      },
+      "metadataCoverage": {
+        "scalarFields": 21,
+        "repeatedFields": 4,
+        "totalSemanticFields": 25,
+        "allFieldsPreserved": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 205,
+        "squaredError": 29594128,
+        "psnrDb": 65.41965555081863,
+        "sourceSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+        "outputSha256": "1420f8dfc14e29d3f4154760f7f32387b5e2e1e875d5ace914b327be47059ae2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 17078,
+      "outputSha256": "c12a2cc20e933ca49da91099ac300bd1510d11541eee312958316a6d5210de98",
+      "tagsPreserved": 21,
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-ogg-standard-repeated-aliases",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 196,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-biwpMu/chrome-profile/Default/File System/000/t/00/00000005",
+        "logicalBytes": 11562,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "12666373957614025",
+          "size": "11562",
+          "birthtimeNs": "1792979042924404000",
+          "mtimeNs": "1792979043080808200"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "dad49891e706652cf7b3d12790932455d71fee34c78f0be0ca5258362c6e2c70"
+          },
+          {
+            "offset": 4096,
+            "bytes": 4096,
+            "sha256": "9c3585f8d4e5f3a993f4385232edb73e77f8f2b75481abdbd10ecc9a53d2481d"
+          },
+          {
+            "offset": 8192,
+            "bytes": 3370,
+            "sha256": "4e15753aca82f5c1c0c092c2b1cfd1ec688b33b78d8d5a3a8148aa8780de9807"
+          }
+        ],
+        "totalBrowserSampleBytes": 11562,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "actualAutomaticQualityArgument": {
+        "requested": "automatic",
+        "nativeCode": 3,
+        "automaticPolicy": "opus-to-vorbis-q7"
+      },
+      "automaticQualityNoticeVisible": true,
+      "standardRepeatedValidation": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "track",
+            "expectedValues": [
+              "3/9",
+              "5/12"
+            ],
+            "entries": [
+              {
+                "key": "TRACKNUMBER",
+                "value": "3/9"
+              },
+              {
+                "key": "TRACKNUMBER",
+                "value": "5/12"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValues": [
+              "αβγ & <texte>",
+              "Deuxième; literal — टिप्पणी"
+            ],
+            "entries": [
+              {
+                "key": "DESCRIPTION",
+                "value": "αβγ & <texte>"
+              },
+              {
+                "key": "DESCRIPTION",
+                "value": "Deuxième; literal — टिप्पणी"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValues": [
+              "Artiste collectif",
+              "Second ensemble 音楽"
+            ],
+            "entries": [
+              {
+                "key": "ALBUMARTIST",
+                "value": "Artiste collectif"
+              },
+              {
+                "key": "ALBUMARTIST",
+                "value": "Second ensemble 音楽"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValues": [
+              "2/3",
+              "4/5"
+            ],
+            "entries": [
+              {
+                "key": "DISCNUMBER",
+                "value": "2/3"
+              },
+              {
+                "key": "DISCNUMBER",
+                "value": "4/5"
+              }
+            ],
+            "status": "preserved"
+          }
+        ],
+        "rawEntriesInspected": true,
+        "dictionarySummaryInsufficient": true,
+        "semicolonSplittingUsed": false,
+        "publicAcceptance": false
+      },
+      "metadataCoverage": {
+        "scalarFields": 21,
+        "repeatedFields": 4,
+        "totalSemanticFields": 25,
+        "allFieldsPreserved": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 145,
+        "squaredError": 80654871,
+        "psnrDb": 61.06540502039469,
+        "sourceSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+        "outputSha256": "422a6ab44fdf0c223250f00fe76ce21c72e8a317f32a310812086f47419f777f",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 11562,
+      "outputSha256": "97b00863761ddd5887d96bafd91eac5f5804702f5e58b66982f08a482ca5989d",
+      "tagsPreserved": 21,
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "ogg-to-flac-standard-repeated-aliases",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 139,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-biwpMu/chrome-profile/Default/File System/000/t/00/00000006",
+        "logicalBytes": 36200,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "12947848934324681",
+          "size": "36200",
+          "birthtimeNs": "1792979043641659100",
+          "mtimeNs": "1792979043744978700"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "6207200a160b55be136797d04bf3ceb6aacc05e44fd2759fa0fd96394eeea8df"
+          },
+          {
+            "offset": 16052,
+            "bytes": 4096,
+            "sha256": "34f2df62030c3d3780a1c52e42c14b3906f6c9b0321cf528607d00ec408e79ff"
+          },
+          {
+            "offset": 32104,
+            "bytes": 4096,
+            "sha256": "461a22abe5272ca3459392ac33286af10608317c1a9b2ff1ab036684a0eb5fa9"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "standardRepeatedValidation": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "track",
+            "expectedValues": [
+              "3/9",
+              "5/12"
+            ],
+            "entries": [
+              {
+                "key": "TRACKNUMBER",
+                "value": "3/9"
+              },
+              {
+                "key": "TRACKNUMBER",
+                "value": "5/12"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValues": [
+              "αβγ & <texte>",
+              "Deuxième; literal — टिप्पणी"
+            ],
+            "entries": [
+              {
+                "key": "DESCRIPTION",
+                "value": "αβγ & <texte>"
+              },
+              {
+                "key": "DESCRIPTION",
+                "value": "Deuxième; literal — टिप्पणी"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValues": [
+              "Artiste collectif",
+              "Second ensemble 音楽"
+            ],
+            "entries": [
+              {
+                "key": "ALBUMARTIST",
+                "value": "Artiste collectif"
+              },
+              {
+                "key": "ALBUMARTIST",
+                "value": "Second ensemble 音楽"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValues": [
+              "2/3",
+              "4/5"
+            ],
+            "entries": [
+              {
+                "key": "DISCNUMBER",
+                "value": "2/3"
+              },
+              {
+                "key": "DISCNUMBER",
+                "value": "4/5"
+              }
+            ],
+            "status": "preserved"
+          }
+        ],
+        "rawEntriesInspected": true,
+        "dictionarySummaryInsufficient": true,
+        "semicolonSplittingUsed": false,
+        "publicAcceptance": false
+      },
+      "metadataCoverage": {
+        "scalarFields": 21,
+        "repeatedFields": 4,
+        "totalSemanticFields": 25,
+        "allFieldsPreserved": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": true,
+        "maximumAbsoluteError": 0,
+        "squaredError": 0,
+        "psnrDb": "infinity",
+        "sourceSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+        "outputSha256": "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+        "minimumPsnrDb": 60,
+        "losslessRequired": true,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 36200,
+      "outputSha256": "97c06d5ba146de3db41640b589ad0293a03b48163c512cf5ea234208a1251f3e",
+      "tagsPreserved": 21,
+      "interruption": null,
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "opus-to-flac-standard-repeated-aliases",
+      "status": "passed-small-private-fidelity-and-metadata-case",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 404,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-biwpMu/chrome-profile/Default/File System/000/t/00/00000007",
+        "logicalBytes": 38546,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "13229323911035337",
+          "size": "38546",
+          "birthtimeNs": "1792979044360625700",
+          "mtimeNs": "1792979044467661400"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "8c0cc4b6381b8138ce9ca403da487704ee2687e155be54e5e16e574ac27e04e3"
+          },
+          {
+            "offset": 17225,
+            "bytes": 4096,
+            "sha256": "3326c34903d97c8324e2dda2e9447f392911ff751c8bfada5b2827d1895034de"
+          },
+          {
+            "offset": 34450,
+            "bytes": 4096,
+            "sha256": "a37d1a4b811291b6d94d712b44ddb596dd59d8eb87aa9a82427aea985a64d51d"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "standardRepeatedValidation": {
+        "status": "passed",
+        "fields": [
+          {
+            "field": "track",
+            "expectedValues": [
+              "3/9",
+              "5/12"
+            ],
+            "entries": [
+              {
+                "key": "TRACKNUMBER",
+                "value": "3/9"
+              },
+              {
+                "key": "TRACKNUMBER",
+                "value": "5/12"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "comment",
+            "expectedValues": [
+              "αβγ & <texte>",
+              "Deuxième; literal — टिप्पणी"
+            ],
+            "entries": [
+              {
+                "key": "DESCRIPTION",
+                "value": "αβγ & <texte>"
+              },
+              {
+                "key": "DESCRIPTION",
+                "value": "Deuxième; literal — टिप्पणी"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "album_artist",
+            "expectedValues": [
+              "Artiste collectif",
+              "Second ensemble 音楽"
+            ],
+            "entries": [
+              {
+                "key": "ALBUMARTIST",
+                "value": "Artiste collectif"
+              },
+              {
+                "key": "ALBUMARTIST",
+                "value": "Second ensemble 音楽"
+              }
+            ],
+            "status": "preserved"
+          },
+          {
+            "field": "disc",
+            "expectedValues": [
+              "2/3",
+              "4/5"
+            ],
+            "entries": [
+              {
+                "key": "DISCNUMBER",
+                "value": "2/3"
+              },
+              {
+                "key": "DISCNUMBER",
+                "value": "4/5"
+              }
+            ],
+            "status": "preserved"
+          }
+        ],
+        "rawEntriesInspected": true,
+        "dictionarySummaryInsufficient": true,
+        "semicolonSplittingUsed": false,
+        "publicAcceptance": false
+      },
+      "metadataCoverage": {
+        "scalarFields": 21,
+        "repeatedFields": 4,
+        "totalSemanticFields": 25,
+        "allFieldsPreserved": true
+      },
+      "failures": [],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": true,
+        "maximumAbsoluteError": 0,
+        "squaredError": 0,
+        "psnrDb": "infinity",
+        "sourceSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+        "outputSha256": "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5",
+        "minimumPsnrDb": 60,
+        "losslessRequired": true,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 38546,
+      "outputSha256": "b1dea5c6dc2c7cd94aab2810fb0593d300030274020367a94a076c25657c6a8a",
+      "tagsPreserved": 21,
+      "interruption": null,
+      "disposableOutputRemoved": true
+    }
+  ],
+  "losslessJournal": {
+    "file": "output/playwright/2026-10-26T01-43-03.703Z-audio-fidelity-memory.ndjson.gz",
+    "records": 476,
+    "sha256": "559956c23dc78ce6f919988bc9fadfb2913351bd06dcf6cf49d42015c84fabf6",
+    "archiveSha256": "d577cac5ff681dc49c9594b5b1fcfb4fca39278a0e0472f2e9c7f2c729ee3b6d",
+    "complete": true
+  },
+  "failures": [],
+  "network": {
+    "observedRequests": 29,
+    "forbidden": [],
+    "nativeGlueRequests": 6,
+    "nativeWasmRequests": 6
+  },
+  "cleanup": {
+    "allRecordedBirthsAbsent": true,
+    "publishedAssetsNeverChanged": true,
+    "stagedPrivateAssetsRestored": true,
+    "ownedProfileFixturesOutputsRemoved": true
+  },
+  "protectedOriginalUnchanged": true
+}

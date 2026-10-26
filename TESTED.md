@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-26 standard-field alias gate CLOSED:01-43-03.703Z/bacd6ddb six
+private production conversions PASS. All four standard groups retain BOTH raw
+values in order (24groups/48values total); literalsemicolon preserved, no join/
+split.21other scalars peroutput preserved;96kPCM peroutput passes60dB orFLAC
+exact. Inputs37207/8176/20588B eachfullydecodeexactversuscanonical source;
+outputhashes0374a3.../14471c.../c12a2c.../97b008.../97c06d.../b1dea5...
+bound in regression. Opus-to-Vorbis actualautomatic/nativearg3/UI notice.
+Whole-tree209.01953125MiB,476valid0NULL,47pins/16ownedbirths absent/original/
+assets/privacy/scratch cleanup PASS. UniquephysicalOPFS/read-onlynative full
+validation, no converted copy. All6headlessscreenshots reviewed, headedNOT
+verified. Existing10editcore alreadyworks; no newenginepatch/rebuild needed.
+Do not replay this exactaliascase. Not everymetadataalias/otherdestination/
+artworkcombination/stress/OSfault/publicpromotion/full54 acceptance.
+
 2026-10-26 NEW standard-field duplicate/alias gate prepared, runtimeUNVERIFIED.
 Six routes amongFLAC/Vorbis/Opus, four standard families track/TRACKNUMBER,
 comment/DESCRIPTION, album_artist/ALBUMARTIST, disc/DISCNUMBER: two unequal
