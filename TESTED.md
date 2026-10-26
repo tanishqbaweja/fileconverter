@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-10-26 — FIRST real browser quota experiment10-12-32.587Z/874391b1
+FAILED its intended midstream criterion: Chrome enforced the1MiB origin limit
+on the FIRST real47-byte SyncAccessHandle header write. Native input262144B,
+Wasm32MiB, output0B; no injected fault, empty OPFS and recovered worker. Default
+quota was restored; same-page genuine17,360B Opus output (SHAfa99d525...092d7f)
+fully decodes96000PCM at66.1683dB with25tags/PNG, but aggregate remains FAILED
+because no acknowledged output preceded exhaustion. Primary181.63671875MiB,
+773valid/0missing, all quota restoration/original/privacy/owned cleanup pass.
+No screenshots were reached; raw/journal retained. Chromium capacity tracker
+documents a minimum1MiB request even for tiny writes; this is an allocation-
+granularity lead, not proof of exact per-origin bookkeeping overhead.
+Changed next control:1MiB+64KiB quota, same180s source and strict native-progress/
+full-recovery/memory requirements; recovery bytes pinned to this actual output.
+This adjusts a negative-test parameter, NOT any quality/memory acceptance limit.
+https://chromium.googlesource.com/chromium/src/+/a926f84cb05b49a7cd839a378f85d89317adbb3c/third_party/blink/renderer/modules/file_system_access/file_system_access_capacity_tracker.cc
+
 2026-10-26 — New browser-enforced OPFS quota gate prepared, runtimeUNVERIFIED.
 `--real-opfs-quota-recovery` uses Chromium's per-origin quota override in one
 fresh owned persistent profile; native production FLAC-to-Opus must fail AFTER

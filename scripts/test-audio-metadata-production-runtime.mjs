@@ -133,7 +133,7 @@ if (mp3GainMatrix) report.scope = "FIVE remaining automatic MP3 gain-repair jobs
 if (mp3Clipping) report.scope = "four NEW near-full-scale2s mono/stereo FLAC-to-MP3 cases at0.99/0.999; independent full f32 decode exposes saturation/overshoot before integer clamping, unchanged60dB complete s16 comparison/tags/PNG/memory/cleanup; not every waveform, IO recovery, stress or public acceptance";
 if (mp3QuantizerClipping) report.scope = "two changed-encoder-search canaries on exact failed0.999 mono/stereo INPUTS: private level2 versus prior level9, same bitrate/gain/automatic argument, unchanged full-float no-overshoot/full-S16>=60dB/25tags/PNG/fulltree250MiB/cleanup; no matrix, general clipping, speed or public acceptance";
 if (mp3IoRecovery) report.scope = "three NEW same-page private gain-core MP3 jobs: cancel after real audio payload, injected error after real bounded write, then exact prior PNG/25-tag/full-PCM recovery; existing near-full-scale failures remain failed; not OS/quota/permission/direct-picker/stress/public acceptance";
-if (realQuotaRecovery) report.scope = "two NEW real-UI jobs: browser-enforced1MiB origin quota must interrupt native FLAC-to-Opus after actual read/write without error injection, then restore default quota and validate same-page PNG/25-tag/repeated/fullPCM recovery; NOT physical disk exhaustion, OS permission revocation, stress or promotion";
+if (realQuotaRecovery) report.scope = "two NEW real-UI jobs: browser-enforced1MiB+64KiB origin quota must interrupt native FLAC-to-Opus after actual read/write without error injection, then restore default quota and validate same-page PNG/25-tag/repeated/fullPCM recovery; NOT physical disk exhaustion, OS permission revocation, stress or promotion";
 if (artworkBudget) report.scope = "one NEW exact4MiB real PNG cover FLAC-to-Opus byte-budget case; unchanged text/codec/quality/memory limits; not repeat/scaling/promotion acceptance";
 if (artworkBenchmark) {
   report.scope = "matched serializer experiment: one explicit warmup plus six identical exact4MiB-artwork FLAC-to-Opus jobs in one normal headless production page; not long-file/stress/scaling/fastest/public acceptance";
@@ -753,6 +753,7 @@ try {
         assert.equal(index, 1); assert.equal(report.cases[0].status, "passed-private-browser-enforced-quota-failure-case");
         assert.equal(state.error, null); assert.deepEqual(state.warnings, []); assert.equal(row.fidelity.samples, 96000);
         assert.equal(row.fidelity.minimumPsnrDb, 60); assert.equal(row.realBrowserQuota.overrideActive, false);
+        assert.equal(row.output.sha256, "fa99d5254cc40bb3d9dc1b8f2f745477f5c5828916b83b7ef7db64d1e1092d7f", "Same-page recovery must match the complete independently decoded prior default-quota output");
         row.samePageRealQuotaRecovery = { actualQuotaFailurePassed: true, defaultQuotaRestored: true,
           noPageOrContextRecreation: true, noStaleErrorOrWarning: true, errorInjectionUsed: false, publicAcceptance: false };
       }

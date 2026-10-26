@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-10-26 — First real1MiB quota experimentFAILED: browser refused the actual
+47-byte native header write, so zero acknowledged output and midstream proof
+correctly fails. Default quota/recovery output/fullPCM/181.63671875MiB/cleanup
+pass, not aggregate acceptance. Evidence10-12-32.587Z retained. Chromium's
+documented minimum1MiB capacity allocation motivates a changed1MiB+64KiB test
+quota; source180s, progress requirements and all quality/memory thresholds remain.
+No unchanged retry, injected error or physical-disk/OS permission claim.
+
 2026-10-26 — Real browser-origin OPFS quota failure/recovery gate implemented,
 not yet run. Existing error-injection gates remain closed; this distinct case
 must obtain an actual native write failure under Chrome-enforced1MiB origin

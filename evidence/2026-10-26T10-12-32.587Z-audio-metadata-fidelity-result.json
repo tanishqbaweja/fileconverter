@@ -1,0 +1,376 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "874391b161d71814c4c0edfa370ff5f46fd88f41",
+  "status": "failed",
+  "scope": "two NEW real-UI jobs: browser-enforced1MiB origin quota must interrupt native FLAC-to-Opus after actual read/write without error injection, then restore default quota and validate same-page PNG/25-tag/repeated/fullPCM recovery; NOT physical disk exhaustion, OS permission revocation, stress or promotion",
+  "publicAcceptance": false,
+  "fullMetadataAcceptance": false,
+  "archive": {
+    "path": "outputs/reports/2026-10-26T10-12-32.587Z-audio-metadata-production-runtime.json.gz",
+    "bytes": 26739,
+    "sha256": "a228f63bb04145e4d0336d388fa6cdff30037e8cec6208c64073bb06881ed2bf",
+    "restoredBytes": 160764,
+    "restoredSha256": "c5b8e45c7ff607a222a7e4bbf843a6691640501f6802a92f76ddd88007c87069"
+  },
+  "sourcePins": 51,
+  "artifactManifestSha256": "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c",
+  "diskProof": {
+    "status": "exact-browser-canary-independently-found-on-disk",
+    "browserBytes": 64,
+    "physicalBytes": 64,
+    "sha256": "78505c4d26ef1d12911421ef8e67bdeab14ee93558233ad2f81ad2e99e6b58ee",
+    "physicalFile": "work\\audio-metadata-production-Y906U1\\chrome-profile\\Default\\File System\\000\\t\\00\\00000001",
+    "profileDirectory": "work\\audio-metadata-production-Y906U1\\chrome-profile",
+    "inspectedEntries": 5,
+    "maximumReadBytes": 65,
+    "provesThisContextOpfsBacking": true,
+    "provesConversionAcceptance": false,
+    "canaryRemovedInFinally": true
+  },
+  "memory": {
+    "scope": "selected-small-case lifecycle only, not stress acceptance",
+    "limitMiB": 250,
+    "intervalMs": 100,
+    "peak": {
+      "sequence": 739,
+      "timestamp": "2026-10-26T10:14:31.3923640Z",
+      "phase": "case-1",
+      "privateBytes": 438272000,
+      "rssBytes": 690479104,
+      "nativeElapsedMs": 81.5844,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 19128,
+          "parentPid": 38928,
+          "createdAt": "2026-10-26T10:13:09.4262259Z",
+          "creationFileTime": "134374831894262259",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 13910016,
+          "rssBytes": 42192896
+        },
+        {
+          "pid": 25692,
+          "parentPid": 38928,
+          "createdAt": "2026-10-26T10:13:09.5474858Z",
+          "creationFileTime": "134374831895474858",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 160575488,
+          "rssBytes": 184700928
+        },
+        {
+          "pid": 31548,
+          "parentPid": 38928,
+          "createdAt": "2026-10-26T10:13:09.4196001Z",
+          "creationFileTime": "134374831894196001",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 151953408,
+          "rssBytes": 175964160
+        },
+        {
+          "pid": 37640,
+          "parentPid": 38928,
+          "createdAt": "2026-10-26T10:13:09.0756761Z",
+          "creationFileTime": "134374831890756761",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2510848,
+          "rssBytes": 10289152
+        },
+        {
+          "pid": 38928,
+          "parentPid": 10000,
+          "createdAt": "2026-10-26T10:13:09.0316566Z",
+          "creationFileTime": "134374831890316566",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 46161920,
+          "rssBytes": 143278080
+        },
+        {
+          "pid": 45148,
+          "parentPid": 38928,
+          "createdAt": "2026-10-26T10:13:09.5081837Z",
+          "creationFileTime": "134374831895081837",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 38768640,
+          "rssBytes": 82608128
+        },
+        {
+          "pid": 45860,
+          "parentPid": 38928,
+          "createdAt": "2026-10-26T10:13:54.1017793Z",
+          "creationFileTime": "134374832341017793",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 16199680,
+          "rssBytes": 32247808
+        },
+        {
+          "pid": 45892,
+          "parentPid": 38928,
+          "createdAt": "2026-10-26T10:13:09.4584259Z",
+          "creationFileTime": "134374831894584259",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8192000,
+          "rssBytes": 19197952
+        }
+      ]
+    },
+    "incrementalPrivateMiB": 181.63671875,
+    "validSamples": 773,
+    "unavailableSamples": 0,
+    "fullHistoryInLosslessJournal": true
+  },
+  "memoryObserverOwnership": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 0,
+    "proofs": [],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false
+  },
+  "cases": [
+    {
+      "name": "flac-to-opus-browser-enforced-quota-failure",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 1740,
+      "failures": [
+        "AssertionError [ERR_ASSERTION]: Require actual native input AND acknowledged output before quota exhaustion\n    at validateRealOpfsQuotaFailure (file:///H:/Github%20Repositories/fileconverter/scripts/lib/real-opfs-quota-validation.mjs:18:10)\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:583:37"
+      ],
+      "interruption": null,
+      "storageBefore": [],
+      "storageAfter": [],
+      "realBrowserQuota": {
+        "usage": 0,
+        "quota": 1048576,
+        "overrideActive": true,
+        "usageBreakdown": [
+          {
+            "storageType": "file_systems",
+            "usage": 0
+          },
+          {
+            "storageType": "indexeddb",
+            "usage": 0
+          },
+          {
+            "storageType": "cache_storage",
+            "usage": 0
+          },
+          {
+            "storageType": "service_workers",
+            "usage": 0
+          }
+        ]
+      },
+      "disposableOutputRemoved": true
+    },
+    {
+      "name": "flac-to-opus-repeated-values-png-cover-after-browser-quota-restoration",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 776,
+      "physicalValidation": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/audio-metadata-production-Y906U1/chrome-profile/Default/File System/000/t/00/00000003",
+        "logicalBytes": 17360,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "9851624192220553",
+          "size": "17360",
+          "birthtimeNs": "1793009670951570300",
+          "mtimeNs": "1793009671480777200"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "a6cf62661f226d0016dacfa312037151e90af4a7cbec123da8021ec7d18e7046"
+          },
+          {
+            "offset": 6632,
+            "bytes": 4096,
+            "sha256": "4b35c91548c25202a9ec942cea97b135db2571658c2b9a616da723eb68222cf9"
+          },
+          {
+            "offset": 13264,
+            "bytes": 4096,
+            "sha256": "87de098bba237f15693a248a5c545ad5b54139bac6e608f410130035b8a4e4e7"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "failures": [
+        "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'failed'\n- 'passed-private-browser-enforced-quota-failure-case'\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:753:40"
+      ],
+      "fidelity": {
+        "canonicalPcm": "signed16-little-endian, source rate/channels, no resampling/alignment/trimming",
+        "samples": 96000,
+        "exact": false,
+        "maximumAbsoluteError": 113,
+        "squaredError": 24908360,
+        "psnrDb": 66.16825969015325,
+        "sourceSha256": "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+        "outputSha256": "8386388f4a65fdeac269a12b9cfa6224a4673656dfebfaa21c91c4bbd2e153c2",
+        "minimumPsnrDb": 60,
+        "losslessRequired": false,
+        "maximumInputChunkBytes": 262144,
+        "maximumOutstandingChunksPerStream": 1,
+        "referenceDecoderCpu": "scalar-no-SIMD"
+      },
+      "outputBytes": 17360,
+      "outputSha256": "fa99d5254cc40bb3d9dc1b8f2f745477f5c5828916b83b7ef7db64d1e1092d7f",
+      "tagsPreserved": 25,
+      "artwork": {
+        "status": "passed-exact-cover-packet",
+        "codec": "png",
+        "width": 64,
+        "height": 64,
+        "bytes": 178,
+        "sha256": "a2c9b09a676abe1df460620135bd1d889ddfb84de2f665b08c95374ec10564f0",
+        "pictureRole": "Cover (front)",
+        "description": "表紙 — Front cover",
+        "streamIndex": 1,
+        "packets": 1,
+        "independentImageDecode": true
+      },
+      "interruption": null,
+      "realBrowserQuota": {
+        "usage": 0,
+        "quota": 2400390529842,
+        "overrideActive": false,
+        "usageBreakdown": [
+          {
+            "storageType": "file_systems",
+            "usage": 0
+          },
+          {
+            "storageType": "indexeddb",
+            "usage": 0
+          },
+          {
+            "storageType": "cache_storage",
+            "usage": 0
+          },
+          {
+            "storageType": "service_workers",
+            "usage": 0
+          }
+        ]
+      },
+      "disposableOutputRemoved": true
+    }
+  ],
+  "losslessJournal": {
+    "file": "output/playwright/2026-10-26T10-12-32.587Z-audio-fidelity-memory.ndjson.gz",
+    "records": 773,
+    "sha256": "7275239850fd8bc8be2e0dac6b990654ceab04504de7b03276be33105a109f55",
+    "archiveSha256": "66c036c9a82df1a686dbafdf553647b8377cac72361b3edc104344b8ec21ee45",
+    "complete": true
+  },
+  "realQuotaControl": {
+    "mechanism": "Storage.overrideQuotaForOrigin in fresh owned profile only; browser enforces OPFS quota, no write method/error injection",
+    "initial": {
+      "usage": 0,
+      "quota": 2400390529842,
+      "overrideActive": false,
+      "usageBreakdown": [
+        {
+          "storageType": "file_systems",
+          "usage": 0
+        },
+        {
+          "storageType": "indexeddb",
+          "usage": 0
+        },
+        {
+          "storageType": "cache_storage",
+          "usage": 0
+        },
+        {
+          "storageType": "service_workers",
+          "usage": 0
+        }
+      ]
+    },
+    "quotaBytes": 1048576,
+    "physicalDiskExhausted": false,
+    "osPermissionRevocationTested": false,
+    "defaultBrowserServicesChanged": false,
+    "final": {
+      "usage": 0,
+      "quota": 2400390529842,
+      "overrideActive": false,
+      "usageBreakdown": [
+        {
+          "storageType": "file_systems",
+          "usage": 0
+        },
+        {
+          "storageType": "indexeddb",
+          "usage": 0
+        },
+        {
+          "storageType": "cache_storage",
+          "usage": 0
+        },
+        {
+          "storageType": "service_workers",
+          "usage": 0
+        }
+      ]
+    },
+    "restoredInFinally": true
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(realQuotaRecovery ? report.cases.every((c, index) => c.status === (index === 0 ? \"passed-private-browser-enforced-quota-failure-case\" : \"passed-small-private-fidelity-and-metadata-case\")) : largeVorbisRepeat ? report.cases.every(c => c.status === \"passed-full-size-private-q7-case-not-public-qualification\") : metadataBudget ? report.cases.every(c => c.metadataFailure ? c.status === (c.metadataFailure === \"text-bytes\" ? \"passed-private-metadata-byte-rejection-case\" : \"passed-private-metadata-field-rejection-case\") : c.status === \"passed-small-private-fidelity-and-metadata-case\")\n    : audioIoRecovery || vorbisIoRecovery || mp3IoRecovery ? report.cases.every(c => c.interruption ? c.status === \"passed-private-audio-interruption-case\" : c.status === \"passed-small-private-fidelity-and-metadata-case\")\n    : report.cases.every(c => c.status === \"passed-small-private-fidelity-and-metadata-case\"))\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:813:10"
+  ],
+  "network": {
+    "observedRequests": 17,
+    "forbidden": [],
+    "nativeGlueRequests": 2,
+    "nativeWasmRequests": 2
+  },
+  "cleanup": {
+    "allRecordedBirthsAbsent": true,
+    "publishedAssetsNeverChanged": true,
+    "stagedPrivateAssetsRestored": true,
+    "ownedProfileFixturesOutputsRemoved": true
+  },
+  "protectedOriginalUnchanged": true
+}

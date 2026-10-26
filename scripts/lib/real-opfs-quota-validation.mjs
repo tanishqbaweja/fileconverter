@@ -1,7 +1,10 @@
 // Browser-enforced per-origin quota in an owned test profile, NOT physical disk
 // exhaustion, OS permission revocation, a fabricated DOMException or publication.
 import assert from "node:assert/strict";
-export const REAL_OPFS_QUOTA_BYTES = 1048576;
+// Chromium requests at least1MiB capacity even for a tiny SyncAccessHandle write.
+// Leave64KiB test-only headroom so the target is a later write, not header open.
+// This is a fault-test parameter, never the converter's memory/quality limit.
+export const REAL_OPFS_QUOTA_BYTES = 1048576 + 65536;
 export const REAL_OPFS_QUOTA_CASES = Object.freeze([
   Object.freeze({ source: "flac", destination: "opus", realQuotaFailure: true }),
   Object.freeze({ source: "flac", destination: "opus", artwork: "png", repeated: true, recoveryAfterRealQuota: true }),

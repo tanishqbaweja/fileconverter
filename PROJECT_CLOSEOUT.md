@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Real quota first control10-12-32.587Z FAILED:1MiB origin limit rejected the
+actual47-byte native header, with0 acknowledged output. Default quota and valid
+same-page recovery restored;181.63671875MiB/cleanup pass, not midstream proof.
+Changed next test uses1MiB+64KiB headroom, motivated by Chromium's documented
+minimum1MiB capacity reservation; same180s source and strict progress/recovery/
+memory thresholds. Keep firstfailure; no native rebuild or unchanged replay.
+
 Next distinct gate implemented, browser-UNVERIFIED: `--real-opfs-quota-recovery`
 must get a Chrome-enforced1MiB OPFS quota failure AFTER genuine native read/write
 (no error injection), restore defaults and prove same-page PNG/25-tag/repeated/
