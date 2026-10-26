@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-10-26 full147.96MB q7 gate00-31-01.120Z FAILED250.69921875MiB,
+not a small-file substitute. Safety-cancelled after11.3s/26.0MB read/11.3MB partial,
+no completed-output/fullPCM acceptance; exact source147964541B/ec870c... verified.
+535valid1NULL/allnormal Chrome processes counted; actualWasm32MiB fixed,
+read256KiB/write29519B/onepending bound intact. Owned14births absent/original/
+publicassetrestoration/emptyOPFS/scratch cleanup PASS. First case only; do not
+replay unchanged. Recovery diagnostic104.2148MiB>96 whileworkerstarting remains
+FAILED too. Next concrete hypothesis: FileReaderSync allocates every slice while
+other profiles already use persistentBYOB; test targeted large-q7 input policy,
+record explicit buffer counters, keep native settings and every threshold.
+Do NOT attribute this to the earlier late model-service failure without proof.
+
 2026-10-26 full-size pre-execution52focused/lint/TypeScript/syntax/diff-check
 PASS. Actual browser qualification next, using unchanged reusable10-edit core;
 new scope is not a replay of closed small metadata/quality tests.

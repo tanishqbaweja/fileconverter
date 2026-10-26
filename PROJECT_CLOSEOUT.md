@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Full-size73be793c/00-31-01.120Z FAILED250.6992MiB at11.3s; safety-cancelled
+26MBread/11MBpartial, empty OPFS and full owned cleanup. No large output/fidelity
+acceptance. Wasm32MiB/256KiBreads/29519Bwrites/oneop,535valid1NULL; growth in
+Chrome outside reported Wasm. Post-cancel96MiB diagnostic also fails whileworker
+starting. Preserve both failures; no unchanged replay. Next targeted input
+policy: existing persistentBYOB for large Opus-to-Vorbis, explicit allocation
+counters and same exact147.96MB/q7/quality/memory constraints. Not yet verified.
+
 af86d20 portable CI40187121369 SUCCESS. New full147964541B/2300s stereo
 q7 repeat gate prepared:3same-page jobs, full220800000-sample strict decode
 plus unchanged actual legacyASDR floor, original250MiB complete normal-Chrome

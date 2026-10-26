@@ -1,0 +1,201 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "73be793cd16079d7533343c8bad36db24d5fe8f8",
+  "status": "failed",
+  "scope": "three NEW same-page full147964541B/2300s stereo-noise automatic q7 jobs; complete unaligned PCM plus unchanged legacy channel-SDR floor; normal complete-Chrome250MiB includes validation/cleanup/all services; no public/IO/cold-repeat/10GB qualification",
+  "publicAcceptance": false,
+  "fullMetadataAcceptance": false,
+  "archive": {
+    "path": "outputs/reports/2026-10-26T00-31-01.120Z-audio-metadata-production-runtime.json.gz",
+    "bytes": 19567,
+    "sha256": "be0b5b854a93b14467000c397f4d9959182bb536d5d4ff6b1e98f29540821fb1",
+    "restoredBytes": 106783,
+    "restoredSha256": "a5c868b73ebacad9c2c6ee80e13cbff30c99d8a74638298b423d9bdcf7676a5c"
+  },
+  "sourcePins": 44,
+  "artifactManifestSha256": "94da3c35e695c4a2b42a4a8cdd863910bbe09b2e9b46d8b66f674d075b3a658c",
+  "diskProof": {
+    "status": "exact-browser-canary-independently-found-on-disk",
+    "browserBytes": 64,
+    "physicalBytes": 64,
+    "sha256": "495cfef9d4215cbb6d6808589628b043cd07b1f5890a34e5a556b9aed60e37f1",
+    "physicalFile": "work\\audio-metadata-production-3JnC0Q\\chrome-profile\\Default\\File System\\000\\t\\00\\00000001",
+    "profileDirectory": "work\\audio-metadata-production-3JnC0Q\\chrome-profile",
+    "inspectedEntries": 5,
+    "maximumReadBytes": 65,
+    "provesThisContextOpfsBacking": true,
+    "provesConversionAcceptance": false,
+    "canaryRemovedInFinally": true
+  },
+  "memory": {
+    "scope": "full-size private automatic-q7 repeats including validation and cleanup; not public qualification",
+    "limitMiB": 250,
+    "intervalMs": 100,
+    "peak": {
+      "sequence": 515,
+      "timestamp": "2026-10-26T00:32:44.6148947Z",
+      "phase": "case-0",
+      "privateBytes": 507437056,
+      "rssBytes": 760193024,
+      "nativeElapsedMs": 12.7362,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 9696,
+          "parentPid": 38152,
+          "createdAt": "2026-10-26T00:31:47.2482867Z",
+          "creationFileTime": "134374483072482867",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 138665984,
+          "rssBytes": 162529280
+        },
+        {
+          "pid": 22760,
+          "parentPid": 38152,
+          "createdAt": "2026-10-26T00:31:47.2554739Z",
+          "creationFileTime": "134374483072554739",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 13918208,
+          "rssBytes": 41345024
+        },
+        {
+          "pid": 29308,
+          "parentPid": 38152,
+          "createdAt": "2026-10-26T00:31:46.8929528Z",
+          "creationFileTime": "134374483068929528",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2543616,
+          "rssBytes": 9838592
+        },
+        {
+          "pid": 33048,
+          "parentPid": 38152,
+          "createdAt": "2026-10-26T00:31:47.3300980Z",
+          "creationFileTime": "134374483073300980",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 38252544,
+          "rssBytes": 81367040
+        },
+        {
+          "pid": 36024,
+          "parentPid": 38152,
+          "createdAt": "2026-10-26T00:31:47.2894696Z",
+          "creationFileTime": "134374483072894696",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8126464,
+          "rssBytes": 18255872
+        },
+        {
+          "pid": 37332,
+          "parentPid": 38152,
+          "createdAt": "2026-10-26T00:31:47.3621391Z",
+          "creationFileTime": "134374483073621391",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 243261440,
+          "rssBytes": 271089664
+        },
+        {
+          "pid": 37676,
+          "parentPid": 38152,
+          "createdAt": "2026-10-26T00:32:07.8267723Z",
+          "creationFileTime": "134374483278267723",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 14938112,
+          "rssBytes": 31363072
+        },
+        {
+          "pid": 38152,
+          "parentPid": 38452,
+          "createdAt": "2026-10-26T00:31:46.7829500Z",
+          "creationFileTime": "134374483067829500",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 47730688,
+          "rssBytes": 144404480
+        }
+      ]
+    },
+    "incrementalPrivateMiB": 250.69921875,
+    "validSamples": 535,
+    "unavailableSamples": 1,
+    "fullHistoryInLosslessJournal": true
+  },
+  "memoryObserverOwnership": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 1,
+    "proofs": [],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false
+  },
+  "cases": [
+    {
+      "name": "opus-to-ogg-large-stereo-repeat-0",
+      "status": "failed",
+      "requestedQuality": "automatic",
+      "browserElapsedMs": 11306,
+      "engineElapsedMs": 11245.695000052452,
+      "actualAutomaticQualityArgument": {
+        "requested": "automatic",
+        "nativeCode": 3,
+        "automaticPolicy": "opus-to-vorbis-q7"
+      },
+      "automaticQualityNoticeVisible": true,
+      "largeStereo": true,
+      "cleanupPrivateBytes": 382959616,
+      "cleanupDeltaFromLoadedMiB": 104.21484375,
+      "failures": [
+        "Error: Full normal Chrome tree exceeded250MiB; keep every process and fail without rerunning unchanged\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:441:37"
+      ],
+      "interruption": null,
+      "disposableOutputRemoved": true
+    }
+  ],
+  "losslessJournal": {
+    "file": "output/playwright/2026-10-26T00-31-01.120Z-audio-fidelity-memory.ndjson.gz",
+    "records": 536,
+    "sha256": "8ebbff0f7f1f365b5ab1bcb390ffbfe0266ca7f4230a7ca7a08d646c69efa3fc",
+    "archiveSha256": "946b97bc638378a95f42a360166fadd5900784ca10b70cb391104cf3a5e5c3d9",
+    "complete": true
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: Unchanged legacy loaded-idle cleanup96MiB allowance exceeded\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-audio-metadata-production-runtime.mjs:567:14"
+  ],
+  "network": {
+    "observedRequests": 14,
+    "forbidden": [],
+    "nativeGlueRequests": 1,
+    "nativeWasmRequests": 1
+  },
+  "cleanup": {
+    "allRecordedBirthsAbsent": true,
+    "publishedAssetsNeverChanged": true,
+    "stagedPrivateAssetsRestored": true,
+    "ownedProfileFixturesOutputsRemoved": true
+  },
+  "protectedOriginalUnchanged": true
+}

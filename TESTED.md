@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-10-26 FULL-SIZE q7 run00-31-01.120Z FAILED (73be793c): genuine
+147964541B/ec870c...2300s stereo input verified; first automatic q7 job exceeded
+primary250MiB at250.69921875 after11.3s, read26017563B/wrote11284458B partial.
+Safety cancellation/empty OPFS/owned cleanup PASS; no completed output or large
+PCM acceptance. Native heap stayed32MiB; reads262144B/writes29519B/one op;
+one Chrome process rose~189MiB over case start.535valid/1NULL native sample,
+14owned births absent/original/assets/scratch PASS. Post-cancel worker still
+starting;104.2148MiB loaded-idle delta also fails96MiB diagnostic, not recovery.
+No second/third replay. Candidate next: remove per-read FileReaderSync slice
+allocation via existing persistentBYOB path on this exact large route; not yet
+proven allocation attribution or fix. Original constraints/codec/quality unchanged.
+
 2026-10-26 full-size gate pre-execution52focused tests/lint/TypeScript/
 syntax/diff-check PASS. Actual3-job147.96MB automatic-q7 runtime pending;
 do not infer pass from source tests. Reuse audited56source/15artifact cache.
