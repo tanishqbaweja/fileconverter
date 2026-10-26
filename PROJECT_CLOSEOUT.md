@@ -6,6 +6,13 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+B08 compatible Vite/tooling batch: new audit19->9groups; actual local build,
+1757portable/5new focused/full lint/TS PASS. Run all19unchanged
+headless privacy/offline/static-host cases through prepared owned wrapper on
+already-built app. No source/native/threshold/public change; don't infer fresh
+memory/speed/stress qualification. Earlier-source CI40343246908 still queued;
+no restart. Cloudflare/framework-image findings remain a separate migration.
+
 B08 independent work: remove demonstrably unused database scaffold while keeping
 empty migration journal/hosting metadata; explicit actual compiler dependency
 esbuild0.28.1. Audits22->19groups, three unused groups eliminated, other tooling

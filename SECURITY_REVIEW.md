@@ -1,5 +1,47 @@
 # Dependency and hosting review
 
+## October 26, 2026 — compatible Vite/tooling patch batch
+
+Vite8.0.13 -> exact8.3.5, within the declared peers of current Vinext,
+React/RSC and Cloudflare plugins. Targeted transitive updates stay within their
+existing consumers' ranges: Babel7.29.x, baseline-browser-mapping2.11.33,
+brace-expansion1.1.21/5.0.12, Browserslist4.29.4, fast-uri3.1.9,
+fflate0.7.5, js-yaml4.3.2, source-map-js1.2.2 and Zod4.6.7. No npm audit fix,
+dependency overrides or framework/Cloudflare major migration. Vite's own
+Rolldown/lightningcss/platform/PostCSS dependencies update with it; no browser
+conversion engine or public capability source changes.
+
+The prior final database audit is an exact package/lock baseline, checked by
+SHA before this batch. New audit:
+`evidence/2026-10-26-compatible-tooling-audit.json` reports19->9groups:
+0critical/8high/0moderate/1low. Exactly the ten targeted package groups disappear.
+The remaining9 are Cloudflare plugin/Miniflare/Wrangler/Undici/ws/Sharp/esbuild
+and Vinext/image-size. A dev label does not close their reachability questions.
+
+Primary maintainers' findings checked:
+[Vite middleware](https://github.com/vitejs/vite/security/advisories/GHSA-9jrq-w75r-8gcw),
+[YAML merge budget](https://github.com/nodeca/js-yaml/security/advisories/GHSA-2883-xcg3-v3hh).
+Newest Cloudflare1.65.0 requires Wrangler4.152.0 and changes configuration support;
+it is deliberately not installed as a blind drop-in. Its migration is separate:
+[Cloudflare release](https://github.com/cloudflare/workers-sdk/releases/tag/%40cloudflare%2Fvite-plugin%401.65.0).
+
+Actual local production build PASS on Vite8.3.5;1757portable tests PASS0fail/0skip
+in112.52s. Five focused new security tests pass, including actual ESLint YAML
+consumer's bounded empty-merge rejection and actual font-library fflate consumer
+roundtrip. Full lint/TypeScript PASS; headless privacy/offline check
+pending. Build emits future native-config-loader and bundler diagnostic warnings;
+no warning-suppression flag added, no speed/memory certification inferred.
+Windows npm again reports UNKNOWN/-4094 at lock save; key installed versions
+independently match audited lock. Not a clean install claim; fresh hosted npm-ci
+remains required. Existing earlier-source CI40343246908 still QUEUED/0jobs.
+
+New finite local wrapper runs ALL19 unchanged privacy/offline/static-host specs
+against the already-built production worker, headless with repository-owned
+scratch, hidden subprocesses, exact root birth checks before taskkill, absence
+proof before scratch deletion, full protected-original hashes before/after and
+failure-artifact retention. It does not weaken spec assertions or claim250MiB
+process-memory acceptance. It is prepared, not yet browser-verified.
+
 ## October 26, 2026 — unused database scaffold removed
 
 B08 remains open. No application/CI import of Drizzle was found; `db:generate`

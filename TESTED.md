@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-26 — Targeted compatible tooling patch batch prepared: Vite8.3.5 plus
+ten audited tooling families within existing peer/consumer ranges; no overrides,
+blind audit fix or framework/Cloudflare migration. Exact baseline hash verified.
+New audit19->9groups (8high/1low remain), full687-entry snapshot/source pins
+retained in `evidence/2026-10-26-compatible-tooling-audit.json`. Actual production
+build PASS;1757portable PASS/0fail/0skip112.52s and five new security tests PASS.
+Full lint/TS PASS. Headless privacy/offline pending. npm Windows save error
+remains a failed install command despite verified installed/lock versions.
+Earlier-source CI40343246908 remains QUEUED, not restarted or implied passed.
+Prepared owned wrapper runs all19 unchanged existing specs on already-built app,
+no redundant build, headless/hidden, birth-safe cleanup/full original hashes.
+No public/stress/memory/speed acceptance or native engine change inferred.
+
 2026-10-26 — Database cleanup f5e42543 pushed to media-options. Exactly one
 changed portable CI40343246908 dispatched, attempt1, last authoritative state
 QUEUED/0jobs/no conclusion; no other active repository run. Not a clean npm-ci/

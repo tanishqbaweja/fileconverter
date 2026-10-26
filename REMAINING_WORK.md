@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-10-26 — B08 compatible-tooling subgap moves forward: exact Vite8.3.5 plus
+targeted transitive patches within declared ranges removes ten more advisory
+groups19->9 (8high/1low remain), no overrides/framework upgrade/native change.
+Actual local production build and1757portable tests/5new focused/full lint PASS.
+TS PASS; complete19-case headless privacy/offline check next, using prepared
+owned/no-rebuild wrapper and unchanged original specs. HostRAM preflight6.09GiB
+physical/6.18GiB virtual passes unchanged2GiB safety guard. Windows save error is
+not a clean install. Earlier-source CI40343246908 still QUEUED/0jobs; follow it,
+do not restart. Cloudflare configuration/framework-image migration, runtime and
+native security/reproducibility, original media/scaling/all54 acceptance remain.
+
 2026-10-26 — B08 cleanup source f5e42543 pushed. Single portable verification
 40343246908 is confirmed QUEUED,0jobs/attempt1/no conclusion. Clean npm-ci and
 hosted build/portable/privacy acceptance remains pending; local20focused plus
