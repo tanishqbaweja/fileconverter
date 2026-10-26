@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-10-26 — Current B08 point:22focused/lint/build/TS pass, nine advisory groups
+remain. Actual asset200/MIME repair is proved; current Windows PUT500/complete
+19-case gate remainsFAILED/OPEN, body-unread and405 assertions intact. Exactly
+one current-source CI40355630340/fe97640c is last verified QUEUED/0jobs, not a
+clean-install/browser pass. Follow it; do not replay old Windows sequence or
+redispatch from queue delay. A bounded method/runtime control or compatible
+Cloudflare migration is the next diagnosis if still needed. Raw failure/stop/
+cleanup/original evidence retained. Extra diagnostic pruning was rejected before
+execution; about2MB copies remain recorded, not misreported removed. All original
+media/memory/scaling/browser/native/release scope remains active/incomplete.
+
 2026-10-26 — B08 asset forwarding now has actual6asset200/MIME proof at3771ef7f,
 but PUT500 persists after POST405. Fast preflight15-54-48-452Z correctly aborted
 before browser launch; not another full privacy pass. Routing alone is NOT the

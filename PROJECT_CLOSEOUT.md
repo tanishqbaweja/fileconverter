@@ -6,6 +6,16 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Next: follow current-source CI40355630340/fe97640c (last verified QUEUED/0jobs)
+to terminal, no duplicate dispatch.22focused/lint/build/TS pass; nine advisory
+groups remain. Windows PUT500 is still unresolved, despite proved6asset repair;
+do not repeat the unchanged whole local sequence. Use a bounded HTTP/runtime
+diagnosis or compatible Cloudflare migration afterwards. Both older failed
+controls stay failed; no threshold/body-read workaround or current Windows19PASS
+claim. About2MB diagnostic copies remain locally after pruning was rejected
+before execution; original and all owned process/profile/runtime cleanup proofs
+are retained. Full original54/media/memory/scaling/native scope is not complete.
+
 3771ef7f forwarding control repairs all6bootstrap assets200/MIME, but exact
 PUT500 still fails local preflight after POST405. Chrome never launched; do not
 claim the complete current Windows19-case suite passed. Raw15-54-48-452Z and

@@ -2,6 +2,14 @@
 
 ## Current result — October 26
 
+Latest focused22tests/lint/build/TS pass. One current-source hosted comparison
+40355630340/fe97640c is last verified QUEUED/0jobs, no conclusion. Do not treat
+that queue or earlier-source success as current clean-install/privacy acceptance.
+`evidence/2026-10-26-compatible-tooling-ci-dispatch.json` pins the exact handle.
+Current Windows PUT500 and remaining9advisory groups stay open; do not replay
+the same entire sequence or loosen the refusal contract. Bounded platform/method
+diagnosis or the separately reviewed Cloudflare config migration is next.
+
 Explicit forwarding fixes the actual six bootstrap asset responses (200 and
 correct MIME) at3771ef7f. PUT nevertheless still returns500 after correct POST405.
 Thus routing alone is not a proven remedy for the underlying Windows runtime/

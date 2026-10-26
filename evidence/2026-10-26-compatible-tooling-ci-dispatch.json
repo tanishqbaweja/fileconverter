@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "scope": "One current-source hosted portable/build/privacy comparison; queue state is not acceptance",
+  "runId": 40355630340,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40355630340",
+  "executedHead": "fe97640c1798d288c9a1cd384cdfe75dc40dd019",
+  "selection": "portable-verify",
+  "lastObservedStatus": "queued",
+  "lastObservedJobs": 0,
+  "conclusion": null,
+  "currentSourceCleanInstallAccepted": false,
+  "currentWindowsCompletePrivacyAccepted": false,
+  "nativeReproductionExecuted": false,
+  "privateStressExecuted": false,
+  "publicPromotion": false,
+  "originalScopeComplete": false,
+  "continuation": "Requery this exact run to terminal; do not redispatch from queue/observation delay. If local Windows diagnosis continues, use a bounded method/runtime control before any further complete browser sequence."
+}

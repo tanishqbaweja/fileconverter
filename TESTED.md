@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-26 — Current-source22focused tests/lint PASS after retaining all three
+failed controls and forwarding fix; actual earlier same-graph1757portable/build/
+TS pass remains scoped to its executed stage. New hosted CI40355630340 at
+fe97640c dispatched ONCE, last verified QUEUED/0jobs/no conclusion, not acceptance.
+No local browser replay after unchanged PUT failure. Original full SHA/owned
+runtime/owned-process cleanup passes are retained; only representative complete
+failure traces committed. About2.03MB copied local diagnostics remain recorded
+after policy rejected extra prune before execution; no converted-media copies
+claimed retained/deleted by that attempt. No completed original54/public/native/
+memory/speed claim. Follow this exact CI handle next.
+
 2026-10-26 — Corrected asset forwarding3771ef7f actual preflight15-54-48-452Z:
 all6referenced JS/CSS assets200 with correct MIME (repairs the observed404 gap).
 POST405/Allow GET,HEAD, but PUT still500. This rejects routing alone as a remedy
