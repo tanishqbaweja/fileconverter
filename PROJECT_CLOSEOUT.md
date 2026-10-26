@@ -6,6 +6,11 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+Remaining FIVE MP3 matrix prepared (--mp3-input-gain-matrix), browserUNVERIFIED:
+FLACJPEG,VorbisPNG/JPEG,OpusPNG/JPEG. ExcludesclosedFLACPNGcanary andunusedfixture;
+samecompiledcore40259508976, exactPCM pins/60dB/gain/25tags/rawID3/covers/memory.
+Run once aftersourcechecks. No clipping/recovery/stress/publicacceptance yet.
+
 ONE newgaincanary02-40-50.659Z PASS97.0623dB versus47.0857dB, sameinput/
 automaticbitrate/quality/native0. All96kPCM unmodified, gain0.999956,25tags/
 exactPNG/rawID3,167.9023MiB/389valid0NULL/15birthsabsent/allcleanup PASS.

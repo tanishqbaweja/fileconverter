@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
+import { runInNewContext } from "node:vm";
 import { makeMp3InputGainCandidate, MP3_GAIN_PARENT_SHA256, MP3_GAIN_ARCHIVE_SHA256 } from "../media/ffmpeg/mp3-input-gain-candidate.mjs";
 import { makeMp3InputGainBuildRecipe } from "../media/ffmpeg/mp3-input-gain-build-recipe.mjs";
 import { makeAudioOggArtworkBuildRecipe } from "../media/ffmpeg/audio-ogg-artwork-build-recipe.mjs";
@@ -59,6 +60,16 @@ test("new browser canary demands the actual changed engine, unchanged automatic 
   assert.match(source, /row.fidelity.minimumPsnrDb, 60/); assert.match(source, /actualAutomaticNativeArgument: 0/);
   assert.match(source, /Math.abs\(gain.leastSquaresGain - 1\) <= 0.001/);
   assert.match(source, /clippingAcceptance: false, publicAcceptance: false/);
+});
+test("remaining matrix executes exactly five new source/cover combinations and excludes the already-passed FLAC PNG canary", async () => {
+  const source = await readFile("scripts/test-audio-metadata-production-runtime.mjs", "utf8");
+  const start = source.indexOf("const selectedCases = "), end = source.indexOf(";\nconst root =", start);
+  assert.ok(start > 0 && end > start); const expression = source.slice(start + "const selectedCases = ".length, end);
+  const cases = JSON.parse(JSON.stringify(runInNewContext("(" + expression + ")", { mp3GainMatrix: true }, { timeout: 1000 })));
+  assert.deepEqual(cases.map(row => [row.source, row.artwork]), [["flac", "mjpeg"], ["ogg", "png"], ["ogg", "mjpeg"], ["opus", "png"], ["opus", "mjpeg"]]);
+  assert.ok(cases.every(row => row.destination === "mp3" && row.gainRepair));
+  assert.match(source, /mp3GainMatrix && !selectedCases.some/); assert.match(source, /row.fidelity.sourceSha256, sourcePcm\[conversion.source\]/);
+  assert.match(source, /actualAutomaticNativeArgument: 0/); assert.match(source, /row.fidelity.minimumPsnrDb, 60/);
 });
 test("actual patched browser canary passes97.06dB and restores unity gain with exact25tags/cover under167.90MiB, without promotion", async () => {
   const sha = bytes => createHash("sha256").update(bytes).digest("hex");

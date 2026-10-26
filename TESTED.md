@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-26 NEW remaining MP3 matrix gate prepared, runtimeUNVERIFIED:
+exactFIVE FLAC/JPEG,VorbisPNG/JPEG,OpusPNG/JPEG using audited40259508976 core.
+ClosedFLAC/PNG canary excluded; unusedmatchingfixture notgenerated. Same
+automatic/native0 plus exactsourcePCM pins,96000unaltered samples>=60/gain
+within0.001/25tags/rawID3/exactcover/wholeChrome250MiB/cleanup. No rebuild,
+oldfailure normalization, clipping/IO/stress/public acceptance implied.
+
 2026-10-26 privateGAIN CANARY02-40-50.659Z/28db3a86 PASS: exactsame
 FLACsource/automaticnativearg0/34048B output, newSHAfd3c7015..., all96000
 unaltered PCM97.0623166dB>=unchanged60 vs old47.0857116dB. RawSSE20274 versus

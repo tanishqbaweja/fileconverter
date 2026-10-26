@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-10-26 next FIVE expandedMP3 cases have distinct source gate prepared,
+runtimeUNVERIFIED; closedcanary excluded by executablematrix test. Uses same
+audited61source/18artifact core, exactsourcePCM/automaticarg0/60dB/gain/tags/
+cover/primarymemory/cleanup. No sourcecore rebuild or unchangedsuccess replay.
+High-amplitude clipping, IO/recovery/repeatstress/publicintegration stillOPEN.
+
 2026-10-26 actual one-edit LAME gaincanary PASS02-40-50.659Z:97.0623dB
 full96kPCM at unchangedautomatic/60dB gate, gain0.999956, exact25tags/PNG/rawID3,
 167.9023MiB fulltree/389valid0missing/allcleanup. Before47.0857dB/gain0.949949

@@ -46,11 +46,12 @@ import { readId3Metadata, validateId3FixtureMetadata } from "./lib/id3-metadata-
 import { encodeBoundedValidationChunk, decodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { OPUS_VORBIS_AUTOMATIC_QUALITY_NOTICE } from "../lib/media-conversion-options.ts";
 
-assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio", "--mp3-artwork-metadata", "--mp3-gain-diagnostic", "--mp3-input-gain-repair"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
-const mp3GainRepair = process.argv[3] === "--mp3-input-gain-repair";
+assert.ok(process.argv.length === 3 || (process.argv.length === 4 && ["--compare-vorbis-quality", "--remaining-repeated-audio", "--flac-order-repair", "--artwork-metadata", "--ogg-artwork", "--artwork-byte-budget", "--artwork-rejection-recovery", "--audio-io-recovery", "--artwork-serializer-benchmark", "--artwork-benchmark-physical-validation", "--metadata-field-budget-recovery", "--metadata-field-rejection-recovery", "--metadata-text-byte-budget-recovery", "--vorbis-automatic-quality-repair", "--vorbis-large-repeat", "--vorbis-io-recovery", "--standard-repeated-audio", "--mp3-artwork-metadata", "--mp3-gain-diagnostic", "--mp3-input-gain-repair", "--mp3-input-gain-matrix"].includes(process.argv[3])), "Pass the audited candidate and one optional explicit qualification scope");
+const mp3GainMatrix = process.argv[3] === "--mp3-input-gain-matrix";
+const mp3GainRepair = process.argv[3] === "--mp3-input-gain-repair" || mp3GainMatrix;
 const mp3GainDiagnostic = process.argv[3] === "--mp3-gain-diagnostic";
-const mp3SingleCanary = mp3GainDiagnostic || mp3GainRepair;
-const mp3ArtworkMetadata = process.argv[3] === "--mp3-artwork-metadata" || mp3SingleCanary;
+const mp3SingleCanary = mp3GainDiagnostic || (mp3GainRepair && !mp3GainMatrix);
+const mp3ArtworkMetadata = process.argv[3] === "--mp3-artwork-metadata" || mp3GainRepair || mp3GainDiagnostic;
 const standardRepeatedAudio = process.argv[3] === "--standard-repeated-audio";
 const vorbisIoRecovery = process.argv[3] === "--vorbis-io-recovery";
 const largeVorbisRepeat = process.argv[3] === "--vorbis-large-repeat";
@@ -69,7 +70,8 @@ const artworkBudget = process.argv[3] === "--artwork-byte-budget" || artworkBenc
 const audioIoRecovery = process.argv[3] === "--audio-io-recovery";
 const artworkRejection = process.argv[3] === "--artwork-rejection-recovery", extendedArtworkInspection = artworkBudget || artworkRejection || audioIoRecovery;
 const oggArtwork = process.argv[3] === "--ogg-artwork" || (automaticVorbisRepair && !largeVorbisRepeat) || vorbisIoRecovery, withArtwork = artworkMetadata || oggArtwork || mp3ArtworkMetadata;
-const selectedCases = mp3GainRepair ? [{ source: "flac", destination: "mp3", artwork: "png", gainRepair: true }] : mp3GainDiagnostic ? [{ source: "flac", destination: "mp3", artwork: "png", gainDiagnostic: true }] : mp3ArtworkMetadata ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork }))) : standardRepeatedAudio ? STANDARD_AUDIO_REPEAT_CASES : vorbisIoRecovery ? [
+const selectedCases = mp3GainMatrix ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork, gainRepair: true })))
+  .filter(row => !(row.source === "flac" && row.artwork === "png")) : mp3GainRepair ? [{ source: "flac", destination: "mp3", artwork: "png", gainRepair: true }] : mp3GainDiagnostic ? [{ source: "flac", destination: "mp3", artwork: "png", gainDiagnostic: true }] : mp3ArtworkMetadata ? ["flac", "ogg", "opus"].flatMap(source => ["png", "mjpeg"].map(artwork => ({ source, destination: "mp3", artwork }))) : standardRepeatedAudio ? STANDARD_AUDIO_REPEAT_CASES : vorbisIoRecovery ? [
   { source: "opus", destination: "ogg", interruption: "cancel", byobCancellation: true },
   { source: "opus", destination: "ogg", repeated: true, artwork: "png", interruption: "write" },
   { source: "opus", destination: "ogg", repeated: true, artwork: "png", recoveryAfterIo: true },
@@ -116,6 +118,7 @@ if (oggArtwork) {
 if (mp3ArtworkMetadata) report.scope = "six NEW private MP3 outputs from FLAC/Vorbis/Opus with25 scalar Unicode tags, PNG/JPEG front/back cover roles/descriptions, raw ID3v2.4 inspection, independent image/full PCM; no duplicate-ID3/stress/direct-picker/public qualification";
 if (mp3GainDiagnostic) report.scope = "one NEW instrumented automatic FLAC/PNG-to-MP3 control pinning prior output bytes/PCM/MSE and recording unmodified whole-signal gain/power/cross-product; original60dB failure retained, no normalization/alignment/new engine/public or stress acceptance";
 if (mp3GainRepair) report.scope = "one NEW automatic FLAC/PNG-to-MP3 canary using authenticated one-edit private LAME gain policy; unchanged60dB all96000PCM/25tags/exactcover/I/O/fulltree250MiB; not high-amplitude clipping, six-case matrix, stress, speed or public acceptance";
+if (mp3GainMatrix) report.scope = "FIVE remaining automatic MP3 gain-repair jobs: FLAC/JPEG plus Vorbis and Opus/PNG/JPEG, excluding closed FLAC/PNG canary; actual patched-core proof, all96000 unmodifiedPCM>=60dB, gain/25tags/rawID3/exactcover/wholeChrome250MiB/cleanup; not clipping/recovery/stress/public acceptance";
 if (artworkBudget) report.scope = "one NEW exact4MiB real PNG cover FLAC-to-Opus byte-budget case; unchanged text/codec/quality/memory limits; not repeat/scaling/promotion acceptance";
 if (artworkBenchmark) {
   report.scope = "matched serializer experiment: one explicit warmup plus six identical exact4MiB-artwork FLAC-to-Opus jobs in one normal headless production page; not long-file/stress/scaling/fastest/public acceptance";
@@ -341,6 +344,7 @@ try {
         ...(pictureOptions ? { pictureRole: pictureOptions.pictureType === 3 ? "Cover (front)" : "Cover (back)", description: pictureOptions.description } : {}) };
       report.artworkImages[codec] = expected;
       for (const source of mp3SingleCanary ? ["flac"] : oggArtwork || mp3ArtworkMetadata ? ["flac", "ogg", "opus"] : ["ogg", "opus"]) {
+        if (mp3GainMatrix && !selectedCases.some(row => row.source === source && row.artwork === codec)) continue;
         const original = path.join(runtime.directory, "source." + source), file = path.join(runtime.directory, `source-artwork-${codec}.${source}`);
         const sourceBytes = await readFile(original);
         const addedText = mp3ArtworkMetadata ? [] : AUDIO_REPEATED_COMMENTS;
@@ -576,7 +580,13 @@ try {
       if (conversion.gainRepair) {
         assert.deepEqual(state.metrics.audioQualityArgument, { requested: "automatic", nativeCode: 0, automaticPolicy: null });
         row.actualAutomaticQualityArgument = state.metrics.audioQualityArgument;
-        assert.notEqual(row.output.sha256, "4710ff605bb185db713b003a3b985ced3094dde4ea0c4a01c81501f33571dcaf", "Changed encoder policy must not return the old attenuated output");
+        const prior = { "flac-png": "4710ff605bb185db713b003a3b985ced3094dde4ea0c4a01c81501f33571dcaf",
+          "flac-mjpeg": "3380881cd83a4b8bba8808963a66d8e6edb05c40a10e3a337681cf3a06e25324",
+          "ogg-png": "cc67fdf33c7f73063a29cec98ffec0f0b7f8a8e9e3f874419cd1457cc00d2e3e",
+          "ogg-mjpeg": "f323fe4db2441aa5cc76396aa9cb9bf2f93aa54d0724a052dac081d6c5bbd9eb",
+          "opus-png": "68ac4c9f413f2bbeb683118ebc33c476fdea334fbf9aab66955e346d1616f6a5",
+          "opus-mjpeg": "b1a0fb5d41106317ea885c8d31d55afa5590e3d73d37c652376ee4198eff81a7" };
+        assert.notEqual(row.output.sha256, prior[conversion.source + "-" + conversion.artwork], "Changed encoder policy must not return the old attenuated output");
       }
       if (automaticVorbisRepair && !largeVorbisRepeat && index === 0) assert.equal(row.output.sha256, "4db863292dcd76fbcf364a4986120ac9bc39d155a774d730376128058565f4db", "New actual AUTOMATIC call must match the retained full higher/q7 output control");
       if (conversion.largeStereo && index > 0) assert.equal(row.output.sha256, report.cases[0].output.sha256, "Full-size repeated outputs must be byte-identical");
@@ -602,7 +612,10 @@ try {
       }
       if (conversion.gainRepair) {
         assert.equal(row.fidelity.samples, 96000); assert.equal(row.fidelity.minimumPsnrDb, 60);
-        assert.equal(row.fidelity.sourceSha256, "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083");
+        const sourcePcm = { flac: "6a56521d7b4572fafeab898fa878678763e4e5228603089c61690f42fc2b8083",
+          ogg: "985ab9f65cdef3f8aa3926c37620520755170ed232cebb35631127fd37104185",
+          opus: "5a677ce930d335071a0617437cfe1997afbad3b98a00c823f2bc558ecc73dfb5" };
+        assert.equal(row.fidelity.sourceSha256, sourcePcm[conversion.source]);
         const gain = row.fidelity.amplitudeDiagnostic; assert.ok(gain?.acceptanceUsesUnmodifiedSamples);
         row.gainDiagnostic = gain; row.repairedGainProof = { exactOneSourceEditAudited: true, actualAutomaticNativeArgument: 0,
           fullPcmQualityPassed: row.fidelity.psnrDb === "infinity" || row.fidelity.psnrDb >= 60,
