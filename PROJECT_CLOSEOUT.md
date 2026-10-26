@@ -6,6 +6,12 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-26
 
+c7edd932 CI40254871875 SUCCESS;38focused/lint/TS locally,19privacy/offline
+browser checks in CI. Source/evidence pushed, owned runtime absent. This closes
+the q7 IO evidence cycle only. Next independent task: exact remaining metadata
+alias/destination preservation/disclosure gaps; do not rerun completed IO or
+known failed stress tests without a relevant source/engine/hypothesis change.
+
 q7-specific IO/recovery CLOSED by01-28-48.427Z receipt:3real UI jobs, true
 >8MiB persistentBYOB midstream cancellation, native injected write-error and
 same-page exactPNG/25tags/repeats/full96kPCM recovery,203.6015625MiB fulltree,
