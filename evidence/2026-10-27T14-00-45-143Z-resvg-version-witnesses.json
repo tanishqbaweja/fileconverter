@@ -1,0 +1,492 @@
+{
+  "publishedWasm": {
+    "bytes": 2478606,
+    "sha256": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70"
+  },
+  "candidateLockSha256": "f420db19c74bdeae19de5bad2f0a7f02628f65a8dea5c4221b0b183a76f17b03",
+  "upstreamCommit": "9ca058462ac529120c8cc84ddcd6fef644cc5406",
+  "witnesses": [
+    {
+      "name": "adler32",
+      "version": "1.2.0",
+      "firstOffset": 2026584,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/adler32-1.2.0/src/lib.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "1.2.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "alloc-no-stdlib",
+      "version": "2.0.4",
+      "firstOffset": 2027359,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/alloc-no-stdlib-2.0.4/src/stack_allocator.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "2.0.4"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "arrayvec",
+      "version": "0.7.4",
+      "firstOffset": 2339124,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/arrayvec-0.7.4/src/arrayvec.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "0.5.2",
+        "0.7.8"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "base64",
+      "version": "0.21.7",
+      "firstOffset": 2027067,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/base64-0.21.7/src/engine/general_purpose/mod.rs",
+      "occurrences": 3,
+      "candidateVersions": [
+        "0.21.7"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "bitvec",
+      "version": "1.0.1",
+      "firstOffset": 2470945,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bitvec-1.0.1/src/slice/api.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "1.1.1"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "brotli-decompressor",
+      "version": "2.5.1",
+      "firstOffset": 2023892,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/brotli-decompressor-2.5.1/src/lib.rs",
+      "occurrences": 5,
+      "candidateVersions": [
+        "2.5.1"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "bytemuck",
+      "version": "1.15.0",
+      "firstOffset": 2341148,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bytemuck-1.15.0/src/internal.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "1.25.2"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "bytes",
+      "version": "1.6.0",
+      "firstOffset": 2162599,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/bytes-1.6.0/src/lib.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "1.12.1"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "data-url",
+      "version": "0.2.0",
+      "firstOffset": 2199314,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/data-url-0.2.0/src/mime.rs",
+      "occurrences": 2,
+      "candidateVersions": [
+        "0.2.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "deflate",
+      "version": "1.0.0",
+      "firstOffset": 2199806,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/deflate-1.0.0/src/huffman_table.rs/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/deflate-1.0.0/src/huffman_lengths.rs",
+      "occurrences": 9,
+      "candidateVersions": [
+        "1.0.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "flate2",
+      "version": "1.0.28",
+      "firstOffset": 2455347,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/flate2-1.0.28/src/crc.rs",
+      "occurrences": 3,
+      "candidateVersions": [
+        "1.1.10"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "fontdb",
+      "version": "0.14.1",
+      "firstOffset": 2203154,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/fontdb-0.14.1/src/lib.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "0.14.1"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "gif",
+      "version": "0.12.0",
+      "firstOffset": 2204326,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/gif-0.12.0/src/reader/decoder.rs",
+      "occurrences": 2,
+      "candidateVersions": [
+        "0.12.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "imagesize",
+      "version": "0.12.0",
+      "firstOffset": 2205601,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/imagesize-0.12.0/src/formats/jxl.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "0.12.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "jpeg-decoder",
+      "version": "0.3.1",
+      "firstOffset": 2207334,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/jpeg-decoder-0.3.1/src/idct.rs",
+      "occurrences": 8,
+      "candidateVersions": [
+        "0.3.2"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "kurbo",
+      "version": "0.9.5",
+      "firstOffset": 2209234,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/kurbo-0.9.5/src/cubicbez.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "0.9.5",
+        "0.10.4"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "miniz_oxide",
+      "version": "0.5.4",
+      "firstOffset": 2214728,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/miniz_oxide-0.5.4/src/inflate/core.rs",
+      "occurrences": 3,
+      "candidateVersions": [
+        "0.5.4",
+        "0.9.1"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "miniz_oxide",
+      "version": "0.7.2",
+      "firstOffset": 2209650,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/miniz_oxide-0.7.2/src/inflate/core.rs",
+      "occurrences": 3,
+      "candidateVersions": [
+        "0.5.4",
+        "0.9.1"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "pathfinder_content",
+      "version": "0.5.0",
+      "firstOffset": 2216031,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/pathfinder_content-0.5.0/src/outline.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "0.5.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "png",
+      "version": "0.17.5",
+      "firstOffset": 2216229,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/png-0.17.5/src/common.rs",
+      "occurrences": 8,
+      "candidateVersions": [
+        "0.17.5"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "rctree",
+      "version": "0.5.0",
+      "firstOffset": 2469501,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rctree-0.5.0/src/lib.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "0.5.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "roxmltree",
+      "version": "0.18.1",
+      "firstOffset": 2229692,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/roxmltree-0.18.1/src/parse.rs",
+      "occurrences": 2,
+      "candidateVersions": [
+        "0.18.1",
+        "0.20.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "rustybuzz",
+      "version": "0.7.0",
+      "firstOffset": 2232168,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/rustybuzz-0.7.0/src/aat/extended_kerning.rs",
+      "occurrences": 33,
+      "candidateVersions": [
+        "0.7.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "serde_json",
+      "version": "1.0.115",
+      "firstOffset": 2331004,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/serde_json-1.0.115/src/error.rs",
+      "occurrences": 2,
+      "candidateVersions": [
+        "1.0.154"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "simplecss",
+      "version": "0.2.1",
+      "firstOffset": 2331979,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/simplecss-0.2.1/src/stream.rs",
+      "occurrences": 2,
+      "candidateVersions": [
+        "0.2.2"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "slotmap",
+      "version": "1.0.7",
+      "firstOffset": 2202917,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/slotmap-1.0.7/src/basic.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "1.1.1"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "smallvec",
+      "version": "1.13.2",
+      "firstOffset": 2230365,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/smallvec-1.13.2/src/lib.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "1.16.4"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "svgtypes",
+      "version": "0.11.0",
+      "firstOffset": 2335332,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/svgtypes-0.11.0/src/stream.rs",
+      "occurrences": 3,
+      "candidateVersions": [
+        "0.11.0",
+        "0.14.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "svgtypes",
+      "version": "0.14.0",
+      "firstOffset": 2334874,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/svgtypes-0.14.0/src/error.rs",
+      "occurrences": 2,
+      "candidateVersions": [
+        "0.11.0",
+        "0.14.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "tiny-skia-path",
+      "version": "0.10.0",
+      "firstOffset": 2347812,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tiny-skia-path-0.10.0/src/dash.rs",
+      "occurrences": 7,
+      "candidateVersions": [
+        "0.10.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "tiny-skia",
+      "version": "0.10.0",
+      "firstOffset": 2341264,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tiny-skia-0.10.0/src/alpha_runs.rs",
+      "occurrences": 25,
+      "candidateVersions": [
+        "0.10.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "tinyvec",
+      "version": "1.6.0",
+      "firstOffset": 2203026,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/tinyvec-1.6.0/src/arrayvec.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "1.13.3"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "ttf-parser",
+      "version": "0.18.1",
+      "firstOffset": 2230160,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/ttf-parser-0.18.1/src/aat.rs",
+      "occurrences": 7,
+      "candidateVersions": [
+        "0.18.1",
+        "0.19.2"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "unicode-bidi",
+      "version": "0.3.15",
+      "firstOffset": 2375564,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/unicode-bidi-0.3.15/src/prepare.rs",
+      "occurrences": 4,
+      "candidateVersions": [
+        "0.3.18"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "unicode-general-category",
+      "version": "0.6.0",
+      "firstOffset": 2426589,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/unicode-general-category-0.6.0/src/category.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "0.6.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "weezl",
+      "version": "0.1.8",
+      "firstOffset": 2470001,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/weezl-0.1.8/src/decode.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "0.1.12"
+      ],
+      "exactVersionPresentInCandidate": false
+    },
+    {
+      "name": "xmlparser",
+      "version": "0.13.6",
+      "firstOffset": 2474465,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/xmlparser-0.13.6/src/stream.rs",
+      "occurrences": 2,
+      "candidateVersions": [
+        "0.13.6"
+      ],
+      "exactVersionPresentInCandidate": true
+    },
+    {
+      "name": "xmlwriter",
+      "version": "0.1.0",
+      "firstOffset": 2475145,
+      "sectionId": 11,
+      "examplePath": "/home/runner/.cargo/registry/src/index.crates.io-6f17d22bba15001f/xmlwriter-0.1.0/src/lib.rs",
+      "occurrences": 1,
+      "candidateVersions": [
+        "0.1.0"
+      ],
+      "exactVersionPresentInCandidate": true
+    }
+  ],
+  "summary": {
+    "uniqueVersionWitnesses": 38,
+    "pathOccurrences": 152,
+    "exactVersionsPresentInCandidate": 24,
+    "absentOrDifferentCandidateVersions": 14
+  },
+  "scope": "Embedded Rust registry source-path strings in actual published Wasm data; version witnesses, not a complete Cargo graph or certification of linked source",
+  "completeHistoricalDependencyGraphRecovered": false,
+  "candidateChanged": false,
+  "compilerRerun": false,
+  "publicEngineChanged": false,
+  "browserOrMemoryAcceptance": false,
+  "originalGoalComplete": false,
+  "observedAt": "2026-10-27T14:00:45.142Z",
+  "sourcePins": {
+    "scripts/audit-resvg-version-witnesses.mjs": "c2bab1c55f6637ff478d0a3384c1169fb199c23d0f7f57c6b5fa3b83aa9d0746",
+    "images/resvg-source/published-version-witnesses.mjs": "d3086701038545c01d188e9c01de9c3914bc3a6cff32d20d54591a78d7dace6f"
+  }
+}

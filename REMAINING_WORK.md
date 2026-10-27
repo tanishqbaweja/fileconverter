@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-10-27 — Read-only published SVG provenance progressed while compiler
+40516685917 waits until its14:08 UTC observation boundary. Byte-exact existing
+Wasm data-section strings give38 unique registry version witnesses/152 paths;
+24 versions present in retained candidate lock,14 absent/different. Example
+published serde_json1.0.115 versus candidate1.0.154. This is direct evidence
+candidate != recovered historical graph, NOT the full historical Cargo.lock or
+proof of linked source identity. No candidate/compile pins altered, no extra
+compiler or resolver dispatched, no publicengine/fixture touched. Exact offsets,
+paths/digests and source pins: `evidence/2026-10-27T14-00-45-143Z-resvg-version-witnesses.json`.
+19focused/0fail/0skip and affected-file lint PASS. No broad conversion/memory
+test repeated merely for this static evidence; compiler handle remains unchanged.
+
 2026-10-27 — Exactly one private SVG compilation CI40516685917/3989398f
 dispatched and confirmed QUEUED (not running or passed) at13:57:47 UTC. Reuses
 retained lockf420db19 and compiler nightly2023-12-11/rustcd86d65bbc. No resolver,

@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-27 — Static published SVG Wasm audit found38 unique embedded
+registry package/version paths (152 occurrences), all wholly inside real data
+section11. Compared with actual retained candidate lock:24 exactversions,
+14 absent/different. Published serde_json1.0.115/candidate1.0.154 is one witness.
+Only original2,478,606B binary SHA22bf6e9f…2d70 accepted; malformed/changedbytes
+refused. Source-pinned read-only inventory, no compiler/renderer/test.mkv/public
+change. Not complete historical graph/linked-source certification or proof of
+any pending compiler result. `evidence/2026-10-27T14-00-45-143Z-resvg-version-witnesses.json`.
+19focused/0fail/0skip and affected-file lint PASS; no browser/compiler replay.
+
 2026-10-27 — Private SVG compiler CI40516685917 at3989398f confirmed
 QUEUED, not a successful or started compilation. One dispatch, exact retained
 lock+recordednightly, no resolver or normalgate replay.26focused/0fail/0skip,
