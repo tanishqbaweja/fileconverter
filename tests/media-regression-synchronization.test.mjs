@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { readPreRecoveryCi } from "./helpers/historical-recovery-ci.mjs";
 import { makeFocusedMediaRegressionWorkflow, FOCUSED_MEDIA_GREP } from "../scripts/lib/focused-media-regression-workflow.mjs";
 const source = await readFile("tests/browser/media-remux.spec.ts", "utf8");
 test("media completion polling requires an actual terminal state, never initial idle/running/unknown", () => {
@@ -14,7 +15,7 @@ test("media completion polling requires an actual terminal state, never initial 
   assert.equal([...source.matchAll(/expect\(state.jobState, state.error \?\? state.phase\).toBe\("complete"\)/g)].length, 4);
   assert.match(source, /getByTestId\("automatic-route-notice"\)\)\.toContainText/);
 });
-test("private focus preserves the five failed cases plus three positive direct-save controls and all original assertions", async () => {
+test("historical private focus preserves five failed cases plus three positive direct-save controls and rejects changed CI", async () => {
   const selected = new RegExp(FOCUSED_MEDIA_GREP);
   for (const title of [
     "browser FFmpeg coalesces PCM packets for a bounded direct WAV save",
@@ -27,9 +28,11 @@ test("private focus preserves the five failed cases plus three positive direct-s
     "browser planner automatically replaces incompatible AV1 WebM copy with its certified encode fallback",
   ]) assert.ok(selected.test(title), title);
   assert.equal(selected.test("browser FFmpeg unrelated route"), false);
-  const workflow = makeFocusedMediaRegressionWorkflow(await readFile(".github/workflows/ci.yml", "utf8"));
+  const workflow = makeFocusedMediaRegressionWorkflow(await readPreRecoveryCi());
   assert.equal(workflow.edits.length, 4); assert.equal(workflow.selectedCases, 8); assert.equal(workflow.publicAcceptance, false);
   assert.match(workflow.generated, /not full CI/); assert.match(workflow.generated, /retention-days: 1/);
   assert.match(workflow.generated, /ffmpeg/); assert.match(workflow.generated, /task_browser_tmp/);
   assert.throws(() => makeFocusedMediaRegressionWorkflow("changed"));
+  const current = await readFile(".github/workflows/ci.yml", "utf8");
+  assert.throws(() => makeFocusedMediaRegressionWorkflow(current));
 });

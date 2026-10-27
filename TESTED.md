@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-10-27 — Corrected full portable run1816PASS/0FAIL/0skip in91.8s,
+548files;162 qualification files explicitly separate/unrun, no publicacceptance.
+First1811PASS/5FAIL remains failed. Historical recipes retain exact oldSHA and
+explicitly reject newCI; current workflow/suite scopes still separately checked.
+After-run only four test titles clarified 'historical', no assertion change.
+`evidence/2026-10-27-svg-lock-preparation-cycle.json`.
+
+2026-10-27 — Broad portable1811PASS/5FAIL/0skip (97.6s) revealed one stale
+literal audio-CI anchor and four historical recipe/current-workflow SHA mismatches.
+Repaired via parsed actual normal/recovery lists and exact10143B oldCI archive
+SHA2774771a…d65; historical recipes unchanged and now explicitly reject current
+workflow. Postfix24focused/affectedlint PASS; first broad result remains failed.
+`evidence/2026-10-27-svg-lock-preparation-cycle.json`.
+
+2026-10-27 — One SVG private candidate lock CI40513908373/55f7948a
+confirmed IN_PROGRESS. Source-resolution preparation only, no nativecompile or
+publicbytes/engine/browser/memory change. No result yet; follow same handle after
+13:49 UTC (~10minutes, hardcap15). `evidence/2026-10-27-svg-source-lock-dispatch.json`.
+
 2026-10-27 — Existing single FFmpeg CI40502517454 now observed TERMINAL
 SUCCESS at9fe17321: aggregate8 published modules+currentmanifest/licenses exact,
 1201s rebuild, verification/cleanup success, mismatch upload skipped. Full log

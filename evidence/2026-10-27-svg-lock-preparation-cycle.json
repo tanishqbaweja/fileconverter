@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "scope": "Private SVG lock preparation, terminal FFmpeg exact proof and CI recipe regression maintenance; not SVG compilation or conversion acceptance",
+  "ffmpegTerminalReceipt": "evidence/2026-10-27-ffmpeg-reproduction-terminal.json",
+  "svgDispatchReceipt": "evidence/2026-10-27-svg-source-lock-dispatch.json",
+  "firstBroadPortable": {
+    "sourceHead": "55f7948a10a7086fa3368eaa6a4e72b1b8900aef",
+    "status": "failed",
+    "testFiles": 548, "passed": 1811, "failed": 5, "skipped": 0,
+    "durationMs": 97630.8697,
+    "failures": [
+      { "file": "tests/audio-source-metadata-matrix.test.mjs", "cause": "Literal YAML list anchor outdated after normal/recovery matrix became an expression; actual suite still selected" },
+      { "file": "tests/media-regression-synchronization.test.mjs", "cause": "Historical private recipe requires exact old CI SHA, not new current workflow" },
+      { "file": "tests/pcm-prefix-diagnostic.test.mjs", "cause": "Historical private recipe requires exact old CI SHA, not new current workflow" },
+      { "file": "tests/vpx-live-memory-workflow.test.mjs", "cause": "Historical private recipe requires exact old CI SHA, not new current workflow" },
+      { "file": "tests/vpx-preserving-candidate.test.mjs", "cause": "Historical private recipe requires exact old CI SHA, not new current workflow" }
+    ]
+  },
+  "repairs": {
+    "audioCiScope": "Parse actual normal and recovery lists and assert normal dispatch conditions; preserve all audio/PCM/quality/SHA/cleanup checks",
+    "historicalRecipeInput": "fixtures/source/pre-recovery-ci-2026-10-27.json",
+    "historicalCiBytes": 10143,
+    "historicalCiSha256": "2774771a70800a96c7368982fdaa365ffc8b2027a2ed3dafae362ffa96d30d65",
+    "historicalRecipesModified": false,
+    "currentWorkflowExplicitlyRejectedByOldRecipes": true,
+    "liveWorkflowGatesStillTestCurrentBytes": true
+  },
+  "focusedAfterRepairs": { "passed": 24, "failed": 0, "skipped": 0, "affectedFileLint": "passed" },
+  "postFixBroadPortable": {
+    "status": "passed",
+    "passed": 1816, "failed": 0, "skipped": 0,
+    "durationMs": 91811.5835,
+    "testFiles": 548,
+    "privateQualificationFilesNotRun": 162,
+    "publicAcceptance": false,
+    "postRunChange": "Four historical recipe test titles clarified only; no assertions or implementation changed"
+  },
+  "sourceCompilationAttempted": false,
+  "publicEngineChanged": false,
+  "originalGoalComplete": false
+}

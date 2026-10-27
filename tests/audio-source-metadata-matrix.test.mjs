@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
+import { createRequire } from "node:module";
+import path from "node:path";
 import test from "node:test";
 import { conversionProfiles } from "../lib/capability-registry.ts";
 
@@ -64,7 +66,13 @@ test("small metadata browser evidence remains bounded and anchored to the execut
   assert.ok(browserSource.includes('await rm(workRoot, { recursive: true, force: true })'));
   assert.ok(browserSource.includes('expect(remaining).toEqual([])'));
   const workflow = await readFile(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");
-  assert.ok(workflow.includes("- audio-source-metadata"));
+  const yaml = createRequire(path.resolve("node_modules/@eslint/eslintrc/package.json"))("js-yaml");
+  const job = yaml.load(workflow).jobs["browser-conversions"];
+  const alternatives = job.strategy.matrix.suite.match(/&& '([^']+)' \|\| '([^']+)'/);
+  assert.ok(alternatives, "Both recovery and full normal suite lists must be present");
+  assert.deepEqual(JSON.parse(alternatives[1]), ["media-remux", "streaming-conversions"]);
+  assert.deepEqual(JSON.parse(alternatives[2]), ["image-conversions", "media-remux", "audio-source-metadata", "audio-destination-scopes", "streaming-conversions"]);
+  assert.match(job.if, /inputs.engine == 'all'/); assert.match(job.if, /inputs.engine == 'verify-only'/);
   assert.ok(workflow.includes('TMPDIR="$task_browser_tmp" npx playwright test'));
   assert.equal(evidence.cleanup.perConversionOpfsEmpty, true);
   assert.equal(evidence.engine.changed, false);

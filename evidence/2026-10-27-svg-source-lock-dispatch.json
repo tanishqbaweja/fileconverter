@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "runId": 40513908373,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40513908373",
+  "headSha": "55f7948a10a7086fa3368eaa6a4e72b1b8900aef",
+  "createdAt": "2026-10-27T13:39:04Z",
+  "observedAt": "2026-10-27T13:39:12Z",
+  "observedStatus": "in_progress",
+  "inputEngine": "svg-source-lock",
+  "scope": "One new private candidate dependency-lock resolution, not native compilation, historical dependency recovery, publication, conversion or memory acceptance",
+  "existingSourceRunsBeforeDispatch": 0,
+  "duplicateDispatchUsed": false,
+  "nextStatusCheckNotBefore": "2026-10-27T13:49:00Z",
+  "estimate": "Allow about10minutes for fresh resolver toolchain and dependency metadata; hard job cap15minutes. Check interval, not a guaranteed completion time.",
+  "automaticTimerCreated": false,
+  "automaticTimerAvailability": "Prior app timer attempt was unavailable; saved not-before deadline governs subsequent checks",
+  "publicEngineReplacement": false,
+  "originalGoalComplete": false
+}

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
+import { readPreRecoveryCi } from "./helpers/historical-recovery-ci.mjs";
 import { createPcmPrefixDiagnostic } from "../scripts/lib/pcm-prefix-diagnostic.mjs";
 import { makeAacSourceDiagnosisWorkflow } from "../scripts/lib/aac-source-diagnosis-workflow.mjs";
 const sha = value => createHash("sha256").update(value).digest("hex");
@@ -24,11 +25,13 @@ test("diagnostic refuses malformed layouts, unbounded chunks, sample fragments, 
   digest = createPcmPrefixDiagnostic({ channels: 1, declaredLeadingSamples: 4 }); digest.update(new Uint8Array(2)); assert.throws(() => digest.finish());
   digest = createPcmPrefixDiagnostic({ channels: 1, declaredLeadingSamples: 0, maximumBytes: 4 }); assert.throws(() => digest.update(new Uint8Array(5)));
 });
-test("hosted source diagnosis changes only the private job and cannot claim a browser or rebuild execution", async () => {
-  const source = await readFile(".github/workflows/ci.yml", "utf8"), workflow = makeAacSourceDiagnosisWorkflow(source);
+test("historical hosted source diagnosis changes only its private job, rejects new CI and makes no execution claim", async () => {
+  const source = await readPreRecoveryCi(), workflow = makeAacSourceDiagnosisWorkflow(source);
   assert.equal(workflow.edits.length, 1); assert.equal(workflow.publicAcceptance, false); assert.equal(workflow.browserConversionClaim, false);
   const job = workflow.edits[0][1]; assert.doesNotMatch(job, /playwright|npm ci|reproduce-nondocker|docker run/);
   assert.match(job, /run-repository-owned-node.mjs scripts\/diagnose-aac-source-priming.mjs/);
   assert.match(job, /retention-days: 1/);
   assert.throws(() => makeAacSourceDiagnosisWorkflow(source + "\n"));
+  const current = await readFile(".github/workflows/ci.yml", "utf8");
+  assert.throws(() => makeAacSourceDiagnosisWorkflow(current));
 });

@@ -4,6 +4,7 @@ import test from "node:test";
 import { makeVpxPreservingSource, makeVpxPreservingRecipe, makeVpxPreservingWorkflow, makeVpxPreservingLibraries, verifyVpxSpecialistComponents } from "../media/ffmpeg/vpx-preserving-candidate.mjs";
 import { reverseVpxAuditDeclarationCorrection, verifyVpxRecoveryProvenance } from "../scripts/lib/vpx-postbuild-recovery.mjs";
 import { makeVpxTerminalRecoveryWorkflow } from "../scripts/lib/vpx-terminal-recovery-workflow.mjs";
+import { readPreRecoveryCi } from "./helpers/historical-recovery-ci.mjs";
 
 const source = await readFile("media/ffmpeg/within_remux.c", "utf8");
 test("private preservation recipe changes only bounded MP4 audio/chapter policy, not codecs/I/O/heap", async () => {
@@ -52,11 +53,13 @@ test("post-build recovery permits only the exact dependency declaration and cann
   for (const change of [{ workflowConclusion: "success" }, { compiledBytesRebuiltOrModified: true }, { run: 1 }, { originalManifestFile: "other" }])
     assert.throws(() => verifyVpxRecoveryProvenance({ ...valid, ...change }));
 });
-test("hosted recovery selects exactly four unexecuted terminal cases and retains source/artifact/cleanup guards", async () => {
-  const source = await readFile(".github/workflows/ci.yml", "utf8"), workflow = makeVpxTerminalRecoveryWorkflow(source);
+test("historical hosted recovery selects four terminal cases, rejects new CI and retains source/artifact/cleanup guards", async () => {
+  const source = await readPreRecoveryCi(), workflow = makeVpxTerminalRecoveryWorkflow(source);
   assert.equal(workflow.selectedCases, 4); assert.equal(workflow.publicAcceptance, false); assert.equal(workflow.memoryAcceptance, false);
   assert.match(workflow.generated, /39581181533/); assert.match(workflow.generated, /recoverVpxSpecialistManifest/);
   assert.match(workflow.generated, /run-id: 39581181533/); assert.match(workflow.generated, /actions: read/);
   assert.match(workflow.generated, /private-vpx-terminal-/); assert.match(workflow.generated, /retention-days: 1/);
   assert.throws(() => makeVpxTerminalRecoveryWorkflow(source + "\n"));
+  const current = await readFile(".github/workflows/ci.yml", "utf8");
+  assert.throws(() => makeVpxTerminalRecoveryWorkflow(current));
 });

@@ -1,5 +1,35 @@
 # Remaining work audit
 
+2026-10-27 — Post-fix COMPLETE portable unit run1816PASS/0FAIL/0skip,
+91.8s,548files. All162 separately prerequisite-bound qualification files remain
+unrun, not passed. Initial1811PASS/5FAIL remains retained; old recipes still
+enforce exact historical SHA while actual CI matrix tests inspect current YAML.
+No browser/conversion/full-memory rerun from this unit cycle. Four test titles
+then clarified 'historical' only. `evidence/2026-10-27-svg-lock-preparation-cycle.json`.
+
+2026-10-27 — First broad portable regression1811PASS/5FAIL/0skip (97.6s):
+one obsolete literal audio-matrix assertion and four historical private CI recipe
+inputs. The latter require oldSHA2774771a; current workflow is legitimately new.
+Archive verifies EXACT10143 oldbytes/hash, and recipes still reject current or
+mutated source; no recipe seals/assertions relaxed. Audio test now parses the
+real normal/recovery lists. All24focused/affectedlint PASS after fixes; one
+post-fix broad run planned. Prior failure remains failed, no browser/media replay.
+`evidence/2026-10-27-svg-lock-preparation-cycle.json`.
+
+2026-10-27 — Broad portable regression found a stale audio CI inventory
+assertion after the recovery matrix changed from YAML list to expression. It
+looked for literal '- audio-source-metadata', although the normal matrix still
+includes that suite and its9 hosted cases previously passed. Fix checks parsed
+normal/recovery lists and normal dispatch conditions explicitly; all PCM,
+source/output SHA, metadata, bounded-I/O and cleanup assertions unchanged.
+The initial broad result will stay recorded as failed, not quietly rewritten.
+
+2026-10-27 — Private SVG lock resolver CI40513908373/55f7948a confirmed
+IN_PROGRESS after one dispatch; no result yet. This resolves a candidate lock,
+NOT a compiler/publication/memory test. Observe the same handle no earlier than
+13:49 UTC (~10minute allowance,15minute cap); do not duplicate on missing output
+or timeout. `evidence/2026-10-27-svg-source-lock-dispatch.json`.
+
 2026-10-27 — FFmpeg CI40502517454/9fe17321 TERMINAL SUCCESS:
 eight published modules + current shared manifest/licenses exact, rebuild1201s,
 artifact verification/owned build cleanup PASS, mismatch upload skipped. Verify
