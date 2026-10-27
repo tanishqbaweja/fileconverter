@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "failedRun": { "id": 40519469540, "jobId": 122242299466, "headSha": "2ed1439b4649b7acdf729dbda016e990fdb6b4d4", "status": "completed", "conclusion": "failure", "observedAt": "2026-10-27T14:21:20Z", "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40519469540" },
+  "rawReceipt": "evidence/2026-10-27-svg-pathfinder-40519469540-raw.json",
+  "rawReceiptBytes": 49211,
+  "rawReceiptSha256": "44011b3a64547e9ce196545dc7f56cfd7c284877c4202c560c4867183327d6ed",
+  "executedSourceArchive": "fixtures/source/svg-compiler-2ed1439b.json",
+  "artifact": { "id": 12741126706, "bytes": 16634, "sha256": "09b06d3a453a9646824afa5dece1089711f5b125f4c2571b778e72dd76ef67b6", "entries": ["resvg-source-compile-40519469540.json", "resvg-source-compile-40519469540.lock"] },
+  "repairedLockSha256Verified": "09c8cea801f0433b757c5b612c96b598faf6f911ddcc665f1fad34dc000d2c6a",
+  "log": { "bytes": 40807, "sha256": "8edd09520302ac1d7e38da6372ecb284ee7a1f2c5e3f4f6945bdcf069837c3b8" },
+  "measuredFailure": "WOFF2 git88cce4c fails with23 errors (E0034/E0277/E0308): bytes1.12.1 adds Buf::try_get_* methods that conflict with existing SafeBuf methods/error types",
+  "pathfinderFailureRecurred": false,
+  "sourceCompilationSucceeded": false,
+  "ownedScratchRemoved": true,
+  "publicEnginesUnchanged": true,
+  "publishedVersionWitness": { "receipt": "evidence/2026-10-27T14-00-45-143Z-resvg-version-witnesses.json", "package": "bytes", "version": "1.6.0", "actualWasmDataSection": true },
+  "crateSourceChecks": [
+    { "version": "1.6.0", "bytes": 60605, "sha256": "514de17de45fdb8dc022b1a7975556c53c86f9f0aa5f534b98977b171857c2c9", "conflictingTryGetMethodsPresent": false, "rustVersionDeclared": "1.39" },
+    { "version": "1.12.1", "bytes": 75667, "sha256": "fc652a48c352aef3ea3aed32080501cf3ef6ed5da78602a020c991775b0aff04", "conflictingTryGetMethodsPresent": true }
+  ],
+  "sourceCheckMethod": "Official static.crates.io archive/checksum verification and bounded stdout-only source extraction, no native crate execution or retained archive copies",
+  "nextRepair": "Private --bytes-1.6.0 keeps measured Pathfinder0.5.2 repair and changes exactly the bytes package version/checksum in its lock; compiler, WOFF2 source and all other package records unchanged",
+  "nextRepairExecuted": false,
+  "nextRepairLockSha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc",
+  "focusedVerification": { "passed": 23, "failed": 0, "skipped": 0, "affectedFileLint": "passed" },
+  "compilerOrParserFeatureRelaxed": false,
+  "securityOrRenderingQualification": false,
+  "publicReplacementOrMemoryAcceptance": false,
+  "originalGoalComplete": false
+}

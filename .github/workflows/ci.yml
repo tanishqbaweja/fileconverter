@@ -16,6 +16,7 @@ on:
           - svg-source-lock
           - svg-source-compile
           - svg-source-compile-pathfinder
+          - svg-source-compile-bytes
           - audio-destination-scopes
           - reproduce-only
           - ffmpeg-remux
@@ -39,7 +40,7 @@ permissions:
 
 jobs:
   engine-matrix:
-    if: github.event_name != 'workflow_dispatch' || (inputs.engine != 'verify-only' && inputs.engine != 'audio-destination-scopes' && inputs.engine != 'portable-verify' && inputs.engine != 'browser-recovery' && inputs.engine != 'svg-source-lock' && inputs.engine != 'svg-source-compile' && inputs.engine != 'svg-source-compile-pathfinder')
+    if: github.event_name != 'workflow_dispatch' || (inputs.engine != 'verify-only' && inputs.engine != 'audio-destination-scopes' && inputs.engine != 'portable-verify' && inputs.engine != 'browser-recovery' && inputs.engine != 'svg-source-lock' && inputs.engine != 'svg-source-compile' && inputs.engine != 'svg-source-compile-pathfinder' && inputs.engine != 'svg-source-compile-bytes')
     runs-on: ubuntu-latest
     outputs:
       engines: ${{ steps.manifest.outputs.engines }}
@@ -222,6 +223,32 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: svg-source-pathfinder-${{ github.run_id }}
+          path: |
+            outputs/reports/resvg-source-compile-${{ github.run_id }}.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}.lock
+            outputs/reports/resvg-source-compile-${{ github.run_id }}.wasm
+          if-no-files-found: warn
+          retention-days: 1
+
+  svg-source-compile-bytes:
+    if: github.event_name == 'workflow_dispatch' && inputs.engine == 'svg-source-compile-bytes'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Compile published-witness Bytes pin with measured Pathfinder fix
+        run: node images/resvg-source/compile-candidate.mjs --bytes-1.6.0
+      - name: Verify public engines were not replaced
+        if: always()
+        run: git diff --exit-code -- public/engines
+      - name: Retain bounded compiler report, exact lock and raw candidate only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: svg-source-bytes-${{ github.run_id }}
           path: |
             outputs/reports/resvg-source-compile-${{ github.run_id }}.json
             outputs/reports/resvg-source-compile-${{ github.run_id }}.lock

@@ -8,23 +8,27 @@ import { createOwnedRuntimeScratch } from "../../scripts/lib/owned-runtime-scrat
 import { pins, sha, pinCargoManifest, inspectCandidateLock } from "./source-pins.mjs";
 import { compileContract, verifyCompileLock, inspectRawWasm } from "./compile-contract.mjs";
 import { pathfinderRepair, makePathfinderLock, pinPathfinderManifest } from "./pathfinder-repair.mjs";
+import { bytesRepair, makePublishedBytesLock } from "./bytes-repair.mjs";
 
 assert.equal(process.platform, "linux", "Linux-only isolated Actions compilation, not local conversion");
-const repairPathfinder = process.argv[2] === "--pathfinder-0.5.2";
+const repairBytes = process.argv[2] === "--bytes-1.6.0";
+const repairPathfinder = process.argv[2] === "--pathfinder-0.5.2" || repairBytes;
 assert.ok(process.argv.length === 2 || (process.argv.length === 3 && repairPathfinder));
 assert.match(process.env.GITHUB_RUN_ID ?? "", /^[0-9]+$/);
 const root = path.resolve(import.meta.dirname, "../.."), runId = process.env.GITHUB_RUN_ID;
 const reportRoot = path.join(root, "outputs/reports"), reportFile = path.join(reportRoot, `resvg-source-compile-${runId}.json`);
 const report = { schemaVersion: 1, runId, startedAt: new Date().toISOString(), status: "running",
-  scope: "Recorded nightly source-compile probe with exact retained baseline or explicitly recorded one-package repair; before bindgen/public engine acceptance",
+  scope: "Recorded nightly source-compile probe with exact retained baseline or explicitly recorded dependency repairs; before bindgen/public engine acceptance",
   pins, compileContract, commands: [], sourcePins: {}, failures: [], rawWasm: null,
   sourceCompilationAttempted: false, sourceCompilationSucceeded: false,
   bindgenProcessingAttempted: false, browserOrMemoryAcceptance: false,
   exactPublishedBinaryReproduction: false, publicEngineReplacement: false, protectedOriginalAccessed: false,
   historicalDependencyGraphRecovered: false, originalGoalComplete: false };
 report.pathfinderRepair = repairPathfinder ? pathfinderRepair : null;
+report.bytesRepair = repairBytes ? bytesRepair : null;
 const sourceFiles = ["images/resvg-source/compile-candidate.mjs", "images/resvg-source/compile-contract.mjs",
   "images/resvg-source/source-pins.mjs", "images/resvg-source/pathfinder-repair.mjs",
+  "images/resvg-source/bytes-repair.mjs",
   "images/resvg-source/Cargo.candidate.lock", ".github/workflows/ci.yml"];
 let runtime, activeChild, tail = Buffer.alloc(0), logBytes = 0;
 const logHash = createHash("sha256");
@@ -76,7 +80,8 @@ try {
   await writeFile(cargoPath, repairPathfinder ? pinPathfinderManifest(Buffer.from(cargo)) : cargo);
   const originalLock = await readFile(path.join(root, "images/resvg-source/Cargo.candidate.lock"));
   report.originalLock = verifyCompileLock(originalLock);
-  const lock = repairPathfinder ? makePathfinderLock(originalLock) : originalLock;
+  const pathfinderLock = repairPathfinder ? makePathfinderLock(originalLock) : originalLock;
+  const lock = repairBytes ? makePublishedBytesLock(pathfinderLock) : pathfinderLock;
   report.lock = inspectCandidateLock(lock.toString()); await writeFile(lockPath, lock, { flag: "wx" });
   if (repairPathfinder) {
     report.retainedRepairedLock = `outputs/reports/resvg-source-compile-${runId}.lock`;

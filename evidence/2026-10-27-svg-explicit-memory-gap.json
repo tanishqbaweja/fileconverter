@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "scope": "Read-only memory declaration audit of the exact current SVG Wasm; not a runtime allocation or Chromium peak measurement",
+  "binary": "public/engines/svg/resvg.wasm",
+  "sha256": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70",
+  "bytes": 2478606,
+  "memorySectionPayload": [1, 0, 23],
+  "importedMemoryCount": 0,
+  "definedMemoryCount": 1,
+  "initialPages": 23,
+  "initialBytes": 1507328,
+  "maximumPages": null,
+  "maximumBytes": null,
+  "explicitMaximumRequirementMet": false,
+  "measuredRuntimeMemoryFailureClaim": false,
+  "primaryProcessTreeFormulaChanged": false,
+  "binaryPatchedOrReplaced": false,
+  "compilerOrBrowserRerun": false,
+  "originalGoalComplete": false,
+  "nextRequiredEvidence": "A source-reproducible private SVG candidate must declare a tested explicit maximum and pass correctness/fidelity/error-recovery plus unchanged complete-Chromium250MiB gates before replacement. An added cap alone is not acceptance."
+}

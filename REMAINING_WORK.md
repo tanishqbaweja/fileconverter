@@ -1,5 +1,30 @@
 # Remaining work audit
 
+2026-10-27 — Pathfinder repair40519469540 TERMINAL FAILURE, not live:
+past previousE0658, actualWOFF2 git88cce4c now fails23E0034/E0277/E0308 because
+bytes1.12.1 Buf::try_get methods collide with existingSafeBuf. NoWasm; scratch
+removed/publicdiffclear. Artifact/49,211B rawreceipt and exactexecutedmain/workflow
+archived; `evidence/2026-10-27-svg-pathfinder-terminal-and-bytes-repair.json`.
+Published binary's actual bytes1.6.0 witness plus officialcheckedcrate source
+shows those conflictingmethods absent. Next privatecandidate changes ONLY that
+additional package version/checksum; Pathfinderfix, compiler/Woff2source/flags
+unchanged. Not arbitraryversionsweep, parserpatch, security/fidelityqualification
+or publicreplacement. No source-reproducible bounded SVG claim yet.
+23focused/0fail/0skip and affectedlint PASS. Exactnewlock SHA7bf87e7c…f886bc
+fixed; one Bytes-pinned source compile planned,5minute initial check allowance
+and20minute cap. No unchanged prior compiler/resolver/memory gate replay.
+
+2026-10-27 — Explicit Wasm memory gap verified in existing SVG binary:
+actual memorysection bytes[1,0,23] =>1 defined memory,23 initial pages/1,507,328B,
+NO maximum (null, never zero). No imported memory. This does not assert a measured
+250MiB breach, but original explicitinitial/max requirement is incomplete. New
+private static gate rejects absent/excessive declared maxima and never replaces
+the whole-Chromium memory gate. No binarypatch or compiler replay; qualification
+must include a source-built bounded candidate plus actual fidelity/recovery/memory.
+`evidence/2026-10-27-svg-explicit-memory-gap.json`.
+Focused memory/compile/provenance checks10PASS and affectedlint PASS; original
+published maximum remains missing, no runtime acceptance inferred.
+
 2026-10-27 — One repaired SVG source compile CI40519469540/2ed1439b
 confirmed IN_PROGRESS14:16:06 UTC. Earlier40516685917 authoritatively failed,
 not restarted/relabeled. Newrun changes ONLY source-declaredpathfinder0.5.2

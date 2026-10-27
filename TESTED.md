@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+2026-10-27 — Second actual SVG compile40519469540 FAILED inWOFF2:
+23methodambiguity/error-type errors with newerbytes1.12.1; PathfinderE0658 no
+longer present. Raw49,211B SHA44011b3a…7d6ed and16,634B artifactSHA09b06d3a…67b6
+verified, exactoldmain/workflow retained; noWasm, ownedscratch removed. Official
+bytes1.6.0 crate source/checksum matches publishedWasmpathwitness and lacks new
+conflictingmethods. Next explicitpin changes oneadditional lockpackage only;
+compiler/parser/flags unchanged, no rendering/security/public/memory claim.
+`evidence/2026-10-27-svg-pathfinder-terminal-and-bytes-repair.json`.
+23focused/0fail/0skip and affectedlint PASS; newlock fixedSHA7bf87e7c…f886bc.
+One targeted privatecompile planned with5minute observation allowance/20cap,
+not a passed compile or resolver replay. Staticmemory contract10checks/lint also
+passed while explicitly retaining the published missing-maximum failure.
+
+2026-10-27 — Read-only currentSVG memorysection audit:1 own memory,
+23pages/1,507,328B initial, maximumNULL/notdeclared, zero imported memories.
+ExactbinarySHA22bf6e9f…2d70. Explicit Wasm maximum requirement not met; NOT a
+measured Chromium250MiB failure. Candidate declaration validator now rejects
+missing/excessive maxima without instantiating renderer or changingpublicbytes.
+`evidence/2026-10-27-svg-explicit-memory-gap.json`.
+
 2026-10-27 — CI40519469540/2ed1439b confirmed IN_PROGRESS after single
 evidence-directed Pathfinder0.5.2 repair; exact one-package delta/repairlockSHA,
 compiler unchanged. First40516685917 failure remains failed and source-sealed.

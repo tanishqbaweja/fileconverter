@@ -49,3 +49,14 @@ from this preparation. Compiler, build flags and quality gates stay unchanged.
 The original failed lock and published engine remain untouched. The repaired
 manifest/lock hashes are fixed, a repaired lock is retained for follow-up, and
 Cargo must compile with `--locked` without changing it. No resolver/version sweep.
+
+That Pathfinder-only compile40519469540 got past its prior API error but failed
+in WOFF2: newer bytes1.12.1 adds `Buf::try_get_*` methods conflicting with WOFF2's
+existing `SafeBuf` methods. The failure, exact sources and cleanup remain saved.
+`svg-source-compile-bytes` / `--bytes-1.6.0` adds exactly the bytes1.6.0 version
+and checksum pin, witnessed in actual published Wasm and checked official crate
+source. It keeps the Pathfinder repair, same compiler and WOFF2 source, with no
+remaining graph re-resolution. This is another explicit private candidate, not
+rendering/security qualification or permission to publish. Strict memory-contract
+tests also expose the old published SVG module's missing declared maximum; a
+source build alone cannot close that requirement or the full process-tree gate.
