@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "browserId": "opera-gx",
+  "startedAt": "2026-10-27T11:54:59.266Z",
+  "status": "failed-not-acceptance",
+  "scope": "Existing unchanged 19 production privacy/offline/hosting cases on one installed browser; not full compatibility or conversion-memory acceptance",
+  "headed": false,
+  "osNativePickerVerified": false,
+  "conversionMemoryAcceptance": false,
+  "publicPromotion": false,
+  "extraBrowserArguments": [],
+  "browserServicesDisabledByThisDriver": false,
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: {\"path\":\"evidence\\\\2026-10-27T11-54-59-581Z-owned-privacy-offline.json\",\"status\":\"failed\",\"stats\":{\"startTime\":\"2026-10-27T11:55:07.071Z\",\"duration\":10210.915,\"expected\":0,\"skipped\":18,\"unexpected\":1,\"flaky\":0},\"failures\":[\"AssertionError [ERR_ASSERTION]: \\nRunning 19 tests using 1 worker\\n\\n(node:20848) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\\n(Use `node --trace-warnings ...` to show where the warning was created)\\n\\n\\n[1/19] tests\\\\browser\\\\privacy-offline.spec.ts:223:1 › functional browser capability probes pass in production Chrome\\n  1) tests\\\\browser\\\\privacy-offline.spec.ts:223:1 › functional browser capability probes pass in production Chrome \\n\\n    Error: page.goto: net::ERR_ABORTED at http://127.0.0.1:59318/?test=1\\n    Call log:\\n      - navigating to \\\"http://127.0.0.1:59318/?test=1\\\", waiting until \\\"load\\\"\\n\\n\\n      222 |\\n      223 | test(\\\"functional browser capability probes pass in production Chrome\\\", async () => {\\n    > 224 |   await page.goto(\\\"/?test=1\\\");\\n          |              ^\\n      225 |   await waitForWorker();\\n      226 |   await expect\\n      227 |     .poll(async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().capabilities))\\n        at H:\\\\Github Repositories\\\\fileconverter\\\\tests\\\\browser\\\\privacy-offline.spec.ts:224:14\\n\\n    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────\\n    work\\\\privacy-validation-cYsm14\\\\artifacts\\\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\\\test-failed-2.png\\n    ────────────────────────────────────────────────────────────────────────────────────────────────\\n\\n    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────\\n    work\\\\privacy-validation-cYsm14\\\\artifacts\\\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\\\test-failed-1.png\\n    ────────────────────────────────────────────────────────────────────────────────────────────────\\n\\n    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────\\n    work\\\\privacy-validation-cYsm14\\\\artifacts\\\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\\\test-failed-1.png\\n    ────────────────────────────────────────────────────────────────────────────────────────────────\\n\\n    Error Context: work\\\\privacy-validation-cYsm14\\\\artifacts\\\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\\\error-context.md\\n\\n    Error Context: work\\\\privacy-validation-cYsm14\\\\artifacts\\\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\\\error-context.md\\n\\n    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────\\n    work\\\\privacy-validation-cYsm14\\\\artifacts\\\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\\\trace.zip\\n    Usage:\\n\\n        npx playwright show-trace work\\\\privacy-validation-cYsm14\\\\artifacts\\\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\\\trace.zip\\n\\n    ────────────────────────────────────────────────────────────────────────────────────────────────\\n\\n\\nTesting stopped early after 1 maximum allowed failures.\\n\\n  1 failed\\n    tests\\\\browser\\\\privacy-offline.spec.ts:223:1 › functional browser capability probes pass in production Chrome \\n  18 did not run\\n  1 error was not a part of any test, see above for details\\n\\n\\n1 !== 0\\n\\n    at file:///H:/Github%20Repositories/fileconverter/scripts/run-owned-privacy-offline.mjs:117:10\"]}\n\n\n1 !== 0\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/run-installed-browser-privacy.mjs:61:10"
+  ],
+  "browserBefore": {
+    "executable": "C:\\Users\\slato\\AppData\\Local\\Programs\\Opera GX\\opera.exe",
+    "version": "137.0.6036.65",
+    "bytes": 3556296,
+    "sha256": "9affc5d320b2daa663faaa21d4eb5c39666022e749d0297cae81b163d4d3a031"
+  },
+  "driverSha256": "33f59fef948ccd648af2f34874af6f831fc50ee732a0721a2560de9d62263769",
+  "signal": null,
+  "runnerExitCode": 1,
+  "productionReceipt": {
+    "path": "evidence/2026-10-27T11-54-59-581Z-owned-privacy-offline.json",
+    "sha256": "bc7614f03308853616df890a7d2c28250b4bd24754840ea2a0acfc7258308a9e"
+  },
+  "executedHead": "413669c6667ca19b6dfda5b88db59a18ca67149a",
+  "stats": {
+    "startTime": "2026-10-27T11:55:07.071Z",
+    "duration": 10210.915,
+    "expected": 0,
+    "skipped": 18,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "productionStatus": "failed",
+  "productionFailures": [
+    "AssertionError [ERR_ASSERTION]: \nRunning 19 tests using 1 worker\n\n(node:20848) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n\n\n[1/19] tests\\browser\\privacy-offline.spec.ts:223:1 › functional browser capability probes pass in production Chrome\n  1) tests\\browser\\privacy-offline.spec.ts:223:1 › functional browser capability probes pass in production Chrome \n\n    Error: page.goto: net::ERR_ABORTED at http://127.0.0.1:59318/?test=1\n    Call log:\n      - navigating to \"http://127.0.0.1:59318/?test=1\", waiting until \"load\"\n\n\n      222 |\n      223 | test(\"functional browser capability probes pass in production Chrome\", async () => {\n    > 224 |   await page.goto(\"/?test=1\");\n          |              ^\n      225 |   await waitForWorker();\n      226 |   await expect\n      227 |     .poll(async () => page.evaluate(() => window.__WITHIN_TEST__?.getState().capabilities))\n        at H:\\Github Repositories\\fileconverter\\tests\\browser\\privacy-offline.spec.ts:224:14\n\n    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────\n    work\\privacy-validation-cYsm14\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\test-failed-2.png\n    ────────────────────────────────────────────────────────────────────────────────────────────────\n\n    attachment #2: screenshot (image/png) ──────────────────────────────────────────────────────────\n    work\\privacy-validation-cYsm14\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\test-failed-1.png\n    ────────────────────────────────────────────────────────────────────────────────────────────────\n\n    attachment #3: screenshot (image/png) ──────────────────────────────────────────────────────────\n    work\\privacy-validation-cYsm14\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\test-failed-1.png\n    ────────────────────────────────────────────────────────────────────────────────────────────────\n\n    Error Context: work\\privacy-validation-cYsm14\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\error-context.md\n\n    Error Context: work\\privacy-validation-cYsm14\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\error-context.md\n\n    attachment #6: trace (application/zip) ─────────────────────────────────────────────────────────\n    work\\privacy-validation-cYsm14\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\trace.zip\n    Usage:\n\n        npx playwright show-trace work\\privacy-validation-cYsm14\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\trace.zip\n\n    ────────────────────────────────────────────────────────────────────────────────────────────────\n\n\nTesting stopped early after 1 maximum allowed failures.\n\n  1 failed\n    tests\\browser\\privacy-offline.spec.ts:223:1 › functional browser capability probes pass in production Chrome \n  18 did not run\n  1 error was not a part of any test, see above for details\n\n\n1 !== 0\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/run-owned-privacy-offline.mjs:117:10"
+  ],
+  "ownedProductionRuntimeRemoved": true,
+  "processCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 1300,
+        "parentPid": 26852,
+        "createdAt": "2026-10-27T11:55:03.2515000Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-27T11:55:19.018Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 543,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 12452,
+        "parentPid": 26852,
+        "createdAt": "2026-10-27T11:55:06.3248340Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-27T11:55:19.543Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 525,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "ownedDriverRuntimeRemoved": true,
+  "browserAfter": {
+    "executable": "C:\\Users\\slato\\AppData\\Local\\Programs\\Opera GX\\opera.exe",
+    "version": "137.0.6036.65",
+    "bytes": 3556296,
+    "sha256": "9affc5d320b2daa663faaa21d4eb5c39666022e749d0297cae81b163d4d3a031"
+  },
+  "finishedAt": "2026-10-27T11:55:23.181Z"
+}

@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "browserId": "edge",
+  "startedAt": "2026-10-27T11:52:42.561Z",
+  "status": "passed-existing-19-headless-privacy-cases",
+  "scope": "Existing unchanged 19 production privacy/offline/hosting cases on one installed browser; not full compatibility or conversion-memory acceptance",
+  "headed": false,
+  "osNativePickerVerified": false,
+  "conversionMemoryAcceptance": false,
+  "publicPromotion": false,
+  "extraBrowserArguments": [],
+  "browserServicesDisabledByThisDriver": false,
+  "failures": [],
+  "browserBefore": {
+    "executable": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+    "version": "156.0.4314.42",
+    "bytes": 5452616,
+    "sha256": "bb74db4c753133706f4ab0a483a87aa28a90ddd6eeb305fe001376ba73a40fc3"
+  },
+  "driverSha256": "33f59fef948ccd648af2f34874af6f831fc50ee732a0721a2560de9d62263769",
+  "signal": null,
+  "runnerExitCode": 0,
+  "productionReceipt": {
+    "path": "evidence/2026-10-27T11-52-42-897Z-owned-privacy-offline.json",
+    "sha256": "50ee2ac3eb99de4a653b70253cc6e09271272e5de504fea29d1a8c3925c5e69e"
+  },
+  "executedHead": "413669c6667ca19b6dfda5b88db59a18ca67149a",
+  "stats": {
+    "startTime": "2026-10-27T11:52:56.702Z",
+    "duration": 46101.697,
+    "expected": 19,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "productionStatus": "passed-complete-headless-privacy-offline-hosting-specs",
+  "productionFailures": [],
+  "ownedProductionRuntimeRemoved": true,
+  "processCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 10232,
+        "parentPid": 26484,
+        "createdAt": "2026-10-27T11:52:51.7913850Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-27T11:53:44.105Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 452,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 33488,
+        "parentPid": 26484,
+        "createdAt": "2026-10-27T11:52:55.8507450Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-27T11:53:44.539Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 434,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "ownedDriverRuntimeRemoved": true,
+  "browserAfter": {
+    "executable": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+    "version": "156.0.4314.42",
+    "bytes": 5452616,
+    "sha256": "bb74db4c753133706f4ab0a483a87aa28a90ddd6eeb305fe001376ba73a40fc3"
+  },
+  "finishedAt": "2026-10-27T11:53:48.568Z"
+}

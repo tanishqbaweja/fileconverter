@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+2026-10-27 — CI40498301387/5d34751d TERMINAL SUCCESS: complete
+streaming238 + media-remux554 PASS (792), not a count of started cases.
+Native validator setup15/19seconds; actual FFmpeg, bsdtar, Pillow11.3.0 and
+py7zr1.1.0 installed. Same conversion specs, no validator/assertion relaxation,
+no Docker. Observed at the scheduled12:00 check; no duplicate dispatch or replay
+of earlier passed suites. Verification/native jobs intentionally skipped, not
+new passes. Previous cancelled run/crash remains failed historical evidence.
+No memory/full-original/scaling/native-reproduction or complete-goal claim.
+`evidence/2026-10-27-browser-recovery-terminal.json`.
+Final focused recovery/browser/provenance/suite-contract checks25/25 and new-test
+lint PASS, following the broader38/38 plus affected lint/TypeScript pass.
+
+2026-10-27 — Installed Edge156.0.4314.42, Brave156.1.98.60 and Opera
+GX137.0.6036.65 each passed the existing complete19 production privacy/offline/
+hosting checks headlessly (46.1s/44.4s/51.0s), zero skip/retry. Version+binary
+hash, source+receipt hashes, native owned-root exit and full original SHA bound
+to every result; all owned runtime scratch removed. GX initially failed before
+converter load (GX Corner replaced the startup tab):0pass/1fail/18unrun. That
+failure/trace remains; only subsequent harness change creates a separate test
+tab, with assertions unchanged. Edge/Brave successful controls not replayed.
+This is scoped privacy/offline coverage, NOT complete B07/memory/native-picker/
+scaling acceptance. `evidence/2026-10-27-installed-browser-privacy-refresh.json`.
+Focused regression38/38, affected-file lint and TypeScript no-emit PASS.
+
 2026-10-27 — Recovery CI40498301387 at5d34751d confirmed IN_PROGRESS, exactly
 media-remux/streaming jobs active after one dispatch. No result yet; verify and
 native engine jobs intentionally skipped, not relabelled passing. Next status

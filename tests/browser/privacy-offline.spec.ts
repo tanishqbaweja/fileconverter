@@ -208,7 +208,8 @@ test.beforeAll(async () => {
       },
     });
   });
-  page = context.pages()[0] ?? (await context.newPage());
+  // Leave browser-owned startup tabs alone; GX Corner can replace their navigation.
+  page = await context.newPage();
 });
 
 test.afterAll(async () => {

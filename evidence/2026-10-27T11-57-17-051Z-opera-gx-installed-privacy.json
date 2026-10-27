@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "browserId": "opera-gx",
+  "startedAt": "2026-10-27T11:57:17.052Z",
+  "status": "passed-existing-19-headless-privacy-cases",
+  "scope": "Existing unchanged 19 production privacy/offline/hosting cases on one installed browser; not full compatibility or conversion-memory acceptance",
+  "headed": false,
+  "osNativePickerVerified": false,
+  "conversionMemoryAcceptance": false,
+  "publicPromotion": false,
+  "extraBrowserArguments": [],
+  "browserServicesDisabledByThisDriver": false,
+  "failures": [],
+  "browserBefore": {
+    "executable": "C:\\Users\\slato\\AppData\\Local\\Programs\\Opera GX\\opera.exe",
+    "version": "137.0.6036.65",
+    "bytes": 3556296,
+    "sha256": "9affc5d320b2daa663faaa21d4eb5c39666022e749d0297cae81b163d4d3a031"
+  },
+  "driverSha256": "33f59fef948ccd648af2f34874af6f831fc50ee732a0721a2560de9d62263769",
+  "signal": null,
+  "runnerExitCode": 0,
+  "productionReceipt": {
+    "path": "evidence/2026-10-27T11-57-17-382Z-owned-privacy-offline.json",
+    "sha256": "b0c4c9ba6637c979a9d0a7572d43597e842e5144f2a5e6ebce29fac9a2e01202"
+  },
+  "executedHead": "413669c6667ca19b6dfda5b88db59a18ca67149a",
+  "stats": {
+    "startTime": "2026-10-27T11:57:23.588Z",
+    "duration": 51026.284999999996,
+    "expected": 19,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "productionStatus": "passed-complete-headless-privacy-offline-hosting-specs",
+  "productionFailures": [],
+  "ownedProductionRuntimeRemoved": true,
+  "processCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 37548,
+        "parentPid": 24644,
+        "createdAt": "2026-10-27T11:57:20.5093440Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-27T11:58:15.986Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 461,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 35040,
+        "parentPid": 24644,
+        "createdAt": "2026-10-27T11:57:22.9427190Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-27T11:58:16.389Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 403,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "ownedDriverRuntimeRemoved": true,
+  "browserAfter": {
+    "executable": "C:\\Users\\slato\\AppData\\Local\\Programs\\Opera GX\\opera.exe",
+    "version": "137.0.6036.65",
+    "bytes": 3556296,
+    "sha256": "9affc5d320b2daa663faaa21d4eb5c39666022e749d0297cae81b163d4d3a031"
+  },
+  "finishedAt": "2026-10-27T11:58:19.414Z"
+}

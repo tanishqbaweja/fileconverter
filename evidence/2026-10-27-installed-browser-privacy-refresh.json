@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "status": "passed-scoped-installed-browser-privacy-refresh-not-full-B07",
+  "scope": "Existing 19 production privacy/offline/hosting checks on installed Edge, Brave and Opera GX; Chrome current production receipt already retained separately",
+  "passed": [
+    { "browserId": "edge", "version": "156.0.4314.42", "path": "evidence/2026-10-27T11-52-42-560Z-edge-installed-privacy.json", "sha256": "0e239f27af950ec7413a29b0e4e98307ed82ede61ee5ed356ab31352f5eca8a8", "passed": 19, "seconds": 46.101697 },
+    { "browserId": "brave", "version": "156.1.98.60", "path": "evidence/2026-10-27T11-53-52-961Z-brave-installed-privacy.json", "sha256": "ffeaa81ff783b822b90196ed59486f0bdf76f4027fc8529c11ac5eb9722eb096", "passed": 19, "seconds": 44.407519 },
+    { "browserId": "opera-gx", "version": "137.0.6036.65", "path": "evidence/2026-10-27T11-57-17-051Z-opera-gx-installed-privacy.json", "sha256": "fdc7a92427cefc37ee933d215af390a4247560b9f7bcb10bff1204e18daaece5", "passed": 19, "seconds": 51.026285 }
+  ],
+  "failedControl": {
+    "path": "evidence/2026-10-27T11-54-59-266Z-opera-gx-installed-privacy.json",
+    "sha256": "f82e65cc458fc1a3682b9f48ff63638658baf10f42a03dd25bc279bfb8904ca9",
+    "passed": 0, "failed": 1, "unrun": 18,
+    "cause": "GX Corner startup navigation replaced the initial browser-owned tab; ERR_ABORTED before converter load",
+    "artifactDirectory": "output/playwright/2026-10-27T11-54-59-581Z-privacy-failure",
+    "portableExactContextArchive": "evidence/2026-10-27-opera-startup-context.json",
+    "retainedLocalTrace": { "bytes": 1771189, "sha256": "193b429566e6cb0f3d3738b0b85632003546f4b7ba5fb1c26cbcf4118584b8da" },
+    "retainedForFailureDiagnosisNotConvertedCopies": true
+  },
+  "repair": {
+    "path": "tests/browser/privacy-offline.spec.ts",
+    "change": "Create a new test tab instead of using the browser's startup tab",
+    "beforeSha256": "3cf518ffd0d244bec985664bf5eadd670cf2dacd98754a40cbdb2417b0ddfc7e",
+    "afterSha256": "1eb56a57f9e41110718747d774dc4607875589ed354496788888b722cc9ef540",
+    "assertionsChanged": false,
+    "retryCountChanged": false,
+    "browserServicesDisabled": false,
+    "edgeBraveReplayedAfterStartupOnlyRepair": false,
+    "historicalPinsVerifiedByExactSingleHunkReversal": true
+  },
+  "focusedVerification": {
+    "nodeTestsPassed": 38,
+    "nodeTestsFailed": 0,
+    "nodeTestsSkipped": 0,
+    "affectedFileLint": "passed",
+    "typescriptNoEmit": "passed",
+    "productionApplicationOrEngineImplementationChanged": false,
+    "fullReleaseGatesNotImpliedPassed": true
+  },
+  "headed": false,
+  "osNativePickerVerified": false,
+  "conversionMemoryAcceptance": false,
+  "fullOriginalOrScalingAcceptance": false,
+  "publicPromotion": false,
+  "allOwnedProductionAndDriverScratchRemoved": true,
+  "protectedOriginal": { "bytes": 2958573265, "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" },
+  "remaining": [
+    "Full B07 changed-flow compatibility and whole-process memory qualification",
+    "Native file-picker/manual coverage remains unverified under headless-only constraints",
+    "Standard Opera was not included; installed GX is not relabelled standard Opera",
+    "Original 54-row goal, large-file scaling and remaining codec/release/security/reproducibility work"
+  ]
+}

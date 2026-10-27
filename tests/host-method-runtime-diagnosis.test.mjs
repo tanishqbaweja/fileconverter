@@ -125,8 +125,15 @@ test("Windows complete existing browser suite passes only on the explicitly iden
   assert.equal(value.protectedOriginalAfter.sha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
   assert.equal(value.assetPreflight.length, 6); assert.ok(value.assetPreflight.every(row => row.status === 200));
   assert.equal(value.methodPreflight.length, 5); assert.ok(value.methodPreflight.every(row => row.status === 405));
-  for (const file of ["scripts/run-owned-privacy-offline.mjs", "tests/browser/privacy-offline.spec.ts", "tests/browser/static-host-policy.spec.ts"])
-    assert.equal(sha(await readFile(file)), value.sourcePins[file]);
+  for (const file of ["scripts/run-owned-privacy-offline.mjs", "tests/browser/privacy-offline.spec.ts", "tests/browser/static-host-policy.spec.ts"]) {
+    let executed = await readFile(file, "utf8");
+    if (file === "tests/browser/privacy-offline.spec.ts") {
+      const current = "  // Leave browser-owned startup tabs alone; GX Corner can replace their navigation.\n  page = await context.newPage();";
+      assert.equal(executed.split(current).length, 2, "Exactly one later startup-tab change; no assertion edits");
+      executed = executed.replace(current, "  page = context.pages()[0] ?? (await context.newPage());");
+    }
+    assert.equal(sha(executed), value.sourcePins[file]);
+  }
   // The sole post-browser helper edit renames a local variable for Next's lint rule.
   // Reconstruct and verify exact executed bytes instead of replaying 19 unchanged cases.
   const helper = await readFile("scripts/lib/direct-workerd-host.mjs", "utf8");
