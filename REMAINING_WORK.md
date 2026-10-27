@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-10-27 — Recovery CI40498301387/5d34751d is confirmed IN_PROGRESS after ONE
+dispatch, with exactly media-remux/streaming active; verification/engine jobs
+are skipped, not passed again. Follow that exact run after12:00 UTC (~15minute
+check interval), no duplicate dispatch. `evidence/2026-10-27-browser-recovery-dispatch.json`.
+The full goal remains incomplete; static-shell memory benefit remains unproven.
+
 2026-10-27 — CI recovery-only selector is implemented for the two incomplete
 media-remux/streaming suites. Normal all/verify-only still runs all five suites.
 Required FFmpeg/bsdtar/Pillow/py7zr and test assertions remain; optional APT

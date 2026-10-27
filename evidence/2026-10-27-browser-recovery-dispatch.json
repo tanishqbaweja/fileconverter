@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "scope": "Single source-bound recovery of two incomplete browser suites; successful earlier jobs and native reproduction are not selected",
+  "runId": 40498301387,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40498301387",
+  "headSha": "5d34751d585b3de25d90557d769d8e11f9e2163e",
+  "createdAt": "2026-10-27T11:43:40Z",
+  "inputEngine": "browser-recovery",
+  "observedStatus": "in_progress",
+  "observedConclusion": null,
+  "activeJobs": [
+    { "jobId": 122169277246, "name": "Browser conversions (streaming-conversions)" },
+    { "jobId": 122169277542, "name": "Browser conversions (media-remux)" }
+  ],
+  "verifyAndEngineJobsObservedSkippedNotPassed": true,
+  "previousIncompleteRun": 40488562110,
+  "previousRunTerminalBeforeDispatch": true,
+  "existingCurrentHeadRunsBeforeDispatch": 0,
+  "duplicateDispatchUsed": false,
+  "nextStatusCheckNotBefore": "2026-10-27T12:00:00Z",
+  "waitEstimate": "About15minutes for installation and the complete two suites; this is a check interval, not a guaranteed completion time",
+  "originalScopeComplete": false
+}

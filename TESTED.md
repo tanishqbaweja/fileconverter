@@ -1,5 +1,10 @@
 # Tested conversion ledger
 
+2026-10-27 — Recovery CI40498301387 at5d34751d confirmed IN_PROGRESS, exactly
+media-remux/streaming jobs active after one dispatch. No result yet; verify and
+native engine jobs intentionally skipped, not relabelled passing. Next status
+check no earlier than12:00 UTC. `evidence/2026-10-27-browser-recovery-dispatch.json`.
+
 2026-10-27 — Recovery-only CI source prepared after terminal40488562110:
 exact media-remux + streaming, unchanged full specs/validators; normal matrix
 retains all5. No optional APT speech-model/driver recommendations; validator

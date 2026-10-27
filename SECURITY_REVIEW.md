@@ -1,5 +1,17 @@
 # Dependency and hosting review
 
+## Targeted hosted recovery — October 27
+
+The no-recommendations/bounded-setup workflow is pushed at5d34751d. After the
+previous run was authoritatively terminal, one `browser-recovery` dispatch was
+created:40498301387. Exactly the two incomplete suites are active; successful
+verify/image/audio jobs and native rebuilds are not selected. No assertions,
+required validators or conversion profiles were removed. 26 focused contract/
+cleanup/selection checks and affected lint passed; real hosted result remains
+pending. `evidence/2026-10-27-browser-recovery-workflow.json` and
+`evidence/2026-10-27-browser-recovery-dispatch.json`. [GitHub step timeouts](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#jobsjob_idstepstimeout-minutes)
+bound setup independently of the unchanged45minute browser job budget.
+
 ## Latest verification boundary — October 27
 
 SDK CI40488562110/e8e3f21c is terminalcancelled, not complete success. Its clean

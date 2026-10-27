@@ -6,6 +6,12 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-27
 
+Actual recovery handle: CI40498301387/5d34751d, observed IN_PROGRESS with only
+media-remux/streaming running. One dispatch, no result yet. Next check12:00 UTC;
+do not poll the prior terminal run or redispatch. See the new dispatch receipt.
+While waiting, other B02–B09 work remains; do not retry the unchanged six-case
+memory comparison or infer full original-scope closure from these small gates.
+
 Next hosted step is recovery-only media-remux/streaming after terminal cancellation,
 using unchanged full tests/required validators, no optional APT recommendations,
 bounded12minute validator setup. Normal matrix remains all5. 26focused/YAML/lint
