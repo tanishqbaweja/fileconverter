@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-27 — Single Bytes-pinned source CI40521129468/4e3b4d7d confirmed
+IN_PROGRESS. Two actual failed controls preserved; newcandidate only oneadditional
+published-witnessdependency lockdelta, samecompiler/flags/Woff2source.23focused/
+lint+final14focused PASS beforedispatch, not sourcecompile acceptance. Next
+check not before14:32 UTC (~5minutes,20cap), no duplicate. Staticexplicitmaximum
+gap remains separate/open. `evidence/2026-10-27-svg-bytes-compile-dispatch.json`.
+
 2026-10-27 — Second actual SVG compile40519469540 FAILED inWOFF2:
 23methodambiguity/error-type errors with newerbytes1.12.1; PathfinderE0658 no
 longer present. Raw49,211B SHA44011b3a…7d6ed and16,634B artifactSHA09b06d3a…67b6
