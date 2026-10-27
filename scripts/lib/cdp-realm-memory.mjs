@@ -37,7 +37,14 @@ export function createRealmSampler(transport, origin, timeoutMs = 1000) {
           if (!entry.sessionId) entry.sessionId = (await transport.send("Target.attachToTarget", { targetId: target.targetId, flatten: true })).sessionId;
           const value = await transport.send("Runtime.getHeapUsage", {}, entry.sessionId);
           return { ...normalizeHeapUsage(value), error: null };
-        })().catch((error) => ({ ...normalizeHeapUsage(null), error: String(error).slice(0, 512) }))
+        })().catch((error) => {
+          const message = String(error).slice(0, 512);
+          // A real detached-session reply completes the failed operation. Reuse
+          // no dead session; attach afresh on the next scheduled sample only.
+          // An observation timeout still leaves the existing operation pending.
+          if (/Session with given id not found|No session with given id|Realm target detached/i.test(message)) entry.sessionId = null;
+          return { ...normalizeHeapUsage(null), error: message };
+        })
           .finally(() => { entry.pending = null; });
         const usage = await deadline(entry.pending, timeoutMs);
         return { targetId: target.targetId, type: target.type, url: target.url,

@@ -4,6 +4,22 @@ import test from "node:test";
 import { gunzipSync } from "node:zlib";
 import { sha } from "../images/resvg-source/source-pins.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url), "utf8");
+test("snapshot-option control stays failed and discloses the actual missing HAR rather than treating diagnostic evidence as accepted", async () => {
+  const proof = JSON.parse(await read("evidence/2026-10-27-svg-snapshot-control-terminal.json")), raw = await readFile(new URL("../" + proof.rawReport, import.meta.url));
+  assert.equal(raw.length, proof.rawReportBytes); assert.equal(sha(raw), proof.rawReportSha256);
+  const row = JSON.parse(raw); assert.equal(row.stats.expected, 10); assert.equal(row.stats.unexpected, 0);
+  assert.equal(row.memory.incrementalPrivateMiB, 273.17578125); assert.ok(row.memory.incrementalPrivateMiB > 250);
+  assert.equal(proof.actualTraceNetworkBytes, 0); assert.equal(proof.initialClaimThatDetailedNetworkRecordingWouldRemainWasWrong, true);
+  assert.equal(proof.acceptanceMetric, false); assert.equal(proof.diagnosticPerturbsMemory, true);
+  assert.deepEqual(row.forbiddenRequests, []); assert.equal(row.wasmRequests, 4);
+  const archive = JSON.parse(await read(proof.sourceArchive)); assert.equal(archive.sourceCommit, row.executedHead);
+  for (const [file, digest] of Object.entries(row.sourcePins)) {
+    const old = archive.files[file]; let bytes;
+    if (old) { bytes = gunzipSync(Buffer.from(old.gzipBase64, "base64"), { maxOutputLength: 32768 }); assert.equal(bytes.length, old.bytes); assert.equal(sha(bytes), old.sha256); }
+    else bytes = await readFile(new URL("../" + file, import.meta.url));
+    assert.equal(sha(bytes), digest, file);
+  }
+});
 test("real allocator diagnostic preserves its strict memory failure, counter archives, unavailable heaps and executed sources", async () => {
   const proof = JSON.parse(await read("evidence/2026-10-27-svg-allocator-terminal.json")), raw = await readFile(new URL("../" + proof.rawReport, import.meta.url));
   assert.equal(raw.length, proof.rawReportBytes); assert.equal(sha(raw), proof.rawReportSha256);
@@ -35,7 +51,8 @@ test("SVG allocation mode is explicit, bounded, non-accepting and keeps full-tre
   assert.match(source, /process.argv\[2\] === "--allocator-diagnostic-no-dom-snapshots"/);
   assert.match(source, /allocationDiagnostic = .* \|\| noDomSnapshotDiagnostic/);
   assert.match(source, /screenshots: true, snapshots: !noDomSnapshotDiagnostic, sources: false/);
-  assert.match(source, /domSnapshotRecording: !noDomSnapshotDiagnostic, screenshotAndNetworkRecording: true/);
+  assert.match(source, /domSnapshotRecording: !noDomSnapshotDiagnostic, screenshotRecording: true/);
+  assert.match(source, /networkHarRecording: !noDomSnapshotDiagnostic, networkPolicyAssertionsRetained: true/);
   assert.match(source, /process.argv.length === 2 \|\| \(process.argv.length === 3 && allocationDiagnostic\)/);
   assert.match(source, /diagnosticPerturbsMemory: allocationDiagnostic/); assert.match(source, /memoryAcceptance: false/);
   assert.match(source, /report.allocatorCaptures.length < 3/); assert.match(source, /}, 12000\)/);

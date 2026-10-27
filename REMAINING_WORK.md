@@ -1,5 +1,30 @@
 # Remaining work audit
 
+2026-10-27 — Shared CDP recovery repair:30 scoped checks PASS/0fail/0skip.
+Archived old code reproduces permanently reused expired session; all three real
+error variants now recover one fresh worker session on the next sample. Timeout
+single-flight, unsupported-realm null handling and complete-tree gates unchanged.
+Snapshot/HAR-off control is not adopted. Default full-recording small-suite
+verification and one broad portable regression of the shared helper are next.
+`evidence/2026-10-27-cdp-session-recovery-preparation.json`.
+
+2026-10-27 — Snapshot-option control REJECTED as a sufficient fix: all ten
+functional checks passed, but perturbed memory still FAILED273.1758 MiB.
+Important correction to the preparation claim: installed Playwright1.62.1 ties
+HAR capture to the snapshots option. The control's trace.network is actually
+empty. Request-policy assertions stayed enabled, but detailed HAR did NOT;
+this was one API-option control with coupled DOM/HAR effects, not isolated DOM
+causality or an acceptable optimization. Retain it as failed/limited evidence;
+default qualification keeps snapshots/HAR enabled. All owned data/process cleanup
+and original SHA checks passed. `evidence/2026-10-27-svg-snapshot-control-terminal.json`.
+Separately fixed a real shared diagnostic defect: after an actual detached-session
+reply, discard the dead cached CDP session and retry once on the next regular
+sample. Observation timeouts still remain single-flight; failures remain null.
+The source-built SVG harness now uses the existing adapter that obtained real
+worker samples, instead of its unsuccessful flat-worker path. No converter,
+normal-service, full-tree, baseline, fidelity or limit change. Real verification
+of this revised instrumentation is next; no acceptance claim from mock tests.
+
 2026-10-27 — Single-variable DOM-snapshot diagnostic control prepared and
 checked:24 focused PASS/0fail/0skip, affected lint PASS. New exact argument
 --allocator-diagnostic-no-dom-snapshots preserves screenshot/network recording,

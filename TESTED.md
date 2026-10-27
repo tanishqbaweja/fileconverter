@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+2026-10-27 — CDP session recovery preparation:30 focused PASS/0fail/0skip,
+including the archived old sticky-error reproduction, three real expired-session
+variants, no retry on mere timeout, and unsupported-realm null preservation.
+No converter/native-observer change; browser verification pending. Default full
+DOM/HAR recording restored/retained, failed control not adopted. See
+`evidence/2026-10-27-cdp-session-recovery-preparation.json`.
+
+2026-10-27 — Snapshot/HAR-option control FAILED273.1758 MiB despite10/10
+functional passes; not adopted. Correction: detailed network trace was0 B.
+Playwright1.62.1 couples HAR to snapshots; earlier preparation expected HAR to
+remain but the actual evidence disproves that. Network-policy assertions stayed
+active. This is not isolated DOM causality or acceptance. Full cleanup/original
+checks passed. `evidence/2026-10-27-svg-snapshot-control-terminal.json`.
+New diagnostic repair clears cached expired CDP sessions only after completed
+protocol errors; retries occur on the next scheduled sample, never on observation
+timeout. Archived old sampler reproduces the sticky-null defect. Existing alternate
+adapter chosen for SVG worker heaps; production converter/native measurement and
+default complete snapshot/HAR recording remain unchanged. Browser verification
+of revised instrumentation pending, not implied by unit tests.
+
 2026-10-27 — DOM snapshot-only control preparation:24 scoped PASS/0fail/0skip
 and affected lint PASS. Screenshot/network evidence and all ten correctness/
 memory assertions retained. One variable only, diagnostic perturbation explicit;

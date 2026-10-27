@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 1,
+  "rawReport": "evidence/2026-10-27T15-34-41-457Z-source-svg-browser.json",
+  "rawReportBytes": 3380446,
+  "rawReportSha256": "28e76aff486abb522e7efa17a021d760d475408bd717ead8631d6c18c06f0cd6",
+  "executedHead": "dc9dbff60c2438dfa57328113b60bb9bc161e575",
+  "stats": {
+    "startTime": "2026-10-27T15:35:23.259Z",
+    "duration": 15128.863,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "conclusion": "Ten functional checks passed; snapshot-option control still FAILED strict memory, no adoption",
+  "diagnosticPerturbsMemory": true,
+  "acceptanceMetric": false,
+  "incrementalPrivateMiB": 273.17578125,
+  "limitMiB": 250,
+  "nativeValidSamples": 154,
+  "nativeUnavailableSamples": 0,
+  "domSnapshots": false,
+  "actualTraceNetworkBytes": 0,
+  "traceFileBytes": 12914,
+  "initialClaimThatDetailedNetworkRecordingWouldRemainWasWrong": true,
+  "networkPolicyAssertionsRetained": true,
+  "forbiddenRequests": [],
+  "wasmRequests": 4,
+  "playwrightCoreVersion": "1.62.1",
+  "installedCoreBundleSha256": "9393fa79e1c67c74edc26b610d65a4f7ed73d345a762465cc88340a33a2454ac",
+  "coupledImplementationWitness": "if (options.snapshots) this._harTracer.start",
+  "comparison": "One API option was changed, but it controls both DOM snapshots and HAR; not isolated DOM causality or a qualified/repeatable improvement",
+  "captures": [
+    {
+      "phase": "blank-after-baseline",
+      "archive": {
+        "path": "output\\playwright\\2026-10-27T15-34-41-457Z-svg-blank-after-baseline.json.gz",
+        "bytes": 121724,
+        "sha256": "9058ddb46df2aeddc97dde21d617d512a3524c7673bed820a6a6a126af2d743e",
+        "restoredBytes": 1659809,
+        "restoredSha256": "990e01056c04131b7318f29a73af5a1183aade675444ad03ad984a9b41076573"
+      },
+      "mainRenderer": {
+        "pid": 40540,
+        "osPrivateBytesBeforeDump": 15073280,
+        "blinkSizeBytes": 917504,
+        "v8SizeBytes": 847928,
+        "objectCounts": {
+          "blink_objects/DetachedScriptState": 0,
+          "blink_objects/Document": 0,
+          "blink_objects/Frame": 0,
+          "blink_objects/Node": 0,
+          "blink_objects/WorkerGlobalScope": 0
+        }
+      }
+    },
+    {
+      "phase": "scheduled-late-suite",
+      "archive": {
+        "path": "output\\playwright\\2026-10-27T15-34-41-457Z-svg-scheduled-late-suite.json.gz",
+        "bytes": 134287,
+        "sha256": "f8bcb7b78602cf05b878b3261eab066d6d1a1ea0817f4f1da4cdec4562c1d14d",
+        "restoredBytes": 1880664,
+        "restoredSha256": "190ed89e247b96d0cbc25adde795911591c88f3a651ce7011e0e271f1a9e505a"
+      },
+      "mainRenderer": {
+        "pid": 40540,
+        "osPrivateBytesBeforeDump": 172445696,
+        "blinkSizeBytes": 36962304,
+        "v8SizeBytes": 53627636,
+        "objectCounts": {
+          "blink_objects/DetachedScriptState": 6,
+          "blink_objects/Document": 10,
+          "blink_objects/Frame": 11,
+          "blink_objects/Node": 6146,
+          "blink_objects/WorkerGlobalScope": 3
+        }
+      }
+    },
+    {
+      "phase": "post-suite",
+      "archive": {
+        "path": "output\\playwright\\2026-10-27T15-34-41-457Z-svg-post-suite.json.gz",
+        "bytes": 132044,
+        "sha256": "05537a659d3548d4d0d842c84a1374a947ba8b715df8240eccfcbd257501e8a8",
+        "restoredBytes": 1865669,
+        "restoredSha256": "7bf87affdbaa2c0ac9422c7c6cfbc312b060019a836d5b964d10bbcf9abe8aa0"
+      },
+      "mainRenderer": {
+        "pid": 40540,
+        "osPrivateBytesBeforeDump": 208277504,
+        "blinkSizeBytes": 46661632,
+        "v8SizeBytes": 71986852,
+        "objectCounts": {
+          "blink_objects/DetachedScriptState": 0,
+          "blink_objects/Document": 4,
+          "blink_objects/Frame": 4,
+          "blink_objects/Node": 4271,
+          "blink_objects/WorkerGlobalScope": 4
+        }
+      }
+    }
+  ],
+  "workerHeapSamples": {
+    "available": 9,
+    "unavailable": 17
+  },
+  "sourceArchive": "fixtures/source/svg-snapshot-dc9dbff6.json",
+  "ownedRuntimeRemoved": true,
+  "ownedProcessIdentitiesAbsent": 4,
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "failureTrace": {
+    "path": "output\\playwright\\2026-10-27T15-34-41-457Z-source-svg-failure.zip",
+    "bytes": 2041743,
+    "sha256": "8dc49648a25905cacc5fb097d559a96ac6a204aa4256bddea6a04196048c13e2"
+  },
+  "publicEngineReplacement": false,
+  "originalGoalComplete": false,
+  "next": "Do not adopt the snapshot/HAR-off control. Fix bounded stale CDP-session retry and verify without changing the production converter, primary native observer, normal services or quality gates."
+}

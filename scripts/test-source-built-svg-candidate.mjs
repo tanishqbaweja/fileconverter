@@ -18,7 +18,6 @@ import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mj
 import { startParallelMemoryObserver } from "./lib/parallel-memory-observer.mjs";
 import { startChromiumMemoryMonitor } from "./lib/birth-aware-chromium-memory.mjs";
 import { sampleChromiumTree, stableWindow } from "./lib/chromium-private-memory.mjs";
-import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
 import { connectPlaywrightRealmSampler } from "./lib/chromium-attribution.mjs";
 import { captureLiveMemoryInfra } from "./lib/live-memory-infra.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
@@ -37,8 +36,10 @@ const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: 
   formula: "(peak simultaneous complete Chromium process-tree private bytes during the entire small suite - earliest stable clean blank private bytes) / 1048576",
   publicEngineReplacement: false, wholeGoalComplete: false, fullStressOrOomAcceptance: false, blankSamples: [], realmSamples: [],
   allocationDiagnostic, diagnosticPerturbsMemory: allocationDiagnostic, allocatorCaptures: [], allocatorErrors: [],
-  domSnapshotRecording: !noDomSnapshotDiagnostic, screenshotAndNetworkRecording: true,
-  memoryAcceptance: false, realmTransport: allocationDiagnostic ? "existing-Playwright-nonflattened-adapter" : "existing-browser-websocket-flat-adapter" };
+  domSnapshotRecording: !noDomSnapshotDiagnostic, screenshotRecording: true,
+  networkHarRecording: !noDomSnapshotDiagnostic, networkPolicyAssertionsRetained: true,
+  traceSnapshotOptionAlsoControlsHar: true,
+  memoryAcceptance: false, realmTransport: "existing-Playwright-nonflattened-adapter-with-stale-session-retry" };
 const protectedFile = path.join(root, "test.mkv");
 const hashFile = async file => { const digest = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) digest.update(bytes); return digest.digest("hex"); };
@@ -139,8 +140,7 @@ try {
       if (forbidden.length < 32) forbidden.push({ url: request.url().slice(0, 512), method: request.method() }); else forbiddenOverflow = true;
     }
   });
-  realms = allocationDiagnostic ? await connectPlaywrightRealmSampler(browser, origin) :
-    await connectRealmSampler(`ws://127.0.0.1:${Number(lines[0])}${lines[1]}`, origin);
+  realms = await connectPlaywrightRealmSampler(browser, origin);
   if (allocationDiagnostic) await captureAllocators("blank-after-baseline");
   await context.tracing.start({ screenshots: true, snapshots: !noDomSnapshotDiagnostic, sources: false }); traceStarted = true;
   const descriptor = path.join(runtime.directory, "descriptor.json"), resultFile = path.join(runtime.directory, "result.json");

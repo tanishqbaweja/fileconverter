@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "scope": "Shared diagnostic session-recovery repair, not converter optimization or memory acceptance",
+  "observedFailureReports": ["evidence/2026-10-27-svg-allocator-terminal.json", "evidence/2026-10-27-svg-snapshot-control-terminal.json"],
+  "archivedOldSamplerStickyFailureReproduced": true,
+  "repair": "Clear only completed detached-session errors; next regular sample attaches afresh. Pending observation timeouts remain single-flight; unrelated failures keep their session and null values.",
+  "staleErrorVariantsTested": 3,
+  "immediateRetryLoopAdded": false,
+  "freshWorkerSessionMockRecoveryVerified": true,
+  "svgTransport": "Existing Playwright non-flattened adapter, which obtained real worker samples in the diagnostic runs",
+  "converterOrPrimaryNativeObserverChanged": false,
+  "normalBrowserServicesOrBaselineChanged": false,
+  "limitMiB": 250,
+  "defaultDomSnapshotsAndHarRetained": true,
+  "rejectedSnapshotOptionControlAdopted": false,
+  "focusedTests": { "passed": 30, "failed": 0, "skipped": 0 },
+  "browserVerificationOfRepairYet": false,
+  "fullPortableRegressionOfSharedChangeYet": false,
+  "originalGoalComplete": false
+}

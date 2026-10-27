@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "headPrefix": "dc9dbff6",
+  "terminalSessionId": 25316,
+  "runner": "scripts/test-source-built-svg-candidate.mjs --allocator-diagnostic-no-dom-snapshots",
+  "initialToolReturnAt": "2026-10-27T15:34:51Z",
+  "nextCheckNotBefore": "2026-10-27T15:37:00Z",
+  "estimatedInitialAllowanceSeconds": 139,
+  "singleChangedVariable": "DOM snapshot recording false; screenshots/network remain on",
+  "sameEngineTenAssertionsNativeObserverThreeAllocatorDumpsAndRealmAdapter": true,
+  "memoryPerturbationDisclosed": true,
+  "memoryAcceptance": false,
+  "sourceCompileOrPostprocessingReplayed": false,
+  "noDuplicateLaunchAfterTimeout": true,
+  "publicEngineReplacement": false,
+  "result": "not yet observed at this launch entry"
+}
