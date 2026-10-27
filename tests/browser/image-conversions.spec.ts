@@ -3,7 +3,7 @@ import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
 import { once } from "node:events";
 import { createWriteStream, existsSync, type WriteStream } from "node:fs";
-import { mkdir, readFile, readdir, rm, stat, writeFile } from "node:fs/promises";
+import { lstat, mkdir, readFile, readdir, realpath, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { promisify } from "node:util";
 
@@ -14,7 +14,11 @@ const testPort = process.env.WITHIN_TEST_PORT ?? "3000";
 const baseURL =
   process.env.WITHIN_TEST_BASE_URL ?? `http://127.0.0.1:${testPort}`;
 const profileRoot = path.join(projectRoot, "work", "playwright-profile-images");
-const outputRoot = path.join(projectRoot, "outputs", "browser-image-smoke");
+let outputRoot = path.join(projectRoot, "outputs", "browser-image-smoke");
+// Explicit private build qualification only; normal CI/public route is unchanged.
+const svgDescriptorPath = process.env.WITHIN_PRIVATE_SVG_DESCRIPTOR;
+let privateSvg: { runtime: string; candidateFile: string; sha256: string; endpoint: string } | null = null;
+let privateBrowser: Awaited<ReturnType<typeof chromium.connectOverCDP>> | null = null;
 const installedChromePath =
   "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe";
 const chromePath =
@@ -113,6 +117,34 @@ function assertProjectLocal(target: string): void {
 }
 
 test.beforeAll(async () => {
+  if (svgDescriptorPath) {
+    const descriptorFile = path.resolve(svgDescriptorPath);
+    const approved = path.join(projectRoot, "work") + path.sep;
+    if (!descriptorFile.startsWith(approved) || await realpath(descriptorFile) !== descriptorFile || (await lstat(descriptorFile)).size > 8192)
+      throw new Error("Private SVG descriptor must be a bounded repository-owned regular file.");
+    const descriptor = JSON.parse(await readFile(descriptorFile, "utf8"));
+    const pins = JSON.parse(await readFile(path.join(projectRoot, "images/resvg-source/processed-candidate-input.json"), "utf8"));
+    if (descriptor.publicAcceptance !== false || descriptor.sha256 !== pins.wasmSha256 ||
+        descriptor.runtime !== path.dirname(descriptorFile) || !/^svg-private-browser-/.test(path.basename(descriptor.runtime)) ||
+        descriptor.candidateFile !== path.join(descriptor.runtime, "candidate.wasm") ||
+        await realpath(descriptor.candidateFile) !== descriptor.candidateFile ||
+        !/^http:\/\/127\.0\.0\.1:[0-9]+$/.test(descriptor.endpoint)) throw new Error("Invalid private SVG build descriptor.");
+    const bytes = await readFile(descriptor.candidateFile);
+    if (bytes.length !== pins.wasmBytes || createHash("sha256").update(bytes).digest("hex") !== pins.wasmSha256)
+      throw new Error("Private SVG candidate bytes differ from the executed source-build artifact.");
+    privateSvg = descriptor;
+    outputRoot = path.join(descriptor.runtime, "validation");
+    await mkdir(outputRoot);
+    privateBrowser = await chromium.connectOverCDP(descriptor.endpoint);
+    context = privateBrowser.contexts()[0]; page = context.pages()[0];
+    // Same production worker/glue/I/O; only the private engine response differs.
+    await context.route("**/engines/svg/resvg.wasm", route => route.fulfill({ contentType: "application/wasm", path: descriptor.candidateFile }));
+    await page.exposeBinding("__withinImageValidationChunk", async (_source, base64: string) => {
+      if (!validationSink) throw new Error("The project-local image validation sink is not open.");
+      if (!validationSink.write(Buffer.from(base64, "base64"))) await once(validationSink, "drain");
+    });
+    return;
+  }
   assertProjectLocal(profileRoot);
   assertProjectLocal(outputRoot);
   await rm(profileRoot, { recursive: true, force: true });
@@ -142,6 +174,12 @@ test.beforeAll(async () => {
 test.afterAll(async () => {
   validationSink?.destroy();
   validationSink = null;
+  if (privateSvg) {
+    await context.unroute("**/engines/svg/resvg.wasm");
+    // The external birth-aware owner closes this normal-profile browser and
+    // removes its runtime only after every owned process has actually exited.
+    return;
+  }
   await context?.close();
   await rm(outputRoot, { recursive: true, force: true });
   await rm(profileRoot, { recursive: true, force: true });

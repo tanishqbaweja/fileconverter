@@ -1,5 +1,19 @@
 # Remaining work audit
 
+2026-10-27 — Corrected private postprocess40525478469/934fa33f SUCCESS:
+actual bindgen execution, candidate2,695,842 B SHA6e5b1920…499fd6; matching
+18 import/51 export names+kinds; explicit24 initial/1536 maximum pages
+(1.5 MiB/EXPERIMENTAL96 MiB). All code/data preserved by cap transform,
+scratch removed/public unchanged. This is not runtime ABI, fidelity, source-repeat
+or whole-Chromium acceptance. Exact artifact/receipt pins retained in
+`evidence/2026-10-27-svg-postprocess-terminal.json`.
+Private browser preparation reuses TEN existing SVG tests unchanged in their
+assertions, with only an exact-byte candidate response and owned CDP context.
+Normal Chrome services and earliest30s blank stability are preserved; all-tree
+100ms native measurement, independent validators, finally cleanup and original
+before/after SHA checks required.17 scoped unit checks, affected lint and complete
+TypeScript semantics PASS; browser execution still pending at this entry.
+
 2026-10-27 — First postprocess40524216250 FAILED before engine processing:
 the driver expected a bare version while exact pinned bindgen prints its correct
 commit suffix. Raw source artifact/tool digest verified; no candidate; scratch

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "runId": 40525478469,
+  "headSha": "934fa33fb543383dacd4ae17a8e47ed3bad5b293",
+  "artifactId": 12743836917,
+  "artifactBytes": 1010772,
+  "artifactSha256": "9c2c017d45305692489fbfa1f752fb41a4bca4ae568440a37c735ae698c66a91",
+  "receiptMember": "resvg-postprocess-40525478469.json",
+  "receiptBytes": 9792,
+  "receiptSha256": "ec6aff0906d2c533734ff31a6b91089fc6bcdc9f6ef88164fa3fd626415586a6",
+  "wasmMember": "resvg-postprocess-40525478469.wasm",
+  "wasmBytes": 2695842,
+  "wasmSha256": "6e5b1920548391340fddc15d6c711cf2ed32f589f5bde7897a815a0925499fd6",
+  "glueMember": "resvg-postprocess-40525478469.mjs",
+  "glueBytes": 18019,
+  "glueSha256": "91a086534d643127d38a12726f8c65adfb398877be6bb4d8212d358b1b1fd923",
+  "experimentalMaximumBytes": 100663296,
+  "kind": "private-source-built-bounded-candidate-not-rendering-or-process-memory-qualified"
+}

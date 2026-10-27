@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-10-27 — Postprocess40525478469 SUCCESS in an18s CI job; actual private
+processing2.641s (build-time, NOT conversion speed). Exact three-member1,010,772 B
+artifact and receipt9,792 B verified. Candidate2,695,842 B SHA6e5b1920…499fd6,
+memory24 initial/1536 max pages; static18 imports/51 exports match public names
+and kinds only. Code/data unchanged by cap; scratch removed/public unchanged.
+`evidence/2026-10-27-svg-postprocess-terminal.json`.
+Next browser preparation:17 scoped units/0fail/0skip, affected lint and full tsc
+PASS. Existing ten SVG correctness/SSIM/direct-save/write-failure/safety tests
+will use the private candidate through the same production worker/glue/I/O,
+normal-service headless Chrome, exact earliest blank/all-tree250MiB formula,
+owned scratch and protected-original before/after hashes. Not yet executed.
+
 2026-10-27 — Postprocess40524216250 terminal FAILURE preserved: assertion
 mistakenly omitted the correct pinned tool's revision suffix. It did verify the
 raw source artifact and checksum-pinned tool but never processed the engine.
