@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-10-27 — Next wasm-bindgen0.2.92 postprocessor fullsource/release/
+checksum pinned. Download6,366,507B/expanded17,489,920B, SHA matches official
+checksum and CLI member listed without extraction/execution/diskcopy. Initial
+Git-tar gzip-helper failure remains recorded, corrected in-process boundedgzip
+then plainlisting. No converter/sourcebuild/compilation/memory acceptance inferred.
+`evidence/2026-10-27-bindgen-toolchain-pin.json`.
+11focused/0fail/0skip and affected-file lint PASS; no executable compiler rerun.
+
 2026-10-27 — Static published SVG Wasm audit found38 unique embedded
 registry package/version paths (152 occurrences), all wholly inside real data
 section11. Compared with actual retained candidate lock:24 exactversions,

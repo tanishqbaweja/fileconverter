@@ -40,3 +40,18 @@ test("actual static inventory is source-pinned and never invokes a renderer, com
   assert.match(source, /assert.equal\(process.argv.length, 2\)/); assert.match(source, /flag: "wx"/);
   assert.doesNotMatch(source, /spawn|execFile|rustup|cargo build|test\.mkv|\.instantiate/);
 });
+test("next postprocessor is checksum/source pinned as a build tool, never mislabelled a source-built conversion engine", async () => {
+  const pin = JSON.parse(await read("images/resvg-source/bindgen-toolchain.json"));
+  const report = JSON.parse(await read("evidence/2026-10-27-bindgen-toolchain-pin.json"));
+  const metadata = JSON.parse(await read("evidence/2026-10-27-engine-source-provenance.json"));
+  assert.equal(pin.version, "0.2.92"); assert.equal(pin.sourceCommit, report.officialSourceCommit);
+  assert.ok(metadata.svgSourceGap.publishedWasmProducerWasmBindgen.includes(pin.sourceCommit.slice(0, 9)));
+  assert.equal(pin.archiveBytes, report.downloadBytes); assert.equal(pin.archiveSha256, report.archiveSha256);
+  assert.equal(report.officialReleaseChecksumMatched, true);
+  assert.ok(report.archiveEntries.includes(pin.executableMember));
+  assert.ok(pin.archiveBytes <= pin.maximumCompressedBytes && report.expandedTarBytes <= pin.maximumExpandedBytes);
+  assert.equal(report.firstArchiveListing.status, "failed"); assert.equal(report.correctedArchiveListing, "passed");
+  assert.equal(report.archiveExtractedOrWrittenToDisk, false);
+  for (const flag of ["toolExecuted", "toolSourceIndependentlyCompiled", "compilerJobResultImplied", "publicEngineChanged", "browserOrMemoryAcceptance", "originalGoalComplete"])
+    assert.equal(report[flag], false, flag);
+});

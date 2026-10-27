@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "status": "verified-release-archive-identity-not-tool-execution",
+  "pinFile": "images/resvg-source/bindgen-toolchain.json",
+  "officialSourceCommit": "2a4a4936238cf11e863353e410f453c94e21c7dd",
+  "publishedSvgProducerPrefix": "0.2.92 (2a4a49362)",
+  "downloadBytes": 6366507,
+  "archiveSha256": "c6e43a3bf0be5231e0b72ea702f73b3f4f47c309037e8a332c5c2e41800ca934",
+  "officialReleaseChecksumMatched": true,
+  "expandedTarBytes": 17489920,
+  "archiveEntries": [
+    "wasm-bindgen-0.2.92-x86_64-unknown-linux-musl/",
+    "wasm-bindgen-0.2.92-x86_64-unknown-linux-musl/README.md",
+    "wasm-bindgen-0.2.92-x86_64-unknown-linux-musl/wasm-bindgen-test-runner",
+    "wasm-bindgen-0.2.92-x86_64-unknown-linux-musl/LICENSE-APACHE",
+    "wasm-bindgen-0.2.92-x86_64-unknown-linux-musl/wasm-bindgen",
+    "wasm-bindgen-0.2.92-x86_64-unknown-linux-musl/wasm2es6js",
+    "wasm-bindgen-0.2.92-x86_64-unknown-linux-musl/LICENSE-MIT"
+  ],
+  "firstArchiveListing": {
+    "status": "failed",
+    "cause": "Git tar -tzf attempted an unavailable gzip helper on PATH; no files extracted and no compiler or converter executed",
+    "secondAttemptReason": "In-process bounded gzip decoding then plain tar listing avoids that unavailable nested helper without changing any version/checksum"
+  },
+  "correctedArchiveListing": "passed",
+  "archiveExtractedOrWrittenToDisk": false,
+  "toolExecuted": false,
+  "toolSourceIndependentlyCompiled": false,
+  "compilerJobResultImplied": false,
+  "publicEngineChanged": false,
+  "browserOrMemoryAcceptance": false,
+  "originalGoalComplete": false
+}

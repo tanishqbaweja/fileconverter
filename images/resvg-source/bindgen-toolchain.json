@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "tool": "wasm-bindgen",
+  "version": "0.2.92",
+  "sourceCommit": "2a4a4936238cf11e863353e410f453c94e21c7dd",
+  "releaseUrl": "https://github.com/wasm-bindgen/wasm-bindgen/releases/tag/0.2.92",
+  "releaseId": 144613601,
+  "assetId": 154802167,
+  "platform": "x86_64-unknown-linux-musl",
+  "archiveUrl": "https://github.com/wasm-bindgen/wasm-bindgen/releases/download/0.2.92/wasm-bindgen-0.2.92-x86_64-unknown-linux-musl.tar.gz",
+  "archiveBytes": 6366507,
+  "archiveSha256": "c6e43a3bf0be5231e0b72ea702f73b3f4f47c309037e8a332c5c2e41800ca934",
+  "checksumUrl": "https://github.com/wasm-bindgen/wasm-bindgen/releases/download/0.2.92/wasm-bindgen-0.2.92-x86_64-unknown-linux-musl.tar.gz.sha256sum",
+  "checksumAssetId": 154802165,
+  "executableMember": "wasm-bindgen-0.2.92-x86_64-unknown-linux-musl/wasm-bindgen",
+  "maximumCompressedBytes": 8388608,
+  "maximumExpandedBytes": 67108864,
+  "kind": "upstream-compiler-postprocessor-tool-not-a-precompiled-conversion-engine",
+  "downloadChecksumVerified": true,
+  "executableRunOrVersionVerified": false,
+  "sourceBuildOfToolIndependentlyVerified": false,
+  "publicEngineReplacement": false
+}

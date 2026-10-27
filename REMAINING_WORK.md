@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-10-27 — Before pending compiler observation, next postprocessor pinned
+from official wasm-bindgen0.2.92 release/fullsource2a4a4936 (matches published
+producer). Actual6,366,507B archive SHA matches official checksum; bounded
+in-memory decoding/plainlisting confirms exact CLI member, no tool executed or
+archive left on disk. Initial tar gzip-helper lookup failed, corrected once by
+in-process gzip+plainlisting, no version/threshold change. This is upstream
+build-tool provenance, NOT independently compiled tool, converter, current SVG
+source reproduction or result of CI40516685917. `evidence/2026-10-27-bindgen-toolchain-pin.json`.
+11focused/0fail/0skip and affected lint PASS for combined witness/toolchain/
+compiler-contract/result evidence. No new broad/browser/compiler gate implied.
+
 2026-10-27 — Read-only published SVG provenance progressed while compiler
 40516685917 waits until its14:08 UTC observation boundary. Byte-exact existing
 Wasm data-section strings give38 unique registry version witnesses/152 paths;
