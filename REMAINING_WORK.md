@@ -1,5 +1,21 @@
 # Remaining work audit
 
+2026-10-27 — Compiler40516685917 TERMINAL FAILURE, not queued/live:
+recordednightly truly compiled source but pathfinder_simd0.5.6 uses unstable
+round_ties_even;8E0658/cargo101/noWasm. Scratchremoved/publicdiffclear. Full
+rawreceipt28,505B/SHA55e0d6ac and exact executedmain/workflow archive retained;
+`evidence/2026-10-27-svg-compiler-failure-and-pathfinder-repair.json`.
+Official source archives checksum-checked:0.5.2 (originalmanifest declared
+version) uses round(),0.5.6 uses round_ties_even(); dependencies/features same.
+Private optional repair pins EXACT0.5.2 and modifies only one lock package's
+version/checksum, allothers byte-identical; compiler/flags unchanged. No rounding
+equivalence or rendering-quality claim, publicbinaries remain untouched. One
+repaired compile to validate after focused checks, no unchanged failure replay.
+24focused/0fail/0skip and affectedlint PASS. Repaired lockhash09c8cea8…d2c6a
+and manifesthasha7f6f21e…72a8e fixed and verified, originalf420lock preserved.
+One targeted repaired run planned, initial5minute check allowance based on first
+compiler's41s plus queue/setup,20minute cap; no false guarantee of completion.
+
 2026-10-27 — Before pending compiler observation, next postprocessor pinned
 from official wasm-bindgen0.2.92 release/fullsource2a4a4936 (matches published
 producer). Actual6,366,507B archive SHA matches official checksum; bounded

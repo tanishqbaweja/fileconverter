@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "failedRun": { "id": 40516685917, "jobId": 122232251188, "headSha": "3989398f8ea53d5a4c09f6e75f17ea4f80288f3f", "status": "completed", "conclusion": "failure", "observedAt": "2026-10-27T14:08:17Z", "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40516685917" },
+  "rawReceipt": "evidence/2026-10-27-svg-source-compile-40516685917-raw.json",
+  "rawReceiptBytes": 28505,
+  "rawReceiptSha256": "55e0d6acf644bbe1a65765640249bd670330e98ea684029d640c925029635aab",
+  "executedSourceArchive": "fixtures/source/svg-compiler-3989398f.json",
+  "artifact": { "id": 12739118346, "bytes": 5029, "sha256": "2a808cefbb0b4f870ce2ddb07fe16d1caf305394c39f14469ed8e80a5f70bab3", "entries": ["resvg-source-compile-40516685917.json"] },
+  "log": { "bytes": 38319, "sha256": "c09966db9b7c3e71b4f6d8d38472469ad36f507e414b80789fd7bffc09ba5a49" },
+  "compilerActuallyExecuted": "rustc 1.76.0-nightly (d86d65bbc 2023-12-10)",
+  "measuredFailure": "pathfinder_simd0.5.6 scalar/mod.rs calls round_ties_even, unstable in the recorded nightly; eight E0658 errors, cargo exit101, no raw Wasm",
+  "ownedScratchRemoved": true,
+  "publicEnginesUnchanged": true,
+  "crateSourceChecks": [
+    { "version": "0.5.2", "bytes": 29990, "sha256": "0444332826c70dc47be74a7c6a5fc44e23a7905ad6858d4162b658320455ef93", "scalarRoundingMethod": "round()", "edition": "2018", "buildDependency": "rustc_version ^0.4", "feature": "pf-no-simd", "rustVersionDeclared": false },
+    { "version": "0.5.6", "bytes": 30687, "sha256": "4500030c302e4af1d423f36f3b958d1aecb6c04184356ed5a833bf6b60435777", "scalarRoundingMethod": "round_ties_even()", "edition": "2018", "buildDependency": "rustc_version ^0.4", "feature": "pf-no-simd", "rustVersionDeclared": false }
+  ],
+  "sourceCheckMethod": "Download official static.crates.io archives, verify registry/retained-lock checksums, bounded in-process gzip then stdout-only Cargo.toml/scalar source extraction; no files or native library executed",
+  "repair": "Private optional --pathfinder-0.5.2 pins the original upstream manifest's declared version exactly; only one lock package version/checksum and one manifest constraint change",
+  "repairRationale": "Compiler failure identifies a newer API in a transitive version without a declared Rust floor. Original manifest named0.5.2, inspected source has no failing calls, dependencies/features unchanged. Do not upgrade compiler or add unstable feature flags as an acceptance workaround.",
+  "repairExecuted": false,
+  "repairedLockSha256": "09c8cea801f0433b757c5b612c96b598faf6f911ddcc665f1fad34dc000d2c6a",
+  "repairedManifestSha256": "a7f6f21e8f1d31c6717b77367ddd4a02e597aed45a2f0c6629806efe2f772a8e",
+  "focusedVerification": { "passed": 24, "failed": 0, "skipped": 0, "affectedFileLint": "passed" },
+  "originalFailedLockPreserved": true,
+  "compilerVersionChanged": false,
+  "roundingOrRenderingEquivalenceClaim": false,
+  "historicalDependencyGraphRecovered": false,
+  "bindgenToolExecuted": false,
+  "publicReplacementOrMemoryAcceptance": false,
+  "originalGoalComplete": false
+}

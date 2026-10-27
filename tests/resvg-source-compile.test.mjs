@@ -27,11 +27,11 @@ test("compiler driver isolates caches and temp, streams bounded logs, pins sourc
   for (const anchor of ['assert.equal(process.platform, "linux"', 'createOwnedRuntimeScratch("resvg-source-compile-")',
     'CARGO_HOME: path.join(runtime.directory, "cargo")', 'RUSTUP_HOME: path.join(runtime.directory, "rustup")',
     'CARGO_TARGET_DIR: path.join(runtime.directory, "target")', 'windowsHide: true', '.subarray(-32768)',
-    'verifyCompileLock(lock)', 'finally {', 'activeChild.exitCode !== null', 'activeChild.signalCode === null',
+    'verifyCompileLock(originalLock)', 'finally {', 'activeChild.exitCode !== null', 'activeChild.signalCode === null',
     'await runtime?.close()', 'report.sourcePins[file]', 'flag: "wx"']) assert.ok(source.includes(anchor), anchor);
   assert.match(source, /disk.bavail \* disk.bsize >= 8 \* 1024 \*\* 3/);
   assert.match(source, /compileContract.nightlyManifestSha256/);
-  assert.match(source, /sha\(await readFile\(lockPath\)\), compileContract.lockSha256/);
+  assert.match(source, /sha\(await readFile\(lockPath\)\), report.lock.sha256/);
   assert.doesNotMatch(source, /generate-lockfile|cargo update|docker|test\.mkv|taskkill|SIGKILL|\.instantiate\(/);
   for (const flag of ["bindgenProcessingAttempted", "browserOrMemoryAcceptance", "exactPublishedBinaryReproduction", "publicEngineReplacement", "historicalDependencyGraphRecovered", "originalGoalComplete"])
     assert.ok(source.includes(flag + ": false"));

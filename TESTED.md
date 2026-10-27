@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-27 — First real pinned SVG compile40516685917 FAILED:actual
+rustc1.76nightly/d86d65bbc, pathfinder_simd0.5.6 round_ties_even E0658x8, cargo101,
+noWasm, scratchremoved/publicengines unchanged. Artifact5,029B/SHA2a808cef and
+rawreceipt28,505B/SHA55e0d6ac verified; exactoldmain/workflow archived for proof.
+Officialcratechecksum/source comparison identifies originaldeclared0.5.2's
+round() instead; builddep/feature lists match. Next privateexactpin changes one
+lock package only, not compiler/features/quality thresholds. Differentrounding
+semantics are NOT called equalrendering; no publiccandidate/promotion.
+`evidence/2026-10-27-svg-compiler-failure-and-pathfinder-repair.json`.
+24focused/0fail/0skip and affectedlint PASS. Repaired lock/manifest fixedSHA
+09c8cea8…d2c6a/a7f6f21e…72a8e, originalfailedlock untouched. New private compile
+not yet executed; allow5minute initial observation interval/20minute cap.
+
 2026-10-27 — Next wasm-bindgen0.2.92 postprocessor fullsource/release/
 checksum pinned. Download6,366,507B/expanded17,489,920B, SHA matches official
 checksum and CLI member listed without extraction/execution/diskcopy. Initial

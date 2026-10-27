@@ -5,23 +5,27 @@ import { createHash } from "node:crypto";
 import { readFile, writeFile, mkdir, copyFile, stat, statfs, access } from "node:fs/promises";
 import path from "node:path";
 import { createOwnedRuntimeScratch } from "../../scripts/lib/owned-runtime-scratch.mjs";
-import { pins, sha, pinCargoManifest } from "./source-pins.mjs";
+import { pins, sha, pinCargoManifest, inspectCandidateLock } from "./source-pins.mjs";
 import { compileContract, verifyCompileLock, inspectRawWasm } from "./compile-contract.mjs";
+import { pathfinderRepair, makePathfinderLock, pinPathfinderManifest } from "./pathfinder-repair.mjs";
 
 assert.equal(process.platform, "linux", "Linux-only isolated Actions compilation, not local conversion");
-assert.equal(process.argv.length, 2);
+const repairPathfinder = process.argv[2] === "--pathfinder-0.5.2";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && repairPathfinder));
 assert.match(process.env.GITHUB_RUN_ID ?? "", /^[0-9]+$/);
 const root = path.resolve(import.meta.dirname, "../.."), runId = process.env.GITHUB_RUN_ID;
 const reportRoot = path.join(root, "outputs/reports"), reportFile = path.join(reportRoot, `resvg-source-compile-${runId}.json`);
 const report = { schemaVersion: 1, runId, startedAt: new Date().toISOString(), status: "running",
-  scope: "Exact retained lock and recorded nightly source-compile probe, before wasm-bindgen processing or public engine acceptance",
+  scope: "Recorded nightly source-compile probe with exact retained baseline or explicitly recorded one-package repair; before bindgen/public engine acceptance",
   pins, compileContract, commands: [], sourcePins: {}, failures: [], rawWasm: null,
   sourceCompilationAttempted: false, sourceCompilationSucceeded: false,
   bindgenProcessingAttempted: false, browserOrMemoryAcceptance: false,
   exactPublishedBinaryReproduction: false, publicEngineReplacement: false, protectedOriginalAccessed: false,
   historicalDependencyGraphRecovered: false, originalGoalComplete: false };
+report.pathfinderRepair = repairPathfinder ? pathfinderRepair : null;
 const sourceFiles = ["images/resvg-source/compile-candidate.mjs", "images/resvg-source/compile-contract.mjs",
-  "images/resvg-source/source-pins.mjs", "images/resvg-source/Cargo.candidate.lock", ".github/workflows/ci.yml"];
+  "images/resvg-source/source-pins.mjs", "images/resvg-source/pathfinder-repair.mjs",
+  "images/resvg-source/Cargo.candidate.lock", ".github/workflows/ci.yml"];
 let runtime, activeChild, tail = Buffer.alloc(0), logBytes = 0;
 const logHash = createHash("sha256");
 const run = async (command, args, { cwd = root, capture = false } = {}) => {
@@ -68,12 +72,19 @@ try {
   await run("git", ["-C", source, "checkout", pins.upstream]);
   assert.equal(await run("git", ["-C", source, "rev-parse", "HEAD"], { capture: true }), pins.upstream);
   const cargoPath = path.join(source, "Cargo.toml"), lockPath = path.join(source, "Cargo.lock");
-  await writeFile(cargoPath, pinCargoManifest(await readFile(cargoPath)));
-  const lock = await readFile(path.join(root, "images/resvg-source/Cargo.candidate.lock"));
-  report.lock = verifyCompileLock(lock); await writeFile(lockPath, lock, { flag: "wx" });
+  const cargo = pinCargoManifest(await readFile(cargoPath));
+  await writeFile(cargoPath, repairPathfinder ? pinPathfinderManifest(Buffer.from(cargo)) : cargo);
+  const originalLock = await readFile(path.join(root, "images/resvg-source/Cargo.candidate.lock"));
+  report.originalLock = verifyCompileLock(originalLock);
+  const lock = repairPathfinder ? makePathfinderLock(originalLock) : originalLock;
+  report.lock = inspectCandidateLock(lock.toString()); await writeFile(lockPath, lock, { flag: "wx" });
+  if (repairPathfinder) {
+    report.retainedRepairedLock = `outputs/reports/resvg-source-compile-${runId}.lock`;
+    await writeFile(path.join(root, report.retainedRepairedLock), lock, { flag: "wx" });
+  }
   report.sourceCompilationAttempted = true;
   await run("rustup", [...compileContract.command], { cwd: source });
-  assert.equal(sha(await readFile(lockPath)), compileContract.lockSha256, "Locked compiler must not re-resolve or modify dependency graph");
+  assert.equal(sha(await readFile(lockPath)), report.lock.sha256, "Locked compiler must not re-resolve or modify dependency graph");
   const binary = path.join(runtime.directory, "target/wasm32-unknown-unknown/release/resvg_js.wasm");
   assert.ok((await stat(binary)).size <= compileContract.maxRawWasmBytes);
   report.rawWasm = inspectRawWasm(await readFile(binary));

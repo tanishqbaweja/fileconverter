@@ -35,3 +35,17 @@ Raw Rust Wasm is **not** yet wasm-bindgen output, an ABI-compatible replacement,
 a render test, exact publication reproduction or memory qualification. Failed
 compilation is retained as failed and must be diagnosed before any retry. Public
 engine files and conversion code are never written by this stage.
+
+First compile 40516685917 failed with eight E0658 errors in pathfinder_simd0.5.6
+(`round_ties_even` is unstable in the recorded compiler). Its exact receipt and
+executed inputs are retained; compiler scratch was removed and no Wasm produced.
+
+`svg-source-compile-pathfinder` / `--pathfinder-0.5.2` is a separate explicit
+private candidate. It pins the original manifest's declared version0.5.2 exactly
+and changes only that package's version/checksum in the otherwise byte-identical
+lock. Official checked crate sources show the same dependency/feature surface,
+but scalar rounding uses `round()` instead: do not claim equivalent rendering
+from this preparation. Compiler, build flags and quality gates stay unchanged.
+The original failed lock and published engine remain untouched. The repaired
+manifest/lock hashes are fixed, a repaired lock is retained for follow-up, and
+Cargo must compile with `--locked` without changing it. No resolver/version sweep.
