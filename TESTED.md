@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-27 — Published-engine provenance audit:12 directories,11 native-source
+recipes +1 pinned SVG package copy. Read-only streamed SHA256/git-blob inventory
+finds11 whole directories unchanged against verified historical snapshots; sole
+changed file is remux/build-manifest.json (later hidden m2v-to-ogv declaration).
+Remote33312105530/35564331436/35809382089/36348285061 revalidated terminal SUCCESS;
+last is exact inspector comparison with verify/browser skipped, direct run is
+within-direct only, not all8. No new build/conversion or memory claim from audit.
+SVG copy provenance is NOT native compilation: actual Wasm producers identify
+Rustnightly1.76.0/walrus0.20.3/wasm-bindgen0.2.92; upstreamv2.6.2 has no Cargo.lock,
+ignores it and chooses wasm-pack latest. Strict source audit now intentionally
+fails on SVG; T-09 corrected from stale VERIFIED to PARTIAL. Native recipe/build
+gap remains open, no public engine replaced. `evidence/2026-10-27-engine-source-provenance.json`.
+Focused audit/strict negative gate/provenance/suite-contract14/14 and affected
+lint PASS; no extra source engine compiled by those checks.
+
 2026-10-27 — CI40498301387/5d34751d TERMINAL SUCCESS: complete
 streaming238 + media-remux554 PASS (792), not a count of started cases.
 Native validator setup15/19seconds; actual FFmpeg, bsdtar, Pillow11.3.0 and

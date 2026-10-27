@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "scope": "Audit recipe kinds, current artifact identity and retained hosted reproduction evidence; not twelve fresh native rebuilds or complete release acceptance",
+  "inventoryReceipt": "evidence/2026-10-27T12-12-28-024Z-published-engine-history.json",
+  "publishedDirectories": 12,
+  "nativeSourceRecipes": 11,
+  "pinnedPackageCopyRecipes": ["svg"],
+  "whollyUnchangedHistoricalArtifactDirectories": 11,
+  "changedHistoricalFiles": ["public/engines/remux/build-manifest.json"],
+  "remoteHistoryRevalidated": [
+    {
+      "runId": 33312105530, "headSha": "5e46a6611865cc0c20400e34899c6c1da7861954", "status": "completed", "conclusion": "success",
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/33312105530",
+      "engineJobIds": { "bzip2": 99258941820, "ffmpeg-remux": 99258941825, "archive7z": 99258941832, "jxl-encoder": 99258941841, "tiff": 99258941847, "avif-encoder": 99258941848, "xz-decoder": 99258941849, "jxl": 99258941850, "avif": 99258941872, "svg": 99258941876, "xz": 99258941924 },
+      "allElevenJobsObservedSuccess": true,
+      "svgJobIsPackageCopyNotNativeCompile": true,
+      "originalReceipt": "evidence/non-docker-all-engine-repro-2026-08-30.json"
+    },
+    {
+      "runId": 36348285061, "headSha": "c0c09a17813fd79fa1ffee21bb71f2ecc6beaab5", "status": "completed", "conclusion": "success",
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/36348285061",
+      "engine": "jxl-inspector", "jobId": 108701855205,
+      "exactComparisonObserved": true,
+      "summary": "Exact no-Docker jxl-inspector artifact comparison passed.",
+      "logBytes": 85772, "logSha256": "ed8a6a57e12962b313df8f3086c1cc8c9022e957c556d04accfeae868a7b1210",
+      "verifyAndBrowserJobsSkippedNotPassed": true
+    },
+    {
+      "runId": 35564331436, "headSha": "51e6074e92f73bb321ca5ee4a8ead8acc1058cab", "status": "completed", "conclusion": "success",
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35564331436", "jobId": 106223061324,
+      "scope": "Historical all-eight FFmpeg comparison before the later direct-core replacement"
+    },
+    {
+      "runId": 35809382089, "headSha": "c3a525a9e926fdeab20096dc0501ce3ad339d6f5", "status": "completed", "conclusion": "success",
+      "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/35809382089", "jobId": 107017275715,
+      "scope": "within-direct only; do not relabel all eight cores freshly reproduced",
+      "coreFilterObserved": "within-direct", "exactComparisonObserved": true,
+      "logBytes": 514888, "logSha256": "7f35121cabfe57c3a04ef1818a055b41f8d81aac4e336aa499b5ee3a1bc64a8e"
+    }
+  ],
+  "svgSourceGap": {
+    "currentRecipe": "scripts/build-svg-engine.mjs",
+    "currentBehavior": "copyFile from node_modules/@resvg/resvg-wasm/index_bg.wasm plus generated local manifest",
+    "publishedWasmBytes": 2478606,
+    "publishedWasmSha256": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70",
+    "upstreamRepository": "https://github.com/thx/resvg-js",
+    "upstreamTag": "v2.6.2", "upstreamCommit": "9ca058462ac529120c8cc84ddcd6fef644cc5406",
+    "upstreamRecursiveTreeTruncated": false,
+    "upstreamCargoLockPresent": false,
+    "upstreamGitignoreExcludesCargoLock": true,
+    "upstreamRustToolchainFile": "rust-toolchain",
+    "upstreamRustToolchainGitBlob": "12ab21637003a29c7fe20f7f0dd146b053412cb6",
+    "upstreamWasmPackVersion": "latest",
+    "upstreamWoff2PatchUsesBranchNotFullCommitInCargoToml": true,
+    "publishedWasmProducerRustc": "1.76.0-nightly (d86d65bbc 2023-12-10)",
+    "publishedWasmProducerWalrus": "0.20.3",
+    "publishedWasmProducerWasmBindgen": "0.2.92 (2a4a49362)",
+    "sourceRebuildAttempted": false,
+    "exactNativeSourceReproductionClaim": false,
+    "nextRequiredEvidence": "Recover or establish a fully pinned Rust/git/crate/wasm toolchain and lock; compile without Docker and compare with the published module. A mismatch is a private candidate requiring full validation before any replacement. Do not brute-force compiler/dependency combinations or weaken byte comparisons.",
+    "primarySourceLinks": [
+      "https://github.com/thx/resvg-js/blob/9ca058462ac529120c8cc84ddcd6fef644cc5406/Cargo.toml",
+      "https://github.com/thx/resvg-js/blob/9ca058462ac529120c8cc84ddcd6fef644cc5406/.gitignore",
+      "https://github.com/thx/resvg-js/blob/9ca058462ac529120c8cc84ddcd6fef644cc5406/.github/workflows/CI.yaml"
+    ]
+  },
+  "nextHostedGap": "One aggregate FFmpeg exact comparison at current source/manifest; do not rebuild ten unchanged directories or the already-proved inspector merely to restate the inventory",
+  "dockerUsed": false,
+  "conversionOrMemoryAcceptance": false,
+  "publicEngineReplacement": false,
+  "allPublishedEnginesSourceRebuilt": false,
+  "originalGoalComplete": false,
+  "focusedVerification": { "testsPassed": 14, "testsFailed": 0, "testsSkipped": 0, "affectedFileLint": "passed", "strictSourceAuditExpectedFailure": "svg copies a pinned package instead of compiling source" }
+}

@@ -8,6 +8,7 @@ const projectRoot = path.resolve(scriptDirectory, "..");
 const engines = [
   {
     id: "ffmpeg-remux",
+    reproductionKind: "native-source",
     command: "npm run build:ffmpeg-remux",
     output: "public/engines/remux",
     installNodeModules: false,
@@ -19,6 +20,7 @@ const engines = [
   },
   {
     id: "bzip2",
+    reproductionKind: "native-source",
     command: "npm run build:bzip2",
     output: "public/engines/bzip2",
     installNodeModules: false,
@@ -30,6 +32,7 @@ const engines = [
   },
   {
     id: "xz",
+    reproductionKind: "native-source",
     command: "npm run build:xz",
     output: "public/engines/xz",
     installNodeModules: false,
@@ -41,6 +44,7 @@ const engines = [
   },
   {
     id: "xz-decoder",
+    reproductionKind: "native-source",
     command: "npm run build:xz-decoder",
     output: "public/engines/xz-decoder",
     installNodeModules: false,
@@ -52,6 +56,7 @@ const engines = [
   },
   {
     id: "archive7z",
+    reproductionKind: "native-source",
     command: "npm run build:archive7z",
     output: "public/engines/archive7z",
     installNodeModules: false,
@@ -63,6 +68,7 @@ const engines = [
   },
   {
     id: "tiff",
+    reproductionKind: "native-source",
     command: "npm run build:tiff",
     output: "public/engines/tiff",
     installNodeModules: false,
@@ -74,6 +80,7 @@ const engines = [
   },
   {
     id: "jxl",
+    reproductionKind: "native-source",
     command: "npm run build:jxl",
     output: "public/engines/jxl",
     installNodeModules: false,
@@ -85,6 +92,7 @@ const engines = [
   },
   {
     id: "jxl-inspector",
+    reproductionKind: "native-source",
     command: "npm run build:jxl-inspector",
     output: "public/engines/jxl-inspector",
     installNodeModules: false,
@@ -96,6 +104,7 @@ const engines = [
   },
   {
     id: "jxl-encoder",
+    reproductionKind: "native-source",
     command: "npm run build:jxl-encoder",
     output: "public/engines/jxl-encoder",
     installNodeModules: false,
@@ -107,6 +116,7 @@ const engines = [
   },
   {
     id: "avif",
+    reproductionKind: "native-source",
     command: "npm run build:avif",
     output: "public/engines/avif",
     installNodeModules: false,
@@ -118,6 +128,7 @@ const engines = [
   },
   {
     id: "avif-encoder",
+    reproductionKind: "native-source",
     command: "npm run build:avif-encoder",
     output: "public/engines/avif-encoder",
     installNodeModules: false,
@@ -129,6 +140,7 @@ const engines = [
   },
   {
     id: "svg",
+    reproductionKind: "pinned-package-copy",
     command: "npm run build:svg",
     output: "public/engines/svg",
     installNodeModules: true,
@@ -162,6 +174,12 @@ async function auditManifest() {
   }
 
   for (const engine of engines) {
+    if (!["native-source", "pinned-package-copy"].includes(engine.reproductionKind)) {
+      throw new Error(`Engine ${engine.id} lacks an explicit reproduction kind.`);
+    }
+    if (engine.reproductionKind === "native-source" && !engine.nonDockerCommand) {
+      throw new Error(`Engine ${engine.id} has no declared no-Docker source recipe.`);
+    }
     const scriptName = engine.command.replace(/^npm run /, "");
     if (!packageJson.scripts?.[scriptName]) {
       throw new Error(
@@ -189,8 +207,19 @@ async function auditManifest() {
   process.stdout.write(
     `Reproducibility manifest covers ${engines.length} published engine directories.\n`,
   );
+  const packageCopies = engines.filter(engine => engine.reproductionKind === "pinned-package-copy");
+  process.stdout.write(JSON.stringify({ scope: "recipe-inventory-not-executed-rebuild-proof",
+    nativeSourceRecipes: engines.length - packageCopies.length,
+    pinnedPackageCopies: packageCopies.map(engine => engine.id),
+    allPublishedEnginesHaveSourceRecipes: packageCopies.length === 0 }) + "\n");
+  if (process.argv.includes("--require-source-builds") && packageCopies.length) {
+    throw new Error(`Source-only reproduction is incomplete: ${packageCopies.map(engine => engine.id).join(", ")} copies a pinned package instead of compiling source.`);
+  }
 }
 
+if (process.argv.includes("--require-source-builds") && !process.argv.includes("--check")) {
+  throw new Error("--require-source-builds requires --check; it cannot silently select a build matrix.");
+}
 if (process.argv.includes("--check")) {
   await auditManifest();
 } else {

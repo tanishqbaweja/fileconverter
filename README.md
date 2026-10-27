@@ -2739,17 +2739,24 @@ reports. `npm run audit:engine-reproducibility` similarly ensures that every
 published engine directory has a reproducible build entry.
 
 The manual CI `engine` input accepts `verify-only` for the production, privacy,
-unit, and browser gates; `reproduce-only` rebuilds all 11 published engines
-without repeating those browser suites. Both paths avoid Docker. The default
+unit, and browser gates; `reproduce-only` executes all 12 published-engine
+recipes without repeating those browser suites. Both paths avoid Docker. The default
 `all` selection runs both sets of gates, while a named engine selects one
-reproducibility check.
+reproducibility check. This is not twelve source compilations: eleven entries
+have native source recipes, but `svg` copies the pinned resvg npm Wasm package.
+That package-copy check cannot satisfy the original source-build requirement.
+`node scripts/engine-reproducibility-manifest.mjs --check --require-source-builds`
+is the strict source-completeness audit and currently fails explicitly on SVG.
+The ordinary audit only checks complete recipe inventory. See
+`evidence/2026-10-27-engine-source-provenance.json` for current artifact hashes,
+revalidated historical jobs and the remaining SVG lock/toolchain provenance gap.
 
 The corrected partitioned hosted baseline is recorded in
 `evidence/hosted-ci-audit-2026-08-28.json`. GitHub Actions run `33182400184`
 passed the production build, lint, TypeScript, unit/evidence gates, 13 privacy
 and offline cases, and all 871 conversion/validator cases split into 152 image,
 484 media, and 235 streaming tests. The engine audit now covers declarations and
-executable exact clean no-Docker rebuilds for all 11 published directories. The
+historical exact no-Docker artifact recipes for the then-11 published directories. The
 all-engine job IDs, source inputs, output hashes, AVIF provenance diagnosis, and
 cleanup are recorded in
 `evidence/non-docker-all-engine-repro-2026-08-30.json`.

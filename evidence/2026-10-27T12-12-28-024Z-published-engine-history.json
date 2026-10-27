@@ -1,0 +1,912 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-27T12:12:20.728Z",
+  "sourceHead": "7b04529ba6b9a701b8e93fad50f62da68781c0e2",
+  "scope": "Current published artifact identity against retained successful historical snapshots; not fresh source rebuild or final release acceptance",
+  "dockerUsed": false,
+  "browserLaunched": false,
+  "conversionRun": false,
+  "protectedTestMkvRead": false,
+  "driverSha256": "ca04ae1d52e2b544ed39fa16dc2fefd44230e4f5fb4799125cdbe5a2a10d63a1",
+  "manifestSha256": "9d7598066eba1284e742438c48e0ed43a0def3a9ead2484417f98b97b9761d02",
+  "snapshots": {
+    "original": "5e46a6611865cc0c20400e34899c6c1da7861954",
+    "direct": "c3a525a9e926fdeab20096dc0501ce3ad339d6f5",
+    "inspector": "c0c09a17813fd79fa1ffee21bb71f2ecc6beaab5"
+  },
+  "engines": [
+    {
+      "id": "ffmpeg-remux",
+      "reproductionKind": "native-source",
+      "output": "public/engines/remux",
+      "historicalCommit": "c3a525a9e926fdeab20096dc0501ce3ad339d6f5",
+      "files": [
+        {
+          "path": "public/engines/remux/LICENSE.lame",
+          "gitBlob": "102c4081e241697020df9c5005d6c070abba03a5",
+          "bytes": 25281,
+          "sha256": "e64f9c5a18f56828c10a575df13ade641aa3af4512a7afe6c411256943b57aaf",
+          "historicalGitBlob": "102c4081e241697020df9c5005d6c070abba03a5",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/LICENSE.lame-linking",
+          "gitBlob": "349fd5f62f9be646cebeed83e0dbc8f810f06bdd",
+          "bytes": 503,
+          "sha256": "5c1f8d44f1eacbea3e1c31ff6ee11a4e1690ccbed4ee4af16de3b6eb61dc69a8",
+          "historicalGitBlob": "349fd5f62f9be646cebeed83e0dbc8f810f06bdd",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/LICENSE.libogg",
+          "gitBlob": "6111c6c5a6b95057e43d36b7c217b073bf5f9b22",
+          "bytes": 1466,
+          "sha256": "d2ab5758336489da61c12cc5bb757da5339c4ae9001f9bb0562b4370249af814",
+          "historicalGitBlob": "6111c6c5a6b95057e43d36b7c217b073bf5f9b22",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/LICENSE.libtheora",
+          "gitBlob": "c8ccce4ffb5d7a7574bac87429ec1d2a7b90686d",
+          "bytes": 1470,
+          "sha256": "8417fad7da775735564e209484a2e011e0fa201e94f01fdbee6e4977e478e6fc",
+          "historicalGitBlob": "c8ccce4ffb5d7a7574bac87429ec1d2a7b90686d",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/LICENSE.libvorbis",
+          "gitBlob": "fb456a87bdfafe2cab7de982e8ce11204933ec5c",
+          "bytes": 1470,
+          "sha256": "ec1815db59fcd302846df949d7424876cb2e2dc5ed1606c5fb0b36787b1cf43a",
+          "historicalGitBlob": "fb456a87bdfafe2cab7de982e8ce11204933ec5c",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/LICENSE.opencore-amr",
+          "gitBlob": "5ec4bf01e7e7fdb46973ba93ae4992fb41352c7f",
+          "bytes": 10271,
+          "sha256": "8b3f1762349248d444ab9acbafe73941254e36e1064954da56bb9ddbd5873ddb",
+          "historicalGitBlob": "5ec4bf01e7e7fdb46973ba93ae4992fb41352c7f",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/LICENSE.opus",
+          "gitBlob": "75711467a3eb220f35f72afdb55a4734ee5cdb47",
+          "bytes": 1945,
+          "sha256": "01e1167d54a096d123cf6dfbbeb19587278845c6481d2d66d545669846079551",
+          "historicalGitBlob": "75711467a3eb220f35f72afdb55a4734ee5cdb47",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/build-manifest.json",
+          "gitBlob": "e3d65b65a1557561838c541e74980c6e3be11a17",
+          "bytes": 12559,
+          "sha256": "37bb34cb852d2a72784f1aa93cb67ae5e63c64395c314badc1c51976f5e6b012",
+          "historicalGitBlob": "b958591e43d5efcf3ff265b25cd6651dbf6693f2",
+          "sameHistoricalBytes": false
+        },
+        {
+          "path": "public/engines/remux/within-aiff.mjs",
+          "gitBlob": "5ceef65380cdaec6270c73ea8fdc381ba4b90600",
+          "bytes": 45561,
+          "sha256": "01caddd34039e3c4b593589a29d32b9518e9af592528179e4ef6db65476c8d07",
+          "historicalGitBlob": "5ceef65380cdaec6270c73ea8fdc381ba4b90600",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-aiff.wasm",
+          "gitBlob": "2a004314b78658c65f335338be3bf78177737035",
+          "bytes": 8793240,
+          "sha256": "56806d4dd2fa3e4d6f354fd2c8f41f7f0025b0d8adb754cac5a5e7aae52f354c",
+          "historicalGitBlob": "2a004314b78658c65f335338be3bf78177737035",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-direct.mjs",
+          "gitBlob": "bb87d6025e98e08982a8fda9fe1610a9d69df271",
+          "bytes": 38536,
+          "sha256": "fe3567c6e025d3cd6085e5e2e846bddac0426dd4fbf91d53145b5d011a8d7079",
+          "historicalGitBlob": "bb87d6025e98e08982a8fda9fe1610a9d69df271",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-direct.wasm",
+          "gitBlob": "06f1e86a3cc4553bec50de67e8dfc172441fd58d",
+          "bytes": 1197888,
+          "sha256": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0",
+          "historicalGitBlob": "06f1e86a3cc4553bec50de67e8dfc172441fd58d",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-mpeg4.mjs",
+          "gitBlob": "982d05ed5a771f7d18fc433bf355f7cd83e2aea3",
+          "bytes": 46652,
+          "sha256": "e4ad237087a65321c6f7829c38784dd9811a6bded4f6bff1b3e50a1d1c9fcd6c",
+          "historicalGitBlob": "982d05ed5a771f7d18fc433bf355f7cd83e2aea3",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-mpeg4.wasm",
+          "gitBlob": "00f7a3e21bf01b1534fa9b9a882fc7e8e6df01b9",
+          "bytes": 9629056,
+          "sha256": "4364023329dbcf19112ede02051fb6ab67f03a0430de1cb119e9cf46861f98e6",
+          "historicalGitBlob": "00f7a3e21bf01b1534fa9b9a882fc7e8e6df01b9",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-remux.mjs",
+          "gitBlob": "7f96b0bd74da3c9d281f6f506884a683875f67a5",
+          "bytes": 45700,
+          "sha256": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+          "historicalGitBlob": "7f96b0bd74da3c9d281f6f506884a683875f67a5",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-remux.wasm",
+          "gitBlob": "28bcfe74d7847c682f4807e265a7ef43bc3b4e49",
+          "bytes": 9873301,
+          "sha256": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+          "historicalGitBlob": "28bcfe74d7847c682f4807e265a7ef43bc3b4e49",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-theora.mjs",
+          "gitBlob": "8fedb72782396ab6ef6cce31ee7e1326c00952db",
+          "bytes": 45703,
+          "sha256": "a436fc61948aaaf7b309abcb8c0f6e3de486612862bf0cb66b16f51491af882a",
+          "historicalGitBlob": "8fedb72782396ab6ef6cce31ee7e1326c00952db",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-theora.wasm",
+          "gitBlob": "a27265026e69abd94be890dddf17ffe30f3be551",
+          "bytes": 10015577,
+          "sha256": "e1028291ed4a85961600c251f8a2ac9955bde568eaaab650c23192542aaa86e0",
+          "historicalGitBlob": "a27265026e69abd94be890dddf17ffe30f3be551",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-vp9.mjs",
+          "gitBlob": "ceef3391a163d09d8fe6c75e3c913de52d00e191",
+          "bytes": 46646,
+          "sha256": "b41c6975377602ccaeb3b21ff717199c2287989a438d45306a6a1ef756cb9c33",
+          "historicalGitBlob": "ceef3391a163d09d8fe6c75e3c913de52d00e191",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-vp9.wasm",
+          "gitBlob": "95d4f1706ce606460db05cf067cbff93a8befd56",
+          "bytes": 9629216,
+          "sha256": "cb5f5e15eeb08a06bd5f032dfdb72358ae1df116dd9adc3d57ad7e6f5b385fed",
+          "historicalGitBlob": "95d4f1706ce606460db05cf067cbff93a8befd56",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-webm-quality.mjs",
+          "gitBlob": "d22c53e9688bcaa5cdcf775c9c56a41b2ac99048",
+          "bytes": 46673,
+          "sha256": "cc5a54a2a41fed21864be102943c6793a6131edfbfe3dfc8693bae0465668d47",
+          "historicalGitBlob": "d22c53e9688bcaa5cdcf775c9c56a41b2ac99048",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-webm-quality.wasm",
+          "gitBlob": "5e624030ad2efa1bd337e5b1a68ada0d31e859b1",
+          "bytes": 9629072,
+          "sha256": "d86fe8608d2060350d9c4b443aafd91d0037a25655698daf8bf0538ca1ac6b02",
+          "historicalGitBlob": "5e624030ad2efa1bd337e5b1a68ada0d31e859b1",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-webm.mjs",
+          "gitBlob": "05518280caf0d173a146c3116d612cb45d47aefc",
+          "bytes": 46649,
+          "sha256": "a0af92f17681af33591d913f2ab09bab23299d3848c58883767c8d172b43f85b",
+          "historicalGitBlob": "05518280caf0d173a146c3116d612cb45d47aefc",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/remux/within-webm.wasm",
+          "gitBlob": "95d4f1706ce606460db05cf067cbff93a8befd56",
+          "bytes": 9629216,
+          "sha256": "cb5f5e15eeb08a06bd5f032dfdb72358ae1df116dd9adc3d57ad7e6f5b385fed",
+          "historicalGitBlob": "95d4f1706ce606460db05cf067cbff93a8befd56",
+          "sameHistoricalBytes": true
+        }
+      ],
+      "removedHistoricalFiles": [],
+      "unchanged": false
+    },
+    {
+      "id": "bzip2",
+      "reproductionKind": "native-source",
+      "output": "public/engines/bzip2",
+      "historicalCommit": "5e46a6611865cc0c20400e34899c6c1da7861954",
+      "files": [
+        {
+          "path": "public/engines/bzip2/LICENSE.bzip2",
+          "gitBlob": "d3edf477d74bd109226653f58fc5cf8eb77c0f59",
+          "bytes": 1891,
+          "sha256": "67fc67381a47fe66f07b5f6705472d26314e6bcdf949f92c2cdde64521bbfdce",
+          "historicalGitBlob": "d3edf477d74bd109226653f58fc5cf8eb77c0f59",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/bzip2/build-manifest.json",
+          "gitBlob": "f0c1697ec3ee1846179b2d9f4adeba33918aee67",
+          "bytes": 980,
+          "sha256": "41ed35a105812682a8f46bf726bbe68dfe6648aab4c07bd49b192723349c993e",
+          "historicalGitBlob": "f0c1697ec3ee1846179b2d9f4adeba33918aee67",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/bzip2/within-bzip2.mjs",
+          "gitBlob": "812902909ba8cbfe00365072c7a7d0b817bce854",
+          "bytes": 7022,
+          "sha256": "7cf0c5151fc71c906844d3277ad7737ea3b817d5f593900321c60122c5b00c9d",
+          "historicalGitBlob": "812902909ba8cbfe00365072c7a7d0b817bce854",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/bzip2/within-bzip2.wasm",
+          "gitBlob": "29472464339ab27d1bc4edb439277890e32625fb",
+          "bytes": 62257,
+          "sha256": "e2d82b90edf997b91a1f307b33e2ff37d2468074ad53748ae60c2b57a7d86031",
+          "historicalGitBlob": "29472464339ab27d1bc4edb439277890e32625fb",
+          "sameHistoricalBytes": true
+        }
+      ],
+      "removedHistoricalFiles": [],
+      "unchanged": true
+    },
+    {
+      "id": "xz",
+      "reproductionKind": "native-source",
+      "output": "public/engines/xz",
+      "historicalCommit": "5e46a6611865cc0c20400e34899c6c1da7861954",
+      "files": [
+        {
+          "path": "public/engines/xz/LICENSE.xz",
+          "gitBlob": "4322122aecf1aecff317bd50334ba206dcb9ac41",
+          "bytes": 607,
+          "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1",
+          "historicalGitBlob": "4322122aecf1aecff317bd50334ba206dcb9ac41",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/xz/build-manifest.json",
+          "gitBlob": "7d0db59a2dc3faddafa65177af893bd160f0b841",
+          "bytes": 980,
+          "sha256": "324b9436beeb986d849ef6fa1210235f50a1a465efe2c1c016fdea8219284172",
+          "historicalGitBlob": "7d0db59a2dc3faddafa65177af893bd160f0b841",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/xz/within-xz.mjs",
+          "gitBlob": "192f9397a5a1ae58bc1488cbc00fe4a14cc145dd",
+          "bytes": 7043,
+          "sha256": "aa301be807b683715756f143d356121a5f27a758fb109db3378c97d1b5f75649",
+          "historicalGitBlob": "192f9397a5a1ae58bc1488cbc00fe4a14cc145dd",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/xz/within-xz.wasm",
+          "gitBlob": "eec34b9083178c7ea7e1f6eed2899d641bb45d07",
+          "bytes": 129986,
+          "sha256": "d8e91debb4d26391503a01768ac8bcfa6c2dcbe79acf7d290e59132c58e8e1f8",
+          "historicalGitBlob": "eec34b9083178c7ea7e1f6eed2899d641bb45d07",
+          "sameHistoricalBytes": true
+        }
+      ],
+      "removedHistoricalFiles": [],
+      "unchanged": true
+    },
+    {
+      "id": "xz-decoder",
+      "reproductionKind": "native-source",
+      "output": "public/engines/xz-decoder",
+      "historicalCommit": "5e46a6611865cc0c20400e34899c6c1da7861954",
+      "files": [
+        {
+          "path": "public/engines/xz-decoder/LICENSE.xz",
+          "gitBlob": "4322122aecf1aecff317bd50334ba206dcb9ac41",
+          "bytes": 607,
+          "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1",
+          "historicalGitBlob": "4322122aecf1aecff317bd50334ba206dcb9ac41",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/xz-decoder/build-manifest.json",
+          "gitBlob": "e8fa89bf5fd8bfe9122c4084ab768ba47a199832",
+          "bytes": 744,
+          "sha256": "e19ead93e66c068b8e6895a2645d005048cf23539299a7639b78c9d5e12e5a2f",
+          "historicalGitBlob": "e8fa89bf5fd8bfe9122c4084ab768ba47a199832",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/xz-decoder/within-xz-decoder.mjs",
+          "gitBlob": "a808acbd06c16706647e3cbbd5d566ddbdd1472d",
+          "bytes": 7059,
+          "sha256": "35374014c67945c3684012457c4cb78e8f6089783fd1e5afb91dd09d2ecaa95c",
+          "historicalGitBlob": "a808acbd06c16706647e3cbbd5d566ddbdd1472d",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/xz-decoder/within-xz-decoder.wasm",
+          "gitBlob": "4f1c4829313ebc54d81e9613435ae4acb86e3f59",
+          "bytes": 69691,
+          "sha256": "76cf9c5d37dbf1796d6e5312ad35ec63fadacdeb57b877c028b9d75e5ae1e86d",
+          "historicalGitBlob": "4f1c4829313ebc54d81e9613435ae4acb86e3f59",
+          "sameHistoricalBytes": true
+        }
+      ],
+      "removedHistoricalFiles": [],
+      "unchanged": true
+    },
+    {
+      "id": "archive7z",
+      "reproductionKind": "native-source",
+      "output": "public/engines/archive7z",
+      "historicalCommit": "5e46a6611865cc0c20400e34899c6c1da7861954",
+      "files": [
+        {
+          "path": "public/engines/archive7z/LICENSE.libarchive",
+          "gitBlob": "9d0bcf81ff613bf5f36d71983b75e20cd0f69213",
+          "bytes": 3089,
+          "sha256": "30e556b3959e3985d66efefec5eaac51d4995053caa1d3cffe6eb916f146f229",
+          "historicalGitBlob": "9d0bcf81ff613bf5f36d71983b75e20cd0f69213",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/archive7z/LICENSE.xz",
+          "gitBlob": "4322122aecf1aecff317bd50334ba206dcb9ac41",
+          "bytes": 607,
+          "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1",
+          "historicalGitBlob": "4322122aecf1aecff317bd50334ba206dcb9ac41",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/archive7z/build-manifest.json",
+          "gitBlob": "5684c845b444a6388afcb438b13a7fb9a0ff72ef",
+          "bytes": 1356,
+          "sha256": "f244ad41a35b0587af4a73c57a5aba9464ebcca3fe1192f07baa4ddfa07ddf0e",
+          "historicalGitBlob": "5684c845b444a6388afcb438b13a7fb9a0ff72ef",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/archive7z/within-archive7z.mjs",
+          "gitBlob": "a28aac20e0ea77c94b34ebd510781d703469d8f6",
+          "bytes": 18964,
+          "sha256": "077afcbb5e63fc965be6dd3b56119d88f5cbea3facd37252c6ec6f2a6d903718",
+          "historicalGitBlob": "a28aac20e0ea77c94b34ebd510781d703469d8f6",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/archive7z/within-archive7z.wasm",
+          "gitBlob": "f7f1fe552c4296a1f4cca38ee4dd1711836960ab",
+          "bytes": 375821,
+          "sha256": "d114dafdb05fb6207e5ab84ce38166699707808e636be8ba3d779536f0019983",
+          "historicalGitBlob": "f7f1fe552c4296a1f4cca38ee4dd1711836960ab",
+          "sameHistoricalBytes": true
+        }
+      ],
+      "removedHistoricalFiles": [],
+      "unchanged": true
+    },
+    {
+      "id": "tiff",
+      "reproductionKind": "native-source",
+      "output": "public/engines/tiff",
+      "historicalCommit": "5e46a6611865cc0c20400e34899c6c1da7861954",
+      "files": [
+        {
+          "path": "public/engines/tiff/LICENSE.libjpeg-turbo",
+          "gitBlob": "2ca7680d46e5d3013ff1f3ed38eabee8b221248a",
+          "bytes": 5622,
+          "sha256": "e10114e6e40f3d0311c401ca25245ac5ef459a43c20f976fd63f03e816f5741f",
+          "historicalGitBlob": "2ca7680d46e5d3013ff1f3ed38eabee8b221248a",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/tiff/LICENSE.libpng",
+          "gitBlob": "1b765ae9f96abea77d3d9a88c543e3b5f4725813",
+          "bytes": 5345,
+          "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+          "historicalGitBlob": "1b765ae9f96abea77d3d9a88c543e3b5f4725813",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/tiff/LICENSE.libtiff",
+          "gitBlob": "d1f235328b3f4f63bd5d0596dc74cdd591dfc6bd",
+          "bytes": 2409,
+          "sha256": "b6704cc58ca31d3f4048218772bac575dd579666553afdd3524be0b6b069f3c9",
+          "historicalGitBlob": "d1f235328b3f4f63bd5d0596dc74cdd591dfc6bd",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/tiff/LICENSE.zlib",
+          "gitBlob": "b7a69d058e616651eae27b3f90c0b7fd36c099b2",
+          "bytes": 1002,
+          "sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2",
+          "historicalGitBlob": "b7a69d058e616651eae27b3f90c0b7fd36c099b2",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/tiff/build-manifest.json",
+          "gitBlob": "0e2bfd271a5a6346f8a7fc61c7b5ae141fb6ef3b",
+          "bytes": 1697,
+          "sha256": "449942cd96207edd26a532f10afcf8f12e5dbf27fc7b9c4cedded929e9811dad",
+          "historicalGitBlob": "0e2bfd271a5a6346f8a7fc61c7b5ae141fb6ef3b",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/tiff/within-tiff.mjs",
+          "gitBlob": "98444932c455eee0d1f25e72441b4cb6eef2926d",
+          "bytes": 22687,
+          "sha256": "2cbddf31168eeb0628d828e66903934f790951d8d64103eb4a02e6a6a8a08fe3",
+          "historicalGitBlob": "98444932c455eee0d1f25e72441b4cb6eef2926d",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/tiff/within-tiff.wasm",
+          "gitBlob": "445aa62a96a72fed282cf1a857bcf731407960ea",
+          "bytes": 1403576,
+          "sha256": "932cec5bf67aaee658578a1eadfa69419c962ebcb673703b62e31c987ea27b5c",
+          "historicalGitBlob": "445aa62a96a72fed282cf1a857bcf731407960ea",
+          "sameHistoricalBytes": true
+        }
+      ],
+      "removedHistoricalFiles": [],
+      "unchanged": true
+    },
+    {
+      "id": "jxl",
+      "reproductionKind": "native-source",
+      "output": "public/engines/jxl",
+      "historicalCommit": "5e46a6611865cc0c20400e34899c6c1da7861954",
+      "files": [
+        {
+          "path": "public/engines/jxl/LICENSE.brotli",
+          "gitBlob": "33b7cdd2dbaeddce1e35aa1a13f63d71154dc42f",
+          "bytes": 1084,
+          "sha256": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94",
+          "historicalGitBlob": "33b7cdd2dbaeddce1e35aa1a13f63d71154dc42f",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl/LICENSE.highway",
+          "gitBlob": "f49a4e16e68b128803cc2dcea614603632b04eac",
+          "bytes": 11356,
+          "sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1",
+          "historicalGitBlob": "f49a4e16e68b128803cc2dcea614603632b04eac",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl/LICENSE.libjxl",
+          "gitBlob": "c66034b105f23d108a51b45c846d5b5c194cc229",
+          "bytes": 1508,
+          "sha256": "8405932022a556380c2d8c272eff154a923feb197233f348ce5f7334fb0a5ede",
+          "historicalGitBlob": "c66034b105f23d108a51b45c846d5b5c194cc229",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl/LICENSE.libpng",
+          "gitBlob": "1b765ae9f96abea77d3d9a88c543e3b5f4725813",
+          "bytes": 5345,
+          "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+          "historicalGitBlob": "1b765ae9f96abea77d3d9a88c543e3b5f4725813",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl/LICENSE.skcms",
+          "gitBlob": "6c7c5be360194ef93331dfb2b0c01114ad9c263f",
+          "bytes": 1635,
+          "sha256": "e59bb5c5c6ba426a9ac4ba9fe667ad14c5166b12aa25be8af1d122b14fbe2e36",
+          "historicalGitBlob": "6c7c5be360194ef93331dfb2b0c01114ad9c263f",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl/LICENSE.zlib",
+          "gitBlob": "b7a69d058e616651eae27b3f90c0b7fd36c099b2",
+          "bytes": 1002,
+          "sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2",
+          "historicalGitBlob": "b7a69d058e616651eae27b3f90c0b7fd36c099b2",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl/PATENTS.libjxl",
+          "gitBlob": "c95b8f4105f210ceb06fe638d033d13b24e227a2",
+          "bytes": 1333,
+          "sha256": "91915f8ae056a68a3c5bdf05d9f6f78bb6903e27a8ca3a8434c9e4ac87300575",
+          "historicalGitBlob": "c95b8f4105f210ceb06fe638d033d13b24e227a2",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl/build-manifest.json",
+          "gitBlob": "81eff3bfd3d70bd3ff82c96b8f86f12071fc0f99",
+          "bytes": 1383,
+          "sha256": "7ba3df4003c6f1d4c2425337256600e3f621f2159157761df048592844b40e87",
+          "historicalGitBlob": "81eff3bfd3d70bd3ff82c96b8f86f12071fc0f99",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl/within-jxl.mjs",
+          "gitBlob": "8cdc2da73456f0893cd90c8c69e24f7c4c7675a1",
+          "bytes": 20455,
+          "sha256": "a3e202d75fe1a38ad592c7d95ad5dc66d8c8a28318a39d9f28b5f93c180afa5e",
+          "historicalGitBlob": "8cdc2da73456f0893cd90c8c69e24f7c4c7675a1",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl/within-jxl.wasm",
+          "gitBlob": "442557d457bc7b91e10cba73eb18f781744c5383",
+          "bytes": 871680,
+          "sha256": "41006c178a8dd8f611c542c800fbd2d2a297f0171812b6bf14ab6f06f7d94e2b",
+          "historicalGitBlob": "442557d457bc7b91e10cba73eb18f781744c5383",
+          "sameHistoricalBytes": true
+        }
+      ],
+      "removedHistoricalFiles": [],
+      "unchanged": true
+    },
+    {
+      "id": "jxl-inspector",
+      "reproductionKind": "native-source",
+      "output": "public/engines/jxl-inspector",
+      "historicalCommit": "c0c09a17813fd79fa1ffee21bb71f2ecc6beaab5",
+      "files": [
+        {
+          "path": "public/engines/jxl-inspector/LICENSE.brotli",
+          "gitBlob": "33b7cdd2dbaeddce1e35aa1a13f63d71154dc42f",
+          "bytes": 1084,
+          "sha256": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94",
+          "historicalGitBlob": "33b7cdd2dbaeddce1e35aa1a13f63d71154dc42f",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-inspector/LICENSE.highway",
+          "gitBlob": "f49a4e16e68b128803cc2dcea614603632b04eac",
+          "bytes": 11356,
+          "sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1",
+          "historicalGitBlob": "f49a4e16e68b128803cc2dcea614603632b04eac",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-inspector/LICENSE.libjxl",
+          "gitBlob": "c66034b105f23d108a51b45c846d5b5c194cc229",
+          "bytes": 1508,
+          "sha256": "8405932022a556380c2d8c272eff154a923feb197233f348ce5f7334fb0a5ede",
+          "historicalGitBlob": "c66034b105f23d108a51b45c846d5b5c194cc229",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-inspector/LICENSE.libpng",
+          "gitBlob": "ea6df986cb6a743738771689876215dfdd81dcc5",
+          "bytes": 5345,
+          "sha256": "16d9daaafbf63a31a5bdc91d4600972548fef5aaa1244202393288dbd079c49a",
+          "historicalGitBlob": "ea6df986cb6a743738771689876215dfdd81dcc5",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-inspector/LICENSE.skcms",
+          "gitBlob": "6c7c5be360194ef93331dfb2b0c01114ad9c263f",
+          "bytes": 1635,
+          "sha256": "e59bb5c5c6ba426a9ac4ba9fe667ad14c5166b12aa25be8af1d122b14fbe2e36",
+          "historicalGitBlob": "6c7c5be360194ef93331dfb2b0c01114ad9c263f",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-inspector/PATENTS.libjxl",
+          "gitBlob": "c95b8f4105f210ceb06fe638d033d13b24e227a2",
+          "bytes": 1333,
+          "sha256": "91915f8ae056a68a3c5bdf05d9f6f78bb6903e27a8ca3a8434c9e4ac87300575",
+          "historicalGitBlob": "c95b8f4105f210ceb06fe638d033d13b24e227a2",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-inspector/build-manifest.json",
+          "gitBlob": "0b14c3818419445961a973794ed9da801a8e2d74",
+          "bytes": 863,
+          "sha256": "87aaf08e3745877348fc695854104d406b0c2da5144ca7c8eb9b263972f5c68a",
+          "historicalGitBlob": "0b14c3818419445961a973794ed9da801a8e2d74",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-inspector/within-jxl-inspector.mjs",
+          "gitBlob": "4d41199fdfbe76c3eab5ef71ec9676895136c639",
+          "bytes": 18172,
+          "sha256": "794c49fe4e69d8fed9b66075e798fc5f36811e0cd9a3c2e01d8329f52701ef7a",
+          "historicalGitBlob": "4d41199fdfbe76c3eab5ef71ec9676895136c639",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-inspector/within-jxl-inspector.wasm",
+          "gitBlob": "e57a115865906a38933a9efe811f111ffdbd7ae5",
+          "bytes": 751368,
+          "sha256": "46bb51cbfc7eda9a6b0d8aa01eb7fe4e11d655350ad5d2f87b0d2cc7dc19baae",
+          "historicalGitBlob": "e57a115865906a38933a9efe811f111ffdbd7ae5",
+          "sameHistoricalBytes": true
+        }
+      ],
+      "removedHistoricalFiles": [],
+      "unchanged": true
+    },
+    {
+      "id": "jxl-encoder",
+      "reproductionKind": "native-source",
+      "output": "public/engines/jxl-encoder",
+      "historicalCommit": "5e46a6611865cc0c20400e34899c6c1da7861954",
+      "files": [
+        {
+          "path": "public/engines/jxl-encoder/LICENSE.brotli",
+          "gitBlob": "33b7cdd2dbaeddce1e35aa1a13f63d71154dc42f",
+          "bytes": 1084,
+          "sha256": "3d180008e36922a4e8daec11c34c7af264fed5962d07924aea928c38e8663c94",
+          "historicalGitBlob": "33b7cdd2dbaeddce1e35aa1a13f63d71154dc42f",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-encoder/LICENSE.highway",
+          "gitBlob": "f49a4e16e68b128803cc2dcea614603632b04eac",
+          "bytes": 11356,
+          "sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1",
+          "historicalGitBlob": "f49a4e16e68b128803cc2dcea614603632b04eac",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-encoder/LICENSE.libjxl",
+          "gitBlob": "c66034b105f23d108a51b45c846d5b5c194cc229",
+          "bytes": 1508,
+          "sha256": "8405932022a556380c2d8c272eff154a923feb197233f348ce5f7334fb0a5ede",
+          "historicalGitBlob": "c66034b105f23d108a51b45c846d5b5c194cc229",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-encoder/LICENSE.libpng",
+          "gitBlob": "ea6df986cb6a743738771689876215dfdd81dcc5",
+          "bytes": 5345,
+          "sha256": "16d9daaafbf63a31a5bdc91d4600972548fef5aaa1244202393288dbd079c49a",
+          "historicalGitBlob": "ea6df986cb6a743738771689876215dfdd81dcc5",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-encoder/LICENSE.skcms",
+          "gitBlob": "6c7c5be360194ef93331dfb2b0c01114ad9c263f",
+          "bytes": 1635,
+          "sha256": "e59bb5c5c6ba426a9ac4ba9fe667ad14c5166b12aa25be8af1d122b14fbe2e36",
+          "historicalGitBlob": "6c7c5be360194ef93331dfb2b0c01114ad9c263f",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-encoder/PATENTS.libjxl",
+          "gitBlob": "c95b8f4105f210ceb06fe638d033d13b24e227a2",
+          "bytes": 1333,
+          "sha256": "91915f8ae056a68a3c5bdf05d9f6f78bb6903e27a8ca3a8434c9e4ac87300575",
+          "historicalGitBlob": "c95b8f4105f210ceb06fe638d033d13b24e227a2",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-encoder/build-manifest.json",
+          "gitBlob": "522534e61746bf58e7eee3c3c4b7484bc75cd595",
+          "bytes": 1212,
+          "sha256": "f6c0a26a42bc4a1f1425acf730947e6e64f664a58bf067e5dbda48ad20a7b04e",
+          "historicalGitBlob": "522534e61746bf58e7eee3c3c4b7484bc75cd595",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-encoder/within-jxl-encoder.mjs",
+          "gitBlob": "1aec81b5c80c04988af3f143e015cc5cb1a91cbd",
+          "bytes": 18451,
+          "sha256": "15d504cc9aeccf9d20963329d93d7a6b860f21c46675c8df690d963f8ca66879",
+          "historicalGitBlob": "1aec81b5c80c04988af3f143e015cc5cb1a91cbd",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/jxl-encoder/within-jxl-encoder.wasm",
+          "gitBlob": "f2b9aebd03a6fd1f26fd0448ed0d7487503f2e6d",
+          "bytes": 2774650,
+          "sha256": "fafb17cbd0b2e3e03ca7f6e2dd632fc0978da5436b46943b9246fa3a2006a315",
+          "historicalGitBlob": "f2b9aebd03a6fd1f26fd0448ed0d7487503f2e6d",
+          "sameHistoricalBytes": true
+        }
+      ],
+      "removedHistoricalFiles": [],
+      "unchanged": true
+    },
+    {
+      "id": "avif",
+      "reproductionKind": "native-source",
+      "output": "public/engines/avif",
+      "historicalCommit": "5e46a6611865cc0c20400e34899c6c1da7861954",
+      "files": [
+        {
+          "path": "public/engines/avif/LICENSE.ffmpeg",
+          "gitBlob": "65c5ca88a67c30becee01c5a8816d964b03862f9",
+          "bytes": 7651,
+          "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768",
+          "historicalGitBlob": "65c5ca88a67c30becee01c5a8816d964b03862f9",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif/LICENSE.libaom",
+          "gitBlob": "fc340c37643472ced912d5acc4ec21a722505e30",
+          "bytes": 1316,
+          "sha256": "4764a286d8b2faeaf42f4418e7d7a28d58fc8fd4d00a3d0a7f44b0a4099de7f2",
+          "historicalGitBlob": "fc340c37643472ced912d5acc4ec21a722505e30",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif/LICENSE.libavif",
+          "gitBlob": "350eb9d15ce1553438b09b8cd14c803e86da316b",
+          "bytes": 20415,
+          "sha256": "165abf92cc04b39e80d29cadea7a6a7e8fddf59407d4ad2616507a7ebe8216f9",
+          "historicalGitBlob": "350eb9d15ce1553438b09b8cd14c803e86da316b",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif/LICENSE.libpng",
+          "gitBlob": "1b765ae9f96abea77d3d9a88c543e3b5f4725813",
+          "bytes": 5345,
+          "sha256": "bdb0a645ea18c60507d0368379b1ac5474b92255fcc2d115e07486a7672ba526",
+          "historicalGitBlob": "1b765ae9f96abea77d3d9a88c543e3b5f4725813",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif/LICENSE.zlib",
+          "gitBlob": "b7a69d058e616651eae27b3f90c0b7fd36c099b2",
+          "bytes": 1002,
+          "sha256": "e32ff4e00d9d94930537635291da39e7e612703334bf6fde8c7f1686fe8a45a2",
+          "historicalGitBlob": "b7a69d058e616651eae27b3f90c0b7fd36c099b2",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif/PATENTS.libaom",
+          "gitBlob": "fc4de9edf8952978e0a84b51cab0f1e37fc47ef7",
+          "bytes": 5701,
+          "sha256": "661fb8e504744e95587b556b94a58343448300606a41bea8c7a9b97125696e61",
+          "historicalGitBlob": "fc4de9edf8952978e0a84b51cab0f1e37fc47ef7",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif/build-manifest.json",
+          "gitBlob": "82ffbc1e92e006127aea25877cb0cf85bfeabac3",
+          "bytes": 1376,
+          "sha256": "34d568c2389106bbef1a9d3f8e620bb159e6b17761057772c30e557046968ebd",
+          "historicalGitBlob": "82ffbc1e92e006127aea25877cb0cf85bfeabac3",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif/within-avif.mjs",
+          "gitBlob": "23c9c5cbff1305540448d30cc3257c01adda632d",
+          "bytes": 23811,
+          "sha256": "4042844911f5c2e1b79d6d28f7a9331767a13bb38e4b1b5fe4fc50c371c3673b",
+          "historicalGitBlob": "23c9c5cbff1305540448d30cc3257c01adda632d",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif/within-avif.wasm",
+          "gitBlob": "2a0ea233a7ea09c1c979d4823e536dead04d4738",
+          "bytes": 2705965,
+          "sha256": "99f89091871a9ef5b7d2eee9d2e5a90ba581309840251329ab6c147bce84388f",
+          "historicalGitBlob": "2a0ea233a7ea09c1c979d4823e536dead04d4738",
+          "sameHistoricalBytes": true
+        }
+      ],
+      "removedHistoricalFiles": [],
+      "unchanged": true
+    },
+    {
+      "id": "avif-encoder",
+      "reproductionKind": "native-source",
+      "output": "public/engines/avif-encoder",
+      "historicalCommit": "5e46a6611865cc0c20400e34899c6c1da7861954",
+      "files": [
+        {
+          "path": "public/engines/avif-encoder/LICENSE.ffmpeg",
+          "gitBlob": "65c5ca88a67c30becee01c5a8816d964b03862f9",
+          "bytes": 7651,
+          "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768",
+          "historicalGitBlob": "65c5ca88a67c30becee01c5a8816d964b03862f9",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif-encoder/LICENSE.libaom",
+          "gitBlob": "fc340c37643472ced912d5acc4ec21a722505e30",
+          "bytes": 1316,
+          "sha256": "4764a286d8b2faeaf42f4418e7d7a28d58fc8fd4d00a3d0a7f44b0a4099de7f2",
+          "historicalGitBlob": "fc340c37643472ced912d5acc4ec21a722505e30",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif-encoder/PATENTS.libaom",
+          "gitBlob": "fc4de9edf8952978e0a84b51cab0f1e37fc47ef7",
+          "bytes": 5701,
+          "sha256": "661fb8e504744e95587b556b94a58343448300606a41bea8c7a9b97125696e61",
+          "historicalGitBlob": "fc4de9edf8952978e0a84b51cab0f1e37fc47ef7",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif-encoder/build-manifest.json",
+          "gitBlob": "82bba962dda2b39ce031dc739bb49029983dda74",
+          "bytes": 1344,
+          "sha256": "9f0a75c27537f383deb74e3ffd0a5dfd536e5bc1946a674700c10c9cf89cafd5",
+          "historicalGitBlob": "82bba962dda2b39ce031dc739bb49029983dda74",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif-encoder/within-avif-animation-encoder.mjs",
+          "gitBlob": "6b8185f7ea57cbf2d388952d903569f71d5f3f5f",
+          "bytes": 28818,
+          "sha256": "d2ef7d1dee45267662e20e31844d4caa0f11e170847892a8af460498c9f18019",
+          "historicalGitBlob": "6b8185f7ea57cbf2d388952d903569f71d5f3f5f",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif-encoder/within-avif-animation-encoder.wasm",
+          "gitBlob": "69692fe3182be0c3c71af6cfa329bc58593fd3d5",
+          "bytes": 4509195,
+          "sha256": "4f1d2902897f39f32bc22078bdce2d1ffb67ca70978a4bac0783f1430955085f",
+          "historicalGitBlob": "69692fe3182be0c3c71af6cfa329bc58593fd3d5",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif-encoder/within-avif-encoder.mjs",
+          "gitBlob": "eabbd6411ab5bf1f78e1c45cb0e7bdbe069cfecf",
+          "bytes": 28798,
+          "sha256": "8e0678831354ebef4ec4b6da985726b9c61cab85e408a2e7f41cbc2829b4a854",
+          "historicalGitBlob": "eabbd6411ab5bf1f78e1c45cb0e7bdbe069cfecf",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/avif-encoder/within-avif-encoder.wasm",
+          "gitBlob": "e01894986a827749fb26041f64b4c2e9eb722414",
+          "bytes": 4509195,
+          "sha256": "4c28a20a06cb480344d2488307fe41c3842255f1df5607e7058bc974a9ec0a03",
+          "historicalGitBlob": "e01894986a827749fb26041f64b4c2e9eb722414",
+          "sameHistoricalBytes": true
+        }
+      ],
+      "removedHistoricalFiles": [],
+      "unchanged": true
+    },
+    {
+      "id": "svg",
+      "reproductionKind": "pinned-package-copy",
+      "output": "public/engines/svg",
+      "historicalCommit": "5e46a6611865cc0c20400e34899c6c1da7861954",
+      "files": [
+        {
+          "path": "public/engines/svg/build-manifest.json",
+          "gitBlob": "790e4af9998b6f29e7455009af7e62fd25f5b89c",
+          "bytes": 749,
+          "sha256": "354d9ab9ba1af3fb9ca717ad9156016890524670eadcef1f8ca6316806bedc99",
+          "historicalGitBlob": "790e4af9998b6f29e7455009af7e62fd25f5b89c",
+          "sameHistoricalBytes": true
+        },
+        {
+          "path": "public/engines/svg/resvg.wasm",
+          "gitBlob": "61332307053bd0ed8bf49d398367a9b2ea0ef4ab",
+          "bytes": 2478606,
+          "sha256": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70",
+          "historicalGitBlob": "61332307053bd0ed8bf49d398367a9b2ea0ef4ab",
+          "sameHistoricalBytes": true
+        }
+      ],
+      "removedHistoricalFiles": [],
+      "unchanged": true
+    }
+  ],
+  "allPublishedEnginesSourceRebuilt": false,
+  "originalGoalComplete": false,
+  "summary": {
+    "publishedDirectories": 12,
+    "nativeSourceRecipes": 11,
+    "pinnedPackageCopies": [
+      "svg"
+    ],
+    "whollyUnchangedHistoricalDirectories": 11,
+    "changedFiles": [
+      "public/engines/remux/build-manifest.json"
+    ]
+  }
+}
