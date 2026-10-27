@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-27 — Existing single FFmpeg CI40502517454 now observed TERMINAL
+SUCCESS at9fe17321: aggregate8 published modules+currentmanifest/licenses exact,
+1201s rebuild, verification/cleanup success, mismatch upload skipped. Full log
+896504B/SHA0365a066…ecb151. Other engine/browser/verify jobs not selected; no
+memory, scaling, SVG source-build or whole-goal acceptance follows.
+`evidence/2026-10-27-ffmpeg-reproduction-terminal.json`.
+Private SVG dependency reconstruction preparation:16focused PASS, affected lint,
+Bash syntax and parsed workflow PASS. Exact upstream Cargo manifest1704B/SHA
+72880b4d…40a9 archived; five exact-anchor changes add Rust floor/fullGit revisions/
+fixedbindgen family. Checks reject alteredsource/missingchecksum/badGit/bindgenskew.
+Manual resolver scope excludes engine/browser/verify,15minute cap, fresh owned
+toolchain/caches removed in EXIT. No hosted lock result or source compile claimed yet.
+
 2026-10-27 — CI40502517454/9fe17321 is confirmed IN_PROGRESS after one
 engine=ffmpeg-remux dispatch: exact aggregate8 published modules+currentmanifest,
 noDocker, no successful unrelated engine/browser replay. No result yet; scheduled
