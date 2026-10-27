@@ -26,7 +26,8 @@ import { definedWasmMemories, requireExplicitWasmMaximum } from "../images/resvg
 import { compareStaticAbi, publishedSha256 } from "../images/resvg-source/postprocess-contract.mjs";
 
 assert.equal(process.platform, "win32");
-const allocationDiagnostic = process.argv[2] === "--allocator-diagnostic";
+const noDomSnapshotDiagnostic = process.argv[2] === "--allocator-diagnostic-no-dom-snapshots";
+const allocationDiagnostic = process.argv[2] === "--allocator-diagnostic" || noDomSnapshotDiagnostic;
 assert.ok(process.argv.length === 2 || (process.argv.length === 3 && allocationDiagnostic));
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
@@ -36,6 +37,7 @@ const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: 
   formula: "(peak simultaneous complete Chromium process-tree private bytes during the entire small suite - earliest stable clean blank private bytes) / 1048576",
   publicEngineReplacement: false, wholeGoalComplete: false, fullStressOrOomAcceptance: false, blankSamples: [], realmSamples: [],
   allocationDiagnostic, diagnosticPerturbsMemory: allocationDiagnostic, allocatorCaptures: [], allocatorErrors: [],
+  domSnapshotRecording: !noDomSnapshotDiagnostic, screenshotAndNetworkRecording: true,
   memoryAcceptance: false, realmTransport: allocationDiagnostic ? "existing-Playwright-nonflattened-adapter" : "existing-browser-websocket-flat-adapter" };
 const protectedFile = path.join(root, "test.mkv");
 const hashFile = async file => { const digest = createHash("sha256");
@@ -140,7 +142,7 @@ try {
   realms = allocationDiagnostic ? await connectPlaywrightRealmSampler(browser, origin) :
     await connectRealmSampler(`ws://127.0.0.1:${Number(lines[0])}${lines[1]}`, origin);
   if (allocationDiagnostic) await captureAllocators("blank-after-baseline");
-  await context.tracing.start({ screenshots: true, snapshots: true, sources: false }); traceStarted = true;
+  await context.tracing.start({ screenshots: true, snapshots: !noDomSnapshotDiagnostic, sources: false }); traceStarted = true;
   const descriptor = path.join(runtime.directory, "descriptor.json"), resultFile = path.join(runtime.directory, "result.json");
   await writeFile(descriptor, JSON.stringify({ publicAcceptance: false, runtime: runtime.directory, candidateFile, sha256: pins.wasmSha256, endpoint }), { flag: "wx" });
   observer.setPhase("small-svg-suite"); report.suiteStartedAt = new Date().toISOString();

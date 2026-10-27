@@ -1,10 +1,41 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { gunzipSync } from "node:zlib";
+import { sha } from "../images/resvg-source/source-pins.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url), "utf8");
+test("real allocator diagnostic preserves its strict memory failure, counter archives, unavailable heaps and executed sources", async () => {
+  const proof = JSON.parse(await read("evidence/2026-10-27-svg-allocator-terminal.json")), raw = await readFile(new URL("../" + proof.rawReport, import.meta.url));
+  assert.equal(raw.length, proof.rawReportBytes); assert.equal(sha(raw), proof.rawReportSha256);
+  const row = JSON.parse(raw); assert.deepEqual([row.stats.expected, row.stats.unexpected, row.stats.skipped], [10, 0, 0]);
+  assert.equal(row.memory.incrementalPrivateMiB, 297.49609375); assert.ok(row.memory.incrementalPrivateMiB > 250);
+  assert.equal(row.memory.diagnosticPerturbed, true); assert.equal(row.memoryAcceptance, false);
+  assert.equal(row.allocatorCaptures.length, 3); assert.deepEqual(row.allocatorErrors, []);
+  assert.deepEqual(proof.workerHeapSamples, { available: 11, unavailable: 22, unavailableIsNullNotZero: true });
+  for (const capture of row.allocatorCaptures) {
+    assert.equal(capture.result.acceptanceMetric, false); assert.equal(capture.result.perturbsMemory, true);
+    const archive = capture.result.archive, zipped = await readFile(new URL("../" + archive.path.replaceAll("\\", "/"), import.meta.url));
+    assert.equal(zipped.length, archive.bytes); assert.equal(sha(zipped), archive.sha256);
+    const trace = gunzipSync(zipped, { maxOutputLength: 8388608 });
+    assert.equal(trace.length, archive.restoredBytes); assert.equal(sha(trace), archive.restoredSha256);
+  }
+  const sourceArchive = JSON.parse(await read(proof.sourceArchive)); assert.equal(sourceArchive.sourceCommit, row.executedHead);
+  for (const [file, digest] of Object.entries(row.sourcePins)) {
+    const old = sourceArchive.files[file]; let bytes;
+    if (old) { bytes = gunzipSync(Buffer.from(old.gzipBase64, "base64"), { maxOutputLength: 32768 }); assert.equal(bytes.length, old.bytes); assert.equal(sha(bytes), old.sha256); }
+    else bytes = await readFile(new URL("../" + file, import.meta.url));
+    assert.equal(sha(bytes), digest, file);
+  }
+  assert.equal(row.ownedRuntimeRemoved, true); assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent"));
+  assert.deepEqual(row.protectedOriginalAfter, row.protectedOriginalBefore);
+});
 test("SVG allocation mode is explicit, bounded, non-accepting and keeps full-tree/quality/cleanup gates", async () => {
   const source = await read("scripts/test-source-built-svg-candidate.mjs");
   assert.match(source, /process.argv\[2\] === "--allocator-diagnostic"/);
+  assert.match(source, /process.argv\[2\] === "--allocator-diagnostic-no-dom-snapshots"/);
+  assert.match(source, /allocationDiagnostic = .* \|\| noDomSnapshotDiagnostic/);
+  assert.match(source, /screenshots: true, snapshots: !noDomSnapshotDiagnostic, sources: false/);
+  assert.match(source, /domSnapshotRecording: !noDomSnapshotDiagnostic, screenshotAndNetworkRecording: true/);
   assert.match(source, /process.argv.length === 2 \|\| \(process.argv.length === 3 && allocationDiagnostic\)/);
   assert.match(source, /diagnosticPerturbsMemory: allocationDiagnostic/); assert.match(source, /memoryAcceptance: false/);
   assert.match(source, /report.allocatorCaptures.length < 3/); assert.match(source, /}, 12000\)/);

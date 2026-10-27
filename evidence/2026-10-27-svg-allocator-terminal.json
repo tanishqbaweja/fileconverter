@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 1,
+  "rawReport": "evidence/2026-10-27T15-24-27-195Z-source-svg-browser.json",
+  "rawReportBytes": 3398227,
+  "rawReportSha256": "4deb235222da4186f6f3bb8d1aa93c751af5c2a6b162115f6cf7a6b2b62f9549",
+  "executedHead": "a82138323e450cdb87c5ad0294bee17fb2322426",
+  "conclusion": "Ten functional cases passed; perturbed full-tree memory still FAILED, not acceptance",
+  "stats": {
+    "startTime": "2026-10-27T15:25:10.155Z",
+    "duration": 14933.34,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "scope": "Private bounded allocator attribution, not allocation stacks or release acceptance",
+  "allocationCauseProven": false,
+  "domSnapshotRecording": true,
+  "screenshotAndNetworkRecording": true,
+  "realmTransport": "existing-Playwright-nonflattened-adapter",
+  "diagnosticPerturbsMemory": true,
+  "primaryLimitMiB": 250,
+  "perturbedIncrementalPrivateMiB": 297.49609375,
+  "nativeValidSamples": 146,
+  "nativeUnavailableSamples": 0,
+  "baselineAdjusted": false,
+  "browserServicesDisabledByDriver": false,
+  "captures": [
+    {
+      "phase": "blank-after-baseline",
+      "scheduledAt": "2026-10-27T15:25:08.396Z",
+      "runnerStillLiveAtRequest": false,
+      "archive": {
+        "path": "output\\playwright\\2026-10-27T15-24-27-195Z-svg-blank-after-baseline.json.gz",
+        "bytes": 121166,
+        "sha256": "5f175cb541f16ea073fbc4772a8dba2d4a8b35f06ff1914078a0031d3463091a",
+        "restoredBytes": 1658302,
+        "restoredSha256": "f2b6af6a290e3b14d994b33fe3c6a81b65b1d53279dadaded320d180596bb094"
+      },
+      "mainRenderer": {
+        "pid": 42716,
+        "osPrivateBytesBeforeDump": 15097856,
+        "blinkSizeBytes": 917504,
+        "blinkMainSizeBytes": 917504,
+        "blinkWorkerSizeBytes": null,
+        "v8SizeBytes": 847928,
+        "v8MainSizeBytes": 847928,
+        "v8WorkerSizeBytes": null,
+        "mallocSizeBytes": 3893128,
+        "objectCounts": {
+          "blink_objects/DetachedScriptState": 0,
+          "blink_objects/Document": 0,
+          "blink_objects/Frame": 0,
+          "blink_objects/Node": 0,
+          "blink_objects/WorkerGlobalScope": 0
+        }
+      }
+    },
+    {
+      "phase": "scheduled-late-suite",
+      "scheduledAt": "2026-10-27T15:25:21.498Z",
+      "runnerStillLiveAtRequest": true,
+      "archive": {
+        "path": "output\\playwright\\2026-10-27T15-24-27-195Z-svg-scheduled-late-suite.json.gz",
+        "bytes": 135020,
+        "sha256": "868b738a58abe083998e3198ace97a64e6953904cb8556fac2d5674bd0c37f5c",
+        "restoredBytes": 1897546,
+        "restoredSha256": "b3bfc6020ed1a1ae251526aece23960a45defd49b221c01742c9540cea27e7bb"
+      },
+      "mainRenderer": {
+        "pid": 42716,
+        "osPrivateBytesBeforeDump": 216678400,
+        "blinkSizeBytes": 42991616,
+        "blinkMainSizeBytes": 39845888,
+        "blinkWorkerSizeBytes": 3145728,
+        "v8SizeBytes": 70149812,
+        "v8MainSizeBytes": 63559156,
+        "v8WorkerSizeBytes": 6590656,
+        "mallocSizeBytes": 60537318,
+        "objectCounts": {
+          "blink_objects/DetachedScriptState": 21,
+          "blink_objects/Document": 32,
+          "blink_objects/Frame": 32,
+          "blink_objects/Node": 11764,
+          "blink_objects/WorkerGlobalScope": 4
+        }
+      }
+    },
+    {
+      "phase": "post-suite",
+      "scheduledAt": "2026-10-27T15:25:25.474Z",
+      "runnerStillLiveAtRequest": false,
+      "archive": {
+        "path": "output\\playwright\\2026-10-27T15-24-27-195Z-svg-post-suite.json.gz",
+        "bytes": 134487,
+        "sha256": "d8416de1fe967b5f81d0369605c81bca1ba7d84301db57a43ceb8f7b72a0b5f7",
+        "restoredBytes": 1893816,
+        "restoredSha256": "1053b9148a775b18ae29d6c3bd8451b536c7109ecdcd7f5e7097cd26c3acaa22"
+      },
+      "mainRenderer": {
+        "pid": 42716,
+        "osPrivateBytesBeforeDump": 230141952,
+        "blinkSizeBytes": 49414144,
+        "blinkMainSizeBytes": 46268416,
+        "blinkWorkerSizeBytes": 3145728,
+        "v8SizeBytes": 75193924,
+        "v8MainSizeBytes": 67554692,
+        "v8WorkerSizeBytes": 7639232,
+        "mallocSizeBytes": 64374774,
+        "objectCounts": {
+          "blink_objects/DetachedScriptState": 9,
+          "blink_objects/Document": 16,
+          "blink_objects/Frame": 16,
+          "blink_objects/Node": 7614,
+          "blink_objects/WorkerGlobalScope": 4
+        }
+      }
+    }
+  ],
+  "workerHeapSamples": {
+    "available": 11,
+    "unavailable": 22,
+    "unavailableIsNullNotZero": true
+  },
+  "counterCategoriesOverlapDoNotSum": true,
+  "sourceArchive": "fixtures/source/svg-allocator-a8213832.json",
+  "failureTrace": {
+    "path": "output\\playwright\\2026-10-27T15-24-27-195Z-source-svg-failure.zip",
+    "bytes": 2892590,
+    "sha256": "f011fb04d9f37f3ad3ed10af80135e4d6b1f07499f3a1cae185128dbde63ee53"
+  },
+  "ownedRuntimeRemoved": true,
+  "ownedProcessIdentitiesAbsent": 4,
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "publicEngineReplacement": false,
+  "originalGoalComplete": false,
+  "next": "One diagnostic control toggles only Playwright DOM snapshot recording, retaining screenshot/network evidence, the alternate realm adapter, three allocator captures, all ten correctness assertions, normal services and full-tree250 MiB. This tests instrumentation retention, not a conversion optimization or acceptance claim."
+}

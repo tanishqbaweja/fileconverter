@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "baselineDiagnostic": "evidence/2026-10-27-svg-allocator-terminal.json",
+  "controlArgument": "--allocator-diagnostic-no-dom-snapshots",
+  "singleChangedVariable": "DOM snapshot recording true -> false",
+  "screenshotsAndNetworkRecordingRetained": true,
+  "sameEngineCandidateAndTenFunctionalAssertions": true,
+  "sameAlternateRealmAdapterAndThreeAllocatorProbes": true,
+  "sameNormalChromeServicesEarliestBlankAnd250MiBFullTreeGate": true,
+  "memoryPerturbationDisclosed": true,
+  "acceptanceMetric": false,
+  "productionCodeOrSharedSamplerChanged": false,
+  "focusedTests": { "passed": 24, "failed": 0, "skipped": 0 },
+  "affectedLint": "passed",
+  "sourceCompileOrPostprocessorReplayed": false,
+  "originalGoalComplete": false,
+  "hypothesis": "Snapshot recorder may contribute to the many retained document/frame objects; not proved by counters alone",
+  "next": "Run one diagnostic control, retain failures, compare same renderer allocator categories without summing overlaps or making an acceptance/performance claim."
+}

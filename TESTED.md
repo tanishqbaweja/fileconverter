@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-10-27 — DOM snapshot-only control preparation:24 scoped PASS/0fail/0skip
+and affected lint PASS. Screenshot/network evidence and all ten correctness/
+memory assertions retained. One variable only, diagnostic perturbation explicit;
+no conversion code/engine/shared-sampler changes or compiler/postprocessor replay.
+`evidence/2026-10-27-svg-snapshot-control-preparation.json`.
+
+2026-10-27 — Actual allocation probe:10 functional PASS, strict perturbed
+whole-tree memory FAILED297.4961 MiB. Three exact-byte allocator archives kept.
+Late main renderer32 documents/frames,38 MiB main Blink and60.6 MiB main V8;
+post-suite16 document/frame objects. Counters overlap and are not proof of which
+component retains objects. Worker transport recovered11 samples;22 remain null.
+All four owned identities absent, disposable runtime removed, original unchanged.
+`evidence/2026-10-27-svg-allocator-terminal.json`. Planned one-variable DOM-
+snapshot control retains screenshots/network and every correctness/memory rule;
+diagnostic-only, not an accepted speed/memory improvement.
+
 2026-10-27 — Explicit SVG allocation mode:23 focused checks PASS/0fail/0skip;
 affected lint PASS. These are preparation/mock/retained-evidence checks, not an
 executed diagnostic browser result. No full portable, compiler or unrelated

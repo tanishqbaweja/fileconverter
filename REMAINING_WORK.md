@@ -1,5 +1,28 @@
 # Remaining work audit
 
+2026-10-27 — Single-variable DOM-snapshot diagnostic control prepared and
+checked:24 focused PASS/0fail/0skip, affected lint PASS. New exact argument
+--allocator-diagnostic-no-dom-snapshots preserves screenshot/network recording,
+all ten independent correctness assertions, native observers, all processes,
+normal services, early baseline, alternate realm transport and three probes.
+No production/shared-sampler edits mixed in; it is not acceptance. See
+`evidence/2026-10-27-svg-snapshot-control-preparation.json`.
+
+2026-10-27 — One allocator diagnostic completed: ten functional cases still
+PASS; perturbed whole-suite memory FAILED297.4961 MiB, not acceptance. Three
+real bounded allocator captures retained; late main renderer contains32 documents/
+frames and about38 MiB main-thread Blink/60.6 MiB main V8, with much smaller
+worker Blink/V8. Post-suite still16 document/frame objects. These categories
+overlap: do not sum or claim allocation-stack causality. Alternate adapter obtained
+11 real worker heap samples;22 unavailable remain null. All owned processes/
+disposable runtime removed and original full SHA/size unchanged. See
+`evidence/2026-10-27-svg-allocator-terminal.json`.
+Next single-variable diagnostic control changes ONLY DOM snapshot recording;
+screenshots/network, native observer, alternate realm transport, three dumps,
+the ten assertions, normal services, earliest blank and250 MiB stay unchanged.
+It cannot confer acceptance and is not a conversion optimization. No shared
+sampler or production-engine changes mixed into this control.
+
 2026-10-27 — Allocation diagnostic preparation verified:23 focused tests PASS,
 zero failed/skipped; affected lint PASS. No browser result yet. Shared diagnostic
 helpers and the ten existing browser assertions are unchanged. See
