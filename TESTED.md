@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-27 — Explicit SVG allocation mode:23 focused checks PASS/0fail/0skip;
+affected lint PASS. These are preparation/mock/retained-evidence checks, not an
+executed diagnostic browser result. No full portable, compiler or unrelated
+stress replay. `evidence/2026-10-27-svg-allocator-preparation.json`.
+
+2026-10-27 — Preparing one explicit allocator diagnostic for the real SVG
+275.04 MiB failure. Same ten existing functional tests, unchanged normal-service
+Chrome/earliest blank/full-tree250 MiB checks and cleanup. At most three bounded
+memory-infra captures (blank-after-baseline, scheduled late suite, post-suite),
+with existing alternate realm transport and case start timestamps. No claim that
+a scheduled sample occurs during rasterization; no forced GC. Memory is marked
+diagnostically perturbed, never acceptance. Prior failing driver retained exactly
+in fixtures/source/svg-browser-51baf25e.json; no unchanged compiler rebuild.
+
 2026-10-27 — Full portable regression after private SVG implementation and
 actual browser result: 1,849 PASS/0fail/0skip/0cancel,557 files,109.503s.
 719 total files accounted for;162 prerequisite-bound qualification files NOT

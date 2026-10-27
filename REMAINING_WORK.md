@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-10-27 — Allocation diagnostic preparation verified:23 focused tests PASS,
+zero failed/skipped; affected lint PASS. No browser result yet. Shared diagnostic
+helpers and the ten existing browser assertions are unchanged. See
+`evidence/2026-10-27-svg-allocator-preparation.json` for exact scope and limits.
+
+2026-10-27 — The preceding turn was genuine progress, not an unfinished live
+job: source-built SVG ran correctly in all ten cases, while the whole-suite
+275.04 MiB memory failure remains authoritative. Current tree verified clean at
+e58b6d1b before this diagnostic change. Next explicit --allocator-diagnostic
+mode reuses the same cases/engine, keeps the original earliest blank baseline,
+normal services and 250 MiB gate, and samples bounded Chrome allocator counters
+after baseline, at a measured late-suite allowance, and after the suite. It also
+tries the already-existing alternate CDP realm adapter. Probes can perturb memory;
+this mode cannot confer acceptance even if a numeric result is below250 MiB.
+Exact old driver archived so prior failure evidence is not rebound to new code.
+No source compiler/postprocessor or unrelated browser/stress replay planned.
+
 2026-10-27 — End-of-cycle regression PASS: 1,849 portable tests across557
 files, zero failures/skips/cancellations in109.503s. All719 inventory files are
 accounted for;162 prerequisite-bound qualification files remain explicitly not

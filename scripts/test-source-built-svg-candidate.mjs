@@ -19,18 +19,24 @@ import { startParallelMemoryObserver } from "./lib/parallel-memory-observer.mjs"
 import { startChromiumMemoryMonitor } from "./lib/birth-aware-chromium-memory.mjs";
 import { sampleChromiumTree, stableWindow } from "./lib/chromium-private-memory.mjs";
 import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
+import { connectPlaywrightRealmSampler } from "./lib/chromium-attribution.mjs";
+import { captureLiveMemoryInfra } from "./lib/live-memory-infra.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
 import { definedWasmMemories, requireExplicitWasmMaximum } from "../images/resvg-source/memory-contract.mjs";
 import { compareStaticAbi, publishedSha256 } from "../images/resvg-source/postprocess-contract.mjs";
 
-assert.equal(process.platform, "win32"); assert.equal(process.argv.length, 2);
+assert.equal(process.platform, "win32");
+const allocationDiagnostic = process.argv[2] === "--allocator-diagnostic";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && allocationDiagnostic));
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
 const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: "running", sourcePins: {}, failures: [],
   scope: "Ten existing small SVG production UI/worker/I/O/validator/security/recovery tests with a private source-built Wasm response; not full stress/OOM/reproducibility or release acceptance",
   headed: false, nativePickerVerified: false, browserServicesDisabledByDriver: false,
   formula: "(peak simultaneous complete Chromium process-tree private bytes during the entire small suite - earliest stable clean blank private bytes) / 1048576",
-  publicEngineReplacement: false, wholeGoalComplete: false, fullStressOrOomAcceptance: false, blankSamples: [], realmSamples: [] };
+  publicEngineReplacement: false, wholeGoalComplete: false, fullStressOrOomAcceptance: false, blankSamples: [], realmSamples: [],
+  allocationDiagnostic, diagnosticPerturbsMemory: allocationDiagnostic, allocatorCaptures: [], allocatorErrors: [],
+  memoryAcceptance: false, realmTransport: allocationDiagnostic ? "existing-Playwright-nonflattened-adapter" : "existing-browser-websocket-flat-adapter" };
 const protectedFile = path.join(root, "test.mkv");
 const hashFile = async file => { const digest = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) digest.update(bytes); return digest.digest("hex"); };
@@ -38,7 +44,8 @@ const originalIdentity = async () => ({ bytes: (await stat(protectedFile)).size,
 const expectedOriginal = { bytes: 2958573265, sha256: "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" };
 const pins = JSON.parse(await readFile(path.join(root, "images/resvg-source/processed-candidate-input.json")));
 report.candidatePin = pins;
-let runtime, server, chrome, runner, browser, observer, nativeMonitor, realms, timer, pending = Promise.resolve();
+let runtime, server, chrome, runner, browser, observer, nativeMonitor, realms, timer, allocatorTimer;
+let pending = Promise.resolve(), allocatorPending = Promise.resolve();
 let serverBirth, chromeBirth, runnerBirth, observerBirth, serverLog = "", runnerLog = "", busy = false, traceStarted = false;
 const stopKnown = async (child, birth) => {
   if (!child || child.exitCode !== null || child.signalCode !== null) return;
@@ -48,7 +55,21 @@ const stopKnown = async (child, birth) => {
 const sourceFiles = ["scripts/test-source-built-svg-candidate.mjs", "tests/browser/image-conversions.spec.ts", "playwright.config.ts",
   "images/resvg-source/processed-candidate-input.json", "workers/conversion.worker.ts", "app/converter/ConverterApp.tsx",
   "lib/capability-registry.ts", "scripts/lib/birth-aware-chromium-memory.mjs", "scripts/lib/chromium-private-memory.mjs",
-  "scripts/lib/parallel-memory-observer.mjs", "scripts/lib/host-memory-preflight.mjs", "package-lock.json"];
+  "scripts/lib/parallel-memory-observer.mjs", "scripts/lib/host-memory-preflight.mjs", "package-lock.json",
+  "scripts/lib/chromium-attribution.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs"];
+const captureAllocators = async phase => {
+  assert.equal(allocationDiagnostic, true); assert.ok(report.allocatorCaptures.length < 3);
+  const row = { phase, scheduledAt: new Date().toISOString(), runnerStillLiveAtRequest: Boolean(runner && runner.exitCode === null), acceptanceMetric: false };
+  report.allocatorCaptures.push(row);
+  try {
+    const tree = await sampleChromiumTree(chrome.pid);
+    await mkdir(path.join(root, "output/playwright"), { recursive: true });
+    const archivePath = path.join(root, "output/playwright", `${stamp}-svg-${phase}.json.gz`);
+    row.result = await captureLiveMemoryInfra({ session: await browser.newBrowserCDPSession(), phase,
+      processes: tree.processes, archivePath });
+    row.result.archive.path = path.relative(root, archivePath); row.finishedAt = new Date().toISOString();
+  } catch (error) { row.error = String(error.stack ?? error); report.allocatorErrors.push(row.error); }
+};
 try {
   report.hostMemory = await inspectStressHostMemory(); assert.equal(report.hostMemory.safeToStart, true, "Unchanged 2 GiB physical/virtual safety floor");
   const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 1024 ** 3);
@@ -116,11 +137,18 @@ try {
       if (forbidden.length < 32) forbidden.push({ url: request.url().slice(0, 512), method: request.method() }); else forbiddenOverflow = true;
     }
   });
-  realms = await connectRealmSampler(`ws://127.0.0.1:${Number(lines[0])}${lines[1]}`, origin);
+  realms = allocationDiagnostic ? await connectPlaywrightRealmSampler(browser, origin) :
+    await connectRealmSampler(`ws://127.0.0.1:${Number(lines[0])}${lines[1]}`, origin);
+  if (allocationDiagnostic) await captureAllocators("blank-after-baseline");
   await context.tracing.start({ screenshots: true, snapshots: true, sources: false }); traceStarted = true;
   const descriptor = path.join(runtime.directory, "descriptor.json"), resultFile = path.join(runtime.directory, "result.json");
   await writeFile(descriptor, JSON.stringify({ publicAcceptance: false, runtime: runtime.directory, candidateFile, sha256: pins.wasmSha256, endpoint }), { flag: "wx" });
   observer.setPhase("small-svg-suite"); report.suiteStartedAt = new Date().toISOString();
+  // Prior recorded suite lasted17.45s and grew late. This is a scheduled probe,
+  // not a simulated progress value or a claim that rasterization is active.
+  if (allocationDiagnostic) allocatorTimer = setTimeout(() => {
+    allocatorPending = captureAllocators("scheduled-late-suite");
+  }, 12000);
   timer = setInterval(() => { if (busy) return; busy = true;
     pending = realms.sample().then(value => { report.realmSamples.push({ timestamp: new Date().toISOString(), ...value }); if (report.realmSamples.length > 256) report.realmSamples.shift(); })
       .catch(error => { report.realmSamplerError = String(error); }).finally(() => { busy = false; }); }, 1000);
@@ -130,24 +158,29 @@ try {
   for (const pipe of [runner.stdout, runner.stderr]) pipe.on("data", bytes => { runnerLog = (runnerLog + bytes).slice(-32768); });
   const completed = new Promise((resolve, reject) => { runner.once("error", reject); runner.once("exit", (code, signal) => { report.runnerSignal = signal; resolve(code); }); });
   runnerBirth = await queryReliableProcessIdentity(runner.pid); assert.ok(runnerBirth);
-  report.runnerExitCode = await completed; clearInterval(timer); await pending; report.suiteFinishedAt = new Date().toISOString();
+  report.runnerExitCode = await completed; clearInterval(timer); clearTimeout(allocatorTimer); await pending; report.suiteFinishedAt = new Date().toISOString();
   await observer.through(Date.now());
   report.memory = { ...observer.peaks(["small-svg-suite"]), limitMiB: 250, scope: "Entire ten-case small suite including validation; not scaling/stress/OOM acceptance" };
   assert.ok(report.memory.validSamples > 0 && report.memory.peak);
   report.memory.incrementalPrivateMiB = (report.memory.peak.privateBytes - report.blankBaseline.privateBytes) / 1048576;
+  report.memory.diagnosticPerturbed = allocationDiagnostic;
   const result = JSON.parse(await readFile(resultFile)); report.stats = result.stats;
   const cases = []; const collect = suites => { for (const suite of suites) { for (const spec of suite.specs ?? [])
-    cases.push({ title: spec.title, ok: spec.ok, tests: spec.tests.map(row => ({ status: row.status, results: row.results.map(value => ({ status: value.status, duration: value.duration, errors: value.errors })) })) }); collect(suite.suites ?? []); } };
+    cases.push({ title: spec.title, ok: spec.ok, tests: spec.tests.map(row => ({ status: row.status, results: row.results.map(value => ({ status: value.status, startTime: value.startTime, duration: value.duration, errors: value.errors })) })) }); collect(suite.suites ?? []); } };
   collect(result.suites); report.cases = cases; report.wasmRequests = wasmRequests;
   report.forbiddenRequests = forbidden; report.forbiddenRequestOverflow = forbiddenOverflow;
   assert.equal(report.runnerSignal, null); assert.equal(report.runnerExitCode, 0, runnerLog);
   assert.equal(report.stats.expected, 10); assert.equal(report.stats.unexpected, 0); assert.equal(report.stats.skipped, 0); assert.equal(report.stats.flaky, 0);
   assert.ok(wasmRequests > 0); assert.deepEqual(forbidden, []); assert.equal(forbiddenOverflow, false);
+  if (allocationDiagnostic) {
+    observer.setPhase("post-suite-diagnostic"); await allocatorPending; await captureAllocators("post-suite");
+    assert.deepEqual(report.allocatorErrors, []); assert.equal(report.allocatorCaptures.length, 3);
+  }
   assert.ok(report.memory.incrementalPrivateMiB <= 250, "Complete Chromium process-tree small-suite private-memory limit failed");
-  report.status = "passed-ten-private-small-svg-browser-cases-not-public-stress-acceptance";
+  report.status = allocationDiagnostic ? "completed-private-svg-allocation-diagnostic-not-memory-acceptance" : "passed-ten-private-small-svg-browser-cases-not-public-stress-acceptance";
 } catch (error) { report.status = "failed-private-svg-browser-qualification"; report.failures.push(String(error.stack ?? error)); process.exitCode = 1; }
 finally {
-  clearInterval(timer); await pending;
+  clearInterval(timer); clearTimeout(allocatorTimer); await pending; await allocatorPending;
   if (traceStarted) try {
     const tracePath = path.join(root, "output/playwright", stamp + "-source-svg-failure.zip");
     if (report.status.startsWith("failed")) { await mkdir(path.dirname(tracePath), { recursive: true });

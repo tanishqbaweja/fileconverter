@@ -23,7 +23,13 @@ test("real bounded source-built SVG renders through all ten existing browser cas
   assert.deepEqual(row.protectedOriginalAfter, row.protectedOriginalBefore);
   assert.equal(row.publicEngineReplacement, false); assert.equal(row.fullStressOrOomAcceptance, false);
   assert.equal(proof.allocationSourceProven, false); assert.equal(proof.workerRealmDiagnosticsContainUnavailableValues, true);
-  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await read(file)), digest, file);
+  const archive = await json("fixtures/source/svg-browser-51baf25e.json"); assert.equal(archive.sourceCommit, row.executedHead);
+  for (const [file, digest] of Object.entries(row.sourcePins)) {
+    const old = archive.files[file]; let source;
+    if (old) { source = gunzipSync(Buffer.from(old.gzipBase64, "base64"), { maxOutputLength: 32768 }); assert.equal(source.length, old.bytes); assert.equal(sha(source), old.sha256); }
+    else source = await read(file);
+    assert.equal(sha(source), digest, file);
+  }
 });
 test("first browser attempt remains a failed navigation control with zero engine fetches, unchanged original and completed owned cleanup", async () => {
   const row = await json("evidence/2026-10-27T15-02-07-989Z-source-svg-browser.json");
