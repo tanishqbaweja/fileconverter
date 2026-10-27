@@ -1,5 +1,28 @@
 # Remaining work audit
 
+2026-10-27 — Memory A/B did NOT complete. Installed Chrome156.0.8078.48 normal
+page-load measured production-only +71.33984375MiB (196 valid native samples,
+0 unavailable); the second clean blank session missed the unchanged 30s early
+stability deadline before loading the candidate. No static memory result, no
+benefit or conversion acceptance. A secondary taskkill error held scratch even
+though all recorded births were absent. Exact recovery rechecked native owners,
+source assets/time/path identities and reclaimed 188,512,156B from 2 owned dirs;
+no process killed, original full SHA unchanged, blocked trace targets untouched.
+`evidence/2026-10-27-static-shell-memory-cycle.json` and its raw/cleanup receipts.
+Do not extend/inflate baseline or replay six unchanged sessions. Static shell
+remains private; all memory/scaling/full-original requirements remain open.
+
+SDK CI40488562110/e8e3f21c is now TERMINAL CANCELLED, not live. Clean verify
+passed1782units/0fail/1skip and19privacy; image153, audio-source9 and audio-
+destination8 passed. Media-remux never reached tests; streaming stopped during
+case142of238 with no full summary and a target-crash message at cancellation.
+Do not count started cases as passed or dismiss that crash without evidence.
+Logs prove slow Azure APT downloads including a 27.4MB recommended speech model;
+streaming's validator install left only ~81s before cancellation. New bounded,
+no-recommendations setup and recovery-only selection are being prepared for
+the two incomplete suites; successful suites will not be replayed.
+`evidence/2026-10-27-cloudflare-ci-terminal.json`. No full-matrix/release claim.
+
 2026-10-27 — Same-application static-shell experiment remains PRIVATE. Actual Home/
 ConverterApp and identical CSS render without the RSC bootstrap; initial JS is
 610,537 -> 529,619 bytes (gzip 159,343 -> 134,675). Corrected private preview passes

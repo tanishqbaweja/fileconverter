@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-10-27 — Actual whole-Chromium page-load diagnostic remains INCOMPLETE:
+Chrome156.0.8078.48 normal URL/services, production +71.33984375MiB with196valid/
+0missing native load samples. Second blank failed early stability before any
+candidate navigation; no valid A/B or memory benefit. Secondary taskkill error
+retained disposable scratch despite all measured births absent. Recovery verified
+closed native identities, exact paths/creation windows/asset pins/no later edits
+and removed188,512,156B/2dirs, no process kills/no original change/no blocked trace
+touch. An initial recovery reference guard correctly removed nothing until its
+own launch ancestry was identified by native birth order. Exact raw/failure/
+cleanup are linked by `evidence/2026-10-27-static-shell-memory-cycle.json`.
+11focused unit checks pass; no unchanged six-case replay or relaxed baseline.
+
+SDK CI40488562110/e8e3f21c TERMINAL CANCELLED. Verify clean-install/build/lint/TS/
+1782pass0fail1skip/19privacy34.2s succeeded; image153passed4.2m, audio-source9/
+21.7s and audio-destination8/22.1s succeeded. Media-remux did not reach tests;
+streaming started142of238, no aggregate completion summary. Target crash logged
+at cancellation is retained, not presumed harmless. Slow APT/model downloads
+used most of45minute budget; validator install completed at11:11:04 with only
+~81s before cancellation. Full matrix remains incomplete; only those two suites
+need source-bound recovery after setup correction. Exact job/time/count receipt:
+`evidence/2026-10-27-cloudflare-ci-terminal.json`. Do not re-wait terminal run.
+
 2026-10-27 — PRIVATE static-shell candidate uses actual Home/ConverterApp, same
 CSS and existing conversion workers/engines. Bootstrap JS 610,537 -> 529,619B;
 gzip 159,343 -> 134,675B. This is artifact-size evidence, NOT measured RAM or

@@ -1,5 +1,22 @@
 # Dependency and hosting review
 
+## Latest verification boundary — October 27
+
+SDK CI40488562110/e8e3f21c is terminalcancelled, not complete success. Its clean
+verify job passed install/build/lint/TS/1782units+1skip/19privacy; images153 and
+audio17 passed. Media-remux did not reach tests; streaming lacks a completion
+summary (case142of238 started, target crash at cancellation). APT spent much of
+the45minute budget downloading optional recommendations including27.4MB speech
+data. Preserve all tests and required validators; bound setup and recover only
+those two suites. `evidence/2026-10-27-cloudflare-ci-terminal.json`.
+
+Normal-service Chrome156 page-load A/B is unproven: production-only+71.34MiB,
+second blank never stabilized within the fixed deadline. No memory formula,
+feature flags or public support changed. Exact recovery reclaimed188,512,156B
+of held copies/profile scratch after native birth/path/content/time checks;
+no process killed, original unchanged, no blocked trace touched. Static shell
+remains private. `evidence/2026-10-27-static-shell-memory-cycle.json`.
+
 ## Private static-shell feasibility — October 27
 
 An isolated build renders actual Home/ConverterApp at build time and hydrates the

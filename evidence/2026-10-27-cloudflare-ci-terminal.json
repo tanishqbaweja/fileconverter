@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "scope": "Terminal current-SDK hosted regression, partially completed; not a full browser/release/native/memory pass",
+  "runId": 40488562110,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40488562110",
+  "headSha": "e8e3f21cd28b3af9aeb4d90b3c6900d64bcb7b9b",
+  "status": "completed",
+  "conclusion": "cancelled",
+  "completedAt": "2026-10-27T11:12:28Z",
+  "verify": {
+    "jobId": 122136428086,
+    "conclusion": "success",
+    "cleanNpmCi": true,
+    "productionBuild": true,
+    "lint": true,
+    "typeScript": true,
+    "portableUnits": { "tests": 1783, "passed": 1782, "failed": 0, "skipped": 1, "durationMs": 45161.390348 },
+    "privacyOffline": { "passed": 19, "durationSeconds": 34.2 },
+    "publicEvidenceEntries": 404
+  },
+  "completedBrowserSuites": [
+    { "jobId": 122136428607, "suite": "image-conversions", "passed": 153, "duration": "4.2m" },
+    { "jobId": 122136428562, "suite": "audio-source-metadata", "passed": 9, "durationSeconds": 21.7 },
+    { "jobId": 122136428535, "suite": "audio-destination-scopes", "passed": 8, "durationSeconds": 22.1 }
+  ],
+  "incompleteBrowserSuites": [
+    { "jobId": 122136428546, "suite": "media-remux", "conclusion": "cancelled", "testsReached": false,
+      "activeStageAtCancellation": "Install independent native validators",
+      "observedPackageDownload": "pocketsphinx-en-us 27.4 MB from azure.archive.ubuntu.com",
+      "packageDownloadStartedAt": "2026-10-27T11:02:55.8712888Z", "cancelledAt": "2026-10-27T11:12:25.0828856Z" },
+    { "jobId": 122136428560, "suite": "streaming-conversions", "conclusion": "cancelled", "completeSummaryAvailable": false,
+      "lastStartedCase": 142, "totalSelectedCases": 238, "startedCasesAreNotPassedCases": true,
+      "validatorInstallCompletedAt": "2026-10-27T11:11:04.2039498Z", "testStepStartedAt": "2026-10-27T11:11:04.3880575Z",
+      "targetCrashedLoggedAt": "2026-10-27T11:12:24.8724298Z", "cancelledAt": "2026-10-27T11:12:25.1403189Z",
+      "crashCauseConfirmed": false, "note": "Crash was logged at cancellation, not dismissed as harmless or claimed to be an independently diagnosed converter defect" }
+  ],
+  "cancellationInterpretation": "Both incomplete jobs stopped near the configured 45-minute deadline. Logs prove slow validator installation; the API/log does not explicitly identify who initiated cancellation.",
+  "recoveryPlan": "Keep the complete tests/validators; avoid optional APT recommendations, bound the validator setup step, and select only these two incomplete suites in a new source-bound recovery run",
+  "nativeReproductionSelected": false,
+  "fullBrowserMatrixPassed": false,
+  "originalScopeComplete": false
+}

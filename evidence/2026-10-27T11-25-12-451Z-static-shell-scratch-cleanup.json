@@ -1,0 +1,973 @@
+{
+  "schemaVersion": 1,
+  "scope": "Closed exact failed static-shell memory experiment scratch only; no input or converted media, no blocked trace target touched",
+  "sourceReceipt": "evidence\\2026-10-27T11-11-16-393Z-static-shell-memory.json",
+  "recordedAt": "2026-10-27T11:25:12.451Z",
+  "noProcessesKilled": true,
+  "noLiveReferences": true,
+  "observations": [
+    {
+      "identity": {
+        "pid": 37060,
+        "parentPid": 4004,
+        "createdAt": "2026-10-27T11:11:21.9951810Z"
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 19280,
+        "parentPid": 4004,
+        "createdAt": "2026-10-27T11:11:25.6604190Z"
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 24268,
+        "parentPid": 4004,
+        "createdAt": "2026-10-27T11:11:26.2003170Z"
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 19280,
+        "parentPid": 4004,
+        "createdAt": "2026-10-27T11:11:25.6604190Z"
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 6460,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:25.8543041Z",
+        "creationFileTime": "134375730858543041",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 14116,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:25.9807447Z",
+        "creationFileTime": "134375730859807447",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 19280,
+        "parentPid": 4004,
+        "createdAt": "2026-10-27T11:11:25.6604192Z",
+        "creationFileTime": "134375730856604192",
+        "executableName": "chrome.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 23912,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:25.9230271Z",
+        "creationFileTime": "134375730859230271",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 24300,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:25.8184379Z",
+        "creationFileTime": "134375730858184379",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 29944,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:25.8273713Z",
+        "creationFileTime": "134375730858273713",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": {
+        "pid": 29944,
+        "parentPid": 29140,
+        "createdAt": "2026-10-27T11:24:53.4004170Z"
+      }
+    },
+    {
+      "identity": {
+        "pid": 36484,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:25.6861329Z",
+        "creationFileTime": "134375730856861329",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 36532,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:25.9875679Z",
+        "creationFileTime": "134375730859875679",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 36980,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:26.6829948Z",
+        "creationFileTime": "134375730866829948",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 44504,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:26.3689727Z",
+        "creationFileTime": "134375730863689727",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 45800,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:25.9741371Z",
+        "creationFileTime": "134375730859741371",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 34208,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:27.2359151Z",
+        "creationFileTime": "134375730872359151",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 32904,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.3343762Z",
+        "creationFileTime": "134375730883343762",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 7964,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.3542244Z",
+        "creationFileTime": "134375730883542244",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 30984,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.3530341Z",
+        "creationFileTime": "134375730883530341",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 46780,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.3910644Z",
+        "creationFileTime": "134375730883910644",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 14100,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.4978082Z",
+        "creationFileTime": "134375730884978082",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 18016,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.4975100Z",
+        "creationFileTime": "134375730884975100",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 32168,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.4969143Z",
+        "creationFileTime": "134375730884969143",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 47540,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.5415406Z",
+        "creationFileTime": "134375730885415406",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 35600,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.6337038Z",
+        "creationFileTime": "134375730886337038",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 30520,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.7216509Z",
+        "creationFileTime": "134375730887216509",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 17728,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.8928409Z",
+        "creationFileTime": "134375730888928409",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 20424,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.8997445Z",
+        "creationFileTime": "134375730888997445",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 48828,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:28.8893499Z",
+        "creationFileTime": "134375730888893499",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 17396,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:29.2361324Z",
+        "creationFileTime": "134375730892361324",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 27348,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:29.2326381Z",
+        "creationFileTime": "134375730892326381",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 35192,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:29.6027939Z",
+        "creationFileTime": "134375730896027939",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 36132,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:38.7139543Z",
+        "creationFileTime": "134375730987139543",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 34000,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:41.2788170Z",
+        "creationFileTime": "134375731012788170",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 5972,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:41.6259482Z",
+        "creationFileTime": "134375731016259482",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 32904,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:41.9826345Z",
+        "creationFileTime": "134375731019826345",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 24216,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:56.8072340Z",
+        "creationFileTime": "134375731168072340",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 26404,
+        "parentPid": 19280,
+        "createdAt": "2026-10-27T11:11:57.0595307Z",
+        "creationFileTime": "134375731170595307",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 42504,
+        "parentPid": 4004,
+        "createdAt": "2026-10-27T11:12:34.3955000Z"
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 31996,
+        "parentPid": 4004,
+        "createdAt": "2026-10-27T11:12:34.8706290Z"
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 42504,
+        "parentPid": 4004,
+        "createdAt": "2026-10-27T11:12:34.3955000Z"
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 3604,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:35.2941930Z",
+        "creationFileTime": "134375731552941930",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 12412,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:34.9199514Z",
+        "creationFileTime": "134375731549199514",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 20436,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:35.4868498Z",
+        "creationFileTime": "134375731554868498",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 20856,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:34.4193939Z",
+        "creationFileTime": "134375731544193939",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 23812,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:34.6190018Z",
+        "creationFileTime": "134375731546190018",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 26352,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:34.9299416Z",
+        "creationFileTime": "134375731549299416",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 29888,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:35.3905506Z",
+        "creationFileTime": "134375731553905506",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 32868,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:34.5528610Z",
+        "creationFileTime": "134375731545528610",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 33468,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:35.5213942Z",
+        "creationFileTime": "134375731555213942",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 35912,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:35.1897878Z",
+        "creationFileTime": "134375731551897878",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 38648,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:34.8408486Z",
+        "creationFileTime": "134375731548408486",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 40376,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:34.8840687Z",
+        "creationFileTime": "134375731548840687",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 42504,
+        "parentPid": 4004,
+        "createdAt": "2026-10-27T11:12:34.3955007Z",
+        "creationFileTime": "134375731543955007",
+        "executableName": "chrome.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 43916,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:34.7816124Z",
+        "creationFileTime": "134375731547816124",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 44088,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:35.2998939Z",
+        "creationFileTime": "134375731552998939",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 25224,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:37.1335516Z",
+        "creationFileTime": "134375731571335516",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 29212,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:37.1582431Z",
+        "creationFileTime": "134375731571582431",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 43972,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:37.3323078Z",
+        "creationFileTime": "134375731573323078",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 44784,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:37.3334029Z",
+        "creationFileTime": "134375731573334029",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 44868,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:37.3720657Z",
+        "creationFileTime": "134375731573720657",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 44900,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:37.3326396Z",
+        "creationFileTime": "134375731573326396",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 8548,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:37.5062031Z",
+        "creationFileTime": "134375731575062031",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 21460,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:37.6509331Z",
+        "creationFileTime": "134375731576509331",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 43396,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:37.7297374Z",
+        "creationFileTime": "134375731577297374",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 43568,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:37.7294225Z",
+        "creationFileTime": "134375731577294225",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 47008,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:37.7714207Z",
+        "creationFileTime": "134375731577714207",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 7356,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:38.0218627Z",
+        "creationFileTime": "134375731580218627",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 48360,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:38.0750759Z",
+        "creationFileTime": "134375731580750759",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 38420,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:38.4704065Z",
+        "creationFileTime": "134375731584704065",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 24492,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:47.8305178Z",
+        "creationFileTime": "134375731678305178",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 22836,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:47.9491487Z",
+        "creationFileTime": "134375731679491487",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 29024,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:48.6847053Z",
+        "creationFileTime": "134375731686847053",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    },
+    {
+      "identity": {
+        "pid": 44624,
+        "parentPid": 42504,
+        "createdAt": "2026-10-27T11:12:50.0117340Z",
+        "creationFileTime": "134375731700117340",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      "current": null
+    }
+  ],
+  "inspectionAncestry": [
+    47004,
+    4328,
+    47920,
+    34912,
+    10768
+  ],
+  "directories": [
+    {
+      "directory": "H:\\Github Repositories\\fileconverter\\work\\static-shell-candidate-6fwxHy",
+      "identity": {
+        "dev": "1887170595",
+        "ino": "38843546793533047"
+      },
+      "files": 144,
+      "bytes": 94675730,
+      "inventorySha256": "71e20d799bfa4d9894720c10fc1c7315badaab4df09f4d92f23c349d536dc4cf",
+      "removed": true
+    },
+    {
+      "directory": "H:\\Github Repositories\\fileconverter\\work\\shell-memory-case-whJ6pR",
+      "identity": {
+        "dev": "1887170595",
+        "ino": "4503599634823678"
+      },
+      "files": 822,
+      "bytes": 93836426,
+      "inventorySha256": "d6b9d8906bbc837c01ae84decd32cf1112f6db409da1157446f77829dd0a663a",
+      "removed": true
+    }
+  ],
+  "removedBytes": 188512156
+}

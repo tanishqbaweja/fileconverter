@@ -6,6 +6,25 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-27
 
+Memory comparison failed safely at the second blank stability gate. Only one
+production page-load result exists (+71.33984375MiB on installedChrome156), not
+a candidate comparison or conversion-memory pass. Keep static shell private;
+do not extend the baseline or repeat unchanged six-case runs. All held scratch
+has now been reclaimed with exact native ownership/path/asset proof:188,512,156B,
+no process kills or protected-original change. 11 focused checks pass.
+`evidence/2026-10-27-static-shell-memory-cycle.json`.
+
+SDK CI40488562110/e8e3f21c is terminalCANCELLED. Verification, image and both audio
+suites succeeded (1782units+1skip/19privacy/153image/17audio). Media-remux never
+ran; streaming incomplete at startedcase142of238, target-crash at cancellation
+unresolved. Slow optional APT downloads consumed setup budget. Next recover
+ONLY those two complete suites using bounded/no-recommendations setup; no rerun
+of successful suites, no native engine rebuild, no full-matrix acceptance.
+`evidence/2026-10-27-cloudflare-ci-terminal.json`. All original54/codec/memory/
+scaling/browser/native/release requirements remain in force and incomplete.
+
+### Historical checkpoint before terminal CI / memory attempt
+
 Private static-shell prototype now builds actual existing app and passes the
 unchanged 19-test headless privacy/offline/hosting suite (51.1s). CSS identical;
 initial JS saves 80,918B raw / 24,668B gzip. These are NOT measured memory or
