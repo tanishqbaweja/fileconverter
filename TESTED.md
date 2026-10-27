@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-27 — Private SVG compiler CI40516685917 at3989398f confirmed
+QUEUED, not a successful or started compilation. One dispatch, exact retained
+lock+recordednightly, no resolver or normalgate replay.26focused/0fail/0skip,
+affectedlint/CI parse PASS. Next check not before14:08 UTC (~10minutes,
+hardcap20), follow exacthandle not duplicate. No published replacement or
+browser/memory claim. `evidence/2026-10-27-svg-source-compile-dispatch.json`.
+
 2026-10-27 — Private SVG compiler probe implemented, not executed yet:
 exact retainedlock+recordednightly, --locked --release --lib wasm32 target,2jobs;
 rawWasm structure/hash only, no instantiation/conversion/publicreplacement.
