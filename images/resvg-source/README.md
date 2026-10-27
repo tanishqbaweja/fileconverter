@@ -19,3 +19,19 @@ different, qualify correctness, fidelity, memory, privacy and cleanup before any
 replacement. This preparation never writes `public/engines`, runs a conversion,
 uses Docker or accesses `test.mkv`. Strict source-build completeness remains
 failed until the original source-reproduction requirement is actually met.
+
+The retained `Cargo.candidate.lock` is the actual verified output of run
+40513908373 (158 packages). Do not rerun the resolver unchanged.
+
+`svg-source-compile` attempts one release build with that exact lock,
+nightly-2023-12-11 / rustc d86d65bbc, and wasm32-unknown-unknown. It verifies the
+nightly distribution manifest and compiler version; Cargo cannot change the
+lock. Dedicated owned Rust/Cargo/target/temp directories are removed in finally
+after normal subprocess exit. Interrupted/unverified children prevent deletion.
+Only a bounded report and, if successful, a raw Wasm candidate survive for the
+next processing step. Logs retain a 32KiB tail plus full-stream hash/byte count.
+
+Raw Rust Wasm is **not** yet wasm-bindgen output, an ABI-compatible replacement,
+a render test, exact publication reproduction or memory qualification. Failed
+compilation is retained as failed and must be diagnosed before any retry. Public
+engine files and conversion code are never written by this stage.

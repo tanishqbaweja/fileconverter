@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-10-27 — Next SVG source step now implemented privately: exact retained
+lockf420db19, recordednightly2023-12-11/rustcd86d65bbc, releasewasm32 build,
+verified distribution manifest, no resolver update or publicengine write. One
+manual svg-source-compile CI scope (20minute cap) retains bounded failure report
+or rawpre-bindgen candidate, finally removes identity-owned compiler/cache/temp
+after normal command exit. Signal/live compiler prevents deletion, not hidden.
+This stage is NOT bindgen processing/browserABI/fidelity/memory acceptance.
+No source compilation has yet run; validate then dispatch one measured attempt.
+Preparation26focused/0fail/0skip, affected-file lint and parsedCI PASS. One
+source compile attempt will be dispatched; allow10minutes initially for fresh
+recorded compiler download and actual source build,20minute jobcap. Check
+interval is an estimate, not a promised finish; no unchanged resolver replay.
+
 2026-10-27 — SVG private lock CI40513908373/55f7948a TERMINAL SUCCESS,
 observed only after13:49 UTC boundary. Exact10,942B artifact digest and3-entry
 allowlist verified; retained candidate lock36,671B/SHAf420db19…f17b03 has158

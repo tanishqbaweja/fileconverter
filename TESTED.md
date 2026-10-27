@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-27 — Private SVG compiler probe implemented, not executed yet:
+exact retainedlock+recordednightly, --locked --release --lib wasm32 target,2jobs;
+rawWasm structure/hash only, no instantiation/conversion/publicreplacement.
+Owned Rust/Cargo/target/temp finally cleanup;32KiB logtail/fullhash; bounded
+failure/success report and optional16MiBmax rawcandidate. Separate20minute
+manualCI excludes resolver/normalengine/browser gates, keeps failed jobs failed.
+Preparation26focused/0fail/0skip, affectedlint and parsedCI PASS; actual compiler
+result remains separate until executed. Existing full1816portable success is
+historical, not relabelled as including later compiler-contract tests.
+
 2026-10-27 — Private SVG lock CI40513908373 TERMINAL SUCCESS. Downloaded
 10,942B artifact SHA802de8b8…bc1aa checked before decoding only3 allowlisted
 entries. Real36,671B lockSHAf420db19…f17b03 revalidated:158total/151registry/
