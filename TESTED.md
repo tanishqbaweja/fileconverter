@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-10-27 — Private SVG lock CI40513908373 TERMINAL SUCCESS. Downloaded
+10,942B artifact SHA802de8b8…bc1aa checked before decoding only3 allowlisted
+entries. Real36,671B lockSHAf420db19…f17b03 revalidated:158total/151registry/
+6Git; Cargo.pinned.toml exactly recomputed from originalmanifestSHA+five edits.
+Retained `images/resvg-source/Cargo.candidate.lock` and rawcompactprovenance.
+Scratch/toolchain EXIT success, publicengines unchanged, otherjobs skipped.
+No compiler/bindgen/Wasm/browser/memory/historicalgraph acceptance claimed.
+Next compiler step, no resolverreplay. `evidence/2026-10-27-svg-source-lock-terminal.json`.
+Post-result15focused/0fail/0skip and result-test lint PASS; publicengine diff
+empty. Earlier full1816 portable pass remains its own checkpoint, not relabelled
+as including the two subsequently added lock-result assertions.
+
 2026-10-27 — Corrected full portable run1816PASS/0FAIL/0skip in91.8s,
 548files;162 qualification files explicitly separate/unrun, no publicacceptance.
 First1811PASS/5FAIL remains failed. Historical recipes retain exact oldSHA and

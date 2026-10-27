@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "status": "resolved-private-candidate-lock-not-source-build-acceptance",
+  "pins": {
+    "upstream": "9ca058462ac529120c8cc84ddcd6fef644cc5406",
+    "cargoTomlSha256": "72880b4d3e64bd62caf033579a21057c97ed069002bdef67a0029b7fc6e340a9",
+    "resvg": "3495d8705b302d6d266748516973606ca9657906",
+    "woff2": "88cce4cd07da2c3f35839068c6f73672700cfc8b",
+    "wasmBindgen": "0.2.92",
+    "jsSys": "0.3.69",
+    "resolverToolchain": "1.90.0",
+    "compilerToolchain": "nightly-2023-12-11",
+    "resolverManifestSha256": "489c19f20d331765ab2835661eb546de90f6446a107a8db83045e7371e45cae2"
+  },
+  "lock": {
+    "bytes": 36671,
+    "sha256": "f420db19c74bdeae19de5bad2f0a7f02628f65a8dea5c4221b0b183a76f17b03",
+    "packages": 158,
+    "registryPackages": 151,
+    "gitPackages": 6,
+    "initialCandidateLockNotHistoricalPublicationLock": true
+  },
+  "patchedCargoSha256": "6a743ccc3685714a83ecb3dfa8b8facdb55596482880eb8f2f01887a2d845496",
+  "cargoVersion": "cargo 1.90.0 (840b83a10 2025-07-30)",
+  "sourceCompilationAttempted": false,
+  "publishedEngineChanged": false,
+  "conversionRun": false,
+  "byteExactPublicationReproduction": false,
+  "historicalDependencyGraphRecovered": false,
+  "compilerCompatibilityVerified": false,
+  "browserOrMemoryAcceptance": false,
+  "remaining": "Review lock, then compile with recorded nightly and pinned wasm-bindgen tools; different bytes remain private until qualified"
+}
