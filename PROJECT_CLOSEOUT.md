@@ -4,7 +4,24 @@ This is an execution order, not a completion claim or a calendar promise. The
 original specification and `REMAINING_WORK.md`'s 54 requirement rows remain the
 acceptance contract. Private engines are not public supported profiles.
 
-## Current execution point — 2026-10-26
+## Current execution point — 2026-10-27
+
+The complete unchanged Windows headless 19-test privacy/offline/hosting suite
+passes in 50.4s on direct workerd serving the same built worker, with a bounded
+read-only loopback ASSETS service. Nine HTTP refusals and all bootstrap/optimizer
+preflights pass. Original size/full SHA unchanged, owned server/runner births
+absent and runtime removed. No app-body drain/cancel or browser/memory relaxation.
+Receipts: `evidence/2026-10-27T10-04-13-785Z-owned-privacy-offline.json` and
+`evidence/2026-10-27T10-03-39-662Z-host-method-runtime.json`.
+Wrangler/Miniflare and explicit-cancel controls stay failed; they are not relabelled
+as direct-runtime passes. Hosted CI40355630340/fe97640c is terminal SUCCESS:
+1767 passed / 1 skipped, 19 privacy in 42.6s, clean npm-ci/build/lint/TS/404 audit.
+Do not re-wait/restart that run or replay rejected controls. Nine dependency
+groups, native/release verification, B02–B09 and the full original 54-row scope
+remain incomplete. Next investigate the compatible Cloudflare/framework migration
+and remaining memory/codec/browser work, not another unchanged local replay.
+
+### Historical checkpoints (superseded status, retained failure evidence)
 
 Next: follow current-source CI40355630340/fe97640c (last verified QUEUED/0jobs)
 to terminal, no duplicate dispatch.22focused/lint/build/TS pass; nine advisory

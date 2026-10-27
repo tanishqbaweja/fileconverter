@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "scope": "Closed owned HTTP diagnostic cache/log/fixture cleanup only, not media or acceptance",
+  "sourceReceipt": "evidence\\2026-10-26T16-42-06-029Z-host-method-runtime.json",
+  "directory": "H:\\Github Repositories\\fileconverter\\work\\method-runtime-cEMWRl",
+  "identity": {
+    "dev": "1887170595",
+    "ino": "84442493014881301"
+  },
+  "processObservations": [
+    {
+      "pid": 26092,
+      "current": null
+    },
+    {
+      "pid": 47076,
+      "current": null
+    },
+    {
+      "pid": 13140,
+      "current": null
+    },
+    {
+      "pid": 8540,
+      "current": null
+    }
+  ],
+  "noLiveReferences": true,
+  "files": [
+    {
+      "path": "probe-false.json",
+      "bytes": 143,
+      "sha256": "3d75717f44c6f963121d7da6fdce867b1fffb67880e23b247f1d9db9169678f1"
+    },
+    {
+      "path": "probe-true.json",
+      "bytes": 218,
+      "sha256": "8a72c8f81618a60b2089c2a1971b5363e07afa09cb6145095f69783afb14c9df"
+    },
+    {
+      "path": "probe.mjs",
+      "bytes": 283,
+      "sha256": "f9a17a2a57e5a367660a198e91da15dd7429843e958d195206dab4b394832ac6"
+    },
+    {
+      "path": "wrangler-logs\\wrangler-2026-10-26_16-39-30_003.log",
+      "bytes": 3095019,
+      "sha256": "1576490963da8927adea93191f18e336f429e48a8907ca618c393b46ac240038"
+    },
+    {
+      "path": "update-check\\wrangler-latest.json",
+      "bytes": 47,
+      "sha256": "2bf4828a4bcd40ef01bfc8f2bbfc645ab187304361cbbc31ac7f880fa0502577"
+    },
+    {
+      "path": "same-async-unbundled-no-assets\\v3\\cache\\miniflare-CacheObject\\metadata.sqlite",
+      "bytes": 4096,
+      "sha256": "4c34b48e33536be849e9810707c97ff2b5625bb5cbf1637dbe384cfffdda3b9d"
+    },
+    {
+      "path": "same-async-unbundled-no-assets\\v3\\cache\\miniflare-CacheObject\\metadata.sqlite-shm",
+      "bytes": 32768,
+      "sha256": "ef77a4247992331a1b279c903699a57d507779b9b2bcb1927e14913c25379c60"
+    },
+    {
+      "path": "same-async-unbundled-no-assets\\v3\\cache\\miniflare-CacheObject\\metadata.sqlite-wal",
+      "bytes": 8272,
+      "sha256": "89e91a4e47918495c0dd56eded3973392270751e4743a1b32e4df451546c0783"
+    },
+    {
+      "path": "assets\\static.txt",
+      "bytes": 15,
+      "sha256": "6ca28a70bd54cb8eb8af30cf1933449bcecde74d4898f80de87222662a4faedc"
+    }
+  ],
+  "bytes": 3140861,
+  "removed": true
+}

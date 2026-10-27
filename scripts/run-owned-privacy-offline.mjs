@@ -13,9 +13,11 @@ import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runti
 import { inspectStressHostMemory } from "./lib/host-memory-preflight.mjs";
 import { queryReliableProcessIdentity } from "./lib/reliable-owned-identity.mjs";
 import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mjs";
+import { startDirectWorkerdHost } from "./lib/direct-workerd-host.mjs";
 
 assert.equal(process.platform, "win32", "This wrapper uses Windows birth-identity cleanup");
-assert.equal(process.argv.length, 2);
+const directWorkerd = process.argv[2] === "--direct-workerd";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && directWorkerd));
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile);
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), sha = value => createHash("sha256").update(value).digest("hex");
 const hashFile = async file => { const digest = createHash("sha256");
@@ -32,12 +34,13 @@ const readBoundedHtml = async response => {
 };
 const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: "running",
   scope: "Complete unchanged production privacy/offline/static-host browser specs; not process-memory, stress, OS-picker or native reproduction acceptance",
-  headedCoverage: false, conversionMemoryAcceptance: false, publicPromotion: false, sourcePins: {}, failures: [] };
+  headedCoverage: false, conversionMemoryAcceptance: false, publicPromotion: false, sourcePins: {}, failures: [],
+  hostingRuntime: directWorkerd ? "direct-workerd-same-built-worker-loopback-static-assets" : "wrangler-miniflare" };
 for (const file of ["package.json", "package-lock.json", "playwright.config.ts", "tests/browser/privacy-offline.spec.ts",
   "tests/browser/static-host-policy.spec.ts", "scripts/run-owned-privacy-offline.mjs", "worker/index.ts", "lib/static-host-request-policy.ts",
-  "app/converter/ConverterApp.tsx", "lib/capability-registry.ts", ".openai/hosting.json", "vite.config.ts"])
+  "app/converter/ConverterApp.tsx", "lib/capability-registry.ts", ".openai/hosting.json", "vite.config.ts", "scripts/lib/direct-workerd-host.mjs"])
   report.sourcePins[file] = sha(await readFile(path.join(root, file)));
-let runtime, server, runner, serverBirth, runnerBirth, serverLog = "", runnerLog = "", result;
+let runtime, server, runner, serverBirth, runnerBirth, serverLog = "", runnerLog = "", result, directHost;
 const stop = async (child, identity) => {
   if (!child || child.exitCode !== null || child.signalCode !== null) return;
   assert.ok(identity, "Never kill an identity-unverified process");
@@ -61,13 +64,19 @@ try {
     socket.listen(0, "127.0.0.1", () => { const port = socket.address().port; socket.close(error => error ? reject(error) : resolve(port)); }); });
   const origin = `http://127.0.0.1:${port}`, env = { ...runtime.env, WRANGLER_SEND_METRICS: "false",
     npm_config_cache: path.join(runtime.directory, "npm-cache"), WITHIN_TEST_PORT: String(port), WITHIN_TEST_BASE_URL: origin };
+  if (directWorkerd) {
+    report.directRuntime = {};
+    directHost = await startDirectWorkerdHost({ runtime, port, receipt: report.directRuntime });
+    server = directHost.child; serverBirth = report.directRuntime.launchIdentity;
+  } else {
   server = spawn(process.execPath, ["node_modules/wrangler/bin/wrangler.js", "dev", "--config", "dist/server/wrangler.json",
     "--port", String(port), "--persist-to", path.join(runtime.directory, "wrangler")], { cwd: root, env, windowsHide: true, stdio: ["ignore", "pipe", "pipe"] });
   serverBirth = await queryReliableProcessIdentity(server.pid); assert.ok(serverBirth);
   for (const pipe of [server.stdout, server.stderr]) pipe.on("data", value => { serverLog = (serverLog + value.toString()).slice(-16384); });
+  }
   let ready = false;
   for (let attempt = 0; attempt < 60; attempt++) {
-    assert.equal(server.exitCode, null, serverLog);
+    directHost?.assertAlive(); assert.equal(server.exitCode, null, serverLog);
     try { const response = await fetch(origin, { signal: AbortSignal.timeout(2000) });
       ready = response.ok; await response.body?.cancel(); if (ready) break;
     } catch { /* bounded local startup */ }
@@ -107,11 +116,15 @@ use:{...base.use,baseURL:${JSON.stringify(origin)},headless:true}, webServer:und
   result = JSON.parse(await readFile(resultFile)); report.stats = result.stats;
   assert.equal(report.runnerExitCode, 0, runnerLog); assert.equal(result.stats.expected, 19);
   assert.equal(result.stats.unexpected, 0); assert.equal(result.stats.skipped, 0); assert.equal(result.stats.flaky, 0);
+  if (directHost) {
+    assert.equal(report.directRuntime.assetService.nonReadRequests, 0);
+    await directHost.verifySourcePins();
+  }
   report.status = "passed-complete-headless-privacy-offline-hosting-specs";
 } catch (error) { report.failures.push(String(error.stack ?? error)); report.status = "failed"; process.exitCode = 1; }
 finally {
   report.processBirths = { server: serverBirth ?? null, runner: runnerBirth ?? null };
-  await finishOwnedCleanup([() => stop(runner, runnerBirth), () => stop(server, serverBirth)])
+  await finishOwnedCleanup([() => stop(runner, runnerBirth), () => directHost ? directHost.close() : stop(server, serverBirth)])
     .catch(error => { report.failures.push("Owned process cleanup: " + error); report.status = "failed"; process.exitCode = 1; });
   report.processCleanup = [];
   for (const identity of [serverBirth, runnerBirth].filter(Boolean)) report.processCleanup.push(await observeOwnedProcessExit(identity));

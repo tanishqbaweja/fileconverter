@@ -1,0 +1,364 @@
+{
+  "schemaVersion": 1,
+  "scope": "Synthetic HTTP runtime diagnosis only; no browser, user file, converter, memory qualification or acceptance",
+  "startedAt": "2026-10-26T16:54:08.713Z",
+  "status": "failed-diagnosis",
+  "browserLaunched": false,
+  "userFilesRead": false,
+  "refusedBodyReadByProbe": false,
+  "conversionAcceptance": false,
+  "publicPromotion": false,
+  "sourcePins": {
+    "scripts/diagnose-host-method-runtime.mjs": "e6a30b5ed70c7bf83272d0eb41e4c4ab70d9f704bb18b017b0684e353bca37d1",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee",
+    "lib/static-host-request-policy.ts": "e699ea329425e935279410b7dc3a5bcd0d6ea1b522962f4a128d1ec1b197e4ad",
+    "vite.config.ts": "f3f7edf25cb1e9a8d24629333bb7f1863686d237641a37077653402a6654a151",
+    "package.json": "4e0afdcc71f91001de4eb703d99380b3dd78a7b52c442a9f2d8128c2b3c9c5cb",
+    "package-lock.json": "a8ab288744ea7ad6864f517e9d3cd748d8bb746ad40c70c903532b068afc0363",
+    "dist/server/wrangler.json": "ebfd37bea83de9743635ad56bb4ae693a88da007762ea1c86fffa598572a2676",
+    "dist/server/index.js": "5b0d9c72eba4ad7fe364af5e8108b5e9caf0cd303b19e72c287f5bcc98ea0342"
+  },
+  "controls": [
+    {
+      "name": "same-async-unbundled-no-assets",
+      "cases": [
+        {
+          "transport": "fresh-socket",
+          "method": "PUT",
+          "requestBytes": 22,
+          "elapsedMs": 3,
+          "status": 405,
+          "allow": "GET, HEAD",
+          "probeMethod": "PUT",
+          "bodyUsed": "false",
+          "responseBytes": 0,
+          "responseText": ""
+        },
+        {
+          "transport": "fresh-socket",
+          "method": "PUT",
+          "requestBytes": 0,
+          "elapsedMs": 33,
+          "status": 500,
+          "allow": null,
+          "probeMethod": null,
+          "bodyUsed": null,
+          "responseBytes": 203,
+          "responseText": "Error: internal error; reference = 52ckfn1n9f9d9nsv28ekv13l\n    at async Object.fetch (file:///H:/Github%20Repositories/fileconverter/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)"
+        },
+        {
+          "transport": "fresh-socket",
+          "method": "POST",
+          "requestBytes": 22,
+          "elapsedMs": 4,
+          "status": 405,
+          "allow": "GET, HEAD",
+          "probeMethod": "POST",
+          "bodyUsed": "false",
+          "responseBytes": 0,
+          "responseText": ""
+        },
+        {
+          "transport": "fresh-socket",
+          "method": "PATCH",
+          "requestBytes": 22,
+          "elapsedMs": 9,
+          "status": 500,
+          "allow": null,
+          "probeMethod": null,
+          "bodyUsed": null,
+          "responseBytes": 175,
+          "responseText": "Error: Network connection lost.\n    at async Object.fetch (file:///H:/Github%20Repositories/fileconverter/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)"
+        },
+        {
+          "transport": "fresh-socket",
+          "method": "DELETE",
+          "requestBytes": 22,
+          "elapsedMs": 3,
+          "status": 405,
+          "allow": "GET, HEAD",
+          "probeMethod": "DELETE",
+          "bodyUsed": "false",
+          "responseBytes": 0,
+          "responseText": ""
+        },
+        {
+          "transport": "fresh-socket",
+          "method": "OPTIONS",
+          "requestBytes": 22,
+          "elapsedMs": 9,
+          "status": 500,
+          "allow": null,
+          "probeMethod": null,
+          "bodyUsed": null,
+          "responseBytes": 175,
+          "responseText": "Error: Network connection lost.\n    at async Object.fetch (file:///H:/Github%20Repositories/fileconverter/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)"
+        },
+        {
+          "transport": "one-reused-socket",
+          "method": "POST",
+          "requestBytes": 22,
+          "elapsedMs": 4,
+          "status": 405,
+          "allow": "GET, HEAD",
+          "probeMethod": "POST",
+          "bodyUsed": "false",
+          "responseBytes": 0,
+          "responseText": ""
+        },
+        {
+          "transport": "one-reused-socket",
+          "method": "PUT",
+          "requestBytes": 22,
+          "elapsedMs": 9,
+          "status": 500,
+          "allow": null,
+          "probeMethod": null,
+          "bodyUsed": null,
+          "responseBytes": 175,
+          "responseText": "Error: Network connection lost.\n    at async Object.fetch (file:///H:/Github%20Repositories/fileconverter/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)"
+        },
+        {
+          "transport": "one-reused-socket",
+          "method": "PATCH",
+          "requestBytes": 22,
+          "elapsedMs": 2,
+          "status": 405,
+          "allow": "GET, HEAD",
+          "probeMethod": "PATCH",
+          "bodyUsed": "false",
+          "responseBytes": 0,
+          "responseText": ""
+        }
+      ],
+      "failures": [],
+      "config": {
+        "sha256": "3d75717f44c6f963121d7da6fdce867b1fffb67880e23b247f1d9db9169678f1",
+        "noBundle": true,
+        "assets": false
+      },
+      "launchIdentity": {
+        "pid": 28848,
+        "parentPid": 38836,
+        "createdAt": "2026-10-26T16:54:09.2891210Z"
+      },
+      "healthAfter": {
+        "method": "HEAD",
+        "requestBytes": 0,
+        "elapsedMs": 7,
+        "status": 500,
+        "allow": null,
+        "probeMethod": null,
+        "bodyUsed": null,
+        "responseBytes": 0,
+        "responseText": ""
+      },
+      "log": "\n ⛅️ wrangler 4.92.0\n───────────────────\nAttaching additional modules:\n┌───────────────────┬──────┬──────────┐\n│ Name              │ Type │ Size     │\n├───────────────────┼──────┼──────────┤\n│ assets/static.txt │ text │ 0.01 KiB │\n├───────────────────┼──────┼──────────┤\n│ Total (1 module)  │      │ 0.01 KiB │\n└───────────────────┴──────┴──────────┘\n⎔ Starting local server...\n[wrangler:info] Ready on http://127.0.0.1:61921\n[wrangler:info] HEAD / 200 OK (3ms)\n[wrangler:info] PUT / 405 Method Not Allowed (1ms)\n\n",
+      "cleanup": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 28848,
+          "parentPid": 38836,
+          "createdAt": "2026-10-26T16:54:09.2891210Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-26T16:54:12.119Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 445,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    },
+    {
+      "name": "same-async-unbundled-worker-first-assets",
+      "cases": [
+        {
+          "transport": "fresh-socket",
+          "method": "PUT",
+          "requestBytes": 22,
+          "elapsedMs": 34,
+          "status": 405,
+          "allow": "GET, HEAD",
+          "probeMethod": "PUT",
+          "bodyUsed": "false",
+          "responseBytes": 0,
+          "responseText": ""
+        },
+        {
+          "transport": "fresh-socket",
+          "method": "PUT",
+          "requestBytes": 0,
+          "elapsedMs": 9,
+          "status": 500,
+          "allow": null,
+          "probeMethod": null,
+          "bodyUsed": null,
+          "responseBytes": 175,
+          "responseText": "Error: Network connection lost.\n    at async Object.fetch (file:///H:/Github%20Repositories/fileconverter/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)"
+        },
+        {
+          "transport": "fresh-socket",
+          "method": "POST",
+          "requestBytes": 22,
+          "elapsedMs": 7,
+          "status": 405,
+          "allow": "GET, HEAD",
+          "probeMethod": "POST",
+          "bodyUsed": "false",
+          "responseBytes": 0,
+          "responseText": ""
+        },
+        {
+          "transport": "fresh-socket",
+          "method": "PATCH",
+          "requestBytes": 22,
+          "elapsedMs": 10,
+          "status": 500,
+          "allow": null,
+          "probeMethod": null,
+          "bodyUsed": null,
+          "responseBytes": 175,
+          "responseText": "Error: Network connection lost.\n    at async Object.fetch (file:///H:/Github%20Repositories/fileconverter/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)"
+        },
+        {
+          "transport": "fresh-socket",
+          "method": "DELETE",
+          "requestBytes": 22,
+          "elapsedMs": 7,
+          "status": 405,
+          "allow": "GET, HEAD",
+          "probeMethod": "DELETE",
+          "bodyUsed": "false",
+          "responseBytes": 0,
+          "responseText": ""
+        },
+        {
+          "transport": "fresh-socket",
+          "method": "OPTIONS",
+          "requestBytes": 22,
+          "elapsedMs": 10,
+          "status": 500,
+          "allow": null,
+          "probeMethod": null,
+          "bodyUsed": null,
+          "responseBytes": 175,
+          "responseText": "Error: Network connection lost.\n    at async Object.fetch (file:///H:/Github%20Repositories/fileconverter/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)"
+        },
+        {
+          "transport": "one-reused-socket",
+          "method": "POST",
+          "requestBytes": 22,
+          "elapsedMs": 7,
+          "status": 405,
+          "allow": "GET, HEAD",
+          "probeMethod": "POST",
+          "bodyUsed": "false",
+          "responseBytes": 0,
+          "responseText": ""
+        },
+        {
+          "transport": "one-reused-socket",
+          "method": "PUT",
+          "requestBytes": 22,
+          "elapsedMs": 10,
+          "status": 500,
+          "allow": null,
+          "probeMethod": null,
+          "bodyUsed": null,
+          "responseBytes": 175,
+          "responseText": "Error: Network connection lost.\n    at async Object.fetch (file:///H:/Github%20Repositories/fileconverter/node_modules/miniflare/dist/src/workers/core/entry.worker.js:4672:22)"
+        },
+        {
+          "transport": "one-reused-socket",
+          "method": "PATCH",
+          "requestBytes": 22,
+          "elapsedMs": 6,
+          "status": 405,
+          "allow": "GET, HEAD",
+          "probeMethod": "PATCH",
+          "bodyUsed": "false",
+          "responseBytes": 0,
+          "responseText": ""
+        }
+      ],
+      "failures": [],
+      "config": {
+        "sha256": "8a72c8f81618a60b2089c2a1971b5363e07afa09cb6145095f69783afb14c9df",
+        "noBundle": true,
+        "assets": true
+      },
+      "launchIdentity": {
+        "pid": 37872,
+        "parentPid": 38836,
+        "createdAt": "2026-10-26T16:54:12.1261660Z"
+      },
+      "healthAfter": {
+        "method": "HEAD",
+        "requestBytes": 0,
+        "elapsedMs": 8,
+        "status": 500,
+        "allow": null,
+        "probeMethod": null,
+        "bodyUsed": null,
+        "responseBytes": 0,
+        "responseText": ""
+      },
+      "log": "\n ⛅️ wrangler 4.92.0\n───────────────────\nYour Worker has access to the following bindings:\nBinding            Resource      Mode\nenv.ASSETS         Assets        local\n\nAttaching additional modules:\n┌───────────────────┬──────┬──────────┐\n│ Name              │ Type │ Size     │\n├───────────────────┼──────┼──────────┤\n│ assets/static.txt │ text │ 0.01 KiB │\n├───────────────────┼──────┼──────────┤\n│ Total (1 module)  │      │ 0.01 KiB │\n└───────────────────┴──────┴──────────┘\n⎔ Starting local server...\n[wrangler:info] Ready on http://127.0.0.1:61960\n[wrangler:info] HEAD / 200 OK (5ms)\n[wrangler:info] PUT / 405 Method Not Allowed (32ms)\n\n\u001b[31mX \u001b[41;31m[\u001b[41;97mERROR\u001b[41;31m]\u001b[0m \u001b[1m\u001b[0m\n\n\n\u001b[32mIf you think this is a bug then please create an issue at https://github.com/cloudflare/workers-sdk/issues/new/choose\u001b[0m\n[wrangler:info] POST / 405 Method Not Allowed (5ms)\n[wrangler:info] DELETE / 405 Method Not Allowed (5ms)\n[wrangler:info] POST / 405 Method Not Allowed (4ms)\n[wrangler:info] PATCH / 405 Method Not Allowed (5ms)\n",
+      "cleanup": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 37872,
+          "parentPid": 38836,
+          "createdAt": "2026-10-26T16:54:12.1261660Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-26T16:54:15.089Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 444,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    }
+  ],
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(report.controls.every(row => row.failures.length === 0 && row.cases.length === 9 && row.cases.every(c => Number.isInteger(c.status)) && row.healthAfter.status === 200))\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/diagnose-host-method-runtime.mjs:118:10\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+  ],
+  "mode": "same-async-probes-unbundled-only",
+  "driverSource": "// Finite HTTP-only comparison: production worker versus two minimal runtime controls.\nimport \"./lib/hidden-unit-subprocesses.mjs\";\nimport assert from \"node:assert/strict\";\nimport { spawn, execFile } from \"node:child_process\";\nimport { createHash } from \"node:crypto\";\nimport { readFile, mkdir, writeFile, access, lstat } from \"node:fs/promises\";\nimport { Agent, request } from \"node:http\";\nimport { createServer } from \"node:net\";\nimport path from \"node:path\";\nimport { promisify } from \"node:util\";\nimport { createOwnedRuntimeScratch } from \"./lib/owned-runtime-scratch.mjs\";\nimport { inspectStressHostMemory } from \"./lib/host-memory-preflight.mjs\";\nimport { queryReliableProcessIdentity } from \"./lib/reliable-owned-identity.mjs\";\nimport { observeOwnedProcessExit } from \"./lib/owned-process-exit-observation.mjs\";\n\nassert.equal(process.platform, \"win32\");\nconst asyncControl = process.argv[2] === \"--async-control\";\nconst unbundledControl = process.argv[2] === \"--unbundled-control\";\nassert.ok(process.argv.length === 2 || (process.argv.length === 3 && (asyncControl || unbundledControl)));\nconst root = path.resolve(import.meta.dirname, \"..\"), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));\nconst sha = bytes => createHash(\"sha256\").update(bytes).digest(\"hex\");\nconst report = { schemaVersion: 1, scope: \"Synthetic HTTP runtime diagnosis only; no browser, user file, converter, memory qualification or acceptance\",\n  startedAt: new Date().toISOString(), status: \"running\", browserLaunched: false, userFilesRead: false,\n  refusedBodyReadByProbe: false, conversionAcceptance: false, publicPromotion: false, sourcePins: {}, controls: [], failures: [] };\nreport.mode = unbundledControl ? \"same-async-probes-unbundled-only\" : asyncControl ? \"new-minimal-async-controls-only\" : \"production-and-minimal-sync-controls\";\nfor (const file of [\"scripts/diagnose-host-method-runtime.mjs\", \"worker/index.ts\", \"lib/static-host-request-policy.ts\", \"vite.config.ts\",\n  \"package.json\", \"package-lock.json\", \"dist/server/wrangler.json\", \"dist/server/index.js\"])\n  report.sourcePins[file] = sha(await readFile(path.join(root, file)));\nreport.driverSource = await readFile(path.join(root, \"scripts/diagnose-host-method-runtime.mjs\"), \"utf8\");\nfor (const name of [\"wrangler\", \"miniflare\"]) report[name] = JSON.parse(await readFile(path.join(root, \"node_modules\", name, \"package.json\"))).version;\nconst getPort = () => new Promise((resolve, reject) => { const socket = createServer(); socket.once(\"error\", reject);\n  socket.listen(0, \"127.0.0.1\", () => { const port = socket.address().port; socket.close(error => error ? reject(error) : resolve(port)); }); });\nconst httpProbe = (port, method, body, agent) => new Promise(resolve => {\n  const payload = body ? Buffer.from(\"synthetic-control-only\") : null, started = Date.now(); let completed = false, deadline;\n  const finish = value => { if (!completed) { completed = true; clearTimeout(deadline); resolve({ method, requestBytes: payload?.length ?? 0, elapsedMs: Date.now() - started, ...value }); } };\n  const req = request({ hostname: \"127.0.0.1\", port, path: \"/\", method, agent,\n    headers: payload ? { \"content-type\": \"application/octet-stream\", \"content-length\": payload.length } : {} }, response => {\n    const chunks = []; let bytes = 0;\n    response.on(\"data\", chunk => { bytes += chunk.length; if (bytes > 4096) response.destroy(new Error(\"HTTP diagnostic response cap\")); else chunks.push(chunk); });\n    response.on(\"error\", error => finish({ status: null, error: String(error) }));\n    response.on(\"end\", () => finish({ status: response.statusCode, allow: response.headers.allow ?? null,\n      probeMethod: response.headers[\"x-probe-method\"] ?? null, bodyUsed: response.headers[\"x-probe-body-used\"] ?? null,\n      responseBytes: bytes, responseText: Buffer.concat(chunks).toString(\"utf8\") }));\n  });\n  req.setTimeout(5000, () => req.destroy(new Error(\"HTTP diagnostic timeout\")));\n  deadline = setTimeout(() => req.destroy(new Error(\"HTTP absolute diagnostic deadline\")), 6000);\n  req.on(\"error\", error => finish({ status: null, error: String(error) })); req.end(payload);\n});\nlet runtime;\ntry {\n  report.hostMemory = await inspectStressHostMemory(); assert.equal(report.hostMemory.safeToStart, true);\n  runtime = await createOwnedRuntimeScratch(\"method-runtime-\");\n  const directoryIdentity = await lstat(runtime.directory, { bigint: true });\n  report.runtime = { directory: path.relative(root, runtime.directory).replaceAll(\"\\\\\", \"/\"),\n    dev: String(directoryIdentity.dev), ino: String(directoryIdentity.ino) };\n  const env = { ...runtime.env, WRANGLER_SEND_METRICS: \"false\", npm_config_cache: path.join(runtime.directory, \"npm-cache\") };\n  const fixture = `export default {${asyncControl || unbundledControl ? \"async \" : \"\"}fetch(request){return new Response(request.method === \"GET\" ? \"ready\" : null,{status:request.method === \"GET\" || request.method === \"HEAD\" ? 200 : 405,headers:{Allow:\"GET, HEAD\",\"X-Probe-Method\":request.method,\"X-Probe-Body-Used\":String(request.bodyUsed)}})}};\\n`;\n  report.probeSha256 = sha(fixture);\n  // Never put live state/cache/log writes under the raw module watch root.\n  const sourceDirectory = path.join(runtime.directory, \"probe-source\"); await mkdir(sourceDirectory);\n  report.probeRelativePath = \"probe-source/probe.mjs\";\n  await writeFile(path.join(sourceDirectory, \"probe.mjs\"), fixture, { flag: \"wx\" });\n  await mkdir(path.join(sourceDirectory, \"assets\")); await writeFile(path.join(sourceDirectory, \"assets\", \"static.txt\"), \"static-control\\n\", { flag: \"wx\" });\n  for (const assets of [false, true]) await writeFile(path.join(sourceDirectory, `probe-${assets}.json`), JSON.stringify({ name: \"within-http-diagnostic\",\n    main: \"probe.mjs\", compatibility_date: \"2026-05-15\", compatibility_flags: [\"nodejs_compat\"],\n    ...(unbundledControl ? { no_bundle: true } : {}),\n    ...(assets ? { assets: { directory: \"assets\", binding: \"ASSETS\", run_worker_first: true } } : {}) }), { flag: \"wx\" });\n  const controls = unbundledControl ? [\n    { name: \"same-async-unbundled-no-assets\", config: path.join(sourceDirectory, \"probe-false.json\") },\n    { name: \"same-async-unbundled-worker-first-assets\", config: path.join(sourceDirectory, \"probe-true.json\") },\n  ] : asyncControl ? [\n    { name: \"minimal-async-no-assets\", config: path.join(sourceDirectory, \"probe-false.json\") },\n    { name: \"minimal-async-worker-first-assets\", config: path.join(sourceDirectory, \"probe-true.json\") },\n  ] : [{ name: \"production\", config: path.join(root, \"dist/server/wrangler.json\") },\n    { name: \"minimal-no-assets\", config: path.join(sourceDirectory, \"probe-false.json\") },\n    { name: \"minimal-worker-first-assets\", config: path.join(sourceDirectory, \"probe-true.json\") }];\n  for (const control of controls) {\n    const row = { name: control.name, cases: [], failures: [] }; report.controls.push(row);\n    const port = await getPort(); let child, identity, log = \"\";\n    try {\n      const configuration = JSON.parse(await readFile(control.config));\n      row.config = { sha256: sha(await readFile(control.config)), noBundle: configuration.no_bundle ?? false, assets: Boolean(configuration.assets) };\n      child = spawn(process.execPath, [\"node_modules/wrangler/bin/wrangler.js\", \"dev\", \"--config\", control.config,\n        \"--port\", String(port), \"--persist-to\", path.join(runtime.directory, control.name)], { cwd: root, env, windowsHide: true, stdio: [\"ignore\", \"pipe\", \"pipe\"] });\n      child.on(\"error\", error => { row.failures.push(String(error)); });\n      for (const pipe of [child.stdout, child.stderr]) pipe.on(\"data\", value => { log = (log + value.toString()).slice(-16384); });\n      identity = await queryReliableProcessIdentity(child.pid); assert.ok(identity); row.launchIdentity = identity;\n      let ready = false;\n      const startupDeadline = Date.now() + 30000;\n      for (let i = 0; i < 30 && Date.now() < startupDeadline; i++) { assert.equal(child.exitCode, null, log);\n        const probe = await httpProbe(port, \"HEAD\", false, false); if (probe.status === 200) { ready = true; break; } await pause(500); }\n      assert.ok(ready, log || \"HTTP startup deadline\");\n      // PUT is first, on a new socket; separate cases isolate body presence and reuse.\n      for (const [method, body] of [[\"PUT\", true], [\"PUT\", false], [\"POST\", true], [\"PATCH\", true], [\"DELETE\", true], [\"OPTIONS\", true]])\n        row.cases.push({ transport: \"fresh-socket\", ...await httpProbe(port, method, body, false) });\n      const agent = new Agent({ keepAlive: true, maxSockets: 1 });\n      try { for (const method of [\"POST\", \"PUT\", \"PATCH\"]) row.cases.push({ transport: \"one-reused-socket\", ...await httpProbe(port, method, true, agent) }); }\n      finally { agent.destroy(); }\n      row.healthAfter = await httpProbe(port, \"HEAD\", false, false);\n    } catch (error) { row.failures.push(String(error.stack ?? error)); }\n    finally {\n      row.log = log;\n      if (child?.exitCode === null && child.signalCode === null) {\n        assert.ok(identity); assert.deepEqual(await queryReliableProcessIdentity(child.pid), identity);\n        try { await execute(\"taskkill.exe\", [\"/PID\", String(child.pid), \"/T\", \"/F\"], { windowsHide: true, timeout: 15000, maxBuffer: 16384 }); }\n        catch (error) {\n          row.stopCommandError = String(error); row.stopErrorPidObservations = [];\n          for (const match of row.stopCommandError.matchAll(/PID\\s+(\\d+)/g)) {\n            const pid = Number(match[1]), current = await queryReliableProcessIdentity(pid);\n            row.stopErrorPidObservations.push({ pid, current }); assert.equal(current, null, \"Never remove state used by a possibly live failed teardown child\");\n          }\n        }\n      }\n      if (identity) row.cleanup = await observeOwnedProcessExit(identity);\n      assert.equal(row.cleanup?.status, \"owned-identity-absent\");\n    }\n  }\n  assert.ok(report.controls.every(row => row.failures.length === 0 && row.cases.length === 9 && row.cases.every(c => Number.isInteger(c.status)) && row.healthAfter.status === 200));\n  report.status = \"completed-http-diagnosis-not-acceptance\";\n} catch (error) { report.failures.push(String(error.stack ?? error)); report.status = \"failed-diagnosis\"; process.exitCode = 1; }\nfinally {\n  if (runtime && report.controls.every(row => row.cleanup?.status === \"owned-identity-absent\")) {\n    await runtime.close(); await assert.rejects(access(runtime.directory), { code: \"ENOENT\" }); report.ownedRuntimeRemoved = true;\n  }\n  for (const [file, digest] of Object.entries(report.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), digest);\n  report.finishedAt = new Date().toISOString();\n  const file = path.join(root, \"evidence\", `${new Date().toISOString().replaceAll(/[:.]/g, \"-\")}-host-method-runtime.json`);\n  await writeFile(file, JSON.stringify(report, null, 2) + \"\\n\", { flag: \"wx\" });\n  console.log(JSON.stringify({ path: path.relative(root, file), status: report.status, controls: report.controls.map(row => ({ name: row.name,\n    cases: row.cases.map(c => ({ transport: c.transport, method: c.method, bytes: c.requestBytes, status: c.status, bodyUsed: c.bodyUsed })),\n    failures: row.failures.map(value => value.slice(0,512)) })), failures: report.failures.map(value => value.slice(0,512)) }));\n}\n",
+  "wrangler": "4.92.0",
+  "miniflare": "4.20260515.0",
+  "hostMemory": {
+    "acquiredAt": "2026-10-26T16:54:09.2133909Z",
+    "freePhysicalBytes": 8121454592,
+    "freeVirtualBytes": 10064416768,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "runtime": {
+    "directory": "work/method-runtime-EELDiK",
+    "dev": "1887170595",
+    "ino": "4785074605770686"
+  },
+  "probeSha256": "f9a17a2a57e5a367660a198e91da15dd7429843e958d195206dab4b394832ac6",
+  "probeRelativePath": "probe-source/probe.mjs",
+  "ownedRuntimeRemoved": true,
+  "finishedAt": "2026-10-26T16:54:15.115Z"
+}

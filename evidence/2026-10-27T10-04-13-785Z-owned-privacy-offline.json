@@ -1,0 +1,378 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-27T10:04:13.786Z",
+  "status": "passed-complete-headless-privacy-offline-hosting-specs",
+  "scope": "Complete unchanged production privacy/offline/static-host browser specs; not process-memory, stress, OS-picker or native reproduction acceptance",
+  "headedCoverage": false,
+  "conversionMemoryAcceptance": false,
+  "publicPromotion": false,
+  "sourcePins": {
+    "package.json": "4e0afdcc71f91001de4eb703d99380b3dd78a7b52c442a9f2d8128c2b3c9c5cb",
+    "package-lock.json": "a8ab288744ea7ad6864f517e9d3cd748d8bb746ad40c70c903532b068afc0363",
+    "playwright.config.ts": "e1ebd9e54b5baf85227edf021b1190dca2788c226ea39209c4e22915ce9d0a84",
+    "tests/browser/privacy-offline.spec.ts": "3cf518ffd0d244bec985664bf5eadd670cf2dacd98754a40cbdb2417b0ddfc7e",
+    "tests/browser/static-host-policy.spec.ts": "9587f432302a1bebd73bc1be19a2d5175d824fbb42ae126f0317a8a64bad29a6",
+    "scripts/run-owned-privacy-offline.mjs": "1364823a4be8a2561348c3ac4c5a217c614417b6735dff5767823c77c75d9d73",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee",
+    "lib/static-host-request-policy.ts": "e699ea329425e935279410b7dc3a5bcd0d6ea1b522962f4a128d1ec1b197e4ad",
+    "app/converter/ConverterApp.tsx": "7ae964f6acdc50f7746d3b04a3717f2a18563216af9a11910a5e3b8aae22b9f3",
+    "lib/capability-registry.ts": "d9f5ad4599db8b43a68acb311f16d652a9a74300c38a31f827c12590652e573b",
+    ".openai/hosting.json": "6f55e031b82f9a23029129a1a3fed515ae6d7da180e369c7b2b90ec248d06475",
+    "vite.config.ts": "f3f7edf25cb1e9a8d24629333bb7f1863686d237641a37077653402a6654a151",
+    "scripts/lib/direct-workerd-host.mjs": "b343d456f5b8b1ef6ac97783bac23fdebe418799acd46165a326095b7337f0ff"
+  },
+  "failures": [],
+  "hostingRuntime": "direct-workerd-same-built-worker-loopback-static-assets",
+  "executedHead": "11e074f8101efe0e3d3c8640787b61c73a949e12",
+  "hostMemory": {
+    "acquiredAt": "2026-10-27T10:04:14.2526269Z",
+    "freePhysicalBytes": 8147689472,
+    "freeVirtualBytes": 10825711616,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "assetRouting": {
+    "binding": "ASSETS",
+    "runWorkerFirst": true
+  },
+  "directRuntime": {
+    "assetService": {
+      "root": "dist/client",
+      "headerFileSha256": "932fcc39dad54e44feef2ae3dcbe098bea8146abbeede80fe4175a1faf490ca9",
+      "requests": 79,
+      "nonReadRequests": 0,
+      "streamedFiles": 63,
+      "servedFiles": {
+        "assets/index-nyqtQdFm.css": {
+          "bytes": 27065,
+          "sha256": "834f451f08bafbadb37fd84eb0a6a4be565cf679896dc80ff981b7977df4046b"
+        },
+        "assets/layout-segment-context-BopcxWxv.js": {
+          "bytes": 288,
+          "sha256": "411c5e15fcba71aab5472d651d5f95c0ddb7d6d5ac7f934589a27c2d37192b32"
+        },
+        "assets/rolldown-runtime-XKyaHtl9.js": {
+          "bytes": 726,
+          "sha256": "548d1dbf321e7d2ae804fcc158b588706a7c52f8ca175de1490c6ccb4dbe55b7"
+        },
+        "assets/framework-DRChgpEG.js": {
+          "bytes": 189686,
+          "sha256": "8260b4ae033c0c6ebbfd4e0922caf54ffbc5cc97e73ea8cc47d825ade3dd6e73"
+        },
+        "assets/index-9y5sB6zW.js": {
+          "bytes": 81019,
+          "sha256": "8be5e2cf0ad58ef04a7f18e8dc828efe9381cf3ea1c9990007e3d3fe0e904c88"
+        },
+        "assets/ConverterApp-oHSk1iRJ.js": {
+          "bytes": 338818,
+          "sha256": "b88f4cc63aceefe4b4b498901d1dd5cdb0df11ad18ed05228835f8b8a6d1cedb"
+        },
+        "manifest.webmanifest": {
+          "bytes": 420,
+          "sha256": "d2ba9ace3d67f7968ca8ae9e342845b219f784cc2d1af96f6fceb47caaed2205"
+        },
+        "icon.svg": {
+          "bytes": 235,
+          "sha256": "5a9a7538fa062c7e1f3ffe789e498a53482e47c37cef566d5773371816b1ebfe"
+        },
+        "assets/conversion.worker-CCZ-nVlb.js": {
+          "bytes": 390594,
+          "sha256": "07044dd0e3e2c36ed5d983f6c43a30287718f9137b1bc157f1587ab0de3abed3"
+        },
+        "assets/jxl-source-inspection-worker-BogpV0iH.js": {
+          "bytes": 2729,
+          "sha256": "37e62eee1bb24b6646bff40e48e13a1087695b41c9823ac9b4ba0fb07f77086a"
+        },
+        "engines/jxl-inspector/within-jxl-inspector.mjs": {
+          "bytes": 18172,
+          "sha256": "794c49fe4e69d8fed9b66075e798fc5f36811e0cd9a3c2e01d8329f52701ef7a"
+        },
+        "engines/jxl-inspector/within-jxl-inspector.wasm": {
+          "bytes": 751368,
+          "sha256": "46bb51cbfc7eda9a6b0d8aa01eb7fe4e11d655350ad5d2f87b0d2cc7dc19baae"
+        },
+        "sw.js": {
+          "bytes": 1540,
+          "sha256": "72b211ba9b1c50392a0ecb4a287185780a05b155bbff524f80a1e72167249549"
+        },
+        "THIRD_PARTY_NOTICES.txt": {
+          "bytes": 4246,
+          "sha256": "0988fad14966b9ab90be579abd864a190952acadf8ff6d890da89fe644a5f750"
+        },
+        "engines/remux/within-vp9.mjs": {
+          "bytes": 46646,
+          "sha256": "b41c6975377602ccaeb3b21ff717199c2287989a438d45306a6a1ef756cb9c33"
+        },
+        "engines/remux/within-vp9.wasm": {
+          "bytes": 9629216,
+          "sha256": "cb5f5e15eeb08a06bd5f032dfdb72358ae1df116dd9adc3d57ad7e6f5b385fed"
+        },
+        "assets/direct-file-writer.worker-Cd6e6fgR.js": {
+          "bytes": 1765,
+          "sha256": "b4feabf1df1d40cbf39236cbf5cb6b9b9d027d83b470323a2d42d3cb2618286c"
+        },
+        "engines/archive7z/within-archive7z.mjs": {
+          "bytes": 18964,
+          "sha256": "077afcbb5e63fc965be6dd3b56119d88f5cbea3facd37252c6ec6f2a6d903718"
+        },
+        "engines/archive7z/within-archive7z.wasm": {
+          "bytes": 375821,
+          "sha256": "d114dafdb05fb6207e5ab84ce38166699707808e636be8ba3d779536f0019983"
+        },
+        "engines/bzip2/within-bzip2.mjs": {
+          "bytes": 7022,
+          "sha256": "7cf0c5151fc71c906844d3277ad7737ea3b817d5f593900321c60122c5b00c9d"
+        },
+        "engines/bzip2/within-bzip2.wasm": {
+          "bytes": 62257,
+          "sha256": "e2d82b90edf997b91a1f307b33e2ff37d2468074ad53748ae60c2b57a7d86031"
+        },
+        "engines/xz-decoder/within-xz-decoder.mjs": {
+          "bytes": 7059,
+          "sha256": "35374014c67945c3684012457c4cb78e8f6089783fd1e5afb91dd09d2ecaa95c"
+        },
+        "engines/xz-decoder/within-xz-decoder.wasm": {
+          "bytes": 69691,
+          "sha256": "76cf9c5d37dbf1796d6e5312ad35ec63fadacdeb57b877c028b9d75e5ae1e86d"
+        },
+        "engines/xz/within-xz.mjs": {
+          "bytes": 7043,
+          "sha256": "aa301be807b683715756f143d356121a5f27a758fb109db3378c97d1b5f75649"
+        },
+        "engines/xz/within-xz.wasm": {
+          "bytes": 129986,
+          "sha256": "d8e91debb4d26391503a01768ac8bcfa6c2dcbe79acf7d290e59132c58e8e1f8"
+        },
+        "engines/remux/within-remux.mjs": {
+          "bytes": 45700,
+          "sha256": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1"
+        }
+      },
+      "maxReadBufferBytes": 65536
+    },
+    "modules": [
+      {
+        "name": "index.js",
+        "sha256": "5b0d9c72eba4ad7fe364af5e8108b5e9caf0cd303b19e72c287f5bcc98ea0342"
+      },
+      {
+        "name": "__vite_rsc_assets_manifest.js",
+        "sha256": "474da1d3b0a3a22158e0952f712c505993629491fc500f19968ad6fdf37ceb08"
+      },
+      {
+        "name": "resvg.wasm",
+        "sha256": "6332e8ff5ef63cb18592370d4f799c8551d886c90b8563e1323fdabee2371e24"
+      },
+      {
+        "name": "ssr/__vite_rsc_assets_manifest.js",
+        "sha256": "474da1d3b0a3a22158e0952f712c505993629491fc500f19968ad6fdf37ceb08"
+      },
+      {
+        "name": "ssr/assets/conversion.worker-CCZ-nVlb.js",
+        "sha256": "07044dd0e3e2c36ed5d983f6c43a30287718f9137b1bc157f1587ab0de3abed3"
+      },
+      {
+        "name": "ssr/assets/ConverterApp-Drc2l1nP.js",
+        "sha256": "60f97291bbb8a6c9c90401b0068d2766e379764a33b4a0cd6136f1750e85c9c2"
+      },
+      {
+        "name": "ssr/assets/direct-file-writer.worker-Cd6e6fgR.js",
+        "sha256": "b4feabf1df1d40cbf39236cbf5cb6b9b9d027d83b470323a2d42d3cb2618286c"
+      },
+      {
+        "name": "ssr/assets/error-boundary-C-_MPqYf.js",
+        "sha256": "36b070e97348f8a55b0ea60d0b1f439f7ab1ee09af7cb71559b2e479852e76d9"
+      },
+      {
+        "name": "ssr/assets/jxl-source-inspection-worker-BogpV0iH.js",
+        "sha256": "37e62eee1bb24b6646bff40e48e13a1087695b41c9823ac9b4ba0fb07f77086a"
+      },
+      {
+        "name": "ssr/assets/layout-segment-context-DJ93MGz0.js",
+        "sha256": "b1d6e4995aad12e7158f666da3f3eddb9ba1d4b68c9fd6647bd5ccb42ee372cb"
+      },
+      {
+        "name": "ssr/assets/staged-save.worker-CXNG5no9.js",
+        "sha256": "58de316b4e460c6157a5747a0003d3a9124e09e69bc39e87b1026ab947073312"
+      },
+      {
+        "name": "ssr/index.js",
+        "sha256": "3fe98f0317b80a65a8dc27017e189f8a115f1ea8f7a9fb669554b996e7af8470"
+      }
+    ],
+    "workerdConfig": "using Workerd = import \"/workerd/workerd.capnp\";\nconst config :Workerd.Config = (\nservices = [\n(name = \"app\", worker = (modules = [(name = \"index.js\", esModule = embed \"../../dist/server/index.js\"),\n(name = \"__vite_rsc_assets_manifest.js\", esModule = embed \"../../dist/server/__vite_rsc_assets_manifest.js\"),\n(name = \"resvg.wasm\", wasm = embed \"../../dist/server/resvg.wasm\"),\n(name = \"ssr/__vite_rsc_assets_manifest.js\", esModule = embed \"../../dist/server/ssr/__vite_rsc_assets_manifest.js\"),\n(name = \"ssr/assets/conversion.worker-CCZ-nVlb.js\", esModule = embed \"../../dist/server/ssr/assets/conversion.worker-CCZ-nVlb.js\"),\n(name = \"ssr/assets/ConverterApp-Drc2l1nP.js\", esModule = embed \"../../dist/server/ssr/assets/ConverterApp-Drc2l1nP.js\"),\n(name = \"ssr/assets/direct-file-writer.worker-Cd6e6fgR.js\", esModule = embed \"../../dist/server/ssr/assets/direct-file-writer.worker-Cd6e6fgR.js\"),\n(name = \"ssr/assets/error-boundary-C-_MPqYf.js\", esModule = embed \"../../dist/server/ssr/assets/error-boundary-C-_MPqYf.js\"),\n(name = \"ssr/assets/jxl-source-inspection-worker-BogpV0iH.js\", esModule = embed \"../../dist/server/ssr/assets/jxl-source-inspection-worker-BogpV0iH.js\"),\n(name = \"ssr/assets/layout-segment-context-DJ93MGz0.js\", esModule = embed \"../../dist/server/ssr/assets/layout-segment-context-DJ93MGz0.js\"),\n(name = \"ssr/assets/staged-save.worker-CXNG5no9.js\", esModule = embed \"../../dist/server/ssr/assets/staged-save.worker-CXNG5no9.js\"),\n(name = \"ssr/index.js\", esModule = embed \"../../dist/server/ssr/index.js\")],\ncompatibilityDate = \"2026-05-15\", compatibilityFlags = [\"nodejs_compat\"],\nbindings = [(name = \"ASSETS\", service = \"assets\") ])),\n(name = \"assets\", external = (address = \"127.0.0.1:60559\", http = ()))\n],\nsockets = [(name = \"http\", address = \"127.0.0.1:60558\", http = (), service = \"app\")]\n);\n",
+    "configSha256": "6cc4c0b11e7560b162c1c250fd8198e4a8654a8253a331291714375853fc34e9",
+    "incomingBodyMiddleware": false,
+    "exactBuiltWorker": true,
+    "workerdVersion": "1.20260515.1",
+    "workerdBinarySha256": "74550de7abef9a2b86fa43491d57c7ecf6809e45b3f123222b2256b57a0839dc",
+    "launchIdentity": {
+      "pid": 38524,
+      "parentPid": 39708,
+      "createdAt": "2026-10-27T10:04:26.7844200Z"
+    },
+    "cleanup": {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 38524,
+        "parentPid": 39708,
+        "createdAt": "2026-10-27T10:04:26.7844200Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-27T10:05:20.575Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 479,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    "assetServiceClosed": true,
+    "log": "workerd/server/server.c++:5535: error: Uncaught exception: kj/async-io-win32.c++:376: failed: WSARecv(): #64 The specified network name is no longer available.\nstack: 7ff6e8c6f3ab 7ff6e8c51c87 7ff6e92ce16c 0 7ff6e92e2a74 0\nworkerd/server/server.c++:5535: error: Uncaught exception: kj/async-io-win32.c++:376: failed: WSARecv(): #64 The specified network name is no longer available.\nstack: 7ff6e8c6f3ab 7ff6e8c51c87 7ff6e92ce16c 0 7ff6e92e2a74 0\nworkerd/server/server.c++:5535: error: Uncaught exception: kj/async-io-win32.c++:376: failed: WSARecv(): #64 The specified network name is no longer available.\nstack: 7ff6e8c6f3ab 7ff6e8c51c87 7ff6e92ce16c 0 7ff6e92e2a74 0\n"
+  },
+  "assetPreflight": [
+    {
+      "path": "/assets/index-nyqtQdFm.css",
+      "status": 200,
+      "mime": "text/css"
+    },
+    {
+      "path": "/assets/layout-segment-context-BopcxWxv.js",
+      "status": 200,
+      "mime": "text/javascript"
+    },
+    {
+      "path": "/assets/rolldown-runtime-XKyaHtl9.js",
+      "status": 200,
+      "mime": "text/javascript"
+    },
+    {
+      "path": "/assets/framework-DRChgpEG.js",
+      "status": 200,
+      "mime": "text/javascript"
+    },
+    {
+      "path": "/assets/index-9y5sB6zW.js",
+      "status": 200,
+      "mime": "text/javascript"
+    },
+    {
+      "path": "/assets/ConverterApp-oHSk1iRJ.js",
+      "status": 200,
+      "mime": "text/javascript"
+    }
+  ],
+  "methodPreflight": [
+    {
+      "method": "POST",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "PUT",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "PATCH",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "DELETE",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "OPTIONS",
+      "status": 405,
+      "allow": "GET, HEAD"
+    }
+  ],
+  "runnerExitCode": 0,
+  "stats": {
+    "startTime": "2026-10-27T10:04:28.686Z",
+    "duration": 50368.723,
+    "expected": 19,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "processBirths": {
+    "server": {
+      "pid": 38524,
+      "parentPid": 39708,
+      "createdAt": "2026-10-27T10:04:26.7844200Z"
+    },
+    "runner": {
+      "pid": 48156,
+      "parentPid": 39708,
+      "createdAt": "2026-10-27T10:04:27.5170880Z"
+    }
+  },
+  "processCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 38524,
+        "parentPid": 39708,
+        "createdAt": "2026-10-27T10:04:26.7844200Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-27T10:05:21.029Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 453,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 48156,
+        "parentPid": 39708,
+        "createdAt": "2026-10-27T10:04:27.5170880Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-27T10:05:21.465Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 436,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "serverLog": "",
+  "runnerLog": "\nRunning 19 tests using 1 worker\n\n(node:33688) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n\n\n[1/19] tests\\browser\\privacy-offline.spec.ts:223:1 › functional browser capability probes pass in production Chrome\n[2/19] tests\\browser\\privacy-offline.spec.ts:264:1 › a failed functional Wasm probe blocks a Wasm profile with an exact reason\n[3/19] tests\\browser\\privacy-offline.spec.ts:295:1 › conversion transmits no filename or file content\n[4/19] tests\\browser\\privacy-offline.spec.ts:366:1 › bounded source inspection reports structured data, document, and subtitle facts without source text\n[5/19] tests\\browser\\privacy-offline.spec.ts:410:1 › bounded source inspection reports archive and package structure without reading payloads or displaying entry names\n[6/19] tests\\browser\\privacy-offline.spec.ts:546:1 › bounded source inspection reports image dimensions and animation without decoding pixels\n[7/19] tests\\browser\\privacy-offline.spec.ts:637:1 › source inspection displays genuine audio and multi-stream video families from bounded local reads\n[8/19] tests\\browser\\privacy-offline.spec.ts:856:1 › installed app shell loads offline without eagerly downloading engines\n[9/19] tests\\browser\\privacy-offline.spec.ts:892:1 › cached VP9 media core performs a real conversion offline\n[10/19] tests\\browser\\privacy-offline.spec.ts:955:1 › cached direct destination writer converts while offline\n[11/19] tests\\browser\\privacy-offline.spec.ts:1012:1 › cached TAR-to-7Z engine converts offline and removes scratch\n[12/19] tests\\browser\\privacy-offline.spec.ts:1075:1 › cached compressed-TAR and ZIP pipelines convert to 7Z offline\n[13/19] tests\\browser\\privacy-offline.spec.ts:1147:1 › cached compressed TAR transcoding pipelines convert offline\n[14/19] tests\\browser\\privacy-offline.spec.ts:1241:1 › cached raw compression transcoding pipelines convert offline\n[15/19] tests\\browser\\privacy-offline.spec.ts:1301:1 › cached TAR.XZ-to-ZIP pipeline converts offline\n[16/19] tests\\browser\\privacy-offline.spec.ts:1354:1 › cached ZIP-to-TAR.XZ pipeline converts offline\n[17/19] tests\\browser\\privacy-offline.spec.ts:1405:1 › cached 7Z-to-compressed-TAR pipelines convert offline\n[18/19] tests\\browser\\privacy-offline.spec.ts:1476:1 › static codec assets preserve cross-origin isolation for pthread workers\n[19/19] tests\\browser\\static-host-policy.spec.ts:3:1 › production worker refuses submissions and server image conversion while serving the app\n  19 passed (50.4s)\n",
+  "ownedRuntimeRemoved": true,
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "finishedAt": "2026-10-27T10:05:24.204Z"
+}

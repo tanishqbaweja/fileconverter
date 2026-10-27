@@ -1,5 +1,44 @@
 # Tested conversion ledger
 
+2026-10-27 — Windows headless privacy/offline/static-host suite: **19 passed,
+0 failed, 0 skipped, 0 retries, 50.4 seconds**, using direct workerd 1.20260515.1
+and the exact existing production worker/modules. The local read-only ASSETS
+service streams only dist/client and applies its actual _headers; it is not a
+converter. No body-draining middleware, app-body cancellation, Chrome-service
+disablement, memory-formula change or test-spec edit. Receipt:
+`evidence/2026-10-27T10-04-13-785Z-owned-privacy-offline.json`.
+The 2,958,573,265-byte original has the same full SHA before/after; owned launch
+births are absent, asset service closed and scratch removed. This is not headed,
+250 MiB, large-file, native-reproduction, broader-browser or full-goal acceptance.
+
+The preceding HTTP-only direct control passed all 9 refusals, 6 bootstrap asset
+checks, 4 optimizer aliases and subsequent health checks:
+`evidence/2026-10-27T10-03-39-662Z-host-method-runtime.json`. Same built worker
+SHA as the earlier failed production control. Existing Wrangler/Miniflare failures
+remain failed. Byte-identical raw async controls (16-54-15-115Z), bundled controls
+with SDK drain disabled, and explicit cancellation controls (16-59-01-904Z) all
+reproduce alternating 405/500 plus HEAD500. Cancellation was rejected, not added
+to the app. The first raw control (16-42-06-029Z) was invalid: zero HTTP cases
+because its scratch writes triggered its module watcher. Its exact closed owned
+scratch (9 files / 3,140,861 bytes) was removed with identity proof in
+`evidence/2026-10-26T16-50-32-682Z-host-method-scratch-cleanup.json`; corrected
+controls isolate source/watch roots. Do not repeat these unchanged controls.
+
+Hosted Linux CI40355630340/fe97640c is terminal SUCCESS: 1767 portable passed,
+0 failed / 1 skipped; 19 privacy/offline passed in 42.6s; clean npm-ci, production
+build, lint, TypeScript and 404-route proof audit passed. Exact result:
+`evidence/2026-10-26-compatible-tooling-ci-result.json`. No duplicate dispatch.
+The queue-state entries below are historical, not current status.
+
+The only helper edit after this browser run renames the local source-pin loop
+variable `module` to `entry` for Next's lint rule. A focused regression reverses
+that exact one-line rename and matches the executed helper SHA; no behavioral
+change or unchanged 19-case replay is claimed.
+All 31 focused unit checks and lint for the five affected scripts/tests pass:
+`evidence/2026-10-27-direct-runtime-focused-verification.json`. No new application
+build, full portable suite, native rebuild, or large-file conversion was run in
+this infrastructure-only stage.
+
 2026-10-26 — Current-source22focused tests/lint PASS after retaining all three
 failed controls and forwarding fix; actual earlier same-graph1757portable/build/
 TS pass remains scoped to its executed stage. New hosted CI40355630340 at

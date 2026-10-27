@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "scope": "Hosted Linux verification of Vite/tooling and worker-first asset-forwarding source; not Windows-local runtime, native reproduction or stress acceptance",
+  "runId": 40355630340,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40355630340",
+  "executedHead": "fe97640c1798d288c9a1cd384cdfe75dc40dd019",
+  "status": "completed",
+  "conclusion": "success",
+  "cleanNpmCi": "passed",
+  "productionBuild": "passed",
+  "lint": "passed",
+  "typeScript": "passed",
+  "portableUnits": { "total": 1768, "passed": 1767, "failed": 0, "skipped": 1 },
+  "networkPrivacyOfflineBrowser": { "passed": 19, "durationSeconds": 42.6 },
+  "publicRouteEvidenceEntries": 404,
+  "windowsLocalCompletePrivacyAccepted": false,
+  "nativeReproductionExecuted": false,
+  "privateStressExecuted": false,
+  "publicPromotion": false,
+  "originalScopeComplete": false,
+  "duplicateDispatchUsed": false
+}

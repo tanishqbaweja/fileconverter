@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "scope": "Focused verification of local diagnostic infrastructure and retained hosting evidence, not full project acceptance",
+  "verifiedAt": "2026-10-27T10:09:01.3289447Z",
+  "tests": {
+    "command": "node scripts/run-repository-owned-node.mjs --test tests/host-method-runtime-diagnosis.test.mjs tests/compatible-tooling-security.test.mjs tests/static-host-request-policy.test.mjs tests/database-scaffold-removal.test.mjs",
+    "passed": 31,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 401.6526
+  },
+  "lint": {
+    "command": "node scripts/run-repository-owned-node.mjs node_modules/eslint/bin/eslint.js scripts/diagnose-host-method-runtime.mjs scripts/recover-host-method-scratch.mjs scripts/lib/direct-workerd-host.mjs scripts/run-owned-privacy-offline.mjs tests/host-method-runtime-diagnosis.test.mjs",
+    "exitCode": 0
+  },
+  "sourcePins": {
+    "scripts/lib/direct-workerd-host.mjs": "32b7b0b0fd8621e1345f8e5a570ac3fff8ac7fbe9eb5919ad500379f031d992f",
+    "scripts/diagnose-host-method-runtime.mjs": "d68fa7d27d2d0b9303207670d0484d896c188b1df7c7b23097b180b1f2dd77e2",
+    "scripts/run-owned-privacy-offline.mjs": "1364823a4be8a2561348c3ac4c5a217c614417b6735dff5767823c77c75d9d73",
+    "tests/host-method-runtime-diagnosis.test.mjs": "510eafc15a7c73431536d488d066cce1bf2733f1394017eacc25850a8b73822e"
+  },
+  "browserReceipt": "evidence/2026-10-27T10-04-13-785Z-owned-privacy-offline.json",
+  "browserPassed": 19,
+  "browserDurationMs": 50368.723,
+  "postBrowserHelperChange": "One local-variable rename for lint; focused regression reverses the exact line and matches the executed helper SHA, without repeating unchanged browser cases",
+  "applicationSourceChanged": false,
+  "dependenciesChanged": false,
+  "browserSpecsChanged": false,
+  "buildRerun": false,
+  "typeScriptRerun": false,
+  "fullPortableRerun": false,
+  "headedCoverage": false,
+  "memoryQualification": false,
+  "nativeReproduction": false,
+  "publicPromotion": false,
+  "originalScopeComplete": false
+}

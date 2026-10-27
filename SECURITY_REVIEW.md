@@ -1,6 +1,67 @@
 # Dependency and hosting review
 
-## Current result — October 26
+## Current hosting result — October 27
+
+Direct workerd 1.20260515.1 with the exact built production worker passes the
+unchanged 19-test Windows headless privacy/offline/static-host suite (50.4s,
+no skip/retry). The app's body refusal remains unchanged. The separate loopback
+ASSETS adapter is static-only: GET/HEAD, dist/client confinement and realpath
+checks, bounded file streaming, exact delivered _headers rules; no conversion.
+All 9 synthetic HTTP refusals, 6 bootstrap assets, 4 optimizer aliases and health
+checks passed before the browser run. Receipts:
+`evidence/2026-10-27T10-03-39-662Z-host-method-runtime.json` and
+`evidence/2026-10-27T10-04-13-785Z-owned-privacy-offline.json`.
+Original full SHA/size and owned process/runtime cleanup pass. No headed, memory,
+large-file, native or full security/release acceptance is inferred.
+
+Byte-identical raw controls and SDK-drain-disabled bundled controls both recreate
+the alternating 405/500 failure; request-body cancellation also fails, so it was
+not adopted. The installed SDK's default drain explains why its ordinary bundled
+minimal controls appeared healthy despite app-handler bodyUsedfalse. Direct
+ingress removes the incoming service-binding proxy boundary implicated by
+[workerd issue 7634](https://github.com/cloudflare/workerd/issues/7634); this is
+supported by the local same-worker controls, not a claim that the upstream defect
+is repaired. The original Wrangler/Miniflare failure remains open. Nine advisory
+groups and the compatible SDK/framework migration remain open. A first raw
+control invalidated by self-watching scratch writes has zero observations;
+corrected source-root isolation and exact 3,140,861-byte cleanup are retained.
+
+Hosted CI40355630340 is terminal success for fe97640c (1767 pass / 1 skip,
+19 privacy in 42.6s, clean install/build/lint/TS/404 audit), not a live queue.
+
+For this installed Windows runtime, after building the app, the explicit local
+qualification command is `node scripts/run-owned-privacy-offline.mjs --direct-workerd`.
+The wrapper keeps launches hidden, browsers headless, scratch repository-owned,
+and original-checksum/cleanup guards enabled. Omitting the flag still selects
+Wrangler/Miniflare; it does not silently fall back on errors. This is a local
+validation path, not a deployment migration. The 31 focused checks and affected
+script/test lint pass; see `evidence/2026-10-27-direct-runtime-focused-verification.json`.
+
+## Historical diagnosis — October 26
+
+40355630340/fe97640c is terminalSUCCESS1767portable+1skip,19privacy/offline42.6s,
+clean install/build/lint/TS/404route evidence. This is current hosted Linux
+application proof; Windows-local negative requests, native and stress remain
+distinct. See `evidence/2026-10-26-compatible-tooling-ci-result.json`.
+
+Local27-request comparison16-21-24-109Z: production alternates405/500 even with
+fresh client sockets; two minimal sync controls return405 throughout. Its final
+HEAD500 correctly leaves the diagnostic aggregateFAILED, despite all27responses
+being captured.18new async-only cases16-26-52-490Z also all405/healthyHEAD, so
+async alone is rejected. All5recorded server launches absent and scratch removed;
+no browser or media file was opened. Scope is synthetic HTTP22/0bytes only.
+
+Upstream documents unread-body/service-binding resets on Windows in
+[workerd7634](https://github.com/cloudflare/workerd/issues/7634); it is supporting
+context, not yet proof that every local error has that cause. The installed
+Wrangler4.92.0 dev bundler injects `middleware-ensure-req-body-drained.ts`, which
+consumes unused bodies after the handler returns; its older history is
+[SDK5106](https://github.com/cloudflare/workers-sdk/pull/5106). Therefore a minimal
+handler's bodyUsedfalse response is NOT end-to-end non-consumption proof. Current
+app uses no_bundle. Next compare identical async probe bytes with no_bundle:true;
+do not fix the visible error by adding an unbounded body drain to the app.
+
+## Historical queue-state checkpoint — October 26
 
 Latest focused22tests/lint/build/TS pass. One current-source hosted comparison
 40355630340/fe97640c is last verified QUEUED/0jobs, no conclusion. Do not treat
