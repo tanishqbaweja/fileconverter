@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "scope": "Observation of the already-dispatched current-SDK CI; not a terminal full-run pass",
+  "runId": 40488562110,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40488562110",
+  "headSha": "e8e3f21cd28b3af9aeb4d90b3c6900d64bcb7b9b",
+  "observedAt": "2026-10-27T10:48:33Z",
+  "status": "in_progress",
+  "conclusion": null,
+  "completedSuccessfully": [
+    { "jobId": 122136428086, "name": "verify", "completedAt": "2026-10-27T10:39:47Z" },
+    { "jobId": 122136428535, "name": "Browser conversions (audio-destination-scopes)", "completedAt": "2026-10-27T10:33:12Z" },
+    { "jobId": 122136428562, "name": "Browser conversions (audio-source-metadata)", "completedAt": "2026-10-27T10:28:47Z" },
+    { "jobId": 122136428607, "name": "Browser conversions (image-conversions)", "completedAt": "2026-10-27T10:32:46Z" }
+  ],
+  "stillRunning": [
+    { "jobId": 122136428546, "name": "Browser conversions (media-remux)", "activeStep": "Install independent native validators" },
+    { "jobId": 122136428560, "name": "Browser conversions (streaming-conversions)", "activeStep": "Install independent native validators" }
+  ],
+  "nativeReproductionSelected": false,
+  "completedJobLogsAvailableViaGhRunView": false,
+  "logAvailabilityNote": "gh refuses run-view logs until the whole run completes; do not restart or fabricate test counts from unavailable logs",
+  "duplicateDispatchUsed": false,
+  "latestReconfirmedAtUtcMinute": "2026-10-27T10:55Z",
+  "latestReconfirmation": "Same four successful jobs, same two live validator-install steps, no overall conclusion",
+  "nextStatusCheckNotBefore": "2026-10-27T11:13:00Z",
+  "waitReason": "The two live jobs have a 45-minute workflow deadline from roughly10:27; check after that deadline rather than polling the unchanged install state repeatedly",
+  "originalScopeComplete": false
+}

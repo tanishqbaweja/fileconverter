@@ -1,5 +1,32 @@
 # Remaining work audit
 
+2026-10-27 — Same-application static-shell experiment remains PRIVATE. Actual Home/
+ConverterApp and identical CSS render without the RSC bootstrap; initial JS is
+610,537 -> 529,619 bytes (gzip 159,343 -> 134,675). Corrected private preview passes
+all unchanged 19 headless privacy/offline/static-host tests in 51.1s, with 19
+module-MIME preflights. This is NOT memory, conversion-speed, full fidelity or
+release acceptance, and installed framework dependencies remain unchanged (2 high
+audit groups). No production file/hosting identity/engine/registry change.
+`evidence/2026-10-27-static-shell-cycle.json` binds exact sources and rejected
+controls. Next is a matched whole-Chromium memory comparison with normal services,
+not another unchanged build/MIME/privacy replay or premature production switch.
+
+All ~92MB candidate asset copies/build/profile scratch were removed in finally;
+recorded owned runner absent/server closed/original full size+SHA unchanged.
+An extra ~991KB diagnostic-trace prune was rejected before execution; it remains
+as regression evidence, not converted media. Do not bypass that denial. Initial
+arbitrary shell-assertion failures and actual MIME failure (5 pass / 1 fail /
+13 unrun) stay failed; .mjs MIME/preflight correction and all19 pass are separate.
+27 focused checks, affected-file lint and TypeScript pass.
+
+SDK CI40488562110/e8e3f21c: verify plus image/audio-source/audio-destination jobs
+SUCCESS; media-remux and streaming still installing native validators at last
+observation, not failed or complete. Logs unavailable until full run completion;
+no invented counts, duplicate dispatch or restart. Exact observation is
+`evidence/2026-10-27-cloudflare-ci-observation.json`; next status check no earlier
+than 11:13 UTC (after the live jobs' 45-minute deadline; same state reconfirmed
+at10:55). Full B02–B09/original54/native/memory/scaling gates remain open.
+
 2026-10-27 — B08 SDK upgrade implemented and locally verified: Cloudflare plugin
 1.65.0 / Wrangler 4.152.0 / Miniflare 5.20261019.2-beta / workerd 1.20261019.1.
 One narrowly scoped override pins that exact Miniflare's HTTP client to Undici

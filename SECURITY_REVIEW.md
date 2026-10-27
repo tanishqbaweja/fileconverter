@@ -1,5 +1,28 @@
 # Dependency and hosting review
 
+## Private static-shell feasibility — October 27
+
+An isolated build renders actual Home/ConverterApp at build time and hydrates the
+same application without the RSC bootstrap. Existing production files, Sites
+identity/integration, CSS, dependency pins, registry and conversion engines are
+unchanged. No deployment/audience change. It saves 80,918 raw initial JS bytes
+and 24,668 gzip bytes; RAM/speed benefits are unmeasured. The corrected private
+headless preview passes all unchanged 19 privacy/offline/static-host cases in
+51.1s under existing headers/policy. It does not close security, engine fidelity,
+whole-Chromium250MiB, metadata/hosting/release or broader original-scope gates.
+
+The first real preview retained a .mjs MIME defect: 5 passed, 1 failed, 13 unrun;
+trace shows HTTP200/octet-stream/nosniff. Correct MIME plus all19module HEAD checks
+fix it, without CSP/nosniff/test relaxation. Raw controls remain failed. Cleanup
+removed all disposable candidate builds and browser scratch; original full SHA
+unchanged. Extra ~991KB trace pruning was rejected before execution; it remains
+for regression verification, no bypass. See `evidence/2026-10-27-static-shell-cycle.json`
+and `evidence/2026-10-27-static-shell-mime-failure.json`.
+
+Next test is matched whole-Chromium memory A/B with normal services and exact
+blank baseline, not adoption based on a smaller JS bundle. Both framework audit
+groups remain unresolved until an actual verified migration removes them.
+
 ## SDK security upgrade — October 27
 
 Implemented aligned Cloudflare Vite plugin 1.65.0 / Wrangler 4.152.0 with one

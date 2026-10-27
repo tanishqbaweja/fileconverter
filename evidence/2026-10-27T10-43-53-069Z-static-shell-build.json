@@ -1,0 +1,295 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-27T10:43:53.070Z",
+  "status": "completed-private-build-feasibility-not-acceptance",
+  "scope": "Private static-shell build, unchanged 19-case headless privacy suite and artifact-size comparison; not memory, fidelity, speed or deployment acceptance",
+  "browserLaunched": true,
+  "userFilesRead": false,
+  "conversionAcceptance": false,
+  "memoryAcceptance": false,
+  "productionReplacement": false,
+  "publicPromotion": false,
+  "sourcePins": {
+    "package.json": "b27907298e6738ae0a732f9b81ada986761719a693c9fbdf4f48c48a4cafd3c1",
+    "package-lock.json": "e4c28744e79accdcdfe1f507892cfeafb7325f519025b4b11c5052a08ebd8753",
+    "vite.config.ts": "ef3bc4603131a48d6f6b013671f86b73a22cc40226196cb037c4b756700d61ae",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee",
+    ".openai/hosting.json": "6f55e031b82f9a23029129a1a3fed515ae6d7da180e369c7b2b90ec248d06475",
+    "build/sites-vite-plugin.ts": "abd6bc3a592961e978ab72fceb8ee7647824d9a2321ee5b5777b2a05d69526cc",
+    "app/page.tsx": "579534aabc25a2605129164676bfc9c74436c39a11895165bc08d5707f1268ba",
+    "app/layout.tsx": "7f483eaa58c889cd4a6fba63ede95a29b95c7ffd307b0d99fc6bc5c0ab9d8cb1",
+    "app/globals.css": "92fa70ec18270415dd5b8bf176e10a871b7e549c426fb87d077ab82d2f940f2f",
+    "app/converter/ConverterApp.tsx": "7ae964f6acdc50f7746d3b04a3717f2a18563216af9a11910a5e3b8aae22b9f3",
+    "lib/capability-registry.ts": "d9f5ad4599db8b43a68acb311f16d652a9a74300c38a31f827c12590652e573b",
+    "public/sw.js": "72b211ba9b1c50392a0ecb4a287185780a05b155bbff524f80a1e72167249549",
+    "dist/server/wrangler.json": "46a2a564521ba3c6322959ab984b4e8c96660ab7a518899be81b8ddbfa044a61",
+    "dist/server/index.js": "aeef17a4181bfcf46a08f9802bc8c0e5f55464a2a0e053f1d6e427b45b3c9172",
+    "scripts/lib/static-shell-candidate-privacy.mjs": "c6ac97a1a9082a058f52b0c27e57d19470937627bd25f4439815b64784fd00f1",
+    "lib/static-host-request-policy.ts": "e699ea329425e935279410b7dc3a5bcd0d6ea1b522962f4a128d1ec1b197e4ad",
+    "public/_headers": "932fcc39dad54e44feef2ae3dcbe098bea8146abbeede80fe4175a1faf490ca9",
+    "playwright.config.ts": "e1ebd9e54b5baf85227edf021b1190dca2788c226ea39209c4e22915ce9d0a84",
+    "tests/browser/privacy-offline.spec.ts": "3cf518ffd0d244bec985664bf5eadd670cf2dacd98754a40cbdb2417b0ddfc7e",
+    "tests/browser/static-host-policy.spec.ts": "9587f432302a1bebd73bc1be19a2d5175d824fbb42ae126f0317a8a64bad29a6",
+    "scripts/build-static-shell-candidate.mjs": "fc6959e3d52fe2e3fd7bee258e7749e51fae660562ce38d8aa1f5e6c36aeff18",
+    "scripts/static-shell-candidate/client.tsx": "c1b7fb3f8844ff1f9484e5e692625a9c014304d8bc5f2aa78f0af9a1ce154686",
+    "scripts/static-shell-candidate/prerender.tsx": "7432a4fd99f68deb5c98cacf26fb71c10f181da46cd2f4f47340b5cb580bdfe1"
+  },
+  "failures": [],
+  "prerenderBuildMs": 158.9495,
+  "prerenderedApplication": {
+    "bytes": 9069,
+    "sha256": "9ffcb8ae22c72e885355101191432c218d7a223ee2d8d32766758e9274f97b77",
+    "actualHomeAndConverterComponent": true,
+    "generatedProgressOrConversionData": false
+  },
+  "clientBuildMs": 1240.047,
+  "candidateBootstrap": {
+    "assets": [
+      {
+        "pathname": "/assets/index-EQVKcRSU.js",
+        "bytes": 529619,
+        "gzipBytes": 134675,
+        "sha256": "7d8cde936a50306e993ffba6dbb75e0d3172ae41b5cfd3887a3d6826d69e52d3"
+      },
+      {
+        "pathname": "/assets/index-nyqtQdFm.css",
+        "bytes": 27065,
+        "gzipBytes": 6577,
+        "sha256": "834f451f08bafbadb37fd84eb0a6a4be565cf679896dc80ff981b7977df4046b"
+      }
+    ],
+    "javascriptBytes": 529619,
+    "javascriptGzipBytes": 134675
+  },
+  "baselineBootstrap": {
+    "assets": [
+      {
+        "pathname": "/assets/index-nyqtQdFm.css",
+        "bytes": 27065,
+        "gzipBytes": 6577,
+        "sha256": "834f451f08bafbadb37fd84eb0a6a4be565cf679896dc80ff981b7977df4046b"
+      },
+      {
+        "pathname": "/assets/layout-segment-context-BopcxWxv.js",
+        "bytes": 288,
+        "gzipBytes": 227,
+        "sha256": "411c5e15fcba71aab5472d651d5f95c0ddb7d6d5ac7f934589a27c2d37192b32"
+      },
+      {
+        "pathname": "/assets/rolldown-runtime-XKyaHtl9.js",
+        "bytes": 726,
+        "gzipBytes": 429,
+        "sha256": "548d1dbf321e7d2ae804fcc158b588706a7c52f8ca175de1490c6ccb4dbe55b7"
+      },
+      {
+        "pathname": "/assets/framework-DRChgpEG.js",
+        "bytes": 189686,
+        "gzipBytes": 58990,
+        "sha256": "8260b4ae033c0c6ebbfd4e0922caf54ffbc5cc97e73ea8cc47d825ade3dd6e73"
+      },
+      {
+        "pathname": "/assets/index-9y5sB6zW.js",
+        "bytes": 81019,
+        "gzipBytes": 24443,
+        "sha256": "8be5e2cf0ad58ef04a7f18e8dc828efe9381cf3ea1c9990007e3d3fe0e904c88"
+      },
+      {
+        "pathname": "/assets/ConverterApp-oHSk1iRJ.js",
+        "bytes": 338818,
+        "gzipBytes": 75254,
+        "sha256": "b88f4cc63aceefe4b4b498901d1dd5cdb0df11ad18ed05228835f8b8a6d1cedb"
+      }
+    ],
+    "javascriptBytes": 610537,
+    "javascriptGzipBytes": 159343
+  },
+  "comparison": {
+    "baseline": "Exact existing SDK-qualified production bootstrap assets, not a browser benchmark",
+    "rawJavascriptBytesSaved": 80918,
+    "gzipJavascriptBytesSaved": 24668
+  },
+  "publicAssets": {
+    "filesPresentAtMatchingSize": 102,
+    "bytes": 92254308,
+    "byteIdentityIndependentlyValidated": false,
+    "note": "Presence/size check only; no browser or independent conversion qualification"
+  },
+  "knownOpenGates": [
+    "full metadata/SEO parity",
+    "Sites deployment metadata packaging",
+    "static-only hosting worker",
+    "unchanged privacy/offline and conversion suites",
+    "whole-Chromium memory A/B",
+    "large-file/repeat/adverse recovery",
+    "all original scope requirements"
+  ],
+  "privacy": {
+    "scope": "Unchanged 19-case headless privacy/offline/static-host suite on a private static frontend candidate; not memory/fidelity/release qualification",
+    "safeToRemoveRuntime": true,
+    "status": "passed-unchanged-private-candidate-privacy-offline-specs",
+    "failures": [],
+    "serverRequests": 96,
+    "nonStaticRefusals": 9,
+    "streamedAssets": 67,
+    "noServerConversion": true,
+    "headed": false,
+    "maxReadBufferBytes": 65536,
+    "hostMemory": {
+      "acquiredAt": "2026-10-27T10:43:54.9868550Z",
+      "freePhysicalBytes": 8505614336,
+      "freeVirtualBytes": 10239741952,
+      "requiredPhysicalBytes": 2147483648,
+      "requiredVirtualBytes": 2147483648,
+      "safeToStart": true,
+      "primaryConversionLimitMiB": 250,
+      "primaryMemoryFormulaChanged": false,
+      "noProcessesKilled": true
+    },
+    "protectedOriginalBefore": {
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+    },
+    "moduleMimePreflight": [
+      {
+        "pathname": "/engines/xz-decoder/within-xz-decoder.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/xz/within-xz.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/tiff/within-tiff.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/remux/within-aiff.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/remux/within-direct.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/remux/within-mpeg4.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/remux/within-remux.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/remux/within-theora.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/remux/within-vp9.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/remux/within-webm-quality.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/remux/within-webm.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/jxl-inspector/within-jxl-inspector.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/jxl-encoder/within-jxl-encoder.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/jxl/within-jxl.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/bzip2/within-bzip2.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/avif-encoder/within-avif-animation-encoder.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/avif-encoder/within-avif-encoder.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/avif/within-avif.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      },
+      {
+        "pathname": "/engines/archive7z/within-archive7z.mjs",
+        "status": 200,
+        "contentType": "text/javascript"
+      }
+    ],
+    "runnerBirth": {
+      "pid": 31896,
+      "parentPid": 38112,
+      "createdAt": "2026-10-27T10:43:58.2611220Z"
+    },
+    "runnerExitCode": 0,
+    "stats": {
+      "startTime": "2026-10-27T10:43:58.939Z",
+      "duration": 51130.259000000005,
+      "expected": 19,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "runnerLog": "\nRunning 19 tests using 1 worker\n\n(node:44856) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n\n\n[1/19] tests\\browser\\privacy-offline.spec.ts:223:1 › functional browser capability probes pass in production Chrome\n[2/19] tests\\browser\\privacy-offline.spec.ts:264:1 › a failed functional Wasm probe blocks a Wasm profile with an exact reason\n[3/19] tests\\browser\\privacy-offline.spec.ts:295:1 › conversion transmits no filename or file content\n[4/19] tests\\browser\\privacy-offline.spec.ts:366:1 › bounded source inspection reports structured data, document, and subtitle facts without source text\n[5/19] tests\\browser\\privacy-offline.spec.ts:410:1 › bounded source inspection reports archive and package structure without reading payloads or displaying entry names\n[6/19] tests\\browser\\privacy-offline.spec.ts:546:1 › bounded source inspection reports image dimensions and animation without decoding pixels\n[7/19] tests\\browser\\privacy-offline.spec.ts:637:1 › source inspection displays genuine audio and multi-stream video families from bounded local reads\n[8/19] tests\\browser\\privacy-offline.spec.ts:856:1 › installed app shell loads offline without eagerly downloading engines\n[9/19] tests\\browser\\privacy-offline.spec.ts:892:1 › cached VP9 media core performs a real conversion offline\n[10/19] tests\\browser\\privacy-offline.spec.ts:955:1 › cached direct destination writer converts while offline\n[11/19] tests\\browser\\privacy-offline.spec.ts:1012:1 › cached TAR-to-7Z engine converts offline and removes scratch\n[12/19] tests\\browser\\privacy-offline.spec.ts:1075:1 › cached compressed-TAR and ZIP pipelines convert to 7Z offline\n[13/19] tests\\browser\\privacy-offline.spec.ts:1147:1 › cached compressed TAR transcoding pipelines convert offline\n[14/19] tests\\browser\\privacy-offline.spec.ts:1241:1 › cached raw compression transcoding pipelines convert offline\n[15/19] tests\\browser\\privacy-offline.spec.ts:1301:1 › cached TAR.XZ-to-ZIP pipeline converts offline\n[16/19] tests\\browser\\privacy-offline.spec.ts:1354:1 › cached ZIP-to-TAR.XZ pipeline converts offline\n[17/19] tests\\browser\\privacy-offline.spec.ts:1405:1 › cached 7Z-to-compressed-TAR pipelines convert offline\n[18/19] tests\\browser\\privacy-offline.spec.ts:1476:1 › static codec assets preserve cross-origin isolation for pthread workers\n[19/19] tests\\browser\\static-host-policy.spec.ts:3:1 › production worker refuses submissions and server image conversion while serving the app\n  19 passed (51.1s)\n",
+    "processCleanup": {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 31896,
+        "parentPid": 38112,
+        "createdAt": "2026-10-27T10:43:58.2611220Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-27T10:44:50.866Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 698,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    "serverClosed": true,
+    "protectedOriginalAfter": {
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+    }
+  },
+  "syntheticBrowserFixturesSelected": true,
+  "protectedOriginalReadForChecksumOnly": true,
+  "ownedRuntimeRemoved": true,
+  "finishedAt": "2026-10-27T10:44:53.763Z"
+}

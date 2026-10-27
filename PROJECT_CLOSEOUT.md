@@ -6,6 +6,26 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-27
 
+Private static-shell prototype now builds actual existing app and passes the
+unchanged 19-test headless privacy/offline/hosting suite (51.1s). CSS identical;
+initial JS saves 80,918B raw / 24,668B gzip. These are NOT measured memory or
+conversion-speed gains; do not replace production or remove framework deps yet.
+All generated ~92MB application copies/build/browser scratch removed; protected
+original full SHA unchanged. One ~991KB diagnostic trace remains after an extra
+prune was rejected; no bypass. 27 focused units/lint/TS pass. Exact cycle/source/
+rejected-control proof: `evidence/2026-10-27-static-shell-cycle.json`.
+Next: matched whole-Chromium memory A/B, preserving normal services/formula,
+then full metadata/hosting/validator/repeat/adverse parity before any adoption.
+
+Current SDK CI40488562110/e8e3f21c: four requested jobs succeeded (verify, image,
+audio source, audio destination); two remain at native-validator installation.
+The overall run is still live, not fully passed. Logs are unavailable until
+terminal. Same state reconfirmed10:55; next check11:13 UTC, after the live jobs'
+45-minute deadline, not repeated install polling. Do not duplicate
+or restart. All full original54/native/media/memory/scaling scope remains open.
+
+### Earlier SDK checkpoint
+
 SDK migration now reduces fresh audits from 9 groups to 2 high framework groups
 and passes the DEFAULT Windows 19-test privacy/offline/hosting suite in 49.8s.
 No alternate-host flag, app-body workaround, browser-service change or memory

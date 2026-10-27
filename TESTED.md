@@ -1,5 +1,32 @@
 # Tested conversion ledger
 
+2026-10-27 — PRIVATE static-shell candidate uses actual Home/ConverterApp, same
+CSS and existing conversion workers/engines. Bootstrap JS 610,537 -> 529,619B;
+gzip 159,343 -> 134,675B. This is artifact-size evidence, NOT measured RAM or
+conversion speed. Corrected private headless preview: unchanged 19 privacy/
+offline/static-host tests PASS in 51.1s, 0 skips/retries, after all 19 .mjs MIME
+preflights. No production replacement or dependency removal/public promotion.
+`evidence/2026-10-27T10-43-53-069Z-static-shell-build.json` and
+`evidence/2026-10-27-static-shell-cycle.json` record source pins, exact HTML/CSS,
+artifact sizes, original full before/after SHA and owned-runner/server/scratch
+cleanup. 27 focused units/lint/TS PASS. Next: matched whole-tree memory A/B,
+metadata/hosting parity and full conversion/validator/repeat/adverse gates.
+
+Failed controls stay failed: 10-36-17 invented 10KB HTML minimum; 10-36-42 wrongly
+expected Convert controls before any file; both corrected from actual component
+structure, with upper bound intact. Real 10-41-05 browser control: 5 PASS / 1 FAIL /
+13 unrun because .mjs was served as octet-stream under nosniff. Retained complete
+trace and `evidence/2026-10-27-static-shell-mime-failure.json` prove HTTP200/wrong
+MIME. Fix maps .mjs correctly and checks every module type before Chrome. About
+991KB diagnostic trace remains after exact extra prune was rejected before any
+execution; do not route around it. All ~92MB disposable candidate copies and
+browser scratch are removed; no protected original conversion occurred.
+
+Current SDK CI40488562110/e8e3f21c remains IN_PROGRESS: verify plus three image/
+audio browser jobs succeeded; media-remux/streaming native-validator install
+steps still live at last check. Full run logs unavailable until terminal, so no
+test counts fabricated. `evidence/2026-10-27-cloudflare-ci-observation.json`.
+
 2026-10-27 — New SDK's DEFAULT Windows runtime passes all unchanged 19 headless
 privacy/offline/static-host tests in 49.8s, with no direct-host flag, skips or
 retries. Receipt `evidence/2026-10-27T10-21-32-023Z-owned-privacy-offline.json`:

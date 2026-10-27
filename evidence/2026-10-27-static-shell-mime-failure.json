@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "scope": "Compact network evidence extracted from the failed private preview trace; not production, conversion correctness or memory acceptance",
+  "sourceReport": "evidence/2026-10-27T10-41-05-002Z-static-shell-build.json",
+  "sourceTrace": {
+    "path": "output/playwright/2026-10-27T10-41-05-002Z-static-shell-failure/trace.zip",
+    "bytes": 991383,
+    "sha256": "d8ef075eaa11782c3b1c605b863e8f15f777285baedcae0121ba05c4404a52cc",
+    "disposition": "An extra exact-target cleanup command was rejected by tool policy before execution. The 991383-byte diagnostic trace remains local; do not retry or route around that denial. It is not converted media. Compact network evidence is committed separately."
+  },
+  "matchingNetworkEntries": [
+    { "pathname": "/engines/jxl-inspector/within-jxl-inspector.mjs", "status": 200, "contentType": "application/octet-stream", "xContentTypeOptions": "nosniff" },
+    { "pathname": "/engines/jxl-inspector/within-jxl-inspector.mjs", "status": 200, "contentType": "application/octet-stream", "xContentTypeOptions": "nosniff" }
+  ],
+  "failedRun": { "passed": 5, "failed": 1, "unrun": 13, "durationMs": 21804.217 },
+  "diagnosis": "The private preview adapter omitted the .mjs JavaScript MIME mapping. The real inspector module existed and returned HTTP200 but strict nosniff/module loading correctly rejected its octet-stream response.",
+  "correction": "Map .mjs to text/javascript; HEAD-preflight all 19 copied module entries before Chrome. Do not relax CSP, nosniff, import requirements or test assertions.",
+  "correctedRun": "evidence/2026-10-27T10-43-53-069Z-static-shell-build.json",
+  "oldFailureRelabelledPassing": false,
+  "productionFilesChanged": false
+}
