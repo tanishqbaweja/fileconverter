@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "rawReport": "evidence/2026-10-27T15-07-38-365Z-source-svg-browser.json",
+  "rawReportBytes": 333734,
+  "rawReportSha256": "706bcc3bece93af8a2aa30206ecbdac29233852c9074bf17973b19a5e6a3e020",
+  "executedHead": "51baf25e41ce2fa07b27c4dd05891549bb479ad3",
+  "startedAt": "2026-10-27T15:07:38.365Z",
+  "finishedAt": "2026-10-27T15:08:47.209Z",
+  "conclusion": "ten functional cases passed; strict complete-tree small-suite memory gate FAILED",
+  "stats": {
+    "startTime": "2026-10-27T15:08:19.968Z",
+    "duration": 17452.346,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "engineRequests": 4,
+  "candidatePin": "images/resvg-source/processed-candidate-input.json",
+  "browserVersion": "156.0.8078.48",
+  "headed": false,
+  "blankPrivateBytes": 325951488,
+  "peakPrivateBytes": 614354944,
+  "incrementalPrivateMiB": 275.04296875,
+  "limitMiB": 250,
+  "nativeValidSamples": 170,
+  "nativeUnavailableSamples": 0,
+  "baselineAdjusted": false,
+  "browserServicesDisabledByDriver": false,
+  "processExclusions": false,
+  "growthAgainstLastBlankSnapshotNotMedianMetric": [
+    {
+      "pid": 43464,
+      "typeFromBirthMatchedBlank": "renderer",
+      "utilitySubtype": null,
+      "peakPrivateBytes": 243888128,
+      "lastBlankPrivateBytes": 17944576,
+      "deltaFromLastBlankMiB": 215.4765625
+    },
+    {
+      "pid": 28080,
+      "typeFromBirthMatchedBlank": "gpu-process",
+      "utilitySubtype": null,
+      "peakPrivateBytes": 168091648,
+      "lastBlankPrivateBytes": 112025600,
+      "deltaFromLastBlankMiB": 53.46875
+    },
+    {
+      "pid": 46152,
+      "typeFromBirthMatchedBlank": "browser",
+      "utilitySubtype": null,
+      "peakPrivateBytes": 81657856,
+      "lastBlankPrivateBytes": 65576960,
+      "deltaFromLastBlankMiB": 15.3359375
+    },
+    {
+      "pid": 47520,
+      "typeFromBirthMatchedBlank": "utility",
+      "utilitySubtype": "network.mojom.NetworkService",
+      "peakPrivateBytes": 16035840,
+      "lastBlankPrivateBytes": 14258176,
+      "deltaFromLastBlankMiB": 1.6953125
+    },
+    {
+      "pid": 39624,
+      "typeFromBirthMatchedBlank": "utility",
+      "utilitySubtype": "storage.mojom.StorageService",
+      "peakPrivateBytes": 8294400,
+      "lastBlankPrivateBytes": 8253440,
+      "deltaFromLastBlankMiB": 0.0390625
+    },
+    {
+      "pid": 14328,
+      "typeFromBirthMatchedBlank": "renderer",
+      "utilitySubtype": null,
+      "peakPrivateBytes": 20639744,
+      "lastBlankPrivateBytes": 20623360,
+      "deltaFromLastBlankMiB": 0.015625
+    },
+    {
+      "pid": 20068,
+      "typeFromBirthMatchedBlank": "renderer",
+      "utilitySubtype": null,
+      "peakPrivateBytes": 21659648,
+      "lastBlankPrivateBytes": 21651456,
+      "deltaFromLastBlankMiB": 0.0078125
+    },
+    {
+      "pid": 32748,
+      "typeFromBirthMatchedBlank": "unknown",
+      "utilitySubtype": null,
+      "peakPrivateBytes": 15552512,
+      "lastBlankPrivateBytes": null,
+      "deltaFromLastBlankMiB": null
+    },
+    {
+      "pid": 28916,
+      "typeFromBirthMatchedBlank": "crashpad-handler",
+      "utilitySubtype": null,
+      "peakPrivateBytes": 2539520,
+      "lastBlankPrivateBytes": 2678784,
+      "deltaFromLastBlankMiB": -0.1328125
+    },
+    {
+      "pid": 48232,
+      "typeFromBirthMatchedBlank": "renderer",
+      "utilitySubtype": null,
+      "peakPrivateBytes": 35995648,
+      "lastBlankPrivateBytes": 43483136,
+      "deltaFromLastBlankMiB": -7.140625
+    }
+  ],
+  "allocationSourceProven": false,
+  "workerRealmDiagnosticsContainUnavailableValues": true,
+  "candidateFunctionalCompatibilityVerifiedForTheseSmallCases": true,
+  "fullStressOrOomAcceptance": false,
+  "publicEngineReplacement": false,
+  "publicMaximumStillUnfixed": true,
+  "sourceReproducibilityRepeatProven": false,
+  "ownedProcessIdentitiesProvenAbsent": 4,
+  "ownedRuntimeRemoved": true,
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "failureTrace": {
+    "path": "output\\playwright\\2026-10-27T15-07-38-365Z-source-svg-failure.zip",
+    "bytes": 3092103,
+    "sha256": "97e3a79dce0f336d5b593ef5ac12cb7c708cdb5d99e896a101d9c1e92086ee37"
+  },
+  "priorNavigationFailureRelabelled": false,
+  "originalGoalComplete": false,
+  "next": "Retain the 275.04 MiB failure. Attribute renderer/GPU growth and unavailable worker diagnostics before changing an implementation or running larger SVG stress. No unchanged compiler/postprocessor/whole-suite replay."
+}

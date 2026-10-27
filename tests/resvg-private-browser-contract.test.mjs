@@ -6,6 +6,25 @@ import { sha } from "../images/resvg-source/source-pins.mjs";
 import { gunzipSync } from "node:zlib";
 const read = file => readFile(new URL("../" + file, import.meta.url));
 const json = async file => JSON.parse(await read(file));
+test("real bounded source-built SVG renders through all ten existing browser cases but its 275 MiB complete-tree failure is never accepted", async () => {
+  const proof = await json("evidence/2026-10-27-svg-private-browser-terminal.json"), bytes = await read(proof.rawReport);
+  assert.equal(bytes.length, proof.rawReportBytes); assert.equal(sha(bytes), proof.rawReportSha256);
+  const row = JSON.parse(bytes); assert.equal(row.executedHead, proof.executedHead);
+  assert.equal(row.status, "failed-private-svg-browser-qualification"); assert.equal(row.failures.length, 1);
+  assert.match(row.failures[0], /Complete Chromium process-tree small-suite private-memory limit failed/);
+  assert.deepEqual([row.stats.expected, row.stats.unexpected, row.stats.skipped, row.stats.flaky], [10, 0, 0, 0]);
+  assert.equal(row.cases.length, 10); assert.ok(row.cases.every(value => value.ok)); assert.equal(row.wasmRequests, 4);
+  assert.equal(row.memory.validSamples, 170); assert.equal(row.memory.unavailableSamples, 0);
+  assert.equal((row.memory.peak.privateBytes - row.blankBaseline.privateBytes) / 1048576, 275.04296875);
+  assert.equal(row.memory.incrementalPrivateMiB, 275.04296875); assert.ok(row.memory.incrementalPrivateMiB > row.memory.limitMiB);
+  assert.equal(row.baselineAdjusted, false); assert.equal(row.browserServicesDisabledByDriver, false);
+  assert.equal(row.ownedRuntimeRemoved, true); assert.equal(row.processCleanup.length, 4);
+  assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent"));
+  assert.deepEqual(row.protectedOriginalAfter, row.protectedOriginalBefore);
+  assert.equal(row.publicEngineReplacement, false); assert.equal(row.fullStressOrOomAcceptance, false);
+  assert.equal(proof.allocationSourceProven, false); assert.equal(proof.workerRealmDiagnosticsContainUnavailableValues, true);
+  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await read(file)), digest, file);
+});
 test("first browser attempt remains a failed navigation control with zero engine fetches, unchanged original and completed owned cleanup", async () => {
   const row = await json("evidence/2026-10-27T15-02-07-989Z-source-svg-browser.json");
   assert.equal(row.status, "failed-private-svg-browser-qualification");

@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+2026-10-27 — Full portable regression after private SVG implementation and
+actual browser result: 1,849 PASS/0fail/0skip/0cancel,557 files,109.503s.
+719 total files accounted for;162 prerequisite-bound qualification files NOT
+executed or called passed. Affected lint and full tsc PASS. Browser remains ten
+functional passes but strict whole-tree SMALL-SUITE memory FAILURE275.04 MiB.
+No public engine replacement or original-goal completion. Disposable owned
+conversion/profile/candidate data removed; retain compact evidence plus3.09 MB
+memory-failure trace. `evidence/2026-10-27-svg-source-browser-cycle.json`.
+
+2026-10-27 — Genuine private source-built/capped SVG browser result:
+10 PASS/0 fail/0 skip/0 flaky for existing correctness, independent decode,
+reference-fidelity, bounded direct-save, write-failure and rejection assertions.
+Same production UI/worker/npm glue/I/O; only exact pinned Wasm response differs.
+Normal Chrome 156.0.8078.48 services retained, headless only; native picker not
+verified. Strict whole-tree small-suite gate FAILED: 275.04296875 MiB >250,
+170 valid/0 unavailable native samples. No public replacement or full stress/
+OOM/source-repeat acceptance. Raw report/source pins and 3,092,103 B trace kept.
+Renderer/GPU last-blank growth about215.48/53.47 MiB is diagnostic, not allocation
+attribution; worker heap failures stay null, never zero. Four process births
+absent, owned runtime and all disposable conversion/candidate data removed;
+original 2,958,573,265 B/SHA31f36695…b9db34 unchanged. Previous navigation failure
+remains failed. `evidence/2026-10-27-svg-private-browser-terminal.json`.
+
 2026-10-27 — First private SVG browser FAILED before conversion: attached
 default page could not navigate relative/?test=1.0pass/1fail/9unrun; zero Wasm
 requests. Memory result is NOT conversion acceptance. Four owned process births

@@ -1,5 +1,32 @@
 # Remaining work audit
 
+2026-10-27 — End-of-cycle regression PASS: 1,849 portable tests across557
+files, zero failures/skips/cancellations in109.503s. All719 inventory files are
+accounted for;162 prerequisite-bound qualification files remain explicitly not
+executed. Final affected lint and TypeScript checking PASS. This does not change
+the genuine ten-case browser functional pass OR its 275.04 MiB memory FAILURE.
+Public engine unchanged; no larger stress or acceptance claim. Full cycle and
+next diagnostic boundary: `evidence/2026-10-27-svg-source-browser-cycle.json`.
+
+2026-10-27 — Source-built bounded SVG now passed all TEN existing production-
+browser functional cases on normal-service, headless Chrome 156.0.8078.48:
+independent decoding/reference SSIM, direct save, write-failure cleanup, and
+security policy. Four candidate fetches; no compiler/postprocessor replay.
+The COMPLETE-TREE SMALL-SUITE memory gate nevertheless FAILED at 275.04296875
+MiB (170 valid native samples, zero missing), using the unchanged earliest
+stable blank baseline and 250 MiB limit. This is not a public acceptance or
+per-conversion stress proof; the suite includes repeated navigation/rejection.
+Birth-matched last-blank diagnostics show approximately +215.48 MiB in a renderer
+and +53.47 MiB in GPU. Allocation cause is NOT proved; unavailable worker heaps
+remain null. Do not guess an AI-service cause, alter the baseline, shrink the
+fixture, lower fidelity, raise the cap, or replay unchanged large gates.
+All four owned process identities absent, disposable runtime/candidate/output
+data removed, full original size/SHA unchanged. Compact report plus 3,092,103 B
+failure trace retained. Public SVG remains unchanged, without an explicit max;
+A-08/B08 stay partial. Next: attribute renderer/GPU growth and diagnostic gaps
+before implementation changes or larger SVG stress. See
+`evidence/2026-10-27-svg-private-browser-terminal.json`.
+
 2026-10-27 — First private SVG browser attempt failed BEFORE conversion:
 CDP-attached page lacked relative-navigation baseURL.0 passed/1 failed/9 unrun,
 ZERO engine fetches; +4.00MiB is not conversion evidence. All four owned process
