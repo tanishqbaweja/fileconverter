@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+2026-10-27 — New SDK's DEFAULT Windows runtime passes all unchanged 19 headless
+privacy/offline/static-host tests in 49.8s, with no direct-host flag, skips or
+retries. Receipt `evidence/2026-10-27T10-21-32-023Z-owned-privacy-offline.json`:
+6 bootstrap assets200/MIME, all 5 refused methods405, protected original full
+SHA/size unchanged and owned birth/runtime cleanup passed. App policy/specs and
+browser services unchanged; no conversion-memory or large-file qualification.
+
+Cloudflare 1.65.0 / Wrangler 4.152.0 share one Miniflare 5.20261019.2-beta and
+workerd 1.20261019.1; only that Miniflare's Undici is overridden to exact 7.30.1
+for current fixes. Actual Miniflare Request/Response/fetch/headers/abort consumer
+checks pass. 687 -> 662 lock entries, reviewed SDK/native-platform/Sharp
+deduplication changes only; root app/React/framework/codec pins unchanged.
+Fresh audit 9 -> 2 high groups (`image-size`, `vinext`), not zero. Production
+build/whole lint/TypeScript pass. Initial full portable run stays 1780 pass / 1
+fail (88.8s): old evidence wrongly required today's SDK to equal historical
+4.92.0. Historical evidence unchanged; corrected focused 38 pass. Full current
+clean hosted regression is separate, not yet inferred. Raw audit/contract/local
+receipts are `evidence/2026-10-27-cloudflare-*.json`.
+Final focused run: 39 passed / 0 failed (570ms), affected-file lint passed and
+404 public manifest entries audited. Full clean hosted regression with the five
+browser conversion/validator suites is next; no local whole-suite pass is invented.
+
+### Historical checkpoints
+
 2026-10-27 — Windows headless privacy/offline/static-host suite: **19 passed,
 0 failed, 0 skipped, 0 retries, 50.4 seconds**, using direct workerd 1.20260515.1
 and the exact existing production worker/modules. The local read-only ASSETS

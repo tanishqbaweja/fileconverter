@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "scope": "Registry and published declaration inspection before SDK upgrade; not installation, build, browser or security acceptance",
+  "plugin": {
+    "version": "1.65.0",
+    "integrity": "sha512-6Oot0UAqh0Lr1nzZbacUyBGi4xbmNXDpbkWdSvpudxFkrFAXJ8gYF+XMzVyytWqrWM23WGuPE+9/vQaEVSGrcg==",
+    "packedBytes": 967843,
+    "entryConfigCustomizerStillPresent": true,
+    "publishedTypesSha256": "d0f9fa2a4c2aa3a22fa1f64b6eaae3c3aeb102a04040ad136a2ad1fdf7c70312",
+    "vitePeer": "^6.1.0 || ^7.0.0 || ^8.0.0",
+    "wranglerPeer": "^4.152.0",
+    "exactSdkDependency": "4.152.0",
+    "exactMiniflareDependency": "5.20261019.2-beta"
+  },
+  "sdk": {
+    "version": "4.152.0",
+    "enginesNode": ">=22.0.0",
+    "integrity": "sha512-lmXTF1sCDEqBaEMpreGczvg/x3AIh1d/qxc4BN7utQ4jEDwdA4YG0L6kr3ev0TtVLHRb6QLySNAOAunwn+dHeA==",
+    "exactMiniflareDependency": "5.20261019.2-beta",
+    "exactWorkerdDependency": "1.20261019.1",
+    "exactEsbuildDependency": "0.28.2"
+  },
+  "reviewedOverride": {
+    "selector": "miniflare@5.20261019.2-beta",
+    "dependency": "undici",
+    "upstreamExactVersion": "7.29.1",
+    "candidateExactVersion": "7.30.1",
+    "reason": "The supported SDK pair still pins an HTTP client below the reviewed security floor; same-major API compatibility must be verified with actual Miniflare and production build/browser gates",
+    "validationPending": true,
+    "securitySource": "https://github.com/nodejs/undici/releases/tag/v7.30.1",
+    "advisorySource": "https://github.com/advisories/GHSA-4qv8-2p9j-2685"
+  },
+  "unchanged": {
+    "applicationWorker": true,
+    "requestRefusalAndSecurityHeaders": true,
+    "conversionEngines": true,
+    "browserServicesAnd250MiBFormula": true,
+    "compatibilityDate": "2026-05-15"
+  },
+  "rejectedAssumptions": [
+    "The release note about removed experimental.newConfig does not remove the published entry config customizer; do not invent a mandatory config-file migration",
+    "Latest Wrangler 4.153.0 has a different exact runtime from the plugin; the candidate aligns the two direct SDK pins to 4.152.0 instead",
+    "New Vinext 1.3.1 requires React/react-dom/RSC 19.3.1 and plugin-rsc 0.5.37; it is a separate framework migration, not part of this candidate"
+  ],
+  "disposablePackageAndNpmCacheRemoved": true,
+  "userFilesRead": false,
+  "browserLaunched": false,
+  "publicPromotion": false
+}

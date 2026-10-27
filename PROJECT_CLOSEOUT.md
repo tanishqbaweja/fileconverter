@@ -6,6 +6,19 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-27
 
+SDK migration now reduces fresh audits from 9 groups to 2 high framework groups
+and passes the DEFAULT Windows 19-test privacy/offline/hosting suite in 49.8s.
+No alternate-host flag, app-body workaround, browser-service change or memory
+relaxation. Exact aligned SDK pair and one scoped Undici security override;
+compatibility date unchanged. Build/lint/TS pass. Initial full portable run stays
+1780 pass / 1 historical-version assertion fail; focused correction passes 38,
+without rewriting that receipt. Clean hosted install/full regression is next.
+`evidence/2026-10-27-cloudflare-local-verification.json` and actual browser receipt
+`evidence/2026-10-27T10-21-32-023Z-owned-privacy-offline.json`. All remaining
+framework-security/native/codec/memory/scaling/browser/full54 gates remain open.
+
+### Earlier October 27 checkpoint
+
 The complete unchanged Windows headless 19-test privacy/offline/hosting suite
 passes in 50.4s on direct workerd serving the same built worker, with a bounded
 read-only loopback ASSETS service. Nine HTTP refusals and all bootstrap/optimizer

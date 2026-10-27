@@ -30,7 +30,9 @@ test("runtime lifecycle proof binds current wiring without replacing historical 
   for (const file of ["scripts/test-owned-runtime-scratch.mjs", "scripts/lib/owned-runtime-scratch.mjs"]) {
     assert.equal(e.currentSources[file], e.executedSources[file], "Real helper execution bytes stay exactly reproduced");
   }
-  assert.equal(JSON.parse(await read("package.json")).devDependencies.wrangler, e.dependency.wranglerVersion);
+  // This receipt certifies the SDK it actually executed, not every future SDK.
+  // Current SDK integration/lifecycle must have separate new runtime evidence.
+  assert.equal(e.dependency.wranglerVersion, "4.92.0");
   const earlier = JSON.parse(await read("evidence/production-native-memory-2026-10-04.json"));
   assert.equal(earlier.executedAtCommit, "b4c8db6f92be0f13f7eaeb25b65edba649aa13b6");
   assert.equal(earlier.executedSources["scripts/memory-profile.mjs"], "d14d4b0fd2d6f315cb703c1854d3db500418ba8787a899551d78ec67caa2e17c");

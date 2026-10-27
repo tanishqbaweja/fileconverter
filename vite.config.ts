@@ -13,6 +13,9 @@ const isCodexSeatbeltSandbox = process.env.CODEX_SANDBOX === "seatbelt";
 
 const localBindingConfig = {
   main: "./worker/index.ts",
+  // Keep the executed application's compatibility semantics stable when the
+  // pinned local SDK/workerd version changes.
+  compatibility_date: "2026-05-15",
   compatibility_flags: ["nodejs_compat"],
   // Enforce the static-only policy before platform asset routing for every
   // method. GET/HEAD can still use Vinext's direct ASSETS binding afterwards.

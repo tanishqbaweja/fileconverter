@@ -1,6 +1,43 @@
 # Dependency and hosting review
 
-## Current hosting result — October 27
+## SDK security upgrade — October 27
+
+Implemented aligned Cloudflare Vite plugin 1.65.0 / Wrangler 4.152.0 with one
+Miniflare 5.20261019.2-beta and workerd 1.20261019.1. Its exact Undici 7.29.1
+upstream pin is below current reviewed fixes, so the sole scoped override is
+`miniflare@5.20261019.2-beta -> undici@7.30.1`. Actual consumer API and production
+checks cover it; it is not an undocumented blanket override. Node 24.7.0 meets
+the SDK's >=22 requirement. The published plugin declarations retain the used
+entry config customizer; removing experimental.newConfig did not require changing
+this application to a different configuration system. Explicitly pinning the
+existing 2026-05-15 compatibility date avoids an implicit runtime-semantics shift.
+See `evidence/2026-10-27-cloudflare-candidate-contract.json` and
+[Undici 7.30.1 security release](https://github.com/nodejs/undici/releases/tag/v7.30.1).
+
+Fresh same-day lock audits remove exactly 7 groups: Cloudflare plugin, Wrangler,
+Miniflare, esbuild, Sharp, Undici and ws. **2 high groups remain: image-size and
+Vinext.** No clean-audit or fully secure release claim. Root framework/React/codec
+versions are unchanged; upgrading Vinext 1.3.1 requires a separately verified
+React/RSC 19.3.1 and plugin-rsc migration. Lock entries fall 687 -> 662 through
+SDK updates and Sharp/native-platform deduplication; one runtime is installed.
+The exact before/after lock hashes, full audit output, graph hashes and owned
+cache cleanup are in `evidence/2026-10-27-cloudflare-audit-before.json` and
+`evidence/2026-10-27-cloudflare-audit-after.json`.
+
+The default Windows Wrangler/Miniflare production path now passes all 19 unchanged
+headless privacy/offline/static-host tests (49.8s, 0 skips/retries), including all
+method refusals and optimizer aliases. This supersedes the current local failure
+status but does not rewrite old failed receipts or claim every upstream transport
+defect is fixed. Original full SHA/size and owned birth/scratch cleanup pass.
+`evidence/2026-10-27T10-21-32-023Z-owned-privacy-offline.json`.
+Build/whole lint/TypeScript pass; initial full portable result remains 1780 pass /
+1 historical-version assertion fail. Corrected historical assertion preserves its
+executed 4.92.0 dependency and separately checks the new runtime; 38 focused checks
+pass. Fresh clean hosted regression is next, not already claimed complete.
+
+## Earlier direct-runtime result — October 27
+
+### Original direct-runtime checkpoint
 
 Direct workerd 1.20260515.1 with the exact built production worker passes the
 unchanged 19-test Windows headless privacy/offline/static-host suite (50.4s,
