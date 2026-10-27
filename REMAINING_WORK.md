@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-10-27 — Exactly one aggregate FFmpeg reproduction dispatched at source
+9fe17321: CI40502517454 confirmed IN_PROGRESS at12:16:55 UTC. Follows the current
+manifest gap, NOT an all12 replay; nine unchanged native directories, historical
+SVG copy and the already-proved inspector aren't selected. No result yet. Next
+check no earlier than12:42 UTC (~20–25minutes estimated from prior1124s aggregate
+plus setup). Follow this handle, never duplicate after timeout/queue delay.
+`evidence/2026-10-27-ffmpeg-reproduction-dispatch.json`. SVG source gap and full
+goal remain incomplete; no memory/formula/service/profile change.
+App follow-up timer creation was unavailable (automation tool rejected dynamic
+invocation); no timer/config created or workaround written. The saved12:42 UTC
+not-before deadline still applies to any subsequent status observation.
+
 2026-10-27 — B08/T-09 source-reproduction audit found a real scope gap:
 there are12 published directories, not the old11, and SVG's build script copies
 @resvg/resvg-wasm2.6.2 rather than compiling Rust source. Manifest now explicitly

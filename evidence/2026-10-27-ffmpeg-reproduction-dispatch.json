@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "scope": "One aggregate exact no-Docker FFmpeg comparison for eight published modules and the current shared manifest; not twelve engines or browser/memory acceptance",
+  "runId": 40502517454,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40502517454",
+  "headSha": "9fe173217191e2c9c42c016fc411fc6c27c76dee",
+  "createdAt": "2026-10-27T12:16:50Z",
+  "inputEngine": "ffmpeg-remux",
+  "observedStatus": "in_progress",
+  "observedAt": "2026-10-27T12:16:55Z",
+  "observedConclusion": null,
+  "existingSourceCommitRunsBeforeDispatch": 0,
+  "duplicateDispatchUsed": false,
+  "reason": "Current manifest adds the later hidden m2v-to-ogv declaration beyond the last scoped within-direct comparison; nine unchanged native directories and the already-proved inspector are not rebuilt",
+  "nextStatusCheckNotBefore": "2026-10-27T12:42:00Z",
+  "automaticTimerCreated": false,
+  "automaticTimerAttempt": "The discovered app automation tool refused dynamic invocation and reported the Codex app MCP server unavailable. No heartbeat/config was created or bypass written. Keep the saved not-before deadline and follow the same CI handle.",
+  "estimate": "About20-25minutes based on the prior1124second aggregate comparison plus setup. This is a check interval, not guaranteed completion.",
+  "publicBytesOrEnginesReplaced": false,
+  "svgSourceGapStillOpen": true,
+  "originalGoalComplete": false
+}

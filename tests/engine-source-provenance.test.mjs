@@ -23,6 +23,9 @@ test("all twelve declared no-Docker entries distinguish eleven source recipes fr
   assert.deepEqual(matrix.filter(row => row.reproductionKind === "pinned-package-copy").map(row => row.id), ["svg"]);
   for (const row of matrix) assert.doesNotMatch(row.command, /\bdocker\b/);
   assert.equal(matrix.find(row => row.id === "svg").command, "npm run build:svg");
+  const focused = JSON.parse((await command("--non-docker", "--engine", "ffmpeg-remux")).stdout).include;
+  assert.equal(focused.length, 1); assert.equal(focused[0].id, "ffmpeg-remux");
+  assert.match(focused[0].command, /bash media\/ffmpeg\/reproduce-nondocker\.sh$/);
 });
 test("normal audit is inventory only and strict source-completeness gate fails on SVG instead of silently passing", async () => {
   const lines = (await command("--check")).stdout.trim().split(/\r?\n/);

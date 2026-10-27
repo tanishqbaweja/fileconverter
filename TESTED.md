@@ -1,5 +1,11 @@
 # Tested conversion ledger
 
+2026-10-27 — CI40502517454/9fe17321 is confirmed IN_PROGRESS after one
+engine=ffmpeg-remux dispatch: exact aggregate8 published modules+currentmanifest,
+noDocker, no successful unrelated engine/browser replay. No result yet; scheduled
+check not before12:42 UTC (~20–25minute estimate, not promised finish).
+`evidence/2026-10-27-ffmpeg-reproduction-dispatch.json`.
+
 2026-10-27 — Published-engine provenance audit:12 directories,11 native-source
 recipes +1 pinned SVG package copy. Read-only streamed SHA256/git-blob inventory
 finds11 whole directories unchanged against verified historical snapshots; sole
