@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-27 — First postprocess40524216250 FAILED before engine processing:
+the driver expected a bare version while exact pinned bindgen prints its correct
+commit suffix. Raw source artifact/tool digest verified; no candidate; scratch
+removed/public unchanged. Failure retained with exact executed-source archive.
+Corrected check now requires both version and pinned source-revision prefix.
+24 focused/0fail/0skip and affected lint PASS. Only corrected post-processing
+will retry, no source rebuild. Measured prior whole job16s; next initial check
+allowance90s instead of five minutes. See
+`evidence/2026-10-27-svg-postprocess-version-failure.json`.
+
 2026-10-27 — One private postprocessor CI40524216250/e8d43688 dispatched
 14:45:33 UTC. Follow the same run no earlier than 14:51 UTC; ten-minute job
 cap. No source rebuild, duplicate dispatch, normal browser matrix or public

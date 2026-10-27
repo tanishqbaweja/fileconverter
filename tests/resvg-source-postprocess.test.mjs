@@ -5,9 +5,30 @@ import { createRequire } from "node:module";
 import path from "node:path";
 import test from "node:test";
 import { sha } from "../images/resvg-source/source-pins.mjs";
-import { rawInput, bindgenTool, experimentalMaximumBytes, verifySourceReceipt, requireArtifactMembers, compareStaticAbi } from "../images/resvg-source/postprocess-contract.mjs";
+import { rawInput, bindgenTool, experimentalMaximumBytes, verifyBindgenVersion, verifySourceReceipt, requireArtifactMembers, compareStaticAbi } from "../images/resvg-source/postprocess-contract.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url));
 const json = async file => JSON.parse(await read(file));
+test("actual tool version includes the pinned source revision; reject an unversioned revision or unrelated build", async () => {
+  const bytes = await read("evidence/2026-10-27-svg-postprocess-40524216250-raw.json");
+  assert.equal(sha(bytes), "a67fa498820c4e7f6586a6d0a316da6a05703bfc7342f20560776c8e6610fb54");
+  const row = JSON.parse(bytes); assert.equal(row.status, "failed-private-postprocessing");
+  assert.equal(row.toolVersion, "wasm-bindgen 0.2.92 (2a4a49362)"); verifyBindgenVersion(row.toolVersion);
+  assert.equal(row.ownedScratchRemoved, true); assert.equal(row.publicSvgUnchanged, true);
+  assert.equal(row.sourceArtifactVerified, true); assert.equal(row.candidate, undefined);
+  assert.match(row.failures[0], /wasm-bindgen 0.2.92/);
+  assert.equal(row.commands.at(-1).exitCode, 0); assert.deepEqual(row.commands.at(-1).args, ["--version"]);
+  for (const wrong of ["wasm-bindgen 0.2.92", "wasm-bindgen 0.2.92 (123456789)", "wasm-bindgen 0.2.93 (2a4a49362)"])
+    assert.throws(() => verifyBindgenVersion(wrong));
+  const archive = await json("fixtures/source/svg-postprocessor-e8d43688.json");
+  assert.equal(archive.sourceCommit, row.executedHead);
+  for (const [file, digest] of Object.entries(row.sourcePins)) {
+    const old = archive.files[file]; let source;
+    if (old) { source = gunzipSync(Buffer.from(old.gzipBase64, "base64"), { maxOutputLength: 32768 });
+      assert.equal(source.length, old.bytes); assert.equal(sha(source), old.sha256); }
+    else source = await read(file);
+    assert.equal(sha(source), digest, `Actual first failed postprocessor source: ${file}`);
+  }
+});
 test("actual third compile succeeded with exact command, repaired lock, genuine raw Wasm digest and owned cleanup", async () => {
   const terminal = await json("evidence/2026-10-27-svg-bytes-compile-terminal.json");
   assert.equal(terminal.conclusion, "success"); assert.equal(terminal.realSourceCompilationSucceeded, true);

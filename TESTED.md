@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-10-27 — Postprocess40524216250 terminal FAILURE preserved: assertion
+mistakenly omitted the correct pinned tool's revision suffix. It did verify the
+raw source artifact and checksum-pinned tool but never processed the engine.
+No candidate, owned scratch removed, public unchanged. Exact version+revision
+check corrected; 24 focused PASS/0fail/0skip, affected lint PASS. Next attempt
+reuses compiled raw bytes; no compiler replay. Based on measured16s job, use90s
+initial wait. `evidence/2026-10-27-svg-postprocess-version-failure.json`.
+
 2026-10-27 — Private postprocess CI40524216250/e8d43688 queued at14:45:33
 UTC. Next observation not before14:51; ten-minute cap, no duplicate/recompile.
 `evidence/2026-10-27-svg-postprocess-dispatch.json`. Reviewed existing SVG browser

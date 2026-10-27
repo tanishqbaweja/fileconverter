@@ -6,7 +6,7 @@ import { gunzipSync } from "node:zlib";
 import path from "node:path";
 import { createOwnedRuntimeScratch } from "../../scripts/lib/owned-runtime-scratch.mjs";
 import { sha } from "./source-pins.mjs";
-import { rawInput, bindgenTool, experimentalMaximumBytes, publishedSha256, verifySourceReceipt, requireArtifactMembers, compareStaticAbi } from "./postprocess-contract.mjs";
+import { rawInput, bindgenTool, experimentalMaximumBytes, publishedSha256, verifyBindgenVersion, verifySourceReceipt, requireArtifactMembers, compareStaticAbi } from "./postprocess-contract.mjs";
 import { boundPrivateMemory } from "./bound-private-memory.mjs";
 import { definedWasmMemories } from "./memory-contract.mjs";
 
@@ -74,7 +74,7 @@ try {
   const executable = await run("tar", ["-xOf", "-", bindgenTool.executableMember], { input: tar, maximum: bindgenTool.maximumExpandedBytes });
   const tool = path.join(runtime.directory, "wasm-bindgen"); await writeFile(tool, executable, { flag: "wx" });
   assert.ok((await lstat(tool)).isFile()); await chmod(tool, 0o755);
-  report.toolVersion = (await run(tool, ["--version"])).toString().trim(); assert.equal(report.toolVersion, "wasm-bindgen 0.2.92");
+  report.toolVersion = (await run(tool, ["--version"])).toString().trim(); verifyBindgenVersion(report.toolVersion);
   const input = path.join(runtime.directory, "raw.wasm"), processed = path.join(runtime.directory, "processed");
   await writeFile(input, raw, { flag: "wx" }); await mkdir(processed);
   await run(tool, [input, "--target", "web", "--out-dir", processed, "--out-name", "index"]);

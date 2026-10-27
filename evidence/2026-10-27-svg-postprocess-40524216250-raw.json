@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "runId": "40524216250",
+  "startedAt": "2026-10-27T14:45:48.270Z",
+  "status": "failed-private-postprocessing",
+  "rawInput": {
+    "schemaVersion": 1,
+    "runId": 40521129468,
+    "headSha": "4e3b4d7d5f598232164873dfab002c8843144160",
+    "artifactId": 12741582696,
+    "artifactBytes": 1259721,
+    "artifactSha256": "bed97eec53d9522fe18ce793aa976e55bee58ea6c5dbf73874a7c57db57a9ee8",
+    "receiptMember": "resvg-source-compile-40521129468.json",
+    "receiptBytes": 20047,
+    "receiptSha256": "0dbb241a6677498525bb3a8d2c903263f87935d6a01053a6a474c6b955480aa9",
+    "lockMember": "resvg-source-compile-40521129468.lock",
+    "lockSha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc",
+    "wasmMember": "resvg-source-compile-40521129468.wasm",
+    "wasmBytes": 3676614,
+    "wasmSha256": "3e93d4dde31d8ef5dd64ed3effa9af7c56fa27517fc9ca8fc802fd9b0404da3f",
+    "kind": "genuine-private-raw-source-compile-before-bindgen-and-browser-qualification"
+  },
+  "bindgenTool": {
+    "schemaVersion": 1,
+    "tool": "wasm-bindgen",
+    "version": "0.2.92",
+    "sourceCommit": "2a4a4936238cf11e863353e410f453c94e21c7dd",
+    "releaseUrl": "https://github.com/wasm-bindgen/wasm-bindgen/releases/tag/0.2.92",
+    "releaseId": 144613601,
+    "assetId": 154802167,
+    "platform": "x86_64-unknown-linux-musl",
+    "archiveUrl": "https://github.com/wasm-bindgen/wasm-bindgen/releases/download/0.2.92/wasm-bindgen-0.2.92-x86_64-unknown-linux-musl.tar.gz",
+    "archiveBytes": 6366507,
+    "archiveSha256": "c6e43a3bf0be5231e0b72ea702f73b3f4f47c309037e8a332c5c2e41800ca934",
+    "checksumUrl": "https://github.com/wasm-bindgen/wasm-bindgen/releases/download/0.2.92/wasm-bindgen-0.2.92-x86_64-unknown-linux-musl.tar.gz.sha256sum",
+    "checksumAssetId": 154802165,
+    "executableMember": "wasm-bindgen-0.2.92-x86_64-unknown-linux-musl/wasm-bindgen",
+    "maximumCompressedBytes": 8388608,
+    "maximumExpandedBytes": 67108864,
+    "kind": "upstream-compiler-postprocessor-tool-not-a-precompiled-conversion-engine",
+    "downloadChecksumVerified": true,
+    "executableRunOrVersionVerified": false,
+    "sourceBuildOfToolIndependentlyVerified": false,
+    "publicEngineReplacement": false
+  },
+  "scope": "Private source-built SVG postprocessing; experimental cap, before rendering/fidelity/process-tree qualification",
+  "experimentalMaximumBytes": 100663296,
+  "sourcePins": {
+    "images/resvg-source/postprocess-candidate.mjs": "2e087a4ae915d22c3c8ca3241d6e720af767c3fc9e59174276111fe3b835be5f",
+    "images/resvg-source/postprocess-contract.mjs": "51b0e5005b8063ef9f0dbef8bacb373c92a78123949163da8c4a9b3b3fe426bc",
+    "images/resvg-source/bound-private-memory.mjs": "57c0027cecccb4f7283b1ab743bd0a9071181e7fe8298796f4943c74693424f6",
+    "images/resvg-source/memory-contract.mjs": "a6d4a01a57d22b119ea814302c0efa58b836c8b0f6dbff4e0415140d84604519",
+    "images/resvg-source/published-version-witnesses.mjs": "d3086701038545c01d188e9c01de9c3914bc3a6cff32d20d54591a78d7dace6f",
+    "images/resvg-source/source-pins.mjs": "c5752b7db714c2f1352423d0b639be744db203f6f4d06568ca9af6629fc60152",
+    "images/resvg-source/compile-contract.mjs": "5e685fc75551b53d0d7455684673daf73ed8656d049a8b1188fc4e0873114122",
+    "images/resvg-source/raw-candidate-input.json": "7aaea3f0be88150c6ee1c34e7c2446d505fd4d8d80ca37f1979bc7b917d41b5c",
+    "images/resvg-source/bindgen-toolchain.json": "e090f1e113f71f47db81af9f5989c8dd7f8494003cdf26a7585efe41ebad96bb",
+    ".github/workflows/ci.yml": "c60872fd9264e255ba8b8a629e7e2cf4b8d798bf5c1968dc5a1880bb54bf7a47"
+  },
+  "commands": [
+    {
+      "command": "git",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "startedAt": "2026-10-27T14:45:48.279Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-27T14:45:48.285Z"
+    },
+    {
+      "command": "gh",
+      "args": [
+        "api",
+        "repos/tanishqbaweja/fileconverter/actions/artifacts/12741582696/zip"
+      ],
+      "startedAt": "2026-10-27T14:45:48.285Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-27T14:45:48.825Z"
+    },
+    {
+      "command": "unzip",
+      "args": [
+        "-Z1",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-postprocess-gpBQrG/source.zip"
+      ],
+      "startedAt": "2026-10-27T14:45:48.827Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-27T14:45:48.831Z"
+    },
+    {
+      "command": "unzip",
+      "args": [
+        "-p",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-postprocess-gpBQrG/source.zip",
+        "resvg-source-compile-40521129468.json"
+      ],
+      "startedAt": "2026-10-27T14:45:48.832Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-27T14:45:48.835Z"
+    },
+    {
+      "command": "unzip",
+      "args": [
+        "-p",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-postprocess-gpBQrG/source.zip",
+        "resvg-source-compile-40521129468.lock"
+      ],
+      "startedAt": "2026-10-27T14:45:48.835Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-27T14:45:48.840Z"
+    },
+    {
+      "command": "unzip",
+      "args": [
+        "-p",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-postprocess-gpBQrG/source.zip",
+        "resvg-source-compile-40521129468.wasm"
+      ],
+      "startedAt": "2026-10-27T14:45:48.840Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-27T14:45:48.888Z"
+    },
+    {
+      "command": "tar",
+      "args": [
+        "-tf",
+        "-"
+      ],
+      "startedAt": "2026-10-27T14:45:49.204Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-27T14:45:49.215Z"
+    },
+    {
+      "command": "tar",
+      "args": [
+        "-xOf",
+        "-",
+        "wasm-bindgen-0.2.92-x86_64-unknown-linux-musl/wasm-bindgen"
+      ],
+      "startedAt": "2026-10-27T14:45:49.215Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-27T14:45:49.289Z"
+    },
+    {
+      "command": "/home/runner/work/fileconverter/fileconverter/work/resvg-postprocess-gpBQrG/wasm-bindgen",
+      "args": [
+        "--version"
+      ],
+      "startedAt": "2026-10-27T14:45:49.292Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-27T14:45:49.303Z"
+    }
+  ],
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ 'wasm-bindgen 0.2.92 (2a4a49362)'\n- 'wasm-bindgen 0.2.92'\n                      ^\n\n    at file:///home/runner/work/fileconverter/fileconverter/images/resvg-source/postprocess-candidate.mjs:77:83\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+  ],
+  "sourceRecompileAttempted": false,
+  "userFileOrProtectedOriginalAccessed": false,
+  "rendererInstantiated": false,
+  "browserOrProcessMemoryAcceptance": false,
+  "exactPublishedReproduction": false,
+  "publicEngineReplacement": false,
+  "originalGoalComplete": false,
+  "executedHead": "e8d436887f507ce0371f9e385cf8cb8fbae78d4c",
+  "sourceArtifactVerified": true,
+  "sourceCompileHead": "4e3b4d7d5f598232164873dfab002c8843144160",
+  "rawMemory": [
+    {
+      "index": 0,
+      "initialPages": 24,
+      "initialBytes": 1572864,
+      "maximumPages": null,
+      "maximumBytes": null,
+      "maximumExplicit": false,
+      "shared": false
+    }
+  ],
+  "toolVersion": "wasm-bindgen 0.2.92 (2a4a49362)",
+  "ownedScratchRemoved": true,
+  "publicSvgUnchanged": true,
+  "finishedAt": "2026-10-27T14:45:49.312Z"
+}

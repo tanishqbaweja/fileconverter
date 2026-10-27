@@ -7,6 +7,9 @@ export const rawInput = Object.freeze(JSON.parse(readFileSync(new URL("./raw-can
 export const bindgenTool = Object.freeze(JSON.parse(readFileSync(new URL("./bindgen-toolchain.json", import.meta.url), "utf8")));
 export const experimentalMaximumBytes = 96 * 1024 ** 2;
 export const publishedSha256 = "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70";
+export function verifyBindgenVersion(version) {
+  assert.equal(version, `wasm-bindgen ${bindgenTool.version} (${bindgenTool.sourceCommit.slice(0, 9)})`, "Exact pinned tool version and embedded source revision");
+}
 export function verifySourceReceipt(bytes) {
   assert.equal(bytes.length, rawInput.receiptBytes); assert.equal(sha(bytes), rawInput.receiptSha256);
   const receipt = JSON.parse(bytes);
