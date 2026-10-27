@@ -137,6 +137,10 @@ test.beforeAll(async () => {
     await mkdir(outputRoot);
     privateBrowser = await chromium.connectOverCDP(descriptor.endpoint);
     context = privateBrowser.contexts()[0]; page = context.pages()[0];
+    // Attached default contexts have no baseURL option. Resolve navigation only;
+    // retain the original blank page, context, services, engine and I/O.
+    const navigate = page.goto.bind(page);
+    page.goto = (url, options) => navigate(new URL(url, baseURL).href, options);
     // Same production worker/glue/I/O; only the private engine response differs.
     await context.route("**/engines/svg/resvg.wasm", route => route.fulfill({ contentType: "application/wasm", path: descriptor.candidateFile }));
     await page.exposeBinding("__withinImageValidationChunk", async (_source, base64: string) => {

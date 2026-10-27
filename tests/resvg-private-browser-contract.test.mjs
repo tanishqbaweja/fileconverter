@@ -3,8 +3,24 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import ts from "typescript";
 import { sha } from "../images/resvg-source/source-pins.mjs";
+import { gunzipSync } from "node:zlib";
 const read = file => readFile(new URL("../" + file, import.meta.url));
 const json = async file => JSON.parse(await read(file));
+test("first browser attempt remains a failed navigation control with zero engine fetches, unchanged original and completed owned cleanup", async () => {
+  const row = await json("evidence/2026-10-27T15-02-07-989Z-source-svg-browser.json");
+  assert.equal(row.status, "failed-private-svg-browser-qualification");
+  assert.equal(row.stats.expected, 0); assert.equal(row.stats.unexpected, 1); assert.equal(row.stats.skipped, 9);
+  assert.equal(row.wasmRequests, 0); assert.match(row.failures[0], /Cannot navigate to invalid URL/);
+  assert.deepEqual(row.protectedOriginalAfter, row.protectedOriginalBefore); assert.equal(row.ownedRuntimeRemoved, true);
+  assert.equal(row.processCleanup.length, 4); assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent"));
+  const archive = await json("fixtures/source/svg-browser-c0dd4198.json"); assert.equal(archive.sourceCommit, row.executedHead);
+  for (const [file, digest] of Object.entries(row.sourcePins)) {
+    const old = archive.files[file]; let bytes;
+    if (old) { bytes = gunzipSync(Buffer.from(old.gzipBase64, "base64"), { maxOutputLength: 262144 }); assert.equal(bytes.length, old.bytes); assert.equal(sha(bytes), old.sha256); }
+    else bytes = await read(file);
+    assert.equal(sha(bytes), digest, file);
+  }
+});
 test("actual postprocessor success is receipt/source/artifact bound, not browser, exact published reproduction or source-repeat acceptance", async () => {
   const proof = await json("evidence/2026-10-27-svg-postprocess-terminal.json"), pins = await json(proof.artifactPin), bytes = await read(proof.rawReceipt);
   assert.equal(bytes.length, pins.receiptBytes); assert.equal(sha(bytes), pins.receiptSha256);
@@ -36,6 +52,7 @@ test("existing suite private hook requires exact candidate bytes and isolated re
   assert.match(source, /privateSvg = descriptor/); assert.match(source, /outputRoot = path.join\(descriptor.runtime, "validation"\)/);
   assert.match(source, /context.route\("\*\*\/engines\/svg\/resvg.wasm"/);
   assert.match(source, /chromium.connectOverCDP\(descriptor.endpoint\)/);
+  assert.match(source, /page.goto = \(url, options\) => navigate\(new URL\(url, baseURL\).href, options\)/);
   assert.match(source, /if \(privateSvg\)/); assert.match(source, /await context.unroute/);
   assert.match(source, /minimumReferenceSsim/); assert.match(source, /peakPendingOperations\)\.toBe\(1\)/);
   const result = ts.transpileModule(source, { compilerOptions: { target: ts.ScriptTarget.ES2022, module: ts.ModuleKind.ESNext }, reportDiagnostics: true });

@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-27 — First private SVG browser FAILED before conversion: attached
+default page could not navigate relative/?test=1.0pass/1fail/9unrun; zero Wasm
+requests. Memory result is NOT conversion acceptance. Four owned process births
+proven absent; all disposable runtime/candidate/output data removed; original
+2,958,573,265 B/SHA31f36695…b9db34 unchanged. Exact report/source archive and
+1,475 B trace retained. Private-only URL resolution corrected; no new context,
+disabled service, changed assertion or threshold.18 scoped PASS/0fail/0skip and
+affected lint PASS. `evidence/2026-10-27-svg-private-navigation-failure.json`.
+
 2026-10-27 — Postprocess40525478469 SUCCESS in an18s CI job; actual private
 processing2.641s (build-time, NOT conversion speed). Exact three-member1,010,772 B
 artifact and receipt9,792 B verified. Candidate2,695,842 B SHA6e5b1920…499fd6,

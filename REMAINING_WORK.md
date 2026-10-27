@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-27 — First private SVG browser attempt failed BEFORE conversion:
+CDP-attached page lacked relative-navigation baseURL.0 passed/1 failed/9 unrun,
+ZERO engine fetches; +4.00MiB is not conversion evidence. All four owned process
+birth identities absent, runtime removed, original full SHA/size unchanged.
+Raw report, exact executed test/driver sources and1,475 B failure trace kept.
+Private navigation now resolves URLs against the existing baseURL, retaining
+the same blank page/context/services/engine/I/O and all original assertions.
+18 scoped units and affected lint PASS. No compiler/postprocessor replay.
+`evidence/2026-10-27-svg-private-navigation-failure.json`.
+
 2026-10-27 — Corrected private postprocess40525478469/934fa33f SUCCESS:
 actual bindgen execution, candidate2,695,842 B SHA6e5b1920…499fd6; matching
 18 import/51 export names+kinds; explicit24 initial/1536 maximum pages

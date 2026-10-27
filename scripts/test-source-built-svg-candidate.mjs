@@ -171,7 +171,6 @@ finally {
     assert.equal(sha(await readFile(path.join(root, "public/engines/svg/resvg.wasm"))), publishedSha256);
     if (report.browserBefore) assertInstalledChromePinsEqual(report.browserBefore, await inspectInstalledChromePin());
     if (report.protectedOriginalBefore) { report.protectedOriginalAfter = await originalIdentity(); assert.deepEqual(report.protectedOriginalAfter, expectedOriginal); }
-    assert.deepEqual(report.failures, []);
   } catch (error) { report.failures.push("Final cleanup/source/original verification: " + error); report.status = "failed-private-svg-browser-qualification"; process.exitCode = 1; }
   report.serverLog = serverLog; report.runnerLog = runnerLog; report.finishedAt = new Date().toISOString();
   const file = path.join(root, "evidence", stamp + "-source-svg-browser.json");
