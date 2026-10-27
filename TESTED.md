@@ -1,5 +1,11 @@
 # Tested conversion ledger
 
+2026-10-27 — Private postprocess CI40524216250/e8d43688 queued at14:45:33
+UTC. Next observation not before14:51; ten-minute cap, no duplicate/recompile.
+`evidence/2026-10-27-svg-postprocess-dispatch.json`. Reviewed existing SVG browser
+coverage for the next stage; it has not been executed against the new candidate.
+Headed/native-picker coverage remains unverified. Public engine untouched.
+
 2026-10-27 — Postprocessor preparation: 20 focused + 51 workflow/historical
 regression checks PASS (four overlap), no failures/skips. Initial lint failure
 (reserved local variable name) corrected; final affected lint PASS. This is

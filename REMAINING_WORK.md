@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-27 — One private postprocessor CI40524216250/e8d43688 dispatched
+14:45:33 UTC. Follow the same run no earlier than 14:51 UTC; ten-minute job
+cap. No source rebuild, duplicate dispatch, normal browser matrix or public
+promotion. `evidence/2026-10-27-svg-postprocess-dispatch.json`. Existing image
+tests cover SVG structure/reference fidelity/direct-save/write failure/security;
+their historical results are not evidence for this new candidate. Normal-profile
+whole-tree measurement, real browser ABI, stress/OOM/recovery and source repeat
+remain required before closing A-08/B08.
+
 2026-10-27 — Private postprocessor preparation: 20 focused and 51 scoped CI/
 historical regression checks PASS (four overlap), zero failed/skipped. Lint first
 failed on a reserved local variable name; renamed, affected lint now PASS.

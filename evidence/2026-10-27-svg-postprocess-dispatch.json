@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "runId": 40524216250,
+  "headSha": "e8d436887f507ce0371f9e385cf8cb8fbae78d4c",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40524216250",
+  "createdAt": "2026-10-27T14:45:33Z",
+  "lastObservedStatus": "queued",
+  "scope": "svg-source-postprocess only; pinned raw source artifact, no source recompile, normal engine/browser jobs unselected",
+  "estimatedInitialWaitSeconds": 327,
+  "nextCheckNotBefore": "2026-10-27T14:51:00Z",
+  "jobTimeoutMinutes": 10,
+  "noDuplicateAfterObservationTimeout": true,
+  "publicReplacementOrAcceptance": false,
+  "originalGoalComplete": false
+}
