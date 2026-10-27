@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+2026-10-27 — Postprocessor preparation: 20 focused + 51 workflow/historical
+regression checks PASS (four overlap), no failures/skips. Initial lint failure
+(reserved local variable name) corrected; final affected lint PASS. This is
+preparation, not postprocessor or rendering execution. No source recompile,
+public engine update or original-fixture access. See
+`evidence/2026-10-27-svg-postprocess-preparation.json`.
+
+2026-10-27 — Actual SVG source compile 40521129468 SUCCESS supersedes the
+historical in-progress entry below. Raw Wasm 3,676,614 B, SHA-256
+3e93d4dd…0404da3f; artifact digest, all three members, receipt, lock and
+executed-source pins verified. Compiler scratch removed/public diff clear.
+No renderer execution or memory acceptance; earlier two failed controls kept.
+`evidence/2026-10-27-svg-bytes-compile-terminal.json`.
+Next private postprocessor reuses that raw artifact and pinned bindgen tool,
+does not recompile or convert user files, and retains only one bounded private
+candidate plus its glue/receipt for browser qualification. Static ABI comparison
+does not prove runtime compatibility. Experimental 96 MiB is not a public budget.
+
+2026-10-27 — Private post-link memory-limit transform prepared/tested entirely
+in-memory: changes only memorysection, preserves all code/data/initial bytes,
+rejects raisedexistingmaximum/unmatchedlayout/overbudget/unalignedvalues. Test
+uses96MiB experimentally; published SVG stays unchanged and unbounded, no
+renderer/conversion/quality/process-memory acceptance or publicbudget selection.
+
 2026-10-27 — Single Bytes-pinned source CI40521129468/4e3b4d7d confirmed
 IN_PROGRESS. Two actual failed controls preserved; newcandidate only oneadditional
 published-witnessdependency lockdelta, samecompiler/flags/Woff2source.23focused/

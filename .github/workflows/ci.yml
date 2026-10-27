@@ -17,6 +17,7 @@ on:
           - svg-source-compile
           - svg-source-compile-pathfinder
           - svg-source-compile-bytes
+          - svg-source-postprocess
           - audio-destination-scopes
           - reproduce-only
           - ffmpeg-remux
@@ -40,7 +41,7 @@ permissions:
 
 jobs:
   engine-matrix:
-    if: github.event_name != 'workflow_dispatch' || (inputs.engine != 'verify-only' && inputs.engine != 'audio-destination-scopes' && inputs.engine != 'portable-verify' && inputs.engine != 'browser-recovery' && inputs.engine != 'svg-source-lock' && inputs.engine != 'svg-source-compile' && inputs.engine != 'svg-source-compile-pathfinder' && inputs.engine != 'svg-source-compile-bytes')
+    if: github.event_name != 'workflow_dispatch' || (inputs.engine != 'verify-only' && inputs.engine != 'audio-destination-scopes' && inputs.engine != 'portable-verify' && inputs.engine != 'browser-recovery' && inputs.engine != 'svg-source-lock' && inputs.engine != 'svg-source-compile' && inputs.engine != 'svg-source-compile-pathfinder' && inputs.engine != 'svg-source-compile-bytes' && inputs.engine != 'svg-source-postprocess')
     runs-on: ubuntu-latest
     outputs:
       engines: ${{ steps.manifest.outputs.engines }}
@@ -253,6 +254,38 @@ jobs:
             outputs/reports/resvg-source-compile-${{ github.run_id }}.json
             outputs/reports/resvg-source-compile-${{ github.run_id }}.lock
             outputs/reports/resvg-source-compile-${{ github.run_id }}.wasm
+          if-no-files-found: warn
+          retention-days: 1
+
+  svg-source-postprocess:
+    if: github.event_name == 'workflow_dispatch' && inputs.engine == 'svg-source-postprocess'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Process exact retained raw source artifact without recompilation
+        run: node images/resvg-source/postprocess-candidate.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_PROMPT_DISABLED: "true"
+      - name: Verify public engines were not replaced
+        if: always()
+        run: git diff --exit-code -- public/engines
+      - name: Retain only private bounded candidate, glue and build receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: svg-source-postprocess-${{ github.run_id }}
+          path: |
+            outputs/reports/resvg-postprocess-${{ github.run_id }}.json
+            outputs/reports/resvg-postprocess-${{ github.run_id }}.wasm
+            outputs/reports/resvg-postprocess-${{ github.run_id }}.mjs
           if-no-files-found: warn
           retention-days: 1
 

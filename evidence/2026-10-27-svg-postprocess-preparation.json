@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-27T14:44:49Z",
+  "scope": "Private source-built SVG postprocessor preparation, not browser or public acceptance",
+  "successfulRawCompile": "evidence/2026-10-27-svg-bytes-compile-terminal.json",
+  "artifactPin": "images/resvg-source/raw-candidate-input.json",
+  "sourceCompileReplayed": false,
+  "newStage": "Pinned wasm-bindgen 0.2.92 on exact retained raw source artifact, static ABI comparison and deterministic experimental 96 MiB memory maximum",
+  "focusedTests": { "passed": 20, "failed": 0, "skipped": 0 },
+  "workflowAndHistoricalRegressionTests": { "passed": 51, "failed": 0, "skipped": 0, "overlapsFocusedTests": 4 },
+  "lintFirstAttempt": "failed: reserved variable name module in postprocess-contract.mjs",
+  "lintCorrection": "rename local variable to wasm; no algorithm or threshold change",
+  "affectedLintFinal": "passed",
+  "fullPortableSuiteReplayed": false,
+  "buildOrPostprocessorExecutedYet": false,
+  "experimentalMaximumBytes": 100663296,
+  "productionBudgetQualified": false,
+  "publicEngineReplacement": false,
+  "userFileOrProtectedOriginalAccessed": false,
+  "headedCoverage": "unverified; no browser launched in this cycle",
+  "originalGoalComplete": false,
+  "next": "Push and dispatch exactly one svg-source-postprocess job; follow that handle after an estimated five-minute allowance, no duplicate source compile or unrelated browser matrix."
+}

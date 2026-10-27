@@ -1,5 +1,32 @@
 # Remaining work audit
 
+2026-10-27 — Private postprocessor preparation: 20 focused and 51 scoped CI/
+historical regression checks PASS (four overlap), zero failed/skipped. Lint first
+failed on a reserved local variable name; renamed, affected lint now PASS.
+No unchanged full suite replay and no executed postprocessor/browser claim yet.
+`evidence/2026-10-27-svg-postprocess-preparation.json` records the boundary.
+
+2026-10-27 — SVG compile 40521129468 is now terminal SUCCESS, not live.
+The genuine pinned Rust build produced 3,676,614 B raw Wasm (SHA-256
+3e93d4dd…0404da3f); its exact artifact, receipt, repaired lock and executed
+workflow are retained/pinned. Scratch removed; public engine unchanged. The
+two preceding failures remain failures. This is not browser rendering,
+reproducibility-repeat, fidelity or memory acceptance. See
+`evidence/2026-10-27-svg-bytes-compile-terminal.json`.
+The next private CI scope reuses that immutable artifact without recompiling,
+runs checksum-pinned wasm-bindgen 0.2.92, compares static ABI names/kinds, and
+adds only an EXPERIMENTAL 96 MiB memory maximum. The cap is not a qualified
+production budget. No public promotion; A-08/B08 and whole-goal gates stay open.
+
+2026-10-27 — Private deterministic post-link memory cap implemented, not
+installed in publicengine. It accepts one validated unshared ownmemory32,
+adds/tightens explicitmax without raising an existinglimit or changinginitial,
+and verifies every non-memory section/code/data payload stays byte-identical.
+It never executes renderer or reads selectedfiles. Pure in-memory test on exact
+published SVG uses an EXPERIMENTAL96MiB cap, not a selected/qualified public
+budget; no files modified and no full-Chromium/fidelity/recovery claim. This
+prepares the missing A-08 mechanism while waiting for the compiler result.
+
 2026-10-27 — One Bytes-pinned SVG compilation CI40521129468/4e3b4d7d
 confirmed IN_PROGRESS14:26:39 UTC. Prior40519469540 terminalfailed, retained;
 no unchangedreplay. Exactnewlock7bf87e7c, two measureddependencyrepairs total,

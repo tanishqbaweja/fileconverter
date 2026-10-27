@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "runId": 40521129468,
+  "headSha": "4e3b4d7d5f598232164873dfab002c8843144160",
+  "artifactId": 12741582696,
+  "artifactBytes": 1259721,
+  "artifactSha256": "bed97eec53d9522fe18ce793aa976e55bee58ea6c5dbf73874a7c57db57a9ee8",
+  "receiptMember": "resvg-source-compile-40521129468.json",
+  "receiptBytes": 20047,
+  "receiptSha256": "0dbb241a6677498525bb3a8d2c903263f87935d6a01053a6a474c6b955480aa9",
+  "lockMember": "resvg-source-compile-40521129468.lock",
+  "lockSha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc",
+  "wasmMember": "resvg-source-compile-40521129468.wasm",
+  "wasmBytes": 3676614,
+  "wasmSha256": "3e93d4dde31d8ef5dd64ed3effa9af7c56fa27517fc9ca8fc802fd9b0404da3f",
+  "kind": "genuine-private-raw-source-compile-before-bindgen-and-browser-qualification"
+}
