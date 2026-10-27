@@ -21,6 +21,9 @@ receipts are `evidence/2026-10-27-cloudflare-*.json`.
 Final focused run: 39 passed / 0 failed (570ms), affected-file lint passed and
 404 public manifest entries audited. Full clean hosted regression with the five
 browser conversion/validator suites is next; no local whole-suite pass is invented.
+CI40488562110 at e8e3f21c was dispatched once (`verify-only`), observed IN_PROGRESS
+with no conclusion. Follow that exact run; no native reproduction selected and
+no duplicate dispatch. `evidence/2026-10-27-cloudflare-ci-dispatch.json`.
 
 ### Historical checkpoints
 

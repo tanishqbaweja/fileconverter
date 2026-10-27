@@ -16,6 +16,10 @@ without rewriting that receipt. Clean hosted install/full regression is next.
 `evidence/2026-10-27-cloudflare-local-verification.json` and actual browser receipt
 `evidence/2026-10-27T10-21-32-023Z-owned-privacy-offline.json`. All remaining
 framework-security/native/codec/memory/scaling/browser/full54 gates remain open.
+Current hosted gate: CI40488562110/e8e3f21c, observed IN_PROGRESS after one
+`verify-only` dispatch. Follow that handle; no result yet, no duplicate dispatch.
+Its six jobs cover clean verification plus five conversion/validator suites,
+not engine reproduction. Next status observation not before 10:33 UTC.
 
 ### Earlier October 27 checkpoint
 

@@ -22,6 +22,9 @@ Final focused run after adding the real new-runtime receipt: 39 passed / 0 faile
 affected-file lint and the 404-entry public manifest audit also pass. The next
 hosted gate includes the clean full portable suite and all five existing browser
 conversion/independent-validator suites, not native engine rebuilds.
+That gate was dispatched ONCE as CI40488562110/e8e3f21c, observed IN_PROGRESS,
+no conclusion yet: `evidence/2026-10-27-cloudflare-ci-dispatch.json`. Do not
+duplicate or infer success. Next status observation not before 10:33 UTC.
 
 ### Historical execution checkpoints
 

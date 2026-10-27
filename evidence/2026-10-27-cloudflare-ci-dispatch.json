@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "scope": "One clean hosted SDK integration regression; not native engine reproduction, large-file stress, conversion memory or full goal acceptance",
+  "runId": 40488562110,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40488562110",
+  "headSha": "e8e3f21cd28b3af9aeb4d90b3c6900d64bcb7b9b",
+  "createdAt": "2026-10-27T10:27:05Z",
+  "event": "workflow_dispatch",
+  "workflow": "ci.yml",
+  "inputEngine": "verify-only",
+  "observedStatus": "in_progress",
+  "observedConclusion": null,
+  "requestedScopes": ["clean npm-ci", "production build", "lint", "TypeScript", "full portable units", "public evidence audit", "network privacy/offline/static-host", "image-conversions", "media-remux", "audio-source-metadata", "audio-destination-scopes", "streaming-conversions", "independent output validators"],
+  "nativeReproductionSelected": false,
+  "duplicateDispatchUsed": false,
+  "priorCurrentHeadRunsBeforeDispatch": 0,
+  "nextStatusCheckNotBefore": "2026-10-27T10:33:00Z",
+  "originalScopeComplete": false
+}
