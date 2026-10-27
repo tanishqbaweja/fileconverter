@@ -6,6 +6,14 @@ acceptance contract. Private engines are not public supported profiles.
 
 ## Current execution point — 2026-10-27
 
+Next hosted step is recovery-only media-remux/streaming after terminal cancellation,
+using unchanged full tests/required validators, no optional APT recommendations,
+bounded12minute validator setup. Normal matrix remains all5. 26focused/YAML/lint
+pass; actual recovery result pending. Do not replay successful verify/image/audio
+jobs or call the previous run live. No new physical memory retry/static adoption;
+failed probe source/evidence and verified188.5MB cleanup remain frozen. Exact
+implementation boundary: `evidence/2026-10-27-browser-recovery-workflow.json`.
+
 Memory comparison failed safely at the second blank stability gate. Only one
 production page-load result exists (+71.33984375MiB on installedChrome156), not
 a candidate comparison or conversion-memory pass. Keep static shell private;

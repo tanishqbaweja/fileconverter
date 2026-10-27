@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { summarizeShellLoadPairs } from "../scripts/lib/static-shell-memory-experiment.mjs";
+import { knownOwnedExitsComplete, summarizeShellLoadPairs } from "../scripts/lib/static-shell-memory-experiment.mjs";
 
 const rows = () => [
   { variant: "production", incrementalLoadPrivateMiB: 100 }, { variant: "static", incrementalLoadPrivateMiB: 90 },
@@ -19,6 +19,14 @@ test("unavailable or nonfinite measurements never become zero or disappear from 
   for (const value of [null, undefined, NaN, Infinity]) { const input = rows(); input[0].incrementalLoadPrivateMiB = value;
     assert.throws(() => summarizeShellLoadPairs(input)); }
   assert.throws(() => summarizeShellLoadPairs(rows().slice(0, 5)));
+});
+test("a partial stop-command warning cannot replace complete PID/parent/birth absence proof", () => {
+  const identities = [{ pid: 101, parentPid: 1, createdAt: "2026-10-27T00:00:00Z" }, { pid: 102, parentPid: 101, createdAt: "2026-10-27T00:00:01Z" }];
+  const observations = identities.map(identity => ({ identity, status: "owned-identity-absent" }));
+  assert.equal(knownOwnedExitsComplete(identities, observations), true);
+  assert.equal(knownOwnedExitsComplete(identities, observations.slice(0, 1)), false);
+  assert.equal(knownOwnedExitsComplete([], []), false);
+  assert.equal(knownOwnedExitsComplete(identities, [{ identity: identities[0], status: "owned-identity-not-proven-absent" }, observations[1]]), false);
 });
 test("native page-load protocol keeps normal URL/services, complete tree, early baseline, reversed order and owned cleanup", async () => {
   const source = await readFile("scripts/lib/static-shell-memory-experiment.mjs", "utf8");

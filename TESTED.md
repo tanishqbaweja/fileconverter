@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-27 — Recovery-only CI source prepared after terminal40488562110:
+exact media-remux + streaming, unchanged full specs/validators; normal matrix
+retains all5. No optional APT speech-model/driver recommendations; validator
+setup12minute cap, ordinary browser job45minute cap unchanged. Setup cancellation
+does not pass tests. YAML parsed and26focused units/affected lint PASS. New
+hosted result still pending. Teardown maintenance now classifies a numeric
+taskkill warning only after all known birth identities and unknown error PIDs
+are absent; source/guard checks, not a new physical6-case comparison. Old failed
+probe source archived at8bcf2580 (exact hash checked before commit).
+`evidence/2026-10-27-browser-recovery-workflow.json`.
+
 2026-10-27 — Actual whole-Chromium page-load diagnostic remains INCOMPLETE:
 Chrome156.0.8078.48 normal URL/services, production +71.33984375MiB with196valid/
 0missing native load samples. Second blank failed early stability before any

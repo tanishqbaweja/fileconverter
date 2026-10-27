@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-10-27 — CI recovery-only selector is implemented for the two incomplete
+media-remux/streaming suites. Normal all/verify-only still runs all five suites.
+Required FFmpeg/bsdtar/Pillow/py7zr and test assertions remain; optional APT
+recommendations are omitted and validator setup is bounded to12minutes, not the
+45minute test job. Setup timeout remains failure. 26focused checks/YAML parse/
+affected-file lint pass; hosted recovery still pending. No new memory run or
+static promotion. Numeric taskkill warnings can no longer prevent scratch
+cleanup after every known birth and extra error PID is conclusively absent;
+unknown/live/unavailable identity still prevents deletion. The original failed
+memory probe is preserved at source archive8bcf2580 and not relabelled passing.
+`evidence/2026-10-27-browser-recovery-workflow.json`.
+
 2026-10-27 — Memory A/B did NOT complete. Installed Chrome156.0.8078.48 normal
 page-load measured production-only +71.33984375MiB (196 valid native samples,
 0 unavailable); the second clean blank session missed the unchanged 30s early

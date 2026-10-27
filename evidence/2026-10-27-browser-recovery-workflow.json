@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "scope": "Source/contract verification of a targeted CI recovery after a terminal incomplete run; not a passing recovery result",
+  "previousRun": 40488562110,
+  "previousStatus": "completed",
+  "previousConclusion": "cancelled",
+  "sourceChange": {
+    "newSelector": "browser-recovery",
+    "selectedSuites": ["media-remux", "streaming-conversions"],
+    "normalMatrixStillHasAllFiveSuites": true,
+    "successfulSuitesReplayed": false,
+    "requiredValidatorsUnchanged": ["ffmpeg", "ffprobe via ffmpeg package", "libarchive-tools", "Pillow==11.3.0", "py7zr==1.1.0"],
+    "aptNoInstallRecommends": true,
+    "validatorSetupTimeoutMinutes": 12,
+    "browserJobTimeoutMinutesUnchanged": 45,
+    "browserTestsOrAssertionsChanged": false,
+    "setupTimeoutCountsAsFailureNotPass": true,
+    "nativeEngineReproductionSelected": false
+  },
+  "validation": { "yamlParsed": true, "focusedUnitsPassed": 26, "focusedUnitsFailed": 0, "focusedUnitsSkipped": 0, "durationMs": 689.6754, "affectedFileLint": "passed" },
+  "postDiagnosticTeardownMaintenance": {
+    "executedOldSourceArchiveCommit": "8bcf2580d0270de9a1abffab3ceb3c5137fc8508",
+    "oldExecutedHelperSha256": "d88242c21be494a3d9dbeaa47093696281cdea4f072c53787761c47baf900741",
+    "change": "A numeric taskkill error is retained as a warning only after complete known PID/parent/birth absence proof and absent unknown error PIDs; otherwise cleanup remains failed. This does not make the failed blank baseline pass.",
+    "focusedGuardTestsPassed": true,
+    "newPhysicalMemoryRerun": false,
+    "baselineOrFeaturePolicyChanged": false
+  },
+  "packageAndConversionCodeChanged": false,
+  "memoryOptimizationAccepted": false,
+  "recoveryResultPending": true,
+  "originalScopeComplete": false
+}

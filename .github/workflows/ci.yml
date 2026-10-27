@@ -12,6 +12,7 @@ on:
           - all
           - verify-only
           - portable-verify
+          - browser-recovery
           - audio-destination-scopes
           - reproduce-only
           - ffmpeg-remux
@@ -35,7 +36,7 @@ permissions:
 
 jobs:
   engine-matrix:
-    if: github.event_name != 'workflow_dispatch' || (inputs.engine != 'verify-only' && inputs.engine != 'audio-destination-scopes' && inputs.engine != 'portable-verify')
+    if: github.event_name != 'workflow_dispatch' || (inputs.engine != 'verify-only' && inputs.engine != 'audio-destination-scopes' && inputs.engine != 'portable-verify' && inputs.engine != 'browser-recovery')
     runs-on: ubuntu-latest
     outputs:
       engines: ${{ steps.manifest.outputs.engines }}
@@ -195,18 +196,15 @@ jobs:
           if-no-files-found: ignore
 
   browser-conversions:
-    if: github.event_name != 'workflow_dispatch' || inputs.engine == 'all' || inputs.engine == 'verify-only'
+    if: github.event_name != 'workflow_dispatch' || inputs.engine == 'all' || inputs.engine == 'verify-only' || inputs.engine == 'browser-recovery'
     runs-on: ubuntu-latest
     timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
-        suite:
-          - image-conversions
-          - media-remux
-          - audio-source-metadata
-          - audio-destination-scopes
-          - streaming-conversions
+        # Recovery follows a terminal incomplete run, without replaying its
+        # successful suites. Normal all/verify-only retains the complete matrix.
+        suite: ${{ fromJSON(inputs.engine == 'browser-recovery' && '["media-remux","streaming-conversions"]' || '["image-conversions","media-remux","audio-source-metadata","audio-destination-scopes","streaming-conversions"]') }}
     name: Browser conversions (${{ matrix.suite }})
     steps:
       - uses: actions/checkout@v4
@@ -220,8 +218,13 @@ jobs:
       - run: npx playwright install --with-deps chromium
       - run: sudo apt-get update
       - name: Install independent native validators
+        timeout-minutes: 12
+        env:
+          DEBIAN_FRONTEND: noninteractive
         run: |
-          sudo apt-get install -y ffmpeg libarchive-tools
+          # Keep required FFmpeg/bsdtar libraries, but avoid optional speech
+          # models and driver bundles that exhausted the old setup budget.
+          sudo apt-get install -y --no-install-recommends ffmpeg libarchive-tools
           python -m pip install --disable-pip-version-check -r scripts/requirements-ci-validators.txt
 
       - name: Run browser conversions and independent validators

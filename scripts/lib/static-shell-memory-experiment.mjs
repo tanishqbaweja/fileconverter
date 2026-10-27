@@ -23,6 +23,10 @@ import { connectRealmSampler } from "./cdp-realm-memory.mjs";
 const execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const hashFile = async filename => { const digest = createHash("sha256"); for await (const bytes of createReadStream(filename, { highWaterMark: 262144 })) digest.update(bytes); return digest.digest("hex"); };
 const median = values => { assert.equal(values.length, 3); return [...values].sort((a, b) => a - b)[1]; };
+export function knownOwnedExitsComplete(identities, observations) {
+  return identities.length > 0 && identities.every(identity => observations.some(row => row.status === "owned-identity-absent" &&
+    row.identity.pid === identity.pid && row.identity.parentPid === identity.parentPid && row.identity.createdAt === identity.createdAt));
+}
 export function summarizeShellLoadPairs(rows) {
   assert.equal(rows.length, 6);
   const pairs = [0, 2, 4].map(start => {
@@ -179,12 +183,31 @@ export async function runStaticShellMemoryComparison({ root, runtime, clientDire
             await observer.stop(); row.nativeMemory = observer.report(); row.nativeOwnership = nativeMonitor.ownershipSummary(); }
         });
         await attempt(async () => { await browser?.close(); });
-        await attempt(async () => { await stopKnown(chrome, birth); });
+        let stopWarning = null;
+        await attempt(async () => {
+          try { await stopKnown(chrome, birth); }
+          catch (error) {
+            if (typeof error.code === "number" && /taskkill\.exe/i.test(error.cmd ?? "")) stopWarning = String(error);
+            else throw error;
+          }
+        });
         row.processCleanup = [];
         const identities = [birth, ...(row.nativeMemory?.identities ?? [])].filter(Boolean);
         const unique = [...new Map(identities.map(identity => [`${identity.pid}:${identity.createdAt}`, identity])).values()];
         for (const identity of unique) await attempt(async () => { const absence = await observeOwnedProcessExit(identity); row.processCleanup.push(absence); assert.equal(absence.status, "owned-identity-absent"); });
         if (observerBirth) await attempt(async () => { row.observerCleanup = await observeOwnedProcessExit(observerBirth); assert.equal(row.observerCleanup.status, "owned-identity-absent"); });
+        if (stopWarning) {
+          row.stopCommandWarning = stopWarning;
+          await attempt(async () => {
+            assert.equal(knownOwnedExitsComplete(unique, row.processCleanup), true, "A command error is benign only after all known birth identities are proved absent");
+            row.stopWarningExtraPidObservations = [];
+            for (const match of stopWarning.matchAll(/PID\s+(\d+)/g)) {
+              const pid = Number(match[1]); if (unique.some(identity => identity.pid === pid)) continue;
+              const current = await queryReliableProcessIdentity(pid); row.stopWarningExtraPidObservations.push({ pid, current });
+              assert.equal(current, null, "Unknown live error PID is not permission to remove its state");
+            }
+          });
+        }
         row.safeToRemoveRuntime = cleanupErrors.length === 0 && (!chrome || chrome.exitCode !== null || chrome.signalCode !== null);
         if (row.safeToRemoveRuntime) await attempt(async () => { await caseRuntime.close(); await assert.rejects(access(caseRuntime.directory), { code: "ENOENT" }); row.runtimeRemoved = true; });
         row.cleanupErrors = cleanupErrors;
