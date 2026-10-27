@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-10-27 — One repaired SVG source compile CI40519469540/2ed1439b
+confirmed IN_PROGRESS14:16:06 UTC. Earlier40516685917 authoritatively failed,
+not restarted/relabeled. Newrun changes ONLY source-declaredpathfinder0.5.2
+constraint/one lock entry, fixedrepairSHA09c8cea8; compiler/flags unchanged.
+No broaderresolver/engine/browser replay. Follow SAME handle after14:21 UTC
+(~5minute initialallowance,20minutecap), no duplicate on timeout.24focused/lint
+pass beforedispatch. `evidence/2026-10-27-svg-pathfinder-compile-dispatch.json`.
+No rawcandidate/result yet, no rounding-equivalence/public/memory/goal claim.
+
 2026-10-27 — Compiler40516685917 TERMINAL FAILURE, not queued/live:
 recordednightly truly compiled source but pathfinder_simd0.5.6 uses unstable
 round_ties_even;8E0658/cargo101/noWasm. Scratchremoved/publicdiffclear. Full

@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-27 — CI40519469540/2ed1439b confirmed IN_PROGRESS after single
+evidence-directed Pathfinder0.5.2 repair; exact one-package delta/repairlockSHA,
+compiler unchanged. First40516685917 failure remains failed and source-sealed.
+24focused/lint PASS beforedispatch, not a compilerpass. Next check no earlier
+14:21 UTC (~5minutes,20cap), followexistinghandle/no duplicate. No publicbyte,
+browser/memory/renderingequivalence claim. `evidence/2026-10-27-svg-pathfinder-compile-dispatch.json`.
+
 2026-10-27 — First real pinned SVG compile40516685917 FAILED:actual
 rustc1.76nightly/d86d65bbc, pathfinder_simd0.5.6 round_ties_even E0658x8, cargo101,
 noWasm, scratchremoved/publicengines unchanged. Artifact5,029B/SHA2a808cef and
