@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-10-28 — Current observed-memory source privacy/offline/hosting:19 PASS,
+0fail/0skip/0flaky54.013s, actual hidden production host and headless Chrome.
+Owned runtime removed, two owned births absent, original size/full SHA unchanged.
+No conversion-memory/native-picker/headed/security/full-goal acceptance inferred.
+`evidence/2026-10-28-svg-observation-privacy-terminal.json`.
+
+2026-10-28 — Observed-memory/direct-recipe regression:1910 portable PASS/0fail/
+0skip/0cancel149.397s across572 files,162 qualification files NOT RUN; affected
+lint PASS. Current production build/TypeScript already verified, source unchanged.
+Portable tests do not establish browser stress/memory or native-picker acceptance.
+`evidence/2026-10-28-svg-observation-regression.json`.
+
+2026-10-28 — Direct-save8M observation gate: actual headless normal-profile
+Chrome run at05fd5d07 stopped at unchanged earliest stable-blank requirement;
+16 blank samples, baselineNULL, zero conversions/zero browser Wasm observations.
+No conversion-memory acceptance. Four owned births absent; both runtimes and
+generated source/reference removed, original2958573265B/full SHA unchanged.
+No identical retry planned. Preparation six focused PASS; exactly three cases
+collected (collection is not conversion). See
+`evidence/2026-10-28-svg-direct-stress-preparation.json` and
+`evidence/2026-10-28-svg-direct-stress-terminal.json`.
+
 2026-10-28 — Lifecycle-only diagnostic preparation:15 focused/lint PASS before
 new failure-evidence test. Same ten original functional assertions, normalChrome,
 fullDOM/HAR/earliestblank/fulltree250MiB. Adds bounded persistedpage-event and

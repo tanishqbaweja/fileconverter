@@ -1,5 +1,38 @@
 # Remaining work audit
 
+2026-10-28 — Current observed-memory build privacy/offline/hosting PASS19/0fail/
+0skip/0flaky54.013s at05fd5d07. Both owned process births absent, owned runtime
+removed and protected original size/full SHA unchanged. Together with1910-unit
+and lint PASS this verifies the changed source's regression/privacy checkpoint,
+not SVG stress, native OS picker, security closure or full original completion.
+`evidence/2026-10-28-svg-observation-privacy-terminal.json`.
+
+Next non-replay work: SVG destination allocation bookkeeping currently omits
+`sharedBufferBytes`/`additionalWorkerCount` from the direct writer, unlike other
+codec paths; source-level finding, not a measured runtime value. The complete
+native process-tree monitor has never excluded that worker. SVG also receives
+no atomic cancellation flag in the current app (only ffmpeg engines do); verify
+and fix cancel delivery around synchronous rasterization before claiming SVG
+stress recovery. No unchanged baseline-only OPFS/direct replay is scheduled.
+
+2026-10-28 — Observed-memory/direct-recipe regression checkpoint:1910 portable
+PASS/0fail/0skip/0cancel149.397s,572 files;162 prerequisite-bound qualification
+files NOT RUN. Affected lint PASS. First1907/1 failure remains recorded; repaired
+only the reviewed reversible current-UI hunk, not historical source evidence or
+live assertions. Production source unchanged since verified build/TypeScript.
+Privacy/offline checks running separately. No browser SVG observation accepted;
+both changed-path attempts stopped before conversion at baseline requirements.
+`evidence/2026-10-28-svg-observation-regression.json`.
+
+2026-10-28 — Required observed-memory direct stress STOPPED BEFORE conversion:
+16 blank samples, no accepted stable baseline inside the unchanged 30-second
+window. Zero conversions, no actual browser memory-getter observations, primary
+result NULL. Four owned process births absent, both owned runtimes/generated
+fixture removed; original full SHA/size unchanged. Not an output failure or a
+conversion pass. No unchanged retry, baseline inflation, service disablement or
+public promotion. Portable regression and privacy/offline verification next.
+`evidence/2026-10-28-svg-direct-stress-terminal.json`.
+
 2026-10-28 — Direct-handle stress preparation verified: six focused recipe tests
 PASS and exactly three cases collected, no browser launched by collection.
 First ambiguous destination-hook preparation rejected before launch and retained;

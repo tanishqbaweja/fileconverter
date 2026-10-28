@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "05fd5d07",
+  "command": "scripts/test-reproduced-svg-stress.mjs --direct-handle",
+  "sessionId": 81257,
+  "launchObservedAt": "2026-10-28T08:22:31Z",
+  "notBeforeTerminalCheck": "2026-10-28T08:25:01Z",
+  "estimatedRemainingSeconds": 150,
+  "estimateIncludes": "Original hash checks, fresh normal-profile Chrome, unchanged early blank baseline, three direct-handle conversions, independent exact-pixel validation and owned cleanup",
+  "headless": true,
+  "publicEngineReplacement": false,
+  "doNotDuplicateWhileSessionIsLive": true,
+  "status": "launched-not-a-conversion-pass"
+}

@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "05fd5d07",
+  "portableCommand": "scripts/run-unit-suite.mjs portable",
+  "portableSessionId": 57775,
+  "portableExitCode": 0,
+  "portableSelectedFiles": 572,
+  "allUnitFiles": 734,
+  "qualificationFilesNotRun": 162,
+  "passed": 1910,
+  "failed": 0,
+  "skipped": 0,
+  "cancelled": 0,
+  "durationMs": 149397.2609,
+  "affectedLint": {
+    "sessionId": 77629,
+    "exitCode": 0,
+    "files": [
+      "scripts/lib/reproduced-svg-direct-stress-recipe.mjs",
+      "scripts/lib/reproduced-svg-stress-recipe.mjs",
+      "scripts/test-reproduced-svg-stress.mjs",
+      "tests/reproduced-svg-direct-stress-recipe.test.mjs",
+      "tests/published-catalogue-integration.test.mjs"
+    ]
+  },
+  "firstFailedRegressionRetained": "evidence/2026-10-28-svg-memory-first-regression.json",
+  "repair": "Exactly reversible reviewed Peak Wasm UI hunk; whole-UI historical comparison retained",
+  "productionSourceChangedSinceVerifiedBuild": false,
+  "conversionMemoryAcceptance": false,
+  "originalGoalComplete": false
+}

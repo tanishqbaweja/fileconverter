@@ -1,0 +1,178 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-28T08:29:36.383Z",
+  "status": "passed-complete-headless-privacy-offline-hosting-specs",
+  "scope": "Complete unchanged production privacy/offline/static-host browser specs; not process-memory, stress, OS-picker or native reproduction acceptance",
+  "headedCoverage": false,
+  "conversionMemoryAcceptance": false,
+  "publicPromotion": false,
+  "sourcePins": {
+    "package.json": "c13423c98132f9f1beaf9cdea8ceadf3436f7cf94031c873cc150f743bd5978c",
+    "package-lock.json": "b2c97a14d64528607b8acd6394350ea741db853de36fcd2f4d46789c4b3964a4",
+    "playwright.config.ts": "e1ebd9e54b5baf85227edf021b1190dca2788c226ea39209c4e22915ce9d0a84",
+    "tests/browser/privacy-offline.spec.ts": "1eb56a57f9e41110718747d774dc4607875589ed354496788888b722cc9ef540",
+    "tests/browser/static-host-policy.spec.ts": "9587f432302a1bebd73bc1be19a2d5175d824fbb42ae126f0317a8a64bad29a6",
+    "scripts/run-owned-privacy-offline.mjs": "1364823a4be8a2561348c3ac4c5a217c614417b6735dff5767823c77c75d9d73",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee",
+    "lib/static-host-request-policy.ts": "e699ea329425e935279410b7dc3a5bcd0d6ea1b522962f4a128d1ec1b197e4ad",
+    "app/converter/ConverterApp.tsx": "62491d0620a5b91083678957f4a629b6cace8d51435a3bb1677f0c57f26c5017",
+    "lib/capability-registry.ts": "d9f5ad4599db8b43a68acb311f16d652a9a74300c38a31f827c12590652e573b",
+    ".openai/hosting.json": "6f55e031b82f9a23029129a1a3fed515ae6d7da180e369c7b2b90ec248d06475",
+    "vite.config.ts": "ef3bc4603131a48d6f6b013671f86b73a22cc40226196cb037c4b756700d61ae",
+    "scripts/lib/direct-workerd-host.mjs": "32b7b0b0fd8621e1345f8e5a570ac3fff8ac7fbe9eb5919ad500379f031d992f"
+  },
+  "failures": [],
+  "hostingRuntime": "wrangler-miniflare",
+  "executedHead": "05fd5d0779b2e4fc32da198a899803ca07ed7cee",
+  "hostMemory": {
+    "acquiredAt": "2026-10-28T08:29:37.1504605Z",
+    "freePhysicalBytes": 3885985792,
+    "freeVirtualBytes": 10383814656,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "assetRouting": {
+    "binding": "ASSETS",
+    "runWorkerFirst": true
+  },
+  "assetPreflight": [
+    {
+      "path": "/assets/index-CwQ1gGtM.css",
+      "status": 200,
+      "mime": "text/css; charset=utf-8"
+    },
+    {
+      "path": "/assets/layout-segment-context-Bge7hjN_.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "/assets/rolldown-runtime-XKyaHtl9.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "/assets/framework-DRChgpEG.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "/assets/index-sCj3f666.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "/assets/ConverterApp-DJgh0phK.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    }
+  ],
+  "methodPreflight": [
+    {
+      "method": "POST",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "PUT",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "PATCH",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "DELETE",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "OPTIONS",
+      "status": 405,
+      "allow": "GET, HEAD"
+    }
+  ],
+  "runnerExitCode": 0,
+  "stats": {
+    "startTime": "2026-10-28T08:29:52.581Z",
+    "duration": 54013.475,
+    "expected": 19,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "processBirths": {
+    "server": {
+      "pid": 45328,
+      "parentPid": 44052,
+      "createdAt": "2026-10-28T08:29:45.6569230Z"
+    },
+    "runner": {
+      "pid": 29072,
+      "parentPid": 44052,
+      "createdAt": "2026-10-28T08:29:51.2154920Z"
+    }
+  },
+  "processCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 45328,
+        "parentPid": 44052,
+        "createdAt": "2026-10-28T08:29:45.6569230Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-28T08:30:48.925Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 800,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 29072,
+        "parentPid": 44052,
+        "createdAt": "2026-10-28T08:29:51.2154920Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-28T08:30:49.748Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 823,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "serverLog": "\n ⛅️ wrangler 4.152.0\n────────────────────\nYour Worker has access to the following bindings:\nBinding            Resource      Mode\nenv.ASSETS         Assets        local\n\nAttaching additional modules:\n┌─────────────────────────────────────────────────────┬───────────────┬─────────────┐\n│ Name                                                │ Type          │ Size        │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ resvg.wasm                                          │ compiled-wasm │ 1346.05 KiB │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/conversion.worker-CS25ziSP.js            │ esm           │ 382.63 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/ConverterApp-UIIIEWQS.js                 │ esm           │ 498.19 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/direct-file-writer.worker-Cd6e6fgR.js    │ esm           │ 1.72 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/error-boundary-C-_MPqYf.js               │ esm           │ 8.23 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/jxl-source-inspection-worker-BogpV0iH.js │ esm           │ 2.67 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/layout-segment-context-DJ93MGz0.js       │ esm           │ 1.74 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/staged-save.worker-CXNG5no9.js           │ esm           │ 3.82 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/index.js                                        │ esm           │ 571.02 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/__vite_rsc_assets_manifest.js                   │ esm           │ 1.09 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ __vite_rsc_assets_manifest.js                       │ esm           │ 1.09 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ Total (11 modules)                                  │               │ 2818.26 KiB │\n└─────────────────────────────────────────────────────┴───────────────┴─────────────┘\n⎔ Starting local server...\n[wrangler:info] ✨ Parsed 3 valid header rules.\nWrangler detected this dev session is running in an AI agent.\nThe Local Explorer API is available at http://127.0.0.1:50761/cdn-cgi/local/explorer/api\nUseful routes:\n  GET http://127.0.0.1:50761/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings\n  POST http://127.0.0.1:50761/cdn-cgi/local/explorer/api/local/scheduled?worker=<name> - invoke a Worker's scheduled handler; cron is required (see the OpenAPI schema for the full request)\n  GET http://127.0.0.1:50761/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces\n  GET http://127.0.0.1:50761/cdn-cgi/local/explorer/api/d1/database - D1 databases\n  GET http://127.0.0.1:50761/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets\n  GET http://127.0.0.1:50761/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces\n  GET http://127.0.0.1:50761/cdn-cgi/local/explorer/api/workflows - Workflows\n  POST http://127.0.0.1:50761/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:\n    curl -X POST http://127.0.0.1:50761/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{\"sql\":\"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20\"}'\n  POST http://127.0.0.1:50761/cdn-cgi/local/explorer/api/local/observability/clear - clear all captured traces and logs\nIf the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):\n  GET http://127.0.0.1:50761/cdn-cgi/local/explorer/api - OpenAPI schema\n[wrangler:info] Ready on http://127.0.0.1:50761\n[wrangler:info] GET / 200 OK (1057ms)\n[wrangler:info] GET / 200 OK (19ms)\n[wrangler:info] GET /assets/index-CwQ1gGtM.css 200 OK (36ms)\n[wrangler:info] GET /assets/layout-segment-context-Bge7hjN_.js 200 OK (10ms)\n[wrangler:info] GET /assets/rolldown-runtime-XKyaHtl9.js 200 OK (13ms)\n[wrangler:info] GET /assets/framework-DRChgpEG.js 200 OK (10ms)\n[wrangler:info] GET /assets/index-sCj3f666.js 200 OK (16ms)\n[wrangler:info] GET /assets/ConverterApp-DJgh0phK.js 200 OK (12ms)\n[wrangler:info] POST / 405 Method Not Allowed (128ms)\n[wrangler:info] PUT / 405 Method Not Allowed (21ms)\n[wrangler:info] PATCH / 405 Method Not Allowed (16ms)\n[wrangler:info] DELETE / 405 Method Not Allowed (17ms)\n[wrangler:info] OPTIONS / 405 Method Not Allowed (25ms)\n[wrangler:info] GET / 200 OK (30ms)\n[wrangler:info] GET /assets/index-CwQ1gGtM.css 200 OK (37ms)\n[wrangler:info] GET /assets/layout-segment-context-Bge7hjN_.js 200 OK (45ms)\n[wrangler:info] GET /manifest.webmanifest 200 OK (41ms)\n[wrangler:info] GET /assets/rolldown-runtime-XKyaHtl9.js 200 OK (78ms)\n[wrangler:info] GET /assets/framework-DRChgpEG.js 200 OK (73ms)\n[wrangler:info] GET /assets/ConverterApp-DJgh0phK.js 200 OK (111ms)\n[wrangler:info] GET /assets/index-sCj3f666.js 200 OK (112ms)\n[wrangler:info] GET /icon.svg 200 OK (61ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (30ms)\n[wrangler:info] GET /assets/conversion.worker-CS25ziSP.js 200 OK (14ms)\n[wrangler:info] GET / 200 OK (25ms)\n[wrangler:info] GET /manifest.webmanifest 304 Not Modified (20ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (19ms)\n[wrangler:info] GET / 200 OK (25ms)\n[wrangler:info] GET /manifest.webmanifest 304 Not Modified (24ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (15ms)\n[wrangler:info] GET / 200 OK (27ms)\n[wrangler:info] GET /manifest.webmanifest 304 Not Modified (15ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (18ms)\n[wrangler:info] GET / 200 OK (43ms)\n[wrangler:info] GET /manifest.webmanifest 304 Not Modified (37ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (15ms)\n[wrangler:info] GET / 200 OK (33ms)\n[wrangler:info] GET /manifest.webmanifest 304 Not Modified (20ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (21ms)\n[wrangler:info] GET /assets/jxl-source-inspection-worker-BogpV0iH.js 200 OK (19ms)\n[wrangler:info] GET /engines/jxl-inspector/within-jxl-inspector.mjs 200 OK (16ms)\n[wrangler:info] GET /engines/jxl-inspector/within-jxl-inspector.wasm 200 OK (15ms)\n[wrangler:info] GET / 200 OK (24ms)\n[wrangler:info] GET /manifest.webmanifest 304 Not Modified (19ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (22ms)\n[wrangler:info] GET / 200 OK (41ms)\n[wrangler:info] GET /manifest.webmanifest 304 Not Modified (20ms)\n[wrangler:info] GET /sw.js 200 OK (29ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (25ms)\n[wrangler:info] GET / 200 OK (22ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (18ms)\n[wrangler:info] GET /manifest.webmanifest 304 Not Modified (23ms)\n[wrangler:info] GET /THIRD_PARTY_NOTICES.txt 200 OK (14ms)\n[wrangler:info] GET / 200 OK (19ms)\n[wrangler:info] GET / 200 OK (25ms)\n[wrangler:info] GET /engines/remux/within-vp9.mjs 200 OK (34ms)\n[wrangler:info] GET /engines/remux/within-vp9.wasm 200 OK (12ms)\n[wrangler:info] GET / 200 OK (21ms)\n[wrangler:info] GET /assets/direct-file-writer.worker-Cd6e6fgR.js 200 OK (21ms)\n[wrangler:info] GET /engines/archive7z/within-archive7z.mjs 200 OK (22ms)\n[wrangler:info] GET /engines/archive7z/within-archive7z.wasm 200 OK (15ms)\n[wrangler:info] GET /engines/bzip2/within-bzip2.mjs 200 OK (16ms)\n[wrangler:info] GET /engines/bzip2/within-bzip2.wasm 200 OK (18ms)\n[wrangler:info] GET /engines/xz-decoder/within-xz-decoder.mjs 200 OK (18ms)\n[wrangler:info] GET /engines/xz-decoder/within-xz-decoder.wasm 200 OK (19ms)\n[wrangler:info] GET /engines/xz/within-xz.mjs 200 OK (20ms)\n[wrangler:info] GET /engines/xz/within-xz.wasm 200 OK (16ms)\n[wrangler:info] GET /engines/remux/within-remux.mjs 200 OK (17ms)\n[wrangler:info] GET /_vinext/image 404 Not Found (16ms)\n[wrangler:info] GET /_next/image 404 Not Found (13ms)\n[wrangler:info] GET /%5Fvinext/%69mage 404 Not Found (11ms)\n[wrangler:info] GET /_next/image/ 404 Not Found (11ms)\n[wrangler:info] POST / 405 Method Not Allowed (35ms)\n[wrangler:info] PUT / 405 Method Not Allowed (25ms)\n[wrangler:info] PATCH / 405 Method Not Allowed (36ms)\n[wrangler:info] DELETE / 405 Method Not Allowed (49ms)\n[wrangler:info] OPTIONS / 405 Method Not Allowed (34ms)\n[wrangler:info] GET / 200 OK (28ms)\n[wrangler:info] HEAD / 200 OK (30ms)\n",
+  "runnerLog": "\nRunning 19 tests using 1 worker\n\n(node:26352) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n\n\n[1/19] tests\\browser\\privacy-offline.spec.ts:224:1 › functional browser capability probes pass in production Chrome\n[2/19] tests\\browser\\privacy-offline.spec.ts:265:1 › a failed functional Wasm probe blocks a Wasm profile with an exact reason\n[3/19] tests\\browser\\privacy-offline.spec.ts:296:1 › conversion transmits no filename or file content\n[4/19] tests\\browser\\privacy-offline.spec.ts:367:1 › bounded source inspection reports structured data, document, and subtitle facts without source text\n[5/19] tests\\browser\\privacy-offline.spec.ts:411:1 › bounded source inspection reports archive and package structure without reading payloads or displaying entry names\n[6/19] tests\\browser\\privacy-offline.spec.ts:547:1 › bounded source inspection reports image dimensions and animation without decoding pixels\n[7/19] tests\\browser\\privacy-offline.spec.ts:638:1 › source inspection displays genuine audio and multi-stream video families from bounded local reads\n[8/19] tests\\browser\\privacy-offline.spec.ts:857:1 › installed app shell loads offline without eagerly downloading engines\n[9/19] tests\\browser\\privacy-offline.spec.ts:893:1 › cached VP9 media core performs a real conversion offline\n[10/19] tests\\browser\\privacy-offline.spec.ts:956:1 › cached direct destination writer converts while offline\n[11/19] tests\\browser\\privacy-offline.spec.ts:1013:1 › cached TAR-to-7Z engine converts offline and removes scratch\n[12/19] tests\\browser\\privacy-offline.spec.ts:1076:1 › cached compressed-TAR and ZIP pipelines convert to 7Z offline\n[13/19] tests\\browser\\privacy-offline.spec.ts:1148:1 › cached compressed TAR transcoding pipelines convert offline\n[14/19] tests\\browser\\privacy-offline.spec.ts:1242:1 › cached raw compression transcoding pipelines convert offline\n[15/19] tests\\browser\\privacy-offline.spec.ts:1302:1 › cached TAR.XZ-to-ZIP pipeline converts offline\n[16/19] tests\\browser\\privacy-offline.spec.ts:1355:1 › cached ZIP-to-TAR.XZ pipeline converts offline\n[17/19] tests\\browser\\privacy-offline.spec.ts:1406:1 › cached 7Z-to-compressed-TAR pipelines convert offline\n[18/19] tests\\browser\\privacy-offline.spec.ts:1477:1 › static codec assets preserve cross-origin isolation for pthread workers\n[19/19] tests\\browser\\static-host-policy.spec.ts:3:1 › production worker refuses submissions and server image conversion while serving the app\n  19 passed (54.0s)\n",
+  "ownedRuntimeRemoved": true,
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "finishedAt": "2026-10-28T08:30:59.499Z"
+}

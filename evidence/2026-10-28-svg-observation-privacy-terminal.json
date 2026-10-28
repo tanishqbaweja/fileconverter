@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "05fd5d0779b2e4fc32da198a899803ca07ed7cee",
+  "status": "passed-complete-headless-privacy-offline-hosting-specs",
+  "receipt": {
+    "path": "evidence/2026-10-28T08-29-36-382Z-owned-privacy-offline.json",
+    "bytes": 19692,
+    "sha256": "6e8d5700ffbaf5e14df405291a9fadb38e4650461f0791545cc447bb37c9130a"
+  },
+  "command": "scripts/run-owned-privacy-offline.mjs",
+  "sessionId": 78491,
+  "exitCode": 0,
+  "stats": {
+    "startTime": "2026-10-28T08:29:52.581Z",
+    "duration": 54013.475,
+    "expected": 19,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "ownedRuntimeRemoved": true,
+  "ownedProcessBirthsAbsent": 2,
+  "originalBytesBeforeAndAfter": 2958573265,
+  "originalSha256BeforeAndAfter": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+  "originalUnchanged": true,
+  "headedOrNativePickerAcceptance": false,
+  "conversionMemoryAcceptance": false,
+  "publicPromotion": false,
+  "originalGoalComplete": false
+}

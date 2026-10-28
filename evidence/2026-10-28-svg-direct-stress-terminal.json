@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "05fd5d0779b2e4fc32da198a899803ca07ed7cee",
+  "scope": "Required direct-handle 8M stress attempt; stopped before any conversion",
+  "wrapper": {
+    "path": "evidence/2026-10-28T08-22-22-143Z-reproduced-svg-grid-stress.json",
+    "bytes": 41758,
+    "sha256": "9886aeda554009547a8d17ee9e10ed4390fd4fc9d93598c10f650bb5527e7387"
+  },
+  "browser": {
+    "path": "evidence/2026-10-28T08-22-24-958Z-source-svg-browser.json",
+    "bytes": 234679,
+    "sha256": "79f7801f82b49122c25e8bf922bbf3fbf8dabc8d8dd0f45bcd9b7de9dd5002fd"
+  },
+  "startedAt": "2026-10-28T08:22:22.144Z",
+  "finishedAt": "2026-10-28T08:23:32.526Z",
+  "sessionId": 81257,
+  "terminalExitCode": 1,
+  "blankSamples": 16,
+  "acceptedBlankBaseline": null,
+  "conversionCasesExecuted": 0,
+  "actualBrowserSvgMemoryObservationExecuted": false,
+  "conversionOrMemoryAcceptance": false,
+  "ownedProcessBirthsAbsent": 4,
+  "ownedBrowserRuntimeRemoved": true,
+  "ownedGenerationFixtureRuntimeRemoved": true,
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "primaryIncrementalPrivateMiB": null,
+  "unchangedRetryPlanned": false,
+  "baselineFormulaServicesAndLimitChanged": false,
+  "publicEngineReplacement": false,
+  "originalGoalComplete": false,
+  "next": "Current-source portable regression and unchanged privacy/offline tests; direct and OPFS observed-memory conversions remain unverified"
+}

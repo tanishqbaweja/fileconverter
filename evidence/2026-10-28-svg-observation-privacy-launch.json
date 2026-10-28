@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "05fd5d07",
+  "command": "scripts/run-owned-privacy-offline.mjs",
+  "sessionId": 78491,
+  "launchObservedAt": "2026-10-28T08:29:45Z",
+  "estimatedRemainingSeconds": 90,
+  "notBeforeTerminalCheck": "2026-10-28T08:31:15Z",
+  "estimateIncludes": "Full original hash, owned hidden production host, complete existing privacy/offline/hosting specs and owned cleanup",
+  "headless": true,
+  "conversionMemoryAcceptance": false,
+  "status": "launched-not-yet-a-test-pass",
+  "doNotDuplicateWhileSessionIsLive": true
+}
