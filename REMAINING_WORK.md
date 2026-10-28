@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-10-28 — SVG execution cycle final privacy/offline/hosting PASS19/0fail/
+0skip/0flaky44.216s at1eb5c893 after scalar-order repair/rebuild. All current
+cycle source hashes unchanged, two owned privacy births absent and scratch
+removed; original2958573265B/full SHA unchanged.1927 full portable PASS before
+scalar-only move,27 focused + fresh build/TypeScript/lint PASS after it. Actual
+five-job recovery/69.875MiB Wasm observation proof retained atfa7505c6, overall
+qualification remains FAILED baselineNULL. No unchanged conversion replay or
+public Wasm replacement. Next distinct SVG work:6M effects, bounded OOM and
+loaded-idle/cleanup stability; original full54/B02-B09 still open.
+`evidence/2026-10-28-svg-execution-cycle.json` and
+`evidence/2026-10-28-svg-execution-privacy-terminal.json`.
+
 SVG scalar timing repair verified:27 focused PASS/0fail/0skip985.556ms; rebuilt
 production, TypeScript and affected lint PASS. No codec/renderer/output/cancel
 behavior change; only moves the real destination metadata before its first

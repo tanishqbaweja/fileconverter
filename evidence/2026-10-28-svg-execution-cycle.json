@@ -80,7 +80,38 @@
       "Destination opened: initial metadata ran after event and briefly underreported writer worker; corrected source ordering with test"
     ]
   },
-  "finalPrivacy": "pending-current-ordering-repair-build",
+  "finalPrivacy": {
+    "schemaVersion": 1,
+    "sourceCommit": "1eb5c893d5ba0adf933a349d60938128bf5c59b8",
+    "receipt": {
+      "path": "evidence/2026-10-28T08-57-06-170Z-owned-privacy-offline.json",
+      "bytes": 19848,
+      "sha256": "14c640aa5a69550406bce6e8b74a39a9fe03af5c53a31c28dfcbd3929bdd655e"
+    },
+    "sessionId": 68539,
+    "exitCode": 0,
+    "status": "passed-complete-headless-privacy-offline-hosting-specs",
+    "stats": {
+      "startTime": "2026-10-28T08:57:18.104Z",
+      "duration": 44215.795999999995,
+      "expected": 19,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "ownedProcessBirthsAbsent": 2,
+    "ownedRuntimeRemoved": true,
+    "protectedOriginal": {
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+    },
+    "originalUnchanged": true,
+    "cycleSourcePinsStillExact": true,
+    "headedAndNativePickerAcceptance": false,
+    "conversionMemoryAcceptance": false,
+    "publicPromotion": false,
+    "originalGoalComplete": false
+  },
   "publicWasmChanged": false,
   "publicPromotion": false,
   "originalGoalComplete": false

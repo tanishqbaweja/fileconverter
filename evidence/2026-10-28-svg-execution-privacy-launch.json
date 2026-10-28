@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "1eb5c893",
+  "command": "scripts/run-owned-privacy-offline.mjs",
+  "sessionId": 68539,
+  "launchObservedAt": "2026-10-28T08:57:15Z",
+  "notBeforeTerminalCheck": "2026-10-28T08:58:45Z",
+  "estimatedRemainingSeconds": 90,
+  "headless": true,
+  "scope": "Final rebuilt SVG atomic-cancel/resource-bookkeeping source, complete existing privacy/offline/hosting specs; not memory/stress qualification",
+  "doNotDuplicateWhileSessionIsLive": true,
+  "status": "launched-not-a-pass"
+}

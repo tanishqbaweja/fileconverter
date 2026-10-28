@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-10-28 — Final SVG execution build at1eb5c893:19 complete headless
+privacy/offline/hosting PASS/0fail/0skip/0flaky44.216s; two owned births absent,
+scratch removed, original full SHA/size unchanged and cycle source hashes exact.
+1927 full portable PASS98.812s before scalar event-order fix;27 focused PASS
+985.556ms and fresh build/TypeScript/lint PASS after it, no redundant full-suite
+or conversion replay. Actual functional recovery proof remains scoped fa7505c6,
+not new whole-tree memory acceptance. `evidence/2026-10-28-svg-execution-cycle.json`.
+
 2026-10-28 — SVG actual recovery diagnostic:3 functional PASS/0fail/0skip/
 0flaky11.907s; five real jobs, three exact8M direct PNG results196588B each,
 one actual UI raster-cancel and one direct-write error, both same-page retries
