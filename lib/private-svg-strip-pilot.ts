@@ -36,6 +36,7 @@ interface Options {
   write: (bytes: Uint8Array<ArrayBuffer>) => Promise<void>;
   onRows: (rows: number) => void;
   onRasterized: () => void;
+  onViewport?: () => void;
 }
 
 export async function runPrivateSvgStripPilot(options: Options): Promise<void> {
@@ -73,6 +74,7 @@ export async function runPrivateSvgStripPilot(options: Options): Promise<void> {
       }
       observation.maximumViewportPixels = Math.max(observation.maximumViewportPixels, width * viewportHeight);
       observation.maximumRgbaCopyBytes = Math.max(observation.maximumRgbaCopyBytes, rgba!.length);
+      options.onViewport?.();
       for (let row = 0; row < rows; row += rowsPerChunk) {
         assertActive();
         const count = Math.min(rowsPerChunk, rows - row), start = (y - top + row) * rowBytes;

@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-10-28 — Coalesced64-row genuine6M run2bdbc5dc FAILED same45s timeout,
+but bounded scalar capture now works and identifies native rasterization:
+29rendered/released viewports,1792central rows,2,621,473B partial writes at
+44.062s; synchronous native render42.613s, pixel-copy12.675ms/demultiply10.4ms.
+197codec chunks became39 completed IDAT writes; total awaited-write1.675s
+(timings can overlap, not an additive wall-time breakdown). Maxwrite65536B,
+one pending,252021B filtered/1920000B RGBA; no completed output/SSIM. Stable
+blank328265728B and full-tree peak540082176B =>202.00390625MiB,456valid0missing,
+NOT qualification of this failed/incomplete conversion. Wasm observer last
+sample remained parsed8.2MiB until whole render: actual intermediate peak is
+unavailable, not that stale value. Generic live image-counter gap remains OPEN.
+All7 roots absent/all4 runtimes/disposable data removed/original SHA unchanged.
+Next80-row experiment reduces viewport count without larger heap/timeout or
+smaller source; adds every native viewport observation and validates union49
+bands (all original31 plus every80-row boundary), unchanged0.99/exact-alpha.
+16focused PASS515.6946ms/lint/types PASS;80-row collection3cases PASS, no browser.
+`evidence/2026-10-28-svg-coalesced-context-terminal.json`.
+
 2026-10-28 — Genuine corrected-context6M browser run51be033b TIMEOUT:0pass/
 1fail/2notrun, unchanged45s job poll/47.580s suite. Last trace frame shows
 Writing PNG strips/2.5MiB/45s, NOT complete or validated output. No SSIM or

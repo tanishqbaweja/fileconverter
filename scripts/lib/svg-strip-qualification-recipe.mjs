@@ -6,6 +6,7 @@ import { sha } from "../../images/resvg-source/source-pins.mjs";
 const replace=(text,before,after)=>{assert.equal(text.split(before).length-1,1,"Exact private strip qualifier anchor: "+before);return text.replace(before,after);};
 export function makeSvgStripQualification(options) {
   const {root,runtime,workerPin}=options;
+  const centralRows=workerPin.centralRows??64;assert.ok([64,80].includes(centralRows));
   assert.equal(workerPin.file,path.join(runtime,"private-svg-strip-worker.mjs"));
   assert.match(workerPin.sha256,/^[a-f0-9]{64}$/);assert.ok(workerPin.bytes>1000&&workerPin.bytes<=1048576);
   const base=makeSvgEffectsDiagnostic(options),edits=[];
@@ -31,7 +32,7 @@ export function makeSvgStripQualification(options) {
     `      } finally { await response.dispose(); }\n`+
     `    });`);
   edit('            const scalar = JSON.stringify({ repeat: stressRepeat, destinationMode: "direct-handle-test-directory",',
-    '            const stripValidation = await validateSvgStripSeams({outputPath,referencePath,width:expectedWidth,height:expectedHeight,centralRows:64,execute:execFileAsync,cwd:projectRoot});\n'+
+    `            const stripValidation = await validateSvgStripSeams({outputPath,referencePath,width:expectedWidth,height:expectedHeight,centralRows:${centralRows},additionalCentralRows:[64],execute:execFileAsync,cwd:projectRoot});\n`+
     '            const scalar = JSON.stringify({ repeat: stressRepeat, stripValidation, destinationMode: "direct-handle-test-directory",');
   const begin=suite.indexOf("for (const [\n  profileId,\n  sourceName,"),end=suite.indexOf('\n\ntest("GIF to JPEG XL preserves every frame',begin);
   assert.ok(begin>0&&end>begin);
@@ -56,6 +57,6 @@ export function makeSvgStripQualification(options) {
     '"scripts/lib/memory-infra-attribution.mjs", "lib/private-svg-strip-pilot.ts", "workers/rgba-png-stream.ts", "scripts/lib/svg-strip-worker-recipe.mjs", "scripts/lib/svg-strip-qualification-recipe.mjs", "scripts/lib/svg-strip-validator.mjs"];');
   driver=replace(driver,"report.candidatePin = pins;","report.candidatePin = pins;\n  report.privateStripWorker = "+JSON.stringify(workerPin)+";");
   return {...base,driver,suite,suiteEdits:edits,proof:{...base.proof,driverSha256:sha(driver),suiteSha256:sha(suite),
-    privateStripPilot:true,workerPin,additionalSeamAndAlphaGates:true,allExistingAssertionsRetained:true,
+    privateStripPilot:true,workerPin,centralRows,allOriginal64RowBoundariesAlsoValidated:true,additionalSeamAndAlphaGates:true,allExistingAssertionsRetained:true,
     generalViewportOrFilterSupport:false,publicPromotion:false}};
 }

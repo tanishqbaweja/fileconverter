@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "2bdbc5dc",
+  "startedAt": "2026-10-28T18:26:00Z",
+  "estimatedDurationSeconds": 180,
+  "doNotObserveBefore": "2026-10-28T18:29:00Z",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/test-svg-strip-pilot.mjs --filter-context",
+  "changedImplementation": "One fixed65524B IDAT coalescer plus scalar render/copy/demultiply/write timings and timeout-state capture",
+  "candidateWasmSha256": "51a482a6f471251fa52c94920da0835b51f1b06c7117d1827ebb7f8abca2a5ff",
+  "sameOriginalSixMillionPixelFixtureAndQualityGates": true,
+  "unchangedJobPollTimeoutMs": 45000,
+  "maximumWriteBytes": 65536,
+  "maximumPendingWrites": 1,
+  "headless": true,
+  "followSameExecutionHandleNoRestartOnObservationTimeout": true,
+  "browserAcceptance": false,
+  "speedupProven": false,
+  "wholeGoalComplete": false
+}

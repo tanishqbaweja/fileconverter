@@ -1,10 +1,11 @@
 // Procedural mock pixels only; no real SVG renderer is executed in Node.
 import assert from "node:assert/strict";
 import test from "node:test";
-import { inflateSync } from "node:zlib";
+import { inflateSync,gunzipSync } from "node:zlib";
 import { readFile } from "node:fs/promises";
 import { build } from "esbuild";
-import { makeSvgStripWorker } from "../scripts/lib/svg-strip-worker-recipe.mjs";
+import { makeSvgStripWorker,buildSvgStripWorker } from "../scripts/lib/svg-strip-worker-recipe.mjs";
+import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 const bundle=await build({stdin:{contents:'export * from "./lib/private-svg-strip-pilot.ts";',loader:"ts",resolveDir:process.cwd()},bundle:true,platform:"node",format:"esm",write:false});
 const {runPrivateSvgStripPilot,svgStripPilotObservation,demultiplySvgRgba}=await import("data:text/javascript;base64,"+Buffer.from(bundle.outputFiles[0].contents).toString("base64"));
 function decodePng(parts,width,height){
@@ -61,4 +62,17 @@ test("private worker overlay reverses to the entire pinned source and changes on
   assert.match(result.generated,/new RegExp\(`/);assert.match(result.generated,/runPrivateSvgStripPilot\(\{renderer/);
   assert.match(result.generated,/resvgInitialization \?\?= initResvgWasm/);assert.match(result.generated,/releaseSvgRendererObjects/);
   assert.throws(()=>makeSvgStripWorker(Buffer.concat([worker,Buffer.from("\n")]),bridge,"/assets/direct-file-writer.worker-Cd6e6fgR.js"));
+});
+test("80-row private worker changes only the row constant in its archived helper and observes actual Wasm after every viewport",async()=>{
+  const runtime=await createOwnedRuntimeScratch("svg-reproduced-qualification-");
+  try{
+    const pin=await buildSvgStripWorker({root:process.cwd(),runtime,centralRows:80});
+    const changed=gunzipSync(Buffer.from(pin.generatedSourceArchives.viewportHelper.gzipBase64,"base64")).toString();
+    const original=(await readFile("lib/private-svg-strip-pilot.ts")).toString();
+    assert.equal(changed.replace("export const SVG_PILOT_ROWS = 80;","export const SVG_PILOT_ROWS = 64;"),original);
+    const worker=gunzipSync(Buffer.from(pin.generatedSourceArchives.worker.gzipBase64,"base64")).toString();
+    assert.match(worker,/onViewport: \(\) => observeSvgMemory\(metrics, "rasterized", getInitializedResvgMemory\(\)\)/);
+    assert.equal(pin.centralRows,80);assert.equal(pin.publicPromotion,false);
+    await assert.rejects(buildSvgStripWorker({root:process.cwd(),runtime,centralRows:128}));
+  }finally{await runtime.close();}
 });

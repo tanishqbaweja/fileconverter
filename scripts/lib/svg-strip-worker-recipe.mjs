@@ -24,6 +24,7 @@ export function makeSvgStripWorker(worker, bridge, writerUrl) {
       observation: stripObservation, assertActive,
       write: bytes => writeBounded(destination, bytes, jobId, "Writing PNG strips", metrics, startedAt),
       onRows: rows => emitProgress(jobId, "Rasterizing SVG strips: " + rows + "/" + expected.height + " rows", metrics, startedAt, false),
+      onViewport: () => observeSvgMemory(metrics, "rasterized", getInitializedResvgMemory()),
       onRasterized: () => observeSvgMemory(metrics, "rasterized", getInitializedResvgMemory()),
     });
     observeSvgMemory(metrics, "encoded", getInitializedResvgMemory());
@@ -44,7 +45,8 @@ export function makeSvgStripWorker(worker, bridge, writerUrl) {
     workerWholeSourceReversed:true,bridgeOnlyUrlResolutionChanged:true,writerUrl,
     originalReadDirectWriteCancelErrorLifecycleRetained:true,publicSourceFilesEdited:false}};
 }
-export async function buildSvgStripWorker({root,runtime}) {
+export async function buildSvgStripWorker({root,runtime,centralRows=64}) {
+  assert.ok([64,80].includes(centralRows));
   assert.equal(path.dirname(runtime.directory),path.join(root,"work"));
   assert.match(path.basename(runtime.directory),/^svg-reproduced-qualification-[A-Za-z0-9]{6}$/);
   assert.equal(esbuildVersion,"0.28.1");
@@ -63,14 +65,20 @@ export async function buildSvgStripWorker({root,runtime}) {
       let contents;
       if(relative==="workers/conversion.worker.ts") contents=recipe.generated;
       if(relative==="workers/random-access-destination.ts") contents=recipe.generatedBridge;
+      if(relative==="lib/private-svg-strip-pilot.ts"&&centralRows!==64)
+        contents=replace(bytes.toString(),"export const SVG_PILOT_ROWS = 64;",`export const SVG_PILOT_ROWS = ${centralRows};`);
       if(contents!==undefined){loads.push(relative);return {contents,loader:"ts",resolveDir:path.dirname(args.path)};}
     });}}]});
-  assert.deepEqual(loads.sort(),Object.keys(stripWorkerPins).sort()); assert.equal(result.outputFiles.length,1);
+  assert.deepEqual(loads.sort(),[...Object.keys(stripWorkerPins),...(centralRows===64?[]:["lib/private-svg-strip-pilot.ts"])].sort()); assert.equal(result.outputFiles.length,1);
   const bytes=result.outputFiles[0].contents; assert.ok(bytes.length<=1048576); assert.ok(Buffer.from(bytes).includes(Buffer.from("Rasterizing SVG strips")));
   const file=path.join(runtime.directory,"private-svg-strip-worker.mjs"); await writeFile(file,bytes,{flag:"wx"});
   const archives=Object.fromEntries([["worker",recipe.generated],["bridge",recipe.generatedBridge]].map(([key,text])=>[key,{bytes:Buffer.byteLength(text),sha256:sha(text),gzipBase64:gzipSync(text,{level:9}).toString("base64")}])) ;
+  if(centralRows!==64){
+    const helper=replace((await readFile(path.join(root,"lib/private-svg-strip-pilot.ts"))).toString(),"export const SVG_PILOT_ROWS = 64;",`export const SVG_PILOT_ROWS = ${centralRows};`);
+    archives.viewportHelper={bytes:Buffer.byteLength(helper),sha256:sha(helper),gzipBase64:gzipSync(helper,{level:9}).toString("base64")};
+  }
   for(const [relative,pin] of Object.entries(sources))assert.equal(sha(await readFile(path.join(root,relative))),pin.sha256,relative);
-  return {file,bytes:bytes.length,sha256:sha(bytes),esbuildVersion,sourceClosure:sources,generatedSourceArchives:archives,
+  return {file,bytes:bytes.length,sha256:sha(bytes),centralRows,esbuildVersion,sourceClosure:sources,generatedSourceArchives:archives,
     recipe:recipe.proof,writer:{url:writerUrl,bytes:writer.length,sha256:sha(writer)},publicPromotion:false,
     privateCompilerDiffersFromVite:true,memoryAcceptance:false};
 }

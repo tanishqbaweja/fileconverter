@@ -1,5 +1,16 @@
 # Remaining work audit
 
+Measured new bottleneck: coalesced64-row actual6M run still hits45s timeout;
+42.613s native rendering for29 viewports vs1.675s awaited writes (non-additive
+timers). Output incomplete/no quality result.197codec chunks=>39 IDAT writes,
+bounded64KiB/1pending. Stable full-tree202.00390625MiB is diagnostic only, not
+accepted failed conversion. Original/7roots/4runtimes cleanup verified. Next
+private80-row config keeps48halo/96MiB/45s, adds49-band union validation, so all
+original31 AND all new seams remain gated0.99; no public promotion. Per-viewport
+real Wasm observation also fixes incomplete-run peak visibility. Generic JS
+image-counter/recovery/transparent/default-profile repeated proof remain OPEN.
+`evidence/2026-10-28-svg-coalesced-context-terminal.json`.
+
 Corrected-context engine first genuine6M run FAILED unchanged45s job timeout,
 not quality-accepted:0pass/1fail/2notrun, last trace2.5MiB written/45s. No
 SSIM/scalar completion data. Blank/incrementalNULL,451valid0missing samples;

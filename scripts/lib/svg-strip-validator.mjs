@@ -1,10 +1,12 @@
 // Native tools validate browser output only. Never called as a converter.
 import assert from "node:assert/strict";
 import path from "node:path";
-export function svgStripSeamGraph(width,height,centralRows=64) {
+export function svgStripSeamGraph(width,height,centralRows=64,additionalCentralRows=[]) {
   assert.ok([width,height,centralRows].every(Number.isSafeInteger));
   assert.ok(width>0&&width<=8192&&height>8&&height<=8192&&width*height<=8388608&&centralRows>=8);
-  const seams=[];for(let y=centralRows;y+4<=height;y+=centralRows)seams.push(y);
+  assert.ok(Array.isArray(additionalCentralRows)&&additionalCentralRows.length<=1&&additionalCentralRows.every(value=>value===64));
+  const rows=new Set();for(const step of [centralRows,...additionalCentralRows])for(let y=step;y+4<=height;y+=step)rows.add(y);
+  const seams=[...rows].sort((a,b)=>a-b);
   assert.ok(seams.length>0&&seams.length<=127);
   const split=(input,prefix)=>`[${input}:v]format=rgb24,split=${seams.length}`+seams.map((_y,i)=>`[${prefix}${i}]`).join("");
   const graph=[split(0,"a"),split(1,"b")];
@@ -15,10 +17,10 @@ export function svgStripSeamGraph(width,height,centralRows=64) {
   });
   return {seams,filter:graph.join(";"),map:`[seam${seams.length-1}]`};
 }
-export async function validateSvgStripSeams({outputPath,referencePath,width,height,centralRows=64,execute,cwd}) {
+export async function validateSvgStripSeams({outputPath,referencePath,width,height,centralRows=64,additionalCentralRows=[],execute,cwd}) {
   assert.ok(path.isAbsolute(cwd));
   for(const file of [outputPath,referencePath])assert.ok(path.isAbsolute(file)&&path.relative(cwd,file).split(path.sep)[0]!==".."&&file!==cwd);
-  const graph=svgStripSeamGraph(width,height,centralRows);
+  const graph=svgStripSeamGraph(width,height,centralRows,additionalCentralRows);
   const result=await execute("ffmpeg",["-v","info","-filter_complex_threads","1","-threads","1","-i",referencePath,
     "-threads","1","-i",outputPath,"-filter_complex",graph.filter,"-map",graph.map,"-frames:v","1","-f","null","NUL"],
     {cwd,windowsHide:true,maxBuffer:131072,timeout:30000});
