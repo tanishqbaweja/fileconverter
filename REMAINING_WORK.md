@@ -1,5 +1,30 @@
 # Remaining work audit
 
+Pinned filter-region intersection source candidate and two-fresh-build recipe
+implemented; actual compiler/browser acceptance still OPEN. Guard original full
+source SHA, patch one allocation extent block, retain every primitive parameter
+and subregion coordinate, verify exact modified source before/after locked build.
+This changes potential clipping semantics: not a fidelity-preserving claim until
+independent genuine browser tests pass. Frozen compile/reproduction drivers stay
+byte-identical; generated derived drivers/commands archived; same nightly/lock/
+release flags.25focused PASS874.1971ms/lint PASS. New dedicated Actions workflow
+bootstraps on only its own file push, thereafter manual; full original6M/fidelity/
+96MiB/250MiB/recovery gates remain mandatory. Do not rerun the prior viewport-only
+worker or guess smaller original input/heap changes.
+
+Actual private strip prototype FAILED after first viewport/64central rows and
+93748B partial output. The isolated-response delivery correction works on49;
+first native image released. Second native Pixmap::new fails under unchanged
+96MiB cap (actual97058816B); no valid PNG/fidelity/memory acceptance.0success/
+1fail/2notrun; baseline/incrementalNULL,93valid samples; all7 roots absent,
+scratch/profiles/partial outputs removed, protected original unchanged.
+Crucial source finding: apply_inner still uses original transformed filter.region
+without source-pixmap intersection; flood/composite/merge allocate by that region,
+so viewport-only tiling does not bound all filter intermediates. Next a pinned,
+reproducibly rebuilt source-region intersection candidate, with coordinates,
+overlap and original6M/fidelity/cap tests retained. Not another smaller viewport
+guess or unchanged replay. `evidence/2026-10-28-svg-strip-first-render-terminal.json`.
+
 Policy-corrected private worker delivery still not browser-verified: attempt at
 ecd23801 stopped before test-browser/runtime creation because Chrome launcher
 was temporarily absent. External update48->49 now independently confirmed by

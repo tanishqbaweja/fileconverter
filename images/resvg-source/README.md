@@ -180,3 +180,32 @@ renderer or qualify a browser conversion. Resvg pixels are premultiplied; they
 must NOT be passed directly to this straight-alpha encoder. Real viewport/halo
 rendering, alpha conversion, independent seam/fidelity, memory, and recovery
 tests are still required before connecting or advertising any strip route.
+
+The first real viewport attempt did render/release one112-row canvas and stream
+64central rows/93,748 partial bytes, then failed in native Pixmap::new on the
+second viewport. No completed PNG or fidelity/memory acceptance. Its source
+finding is important: apply_inner's filter.region is still the original full
+region; flood/composite/merge allocate by it even when the source canvas is
+bounded. Merely changing the viewport is insufficient. The failure and all
+cleanup are retained in `evidence/2026-10-28-svg-strip-first-render-terminal.json`.
+
+`filter-region-patch.mjs` proposes intersecting that allocation extent with the
+already bounded source canvas. It requires the entire pinned upstream module,
+retains the MPL notice, and reverses to all original bytes. It does not delete
+primitives, alter their parameters or move subregions, but clipping/fidelity is
+still unverified. The original source is archived with attribution in
+`fixtures/source/resvg-filter-3495d870-preimage.json`, not replaced in public assets.
+
+The private build command is Linux Actions-only:
+
+```sh
+node images/resvg-source/reproduce-filter-region-source.mjs
+```
+
+Its dedicated `svg-source-filter-region.yml` workflow runs two fresh locked
+compilations, patches only the exact newly fetched owned dependency checkout,
+checks source bytes after compilation, compares full raw outputs, and removes
+the second verified duplicate. Frozen baseline build files remain unchanged;
+generated drivers are archived. Compilation/byte equality still do NOT prove
+browser fidelity, safety, speed or source reproduction of the old public binary.
+New artifacts require pinned postprocessing/capping and unchanged browser gates.

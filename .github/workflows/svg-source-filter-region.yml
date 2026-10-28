@@ -1,0 +1,41 @@
+name: Private SVG filter-region source reproduction
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["media-options"]
+    paths: [".github/workflows/svg-source-filter-region.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce-filter-region-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Two fresh locked builds with exact source-region patch
+        run: node images/resvg-source/reproduce-filter-region-source.mjs
+      - name: Verify public engines unchanged
+        if: always()
+        run: git diff --exit-code -- public/engines
+      - name: Retain private candidate and exact build evidence for one day
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: svg-filter-region-source-${{ github.run_id }}
+          path: |
+            outputs/reports/resvg-filter-region-owner-${{ github.run_id }}.json
+            outputs/reports/resvg-source-repeat-${{ github.run_id }}.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.wasm
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.lock
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.wasm
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.lock
+          if-no-files-found: warn
+          retention-days: 1

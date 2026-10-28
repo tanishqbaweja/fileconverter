@@ -2,6 +2,13 @@
 
 ## Current interpretation — 2026-10-28
 
+Latest private SVG finding: real viewport rendering completed only64rows, then
+failed native allocation; no valid PNG/fidelity/memory pass. Intermediates still
+use original full filter.region. A guarded source-region intersection candidate
+and two-fresh-compile recipe now have25focused/lint PASS, not compiler/browser
+acceptance. New source build and unchanged96MiB/SSIM0.99/whole-tree250/recovery
+gates remain required. Public engine/selector unchanged; whole goal incomplete.
+
 The B02–B09 table below is the current backlog. Older dated entries are
 historical, not instructions to replay their completed gates. Keep all Chrome
 services, every process and the exact 250 MiB clean-blank formula unchanged.

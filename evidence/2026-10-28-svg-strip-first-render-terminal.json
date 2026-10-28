@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "status": "first-viewport-converted-second-native-allocation-failed-no-valid-output",
+  "executedHead": "efff2206d73553bf7cd8fea6f4460b027aff9bf7",
+  "browserVersion": "156.0.8078.49",
+  "receipts": [
+    { "path": "evidence/2026-10-28T14-28-14-723Z-svg-strip-pilot.json", "bytes": 29745, "sha256": "793b63c07089e23610e08f300f239e21261e8dd40920a6bae148fcc242aa6895" },
+    { "path": "evidence/2026-10-28T14-28-15-818Z-reproduced-svg-grid-stress.json", "bytes": 249968, "sha256": "9611fef7e23282b1dd7077978bd77f5326c64d32b04548585d14d9b62b17db9e" },
+    { "path": "evidence/2026-10-28T14-28-44-174Z-source-svg-browser.json", "bytes": 386858, "sha256": "6dba8ea907da5ad8f342e9d951e2aee00650fe8c7839f90d98aebab6186cc824" }
+  ],
+  "privateWorkerSha256": "d89f1a5076542f293ae3578234fceb354c8da5ed015b0cd14c8f72552ce03aa4",
+  "securityHeaderDeliveryFixNowWorked": true,
+  "svgWasmRequests": 1,
+  "cases": { "passed": 0, "failed": 1, "notRun": 2, "durationMs": 8663.795 },
+  "partialJob": { "elapsedMs": 4485.149999976158, "renderedAndReleasedViewports": 1, "completedRows": 64, "totalRequiredRows": 2000, "maximumViewportPixels": 336000, "maximumRgbaCopyBytes": 1344000, "maximumExplicitPixelWorkingBytes": 1848021, "partialOutputBytes": 93748, "maximumFilteredStripBytes": 252021, "maximumCodecChunkBytes": 16384, "maximumWriteBytes": 16396, "maximumPendingWrites": 1, "finalPendingWrites": 0, "finalQueuedBytes": 0 },
+  "failure": { "function": "tiny_skia::pixmap::Pixmap::new", "functionIndex": 1150, "offset": "0x1f01a8", "caller": "resvg::filter::apply_inner", "callerOffset": "0x1e9ad", "message": "unreachable", "probe": null, "exactFailedRequestedBytes": null, "wasmBytesAtFailure": 97058816, "maximumWasmBytesUnchanged": 100663296, "oneRendererDestructorFailedButPrimaryPreserved": true },
+  "validation": { "validPngProduced": false, "ssim": null, "seamFidelity": null, "alphaFidelity": null, "sourceAndFresh49ReferenceHistoricalByteIdentitiesUnchanged": true },
+  "memory": { "earliestStableBlank": null, "incrementalPrivateMiB": null, "unadjustedPeakPrivateBytes": 552062976, "validNativeSamples": 93, "unavailableNativeSamples": 0 },
+  "cleanup": { "ownedRootsObservedAbsent": 7, "allCreatedScratchProfilesFixturesReferencesAndPartialOutputsRemoved": true, "protectedOriginalBeforeEqualsAfter": true, "originalBytes": 2958573265, "originalSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" },
+  "retainedTrace": { "path": "output/playwright/2026-10-28T14-28-44-174Z-source-svg-failure.zip", "bytes": 1336580, "sha256": "1ebf0368082e07f2a1b7b5659c1d8657f30f8eb2216f24c893c5416470aaeb81" },
+  "nextSourceFinding": "Pinned apply_inner derives region from the original transformed SVG filter, without intersecting the already bounded source pixmap. Flood/composite/merge allocate from that full region. Viewport-only tiling therefore still permits original-sized filter intermediates. Investigate an auditable source-region intersection build, retaining source coordinates and unchanged fidelity/caps; do not simply shrink the source input or repeat this worker.",
+  "memoryAcceptance": false,
+  "speedGainProven": false,
+  "publicPromotion": false,
+  "wholeGoalComplete": false
+}

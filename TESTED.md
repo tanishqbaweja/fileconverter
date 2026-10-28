@@ -1,5 +1,33 @@
 # Tested conversion ledger
 
+2026-10-28 — Source-level candidate prepared, NOT compiled/accepted: exact
+44067B upstream filter source SHA1770d1f0...f5468a retained compressed with MPL
+notice; one region block changed to intersect allocation extent with source
+canvas. Entire inverse restores original bytes; patched44239B SHAff98d2cf...6191.
+All primitive code/parameters/subregion coordinates unchanged, but rendering
+semantics/fidelity remain UNPROVEN. Derived source-build drivers retain frozen
+baseline files, same nightly/lock/release flags, add locked dependency fetch,
+patch only exact owned Cargo checkout/revision, verify patched bytes after build.
+Two fresh builds/full raw-byte equality/duplicate cleanup retained.25focused
+PASS/0fail/0skip/0cancel874.1971ms and affected lint PASS. No real renderer run
+or source compilation from those units; dedicated headless Linux Actions build
+next, no Docker/public engine replacement.
+
+2026-10-28 — Actual49 private strip rendering at efff2206: header preservation
+worked, SVG Wasm requested once, first112-row viewport336000pixels rendered/freed,
+64central rows streamed/93748B partial PNG written in4485.150ms job interval.
+Second viewport FAILED in native Pixmap::new/function1150:0x1f01a8 via apply_inner;
+Wasm97058816B, cap unchanged96MiB.0valid PNG/1fail/2notrun/no SSIM/alpha score.
+Maxfiltered252021B, codec16384B, write16396B,1pending peak/final0; ordinary abort
+and partial-output removal, primary error preserved despite destructor failure.
+Early blankNULL/incrementalNULL,93valid/0missing native samples; not acceptance.
+All7 owned roots absent, all disposable data removed, original full SHA unchanged.
+1336580B failure trace retained. Source inspection now identifies full original
+filter.region allocations in flood/composite/merge despite bounded source canvas;
+viewport-only shrinking is insufficient. Next source-region allocation change,
+not the same worker replay or smaller original input. See
+`evidence/2026-10-28-svg-strip-first-render-terminal.json`.
+
 2026-10-28 — Policy-corrected attempt ecd23801 held BEFORE test-browser
 launch: installed Chrome launcher temporarily absent during update. Earlier
 reference used156.0.8078.48; fresh read-only exact launcher/DLL snapshot confirms

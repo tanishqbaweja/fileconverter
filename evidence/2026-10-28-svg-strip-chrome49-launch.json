@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "efff2206",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/test-svg-strip-pilot.mjs",
+  "session": 64769,
+  "launchObservedAt": "2026-10-28T14:28:23Z",
+  "estimatedDurationSeconds": 240,
+  "notBeforeNextObservation": "2026-10-28T14:32:23Z",
+  "sameLiveHandleOnly": true,
+  "changedPrerequisite": "Installed Chrome156.0.8078.49 exact launcher/DLL pin now independently readable after transient48->49 update hold",
+  "freshReferenceAndBeforeAfterBrowserPinsRequired": true,
+  "rendererAndWorkerBytesChangedSinceInitialStripCandidate": false,
+  "policyPreservingPrivateResponseCorrectionRetained": true,
+  "original6MInputUnchanged": true,
+  "wasmMaximumBytes": 100663296,
+  "wholeBrowserLimitMiB": 250,
+  "wholeImageAndEverySeamMinimumSsim": 0.99,
+  "testAndJobTimeoutsChanged": false,
+  "updaterOrBrowserServicesDisabled": false,
+  "memoryAcceptance": false,
+  "wholeGoalComplete": false
+}
