@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-10-28 — Allocation probe prepared, not an optimization: five exact branch
+edges reach get_input's observed trap (four null malloc checks, one Arc counter
+overflow). Static offset alone cannot choose a cause. Add two scalar Wasm
+globals and balanced counter stores before those branches; no original opcode,
+condition/depth,96MiB limit or pixel algorithm changed. Removing probes restores
+ALL2684770 original bytes; instrumented2684873B source hash fixed. Arithmetic-only
+unit controls preserve normal/trap outcomes. Optional binding getter reads only
+globals; absent/unvisitedNULL; exact original17048 upstream binding bytes remain.
+Old uncommitted static inputs archived against their actual receipt hashes.
+31focused/build/TypeScript/lint PASS; collection exactly3effects cases/no browser.
+One diagnostic native run next; never public promotion or250MiB acceptance.
+`evidence/2026-10-28-svg-allocation-probe-preparation.json`.
+
 2026-10-28 — Static SVG trap inspection: installed LLVM22.1.8 lacks a Wasm
 backend; no replacement tool installed. Existing locked Wasm parser mapped the
 exact candidateSHA/native offset1741208 to unreachable in get_input/function532.

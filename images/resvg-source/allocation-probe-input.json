@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "kind": "temporary-five-branch-observation-not-converter-optimization-or-memory-acceptance",
+  "baselinePin": "images/resvg-source/repeated-processed-input.json",
+  "baselineSha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d",
+  "instrumentedSha256": "9272c1e44dc94bfc938a2c79e3f97e520faea495758caa09dd73ad2fe94e4c42",
+  "baselineBytes": 2684770,
+  "instrumentedBytes": 2684873,
+  "originalFunctionIndex": 532,
+  "originalTrapOffset": 1741208,
+  "instrumentedTrapOffset": 1741311,
+  "sites": [
+    {
+      "site": 1,
+      "offset": 1740504,
+      "depth": 6,
+      "local": 9,
+      "kind": "payload-allocation-null"
+    },
+    {
+      "site": 2,
+      "offset": 1740554,
+      "depth": 5,
+      "constant": 28,
+      "kind": "header-allocation-null"
+    },
+    {
+      "site": 3,
+      "offset": 1740654,
+      "depth": 5,
+      "local": 9,
+      "kind": "payload-allocation-null"
+    },
+    {
+      "site": 4,
+      "offset": 1740971,
+      "depth": 4,
+      "constant": 28,
+      "kind": "header-allocation-null"
+    },
+    {
+      "site": 5,
+      "offset": 1741141,
+      "depth": 2,
+      "local": 9,
+      "kind": "reference-count-overflow"
+    }
+  ],
+  "globals": [
+    "__within_svg_probe_site",
+    "__within_svg_probe_value"
+  ],
+  "renderInstructionsAndOriginalBranchesPreserved": true,
+  "reversibleWholeModuleByteEquality": true,
+  "linearMemorySectionChanged": false,
+  "acceptanceMetric": false,
+  "staticReceipt": {
+    "path": "evidence/2026-10-28T13-10-27-052Z-svg-static-trap.json",
+    "bytes": 85305,
+    "sha256": "0216afb493b2d3f8b733ced0f71d6abd14dcd7ffdaaf93df6c1b020b5e19dd67"
+  },
+  "publicPromotion": false,
+  "originalGoalComplete": false
+}

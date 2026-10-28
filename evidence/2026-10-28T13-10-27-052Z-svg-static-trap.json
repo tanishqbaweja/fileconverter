@@ -1,0 +1,3715 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-28T13:10:27.053Z",
+  "status": "inspected-exact-native-trap-offset-not-a-render-or-root-cause-proof",
+  "sourcePins": {
+    "scripts/inspect-svg-filter-trap.mjs": "4f38c390d9c70e80bfc04a050b5b8ffb20cdc0dc394a9258ab6407d79cba15d5",
+    "images/resvg-source/trap-inspection.mjs": "0b543d8f8fe298c14612fac2aad23f43ec9d7e83a9eea3c2d21f470b66e2e6a4",
+    "images/resvg-source/repeated-processed-input.json": "ac855f10dd35a787017df296a69205d0bef351450a185c5f0668bca78d32ff1a",
+    "evidence/2026-10-28-svg-primary-failure-terminal.json": "74fc2e5b6a50b1ded0d8b74df27c0ceba4db242100f17015a73f9149a7b5571f",
+    "images/resvg-source/allocation-probe.mjs": "e52659086903d31470b1bfdfb74451ff16091719f73a0744f24fb5237ecf9c9b",
+    "node_modules/@webassemblyjs/wasm-parser/package.json": "67a309ba212b2d4961ddfc5b3b0bc9b729b1447ce5a905fc42542f0861b4a678",
+    "node_modules/@webassemblyjs/wasm-parser/lib/index.js": "a3ae2edf378a9217a22e010ef449196e78d12aa5b2e919e596361438487b31d8",
+    "node_modules/@webassemblyjs/wasm-parser/lib/decoder.js": "c3d85ffb7034b2a2dbffbc7c6220590718d35c3cd7a4f47320f0279cab1e39d3"
+  },
+  "failures": [],
+  "scope": "Static instructions at the actual private SVG trap offset; no converter or Wasm execution",
+  "conversionOrMemoryAcceptance": false,
+  "publicEngineChanged": false,
+  "originalGoalComplete": false,
+  "input": {
+    "priorFrame": "at resvg::filter::get_input::h832c13b1b93182af (http://127.0.0.1:64148/engines/svg/resvg.wasm:wasm-function[532]:0x1a9198)",
+    "artifactId": 12794726096,
+    "wasmSha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d"
+  },
+  "inspection": {
+    "functionIndex": 532,
+    "name": "resvg::filter::get_input::h832c13b1b93182af",
+    "functionLocation": {
+      "start": {
+        "line": -1,
+        "column": 1740407
+      },
+      "end": {
+        "line": -1,
+        "column": 1741210
+      }
+    },
+    "trapOffset": 1741208,
+    "window": [
+      {
+        "offset": 1741160,
+        "type": "Instr",
+        "id": "end",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741161,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          0
+        ]
+      },
+      {
+        "offset": 1741163,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          7
+        ]
+      },
+      {
+        "offset": 1741165,
+        "type": "Instr",
+        "id": "store",
+        "object": "u32",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741168,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          0
+        ]
+      },
+      {
+        "offset": 1741170,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          8
+        ]
+      },
+      {
+        "offset": 1741172,
+        "type": "Instr",
+        "id": "store8",
+        "object": "u32",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741175,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          0
+        ]
+      },
+      {
+        "offset": 1741177,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          2
+        ]
+      },
+      {
+        "offset": 1741179,
+        "type": "Instr",
+        "id": "load",
+        "object": "u64",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741182,
+        "type": "Instr",
+        "id": "store",
+        "object": "u64",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741185,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          0
+        ]
+      },
+      {
+        "offset": 1741187,
+        "type": "Instr",
+        "id": "const",
+        "object": "i32",
+        "index": null,
+        "args": [
+          12
+        ]
+      },
+      {
+        "offset": 1741189,
+        "type": "Instr",
+        "id": "add",
+        "object": "i32",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741190,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          2
+        ]
+      },
+      {
+        "offset": 1741192,
+        "type": "Instr",
+        "id": "const",
+        "object": "i32",
+        "index": null,
+        "args": [
+          8
+        ]
+      },
+      {
+        "offset": 1741194,
+        "type": "Instr",
+        "id": "add",
+        "object": "i32",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741195,
+        "type": "Instr",
+        "id": "load",
+        "object": "u64",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741198,
+        "type": "Instr",
+        "id": "store",
+        "object": "u64",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741201,
+        "type": "Instr",
+        "id": "return",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741202,
+        "type": "Instr",
+        "id": "end",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741203,
+        "type": "CallInstruction",
+        "id": "call",
+        "object": null,
+        "index": "alloc::raw_vec::capacity_overflow::h2fb0507c193e25d6",
+        "args": []
+      },
+      {
+        "offset": 1741206,
+        "type": "Instr",
+        "id": "unreachable",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741207,
+        "type": "Instr",
+        "id": "end",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741208,
+        "type": "Instr",
+        "id": "unreachable",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741209,
+        "type": "Instr",
+        "id": "end",
+        "object": null,
+        "index": null,
+        "args": []
+      }
+    ],
+    "instructionCount": 381,
+    "allocationAndCopyCalls": [
+      {
+        "call": {
+          "offset": 1740499,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1740482,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740484,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              -1
+            ]
+          },
+          {
+            "offset": 1740486,
+            "type": "Instr",
+            "id": "le_s",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740487,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              5
+            ]
+          },
+          {
+            "offset": 1740489,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1740491,
+            "type": "Instr",
+            "id": "load8_u",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740496,
+            "type": "Instr",
+            "id": "drop",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740497,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740499,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740501,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740503,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740504,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              6
+            ]
+          },
+          {
+            "offset": 1740506,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          }
+        ]
+      },
+      {
+        "call": {
+          "offset": 1740513,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "memcpy",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1740499,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740501,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740503,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740504,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              6
+            ]
+          },
+          {
+            "offset": 1740506,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740507,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740509,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740511,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740513,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "memcpy",
+            "args": []
+          },
+          {
+            "offset": 1740516,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              4
+            ]
+          },
+          {
+            "offset": 1740518,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1740520,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740522,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "call": {
+          "offset": 1740549,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1740532,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              16
+            ]
+          },
+          {
+            "offset": 1740534,
+            "type": "Instr",
+            "id": "add",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740535,
+            "type": "Instr",
+            "id": "load",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740538,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              10
+            ]
+          },
+          {
+            "offset": 1740540,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              3
+            ]
+          },
+          {
+            "offset": 1740542,
+            "type": "Instr",
+            "id": "load",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740545,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1740547,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              28
+            ]
+          },
+          {
+            "offset": 1740549,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740551,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740553,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740554,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              5
+            ]
+          },
+          {
+            "offset": 1740556,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "call": {
+          "offset": 1740649,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1740632,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740634,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              -1
+            ]
+          },
+          {
+            "offset": 1740636,
+            "type": "Instr",
+            "id": "le_s",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740637,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              4
+            ]
+          },
+          {
+            "offset": 1740639,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1740641,
+            "type": "Instr",
+            "id": "load8_u",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740646,
+            "type": "Instr",
+            "id": "drop",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740647,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740649,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740651,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740653,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740654,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              5
+            ]
+          },
+          {
+            "offset": 1740656,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          }
+        ]
+      },
+      {
+        "call": {
+          "offset": 1740663,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "memcpy",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1740649,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740651,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740653,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740654,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              5
+            ]
+          },
+          {
+            "offset": 1740656,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740657,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740659,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740661,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740663,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "memcpy",
+            "args": []
+          },
+          {
+            "offset": 1740666,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              4
+            ]
+          },
+          {
+            "offset": 1740668,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              3
+            ]
+          },
+          {
+            "offset": 1740670,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              16
+            ]
+          },
+          {
+            "offset": 1740672,
+            "type": "Instr",
+            "id": "add",
+            "object": "i32",
+            "index": null,
+            "args": []
+          }
+        ]
+      },
+      {
+        "call": {
+          "offset": 1740966,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1740950,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740951,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740952,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1740954,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740956,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1740958,
+            "type": "Instr",
+            "id": "load8_u",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740963,
+            "type": "Instr",
+            "id": "drop",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740964,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              28
+            ]
+          },
+          {
+            "offset": 1740966,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740968,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740970,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740971,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              4
+            ]
+          },
+          {
+            "offset": 1740973,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "call": {
+          "offset": 1741203,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "alloc::raw_vec::capacity_overflow::h2fb0507c193e25d6",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1741189,
+            "type": "Instr",
+            "id": "add",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741190,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1741192,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1741194,
+            "type": "Instr",
+            "id": "add",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741195,
+            "type": "Instr",
+            "id": "load",
+            "object": "u64",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741198,
+            "type": "Instr",
+            "id": "store",
+            "object": "u64",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741201,
+            "type": "Instr",
+            "id": "return",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741202,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741203,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "alloc::raw_vec::capacity_overflow::h2fb0507c193e25d6",
+            "args": []
+          },
+          {
+            "offset": 1741206,
+            "type": "Instr",
+            "id": "unreachable",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741207,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741208,
+            "type": "Instr",
+            "id": "unreachable",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741209,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          }
+        ]
+      }
+    ],
+    "branchesToTrap": [
+      {
+        "branchOffset": 1740504,
+        "branchKind": "br_if",
+        "depth": 6,
+        "targetOffset": 1741208,
+        "context": [
+          {
+            "offset": 1740487,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              5
+            ]
+          },
+          {
+            "offset": 1740489,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1740491,
+            "type": "Instr",
+            "id": "load8_u",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740496,
+            "type": "Instr",
+            "id": "drop",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740497,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740499,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740501,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740503,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740504,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              6
+            ]
+          },
+          {
+            "offset": 1740506,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740507,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740509,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740511,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          }
+        ]
+      },
+      {
+        "branchOffset": 1740554,
+        "branchKind": "br_if",
+        "depth": 5,
+        "targetOffset": 1741208,
+        "context": [
+          {
+            "offset": 1740538,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              10
+            ]
+          },
+          {
+            "offset": 1740540,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              3
+            ]
+          },
+          {
+            "offset": 1740542,
+            "type": "Instr",
+            "id": "load",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740545,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1740547,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              28
+            ]
+          },
+          {
+            "offset": 1740549,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740551,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740553,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740554,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              5
+            ]
+          },
+          {
+            "offset": 1740556,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740558,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              10
+            ]
+          },
+          {
+            "offset": 1740560,
+            "type": "Instr",
+            "id": "store",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740563,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "branchOffset": 1740654,
+        "branchKind": "br_if",
+        "depth": 5,
+        "targetOffset": 1741208,
+        "context": [
+          {
+            "offset": 1740637,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              4
+            ]
+          },
+          {
+            "offset": 1740639,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1740641,
+            "type": "Instr",
+            "id": "load8_u",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740646,
+            "type": "Instr",
+            "id": "drop",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740647,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740649,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740651,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740653,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740654,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              5
+            ]
+          },
+          {
+            "offset": 1740656,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740657,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740659,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740661,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          }
+        ]
+      },
+      {
+        "branchOffset": 1740971,
+        "branchKind": "br_if",
+        "depth": 4,
+        "targetOffset": 1741208,
+        "context": [
+          {
+            "offset": 1740954,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740956,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1740958,
+            "type": "Instr",
+            "id": "load8_u",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740963,
+            "type": "Instr",
+            "id": "drop",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740964,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              28
+            ]
+          },
+          {
+            "offset": 1740966,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740968,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740970,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740971,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              4
+            ]
+          },
+          {
+            "offset": 1740973,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740975,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              10
+            ]
+          },
+          {
+            "offset": 1740977,
+            "type": "Instr",
+            "id": "store",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740980,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "branchOffset": 1741141,
+        "branchKind": "br_if",
+        "depth": 2,
+        "targetOffset": 1741208,
+        "context": [
+          {
+            "offset": 1741125,
+            "type": "Instr",
+            "id": "load",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741128,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1741130,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1741132,
+            "type": "Instr",
+            "id": "add",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741133,
+            "type": "Instr",
+            "id": "store",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741136,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1741138,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              -1
+            ]
+          },
+          {
+            "offset": 1741140,
+            "type": "Instr",
+            "id": "le_s",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741141,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1741143,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1741145,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              -20
+            ]
+          },
+          {
+            "offset": 1741147,
+            "type": "Instr",
+            "id": "add",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741148,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          }
+        ]
+      }
+    ],
+    "nativeExecution": false,
+    "sourceAllocationCauseProven": false
+  },
+  "instrumentation": {
+    "baselineSha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d",
+    "instrumentedSha256": "9272c1e44dc94bfc938a2c79e3f97e520faea495758caa09dd73ad2fe94e4c42",
+    "baselineBytes": 2684770,
+    "instrumentedBytes": 2684873,
+    "originalFunctionIndex": 532,
+    "originalTrapOffset": 1741208,
+    "instrumentedTrapOffset": 1741311,
+    "sites": [
+      {
+        "site": 1,
+        "offset": 1740504,
+        "depth": 6,
+        "local": 9,
+        "kind": "payload-allocation-null"
+      },
+      {
+        "site": 2,
+        "offset": 1740554,
+        "depth": 5,
+        "constant": 28,
+        "kind": "header-allocation-null"
+      },
+      {
+        "site": 3,
+        "offset": 1740654,
+        "depth": 5,
+        "local": 9,
+        "kind": "payload-allocation-null"
+      },
+      {
+        "site": 4,
+        "offset": 1740971,
+        "depth": 4,
+        "constant": 28,
+        "kind": "header-allocation-null"
+      },
+      {
+        "site": 5,
+        "offset": 1741141,
+        "depth": 2,
+        "local": 9,
+        "kind": "reference-count-overflow"
+      }
+    ],
+    "globals": [
+      "__within_svg_probe_site",
+      "__within_svg_probe_value"
+    ],
+    "renderInstructionsAndOriginalBranchesPreserved": true,
+    "reversibleWholeModuleByteEquality": true,
+    "linearMemorySectionChanged": false,
+    "acceptanceMetric": false
+  },
+  "instrumentedInspection": {
+    "functionIndex": 532,
+    "name": "resvg::filter::get_input::h832c13b1b93182af",
+    "functionLocation": {
+      "start": {
+        "line": -1,
+        "column": 1740470
+      },
+      "end": {
+        "line": -1,
+        "column": 1741313
+      }
+    },
+    "trapOffset": 1741311,
+    "window": [
+      {
+        "offset": 1741263,
+        "type": "Instr",
+        "id": "end",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741264,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          0
+        ]
+      },
+      {
+        "offset": 1741266,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          7
+        ]
+      },
+      {
+        "offset": 1741268,
+        "type": "Instr",
+        "id": "store",
+        "object": "u32",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741271,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          0
+        ]
+      },
+      {
+        "offset": 1741273,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          8
+        ]
+      },
+      {
+        "offset": 1741275,
+        "type": "Instr",
+        "id": "store8",
+        "object": "u32",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741278,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          0
+        ]
+      },
+      {
+        "offset": 1741280,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          2
+        ]
+      },
+      {
+        "offset": 1741282,
+        "type": "Instr",
+        "id": "load",
+        "object": "u64",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741285,
+        "type": "Instr",
+        "id": "store",
+        "object": "u64",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741288,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          0
+        ]
+      },
+      {
+        "offset": 1741290,
+        "type": "Instr",
+        "id": "const",
+        "object": "i32",
+        "index": null,
+        "args": [
+          12
+        ]
+      },
+      {
+        "offset": 1741292,
+        "type": "Instr",
+        "id": "add",
+        "object": "i32",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741293,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          2
+        ]
+      },
+      {
+        "offset": 1741295,
+        "type": "Instr",
+        "id": "const",
+        "object": "i32",
+        "index": null,
+        "args": [
+          8
+        ]
+      },
+      {
+        "offset": 1741297,
+        "type": "Instr",
+        "id": "add",
+        "object": "i32",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741298,
+        "type": "Instr",
+        "id": "load",
+        "object": "u64",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741301,
+        "type": "Instr",
+        "id": "store",
+        "object": "u64",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741304,
+        "type": "Instr",
+        "id": "return",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741305,
+        "type": "Instr",
+        "id": "end",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741306,
+        "type": "CallInstruction",
+        "id": "call",
+        "object": null,
+        "index": "alloc::raw_vec::capacity_overflow::h2fb0507c193e25d6",
+        "args": []
+      },
+      {
+        "offset": 1741309,
+        "type": "Instr",
+        "id": "unreachable",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741310,
+        "type": "Instr",
+        "id": "end",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741311,
+        "type": "Instr",
+        "id": "unreachable",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741312,
+        "type": "Instr",
+        "id": "end",
+        "object": null,
+        "index": null,
+        "args": []
+      }
+    ],
+    "instructionCount": 401,
+    "allocationAndCopyCalls": [
+      {
+        "call": {
+          "offset": 1740562,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1740545,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740547,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              -1
+            ]
+          },
+          {
+            "offset": 1740549,
+            "type": "Instr",
+            "id": "le_s",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740550,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              5
+            ]
+          },
+          {
+            "offset": 1740552,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1740554,
+            "type": "Instr",
+            "id": "load8_u",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740559,
+            "type": "Instr",
+            "id": "drop",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740560,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740562,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740564,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740566,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740567,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1740569,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "call": {
+          "offset": 1740584,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "memcpy",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1740569,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1740571,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740573,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1740575,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              6
+            ]
+          },
+          {
+            "offset": 1740577,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740578,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740580,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740582,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740584,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "memcpy",
+            "args": []
+          },
+          {
+            "offset": 1740587,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              4
+            ]
+          },
+          {
+            "offset": 1740589,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1740591,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740593,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "call": {
+          "offset": 1740620,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1740603,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              16
+            ]
+          },
+          {
+            "offset": 1740605,
+            "type": "Instr",
+            "id": "add",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740606,
+            "type": "Instr",
+            "id": "load",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740609,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              10
+            ]
+          },
+          {
+            "offset": 1740611,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              3
+            ]
+          },
+          {
+            "offset": 1740613,
+            "type": "Instr",
+            "id": "load",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740616,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1740618,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              28
+            ]
+          },
+          {
+            "offset": 1740620,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740622,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740624,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740625,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1740627,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "call": {
+          "offset": 1740728,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1740711,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740713,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              -1
+            ]
+          },
+          {
+            "offset": 1740715,
+            "type": "Instr",
+            "id": "le_s",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740716,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              4
+            ]
+          },
+          {
+            "offset": 1740718,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1740720,
+            "type": "Instr",
+            "id": "load8_u",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740725,
+            "type": "Instr",
+            "id": "drop",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740726,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740728,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740730,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740732,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740733,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              3
+            ]
+          },
+          {
+            "offset": 1740735,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "call": {
+          "offset": 1740750,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "memcpy",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1740735,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1740737,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740739,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1740741,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              5
+            ]
+          },
+          {
+            "offset": 1740743,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740744,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740746,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740748,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740750,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "memcpy",
+            "args": []
+          },
+          {
+            "offset": 1740753,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              4
+            ]
+          },
+          {
+            "offset": 1740755,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              3
+            ]
+          },
+          {
+            "offset": 1740757,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              16
+            ]
+          },
+          {
+            "offset": 1740759,
+            "type": "Instr",
+            "id": "add",
+            "object": "i32",
+            "index": null,
+            "args": []
+          }
+        ]
+      },
+      {
+        "call": {
+          "offset": 1741053,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1741037,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741038,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741039,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1741041,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1741043,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              0
+            ]
+          },
+          {
+            "offset": 1741045,
+            "type": "Instr",
+            "id": "load8_u",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741050,
+            "type": "Instr",
+            "id": "drop",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741051,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              28
+            ]
+          },
+          {
+            "offset": 1741053,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1741055,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1741057,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741058,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              4
+            ]
+          },
+          {
+            "offset": 1741060,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "call": {
+          "offset": 1741306,
+          "type": "CallInstruction",
+          "id": "call",
+          "object": null,
+          "index": "alloc::raw_vec::capacity_overflow::h2fb0507c193e25d6",
+          "args": []
+        },
+        "context": [
+          {
+            "offset": 1741292,
+            "type": "Instr",
+            "id": "add",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741293,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1741295,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1741297,
+            "type": "Instr",
+            "id": "add",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741298,
+            "type": "Instr",
+            "id": "load",
+            "object": "u64",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741301,
+            "type": "Instr",
+            "id": "store",
+            "object": "u64",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741304,
+            "type": "Instr",
+            "id": "return",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741305,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741306,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "alloc::raw_vec::capacity_overflow::h2fb0507c193e25d6",
+            "args": []
+          },
+          {
+            "offset": 1741309,
+            "type": "Instr",
+            "id": "unreachable",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741310,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741311,
+            "type": "Instr",
+            "id": "unreachable",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741312,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          }
+        ]
+      }
+    ],
+    "branchesToTrap": [
+      {
+        "branchOffset": 1740575,
+        "branchKind": "br_if",
+        "depth": 6,
+        "targetOffset": 1741311,
+        "context": [
+          {
+            "offset": 1740560,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740562,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740564,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740566,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740567,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1740569,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1740571,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740573,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1740575,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              6
+            ]
+          },
+          {
+            "offset": 1740577,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740578,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740580,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740582,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          }
+        ]
+      },
+      {
+        "branchOffset": 1740633,
+        "branchKind": "br_if",
+        "depth": 5,
+        "targetOffset": 1741311,
+        "context": [
+          {
+            "offset": 1740618,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              28
+            ]
+          },
+          {
+            "offset": 1740620,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740622,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740624,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740625,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1740627,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1740629,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              28
+            ]
+          },
+          {
+            "offset": 1740631,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1740633,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              5
+            ]
+          },
+          {
+            "offset": 1740635,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740637,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              10
+            ]
+          },
+          {
+            "offset": 1740639,
+            "type": "Instr",
+            "id": "store",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740642,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "branchOffset": 1740741,
+        "branchKind": "br_if",
+        "depth": 5,
+        "targetOffset": 1741311,
+        "context": [
+          {
+            "offset": 1740726,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740728,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1740730,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740732,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740733,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              3
+            ]
+          },
+          {
+            "offset": 1740735,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1740737,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1740739,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1740741,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              5
+            ]
+          },
+          {
+            "offset": 1740743,
+            "type": "Instr",
+            "id": "end",
+            "object": null,
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1740744,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1740746,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1740748,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          }
+        ]
+      },
+      {
+        "branchOffset": 1741066,
+        "branchKind": "br_if",
+        "depth": 4,
+        "targetOffset": 1741311,
+        "context": [
+          {
+            "offset": 1741051,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              28
+            ]
+          },
+          {
+            "offset": 1741053,
+            "type": "CallInstruction",
+            "id": "call",
+            "object": null,
+            "index": "dlmalloc::dlmalloc::Dlmalloc<A>::malloc::hffc6ac4fc0e6a1d8",
+            "args": []
+          },
+          {
+            "offset": 1741055,
+            "type": "Instr",
+            "id": "tee_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1741057,
+            "type": "Instr",
+            "id": "eqz",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741058,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              4
+            ]
+          },
+          {
+            "offset": 1741060,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1741062,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              28
+            ]
+          },
+          {
+            "offset": 1741064,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1741066,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              4
+            ]
+          },
+          {
+            "offset": 1741068,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          },
+          {
+            "offset": 1741070,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              10
+            ]
+          },
+          {
+            "offset": 1741072,
+            "type": "Instr",
+            "id": "store",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741075,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              7
+            ]
+          }
+        ]
+      },
+      {
+        "branchOffset": 1741244,
+        "branchKind": "br_if",
+        "depth": 2,
+        "targetOffset": 1741311,
+        "context": [
+          {
+            "offset": 1741228,
+            "type": "Instr",
+            "id": "store",
+            "object": "u32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741231,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1741233,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              -1
+            ]
+          },
+          {
+            "offset": 1741235,
+            "type": "Instr",
+            "id": "le_s",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741236,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              5
+            ]
+          },
+          {
+            "offset": 1741238,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              1
+            ]
+          },
+          {
+            "offset": 1741240,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              9
+            ]
+          },
+          {
+            "offset": 1741242,
+            "type": "Instr",
+            "id": "set_global",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1741244,
+            "type": "Instr",
+            "id": "br_if",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          },
+          {
+            "offset": 1741246,
+            "type": "Instr",
+            "id": "get_local",
+            "object": null,
+            "index": null,
+            "args": [
+              8
+            ]
+          },
+          {
+            "offset": 1741248,
+            "type": "Instr",
+            "id": "const",
+            "object": "i32",
+            "index": null,
+            "args": [
+              -20
+            ]
+          },
+          {
+            "offset": 1741250,
+            "type": "Instr",
+            "id": "add",
+            "object": "i32",
+            "index": null,
+            "args": []
+          },
+          {
+            "offset": 1741251,
+            "type": "Instr",
+            "id": "set_local",
+            "object": null,
+            "index": null,
+            "args": [
+              2
+            ]
+          }
+        ]
+      }
+    ],
+    "nativeExecution": false,
+    "sourceAllocationCauseProven": false
+  },
+  "ownedScratchRemoved": true,
+  "finishedAt": "2026-10-28T13:10:57.344Z"
+}

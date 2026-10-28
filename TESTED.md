@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-28 — Static/control-edge probe preparation: all five trap predecessors
+resolved; allocation failure and Arc-overflow remain distinct. Exact source Wasm
+round-trip after removing only103 added bytes PASS; no heap/linear-memory edit.
+Tiny arithmetic-only Wasm tests preserve pending branch operand and normal/trap
+outcomes; optional real Global getter/null/classification controls PASS.31focused
+checks1552.898ms, build/types/lint PASS. First lint2 reserved-name errors fixed
+without policy exemptions; actual browser probe pending. Exact earlier static
+source preimages retained rather than relabelling new code as historical input.
+`evidence/2026-10-28-svg-allocation-probe-preparation.json`.
+
 2026-10-28 — Static-only source-artifact inspection: existing parser resolves
 actual get_input/function532 unreachable at1741208 (capacity-overflow trap is
 1741206, not the same location). Two positive/wrong-offset/malformed controls

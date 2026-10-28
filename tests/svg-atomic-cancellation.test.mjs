@@ -49,7 +49,7 @@ function mockJob(cancelAt, faults = {}) {
   const run = runInNewContext(compile(`${isCancelled}\n${assertActive}\n${runSvg}\nrunSvgToPng;`), {
     cancellationSignal: signal, cancelled: false, resvgInitialization: undefined, Resvg: Renderer, Atomics, DOMException, WebAssembly,
     MAX_SVG_INPUT_BYTES: 4 * 1024 * 1024, MAX_IMAGE_PIXELS: 8_294_400, MAX_IMAGE_OUTPUT_BYTES: 64 * 1024 * 1024, MAX_WRITE_CHUNK: 256 * 1024,
-    RESVG_WASM_URL: "/unit-only.wasm", getInitializedResvgMemory: () => null,
+    RESVG_WASM_URL: "/unit-only.wasm", getInitializedResvgMemory: () => null, getLastResvgFailureProbe: () => null,
     observeSvgMemory: (_, phase) => observations.push(phase), releaseSvgRendererObjects,
     readBoundedUtf8: async () => { touch("read"); return "unit-only-not-image-data"; }, parseSvgDimensions: () => ({ width: 2, height: 2 }),
     initResvgWasm: async () => touch("initialize"), fetch: () => undefined, emitProgress: () => {},

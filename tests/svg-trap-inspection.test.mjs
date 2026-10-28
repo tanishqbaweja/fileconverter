@@ -15,3 +15,10 @@ test("static decoder rejects a wrong function, end instruction, zero header byte
   const corrupt = Buffer.from(wasm); corrupt[0]=1;
   assert.throws(() => inspectWasmTrap(corrupt,0,23));
 });
+test("structured branch labels resolve to the exact trap after a block, not an unrelated instruction", () => {
+  const code = [0,2,64,65,0,13,0,11,0,11];
+  const branch = Buffer.from([...wasm.subarray(0,18),10,code.length+2,1,code.length,...code]);
+  const row = inspectWasmTrap(branch,0,30);
+  assert.equal(row.branchesToTrap.length,1);
+  assert.equal(row.branchesToTrap[0].branchOffset,27); assert.equal(row.branchesToTrap[0].targetOffset,30);
+});

@@ -1,6 +1,6 @@
 /// <reference lib="webworker" />
 
-import { initWasm as initResvgWasm, Resvg, getInitializedResvgMemory } from "../lib/vendor/resvg-binding.mjs";
+import { initWasm as initResvgWasm, Resvg, getInitializedResvgMemory, getLastResvgFailureProbe } from "../lib/vendor/resvg-binding.mjs";
 import { observeSvgMemory } from "../lib/svg-memory-observation";
 import { observeSvgExecutionResources } from "../lib/svg-execution-resources";
 import { releaseSvgRendererObjects } from "../lib/svg-renderer-release";
@@ -1799,7 +1799,7 @@ async function runSvgToPng(
     if (error instanceof WebAssembly.RuntimeError) {
       metrics.svgRuntimeFailure = { message: error.message.slice(0, 256),
         stack: typeof error.stack === "string" ? error.stack.slice(0, 4096) : null,
-        lastObservedPhase: metrics.svgMemoryObservation?.phase ?? null };
+        lastObservedPhase: metrics.svgMemoryObservation?.phase ?? null, probe: getLastResvgFailureProbe() };
     }
     throw error;
   } finally {

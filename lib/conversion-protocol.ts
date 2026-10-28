@@ -59,6 +59,8 @@ export interface ConversionMetrics {
     message: string;
     stack: string | null;
     lastObservedPhase: NonNullable<ConversionMetrics["svgMemoryObservation"]>["phase"] | null;
+    /** Raw optional Wasm diagnostic globals, not automatic OOM classification. */
+    probe?: { site: number; value: number } | null;
   };
   /** Actual MPEG-2 AVCodecContext fields after native settings-match succeeds. */
   mpeg2EncoderSettings?: { width: number; height: number; frameRateNumerator: number; frameRateDenominator: number;

@@ -12,17 +12,19 @@ import { makeReproducedSvgStressQualification } from "./lib/reproduced-svg-stres
 import { makeReproducedSvgDirectStressQualification } from "./lib/reproduced-svg-direct-stress-recipe.mjs";
 import { makeSvgExecutionDiagnostic } from "./lib/svg-execution-diagnostic-recipe.mjs";
 import { makeSvgEffectsDiagnostic } from "./lib/svg-effects-diagnostic-recipe.mjs";
+import { makeSvgAllocationDiagnostic } from "./lib/svg-allocation-diagnostic-recipe.mjs";
+import { classifyAllocationProbeFailure } from "../images/resvg-source/allocation-probe.mjs";
 import { generateOwnedSvgEffectsFixture } from "./lib/owned-svg-effects-fixture.mjs";
 import { reproducedSvgBasePins } from "./lib/reproduced-svg-browser-recipe.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
 
 assert.equal(process.platform, "win32");
-const args = process.argv.slice(2), listOnly = args.includes("--list-only"), executionDiagnostic = args.includes("--execution-diagnostic"), effectsDiagnostic = args.includes("--effects-diagnostic"), directHandle = args.includes("--direct-handle") || executionDiagnostic || effectsDiagnostic;
-assert.equal(new Set(args).size, args.length); assert.ok(args.length <= 2 && args.every(arg => ["--list-only", "--direct-handle", "--execution-diagnostic", "--effects-diagnostic"].includes(arg)));
-assert.ok([executionDiagnostic, effectsDiagnostic, args.includes("--direct-handle")].filter(Boolean).length <= 1, "Choose exactly one strict/diagnostic route");
+const args = process.argv.slice(2), listOnly = args.includes("--list-only"), allocationProbeDiagnostic = args.includes("--effects-allocation-probe"), executionDiagnostic = args.includes("--execution-diagnostic"), effectsDiagnostic = args.includes("--effects-diagnostic") || allocationProbeDiagnostic, directHandle = args.includes("--direct-handle") || executionDiagnostic || effectsDiagnostic;
+assert.equal(new Set(args).size, args.length); assert.ok(args.length <= 2 && args.every(arg => ["--list-only", "--direct-handle", "--execution-diagnostic", "--effects-diagnostic", "--effects-allocation-probe"].includes(arg)));
+assert.ok(args.filter(arg => arg !== "--list-only").length <= 1, "Choose exactly one strict/diagnostic route");
 const root = path.resolve(import.meta.dirname, ".."), stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
 const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: "running", sourcePins: {}, generatedSourceArchives: {}, failures: [],
-  listOnly, executionDiagnostic, effectsDiagnostic, memoryAcceptance: false, publicEngineReplacement: false, originalGoalComplete: false,
+  listOnly, executionDiagnostic, effectsDiagnostic, allocationProbeDiagnostic, memoryAcceptance: false, publicEngineReplacement: false, originalGoalComplete: false,
   destinationMode: directHandle ? "direct-handle-test-directory; native OS picker unverified" : "Existing bounded production OPFS test adapter; direct-handle stress is a separate pending gate",
   scope: effectsDiagnostic ? "Three6M direct SVG effects writes, independent current-Chromium reference, native SSIM>=0.99, strict final baseline/250 verdict retained; no full release acceptance" : executionDiagnostic ? "8M direct success, real UI raster cancellation, direct write error and same-page independently validated retries; strict final baseline/250 verdict retained" : directHandle ? "Three same-browser 8M direct-handle grid repeats; no native OS picker/effects/OOM/recovery/full release acceptance" : "Three same-browser 8M grid repeats only; no direct-handle/effects/clean-session/OOM/recovery/full release acceptance" };
 let runtime, child, birth, log = "";
@@ -30,6 +32,7 @@ try {
   for (const file of ["scripts/test-reproduced-svg-stress.mjs", "scripts/lib/reproduced-svg-stress-recipe.mjs", "scripts/lib/reproduced-svg-direct-stress-recipe.mjs", "scripts/lib/reproduced-svg-browser-recipe.mjs",
     "scripts/lib/svg-execution-diagnostic-recipe.mjs", "lib/svg-execution-resources.ts", "lib/svg-renderer-release.ts",
     "scripts/lib/svg-effects-diagnostic-recipe.mjs", "scripts/lib/owned-svg-effects-fixture.mjs", "scripts/generate-svg-effects-fixtures.mjs",
+    "scripts/lib/svg-allocation-diagnostic-recipe.mjs", "images/resvg-source/allocation-probe.mjs", "images/resvg-source/allocation-probe-input.json",
     "fixtures/stress/images/svg-effects-6m.svg.json", "fixtures/stress/images/svg-effects-6m-reference.png.json",
     "scripts/lib/exact-rgba-validation.mjs",
     "workers/conversion.worker.ts", "app/converter/ConverterApp.tsx", "lib/conversion-protocol.ts", "lib/svg-memory-observation.ts",
@@ -41,7 +44,7 @@ try {
     const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 1024 ** 3);
   }
   runtime = await createOwnedRuntimeScratch("svg-reproduced-qualification-");
-  const recipe = effectsDiagnostic ? makeSvgEffectsDiagnostic : executionDiagnostic ? makeSvgExecutionDiagnostic : directHandle ? makeReproducedSvgDirectStressQualification : makeReproducedSvgStressQualification;
+  const recipe = allocationProbeDiagnostic ? makeSvgAllocationDiagnostic : effectsDiagnostic ? makeSvgEffectsDiagnostic : executionDiagnostic ? makeSvgExecutionDiagnostic : directHandle ? makeReproducedSvgDirectStressQualification : makeReproducedSvgStressQualification;
   const generated = recipe({ root, runtime: runtime.directory,
     driverBytes: await readFile(path.join(root, "scripts/test-source-built-svg-candidate.mjs")),
     suiteBytes: await readFile(path.join(root, "tests/browser/image-conversions.spec.ts")),
@@ -85,6 +88,10 @@ try {
     const raw = await readFile(path.join(root, summary.path)); assert.ok(raw.length <= 4 * 1024 ** 2); const actual = JSON.parse(raw);
     report.browserReceipt = { path: summary.path.replaceAll("\\", "/"), bytes: raw.length, sha256: sha(raw) };
     report.stats = actual.stats ?? null; report.memory = actual.memory ?? null; report.stressRuns = actual.stressRuns ?? null; report.innerFailures = actual.failures;
+    report.instrumentation = actual.instrumentation ?? null;
+    if (allocationProbeDiagnostic) report.probeClassifications = actual.stressRuns?.map(row => ({ repeat: row.repeat,
+      classification: classifyAllocationProbeFailure(row.result?.metrics?.svgRuntimeFailure?.probe, actual.instrumentation,
+        row.result?.metrics?.svgRuntimeFailure?.stack) })) ?? null;
     report.functionalAssertionsPassed = actual.functionalAssertionsPassed ?? false;
     report.earlyBaselineGatePassed = actual.earlyBaselineGatePassed ?? null;
     report.earlyBaselineGateFailure = actual.earlyBaselineGateFailure ?? null;
