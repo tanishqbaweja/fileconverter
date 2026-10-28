@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-10-28 — Filter candidate postprocess40712501519 SUCCESS: two pinned
+bindgen/cap outputs/glue fully byte-identical, raw source owner/both build receipts
+verified. Capped2686182B SHA6ed83996...75d4, explicit24initial/1536max pages=96MiB;
+glue18019B SHA91a08653...d923 exactly prior candidate, public ABI names/kinds
+match. Exact4-member authenticated artifact12825718556/1018247B verified locally,
+no local binary copies retained, all owned processing/inspection scratch removed.
+New --filter-region browser variant binds all4 members/owner/raw-source proof
+and preserves same6M/SSIM0.99/every31seam/exact-alpha/baseline/250/timeouts.
+10focused PASS870.4794ms/lint PASS; collection3cases/no browser. Genuine new
+rendering next; no memory/fidelity/speed/public acceptance yet.
+`evidence/2026-10-28-svg-filter-processed-terminal.json`.
+
 2026-10-28 — Source-region build40709137070 SUCCESS: two fresh actual locked
 nightly builds/full raw-byte equality, exact source patch before/after verified,
 raw3666973B SHA424e3a7c...f4321 differs from unpatched source. Both compiler/repeat/

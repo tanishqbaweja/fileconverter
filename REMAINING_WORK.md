@@ -1,5 +1,18 @@
 # Remaining work audit
 
+Source-patched Wasm now reproducibly processed/capped, not browser-qualified:
+run40712501519 SUCCESS, both Wasm/glue outputs byte-identical; explicit96MiB max,
+2686182B SHA6ed83996...75d4, glue unchanged vs prior compatible private candidate.
+Exact4-member artifact authenticated/verified; no local binary copies, processing/
+inspection scratch removed. Separate immutable filter-region-processed-input.json
+added; old candidate pins untouched. New --filter-region suite/owner verifies
+extra artifact owner and exact raw-source pin, preserves original6M/31boundary
+SSIM0.99/exact-alpha/full-tree250/timeouts/security.10focused/lint PASS, exact
+3case collection PASS. Next genuine production-browser attempt with this changed
+Wasm (not unchanged prior failing engine); broader SVG/transparent inputs/recovery/
+repeat speed/default-profile memory gates remain OPEN.
+`evidence/2026-10-28-svg-filter-processed-terminal.json`.
+
 Source-region candidate compile reproducibility now verified: run40709137070
 SUCCESS, two fresh same-nightly/locked builds fully byte-identical; source patch
 verified before/after, cleanup/duplicate removal and exact six-member artifact

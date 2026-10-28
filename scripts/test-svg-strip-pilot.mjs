@@ -11,37 +11,42 @@ import { queryReliableProcessIdentity } from "./lib/reliable-owned-identity.mjs"
 import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
 const root=path.resolve(import.meta.dirname,".."),args=process.argv.slice(2);
-assert.ok(args.length===0||(args.length===1&&args[0]==="--list-only"));
+assert.equal(new Set(args).size,args.length);assert.ok(args.length<=2&&args.every(arg=>["--list-only","--filter-region"].includes(arg)));
+const filterRegion=args.includes("--filter-region"),listOnly=args.includes("--list-only");
 const stamp=new Date().toISOString().replaceAll(/[:.]/g,"-"),baseOwner="scripts/test-reproduced-svg-stress.mjs";
 const report={schemaVersion:1,startedAt:new Date().toISOString(),scope:"Private viewport/streaming PNG worker with original6M effects fixture and unchanged final baseline/250 threshold; not general SVG/release acceptance",
-  sourcePins:{},failures:[],publicSourceEdited:false,publicEngineReplacement:false,memoryAcceptance:false,wholeGoalComplete:false};
+  sourcePins:{},failures:[],sourceFilterRegionCandidate:filterRegion,publicSourceEdited:false,publicEngineReplacement:false,memoryAcceptance:false,wholeGoalComplete:false};
 let runtime,child,birth,log="";
-const replace=(text,before,after)=>{assert.equal(text.split(before).length-1,1,"Exact strip owner anchor: "+before);return text.replace(before,after);};
+const replace=(text,before,after,count=1)=>{assert.equal(text.split(before).length-1,count,"Exact strip owner anchor: "+before);return text.split(before).join(after);};
 try{
   const original=await readFile(path.join(root,baseOwner));assert.equal(sha(original),"5a5ec0af3ef4a7b6f0c0743974cee04fafb970bb50aeb47e024a05c58f4cc30c");
   for(const file of [baseOwner,"scripts/test-svg-strip-pilot.mjs","scripts/lib/svg-strip-worker-recipe.mjs","scripts/lib/svg-strip-qualification-recipe.mjs","scripts/lib/svg-strip-validator.mjs","lib/private-svg-strip-pilot.ts","workers/rgba-png-stream.ts"])
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));
+  report.sourcePins["scripts/lib/svg-filter-region-qualification.mjs"]=sha(await readFile(path.join(root,"scripts/lib/svg-filter-region-qualification.mjs")));
+  if(filterRegion) report.sourcePins["images/resvg-source/filter-region-processed-input.json"]=sha(await readFile(path.join(root,"images/resvg-source/filter-region-processed-input.json")));
   runtime=await createOwnedRuntimeScratch("svg-strip-owner-");
   let source=original.toString().replace(/((?:from\s+|import\s*)["'])(\.\.?\/[^"']+)(["'])/g,(_all,start,name,end)=>start+pathToFileURL(path.resolve(root,"scripts",name)).href+end);
   source=replace(source,'const root = path.resolve(import.meta.dirname, ".."), stamp',`const root = ${JSON.stringify(root)}, stamp`);
   source=replace(source,'  runtime = await createOwnedRuntimeScratch("svg-reproduced-qualification-");',
     '  runtime = await createOwnedRuntimeScratch("svg-reproduced-qualification-");\n  report.privateWorker = await buildSvgStripWorker({root,runtime});');
   const selector='  const recipe = allocationProbeDiagnostic ? makeSvgAllocationDiagnostic : effectsDiagnostic ? makeSvgEffectsDiagnostic : executionDiagnostic ? makeSvgExecutionDiagnostic : directHandle ? makeReproducedSvgDirectStressQualification : makeReproducedSvgStressQualification;';
-  source=replace(source,selector,'  const recipe = options => makeSvgStripQualification({...options,workerPin:report.privateWorker});');
+  source=replace(source,selector,'  const recipe = options => '+(filterRegion?'makeFilterRegionSvgQualification':'makeSvgStripQualification')+'({...options,workerPin:report.privateWorker});');
   source=replace(source,'    await generateOwnedSvgEffectsFixture({ runtime, fixtureRoot: generated.fixtureRoot, receipt: report.fixture });',
     '    await generateOwnedSvgEffectsFixture({ runtime, fixtureRoot: generated.fixtureRoot, receipt: report.fixture });\n'+
     '    const reference = path.join(generated.fixtureRoot,"svg-effects-6m-reference.png");\n'+
     '    report.validatorControl = await validateSvgStripSeams({outputPath:reference,referencePath:reference,width:3000,height:2000,execute:promisify(execFile),cwd:root});\n'+
     '    assert.equal(report.validatorControl.passed,true); assert.equal(report.validatorControl.minimumSsim,1);');
   source=replace(source,'  for (const file of ["scripts/test-reproduced-svg-stress.mjs",',
-    '  for (const file of ["scripts/test-svg-strip-pilot.mjs", "scripts/lib/svg-strip-worker-recipe.mjs", "scripts/lib/svg-strip-qualification-recipe.mjs", "scripts/lib/svg-strip-validator.mjs", "lib/private-svg-strip-pilot.ts", "workers/rgba-png-stream.ts", "scripts/test-reproduced-svg-stress.mjs",');
+    '  for (const file of ["scripts/test-svg-strip-pilot.mjs", "scripts/lib/svg-filter-region-qualification.mjs", "scripts/lib/svg-strip-worker-recipe.mjs", "scripts/lib/svg-strip-qualification-recipe.mjs", "scripts/lib/svg-strip-validator.mjs", "lib/private-svg-strip-pilot.ts", "workers/rgba-png-stream.ts", "scripts/test-reproduced-svg-stress.mjs",');
+  if(filterRegion) source=replace(source,"images/resvg-source/repeated-processed-input.json","images/resvg-source/filter-region-processed-input.json",2);
   source=`import {buildSvgStripWorker} from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-strip-worker-recipe.mjs")).href)};\n`+
     `import {makeSvgStripQualification} from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-strip-qualification-recipe.mjs")).href)};\n`+
+    `import {makeFilterRegionSvgQualification} from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-filter-region-qualification.mjs")).href)};\n`+
     `import {validateSvgStripSeams} from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-strip-validator.mjs")).href)};\n`+
     'import {execFile} from "node:child_process";\nimport {promisify} from "node:util";\n'+source;
   report.generatedOwner={bytes:Buffer.byteLength(source),sha256:sha(source),gzipBase64:gzipSync(source,{level:9}).toString("base64"),baseSha256:sha(original)};
   const file=path.join(runtime.directory,"owner.mjs");await writeFile(file,source,{flag:"wx"});
-  child=spawn(process.execPath,[file,"--effects-diagnostic",...args],{cwd:root,env:runtime.env,windowsHide:true,stdio:["ignore","pipe","pipe"]});
+  child=spawn(process.execPath,[file,"--effects-diagnostic",...(listOnly?["--list-only"]:[])],{cwd:root,env:runtime.env,windowsHide:true,stdio:["ignore","pipe","pipe"]});
   for(const pipe of [child.stdout,child.stderr])pipe.on("data",bytes=>{log=(log+bytes).slice(-65536);});
   const completed=new Promise((resolve,reject)=>{child.once("error",reject);child.once("close",(code,signal)=>{report.childSignal=signal;resolve(code);});});
   birth=await queryReliableProcessIdentity(child.pid);assert.ok(birth);report.childBirth=birth;report.childExit=await completed;
@@ -53,7 +58,7 @@ try{
   report.privateWorker={bytes:actual.privateWorker?.bytes,sha256:actual.privateWorker?.sha256};
   report.validatorControl=actual.validatorControl??null;
   assert.equal(report.childSignal,null);assert.equal(report.childExit,0,log);
-  report.status=args.length?"listed-private-strip-browser-cases-no-conversion":"completed-private-strip-effects-checks-not-general-support";
+  report.status=listOnly?"listed-private-strip-browser-cases-no-conversion":"completed-private-strip-effects-checks-not-general-support";
 }catch(error){report.status="failed-private-strip-pilot";report.failures.push(String(error.stack??error));process.exitCode=1;}
 finally{
   try{

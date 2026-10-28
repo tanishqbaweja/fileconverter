@@ -1,0 +1,78 @@
+{
+  "schemaVersion": 1,
+  "runId": 40712501519,
+  "sourceHead": "82ec7fff1d01a82ca0c80d3ee38c5a272392a246",
+  "startedAt": "2026-10-28T17:23:48.669Z",
+  "sourcePins": {
+    "scripts/inspect-svg-filter-processed.mjs": "5b78e2abcd7106c6419341952aee0c99ed3a63c14419722adf64612f115228f5",
+    "images/resvg-source/filter-region-patch.mjs": "f6c60cccb2d923d3a5ae420d58ca058c05221c5214618b3502f1f7d1fe26efb0",
+    "images/resvg-source/filter-region-raw-input.json": "306c18ec0996bfe334ee993d879a16d3dc60afa87783a6689ab7ce6277d79db5",
+    "images/resvg-source/postprocess-filter-region-source.mjs": "63bfef77693e39b9ab7ac981303e24af8b719b38e46a6237d185dd2395ebe3b0",
+    "images/resvg-source/filter-postprocess-recipe.mjs": "8160bc766a29e2afbd667a1f8413f203cdaa520083ed2abc7c25030175e28c9c"
+  },
+  "failures": [],
+  "rendererExecuted": false,
+  "protectedOriginalAccessed": false,
+  "localBinaryCopiesRetained": false,
+  "browserAcceptance": false,
+  "wholeGoalComplete": false,
+  "artifact": {
+    "id": 12825718556,
+    "bytes": 1018247,
+    "sha256": "3a6d65499cd4ef04081080f4fd341675cb9eae5e3cdae816c1eb65bb2b40a641",
+    "advertisedDigest": "sha256:3a6d65499cd4ef04081080f4fd341675cb9eae5e3cdae816c1eb65bb2b40a641",
+    "expiresAt": "2026-10-29T15:06:33Z"
+  },
+  "memory": [
+    {
+      "index": 0,
+      "initialPages": 24,
+      "initialBytes": 1572864,
+      "maximumPages": 1536,
+      "maximumBytes": 100663296,
+      "maximumExplicit": true,
+      "shared": false
+    }
+  ],
+  "staticAbi": {
+    "publishedImports": 18,
+    "candidateImports": 18,
+    "publishedExports": 51,
+    "candidateExports": 51,
+    "missingImports": [],
+    "addedImports": [],
+    "missingExports": [],
+    "addedExports": [],
+    "namesAndKindsEqual": true,
+    "functionSignaturesOrRuntimeCompatibilityProven": false,
+    "instantiated": false
+  },
+  "glueMatchesPriorPrivateCandidate": true,
+  "inputPin": {
+    "schemaVersion": 1,
+    "runId": 40712501519,
+    "headSha": "82ec7fff1d01a82ca0c80d3ee38c5a272392a246",
+    "artifactId": 12825718556,
+    "artifactBytes": 1018247,
+    "artifactSha256": "3a6d65499cd4ef04081080f4fd341675cb9eae5e3cdae816c1eb65bb2b40a641",
+    "receiptMember": "resvg-source-processed-repeat-40712501519.json",
+    "receiptBytes": 15293,
+    "receiptSha256": "1927bbcb279858cca1d26c9bf91eefd9878c16dbfd66ddefa92b4f5736857283",
+    "ownerReceiptMember": "resvg-filter-processed-owner-40712501519.json",
+    "ownerReceiptBytes": 8311,
+    "ownerReceiptSha256": "6d5ecfa1f7e6aa3220fc17b1a0a0d1a4ee83e51409a52543ff432fb8f0924ff6",
+    "wasmMember": "resvg-source-processed-repeat-40712501519.wasm",
+    "wasmBytes": 2686182,
+    "wasmSha256": "6ed83996764bed766960996baa82009e68fa38d1e1ab067bd6f8c566bb6375d4",
+    "glueMember": "resvg-source-processed-repeat-40712501519.mjs",
+    "glueBytes": 18019,
+    "glueSha256": "91a086534d643127d38a12726f8c65adfb398877be6bb4d8212d358b1b1fd923",
+    "experimentalMaximumBytes": 100663296,
+    "sourceRepeatPin": "images/resvg-source/filter-region-raw-input.json",
+    "filterModulePatchedSha256": "ff98d2cf2406b01d728d84ae214c146c628b514bc94fee015ce978dbbd416191",
+    "kind": "two-fresh-filter-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified"
+  },
+  "status": "verified-source-patched-private-capped-Wasm-and-binding-not-browser-acceptance",
+  "ownedRuntimeRemoved": true,
+  "finishedAt": "2026-10-28T17:23:55.229Z"
+}
