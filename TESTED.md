@@ -1,5 +1,26 @@
 # Tested conversion ledger
 
+2026-10-28 —80-row sourcea5eb6702 genuine6M attempt REJECTED for adoption:
+same45s timeout/0validated-pass/1fail/2notrun. At44.521s:23native viewports
+rendered/released,1781central rows/2555937B partial output,43.468s synchronous
+native render; no SSIM/completed PNG. Fewer passes did not meet the deadline;
+do not infer accepted speedup. Actual per-viewport Wasm sampling now works:
+83951616B/1281pages (<unchanged96MiB staticmax),26 observations available.
+MaxRGBA2112000B/filter252021B/write65536B/1pending. Full-tree stable blank
+327204864B/peak547074048B =>209.68359375MiB,450valid0missing, only incomplete
+diagnostic. All7 roots absent/all4 runtimes/generated data removed/original
+size and full SHA unchanged.2058509B trace retained. Generic JS image-memory
+counter remains incomplete. Added machine-readable rejected-engine/config
+ledger and preflight guard: no unchanged original6M native/config replay,
+collection-only still permitted; genuinely changed native bytes remain eligible.
+Next inspect/reduce repeated native layer/filter work, no more IO-only or row
+trials, heap/time/quality relaxations, or public promotion. New row worker guard
+and49-band validation:11focused PASS471.7611ms, lint PASS; previous16focused/
+types/lint green. See `evidence/2026-10-28-svg-80row-context-terminal.json`.
+Final rejection/coalescing/worker/qualification regression:18focused PASS/
+0fail/0skip/0cancel514.0378ms, changed-file lint PASS. No fourth unchanged
+browser run. Public converter/engine unchanged; full project remains incomplete.
+
 2026-10-28 — Coalesced64-row genuine6M run2bdbc5dc FAILED same45s timeout,
 but bounded scalar capture now works and identifies native rasterization:
 29rendered/released viewports,1792central rows,2,621,473B partial writes at

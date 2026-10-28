@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "fixtureSha256": "af4df880bee340b34ec1102a78a78cce8d04915635ea2ee5a7aa0ffe04e4ca78",
+  "scope": "Private original6M effects fixture; unchanged native code/config must not be replayed",
+  "experiments": [
+    {
+      "wasmSha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d",
+      "centralRows": 64,
+      "reason": "Second native viewport allocation failed under96MiB",
+      "evidence": "evidence/2026-10-28-svg-strip-first-render-terminal.json"
+    },
+    {
+      "wasmSha256": "6ed83996764bed766960996baa82009e68fa38d1e1ab067bd6f8c566bb6375d4",
+      "centralRows": 64,
+      "reason": "Whole SSIM0.496146/minimum seam0.111728 below unchanged0.99",
+      "evidence": "evidence/2026-10-28-svg-filter-first-quality-terminal.json"
+    },
+    {
+      "wasmSha256": "51a482a6f471251fa52c94920da0835b51f1b06c7117d1827ebb7f8abca2a5ff",
+      "centralRows": 64,
+      "reason": "45s timeout with both original and coalesced PNG writer; measured42.613s native rendering for29viewports",
+      "evidence": "evidence/2026-10-28-svg-coalesced-context-terminal.json"
+    },
+    {
+      "wasmSha256": "51a482a6f471251fa52c94920da0835b51f1b06c7117d1827ebb7f8abca2a5ff",
+      "centralRows": 80,
+      "reason": "45s timeout despite fewer passes; measured43.468s native rendering/1781rows; no quality result",
+      "evidence": "evidence/2026-10-28-svg-80row-context-terminal.json"
+    }
+  ],
+  "requiredNextChange": "Concrete native-render allocation/work reduction with source proof; do not increase heap/timeout or reduce original fixture/quality gates",
+  "publicPromotion": false
+}

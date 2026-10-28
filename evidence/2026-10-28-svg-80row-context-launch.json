@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "a5eb6702",
+  "startedAt": "2026-10-28T18:33:15Z",
+  "estimatedDurationSeconds": 270,
+  "doNotObserveBefore": "2026-10-28T18:37:45Z",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/test-svg-strip-pilot.mjs --filter-context --rows80",
+  "centralRows": 80,
+  "haloRows": 48,
+  "sourcePixels": 6000000,
+  "wasmMaximumBytes": 100663296,
+  "jobPollTimeoutMs": 45000,
+  "requiredSeamBands": 49,
+  "allOriginal31AndAllNew80RowBoundariesIncluded": true,
+  "requiredWholeAndEveryBandSsim": 0.99,
+  "actualWasmObservedAfterEveryViewport": true,
+  "headless": true,
+  "followSameExecutionHandleNoRestartOnObservationTimeout": true,
+  "publicPromotion": false,
+  "wholeGoalComplete": false
+}

@@ -1,5 +1,20 @@
 # Remaining work audit
 
+Latest80-row experiment REJECTED for adoption:45s timeout,1781/2000central rows,
+43.468s native raster at44.521s, no completed PNG/SSIM. Same6M/cap/timeout/gates,
+no accepted speedup. Actual intermediate Wasm now observed83951616B (<96MiB);
+full-tree209.68359375MiB is incomplete diagnostic only.450valid0missing samples,
+7roots/4runtimes/disposable cleanup/original SHA verified. Machine-readable
+rejection guard blocks unchanged native/config reruns before browser/fixture
+launch; list-only allowed, new native bytes eligible. Next source-level render
+work/allocation reduction with proof, not more row/IO guesses. Quality/default
+profile repeated memory/generic telemetry/recovery/transparent coverage remain
+OPEN, and all broader original-format/release obligations remain unchanged.
+`evidence/2026-10-28-svg-80row-context-terminal.json`.
+Final focused18PASS514.0378ms/lint PASS; no fourth unchanged browser run.
+All current rejected modes are retained only as private reproducible evidence,
+not accepted optimizations or supported public profiles.
+
 Measured new bottleneck: coalesced64-row actual6M run still hits45s timeout;
 42.613s native rendering for29 viewports vs1.675s awaited writes (non-additive
 timers). Output incomplete/no quality result.197codec chunks=>39 IDAT writes,
