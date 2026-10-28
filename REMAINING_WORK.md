@@ -1,5 +1,17 @@
 # Remaining work audit
 
+Context postprocessing40742766594 and authenticated exact4-member artifact
+verification COMPLETE, but private browser qualification remains OPEN.
+Processed2686281B SHA51a482a6...a5ff, same96MiB cap and compatible binding/ABI.
+Both native source changes verified; no local binaries retained/owned scratch
+removed. Separate --filter-context adapter retains every original6M/0.99/seam/
+alpha/250MiB/security/timeout gate. Next run this changed native engine once;
+do not repeat rejected region-only output or claim source proof is fidelity.
+Generic buffer telemetry, recovery, transparent input, repeated speed/default
+profile memory and broader original requirements remain OPEN.
+Preparation guards:9focused PASS1003.41ms/lint PASS; exact3case collection PASS,
+no browser/conversion. This is preparation evidence only.
+
 Context+region source variant now compiled twice from fresh locked source:
 40741245271 SUCCESS/full raw-byte equality, both patched module SHAs verified
 before/after build, raw3667072B SHAf2d0d3ff...fa71. Exact6-member authenticated

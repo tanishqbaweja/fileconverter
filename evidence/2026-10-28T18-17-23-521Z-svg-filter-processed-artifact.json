@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "runId": 40742766594,
+  "sourceHead": "1d6dd07d5d321618982e55ae632902c54ba6691c",
+  "contextVariant": true,
+  "startedAt": "2026-10-28T18:17:23.522Z",
+  "sourcePins": {
+    "scripts/inspect-svg-filter-processed.mjs": "6c69bfbd4a893b71293356af4cc7062f34365e38fb393b6d13e4960b4bfb515f",
+    "images/resvg-source/filter-region-patch.mjs": "f6c60cccb2d923d3a5ae420d58ca058c05221c5214618b3502f1f7d1fe26efb0",
+    "images/resvg-source/filter-context-raw-input.json": "30a858342d1d936be6f52919c9bcd24bea091f48d02a34a7bf026b0ad8b9685b",
+    "images/resvg-source/postprocess-filter-region-source.mjs": "cceee4e51ebeb9c6f21305b4a2badb13c90d086cd52c601750d81db8efc367e4",
+    "images/resvg-source/filter-postprocess-recipe.mjs": "8160bc766a29e2afbd667a1f8413f203cdaa520083ed2abc7c25030175e28c9c",
+    "images/resvg-source/render-context-patch.mjs": "65fa68be93d4b9893dea6de44018f5a959e13bebb29420ee697b0096115e33d3",
+    "images/resvg-source/context-postprocess-recipe.mjs": "131a5c73e1336c82db9d0361d870b0baad85740adf70a237932b8ae7adaf2cbc"
+  },
+  "failures": [],
+  "rendererExecuted": false,
+  "protectedOriginalAccessed": false,
+  "localBinaryCopiesRetained": false,
+  "browserAcceptance": false,
+  "wholeGoalComplete": false,
+  "artifact": {
+    "id": 12838434791,
+    "bytes": 1019223,
+    "sha256": "d485acef56679ca373577c576e4c30a0e7b8eb9a4d449a6bd09e3c6a3e83ab53",
+    "advertisedDigest": "sha256:d485acef56679ca373577c576e4c30a0e7b8eb9a4d449a6bd09e3c6a3e83ab53",
+    "expiresAt": "2026-10-29T18:12:01Z"
+  },
+  "memory": [
+    {
+      "index": 0,
+      "initialPages": 24,
+      "initialBytes": 1572864,
+      "maximumPages": 1536,
+      "maximumBytes": 100663296,
+      "maximumExplicit": true,
+      "shared": false
+    }
+  ],
+  "staticAbi": {
+    "publishedImports": 18,
+    "candidateImports": 18,
+    "publishedExports": 51,
+    "candidateExports": 51,
+    "missingImports": [],
+    "addedImports": [],
+    "missingExports": [],
+    "addedExports": [],
+    "namesAndKindsEqual": true,
+    "functionSignaturesOrRuntimeCompatibilityProven": false,
+    "instantiated": false
+  },
+  "glueMatchesPriorPrivateCandidate": true,
+  "inputPin": {
+    "schemaVersion": 1,
+    "runId": 40742766594,
+    "headSha": "1d6dd07d5d321618982e55ae632902c54ba6691c",
+    "artifactId": 12838434791,
+    "artifactBytes": 1019223,
+    "artifactSha256": "d485acef56679ca373577c576e4c30a0e7b8eb9a4d449a6bd09e3c6a3e83ab53",
+    "receiptMember": "resvg-source-processed-repeat-40742766594.json",
+    "receiptBytes": 16388,
+    "receiptSha256": "4e94db1e379310608dc06e044309692483fbeca4a2374d0ca40793f6a3de69eb",
+    "ownerReceiptMember": "resvg-filter-context-processed-owner-40742766594.json",
+    "ownerReceiptBytes": 9573,
+    "ownerReceiptSha256": "30b2316817d79309095fb8b8c103513d1e59d4448e5070294c31732f9ca28497",
+    "wasmMember": "resvg-source-processed-repeat-40742766594.wasm",
+    "wasmBytes": 2686281,
+    "wasmSha256": "51a482a6f471251fa52c94920da0835b51f1b06c7117d1827ebb7f8abca2a5ff",
+    "glueMember": "resvg-source-processed-repeat-40742766594.mjs",
+    "glueBytes": 18019,
+    "glueSha256": "91a086534d643127d38a12726f8c65adfb398877be6bb4d8212d358b1b1fd923",
+    "experimentalMaximumBytes": 100663296,
+    "sourceRepeatPin": "images/resvg-source/filter-context-raw-input.json",
+    "filterModulePatchedSha256": "ff98d2cf2406b01d728d84ae214c146c628b514bc94fee015ce978dbbd416191",
+    "kind": "two-fresh-context-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified",
+    "renderContextPatchedSha256": "d9d3b07113d3e95e0506658e197f2c782dd0469fd5d3a34e960fff66c53f7bef"
+  },
+  "status": "verified-source-patched-private-capped-Wasm-and-binding-not-browser-acceptance",
+  "ownedRuntimeRemoved": true,
+  "finishedAt": "2026-10-28T18:17:29.775Z"
+}

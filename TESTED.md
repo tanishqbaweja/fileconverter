@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-28 — Context postprocess40742766594 SUCCESS (38s job/3s processing):
+two pinned postprocessors byte-identical, both native source-patch receipts and
+raw pin verified. Exact4-member authenticated artifact12838434791/1019223B
+SHAd485acef...ab53; capped2686281B SHA51a482a6...a5ff,24initial/1536max pages,
+96MiB unchanged, binding and public ABI names/kinds unchanged. No local binary
+copies; owned inspection/postprocessing scratch removed. New private
+--filter-context qualifier binds both source proofs and retains original6M,
+SSIM0.99, all31 seams, exact-alpha, full-tree250MiB, original timeouts/security.
+Browser conversion not yet run; previous0.496146 output remains rejected.
+`evidence/2026-10-28T18-17-23-521Z-svg-filter-processed-artifact.json`.
+Context browser preparation:9focused PASS/0fail/0skip1003.41ms, changed-file
+lint PASS; --filter-context --list-only collected the original3 cases without
+launching a browser/converting, owned runtime removed. No full suite replay.
+
 2026-10-28 — Context source build40741245271 SUCCESS: both fresh compilers
 verified regionff98d2cf...6191 and renderd9d3b071...7bef, full raw bytes equal.
 Raw3667072B SHAf2d0d3ff...fa71 differs from region-only candidate. Authenticated
