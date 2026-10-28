@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-10-28 — Source-SVG8M grid stress adapter prepared: reuse existing image
+case body/independent exact RGBA comparison, three labelled cases in ONE owned
+normal Chrome context.327564B source/32928B Pillow PNG must match historical
+SHA values exactly; only generator root/output paths change, scratch disposed
+in finally. Python3.11.9/Pillow11.3.0 available by exact installed path (not PATH).
+8 focused/lint PASS; actual dry collection lists3 cases/1 file and cleans scratch,
+no browser/conversion yet. Existing OPFS output test adapter used at this stage;
+direct-handle/effects/clean-session/OOM/stress recovery gates remain separate.
+Earliest blank/fulltree/250MiB/normal services/full DOM+HAR unmodified. No source
+compile/postprocessor replay or public engine replacement. Next one actual run.
+`scripts/test-reproduced-svg-stress.mjs`.
+
 Final idle-cycle evidence check:40 focused PASS707.408ms/zero fail/skip and
 affected lint PASS. No full-suite replay after the final receipt-only addition.
 All launched processes in this cycle terminal with owned cleanup verified;

@@ -11385,3 +11385,11 @@ README updated for idle navigation cleanup and37 current worker modules. Full
 regression predates the final privacy-receipt test addition; focused verification
 follows. No public source-SVG promotion, stress/OOM/repeat or full-goal completion.
 `evidence/2026-10-28-idle-worker-cycle.json`.
+
+2026-10-28 source-SVG8M grid stress preparation:8 focused PASS478.345ms and
+affected lint PASS; actual dry listing3 tests/1 file, no browser or conversion,
+generated runtime removed. Three same-context production OPFS adapter runs with
+existing validators and exact independent RGBA equality; historical SVG+Pillow
+reference hashes required, source recipe unchanged except owned paths. Normal
+Chrome/earliest blank/alltree/250MiB/full tracing unchanged. Direct stress and
+effects/clean-session/OOM/recovery remain pending. Python3.11.9/Pillow11.3.0 pinned.
