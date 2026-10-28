@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "runId": "40636660255",
+  "startedAt": "2026-10-28T05:13:09.821Z",
+  "status": "failed-private-raw-source-reproduction",
+  "sourcePins": {
+    "images/resvg-source/reproduce-raw-source.mjs": "a53f0b68cdd10dcb3aa9d54f6a4a24a080db12d532ae3ba50865d2cd2fd22325",
+    "images/resvg-source/remap-rustc.mjs": "844723595b9cd9edd3cc3edd15ff6f6932ebf9f528ce2c5da3d185d189e15f0e",
+    "images/resvg-source/remap-contract.mjs": "d97006fb271888ff4b84d99f40cb36fd1a5cd7b466420c452c2c04a43879c700",
+    "images/resvg-source/compile-candidate.mjs": "74583103d51daf2eb6e6ab3f8406aeb01ceacc3521371c99f7a7ef10fa6cc3c1",
+    "images/resvg-source/compile-contract.mjs": "5e685fc75551b53d0d7455684673daf73ed8656d049a8b1188fc4e0873114122",
+    "images/resvg-source/source-pins.mjs": "c5752b7db714c2f1352423d0b639be744db203f6f4d06568ca9af6629fc60152",
+    "images/resvg-source/pathfinder-repair.mjs": "1bb3392b93dab10afaaa8d0ed20f2af421706529a5528a5ce3efcb1cbcd8c886",
+    "images/resvg-source/bytes-repair.mjs": "f1610f6b6030a236228596b7cb6bcd95134406949231e47ae7ae524c943ee69b",
+    "images/resvg-source/Cargo.candidate.lock": "f420db19c74bdeae19de5bad2f0a7f02628f65a8dea5c4221b0b183a76f17b03",
+    ".github/workflows/ci.yml": "c60872fd9264e255ba8b8a629e7e2cf4b8d798bf5c1968dc5a1880bb54bf7a47",
+    ".github/workflows/svg-source-reproduction.yml": "db7ee8d3831deb80fd1fafa1ffc20c6da772d0625dcaeb859ad301e8f8c6b9c5"
+  },
+  "builds": [
+    {
+      "index": 1,
+      "buildId": "406366602551",
+      "startedAt": "2026-10-28T05:13:09.831Z",
+      "childSignal": null,
+      "childExitCode": 1,
+      "finishedAt": "2026-10-28T05:13:20.941Z"
+    }
+  ],
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\n1 !== 0\n\n    at file:///home/runner/work/fileconverter/fileconverter/images/resvg-source/reproduce-raw-source.mjs:48:96\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)"
+  ],
+  "scope": "Two fresh remapped source compilations only, before bindgen/fidelity/browser/release qualification",
+  "remappedSourceRoot": "/within/resvg-build",
+  "samePinnedCompilerLockAndCargoArguments": true,
+  "optimizationOrCodecSettingsChanged": false,
+  "sourceLocationStringsChanged": true,
+  "rawBytesEqual": false,
+  "bindgenProcessingAttempted": false,
+  "rendererExecuted": false,
+  "publicEngineReplacement": false,
+  "originalGoalComplete": false,
+  "publicBeforeSha256": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70",
+  "ownedDriverScratchRemoved": true,
+  "finishedAt": "2026-10-28T05:13:20.946Z"
+}

@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "runId": 40636660255,
+  "headSha": "9aa832a3d7ced17edcb4c10b9c2f285e2ad32841",
+  "workflow": ".github/workflows/svg-source-reproduction.yml",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40636660255",
+  "createdAt": "2026-10-28T05:12:52Z",
+  "observedAt": "2026-10-28T05:13:08Z",
+  "observedStatus": "in_progress",
+  "trigger": "push of this exact new workflow file, not duplicate dispatch",
+  "nextCheckNotBefore": "2026-10-28T05:19:00Z",
+  "estimatedInitialWaitSeconds": 368,
+  "jobTimeoutMinutes": 20,
+  "scope": "Two fresh same-compiler/same-lock raw builds with source-path remapping only; no rendering/public promotion",
+  "noDuplicateOnObservationTimeout": true,
+  "originalGoalComplete": false
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "runId": 40636660255,
+  "jobId": 122645086857,
+  "headSha": "9aa832a3d7ced17edcb4c10b9c2f285e2ad32841",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40636660255",
+  "conclusion": "failure",
+  "observedAt": "2026-10-28T05:19:11Z",
+  "completedAt": "2026-10-28T05:13:25Z",
+  "artifactId": 12793668040,
+  "artifactBytes": 14528,
+  "artifactSha256": "1cbf26072286fb4a5fa37c110142d9067b7511488289a1430e051ebc17074d40",
+  "members": [
+    {
+      "name": "resvg-source-repeat-40636660255.json",
+      "bytes": 2594,
+      "sha256": "34ff79d48ee17813d1ed2d81a6253e738ee65f25407e2f244fa5c7855f0ec7bd"
+    },
+    {
+      "name": "resvg-source-compile-406366602551.json",
+      "bytes": 13986,
+      "sha256": "a6fc695504b96b1dff560775b8737da30aadc7f093ac4e58df59bbc8e5f633bc"
+    },
+    {
+      "name": "resvg-source-compile-406366602551.lock",
+      "bytes": 36670,
+      "sha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc"
+    }
+  ],
+  "repeatReceipt": "evidence/2026-10-28-resvg-source-repeat-40636660255.json",
+  "compileReceipt": "evidence/2026-10-28-resvg-source-compile-406366602551.json",
+  "executedSourceArchive": "fixtures/source/svg-source-repeat-9aa832a3.json",
+  "cause": "Rustup canonicalizes RUSTUP_TOOLCHAIN to nightly-2023-12-11-x86_64-unknown-linux-gnu, while the wrapper expected only nightly-2023-12-11",
+  "failureBeforeCodeGeneration": true,
+  "firstBuildAttempted": true,
+  "secondBuildAttempted": false,
+  "wasmProduced": false,
+  "compilerVersionAndLockUnchanged": true,
+  "ownedCompilerScratchRemoved": true,
+  "ownedDriverScratchRemoved": true,
+  "publicEngineDiffEmpty": true,
+  "repair": "Accept exactly the short or x86_64-unknown-linux-gnu-qualified name of the same pinned nightly; exact owned compiler path remains mandatory",
+  "previousFailureRelabelled": false,
+  "sourceRepeatAccepted": false,
+  "publicEngineReplacement": false,
+  "originalGoalComplete": false
+}

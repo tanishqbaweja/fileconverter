@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "runId": "406366602551",
+  "startedAt": "2026-10-28T05:13:09.871Z",
+  "status": "failed-private-source-compilation-not-acceptance",
+  "scope": "Recorded nightly source-compile probe with exact retained baseline or explicitly recorded dependency repairs; before bindgen/public engine acceptance",
+  "pins": {
+    "upstream": "9ca058462ac529120c8cc84ddcd6fef644cc5406",
+    "cargoTomlSha256": "72880b4d3e64bd62caf033579a21057c97ed069002bdef67a0029b7fc6e340a9",
+    "resvg": "3495d8705b302d6d266748516973606ca9657906",
+    "woff2": "88cce4cd07da2c3f35839068c6f73672700cfc8b",
+    "wasmBindgen": "0.2.92",
+    "jsSys": "0.3.69",
+    "resolverToolchain": "1.90.0",
+    "compilerToolchain": "nightly-2023-12-11",
+    "resolverManifestSha256": "489c19f20d331765ab2835661eb546de90f6446a107a8db83045e7371e45cae2"
+  },
+  "compileContract": {
+    "nightlyManifestUrl": "https://static.rust-lang.org/dist/2023-12-11/channel-rust-nightly.toml",
+    "nightlyManifestSha256": "14e086a5312b0dc8bfbe5d91957eaec3a972261937547779327451a7c82fe6cf",
+    "rustcVersion": "rustc 1.76.0-nightly (d86d65bbc 2023-12-10)",
+    "lockSha256": "f420db19c74bdeae19de5bad2f0a7f02628f65a8dea5c4221b0b183a76f17b03",
+    "maxRawWasmBytes": 16777216,
+    "command": [
+      "run",
+      "nightly-2023-12-11",
+      "cargo",
+      "build",
+      "--locked",
+      "--release",
+      "--lib",
+      "--target",
+      "wasm32-unknown-unknown",
+      "--jobs",
+      "2"
+    ]
+  },
+  "commands": [
+    {
+      "command": "git",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "startedAt": "2026-10-28T05:13:09.876Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:13:09.883Z"
+    },
+    {
+      "command": "rustup",
+      "args": [
+        "toolchain",
+        "install",
+        "nightly-2023-12-11",
+        "--profile",
+        "minimal",
+        "--target",
+        "wasm32-unknown-unknown"
+      ],
+      "startedAt": "2026-10-28T05:13:10.090Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:13:18.545Z"
+    },
+    {
+      "command": "rustup",
+      "args": [
+        "run",
+        "nightly-2023-12-11",
+        "rustc",
+        "--version"
+      ],
+      "startedAt": "2026-10-28T05:13:18.545Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:13:18.561Z"
+    },
+    {
+      "command": "rustup",
+      "args": [
+        "run",
+        "nightly-2023-12-11",
+        "cargo",
+        "--version"
+      ],
+      "startedAt": "2026-10-28T05:13:18.561Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:13:18.572Z"
+    },
+    {
+      "command": "git",
+      "args": [
+        "clone",
+        "--filter=blob:none",
+        "--no-checkout",
+        "https://github.com/thx/resvg-js.git",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-OlLDk9/source"
+      ],
+      "startedAt": "2026-10-28T05:13:18.575Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:13:19.135Z"
+    },
+    {
+      "command": "git",
+      "args": [
+        "-C",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-OlLDk9/source",
+        "checkout",
+        "9ca058462ac529120c8cc84ddcd6fef644cc5406"
+      ],
+      "startedAt": "2026-10-28T05:13:19.135Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:13:20.821Z"
+    },
+    {
+      "command": "git",
+      "args": [
+        "-C",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-OlLDk9/source",
+        "rev-parse",
+        "HEAD"
+      ],
+      "startedAt": "2026-10-28T05:13:20.821Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:13:20.825Z"
+    },
+    {
+      "command": "rustup",
+      "args": [
+        "run",
+        "nightly-2023-12-11",
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--lib",
+        "--target",
+        "wasm32-unknown-unknown",
+        "--jobs",
+        "2"
+      ],
+      "startedAt": "2026-10-28T05:13:20.835Z",
+      "exitCode": 101,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:13:20.903Z"
+    }
+  ],
+  "sourcePins": {
+    "images/resvg-source/compile-candidate.mjs": "74583103d51daf2eb6e6ab3f8406aeb01ceacc3521371c99f7a7ef10fa6cc3c1",
+    "images/resvg-source/compile-contract.mjs": "5e685fc75551b53d0d7455684673daf73ed8656d049a8b1188fc4e0873114122",
+    "images/resvg-source/source-pins.mjs": "c5752b7db714c2f1352423d0b639be744db203f6f4d06568ca9af6629fc60152",
+    "images/resvg-source/pathfinder-repair.mjs": "1bb3392b93dab10afaaa8d0ed20f2af421706529a5528a5ce3efcb1cbcd8c886",
+    "images/resvg-source/bytes-repair.mjs": "f1610f6b6030a236228596b7cb6bcd95134406949231e47ae7ae524c943ee69b",
+    "images/resvg-source/Cargo.candidate.lock": "f420db19c74bdeae19de5bad2f0a7f02628f65a8dea5c4221b0b183a76f17b03",
+    ".github/workflows/ci.yml": "c60872fd9264e255ba8b8a629e7e2cf4b8d798bf5c1968dc5a1880bb54bf7a47"
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: rustup exited 101: 9aa832a3d7ced17edcb4c10b9c2f285e2ad32841\ninfo: syncing channel updates for nightly-2023-12-11-x86_64-unknown-linux-gnu\ninfo: latest update on 2023-12-11 for version 1.76.0-nightly (d86d65bbc 2023-12-10)\ninfo: downloading 4 components\n\n  nightly-2023-12-11-x86_64-unknown-linux-gnu installed - rustc 1.76.0-nightly (d86d65bbc 2023-12-10)\n\ninfo: default toolchain set to nightly-2023-12-11-x86_64-unknown-linux-gnu\nrustc 1.76.0-nightly (d86d65bbc 2023-12-10)\ncargo 1.76.0-nightly (978722961 2023-12-06)\nCloning into '/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-OlLDk9/source'...\nNote: switching to '9ca058462ac529120c8cc84ddcd6fef644cc5406'.\n\nYou are in 'detached HEAD' state. You can look around, make experimental\nchanges and commit them, and you can discard any commits you make in this\nstate without impacting any branches by switching back to a branch.\n\nIf you want to create a new branch to retain commits you create, you may\ndo so (now or later) by using -c with the switch command. Example:\n\n  git switch -c <new-branch-name>\n\nOr undo this operation with:\n\n  git switch -\n\nTurn off this advice by setting config variable advice.detachedHead to false\n\nHEAD is now at 9ca0584 2.6.2\n9ca058462ac529120c8cc84ddcd6fef644cc5406\nerror: failed to run `rustc` to learn about target-specific information\n\nCaused by:\n  process didn't exit successfully: `/home/runner/work/fileconverter/fileconverter/images/resvg-source/remap-rustc.mjs /home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-OlLDk9/rustup/toolchains/nightly-2023-12-11-x86_64-unknown-linux-gnu/bin/rustc - --crate-name ___ --print=file-names --crate-type bin --crate-type rlib --crate-type dylib --crate-type cdylib --crate-type staticlib --crate-type proc-macro --print=sysroot --print=split-debuginfo --print=crate-name --print=cfg` (exit status: 1)\n  --- stderr\n  node:internal/modules/run_main:107\n      triggerUncaughtException(\n      ^\n\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n\n  + 'nightly-2023-12-11-x86_64-unknown-linux-gnu'\n  - 'nightly-2023-12-11'\n                       ^\n\n      at remappedRustcInvocation (file:///home/runner/work/fileconverter/fileconverter/images/resvg-source/remap-contract.mjs:8:10)\n      at file:///home/runner/work/fileconverter/fileconverter/images/resvg-source/remap-rustc.mjs:10:20\n      at ModuleJob.run (node:internal/modules/esm/module_job:561:25)\n      at async node:internal/modules/esm/loader:647:26\n      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'nightly-2023-12-11-x86_64-unknown-linux-gnu',\n    expected: 'nightly-2023-12-11',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\n  Node.js v24.21.0\n\n\n101 !== 0\n\n    at run (file:///home/runner/work/fileconverter/fileconverter/images/resvg-source/compile-candidate.mjs:54:10)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async file:///home/runner/work/fileconverter/fileconverter/images/resvg-source/compile-candidate.mjs:91:3"
+  ],
+  "rawWasm": null,
+  "sourceCompilationAttempted": true,
+  "sourceCompilationSucceeded": false,
+  "bindgenProcessingAttempted": false,
+  "browserOrMemoryAcceptance": false,
+  "exactPublishedBinaryReproduction": false,
+  "publicEngineReplacement": false,
+  "protectedOriginalAccessed": false,
+  "historicalDependencyGraphRecovered": false,
+  "originalGoalComplete": false,
+  "pathfinderRepair": {
+    "package": "pathfinder_simd",
+    "from": "0.5.6",
+    "to": "0.5.2",
+    "oldChecksum": "4500030c302e4af1d423f36f3b958d1aecb6c04184356ed5a833bf6b60435777",
+    "newChecksum": "0444332826c70dc47be74a7c6a5fc44e23a7905ad6858d4162b658320455ef93",
+    "repairedLockSha256": "09c8cea801f0433b757c5b612c96b598faf6f911ddcc665f1fad34dc000d2c6a",
+    "repairedManifestSha256": "a7f6f21e8f1d31c6717b77367ddd4a02e597aed45a2f0c6629806efe2f772a8e",
+    "reason": "Measured E0658:0.5.6 uses round_ties_even unavailable in recorded nightly;0.5.2 is the original manifest's declared version and uses round",
+    "candidateOnly": true,
+    "identicalRenderingClaim": false,
+    "historicalGraphRecovered": false
+  },
+  "bytesRepair": {
+    "package": "bytes",
+    "from": "1.12.1",
+    "to": "1.6.0",
+    "oldChecksum": "fc652a48c352aef3ea3aed32080501cf3ef6ed5da78602a020c991775b0aff04",
+    "newChecksum": "514de17de45fdb8dc022b1a7975556c53c86f9f0aa5f534b98977b171857c2c9",
+    "repairedLockSha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc",
+    "publishedVersionWitness": "bytes-1.6.0",
+    "candidateOnly": true,
+    "securityOrRenderingQualification": false,
+    "reason": "Measured WOFF2 SafeBuf/Buf try_get method collision in newer bytes; inspected official1.6.0 source lacks those new methods and matches actual published Wasm path witness"
+  },
+  "executedHead": "9aa832a3d7ced17edcb4c10b9c2f285e2ad32841",
+  "rustcVersion": "rustc 1.76.0-nightly (d86d65bbc 2023-12-10)",
+  "cargoVersion": "cargo 1.76.0-nightly (978722961 2023-12-06)",
+  "originalLock": {
+    "bytes": 36671,
+    "sha256": "f420db19c74bdeae19de5bad2f0a7f02628f65a8dea5c4221b0b183a76f17b03",
+    "packages": 158,
+    "registryPackages": 151,
+    "gitPackages": 6,
+    "initialCandidateLockNotHistoricalPublicationLock": true
+  },
+  "lock": {
+    "bytes": 36670,
+    "sha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc",
+    "packages": 158,
+    "registryPackages": 151,
+    "gitPackages": 6,
+    "initialCandidateLockNotHistoricalPublicationLock": true
+  },
+  "retainedRepairedLock": "outputs/reports/resvg-source-compile-406366602551.lock",
+  "ownedScratchRemoved": true,
+  "compilerLog": {
+    "bytes": 2814,
+    "sha256": "28f9536782c5a18e4944a1d362863fc37af560506252495f8d9b4c5bd8b8d0c9",
+    "retainedTailBytes": 2814,
+    "tail": "9aa832a3d7ced17edcb4c10b9c2f285e2ad32841\ninfo: syncing channel updates for nightly-2023-12-11-x86_64-unknown-linux-gnu\ninfo: latest update on 2023-12-11 for version 1.76.0-nightly (d86d65bbc 2023-12-10)\ninfo: downloading 4 components\n\n  nightly-2023-12-11-x86_64-unknown-linux-gnu installed - rustc 1.76.0-nightly (d86d65bbc 2023-12-10)\n\ninfo: default toolchain set to nightly-2023-12-11-x86_64-unknown-linux-gnu\nrustc 1.76.0-nightly (d86d65bbc 2023-12-10)\ncargo 1.76.0-nightly (978722961 2023-12-06)\nCloning into '/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-OlLDk9/source'...\nNote: switching to '9ca058462ac529120c8cc84ddcd6fef644cc5406'.\n\nYou are in 'detached HEAD' state. You can look around, make experimental\nchanges and commit them, and you can discard any commits you make in this\nstate without impacting any branches by switching back to a branch.\n\nIf you want to create a new branch to retain commits you create, you may\ndo so (now or later) by using -c with the switch command. Example:\n\n  git switch -c <new-branch-name>\n\nOr undo this operation with:\n\n  git switch -\n\nTurn off this advice by setting config variable advice.detachedHead to false\n\nHEAD is now at 9ca0584 2.6.2\n9ca058462ac529120c8cc84ddcd6fef644cc5406\nerror: failed to run `rustc` to learn about target-specific information\n\nCaused by:\n  process didn't exit successfully: `/home/runner/work/fileconverter/fileconverter/images/resvg-source/remap-rustc.mjs /home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-OlLDk9/rustup/toolchains/nightly-2023-12-11-x86_64-unknown-linux-gnu/bin/rustc - --crate-name ___ --print=file-names --crate-type bin --crate-type rlib --crate-type dylib --crate-type cdylib --crate-type staticlib --crate-type proc-macro --print=sysroot --print=split-debuginfo --print=crate-name --print=cfg` (exit status: 1)\n  --- stderr\n  node:internal/modules/run_main:107\n      triggerUncaughtException(\n      ^\n\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n\n  + 'nightly-2023-12-11-x86_64-unknown-linux-gnu'\n  - 'nightly-2023-12-11'\n                       ^\n\n      at remappedRustcInvocation (file:///home/runner/work/fileconverter/fileconverter/images/resvg-source/remap-contract.mjs:8:10)\n      at file:///home/runner/work/fileconverter/fileconverter/images/resvg-source/remap-rustc.mjs:10:20\n      at ModuleJob.run (node:internal/modules/esm/module_job:561:25)\n      at async node:internal/modules/esm/loader:647:26\n      at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'nightly-2023-12-11-x86_64-unknown-linux-gnu',\n    expected: 'nightly-2023-12-11',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\n  Node.js v24.21.0\n"
+  },
+  "finishedAt": "2026-10-28T05:13:20.929Z"
+}

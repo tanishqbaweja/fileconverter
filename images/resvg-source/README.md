@@ -13,12 +13,11 @@ The resolver's release manifest is hash-checked. Rust/Cargo downloads, sources,
 temp and caches stay in a fresh repository-owned directory removed on exit.
 Only bounded manifest, lock and provenance survive for review.
 
-Next: inspect the lock, pin the compiler/bindgen tool dependencies, compile a
-private candidate, compare binary and JS ABI against the published engine. If
-different, qualify correctness, fidelity, memory, privacy and cleanup before any
-replacement. This preparation never writes `public/engines`, runs a conversion,
-uses Docker or accesses `test.mkv`. Strict source-build completeness remains
-failed until the original source-reproduction requirement is actually met.
+Source compilation and a first private bindgen stage have since executed; see
+the stage boundaries below. None of these build stages writes `public/engines`,
+runs a conversion, uses Docker or accesses `test.mkv`. Strict source-build
+completeness remains failed until the published engine's source-reproduction
+requirement is actually met.
 
 The retained `Cargo.candidate.lock` is the actual verified output of run
 40513908373 (158 packages). Do not rerun the resolver unchanged.
@@ -60,3 +59,65 @@ remaining graph re-resolution. This is another explicit private candidate, not
 rendering/security qualification or permission to publish. Strict memory-contract
 tests also expose the old published SVG module's missing declared maximum; a
 source build alone cannot close that requirement or the full process-tree gate.
+
+## Executed stages and open gates
+
+| Stage | Actual evidence | What it does not prove |
+| --- | --- | --- |
+| Locked source compile with both measured dependency repairs | Run40521129468; raw3,676,614 B, SHA3e93d4dd…0404da3f | Bindgen output, rendering, source-repeat equality |
+| Pinned bindgen0.2.92 and deterministic experimental96 MiB maximum | Run40525478469; private2,695,842 B candidate, SHA6e5b1920…499fd6 | Exact old publication bytes, complete-browser memory, safe OOM recovery |
+| Ten existing production-browser SVG correctness/fidelity/direct-save/error/policy checks | All ten passed; both failed and passed full-tree small-suite runs retained | Repeatable conversion optimization, maximum-size stress, cancellation/OOM and release qualification |
+| Source path audit |188 random scratch-prefix occurrences in data section11 | A successful second reproducible build |
+| Fresh remapped source-repeat workflow | Recipe prepared; run result must be checked separately | Processed/browser engine repeatability or public promotion |
+
+The published engine is still the original pinned npm binary, not this private
+candidate. It has no explicit Wasm maximum. The private cap changes only the
+memory declaration and preserves all other section payloads, but96 MiB is an
+experimental budget, not a qualified production setting. Import/export names and
+kinds match the current glue; the actual small browser cases additionally test
+functional compatibility. Full fidelity, stress, recovery, legal/security and
+whole-process-tree release gates remain mandatory.
+
+The normal-service Chrome small-suite results include275.04 MiB (failed) and
+241.76 MiB (passed after diagnostic-session recovery). These are different runs,
+not an established causal or repeatable conversion-memory improvement. Three
+allocator probes and a rejected snapshot/HAR-option control are diagnostic only.
+The default harness retains complete DOM/HAR tracing and the original250 MiB
+formula; unavailable realm measurements stay null. See
+`evidence/2026-10-28-cdp-session-recovery-browser-terminal.json` and the prior
+failure references in `TESTED.md`.
+
+## Independent raw source reproduction
+
+`.github/workflows/svg-source-reproduction.yml` runs:
+
+```sh
+node images/resvg-source/reproduce-raw-source.mjs
+```
+
+This is an isolated Linux Actions build, not a local conversion command. The
+workflow is manual after its exact-file push bootstrap. Do not dispatch again
+while a confirmed run is live; retain its run ID and estimated next-check time.
+
+The wrapper `remap-rustc.mjs` verifies the exact compiler under each fresh owned
+Rust home, then prepends
+`--remap-path-prefix=<owned-compile-runtime>=/within/resvg-build` to each rustc
+invocation. All original rustc arguments are preserved; competing compiler flags
+and unexpected roots/compilers are rejected. The original `compile-candidate.mjs`
+driver, nightly, locked dependency graph and Cargo release arguments are not
+rewritten. This changes source-location strings, not codec or optimizer settings;
+new output still needs its own qualification.
+
+Two builds use distinct fresh Cargo/Rustup/target/temp directories. Both actual
+receipts must show success and completed owned cleanup, the exact compiler/lock,
+and no random scratch prefix left in raw Wasm. The recipe compares the full raw
+bytes, not merely package versions or source metadata. Only after equality and
+file-identity checks does it remove the second duplicate raw binary and lock.
+Both compact receipts plus one raw candidate/lock survive for the next stage in
+a one-day artifact. Failure evidence may retain the second candidate for diagnosis.
+
+Raw equality alone does not qualify wasm-bindgen output. The next stage must
+pin the new artifact/receipt hashes, run the pinned postprocessor and cap, compare
+outputs, and qualify real browser rendering/recovery/memory. Existing artifact
+input JSONs refer to the earlier immutable runs and expire; do not silently swap
+their IDs or claim an unexecuted pipeline passed.

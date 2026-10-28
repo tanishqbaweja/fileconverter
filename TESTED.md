@@ -1,5 +1,26 @@
 # Tested conversion ledger
 
+2026-10-28 — Host-qualified nightly guard correction:25 focused PASS/0fail/
+0skip, affected lint PASS. Actual failed compile receipt/source pins checked;
+short and exacthost-qualified compiler names map to the same pinned binary,
+otherhosts rejected. Correctedrepeat planned once withfour-minute initialcheck/
+20-minute cap. No existing compiler-driver/dependency/codec/optimizer change.
+Earlier1,863 full portable pass does not include these later added test cases.
+
+2026-10-28 — Source-repeat40636660255 terminal FAILURE before rustc target
+discovery/code generation: Rustup's canonical pinned toolchain name includes host
+triplet, whereas wrapper expectedshortname. NoWasm/secondbuild; same exactcompiler
+and lock; compiler/driver scratch removed, public unchanged. Retained3-member
+artifact14,528 B and exact receipts/source archive. Guard now accepts just the
+short and exact x86_64-qualified names; otherhosts stillreject. Old failure not
+relabeled. `evidence/2026-10-28-svg-source-repeat-first-terminal.json`.
+
+2026-10-28 — Actual source-repeat bootstrap40636660255/9aa832a3 observed
+IN_PROGRESS05:13:08. One run, two fresh locked builds with source-path remap;
+no renderer/public update or source-repeat pass yet. Initial check not before
+05:19 UTC,20-minute cap; no duplicate. See
+`evidence/2026-10-28-svg-source-repeat-launch.json`.
+
 2026-10-28 — Final portable regression PASS1863/0fail/0skip/0cancel,560 files,
 82.081s;162 qualification files not executed. Prior1819/39 and1858/1 failures
 preserved. Focused historical106, source-contract35 and final bootstrap4 all

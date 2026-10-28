@@ -1,5 +1,28 @@
 # Remaining work audit
 
+2026-10-28 — Exact host-qualified nightly guard correction verified25 focused
+PASS/0fail/0skip plus affected lint PASS. An additional10 focused sampler/evidence
+checks also passed while waiting;1,863 full portable pass predates these added
+tests and is not relabeled. One corrected source-repeat manual dispatch planned,
+four-minute first observation allowance/20-minute cap, no duplicate. Compiler
+driver, dependency graph, source revisions, Cargo argv andquality unchanged.
+
+2026-10-28 — Initial source-repeat40636660255 FAILED before code generation:
+Rustup expands pinned nightly to its exact x86_64 host-qualified name; wrapper
+mistakenly demanded only its short form. Samecompiler/version/lock confirmed;
+noWasm, second build not started, both owned compiler/driver scratch removed,
+publicdiffclear. Exact bounded artifact/receipts and old remap contract retained.
+Corrected guard permits ONLY those two names for that same nightly and exact
+owned compiler path, rejecting otherhosts/toolchains; no rendering/quality/limit
+change. Retry only changed source-repeat stage; previousfailure preserved.
+`evidence/2026-10-28-svg-source-repeat-first-terminal.json`.
+
+2026-10-28 — Source reproduction bootstrap40636660255/9aa832a3 confirmed
+IN_PROGRESS05:13:08 UTC (created05:12:52). Follow samehandle no earlier05:19 UTC,
+six-minute allowance/20-minute cap. This is the concrete remap+twofresh-build
+change, not an unchanged replay. No duplicate dispatch or otherengine/browser
+matrix. `evidence/2026-10-28-svg-source-repeat-launch.json`. Goal remains open.
+
 2026-10-28 — Final portable regression now PASS1863/0fail/0skip/0cancel in
 82.081s across560 files; all722 files accounted for,162 qualification files
 explicitly not run. Both preceding historical-binding failures retained rather
