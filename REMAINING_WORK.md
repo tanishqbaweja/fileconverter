@@ -1,5 +1,23 @@
 # Remaining work audit
 
+Changed idle-worker lifecycle full portable regression1893PASS/0fail/0skip/
+0cancel106.014s,567 files;162 qualification files not run. Build/TypeScript PASS,
+affected lint PASS before final receipt test addition. Current changed-build
+19-case privacy check next. SVG high-pixel/effects stress, same/clean-session
+repeats, explicit-max allocation failure and stress recovery remain before
+public source-engine promotion. Historical small-suite memory failures retained.
+`evidence/2026-10-28-idle-worker-cycle.json`.
+
+2026-10-28 — Changed lifecycle exact-engine small SVG gate PASS:10/10 unchanged
+functional/validator/security/write-failure/direct-save cases, full-tree235.6641
+MiB <=250 using earliest blank (325558272B) and simultaneous peak(572669952B),
+170 valid native samples/zero unavailable. Coordinator source explicitly bound,
+same SHA4068…afab9d, normal services/full DOM+HAR unchanged. Earlier264.29297MiB
+failure retained, not sole-cause/repeatable optimization proof. Five owned births
+absent, inner/outer runtimes removed, original full SHA/size unchanged. Candidate
+still PRIVATE: high-pixel stress/repeats/OOM/recovery remain, no public promotion.
+`evidence/2026-10-28-svg-idle-lifecycle-qualification-terminal.json`.
+
 2026-10-28 — Actual changed idle lifecycle diagnostic COMPLETE:8 observations,
 away conversion workers0/0/0, returned1/1/1 with four distinct worker IDs including
 initial. Two persisted BFCache returns, one browser-chosen fresh document; cache

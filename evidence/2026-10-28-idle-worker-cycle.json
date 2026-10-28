@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "scope": "Idle worker navigation ownership and same-engine small SVG verification; not full project or SVG stress acceptance",
+  "firstDiagnostic": "evidence/2026-10-28-idle-navigation-first-terminal.json",
+  "fixedDiagnostic": "evidence/2026-10-28-idle-navigation-fixed-terminal.json",
+  "sameEngineConversionGate": "evidence/2026-10-28-svg-idle-lifecycle-qualification-terminal.json",
+  "productionBuild": "passed with existing warnings",
+  "typescript": "passed",
+  "affectedLint": "passed before final small-suite receipt test addition",
+  "coordinatorCoreFocusedTests": { "passed": 44, "failed": 0, "skipped": 0, "durationMs": 1139.0861 },
+  "finalPreparationFocusedTests": { "passed": 32, "failed": 0, "skipped": 0, "durationMs": 641.9548 },
+  "fullPortableRegression": { "passed": 1893, "failed": 0, "skipped": 0, "cancelled": 0, "durationMs": 106013.7998, "selectedFiles": 567, "allFiles": 729, "qualificationFilesNotRun": 162 },
+  "privacyBrowserGate": "pending-one-current-lifecycle-build-run-of-existing-19-cases",
+  "repeatableOrSoleCauseMemoryOptimizationProven": false,
+  "publicSvgEngineUnchanged": true,
+  "remainingSvgGates": ["fixed-maximum source candidate high-pixel/effects stress with independent validation", "three repeatable same-session and clean-session process-tree memory/cleanup runs", "safe allocation failure at the experimental maximum", "cancellation and output failure/recovery under stress", "source reproduction/public registry/docs/release acceptance alignment"],
+  "originalGoalComplete": false
+}

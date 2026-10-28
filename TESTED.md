@@ -11367,3 +11367,12 @@ First diagnostic remains failed on invalid load-event wait, despite its observed
 same-document/retained-worker evidence. New URL/readiness wait is correct for
 cached restores. Not conversion/peak-memory acceptance; same ten SVG cases next.
 `evidence/2026-10-28-idle-navigation-fixed-terminal.json`.
+
+2026-10-28 changed lifecycle ten-case SVG gate ate05a7d93:10/10 PASS17.379s;
+170 valid native samples/zero unavailable, exact earliest-blank/fulltree delta
+235.6640625MiB <=250. Same reproduced engine SHA4068…afab9d, same assertions,
+normal services and full DOM/HAR. Previous264.29297MiB failure remains; one new
+small-suite pass does not establish sole causality, repeatability, high-pixel
+stress, OOM/recovery or public promotion. Suite timing is NOT conversion-speed
+benchmark. Five owned births absent, both runtimes removed, original full SHA/
+size unchanged. `evidence/2026-10-28-svg-idle-lifecycle-qualification-terminal.json`.

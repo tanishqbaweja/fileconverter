@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "e05a7d93",
+  "command": "scripts/test-reproduced-svg-candidate.mjs",
+  "sessionId": 24363,
+  "observedRunningAt": "2026-10-28T06:28:12Z",
+  "estimatedRemainingSeconds": 150,
+  "notBeforeNextObservation": "2026-10-28T06:30:42Z",
+  "singleExecutionOnly": true,
+  "reasonNotReplay": "Changed production idle-worker lifecycle, now proven to retire workers while away; same ten cases and exact reproduced engine",
+  "earliestStableBlankGateUnchanged": true,
+  "primaryMemoryLimitMiB": 250,
+  "fullChromiumTreeNoProcessExclusions": true,
+  "fullDomAndHarTracing": true,
+  "browserServicesDisabled": false,
+  "headless": true,
+  "newPublicEnginePromotion": false
+}

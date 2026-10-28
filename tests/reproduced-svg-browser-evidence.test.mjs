@@ -51,3 +51,26 @@ test("lifecycle diagnostic that never stabilized its earliest blank remains unex
   assert.deepEqual(browser.protectedOriginalBefore, browser.protectedOriginalAfter);
   assert.equal(proof.retainedNavigationHypothesis, "untested, not confirmed or rejected");
 });
+test("changed idle lifecycle passes the exact reproduced-engine ten-case full-tree gate, never stress or repeatable optimization acceptance", async () => {
+  const proof = JSON.parse(await read("evidence/2026-10-28-svg-idle-lifecycle-qualification-terminal.json")), values = [];
+  for (const entry of [proof.wrapper, proof.browser]) {
+    const bytes = await read(entry.path); assert.equal(bytes.length, entry.bytes); assert.equal(sha(bytes), entry.sha256); values.push(JSON.parse(bytes));
+  }
+  const [wrapper, browser] = values;
+  assert.equal(wrapper.status, proof.status); assert.equal(browser.status, "passed-ten-private-small-svg-browser-cases-not-public-stress-acceptance");
+  assert.equal(browser.executedHead, proof.executedHead); assert.deepEqual(browser.failures, []);
+  assert.deepEqual([browser.stats.expected, browser.stats.unexpected, browser.stats.skipped, browser.stats.flaky], [10,0,0,0]);
+  assert.equal(browser.candidatePin.wasmSha256, proof.candidateSha256);
+  assert.equal(browser.sourcePins["lib/staged-worker-coordinator.ts"], proof.coordinatorSha256);
+  assert.equal(wrapper.sourcePins["lib/staged-worker-coordinator.ts"], proof.coordinatorSha256);
+  assert.equal(sha(await read("lib/staged-worker-coordinator.ts")), proof.coordinatorSha256);
+  assert.equal(browser.memory.validSamples, 170); assert.equal(browser.memory.unavailableSamples, 0);
+  assert.equal(browser.memory.incrementalPrivateMiB, 235.6640625); assert.equal(browser.memory.limitMiB, 250);
+  assert.equal((browser.memory.peak.privateBytes - browser.blankBaseline.privateBytes) / 1048576, 235.6640625);
+  assert.equal(browser.baselineAdjusted, false); assert.equal(browser.browserServicesDisabledByDriver, false);
+  assert.equal(browser.domSnapshotRecording, true); assert.equal(browser.networkHarRecording, true); assert.equal(browser.memory.diagnosticPerturbed, false);
+  assert.equal(browser.ownedRuntimeRemoved, true); assert.equal(wrapper.ownedGenerationRuntimeRemoved, true);
+  assert.ok(browser.processCleanup.every(row => row.status === "owned-identity-absent")); assert.equal(wrapper.processCleanup.status, "owned-identity-absent");
+  assert.deepEqual(browser.protectedOriginalBefore, browser.protectedOriginalAfter);
+  assert.equal(proof.repeatableOrSoleCauseOptimizationProven, false); assert.equal(proof.stressOomAndRepeatAcceptance, false); assert.equal(proof.publicEngineReplacement, false);
+});
