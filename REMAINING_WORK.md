@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-10-28 — Distinct SVG6M effects preparation: byte-identical470390B historical
+SVG from pinned unchanged builder, independent current-Chromium SVG/Canvas2D
+reference generated only in fresh owned fixture/profile directories and removed
+after use. No shared historical manifest writes. Bound reference export to one
+awaited64KiB write; record reference hash/version equality instead of assuming.
+Fixed independent native RGB24 SSIM>=0.99 before execution (not exactRGBA).
+First10pass/2fail rejected ambiguous five-match completion hook before browser;
+exact generic-body scope repair gives12focusedPASS, actual collection selects
+three6M cases/no browser. Strict final baseline/250 verdict retained even if
+functional diagnostics continue; no public promotion/unchanged8M replay.
+`evidence/2026-10-28-svg-effects-preparation.json`.
+
 2026-10-28 — SVG execution cycle final privacy/offline/hosting PASS19/0fail/
 0skip/0flaky44.216s at1eb5c893 after scalar-order repair/rebuild. All current
 cycle source hashes unchanged, two owned privacy births absent and scratch
