@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-10-28 — Lifecycle-only diagnostic preparation:15 focused/lint PASS before
+new failure-evidence test. Same ten original functional assertions, normalChrome,
+fullDOM/HAR/earliestblank/fulltree250MiB. Adds bounded persistedpage-event and
+DOM/navigation/frame/target metadata only; no cache settings, GC or appfix. Unknown
+values null, overflowreported, never memoryacceptance. Actual264.29MiB failure
+and sourcearchive retained. `evidence/2026-10-28-svg-lifecycle-diagnostic-preparation.json`.
+
+2026-10-28 — Real new reproducedSVG engine:10 functional PASS/0fail/0skip,
+including independent decode/SSIM/directsave/writefailure/security; strict full-
+tree suite memory FAILED264.29296875 MiB. Sameunchanged250MiB/earlyblank/all
+processes/normalservices/DOM+HAR. Exact generated sources and trace kept, old
+results not reused as acceptance. Inner and generation runtimes removed, five
+owned births absent, protectedoriginal unchanged. Next lifecycle-only diagnostic
+for retained docs/workers; no guessed productionfix or unchanged source replay.
+`evidence/2026-10-28-reproduced-svg-browser-terminal.json`.
+
 2026-10-28 — Newcandidate browser preparation17 focused/lint PASS. Collection
 dryrun1 failed due Windows absolute CLI-regex path (no browser); basename/exact
 config collection corrected, dryrun2 selects10 tests/1file. Owned scratch removed

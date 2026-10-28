@@ -48,3 +48,15 @@ test("outer owner archives exact generated code and verifies owned child exit be
     'actual.browserServicesDisabledByDriver, false', 'actual.baselineAdjusted, false']) assert.ok(source.includes(anchor), anchor);
   assert.doesNotMatch(source, /--disable-|cargo build|rustup|build:svg|WebAssembly\.instantiate/);
 });
+test("lifecycle mode observes bounded page-transition and target counters, never changes caching, GC, conversion or memory gates", async () => {
+  const generated = makeReproducedSvgBrowserQualification({ root, runtime: path.join(root, "work/svg-reproduced-qualification-aBc123"),
+    driverBytes: await read("scripts/test-source-built-svg-candidate.mjs"), suiteBytes: await read("tests/browser/image-conversions.spec.ts"), lifecycleDiagnostic: true });
+  assert.equal(generated.proof.lifecycleDiagnostic, true);
+  for (const anchor of ['events.length >= 128', '"pagehide", "pageshow"', 'persisted: event.persisted',
+    '"Memory.getDOMCounters", "Page.getNavigationHistory", "Page.getFrameTree"', '"Target.getTargets"',
+    'report.memory.diagnosticPerturbed = true', 'report.memory.incrementalPrivateMiB <= 250',
+    'stats.expected, 10', 'completed-reproduced-svg-lifecycle-diagnostic-not-memory-acceptance']) assert.ok(generated.driver.includes(anchor), anchor);
+  assert.doesNotMatch(generated.driver, /setWebLifecycleState|setBypassServiceWorker|disable-back-forward-cache|collectGarbage|forceGC/);
+  const parsed = ts.createSourceFile("lifecycle-driver.mjs", generated.driver, ts.ScriptTarget.ESNext, true);
+  assert.deepEqual(parsed.parseDiagnostics, []);
+});

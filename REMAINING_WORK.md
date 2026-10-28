@@ -1,5 +1,25 @@
 # Remaining work audit
 
+2026-10-28 — Read-only lifecycle mode prepared after actual264.29 MiB failure:
+up to128 pagehide/pageshow events, explicit persistedflags, DOMcounter/navigation/
+frame/target metadata. No browsercache/service settings, app code, threshold,
+assertions or forcedGC changes. Missing replies null/overflowreported. This mode
+is diagnosticallyperturbed and can never confer memory/releaseacceptance.15
+focused/lint PASS before real-evidence test addition; exact oldfailed adapter
+sources archived. One diagnosticrun planned,~150s firstcheck, no source replay.
+`evidence/2026-10-28-svg-lifecycle-diagnostic-preparation.json`.
+
+2026-10-28 — Actual reproducedcandidate (SHA4068ccdc…afab9d) now passes all
+TEN unchanged functional browser checks, but strict whole-suite process memory
+FAILED264.29296875 MiB >250. No sourcecompile/postprocess replay or publicupdate.
+Earlyblank/fulltree/normalservices/DOM+HAR and all assertions preserved. Exact
+generated sources, raw evidence and memory-failure trace retained. Both owned
+runtimes removed, five owned process births absent, original size/SHA unchanged.
+This does not qualify newengine for public/stress acceptance. Next read-only
+navigation lifecycle observation investigates retainedframes/workers before any
+production fix; BFCache is a hypothesis, not established allocator causality.
+`evidence/2026-10-28-reproduced-svg-browser-terminal.json`.
+
 2026-10-28 — Exact-new-engine adapter17 focused/lint PASS. First generated-suite
 listing failed beforebrowser: an unescaped Windows absolute path became a CLI
 regex. Switched only collection filter to basename under exact owned config and

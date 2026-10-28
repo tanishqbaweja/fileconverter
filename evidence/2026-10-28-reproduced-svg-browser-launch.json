@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "headPrefix": "fbc76f54",
+  "terminalSessionId": 82940,
+  "runner": "scripts/test-reproduced-svg-candidate.mjs",
+  "initialToolReturnAt": "2026-10-28T05:41:18Z",
+  "nextCheckNotBefore": "2026-10-28T05:43:50Z",
+  "estimatedInitialAllowanceSeconds": 162,
+  "candidatePin": "images/resvg-source/repeated-processed-input.json",
+  "scope": "Ten unchanged existing correctness/fidelity/direct-output/write-failure/security cases on exact reproduced candidate",
+  "normalServicesEarlyBlankFullTree250MiBAndDomHarRetained": true,
+  "headed": false,
+  "sourceCompilerOrPostprocessorReplayed": false,
+  "noDuplicateOnObservationTimeout": true,
+  "publicEngineReplacement": false,
+  "result": "not yet observed at launch entry"
+}

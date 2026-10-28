@@ -11,7 +11,8 @@ const replaceExactly = (source, before, after, count = 1) => {
   assert.equal(source.split(before).length - 1, count, "Exact qualification source anchor: " + before);
   return source.split(before).join(after);
 };
-export function makeReproducedSvgBrowserQualification({ root, runtime, driverBytes, suiteBytes }) {
+export function makeReproducedSvgBrowserQualification({ root, runtime, driverBytes, suiteBytes, lifecycleDiagnostic = false }) {
+  assert.equal(typeof lifecycleDiagnostic, "boolean");
   assert.equal(root, path.resolve(import.meta.dirname, "../.."));
   assert.equal(path.dirname(runtime), path.join(root, "work"));
   assert.match(path.basename(runtime), /^svg-reproduced-qualification-[A-Za-z0-9]{6}$/);
@@ -39,11 +40,37 @@ export function makeReproducedSvgBrowserQualification({ root, runtime, driverByt
     const resolved = path.resolve(root, "scripts", name); assert.ok(resolved.startsWith(root + path.sep));
     return start + pathToFileURL(resolved).href + end;
   });
+  if (lifecycleDiagnostic) {
+    const observe = `report.lifecycleDiagnostic = { acceptanceMetric: false, perturbsMemory: true, events: [], overflow: false, observations: [] };\n` +
+      `  await context.exposeBinding("__withinLifecycleObservation", (_source, event) => {\n` +
+      `    if (report.lifecycleDiagnostic.events.length >= 128) { report.lifecycleDiagnostic.overflow = true; return; }\n` +
+      `    report.lifecycleDiagnostic.events.push({ receivedAt: new Date().toISOString(), ...event });\n` +
+      `  });\n` +
+      `  await context.addInitScript(() => {\n` +
+      `    for (const type of ["pagehide", "pageshow"]) addEventListener(type, event => {\n` +
+      `      void globalThis.__withinLifecycleObservation({ type, persisted: event.persisted, href: location.href, timestamp: new Date().toISOString() }).catch(() => {});\n` +
+      `    });\n` +
+      `  });\n`;
+    driver = replaceExactly(driver, "  realms = await connectPlaywrightRealmSampler(browser, origin);", observe + "  realms = await connectPlaywrightRealmSampler(browser, origin);");
+    const inspect = `  report.memory.diagnosticPerturbed = true;\n` +
+      `  const lifecyclePageSession = await context.newCDPSession(page), lifecycleBrowserSession = await browser.newBrowserCDPSession();\n` +
+      `  try {\n` +
+      `    for (const method of ["Memory.getDOMCounters", "Page.getNavigationHistory", "Page.getFrameTree"]) {\n` +
+      `      try { report.lifecycleDiagnostic.observations.push({ method, result: await lifecyclePageSession.send(method) }); }\n` +
+      `      catch (error) { report.lifecycleDiagnostic.observations.push({ method, result: null, unavailable: String(error).slice(0, 512) }); }\n` +
+      `    }\n` +
+      `    const result = await lifecycleBrowserSession.send("Target.getTargets");\n` +
+      `    const targets = result.targetInfos.filter(target => target.url.startsWith(origin + "/")); assert.ok(targets.length <= 32);\n` +
+      `    report.lifecycleDiagnostic.observations.push({ method: "Target.getTargets", result: targets });\n` +
+      `  } finally { await lifecyclePageSession.detach(); await lifecycleBrowserSession.detach(); }\n`;
+    driver = replaceExactly(driver, '  assert.equal(report.runnerSignal, null); assert.equal(report.runnerExitCode, 0, runnerLog);', inspect + '  assert.equal(report.runnerSignal, null); assert.equal(report.runnerExitCode, 0, runnerLog);');
+    driver = replaceExactly(driver, '"passed-ten-private-small-svg-browser-cases-not-public-stress-acceptance";', '"completed-reproduced-svg-lifecycle-diagnostic-not-memory-acceptance";');
+  }
   const config = `import original from ${JSON.stringify(pathToFileURL(path.join(root, "playwright.config.ts")).href)};\n` +
     `export default { ...original, testDir: ${JSON.stringify(runtime)}, testMatch: "**/image-conversions.spec.ts", outputDir: ${JSON.stringify(path.join(runtime, "artifacts"))} };\n`;
   return { driverPath, suitePath, configPath, driver, suite, config,
     proof: { baseSourcePins: reproducedSvgBasePins, driverSha256: sha(driver), suiteSha256: sha(suite), configSha256: sha(config),
-      sameTenCasesAndAllAssertions: true, memoryFormulaAndThresholdUnchanged: true,
+      sameTenCasesAndAllAssertions: true, memoryFormulaAndThresholdUnchanged: true, lifecycleDiagnostic,
       normalBrowserServicesUnchanged: true, baseFilesModified: false,
       changes: ["absolute owned-generation paths/imports", "new exact pinned engine artifact", "new source-repeat receipt requirements", "generated provenance fields"] } };
 }

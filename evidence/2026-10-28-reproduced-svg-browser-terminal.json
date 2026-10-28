@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "wrapperReport": "evidence/2026-10-28T05-41-08-799Z-reproduced-svg-browser.json",
+  "wrapperReportBytes": 36103,
+  "wrapperReportSha256": "aa72d4d361ebb1eeb8163eca89aee5d1349d136996a655c15eb29b66a94d1516",
+  "browserReceipt": {
+    "path": "evidence/2026-10-28T05-41-09-211Z-source-svg-browser.json",
+    "bytes": 323935,
+    "sha256": "6bae1685274403a2ac10f4a85d9bbe07f3a72ca0a812995613ce4e2e866bd61e"
+  },
+  "executedHead": "fbc76f54199edb3ddc61326993304932a85928f0",
+  "conclusion": "All ten exact new-engine functional cases passed; strict whole-tree small-suite memory FAILED",
+  "stats": {
+    "startTime": "2026-10-28T05:41:56.848Z",
+    "duration": 15584.093,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "candidateSha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d",
+  "nativeValidSamples": 153,
+  "nativeUnavailableSamples": 0,
+  "blankPrivateBytes": 339206144,
+  "peakPrivateBytes": 616337408,
+  "incrementalPrivateMiB": 264.29296875,
+  "limitMiB": 250,
+  "baselineAdjusted": false,
+  "browserServicesDisabled": false,
+  "domSnapshotsAndHar": true,
+  "exactGeneratedSourcesRetainedInWrapper": true,
+  "unchangedBaseFilesAndAssertions": true,
+  "failureTrace": {
+    "path": "output\\playwright\\2026-10-28T05-41-09-211Z-source-svg-failure.zip",
+    "bytes": 2860590,
+    "sha256": "c986ed9817e3379367b0392dd841640140b0228f1bc7e4e7a11cc7efc9aac540"
+  },
+  "ownedInnerAndGenerationRuntimesRemoved": true,
+  "ownedProcessIdentitiesAbsent": 5,
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "publicEngineReplacement": false,
+  "originalGoalComplete": false,
+  "next": "Read-only lifecycle diagnostics for retained document/frame/worker state during the same navigation suite; no production change or unchanged conversion replay.",
+  "executedSourceArchive": "fixtures/source/reproduced-svg-browser-fbc76f54.json"
+}

@@ -10,11 +10,14 @@ import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mj
 import { queryReliableProcessIdentity } from "./lib/reliable-owned-identity.mjs";
 import { makeReproducedSvgBrowserQualification, reproducedSvgBasePins } from "./lib/reproduced-svg-browser-recipe.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
-assert.equal(process.platform, "win32"); assert.equal(process.argv.length, 2);
+assert.equal(process.platform, "win32");
+const lifecycleDiagnostic = process.argv[2] === "--lifecycle-diagnostic";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && lifecycleDiagnostic));
 const root = path.resolve(import.meta.dirname, ".."), stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
 const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: "running", failures: [],
   scope: "Same existing ten SVG correctness/recovery/security cases with exact reproduced candidate; not stress/OOM/release acceptance",
-  publicEngineReplacement: false, originalGoalComplete: false, generatedSourceArchives: {}, sourcePins: {} };
+  publicEngineReplacement: false, originalGoalComplete: false, generatedSourceArchives: {}, sourcePins: {},
+  lifecycleDiagnostic, diagnosticAcceptanceMetric: false };
 let runtime, child, birth, log = "";
 try {
   for (const file of ["scripts/test-reproduced-svg-candidate.mjs", "scripts/lib/reproduced-svg-browser-recipe.mjs",
@@ -23,7 +26,7 @@ try {
   runtime = await createOwnedRuntimeScratch("svg-reproduced-qualification-");
   const generated = makeReproducedSvgBrowserQualification({ root, runtime: runtime.directory,
     driverBytes: await readFile(path.join(root, "scripts/test-source-built-svg-candidate.mjs")),
-    suiteBytes: await readFile(path.join(root, "tests/browser/image-conversions.spec.ts")) });
+    suiteBytes: await readFile(path.join(root, "tests/browser/image-conversions.spec.ts")), lifecycleDiagnostic });
   report.generation = generated.proof;
   for (const [name, file, source] of [["driver", generated.driverPath, generated.driver], ["suite", generated.suitePath, generated.suite], ["config", generated.configPath, generated.config]]) {
     report.generatedSourceArchives[name] = { path: path.relative(root, file), bytes: Buffer.byteLength(source), sha256: sha(source), gzipBase64: gzipSync(source, { level: 9 }).toString("base64") };
@@ -42,18 +45,19 @@ try {
   report.browserReceipt = { path: summary.path.replaceAll("\\", "/"), bytes: raw.length, sha256: sha(raw) };
   report.browserStatus = actual.status; report.stats = actual.stats ?? null; report.incrementalPrivateMiB = actual.memory?.incrementalPrivateMiB ?? null;
   report.innerFailures = actual.failures; report.ownedBrowserRuntimeRemoved = actual.ownedRuntimeRemoved;
+  report.lifecycleObservations = actual.lifecycleDiagnostic ?? null;
   assert.equal(actual.candidatePin.wasmSha256, pins.wasmSha256);
   assert.equal(actual.generatedQualification.driverSha256, report.generation.driverSha256);
   assert.equal(actual.generatedQualification.suiteSha256, report.generation.suiteSha256);
   assert.deepEqual(actual.generatedQualification.baseSourcePins, reproducedSvgBasePins);
   assert.equal(report.childSignal, null); assert.equal(report.childExitCode, 0, log);
-  assert.equal(actual.status, "passed-ten-private-small-svg-browser-cases-not-public-stress-acceptance");
+  assert.equal(actual.status, lifecycleDiagnostic ? "completed-reproduced-svg-lifecycle-diagnostic-not-memory-acceptance" : "passed-ten-private-small-svg-browser-cases-not-public-stress-acceptance");
   assert.deepEqual([actual.stats.expected, actual.stats.unexpected, actual.stats.skipped, actual.stats.flaky], [10, 0, 0, 0]);
   assert.equal(actual.ownedRuntimeRemoved, true); assert.ok(actual.processCleanup.every(row => row.status === "owned-identity-absent"));
   assert.equal(actual.domSnapshotRecording, true); assert.equal(actual.networkHarRecording, true);
   assert.equal(actual.browserServicesDisabledByDriver, false); assert.equal(actual.baselineAdjusted, false);
   assert.ok(actual.memory.incrementalPrivateMiB <= 250); assert.deepEqual(actual.protectedOriginalAfter, actual.protectedOriginalBefore);
-  report.status = "passed-reproduced-private-svg-ten-case-browser-qualification-not-stress-or-release";
+  report.status = lifecycleDiagnostic ? "completed-reproduced-svg-lifecycle-diagnostic-not-release-acceptance" : "passed-reproduced-private-svg-ten-case-browser-qualification-not-stress-or-release";
 } catch (error) { report.status = "failed-reproduced-private-svg-browser-qualification"; report.failures.push(String(error.stack ?? error)); process.exitCode = 1; }
 finally {
   try {

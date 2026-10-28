@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "priorFailure": "evidence/2026-10-28-reproduced-svg-browser-terminal.json",
+  "runner": "scripts/test-reproduced-svg-candidate.mjs --lifecycle-diagnostic",
+  "scope": "Bounded observation of retained navigation state during the same ten-case suite; never memory acceptance",
+  "hypothesisNotProven": "Chrome may retain document/frame/worker state across navigation; prior counters alone do not identify the cause",
+  "observations": ["pagehide/pageshow persisted flags", "Memory.getDOMCounters", "Page.getNavigationHistory", "Page.getFrameTree", "Target.getTargets with source-origin parent frame metadata"],
+  "maximumLifecycleEvents": 128,
+  "maximumSourceOriginTargets": 32,
+  "eventOverflowReportedNotDiscarded": true,
+  "unavailableProtocolRepliesRemainNull": true,
+  "browserCacheServiceSettingsOrProductionCodeChanged": false,
+  "forcedGarbageCollection": false,
+  "sameEngineTenAssertionsFullTracingAnd250MiBRule": true,
+  "diagnosticPerturbsMemory": true,
+  "acceptanceMetric": false,
+  "focusedTestsBeforeEvidenceAddition": { "passed": 15, "failed": 0, "skipped": 0 },
+  "affectedLint": "passed",
+  "finalFocusedVerification": { "passed": 12, "failed": 0, "skipped": 0, "durationMs": 721.2857, "affectedLint": "passed" },
+  "originalGoalComplete": false
+}
