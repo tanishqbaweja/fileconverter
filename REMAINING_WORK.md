@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-10-28 — Actual source-SVG8M OPFS grid3/3 PASS: byte-identical historical
+source/reference and exact RGBA equality, output196588B each, conversion metrics
+936.9/865.8/784.5ms. Full-tree224.3945MiB <=250,883 valid native samples/zero
+unavailable, reads<=262144B/writes<=196588B/one pending. Five owned births absent,
+all fixture/output/runtime scratch removed, original full SHA unchanged. Entire
+test cases take30–33s vs subsecond engine metrics; exact validator CPU cost next.
+New diagnostic gap: SVG's legacy Wasm metrics falsely say0; unavailable actual
+current/peak memory is recorded NULL, raw history preserved. Do not treat this
+as complete telemetry or public qualification. Clean-session/direct/effects/
+OOM/recovery and real SVG Wasm observation remain. `evidence/2026-10-28-svg-grid-stress-first-terminal.json`.
+
 2026-10-28 — Source-SVG8M grid stress adapter prepared: reuse existing image
 case body/independent exact RGBA comparison, three labelled cases in ONE owned
 normal Chrome context.327564B source/32928B Pillow PNG must match historical
