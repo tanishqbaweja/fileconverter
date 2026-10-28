@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-10-28 — Exact-new-engine adapter17 focused/lint PASS. First generated-suite
+listing failed beforebrowser: an unescaped Windows absolute path became a CLI
+regex. Switched only collection filter to basename under exact owned config and
+explicit testMatch glob; corrected listing selects10 cases/1 file. Both dryruns'
+scratch removed, no browser/conversion or memorypass claimed. Source/suite hashes
+and all assertions unchanged. Actual one-run browserqualification next, estimated
+150-second observation allowance. `evidence/2026-10-28-reproduced-svg-browser-preparation.json`.
+
+2026-10-28 — Exact reproduced SVG browser adapter prepared: immutable original
+driver/suite hashes required, existing ten cases/assertions reused in repository-
+owned scratch. Only root/import/output paths, new artifact pin/receipt status,
+stronger repeat-proof checks and generated provenance are adapted; no converter,
+fidelity threshold, early baseline, normal-service or250 MiB change. Generated
+source archived byte-exact in its receipt; original driver/test files untouched.
+This is new-byte qualification, not unchanged oldcandidate replay. Focused tests/
+lint and actual browser run still pending at this preparation entry.
+
 2026-10-28 — Deterministic private SVG source cycle checkpoint: two genuinely
 fresh raw source builds and two pinned postprocessor/cap passes are now byte-
 identical, independently artifact/receipt verified. Final19 focused checks and

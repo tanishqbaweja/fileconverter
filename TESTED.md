@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-28 — Newcandidate browser preparation17 focused/lint PASS. Collection
+dryrun1 failed due Windows absolute CLI-regex path (no browser); basename/exact
+config collection corrected, dryrun2 selects10 tests/1file. Owned scratch removed
+afterboth. No assertion/fixture/validator/limit/service change. Actual browser
+not yet executed at this entry; one run planned afterpush,150-second wait.
+`evidence/2026-10-28-reproduced-svg-browser-preparation.json`.
+
+2026-10-28 — Preparing exact newcandidate browser qualification without changing
+the olddriver/suite: hash-guarded owned scratch generation, same ten assertions/
+fixtures/validators, newartifact pin plus repeated-source receipt checks. Generated
+sources archived, scratch finally removed; original250 MiB/fulltree/earliestblank/
+normalservices/DOM+HAR rules unchanged. Not yet executed or accepted.
+
 2026-10-28 — Final checkpoint: raw two-fresh-build and two-pass bindgen/cap
 repeatability now verified, oneusefulartifact retained perstage, scratch removed.
 19 final scoped PASS/0fail/0skip and affectedlint PASS; tsc PASS. Earlier1,863
