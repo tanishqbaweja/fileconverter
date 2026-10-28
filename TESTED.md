@@ -11326,3 +11326,19 @@ match2.0.2 exactly; malformed ICNS fixture used incorrect header field order, so
 old failure reproduction assertion FAILED. No application dependency change or
 security acceptance. Owned install/cache/parser workers disposed. Keep failed
 receipt and correct the synthetic fixture before testing it again.
+
+2026-10-28 image-size2.0.3 corrected control and installed patch: ten isolated
+controls PASS;20 focused tests PASS702.726ms, affected ESLint PASS. Only one
+locked package changed under exact vinext@0.0.50 override. Valid dimensions
+identical for seven formats; malformed ICNS/HEIF/JXL now reject promptly instead
+of hitting the isolated worker heap limit. Fresh audit0high/3moderate (satori and
+aggregate @vercel/og/vinext), still not clean. Application/codec/framework pins
+unchanged. Owned candidate/install/audit cache directories removed in finally;
+bounded parser workers terminated. Build/regression/privacy gates pending.
+
+Final patch regression:1881PASS/0fail/0skip/0cancel,99.139s,566 portable files;
+162 qualification files NOT RUN. Production build/tsc/affected ESLint PASS.
+Eight historical dependency-input mismatches from first regression repaired by
+binding only those old checks to the exact archived package/lock; old memory
+failures and browser results unchanged.22 focused checks PASS after repair.
+One current-build19-case headless privacy/offline/hosting gate pending.

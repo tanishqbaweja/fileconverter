@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
 import { sha } from "../images/resvg-source/source-pins.mjs";
+import { readPreImageSizePatch } from "./helpers/pre-image-size-patch.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url), "utf8");
 test("snapshot-option control stays failed and discloses the actual missing HAR rather than treating diagnostic evidence as accepted", async () => {
   const proof = JSON.parse(await read("evidence/2026-10-27-svg-snapshot-control-terminal.json")), raw = await readFile(new URL("../" + proof.rawReport, import.meta.url));
@@ -16,7 +17,7 @@ test("snapshot-option control stays failed and discloses the actual missing HAR 
   for (const [file, digest] of Object.entries(row.sourcePins)) {
     const old = archive.files[file]; let bytes;
     if (old) { bytes = gunzipSync(Buffer.from(old.gzipBase64, "base64"), { maxOutputLength: 32768 }); assert.equal(bytes.length, old.bytes); assert.equal(sha(bytes), old.sha256); }
-    else bytes = await readFile(new URL("../" + file, import.meta.url));
+    else bytes = await readPreImageSizePatch(file);
     assert.equal(sha(bytes), digest, file);
   }
 });
@@ -39,7 +40,7 @@ test("real allocator diagnostic preserves its strict memory failure, counter arc
   for (const [file, digest] of Object.entries(row.sourcePins)) {
     const old = sourceArchive.files[file]; let bytes;
     if (old) { bytes = gunzipSync(Buffer.from(old.gzipBase64, "base64"), { maxOutputLength: 32768 }); assert.equal(bytes.length, old.bytes); assert.equal(sha(bytes), old.sha256); }
-    else bytes = await readFile(new URL("../" + file, import.meta.url));
+    else bytes = await readPreImageSizePatch(file);
     assert.equal(sha(bytes), digest, file);
   }
   assert.equal(row.ownedRuntimeRemoved, true); assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent"));

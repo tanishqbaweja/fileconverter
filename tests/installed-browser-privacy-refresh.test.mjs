@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
+import { readPreImageSizePatch } from "./helpers/pre-image-size-patch.mjs";
 
 const read = file => readFile(new URL("../" + file, import.meta.url));
 const json = async file => JSON.parse(await read(file));
@@ -43,7 +44,7 @@ for (const expected of proof.passed) test(`${expected.browserId} has exactly 19 
   assert.deepEqual(actual.protectedOriginalAfter, proof.protectedOriginal);
   assert.ok(actual.processCleanup.length === 2 && actual.processCleanup.every(item => item.status === "owned-identity-absent"));
   for (const [file, digest] of Object.entries(actual.sourcePins)) {
-    let source = await read(file);
+    let source = await readPreImageSizePatch(file);
     if (file === proof.repair.path && digest === proof.repair.beforeSha256) {
       const current = source.toString(); assert.equal(current.split(currentTab).length, 2);
       source = Buffer.from(current.replace(currentTab, oldTab));

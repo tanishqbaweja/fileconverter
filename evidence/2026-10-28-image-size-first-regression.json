@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "command": "scripts/run-unit-suite.mjs portable",
+  "status": "failed-historical-dependency-input-bindings",
+  "selectedFiles": 566,
+  "qualificationFilesNotRun": 162,
+  "tests": 1881,
+  "passed": 1873,
+  "failed": 8,
+  "skipped": 0,
+  "cancelled": 0,
+  "durationMs": 86425.1895,
+  "failureCause": "Eight historical browser-evidence checks compare pre-patch package or lock hashes to current installed dependency inputs",
+  "repair": "Bind only those historical checks to the exact two pre-patch files archived at fixtures/source/pre-image-size-patch-2026-10-28.json; keep old assertions, measurements and failures intact",
+  "currentInstalledPatchTests": "20 focused passed",
+  "productionBuild": "passed, existing sourcemap/config warnings retained",
+  "typescript": "passed",
+  "originalGoalComplete": false
+}

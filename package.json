@@ -265,6 +265,9 @@
     "wrangler": "4.152.0"
   },
   "overrides": {
+    "vinext@0.0.50": {
+      "image-size": "2.0.3"
+    },
     "miniflare@5.20261019.2-beta": {
       "undici": "7.30.1"
     }

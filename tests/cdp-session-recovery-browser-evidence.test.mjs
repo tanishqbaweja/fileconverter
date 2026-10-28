@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { sha } from "../images/resvg-source/source-pins.mjs";
+import { readPreImageSizePatch } from "./helpers/pre-image-size-patch.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url));
 test("actual repaired diagnostic browser verification keeps all ten assertions and a scoped full-tree pass, never causal optimization or release proof", async () => {
   const proof = JSON.parse(await read("evidence/2026-10-28-cdp-session-recovery-browser-terminal.json")), bytes = await read(proof.rawReport);
@@ -26,7 +27,7 @@ test("actual repaired diagnostic browser verification keeps all ten assertions a
   assert.deepEqual(row.protectedOriginalAfter, row.protectedOriginalBefore);
   assert.equal(row.publicEngineReplacement, false); assert.equal(row.fullStressOrOomAcceptance, false);
   assert.equal(proof.repeatableMemoryOrSpeedImprovementProven, false); assert.equal(proof.priorFailureRelabelled, false);
-  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await read(file)), digest, file);
+  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await readPreImageSizePatch(file)), digest, file);
 });
 test("actual private raw source-path witness remains measured and is not labelled successful reproduction", async () => {
   const row = JSON.parse(await read("evidence/2026-10-27-svg-source-path-audit.json"));

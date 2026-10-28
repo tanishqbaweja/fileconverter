@@ -4,6 +4,7 @@ import test from "node:test";
 import ts from "typescript";
 import { sha } from "../images/resvg-source/source-pins.mjs";
 import { gunzipSync } from "node:zlib";
+import { readPreImageSizePatch } from "./helpers/pre-image-size-patch.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url));
 const json = async file => JSON.parse(await read(file));
 test("real bounded source-built SVG renders through all ten existing browser cases but its 275 MiB complete-tree failure is never accepted", async () => {
@@ -27,7 +28,7 @@ test("real bounded source-built SVG renders through all ten existing browser cas
   for (const [file, digest] of Object.entries(row.sourcePins)) {
     const old = archive.files[file]; let source;
     if (old) { source = gunzipSync(Buffer.from(old.gzipBase64, "base64"), { maxOutputLength: 32768 }); assert.equal(source.length, old.bytes); assert.equal(sha(source), old.sha256); }
-    else source = await read(file);
+    else source = await readPreImageSizePatch(file);
     assert.equal(sha(source), digest, file);
   }
 });
@@ -42,7 +43,7 @@ test("first browser attempt remains a failed navigation control with zero engine
   for (const [file, digest] of Object.entries(row.sourcePins)) {
     const old = archive.files[file]; let bytes;
     if (old) { bytes = gunzipSync(Buffer.from(old.gzipBase64, "base64"), { maxOutputLength: 262144 }); assert.equal(bytes.length, old.bytes); assert.equal(sha(bytes), old.sha256); }
-    else bytes = await read(file);
+    else bytes = await readPreImageSizePatch(file);
     assert.equal(sha(bytes), digest, file);
   }
 });

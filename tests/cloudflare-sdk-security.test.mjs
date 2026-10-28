@@ -18,7 +18,7 @@ test("SDK/plugin pins align with one runtime and the exact reviewed HTTP-client 
   }
   assert.equal(pkg.devDependencies["@cloudflare/vite-plugin"], versions["@cloudflare/vite-plugin"]);
   assert.equal(pkg.devDependencies.wrangler, versions.wrangler);
-  assert.deepEqual(pkg.overrides, { "miniflare@5.20261019.2-beta": { undici: "7.30.1" } });
+  assert.deepEqual(pkg.overrides, { "miniflare@5.20261019.2-beta": { undici: "7.30.1" }, "vinext@0.0.50": { "image-size": "2.0.3" } });
   assert.equal(requireFromMiniflare("undici/package.json").version, "7.30.1", "Actual consumer resolves the patched client");
   assert.equal((await json("node_modules/@cloudflare/vite-plugin/package.json")).dependencies.wrangler, versions.wrangler);
   assert.deepEqual(Object.keys(lock.packages).filter(key => /node_modules\/(?:wrangler|miniflare|workerd|undici)$/.test(key)).sort(),
