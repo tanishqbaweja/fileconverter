@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "runId": 40712501519,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40712501519",
+  "sourceCommit": "82ec7fff1d01a82ca0c80d3ee38c5a272392a246",
+  "workflow": "svg-source-filter-postprocess.yml",
+  "authoritativeStatusObserved": "queued",
+  "observedAt": "2026-10-28T15:05:58Z",
+  "estimatedDurationSeconds": 120,
+  "notBeforeNextObservation": "2026-10-28T15:07:58Z",
+  "sameRunOnly": true,
+  "dispatchAnotherRunIfObservationTimesOut": false,
+  "exactRawSourceRun": 40709137070,
+  "rawInputPin": "images/resvg-source/filter-region-raw-input.json",
+  "scope": "Two pinned bindgen/cap passes and full output/glue equality after verified source builds; no renderer or browser acceptance",
+  "sourceRecompilation": false,
+  "maximumWasmBytes": 100663296,
+  "publicEngineReplacement": false,
+  "wholeGoalComplete": false
+}
