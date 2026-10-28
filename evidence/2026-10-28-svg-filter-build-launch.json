@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "runId": 40709137070,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40709137070",
+  "sourceCommit": "bb79bc0c477c8fdde59158376590bfe8c9ace9b2",
+  "workflow": "svg-source-filter-region.yml",
+  "authoritativeStatusObserved": "in_progress",
+  "observedAt": "2026-10-28T14:45:45Z",
+  "estimatedDurationSeconds": 720,
+  "notBeforeNextObservation": "2026-10-28T14:57:45Z",
+  "sameRunOnly": true,
+  "dispatchAnotherRunIfObservationTimesOut": false,
+  "scope": "Two fresh isolated Linux source compilations with exact region patch and byte equality; no browser rendering or postprocessing acceptance",
+  "dockerUsed": false,
+  "publicEngineReplacement": false,
+  "memoryAcceptance": false,
+  "wholeGoalComplete": false
+}

@@ -2,6 +2,11 @@
 
 ## Current interpretation — 2026-10-28
 
+Latest local regression:1960portable PASS122.264s,19same-built-worker/direct-
+workerd privacy PASS49.901s; source build40709137070 observed live14:45:45Z.
+No compiler/rendering/memory acceptance inferred. Future postprocess recipe's
+additional1focused PASS is separate from that full run; public path unchanged.
+
 Latest private SVG finding: real viewport rendering completed only64rows, then
 failed native allocation; no valid PNG/fidelity/memory pass. Intermediates still
 use original full filter.region. A guarded source-region intersection candidate

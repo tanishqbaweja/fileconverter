@@ -1,5 +1,16 @@
 # Remaining work audit
 
+Local regression atbb79bc0c:1960portable PASS122.2635719s/0fail/0skip/0cancel,
+162qualification files still NOT RUN. Existing built worker/direct-workerd
+headless privacy19PASS49.900623s, owned roots/runtime/asset-service cleanup and
+protected-original SHA checks passed. Not source-compilation, strip-renderer,
+Wrangler/CDN or conversion-memory acceptance. Source run40709137070 confirmed
+in_progress14:45:45Z, estimated next check14:57:45Z; monitor SAME run, no rerun
+on observation expiry. A future separate-pin postprocessor recipe now has1
+focused/lint PASS after the585-file run; artifact pin/wrapper/actual processing
+remain pending terminal source-build evidence. Full goal remains ACTIVE.
+`evidence/2026-10-28-svg-private-pipeline-cycle.json`.
+
 Pinned filter-region intersection source candidate and two-fresh-build recipe
 implemented; actual compiler/browser acceptance still OPEN. Guard original full
 source SHA, patch one allocation extent block, retain every primitive parameter

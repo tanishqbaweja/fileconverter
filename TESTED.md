@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-28 — Current private pipeline local regression:1960portable PASS/
+0fail/0skip/0cancel122.2635719s (585files;162qualificationNOTRUN). Final same
+existing built worker/direct-workerd headless privacy19PASS/0fail/0skip/0flaky
+49.900623s; two owned roots absent, asset service closed/non-read0, runtime
+removed, original full SHA before/after unchanged. Not Wrangler/CDN, headed,
+conversion-memory or new-renderer acceptance. Dedicated source run40709137070
+was observed in_progress at14:45:45Z; next scheduled check14:57:45Z, no duplicate
+dispatch. Future separate-pin postprocess helper added AFTER this full run:
+1focused PASS152.5894ms/lint PASS; no artifact-processing claim. See
+`evidence/2026-10-28-svg-private-pipeline-cycle.json`.
+
 2026-10-28 — Source-level candidate prepared, NOT compiled/accepted: exact
 44067B upstream filter source SHA1770d1f0...f5468a retained compressed with MPL
 notice; one region block changed to intersect allocation extent with source

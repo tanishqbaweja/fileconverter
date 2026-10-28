@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "bb79bc0c477c8fdde59158376590bfe8c9ace9b2",
+  "status": "local-regression-and-scoped-privacy-pass-source-build-not-yet-observed-terminal",
+  "portable": { "path": "evidence/2026-10-28-svg-private-pipeline-portable.json", "bytes": 300415, "sha256": "c749a033a9b12d16b7186b686fb5818161204d7f9dcea7bcb56a45ec6880de83", "selectedFiles": 585, "passed": 1960, "failed": 0, "skipped": 0, "cancelled": 0, "durationMs": 122263.5719, "qualificationFilesNotRun": 162 },
+  "privacy": { "path": "evidence/2026-10-28T14-47-03-741Z-owned-privacy-offline.json", "bytes": 17667, "sha256": "4e2a2af82aacaa87f17237fafa9837e986f2cf6963c0481acb8473b7d514cd54", "passed": 19, "failed": 0, "skipped": 0, "flaky": 0, "durationMs": 49900.62300000001, "host": "direct-workerd-same-built-worker-loopback-static-assets", "assetNonReadRequests": 0, "assetServiceClosed": true, "ownedRootsObservedAbsent": 2, "ownedRuntimeRemoved": true, "wranglerOrCdnAcceptance": false, "conversionMemoryAcceptance": false, "headedCoverage": false },
+  "protectedOriginal": { "beforeEqualsAfter": true, "bytes": 2958573265, "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" },
+  "sourceBuild": { "runId": 40709137070, "lastObservedStatus": "in_progress", "observedAt": "2026-10-28T14:45:45Z", "notBeforeNextObservation": "2026-10-28T14:57:45Z", "compilationOrByteEqualityNotClaimed": true },
+  "subsequentFocusedPreparation": { "test": "tests/svg-filter-postprocess-recipe.test.mjs", "passed": 1, "failed": 0, "durationMs": 152.5894, "lint": "passed", "notIncludedInEarlier585FileRun": true, "scope": "Future separate-pin postprocess recipe only; no artifact available/processed claim" },
+  "publicSourceAndEngineReplacement": false,
+  "validStripPngProduced": false,
+  "speedGainProven": false,
+  "memoryAcceptance": false,
+  "wholeGoalComplete": false
+}

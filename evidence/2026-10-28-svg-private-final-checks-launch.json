@@ -1,0 +1,9 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "bb79bc0c",
+  "observedAt": "2026-10-28T14:47:03Z",
+  "portable": { "session": 98253, "selectedFiles": 585, "qualificationFilesNotRun": 162, "report": "evidence/2026-10-28-svg-private-pipeline-portable.json", "estimatedSeconds": 150, "notBeforeNextObservation": "2026-10-28T14:49:33Z", "sameHandleOnly": true },
+  "privacy": { "session": 16474, "host": "direct-workerd-same-built-worker-loopback-static-assets", "estimatedSeconds": 120, "notBeforeNextObservation": "2026-10-28T14:49:03Z", "sameHandleOnly": true, "conversionMemoryAcceptance": false, "wranglerOrCdnAcceptance": false },
+  "publicSourceOrEngineChanged": false,
+  "wholeGoalComplete": false
+}
