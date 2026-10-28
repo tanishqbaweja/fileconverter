@@ -1,5 +1,13 @@
 # Remaining work audit
 
+Last-use native source compilation and raw reproducibility VERIFIED40748064269:
+two fresh builds/187s step, raw3669070B SHA1d67f2f0...f1a3 fully identical, all3
+source/module proofs/same compiler+lock+release flags/cleanup verified. Exact
+six-member authenticated artifact and immutable lifetime raw pin retained; no
+local binary copies. Next repeated pinned postprocessing at unchanged96MiB,
+then genuine browser quality/performance/full-tree memory gates. This is NOT
+conversion or speed acceptance; unchanged rejected engines remain blocked.
+
 Native filter lifetime optimization IMPLEMENTED privately, compiler/browser
 unverified: previous results Vec retains every Arc until full chain completes,
 forcing some copy-on-write pixel copies despite no future consumer. New guarded

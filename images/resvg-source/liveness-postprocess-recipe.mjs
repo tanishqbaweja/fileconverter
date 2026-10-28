@@ -13,7 +13,7 @@ export function makeLivenessPostprocessRecipe(options){
   source=replace(source,"two-fresh-filter-context-source-builds-verified-not-browser-acceptance","two-fresh-filter-liveness-source-builds-verified-not-browser-acceptance");
   source=replace(source,'  report.filterRegionPatch = filterRegionPatch;',
     '  assert.equal(sourceRepeat.filterLivenessPatch.patchedSha256, filterLivenessPatch.patchedSha256);\n'+
-    '  assert.equal(pins.filterLivenessPatchedSha256, filterLivenessPatch.patchedSha256);\n'+
+    '  assert.equal(inputPin.filterLivenessPatchedSha256, filterLivenessPatch.patchedSha256);\n'+
     '  report.filterLivenessPatch = filterLivenessPatch; report.sourceIntermediateLifetimesChanged = true;\n  report.filterRegionPatch = filterRegionPatch;');
   source=replace(source,'    assert.equal(receipt.renderContextPatch.patchedSha256, renderContextPatch.patchedSha256);',
     '    assert.equal(receipt.filterLivenessPatch.patchedSha256, filterLivenessPatch.patchedSha256);\n'+

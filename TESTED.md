@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-28 — Native lifetime source40748064269 SUCCESS: two fresh same-locked
+compilations, full raw-byte equality, all3 source proofs checked. Raw3669070B
+SHA1d67f2f0...f1a3 differs from rejected context source; same release flags and
+pixel kernels/dimensions/region bounds. Exact6-member authenticated artifact
+12842228349/1285537B SHA8fbbb620...53bb verified; all owned compiler/owner/local
+inspection scratch and duplicate second raw/lock removed, no local binaries
+retained. Source step187s/job218s (not conversion speed). Immutable new raw pin
+and all3-proof repeated bindgen/cap stage prepared; no native recompile needed.
+Browser quality/runtime speed/96MiB/final full-tree memory/recovery still OPEN.
+`evidence/2026-10-28T18-50-18-183Z-svg-filter-source-artifact.json`.
+Postprocess preparation7focused PASS5973.5876ms/lint PASS, including lint of
+the entire generated processor (not syntax-only). A wrong local input-pin
+identifier was caught by source review and corrected BEFORE any remote
+postprocessing; regression now checks generated code for undefined names.
+
 2026-10-28 — Native last-use candidate prepared after measured raster timeouts.
 Pinned region-patched filter44239B/SHAff98...6191 becomes46971B/SHA5331eaa1
 ...3307. Acquires ALL current inputs before releasing previous named-result

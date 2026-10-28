@@ -4,6 +4,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { gunzipSync } from "node:zlib";
 import test from "node:test";
+import { ESLint } from "eslint";
 import { patchPinnedFilterRegion } from "../images/resvg-source/filter-region-patch.mjs";
 import { patchPinnedFilterLiveness,patchOwnedFilterLiveness,filterLivenessPatch } from "../images/resvg-source/filter-liveness-patch.mjs";
 import { makeLivenessBuildRecipes } from "../images/resvg-source/liveness-build-recipe.mjs";
@@ -52,11 +53,23 @@ test("future lifetime postprocessor fails closed on its own immutable source pin
   const result=makeLivenessPostprocessRecipe({root:process.cwd(),sourceBytes:await readFile("images/resvg-source/postprocess-repeated-source.mjs")});
   assert.match(result.source,/filter-liveness-raw-input.json/);assert.doesNotMatch(result.source,/filter-context-raw-input.json/);
   for(const name of ["filterLivenessPatch","renderContextPatch","filterRegionPatch"])assert.ok(result.source.includes("receipt."+name+".patchedSha256"));
-  assert.match(result.source,/sourceRepeat.filterLivenessPatch.patchedSha256/);assert.match(result.source,/pins.filterLivenessPatchedSha256/);
+  assert.match(result.source,/sourceRepeat.filterLivenessPatch.patchedSha256/);assert.match(result.source,/inputPin.filterLivenessPatchedSha256/);
   assert.match(result.source,/Compare full bounded Wasm bytes/);assert.match(result.source,/Compare full generated glue bytes/);
   assert.match(result.source,/compareStaticAbi\(published, bounded.bytes\)/);assert.equal(result.proof.maximumBytesChanged,false);
+  const lint=await new ESLint().lintText(result.source,{filePath:"images/resvg-source/generated-lifetime-processor.mjs"});
+  assert.deepEqual(lint.flatMap(row=>row.messages.filter(message=>message.severity===2)),[],"Generated processor must lint too, not only parse");
   const runtime=await createOwnedRuntimeScratch("lifetime-processor-check-");try{
     const file=runtime.directory+"/processor.mjs";await writeFile(file,result.source,{flag:"wx"});
     await promisify(execFile)(process.execPath,["--check",file],{env:runtime.env,windowsHide:true,timeout:10000,maxBuffer:16384});
   }finally{await runtime.close();}
+});
+test("actual lifetime source pin matches authenticated full artifact verification and both fresh compiler receipts",async()=>{
+  const pin=JSON.parse(await readFile("images/resvg-source/filter-liveness-raw-input.json"));
+  const receipt=JSON.parse(await readFile("evidence/2026-10-28T18-50-18-183Z-svg-filter-source-artifact.json"));
+  assert.deepEqual(pin,receipt.inputPin);assert.equal(pin.runId,40748064269);assert.equal(receipt.liveness,true);
+  assert.equal(receipt.rawWasm.sha256,"1d67f2f0bf4aa89759ab15db23737e79a34156ef5ee6acf82557dcdc58d1f1a3");
+  for(const row of receipt.compileProofs){assert.equal(row.filterLivenessPatch.patchedSha256,pin.filterLivenessPatchedSha256);assert.equal(row.renderContextPatch.patchedSha256,pin.renderContextPatchedSha256);assert.equal(row.ownedScratchRemoved,true);}
+  assert.equal(receipt.localBinaryCopiesRetained,false);assert.equal(receipt.ownedRuntimeRemoved,true);assert.deepEqual(receipt.failures,[]);
+  const workflow=await readFile(".github/workflows/svg-liveness-postprocess.yml","utf8");
+  assert.match(workflow,/postprocess-filter-region-source.mjs --liveness/);assert.match(workflow,/retention-days: 1/);assert.doesNotMatch(workflow,/cargo|rustup|docker|test\.mkv/i);
 });
