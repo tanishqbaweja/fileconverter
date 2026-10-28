@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "suite": "portable",
+  "selectedFiles": 559,
+  "totalFiles": 721,
+  "qualificationFilesNotRun": 162,
+  "passed": 1858,
+  "failed": 1,
+  "skipped": 0,
+  "cancelled": 0,
+  "durationMs": 95961.6763,
+  "conclusion": "FAILED: one additional historical test still compared old sampler hash to current live source",
+  "remainingFile": "tests/mpeg2-split-initialization-attribution.test.mjs",
+  "repair": "Same exact historical CDP-only adapter as the other historical files; no recorded values or expected hashes changed",
+  "postRepairFocused": { "passed": 4, "failed": 0, "skipped": 0 },
+  "previousFailuresRelabelled": false,
+  "publicOrWholeGoalAcceptance": false
+}

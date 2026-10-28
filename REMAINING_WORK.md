@@ -1,5 +1,54 @@
 # Remaining work audit
 
+2026-10-28 — Final portable regression now PASS1863/0fail/0skip/0cancel in
+82.081s across560 files; all722 files accounted for,162 qualification files
+explicitly not run. Both preceding historical-binding failures retained rather
+than relabelled. Affected lint/focused source-contract checks PASS. New dedicated
+source-repeat workflow ready for ONE bootstrap run on its exact file push:
+two fresh remapped locked builds, estimated six minutes before initial check,
+20-minute cap. No extra dispatch, no public engine update. Evidence:
+`evidence/2026-10-28-source-repeat-preparation-and-regression.json`.
+
+2026-10-28 — Raw source-repeat preparation: unchanged original compiler driver
+is wrapped only to normalize its owned source prefix to /within/resvg-build.
+Compiler version, original graph with two measured repairs, Cargo argv and
+optimization settings stay fixed. A dedicated workflow compares two fresh
+compile directories and full raw bytes, retaining one binary/lock after exact
+duplicate verification. It does not postprocess, rasterize or promote engines.
+New workflow bootstraps on its exact workflow-file push to media-options only;
+ordinary helper/docs pushes cannot retrigger it. No separate dispatch duplicate.
+35 focused PASS/0fail/0skip and affected lint PASS; final new-workflow assertion
+and one end-of-cycle portable run pending. Historical regression second attempt
+was1858pass/1fail (one missed historical source binding), then that exact file's
+four focused checks passed. No failed result rewritten as a pass.
+
+2026-10-28 — Historical CDP binding repair focused106 PASS/0fail/0skip and
+affected lint PASS. Old exact sampler is used only for historical source checks;
+current diagnostics retain repaired implementation. Oversized focused command
+was refused before execution, then split into two bounded batches without raising
+the command-wrapper guard. One repaired portable run is in progress; no browser
+rerun. `evidence/2026-10-28-cdp-historical-binding-repair.json`.
+Static source-repro audit independently found188 actual random compile-directory
+prefix occurrences in private Wasm data (section11), so repeated-build equality
+is still unproved. Next recipe wraps the SAME pinned Rust compiler/locked graph/
+Cargo argv with source-path remapping only, then compares two fresh independent
+builds. It is not a codec/optimization change or published-engine claim; see
+`evidence/2026-10-27-svg-source-path-audit.json`.
+
+2026-10-28 — Revised diagnostic sampler's actual browser verification completed:
+ten functional cases passed, full snapshot/HAR recording enabled, no allocator
+probes. One small-suite whole-tree result241.7578 MiB with156 valid/0 missing
+native samples;22 worker heaps available/13 null. This is a scoped instrumentation
+verification, NOT repeatable conversion optimization, stress/OOM/release acceptance.
+All previous failures retained, normal services/250 MiB formula unchanged;
+four owned process identities absent, runtime removed, original SHA/size unchanged.
+`evidence/2026-10-28-cdp-session-recovery-browser-terminal.json`.
+The portable regression FAILED1819pass/39fail due historical source pins on the
+old sampler. Exact4,791 B SHA046b122e preimage already exists; historical-only
+reader now verifies that single archive/path, while live tests retain repaired
+code. Historical outcomes/hashes unchanged. Focused and full regression pending;
+first failed result retained in `evidence/2026-10-28-cdp-regression-first-result.json`.
+
 2026-10-27 — Shared CDP recovery repair:30 scoped checks PASS/0fail/0skip.
 Archived old code reproduces permanently reused expired session; all three real
 error variants now recover one fresh worker session on the next sample. Timeout

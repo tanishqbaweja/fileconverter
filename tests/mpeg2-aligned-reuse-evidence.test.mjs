@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { readHistoricalCdpOrFile as readFile } from "./helpers/historical-cdp-realm.mjs";
 import test from "node:test";
 const read = file => readFile(new URL(`../${file}`, import.meta.url));
 const proof = JSON.parse(await read("evidence/mpeg2-aligned-reuse-2026-10-06.json"));

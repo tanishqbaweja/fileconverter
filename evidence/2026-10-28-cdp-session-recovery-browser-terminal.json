@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "rawReport": "evidence/2026-10-27T15-45-16-202Z-source-svg-browser.json",
+  "rawReportBytes": 315497,
+  "rawReportSha256": "cc83012fa2adb574ac1917074acadd31e51eba5058db0672cc0a1764cd6b6393",
+  "executedHead": "b371996183b0cb63340697878353eded34b841c5",
+  "conclusion": "passed-ten-private-small-svg-browser-cases-not-public-stress-acceptance",
+  "stats": {
+    "startTime": "2026-10-27T15:46:05.708Z",
+    "duration": 15866.413999999999,
+    "expected": 10,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "scope": "Real verification of changed diagnostic sampler/adapter; one ten-case small suite only",
+  "candidatePin": "images/resvg-source/processed-candidate-input.json",
+  "browserVersion": "156.0.8078.48",
+  "workerHeapSamples": {
+    "available": 22,
+    "unavailable": 13,
+    "unavailableIsNullNotZero": true
+  },
+  "realmTransport": "existing-Playwright-nonflattened-adapter-with-stale-session-retry",
+  "incrementalPrivateMiB": 241.7578125,
+  "limitMiB": 250,
+  "nativeValidSamples": 156,
+  "nativeUnavailableSamples": 0,
+  "blankPrivateBytes": 338665472,
+  "peakPrivateBytes": 592166912,
+  "baselineAdjusted": false,
+  "normalServicesRetained": true,
+  "domSnapshotsAndHar": true,
+  "allocatorProbes": 0,
+  "converterCodeChanged": false,
+  "repeatableMemoryOrSpeedImprovementProven": false,
+  "priorFailureRelabelled": false,
+  "allStressRecoverySourceReproGatesClosed": false,
+  "headed": false,
+  "nativePickerVerified": false,
+  "wasmRequests": 4,
+  "forbiddenRequests": [],
+  "ownedRuntimeRemoved": true,
+  "ownedProcessIdentitiesAbsent": 4,
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "publicEngineReplacement": false,
+  "originalGoalComplete": false,
+  "next": "Preserve this scoped pass and every prior failure; repair historical exact-source archive bindings then finish regression before larger SVG stress/OOM/source-repeat qualification."
+}

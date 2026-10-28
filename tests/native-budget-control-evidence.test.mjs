@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { access, readFile } from "node:fs/promises";
+import { readHistoricalCdpOrFile as readFile } from "./helpers/historical-cdp-realm.mjs";
+import { access } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 const root = path.resolve(import.meta.dirname, "..");

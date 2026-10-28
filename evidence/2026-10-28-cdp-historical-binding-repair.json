@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "firstRegression": "evidence/2026-10-28-cdp-regression-first-result.json",
+  "scope": "Historical evidence source binding only; live sampler remains repaired and directly tested",
+  "historicalPath": "scripts/lib/cdp-realm-memory.mjs",
+  "historicalBytes": 4791,
+  "historicalSha256": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+  "archive": "fixtures/source/svg-snapshot-dc9dbff6.json",
+  "historicalValuesOrExpectedHashesChanged": false,
+  "otherFilesFallThroughToNormalReader": true,
+  "oldMemoryFailuresRemainFailures": true,
+  "focusedTests": { "passed": 106, "failed": 0, "skipped": 0, "batches": [70, 36] },
+  "initialFocusedLaunch": "refused before execution because the owned command wrapper permits at most32 arguments; split into two bounded batches without changing that guard",
+  "affectedLint": "passed",
+  "fullPortableRegressionStatus": "one repaired run launched; outcome pending at this entry",
+  "publicOrOriginalGoalAcceptance": false
+}

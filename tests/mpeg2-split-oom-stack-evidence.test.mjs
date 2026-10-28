@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { readHistoricalCdpOrFile as readFile } from "./helpers/historical-cdp-realm.mjs";
 import test from "node:test";
 test("Actual original failure stack proves decoded-frame buffer path from binary names, not a completed conversion", async () => {
   const root = new URL("../", import.meta.url);

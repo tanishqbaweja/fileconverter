@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "headPrefix": "b3719961",
+  "terminalSessionId": 91560,
+  "runner": "scripts/test-source-built-svg-candidate.mjs",
+  "initialToolReturnAt": "2026-10-27T15:45:25Z",
+  "nextCheckNotBefore": "2026-10-27T15:47:30Z",
+  "purpose": "Real verification of changed shared session recovery and worker realm adapter, not a conversion optimization",
+  "sameTenFunctionalAssertions": true,
+  "domSnapshotsAndDetailedHarRecording": true,
+  "allocatorProbes": false,
+  "normalServicesAnd250MiBWholeTreeLimitUnchanged": true,
+  "noDuplicateAfterTimeout": true,
+  "sourceCompilerOrPostprocessorReplayed": false,
+  "publicEngineReplacement": false,
+  "result": "not yet observed at launch entry"
+}

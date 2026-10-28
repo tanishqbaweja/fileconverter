@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readHistoricalCdpOrFile as readFile } from "./helpers/historical-cdp-realm.mjs";
 import { createHash } from "node:crypto";
 import test from "node:test";
 import { PINNED_DLMALLOC_ROOT, PINNED_SPLIT_DECODER_SHA256 } from "../scripts/lib/dlmalloc-free-header-inspection.mjs";

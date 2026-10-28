@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { readHistoricalCdpOrFile as readFile } from "./helpers/historical-cdp-realm.mjs";
 import path from "node:path";
 import test from "node:test";
 import { ATTRIBUTION_LIMITS, startBoundedRendererAttribution } from "../scripts/lib/bounded-renderer-attribution.mjs";

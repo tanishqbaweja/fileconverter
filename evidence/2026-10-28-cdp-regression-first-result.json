@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "observedTerminalAt": "2026-10-27T15:51:02Z",
+  "headPrefix": "b3719961",
+  "suite": "portable",
+  "selectedFiles": 558,
+  "qualificationFilesNotRun": 162,
+  "passed": 1819,
+  "failed": 39,
+  "skipped": 0,
+  "cancelled": 0,
+  "durationMs": 141284.943,
+  "conclusion": "FAILED; historical evidence assertions compared archived pre-repair sampler hash against current repaired code",
+  "expectedHistoricalSamplerSha256": "046b122ebb37935de6e5b75ebc59f0fd16ea6837c8aea0d75e0bbd70f1eb799f",
+  "currentRepairedSamplerSha256": "abc33188e252183133d5debb54f909428324dfad4d0967b7c007434b5f0ecf9a",
+  "repair": "Historical-only exact-path reader verifies the immutable 4791 B pre-repair sampler; all historical measurements and expected hashes unchanged, live tests keep importing current sampler",
+  "priorFailedResultRelabelled": false,
+  "publicOrWholeGoalAcceptance": false
+}

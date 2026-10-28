@@ -1,5 +1,43 @@
 # Tested conversion ledger
 
+2026-10-28 — Final portable regression PASS1863/0fail/0skip/0cancel,560 files,
+82.081s;162 qualification files not executed. Prior1819/39 and1858/1 failures
+preserved. Focused historical106, source-contract35 and final bootstrap4 all
+PASS; affected lint PASS. Prepared same-compiler/lock/argv source-path remap and
+two fresh build comparisons. ONE initial push-triggered run planned, six-minute
+observation allowance/20-minute cap; no browser/public-engine change or source-
+repeat claim yet. `evidence/2026-10-28-source-repeat-preparation-and-regression.json`.
+
+2026-10-28 — Source repeat recipe prepared: pinned original compile driver
+unchanged, own Rust wrapper adds source-prefix remap only; two genuinely fresh
+locked builds must compare full bytes. One raw binary retained, second duplicate
+removed only after exact identity/hash comparison. Separate workflow bootstraps
+only on exact workflow-file push; no duplicate manual dispatch.35 focused PASS
+and affected lint PASS before final bootstrap-contract assertion. No actual
+source repeat result yet. Portable attempt2 retained1858pass/1fail; omitted
+historical-file binding corrected and4 focused checks PASS. Full final run next.
+
+2026-10-28 — Historical bindings:106 scoped PASS/0fail/0skip (70+36), affected
+lint PASS; full repaired portable run pending. First overlong command was refused
+before execution and split, existing32-argument guard retained. No memory fact,
+old expected SHA or failure status changed. Real browser result was not rerun.
+`evidence/2026-10-28-cdp-historical-binding-repair.json`.
+Private Wasm static source-path audit found188 random scratch-prefix occurrences
+inside section11; no source-repeat acceptance. Preparing exact compiler-wrapper
+path remap, same graph/quality/settings, before two independent build comparison.
+
+2026-10-28 — Actual default-recording diagnostic recovery verification:
+10pass/0fail/0skip, one small-suite full-tree241.7578 MiB,156 valid/0 unavailable
+native samples;22 worker heaps available/13 null. Full DOM/HAR on, no allocator
+probes, services/early baseline/250MiB unchanged. This is not a claimed conversion
+optimization or repeat/stress/OOM certification. Four owned identities absent,
+runtime removed, original full SHA/size unchanged. Prior failures retained.
+`evidence/2026-10-28-cdp-session-recovery-browser-terminal.json`.
+Portable regression first result FAILED1819pass/39fail/0skip in141.285s; every
+reported failure was old diagnostic source pins versus repaired sampler. Fixing
+only historical archive binding, never repinning old measurements as current.
+`evidence/2026-10-28-cdp-regression-first-result.json`.
+
 2026-10-27 — CDP session recovery preparation:30 focused PASS/0fail/0skip,
 including the archived old sticky-error reproduction, three real expired-session
 variants, no retry on mere timeout, and unsupported-realm null preservation.

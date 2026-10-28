@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
+import { readHistoricalCdpOrFile as readFile } from "./helpers/historical-cdp-realm.mjs";
 import test from "node:test";
 const read = async file => (await readFile(new URL(`../${file}`, import.meta.url), "utf8")).replaceAll("\r\n", "\n");
 

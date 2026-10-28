@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "scope": "Read-only deterministic source-build-path audit; no compiler, renderer or selected-file execution",
+  "artifactPin": "images/resvg-source/processed-candidate-input.json",
+  "wasmSha256": "6e5b1920548391340fddc15d6c711cf2ed32f589f5bde7897a815a0925499fd6",
+  "wasmBytes": 2695842,
+  "ownedRandomBuildPrefixOccurrences": 188,
+  "uniquePrefixes": [
+    "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-HOdYcB"
+  ],
+  "sectionIds": [
+    11
+  ],
+  "firstOccurrences": [
+    {
+      "prefix": "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-HOdYcB",
+      "offset": 2098345,
+      "sectionId": 11
+    },
+    {
+      "prefix": "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-HOdYcB",
+      "offset": 2099009,
+      "sectionId": 11
+    },
+    {
+      "prefix": "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-HOdYcB",
+      "offset": 2099228,
+      "sectionId": 11
+    }
+  ],
+  "rawBinaryRetainedOnDisk": false,
+  "sourceRecompileExecuted": false,
+  "sourceBuildRepeatProven": false,
+  "publicReplacement": false,
+  "originalGoalComplete": false
+}

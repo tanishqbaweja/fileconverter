@@ -1,0 +1,42 @@
+name: Private SVG source reproduction
+
+on:
+  workflow_dispatch:
+  # Register this new workflow without modifying the existing CI source pins.
+  # Recipe/helper changes alone do not retrigger builds; subsequent runs are manual.
+  push:
+    branches: ["media-options"]
+    paths: [".github/workflows/svg-source-reproduction.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce-remapped-raw-svg:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Compare two fresh locked raw builds with source path remapping
+        run: node images/resvg-source/reproduce-raw-source.mjs
+      - name: Verify public engines were not replaced
+        if: always()
+        run: git diff --exit-code -- public/engines
+      - name: Retain raw comparison evidence and one candidate, second binary only on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: svg-source-repeat-${{ github.run_id }}
+          path: |
+            outputs/reports/resvg-source-repeat-${{ github.run_id }}.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.lock
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.wasm
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.lock
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.wasm
+          if-no-files-found: warn
+          retention-days: 1
