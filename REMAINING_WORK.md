@@ -1,5 +1,12 @@
 # Remaining work audit
 
+Spatial-fidelity diagnosis now has a fixed small paired control prepared:
+full-frame/nativePNG versus128-row/streamedPNG, same native bytes and production
+UI/direct I/O, exact decodedRGBA comparison plus freshChrome whole/band0.99.
+This is ONLY an isolation diagnostic, never a substitute for failed original6M.
+3focused PASS702.178ms/lint/1case collection PASS; actual pair still pending.
+Full large-file, release, memory-repeat/recovery/transparent obligations unchanged.
+
 128-row lifetime native candidate now genuinely converted6M in31.156s under
 unchanged45s, but REJECTED: wholeSSIM0.990103 passes; minimum31band0.979671
 fails0.99. Alphaall6Mexact/opaque only.227.87109375MiB full-tree/345valid0missing,

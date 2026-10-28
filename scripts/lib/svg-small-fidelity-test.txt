@@ -1,0 +1,79 @@
+test("paired-svg-fidelity-control", async () => {
+  if (!privateSvg) throw new Error("Owned private candidate required");
+  const sourcePath = path.join(projectRoot,"fixtures/images/test-pattern-effects.svg");
+  const sourceBytes = await readFile(sourcePath);
+  expect(sourceBytes.length).toBe(11194);
+  expect(createHash("sha256").update(sourceBytes).digest("hex")).toBe("afebfa848cd052fcd656cfdda7605c6c191edf845087759ca3421cf44880981d");
+  const referencePath=path.join(privateSvg.runtime,"small-fresh-reference.png");
+  const results: {mode:string;rgbaSha256:string;wholeSsim:number;minimumBandSsim:number;alphaExact:boolean;metrics:unknown}[]=[];
+  const save=async()=>{
+    if(!privateSvg)throw new Error("Owned descriptor vanished");
+    const equal=results.length===2&&results[0].rgbaSha256===results[1].rgbaSha256;
+    const value={repeat:"small-full-vs-strip-control",diagnosticOnly:true,sourcePixels:960*540,
+      fullOriginal6MStressReplacement:false,results,exactFullVsStripRgbaEqual:equal,
+      independentlyValidatedEffects:equal&&results.every(row=>row.wholeSsim>=0.99&&row.minimumBandSsim>=0.99&&row.alphaExact),
+      publicPromotion:false,wholeGoalComplete:false};
+    const text=JSON.stringify(value);if(Buffer.byteLength(text)>65536)throw new Error("Bounded diagnostic receipt");
+    await writeFile(path.join(privateSvg.runtime,"small-full-vs-strip-control.json"),text);
+  };
+  const finishSink=async()=>{if(!validationSink)throw new Error("Missing validation sink");validationSink.end();await once(validationSink,"finish");validationSink=null;};
+  const transfer=async(name:string)=>{
+    await page.evaluate(async outputName=>{
+      const root=await navigator.storage.getDirectory(),handle=await root.getFileHandle(outputName);
+      const reader=(await handle.getFile()).stream().getReader();
+      try{for(;;){const {done,value}=await reader.read();if(done)break;
+        for(let at=0;at<value.length;at+=65536){const part=value.subarray(at,Math.min(at+65536,value.length));let binary="";
+          for(let start=0;start<part.length;start+=16384)binary+=String.fromCharCode(...part.subarray(start,Math.min(start+16384,part.length)));
+          await window.__withinImageValidationChunk(btoa(binary));
+        }
+      }}finally{await reader.cancel();reader.releaseLock();await root.removeEntry(outputName);}
+    },name);
+  };
+  try{
+    await page.goto("/?test=1&directory=1");
+    await page.waitForFunction(()=>window.__WITHIN_TEST__?.getState().workerStatus==="ready");
+    validationSink=createWriteStream(referencePath,{flags:"wx"});
+    await page.evaluate(async source=>{
+      const image=new Image(),url=URL.createObjectURL(new Blob([source],{type:"image/svg+xml;charset=utf-8"}));let canvas;
+      try{image.src=url;await image.decode();canvas=document.createElement("canvas");canvas.width=960;canvas.height=540;
+        const context=canvas.getContext("2d");if(!context)throw new Error("Independent Canvas2D unavailable");context.drawImage(image,0,0,960,540);
+        const png=await new Promise<Blob|null>(resolve=>canvas!.toBlob(resolve,"image/png"));
+        if(!(png instanceof Blob)||png.size<1||png.size>524288)throw new Error("Bounded small reference");
+        const reader=png.stream().getReader();try{for(;;){const {done,value}=await reader.read();if(done)break;
+          for(let at=0;at<value.length;at+=65536){let binary="";const part=value.subarray(at,Math.min(at+65536,value.length));
+            for(let start=0;start<part.length;start+=16384)binary+=String.fromCharCode(...part.subarray(start,Math.min(start+16384,part.length)));
+            await window.__withinImageValidationChunk(btoa(binary));
+          }
+        }}finally{await reader.cancel();reader.releaseLock();}
+      }finally{URL.revokeObjectURL(url);image.src="";if(canvas){canvas.width=0;canvas.height=0;}}
+    },sourceBytes.toString());
+    await finishSink();
+    for(const mode of ["full","strip"]){
+      svgDiagnosticStripMode=mode==="strip";
+      const outputPath=path.join(privateSvg.runtime,"small-"+mode+".png");
+      try{
+        await page.goto("/?test=1&directory=1");
+        await page.waitForFunction(()=>window.__WITHIN_TEST__?.getState().workerStatus==="ready");
+        await page.locator('[data-testid="file-input"]').setInputFiles(sourcePath);
+        await page.locator('[data-testid="format-select"]').selectOption("svg-to-png");
+        await page.locator('[data-testid="convert-button"]').click();
+        await expect.poll(()=>page.evaluate(()=>window.__WITHIN_TEST__?.getState().jobState),{timeout:45_000}).not.toBe("running");
+        const state=await page.evaluate(()=>window.__WITHIN_TEST__?.getState());expect(state?.jobState,state?.error??state?.phase).toBe("complete");
+        expect(state?.opfsName).toBeNull();expect(state?.batchOutputNames).toEqual(["test-pattern-effects.png"]);
+        validationSink=createWriteStream(outputPath,{flags:"wx"});await transfer("test-pattern-effects.png");await finishSink();
+        const probe=JSON.parse((await execFileAsync("ffprobe",["-v","error","-show_entries","stream=codec_name,width,height","-of","json",outputPath],{cwd:projectRoot,windowsHide:true,maxBuffer:16384})).stdout);
+        expect(probe.streams).toEqual([{codec_name:"png",width:960,height:540}]);
+        const decoded=await execFileAsync("ffmpeg",["-v","error","-threads","1","-i",outputPath,"-pix_fmt","rgba","-f","rawvideo","-"],{cwd:projectRoot,windowsHide:true,maxBuffer:960*540*4+65536,encoding:"buffer"});
+        expect(decoded.stdout.length).toBe(960*540*4);
+        const rgbaSha256=createHash("sha256").update(decoded.stdout).digest("hex");
+        const comparison=await execFileAsync("ffmpeg",["-v","info","-threads","1","-i",referencePath,"-threads","1","-i",outputPath,"-lavfi","[0:v]format=rgb24[a];[1:v]format=rgb24[b];[a][b]ssim","-frames:v","1","-f","null","NUL"],{cwd:projectRoot,windowsHide:true,maxBuffer:65536});
+        const wholeSsim=Number(comparison.stderr.match(/All:([0-9.]+)/)?.[1]);
+        const bands=await validateSvgStripSeams({outputPath,referencePath,width:960,height:540,centralRows:128,additionalCentralRows:[64],execute:execFileAsync,cwd:projectRoot});
+        results.push({mode,rgbaSha256,wholeSsim,minimumBandSsim:bands.minimumSsim,alphaExact:bands.alphaExact,metrics:state!.metrics});await save();
+      }finally{if(validationSink){validationSink.destroy();validationSink=null;}await rm(outputPath,{force:true});
+        await page.evaluate(async()=>{const root=await navigator.storage.getDirectory();await root.removeEntry("test-pattern-effects.png").catch(()=>{});}).catch(()=>{});}
+    }
+    await save();expect(results.length).toBe(2);expect(results[0].rgbaSha256).toBe(results[1].rgbaSha256);
+    for(const row of results){expect(row.wholeSsim).toBeGreaterThanOrEqual(0.99);expect(row.minimumBandSsim).toBeGreaterThanOrEqual(0.99);expect(row.alphaExact).toBe(true);}
+  }finally{await save();if(validationSink){validationSink.destroy();validationSink=null;}await rm(referencePath,{force:true});}
+});

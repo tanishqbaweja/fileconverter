@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-28 — Small paired fidelity diagnostic PREPARED, not a6M replacement.
+Fixed existing11194B/960x540 SVG/SHAafebfa84...981d; fresh independent current-
+Chrome reference, production UI/direct writer in BOTH modes, same902fc72b...845d
+native engine. Full mode forwards original production worker; strip mode uses
+same128/48 pilot. Independent decode+exactRGBA SHA comparison and unchanged
+0.99 whole/bands/alpha gates recorded AFTER both conversions, so a first quality
+failure cannot hide the second control. Same45s poll/60s test/96MiB/250MiB gates,
+normal services/headless/owned cleanup; no public acceptance.3focused PASS
+702.178ms/lint PASS; exact1paired test collection PASS/no browser/runtime removed.
+The rejected31.156s full6M attempt remains rejected; no unchanged large replay.
+
 2026-10-28 — Genuine128-row conversion7c2b3a60 COMPLETE but QUALITY REJECTED:
 3000x2000 PNG2932111B independently decoded,31156.220ms conversion/30041.160ms
 native render/36592.933ms suite. Whole SSIM0.990103>=0.99 but minimum all31
