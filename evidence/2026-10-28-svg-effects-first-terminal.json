@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "76d5fc8501e2a3e95cf0374fb659b51fea3a4043",
+  "wrapper": {
+    "path": "evidence/2026-10-28T09-13-02-318Z-reproduced-svg-grid-stress.json",
+    "bytes": 67283,
+    "sha256": "85d83229835dd97daabd0561f6f042940595fbb585757e79542869c41e7586ff"
+  },
+  "browser": {
+    "path": "evidence/2026-10-28T09-13-30-369Z-source-svg-browser.json",
+    "bytes": 301024,
+    "sha256": "9b16a3354b50f647fb4530bb0b89b77b949ce20939022b49cc15f586b79673bd"
+  },
+  "sessionId": 90401,
+  "terminalExitCode": 1,
+  "stats": {
+    "startTime": "2026-10-28T09:14:28.707Z",
+    "duration": 5050.38,
+    "expected": 0,
+    "skipped": 2,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "fixture": {
+    "source": {
+      "bytes": 470390,
+      "sha256": "af4df880bee340b34ec1102a78a78cce8d04915635ea2ee5a7aa0ffe04e4ca78",
+      "width": 3000,
+      "height": 2000,
+      "elements": 6719,
+      "filters": 1,
+      "masks": 1,
+      "filterPrimitives": 7,
+      "sameHistoricalSvgBytes": true
+    },
+    "browserBefore": {
+      "version": "156.0.8078.48",
+      "launcher": {
+        "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+        "bytes": 4522648,
+        "sha256": "480f275b63d1ea39113cbc8344ac395578acc25b432bd39af5fbc77005179aca",
+        "identity": {
+          "dev": "1386679384",
+          "ino": "28428972648127597",
+          "birthtimeNs": "1793052149841822100",
+          "mtimeNs": "1792460818004188000"
+        }
+      },
+      "library": {
+        "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.48\\chrome.dll",
+        "bytes": 308101784,
+        "sha256": "e23d982e66959f3d738154ba68dd2638c9c7473a7e0f362eaee2b1dad5e20f57",
+        "identity": {
+          "dev": "1386679384",
+          "ino": "41095346600131756",
+          "birthtimeNs": "1793052149854400100",
+          "mtimeNs": "1792460826425077000"
+        }
+      }
+    },
+    "chromeArguments": [
+      "--headless=new",
+      "--remote-debugging-port=0",
+      "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\svg-effects-reference-nr25by\\profile",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "about:blank"
+    ],
+    "birth": {
+      "pid": 34680,
+      "parentPid": 46092,
+      "createdAt": "2026-10-28T09:13:04.3029720Z"
+    },
+    "render": {
+      "width": 3000,
+      "height": 2000,
+      "pngBytes": 3834367,
+      "renderer": "Independent Chromium SVG and Canvas2D, not resvg"
+    },
+    "reference": {
+      "bytes": 3834367,
+      "sha256": "df3a7c767f8c1dcd38ac9dbe3f37f81e2ffbdd77ea09096a230d1fc435d34ecd",
+      "chunks": 59,
+      "maximumChunkBytes": 65536,
+      "rendererVersion": "156.0.8078.48",
+      "historicalRenderer": "151.0.7922.137 SVG and Canvas2D",
+      "historicalBytes": 3834367,
+      "historicalSha256": "df3a7c767f8c1dcd38ac9dbe3f37f81e2ffbdd77ea09096a230d1fc435d34ecd",
+      "sameHistoricalReferenceBytes": true,
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "png",
+            "width": 3000,
+            "height": 2000
+          }
+        ]
+      },
+      "independentNativeDecodePassed": true
+    },
+    "conversionAcceptance": false,
+    "forbiddenRequests": [],
+    "cleanup": {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 34680,
+        "parentPid": 46092,
+        "createdAt": "2026-10-28T09:13:04.3029720Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-28T09:13:28.219Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 546,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    "ownedReferenceProfileRemoved": true,
+    "cleanupErrors": []
+  },
+  "runs": [
+    {
+      "repeat": "6m-effects-repeat-1",
+      "result": {
+        "repeat": "6m-effects-repeat-1",
+        "destinationMode": "direct-handle-test-directory",
+        "independentlyValidatedEffects": false,
+        "metrics": {
+          "inputBytes": 470390,
+          "outputBytes": 0,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 0,
+          "pendingOperations": 0,
+          "peakPendingOperations": 0,
+          "maxReadChunkBytes": 262144,
+          "maxWriteChunkBytes": 0,
+          "elapsedMs": 1162.5300000309944,
+          "wasmMemories": {
+            "resvg": 82247680
+          },
+          "sharedArrayBufferBytes": 266276,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0,
+          "svgExecutionResources": {
+            "phase": "aborted",
+            "cancellationBytes": 4,
+            "destinationSharedBytes": 266272,
+            "allocatedSharedBytes": 266276,
+            "peakAllocatedSharedBytes": 266276,
+            "destinationWorkerCount": 0,
+            "peakKnownWorkerCount": 2,
+            "sharedBytesMeaning": "allocated-for-job-not-garbage-collection-or-process-memory"
+          },
+          "svgMemoryObservation": {
+            "phase": "released",
+            "currentBytes": 82247680,
+            "peakBytes": 82247680,
+            "currentPages": 1255,
+            "peakPages": 1255,
+            "maximumBytes": null,
+            "maximumPages": null,
+            "phaseBytes": {
+              "preparing": null,
+              "initialized": 1572864,
+              "parsed": 8585216,
+              "released": 82247680
+            },
+            "maximumStatus": "not-observed-from-runtime-binding",
+            "available": true,
+            "observations": 4,
+            "unavailableObservations": 0
+          },
+          "wasmMemoryBytes": 82247680,
+          "peakWasmMemoryBytes": 82247680
+        },
+        "failure": {
+          "jobState": "error",
+          "phase": "Stopped safely",
+          "error": "recursive use of an object detected which would lead to unsafe aliasing in rust"
+        }
+      },
+      "unavailable": null
+    },
+    {
+      "repeat": "6m-effects-repeat-2",
+      "result": null,
+      "unavailable": "Not written before failure"
+    },
+    {
+      "repeat": "6m-effects-repeat-3",
+      "result": null,
+      "unavailable": "Not written before failure"
+    }
+  ],
+  "blankSamples": 16,
+  "blankBaseline": null,
+  "primaryIncrementalMiB": null,
+  "nativeValidSamples": 60,
+  "nativeUnavailableSamples": 0,
+  "unadjustedPeakPrivateBytes": 550002688,
+  "ownedProcessBirthsAbsent": 6,
+  "ownedRuntimesFixturesOutputsRemoved": true,
+  "originalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "originalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "failureTrace": {
+    "path": "output\\playwright\\2026-10-28T09-13-30-369Z-source-svg-failure.zip",
+    "bytes": 298675,
+    "sha256": "dfda5eb246051971c04902afcf56e9810298a47cc3fe49bcc3e823769f2814cf"
+  },
+  "conclusion": "First6M render failed; two cases not run. Finally cleanup error masks primary renderer error. Exact cause unproven; do not declare OOM or SSIM failure",
+  "primaryMemoryAcceptance": false,
+  "publicPromotion": false,
+  "originalGoalComplete": false
+}

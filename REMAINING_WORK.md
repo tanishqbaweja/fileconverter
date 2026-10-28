@@ -1,5 +1,35 @@
 # Remaining work audit
 
+SVG primary-failure preservation gates PASS:31focused, then21 final native-stack
+focused; fresh production build, TypeScript and affected lint PASS. No input,
+rendering setting, engine binary,96MiB cap, SSIM0.99 or full-tree250MiB change.
+One changed failure diagnostic next, solely to expose original exception/stack
+that prior destructor masked. `evidence/2026-10-28-svg-primary-failure-preparation.json`.
+
+SVG renderer failure preservation implemented: catch/rethrow original exception;
+try both destructors independently; scalar attempted/release-failure counts,
+without retaining Error/native objects. Cleanup-only errors still stop the job.
+Native RuntimeError gets a bounded256-character message/4096-character stack
+and last observed phase, not arbitrary parser/source text. Surface a failed-
+release warning; ordinary destination abort and application worker replacement
+remain unchanged.31 focused PASS;21 post-stack focused PASS. Build/type/lint
+gates next, then one changed diagnostic to expose the formerly masked cause.
+Do not infer OOM or promote the failed6M profile from unit evidence.
+
+2026-10-28 — Actual private6M effects FAILED first case during render;0success/
+1fail/2notrun. Exact historical470390B SVG and3834367B Chromium reference both
+reproduced byte-identically (current156 renderer vs prior151),59awaited64KiB
+reference chunks; native decode passed. No SSIM score/output generated. Actual
+Wasm after release attempt82247680B/1255pages; primary baselineNULL16samples,
+60valid/0missing native samples. Six owned births absent, all reference/profile/
+fixture/output scratch removed, original full SHA unchanged;298675B trace kept.
+
+Error currently shown is Rust recursive-borrow cleanup, which can mask the
+original render exception in finally. Preserve primary error while attempting
+both frees before diagnosing native cause. Do NOT infer OOM from a cap/size
+alone, raise96MiB, reduce the6M input or call this a quality/250MiB pass.
+`evidence/2026-10-28-svg-effects-first-terminal.json`.
+
 2026-10-28 — Distinct SVG6M effects preparation: byte-identical470390B historical
 SVG from pinned unchanged builder, independent current-Chromium SVG/Canvas2D
 reference generated only in fresh owned fixture/profile directories and removed

@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-28 — Source-candidate6M effects first attempt at76d5fc85:0success/
+1failure/2notrun. Both original SVG and independent current-Chromium reference
+are byte-identical to historical hashes; reference bounded export/native decode
+passed. Real render failed before PNG; surfaced Rust borrow-cleanup error can
+mask primary exception. Actual Wasm82247680B, no SSIM/output; baselineNULL,
+60valid/0missing native samples, no memory acceptance. Six owned births absent,
+all disposable fixtures/outputs/profiles removed, original full SHA unchanged.
+`evidence/2026-10-28-svg-effects-first-terminal.json`. Next preserve primary
+failure, do not blindly raise heap or rerun identical masked-error case.
+
 2026-10-28 — Final SVG execution build at1eb5c893:19 complete headless
 privacy/offline/hosting PASS/0fail/0skip/0flaky44.216s; two owned births absent,
 scratch removed, original full SHA/size unchanged and cycle source hashes exact.

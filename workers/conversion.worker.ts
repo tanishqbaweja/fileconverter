@@ -3,6 +3,7 @@
 import { initWasm as initResvgWasm, Resvg, getInitializedResvgMemory } from "../lib/vendor/resvg-binding.mjs";
 import { observeSvgMemory } from "../lib/svg-memory-observation";
 import { observeSvgExecutionResources } from "../lib/svg-execution-resources";
+import { releaseSvgRendererObjects } from "../lib/svg-renderer-release";
 
 import type {
   ConversionMetrics,
@@ -1743,6 +1744,7 @@ async function runSvgToPng(
   assertActive();
   let renderer: InstanceType<typeof Resvg> | null = null;
   let rendered: ReturnType<InstanceType<typeof Resvg>["render"]> | null = null;
+  let primaryFailureActive = false;
   try {
     resvgInitialization ??= initResvgWasm(fetch(RESVG_WASM_URL));
     await resvgInitialization;
@@ -1792,12 +1794,17 @@ async function runSvgToPng(
       );
     }
     metrics.inputBytes = file.size;
-  } finally {
-    try { rendered?.free(); }
-    finally {
-      try { renderer?.free(); }
-      finally { observeSvgMemory(metrics, "released", getInitializedResvgMemory()); }
+  } catch (error) {
+    primaryFailureActive = true;
+    if (error instanceof WebAssembly.RuntimeError) {
+      metrics.svgRuntimeFailure = { message: error.message.slice(0, 256),
+        stack: typeof error.stack === "string" ? error.stack.slice(0, 4096) : null,
+        lastObservedPhase: metrics.svgMemoryObservation?.phase ?? null };
     }
+    throw error;
+  } finally {
+    try { releaseSvgRendererObjects(metrics, rendered, renderer, primaryFailureActive); }
+    finally { observeSvgMemory(metrics, "released", getInitializedResvgMemory()); }
   }
 }
 
@@ -5452,6 +5459,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       observeSvgExecutionResources(metrics, destination.writable, cancellationSignal?.byteLength ?? 0,
         destinationAbortObserved ? "aborted" : "abort-unverified");
     }
+    if (profileId === "svg-to-png" && metrics.svgReleaseObservation?.releaseFailures) {
+      post({ type: "warning", jobId, message: "The SVG engine could not release every internal object. Discard its worker before another job; no output was saved." });
+    }
     metrics.queuedBytes = 0;
     metrics.pendingOperations = 0;
     if (error instanceof DOMException && error.name === "AbortError") {
@@ -5460,7 +5470,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       post({
         type: "error",
         jobId,
-        message: error instanceof Error ? error.message : String(error),
+        message: profileId === "svg-to-png" && error instanceof WebAssembly.RuntimeError
+          ? `SVG rendering failed inside the bounded engine (${error.message}). No output was saved.`
+          : error instanceof Error ? error.message : String(error),
         metrics: { ...metrics },
       });
     }

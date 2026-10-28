@@ -48,6 +48,18 @@ export interface ConversionMetrics {
     peakKnownWorkerCount: number;
     sharedBytesMeaning: "allocated-for-job-not-garbage-collection-or-process-memory";
   };
+  /** Release attempts are not proof of native deallocation or linear-memory shrinkage. */
+  svgReleaseObservation?: {
+    attemptedObjects: number;
+    releaseFailures: number;
+    primaryFailurePreserved: boolean;
+  };
+  /** Bounded native runtime stack only, never arbitrary parser/source content. */
+  svgRuntimeFailure?: {
+    message: string;
+    stack: string | null;
+    lastObservedPhase: NonNullable<ConversionMetrics["svgMemoryObservation"]>["phase"] | null;
+  };
   /** Actual MPEG-2 AVCodecContext fields after native settings-match succeeds. */
   mpeg2EncoderSettings?: { width: number; height: number; frameRateNumerator: number; frameRateDenominator: number;
     bitRateBps: number; qmin: number; qmax: number };

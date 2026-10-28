@@ -28,7 +28,7 @@ const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: 
 let runtime, child, birth, log = "";
 try {
   for (const file of ["scripts/test-reproduced-svg-stress.mjs", "scripts/lib/reproduced-svg-stress-recipe.mjs", "scripts/lib/reproduced-svg-direct-stress-recipe.mjs", "scripts/lib/reproduced-svg-browser-recipe.mjs",
-    "scripts/lib/svg-execution-diagnostic-recipe.mjs", "lib/svg-execution-resources.ts",
+    "scripts/lib/svg-execution-diagnostic-recipe.mjs", "lib/svg-execution-resources.ts", "lib/svg-renderer-release.ts",
     "scripts/lib/svg-effects-diagnostic-recipe.mjs", "scripts/lib/owned-svg-effects-fixture.mjs", "scripts/generate-svg-effects-fixtures.mjs",
     "fixtures/stress/images/svg-effects-6m.svg.json", "fixtures/stress/images/svg-effects-6m-reference.png.json",
     "scripts/lib/exact-rgba-validation.mjs",

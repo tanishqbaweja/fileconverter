@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "76d5fc85",
+  "command": "scripts/test-reproduced-svg-stress.mjs --effects-diagnostic",
+  "sessionId": 90401,
+  "launchObservedAt": "2026-10-28T09:13:11Z",
+  "notBeforeTerminalCheck": "2026-10-28T09:16:11Z",
+  "estimatedRemainingSeconds": 180,
+  "estimateIncludes": "Separate owned independent-reference browser and bounded PNG export/validation, then fresh normal-profile qualification Chrome with baseline/native sampler, three6M effects jobs and native SSIM validation, original hashes and owned cleanup",
+  "headless": true,
+  "memoryFormulaLimitAndPrivate96MiBEngineCapUnchanged": true,
+  "doNotDuplicateWhileSessionIsLive": true,
+  "status": "launched-not-a-conversion-pass"
+}

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "scope": "Preserve actual SVG primary error when native object destruction also fails; not an OOM/cap/fidelity remedy",
+  "maskedBrowserFailure": "evidence/2026-10-28-svg-effects-first-terminal.json",
+  "releaseHelper": "lib/svg-renderer-release.ts",
+  "bothDestructorsAttempted": true,
+  "primaryExceptionIdentityPreserved": true,
+  "cleanupOnlyExceptionStillFailsJob": true,
+  "metricsRetainNativeObjectsOrErrors": false,
+  "nativeRuntimeMessageBoundCharacters": 256,
+  "nativeRuntimeStackBoundCharacters": 4096,
+  "arbitraryParserOrSourceTextRecordedByNewDiagnostic": false,
+  "firstFocusedTests": { "passed": 31, "failed": 0, "skipped": 0, "durationMs": 1767.7051 },
+  "finalNativeStackFocusedTests": { "passed": 21, "failed": 0, "skipped": 0, "durationMs": 1230.6816 },
+  "productionBuild": { "sessionId": 47512, "exitCode": 0, "existingWarningsRetained": true },
+  "typescript": { "sessionId": 59578, "exitCode": 0 },
+  "affectedLint": { "sessionId": 89406, "exitCode": 0 },
+  "converterAlgorithmSettingsInputPrivate96MiBCapAnd250MiBLimitChanged": false,
+  "nextBrowserRunReason": "Changed exception preservation must expose the previously masked primary failure and bounded stack, not retry identical conversion to claim success",
+  "originalGoalComplete": false
+}
