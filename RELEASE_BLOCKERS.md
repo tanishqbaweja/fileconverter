@@ -2,6 +2,12 @@
 
 ## Current interpretation — 2026-10-28
 
+Newest SVG output completed but was correctly REJECTED for fidelity (0.496146
+whole-image/0.111728 worst boundary versus0.99). Structural decoding/alpha passed,
+not content correctness or memory acceptance. No promotion. Recursive layer
+coordinate bounds and private generic buffer telemetry require correction next;
+all original quality/memory/input gates remain unchanged. See latest TESTED entry.
+
 Latest local regression:1960portable PASS122.264s,19same-built-worker/direct-
 workerd privacy PASS49.901s; source build40709137070 observed live14:45:45Z.
 No compiler/rendering/memory acceptance inferred. Future postprocess recipe's

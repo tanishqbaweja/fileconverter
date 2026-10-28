@@ -1,0 +1,215 @@
+{
+  "schemaVersion": 1,
+  "status": "completed-structurally-valid-PNG-rejected-for-fidelity",
+  "executedHead": "d6bee83cc02d0d6a390f75df81fc821348059af5",
+  "browserVersion": "156.0.8078.49",
+  "receipts": [
+    {
+      "path": "evidence/2026-10-28T17-42-33-562Z-svg-strip-pilot.json",
+      "bytes": 33862,
+      "sha256": "979a1be23a3e8d145c2b8f47c95b012935c0b5205451982c122546306642cd1e"
+    },
+    {
+      "path": "evidence/2026-10-28T17-42-34-034Z-reproduced-svg-grid-stress.json",
+      "bytes": 255440,
+      "sha256": "6deb026952c09c1f73b157d91c75c8aa76a860fe4de4670bfcfa7fd93f76f53c"
+    },
+    {
+      "path": "evidence/2026-10-28T17-43-01-238Z-source-svg-browser.json",
+      "bytes": 574293,
+      "sha256": "04a7c7414dff4c4d80dc8e3015e7dec96691bca24db9b723332b7a2381d3f343"
+    }
+  ],
+  "cases": {
+    "startTime": "2026-10-28T17:43:55.962Z",
+    "duration": 47625.842000000004,
+    "expected": 0,
+    "skipped": 2,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "browserConverted": {
+    "width": 3000,
+    "height": 2000,
+    "outputBytes": 883974,
+    "elapsedMs": 42627.50499999523,
+    "strip": {
+      "centralRows": 64,
+      "haloRows": 48,
+      "renderedViewports": 32,
+      "releasedViewports": 32,
+      "completedRows": 2000,
+      "maximumViewportPixels": 480000,
+      "maximumRgbaCopyBytes": 1920000,
+      "maximumExplicitPixelWorkingBytes": 2424021,
+      "png": {
+        "rows": 2000,
+        "outputBytes": 883974,
+        "maximumRgbaBytes": 252000,
+        "maximumFilteredBytes": 252021,
+        "maximumCodecChunkBytes": 16384,
+        "maximumWriteBytes": 16396,
+        "maximumPendingWrites": 1
+      },
+      "generalFilterSupportClaimed": false
+    },
+    "wasm": {
+      "phase": "released",
+      "currentBytes": 80084992,
+      "peakBytes": 80084992,
+      "currentPages": 1222,
+      "peakPages": 1222,
+      "maximumBytes": null,
+      "maximumPages": null,
+      "phaseBytes": {
+        "preparing": null,
+        "initialized": 1572864,
+        "parsed": 8585216,
+        "rasterized": 80084992,
+        "encoded": 80084992,
+        "released": 80084992
+      },
+      "maximumStatus": "not-observed-from-runtime-binding",
+      "available": true,
+      "observations": 6,
+      "unavailableObservations": 0
+    },
+    "release": {
+      "attemptedObjects": 1,
+      "releaseFailures": 0,
+      "primaryFailurePreserved": false
+    },
+    "maxRead": 262144,
+    "maxWrite": 16396,
+    "peakPending": 1,
+    "finalQueued": 0,
+    "finalPending": 0
+  },
+  "fidelity": {
+    "kind": "independent-Chromium-SVG-vs-resvg-native-FFmpeg-SSIM-rgb24",
+    "minimumSsim": 0.99,
+    "actualSsim": 0.496146
+  },
+  "stripValidation": {
+    "seamRows": [
+      64,
+      128,
+      192,
+      256,
+      320,
+      384,
+      448,
+      512,
+      576,
+      640,
+      704,
+      768,
+      832,
+      896,
+      960,
+      1024,
+      1088,
+      1152,
+      1216,
+      1280,
+      1344,
+      1408,
+      1472,
+      1536,
+      1600,
+      1664,
+      1728,
+      1792,
+      1856,
+      1920,
+      1984
+    ],
+    "seamBandHeight": 8,
+    "scores": [
+      0.276259,
+      0.116509,
+      0.14674,
+      0.54268,
+      0.555562,
+      0.560063,
+      0.554479,
+      0.51004,
+      0.140382,
+      0.121745,
+      0.466956,
+      0.56083,
+      0.544049,
+      0.555058,
+      0.533982,
+      0.2714,
+      0.111728,
+      0.137807,
+      0.514945,
+      0.541187,
+      0.532568,
+      0.539058,
+      0.482846,
+      0.152898,
+      0.121164,
+      0.430983,
+      0.213384,
+      0.99519,
+      0.995099,
+      0.995822,
+      0.984285
+    ],
+    "minimumSsim": 0.111728,
+    "requiredMinimumSsim": 0.99,
+    "alphaExact": true,
+    "alphaComparedPixels": 6000000,
+    "allReferenceAlphaOpaque": true,
+    "transparentInputCoverage": false,
+    "passed": false,
+    "validator": "independent-native-FFmpeg-per-boundary-SSIM-and-exact-alpha"
+  },
+  "memory": {
+    "blank": null,
+    "incrementalPrivateMiB": null,
+    "unadjustedPeakPrivateBytes": 556261376,
+    "validSamples": 447,
+    "unavailableSamples": 0
+  },
+  "cleanup": {
+    "roots": [
+      "owned-identity-absent",
+      "owned-identity-absent",
+      "owned-identity-absent",
+      "owned-identity-absent",
+      "owned-identity-absent",
+      "owned-identity-absent",
+      "owned-identity-absent"
+    ],
+    "runtimesRemoved": [
+      true,
+      true,
+      true,
+      true
+    ],
+    "originalBefore": {
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+    },
+    "originalAfter": {
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+    }
+  },
+  "trace": {
+    "path": "output\\playwright\\2026-10-28T17-43-01-238Z-source-svg-failure.zip",
+    "bytes": 1357461,
+    "sha256": "501a416c02a8b88f013fd4e51d41ac1754cbd18b4f7e6618115814a1fd825f14"
+  },
+  "structuralPngValidationPassed": true,
+  "acceptedOutput": false,
+  "memoryAcceptance": false,
+  "speedGainProven": false,
+  "publicEngineReplacement": false,
+  "wholeGoalComplete": false,
+  "next": "Investigate render Context max_bbox coordinate-space propagation across isolated group layers; do not relax0.99, shrink original input or raise96MiB cap.",
+  "telemetryFollowup": "Private strip observations report actual fixed pixel-buffer maxima; generic imageWorkingBytes is not updated while the private path runs and needs integration before adoption."
+}

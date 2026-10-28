@@ -1,5 +1,28 @@
 # Remaining work audit
 
+Concrete follow-up to rejected strip quality: isolated group shifts pixmap origin
+but reuses parent-coordinate max_bbox for child/mask rendering. A mathematical
+counterexample and translation-property controls demonstrate valid pixels can
+be lost. Guarded render.rs patch translates the rectangle (same dimensions/root
+bounds), preserves all pixel kernels/parameters, reverses full upstream bytes.
+New two-fresh-build context variant includes the already verified filter-region
+patch and checks both exact source digests after compilation.6focused/lint PASS;
+compiler/browser/fidelity remain pending. No full-image quality relaxation,
+larger clipping extent, heap increase, smaller source, timeout increase, or new
+public engine. Generic image-buffer telemetry and all recovery gates remain open.
+
+Real full6M source-clamped output is STRUCTURALLY VALID but QUALITY FAILED:
+SSIM0.496146/minimum seam0.111728 versus required0.99; alpha exact/opaque only.
+32viewports/2000rows fully converted883974B in42.628s, all native images freed,
+Wasm80084992B<96MiB, bounded252021Bfiltered/16396Bwrite/1pending. No accepted
+output, speed or memory qualification (blank/incrementalNULL);447native valid/
+0missing. All7 owned roots absent, disposable generated/converted files removed,
+protected original unchanged. This must NOT become a public engine. Investigate
+recursive Context max_bbox coordinate-space translation, keeping original6M,
+all fidelity gates, timeouts and96MiB cap. Private legacy generic image buffer
+telemetry also needs integration before adoption; maxima are recorded separately.
+`evidence/2026-10-28-svg-filter-first-quality-terminal.json`.
+
 Source-patched Wasm now reproducibly processed/capped, not browser-qualified:
 run40712501519 SUCCESS, both Wasm/glue outputs byte-identical; explicit96MiB max,
 2686182B SHA6ed83996...75d4, glue unchanged vs prior compatible private candidate.

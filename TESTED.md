@@ -1,5 +1,31 @@
 # Tested conversion ledger
 
+2026-10-28 — Coordinate correction prepared: a visible parent-space pixel64
+becomes child-space384 after layer origin-320; old[-320,320) bounds incorrectly
+clip it, translated[0,640) retains the exact original clipping predicate. Property
+controls across positive/negative origins PASS. Exact5969B pinned render.rs
+SHAfdb0fe57...e937 changes only child/mask context origin;6167B patched SHAd9d3b071
+...7bef, full inverse restores every upstream byte. Root bounds/dimensions and
+filter kernels/parameters unchanged. Derived native source build verifies BOTH
+region/render patches before/after two fresh locked compilations and raw-byte
+comparison.6focused PASS581.8674ms/lint PASS. No new compiler/browser acceptance
+yet; previous0.496146/0.111728 quality failure remains rejected.
+
+2026-10-28 — Source-clamped private6M engine d6bee83c completed/independently
+decoded a structurally valid3000x2000 PNG883974B in42627.505ms, but REJECTED:
+whole-image SSIM0.496146 and minimum31-boundary SSIM0.111728<unchanged0.99.
+All6000000 alpha bytes matched (opaque reference, not transparent-input proof).
+All32 native viewports rendered/freed,2000rows written, actual Wasm80084992B
+within96MiB; maxfiltered252021B/write16396B/peak1pending/finalqueues0. No native
+release failure.0validated-pass/1quality-fail/2notrun; baseline/incrementalNULL,
+447valid/0missing native samples. All7 roots absent, disposable outputs/fixtures/
+profiles removed, original before/after SHA unchanged;1357461B trace retained.
+No speed/memory/public acceptance. Next inspect recursive layer/context bounds,
+not another unchanged conversion or lowered fidelity. Generic imageWorkingBytes
+is not populated during private strip work; scalar buffer maxima remain recorded
+but generic telemetry integration is still OPEN before any adoption. See
+`evidence/2026-10-28-svg-filter-first-quality-terminal.json`.
+
 2026-10-28 — Filter candidate postprocess40712501519 SUCCESS: two pinned
 bindgen/cap outputs/glue fully byte-identical, raw source owner/both build receipts
 verified. Capped2686182B SHA6ed83996...75d4, explicit24initial/1536max pages=96MiB;

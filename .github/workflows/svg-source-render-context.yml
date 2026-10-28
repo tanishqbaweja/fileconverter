@@ -1,0 +1,41 @@
+name: Private SVG render-context source reproduction
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["media-options"]
+    paths: [".github/workflows/svg-source-render-context.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce-render-context-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Two fresh locked builds with exact region and context source patches
+        run: node images/resvg-source/reproduce-filter-context-source.mjs
+      - name: Verify public engines unchanged
+        if: always()
+        run: git diff --exit-code -- public/engines
+      - name: Retain private source candidate and exact evidence for one day
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: svg-filter-context-source-${{ github.run_id }}
+          path: |
+            outputs/reports/resvg-filter-context-owner-${{ github.run_id }}.json
+            outputs/reports/resvg-source-repeat-${{ github.run_id }}.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.wasm
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.lock
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.wasm
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.lock
+          if-no-files-found: warn
+          retention-days: 1

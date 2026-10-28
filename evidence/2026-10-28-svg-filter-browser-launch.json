@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "d6bee83c",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/test-svg-strip-pilot.mjs --filter-region",
+  "session": 5251,
+  "launchObservedAt": "2026-10-28T17:42:43Z",
+  "estimatedDurationSeconds": 180,
+  "notBeforeNextObservation": "2026-10-28T17:45:43Z",
+  "sameLiveHandleOnly": true,
+  "newWasmSha256": "6ed83996764bed766960996baa82009e68fa38d1e1ab067bd6f8c566bb6375d4",
+  "newSourceModuleSha256": "ff98d2cf2406b01d728d84ae214c146c628b514bc94fee015ce978dbbd416191",
+  "changedCandidate": "Compiled source intersects filter allocation region with bounded source canvas; private JS viewport worker bytes unchanged",
+  "original6MPixelsAndSourceReferenceRequired": true,
+  "maximumWasmBytes": 100663296,
+  "completeTreeLimitMiB": 250,
+  "wholeImageAndEveryBoundaryMinimumSsim": 0.99,
+  "exactAlphaRequired": true,
+  "sameNormalBrowserPoliciesAndServices": true,
+  "sourceRebuildsOrPostprocessorsRepeated": false,
+  "publicEngineReplacement": false,
+  "memoryAcceptance": false,
+  "wholeGoalComplete": false
+}
