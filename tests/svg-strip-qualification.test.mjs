@@ -18,6 +18,10 @@ test("private qualifier preserves every existing effects assertion while adding 
     assert.equal(restored.slice(restored.indexOf("\n")+1),base.suite);
     assert.match(generated.suite,/expect\(stripValidation.minimumSsim\).toBeGreaterThanOrEqual\(0.99\)/);
     assert.match(generated.suite,/independentlyValidatedEffects: similarity >= minimumReferenceSsim && stripValidation.passed/);
+    assert.match(generated.suite,/const response = await route.fetch\(\)/);
+    assert.match(generated.suite,/headers\["cross-origin-embedder-policy"\]\).toBe\("require-corp"\)/);
+    assert.match(generated.suite,/route.fulfill\(\{response,headers,contentType:/);
+    assert.match(generated.suite,/finally \{ await response.dispose\(\); \}/);
     assert.match(generated.driver,/Do not delay\/inflate the earliest stable blank baseline/);
     assert.match(generated.driver,/incrementalPrivateMiB <= 250/);
     assert.equal(generated.proof.publicPromotion,false);

@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-28 — First private strip browser attempt at4d9f6cb9 FAILED before
+conversion:0success/1timeout/2notrun, zero SVG Wasm requests, no job/output/quality
+result available. Retained HAR shows248 intercepted worker loads blocked with
+net::ERR_BLOCKED_BY_RESPONSE; synthetic worker response omitted the production
+COEP headers. Final un-intercepted response retained full production policy.
+Do not label low42.88671875MiB diagnostic memory as conversion acceptance.
+Native validator control on original6M reference:31/31 boundaries SSIM1, exact
+6000000 alpha bytes; source/reference hashes historical-match. All7 owned roots
+absent, all disposable data removed, original unchanged,151962B trace retained.
+Fix only private response policy preservation: fetch original static response,
+retain/require COEP+COOP+CORP+CSP, replace bytes and stale body/cache validators,
+dispose response. Do not raise test timeout or weaken browser security policy.
+Additional alpha test:32896 valid channel/alpha pairs,38 rational-vs-pinned-f64
+rounding differences;5focused PASS177.6999ms. Renderer code unchanged while live.
+
 2026-10-28 — Private viewport/PNG integration prepared:20focused PASS/0fail/
 0skip/0cancel818.5982ms, affected ESLint and TypeScript PASS. First TypeScript
 failure was upstream pixels getter typed ArrayBufferLike; retain its real type

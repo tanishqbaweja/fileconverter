@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "status": "failed-before-conversion-private-worker-response-policy",
+  "sourceCommit": "4d9f6cb9",
+  "receipts": [
+    { "path": "evidence/2026-10-28T14-10-40-668Z-svg-strip-pilot.json", "bytes": 29471, "sha256": "490c043605d95f06608c9b59a2cf9a6aef36869e655bb62d4f3c5a525e8618bc" },
+    { "path": "evidence/2026-10-28T14-10-41-091Z-reproduced-svg-grid-stress.json", "bytes": 244289, "sha256": "81d5ab73b1aa16c5d1315e712078736cf556bbd444be0036dd98fbd1c1e17683" },
+    { "path": "evidence/2026-10-28T14-11-04-451Z-source-svg-browser.json", "bytes": 631072, "sha256": "b0bc39a491fb56d11af7857d0d816469ee75f5ff07cbc90354a0a9a908e54092" }
+  ],
+  "cases": { "passed": 0, "failed": 1, "notRun": 2, "durationMs": 74465.33099999999, "testTimedOutMs": 60000 },
+  "svgWasmRequests": 0,
+  "conversionJobResult": null,
+  "outputBytes": null,
+  "ssim": null,
+  "trace": { "path": "output/playwright/2026-10-28T14-11-04-451Z-source-svg-failure.zip", "bytes": 151962, "sha256": "a72c82978f23e2c245532c046f3d4803f6c85534bcda03b90f962c7c7b8a8efe" },
+  "harWorkerRequests": { "blockedByResponse": 248, "blockedResponseHeaders": [], "finalUnintercepted200": 1, "production200HasCoepCoopCorpCsp": true },
+  "validatorOnlyControl": { "sameOriginalReferenceBothSides": true, "boundaries": 31, "minimumSsim": 1, "alphaExact": true, "alphaPixels": 6000000, "conversionAcceptance": false },
+  "diagnosticMemoryOnly": { "stableBlankPrivateBytes": 327376896, "peakPrivateBytes": 372346880, "incrementalPrivateMiB": 42.88671875, "validNativeSamples": 695, "unavailableNativeSamples": 0 },
+  "cleanup": { "ownedRootsObservedAbsent": 7, "allDisposableOwnedRuntimesAndFixtureReferenceRemoved": true, "protectedOriginalBeforeEqualsAfter": true, "originalBytes": 2958573265, "originalSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" },
+  "correction": "Private route.fetch original static worker response, require and retain production COEP/COOP/CORP/CSP, replace script bytes and stale body/cache metadata only, dispose APIResponse. No renderer/settings/Wasm-cap/test-timeout/security-policy relaxation.",
+  "correctionFocused": { "passed": 8, "failed": 0, "skipped": 0, "cancelled": 0, "durationMs": 645.547, "lint": "passed" },
+  "alphaEdgeGuard": { "validPairs": 32896, "differentFromAlternateRationalRounding": 38, "pinnedF64Preserved": true },
+  "genuineStripConversionPerformed": false,
+  "speedGainProven": false,
+  "memoryAcceptance": false,
+  "wholeGoalComplete": false
+}

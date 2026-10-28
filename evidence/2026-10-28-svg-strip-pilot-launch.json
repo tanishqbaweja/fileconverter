@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "4d9f6cb9",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/test-svg-strip-pilot.mjs",
+  "session": 75243,
+  "launchObservedAt": "2026-10-28T14:10:50Z",
+  "estimatedDurationSeconds": 240,
+  "notBeforeNextObservation": "2026-10-28T14:14:50Z",
+  "sameLiveHandleOnly": true,
+  "actualInputPixels": 6000000,
+  "sameHistoricalInputAndReferenceRequired": true,
+  "wholeImageMinimumSsim": 0.99,
+  "all31BoundaryMinimumSsim": 0.99,
+  "exactAlphaComparisonRequired": true,
+  "wasmMaximumBytes": 100663296,
+  "completeTreeLimitMiB": 250,
+  "browserServicesDisabled": false,
+  "publicWorkerOrEngineReplaced": false,
+  "headed": false,
+  "nativePickerCoverage": false,
+  "memoryAcceptance": false,
+  "wholeGoalComplete": false
+}

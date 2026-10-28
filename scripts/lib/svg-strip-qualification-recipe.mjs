@@ -16,7 +16,20 @@ export function makeSvgStripQualification(options) {
     `    const stripWorkerBytes = await readFile(stripWorkerFile);\n`+
     `    expect(stripWorkerBytes.length).toBe(${workerPin.bytes});\n`+
     `    expect(createHash("sha256").update(stripWorkerBytes).digest("hex")).toBe(${JSON.stringify(workerPin.sha256)});\n`+
-    `    await context.route("**/assets/conversion.worker-*.js", route => route.fulfill({contentType:"text/javascript",path:stripWorkerFile}));`);
+    `    await context.route("**/assets/conversion.worker-*.js", async route => {\n`+
+    `      const response = await route.fetch();\n`+
+    `      try {\n`+
+    `        expect(response.status()).toBe(200);\n`+
+    `        const headers = response.headers();\n`+
+    `        expect(headers["cross-origin-embedder-policy"]).toBe("require-corp");\n`+
+    `        expect(headers["cross-origin-opener-policy"]).toBe("same-origin");\n`+
+    `        expect(headers["cross-origin-resource-policy"]).toBe("same-origin");\n`+
+    `        expect(headers["content-security-policy"]).toContain("wasm-unsafe-eval");\n`+
+    `        delete headers["content-encoding"]; delete headers["content-length"]; delete headers["etag"];\n`+
+    `        headers["cache-control"] = "no-store";\n`+
+    `        await route.fulfill({response,headers,contentType:"text/javascript",path:stripWorkerFile});\n`+
+    `      } finally { await response.dispose(); }\n`+
+    `    });`);
   edit('            const scalar = JSON.stringify({ repeat: stressRepeat, destinationMode: "direct-handle-test-directory",',
     '            const stripValidation = await validateSvgStripSeams({outputPath,referencePath,width:expectedWidth,height:expectedHeight,centralRows:64,execute:execFileAsync,cwd:projectRoot});\n'+
     '            const scalar = JSON.stringify({ repeat: stressRepeat, stripValidation, destinationMode: "direct-handle-test-directory",');

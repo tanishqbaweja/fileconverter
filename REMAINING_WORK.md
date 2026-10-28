@@ -1,5 +1,17 @@
 # Remaining work audit
 
+First actual private strip attempt FAILED at worker delivery, not rendering:
+0success/1timeout/2notrun; Wasm requests0 and no conversion output/metrics result.
+HAR identifies intercepted worker responses missing isolation policy and blocked
+by Chromium (248 ERR_BLOCKED_BY_RESPONSE); record failure, not a42.8867MiB pass.
+Original6M reference-only validator control31seamsSSIM1/exact alpha passed.
+All7 owned roots absent, disposable data removed, original SHA unchanged. Next
+preserve original static worker response headers with strict policy assertions,
+replacing only private script bytes/stale length/encoding/ETag/cache-control;
+no timeout increase, security relaxation, or unchanged worker replay. Native
+allocation avoidance and actual strip fidelity are still UNVERIFIED. Alpha
+rounding guard now exhaustively covers32896 valid pairs/38 edge differences.
+
 2026-10-28 — Concrete partial SVG fix: private worker source overlay now renders
 64central rows with48-row overlap into the existing bounded direct destination
 and incremental PNG helper, freeing each native image before next render. Same

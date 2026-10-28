@@ -20,6 +20,18 @@ test("alpha conversion preserves opaque/transparent cases and pinned rounding ex
   demultiplySvgRgba(pixels);assert.deepEqual([...pixels],[13,19,32,40,217,140,77,180,10,20,30,255,0,0,0,0,128,128,128,2]);
   assert.throws(()=>demultiplySvgRgba(new Uint8Array(3)),/Complete RGBA/);
 });
+test("pinned f64 demultiplication must not be replaced with different rational rounding",()=>{
+  let pairs=0,differences=0;
+  for(let alpha=0;alpha<=255;alpha++)for(let channel=0;channel<=alpha;channel++){
+    const pixel=new Uint8Array([channel,channel,channel,alpha]);demultiplySvgRgba(pixel);pairs++;
+    const rational=alpha===0?0:Math.floor((channel*510+alpha)/(2*alpha));
+    if(pixel[0]!==rational)differences++;
+    assert.equal(pixel[0],pixel[1]);assert.equal(pixel[1],pixel[2]);assert.equal(pixel[3],alpha);
+  }
+  assert.equal(pairs,32896);assert.equal(differences,38);
+  const edge=new Uint8Array([11,33,55,66,7,35,63,70]);demultiplySvgRgba(edge);
+  assert.deepEqual([...edge],[42,127,212,66,25,127,229,70]);
+});
 test("private viewport prototype emits every central row exactly once, frees native mocks and never keeps a full image",{timeout:10000},async()=>{
   const width=16,height=200,parts=[],observation=svgStripPilotObservation();let boxReleased=0,live=0,peakLive=0,rasterized=0;
   const boxes=[],box={x:0,y:0,width,height,free(){boxReleased++;}}, pixel=(x,y)=>[x%128,y%128,(x+y)%128,128];
