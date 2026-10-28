@@ -8,14 +8,16 @@ services, every process and the exact 250 MiB clean-blank formula unchanged.
 The user's decision is to continue independent work, not disable the on-device
 model service or alter a profile to obtain a passing memory result.
 
-Current checkpoint:1910 portable tests and19 production privacy/offline/hosting
-cases PASS, no skips; changed SVG memory observer still lacks actual browser
-conversion observations. Both new OPFS and direct-handle attempts stopped at the
-unchanged early blank baseline, with no conversions. Do not replay them unchanged
-or reinterpret those failures as conversion passes. Owned scratch removed and
-original full SHA unchanged. See `evidence/2026-10-28-svg-observation-regression.json`,
-`evidence/2026-10-28-svg-observation-privacy-terminal.json` and
-`evidence/2026-10-28-svg-direct-stress-terminal.json`.
+Current checkpoint:1927 portable PASS atfa7505c6,27 focused PASS after a scalar
+event-order repair; production build/TypeScript/lint PASS. Actual new SVG engine
+diagnostic has three exact8M direct outputs, real UI raster cancellation/direct
+write-error cleanup and same-page validated retries; real Wasm69.875MiB and
+shared allocation266276B observed. Overall qualification still FAILS because
+no earliest stable blank baseline exists: primary memoryNULL, not a pass. Prior
+OPFS/direct attempts had zero conversions; do not replay them unchanged. Five
+owned diagnostic births absent, disposable scratch removed, original full SHA
+unchanged. See `evidence/2026-10-28-svg-execution-terminal.json` and
+`evidence/2026-10-28-svg-execution-cycle.json`. Final current-build privacy pending.
 
 Newly closed small storage-error UI proof:
 `evidence/2026-10-26T14-16-54.324Z-audio-metadata-fidelity-result.json`:

@@ -48,6 +48,9 @@ test("invalid metadata/foreign phases cannot produce misleading counters", () =>
 test("live production SVG wires open, confirmed close and guarded abort accounting without changing other engines", async () => {
   const source = await readFile("workers/conversion.worker.ts", "utf8");
   assert.match(source, /profileId === "svg-to-png"\) \{\s+observeSvgExecutionResources\(metrics, destination.writable, cancellationSignal\?\.byteLength \?\? 0, "opened"\)/);
+  const opened = source.indexOf('observeSvgExecutionResources(metrics, destination.writable, cancellationSignal?.byteLength ?? 0, "opened")');
+  assert.ok(opened > source.indexOf('destination = await openDestination('));
+  assert.ok(opened < source.indexOf('emitProgress(jobId, "Destination opened"'), "First destination progress must include its real helper worker/buffers");
   assert.match(source, /await destination.writable.close\(\);\s+if \(profileId === "svg-to-png"\) \{\s+observeSvgExecutionResources\([\s\S]*?"closed"\)/);
   assert.match(source, /await destination\?\.writable.abort\(error\);\s+destinationAbortObserved = destination !== null/);
   assert.match(source, /destinationAbortObserved \? "aborted" : "abort-unverified"/);

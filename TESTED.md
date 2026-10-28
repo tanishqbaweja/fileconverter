@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-10-28 — SVG actual recovery diagnostic:3 functional PASS/0fail/0skip/
+0flaky11.907s; five real jobs, three exact8M direct PNG results196588B each,
+one actual UI raster-cancel and one direct-write error, both same-page retries
+independently exact33177600 RGBA bytes. Real memory getter now observed across
+all six success phases: peak/current73269248B/1118pages=69.875MiB; maximumNULL,
+zero failed observations. Direct shared allocations266276B/peak2known workers.
+Zero output bytes for raster-cancel, PNG encoding never entered, both partial
+destinations absent before retries. No native converter used.
+
+Overall memory qualification FAILED because earliest stable blank missing
+(17samples, baselineNULL). Primary incrementalNULL; native121valid/0missing,
+unadjusted whole-tree peak698109952B. Never compare it to an unstable baseline.
+Five owned births absent, all disposable runtime/fixture/output data removed,
+original full SHA/size unchanged; actual failure trace retained2010445B.
+`evidence/2026-10-28-svg-execution-terminal.json`. No fullSVG/release acceptance.
+
 2026-10-28 — Current observed-memory source privacy/offline/hosting:19 PASS,
 0fail/0skip/0flaky54.013s, actual hidden production host and headless Chrome.
 Owned runtime removed, two owned births absent, original size/full SHA unchanged.

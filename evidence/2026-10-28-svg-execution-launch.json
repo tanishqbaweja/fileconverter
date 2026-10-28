@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "fa7505c6",
+  "command": "scripts/test-reproduced-svg-stress.mjs --execution-diagnostic",
+  "sessionId": 69569,
+  "launchObservedAt": "2026-10-28T08:47:18Z",
+  "notBeforeTerminalCheck": "2026-10-28T08:49:48Z",
+  "estimatedRemainingSeconds": 150,
+  "estimateIncludes": "Fresh source-engine download/hash/ABI checks, protected-original hash, owned hidden production host/normal Chrome, earliest baseline collection, real UI cancel and direct write-error recovery with three exact8M results, cleanup",
+  "headless": true,
+  "strictFinalBaselineAnd250MiBVerdictRetained": true,
+  "unstableBaselineNeverUsedForPrimaryCalculation": true,
+  "functionalSubcaseSuccessCannotOverrideFinalMemoryFailure": true,
+  "status": "launched-not-a-test-pass",
+  "doNotDuplicateWhileSessionIsLive": true
+}

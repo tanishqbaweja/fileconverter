@@ -4439,6 +4439,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         profileId === "avi-to-flv" || profileId === "mkv-to-mp4",
       );
     }
+    if (profileId === "svg-to-png") {
+      observeSvgExecutionResources(metrics, destination.writable, cancellationSignal?.byteLength ?? 0, "opened");
+    }
     if (
       message.testFault &&
       message.testFault !== "worker-crash" &&
@@ -4906,7 +4909,6 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         startedAt,
       );
     } else if (profileId === "svg-to-png") {
-      observeSvgExecutionResources(metrics, destination.writable, cancellationSignal?.byteLength ?? 0, "opened");
       await runSvgToPng(
         file,
         destination.writable,

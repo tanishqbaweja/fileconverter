@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "scope": "SVG cancellation/resource-observation implementation and actual private-engine recovery; not full SVG/release acceptance",
+  "sourcePins": {
+    "workers/conversion.worker.ts": "845291743ae9e89768a3870c14cf93fccf75190702058a314774bdaac23ac0a1",
+    "app/converter/ConverterApp.tsx": "60c91910dd662aa7bf43f5587ea1b660935bc8706ce700e7bd604f141b39b3a0",
+    "lib/conversion-protocol.ts": "38b6a631a432df31976e71bc87fd59bab5a8f90583669b681fa525f01fecb322",
+    "lib/svg-execution-resources.ts": "20fb793d3a24b396be20d7cf645004b4a27c8fd4b396a6c6f09bdb5e5fc2a4a7",
+    "scripts/lib/svg-execution-diagnostic-recipe.mjs": "cf4b5a334aaa1fb921dedcaa70c465e9717bef185b4639cfd441b214a27b2dea",
+    "scripts/test-reproduced-svg-stress.mjs": "dacce27d963ee1867d3391985414c0797ec71cc3dd5cb6c936615f5349c93217",
+    "public/engines/svg/resvg.wasm": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70"
+  },
+  "actualBrowser": {
+    "sourceCommit": "fa7505c6",
+    "terminal": "evidence/2026-10-28-svg-execution-terminal.json",
+    "functionalCasesPassed": 3,
+    "realJobs": 5,
+    "exactPixelSuccesses": 3,
+    "exactRgbaBytesPerSuccess": 33177600,
+    "wasmPeakBytesPerSuccess": 73269248,
+    "directSharedAllocationBytes": 266276,
+    "overallQualificationPassed": false,
+    "reason": "17 early blank samples with no accepted stable baseline; primary result null",
+    "ownedBirthsAbsent": 5,
+    "disposableFixturesOutputsRuntimesRemoved": true,
+    "originalSizeAndShaUnchanged": true
+  },
+  "fullPortable": {
+    "sourceCommit": "fa7505c6",
+    "sessionId": 19728,
+    "passed": 1927,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 98811.5397,
+    "selectedFiles": 575,
+    "allFiles": 737,
+    "qualificationFilesNotRun": 162
+  },
+  "afterFullRegressionRepair": {
+    "kind": "Move scalar destination bookkeeping before the first Destination opened event, no conversion/codec/I/O change",
+    "discoveredBy": "Headless trace screenshot plus source event ordering",
+    "focusedTestsPassed": 27,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 985.5562,
+    "finalBuild": {
+      "sessionId": 18882,
+      "exitCode": 0
+    },
+    "finalAffectedLint": {
+      "sessionId": 33166,
+      "exitCode": 0
+    },
+    "finalTypeScript": {
+      "exitCode": 0
+    },
+    "fullPortableNotReplayedForThisScalarOnlyMove": true,
+    "originalBrowserRecoveryNotReplayedUnchanged": true
+  },
+  "headlessVisualReview": {
+    "archive": "output/playwright/2026-10-28T08-47-10-870Z-source-svg-failure.zip",
+    "savedScreenshot": {
+      "name": "page@4e166c43afd35f4cb68741b9c53630dc-1793177295404.jpeg",
+      "bytes": 33924
+    },
+    "otherScreenshots": [
+      {
+        "name": "resources/page@4e166c43afd35f4cb68741b9c53630dc-1793177288825.jpeg",
+        "bytes": 44107
+      },
+      {
+        "name": "resources/page@4e166c43afd35f4cb68741b9c53630dc-1793177293997.jpeg",
+        "bytes": 33323
+      }
+    ],
+    "findings": [
+      "Saved: real peak Wasm rounded70MiB, one worker after close, incremental private Profiler only",
+      "Cancelled:0B written,70MiB observed Wasm, no false memory acceptance",
+      "Destination opened: initial metadata ran after event and briefly underreported writer worker; corrected source ordering with test"
+    ]
+  },
+  "finalPrivacy": "pending-current-ordering-repair-build",
+  "publicWasmChanged": false,
+  "publicPromotion": false,
+  "originalGoalComplete": false
+}

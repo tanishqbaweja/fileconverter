@@ -1,0 +1,299 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "fa7505c606e768d8f938bed03da92fc61c15439f",
+  "wrapper": {
+    "path": "evidence/2026-10-28T08-47-08-634Z-reproduced-svg-grid-stress.json",
+    "bytes": 64107,
+    "sha256": "d990ebf5ac953ebc9544f0f0592049d9694dd128ffda359910d5a89022252320"
+  },
+  "browser": {
+    "path": "evidence/2026-10-28T08-47-10-870Z-source-svg-browser.json",
+    "bytes": 322820,
+    "sha256": "06b7eb21a32fc786efe24b0adedede14a2774e6f590e618d46416d1867a0746a"
+  },
+  "sessionId": 69569,
+  "terminalExitCode": 1,
+  "overallQualificationStatus": "failed-private-svg-browser-qualification",
+  "functionalAssertionsPassed": true,
+  "stats": {
+    "startTime": "2026-10-28T08:48:03.508Z",
+    "duration": 11906.535,
+    "expected": 3,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "blankSamples": 17,
+  "blankBaseline": null,
+  "incrementalPrivateMiB": null,
+  "primaryMemoryAcceptance": false,
+  "unadjustedPeakPrivateBytes": 698109952,
+  "peakRssBytes": 1062199296,
+  "nativeValidSamples": 121,
+  "nativeUnavailableSamples": 0,
+  "runs": [
+    {
+      "repeat": "8m-grid-repeat-1",
+      "outputBytes": 196588,
+      "elapsedMs": 998.2300000190735,
+      "pixelComparison": {
+        "implementation": "exact-native-buffer-equality",
+        "expectedBytes": 33177600,
+        "comparisonMs": 5.3059000000002925
+      },
+      "wasm": {
+        "phase": "released",
+        "currentBytes": 73269248,
+        "peakBytes": 73269248,
+        "currentPages": 1118,
+        "peakPages": 1118,
+        "maximumBytes": null,
+        "maximumPages": null,
+        "phaseBytes": {
+          "preparing": null,
+          "initialized": 1572864,
+          "parsed": 5373952,
+          "rasterized": 73269248,
+          "encoded": 73269248,
+          "released": 73269248
+        },
+        "maximumStatus": "not-observed-from-runtime-binding",
+        "available": true,
+        "observations": 6,
+        "unavailableObservations": 0
+      },
+      "resources": {
+        "phase": "closed",
+        "cancellationBytes": 4,
+        "destinationSharedBytes": 266272,
+        "allocatedSharedBytes": 266276,
+        "peakAllocatedSharedBytes": 266276,
+        "destinationWorkerCount": 0,
+        "peakKnownWorkerCount": 2,
+        "sharedBytesMeaning": "allocated-for-job-not-garbage-collection-or-process-memory"
+      },
+      "recovery": null
+    },
+    {
+      "repeat": "8m-grid-repeat-2",
+      "outputBytes": 196588,
+      "elapsedMs": 1020.6700000166893,
+      "pixelComparison": {
+        "implementation": "exact-native-buffer-equality",
+        "expectedBytes": 33177600,
+        "comparisonMs": 4.811499999999796
+      },
+      "wasm": {
+        "phase": "released",
+        "currentBytes": 73269248,
+        "peakBytes": 73269248,
+        "currentPages": 1118,
+        "peakPages": 1118,
+        "maximumBytes": null,
+        "maximumPages": null,
+        "phaseBytes": {
+          "preparing": null,
+          "initialized": 1572864,
+          "parsed": 5373952,
+          "rasterized": 73269248,
+          "encoded": 73269248,
+          "released": 73269248
+        },
+        "maximumStatus": "not-observed-from-runtime-binding",
+        "available": true,
+        "observations": 6,
+        "unavailableObservations": 0
+      },
+      "resources": {
+        "phase": "closed",
+        "cancellationBytes": 4,
+        "destinationSharedBytes": 266272,
+        "allocatedSharedBytes": 266276,
+        "peakAllocatedSharedBytes": 266276,
+        "destinationWorkerCount": 0,
+        "peakKnownWorkerCount": 2,
+        "sharedBytesMeaning": "allocated-for-job-not-garbage-collection-or-process-memory"
+      },
+      "recovery": {
+        "kind": "cancelled",
+        "cancelClick": {
+          "phase": "Encoding PNG",
+          "atMs": 1167.5300000309944
+        },
+        "metrics": {
+          "inputBytes": 327564,
+          "outputBytes": 0,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 0,
+          "pendingOperations": 0,
+          "peakPendingOperations": 0,
+          "maxReadChunkBytes": 262028,
+          "maxWriteChunkBytes": 0,
+          "elapsedMs": 839.6100000143051,
+          "wasmMemories": {
+            "resvg": 73269248
+          },
+          "sharedArrayBufferBytes": 266276,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0,
+          "svgExecutionResources": {
+            "phase": "aborted",
+            "cancellationBytes": 4,
+            "destinationSharedBytes": 266272,
+            "allocatedSharedBytes": 266276,
+            "peakAllocatedSharedBytes": 266276,
+            "destinationWorkerCount": 0,
+            "peakKnownWorkerCount": 2,
+            "sharedBytesMeaning": "allocated-for-job-not-garbage-collection-or-process-memory"
+          },
+          "svgMemoryObservation": {
+            "phase": "released",
+            "currentBytes": 73269248,
+            "peakBytes": 73269248,
+            "currentPages": 1118,
+            "peakPages": 1118,
+            "maximumBytes": null,
+            "maximumPages": null,
+            "phaseBytes": {
+              "preparing": null,
+              "initialized": 1572864,
+              "parsed": 5373952,
+              "rasterized": 73269248,
+              "released": 73269248
+            },
+            "maximumStatus": "not-observed-from-runtime-binding",
+            "available": true,
+            "observations": 5,
+            "unavailableObservations": 0
+          },
+          "wasmMemoryBytes": 73269248,
+          "peakWasmMemoryBytes": 73269248
+        },
+        "outputRemoved": true,
+        "timeOriginBefore": 1793177287486.25,
+        "timeOriginAfter": 1793177287486.25
+      }
+    },
+    {
+      "repeat": "8m-grid-repeat-3",
+      "outputBytes": 196588,
+      "elapsedMs": 813.2999999523163,
+      "pixelComparison": {
+        "implementation": "exact-native-buffer-equality",
+        "expectedBytes": 33177600,
+        "comparisonMs": 4.129499999999098
+      },
+      "wasm": {
+        "phase": "released",
+        "currentBytes": 73269248,
+        "peakBytes": 73269248,
+        "currentPages": 1118,
+        "peakPages": 1118,
+        "maximumBytes": null,
+        "maximumPages": null,
+        "phaseBytes": {
+          "preparing": null,
+          "initialized": 1572864,
+          "parsed": 5373952,
+          "rasterized": 73269248,
+          "encoded": 73269248,
+          "released": 73269248
+        },
+        "maximumStatus": "not-observed-from-runtime-binding",
+        "available": true,
+        "observations": 6,
+        "unavailableObservations": 0
+      },
+      "resources": {
+        "phase": "closed",
+        "cancellationBytes": 4,
+        "destinationSharedBytes": 266272,
+        "allocatedSharedBytes": 266276,
+        "peakAllocatedSharedBytes": 266276,
+        "destinationWorkerCount": 0,
+        "peakKnownWorkerCount": 2,
+        "sharedBytesMeaning": "allocated-for-job-not-garbage-collection-or-process-memory"
+      },
+      "recovery": {
+        "kind": "error",
+        "cancelClick": null,
+        "metrics": {
+          "inputBytes": 327564,
+          "outputBytes": 0,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 196588,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 196608,
+          "maxWriteChunkBytes": 196588,
+          "elapsedMs": 893.1599999666214,
+          "wasmMemories": {
+            "resvg": 73269248
+          },
+          "sharedArrayBufferBytes": 266276,
+          "activeWorkerCount": 1,
+          "imageWorkingBytes": 0,
+          "svgExecutionResources": {
+            "phase": "aborted",
+            "cancellationBytes": 4,
+            "destinationSharedBytes": 266272,
+            "allocatedSharedBytes": 266276,
+            "peakAllocatedSharedBytes": 266276,
+            "destinationWorkerCount": 0,
+            "peakKnownWorkerCount": 2,
+            "sharedBytesMeaning": "allocated-for-job-not-garbage-collection-or-process-memory"
+          },
+          "svgMemoryObservation": {
+            "phase": "released",
+            "currentBytes": 73269248,
+            "peakBytes": 73269248,
+            "currentPages": 1118,
+            "peakPages": 1118,
+            "maximumBytes": null,
+            "maximumPages": null,
+            "phaseBytes": {
+              "preparing": null,
+              "initialized": 1572864,
+              "parsed": 5373952,
+              "rasterized": 73269248,
+              "encoded": 73269248,
+              "released": 73269248
+            },
+            "maximumStatus": "not-observed-from-runtime-binding",
+            "available": true,
+            "observations": 6,
+            "unavailableObservations": 0
+          },
+          "wasmMemoryBytes": 73269248,
+          "peakWasmMemoryBytes": 73269248
+        },
+        "outputRemoved": true,
+        "timeOriginBefore": 1793177291623.885,
+        "timeOriginAfter": 1793177291623.885
+      }
+    }
+  ],
+  "forbiddenRequests": [],
+  "ownedProcessBirthsAbsent": 5,
+  "allOwnedIdentitiesAbsent": true,
+  "ownedBrowserRuntimeRemoved": true,
+  "ownedGenerationFixtureRuntimeRemoved": true,
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "retainedFailureTrace": {
+    "path": "output\\playwright\\2026-10-28T08-47-10-870Z-source-svg-failure.zip",
+    "bytes": 2010445,
+    "sha256": "c11ec6e7578b637bbb74f0a1482f17fbceda450a07a014f31ff81852991af959"
+  },
+  "headedAndNativePickerVerified": false,
+  "publicWasmReplacement": false,
+  "unchangedReplayPlanned": false,
+  "effectsOomLoadedIdleCleanupStabilityAndFullOriginalGoalRemainOpen": true,
+  "originalGoalComplete": false
+}

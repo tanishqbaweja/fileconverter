@@ -1,5 +1,41 @@
 # Remaining work audit
 
+SVG scalar timing repair verified:27 focused PASS/0fail/0skip985.556ms; rebuilt
+production, TypeScript and affected lint PASS. No codec/renderer/output/cancel
+behavior change; only moves the real destination metadata before its first
+progress event. Full1927 regression and real recovery proof belong tofa7505c6
+before this move; no unchanged conversion or full regression replay for scalar
+ordering alone. Final current-build privacy/offline check next. Machine-readable
+cycle: `evidence/2026-10-28-svg-execution-cycle.json`.
+
+SVG execution regression atfa7505c6:1927 portable PASS/0fail/0skip/0cancel
+98.812s across575 files;162 qualification files NOT RUN. Headless trace review
+verified Cancelled0B and Saved/70MiB Wasm UI; it also found the first Destination
+opened event preceded resource bookkeeping and briefly showed one worker. Move
+the same bookkeeping call before that event (no converter/codec/I/O changes),
+strengthen the source-order check, and rebuild before final privacy checks.
+Prior successful recovery cases remain scoped to their exactfa7505c6 source;
+no unchanged full conversion replay needed for this scalar timing repair.
+
+2026-10-28 — Actual SVG execution diagnostic atfa7505c6:3 functional PASS,
+five real jobs (direct success; real UI cancel after raster/before PNG + exact
+same-page retry; direct write error + exact same-page retry). Each successful
+196588B PNG independently decoded and all33177600 RGBA bytes matched. Three
+observed Wasm peaks/current73269248B=69.875MiB/1118pages; all six stages present,
+zero failed observations, runtime maximum remainsNULL. Direct allocation266276B
+and peak two known workers verified; confirmed abort/close leaves one worker,
+shared bytes remain conservatively counted. Both failed outputs absent before
+retry, no page reload (same performance.timeOrigin). This closes those precise
+functional/observation subgaps, not effects/OOM/loaded-idle cleanup/fullSVG.
+
+Overall qualification STILL FAILED:17 blank samples, baselineNULL.121 valid/
+0 unavailable full-tree native samples retained, unadjusted peak698109952B;
+primary incremental memoryNULL, not a fabricated comparison. All normal services,
+tracing and strict final baseline/250 assertions retained. Five owned births
+absent, both runtimes/fixtures/outputs removed, original full SHA unchanged;
+2010445B failure trace retained. No unchanged replay/public replacement planned.
+`evidence/2026-10-28-svg-execution-terminal.json`.
+
 SVG execution preparation: production build/TypeScript/two affected lint groups
 PASS;23 recipe/execution focused checks PASS after initial25, actual collection
 selects exactly three8M cases. Separately labelled recovery diagnostic retains
