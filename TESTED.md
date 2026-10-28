@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-28 — Lifetime private browser adapter prepared: --filter-liveness binds
+new902fc72b...845d artifact, exact4members/owner/raw pin/all3 source patch proofs.
+Same64central/48halo/original6M/31seams/0.99/exact-alpha/96MiB/250MiB/security/
+45s job limit and60s test limit retained; all old rejection guards remain active.
+7focused PASS468.9466ms/lint PASS; list-only exact3case collection PASS, owned
+runtime removed/no browser launched. Next actual changed-native run once.
+
 2026-10-28 — Lifetime postprocessing40749099894 SUCCESS: two exact pinned
 bindgen/cap outputs and glue byte-identical, all3 native source proofs verified.
 Exact4-member artifact12842283448/1020790B SHA558fab81...03ac authenticated;

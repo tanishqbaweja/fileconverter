@@ -1,5 +1,11 @@
 # Remaining work audit
 
+Lifetime browser adapter now implemented and collection-verified, not converted:
+new immutable processed/raw/source proofs required;7focused PASS468.9466ms,
+lint/exact3case list PASS. Original6M/64+48rows/all31seams/0.99/exactalpha/
+96MiB/250MiB/45s/security/cleanup unchanged. Next ONE genuine browser run with
+changed native bytes; no accepted speed, memory or output claim yet.
+
 Last-use candidate now source-reproduced AND repeatedly postprocessed/capped:
 40749099894 SUCCESS, exact4-member artifact authenticated, capped2688120B
 SHA902fc72b...845d, unchanged96MiB explicitmax and compatible binding/ABI.
