@@ -1,5 +1,20 @@
 # Remaining work audit
 
+Idle lifecycle pre-browser gate: production build, tsc and affected lint PASS;
+25 focused coordinator/navigation checks PASS259.058ms after final evidence and
+restoration-error additions. One corrected diagnostic against the changed build
+next, estimated90s before first observation. No browser memory pass inferred.
+
+2026-10-28 — Idle lifecycle fix implemented in the existing worker coordinator,
+not the conversion engines or app selector: idle pagehide retires the worker and
+clears static-code slots; persisted pageshow restores one fresh worker. Active
+jobs, queued starts and destination-copy phases are not interrupted. Explicit
+terminate unregisters both listeners; new starts during suspended state cannot
+hang behind a retired worker.44 focused checks PASS before final evidence/error
+case additions. Corrected diagnostic waits for actual restored URL/readiness,
+not a new load event. Build/TypeScript/browser verification pending; no memory
+or causal-optimization claim until exact evidence exists.
+
 2026-10-28 — Idle-navigation diagnostic FIRST RUN FAILED: browser-back reached
 the app, but waiting for a new load event timed out (3/8 observations completed).
 Actual events nevertheless prove same-document BFCache restore via persisted

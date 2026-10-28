@@ -21,10 +21,27 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
   private vpxPreparedJobId: string | null = null;
   private mpeg2CompiledCore: Mpeg2CompiledCore | null = null;
   private mpeg2PreparedJobId: string | null = null;
+  private navigationSuspended = false;
+  private readonly onPageHide = (): void => {
+    // Never interrupt an encoder, queued start or final destination copy. Idle
+    // coordinators otherwise survive with the page in the browser's BFCache.
+    if (this.disposed || this.navigationSuspended || this.job || this.pending) return;
+    this.navigationSuspended = true; this.stopActive();
+    this.vpxCompiledCore = null; this.vpxPreparedJobId = null; this.staticCodeSlot?.clear();
+    this.mpeg2CompiledCore = null; this.mpeg2PreparedJobId = null; this.mpeg2CodeSlot?.clear();
+  };
+  private readonly onPageShow = (event: Event): void => {
+    if (!(event as PageTransitionEvent).persisted || !this.navigationSuspended || this.disposed) return;
+    this.navigationSuspended = false;
+    try { this.install("conversion"); } catch (error) { this.fail(error); }
+  };
 
   constructor(private readonly conversionFactory: () => Worker, private readonly saveFactory: () => Worker,
-    private readonly staticCodeSlot?: VpxCompiledCoreSlot, private readonly mpeg2CodeSlot?: Mpeg2CompiledCoreSlot) {
+    private readonly staticCodeSlot?: VpxCompiledCoreSlot, private readonly mpeg2CodeSlot?: Mpeg2CompiledCoreSlot,
+    private readonly lifecycleTarget: EventTarget | null = typeof window === "undefined" ? null : window) {
     super(); this.install("conversion");
+    this.lifecycleTarget?.addEventListener("pagehide", this.onPageHide);
+    this.lifecycleTarget?.addEventListener("pageshow", this.onPageShow);
   }
   private emit(message: WorkerResponse): void {
     const event = new MessageEvent("message", { data: message });
@@ -105,6 +122,12 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
     }
     if (message.type !== "start" || this.job || this.pending) throw new Error("Only one conversion may be active");
     if ("vpxCompiledCore" in message || "mpeg2CompiledCore" in message) throw new Error("Static codec code is owned by the coordinator, not its caller");
+    // A caller may resume before a synthetic/missing pageshow observation.
+    // Do not queue a new start behind a worker intentionally retired for idle.
+    if (this.navigationSuspended) {
+      this.navigationSuspended = false;
+      try { this.install("conversion"); } catch (error) { this.fail(error); throw error; }
+    }
     // Keep static code for only the currently selected private engine. Avoid
     // accumulating a VPX module plus a MPEG-2 pair across mixed-format jobs.
     if (!isVpxDecoderProfile(message.profileId)) { this.vpxCompiledCore = null; this.staticCodeSlot?.clear(); }
@@ -127,6 +150,9 @@ export class StagedWorkerCoordinator extends EventTarget implements Worker {
   }
   terminate(): void {
     if (this.disposed) return;
+    this.lifecycleTarget?.removeEventListener("pagehide", this.onPageHide);
+    this.lifecycleTarget?.removeEventListener("pageshow", this.onPageShow);
+    this.navigationSuspended = false;
     this.disposed = true; this.pending = null; this.pendingCancel = false; this.job = null; this.stopActive();
     this.vpxCompiledCore = null; this.vpxPreparedJobId = null;
     this.mpeg2CompiledCore = null; this.mpeg2PreparedJobId = null;

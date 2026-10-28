@@ -106,7 +106,11 @@ try {
   for (let index = 1; index <= 3; index++) {
     await page.goto(origin + "/test-validator.html?navigation=" + index); await page.locator("p").waitFor();
     await capture("away-" + index);
-    await page.goBack({ waitUntil: "load" }); await page.locator(".readiness.ready").waitFor({ timeout: 15000 });
+    // A BFCache restore does not refire load. Observe the real URL and readiness
+    // rather than waiting for a new document's load event on the restored one.
+    await page.evaluate(() => history.back());
+    await page.waitForFunction(expected => location.href === expected, origin + "/", { timeout: 15000 });
+    await page.locator(".readiness.ready").waitFor({ timeout: 15000 });
     await capture("returned-" + index);
   }
   report.forbiddenRequests = forbidden; report.forbiddenRequestOverflow = forbiddenOverflow;

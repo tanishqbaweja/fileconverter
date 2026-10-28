@@ -33,10 +33,63 @@ function fixture(options = {}) {
     assert.equal(encoders.at(-1).terminated, true, "Retire codec before creating saver");
     if (options.failSaveFactory) throw new Error("Save startup failure");
     const worker = new FakeWorker(); savers.push(worker); return worker;
-  }, options.staticCodeSlot, options.mpeg2CodeSlot);
+  }, options.staticCodeSlot, options.mpeg2CodeSlot, options.lifecycleTarget);
   owner.onmessage = ({ data }) => events.push(data); owner.onerror = event => errors.push(event.message);
   return { owner, encoders, savers, events, errors };
 }
+
+const transition = (target, type, persisted = true) => target.dispatchEvent(Object.assign(new Event(type), { persisted }));
+test("idle restoration factory failure follows normal worker error handling instead of escaping its lifecycle event", () => {
+  const lifecycleTarget = new EventTarget(); let attempts = 0; const failures = [];
+  const owner = new StagedWorkerCoordinator(() => { if (++attempts === 2) throw new Error("Restore startup failure"); return new FakeWorker(); },
+    () => new FakeWorker(), undefined, undefined, lifecycleTarget);
+  owner.onerror = event => failures.push(event.message);
+  transition(lifecycleTarget, "pagehide"); transition(lifecycleTarget, "pageshow");
+  assert.deepEqual(failures, ["Restore startup failure"]); transition(lifecycleTarget, "pageshow"); assert.equal(attempts, 2);
+  owner.terminate();
+});
+test("idle pagehide retires only its worker and cached code; persisted pageshow installs exactly one fresh worker", () => {
+  const lifecycleTarget = new EventTarget(), vpxSlot = createVpxCompiledCoreSlot(), mpeg2Slot = createMpeg2CompiledCoreSlot();
+  vpxSlot.set(staticCode()); mpeg2Slot.set(mpeg2Code());
+  const f = fixture({ lifecycleTarget, staticCodeSlot: vpxSlot, mpeg2CodeSlot: mpeg2Slot }); f.encoders[0].emit({ type: "ready" });
+  transition(lifecycleTarget, "pagehide"); assert.equal(f.encoders[0].terminated, true);
+  assert.equal(vpxSlot.get(), null); assert.equal(mpeg2Slot.get(), null);
+  transition(lifecycleTarget, "pagehide"); transition(lifecycleTarget, "pageshow", false); assert.equal(f.encoders.length, 1);
+  transition(lifecycleTarget, "pageshow"); assert.equal(f.encoders.length, 2); assert.equal(f.encoders[1].terminated, false);
+  transition(lifecycleTarget, "pageshow"); assert.equal(f.encoders.length, 2);
+  f.encoders[1].emit({ type: "ready" }); f.owner.postMessage(start()); assert.equal(f.encoders[1].messages.length, 1);
+  f.owner.terminate(); vpxSlot.dispose(); mpeg2Slot.dispose();
+});
+test("navigation never retires an active conversion, a queued start or an active staged destination copy", () => {
+  for (const phase of ["queued", "encoding", "saving"]) {
+    const lifecycleTarget = new EventTarget(), f = fixture({ lifecycleTarget }), job = start();
+    if (phase !== "queued") f.encoders[0].emit({ type: "ready" });
+    f.owner.postMessage(job);
+    if (phase === "saving") { f.encoders[0].emit(handoff(job)); f.savers[0].emit({ type: "ready" }); }
+    const active = phase === "saving" ? f.savers[0] : f.encoders[0];
+    transition(lifecycleTarget, "pagehide"); transition(lifecycleTarget, "pageshow"); assert.equal(active.terminated, false, phase);
+    assert.equal(f.encoders.length, 1); f.owner.terminate();
+  }
+});
+test("a start while idle-suspended restarts one worker and retains bounded readiness/cancellation semantics", () => {
+  const lifecycleTarget = new EventTarget(), f = fixture({ lifecycleTarget }), job = start();
+  transition(lifecycleTarget, "pagehide"); f.owner.postMessage(job); assert.equal(f.encoders.length, 2);
+  f.owner.postMessage({ type: "cancel", jobId: job.jobId }); assert.equal(f.encoders[1].messages.length, 0);
+  transition(lifecycleTarget, "pageshow"); assert.equal(f.encoders.length, 2);
+  f.encoders[1].emit({ type: "ready" }); assert.deepEqual(f.encoders[1].messages.map(value => value.type), ["start", "cancel"]);
+  f.owner.terminate();
+});
+test("terminating a suspended owner removes its lifecycle listeners and cannot resurrect a worker", () => {
+  class LifecycleTarget extends EventTarget {
+    listeners = new Set();
+    addEventListener(type, listener, options) { super.addEventListener(type, listener, options); this.listeners.add(listener); }
+    removeEventListener(type, listener, options) { super.removeEventListener(type, listener, options); this.listeners.delete(listener); }
+  }
+  const lifecycleTarget = new LifecycleTarget(), f = fixture({ lifecycleTarget }); assert.equal(lifecycleTarget.listeners.size, 2);
+  transition(lifecycleTarget, "pagehide"); f.owner.terminate(); assert.equal(lifecycleTarget.listeners.size, 0);
+  transition(lifecycleTarget, "pageshow"); assert.equal(f.encoders.length, 1);
+  assert.throws(() => f.owner.postMessage(start()), /closed/);
+});
 
 test("MPEG-2 pair survives worker/coordinator replacement, never reaches saver, and mixed routes evict the prior engine", () => {
   const vpxSlot = createVpxCompiledCoreSlot(), mpeg2Slot = createMpeg2CompiledCoreSlot(); vpxSlot.set(staticCode());

@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
 const source = await readFile(new URL("../scripts/diagnose-navigation-worker-retention.mjs", import.meta.url), "utf8");
 test("idle navigation diagnostic cannot become a converted-file, stable-baseline, peak-memory or cache-disabled acceptance test", () => {
   assert.match(source, /fileSelections: 0, conversions: 0, memoryAcceptance: false, baseline: null/);
@@ -24,4 +26,23 @@ test("navigation diagnostic owns only hidden launches, waits for birth-verified 
   assert.match(source, /owned-identity-absent/); assert.match(source, /await runtime\?\.close\(\)/);
   assert.match(source, /protectedOriginalAfter = await originalIdentity\(\)/);
   assert.match(source, /assertInstalledChromePinsEqual/);
+});
+test("first idle diagnostic stays failed, while exact events and target identities prove one retained idle worker rather than peak causality", async () => {
+  const read = file => readFile(new URL("../" + file, import.meta.url)), sha = b => createHash("sha256").update(b).digest("hex");
+  const proof = JSON.parse(await read("evidence/2026-10-28-idle-navigation-first-terminal.json")), bytes = await read(proof.raw.path);
+  assert.equal(bytes.length, proof.raw.bytes); assert.equal(sha(bytes), proof.raw.sha256);
+  const row = JSON.parse(bytes); assert.equal(row.status, "failed-idle-navigation-diagnostic"); assert.equal(row.phases.length, 3);
+  assert.match(row.failures[0], /page.goBack: Timeout/);
+  const initial = row.phases.find(phase => phase.phase === "app-initial-idle"), away = row.phases.find(phase => phase.phase === "away-1");
+  assert.ok(row.events.some(event => event.documentId === initial.document.state.documentId && event.type === "pageshow" && event.persisted));
+  const before = initial.targets.filter(target => target.type === "worker"), after = away.targets.filter(target => target.type === "worker");
+  assert.equal(before.length, 1); assert.equal(after.length, 1); assert.equal(after[0].targetId, before[0].targetId);
+  assert.equal(row.conversions, 0); assert.equal(row.memoryAcceptance, false); assert.equal(proof.fullConversionPeakAllocationCauseProven, false);
+  const archive = JSON.parse(await read(proof.sourceArchive));
+  for (const file of ["lib/staged-worker-coordinator.ts", "scripts/diagnose-navigation-worker-retention.mjs"]) {
+    const entry = archive.files[file], source = gunzipSync(Buffer.from(entry.gzipBase64, "base64"), { maxOutputLength: 65536 });
+    assert.equal(source.length, entry.bytes); assert.equal(sha(source), entry.sha256); assert.equal(entry.sha256, row.sourcePins[file]);
+  }
+  assert.equal(row.ownedRuntimeRemoved, true); assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent"));
+  assert.deepEqual(row.protectedOriginalBefore, row.protectedOriginalAfter);
 });
