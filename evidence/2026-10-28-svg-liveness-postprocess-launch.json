@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "runId": 40749099894,
+  "headSha": "61779a81d918c9e30d1e291c2d66a47e4f796af1",
+  "workflow": "svg-liveness-postprocess.yml",
+  "observedStatus": "in_progress",
+  "observedAt": "2026-10-28T18:52:14Z",
+  "estimatedRemainingSeconds": 90,
+  "doNotObserveBefore": "2026-10-28T18:53:44Z",
+  "followSameRunNoDuplicateDispatch": true,
+  "sourceOnlyNoUserFilesAccessed": true,
+  "experimentalMaximumBytes": 100663296,
+  "publicPromotion": false,
+  "wholeGoalComplete": false
+}
