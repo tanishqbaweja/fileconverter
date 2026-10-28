@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-10-28 — Private viewport/PNG integration prepared:20focused PASS/0fail/
+0skip/0cancel818.5982ms, affected ESLint and TypeScript PASS. First TypeScript
+failure was upstream pixels getter typed ArrayBufferLike; retain its real type
+and use existing bounded slice, no extra full-frame copy or assertion cast.
+Native validator control on SAME existing960x540 reference:8/8 strip boundaries
+SSIM1, all518400 alpha bytes exact. This validates the validator, NOT conversion
+or transparent-image coverage. Original6M pilot collection exactly3cases PASS,
+private source overlay reverses to entire original worker; direct-writer URL
+resolves unchanged production bytes. New browser experiment pending; no public
+source/Wasm/dist replacement or memory/fidelity/speed claim.
+`evidence/2026-10-28T14-06-04-808Z-svg-strip-pilot.json`.
+
 2026-10-28 — Final current-build privacy at899dffb5:19PASS/0fail/0skip/
 0flaky46.020718s, exact existing built worker/direct-workerd/read-only loopback
 static assets. Same unchanged privacy/offline/static-host specs; NOT Wrangler,

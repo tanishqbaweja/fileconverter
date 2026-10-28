@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-10-28 — Concrete partial SVG fix: private worker source overlay now renders
+64central rows with48-row overlap into the existing bounded direct destination
+and incremental PNG helper, freeing each native image before next render. Same
+parser/input/cancel/bridge/error lifecycle; raw premultiplied pixels demultiplied
+with pinned f64 rounding,1:1 zero-origin viewBox guard. Fixed overlap is only an
+EXPERIMENTAL hypothesis for the unchanged6M fixture, not general filter support.
+Private esbuild0.28.1 bundle differs from Vite compilation; exact source closure,
+generated source bytes and writer hash recorded. Public source/Wasm/dist unchanged.
+Added native SSIM>=0.99 at EVERY31 strip boundary plus exact alpha comparison,
+keeping original whole-image SSIM/strict baseline/250MiB checks.20focused PASS,
+lint/types PASS, original3case collection PASS. Existing reference-only native
+8-seam control SSIM1/exact alpha proves validator functionality, not conversion.
+Next actual6M browser run with unchanged caps; independent transparent-input
+coverage, general viewport/filter mapping, recovery and speed repeats remain OPEN.
+
 Final current-build headless privacy at899dffb5:19PASS/0fail/0skip/0flaky
 46.020718s using existing direct-workerd same-built-worker loopback asset host.
 Scope is NOT Wrangler/Miniflare/CDN, conversion-memory, headed or OS-picker

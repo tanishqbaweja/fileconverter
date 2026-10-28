@@ -1,0 +1,35 @@
+import assert from "node:assert/strict";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
+import { makeSvgEffectsDiagnostic } from "./svg-effects-diagnostic-recipe.mjs";
+import { sha } from "../../images/resvg-source/source-pins.mjs";
+const replace=(text,before,after)=>{assert.equal(text.split(before).length-1,1,"Exact private strip qualifier anchor: "+before);return text.replace(before,after);};
+export function makeSvgStripQualification(options) {
+  const {root,runtime,workerPin}=options;
+  assert.equal(workerPin.file,path.join(runtime,"private-svg-strip-worker.mjs"));
+  assert.match(workerPin.sha256,/^[a-f0-9]{64}$/);assert.ok(workerPin.bytes>1000&&workerPin.bytes<=1048576);
+  const base=makeSvgEffectsDiagnostic(options),edits=[];
+  let suite=`import { validateSvgStripSeams } from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-strip-validator.mjs")).href)};\n`+base.suite;
+  const edit=(before,after)=>{suite=replace(suite,before,after);edits.push([before,after]);};
+  const route='    await context.route("**/engines/svg/resvg.wasm", route => route.fulfill({ contentType: "application/wasm", path: descriptor.candidateFile }));';
+  edit(route,route+`\n    const stripWorkerFile = ${JSON.stringify(workerPin.file)};\n`+
+    `    const stripWorkerBytes = await readFile(stripWorkerFile);\n`+
+    `    expect(stripWorkerBytes.length).toBe(${workerPin.bytes});\n`+
+    `    expect(createHash("sha256").update(stripWorkerBytes).digest("hex")).toBe(${JSON.stringify(workerPin.sha256)});\n`+
+    `    await context.route("**/assets/conversion.worker-*.js", route => route.fulfill({contentType:"text/javascript",path:stripWorkerFile}));`);
+  edit('            const scalar = JSON.stringify({ repeat: stressRepeat, destinationMode: "direct-handle-test-directory",',
+    '            const stripValidation = await validateSvgStripSeams({outputPath,referencePath,width:expectedWidth,height:expectedHeight,centralRows:64,execute:execFileAsync,cwd:projectRoot});\n'+
+    '            const scalar = JSON.stringify({ repeat: stressRepeat, stripValidation, destinationMode: "direct-handle-test-directory",');
+  edit('independentlyValidatedEffects: similarity >= minimumReferenceSsim, exactPixelEqualityClaimed: false,',
+    'independentlyValidatedEffects: similarity >= minimumReferenceSsim && stripValidation.passed, exactPixelEqualityClaimed: false,');
+  edit('            await writeFile(path.join(privateSvg.runtime, stressRepeat + ".json"), scalar, { flag: "wx" });',
+    '            await writeFile(path.join(privateSvg.runtime, stressRepeat + ".json"), scalar, { flag: "wx" });\n'+
+    '            expect(stripValidation.minimumSsim).toBeGreaterThanOrEqual(0.99);\n            expect(stripValidation.alphaExact).toBe(true);');
+  let driver=replace(base.driver,JSON.stringify(sha(base.suite)),JSON.stringify(sha(suite)));
+  driver=replace(driver,'"scripts/lib/memory-infra-attribution.mjs"];',
+    '"scripts/lib/memory-infra-attribution.mjs", "lib/private-svg-strip-pilot.ts", "workers/rgba-png-stream.ts", "scripts/lib/svg-strip-worker-recipe.mjs", "scripts/lib/svg-strip-qualification-recipe.mjs", "scripts/lib/svg-strip-validator.mjs"];');
+  driver=replace(driver,"report.candidatePin = pins;","report.candidatePin = pins;\n  report.privateStripWorker = "+JSON.stringify(workerPin)+";");
+  return {...base,driver,suite,suiteEdits:edits,proof:{...base.proof,driverSha256:sha(driver),suiteSha256:sha(suite),
+    privateStripPilot:true,workerPin,additionalSeamAndAlphaGates:true,allExistingAssertionsRetained:true,
+    generalViewportOrFilterSupport:false,publicPromotion:false}};
+}
