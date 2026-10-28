@@ -74,7 +74,7 @@ test("actual lifetime source pin matches authenticated full artifact verificatio
   const workflow=await readFile(".github/workflows/svg-liveness-postprocess.yml","utf8");
   assert.match(workflow,/postprocess-filter-region-source.mjs --liveness/);assert.match(workflow,/retention-days: 1/);assert.doesNotMatch(workflow,/cargo|rustup|docker|test\.mkv/i);
 });
-test("actual repeated lifetime processor artifact retains explicit96MiB/static ABI/prior binding; changed native code is eligible not accepted",async()=>{
+test("actual repeated lifetime artifact retains explicit96MiB/static ABI/prior binding, while both failed browser configurations stay rejected",async()=>{
   const pin=JSON.parse(await readFile("images/resvg-source/filter-liveness-processed-input.json"));
   const receipt=JSON.parse(await readFile("evidence/2026-10-28T18-53-58-593Z-svg-filter-processed-artifact.json"));
   assert.deepEqual(pin,receipt.inputPin);assert.equal(pin.runId,40749099894);assert.equal(pin.filterLivenessPatchedSha256,filterLivenessPatch.patchedSha256);
@@ -84,5 +84,5 @@ test("actual repeated lifetime processor artifact retains explicit96MiB/static A
   assert.equal(receipt.ownedRuntimeRemoved,true);assert.equal(receipt.localBinaryCopiesRetained,false);assert.deepEqual(receipt.failures,[]);
   assert.equal(receipt.browserAcceptance,false);assert.equal(receipt.wholeGoalComplete,false);
   const ledger=JSON.parse(await readFile("images/resvg-source/rejected-strip-experiments.json"));
-  assert.doesNotThrow(()=>assertSvgStripExperimentNotRejected(ledger,{wasmSha256:pin.wasmSha256,centralRows:128,fixtureSha256:ledger.fixtureSha256}));
+  for(const centralRows of [64,128])assert.throws(()=>assertSvgStripExperimentNotRejected(ledger,{wasmSha256:pin.wasmSha256,centralRows,fixtureSha256:ledger.fixtureSha256}),/must not be replayed/);
 });

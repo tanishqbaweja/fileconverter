@@ -23,3 +23,19 @@ test("lifetime qualification binds all3 source proofs/new exact4member artifact 
     assert.equal(result.proof.allExistingFidelityMemoryPrivacyCleanupAssertionsRetained,true);assert.equal(result.proof.publicPromotion,false);
   }finally{await runtime.close();}
 });
+test("actual genuine31second output remains rejected even though wholeSSIM and one-run process-tree memory numbers pass",async()=>{
+  const report=JSON.parse(await readFile("evidence/2026-10-28T19-15-52-782Z-source-svg-browser.json"));
+  const actual=report.stressRuns[0].result;
+  assert.equal(report.stats.expected,0);assert.equal(report.stats.unexpected,1);assert.equal(report.stats.skipped,2);
+  assert.equal(actual.width,3000);assert.equal(actual.height,2000);assert.equal(actual.outputBytes,2932111);
+  assert.equal(actual.metrics.elapsedMs,31156.22000002861);assert.equal(actual.metrics.svgStripPilot.completedRows,2000);
+  assert.ok(actual.fidelity.actualSsim>=0.99);assert.equal(actual.stripValidation.scores.length,31);
+  assert.equal(actual.stripValidation.minimumSsim,0.979671);assert.ok(actual.stripValidation.minimumSsim<0.99);
+  assert.equal(actual.stripValidation.alphaExact,true);assert.equal(actual.independentlyValidatedEffects,false);
+  assert.equal(actual.stripValidation.passed,false);assert.equal(actual.stripValidation.transparentInputCoverage,false);
+  assert.ok(actual.stripValidation.seamRows.some((y,i)=>y%128!==0&&actual.stripValidation.scores[i]<0.99));
+  assert.equal(report.memory.incrementalPrivateMiB,227.87109375);assert.equal(report.memory.unavailableSamples,0);
+  assert.equal(report.wholeGoalComplete,false);assert.equal(report.publicEngineReplacement,false);
+  assert.equal(report.ownedRuntimeRemoved,true);assert.ok(report.processCleanup.every(row=>row.status==="owned-identity-absent"));
+  assert.deepEqual(report.protectedOriginalBefore,report.protectedOriginalAfter);
+});

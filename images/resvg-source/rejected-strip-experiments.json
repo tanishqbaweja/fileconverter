@@ -32,8 +32,14 @@
       "centralRows": 64,
       "reason": "45s timeout/1792central rows despite lower native memory50855936B; no completed output or SSIM",
       "evidence": "evidence/2026-10-28-svg-liveness-64row-terminal.json"
+    },
+    {
+      "wasmSha256": "902fc72bd6f3165e28a7982a11ff3ee12e9eabb6adb37b24459e9c7ef2be845d",
+      "centralRows": 128,
+      "reason": "Genuine complete31.156s PNG wholeSSIM0.990103 but minimum all31bands0.979671<0.99; quality failure cannot become accepted speedup",
+      "evidence": "evidence/2026-10-28-svg-liveness-128row-quality-terminal.json"
     }
   ],
-  "requiredNextChange": "Concrete native-render allocation/work reduction with source proof; do not increase heap/timeout or reduce original fixture/quality gates",
+  "requiredNextChange": "Concrete native correctness or bounded-work change backed by source/diagnostic evidence; do not increase heap/timeout or reduce original fixture/quality gates",
   "publicPromotion": false
 }

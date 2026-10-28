@@ -1,5 +1,20 @@
 # Remaining work audit
 
+128-row lifetime native candidate now genuinely converted6M in31.156s under
+unchanged45s, but REJECTED: wholeSSIM0.990103 passes; minimum31band0.979671
+fails0.99. Alphaall6Mexact/opaque only.227.87109375MiB full-tree/345valid0missing,
+74,383,360B actualWasm<96MiB,16native images freed/final queues0. Quality failure
+prevents supported profile/speed/repeated-memory acceptance. All7roots/fourruntimes/
+outputs/fixtures/profile cleaned/original SHA same. LatestreferenceHTTP0, earlier
+Docs Offline request remains separate failing evidence. Existing128configuration
+guarded against unchanged replay. Next analyze why band errors include locations
+away from actual128row seams; do not lower thresholds or keep only wholeSSIM.
+Generic image buffer telemetry, transparent/recovery/current-browser repeats and
+all wider original deliverables remain OPEN.
+`evidence/2026-10-28-svg-liveness-128row-quality-terminal.json`.
+Final13focused PASS5873.2276ms, then2updated negative-acceptance guardsPASS
+441.7098ms/lint PASS. Raw reports/scalar receipts retained, no disposable media.
+
 128-row conversion remains UNTESTED: reference browser attempted POST to Docs Offline
 report endpoint, failed original network assertion before application launch.
 Old helper was observation-only; do not claim blocking or infer transmitted

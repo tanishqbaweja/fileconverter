@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+2026-10-28 — Genuine128-row conversion7c2b3a60 COMPLETE but QUALITY REJECTED:
+3000x2000 PNG2932111B independently decoded,31156.220ms conversion/30041.160ms
+native render/36592.933ms suite. Whole SSIM0.990103>=0.99 but minimum all31
+8-row bands0.979671<0.99 (worst center1536); multiple failing bands are NOT
+physical128row boundaries, so do not assume overlap alone is the cause. Exact
+all6000000alpha bytes (opaque reference only).16viewports rendered/released,
+2000rows, actualWasm74383360B/1135pages<96MiB,22observations/all6phases; native
+release failures0, maxRGBA2688000B/filtered252021B/write65536B/1pending/final
+queues0. Full-tree baseline334012416B/peak572952576B =>227.87109375MiB,
+345valid0missing, but quality failure means NO supported profile/repeated memory
+or accepted speed claim.0validated-pass/1quality-fail/2notrun. This retry had
+0reference HTTP attempts and0conversion forbidden requests; prior Docs Offline
+failure remains recorded, no exemptions/services disabled. All7roots/fourruntimes/
+generatedsource/reference/convertedoutput/profile removed; original full SHA and
+size unchanged.1851450B trace retained.128row native/config now rejection-guarded;
+next spatial rendering-fidelity analysis, not unchanged scheduling/IO replay.
+`evidence/2026-10-28-svg-liveness-128row-quality-terminal.json`.
+Final lifetime/qualification/rejection/reference regression13PASS/0fail/0skip/
+0cancel5873.2276ms/lint PASS. Added an explicit genuine-output negative-acceptance
+guard so whole-image0.99 or one below250MiB measurement cannot override band
+quality failure. Previous privacy failure and64-row timeout retained separately.
+Updated negative-acceptance guard2PASS441.7098ms/lint PASS; no repeated full
+suite or unchanged browser run. Public converter unchanged; full goal incomplete.
+
 2026-10-28 —128-row runc4bf9a3c held BEFORE CONVERSION: independent reference
 browser attemptedPOST https://docs.google.com/offline/extension/report?v=1.111.1&optin=unknown.
 Unchanged forbidden-request assertion FAILED; application not loaded,0conversions,
