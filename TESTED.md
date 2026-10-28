@@ -11350,3 +11350,10 @@ births absent, owned runtime removed, protected original2,958,573,265B and full
 SHA31f36695…9db34 unchanged before/after. Exact raw receipt bound in
 `evidence/2026-10-28-image-size-patch-verification.json`. Not headed/native-picker,
 conversion-memory, SVG qualification or complete security/release acceptance.
+
+2026-10-28 idle-navigation diagnostic preparation:3 focused PASS69.408ms and
+affected lint PASS. No file selection or conversion; observe document identity,
+persisted lifecycle events and worker targets during three production-app/static
+page/back traversals with normal Chrome services and full DOM/HAR tracing. Native
+single-point snapshots are not stable baseline, peak or memory-acceptance data.
+One actual run next; source/fixture/threshold/production behavior unchanged.

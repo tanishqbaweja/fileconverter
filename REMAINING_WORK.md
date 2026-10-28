@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-28 — New bounded idle-navigation diagnostic prepared,3 focused/lint
+PASS. It traverses the unchanged production app and existing same-origin static
+validator page three times, observing document IDs, pagehide/pageshow persisted
+flags and worker target identities. No files selected/conversions/engine swaps;
+single-point native snapshots are diagnostic only, NOT an accepted baseline or
+peak/memory pass. No delayed blank gate, disabled service/cache, forced GC or
+production modification. Full DOM/HAR tracing and exact birth-owned cleanup kept.
+This is a different question from the blocked conversion suite, not its replay.
+`scripts/diagnose-navigation-worker-retention.mjs`.
+
 Final evidence binding after browser run:25 focused PASS/0fail/0skip615.169ms,
 affected lint PASS. This includes the final browser receipt/source/cleanup check;
 the prior1881 full portable pass is not relabelled as including this later test.
