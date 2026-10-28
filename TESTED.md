@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+2026-10-28 — Genuine lifetime64-row run32199b76 still FAILED unchanged45s
+poll:0validated-pass/1fail/2notrun/no complete PNG or SSIM. At42.979s sampled:
+29viewports rendered/released,1792central rows,2621473B partial output,
+41.706s native raster. Actual Wasm50855936B/776pages,32observations available;
+same96MiB max. Full-tree baseline329879552B/peak531693568B =>192.46484375MiB,
+440valid/1unavailable (never zero). Incomplete diagnostic, NOT memory/speed
+acceptance. All7 roots/fourruntimes/generated data cleaned/original SHA same.
+New source-lifetime engine's observed memory headroom justifies128-row schedule:
+same48halo/6M/cap/45s, accumulated viewport rows4944->3440 (30.421% less),
+all128seams subset of original31 64-row bands, still all31 validated. Existing
+64-row native/config rejected and guarded against replay. Generic JS image
+counter remains OPEN. `evidence/2026-10-28-svg-liveness-64row-terminal.json`.
+128-row preparation initially9PASS/2FAIL: test reused one exclusive-output
+runtime and overlap estimate omitted a clipped bottom viewport. Fixed tests
+to use independent owned runtimes and exact4944->3440 row sum; no converter
+or threshold weakening. Final11focused PASS551.343ms/lint PASS.
+
 2026-10-28 — Lifetime private browser adapter prepared: --filter-liveness binds
 new902fc72b...845d artifact, exact4members/owner/raw pin/all3 source patch proofs.
 Same64central/48halo/original6M/31seams/0.99/exact-alpha/96MiB/250MiB/security/

@@ -12,12 +12,14 @@ import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mj
 import { sha } from "../images/resvg-source/source-pins.mjs";
 import { assertSvgStripExperimentNotRejected } from "./lib/svg-strip-rejections.mjs";
 const root=path.resolve(import.meta.dirname,".."),args=process.argv.slice(2);
-assert.equal(new Set(args).size,args.length);assert.ok(args.length<=3&&args.every(arg=>["--list-only","--filter-region","--filter-context","--filter-liveness","--rows80"].includes(arg)));
+assert.equal(new Set(args).size,args.length);assert.ok(args.length<=3&&args.every(arg=>["--list-only","--filter-region","--filter-context","--filter-liveness","--rows80","--rows128"].includes(arg)));
 const filterLiveness=args.includes("--filter-liveness"),filterContext=args.includes("--filter-context"),filterRegion=args.includes("--filter-region"),listOnly=args.includes("--list-only");
 assert.ok([filterLiveness,filterContext,filterRegion].filter(Boolean).length<=1,"Select one immutable native candidate");
 const nativeVariant=filterLiveness||filterContext||filterRegion;
-const centralRows=args.includes("--rows80")?80:64;
+assert.ok(!(args.includes("--rows80")&&args.includes("--rows128")),"Select one strip schedule");
+const centralRows=args.includes("--rows128")?128:args.includes("--rows80")?80:64;
 assert.ok(centralRows===64||filterContext||filterLiveness,"80-row experiment requires the context-corrected source");
+assert.ok(centralRows!==128||filterLiveness,"128 rows require the measured lower-memory native lifetime implementation");
 const candidatePin=filterLiveness?"images/resvg-source/filter-liveness-processed-input.json":filterContext?"images/resvg-source/filter-context-processed-input.json":"images/resvg-source/filter-region-processed-input.json";
 const stamp=new Date().toISOString().replaceAll(/[:.]/g,"-"),baseOwner="scripts/test-reproduced-svg-stress.mjs";
 const report={schemaVersion:1,startedAt:new Date().toISOString(),scope:"Private viewport/streaming PNG worker with original6M effects fixture and unchanged final baseline/250 threshold; not general SVG/release acceptance",

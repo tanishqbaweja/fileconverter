@@ -6,7 +6,7 @@ import { sha } from "../../images/resvg-source/source-pins.mjs";
 const replace=(text,before,after)=>{assert.equal(text.split(before).length-1,1,"Exact private strip qualifier anchor: "+before);return text.replace(before,after);};
 export function makeSvgStripQualification(options) {
   const {root,runtime,workerPin}=options;
-  const centralRows=workerPin.centralRows??64;assert.ok([64,80].includes(centralRows));
+  const centralRows=workerPin.centralRows??64;assert.ok([64,80,128].includes(centralRows));
   assert.equal(workerPin.file,path.join(runtime,"private-svg-strip-worker.mjs"));
   assert.match(workerPin.sha256,/^[a-f0-9]{64}$/);assert.ok(workerPin.bytes>1000&&workerPin.bytes<=1048576);
   const base=makeSvgEffectsDiagnostic(options),edits=[];

@@ -26,6 +26,12 @@
       "centralRows": 80,
       "reason": "45s timeout despite fewer passes; measured43.468s native rendering/1781rows; no quality result",
       "evidence": "evidence/2026-10-28-svg-80row-context-terminal.json"
+    },
+    {
+      "wasmSha256": "902fc72bd6f3165e28a7982a11ff3ee12e9eabb6adb37b24459e9c7ef2be845d",
+      "centralRows": 64,
+      "reason": "45s timeout/1792central rows despite lower native memory50855936B; no completed output or SSIM",
+      "evidence": "evidence/2026-10-28-svg-liveness-64row-terminal.json"
     }
   ],
   "requiredNextChange": "Concrete native-render allocation/work reduction with source proof; do not increase heap/timeout or reduce original fixture/quality gates",

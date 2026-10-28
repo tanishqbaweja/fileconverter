@@ -39,6 +39,9 @@ test("all31 original6M boundaries are validated with8-row native SSIM windows, n
   for(const y of graph.seams)assert.ok(changed.seams.includes(y));
   for(let y=80;y+4<=2000;y+=80)assert.ok(changed.seams.includes(y));
   assert.throws(()=>svgStripSeamGraph(3000,2000,80,[0]));
+  const larger=svgStripSeamGraph(3000,2000,128,[64]);assert.deepEqual(larger.seams,graph.seams);
+  const viewportRows=step=>{let total=0;for(let y=0;y<2000;y+=step)total+=Math.min(2000,y+Math.min(step,2000-y)+48)-Math.max(0,y-48);return total;};
+  assert.equal(viewportRows(64),4944);assert.equal(viewportRows(128),3440);
 });
 test("validator keeps failing or missing seam scores failing, compares every alpha pixel, and launches tools hidden",async()=>{
   const cwd=process.cwd(),outputPath=path.join(cwd,"outputs","mock.png"),referencePath=path.join(cwd,"fixtures","mock.png");

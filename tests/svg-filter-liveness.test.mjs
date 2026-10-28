@@ -84,5 +84,5 @@ test("actual repeated lifetime processor artifact retains explicit96MiB/static A
   assert.equal(receipt.ownedRuntimeRemoved,true);assert.equal(receipt.localBinaryCopiesRetained,false);assert.deepEqual(receipt.failures,[]);
   assert.equal(receipt.browserAcceptance,false);assert.equal(receipt.wholeGoalComplete,false);
   const ledger=JSON.parse(await readFile("images/resvg-source/rejected-strip-experiments.json"));
-  assert.doesNotThrow(()=>assertSvgStripExperimentNotRejected(ledger,{wasmSha256:pin.wasmSha256,centralRows:64,fixtureSha256:ledger.fixtureSha256}));
+  assert.doesNotThrow(()=>assertSvgStripExperimentNotRejected(ledger,{wasmSha256:pin.wasmSha256,centralRows:128,fixtureSha256:ledger.fixtureSha256}));
 });

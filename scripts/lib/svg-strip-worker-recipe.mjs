@@ -46,7 +46,7 @@ export function makeSvgStripWorker(worker, bridge, writerUrl) {
     originalReadDirectWriteCancelErrorLifecycleRetained:true,publicSourceFilesEdited:false}};
 }
 export async function buildSvgStripWorker({root,runtime,centralRows=64}) {
-  assert.ok([64,80].includes(centralRows));
+  assert.ok([64,80,128].includes(centralRows));
   assert.equal(path.dirname(runtime.directory),path.join(root,"work"));
   assert.match(path.basename(runtime.directory),/^svg-reproduced-qualification-[A-Za-z0-9]{6}$/);
   assert.equal(esbuildVersion,"0.28.1");

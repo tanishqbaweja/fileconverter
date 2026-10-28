@@ -1,5 +1,15 @@
 # Remaining work audit
 
+Lifetime64-row actual6M still hits unchanged45s deadline;0pass/1fail/2notrun,
+no completed PNG/SSIM. Actual native heap50855936B/776pages, full-tree192.4648MiB
+incomplete only;440valid1missing, cleanup7roots/4runtimes/original SHA verified.
+New source implementation frees enough observed heap for128-row scheduling;
+same48halo/source/96MiB/45s/0.99/exactalpha/all31seam checks, viewport overlap
+work4944->3440rows. This is a measured-memory-backed scheduling experiment,
+not unchanged old80row native engine replay; no accepted speed claim.64row
+attempt added to rejection guard. Generic memory telemetry/recovery and broader
+original goal remain OPEN. `evidence/2026-10-28-svg-liveness-64row-terminal.json`.
+
 Lifetime browser adapter now implemented and collection-verified, not converted:
 new immutable processed/raw/source proofs required;7focused PASS468.9466ms,
 lint/exact3case list PASS. Original6M/64+48rows/all31seams/0.99/exactalpha/
