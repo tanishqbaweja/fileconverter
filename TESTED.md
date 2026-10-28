@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-10-28 —128-row runc4bf9a3c held BEFORE CONVERSION: independent reference
+browser attemptedPOST https://docs.google.com/offline/extension/report?v=1.111.1&optin=unknown.
+Unchanged forbidden-request assertion FAILED; application not loaded,0conversions,
+no native128row timing/fidelity/memory evidence. Existing helper OBSERVED only,
+did not intercept; transmission/body/caller unknown. Only deterministic synthetic
+fixture rendered3834367B, no protected original/userfile accessed. All threeowned
+runtimes/disposable source/reference/worker/profile removed and birth cleanup
+verified. Request source/response not retained in old failure receipt (URL from
+assertion stack); added bounded32-event metadata-only attribution and final
+after-close assertions, preserving all attempts as failures. No bodies/headers,
+no extension/service/cache/worker disabling. Route interception NOT added:
+official docs note cache disabling and service-worker coverage limits. New
+128-row converter configuration is UNTESTED, not a rejected conversion.
+`evidence/2026-10-28-svg-128row-reference-network-hold.json`.
+Metadata/source/qualification regression9focused PASS782.5985ms/lint PASS;
+response-from-service-worker flag also retained to avoid inferring a server
+response when a worker may have served one. One controlled attribution retry
+is justified by newly retained failure data; not automatic retries until green.
+
 2026-10-28 — Genuine lifetime64-row run32199b76 still FAILED unchanged45s
 poll:0validated-pass/1fail/2notrun/no complete PNG or SSIM. At42.979s sampled:
 29viewports rendered/released,1792central rows,2621473B partial output,

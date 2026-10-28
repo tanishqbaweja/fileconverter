@@ -1,5 +1,16 @@
 # Remaining work audit
 
+128-row conversion remains UNTESTED: reference browser attempted POST to Docs Offline
+report endpoint, failed original network assertion before application launch.
+Old helper was observation-only; do not claim blocking or infer transmitted
+contents/caller. Only generated fixture used, all3runtimes/profile/reference/
+worker/source cleaned; protected original not accessed. New bounded request
+attribution survives failure and checks late traffic after close; no services,
+extensions, cache or workers disabled/no request exemptions. Source-generation
+privacy failure must remain recorded; no unchanged retry without concrete new
+diagnostic purpose or environment change. Other original work remains available.
+`evidence/2026-10-28-svg-128row-reference-network-hold.json`.
+
 Lifetime64-row actual6M still hits unchanged45s deadline;0pass/1fail/2notrun,
 no completed PNG/SSIM. Actual native heap50855936B/776pages, full-tree192.4648MiB
 incomplete only;440valid1missing, cleanup7roots/4runtimes/original SHA verified.

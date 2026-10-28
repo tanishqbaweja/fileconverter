@@ -14,6 +14,30 @@ import { inspectInstalledChromePin, assertInstalledChromePinsEqual } from "./ins
 import { sha } from "../../images/resvg-source/source-pins.mjs";
 export const svgEffectsGeneratorSha256 = "bd3165aec5e8a48ac330fa1d422563c639e600f04c8b2423413baa1efc4816af";
 const root = path.resolve(import.meta.dirname, "../.."), execute = promisify(execFile);
+// Metadata only, never bodies/headers/cookies. This observes; it does not claim
+// interception or suppress normal browser services, extensions, cache or workers.
+export function createSvgReferenceNetworkObservation(forbidden) {
+  assert.ok(Array.isArray(forbidden)&&forbidden.length===0);
+  const identities=new WeakMap(),report={observedHttpRequests:0,overflow:false,requests:[],
+    interceptionInstalled:false,blockedBeforeDispatch:null,requestBodiesOrHeadersRecorded:false,
+    browserServicesDisabled:false,sourceAttributionIsBestEffort:true};
+  const safe=action=>{try{return action();}catch{return null;}};
+  const observe=request=>{
+    const url=request.url();if(!["http:","https:"].includes(new URL(url).protocol))return;
+    report.observedHttpRequests++;
+    if(forbidden.length>=32){report.overflow=true;return;}
+    const entry={method:request.method(),url:url.slice(0,512)};forbidden.push(entry);
+    const frameUrl=safe(()=>request.frame()?.url()),workerUrl=safe(()=>request.serviceWorker()?.url());
+    const record={...entry,resourceType:safe(()=>request.resourceType()),
+      frameUrl:typeof frameUrl==="string"?frameUrl.slice(0,512):null,
+      serviceWorkerUrl:typeof workerUrl==="string"?workerUrl.slice(0,512):null,
+      responseStatus:null,responseFromServiceWorker:null,failureText:null,blockedBeforeDispatch:null};
+    identities.set(request,record);report.requests.push(record);
+  };
+  const response=value=>{const record=identities.get(value.request());if(record){record.responseStatus=value.status();record.responseFromServiceWorker=safe(()=>value.fromServiceWorker());}};
+  const failed=request=>{const record=identities.get(request);if(record){const message=safe(()=>request.failure()?.errorText);record.failureText=typeof message==="string"?message.slice(0,256):null;}};
+  return{report,observe,response,failed};
+}
 export function buildHistoricalSvgEffectsSource(generatorBytes) {
   assert.equal(sha(generatorBytes), svgEffectsGeneratorSha256);
   const source = generatorBytes.toString(), begin = source.indexOf("function buildSvg("), end = source.indexOf("\nfunction countElements(", begin);
@@ -35,7 +59,8 @@ export async function generateOwnedSvgEffectsFixture({ runtime, fixtureRoot, rec
   const inputHandle = await open(sourceFile, "wx");
   try { await inputHandle.writeFile(source); } finally { await inputHandle.close(); }
   let owned, child, childClosed, birth, browser, output, written = 0, chunks = 0, maximumChunkBytes = 0;
-  const digest = createHash("sha256"), forbidden = [];
+  const digest = createHash("sha256"), forbidden = [], network=createSvgReferenceNetworkObservation(forbidden);
+  receipt.referenceNetwork=network.report;let primaryFailure=false;
   try {
     receipt.browserBefore = await inspectInstalledChromePin();
     owned = await createOwnedRuntimeScratch("svg-effects-reference-");
@@ -56,11 +81,7 @@ export async function generateOwnedSvgEffectsFixture({ runtime, fixtureRoot, rec
     browser = await chromium.connectOverCDP(`http://127.0.0.1:${Number(lines[0])}`);
     assert.equal(browser.version(), receipt.browserBefore.version);
     const context = browser.contexts()[0], page = context.pages()[0]; assert.equal(page.url(), "about:blank");
-    context.on("request", request => {
-      if (["http:", "https:"].includes(new URL(request.url()).protocol)) {
-        if (forbidden.length < 32) forbidden.push({ method: request.method(), url: request.url().slice(0,512) });
-      }
-    });
+    context.on("request",network.observe);context.on("response",network.response);context.on("requestfailed",network.failed);
     output = await open(referenceFile, "wx");
     await page.exposeBinding("__withinSvgReferenceChunk", async (_caller, values) => {
       assert.ok(Array.isArray(values) && values.length > 0 && values.length <= 65536);
@@ -102,7 +123,7 @@ export async function generateOwnedSvgEffectsFixture({ runtime, fixtureRoot, rec
       { cwd: root, env: owned.env, windowsHide: true, timeout: 15000, maxBuffer: 16384 });
     receipt.reference.independentNativeDecodePassed = true;
     receipt.conversionAcceptance = false; receipt.forbiddenRequests = forbidden;
-  } finally {
+  } catch(error) { primaryFailure=true;throw error; } finally {
     const cleanupErrors = [], attempt = async action => { try { await action(); } catch (error) { cleanupErrors.push(error); } };
     await attempt(async () => { await output?.close(); });
     await attempt(async () => { await browser?.close(); });
@@ -121,6 +142,9 @@ export async function generateOwnedSvgEffectsFixture({ runtime, fixtureRoot, rec
     });
     await attempt(async () => { if (receipt.browserBefore) assertInstalledChromePinsEqual(receipt.browserBefore, await inspectInstalledChromePin()); });
     receipt.cleanupErrors = cleanupErrors.map(error => String(error));
+    receipt.forbiddenRequests=forbidden;receipt.forbiddenRequestOverflow=network.report.overflow;
     if (cleanupErrors.length) throw new AggregateError(cleanupErrors, "Independent SVG reference cleanup/pin verification failed");
+    // Include late requests during native reference validation/browser closure.
+    if(!primaryFailure){assert.deepEqual(forbidden,[]);assert.equal(network.report.overflow,false);}
   }
 }

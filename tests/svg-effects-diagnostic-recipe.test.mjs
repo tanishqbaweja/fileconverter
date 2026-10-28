@@ -5,7 +5,7 @@ import test from "node:test";
 import ts from "typescript";
 import { makeSvgEffectsDiagnostic, svgEffectsMinimumSsim } from "../scripts/lib/svg-effects-diagnostic-recipe.mjs";
 import { makeReproducedSvgDirectStressQualification } from "../scripts/lib/reproduced-svg-direct-stress-recipe.mjs";
-import { buildHistoricalSvgEffectsSource } from "../scripts/lib/owned-svg-effects-fixture.mjs";
+import { buildHistoricalSvgEffectsSource,createSvgReferenceNetworkObservation } from "../scripts/lib/owned-svg-effects-fixture.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
 const root = path.resolve(import.meta.dirname, ".."), read = file => readFile(path.join(root, file));
 const options = { root, runtime: path.join(root, "work/svg-reproduced-qualification-aBc123"),
@@ -50,4 +50,20 @@ test("reference fixture owner is hidden/normal-profile, chunk-backpressured, sou
     'queryReliableProcessIdentity(child.pid), birth', '"owned-identity-absent"', 'await owned?.close()', 'finally { URL.revokeObjectURL(url)',
     'independentNativeDecodePassed = true', 'cleanupErrors.map']) assert.ok(source.includes(anchor), anchor);
   assert.doesNotMatch(source, /toDataURL|\.arrayBuffer\(|--disable-|recursive: true|ffmpeg.*-vf/);
+});
+test("reference network observer records bounded frame/worker/response/failure metadata even on failure and never claims requests were blocked",()=>{
+  const forbidden=[],observer=createSvgReferenceNetworkObservation(forbidden);
+  const request={url:()=>"https://docs.google.com/offline/extension/report?v=1.111.1&optin=unknown",method:()=>"POST",
+    frame(){throw new Error("No frame for worker request");},serviceWorker:()=>({url:()=>"chrome-extension://synthetic-test/worker.js"}),
+    resourceType:()=>"fetch",failure:()=>({errorText:"net::ERR_FAILED"}),postData(){assert.fail("Never read body");},allHeaders(){assert.fail("Never read headers");}};
+  observer.observe(request);observer.response({request:()=>request,status:()=>200,fromServiceWorker:()=>false});observer.failed(request);
+  assert.equal(forbidden.length,1);assert.equal(observer.report.requests[0].frameUrl,null);
+  assert.match(observer.report.requests[0].serviceWorkerUrl,/chrome-extension:/);assert.equal(observer.report.requests[0].responseStatus,200);
+  assert.equal(observer.report.requests[0].responseFromServiceWorker,false);
+  assert.equal(observer.report.requests[0].failureText,"net::ERR_FAILED");assert.equal(observer.report.blockedBeforeDispatch,null);
+  assert.equal(observer.report.interceptionInstalled,false);assert.equal(observer.report.requestBodiesOrHeadersRecorded,false);
+  for(let i=0;i<100;i++)observer.observe({...request,url:()=>"https://example.invalid/"+"x".repeat(1000)});
+  assert.equal(forbidden.length,32);assert.equal(observer.report.requests.length,32);assert.equal(observer.report.overflow,true);
+  assert.equal(observer.report.observedHttpRequests,101);assert.ok(forbidden.every(row=>row.url.length<=512));
+  observer.observe({...request,url:()=>"blob:synthetic"});assert.equal(observer.report.observedHttpRequests,101);
 });
