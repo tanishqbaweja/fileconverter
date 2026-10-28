@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "runId": 40741245271,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40741245271",
+  "sourceCommit": "e98056612e2f82d97cbc4ea4ed7289903b42bb22",
+  "workflow": "svg-source-render-context.yml",
+  "authoritativeStatusObserved": "in_progress",
+  "observedAt": "2026-10-28T18:01:39Z",
+  "estimatedDurationSeconds": 180,
+  "notBeforeNextObservation": "2026-10-28T18:04:39Z",
+  "sameRunOnly": true,
+  "candidateChange": "Translate clipping bounds into isolated child/mask pixmap coordinates, retaining prior region allocation patch",
+  "rootBoundsAndExtentDimensionsEnlarged": false,
+  "filterParametersOrPixelKernelsChanged": false,
+  "sourceModuleSha256": "d9d3b07113d3e95e0506658e197f2c782dd0469fd5d3a34e960fff66c53f7bef",
+  "sourceCompilerAndLockAndReleaseFlagsUnchanged": true,
+  "noUnchangedCompileReplay": true,
+  "browserAcceptance": false,
+  "publicEngineReplacement": false,
+  "wholeGoalComplete": false
+}

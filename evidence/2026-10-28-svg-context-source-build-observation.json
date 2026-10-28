@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "runId": 40741245271,
+  "jobId": 123003092357,
+  "sourceCommit": "e98056612e2f82d97cbc4ea4ed7289903b42bb22",
+  "observedAt": "2026-10-28T18:04:42Z",
+  "authoritativeStatus": "in_progress",
+  "activeStep": "Two fresh locked builds with exact region and context source patches",
+  "stepStartedAt": "2026-10-28T18:01:56Z",
+  "notBeforeNextObservation": "2026-10-28T18:06:42Z",
+  "sameRunOnly": true,
+  "newRunDispatched": false,
+  "compilationAccepted": false,
+  "browserAcceptance": false
+}
