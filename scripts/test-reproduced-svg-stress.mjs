@@ -23,6 +23,7 @@ const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: 
 let runtime, child, birth, log = "";
 try {
   for (const file of ["scripts/test-reproduced-svg-stress.mjs", "scripts/lib/reproduced-svg-stress-recipe.mjs", "scripts/lib/reproduced-svg-browser-recipe.mjs",
+    "scripts/lib/exact-rgba-validation.mjs",
     "scripts/generate-svg-stress-fixture.py", "fixtures/stress/images/svg-grid-8m.svg.json", "images/resvg-source/repeated-processed-input.json",
     "lib/staged-worker-coordinator.ts", ...Object.keys(reproducedSvgBasePins)]) report.sourcePins[file] = sha(await readFile(path.join(root, file)));
   if (!listOnly) {

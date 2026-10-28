@@ -9,14 +9,23 @@ const root = path.resolve(import.meta.dirname, ".."), read = file => readFile(pa
 const options = { root, runtime: path.join(root, "work/svg-reproduced-qualification-aBc123"),
   driverBytes: await read("scripts/test-source-built-svg-candidate.mjs"), suiteBytes: await read("tests/browser/image-conversions.spec.ts"),
   generatorBytes: await read("scripts/generate-svg-stress-fixture.py") };
-test("stress adapter adds only three same-fixture labels and bounded evidence, preserving every existing image-case assertion", () => {
+test("stress adapter retains exact pixels and existing I/O/decoder assertions while bounding comparison evidence", () => {
   const base = makeReproducedSvgBrowserQualification(options), generated = makeReproducedSvgStressQualification(options);
   let restored = generated.suite.split("\n").filter(line => !line.includes('"8m-grid-repeat-') || !line.trim().startsWith('["svg-to-png",')).join("\n");
+  restored = restored.replace(/^import \{ compareExactRgbaBuffers \} from [^\r\n]+;\n/, "")
+    .replace('    let stressPixelComparisonMs: number | null = null;\n', "");
   restored = restored.replace('  minimumReferenceSsim,\n  stressRepeat,\n] of routes)', '  minimumReferenceSsim,\n] of routes)')
     .replace('${sourceName} produces a bounded independently decodable image${stressRepeat ? ` [${stressRepeat}]` : ""}', '${sourceName} produces a bounded independently decodable image')
     .replace(/\n      if \(stressRepeat\) \{[\s\S]*?^      \}/m, "");
+  restored = restored.replace(`          const convertedPixels = await frameBytes(outputPath), referencePixels = await frameBytes(referencePath);\n` +
+    `          if (stressRepeat) {\n` +
+    `            const equality = compareExactRgbaBuffers(convertedPixels, referencePixels, expectedWidth * expectedHeight * 4);\n` +
+    `            expect(equality.equal).toBe(true); stressPixelComparisonMs = equality.comparisonMs;\n` +
+    `          } else expect(convertedPixels).toEqual(referencePixels);`,
+  `          expect(await frameBytes(outputPath)).toEqual(\n            await frameBytes(referencePath),\n          );`);
   assert.equal(restored, base.suite, "No validator, pixel comparison, queue, cleanup, timeout or existing-case assertion changes");
   assert.equal(generated.proof.selectedStressRuns, 3); assert.equal(generated.proof.sameTenCasesAndAllAssertions, false);
+  assert.equal(generated.proof.sameFidelityAndResourceThresholds, true);
   assert.match(generated.suite, /3840, 2160, 1_000, undefined,[^\r\n]+"rgba", undefined, "8m-grid-repeat-1"/);
   assert.equal(generated.suite.match(/3840, 2160, 1_000, undefined,[^\r\n]+"rgba", undefined, "8m-grid-repeat-[123]"/g).length, 3);
   for (const [name, source] of [["stress-driver.mjs", generated.driver], ["stress-suite.ts", generated.suite], ["config.mts", generated.config]])

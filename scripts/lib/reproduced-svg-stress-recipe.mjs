@@ -2,6 +2,7 @@
 // fixture, repeat labels and retained scalar evidence differ from small cases.
 import assert from "node:assert/strict";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 import { makeReproducedSvgBrowserQualification } from "./reproduced-svg-browser-recipe.mjs";
 import { sha } from "../../images/resvg-source/source-pins.mjs";
 export const svgGridGeneratorSha256 = "757bd4490c38f75d0f40821e27f24ac168621a71353906ab75c26066ca19bb53";
@@ -16,14 +17,23 @@ export function makeReproducedSvgStressQualification(options) {
   const reference = path.relative(path.join(root, "fixtures/images"), path.join(fixtureRoot, "svg-grid-8m-reference.png"));
   const rows = [1,2,3].map(index => `  ["svg-to-png", ${JSON.stringify(input)}, "png", "png", undefined, 3840, 2160, 1_000, undefined, ${JSON.stringify(reference)}, "rgba", undefined, "8m-grid-repeat-${index}"],`).join("\n");
   let suite = replace(base.suite, "const routes = [", "const routes = [\n" + rows);
+  suite = `import { compareExactRgbaBuffers } from ${JSON.stringify(pathToFileURL(path.join(root, "scripts/lib/exact-rgba-validation.mjs")).href)};\n` + suite;
   suite = replace(suite, "  minimumReferenceSsim,\n] of routes)", "  minimumReferenceSsim,\n  stressRepeat,\n] of routes)");
   suite = replace(suite, '${sourceName} produces a bounded independently decodable image`, async () => {',
     '${sourceName} produces a bounded independently decodable image${stressRepeat ? ` [${stressRepeat}]` : ""}`, async () => {');
+  suite = replace(suite, '    const outputPath = path.join(outputRoot, `${profileId}.${extension}`);',
+    '    let stressPixelComparisonMs: number | null = null;\n    const outputPath = path.join(outputRoot, `${profileId}.${extension}`);');
   const pixelGate = `          expect(await frameBytes(outputPath)).toEqual(\n            await frameBytes(referencePath),\n          );\n        }\n      }`;
-  suite = replace(suite, pixelGate, pixelGate + `\n      if (stressRepeat) {\n` +
+  const exactPixelGate = `          const convertedPixels = await frameBytes(outputPath), referencePixels = await frameBytes(referencePath);\n` +
+    `          if (stressRepeat) {\n` +
+    `            const equality = compareExactRgbaBuffers(convertedPixels, referencePixels, expectedWidth * expectedHeight * 4);\n` +
+    `            expect(equality.equal).toBe(true); stressPixelComparisonMs = equality.comparisonMs;\n` +
+    `          } else expect(convertedPixels).toEqual(referencePixels);\n        }\n      }`;
+  suite = replace(suite, pixelGate, exactPixelGate + `\n      if (stressRepeat) {\n` +
     `        if (!privateSvg) throw new Error("Stress evidence requires the owned private descriptor");\n` +
     `        const evidence = JSON.stringify({ repeat: stressRepeat, independentlyValidatedRgbaPixels: true,\n` +
-    `          width: expectedWidth, height: expectedHeight, outputBytes: (await stat(outputPath)).size, metrics: state!.metrics });\n` +
+    `          width: expectedWidth, height: expectedHeight, outputBytes: (await stat(outputPath)).size, metrics: state!.metrics,\n` +
+    `          pixelComparison: { implementation: "exact-native-buffer-equality", expectedBytes: expectedWidth * expectedHeight * 4, comparisonMs: stressPixelComparisonMs } });\n` +
     `        if (Buffer.byteLength(evidence) > 65536) throw new Error("Stress scalar evidence exceeds bound");\n` +
     `        await writeFile(path.join(privateSvg.runtime, stressRepeat + ".json"), evidence, { flag: "wx" });\n      }`);
   let driver = replace(base.driver, JSON.stringify(sha(base.suite)), JSON.stringify(sha(suite)));
@@ -45,7 +55,7 @@ export function makeReproducedSvgStressQualification(options) {
   let generator = replace(generatorBytes.toString(), "PROJECT_ROOT = Path(__file__).resolve().parent.parent", `PROJECT_ROOT = Path(${JSON.stringify(root)})`);
   generator = replace(generator, 'FIXTURE_ROOT = PROJECT_ROOT / "fixtures" / "stress" / "images"', `FIXTURE_ROOT = Path(${JSON.stringify(fixtureRoot)})`);
   return { ...base, driver, suite, generator, generatorPath: path.join(runtime, "generate-grid.py"), fixtureRoot,
-    proof: { ...base.proof, sameTenCasesAndAllAssertions: false, sameImageCaseBodyAssertions: true,
+    proof: { ...base.proof, sameTenCasesAndAllAssertions: false, sameImageCaseBodyAssertions: false, sameFidelityAndResourceThresholds: true,
       selectedStressRuns: 3, independentPixelGate: "Exact RGBA bytes, not relaxed SSIM", driverSha256: sha(driver), suiteSha256: sha(suite),
       generatorSha256: sha(generator), originalGeneratorSha256: svgGridGeneratorSha256,
       scope: "8,294,400-pixel grid only; effects and full release gates remain separate" } };

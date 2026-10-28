@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-28 — Independent validator optimization prepared for required clean-
+session stress repeats: native Buffer equality checks every RGBA byte with an
+additional exact expected-length gate, replacing only the stress branch's slow
+per-byte assertion object walk. Original native decoder/I/O/cleanup guards and
+legacy case thresholds retained. One-bit changes in every RGB/alpha position,
+truncated buffers, wrong types and excess sizes reject; full33,177,600B check
+covered.6 focused PASS1163.299ms. No conversion-engine speed claim. New browser
+session repeats will also record comparator timing; source/engine hashes and
+normal-profile primary memory rule stay unchanged.
+
 2026-10-28 — Actual source-SVG8M OPFS grid3/3 PASS: byte-identical historical
 source/reference and exact RGBA equality, output196588B each, conversion metrics
 936.9/865.8/784.5ms. Full-tree224.3945MiB <=250,883 valid native samples/zero

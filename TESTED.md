@@ -11393,3 +11393,15 @@ existing validators and exact independent RGBA equality; historical SVG+Pillow
 reference hashes required, source recipe unchanged except owned paths. Normal
 Chrome/earliest blank/alltree/250MiB/full tracing unchanged. Direct stress and
 effects/clean-session/OOM/recovery remain pending. Python3.11.9/Pillow11.3.0 pinned.
+
+Actual first8M grid gate at2d93682b:3/3 exact independent RGBA PASS, same historical
+SVG/Pillow hashes, output196588B each; conversion metrics936.9/865.8/784.5ms,
+test suite94.879s.883 valid native samples/zero unavailable; earliest blank329940992B,
+peak565235712B =>224.39453125MiB <=250, normal services/full tracing retained.
+Reads<=262144B, writes<=196588B, one pending. Five owned births absent, both
+runtimes/fixture/outputs removed; original size/full SHA unchanged. Raw SVG Wasm
+metrics show known placeholder0, not actual observations; normalized current/peak
+NULL and telemetry remains OPEN. Direct/effects/clean-session/OOM/recovery remain.
+Exact native Buffer equality with expected RGBA length is prepared to remove
+assertion-walk CPU overhead;7 focused PASS452.684ms and affected prior lint PASS.
+`evidence/2026-10-28-svg-grid-stress-first-terminal.json`.
