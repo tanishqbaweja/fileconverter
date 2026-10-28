@@ -10,20 +10,23 @@ import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mj
 import { queryReliableProcessIdentity } from "./lib/reliable-owned-identity.mjs";
 import { makeReproducedSvgStressQualification } from "./lib/reproduced-svg-stress-recipe.mjs";
 import { makeReproducedSvgDirectStressQualification } from "./lib/reproduced-svg-direct-stress-recipe.mjs";
+import { makeSvgExecutionDiagnostic } from "./lib/svg-execution-diagnostic-recipe.mjs";
 import { reproducedSvgBasePins } from "./lib/reproduced-svg-browser-recipe.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
 
 assert.equal(process.platform, "win32");
-const args = process.argv.slice(2), listOnly = args.includes("--list-only"), directHandle = args.includes("--direct-handle");
-assert.equal(new Set(args).size, args.length); assert.ok(args.length <= 2 && args.every(arg => ["--list-only", "--direct-handle"].includes(arg)));
+const args = process.argv.slice(2), listOnly = args.includes("--list-only"), executionDiagnostic = args.includes("--execution-diagnostic"), directHandle = args.includes("--direct-handle") || executionDiagnostic;
+assert.equal(new Set(args).size, args.length); assert.ok(args.length <= 2 && args.every(arg => ["--list-only", "--direct-handle", "--execution-diagnostic"].includes(arg)));
+assert.ok(!(executionDiagnostic && args.includes("--direct-handle")), "Choose the strict direct qualification or the separate execution diagnostic");
 const root = path.resolve(import.meta.dirname, ".."), stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
 const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: "running", sourcePins: {}, generatedSourceArchives: {}, failures: [],
-  listOnly, publicEngineReplacement: false, originalGoalComplete: false,
+  listOnly, executionDiagnostic, memoryAcceptance: false, publicEngineReplacement: false, originalGoalComplete: false,
   destinationMode: directHandle ? "direct-handle-test-directory; native OS picker unverified" : "Existing bounded production OPFS test adapter; direct-handle stress is a separate pending gate",
-  scope: directHandle ? "Three same-browser 8M direct-handle grid repeats; no native OS picker/effects/OOM/recovery/full release acceptance" : "Three same-browser 8M grid repeats only; no direct-handle/effects/clean-session/OOM/recovery/full release acceptance" };
+  scope: executionDiagnostic ? "8M direct success, real UI raster cancellation, direct write error and same-page independently validated retries; strict final baseline/250 verdict retained" : directHandle ? "Three same-browser 8M direct-handle grid repeats; no native OS picker/effects/OOM/recovery/full release acceptance" : "Three same-browser 8M grid repeats only; no direct-handle/effects/clean-session/OOM/recovery/full release acceptance" };
 let runtime, child, birth, log = "";
 try {
   for (const file of ["scripts/test-reproduced-svg-stress.mjs", "scripts/lib/reproduced-svg-stress-recipe.mjs", "scripts/lib/reproduced-svg-direct-stress-recipe.mjs", "scripts/lib/reproduced-svg-browser-recipe.mjs",
+    "scripts/lib/svg-execution-diagnostic-recipe.mjs", "lib/svg-execution-resources.ts",
     "scripts/lib/exact-rgba-validation.mjs",
     "workers/conversion.worker.ts", "app/converter/ConverterApp.tsx", "lib/conversion-protocol.ts", "lib/svg-memory-observation.ts",
     "lib/vendor/resvg-binding.mjs", "lib/vendor/resvg-binding.d.mts", "images/resvg-source/observed-binding-contract.mjs",
@@ -34,7 +37,7 @@ try {
     const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 1024 ** 3);
   }
   runtime = await createOwnedRuntimeScratch("svg-reproduced-qualification-");
-  const recipe = directHandle ? makeReproducedSvgDirectStressQualification : makeReproducedSvgStressQualification;
+  const recipe = executionDiagnostic ? makeSvgExecutionDiagnostic : directHandle ? makeReproducedSvgDirectStressQualification : makeReproducedSvgStressQualification;
   const generated = recipe({ root, runtime: runtime.directory,
     driverBytes: await readFile(path.join(root, "scripts/test-source-built-svg-candidate.mjs")),
     suiteBytes: await readFile(path.join(root, "tests/browser/image-conversions.spec.ts")),
@@ -74,11 +77,14 @@ try {
     const raw = await readFile(path.join(root, summary.path)); assert.ok(raw.length <= 4 * 1024 ** 2); const actual = JSON.parse(raw);
     report.browserReceipt = { path: summary.path.replaceAll("\\", "/"), bytes: raw.length, sha256: sha(raw) };
     report.stats = actual.stats ?? null; report.memory = actual.memory ?? null; report.stressRuns = actual.stressRuns ?? null; report.innerFailures = actual.failures;
+    report.functionalAssertionsPassed = actual.functionalAssertionsPassed ?? false;
+    report.earlyBaselineGatePassed = actual.earlyBaselineGatePassed ?? null;
+    report.earlyBaselineGateFailure = actual.earlyBaselineGateFailure ?? null;
     report.ownedBrowserRuntimeRemoved = actual.ownedRuntimeRemoved;
     assert.equal(actual.generatedQualification.driverSha256, generated.proof.driverSha256); assert.equal(actual.generatedQualification.suiteSha256, generated.proof.suiteSha256);
     const pins = JSON.parse(await readFile(path.join(root, "images/resvg-source/repeated-processed-input.json"))); assert.equal(actual.candidatePin.wasmSha256, pins.wasmSha256);
     assert.equal(report.childSignal, null); assert.equal(report.childExitCode, 0, log);
-    assert.equal(actual.status, directHandle ? "passed-three-private-svg-grid-8m-direct-repeats-not-full-stress-or-release-acceptance" : "passed-three-private-svg-grid-8m-repeats-not-full-stress-or-release-acceptance");
+    assert.equal(actual.status, executionDiagnostic ? "completed-svg-execution-diagnostic-not-full-svg-or-release-acceptance" : directHandle ? "passed-three-private-svg-grid-8m-direct-repeats-not-full-stress-or-release-acceptance" : "passed-three-private-svg-grid-8m-repeats-not-full-stress-or-release-acceptance");
     assert.deepEqual([actual.stats.expected, actual.stats.unexpected, actual.stats.skipped, actual.stats.flaky], [3,0,0,0]);
     assert.equal(actual.stressRuns.length, 3); assert.ok(actual.stressRuns.every(row => row.result?.independentlyValidatedRgbaPixels));
     for (const run of actual.stressRuns) {
@@ -95,7 +101,7 @@ try {
     assert.equal(actual.ownedRuntimeRemoved, true); assert.ok(actual.processCleanup.every(row => row.status === "owned-identity-absent"));
     assert.equal(actual.domSnapshotRecording, true); assert.equal(actual.networkHarRecording, true); assert.equal(actual.baselineAdjusted, false); assert.equal(actual.browserServicesDisabledByDriver, false);
     assert.ok(actual.memory.incrementalPrivateMiB <= 250); assert.deepEqual(actual.protectedOriginalBefore, actual.protectedOriginalAfter);
-    report.status = directHandle ? "passed-three-same-browser-svg-grid-8m-direct-repeats-not-full-svg-or-release-acceptance" : "passed-three-same-browser-svg-grid-8m-repeats-not-full-svg-or-release-acceptance";
+    report.status = executionDiagnostic ? "completed-svg-execution-diagnostic-not-full-svg-or-release-acceptance" : directHandle ? "passed-three-same-browser-svg-grid-8m-direct-repeats-not-full-svg-or-release-acceptance" : "passed-three-same-browser-svg-grid-8m-repeats-not-full-svg-or-release-acceptance";
   }
 } catch (error) { report.status = "failed-reproduced-svg-grid-stress"; report.failures.push(String(error.stack ?? error)); process.exitCode = 1; }
 finally {

@@ -1,5 +1,25 @@
 # Remaining work audit
 
+SVG execution preparation: production build/TypeScript/two affected lint groups
+PASS;23 recipe/execution focused checks PASS after initial25, actual collection
+selects exactly three8M cases. Separately labelled recovery diagnostic retains
+the early30s collection and final strict baseline/250 assertions, but permits
+functional observations before the final failing verdict when baselineNULL;
+ordinary qualification still stops early. No fabricated baseline, service flag,
+pixel relaxation, output-copy shortcut or public promotion. Actual browser run
+pending. `evidence/2026-10-28-svg-execution-preparation.json`.
+
+2026-10-28 — SVG execution fixes implemented: actual UI allocates a four-byte
+atomic cancel flag for SVG as well as FFmpeg; worker checks between inspection,
+initialization, parse, rasterization, PNG encoding and bounded writes. Native
+calls are not interrupted mid-call. Explicit destination metadata now includes
+its shared-buffer allocation and helper worker, with confirmed close/abort versus
+unknown abort state. Closed SAB closures remain counted, not claimed collected.
+25 focused actual-function/mock-renderer/resource/catalogue tests PASS; affected
+lint and TypeScript PASS. Node tests do not rasterize images or prove browser
+cancellation. Exact prior worker/app/protocol archived before changes in
+`fixtures/source/pre-svg-execution-diagnostics-2026-10-28.json`.
+
 2026-10-28 — Current observed-memory build privacy/offline/hosting PASS19/0fail/
 0skip/0flaky54.013s at05fd5d07. Both owned process births absent, owned runtime
 removed and protected original size/full SHA unchanged. Together with1910-unit

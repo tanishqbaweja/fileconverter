@@ -8,6 +8,33 @@ or conversion endpoint.
 
 PDF input, PDF output, and PDF tooling are intentionally out of scope.
 
+### SVG execution diagnostics
+
+SVG jobs have a four-byte atomic cancellation flag. The UI can set it while the
+raster worker is busy; the worker checks it between inspection, initialization,
+parsing, rasterization, PNG encoding and bounded writes. A synchronous native
+call cannot be interrupted mid-call. Cancellation stops the next phase and
+uses the ordinary destination abort/cleanup path; it is not instant termination.
+
+`svgExecutionResources` records scalar metadata from the actual destination.
+The shared direct writer allocates256KiB payload+4096 error+32 control bytes,
+plus the separate4-byte cancel flag:266276 bytes and two known job workers while
+open. Confirmed close/abort reduces the known active worker count to one, but
+does not pretend the still-reachable shared buffers were garbage-collected.
+An unverified abort reports the destination worker count as null. These counters
+never replace complete Chromium-process-tree private-memory measurements.
+
+`node scripts/test-reproduced-svg-stress.mjs --execution-diagnostic` is a separate
+private-engine recovery diagnostic: real UI cancellation during rasterization,
+direct write failure, and same-page retries with independent exact8M RGBA
+validation. It keeps the early30-second stable-blank collection and the final
+strict baseline/250MiB assertions. If no stable baseline exists, primary memory
+is null and the terminal verdict fails, even if functional cases passed. It does
+not promote an engine or certify full SVG stress, effects, OOM or native OS-picker
+coverage. Ordinary OPFS/direct qualification still stops before conversion when
+the early baseline gate fails. Public Wasm bytes are unchanged; the public SVG
+module's missing explicit maximum/source-build alignment remains an open issue.
+
 Large-file jobs using browser-private temporary storage require a normal browser
 window. Chromium can keep Private/Incognito filesystem contents in RAM; those
 modes are not qualified for large-file OPFS staging. This is separate from the

@@ -29,7 +29,7 @@ test("direct owner keeps exact early baseline, normal services, full tracing, fi
   for (const anchor of ['baselineDeadline = baselineStarted + 30000', 'stableWindow(report.blankSamples)', 'report.memory.incrementalPrivateMiB <= 250',
     'screenshots: true, snapshots: !noDomSnapshotDiagnostic', 'report.stats.expected, 3', 'owned-identity-absent']) assert.ok(direct.driver.includes(anchor), anchor);
   assert.match(direct.suite, /observations: 6, unavailableObservations: 0/);
-  assert.match(runner, /\["--list-only", "--direct-handle"\]\.includes\(arg\)/);
+  assert.match(runner, /\["--list-only", "--direct-handle", "--execution-diagnostic"\]\.includes\(arg\)/);
   assert.match(runner, /if \(directHandle\) assert.equal\(run.result.destinationMode, "direct-handle-test-directory"\)/);
   assert.doesNotMatch(direct.driver, /--disable-|ignoreDefaultArgs|--headed/);
 });

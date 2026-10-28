@@ -37,6 +37,17 @@ export interface ConversionMetrics {
     observations: number;
     unavailableObservations: number;
   };
+  /** Explicit job-owned allocation bookkeeping, not OS memory or a GC observation. */
+  svgExecutionResources?: {
+    phase: "opened" | "closed" | "aborted" | "abort-unverified";
+    cancellationBytes: number;
+    destinationSharedBytes: number;
+    allocatedSharedBytes: number;
+    peakAllocatedSharedBytes: number;
+    destinationWorkerCount: number | null;
+    peakKnownWorkerCount: number;
+    sharedBytesMeaning: "allocated-for-job-not-garbage-collection-or-process-memory";
+  };
   /** Actual MPEG-2 AVCodecContext fields after native settings-match succeeds. */
   mpeg2EncoderSettings?: { width: number; height: number; frameRateNumerator: number; frameRateDenominator: number;
     bitRateBps: number; qmin: number; qmax: number };

@@ -2,6 +2,7 @@
 
 import { initWasm as initResvgWasm, Resvg, getInitializedResvgMemory } from "../lib/vendor/resvg-binding.mjs";
 import { observeSvgMemory } from "../lib/svg-memory-observation";
+import { observeSvgExecutionResources } from "../lib/svg-execution-resources";
 
 import type {
   ConversionMetrics,
@@ -1739,12 +1740,14 @@ async function runSvgToPng(
   }
   const source = await readBoundedUtf8(file, metrics, jobId, startedAt);
   const expected = parseSvgDimensions(source);
+  assertActive();
   let renderer: InstanceType<typeof Resvg> | null = null;
   let rendered: ReturnType<InstanceType<typeof Resvg>["render"]> | null = null;
   try {
     resvgInitialization ??= initResvgWasm(fetch(RESVG_WASM_URL));
     await resvgInitialization;
     observeSvgMemory(metrics, "initialized", getInitializedResvgMemory());
+    assertActive();
     emitProgress(jobId, "Rasterizing SVG", metrics, startedAt, true);
     renderer = new Resvg(source, {
       fitTo: { mode: "original" },
@@ -1754,6 +1757,7 @@ async function runSvgToPng(
       imageRendering: 0,
     });
     observeSvgMemory(metrics, "parsed", getInitializedResvgMemory());
+    assertActive();
     if (
       renderer.width !== expected.width ||
       renderer.height !== expected.height ||
@@ -1766,11 +1770,13 @@ async function runSvgToPng(
     emitProgress(jobId, "Encoding PNG", metrics, startedAt, true);
     rendered = renderer.render();
     observeSvgMemory(metrics, "rasterized", getInitializedResvgMemory());
+    assertActive();
     if (rendered.width !== expected.width || rendered.height !== expected.height) {
       throw new Error("The SVG renderer returned unexpected output dimensions.");
     }
     const output = rendered.asPng();
     observeSvgMemory(metrics, "encoded", getInitializedResvgMemory());
+    assertActive();
     if (output.byteLength < 1 || output.byteLength > MAX_IMAGE_OUTPUT_BYTES) {
       throw new Error("Encoded SVG raster exceeds the 64 MiB output safety limit.");
     }
@@ -4900,6 +4906,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         startedAt,
       );
     } else if (profileId === "svg-to-png") {
+      observeSvgExecutionResources(metrics, destination.writable, cancellationSignal?.byteLength ?? 0, "opened");
       await runSvgToPng(
         file,
         destination.writable,
@@ -5417,6 +5424,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
 
     assertActive();
     await destination.writable.close();
+    if (profileId === "svg-to-png") {
+      observeSvgExecutionResources(metrics, destination.writable, cancellationSignal?.byteLength ?? 0, "closed");
+    }
     updateElapsed(metrics, startedAt);
     emitProgress(jobId, "Complete", metrics, startedAt, true);
     activeJobId = null;
@@ -5429,10 +5439,16 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
     });
   } catch (error) {
     updateElapsed(metrics, startedAt);
+    let destinationAbortObserved = false;
     try {
       await destination?.writable.abort(error);
+      destinationAbortObserved = destination !== null;
     } catch {
       // The destination may already be closed or unavailable.
+    }
+    if (profileId === "svg-to-png" && destination) {
+      observeSvgExecutionResources(metrics, destination.writable, cancellationSignal?.byteLength ?? 0,
+        destinationAbortObserved ? "aborted" : "abort-unverified");
     }
     metrics.queuedBytes = 0;
     metrics.pendingOperations = 0;

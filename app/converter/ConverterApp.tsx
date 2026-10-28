@@ -604,7 +604,7 @@ export function ConverterApp() {
       const jobId = crypto.randomUUID();
       jobIdRef.current = jobId;
       const cancellationBuffer =
-        batch.profile.engine.startsWith("ffmpeg-") &&
+        (batch.profile.engine.startsWith("ffmpeg-") || batch.profile.id === "svg-to-png") &&
         typeof SharedArrayBuffer === "function"
           ? new SharedArrayBuffer(Int32Array.BYTES_PER_ELEMENT)
           : undefined;
