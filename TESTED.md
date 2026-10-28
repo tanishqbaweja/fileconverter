@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+2026-10-28 — Lifetime postprocessing40749099894 SUCCESS: two exact pinned
+bindgen/cap outputs and glue byte-identical, all3 native source proofs verified.
+Exact4-member artifact12842283448/1020790B SHA558fab81...03ac authenticated;
+capped2688120B SHA902fc72b...845d,24initial/1536max pages=96MiB, same compatible
+binding/public ABI names and kinds. All processing/inspection scratch removed,
+no local binary copies retained. Job34s/processing4s, NOT conversion speed.
+New immutable processed pin is eligible for private browser qualification
+because native bytes differ from rejected configurations; not public acceptance.
+Next add private liveness selector retaining all original6M/fidelity/seam/alpha/
+250MiB/time/security/recovery gates, then ONE actual browser run. Generic image
+buffer telemetry remains OPEN. Public engine/worker untouched throughout.
+`evidence/2026-10-28T18-53-58-593Z-svg-filter-processed-artifact.json`.
+Final source/processor/rejection regression10PASS/0fail/0skip/0cancel6369.2937ms,
+changed-file and generated-processor lint PASS. No browser/conversion this source
+cycle; original user files not accessed. Compact checkpoint:
+`evidence/2026-10-28-svg-liveness-source-cycle.json`.
+
 2026-10-28 — Native lifetime source40748064269 SUCCESS: two fresh same-locked
 compilations, full raw-byte equality, all3 source proofs checked. Raw3669070B
 SHA1d67f2f0...f1a3 differs from rejected context source; same release flags and

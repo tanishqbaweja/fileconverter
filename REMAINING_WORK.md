@@ -1,5 +1,17 @@
 # Remaining work audit
 
+Last-use candidate now source-reproduced AND repeatedly postprocessed/capped:
+40749099894 SUCCESS, exact4-member artifact authenticated, capped2688120B
+SHA902fc72b...845d, unchanged96MiB explicitmax and compatible binding/ABI.
+All3 source proofs and repeated full-byte comparisons passed; no local binary
+copies/owned scratch retained. Browser correctness/speed/full-tree memory not
+tested yet for these changed native bytes. Next liveness-only private selector
+must verify source-owner/raw/processed proofs before original6M unchanged-gate
+browser run; all wider original requirements remain OPEN. No public adoption.
+Final10focused PASS6369.2937ms/changed-file and generated-processor lint PASS;
+no renderer/user-file access or local binary retention this cycle. Next exact
+checkpoint in `evidence/2026-10-28-svg-liveness-source-cycle.json`.
+
 Last-use native source compilation and raw reproducibility VERIFIED40748064269:
 two fresh builds/187s step, raw3669070B SHA1d67f2f0...f1a3 fully identical, all3
 source/module proofs/same compiler+lock+release flags/cleanup verified. Exact

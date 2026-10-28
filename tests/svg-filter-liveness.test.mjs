@@ -10,6 +10,7 @@ import { patchPinnedFilterLiveness,patchOwnedFilterLiveness,filterLivenessPatch 
 import { makeLivenessBuildRecipes } from "../images/resvg-source/liveness-build-recipe.mjs";
 import { makeLivenessPostprocessRecipe } from "../images/resvg-source/liveness-postprocess-recipe.mjs";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
+import { assertSvgStripExperimentNotRejected } from "../scripts/lib/svg-strip-rejections.mjs";
 test("lifetime patch changes only ownership around all13 input arms and merge, reversing the entire region-patched source",async()=>{
   const pin=JSON.parse(await readFile("fixtures/source/resvg-filter-3495d870-preimage.json"));
   const input=patchPinnedFilterRegion(gunzipSync(Buffer.from(pin.gzipBase64,"base64"))).bytes;
@@ -72,4 +73,16 @@ test("actual lifetime source pin matches authenticated full artifact verificatio
   assert.equal(receipt.localBinaryCopiesRetained,false);assert.equal(receipt.ownedRuntimeRemoved,true);assert.deepEqual(receipt.failures,[]);
   const workflow=await readFile(".github/workflows/svg-liveness-postprocess.yml","utf8");
   assert.match(workflow,/postprocess-filter-region-source.mjs --liveness/);assert.match(workflow,/retention-days: 1/);assert.doesNotMatch(workflow,/cargo|rustup|docker|test\.mkv/i);
+});
+test("actual repeated lifetime processor artifact retains explicit96MiB/static ABI/prior binding; changed native code is eligible not accepted",async()=>{
+  const pin=JSON.parse(await readFile("images/resvg-source/filter-liveness-processed-input.json"));
+  const receipt=JSON.parse(await readFile("evidence/2026-10-28T18-53-58-593Z-svg-filter-processed-artifact.json"));
+  assert.deepEqual(pin,receipt.inputPin);assert.equal(pin.runId,40749099894);assert.equal(pin.filterLivenessPatchedSha256,filterLivenessPatch.patchedSha256);
+  assert.equal(pin.wasmSha256,"902fc72bd6f3165e28a7982a11ff3ee12e9eabb6adb37b24459e9c7ef2be845d");
+  assert.deepEqual(receipt.memory.map(row=>[row.initialPages,row.maximumPages,row.shared]),[[24,1536,false]]);
+  assert.equal(receipt.staticAbi.namesAndKindsEqual,true);assert.equal(receipt.glueMatchesPriorPrivateCandidate,true);
+  assert.equal(receipt.ownedRuntimeRemoved,true);assert.equal(receipt.localBinaryCopiesRetained,false);assert.deepEqual(receipt.failures,[]);
+  assert.equal(receipt.browserAcceptance,false);assert.equal(receipt.wholeGoalComplete,false);
+  const ledger=JSON.parse(await readFile("images/resvg-source/rejected-strip-experiments.json"));
+  assert.doesNotThrow(()=>assertSvgStripExperimentNotRejected(ledger,{wasmSha256:pin.wasmSha256,centralRows:64,fixtureSha256:ledger.fixtureSha256}));
 });
