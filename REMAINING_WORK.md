@@ -1,5 +1,17 @@
 # Remaining work audit
 
+Source-region candidate compile reproducibility now verified: run40709137070
+SUCCESS, two fresh same-nightly/locked builds fully byte-identical; source patch
+verified before/after, cleanup/duplicate removal and exact six-member artifact
+digest all passed. Raw3666973B SHA424e3a7c...f4321; not a published
+engine yet. Exact pin in filter-region-raw-input.json. No local Wasm copies kept.
+Next dedicated repeated bindgen/cap stage (same96MiB); wrapper/receipt guards
+prepared with7focused/lint/types PASS. Browser fidelity, successful full6M output,
+default-profile250MiB, recovery and speed repetitions still OPEN. Initial12minute
+build observation estimate proved conservative (actual compile step141s); use
+3minute estimate for comparable next builds, do not recompile unchanged source.
+`evidence/2026-10-28-svg-filter-source-build-terminal.json`.
+
 Local regression atbb79bc0c:1960portable PASS122.2635719s/0fail/0skip/0cancel,
 162qualification files still NOT RUN. Existing built worker/direct-workerd
 headless privacy19PASS49.900623s, owned roots/runtime/asset-service cleanup and

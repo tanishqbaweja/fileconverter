@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-28T15:01:22.982Z",
+  "runId": 40709137070,
+  "sourceHead": "bb79bc0c477c8fdde59158376590bfe8c9ace9b2",
+  "sourcePins": {
+    "scripts/inspect-svg-filter-build.mjs": "1e29d5c2f4a67e793ea3a499c637c084a8f0b1248f25c3371f30ed69f924774f",
+    "images/resvg-source/filter-region-patch.mjs": "f6c60cccb2d923d3a5ae420d58ca058c05221c5214618b3502f1f7d1fe26efb0",
+    "images/resvg-source/filter-build-recipe.mjs": "a35e7e471a59fa3cbb1cde8eb2c1071b27de1f89d662719893d0aa6f9849af21",
+    "images/resvg-source/reproduce-filter-region-source.mjs": "1e9376fae584247758992fcd12c8c2f02e2de7ec616e0259284c655cd2223860"
+  },
+  "failures": [],
+  "rendererExecuted": false,
+  "protectedOriginalAccessed": false,
+  "localBinaryCopiesRetained": false,
+  "browserAcceptance": false,
+  "wholeGoalComplete": false,
+  "artifact": {
+    "id": 12824034233,
+    "name": "svg-filter-region-source-40709137070",
+    "advertisedDigest": "sha256:22d467b1a864e244795377605c09be41234324a2b2308ec81de8457097f76fce",
+    "expiresAt": "2026-10-29T14:48:22Z",
+    "bytes": 1280939,
+    "sha256": "22d467b1a864e244795377605c09be41234324a2b2308ec81de8457097f76fce"
+  },
+  "rawWasm": {
+    "bytes": 3666973,
+    "sha256": "424e3a7cbb5de3bed809b66c49c575d6f8fb788f923fdd69a01e985412ff4321",
+    "structurallyValid": true,
+    "importCount": 21,
+    "exportCount": 799,
+    "stage": "raw-before-wasm-bindgen-processing-not-browser-engine",
+    "executed": false
+  },
+  "compileProofs": [
+    {
+      "member": "resvg-source-compile-407091370701.json",
+      "startedAt": "2026-10-28T14:46:01.618Z",
+      "finishedAt": "2026-10-28T14:47:14.282Z",
+      "filterRegionPatch": {
+        "revision": "3495d8705b302d6d266748516973606ca9657906",
+        "sourceFile": "crates/resvg/src/filter/mod.rs",
+        "originalSha256": "1770d1f0b7fc6992c723e6bcc704fd0fe5442e00472c8603593cfa1966f5468a",
+        "patchedSha256": "ff98d2cf2406b01d728d84ae214c146c628b514bc94fee015ce978dbbd416191",
+        "scope": "Intersect transformed filter allocation region with already bounded source pixmap; original primitives, parameters and subregion coordinates retained",
+        "fidelityProven": false,
+        "publicPromotion": false,
+        "originalBytes": 44067,
+        "patchedBytes": 44239,
+        "entireOriginalSourceRestoredByRemovingOnlyPatch": true,
+        "primitiveCodeOrParametersChanged": false,
+        "subregionCoordinatesChanged": false,
+        "ownedCargoSourceFile": "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-7ZMoo6/cargo/git/checkouts/resvg-4b7e4ee32ad6d954/3495d87/crates/resvg/src/filter/mod.rs",
+        "gitHead": "3495d8705b302d6d266748516973606ca9657906",
+        "onlyOwnedFreshDependencyCheckoutChanged": true
+      },
+      "compiler": "rustc 1.76.0-nightly (d86d65bbc 2023-12-10)",
+      "lockSha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc",
+      "rawSha256": "424e3a7cbb5de3bed809b66c49c575d6f8fb788f923fdd69a01e985412ff4321",
+      "ownedScratchRemoved": true
+    },
+    {
+      "member": "resvg-source-compile-407091370702.json",
+      "startedAt": "2026-10-28T14:47:14.340Z",
+      "finishedAt": "2026-10-28T14:48:22.073Z",
+      "filterRegionPatch": {
+        "revision": "3495d8705b302d6d266748516973606ca9657906",
+        "sourceFile": "crates/resvg/src/filter/mod.rs",
+        "originalSha256": "1770d1f0b7fc6992c723e6bcc704fd0fe5442e00472c8603593cfa1966f5468a",
+        "patchedSha256": "ff98d2cf2406b01d728d84ae214c146c628b514bc94fee015ce978dbbd416191",
+        "scope": "Intersect transformed filter allocation region with already bounded source pixmap; original primitives, parameters and subregion coordinates retained",
+        "fidelityProven": false,
+        "publicPromotion": false,
+        "originalBytes": 44067,
+        "patchedBytes": 44239,
+        "entireOriginalSourceRestoredByRemovingOnlyPatch": true,
+        "primitiveCodeOrParametersChanged": false,
+        "subregionCoordinatesChanged": false,
+        "ownedCargoSourceFile": "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-La80kn/cargo/git/checkouts/resvg-4b7e4ee32ad6d954/3495d87/crates/resvg/src/filter/mod.rs",
+        "gitHead": "3495d8705b302d6d266748516973606ca9657906",
+        "onlyOwnedFreshDependencyCheckoutChanged": true
+      },
+      "compiler": "rustc 1.76.0-nightly (d86d65bbc 2023-12-10)",
+      "lockSha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc",
+      "rawSha256": "424e3a7cbb5de3bed809b66c49c575d6f8fb788f923fdd69a01e985412ff4321",
+      "ownedScratchRemoved": true
+    }
+  ],
+  "inputPin": {
+    "schemaVersion": 1,
+    "runId": 40709137070,
+    "headSha": "bb79bc0c477c8fdde59158376590bfe8c9ace9b2",
+    "artifactId": 12824034233,
+    "artifactBytes": 1280939,
+    "artifactSha256": "22d467b1a864e244795377605c09be41234324a2b2308ec81de8457097f76fce",
+    "members": [
+      {
+        "name": "resvg-filter-region-owner-40709137070.json",
+        "bytes": 16549,
+        "sha256": "f865ededb232c13fa92aee6acde8c5372ebeeba0a446d46511065bf1f28c0810"
+      },
+      {
+        "name": "resvg-source-compile-407091370701.json",
+        "bytes": 32114,
+        "sha256": "757ba318635a30dc783c2412dd9d17bb5b327274415e93af8ca26eb336d4293e"
+      },
+      {
+        "name": "resvg-source-compile-407091370701.lock",
+        "bytes": 36670,
+        "sha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc"
+      },
+      {
+        "name": "resvg-source-compile-407091370701.wasm",
+        "bytes": 3666973,
+        "sha256": "424e3a7cbb5de3bed809b66c49c575d6f8fb788f923fdd69a01e985412ff4321"
+      },
+      {
+        "name": "resvg-source-compile-407091370702.json",
+        "bytes": 32675,
+        "sha256": "e07f00f688827db6f837570cb929c53ccbf4843ffd2f85e7de36bde936c1c482"
+      },
+      {
+        "name": "resvg-source-repeat-40709137070.json",
+        "bytes": 8115,
+        "sha256": "0dc9e276b0812c51932b9d8e264f7fac68845ab09360c4b7d87cbdde8aafc9dc"
+      }
+    ],
+    "summaryMember": "resvg-source-repeat-40709137070.json",
+    "wasmMember": "resvg-source-compile-407091370701.wasm",
+    "lockMember": "resvg-source-compile-407091370701.lock",
+    "compilerReceiptMembers": [
+      "resvg-source-compile-407091370701.json",
+      "resvg-source-compile-407091370702.json"
+    ],
+    "ownerReceiptMember": "resvg-filter-region-owner-40709137070.json",
+    "kind": "two-fresh-filter-region-source-builds-byte-identical-before-postprocessing"
+  },
+  "status": "verified-two-fresh-source-patched-raw-builds-not-postprocessing-or-browser-acceptance",
+  "ownedRuntimeRemoved": true,
+  "finishedAt": "2026-10-28T15:01:30.675Z"
+}

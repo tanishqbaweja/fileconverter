@@ -34,5 +34,5 @@ export function makeFilterPostprocessRecipe({root,sourceBytes}){
   return{source,proof:{originalPostprocessorSha256:filterPostprocessBaseSha256,generatedSha256:sha(source),
     exactFutureInputPin:"images/resvg-source/filter-region-raw-input.json",oldInputPinsOrPostprocessorEdited:false,
     sourceOwnerAndBothCompilePatchReceiptsRequired:true,fullProcessedAndGlueByteEqualityRequired:true,
-    maximumBytesChanged:false,publicPromotion:false,artifactAvailableOrProcessingPerformed:false}};
+    maximumBytesChanged:false,publicPromotion:false,processingPerformedByRecipeGenerator:false}};
 }

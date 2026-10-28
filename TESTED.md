@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-28 — Source-region build40709137070 SUCCESS: two fresh actual locked
+nightly builds/full raw-byte equality, exact source patch before/after verified,
+raw3666973B SHA424e3a7c...f4321 differs from unpatched source. Both compiler/repeat/
+owner scratch removed and verified duplicate binary/lock removed. Exact6-member
+artifact12824034233/1280939B SHA22d467b1...6fce matches advertised digest; local
+bounded artifact verification PASS, no Wasm copies retained, original not read.
+Build step141s (initial12minute check estimate conservative; use3minutes next).
+Pinned separate postprocess stage prepared:7focused PASS334.2246ms/lint/types PASS;
+no new source compile or browser/96MiB/250MiB/fidelity acceptance inferred.
+`evidence/2026-10-28-svg-filter-source-build-terminal.json`.
+
 2026-10-28 — Current private pipeline local regression:1960portable PASS/
 0fail/0skip/0cancel122.2635719s (585files;162qualificationNOTRUN). Final same
 existing built worker/direct-workerd headless privacy19PASS/0fail/0skip/0flaky

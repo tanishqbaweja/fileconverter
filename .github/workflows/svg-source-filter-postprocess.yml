@@ -1,0 +1,41 @@
+name: Private SVG filter source postprocess repetition
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["media-options"]
+    paths: [".github/workflows/svg-source-filter-postprocess.yml"]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  postprocess-filter-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Verify exact patched source artifact and compare pinned postprocessors
+        run: node images/resvg-source/postprocess-filter-region-source.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_PROMPT_DISABLED: "true"
+      - name: Verify public engines unchanged
+        if: always()
+        run: git diff --exit-code -- public/engines
+      - name: Retain private candidate and exact postprocessing evidence for one day
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: svg-filter-region-processed-${{ github.run_id }}
+          path: |
+            outputs/reports/resvg-filter-processed-owner-${{ github.run_id }}.json
+            outputs/reports/resvg-source-processed-repeat-${{ github.run_id }}.json
+            outputs/reports/resvg-source-processed-repeat-${{ github.run_id }}.wasm
+            outputs/reports/resvg-source-processed-repeat-${{ github.run_id }}.mjs
+          if-no-files-found: warn
+          retention-days: 1
