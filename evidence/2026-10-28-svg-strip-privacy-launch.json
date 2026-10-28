@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "899dffb5",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/run-owned-privacy-offline.mjs --direct-workerd",
+  "session": 84197,
+  "launchObservedAt": "2026-10-28T13:50:48Z",
+  "estimatedDurationSeconds": 120,
+  "notBeforeNextObservation": "2026-10-28T13:52:48Z",
+  "sameLiveHandleOnly": true,
+  "scope": "Same19 headless privacy/offline/static-host tests on exact existing built worker with direct-workerd loopback static assets; not Wrangler/Miniflare/CDN or conversion-memory acceptance",
+  "publicApplicationOrEngineChangedSinceBuild": false,
+  "publicStripRouteConnected": false
+}

@@ -8,7 +8,13 @@ services, every process and the exact 250 MiB clean-blank formula unchanged.
 The user's decision is to continue independent work, not disable the on-device
 model service or alter a profile to obtain a passing memory result.
 
-Current checkpoint:1933 portable PASS at3c5adafb; build/TypeScript/lint PASS.
+Last all-green full portable checkpoint:1933 PASS at3c5adafb; build/types/lint
+PASS. New581-file run:1947PASS/1old-inventoryFAIL, retained honestly. Exact
+38-module inventory correction and all changed behavior:15focused PASS1075.2314ms,
+lint/types PASS; no redundant full replay or public implementation change.
+Final same-built-worker/direct-workerd privacy:19PASS46.020718s at899dffb5,
+two owned roots absent and protected original unchanged. This remains a scoped
+local headless host check, not Wrangler/CDN or conversion-memory acceptance.
 Newer allocation diagnostic atce345071 confirmed a24,000,000-byte failed payload
 allocation (site3), not Arc overflow. Still0valid outputs/1failure/2notrun; the
 204.46484375MiB diagnostic increase does not qualify a failed/instrumented route.

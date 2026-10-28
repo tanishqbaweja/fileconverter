@@ -1,5 +1,18 @@
 # Remaining work audit
 
+Final current-build headless privacy at899dffb5:19PASS/0fail/0skip/0flaky
+46.020718s using existing direct-workerd same-built-worker loopback asset host.
+Scope is NOT Wrangler/Miniflare/CDN, conversion-memory, headed or OS-picker
+acceptance. Two owned roots absent/runtime removed, original full SHA unchanged,
+public SVG Wasm unchanged. Native24MB allocation avoidance/viewport pipeline is
+still OPEN; private strip encoder alone is not a measured speed/memory fix.
+`evidence/2026-10-28T13-50-38-794Z-owned-privacy-offline.json`.
+
+Inventory correction focused verification:15PASS/0fail/0skip/0cancel1075.2314ms,
+affected lint PASS and TypeScript PASS. The1947/1 full run remains failed evidence,
+not retroactively all-green. No further full rerun for this inventory-only fix.
+The public application/engine/build are unchanged; private helper remains unused.
+
 New-code581-file portable run terminal recovered durably:1947PASS/1FAIL/
 0skip/0cancel123.265s. Only failure: old37-module inventory versus new38th
 unconnected worker helper. New helper contains no module-scoped mutable job state

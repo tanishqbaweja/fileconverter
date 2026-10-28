@@ -1,0 +1,378 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-28T13:50:38.795Z",
+  "status": "passed-complete-headless-privacy-offline-hosting-specs",
+  "scope": "Complete unchanged production privacy/offline/static-host browser specs; not process-memory, stress, OS-picker or native reproduction acceptance",
+  "headedCoverage": false,
+  "conversionMemoryAcceptance": false,
+  "publicPromotion": false,
+  "sourcePins": {
+    "package.json": "c13423c98132f9f1beaf9cdea8ceadf3436f7cf94031c873cc150f743bd5978c",
+    "package-lock.json": "b2c97a14d64528607b8acd6394350ea741db853de36fcd2f4d46789c4b3964a4",
+    "playwright.config.ts": "e1ebd9e54b5baf85227edf021b1190dca2788c226ea39209c4e22915ce9d0a84",
+    "tests/browser/privacy-offline.spec.ts": "1eb56a57f9e41110718747d774dc4607875589ed354496788888b722cc9ef540",
+    "tests/browser/static-host-policy.spec.ts": "9587f432302a1bebd73bc1be19a2d5175d824fbb42ae126f0317a8a64bad29a6",
+    "scripts/run-owned-privacy-offline.mjs": "1364823a4be8a2561348c3ac4c5a217c614417b6735dff5767823c77c75d9d73",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee",
+    "lib/static-host-request-policy.ts": "e699ea329425e935279410b7dc3a5bcd0d6ea1b522962f4a128d1ec1b197e4ad",
+    "app/converter/ConverterApp.tsx": "60c91910dd662aa7bf43f5587ea1b660935bc8706ce700e7bd604f141b39b3a0",
+    "lib/capability-registry.ts": "d9f5ad4599db8b43a68acb311f16d652a9a74300c38a31f827c12590652e573b",
+    ".openai/hosting.json": "6f55e031b82f9a23029129a1a3fed515ae6d7da180e369c7b2b90ec248d06475",
+    "vite.config.ts": "ef3bc4603131a48d6f6b013671f86b73a22cc40226196cb037c4b756700d61ae",
+    "scripts/lib/direct-workerd-host.mjs": "32b7b0b0fd8621e1345f8e5a570ac3fff8ac7fbe9eb5919ad500379f031d992f"
+  },
+  "failures": [],
+  "hostingRuntime": "direct-workerd-same-built-worker-loopback-static-assets",
+  "executedHead": "899dffb56ce47d73474e4365adf0ce0588f81076",
+  "hostMemory": {
+    "acquiredAt": "2026-10-28T13:50:39.4846048Z",
+    "freePhysicalBytes": 8292921344,
+    "freeVirtualBytes": 9600196608,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "assetRouting": {
+    "binding": "ASSETS",
+    "runWorkerFirst": true
+  },
+  "directRuntime": {
+    "assetService": {
+      "root": "dist/client",
+      "headerFileSha256": "932fcc39dad54e44feef2ae3dcbe098bea8146abbeede80fe4175a1faf490ca9",
+      "requests": 75,
+      "nonReadRequests": 0,
+      "streamedFiles": 59,
+      "servedFiles": {
+        "assets/index-CwQ1gGtM.css": {
+          "bytes": 27089,
+          "sha256": "ee120d7a2c5f5c3b9ca81cc1d032518ee45a7bffecf31db496e09e7c415eeeda"
+        },
+        "assets/layout-segment-context-DAEuWe0O.js": {
+          "bytes": 288,
+          "sha256": "51b24a20897bca6aa0bd15a277b3cb8635bc344472dc6babe673dba4417f6409"
+        },
+        "assets/rolldown-runtime-XKyaHtl9.js": {
+          "bytes": 726,
+          "sha256": "548d1dbf321e7d2ae804fcc158b588706a7c52f8ca175de1490c6ccb4dbe55b7"
+        },
+        "assets/framework-DRChgpEG.js": {
+          "bytes": 189686,
+          "sha256": "8260b4ae033c0c6ebbfd4e0922caf54ffbc5cc97e73ea8cc47d825ade3dd6e73"
+        },
+        "assets/index-Cl-zFYDm.js": {
+          "bytes": 81019,
+          "sha256": "6130b7ec5f0fb5027e4cb8f5026f6827758e9d849e56b4683b8f7cfee392e7d8"
+        },
+        "assets/ConverterApp-XIUK0E_b.js": {
+          "bytes": 340001,
+          "sha256": "4061545688d5acf1ed0e8dd3728c428413f0d76fe94c7bb2cbad1db8c28ca470"
+        },
+        "icon.svg": {
+          "bytes": 235,
+          "sha256": "5a9a7538fa062c7e1f3ffe789e498a53482e47c37cef566d5773371816b1ebfe"
+        },
+        "manifest.webmanifest": {
+          "bytes": 420,
+          "sha256": "d2ba9ace3d67f7968ca8ae9e342845b219f784cc2d1af96f6fceb47caaed2205"
+        },
+        "assets/conversion.worker-Dqd1isBG.js": {
+          "bytes": 394147,
+          "sha256": "f4a85931e8f034322f739078eb5451b5d4babf784d9ff2d486021fefa486af0b"
+        },
+        "assets/jxl-source-inspection-worker-BogpV0iH.js": {
+          "bytes": 2729,
+          "sha256": "37e62eee1bb24b6646bff40e48e13a1087695b41c9823ac9b4ba0fb07f77086a"
+        },
+        "engines/jxl-inspector/within-jxl-inspector.mjs": {
+          "bytes": 18172,
+          "sha256": "794c49fe4e69d8fed9b66075e798fc5f36811e0cd9a3c2e01d8329f52701ef7a"
+        },
+        "engines/jxl-inspector/within-jxl-inspector.wasm": {
+          "bytes": 751368,
+          "sha256": "46bb51cbfc7eda9a6b0d8aa01eb7fe4e11d655350ad5d2f87b0d2cc7dc19baae"
+        },
+        "sw.js": {
+          "bytes": 1540,
+          "sha256": "72b211ba9b1c50392a0ecb4a287185780a05b155bbff524f80a1e72167249549"
+        },
+        "THIRD_PARTY_NOTICES.txt": {
+          "bytes": 4615,
+          "sha256": "75b99139c722ce4ae9fbffa0d455288a9b7e18fcfa26720af2ee0ea4436df548"
+        },
+        "engines/remux/within-vp9.mjs": {
+          "bytes": 46646,
+          "sha256": "b41c6975377602ccaeb3b21ff717199c2287989a438d45306a6a1ef756cb9c33"
+        },
+        "engines/remux/within-vp9.wasm": {
+          "bytes": 9629216,
+          "sha256": "cb5f5e15eeb08a06bd5f032dfdb72358ae1df116dd9adc3d57ad7e6f5b385fed"
+        },
+        "assets/direct-file-writer.worker-Cd6e6fgR.js": {
+          "bytes": 1765,
+          "sha256": "b4feabf1df1d40cbf39236cbf5cb6b9b9d027d83b470323a2d42d3cb2618286c"
+        },
+        "engines/archive7z/within-archive7z.mjs": {
+          "bytes": 18964,
+          "sha256": "077afcbb5e63fc965be6dd3b56119d88f5cbea3facd37252c6ec6f2a6d903718"
+        },
+        "engines/archive7z/within-archive7z.wasm": {
+          "bytes": 375821,
+          "sha256": "d114dafdb05fb6207e5ab84ce38166699707808e636be8ba3d779536f0019983"
+        },
+        "engines/bzip2/within-bzip2.mjs": {
+          "bytes": 7022,
+          "sha256": "7cf0c5151fc71c906844d3277ad7737ea3b817d5f593900321c60122c5b00c9d"
+        },
+        "engines/bzip2/within-bzip2.wasm": {
+          "bytes": 62257,
+          "sha256": "e2d82b90edf997b91a1f307b33e2ff37d2468074ad53748ae60c2b57a7d86031"
+        },
+        "engines/xz-decoder/within-xz-decoder.mjs": {
+          "bytes": 7059,
+          "sha256": "35374014c67945c3684012457c4cb78e8f6089783fd1e5afb91dd09d2ecaa95c"
+        },
+        "engines/xz-decoder/within-xz-decoder.wasm": {
+          "bytes": 69691,
+          "sha256": "76cf9c5d37dbf1796d6e5312ad35ec63fadacdeb57b877c028b9d75e5ae1e86d"
+        },
+        "engines/xz/within-xz.mjs": {
+          "bytes": 7043,
+          "sha256": "aa301be807b683715756f143d356121a5f27a758fb109db3378c97d1b5f75649"
+        },
+        "engines/xz/within-xz.wasm": {
+          "bytes": 129986,
+          "sha256": "d8e91debb4d26391503a01768ac8bcfa6c2dcbe79acf7d290e59132c58e8e1f8"
+        },
+        "engines/remux/within-remux.mjs": {
+          "bytes": 45700,
+          "sha256": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1"
+        }
+      },
+      "maxReadBufferBytes": 65536
+    },
+    "modules": [
+      {
+        "name": "index.js",
+        "sha256": "fed87305485e2c3cabbf510ac52fe3a00850b09f36a37f989f54127388d198fc"
+      },
+      {
+        "name": "__vite_rsc_assets_manifest.js",
+        "sha256": "46d3c560a25496911caf25b449dacfd0169baeff438f10b106bd1397d7010149"
+      },
+      {
+        "name": "resvg.wasm",
+        "sha256": "6332e8ff5ef63cb18592370d4f799c8551d886c90b8563e1323fdabee2371e24"
+      },
+      {
+        "name": "ssr/__vite_rsc_assets_manifest.js",
+        "sha256": "46d3c560a25496911caf25b449dacfd0169baeff438f10b106bd1397d7010149"
+      },
+      {
+        "name": "ssr/assets/conversion.worker-Dqd1isBG.js",
+        "sha256": "f4a85931e8f034322f739078eb5451b5d4babf784d9ff2d486021fefa486af0b"
+      },
+      {
+        "name": "ssr/assets/ConverterApp-CvbNaR_c.js",
+        "sha256": "a9ae4ac061579800d84b723b56e9f8d6d49d11ae25d83ab73b2369a2894bb057"
+      },
+      {
+        "name": "ssr/assets/direct-file-writer.worker-Cd6e6fgR.js",
+        "sha256": "b4feabf1df1d40cbf39236cbf5cb6b9b9d027d83b470323a2d42d3cb2618286c"
+      },
+      {
+        "name": "ssr/assets/error-boundary-C-_MPqYf.js",
+        "sha256": "398d7de2290ddcf957d92f1fe8659b03dacc3e41a28bab6d08d36e5efb33f8b4"
+      },
+      {
+        "name": "ssr/assets/jxl-source-inspection-worker-BogpV0iH.js",
+        "sha256": "37e62eee1bb24b6646bff40e48e13a1087695b41c9823ac9b4ba0fb07f77086a"
+      },
+      {
+        "name": "ssr/assets/layout-segment-context-DJ93MGz0.js",
+        "sha256": "a1e26488e3f8a463f356046d4c4f5f6d71a38213626e2a1e2f2d24246e58e093"
+      },
+      {
+        "name": "ssr/assets/staged-save.worker-CXNG5no9.js",
+        "sha256": "58de316b4e460c6157a5747a0003d3a9124e09e69bc39e87b1026ab947073312"
+      },
+      {
+        "name": "ssr/index.js",
+        "sha256": "b32dac4e11b4246c95fde56f21eb465721bf076c2bfaab24fdba746d3e5d6138"
+      }
+    ],
+    "workerdConfig": "using Workerd = import \"/workerd/workerd.capnp\";\nconst config :Workerd.Config = (\nservices = [\n(name = \"app\", worker = (modules = [(name = \"index.js\", esModule = embed \"../../dist/server/index.js\"),\n(name = \"__vite_rsc_assets_manifest.js\", esModule = embed \"../../dist/server/__vite_rsc_assets_manifest.js\"),\n(name = \"resvg.wasm\", wasm = embed \"../../dist/server/resvg.wasm\"),\n(name = \"ssr/__vite_rsc_assets_manifest.js\", esModule = embed \"../../dist/server/ssr/__vite_rsc_assets_manifest.js\"),\n(name = \"ssr/assets/conversion.worker-Dqd1isBG.js\", esModule = embed \"../../dist/server/ssr/assets/conversion.worker-Dqd1isBG.js\"),\n(name = \"ssr/assets/ConverterApp-CvbNaR_c.js\", esModule = embed \"../../dist/server/ssr/assets/ConverterApp-CvbNaR_c.js\"),\n(name = \"ssr/assets/direct-file-writer.worker-Cd6e6fgR.js\", esModule = embed \"../../dist/server/ssr/assets/direct-file-writer.worker-Cd6e6fgR.js\"),\n(name = \"ssr/assets/error-boundary-C-_MPqYf.js\", esModule = embed \"../../dist/server/ssr/assets/error-boundary-C-_MPqYf.js\"),\n(name = \"ssr/assets/jxl-source-inspection-worker-BogpV0iH.js\", esModule = embed \"../../dist/server/ssr/assets/jxl-source-inspection-worker-BogpV0iH.js\"),\n(name = \"ssr/assets/layout-segment-context-DJ93MGz0.js\", esModule = embed \"../../dist/server/ssr/assets/layout-segment-context-DJ93MGz0.js\"),\n(name = \"ssr/assets/staged-save.worker-CXNG5no9.js\", esModule = embed \"../../dist/server/ssr/assets/staged-save.worker-CXNG5no9.js\"),\n(name = \"ssr/index.js\", esModule = embed \"../../dist/server/ssr/index.js\")],\ncompatibilityDate = \"2026-05-15\", compatibilityFlags = [\"nodejs_compat\"],\nbindings = [(name = \"ASSETS\", service = \"assets\") ])),\n(name = \"assets\", external = (address = \"127.0.0.1:57593\", http = ()))\n],\nsockets = [(name = \"http\", address = \"127.0.0.1:57592\", http = (), service = \"app\")]\n);\n",
+    "configSha256": "59051fc27acae3b5e065f17b3b3d744ba915f048d689fb4003a7b888a8bf608e",
+    "incomingBodyMiddleware": false,
+    "exactBuiltWorker": true,
+    "workerdVersion": "1.20261019.1",
+    "workerdBinarySha256": "40dca3fc6876cc5cc204af7f5d92b7d52533ffa561632cf6dcac65f4bc5328ec",
+    "launchIdentity": {
+      "pid": 26392,
+      "parentPid": 34628,
+      "createdAt": "2026-10-28T13:50:47.7399410Z"
+    },
+    "cleanup": {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 26392,
+        "parentPid": 34628,
+        "createdAt": "2026-10-28T13:50:47.7399410Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-28T13:51:37.131Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 490,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    "assetServiceClosed": true,
+    "log": ""
+  },
+  "assetPreflight": [
+    {
+      "path": "/assets/index-CwQ1gGtM.css",
+      "status": 200,
+      "mime": "text/css"
+    },
+    {
+      "path": "/assets/layout-segment-context-DAEuWe0O.js",
+      "status": 200,
+      "mime": "text/javascript"
+    },
+    {
+      "path": "/assets/rolldown-runtime-XKyaHtl9.js",
+      "status": 200,
+      "mime": "text/javascript"
+    },
+    {
+      "path": "/assets/framework-DRChgpEG.js",
+      "status": 200,
+      "mime": "text/javascript"
+    },
+    {
+      "path": "/assets/index-Cl-zFYDm.js",
+      "status": 200,
+      "mime": "text/javascript"
+    },
+    {
+      "path": "/assets/ConverterApp-XIUK0E_b.js",
+      "status": 200,
+      "mime": "text/javascript"
+    }
+  ],
+  "methodPreflight": [
+    {
+      "method": "POST",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "PUT",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "PATCH",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "DELETE",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "OPTIONS",
+      "status": 405,
+      "allow": "GET, HEAD"
+    }
+  ],
+  "runnerExitCode": 0,
+  "stats": {
+    "startTime": "2026-10-28T13:50:49.270Z",
+    "duration": 46020.718,
+    "expected": 19,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "processBirths": {
+    "server": {
+      "pid": 26392,
+      "parentPid": 34628,
+      "createdAt": "2026-10-28T13:50:47.7399410Z"
+    },
+    "runner": {
+      "pid": 41264,
+      "parentPid": 34628,
+      "createdAt": "2026-10-28T13:50:48.4984640Z"
+    }
+  },
+  "processCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 26392,
+        "parentPid": 34628,
+        "createdAt": "2026-10-28T13:50:47.7399410Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-28T13:51:37.671Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 540,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 41264,
+        "parentPid": 34628,
+        "createdAt": "2026-10-28T13:50:48.4984640Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-28T13:51:38.297Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 626,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "serverLog": "",
+  "runnerLog": "\nRunning 19 tests using 1 worker\n\n(node:18600) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n\n\n[1/19] tests\\browser\\privacy-offline.spec.ts:224:1 › functional browser capability probes pass in production Chrome\n[2/19] tests\\browser\\privacy-offline.spec.ts:265:1 › a failed functional Wasm probe blocks a Wasm profile with an exact reason\n[3/19] tests\\browser\\privacy-offline.spec.ts:296:1 › conversion transmits no filename or file content\n[4/19] tests\\browser\\privacy-offline.spec.ts:367:1 › bounded source inspection reports structured data, document, and subtitle facts without source text\n[5/19] tests\\browser\\privacy-offline.spec.ts:411:1 › bounded source inspection reports archive and package structure without reading payloads or displaying entry names\n[6/19] tests\\browser\\privacy-offline.spec.ts:547:1 › bounded source inspection reports image dimensions and animation without decoding pixels\n[7/19] tests\\browser\\privacy-offline.spec.ts:638:1 › source inspection displays genuine audio and multi-stream video families from bounded local reads\n[8/19] tests\\browser\\privacy-offline.spec.ts:857:1 › installed app shell loads offline without eagerly downloading engines\n[9/19] tests\\browser\\privacy-offline.spec.ts:893:1 › cached VP9 media core performs a real conversion offline\n[10/19] tests\\browser\\privacy-offline.spec.ts:956:1 › cached direct destination writer converts while offline\n[11/19] tests\\browser\\privacy-offline.spec.ts:1013:1 › cached TAR-to-7Z engine converts offline and removes scratch\n[12/19] tests\\browser\\privacy-offline.spec.ts:1076:1 › cached compressed-TAR and ZIP pipelines convert to 7Z offline\n[13/19] tests\\browser\\privacy-offline.spec.ts:1148:1 › cached compressed TAR transcoding pipelines convert offline\n[14/19] tests\\browser\\privacy-offline.spec.ts:1242:1 › cached raw compression transcoding pipelines convert offline\n[15/19] tests\\browser\\privacy-offline.spec.ts:1302:1 › cached TAR.XZ-to-ZIP pipeline converts offline\n[16/19] tests\\browser\\privacy-offline.spec.ts:1355:1 › cached ZIP-to-TAR.XZ pipeline converts offline\n[17/19] tests\\browser\\privacy-offline.spec.ts:1406:1 › cached 7Z-to-compressed-TAR pipelines convert offline\n[18/19] tests\\browser\\privacy-offline.spec.ts:1477:1 › static codec assets preserve cross-origin isolation for pthread workers\n[19/19] tests\\browser\\static-host-policy.spec.ts:3:1 › production worker refuses submissions and server image conversion while serving the app\n  19 passed (46.0s)\n",
+  "ownedRuntimeRemoved": true,
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "finishedAt": "2026-10-28T13:51:41.208Z"
+}

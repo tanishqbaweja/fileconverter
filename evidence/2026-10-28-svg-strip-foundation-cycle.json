@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "status": "allocation-cause-confirmed-private-strip-foundation-only",
+  "sourceCommit": "899dffb56ce47d73474e4365adf0ce0588f81076",
+  "nativeDiagnosis": "evidence/2026-10-28-svg-allocation-probe-terminal.json",
+  "implementation": { "path": "workers/rgba-png-stream.ts", "bytes": 6121, "sha256": "c054bdb9c027c08f7a2cc2766399794ae053d62381799be84c75c9ae90177d83", "publiclyConnected": false, "sourceRendererChanged": false },
+  "portable": { "path": "evidence/2026-10-28-svg-strip-foundation-portable.json", "bytes": 298782, "sha256": "e785cdf8989f211e508a548e8ca8308e7191b30e6cfc5c88ce9ec5369c809e03", "passed": 1947, "failed": 1, "skipped": 0, "cancelled": 0, "durationMs": 123265.1525, "qualificationFilesNotRun": 162, "soleFailure": "Exact worker inventory still37 after new38th helper", "failureReceiptUnchanged": true },
+  "inventoryFix": { "allOriginalMutableAndMessageLoopAssertionsRetained": true, "newModuleExplicitlyPresentAndUnconnected": true, "focusedPassed": 15, "focusedFailed": 0, "focusedSkipped": 0, "focusedCancelled": 0, "focusedDurationMs": 1075.2314, "lint": "passed", "typescript": "passed", "noRedundantFullRerun": true },
+  "privacy": { "path": "evidence/2026-10-28T13-50-38-794Z-owned-privacy-offline.json", "bytes": 17658, "sha256": "afa621e230d663c243147d14482c0956874b28893eeaa4fa45bdc7cfd4e3fa3f", "passed": 19, "failed": 0, "skipped": 0, "flaky": 0, "durationMs": 46020.718, "host": "direct-workerd-same-built-worker-loopback-static-assets", "nonReadAssetRequests": 0, "ownedRootsAbsent": 2, "ownedRuntimeRemoved": true, "wranglerOrCdnAcceptance": false, "headedOrNativePickerCoverage": false, "conversionMemoryAcceptance": false },
+  "protectedOriginal": { "beforeEqualsAfter": true, "bytes": 2958573265, "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" },
+  "publicSvgWasm": { "unchanged": true, "bytes": 2478606, "sha256": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70" },
+  "productionBuild": "Existing successful getter build unchanged; new private helper has no public import. No new build/codec speed claim.",
+  "speedImprovementProven": false,
+  "genuineStripSvgConversionPerformed": false,
+  "memoryAcceptance": false,
+  "publicPromotion": false,
+  "wholeGoalComplete": false,
+  "next": "images/resvg-source/strip-pilot-plan.md; implement private viewport integration and verify full6M source/reference seam/alpha/filter fidelity and recovery under unchanged caps before timing repeatable candidates"
+}

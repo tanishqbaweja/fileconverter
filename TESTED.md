@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-28 — Final current-build privacy at899dffb5:19PASS/0fail/0skip/
+0flaky46.020718s, exact existing built worker/direct-workerd/read-only loopback
+static assets. Same unchanged privacy/offline/static-host specs; NOT Wrangler,
+hosted CDN, conversion memory, headed or native-picker acceptance. Zero non-read
+asset requests, both owned roots absent, runtime removed, original before/after
+2958573265B SHA31f36695...db34 identical. Public SVG Wasm2478606B SHA22bf6e9f...d2d70
+unchanged. `evidence/2026-10-28T13-50-38-794Z-owned-privacy-offline.json`.
+
+Inventory correction verification:15focused PASS/0fail/0skip/0cancel1075.2314ms;
+affected ESLint PASS; TypeScript PASS. Failed full portable receipt unchanged.
+No new public application/engine code or route since the successful production
+build preceding the probe; the strip helper remains unimported by that build.
+
 2026-10-28 — Durable new-code portable regression:1947PASS/1FAIL/0skip/
 0cancel123.265s (581files;162qualificationNOTRUN). Sole failure was the worker
 module inventory expecting37 after adding the38th unconnected helper. Audited
