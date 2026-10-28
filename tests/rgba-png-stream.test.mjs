@@ -54,8 +54,13 @@ test("streamed synthetic RGBA retains every channel/alpha byte, validates CRC/zl
 
 test("write rejection closes producer, emits no IEND and preserves the original error over cleanup", {timeout:10000}, async () => {
   const failure = new Error("owned synthetic write failure"); let returned = 0, writes = 0;
+  let seed=2463534242;
   const strips = { [Symbol.asyncIterator]() { return {
-    async next() { return { done: false, value: new Uint8Array(4096) }; },
+    async next() {
+      const value=new Uint8Array(4096);
+      for(let i=0;i<value.length;i++){seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;value[i]=seed&255;}
+      return { done: false, value };
+    },
     async return() { returned++; throw new Error("secondary generator cleanup"); },
   }; } };
   await assert.rejects(writeRgbaPngStrips({ width: 32, height: 4096, strips, observation: pngStripObservation(), assertActive() {},
@@ -89,4 +94,21 @@ test("header sink failure releases iterator without requesting pixels", {timeout
   const strips = { [Symbol.asyncIterator]() { return { async next() { assert.fail("Must not read"); }, async return() { returned++; return {done:true}; } }; } };
   await assert.rejects(writeRgbaPngStrips({width: 1,height: 1,strips,observation:pngStripObservation(),assertActive() {}, async write() {throw new Error("header failed");}}), /header failed/);
   assert.equal(returned, 1);
+});
+
+test("coalescing minimizes bounded IDAT writes without changing a single decoded pixel or allowing concurrent writes",{timeout:10000},async()=>{
+  const width=512,height=512,original=new Uint8Array(width*height*4);let seed=123456789;
+  for(let i=0;i<original.length;i++){seed^=seed<<13;seed^=seed>>>17;seed^=seed<<5;original[i]=seed&255;}
+  async function* strips(){for(let y=0;y<height;y+=16)yield original.slice(y*width*4,Math.min(height,y+16)*width*4);}
+  const observation=pngStripObservation(),output=[];let pending=0;
+  await writeRgbaPngStrips({width,height,strips:strips(),observation,assertActive(){},async write(bytes){
+    assert.equal(++pending,1);await new Promise(resolve=>setTimeout(resolve,1));output.push(Buffer.from(bytes));pending--;
+  }});
+  const png=Buffer.concat(output);assert.deepEqual(decode(png,width,height),Buffer.from(original));
+  const idats=output.filter(b=>b.toString("ascii",4,8)==="IDAT"),compressed=idats.reduce((n,b)=>n+b.length-12,0);
+  assert.equal(idats.length,Math.ceil(compressed/65524));
+  assert.ok(idats.slice(0,-1).every(b=>b.length===65536));
+  assert.equal(observation.idatChunks,idats.length);assert.ok(observation.codecChunks>observation.idatChunks*3);
+  assert.equal(observation.fixedCoalescerBytes,65524);assert.equal(observation.maximumPendingWrites,1);
+  assert.ok(observation.totalWriteMs>0);assert.ok(observation.maximumWriteMs>0);
 });

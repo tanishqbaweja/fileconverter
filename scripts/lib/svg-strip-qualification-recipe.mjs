@@ -33,6 +33,19 @@ export function makeSvgStripQualification(options) {
   edit('            const scalar = JSON.stringify({ repeat: stressRepeat, destinationMode: "direct-handle-test-directory",',
     '            const stripValidation = await validateSvgStripSeams({outputPath,referencePath,width:expectedWidth,height:expectedHeight,centralRows:64,execute:execFileAsync,cwd:projectRoot});\n'+
     '            const scalar = JSON.stringify({ repeat: stressRepeat, stripValidation, destinationMode: "direct-handle-test-directory",');
+  const begin=suite.indexOf("for (const [\n  profileId,\n  sourceName,"),end=suite.indexOf('\n\ntest("GIF to JPEG XL preserves every frame',begin);
+  assert.ok(begin>0&&end>begin);
+  const body=suite.slice(begin,end);
+  const pollStart='      await expect\n        .poll(',pollEnd='        .not.toBe("running");';
+  let captured=replace(body,pollStart,'      try {\n'+pollStart);
+  captured=replace(captured,pollEnd,pollEnd+'\n      } catch (primary) {\n'+
+    '        if (stressRepeat && privateSvg) try {\n'+
+    '          const state = await page.evaluate(() => window.__WITHIN_TEST__?.getState());\n'+
+    '          const scalar = JSON.stringify({repeat:stressRepeat, independentlyValidatedEffects:false, metrics:state?.metrics??null, failure:{jobState:state?.jobState??null,phase:state?.phase??null,error:state?.error??null,pollTimeoutMs:45000}});\n'+
+    '          if (Buffer.byteLength(scalar)<=65536) await writeFile(path.join(privateSvg.runtime,stressRepeat+".json"),scalar,{flag:"wx"});\n'+
+    '        } catch { /* Capture failure must not replace the original timeout. */ }\n'+
+    '        throw primary;\n      }');
+  edit(body,captured);
   edit('independentlyValidatedEffects: similarity >= minimumReferenceSsim, exactPixelEqualityClaimed: false,',
     'independentlyValidatedEffects: similarity >= minimumReferenceSsim && stripValidation.passed, exactPixelEqualityClaimed: false,');
   edit('            await writeFile(path.join(privateSvg.runtime, stressRepeat + ".json"), scalar, { flag: "wx" });',

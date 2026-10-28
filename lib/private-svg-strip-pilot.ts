@@ -8,6 +8,7 @@ export function svgStripPilotObservation() {
   return { centralRows: SVG_PILOT_ROWS, haloRows: SVG_PILOT_HALO, renderedViewports: 0,
     releasedViewports: 0, completedRows: 0, maximumViewportPixels: 0,
     maximumRgbaCopyBytes: 0, maximumExplicitPixelWorkingBytes: 0,
+    nativeRenderMs: 0, nativePixelCopyMs: 0, demultiplyMs: 0,
     png: pngStripObservation(), generalFilterSupportClaimed: false };
 }
 
@@ -55,10 +56,15 @@ export async function runPrivateSvgStripPilot(options: Options): Promise<void> {
       let image: ReturnType<Renderer["render"]> | null = null, nativeFailure = false;
       let rgba: Uint8Array;
       try {
-        image = renderer.render(); observation.renderedViewports++;
+        const renderStarted = performance.now();
+        image = renderer.render();
+        observation.nativeRenderMs += performance.now() - renderStarted;
+        observation.renderedViewports++;
         assertActive();
         if (image.width !== width || image.height !== viewportHeight) throw new Error("Unexpected private viewport raster dimensions.");
+        const copyStarted = performance.now();
         rgba = image.pixels;
+        observation.nativePixelCopyMs += performance.now() - copyStarted;
         if (rgba.length !== width * viewportHeight * 4) throw new Error("Unexpected viewport pixel byte count.");
       } catch (error) { nativeFailure = true; throw error; }
       finally {
@@ -71,7 +77,9 @@ export async function runPrivateSvgStripPilot(options: Options): Promise<void> {
         assertActive();
         const count = Math.min(rowsPerChunk, rows - row), start = (y - top + row) * rowBytes;
         const central = rgba!.slice(start, start + count * rowBytes);
+        const demultiplyStarted = performance.now();
         demultiplySvgRgba(central);
+        observation.demultiplyMs += performance.now() - demultiplyStarted;
         observation.maximumExplicitPixelWorkingBytes = Math.max(observation.maximumExplicitPixelWorkingBytes,
           rgba!.length + central.length + count * (rowBytes + 1));
         yield central;

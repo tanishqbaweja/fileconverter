@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-10-28 — Genuine corrected-context6M browser run51be033b TIMEOUT:0pass/
+1fail/2notrun, unchanged45s job poll/47.580s suite. Last trace frame shows
+Writing PNG strips/2.5MiB/45s, NOT complete or validated output. No SSIM or
+scalar result (old timeout path throws before state capture). Blank/incremental
+NULL; unadjusted peak554434560B,451valid/0missing native samples. All7 owned
+roots absent/all4 runtimes and generated/converted data removed, original SHA
+unchanged. 2264665B trace SHAd84f5121...697e retained. No quality/speed/memory
+acceptance. Follow-up combines codec outputs into one reusable65524B IDAT
+buffer, serial max65536B writes, unchanged pixels/filter/DEFLATE/Wasm limits;
+adds render/copy/demultiply/write scalar timers and timeout capture with original
+error rethrown.16focused PASS502.7696ms. Initial15pass/1fail exposed invalid
+infinite-zero mock (no full IDAT before declared-height rejection); changed it
+to incompressible procedural bytes so intended first-data-write failure is
+actually reached; preservation/cleanup assertion unchanged. Lint PASS before
+this mock-only edit, final lint/types pending. No browser speedup inferred.
+`evidence/2026-10-28-svg-context-timeout-terminal.json`.
+Final changed-file lint and TypeScript PASS; enhanced timeout/quality recipe
+guards3focused PASS680.4018ms. Previous failed mock result remains recorded.
+
 2026-10-28 — Context postprocess40742766594 SUCCESS (38s job/3s processing):
 two pinned postprocessors byte-identical, both native source-patch receipts and
 raw pin verified. Exact4-member authenticated artifact12838434791/1019223B

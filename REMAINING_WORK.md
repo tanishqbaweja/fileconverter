@@ -1,5 +1,16 @@
 # Remaining work audit
 
+Corrected-context engine first genuine6M run FAILED unchanged45s job timeout,
+not quality-accepted:0pass/1fail/2notrun, last trace2.5MiB written/45s. No
+SSIM/scalar completion data. Blank/incrementalNULL,451valid0missing samples;
+all owned roots/runtime/fixtures/output removed, original unchanged. No replay
+of unchanged engine. Next changed JS path coalesces output in fixed65524B
+buffer (same64KiB maxwrite, single pending), adds measured render/write timing
+and captures timeout state while retaining original45s error.16focused pass;
+browser performance/fidelity/default-profile memory remain OPEN, no timeout
+increase, heap change or smaller source. Generic image telemetry also OPEN.
+`evidence/2026-10-28-svg-context-timeout-terminal.json`.
+
 Context postprocessing40742766594 and authenticated exact4-member artifact
 verification COMPLETE, but private browser qualification remains OPEN.
 Processed2686281B SHA51a482a6...a5ff, same96MiB cap and compatible binding/ABI.

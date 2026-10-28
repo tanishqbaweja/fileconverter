@@ -22,6 +22,10 @@ test("private qualifier preserves every existing effects assertion while adding 
     assert.match(generated.suite,/headers\["cross-origin-embedder-policy"\]\).toBe\("require-corp"\)/);
     assert.match(generated.suite,/route.fulfill\(\{response,headers,contentType:/);
     assert.match(generated.suite,/finally \{ await response.dispose\(\); \}/);
+    assert.match(generated.suite,/pollTimeoutMs:45000/);
+    assert.match(generated.suite,/Capture failure must not replace the original timeout/);
+    assert.match(generated.suite,/throw primary;/);
+    assert.match(generated.suite,/\{ timeout: 45_000 \}/);
     assert.match(generated.driver,/Do not delay\/inflate the earliest stable blank baseline/);
     assert.match(generated.driver,/incrementalPrivateMiB <= 250/);
     assert.equal(generated.proof.publicPromotion,false);

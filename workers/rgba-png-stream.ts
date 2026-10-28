@@ -15,6 +15,11 @@ export interface PngStripObservation {
   maximumCodecChunkBytes: number;
   maximumWriteBytes: number;
   maximumPendingWrites: number;
+  codecChunks: number;
+  idatChunks: number;
+  fixedCoalescerBytes: number;
+  totalWriteMs: number;
+  maximumWriteMs: number;
 }
 
 interface Options {
@@ -29,7 +34,8 @@ interface Options {
 export function pngStripObservation(): PngStripObservation {
   return { rows: 0, outputBytes: 0, maximumRgbaBytes: 0,
     maximumFilteredBytes: 0, maximumCodecChunkBytes: 0,
-    maximumWriteBytes: 0, maximumPendingWrites: 0 };
+    maximumWriteBytes: 0, maximumPendingWrites: 0, codecChunks: 0,
+    idatChunks: 0, fixedCoalescerBytes: 0, totalWriteMs: 0, maximumWriteMs: 0 };
 }
 
 function chunk(type: string, data: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer> {
@@ -77,8 +83,14 @@ export async function writeRgbaPngStrips(options: Options): Promise<void> {
     observation.maximumPendingWrites = Math.max(observation.maximumPendingWrites, pendingWrites);
     if (pendingWrites !== 1) throw new Error("PNG output writes must be serial.");
     observation.maximumWriteBytes = Math.max(observation.maximumWriteBytes, bytes.length);
+    const started = performance.now();
     try { await write(bytes); observation.outputBytes += bytes.length; }
-    finally { pendingWrites--; }
+    finally {
+      const elapsed = performance.now() - started;
+      observation.totalWriteMs += elapsed;
+      observation.maximumWriteMs = Math.max(observation.maximumWriteMs, elapsed);
+      pendingWrites--;
+    }
   };
   let primaryFailure = false;
   try {
@@ -111,15 +123,32 @@ export async function writeRgbaPngStrips(options: Options): Promise<void> {
       },
       cancel: releaseInput,
     }, { highWaterMark: 0 });
+    // One reusable fixed buffer, never an array of codec chunks. Await each
+    // full PNG chunk before reuse, preserving the same serial writer contract.
+    const coalescer = new Uint8Array(PNG_IDAT_BYTES);
+    observation.fixedCoalescerBytes = coalescer.length;
+    let filled = 0;
+    const flushIdat = async () => {
+      if (filled === 0) return;
+      await writeOne(chunk("IDAT", coalescer.subarray(0, filled)));
+      observation.idatChunks++;
+      filled = 0;
+    };
     await source.pipeThrough(new CompressionStream("deflate")).pipeTo(new WritableStream({
       async write(bytes: Uint8Array<ArrayBuffer>) {
         assertActive();
+        observation.codecChunks++;
         observation.maximumCodecChunkBytes = Math.max(observation.maximumCodecChunkBytes, bytes.length);
         if (bytes.length > PNG_STRIP_BYTES) throw new RangeError("Unexpectedly large streaming DEFLATE output chunk.");
-        for (let offset = 0; offset < bytes.length; offset += PNG_IDAT_BYTES) {
-          await writeOne(chunk("IDAT", bytes.subarray(offset, Math.min(offset + PNG_IDAT_BYTES, bytes.length))));
+        for (let offset = 0; offset < bytes.length;) {
+          assertActive();
+          const length = Math.min(coalescer.length - filled, bytes.length - offset);
+          coalescer.set(bytes.subarray(offset, offset + length), filled);
+          filled += length; offset += length;
+          if (filled === coalescer.length) await flushIdat();
         }
       },
+      close: flushIdat,
     }, { highWaterMark: 1 }));
     await writeOne(chunk("IEND", new Uint8Array(0)));
   } catch (error) { primaryFailure = true; throw error; }
