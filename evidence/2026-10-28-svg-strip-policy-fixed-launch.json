@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "ecd23801",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/test-svg-strip-pilot.mjs",
+  "session": 34800,
+  "launchObservedAt": "2026-10-28T14:20:44Z",
+  "estimatedDurationSeconds": 240,
+  "notBeforeNextObservation": "2026-10-28T14:24:44Z",
+  "sameLiveHandleOnly": true,
+  "changeFromPrevious": "Preserve/require original static worker response COEP/COOP/CORP/CSP; replace private JS bytes and stale encoding/length/ETag/cache-control only; dispose APIResponse",
+  "privateWorkerRenderingBytesChanged": false,
+  "original6MInputAndReferenceUnchanged": true,
+  "wasmMaximumBytes": 100663296,
+  "completeTreeLimitMiB": 250,
+  "wholeImageAndEveryBoundaryMinimumSsim": 0.99,
+  "testAndJobTimeoutsChanged": false,
+  "browserServicesOrSecurityPolicyWeakened": false,
+  "publicEngineReplacement": false,
+  "memoryAcceptance": false,
+  "wholeGoalComplete": false
+}

@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "status": "held-before-test-browser-launch-during-installed-Chrome-update",
+  "sourceCommit": "ecd23801",
+  "receipts": [
+    { "path": "evidence/2026-10-28T14-20-34-490Z-svg-strip-pilot.json", "bytes": 14229, "sha256": "721c5525bbb5a664ef192c2e29cc69d9cb4d7bfe6f7122bc7f3c26a0695397e3" },
+    { "path": "evidence/2026-10-28T14-20-34-894Z-reproduced-svg-grid-stress.json", "bytes": 227583, "sha256": "b7400f06642f47c468e0a0f0c1a7d916c9fd0f703b0058c0de73bbb460639265" },
+    { "path": "evidence/2026-10-28T14-21-02-000Z-source-svg-browser.json", "bytes": 64759, "sha256": "23880856b2e730ab25bc7bb6e8b4a442aa7c79038f970d1969a28de2868088f1" }
+  ],
+  "reason": "Installed launcher temporarily absent when exact browser-pin preflight queried it; reference generation earlier used156.0.8078.48. Subsequent read-only binary snapshot confirms installed156.0.8078.49.",
+  "browserTestCasesRun": 0,
+  "browserTestStats": null,
+  "conversionResult": null,
+  "memoryResult": null,
+  "testBrowserAndObserverLaunched": false,
+  "testBrowserRuntimeCreated": false,
+  "testBrowserCleanupNotApplicable": true,
+  "existingOwnedCleanup": { "ownerRootsObservedAbsent": 2, "referenceChromeObservedAbsent": true, "referenceProfileRemoved": true, "outerFixtureAndOwnerRuntimesRemoved": true, "protectedOriginalBeforeEqualsAfter": true },
+  "referenceOnlyValidatorControl": { "boundaries": 31, "minimumSsim": 1, "alphaExact": true, "conversionAcceptance": false },
+  "freshInstalledPin": {
+    "version": "156.0.8078.49",
+    "launcher": { "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe", "bytes": 4522648, "sha256": "d6632baf469a92188e7459bb5a7b109261c5b20e6c38fea1e7a9fe2473725e79", "identity": { "dev": "1386679384", "ino": "31525197391916618", "birthtimeNs": "1793163735563235600", "mtimeNs": "1792463889698569000" } },
+    "library": { "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.49\\chrome.dll", "bytes": 308101784, "sha256": "a660bbe3f18b70668b3ca7f3912ecade76307d619fae8bb7f70335be777aeede", "identity": { "dev": "1386679384", "ino": "29836347531652684", "birthtimeNs": "1793163735575905800", "mtimeNs": "1792463898838666000" } }
+  },
+  "next": "Fresh49 reference and normal-profile browser instance with same before/after version/byte/identity guards. Security-header correction remains unverified in a live test browser; do not weaken checks or disable updater/services.",
+  "memoryAcceptance": false,
+  "speedGainProven": false,
+  "wholeGoalComplete": false
+}

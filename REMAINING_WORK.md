@@ -1,5 +1,15 @@
 # Remaining work audit
 
+Policy-corrected private worker delivery still not browser-verified: attempt at
+ecd23801 stopped before test-browser/runtime creation because Chrome launcher
+was temporarily absent. External update48->49 now independently confirmed by
+exact read-only launcher/DLL hashes/identities.0cases/NULLmemory/conversion,
+no renderer acceptance. Both owned owners/referenceChrome absent, all created
+scratch removed, original before/after SHA unchanged. Fresh49 reference/browser
+is a concrete changed prerequisite, not an unchanged failing conversion replay;
+retain original before/after pins and normal services/updater. No limit/security
+or fidelity relaxation. `evidence/2026-10-28-svg-strip-browser-update-terminal.json`.
+
 First actual private strip attempt FAILED at worker delivery, not rendering:
 0success/1timeout/2notrun; Wasm requests0 and no conversion output/metrics result.
 HAR identifies intercepted worker responses missing isolation policy and blocked

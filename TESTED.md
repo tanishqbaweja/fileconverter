@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-28 — Policy-corrected attempt ecd23801 held BEFORE test-browser
+launch: installed Chrome launcher temporarily absent during update. Earlier
+reference used156.0.8078.48; fresh read-only exact launcher/DLL snapshot confirms
+156.0.8078.49.0testcases, stats/memory/conversionNULL, not a worker/render result.
+Native31seam reference-only control SSIM1/exact alpha passed. Both owner roots
+and referenceChrome absent, all actually created scratch/profiles removed;
+test browser runtime was never created (cleanupN/A, not a leak), original full
+SHA before/after unchanged. Preserve failure. Fresh49 instance/reference plus
+all before/after binary guards next; updater/services remain enabled.
+`evidence/2026-10-28-svg-strip-browser-update-terminal.json`.
+
 2026-10-28 — First private strip browser attempt at4d9f6cb9 FAILED before
 conversion:0success/1timeout/2notrun, zero SVG Wasm requests, no job/output/quality
 result available. Retained HAR shows248 intercepted worker loads blocked with
