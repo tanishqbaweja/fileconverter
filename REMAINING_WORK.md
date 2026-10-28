@@ -1,5 +1,32 @@
 # Remaining work audit
 
+2026-10-28 — Source postprocessing-repeat prepared: verifies exact five-member
+raw-repeat artifact plus both independent compile receipts, then runs pinned
+bindgen twice in distinct scratch output dirs, applies the SAME experimental
+96 MiB cap and compares full Wasm AND JS glue. No raw source recompile or public
+engine replacement.17 focused PASS/0fail/0skip, affected lint PASS. Dedicated
+exact-workflow-file bootstrap planned once,90-second initial check/10-minutecap.
+No source/browser/release acceptance implied by this preparation.
+
+2026-10-28 — Corrected raw source-repeat40637485225/aa71d46f TERMINAL
+SUCCESS. Two independent compiler directories produced3,665,540 B raw Wasm,
+both SHA c6014e1c…ee5c09, full bytes equal. Artifact1,268,872 B digest/exactfive
+members, both compile receipts/lock, real module and remapped source strings
+independently verified. Both compiler scratch dirs and driver scratch removed;
+second duplicate raw/lock removed after equality/identity checks. Public unchanged.
+Earlier hostname failure retained. This closes only raw same-recipe repeatability,
+not bindgen/browser/public source-reproduction or memory gates. No further raw
+rebuild needed unchanged. Next pinned postprocessor+cap repeat using retained
+artifact. `evidence/2026-10-28-svg-source-repeat-terminal.json`.
+
+2026-10-28 — Fresh read-only full npm audit now reports2 high AND2 moderate
+groups (image-size/vinext and satori/@vercel/og), not a clean audit or the stale
+two-group total. No install/automaticfix; package/lock hashes preserved; own
+audit cache/temp removed. Upstream Satori advisory was updatedOct27; raw audit
+records URLs/ranges. npm's proposed vinext1.3.1 change is markedsemver-major,
+so compatibility/build/privacy qualification is still required before adoption.
+B08 security remains OPEN. `evidence/2026-10-28-security-audit-refresh.json`.
+
 2026-10-28 — Exact host-qualified nightly guard correction verified25 focused
 PASS/0fail/0skip plus affected lint PASS. An additional10 focused sampler/evidence
 checks also passed while waiting;1,863 full portable pass predates these added

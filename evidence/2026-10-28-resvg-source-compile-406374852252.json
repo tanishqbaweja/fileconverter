@@ -1,0 +1,235 @@
+{
+  "schemaVersion": 1,
+  "runId": "406374852252",
+  "startedAt": "2026-10-28T05:22:58.317Z",
+  "status": "compiled-private-raw-wasm-not-bindgen-or-browser-acceptance",
+  "scope": "Recorded nightly source-compile probe with exact retained baseline or explicitly recorded dependency repairs; before bindgen/public engine acceptance",
+  "pins": {
+    "upstream": "9ca058462ac529120c8cc84ddcd6fef644cc5406",
+    "cargoTomlSha256": "72880b4d3e64bd62caf033579a21057c97ed069002bdef67a0029b7fc6e340a9",
+    "resvg": "3495d8705b302d6d266748516973606ca9657906",
+    "woff2": "88cce4cd07da2c3f35839068c6f73672700cfc8b",
+    "wasmBindgen": "0.2.92",
+    "jsSys": "0.3.69",
+    "resolverToolchain": "1.90.0",
+    "compilerToolchain": "nightly-2023-12-11",
+    "resolverManifestSha256": "489c19f20d331765ab2835661eb546de90f6446a107a8db83045e7371e45cae2"
+  },
+  "compileContract": {
+    "nightlyManifestUrl": "https://static.rust-lang.org/dist/2023-12-11/channel-rust-nightly.toml",
+    "nightlyManifestSha256": "14e086a5312b0dc8bfbe5d91957eaec3a972261937547779327451a7c82fe6cf",
+    "rustcVersion": "rustc 1.76.0-nightly (d86d65bbc 2023-12-10)",
+    "lockSha256": "f420db19c74bdeae19de5bad2f0a7f02628f65a8dea5c4221b0b183a76f17b03",
+    "maxRawWasmBytes": 16777216,
+    "command": [
+      "run",
+      "nightly-2023-12-11",
+      "cargo",
+      "build",
+      "--locked",
+      "--release",
+      "--lib",
+      "--target",
+      "wasm32-unknown-unknown",
+      "--jobs",
+      "2"
+    ]
+  },
+  "commands": [
+    {
+      "command": "git",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "startedAt": "2026-10-28T05:22:58.321Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:22:58.328Z"
+    },
+    {
+      "command": "rustup",
+      "args": [
+        "toolchain",
+        "install",
+        "nightly-2023-12-11",
+        "--profile",
+        "minimal",
+        "--target",
+        "wasm32-unknown-unknown"
+      ],
+      "startedAt": "2026-10-28T05:22:58.459Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:23:06.144Z"
+    },
+    {
+      "command": "rustup",
+      "args": [
+        "run",
+        "nightly-2023-12-11",
+        "rustc",
+        "--version"
+      ],
+      "startedAt": "2026-10-28T05:23:06.144Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:23:06.161Z"
+    },
+    {
+      "command": "rustup",
+      "args": [
+        "run",
+        "nightly-2023-12-11",
+        "cargo",
+        "--version"
+      ],
+      "startedAt": "2026-10-28T05:23:06.161Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:23:06.172Z"
+    },
+    {
+      "command": "git",
+      "args": [
+        "clone",
+        "--filter=blob:none",
+        "--no-checkout",
+        "https://github.com/thx/resvg-js.git",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-RgFRXk/source"
+      ],
+      "startedAt": "2026-10-28T05:23:06.172Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:23:06.711Z"
+    },
+    {
+      "command": "git",
+      "args": [
+        "-C",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-RgFRXk/source",
+        "checkout",
+        "9ca058462ac529120c8cc84ddcd6fef644cc5406"
+      ],
+      "startedAt": "2026-10-28T05:23:06.711Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:23:07.540Z"
+    },
+    {
+      "command": "git",
+      "args": [
+        "-C",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-RgFRXk/source",
+        "rev-parse",
+        "HEAD"
+      ],
+      "startedAt": "2026-10-28T05:23:07.540Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:23:07.544Z"
+    },
+    {
+      "command": "rustup",
+      "args": [
+        "run",
+        "nightly-2023-12-11",
+        "cargo",
+        "build",
+        "--locked",
+        "--release",
+        "--lib",
+        "--target",
+        "wasm32-unknown-unknown",
+        "--jobs",
+        "2"
+      ],
+      "startedAt": "2026-10-28T05:23:07.553Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:24:23.070Z"
+    }
+  ],
+  "sourcePins": {
+    "images/resvg-source/compile-candidate.mjs": "74583103d51daf2eb6e6ab3f8406aeb01ceacc3521371c99f7a7ef10fa6cc3c1",
+    "images/resvg-source/compile-contract.mjs": "5e685fc75551b53d0d7455684673daf73ed8656d049a8b1188fc4e0873114122",
+    "images/resvg-source/source-pins.mjs": "c5752b7db714c2f1352423d0b639be744db203f6f4d06568ca9af6629fc60152",
+    "images/resvg-source/pathfinder-repair.mjs": "1bb3392b93dab10afaaa8d0ed20f2af421706529a5528a5ce3efcb1cbcd8c886",
+    "images/resvg-source/bytes-repair.mjs": "f1610f6b6030a236228596b7cb6bcd95134406949231e47ae7ae524c943ee69b",
+    "images/resvg-source/Cargo.candidate.lock": "f420db19c74bdeae19de5bad2f0a7f02628f65a8dea5c4221b0b183a76f17b03",
+    ".github/workflows/ci.yml": "c60872fd9264e255ba8b8a629e7e2cf4b8d798bf5c1968dc5a1880bb54bf7a47"
+  },
+  "failures": [],
+  "rawWasm": {
+    "bytes": 3665540,
+    "sha256": "c6014e1c42f7d88c92e858084e187e058451d480fa49e93487af9dc9a9ee5c09",
+    "structurallyValid": true,
+    "importCount": 21,
+    "exportCount": 799,
+    "stage": "raw-before-wasm-bindgen-processing-not-browser-engine",
+    "executed": false,
+    "retainedPath": "outputs/reports/resvg-source-compile-406374852252.wasm"
+  },
+  "sourceCompilationAttempted": true,
+  "sourceCompilationSucceeded": true,
+  "bindgenProcessingAttempted": false,
+  "browserOrMemoryAcceptance": false,
+  "exactPublishedBinaryReproduction": false,
+  "publicEngineReplacement": false,
+  "protectedOriginalAccessed": false,
+  "historicalDependencyGraphRecovered": false,
+  "originalGoalComplete": false,
+  "pathfinderRepair": {
+    "package": "pathfinder_simd",
+    "from": "0.5.6",
+    "to": "0.5.2",
+    "oldChecksum": "4500030c302e4af1d423f36f3b958d1aecb6c04184356ed5a833bf6b60435777",
+    "newChecksum": "0444332826c70dc47be74a7c6a5fc44e23a7905ad6858d4162b658320455ef93",
+    "repairedLockSha256": "09c8cea801f0433b757c5b612c96b598faf6f911ddcc665f1fad34dc000d2c6a",
+    "repairedManifestSha256": "a7f6f21e8f1d31c6717b77367ddd4a02e597aed45a2f0c6629806efe2f772a8e",
+    "reason": "Measured E0658:0.5.6 uses round_ties_even unavailable in recorded nightly;0.5.2 is the original manifest's declared version and uses round",
+    "candidateOnly": true,
+    "identicalRenderingClaim": false,
+    "historicalGraphRecovered": false
+  },
+  "bytesRepair": {
+    "package": "bytes",
+    "from": "1.12.1",
+    "to": "1.6.0",
+    "oldChecksum": "fc652a48c352aef3ea3aed32080501cf3ef6ed5da78602a020c991775b0aff04",
+    "newChecksum": "514de17de45fdb8dc022b1a7975556c53c86f9f0aa5f534b98977b171857c2c9",
+    "repairedLockSha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc",
+    "publishedVersionWitness": "bytes-1.6.0",
+    "candidateOnly": true,
+    "securityOrRenderingQualification": false,
+    "reason": "Measured WOFF2 SafeBuf/Buf try_get method collision in newer bytes; inspected official1.6.0 source lacks those new methods and matches actual published Wasm path witness"
+  },
+  "executedHead": "aa71d46f1cba7d43b54aaedde0a27eed2aa66a41",
+  "rustcVersion": "rustc 1.76.0-nightly (d86d65bbc 2023-12-10)",
+  "cargoVersion": "cargo 1.76.0-nightly (978722961 2023-12-06)",
+  "originalLock": {
+    "bytes": 36671,
+    "sha256": "f420db19c74bdeae19de5bad2f0a7f02628f65a8dea5c4221b0b183a76f17b03",
+    "packages": 158,
+    "registryPackages": 151,
+    "gitPackages": 6,
+    "initialCandidateLockNotHistoricalPublicationLock": true
+  },
+  "lock": {
+    "bytes": 36670,
+    "sha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc",
+    "packages": 158,
+    "registryPackages": 151,
+    "gitPackages": 6,
+    "initialCandidateLockNotHistoricalPublicationLock": true
+  },
+  "retainedRepairedLock": "outputs/reports/resvg-source-compile-406374852252.lock",
+  "ownedScratchRemoved": true,
+  "compilerLog": {
+    "bytes": 20949,
+    "sha256": "77bfa746b7e18fea458daf6449a96ff92133d7bf239db4ee70a5db8523cdf38b",
+    "retainedTailBytes": 20949,
+    "tail": "aa71d46f1cba7d43b54aaedde0a27eed2aa66a41\ninfo: syncing channel updates for nightly-2023-12-11-x86_64-unknown-linux-gnu\ninfo: latest update on 2023-12-11 for version 1.76.0-nightly (d86d65bbc 2023-12-10)\ninfo: downloading 4 components\n\n  nightly-2023-12-11-x86_64-unknown-linux-gnu installed - rustc 1.76.0-nightly (d86d65bbc 2023-12-10)\n\ninfo: default toolchain set to nightly-2023-12-11-x86_64-unknown-linux-gnu\nrustc 1.76.0-nightly (d86d65bbc 2023-12-10)\ncargo 1.76.0-nightly (978722961 2023-12-06)\nCloning into '/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-RgFRXk/source'...\nNote: switching to '9ca058462ac529120c8cc84ddcd6fef644cc5406'.\n\nYou are in 'detached HEAD' state. You can look around, make experimental\nchanges and commit them, and you can discard any commits you make in this\nstate without impacting any branches by switching back to a branch.\n\nIf you want to create a new branch to retain commits you create, you may\ndo so (now or later) by using -c with the switch command. Example:\n\n  git switch -c <new-branch-name>\n\nOr undo this operation with:\n\n  git switch -\n\nTurn off this advice by setting config variable advice.detachedHead to false\n\nHEAD is now at 9ca0584 2.6.2\n9ca058462ac529120c8cc84ddcd6fef644cc5406\n    Updating git repository `https://github.com/zimond/resvg`\nFrom https://github.com/zimond/resvg\n * [new ref]           3495d8705b302d6d266748516973606ca9657906 -> refs/commit/3495d8705b302d6d266748516973606ca9657906\n * [new tag]           v0.1.0     -> v0.1.0\n * [new tag]           v0.10.0    -> v0.10.0\n * [new tag]           v0.11.0    -> v0.11.0\n * [new tag]           v0.2.0     -> v0.2.0\n * [new tag]           v0.3.0     -> v0.3.0\n * [new tag]           v0.4.0     -> v0.4.0\n * [new tag]           v0.5.0     -> v0.5.0\n * [new tag]           v0.6.0     -> v0.6.0\n * [new tag]           v0.6.1     -> v0.6.1\n * [new tag]           v0.7.0     -> v0.7.0\n * [new tag]           v0.8.0     -> v0.8.0\n * [new tag]           v0.9.0     -> v0.9.0\n * [new tag]           v0.9.1     -> v0.9.1\n    Updating git repository `https://github.com/yisibl/woff2-rs`\nFrom https://github.com/yisibl/woff2-rs\n * [new ref]         88cce4cd07da2c3f35839068c6f73672700cfc8b -> refs/commit/88cce4cd07da2c3f35839068c6f73672700cfc8b\n    Updating crates.io index\n Downloading crates ...\n  Downloaded adler v1.0.2\n  Downloaded adler32 v1.2.0\n  Downloaded adler2 v2.0.1\n  Downloaded cfg-if v1.0.5\n  Downloaded env_filter v2.0.0\n  Downloaded safer-bytes v0.2.0\n  Downloaded pathfinder_geometry v0.5.1\n  Downloaded rgb v0.8.53\n  Downloaded quote v1.0.47\n  Downloaded serde_core v1.0.229\n  Downloaded roxmltree v0.20.0\n  Downloaded version_check v0.9.5\n  Downloaded rctree v0.5.0\n  Downloaded kurbo v0.9.5\n  Downloaded unicode-ident v1.0.27\n  Downloaded unicode-bidi-mirroring v0.1.0\n  Downloaded four-cc v0.3.0\n  Downloaded unicode-script v0.5.8\n  Downloaded rustc_version v0.4.1\n  Downloaded pathfinder_color v0.5.0\n  Downloaded jiff-core v0.1.1\n  Downloaded thiserror v2.0.20\n  Downloaded zmij v1.0.23\n  Downloaded slotmap v1.1.1\n  Downloaded smallvec v1.16.4\n  Downloaded svgtypes v0.11.0\n  Downloaded png v0.17.5\n  Downloaded tinyvec v1.13.3\n  Downloaded thiserror v1.0.69\n  Downloaded cc v1.10.0\n  Downloaded ttf-parser v0.19.2\n  Downloaded rustybuzz v0.7.0\n  Downloaded tiny-skia v0.10.0\n  Downloaded tap v1.0.1\n  Downloaded wyz v0.5.1\n  Downloaded wasm-bindgen-shared v0.2.92\n  Downloaded siphasher v0.3.11\n  Downloaded regex-syntax v0.8.11\n  Downloaded tiny-skia-path v0.10.0\n  Downloaded thiserror-impl v2.0.20\n  Downloaded libmimalloc-sys v0.1.49\n  Downloaded weezl v0.1.12\n  Downloaded jiff v0.2.38\n  Downloaded kurbo v0.10.4\n  Downloaded brotli v3.5.0\n  Downloaded wasm-bindgen v0.2.92\n  Downloaded jpeg-decoder v0.3.2\n  Downloaded gif v0.12.0\n  Downloaded wasm-bindgen-macro-support v0.2.92\n  Downloaded wasm-bindgen-backend v0.2.92\n  Downloaded regex-automata v0.4.18\n  Downloaded syn v3.0.9\n  Downloaded syn v2.0.119\n  Downloaded svgtypes v0.14.0\n  Downloaded strict-num v0.1.1\n  Downloaded simplecss v0.2.2\n  Downloaded bitvec v1.1.1\n  Downloaded ttf-parser v0.18.1\n  Downloaded tokio v1.53.3\n  Downloaded serde_json v1.0.154\n  Downloaded futures-util v0.3.34\n  Downloaded brotli-decompressor v2.5.1\n  Downloaded unicode-general-category v0.6.0\n  Downloaded serde v1.0.229\n  Downloaded memchr v2.8.3\n  Downloaded napi v2.16.17\n  Downloaded base64 v0.21.7\n  Downloaded serde_derive v1.0.229\n  Downloaded js-sys v0.3.69\n  Downloaded deflate v1.0.0\n  Downloaded crc32fast v1.5.3\n  Downloaded bumpalo v3.20.3\n  Downloaded semver v1.0.28\n  Downloaded proc-macro2 v1.0.107\n  Downloaded once_cell v1.21.4\n  Downloaded miniz_oxide v0.9.1\n  Downloaded futures-channel v0.3.34\n  Downloaded fontconfig-parser v0.5.8\n  Downloaded bitflags v2.13.2\n  Downloaded simd-adler32 v0.3.10\n  Downloaded roxmltree v0.18.1\n  Downloaded bytes v1.6.0\n  Downloaded xmlwriter v0.1.0\n  Downloaded xmlparser v0.13.6\n  Downloaded wasm-bindgen-macro v0.2.92\n  Downloaded utf8parse v0.2.2\n  Downloaded thiserror-impl v1.0.69\n  Downloaded pathfinder_simd v0.5.2\n  Downloaded napi-sys v2.4.0\n  Downloaded find-msvc-tools v0.1.15\n  Downloaded defmt-macros v1.1.1\n  Downloaded slab v0.4.12\n  Downloaded unicode-vo v0.1.0\n  Downloaded unicode-segmentation v1.12.0\n  Downloaded pico-args v0.5.0\n  Downloaded pathfinder_content v0.5.0\n  Downloaded napi-derive v2.16.13\n  Downloaded convert_case v0.6.0\n  Downloaded anstyle v1.0.14\n  Downloaded itoa v1.0.18\n  Downloaded futures-macro v0.3.34\n  Downloaded funty v2.0.0\n  Downloaded radium v0.7.0\n  Downloaded ctor v0.2.9\n  Downloaded float-cmp v0.9.0\n  Downloaded env_logger v0.11.11\n  Downloaded defmt-parser v1.0.0\n  Downloaded anstyle-parse v1.0.0\n  Downloaded regex v1.13.1\n  Downloaded imagesize v0.12.0\n  Downloaded arrayvec v0.7.8\n  Downloaded unicode-ccc v0.1.2\n  Downloaded arrayref v0.3.9\n  Downloaded alloc-no-stdlib v2.0.4\n  Downloaded aho-corasick v1.1.5\n  Downloaded mimalloc v0.1.52\n  Downloaded futures-io v0.3.34\n  Downloaded futures-core v0.3.34\n  Downloaded fontdb v0.14.1\n  Downloaded colorchoice v1.0.5\n  Downloaded alloc-stdlib v0.2.4\n  Downloaded unicode-bidi v0.3.18\n  Downloaded shlex v2.0.1\n  Downloaded futures-task v0.3.34\n  Downloaded flate2 v1.1.10\n  Downloaded miniz_oxide v0.5.4\n  Downloaded log v0.4.34\n  Downloaded defmt v1.1.1\n  Downloaded color_quant v1.1.0\n  Downloaded bytemuck v1.25.2\n  Downloaded futures v0.3.34\n  Downloaded paste v1.0.15\n  Downloaded napi-derive-backend v1.0.75\n  Downloaded pin-project-lite v0.2.17\n  Downloaded futures-executor v0.3.34\n  Downloaded futures-sink v0.3.34\n  Downloaded data-url v0.2.0\n  Downloaded bitflags v1.3.2\n  Downloaded arrayvec v0.5.2\n  Downloaded napi-build v2.1.3\n  Downloaded is_terminal_polyfill v1.70.2\n  Downloaded anstream v1.0.0\n  Downloaded anstyle-query v1.1.5\n   Compiling proc-macro2 v1.0.107\n   Compiling unicode-ident v1.0.27\nwarning: failed to connect to jobserver from environment variable `CARGO_MAKEFLAGS=\"-j --jobserver-fds=11,14 --jobserver-auth=11,14\"`: cannot open file descriptor 11 from the jobserver environment variable value: Bad file descriptor (os error 9)\n  |\n  = note: the build environment is likely misconfigured\n\nwarning: `unicode-ident` (lib) generated 1 warning (1 duplicate)\n   Compiling quote v1.0.47\nwarning: `proc-macro2` (build script) generated 1 warning\nwarning: `quote` (build script) generated 1 warning (1 duplicate)\n   Compiling log v0.4.34\nwarning: `log` (lib) generated 1 warning (1 duplicate)\n   Compiling arrayvec v0.7.8\nwarning: `arrayvec` (lib) generated 1 warning (1 duplicate)\nwarning: `proc-macro2` (lib) generated 1 warning (1 duplicate)\n   Compiling cfg-if v1.0.5\nwarning: `cfg-if` (lib) generated 1 warning (1 duplicate)\n   Compiling bytemuck v1.25.2\nwarning: `quote` (lib) generated 1 warning (1 duplicate)\n   Compiling syn v2.0.119\nwarning: `bytemuck` (lib) generated 1 warning (1 duplicate)\n   Compiling memchr v2.8.3\nwarning: `memchr` (lib) generated 1 warning (1 duplicate)\n   Compiling float-cmp v0.9.0\nwarning: `float-cmp` (lib) generated 1 warning (1 duplicate)\n   Compiling crc32fast v1.5.3\nwarning: `crc32fast` (build script) generated 1 warning (1 duplicate)\n   Compiling strict-num v0.1.1\nwarning: `strict-num` (lib) generated 1 warning (1 duplicate)\n   Compiling semver v1.0.28\nwarning: `semver` (lib) generated 1 warning (1 duplicate)\n   Compiling siphasher v0.3.11\nwarning: `siphasher` (lib) generated 1 warning (1 duplicate)\n   Compiling version_check v0.9.5\nwarning: `version_check` (lib) generated 1 warning (1 duplicate)\n   Compiling smallvec v1.16.4\nwarning: `smallvec` (lib) generated 1 warning (1 duplicate)\n   Compiling bitflags v1.3.2\nwarning: `bitflags` (lib) generated 1 warning (1 duplicate)\n   Compiling wasm-bindgen-shared v0.2.92\nwarning: `wasm-bindgen-shared` (build script) generated 1 warning (1 duplicate)\n   Compiling arrayref v0.3.9\nwarning: `arrayref` (lib) generated 1 warning (1 duplicate)\n   Compiling tiny-skia-path v0.10.0\nwarning: `syn` (lib) generated 1 warning (1 duplicate)\n   Compiling slotmap v1.1.1\nwarning: `slotmap` (build script) generated 1 warning (1 duplicate)\n   Compiling rustc_version v0.4.1\nwarning: `rustc_version` (lib) generated 1 warning (1 duplicate)\nwarning: `crc32fast` (lib) generated 1 warning (1 duplicate)\n   Compiling syn v3.0.9\nwarning: `tiny-skia-path` (lib) generated 1 warning (1 duplicate)\n   Compiling kurbo v0.9.5\nwarning: `kurbo` (lib) generated 1 warning (1 duplicate)\n   Compiling unicode-general-category v0.6.0\nwarning: `unicode-general-category` (build script) generated 1 warning (1 duplicate)\n   Compiling svgtypes v0.11.0\nwarning: `syn` (lib) generated 1 warning (1 duplicate)\n   Compiling pathfinder_simd v0.5.2\nwarning: `pathfinder_simd` (build script) generated 1 warning (1 duplicate)\nwarning: `wasm-bindgen-shared` (lib) generated 1 warning (1 duplicate)\n   Compiling adler2 v2.0.1\nwarning: `adler2` (lib) generated 1 warning (1 duplicate)\n   Compiling simd-adler32 v0.3.10\nwarning: `svgtypes` (lib) generated 1 warning (1 duplicate)\n   Compiling rctree v0.5.0\nwarning: `simd-adler32` (lib) generated 1 warning (1 duplicate)\n   Compiling once_cell v1.21.4\nwarning: `rctree` (lib) generated 1 warning (1 duplicate)\n   Compiling bumpalo v3.20.3\nwarning: `once_cell` (lib) generated 1 warning (1 duplicate)\nwarning: `bumpalo` (lib) generated 1 warning (1 duplicate)\n   Compiling usvg-tree v0.34.0 (https://github.com/zimond/resvg?rev=3495d8705b302d6d266748516973606ca9657906#3495d870)\nwarning: `log` (lib) generated 1 warning (1 duplicate)\n   Compiling wasm-bindgen-backend v0.2.92\nwarning: `usvg-tree` (lib) generated 1 warning (1 duplicate)\n   Compiling miniz_oxide v0.9.1\nwarning: `wasm-bindgen-backend` (lib) generated 1 warning (1 duplicate)\nwarning: `slotmap` (lib) generated 1 warning (1 duplicate)\nwarning: `miniz_oxide` (lib) generated 1 warning (1 duplicate)\n   Compiling aho-corasick v1.1.5\nwarning: `unicode-general-category` (lib) generated 1 warning (1 duplicate)\n   Compiling futures-core v0.3.34\nwarning: `futures-core` (lib) generated 1 warning (1 duplicate)\n   Compiling regex-syntax v0.8.11\nwarning: `aho-corasick` (lib) generated 1 warning (1 duplicate)\n   Compiling ttf-parser v0.18.1\nwarning: `regex-syntax` (lib) generated 1 warning (1 duplicate)\n   Compiling unicode-script v0.5.8\nwarning: `unicode-script` (lib) generated 1 warning (1 duplicate)\n   Compiling adler v1.0.2\nwarning: `adler` (lib) generated 1 warning (1 duplicate)\n   Compiling paste v1.0.15\nwarning: `paste` (build script) generated 1 warning (1 duplicate)\n   Compiling serde_core v1.0.229\nwarning: `serde_core` (build script) generated 1 warning (1 duplicate)\n   Compiling tinyvec v1.13.3\nwarning: `tinyvec` (lib) generated 1 warning (1 duplicate)\n   Compiling ttf-parser v0.19.2\nwarning: `ttf-parser` (lib) generated 1 warning (1 duplicate)\n   Compiling unicode-ccc v0.1.2\nwarning: `unicode-ccc` (lib) generated 1 warning (1 duplicate)\n   Compiling thiserror v1.0.69\nwarning: `thiserror` (build script) generated 1 warning (1 duplicate)\n   Compiling adler32 v1.2.0\nwarning: `adler32` (lib) generated 1 warning (1 duplicate)\n   Compiling futures-sink v0.3.34\nwarning: `futures-sink` (lib) generated 1 warning (1 duplicate)\n   Compiling xmlparser v0.13.6\nwarning: `xmlparser` (lib) generated 1 warning (1 duplicate)\n   Compiling radium v0.7.0\nwarning: `radium` (build script) generated 1 warning (1 duplicate)\n   Compiling unicode-bidi-mirroring v0.1.0\nwarning: `unicode-bidi-mirroring` (lib) generated 1 warning (1 duplicate)\n   Compiling alloc-no-stdlib v2.0.4\nwarning: `alloc-no-stdlib` (lib) generated 1 warning (1 duplicate)\n   Compiling alloc-stdlib v0.2.4\nwarning: `alloc-stdlib` (lib) generated 1 warning (1 duplicate)\n   Compiling fontdb v0.14.1\nwarning: `fontdb` (lib) generated 1 warning (1 duplicate)\n   Compiling rustybuzz v0.7.0\nwarning: `ttf-parser` (lib) generated 1 warning (1 duplicate)\n   Compiling roxmltree v0.18.1\nwarning: `roxmltree` (lib) generated 1 warning (1 duplicate)\n   Compiling futures-channel v0.3.34\nwarning: `futures-channel` (lib) generated 1 warning (1 duplicate)\n   Compiling deflate v1.0.0\nwarning: `deflate` (lib) generated 1 warning (1 duplicate)\n   Compiling miniz_oxide v0.5.4\nwarning: `miniz_oxide` (lib) generated 1 warning (1 duplicate)\n   Compiling regex-automata v0.4.18\nwarning: `rustybuzz` (lib) generated 1 warning (1 duplicate)\nwarning: `pathfinder_simd` (lib) generated 1 warning (1 duplicate)\n   Compiling flate2 v1.1.10\nwarning: `flate2` (lib) generated 1 warning (1 duplicate)\n   Compiling wasm-bindgen-macro-support v0.2.92\nwarning: `wasm-bindgen-macro-support` (lib) generated 1 warning (1 duplicate)\n   Compiling futures-macro v0.3.34\nwarning: `futures-macro` (lib) generated 1 warning (1 duplicate)\n   Compiling thiserror-impl v1.0.69\nwarning: `thiserror-impl` (lib) generated 1 warning (1 duplicate)\n   Compiling simplecss v0.2.2\nwarning: `simplecss` (lib) generated 1 warning (1 duplicate)\n   Compiling futures-task v0.3.34\nwarning: `futures-task` (lib) generated 1 warning (1 duplicate)\n   Compiling zmij v1.0.23\nwarning: `zmij` (build script) generated 1 warning (1 duplicate)\n   Compiling imagesize v0.12.0\nwarning: `imagesize` (lib) generated 1 warning (1 duplicate)\n   Compiling pin-project-lite v0.2.17\nwarning: `pin-project-lite` (lib) generated 1 warning (1 duplicate)\n   Compiling slab v0.4.12\nwarning: `slab` (lib) generated 1 warning (1 duplicate)\n   Compiling wasm-bindgen v0.2.92\nwarning: `wasm-bindgen` (build script) generated 1 warning (1 duplicate)\n   Compiling unicode-bidi v0.3.18\nwarning: `unicode-bidi` (lib) generated 1 warning (1 duplicate)\n   Compiling data-url v0.2.0\nwarning: `regex-automata` (lib) generated 1 warning (1 duplicate)\n   Compiling futures-io v0.3.34\nwarning: `data-url` (lib) generated 1 warning (1 duplicate)\n   Compiling utf8parse v0.2.2\nwarning: `futures-io` (lib) generated 1 warning (1 duplicate)\n   Compiling unicode-vo v0.1.0\nwarning: `utf8parse` (lib) generated 1 warning (1 duplicate)\n   Compiling tap v1.0.1\nwarning: `tap` (lib) generated 1 warning (1 duplicate)\n   Compiling wyz v0.5.1\nwarning: `unicode-vo` (lib) generated 1 warning (1 duplicate)\n   Compiling usvg-text-layout v0.34.0 (https://github.com/zimond/resvg?rev=3495d8705b302d6d266748516973606ca9657906#3495d870)\nwarning: `wyz` (lib) generated 1 warning (1 duplicate)\n   Compiling anstyle-parse v1.0.0\nwarning: `anstyle-parse` (lib) generated 1 warning (1 duplicate)\n   Compiling futures-util v0.3.34\nwarning: `usvg-text-layout` (lib) generated 1 warning (1 duplicate)\n   Compiling usvg-parser v0.34.0 (https://github.com/zimond/resvg?rev=3495d8705b302d6d266748516973606ca9657906#3495d870)\nwarning: `futures-util` (lib) generated 1 warning (1 duplicate)\nwarning: `thiserror` (lib) generated 1 warning (1 duplicate)\n   Compiling wasm-bindgen-macro v0.2.92\nwarning: `wasm-bindgen-macro` (lib) generated 1 warning (1 duplicate)\n   Compiling regex v1.13.1\nwarning: `regex` (lib) generated 1 warning (1 duplicate)\n   Compiling png v0.17.5\nwarning: `png` (lib) generated 1 warning (1 duplicate)\nwarning: `paste` (lib) generated 1 warning (1 duplicate)\nwarning: `usvg-parser` (lib) generated 1 warning (1 duplicate)\nwarning: `radium` (lib) generated 1 warning (1 duplicate)\n   Compiling brotli-decompressor v2.5.1\nwarning: `serde_core` (lib) generated 1 warning (1 duplicate)\n   Compiling base64 v0.21.7\nwarning: `base64` (lib) generated 1 warning (1 duplicate)\n   Compiling weezl v0.1.12\nwarning: `weezl` (lib) generated 1 warning (1 duplicate)\n   Compiling anstyle-query v1.1.5\nwarning: `anstyle-query` (lib) generated 1 warning (1 duplicate)\n   Compiling serde_json v1.0.154\nwarning: `serde_json` (build script) generated 1 warning (1 duplicate)\n   Compiling bytes v1.6.0\nwarning: `brotli-decompressor` (lib) generated 1 warning (1 duplicate)\n   Compiling jiff-core v0.1.1\nwarning: `bytes` (lib) generated 1 warning (1 duplicate)\n   Compiling pico-args v0.5.0\nwarning: `pico-args` (lib) generated 1 warning (1 duplicate)\n   Compiling colorchoice v1.0.5\nwarning: `colorchoice` (lib) generated 1 warning (1 duplicate)\n   Compiling napi-build v2.1.3\nwarning: `napi-build` (lib) generated 1 warning (1 duplicate)\n   Compiling serde v1.0.229\nwarning: `serde` (build script) generated 1 warning (1 duplicate)\n   Compiling xmlwriter v0.1.0\nwarning: `xmlwriter` (lib) generated 1 warning (1 duplicate)\n   Compiling color_quant v1.1.0\nwarning: `color_quant` (lib) generated 1 warning (1 duplicate)\n   Compiling funty v2.0.0\nwarning: `jiff-core` (lib) generated 1 warning (1 duplicate)\n   Compiling is_terminal_polyfill v1.70.2\nwarning: `is_terminal_polyfill` (lib) generated 1 warning (1 duplicate)\n   Compiling anstyle v1.0.14\nwarning: `anstyle` (lib) generated 1 warning (1 duplicate)\n   Compiling anstream v1.0.0\nwarning: `funty` (lib) generated 1 warning (1 duplicate)\n   Compiling bitvec v1.1.1\nwarning: `anstream` (lib) generated 1 warning (1 duplicate)\n   Compiling gif v0.12.0\nwarning: `gif` (lib) generated 1 warning (1 duplicate)\n   Compiling jiff v0.2.38\nwarning: `bitvec` (lib) generated 1 warning (1 duplicate)\n   Compiling usvg v0.34.1 (https://github.com/zimond/resvg?rev=3495d8705b302d6d266748516973606ca9657906#3495d870)\nwarning: `usvg` (lib) generated 1 warning (1 duplicate)\n   Compiling resvg-js v1.0.0 (/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-RgFRXk/source)\nwarning: `resvg-js` (build script) generated 1 warning (1 duplicate)\n   Compiling safer-bytes v0.2.0\nwarning: `safer-bytes` (lib) generated 1 warning (1 duplicate)\n   Compiling brotli v3.5.0\nwarning: `jiff` (lib) generated 1 warning (1 duplicate)\n   Compiling tiny-skia v0.10.0\nwarning: `brotli` (lib) generated 1 warning (1 duplicate)\n   Compiling env_filter v2.0.0\nwarning: `env_filter` (lib) generated 1 warning (1 duplicate)\nwarning: `wasm-bindgen` (lib) generated 1 warning (1 duplicate)\nwarning: `zmij` (lib) generated 1 warning (1 duplicate)\n   Compiling futures-executor v0.3.34\nwarning: `futures-executor` (lib) generated 1 warning (1 duplicate)\n   Compiling pathfinder_color v0.5.0\nwarning: `pathfinder_color` (lib) generated 1 warning (1 duplicate)\n   Compiling pathfinder_geometry v0.5.1\nwarning: `pathfinder_geometry` (lib) generated 1 warning (1 duplicate)\n   Compiling serde_derive v1.0.229\nwarning: `tiny-skia` (lib) generated 1 warning (1 duplicate)\n   Compiling kurbo v0.10.4\nwarning: `serde_derive` (lib) generated 1 warning (1 duplicate)\n   Compiling rgb v0.8.53\nwarning: `rgb` (lib) generated 1 warning (1 duplicate)\n   Compiling jpeg-decoder v0.3.2\nwarning: `kurbo` (lib) generated 1 warning (1 duplicate)\n   Compiling itoa v1.0.18\nwarning: `itoa` (lib) generated 1 warning (1 duplicate)\n   Compiling arrayvec v0.5.2\nwarning: `arrayvec` (lib) generated 1 warning (1 duplicate)\n   Compiling four-cc v0.3.0\nwarning: `four-cc` (lib) generated 1 warning (1 duplicate)\n   Compiling woff2 v0.3.0 (https://github.com/yisibl/woff2-rs?rev=88cce4cd07da2c3f35839068c6f73672700cfc8b#88cce4cd)\nwarning: `jpeg-decoder` (lib) generated 1 warning (1 duplicate)\n   Compiling pathfinder_content v0.5.0\nwarning: `woff2` (lib) generated 1 warning (1 duplicate)\nwarning: `pathfinder_content` (lib) generated 1 warning (1 duplicate)\n   Compiling resvg v0.34.1 (https://github.com/zimond/resvg?rev=3495d8705b302d6d266748516973606ca9657906#3495d870)\nwarning: `serde_json` (lib) generated 1 warning (1 duplicate)\nwarning: `serde` (lib) generated 1 warning (1 duplicate)\n   Compiling svgtypes v0.14.0\nwarning: `svgtypes` (lib) generated 1 warning (1 duplicate)\n   Compiling futures v0.3.34\nwarning: `futures` (lib) generated 1 warning (1 duplicate)\n   Compiling js-sys v0.3.69\nwarning: `resvg` (lib) generated 1 warning (1 duplicate)\n   Compiling env_logger v0.11.11\nwarning: `env_logger` (lib) generated 1 warning (1 duplicate)\nwarning: `js-sys` (lib) generated 1 warning (1 duplicate)\nwarning: `resvg-js` (lib) generated 1 warning (1 duplicate)\n    Finished release [optimized] target(s) in 1m 15s\n"
+  },
+  "finishedAt": "2026-10-28T05:24:23.634Z"
+}

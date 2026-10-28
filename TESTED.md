@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+2026-10-28 — Repeat postprocessor preparation:17 focused PASS/0fail/0skip,
+affected lint PASS. Two proven equal raw source outputs are reused; exact artifact/
+both compiler receipts bound, same pinned bindgen and experimental96 MiB cap
+applied twice in separate dirs, full Wasm/glue comparison required. Retainone
+candidate only, owned scratch finally. No Rust replay/public engine change.
+One exact-file bootstrap planned,90-second observation allowance/10-minutecap.
+
+2026-10-28 — Actual raw source repeat40637485225 SUCCESS: fresh tiWzyY and
+RgFRXk compile dirs, same pinned compiler/lock/argv plus path remap; full3,665,540 B
+raw Wasm bytes identical SHA c6014e1c…ee5c09. Independently checked artifact
+digest/five members, two receipts, lock and real Wasm; random prefixes absent.
+Both compiler scratch dirs/outerruntime removed; second identical binary/lock
+removed only after identity/full-byte verification. Public unchanged, oldfailed
+control kept. Not processed-engine/browser/source-release acceptance. Next stage
+reuses artifact, no unchanged rawcompile replay. See
+`evidence/2026-10-28-svg-source-repeat-terminal.json`.
+
+2026-10-28 — Read-only npm audit refresh:2high+2moderate/0critical groups,
+no dependency install/fix; package/lock unchanged and ownedcache/temp removed.
+Older two-high-only audit stays historical, not current clean security evidence.
+Reported vinext1.3.1 automaticfix is semver-major; not applied/qualified. See
+`evidence/2026-10-28-security-audit-refresh.json`.
+
 2026-10-28 — Host-qualified nightly guard correction:25 focused PASS/0fail/
 0skip, affected lint PASS. Actual failed compile receipt/source pins checked;
 short and exacthost-qualified compiler names map to the same pinned binary,

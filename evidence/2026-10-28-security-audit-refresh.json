@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "observedAt": "2026-10-28T05:22:57.447Z",
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 2,
+      "high": 2,
+      "critical": 0,
+      "total": 4
+    },
+    "dependencies": {
+      "prod": 24,
+      "dev": 630,
+      "optional": 175,
+      "peer": 48,
+      "peerOptional": 0,
+      "total": 662
+    }
+  },
+  "vulnerabilities": {
+    "@vercel/og": {
+      "name": "@vercel/og",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "satori"
+      ],
+      "effects": [
+        "vinext"
+      ],
+      "range": "0.0.12-beta.0 - 1.0.2",
+      "nodes": [
+        "node_modules/@vercel/og"
+      ],
+      "fixAvailable": {
+        "name": "vinext",
+        "version": "1.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "image-size": {
+      "name": "image-size",
+      "severity": "high",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1239765,
+          "name": "image-size",
+          "dependency": "image-size",
+          "title": "image-size: JXL and HEIF parsers allow denial of service through infinite loops",
+          "url": "https://github.com/advisories/GHSA-5p2g-fcmc-qvqq",
+          "severity": "high",
+          "cwe": [
+            "CWE-835"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=1.2.0 <=2.0.2"
+        },
+        {
+          "source": 1239766,
+          "name": "image-size",
+          "dependency": "image-size",
+          "title": "image-size: ICNS parser allows denial of service through an infinite loop",
+          "url": "https://github.com/advisories/GHSA-w3rx-r6r6-pgpr",
+          "severity": "high",
+          "cwe": [
+            "CWE-835"
+          ],
+          "cvss": {
+            "score": 7.5,
+            "vectorString": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+          },
+          "range": ">=0.6.3 <=2.0.2"
+        }
+      ],
+      "effects": [
+        "vinext"
+      ],
+      "range": "0.6.3 - 2.0.2",
+      "nodes": [
+        "node_modules/image-size"
+      ],
+      "fixAvailable": {
+        "name": "vinext",
+        "version": "1.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "satori": {
+      "name": "satori",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1243436,
+          "name": "satori",
+          "dependency": "satori",
+          "title": "Satori-generated SVG has improper escaping",
+          "url": "https://github.com/advisories/GHSA-wx4j-mvgx-mqwp",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-116"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": ">=0.0.27 <0.33.5"
+        }
+      ],
+      "effects": [
+        "@vercel/og"
+      ],
+      "range": "0.0.27 - 0.33.4",
+      "nodes": [
+        "node_modules/satori"
+      ],
+      "fixAvailable": {
+        "name": "vinext",
+        "version": "1.3.1",
+        "isSemVerMajor": true
+      }
+    },
+    "vinext": {
+      "name": "vinext",
+      "severity": "high",
+      "isDirect": true,
+      "via": [
+        "@vercel/og",
+        "image-size"
+      ],
+      "effects": [],
+      "range": "0.0.1 - 1.0.0-beta.13",
+      "nodes": [
+        "node_modules/vinext"
+      ],
+      "fixAvailable": {
+        "name": "vinext",
+        "version": "1.3.1",
+        "isSemVerMajor": true
+      }
+    }
+  },
+  "error": null,
+  "ownedAuditRuntimeRemoved": true,
+  "scope": "Read-only full npm audit refresh; dependencies unchanged, not proof of a live exploitable conversion endpoint",
+  "packageJsonSha256": "b27907298e6738ae0a732f9b81ada986761719a693c9fbdf4f48c48a4cafd3c1",
+  "packageLockSha256": "e4c28744e79accdcdfe1f507892cfeafb7325f519025b4b11c5052a08ebd8753",
+  "installedImageSize": "2.0.2",
+  "installedSatori": "0.16.0",
+  "automaticFixExecuted": false,
+  "dependenciesInstalledOrChanged": false,
+  "priorAuditHistoricalCountNotRewritten": true,
+  "securityClosure": false,
+  "originalGoalComplete": false,
+  "next": "Evaluate current compatible framework/dependency fixes under independent production build/privacy/browser gates; do not force an untested semver-major audit fix."
+}

@@ -1,0 +1,34 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import { createRequire } from "node:module";
+import path from "node:path";
+import test from "node:test";
+const read = file => readFile(new URL("../" + file, import.meta.url), "utf8");
+test("next postprocessor reuses both proven raw source receipts, never rebuilds or replaces public converter", async () => {
+  const source = await read("images/resvg-source/postprocess-repeated-source.mjs");
+  assert.match(source, /inputPin.artifactSha256/); assert.match(source, /inputPin.compilerReceiptMembers/);
+  assert.match(source, /sourceRepeat.rawBytesEqual, true/); assert.match(source, /sourceRepeat.builds.length, 2/);
+  assert.match(source, /assert.notEqual\(sourceRepeat.builds\[0\].runtimeFromReceipt/);
+  assert.match(source, /receipt.rawWasm.sha256, sha\(raw\)/); assert.match(source, /receipt.lock.sha256, sha\(members.get/);
+  assert.match(source, /compileContract.command/); assert.match(source, /sourceRecompileAttempted: false/);
+  assert.doesNotMatch(source, /cargo build|rustup.*install|compile-candidate.mjs|WebAssembly\.instantiate|test\.mkv|docker/);
+  assert.match(source, /bindgenTool.archiveSha256/); assert.match(source, /verifyBindgenVersion\(report.toolVersion\)/);
+  assert.match(source, /for \(const index of \[1, 2\]\)/);
+  assert.match(source, /assert.deepEqual\(bounded.bytes, first.wasm/); assert.match(source, /assert.deepEqual\(glue, first.glue/);
+  assert.match(source, /boundPrivateMemory\(processed, experimentalMaximumBytes\)/);
+  assert.match(source, /abi.namesAndKindsEqual, true/); assert.match(source, /browserMemoryOrFidelityAcceptance: false/);
+  assert.match(source, /windowsHide: true/); assert.match(source, /await runtime\?\.close\(\)/);
+});
+test("dedicated postprocessor bootstrap is isolated from all raw/normal CI jobs and retains no duplicate candidate", async () => {
+  const yaml = createRequire(path.resolve("node_modules/@eslint/eslintrc/package.json"))("js-yaml");
+  const row = yaml.load(await read(".github/workflows/svg-source-postprocess-repeat.yml"));
+  assert.deepEqual(row.on.push.branches, ["media-options"]);
+  assert.deepEqual(row.on.push.paths, [".github/workflows/svg-source-postprocess-repeat.yml"]);
+  assert.deepEqual(Object.keys(row.jobs), ["postprocess-repeated-source-svg"]);
+  assert.equal(row.permissions.actions, "read");
+  const job = row.jobs["postprocess-repeated-source-svg"]; assert.equal(job["timeout-minutes"], 10);
+  assert.equal(job.steps.find(step => step.run?.startsWith("node ")).run, "node images/resvg-source/postprocess-repeated-source.mjs");
+  const upload = job.steps.find(step => step.uses?.startsWith("actions/upload-artifact"));
+  assert.equal(upload.with["retention-days"], 1); assert.equal(upload.with.path.trim().split("\n").length, 3);
+  assert.doesNotMatch(upload.with.path, /work\/|cargo\/|processed-2/);
+});

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "runId": 40637485225,
+  "headSha": "aa71d46f1cba7d43b54aaedde0a27eed2aa66a41",
+  "artifactId": 12793927637,
+  "artifactBytes": 1268872,
+  "artifactSha256": "d4671ae634c1954aa5bcead6015caed3f66d9d55aee3fb2afaf73f2435dca748",
+  "members": [
+    {
+      "name": "resvg-source-compile-406374852251.json",
+      "bytes": 29637,
+      "sha256": "7da2bfee89aa79a8edbc8728c6ebfc3ddb82eca4dfb799d70f4ef162bcc5bcea"
+    },
+    {
+      "name": "resvg-source-compile-406374852251.lock",
+      "bytes": 36670,
+      "sha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc"
+    },
+    {
+      "name": "resvg-source-compile-406374852251.wasm",
+      "bytes": 3665540,
+      "sha256": "c6014e1c42f7d88c92e858084e187e058451d480fa49e93487af9dc9a9ee5c09"
+    },
+    {
+      "name": "resvg-source-compile-406374852252.json",
+      "bytes": 29637,
+      "sha256": "4665c4515d8bc31b05a0ef35d5632c2a44b63fb128d75c024fc3a6edad51e172"
+    },
+    {
+      "name": "resvg-source-repeat-40637485225.json",
+      "bytes": 4628,
+      "sha256": "28a9d66a02ef55681c2f5ba10eb515031c430a6af515116029d9e76a411901f2"
+    }
+  ],
+  "summaryMember": "resvg-source-repeat-40637485225.json",
+  "wasmMember": "resvg-source-compile-406374852251.wasm",
+  "lockMember": "resvg-source-compile-406374852251.lock",
+  "compilerReceiptMembers": [
+    "resvg-source-compile-406374852251.json",
+    "resvg-source-compile-406374852252.json"
+  ],
+  "kind": "two-fresh-remapped-raw-source-builds-byte-identical-before-postprocessing"
+}

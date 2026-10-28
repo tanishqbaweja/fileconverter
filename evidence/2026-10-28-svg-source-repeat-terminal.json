@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "runId": 40637485225,
+  "jobId": 122647691258,
+  "headSha": "aa71d46f1cba7d43b54aaedde0a27eed2aa66a41",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40637485225",
+  "conclusion": "success",
+  "observedAt": "2026-10-28T05:25:42Z",
+  "completedAt": "2026-10-28T05:24:29Z",
+  "artifactPin": "images/resvg-source/remapped-raw-input.json",
+  "repeatReceipt": "evidence/2026-10-28-resvg-source-repeat-40637485225.json",
+  "compilerReceipts": [
+    "evidence/2026-10-28-resvg-source-compile-406374852251.json",
+    "evidence/2026-10-28-resvg-source-compile-406374852252.json"
+  ],
+  "artifactDigestAndExactFiveMembersVerified": true,
+  "rawModuleValidatedWithoutInstantiation": true,
+  "rawBytes": 3665540,
+  "rawSha256": "c6014e1c42f7d88c92e858084e187e058451d480fa49e93487af9dc9a9ee5c09",
+  "freshDistinctCompilerDirectories": [
+    "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-tiWzyY",
+    "/home/runner/work/fileconverter/fileconverter/work/resvg-source-compile-RgFRXk"
+  ],
+  "rawBytesEqual": true,
+  "randomRuntimePrefixAbsent": true,
+  "normalizedPrefixPresent": "/within/resvg-build",
+  "twoOwnedCompilerScratchDirectoriesRemoved": true,
+  "ownedDriverScratchRemoved": true,
+  "redundantSecondRawAndLockRemovedAfterExactVerification": true,
+  "publicEngineDiffEmpty": true,
+  "priorFailureRelabelled": false,
+  "postprocessedReproducibilityProven": false,
+  "browserQualificationForNewBytesProven": false,
+  "originalGoalComplete": false,
+  "next": "Pinned bindgen plus same experimental memory cap, twice in independent scratch subdirectories using the two proven equal raw build outputs; compare full Wasm/glue before browser qualification."
+}

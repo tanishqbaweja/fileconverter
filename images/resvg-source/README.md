@@ -68,7 +68,7 @@ source build alone cannot close that requirement or the full process-tree gate.
 | Pinned bindgen0.2.92 and deterministic experimental96 MiB maximum | Run40525478469; private2,695,842 B candidate, SHA6e5b1920…499fd6 | Exact old publication bytes, complete-browser memory, safe OOM recovery |
 | Ten existing production-browser SVG correctness/fidelity/direct-save/error/policy checks | All ten passed; both failed and passed full-tree small-suite runs retained | Repeatable conversion optimization, maximum-size stress, cancellation/OOM and release qualification |
 | Source path audit |188 random scratch-prefix occurrences in data section11 | A successful second reproducible build |
-| Fresh remapped source-repeat workflow | Recipe prepared; run result must be checked separately | Processed/browser engine repeatability or public promotion |
+| Fresh remapped source-repeat workflow | Run40637485225: two distinct fresh builds, raw3,665,540 B SHA c6014e1c…ee5c09, full bytes equal | Processed/browser engine repeatability or public promotion |
 
 The published engine is still the original pinned npm binary, not this private
 candidate. It has no explicit Wasm maximum. The private cap changes only the
@@ -121,3 +121,27 @@ pin the new artifact/receipt hashes, run the pinned postprocessor and cap, compa
 outputs, and qualify real browser rendering/recovery/memory. Existing artifact
 input JSONs refer to the earlier immutable runs and expire; do not silently swap
 their IDs or claim an unexecuted pipeline passed.
+
+The first remapped build attempt40636660255 failed before code generation because
+the wrapper rejected Rustup's host-qualified name for the already pinned nightly.
+Its receipt remains failed. The corrected guard accepts only the short name and
+its exact x86_64 host-qualified form, with the same owned compiler path. The
+subsequent two-fresh-build run40637485225 passed and removed both compiler/runtime
+scratch directories plus the verified redundant second raw binary/lock. Its exact
+five-member artifact is pinned in `remapped-raw-input.json`; do not rerun those
+source compilations unchanged.
+
+The next standalone build stage is:
+
+```sh
+node images/resvg-source/postprocess-repeated-source.mjs
+```
+
+It verifies both retained source-build receipts and the exact raw-repeat artifact,
+then runs checksum-pinned bindgen twice in separate temporary output directories.
+Both generated glue files and bounded Wasm outputs must compare byte-for-byte.
+Only one candidate/glue/receipt is retained; scratch is removed in finally.
+Its dedicated `svg-source-postprocess-repeat.yml` workflow bootstraps only on its
+own file push, then permits manual dispatch. It does not recompile Rust or alter
+the public engine. A new result still needs real browser stress/recovery/fidelity
+and unchanged whole-process-tree acceptance before any production adoption.

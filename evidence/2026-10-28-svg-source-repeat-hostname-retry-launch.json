@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "runId": 40637485225,
+  "headSha": "aa71d46f1cba7d43b54aaedde0a27eed2aa66a41",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40637485225",
+  "createdAt": "2026-10-28T05:21:07Z",
+  "observedAt": "2026-10-28T05:21:31Z",
+  "observedStatus": "in_progress",
+  "trigger": "one manual dispatch after terminal first failure and exact host-name guard repair; no push-trigger duplicate",
+  "nextCheckNotBefore": "2026-10-28T05:25:30Z",
+  "estimatedInitialWaitSeconds": 263,
+  "jobTimeoutMinutes": 20,
+  "scope": "Two fresh same-compiler/same-lock builds with remapped source locations, no renderer/public replacement",
+  "previousFailureRetained": "evidence/2026-10-28-svg-source-repeat-first-terminal.json",
+  "noDuplicateOnObservationTimeout": true,
+  "originalGoalComplete": false
+}
