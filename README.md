@@ -496,6 +496,14 @@ it before posting the worker message, so native packet loops can stop even if
 synchronous Wasm temporarily prevents the worker from reading that message.
 The flag is included in shared-buffer diagnostics and released at job end.
 
+When an idle page enters browser-managed navigation history, the coordinator
+releases its idle worker and cached compiled code on `pagehide`. A cached-page
+return creates a fresh worker on persisted `pageshow`; active conversions,
+queued starts, and final destination copies are left intact. Back/forward caching
+remains browser-controlled. The headless navigation evidence covers both cached
+and fresh-document returns; it is not a substitute for conversion stress-memory
+acceptance. See `evidence/2026-10-28-idle-worker-cycle.json`.
+
 Browser tests exercise write rejection, quota exhaustion, revoked destination
 permission, and an uncaught worker crash after a real bounded write. Fault
 injection is accepted only by the localhost `?test=1` harness. Write, quota, and
@@ -523,10 +531,11 @@ characters, warning/error text at 2,048 characters, and the UI retains only the
 latest eight warnings. The browser suite converts Unicode-named files in one
 batch, rejects a 257-file batch before output, parses both valid outputs, checks
 the queue limits, and deletes every test-owned copy. A source audit covers all
-30 worker modules and both message loops; its static tests reject new
+37 current worker modules and both message loops; its static tests reject new
 cross-job mutable state, mutable module containers, binary response payloads,
 missing terminal cleanup, or an unreviewed worker inventory change. See
-`evidence/worker-lifecycle-bounds-2026-09-01.json`.
+`evidence/worker-lifecycle-bounds-2026-09-01.json` for the dated original inventory;
+the current tests retain the explicit updated inventory.
 
 The source-inspection panel reports the locally detected format and category,
 browser-provided MIME type, exact byte count, batch count, and modification time.

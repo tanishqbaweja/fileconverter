@@ -11376,3 +11376,12 @@ small-suite pass does not establish sole causality, repeatability, high-pixel
 stress, OOM/recovery or public promotion. Suite timing is NOT conversion-speed
 benchmark. Five owned births absent, both runtimes removed, original full SHA/
 size unchanged. `evidence/2026-10-28-svg-idle-lifecycle-qualification-terminal.json`.
+
+Final idle-worker cycle:1893 portable PASS/0fail/0skip/0cancel106.014s across567
+files (162 prerequisite-bound qualification files NOT RUN), build/tsc/affected
+lint PASS. New changed-build privacy gate at9c950d6d19PASS47.372s,0fail/skip/flaky;
+two owned births absent, runtime removed, original2,958,573,265B/full SHA unchanged.
+README updated for idle navigation cleanup and37 current worker modules. Full
+regression predates the final privacy-receipt test addition; focused verification
+follows. No public source-SVG promotion, stress/OOM/repeat or full-goal completion.
+`evidence/2026-10-28-idle-worker-cycle.json`.

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "9c950d6d",
+  "command": "scripts/run-owned-privacy-offline.mjs",
+  "sessionId": 86338,
+  "observedRunningAt": "2026-10-28T06:36:03Z",
+  "estimatedRemainingSeconds": 150,
+  "notBeforeNextObservation": "2026-10-28T06:38:33Z",
+  "singleExecutionOnly": true,
+  "expectedCases": 19,
+  "sameExistingSpecsAgainstChangedLifecycleBuild": true,
+  "headless": true,
+  "conversionMemoryAcceptance": false
+}

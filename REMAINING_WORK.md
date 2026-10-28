@@ -1,5 +1,19 @@
 # Remaining work audit
 
+Final idle-cycle evidence check:40 focused PASS707.408ms/zero fail/skip and
+affected lint PASS. No full-suite replay after the final receipt-only addition.
+All launched processes in this cycle terminal with owned cleanup verified;
+next actual source-SVG stress qualification, not another unchanged small suite.
+
+2026-10-28 — Idle-worker cycle final browser gate:19/19 unchanged privacy/
+offline/static-host cases PASS47.372s at9c950d6d,0fail/skip/flaky. Both owned
+births absent, runtime removed, protected original full SHA/size unchanged.
+README describes idle navigation cleanup and current37-worker source inventory.
+Full1893 portable PASS precedes final privacy-receipt test addition; focused
+receipt checks/lint next, no expensive unchanged suite replay. High-pixel/repeat/
+OOM stress qualification remains next; published SVG engine stays unchanged.
+`evidence/2026-10-28-idle-worker-cycle.json`.
+
 Changed idle-worker lifecycle full portable regression1893PASS/0fail/0skip/
 0cancel106.014s,567 files;162 qualification files not run. Build/TypeScript PASS,
 affected lint PASS before final receipt test addition. Current changed-build

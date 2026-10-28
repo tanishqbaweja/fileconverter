@@ -64,3 +64,19 @@ test("fixed real app retires all idle workers while away and creates fresh worke
   assert.equal(row.ownedRuntimeRemoved, true); assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent"));
   assert.deepEqual(row.protectedOriginalBefore, row.protectedOriginalAfter);
 });
+test("changed lifecycle build retains all nineteen original privacy/offline/hosting checks and owned cleanup", async () => {
+  const read = file => readFile(new URL("../" + file, import.meta.url)), sha = b => createHash("sha256").update(b).digest("hex");
+  const cycle = JSON.parse(await read("evidence/2026-10-28-idle-worker-cycle.json")), entry = cycle.privacyReceipt, bytes = await read(entry.path);
+  assert.equal(bytes.length, entry.bytes); assert.equal(sha(bytes), entry.sha256);
+  const row = JSON.parse(bytes); assert.equal(row.executedHead, entry.executedHead);
+  assert.equal(row.status, "passed-complete-headless-privacy-offline-hosting-specs");
+  assert.deepEqual([row.stats.expected, row.stats.unexpected, row.stats.skipped, row.stats.flaky], [19,0,0,0]);
+  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await read(file)), digest, file);
+  assert.equal(row.methodPreflight.length, 5); assert.ok(row.methodPreflight.every(value => value.status === 405));
+  assert.equal(row.assetPreflight.length, 6); assert.ok(row.assetPreflight.every(value => value.status === 200));
+  assert.equal(row.ownedRuntimeRemoved, true); assert.equal(row.processCleanup.length, 2);
+  assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent"));
+  assert.deepEqual(row.protectedOriginalBefore, row.protectedOriginalAfter);
+  assert.equal(row.protectedOriginalAfter.sha256, cycle.originalSha256BeforeAndAfter);
+  assert.equal(row.headedCoverage, false); assert.equal(row.conversionMemoryAcceptance, false); assert.equal(row.publicPromotion, false);
+});
