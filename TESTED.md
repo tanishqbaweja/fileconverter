@@ -11405,3 +11405,22 @@ NULL and telemetry remains OPEN. Direct/effects/clean-session/OOM/recovery remai
 Exact native Buffer equality with expected RGBA length is prepared to remove
 assertion-walk CPU overhead;7 focused PASS452.684ms and affected prior lint PASS.
 `evidence/2026-10-28-svg-grid-stress-first-terminal.json`.
+
+Fresh clean-Chrome repeat ata8bccc68:3/3 same8M source/engine/reference outputs
+PASS at exact33,177,600 RGBA bytes. Fulltree243.79296875MiB <=250,93 valid samples/
+zero unavailable. Combined six exact passes in two browser births; native bounds,
+normal services/full tracing/earliest blank unchanged. Native Buffer comparator
+4.43/5.51/4.76ms; suite9.059s vs94.879s, validation-workflow speedup ONLY. Engine
+elapsed958.7/1062.6/920.8ms, no codec speed claim. Five owned births absent, owned
+runtime/fixtures/outputs removed, original full SHA/size unchanged. Wasm telemetry
+remains unavailableNULL, raw known-placeholder0 retained; direct/effects/OOM/
+loaded-idle cleanup and release gates pending. `evidence/2026-10-28-svg-grid-clean-session-terminal.json`.
+
+Final8M cycle regression:1902PASS/0fail/0skip/0cancel121.654s,570 portable files;
+162 qualification files NOT RUN. Affected lint PASS. No production source/asset
+change in this validator/qualification cycle; prior verified app build retained,
+not replayed. Six exact OPFS conversions across two clean sessions, fulltree
+224.39/243.79MiB. Ten owned births absent, all source/reference/output/profile/
+runtime scratch removed, original full SHA/size unchanged. Next actual SVG Wasm
+observations (not legacyfalse0), then direct/effects/OOM/cleanup gates. No public
+replacement or complete SVG/release/goal claim. `evidence/2026-10-28-svg-grid-cycle.json`.

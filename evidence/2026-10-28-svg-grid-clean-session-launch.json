@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "a8bccc68",
+  "command": "scripts/test-reproduced-svg-stress.mjs",
+  "sessionId": 31862,
+  "observedRunningAt": "2026-10-28T07:06:24Z",
+  "estimatedRemainingSeconds": 90,
+  "notBeforeNextObservation": "2026-10-28T07:07:54Z",
+  "singleExecutionOnly": true,
+  "reason": "Required second clean Chrome session with three repeated identical source/engine runs and exact byte-comparison optimization",
+  "sourceAndReferenceHashesUnchanged": true,
+  "exactPixelEqualityAndExpectedLengthRequired": true,
+  "repeatsInNewCleanBrowser": 3,
+  "outputMode": "bounded production OPFS test adapter",
+  "earliestBlankFullTree250MiBNormalServicesAndFullTracingUnchanged": true,
+  "publicEngineReplacement": false,
+  "headless": true
+}

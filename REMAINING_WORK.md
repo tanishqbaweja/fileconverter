@@ -1,5 +1,27 @@
 # Remaining work audit
 
+2026-10-28 — Source-SVG8M grid cycle checkpoint:1902 portable PASS/0fail/0skip/
+0cancel121.654s across570 files;162 qualification files NOT RUN. Affected lint
+PASS. Production source/assets unchanged this cycle, so prior verified build
+remains applicable. Six exact browser conversions in two distinct sessions at
+224.39/243.79MiB, exact pixels retained, validation suite94.879s→9.059s (NOT codec
+speedup). Ten owned process births absent, all fixture/reference/output/runtime
+scratch removed, original full SHA/size unchanged. Next real SVG Wasm current/
+peak tracking: legacy zeros are unavailableNULL, not measurements. Then direct/
+effects/OOM/loaded-idle cleanup and public-source gates. No unchanged OPFS grid
+replay or public engine promotion. `evidence/2026-10-28-svg-grid-cycle.json`.
+
+2026-10-28 — Required fresh-Chrome8M OPFS repeats3/3 PASS: same source/reference/
+engine hashes, exact33,177,600 RGBA bytes per output (196588B PNG each), full-tree
+243.79297MiB <=250,93 valid/zero unavailable native samples. Combined with first
+session:6 exact passes in two distinct clean browser births, peaks224.39/243.79.
+Exact native byte comparison takes4.43–5.51ms; full test suite94.879s→9.059s,
+an observed validation-workflow improvement, NOT codec speed. Actual conversion
+metrics0.92–1.06s. Five owned births absent, all scratch/outputs removed, original
+full SHA unchanged. Wasm current/peak observations remainNULL, not legacyfalse0.
+Direct/effects/OOM/loaded-idle cleanup and actual Wasm tracking still OPEN before
+any public promotion. `evidence/2026-10-28-svg-grid-clean-session-terminal.json`.
+
 2026-10-28 — Independent validator optimization prepared for required clean-
 session stress repeats: native Buffer equality checks every RGBA byte with an
 additional exact expected-length gate, replacing only the stress branch's slow
