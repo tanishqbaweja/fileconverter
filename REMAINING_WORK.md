@@ -1,5 +1,29 @@
 # Remaining work audit
 
+2026-10-28 — Deterministic private SVG source cycle checkpoint: two genuinely
+fresh raw source builds and two pinned postprocessor/cap passes are now byte-
+identical, independently artifact/receipt verified. Final19 focused checks and
+affected lint PASS; tsc PASS. Full1,863 portable pass occurred before later
+isolated source/evidence additions, not relabelled as including them. All162
+qualification files remain separate. Newcandidate is NOT publicly installed or
+browser/stress/OOM/recovery qualified; old small-suite pass cannot close its gates.
+Source artifacts retained once for nextqualification; owned compiler/tool/raw
+scratch removed. No media/original modification or conversion-speed claim.
+Fresh security2high+2moderate remainopen. Next action exact newcandidate browser
+qualification, no unchanged compiler/postprocessor replay. Full checkpoint:
+`evidence/2026-10-28-deterministic-svg-source-cycle.json`.
+
+2026-10-28 — Repeated postprocess40638268353/97ed8ecf TERMINAL SUCCESS:
+exact source-repeat artifact/bothreceipts verified, pinnedbindgen run twice in
+distinct outputdirs, full cappedWasm AND generatedglue byte-identical. Newprivate
+Wasm2,684,770 B SHA4068ccdc…afab9d;24 initial/1536 maximum pages (experimental
+96 MiB). Static import/export names+kinds matchpublic, gluehashequals earlier
+privatecandidate. Artifact1,011,079 B digest/exact3members independentlychecked;
+scratchremoved, onlyonecandidate/glueretained, publicunchanged. No Rustrebuild
+duringpostprocess. Do not rerun unchanged. This establishes private raw+processed
+repeatability, NOT public sourceclosure or newbytes' fidelity/stress/OOM/recovery/
+whole-tree memory qualification. See `evidence/2026-10-28-svg-postprocess-repeat-terminal.json`.
+
 2026-10-28 — Source postprocessing-repeat prepared: verifies exact five-member
 raw-repeat artifact plus both independent compile receipts, then runs pinned
 bindgen twice in distinct scratch output dirs, applies the SAME experimental

@@ -3,7 +3,30 @@ import { readFile } from "node:fs/promises";
 import { createRequire } from "node:module";
 import path from "node:path";
 import test from "node:test";
+import { sha } from "../images/resvg-source/source-pins.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url), "utf8");
+test("actual two-pass postprocessor proof keeps full Wasm/glue equality and explicit limits separate from browser qualification", async () => {
+  const proof = JSON.parse(await read("evidence/2026-10-28-svg-postprocess-repeat-terminal.json")), pins = JSON.parse(await read(proof.artifactPin));
+  const bytes = await readFile(new URL("../" + proof.rawReceipt, import.meta.url));
+  assert.equal(bytes.length, pins.receiptBytes); assert.equal(sha(bytes), pins.receiptSha256);
+  const row = JSON.parse(bytes); assert.equal(row.executedHead, pins.headSha); assert.deepEqual(row.failures, []);
+  assert.equal(row.twoSourceBuildReceiptsAndRawEqualityVerified, true); assert.equal(row.processedWasmAndGlueByteIdentical, true);
+  assert.equal(row.variants.length, 2); assert.equal(row.variants[0].boundedSha256, row.variants[1].boundedSha256);
+  assert.equal(row.variants[0].glueSha256, row.variants[1].glueSha256);
+  for (const variant of row.variants) {
+    assert.equal(variant.boundedSha256, pins.wasmSha256); assert.equal(variant.glueSha256, pins.glueSha256);
+    assert.equal(variant.memory.length, 1); assert.equal(variant.memory[0].initialPages, 24);
+    assert.equal(variant.memory[0].maximumPages, 1536); assert.equal(variant.memory[0].maximumExplicit, true);
+    assert.equal(variant.memoryBoundProof.onlyMemorySectionChanged, true);
+    assert.equal(variant.memoryBoundProof.allCodeAndDataBytesPreserved, true);
+    assert.equal(variant.staticAbi.namesAndKindsEqual, true);
+  }
+  assert.equal(row.ownedScratchRemoved, true); assert.equal(row.publicEngineUnchanged, true);
+  assert.equal(row.sourceRecompileAttempted, false); assert.equal(row.rendererExecuted, false);
+  assert.equal(row.browserMemoryOrFidelityAcceptance, false); assert.equal(row.publicEngineReplacement, false);
+  assert.equal(proof.browserQualificationForNewBytes, false); assert.equal(proof.originalGoalComplete, false);
+  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await readFile(new URL("../" + file, import.meta.url))), digest, file);
+});
 test("next postprocessor reuses both proven raw source receipts, never rebuilds or replaces public converter", async () => {
   const source = await read("images/resvg-source/postprocess-repeated-source.mjs");
   assert.match(source, /inputPin.artifactSha256/); assert.match(source, /inputPin.compilerReceiptMembers/);

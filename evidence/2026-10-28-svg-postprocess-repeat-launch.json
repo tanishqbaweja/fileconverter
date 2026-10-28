@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "runId": 40638268353,
+  "headSha": "97ed8ecf9eff1d5109cbaa09e15f1e63a70195cb",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40638268353",
+  "createdAt": "2026-10-28T05:29:12Z",
+  "observedAt": "2026-10-28T05:29:23Z",
+  "observedStatus": "in_progress",
+  "trigger": "exact new postprocessor-workflow file push only; no duplicate manual dispatch",
+  "nextCheckNotBefore": "2026-10-28T05:31:00Z",
+  "estimatedInitialAllowanceSeconds": 108,
+  "jobTimeoutMinutes": 10,
+  "sourceRecompileAttempted": false,
+  "rawRepeatArtifact": "images/resvg-source/remapped-raw-input.json",
+  "scope": "Twice-run bindgen/cap and full private Wasm/glue comparison, not rendering or release acceptance",
+  "noDuplicateOnObservationTimeout": true,
+  "originalGoalComplete": false
+}

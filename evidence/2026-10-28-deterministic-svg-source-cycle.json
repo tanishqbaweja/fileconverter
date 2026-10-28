@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "scope": "Historical evidence regression recovery, verified diagnostic repair, and deterministic private SVG source pipeline",
+  "originalGoalComplete": false,
+  "publicEngineReplacement": false,
+  "portableRegression": {
+    "passed": 1863,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "selectedFiles": 560,
+    "durationMs": 82080.9731,
+    "qualificationFilesNotRun": 162,
+    "executedBeforeLaterIsolatedSourceStageAndEvidenceAdditions": true
+  },
+  "finalFocusedTests": {
+    "passed": 19,
+    "failed": 0,
+    "skipped": 0
+  },
+  "affectedLint": "passed",
+  "typescriptNoEmit": "passed",
+  "historicalRegressionFailuresPreserved": [
+    "evidence/2026-10-28-cdp-regression-first-result.json",
+    "evidence/2026-10-28-cdp-regression-second-result.json"
+  ],
+  "diagnosticBrowserVerification": "evidence/2026-10-28-cdp-session-recovery-browser-terminal.json",
+  "sourcePathAudit": "evidence/2026-10-27-svg-source-path-audit.json",
+  "rawSourceRepeat": {
+    "proof": "evidence/2026-10-28-svg-source-repeat-terminal.json",
+    "freshBuilds": 2,
+    "rawBytes": 3665540,
+    "sha256": "c6014e1c42f7d88c92e858084e187e058451d480fa49e93487af9dc9a9ee5c09",
+    "fullBytesEqual": true
+  },
+  "postprocessorRepeat": {
+    "proof": "evidence/2026-10-28-svg-postprocess-repeat-terminal.json",
+    "passes": 2,
+    "boundedWasmBytes": 2684770,
+    "sha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d",
+    "glueSha256": "91a086534d643127d38a12726f8c65adfb398877be6bb4d8212d358b1b1fd923",
+    "fullWasmAndGlueBytesEqual": true,
+    "experimentalWasmMaximumMiB": 96
+  },
+  "newEngineBrowserQualification": false,
+  "oldSmallSuiteMemoryPassReusedForNewBytes": false,
+  "allOwnedCompilerAndPostprocessorScratchRemoved": true,
+  "oneUsefulCandidateRetainedPerStage": true,
+  "noRawEngineBinaryOrToolArchiveDownloadedPermanentlyToLocalDrive": true,
+  "noUserFileConversionOrOriginalModificationInThisSourceBuildCycle": true,
+  "conversionSpeedImprovementClaimed": false,
+  "latestAudit": "evidence/2026-10-28-security-audit-refresh.json",
+  "securityGroups": {
+    "high": 2,
+    "moderate": 2
+  },
+  "dependencyVersionsChanged": false,
+  "next": "Pin this new artifact into the private production-browser qualification path; test exact new bytes, maximum-size repeated SVG fidelity, cancellation/OOM/write-failure recovery, privacy and unchanged full-process-tree250MiB target. Public source-completeness and whole-goal completion remain unproven."
+}

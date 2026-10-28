@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+2026-10-28 — Final checkpoint: raw two-fresh-build and two-pass bindgen/cap
+repeatability now verified, oneusefulartifact retained perstage, scratch removed.
+19 final scoped PASS/0fail/0skip and affectedlint PASS; tsc PASS. Earlier1,863
+portable PASS predates subsequentisolated additions;162 qualificationfiles not
+run. No newenginebrowser/public/source-release/whole-goal acceptance or conversion-
+speed claim. Publicengine/productionpipeline/original unchanged in buildcycle.
+Next: exact newcandidate browserfidelity/max-size stress/recovery/250MiB gates,
+no unchangedsource/postprocess rerun. Security2high+2moderate stillopen. See
+`evidence/2026-10-28-deterministic-svg-source-cycle.json`.
+
+2026-10-28 — Actual repeated postprocessor40638268353 SUCCESS: both full
+capped Wasm/glue outputs comparebyte-exact after source-repeat receiptverification.
+New2,684,770 B SHA4068ccdc…afab9d;24initial/1536maxpages, experimental96MiB,
+samegeneratedgluehashas priorcandidate. Exact1,011,079 B artifact/3members,
+receipt13,531 B SHA3152184e…96fbca independentlyverified. No rawrecompile;
+scratchremoved/onecandidateonly/publicunchanged. Raw+processedprivate repeatability
+now actual, but newcandidate NOT browser/fidelity/stress/OOM/cancellation or
+releasequalified. Earliercandidate's241.76MiB smallsuite is not reused as proof.
+`evidence/2026-10-28-svg-postprocess-repeat-terminal.json`.
+
 2026-10-28 — Repeat postprocessor preparation:17 focused PASS/0fail/0skip,
 affected lint PASS. Two proven equal raw source outputs are reused; exact artifact/
 both compiler receipts bound, same pinned bindgen and experimental96 MiB cap

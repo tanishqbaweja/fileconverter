@@ -69,6 +69,7 @@ source build alone cannot close that requirement or the full process-tree gate.
 | Ten existing production-browser SVG correctness/fidelity/direct-save/error/policy checks | All ten passed; both failed and passed full-tree small-suite runs retained | Repeatable conversion optimization, maximum-size stress, cancellation/OOM and release qualification |
 | Source path audit |188 random scratch-prefix occurrences in data section11 | A successful second reproducible build |
 | Fresh remapped source-repeat workflow | Run40637485225: two distinct fresh builds, raw3,665,540 B SHA c6014e1c…ee5c09, full bytes equal | Processed/browser engine repeatability or public promotion |
+| Twice-processed reproducible private candidate | Run40638268353: full Wasm/glue equal across both passes; bounded2,684,770 B SHA4068ccdc…afab9d | Browser fidelity, maximum-size stress/OOM/cancellation, release acceptance |
 
 The published engine is still the original pinned npm binary, not this private
 candidate. It has no explicit Wasm maximum. The private cap changes only the
@@ -145,3 +146,12 @@ Its dedicated `svg-source-postprocess-repeat.yml` workflow bootstraps only on it
 own file push, then permits manual dispatch. It does not recompile Rust or alter
 the public engine. A new result still needs real browser stress/recovery/fidelity
 and unchanged whole-process-tree acceptance before any production adoption.
+
+Run40638268353 completed this stage successfully. The new Wasm is2,684,770 B,
+SHA-2564068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d;
+both capped outputs and both glue files were byte-identical. The generated glue
+also matches the earlier private candidate's glue hash. The exact three-member
+artifact is pinned in `repeated-processed-input.json`; only one candidate/glue
+copy was retained, all owned postprocessor scratch removed, public engine unchanged.
+Do not replay either raw compilation or postprocessing unchanged. Browser evidence
+for the earlier unremapped candidate does not qualify these new bytes.

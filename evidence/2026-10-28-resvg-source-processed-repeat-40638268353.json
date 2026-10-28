@@ -1,0 +1,365 @@
+{
+  "schemaVersion": 1,
+  "runId": "40638268353",
+  "startedAt": "2026-10-28T05:29:30.031Z",
+  "status": "repeated-source-and-processed-private-candidate-byte-identical-before-browser-acceptance",
+  "sourcePins": {
+    "images/resvg-source/postprocess-repeated-source.mjs": "70c18a945dcc07b7c98a0c1ab13dbefa46bc22ab4a0e973e43b5f3803a807188",
+    "images/resvg-source/remapped-raw-input.json": "c522e1a5f58d667482210eec06a8dcfac1d24a36a3c5c6a2de22e52af32d47df",
+    "images/resvg-source/postprocess-contract.mjs": "97ab042096792148fbf9e1f84d51308d08f05b1ef75157235d42f47ec50b268e",
+    "images/resvg-source/raw-candidate-input.json": "7aaea3f0be88150c6ee1c34e7c2446d505fd4d8d80ca37f1979bc7b917d41b5c",
+    "images/resvg-source/bindgen-toolchain.json": "e090f1e113f71f47db81af9f5989c8dd7f8494003cdf26a7585efe41ebad96bb",
+    "images/resvg-source/bound-private-memory.mjs": "57c0027cecccb4f7283b1ab743bd0a9071181e7fe8298796f4943c74693424f6",
+    "images/resvg-source/memory-contract.mjs": "a6d4a01a57d22b119ea814302c0efa58b836c8b0f6dbff4e0415140d84604519",
+    "images/resvg-source/published-version-witnesses.mjs": "d3086701038545c01d188e9c01de9c3914bc3a6cff32d20d54591a78d7dace6f",
+    "images/resvg-source/source-pins.mjs": "c5752b7db714c2f1352423d0b639be744db203f6f4d06568ca9af6629fc60152",
+    "images/resvg-source/compile-contract.mjs": "5e685fc75551b53d0d7455684673daf73ed8656d049a8b1188fc4e0873114122",
+    ".github/workflows/svg-source-postprocess-repeat.yml": "a2453b8a97a037c49872130a794f9bc06a7f922c1d86828c79bdee780013a0b1"
+  },
+  "commands": [
+    {
+      "command": "git",
+      "args": [
+        "rev-parse",
+        "HEAD"
+      ],
+      "startedAt": "2026-10-28T05:29:30.038Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:30.042Z"
+    },
+    {
+      "command": "gh",
+      "args": [
+        "api",
+        "repos/tanishqbaweja/fileconverter/actions/artifacts/12793927637/zip"
+      ],
+      "startedAt": "2026-10-28T05:29:30.043Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:31.459Z"
+    },
+    {
+      "command": "unzip",
+      "args": [
+        "-Z1",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/input.zip"
+      ],
+      "startedAt": "2026-10-28T05:29:31.461Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:31.494Z"
+    },
+    {
+      "command": "unzip",
+      "args": [
+        "-p",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/input.zip",
+        "resvg-source-compile-406374852251.json"
+      ],
+      "startedAt": "2026-10-28T05:29:31.495Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:31.498Z"
+    },
+    {
+      "command": "unzip",
+      "args": [
+        "-p",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/input.zip",
+        "resvg-source-compile-406374852251.lock"
+      ],
+      "startedAt": "2026-10-28T05:29:31.498Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:31.501Z"
+    },
+    {
+      "command": "unzip",
+      "args": [
+        "-p",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/input.zip",
+        "resvg-source-compile-406374852251.wasm"
+      ],
+      "startedAt": "2026-10-28T05:29:31.501Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:31.554Z"
+    },
+    {
+      "command": "unzip",
+      "args": [
+        "-p",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/input.zip",
+        "resvg-source-compile-406374852252.json"
+      ],
+      "startedAt": "2026-10-28T05:29:31.556Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:31.561Z"
+    },
+    {
+      "command": "unzip",
+      "args": [
+        "-p",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/input.zip",
+        "resvg-source-repeat-40637485225.json"
+      ],
+      "startedAt": "2026-10-28T05:29:31.561Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:31.566Z"
+    },
+    {
+      "command": "tar",
+      "args": [
+        "-tf",
+        "-"
+      ],
+      "startedAt": "2026-10-28T05:29:32.432Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:32.443Z"
+    },
+    {
+      "command": "tar",
+      "args": [
+        "-xOf",
+        "-",
+        "wasm-bindgen-0.2.92-x86_64-unknown-linux-musl/wasm-bindgen"
+      ],
+      "startedAt": "2026-10-28T05:29:32.443Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:32.521Z"
+    },
+    {
+      "command": "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/wasm-bindgen",
+      "args": [
+        "--version"
+      ],
+      "startedAt": "2026-10-28T05:29:32.524Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:32.536Z"
+    },
+    {
+      "command": "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/wasm-bindgen",
+      "args": [
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/raw.wasm",
+        "--target",
+        "web",
+        "--out-dir",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/processed-1",
+        "--out-name",
+        "index"
+      ],
+      "startedAt": "2026-10-28T05:29:32.538Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:32.907Z"
+    },
+    {
+      "command": "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/wasm-bindgen",
+      "args": [
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/raw.wasm",
+        "--target",
+        "web",
+        "--out-dir",
+        "/home/runner/work/fileconverter/fileconverter/work/resvg-process-repeat-zXuees/processed-2",
+        "--out-name",
+        "index"
+      ],
+      "startedAt": "2026-10-28T05:29:32.958Z",
+      "exitCode": 0,
+      "signal": null,
+      "finishedAt": "2026-10-28T05:29:33.322Z"
+    }
+  ],
+  "failures": [],
+  "scope": "Two pinned bindgen/cap passes after proven two-fresh-build raw source equality, before browser qualification/public promotion",
+  "inputPin": {
+    "schemaVersion": 1,
+    "runId": 40637485225,
+    "headSha": "aa71d46f1cba7d43b54aaedde0a27eed2aa66a41",
+    "artifactId": 12793927637,
+    "artifactBytes": 1268872,
+    "artifactSha256": "d4671ae634c1954aa5bcead6015caed3f66d9d55aee3fb2afaf73f2435dca748",
+    "members": [
+      {
+        "name": "resvg-source-compile-406374852251.json",
+        "bytes": 29637,
+        "sha256": "7da2bfee89aa79a8edbc8728c6ebfc3ddb82eca4dfb799d70f4ef162bcc5bcea"
+      },
+      {
+        "name": "resvg-source-compile-406374852251.lock",
+        "bytes": 36670,
+        "sha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc"
+      },
+      {
+        "name": "resvg-source-compile-406374852251.wasm",
+        "bytes": 3665540,
+        "sha256": "c6014e1c42f7d88c92e858084e187e058451d480fa49e93487af9dc9a9ee5c09"
+      },
+      {
+        "name": "resvg-source-compile-406374852252.json",
+        "bytes": 29637,
+        "sha256": "4665c4515d8bc31b05a0ef35d5632c2a44b63fb128d75c024fc3a6edad51e172"
+      },
+      {
+        "name": "resvg-source-repeat-40637485225.json",
+        "bytes": 4628,
+        "sha256": "28a9d66a02ef55681c2f5ba10eb515031c430a6af515116029d9e76a411901f2"
+      }
+    ],
+    "summaryMember": "resvg-source-repeat-40637485225.json",
+    "wasmMember": "resvg-source-compile-406374852251.wasm",
+    "lockMember": "resvg-source-compile-406374852251.lock",
+    "compilerReceiptMembers": [
+      "resvg-source-compile-406374852251.json",
+      "resvg-source-compile-406374852252.json"
+    ],
+    "kind": "two-fresh-remapped-raw-source-builds-byte-identical-before-postprocessing"
+  },
+  "bindgenTool": {
+    "schemaVersion": 1,
+    "tool": "wasm-bindgen",
+    "version": "0.2.92",
+    "sourceCommit": "2a4a4936238cf11e863353e410f453c94e21c7dd",
+    "releaseUrl": "https://github.com/wasm-bindgen/wasm-bindgen/releases/tag/0.2.92",
+    "releaseId": 144613601,
+    "assetId": 154802167,
+    "platform": "x86_64-unknown-linux-musl",
+    "archiveUrl": "https://github.com/wasm-bindgen/wasm-bindgen/releases/download/0.2.92/wasm-bindgen-0.2.92-x86_64-unknown-linux-musl.tar.gz",
+    "archiveBytes": 6366507,
+    "archiveSha256": "c6e43a3bf0be5231e0b72ea702f73b3f4f47c309037e8a332c5c2e41800ca934",
+    "checksumUrl": "https://github.com/wasm-bindgen/wasm-bindgen/releases/download/0.2.92/wasm-bindgen-0.2.92-x86_64-unknown-linux-musl.tar.gz.sha256sum",
+    "checksumAssetId": 154802165,
+    "executableMember": "wasm-bindgen-0.2.92-x86_64-unknown-linux-musl/wasm-bindgen",
+    "maximumCompressedBytes": 8388608,
+    "maximumExpandedBytes": 67108864,
+    "kind": "upstream-compiler-postprocessor-tool-not-a-precompiled-conversion-engine",
+    "downloadChecksumVerified": true,
+    "executableRunOrVersionVerified": false,
+    "sourceBuildOfToolIndependentlyVerified": false,
+    "publicEngineReplacement": false
+  },
+  "experimentalMaximumBytes": 100663296,
+  "variants": [
+    {
+      "index": 1,
+      "processedBytes": 2684768,
+      "processedSha256": "9269b2adbd6ef9bd0e927c8f1b61ce684cac21f2606ca7e08fdbdefb54c67a01",
+      "boundedBytes": 2684770,
+      "boundedSha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d",
+      "glueBytes": 18019,
+      "glueSha256": "91a086534d643127d38a12726f8c65adfb398877be6bb4d8212d358b1b1fd923",
+      "memory": [
+        {
+          "index": 0,
+          "initialPages": 24,
+          "initialBytes": 1572864,
+          "maximumPages": 1536,
+          "maximumBytes": 100663296,
+          "maximumExplicit": true,
+          "shared": false
+        }
+      ],
+      "memoryBoundProof": {
+        "inputSha256": "9269b2adbd6ef9bd0e927c8f1b61ce684cac21f2606ca7e08fdbdefb54c67a01",
+        "outputSha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d",
+        "maximumBytes": 100663296,
+        "initialBytes": 1572864,
+        "priorMaximumBytes": null,
+        "onlyMemorySectionChanged": true,
+        "allCodeAndDataBytesPreserved": true,
+        "inputBytesMutated": false,
+        "executed": false,
+        "renderingOrProcessMemoryAcceptance": false,
+        "publicPromotion": false
+      },
+      "staticAbi": {
+        "publishedImports": 18,
+        "candidateImports": 18,
+        "publishedExports": 51,
+        "candidateExports": 51,
+        "missingImports": [],
+        "addedImports": [],
+        "missingExports": [],
+        "addedExports": [],
+        "namesAndKindsEqual": true,
+        "functionSignaturesOrRuntimeCompatibilityProven": false,
+        "instantiated": false
+      }
+    },
+    {
+      "index": 2,
+      "processedBytes": 2684768,
+      "processedSha256": "9269b2adbd6ef9bd0e927c8f1b61ce684cac21f2606ca7e08fdbdefb54c67a01",
+      "boundedBytes": 2684770,
+      "boundedSha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d",
+      "glueBytes": 18019,
+      "glueSha256": "91a086534d643127d38a12726f8c65adfb398877be6bb4d8212d358b1b1fd923",
+      "memory": [
+        {
+          "index": 0,
+          "initialPages": 24,
+          "initialBytes": 1572864,
+          "maximumPages": 1536,
+          "maximumBytes": 100663296,
+          "maximumExplicit": true,
+          "shared": false
+        }
+      ],
+      "memoryBoundProof": {
+        "inputSha256": "9269b2adbd6ef9bd0e927c8f1b61ce684cac21f2606ca7e08fdbdefb54c67a01",
+        "outputSha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d",
+        "maximumBytes": 100663296,
+        "initialBytes": 1572864,
+        "priorMaximumBytes": null,
+        "onlyMemorySectionChanged": true,
+        "allCodeAndDataBytesPreserved": true,
+        "inputBytesMutated": false,
+        "executed": false,
+        "renderingOrProcessMemoryAcceptance": false,
+        "publicPromotion": false
+      },
+      "staticAbi": {
+        "publishedImports": 18,
+        "candidateImports": 18,
+        "publishedExports": 51,
+        "candidateExports": 51,
+        "missingImports": [],
+        "addedImports": [],
+        "missingExports": [],
+        "addedExports": [],
+        "namesAndKindsEqual": true,
+        "functionSignaturesOrRuntimeCompatibilityProven": false,
+        "instantiated": false
+      }
+    }
+  ],
+  "sourceRecompileAttempted": false,
+  "rendererExecuted": false,
+  "browserMemoryOrFidelityAcceptance": false,
+  "exactOldPublishedReproduction": false,
+  "publicEngineReplacement": false,
+  "originalGoalComplete": false,
+  "executedHead": "97ed8ecf9eff1d5109cbaa09e15f1e63a70195cb",
+  "twoSourceBuildReceiptsAndRawEqualityVerified": true,
+  "toolVersion": "wasm-bindgen 0.2.92 (2a4a49362)",
+  "processedWasmAndGlueByteIdentical": true,
+  "candidate": {
+    "wasm": "resvg-source-processed-repeat-40638268353.wasm",
+    "wasmBytes": 2684770,
+    "wasmSha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d",
+    "glue": "resvg-source-processed-repeat-40638268353.mjs",
+    "glueBytes": 18019,
+    "glueSha256": "91a086534d643127d38a12726f8c65adfb398877be6bb4d8212d358b1b1fd923",
+    "defaultGlueWasmUrl": "index_bg.wasm",
+    "initializationRequiresExplicitWasmUrl": true
+  },
+  "ownedScratchRemoved": true,
+  "publicEngineUnchanged": true,
+  "finishedAt": "2026-10-28T05:29:33.367Z"
+}

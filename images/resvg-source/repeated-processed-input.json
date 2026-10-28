@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "runId": 40638268353,
+  "headSha": "97ed8ecf9eff1d5109cbaa09e15f1e63a70195cb",
+  "artifactId": 12794726096,
+  "artifactBytes": 1011079,
+  "artifactSha256": "1aefb2c4e96b6dede72d199de8746067323b727b6f11bad0c838a53175233cd4",
+  "receiptMember": "resvg-source-processed-repeat-40638268353.json",
+  "receiptBytes": 13531,
+  "receiptSha256": "3152184e96f2e3993f81c7fbf3de56b21116ae27b0a13cafb4000c686a96fbca",
+  "wasmMember": "resvg-source-processed-repeat-40638268353.wasm",
+  "wasmBytes": 2684770,
+  "wasmSha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d",
+  "glueMember": "resvg-source-processed-repeat-40638268353.mjs",
+  "glueBytes": 18019,
+  "glueSha256": "91a086534d643127d38a12726f8c65adfb398877be6bb4d8212d358b1b1fd923",
+  "experimentalMaximumBytes": 100663296,
+  "sourceRepeatPin": "images/resvg-source/remapped-raw-input.json",
+  "kind": "two-fresh-source-builds-and-two-pinned-postprocessor-passes-byte-identical-private-candidate-not-browser-qualified"
+}
