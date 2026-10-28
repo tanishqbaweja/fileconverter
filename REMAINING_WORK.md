@@ -1,5 +1,14 @@
 # Remaining work audit
 
+Context+region source variant now compiled twice from fresh locked source:
+40741245271 SUCCESS/full raw-byte equality, both patched module SHAs verified
+before/after build, raw3667072B SHAf2d0d3ff...fa71. Exact6-member authenticated
+artifact pinned in filter-context-raw-input.json; no local binaries retained and
+all owned build/inspection scratch/duplicate outputs removed. Next dedicated
+context postprocessing with both source-receipt guards and unchanged96MiB cap;
+then same original6M/seam/alpha/time/privacy/memory gates. No browser fidelity,
+speed, default-profile memory, generic buffer telemetry or public acceptance yet.
+
 Concrete follow-up to rejected strip quality: isolated group shifts pixmap origin
 but reuses parent-coordinate max_bbox for child/mask rendering. A mathematical
 counterexample and translation-property controls demonstrate valid pixels can

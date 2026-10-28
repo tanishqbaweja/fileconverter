@@ -1,0 +1,41 @@
+name: Private SVG context source postprocess repetition
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["media-options"]
+    paths: [".github/workflows/svg-context-postprocess.yml"]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  postprocess-context-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+      - name: Verify both source patches and compare repeated capped postprocessors
+        run: node images/resvg-source/postprocess-filter-region-source.mjs --context
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_PROMPT_DISABLED: "true"
+      - name: Verify public engines unchanged
+        if: always()
+        run: git diff --exit-code -- public/engines
+      - name: Retain private context candidate and exact evidence for one day
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: svg-filter-context-processed-${{ github.run_id }}
+          path: |
+            outputs/reports/resvg-filter-context-processed-owner-${{ github.run_id }}.json
+            outputs/reports/resvg-source-processed-repeat-${{ github.run_id }}.json
+            outputs/reports/resvg-source-processed-repeat-${{ github.run_id }}.wasm
+            outputs/reports/resvg-source-processed-repeat-${{ github.run_id }}.mjs
+          if-no-files-found: warn
+          retention-days: 1

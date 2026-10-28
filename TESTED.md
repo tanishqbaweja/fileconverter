@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-28 — Context source build40741245271 SUCCESS: both fresh compilers
+verified regionff98d2cf...6191 and renderd9d3b071...7bef, full raw bytes equal.
+Raw3667072B SHAf2d0d3ff...fa71 differs from region-only candidate. Authenticated
+exact6-member artifact12839392500/1283166B SHA079c32d5...ca18 verified; all owned
+compiler/owner/inspection scratch and duplicate second raw/lock removed, no local
+binary copies. Source build step198s; next repeated bindgen/cap uses same96MiB,
+no Rust recompile. Context/raw receipts and postprocess recipe guards reviewed;
+genuine browser correctness still unproven. Previous0.496146 quality failure
+remains explicitly rejected. `evidence/2026-10-28T18-09-01-840Z-svg-filter-source-artifact.json`.
+
 2026-10-28 — Coordinate correction prepared: a visible parent-space pixel64
 becomes child-space384 after layer origin-320; old[-320,320) bounds incorrectly
 clip it, translated[0,640) retains the exact original clipping predicate. Property

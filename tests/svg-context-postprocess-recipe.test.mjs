@@ -17,3 +17,14 @@ test("context postprocessor requires both exact patches, distinct source pin, un
     await promisify(execFile)(process.execPath,["--check",file],{env:runtime.env,windowsHide:true,timeout:10000,maxBuffer:16384});
   }finally{await runtime.close();}
 });
+test("actual context raw pin requires both independent source patches; workflow processes it without rebuilding Rust",async()=>{
+  const pin=JSON.parse(await readFile("images/resvg-source/filter-context-raw-input.json"));
+  const receipt=JSON.parse(await readFile("evidence/2026-10-28T18-09-01-840Z-svg-filter-source-artifact.json"));
+  assert.deepEqual(pin,receipt.inputPin);assert.equal(pin.runId,40741245271);assert.equal(receipt.contextVariant,true);
+  assert.equal(receipt.rawWasm.sha256,"f2d0d3ffc09fb7384e2c50ad8a332e10064089fa349bf92ea97b1222c6c6fa71");
+  for(const row of receipt.compileProofs){assert.equal(row.renderContextPatch.patchedSha256,pin.renderContextPatchedSha256);assert.equal(row.filterRegionPatch.patchedSha256,"ff98d2cf2406b01d728d84ae214c146c628b514bc94fee015ce978dbbd416191");}
+  assert.equal(receipt.ownedRuntimeRemoved,true);assert.equal(receipt.localBinaryCopiesRetained,false);
+  const workflow=await readFile(".github/workflows/svg-context-postprocess.yml","utf8");
+  assert.match(workflow,/postprocess-filter-region-source.mjs --context/);assert.match(workflow,/retention-days: 1/);
+  assert.doesNotMatch(workflow,/cargo|rustup|docker|test\.mkv/i);
+});

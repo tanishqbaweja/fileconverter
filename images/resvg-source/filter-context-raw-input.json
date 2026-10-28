@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "runId": 40741245271,
+  "headSha": "e98056612e2f82d97cbc4ea4ed7289903b42bb22",
+  "artifactId": 12839392500,
+  "artifactBytes": 1283166,
+  "artifactSha256": "079c32d5f582852541f257cc1ef7dff266d7aa7ac80460d68c1480abd557ca18",
+  "members": [
+    {
+      "name": "resvg-filter-context-owner-40741245271.json",
+      "bytes": 18511,
+      "sha256": "14f0bf358f21a5b70894eda8dac1a4a41fa4f976ad7a7239ba36f2359e0e3d89"
+    },
+    {
+      "name": "resvg-source-compile-407412452711.json",
+      "bytes": 34237,
+      "sha256": "39d7430e1539637024104bf61afdb2872ce59a9ee1fd660dac2ca401f2e0d629"
+    },
+    {
+      "name": "resvg-source-compile-407412452711.lock",
+      "bytes": 36670,
+      "sha256": "7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc"
+    },
+    {
+      "name": "resvg-source-compile-407412452711.wasm",
+      "bytes": 3667072,
+      "sha256": "f2d0d3ffc09fb7384e2c50ad8a332e10064089fa349bf92ea97b1222c6c6fa71"
+    },
+    {
+      "name": "resvg-source-compile-407412452712.json",
+      "bytes": 34237,
+      "sha256": "fe13439c0161249ae85cc0c4ac43a8b07e1a5040d565f0cb3a42c8867bf747a4"
+    },
+    {
+      "name": "resvg-source-repeat-40741245271.json",
+      "bytes": 11572,
+      "sha256": "d3417887bf1233b58afaf0ce085688de24cc828b2c70459dd5e6496104260c58"
+    }
+  ],
+  "summaryMember": "resvg-source-repeat-40741245271.json",
+  "wasmMember": "resvg-source-compile-407412452711.wasm",
+  "lockMember": "resvg-source-compile-407412452711.lock",
+  "compilerReceiptMembers": [
+    "resvg-source-compile-407412452711.json",
+    "resvg-source-compile-407412452712.json"
+  ],
+  "ownerReceiptMember": "resvg-filter-context-owner-40741245271.json",
+  "kind": "two-fresh-filter-context-source-builds-byte-identical-before-postprocessing",
+  "renderContextPatchedSha256": "d9d3b07113d3e95e0506658e197f2c782dd0469fd5d3a34e960fff66c53f7bef"
+}
