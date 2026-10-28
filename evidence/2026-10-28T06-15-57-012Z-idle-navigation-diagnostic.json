@@ -1,0 +1,631 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-28T06:15:57.012Z",
+  "status": "failed-idle-navigation-diagnostic",
+  "failures": [
+    "page.goBack: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for navigation until \"load\"\u001b[22m\n\u001b[2m    - navigated to \"http://127.0.0.1:49899/\"\u001b[22m\n\n    at H:\\Github Repositories\\fileconverter\\scripts\\diagnose-navigation-worker-retention.mjs:109:16"
+  ],
+  "sourcePins": {
+    "scripts/diagnose-navigation-worker-retention.mjs": "e7f384df958d926720a04e73f850119f1c16890c31f1d31d5b0481240e24eccd",
+    "app/converter/ConverterApp.tsx": "7ae964f6acdc50f7746d3b04a3717f2a18563216af9a11910a5e3b8aae22b9f3",
+    "lib/staged-worker-coordinator.ts": "848e5a2126b96ea5430b2f82f41e9a1138bfef29889633c1a8eb91674a1fa9e6",
+    "package.json": "c13423c98132f9f1beaf9cdea8ceadf3436f7cf94031c873cc150f743bd5978c",
+    "package-lock.json": "b2c97a14d64528607b8acd6394350ea741db853de36fcd2f4d46789c4b3964a4",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee",
+    "public/test-validator.html": "65d2ce0536bf852609358a9c59b81faf8aa6a63daeefc46324ee0ed727f88c4c",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094"
+  },
+  "phases": [
+    {
+      "phase": "blank-single-point-not-accepted-baseline",
+      "timestamp": "2026-10-28T06:16:04.905Z",
+      "targets": [],
+      "memory": {
+        "processes": [
+          {
+            "pid": 28172,
+            "parentPid": 2300,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.5517440Z",
+            "privateBytes": 44003328,
+            "rssBytes": 136871936
+          },
+          {
+            "pid": 17924,
+            "parentPid": 28172,
+            "type": "crashpad-handler",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.5719300Z",
+            "privateBytes": 2678784,
+            "rssBytes": 10469376
+          },
+          {
+            "pid": 14348,
+            "parentPid": 28172,
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.7034230Z",
+            "privateBytes": 111210496,
+            "rssBytes": 133619712
+          },
+          {
+            "pid": 34960,
+            "parentPid": 28172,
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "sandboxType": "none",
+            "createdAt": "2026-10-28T06:16:03.7061400Z",
+            "privateBytes": 13484032,
+            "rssBytes": 38862848
+          },
+          {
+            "pid": 44744,
+            "parentPid": 28172,
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:16:03.7325300Z",
+            "privateBytes": 8138752,
+            "rssBytes": 17752064
+          },
+          {
+            "pid": 18928,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.7855440Z",
+            "privateBytes": 47874048,
+            "rssBytes": 89776128
+          },
+          {
+            "pid": 38744,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.8767590Z",
+            "privateBytes": 21008384,
+            "rssBytes": 51568640
+          },
+          {
+            "pid": 48140,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.8771730Z",
+            "privateBytes": 15466496,
+            "rssBytes": 31977472
+          },
+          {
+            "pid": 30848,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.8777550Z",
+            "privateBytes": 19488768,
+            "rssBytes": 46649344
+          },
+          {
+            "pid": 36968,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:04.2086110Z",
+            "privateBytes": 23834624,
+            "rssBytes": 46977024
+          },
+          {
+            "pid": 39796,
+            "parentPid": 28172,
+            "type": "utility",
+            "utilitySubtype": "unzip.mojom.Unzipper",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:16:04.2966600Z",
+            "privateBytes": 8323072,
+            "rssBytes": 16850944
+          }
+        ],
+        "privateBytes": 315510784,
+        "rssBytes": 621375488
+      },
+      "memoryUnavailable": null,
+      "document": null
+    },
+    {
+      "phase": "app-initial-idle",
+      "timestamp": "2026-10-28T06:16:05.879Z",
+      "targets": [
+        {
+          "targetId": "AEB3D0407EC8B1860F64744583720849",
+          "type": "service_worker",
+          "title": "Service Worker http://127.0.0.1:49899/sw.js",
+          "url": "http://127.0.0.1:49899/sw.js",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "703A9EED4EE9FC15F552CA18B5BDF14B"
+        },
+        {
+          "targetId": "583299BBFAD526101EAFA6279345DC38",
+          "type": "worker",
+          "title": "within-conversion",
+          "url": "http://127.0.0.1:49899/assets/conversion.worker-CCZ-nVlb.js",
+          "attached": true,
+          "parentId": "9196DF68C310A1D1F1D260739C9FA073",
+          "canAccessOpener": false,
+          "parentFrameId": "9196DF68C310A1D1F1D260739C9FA073",
+          "browserContextId": "703A9EED4EE9FC15F552CA18B5BDF14B"
+        },
+        {
+          "targetId": "9196DF68C310A1D1F1D260739C9FA073",
+          "type": "page",
+          "title": "Within — private file conversion",
+          "url": "http://127.0.0.1:49899/",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "703A9EED4EE9FC15F552CA18B5BDF14B"
+        }
+      ],
+      "memory": {
+        "processes": [
+          {
+            "pid": 28172,
+            "parentPid": 2300,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.5517440Z",
+            "privateBytes": 47632384,
+            "rssBytes": 145350656
+          },
+          {
+            "pid": 17924,
+            "parentPid": 28172,
+            "type": "crashpad-handler",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.5719300Z",
+            "privateBytes": 2678784,
+            "rssBytes": 10469376
+          },
+          {
+            "pid": 14348,
+            "parentPid": 28172,
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.7034230Z",
+            "privateBytes": 128159744,
+            "rssBytes": 155234304
+          },
+          {
+            "pid": 34960,
+            "parentPid": 28172,
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "sandboxType": "none",
+            "createdAt": "2026-10-28T06:16:03.7061400Z",
+            "privateBytes": 15200256,
+            "rssBytes": 41201664
+          },
+          {
+            "pid": 44744,
+            "parentPid": 28172,
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:16:03.7325300Z",
+            "privateBytes": 8167424,
+            "rssBytes": 18006016
+          },
+          {
+            "pid": 18928,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.7855440Z",
+            "privateBytes": 47882240,
+            "rssBytes": 89825280
+          },
+          {
+            "pid": 48140,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.8771730Z",
+            "privateBytes": 46342144,
+            "rssBytes": 98451456
+          },
+          {
+            "pid": 30848,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.8777550Z",
+            "privateBytes": 19492864,
+            "rssBytes": 46686208
+          },
+          {
+            "pid": 36968,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:04.2086110Z",
+            "privateBytes": 23834624,
+            "rssBytes": 46977024
+          },
+          {
+            "pid": 18784,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:04.9560810Z",
+            "privateBytes": 20054016,
+            "rssBytes": 43352064
+          },
+          {
+            "pid": 14944,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:05.1475930Z",
+            "privateBytes": 15491072,
+            "rssBytes": 31842304
+          }
+        ],
+        "privateBytes": 374935552,
+        "rssBytes": 727396352
+      },
+      "memoryUnavailable": null,
+      "document": {
+        "state": {
+          "documentId": "d5411cea-3317-4081-9e9d-b13d1cbc65e9",
+          "events": [
+            {
+              "documentId": "d5411cea-3317-4081-9e9d-b13d1cbc65e9",
+              "type": "pageshow",
+              "persisted": false,
+              "href": "http://127.0.0.1:49899/",
+              "timestamp": "2026-10-28T06:16:05.016Z"
+            }
+          ]
+        },
+        "url": "http://127.0.0.1:49899/",
+        "crossOriginIsolated": true,
+        "navigationType": "navigate"
+      }
+    },
+    {
+      "phase": "away-1",
+      "timestamp": "2026-10-28T06:16:06.630Z",
+      "targets": [
+        {
+          "targetId": "AEB3D0407EC8B1860F64744583720849",
+          "type": "service_worker",
+          "title": "Service Worker http://127.0.0.1:49899/sw.js",
+          "url": "http://127.0.0.1:49899/sw.js",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "703A9EED4EE9FC15F552CA18B5BDF14B"
+        },
+        {
+          "targetId": "583299BBFAD526101EAFA6279345DC38",
+          "type": "worker",
+          "title": "within-conversion",
+          "url": "http://127.0.0.1:49899/assets/conversion.worker-CCZ-nVlb.js",
+          "attached": false,
+          "parentId": "9196DF68C310A1D1F1D260739C9FA073",
+          "canAccessOpener": false,
+          "parentFrameId": "9196DF68C310A1D1F1D260739C9FA073",
+          "browserContextId": "703A9EED4EE9FC15F552CA18B5BDF14B"
+        },
+        {
+          "targetId": "9196DF68C310A1D1F1D260739C9FA073",
+          "type": "page",
+          "title": "Within local test validator",
+          "url": "http://127.0.0.1:49899/test-validator?navigation=1",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "703A9EED4EE9FC15F552CA18B5BDF14B"
+        }
+      ],
+      "memory": {
+        "processes": [
+          {
+            "pid": 28172,
+            "parentPid": 2300,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.5517440Z",
+            "privateBytes": 55906304,
+            "rssBytes": 157339648
+          },
+          {
+            "pid": 17924,
+            "parentPid": 28172,
+            "type": "crashpad-handler",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.5719300Z",
+            "privateBytes": 2678784,
+            "rssBytes": 10469376
+          },
+          {
+            "pid": 14348,
+            "parentPid": 28172,
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.7034230Z",
+            "privateBytes": 129806336,
+            "rssBytes": 156844032
+          },
+          {
+            "pid": 34960,
+            "parentPid": 28172,
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "sandboxType": "none",
+            "createdAt": "2026-10-28T06:16:03.7061400Z",
+            "privateBytes": 15212544,
+            "rssBytes": 41357312
+          },
+          {
+            "pid": 44744,
+            "parentPid": 28172,
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:16:03.7325300Z",
+            "privateBytes": 8175616,
+            "rssBytes": 18034688
+          },
+          {
+            "pid": 18928,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.7855440Z",
+            "privateBytes": 47886336,
+            "rssBytes": 89927680
+          },
+          {
+            "pid": 48140,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.8771730Z",
+            "privateBytes": 49020928,
+            "rssBytes": 103084032
+          },
+          {
+            "pid": 30848,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:03.8777550Z",
+            "privateBytes": 19492864,
+            "rssBytes": 46686208
+          },
+          {
+            "pid": 36968,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:04.2086110Z",
+            "privateBytes": 23834624,
+            "rssBytes": 46977024
+          },
+          {
+            "pid": 18784,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:04.9560810Z",
+            "privateBytes": 20193280,
+            "rssBytes": 44150784
+          },
+          {
+            "pid": 41776,
+            "parentPid": 28172,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:05.8855640Z",
+            "privateBytes": 18296832,
+            "rssBytes": 34754560
+          },
+          {
+            "pid": 31972,
+            "parentPid": 28172,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:16:06.4158100Z",
+            "privateBytes": 647168,
+            "rssBytes": 3567616
+          }
+        ],
+        "privateBytes": 391151616,
+        "rssBytes": 753192960
+      },
+      "memoryUnavailable": null,
+      "document": {
+        "state": {
+          "documentId": "fba3baff-73a1-4f33-89c9-17ceb815e7fa",
+          "events": [
+            {
+              "documentId": "fba3baff-73a1-4f33-89c9-17ceb815e7fa",
+              "type": "pageshow",
+              "persisted": false,
+              "href": "http://127.0.0.1:49899/test-validator?navigation=1",
+              "timestamp": "2026-10-28T06:16:05.937Z"
+            }
+          ]
+        },
+        "url": "http://127.0.0.1:49899/test-validator?navigation=1",
+        "crossOriginIsolated": true,
+        "navigationType": "navigate"
+      }
+    }
+  ],
+  "events": [
+    {
+      "documentId": "d5411cea-3317-4081-9e9d-b13d1cbc65e9",
+      "type": "pageshow",
+      "persisted": false,
+      "href": "http://127.0.0.1:49899/",
+      "timestamp": "2026-10-28T06:16:05.016Z"
+    },
+    {
+      "documentId": "fba3baff-73a1-4f33-89c9-17ceb815e7fa",
+      "type": "pageshow",
+      "persisted": false,
+      "href": "http://127.0.0.1:49899/test-validator?navigation=1",
+      "timestamp": "2026-10-28T06:16:05.937Z"
+    },
+    {
+      "documentId": "d5411cea-3317-4081-9e9d-b13d1cbc65e9",
+      "type": "pageshow",
+      "persisted": true,
+      "href": "http://127.0.0.1:49899/",
+      "timestamp": "2026-10-28T06:16:06.651Z"
+    }
+  ],
+  "eventOverflow": false,
+  "scope": "Three idle production app / same-origin static page / browser-back traversals, not conversion or peak memory acceptance",
+  "headed": false,
+  "browserServicesDisabled": false,
+  "fileSelections": 0,
+  "conversions": 0,
+  "memoryAcceptance": false,
+  "baseline": null,
+  "diagnosticPerturbsMemory": true,
+  "fullDomAndHarTracing": true,
+  "productionCodeChanged": false,
+  "originalGoalComplete": false,
+  "executedHead": "0f6f5ca51818d397e59f9a453694241e83d815ea",
+  "hostMemory": {
+    "acquiredAt": "2026-10-28T06:15:57.6233632Z",
+    "freePhysicalBytes": 7258251264,
+    "freeVirtualBytes": 10445111296,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "browserBefore": {
+    "version": "156.0.8078.48",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4522648,
+      "sha256": "480f275b63d1ea39113cbc8344ac395578acc25b432bd39af5fbc77005179aca",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "28428972648127597",
+        "birthtimeNs": "1793052149841822100",
+        "mtimeNs": "1792460818004188000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.48\\chrome.dll",
+      "bytes": 308101784,
+      "sha256": "e23d982e66959f3d738154ba68dd2638c9c7473a7e0f362eaee2b1dad5e20f57",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "41095346600131756",
+        "birthtimeNs": "1793052149854400100",
+        "mtimeNs": "1792460826425077000"
+      }
+    }
+  },
+  "chromeArguments": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\navigation-worker-diagnostic-A7y682\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "about:blank"
+  ],
+  "trace": {
+    "path": "output\\playwright\\2026-10-28T06-15-57-012Z-idle-navigation-diagnostic.zip",
+    "bytes": 204450,
+    "sha256": "cbd3b338e05cbb56be4f184a6de789c4cdec2f7a65c29be2389e9d70198791d1"
+  },
+  "processCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 28172,
+        "parentPid": 2300,
+        "createdAt": "2026-10-28T06:16:03.5517440Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-28T06:16:38.011Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 515,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 33052,
+        "parentPid": 2300,
+        "createdAt": "2026-10-28T06:16:01.2392090Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-28T06:16:38.497Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 486,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "ownedRuntimeRemoved": true,
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "serverLog": "\n ⛅️ wrangler 4.152.0\n────────────────────\nYour Worker has access to the following bindings:\nBinding            Resource      Mode\nenv.ASSETS         Assets        local\n\nAttaching additional modules:\n┌─────────────────────────────────────────────────────┬───────────────┬─────────────┐\n│ Name                                                │ Type          │ Size        │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ resvg.wasm                                          │ compiled-wasm │ 1346.05 KiB │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/conversion.worker-CCZ-nVlb.js            │ esm           │ 381.44 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/ConverterApp-Drc2l1nP.js                 │ esm           │ 496.71 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/direct-file-writer.worker-Cd6e6fgR.js    │ esm           │ 1.72 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/error-boundary-C-_MPqYf.js               │ esm           │ 8.23 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/jxl-source-inspection-worker-BogpV0iH.js │ esm           │ 2.67 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/layout-segment-context-DJ93MGz0.js       │ esm           │ 1.74 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/staged-save.worker-CXNG5no9.js           │ esm           │ 3.82 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/index.js                                        │ esm           │ 571.02 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/__vite_rsc_assets_manifest.js                   │ esm           │ 1.09 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ __vite_rsc_assets_manifest.js                       │ esm           │ 1.09 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ Total (11 modules)                                  │               │ 2815.60 KiB │\n└─────────────────────────────────────────────────────┴───────────────┴─────────────┘\n⎔ Starting local server...\n[wrangler:info] ✨ Parsed 3 valid header rules.\nWrangler detected this dev session is running in an AI agent.\nThe Local Explorer API is available at http://127.0.0.1:49899/cdn-cgi/local/explorer/api\nUseful routes:\n  GET http://127.0.0.1:49899/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings\n  POST http://127.0.0.1:49899/cdn-cgi/local/explorer/api/local/scheduled?worker=<name> - invoke a Worker's scheduled handler; cron is required (see the OpenAPI schema for the full request)\n  GET http://127.0.0.1:49899/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces\n  GET http://127.0.0.1:49899/cdn-cgi/local/explorer/api/d1/database - D1 databases\n  GET http://127.0.0.1:49899/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets\n  GET http://127.0.0.1:49899/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces\n  GET http://127.0.0.1:49899/cdn-cgi/local/explorer/api/workflows - Workflows\n  POST http://127.0.0.1:49899/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:\n    curl -X POST http://127.0.0.1:49899/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{\"sql\":\"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20\"}'\n  POST http://127.0.0.1:49899/cdn-cgi/local/explorer/api/local/observability/clear - clear all captured traces and logs\nIf the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):\n  GET http://127.0.0.1:49899/cdn-cgi/local/explorer/api - OpenAPI schema\n[wrangler:info] Ready on http://127.0.0.1:49899\n[wrangler:info] HEAD / 200 OK (654ms)\n[wrangler:info] GET / 200 OK (12ms)\n[wrangler:info] GET /assets/index-CwQ1gGtM.css 200 OK (10ms)\n[wrangler:info] GET /assets/ConverterApp-oHSk1iRJ.js 200 OK (29ms)\n[wrangler:info] GET /assets/layout-segment-context-BopcxWxv.js 200 OK (33ms)\n[wrangler:info] GET /assets/rolldown-runtime-XKyaHtl9.js 200 OK (32ms)\n[wrangler:info] GET /assets/framework-DRChgpEG.js 200 OK (33ms)\n[wrangler:info] GET /assets/index-9y5sB6zW.js 200 OK (33ms)\n[wrangler:info] GET /manifest.webmanifest 200 OK (39ms)\n[wrangler:info] GET /icon.svg 200 OK (12ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (9ms)\n[wrangler:info] GET /assets/conversion.worker-CCZ-nVlb.js 200 OK (7ms)\n[wrangler:info] GET /sw.js 200 OK (14ms)\n[wrangler:info] GET / 200 OK (14ms)\n[wrangler:info] GET /manifest.webmanifest 304 Not Modified (28ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (30ms)\n[wrangler:info] GET /THIRD_PARTY_NOTICES.txt 200 OK (21ms)\n[wrangler:info] GET /test-validator.html 307 Temporary Redirect (11ms)\n[wrangler:info] GET /test-validator 200 OK (12ms)\n[wrangler:info] GET /favicon.ico 404 Not Found (14ms)\n[wrangler:info] GET /sw.js 304 Not Modified (18ms)\n",
+  "finishedAt": "2026-10-28T06:16:42.373Z"
+}

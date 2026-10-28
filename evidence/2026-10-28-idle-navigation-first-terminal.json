@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "0f6f5ca5",
+  "raw": { "path": "evidence/2026-10-28T06-15-57-012Z-idle-navigation-diagnostic.json", "bytes": 28970, "sha256": "713292cbfccd3cda5ec3abcb51364c151b21862c52a48b4e898955dd6c3985fe" },
+  "status": "failed-idle-navigation-diagnostic",
+  "reason": "Browser-back restored the page but load-event wait timed out; only three of eight phase observations completed",
+  "observed": "Same app document ID returned with pageshow.persisted=true; its exact idle worker target remained alive while on the validator page",
+  "completeThreeTraverseDiagnostic": false,
+  "fullConversionPeakAllocationCauseProven": false,
+  "memoryAcceptance": false,
+  "conversions": 0,
+  "ownedRuntimeRemoved": true,
+  "ownedProcessBirthsAbsent": 2,
+  "originalSizeAndShaUnchanged": true,
+  "sourceArchive": "fixtures/source/pre-idle-navigation-lifecycle-2026-10-28.json",
+  "next": "Retire idle coordinator workers on pagehide and restore on persisted pageshow; preserve active jobs; correct diagnostic browser-back waiting to URL/readiness rather than a non-refired load event"
+}

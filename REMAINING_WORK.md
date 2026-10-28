@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-28 — Idle-navigation diagnostic FIRST RUN FAILED: browser-back reached
+the app, but waiting for a new load event timed out (3/8 observations completed).
+Actual events nevertheless prove same-document BFCache restore via persisted
+pageshow=true, and exact idle conversion-worker target survives while away.
+This proves idle retention, NOT the full conversion peak's allocation cause.
+Two owned births absent, scratch removed, original full SHA/size unchanged.
+Next idle-only coordinator pagehide/pageshow ownership and correct URL/readiness
+wait; do not replay the invalid load-event wait or relabel this as a full pass.
+`evidence/2026-10-28-idle-navigation-first-terminal.json`.
+
 2026-10-28 — New bounded idle-navigation diagnostic prepared,3 focused/lint
 PASS. It traverses the unchanged production app and existing same-origin static
 validator page three times, observing document IDs, pagehide/pageshow persisted
