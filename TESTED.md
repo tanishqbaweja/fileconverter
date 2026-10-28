@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-28 — Paired small controlaea34674 stopped BEFORE any conversion:
+reference Blob image decode blocked by correct existing application img-src
+'self' data: CSP, confirmed in103508B trace console.0mode results/no native
+fidelity data; forbiddenHTTP0/all owned roots/runtime cleaned/original SHA same.
+Control reference preparation now uses separately owned about:blank page and
+bounded sink, closes it before conversion. Application headers/CSP/timeouts/
+native code unchanged; not a relaxed security test. Unit guard requires blank
+reference page/closure and forbids CSP bypass. Original6M rejection unaffected.
+evidence/2026-10-28-svg-small-reference-csp-terminal.json.
+Setup correction1focused PASS770.9591ms/lint PASS; reference hash retained,
+mode telemetry asserts full worker has no strip metric and strip completes
+all540rows. No source/kernel/CSP/timeout/quality change; retry is setup-specific.
+
 2026-10-28 — Small paired fidelity diagnostic PREPARED, not a6M replacement.
 Fixed existing11194B/960x540 SVG/SHAafebfa84...981d; fresh independent current-
 Chrome reference, production UI/direct writer in BOTH modes, same902fc72b...845d

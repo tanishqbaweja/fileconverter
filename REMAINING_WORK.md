@@ -1,5 +1,11 @@
 # Remaining work audit
 
+Small paired control first attempt produced no conversions: independent
+reference preparation was blocked by application Blob-image CSP. Security
+worked; do not weaken it. Reference generation moved to a separate owned blank
+page closed before production tests, same reference pixels/gates. No native
+quality conclusion from this setup failure; original6M still rejected.
+
 Spatial-fidelity diagnosis now has a fixed small paired control prepared:
 full-frame/nativePNG versus128-row/streamedPNG, same native bytes and production
 UI/direct I/O, exact decodedRGBA comparison plus freshChrome whole/band0.99.

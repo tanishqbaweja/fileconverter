@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "aea34674",
+  "status": "diagnostic-reference-generation-blocked-by-unchanged-application-CSP",
+  "ownerReceipt": "evidence/2026-10-28T19-36-43-346Z-svg-small-fidelity-control.json",
+  "browserReceipt": "evidence/2026-10-28T19-36-43-849Z-source-svg-browser.json",
+  "sourcePixels": 518400,
+  "convertedModesCollected": 0,
+  "independentReferenceImageDecodeError": "EncodingError: The source image cannot be decoded",
+  "retainedTraceConsoleCause": "Loading blob image violates existing img-src 'self' data:; browser blocked it",
+  "applicationSecurityWeakened": false,
+  "nextChange": "Generate independent reference on a separate owned about:blank page, close before production conversions; retain application CSP and all gates",
+  "forbiddenHttpRequests": [],
+  "allOwnedRootsAndRuntimesCleaned": true,
+  "protectedOriginalBeforeAfterSha256Unchanged": true,
+  "failureTrace": {
+    "path": "output/playwright/2026-10-28T19-36-43-849Z-source-svg-failure.zip",
+    "bytes": 103508,
+    "sha256": "981b570028da20a12dd6534ed20a37177f8832f34752d76c4efe0607bc1b45b4"
+  },
+  "notNativeQualityEvidence": true,
+  "publicPromotion": false,
+  "wholeGoalComplete": false
+}

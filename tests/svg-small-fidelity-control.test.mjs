@@ -20,6 +20,10 @@ test("paired small control compares production full/nativePNG and strip/streamed
     assert.match(result.suite,/expect\(results\[0\].rgbaSha256\).toBe\(results\[1\].rgbaSha256\)/);
     assert.match(result.suite,/row.minimumBandSsim\).toBeGreaterThanOrEqual\(0.99\)/);
     assert.match(result.suite,/sourceBytes.length\).toBe\(11194\)/);assert.match(result.suite,/timeout:45_000/);
+    assert.match(result.suite,/const referencePage=await context.newPage\(\)/);
+    assert.match(result.suite,/expect\(referencePage.url\(\)\).toBe\("about:blank"\)/);
+    assert.match(result.suite,/finally\{await referencePage.close\(\);\}/);
+    assert.doesNotMatch(result.suite,/bypassCSP|setBypassCSP|--disable-web-security/);
     for(const [name,source]of [["driver.mjs",result.driver],["suite.ts",result.suite]])
       assert.deepEqual(ts.createSourceFile(name,source,ts.ScriptTarget.ESNext,true).parseDiagnostics,[],name);
   }finally{await runtime.close();}

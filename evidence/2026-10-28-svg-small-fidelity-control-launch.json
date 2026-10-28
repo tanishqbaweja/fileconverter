@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "aea34674",
+  "startedAt": "2026-10-28T19:36:40Z",
+  "estimatedDurationSeconds": 120,
+  "doNotObserveBefore": "2026-10-28T19:38:40Z",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/test-svg-small-fidelity-control.mjs",
+  "purpose": "One small paired isolation diagnostic; same native engine full-frame versus strip, exact decodedRGBA plus freshChrome0.99 quality",
+  "sourcePixels": 518400,
+  "fullOriginalSixMillionPixelStressReplacement": false,
+  "originalRejected128rowRunRemainsRejected": true,
+  "noQualityMemoryTimeoutRelaxation": true,
+  "followSameExecutionHandleNoRestartOnObservationTimeout": true,
+  "headless": true,
+  "publicPromotion": false,
+  "wholeGoalComplete": false
+}
