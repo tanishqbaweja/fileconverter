@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "runId": 40748064269,
+  "headSha": "0d0fc32d3a32f50afe690909f036640e82849055",
+  "workflow": "svg-source-filter-liveness.yml",
+  "observedStatus": "in_progress",
+  "observedAt": "2026-10-28T18:45:29Z",
+  "estimatedRemainingSeconds": 270,
+  "doNotObserveBefore": "2026-10-28T18:49:59Z",
+  "basis": "Previous two-fresh same-toolchain native source step198s plus checkout/setup/upload and queue allowance",
+  "followSameRunNoDuplicateDispatch": true,
+  "sourceOnlyNoUserFilesAccessed": true,
+  "publicPromotion": false,
+  "wholeGoalComplete": false
+}

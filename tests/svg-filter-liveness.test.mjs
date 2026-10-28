@@ -7,6 +7,7 @@ import test from "node:test";
 import { patchPinnedFilterRegion } from "../images/resvg-source/filter-region-patch.mjs";
 import { patchPinnedFilterLiveness,patchOwnedFilterLiveness,filterLivenessPatch } from "../images/resvg-source/filter-liveness-patch.mjs";
 import { makeLivenessBuildRecipes } from "../images/resvg-source/liveness-build-recipe.mjs";
+import { makeLivenessPostprocessRecipe } from "../images/resvg-source/liveness-postprocess-recipe.mjs";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 test("lifetime patch changes only ownership around all13 input arms and merge, reversing the entire region-patched source",async()=>{
   const pin=JSON.parse(await readFile("fixtures/source/resvg-filter-3495d870-preimage.json"));
@@ -45,5 +46,17 @@ test("lifetime build keeps exact current compiler lock release args and both fre
     for(const [file,source]of [[result.compilerPath,result.compiler],[result.reproducerPath,result.reproducer]]){
       await writeFile(file,source,{flag:"wx"});await promisify(execFile)(process.execPath,["--check",file],{env:runtime.env,windowsHide:true,timeout:10000,maxBuffer:16384});
     }
+  }finally{await runtime.close();}
+});
+test("future lifetime postprocessor fails closed on its own immutable source pin and all three patch proofs; cap/ABI/repetition gates retained",async()=>{
+  const result=makeLivenessPostprocessRecipe({root:process.cwd(),sourceBytes:await readFile("images/resvg-source/postprocess-repeated-source.mjs")});
+  assert.match(result.source,/filter-liveness-raw-input.json/);assert.doesNotMatch(result.source,/filter-context-raw-input.json/);
+  for(const name of ["filterLivenessPatch","renderContextPatch","filterRegionPatch"])assert.ok(result.source.includes("receipt."+name+".patchedSha256"));
+  assert.match(result.source,/sourceRepeat.filterLivenessPatch.patchedSha256/);assert.match(result.source,/pins.filterLivenessPatchedSha256/);
+  assert.match(result.source,/Compare full bounded Wasm bytes/);assert.match(result.source,/Compare full generated glue bytes/);
+  assert.match(result.source,/compareStaticAbi\(published, bounded.bytes\)/);assert.equal(result.proof.maximumBytesChanged,false);
+  const runtime=await createOwnedRuntimeScratch("lifetime-processor-check-");try{
+    const file=runtime.directory+"/processor.mjs";await writeFile(file,result.source,{flag:"wx"});
+    await promisify(execFile)(process.execPath,["--check",file],{env:runtime.env,windowsHide:true,timeout:10000,maxBuffer:16384});
   }finally{await runtime.close();}
 });

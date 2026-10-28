@@ -11,6 +11,11 @@ match; full source inverse/pixel-kernel bytes/dimensions/regions preserved.
 locked compilations must verify5331eaa1...3307 dependency bytes before/after,
 retain prior context/region proofs, compare full raw bytes and clean scratch.
 No accepted quality/speed/memory result; original full goal remains unchanged.
+Actual source build40748064269 is running at0d0fc32d; confirmed18:45:29Z,
+next observation18:49:59Z. No duplicate dispatch/unchanged browser retry.
+Future liveness postprocessor requires all3 exact source proofs and its own
+verified pin;6focused/lint PASS, actual pin/processing/browser still pending.
+Existing release opt-level3 confirmed; do not rebuild for a no-op flag change.
 
 Latest80-row experiment REJECTED for adoption:45s timeout,1781/2000central rows,
 43.468s native raster at44.521s, no completed PNG/SSIM. Same6M/cap/timeout/gates,

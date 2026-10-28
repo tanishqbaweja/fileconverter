@@ -13,6 +13,12 @@ Derived two-fresh-build recipe retains same locked nightly/release flags/remap,
 both prior patch proofs plus final exact liveness-source verification/cleanup/
 raw-byte equality. New isolated no-Docker source-only workflow; compiler/browser/
 fidelity/memory/speed acceptance still OPEN. No unchanged browser rerun.
+Source run40748064269/head0d0fc32d confirmed in_progress18:45:29Z; next check
+not before18:49:59Z, same run only. Future immutable-source postprocessor guards
+all3 patch proofs/cap/static ABI/full repeated-output equality:6focused PASS
+435.4414ms/lint PASS; not actual processing. Raw artifact verifier now supports
+this exact run and rejects old context bytes. Cargo source already uses release
+opt-level3, so merely requesting opt-level3 is a no-op, not a new experiment.
 
 2026-10-28 —80-row sourcea5eb6702 genuine6M attempt REJECTED for adoption:
 same45s timeout/0validated-pass/1fail/2notrun. At44.521s:23native viewports

@@ -11,16 +11,20 @@ import { filterRegionPatch } from "../images/resvg-source/filter-region-patch.mj
 import { compileContract,inspectRawWasm } from "../images/resvg-source/compile-contract.mjs";
 import { bytesRepair } from "../images/resvg-source/bytes-repair.mjs";
 import { renderContextPatch } from "../images/resvg-source/render-context-patch.mjs";
-const contextVariant=process.argv[2]==="--context";assert.ok(process.argv.length===2||(process.argv.length===3&&contextVariant));
-const runId=contextVariant?40741245271:40709137070,headSha=contextVariant?"e98056612e2f82d97cbc4ea4ed7289903b42bb22":"bb79bc0c477c8fdde59158376590bfe8c9ace9b2",root=path.resolve(import.meta.dirname,"..");
+import { filterLivenessPatch } from "../images/resvg-source/filter-liveness-patch.mjs";
+const liveness=process.argv[2]==="--liveness",contextVariant=liveness||process.argv[2]==="--context";assert.ok(process.argv.length===2||(process.argv.length===3&&contextVariant));
+const variant=liveness?"liveness":contextVariant?"context":"region";
+const runId=liveness?40748064269:contextVariant?40741245271:40709137070,headSha=liveness?"0d0fc32d3a32f50afe690909f036640e82849055":contextVariant?"e98056612e2f82d97cbc4ea4ed7289903b42bb22":"bb79bc0c477c8fdde59158376590bfe8c9ace9b2",root=path.resolve(import.meta.dirname,"..");
 const stamp=new Date().toISOString().replaceAll(/[:.]/g,"-"),execute=promisify(execFile);
-const report={schemaVersion:1,startedAt:new Date().toISOString(),runId,sourceHead:headSha,contextVariant,sourcePins:{},failures:[],
+const report={schemaVersion:1,startedAt:new Date().toISOString(),runId,sourceHead:headSha,contextVariant,liveness,sourcePins:{},failures:[],
   rendererExecuted:false,protectedOriginalAccessed:false,localBinaryCopiesRetained:false,browserAcceptance:false,wholeGoalComplete:false};
 let runtime;
 try{
   for(const file of ["scripts/inspect-svg-filter-build.mjs","images/resvg-source/filter-region-patch.mjs","images/resvg-source/filter-build-recipe.mjs","images/resvg-source/reproduce-filter-region-source.mjs"])
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));
   if(contextVariant)for(const file of ["images/resvg-source/render-context-patch.mjs","images/resvg-source/context-build-recipe.mjs","images/resvg-source/reproduce-filter-context-source.mjs"])
+    report.sourcePins[file]=sha(await readFile(path.join(root,file)));
+  if(liveness)for(const file of ["images/resvg-source/filter-liveness-patch.mjs","images/resvg-source/liveness-build-recipe.mjs"])
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));
   runtime=await createOwnedRuntimeScratch("svg-filter-artifact-");
   const gh=async(args,maximum=65536)=>{
@@ -29,14 +33,14 @@ try{
   };
   const list=JSON.parse((await gh(["api",`repos/tanishqbaweja/fileconverter/actions/runs/${runId}/artifacts`])).toString());
   assert.ok(list.total_count>0&&list.total_count<=16);
-  const matches=list.artifacts.filter(row=>row.name===`svg-filter-${contextVariant?"context":"region"}-source-${runId}`);assert.equal(matches.length,1);
+  const matches=list.artifacts.filter(row=>row.name===`svg-filter-${variant}-source-${runId}`);assert.equal(matches.length,1);
   const artifact=matches[0];assert.equal(artifact.expired,false);assert.equal(artifact.workflow_run.id,runId);assert.equal(artifact.workflow_run.head_sha,headSha);
   assert.ok(Number.isSafeInteger(artifact.id)&&artifact.id>0);
   report.artifact={id:artifact.id,name:artifact.name,advertisedDigest:artifact.digest,expiresAt:artifact.expires_at};
   const zip=await gh(["api",`repos/tanishqbaweja/fileconverter/actions/artifacts/${artifact.id}/zip`],4194304);
   report.artifact.bytes=zip.length;report.artifact.sha256=sha(zip);
   assert.equal(artifact.digest,"sha256:"+sha(zip));
-  const names=[`resvg-filter-${contextVariant?"context":"region"}-owner-${runId}.json`,`resvg-source-repeat-${runId}.json`,
+  const names=[`resvg-filter-${variant}-owner-${runId}.json`,`resvg-source-repeat-${runId}.json`,
     `resvg-source-compile-${runId}1.json`,`resvg-source-compile-${runId}1.lock`,`resvg-source-compile-${runId}1.wasm`,`resvg-source-compile-${runId}2.json`];
   const seen=new Set();
   const members=unzipSync(zip,{filter:entry=>{assert.ok(names.includes(entry.name),"Unexpected artifact member: "+entry.name);
@@ -44,16 +48,18 @@ try{
     assert.ok(entry.originalSize>0&&entry.originalSize<=(entry.name.endsWith(".wasm")?16777216:262144));return true;}});
   assert.deepEqual(Object.keys(members).sort(),[...names].sort());
   const json=name=>JSON.parse(Buffer.from(members[name]).toString()),owner=json(names[0]),summary=json(names[1]),raw=Buffer.from(members[names[4]]);
-  assert.equal(owner.status,contextVariant?"two-fresh-filter-context-source-builds-verified-not-browser-acceptance":"two-fresh-filter-region-source-builds-verified-not-browser-acceptance");
+  assert.equal(owner.status,`two-fresh-filter-${variant}-source-builds-verified-not-browser-acceptance`);
   assert.equal(owner.rawByteEquality,true);assert.equal(owner.ownedOwnerScratchRemoved,true);assert.deepEqual(owner.failures,[]);
   assert.equal(owner.rawRepeatReceipt.sha256,sha(members[names[1]]));
-  assert.equal(summary.status,contextVariant?"two-fresh-private-filter-context-source-builds-byte-identical-not-browser-acceptance":"two-fresh-private-filter-region-source-builds-byte-identical-not-browser-acceptance");
+  assert.equal(summary.status,`two-fresh-private-filter-${variant}-source-builds-byte-identical-not-browser-acceptance`);
   if(contextVariant)assert.equal(summary.renderContextPatch.patchedSha256,renderContextPatch.patchedSha256);
+  if(liveness)assert.equal(summary.filterLivenessPatch.patchedSha256,filterLivenessPatch.patchedSha256);
   assert.equal(summary.rawBytesEqual,true);assert.equal(summary.publicEngineUnchanged,true);assert.equal(summary.ownedDriverScratchRemoved,true);
   assert.equal(summary.secondOwnedRawAndLockRemovedAfterExactVerification,true);assert.deepEqual(summary.failures,[]);
   assert.equal(summary.builds.length,2);assert.notEqual(summary.builds[0].runtimeFromReceipt,summary.builds[1].runtimeFromReceipt);
   report.rawWasm=inspectRawWasm(raw);assert.notEqual(report.rawWasm.sha256,"c6014e1c42f7d88c92e858084e187e058451d480fa49e93487af9dc9a9ee5c09");
   if(contextVariant)assert.notEqual(report.rawWasm.sha256,"424e3a7cbb5de3bed809b66c49c575d6f8fb788f923fdd69a01e985412ff4321");
+  if(liveness)assert.notEqual(report.rawWasm.sha256,"f2d0d3ffc09fb7384e2c50ad8a332e10064089fa349bf92ea97b1222c6c6fa71");
   assert.equal(sha(members[names[3]]),bytesRepair.repairedLockSha256);
   report.compileProofs=[];
   for(const name of [names[2],names[5]]){
@@ -63,14 +69,16 @@ try{
     assert.equal(row.filterRegionPatch.originalSha256,filterRegionPatch.originalSha256);assert.equal(row.filterRegionPatch.patchedSha256,filterRegionPatch.patchedSha256);
     assert.equal(row.filterRegionPatch.onlyOwnedFreshDependencyCheckoutChanged,true);assert.equal(row.filterRegionPatch.gitHead,filterRegionPatch.revision);
     if(contextVariant){assert.equal(row.renderContextPatch.patchedSha256,renderContextPatch.patchedSha256);assert.equal(row.renderContextPatch.onlyOwnedFreshDependencyCheckoutChanged,true);}
+    if(liveness){assert.equal(row.filterLivenessPatch.patchedSha256,filterLivenessPatch.patchedSha256);assert.equal(row.filterLivenessPatch.onlyOwnedFreshDependencyCheckoutChanged,true);}
     assert.deepEqual(row.commands.at(-1).args,[...compileContract.command]);assert.equal(row.commands.at(-1).exitCode,0);assert.equal(row.commands.at(-1).signal,null);
-    report.compileProofs.push({member:name,startedAt:row.startedAt,finishedAt:row.finishedAt,filterRegionPatch:row.filterRegionPatch,renderContextPatch:row.renderContextPatch??null,compiler:row.rustcVersion,lockSha256:row.lock.sha256,rawSha256:row.rawWasm.sha256,ownedScratchRemoved:true});
+    report.compileProofs.push({member:name,startedAt:row.startedAt,finishedAt:row.finishedAt,filterRegionPatch:row.filterRegionPatch,renderContextPatch:row.renderContextPatch??null,filterLivenessPatch:row.filterLivenessPatch??null,compiler:row.rustcVersion,lockSha256:row.lock.sha256,rawSha256:row.rawWasm.sha256,ownedScratchRemoved:true});
   }
   report.inputPin={schemaVersion:1,runId,headSha,artifactId:artifact.id,artifactBytes:zip.length,artifactSha256:sha(zip),
     members:Object.entries(members).map(([name,bytes])=>({name,bytes:bytes.length,sha256:sha(bytes)})).sort((a,b)=>a.name.localeCompare(b.name)),
     summaryMember:names[1],wasmMember:names[4],lockMember:names[3],compilerReceiptMembers:[names[2],names[5]],ownerReceiptMember:names[0],
-    kind:contextVariant?"two-fresh-filter-context-source-builds-byte-identical-before-postprocessing":"two-fresh-filter-region-source-builds-byte-identical-before-postprocessing"};
+    kind:`two-fresh-filter-${variant}-source-builds-byte-identical-before-postprocessing`};
   if(contextVariant)report.inputPin.renderContextPatchedSha256=renderContextPatch.patchedSha256;
+  if(liveness)report.inputPin.filterLivenessPatchedSha256=filterLivenessPatch.patchedSha256;
   report.status="verified-two-fresh-source-patched-raw-builds-not-postprocessing-or-browser-acceptance";
 }catch(error){report.status="failed-filter-source-artifact-verification";report.failures.push(String(error.stack??error));process.exitCode=1;}
 finally{
