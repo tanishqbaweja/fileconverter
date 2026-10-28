@@ -1,5 +1,19 @@
 # Remaining work audit
 
+Final evidence binding after browser run:25 focused PASS/0fail/0skip615.169ms,
+affected lint PASS. This includes the final browser receipt/source/cleanup check;
+the prior1881 full portable pass is not relabelled as including this later test.
+
+2026-10-28 — Reviewed parser patch cycle complete at3a86bb67: all19 unchanged
+headless privacy/offline/static-host cases PASS46.232s,0fail/skip/flaky; default
+Wrangler/Miniflare hosting, six bootstrap assets200 and five forbidden methods405.
+Both owned process births absent and scratch removed; protected original full
+SHA/size unchanged. Build/tsc/lint and1881 portable checks PASS before final
+browser-evidence test addition. No native-picker/headed, conversion-speed,
+process-memory, public-engine or full-goal acceptance. Audit0high/3moderate stays
+OPEN; SVG264.29MiB failure and unexecuted lifecycle hypothesis remain recorded.
+`evidence/2026-10-28-image-size-patch-verification.json`.
+
 2026-10-28 — Final patched-graph portable regression1881PASS/0fail/0skip,
 99.139s across566 files;162 prerequisite-bound qualification files NOT RUN.
 Production build/tsc/affected lint PASS; existing build warnings retained. No

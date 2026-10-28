@@ -75,3 +75,19 @@ test("fresh complete audit removes both high severity groups but keeps three mod
   assert.deepEqual(Object.keys(after.packageEntries), Object.keys(priorEntries));
   assert.deepEqual(Object.keys(after.packageEntries).filter(key => after.packageEntries[key] !== priorEntries[key]), ["node_modules/image-size"]);
 });
+test("changed dependency build passes all nineteen original privacy cases with source and owned cleanup proof", async () => {
+  const proof = await json("evidence/2026-10-28-image-size-patch-verification.json"), entry = proof.privacyBrowserReceipt;
+  const bytes = await readFile(entry.path); assert.equal(bytes.length, entry.bytes); assert.equal(sha(bytes), entry.sha256);
+  const row = JSON.parse(bytes), audit = await json(proof.dependencyAudit);
+  assert.equal(row.status, "passed-complete-headless-privacy-offline-hosting-specs"); assert.equal(row.executedHead, entry.executedHead);
+  assert.deepEqual([row.stats.expected, row.stats.unexpected, row.stats.skipped, row.stats.flaky], [19,0,0,0]);
+  assert.equal(row.sourcePins["package.json"], audit.packageSha256); assert.equal(row.sourcePins["package-lock.json"], audit.lockSha256);
+  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await readFile(file)), digest, file);
+  assert.equal(row.methodPreflight.length, 5); assert.ok(row.methodPreflight.every(value => value.status === 405 && value.allow === "GET, HEAD"));
+  assert.equal(row.assetPreflight.length, 6); assert.ok(row.assetPreflight.every(value => value.status === 200));
+  assert.equal(row.ownedRuntimeRemoved, true); assert.equal(row.processCleanup.length, 2);
+  assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent"));
+  assert.deepEqual(row.protectedOriginalBefore, row.protectedOriginalAfter);
+  assert.equal(row.protectedOriginalAfter.bytes, proof.originalBytesBeforeAndAfter); assert.equal(row.protectedOriginalAfter.sha256, proof.originalSha256BeforeAndAfter);
+  assert.equal(row.headedCoverage, false); assert.equal(row.conversionMemoryAcceptance, false); assert.equal(row.publicPromotion, false);
+});

@@ -11342,3 +11342,11 @@ Eight historical dependency-input mismatches from first regression repaired by
 binding only those old checks to the exact archived package/lock; old memory
 failures and browser results unchanged.22 focused checks PASS after repair.
 One current-build19-case headless privacy/offline/hosting gate pending.
+
+Final browser gate at3a86bb67:19PASS/0fail/0skip/0flaky,46.232s, unchanged full
+privacy/offline/static-host specs using default Wrangler/Miniflare production
+build. Six bootstrap assets200; POST/PUT/PATCH/DELETE/OPTIONS405. Two owned process
+births absent, owned runtime removed, protected original2,958,573,265B and full
+SHA31f36695…9db34 unchanged before/after. Exact raw receipt bound in
+`evidence/2026-10-28-image-size-patch-verification.json`. Not headed/native-picker,
+conversion-memory, SVG qualification or complete security/release acceptance.
