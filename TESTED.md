@@ -11312,3 +11312,12 @@ Next actual adapter/failure-slot rebind, original content/adverse/memory control
 then balanced identical-input A/B. No unchanged multi-hour baseline repeated.
 Final focused13/13 PASS2538.290ms/zero skips; fourteen-file lint zero warnings/
 errors and diffcheck PASS. Current public assets and protected original untouched.
+# 2026-10-28 — Lifecycle diagnostic blocked before conversion
+
+One headless run at04a8cf5f stopped on the unchanged earliest-blank stability gate.
+17 samples, no accepted baseline, zero conversion cases, no lifecycle events.
+This neither confirms nor rejects retained navigation state and is NOT a memory
+pass. Four owned process births observed absent, both runtime directories removed,
+original size/full SHA unchanged. No unchanged retry planned; continue independent
+dependency security work. `evidence/2026-10-28-svg-lifecycle-diagnostic-terminal.json`.
+

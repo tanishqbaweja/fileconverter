@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "04a8cf5f",
+  "wrapper": { "path": "evidence/2026-10-28T05-52-55-748Z-reproduced-svg-browser.json", "bytes": 36539, "sha256": "fd5c03010620f89cb28ce70b0ecc911d49cd9aa6c8b85e31cb95a3f56e6003ec" },
+  "browser": { "path": "evidence/2026-10-28T05-52-56-231Z-source-svg-browser.json", "bytes": 226795, "sha256": "b64ae330afa10030caad544f0d97591b9c90ecf3e77e96aa9304fd9d294baed2" },
+  "conclusion": "Stopped before conversion: earliest clean blank baseline did not stabilize within unchanged deadline",
+  "blankSamples": 17,
+  "blankBaseline": null,
+  "conversionCasesExecuted": 0,
+  "lifecycleObservationsExecuted": false,
+  "retainedNavigationHypothesis": "untested, not confirmed or rejected",
+  "memoryAcceptance": false,
+  "baselineThresholdServicesOrProductionChanged": false,
+  "ownedScratchRemoved": true,
+  "ownedProcessBirthsObservedAbsent": 4,
+  "protectedOriginalBytes": 2958573265,
+  "protectedOriginalSha256BeforeAndAfter": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+  "unchangedRunReplayPlanned": false,
+  "next": "Continue dependency security work without another unchanged browser memory run",
+  "originalGoalComplete": false
+}

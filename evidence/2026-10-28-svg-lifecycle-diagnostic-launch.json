@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "04a8cf5f",
+  "command": "scripts/test-reproduced-svg-candidate.mjs --lifecycle-diagnostic",
+  "sessionId": 81175,
+  "observedRunningAt": "2026-10-28T05:53:05Z",
+  "estimatedRemainingSeconds": 150,
+  "notBeforeNextObservation": "2026-10-28T05:55:35Z",
+  "singleExecutionOnly": true,
+  "headless": true,
+  "diagnosticNotAcceptance": true
+}

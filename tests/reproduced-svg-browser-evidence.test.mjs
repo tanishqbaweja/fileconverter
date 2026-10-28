@@ -34,3 +34,20 @@ test("actual reproduced SVG functional pass stays a 264 MiB memory failure with 
   assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent")); assert.equal(wrapper.processCleanup.status, "owned-identity-absent");
   assert.deepEqual(row.protectedOriginalAfter, row.protectedOriginalBefore); assert.equal(row.publicEngineReplacement, false);
 });
+test("lifecycle diagnostic that never stabilized its earliest blank remains unexecuted, not evidence for the hypothesis", async () => {
+  const proof = JSON.parse(await read("evidence/2026-10-28-svg-lifecycle-diagnostic-terminal.json"));
+  const values = [];
+  for (const entry of [proof.wrapper, proof.browser]) {
+    const bytes = await read(entry.path); assert.equal(bytes.length, entry.bytes); assert.equal(sha(bytes), entry.sha256); values.push(JSON.parse(bytes));
+  }
+  const [wrapper, browser] = values;
+  assert.equal(wrapper.lifecycleDiagnostic, true); assert.equal(wrapper.stats, null); assert.equal(wrapper.incrementalPrivateMiB, null);
+  assert.equal(browser.blankBaseline, null); assert.equal(browser.blankSamples.length, 17);
+  assert.equal(browser.lifecycleDiagnostic, undefined); assert.equal(browser.stats, undefined);
+  assert.match(browser.failures[0], /Do not delay\/inflate the earliest stable blank baseline/);
+  assert.equal(browser.ownedRuntimeRemoved, true); assert.equal(wrapper.ownedGenerationRuntimeRemoved, true);
+  assert.ok(browser.processCleanup.every(row => row.status === "owned-identity-absent"));
+  assert.equal(wrapper.processCleanup.status, "owned-identity-absent");
+  assert.deepEqual(browser.protectedOriginalBefore, browser.protectedOriginalAfter);
+  assert.equal(proof.retainedNavigationHypothesis, "untested, not confirmed or rejected");
+});
