@@ -1,5 +1,41 @@
 # Remaining work audit
 
+New-code581-file portable run terminal recovered durably:1947PASS/1FAIL/
+0skip/0cancel123.265s. Only failure: old37-module inventory versus new38th
+unconnected worker helper. New helper contains no module-scoped mutable job state
+or message loop; exact inventory updated to38 plus explicit presence/non-public
+import guards. All lifecycle assertions retained. Focused verification follows;
+do not relabel the retained failed full run as all-green or immediately repeat
+the entire expensive suite for this single inventory correction.162qualification
+files remain NOT RUN. `evidence/2026-10-28-svg-strip-foundation-portable.json`.
+
+2026-10-28 — Partial implementation: private incremental PNG helper added but
+NOT imported into a public conversion. Straight RGBA input/full-row validation,
+256KiB filtered working cap, serial awaited<=64KiB IDAT writes,64MiB total output
+cap, exact source height, cancellation/error/finally producer return implemented.
+5 synthetic checks PASS238.630ms. First HWM0 sink deadlock rejected/fixed to1
+(owned test process birth-verified cleanup); invalid infinite-source cancellation
+fixture corrected, production height guard retained. Actual SVG pixels are
+premultiplied and require correct conversion; do not wire them directly here.
+Viewport mapping/halo safety, genuine6M rendering, alpha/seam fidelity, recovery,
+repeat speed/memory measurements remain OPEN. Existing renderer/public selector
+unchanged. This is groundwork toward avoiding24MB clones, not an accepted fix.
+
+2026-10-28 — Allocation cause now genuinely observed, NOT fixed: actual6M
+native probe selected site3/payload-allocation-null/value24000000 at exactly
+get_input/function532 trap0x1a91ff. This excludes the Arc-overflow alternative
+for this run, but does not distinguish heap fragmentation from cap exhaustion
+or prove physical host OOM. Same96MiB cap/source/reference/fidelity threshold.
+0success/1fail/2notrun; no PNG/SSIM, no memory qualification despite diagnostic
+stable-baseline204.46484375MiB/46valid samples. Six owned roots absent; all
+disposable data removed; protected original unchanged. Do not repeat this probe.
+The current crop option clones a rectangle AFTER full rasterization; rejected
+as a fix without a new test. Investigate viewport/strip rendering plus bounded
+incremental PNG with seam/alpha/filter fidelity checks, not a heap increase or
+fixture-specific simplification. Portable66702 terminal result unrecoverable:
+UNVERIFIED, not passed; no rerun solely for observation loss. Whole goal ACTIVE.
+`evidence/2026-10-28-svg-allocation-probe-terminal.json`.
+
 2026-10-28 — Allocation probe prepared, not an optimization: five exact branch
 edges reach get_input's observed trap (four null malloc checks, one Arc counter
 overflow). Static offset alone cannot choose a cause. Add two scalar Wasm

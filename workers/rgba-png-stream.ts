@@ -1,0 +1,130 @@
+// Private strip-rendering foundation. Not connected to any public profile.
+// Input is straight (not premultiplied) RGBA, in complete rows, in image order.
+import { updateCrc32 } from "./archive-conversion";
+
+export const PNG_STRIP_BYTES = 256 * 1024;
+export const PNG_IDAT_BYTES = 64 * 1024 - 12;
+const MAX_PIXELS = 8_388_608;
+const MAX_OUTPUT = 64 * 1024 * 1024;
+
+export interface PngStripObservation {
+  rows: number;
+  outputBytes: number;
+  maximumRgbaBytes: number;
+  maximumFilteredBytes: number;
+  maximumCodecChunkBytes: number;
+  maximumWriteBytes: number;
+  maximumPendingWrites: number;
+}
+
+interface Options {
+  width: number;
+  height: number;
+  strips: AsyncIterable<Uint8Array<ArrayBuffer>>;
+  assertActive: () => void;
+  write: (bytes: Uint8Array<ArrayBuffer>) => Promise<void>;
+  observation: PngStripObservation;
+}
+
+export function pngStripObservation(): PngStripObservation {
+  return { rows: 0, outputBytes: 0, maximumRgbaBytes: 0,
+    maximumFilteredBytes: 0, maximumCodecChunkBytes: 0,
+    maximumWriteBytes: 0, maximumPendingWrites: 0 };
+}
+
+function chunk(type: string, data: Uint8Array<ArrayBuffer>): Uint8Array<ArrayBuffer> {
+  const kind = new TextEncoder().encode(type), bytes = new Uint8Array(data.length + 12);
+  const view = new DataView(bytes.buffer);
+  view.setUint32(0, data.length);
+  bytes.set(kind, 4); bytes.set(data, 8);
+  const crc = updateCrc32(updateCrc32(0xffff_ffff, kind), data);
+  view.setUint32(bytes.length - 4, (crc ^ 0xffff_ffff) >>> 0);
+  return bytes;
+}
+
+// Sub filtering needs only the current row, with no prior-strip dependency.
+function filter(rgba: Uint8Array<ArrayBuffer>, rowBytes: number): Uint8Array<ArrayBuffer> {
+  const rows = rgba.length / rowBytes, filtered = new Uint8Array((rowBytes + 1) * rows);
+  for (let row = 0; row < rows; row++) {
+    const input = row * rowBytes, output = row * (rowBytes + 1);
+    filtered[output] = 1;
+    for (let x = 0; x < rowBytes; x++) {
+      filtered[output + 1 + x] = rgba[input + x] - (x < 4 ? 0 : rgba[input + x - 4]);
+    }
+  }
+  return filtered;
+}
+
+export async function writeRgbaPngStrips(options: Options): Promise<void> {
+  const { width, height, strips, observation, assertActive, write } = options;
+  if (![width, height].every(value => Number.isSafeInteger(value) && value > 0 && value <= 8192)
+      || width * height > MAX_PIXELS) throw new RangeError("PNG strip dimensions exceed the bounded profile.");
+  if (typeof CompressionStream !== "function") throw new Error("Streaming DEFLATE is unavailable.");
+  const rowBytes = width * 4, iterator = strips[Symbol.asyncIterator]();
+  let returning: Promise<void> | null = null;
+  let pendingRead: Promise<IteratorResult<Uint8Array<ArrayBuffer>>> | null = null;
+  const releaseInput = () => returning ??= (async () => {
+    // Do not race return() against an in-flight producer operation.
+    await pendingRead?.catch(() => {});
+    await iterator.return?.();
+  })();
+  let pendingWrites = 0;
+  const writeOne = async (bytes: Uint8Array<ArrayBuffer>) => {
+    assertActive();
+    if (bytes.length > 65536 || observation.outputBytes + bytes.length > MAX_OUTPUT)
+      throw new RangeError("PNG output exceeds the bounded write or output limit.");
+    pendingWrites++;
+    observation.maximumPendingWrites = Math.max(observation.maximumPendingWrites, pendingWrites);
+    if (pendingWrites !== 1) throw new Error("PNG output writes must be serial.");
+    observation.maximumWriteBytes = Math.max(observation.maximumWriteBytes, bytes.length);
+    try { await write(bytes); observation.outputBytes += bytes.length; }
+    finally { pendingWrites--; }
+  };
+  let primaryFailure = false;
+  try {
+    await writeOne(new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]));
+    const header = new Uint8Array(13), view = new DataView(header.buffer);
+    view.setUint32(0, width); view.setUint32(4, height); header[8] = 8; header[9] = 6;
+    await writeOne(chunk("IHDR", header));
+    const source = new ReadableStream<Uint8Array<ArrayBuffer>>({
+      async pull(controller) {
+        assertActive();
+        pendingRead = iterator.next();
+        const next = await pendingRead;
+        pendingRead = null;
+        assertActive();
+        if (next.done) {
+          if (observation.rows !== height) throw new Error("PNG strips ended before the declared height.");
+          controller.close(); return;
+        }
+        const rgba = next.value;
+        if (!(rgba instanceof Uint8Array) || rgba.length === 0 || rgba.length % rowBytes !== 0)
+          throw new RangeError("PNG strip must contain complete nonempty RGBA rows.");
+        const rows = rgba.length / rowBytes;
+        if ((rowBytes + 1) * rows > PNG_STRIP_BYTES || observation.rows + rows > height)
+          throw new RangeError("PNG strip exceeds the fixed working limit or declared height.");
+        const filtered = filter(rgba, rowBytes);
+        observation.maximumRgbaBytes = Math.max(observation.maximumRgbaBytes, rgba.length);
+        observation.maximumFilteredBytes = Math.max(observation.maximumFilteredBytes, filtered.length);
+        observation.rows += rows;
+        controller.enqueue(filtered);
+      },
+      cancel: releaseInput,
+    }, { highWaterMark: 0 });
+    await source.pipeThrough(new CompressionStream("deflate")).pipeTo(new WritableStream({
+      async write(bytes: Uint8Array<ArrayBuffer>) {
+        assertActive();
+        observation.maximumCodecChunkBytes = Math.max(observation.maximumCodecChunkBytes, bytes.length);
+        if (bytes.length > PNG_STRIP_BYTES) throw new RangeError("Unexpectedly large streaming DEFLATE output chunk.");
+        for (let offset = 0; offset < bytes.length; offset += PNG_IDAT_BYTES) {
+          await writeOne(chunk("IDAT", bytes.subarray(offset, Math.min(offset + PNG_IDAT_BYTES, bytes.length))));
+        }
+      },
+    }, { highWaterMark: 1 }));
+    await writeOne(chunk("IEND", new Uint8Array(0)));
+  } catch (error) { primaryFailure = true; throw error; }
+  finally {
+    // A generator cleanup failure must not hide a native/IO/cancellation error.
+    try { await releaseInput(); } catch (error) { if (!primaryFailure) throw error; }
+  }
+}

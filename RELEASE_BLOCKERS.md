@@ -9,6 +9,16 @@ The user's decision is to continue independent work, not disable the on-device
 model service or alter a profile to obtain a passing memory result.
 
 Current checkpoint:1933 portable PASS at3c5adafb; build/TypeScript/lint PASS.
+Newer allocation diagnostic atce345071 confirmed a24,000,000-byte failed payload
+allocation (site3), not Arc overflow. Still0valid outputs/1failure/2notrun; the
+204.46484375MiB diagnostic increase does not qualify a failed/instrumented route.
+No unchanged replay. A private incremental PNG strip writer now has7focused
+checks; it is NOT connected to the public SVG path. Actual viewport/halo/alpha
+fidelity and complete browser recovery/memory/performance gates remain OPEN.
+Portable66702's terminal observation was lost (UNVERIFIED); the new-code581-file
+regression97613 saves a durable report instead. See
+`evidence/2026-10-28-svg-allocation-probe-terminal.json` and
+`evidence/2026-10-28-svg-strip-foundation-checkpoint.json`.
 Prior private8M exact-pixel/cancel/write-error/retry proof remains scoped history,
 not a reason to repeat it. Distinct6M effects FAILED before PNG: native trap in
 resvg::filter::get_input; one destructor error now no longer masks the primary

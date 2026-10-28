@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "status": "diagnosis-confirmed-conversion-still-failed",
+  "executedHead": "ce345071",
+  "receipts": [
+    { "path": "evidence/2026-10-28T13-23-41-328Z-reproduced-svg-grid-stress.json", "bytes": 73969, "sha256": "24bf7c642d1259f76d10e40865ad2aef25932390e45f3905bd9a4e479fe228e1" },
+    { "path": "evidence/2026-10-28T13-24-07-131Z-source-svg-browser.json", "bytes": 259093, "sha256": "9a03a4331d02efbece1c229a0bc4882b014726afdae1aff92969cbe49ef3ca3a" }
+  ],
+  "conversion": { "passed": 0, "failed": 1, "notRun": 2, "durationMs": 4055.6669999999995, "outputBytes": 0, "ssim": null },
+  "diagnosis": {
+    "functionIndex": 532,
+    "functionName": "resvg::filter::get_input",
+    "instrumentedTrapOffset": 1741311,
+    "probe": { "site": 3, "value": 24000000 },
+    "kind": "payload-allocation-null",
+    "attemptedAllocationBytes": 24000000,
+    "exactNativeTrapAndProbeMatched": true,
+    "referenceCountOverflow": false,
+    "fragmentationVersusCapExhaustionProven": false,
+    "hostPhysicalOutOfMemoryProven": false
+  },
+  "unchangedConstraints": { "maximumWasmBytes": 100663296, "pixels": 6000000, "minimumSsim": 0.99, "completeTreeLimitMiB": 250, "browserServicesDisabled": false, "baselineAdjusted": false },
+  "observationsNotAcceptance": { "stableBlankPrivateBytes": 329138176, "blankSpreadBytes": 491520, "peakCompleteTreePrivateBytes": 543535104, "incrementalPrivateMiB": 204.46484375, "validNativeSamples": 46, "unavailableNativeSamples": 0, "wasmBytesAtFailure": 82247680, "instrumentedDiagnostic": true },
+  "memoryAcceptance": false,
+  "fidelityAcceptance": false,
+  "optimizationProven": false,
+  "publicEngineReplacement": false,
+  "wholeGoalComplete": false,
+  "cleanup": { "ownedRootsObservedAbsent": 6, "fixtureAndReferenceRemoved": true, "browserRuntimeRemoved": true, "generationRuntimeRemoved": true, "protectedOriginalBeforeEqualsAfter": true, "originalBytes": 2958573265, "originalSha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" },
+  "retainedFailureTrace": { "path": "output/playwright/2026-10-28T13-24-07-131Z-source-svg-failure.zip", "bytes": 1270051, "sha256": "60b47b17de7a7e077cd25751cf49b2991b75353da2071132f7cdc247da55a803" },
+  "portableRegressionObservation": { "session": 66702, "selectedFiles": 579, "qualificationFilesNotRun": 162, "terminalOutputRecovered": false, "passedClaim": false, "note": "Terminal tool output was lost; the same session handle no longer exists. No rerun solely to replace a missing observation." },
+  "next": "Avoid the full-frame allocation; do not replay this unchanged probe. Existing crop option runs after full rendering and cannot fix it. Investigate a private viewport/strip pipeline with incremental PNG and independent seam/alpha validation before public adoption."
+}

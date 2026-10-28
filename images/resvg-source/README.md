@@ -155,3 +155,28 @@ artifact is pinned in `repeated-processed-input.json`; only one candidate/glue
 copy was retained, all owned postprocessor scratch removed, public engine unchanged.
 Do not replay either raw compilation or postprocessing unchanged. Browser evidence
 for the earlier unremapped candidate does not qualify these new bytes.
+
+## Confirmed allocation failure and private strip work
+
+`node scripts/test-reproduced-svg-stress.mjs --effects-allocation-probe` was
+executed once against the same6M effects source/reference. Two scalar globals
+and balanced stores identify which original trap edge was taken. Removing only
+the diagnostic additions restores every original Wasm byte; the96MiB maximum
+and all original branch conditions are unchanged. The actual counter selected
+payload-allocation-null/site3 with requested size24,000,000 bytes and matching
+get_input/function532 trap0x1a91ff. This is NOT the Arc-overflow alternative.
+See `evidence/2026-10-28-svg-allocation-probe-terminal.json`. Do not rerun this
+unchanged diagnostic. It produced zero output and does not qualify fidelity or
+memory, even though the diagnostic full-tree increase was204.46484375MiB.
+
+The upstream `crop` option runs after full rasterization, so it cannot avoid
+the allocation. `workers/rgba-png-stream.ts` is an unconnected private foundation
+for incremental lossless PNG writing from straight-alpha RGBA strips. Each
+filtered strip is capped at256KiB; each destination write is at most64KiB and
+awaited, with one active write. No full-output collection/Blob is used. Synthetic
+algorithm tests validate CRCs, independent zlib inflate, exact channel/alpha
+bytes, errors, cancellation, and producer release. They do not execute an SVG
+renderer or qualify a browser conversion. Resvg pixels are premultiplied; they
+must NOT be passed directly to this straight-alpha encoder. Real viewport/halo
+rendering, alpha conversion, independent seam/fidelity, memory, and recovery
+tests are still required before connecting or advertising any strip route.

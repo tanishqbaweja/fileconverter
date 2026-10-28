@@ -1,5 +1,41 @@
 # Tested conversion ledger
 
+2026-10-28 — Durable new-code portable regression:1947PASS/1FAIL/0skip/
+0cancel123.265s (581files;162qualificationNOTRUN). Sole failure was the worker
+module inventory expecting37 after adding the38th unconnected helper. Audited
+the new helper's function-local state and updated exact inventory to38, adding
+explicit presence and no-public-import checks; mutable-state/message-loop
+assertions retained. Preserve the failed run; verify the inventory fix with its
+focused suite, not another unchanged full run. Durable receipt:
+`evidence/2026-10-28-svg-strip-foundation-portable.json`.
+
+2026-10-28 — Unconnected private PNG strip foundation:5 synthetic algorithm
+tests PASS/0fail/0skip/0cancel238.630ms; independent CRC/zlib/byte-for-byte RGBA
+checks, slow serial writes, invalid rows/dimensions, cancellation, producer return,
+primary error preservation.256KiB filtered strips/64KiB writes, no full-output
+collection in production helper. First draft sink highWaterMark0 stalled before
+any test finished; exact owned test PID/parent/birth verified then terminated,
+wrapper exited1/cleaned scratch. Correct sink highWaterMark1 restores one-active
+write backpressure. A separate cancellation test initially overran its synthetic
+infinite source before compressed IDAT emission; corrected to set cancellation
+at an actual producer boundary, not relax a production guard. No SVG conversion,
+viewport/seam/alpha-interpretation or memory qualification claimed. Public path
+and Wasm unchanged; next connect only in a private measured browser candidate.
+
+2026-10-28 — Actual6M allocation probe at ce345071 CONFIRMS a24,000,000-byte
+payload malloc returned null in get_input/function532 (site3, exact native
+trap0x1a91ff). Not the shared Arc-overflow branch. Fixed96MiB cap unchanged;
+fragmentation versus cap exhaustion/physical host OOM not separately proven.
+0success/1fail/2notrun, zero output/no SSIM. Stable early blank329138176B,
+whole-tree peak543535104B,204.46484375MiB incremental,46valid/0missing samples:
+DIAGNOSTIC ONLY, not memory acceptance for a failed/instrumented conversion.
+All six owned roots absent, disposable fixture/reference/profile/runtime data
+removed, original full SHA/size unchanged;1270051B failure trace retained.
+Full portable run66702's terminal output was lost and cannot be recovered; its
+result is UNVERIFIED, not passed, and it was not blindly restarted. Next avoid
+the full-frame copy; post-render cropping cannot help. See
+`evidence/2026-10-28-svg-allocation-probe-terminal.json`.
+
 2026-10-28 — Static/control-edge probe preparation: all five trap predecessors
 resolved; allocation failure and Arc-overflow remain distinct. Exact source Wasm
 round-trip after removing only103 added bytes PASS; no heap/linear-memory edit.

@@ -64,7 +64,10 @@ function topLevelConstContainers(tree) {
 }
 
 test("every worker module has an explicit cross-job retained-state contract", () => {
-  assert.equal(workerFiles.length, 37, "audit inventory must be updated for worker additions or removals");
+  assert.equal(workerFiles.length, 38, "audit inventory must be updated for worker additions or removals");
+  assert.ok(workerFiles.includes("rgba-png-stream.ts"));
+  // The private encoder adds no message loop, module-scoped job state or public route.
+  assert.doesNotMatch(source("workers/conversion.worker.ts"), /from ["']\.\/rgba-png-stream["']/);
   assert.ok(workerFiles.includes("vpx-core-loader.ts"));
   assert.ok(workerFiles.includes("mpeg2-split-runtime.ts"));
   assert.ok(workerFiles.includes("mpeg2-core-loader.ts"));

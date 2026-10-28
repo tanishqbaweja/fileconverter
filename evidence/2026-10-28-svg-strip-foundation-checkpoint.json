@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "status": "private-unconnected-strip-writer-focused-checks-passed-regression-running",
+  "recordedAt": "2026-10-28T13:46:39Z",
+  "scope": "Synthetic PNG algorithm/retained SVG failure evidence, not a genuine browser SVG conversion",
+  "implementation": "workers/rgba-png-stream.ts",
+  "publicRouteConnected": false,
+  "limits": { "filteredStripBytes": 262144, "destinationWriteBytes": 65536, "pendingDestinationWrites": 1, "totalOutputBytes": 67108864, "pixels": 8388608, "dimension": 8192 },
+  "focused": { "tests": 7, "passed": 7, "failed": 0, "skipped": 0, "cancelled": 0, "durationMs": 155.8915, "lint": "passed", "typescript": "passed" },
+  "rejectedDrafts": [
+    { "issue": "Writable sink highWaterMark0 prevents pipeTo from starting", "outcome": "Owned hung test failed after identity-verified termination; no conversion ran", "ownedTestIdentity": { "pid": 26364, "parentPid": 24764, "createdAt": "2026-10-28T13:42:30.0952890Z" }, "ownedIdentityObservedAbsent": true, "wrapperSession": 3679, "wrapperExit": 1, "wrapperFinallyCleanup": true, "correction": "Sink HWM1, source HWM0, serial awaited writes; finite per-test deadlines" },
+    { "issue": "Cancellation fixture awaited an IDAT write while infinite zero strips exceeded declared height first", "outcome": "4pass/1fail/0skip175.5363ms; real height guard correctly rejected source", "correction": "Trigger synthetic cancellation at the third producer boundary; retain all production bounds" }
+  ],
+  "regression": { "session": 97613, "selectedPortableFiles": 581, "qualificationFilesNotRun": 162, "durableReport": "evidence/2026-10-28-svg-strip-foundation-portable.json", "startedObservation": "2026-10-28T13:46:39Z", "estimatedDurationSeconds": 150, "notBeforeNextObservation": "2026-10-28T13:49:09Z", "sameHandleOnly": true, "passed": null },
+  "open": ["Private viewport rendering and safe halo planning", "Premultiplied-to-straight alpha correctness", "Independent filter/seam fidelity at unchanged0.99", "Actual browser success/cancel/write-failure/retry", "Repeat speed and whole-tree memory qualification"],
+  "genuineBrowserConversion": false,
+  "optimizationProven": false,
+  "memoryAcceptance": false,
+  "wholeGoalComplete": false
+}

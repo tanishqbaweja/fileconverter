@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "ce345071",
+  "command": "scripts/test-reproduced-svg-stress.mjs --effects-allocation-probe",
+  "sessionId": 89983,
+  "launchObservedAt": "2026-10-28T13:23:50Z",
+  "notBeforeTerminalCheck": "2026-10-28T13:26:50Z",
+  "estimatedRemainingSeconds": 180,
+  "reasonForChangedRun": "Read two temporary native globals to distinguish the five exact trap predecessor branches; not unchanged render replay or a compliance test",
+  "same6MInputReferenceSsim099Private96MiBCapAnd250MiBFormula": true,
+  "headless": true,
+  "doNotDuplicateWhileSessionIsLive": true,
+  "status": "launched-not-a-pass"
+}
