@@ -46,3 +46,21 @@ test("first idle diagnostic stays failed, while exact events and target identiti
   assert.equal(row.ownedRuntimeRemoved, true); assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent"));
   assert.deepEqual(row.protectedOriginalBefore, row.protectedOriginalAfter);
 });
+test("fixed real app retires all idle workers while away and creates fresh workers after both cached and fresh-document returns", async () => {
+  const read = file => readFile(new URL("../" + file, import.meta.url)), sha = b => createHash("sha256").update(b).digest("hex");
+  const proof = JSON.parse(await read("evidence/2026-10-28-idle-navigation-fixed-terminal.json")), bytes = await read(proof.raw.path);
+  assert.equal(bytes.length, proof.raw.bytes); assert.equal(sha(bytes), proof.raw.sha256);
+  const row = JSON.parse(bytes); assert.equal(row.status, proof.status); assert.deepEqual(row.failures, []); assert.equal(row.phases.length, 8);
+  const workers = phase => phase.targets.filter(target => target.type === "worker");
+  const away = row.phases.filter(phase => phase.phase.startsWith("away-"));
+  const returned = row.phases.filter(phase => phase.phase.startsWith("returned-"));
+  assert.deepEqual(away.map(phase => workers(phase).length), [0,0,0]); assert.deepEqual(returned.map(phase => workers(phase).length), [1,1,1]);
+  const initial = row.phases.find(phase => phase.phase === "app-initial-idle");
+  assert.equal(new Set([initial, ...returned].map(phase => workers(phase)[0].targetId)).size, 4);
+  assert.equal(row.events.filter(event => event.type === "pageshow" && event.persisted).length, 2);
+  assert.equal(row.browserServicesDisabled, false); assert.equal(row.bfcacheRestoreObserved, true); assert.equal(row.fullDomAndHarTracing, true);
+  assert.equal(row.memoryAcceptance, false); assert.equal(row.conversions, 0); assert.equal(row.baseline, null);
+  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await read(file)), digest, file);
+  assert.equal(row.ownedRuntimeRemoved, true); assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent"));
+  assert.deepEqual(row.protectedOriginalBefore, row.protectedOriginalAfter);
+});

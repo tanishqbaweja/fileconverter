@@ -16,6 +16,7 @@ test("generated suite differs only in explicit repository root and exact reprodu
       .replace("images/resvg-source/repeated-processed-input.json", "images/resvg-source/processed-candidate-input.json");
     assert.equal(restored, suiteBytes.toString(), "No assertion, route, fixture, validator, timing or quality changes");
     assert.equal(generated.proof.sameTenCasesAndAllAssertions, true); assert.equal(generated.proof.baseFilesModified, false);
+    assert.ok(generated.driver.includes('"lib/staged-worker-coordinator.ts"'), "Bind the actual changed lifecycle source in the raw browser receipt");
     assert.equal(sha(generated.driver), generated.proof.driverSha256); assert.equal(sha(generated.suite), generated.proof.suiteSha256);
     assert.ok(generated.driver.includes('"test", "image-conversions.spec.ts", "--config='), "CLI file filters are regexes: do not insert an unescaped Windows absolute path");
     for (const [name, source] of [["driver.mjs", generated.driver], ["suite.ts", generated.suite], ["config.mts", generated.config]]) {

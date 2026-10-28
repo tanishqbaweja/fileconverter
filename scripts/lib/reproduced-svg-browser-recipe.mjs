@@ -23,6 +23,7 @@ export function makeReproducedSvgBrowserQualification({ root, runtime, driverByt
   suite = replaceExactly(suite, 'const projectRoot = path.resolve(import.meta.dirname, "..", "..");', `const projectRoot = ${JSON.stringify(root)};`);
   suite = replaceExactly(suite, "images/resvg-source/processed-candidate-input.json", "images/resvg-source/repeated-processed-input.json");
   let driver = driverBytes.toString();
+  driver = replaceExactly(driver, '"lib/capability-registry.ts",', '"lib/staged-worker-coordinator.ts", "lib/capability-registry.ts",');
   driver = replaceExactly(driver, 'const root = path.resolve(import.meta.dirname, ".."),', `const root = ${JSON.stringify(root)},`);
   driver = replaceExactly(driver, "images/resvg-source/processed-candidate-input.json", "images/resvg-source/repeated-processed-input.json", 2);
   driver = replaceExactly(driver, 'assert.equal(receipt.status, "processed-private-source-candidate-not-rendering-or-browser-acceptance");',
@@ -72,5 +73,5 @@ export function makeReproducedSvgBrowserQualification({ root, runtime, driverByt
     proof: { baseSourcePins: reproducedSvgBasePins, driverSha256: sha(driver), suiteSha256: sha(suite), configSha256: sha(config),
       sameTenCasesAndAllAssertions: true, memoryFormulaAndThresholdUnchanged: true, lifecycleDiagnostic,
       normalBrowserServicesUnchanged: true, baseFilesModified: false,
-      changes: ["absolute owned-generation paths/imports", "new exact pinned engine artifact", "new source-repeat receipt requirements", "generated provenance fields"] } };
+      changes: ["absolute owned-generation paths/imports", "new exact pinned engine artifact", "new source-repeat receipt requirements", "generated provenance fields", "explicit current worker-coordinator source binding"] } };
 }

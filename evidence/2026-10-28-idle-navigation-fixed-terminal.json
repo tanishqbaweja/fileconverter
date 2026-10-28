@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "09deb0bc3ca7a26dafd69287e2b755686acaed43",
+  "raw": { "path": "evidence/2026-10-28T06-24-44-765Z-idle-navigation-diagnostic.json", "bytes": 64005, "sha256": "66640e401557e2014be866384b02e5024274c7b214fe8a2c697a7f9c24344709" },
+  "status": "completed-idle-navigation-diagnostic-not-conversion-or-memory-acceptance",
+  "phaseObservations": 8,
+  "awayConversionWorkerCounts": [0,0,0],
+  "returnedConversionWorkerCounts": [1,1,1],
+  "initialAndReturnedWorkerIdsAllDistinct": true,
+  "persistedPageShows": 2,
+  "freshDocumentReturns": 1,
+  "backForwardCacheDisabled": false,
+  "productionChange": "Retire only idle coordinator workers on pagehide, release code slots, restore on persisted pageshow",
+  "fullConversionPeakAllocationCauseProven": false,
+  "memoryAcceptance": false,
+  "nativeMemoryValuesAreSinglePointDiagnosticsNotStableBaselineOrPeak": true,
+  "conversions": 0,
+  "ownedRuntimeRemoved": true,
+  "ownedProcessBirthsAbsent": 2,
+  "originalSizeAndShaUnchanged": true,
+  "next": "Same ten-case exact reproduced-SVG conversion suite against changed lifecycle code with earliest stable blank/full Chromium tree, normal services, full DOM/HAR and unchanged 250 MiB guard"
+}

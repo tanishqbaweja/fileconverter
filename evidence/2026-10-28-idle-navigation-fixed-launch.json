@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "09deb0bc",
+  "command": "scripts/diagnose-navigation-worker-retention.mjs",
+  "sessionId": 95787,
+  "observedRunningAt": "2026-10-28T06:24:54Z",
+  "estimatedRemainingSeconds": 90,
+  "notBeforeNextObservation": "2026-10-28T06:26:24Z",
+  "singleExecutionOnly": true,
+  "reasonNotReplay": "Production idle worker ownership changed after observed retention; diagnostic browser-back waits for restored URL/readiness, not a load event",
+  "conversions": 0,
+  "memoryAcceptance": false,
+  "browserServicesDisabled": false,
+  "headless": true
+}

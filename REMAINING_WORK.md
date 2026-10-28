@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-28 — Actual changed idle lifecycle diagnostic COMPLETE:8 observations,
+away conversion workers0/0/0, returned1/1/1 with four distinct worker IDs including
+initial. Two persisted BFCache returns, one browser-chosen fresh document; cache
+and services never disabled. Source/trace bound, two owned births absent, scratch
+removed and original full SHA/size unchanged. Native values are single-point
+diagnostics, not accepted baseline/peak or optimization proof. Next same ten
+SVG conversion cases with actual changed coordinator explicitly hash-bound in
+outer/inner receipts, unchanged baseline/fulltree/quality/tracing/250MiB guards.
+`evidence/2026-10-28-idle-navigation-fixed-terminal.json`.
+
 Idle lifecycle pre-browser gate: production build, tsc and affected lint PASS;
 25 focused coordinator/navigation checks PASS259.058ms after final evidence and
 restoration-error additions. One corrected diagnostic against the changed build

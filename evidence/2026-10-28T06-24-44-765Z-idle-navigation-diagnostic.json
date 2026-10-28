@@ -1,0 +1,1718 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-28T06:24:44.765Z",
+  "status": "completed-idle-navigation-diagnostic-not-conversion-or-memory-acceptance",
+  "failures": [],
+  "sourcePins": {
+    "scripts/diagnose-navigation-worker-retention.mjs": "e49d551de5ba9d5a475e4d9a9a2bffd0ad364260efec7d93377e9141f361f625",
+    "app/converter/ConverterApp.tsx": "7ae964f6acdc50f7746d3b04a3717f2a18563216af9a11910a5e3b8aae22b9f3",
+    "lib/staged-worker-coordinator.ts": "121074352923911f8f851260ed903d6cc040e48107e67c3e97a6cc9b361de669",
+    "package.json": "c13423c98132f9f1beaf9cdea8ceadf3436f7cf94031c873cc150f743bd5978c",
+    "package-lock.json": "b2c97a14d64528607b8acd6394350ea741db853de36fcd2f4d46789c4b3964a4",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee",
+    "public/test-validator.html": "65d2ce0536bf852609358a9c59b81faf8aa6a63daeefc46324ee0ed727f88c4c",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094"
+  },
+  "phases": [
+    {
+      "phase": "blank-single-point-not-accepted-baseline",
+      "timestamp": "2026-10-28T06:24:56.671Z",
+      "targets": [],
+      "memory": {
+        "processes": [
+          {
+            "pid": 44112,
+            "parentPid": 46436,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.8564820Z",
+            "privateBytes": 45092864,
+            "rssBytes": 136073216
+          },
+          {
+            "pid": 10000,
+            "parentPid": 44112,
+            "type": "crashpad-handler",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.9338820Z",
+            "privateBytes": 2670592,
+            "rssBytes": 10473472
+          },
+          {
+            "pid": 29580,
+            "parentPid": 44112,
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.2863340Z",
+            "privateBytes": 110604288,
+            "rssBytes": 132939776
+          },
+          {
+            "pid": 48480,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "sandboxType": "none",
+            "createdAt": "2026-10-28T06:24:55.2960720Z",
+            "privateBytes": 13606912,
+            "rssBytes": 38821888
+          },
+          {
+            "pid": 20848,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:24:55.3375990Z",
+            "privateBytes": 8171520,
+            "rssBytes": 17772544
+          },
+          {
+            "pid": 42536,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.4094370Z",
+            "privateBytes": 45166592,
+            "rssBytes": 87937024
+          },
+          {
+            "pid": 44940,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.5366960Z",
+            "privateBytes": 18087936,
+            "rssBytes": 48693248
+          },
+          {
+            "pid": 34724,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6458580Z",
+            "privateBytes": 15597568,
+            "rssBytes": 32092160
+          },
+          {
+            "pid": 37040,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6490920Z",
+            "privateBytes": 18448384,
+            "rssBytes": 46440448
+          },
+          {
+            "pid": 46708,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.8584660Z",
+            "privateBytes": 23834624,
+            "rssBytes": 46915584
+          },
+          {
+            "pid": 36876,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "unzip.mojom.Unzipper",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:24:56.0293360Z",
+            "privateBytes": 8806400,
+            "rssBytes": 17219584
+          }
+        ],
+        "privateBytes": 310087680,
+        "rssBytes": 615378944
+      },
+      "memoryUnavailable": null,
+      "document": null
+    },
+    {
+      "phase": "app-initial-idle",
+      "timestamp": "2026-10-28T06:24:58.044Z",
+      "targets": [
+        {
+          "targetId": "C8B9A75AEC9315D74FCEBCBC4E4CF0AA",
+          "type": "service_worker",
+          "title": "Service Worker http://127.0.0.1:52950/sw.js",
+          "url": "http://127.0.0.1:52950/sw.js",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        },
+        {
+          "targetId": "C798D10850578377C3886735AEF64914",
+          "type": "worker",
+          "title": "within-conversion",
+          "url": "http://127.0.0.1:52950/assets/conversion.worker-CCZ-nVlb.js",
+          "attached": true,
+          "parentId": "7AD292EA07648C802AAD1536B80EAA09",
+          "canAccessOpener": false,
+          "parentFrameId": "7AD292EA07648C802AAD1536B80EAA09",
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        },
+        {
+          "targetId": "7AD292EA07648C802AAD1536B80EAA09",
+          "type": "page",
+          "title": "Within — private file conversion",
+          "url": "http://127.0.0.1:52950/",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        }
+      ],
+      "memory": {
+        "processes": [
+          {
+            "pid": 44112,
+            "parentPid": 46436,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.8564820Z",
+            "privateBytes": 49397760,
+            "rssBytes": 145244160
+          },
+          {
+            "pid": 10000,
+            "parentPid": 44112,
+            "type": "crashpad-handler",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.9338820Z",
+            "privateBytes": 2670592,
+            "rssBytes": 10473472
+          },
+          {
+            "pid": 29580,
+            "parentPid": 44112,
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.2863340Z",
+            "privateBytes": 127533056,
+            "rssBytes": 154804224
+          },
+          {
+            "pid": 48480,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "sandboxType": "none",
+            "createdAt": "2026-10-28T06:24:55.2960720Z",
+            "privateBytes": 15187968,
+            "rssBytes": 41177088
+          },
+          {
+            "pid": 20848,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:24:55.3375990Z",
+            "privateBytes": 8192000,
+            "rssBytes": 18018304
+          },
+          {
+            "pid": 42536,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.4094370Z",
+            "privateBytes": 45170688,
+            "rssBytes": 88150016
+          },
+          {
+            "pid": 34724,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6458580Z",
+            "privateBytes": 47022080,
+            "rssBytes": 99549184
+          },
+          {
+            "pid": 37040,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6490920Z",
+            "privateBytes": 18448384,
+            "rssBytes": 46473216
+          },
+          {
+            "pid": 46708,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.8584660Z",
+            "privateBytes": 23834624,
+            "rssBytes": 46915584
+          },
+          {
+            "pid": 38452,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:56.8441110Z",
+            "privateBytes": 20176896,
+            "rssBytes": 43429888
+          },
+          {
+            "pid": 5300,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:57.0886610Z",
+            "privateBytes": 15495168,
+            "rssBytes": 31920128
+          }
+        ],
+        "privateBytes": 373129216,
+        "rssBytes": 726155264
+      },
+      "memoryUnavailable": null,
+      "document": {
+        "state": {
+          "documentId": "94fee12f-e19a-401e-b37a-aa352339787c",
+          "events": [
+            {
+              "documentId": "94fee12f-e19a-401e-b37a-aa352339787c",
+              "type": "pageshow",
+              "persisted": false,
+              "href": "http://127.0.0.1:52950/",
+              "timestamp": "2026-10-28T06:24:56.918Z"
+            }
+          ]
+        },
+        "url": "http://127.0.0.1:52950/",
+        "crossOriginIsolated": true,
+        "navigationType": "navigate"
+      }
+    },
+    {
+      "phase": "away-1",
+      "timestamp": "2026-10-28T06:24:59.040Z",
+      "targets": [
+        {
+          "targetId": "C8B9A75AEC9315D74FCEBCBC4E4CF0AA",
+          "type": "service_worker",
+          "title": "Service Worker http://127.0.0.1:52950/sw.js",
+          "url": "http://127.0.0.1:52950/sw.js",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        },
+        {
+          "targetId": "7AD292EA07648C802AAD1536B80EAA09",
+          "type": "page",
+          "title": "Within local test validator",
+          "url": "http://127.0.0.1:52950/test-validator?navigation=1",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        }
+      ],
+      "memory": {
+        "processes": [
+          {
+            "pid": 44112,
+            "parentPid": 46436,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.8564820Z",
+            "privateBytes": 57495552,
+            "rssBytes": 160817152
+          },
+          {
+            "pid": 10000,
+            "parentPid": 44112,
+            "type": "crashpad-handler",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.9338820Z",
+            "privateBytes": 2686976,
+            "rssBytes": 10489856
+          },
+          {
+            "pid": 29580,
+            "parentPid": 44112,
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.2863340Z",
+            "privateBytes": 128802816,
+            "rssBytes": 156200960
+          },
+          {
+            "pid": 48480,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "sandboxType": "none",
+            "createdAt": "2026-10-28T06:24:55.2960720Z",
+            "privateBytes": 15310848,
+            "rssBytes": 41455616
+          },
+          {
+            "pid": 20848,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:24:55.3375990Z",
+            "privateBytes": 8196096,
+            "rssBytes": 18137088
+          },
+          {
+            "pid": 42536,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.4094370Z",
+            "privateBytes": 45174784,
+            "rssBytes": 88195072
+          },
+          {
+            "pid": 34724,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6458580Z",
+            "privateBytes": 41996288,
+            "rssBytes": 99012608
+          },
+          {
+            "pid": 37040,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6490920Z",
+            "privateBytes": 18448384,
+            "rssBytes": 46473216
+          },
+          {
+            "pid": 46708,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.8584660Z",
+            "privateBytes": 23834624,
+            "rssBytes": 46915584
+          },
+          {
+            "pid": 38452,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:56.8441110Z",
+            "privateBytes": 20307968,
+            "rssBytes": 44232704
+          },
+          {
+            "pid": 33908,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:58.0525640Z",
+            "privateBytes": 15503360,
+            "rssBytes": 31932416
+          },
+          {
+            "pid": 39280,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "chrome.mojom.ProcessorMetrics",
+            "sandboxType": "none",
+            "createdAt": "2026-10-28T06:24:58.4677500Z",
+            "privateBytes": 8830976,
+            "rssBytes": 21225472
+          },
+          {
+            "pid": 33988,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:58.4777260Z",
+            "privateBytes": 21229568,
+            "rssBytes": 44498944
+          },
+          {
+            "pid": 45316,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:58.4798120Z",
+            "privateBytes": 17276928,
+            "rssBytes": 41738240
+          },
+          {
+            "pid": 42776,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:58.5981530Z",
+            "privateBytes": 17264640,
+            "rssBytes": 41558016
+          },
+          {
+            "pid": 44088,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:58.6875160Z",
+            "privateBytes": 1011712,
+            "rssBytes": 4825088
+          }
+        ],
+        "privateBytes": 443371520,
+        "rssBytes": 897708032
+      },
+      "memoryUnavailable": null,
+      "document": {
+        "state": {
+          "documentId": "bf4f785d-2ab3-4156-9aee-7627a3329385",
+          "events": [
+            {
+              "documentId": "bf4f785d-2ab3-4156-9aee-7627a3329385",
+              "type": "pageshow",
+              "persisted": false,
+              "href": "http://127.0.0.1:52950/test-validator?navigation=1",
+              "timestamp": "2026-10-28T06:24:58.119Z"
+            }
+          ]
+        },
+        "url": "http://127.0.0.1:52950/test-validator?navigation=1",
+        "crossOriginIsolated": true,
+        "navigationType": "navigate"
+      }
+    },
+    {
+      "phase": "returned-1",
+      "timestamp": "2026-10-28T06:25:00.145Z",
+      "targets": [
+        {
+          "targetId": "C8B9A75AEC9315D74FCEBCBC4E4CF0AA",
+          "type": "service_worker",
+          "title": "Service Worker http://127.0.0.1:52950/sw.js",
+          "url": "http://127.0.0.1:52950/sw.js",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        },
+        {
+          "targetId": "0A714D951FE3EA14F15C2BE1DFD5EB1D",
+          "type": "worker",
+          "title": "within-conversion",
+          "url": "http://127.0.0.1:52950/assets/conversion.worker-CCZ-nVlb.js",
+          "attached": true,
+          "parentId": "7AD292EA07648C802AAD1536B80EAA09",
+          "canAccessOpener": false,
+          "parentFrameId": "7AD292EA07648C802AAD1536B80EAA09",
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        },
+        {
+          "targetId": "7AD292EA07648C802AAD1536B80EAA09",
+          "type": "page",
+          "title": "Within — private file conversion",
+          "url": "http://127.0.0.1:52950/",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        }
+      ],
+      "memory": {
+        "processes": [
+          {
+            "pid": 44112,
+            "parentPid": 46436,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.8564820Z",
+            "privateBytes": 59412480,
+            "rssBytes": 163676160
+          },
+          {
+            "pid": 10000,
+            "parentPid": 44112,
+            "type": "crashpad-handler",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.9338820Z",
+            "privateBytes": 2699264,
+            "rssBytes": 10498048
+          },
+          {
+            "pid": 29580,
+            "parentPid": 44112,
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.2863340Z",
+            "privateBytes": 131186688,
+            "rssBytes": 158482432
+          },
+          {
+            "pid": 48480,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "sandboxType": "none",
+            "createdAt": "2026-10-28T06:24:55.2960720Z",
+            "privateBytes": 15511552,
+            "rssBytes": 41721856
+          },
+          {
+            "pid": 20848,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:24:55.3375990Z",
+            "privateBytes": 8208384,
+            "rssBytes": 18173952
+          },
+          {
+            "pid": 42536,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.4094370Z",
+            "privateBytes": 45297664,
+            "rssBytes": 88891392
+          },
+          {
+            "pid": 34724,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6458580Z",
+            "privateBytes": 55783424,
+            "rssBytes": 111435776
+          },
+          {
+            "pid": 37040,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6490920Z",
+            "privateBytes": 18448384,
+            "rssBytes": 46485504
+          },
+          {
+            "pid": 46708,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.8584660Z",
+            "privateBytes": 23834624,
+            "rssBytes": 46915584
+          },
+          {
+            "pid": 38452,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:56.8441110Z",
+            "privateBytes": 24158208,
+            "rssBytes": 48058368
+          },
+          {
+            "pid": 25268,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:59.1046780Z",
+            "privateBytes": 15446016,
+            "rssBytes": 31887360
+          },
+          {
+            "pid": 47688,
+            "parentPid": 44112,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:59.3770860Z",
+            "privateBytes": 8208384,
+            "rssBytes": 16687104
+          },
+          {
+            "pid": 3136,
+            "parentPid": 44112,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:59.3775490Z",
+            "privateBytes": 7987200,
+            "rssBytes": 17170432
+          }
+        ],
+        "privateBytes": 416182272,
+        "rssBytes": 800083968
+      },
+      "memoryUnavailable": null,
+      "document": {
+        "state": {
+          "documentId": "94fee12f-e19a-401e-b37a-aa352339787c",
+          "events": [
+            {
+              "documentId": "94fee12f-e19a-401e-b37a-aa352339787c",
+              "type": "pageshow",
+              "persisted": false,
+              "href": "http://127.0.0.1:52950/",
+              "timestamp": "2026-10-28T06:24:56.918Z"
+            },
+            {
+              "documentId": "94fee12f-e19a-401e-b37a-aa352339787c",
+              "type": "pagehide",
+              "persisted": true,
+              "href": "http://127.0.0.1:52950/",
+              "timestamp": "2026-10-28T06:24:58.113Z"
+            },
+            {
+              "documentId": "94fee12f-e19a-401e-b37a-aa352339787c",
+              "type": "pageshow",
+              "persisted": true,
+              "href": "http://127.0.0.1:52950/",
+              "timestamp": "2026-10-28T06:24:59.076Z"
+            }
+          ]
+        },
+        "url": "http://127.0.0.1:52950/",
+        "crossOriginIsolated": true,
+        "navigationType": "navigate"
+      }
+    },
+    {
+      "phase": "away-2",
+      "timestamp": "2026-10-28T06:25:01.641Z",
+      "targets": [
+        {
+          "targetId": "C8B9A75AEC9315D74FCEBCBC4E4CF0AA",
+          "type": "service_worker",
+          "title": "Service Worker http://127.0.0.1:52950/sw.js",
+          "url": "http://127.0.0.1:52950/sw.js",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        },
+        {
+          "targetId": "7AD292EA07648C802AAD1536B80EAA09",
+          "type": "page",
+          "title": "Within local test validator",
+          "url": "http://127.0.0.1:52950/test-validator?navigation=2",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        }
+      ],
+      "memory": {
+        "processes": [
+          {
+            "pid": 44112,
+            "parentPid": 46436,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.8564820Z",
+            "privateBytes": 61501440,
+            "rssBytes": 166699008
+          },
+          {
+            "pid": 10000,
+            "parentPid": 44112,
+            "type": "crashpad-handler",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.9338820Z",
+            "privateBytes": 2699264,
+            "rssBytes": 10498048
+          },
+          {
+            "pid": 29580,
+            "parentPid": 44112,
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.2863340Z",
+            "privateBytes": 131776512,
+            "rssBytes": 159240192
+          },
+          {
+            "pid": 48480,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "sandboxType": "none",
+            "createdAt": "2026-10-28T06:24:55.2960720Z",
+            "privateBytes": 15679488,
+            "rssBytes": 42041344
+          },
+          {
+            "pid": 20848,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:24:55.3375990Z",
+            "privateBytes": 8249344,
+            "rssBytes": 18288640
+          },
+          {
+            "pid": 42536,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.4094370Z",
+            "privateBytes": 45318144,
+            "rssBytes": 89112576
+          },
+          {
+            "pid": 34724,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6458580Z",
+            "privateBytes": 55312384,
+            "rssBytes": 113573888
+          },
+          {
+            "pid": 37040,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6490920Z",
+            "privateBytes": 18485248,
+            "rssBytes": 46800896
+          },
+          {
+            "pid": 46708,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.8584660Z",
+            "privateBytes": 23855104,
+            "rssBytes": 47251456
+          },
+          {
+            "pid": 38452,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:56.8441110Z",
+            "privateBytes": 24236032,
+            "rssBytes": 48508928
+          },
+          {
+            "pid": 44968,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "data_decoder.mojom.DataDecoderService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:24:59.9372090Z",
+            "privateBytes": 8335360,
+            "rssBytes": 17653760
+          },
+          {
+            "pid": 38784,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:25:00.8643500Z",
+            "privateBytes": 15540224,
+            "rssBytes": 32206848
+          },
+          {
+            "pid": 18776,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:25:00.8655490Z",
+            "privateBytes": 21819392,
+            "rssBytes": 53305344
+          }
+        ],
+        "privateBytes": 432807936,
+        "rssBytes": 845180928
+      },
+      "memoryUnavailable": null,
+      "document": {
+        "state": {
+          "documentId": "ddf2610c-a1c4-4650-80d8-7999f37b6299",
+          "events": [
+            {
+              "documentId": "ddf2610c-a1c4-4650-80d8-7999f37b6299",
+              "type": "pageshow",
+              "persisted": false,
+              "href": "http://127.0.0.1:52950/test-validator?navigation=2",
+              "timestamp": "2026-10-28T06:25:00.224Z"
+            }
+          ]
+        },
+        "url": "http://127.0.0.1:52950/test-validator?navigation=2",
+        "crossOriginIsolated": true,
+        "navigationType": "navigate"
+      }
+    },
+    {
+      "phase": "returned-2",
+      "timestamp": "2026-10-28T06:25:02.974Z",
+      "targets": [
+        {
+          "targetId": "C8B9A75AEC9315D74FCEBCBC4E4CF0AA",
+          "type": "service_worker",
+          "title": "Service Worker http://127.0.0.1:52950/sw.js",
+          "url": "http://127.0.0.1:52950/sw.js",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        },
+        {
+          "targetId": "151F974DB7610F9AE7A8176A0186A321",
+          "type": "worker",
+          "title": "within-conversion",
+          "url": "http://127.0.0.1:52950/assets/conversion.worker-CCZ-nVlb.js",
+          "attached": true,
+          "parentId": "7AD292EA07648C802AAD1536B80EAA09",
+          "canAccessOpener": false,
+          "parentFrameId": "7AD292EA07648C802AAD1536B80EAA09",
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        },
+        {
+          "targetId": "7AD292EA07648C802AAD1536B80EAA09",
+          "type": "page",
+          "title": "Within — private file conversion",
+          "url": "http://127.0.0.1:52950/",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        }
+      ],
+      "memory": {
+        "processes": [
+          {
+            "pid": 44112,
+            "parentPid": 46436,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.8564820Z",
+            "privateBytes": 62148608,
+            "rssBytes": 167669760
+          },
+          {
+            "pid": 10000,
+            "parentPid": 44112,
+            "type": "crashpad-handler",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.9338820Z",
+            "privateBytes": 2699264,
+            "rssBytes": 10498048
+          },
+          {
+            "pid": 29580,
+            "parentPid": 44112,
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.2863340Z",
+            "privateBytes": 131592192,
+            "rssBytes": 159289344
+          },
+          {
+            "pid": 48480,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "sandboxType": "none",
+            "createdAt": "2026-10-28T06:24:55.2960720Z",
+            "privateBytes": 15450112,
+            "rssBytes": 41893888
+          },
+          {
+            "pid": 20848,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:24:55.3375990Z",
+            "privateBytes": 8257536,
+            "rssBytes": 18296832
+          },
+          {
+            "pid": 42536,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.4094370Z",
+            "privateBytes": 45731840,
+            "rssBytes": 89538560
+          },
+          {
+            "pid": 34724,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6458580Z",
+            "privateBytes": 71237632,
+            "rssBytes": 126124032
+          },
+          {
+            "pid": 37040,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6490920Z",
+            "privateBytes": 18505728,
+            "rssBytes": 46895104
+          },
+          {
+            "pid": 46708,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.8584660Z",
+            "privateBytes": 23891968,
+            "rssBytes": 47362048
+          },
+          {
+            "pid": 38452,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:56.8441110Z",
+            "privateBytes": 26521600,
+            "rssBytes": 50823168
+          },
+          {
+            "pid": 38784,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:25:00.8643500Z",
+            "privateBytes": 15609856,
+            "rssBytes": 32387072
+          },
+          {
+            "pid": 18776,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:25:00.8655490Z",
+            "privateBytes": 21876736,
+            "rssBytes": 53460992
+          },
+          {
+            "pid": 47080,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:25:02.3007390Z",
+            "privateBytes": 22421504,
+            "rssBytes": 47816704
+          }
+        ],
+        "privateBytes": 465944576,
+        "rssBytes": 892055552
+      },
+      "memoryUnavailable": null,
+      "document": {
+        "state": {
+          "documentId": "a39ab54a-6d6d-4e87-82ba-1c516fbb6081",
+          "events": [
+            {
+              "documentId": "a39ab54a-6d6d-4e87-82ba-1c516fbb6081",
+              "type": "pageshow",
+              "persisted": false,
+              "href": "http://127.0.0.1:52950/",
+              "timestamp": "2026-10-28T06:25:01.786Z"
+            }
+          ]
+        },
+        "url": "http://127.0.0.1:52950/",
+        "crossOriginIsolated": true,
+        "navigationType": "back_forward"
+      }
+    },
+    {
+      "phase": "away-3",
+      "timestamp": "2026-10-28T06:25:04.022Z",
+      "targets": [
+        {
+          "targetId": "C8B9A75AEC9315D74FCEBCBC4E4CF0AA",
+          "type": "service_worker",
+          "title": "Service Worker http://127.0.0.1:52950/sw.js",
+          "url": "http://127.0.0.1:52950/sw.js",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        },
+        {
+          "targetId": "7AD292EA07648C802AAD1536B80EAA09",
+          "type": "page",
+          "title": "Within local test validator",
+          "url": "http://127.0.0.1:52950/test-validator?navigation=3",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        }
+      ],
+      "memory": {
+        "processes": [
+          {
+            "pid": 44112,
+            "parentPid": 46436,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.8564820Z",
+            "privateBytes": 61349888,
+            "rssBytes": 166891520
+          },
+          {
+            "pid": 10000,
+            "parentPid": 44112,
+            "type": "crashpad-handler",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.9338820Z",
+            "privateBytes": 2699264,
+            "rssBytes": 10498048
+          },
+          {
+            "pid": 29580,
+            "parentPid": 44112,
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.2863340Z",
+            "privateBytes": 132464640,
+            "rssBytes": 160145408
+          },
+          {
+            "pid": 48480,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "sandboxType": "none",
+            "createdAt": "2026-10-28T06:24:55.2960720Z",
+            "privateBytes": 15482880,
+            "rssBytes": 41914368
+          },
+          {
+            "pid": 20848,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:24:55.3375990Z",
+            "privateBytes": 8257536,
+            "rssBytes": 18296832
+          },
+          {
+            "pid": 42536,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.4094370Z",
+            "privateBytes": 45731840,
+            "rssBytes": 89550848
+          },
+          {
+            "pid": 34724,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6458580Z",
+            "privateBytes": 68452352,
+            "rssBytes": 125054976
+          },
+          {
+            "pid": 37040,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6490920Z",
+            "privateBytes": 18505728,
+            "rssBytes": 46895104
+          },
+          {
+            "pid": 46708,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.8584660Z",
+            "privateBytes": 23891968,
+            "rssBytes": 47362048
+          },
+          {
+            "pid": 38452,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:56.8441110Z",
+            "privateBytes": 26542080,
+            "rssBytes": 50933760
+          },
+          {
+            "pid": 18776,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:25:00.8655490Z",
+            "privateBytes": 21876736,
+            "rssBytes": 53460992
+          },
+          {
+            "pid": 47080,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:25:02.3007390Z",
+            "privateBytes": 22421504,
+            "rssBytes": 47816704
+          },
+          {
+            "pid": 39404,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:25:03.0154230Z",
+            "privateBytes": 17014784,
+            "rssBytes": 33218560
+          }
+        ],
+        "privateBytes": 464691200,
+        "rssBytes": 892039168
+      },
+      "memoryUnavailable": null,
+      "document": {
+        "state": {
+          "documentId": "86af80bf-3b75-4a68-9d1d-492510271fa5",
+          "events": [
+            {
+              "documentId": "86af80bf-3b75-4a68-9d1d-492510271fa5",
+              "type": "pageshow",
+              "persisted": false,
+              "href": "http://127.0.0.1:52950/test-validator?navigation=3",
+              "timestamp": "2026-10-28T06:25:03.072Z"
+            }
+          ]
+        },
+        "url": "http://127.0.0.1:52950/test-validator?navigation=3",
+        "crossOriginIsolated": true,
+        "navigationType": "navigate"
+      }
+    },
+    {
+      "phase": "returned-3",
+      "timestamp": "2026-10-28T06:25:05.345Z",
+      "targets": [
+        {
+          "targetId": "C8B9A75AEC9315D74FCEBCBC4E4CF0AA",
+          "type": "service_worker",
+          "title": "Service Worker http://127.0.0.1:52950/sw.js",
+          "url": "http://127.0.0.1:52950/sw.js",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        },
+        {
+          "targetId": "B35E244AE514A45CC46B04D7F991025E",
+          "type": "worker",
+          "title": "within-conversion",
+          "url": "http://127.0.0.1:52950/assets/conversion.worker-CCZ-nVlb.js",
+          "attached": true,
+          "parentId": "7AD292EA07648C802AAD1536B80EAA09",
+          "canAccessOpener": false,
+          "parentFrameId": "7AD292EA07648C802AAD1536B80EAA09",
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        },
+        {
+          "targetId": "7AD292EA07648C802AAD1536B80EAA09",
+          "type": "page",
+          "title": "Within — private file conversion",
+          "url": "http://127.0.0.1:52950/",
+          "attached": true,
+          "canAccessOpener": false,
+          "browserContextId": "DF599D8E0255C0CF163D813C9FB5BCF2"
+        }
+      ],
+      "memory": {
+        "processes": [
+          {
+            "pid": 44112,
+            "parentPid": 46436,
+            "type": "browser",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.8564820Z",
+            "privateBytes": 61669376,
+            "rssBytes": 167211008
+          },
+          {
+            "pid": 10000,
+            "parentPid": 44112,
+            "type": "crashpad-handler",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:54.9338820Z",
+            "privateBytes": 2699264,
+            "rssBytes": 10498048
+          },
+          {
+            "pid": 29580,
+            "parentPid": 44112,
+            "type": "gpu-process",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.2863340Z",
+            "privateBytes": 133902336,
+            "rssBytes": 161804288
+          },
+          {
+            "pid": 48480,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "network.mojom.NetworkService",
+            "sandboxType": "none",
+            "createdAt": "2026-10-28T06:24:55.2960720Z",
+            "privateBytes": 15450112,
+            "rssBytes": 41897984
+          },
+          {
+            "pid": 20848,
+            "parentPid": 44112,
+            "type": "utility",
+            "utilitySubtype": "storage.mojom.StorageService",
+            "sandboxType": "service",
+            "createdAt": "2026-10-28T06:24:55.3375990Z",
+            "privateBytes": 8257536,
+            "rssBytes": 18296832
+          },
+          {
+            "pid": 42536,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.4094370Z",
+            "privateBytes": 45862912,
+            "rssBytes": 89575424
+          },
+          {
+            "pid": 34724,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6458580Z",
+            "privateBytes": 80392192,
+            "rssBytes": 134463488
+          },
+          {
+            "pid": 37040,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.6490920Z",
+            "privateBytes": 18505728,
+            "rssBytes": 46895104
+          },
+          {
+            "pid": 46708,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:55.8584660Z",
+            "privateBytes": 23891968,
+            "rssBytes": 47362048
+          },
+          {
+            "pid": 38452,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:24:56.8441110Z",
+            "privateBytes": 26578944,
+            "rssBytes": 51040256
+          },
+          {
+            "pid": 18776,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:25:00.8655490Z",
+            "privateBytes": 21876736,
+            "rssBytes": 53473280
+          },
+          {
+            "pid": 47080,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:25:02.3007390Z",
+            "privateBytes": 22421504,
+            "rssBytes": 47816704
+          },
+          {
+            "pid": 39404,
+            "parentPid": 44112,
+            "type": "renderer",
+            "utilitySubtype": null,
+            "sandboxType": null,
+            "createdAt": "2026-10-28T06:25:03.0154230Z",
+            "privateBytes": 17014784,
+            "rssBytes": 33218560
+          }
+        ],
+        "privateBytes": 478523392,
+        "rssBytes": 903553024
+      },
+      "memoryUnavailable": null,
+      "document": {
+        "state": {
+          "documentId": "a39ab54a-6d6d-4e87-82ba-1c516fbb6081",
+          "events": [
+            {
+              "documentId": "a39ab54a-6d6d-4e87-82ba-1c516fbb6081",
+              "type": "pageshow",
+              "persisted": false,
+              "href": "http://127.0.0.1:52950/",
+              "timestamp": "2026-10-28T06:25:01.786Z"
+            },
+            {
+              "documentId": "a39ab54a-6d6d-4e87-82ba-1c516fbb6081",
+              "type": "pagehide",
+              "persisted": true,
+              "href": "http://127.0.0.1:52950/",
+              "timestamp": "2026-10-28T06:25:03.065Z"
+            },
+            {
+              "documentId": "a39ab54a-6d6d-4e87-82ba-1c516fbb6081",
+              "type": "pageshow",
+              "persisted": true,
+              "href": "http://127.0.0.1:52950/",
+              "timestamp": "2026-10-28T06:25:04.044Z"
+            }
+          ]
+        },
+        "url": "http://127.0.0.1:52950/",
+        "crossOriginIsolated": true,
+        "navigationType": "back_forward"
+      }
+    }
+  ],
+  "events": [
+    {
+      "documentId": "94fee12f-e19a-401e-b37a-aa352339787c",
+      "type": "pageshow",
+      "persisted": false,
+      "href": "http://127.0.0.1:52950/",
+      "timestamp": "2026-10-28T06:24:56.918Z"
+    },
+    {
+      "documentId": "bf4f785d-2ab3-4156-9aee-7627a3329385",
+      "type": "pageshow",
+      "persisted": false,
+      "href": "http://127.0.0.1:52950/test-validator?navigation=1",
+      "timestamp": "2026-10-28T06:24:58.119Z"
+    },
+    {
+      "documentId": "94fee12f-e19a-401e-b37a-aa352339787c",
+      "type": "pageshow",
+      "persisted": true,
+      "href": "http://127.0.0.1:52950/",
+      "timestamp": "2026-10-28T06:24:59.076Z"
+    },
+    {
+      "documentId": "ddf2610c-a1c4-4650-80d8-7999f37b6299",
+      "type": "pageshow",
+      "persisted": false,
+      "href": "http://127.0.0.1:52950/test-validator?navigation=2",
+      "timestamp": "2026-10-28T06:25:00.224Z"
+    },
+    {
+      "documentId": "a39ab54a-6d6d-4e87-82ba-1c516fbb6081",
+      "type": "pageshow",
+      "persisted": false,
+      "href": "http://127.0.0.1:52950/",
+      "timestamp": "2026-10-28T06:25:01.786Z"
+    },
+    {
+      "documentId": "86af80bf-3b75-4a68-9d1d-492510271fa5",
+      "type": "pageshow",
+      "persisted": false,
+      "href": "http://127.0.0.1:52950/test-validator?navigation=3",
+      "timestamp": "2026-10-28T06:25:03.072Z"
+    },
+    {
+      "documentId": "a39ab54a-6d6d-4e87-82ba-1c516fbb6081",
+      "type": "pageshow",
+      "persisted": true,
+      "href": "http://127.0.0.1:52950/",
+      "timestamp": "2026-10-28T06:25:04.044Z"
+    }
+  ],
+  "eventOverflow": false,
+  "scope": "Three idle production app / same-origin static page / browser-back traversals, not conversion or peak memory acceptance",
+  "headed": false,
+  "browserServicesDisabled": false,
+  "fileSelections": 0,
+  "conversions": 0,
+  "memoryAcceptance": false,
+  "baseline": null,
+  "diagnosticPerturbsMemory": true,
+  "fullDomAndHarTracing": true,
+  "productionCodeChanged": false,
+  "originalGoalComplete": false,
+  "executedHead": "09deb0bc3ca7a26dafd69287e2b755686acaed43",
+  "hostMemory": {
+    "acquiredAt": "2026-10-28T06:24:45.6284727Z",
+    "freePhysicalBytes": 6172364800,
+    "freeVirtualBytes": 9196658688,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "browserBefore": {
+    "version": "156.0.8078.48",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4522648,
+      "sha256": "480f275b63d1ea39113cbc8344ac395578acc25b432bd39af5fbc77005179aca",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "28428972648127597",
+        "birthtimeNs": "1793052149841822100",
+        "mtimeNs": "1792460818004188000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.48\\chrome.dll",
+      "bytes": 308101784,
+      "sha256": "e23d982e66959f3d738154ba68dd2638c9c7473a7e0f362eaee2b1dad5e20f57",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "41095346600131756",
+        "birthtimeNs": "1793052149854400100",
+        "mtimeNs": "1792460826425077000"
+      }
+    }
+  },
+  "chromeArguments": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\navigation-worker-diagnostic-vAV3np\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "about:blank"
+  ],
+  "forbiddenRequests": [],
+  "forbiddenRequestOverflow": false,
+  "returnedDocuments": [
+    {
+      "phase": "returned-1",
+      "sameDocument": true,
+      "events": [
+        {
+          "documentId": "94fee12f-e19a-401e-b37a-aa352339787c",
+          "type": "pageshow",
+          "persisted": false,
+          "href": "http://127.0.0.1:52950/",
+          "timestamp": "2026-10-28T06:24:56.918Z"
+        },
+        {
+          "documentId": "94fee12f-e19a-401e-b37a-aa352339787c",
+          "type": "pagehide",
+          "persisted": true,
+          "href": "http://127.0.0.1:52950/",
+          "timestamp": "2026-10-28T06:24:58.113Z"
+        },
+        {
+          "documentId": "94fee12f-e19a-401e-b37a-aa352339787c",
+          "type": "pageshow",
+          "persisted": true,
+          "href": "http://127.0.0.1:52950/",
+          "timestamp": "2026-10-28T06:24:59.076Z"
+        }
+      ],
+      "currentOriginWorkerTargets": [
+        "0A714D951FE3EA14F15C2BE1DFD5EB1D"
+      ]
+    },
+    {
+      "phase": "returned-2",
+      "sameDocument": false,
+      "events": [
+        {
+          "documentId": "a39ab54a-6d6d-4e87-82ba-1c516fbb6081",
+          "type": "pageshow",
+          "persisted": false,
+          "href": "http://127.0.0.1:52950/",
+          "timestamp": "2026-10-28T06:25:01.786Z"
+        }
+      ],
+      "currentOriginWorkerTargets": [
+        "151F974DB7610F9AE7A8176A0186A321"
+      ]
+    },
+    {
+      "phase": "returned-3",
+      "sameDocument": false,
+      "events": [
+        {
+          "documentId": "a39ab54a-6d6d-4e87-82ba-1c516fbb6081",
+          "type": "pageshow",
+          "persisted": false,
+          "href": "http://127.0.0.1:52950/",
+          "timestamp": "2026-10-28T06:25:01.786Z"
+        },
+        {
+          "documentId": "a39ab54a-6d6d-4e87-82ba-1c516fbb6081",
+          "type": "pagehide",
+          "persisted": true,
+          "href": "http://127.0.0.1:52950/",
+          "timestamp": "2026-10-28T06:25:03.065Z"
+        },
+        {
+          "documentId": "a39ab54a-6d6d-4e87-82ba-1c516fbb6081",
+          "type": "pageshow",
+          "persisted": true,
+          "href": "http://127.0.0.1:52950/",
+          "timestamp": "2026-10-28T06:25:04.044Z"
+        }
+      ],
+      "currentOriginWorkerTargets": [
+        "B35E244AE514A45CC46B04D7F991025E"
+      ]
+    }
+  ],
+  "bfcacheRestoreObserved": true,
+  "trace": {
+    "path": "output\\playwright\\2026-10-28T06-24-44-765Z-idle-navigation-diagnostic.zip",
+    "bytes": 665516,
+    "sha256": "751a2571bb6ef932dc0185e547a9eb2777f08c3148f8a286d6b924e43525ef42"
+  },
+  "processCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 44112,
+        "parentPid": 46436,
+        "createdAt": "2026-10-28T06:24:54.8564820Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-28T06:25:07.376Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 655,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 42212,
+        "parentPid": 46436,
+        "createdAt": "2026-10-28T06:24:51.2764590Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-28T06:25:08.068Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 692,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "ownedRuntimeRemoved": true,
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "serverLog": "\n ⛅️ wrangler 4.152.0\n────────────────────\nYour Worker has access to the following bindings:\nBinding            Resource      Mode\nenv.ASSETS         Assets        local\n\nAttaching additional modules:\n┌─────────────────────────────────────────────────────┬───────────────┬─────────────┐\n│ Name                                                │ Type          │ Size        │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ resvg.wasm                                          │ compiled-wasm │ 1346.05 KiB │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/conversion.worker-CCZ-nVlb.js            │ esm           │ 381.44 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/ConverterApp-B4bWTjjN.js                 │ esm           │ 497.95 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/direct-file-writer.worker-Cd6e6fgR.js    │ esm           │ 1.72 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/error-boundary-C-_MPqYf.js               │ esm           │ 8.23 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/jxl-source-inspection-worker-BogpV0iH.js │ esm           │ 2.67 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/layout-segment-context-DJ93MGz0.js       │ esm           │ 1.74 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/staged-save.worker-CXNG5no9.js           │ esm           │ 3.82 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/index.js                                        │ esm           │ 571.02 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/__vite_rsc_assets_manifest.js                   │ esm           │ 1.09 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ __vite_rsc_assets_manifest.js                       │ esm           │ 1.09 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ Total (11 modules)                                  │               │ 2816.84 KiB │\n└─────────────────────────────────────────────────────┴───────────────┴─────────────┘\n⎔ Starting local server...\n[wrangler:info] ✨ Parsed 3 valid header rules.\nWrangler detected this dev session is running in an AI agent.\nThe Local Explorer API is available at http://127.0.0.1:52950/cdn-cgi/local/explorer/api\nUseful routes:\n  GET http://127.0.0.1:52950/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings\n  POST http://127.0.0.1:52950/cdn-cgi/local/explorer/api/local/scheduled?worker=<name> - invoke a Worker's scheduled handler; cron is required (see the OpenAPI schema for the full request)\n  GET http://127.0.0.1:52950/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces\n  GET http://127.0.0.1:52950/cdn-cgi/local/explorer/api/d1/database - D1 databases\n  GET http://127.0.0.1:52950/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets\n  GET http://127.0.0.1:52950/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces\n  GET http://127.0.0.1:52950/cdn-cgi/local/explorer/api/workflows - Workflows\n  POST http://127.0.0.1:52950/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:\n    curl -X POST http://127.0.0.1:52950/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{\"sql\":\"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20\"}'\n  POST http://127.0.0.1:52950/cdn-cgi/local/explorer/api/local/observability/clear - clear all captured traces and logs\nIf the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):\n  GET http://127.0.0.1:52950/cdn-cgi/local/explorer/api - OpenAPI schema\n[wrangler:info] Ready on http://127.0.0.1:52950\n[wrangler:info] HEAD / 200 OK (904ms)\n[wrangler:info] GET / 200 OK (69ms)\n[wrangler:info] GET /assets/index-CwQ1gGtM.css 200 OK (51ms)\n[wrangler:info] GET /assets/ConverterApp-DMiWQbrc.js 200 OK (77ms)\n[wrangler:info] GET /assets/layout-segment-context-BYFSan3v.js 200 OK (89ms)\n[wrangler:info] GET /assets/rolldown-runtime-XKyaHtl9.js 200 OK (86ms)\n[wrangler:info] GET /assets/framework-DRChgpEG.js 200 OK (88ms)\n[wrangler:info] GET /assets/index-DQSnsS63.js 200 OK (83ms)\n[wrangler:info] GET /manifest.webmanifest 200 OK (63ms)\n[wrangler:info] GET /icon.svg 200 OK (28ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (16ms)\n[wrangler:info] GET /assets/conversion.worker-CCZ-nVlb.js 200 OK (12ms)\n[wrangler:info] GET /sw.js 200 OK (28ms)\n[wrangler:info] GET / 200 OK (25ms)\n[wrangler:info] GET /manifest.webmanifest 304 Not Modified (40ms)\n[wrangler:info] GET /icon.svg 304 Not Modified (41ms)\n[wrangler:info] GET /THIRD_PARTY_NOTICES.txt 200 OK (22ms)\n[wrangler:info] GET /test-validator.html 307 Temporary Redirect (12ms)\n[wrangler:info] GET /test-validator 200 OK (13ms)\n[wrangler:info] GET /favicon.ico 404 Not Found (18ms)\n[wrangler:info] GET /sw.js 304 Not Modified (15ms)\n[wrangler:info] GET /test-validator.html 307 Temporary Redirect (12ms)\n[wrangler:info] GET /test-validator 200 OK (12ms)\n[wrangler:info] GET / 200 OK (21ms)\n[wrangler:info] GET /sw.js 304 Not Modified (21ms)\n[wrangler:info] GET /test-validator.html 307 Temporary Redirect (13ms)\n[wrangler:info] GET /test-validator 200 OK (19ms)\n[wrangler:info] GET /sw.js 304 Not Modified (28ms)\n",
+  "finishedAt": "2026-10-28T06:25:12.709Z"
+}

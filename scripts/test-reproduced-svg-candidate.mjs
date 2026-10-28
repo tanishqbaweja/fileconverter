@@ -21,7 +21,7 @@ const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: 
 let runtime, child, birth, log = "";
 try {
   for (const file of ["scripts/test-reproduced-svg-candidate.mjs", "scripts/lib/reproduced-svg-browser-recipe.mjs",
-    "images/resvg-source/repeated-processed-input.json", ...Object.keys(reproducedSvgBasePins)])
+    "images/resvg-source/repeated-processed-input.json", "lib/staged-worker-coordinator.ts", ...Object.keys(reproducedSvgBasePins)])
     report.sourcePins[file] = sha(await readFile(path.join(root, file)));
   runtime = await createOwnedRuntimeScratch("svg-reproduced-qualification-");
   const generated = makeReproducedSvgBrowserQualification({ root, runtime: runtime.directory,

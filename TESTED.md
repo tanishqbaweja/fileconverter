@@ -11357,3 +11357,13 @@ persisted lifecycle events and worker targets during three production-app/static
 page/back traversals with normal Chrome services and full DOM/HAR tracing. Native
 single-point snapshots are not stable baseline, peak or memory-acceptance data.
 One actual run next; source/fixture/threshold/production behavior unchanged.
+
+2026-10-28 idle worker lifecycle fix at09deb0bc: real headless production app
+navigation produced8 phase observations; away workers0/0/0 and returned1/1/1,
+four unique worker IDs including initial. Two BFCache persisted returns and one
+fresh document (browser choice), normal services/cache, full DOM/HAR tracing.
+Both owned births absent, runtime removed, original full SHA/size unchanged.
+First diagnostic remains failed on invalid load-event wait, despite its observed
+same-document/retained-worker evidence. New URL/readiness wait is correct for
+cached restores. Not conversion/peak-memory acceptance; same ten SVG cases next.
+`evidence/2026-10-28-idle-navigation-fixed-terminal.json`.
