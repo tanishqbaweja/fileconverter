@@ -4,6 +4,7 @@
   "wrapper": { "path": "evidence/2026-10-28T07-06-14-907Z-reproduced-svg-grid-stress.json", "bytes": 51200, "sha256": "5ce564b31891ee39b9e56155865d66bd711a55d065197b48b9966df673f21742" },
   "browser": { "path": "evidence/2026-10-28T07-06-16-949Z-source-svg-browser.json", "bytes": 269783, "sha256": "aee3a728f105390d6af14179446e8b7812db5669cece873ba2b0d208620c0993" },
   "previousSession": "evidence/2026-10-28-svg-grid-stress-first-terminal.json",
+  "sourceArchive": "fixtures/source/svg-grid-stress-a8bccc68.json",
   "sourceAndReferenceAndEngineHashesUnchanged": true,
   "newCleanChromeSession": true,
   "runsPassed": 3,

@@ -59,7 +59,12 @@ test("fresh Chrome repeats exact high-pixel outputs within 250 MiB, with measure
     assert.ok(run.result.pixelComparison.comparisonMs >= 0); assert.equal(run.result.metrics.peakPendingOperations, 1);
     assert.ok(run.result.metrics.maxReadChunkBytes <= 262144); assert.ok(run.result.metrics.maxWriteChunkBytes <= 262144);
   }
-  for (const [file, digest] of Object.entries(outer.sourcePins)) assert.equal(sha(await read(file)), digest, file);
+  const archive = JSON.parse(await read(proof.sourceArchive)); assert.equal(archive.sourceCommit, row.executedHead);
+  for (const [file, digest] of Object.entries(outer.sourcePins)) {
+    const archived = archive.files[file];
+    const bytes = archived ? gunzipSync(Buffer.from(archived.gzipBase64, "base64"), { maxOutputLength: 65536 }) : await read(file);
+    assert.equal(sha(bytes), digest, file);
+  }
   assert.equal(outer.ownedGenerationAndFixtureRuntimeRemoved, true); assert.equal(row.ownedRuntimeRemoved, true);
   assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent")); assert.equal(outer.processCleanup.status, "owned-identity-absent");
   assert.deepEqual(row.protectedOriginalBefore, row.protectedOriginalAfter);

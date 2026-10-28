@@ -89,6 +89,10 @@ Package: https://www.npmjs.com/package/@resvg/resvg-wasm/v/2.6.2
 Source: https://github.com/thx/resvg-js/tree/v2.6.2
 License: Mozilla Public License 2.0
 License text: https://github.com/thx/resvg-js/blob/v2.6.2/LICENSE
+The bundled JavaScript binding has an additive read-only memory-observation getter.
+Its MPL-2.0 source and full license are included in this repository under lib/vendor/:
+https://github.com/tanishqbaweja/fileconverter/blob/media-options/lib/vendor/resvg-binding.mjs
+https://github.com/tanishqbaweja/fileconverter/blob/media-options/lib/vendor/resvg-LICENSE-MPL-2.0.txt
 
 Exact configure switches, enabled components, memory limits, and build commands
 are in media/ffmpeg/, compression/bzip2/, compression/xz/,

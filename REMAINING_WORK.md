@@ -1,5 +1,28 @@
 # Remaining work audit
 
+SVG observation pre-browser gate:28 focused PASS after three historical UI-hash
+bindings were repaired with exact archived inputs;19 final phase/qualification
+checks PASS after bounded six-stage byte/page map added. Production build,
+TypeScript and affected lint PASS; generated-binding recipe preserves all17048
+upstream bytes, original license body plus exactly one repository finalLF.
+Old source-SVG stress owners archived before qualification changes; no past
+zero-placeholder history rewritten. New 3-run8M browser gate will require actual
+positive memory, all six stages, zero failed observations and a truthful UI.
+`evidence/2026-10-28-svg-memory-observation-preparation.json`.
+
+2026-10-28 — SVG memory-observation implementation prepared: exact pinned
+upstream binding preserved with only a stateless memory-export getter appended;
+MPL-2.0 source/license retained. Real scalar buffer sizes captured at preparing/
+initialization/parse/raster/PNG/release, no memory copies or global Wasm monkey-
+patches. Missing observationsNULL; runtime-unobservable maximumNULL, not inferred.
+Nested finally still frees both objects; UI distinguishes unavailable/partial
+from not-used. First focused run13pass/1fail and lint1error were additive-source
+format issues (extra finalLF and generated upstream array-constructor style),
+not renderer failures; exact source recipe restored, only generated style rules
+exempt. Upstream license body preserved byte-exact with one repository finalLF.
+Old worker/app inputs archived before edits; historical reads bind those inputs,
+live tracking tests read current source. Further focused/build/browser gates next.
+
 2026-10-28 — Source-SVG8M grid cycle checkpoint:1902 portable PASS/0fail/0skip/
 0cancel121.654s across570 files;162 qualification files NOT RUN. Affected lint
 PASS. Production source/assets unchanged this cycle, so prior verified build

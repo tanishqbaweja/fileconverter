@@ -24,6 +24,8 @@ let runtime, child, birth, log = "";
 try {
   for (const file of ["scripts/test-reproduced-svg-stress.mjs", "scripts/lib/reproduced-svg-stress-recipe.mjs", "scripts/lib/reproduced-svg-browser-recipe.mjs",
     "scripts/lib/exact-rgba-validation.mjs",
+    "workers/conversion.worker.ts", "app/converter/ConverterApp.tsx", "lib/conversion-protocol.ts", "lib/svg-memory-observation.ts",
+    "lib/vendor/resvg-binding.mjs", "lib/vendor/resvg-binding.d.mts", "images/resvg-source/observed-binding-contract.mjs",
     "scripts/generate-svg-stress-fixture.py", "fixtures/stress/images/svg-grid-8m.svg.json", "images/resvg-source/repeated-processed-input.json",
     "lib/staged-worker-coordinator.ts", ...Object.keys(reproducedSvgBasePins)]) report.sourcePins[file] = sha(await readFile(path.join(root, file)));
   if (!listOnly) {
@@ -77,6 +79,16 @@ try {
     assert.equal(actual.status, "passed-three-private-svg-grid-8m-repeats-not-full-stress-or-release-acceptance");
     assert.deepEqual([actual.stats.expected, actual.stats.unexpected, actual.stats.skipped, actual.stats.flaky], [3,0,0,0]);
     assert.equal(actual.stressRuns.length, 3); assert.ok(actual.stressRuns.every(row => row.result?.independentlyValidatedRgbaPixels));
+    for (const run of actual.stressRuns) {
+      const observation = run.result.metrics.svgMemoryObservation;
+      assert.equal(observation.phase, "released"); assert.equal(observation.available, true); assert.equal(observation.unavailableObservations, 0);
+      assert.equal(observation.observations, 6); assert.equal(observation.maximumBytes, null);
+      assert.equal(Object.keys(observation.phaseBytes).length, 6); assert.ok(observation.phaseBytes.initialized > 0);
+      assert.equal(observation.phaseBytes.released, observation.currentBytes);
+      assert.equal(observation.currentPages * 65536, observation.currentBytes); assert.equal(observation.maximumPages, null);
+      assert.ok(observation.currentBytes > 0 && observation.peakBytes >= observation.currentBytes && observation.peakBytes <= pins.experimentalMaximumBytes);
+      assert.equal(run.result.metrics.peakWasmMemoryBytes, observation.peakBytes); assert.equal(run.result.metrics.wasmMemories.resvg, observation.currentBytes);
+    }
     assert.equal(actual.ownedRuntimeRemoved, true); assert.ok(actual.processCleanup.every(row => row.status === "owned-identity-absent"));
     assert.equal(actual.domSnapshotRecording, true); assert.equal(actual.networkHarRecording, true); assert.equal(actual.baselineAdjusted, false); assert.equal(actual.browserServicesDisabledByDriver, false);
     assert.ok(actual.memory.incrementalPrivateMiB <= 250); assert.deepEqual(actual.protectedOriginalBefore, actual.protectedOriginalAfter);

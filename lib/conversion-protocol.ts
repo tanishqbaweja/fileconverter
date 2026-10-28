@@ -22,6 +22,21 @@ export interface ConversionMetrics {
     explicitBufferAllocations: number; explicitAllocatedBufferBytes: number; maximumReadBytes: number; inFlight: number; peakInFlight: number };
   wasmMemoryBytes?: number;
   peakWasmMemoryBytes?: number;
+  /** Actual resvg linear-buffer observations. An unobservable maximum is never inferred from a manifest. */
+  svgMemoryObservation?: {
+    phase: "preparing" | "initialized" | "parsed" | "rasterized" | "encoded" | "released";
+    currentBytes: number | null;
+    peakBytes: number | null;
+    currentPages: number | null;
+    peakPages: number | null;
+    maximumBytes: null;
+    maximumPages: null;
+    maximumStatus: "not-observed-from-runtime-binding";
+    phaseBytes: Partial<Record<"preparing" | "initialized" | "parsed" | "rasterized" | "encoded" | "released", number | null>>;
+    available: boolean;
+    observations: number;
+    unavailableObservations: number;
+  };
   /** Actual MPEG-2 AVCodecContext fields after native settings-match succeeds. */
   mpeg2EncoderSettings?: { width: number; height: number; frameRateNumerator: number; frameRateDenominator: number;
     bitRateBps: number; qmin: number; qmax: number };

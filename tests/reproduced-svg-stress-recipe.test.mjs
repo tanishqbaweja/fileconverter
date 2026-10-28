@@ -38,6 +38,8 @@ test("stress owner retains exact early baseline, normal services, all-tree 250 g
     'protectedOriginalAfter = await originalIdentity()', 'owned-identity-absent']) assert.ok(generated.driver.includes(anchor), anchor);
   assert.doesNotMatch(generated.driver, /--disable-|--repeat-each|ignoreDefaultArgs/);
   assert.match(generated.driver, /8m-grid-repeat-\[123\]/); assert.match(generated.driver, /result: null, unavailable: "Not written before failure"/);
+  assert.match(generated.suite, /svgMemoryObservation.*phase: "released", available: true, observations: 6/);
+  assert.match(generated.suite, /not.toHaveText\(\/Not used\|Unavailable\|incomplete\//);
   assert.match(generated.generator, /FIXTURE_ROOT = Path\(/);
   const restored = generated.generator.replace(/^PROJECT_ROOT = Path\([^\r\n]+\)$/m, "PROJECT_ROOT = Path(__file__).resolve().parent.parent")
     .replace(/^FIXTURE_ROOT = Path\([^\r\n]+\)$/m, 'FIXTURE_ROOT = PROJECT_ROOT / "fixtures" / "stress" / "images"');

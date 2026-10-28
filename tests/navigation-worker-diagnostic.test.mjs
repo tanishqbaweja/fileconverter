@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
+import { readPreSvgMemoryInput } from "./helpers/pre-svg-memory-inputs.mjs";
 const source = await readFile(new URL("../scripts/diagnose-navigation-worker-retention.mjs", import.meta.url), "utf8");
 test("idle navigation diagnostic cannot become a converted-file, stable-baseline, peak-memory or cache-disabled acceptance test", () => {
   assert.match(source, /fileSelections: 0, conversions: 0, memoryAcceptance: false, baseline: null/);
@@ -60,7 +61,7 @@ test("fixed real app retires all idle workers while away and creates fresh worke
   assert.equal(row.events.filter(event => event.type === "pageshow" && event.persisted).length, 2);
   assert.equal(row.browserServicesDisabled, false); assert.equal(row.bfcacheRestoreObserved, true); assert.equal(row.fullDomAndHarTracing, true);
   assert.equal(row.memoryAcceptance, false); assert.equal(row.conversions, 0); assert.equal(row.baseline, null);
-  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await read(file)), digest, file);
+  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await readPreSvgMemoryInput(file)), digest, file);
   assert.equal(row.ownedRuntimeRemoved, true); assert.ok(row.processCleanup.every(value => value.status === "owned-identity-absent"));
   assert.deepEqual(row.protectedOriginalBefore, row.protectedOriginalAfter);
 });
@@ -71,7 +72,7 @@ test("changed lifecycle build retains all nineteen original privacy/offline/host
   const row = JSON.parse(bytes); assert.equal(row.executedHead, entry.executedHead);
   assert.equal(row.status, "passed-complete-headless-privacy-offline-hosting-specs");
   assert.deepEqual([row.stats.expected, row.stats.unexpected, row.stats.skipped, row.stats.flaky], [19,0,0,0]);
-  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await read(file)), digest, file);
+  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await readPreSvgMemoryInput(file)), digest, file);
   assert.equal(row.methodPreflight.length, 5); assert.ok(row.methodPreflight.every(value => value.status === 405));
   assert.equal(row.assetPreflight.length, 6); assert.ok(row.assetPreflight.every(value => value.status === 200));
   assert.equal(row.ownedRuntimeRemoved, true); assert.equal(row.processCleanup.length, 2);

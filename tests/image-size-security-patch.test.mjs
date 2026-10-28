@@ -7,6 +7,7 @@ import test from "node:test";
 import { Worker } from "node:worker_threads";
 import { imageSize as esmImageSize } from "image-size";
 import { readPreImageSizePatch } from "./helpers/pre-image-size-patch.mjs";
+import { readPreSvgMemoryInput } from "./helpers/pre-svg-memory-inputs.mjs";
 const json = async file => JSON.parse(await readFile(file));
 const sha = b => createHash("sha256").update(b).digest("hex");
 const consumer = createRequire(path.resolve("node_modules/vinext/package.json"));
@@ -82,7 +83,7 @@ test("changed dependency build passes all nineteen original privacy cases with s
   assert.equal(row.status, "passed-complete-headless-privacy-offline-hosting-specs"); assert.equal(row.executedHead, entry.executedHead);
   assert.deepEqual([row.stats.expected, row.stats.unexpected, row.stats.skipped, row.stats.flaky], [19,0,0,0]);
   assert.equal(row.sourcePins["package.json"], audit.packageSha256); assert.equal(row.sourcePins["package-lock.json"], audit.lockSha256);
-  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await readFile(file)), digest, file);
+  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await readPreSvgMemoryInput(file)), digest, file);
   assert.equal(row.methodPreflight.length, 5); assert.ok(row.methodPreflight.every(value => value.status === 405 && value.allow === "GET, HEAD"));
   assert.equal(row.assetPreflight.length, 6); assert.ok(row.assetPreflight.every(value => value.status === 200));
   assert.equal(row.ownedRuntimeRemoved, true); assert.equal(row.processCleanup.length, 2);

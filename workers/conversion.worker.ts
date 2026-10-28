@@ -1,6 +1,7 @@
 /// <reference lib="webworker" />
 
-import { initWasm as initResvgWasm, Resvg } from "@resvg/resvg-wasm";
+import { initWasm as initResvgWasm, Resvg, getInitializedResvgMemory } from "../lib/vendor/resvg-binding.mjs";
+import { observeSvgMemory } from "../lib/svg-memory-observation";
 
 import type {
   ConversionMetrics,
@@ -1732,6 +1733,7 @@ async function runSvgToPng(
   metrics: ConversionMetrics,
   startedAt: number,
 ): Promise<void> {
+  observeSvgMemory(metrics, "preparing", getInitializedResvgMemory());
   if (file.size < 1 || file.size > MAX_SVG_INPUT_BYTES) {
     throw new Error("SVG input must be between 1 byte and the 4 MiB safety limit.");
   }
@@ -1742,6 +1744,7 @@ async function runSvgToPng(
   try {
     resvgInitialization ??= initResvgWasm(fetch(RESVG_WASM_URL));
     await resvgInitialization;
+    observeSvgMemory(metrics, "initialized", getInitializedResvgMemory());
     emitProgress(jobId, "Rasterizing SVG", metrics, startedAt, true);
     renderer = new Resvg(source, {
       fitTo: { mode: "original" },
@@ -1750,6 +1753,7 @@ async function runSvgToPng(
       textRendering: 2,
       imageRendering: 0,
     });
+    observeSvgMemory(metrics, "parsed", getInitializedResvgMemory());
     if (
       renderer.width !== expected.width ||
       renderer.height !== expected.height ||
@@ -1761,10 +1765,12 @@ async function runSvgToPng(
     }
     emitProgress(jobId, "Encoding PNG", metrics, startedAt, true);
     rendered = renderer.render();
+    observeSvgMemory(metrics, "rasterized", getInitializedResvgMemory());
     if (rendered.width !== expected.width || rendered.height !== expected.height) {
       throw new Error("The SVG renderer returned unexpected output dimensions.");
     }
     const output = rendered.asPng();
+    observeSvgMemory(metrics, "encoded", getInitializedResvgMemory());
     if (output.byteLength < 1 || output.byteLength > MAX_IMAGE_OUTPUT_BYTES) {
       throw new Error("Encoded SVG raster exceeds the 64 MiB output safety limit.");
     }
@@ -1781,8 +1787,11 @@ async function runSvgToPng(
     }
     metrics.inputBytes = file.size;
   } finally {
-    rendered?.free();
-    renderer?.free();
+    try { rendered?.free(); }
+    finally {
+      try { renderer?.free(); }
+      finally { observeSvgMemory(metrics, "released", getInitializedResvgMemory()); }
+    }
   }
 }
 

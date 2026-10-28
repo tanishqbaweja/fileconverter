@@ -2447,9 +2447,14 @@ export function ConverterApp() {
                     <div>
                       <dt>Peak Wasm</dt>
                       <dd>
-                        {metrics.peakWasmMemoryBytes
+                        {metrics.svgMemoryObservation
+                          ? metrics.svgMemoryObservation.peakBytes === null
+                            ? "Unavailable"
+                            : formatBytes(metrics.svgMemoryObservation.peakBytes)
+                          : metrics.peakWasmMemoryBytes
                           ? formatBytes(metrics.peakWasmMemoryBytes)
                           : "Not used"}
+                        {Boolean(metrics.svgMemoryObservation?.unavailableObservations) && " (incomplete)"}
                       </dd>
                     </div>
                     <div>

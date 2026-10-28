@@ -31,6 +31,9 @@ export function makeReproducedSvgStressQualification(options) {
     `          } else expect(convertedPixels).toEqual(referencePixels);\n        }\n      }`;
   suite = replace(suite, pixelGate, exactPixelGate + `\n      if (stressRepeat) {\n` +
     `        if (!privateSvg) throw new Error("Stress evidence requires the owned private descriptor");\n` +
+    `        expect(state!.metrics.svgMemoryObservation).toMatchObject({ phase: "released", available: true, observations: 6, unavailableObservations: 0, maximumBytes: null });\n` +
+    `        expect(state!.metrics.svgMemoryObservation!.peakBytes).toBeGreaterThan(0);\n` +
+    `        await expect(page.locator("dt").filter({ hasText: /^Peak Wasm$/ }).locator("..").locator("dd")).not.toHaveText(/Not used|Unavailable|incomplete/);\n` +
     `        const evidence = JSON.stringify({ repeat: stressRepeat, independentlyValidatedRgbaPixels: true,\n` +
     `          width: expectedWidth, height: expectedHeight, outputBytes: (await stat(outputPath)).size, metrics: state!.metrics,\n` +
     `          pixelComparison: { implementation: "exact-native-buffer-equality", expectedBytes: expectedWidth * expectedHeight * 4, comparisonMs: stressPixelComparisonMs } });\n` +

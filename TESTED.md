@@ -11424,3 +11424,14 @@ not replayed. Six exact OPFS conversions across two clean sessions, fulltree
 runtime scratch removed, original full SHA/size unchanged. Next actual SVG Wasm
 observations (not legacyfalse0), then direct/effects/OOM/cleanup gates. No public
 replacement or complete SVG/release/goal claim. `evidence/2026-10-28-svg-grid-cycle.json`.
+
+2026-10-28 actual SVG Wasm observation preparation: exact17048B upstream JS binding
+retained with additive memory getter, full MPL-2.0 source/license included. Six
+bounded byte/page stages, unknown maximumNULL, unavailable readsNULL, no memory
+copy/growth/global API patch or renderer/encoder/Wasm change. First source-copy
+test13pass/1fail (extraLF), license finalLF check and3 historical-app binding
+failures retained; fixed without renderer changes or old result rewriting.
+28 focused PASS785.413ms after historical fix;19 final phase/qualifier checks
+PASS1042.068ms. Build/tsc/affected lint PASS. Actual changed-source8M browser gate
+next; Node binding smoke initialized code only, never rasterized SVG or claimed
+conversion/memory acceptance. `evidence/2026-10-28-svg-memory-observation-preparation.json`.
