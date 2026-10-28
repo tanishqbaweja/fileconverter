@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "runId": 40742766594,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40742766594",
+  "sourceCommit": "1d6dd07d5d321618982e55ae632902c54ba6691c",
+  "workflow": "svg-context-postprocess.yml",
+  "authoritativeStatusObserved": "in_progress",
+  "observedAt": "2026-10-28T18:11:24Z",
+  "estimatedDurationSeconds": 90,
+  "notBeforeNextObservation": "2026-10-28T18:12:54Z",
+  "sameRunOnly": true,
+  "sourceRun": 40741245271,
+  "rawPin": "images/resvg-source/filter-context-raw-input.json",
+  "bothSourcePatchesMustBeVerified": true,
+  "sourceRecompilation": false,
+  "maximumWasmBytes": 100663296,
+  "publicEngineReplacement": false,
+  "browserAcceptance": false,
+  "wholeGoalComplete": false
+}
