@@ -1,0 +1,183 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-28T05:58:44.995Z",
+  "sourcePins": {
+    "package.json": "b27907298e6738ae0a732f9b81ada986761719a693c9fbdf4f48c48a4cafd3c1",
+    "package-lock.json": "e4c28744e79accdcdfe1f507892cfeafb7325f519025b4b11c5052a08ebd8753",
+    "scripts/check-image-size-security-candidate.mjs": "c4b2164237cefbabe939c5d65108a7e3a5e2c97d30dc268283ba126420a92284"
+  },
+  "status": "failed-isolated-patch-candidate",
+  "cases": [
+    {
+      "file": "fixtures/images/test-pattern.png",
+      "bytes": 84034,
+      "sha256": "3857160be56ad974f617fb395c0e6e677fa50655190d285fd92e277bda106267",
+      "before": {
+        "kind": "dimensions",
+        "value": {
+          "height": 768,
+          "width": 1024,
+          "type": "png"
+        }
+      },
+      "after": {
+        "kind": "dimensions",
+        "value": {
+          "height": 768,
+          "width": 1024,
+          "type": "png"
+        }
+      }
+    },
+    {
+      "file": "fixtures/images/test-pattern.jpg",
+      "bytes": 51804,
+      "sha256": "d0bd2c79ac309fc082b25b0d0156b63b7e274e33faf899f81b4f900b79e5d004",
+      "before": {
+        "kind": "dimensions",
+        "value": {
+          "height": 768,
+          "width": 1024,
+          "type": "jpg"
+        }
+      },
+      "after": {
+        "kind": "dimensions",
+        "value": {
+          "height": 768,
+          "width": 1024,
+          "type": "jpg"
+        }
+      }
+    },
+    {
+      "file": "fixtures/images/test-pattern.webp",
+      "bytes": 28496,
+      "sha256": "c091244b94ff679cbbd920719385240c8c5377b0e004420a787dbbcadbd6ee20",
+      "before": {
+        "kind": "dimensions",
+        "value": {
+          "height": 768,
+          "width": 1024,
+          "type": "webp"
+        }
+      },
+      "after": {
+        "kind": "dimensions",
+        "value": {
+          "height": 768,
+          "width": 1024,
+          "type": "webp"
+        }
+      }
+    },
+    {
+      "file": "fixtures/images/test-pattern.bmp",
+      "bytes": 2359350,
+      "sha256": "4846de2234ae0af0b6294a7a8a790ab7e4e2053c407740611875a72d0b32db06",
+      "before": {
+        "kind": "dimensions",
+        "value": {
+          "height": 768,
+          "width": 1024,
+          "type": "bmp"
+        }
+      },
+      "after": {
+        "kind": "dimensions",
+        "value": {
+          "height": 768,
+          "width": 1024,
+          "type": "bmp"
+        }
+      }
+    },
+    {
+      "file": "fixtures/images/test-pattern.avif",
+      "bytes": 13507,
+      "sha256": "97a9a3b41cee6695bd4ec8f514c5811ba5b4bf4d55d8c8a36a60f4cb9de484f2",
+      "before": {
+        "kind": "dimensions",
+        "value": {
+          "width": 1024,
+          "height": 768,
+          "type": "avif"
+        }
+      },
+      "after": {
+        "kind": "dimensions",
+        "value": {
+          "width": 1024,
+          "height": 768,
+          "type": "avif"
+        }
+      }
+    },
+    {
+      "file": "fixtures/images/test-pattern.jxl",
+      "bytes": 70609,
+      "sha256": "58de8620064d34d0a1837fb81f3a1e561b65052d89b51b131b8e61cda6d6e6a0",
+      "before": {
+        "kind": "dimensions",
+        "value": {
+          "width": 1024,
+          "height": 768,
+          "type": "jxl-stream"
+        }
+      },
+      "after": {
+        "kind": "dimensions",
+        "value": {
+          "width": 1024,
+          "height": 768,
+          "type": "jxl-stream"
+        }
+      }
+    },
+    {
+      "file": "fixtures/images/test-pattern.svg",
+      "bytes": 1105,
+      "sha256": "4a0100b7a813d1a538b8d51fc1116c40a09b21d519c3c74b385b0df0fe7e7e7b",
+      "before": {
+        "kind": "dimensions",
+        "value": {
+          "height": 480,
+          "width": 640,
+          "type": "svg"
+        }
+      },
+      "after": {
+        "kind": "dimensions",
+        "value": {
+          "height": 480,
+          "width": 640,
+          "type": "svg"
+        }
+      }
+    }
+  ],
+  "patchedVersion": "2.0.3",
+  "advisories": [
+    "GHSA-5p2g-fcmc-qvqq",
+    "GHSA-w3rx-r6r6-pgpr"
+  ],
+  "installedApplicationGraphChanged": false,
+  "conversionOrMemoryAcceptance": false,
+  "securityClosure": false,
+  "candidate": {
+    "packageSha256": "3bac34832baff0aec1551117bdca0aa599ce3bbe518447fa6cbfd46de02520ab",
+    "entrySha256": "9cd6dd0a7e1205fb9c8a057b2bb6af419b8af9305507dd60e5bf5653c7939984",
+    "version": "2.0.3",
+    "engines": {
+      "node": ">=18"
+    },
+    "repository": {
+      "type": "git",
+      "url": "https://codeberg.org/image-size/image-size.git"
+    }
+  },
+  "originalEntrySha256": "aeb11b9ec9d0d670c40d66dcb4fc7032aa32722499f6740b715e21a20eab1b62",
+  "failure": "AssertionError [ERR_ASSERTION]: icns-zero-entry must reproduce the old parser failure\n    at file:///H:/Github%20Repositories/fileconverter/scripts/check-image-size-security-candidate.mjs:76:12\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+  "ownedScratchRemoved": true,
+  "finishedAt": "2026-10-28T05:58:48.078Z"
+}

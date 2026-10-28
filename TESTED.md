@@ -11321,3 +11321,8 @@ pass. Four owned process births observed absent, both runtime directories remove
 original size/full SHA unchanged. No unchanged retry planned; continue independent
 dependency security work. `evidence/2026-10-28-svg-lifecycle-diagnostic-terminal.json`.
 
+2026-10-28 image-size isolated candidate: seven valid-format dimension results
+match2.0.2 exactly; malformed ICNS fixture used incorrect header field order, so
+old failure reproduction assertion FAILED. No application dependency change or
+security acceptance. Owned install/cache/parser workers disposed. Keep failed
+receipt and correct the synthetic fixture before testing it again.

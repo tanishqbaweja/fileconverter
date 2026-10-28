@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-10-28 — Isolated image-size2.0.3 candidate: seven valid-format dimension
+comparisons PASS, but malformed ICNS control was constructed with box-style
+length/magic order instead of ICNS magic/length and therefore did not reproduce
+the old failure. Candidate check remains FAILED, not a rejected patch or security
+closure. Correct the fixture header, retain this failed result, then evaluate the
+actual malformed controls. Application graph unchanged; owned install/cache and
+parser workers disposed. `evidence/2026-10-28-image-size-candidate.json`.
+
 2026-10-28 — Lifecycle diagnostic stopped BEFORE conversion: earliest blank did
 not stabilize within the unchanged deadline (17 samples; accepted baseline null).
 Zero conversion cases and no lifecycle observations; retained-navigation theory
