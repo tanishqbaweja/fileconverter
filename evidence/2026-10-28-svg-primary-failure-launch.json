@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "3c5adafb",
+  "command": "scripts/test-reproduced-svg-stress.mjs --effects-diagnostic",
+  "sessionId": 87641,
+  "launchObservedAt": "2026-10-28T09:25:57Z",
+  "notBeforeTerminalCheck": "2026-10-28T09:28:57Z",
+  "estimatedRemainingSeconds": 180,
+  "reasonForChangedRun": "Preserve original render exception across failed cleanup and capture its bounded native stack; no converter/input/cap/quality/primary-limit change",
+  "headless": true,
+  "doNotDuplicateWhileSessionIsLive": true,
+  "status": "launched-not-a-pass"
+}

@@ -35,6 +35,21 @@ coverage. Ordinary OPFS/direct qualification still stops before conversion when
 the early baseline gate fails. Public Wasm bytes are unchanged; the public SVG
 module's missing explicit maximum/source-build alignment remains an open issue.
 
+`--effects-diagnostic` selects the distinct3000x2000 mask/seven-primitive filter
+fixture. Its SVG source and independent Chromium/Canvas2D reference are generated
+in owned scratch, with explicit hash comparison to historical manifests; no
+shared fixture manifests are overwritten. Native RGB24 SSIM must be at least0.99,
+fixed before the test. This is not an exact-pixel claim or a memory waiver.
+
+If SVG parsing/rendering/encoding fails, both native object releases are attempted
+without replacing the primary exception with a destructor exception.
+`svgReleaseObservation` reports attempted objects and failed releases, not proof
+of deallocation. `svgRuntimeFailure` retains only bounded native RuntimeError
+message/stack diagnostics (256/4096characters) and its last observed phase, not
+arbitrary SVG/parser content. Failed jobs abort the destination and the ordinary
+application lifecycle discards the worker. A native trap does not by itself
+establish OOM; failed releases do not establish that linear memory was freed.
+
 Large-file jobs using browser-private temporary storage require a normal browser
 window. Chromium can keep Private/Incognito filesystem contents in RAM; those
 modes are not qualified for large-file OPFS staging. This is separate from the

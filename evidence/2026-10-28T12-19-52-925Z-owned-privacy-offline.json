@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-28T12:19:52.926Z",
+  "status": "failed",
+  "scope": "Complete unchanged production privacy/offline/static-host browser specs; not process-memory, stress, OS-picker or native reproduction acceptance",
+  "headedCoverage": false,
+  "conversionMemoryAcceptance": false,
+  "publicPromotion": false,
+  "sourcePins": {
+    "package.json": "c13423c98132f9f1beaf9cdea8ceadf3436f7cf94031c873cc150f743bd5978c",
+    "package-lock.json": "b2c97a14d64528607b8acd6394350ea741db853de36fcd2f4d46789c4b3964a4",
+    "playwright.config.ts": "e1ebd9e54b5baf85227edf021b1190dca2788c226ea39209c4e22915ce9d0a84",
+    "tests/browser/privacy-offline.spec.ts": "1eb56a57f9e41110718747d774dc4607875589ed354496788888b722cc9ef540",
+    "tests/browser/static-host-policy.spec.ts": "9587f432302a1bebd73bc1be19a2d5175d824fbb42ae126f0317a8a64bad29a6",
+    "scripts/run-owned-privacy-offline.mjs": "1364823a4be8a2561348c3ac4c5a217c614417b6735dff5767823c77c75d9d73",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee",
+    "lib/static-host-request-policy.ts": "e699ea329425e935279410b7dc3a5bcd0d6ea1b522962f4a128d1ec1b197e4ad",
+    "app/converter/ConverterApp.tsx": "60c91910dd662aa7bf43f5587ea1b660935bc8706ce700e7bd604f141b39b3a0",
+    "lib/capability-registry.ts": "d9f5ad4599db8b43a68acb311f16d652a9a74300c38a31f827c12590652e573b",
+    ".openai/hosting.json": "6f55e031b82f9a23029129a1a3fed515ae6d7da180e369c7b2b90ec248d06475",
+    "vite.config.ts": "ef3bc4603131a48d6f6b013671f86b73a22cc40226196cb037c4b756700d61ae",
+    "scripts/lib/direct-workerd-host.mjs": "32b7b0b0fd8621e1345f8e5a570ac3fff8ac7fbe9eb5919ad500379f031d992f"
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: \nRunning 19 tests using 1 worker\n\n(node:13656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n\n\n[1/19] tests\\browser\\privacy-offline.spec.ts:224:1 › functional browser capability probes pass in production Chrome\n  1) tests\\browser\\privacy-offline.spec.ts:224:1 › functional browser capability probes pass in production Chrome \n\n    Error: {\"acquiredAt\":\"2026-10-28T12:20:09.5935221Z\",\"freePhysicalBytes\":838938624,\"freeVirtualBytes\":4756672512,\"requiredPhysicalBytes\":2147483648,\"requiredVirtualBytes\":2147483648,\"safeToStart\":false,\"primaryConversionLimitMiB\":250,\"primaryMemoryFormulaChanged\":false,\"noProcessesKilled\":true}\n\n    expect(received).toBe(expected) // Object.is equality\n\n    Expected: true\n    Received: false\n\n      182 |   if (process.platform === \"win32\") {\n      183 |     const memory = await inspectStressHostMemory();\n    > 184 |     expect(memory.safeToStart, JSON.stringify(memory)).toBe(true);\n          |                                                        ^\n      185 |   }\n      186 |   // Chromium adds its singleton socket below TMPDIR. A short owned prefix\n      187 |   // keeps the full Linux socket path below108 bytes on the hosted checkout.\n        at H:\\Github Repositories\\fileconverter\\tests\\browser\\privacy-offline.spec.ts:184:56\n\n    Error Context: work\\privacy-validation-GNTDOD\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\error-context.md\n\n    Error Context: work\\privacy-validation-GNTDOD\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\error-context.md\n\n    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────\n    work\\privacy-validation-GNTDOD\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\trace.zip\n    Usage:\n\n        npx playwright show-trace work\\privacy-validation-GNTDOD\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\trace.zip\n\n    ────────────────────────────────────────────────────────────────────────────────────────────────\n\n\nTesting stopped early after 1 maximum allowed failures.\n\n  1 failed\n    tests\\browser\\privacy-offline.spec.ts:224:1 › functional browser capability probes pass in production Chrome \n  18 did not run\n  1 error was not a part of any test, see above for details\n\n\n1 !== 0\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/run-owned-privacy-offline.mjs:117:10"
+  ],
+  "hostingRuntime": "wrangler-miniflare",
+  "executedHead": "3c5adafbfac2e23b2c41a770dec19c1968b98505",
+  "hostMemory": {
+    "acquiredAt": "2026-10-28T12:19:53.5875890Z",
+    "freePhysicalBytes": 2825080832,
+    "freeVirtualBytes": 6997573632,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "assetRouting": {
+    "binding": "ASSETS",
+    "runWorkerFirst": true
+  },
+  "assetPreflight": [
+    {
+      "path": "/assets/index-CwQ1gGtM.css",
+      "status": 200,
+      "mime": "text/css; charset=utf-8"
+    },
+    {
+      "path": "/assets/layout-segment-context-DXaeUJxb.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "/assets/rolldown-runtime-XKyaHtl9.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "/assets/framework-DRChgpEG.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "/assets/index-DlgWTGue.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    },
+    {
+      "path": "/assets/ConverterApp-BmsJSvrY.js",
+      "status": 200,
+      "mime": "text/javascript; charset=utf-8"
+    }
+  ],
+  "methodPreflight": [
+    {
+      "method": "POST",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "PUT",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "PATCH",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "DELETE",
+      "status": 405,
+      "allow": "GET, HEAD"
+    },
+    {
+      "method": "OPTIONS",
+      "status": 405,
+      "allow": "GET, HEAD"
+    }
+  ],
+  "runnerExitCode": 1,
+  "stats": {
+    "startTime": "2026-10-28T12:20:08.050Z",
+    "duration": 1625.4289999999999,
+    "expected": 0,
+    "skipped": 18,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "processBirths": {
+    "server": {
+      "pid": 41948,
+      "parentPid": 43732,
+      "createdAt": "2026-10-28T12:20:02.4202590Z"
+    },
+    "runner": {
+      "pid": 13688,
+      "parentPid": 43732,
+      "createdAt": "2026-10-28T12:20:06.8440010Z"
+    }
+  },
+  "processCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 41948,
+        "parentPid": 43732,
+        "createdAt": "2026-10-28T12:20:02.4202590Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-28T12:20:11.307Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 590,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 13688,
+        "parentPid": 43732,
+        "createdAt": "2026-10-28T12:20:06.8440010Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-10-28T12:20:11.970Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 663,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "serverLog": "\n ⛅️ wrangler 4.152.0\n────────────────────\nYour Worker has access to the following bindings:\nBinding            Resource      Mode\nenv.ASSETS         Assets        local\n\nAttaching additional modules:\n┌─────────────────────────────────────────────────────┬───────────────┬─────────────┐\n│ Name                                                │ Type          │ Size        │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ resvg.wasm                                          │ compiled-wasm │ 1346.05 KiB │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/conversion.worker-B8N0gGXS.js            │ esm           │ 384.64 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/ConverterApp-CvbNaR_c.js                 │ esm           │ 498.22 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/direct-file-writer.worker-Cd6e6fgR.js    │ esm           │ 1.72 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/error-boundary-C-_MPqYf.js               │ esm           │ 8.23 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/jxl-source-inspection-worker-BogpV0iH.js │ esm           │ 2.67 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/layout-segment-context-DJ93MGz0.js       │ esm           │ 1.74 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/staged-save.worker-CXNG5no9.js           │ esm           │ 3.82 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/index.js                                        │ esm           │ 571.02 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/__vite_rsc_assets_manifest.js                   │ esm           │ 1.09 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ __vite_rsc_assets_manifest.js                       │ esm           │ 1.09 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ Total (11 modules)                                  │               │ 2820.31 KiB │\n└─────────────────────────────────────────────────────┴───────────────┴─────────────┘\n⎔ Starting local server...\n[wrangler:info] ✨ Parsed 3 valid header rules.\nWrangler detected this dev session is running in an AI agent.\nThe Local Explorer API is available at http://127.0.0.1:50444/cdn-cgi/local/explorer/api\nUseful routes:\n  GET http://127.0.0.1:50444/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings\n  POST http://127.0.0.1:50444/cdn-cgi/local/explorer/api/local/scheduled?worker=<name> - invoke a Worker's scheduled handler; cron is required (see the OpenAPI schema for the full request)\n  GET http://127.0.0.1:50444/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces\n  GET http://127.0.0.1:50444/cdn-cgi/local/explorer/api/d1/database - D1 databases\n  GET http://127.0.0.1:50444/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets\n  GET http://127.0.0.1:50444/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces\n  GET http://127.0.0.1:50444/cdn-cgi/local/explorer/api/workflows - Workflows\n  POST http://127.0.0.1:50444/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:\n    curl -X POST http://127.0.0.1:50444/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{\"sql\":\"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20\"}'\n  POST http://127.0.0.1:50444/cdn-cgi/local/explorer/api/local/observability/clear - clear all captured traces and logs\nIf the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):\n  GET http://127.0.0.1:50444/cdn-cgi/local/explorer/api - OpenAPI schema\n[wrangler:info] Ready on http://127.0.0.1:50444\n[wrangler:info] GET / 200 OK (1260ms)\n[wrangler:info] GET / 200 OK (18ms)\n[wrangler:info] GET /assets/index-CwQ1gGtM.css 200 OK (39ms)\n[wrangler:info] GET /assets/layout-segment-context-DXaeUJxb.js 200 OK (10ms)\n[wrangler:info] GET /assets/rolldown-runtime-XKyaHtl9.js 200 OK (11ms)\n[wrangler:info] GET /assets/framework-DRChgpEG.js 200 OK (7ms)\n[wrangler:info] GET /assets/index-DlgWTGue.js 200 OK (11ms)\n[wrangler:info] GET /assets/ConverterApp-BmsJSvrY.js 200 OK (9ms)\n[wrangler:info] POST / 405 Method Not Allowed (105ms)\n[wrangler:info] PUT / 405 Method Not Allowed (17ms)\n[wrangler:info] PATCH / 405 Method Not Allowed (13ms)\n[wrangler:info] DELETE / 405 Method Not Allowed (13ms)\n[wrangler:info] OPTIONS / 405 Method Not Allowed (18ms)\n",
+  "runnerLog": "\nRunning 19 tests using 1 worker\n\n(node:13656) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n\n\n[1/19] tests\\browser\\privacy-offline.spec.ts:224:1 › functional browser capability probes pass in production Chrome\n  1) tests\\browser\\privacy-offline.spec.ts:224:1 › functional browser capability probes pass in production Chrome \n\n    Error: {\"acquiredAt\":\"2026-10-28T12:20:09.5935221Z\",\"freePhysicalBytes\":838938624,\"freeVirtualBytes\":4756672512,\"requiredPhysicalBytes\":2147483648,\"requiredVirtualBytes\":2147483648,\"safeToStart\":false,\"primaryConversionLimitMiB\":250,\"primaryMemoryFormulaChanged\":false,\"noProcessesKilled\":true}\n\n    expect(received).toBe(expected) // Object.is equality\n\n    Expected: true\n    Received: false\n\n      182 |   if (process.platform === \"win32\") {\n      183 |     const memory = await inspectStressHostMemory();\n    > 184 |     expect(memory.safeToStart, JSON.stringify(memory)).toBe(true);\n          |                                                        ^\n      185 |   }\n      186 |   // Chromium adds its singleton socket below TMPDIR. A short owned prefix\n      187 |   // keeps the full Linux socket path below108 bytes on the hosted checkout.\n        at H:\\Github Repositories\\fileconverter\\tests\\browser\\privacy-offline.spec.ts:184:56\n\n    Error Context: work\\privacy-validation-GNTDOD\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\error-context.md\n\n    Error Context: work\\privacy-validation-GNTDOD\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\error-context.md\n\n    attachment #3: trace (application/zip) ─────────────────────────────────────────────────────────\n    work\\privacy-validation-GNTDOD\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\trace.zip\n    Usage:\n\n        npx playwright show-trace work\\privacy-validation-GNTDOD\\artifacts\\privacy-offline-functional-69d73-s-pass-in-production-Chrome\\trace.zip\n\n    ────────────────────────────────────────────────────────────────────────────────────────────────\n\n\nTesting stopped early after 1 maximum allowed failures.\n\n  1 failed\n    tests\\browser\\privacy-offline.spec.ts:224:1 › functional browser capability probes pass in production Chrome \n  18 did not run\n  1 error was not a part of any test, see above for details\n",
+  "ownedRuntimeRemoved": true,
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "finishedAt": "2026-10-28T12:20:20.214Z"
+}

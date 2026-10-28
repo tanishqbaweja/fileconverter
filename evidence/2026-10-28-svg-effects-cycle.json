@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "scope": "Private6M SVG effects diagnosis and primary-error-preservation fix, not a passing effects conversion or original-goal closure",
+  "sourceCommit": "3c5adafbfac2e23b2c41a770dec19c1968b98505",
+  "firstFailure": "evidence/2026-10-28-svg-effects-first-terminal.json",
+  "changedFailure": "evidence/2026-10-28-svg-primary-failure-terminal.json",
+  "gates": {
+    "productionBuild": "passed",
+    "typescript": "passed",
+    "affectedLint": "passed",
+    "firstFocused": {
+      "passed": 31,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 1767.7051
+    },
+    "finalNativeStackFocused": {
+      "passed": 21,
+      "failed": 0,
+      "skipped": 0,
+      "durationMs": 1230.6816
+    },
+    "fullPortable": {
+      "sessionId": 28903,
+      "passed": 1933,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "durationMs": 140884.8719,
+      "selectedFiles": 576,
+      "allFiles": 738,
+      "qualificationFilesNotRun": 162
+    },
+    "privacy": "evidence/2026-10-28-svg-effects-privacy-terminal.json"
+  },
+  "sourceAndReferenceHistoricalBytesPreserved": true,
+  "private96MiBCapChanged": false,
+  "required250MiBFormulaChanged": false,
+  "originalRootFailureNowVisible": "resvg::filter::get_input / native unreachable; one destructor error no longer masks it",
+  "rootAllocationCauseProven": false,
+  "candidateOptimization": "Investigate last-use intermediate bitmap release/ownership in pinned filter source, preserve pixels and prove through new reproducible build/browser gates",
+  "nativeCompletedOutputs": 0,
+  "acceptedSsim": null,
+  "acceptedIncrementalPrivateMiB": null,
+  "unchangedReplayPlanned": false,
+  "disposableDataRemoved": true,
+  "testMkvUnchanged": true,
+  "publicEnginePromotion": false,
+  "originalGoalComplete": false
+}

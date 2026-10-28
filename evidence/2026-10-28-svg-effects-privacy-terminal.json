@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "3c5adafbfac2e23b2c41a770dec19c1968b98505",
+  "wrangler": {
+    "receipt": {
+      "path": "evidence/2026-10-28T12-19-52-925Z-owned-privacy-offline.json",
+      "bytes": 18902,
+      "sha256": "e29174d21dcf393fdbce1b6c4473250599e0f7982dd9c9fed2a8152c0c334179"
+    },
+    "status": "failed",
+    "stats": {
+      "startTime": "2026-10-28T12:20:08.050Z",
+      "duration": 1625.4289999999999,
+      "expected": 0,
+      "skipped": 18,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "preBrowserPhysicalBytes": 838938624,
+    "requiredBytes": 2147483648,
+    "ownedRuntimeRemoved": true,
+    "ownedBirthsAbsent": 2
+  },
+  "directWorkerd": {
+    "receipt": {
+      "path": "evidence/2026-10-28T12-24-41-236Z-owned-privacy-offline.json",
+      "bytes": 17659,
+      "sha256": "ab9f2e8ac3df61399b97ddf2e5c654ea286deecb7f7c01829218bb099d6a97c7"
+    },
+    "status": "passed-complete-headless-privacy-offline-hosting-specs",
+    "stats": {
+      "startTime": "2026-10-28T12:24:49.493Z",
+      "duration": 46834.672,
+      "expected": 19,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "exactBuiltWorker": true,
+    "assetServiceNonReadRequests": 0,
+    "assetServiceClosed": true,
+    "ownedRuntimeRemoved": true,
+    "ownedBirthsAbsent": 2,
+    "original": {
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+    }
+  },
+  "notWranglerOrHostedCdnAcceptance": true,
+  "headedOrNativePickerAcceptance": false,
+  "conversionMemoryAcceptance": false,
+  "publicPromotion": false,
+  "originalGoalComplete": false
+}

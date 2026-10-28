@@ -1,0 +1,126 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "3c5adafbfac2e23b2c41a770dec19c1968b98505",
+  "wrapper": {
+    "path": "evidence/2026-10-28T09-25-47-646Z-reproduced-svg-grid-stress.json",
+    "bytes": 68981,
+    "sha256": "347f3603c2997e84959edc48fdfbe989ffebaf107d7a64f5723b3c66a8a1b0ee"
+  },
+  "browser": {
+    "path": "evidence/2026-10-28T09-26-16-499Z-source-svg-browser.json",
+    "bytes": 294926,
+    "sha256": "19fa9bd8203ba7cc8b18e2b6a465025999f9035d24823cd06d2b34fc12378ca3"
+  },
+  "sessionId": 87641,
+  "terminalExitCode": 1,
+  "stats": {
+    "startTime": "2026-10-28T09:27:11.530Z",
+    "duration": 5499.013,
+    "expected": 0,
+    "skipped": 2,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "failedRun": {
+    "repeat": "6m-effects-repeat-1",
+    "destinationMode": "direct-handle-test-directory",
+    "independentlyValidatedEffects": false,
+    "metrics": {
+      "inputBytes": 470390,
+      "outputBytes": 0,
+      "queuedBytes": 0,
+      "peakQueuedBytes": 0,
+      "pendingOperations": 0,
+      "peakPendingOperations": 0,
+      "maxReadChunkBytes": 262144,
+      "maxWriteChunkBytes": 0,
+      "elapsedMs": 1092.2750000357628,
+      "wasmMemories": {
+        "resvg": 82247680
+      },
+      "sharedArrayBufferBytes": 266276,
+      "activeWorkerCount": 1,
+      "imageWorkingBytes": 0,
+      "svgExecutionResources": {
+        "phase": "aborted",
+        "cancellationBytes": 4,
+        "destinationSharedBytes": 266272,
+        "allocatedSharedBytes": 266276,
+        "peakAllocatedSharedBytes": 266276,
+        "destinationWorkerCount": 0,
+        "peakKnownWorkerCount": 2,
+        "sharedBytesMeaning": "allocated-for-job-not-garbage-collection-or-process-memory"
+      },
+      "svgMemoryObservation": {
+        "phase": "released",
+        "currentBytes": 82247680,
+        "peakBytes": 82247680,
+        "currentPages": 1255,
+        "peakPages": 1255,
+        "maximumBytes": null,
+        "maximumPages": null,
+        "phaseBytes": {
+          "preparing": null,
+          "initialized": 1572864,
+          "parsed": 8585216,
+          "released": 82247680
+        },
+        "maximumStatus": "not-observed-from-runtime-binding",
+        "available": true,
+        "observations": 4,
+        "unavailableObservations": 0
+      },
+      "wasmMemoryBytes": 82247680,
+      "peakWasmMemoryBytes": 82247680,
+      "svgRuntimeFailure": {
+        "message": "unreachable",
+        "stack": "RuntimeError: unreachable\n    at resvg::filter::get_input::h832c13b1b93182af (http://127.0.0.1:64148/engines/svg/resvg.wasm:wasm-function[532]:0x1a9198)\n    at resvg::filter::apply_inner::h7762029ec018201f (http://127.0.0.1:64148/engines/svg/resvg.wasm:wasm-function[20]:0x1c5e5)\n    at resvg::render::render_group::h41159d985901669f (http://127.0.0.1:64148/engines/svg/resvg.wasm:wasm-function[201]:0x13769f)\n    at resvg::render::render_nodes::h67ff4a7eccfe9e35 (http://127.0.0.1:64148/engines/svg/resvg.wasm:wasm-function[1310]:0x1f8358)\n    at resvg::render::render_group::h41159d985901669f (http://127.0.0.1:64148/engines/svg/resvg.wasm:wasm-function[201]:0x13766a)\n    at resvg::render::render_nodes::h67ff4a7eccfe9e35 (http://127.0.0.1:64148/engines/svg/resvg.wasm:wasm-function[1310]:0x1f8358)\n    at resvg::render::render_group::h41159d985901669f (http://127.0.0.1:64148/engines/svg/resvg.wasm:wasm-function[201]:0x137954)\n    at resvg::render::<impl resvg::tree::Tree>::render::h881d13678f490056 (http://127.0.0.1:64148/engines/svg/resvg.wasm:wasm-function[535]:0x1a9aac)\n    at resvg_render (http://127.0.0.1:64148/engines/svg/resvg.wasm:wasm-function[39]:0x75953)\n    at oe.render (http://127.0.0.1:64148/assets/conversion.worker-B8N0gGXS.js:1:4122)",
+        "lastObservedPhase": "parsed"
+      },
+      "svgReleaseObservation": {
+        "attemptedObjects": 1,
+        "releaseFailures": 1,
+        "primaryFailurePreserved": true
+      }
+    },
+    "failure": {
+      "jobState": "error",
+      "phase": "Stopped safely",
+      "error": "SVG rendering failed inside the bounded engine (unreachable). No output was saved."
+    }
+  },
+  "nativeValidSamples": 64,
+  "nativeUnavailableSamples": 0,
+  "unadjustedPeakPrivateBytes": 540397568,
+  "blankBaseline": null,
+  "primaryIncrementalMiB": null,
+  "independentReferenceSameHistoricalBytes": true,
+  "ownedBirthsAbsent": 6,
+  "ownedRuntimesFixturesOutputsRemoved": true,
+  "originalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "originalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "failureTrace": {
+    "path": "output\\playwright\\2026-10-28T09-26-16-499Z-source-svg-failure.zip",
+    "bytes": 292800,
+    "sha256": "989a2387c6d21c16801a5adbb6b06be3b540339e5aedd18013d36d7427ef79ee"
+  },
+  "conclusion": "Primary native unreachable in resvg::filter::get_input now survives one failed destructor; no completed PNG or fidelity score. Root allocation/logic cause remains unproven",
+  "sourceInspection": {
+    "url": "https://raw.githubusercontent.com/RazrFalcon/resvg/3495d8705b302d6d266748516973606ca9657906/crates/resvg/src/filter/mod.rs",
+    "facts": [
+      "get_input clones full source pixmaps for SourceGraphic/SourceAlpha",
+      "apply_inner retains FilterResult values through the primitive loop",
+      "Inference only: full-sized source copies plus retained results may exceed bounded heap; must verify a source-level lifecycle optimization without altering pixels, cap or limits"
+    ]
+  },
+  "unchangedReplayPlanned": false,
+  "primaryMemoryAcceptance": false,
+  "publicPromotion": false,
+  "originalGoalComplete": false
+}

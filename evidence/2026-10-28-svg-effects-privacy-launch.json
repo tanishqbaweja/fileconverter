@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "3c5adafb",
+  "command": "scripts/run-owned-privacy-offline.mjs",
+  "sessionId": 1915,
+  "launchObservedAt": "2026-10-28T12:20:02Z",
+  "notBeforeTerminalCheck": "2026-10-28T12:21:32Z",
+  "estimatedRemainingSeconds": 90,
+  "headless": true,
+  "status": "launched-not-yet-a-pass",
+  "conversionMemoryAcceptance": false,
+  "doNotDuplicateWhileSessionIsLive": true
+}

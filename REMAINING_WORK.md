@@ -1,5 +1,43 @@
 # Remaining work audit
 
+2026-10-28 — Effects/error-preservation cycle checkpoint:1933 portable PASS,
+build/TypeScript/lint PASS,31initial/21final focused PASS. Default Wrangler
+privacy0pass/1preflight-fail/18notrun remains recorded (RAM<unchanged2GiB before
+Chrome). Existing direct-workerd exact-built-worker/read-only-loopback host:
+19same privacy/offline tests PASS/0fail/0skip/0flaky46.835s; no app/test/safety
+relaxation. Different host scope explicit, NOT Wrangler/hosted-CDN acceptance.
+Both privacy runtimes removed, four privacy births absent, protected original
+full SHA/size unchanged. Failed6M effects/primary baselineNULL still unaccepted;
+two owned renderer failure traces retained, no disposable copies. Next actual
+source-level allocation investigation, no unchanged failing-Wasm replay.
+`evidence/2026-10-28-svg-effects-cycle.json`.
+
+Current default-Wrangler privacy verification HELD before Chrome: wrapper initial
+free physical2825080832B passed, spec preflight later838938624B failed unchanged
+2GiB floor;0pass/1preflight-fail/18notrun. Both owned births absent, scratch
+removed and original full SHA unchanged. No unrelated app closed or check reduced.
+Fresh post-cleanup free physical6904233984B; run the existing lower-overhead
+direct-workerd host with the identical19 tests/exact built worker. Keep host-mode
+scope explicit; cannot relabel its result Wrangler/Miniflare acceptance.
+`evidence/2026-10-28T12-19-52-925Z-owned-privacy-offline.json`.
+
+2026-10-28 — Changed6M diagnosis at3c5adafb successfully preserves primary error:
+native unreachable in resvg::filter::get_input, last phase parsed. One destructor
+attempt/failure no longer masks it; destination abort, zero output and known
+writer retirement observed.0success/1fail/2notrun, no SSIM score,64valid/0missing
+native samples; primary baseline/incrementalNULL. Six owned births absent, all
+disposable fixtures/references/profiles removed, original full SHA unchanged;
+292800B failure trace retained. No identical replay, cap increase or smaller input.
+
+Pinned3495d870 filter source clones SourceGraphic/SourceAlpha pixmaps and keeps
+intermediate FilterResults through the primitive chain. This is a concrete
+candidate allocation source, NOT proven OOM or an accepted optimization. Next
+investigate last-use intermediate release/ownership with exact reference pixels,
+unchanged96MiB cap/SSIM0.99/full-tree250 and independent rebuild/browser gates.
+1933 portable PASS/0fail/0skip/0cancel140.885s (576files;162qualNOTRUN); final
+current-build privacy/offline check running separately. See
+`evidence/2026-10-28-svg-primary-failure-terminal.json`.
+
 SVG primary-failure preservation gates PASS:31focused, then21 final native-stack
 focused; fresh production build, TypeScript and affected lint PASS. No input,
 rendering setting, engine binary,96MiB cap, SSIM0.99 or full-tree250MiB change.

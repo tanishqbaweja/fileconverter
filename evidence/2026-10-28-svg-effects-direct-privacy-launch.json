@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "3c5adafb",
+  "command": "scripts/run-owned-privacy-offline.mjs --direct-workerd",
+  "sessionId": 36579,
+  "launchObservedAt": "2026-10-28T12:24:51Z",
+  "notBeforeTerminalCheck": "2026-10-28T12:26:30Z",
+  "reason": "Wrangler run stopped at unchanged pre-browser2GiB floor; fresh post-cleanup physical RAM6904233984B. Use existing lower-overhead exact-built-worker/direct-workerd diagnostic host, no app/test/safety changes",
+  "same19UnchangedBrowserSpecs": true,
+  "originalWranglerReceiptRetained": "evidence/2026-10-28T12-19-52-925Z-owned-privacy-offline.json",
+  "notWranglerMiniflareAcceptance": true,
+  "doNotDuplicateWhileLive": true,
+  "status": "launched-not-a-pass"
+}

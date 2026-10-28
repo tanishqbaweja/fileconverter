@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-10-28 — Final effects/error-preservation checks:1933 portable PASS/0fail/
+0skip/0cancel140.885s, build/types/lint PASS. Default Wrangler privacy stopped
+before Chrome at physicalRAM838938624B<2147483648B;0pass/1fail/18notrun retained.
+After owned cleanup and a fresh6904233984B safety observation, existing lighter
+direct-workerd exact-built-worker host passed the SAME19cases46.835s, no skips.
+Not a Wrangler/CDN or conversion-memory pass. Both owned runtimes/four roots
+absent, original full SHA/size unchanged. Actual6M native filter failure and
+primary-vs-cleanup cause remain explicit in `evidence/2026-10-28-svg-effects-cycle.json`.
+
+2026-10-28 — Error-preservation browser proof at3c5adafb: actual6M render traps
+in resvg::filter::get_input; original native unreachable/stack preserved despite
+one failed destructor. Zero output, ordinary abort observed,0success/1fail/
+2notrun, no quality score. Source/reference byte identities unchanged.64valid/
+0missing native rows; baseline/incrementalNULL, not memory acceptance. All six
+owned births absent and disposable data removed; original full SHA unchanged.
+1933 portable PASS/0fail/0skip/0cancel140.885s,162qualification files NOT RUN.
+`evidence/2026-10-28-svg-primary-failure-terminal.json`. Allocation reduction
+is a candidate investigation, not a measured solution or grounds for heap growth.
+
 2026-10-28 — Source-candidate6M effects first attempt at76d5fc85:0success/
 1failure/2notrun. Both original SVG and independent current-Chromium reference
 are byte-identical to historical hashes; reference bounded export/native decode
