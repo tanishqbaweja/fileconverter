@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-10-28 — Static-only source-artifact inspection: existing parser resolves
+actual get_input/function532 unreachable at1741208 (capacity-overflow trap is
+1741206, not the same location). Two positive/wrong-offset/malformed controls
+PASS179.549ms and lint PASS. No renderer execution, root-cause/memory acceptance
+or binary modification. Pinned artifact inspection scratch removed.
+`evidence/2026-10-28T12-45-07-221Z-svg-static-trap.json`.
+
 2026-10-28 — Final effects/error-preservation checks:1933 portable PASS/0fail/
 0skip/0cancel140.885s, build/types/lint PASS. Default Wrangler privacy stopped
 before Chrome at physicalRAM838938624B<2147483648B;0pass/1fail/18notrun retained.

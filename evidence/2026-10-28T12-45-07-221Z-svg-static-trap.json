@@ -1,0 +1,274 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-28T12:45:07.222Z",
+  "status": "inspected-exact-native-trap-offset-not-a-render-or-root-cause-proof",
+  "sourcePins": {
+    "scripts/inspect-svg-filter-trap.mjs": "1bf5b02ce73ade544039ea269aca7b4e742f25dd4eabffe3becbb0881e038d3d",
+    "images/resvg-source/trap-inspection.mjs": "b0e7b3bc5c5bc5ba83f3510df58e4230133649124fdc961e4e056e3dde08c42f",
+    "images/resvg-source/repeated-processed-input.json": "ac855f10dd35a787017df296a69205d0bef351450a185c5f0668bca78d32ff1a",
+    "evidence/2026-10-28-svg-primary-failure-terminal.json": "74fc2e5b6a50b1ded0d8b74df27c0ceba4db242100f17015a73f9149a7b5571f",
+    "node_modules/@webassemblyjs/wasm-parser/package.json": "67a309ba212b2d4961ddfc5b3b0bc9b729b1447ce5a905fc42542f0861b4a678",
+    "node_modules/@webassemblyjs/wasm-parser/lib/index.js": "a3ae2edf378a9217a22e010ef449196e78d12aa5b2e919e596361438487b31d8",
+    "node_modules/@webassemblyjs/wasm-parser/lib/decoder.js": "c3d85ffb7034b2a2dbffbc7c6220590718d35c3cd7a4f47320f0279cab1e39d3"
+  },
+  "failures": [],
+  "scope": "Static instructions at the actual private SVG trap offset; no converter or Wasm execution",
+  "conversionOrMemoryAcceptance": false,
+  "publicEngineChanged": false,
+  "originalGoalComplete": false,
+  "input": {
+    "priorFrame": "at resvg::filter::get_input::h832c13b1b93182af (http://127.0.0.1:64148/engines/svg/resvg.wasm:wasm-function[532]:0x1a9198)",
+    "artifactId": 12794726096,
+    "wasmSha256": "4068ccdc36f10df407150752bcae5af699dd1190700c5ebb78e578ea9aafab9d"
+  },
+  "inspection": {
+    "functionIndex": 532,
+    "name": "resvg::filter::get_input::h832c13b1b93182af",
+    "functionLocation": {
+      "start": {
+        "line": -1,
+        "column": 1740407
+      },
+      "end": {
+        "line": -1,
+        "column": 1741210
+      }
+    },
+    "trapOffset": 1741208,
+    "window": [
+      {
+        "offset": 1741160,
+        "type": "Instr",
+        "id": "end",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741161,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          0
+        ]
+      },
+      {
+        "offset": 1741163,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          7
+        ]
+      },
+      {
+        "offset": 1741165,
+        "type": "Instr",
+        "id": "store",
+        "object": "u32",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741168,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          0
+        ]
+      },
+      {
+        "offset": 1741170,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          8
+        ]
+      },
+      {
+        "offset": 1741172,
+        "type": "Instr",
+        "id": "store8",
+        "object": "u32",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741175,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          0
+        ]
+      },
+      {
+        "offset": 1741177,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          2
+        ]
+      },
+      {
+        "offset": 1741179,
+        "type": "Instr",
+        "id": "load",
+        "object": "u64",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741182,
+        "type": "Instr",
+        "id": "store",
+        "object": "u64",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741185,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          0
+        ]
+      },
+      {
+        "offset": 1741187,
+        "type": "Instr",
+        "id": "const",
+        "object": "i32",
+        "index": null,
+        "args": [
+          12
+        ]
+      },
+      {
+        "offset": 1741189,
+        "type": "Instr",
+        "id": "add",
+        "object": "i32",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741190,
+        "type": "Instr",
+        "id": "get_local",
+        "object": null,
+        "index": null,
+        "args": [
+          2
+        ]
+      },
+      {
+        "offset": 1741192,
+        "type": "Instr",
+        "id": "const",
+        "object": "i32",
+        "index": null,
+        "args": [
+          8
+        ]
+      },
+      {
+        "offset": 1741194,
+        "type": "Instr",
+        "id": "add",
+        "object": "i32",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741195,
+        "type": "Instr",
+        "id": "load",
+        "object": "u64",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741198,
+        "type": "Instr",
+        "id": "store",
+        "object": "u64",
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741201,
+        "type": "Instr",
+        "id": "return",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741202,
+        "type": "Instr",
+        "id": "end",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741203,
+        "type": "CallInstruction",
+        "id": "call",
+        "object": null,
+        "index": "alloc::raw_vec::capacity_overflow::h2fb0507c193e25d6",
+        "args": []
+      },
+      {
+        "offset": 1741206,
+        "type": "Instr",
+        "id": "unreachable",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741207,
+        "type": "Instr",
+        "id": "end",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741208,
+        "type": "Instr",
+        "id": "unreachable",
+        "object": null,
+        "index": null,
+        "args": []
+      },
+      {
+        "offset": 1741209,
+        "type": "Instr",
+        "id": "end",
+        "object": null,
+        "index": null,
+        "args": []
+      }
+    ],
+    "instructionCount": 381,
+    "nativeExecution": false,
+    "sourceAllocationCauseProven": false
+  },
+  "ownedScratchRemoved": true,
+  "finishedAt": "2026-10-28T12:45:22.677Z"
+}

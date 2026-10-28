@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-28 — Static SVG trap inspection: installed LLVM22.1.8 lacks a Wasm
+backend; no replacement tool installed. Existing locked Wasm parser mapped the
+exact candidateSHA/native offset1741208 to unreachable in get_input/function532.
+Nearby capacity-overflow call has a different unreachable offset1741206; do not
+conflate them or infer root cause from proximity. Two focused static controls
+and affected lint PASS; only pinned source artifact read in memory, no Wasm
+instantiation/conversion/browser/heap change, owned scratch removed. Next trace
+the allocation/caller control edges before choosing a source optimization.
+`evidence/2026-10-28T12-45-07-221Z-svg-static-trap.json`.
+
 2026-10-28 — Effects/error-preservation cycle checkpoint:1933 portable PASS,
 build/TypeScript/lint PASS,31initial/21final focused PASS. Default Wrangler
 privacy0pass/1preflight-fail/18notrun remains recorded (RAM<unchanged2GiB before
