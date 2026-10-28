@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "scope": "Three required 8M direct-handle writes using the existing directory-picker test adapter; not native OS picker/effects/OOM/full release",
+  "recipe": "scripts/lib/reproduced-svg-direct-stress-recipe.mjs",
+  "command": "scripts/test-reproduced-svg-stress.mjs --direct-handle",
+  "differentPathNotUnchangedOpfsReplay": true,
+  "sameSourceReferenceEnginePixelEqualityMemoryFormulaAndLimits": true,
+  "realOutputHandleRequiredByNullOpfsNameAndExactBatchName": true,
+  "sixActualWasmStageObservationsRequired": true,
+  "firstPreparationFailure": { "focusedPassed": 12, "focusedFailed": 2, "reason": "Whole-suite destination hook matches three cases; exact guard rejected before browser", "archive": "fixtures/source/svg-direct-stress-first-preparation.json", "listingReceipt": "evidence/2026-10-28T08-08-06-733Z-reproduced-svg-grid-stress.json" },
+  "repair": "Limit all five exact reversible destination edits to the original generic image-case body, preserving the rest byte-for-byte",
+  "correctedFocusedTests": { "passed": 6, "failed": 0, "skipped": 0, "durationMs": 566.0022 },
+  "correctedActualCollection": { "selectedCases": 3, "files": 1, "receipt": "evidence/2026-10-28T08-09-57-688Z-reproduced-svg-grid-stress.json", "browserOrConversionsExecuted": false, "ownedScratchRemoved": true },
+  "catalogueReviewedHunkAndLiveMemoryFocusedTests": { "passed": 10, "failed": 0, "skipped": 0, "durationMs": 1337.1237 },
+  "productionBuildAndTypescript": "passed, production source unchanged since verified observed-memory build",
+  "earliestStableBlankGuardUnchanged": true,
+  "headless": true,
+  "publicWasmReplacement": false,
+  "originalGoalComplete": false
+}

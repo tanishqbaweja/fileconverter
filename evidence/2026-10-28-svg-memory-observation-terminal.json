@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "837f7bef",
+  "sourceArchive": "fixtures/source/svg-observation-stress-837f7bef.json",
+  "wrapper": { "path": "evidence/2026-10-28T07-49-35-278Z-reproduced-svg-grid-stress.json", "bytes": 41330, "sha256": "2af1658ecc15a51145f1fc9f924ab245db527ad9a581ff4944a1b0a3a9e358d2" },
+  "browser": { "path": "evidence/2026-10-28T07-49-37-947Z-source-svg-browser.json", "bytes": 233884, "sha256": "3347ea371e4985887291da2de9a86072c34fc354217c05d5e75a861cb5ea1915" },
+  "conclusion": "Stopped before conversion: earliest stable blank gate failed within unchanged deadline",
+  "blankSamples": 18,
+  "acceptedBlankBaseline": null,
+  "conversionCasesExecuted": 0,
+  "browserSvgMemoryObservationExecuted": false,
+  "memoryOrTelemetryAcceptance": false,
+  "ownedProcessBirthsAbsent": 4,
+  "ownedRuntimesFixtureAndOutputsRemoved": true,
+  "originalSizeAndFullShaUnchanged": true,
+  "unchangedOpfsRunRetryPlanned": false,
+  "next": "Required direct-handle stress route, independently of this unexecuted OPFS gate; preserve original baseline and all memory constraints",
+  "originalGoalComplete": false
+}

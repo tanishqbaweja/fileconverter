@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "command": "scripts/run-unit-suite.mjs portable",
+  "status": "failed-one-current-catalogue-integration-hunk",
+  "passed": 1907,
+  "failed": 1,
+  "skipped": 0,
+  "cancelled": 0,
+  "durationMs": 106574.5692,
+  "selectedFiles": 571,
+  "qualificationFilesNotRun": 162,
+  "failure": "Current catalogue integration's complete reversible historical UI comparison does not yet account for the reviewed SVG memory label hunk",
+  "repair": "Add only that exact unique reversible Peak Wasm block; keep the whole UI equivalence check and live memory tests",
+  "originalGoalComplete": false
+}

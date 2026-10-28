@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-28T08:08:06.734Z",
+  "status": "failed-reproduced-svg-grid-stress",
+  "sourcePins": {
+    "scripts/test-reproduced-svg-stress.mjs": "f989964b00b84b2347272ace2b8e440019608fc73211d1811661c19e62061946",
+    "scripts/lib/reproduced-svg-stress-recipe.mjs": "e54585934f781b93e47f5c24be88eb7b38d512377fb4a3e0df1475d290149230",
+    "scripts/lib/reproduced-svg-direct-stress-recipe.mjs": "3f2e1925e2e139690a18baac1074195c94881142fa32fe06ef18acf79c9a3ba7",
+    "scripts/lib/reproduced-svg-browser-recipe.mjs": "4cc3955d73b252ce41d3c632a362f56f6c23614d1a123cd42f2fd0b4e73e8bc1",
+    "scripts/lib/exact-rgba-validation.mjs": "621d026feabb005646f6aef851cb32e12dc672eb2432d0a8dded9070a9f7de4d",
+    "workers/conversion.worker.ts": "3e329df34b3777c0c21ee4377f0e01ea7407f617881812527918d9d479a3272c",
+    "app/converter/ConverterApp.tsx": "62491d0620a5b91083678957f4a629b6cace8d51435a3bb1677f0c57f26c5017",
+    "lib/conversion-protocol.ts": "232f1ffffb783563442e65f8dbd20e7cec09f6384f9a9040c57e0a75cd4c2513",
+    "lib/svg-memory-observation.ts": "91bcde4cad0e5058aed86c426977d0a49d62f0d556a1f7e60cc133b292502987",
+    "lib/vendor/resvg-binding.mjs": "4c54da4e6384cf9f25ccd6cedf9bd5bb79f8233651fde6fad784ad43b0a03d58",
+    "lib/vendor/resvg-binding.d.mts": "2e4012ff74e58e9288886c25fdc39d5654a7e56d0bc0652bfd54bb3be68d79eb",
+    "images/resvg-source/observed-binding-contract.mjs": "05511c5587b84a4456f20e70b79f78b6d6412d810cd60b82d36fba002860111d",
+    "scripts/generate-svg-stress-fixture.py": "757bd4490c38f75d0f40821e27f24ac168621a71353906ab75c26066ca19bb53",
+    "fixtures/stress/images/svg-grid-8m.svg.json": "84267a799359b2d1c56893677e76941a324204cfa923391de61f310d298821a8",
+    "images/resvg-source/repeated-processed-input.json": "ac855f10dd35a787017df296a69205d0bef351450a185c5f0668bca78d32ff1a",
+    "lib/staged-worker-coordinator.ts": "121074352923911f8f851260ed903d6cc040e48107e67c3e97a6cc9b361de669",
+    "scripts/test-source-built-svg-candidate.mjs": "81c23573e917ad6ad534d48757e1265333281663429f54c6cc31d3c1a272583c",
+    "tests/browser/image-conversions.spec.ts": "262ec202fde2f1029bc32a86a4b8d5c5afdb948255bae6b7366baa22d9a15f49"
+  },
+  "generatedSourceArchives": {},
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: Exact direct stress anchor:     assertProjectLocal(outputPath);\n    try {\n      await page.goto(\"/?test=1\");\n\n3 !== 1\n\n    at replace (file:///H:/Github%20Repositories/fileconverter/scripts/lib/reproduced-svg-direct-stress-recipe.mjs:7:10)\n    at edit (file:///H:/Github%20Repositories/fileconverter/scripts/lib/reproduced-svg-direct-stress-recipe.mjs:12:45)\n    at makeReproducedSvgDirectStressQualification (file:///H:/Github%20Repositories/fileconverter/scripts/lib/reproduced-svg-direct-stress-recipe.mjs:13:3)\n    at file:///H:/Github%20Repositories/fileconverter/scripts/test-reproduced-svg-stress.mjs:38:21"
+  ],
+  "listOnly": true,
+  "publicEngineReplacement": false,
+  "originalGoalComplete": false,
+  "destinationMode": "direct-handle-test-directory; native OS picker unverified",
+  "scope": "Three same-browser 8M direct-handle grid repeats; no native OS picker/effects/OOM/recovery/full release acceptance",
+  "ownedGenerationAndFixtureRuntimeRemoved": true,
+  "logTail": "",
+  "finishedAt": "2026-10-28T08:08:06.752Z"
+}

@@ -29,6 +29,7 @@ test("current application mounts the bounded component with explicit lifecycle a
   // unique and reversible; the complete historical UI comparison below remains
   // mandatory and still catches every unrelated change.
   const codeOwnerEdits = [
+    ["                      <dt>Peak Wasm</dt>\n                      <dd>\n                        {metrics.svgMemoryObservation\n                          ? metrics.svgMemoryObservation.peakBytes === null\n                            ? \"Unavailable\"\n                            : formatBytes(metrics.svgMemoryObservation.peakBytes)\n                          : metrics.peakWasmMemoryBytes\n                          ? formatBytes(metrics.peakWasmMemoryBytes)\n                          : \"Not used\"}\n                        {Boolean(metrics.svgMemoryObservation?.unavailableObservations) && \" (incomplete)\"}\n                      </dd>","                      <dt>Peak Wasm</dt>\n                      <dd>\n                        {metrics.peakWasmMemoryBytes\n                          ? formatBytes(metrics.peakWasmMemoryBytes)\n                          : \"Not used\"}\n                      </dd>"],
     ['import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";\nimport { ConversionError } from "./ConversionError";\n',
       'import { PublishedFormatsCatalogue } from "./PublishedFormatsCatalogue";\n'],
     ['          {error && !file ? (\n            <ConversionError message={error} />\n',

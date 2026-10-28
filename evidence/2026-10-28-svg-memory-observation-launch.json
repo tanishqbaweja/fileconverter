@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "executedHead": "837f7bef",
+  "command": "scripts/test-reproduced-svg-stress.mjs",
+  "sessionId": 33229,
+  "observedRunningAt": "2026-10-28T07:49:44Z",
+  "estimatedRemainingSeconds": 150,
+  "notBeforeNextObservation": "2026-10-28T07:52:14Z",
+  "singleExecutionOnly": true,
+  "reasonNotReplay": "Production binding/memory observer and truthful UI changed; require real six-stage Wasm bytes/pages during identical 8M exact-pixel repeats",
+  "repeatsInOneCleanBrowser": 3,
+  "earliestBlankFullTree250MiBNormalServicesAndFullTracingUnchanged": true,
+  "runtimeUnknownMaximumRemainsNull": true,
+  "publicWasmReplacement": false,
+  "headless": true
+}

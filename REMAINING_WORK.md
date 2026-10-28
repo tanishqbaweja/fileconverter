@@ -1,5 +1,25 @@
 # Remaining work audit
 
+2026-10-28 — Direct-handle stress preparation verified: six focused recipe tests
+PASS and exactly three cases collected, no browser launched by collection.
+First ambiguous destination-hook preparation rejected before launch and retained;
+repair scopes five reversible edits to the generic image-case body only. Current
+catalogue's reviewed Peak Wasm UI hunk repaired, ten catalogue/memory tests PASS.
+Actual direct conversion and real browser Wasm observations remain unverified.
+See `evidence/2026-10-28-svg-direct-stress-preparation.json`.
+
+2026-10-28 — Actual observed-memory OPFS gate stopped BEFORE conversion:18
+blank samples, no stable baseline within unchanged deadline. Zero SVG conversions
+or browser memory-getter observations; four owned births absent, both runtimes/
+fixture removed, original full SHA unchanged. Do not retry identical OPFS gate
+or relax baseline. Full regression1907pass/1fail/0skip106.575s: only current
+catalogue integration's exact historical-UI comparison needs the reviewed Peak
+Wasm hunk; preserve reversible whole-UI check. Required direct-handle stress is
+the next different output path, not a relabelled OPFS repeat. Browser memory
+tracking remains unverified until that actual conversion. See
+`evidence/2026-10-28-svg-memory-observation-terminal.json` and
+`evidence/2026-10-28-svg-memory-first-regression.json`.
+
 SVG observation pre-browser gate:28 focused PASS after three historical UI-hash
 bindings were repaired with exact archived inputs;19 final phase/qualification
 checks PASS after bounded six-stage byte/page map added. Production build,
