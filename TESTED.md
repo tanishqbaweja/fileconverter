@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-28 — Native last-use candidate prepared after measured raster timeouts.
+Pinned region-patched filter44239B/SHAff98...6191 becomes46971B/SHA5331eaa1
+...3307. Acquires ALL current inputs before releasing previous named-result
+owners that no future primitive references; repeated names retained conservatively,
+merge retains its original input loop.13input-bearing arms covered. Entire patch
+inverse restores full preimage; every get_input/pixel kernel and all later source
+bytes exactly unchanged, no dimensions/region/kernel/parameter/compiler change.
+Synthetic1000graph lifetime/name/alias/missing/repeated-input controls preserve
+computed result; not native pixel proof.9focused PASS385.6465ms/lint PASS.
+Derived two-fresh-build recipe retains same locked nightly/release flags/remap,
+both prior patch proofs plus final exact liveness-source verification/cleanup/
+raw-byte equality. New isolated no-Docker source-only workflow; compiler/browser/
+fidelity/memory/speed acceptance still OPEN. No unchanged browser rerun.
+
 2026-10-28 —80-row sourcea5eb6702 genuine6M attempt REJECTED for adoption:
 same45s timeout/0validated-pass/1fail/2notrun. At44.521s:23native viewports
 rendered/released,1781central rows/2555937B partial output,43.468s synchronous

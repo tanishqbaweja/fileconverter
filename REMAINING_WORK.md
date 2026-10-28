@@ -1,5 +1,17 @@
 # Remaining work audit
 
+Native filter lifetime optimization IMPLEMENTED privately, compiler/browser
+unverified: previous results Vec retains every Arc until full chain completes,
+forcing some copy-on-write pixel copies despite no future consumer. New guarded
+source patch releases only provably dead named owners AFTER all current inputs
+are acquired (merge after its original loop), conservatively retaining repeated
+names/future aliases.13arms plus no-input/merge post-release,17kind exhaustive
+match; full source inverse/pixel-kernel bytes/dimensions/regions preserved.
+1000synthetic graphs+source/build guards9PASS385.6465ms/lint PASS. Two fresh
+locked compilations must verify5331eaa1...3307 dependency bytes before/after,
+retain prior context/region proofs, compare full raw bytes and clean scratch.
+No accepted quality/speed/memory result; original full goal remains unchanged.
+
 Latest80-row experiment REJECTED for adoption:45s timeout,1781/2000central rows,
 43.468s native raster at44.521s, no completed PNG/SSIM. Same6M/cap/timeout/gates,
 no accepted speedup. Actual intermediate Wasm now observed83951616B (<96MiB);
