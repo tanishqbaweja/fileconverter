@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-29T20:32:05.862Z",
+  "sourcePins": {
+    "images/resvg-source/blur-boundary-entry.rs": "80b16fcc4f45de174e5d804b5515c144f7b5b32ff9e52c525af97a63fdfd5a10",
+    "images/resvg-source/blur-boundary-patch.mjs": "0497f82f28d1e75561f45596c3e38dfdad866256ba3826301f4594c40e6d7565",
+    "images/resvg-source/blur-boundary-kernel-tests.rs": "2f52fa1757b303c8a1129b96269922de52eac7cdb5b99f0c3284343fed6f8487",
+    "fixtures/source/resvg-box-blur-3495d870-preimage.json": "7db84e2e7beaea8881be6f1a502617766de371d79bfc04ead5ca270321d59f1f",
+    "scripts/test-svg-blur-boundary-kernel.mjs": "fd8c8258264d0d9af812ba9587ad5ac46ae7bd07c1b365fd061f2b82258e5d36"
+  },
+  "commands": [
+    {
+      "executable": "H:\\DevTools\\Rust\\rustup\\toolchains\\1.75.0-x86_64-pc-windows-msvc\\bin\\rustc.exe",
+      "args": [
+        "--version",
+        "--verbose"
+      ],
+      "pid": 29208,
+      "birth": {
+        "pid": 29208,
+        "parentPid": 25396,
+        "createdAt": "2026-10-29T20:32:05.9399780Z"
+      },
+      "log": "rustc 1.75.0 (82e1608df 2023-12-21)\nbinary: rustc\ncommit-hash: 82e1608dfa6e0b5569232559e3d385fea5a93112\ncommit-date: 2023-12-21\nhost: x86_64-pc-windows-msvc\nrelease: 1.75.0\nLLVM version: 17.0.6\n",
+      "exitCode": 0,
+      "signal": null,
+      "cleanup": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 29208,
+          "parentPid": 25396,
+          "createdAt": "2026-10-29T20:32:05.9399780Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-29T20:32:08.528Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 533,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    },
+    {
+      "executable": "H:\\DevTools\\Rust\\rustup\\toolchains\\1.75.0-x86_64-pc-windows-msvc\\bin\\rustc.exe",
+      "args": [
+        "--edition=2021",
+        "--test",
+        "H:\\Github Repositories\\fileconverter\\work\\svg-blur-boundary-kernel-C60ccQ\\numeric-tests.rs",
+        "-O",
+        "-o",
+        "H:\\Github Repositories\\fileconverter\\work\\svg-blur-boundary-kernel-C60ccQ\\blur-kernel-tests.exe"
+      ],
+      "pid": 47316,
+      "birth": {
+        "pid": 47316,
+        "parentPid": 25396,
+        "createdAt": "2026-10-29T20:32:08.5303050Z"
+      },
+      "log": "warning: variable does not need to be mutable\n  --> H:\\Github Repositories\\fileconverter\\work\\svg-blur-boundary-kernel-C60ccQ\\patched-box-blur.rs:24:42\n   |\n24 | pub fn apply(sigma_x: f64, sigma_y: f64, mut src: ImageRefMut) {\n   |                                          ----^^^\n   |                                          |\n   |                                          help: remove this `mut`\n   |\n   = note: `#[warn(unused_mut)]` on by default\n\nwarning: 1 warning emitted\n\n",
+      "exitCode": 0,
+      "signal": null,
+      "cleanup": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 47316,
+          "parentPid": 25396,
+          "createdAt": "2026-10-29T20:32:08.5303050Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-29T20:32:11.726Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 525,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    },
+    {
+      "executable": "H:\\Github Repositories\\fileconverter\\work\\svg-blur-boundary-kernel-C60ccQ\\blur-kernel-tests.exe",
+      "args": [
+        "--test-threads=1",
+        "--nocapture"
+      ],
+      "pid": 14400,
+      "birth": null,
+      "log": "\nrunning 4 tests\ntest every_rgba_channel_matches_the_unchanged_kernel_on_a_larger_zero_extended_domain ... ok\ntest fixed_window_negative_control_loses_boundary_values_but_center_is_unchanged ... boundary-observation old=79 expanded=136 max=57 center=255\nok\ntest oversized_extent_is_rejected_before_any_large_temporary_allocation - should panic ... thread 'oversized_extent_is_rejected_before_any_large_temporary_allocation' panicked at H:\\Github Repositories\\fileconverter\\work\\svg-blur-boundary-kernel-C60ccQ\\patched-box-blur.rs:43:5:\nbounded blur halo buffers exceed 96 MiB\nnote: run with `RUST_BACKTRACE=1` environment variable to display a backtrace\nok\ntest sigma6_viewport_halo_footprint_is_explicit_and_does_not_raise_the_wasm_cap ... halo-footprint padding=21 expanded-temporary-bytes=6473376 wasm-cap=100663296\nok\n\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s\n\n",
+      "exitCode": 0,
+      "signal": null,
+      "cleanup": {
+        "status": "launch-exit-observed-before-birth-query-no-process-killed",
+        "exitCode": 0
+      }
+    }
+  ],
+  "failures": [],
+  "scope": "Host compiled synthetic numeric buffers, not a native SVG converter or browser/Wasm acceptance",
+  "nativeSourceRecipeIntegrated": false,
+  "productionConversionTested": false,
+  "publicPromotion": false,
+  "wholeGoalComplete": false,
+  "patch": {
+    "revision": "3495d8705b302d6d266748516973606ca9657906",
+    "sourceFile": "crates/resvg/src/filter/box_blur.rs",
+    "originalSha256": "a06d3873a14dc70471ca5cd022fc0def099fa72a911e9dcd4ac285e03acf098f",
+    "entrySha256": "80b16fcc4f45de174e5d804b5515c144f7b5b32ff9e52c525af97a63fdfd5a10",
+    "patchedSha256": "c21f5eb8dd43515068ec39421e8112060403373e74f50b4576916b7d910641a7",
+    "maximumWasmBytesUnchanged": 100663296,
+    "kernelWeightsRoundingOrPassCountChanged": false,
+    "nativeSourceRecipeIntegrated": false,
+    "browserFidelityProven": false,
+    "publicPromotion": false,
+    "originalBytes": 11259,
+    "patchedBytes": 13374,
+    "entireOriginalSourceRestoredByRemovingOnlyPatch": true,
+    "zeroHaloComputedFromExistingKernelSupport": true,
+    "allKernelAndRoundingFunctionsRetained": true,
+    "croppedBackToOriginalDimensions": true,
+    "additionalExpandedTemporaryBuffers": 2
+  },
+  "compilerVersion": "rustc 1.75.0 (82e1608df 2023-12-21)\nbinary: rustc\ncommit-hash: 82e1608dfa6e0b5569232559e3d385fea5a93112\ncommit-date: 2023-12-21\nhost: x86_64-pc-windows-msvc\nrelease: 1.75.0\nLLVM version: 17.0.6\n",
+  "status": "four-compiled-numeric-boundary-tests-pass-not-browser-acceptance",
+  "ownedRuntimeRemoved": true,
+  "finishedAt": "2026-10-29T20:32:12.432Z"
+}

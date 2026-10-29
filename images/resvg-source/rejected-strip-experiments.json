@@ -127,5 +127,15 @@
     "evidence": "evidence/2026-10-29-svg-filtered-alpha-terminal.json",
     "conclusion": "FAIL exact alpha:52879 mismatched pixels,max50/255 in both modes despite exact full/strip RGBA and whole0.999023/min8bands0.997423. Shared renderer/reference gap, not strip seams. Small175.742MiB diagnostic only. Preserve failure; do not replay unchanged pair, relax alpha or promote. Isolate geometry versus blur/merge on different component inputs before source changes."
   },
+  "completedPremultipliedAlphaComponents": {
+    "nativeWasmSha256": "8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+    "variants": [
+      {"name":"rounded-no-filter","sha256":"23d0d451461e23e3a9ccc84d9e9698edd22683c8df29199276a970330019904c"},
+      {"name":"square-no-filter","sha256":"3aebeeb224cef976bde753f176fbb13574d77b746b3f4898ce0dcad83d1cb1fc"},
+      {"name":"square-filtered","sha256":"7bcb8dcad1192c1238403c3e8154ab01279d37d2177e4d9e55fc1a665d6debe6"}
+    ],
+    "evidence": "evidence/2026-10-29-svg-alpha-components-terminal.json",
+    "conclusion": "Rounded/no-filter7776 alpha mismatches,max18; square/no-filterexact; square/filtered38067 mismatches,max34. RGB all-band0.99 passes. Independent geometry and filter discrepancies, not one strip error. Small214.906MiB diagnostic only. Do not replay unchanged components; inspect bounded spatial evidence and test boundary-convolution hypothesis numerically before native changes."
+  },
   "publicPromotion": false
 }

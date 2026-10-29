@@ -1,13 +1,35 @@
 # Tested conversion ledger
 
-Current alpha-component investigation PREPARED, browser pending: three new
-inputs isolate rounded/no-filter, integer-square/no-filter and square/original-
-filter behavior. Same pinned96MiB native candidate, actual production UI/worker/
-IO, original0.99 all-band and exact-alpha gates; original failed pair NOT replayed.
-At most64 fixed plus12 worst alpha pixel records per component, histograms fixed
-at256 bins. Hypotheses recorded before execution in
-evidence/2026-10-29-svg-alpha-components-plan.json.14 focused PASS970.2069ms,
-lint/diff PASS; Playwright discovery exactly one test. No browser result yet.
+Alpha-component investigation TERMINAL at52ac74f3, Chrome156 headless: all three
+different inputs collected before unchanged quality verdict. Rounded/no-filter:
+7776 alpha mismatches,max18; square/no-filter: exactRGBA/alpha and SSIM1; square/
+original-filter:38067 alpha mismatches,max34. All RGB seam/whole scores pass0.99,
+but total test remains0PASS/1FAIL/0 skip/flaky9.806s. Predictions fixed before run
+matched;64 fixed plus up to12 worst positional records per component retained.
+Geometry coverage and filtering have independent discrepancies; a specific
+filter primitive cause is not yet proven. Worst filtered error at58,6 maps to
+blur boundary50,0 after original8,6 offset. Small214.906MiB diagnostic only,
+100 valid/0 missing, stableblank;96MiB native cap/250formula unchanged. Zero
+forbidden requests; all4 roots/wrapper/owned scratch/converted/reference and
+component files removed; original full SHA/size unchanged. No source rebuild,
+unchanged failed-pair replay, accepted speedup or promotion. Ledger blocks these
+unchanged components. Receipt:evidence/2026-10-29-svg-alpha-components-terminal.json.
+The follow-up numeric boundary check below has now completed.
+
+Numeric investigation completed: actual pinned Rust box kernel reproduces79
+edge alpha on a fixed64-sample window versus136 on a larger zero-extended domain,
+maxdifference57/identical center255. Private halo source correction retains all
+kernel/weight/rounding/pass bytes and matches the unchanged original kernel on
+a larger domain across sixteen dimension/axis cases.4 compiled tests PASS;
+oversized allocation arithmetic rejects before large allocation. Host compiler
+Rust1.75.0 is NOT the pinned Wasm nightly. SourceSHA c21f5eb8…10a7; no Wasm built
+or recipe integration, no rounded-edge fix, browser qualification or speed claim.
+At sigma6/3000x224, two expanded buffers specify6,473,376B plus2,688,000B input;
+this is not a peak-memory measurement. Global96MiB cap remains mandatory.
+18 focused unit/receipt tests PASS956.4064ms, affected lint/diff PASS. All numeric
+binaries/PDB/source scratch removed; no user fixture opened by the numeric probe.
+Next fifth-proof recipe integration and changed-candidate qualification.
+evidence/2026-10-29-svg-blur-boundary-numeric-terminal.json.
 
 Filtered-alpha browser gate TERMINAL FAIL at a5c28aad, Chrome156.0.8078.49:
 genuine full/strip outputs decode to identical RGBA, wholeSSIM0.999023 and all

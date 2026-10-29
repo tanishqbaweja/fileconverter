@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "status": "private-blur-boundary-source-patch-compiled-numeric-pass-not-built-to-wasm",
+  "rawReceipt": {
+    "path": "evidence/2026-10-29T20-32-05-861Z-svg-blur-boundary-kernel.json",
+    "bytes": 6576,
+    "sha256": "e676fad92422b7487e23ba42f098adb86466707fa35abb81c111690fc1d339d1"
+  },
+  "sourceRevision": "3495d8705b302d6d266748516973606ca9657906",
+  "patch": {
+    "revision": "3495d8705b302d6d266748516973606ca9657906",
+    "sourceFile": "crates/resvg/src/filter/box_blur.rs",
+    "originalSha256": "a06d3873a14dc70471ca5cd022fc0def099fa72a911e9dcd4ac285e03acf098f",
+    "entrySha256": "80b16fcc4f45de174e5d804b5515c144f7b5b32ff9e52c525af97a63fdfd5a10",
+    "patchedSha256": "c21f5eb8dd43515068ec39421e8112060403373e74f50b4576916b7d910641a7",
+    "maximumWasmBytesUnchanged": 100663296,
+    "kernelWeightsRoundingOrPassCountChanged": false,
+    "nativeSourceRecipeIntegrated": false,
+    "browserFidelityProven": false,
+    "publicPromotion": false,
+    "originalBytes": 11259,
+    "patchedBytes": 13374,
+    "entireOriginalSourceRestoredByRemovingOnlyPatch": true,
+    "zeroHaloComputedFromExistingKernelSupport": true,
+    "allKernelAndRoundingFunctionsRetained": true,
+    "croppedBackToOriginalDimensions": true,
+    "additionalExpandedTemporaryBuffers": 2
+  },
+  "hostCompiler": "rustc 1.75.0 (82e1608df 2023-12-21)\nbinary: rustc\ncommit-hash: 82e1608dfa6e0b5569232559e3d385fea5a93112\ncommit-date: 2023-12-21\nhost: x86_64-pc-windows-msvc\nrelease: 1.75.0\nLLVM version: 17.0.6\n",
+  "hostCompilerIsPinnedWasmNightly": false,
+  "numericTests": {
+    "passed": 4,
+    "failed": 0,
+    "ignored": 0,
+    "negativeControl": {
+      "sourceLength": 64,
+      "sigmaX": 6,
+      "sigmaY": 0,
+      "originalFixedWindowEdgeAlpha": 79,
+      "expandedDomainEdgeAlpha": 136,
+      "maximumAbsoluteDifference": 57,
+      "unchangedCenterAlpha": 255
+    },
+    "positiveReference": "All RGBA channels match the unchanged original kernel on a larger zero-extended domain across sixteen size/axis cases",
+    "oversizedExtent": "5000x5000 rejected before any large temporary allocation, not actual browser OOM recovery"
+  },
+  "sigma6ViewportPayload": {
+    "width": 3000,
+    "height": 224,
+    "existingBoxWidths": [
+      9,
+      9,
+      9,
+      9,
+      11
+    ],
+    "haloEachSide": 21,
+    "expandedWidth": 3042,
+    "expandedHeight": 266,
+    "expandedPixels": 809172,
+    "twoExpandedTemporaryBufferBytes": 6473376,
+    "sourceInputRgbaBytes": 2688000,
+    "totalSpecifiedPayloadBytes": 9161376,
+    "additionalSpecifiedPayloadBytesVsUnpadded": 3785376,
+    "scope": "Specified payload arithmetic only, not renderer/Wasm allocator/process peak"
+  },
+  "primarySources": [
+    "https://raw.githubusercontent.com/RazrFalcon/resvg/3495d8705b302d6d266748516973606ca9657906/crates/resvg/src/filter/box_blur.rs",
+    "https://www.w3.org/TR/filter-effects-1/#element-attrdef-fegaussianblur-edgemode"
+  ],
+  "ownedRuntimeRemoved": true,
+  "noUserFixtureOpened": true,
+  "noSvgOrFileConversionPerformed": true,
+  "noWasmProduced": true,
+  "sourceRecipeIntegrated": false,
+  "roundedGeometryCoverageMismatchFixed": false,
+  "browserFidelityProven": false,
+  "conversionMemoryAcceptance": false,
+  "acceptedSpeedup": false,
+  "publicPromotion": false,
+  "wholeGoalComplete": false,
+  "next": "Integrate the exact source patch as a fifth proof in a new private no-Docker recipe, run the numeric tests with the pinned compiler, dual-build/dual-postprocess with unchanged96MiB cap, then browser-validate changed native bytes; do not rebuild old candidate or loosen gates",
+  "focused": {
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 956.4064,
+    "lint": "passed",
+    "diffCheck": "passed"
+  }
+}

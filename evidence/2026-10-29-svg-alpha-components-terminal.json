@@ -1,0 +1,191 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "52ac74f3cb15c7985b3a652dfce4c4d1169c8178",
+  "status": "three-alpha-components-collected-two-fail-exact-alpha-one-passes-not-profile-acceptance",
+  "plan": "evidence/2026-10-29-svg-alpha-components-plan.json",
+  "parentReceipt": {
+    "path": "evidence/2026-10-29T20-13-55-421Z-svg-alpha-components-control.json",
+    "bytes": 386752,
+    "sha256": "910b97b42f681b75a252a9fa5e6c3d23785e77e0ddf12091c0f2b32c1b47667d"
+  },
+  "browserReceipt": {
+    "path": "evidence/2026-10-29T20-13-55-972Z-source-svg-browser.json",
+    "bytes": 519526,
+    "sha256": "9319e9412e50d534d708c445db6056fb3da7b9c053ee46993b64cc45b5d0bf25"
+  },
+  "nativeWasmSha256": "8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+  "browser": "Chrome156.0.8078.49 headless",
+  "functionalTest": {
+    "startTime": "2026-10-29T20:14:43.421Z",
+    "duration": 9806.133,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "components": [
+    {
+      "name": "rounded-no-filter",
+      "sourcePin": {
+        "bytes": 11095,
+        "sha256": "23d0d451461e23e3a9ccc84d9e9698edd22683c8df29199276a970330019904c",
+        "changes": {
+          "filterUseRemoved": 1,
+          "roundedRadiiRemoved": 0
+        },
+        "hypothesis": "If alpha still differs, filtering is not necessary for the mismatch"
+      },
+      "referencePin": {
+        "bytes": 56562,
+        "sha256": "38caf2dd07e461fcf33bd68b7e528d77485775c519aca88fcdda27781e9c6d58"
+      },
+      "wholeSsim": 0.999967,
+      "minimumAll8BandsSsim": 0.999869,
+      "alphaExact": false,
+      "alphaDiagnostics": {
+        "mismatchedPixels": 7776,
+        "maximumAbsoluteError": 18,
+        "referenceTransparentPixels": 60240,
+        "referencePartialPixels": 8064
+      },
+      "fixedSamplesRetained": 64,
+      "worstPixelsRetained": 12,
+      "firstWorstPixel": {
+        "x": 8,
+        "y": 0,
+        "absoluteError": 18,
+        "referenceRgba": [
+          0,
+          0,
+          0,
+          225
+        ],
+        "outputRgba": [
+          0,
+          0,
+          0,
+          207
+        ]
+      },
+      "outputRgbaSha256": "33ef28789b0b7f76b4c5fd33399611a390881083e941b3505473014eabeb4596",
+      "outputBytes": 54733,
+      "elapsedMs": 534.4650000333786,
+      "wasmPeakBytes": 8716288
+    },
+    {
+      "name": "square-no-filter",
+      "sourcePin": {
+        "bytes": 9943,
+        "sha256": "3aebeeb224cef976bde753f176fbb13574d77b746b3f4898ce0dcad83d1cb1fc",
+        "changes": {
+          "filterUseRemoved": 1,
+          "roundedRadiiRemoved": 144
+        },
+        "hypothesis": "Integer-edge coverage control should have no partial alpha and exact alpha equality"
+      },
+      "referencePin": {
+        "bytes": 15013,
+        "sha256": "f4604d7bd88172de1f009abd14695e8754a5b5d4dfcd3c387fefbca221f33dfd"
+      },
+      "wholeSsim": 1,
+      "minimumAll8BandsSsim": 1,
+      "alphaExact": true,
+      "alphaDiagnostics": {
+        "mismatchedPixels": 0,
+        "maximumAbsoluteError": 0,
+        "referenceTransparentPixels": 50448,
+        "referencePartialPixels": 0
+      },
+      "fixedSamplesRetained": 64,
+      "worstPixelsRetained": 0,
+      "firstWorstPixel": null,
+      "outputRgbaSha256": "d805635580563346fa926ac3e8917a5d87e9e58b3e65db5c156b50e944b6fd4c",
+      "outputBytes": 13336,
+      "elapsedMs": 461.1650000810623,
+      "wasmPeakBytes": 8716288
+    },
+    {
+      "name": "square-filtered",
+      "sourcePin": {
+        "bytes": 9973,
+        "sha256": "7bcb8dcad1192c1238403c3e8154ab01279d37d2177e4d9e55fc1a665d6debe6",
+        "changes": {
+          "filterUseRemoved": 0,
+          "roundedRadiiRemoved": 144
+        },
+        "hypothesis": "Remaining alpha differences implicate filtering beyond rounded-geometry coverage"
+      },
+      "referencePin": {
+        "bytes": 61091,
+        "sha256": "c0ca2404da050b77ef881ab8822216eba1509775b11437913d6ca65902b1cbee"
+      },
+      "wholeSsim": 0.999531,
+      "minimumAll8BandsSsim": 0.998078,
+      "alphaExact": false,
+      "alphaDiagnostics": {
+        "mismatchedPixels": 38067,
+        "maximumAbsoluteError": 34,
+        "referenceTransparentPixels": 1850,
+        "referencePartialPixels": 48598
+      },
+      "fixedSamplesRetained": 64,
+      "worstPixelsRetained": 12,
+      "firstWorstPixel": {
+        "x": 58,
+        "y": 6,
+        "absoluteError": 34,
+        "referenceRgba": [
+          0,
+          0,
+          28,
+          82
+        ],
+        "outputRgba": [
+          0,
+          0,
+          37,
+          48
+        ]
+      },
+      "outputRgbaSha256": "5732cf33766a15ec54843ef6e4afa2671b6624ad24d652cabcdb119f7ccc2221",
+      "outputBytes": 60783,
+      "elapsedMs": 864.3499999046326,
+      "wasmPeakBytes": 14548992
+    }
+  ],
+  "inference": {
+    "roundedEdgesHaveIndependentMismatch": true,
+    "filteringHasAdditionalMismatchOnHardEdges": true,
+    "filteringNotNecessaryForGeometryMismatch": true,
+    "allFiltersUseSameOriginalParameters": true,
+    "specificFilterPrimitiveCauseProven": false,
+    "nextHypothesis": "Worst filtered pixels lie near a clipped filter boundary; verify repeated box-pass truncation numerically before changing native code"
+  },
+  "memory": {
+    "scope": "Three small diagnostic components, not profile/scaling acceptance",
+    "blankStable": true,
+    "blankPrivateBytes": 329035776,
+    "peakCompleteTreePrivateBytes": 554381312,
+    "incrementalPrivateMiB": 214.90625,
+    "validSamples": 100,
+    "unavailableSamples": 0,
+    "staticWasmMaximumBytes": 100663296
+  },
+  "forbiddenRequests": 0,
+  "forbiddenRequestOverflow": false,
+  "ownedRootsProvenAbsent": 4,
+  "ownerProcessProvenAbsent": true,
+  "ownedRuntimeRemoved": true,
+  "ownedBrowserRuntimeRemoved": true,
+  "disposableComponentSvgAndOutputReferenceFilesRemoved": true,
+  "protectedOriginalBeforeAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "originalFailedPairReplayed": false,
+  "nativeRebuildPerformed": false,
+  "acceptedSpeedup": false,
+  "publicPromotion": false,
+  "fullOriginal6MStressReplacement": false,
+  "wholeGoalComplete": false
+}

@@ -1,5 +1,40 @@
 # Private SVG source reconstruction
 
+## Blur-boundary extent candidate (private, numeric only, 2026-10-30 IST)
+
+New alpha components isolate two differences: rounded shapes without filters
+differ at7776 alpha pixels/max18, hard rectangles without filters match exactly,
+and hard rectangles with the original filter differ at38067/max34. All RGB scores
+pass0.99, but the exact-alpha gate still FAILS. Bounded spatial evidence places
+the largest filtered error near the cropped convolution edge. See
+`evidence/2026-10-29-svg-alpha-components-terminal.json`. Do not replay these
+unchanged components or relabel their214.906MiB small diagnostic as acceptance.
+
+The pinned [box-blur source](https://raw.githubusercontent.com/RazrFalcon/resvg/3495d8705b302d6d266748516973606ca9657906/crates/resvg/src/filter/box_blur.rs)
+uses five finite-extent passes. A compiled numeric negative control observes
+edge alpha79 versus136 when intermediate values are retained on a larger
+zero-extended domain, with identical center255. The private
+`blur-boundary-entry.rs` correction adds one zero halo through all passes and
+crops only afterward, leaving every kernel, weight, pass count and rounding
+function unchanged. Source checksum/reversal is enforced by
+`blur-boundary-patch.mjs`; the original MPL notice remains in the resulting file.
+This targets the [zero-extension boundary rule](https://www.w3.org/TR/filter-effects-1/#element-attrdef-fegaussianblur-edgemode),
+not altered SVG parameters or post-render alpha smoothing.
+
+All four host numeric tests pass using installed Rust1.75.0, NOT the pinned Wasm
+nightly. At sigma6 the unchanged kernel widths9,9,9,9,11 require a21-pixel halo.
+For a3000x224 viewport, two expanded temporary buffers specify6,473,376 bytes,
+plus2,688,000 input bytes; this is payload arithmetic, NOT a measured renderer
+peak. The96MiB global cap must not increase. Checked extents and a pre-allocation
+guard are tested, but browser OOM/recovery is not proved. No native recipe has
+integrated the patch and no new Wasm has been built; rounded-edge coverage also
+remains unresolved. See `evidence/2026-10-29-svg-blur-boundary-numeric-terminal.json`.
+
+Next integrate the fifth source proof in a NEW private recipe, run numeric tests
+with the pinned compiler and perform dual fresh builds/capped postprocessing,
+then qualify the changed bytes in the browser. Do not rebuild the unchanged old
+candidate, publish the source-only patch, loosen exact alpha, or infer speedup.
+
 ## Premultiplied-transfer candidate (private, 2026-10-29)
 
 The opacity controls reproduced predictions recorded before execution: the

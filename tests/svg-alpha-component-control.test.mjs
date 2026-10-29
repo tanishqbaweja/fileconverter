@@ -79,3 +79,27 @@ test("alpha-component recipe collects all three before unchanged quality verdict
       assert.deepEqual(ts.createSourceFile(name,source,ts.ScriptTarget.ESNext,true).parseDiagnostics,[],name);
   } finally { await runtime.close(); }
 });
+
+test("collected components prove separate geometry/filter mismatches while preserving failed overall verdict and no replay", async () => {
+  const c=JSON.parse(await readFile("evidence/2026-10-29-svg-alpha-components-terminal.json"));
+  const bytes=await readFile(c.browserReceipt.path),b=JSON.parse(bytes),p=JSON.parse(await readFile(c.parentReceipt.path));
+  assert.equal(bytes.length,c.browserReceipt.bytes);assert.equal(sha(bytes),c.browserReceipt.sha256);
+  assert.equal(b.executedHead,c.sourceHead);assert.equal(p.childExit,1);
+  assert.deepEqual([p.stats.expected,p.stats.unexpected,p.stats.skipped,p.stats.flaky],[0,1,0,0]);
+  assert.equal(p.diagnostic.results.length,3);
+  assert.deepEqual(p.diagnostic.results.map(r=>[r.component,r.alphaDiagnostics.mismatchedPixels,r.alphaDiagnostics.maximumAbsoluteError]),
+    [["rounded-no-filter",7776,18],["square-no-filter",0,0],["square-filtered",38067,34]]);
+  for(const r of p.diagnostic.results){assert.ok(r.wholeSsim>=0.99&&r.minimumBandSsim>=0.99);assert.equal(r.spatialAlpha.fixedSamples.length,64);
+    assert.ok(r.spatialAlpha.worstPixels.length<=12);assert.equal(r.spatialAlpha.differenceCounts.reduce((a,b)=>a+b),960*540);}
+  const square=p.diagnostic.results[1];assert.equal(square.alphaExact,true);assert.equal(square.wholeSsim,1);assert.equal(square.minimumBandSsim,1);
+  assert.equal(square.alphaDiagnostics.referencePartialPixels,0);
+  const edge=p.diagnostic.results[2].spatialAlpha.worstPixels[0];assert.deepEqual([edge.x,edge.y,edge.referenceRgba[3],edge.outputRgba[3]],[58,6,82,48]);
+  assert.equal(c.memory.incrementalPrivateMiB,(b.memory.peak.privateBytes-b.blankBaseline.privateBytes)/1048576);
+  assert.equal(c.memory.unavailableSamples,0);assert.deepEqual(b.forbiddenRequests,[]);assert.equal(b.forbiddenRequestOverflow,false);
+  assert.ok(p.processCleanup.every(r=>r.status==="owned-identity-absent"));assert.equal(p.ownerProcessCleanup.status,"owned-identity-absent");
+  assert.equal(p.ownedRuntimeRemoved,true);assert.equal(p.ownedBrowserRuntimeRemoved,true);assert.deepEqual(p.protectedOriginalBefore,p.protectedOriginalAfter);
+  assert.equal(c.nativeRebuildPerformed,false);assert.equal(c.publicPromotion,false);assert.equal(c.wholeGoalComplete,false);
+  const variants=svgAlphaComponentVariants(await readFile("fixtures/images/svg-strip-filtered-alpha.svg"));
+  const ledger=JSON.parse(await readFile("images/resvg-source/rejected-strip-experiments.json"));
+  assert.throws(()=>assertSvgAlphaComponentsNotCompleted(ledger,c.nativeWasmSha256,variants));
+});
