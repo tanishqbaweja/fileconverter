@@ -1,5 +1,13 @@
 # Remaining work audit
 
+Alpha source diagnosis next: ONE additional three-component control is prepared,
+not another unchanged filtered-scene replay or native rebuild. Rounded/no-filter,
+square/no-filter and square/filtered predictions are frozen before execution.
+Spatial evidence bounded64 fixed/12 worst points,256-bin histograms; all original
+alpha/RGB/memory/privacy/cleanup gates retained.14 focused PASS970.2069ms,
+lint/diff PASS, one test discovered. Browser execution pending; no promotion or
+large-scene acceptance. Plan: evidence/2026-10-29-svg-alpha-components-plan.json.
+
 A08/source-SVG filtered transparency now measured and FAILED, not silently
 omitted: full/strip exact RGBA and RGB fidelity pass, but52,879 alpha pixels differ
 from independent Chromium,max50/255.0PASS/1FAIL. Small175.742MiB diagnostic does

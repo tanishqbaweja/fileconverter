@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+Current alpha-component investigation PREPARED, browser pending: three new
+inputs isolate rounded/no-filter, integer-square/no-filter and square/original-
+filter behavior. Same pinned96MiB native candidate, actual production UI/worker/
+IO, original0.99 all-band and exact-alpha gates; original failed pair NOT replayed.
+At most64 fixed plus12 worst alpha pixel records per component, histograms fixed
+at256 bins. Hypotheses recorded before execution in
+evidence/2026-10-29-svg-alpha-components-plan.json.14 focused PASS970.2069ms,
+lint/diff PASS; Playwright discovery exactly one test. No browser result yet.
+
 Filtered-alpha browser gate TERMINAL FAIL at a5c28aad, Chrome156.0.8078.49:
 genuine full/strip outputs decode to identical RGBA, wholeSSIM0.999023 and all
 8 seam bands minimum0.997423 pass0.99, but BOTH differ from Chromium alpha at

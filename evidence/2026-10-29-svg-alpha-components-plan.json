@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "recordedBeforeBrowser": true,
+  "baseFixture": {
+    "path": "fixtures/images/svg-strip-filtered-alpha.svg",
+    "bytes": 11125,
+    "sha256": "564e74d9e4abc8cc9f59b93d5db38f7d2e8a9fdcaf233c97bbf3f9dffe74290a"
+  },
+  "nativeWasmSha256": "8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+  "maximumWasmBytes": 100663296,
+  "variants": [
+    {
+      "name": "rounded-no-filter",
+      "bytes": 11095,
+      "sha256": "23d0d451461e23e3a9ccc84d9e9698edd22683c8df29199276a970330019904c",
+      "changes": {
+        "filterUseRemoved": 1,
+        "roundedRadiiRemoved": 0
+      },
+      "hypothesis": "If alpha still differs, filtering is not necessary for the mismatch",
+      "expectPartialAlpha": true,
+      "fixedSampleCount": 64,
+      "sampleCoordinatesSha256": "5e946619965276e9759e811bfc1f28e0aed834e0287d16df063da37ca6005f08"
+    },
+    {
+      "name": "square-no-filter",
+      "bytes": 9943,
+      "sha256": "3aebeeb224cef976bde753f176fbb13574d77b746b3f4898ce0dcad83d1cb1fc",
+      "changes": {
+        "filterUseRemoved": 1,
+        "roundedRadiiRemoved": 144
+      },
+      "hypothesis": "Integer-edge coverage control should have no partial alpha and exact alpha equality",
+      "expectPartialAlpha": false,
+      "fixedSampleCount": 64,
+      "sampleCoordinatesSha256": "5e946619965276e9759e811bfc1f28e0aed834e0287d16df063da37ca6005f08"
+    },
+    {
+      "name": "square-filtered",
+      "bytes": 9973,
+      "sha256": "7bcb8dcad1192c1238403c3e8154ab01279d37d2177e4d9e55fc1a665d6debe6",
+      "changes": {
+        "filterUseRemoved": 0,
+        "roundedRadiiRemoved": 144
+      },
+      "hypothesis": "Remaining alpha differences implicate filtering beyond rounded-geometry coverage",
+      "expectPartialAlpha": true,
+      "fixedSampleCount": 64,
+      "sampleCoordinatesSha256": "5e946619965276e9759e811bfc1f28e0aed834e0287d16df063da37ca6005f08"
+    }
+  ],
+  "execution": "One headless diagnostic, three full-frame conversions through the same production UI/File/worker/native/writer path; different component inputs, not a replay of the failed pair",
+  "hypothesisScope": "Distinguish geometry coverage from filtering; do not infer a precise filter primitive cause from one component",
+  "gates": {
+    "minimumWholeAndEverySeamSsim": 0.99,
+    "exactAlpha": true,
+    "hardEdgeNoFilterReferencePartialAlpha": 0,
+    "maximumPrivateMiB": 250,
+    "blankBaseline": "earliest stable same clean Chromium instance",
+    "maximumFixedSamplesPerVariant": 64,
+    "maximumWorstPixelsPerVariant": 12
+  },
+  "focused": {
+    "passed": 14,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 970.2069,
+    "lint": "passed",
+    "diffCheck": "passed",
+    "playwrightDiscovery": "exactly one test, no browser executed"
+  },
+  "fullOriginal6MStressReplacement": false,
+  "publicPromotion": false,
+  "wholeGoalComplete": false
+}
