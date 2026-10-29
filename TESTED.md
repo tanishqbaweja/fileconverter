@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+Retained-memory interpretation (no conversion replay): existing blank-sample
+PID/parent/birth metadata resolves the prior unknown children to renderer18084
+(+181.91796875MiB) and GPU34552(+72.73828125MiB). Original complete-tree265.445MiB
+FAIL and every private-byte/process count remain unchanged; no roles guessed.
+Actual median-matching sample used, missing values stay null, old receipt stays
+immutable. One unavailable stale-worker sequence does not prove an app leak.
+13 focused analysis/metadata/sampler PASS480.3254ms, then8 diagnostic/retained-
+receipt regression PASS7545.1838ms, generated syntax/lint and affected lint/diff
+PASS. One bounded allocation experiment PREPARED with fixed pre-execution plan:
+blank/mid/post light dumps, unchanged native/input/quality/formula/services,
+post-capture before failed quality assertion; perturbed, NEVER acceptance.
+No source rebuild/capped-pass replay. Next execute it once to identify allocation
+categories, not obtain green. evidence/2026-10-29-svg-blur-boundary-allocation-analysis.json
+and evidence/2026-10-29-svg-blur-boundary-allocation-plan.json.
+
 Blur-boundary browser TERMINAL at86b726cb, Chrome156 headless: source correction
 reduces square/filtered max alpha error34→4;37,784 mismatches remain (was38,067),
 wholeSSIM0.999743/minbands0.998832. Rounded/no-filter7,776/max18 unchanged,

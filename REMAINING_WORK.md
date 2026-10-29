@@ -1,5 +1,16 @@
 # Remaining work audit
 
+Current next action: offline birth-identity annotation resolves the last failed
+run's large-growing processes as renderer181.918MiB and GPU72.738MiB, WITHOUT
+replaying conversion or altering totals/formula. Specific native allocations are
+still unproven.13 metadata/sampler checks plus8 diagnostic regression checks pass,
+including preserved failed browser receipt. A distinct one-shot, explicitly
+perturbed memory-category diagnostic is prepared; normal services/250MiB/alpha
+gates stay unchanged and no source rebuild occurs. It captures blank/mid/post
+even when quality fails, then remains failed. See allocation-analysis.json and
+allocation-plan.json under evidence/2026-10-29-svg-blur-boundary-*. Next execute
+only that instrumented investigation; original acceptance failure is retained.
+
 Current SVG checkpoint (2026-10-30 IST): the new fifth-proof source and capped
 postprocessing stages PASSED; the changed-native browser component test FAILED.
 Filtered maximum alpha error34→4 and RGB scores improve, but37,784 alpha pixels

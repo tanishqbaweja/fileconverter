@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "reason": "Prior non-instrumented component run exceeded250MiB at265.4453125; retained birth metadata proves181.918MiB renderer and72.738MiB GPU growth but no allocation categories",
+  "priorRun": "evidence/2026-10-29-svg-blur-boundary-browser-terminal.json",
+  "offlineRoleAnalysis": "evidence/2026-10-29-svg-blur-boundary-allocation-analysis.json",
+  "scope": "One explicitly perturbed allocation diagnostic, not acceptance or an unchanged source-build replay",
+  "nativeWasmSha256": "5c6cd9b4f8d272ae25031e3bc74ebc58a2ef11d328abf96766368b1c6e61ba13",
+  "nativeBytesAndThreeComponentInputsChanged": false,
+  "capturePhases": ["blank-after-baseline","scheduled-late-suite","post-suite"],
+  "scheduledMidRunMs": 5000,
+  "scheduledDumpAssumedToBeActiveRasterization": false,
+  "maximumTraceBufferKiB": 4096,
+  "maximumRawTraceBytesPerCapture": 8388608,
+  "maximumCaptureMs": 15000,
+  "hypothesesBeforeExecution": [
+    "Retained renderer growth should be observable in native allocation categories, potentially PartitionAlloc/V8, but this is not assumed",
+    "Retained GPU growth may include Skia or shared-image counters; category overlap must not be summed as distinct private bytes",
+    "A stale or unavailable worker heap reply is not by itself evidence of an application worker leak"
+  ],
+  "normalBrowserServicesRetained": true,
+  "originalFormulaAnd250MiBLimitRetained": true,
+  "exactAlphaAndSsimGatesRetained": true,
+  "perturbsMemory": true,
+  "acceptanceMetric": false,
+  "originalFailureRemainsRecorded": true,
+  "sourceRebuildOrPostprocess": false,
+  "publicEngineReplacement": false,
+  "wholeGoalComplete": false,
+  "stopAfterOneDiagnostic": true,
+  "disposableDataRemovedInFinally": true,
+  "retainOnlyReportsAndBoundedDiagnosticTraces": true
+}
