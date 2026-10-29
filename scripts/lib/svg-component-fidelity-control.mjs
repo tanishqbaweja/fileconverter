@@ -2,6 +2,7 @@
 import assert from "node:assert/strict";
 import { makeSvgSmallFidelityControl } from "./svg-small-fidelity-control.mjs";
 import { sha } from "../../images/resvg-source/source-pins.mjs";
+import { svgFilterPrecisionVariants } from "./svg-filter-precision-variants.mjs";
 const replace=(source,before,after,count=1)=>{assert.equal(source.split(before).length-1,count,"Exact component diagnostic anchor: "+before.slice(0,100));return source.split(before).join(after);};
 export function svgComponentVariants(bytes){
   assert.equal(bytes.length,11194);
@@ -24,16 +25,17 @@ export function svgComponentVariants(bytes){
     ["no-filter-square",square,{filterUseRemoved:1,roundedRectangleRadiiRemoved:144}]]
     .map(([name,text,changes])=>({name,source:text,bytes:Buffer.byteLength(text),sha256:sha(text),changes}));
 }
-export function assertSvgComponentControlNotCompleted(ledger,{nativeWasmSha256,variants}){
+export function assertSvgComponentControlNotCompleted(ledger,{nativeWasmSha256,variants,filterPrecision=false}){
   assert.match(nativeWasmSha256,/^[a-f0-9]{64}$/);assert.equal(variants.length,3);
   const pins=variants.map(({name,sha256})=>{assert.match(sha256,/^[a-f0-9]{64}$/);return {name,sha256};});
-  const done=ledger.completedComponentControl;
+  assert.equal(typeof filterPrecision,"boolean");
+  const done=filterPrecision?ledger.completedFilterPrecisionControl:ledger.completedComponentControl;
   assert.ok(!(done?.nativeWasmSha256===nativeWasmSha256&&JSON.stringify(done?.variants)===JSON.stringify(pins)),
     "This exact component control is already complete; inspect "+done?.evidence+" instead of replaying it.");
 }
 export function makeSvgComponentFidelityControl(options){
   const base=makeSvgSmallFidelityControl(options),body=options.controlTestBytes.toString();
-  const variants=svgComponentVariants(options.componentSourceBytes);
+  const variants=(options.filterPrecision?svgFilterPrecisionVariants:svgComponentVariants)(options.componentSourceBytes);
   let fragment=replace(body,'test("paired-svg-fidelity-control",','test("svg-component-fidelity-control",');
   fragment=replace(fragment,'const sourcePath = path.join(projectRoot,"fixtures/images/test-pattern-effects.svg");','const originalSourcePath = path.join(projectRoot,"fixtures/images/test-pattern-effects.svg");');
   fragment=replace(fragment,'const sourceBytes = await readFile(sourcePath);','const originalBytes = await readFile(originalSourcePath);');
@@ -58,6 +60,17 @@ export function makeSvgComponentFidelityControl(options){
     '      }finally{if(validationSink){validationSink.destroy();validationSink=null;}await rm(referencePath,{force:true});await rm(sourcePath,{force:true});}\n    }\n    await save();expect(results.length).toBe(3);');
   fragment=replace(fragment,'}finally{await save();if(validationSink){validationSink.destroy();validationSink=null;}await rm(referencePath,{force:true});}',
     '}finally{await save();if(validationSink){validationSink.destroy();validationSink=null;}}');
+  if(options.filterPrecision){
+    fragment=replace(fragment,'metrics:unknown}[]','metrics:unknown;pixelSamples?:unknown}[]');
+    fragment=replace(fragment,'        const rgbaSha256=createHash("sha256").update(decoded.stdout).digest("hex");',
+      '        const rgbaSha256=createHash("sha256").update(decoded.stdout).digest("hex");\n'+
+      '        const referenceDecoded=await execFileAsync("ffmpeg",["-v","error","-threads","1","-i",referencePath,"-pix_fmt","rgba","-f","rawvideo","-"],{cwd:projectRoot,windowsHide:true,maxBuffer:960*540*4+65536,encoding:"buffer"});\n'+
+      '        expect(referenceDecoded.stdout.length).toBe(960*540*4);\n'+
+      '        const quantizedRoundTrip=(value:number)=>{const srgb=value/255,linear=srgb<=0.04045?srgb/12.92:((srgb+0.055)/1.055)**2.4;const rounded=Math.round(linear*255)/255;return Math.round(255*(rounded<=0.0031308?rounded*12.92:1.055*rounded**(1/2.4)-0.055));};\n'+
+      '        const pixelSamples=Array.from({length:16},(_unused,index)=>{const x=30+60*index,y=30,at=(960*y+x)*4;const referenceRgba=[...referenceDecoded.stdout.subarray(at,at+4)],outputRgba=[...decoded.stdout.subarray(at,at+4)];return {x,y,referenceRgba,outputRgba,predicted8BitLinearRoundTripRgb:referenceRgba.slice(0,3).map(quantizedRoundTrip)};});');
+    fragment=replace(fragment,'alphaExact:bands.alphaExact,metrics:','alphaExact:bands.alphaExact,pixelSamples,metrics:');
+    fragment=replace(fragment,'svg-component-fidelity-control','svg-filter-precision-control',3);
+  }
   const suite=replace(base.suite,body,fragment);
   let driver=replace(base.driver,JSON.stringify(sha(base.suite)),JSON.stringify(sha(suite)));
   driver=replace(driver,'"--grep", "paired-svg-fidelity-control",','"--grep", "svg-component-fidelity-control",');
@@ -69,8 +82,17 @@ export function makeSvgComponentFidelityControl(options){
   driver=replace(driver,'"Small paired diagnostic including fresh reference and validation; never stress or release acceptance"',
     '"Component diagnostics including fresh references and strict validation; never stress or release acceptance"');
   driver=replace(driver,'"fixtures/images/test-pattern-effects.svg.json"];','"fixtures/images/test-pattern-effects.svg.json", "scripts/lib/svg-component-fidelity-control.mjs"];');
+  if(options.filterPrecision){
+    driver=replace(driver,'"--grep", "svg-component-fidelity-control",','"--grep", "svg-filter-precision-control",');
+    driver=replace(driver,'const repeat = "svg-component-fidelity-control";','const repeat = "svg-filter-precision-control";');
+    driver=replace(driver,'components:3};','components:3,filterPrecision:true};');
+    driver=replace(driver,'"Three small component ablations, full-frame production worker/UI/direct IO; never original6M stress acceptance"',
+      '"Three small filter precision controls, same full-frame worker/UI/direct IO; not original6M acceptance"');
+    driver=replace(driver,'"scripts/lib/svg-component-fidelity-control.mjs"];','"scripts/lib/svg-component-fidelity-control.mjs", "scripts/lib/svg-filter-precision-variants.mjs"];');
+  }
   return {...base,suite,driver,proof:{...base.proof,suiteSha256:sha(suite),driverSha256:sha(driver),controlTestSha256:sha(fragment),
     bothModesSameNativeBytesAndProductionIo:false,fullFrameProductionWorkerOnly:true,
     componentVariants:variants.map(({source,...pin})=>{void source;return pin;}),
+    filterPrecisionControl:options.filterPrecision===true,eachVariantHasItsOwnMatchingChromiumReference:true,
     scope:"Small component ablations only; original6M acceptance unaltered and not exercised",publicPromotion:false}};
 }

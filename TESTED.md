@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-10-29 — Filter precision controls prepared, NOT converted yet. Exact pinned
+small source yields identity-default, identity-sRGB and effects-sRGB variants;
+only filter primitives or interpolation attribute change, geometry/mask/background
+stay byte-identical. Each variant gets its own fresh matching Chrome reference;
+16 opaque tile-center RGBA pairs and predicted8-bit linearRGB round trips are
+bounded diagnostic evidence, not quality exemptions. All whole/band0.99/alpha,
+96MiB/250MiB/45s/security/direct-IO/cleanup gates remain. Original6M not replaced.
+Initial exact-anchor unit guard caught accidental source-filename substitution;
+fixed with specific grep/receipt anchors before browser execution.10focused PASS
+1318.2446ms/lint/exact1case collection PASS. No new public profile or speed claim.
+evidence/2026-10-29T07-00-10-837Z-svg-filter-precision-control.json.
+
 2026-10-29 — Component controls at9cca631c COMPLETE, all3 genuine production
 full-worker/UI/direct-output conversions independently pass whole/band0.99 and
 exact opaque alpha. No-filter whole0.999794/minband0.999207, background-only

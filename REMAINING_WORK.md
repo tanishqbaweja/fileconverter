@@ -1,5 +1,12 @@
 # Remaining work audit
 
+Precision hypothesis now has3 actual control recipes prepared, NOT executed:
+identity-default, identity-sRGB, effects-sRGB against matching fresh references,
+bounded16tile-center values plus independent native validation.10focused PASS/
+lint/onecase collection PASS. No native patch/rebuild justified until results
+discriminate precision from other primitive differences. Original6M and broader
+project acceptance remain OPEN; source variants never become user-input rewrites.
+
 New filter isolation evidence: all3 small component conversions pass unchanged
 whole/band0.99/exact opaque alpha; removing filter alone changes minband from
 0.982544 to0.999207. Background and square shapes also pass. Exact filter
