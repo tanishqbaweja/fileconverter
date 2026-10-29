@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+Blur-boundary source build TERMINAL:40952659246 at7a60933d SUCCESS, job206s.
+Authenticated six-member artifact12931683455/digest231070a6...; two fresh locked
+raw builds are byte-identical3,669,418B SHA b71a7cb32dea835ab11d3369b2aedcb39aabbcb60f27e4679d803d62f0a802fc.
+All five source proofs and original4 premultiplied plus4 boundary numeric tests
+pass in EACH pinned nightly1.76 build. Compiler/driver/owner/inspection scratch
+removed, second raw/lock removed after exact comparison, no local binary copies,
+public engines unchanged; no Docker/renderer/protected-original access. Raw pin
+now committed for next two capped postprocess passes; not browser acceptance.
+Compact:evidence/2026-10-29-svg-blur-boundary-source-terminal.json.
+Postprocess dispatch gate:17 focused PASS/0FAIL/0skip8562.5967ms including actual
+authenticated boundary receipts, malformed-proof rejection, generated-script
+syntax/lint and all historical premultiplied checks. No browser claims.
+
+Blur-boundary postprocessing PREPARED while the single raw build40952659246 is
+running at7a60933d. New separate recipe/owner/workflow preserves historical
+processors and pins, requires all five source proofs plus both4-test pinned
+numeric sets per build, and retains two exact bindgen/glue/96MiB cap passes.
+Source artifact inspector now accepts only this explicit new run/head after
+hosted completion/success and authenticates archive digest/members/receipts.
+Focused processor/build/patch8PASS7257.6244ms; processor plus historical
+premultiplied regression10PASS6409.0227ms, generated syntax/ESLint included.
+No postprocess dispatched: real authenticated raw input pin is still required.
+No source build success, browser acceptance, speedup or public promotion claimed.
+
 Blur-boundary source integration PREPARED (not executed yet): separate private
 owner/recipe/workflow keeps historical build drivers unchanged. All four prior
 source proofs plus checked box-boundary sibling patch required. Each of two fresh

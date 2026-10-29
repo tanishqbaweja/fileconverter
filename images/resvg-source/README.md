@@ -26,21 +26,39 @@ nightly. At sigma6 the unchanged kernel widths9,9,9,9,11 require a21-pixel halo.
 For a3000x224 viewport, two expanded temporary buffers specify6,473,376 bytes,
 plus2,688,000 input bytes; this is payload arithmetic, NOT a measured renderer
 peak. The96MiB global cap must not increase. Checked extents and a pre-allocation
-guard are tested, but browser OOM/recovery is not proved. No native recipe has
-integrated the patch and no new Wasm has been built; rounded-edge coverage also
-remains unresolved. See `evidence/2026-10-29-svg-blur-boundary-numeric-terminal.json`.
+guard are tested, but browser OOM/recovery is not proved. Those first host tests
+were numeric-only; the separately executed source build below now integrates the
+patch. Rounded-edge coverage remains unresolved. See
+`evidence/2026-10-29-svg-blur-boundary-numeric-terminal.json`.
 
 The fifth-proof integration now exists separately in
 `blur-boundary-build-recipe.mjs`, `owned-blur-boundary-patch.mjs` and
 `reproduce-blur-boundary-source.mjs`, with the dedicated
 `svg-source-blur-boundary.yml` workflow. Generated compiler/reproducer syntax,
 lint, source ownership/replay guards and workflow cleanup checks pass13 focused
-tests. This is recipe preparation, not executed source-build proof. Each fresh
-build must run both4-test numeric sets with the pinned nightly and verify Cargo
-retains all five corrections before raw byte equality is accepted. Next execute
-that NEW private build, cap/repeat postprocessing and qualify the changed bytes
+tests. The subsequent run40952659246 at7a60933d succeeded in206s: both fresh
+builds ran both4-test numeric sets with the pinned nightly, verified retained
+source corrections and produced exactly identical3,669,418B raw Wasm,
+SHA b71a7cb32dea835ab11d3369b2aedcb39aabbcb60f27e4679d803d62f0a802fc.
+Source/driver/owner/inspection scratch and duplicate raw/lock are removed, with no
+local binary copies. See `evidence/2026-10-29-svg-blur-boundary-source-terminal.json`.
+Next cap/repeat postprocessing and qualify the changed bytes
 in the browser. Do not rebuild the unchanged old candidate, publish the
 source-only patch, loosen exact alpha, or infer speedup.
+
+The single source run40952659246 was originally recorded in
+`evidence/2026-10-29-svg-blur-boundary-source-dispatch.json`. During that run,
+`blur-boundary-postprocess-recipe.mjs` and
+`postprocess-blur-boundary-source.mjs` prepare the next distinct stage without
+editing historical postprocessors. The new inspector mode
+`scripts/inspect-svg-filter-build.mjs --blur-boundary` requires the exact hosted
+run/head to finish successfully, verifies the artifact digest and all six
+members, both fresh source receipts, all five patches and pinned-nightly4+4
+numeric proofs. Only its authenticated input pin may feed postprocessing. The
+new postprocessing workflow may now use that verified raw pin.
+No local source artifact copies are retained. Postprocessing still requires two
+byte-identical bindgen/glue/cap results and unchanged static ABI/96MiB maximum;
+neither stage counts as rendering, memory, fidelity, recovery or public acceptance.
 
 ## Premultiplied-transfer candidate (private, 2026-10-29)
 

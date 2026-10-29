@@ -1,5 +1,22 @@
 # Remaining work audit
 
+Fifth-proof native source integration EXECUTED:40952659246/7a60933d succeeded in
+206s. Two fresh raw builds byte-identical b71a7cb3..., all five source proofs,
+both4-test numeric sets per pinned-nightly build verified. Authenticated raw pin
+exists; all source/inspection scratch and duplicate binary/lock removed, no local
+binary retained/public changes. NEXT dual96MiB capped bindgen/ABI processing,
+then changed-byte browser component test. Rounded geometry/exact-alpha, full
+memory/recovery, source promotion and the broader original requirements remain
+OPEN. Receipt:evidence/2026-10-29-svg-blur-boundary-source-terminal.json.
+
+Pending execution checkpoint: single raw source run40952659246 at7a60933d;
+not restarted or duplicated. Separate fifth-proof postprocessing code is prepared
+and focused tests pass (8 plus10 including historical premultiplied regression).
+Its real artifact pin does not exist yet; no postprocess dispatch or browser
+claim. Required sequence remains authenticated dual raw build, dual capped
+postprocess/ABI, changed-byte browser component check, then broader fidelity/
+memory/recovery only if justified. All source/kernel/formula thresholds unchanged.
+
 Fifth-proof blur-boundary recipe is now code-integrated, separate from historical
 source drivers; actual execution remains pending. Two fresh locked builds each
 require pinned-nightly4+4 numeric tests and retained-source checks before exact

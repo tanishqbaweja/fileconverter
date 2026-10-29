@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "runId": 40952659246,
+  "jobId": 123724533640,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40952659246",
+  "headSha": "7a60933d4a3c82ccac8fa8d502cd2dabc7c670eb",
+  "workflow": "svg-source-blur-boundary.yml",
+  "trigger": "single-push-path-bootstrap-no-manual-duplicate",
+  "createdAt": "2026-10-29T20:51:00Z",
+  "observedStatus": "in_progress",
+  "estimatedMinutes": [8, 12],
+  "nextStatusCheckNotBefore": "2026-10-29T21:01:00Z",
+  "monitorIntervalSeconds": 600,
+  "scope": "Two fresh raw source builds with five source proofs and both four-test numeric sets per pinned-nightly build",
+  "dockerUsed": false,
+  "browserSelected": false,
+  "publicEngineReplacement": false,
+  "rawBuildPassed": null,
+  "cappedPostprocessingStillRequired": true,
+  "browserFidelityOrMemoryAcceptance": false,
+  "wholeGoalComplete": false
+}

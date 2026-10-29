@@ -1,0 +1,48 @@
+name: Private SVG blur-boundary source postprocess repetition
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["media-options"]
+    paths: [".github/workflows/svg-blur-boundary-postprocess.yml"]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  postprocess-blur-boundary-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Prepare repository-owned processing runtime
+        run: node scripts/ci-owned-runtime.mjs prepare
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "24.7.0"
+      - name: Verify five source proofs and repeat capped postprocessing
+        run: node images/resvg-source/postprocess-blur-boundary-source.mjs
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_PROMPT_DISABLED: "true"
+      - name: Verify public engines unchanged
+        if: always()
+        run: git diff --exit-code -- public/engines
+      - name: Retain private candidate and exact evidence for one day
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: svg-filter-blur-boundary-processed-${{ github.run_id }}
+          path: |
+            outputs/reports/resvg-filter-blur-boundary-processed-owner-${{ github.run_id }}.json
+            outputs/reports/resvg-source-processed-repeat-${{ github.run_id }}.json
+            outputs/reports/resvg-source-processed-repeat-${{ github.run_id }}.wasm
+            outputs/reports/resvg-source-processed-repeat-${{ github.run_id }}.mjs
+          if-no-files-found: warn
+          retention-days: 1
+      - name: Remove owned processing runtime
+        if: always()
+        env:
+          NODE_DISABLE_COMPILE_CACHE: "1"
+        run: node scripts/ci-owned-runtime.mjs cleanup

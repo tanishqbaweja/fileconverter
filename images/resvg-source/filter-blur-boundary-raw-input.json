@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "runId": 40952659246,
+  "headSha": "7a60933d4a3c82ccac8fa8d502cd2dabc7c670eb",
+  "artifactId": 12931683455,
+  "artifactBytes": 1294219,
+  "artifactSha256": "231070a62e574b057733c46c2519bfcdc0d157067b65097e188b12e77c7d0bf5",
+  "members": [
+    {"name":"resvg-filter-blur-boundary-owner-40952659246.json","bytes":28704,"sha256":"292d6d3e89dd4557fe4e992720cea2aeb18cd5f1bc887b584fa5f3adccb8b14c"},
+    {"name":"resvg-source-compile-409526592461.json","bytes":45950,"sha256":"56968dcaf3aaf004bea29942fdbfcaa593860242ef18a330863b4b99393920f5"},
+    {"name":"resvg-source-compile-409526592461.lock","bytes":36670,"sha256":"7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc"},
+    {"name":"resvg-source-compile-409526592461.wasm","bytes":3669418,"sha256":"b71a7cb32dea835ab11d3369b2aedcb39aabbcb60f27e4679d803d62f0a802fc"},
+    {"name":"resvg-source-compile-409526592462.json","bytes":45950,"sha256":"dee43b3432adce556c0ddcde8b440bd884327b07324c32cc6ab21b43c99736b9"},
+    {"name":"resvg-source-repeat-40952659246.json","bytes":25465,"sha256":"9affb4809328dcb7205025637382fdf15b306745007746cebbd70a6309848a48"}
+  ],
+  "summaryMember": "resvg-source-repeat-40952659246.json",
+  "wasmMember": "resvg-source-compile-409526592461.wasm",
+  "lockMember": "resvg-source-compile-409526592461.lock",
+  "compilerReceiptMembers": ["resvg-source-compile-409526592461.json","resvg-source-compile-409526592462.json"],
+  "ownerReceiptMember": "resvg-filter-blur-boundary-owner-40952659246.json",
+  "kind": "two-fresh-filter-blur-boundary-source-builds-byte-identical-before-postprocessing",
+  "renderContextPatchedSha256": "d9d3b07113d3e95e0506658e197f2c782dd0469fd5d3a34e960fff66c53f7bef",
+  "filterLivenessPatchedSha256": "5331eaa19f37af8f1f6b96d1e672a66609a7bd65f8f3ec24f47faaf6dcc53307",
+  "premultipliedTransferPatchedSha256": "9b601b713bfc3a5ca318fd8edaa220f4dcb2b3ba7323956efefc118f08fba8bb",
+  "premultipliedKernelSha256": "0b28bd9909c60f9575be8ae5021dcb2c81291c16e9a6fea69663009fe66b5126",
+  "blurBoundaryPatchedSha256": "c21f5eb8dd43515068ec39421e8112060403373e74f50b4576916b7d910641a7",
+  "blurBoundaryNumericTestsSha256": "2f52fa1757b303c8a1129b96269922de52eac7cdb5b99f0c3284343fed6f8487"
+}
