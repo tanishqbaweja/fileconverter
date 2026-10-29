@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "sessionId": 88008,
+  "observedRunningAt": "2026-10-29T13:42:05.000Z",
+  "observeNotBefore": "2026-10-29T13:42:35.000Z",
+  "estimatedRemainingSeconds": 30,
+  "lastAuthoritativeObservation": "same session exited1; local require bridge exposed missing hb.wasm at relocated module directory; officialOG1.0.3 tar lacks that sidecar, actual declaredharfbuzzjs dependency provides it",
+  "terminal": true,
+  "restartOnObservationTimeout": false,
+  "reason": "Hash-pinned module-local Node bootstrap remedy; no app graph mutation or changed serializer/codecs"
+}

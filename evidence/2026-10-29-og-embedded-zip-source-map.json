@@ -1,0 +1,109 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-29T13:43:16.565Z",
+  "scope": "Source-map evidence for exact upstreamOG1.0.3 embedded fflate ZIP64 functions only; not complete security or conversion acceptance",
+  "cases": [
+    {
+      "kind": "node",
+      "entryBytes": 961520,
+      "entrySha256": "3269eb15ca135a0eb7e07ddf8af0b35711d6e75c56b84c6a6727c5626d59409c",
+      "mapBytes": 2213578,
+      "mapSha256": "b4acdf74905499be5c68eda0efe0adb647dd88d787864bd48a2f87ff53687553",
+      "sourceCases": [
+        {
+          "source": "../node_modules/.pnpm/@shuding+opentype.js@1.4.0-beta.0/node_modules/@shuding/opentype.js/node_modules/.pnpm/fflate@0.7.3/node_modules/fflate/esm/browser.js",
+          "sourceSha256": "de788be4f7afcf1cbe92333882e2e2997c03388e39ae096ca9053d6675565192",
+          "retainedMappings": 1520,
+          "ranges": [
+            {
+              "name": "z64e",
+              "startLine": 1711,
+              "endLine": 1715,
+              "mappedSegments": 0
+            },
+            {
+              "name": "unzipSync",
+              "startLine": 2507,
+              "endLine": 2546,
+              "mappedSegments": 0
+            }
+          ]
+        },
+        {
+          "source": "../node_modules/.pnpm/fflate@0.7.3/node_modules/fflate/esm/index.mjs",
+          "sourceSha256": "7e72d7d97249c55ce13f63891130fa0fa9d18972b818fca409380f8eac1e929e",
+          "retainedMappings": 1624,
+          "ranges": [
+            {
+              "name": "z64e",
+              "startLine": 1725,
+              "endLine": 1729,
+              "mappedSegments": 0
+            },
+            {
+              "name": "unzipSync",
+              "startLine": 2521,
+              "endLine": 2560,
+              "mappedSegments": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "edge",
+      "entryBytes": 863138,
+      "entrySha256": "919b0243f4f431b163ba0a56e3153e9417769db090d19e6dd22b5681d4126d67",
+      "mapBytes": 2121375,
+      "mapSha256": "1494fd03e0c7a7c99f9633eac2fbe0938df275ea3aabb2823da91a1f76500c59",
+      "sourceCases": [
+        {
+          "source": "../node_modules/.pnpm/@shuding+opentype.js@1.4.0-beta.0/node_modules/@shuding/opentype.js/node_modules/.pnpm/fflate@0.7.3/node_modules/fflate/esm/browser.js",
+          "sourceSha256": "de788be4f7afcf1cbe92333882e2e2997c03388e39ae096ca9053d6675565192",
+          "retainedMappings": 1520,
+          "ranges": [
+            {
+              "name": "z64e",
+              "startLine": 1711,
+              "endLine": 1715,
+              "mappedSegments": 0
+            },
+            {
+              "name": "unzipSync",
+              "startLine": 2507,
+              "endLine": 2546,
+              "mappedSegments": 0
+            }
+          ]
+        },
+        {
+          "source": "../node_modules/.pnpm/fflate@0.7.3/node_modules/fflate/esm/index.mjs",
+          "sourceSha256": "7e72d7d97249c55ce13f63891130fa0fa9d18972b818fca409380f8eac1e929e",
+          "retainedMappings": 1624,
+          "ranges": [
+            {
+              "name": "z64e",
+              "startLine": 1725,
+              "endLine": 1729,
+              "mappedSegments": 0
+            },
+            {
+              "name": "unzipSync",
+              "startLine": 2521,
+              "endLine": 2560,
+              "mappedSegments": 0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "applicationGraphChanged": false,
+  "archive": {
+    "bytes": 2062425,
+    "integrity": "sha512-/iYJ34PDu4lty1TXdL86qHEw8viveHTllG1PWLuJX8tSFfqKL7kyVJeUORJmQ250bHB0h+alcalXUlza3c/NSA==",
+    "sha256": "2f82b56a1adff317bdc340c479892798882041a6dd264f3de27310c75d999fd3"
+  },
+  "status": "exact-node-and-edge-bundles-exclude-both-fflate-unzipSync-and-zip64-walker",
+  "finishedAt": "2026-10-29T13:43:17.662Z"
+}

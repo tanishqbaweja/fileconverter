@@ -1,5 +1,23 @@
 # Remaining work audit
 
+Security integration portable regression nowPASS2033/0fail/skip/cancel152.675s
+across609files;162qualification files NOTRUN. Build/tsc/lint/focusedPASS, lockaudit0,
+20publicengineWasm unchanged. Fresh19case defaultSDK privacy/offline/static-host
+browser gate NEXT. Fullsource/release/security and wideroriginalscope remainOPEN.
+evidence/2026-10-29-og-security-portable.json.
+
+B08 targeted dependency security implementation now real: scopedOG1.0.3+
+Satori0.33.5+fflate0.7.5, exact5lockentries changed,20publicengineWasm hashes
+unchanged; currentlockaudit0 vsprior3moderate. Actual bundled escaping/rejection
+and publicAPIpixel controls pass; two genuine ESM/asset packaging failures fixed
+by reproducible hash-pinned module-local Node bootstrap. Node/edge sourcemap
+proof excludes affected ZIP64 functions, standalonefflate actuallypatched.
+26focused PASS1182.1782ms/lint/tsc/build PASS. Fullportable/fresh privacy/hosting
+verification remains NEXT, not inferred. FullB08 coherent source/release/security
+and all wider original deliverables still OPEN. PreviouslargeSVG memory failures
+unchanged, no conversionprofile/publicengine promotion. See current install/audit/
+candidate/source-map reports in evidence/2026-10-29-og-*.
+
 B08 security now evidence-directed: original3moderate lock findings remain;
 OG0.8.6 bundledSatori0.16.0 injection genuinely reproduced. Scoped Satori-only
 override is insufficient because consumer embeds old code. IsolatedOG1.0.3

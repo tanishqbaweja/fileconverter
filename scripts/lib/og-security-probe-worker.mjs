@@ -3,8 +3,9 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import { parentPort,workerData } from "node:worker_threads";
 import { pathToFileURL } from "node:url";
-const requests=[];
-globalThis.fetch=async resource=>{requests.push(String(resource).slice(0,256));throw new Error("Framework security fixture must not fetch");};
+import { frameworkProbeFetch } from "./framework-probe-fetch.mjs";
+const guard=frameworkProbeFetch(globalThis.fetch.bind(globalThis));
+globalThis.fetch=guard.fetch;
 try{
   const {ImageResponse,withinBundledSatori}=await import(pathToFileURL(workerData.probePath).href);
   assert.equal(typeof ImageResponse,"function");assert.equal(typeof withinBundledSatori,"function");
@@ -32,5 +33,5 @@ try{
   try{for(;;){const {done,value}=await reader.read();if(done)break;assert.ok(png.length+value.byteLength<=65536);png=Buffer.concat([png,Buffer.from(value)]);}}
   finally{await reader.cancel();reader.releaseLock();}
   assert.equal(png.subarray(1,4).toString(),"PNG");assert.equal(png.readUInt32BE(16),32);assert.equal(png.readUInt32BE(20),16);
-  parentPort.postMessage({cases,requests,pngBase64:png.toString("base64")});
-}catch(error){parentPort.postMessage({failure:String(error.stack??error).slice(0,4096),requests});}
+  parentPort.postMessage({cases,requests:guard.proof.blockedRequests,fetchProof:guard.proof,pngBase64:png.toString("base64")});
+}catch(error){parentPort.postMessage({failure:String(error.stack??error).slice(0,4096),requests:guard.proof.blockedRequests,fetchProof:guard.proof});}

@@ -7,19 +7,20 @@ import test from "node:test";
 import { Worker } from "node:worker_threads";
 import { imageSize as esmImageSize } from "image-size";
 import { readPreImageSizePatch } from "./helpers/pre-image-size-patch.mjs";
+import { readPreOgSecurityInput } from "./helpers/pre-og-security-inputs.mjs";
 import { readPreSvgMemoryInput } from "./helpers/pre-svg-memory-inputs.mjs";
 const json = async file => JSON.parse(await readFile(file));
 const sha = b => createHash("sha256").update(b).digest("hex");
 const consumer = createRequire(path.resolve("node_modules/vinext/package.json"));
-test("only image-size changes in the locked graph; exact scoped override keeps every framework/codec pin", async () => {
-  const before = JSON.parse(await readPreImageSizePatch("package-lock.json")), after = await json("package-lock.json");
+test("historical image-size cycle changes only that dependency; current dimension consumer remains patched", async () => {
+  const before = JSON.parse(await readPreImageSizePatch("package-lock.json")), after = JSON.parse(await readPreOgSecurityInput("package-lock.json"));
   assert.deepEqual(Object.keys(after.packages), Object.keys(before.packages));
   assert.deepEqual(Object.keys(after.packages).filter(key => JSON.stringify(after.packages[key]) !== JSON.stringify(before.packages[key])), ["node_modules/image-size"]);
   assert.equal(after.packages["node_modules/image-size"].version, "2.0.3");
   const installed = await json("node_modules/image-size/package.json"); assert.equal(installed.version, "2.0.3");
   assert.equal(installed.dependencies, undefined);
   assert.equal(consumer.resolve("image-size"), path.resolve("node_modules/image-size/dist/cjs/index.js"));
-  const oldPkg = JSON.parse(await readPreImageSizePatch("package.json")), pkg = await json("package.json");
+  const oldPkg = JSON.parse(await readPreImageSizePatch("package.json")), pkg = JSON.parse(await readPreOgSecurityInput("package.json"));
   oldPkg.overrides["vinext@0.0.50"] = { "image-size": "2.0.3" }; assert.deepEqual(pkg, oldPkg);
 });
 test("seven real bounded fixtures preserve dimensions and named API in both framework CJS and ESM resolution", async () => {
@@ -71,7 +72,7 @@ test("fresh complete audit removes both high severity groups but keeps three mod
   assert.deepEqual(after.audit.metadata.vulnerabilities, { info: 0, low: 0, moderate: 3, high: 0, critical: 0, total: 3 });
   assert.deepEqual(Object.keys(after.audit.vulnerabilities).sort(), ["@vercel/og", "satori", "vinext"]);
   assert.equal(after.auditExitCode, 1); assert.equal(after.cleanup.ownedScratchRemoved, true);
-  assert.equal(sha(await readFile("package.json")), after.packageSha256); assert.equal(sha(await readFile("package-lock.json")), after.lockSha256);
+  assert.equal(sha(await readPreOgSecurityInput("package.json")), after.packageSha256); assert.equal(sha(await readPreOgSecurityInput("package-lock.json")), after.lockSha256);
   const priorEntries = (await json("evidence/2026-10-27-cloudflare-audit-after.json")).packageEntries;
   assert.deepEqual(Object.keys(after.packageEntries), Object.keys(priorEntries));
   assert.deepEqual(Object.keys(after.packageEntries).filter(key => after.packageEntries[key] !== priorEntries[key]), ["node_modules/image-size"]);

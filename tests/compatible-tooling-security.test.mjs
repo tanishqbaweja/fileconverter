@@ -24,8 +24,8 @@ test("installed tooling and exact lock pins meet the reviewed patch floors witho
   }
   assert.equal(pkg.devDependencies.vite, lock.packages["node_modules/vite"].version);
   assert.match(pkg.devDependencies.vite, /^8\.\d+\.\d+$/); // Existing framework's supported major, no unreviewed major migration.
-  assert.deepEqual(pkg.overrides, { "miniflare@5.20261019.2-beta": { undici: "7.30.1" }, "vinext@0.0.50": { "image-size": "2.0.3" } },
-    "Only the two reviewed exact consumer-scoped security pins may override upstream dependencies");
+  assert.deepEqual(pkg.overrides, { "miniflare@5.20261019.2-beta": { undici: "7.30.1" }, "vinext@0.0.50": { "image-size": "2.0.3", "@vercel/og":"1.0.3" }, "satori@0.33.5":{fflate:"0.7.5"} },
+    "Only the reviewed exact consumer-scoped security pins may override upstream dependencies");
   assert.equal(pkg.scripts["db:generate"], undefined);
 });
 test("retained same-source audit comparison removes precisely the ten targeted groups and keeps nine unresolved groups visible", async () => {

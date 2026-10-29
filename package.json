@@ -6,9 +6,9 @@
     "node": ">=22.13.0"
   },
   "scripts": {
-    "dev": "vinext dev",
-    "build": "vinext build",
-    "start": "vinext start",
+    "dev": "node scripts/run-vinext.mjs dev",
+    "build": "node scripts/run-vinext.mjs build",
+    "start": "node scripts/run-vinext.mjs start",
     "test": "npm run build && npm run test:unit",
     "test:unit": "node scripts/run-unit-suite.mjs portable",
     "test:qualification": "node scripts/run-unit-suite.mjs qualification",
@@ -266,7 +266,11 @@
   },
   "overrides": {
     "vinext@0.0.50": {
-      "image-size": "2.0.3"
+      "image-size": "2.0.3",
+      "@vercel/og": "1.0.3"
+    },
+    "satori@0.33.5": {
+      "fflate": "0.7.5"
     },
     "miniflare@5.20261019.2-beta": {
       "undici": "7.30.1"

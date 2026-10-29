@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "sessionId": 24405,
+  "observedRunningAt": "2026-10-29T13:33:54.000Z",
+  "observeNotBefore": "2026-10-29T13:34:24.000Z",
+  "estimatedRemainingSeconds": 30,
+  "lastAuthoritativeObservation": "same session exited1; scoped isolated graph audit0 but actual new Node ESM initialization fails dynamic requirefs; not installed",
+  "terminal": true,
+  "restartOnObservationTimeout": false,
+  "reason": "Use verified1.0.3 multiline consumer/font layout, scoped fflate0.7.5, actual bundled escaping and benign public API; app graph unchanged"
+}

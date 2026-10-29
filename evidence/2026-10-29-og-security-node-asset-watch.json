@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "sessionId": 91162,
+  "observedRunningAt": "2026-10-29T13:49:19.000Z",
+  "observeNotBefore": "2026-10-29T13:49:49.000Z",
+  "estimatedRemainingSeconds": 30,
+  "lastAuthoritativeObservation": "same session exited0; isolated exact bundled escaping/structural rejection and public PNG API controls pass, scoped graph audit0, allscratch removed",
+  "terminal": true,
+  "restartOnObservationTimeout": false,
+  "reason": "Hash-pinned local CJS bridge resolves actual declared HarfBuzz asset directory; serializer/codecs and app graph unchanged"
+}

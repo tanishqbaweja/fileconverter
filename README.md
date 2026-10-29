@@ -8,6 +8,26 @@ or conversion endpoint.
 
 PDF input, PDF output, and PDF tooling are intentionally out of scope.
 
+### Framework security bootstrap
+
+Use `npm run dev`, `npm run build`, and `npm run start`. Their small Node wrapper
+applies an idempotent, hash-pinned compatibility banner to the exact installed
+`@vercel/og`1.0.3 Node entry, including after `npm ci --ignore-scripts`. Unknown
+or modified package code fails closed. The banner supplies module-local CommonJS
+bindings and resolves HarfBuzz's Wasm from its declared dependency; it does not
+change globals, the serializer, codecs, or converter engines. The upstream
+MPL-2.0 package and license remain intact. Patch source is in
+`scripts/lib/og-node-bootstrap-patch.mjs`.
+
+The consumer-scoped overrides retain Vinext0.0.50, select OG1.0.3/Satori0.33.5,
+and pin Satori's standalone fflate to0.7.5. Actual embedded serializer tests prove
+the SVG escaping correction; source maps show that fflate's vulnerable ZIP64
+functions are absent from both OG bundles. A fresh2026-10-29 lock audit reports
+zero findings, not a blanket security or conversion-memory certification.
+`evidence/2026-10-29-og-security-after-audit.json` records the audit. All20 public
+converter Wasm hashes are unchanged. Framework diagnostics are synthetic tool
+tests, never a server-side path for converting selected user files.
+
 ### SVG execution diagnostics
 
 SVG jobs have a four-byte atomic cancellation flag. The UI can set it while the

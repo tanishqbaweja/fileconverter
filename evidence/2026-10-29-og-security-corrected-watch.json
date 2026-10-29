@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "observedRunningAt": "2026-10-29T13:26:19.000Z",
+  "sessionId": 70050,
+  "command": "scripts/run-repository-owned-node.mjs scripts/check-og-security-candidate.mjs",
+  "observeNotBefore": "2026-10-29T13:26:49.000Z",
+  "estimatedRemainingSeconds": 30,
+  "lastAuthoritativeObservation": "same session exited1; corrected embedded-data handling and old PNG API passed; new1.0.3 consumer uses multiline calls/different font, inspection anchor failed before candidate runtime",
+  "terminal": true,
+  "restartOnObservationTimeout": false,
+  "reason": "Correct local embedded-data decoding classification; genuine external requests remain blocked; app graph unchanged"
+}

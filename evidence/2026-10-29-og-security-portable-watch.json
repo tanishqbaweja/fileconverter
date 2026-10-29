@@ -1,0 +1,15 @@
+{
+  "schemaVersion":1,
+  "startedAt":"2026-10-29T14:01:04Z",
+  "sessionId":98280,
+  "command":"scripts/run-repository-owned-node.mjs scripts/run-unit-suite.mjs portable --reporter=file:///H:/Github%20Repositories/fileconverter/scripts/lib/unit-inventory-reporter.mjs",
+  "report":"evidence/2026-10-29-og-security-portable.json",
+  "selectedFiles":609,
+  "qualificationNotRun":162,
+  "estimatedTotalSeconds":180,
+  "observeNotBefore":"2026-10-29T14:04:04Z",
+  "lastAuthoritativeObservation":"same session exited0;2033PASS/0fail/0skip/0cancel,152675.2003ms across609files;162qualification files NOT RUN",
+  "terminal":true,
+  "restartOnObservationTimeout":false,
+  "wholeGoalComplete":false
+}

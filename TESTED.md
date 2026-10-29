@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+Security integration fullportable PASS2033/0fail/0skip/0cancel152.675s,609selected
+files/771total,162prerequisite-boundqualification NOTRUN. Fresh26focused/lint/tsc/
+productionbuild alreadyPASS; exactrootaudit0,20publicengineWasm hashesunchanged.
+Next actual unchanged19case privacy/offline/defaultSDKhost gate on pushedsource;
+no browser/securityrelease/memory/fullgoal completion inferred fromunitgreen.
+evidence/2026-10-29-og-security-portable.json.
+
+2026-10-29 B08 targeted security remedy INSTALLED: scopedOG1.0.3/Satori0.33.5/
+fflate0.7.5, exact5framework/font lock entries changed; framework/app/React/SDK
+rootpins unchanged. All20publishedconverterWasm hashes unchanged. Same-day root
+lock audit3moderate→0(allseverities),663packageentries. Actual embeddedoldinjection
+reproduced/newescaped, invalid XMLnames/internalstyle rejected;32x16 publicAPI
+PNG independently decodes to exactoldgreenRGBA. Native1.0.3 ESM packaging failures
+(requirefs, missinghb.wasm) retained; hash-pinned Nodeonly bootstrap resolves local
+require/HarfBuzzdependency assetdirectory, renderingcode/globals unchanged.
+Node/edge sourcemaps retain otherfflate code but emit0segments for unzipSync/z64e;
+no audit-only embedded-code exemption. Fresh26focused PASS1182.1782ms, affected
+lint/tsc/productionbuild PASS. Fullportable and fresh privacy/hosting gate NEXT;
+no fullsecurity/source/release/memory/goalclosure. Historicaldependency inputs
+archived, old failedreports unchanged, alltemporarycandidate/installcache removed.
+evidence/2026-10-29-og-security-install.json,
+evidence/2026-10-29-og-security-node-asset-candidate.json,
+evidence/2026-10-29-og-embedded-zip-source-map.json.
+
 2026-10-29 security phase: fresh original lock audit confirms3moderate groups,
 0high/critical, unchanged package/lock andowned audit scratch cleaned.
 @vercel/og0.8.6 embedsSatori0.16.0; actual isolated additive-export probe reproduces
