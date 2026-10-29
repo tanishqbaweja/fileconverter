@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "fda9e1acedfbc4ef9127c32f90c78c2fe83c01ba",
+  "runId": 40835665062,
+  "workflow": "svg-precision-postprocess.yml",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40835665062",
+  "verifiedStatus": "completed",
+  "conclusion": "success",
+  "finishedAt": "2026-10-29T07:28:55Z",
+  "observedAfterEstimateAt": "2026-10-29T07:30:52Z",
+  "authenticatedReceipt": "evidence/2026-10-29T07-31-15-422Z-svg-filter-processed-artifact.json",
+  "verifiedUpdatedAt": "2026-10-29T07:28:39Z",
+  "estimatedTotalSeconds": 120,
+  "doNotCheckBefore": "2026-10-29T07:30:45Z",
+  "instruction": "Follow the same run/head; never redispatch on observation timeout.",
+  "scope": "Two authenticated bindgen/cap passes only; not browser conversion acceptance"
+}

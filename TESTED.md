@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-10-29 — Precision bindgen/cap job40835665062/fda9e1ac SUCCESS. Two passes
+are full-byte identical; exact4-member artifact12880004819/1023383B authenticated
+SHA0125450a...afc850. Capped2691689B Wasm SHA3bb55dc356427d760021c4aea7aff7db06f776505f1fcefc96251a2bad0d7c8c;
+literal24initial/1536maxpages=96MiB, unshared. Static ABI matches,18019Bglue
+SHA91a08653...fd923 matches prior binding exactly. All4source proofs and pinned
+numeric controls retained, all scratch cleaned, no local binary copies kept.
+Immutable processed pin equals verifier output. No renderer execution/browser
+conversion/profile promotion/speedup claim. Next four-proof browser qualifier
+must validate original pinned small full/strip scene with changed native bytes,
+then original6M unchanged gates only if justified. Generic image telemetry and
+transparent/recovery/fulltree/repeat release evidence still required.
+evidence/2026-10-29-svg-precision-build-terminal.json and
+evidence/2026-10-29T07-31-15-422Z-svg-filter-processed-artifact.json.
+Final15focused PASS/0fail/0skip/0cancel7821.0916ms, lint/diff PASS. No repeated
+full suite or old native conversion. Both source/postprocess jobs terminal.
+
 2026-10-29 — Precision source40834686084/fdd7eaf1 SUCCESS, authenticated.
 Both fresh pinned-nightly builds and4numeric tests in each passed; raw3672717B
 SHA86e92aaefdb94cc56eb11df85205e92d91a2e9d5b2cef1999e6580aa0c9ba25d is

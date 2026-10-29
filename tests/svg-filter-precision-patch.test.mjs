@@ -86,3 +86,14 @@ test("actual precision source pin authenticates both fresh native builds and the
   assert.match(workflow,/postprocess-filter-region-source.mjs --precision/);assert.match(workflow,/retention-days: 1/);
   assert.doesNotMatch(workflow,/cargo|rustup|docker|test\.mkv/i);
 });
+test("actual repeated precision postprocessing retains exact96MiB explicit cap, ABI and prior binding without claiming a browser pass",async()=>{
+  const pin=JSON.parse(await readFile("images/resvg-source/filter-precision-processed-input.json"));
+  const receipt=JSON.parse(await readFile("evidence/2026-10-29T07-31-15-422Z-svg-filter-processed-artifact.json"));
+  assert.deepEqual(pin,receipt.inputPin);assert.equal(receipt.precision,true);assert.equal(pin.runId,40835665062);
+  assert.equal(pin.wasmSha256,"3bb55dc356427d760021c4aea7aff7db06f776505f1fcefc96251a2bad0d7c8c");
+  assert.equal(pin.filterPrecisionPatchedSha256,filterPrecisionPatch.patchedSha256);
+  assert.deepEqual(receipt.memory.map(row=>[row.initialPages,row.maximumPages,row.shared]),[[24,1536,false]]);
+  assert.equal(receipt.staticAbi.namesAndKindsEqual,true);assert.equal(receipt.glueMatchesPriorPrivateCandidate,true);
+  assert.equal(receipt.browserAcceptance,false);assert.equal(receipt.ownedRuntimeRemoved,true);assert.equal(receipt.localBinaryCopiesRetained,false);
+  assert.deepEqual(receipt.failures,[]);
+});

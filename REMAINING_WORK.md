@@ -1,5 +1,18 @@
 # Remaining work audit
 
+New precision source now fully repeated/postprocessed/capped and authenticated:
+40835665062 SUCCESS, native3bb55dc3...d7c8c, exact96MiB unshared max, compatible
+ABI and identical prior glue. All four source patches/numeric controls verified;
+owned scratch/duplicates removed, no user inputs accessed or changed. Browser
+correctness/performance/full-tree250MiB still UNVERIFIED for these new bytes.
+Next add precision-only qualifier requiring fourth source proof and both new
+immutable pins, then original small fidelity scene before unchanged6M stress.
+Do not rebuild this unchanged source or relabel build success as conversion
+acceptance. Full original scope, error/recovery/transparency/repeats and all
+media/large-file/privacy/release deliverables remain OPEN.
+evidence/2026-10-29-svg-precision-build-terminal.json.
+Final15focused PASS7821.0916ms/lint/diff PASS; no live source jobs remain.
+
 Precision candidate is now genuinely source-compiled twice, byte-identical and
 artifact-authenticated (40834686084/fdd7eaf1, raw86e92aae...c9ba25d). Pinned
 nightly numeric tests pass in BOTH builds. No new browser acceptance: raw must

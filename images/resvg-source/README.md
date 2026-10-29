@@ -37,6 +37,17 @@ exact members, both compiler receipts and cleanup. Subsequent bindgen/cap
 processing must authenticate its own immutable source pin and retain unchanged
 ABI, byte-equality and memory-cap checks. No public engine has been replaced.
 
+Source run `40834686084` and processing run `40835665062` have now succeeded and
+their exact artifacts are authenticated in the retained reports. The resulting
+private module is 2,691,689 bytes, SHA-256
+`3bb55dc356427d760021c4aea7aff7db06f776505f1fcefc96251a2bad0d7c8c`, with 24
+initial and 1,536 maximum pages (96 MiB), unshared. Its ABI and binding bytes match
+the preceding private candidate. See `filter-precision-raw-input.json`,
+`filter-precision-processed-input.json` and
+`evidence/2026-10-29-svg-precision-build-terminal.json`. Browser rendering and
+full-process-tree memory remain unverified for these new bytes. Do not rebuild
+the unchanged source; the next step is browser qualification, not another build.
+
 `svg-source-lock` is a manual CI scope, not a published engine recipe. It checks
 out resvg-js v2.6.2 by full commit, verifies its original Cargo manifest SHA,
 replaces two Git references with full immutable revisions and pins the published
