@@ -1,0 +1,23 @@
+test("svg-native-worker-capability-control",async()=>{
+  if(!privateSvg)throw new Error("Owned descriptor required");
+  await page.goto("/?test=1&directory=1");
+  await page.waitForFunction(()=>window.__WITHIN_TEST__?.getState().workerStatus==="ready");
+  expect(await page.locator('[data-testid="file-input"]').inputValue()).toBe("");
+  const source=await readFile(path.join(projectRoot,"scripts/lib/svg-native-worker-probe.txt"),"utf8");
+  expect(Buffer.byteLength(source)).toBeLessThan(8192);
+  const result=await page.evaluate(async source=>{
+    const url=URL.createObjectURL(new Blob([source],{type:"text/javascript"}));
+    const worker=new Worker(url,{name:"within-svg-native-capability"});
+    try{return await new Promise<Record<string,unknown>>((resolve,reject)=>{
+      const timer=setTimeout(()=>reject(new Error("Bounded15s capability probe timeout")),15000);
+      worker.onmessage=event=>{clearTimeout(timer);resolve(event.data);};
+      worker.onerror=event=>{clearTimeout(timer);reject(new Error(event.message));};
+    });}finally{worker.terminate();URL.revokeObjectURL(url);}
+  },source);
+  const scalar={repeat:"native-svg-worker-capability-control",nativeWorkerCapabilityProbeCompleted:result.probeCompleted===true,
+    diagnosticOnly:true,sourcePixels:4,conversionProfileTested:false,result,publicPromotion:false,wholeGoalComplete:false};
+  const text=JSON.stringify(scalar);expect(Buffer.byteLength(text)).toBeLessThanOrEqual(16384);
+  await writeFile(path.join(privateSvg.runtime,"native-svg-worker-capability-control.json"),text,{flag:"wx"});
+  expect(result.probeCompleted).toBe(true);
+  expect(result.crossOriginIsolated).toBe(true);
+});

@@ -1,0 +1,40 @@
+// Fixed four-pixel capability probe only; no user files, network or codec flags.
+(async()=>{
+  const error=value=>({name:String(value?.name??"Error").slice(0,128),message:String(value?.message??value).slice(0,512)});
+  const expected=[25,163,74,255,25,163,74,255,25,163,74,255,25,163,74,255];
+  const result={probeCompleted:false,crossOriginIsolated:self.crossOriginIsolated===true,
+    imageDecoderAvailable:typeof ImageDecoder==="function",bitmapAvailable:typeof createImageBitmap==="function",
+    offscreenCanvasAvailable:typeof OffscreenCanvas==="function",pngPositiveControl:null,svgBitmap:null,svgImageDecoder:null,
+    securityViolations:[],sourcePixels:4,conversionProfileTested:false,publicPromotion:false};
+  self.addEventListener("securitypolicyviolation",event=>{
+    if(result.securityViolations.length<16)result.securityViolations.push({directive:String(event.violatedDirective).slice(0,128),blockedURI:String(event.blockedURI).slice(0,128)});
+  });
+  const pixels=bitmap=>{
+    const canvas=new OffscreenCanvas(2,2);try{
+      const context=canvas.getContext("2d");if(!context)throw new Error("No worker Canvas2D");
+      context.drawImage(bitmap,0,0,2,2);return Array.from(context.getImageData(0,0,2,2).data);
+    }finally{canvas.width=0;canvas.height=0;}
+  };
+  if(result.bitmapAvailable&&result.offscreenCanvasAvailable){
+    let bitmap,canvas;
+    try{canvas=new OffscreenCanvas(2,2);const context=canvas.getContext("2d");if(!context)throw new Error("No worker Canvas2D");
+      context.fillStyle="#19a34a";context.fillRect(0,0,2,2);const png=await canvas.convertToBlob({type:"image/png"});
+      if(png.size>1024)throw new Error("Fixed positive-control PNG bound");bitmap=await createImageBitmap(png);
+      const rgba=pixels(bitmap);result.pngPositiveControl={width:bitmap.width,height:bitmap.height,bytes:png.size,rgba,exact:rgba.every((v,i)=>v===expected[i])};
+    }catch(value){result.pngPositiveControl={error:error(value)};}finally{bitmap?.close();if(canvas){canvas.width=0;canvas.height=0;}}
+    bitmap=null;
+    try{const svg=new Blob(['<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2"><rect width="2" height="2" fill="#19a34a"/></svg>'],{type:"image/svg+xml"});
+      bitmap=await createImageBitmap(svg);const rgba=pixels(bitmap);result.svgBitmap={width:bitmap.width,height:bitmap.height,rgba,exact:rgba.every((v,i)=>v===expected[i])};
+    }catch(value){result.svgBitmap={error:error(value)};}finally{bitmap?.close();}
+  }
+  if(result.imageDecoderAvailable){
+    let decoder,frame;
+    try{const supported=await ImageDecoder.isTypeSupported("image/svg+xml");result.svgImageDecoder={supported};
+      if(supported){const data=new TextEncoder().encode('<svg xmlns="http://www.w3.org/2000/svg" width="2" height="2"><rect width="2" height="2" fill="#19a34a"/></svg>');
+        decoder=new ImageDecoder({type:"image/svg+xml",data});frame=(await decoder.decode({frameIndex:0,completeFramesOnly:true})).image;
+        const rgba=new Uint8Array(16);await frame.copyTo(rgba,{format:"RGBA"});result.svgImageDecoder={supported,width:frame.displayWidth,height:frame.displayHeight,rgba:Array.from(rgba),exact:rgba.every((v,i)=>v===expected[i])};
+      }
+    }catch(value){result.svgImageDecoder={error:error(value)};}finally{frame?.close();decoder?.close();}
+  }
+  result.probeCompleted=true;self.postMessage(result);
+})().catch(value=>self.postMessage({probeCompleted:false,error:{name:String(value?.name).slice(0,128),message:String(value?.message).slice(0,512)}}));

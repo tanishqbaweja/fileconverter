@@ -1,5 +1,18 @@
 # Remaining work audit
 
+New decisive fidelity evidence: fixed small full-frame and strip paths produce
+identical decodedRGBA, yet BOTH have same0.982544 band failure against fresh
+Chrome. Therefore the mismatch exists without strip rendering on this control;
+do not keep changing overlap/PNG/schedules. Precise primitive/large-scene cause
+not yet isolated. Original6M remains rejected; no fidelity relaxation, public
+adoption or memory qualification. Paired control completed/guarded against replay.
+Next investigate a genuinely available worker-native backend or component cause.
+evidence/2026-10-29-svg-small-paired-fidelity-terminal.json.
+Fixed4pixel worker-native capability probe prepared with positive PNG control,
+actual SVG color checks only if available, unchanged production CSP and normal
+services;3focused PASS1238.8199ms/lint PASS. Not yet executed, not a converter
+implementation or stress substitute. Failed6M requirements remain OPEN.
+
 Small paired control first attempt produced no conversions: independent
 reference preparation was blocked by application Blob-image CSP. Security
 worked; do not weaken it. Reference generation moved to a separate owned blank

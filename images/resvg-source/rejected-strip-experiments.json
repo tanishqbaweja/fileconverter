@@ -41,5 +41,11 @@
     }
   ],
   "requiredNextChange": "Concrete native correctness or bounded-work change backed by source/diagnostic evidence; do not increase heap/timeout or reduce original fixture/quality gates",
+  "completedPairedSmallControl": {
+    "nativeWasmSha256": "902fc72bd6f3165e28a7982a11ff3ee12e9eabb6adb37b24459e9c7ef2be845d",
+    "sourceSha256": "afebfa848cd052fcd656cfdda7605c6c191edf845087759ca3421cf44880981d",
+    "evidence": "evidence/2026-10-29-svg-small-paired-fidelity-terminal.json",
+    "conclusion": "Full and strip decodedRGBA equal; both fail same0.982544 band versus0.99"
+  },
   "publicPromotion": false
 }

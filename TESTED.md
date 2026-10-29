@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-10-29 observation of terminal6f32f843 small paired control (ranOct28):
+both genuine960x540 conversions collected. Full147873B/1019.485ms versus
+strip132819B/2392.265ms PNGs decode to EXACT same2073600RGBA bytes/SHAe6a17bfd
+...c20b. Both wholeSSIM0.99418 but identical minimum-band0.982544<0.99;
+allalphaexact. FreshChrome reference167494B/SHAa619bd9b...f4ab matches historical
+reference. This CONTROL isolates a shared renderer-versus-Chrome mismatch, not
+strip damage; does NOT establish the precise primitive or every6M discrepancy.
+No more unchanged halo/PNG/ROI trials. Native full14.4MB/strip13.4MB, primary
+176.3359375MiB/103valid0missing diagnostic only, not profile acceptance. All owned
+roots/runtimes/reference/output cleaned and original before/after SHA same.
+Exact paired control now guarded against unchanged replay; native worker API
+capability or precise primitive investigation next. Original6M profile rejected.
+evidence/2026-10-29-svg-small-paired-fidelity-terminal.json.
+Paired/rejection provenance3focused PASS1071.7903ms/lint PASS. Next fixed4pixel
+worker API probe prepared under actual application CSP/COEP: PNG positive control,
+SVG createImageBitmap and ImageDecoder type/actual-color checks, no browser flags,
+network calls or user files. Probe result is feature availability, NOT conversion
+profile acceptance. Native API/paired-regression3PASS1238.8199ms/lint PASS.
+
 2026-10-28 — Paired small controlaea34674 stopped BEFORE any conversion:
 reference Blob image decode blocked by correct existing application img-src
 'self' data: CSP, confirmed in103508B trace console.0mode results/no native

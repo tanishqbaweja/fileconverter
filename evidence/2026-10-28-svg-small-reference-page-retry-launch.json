@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "6f32f843",
+  "startedAt": "2026-10-28T19:42:10Z",
+  "estimatedDurationSeconds": 120,
+  "doNotObserveBefore": "2026-10-28T19:44:10Z",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/test-svg-small-fidelity-control.mjs",
+  "changedSetup": "Independent reference on separate owned blank page closed before conversion, bounded reference hash and mode identity telemetry",
+  "applicationCSPUnchanged": true,
+  "sameNativeCodeAndQualityMemoryTimeoutGates": true,
+  "sourcePixels": 518400,
+  "fullOriginalSixMillionPixelStressReplacement": false,
+  "followSameExecutionHandleNoRestartOnObservationTimeout": true,
+  "headless": true,
+  "publicPromotion": false,
+  "wholeGoalComplete": false
+}

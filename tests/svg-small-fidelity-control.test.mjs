@@ -28,3 +28,13 @@ test("paired small control compares production full/nativePNG and strip/streamed
       assert.deepEqual(ts.createSourceFile(name,source,ts.ScriptTarget.ESNext,true).parseDiagnostics,[],name);
   }finally{await runtime.close();}
 });
+test("actual paired control proves identical pixels without granting either mode profile acceptance",async()=>{
+  const report=JSON.parse(await readFile("evidence/2026-10-28T19-42-13-951Z-svg-small-fidelity-control.json"));
+  const result=report.diagnostic;assert.equal(result.results.length,2);assert.equal(result.exactFullVsStripRgbaEqual,true);
+  assert.equal(result.results[0].rgbaSha256,result.results[1].rgbaSha256);
+  for(const row of result.results){assert.equal(row.wholeSsim,0.99418);assert.equal(row.minimumBandSsim,0.982544);assert.equal(row.alphaExact,true);}
+  assert.equal(result.independentlyValidatedEffects,false);assert.equal(result.fullOriginal6MStressReplacement,false);
+  assert.equal(report.ownedRuntimeRemoved,true);assert.equal(report.ownerProcessCleanup.status,"owned-identity-absent");
+  assert.ok(report.processCleanup.every(row=>row.status==="owned-identity-absent"));
+  assert.deepEqual(report.protectedOriginalBefore,report.protectedOriginalAfter);
+});
