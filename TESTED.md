@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-29 — Premultiplied capped artifact40844028971/41b5ff4a SUCCESS/authenticated.
+Two passes byte-identical; exact4member artifact12883723633/1022086B SHA2eeadbdc
+...045222. Wasm2687070B SHA8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0;
+26initial/1536maxpages, unshared, unchanged96MiB maximum. Fixed LUT payload
+explains2extra initial pages versus prior24, not a raised maximum. Static ABI
+matches,18019B glue91a08653...fd923 identical. Allfour source/numeric proofs
+retained, all owned scratch cleaned/no localbinarycopies. Inputpin equalsverifier.
+No browser use or speed/fidelity/memory qualification yet for new8641bytes.
+Next premultiplied-only qualifier and unchanged original small pair before6M.
+evidence/2026-10-29-svg-premultiplied-build-terminal.json and
+evidence/2026-10-29T08-45-09-872Z-svg-filter-processed-artifact.json.
+Final16focused PASS/0fail/0skip/0cancel10251.8869ms; lint/diff PASS. Both new
+source jobs terminal, no repeated full suite or unchanged browser conversion.
+
 2026-10-29 — Premultiplied source40842628275/96a4a09a SUCCESS/authenticated.
 Two fresh pinned-nightly builds and4table tests each passed; raw3667913B SHA
 1df4c1453ea928d7c29e2cc9b06d3cb708d4a32438c524dd9e5e9517080e0f1b full-byte

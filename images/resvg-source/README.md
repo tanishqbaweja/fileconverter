@@ -38,6 +38,16 @@ See `filter-premultiplied-raw-input.json` and
 copies remain. The next stage is repeated capped postprocessing, not another
 source build; browser correctness and performance are still unverified.
 
+Processing run `40844028971` also succeeds and its exact artifact is authenticated.
+The private capped module is 2,687,070 bytes, SHA-256
+`8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0`, with 26
+initial pages and the unchanged 1,536-page (96 MiB) maximum, unshared. Its binding
+bytes and static ABI match the preceding candidate. See
+`filter-premultiplied-processed-input.json` and
+`evidence/2026-10-29-svg-premultiplied-build-terminal.json`. No local binary copies
+remain. Browser conversion has not run for these bytes; do not infer fidelity,
+speed or complete-browser memory acceptance from source/build checks.
+
 ## Final-merge precision candidate (private, 2026-10-29)
 
 The default identity-filter diagnostic demonstrated an 8-bit linearRGB round-trip

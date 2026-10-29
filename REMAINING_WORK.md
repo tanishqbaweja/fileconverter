@@ -1,5 +1,15 @@
 # Remaining work audit
 
+Premultiplied candidate8641a413 now genuinely source-reproduced, capped, byte-
+compared and authenticated. Explicit96MiB unsharedmax unchanged; initial26pages
+includes fixed128KiB tables. ABI/priorglue compatible, allfour source/numeric
+proofs verified and scratch cleaned. Browser fidelity/speed/fulltree memory still
+UNVERIFIED for these bytes. Next dedicatedfourproof browser binding and original
+small full/strip pair before6M; no unchanged native rebuild. Full original scope,
+genericimage telemetry, transparency/recovery/repeats and all media/privacy/release
+deliverables remain OPEN. evidence/2026-10-29-svg-premultiplied-build-terminal.json.
+Final16focused PASS10251.8869ms/lint/diff PASS; no live source jobs remain.
+
 New premultiplied source is repeatedly compiled/byte-identical and authenticated:
 40842628275/96a4a09a/raw1df4c145...e0f1b, both pinned-nightly numeric controls
 passed. Raw pin saved only after exact archive/receipt/patch verification; no

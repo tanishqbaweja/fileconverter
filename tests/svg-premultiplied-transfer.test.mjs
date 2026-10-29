@@ -67,6 +67,11 @@ test("extended source verifier preserves every historical immutable run/head and
   }
   const watch=JSON.parse(await readFile("evidence/2026-10-29-svg-premultiplied-source-watch.json"));
   assert.ok(source.includes(JSON.stringify(watch.sourceHead)));assert.ok(source.includes(String(watch.runId)));
+  const processed=await readFile("scripts/inspect-svg-filter-processed.mjs","utf8");
+  for(const name of ["region","context","liveness","precision"]){
+    const pin=JSON.parse(await readFile("images/resvg-source/filter-"+name+"-processed-input.json"));
+    assert.ok(processed.includes(JSON.stringify(pin.headSha)),name);assert.ok(processed.includes(String(pin.runId)),name);
+  }
 });
 test("actual source artifact authenticates both premultiplied builds, exact immutable input and pinned-nightly table tests",async()=>{
   const pin=JSON.parse(await readFile("images/resvg-source/filter-premultiplied-raw-input.json"));
@@ -78,4 +83,14 @@ test("actual source artifact authenticates both premultiplied builds, exact immu
   const workflow=await readFile(".github/workflows/svg-premultiplied-postprocess.yml","utf8");
   assert.equal((workflow.match(/uses: actions\/[\w-]+@[a-f0-9]{40}/g)??[]).length,3);
   assert.match(workflow,/--premultiplied/);assert.doesNotMatch(workflow,/cargo|rustup|docker|test\.mkv/i);
+});
+test("actual capped premultiplied module preserves96MiB maximum, compatible ABI and identical binding while recording its new26-page minimum",async()=>{
+  const pin=JSON.parse(await readFile("images/resvg-source/filter-premultiplied-processed-input.json"));
+  const receipt=JSON.parse(await readFile("evidence/2026-10-29T08-45-09-872Z-svg-filter-processed-artifact.json"));
+  assert.deepEqual(pin,receipt.inputPin);assert.equal(receipt.premultiplied,true);assert.equal(pin.runId,40844028971);
+  assert.equal(pin.wasmSha256,"8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0");
+  assert.equal(pin.premultipliedTransferPatchedSha256,premultipliedTransferPatch.patchedSha256);
+  assert.deepEqual(receipt.memory.map(row=>[row.initialPages,row.maximumPages,row.shared]),[[26,1536,false]]);
+  assert.equal(receipt.staticAbi.namesAndKindsEqual,true);assert.equal(receipt.glueMatchesPriorPrivateCandidate,true);
+  assert.equal(receipt.browserAcceptance,false);assert.equal(receipt.localBinaryCopiesRetained,false);assert.equal(receipt.ownedRuntimeRemoved,true);assert.deepEqual(receipt.failures,[]);
 });

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "41b5ff4a8ebdc71e2eeb18eb446144443bd6e63b",
+  "runId": 40844028971,
+  "workflow": "svg-premultiplied-postprocess.yml",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40844028971",
+  "verifiedStatus": "completed",
+  "conclusion": "success",
+  "firstObservedAt": "2026-10-29T08:42:32Z",
+  "finishedAt": "2026-10-29T08:42:31Z",
+  "authenticatedReceipt": "evidence/2026-10-29T08-45-09-872Z-svg-filter-processed-artifact.json",
+  "noRepeatedPollingOrRedispatch": true,
+  "scope": "Repeated source-authenticated capped processing only; no browser acceptance"
+}
