@@ -1,5 +1,13 @@
 # Remaining work audit
 
+Fifth-proof blur-boundary recipe is now code-integrated, separate from historical
+source drivers; actual execution remains pending. Two fresh locked builds each
+require pinned-nightly4+4 numeric tests and retained-source checks before exact
+raw-byte comparison.13 focused PASS7052.4717ms, syntax/generated lint/affected
+lint/diff PASS; owned patch guards and one-day/scoped cleanup tested. Next new
+raw build, then repeated96MiB capped postprocessing/ABI and changed-byte browser
+qualification. Geometry alpha discrepancy and full memory/recovery remain OPEN.
+
 Alpha diagnosis now separates two gaps: rounded/no-filter7776 mismatches/max18,
 square/no-filter exact, square/filtered38067/max34; allRGB0.99 passes, unchanged
 exact-alpha overall gate FAILS.64 fixed/12 worst records per component retained;

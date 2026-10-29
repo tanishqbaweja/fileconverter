@@ -1,0 +1,46 @@
+name: Private SVG blur-boundary source reproduction
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["media-options"]
+    paths: [".github/workflows/svg-source-blur-boundary.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce-blur-boundary-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Prepare repository-owned build runtime
+        run: node scripts/ci-owned-runtime.mjs prepare
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "24.7.0"
+      - name: Two fresh locked builds with all five source and pinned-nightly numeric proofs
+        run: node images/resvg-source/reproduce-blur-boundary-source.mjs
+      - name: Verify public engines unchanged
+        if: always()
+        run: git diff --exit-code -- public/engines
+      - name: Retain private source candidate and exact evidence for one day
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: svg-filter-blur-boundary-source-${{ github.run_id }}
+          path: |
+            outputs/reports/resvg-filter-blur-boundary-owner-${{ github.run_id }}.json
+            outputs/reports/resvg-source-repeat-${{ github.run_id }}.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.wasm
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.lock
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.json
+          if-no-files-found: warn
+          retention-days: 1
+      - name: Remove owned build runtime
+        if: always()
+        env:
+          NODE_DISABLE_COMPILE_CACHE: "1"
+        run: node scripts/ci-owned-runtime.mjs cleanup

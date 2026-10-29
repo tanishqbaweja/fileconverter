@@ -30,10 +30,17 @@ guard are tested, but browser OOM/recovery is not proved. No native recipe has
 integrated the patch and no new Wasm has been built; rounded-edge coverage also
 remains unresolved. See `evidence/2026-10-29-svg-blur-boundary-numeric-terminal.json`.
 
-Next integrate the fifth source proof in a NEW private recipe, run numeric tests
-with the pinned compiler and perform dual fresh builds/capped postprocessing,
-then qualify the changed bytes in the browser. Do not rebuild the unchanged old
-candidate, publish the source-only patch, loosen exact alpha, or infer speedup.
+The fifth-proof integration now exists separately in
+`blur-boundary-build-recipe.mjs`, `owned-blur-boundary-patch.mjs` and
+`reproduce-blur-boundary-source.mjs`, with the dedicated
+`svg-source-blur-boundary.yml` workflow. Generated compiler/reproducer syntax,
+lint, source ownership/replay guards and workflow cleanup checks pass13 focused
+tests. This is recipe preparation, not executed source-build proof. Each fresh
+build must run both4-test numeric sets with the pinned nightly and verify Cargo
+retains all five corrections before raw byte equality is accepted. Next execute
+that NEW private build, cap/repeat postprocessing and qualify the changed bytes
+in the browser. Do not rebuild the unchanged old candidate, publish the
+source-only patch, loosen exact alpha, or infer speedup.
 
 ## Premultiplied-transfer candidate (private, 2026-10-29)
 

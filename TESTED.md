@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+Blur-boundary source integration PREPARED (not executed yet): separate private
+owner/recipe/workflow keeps historical build drivers unchanged. All four prior
+source proofs plus checked box-boundary sibling patch required. Each of two fresh
+locked pinned-nightly builds runs original4 premultiplied and4 boundary numeric
+tests, verifies Cargo retained both modified modules, and compares full raw bytes.
+Only source/check evidence retained for one day; repository-scoped build runtime
+and post-action cache cleanup included.13 focused PASS7052.4717ms, generated
+driver syntax/ESLint and affected lint/diff PASS. Owned helper rejects wrong
+revision/paths and double patching without touching prior filter source. No new
+Wasm yet, no browser acceptance or promotion. Fresh raw build NEXT; postprocessing
+must still impose the unchanged96MiB cap and validate ABI before browser use.
+
 Alpha-component investigation TERMINAL at52ac74f3, Chrome156 headless: all three
 different inputs collected before unchanged quality verdict. Rounded/no-filter:
 7776 alpha mismatches,max18; square/no-filter: exactRGBA/alpha and SSIM1; square/
