@@ -1,5 +1,42 @@
 # Private SVG source reconstruction
 
+## Final-merge precision candidate (private, 2026-10-29)
+
+The default identity-filter diagnostic demonstrated an 8-bit linearRGB round-trip
+loss. Its 16 sampled output colors matched the predicted quantization; the
+matching sRGB controls passed. This does not authorize rewriting SVG inputs or
+weakening the original six-million-pixel acceptance case.
+
+`filter-precision-patch.mjs` adds a floating-point final linearRGB merge to the
+pinned region/context/lifetime candidate. Earlier kernels and non-final or sRGB
+merges remain unchanged. The extra accumulator uses 16 bytes per viewport pixel,
+with checked multiplication, fallible reservation and a 16 MiB request ceiling.
+That ceiling is not a total-engine memory measurement. Exceeding it currently
+returns the renderer's existing filter error; user-facing error/recovery behavior
+must be qualified before publication. The original 96 MiB Wasm cap and 250 MiB
+complete-browser-tree requirement still apply.
+
+The exact final opaque sRGB input can replace prior layers without color-space
+arithmetic. Other pixels are composited in premultiplied f32 linearRGB and encoded
+directly to sRGB, avoiding the demonstrated intermediate 8-bit round trip.
+
+Four compiled host-Rust arithmetic tests pass, including every legal scalar
+channel/alpha pair and 10,000 mixed-space cases against an f64 reference. These
+are arithmetic tests, not browser image conversions. To repeat after a meaningful
+kernel change, set `WITHIN_RUSTC_EXECUTABLE` to an installed compiler binary, then
+run `node scripts/run-repository-owned-node.mjs scripts/test-svg-filter-precision-kernel.mjs`.
+Executables, compiler outputs and scratch are repository-local and removed.
+
+The `svg-source-filter-precision.yml` workflow runs
+`node images/resvg-source/reproduce-filter-context-source.mjs --precision` on
+Linux without Docker. It requires two fresh locked builds, pinned-nightly
+arithmetic tests in both builds, all four patch proofs, and full raw-byte equality.
+Use `node scripts/inspect-svg-filter-build.mjs --precision` only after the exact
+recorded source run succeeds. The verifier checks the run/head, archive digest,
+exact members, both compiler receipts and cleanup. Subsequent bindgen/cap
+processing must authenticate its own immutable source pin and retain unchanged
+ABI, byte-equality and memory-cap checks. No public engine has been replaced.
+
 `svg-source-lock` is a manual CI scope, not a published engine recipe. It checks
 out resvg-js v2.6.2 by full commit, verifies its original Cargo manifest SHA,
 replaces two Git references with full immutable revisions and pins the published

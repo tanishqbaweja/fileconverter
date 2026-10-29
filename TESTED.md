@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-29 — Source build40834686084 atfdd7eaf1 confirmed IN_PROGRESS07:19:27Z.
+This is one new implementation, not an unchanged retry. Saved watch estimates
+6minutes/not-before07:25:30Z. While waiting, exact-run artifact verifier and
+future precision postprocessor prepared: all4patch proofs, pinned numeric-test
+receipts, unchanged cap/ABI/full-byte comparison and fail-closed missing input
+pin.4focused PASS6363.8409ms/lint/diff PASS; no artifact downloaded/processed yet.
+README now documents algorithm, bounds and limitations, including the existing
+filter-error behavior that needs recovery qualification before publication.
+evidence/2026-10-29-svg-precision-source-watch.json.
+
 2026-10-29 — Private precision implementation prepared, not browser-accepted.
 Pinned liveness source5331...3307 gains only a final-linearRGB merge dispatch
 and source-pinned f32 arithmetic; original other kernels and non-final/sRGB

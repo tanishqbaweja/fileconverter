@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "fdd7eaf17f5239712c1b1aed1cbbdc293a09d9a5",
+  "runId": 40834686084,
+  "workflow": "svg-source-filter-precision.yml",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40834686084",
+  "verifiedStatus": "in_progress",
+  "verifiedUpdatedAt": "2026-10-29T07:19:27Z",
+  "estimatedTotalSeconds": 360,
+  "doNotCheckBefore": "2026-10-29T07:25:30Z",
+  "instruction": "Follow this exact run/head; do not redispatch on observation timeouts or unchanged state.",
+  "scope": "Two fresh source builds plus pinned-compiler arithmetic controls only; no browser conversion acceptance"
+}

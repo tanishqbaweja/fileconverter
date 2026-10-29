@@ -1,5 +1,13 @@
 # Remaining work audit
 
+Exact new precision source job40834686084/fdd7eaf1 confirmed running07:19:27Z,
+not-before07:25:30Z. Do not redispatch. Exact-run verifier and future capped
+postprocessor prepared/tested, but no raw input pin is fabricated before remote
+artifact authentication.4focused PASS6363.8409ms/lint/diff PASS. Browser tests
+of compiled implementation remain pending; original6M/96MiB/250MiB and all wider
+goal obligations unchanged. New accumulator ceiling still needs explicit
+user-facing error/recovery qualification, not a claim of safe public support.
+
 Native precision correction now IMPLEMENTED as private source patch, not adopted:
 final-linearRGB merge f32 path, exact opaque-last-layer shortcut,16MiB checked
 extra accumulator; all previous kernels/non-final merges untouched.4actual

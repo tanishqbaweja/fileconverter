@@ -9,6 +9,7 @@ import { patchPinnedFilterRegion } from "../images/resvg-source/filter-region-pa
 import { patchPinnedFilterLiveness } from "../images/resvg-source/filter-liveness-patch.mjs";
 import { patchPinnedFilterPrecision,patchOwnedFilterPrecision,filterPrecisionPatch } from "../images/resvg-source/filter-precision-patch.mjs";
 import { makePrecisionBuildRecipes } from "../images/resvg-source/precision-build-recipe.mjs";
+import { makePrecisionPostprocessRecipe } from "../images/resvg-source/precision-postprocess-recipe.mjs";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 test("precision patch reverses the entire pinned source and leaves all original kernels and non-final dispatch available",async()=>{
   const fixture=JSON.parse(await readFile("fixtures/source/resvg-filter-3495d870-preimage.json"));
@@ -26,6 +27,19 @@ test("precision patch reverses the entire pinned source and leaves all original 
   assert.match(source,/value\[3\] < 0.0/);assert.match(source,/ColorInterpolation::SRGB\)\)/);
   assert.throws(()=>patchPinnedFilterPrecision(result.bytes));
   let ran=false;await assert.rejects(patchOwnedFilterPrecision({runtime:{directory:process.cwd()},livenessProof:{},run(){ran=true;}}));assert.equal(ran,false);
+});
+test("future precision processor requires exact source pin, all four patches and actual pinned-compiler tests without changing cap or ABI guards",async()=>{
+  const result=makePrecisionPostprocessRecipe({root:process.cwd(),sourceBytes:await readFile("images/resvg-source/postprocess-repeated-source.mjs")});
+  assert.equal(result.proof.processingPerformedByRecipeGenerator,false);assert.equal(result.proof.maximumBytesChanged,false);
+  assert.equal(result.proof.exactFutureInputPin,"images/resvg-source/filter-precision-raw-input.json");
+  assert.match(result.source,/receipt.filterPrecisionKernelTests.passed,4/);
+  assert.match(result.source,/receipt.filterPrecisionKernelTests.compiler,compileContract.rustcVersion/);
+  assert.match(result.source,/Compare full bounded Wasm bytes/);
+  assert.match(result.source,/compareStaticAbi\(published, bounded.bytes\)/);
+  assert.match(result.source,/sourceRepeat.filterLivenessPatch.patchedSha256/);
+  const lint=await new ESLint().lintText(result.source,{filePath:"images/resvg-source/generated-precision-processor.mjs"});
+  assert.deepEqual(lint.flatMap(row=>row.messages.filter(message=>message.severity===2)),[]);
+  assert.deepEqual(ts.createSourceFile("processor.mjs",result.source,ts.ScriptTarget.ESNext,true).parseDiagnostics,[]);
 });
 test("precision build keeps compiler/lock/Cargo flags, two fresh byte comparisons, previous proofs and numeric controls",async()=>{
   const runtime=await createOwnedRuntimeScratch("resvg-filter-owner-");
