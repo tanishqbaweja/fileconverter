@@ -1,5 +1,13 @@
 # Remaining work audit
 
+Component isolation prepared next, not run: same pinned small source with three
+precise reversible ablations (filter use, foreground group, rectangle corners).
+4focused PASS/lint/exact1case collection PASS. Original6M quality,250MiB,
+96MiB Wasm,45s conversion deadline, normal services and all broader deliverables
+unchanged. Controls must not replace stress acceptance or repeat the completed
+full-versus-strip pair. Keep each independently referenced component result,
+including failures; cleanup every generated input/reference/output in finally.
+
 Native-worker shortcut investigated, unavailable in currentChrome156.0.8078.49:
 exact PNG worker positive control passes, SVG bitmap decode throws and SVG
 ImageDecoder type reportsfalse under unchanged application CSP/COEP.1probe

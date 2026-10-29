@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-29 — Three component controls prepared, NOT yet executed: filter-use
+removed, background-only, and filter-use removed with square rectangle corners.
+All derive reversibly from the pinned11194B960x540 source; original source is
+unchanged. Same production full worker/UI/direct I/O/native bytes, fresh owned
+Chromium references, whole/band0.99 and exact alpha; collect all three before
+asserting quality. These are diagnostics only, never original6M stress evidence.
+Initial source-reversal unit assertion caught variable tile sizes56/57/58;
+corrected the assertion before browser use.4focused PASS953.2904ms/lint PASS,
+exact1test collection PASS; no conversion claim. All disposable data cleaned.
+evidence/2026-10-29T06-49-54-365Z-svg-component-control.json.
+
 2026-10-29 — Actual native-worker SVG capability probedd7cd998 COMPLETE:
 production CSP/COOP/COEP unchanged/crossOriginIsolatedtrue, exact four-pixel
 PNG positive control PASSED93B; worker createImageBitmap(SVG Blob) throws

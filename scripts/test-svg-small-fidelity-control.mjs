@@ -10,11 +10,13 @@ import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mj
 import { buildSvgStripWorker } from "./lib/svg-strip-worker-recipe.mjs";
 import { makeSvgSmallFidelityControl } from "./lib/svg-small-fidelity-control.mjs";
 import { makeSvgNativeWorkerCapabilityControl } from "./lib/svg-native-worker-capability-control.mjs";
+import { makeSvgComponentFidelityControl } from "./lib/svg-component-fidelity-control.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
-const args=process.argv.slice(2),listOnly=args.includes("--list-only"),nativeCapability=args.includes("--native-capability");
-assert.equal(new Set(args).size,args.length);assert.ok(args.length<=2&&args.every(arg=>["--list-only","--native-capability"].includes(arg)));
+const args=process.argv.slice(2),listOnly=args.includes("--list-only"),nativeCapability=args.includes("--native-capability"),components=args.includes("--components");
+assert.equal(new Set(args).size,args.length);assert.ok(args.length<=2&&args.every(arg=>["--list-only","--native-capability","--components"].includes(arg)));
+assert.ok(!(nativeCapability&&components),"Choose exactly one diagnostic kind");
 const root=path.resolve(import.meta.dirname,".."),stamp=new Date().toISOString().replaceAll(/[:.]/g,"-");
-const report={schemaVersion:1,startedAt:new Date().toISOString(),diagnosticOnly:true,nativeCapability,sourceWidth:nativeCapability?2:960,sourceHeight:nativeCapability?2:540,
+const report={schemaVersion:1,startedAt:new Date().toISOString(),diagnosticOnly:true,nativeCapability,components,sourceWidth:nativeCapability?2:960,sourceHeight:nativeCapability?2:540,
   sourcePins:{},failures:[],fullOriginal6MStressReplacement:false,publicPromotion:false,memoryAcceptance:false,wholeGoalComplete:false};
 let runtime,child,birth,log="";
 try{
@@ -22,9 +24,9 @@ try{
     "scripts/lib/svg-strip-worker-recipe.mjs","scripts/lib/svg-filter-liveness-qualification.mjs","scripts/test-source-built-svg-candidate.mjs",
     "tests/browser/image-conversions.spec.ts","images/resvg-source/filter-liveness-raw-input.json","images/resvg-source/filter-liveness-processed-input.json",
     "fixtures/images/test-pattern-effects.svg","fixtures/images/test-pattern-effects.svg.json",
-    "scripts/lib/svg-native-worker-capability-control.mjs","scripts/lib/svg-native-worker-test.txt","scripts/lib/svg-native-worker-probe.txt"])
+    "scripts/lib/svg-native-worker-capability-control.mjs","scripts/lib/svg-native-worker-test.txt","scripts/lib/svg-native-worker-probe.txt","scripts/lib/svg-component-fidelity-control.mjs"])
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));
-  if(!listOnly&&!nativeCapability){
+  if(!listOnly&&!nativeCapability&&!components){
     const pin=JSON.parse(await readFile(path.join(root,"images/resvg-source/filter-liveness-processed-input.json")));
     const ledger=JSON.parse(await readFile(path.join(root,"images/resvg-source/rejected-strip-experiments.json")));
     const done=ledger.completedPairedSmallControl;
@@ -37,18 +39,19 @@ try{
   report.sourcePins[fullWorkerFile]=sha(fullWorker);
   runtime=await createOwnedRuntimeScratch("svg-reproduced-qualification-");
   report.privateWorker=await buildSvgStripWorker({root,runtime,centralRows:128});
-  const generated=(nativeCapability?makeSvgNativeWorkerCapabilityControl:makeSvgSmallFidelityControl)({root,runtime:runtime.directory,workerPin:report.privateWorker,
+  const generated=(components?makeSvgComponentFidelityControl:nativeCapability?makeSvgNativeWorkerCapabilityControl:makeSvgSmallFidelityControl)({root,runtime:runtime.directory,workerPin:report.privateWorker,
     driverBytes:await readFile(path.join(root,"scripts/test-source-built-svg-candidate.mjs")),
     suiteBytes:await readFile(path.join(root,"tests/browser/image-conversions.spec.ts")),
     generatorBytes:await readFile(path.join(root,"scripts/generate-svg-stress-fixture.py")),
     controlTestBytes:await readFile(path.join(root,"scripts/lib/svg-small-fidelity-test.txt")),
-    capabilityTestBytes:await readFile(path.join(root,"scripts/lib/svg-native-worker-test.txt"))});
+    capabilityTestBytes:await readFile(path.join(root,"scripts/lib/svg-native-worker-test.txt")),
+    componentSourceBytes:await readFile(path.join(root,"fixtures/images/test-pattern-effects.svg"))});
   report.recipe=generated.proof;report.generatedSourceArchives={};
   for(const [name,file,source]of [["driver",generated.driverPath,generated.driver],["suite",generated.suitePath,generated.suite],["config",generated.configPath,generated.config]]){
     report.generatedSourceArchives[name]={bytes:Buffer.byteLength(source),sha256:sha(source),gzipBase64:gzipSync(source,{level:9}).toString("base64")};
     await writeFile(file,source,{flag:"wx"});
   }
-  const childArgs=listOnly?["node_modules/@playwright/test/cli.js","test","--config="+generated.configPath,"--grep",nativeCapability?"svg-native-worker-capability-control":"paired-svg-fidelity-control","--list"]:[generated.driverPath];
+  const childArgs=listOnly?["node_modules/@playwright/test/cli.js","test","--config="+generated.configPath,"--grep",components?"svg-component-fidelity-control":nativeCapability?"svg-native-worker-capability-control":"paired-svg-fidelity-control","--list"]:[generated.driverPath];
   child=spawn(process.execPath,childArgs,{cwd:root,env:runtime.env,windowsHide:true,stdio:["ignore","pipe","pipe"]});
   for(const pipe of [child.stdout,child.stderr])pipe.on("data",bytes=>{log=(log+bytes).slice(-65536);});
   const completed=new Promise((resolve,reject)=>{child.once("error",reject);child.once("close",(code,signal)=>{report.childSignal=signal;resolve(code);});});
@@ -56,7 +59,7 @@ try{
   assert.equal(report.childSignal,null);
   if(listOnly){
     assert.equal(report.childExit,0,log);assert.match(log,/Total: 1 test in 1 file/);
-    report.status=nativeCapability?"listed-one-native-worker-api-probe-no-browser":"listed-one-paired-small-control-no-browser";
+    report.status=components?"listed-one-three-component-control-no-browser":nativeCapability?"listed-one-native-worker-api-probe-no-browser":"listed-one-paired-small-control-no-browser";
   }else{
     const summaries=log.split(/\r?\n/).filter(line=>line.startsWith('{"path":'));assert.equal(summaries.length,1,log);
     const relative=JSON.parse(summaries[0]).path.replaceAll("\\","/");assert.match(relative,/^evidence\/[\w-]+-source-svg-browser\.json$/);
@@ -66,11 +69,12 @@ try{
     report.incrementalPrivateMiB=actual.memory?.incrementalPrivateMiB??null;
     report.processCleanup=actual.processCleanup;report.protectedOriginalBefore=actual.protectedOriginalBefore;report.protectedOriginalAfter=actual.protectedOriginalAfter;
     report.browserVersion=actual.browserBefore?.version;report.ownedBrowserRuntimeRemoved=actual.ownedRuntimeRemoved;
-    if(nativeCapability){assert.equal(actual.nativeWorkerCapabilityControl.diagnosticOnly,true);assert.equal(actual.nativeWorkerCapabilityControl.conversionProfileTested,false);}
+    if(components){assert.equal(actual.componentFidelityControl.diagnosticOnly,true);assert.equal(actual.componentFidelityControl.original6MStressReplaced,false);}
+    else if(nativeCapability){assert.equal(actual.nativeWorkerCapabilityControl.diagnosticOnly,true);assert.equal(actual.nativeWorkerCapabilityControl.conversionProfileTested,false);}
     else{assert.equal(actual.smallFidelityControl.diagnosticOnly,true);assert.equal(actual.smallFidelityControl.original6MStressReplaced,false);}
     assert.ok(actual.processCleanup.every(row=>row.status==="owned-identity-absent"));assert.equal(actual.ownedRuntimeRemoved,true);
     assert.deepEqual(actual.protectedOriginalBefore,actual.protectedOriginalAfter);
-    report.status=nativeCapability?(report.childExit===0?"collected-worker-api-capability-not-conversion-acceptance":"collected-worker-api-capability-with-gate-failures"):(report.childExit===0?"collected-small-fidelity-control-not-profile-acceptance":"collected-small-fidelity-control-with-gate-failures");
+    report.status=components?(report.childExit===0?"collected-components-not-profile-acceptance":"collected-components-with-gate-failures"):nativeCapability?(report.childExit===0?"collected-worker-api-capability-not-conversion-acceptance":"collected-worker-api-capability-with-gate-failures"):(report.childExit===0?"collected-small-fidelity-control-not-profile-acceptance":"collected-small-fidelity-control-with-gate-failures");
     if(report.childExit!==0)process.exitCode=1;
   }
 }catch(error){report.status="failed-small-fidelity-control";report.failures.push(String(error.stack??error));process.exitCode=1;}
@@ -82,6 +86,6 @@ finally{
     for(const [file,digest]of Object.entries(report.sourcePins))assert.equal(sha(await readFile(path.join(root,file))),digest,file);
   }catch(error){report.failures.push("Owned cleanup/source verification: "+error);report.status="failed-small-fidelity-control";process.exitCode=1;}
   report.logTail=log.slice(-8192);report.finishedAt=new Date().toISOString();
-  const file=path.join(root,"evidence",stamp+(nativeCapability?"-svg-native-worker-capability.json":"-svg-small-fidelity-control.json"));await writeFile(file,JSON.stringify(report,null,2)+"\n",{flag:"wx"});
+  const file=path.join(root,"evidence",stamp+(components?"-svg-component-control.json":nativeCapability?"-svg-native-worker-capability.json":"-svg-small-fidelity-control.json"));await writeFile(file,JSON.stringify(report,null,2)+"\n",{flag:"wx"});
   console.log(JSON.stringify({path:path.relative(root,file),status:report.status,diagnostic:report.diagnostic??null,ownedRuntimeRemoved:report.ownedRuntimeRemoved,failures:report.failures}));
 }
