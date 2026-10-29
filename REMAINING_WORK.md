@@ -1,5 +1,16 @@
 # Remaining work audit
 
+Native precision correction now IMPLEMENTED as private source patch, not adopted:
+final-linearRGB merge f32 path, exact opaque-last-layer shortcut,16MiB checked
+extra accumulator; all previous kernels/non-final merges untouched.4actual
+compiled hostRust numeric tests pass;12focused source/build/regression tests
+pass. This does NOT prove renderer Wasm compilation, original6M quality/speed,
+96MiB capped heap or250MiB full-tree acceptance. Next execute the new pinned
+two-fresh-build workflow once, authenticate artifacts, apply unchanged cap and
+validate compiled small original before6M. Original inputs/gates remain intact.
+Generic image-memory telemetry, transparent/recovery/repeated acceptance and
+all original broader project deliverables remain OPEN. No public promotion.
+
 Precision issue now directly demonstrated: identity-default fails0.984086 whole/
 0.948239 band and16/16tile samples match predicted8-bit linearRGB loss; both
 explicit-sRGB controls pass0.99. Original6M quality still OPEN/REJECTED, and

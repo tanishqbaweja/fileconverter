@@ -7,13 +7,14 @@ import { gzipSync } from "node:zlib";
 import { createOwnedRuntimeScratch } from "../../scripts/lib/owned-runtime-scratch.mjs";
 import { makeContextBuildRecipes } from "./context-build-recipe.mjs";
 import { makeLivenessBuildRecipes } from "./liveness-build-recipe.mjs";
+import { makePrecisionBuildRecipes } from "./precision-build-recipe.mjs";
 import { sha } from "./source-pins.mjs";
-const liveness=process.argv[2]==="--liveness";
+const precision=process.argv[2]==="--precision",liveness=precision||process.argv[2]==="--liveness";
 assert.equal(process.platform,"linux");assert.ok(process.argv.length===2||(process.argv.length===3&&liveness));assert.match(process.env.GITHUB_RUN_ID??"",/^[0-9]{1,14}$/);
-const variant=liveness?"liveness":"context";
+const variant=precision?"precision":liveness?"liveness":"context";
 const root=path.resolve(import.meta.dirname,"../.."),runId=process.env.GITHUB_RUN_ID,output=path.join(root,"outputs/reports");
 const report={schemaVersion:1,runId,variant,startedAt:new Date().toISOString(),sourcePins:{},failures:[],
-  scope:liveness?"Two fresh locked compilations with region/context fixes and last-use intermediate ownership release; no browser acceptance":"Two fresh locked compilations with original region patch plus child/mask context-coordinate correction; no browser acceptance",
+  scope:precision?"Two fresh locked compilations plus pinned-compiler numeric tests with high-precision final linearRGB merge; no browser acceptance":liveness?"Two fresh locked compilations with region/context fixes and last-use intermediate ownership release; no browser acceptance":"Two fresh locked compilations with original region patch plus child/mask context-coordinate correction; no browser acceptance",
   publicEngineReplacement:false,rendererExecuted:false,wholeGoalComplete:false};
 let runtime,child,log="";
 try{
@@ -22,9 +23,10 @@ try{
     "images/resvg-source/filter-region-patch.mjs","images/resvg-source/context-build-recipe.mjs","images/resvg-source/render-context-patch.mjs",
     "images/resvg-source/reproduce-filter-context-source.mjs","fixtures/source/resvg-render-3495d870-preimage.json",".github/workflows/svg-source-render-context.yml"];
   if(liveness)files.push("images/resvg-source/filter-liveness-patch.mjs","images/resvg-source/liveness-build-recipe.mjs",".github/workflows/svg-source-filter-liveness.yml");
+  if(precision)files.push("images/resvg-source/filter-precision-patch.mjs","images/resvg-source/filter-precision-kernel.rs","images/resvg-source/precision-build-recipe.mjs",".github/workflows/svg-source-filter-precision.yml");
   for(const file of files)report.sourcePins[file]=sha(await readFile(path.join(root,file)));
   runtime=await createOwnedRuntimeScratch("resvg-filter-owner-");
-  const generated=(liveness?makeLivenessBuildRecipes:makeContextBuildRecipes)({root,runtime:runtime.directory,compilerBytes:await readFile(path.join(root,files[0])),reproducerBytes:await readFile(path.join(root,files[1]))});
+  const generated=(precision?makePrecisionBuildRecipes:liveness?makeLivenessBuildRecipes:makeContextBuildRecipes)({root,runtime:runtime.directory,compilerBytes:await readFile(path.join(root,files[0])),reproducerBytes:await readFile(path.join(root,files[1]))});
   report.recipe=generated.proof;report.generatedSourceArchives={};
   for(const [name,file,source]of [["compiler",generated.compilerPath,generated.compiler],["reproducer",generated.reproducerPath,generated.reproducer]]){
     report.generatedSourceArchives[name]={bytes:Buffer.byteLength(source),sha256:sha(source),gzipBase64:gzipSync(source,{level:9}).toString("base64")};

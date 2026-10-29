@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+2026-10-29 — Private precision implementation prepared, not browser-accepted.
+Pinned liveness source5331...3307 gains only a final-linearRGB merge dispatch
+and source-pinned f32 arithmetic; original other kernels and non-final/sRGB
+merge behavior retained. Fully opaque final sRGB input is copied exactly (valid
+source-over identity). Different input row strides/top-left clipping preserved.
+Accumulator16B/pixel with checked16MiB cap and fallible reserve;96MiB Wasm cap
+must still be applied/verified by later postprocessing. No user SVG changes.
+Source patch SHA c2d6b0498e2a27a57d90566de685f8f95269ab4ee774b83d3966d5e0543df91f;
+kernel704e39ea...ddc8e. Actual localRust1.75.0 compiled4numeric tests PASS:
+all768opaque channel controls,32895legal nonzero-alpha/channel pairs pluszero,
+10000mixed-space4-layer cases versus f64 reference (<=1RGB LSB/exactalpha),
+transparent/opaque identities. Numeric tolerance is NOT a browser gate change.
+No renderer/image conversion was performed by this host arithmetic program.
+Owned compiler birth absent; tiny test process exited before birth query and is
+explicitly recorded as launch-exit observed, not a fabricated birth observation.
+All executable/compiler scratch removed. evidence/2026-10-29T07-14-44-468Z-svg-precision-kernel.json.
+12focused PASS6705.2122ms/lint/diff PASS. New source-reproduction workflow runs
+the same numeric controls with pinnednightly in BOTH fresh source builds, requires
+same lock/Cargo flags/full raw-byte equality and prior3patch proofs. Full native
+renderer compilation, bounded bindgen96MiB output and original browser fidelity
+remain UNVERIFIED. Public engine/registry/test.mkv unchanged; no speed claim.
+Generated precision compiler/reproducer both ESLint-clean;3focused recheck PASS
+6854.1386ms after adding that gate. No full portable-suite replay.
+
 2026-10-29 — Actual precision controls atf1c81ff1 COMPLETE, diagnostic FAIL
 retained after all3 genuine conversions collected. Identity-default whole0.984086/
 minband0.948239 fails0.99; all16tile samples match predicted8-bit linearRGB
