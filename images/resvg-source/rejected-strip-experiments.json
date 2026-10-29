@@ -57,5 +57,15 @@
     "evidence": "evidence/2026-10-29-svg-component-fidelity-terminal.json",
     "conclusion": "All three ablations pass0.99; filter inclusion drives the failing band on the original small control, exact primitive unproven"
   },
+  "completedFilterPrecisionControl": {
+    "nativeWasmSha256": "902fc72bd6f3165e28a7982a11ff3ee12e9eabb6adb37b24459e9c7ef2be845d",
+    "variants": [
+      {"name":"identity-default","sha256":"0e290d0d4cb82fdab82f3eba5f20c331d910b7303a994cf2f86e567f82fe2d7d"},
+      {"name":"identity-srgb","sha256":"e0ce4a6426273dfaa5861e62bd200c99264b41c53d53674f8e617fb136aaf2ea"},
+      {"name":"effects-srgb","sha256":"d7e9499ae43242251b435132de721dce95da417ae976512424a62cd8d97c4993"}
+    ],
+    "evidence": "evidence/2026-10-29-svg-filter-precision-terminal.json",
+    "conclusion": "Identity-default fails0.984086/0.948239 and all16 center samples exactly match8-bit linearRGB round trips; identity-sRGB and effects-sRGB pass0.99. Do not alter original SVG as a workaround."
+  },
   "publicPromotion": false
 }

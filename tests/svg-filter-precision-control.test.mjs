@@ -4,7 +4,7 @@ import path from "node:path";
 import test from "node:test";
 import ts from "typescript";
 import { svgFilterPrecisionVariants } from "../scripts/lib/svg-filter-precision-variants.mjs";
-import { makeSvgComponentFidelityControl } from "../scripts/lib/svg-component-fidelity-control.mjs";
+import { makeSvgComponentFidelityControl,assertSvgComponentControlNotCompleted } from "../scripts/lib/svg-component-fidelity-control.mjs";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 test("filter precision variants change only reversible filter content or explicit color space, not geometry/mask/background",async()=>{
   const source=await readFile("fixtures/images/test-pattern-effects.svg"),variants=svgFilterPrecisionVariants(source);
@@ -16,6 +16,29 @@ test("filter precision variants change only reversible filter content or explici
   assert.match(variants[1].source,/<filter color-interpolation-filters="sRGB"/);
   assert.equal((variants[2].source.match(/<fe[A-Z]/g)??[]).length,7);
   assert.throws(()=>svgFilterPrecisionVariants(Buffer.concat([source,Buffer.from(" ")])));
+});
+test("actual identity-default quantization evidence is retained as a failure, not hidden by passing sRGB variants",async()=>{
+  const report=JSON.parse(await readFile("evidence/2026-10-29T07-00-58-722Z-svg-filter-precision-control.json"));
+  assert.equal(report.childExit,1);assert.equal(report.diagnostic.results.length,3);
+  assert.equal(report.diagnostic.independentlyValidatedEffects,false);
+  assert.equal(report.fullOriginal6MStressReplacement,false);assert.equal(report.memoryAcceptance,false);assert.equal(report.publicPromotion,false);
+  const [identity,srgb,effects]=report.diagnostic.results;
+  assert.deepEqual([identity.wholeSsim,identity.minimumBandSsim],[0.984086,0.948239]);
+  assert.deepEqual([srgb.wholeSsim,srgb.minimumBandSsim],[0.999791,0.999207]);
+  assert.deepEqual([effects.wholeSsim,effects.minimumBandSsim],[0.999701,0.999062]);
+  assert.deepEqual(identity.referencePin,srgb.referencePin);
+  assert.equal(identity.pixelSamples.length,16);
+  for(const sample of identity.pixelSamples)assert.deepEqual(sample.outputRgba.slice(0,3),sample.predicted8BitLinearRoundTripRgb);
+  assert.equal(identity.pixelSamples.filter(sample=>JSON.stringify(sample.referenceRgba)!==JSON.stringify(sample.outputRgba)).length,7);
+  for(const row of [srgb,effects])for(const sample of row.pixelSamples)assert.deepEqual(sample.outputRgba,sample.referenceRgba);
+  for(const row of report.diagnostic.results)assert.equal(row.alphaExact,true);
+  assert.equal(report.ownedRuntimeRemoved,true);assert.equal(report.ownedBrowserRuntimeRemoved,true);
+  assert.ok(report.processCleanup.every(row=>row.status==="owned-identity-absent"));
+  assert.deepEqual(report.protectedOriginalBefore,report.protectedOriginalAfter);
+  const ledger=JSON.parse(await readFile("images/resvg-source/rejected-strip-experiments.json"));
+  const variants=svgFilterPrecisionVariants(await readFile("fixtures/images/test-pattern-effects.svg"));
+  assert.throws(()=>assertSvgComponentControlNotCompleted(ledger,{nativeWasmSha256:ledger.completedFilterPrecisionControl.nativeWasmSha256,variants,filterPrecision:true}),/already complete/);
+  assert.doesNotThrow(()=>assertSvgComponentControlNotCompleted(ledger,{nativeWasmSha256:"b".repeat(64),variants,filterPrecision:true}));
 });
 test("precision browser recipe preserves gates and matching independent references, with bounded center pixel evidence",async()=>{
   const runtime=await createOwnedRuntimeScratch("svg-reproduced-qualification-");

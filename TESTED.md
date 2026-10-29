@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+2026-10-29 — Actual precision controls atf1c81ff1 COMPLETE, diagnostic FAIL
+retained after all3 genuine conversions collected. Identity-default whole0.984086/
+minband0.948239 fails0.99; all16tile samples match predicted8-bit linearRGB
+round trips,7 differ from freshChrome. Identity-sRGB whole0.999791/min0.999207
+and effects-sRGB0.999701/0.999062 pass; all16centers match each freshreference.
+Both identity references exactly equal earlier no-filterChrome PNG151003B/SHA8c20.
+This directly demonstrates precision loss in the identity path, not merely a
+blur hypothesis. No assertion that all original6M errors are explained yet.
+DO NOT rewrite user SVG with sRGB or substitute these controls for originals.
+637.790/724.275/1061.215ms, suite11676.067ms/1failed test; alloutputs independently
+decoded, exact opaque alpha.218.9296875MiB/119valid0missing is diagnostic only.
+No forbidden requests; allowned browser/owner identities absent, all temporary
+SVG/PNG/reference/profile/runtime data removed; original full SHA/size same.
+Exact precision-control replay is now guarded. Next source-pinned precision
+implementation must keep prior kernels/inputs/limits and prove compiled behavior.
+evidence/2026-10-29-svg-filter-precision-terminal.json.
+Final11focused PASS/0fail/0skip/0cancel1021.3267ms, lint/diff checks PASS.
+Passing regression tests assert and retain the actual browser quality failure;
+they do not turn the failed conversion into supported fidelity evidence.
+
 2026-10-29 — Filter precision controls prepared, NOT converted yet. Exact pinned
 small source yields identity-default, identity-sRGB and effects-sRGB variants;
 only filter primitives or interpolation attribute change, geometry/mask/background

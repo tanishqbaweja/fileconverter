@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "f1c81ff1",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/test-svg-small-fidelity-control.mjs --filter-precision",
+  "execSessionId": 99768,
+  "observedRunningAt": "2026-10-29T07:01:08Z",
+  "estimatedTotalSeconds": 120,
+  "doNotCheckBefore": "2026-10-29T07:03:00Z",
+  "instruction": "Follow the same handle after the estimate; never restart because observation timed out.",
+  "scope": "Three synthetic filter precision controls only; not original6M acceptance",
+  "status": "terminal-observed-after-estimate-on-same-handle-no-restart",
+  "finishedAt": "2026-10-29T07:02:10.057Z",
+  "observedAfterEstimateAt": "2026-10-29T07:03:25Z",
+  "exitCode": 1,
+  "ownerReceipt": "evidence/2026-10-29T07-00-58-722Z-svg-filter-precision-control.json",
+  "reason": "Identity-default quality failure retained after all three controls collected"
+}

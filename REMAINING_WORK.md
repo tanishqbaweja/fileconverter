@@ -1,5 +1,18 @@
 # Remaining work audit
 
+Precision issue now directly demonstrated: identity-default fails0.984086 whole/
+0.948239 band and16/16tile samples match predicted8-bit linearRGB loss; both
+explicit-sRGB controls pass0.99. Original6M quality still OPEN/REJECTED, and
+input rewriting is NOT a fix. No more unchanged precision/component/halo trials.
+Next implement a high-precision final linearRGB merge candidate in pinned source;
+preserve original input, earlier kernels, bounded buffers,96MiB/250MiB/45s and
+exact-alpha gates. Validate actual compiled small originals before large rerun.
+All scratch cleaned/originalhash unchanged; no public adoption. Wider full goal
+including transparency/recovery/repeatedmemory/currentbrowser/source release
+coverage, generic image memory telemetry and all media scaling still remains.
+evidence/2026-10-29-svg-filter-precision-terminal.json.
+Final11focused PASS1021.3267ms/lint/diff PASS; underlying browser failure remains.
+
 Precision hypothesis now has3 actual control recipes prepared, NOT executed:
 identity-default, identity-sRGB, effects-sRGB against matching fresh references,
 bounded16tile-center values plus independent native validation.10focused PASS/
