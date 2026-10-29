@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-10-29 — Precision source40834686084/fdd7eaf1 SUCCESS, authenticated.
+Both fresh pinned-nightly builds and4numeric tests in each passed; raw3672717B
+SHA86e92aaefdb94cc56eb11df85205e92d91a2e9d5b2cef1999e6580aa0c9ba25d is
+full-byte identical across builds. Exact6member artifact12880272011/1289648B,
+SHA90447528...ad699f verified against API digest/run/head and every member.
+All4patch proofs/locked graph/compiler/Cargo flags/owned cleanup preserved.
+No local binary copies retained; raw is NOT a usable browser engine yet.
+evidence/2026-10-29T07-26-29-039Z-svg-filter-source-artifact.json; immutable
+filter-precision-raw-input.json equals verifier output. Source step218s/job240s.
+11focused PASS9712.6924ms/lint/diff PASS. New postprocess workflow now ready
+to authenticate this pin, run two full-byte-equal bindgen/cap passes and compare
+ABI under unchanged96MiB limit; not executed yet. Browser/quality/memory/speed,
+recovery/transparency and public-source closure remain unverified. No adoption.
+
 2026-10-29 — Source build40834686084 atfdd7eaf1 confirmed IN_PROGRESS07:19:27Z.
 This is one new implementation, not an unchanged retry. Saved watch estimates
 6minutes/not-before07:25:30Z. While waiting, exact-run artifact verifier and

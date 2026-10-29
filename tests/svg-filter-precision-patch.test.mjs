@@ -73,3 +73,16 @@ test("compiled host numeric controls are actual Rust tests, not an image convers
   assert.match(workflow,/--precision/);assert.match(workflow,/retention-days: 1/);
   assert.doesNotMatch(workflow,/docker|test\.mkv|--liveness\s*$/im);
 });
+test("actual precision source pin authenticates both fresh native builds and their pinned-nightly numeric controls",async()=>{
+  const pin=JSON.parse(await readFile("images/resvg-source/filter-precision-raw-input.json"));
+  const receipt=JSON.parse(await readFile("evidence/2026-10-29T07-26-29-039Z-svg-filter-source-artifact.json"));
+  assert.deepEqual(pin,receipt.inputPin);assert.equal(receipt.precision,true);
+  assert.equal(pin.runId,40834686084);assert.equal(pin.headSha,"fdd7eaf17f5239712c1b1aed1cbbdc293a09d9a5");
+  assert.equal(receipt.rawWasm.sha256,"86e92aaefdb94cc56eb11df85205e92d91a2e9d5b2cef1999e6580aa0c9ba25d");
+  assert.equal(receipt.compileProofs.length,2);
+  for(const row of receipt.compileProofs){assert.equal(row.filterPrecisionKernelTests.passed,4);assert.equal(row.filterPrecisionPatch.patchedSha256,filterPrecisionPatch.patchedSha256);assert.equal(row.ownedScratchRemoved,true);}
+  assert.deepEqual(receipt.failures,[]);assert.equal(receipt.localBinaryCopiesRetained,false);assert.equal(receipt.ownedRuntimeRemoved,true);
+  const workflow=await readFile(".github/workflows/svg-precision-postprocess.yml","utf8");
+  assert.match(workflow,/postprocess-filter-region-source.mjs --precision/);assert.match(workflow,/retention-days: 1/);
+  assert.doesNotMatch(workflow,/cargo|rustup|docker|test\.mkv/i);
+});

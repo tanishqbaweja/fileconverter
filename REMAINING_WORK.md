@@ -1,5 +1,13 @@
 # Remaining work audit
 
+Precision candidate is now genuinely source-compiled twice, byte-identical and
+artifact-authenticated (40834686084/fdd7eaf1, raw86e92aae...c9ba25d). Pinned
+nightly numeric tests pass in BOTH builds. No new browser acceptance: raw must
+still undergo repeated capped bindgen/ABI verification, then original small
+fidelity tests before6M.11focused PASS9712.6924ms/lint/diff PASS. Exact immutable
+raw pin saved only after full artifact verification; no local raw copies kept.
+Do not rebuild this unchanged source. All original limits/broader goal intact.
+
 Exact new precision source job40834686084/fdd7eaf1 confirmed running07:19:27Z,
 not-before07:25:30Z. Do not redispatch. Exact-run verifier and future capped
 postprocessor prepared/tested, but no raw input pin is fabricated before remote

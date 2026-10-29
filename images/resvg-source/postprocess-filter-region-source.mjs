@@ -11,11 +11,13 @@ import { makeLivenessPostprocessRecipe } from "./liveness-postprocess-recipe.mjs
 import { filterRegionPatch } from "./filter-region-patch.mjs";
 import { renderContextPatch } from "./render-context-patch.mjs";
 import { filterLivenessPatch } from "./filter-liveness-patch.mjs";
+import { filterPrecisionPatch } from "./filter-precision-patch.mjs";
+import { makePrecisionPostprocessRecipe } from "./precision-postprocess-recipe.mjs";
 import { sha } from "./source-pins.mjs";
-assert.equal(process.platform,"linux");const liveness=process.argv[2]==="--liveness",contextVariant=liveness||process.argv[2]==="--context";
+assert.equal(process.platform,"linux");const precision=process.argv[2]==="--precision",liveness=precision||process.argv[2]==="--liveness",contextVariant=liveness||process.argv[2]==="--context";
 assert.ok(process.argv.length===2||(process.argv.length===3&&contextVariant));assert.match(process.env.GITHUB_RUN_ID??"",/^[0-9]+$/);
 const root=path.resolve(import.meta.dirname,"../.."),runId=process.env.GITHUB_RUN_ID,output=path.join(root,"outputs/reports");
-const report={schemaVersion:1,runId,contextVariant,liveness,startedAt:new Date().toISOString(),sourcePins:{},failures:[],
+const report={schemaVersion:1,runId,contextVariant,liveness,precision,startedAt:new Date().toISOString(),sourcePins:{},failures:[],
   scope:"Verified region-patched source artifact plus two exact pinned bindgen/cap passes; no browser/fidelity/250MiB acceptance",
   publicEngineReplacement:false,rendererExecuted:false,wholeGoalComplete:false};
 let runtime,child,log="";
@@ -30,8 +32,10 @@ try{
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));
   if(liveness)for(const file of ["images/resvg-source/filter-liveness-raw-input.json","images/resvg-source/liveness-postprocess-recipe.mjs","images/resvg-source/filter-liveness-patch.mjs",".github/workflows/svg-liveness-postprocess.yml"])
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));
+  if(precision)for(const file of ["images/resvg-source/filter-precision-raw-input.json","images/resvg-source/precision-postprocess-recipe.mjs","images/resvg-source/filter-precision-patch.mjs","images/resvg-source/filter-precision-kernel.rs",".github/workflows/svg-precision-postprocess.yml"])
+    report.sourcePins[file]=sha(await readFile(path.join(root,file)));
   runtime=await createOwnedRuntimeScratch("resvg-filter-process-owner-");
-  const recipe=(liveness?makeLivenessPostprocessRecipe:contextVariant?makeContextPostprocessRecipe:makeFilterPostprocessRecipe)({root,sourceBytes:await readFile(path.join(root,"images/resvg-source/postprocess-repeated-source.mjs"))});
+  const recipe=(precision?makePrecisionPostprocessRecipe:liveness?makeLivenessPostprocessRecipe:contextVariant?makeContextPostprocessRecipe:makeFilterPostprocessRecipe)({root,sourceBytes:await readFile(path.join(root,"images/resvg-source/postprocess-repeated-source.mjs"))});
   report.recipe=recipe.proof;report.generatedSourceArchive={bytes:Buffer.byteLength(recipe.source),sha256:sha(recipe.source),gzipBase64:gzipSync(recipe.source,{level:9}).toString("base64")};
   const file=path.join(runtime.directory,"processor.mjs");await writeFile(file,recipe.source,{flag:"wx"});
   child=spawn(process.execPath,[file],{cwd:root,env:{...runtime.env,GH_PROMPT_DISABLED:"true"},windowsHide:true,stdio:["ignore","pipe","pipe"]});
@@ -43,10 +47,11 @@ try{
   assert.equal(receipt.filterRegionPatch.patchedSha256,filterRegionPatch.patchedSha256);
   if(contextVariant)assert.equal(receipt.renderContextPatch.patchedSha256,renderContextPatch.patchedSha256);
   if(liveness)assert.equal(receipt.filterLivenessPatch.patchedSha256,filterLivenessPatch.patchedSha256);
+  if(precision){assert.equal(receipt.filterPrecisionPatch.patchedSha256,filterPrecisionPatch.patchedSha256);assert.equal(receipt.sourceFinalMergePrecisionChanged,true);}
   assert.equal(receipt.processedWasmAndGlueByteIdentical,true);assert.equal(receipt.twoSourceBuildReceiptsAndRawEqualityVerified,true);
   assert.equal(receipt.ownedScratchRemoved,true);assert.equal(receipt.publicEngineUnchanged,true);assert.deepEqual(receipt.failures,[]);
   report.processedReceipt={path:receiptPath,bytes:bytes.length,sha256:sha(bytes)};report.candidate=receipt.candidate;
-  report.status=liveness?"two-pinned-liveness-source-postprocessing-passes-byte-identical-not-browser-acceptance":contextVariant?"two-pinned-context-source-postprocessing-passes-byte-identical-not-browser-acceptance":"two-pinned-filter-source-postprocessing-passes-byte-identical-not-browser-acceptance";
+  report.status=precision?"two-pinned-precision-source-postprocessing-passes-byte-identical-not-browser-acceptance":liveness?"two-pinned-liveness-source-postprocessing-passes-byte-identical-not-browser-acceptance":contextVariant?"two-pinned-context-source-postprocessing-passes-byte-identical-not-browser-acceptance":"two-pinned-filter-source-postprocessing-passes-byte-identical-not-browser-acceptance";
 }catch(error){report.status="failed-private-filter-source-postprocessing";report.failures.push(String(error.stack??error));process.exitCode=1;}
 finally{
   try{
@@ -56,6 +61,6 @@ finally{
     for(const [file,digest]of Object.entries(report.sourcePins))assert.equal(sha(await readFile(path.join(root,file))),digest,file);
   }catch(error){report.status="failed-private-filter-source-postprocessing";report.failures.push("Owned cleanup/source verification: "+error);process.exitCode=1;}
   report.logTail=log;report.finishedAt=new Date().toISOString();
-  const file=path.join(output,`resvg-filter-${liveness?"liveness-":contextVariant?"context-":""}processed-owner-${runId}.json`);await writeFile(file,JSON.stringify(report,null,2)+"\n",{flag:"wx"});
+  const file=path.join(output,`resvg-filter-${precision?"precision-":liveness?"liveness-":contextVariant?"context-":""}processed-owner-${runId}.json`);await writeFile(file,JSON.stringify(report,null,2)+"\n",{flag:"wx"});
   console.log(JSON.stringify({file,status:report.status,candidate:report.candidate,failures:report.failures}));
 }
