@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-10-30 IST source/provenance continuation: revalidated successful hosted
+33312105530,40502517454 and36348285061. Current native build inputs/published
+outputs remain unchanged for the previously proved engines; do not dispatch an
+all-engine rebuild merely to restate them. SVG still publishes a pinned package
+copy, not the private locked source candidate. Corrected stale private README
+instructions which incorrectly said its source-built bytes had never run.
+Prepared ONE additional filtered-transparency control: original960x540 effects
+scene minus only the opaque background rectangle, all filters/mask/geometry
+retained. Native candidate/cap, exact full/strip/alpha, SSIM0.99 all bands,
+250MiB formula and cleanup unchanged. New diagnostics retain alpha mismatch count,
+maximum error and histogram before any verdict.9 focused PASS918.7203ms,
+affected lint/diff PASS; real Playwright discovery lists exactly one test with
+owned runtime removed. No browser result yet; no source rebuild, promotion or
+large-scene acceptance implied.
+
 FINAL CI storage follow-up PASS at 5461362f/run40941825495: production build,
 lint, TypeScript, public evidence audit; 2042 portable units PASS/0 FAIL/1 existing
 protected-fixture Linux skip in49.510s; all19 privacy/offline/static-host cases

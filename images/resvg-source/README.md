@@ -35,8 +35,8 @@ raw module is 3,667,913 bytes, SHA-256
 `1df4c1453ea928d7c29e2cc9b06d3cb708d4a32438c524dd9e5e9517080e0f1b`.
 See `filter-premultiplied-raw-input.json` and
 `evidence/2026-10-29T08-37-13-491Z-svg-filter-source-artifact.json`. No local binary
-copies remain. The next stage is repeated capped postprocessing, not another
-source build; browser correctness and performance are still unverified.
+copies remain. Repeated capped postprocessing has also succeeded below; do not
+rebuild this unchanged source or replay the completed controls to restate it.
 
 Processing run `40844028971` also succeeds and its exact artifact is authenticated.
 The private capped module is 2,687,070 bytes, SHA-256
@@ -45,8 +45,25 @@ initial pages and the unchanged 1,536-page (96 MiB) maximum, unshared. Its bindi
 bytes and static ABI match the preceding candidate. See
 `filter-premultiplied-processed-input.json` and
 `evidence/2026-10-29-svg-premultiplied-build-terminal.json`. No local binary copies
-remain. Browser conversion has not run for these bytes; do not infer fidelity,
-speed or complete-browser memory acceptance from source/build checks.
+remain. Browser conversion has now run for these bytes: the original opaque
+small full/strip pair passes all-band fidelity, three original six-million-pixel
+runs pass functional fidelity, and basic transparent rectangles match an
+independent analytic golden exactly. The original large strict verdict still
+FAILS because the earliest blank baseline was unstable; it is not memory or
+publication acceptance. Buffer lifecycle, real cancellation, first-write failure
+and same-page recovery were also exercised. See
+`evidence/2026-10-29-svg-premultiplied-6m-repeat-terminal.json`,
+`evidence/2026-10-29-svg-strip-lifecycle-terminal.json`, and
+`evidence/2026-10-29-svg-transparent-terminal.json`.
+
+The next additional fidelity gate removes only the small effects scene's opaque
+background, retaining its filters, mask and geometry. It checks independent
+Chromium/native validation, exact full/strip RGBA and alpha, all original seam
+thresholds, and bounded buffer cleanup. It is not the original large stress
+replacement. Invoke `node scripts/run-repository-owned-node.mjs
+scripts/test-svg-small-fidelity-control.mjs --premultiplied-filtered-alpha` only
+after reviewing its separate no-replay ledger entry; never infer support from
+test discovery or a successful source build.
 
 ## Final-merge precision candidate (private, 2026-10-29)
 
