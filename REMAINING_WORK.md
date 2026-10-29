@@ -1,5 +1,11 @@
 # Remaining work audit
 
+Four-proof precision browser adapter is ready/collection-verified, not converted:
+new native3bb55dc3 only, unchanged original small paired body/inputs/quality/
+96MiB/250MiB/45s/network/cleanup assertions.5focused PASS883.5814ms/lint/diff/
+exact1case list PASS. Next ONE genuine small paired browser run before6M.
+Original6M remains rejected/unverified for new code; no public adoption.
+
 New precision source now fully repeated/postprocessed/capped and authenticated:
 40835665062 SUCCESS, native3bb55dc3...d7c8c, exact96MiB unshared max, compatible
 ABI and identical prior glue. All four source patches/numeric controls verified;

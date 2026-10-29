@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-29 — Four-proof precision browser qualifier prepared, NOT executed yet.
+It binds only new3bb55dc3 native bytes, verifies region/context/lifetime/precision
+patch digests, numeric-kernel digest, unchanged96MiB cap and exact raw lineage.
+Missing/mutated proof, cap or lineage fails closed. Small paired test body remains
+byte-identical: original11194Bscene, fresh matching reference, real production
+full/strip UI/direct I/O, exact decodedRGBA equality, whole/band0.99/exactalpha,
+45s and250MiB unchanged. No sRGB source rewrite or smaller stress replacement.
+5focused PASS883.5814ms/lint/diff PASS; exact1case collection PASS.
+evidence/2026-10-29T07-37-11-587Z-svg-small-precision-fidelity-control.json.
+Old902 native/control replay guards remain; new native bytes justify this test.
+
 2026-10-29 — Precision bindgen/cap job40835665062/fda9e1ac SUCCESS. Two passes
 are full-byte identical; exact4-member artifact12880004819/1023383B authenticated
 SHA0125450a...afc850. Capped2691689B Wasm SHA3bb55dc356427d760021c4aea7aff7db06f776505f1fcefc96251a2bad0d7c8c;
