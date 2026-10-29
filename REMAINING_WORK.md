@@ -1,5 +1,13 @@
 # Remaining work audit
 
+Original6M telemetry/lifecycle gate now prepared: actual-row UI cancellation,
+directwrite fault, same-page recovered conversions and explicit buffer current0/
+boundednonzeropeak checks, retaining all31qualitybands/caps/baseline/timeouts.
+23focused PASS2364.6695ms/lint PASS;3cases collected/no browser, scratchcleaned.
+Next actual new coverage, NOT unchanged repeats for green memory. Transparency
+and all wider original deliverables remain OPEN.
+evidence/2026-10-29T12-50-29-176Z-svg-strip-pilot.json.
+
 Private SVG active working-byte telemetry now implemented and24focused synthetic/
 receipt checks PASS1208.2299ms; lint/tsc/diff PASS. Known owned/in-flight JS buffer
 payload replaceszero, with explicit excludesWasm/opaque codec/GC/private-memory

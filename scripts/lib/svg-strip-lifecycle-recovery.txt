@@ -1,0 +1,56 @@
+      if (stressRepeat === "6m-effects-repeat-2" || stressRepeat === "6m-effects-repeat-3") {
+        if (!privateSvg) throw new Error("Owned lifecycle descriptor required");
+        const timeOriginBefore = await page.evaluate(() => performance.timeOrigin);
+        let cancelClick: { phase: string; atMs: number; completedRows: number; workingBytes: number } | null = null;
+        if (stressRepeat === "6m-effects-repeat-2") {
+          [cancelClick] = await Promise.all([
+            page.evaluate(() => new Promise<{ phase: string; atMs: number; completedRows: number; workingBytes: number }>((resolve, reject) => {
+              const observer = new MutationObserver(() => {
+                const phase = document.querySelector(".progress-topline strong")?.textContent;
+                const button = document.querySelector<HTMLButtonElement>("button.cancel");
+                const state = window.__WITHIN_TEST__?.getState();
+                const rows = state?.metrics?.svgStripPilot?.completedRows;
+                const bytes = state?.metrics?.imageWorkingBytes;
+                if (!phase?.startsWith("Rasterizing SVG strips:") || !button || !(rows > 0) || !(bytes > 0)) return;
+                observer.disconnect(); clearTimeout(deadline);
+                button.click(); resolve({ phase, atMs: performance.now(), completedRows: rows, workingBytes: bytes });
+              });
+              const deadline = setTimeout(() => { observer.disconnect(); reject(new Error("No actual row progress with live buffers observed for cancellation")); }, 10000);
+              observer.observe(document.body, { subtree: true, childList: true, characterData: true });
+            })),
+            page.locator('[data-testid="convert-button"]').click(),
+          ]);
+        } else await page.locator('[data-testid="convert-button"]').click();
+        const expectedState = stressRepeat === "6m-effects-repeat-2" ? "cancelled" : "error";
+        await expect.poll(() => page.evaluate(() => window.__WITHIN_TEST__?.getState().jobState), { timeout: 30000 }).toBe(expectedState);
+        const failed = await page.evaluate(() => window.__WITHIN_TEST__?.getState());
+        const outputRemoved = await page.evaluate(async () => {
+          const root = await navigator.storage.getDirectory();
+          try { await root.getFileHandle("svg-effects-6m.png"); return false; }
+          catch (error) { if (error instanceof DOMException && error.name === "NotFoundError") return true; throw error; }
+        });
+        executionRecovery = { kind: expectedState, cancelClick, metrics: failed!.metrics, error: failed!.error,
+          outputRemoved, timeOriginBefore, timeOriginAfter: await page.evaluate(() => performance.timeOrigin) };
+        const recoveryJson = JSON.stringify(executionRecovery);
+        if (Buffer.byteLength(recoveryJson) > 65536) throw new Error("Bounded lifecycle failure evidence");
+        await writeFile(path.join(privateSvg.runtime, stressRepeat + "-lifecycle.json"), recoveryJson, { flag: "wx" });
+        expect(failed!.metrics.svgExecutionResources).toMatchObject({ phase: "aborted", cancellationBytes: 4,
+          destinationSharedBytes: 266272, allocatedSharedBytes: 266276, destinationWorkerCount: 0, peakKnownWorkerCount: 2 });
+        expect(failed!.metrics.activeWorkerCount).toBe(1);
+        expect(failed!.metrics.queuedBytes).toBe(0); expect(failed!.metrics.pendingOperations).toBe(0);
+        expect(failed!.metrics.imageWorkingBytes).toBe(0);
+        expect(failed!.metrics.peakImageWorkingBytes).toBeGreaterThan(0);
+        expect(failed!.metrics.svgStripPilot).toMatchObject({ currentExplicitBufferBytes: 0, png: { currentExplicitBufferBytes: 0 } });
+        if (expectedState === "cancelled") {
+          expect(cancelClick!.completedRows).toBeGreaterThan(0); expect(cancelClick!.completedRows).toBeLessThan(2000);
+          expect(cancelClick!.workingBytes).toBeGreaterThan(0);
+          expect(failed!.metrics.svgMemoryObservation!.phaseBytes.rasterized).toBeGreaterThan(0);
+          expect(failed!.metrics.svgMemoryObservation!.phaseBytes.encoded).toBeUndefined();
+        } else expect(failed!.error?.toLowerCase()).toContain("destination rejected a bounded write");
+        expect(outputRemoved).toBe(true);
+        await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready");
+        await page.evaluate(() => history.replaceState(null, "", "/?test=1&directory=1"));
+        await page.locator('[data-testid="file-input"]').setInputFiles(sourcePath);
+        await page.locator('[data-testid="format-select"]').selectOption(profileId);
+        expect(await page.evaluate(() => performance.timeOrigin)).toBe(timeOriginBefore);
+      }

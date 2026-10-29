@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-10-29 — New original6M strip lifecycle gate prepared, NOT executed yet.
+Same8641 capped Wasm/input/reference/128rows/48halo/all31bands; adds cancellation
+after actual nonzero rows with live JS buffers, direct write fault, aborted
+buffer/queue/destination cleanup and same-page retries. Final successful jobs
+require nonzero bounded explicit JS peak/current0, exact observation/release
+counts and original fidelity. Earliest blank/250MiB/96MiB/45s/60s unchanged.
+23focused PASS2364.6695ms, affected lint PASS; dry3cases/no browser/runtimeclean.
+evidence/2026-10-29T12-50-29-176Z-svg-strip-pilot.json. Actual telemetry/recovery
+still UNVERIFIED; no acceptance claim or large stress replacement.
+
 Private active-buffer telemetry IMPLEMENTED, browser verification PENDING.
 Scalar owned/in-flight viewport+centralRGBA, filtered input, fixed coalescer,
 codec chunk/header/serialwrite payload updates generic current/peak image bytes;
