@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-10-29 — Premultiplied browser qualifier prepared:8 focused tests PASS
+1081.4917ms, affected ESLint PASS; dry collection exactly1 paired test/no browser,
+owned runtime removed. Four source proofs, authenticated native/cap pins, unchanged
+original small SVG/reference and full/strip quality/alpha/IO assertions required.
+Collection:evidence/2026-10-29T12-21-05-400Z-svg-small-premultiplied-control.json.
+Previous focused command output was lost; no matching process remained, so only
+this bounded focused group was rechecked, not the full portable suite. Actual
+browser fidelity, original6M, repeats/recovery and public promotion remain unproven.
+
 2026-10-29 — Premultiplied capped artifact40844028971/41b5ff4a SUCCESS/authenticated.
 Two passes byte-identical; exact4member artifact12883723633/1022086B SHA2eeadbdc
 ...045222. Wasm2687070B SHA8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0;

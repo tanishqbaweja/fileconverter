@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-10-29 premultiplied browser preparation:8 focused PASS1081.4917ms,
+affected ESLint PASS; exactly1 original small paired test collected without
+launching a browser; owned scratch removed. The qualifier requires all four
+source proofs and the unchanged96MiB cap, 250MiB full-tree formula, original
+quality/alpha/production IO. Actual browser verification is NEXT, not complete;
+original6M/repeated stress/recovery, truthful active imageWorkingBytes telemetry,
+public-source/release and every wider original deliverable remain OPEN.
+
 Premultiplied candidate8641a413 now genuinely source-reproduced, capped, byte-
 compared and authenticated. Explicit96MiB unsharedmax unchanged; initial26pages
 includes fixed128KiB tables. ABI/priorglue compatible, allfour source/numeric
