@@ -55,3 +55,33 @@ test("filtered-alpha mode is isolated from completed controls and has its own re
   assert.match(source, /-svg-filtered-alpha-control.json/);
   assert.match(source, /Diagnostic modes are mutually exclusive/); assert.match(source, /windowsHide:true/);
 });
+
+test("real filtered-alpha failure preserves exact full/strip and RGB passes without turning alpha or small memory into acceptance", async () => {
+  const c = JSON.parse(await readFile("evidence/2026-10-29-svg-filtered-alpha-terminal.json"));
+  const parentBytes = await readFile(c.parentReceipt.path), p = JSON.parse(parentBytes);
+  const browserBytes = await readFile(c.browserReceipt.path), b = JSON.parse(browserBytes);
+  assert.equal(parentBytes.length, c.parentReceipt.bytes); assert.equal(sha(parentBytes), c.parentReceipt.sha256);
+  assert.equal(browserBytes.length, c.browserReceipt.bytes); assert.equal(sha(browserBytes), c.browserReceipt.sha256);
+  assert.equal(b.executedHead, c.sourceHead); assert.equal(b.candidatePin.wasmSha256, c.nativeWasmSha256);
+  assert.equal(b.filteredAlphaFidelityControl.sha256, svgFilteredAlphaControlPin.sha256);
+  assert.equal(p.childExit, 1); assert.deepEqual([p.stats.expected, p.stats.unexpected, p.stats.skipped, p.stats.flaky], [0, 1, 0, 0]);
+  assert.equal(p.diagnostic.exactFullVsStripRgbaEqual, true); assert.equal(p.diagnostic.independentlyValidatedEffects, false);
+  for (const r of p.diagnostic.results) {
+    assert.equal(r.rgbaSha256, c.eachMode.rgbaSha256); assert.ok(r.wholeSsim >= 0.99 && r.minimumBandSsim >= 0.99);
+    assert.equal(r.alphaExact, false); assert.equal(r.alphaDiagnostics.mismatchedPixels, 52879);
+    assert.equal(r.alphaDiagnostics.maximumAbsoluteError, 50); assert.equal(r.allReferenceAlphaOpaque, false);
+    assert.equal(r.alphaHistogram.length, 256); assert.equal(r.alphaHistogram.reduce((n, v) => n + v, 0), 960 * 540);
+  }
+  assert.equal(c.memory.incrementalPrivateMiB, (b.memory.peak.privateBytes - b.blankBaseline.privateBytes) / 1048576);
+  assert.equal(c.memory.unavailableSamples, 0); assert.equal(c.strip.finalExplicitJsBufferBytes, 0);
+  assert.equal(c.strip.renderedViewports, c.strip.releasedViewports); assert.equal(c.strip.completedRows, 540);
+  assert.deepEqual(b.forbiddenRequests, []); assert.equal(b.forbiddenRequestOverflow, false);
+  assert.ok(p.processCleanup.every(row => row.status === "owned-identity-absent"));
+  assert.equal(p.ownerProcessCleanup.status, "owned-identity-absent"); assert.equal(p.ownedRuntimeRemoved, true);
+  assert.equal(p.ownedBrowserRuntimeRemoved, true); assert.deepEqual(p.protectedOriginalBefore, p.protectedOriginalAfter);
+  assert.equal(c.publicPromotion, false); assert.equal(c.acceptedSpeedup, false); assert.equal(c.fullOriginal6MStressReplacement, false);
+  assert.equal(c.wholeGoalComplete, false);
+  const ledger = JSON.parse(await readFile("images/resvg-source/rejected-strip-experiments.json"));
+  assert.equal(ledger.completedPremultipliedFilteredAlphaControl.nativeWasmSha256, c.nativeWasmSha256);
+  assert.equal(ledger.completedPremultipliedFilteredAlphaControl.sourceSha256, c.source.sha256);
+});

@@ -56,7 +56,7 @@ and same-page recovery were also exercised. See
 `evidence/2026-10-29-svg-strip-lifecycle-terminal.json`, and
 `evidence/2026-10-29-svg-transparent-terminal.json`.
 
-The next additional fidelity gate removes only the small effects scene's opaque
+The additional filtered-alpha fidelity gate removes only the small effects scene's opaque
 background, retaining its filters, mask and geometry. It checks independent
 Chromium/native validation, exact full/strip RGBA and alpha, all original seam
 thresholds, and bounded buffer cleanup. It is not the original large stress
@@ -64,6 +64,15 @@ replacement. Invoke `node scripts/run-repository-owned-node.mjs
 scripts/test-svg-small-fidelity-control.mjs --premultiplied-filtered-alpha` only
 after reviewing its separate no-replay ledger entry; never infer support from
 test discovery or a successful source build.
+
+This gate has now FAILED exact alpha at source `a5c28aad`: both full and strip
+match each other, and whole0.999023/minimum8bands0.997423 pass0.99, but52,879 alpha
+pixels differ from Chromium, maximum50/255. The failure is shared by both render
+modes; strip seams are not its cause. See
+`evidence/2026-10-29-svg-filtered-alpha-terminal.json`. The ledger now blocks this
+unchanged pair. Small175.742MiB is diagnostic only, not profile acceptance. Next
+isolate geometry coverage versus blur/merge on different component inputs; do
+not relax alpha equality, rerun unchanged for green or rebuild the same source.
 
 ## Final-merge precision candidate (private, 2026-10-29)
 

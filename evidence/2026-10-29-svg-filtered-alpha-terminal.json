@@ -1,0 +1,103 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "a5c28aad47b28c23d7617113b6f0c97737a62fb9",
+  "status": "failed-filtered-alpha-equality-not-private-profile-acceptance",
+  "parentReceipt": {
+    "path": "evidence/2026-10-29T19-56-41-262Z-svg-filtered-alpha-control.json",
+    "bytes": 257787,
+    "sha256": "29fbf0b0334eecbfda36de0902dad7a59649a2fee08bf0d8024cbf224c30d95f"
+  },
+  "browserReceipt": {
+    "path": "evidence/2026-10-29T19-56-41-759Z-source-svg-browser.json",
+    "bytes": 362385,
+    "sha256": "e13377056ff35bf1ab21ddbf9f8e704332a7562dbe1fece7655b4fdb426c7625"
+  },
+  "browser": "Chrome156.0.8078.49 headless",
+  "nativeWasmSha256": "8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+  "source": {
+    "path": "fixtures/images/svg-strip-filtered-alpha.svg",
+    "bytes": 11125,
+    "sha256": "564e74d9e4abc8cc9f59b93d5db38f7d2e8a9fdcaf233c97bbf3f9dffe74290a",
+    "width": 960,
+    "height": 540,
+    "change": "Only original small opaque background removed; filter/mask/geometry unchanged"
+  },
+  "reference": {
+    "bytes": 119355,
+    "sha256": "0c45a85418b36a67924f52df5e4566640fc7806ea36449ce437e6789ef7caa9b"
+  },
+  "functionalTests": {
+    "startTime": "2026-10-29T19:57:25.935Z",
+    "duration": 8924.569,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "exactFullVsStripRgbaEqual": true,
+  "eachMode": {
+    "rgbaSha256": "4f451fac4f3b64c6af3e0080670838e2b4db52eb8e8fc14398d879b1f2e760b2",
+    "wholeSsim": 0.999023,
+    "minimumAll8BandsSsim": 0.997423,
+    "alphaExact": false,
+    "mismatchedAlphaPixels": 52879,
+    "maximumAbsoluteAlphaError": 50,
+    "referenceTransparentPixels": 2653,
+    "referencePartialAlphaPixels": 65651
+  },
+  "full": {
+    "outputBytes": 112481,
+    "elapsedMs": 952.3349999189377,
+    "wasmPeakBytes": 14548992,
+    "genericJsBufferTelemetryInstrumented": false
+  },
+  "strip": {
+    "outputBytes": 103882,
+    "elapsedMs": 2017.5599999427795,
+    "wasmPeakBytes": 13565952,
+    "peakExplicitJsBufferBytes": 1448005,
+    "finalExplicitJsBufferBytes": 0,
+    "renderedViewports": 5,
+    "releasedViewports": 5,
+    "completedRows": 540,
+    "maximumWriteBytes": 65536,
+    "maximumPendingOperations": 1
+  },
+  "memory": {
+    "scope": "Small failed-fidelity diagnostic only, never large/repeated/general profile acceptance",
+    "blankPrivateBytes": 334761984,
+    "blankStable": true,
+    "peakCompleteTreePrivateBytes": 519041024,
+    "incrementalPrivateMiB": 175.7421875,
+    "validSamples": 97,
+    "unavailableSamples": 0,
+    "staticWasmMaximumBytes": 100663296,
+    "runtimeMaximumObservation": null
+  },
+  "forbiddenRequests": 0,
+  "forbiddenRequestOverflow": false,
+  "ownedRootsProvenAbsent": 4,
+  "ownerProcessProvenAbsent": true,
+  "ownedRuntimeRemoved": true,
+  "ownedBrowserRuntimeRemoved": true,
+  "convertedAndReferenceOutputsRemoved": true,
+  "protectedOriginalBeforeAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "conclusion": "Shared native-renderer/reference alpha mismatch, not strip stitching; exact alpha remains a failed gate. Root cause not yet proven.",
+  "nextInvestigation": "Different component inputs isolating geometry coverage versus blur/merge, with bounded spatial pixel observations. Do not replay this unchanged full fixture or rebuild unchanged native source.",
+  "acceptedSpeedup": false,
+  "publicPromotion": false,
+  "fullOriginal6MStressReplacement": false,
+  "postReceiptVerification": {
+    "focusedPassed": 14,
+    "focusedFailed": 0,
+    "focusedSkipped": 0,
+    "durationMs": 1045.6031,
+    "affectedEslint": "passed",
+    "diffCheck": "passed",
+    "scope": "Receipt integrity, preserved failed alpha verdict, exact fixture transformation, unchanged native inventory, original gates and no-replay slot; not a passed browser gate"
+  },
+  "wholeGoalComplete": false
+}

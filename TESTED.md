@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+Filtered-alpha browser gate TERMINAL FAIL at a5c28aad, Chrome156.0.8078.49:
+genuine full/strip outputs decode to identical RGBA, wholeSSIM0.999023 and all
+8 seam bands minimum0.997423 pass0.99, but BOTH differ from Chromium alpha at
+52,879/518,400 pixels,max50/255. Test0PASS/1FAIL/0 skip/flaky8.925s. This is a
+shared renderer/reference gap, not strip stitching; root cause not yet proven.
+Small diagnostic175.742MiB (stable334,761,984B blank;519,041,024B tree peak,
+97 valid/0 missing samples) is NOT functional/profile/large-memory acceptance.
+Full0.952s/112481B versus strip2.018s/103882B: no accepted speedup. Strip explicit
+JS peak1,448,005B→0,5 rendered/released viewports,540 rows; native cap remains96MiB.
+No forbidden requests,4 owned browser roots plus wrapper absent, all disposable
+outputs/reference/native copies/profiles/runtimes removed; original full SHA/size
+unchanged. Reusable11,125B fixture and compact reports retained. Ledger blocks
+unchanged replay. Next isolate geometry coverage versus blur/merge with bounded
+spatial observations on different component inputs; do not lower alpha or rebuild
+unchanged source. evidence/2026-10-29-svg-filtered-alpha-terminal.json.
+
+Post-receipt regression14 PASS/0 fail/skip1045.6031ms, lint/diff PASS. These verify
+receipt integrity and the retained failure/no-replay policy, not browser success.
+
 2026-10-30 IST source/provenance continuation: revalidated successful hosted
 33312105530,40502517454 and36348285061. Current native build inputs/published
 outputs remain unchanged for the previously proved engines; do not dispatch an

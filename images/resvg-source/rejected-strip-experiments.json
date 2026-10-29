@@ -121,5 +121,11 @@
     "evidence": "evidence/2026-10-29-svg-transparent-terminal.json",
     "conclusion": "Full/strip decodedRGBA equal independent analytic golden, all alpha counts exact, whole/min8bands1.0; small diagnostic129.871MiB only. No unchanged replay, filtered-alpha/generalSVG/profile acceptance not proven."
   },
+  "completedPremultipliedFilteredAlphaControl": {
+    "nativeWasmSha256": "8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+    "sourceSha256": "564e74d9e4abc8cc9f59b93d5db38f7d2e8a9fdcaf233c97bbf3f9dffe74290a",
+    "evidence": "evidence/2026-10-29-svg-filtered-alpha-terminal.json",
+    "conclusion": "FAIL exact alpha:52879 mismatched pixels,max50/255 in both modes despite exact full/strip RGBA and whole0.999023/min8bands0.997423. Shared renderer/reference gap, not strip seams. Small175.742MiB diagnostic only. Preserve failure; do not replay unchanged pair, relax alpha or promote. Isolate geometry versus blur/merge on different component inputs before source changes."
+  },
   "publicPromotion": false
 }
