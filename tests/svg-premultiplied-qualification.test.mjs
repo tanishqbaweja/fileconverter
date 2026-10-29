@@ -48,6 +48,26 @@ test("first original6M result preserves harness failure separately from passing 
   assert.equal(r.metrics.svgStripPilot.renderedViewports,16);assert.equal(r.metrics.svgStripPilot.releasedViewports,16);
   assert.equal(c.publicPromotion,false);assert.equal(c.wholeGoalComplete,false);
 });
+test("three actual large functional passes cannot substitute an earlier baseline for missing repeat-memory acceptance",async()=>{
+  const c=JSON.parse(await readFile("evidence/2026-10-29-svg-premultiplied-6m-repeat-terminal.json"));
+  const b=JSON.parse(await readFile(c.browserReceipt));
+  assert.deepEqual([b.stats.expected,b.stats.unexpected,b.stats.skipped,b.stats.flaky],[3,0,0,0]);
+  assert.equal(b.runnerExitCode,0);assert.equal(b.earlyBaselineGatePassed,false);assert.equal(b.blankBaseline,null);
+  assert.equal(b.memory.incrementalPrivateMiB,null);assert.equal(c.incrementalPrivateMiB,null);assert.equal(c.memoryAcceptance,false);
+  assert.equal(b.memory.validSamples,c.validNativeSamples);assert.equal(b.memory.unavailableSamples,c.unavailableNativeSamples);
+  assert.equal(b.memory.peak.privateBytes,c.peakCompleteTreePrivateBytes);
+  for(const [index,row]of b.stressRuns.entries()){
+    const r=row.result;assert.equal(r.fidelity.actualSsim,c.runs[index].wholeSsim);
+    assert.equal(r.stripValidation.minimumSsim,c.runs[index].minimum31BandSsim);assert.equal(r.stripValidation.scores.length,31);
+    assert.equal(r.stripValidation.alphaComparedPixels,6000000);assert.equal(r.stripValidation.alphaExact,true);
+    assert.equal(r.metrics.svgMemoryObservation.observations,22);assert.equal(r.metrics.svgStripPilot.releasedViewports,16);
+    assert.equal(r.metrics.pendingOperations,0);assert.equal(r.metrics.queuedBytes,0);
+  }
+  assert.ok(b.failures.some(value=>value.includes("earliest stable blank baseline")));
+  assert.deepEqual(b.protectedOriginalBefore,b.protectedOriginalAfter);assert.equal(b.ownedRuntimeRemoved,true);
+  assert.ok(b.processCleanup.every(row=>row.status==="owned-identity-absent"));
+  assert.equal(c.publicPromotion,false);assert.equal(c.wholeGoalComplete,false);
+});
 test("new native browser recipes retain exact large/small scene gates and production IO rather than weaker diagnostic inputs",async()=>{
   const runtime=await createOwnedRuntimeScratch("svg-reproduced-qualification-");
   try{

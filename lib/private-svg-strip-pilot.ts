@@ -6,6 +6,8 @@ export const SVG_PILOT_ROWS = 64;
 export const SVG_PILOT_HALO = 48;
 export function svgStripPilotObservation() {
   return { centralRows: SVG_PILOT_ROWS, haloRows: SVG_PILOT_HALO, renderedViewports: 0,
+    currentExplicitBufferBytes: 0, peakExplicitBufferBytes: 0,
+    explicitBufferScope: "owned-or-in-flight-JS-payload-excludes-Wasm-opaque-codec-GC-and-process-memory",
     releasedViewports: 0, completedRows: 0, maximumViewportPixels: 0,
     maximumRgbaCopyBytes: 0, maximumExplicitPixelWorkingBytes: 0,
     nativeRenderMs: 0, nativePixelCopyMs: 0, demultiplyMs: 0,
@@ -37,6 +39,7 @@ interface Options {
   onRows: (rows: number) => void;
   onRasterized: () => void;
   onViewport?: () => void;
+  onWorkingBytes?: (bytes: number) => void;
 }
 
 export async function runPrivateSvgStripPilot(options: Options): Promise<void> {
@@ -46,8 +49,16 @@ export async function runPrivateSvgStripPilot(options: Options): Promise<void> {
   const box = renderer.getBBox();
   if (!box) throw new Error("Private viewport experiment requires a native bounding box.");
   let primaryFailure = false;
+  let viewportBytes = 0, centralBytes = 0, pngBytes = 0;
+  const observeBuffers = () => {
+    const bytes = viewportBytes + centralBytes + pngBytes;
+    observation.currentExplicitBufferBytes = bytes;
+    observation.peakExplicitBufferBytes = Math.max(observation.peakExplicitBufferBytes, bytes);
+    options.onWorkingBytes?.(bytes);
+  };
   const rowBytes = width * 4, rowsPerChunk = Math.floor(PNG_STRIP_BYTES / (rowBytes + 1));
   async function* strips(): AsyncGenerator<Uint8Array<ArrayBuffer>> {
+    try {
     for (let y = 0; y < height; y += SVG_PILOT_ROWS) {
       assertActive();
       const rows = Math.min(SVG_PILOT_ROWS, height - y), top = Math.max(0, y - SVG_PILOT_HALO);
@@ -65,6 +76,7 @@ export async function runPrivateSvgStripPilot(options: Options): Promise<void> {
         if (image.width !== width || image.height !== viewportHeight) throw new Error("Unexpected private viewport raster dimensions.");
         const copyStarted = performance.now();
         rgba = image.pixels;
+        viewportBytes = rgba.byteLength; observeBuffers();
         observation.nativePixelCopyMs += performance.now() - copyStarted;
         if (rgba.length !== width * viewportHeight * 4) throw new Error("Unexpected viewport pixel byte count.");
       } catch (error) { nativeFailure = true; throw error; }
@@ -79,18 +91,23 @@ export async function runPrivateSvgStripPilot(options: Options): Promise<void> {
         assertActive();
         const count = Math.min(rowsPerChunk, rows - row), start = (y - top + row) * rowBytes;
         const central = rgba!.slice(start, start + count * rowBytes);
+        centralBytes = central.byteLength; observeBuffers();
         const demultiplyStarted = performance.now();
         demultiplySvgRgba(central);
         observation.demultiplyMs += performance.now() - demultiplyStarted;
         observation.maximumExplicitPixelWorkingBytes = Math.max(observation.maximumExplicitPixelWorkingBytes,
           rgba!.length + central.length + count * (rowBytes + 1));
         yield central;
+        centralBytes = 0; observeBuffers();
         observation.completedRows += count; onRows(observation.completedRows);
       }
+      viewportBytes = 0; observeBuffers();
     }
     onRasterized();
+    } finally { viewportBytes = centralBytes = 0; observeBuffers(); }
   }
-  try { await writeRgbaPngStrips({width,height,strips: strips(),observation: observation.png,assertActive,write}); }
+  try { await writeRgbaPngStrips({width,height,strips: strips(),observation: observation.png,assertActive,write,
+    onWorkingBytes: bytes => { pngBytes = bytes; observeBuffers(); }}); }
   catch (error) { primaryFailure = true; throw error; }
   finally { try { box.free(); } catch (error) { if (!primaryFailure) throw error; } }
 }

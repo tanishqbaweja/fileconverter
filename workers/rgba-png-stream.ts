@@ -8,6 +8,8 @@ const MAX_PIXELS = 8_388_608;
 const MAX_OUTPUT = 64 * 1024 * 1024;
 
 export interface PngStripObservation {
+  currentExplicitBufferBytes: number;
+  peakExplicitBufferBytes: number;
   rows: number;
   outputBytes: number;
   maximumRgbaBytes: number;
@@ -29,10 +31,13 @@ interface Options {
   assertActive: () => void;
   write: (bytes: Uint8Array<ArrayBuffer>) => Promise<void>;
   observation: PngStripObservation;
+  // Owned/in-flight buffer payload only; not opaque CompressionStream storage,
+  // Wasm, GC retention, allocator overhead or process-tree private memory.
+  onWorkingBytes?: (bytes: number) => void;
 }
 
 export function pngStripObservation(): PngStripObservation {
-  return { rows: 0, outputBytes: 0, maximumRgbaBytes: 0,
+  return { currentExplicitBufferBytes: 0, peakExplicitBufferBytes: 0, rows: 0, outputBytes: 0, maximumRgbaBytes: 0,
     maximumFilteredBytes: 0, maximumCodecChunkBytes: 0,
     maximumWriteBytes: 0, maximumPendingWrites: 0, codecChunks: 0,
     idatChunks: 0, fixedCoalescerBytes: 0, totalWriteMs: 0, maximumWriteMs: 0 };
@@ -75,6 +80,13 @@ export async function writeRgbaPngStrips(options: Options): Promise<void> {
     await iterator.return?.();
   })();
   let pendingWrites = 0;
+  let headerBytes = 0, filteredBytes = 0, coalescerBytes = 0, codecBytes = 0, writeBytes = 0;
+  const observeBuffers = () => {
+    const bytes = headerBytes + filteredBytes + coalescerBytes + codecBytes + writeBytes;
+    observation.currentExplicitBufferBytes = bytes;
+    observation.peakExplicitBufferBytes = Math.max(observation.peakExplicitBufferBytes, bytes);
+    options.onWorkingBytes?.(bytes);
+  };
   const writeOne = async (bytes: Uint8Array<ArrayBuffer>) => {
     assertActive();
     if (bytes.length > 65536 || observation.outputBytes + bytes.length > MAX_OUTPUT)
@@ -83,6 +95,7 @@ export async function writeRgbaPngStrips(options: Options): Promise<void> {
     observation.maximumPendingWrites = Math.max(observation.maximumPendingWrites, pendingWrites);
     if (pendingWrites !== 1) throw new Error("PNG output writes must be serial.");
     observation.maximumWriteBytes = Math.max(observation.maximumWriteBytes, bytes.length);
+    writeBytes = bytes.byteLength; observeBuffers();
     const started = performance.now();
     try { await write(bytes); observation.outputBytes += bytes.length; }
     finally {
@@ -90,16 +103,20 @@ export async function writeRgbaPngStrips(options: Options): Promise<void> {
       observation.totalWriteMs += elapsed;
       observation.maximumWriteMs = Math.max(observation.maximumWriteMs, elapsed);
       pendingWrites--;
+      writeBytes = 0; observeBuffers();
     }
   };
   let primaryFailure = false;
   try {
     await writeOne(new Uint8Array([137, 80, 78, 71, 13, 10, 26, 10]));
     const header = new Uint8Array(13), view = new DataView(header.buffer);
+    headerBytes = header.byteLength; observeBuffers();
     view.setUint32(0, width); view.setUint32(4, height); header[8] = 8; header[9] = 6;
     await writeOne(chunk("IHDR", header));
     const source = new ReadableStream<Uint8Array<ArrayBuffer>>({
       async pull(controller) {
+        // A subsequent pull means the prior filtered input was consumed.
+        filteredBytes = 0; observeBuffers();
         assertActive();
         pendingRead = iterator.next();
         const next = await pendingRead;
@@ -116,6 +133,7 @@ export async function writeRgbaPngStrips(options: Options): Promise<void> {
         if ((rowBytes + 1) * rows > PNG_STRIP_BYTES || observation.rows + rows > height)
           throw new RangeError("PNG strip exceeds the fixed working limit or declared height.");
         const filtered = filter(rgba, rowBytes);
+        filteredBytes = filtered.byteLength; observeBuffers();
         observation.maximumRgbaBytes = Math.max(observation.maximumRgbaBytes, rgba.length);
         observation.maximumFilteredBytes = Math.max(observation.maximumFilteredBytes, filtered.length);
         observation.rows += rows;
@@ -126,6 +144,7 @@ export async function writeRgbaPngStrips(options: Options): Promise<void> {
     // One reusable fixed buffer, never an array of codec chunks. Await each
     // full PNG chunk before reuse, preserving the same serial writer contract.
     const coalescer = new Uint8Array(PNG_IDAT_BYTES);
+    coalescerBytes = coalescer.byteLength; observeBuffers();
     observation.fixedCoalescerBytes = coalescer.length;
     let filled = 0;
     const flushIdat = async () => {
@@ -136,6 +155,8 @@ export async function writeRgbaPngStrips(options: Options): Promise<void> {
     };
     await source.pipeThrough(new CompressionStream("deflate")).pipeTo(new WritableStream({
       async write(bytes: Uint8Array<ArrayBuffer>) {
+        codecBytes = bytes.byteLength; observeBuffers();
+        try {
         assertActive();
         observation.codecChunks++;
         observation.maximumCodecChunkBytes = Math.max(observation.maximumCodecChunkBytes, bytes.length);
@@ -147,6 +168,7 @@ export async function writeRgbaPngStrips(options: Options): Promise<void> {
           filled += length; offset += length;
           if (filled === coalescer.length) await flushIdat();
         }
+        } finally { codecBytes = 0; observeBuffers(); }
       },
       close: flushIdat,
     }, { highWaterMark: 1 }));
@@ -155,5 +177,9 @@ export async function writeRgbaPngStrips(options: Options): Promise<void> {
   finally {
     // A generator cleanup failure must not hide a native/IO/cancellation error.
     try { await releaseInput(); } catch (error) { if (!primaryFailure) throw error; }
+    finally {
+      headerBytes = filteredBytes = coalescerBytes = codecBytes = writeBytes = 0;
+      observeBuffers();
+    }
   }
 }

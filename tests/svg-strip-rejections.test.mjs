@@ -11,4 +11,9 @@ test("all recorded native/config failures prevent unchanged expensive replay; di
   }
   assert.doesNotThrow(()=>assertSvgStripExperimentNotRejected(ledger,{wasmSha256:"a".repeat(64),centralRows:64,fixtureSha256:ledger.fixtureSha256}));
   assert.throws(()=>assertSvgStripExperimentNotRejected(ledger,{wasmSha256:"a".repeat(64),centralRows:129,fixtureSha256:ledger.fixtureSha256}));
+  const completed=ledger.completedPremultipliedOriginal6MControl;
+  const candidate={wasmSha256:completed.nativeWasmSha256,centralRows:completed.centralRows,fixtureSha256:ledger.fixtureSha256};
+  assert.throws(()=>assertSvgStripExperimentNotRejected(ledger,candidate),/explicit changed implementation/);
+  assert.throws(()=>assertSvgStripExperimentNotRejected(ledger,{...candidate,workerImplementationSha256:completed.workerImplementationSha256}),/must not be replayed unchanged/);
+  assert.doesNotThrow(()=>assertSvgStripExperimentNotRejected(ledger,{...candidate,workerImplementationSha256:"c".repeat(64)}));
 });

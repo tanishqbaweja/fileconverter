@@ -32,7 +32,10 @@ try{
     const pinFile=nativeVariant?candidatePin:"images/resvg-source/repeated-processed-input.json";
     const pin=JSON.parse(await readFile(path.join(root,pinFile)));
     const ledger=JSON.parse(await readFile(path.join(root,"images/resvg-source/rejected-strip-experiments.json")));
-    assertSvgStripExperimentNotRejected(ledger,{wasmSha256:pin.wasmSha256,centralRows,fixtureSha256:"af4df880bee340b34ec1102a78a78cce8d04915635ea2ee5a7aa0ffe04e4ca78"});
+    const implementationFiles=["lib/private-svg-strip-pilot.ts","workers/rgba-png-stream.ts","scripts/lib/svg-strip-worker-recipe.mjs","scripts/lib/svg-strip-qualification-recipe.mjs"];
+    report.workerImplementationSourcePins=Object.fromEntries(await Promise.all(implementationFiles.map(async file=>[file,sha(await readFile(path.join(root,file)))])));
+    report.workerImplementationSha256=sha(JSON.stringify(report.workerImplementationSourcePins));
+    assertSvgStripExperimentNotRejected(ledger,{wasmSha256:pin.wasmSha256,centralRows,fixtureSha256:"af4df880bee340b34ec1102a78a78cce8d04915635ea2ee5a7aa0ffe04e4ca78",workerImplementationSha256:report.workerImplementationSha256});
   }
   for(const file of [baseOwner,"scripts/test-svg-strip-pilot.mjs","scripts/lib/svg-strip-rejections.mjs","images/resvg-source/rejected-strip-experiments.json","scripts/lib/svg-strip-worker-recipe.mjs","scripts/lib/svg-strip-qualification-recipe.mjs","scripts/lib/svg-strip-validator.mjs","lib/private-svg-strip-pilot.ts","workers/rgba-png-stream.ts"])
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));

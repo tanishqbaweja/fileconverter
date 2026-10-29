@@ -22,6 +22,7 @@ export function makeSvgStripWorker(worker, bridge, writerUrl) {
     const stripObservation = svgStripPilotObservation(); Object.assign(metrics, {svgStripPilot: stripObservation});
     await runPrivateSvgStripPilot({renderer, width: expected.width, height: expected.height,
       observation: stripObservation, assertActive,
+      onWorkingBytes: bytes => { metrics.imageWorkingBytes = bytes; metrics.peakImageWorkingBytes = Math.max(metrics.peakImageWorkingBytes ?? 0, bytes); },
       write: bytes => writeBounded(destination, bytes, jobId, "Writing PNG strips", metrics, startedAt),
       onRows: rows => emitProgress(jobId, "Rasterizing SVG strips: " + rows + "/" + expected.height + " rows", metrics, startedAt, false),
       onViewport: () => observeSvgMemory(metrics, "rasterized", getInitializedResvgMemory()),

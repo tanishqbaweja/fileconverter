@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+Private active-buffer telemetry IMPLEMENTED, browser verification PENDING.
+Scalar owned/in-flight viewport+centralRGBA, filtered input, fixed coalescer,
+codec chunk/header/serialwrite payload updates generic current/peak image bytes;
+explicitly excludesWasm/opaque codec/allocator/GC/processmemory. No queue/history,
+pixel/codec/IO/limit changes. Success/writefailure/cancellation reset current0,
+nonzero peak and exact PNG/RGBA/CRC preserved in synthetic tests.24focused PASS
+1208.2299ms, affected ESLint/tsc --noEmit/diff check PASS;80/128privateworker builds
+PASS/owned scratch removed. Public SVG remains unchanged/unqualified for this
+candidate. Completed6M native/config+implementation fingerprint now blocks
+unchanged replay; genuinely new source needs provenance. All actual old browser
+zero-fields remain recorded, not retroactively fixed. Next actual telemetry,
+recovery/transparent coverage, not a green-baseline retry.
+evidence/2026-10-29-svg-explicit-buffer-telemetry-preparation.json.
+
+Original6M8641 repeat at2d50b9a6:3/3 functional PASS95.895s, genuine outputs
+2882332B each, conversion29.214/28.152/27.834s; whole0.999079/minall31bands0.998057,
+6Malphaexact each. Exact22 observation/16viewportrelease counts pass. Final strict
+verdict FAILED: no earliest stable blank baseline, incrementalPrivateMiB=NULL;
+peak573997056B,885valid/1unavailable(excluded, not0). Do NOT borrow prior198.51MiB
+or claim repeat-memory acceptance/accepted speedup. Chrome156.0.8078.49, normal
+services unchanged, network0, allowneddata cleaned/original full SHA unchanged.
+Next active working-byte telemetry/recovery/transparent coverage, not unchanged
+repeat for green. evidence/2026-10-29-svg-premultiplied-6m-repeat-terminal.json.
+
 Exact lifecycle-count fix:9 focused PASS1372.0271ms/affected lint PASS; fresh dry
 listing3 original6M cases/no browser, owned scratch removed. Source/pixels unchanged;
 qualifier now requires22 lifecycle+viewport observations and16 matching releases

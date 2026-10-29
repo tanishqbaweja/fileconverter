@@ -99,5 +99,13 @@
     "evidence": "evidence/2026-10-29-svg-small-premultiplied-terminal.json",
     "conclusion": "Full/strip exact decodedRGBA equality, whole0.999571/minband0.998555 pass0.99, alpha exact. Proceed to original6M; small diagnostic not profile acceptance. Do not replay unchanged pair."
   },
+  "completedPremultipliedOriginal6MControl": {
+    "nativeWasmSha256": "8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+    "centralRows": 128,
+    "workerImplementationSha256": "fd5a4821252431b93a8b03ea967bf4ab48dbf73b3c1dcae0b561098f31bea257",
+    "fixtureSha256": "af4df880bee340b34ec1102a78a78cce8d04915635ea2ee5a7aa0ffe04e4ca78",
+    "evidence": "evidence/2026-10-29-svg-premultiplied-6m-repeat-terminal.json",
+    "conclusion": "All3 functional tests pass whole0.999079/min31bands0.998057/alphaexact; final verdict FAIL absent stable blank baseline, incremental memory null. Do not replay unchanged to seek green; telemetry/recovery/transparent-input gaps next, no public promotion."
+  },
   "publicPromotion": false
 }

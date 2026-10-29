@@ -1,5 +1,24 @@
 # Remaining work audit
 
+Private SVG active working-byte telemetry now implemented and24focused synthetic/
+receipt checks PASS1208.2299ms; lint/tsc/diff PASS. Known owned/in-flight JS buffer
+payload replaceszero, with explicit excludesWasm/opaque codec/GC/private-memory
+scope; success/cancel/writeerror reset tested. Actual new browser telemetry and
+recovery/transparent inputs remain UNVERIFIED. Public SVG engine unchanged.
+Completed6M unchanged-implementation replay now guarded by exact source fingerprint;
+no reruns merely for green memory. Next genuine uncovered browser gates, then
+coherent clean-session/release closure; full original scope remains active.
+evidence/2026-10-29-svg-explicit-buffer-telemetry-preparation.json.
+
+Original6M8641 now3/3 FUNCTIONAL PASS with unchanged scene, whole0.999079/all31
+bands>=0.998057/alphaexact,27.834–29.214s; exact22observations/16releases each.
+Strict overall qualification still FAILED: blank baseline never stabilized;
+incremental memory NULL,885valid/1missing sample. Prior198.51MiB cannot be reused.
+Do not replay unchanged to seek green. Next truthful active imageWorkingBytes,
+recovery/transparent inputs and later coherent clean-session qualification.
+No public promotion/accepted speedup/full goal closure; all wider original
+deliverables OPEN. evidence/2026-10-29-svg-premultiplied-6m-repeat-terminal.json.
+
 Lifecycle-count harness fix focused verification:9PASS1372.0271ms/lint PASS,
 3 original6M cases collected/no browser, scratch removed. Exact count derives
 from geometry, each viewport release required; native/IO/input/limits unchanged.

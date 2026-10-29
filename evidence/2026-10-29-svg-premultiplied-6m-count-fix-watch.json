@@ -1,0 +1,17 @@
+{
+  "schemaVersion":1,
+  "startedAt":"2026-10-29T12:32:41Z",
+  "sourceCommit":"2d50b9a6",
+  "sessionId":78867,
+  "command":"scripts/run-repository-owned-node.mjs scripts/test-svg-strip-pilot.mjs --premultiplied --rows128",
+  "nativeWasmSha256":"8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+  "reasonForRerun":"Exact geometry-derived lifecycle count fixes prior six-vs22 harness failure; renderer and every input/quality/time/memory setting unchanged",
+  "estimatedTotalSeconds":240,
+  "observeNotBefore":"2026-10-29T12:36:41Z",
+  "lastAuthoritativeObservation":"same session exited1; three functional tests passed; strict final verdict failed absent stable blank baseline, incremental memory null",
+  "terminal":true,
+  "browserReceipt":"evidence/2026-10-29T12-33-09-016Z-source-svg-browser.json",
+  "restartOnObservationTimeout":false,
+  "publicPromotion":false,
+  "wholeGoalComplete":false
+}

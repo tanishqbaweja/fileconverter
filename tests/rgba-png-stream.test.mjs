@@ -50,6 +50,7 @@ test("streamed synthetic RGBA retains every channel/alpha byte, validates CRC/zl
   assert.equal(released, 1); assert.equal(peak, 1); assert.equal(observation.maximumPendingWrites, 1);
   assert.equal(observation.rows, height); assert.ok(observation.maximumFilteredBytes <= 262144);
   assert.ok(observation.maximumWriteBytes <= 65536); assert.equal(observation.outputBytes, Buffer.concat(output).length);
+  assert.equal(observation.currentExplicitBufferBytes,0);assert.ok(observation.peakExplicitBufferBytes>65524);
 });
 
 test("write rejection closes producer, emits no IEND and preserves the original error over cleanup", {timeout:10000}, async () => {

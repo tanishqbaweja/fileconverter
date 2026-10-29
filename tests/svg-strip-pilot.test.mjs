@@ -41,12 +41,30 @@ test("private viewport prototype emits every central row exactly once, frees nat
     return{width,height:h,get pixels(){const rgba=new Uint8Array(width*h*4);for(let row=0;row<h;row++)for(let x=0;x<width;x++)rgba.set(pixel(x,y+row),(row*width+x)*4);return rgba;},free(){live--;}};
   }};
   let lastRows=0;
-  await runPrivateSvgStripPilot({renderer,width,height,observation,assertActive(){},async write(bytes){parts.push(Buffer.from(bytes));},onRows(rows){assert.ok(rows>lastRows);lastRows=rows;},onRasterized(){rasterized++;}});
+  let current=0,peak=0,observations=0;
+  await runPrivateSvgStripPilot({renderer,width,height,observation,assertActive(){},async write(bytes){assert.ok(current>0);parts.push(Buffer.from(bytes));},onRows(rows){assert.ok(rows>lastRows);lastRows=rows;},onRasterized(){rasterized++;},
+    onWorkingBytes(bytes){assert.ok(Number.isSafeInteger(bytes)&&bytes>=0);current=bytes;peak=Math.max(peak,bytes);observations++;}});
   const expected=new Uint8Array(width*height*4);for(let y=0;y<height;y++)for(let x=0;x<width;x++)expected.set(pixel(x,y),(y*width+x)*4);demultiplySvgRgba(expected);
   assert.deepEqual(decodePng(parts,width,height),Buffer.from(expected));assert.equal(peakLive,1);assert.equal(live,0);assert.equal(boxReleased,1);assert.equal(rasterized,1);
   assert.equal(observation.renderedViewports,4);assert.equal(observation.releasedViewports,4);assert.equal(observation.completedRows,height);assert.equal(lastRows,height);
   assert.ok(boxes.every(value=>value.height<=160));assert.ok(observation.maximumRgbaCopyBytes<=width*160*4);
   assert.equal(observation.generalFilterSupportClaimed,false);
+  assert.equal(current,0);assert.equal(observation.currentExplicitBufferBytes,0);assert.equal(observation.png.currentExplicitBufferBytes,0);
+  assert.equal(observation.peakExplicitBufferBytes,peak);assert.ok(peak>observation.maximumRgbaCopyBytes);assert.ok(observations>4);
+});
+test("explicit buffer telemetry returns to zero after real synthetic pipeline write rejection and cancellation",{timeout:10000},async()=>{
+  for(const mode of ["write","cancel"]){
+    let current=0,peak=0,writes=0,released=0,rows=0;
+    const failure=new Error("synthetic "+mode),box={x:0,y:0,width:16,height:200,free(){}};
+    const renderer={getBBox(){return box;},cropByBBox(){},render(){return {width:16,height:box.height,get pixels(){return new Uint8Array(16*box.height*4).fill(255);},free(){released++;}};}};
+    const observation=svgStripPilotObservation();
+    await assert.rejects(runPrivateSvgStripPilot({renderer,width:16,height:200,observation,
+      assertActive(){if(mode==="cancel"&&rows>0)throw failure;},
+      async write(){if(++writes===3&&mode==="write")throw failure;},onRows(n){rows=n;},onRasterized(){},
+      onWorkingBytes(bytes){current=bytes;peak=Math.max(peak,bytes);}}),error=>error===failure);
+    assert.ok(peak>0);assert.ok(released>0);assert.equal(current,0);
+    assert.equal(observation.currentExplicitBufferBytes,0);assert.equal(observation.png.currentExplicitBufferBytes,0);
+  }
 });
 test("native pixel failure survives both image and BBox cleanup errors",{timeout:10000},async()=>{
   const primary=new WebAssembly.RuntimeError("mock native primary");let imageReleased=0,boxReleased=0;
@@ -61,6 +79,7 @@ test("private worker overlay reverses to the entire pinned source and changes on
   assert.equal(result.proof.workerWholeSourceReversed,true);assert.equal(result.proof.bridgeOnlyUrlResolutionChanged,true);
   assert.match(result.generated,/new RegExp\(`/);assert.match(result.generated,/runPrivateSvgStripPilot\(\{renderer/);
   assert.match(result.generated,/resvgInitialization \?\?= initResvgWasm/);assert.match(result.generated,/releaseSvgRendererObjects/);
+  assert.match(result.generated,/onWorkingBytes: bytes => \{ metrics.imageWorkingBytes = bytes;/);
   assert.throws(()=>makeSvgStripWorker(Buffer.concat([worker,Buffer.from("\n")]),bridge,"/assets/direct-file-writer.worker-Cd6e6fgR.js"));
 });
 test("80/128-row private workers change only the row constant in their archived helper and observe actual Wasm after every viewport",async()=>{
