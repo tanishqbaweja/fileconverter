@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "scope": "Read-only pinned source/options audit; no compiler or renderer run",
+  "upstreamRevision": "9ca058462ac529120c8cc84ddcd6fef644cc5406",
+  "optionsSource": "https://raw.githubusercontent.com/thx/resvg-js/9ca058462ac529120c8cc84ddcd6fef644cc5406/src/options.rs",
+  "wrapperSource": "https://raw.githubusercontent.com/thx/resvg-js/9ca058462ac529120c8cc84ddcd6fef644cc5406/src/lib.rs",
+  "existingWorkerShapeRendering": 2,
+  "upstreamShapeMapping": {"0":"OptimizeSpeed","1":"CrispEdges","2":"GeometricPrecision"},
+  "alreadyUsingGeometricPrecision": true,
+  "existingWorkerFitTo": "original",
+  "upstreamOriginalFitScale": 1,
+  "cropSourceChangesViewBoxAndSize": true,
+  "renderSourceRebuildsResvgTreeFromParsedUsvgTree": true,
+  "rejectedNoOp": "Do not propose enabling geometric precision or original scale as a new fidelity fix; both are already selected",
+  "notEstablished": "The precise pixel primitive responsible for shared full-versus-Chrome mismatch",
+  "publicFilesChanged": false,
+  "wholeGoalComplete": false
+}

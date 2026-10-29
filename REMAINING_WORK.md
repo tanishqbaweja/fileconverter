@@ -1,5 +1,17 @@
 # Remaining work audit
 
+Native-worker shortcut investigated, unavailable in currentChrome156.0.8078.49:
+exact PNG worker positive control passes, SVG bitmap decode throws and SVG
+ImageDecoder type reportsfalse under unchanged application CSP/COEP.1probe
+PASS is feature-detection success, NOT a conversion capability/public profile.
+All owned roots/runtime cleaned/original SHA same. Shared resvg-vs-Chrome band
+fidelity still OPEN; geometry precision/original scale already selected, so no
+no-op renderer-option/halo retries. Precise component/alternate-Wasm work or
+other original missing capabilities next. Original6M and all wider gates intact.
+evidence/2026-10-29-svg-native-worker-capability-terminal.json.
+Final5focused PASS1017.6303ms/lint PASS. Both completed paired-control and
+negative worker-API findings are explicit evidence, not full-goal completion.
+
 New decisive fidelity evidence: fixed small full-frame and strip paths produce
 identical decodedRGBA, yet BOTH have same0.982544 band failure against fresh
 Chrome. Therefore the mismatch exists without strip rendering on this control;

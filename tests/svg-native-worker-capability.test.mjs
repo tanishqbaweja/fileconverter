@@ -31,3 +31,14 @@ test("native SVG capability probe remains a fixed4pixel worker-only feature test
       assert.deepEqual(ts.createSourceFile(name,source,ts.ScriptTarget.ESNext,true).parseDiagnostics,[]);
   }finally{await runtime.close();}
 });
+test("actual worker SVG unavailability cannot be advertised as a native conversion backend despite a passing PNG positive control",async()=>{
+  const report=JSON.parse(await readFile("evidence/2026-10-29T06-31-19-843Z-svg-native-worker-capability.json"));
+  const result=report.diagnostic.result;
+  assert.equal(result.probeCompleted,true);assert.equal(result.crossOriginIsolated,true);
+  assert.equal(result.pngPositiveControl.exact,true);assert.equal(result.pngPositiveControl.width,2);assert.equal(result.pngPositiveControl.height,2);
+  assert.equal(result.svgBitmap.error.name,"InvalidStateError");assert.equal(result.svgImageDecoder.supported,false);
+  assert.deepEqual(result.securityViolations,[]);assert.equal(result.conversionProfileTested,false);
+  assert.equal(report.publicPromotion,false);assert.equal(report.wholeGoalComplete,false);assert.equal(report.ownedRuntimeRemoved,true);
+  assert.equal(report.ownerProcessCleanup.status,"owned-identity-absent");assert.ok(report.processCleanup.every(row=>row.status==="owned-identity-absent"));
+  assert.deepEqual(report.protectedOriginalBefore,report.protectedOriginalAfter);
+});

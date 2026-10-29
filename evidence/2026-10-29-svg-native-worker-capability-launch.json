@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "dd7cd998",
+  "startedAt": "2026-10-29T06:31:20Z",
+  "estimatedDurationSeconds": 120,
+  "doNotObserveBefore": "2026-10-29T06:33:20Z",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/test-svg-small-fidelity-control.mjs --native-capability",
+  "scope": "Fixed4pixel SVG worker API availability and exact-color checks with PNG positive control; not a production conversion profile",
+  "noUserFilesSelected": true,
+  "productionCSPAndNormalServicesUnchanged": true,
+  "noConverterWasmRequestedByProbe": true,
+  "followSameExecutionHandleNoRestartOnObservationTimeout": true,
+  "headless": true,
+  "publicPromotion": false,
+  "wholeGoalComplete": false
+}

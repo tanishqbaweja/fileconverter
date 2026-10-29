@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-10-29 — Actual native-worker SVG capability probedd7cd998 COMPLETE:
+production CSP/COOP/COEP unchanged/crossOriginIsolatedtrue, exact four-pixel
+PNG positive control PASSED93B; worker createImageBitmap(SVG Blob) throws
+InvalidStateError/source cannot decode, ImageDecoder SVG type reportsfalse.
+ObservedCSPviolations[], no browser flags/services/extensions/cache changes;
+this is unavailability in testedChrome156.0.8078.49 environment, not a universal
+API claim.1probe PASS2549.897ms,0converterWasmrequests/no userfiles selected.
+50.91015625MiB primary/41valid0missing is API-probe ONLY, not converter memory
+qualification. All owned roots/runtime/source scratch cleaned/original SHA same.
+Do not implement a native-worker fallback assuming this API works here.
+Read-only pinned source audit also confirms shapeRendering2 already maps to
+GeometricPrecision and original fit scale1; those flag changes would be no-ops.
+No renderer/public profile change; original6M quality failure remains rejected.
+evidence/2026-10-29-svg-native-worker-capability-terminal.json and
+evidence/2026-10-29-svg-render-options-audit.json.
+Final API/paired/rejection regressions5PASS/0fail/0skip/0cancel1017.6303ms,
+lint PASS. No repeated large conversion, no new public profile, no disposable
+converted copies retained. Original full project remains incomplete.
+
 2026-10-29 observation of terminal6f32f843 small paired control (ranOct28):
 both genuine960x540 conversions collected. Full147873B/1019.485ms versus
 strip132819B/2392.265ms PNGs decode to EXACT same2073600RGBA bytes/SHAe6a17bfd
