@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "collectedAt": "2026-10-29T19:32:29.535Z",
+  "runId": 40940066286,
+  "jobId": 123680786358,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40940066286",
+  "headSha": "9ef59a13a7fbe709f2d0c3000dda7a0d2d3c78e7",
+  "status": "completed",
+  "conclusion": "success",
+  "startedAt": "2026-10-29T19:26:15Z",
+  "completedAt": "2026-10-29T19:30:07Z",
+  "successfulRequiredSteps": [
+    "Prepare repository-owned CI runtime",
+    "Run npm ci",
+    "Audit public route evidence",
+    "Audit complete unit inventory (private qualification not executed here)",
+    "Run npm run lint",
+    "Run npx tsc --noEmit --incremental false",
+    "Run npm test",
+    "Run network privacy and offline browser tests",
+    "Remove owned CI runtime"
+  ],
+  "portableUnits": {
+    "success": true,
+    "counts": {
+      "tests": 2043,
+      "failed": 0,
+      "passed": 2042,
+      "cancelled": 0,
+      "skipped": 1,
+      "todo": 0,
+      "topLevel": 2043,
+      "suites": 0
+    },
+    "duration_ms": 83923.771569
+  },
+  "unitInventory": {
+    "suite": "all",
+    "selectedFiles": 773,
+    "allFiles": 773,
+    "portableFiles": 611,
+    "qualificationFiles": 162,
+    "priorHostedFilesKeptPortable": 235,
+    "qualificationStatus": "separate-prerequisite-bound-checks-not-implied-passed",
+    "publicAcceptance": false
+  },
+  "qualificationExecuted": false,
+  "existingSkip": {
+    "file": "tests/media-source-inspection.test.mjs",
+    "name": "protected multi-gigabyte Matroska inspection reads only 64 KiB",
+    "reason": "test.mkv is an intentionally untracked local stress fixture; never copied into CI"
+  },
+  "privacy": {
+    "startTime": "2026-10-29T19:29:20.136Z",
+    "duration": 43990.669,
+    "expected": 19,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "actualPrivacyCaseResultsChecked": 19,
+  "artifact": {
+    "id": 12925369561,
+    "name": "verification-results",
+    "compressedBytes": 3045,
+    "zipSha256": "3ecc05ab4daca5d22f032653ce23f829c810d31e0e7774d2e4e8a23179614694",
+    "member": "verify-results.json",
+    "reportBytes": 24945,
+    "reportSha256": "835c5eff2ffbf84d14095bdb0e7a03df0d8b228e710bd98bfde2629a89fed4ab"
+  },
+  "cleanup": {
+    "status": "owned-runtime-removed",
+    "directory": "/home/runner/work/fileconverter/fileconverter/work/ci-oNMFxo",
+    "noProcessesKilled": true
+  },
+  "jobLogsSha256": "819a7c3df5acfb3fcb91a637f2859bc212d7d2299a38eba70f7a0ba2c6dad67d",
+  "browser": "Headless Playwright Chromium on GitHub Ubuntu; not installed Windows-browser coverage",
+  "headedCoverage": false,
+  "downloadedConversionFiles": false,
+  "localScratchCreated": false,
+  "dockerUsed": false,
+  "engineReproductionSelected": false,
+  "conversionMemoryAcceptance": false,
+  "wholeGoalComplete": false
+}

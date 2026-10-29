@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { access, readFile, writeFile } from "node:fs/promises";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
 import path from "node:path";
 import test from "node:test";
 import { prepareCiRuntime, cleanupCiRuntime } from "../scripts/ci-owned-runtime.mjs";
@@ -22,8 +24,12 @@ test("CI runtime scopes browser profiles, tools and caches inside a short fresh 
     }));
     assert.deepEqual(exported, value.env);
     await writeFile(path.join(value.directory, "disposable-profile-data"), "owned only");
-    const result = await cleanupCiRuntime({ ...job, ...exported });
+    const result = await cleanupCiRuntime({ ...job, ...exported, GITHUB_ENV: file });
     assert.equal(result.status, "owned-runtime-removed"); assert.equal(result.noProcessesKilled, true);
+    assert.match(await readFile(file, "utf8"), /\nNODE_DISABLE_COMPILE_CACHE=1\n$/);
+    // Simulate the subsequent GitHub Node action with the propagated job env.
+    await promisify(execFile)(process.execPath, ["-e", "1+1"], { windowsHide: true,
+      env: { ...process.env, ...exported, NODE_DISABLE_COMPILE_CACHE: "1" }, maxBuffer: 16384 });
     await assert.rejects(access(value.directory), { code: "ENOENT" }); value = null;
   } finally {
     if (value) await cleanupCiRuntime({ ...job, ...value.env });

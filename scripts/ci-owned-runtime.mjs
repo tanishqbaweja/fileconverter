@@ -52,6 +52,9 @@ export async function cleanupCiRuntime(env = process.env) {
   assert.equal(record.schemaVersion, 1); assert.equal(record.directory, directory);
   assert.deepEqual(record.job, binding(env), "A different job cannot clean this runtime");
   assert.equal(record.dev, String(identity.dev)); assert.equal(record.ino, String(identity.ino));
+  // setup-node/checkout post-actions run after this step. Without this export,
+  // their Node startup can recreate NODE_COMPILE_CACHE under the removed runtime.
+  if (env.GITHUB_ENV) await appendFile(env.GITHUB_ENV, "NODE_DISABLE_COMPILE_CACHE=1\n");
   await rm(directory, { recursive: true, force: false, maxRetries: 5, retryDelay: 100 });
   return { status: "owned-runtime-removed", directory, noProcessesKilled: true };
 }

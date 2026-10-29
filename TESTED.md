@@ -1,5 +1,32 @@
 # Tested conversion ledger
 
+Storage follow-up after the green hosted recovery: a real Node24.7.0 negative
+control recreated a deleted compile cache in owned scratch. Cleanup now exports
+NODE_DISABLE_COMPILE_CACHE=1 for later GitHub post-actions before deleting its
+runtime. Local11 focused checks PASS/0 fail/skip835.9178ms, including an actual
+subsequent Node process proving the removed runtime is not recreated. Lint/diff
+PASS. Fresh verify-job-only validation of this CI-helper change is pending; the
+962 conversion cases will not be replayed. Earlier cleanup receipts prove removal
+at the cleanup step, not post-action filesystem absence. Negative probe cleaned.
+
+Latest checkpoint, 2026-10-30 IST (2026-10-29 UTC): hosted verification recovered
+successfully at 9ef59a13/run40940066286. Production build, lint, TypeScript, public
+evidence audit PASS; 2042 portable units PASS, zero failures, one existing Linux
+skip because the protected local test.mkv is intentionally absent. 611 portable
+files executed; 162 qualification files NOT RUN. All 19 privacy/offline/static-host
+cases PASS in 43.991 s, zero skipped/flaky, owned runtime removal verified.
+The original five-suite conversion run passed all 962 cases without replay.
+3771 production/browser-test/engine/workflow Git entries are identical between
+its d450bc5b source and successful recovery 9ef59a13; only historical tests,
+archives, reports and ledgers changed. Both earlier failed verify attempts remain
+recorded. Fresh local full SHA-256 confirms test.mkv unchanged: 2,958,573,265 bytes,
+31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34.
+No conversion artifacts downloaded; browser/profile/tool scratch cleanup passed.
+Headless only, no Docker. This is NOT multi-gigabyte/memory, installed-browser,
+all-engine reproduction, speed-optimization or full-project acceptance.
+Canonical receipt: evidence/2026-10-29-hosted-ci-cycle.json. Earlier notes below
+are chronological preparation/failure checkpoints, superseded by this result.
+
 Fresh hosted run 40893562612 at d450bc5b is terminal: all five browser suites
 PASS, 962 cases (554 media/remux, 238 streaming, 153 images, 9 audio source,
 8 audio destination), zero failures/skips/flaky retries. Actual JSON case results

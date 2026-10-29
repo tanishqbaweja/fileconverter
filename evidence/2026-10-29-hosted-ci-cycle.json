@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-29T19:33:31Z",
+  "status": "hosted-small-conversion-and-verification-gates-passed-after-historical-provenance-recovery-not-project-complete",
+  "browser": {
+    "runId": 40893562612,
+    "sourceCommit": "d450bc5b295b4c505f097bf115b629ee05aea34e",
+    "overallRunConclusion": "failure",
+    "browserJobConclusions": "all-five-success",
+    "passed": 962,
+    "failed": 0,
+    "skipped": 0,
+    "flaky": 0,
+    "suiteCounts": {
+      "media-remux": 554,
+      "streaming-conversions": 238,
+      "image-conversions": 153,
+      "audio-source-metadata": 9,
+      "audio-destination-scopes": 8
+    },
+    "receipt": "evidence/2026-10-29-hosted-browser-results.json"
+  },
+  "verification": {
+    "runId": 40940066286,
+    "sourceCommit": "9ef59a13a7fbe709f2d0c3000dda7a0d2d3c78e7",
+    "conclusion": "success",
+    "portableUnits": {
+      "passed": 2042,
+      "failed": 0,
+      "skipped": 1,
+      "total": 2043,
+      "durationMs": 83923.771569,
+      "selectedFiles": 611,
+      "qualificationFilesNotRun": 162
+    },
+    "privacy": {
+      "passed": 19,
+      "failed": 0,
+      "skipped": 0,
+      "flaky": 0,
+      "durationMs": 43990.669
+    },
+    "productionBuild": "passed",
+    "lint": "passed",
+    "typescript": "passed",
+    "publicEvidenceManifest": "passed",
+    "receipt": "evidence/2026-10-29-hosted-ci-recovery-terminal.json"
+  },
+  "failedAttemptsPreserved": [
+    {
+      "runId": 40893562612,
+      "unitPassed": 2028,
+      "unitFailed": 10,
+      "unitSkipped": 1,
+      "privacyExecuted": false,
+      "receipt": "evidence/2026-10-29-hosted-ci-unit-failure.json"
+    },
+    {
+      "runId": 40896302105,
+      "unitPassed": 2036,
+      "unitFailed": 5,
+      "unitSkipped": 1,
+      "privacyExecuted": false,
+      "receipt": "evidence/2026-10-29-hosted-ci-recovery-first-failure.json"
+    }
+  ],
+  "sourceEquivalence": {
+    "browserRun": 40893562612,
+    "browserHead": "d450bc5b295b4c505f097bf115b629ee05aea34e",
+    "verificationRun": 40940066286,
+    "verificationHead": "9ef59a13a7fbe709f2d0c3000dda7a0d2d3c78e7",
+    "changedPaths": [
+      "REMAINING_WORK.md",
+      "TESTED.md",
+      "evidence/2026-10-29-hosted-browser-results.json",
+      "evidence/2026-10-29-hosted-ci-dispatch.json",
+      "evidence/2026-10-29-hosted-ci-recovery-first-failure.json",
+      "evidence/2026-10-29-hosted-ci-unit-failure.json",
+      "evidence/2026-10-29-hosted-source-equivalence.json",
+      "fixtures/source/pre-ci-runtime-2026-10-29.json",
+      "tests/helpers/pre-ci-runtime-inputs.mjs",
+      "tests/helpers/pre-image-size-patch.mjs",
+      "tests/helpers/pre-og-security-inputs.mjs",
+      "tests/helpers/pre-svg-memory-inputs.mjs",
+      "tests/pre-ci-runtime-inputs.test.mjs",
+      "tests/resvg-private-browser-contract.test.mjs",
+      "tests/resvg-source-postprocess.test.mjs",
+      "tests/resvg-source-repeat-result.test.mjs",
+      "tests/resvg-source-reproduction.test.mjs"
+    ],
+    "excludedScope": "Unit/qualification tests and helpers, source archives, evidence and TESTED/REMAINING ledgers. Browser tests are INCLUDED.",
+    "trackedEntriesCompared": 3771,
+    "sourceTreesEqual": true,
+    "gitTreeListingSha256": "04666ff84e6ceff6d235813b58d15c15f31fcaac5da695458733d967dd8ba0fe"
+  },
+  "protectedOriginal": {
+    "bytes": 2958573265,
+    "checkedAt": "2026-10-29T19:33:17.3180578Z",
+    "path": "H:\\Github Repositories\\fileconverter\\test.mkv",
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "unchangedFromRecordedOriginal": true
+  },
+  "cleanup": {
+    "hostedBrowserJobs": "five cleanup steps passed",
+    "hostedVerifyJob": "owned-runtime-removed receipt verified",
+    "localConversionOutputsDownloaded": false,
+    "artifactZipHandling": "bounded memory only, no disk extraction",
+    "localOwnedScratch": "focused test runtimes removed in finally",
+    "noProcessesKilled": true
+  },
+  "headlessOnly": true,
+  "osNativePickerCoverage": false,
+  "dockerUsed": false,
+  "conversionSpeedImprovementClaimed": false,
+  "conversionMemoryAcceptance": false,
+  "engineReproductionSelected": false,
+  "installedWindowsBrowserCoverageRefreshed": false,
+  "remaining": [
+    "Source reproducibility for every published engine and final release/source-security closure",
+    "Normal installed current-browser compatibility, manual/native-picker coverage as permitted",
+    "Unfinished genuine codec/container/options/metadata/image routes",
+    "Protected-original and progressively larger valid files approaching 10 GB, unchanged full-tree 250 MiB memory and fidelity gates",
+    "Broader cancellation, write-failure, quota, permission, reload, repeated/clean-session and cleanup stress"
+  ],
+  "postActionCacheFollowup": {
+    "ownedNegativeControlRecreatedDeletedCompileCache": true,
+    "fix": "Export NODE_DISABLE_COMPILE_CACHE=1 to later GitHub post-action steps before deleting owned runtime",
+    "focusedPassed": 11,
+    "focusedFailed": 0,
+    "focusedSkipped": 0,
+    "focusedDurationMs": 835.9178,
+    "nodeVersion": "v24.7.0",
+    "hostedValidationAfterFix": "pending",
+    "earlierHostedFinalPostActionCacheAbsenceVerified": false
+  },
+  "wholeGoalComplete": false
+}
