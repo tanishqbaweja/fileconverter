@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "browserConversionRun": 40893562612,
+  "browserSourceCommit": "d450bc5b295b4c505f097bf115b629ee05aea34e",
+  "verifyRecoveryRun": 40896302105,
+  "verifySourceCommit": "fb009d169d8fea663d5636b3dd7728622ed86cc5",
+  "checkedAt": "2026-10-29T14:58:00.801Z",
+  "changedPaths": [
+    "REMAINING_WORK.md",
+    "TESTED.md",
+    "evidence/2026-10-29-hosted-ci-dispatch.json",
+    "evidence/2026-10-29-hosted-ci-unit-failure.json",
+    "fixtures/source/pre-ci-runtime-2026-10-29.json",
+    "tests/helpers/pre-ci-runtime-inputs.mjs",
+    "tests/helpers/pre-og-security-inputs.mjs",
+    "tests/pre-ci-runtime-inputs.test.mjs",
+    "tests/resvg-private-browser-contract.test.mjs",
+    "tests/resvg-source-postprocess.test.mjs",
+    "tests/resvg-source-repeat-result.test.mjs",
+    "tests/resvg-source-reproduction.test.mjs"
+  ],
+  "excludedScope": "Unit/qualification tests and helpers, immutable source archives, evidence and the two execution ledgers; browser test sources are NOT excluded",
+  "trackedEntriesCompared": 3771,
+  "productionAndBrowserSourceTreesEqual": true,
+  "gitTreeListingSha256": "04666ff84e6ceff6d235813b58d15c15f31fcaac5da695458733d967dd8ba0fe",
+  "reasonToAvoidBrowserMatrixReplay": "Every production asset/source/dependency, build/helper script, workflow, browser test and browser configuration Git entry is identical. Only provenance tests/archives and ledgers changed.",
+  "engineReproduction": false,
+  "conversionMemoryAcceptance": false,
+  "wholeGoalComplete": false
+}

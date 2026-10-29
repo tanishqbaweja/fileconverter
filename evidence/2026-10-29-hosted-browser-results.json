@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "collectedAt": "2026-10-29T14:57:06.474Z",
+  "runId": 40893562612,
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40893562612",
+  "headSha": "d450bc5b295b4c505f097bf115b629ee05aea34e",
+  "overallConclusion": "failure",
+  "overallFailure": "Verify historical provenance unit checks; privacy not reached",
+  "suites": [
+    {
+      "suite": "media-remux",
+      "jobId": 123516493196,
+      "conclusion": "success",
+      "startedAt": "2026-10-29T14:38:53Z",
+      "completedAt": "2026-10-29T14:52:11Z",
+      "stats": {
+        "startTime": "2026-10-29T14:41:13.842Z",
+        "duration": 651578.16,
+        "expected": 554,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "actualCaseResultsChecked": 554,
+      "cleanupStep": "success",
+      "artifact": {
+        "id": 12906383585,
+        "name": "browser-results-media-remux",
+        "compressedBytes": 24003,
+        "zipSha256": "9bf7e5d4b59bd5904497871c4127ab8b2abd5c776eff029e68e090020cc2e6ab",
+        "member": "media-remux-results.json",
+        "reportBytes": 590712,
+        "reportSha256": "d63d589923dcac0dfb62a5bb4fede1e2495e60eab907119a7dc71d9ac48fcf04"
+      }
+    },
+    {
+      "suite": "audio-destination-scopes",
+      "jobId": 123516493013,
+      "conclusion": "success",
+      "startedAt": "2026-10-29T14:38:52Z",
+      "completedAt": "2026-10-29T14:40:21Z",
+      "stats": {
+        "startTime": "2026-10-29T14:39:56.394Z",
+        "duration": 21241.111,
+        "expected": 8,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "actualCaseResultsChecked": 8,
+      "cleanupStep": "success",
+      "artifact": {
+        "id": 12906236656,
+        "name": "browser-results-audio-destination-scopes",
+        "compressedBytes": 1927,
+        "zipSha256": "e28ba785b198b25a480cd6e197d7539374b6a45b3b37602130fb43704d5f35f3",
+        "member": "audio-destination-scopes-results.json",
+        "reportBytes": 12595,
+        "reportSha256": "797a8b2fe71e73cea39b27c263c67d6df9cbd62a5138d71c8c2b35a6fe68c482"
+      }
+    },
+    {
+      "suite": "image-conversions",
+      "jobId": 123516493290,
+      "conclusion": "success",
+      "startedAt": "2026-10-29T14:38:52Z",
+      "completedAt": "2026-10-29T14:44:22Z",
+      "stats": {
+        "startTime": "2026-10-29T14:40:04.178Z",
+        "duration": 254315.65,
+        "expected": 153,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "actualCaseResultsChecked": 153,
+      "cleanupStep": "success",
+      "artifact": {
+        "id": 12906221685,
+        "name": "browser-results-image-conversions",
+        "compressedBytes": 8091,
+        "zipSha256": "8c3eb7005c5c1bcfb4aa1bdbdc8d40d039a2dcfbedd8aae3e95d9399bf15844e",
+        "member": "image-conversions-results.json",
+        "reportBytes": 168036,
+        "reportSha256": "0dad80641e2a6dc898d514ef87969aa3721949a1e9cd2806c65e662c8d546cba"
+      }
+    },
+    {
+      "suite": "streaming-conversions",
+      "jobId": 123516492949,
+      "conclusion": "success",
+      "startedAt": "2026-10-29T14:38:52Z",
+      "completedAt": "2026-10-29T14:42:07Z",
+      "stats": {
+        "startTime": "2026-10-29T14:40:02.059Z",
+        "duration": 121989.45199999999,
+        "expected": 238,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "actualCaseResultsChecked": 238,
+      "cleanupStep": "success",
+      "artifact": {
+        "id": 12905777547,
+        "name": "browser-results-streaming-conversions",
+        "compressedBytes": 12430,
+        "zipSha256": "114717f2bee4d1022a5b7a7f33d2eb437d2984e6c5d18dbce9cd4922f1efe6e0",
+        "member": "streaming-conversions-results.json",
+        "reportBytes": 257065,
+        "reportSha256": "ab38dee3f0f98fff2f9518bbc792a5d8f64b73f5fb87ea3da6f76d7ea4cc5f41"
+      }
+    },
+    {
+      "suite": "audio-source-metadata",
+      "jobId": 123516493340,
+      "conclusion": "success",
+      "startedAt": "2026-10-29T14:38:53Z",
+      "completedAt": "2026-10-29T14:40:31Z",
+      "stats": {
+        "startTime": "2026-10-29T14:40:03.492Z",
+        "duration": 23151.314,
+        "expected": 9,
+        "skipped": 0,
+        "unexpected": 0,
+        "flaky": 0
+      },
+      "actualCaseResultsChecked": 9,
+      "cleanupStep": "success",
+      "artifact": {
+        "id": 12905562719,
+        "name": "browser-results-audio-source-metadata",
+        "compressedBytes": 1982,
+        "zipSha256": "9b419a371083a077f1742f67c16d0062f7f71d5be1a9efd53e076191655430c3",
+        "member": "audio-source-metadata-results.json",
+        "reportBytes": 13608,
+        "reportSha256": "8211f9b29172695733d5fb6ab0e866889c65fac8e879bf2bef262b6f04c69dcf"
+      }
+    }
+  ],
+  "totalBrowserCasesPassed": 962,
+  "headedCoverage": false,
+  "artifactsDownloadedOnlyInBoundedMemory": true,
+  "downloadedConversionFiles": false,
+  "localScratchCreated": false,
+  "conversionMemoryAcceptance": false,
+  "engineReproduction": false,
+  "wholeGoalComplete": false
+}

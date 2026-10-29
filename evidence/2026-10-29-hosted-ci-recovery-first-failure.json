@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "runId": 40896302105,
+  "jobId": 123526219378,
+  "sourceCommit": "fb009d169d8fea663d5636b3dd7728622ed86cc5",
+  "events": [
+    {
+      "failed": "changed dependency build passes all nineteen original privacy cases with source and owned cleanup proof",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/image-size-security-patch.test.mjs",
+      "message": ".openai/hosting.json\n+ actual - expected\n\n+ '837b8f14a699d92a7269a38c5bbeb78838ef013d4629c6ad68ec4fbc68409760'\n- '6f55e031b82f9a23029129a1a3fed515ae6d7da180e369c7b2b90ec248d06475'\n"
+    },
+    {
+      "failed": "edge has exactly 19 actual headless passes, pinned binary and original, and completed owned cleanup",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/installed-browser-privacy-refresh.test.mjs",
+      "message": "Exact executed source: .openai/hosting.json\n+ actual - expected\n\n+ '837b8f14a699d92a7269a38c5bbeb78838ef013d4629c6ad68ec4fbc68409760'\n- '6f55e031b82f9a23029129a1a3fed515ae6d7da180e369c7b2b90ec248d06475'\n"
+    },
+    {
+      "failed": "brave has exactly 19 actual headless passes, pinned binary and original, and completed owned cleanup",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/installed-browser-privacy-refresh.test.mjs",
+      "message": "Exact executed source: .openai/hosting.json\n+ actual - expected\n\n+ '837b8f14a699d92a7269a38c5bbeb78838ef013d4629c6ad68ec4fbc68409760'\n- '6f55e031b82f9a23029129a1a3fed515ae6d7da180e369c7b2b90ec248d06475'\n"
+    },
+    {
+      "failed": "opera-gx has exactly 19 actual headless passes, pinned binary and original, and completed owned cleanup",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/installed-browser-privacy-refresh.test.mjs",
+      "message": "Exact executed source: .openai/hosting.json\n+ actual - expected\n\n+ '837b8f14a699d92a7269a38c5bbeb78838ef013d4629c6ad68ec4fbc68409760'\n- '6f55e031b82f9a23029129a1a3fed515ae6d7da180e369c7b2b90ec248d06475'\n"
+    },
+    {
+      "failed": "changed lifecycle build retains all nineteen original privacy/offline/hosting checks and owned cleanup",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/navigation-worker-diagnostic.test.mjs",
+      "message": ".openai/hosting.json\n+ actual - expected\n\n+ '837b8f14a699d92a7269a38c5bbeb78838ef013d4629c6ad68ec4fbc68409760'\n- '6f55e031b82f9a23029129a1a3fed515ae6d7da180e369c7b2b90ec248d06475'\n"
+    },
+    {
+      "summary": {
+        "success": false,
+        "counts": {
+          "tests": 2042,
+          "failed": 5,
+          "passed": 2036,
+          "cancelled": 0,
+          "skipped": 1,
+          "todo": 0,
+          "topLevel": 2042,
+          "suites": 0
+        },
+        "duration_ms": 82257.76644
+      },
+      "qualificationNotRun": true,
+      "suite": "portable"
+    }
+  ],
+  "hostedPrivacyExecuted": false,
+  "explanation": "Earlier historical worker and workflow pins fixed. Five receipt checks next reached mixed-CRLF hosting.json. Before another dispatch, a complete Git-blob LF audit of all pins in all six affected receipts also caught five vite.config.ts mismatches; archive exact Windows hosting/Vite bytes too, retaining their original digests and independent Git blob pins.",
+  "focusedLfAudit": {
+    "initialPassed": 37,
+    "initialFailed": 1,
+    "initialDurationMs": 1750.9949,
+    "remainingMismatchFile": "vite.config.ts",
+    "remainingMismatches": 5,
+    "finalPassed": 38,
+    "finalFailed": 0,
+    "finalSkipped": 0,
+    "finalDurationMs": 973.1332
+  },
+  "conversionMemoryAcceptance": false,
+  "wholeGoalComplete": false
+}

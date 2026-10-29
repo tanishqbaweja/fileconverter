@@ -1,16 +1,21 @@
 # Tested conversion ledger
 
-Fresh hosted run 40893562612 at d450bc5b: lint, TypeScript, production build and
-four browser-suite jobs passed at first timed observation; media/remux still
-running. Verify units failed 10/2039 (2028 passed, one existing protected-original
-skip on Linux), so hosted privacy did NOT run. Exact failures retained in
-evidence/2026-10-29-hosted-ci-unit-failure.json. Six checks hit mixed Windows/LF
-worker bytes; four compared historical receipts to the newly changed CI file.
-Remedy archives the exact old bytes with original SHA-256s and independent Git
-blob pins; live policy/workflow assertions still read live sources. No receipt
-digests, thresholds, browser cases or production code changed. Focused historical
-and rejection checks: 37 PASS/0 skip, 902.2546 ms; affected lint/diff PASS. Verify
-recovery will run only its failed/unreached job, not replay successful suites.
+Fresh hosted run 40893562612 at d450bc5b is terminal: all five browser suites
+PASS, 962 cases (554 media/remux, 238 streaming, 153 images, 9 audio source,
+8 audio destination), zero failures/skips/flaky retries. Actual JSON case results
+and five cleanup steps checked; compact artifact hashes/stats retained in
+evidence/2026-10-29-hosted-browser-results.json. No conversion files downloaded.
+Verify failed ten historical-source checks; recovery 40896302105 at fb009d16
+resolved those but reached five more Windows/LF hosting pins (2036 PASS, 5 FAIL,
+one existing protected-original Linux skip). Privacy unreached in BOTH runs.
+Both failures retained. Full Git-blob LF audit of ALL pins in the six affected
+receipts caught the remaining Vite mismatches before another dispatch. Exact
+worker/hosting/Vite/prior-CI bytes are now immutable, original receipt digests
+unchanged, live-policy reads untouched. Focused checks: 38 PASS/0 skip, 973.1332
+ms; lint/diff PASS. Fresh verify-only-job recovery pending; successful conversion
+suites will not be replayed. 3771 non-test/evidence/ledger Git entries (INCLUDING
+browser tests) match between initial and first recovery source commits; see
+evidence/2026-10-29-hosted-source-equivalence.json. No memory/goal certification.
 
 2026-10-29 fresh hosted CI preparation (not a completed hosted run): verify and
 all five conversion suites now use one short, identity-checked repository-owned

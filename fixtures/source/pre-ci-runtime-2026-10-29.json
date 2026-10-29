@@ -1,8 +1,22 @@
 {
   "schemaVersion": 1,
   "sourceCommit": "86a95a5df5ca1f566c54fa7f0f327d9a278b2b47",
-  "purpose": "Exact prior receipt inputs only; Windows worker bytes retain their seven CRLFs. Not live-policy evidence.",
+  "purpose": "Exact prior receipt inputs only: prior CI plus Windows worker, hosting and Vite bytes. Original line endings and independent LF Git-blob hashes retained. Not live-policy evidence.",
   "files": {
+    "vite.config.ts": {
+      "bytes": 2134,
+      "sha256": "ef3bc4603131a48d6f6b013671f86b73a22cc40226196cb037c4b756700d61ae",
+      "gitBlobSha256": "d2dc95ac4ec9402f18c60709abea8cd5df3c952d5b53761684fdd85c1cd95b74",
+      "encoding": "gzip-base64",
+      "gzipBase64": "H4sIAAAAAAACCo1VbU/jOBD+jsR/GOXLwqkvUN2eTln1uELDi7ZQ1FTHnhDKuvEkNbh25HFaEOp/PzlO+qJjJfIhsj3PjGfG88yIRaGNhaVQ+GohM3oBgd8E3w4PhJe+A8dMKLzQKhM5rDc4izuouSYrVF6DPKTT7egCFRPdWtp5Jq32TJOwSBubne6sFJJ3q9O2u6FdyDIXlc7hQaoVWYhvplFyMYkG0/EkuR8NLqLr8WgYTZLhYDo4H8RRcjOE/uEBQHBSf+3q97v7/dlsm2/X9Dvw0xaYHqyhvx9RBep2YcHScQwxMjtDaWEmdfpCcBlHS1SWWkAaLjTHVygMLgWuCBQih0JLKVQOmTZwfTvpNBcKqtCNvZgpPtOv0IfC6BSJOqiWnYvxMPqRxIO74fn4B/T7fQioVth1XuqUyXOh+PYZ+vDu8rBgQoUuuyttXtB0heL42rEUtJy024XviAXYOQK+Ylpa5MCKQoqUWaHVF4JULwpmxUxIYd+AcMGUFSkBWTaTCKs5KqdeWyuEUsi9PxAPv9fXcliiIaEVpHOmcqSOw++ZTjizGELQO+n90T752j796l3cB2WS5RTCY6A0x2dKvDR4aqKJVKZNilVAZJkVaVsr+eYeQaRvMMNMG4RCMptpswBGhBaMLm3zQrhE81YbW6Cda96Bq2javY4GQ0iZArJCSigJ4Z+KLV8IuDCYWhjEcTSNYeafAVhm0ayY4T7Y6ioK4b0BhBB4jaAFplSJz1SSCUM2BGtKhHUVFj91uWEzRkgh8FN3BnAGj37hvvftErb2+Wlr97wxkii2cJl2TGunBpnVps1Pg4/Bgoefot2O9nqzfvKLEB79C5leMivTlyoRpvfpQExvzzdv4sMwTC/4hCPrijr4WjUijhkrpd3rdEeM3lQKR8fQ/8v71DDlwTCVSzTAFIdboUQmmfG1ho65z5jadlX+HZjOkRCcWGnVJkwNWrBay9ogoXV1R992KQeolsJotUBlYYZSq5xAKBC50gY5/HR94befkAlZ02i3XzxMBndXo2iSPEzcm43GVzGcnfUhyJikqmf/Aj8aXyX3g+m1R3dWdZhdqXP6v9rtzd3N5WgwiZJJdHUTTyf/fqhsMBdkzZtvVVXMm/yRYgXNtSUQlkDqHApm57CaC+npeyF1yX12/SAAQeCHB/K6f/jGnW6RrnmzFRO2Rh4Ff2+l3d2pclz7ZNCWRjWFR2iWaMJfNOemms7gHVbMpnNH55LwkvwMCKFKc8ud3fu23zAZ1o1yCKXytcbr8vQeubbWYPwgPjre1G81FXf226COdijj4ou25eO8q0liKA1akM6F5DuAqpMSmeBphypVXjORhx9MlQ1o3bjiee0ItXYZ/Q8lSBxgVggAAA=="
+    },
+    ".openai/hosting.json": {
+      "bytes": 93,
+      "sha256": "6f55e031b82f9a23029129a1a3fed515ae6d7da180e369c7b2b90ec248d06475",
+      "gitBlobSha256": "837b8f14a699d92a7269a38c5bbeb78838ef013d4629c6ad68ec4fbc68409760",
+      "encoding": "gzip-base64",
+      "gzipBase64": "H4sIAAAAAAACCqvmUlBQKijKz0pNLonPTFGyUlBKLChILyjKijdLNEtKtkw0STYxNLAwtDS0ME8xSzQ2MDYwTLFIMku1VNIB6U0xVLJSyCvNyQHzioygPF6uWl4uAAWxPqldAAAA"
+    },
     "worker/index.ts": {
       "bytes": 2036,
       "sha256": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee",

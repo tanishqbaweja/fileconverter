@@ -1,13 +1,18 @@
 # Remaining work audit
 
-B08/T-10 fresh hosted verification found real provenance portability failures:
-run 40893562612 verify units failed 10/2039; privacy unreached. Build/lint/tsc and
-four browser jobs passed at timed observation; media/remux pending. Fixed only
-historical source binding using immutable original worker/CI bytes (mixed CRLF
-and prior workflow), preserving every original digest and all live-policy gates.
-37 focused checks PASS/0 skip in 902.2546 ms, lint/diff PASS. Exact failed run is
-retained, not overwritten. Next: verify-only-job recovery (`portable-verify`) on
-the test-only remedy; no repeat of completed conversion suites. Full goal OPEN.
+B08/T-10: fresh hosted browser matrix COMPLETE at d450bc5b/run40893562612:
+962 PASS/0 fail/skip/flaky across all five suites, five owned scratch cleanups
+PASS. Build/lint/tsc also PASS, but verify units failed historical-source pins;
+first recovery40896302105/fb009d16 resolved ten failures then exposed five more
+hosting-line-ending pins (2036 PASS/5 FAIL/1 existing original-fixture Linux skip).
+Privacy remains unreached. Exact failures retained, original receipt hashes not
+rewritten. Full LF Git-blob audit now covers every pin in all six affected
+receipts and caught remaining Vite mismatches locally; focused38 PASS/0 skip
+973.1332 ms, lint/diff PASS. Next: recover ONLY verify on the test/archive-only
+fix. Production/browser/engine/workflow entries unchanged; no conversion replay.
+Evidence: 2026-10-29-hosted-browser-results.json, hosted-source-equivalence.json,
+hosted-ci-unit-failure.json, hosted-ci-recovery-first-failure.json (under evidence).
+Engine reproduction, current installed browsers, scaling/memory and full goal OPEN.
 
 2026-10-29 B08/T-10 hosted verification preparation: current framework dependency
 graph still needs fresh clean-checkout CI. Fixed verify/browser-job scratch and
