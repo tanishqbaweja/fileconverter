@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-29 — Premultiplied source40842628275/96a4a09a SUCCESS/authenticated.
+Two fresh pinned-nightly builds and4table tests each passed; raw3667913B SHA
+1df4c1453ea928d7c29e2cc9b06d3cb708d4a32438c524dd9e5e9517080e0f1b full-byte
+identical. Exact6member artifact12883946071/1289207B SHA c9bff709...adff2a8
+verified against API digest/head and every member. All4patch proofs/lock/compiler/
+cleanup verified, no local binarycopies. Inputpin equals verifier output.
+Source step188s/job205s, not a conversion benchmark. Future capped processor and
+exact-run verifier prepared;5focused PASS4937.3153ms then9source/opacity PASS
+6236.1289ms/lint/diff PASS. Historical verifier heads preserved by new guard.
+No raw artifact executes in browser before repeated cap/ABI checks. New capped
+postprocess workflow is now ready, not yet executed; all original limits intact.
+evidence/2026-10-29T08-37-13-491Z-svg-filter-source-artifact.json.
+
 2026-10-29 — Distinct premultiplied-transfer source candidate IMPLEMENTED,
 not renderer/browser-compiled yet. Starts from5331liveness, not rejectedc2d
 blanket-float patch. Two fixed65536B LUT payloads (131072B total; staticstorage

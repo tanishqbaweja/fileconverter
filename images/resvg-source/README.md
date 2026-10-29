@@ -29,6 +29,15 @@ browser-ready: repeated bindgen/cap/ABI verification and actual browser fidelity
 250 MiB full-tree memory, speed and recovery testing remain mandatory. The
 original 96 MiB cap and acceptance inputs must not change.
 
+Source run `40842628275` at `96a4a09a` now succeeds: both fresh raw builds are
+byte-identical and both pinned-nightly arithmetic checks pass. The authenticated
+raw module is 3,667,913 bytes, SHA-256
+`1df4c1453ea928d7c29e2cc9b06d3cb708d4a32438c524dd9e5e9517080e0f1b`.
+See `filter-premultiplied-raw-input.json` and
+`evidence/2026-10-29T08-37-13-491Z-svg-filter-source-artifact.json`. No local binary
+copies remain. The next stage is repeated capped postprocessing, not another
+source build; browser correctness and performance are still unverified.
+
 ## Final-merge precision candidate (private, 2026-10-29)
 
 The default identity-filter diagnostic demonstrated an 8-bit linearRGB round-trip

@@ -1,5 +1,12 @@
 # Remaining work audit
 
+New premultiplied source is repeatedly compiled/byte-identical and authenticated:
+40842628275/96a4a09a/raw1df4c145...e0f1b, both pinned-nightly numeric controls
+passed. Raw pin saved only after exact archive/receipt/patch verification; no
+local binary copies. Next repeated bindgen/cap/ABI stage, then actual original
+small fidelity before6M.9focused PASS6236.1289ms/lint/diff PASS. No browser or
+memory/speed acceptance yet, no rebuild of unchanged source. Wider goal intact.
+
 Premultiplied-transfer implementation now prepared from original liveness source,
 NOT blanket-float candidate. Fixed128KiB LUT payload, original8-bit multiple-input
 merge behavior, no viewport float accumulator;4compiled hostRust tests and12

@@ -1,0 +1,41 @@
+name: Private SVG premultiplied source postprocess repetition
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["media-options"]
+    paths: [".github/workflows/svg-premultiplied-postprocess.yml"]
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  postprocess-premultiplied-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "24.7.0"
+      - name: Verify four source proofs and repeat capped postprocessing
+        run: node images/resvg-source/postprocess-filter-region-source.mjs --premultiplied
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_PROMPT_DISABLED: "true"
+      - name: Verify public engines unchanged
+        if: always()
+        run: git diff --exit-code -- public/engines
+      - name: Retain private candidate and exact evidence for one day
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: svg-filter-premultiplied-processed-${{ github.run_id }}
+          path: |
+            outputs/reports/resvg-filter-premultiplied-processed-owner-${{ github.run_id }}.json
+            outputs/reports/resvg-source-processed-repeat-${{ github.run_id }}.json
+            outputs/reports/resvg-source-processed-repeat-${{ github.run_id }}.wasm
+            outputs/reports/resvg-source-processed-repeat-${{ github.run_id }}.mjs
+          if-no-files-found: warn
+          retention-days: 1

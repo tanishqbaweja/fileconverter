@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "96a4a09a39989200282444076caca508314c1f74",
+  "runId": 40842628275,
+  "workflow": "svg-source-premultiplied-transfer.yml",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/40842628275",
+  "verifiedStatus": "completed",
+  "conclusion": "success",
+  "finishedAt": "2026-10-29T08:34:01Z",
+  "observedAfterEstimateAt": "2026-10-29T08:37:01Z",
+  "authenticatedReceipt": "evidence/2026-10-29T08-37-13-491Z-svg-filter-source-artifact.json",
+  "verifiedAt": "2026-10-29T08:31:25Z",
+  "verifiedUpdatedAt": "2026-10-29T08:30:36Z",
+  "estimatedTotalSeconds": 360,
+  "doNotCheckBefore": "2026-10-29T08:36:40Z",
+  "instruction": "Follow this exact run/head; do not redispatch on observation timeout or unchanged state.",
+  "scope": "Two fresh premultiplied-transfer source builds only; no browser acceptance"
+}

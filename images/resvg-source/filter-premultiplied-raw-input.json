@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "runId": 40842628275,
+  "headSha": "96a4a09a39989200282444076caca508314c1f74",
+  "artifactId": 12883946071,
+  "artifactBytes": 1289207,
+  "artifactSha256": "c9bff7096117456ab8a854cc6a04c21fbb5d53c86f6639d685338aac2adff2a8",
+  "members": [
+    {"name":"resvg-filter-premultiplied-owner-40842628275.json","bytes":24908,"sha256":"624ae7f1755adae9b7ebff136fc5aff179f72fe760e2bdc3dc94b4e7228dfeb0"},
+    {"name":"resvg-source-compile-408426282751.json","bytes":40447,"sha256":"69a525a6957fd7e42decab67dd1490e91887c524ff5f66841b1eb1e42efb44d9"},
+    {"name":"resvg-source-compile-408426282751.lock","bytes":36670,"sha256":"7bf87e7ccbd783700754844a8357a20b7b097c2c69e31476d9f44ba19ff886bc"},
+    {"name":"resvg-source-compile-408426282751.wasm","bytes":3667913,"sha256":"1df4c1453ea928d7c29e2cc9b06d3cb708d4a32438c524dd9e5e9517080e0f1b"},
+    {"name":"resvg-source-compile-408426282752.json","bytes":40447,"sha256":"7c01c1e7c9e6e63dd9822b85d51fb32e6f1c12f1ae7196be3c9a12b1497b25be"},
+    {"name":"resvg-source-repeat-40842628275.json","bytes":20399,"sha256":"3401fceb1fd17eadcb9fa3efd0bbff95540b46a73ae4b3bb60a11156c8ccedc7"}
+  ],
+  "summaryMember": "resvg-source-repeat-40842628275.json",
+  "wasmMember": "resvg-source-compile-408426282751.wasm",
+  "lockMember": "resvg-source-compile-408426282751.lock",
+  "compilerReceiptMembers": ["resvg-source-compile-408426282751.json","resvg-source-compile-408426282752.json"],
+  "ownerReceiptMember": "resvg-filter-premultiplied-owner-40842628275.json",
+  "kind": "two-fresh-filter-premultiplied-source-builds-byte-identical-before-postprocessing",
+  "renderContextPatchedSha256": "d9d3b07113d3e95e0506658e197f2c782dd0469fd5d3a34e960fff66c53f7bef",
+  "filterLivenessPatchedSha256": "5331eaa19f37af8f1f6b96d1e672a66609a7bd65f8f3ec24f47faaf6dcc53307",
+  "premultipliedTransferPatchedSha256": "9b601b713bfc3a5ca318fd8edaa220f4dcb2b3ba7323956efefc118f08fba8bb",
+  "premultipliedKernelSha256": "0b28bd9909c60f9575be8ae5021dcb2c81291c16e9a6fea69663009fe66b5126"
+}
