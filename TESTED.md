@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+2026-10-29 — Integration9ff9686b COMPLETE, identity PASS/real effects+shadow FAIL.
+Identity whole0.999791/band0.999207; original effects0.979103/0.946037 (sameeee186
+pixels as rejected pair); shadow-only0.949401/0.931386.64samples/256bins/12worst
+pixels each retained. At(90,30), Chrome identity[29,11,17] but Chrome effects
+[28,13,13]; native3bb[29,11,17] both. Thus earlier identity precision finding
+does NOT generalize to real chains: the matching reference actually quantizes
+there. Shadow-only reference[7,30,45] versus native[19,30,45] isolates a large
+red mismatch; geometry/identity itself passes. Both input/reference pins intact.
+Numeric-only premultRGBA[5,12,19,166]: old unpremultiply/table/premultiply yields
+linear[1,1,2], direct float decode/premultiply/quantize yields[0,1,2]. This suggests
+conversion-order controls, NOT a proven Chromium algorithm or fix. Need fixed
+opacity1/.65/.9 flood+composite controls before another native implementation.
+No stable earliestblank baseline:128valid0missing samples, incremental=null,
+no memory acceptance; do not borrow an earlier session's baseline or inflate one.
+Allopaquealphaexact/no forbiddenrequests/queues0/owned roots/runtime/media clean,
+original full SHA unchanged. Suite12648.885ms/onefailedtest; no6M run/rebuild.
+Exact integration replay guarded. evidence/2026-10-29-svg-precision-integration-terminal.json.
+Final12focused PASS/0fail/0skip/0cancel1215.6796ms, lint/diff PASS. Tests retain
+both real-chain quality failures and unavailable memory baseline as failures.
+
 2026-10-29 — New integration diagnostic prepared, not executed: same native3bb,
 identity-default, unchanged original effects-default, and reversible shadow-only
 source. All4source proofs and original quality/96MiB/250MiB/45s gates retained.

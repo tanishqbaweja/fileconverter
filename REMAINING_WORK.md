@@ -1,5 +1,17 @@
 # Remaining work audit
 
+Integration now disproves blanket float compatibility: identity passes but actual
+Chrome effects reference quantizes opaque[29,11,17] to[28,13,13], while newnative
+keepsoriginal. Shadow-only red differs by12atknowncenter; preserved bounded pixel
+evidence isolates separate shadow issue. Correct fix must respect real-chain
+reference behavior, not assume all quantization is removable. Premultiplication/
+quantization order is a new numeric-backed hypothesis; opacity controls still
+needed before new native build. Exact controls guarded, no6M rerun justified.
+Currentblank baseline unavailable/primaryincremental=null; memory not qualified.
+Allowned data cleaned/originalhash unchanged; all broader original scope intact.
+evidence/2026-10-29-svg-precision-integration-terminal.json.
+Final12focused PASS1215.6796ms/lint/diff PASS; no supported profile established.
+
 Precision integration controls are now source/collection-verified, NOT converted:
 identity-default, original effects-default and shadow-only under new3bbnative,
 with bounded64pixel/256bin/12worst evidence and alloriginal gates/fourproofs.

@@ -73,5 +73,15 @@
     "evidence": "evidence/2026-10-29-svg-small-precision-terminal.json",
     "conclusion": "New high-precision final merge worsens original small-scene fidelity: full and strip decodedRGBA equal but both whole0.979103/minband0.946037 fail0.99. Do not run6M or replay unchanged pair."
   },
+  "completedPrecisionIntegrationControl": {
+    "nativeWasmSha256": "3bb55dc356427d760021c4aea7aff7db06f776505f1fcefc96251a2bad0d7c8c",
+    "variants": [
+      {"name":"identity-default","sha256":"0e290d0d4cb82fdab82f3eba5f20c331d910b7303a994cf2f86e567f82fe2d7d"},
+      {"name":"effects-default","sha256":"afebfa848cd052fcd656cfdda7605c6c191edf845087759ca3421cf44880981d"},
+      {"name":"shadow-only","sha256":"ca496ff1dafb0953f6c14455690b0afc04792755544cadcabbcd938e769a1dc4"}
+    ],
+    "evidence": "evidence/2026-10-29-svg-precision-integration-terminal.json",
+    "conclusion": "Identity passes; real effects and shadow fail. Chrome reference itself quantizes opaque colors in real effects but not identity; blanket float merge is not a compatibility fix."
+  },
   "publicPromotion": false
 }

@@ -50,8 +50,14 @@ whole SSIM 0.979103 and minimum band 0.946037 are below 0.99 and worse than the
 earlier candidate. See `evidence/2026-10-29-svg-small-precision-terminal.json`.
 This candidate is rejected; 187.75 MiB diagnostic memory is not profile acceptance.
 No large-scene run is justified. Do not rebuild or replay the unchanged pair.
-The next diagnostic must distinguish identity integration from earlier shadow
-intermediate loss with bounded pixel evidence; neither cause is proven yet.
+The subsequent bounded integration diagnostic shows that the identity case
+passes, but the Chromium reference itself quantizes opaque colors in real effects
+chains: `[29,11,17]` in identity becomes `[28,13,13]` in effects. The float candidate
+incorrectly removes this reference behavior. A shadow-only red-channel mismatch
+also remains. See `evidence/2026-10-29-svg-precision-integration-terminal.json`.
+That run lacked a stable blank baseline, so its incremental memory is `null`, not
+a pass. Next distinguish premultiplication/quantization order with varied-opacity
+controls before another native change. Do not repeat the completed diagnostic.
 
 `svg-source-lock` is a manual CI scope, not a published engine recipe. It checks
 out resvg-js v2.6.2 by full commit, verifies its original Cargo manifest SHA,
