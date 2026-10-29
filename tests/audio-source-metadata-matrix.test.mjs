@@ -73,7 +73,11 @@ test("small metadata browser evidence remains bounded and anchored to the execut
   assert.deepEqual(JSON.parse(alternatives[1]), ["media-remux", "streaming-conversions"]);
   assert.deepEqual(JSON.parse(alternatives[2]), ["image-conversions", "media-remux", "audio-source-metadata", "audio-destination-scopes", "streaming-conversions"]);
   assert.match(job.if, /inputs.engine == 'all'/); assert.match(job.if, /inputs.engine == 'verify-only'/);
-  assert.ok(workflow.includes('TMPDIR="$task_browser_tmp" npx playwright test'));
+  const prepare = job.steps.findIndex(step => step.run === "node scripts/ci-owned-runtime.mjs prepare");
+  const run = job.steps.findIndex(step => step.name === "Run browser conversions and independent validators");
+  const cleanup = job.steps.find(step => step.run === "node scripts/ci-owned-runtime.mjs cleanup");
+  assert.ok(prepare >= 0 && prepare < run);
+  assert.equal(cleanup.if, "always()");
   assert.equal(evidence.cleanup.perConversionOpfsEmpty, true);
   assert.equal(evidence.engine.changed, false);
   assert.ok(evidence.limitations.some((item) => item.includes("no new complete-process memory")));
@@ -81,12 +85,19 @@ test("small metadata browser evidence remains bounded and anchored to the execut
 
 test("CI repository-local browser temporary paths fit Linux singleton sockets", async () => {
   const workflow = await readFile(new URL("../.github/workflows/ci.yml", import.meta.url), "utf8");
-  assert.ok(workflow.includes('mktemp -d "$GITHUB_WORKSPACE/work/t.XXXXXX"'));
+  const runtime = await readFile(new URL("../scripts/ci-owned-runtime.mjs", import.meta.url), "utf8");
+  assert.ok(runtime.includes('createOwnedRuntimeScratch("ci-")'));
   const workspace = "/home/runner/work/fileconverter/fileconverter";
   const socketSuffix = "/org.chromium.Chromium.165DAM/SingletonSocket";
   const rejected = `${workspace}/work/ci-browser-streaming-conversions-AQ7rYA${socketSuffix}`;
-  const retained = `${workspace}/work/t.ABCDEF${socketSuffix}`;
+  const retained = `${workspace}/work/ci-ABCDEF${socketSuffix}`;
   assert.ok(Buffer.byteLength(rejected) >= 108);
   assert.ok(Buffer.byteLength(retained) < 108);
-  assert.ok(workflow.includes("trap 'rm -rf --"));
+  assert.ok(runtime.includes("TMPDIR: runtime.directory"));
+  const yaml = createRequire(path.resolve("node_modules/@eslint/eslintrc/package.json"))("js-yaml");
+  for (const name of ["verify", "browser-conversions"]) {
+    const steps = yaml.load(workflow).jobs[name].steps;
+    assert.equal(steps.at(-1).run, "node scripts/ci-owned-runtime.mjs cleanup");
+    assert.equal(steps.at(-1).if, "always()");
+  }
 });

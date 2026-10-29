@@ -38,3 +38,36 @@ test("validator setup is finite/noninteractive and omits optional recommendation
   assert.match(tests.run, /npx playwright test tests\/browser\/\$\{\{ matrix.suite \}\}.spec.ts/);
   assert.doesNotMatch(tests.run, /--grep|--last-failed|--max-failures|--skip/);
 });
+
+test("fresh hosted verification scopes scratch before installs and removes only its owned runtime after evidence", async () => {
+  const workflow = await load();
+  for (const name of ["verify", "browser-conversions"]) {
+    const job = workflow.jobs[name], steps = job.steps;
+    const prepare = steps.findIndex(step => step.run === "node scripts/ci-owned-runtime.mjs prepare");
+    const setup = steps.findIndex(step => step.uses === "actions/setup-node@v4");
+    const cleanup = steps.findIndex(step => step.run === "node scripts/ci-owned-runtime.mjs cleanup");
+    assert.ok(prepare > 0 && prepare < setup && cleanup === steps.length - 1);
+    assert.equal(steps[setup].with["node-version"], "24.7.0");
+    assert.equal(steps[setup].with.cache, undefined, "Do not persist a cache that finally cleanup removes");
+    assert.equal(steps[cleanup].if, "always()");
+    assert.equal(steps[cleanup].env.NODE_DISABLE_COMPILE_CACHE, "1", "Cleanup must not recreate its own compile cache on exit");
+    assert.equal(job.env.WRANGLER_SEND_METRICS, "false");
+    assert.equal(job.env.NEXT_TELEMETRY_DISABLED, "1");
+    for (const step of steps.filter(step => step.uses === "actions/upload-artifact@v4"))
+      assert.equal(step.with["retention-days"], 1);
+    const compact = steps.find(step => step.name?.startsWith("Retain compact"));
+    assert.equal(compact.if, "always()"); assert.match(compact.with.path, /^output\/playwright\/.*results\.json$/);
+  }
+});
+
+test("verification retains all unchanged browser cases and adds machine-readable results without headed launches or retries", async () => {
+  const jobs = (await load()).jobs;
+  const privacy = jobs.verify.steps.find(step => step.name === "Run network privacy and offline browser tests");
+  assert.equal(privacy.run, "npx playwright test tests/browser/privacy-offline.spec.ts tests/browser/static-host-policy.spec.ts --reporter=line,json,html");
+  const conversion = jobs["browser-conversions"].steps.find(step => step.name === "Run browser conversions and independent validators");
+  assert.equal(conversion.run, "npx playwright test tests/browser/${{ matrix.suite }}.spec.ts --reporter=line,json,html");
+  for (const step of [privacy, conversion]) {
+    assert.match(step.env.PLAYWRIGHT_JSON_OUTPUT_NAME, /^output\/playwright\/.*results\.json$/);
+    assert.doesNotMatch(step.run, /--headed|--retries|--grep|--last-failed|--max-failures/);
+  }
+});

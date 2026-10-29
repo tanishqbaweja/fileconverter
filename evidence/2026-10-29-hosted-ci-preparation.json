@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-10-29T14:38:10Z",
+  "purpose": "Fresh clean-checkout hosted verification after framework dependency remediation",
+  "initialFocusedResult": {
+    "passed": 28,
+    "failed": 2,
+    "durationMs": 2458.2159,
+    "failures": [
+      "Existing metadata workflow contract still required the replaced inline TMPDIR shell string",
+      "New workflow test called startsWith on unnamed action steps"
+    ],
+    "remedy": "Bind metadata assertions to the new prepare-before-test and always-cleanup contract; guard unnamed steps. No browser cases or acceptance thresholds changed."
+  },
+  "finalFocusedResult": {
+    "passed": 30,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 1152.1718,
+    "files": [
+      "tests/ci-owned-runtime.test.mjs",
+      "tests/browser-recovery-workflow.test.mjs",
+      "tests/audio-source-metadata-matrix.test.mjs",
+      "tests/audio-destination-scopes-contract.test.mjs",
+      "tests/static-host-request-policy.test.mjs",
+      "tests/unit-suite-contract.test.mjs",
+      "tests/vpx-live-memory-workflow.test.mjs",
+      "tests/media-regression-synchronization.test.mjs"
+    ]
+  },
+  "affectedEslint": "passed",
+  "diffCheck": "passed",
+  "localDisposableRuntimeDirectoriesRemaining": 0,
+  "testMkvOpenedOrConverted": false,
+  "dockerUsed": false,
+  "headedCoverage": false,
+  "hostedVerification": "not-yet-dispatched-at-this-checkpoint",
+  "engineReproduction": false,
+  "conversionMemoryAcceptance": false,
+  "wholeGoalComplete": false
+}

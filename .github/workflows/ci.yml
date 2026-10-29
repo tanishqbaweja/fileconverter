@@ -293,15 +293,20 @@ jobs:
     if: github.event_name != 'workflow_dispatch' || inputs.engine == 'all' || inputs.engine == 'verify-only' || inputs.engine == 'portable-verify'
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      WRANGLER_SEND_METRICS: "false"
+      NEXT_TELEMETRY_DISABLED: "1"
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
+      - name: Prepare repository-owned CI runtime
+        run: node scripts/ci-owned-runtime.mjs prepare
+
       - uses: actions/setup-node@v4
         with:
-          node-version: "24"
-          cache: npm
+          node-version: "24.7.0"
 
       - run: npm ci
       - run: npx playwright install --with-deps chromium
@@ -317,7 +322,18 @@ jobs:
       - run: npm test
 
       - name: Run network privacy and offline browser tests
-        run: npx playwright test tests/browser/privacy-offline.spec.ts tests/browser/static-host-policy.spec.ts
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: output/playwright/verify-results.json
+        run: npx playwright test tests/browser/privacy-offline.spec.ts tests/browser/static-host-policy.spec.ts --reporter=line,json,html
+
+      - name: Retain compact verification results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-results
+          path: output/playwright/verify-results.json
+          if-no-files-found: ignore
+          retention-days: 1
 
       - name: Upload verification failure evidence
         if: failure()
@@ -328,11 +344,21 @@ jobs:
             output/playwright/artifacts
             output/playwright/report
           if-no-files-found: ignore
+          retention-days: 1
+
+      - name: Remove owned CI runtime
+        if: always()
+        env:
+          NODE_DISABLE_COMPILE_CACHE: "1"
+        run: node scripts/ci-owned-runtime.mjs cleanup
 
   browser-conversions:
     if: github.event_name != 'workflow_dispatch' || inputs.engine == 'all' || inputs.engine == 'verify-only' || inputs.engine == 'browser-recovery'
     runs-on: ubuntu-latest
     timeout-minutes: 45
+    env:
+      WRANGLER_SEND_METRICS: "false"
+      NEXT_TELEMETRY_DISABLED: "1"
     strategy:
       fail-fast: false
       matrix:
@@ -343,10 +369,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Prepare repository-owned CI runtime
+        run: node scripts/ci-owned-runtime.mjs prepare
+
       - uses: actions/setup-node@v4
         with:
-          node-version: "24"
-          cache: npm
+          node-version: "24.7.0"
 
       - run: npm ci
       - run: npx playwright install --with-deps chromium
@@ -362,14 +390,18 @@ jobs:
           python -m pip install --disable-pip-version-check -r scripts/requirements-ci-validators.txt
 
       - name: Run browser conversions and independent validators
-        shell: bash
-        run: |
-          mkdir -p "$GITHUB_WORKSPACE/work"
-          # Chromium appends its singleton socket path here; keep the complete
-          # AF_UNIX path below Linux's 108-byte ceiling without leaving the repo.
-          task_browser_tmp="$(mktemp -d "$GITHUB_WORKSPACE/work/t.XXXXXX")"
-          trap 'rm -rf -- "$task_browser_tmp"' EXIT
-          TMPDIR="$task_browser_tmp" npx playwright test tests/browser/${{ matrix.suite }}.spec.ts
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: output/playwright/${{ matrix.suite }}-results.json
+        run: npx playwright test tests/browser/${{ matrix.suite }}.spec.ts --reporter=line,json,html
+
+      - name: Retain compact browser results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-results-${{ matrix.suite }}
+          path: output/playwright/${{ matrix.suite }}-results.json
+          if-no-files-found: ignore
+          retention-days: 1
 
       - name: Upload browser failure evidence
         if: failure()
@@ -380,6 +412,13 @@ jobs:
             output/playwright/artifacts
             output/playwright/report
           if-no-files-found: ignore
+          retention-days: 1
+
+      - name: Remove owned CI runtime
+        if: always()
+        env:
+          NODE_DISABLE_COMPILE_CACHE: "1"
+        run: node scripts/ci-owned-runtime.mjs cleanup
 
   audio-destination-scopes:
     if: github.event_name == 'workflow_dispatch' && inputs.engine == 'audio-destination-scopes'

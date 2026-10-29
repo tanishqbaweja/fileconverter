@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-10-29 B08/T-10 hosted verification preparation: current framework dependency
+graph still needs fresh clean-checkout CI. Fixed verify/browser-job scratch and
+cache locations to fresh short repository-owned runtimes, with job/source and
+directory-identity checked always-cleanup. Preserved the full five-suite matrix
+and every existing gate. Added compact results with one-day artifact retention.
+Local focused checks: 30 PASS/0 fail/skip in 1152.1718 ms, ESLint/diff PASS;
+initial two contract failures retained in the preparation receipt. Hosted
+completion remains UNVERIFIED pending dispatch and terminal results.
+This is not engine reproduction, large-file/memory acceptance, or goal completion.
+
 Final7focused receipt/idempotency checks PASS1562.4578ms/lint PASS. Owned
 unpatched-module fixture is not a fullfreshcheckout;2033portable predates two
 last test additions, productionimplementation remains e40c4223. CanonicalT-10

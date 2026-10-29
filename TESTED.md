@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-29 fresh hosted CI preparation (not a completed hosted run): verify and
+all five conversion suites now use one short, identity-checked repository-owned
+runtime per job for temporary files, browser profiles, SDK logs and tool caches.
+Cleanup runs after evidence upload, including on failure; compile-cache creation
+is disabled during cleanup. Node is fixed at the locally tested 24.7.0. All cases,
+timeouts and acceptance constraints are unchanged. Compact browser results and
+failure evidence expire after one day. Focused regression: 30 PASS, zero failures
+or skips, 1152.1718 ms; affected ESLint/diff checks PASS. Initial two contract-test
+failures and fixes retained in evidence/2026-10-29-hosted-ci-preparation.json.
+Fresh hosted results will be recorded separately. No Docker or headed launches.
+
 Finalreceipt/preparation regression:7focused PASS1562.4578ms/lint PASS, including
 exactsource-audit/privacy linkage and an owned unpatched-module fixture proving
 one-time/idempotent bootstrap without touching the live installed module. This
