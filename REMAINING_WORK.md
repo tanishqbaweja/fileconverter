@@ -1,5 +1,14 @@
 # Remaining work audit
 
+B08/T-10 fresh hosted verification found real provenance portability failures:
+run 40893562612 verify units failed 10/2039; privacy unreached. Build/lint/tsc and
+four browser jobs passed at timed observation; media/remux pending. Fixed only
+historical source binding using immutable original worker/CI bytes (mixed CRLF
+and prior workflow), preserving every original digest and all live-policy gates.
+37 focused checks PASS/0 skip in 902.2546 ms, lint/diff PASS. Exact failed run is
+retained, not overwritten. Next: verify-only-job recovery (`portable-verify`) on
+the test-only remedy; no repeat of completed conversion suites. Full goal OPEN.
+
 2026-10-29 B08/T-10 hosted verification preparation: current framework dependency
 graph still needs fresh clean-checkout CI. Fixed verify/browser-job scratch and
 cache locations to fresh short repository-owned runtimes, with job/source and

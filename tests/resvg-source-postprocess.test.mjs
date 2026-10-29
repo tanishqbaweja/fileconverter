@@ -5,6 +5,7 @@ import { createRequire } from "node:module";
 import path from "node:path";
 import test from "node:test";
 import { sha } from "../images/resvg-source/source-pins.mjs";
+import { readPreCiRuntimeInput } from "./helpers/pre-ci-runtime-inputs.mjs";
 import { rawInput, bindgenTool, experimentalMaximumBytes, verifyBindgenVersion, verifySourceReceipt, requireArtifactMembers, compareStaticAbi } from "../images/resvg-source/postprocess-contract.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url));
 const json = async file => JSON.parse(await read(file));
@@ -25,7 +26,7 @@ test("actual tool version includes the pinned source revision; reject an unversi
     const old = archive.files[file]; let source;
     if (old) { source = gunzipSync(Buffer.from(old.gzipBase64, "base64"), { maxOutputLength: 32768 });
       assert.equal(source.length, old.bytes); assert.equal(sha(source), old.sha256); }
-    else source = await read(file);
+    else source = await readPreCiRuntimeInput(file);
     assert.equal(sha(source), digest, `Actual first failed postprocessor source: ${file}`);
   }
 });
@@ -39,7 +40,7 @@ test("actual third compile succeeded with exact command, repaired lock, genuine 
     const old = archive.files[file]; let bytes;
     if (old) { bytes = gunzipSync(Buffer.from(old.gzipBase64, "base64"), { maxOutputLength: 32768 });
       assert.equal(bytes.length, old.bytes); assert.equal(sha(bytes), old.sha256); }
-    else bytes = await read(file);
+    else bytes = await readPreCiRuntimeInput(file);
     assert.equal(sha(bytes), digest, `Actual successful compiler source: ${file}`);
   }
   assert.equal(receipt.rawWasm.executed, false); assert.equal(receipt.rawWasm.importCount, 21); assert.equal(receipt.rawWasm.exportCount, 799);

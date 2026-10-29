@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "runId": 40893562612,
+  "jobId": 123516492562,
+  "sourceCommit": "d450bc5b295b4c505f097bf115b629ee05aea34e",
+  "events": [
+    {
+      "failed": "changed dependency build passes all nineteen original privacy cases with source and owned cleanup proof",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/image-size-security-patch.test.mjs",
+      "message": "worker/index.ts\n+ actual - expected\n\n+ '427c980ca2d22a309a355f1cb9b1a3fadfb5cecb86cc1d3071530d8117e17c30'\n- 'e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee'\n"
+    },
+    {
+      "failed": "edge has exactly 19 actual headless passes, pinned binary and original, and completed owned cleanup",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/installed-browser-privacy-refresh.test.mjs",
+      "message": "Exact executed source: worker/index.ts\n+ actual - expected\n\n+ '427c980ca2d22a309a355f1cb9b1a3fadfb5cecb86cc1d3071530d8117e17c30'\n- 'e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee'\n"
+    },
+    {
+      "failed": "brave has exactly 19 actual headless passes, pinned binary and original, and completed owned cleanup",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/installed-browser-privacy-refresh.test.mjs",
+      "message": "Exact executed source: worker/index.ts\n+ actual - expected\n\n+ '427c980ca2d22a309a355f1cb9b1a3fadfb5cecb86cc1d3071530d8117e17c30'\n- 'e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee'\n"
+    },
+    {
+      "failed": "opera-gx has exactly 19 actual headless passes, pinned binary and original, and completed owned cleanup",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/installed-browser-privacy-refresh.test.mjs",
+      "message": "Exact executed source: worker/index.ts\n+ actual - expected\n\n+ '427c980ca2d22a309a355f1cb9b1a3fadfb5cecb86cc1d3071530d8117e17c30'\n- 'e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee'\n"
+    },
+    {
+      "failed": "fixed real app retires all idle workers while away and creates fresh workers after both cached and fresh-document returns",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/navigation-worker-diagnostic.test.mjs",
+      "message": "worker/index.ts\n+ actual - expected\n\n+ '427c980ca2d22a309a355f1cb9b1a3fadfb5cecb86cc1d3071530d8117e17c30'\n- 'e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee'\n"
+    },
+    {
+      "failed": "changed lifecycle build retains all nineteen original privacy/offline/hosting checks and owned cleanup",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/navigation-worker-diagnostic.test.mjs",
+      "message": "worker/index.ts\n+ actual - expected\n\n+ '427c980ca2d22a309a355f1cb9b1a3fadfb5cecb86cc1d3071530d8117e17c30'\n- 'e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee'\n"
+    },
+    {
+      "failed": "actual postprocessor success is receipt/source/artifact bound, not browser, exact published reproduction or source-repeat acceptance",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/resvg-private-browser-contract.test.mjs",
+      "message": ".github/workflows/ci.yml\n+ actual - expected\n\n+ '17daa9948f9d677bceb2fb64de6a49a5cdd0bb75f2c8dd4c1153d062b2cbc7e3'\n- 'c60872fd9264e255ba8b8a629e7e2cf4b8d798bf5c1968dc5a1880bb54bf7a47'\n"
+    },
+    {
+      "failed": "actual tool version includes the pinned source revision; reject an unversioned revision or unrelated build",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/resvg-source-postprocess.test.mjs",
+      "message": "Actual first failed postprocessor source: .github/workflows/ci.yml\n+ actual - expected\n\n+ '17daa9948f9d677bceb2fb64de6a49a5cdd0bb75f2c8dd4c1153d062b2cbc7e3'\n- 'c60872fd9264e255ba8b8a629e7e2cf4b8d798bf5c1968dc5a1880bb54bf7a47'\n"
+    },
+    {
+      "failed": "two actual fresh remapped source builds have byte-identical raw Wasm, fixed locked inputs and independently removed scratch",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/resvg-source-repeat-result.test.mjs",
+      "message": ".github/workflows/ci.yml\n+ actual - expected\n\n+ '17daa9948f9d677bceb2fb64de6a49a5cdd0bb75f2c8dd4c1153d062b2cbc7e3'\n- 'c60872fd9264e255ba8b8a629e7e2cf4b8d798bf5c1968dc5a1880bb54bf7a47'\n"
+    },
+    {
+      "failed": "actual first repeat probe remains failed before generation with exact pinned compiler/lock and complete owned cleanup",
+      "file": "/home/runner/work/fileconverter/fileconverter/tests/resvg-source-reproduction.test.mjs",
+      "message": ".github/workflows/ci.yml\n+ actual - expected\n\n+ '17daa9948f9d677bceb2fb64de6a49a5cdd0bb75f2c8dd4c1153d062b2cbc7e3'\n- 'c60872fd9264e255ba8b8a629e7e2cf4b8d798bf5c1968dc5a1880bb54bf7a47'\n"
+    },
+    {
+      "summary": {
+        "success": false,
+        "counts": {
+          "tests": 2039,
+          "failed": 10,
+          "passed": 2028,
+          "cancelled": 0,
+          "skipped": 1,
+          "todo": 0,
+          "topLevel": 2039,
+          "suites": 0
+        },
+        "duration_ms": 85520.876481
+      },
+      "qualificationNotRun": true,
+      "suite": "portable"
+    }
+  ],
+  "hostedPrivacyExecuted": false,
+  "explanation": "Six historical worker source pins differ by checkout line endings; four historical workflow source pins compare against newly changed live CI. Preserve all original receipt digests and bind exact archived historical bytes, not live acceptance.",
+  "conversionMemoryAcceptance": false,
+  "wholeGoalComplete": false
+}

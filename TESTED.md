@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+Fresh hosted run 40893562612 at d450bc5b: lint, TypeScript, production build and
+four browser-suite jobs passed at first timed observation; media/remux still
+running. Verify units failed 10/2039 (2028 passed, one existing protected-original
+skip on Linux), so hosted privacy did NOT run. Exact failures retained in
+evidence/2026-10-29-hosted-ci-unit-failure.json. Six checks hit mixed Windows/LF
+worker bytes; four compared historical receipts to the newly changed CI file.
+Remedy archives the exact old bytes with original SHA-256s and independent Git
+blob pins; live policy/workflow assertions still read live sources. No receipt
+digests, thresholds, browser cases or production code changed. Focused historical
+and rejection checks: 37 PASS/0 skip, 902.2546 ms; affected lint/diff PASS. Verify
+recovery will run only its failed/unreached job, not replay successful suites.
+
 2026-10-29 fresh hosted CI preparation (not a completed hosted run): verify and
 all five conversion suites now use one short, identity-checked repository-owned
 runtime per job for temporary files, browser profiles, SDK logs and tool caches.

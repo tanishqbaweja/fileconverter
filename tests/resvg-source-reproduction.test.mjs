@@ -5,6 +5,7 @@ import path from "node:path";
 import test from "node:test";
 import { gunzipSync } from "node:zlib";
 import { sha } from "../images/resvg-source/source-pins.mjs";
+import { readPreCiRuntimeInput } from "./helpers/pre-ci-runtime-inputs.mjs";
 import { remappedRustcInvocation, remappedSourceRoot } from "../images/resvg-source/remap-contract.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url), "utf8");
 const root = "/home/runner/work/fileconverter/fileconverter", runtime = root + "/work/resvg-source-compile-Ab3XyZ";
@@ -31,7 +32,7 @@ test("actual first repeat probe remains failed before generation with exact pinn
   for (const receipt of [top, compile]) for (const [file, digest] of Object.entries(receipt.sourcePins)) {
     const old = archive.files[file]; let bytes;
     if (old) { bytes = gunzipSync(Buffer.from(old.gzipBase64, "base64"), { maxOutputLength: 32768 }); assert.equal(bytes.length, old.bytes); assert.equal(sha(bytes), old.sha256); }
-    else bytes = await readFile(new URL("../" + file, import.meta.url));
+    else bytes = await readPreCiRuntimeInput(file);
     assert.equal(sha(bytes), digest, file);
   }
 });

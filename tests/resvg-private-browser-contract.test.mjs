@@ -5,6 +5,7 @@ import ts from "typescript";
 import { sha } from "../images/resvg-source/source-pins.mjs";
 import { gunzipSync } from "node:zlib";
 import { readPreImageSizePatch } from "./helpers/pre-image-size-patch.mjs";
+import { readPreCiRuntimeInput } from "./helpers/pre-ci-runtime-inputs.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url));
 const json = async file => JSON.parse(await read(file));
 test("real bounded source-built SVG renders through all ten existing browser cases but its 275 MiB complete-tree failure is never accepted", async () => {
@@ -58,7 +59,7 @@ test("actual postprocessor success is receipt/source/artifact bound, not browser
   assert.equal(row.memoryBoundProof.onlyMemorySectionChanged, true); assert.equal(row.memoryBoundProof.allCodeAndDataBytesPreserved, true);
   assert.equal(row.sourceRecompileAttempted, false); assert.equal(row.rendererInstantiated, false);
   assert.equal(row.publicEngineReplacement, false); assert.equal(row.originalGoalComplete, false);
-  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await read(file)), digest, file);
+  for (const [file, digest] of Object.entries(row.sourcePins)) assert.equal(sha(await readPreCiRuntimeInput(file)), digest, file);
 });
 test("private browser driver keeps normal services, earliest blank/all-tree formula, fixed thresholds and birth-aware owned cleanup", async () => {
   const source = (await read("scripts/test-source-built-svg-candidate.mjs")).toString();

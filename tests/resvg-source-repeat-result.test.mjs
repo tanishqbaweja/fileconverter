@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { sha } from "../images/resvg-source/source-pins.mjs";
+import { readPreCiRuntimeInput } from "./helpers/pre-ci-runtime-inputs.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url));
 test("two actual fresh remapped source builds have byte-identical raw Wasm, fixed locked inputs and independently removed scratch", async () => {
   const proof = JSON.parse(await read("evidence/2026-10-28-svg-source-repeat-terminal.json")), pin = JSON.parse(await read(proof.artifactPin));
@@ -22,7 +23,7 @@ test("two actual fresh remapped source builds have byte-identical raw Wasm, fixe
     assert.equal(receipt.executedHead, pin.headSha); assert.equal(receipt.rawWasm.sha256, proof.rawSha256);
     assert.equal(receipt.rawWasm.bytes, proof.rawBytes); assert.equal(receipt.rawWasm.executed, false);
     assert.equal(receipt.lock.sha256, members.get(pin.lockMember).sha256);
-    for (const [source, digest] of Object.entries(receipt.sourcePins)) assert.equal(sha(await read(source)), digest, source);
+    for (const [source, digest] of Object.entries(receipt.sourcePins)) assert.equal(sha(await readPreCiRuntimeInput(source)), digest, source);
   }
-  for (const [file, digest] of Object.entries(top.sourcePins)) assert.equal(sha(await read(file)), digest, file);
+  for (const [file, digest] of Object.entries(top.sourcePins)) assert.equal(sha(await readPreCiRuntimeInput(file)), digest, file);
 });
