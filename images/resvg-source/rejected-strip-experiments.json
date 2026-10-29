@@ -147,5 +147,10 @@
     "evidence": "evidence/2026-10-29-svg-blur-boundary-browser-terminal.json",
     "conclusion": "Blur boundary correction reduces filtered max alpha error34 to4,37784 pixels still differ; rounded7776/max18 unchanged, square unfilteredexact. Overall strict alpha FAIL and measured stable-blank complete-tree265.4453125MiB FAIL112valid0missing. Filtered Wasm peak rises only524288B; aggregate allocation cause unproven. No speedup/promotion. Inspect residual arithmetic/geometry and retained whole-tree evidence; do not replay unchanged candidate/components."
   },
+  "completedBlurBoundaryAllocationDiagnostic": {
+    "nativeWasmSha256": "5c6cd9b4f8d272ae25031e3bc74ebc58a2ef11d328abf96766368b1c6e61ba13",
+    "evidence": "evidence/2026-10-29-svg-blur-boundary-allocation-terminal.json",
+    "conclusion": "One perturbed blank/mid/post experiment completed3 light dumps without errors. Same alpha failures; instrumented280.6015625MiB NOT acceptance, prior noninstrumented265.4453125MiB FAIL remains. Renderer V8/Blink/malloc/PartitionAlloc and GPU Skia counters grow but overlap; post26Documents/24Frames/15DetachedScriptStates/3WorkerGlobalScopes are not alone production-leak proof. Reports losslessly compressed, original redundant JSON removed only after exact reversibility; all owned conversion data/processes cleaned. Do not repeat unchanged experiment or previously rejected snapshot/HAR-off control. Investigate retained document/worker lifetimes before another code/run."
+  },
   "publicPromotion": false
 }

@@ -1,5 +1,20 @@
 # Private SVG source reconstruction
 
+One subsequent allocation diagnostic is complete, not a new acceptance claim.
+Retained baseline birth metadata identifies renderer/GPU growth in the prior
+265.445MiB failure. The new perturbed blank/mid/post dumps show renderer V8,
+Blink, malloc and PartitionAlloc growth plus GPU Skia resources; these counters
+overlap and are never summed. Post-run26 documents/24 frames/15 detached script
+states/3 worker scopes require lifecycle investigation, not an asserted leak.
+Same alpha failure, instrumented280.602MiB; no promotion, native rebuild or
+accepted speedup. Original failure remains. See
+`evidence/2026-10-29-svg-blur-boundary-allocation-terminal.json`. Its two raw
+receipts are exact reversible gzip archives (708KB instead of6.91MB); redundant
+uncompressed copies removed only after verification. Three bounded native dumps
+and failure traces remain for diagnosis. All disposable conversion data and owned
+processes are cleaned; protected original is unchanged. Do not repeat the unchanged
+diagnostic or the already rejected snapshot/HAR-off experiment.
+
 Latest changed-native browser verdict: FAIL exact alpha AND measured complete-
 Chromium memory. The boundary correction improves filtered max error34→4 but
 does not make it exact (37,784 differing pixels). Rounded/no-filter errors remain

@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+Allocation diagnostic TERMINAL atd0eb255b: exactly3 light dumps, blank/mid/post,
+0capture errors; all same alpha failures,0PASS/1FAIL/0skip/flaky11.135s. Perturbed
+280.6015625MiB is NOT acceptance; prior265.4453125MiB FAIL remains authoritative.
+Actual renderer post counters:V8 size44,787,504B, Blink30,146,640B, malloc54,096,674B,
+PartitionAlloc35,184,640B; OVERLAP, never summed. GPU mid Skia resources23,924,557B
+versus blank56,576B. Renderer post26Documents/24Frames/15DetachedScriptStates/
+3WorkerGlobalScopes require lifecycle diagnosis, not an asserted production leak.
+Prior snapshot/HAR-off failure was inspected and will NOT be repeated/adopted.
+All4 roots/owner/scratch/conversion/reference/native copies removed,0forbidden
+requests, original full SHA/size unchanged. New one-shot no-replay blocks another
+unchanged diagnostic.6,908,747B redundant JSON replaced by708,005B exact reversible
+gzip receipts after full byte/SHA verification; original copies removed, recoverable
+from archives. Three bounded native trace archives retained (~384KiB), plus failure
+trace; no converted outputs retained. No rebuild, promotion, speedup or goal closure.
+Compact:evidence/2026-10-29-svg-blur-boundary-allocation-terminal.json.
+Post-archive10 focused PASS8512.8012ms/0fail/skip; exact gzip reversal and native
+trace SHA/object counts independently reconstructed, all failed verdicts retained.
+Affected lint/diff PASS. Three bounded native dumps are retained in the approved
+output/playwright directory for portable regression proof, not converted copies.
+
 Retained-memory interpretation (no conversion replay): existing blank-sample
 PID/parent/birth metadata resolves the prior unknown children to renderer18084
 (+181.91796875MiB) and GPU34552(+72.73828125MiB). Original complete-tree265.445MiB

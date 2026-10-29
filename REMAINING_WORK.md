@@ -1,5 +1,18 @@
 # Remaining work audit
 
+Current allocation checkpoint: one-shot diagnostic completed3/3 dumps with no
+capture errors. Same exact-alpha FAIL; instrumented280.602MiB NOT acceptance,
+original noninstrumented265.445MiB FAIL retained. Renderer V8/Blink/malloc/
+PartitionAlloc and GPU Skia growth observed, overlapping, not summed or callstack
+proof. Post26Documents/24Frames/15DetachedScriptStates/3WorkerGlobalScopes narrow
+the next investigation to retained document/worker lifetimes. Existing rejected
+snapshot/HAR-off control reviewed; do not repeat. No production fix yet claimed.
+All owned processes/disposable conversion data cleaned, original full SHA/size
+unchanged. Redundant6.91MB JSON now exact reversible708KB archives; compact report
+and bounded traces retained. No replay/rebuild/promotion. See
+evidence/2026-10-29-svg-blur-boundary-allocation-terminal.json. Next inspect retained
+lifecycle evidence and the public SVG qualification gap; broader backlog remains.
+
 Current next action: offline birth-identity annotation resolves the last failed
 run's large-growing processes as renderer181.918MiB and GPU72.738MiB, WITHOUT
 replaying conversion or altering totals/formula. Specific native allocations are

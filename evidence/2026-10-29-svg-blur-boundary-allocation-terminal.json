@@ -1,0 +1,1838 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "d0eb255bafa5565e1061fe74e176134d57ecf4b5",
+  "plan": "evidence/2026-10-29-svg-blur-boundary-allocation-plan.json",
+  "scope": "One perturbed diagnostic; unchanged prior265.445MiB failure remains authoritative, not another acceptance run",
+  "rawReceipts": [
+    {
+      "originalPath": "evidence/2026-10-29T21-22-29-227Z-svg-blur-boundary-allocator-diagnostic.json",
+      "originalBytes": 3373522,
+      "originalSha256": "880794a9e556ab5ce37b29e99c006417a700ae1581a40c24b88222f6d9002340",
+      "archivePath": "evidence/2026-10-29T21-22-29-227Z-svg-blur-boundary-allocator-diagnostic.json.gz",
+      "archiveBytes": 406657,
+      "archiveSha256": "d7a26a3f69a23fc85574e9ffb2c470d861299ab86d9a44bf8111ef86389a45d7",
+      "exactByteReversalVerified": true
+    },
+    {
+      "originalPath": "evidence/2026-10-29T21-22-29-880Z-source-svg-browser.json",
+      "originalBytes": 3535225,
+      "originalSha256": "7e1ce9405906165a4bab012f1868b26fc0b52bb30894bad5241180f49265859a",
+      "archivePath": "evidence/2026-10-29T21-22-29-880Z-source-svg-browser.json.gz",
+      "archiveBytes": 301348,
+      "archiveSha256": "1ce5930c1c0dd6379290823eb4333a742250f716857b37f679388bc81afdcba3",
+      "exactByteReversalVerified": true
+    }
+  ],
+  "captures": [
+    {
+      "phase": "blank-after-baseline",
+      "scheduledAt": "2026-10-29T21:23:08.675Z",
+      "runnerStillLiveAtRequest": false,
+      "archive": {
+        "path": "output/playwright/2026-10-29T21-22-29-880Z-svg-blank-after-baseline.json.gz",
+        "bytes": 121416,
+        "sha256": "1cf0e5b66669426a2b72c77706651b496cbf1e27a834f2423dbb119a41dc4322",
+        "restoredBytes": 1663460,
+        "restoredSha256": "c18f105863b6f5a8581b7b561cc9b33f2a5f7f3e4a27266f5c8c7ecb1d2d8094"
+      },
+      "acceptanceMetric": false,
+      "allocatorValuesOverlap": true,
+      "summedAllocatorTotal": null,
+      "processes": [
+        {
+          "pid": 45856,
+          "traceName": "Service: tracing.mojom.TracingService",
+          "osType": null,
+          "osPrivateBytesBeforeDump": null,
+          "tracePrivateFootprintBytes": 13074432,
+          "allocatorCategories": {
+            "malloc": {
+              "allocated_objects_size": 961008,
+              "effective_size": 1323552,
+              "size": 1323552,
+              "virtual_size": 4194304
+            },
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 156057,
+              "size": 303104
+            },
+            "skia": {}
+          },
+          "skiaGpuResources": null,
+          "objectCounts": null
+        },
+        {
+          "pid": 680,
+          "traceName": "GPU Process",
+          "osType": "gpu-process",
+          "osPrivateBytesBeforeDump": 116154368,
+          "tracePrivateFootprintBytes": 116269056,
+          "allocatorCategories": {
+            "cc": {
+              "size": 1277952
+            },
+            "discardable": {},
+            "gpu": {
+              "effective_size": 1999324,
+              "size": 4526428
+            },
+            "malloc": {
+              "allocated_objects_size": 4494752,
+              "effective_size": 6770112,
+              "size": 6776181,
+              "virtual_size": 10485760
+            },
+            "mojo": {},
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 108953,
+              "size": 1564672
+            },
+            "skia": {
+              "effective_size": 55221,
+              "size": 62645
+            },
+            "global": {
+              "effective_size": 16416,
+              "size": 6770744
+            }
+          },
+          "skiaGpuResources": {
+            "effective_size": 49152,
+            "size": 56576
+          },
+          "objectCounts": null
+        },
+        {
+          "pid": 7604,
+          "traceName": "Browser",
+          "osType": "browser",
+          "osPrivateBytesBeforeDump": 64860160,
+          "tracePrivateFootprintBytes": 65777664,
+          "allocatorCategories": {
+            "accessibility": {},
+            "cc": {
+              "effective_size": 1285376,
+              "size": 1285376
+            },
+            "components": {
+              "effective_size": 13552,
+              "size": 13552
+            },
+            "devtools": {},
+            "extensions": {
+              "effective_size": 16416,
+              "size": 16416
+            },
+            "frame_evictor": {},
+            "gpu": {
+              "effective_size": 1114048,
+              "size": 1114048
+            },
+            "leveldatabase": {
+              "effective_size": 139935,
+              "size": 156351
+            },
+            "malloc": {
+              "allocated_objects_size": 34389950,
+              "effective_size": 42171728,
+              "size": 43170088,
+              "virtual_size": 60817408
+            },
+            "mojo": {},
+            "omnibox": {
+              "effective_size": 167600,
+              "size": 167600
+            },
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 1739843,
+              "size": 3112896
+            },
+            "site_storage": {},
+            "skia": {
+              "effective_size": 10512,
+              "size": 10512
+            },
+            "sqlite": {
+              "effective_size": 987848,
+              "malloc_high_wmark_size": 1030868,
+              "size": 987848
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": null
+        },
+        {
+          "pid": 11532,
+          "traceName": "WebUI Top Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 44306432,
+          "tracePrivateFootprintBytes": 44572672,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 5898240,
+              "size": 5898240
+            },
+            "blink_gc/main": {
+              "effective_size": 5898240,
+              "size": 5898240
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "malloc": {
+              "allocated_objects_size": 7490544,
+              "effective_size": 8466672,
+              "size": 8781616,
+              "virtual_size": 33554432
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 22830,
+              "unparked_size": 22830
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 7159840,
+              "size": 10291138
+            },
+            "shared_memory": {
+              "effective_size": 62531,
+              "size": 114688
+            },
+            "skia": {
+              "effective_size": 1552,
+              "size": 1552
+            },
+            "v8": {
+              "effective_size": 10799152,
+              "size": 10799152
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 159744,
+              "effective_size": 262144,
+              "size": 262144,
+              "virtual_size": 262144
+            },
+            "web_cache": {
+              "effective_size": 3154325,
+              "size": 3154325
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 20,
+            "blink_objects/Frame": 3,
+            "blink_objects/Node": 2352,
+            "blink_objects/WorkerGlobalScope": 0
+          }
+        },
+        {
+          "pid": 16736,
+          "traceName": "Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 18804736,
+          "tracePrivateFootprintBytes": 20127744,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 1441792,
+              "size": 1441792
+            },
+            "blink_gc/main": {
+              "effective_size": 1441792,
+              "size": 1441792
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "gpu": {
+              "effective_size": 131008,
+              "size": 131008
+            },
+            "malloc": {
+              "allocated_objects_size": 4981940,
+              "effective_size": 6682672,
+              "size": 6765664,
+              "virtual_size": 10485760
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 0,
+              "unparked_size": 0
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 581632,
+              "size": 581632
+            },
+            "shared_memory": {
+              "effective_size": 74819,
+              "size": 270272
+            },
+            "skia": {},
+            "v8": {
+              "effective_size": 1393712,
+              "size": 1393712
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 0,
+              "virtual_size": 0
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 2,
+            "blink_objects/Frame": 1,
+            "blink_objects/Node": 8,
+            "blink_objects/WorkerGlobalScope": 0
+          }
+        },
+        {
+          "pid": 21092,
+          "traceName": "Service: storage.mojom.StorageService",
+          "osType": "utility",
+          "osPrivateBytesBeforeDump": 8261632,
+          "tracePrivateFootprintBytes": 8531968,
+          "allocatorCategories": {
+            "leveldatabase": {
+              "size": 16416
+            },
+            "malloc": {
+              "allocated_objects_size": 868592,
+              "effective_size": 1342560,
+              "size": 1342560,
+              "virtual_size": 4194304
+            },
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 33177,
+              "size": 57344
+            },
+            "site_storage": {},
+            "skia": {}
+          },
+          "skiaGpuResources": null,
+          "objectCounts": null
+        },
+        {
+          "pid": 25656,
+          "traceName": "Service: network.mojom.NetworkService",
+          "osType": "utility",
+          "osPrivateBytesBeforeDump": 14962688,
+          "tracePrivateFootprintBytes": 15040512,
+          "allocatorCategories": {
+            "malloc": {
+              "allocated_objects_size": 3664624,
+              "effective_size": 5259120,
+              "size": 5259120,
+              "virtual_size": 10485760
+            },
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 51609,
+              "size": 98304
+            },
+            "skia": {}
+          },
+          "skiaGpuResources": null,
+          "objectCounts": null
+        },
+        {
+          "pid": 26884,
+          "traceName": "Extension Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 21659648,
+          "tracePrivateFootprintBytes": 21831680,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 1703936,
+              "size": 1703936
+            },
+            "blink_gc/main": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_gc/workers": {
+              "effective_size": 786432,
+              "size": 786432
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "malloc": {
+              "allocated_objects_size": 5499552,
+              "effective_size": 6247616,
+              "size": 6383912,
+              "virtual_size": 18874368
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 0,
+              "unparked_size": 0
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 1245184,
+              "size": 1245184
+            },
+            "shared_memory": {
+              "effective_size": 52291,
+              "size": 98304
+            },
+            "skia": {},
+            "v8": {
+              "effective_size": 2495592,
+              "size": 2495592
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 0,
+              "virtual_size": 0
+            },
+            "v8/workers/heap/code_space": {
+              "effective_size": 262144,
+              "size": 262144
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 0,
+            "blink_objects/Frame": 0,
+            "blink_objects/Node": 0,
+            "blink_objects/WorkerGlobalScope": 1
+          }
+        },
+        {
+          "pid": 30132,
+          "traceName": "Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 17920000,
+          "tracePrivateFootprintBytes": 18108416,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_gc/main": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "malloc": {
+              "allocated_objects_size": 3439184,
+              "effective_size": 3836800,
+              "size": 3898296,
+              "virtual_size": 8388608
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 0,
+              "unparked_size": 0
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 475136,
+              "size": 475136
+            },
+            "shared_memory": {
+              "effective_size": 40003,
+              "size": 77824
+            },
+            "skia": {},
+            "v8": {
+              "effective_size": 847928,
+              "size": 847928
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 0,
+              "virtual_size": 0
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 0,
+            "blink_objects/Frame": 0,
+            "blink_objects/Node": 0,
+            "blink_objects/WorkerGlobalScope": 0
+          }
+        },
+        {
+          "pid": 46664,
+          "traceName": "Extension Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 23474176,
+          "tracePrivateFootprintBytes": 23670784,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 1703936,
+              "size": 1703936
+            },
+            "blink_gc/main": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_gc/workers": {
+              "effective_size": 786432,
+              "size": 786432
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "malloc": {
+              "allocated_objects_size": 5854400,
+              "effective_size": 6572656,
+              "size": 6708952,
+              "virtual_size": 10485760
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 0,
+              "unparked_size": 0
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 565248,
+              "size": 565248
+            },
+            "shared_memory": {
+              "effective_size": 52291,
+              "size": 98304
+            },
+            "skia": {},
+            "v8": {
+              "effective_size": 1971304,
+              "size": 1971304
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 0,
+              "virtual_size": 0
+            },
+            "v8/workers/heap/code_space": {}
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 0,
+            "blink_objects/Frame": 0,
+            "blink_objects/Node": 0,
+            "blink_objects/WorkerGlobalScope": 1
+          }
+        }
+      ]
+    },
+    {
+      "phase": "scheduled-late-suite",
+      "scheduledAt": "2026-10-29T21:23:14.621Z",
+      "runnerStillLiveAtRequest": true,
+      "archive": {
+        "path": "output/playwright/2026-10-29T21-22-29-880Z-svg-scheduled-late-suite.json.gz",
+        "bytes": 132383,
+        "sha256": "cf1d7adb23eea6778598ffd53b6c7131dc9a7a6e9d472505c0790ab718e82dd3",
+        "restoredBytes": 1850869,
+        "restoredSha256": "2fddac4947c8cc62d51268365c412b085723add8da151399d2971798af82d3bb"
+      },
+      "acceptanceMetric": false,
+      "allocatorValuesOverlap": true,
+      "summedAllocatorTotal": null,
+      "processes": [
+        {
+          "pid": 45856,
+          "traceName": "Service: tracing.mojom.TracingService",
+          "osType": "utility",
+          "osPrivateBytesBeforeDump": 9990144,
+          "tracePrivateFootprintBytes": 14536704,
+          "allocatorCategories": {
+            "malloc": {
+              "allocated_objects_size": 1148192,
+              "effective_size": 2620848,
+              "size": 2620848,
+              "virtual_size": 27262976
+            },
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 33089945,
+              "size": 33734656
+            },
+            "skia": {}
+          },
+          "skiaGpuResources": null,
+          "objectCounts": null
+        },
+        {
+          "pid": 680,
+          "traceName": "GPU Process",
+          "osType": "gpu-process",
+          "osPrivateBytesBeforeDump": 168632320,
+          "tracePrivateFootprintBytes": 168742912,
+          "allocatorCategories": {
+            "cc": {
+              "effective_size": 2220,
+              "size": 3655852
+            },
+            "discardable": {},
+            "gpu": {
+              "effective_size": 3971148,
+              "size": 24754168
+            },
+            "malloc": {
+              "allocated_objects_size": 9930236,
+              "effective_size": 12435184,
+              "size": 12773043,
+              "virtual_size": 16777216
+            },
+            "mojo": {},
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 8165785,
+              "size": 16019456
+            },
+            "skia": {
+              "effective_size": 24255696,
+              "size": 24262416
+            },
+            "global": {
+              "effective_size": 16416,
+              "size": 92622217
+            }
+          },
+          "skiaGpuResources": {
+            "effective_size": 23917837,
+            "size": 23924557
+          },
+          "objectCounts": null
+        },
+        {
+          "pid": 7604,
+          "traceName": "Browser",
+          "osType": "browser",
+          "osPrivateBytesBeforeDump": 82714624,
+          "tracePrivateFootprintBytes": 80494592,
+          "allocatorCategories": {
+            "accessibility": {},
+            "cc": {
+              "effective_size": 3253952,
+              "size": 3253952
+            },
+            "components": {
+              "effective_size": 13552,
+              "size": 13552
+            },
+            "devtools": {},
+            "discardable": {
+              "size": 4096
+            },
+            "extensions": {
+              "effective_size": 16416,
+              "size": 16416
+            },
+            "frame_evictor": {},
+            "gpu": {
+              "effective_size": 4390784,
+              "size": 4390784
+            },
+            "leveldatabase": {
+              "effective_size": 152247,
+              "size": 168663
+            },
+            "malloc": {
+              "allocated_objects_size": 43171408,
+              "effective_size": 53302240,
+              "size": 54585818,
+              "virtual_size": 113246208
+            },
+            "mojo": {},
+            "omnibox": {
+              "effective_size": 176198,
+              "size": 176198
+            },
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 2866243,
+              "size": 8683392
+            },
+            "site_storage": {
+              "effective_size": 21110,
+              "size": 21110
+            },
+            "skia": {
+              "effective_size": 12768,
+              "size": 12768
+            },
+            "sqlite": {
+              "effective_size": 1246932,
+              "malloc_high_wmark_size": 1289396,
+              "size": 1246932
+            },
+            "tab_restore": {
+              "effective_size": 2768,
+              "size": 2768
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": null
+        },
+        {
+          "pid": 11532,
+          "traceName": "WebUI Top Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 37240832,
+          "tracePrivateFootprintBytes": 37240832,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 5242880,
+              "size": 5242880
+            },
+            "blink_gc/main": {
+              "effective_size": 5242880,
+              "size": 5242880
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "malloc": {
+              "allocated_objects_size": 6757760,
+              "effective_size": 9175024,
+              "size": 9383412,
+              "virtual_size": 35651584
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 22830,
+              "total_size": 22830,
+              "unparked_size": 0
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 22830,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 4414955,
+              "size": 4485120
+            },
+            "shared_memory": {
+              "effective_size": 62531,
+              "size": 126976
+            },
+            "skia": {
+              "effective_size": 1552,
+              "size": 1552
+            },
+            "v8": {
+              "effective_size": 5711860,
+              "size": 5711860
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 212928,
+              "effective_size": 262144,
+              "size": 262144,
+              "virtual_size": 262144
+            },
+            "web_cache": {
+              "effective_size": 93191,
+              "size": 93191
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 13,
+            "blink_objects/Frame": 3,
+            "blink_objects/Node": 2159,
+            "blink_objects/WorkerGlobalScope": 0
+          }
+        },
+        {
+          "pid": 18756,
+          "traceName": "Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 15609856,
+          "tracePrivateFootprintBytes": 15757312,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_gc/main": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "malloc": {
+              "allocated_objects_size": 3463724,
+              "effective_size": 4575712,
+              "size": 4637208,
+              "virtual_size": 8388608
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 0,
+              "unparked_size": 0
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 475136,
+              "size": 475136
+            },
+            "shared_memory": {
+              "effective_size": 37955,
+              "size": 73728
+            },
+            "skia": {},
+            "v8": {
+              "effective_size": 847928,
+              "size": 847928
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 0,
+              "virtual_size": 0
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 0,
+            "blink_objects/Frame": 0,
+            "blink_objects/Node": 0,
+            "blink_objects/WorkerGlobalScope": 0
+          }
+        },
+        {
+          "pid": 21092,
+          "traceName": "Service: storage.mojom.StorageService",
+          "osType": "utility",
+          "osPrivateBytesBeforeDump": 8851456,
+          "tracePrivateFootprintBytes": 8855552,
+          "allocatorCategories": {
+            "leveldatabase": {
+              "size": 16416
+            },
+            "malloc": {
+              "allocated_objects_size": 945104,
+              "effective_size": 1634688,
+              "size": 1634688,
+              "virtual_size": 6291456
+            },
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 37273,
+              "size": 77824
+            },
+            "site_storage": {},
+            "skia": {}
+          },
+          "skiaGpuResources": null,
+          "objectCounts": null
+        },
+        {
+          "pid": 25656,
+          "traceName": "Service: network.mojom.NetworkService",
+          "osType": "utility",
+          "osPrivateBytesBeforeDump": 15249408,
+          "tracePrivateFootprintBytes": 15253504,
+          "allocatorCategories": {
+            "malloc": {
+              "allocated_objects_size": 4132864,
+              "effective_size": 5838736,
+              "size": 5838736,
+              "virtual_size": 12582912
+            },
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 63897,
+              "size": 126976
+            },
+            "skia": {}
+          },
+          "skiaGpuResources": null,
+          "objectCounts": null
+        },
+        {
+          "pid": 26884,
+          "traceName": "Extension Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 22437888,
+          "tracePrivateFootprintBytes": 22446080,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 1703936,
+              "size": 1703936
+            },
+            "blink_gc/main": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_gc/workers": {
+              "effective_size": 786432,
+              "size": 786432
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "malloc": {
+              "allocated_objects_size": 5578928,
+              "effective_size": 6781408,
+              "size": 6917704,
+              "virtual_size": 20971520
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 0,
+              "unparked_size": 0
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 1253376,
+              "size": 1253376
+            },
+            "shared_memory": {
+              "effective_size": 52291,
+              "size": 110592
+            },
+            "skia": {},
+            "v8": {
+              "effective_size": 2495592,
+              "size": 2495592
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 0,
+              "virtual_size": 0
+            },
+            "v8/workers/heap/code_space": {
+              "effective_size": 262144,
+              "size": 262144
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 0,
+            "blink_objects/Frame": 0,
+            "blink_objects/Node": 0,
+            "blink_objects/WorkerGlobalScope": 1
+          }
+        },
+        {
+          "pid": 30132,
+          "traceName": "Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 105627648,
+          "tracePrivateFootprintBytes": 138133504,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 18612224,
+              "size": 18612224
+            },
+            "blink_gc/main": {
+              "effective_size": 17039360,
+              "size": 17039360
+            },
+            "blink_gc/workers": {
+              "effective_size": 1572864,
+              "size": 1572864
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "cc": {
+              "effective_size": 10715136,
+              "size": 10715136
+            },
+            "discardable": {
+              "effective_size": 4096,
+              "size": 90112
+            },
+            "gpu": {
+              "effective_size": 2424704,
+              "size": 2424704
+            },
+            "malloc": {
+              "allocated_objects_size": 31359995,
+              "effective_size": 51419456,
+              "size": 58745050,
+              "virtual_size": 75497472
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 1041,
+              "unparked_size": 1041
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 18896258,
+              "size": 19984384
+            },
+            "shared_memory": {
+              "effective_size": 126019,
+              "size": 2768768
+            },
+            "site_storage": {},
+            "skia": {
+              "effective_size": 144626,
+              "size": 144626
+            },
+            "v8": {
+              "effective_size": 32682664,
+              "size": 32682664
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 969664,
+              "effective_size": 1310720,
+              "size": 1310720,
+              "virtual_size": 1310720
+            },
+            "v8/workers/heap/code_space": {
+              "effective_size": 524288,
+              "size": 524288
+            },
+            "web_cache": {
+              "effective_size": 1088125,
+              "size": 1088125
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 9,
+            "blink_objects/Document": 18,
+            "blink_objects/Frame": 16,
+            "blink_objects/Node": 3891,
+            "blink_objects/WorkerGlobalScope": 2
+          }
+        },
+        {
+          "pid": 46664,
+          "traceName": "Extension Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 24330240,
+          "tracePrivateFootprintBytes": 24342528,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 1703936,
+              "size": 1703936
+            },
+            "blink_gc/main": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_gc/workers": {
+              "effective_size": 786432,
+              "size": 786432
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "malloc": {
+              "allocated_objects_size": 5894464,
+              "effective_size": 7135680,
+              "size": 7271976,
+              "virtual_size": 12582912
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 0,
+              "unparked_size": 0
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 573440,
+              "size": 573440
+            },
+            "shared_memory": {
+              "effective_size": 52291,
+              "size": 110592
+            },
+            "skia": {},
+            "v8": {
+              "effective_size": 1971304,
+              "size": 1971304
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 0,
+              "virtual_size": 0
+            },
+            "v8/workers/heap/code_space": {}
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 0,
+            "blink_objects/Frame": 0,
+            "blink_objects/Node": 0,
+            "blink_objects/WorkerGlobalScope": 1
+          }
+        }
+      ]
+    },
+    {
+      "phase": "post-suite",
+      "scheduledAt": "2026-10-29T21:23:21.812Z",
+      "runnerStillLiveAtRequest": false,
+      "archive": {
+        "path": "output/playwright/2026-10-29T21-22-29-880Z-svg-post-suite.json.gz",
+        "bytes": 129862,
+        "sha256": "9e79e211c1751edc998ecbe98364f88754664e4725882bdcc65d3da50ee81b8c",
+        "restoredBytes": 1813676,
+        "restoredSha256": "310ff763eccd297626452bf5b10b7752fb0b0de12ef118f6a82c59f8d8b0c631"
+      },
+      "acceptanceMetric": false,
+      "allocatorValuesOverlap": true,
+      "summedAllocatorTotal": null,
+      "processes": [
+        {
+          "pid": 45856,
+          "traceName": "Service: tracing.mojom.TracingService",
+          "osType": "utility",
+          "osPrivateBytesBeforeDump": 10252288,
+          "tracePrivateFootprintBytes": 14794752,
+          "allocatorCategories": {
+            "malloc": {
+              "allocated_objects_size": 1159504,
+              "effective_size": 2866688,
+              "size": 2866688,
+              "virtual_size": 29360128
+            },
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 32610713,
+              "size": 33755136
+            },
+            "skia": {}
+          },
+          "skiaGpuResources": null,
+          "objectCounts": null
+        },
+        {
+          "pid": 680,
+          "traceName": "GPU Process",
+          "osType": "gpu-process",
+          "osPrivateBytesBeforeDump": 184856576,
+          "tracePrivateFootprintBytes": 184860672,
+          "allocatorCategories": {
+            "cc": {
+              "effective_size": 2220,
+              "size": 3655852
+            },
+            "discardable": {},
+            "gpu": {
+              "effective_size": 8497584,
+              "size": 17992092
+            },
+            "malloc": {
+              "allocated_objects_size": 10579132,
+              "effective_size": 13869264,
+              "size": 14209287,
+              "virtual_size": 23068672
+            },
+            "mojo": {},
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 7446937,
+              "size": 11239424
+            },
+            "skia": {
+              "effective_size": 7830981,
+              "size": 7839749
+            },
+            "global": {
+              "effective_size": 16416,
+              "size": 66514606
+            }
+          },
+          "skiaGpuResources": {
+            "effective_size": 7490958,
+            "size": 7499726
+          },
+          "objectCounts": null
+        },
+        {
+          "pid": 7604,
+          "traceName": "Browser",
+          "osType": "browser",
+          "osPrivateBytesBeforeDump": 75145216,
+          "tracePrivateFootprintBytes": 77254656,
+          "allocatorCategories": {
+            "accessibility": {},
+            "cc": {
+              "effective_size": 1306304,
+              "size": 1306304
+            },
+            "components": {
+              "effective_size": 13552,
+              "size": 13552
+            },
+            "devtools": {},
+            "discardable": {
+              "size": 4096
+            },
+            "extensions": {
+              "effective_size": 16416,
+              "size": 16416
+            },
+            "frame_evictor": {},
+            "gpu": {
+              "effective_size": 1114048,
+              "size": 1114048
+            },
+            "leveldatabase": {
+              "effective_size": 152247,
+              "size": 168663
+            },
+            "malloc": {
+              "allocated_objects_size": 39694500,
+              "effective_size": 51201440,
+              "size": 52382679,
+              "virtual_size": 109051904
+            },
+            "mojo": {},
+            "omnibox": {
+              "effective_size": 176198,
+              "size": 176198
+            },
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 2569283,
+              "size": 4841408
+            },
+            "site_storage": {
+              "effective_size": 31119,
+              "size": 31119
+            },
+            "skia": {
+              "effective_size": 12768,
+              "size": 12768
+            },
+            "sqlite": {
+              "effective_size": 1133200,
+              "malloc_high_wmark_size": 1289396,
+              "size": 1133200
+            },
+            "tab_restore": {
+              "effective_size": 4152,
+              "size": 4152
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": null
+        },
+        {
+          "pid": 11532,
+          "traceName": "WebUI Top Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 37466112,
+          "tracePrivateFootprintBytes": 37466112,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 5242880,
+              "size": 5242880
+            },
+            "blink_gc/main": {
+              "effective_size": 5242880,
+              "size": 5242880
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "malloc": {
+              "allocated_objects_size": 6784624,
+              "effective_size": 9403440,
+              "size": 9611828,
+              "virtual_size": 35651584
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 22830,
+              "total_size": 22830,
+              "unparked_size": 0
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 22830,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 4414955,
+              "size": 4485120
+            },
+            "shared_memory": {
+              "effective_size": 68675,
+              "size": 139264
+            },
+            "skia": {
+              "effective_size": 1552,
+              "size": 1552
+            },
+            "v8": {
+              "effective_size": 5711860,
+              "size": 5711860
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 214080,
+              "effective_size": 262144,
+              "size": 262144,
+              "virtual_size": 262144
+            },
+            "web_cache": {
+              "effective_size": 93191,
+              "size": 93191
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 23,
+            "blink_objects/Frame": 3,
+            "blink_objects/Node": 2269,
+            "blink_objects/WorkerGlobalScope": 0
+          }
+        },
+        {
+          "pid": 15800,
+          "traceName": "Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 15654912,
+          "tracePrivateFootprintBytes": 15790080,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_gc/main": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "malloc": {
+              "allocated_objects_size": 3493420,
+              "effective_size": 4639776,
+              "size": 4701272,
+              "virtual_size": 8388608
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 0,
+              "unparked_size": 0
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 475136,
+              "size": 475136
+            },
+            "shared_memory": {
+              "effective_size": 37955,
+              "size": 73728
+            },
+            "skia": {},
+            "v8": {
+              "effective_size": 847928,
+              "size": 847928
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 0,
+              "virtual_size": 0
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 0,
+            "blink_objects/Frame": 0,
+            "blink_objects/Node": 0,
+            "blink_objects/WorkerGlobalScope": 0
+          }
+        },
+        {
+          "pid": 21092,
+          "traceName": "Service: storage.mojom.StorageService",
+          "osType": "utility",
+          "osPrivateBytesBeforeDump": 8785920,
+          "tracePrivateFootprintBytes": 8785920,
+          "allocatorCategories": {
+            "leveldatabase": {
+              "size": 16416
+            },
+            "malloc": {
+              "allocated_objects_size": 959696,
+              "effective_size": 1568016,
+              "size": 1568016,
+              "virtual_size": 6291456
+            },
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 43417,
+              "size": 90112
+            },
+            "site_storage": {},
+            "skia": {}
+          },
+          "skiaGpuResources": null,
+          "objectCounts": null
+        },
+        {
+          "pid": 25656,
+          "traceName": "Service: network.mojom.NetworkService",
+          "osType": "utility",
+          "osPrivateBytesBeforeDump": 15560704,
+          "tracePrivateFootprintBytes": 15560704,
+          "allocatorCategories": {
+            "malloc": {
+              "allocated_objects_size": 4415076,
+              "effective_size": 6189376,
+              "size": 6189376,
+              "virtual_size": 12582912
+            },
+            "partition_alloc": {},
+            "shared_memory": {
+              "effective_size": 70041,
+              "size": 139264
+            },
+            "skia": {}
+          },
+          "skiaGpuResources": null,
+          "objectCounts": null
+        },
+        {
+          "pid": 26884,
+          "traceName": "Extension Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 22650880,
+          "tracePrivateFootprintBytes": 22650880,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 1703936,
+              "size": 1703936
+            },
+            "blink_gc/main": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_gc/workers": {
+              "effective_size": 786432,
+              "size": 786432
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "malloc": {
+              "allocated_objects_size": 5548608,
+              "effective_size": 6961728,
+              "size": 7098024,
+              "virtual_size": 20971520
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 0,
+              "unparked_size": 0
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 1253376,
+              "size": 1253376
+            },
+            "shared_memory": {
+              "effective_size": 58435,
+              "size": 122880
+            },
+            "skia": {},
+            "v8": {
+              "effective_size": 2495592,
+              "size": 2495592
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 0,
+              "virtual_size": 0
+            },
+            "v8/workers/heap/code_space": {
+              "effective_size": 262144,
+              "size": 262144
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 0,
+            "blink_objects/Frame": 0,
+            "blink_objects/Node": 0,
+            "blink_objects/WorkerGlobalScope": 1
+          }
+        },
+        {
+          "pid": 30132,
+          "traceName": "Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 203747328,
+          "tracePrivateFootprintBytes": 203747328,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 30146640,
+              "size": 30146640
+            },
+            "blink_gc/main": {
+              "effective_size": 27787344,
+              "size": 27787344
+            },
+            "blink_gc/workers": {
+              "effective_size": 2359296,
+              "size": 2359296
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "cc": {
+              "effective_size": 4718592,
+              "size": 4718592
+            },
+            "discardable": {
+              "effective_size": 4096,
+              "size": 90112
+            },
+            "gpu": {
+              "effective_size": 2359168,
+              "size": 2359168
+            },
+            "malloc": {
+              "allocated_objects_size": 40465840,
+              "effective_size": 52401824,
+              "size": 54096674,
+              "virtual_size": 94371840
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 1041,
+              "unparked_size": 1041
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 35184639,
+              "size": 35184640
+            },
+            "shared_memory": {
+              "effective_size": 152643,
+              "size": 2756480
+            },
+            "site_storage": {},
+            "skia": {
+              "effective_size": 144722,
+              "size": 144722
+            },
+            "v8": {
+              "effective_size": 44787504,
+              "size": 44787504
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 1411520,
+              "effective_size": 2097152,
+              "size": 2097152,
+              "virtual_size": 2097152
+            },
+            "v8/workers/heap/code_space": {
+              "effective_size": 1310720,
+              "size": 1310720
+            }
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 15,
+            "blink_objects/Document": 26,
+            "blink_objects/Frame": 24,
+            "blink_objects/Node": 5843,
+            "blink_objects/WorkerGlobalScope": 3
+          }
+        },
+        {
+          "pid": 46664,
+          "traceName": "Extension Renderer",
+          "osType": "renderer",
+          "osPrivateBytesBeforeDump": 24535040,
+          "tracePrivateFootprintBytes": 24535040,
+          "allocatorCategories": {
+            "blink_gc": {
+              "effective_size": 1703936,
+              "size": 1703936
+            },
+            "blink_gc/main": {
+              "effective_size": 917504,
+              "size": 917504
+            },
+            "blink_gc/workers": {
+              "effective_size": 786432,
+              "size": 786432
+            },
+            "blink_objects": {},
+            "canvas": {},
+            "discardable": {},
+            "malloc": {
+              "allocated_objects_size": 5913280,
+              "effective_size": 7352880,
+              "size": 7489176,
+              "virtual_size": 12582912
+            },
+            "mojo": {},
+            "parkable_images": {
+              "on_disk_size": 0,
+              "total_size": 0,
+              "unparked_size": 0
+            },
+            "parkable_strings": {
+              "compressed_size": 0,
+              "metadata_size": 0,
+              "on_disk_footprint": 0,
+              "on_disk_free_chunks": 0,
+              "on_disk_size": 0,
+              "original_size": 0,
+              "overhead_size": 0,
+              "savings_size": 0,
+              "uncompressed_size": 0
+            },
+            "partition_alloc": {
+              "effective_size": 573440,
+              "size": 573440
+            },
+            "shared_memory": {
+              "effective_size": 58435,
+              "size": 122880
+            },
+            "skia": {},
+            "v8": {
+              "effective_size": 1971304,
+              "size": 1971304
+            },
+            "v8/main/heap/code_space": {
+              "allocated_objects_size": 0,
+              "virtual_size": 0
+            },
+            "v8/workers/heap/code_space": {}
+          },
+          "skiaGpuResources": null,
+          "objectCounts": {
+            "blink_objects/DetachedScriptState": 0,
+            "blink_objects/Document": 0,
+            "blink_objects/Frame": 0,
+            "blink_objects/Node": 0,
+            "blink_objects/WorkerGlobalScope": 1
+          }
+        }
+      ]
+    }
+  ],
+  "stats": {
+    "startTime": "2026-10-29T21:23:10.227Z",
+    "duration": 11135.26,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 1,
+    "flaky": 0
+  },
+  "components": [
+    {
+      "component": "rounded-no-filter",
+      "alphaMismatches": 7776,
+      "maximumAlphaError": 18,
+      "wholeSsim": 0.999967,
+      "minimumBandSsim": 0.999869
+    },
+    {
+      "component": "square-no-filter",
+      "alphaMismatches": 0,
+      "maximumAlphaError": 0,
+      "wholeSsim": 1,
+      "minimumBandSsim": 1
+    },
+    {
+      "component": "square-filtered",
+      "alphaMismatches": 37784,
+      "maximumAlphaError": 4,
+      "wholeSsim": 0.999743,
+      "minimumBandSsim": 0.998832
+    }
+  ],
+  "diagnosticMemory": {
+    "perturbed": true,
+    "acceptanceMetric": false,
+    "incrementalPrivateMiB": 280.6015625,
+    "peakPrivateBytes": 627576832,
+    "stableBlankPrivateBytes": 333344768,
+    "validSamples": 111,
+    "unavailableSamples": 0,
+    "limitMiB": 250
+  },
+  "nativeWasmSha256": "5c6cd9b4f8d272ae25031e3bc74ebc58a2ef11d328abf96766368b1c6e61ba13",
+  "qualityAndMemoryThresholdsChanged": false,
+  "forbiddenRequests": 0,
+  "forbiddenRequestOverflow": false,
+  "allFourOwnedRootsAndOwnerAbsent": true,
+  "ownedRuntimeAndDisposableConversionDataRemoved": true,
+  "protectedOriginal": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "retainedFailureTrace": {
+    "path": "output\\playwright\\2026-10-29T21-22-29-880Z-source-svg-failure.zip",
+    "bytes": 1939889,
+    "sha256": "19348a5d87996bcd39ee9ab87ad857b18204b88487e26b883d59f27a609a1c5c"
+  },
+  "originalUncompressedJsonCopiesRemovedAfterExactArchives": true,
+  "sourceRecompiled": false,
+  "publicEngineReplacement": false,
+  "wholeGoalComplete": false,
+  "specificAllocationStacksProven": false,
+  "conclusions": [
+    "Renderer native categories grow across V8, Blink GC, malloc and PartitionAlloc; overlapping counters must not be added",
+    "GPU capture includes increased Skia GPU-resource counters; it does not prove a particular allocation stack or production leak",
+    "Post-suite Document/Frame/DetachedScriptState/WorkerGlobalScope counts require lifecycle investigation, not a forced-GC or snapshot/HAR-off acceptance workaround"
+  ],
+  "priorRejectedSnapshotHarOffControl": "evidence/2026-10-27-svg-snapshot-control-terminal.json",
+  "next": "Inspect retained per-document/worker lifetimes before changing production code; do not repeat this unchanged allocation experiment or disable default services/tracing to claim acceptance"
+}
