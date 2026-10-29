@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+Finalreceipt/preparation regression:7focused PASS1562.4578ms/lint PASS, including
+exactsource-audit/privacy linkage and an owned unpatched-module fixture proving
+one-time/idempotent bootstrap without touching the live installed module. This
+is not a fullcleancheckout claim.2033fullportable atimplementation e40c4223
+predates these two final test additions; production sources unchanged since.
+CanonicalT-10 updated: prior3moderate is historical, currentaudit0; hostedrelease/
+all12nativeengine rebuilds and conversionmemory remainOPEN. Alljobs terminal,
+newownedfixtures/caches/profiles/diagnosticPNGs removed; protectedoriginalunchanged.
+
+Targetedsecurity cycle terminal atpushed e40c4223: fresh DEFAULTWranglerMiniflare
+privacy/offline/static-host19PASS45.641s/0fail/skip/flaky;5methodrefusals405+6assets200,
+twoownedbirthsabsent/runtimeclean, original2,958,573,265B/fullSHA unchanged. Same
+package/lock asafteraudit0. Productionbuild/tsc/lint/26focused and2033fullportable
+PASS;162qualificationfiles NOTRUN. Failuresretained, metadata-only overrides not
+treated as codefixes. No converterengine/profile orfullsecurity/release/goal
+promotion. evidence/2026-10-29-og-security-verification.json.
+
 Security integration fullportable PASS2033/0fail/0skip/0cancel152.675s,609selected
 files/771total,162prerequisite-boundqualification NOTRUN. Fresh26focused/lint/tsc/
 productionbuild alreadyPASS; exactrootaudit0,20publicengineWasm hashesunchanged.

@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile,mkdir,writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { createRequire } from "node:module";
 import path from "node:path";
@@ -8,7 +8,21 @@ import test from "node:test";
 import { prepareOgNodeRuntime } from "../scripts/lib/prepare-og-node-runtime.mjs";
 import { ogNodeBootstrapBanner,patchOgNodeBootstrap } from "../scripts/lib/og-node-bootstrap-patch.mjs";
 import { readPreOgSecurityInput } from "./helpers/pre-og-security-inputs.mjs";
+import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 const json=async file=>JSON.parse(await readFile(file));
+test("changed-source default SDK privacy receipt passes every original case with protected source and cleanup, not memory certification",async()=>{
+  const c=await json("evidence/2026-10-29-og-security-verification.json"),audit=await json(c.afterAudit);
+  const bytes=await readFile(c.privacyBrowserReceipt.path),p=JSON.parse(bytes);
+  assert.equal(bytes.length,c.privacyBrowserReceipt.bytes);assert.equal(createHash("sha256").update(bytes).digest("hex"),c.privacyBrowserReceipt.sha256);
+  assert.equal(p.executedHead,c.sourceCommit);assert.equal(p.hostingRuntime,"wrangler-miniflare");
+  assert.deepEqual([p.stats.expected,p.stats.unexpected,p.stats.skipped,p.stats.flaky],[19,0,0,0]);
+  assert.equal(p.sourcePins["package.json"],audit.packageSha256);assert.equal(p.sourcePins["package-lock.json"],audit.lockSha256);
+  assert.equal(audit.audit.metadata.vulnerabilities.total,0);assert.equal(p.methodPreflight.length,5);
+  assert.ok(p.methodPreflight.every(x=>x.status===405&&x.allow==="GET, HEAD"));assert.equal(p.assetPreflight.length,6);assert.ok(p.assetPreflight.every(x=>x.status===200));
+  assert.equal(p.processCleanup.length,2);assert.ok(p.processCleanup.every(x=>x.status==="owned-identity-absent"));assert.equal(p.ownedRuntimeRemoved,true);
+  assert.deepEqual(p.protectedOriginalBefore,p.protectedOriginalAfter);assert.deepEqual(p.protectedOriginalAfter,c.protectedOriginalBeforeAfter);
+  assert.equal(p.headedCoverage,false);assert.equal(p.conversionMemoryAcceptance,false);assert.equal(c.wholeGoalComplete,false);
+});
 test("installed reviewed graph changes exactly five framework/font entries and keeps every converter engine intact",async()=>{
   const before=JSON.parse(await readPreOgSecurityInput("package-lock.json")),after=await json("package-lock.json"),pkg=await json("package.json");
   const keys=new Set([...Object.keys(before.packages),...Object.keys(after.packages)]);
@@ -22,6 +36,7 @@ test("installed reviewed graph changes exactly five framework/font entries and k
 });
 test("actual framework consumer resolves the patched module, bootstrap is idempotent, and bounded public PNG API still works",async()=>{
   const consumer=createRequire(path.resolve("node_modules/vinext/package.json"));
+  await prepareOgNodeRuntime(process.cwd());
   const entry=consumer.resolve("@vercel/og"),bytes=await readFile(entry),proof=await prepareOgNodeRuntime(process.cwd());
   assert.equal(proof.alreadyPatched,true);assert.equal(bytes.toString().startsWith(ogNodeBootstrapBanner),true);
   assert.equal(createHash("sha256").update(bytes).digest("hex"),proof.patchedSha256);assert.equal(patchOgNodeBootstrap(bytes).code,bytes.toString());
@@ -31,6 +46,21 @@ test("actual framework consumer resolves the patched module, bootstrap is idempo
   try{for(;;){const {done,value}=await reader.read();if(done)break;total+=value.byteLength;assert.ok(total<=65536);parts.push(Buffer.from(value));}}
   finally{await reader.cancel();reader.releaseLock();}
   const png=Buffer.concat(parts);assert.equal(png.subarray(1,4).toString(),"PNG");assert.equal(png.readUInt32BE(16),32);assert.equal(png.readUInt32BE(20),16);
+});
+test("fresh install without package lifecycle scripts gets the exact bootstrap once, entirely in disposable owned test data",async()=>{
+  const runtime=await createOwnedRuntimeScratch("og-node-bootstrap-test-");
+  try{
+    const consumer=createRequire(path.resolve("node_modules/vinext/package.json"));await prepareOgNodeRuntime(process.cwd());
+    const installed=(await readFile(consumer.resolve("@vercel/og"))).toString();assert.ok(installed.startsWith(ogNodeBootstrapBanner));
+    const original=installed.slice(ogNodeBootstrapBanner.length),pkg=path.join(runtime.directory,"node_modules/@vercel/og");
+    await mkdir(path.join(pkg,"dist"),{recursive:true});await mkdir(path.join(runtime.directory,"node_modules/vinext"),{recursive:true});
+    await writeFile(path.join(pkg,"package.json"),JSON.stringify({name:"@vercel/og",version:"1.0.3",exports:{"./package.json":"./package.json"}}));
+    await writeFile(path.join(runtime.directory,"node_modules/vinext/package.json"),JSON.stringify({name:"vinext",version:"0.0.50"}));
+    await writeFile(path.join(pkg,"dist/index.node.js"),original);
+    assert.equal((await prepareOgNodeRuntime(runtime.directory)).alreadyPatched,false);
+    assert.equal((await prepareOgNodeRuntime(runtime.directory)).alreadyPatched,true);
+    assert.equal((await readFile(path.join(pkg,"dist/index.node.js"))).toString(),installed);
+  }finally{await runtime.close();}
 });
 test("actual bundled escaping remediation and source maps do not substitute metadata labels for runtime evidence",async()=>{
   const proof=await json("evidence/2026-10-29-og-security-node-asset-candidate.json");assert.equal(proof.status,"passed-isolated-embedded-runtime-security-and-api-controls-not-installed");

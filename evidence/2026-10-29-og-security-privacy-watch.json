@@ -1,0 +1,17 @@
+{
+  "schemaVersion":1,
+  "sourceCommit":"e40c4223",
+  "startedAt":"2026-10-29T14:07:25Z",
+  "sessionId":36006,
+  "command":"scripts/run-repository-owned-node.mjs scripts/run-owned-privacy-offline.mjs",
+  "defaultSdkHost":true,
+  "originalUnchangedCases":19,
+  "estimatedTotalSeconds":120,
+  "observeNotBefore":"2026-10-29T14:09:25Z",
+  "lastAuthoritativeObservation":"same session exited0;19PASS/0fail/skip/flaky,45.641283s, defaultWranglerMiniflare, two ownedbirths absent/runtime removed/original fullSHA unchanged",
+  "terminal":true,
+  "receipt":"evidence/2026-10-29T14-07-25-711Z-owned-privacy-offline.json",
+  "restartOnObservationTimeout":false,
+  "conversionMemoryAcceptance":false,
+  "wholeGoalComplete":false
+}
