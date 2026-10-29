@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile,access } from "node:fs/promises";
 import test from "node:test";
-import { assertSvgStripExperimentNotRejected } from "../scripts/lib/svg-strip-rejections.mjs";
+import { assertSvgStripExperimentNotRejected,assertSvgStripLifecycleNotCompleted } from "../scripts/lib/svg-strip-rejections.mjs";
 test("all recorded native/config failures prevent unchanged expensive replay; distinct native code remains eligible",async()=>{
   const ledger=JSON.parse(await readFile("images/resvg-source/rejected-strip-experiments.json"));
   assert.ok(ledger.experiments.length>=4&&ledger.experiments.length<=32);
@@ -16,4 +16,7 @@ test("all recorded native/config failures prevent unchanged expensive replay; di
   assert.throws(()=>assertSvgStripExperimentNotRejected(ledger,candidate),/explicit changed implementation/);
   assert.throws(()=>assertSvgStripExperimentNotRejected(ledger,{...candidate,workerImplementationSha256:completed.workerImplementationSha256}),/must not be replayed unchanged/);
   assert.doesNotThrow(()=>assertSvgStripExperimentNotRejected(ledger,{...candidate,workerImplementationSha256:"c".repeat(64)}));
+  const lifecycle=ledger.completedPremultipliedLifecycleControl;
+  assert.throws(()=>assertSvgStripLifecycleNotCompleted(ledger,lifecycle),/must not be replayed unchanged/);
+  assert.doesNotThrow(()=>assertSvgStripLifecycleNotCompleted(ledger,{...lifecycle,workerImplementationSha256:"e".repeat(64)}));
 });

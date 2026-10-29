@@ -1,5 +1,26 @@
 # Tested conversion ledger
 
+Transparent control prepared: pinned498B960x540 source7816a861, integer nonoverlap
+rectangles with exact alpha bins0:129600/64:64800/128:129600/191:64800/255:129600.
+Production full/nativePNG and strip/streamedPNG use same authenticated8641native;
+require exact modeRGBA equality, all alpha bins, actual transparent reference,
+original0.99 whole/bands, strict baseline/250 and96MiB. Not filtered-alpha/general
+SVG coverage or original6M replacement.12focused PASS2660.5216ms incl real lifecycle
+receipt audit/replay guard; affected lint PASS, exactly1pairedcase listed/no browser,
+runtime cleaned. Actual conversion NEXT. evidence/2026-10-29T12-58-05-928Z-svg-transparent-control.json.
+
+Actual original6M telemetry/lifecycle at5ade0755:3 functional PASS106.570s; same
+2882332B outputs/whole0.999079/min31bands0.998057/alphaexact. Generic peak explicit
+JS3339478B and final0 each; PNGpeak399478B/final0. Real row cancellation:
+UI149rows/testAPIsnapshot21rows+2177537B (asynchronous, not same snapshot), final
+149rows/2nativeviewports released/131105Bpartial removed/peak3273942B→0. First8B
+headerwrite fault after parsing:peak8B→0, partial removed. Both recover samepage
+to independently validated images. NOT late-write coverage. Final qualification
+FAILED: blank unstable, incrementalNULL, fulltreepeak699760640B/989valid0missing.
+No borrowed baseline or service/process exclusions. Network0, allowneddatacleaned,
+original full SHA unchanged. New alpha control NEXT; no unchanged lifecycle replay.
+evidence/2026-10-29-svg-strip-lifecycle-terminal.json.
+
 2026-10-29 — New original6M strip lifecycle gate prepared, NOT executed yet.
 Same8641 capped Wasm/input/reference/128rows/48halo/all31bands; adds cancellation
 after actual nonzero rows with live JS buffers, direct write fault, aborted

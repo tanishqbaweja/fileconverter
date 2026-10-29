@@ -10,7 +10,7 @@ import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { queryReliableProcessIdentity } from "./lib/reliable-owned-identity.mjs";
 import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
-import { assertSvgStripExperimentNotRejected } from "./lib/svg-strip-rejections.mjs";
+import { assertSvgStripExperimentNotRejected,assertSvgStripLifecycleNotCompleted } from "./lib/svg-strip-rejections.mjs";
 const root=path.resolve(import.meta.dirname,".."),args=process.argv.slice(2);
 assert.equal(new Set(args).size,args.length);assert.ok(args.length<=3&&args.every(arg=>["--list-only","--filter-region","--filter-context","--filter-liveness","--premultiplied","--premultiplied-lifecycle","--rows80","--rows128"].includes(arg)));
 const lifecycle=args.includes("--premultiplied-lifecycle"),premultiplied=args.includes("--premultiplied")||lifecycle,filterLiveness=args.includes("--filter-liveness"),filterContext=args.includes("--filter-context"),filterRegion=args.includes("--filter-region"),listOnly=args.includes("--list-only");
@@ -38,6 +38,9 @@ try{
     report.workerImplementationSourcePins=Object.fromEntries(await Promise.all(implementationFiles.map(async file=>[file,sha(await readFile(path.join(root,file)))])));
     report.workerImplementationSha256=sha(JSON.stringify(report.workerImplementationSourcePins));
     assertSvgStripExperimentNotRejected(ledger,{wasmSha256:pin.wasmSha256,centralRows,fixtureSha256:"af4df880bee340b34ec1102a78a78cce8d04915635ea2ee5a7aa0ffe04e4ca78",workerImplementationSha256:report.workerImplementationSha256});
+    if(lifecycle)assertSvgStripLifecycleNotCompleted(ledger,{nativeWasmSha256:pin.wasmSha256,workerImplementationSha256:report.workerImplementationSha256,
+      lifecycleQualifierSha256:sha(await readFile(path.join(root,"scripts/lib/svg-strip-lifecycle-qualification.mjs"))),
+      lifecycleRecoverySha256:sha(await readFile(path.join(root,"scripts/lib/svg-strip-lifecycle-recovery.txt")))});
   }
   for(const file of [baseOwner,"scripts/test-svg-strip-pilot.mjs","scripts/lib/svg-strip-rejections.mjs","images/resvg-source/rejected-strip-experiments.json","scripts/lib/svg-strip-worker-recipe.mjs","scripts/lib/svg-strip-qualification-recipe.mjs","scripts/lib/svg-strip-validator.mjs","lib/private-svg-strip-pilot.ts","workers/rgba-png-stream.ts"])
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));

@@ -107,5 +107,13 @@
     "evidence": "evidence/2026-10-29-svg-premultiplied-6m-repeat-terminal.json",
     "conclusion": "All3 functional tests pass whole0.999079/min31bands0.998057/alphaexact; final verdict FAIL absent stable blank baseline, incremental memory null. Do not replay unchanged to seek green; telemetry/recovery/transparent-input gaps next, no public promotion."
   },
+  "completedPremultipliedLifecycleControl": {
+    "nativeWasmSha256": "8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+    "workerImplementationSha256": "53ce6f1ce26507552d77bbe39f07050c5883993b308ba67049980e9322411b29",
+    "lifecycleQualifierSha256": "615ac218b07f3675f0bbcd4a4d13d3aeee379217b986ab896dac0c2b5cf6d999",
+    "lifecycleRecoverySha256": "0d999a5285656cbe788f6b887e98f18df4743f301cd1f45b141c696f02f25211",
+    "evidence": "evidence/2026-10-29-svg-strip-lifecycle-terminal.json",
+    "conclusion": "3 functional successes, nonzero bounded buffer peaks/finalzero, real-row UI cancel, firstwrite fault, cleanup and same-page retries pass; final strict verdict FAIL unstable baseline/incremental null. No unchanged replay for green."
+  },
   "publicPromotion": false
 }

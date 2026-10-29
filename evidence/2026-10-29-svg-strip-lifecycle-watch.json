@@ -1,0 +1,16 @@
+{
+  "schemaVersion":1,
+  "startedAt":"2026-10-29T12:51:20Z",
+  "sourceCommit":"5ade0755",
+  "sessionId":47296,
+  "command":"scripts/run-repository-owned-node.mjs scripts/test-svg-strip-pilot.mjs --premultiplied-lifecycle --rows128",
+  "estimatedTotalSeconds":240,
+  "observeNotBefore":"2026-10-29T12:55:20Z",
+  "reason":"New actual buffer telemetry, actual-row UI cancellation, direct write failure, cleanup and same-page retries on original6M scene; not a green-baseline retry",
+  "lastAuthoritativeObservation":"same session exited1;3 functional passes incl telemetry/cancellation/write-error/same-page recovery; strict final baseline gate failed and incremental memory null",
+  "terminal":true,
+  "browserReceipt":"evidence/2026-10-29T12-52-00-198Z-source-svg-browser.json",
+  "restartOnObservationTimeout":false,
+  "publicPromotion":false,
+  "wholeGoalComplete":false
+}

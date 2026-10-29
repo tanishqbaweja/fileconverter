@@ -6,6 +6,25 @@ import ts from "typescript";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 import { makePremultipliedSvgQualification } from "../scripts/lib/svg-premultiplied-qualification.mjs";
 import { makeSvgStripLifecycleQualification } from "../scripts/lib/svg-strip-lifecycle-qualification.mjs";
+test("actual lifecycle pass proves real nonzero buffer telemetry and both recoveries but retains null primary memory and failed qualification",async()=>{
+  const c=JSON.parse(await readFile("evidence/2026-10-29-svg-strip-lifecycle-terminal.json"));
+  const b=JSON.parse(await readFile(c.browserReceipt));
+  assert.deepEqual([b.stats.expected,b.stats.unexpected,b.stats.skipped],[3,0,0]);assert.equal(b.runnerExitCode,0);
+  assert.equal(b.blankBaseline,null);assert.equal(b.memory.incrementalPrivateMiB,null);assert.equal(c.memoryAcceptance,false);
+  assert.equal(b.memory.validSamples,c.validNativeSamples);assert.equal(b.memory.unavailableSamples,c.unavailableNativeSamples);
+  for(const row of b.stressRuns){const r=row.result;assert.equal(r.metrics.imageWorkingBytes,0);
+    assert.equal(r.metrics.peakImageWorkingBytes,c.eachSuccess.peakExplicitJsBufferBytes);
+    assert.equal(r.metrics.peakImageWorkingBytes,r.metrics.svgStripPilot.peakExplicitBufferBytes);
+    assert.equal(r.stripValidation.minimumSsim,c.eachSuccess.minimumAll31BandsSsim);assert.equal(r.stripValidation.alphaExact,true);}
+  const [cancel,write]=b.lifecycleRecovery.map(row=>row.result);
+  assert.equal(cancel.kind,"cancelled");assert.ok(cancel.cancelClick.completedRows>0&&cancel.cancelClick.workingBytes>0);
+  assert.equal(write.kind,"error");assert.equal(write.metrics.maxWriteChunkBytes,8);assert.equal(write.metrics.svgStripPilot.renderedViewports,0);
+  for(const r of [cancel,write]){assert.equal(r.metrics.imageWorkingBytes,0);assert.equal(r.metrics.svgStripPilot.png.currentExplicitBufferBytes,0);
+    assert.equal(r.outputRemoved,true);assert.equal(r.timeOriginBefore,r.timeOriginAfter);assert.equal(r.metrics.queuedBytes,0);assert.equal(r.metrics.pendingOperations,0);}
+  assert.ok(b.failures.some(value=>value.includes("earliest stable blank baseline")));
+  assert.deepEqual(b.protectedOriginalBefore,b.protectedOriginalAfter);assert.equal(b.ownedRuntimeRemoved,true);
+  assert.ok(b.processCleanup.every(row=>row.status==="owned-identity-absent"));assert.equal(c.publicPromotion,false);
+});
 test("strip lifecycle adds real row cancellation, destination fault and same-page retries without removing original6M gates",async()=>{
   const runtime=await createOwnedRuntimeScratch("svg-reproduced-qualification-");
   try{

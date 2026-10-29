@@ -1,5 +1,23 @@
 # Remaining work audit
 
+Basic transparency control now prepared with exact per-alpha pixel counts on
+498Bfixed960x540 source, both real production full/strip paths, same8641native,
+all quality/cap/privacy/cleanup gates.12focused PASS2660.5216ms/lint PASS;
+1case listed/no browser, runtimeclean. Actual alpha verification NEXT, not
+filtered-alpha or generalSVG closure. Completed lifecycle source/native replay
+is now guarded; unstable memory verdict remains failed and unborrowed.
+evidence/2026-10-29T12-58-05-928Z-svg-transparent-control.json.
+
+Private actual telemetry/row-cancel/firstwrite-error/samepage recovery now
+FUNCTIONALLY VERIFIED on original6M:3successes, explicit peak3339478B/final0,
+same whole/all31band/alpha gates PASS. Cancellation frees2viewports/partialfile;
+firstheaderwrite fault freesparser/destination/buffers; both recover samepage.
+Strict memory qualification still FAILED absent stable blank baseline; incremental
+NULL,989valid0missing, peak699760640B. No unchanged replay for green. Basic/filtered
+transparent inputs, late-write/quota/permission/reload/OOM, coherent clean-session
+memory/release and wider original scope OPEN. Next separate alpha control.
+evidence/2026-10-29-svg-strip-lifecycle-terminal.json.
+
 Original6M telemetry/lifecycle gate now prepared: actual-row UI cancellation,
 directwrite fault, same-page recovered conversions and explicit buffer current0/
 boundednonzeropeak checks, retaining all31qualitybands/caps/baseline/timeouts.
