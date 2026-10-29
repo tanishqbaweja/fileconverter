@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+Original6M premultiplied128/48 selection prepared without changing frozen owners
+or scene. Seven focused receipt/gate/rejection tests PASS1129.2704ms, affected
+ESLint PASS. Dry listing3 original stress cases; no browser/conversion, owned
+scratch removed. evidence/2026-10-29T12-26-03-737Z-svg-strip-pilot.json. Actual
+large run NEXT; all31bands/whole/alpha,96MiB/250MiB and45s/60s limits unchanged.
+
+2026-10-29 — New8641 native original small pair at9d7cd2ee PASS: full/strip exact
+RGBA5722e48c, wholeSSIM0.999571/minimum8bands0.998555/alphaexact. Same original
+11194B source and167494B Chromium reference. Old902 band0.982544 and rejected3bb
+0.946037 remain failures; no thresholds/scene changes. Full1107.01ms/143044B,
+strip2296.78ms/127118B, native heaps14,548,992/13,565,952B. No speedup claim.
+Stable blank333500416B/peak568434688B =>224.05078125MiB fulltree,94valid/0missing,
+small diagnostic ONLY. Chrome156.0.8078.49,0 forbidden requests, all owned births
+absent/runtimes/outputs removed, original full SHA/size unchanged. Exact pair
+replay guarded. Next original6M; generic working-byte telemetry remains OPEN.
+evidence/2026-10-29-svg-small-premultiplied-terminal.json.
+
 2026-10-29 — Premultiplied browser qualifier prepared:8 focused tests PASS
 1081.4917ms, affected ESLint PASS; dry collection exactly1 paired test/no browser,
 owned runtime removed. Four source proofs, authenticated native/cap pins, unchanged

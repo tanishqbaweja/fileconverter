@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-29T12:22:01Z",
+  "sourceCommit": "9d7cd2ee",
+  "sessionId": 78213,
+  "command": "scripts/run-repository-owned-node.mjs scripts/test-svg-small-fidelity-control.mjs --premultiplied-candidate",
+  "nativeWasmSha256": "8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+  "estimatedTotalSeconds": 150,
+  "observeNotBefore": "2026-10-29T12:24:31Z",
+  "lastAuthoritativeObservation": "same session exited 0; receipt finished 2026-10-29T12:23:14.218Z, observed 12:24:36Z after estimate",
+  "terminal": true,
+  "receipt": "evidence/2026-10-29T12-22-02-459Z-svg-small-premultiplied-control.json",
+  "restartOnObservationTimeout": false,
+  "diagnosticOnly": true,
+  "publicPromotion": false
+}

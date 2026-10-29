@@ -9,6 +9,24 @@ import { filterRegionPatch } from "../images/resvg-source/filter-region-patch.mj
 import { renderContextPatch } from "../images/resvg-source/render-context-patch.mjs";
 import { filterLivenessPatch } from "../images/resvg-source/filter-liveness-patch.mjs";
 import { premultipliedTransferPatch } from "../images/resvg-source/premultiplied-transfer-patch.mjs";
+import { createHash } from "node:crypto";
+test("actual new native small pair passes unchanged quality gates and has terminal cleanup without granting large-profile acceptance",async()=>{
+  const compact=JSON.parse(await readFile("evidence/2026-10-29-svg-small-premultiplied-terminal.json"));
+  const parent=JSON.parse(await readFile(compact.parentReceipt));
+  const bytes=await readFile(compact.browserReceipt.path),browser=JSON.parse(bytes);
+  assert.equal(bytes.length,compact.browserReceipt.bytes);assert.equal(createHash("sha256").update(bytes).digest("hex"),compact.browserReceipt.sha256);
+  assert.equal(parent.childExit,0);assert.equal(browser.runnerExitCode,0);assert.equal(browser.sourcePremultipliedTransferCandidate,true);
+  assert.deepEqual(browser.forbiddenRequests,[]);assert.equal(browser.forbiddenRequestOverflow,false);
+  const results=parent.diagnostic.results;assert.equal(results.length,2);assert.equal(results[0].rgbaSha256,results[1].rgbaSha256);
+  for(const row of results){assert.ok(row.wholeSsim>=0.99);assert.ok(row.minimumBandSsim>=0.99);assert.equal(row.alphaExact,true);}
+  assert.equal(parent.incrementalPrivateMiB,(browser.memory.peak.privateBytes-browser.blankBaseline.privateBytes)/1048576);
+  assert.equal(parent.incrementalPrivateMiB,compact.incrementalPrivateMiB);assert.equal(browser.memory.unavailableSamples,0);
+  assert.deepEqual(parent.protectedOriginalBefore,parent.protectedOriginalAfter);assert.equal(parent.ownedRuntimeRemoved,true);assert.equal(browser.ownedRuntimeRemoved,true);
+  assert.ok(browser.processCleanup.every(row=>row.status==="owned-identity-absent"));
+  assert.equal(parent.memoryAcceptance,false);assert.equal(compact.publicPromotion,false);assert.equal(compact.wholeGoalComplete,false);
+  const ledger=JSON.parse(await readFile("images/resvg-source/rejected-strip-experiments.json"));
+  assert.equal(ledger.completedPremultipliedPairedSmallControl.nativeWasmSha256,compact.nativeWasmSha256);
+});
 test("premultiplied assertion requires its own four proofs and rejects rejected-float lineage, changed maximum or workspace semantics",async()=>{
   const pins=JSON.parse(await readFile("images/resvg-source/filter-premultiplied-processed-input.json"));
   const receipt={filterRegionPatch,renderContextPatch,filterLivenessPatch,premultipliedTransferPatch,sourcePremultipliedTransferChanged:true};

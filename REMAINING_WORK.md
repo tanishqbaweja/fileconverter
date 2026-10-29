@@ -1,5 +1,17 @@
 # Remaining work audit
 
+Original6M128/48 premultiplied qualifier now selectable; dry listing3 cases,
+7 focused PASS1129.2704ms and affected lint PASS. Actual large behavior unproven;
+all original gates retained. First actual run next, no unchanged native rebuild
+or small-pair replay. evidence/2026-10-29T12-26-03-737Z-svg-strip-pilot.json.
+
+Actual8641 original small full/strip gate PASSED at9d7cd2ee: exactRGBA equality,
+whole0.999571/minimum8bands0.998555 >=0.99, alphaexact, same original source and
+reference; no speedup claim. Fulltree224.05078125MiB is small diagnostic ONLY.
+All owned data cleaned, protected original full SHA unchanged. Completed pair is
+guarded against replay. Next original6M qualification; no promotion/release or
+full-goal completion. evidence/2026-10-29-svg-small-premultiplied-terminal.json.
+
 2026-10-29 premultiplied browser preparation:8 focused PASS1081.4917ms,
 affected ESLint PASS; exactly1 original small paired test collected without
 launching a browser; owned scratch removed. The qualifier requires all four

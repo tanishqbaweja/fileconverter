@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "9d7cd2eea3226986ef3d9911f21ec46d7fb4beaa",
+  "status": "original-small-paired-correctness-gate-passed-not-profile-acceptance",
+  "browser": "Chrome 156.0.8078.49 headless",
+  "nativeWasmSha256": "8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+  "sourceSha256": "afebfa848cd052fcd656cfdda7605c6c191edf845087759ca3421cf44880981d",
+  "referenceSha256": "a619bd9bfc4036116d81af06b2e5f2f1cee6929044cc8ca555c8c3a1dcfdf4ab",
+  "parentReceipt": "evidence/2026-10-29T12-22-02-459Z-svg-small-premultiplied-control.json",
+  "browserReceipt": {"path":"evidence/2026-10-29T12-22-03-094Z-source-svg-browser.json","bytes":351731,"sha256":"51bd18493b074a3f7b8cbb174c5e0e73d353be8332851eb39e538c4395d92233"},
+  "results": [
+    {"mode":"full","outputBytes":143044,"elapsedMs":1107.0099999904633,"wholeSsim":0.999571,"minimumBandSsim":0.998555,"alphaExact":true,"rgbaSha256":"5722e48cbb545630c34e582346db257ff8bb13206cbdd35c416f86d6160fe483","peakWasmBytes":14548992},
+    {"mode":"strip128-halo48","outputBytes":127118,"elapsedMs":2296.780000090599,"wholeSsim":0.999571,"minimumBandSsim":0.998555,"alphaExact":true,"rgbaSha256":"5722e48cbb545630c34e582346db257ff8bb13206cbdd35c416f86d6160fe483","peakWasmBytes":13565952,"renderedViewports":5,"releasedViewports":5,"completedRows":540,"maximumWriteBytes":65536,"maximumPendingWrites":1}
+  ],
+  "comparison": {"sameOriginalInputReferenceAndSettings":true,"old902WholeSsim":0.99418,"old902MinimumBandSsim":0.982544,"rejected3bbWholeSsim":0.979103,"rejected3bbMinimumBandSsim":0.946037,"qualityThreshold":0.99,"speedImprovementClaimed":false},
+  "blankPrivateBytes":333500416,
+  "peakFullTreePrivateBytes":568434688,
+  "incrementalPrivateMiB":224.05078125,
+  "validNativeSamples":94,
+  "unavailableNativeSamples":0,
+  "memoryScope":"Small diagnostic only; not large-scene or repeated-profile acceptance",
+  "forbiddenRequests":0,
+  "forbiddenRequestOverflow":false,
+  "ownedProcessesAbsent":true,
+  "ownedRuntimesAndDisposableOutputsRemoved":true,
+  "protectedOriginalBeforeAfter":{"bytes":2958573265,"sha256":"31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"},
+  "knownOpenTelemetry":"Generic imageWorkingBytes remains zero during work; separate maxima and actual Wasm observations retained. Fix before adoption.",
+  "next":"Original6M effects scene with exact original source/reference, all31 band checks, unchanged250MiB/96MiB/timeouts; no unchanged small-pair replay",
+  "publicPromotion":false,
+  "wholeGoalComplete":false
+}

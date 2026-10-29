@@ -12,18 +12,18 @@ import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mj
 import { sha } from "../images/resvg-source/source-pins.mjs";
 import { assertSvgStripExperimentNotRejected } from "./lib/svg-strip-rejections.mjs";
 const root=path.resolve(import.meta.dirname,".."),args=process.argv.slice(2);
-assert.equal(new Set(args).size,args.length);assert.ok(args.length<=3&&args.every(arg=>["--list-only","--filter-region","--filter-context","--filter-liveness","--rows80","--rows128"].includes(arg)));
-const filterLiveness=args.includes("--filter-liveness"),filterContext=args.includes("--filter-context"),filterRegion=args.includes("--filter-region"),listOnly=args.includes("--list-only");
-assert.ok([filterLiveness,filterContext,filterRegion].filter(Boolean).length<=1,"Select one immutable native candidate");
-const nativeVariant=filterLiveness||filterContext||filterRegion;
+assert.equal(new Set(args).size,args.length);assert.ok(args.length<=3&&args.every(arg=>["--list-only","--filter-region","--filter-context","--filter-liveness","--premultiplied","--rows80","--rows128"].includes(arg)));
+const premultiplied=args.includes("--premultiplied"),filterLiveness=args.includes("--filter-liveness"),filterContext=args.includes("--filter-context"),filterRegion=args.includes("--filter-region"),listOnly=args.includes("--list-only");
+assert.ok([premultiplied,filterLiveness,filterContext,filterRegion].filter(Boolean).length<=1,"Select one immutable native candidate");
+const nativeVariant=premultiplied||filterLiveness||filterContext||filterRegion;
 assert.ok(!(args.includes("--rows80")&&args.includes("--rows128")),"Select one strip schedule");
 const centralRows=args.includes("--rows128")?128:args.includes("--rows80")?80:64;
-assert.ok(centralRows===64||filterContext||filterLiveness,"80-row experiment requires the context-corrected source");
-assert.ok(centralRows!==128||filterLiveness,"128 rows require the measured lower-memory native lifetime implementation");
-const candidatePin=filterLiveness?"images/resvg-source/filter-liveness-processed-input.json":filterContext?"images/resvg-source/filter-context-processed-input.json":"images/resvg-source/filter-region-processed-input.json";
+assert.ok(centralRows===64||filterContext||filterLiveness||premultiplied,"80-row experiment requires the context-corrected source");
+assert.ok(centralRows!==128||filterLiveness||premultiplied,"128 rows require the measured lower-memory native lifetime implementation");
+const candidatePin=premultiplied?"images/resvg-source/filter-premultiplied-processed-input.json":filterLiveness?"images/resvg-source/filter-liveness-processed-input.json":filterContext?"images/resvg-source/filter-context-processed-input.json":"images/resvg-source/filter-region-processed-input.json";
 const stamp=new Date().toISOString().replaceAll(/[:.]/g,"-"),baseOwner="scripts/test-reproduced-svg-stress.mjs";
 const report={schemaVersion:1,startedAt:new Date().toISOString(),scope:"Private viewport/streaming PNG worker with original6M effects fixture and unchanged final baseline/250 threshold; not general SVG/release acceptance",
-  sourcePins:{},failures:[],centralRows,sourceFilterRegionCandidate:nativeVariant,sourceRenderContextCandidate:filterContext||filterLiveness,sourceFilterLivenessCandidate:filterLiveness,publicSourceEdited:false,publicEngineReplacement:false,memoryAcceptance:false,wholeGoalComplete:false};
+  sourcePins:{},failures:[],centralRows,sourceFilterRegionCandidate:nativeVariant,sourceRenderContextCandidate:filterContext||filterLiveness||premultiplied,sourceFilterLivenessCandidate:filterLiveness||premultiplied,sourcePremultipliedTransferCandidate:premultiplied,publicSourceEdited:false,publicEngineReplacement:false,memoryAcceptance:false,wholeGoalComplete:false};
 let runtime,child,birth,log="";
 const replace=(text,before,after,count=1)=>{assert.equal(text.split(before).length-1,count,"Exact strip owner anchor: "+before);return text.split(before).join(after);};
 try{
@@ -39,6 +39,8 @@ try{
   report.sourcePins["scripts/lib/svg-filter-region-qualification.mjs"]=sha(await readFile(path.join(root,"scripts/lib/svg-filter-region-qualification.mjs")));
   report.sourcePins["scripts/lib/svg-filter-context-qualification.mjs"]=sha(await readFile(path.join(root,"scripts/lib/svg-filter-context-qualification.mjs")));
   report.sourcePins["scripts/lib/svg-filter-liveness-qualification.mjs"]=sha(await readFile(path.join(root,"scripts/lib/svg-filter-liveness-qualification.mjs")));
+  if(premultiplied)for(const file of ["scripts/lib/svg-premultiplied-qualification.mjs","images/resvg-source/premultiplied-transfer-patch.mjs","images/resvg-source/premultiplied-transfer-kernel.rs","images/resvg-source/filter-premultiplied-raw-input.json"])
+    report.sourcePins[file]=sha(await readFile(path.join(root,file)));
   if(nativeVariant) report.sourcePins[candidatePin]=sha(await readFile(path.join(root,candidatePin)));
   runtime=await createOwnedRuntimeScratch("svg-strip-owner-");
   let source=original.toString().replace(/((?:from\s+|import\s*)["'])(\.\.?\/[^"']+)(["'])/g,(_all,start,name,end)=>start+pathToFileURL(path.resolve(root,"scripts",name)).href+end);
@@ -46,7 +48,7 @@ try{
   source=replace(source,'  runtime = await createOwnedRuntimeScratch("svg-reproduced-qualification-");',
     '  runtime = await createOwnedRuntimeScratch("svg-reproduced-qualification-");\n  report.privateWorker = await buildSvgStripWorker({root,runtime,centralRows:'+centralRows+'});');
   const selector='  const recipe = allocationProbeDiagnostic ? makeSvgAllocationDiagnostic : effectsDiagnostic ? makeSvgEffectsDiagnostic : executionDiagnostic ? makeSvgExecutionDiagnostic : directHandle ? makeReproducedSvgDirectStressQualification : makeReproducedSvgStressQualification;';
-  source=replace(source,selector,'  const recipe = options => '+(filterLiveness?'makeFilterLivenessSvgQualification':filterContext?'makeFilterContextSvgQualification':filterRegion?'makeFilterRegionSvgQualification':'makeSvgStripQualification')+'({...options,workerPin:report.privateWorker});');
+  source=replace(source,selector,'  const recipe = options => '+(premultiplied?'makePremultipliedSvgQualification':filterLiveness?'makeFilterLivenessSvgQualification':filterContext?'makeFilterContextSvgQualification':filterRegion?'makeFilterRegionSvgQualification':'makeSvgStripQualification')+'({...options,workerPin:report.privateWorker});');
   source=replace(source,'    await generateOwnedSvgEffectsFixture({ runtime, fixtureRoot: generated.fixtureRoot, receipt: report.fixture });',
     '    await generateOwnedSvgEffectsFixture({ runtime, fixtureRoot: generated.fixtureRoot, receipt: report.fixture });\n'+
     '    const reference = path.join(generated.fixtureRoot,"svg-effects-6m-reference.png");\n'+
@@ -56,13 +58,15 @@ try{
     '  for (const file of ["scripts/test-svg-strip-pilot.mjs", "scripts/lib/svg-filter-region-qualification.mjs", "scripts/lib/svg-strip-worker-recipe.mjs", "scripts/lib/svg-strip-qualification-recipe.mjs", "scripts/lib/svg-strip-validator.mjs", "lib/private-svg-strip-pilot.ts", "workers/rgba-png-stream.ts", "scripts/test-reproduced-svg-stress.mjs",');
   if(nativeVariant) source=replace(source,"images/resvg-source/repeated-processed-input.json",candidatePin,2);
   source=replace(source,'assert.equal(observation.observations, 6);','assert.equal(observation.observations, 6 + run.result.metrics.svgStripPilot.renderedViewports);');
-  if(filterContext||filterLiveness) source=replace(source,'"scripts/lib/svg-filter-region-qualification.mjs",','"scripts/lib/svg-filter-region-qualification.mjs", "scripts/lib/svg-filter-context-qualification.mjs",');
-  if(filterLiveness) source=replace(source,'"scripts/lib/svg-filter-context-qualification.mjs",','"scripts/lib/svg-filter-context-qualification.mjs", "scripts/lib/svg-filter-liveness-qualification.mjs",');
+  if(filterContext||filterLiveness||premultiplied) source=replace(source,'"scripts/lib/svg-filter-region-qualification.mjs",','"scripts/lib/svg-filter-region-qualification.mjs", "scripts/lib/svg-filter-context-qualification.mjs",');
+  if(filterLiveness||premultiplied) source=replace(source,'"scripts/lib/svg-filter-context-qualification.mjs",','"scripts/lib/svg-filter-context-qualification.mjs", "scripts/lib/svg-filter-liveness-qualification.mjs",');
+  if(premultiplied)source=replace(source,'"scripts/lib/svg-filter-liveness-qualification.mjs",','"scripts/lib/svg-filter-liveness-qualification.mjs", "scripts/lib/svg-premultiplied-qualification.mjs", "images/resvg-source/premultiplied-transfer-patch.mjs", "images/resvg-source/premultiplied-transfer-kernel.rs",');
   source=`import {buildSvgStripWorker} from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-strip-worker-recipe.mjs")).href)};\n`+
     `import {makeSvgStripQualification} from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-strip-qualification-recipe.mjs")).href)};\n`+
     `import {makeFilterRegionSvgQualification} from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-filter-region-qualification.mjs")).href)};\n`+
     `import {makeFilterContextSvgQualification} from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-filter-context-qualification.mjs")).href)};\n`+
     `import {makeFilterLivenessSvgQualification} from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-filter-liveness-qualification.mjs")).href)};\n`+
+    `import {makePremultipliedSvgQualification} from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-premultiplied-qualification.mjs")).href)};\n`+
     `import {validateSvgStripSeams} from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-strip-validator.mjs")).href)};\n`+
     'import {execFile} from "node:child_process";\nimport {promisify} from "node:util";\n'+source;
   report.generatedOwner={bytes:Buffer.byteLength(source),sha256:sha(source),gzipBase64:gzipSync(source,{level:9}).toString("base64"),baseSha256:sha(original)};
