@@ -1,5 +1,16 @@
 # Private SVG source reconstruction
 
+Latest changed-native browser verdict: FAIL exact alpha AND measured complete-
+Chromium memory. The boundary correction improves filtered max error34→4 but
+does not make it exact (37,784 differing pixels). Rounded/no-filter errors remain
+7,776/max18; square/no-filter stays exact. Stableblank complete-tree incremental
+memory265.445MiB>250 (112valid/0missing). No promotion or speedup claim.
+All disposable runtime/output/reference/native copies and owned processes are
+cleaned; protected original full SHA/size unchanged. Only the compact reports and
+1.84MB diagnostic failure trace remain. Do not replay unchanged candidate/source
+builds; investigate residual arithmetic/geometry and retained allocation evidence.
+See `evidence/2026-10-29-svg-blur-boundary-browser-terminal.json`.
+
 ## Blur-boundary extent candidate (private, numeric only, 2026-10-30 IST)
 
 New alpha components isolate two differences: rounded shapes without filters

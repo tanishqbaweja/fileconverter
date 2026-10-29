@@ -137,5 +137,15 @@
     "evidence": "evidence/2026-10-29-svg-alpha-components-terminal.json",
     "conclusion": "Rounded/no-filter7776 alpha mismatches,max18; square/no-filterexact; square/filtered38067 mismatches,max34. RGB all-band0.99 passes. Independent geometry and filter discrepancies, not one strip error. Small214.906MiB diagnostic only. Do not replay unchanged components; inspect bounded spatial evidence and test boundary-convolution hypothesis numerically before native changes."
   },
+  "completedBlurBoundaryAlphaComponents": {
+    "nativeWasmSha256": "5c6cd9b4f8d272ae25031e3bc74ebc58a2ef11d328abf96766368b1c6e61ba13",
+    "variants": [
+      {"name":"rounded-no-filter","sha256":"23d0d451461e23e3a9ccc84d9e9698edd22683c8df29199276a970330019904c"},
+      {"name":"square-no-filter","sha256":"3aebeeb224cef976bde753f176fbb13574d77b746b3f4898ce0dcad83d1cb1fc"},
+      {"name":"square-filtered","sha256":"7bcb8dcad1192c1238403c3e8154ab01279d37d2177e4d9e55fc1a665d6debe6"}
+    ],
+    "evidence": "evidence/2026-10-29-svg-blur-boundary-browser-terminal.json",
+    "conclusion": "Blur boundary correction reduces filtered max alpha error34 to4,37784 pixels still differ; rounded7776/max18 unchanged, square unfilteredexact. Overall strict alpha FAIL and measured stable-blank complete-tree265.4453125MiB FAIL112valid0missing. Filtered Wasm peak rises only524288B; aggregate allocation cause unproven. No speedup/promotion. Inspect residual arithmetic/geometry and retained whole-tree evidence; do not replay unchanged candidate/components."
+  },
   "publicPromotion": false
 }

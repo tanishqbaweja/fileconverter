@@ -9,6 +9,43 @@ import { makeSvgBlurBoundaryAlphaControl, assertSvgBlurBoundarySourceReceipt } f
 import { svgAlphaComponentVariants, assertSvgAlphaComponentsNotCompleted } from "../scripts/lib/svg-alpha-component-variants.mjs";
 import { premultipliedTransferPatch } from "../images/resvg-source/premultiplied-transfer-patch.mjs";
 import { blurBoundaryPatch } from "../images/resvg-source/blur-boundary-patch.mjs";
+import { sha } from "../images/resvg-source/source-pins.mjs";
+
+test("actual boundary browser diagnostic retains improved filtered error but strict alpha/memory failures and cleanup", async () => {
+  const terminal = JSON.parse(await readFile("evidence/2026-10-29-svg-blur-boundary-browser-terminal.json"));
+  const parent = JSON.parse(await readFile(terminal.parentReceipt));
+  const bytes = await readFile(terminal.browserReceipt.path), browser = JSON.parse(bytes);
+  assert.equal(bytes.length, terminal.browserReceipt.bytes); assert.equal(sha(bytes), terminal.browserReceipt.sha256);
+  assert.equal(browser.executedHead, terminal.sourceHead); assert.equal(parent.childExit, 1);
+  assert.equal(browser.sourceBlurBoundaryCandidate, true);
+  assert.deepEqual([parent.stats.expected, parent.stats.unexpected, parent.stats.skipped, parent.stats.flaky], [0, 1, 0, 0]);
+  assert.deepEqual(parent.diagnostic.results.map(row => [row.component, row.alphaDiagnostics.mismatchedPixels, row.alphaDiagnostics.maximumAbsoluteError]),
+    [["rounded-no-filter", 7776, 18], ["square-no-filter", 0, 0], ["square-filtered", 37784, 4]]);
+  assert.equal(terminal.memory.incrementalPrivateMiB, (browser.memory.peak.privateBytes - browser.blankBaseline.privateBytes) / 1048576);
+  assert.ok(terminal.memory.incrementalPrivateMiB > 250); assert.equal(terminal.memory.passed, false);
+  assert.equal(browser.blankBaseline.stable, true); assert.equal(browser.memory.unavailableSamples, 0);
+  const blank = browser.blankSamples.find(row => row.timestamp === terminal.memory.medianMatchingBlankSampleTimestamp);
+  assert.equal(blank.privateBytes, browser.blankBaseline.privateBytes);
+  const ticks = iso => { const parts = /^(.*:\d\d)(?:\.(\d{1,7}))?Z$/.exec(iso); assert.ok(parts);
+    return BigInt(Date.parse(parts[1] + "Z")) * 10000n + BigInt((parts[2] ?? "").padEnd(7, "0")); };
+  for (const recorded of terminal.memory.dominantExistingChildrenAtAggregatePeak) {
+    const peak = browser.memory.peak.processes.find(row => row.pid === recorded.pid);
+    const prior = blank.processes.find(row => row.pid === recorded.pid && row.parentPid === peak.parentPid);
+    const birthDelta = ticks(peak.createdAt) - ticks(prior.createdAt); assert.ok(birthDelta >= -10n && birthDelta <= 10n);
+    assert.equal(peak.privateBytes, recorded.peakPrivateBytes); assert.equal(prior.privateBytes, recorded.blankPrivateBytes);
+    assert.equal(peak.privateBytes - prior.privateBytes, recorded.growthBytes); assert.equal(recorded.type, "unknown");
+  }
+  assert.equal(terminal.memory.dominantChildRolesOrSpecificAllocationsProven, false);
+  assert.deepEqual(browser.forbiddenRequests, []); assert.equal(browser.forbiddenRequestOverflow, false);
+  assert.ok(parent.processCleanup.every(row => row.status === "owned-identity-absent")); assert.equal(parent.ownerProcessCleanup.status, "owned-identity-absent");
+  assert.equal(parent.ownedRuntimeRemoved, true); assert.equal(parent.ownedBrowserRuntimeRemoved, true);
+  assert.deepEqual(parent.protectedOriginalBefore, parent.protectedOriginalAfter);
+  assert.equal(parent.protectedOriginalAfter.sha256, terminal.protectedOriginal.sha256);
+  const variants = svgAlphaComponentVariants(await readFile("fixtures/images/svg-strip-filtered-alpha.svg"));
+  const ledger = JSON.parse(await readFile("images/resvg-source/rejected-strip-experiments.json"));
+  assert.throws(() => assertSvgAlphaComponentsNotCompleted(ledger, terminal.nativeWasmSha256, variants), /already complete/);
+  assert.equal(terminal.acceptedPerformanceBenchmarkOrSpeedup, false); assert.equal(terminal.publicPromotion, false);
+});
 
 test("actual boundary processed artifact keeps explicit96MiB cap, compatible ABI and pinned unchanged binding", async () => {
   const report = JSON.parse(await readFile("evidence/2026-10-29T21-04-28-476Z-svg-filter-processed-artifact.json"));

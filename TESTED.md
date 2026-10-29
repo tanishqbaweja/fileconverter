@@ -1,5 +1,33 @@
 # Tested conversion ledger
 
+Blur-boundary browser TERMINAL at86b726cb, Chrome156 headless: source correction
+reduces square/filtered max alpha error34→4;37,784 mismatches remain (was38,067),
+wholeSSIM0.999743/minbands0.998832. Rounded/no-filter7,776/max18 unchanged,
+square/no-filterexactRGBA/alpha/SSIM1. All three collected before unchanged strict
+verdict0PASS/1FAIL/0skip/flaky10.389s. Full-tree stableblank337,924,096B,
+peak616,263,680B =265.4453125MiB>250: memory FAIL,112 valid/0missing. Normal
+services/formula/96MiB cap unchanged. Filtered Wasm peak+524,288B does NOT prove
+the source of the aggregate increase. No accepted speedup (single filtered
+elapsed926.77ms versus prior864.35ms, not a controlled repeat benchmark).
+Zero forbidden requests; four owned roots plus owner absent; scratch, component
+SVGs, outputs/references and native copies removed; original full SHA/size equal.
+Retain1,844,826B diagnostic failure trace only; no public binary change. New
+no-replay entry prevents rerunning this candidate/components. Residual geometry/
+filter arithmetic and whole-tree allocation evidence NEXT; no goal completion.
+Receipt:evidence/2026-10-29-svg-blur-boundary-browser-terminal.json.
+Retained samples locate190,754,816B and76,271,616B growth in two existing owned
+Chrome children at aggregate peak; their exact roles are unknown in this receipt.
+Compared against an actual blank sample equal to the median, same PID/parent/
+birth within1microsecond (diagnostic comparison only, no cleanup authority).
+No claim these are GPU, renderer or model service; next allocation evidence must
+identify roles without excluding them.26 post-receipt focused PASS11611.0985ms,
+0fail/skip, generated syntax/lint plus affected lint/diff PASS.
+Final retained growth/birth comparison4 focused PASS6498.9328ms, lint/diff PASS;
+failure-trace full SHA independently matches4b588bed... in the compact receipt.
+
+The source/postprocess successes and earlier preparation checkpoints below are
+historical stages, not overrides of the failed browser terminal result above.
+
 Blur-boundary capped postprocessing TERMINAL:40954461634/d4238667 SUCCESS.
 Two pinned bindgen/cap passes byte-identical2,688,477B native
 SHA5c6cd9b4f8d272ae25031e3bc74ebc58a2ef11d328abf96766368b1c6e61ba13;
