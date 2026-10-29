@@ -83,5 +83,15 @@
     "evidence": "evidence/2026-10-29-svg-precision-integration-terminal.json",
     "conclusion": "Identity passes; real effects and shadow fail. Chrome reference itself quantizes opaque colors in real effects but not identity; blanket float merge is not a compatibility fix."
   },
+  "completedPrecisionOpacityControl": {
+    "nativeWasmSha256": "3bb55dc356427d760021c4aea7aff7db06f776505f1fcefc96251a2bad0d7c8c",
+    "variants": [
+      {"name":"flood-opacity-100","sha256":"6376ff94c45d8ff1f2ec18f48db0d0903e488e4072d428632a0cca7710e85180"},
+      {"name":"flood-opacity-065","sha256":"b61239a7d36a7bb1ba51d1070b4bbc52764d08fec4125ae88b550dab91e7a1ac"},
+      {"name":"flood-opacity-090","sha256":"a44027f2c8bdb3047919f696fcce18f1e8de61083258e237d5269b563b602f49"}
+    ],
+    "evidence": "evidence/2026-10-29-svg-precision-opacity-terminal.json",
+    "conclusion": "Predicted opacity-dependent red.65/green.9 errors observed; opacity1 matches. Supports testing premultiplied conversion order while retaining8-bit real-chain behavior."
+  },
   "publicPromotion": false
 }

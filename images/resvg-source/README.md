@@ -1,5 +1,34 @@
 # Private SVG source reconstruction
 
+## Premultiplied-transfer candidate (private, 2026-10-29)
+
+The opacity controls reproduced predictions recorded before execution: the
+opaque case matched, opacity 0.65 exposed a red-channel discrepancy, and 0.9
+exposed a green-channel discrepancy. This supports testing the order of transfer,
+premultiplication and rounding; it does not prove Chromium's internal algorithm.
+See `evidence/2026-10-29-svg-precision-opacity-terminal.json`.
+
+The new candidate starts from the lifetime-patched source, not the rejected
+floating-point final merge. It preserves 8-bit multi-input compositing and
+replaces the transfer methods with fixed premultiplied lookup tables. Each table
+has 65,536 byte entries; two tables total 128 KiB, independent of file or viewport
+size. There is no viewport-sized float accumulator. A single-input merge can
+copy through the existing output dimensions without unnecessary color transfer.
+
+Four compiled host arithmetic tests pass, including the opaque-row fingerprint
+of both original lookup tables. Run the local arithmetic check after meaningful
+changes with an installed `WITHIN_RUSTC_EXECUTABLE` and
+`node scripts/run-repository-owned-node.mjs scripts/test-svg-filter-precision-kernel.mjs --premultiplied`.
+This is not a renderer or browser conversion test.
+
+The `svg-source-premultiplied-transfer.yml` workflow invokes
+`node images/resvg-source/reproduce-filter-context-source.mjs --premultiplied`,
+requires two fresh locked builds and pinned-nightly numeric tests, and compares
+complete raw bytes. Its actions and Node version are pinned. Raw output is not
+browser-ready: repeated bindgen/cap/ABI verification and actual browser fidelity,
+250 MiB full-tree memory, speed and recovery testing remain mandatory. The
+original 96 MiB cap and acceptance inputs must not change.
+
 ## Final-merge precision candidate (private, 2026-10-29)
 
 The default identity-filter diagnostic demonstrated an 8-bit linearRGB round-trip

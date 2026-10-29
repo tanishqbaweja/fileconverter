@@ -1,0 +1,41 @@
+name: Private SVG premultiplied-transfer source reproduction
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ["media-options"]
+    paths: [".github/workflows/svg-source-premultiplied-transfer.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  reproduce-premultiplied-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: "24.7.0"
+      - name: Two fresh locked builds and pinned-nightly table arithmetic controls
+        run: node images/resvg-source/reproduce-filter-context-source.mjs --premultiplied
+      - name: Verify public engines unchanged
+        if: always()
+        run: git diff --exit-code -- public/engines
+      - name: Retain private source candidate and exact evidence for one day
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: svg-filter-premultiplied-source-${{ github.run_id }}
+          path: |
+            outputs/reports/resvg-filter-premultiplied-owner-${{ github.run_id }}.json
+            outputs/reports/resvg-source-repeat-${{ github.run_id }}.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.wasm
+            outputs/reports/resvg-source-compile-${{ github.run_id }}1.lock
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.json
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.wasm
+            outputs/reports/resvg-source-compile-${{ github.run_id }}2.lock
+          if-no-files-found: warn
+          retention-days: 1

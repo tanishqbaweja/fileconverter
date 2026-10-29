@@ -1,0 +1,75 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-10-29T08:23:36.651Z",
+  "premultiplied": true,
+  "scope": "Compiled host Rust scalar arithmetic only; not renderer/browser/stress acceptance",
+  "commands": [
+    {
+      "executable": "H:\\DevTools\\Rust\\rustup\\toolchains\\1.75.0-x86_64-pc-windows-msvc\\bin\\rustc.exe",
+      "args": [
+        "--edition=2021",
+        "--test",
+        "H:\\Github Repositories\\fileconverter\\images\\resvg-source\\premultiplied-transfer-kernel.rs",
+        "-O",
+        "-o",
+        "H:\\Github Repositories\\fileconverter\\work\\svg-precision-kernel-Mg8Wd2\\precision-kernel-tests.exe"
+      ],
+      "log": "",
+      "pid": 31272,
+      "birth": {
+        "pid": 31272,
+        "parentPid": 36044,
+        "createdAt": "2026-10-29T08:23:36.6581180Z"
+      },
+      "exitCode": 0,
+      "signal": null,
+      "cleanup": {
+        "status": "owned-identity-absent",
+        "identity": {
+          "pid": 31272,
+          "parentPid": 36044,
+          "createdAt": "2026-10-29T08:23:36.6581180Z"
+        },
+        "observations": [
+          {
+            "acquiredAt": "2026-10-29T08:23:39.749Z",
+            "current": null,
+            "unavailable": null,
+            "ownedIdentityPresent": false,
+            "sameParent": null
+          }
+        ],
+        "pidReused": false,
+        "elapsedMs": 478,
+        "noProcessesKilled": true,
+        "unavailableIsNotZero": true
+      }
+    },
+    {
+      "executable": "H:\\Github Repositories\\fileconverter\\work\\svg-precision-kernel-Mg8Wd2\\precision-kernel-tests.exe",
+      "args": [
+        "--test-threads=1"
+      ],
+      "log": "\nrunning 4 tests\ntest within_premultiplied_transfer_tests::all_lookup_entries_match_scalar_transfer_and_preserve_premultiplied_bounds ... ok\ntest within_premultiplied_transfer_tests::opacity_signature_models_have_the_predicted_channel_rounding ... ok\ntest within_premultiplied_transfer_tests::opaque_rows_match_both_pinned_original_tables_exactly ... ok\ntest within_premultiplied_transfer_tests::tables_are_reused_and_payload_is_fixed_independent_of_input_size ... ok\n\ntest result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s\n\n",
+      "pid": 7572,
+      "birth": null,
+      "exitCode": 0,
+      "signal": null,
+      "cleanup": {
+        "status": "launch-exit-observed-before-birth-query-no-process-killed",
+        "exitCode": 0
+      }
+    }
+  ],
+  "sourcePins": {
+    "images/resvg-source/premultiplied-transfer-kernel.rs": "0b28bd9909c60f9575be8ae5021dcb2c81291c16e9a6fea69663009fe66b5126"
+  },
+  "failures": [],
+  "productionConversionTested": false,
+  "publicPromotion": false,
+  "wholeGoalComplete": false,
+  "compilationSucceeded": true,
+  "status": "four-compiled-Rust-numeric-tests-passed-not-browser-acceptance",
+  "ownedRuntimeRemoved": true,
+  "finishedAt": "2026-10-29T08:23:40.290Z"
+}

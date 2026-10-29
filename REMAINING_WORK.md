@@ -1,5 +1,22 @@
 # Remaining work audit
 
+Premultiplied-transfer implementation now prepared from original liveness source,
+NOT blanket-float candidate. Fixed128KiB LUT payload, original8-bit multiple-input
+merge behavior, no viewport float accumulator;4compiled hostRust tests and12
+focused regressions pass. Full renderer compilation/repro/capping/browser original
+fidelity/performance remain UNVERIFIED. Next ONE two-fresh-build workflow, with
+pinned-nightly numeric controls and exact full-byte equality. Keep original
+96MiB/250MiB/quality/6M/recovery/privacy constraints and full broader goal intact.
+
+Opacity controls confirm predicted dominant channels: opaque case matches;
+.65 native+12red, .9 native+8green atretainedcenter. This supports a specific
+premultiplied-transfer rounding candidate while preserving8-bit real-chain
+behavior, not blanket float compositing. All3collected; twofidelityfails remain.
+214.04MiB is diagnostic only, no profile/memory acceptance. Allscratch cleaned/
+originalhash same; no6M rerun. Next distinct source implementation plus numeric/
+reproducibility/browser proof required. Exact opacity replay now guarded.
+evidence/2026-10-29-svg-precision-opacity-terminal.json.
+
 Fixed opacity1/.65/.9 controls prepared/collection-verified, not converted;
 pre-execution model predicts red.65/green.9 error signatures.8focused PASS/
 lint/diff/exact1case list PASS. Next ONE diagnostic run; no new native code or

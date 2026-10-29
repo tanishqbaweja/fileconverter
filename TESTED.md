@@ -1,5 +1,36 @@
 # Tested conversion ledger
 
+2026-10-29 — Distinct premultiplied-transfer source candidate IMPLEMENTED,
+not renderer/browser-compiled yet. Starts from5331liveness, not rejectedc2d
+blanket-float patch. Two fixed65536B LUT payloads (131072B total; staticstorage
+<=131104B) perform transfer and premultiply before one final8-bit rounding.
+Original multi-input merge loop remains byte-identical; single-input merge
+copies through original output dimensions without needless color conversion.
+No full-viewport float accumulator or input/filter-parameter changes. Fullsource
+reversal passed; patchedSHA9b601b713bfc3a5ca318fd8edaa220f4dcb2b3ba7323956efefc118f08fba8bb,
+kernel0b28bd99...b5126. Actual compiled hostRust4tests PASS: opacity vectors,
+all131072LUT entries/bounds/monotonicity, opaque512-byte transfer fingerprint
+fdf3527d10047e2c equals original tables, cache reuse/static bound. Scratch removed.
+evidence/2026-10-29T08-23-36-650Z-svg-premultiplied-kernel.json.12focused source/
+opacity/priorcandidate regressions PASS7929.1539ms/lint/diff PASS. These do NOT
+prove renderer fidelity or speed. New workflow requires both fresh pinned-nightly
+numeric tests/locked source builds/full raw equality, no Docker. Actions pinned
+to official API-verified commit SHAs; Node24.7.0 pinned. Native96MiB cap still
+must be applied/verified after raw compilation; public engine unchanged.
+
+2026-10-29 — Opacity121048e0 COMPLETE, pre-recorded signature observed. At(90,30),
+opacity1 reference/native both13/22/28; opacity.65 reference7/30/45 native19/30/45
+(+12red), opacity.9 reference15/18/35 native15/26/34 (+8green,-1blue). These match
+prior dominant-channel predictions and support testing premultiply/transfer
+rounding order; NOT proof of Chromium internals or completed native fix.
+Whole/band:1=.998779/.994108 PASS;.65=.948321/.923506 FAIL;.9=.986930/.979694 FAIL.
+All64samples/bins/worst12 and opaquealpha retained.214.04296875MiB primary,
+130valid0missing, stableblank330674176B/peak555114496B, diagnostic only. No forbidden
+requests; allowned data cleaned/originalSHA same. No6M/native rebuild occurred.
+New source candidate should keep8-bit multiple-input behavior and fix transfer
+rounding with fixed-size LUTs, not repeat rejected blanket-float merge. Exact
+opacity replay guarded. evidence/2026-10-29-svg-precision-opacity-terminal.json.
+
 2026-10-29 — Three opacity controls prepared, not converted: opacity1/.65/.9
 with same#08121d flood, SourceAlpha-in composite and single merge, no blur/offset.
 Geometry/mask/background unchanged; same3bbnative/fullworker/UI/direct I/O,
