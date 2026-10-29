@@ -1,0 +1,42 @@
+{
+  "browserRun": 40893562612,
+  "browserHead": "d450bc5b295b4c505f097bf115b629ee05aea34e",
+  "verificationRun": 40941825495,
+  "verificationHead": "5461362f5ac31ae98c2c88e8c49e7b2d237379d8",
+  "changedPaths": [
+    "REMAINING_WORK.md",
+    "TESTED.md",
+    "evidence/2026-10-29-hosted-browser-results.json",
+    "evidence/2026-10-29-hosted-ci-cycle.json",
+    "evidence/2026-10-29-hosted-ci-dispatch.json",
+    "evidence/2026-10-29-hosted-ci-recovery-first-failure.json",
+    "evidence/2026-10-29-hosted-ci-recovery-terminal.json",
+    "evidence/2026-10-29-hosted-ci-unit-failure.json",
+    "evidence/2026-10-29-hosted-source-equivalence.json",
+    "fixtures/source/pre-ci-runtime-2026-10-29.json",
+    "scripts/ci-owned-runtime.mjs",
+    "tests/ci-owned-runtime.test.mjs",
+    "tests/helpers/pre-ci-runtime-inputs.mjs",
+    "tests/helpers/pre-image-size-patch.mjs",
+    "tests/helpers/pre-og-security-inputs.mjs",
+    "tests/helpers/pre-svg-memory-inputs.mjs",
+    "tests/pre-ci-runtime-inputs.test.mjs",
+    "tests/resvg-private-browser-contract.test.mjs",
+    "tests/resvg-source-postprocess.test.mjs",
+    "tests/resvg-source-repeat-result.test.mjs",
+    "tests/resvg-source-reproduction.test.mjs"
+  ],
+  "trackedEntriesCompared": 3770,
+  "sourceTreesEqualExcludingDeclaredCleanupOnlyHelper": true,
+  "gitTreeListingSha256": "7e85ba320ea6b1d147136da4ffcf212f7c56ee86b03772210ec1e78097cc1718",
+  "exclusions": "Unit/qualification tests, source archives, evidence, execution ledgers, plus exactly one post-conversion CI cleanup helper. Browser tests, workflows and all converter/build sources are included.",
+  "cleanupOnlyChange": {
+    "path": "scripts/ci-owned-runtime.mjs",
+    "beforeSha256": "703c0e9886d887abd85e7d1006bb64c3cce63640f4586f50d5aa5128d98cd269",
+    "afterSha256": "3104f1835eb166d508bf22a4d72cadcbaf99ade4f04af02568b3becbf81e90ed",
+    "addedTextSha256": "18ef9c299d911bdcab4eb782d32b5ab2080debdfc6dd8ded1906bc4b9cb9ef4c",
+    "exactReversalVerified": true,
+    "prepareOrConversionCodeChanged": false,
+    "effect": "Disable Node compile cache for post-actions after conversions and owned identity validation; no browser flags/services/cache/limits changed"
+  }
+}

@@ -1,15 +1,20 @@
 # Tested conversion ledger
 
-Storage follow-up after the green hosted recovery: a real Node24.7.0 negative
-control recreated a deleted compile cache in owned scratch. Cleanup now exports
-NODE_DISABLE_COMPILE_CACHE=1 for later GitHub post-actions before deleting its
-runtime. Local11 focused checks PASS/0 fail/skip835.9178ms, including an actual
-subsequent Node process proving the removed runtime is not recreated. Lint/diff
-PASS. Fresh verify-job-only validation of this CI-helper change is pending; the
-962 conversion cases will not be replayed. Earlier cleanup receipts prove removal
-at the cleanup step, not post-action filesystem absence. Negative probe cleaned.
+FINAL CI storage follow-up PASS at 5461362f/run40941825495: production build,
+lint, TypeScript, public evidence audit; 2042 portable units PASS/0 FAIL/1 existing
+protected-fixture Linux skip in49.510s; all19 privacy/offline/static-host cases
+PASS32.686s/0 skip/flaky.162 qualification files NOT RUN. Both GitHub post-actions
+and owned runtime cleanup PASS. A real Node24.7.0 negative control had recreated
+a deleted cache; cleanup now propagates NODE_DISABLE_COMPILE_CACHE=1. Actual
+subsequent-process regression passes locally and in the hosted portable suite.
+Local11 focused checks PASS835.9178ms, lint/diff PASS. No direct hosted filesystem
+probe after all post-actions is claimed. Negative probe and local scratch removed.
+No 962-case conversion replay:3770 production/browser/engine/workflow entries
+match d450bc5b exactly; the sole CI-helper exception is an exact-reversal-verified
+post-conversion cleanup export, not conversion/prepare code. See canonical
+evidence/2026-10-29-hosted-ci-cycle.json and its final cache source/terminal receipts.
 
-Latest checkpoint, 2026-10-30 IST (2026-10-29 UTC): hosted verification recovered
+Earlier green checkpoint, 2026-10-30 IST (2026-10-29 UTC): hosted verification recovered
 successfully at 9ef59a13/run40940066286. Production build, lint, TypeScript, public
 evidence audit PASS; 2042 portable units PASS, zero failures, one existing Linux
 skip because the protected local test.mkv is intentionally absent. 611 portable

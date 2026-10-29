@@ -2664,6 +2664,15 @@ and pull requests retain the full configured gates. Use the focused dispatch
 only when matching retained browser/engine evidence is appropriate, and report
 its unselected jobs as unexecuted rather than passed.
 
+These verification/browser jobs pin Node 24.7.0 and create a fresh short
+`work/ci-*` runtime for temporary files, browser profiles, SDK logs and tool
+caches. Cleanup checks the job/source and directory identity, removes only that
+runtime, and disables Node compile caching for later GitHub post-actions so they
+cannot recreate that compile cache. Compact browser results and failure artifacts expire after
+one day. Conversion-test outputs still use their own `finally` cleanup; the
+protected local `test.mkv` is never copied into hosted CI. All automated browsers
+remain headless, and these selected jobs do not use Docker.
+
 The committed extended TIFF fixtures are reproducible with native FFmpeg and
 the pinned Python packages in `scripts/requirements-tiff-fixtures.txt`.
 `npm run fixtures:images` regenerates the small correctness matrix;

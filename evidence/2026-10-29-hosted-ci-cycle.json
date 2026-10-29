@@ -1,6 +1,7 @@
 {
   "schemaVersion": 1,
   "recordedAt": "2026-10-29T19:33:31Z",
+  "updatedAt": "2026-10-29T19:46:13Z",
   "status": "hosted-small-conversion-and-verification-gates-passed-after-historical-provenance-recovery-not-project-complete",
   "browser": {
     "runId": 40893562612,
@@ -21,15 +22,15 @@
     "receipt": "evidence/2026-10-29-hosted-browser-results.json"
   },
   "verification": {
-    "runId": 40940066286,
-    "sourceCommit": "9ef59a13a7fbe709f2d0c3000dda7a0d2d3c78e7",
+    "runId": 40941825495,
+    "sourceCommit": "5461362f5ac31ae98c2c88e8c49e7b2d237379d8",
     "conclusion": "success",
     "portableUnits": {
       "passed": 2042,
       "failed": 0,
       "skipped": 1,
       "total": 2043,
-      "durationMs": 83923.771569,
+      "durationMs": 49510.43574,
       "selectedFiles": 611,
       "qualificationFilesNotRun": 162
     },
@@ -38,13 +39,13 @@
       "failed": 0,
       "skipped": 0,
       "flaky": 0,
-      "durationMs": 43990.669
+      "durationMs": 32685.838999999996
     },
     "productionBuild": "passed",
     "lint": "passed",
     "typescript": "passed",
     "publicEvidenceManifest": "passed",
-    "receipt": "evidence/2026-10-29-hosted-ci-recovery-terminal.json"
+    "receipt": "evidence/2026-10-29-hosted-ci-cache-followup-terminal.json"
   },
   "failedAttemptsPreserved": [
     {
@@ -64,7 +65,7 @@
       "receipt": "evidence/2026-10-29-hosted-ci-recovery-first-failure.json"
     }
   ],
-  "sourceEquivalence": {
+  "earlierUnchangedSourceEquivalence": {
     "browserRun": 40893562612,
     "browserHead": "d450bc5b295b4c505f097bf115b629ee05aea34e",
     "verificationRun": 40940066286,
@@ -106,7 +107,7 @@
     "localConversionOutputsDownloaded": false,
     "artifactZipHandling": "bounded memory only, no disk extraction",
     "localOwnedScratch": "focused test runtimes removed in finally",
-    "noProcessesKilled": true
+    "noUnrelatedProcessesKilled": true
   },
   "headlessOnly": true,
   "osNativePickerCoverage": false,
@@ -130,7 +131,12 @@
     "focusedSkipped": 0,
     "focusedDurationMs": 835.9178,
     "nodeVersion": "v24.7.0",
-    "hostedValidationAfterFix": "pending",
+    "hostedValidationAfterFix": "success",
+    "sourceCommit": "5461362f5ac31ae98c2c88e8c49e7b2d237379d8",
+    "runId": 40941825495,
+    "latestSourceProof": "evidence/2026-10-29-hosted-ci-cache-source-proof.json",
+    "sourceProofScope": "3770 identical production/browser/engine/workflow entries plus exact-reversal-verified post-conversion cleanup-only helper change",
+    "hostedPostActionFilesystemProbe": false,
     "earlierHostedFinalPostActionCacheAbsenceVerified": false
   },
   "wholeGoalComplete": false
