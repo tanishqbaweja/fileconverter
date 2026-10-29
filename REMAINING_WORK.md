@@ -1,5 +1,14 @@
 # Remaining work audit
 
+Dual capped postprocessing now verified at40954461634/d4238667: native5c6cd9b4...
+2,688,477B, same binding/static ABI, explicit96MiB max, two exact processed passes.
+Authenticated raw+processed pins retained; all disposable build/inspection data
+removed.19 focused PASS plus lint/diff and headless-test discovery PASS. Browser
+predictions fixed before execution: rounded errors expected unchanged, square
+unfiltered exact, filtered boundary errors predicted lower. NEXT one changed-byte
+three-component production browser diagnostic; no public promotion or large
+acceptance. Rounded alpha/full memory/recovery and original backlog remain OPEN.
+
 Fifth-proof native source integration EXECUTED:40952659246/7a60933d succeeded in
 206s. Two fresh raw builds byte-identical b71a7cb3..., all five source proofs,
 both4-test numeric sets per pinned-nightly build verified. Authenticated raw pin

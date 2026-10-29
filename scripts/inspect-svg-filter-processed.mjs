@@ -12,13 +12,15 @@ import { renderContextPatch } from "../images/resvg-source/render-context-patch.
 import { filterLivenessPatch } from "../images/resvg-source/filter-liveness-patch.mjs";
 import { filterPrecisionPatch } from "../images/resvg-source/filter-precision-patch.mjs";
 import { premultipliedTransferPatch } from "../images/resvg-source/premultiplied-transfer-patch.mjs";
+import { blurBoundaryPatch } from "../images/resvg-source/blur-boundary-patch.mjs";
+import { boundaryNumericTestsSha256 } from "../images/resvg-source/blur-boundary-postprocess-recipe.mjs";
 import { definedWasmMemories,requireExplicitWasmMaximum } from "../images/resvg-source/memory-contract.mjs";
 import { compareStaticAbi,publishedSha256 } from "../images/resvg-source/postprocess-contract.mjs";
-const premultiplied=process.argv[2]==="--premultiplied",precision=process.argv[2]==="--precision",liveness=premultiplied||precision||process.argv[2]==="--liveness",contextVariant=liveness||process.argv[2]==="--context";assert.ok(process.argv.length===2||(process.argv.length===3&&contextVariant));
-const root=path.resolve(import.meta.dirname,".."),runId=premultiplied?40844028971:precision?40835665062:liveness?40749099894:contextVariant?40742766594:40712501519,headSha=premultiplied?"41b5ff4a8ebdc71e2eeb18eb446144443bd6e63b":precision?"fda9e1acedfbc4ef9127c32f90c78c2fe83c01ba":liveness?"61779a81d918c9e30d1e291c2d66a47e4f796af1":contextVariant?"1d6dd07d5d321618982e55ae632902c54ba6691c":"82ec7fff1d01a82ca0c80d3ee38c5a272392a246";
-const rawPinFile=premultiplied?"images/resvg-source/filter-premultiplied-raw-input.json":precision?"images/resvg-source/filter-precision-raw-input.json":liveness?"images/resvg-source/filter-liveness-raw-input.json":contextVariant?"images/resvg-source/filter-context-raw-input.json":"images/resvg-source/filter-region-raw-input.json";
+const boundary=process.argv[2]==="--blur-boundary",premultiplied=boundary||process.argv[2]==="--premultiplied",precision=process.argv[2]==="--precision",liveness=premultiplied||precision||process.argv[2]==="--liveness",contextVariant=liveness||process.argv[2]==="--context";assert.ok(process.argv.length===2||(process.argv.length===3&&contextVariant));
+const root=path.resolve(import.meta.dirname,".."),runId=boundary?40954461634:premultiplied?40844028971:precision?40835665062:liveness?40749099894:contextVariant?40742766594:40712501519,headSha=boundary?"d4238667d6730b54f5bcb03e3d67e7f15c7f4f44":premultiplied?"41b5ff4a8ebdc71e2eeb18eb446144443bd6e63b":precision?"fda9e1acedfbc4ef9127c32f90c78c2fe83c01ba":liveness?"61779a81d918c9e30d1e291c2d66a47e4f796af1":contextVariant?"1d6dd07d5d321618982e55ae632902c54ba6691c":"82ec7fff1d01a82ca0c80d3ee38c5a272392a246";
+const rawPinFile=boundary?"images/resvg-source/filter-blur-boundary-raw-input.json":premultiplied?"images/resvg-source/filter-premultiplied-raw-input.json":precision?"images/resvg-source/filter-precision-raw-input.json":liveness?"images/resvg-source/filter-liveness-raw-input.json":contextVariant?"images/resvg-source/filter-context-raw-input.json":"images/resvg-source/filter-region-raw-input.json";
 const execute=promisify(execFile),stamp=new Date().toISOString().replaceAll(/[:.]/g,"-");
-const report={schemaVersion:1,runId,sourceHead:headSha,contextVariant,liveness,precision,premultiplied,startedAt:new Date().toISOString(),sourcePins:{},failures:[],
+const report={schemaVersion:1,runId,sourceHead:headSha,contextVariant,liveness,precision,premultiplied,boundary,startedAt:new Date().toISOString(),sourcePins:{},failures:[],
   rendererExecuted:false,protectedOriginalAccessed:false,localBinaryCopiesRetained:false,browserAcceptance:false,wholeGoalComplete:false};
 let runtime;
 try{
@@ -33,25 +35,33 @@ try{
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));
   if(premultiplied)for(const file of ["images/resvg-source/premultiplied-transfer-patch.mjs","images/resvg-source/premultiplied-postprocess-recipe.mjs","images/resvg-source/premultiplied-transfer-kernel.rs"])
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));
+  if(boundary)for(const file of ["images/resvg-source/blur-boundary-postprocess-recipe.mjs","images/resvg-source/blur-boundary-patch.mjs","images/resvg-source/blur-boundary-kernel-tests.rs","images/resvg-source/postprocess-blur-boundary-source.mjs"])
+    report.sourcePins[file]=sha(await readFile(path.join(root,file)));
   const rawPin=JSON.parse(await readFile(path.join(root,rawPinFile)));
   runtime=await createOwnedRuntimeScratch("svg-filter-processed-");
   const gh=async(args,maxBuffer=65536)=>(await execute(process.env.WITHIN_GH_EXECUTABLE??"gh",args,
     {cwd:root,env:{...runtime.env,GH_PROMPT_DISABLED:"true"},windowsHide:true,timeout:60000,maxBuffer,encoding:"buffer"})).stdout;
+  if(boundary){
+    const hosted=JSON.parse((await gh(["api",`repos/tanishqbaweja/fileconverter/actions/runs/${runId}`])).toString());
+    assert.equal(hosted.id,runId);assert.equal(hosted.head_sha,headSha);assert.equal(hosted.status,"completed");assert.equal(hosted.conclusion,"success");
+    assert.equal(hosted.path,".github/workflows/svg-blur-boundary-postprocess.yml");
+    report.hostedRun={id:runId,headSha,status:hosted.status,conclusion:hosted.conclusion,path:hosted.path};
+  }
   const list=JSON.parse((await gh(["api",`repos/tanishqbaweja/fileconverter/actions/runs/${runId}/artifacts`])).toString());
   assert.ok(list.total_count>0&&list.total_count<=16);
-  const matches=list.artifacts.filter(row=>row.name===`svg-filter-${premultiplied?"premultiplied":precision?"precision":liveness?"liveness":contextVariant?"context":"region"}-processed-${runId}`);assert.equal(matches.length,1);
+  const matches=list.artifacts.filter(row=>row.name===`svg-filter-${boundary?"blur-boundary":premultiplied?"premultiplied":precision?"precision":liveness?"liveness":contextVariant?"context":"region"}-processed-${runId}`);assert.equal(matches.length,1);
   const artifact=matches[0];assert.equal(artifact.expired,false);assert.equal(artifact.workflow_run.id,runId);assert.equal(artifact.workflow_run.head_sha,headSha);
   assert.ok(Number.isSafeInteger(artifact.id)&&artifact.id>0);
   const zip=await gh(["api",`repos/tanishqbaweja/fileconverter/actions/artifacts/${artifact.id}/zip`],4194304);
   report.artifact={id:artifact.id,bytes:zip.length,sha256:sha(zip),advertisedDigest:artifact.digest,expiresAt:artifact.expires_at};
   assert.equal(artifact.digest,"sha256:"+sha(zip));
-  const stem=`resvg-source-processed-repeat-${runId}`,names=[`resvg-filter-${premultiplied?"premultiplied-":precision?"precision-":liveness?"liveness-":contextVariant?"context-":""}processed-owner-${runId}.json`,stem+".json",stem+".wasm",stem+".mjs"],seen=new Set();
+  const stem=`resvg-source-processed-repeat-${runId}`,names=[`resvg-filter-${boundary?"blur-boundary-":premultiplied?"premultiplied-":precision?"precision-":liveness?"liveness-":contextVariant?"context-":""}processed-owner-${runId}.json`,stem+".json",stem+".wasm",stem+".mjs"],seen=new Set();
   const members=unzipSync(zip,{filter:entry=>{assert.ok(names.includes(entry.name));assert.equal(seen.has(entry.name),false);seen.add(entry.name);
     assert.ok(entry.originalSize>0&&entry.originalSize<=(entry.name.endsWith(".wasm")?16777216:262144));return true;}});
   assert.deepEqual(Object.keys(members).sort(),[...names].sort());
   const owner=JSON.parse(Buffer.from(members[names[0]]).toString()),receipt=JSON.parse(Buffer.from(members[names[1]]).toString());
   const wasm=Buffer.from(members[names[2]]),glue=Buffer.from(members[names[3]]);
-  assert.equal(owner.status,premultiplied?"two-pinned-premultiplied-source-postprocessing-passes-byte-identical-not-browser-acceptance":precision?"two-pinned-precision-source-postprocessing-passes-byte-identical-not-browser-acceptance":liveness?"two-pinned-liveness-source-postprocessing-passes-byte-identical-not-browser-acceptance":contextVariant?"two-pinned-context-source-postprocessing-passes-byte-identical-not-browser-acceptance":"two-pinned-filter-source-postprocessing-passes-byte-identical-not-browser-acceptance");
+  assert.equal(owner.status,boundary?"two-pinned-blur-boundary-source-postprocessing-passes-byte-identical-not-browser-acceptance":premultiplied?"two-pinned-premultiplied-source-postprocessing-passes-byte-identical-not-browser-acceptance":precision?"two-pinned-precision-source-postprocessing-passes-byte-identical-not-browser-acceptance":liveness?"two-pinned-liveness-source-postprocessing-passes-byte-identical-not-browser-acceptance":contextVariant?"two-pinned-context-source-postprocessing-passes-byte-identical-not-browser-acceptance":"two-pinned-filter-source-postprocessing-passes-byte-identical-not-browser-acceptance");
   assert.equal(owner.ownedOwnerScratchRemoved,true);assert.deepEqual(owner.failures,[]);assert.equal(owner.processedReceipt.sha256,sha(members[names[1]]));
   assert.equal(receipt.executedHead,headSha);assert.equal(receipt.status,"repeated-source-and-processed-private-candidate-byte-identical-before-browser-acceptance");
   assert.equal(receipt.ownedScratchRemoved,true);assert.equal(receipt.publicEngineUnchanged,true);assert.deepEqual(receipt.failures,[]);
@@ -61,6 +71,11 @@ try{
   if(liveness){assert.equal(receipt.filterLivenessPatch.patchedSha256,filterLivenessPatch.patchedSha256);assert.equal(receipt.sourceIntermediateLifetimesChanged,true);}
   if(precision){assert.equal(receipt.filterPrecisionPatch.patchedSha256,filterPrecisionPatch.patchedSha256);assert.equal(receipt.filterPrecisionPatch.kernelSha256,filterPrecisionPatch.kernelSha256);assert.equal(receipt.sourceFinalMergePrecisionChanged,true);}
   if(premultiplied){assert.equal(receipt.premultipliedTransferPatch.patchedSha256,premultipliedTransferPatch.patchedSha256);assert.equal(receipt.premultipliedTransferPatch.kernelSha256,premultipliedTransferPatch.kernelSha256);assert.equal(receipt.sourcePremultipliedTransferChanged,true);assert.equal(receipt.premultipliedTransferPatch.fullViewportFloatAccumulatorIntroduced,false);}
+  if(boundary){
+    assert.equal(receipt.blurBoundaryPatch.patchedSha256,blurBoundaryPatch.patchedSha256);assert.equal(receipt.blurBoundaryPatch.nativeSourceRecipeIntegrated,true);
+    assert.equal(receipt.sourceBlurBoundaryChanged,true);assert.equal(receipt.inputPin.blurBoundaryNumericTestsSha256,boundaryNumericTestsSha256);
+    assert.notEqual(sha(wasm),"8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0");
+  }
   assert.equal(receipt.variants.length,2);
   for(const row of receipt.variants){assert.equal(row.boundedSha256,sha(wasm));assert.equal(row.glueSha256,sha(glue));}
   assert.deepEqual(owner.candidate,receipt.candidate);assert.equal(receipt.candidate.wasmSha256,sha(wasm));assert.equal(receipt.candidate.glueSha256,sha(glue));
@@ -74,11 +89,12 @@ try{
     ownerReceiptMember:names[0],ownerReceiptBytes:members[names[0]].length,ownerReceiptSha256:sha(members[names[0]]),
     wasmMember:names[2],wasmBytes:wasm.length,wasmSha256:sha(wasm),glueMember:names[3],glueBytes:glue.length,glueSha256:sha(glue),
     experimentalMaximumBytes:100663296,sourceRepeatPin:rawPinFile,filterModulePatchedSha256:filterRegionPatch.patchedSha256,
-    kind:premultiplied?"two-fresh-premultiplied-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified":precision?"two-fresh-precision-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified":liveness?"two-fresh-liveness-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified":contextVariant?"two-fresh-context-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified":"two-fresh-filter-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified"};
+    kind:boundary?"two-fresh-blur-boundary-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified":premultiplied?"two-fresh-premultiplied-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified":precision?"two-fresh-precision-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified":liveness?"two-fresh-liveness-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified":contextVariant?"two-fresh-context-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified":"two-fresh-filter-source-builds-and-two-pinned-postprocessors-byte-identical-private-candidate-not-browser-qualified"};
   if(contextVariant)report.inputPin.renderContextPatchedSha256=renderContextPatch.patchedSha256;
   if(liveness)report.inputPin.filterLivenessPatchedSha256=filterLivenessPatch.patchedSha256;
   if(precision){report.inputPin.filterPrecisionPatchedSha256=filterPrecisionPatch.patchedSha256;report.inputPin.filterPrecisionKernelSha256=filterPrecisionPatch.kernelSha256;}
   if(premultiplied){report.inputPin.premultipliedTransferPatchedSha256=premultipliedTransferPatch.patchedSha256;report.inputPin.premultipliedKernelSha256=premultipliedTransferPatch.kernelSha256;}
+  if(boundary){report.inputPin.blurBoundaryPatchedSha256=blurBoundaryPatch.patchedSha256;report.inputPin.blurBoundaryNumericTestsSha256=boundaryNumericTestsSha256;}
   report.status="verified-source-patched-private-capped-Wasm-and-binding-not-browser-acceptance";
 }catch(error){report.status="failed-filter-processed-artifact-verification";report.failures.push(String(error.stack??error));process.exitCode=1;}
 finally{

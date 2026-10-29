@@ -60,6 +60,18 @@ No local source artifact copies are retained. Postprocessing still requires two
 byte-identical bindgen/glue/cap results and unchanged static ABI/96MiB maximum;
 neither stage counts as rendering, memory, fidelity, recovery or public acceptance.
 
+Postprocessing40954461634 atd4238667 has now succeeded, with authenticated
+four-member artifact and two byte-identical capped passes. Private native Wasm:
+2,688,477B SHA5c6cd9b4f8d272ae25031e3bc74ebc58a2ef11d328abf96766368b1c6e61ba13;
+unchanged18,019B binding/static ABI,26 initial pages,1536 maximum pages,
+explicit96MiB/unshared. No source recompile or public write. Both postprocessing
+owners and local inspection scratch are removed. See
+`evidence/2026-10-29-svg-blur-boundary-postprocess-terminal.json` and
+`filter-blur-boundary-processed-input.json`. Next is exactly one changed-byte
+component diagnostic, whose predictions are recorded before execution in
+`evidence/2026-10-29-svg-blur-boundary-browser-plan.json`. Original strict gates,
+normal Chrome services and original6M acceptance requirements remain unchanged.
+
 ## Premultiplied-transfer candidate (private, 2026-10-29)
 
 The opacity controls reproduced predictions recorded before execution: the

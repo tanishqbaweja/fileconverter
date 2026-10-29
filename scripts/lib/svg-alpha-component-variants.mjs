@@ -32,7 +32,8 @@ export function svgAlphaComponentVariants(bytes) {
 export function assertSvgAlphaComponentsNotCompleted(ledger, nativeWasmSha256, variants) {
   assert.match(nativeWasmSha256, /^[a-f0-9]{64}$/); assert.equal(variants.length, 3);
   const pins = variants.map(({ name, sha256 }) => ({ name, sha256 }));
-  const done = ledger.completedPremultipliedAlphaComponents;
+  for (const done of [ledger.completedPremultipliedAlphaComponents, ledger.completedBlurBoundaryAlphaComponents]) {
   assert.ok(!(done?.nativeWasmSha256 === nativeWasmSha256 && JSON.stringify(done.variants) === JSON.stringify(pins)),
     "These exact alpha components are already complete; inspect " + done?.evidence + " instead of replaying them");
+  }
 }

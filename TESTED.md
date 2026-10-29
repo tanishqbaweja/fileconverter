@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+Blur-boundary capped postprocessing TERMINAL:40954461634/d4238667 SUCCESS.
+Two pinned bindgen/cap passes byte-identical2,688,477B native
+SHA5c6cd9b4f8d272ae25031e3bc74ebc58a2ef11d328abf96766368b1c6e61ba13;
+binding unchanged18,019B, static ABI compatible,26initial/1536max pages,
+explicit96MiB/unshared. Four-member artifact/digest and raw pin authenticated;
+all five source proofs/numeric contracts retained. Processing/owner/inspection
+scratch removed, no local binary copies/public replacement/source recompile.
+19 focused PASS8695.0339ms and affected lint/diff PASS. One real test discovered
+without browser; wrapper cleaned. Pre-execution component predictions fixed in
+evidence/2026-10-29-svg-blur-boundary-browser-plan.json. Changed-byte headless
+browser component diagnostic NEXT; no rendering/fidelity/memory/speed acceptance.
+Compact:evidence/2026-10-29-svg-blur-boundary-postprocess-terminal.json.
+
 Blur-boundary source build TERMINAL:40952659246 at7a60933d SUCCESS, job206s.
 Authenticated six-member artifact12931683455/digest231070a6...; two fresh locked
 raw builds are byte-identical3,669,418B SHA b71a7cb32dea835ab11d3369b2aedcb39aabbcb60f27e4679d803d62f0a802fc.

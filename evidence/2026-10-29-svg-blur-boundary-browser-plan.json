@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "scope": "Single changed-native three-component headless production-pipeline diagnostic, not original6M or profile acceptance",
+  "nativeWasmSha256": "5c6cd9b4f8d272ae25031e3bc74ebc58a2ef11d328abf96766368b1c6e61ba13",
+  "priorNativeWasmSha256": "8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+  "hypothesesFixedBeforeExecution": [
+    "Rounded/no-filter alpha discrepancy should remain because geometry code is unchanged",
+    "Square/no-filter should remain exact",
+    "Square/filtered boundary alpha error should decrease if clipped intermediate blur support was a material cause; residual rounding or other primitives may still fail exact alpha"
+  ],
+  "sourceComponentsChanged": false,
+  "fullFrameProductionWorkerOnly": true,
+  "reference": "Independent current Chromium rendering of each same component",
+  "ssimMinimumWholeAndAllBands": 0.99,
+  "exactAlphaRequired": true,
+  "memoryFormulaUnchanged": true,
+  "completeChromiumIncrementalPrivateLimitMiB": 250,
+  "wasmMaximumBytes": 100663296,
+  "normalBrowserServicesRetained": true,
+  "maximumFixedPixelSamplesPerVariant": 64,
+  "maximumWorstPixelRecordsPerVariant": 12,
+  "disposableDataRemovedInFinally": true,
+  "stopAfterSingleChangedCandidateRun": true,
+  "acceptedSpeedupClaim": false,
+  "publicPromotion": false,
+  "wholeGoalComplete": false
+}
