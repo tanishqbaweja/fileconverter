@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+First transparency attempt atbab9c5e4 FAILED adapter name before validation:
+full production job complete with svg-strip-transparent.png, template expected
+oldtest-pattern-effects.png. No decoded output/alpha count; strip NOT RUN.
+Fresh reference12339B/b3b50032 retained as hash, allowneddata cleaned/original
+full SHA unchanged, network0. Incomplete diagnostic116.71875MiB/45valid0missing,
+not paired/profile acceptance. All3 expected/transfer/cleanup leaves corrected,
+new selected-body naming regression prevents recurrence. Native/input/quality/
+limits unchanged.5focused PASS841.5645ms/affected lint PASS after exact fix.
+evidence/2026-10-29-svg-transparent-output-name-terminal.json.
+
 Transparent control prepared: pinned498B960x540 source7816a861, integer nonoverlap
 rectangles with exact alpha bins0:129600/64:64800/128:129600/191:64800/255:129600.
 Production full/nativePNG and strip/streamedPNG use same authenticated8641native;

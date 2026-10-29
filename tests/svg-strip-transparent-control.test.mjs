@@ -32,6 +32,10 @@ test("transparent production-browser recipe retains same native4proof cap, IO, e
     assert.match(result.suite,/peakImageWorkingBytes\).toBeGreaterThan\(0\)/);assert.match(result.suite,/imageWorkingBytes\).toBe\(0\)/);
     assert.match(result.driver,/"--grep", "svg-transparent-fidelity-control"/);assert.match(result.driver,/incrementalPrivateMiB <= 250/);
     assert.match(result.driver,/pins.experimentalMaximumBytes, 100663296/);assert.doesNotMatch(result.suite,/bypassCSP|setBypassCSP/);
+    const body=result.suite.slice(result.suite.indexOf('test("svg-transparent-fidelity-control",'));
+    assert.doesNotMatch(body,/test-pattern-effects\.(?:svg|png)/);
+    assert.match(body,/batchOutputNames\).toEqual\(\["svg-strip-transparent.png"\]\)/);
+    assert.match(body,/await transfer\("svg-strip-transparent.png"\)/);assert.match(body,/root.removeEntry\("svg-strip-transparent.png"\)/);
     for(const [name,source]of [["driver.mjs",result.driver],["suite.ts",result.suite]])assert.deepEqual(ts.createSourceFile(name,source,ts.ScriptTarget.ESNext,true).parseDiagnostics,[],name);
     assert.throws(()=>makeSvgStripTransparentControl({...options,transparentSourceBytes:Buffer.from("wrong")}));
   }finally{await runtime.close();}

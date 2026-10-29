@@ -1,5 +1,12 @@
 # Remaining work audit
 
+First basic-alpha attempt stopped at stale expected output leaf in test adapter,
+not renderer/alpha verdict. Full jobcomplete, no independentdecode, stripnotrun.
+Exact3name correction+selected-body regression required before retry; no native
+rebuild/threshold/input changes. Allowneddata cleaned, original unchanged. Alpha
+coverage still UNVERIFIED.5focused PASS841.5645ms/lint PASS after exact fix;
+next actual corrected control. evidence/2026-10-29-svg-transparent-output-name-terminal.json.
+
 Basic transparency control now prepared with exact per-alpha pixel counts on
 498Bfixed960x540 source, both real production full/strip paths, same8641native,
 all quality/cap/privacy/cleanup gates.12focused PASS2660.5216ms/lint PASS;

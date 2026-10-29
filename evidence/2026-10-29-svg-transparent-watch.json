@@ -1,0 +1,17 @@
+{
+  "schemaVersion":1,
+  "startedAt":"2026-10-29T12:59:32Z",
+  "sourceCommit":"bab9c5e4",
+  "sessionId":3149,
+  "command":"scripts/run-repository-owned-node.mjs scripts/test-svg-small-fidelity-control.mjs --premultiplied-transparent",
+  "sourceSha256":"7816a8613e93bb0a5587c7f2dd47321d2846d397751b7a00eef222b431e1d585",
+  "estimatedTotalSeconds":120,
+  "observeNotBefore":"2026-10-29T13:01:32Z",
+  "reason":"New transparent and partial-alpha input, exact all-alpha pixel counts, full/strip pixel equality; not replay of completed opaque pair or original6M",
+  "lastAuthoritativeObservation":"same session exited1; full conversion completed but old expected output filename caused harness failure before validation; no alpha/fidelity conclusion",
+  "terminal":true,
+  "browserReceipt":"evidence/2026-10-29T12-59-34-372Z-source-svg-browser.json",
+  "restartOnObservationTimeout":false,
+  "publicPromotion":false,
+  "wholeGoalComplete":false
+}

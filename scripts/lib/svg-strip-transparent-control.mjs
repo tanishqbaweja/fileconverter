@@ -11,6 +11,7 @@ export function makeSvgStripTransparentControl(options){
   assert.equal(sha(options.transparentSourceBytes),svgTransparentControlPin.sha256);
   const originalBody=options.controlTestBytes.toString();
   let body=replace(originalBody,'fixtures/images/test-pattern-effects.svg','fixtures/images/svg-strip-transparent.svg');
+  body=replace(body,'test-pattern-effects.png','svg-strip-transparent.png',3);
   body=replace(body,'expect(sourceBytes.length).toBe(11194);',`expect(sourceBytes.length).toBe(${svgTransparentControlPin.bytes});`);
   body=replace(body,'afebfa848cd052fcd656cfdda7605c6c191edf845087759ca3421cf44880981d',svgTransparentControlPin.sha256);
   body=replace(body,'small-full-vs-strip-control','svg-transparent-full-vs-strip-control',2);
