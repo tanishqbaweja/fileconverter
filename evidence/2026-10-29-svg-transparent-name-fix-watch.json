@@ -1,0 +1,16 @@
+{
+  "schemaVersion":1,
+  "startedAt":"2026-10-29T13:03:17Z",
+  "sourceCommit":"e3e88967",
+  "sessionId":2301,
+  "command":"scripts/run-repository-owned-node.mjs scripts/test-svg-small-fidelity-control.mjs --premultiplied-transparent",
+  "estimatedTotalSeconds":120,
+  "observeNotBefore":"2026-10-29T13:05:17Z",
+  "reason":"Corrected expected output/transfer/cleanup names after demonstrated adapter error; native/input/quality/IO/caps unchanged",
+  "lastAuthoritativeObservation":"same session exited0; full and strip exactRGBA/analytic golden/all alpha counts pass; small diagnostic129.87109375MiB, allowneddata removed",
+  "terminal":true,
+  "browserReceipt":"evidence/2026-10-29T13-03-18-887Z-source-svg-browser.json",
+  "restartOnObservationTimeout":false,
+  "publicPromotion":false,
+  "wholeGoalComplete":false
+}

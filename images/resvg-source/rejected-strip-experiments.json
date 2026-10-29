@@ -115,5 +115,11 @@
     "evidence": "evidence/2026-10-29-svg-strip-lifecycle-terminal.json",
     "conclusion": "3 functional successes, nonzero bounded buffer peaks/finalzero, real-row UI cancel, firstwrite fault, cleanup and same-page retries pass; final strict verdict FAIL unstable baseline/incremental null. No unchanged replay for green."
   },
+  "completedPremultipliedTransparentControl": {
+    "nativeWasmSha256": "8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+    "sourceSha256": "7816a8613e93bb0a5587c7f2dd47321d2846d397751b7a00eef222b431e1d585",
+    "evidence": "evidence/2026-10-29-svg-transparent-terminal.json",
+    "conclusion": "Full/strip decodedRGBA equal independent analytic golden, all alpha counts exact, whole/min8bands1.0; small diagnostic129.871MiB only. No unchanged replay, filtered-alpha/generalSVG/profile acceptance not proven."
+  },
   "publicPromotion": false
 }

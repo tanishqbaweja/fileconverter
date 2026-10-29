@@ -6,6 +6,34 @@ import ts from "typescript";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 import { makeSvgStripTransparentControl,svgTransparentControlPin } from "../scripts/lib/svg-strip-transparent-control.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
+import { createHash } from "node:crypto";
+test("actual production transparent outputs match independent row-wise golden and all alpha counts without borrowing large-scene acceptance",async()=>{
+  const c=JSON.parse(await readFile("evidence/2026-10-29-svg-transparent-terminal.json"));
+  const p=JSON.parse(await readFile(c.parentReceipt));const bytes=await readFile(c.browserReceipt.path),b=JSON.parse(bytes);
+  assert.equal(bytes.length,c.browserReceipt.bytes);assert.equal(sha(bytes),c.browserReceipt.sha256);assert.equal(p.childExit,0);
+  assert.equal(b.candidatePin.wasmSha256,c.nativeWasmSha256);assert.equal(b.sourcePins[c.source.path],c.source.sha256);
+  assert.equal(b.transparentFidelityControl.sha256,c.source.sha256);
+  const hash=createHash("sha256"),row=Buffer.alloc(960*4),colors=[[255,0,0,255],[0,255,0,128],[0,0,255,64],[255,255,255,191],[0,0,0,0]];
+  for(let y=0;y<540;y++){
+    for(let x=0;x<960;x++){
+      const color=x<240?colors[0]:x<480?colors[1]:x<720&&y<270?colors[2]:x>=720&&y>=270?colors[3]:colors[4];
+      for(let channel=0;channel<4;channel++)row[4*x+channel]=color[channel];
+    }hash.update(row);
+  }
+  const golden=hash.digest("hex");assert.equal(golden,c.independentAnalyticGolden.rgbaSha256);assert.equal(row.length,3840);
+  assert.equal(p.diagnostic.results.length,2);
+  for(const r of p.diagnostic.results){assert.equal(r.rgbaSha256,golden);assert.equal(r.alphaExact,true);assert.equal(r.allReferenceAlphaOpaque,false);
+    assert.deepEqual(r.alphaCounts,svgTransparentControlPin.alphaCounts);assert.equal(r.wholeSsim,1);assert.equal(r.minimumBandSsim,1);}
+  assert.equal(p.diagnostic.results[1].metrics.peakImageWorkingBytes,c.strip.peakExplicitJsBufferBytes);
+  assert.equal(p.diagnostic.results[1].metrics.imageWorkingBytes,0);
+  assert.equal(p.incrementalPrivateMiB,(b.memory.peak.privateBytes-b.blankBaseline.privateBytes)/1048576);
+  assert.equal(p.incrementalPrivateMiB,c.incrementalPrivateMiB);assert.equal(p.memoryAcceptance,false);assert.equal(c.publicPromotion,false);
+  assert.equal(b.memory.unavailableSamples,0);assert.deepEqual(b.forbiddenRequests,[]);assert.equal(b.forbiddenRequestOverflow,false);
+  assert.equal(b.ownedRuntimeRemoved,true);assert.ok(b.processCleanup.every(r=>r.status==="owned-identity-absent"));
+  assert.deepEqual(b.protectedOriginalBefore,b.protectedOriginalAfter);
+  const ledger=JSON.parse(await readFile("images/resvg-source/rejected-strip-experiments.json"));
+  assert.equal(ledger.completedPremultipliedTransparentControl.sourceSha256,c.source.sha256);
+});
 test("new transparent fixture is exactly pinned, analytically covers every pixel and does not alter historical opaque controls",async()=>{
   const bytes=await readFile("fixtures/images/svg-strip-transparent.svg");
   assert.equal(bytes.length,svgTransparentControlPin.bytes);assert.equal(sha(bytes),svgTransparentControlPin.sha256);

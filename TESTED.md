@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+Final lifecycle/transparency cycle:29focused PASS1866.6023ms/0fail/skip/cancel,
+affected ESLint/diff PASS. Private80/128worker compilation and exact synthetic
+PNG/alpha/cleanup/replay/source proofs retained. Actual new telemetry/recovery
+and basic-alpha receipts audited against original strict verdicts; no full
+portable/build/browser-matrix replay or publicSVG replacement. All current jobs
+terminal, disposableoutputs/profiles removed; only reusable498Bnewfixture retained.
+Next source/release/security and wider backlog; no completed-control baseline
+lottery. evidence/2026-10-29-svg-lifecycle-transparency-cycle.json.
+
+Corrected transparency gate ate3e88967 PASS1/1: full8938B477.43ms andstrip6856B
+472.66ms genuinePNG, both2,073,600decodedRGBA exact87532c1e matching independent
+3840B-row analytical golden. Whole/all8bands1.0/alphaexact, bins0:129600/64:64800/
+128:129600/191:64800/255:129600. StripknownJSpeak1448005B/final0,5viewports released,
+540rows; nativeheaps6,291,456/4,128,768B. Fullframe genericbyte telemetry remains
+uninstrumented. Stableblank334139392B/peak470319104B =>129.87109375MiB/57valid0missing
+SMALLCONTROL ONLY, not borrowed for earlier failed6M gates. Network0, owneddata
+cleaned/originalfullSHAunchanged. Reusable498Bfixture retained, convertedfilesdeleted.
+Exactcontrol replayguarded; filteredalpha/generalSVG/release still OPEN; no accepted
+speedup/publicpromotion. evidence/2026-10-29-svg-transparent-terminal.json.
+
 First transparency attempt atbab9c5e4 FAILED adapter name before validation:
 full production job complete with svg-strip-transparent.png, template expected
 oldtest-pattern-effects.png. No decoded output/alpha count; strip NOT RUN.

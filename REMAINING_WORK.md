@@ -1,5 +1,22 @@
 # Remaining work audit
 
+Current bounded cycle terminal:29focused PASS1866.6023ms/lint/diff PASS. New
+private telemetry/lifecycle/basic-alpha functionality verified with precise scope;
+original6M strict memory remains FAILED/unavailable and not replaced by a small
+passing control. No public promotion/full release or full-goal closure. All
+disposableoutputs/profiles removed; only498Breusablefixture retained. Continue
+source/release/security and broad original backlog, not repeated unchanged
+controls for green. evidence/2026-10-29-svg-lifecycle-transparency-cycle.json.
+
+Basic transparency now VERIFIED for pinned498B scene: real full/strip PNGs decode
+to exact analytical golden RGBA and every expected alpha bin; whole/all8bands1.0.
+Striplivebytepeak1448005B→0,5viewports released. Smallcontrol129.87109375MiB with
+stablebaseline/57valid0missing; cannot replace failed6M/recovery memory acceptance.
+All disposableoutputs/profiles removed/originalfullSHAunchanged;498Bfixture reusable.
+Exactcontrol replayguarded. Filteredalpha/arbitraryviewports/OOM/latewrite/permission/
+quota/reload/coherentmemory, publicsourcebuild/cap/release and all wider original
+deliverables remain OPEN. evidence/2026-10-29-svg-transparent-terminal.json.
+
 First basic-alpha attempt stopped at stale expected output leaf in test adapter,
 not renderer/alpha verdict. Full jobcomplete, no independentdecode, stripnotrun.
 Exact3name correction+selected-body regression required before retry; no native
