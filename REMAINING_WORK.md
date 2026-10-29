@@ -1,5 +1,11 @@
 # Remaining work audit
 
+Fixed opacity1/.65/.9 controls prepared/collection-verified, not converted;
+pre-execution model predicts red.65/green.9 error signatures.8focused PASS/
+lint/diff/exact1case list PASS. Next ONE diagnostic run; no new native code or
+original6M replay until evidence distinguishes conversion order. These small
+fixtures never replace original stress/quality/memory requirements.
+
 Integration now disproves blanket float compatibility: identity passes but actual
 Chrome effects reference quantizes opaque[29,11,17] to[28,13,13], while newnative
 keepsoriginal. Shadow-only red differs by12atknowncenter; preserved bounded pixel

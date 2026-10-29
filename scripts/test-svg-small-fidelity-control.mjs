@@ -14,14 +14,15 @@ import { makeSvgComponentFidelityControl,svgComponentVariants,assertSvgComponent
 import { svgFilterPrecisionVariants } from "./lib/svg-filter-precision-variants.mjs";
 import { makeSvgSmallPrecisionFidelityControl,makeSvgPrecisionIntegrationControl } from "./lib/svg-filter-precision-qualification.mjs";
 import { svgFilterIntegrationVariants } from "./lib/svg-filter-integration-variants.mjs";
+import { makeSvgPrecisionOpacityControl,svgFilterOpacityVariants } from "./lib/svg-filter-opacity-control.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
-const args=process.argv.slice(2),listOnly=args.includes("--list-only"),nativeCapability=args.includes("--native-capability"),components=args.includes("--components"),filterPrecision=args.includes("--filter-precision"),integrationDiagnostics=args.includes("--precision-integration"),nativePrecisionCandidate=args.includes("--precision-candidate")||integrationDiagnostics;
-assert.equal(new Set(args).size,args.length);assert.ok(args.length<=2&&args.every(arg=>["--list-only","--native-capability","--components","--filter-precision","--precision-candidate","--precision-integration"].includes(arg)));
+const args=process.argv.slice(2),listOnly=args.includes("--list-only"),nativeCapability=args.includes("--native-capability"),components=args.includes("--components"),filterPrecision=args.includes("--filter-precision"),integrationDiagnostics=args.includes("--precision-integration"),opacityDiagnostics=args.includes("--precision-opacity"),nativePrecisionCandidate=args.includes("--precision-candidate")||integrationDiagnostics||opacityDiagnostics;
+assert.equal(new Set(args).size,args.length);assert.ok(args.length<=2&&args.every(arg=>["--list-only","--native-capability","--components","--filter-precision","--precision-candidate","--precision-integration","--precision-opacity"].includes(arg)));
 assert.ok(args.filter(arg=>arg!=="--list-only").length<=1,"Diagnostic modes are mutually exclusive");
 assert.ok([nativeCapability,components,filterPrecision,nativePrecisionCandidate].filter(Boolean).length<=1,"Choose exactly one diagnostic kind");
-const componentControl=components||filterPrecision||integrationDiagnostics,testName=integrationDiagnostics?"svg-filter-integration-control":filterPrecision?"svg-filter-precision-control":components?"svg-component-fidelity-control":nativeCapability?"svg-native-worker-capability-control":"paired-svg-fidelity-control";
+const componentControl=components||filterPrecision||integrationDiagnostics||opacityDiagnostics,testName=opacityDiagnostics?"svg-filter-opacity-control":integrationDiagnostics?"svg-filter-integration-control":filterPrecision?"svg-filter-precision-control":components?"svg-component-fidelity-control":nativeCapability?"svg-native-worker-capability-control":"paired-svg-fidelity-control";
 const root=path.resolve(import.meta.dirname,".."),stamp=new Date().toISOString().replaceAll(/[:.]/g,"-");
-const report={schemaVersion:1,startedAt:new Date().toISOString(),diagnosticOnly:true,nativeCapability,components,filterPrecision,nativePrecisionCandidate,integrationDiagnostics,sourceWidth:nativeCapability?2:960,sourceHeight:nativeCapability?2:540,
+const report={schemaVersion:1,startedAt:new Date().toISOString(),diagnosticOnly:true,nativeCapability,components,filterPrecision,nativePrecisionCandidate,integrationDiagnostics,opacityDiagnostics,sourceWidth:nativeCapability?2:960,sourceHeight:nativeCapability?2:540,
   sourcePins:{},failures:[],fullOriginal6MStressReplacement:false,publicPromotion:false,memoryAcceptance:false,wholeGoalComplete:false};
 let runtime,child,birth,log="";
 try{
@@ -31,14 +32,15 @@ try{
     "fixtures/images/test-pattern-effects.svg","fixtures/images/test-pattern-effects.svg.json",
     "scripts/lib/svg-native-worker-capability-control.mjs","scripts/lib/svg-native-worker-test.txt","scripts/lib/svg-native-worker-probe.txt","scripts/lib/svg-component-fidelity-control.mjs","scripts/lib/svg-filter-precision-variants.mjs"])
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));
-  if(integrationDiagnostics)report.sourcePins["scripts/lib/svg-filter-integration-variants.mjs"]=sha(await readFile(path.join(root,"scripts/lib/svg-filter-integration-variants.mjs")));
+  if(integrationDiagnostics||opacityDiagnostics)report.sourcePins["scripts/lib/svg-filter-integration-variants.mjs"]=sha(await readFile(path.join(root,"scripts/lib/svg-filter-integration-variants.mjs")));
+  if(opacityDiagnostics)report.sourcePins["scripts/lib/svg-filter-opacity-control.mjs"]=sha(await readFile(path.join(root,"scripts/lib/svg-filter-opacity-control.mjs")));
   if(nativePrecisionCandidate)for(const file of ["scripts/lib/svg-filter-precision-qualification.mjs","images/resvg-source/filter-precision-patch.mjs","images/resvg-source/filter-precision-kernel.rs","images/resvg-source/filter-precision-raw-input.json","images/resvg-source/filter-precision-processed-input.json"])
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));
   if(!listOnly&&!nativeCapability){
     const pin=JSON.parse(await readFile(path.join(root,nativePrecisionCandidate?"images/resvg-source/filter-precision-processed-input.json":"images/resvg-source/filter-liveness-processed-input.json")));
     const ledger=JSON.parse(await readFile(path.join(root,"images/resvg-source/rejected-strip-experiments.json")));
-    if(componentControl)assertSvgComponentControlNotCompleted(ledger,{nativeWasmSha256:pin.wasmSha256,filterPrecision,integrationDiagnostics,
-      variants:(integrationDiagnostics?svgFilterIntegrationVariants:filterPrecision?svgFilterPrecisionVariants:svgComponentVariants)(await readFile(path.join(root,"fixtures/images/test-pattern-effects.svg")))});
+    if(componentControl)assertSvgComponentControlNotCompleted(ledger,{nativeWasmSha256:pin.wasmSha256,filterPrecision,integrationDiagnostics,opacityDiagnostics,
+      variants:(opacityDiagnostics?svgFilterOpacityVariants:integrationDiagnostics?svgFilterIntegrationVariants:filterPrecision?svgFilterPrecisionVariants:svgComponentVariants)(await readFile(path.join(root,"fixtures/images/test-pattern-effects.svg")))});
     else{const done=nativePrecisionCandidate?ledger.completedPrecisionPairedSmallControl:ledger.completedPairedSmallControl;
     assert.ok(!(done?.nativeWasmSha256===pin.wasmSha256&&done?.sourceSha256===report.sourcePins["fixtures/images/test-pattern-effects.svg"]),
       "This exact paired small control is already complete; inspect "+done?.evidence+" instead of replaying it.");}
@@ -49,7 +51,7 @@ try{
   report.sourcePins[fullWorkerFile]=sha(fullWorker);
   runtime=await createOwnedRuntimeScratch("svg-reproduced-qualification-");
   report.privateWorker=await buildSvgStripWorker({root,runtime,centralRows:128});
-  const generated=(integrationDiagnostics?makeSvgPrecisionIntegrationControl:nativePrecisionCandidate?makeSvgSmallPrecisionFidelityControl:componentControl?makeSvgComponentFidelityControl:nativeCapability?makeSvgNativeWorkerCapabilityControl:makeSvgSmallFidelityControl)({root,runtime:runtime.directory,workerPin:report.privateWorker,filterPrecision,integrationDiagnostics,
+  const generated=(opacityDiagnostics?makeSvgPrecisionOpacityControl:integrationDiagnostics?makeSvgPrecisionIntegrationControl:nativePrecisionCandidate?makeSvgSmallPrecisionFidelityControl:componentControl?makeSvgComponentFidelityControl:nativeCapability?makeSvgNativeWorkerCapabilityControl:makeSvgSmallFidelityControl)({root,runtime:runtime.directory,workerPin:report.privateWorker,filterPrecision,integrationDiagnostics,
     driverBytes:await readFile(path.join(root,"scripts/test-source-built-svg-candidate.mjs")),
     suiteBytes:await readFile(path.join(root,"tests/browser/image-conversions.spec.ts")),
     generatorBytes:await readFile(path.join(root,"scripts/generate-svg-stress-fixture.py")),
@@ -69,7 +71,7 @@ try{
   assert.equal(report.childSignal,null);
   if(listOnly){
     assert.equal(report.childExit,0,log);assert.match(log,/Total: 1 test in 1 file/);
-    report.status=integrationDiagnostics?"listed-one-three-precision-integration-controls-no-browser":filterPrecision?"listed-one-three-filter-precision-control-no-browser":components?"listed-one-three-component-control-no-browser":nativeCapability?"listed-one-native-worker-api-probe-no-browser":"listed-one-paired-small-control-no-browser";
+    report.status=opacityDiagnostics?"listed-one-three-fixed-opacity-controls-no-browser":integrationDiagnostics?"listed-one-three-precision-integration-controls-no-browser":filterPrecision?"listed-one-three-filter-precision-control-no-browser":components?"listed-one-three-component-control-no-browser":nativeCapability?"listed-one-native-worker-api-probe-no-browser":"listed-one-paired-small-control-no-browser";
   }else{
     const summaries=log.split(/\r?\n/).filter(line=>line.startsWith('{"path":'));assert.equal(summaries.length,1,log);
     const relative=JSON.parse(summaries[0]).path.replaceAll("\\","/");assert.match(relative,/^evidence\/[\w-]+-source-svg-browser\.json$/);
@@ -79,7 +81,7 @@ try{
     report.incrementalPrivateMiB=actual.memory?.incrementalPrivateMiB??null;
     report.processCleanup=actual.processCleanup;report.protectedOriginalBefore=actual.protectedOriginalBefore;report.protectedOriginalAfter=actual.protectedOriginalAfter;
     report.browserVersion=actual.browserBefore?.version;report.ownedBrowserRuntimeRemoved=actual.ownedRuntimeRemoved;
-    if(componentControl){assert.equal(actual.componentFidelityControl.diagnosticOnly,true);assert.equal(actual.componentFidelityControl.original6MStressReplaced,false);if(filterPrecision)assert.equal(actual.componentFidelityControl.filterPrecision,true);if(integrationDiagnostics){assert.equal(actual.componentFidelityControl.integrationDiagnostics,true);assert.equal(actual.sourceFilterPrecisionCandidate,true);}}
+    if(componentControl){assert.equal(actual.componentFidelityControl.diagnosticOnly,true);assert.equal(actual.componentFidelityControl.original6MStressReplaced,false);if(filterPrecision)assert.equal(actual.componentFidelityControl.filterPrecision,true);if(integrationDiagnostics||opacityDiagnostics){assert.equal(actual.componentFidelityControl.integrationDiagnostics,true);assert.equal(actual.sourceFilterPrecisionCandidate,true);}if(opacityDiagnostics)assert.equal(actual.componentFidelityControl.opacityDiagnostics,true);}
     else if(nativeCapability){assert.equal(actual.nativeWorkerCapabilityControl.diagnosticOnly,true);assert.equal(actual.nativeWorkerCapabilityControl.conversionProfileTested,false);}
     else{assert.equal(actual.smallFidelityControl.diagnosticOnly,true);assert.equal(actual.smallFidelityControl.original6MStressReplaced,false);if(nativePrecisionCandidate)assert.equal(actual.sourceFilterPrecisionCandidate,true);}
     assert.ok(actual.processCleanup.every(row=>row.status==="owned-identity-absent"));assert.equal(actual.ownedRuntimeRemoved,true);
@@ -96,6 +98,6 @@ finally{
     for(const [file,digest]of Object.entries(report.sourcePins))assert.equal(sha(await readFile(path.join(root,file))),digest,file);
   }catch(error){report.failures.push("Owned cleanup/source verification: "+error);report.status="failed-small-fidelity-control";process.exitCode=1;}
   report.logTail=log.slice(-8192);report.finishedAt=new Date().toISOString();
-  const file=path.join(root,"evidence",stamp+(integrationDiagnostics?"-svg-precision-integration-control.json":nativePrecisionCandidate?"-svg-small-precision-fidelity-control.json":filterPrecision?"-svg-filter-precision-control.json":components?"-svg-component-control.json":nativeCapability?"-svg-native-worker-capability.json":"-svg-small-fidelity-control.json"));await writeFile(file,JSON.stringify(report,null,2)+"\n",{flag:"wx"});
+  const file=path.join(root,"evidence",stamp+(opacityDiagnostics?"-svg-precision-opacity-control.json":integrationDiagnostics?"-svg-precision-integration-control.json":nativePrecisionCandidate?"-svg-small-precision-fidelity-control.json":filterPrecision?"-svg-filter-precision-control.json":components?"-svg-component-control.json":nativeCapability?"-svg-native-worker-capability.json":"-svg-small-fidelity-control.json"));await writeFile(file,JSON.stringify(report,null,2)+"\n",{flag:"wx"});
   console.log(JSON.stringify({path:path.relative(root,file),status:report.status,diagnostic:report.diagnostic??null,ownedRuntimeRemoved:report.ownedRuntimeRemoved,failures:report.failures}));
 }

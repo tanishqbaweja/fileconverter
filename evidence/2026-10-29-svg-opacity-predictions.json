@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "status": "predictions-recorded-before-opacity-browser-execution",
+  "modelOnlyNotObservedIntermediatePixels": true,
+  "sourceRgb": [8,18,29],
+  "models": [
+    {"opacity":1,"alphaByte":255,"premultipliedSrgb":[8,18,29],"oldLinear":[1,2,3],"directLinear":[1,2,3],"oldThenFloatInversePremultipliedSrgb":[13,22,28],"directThenFloatInversePremultipliedSrgb":[13,22,28]},
+    {"opacity":0.65,"alphaByte":166,"premultipliedSrgb":[5,12,19],"oldLinear":[1,1,2],"directLinear":[0,1,2],"oldThenFloatInversePremultipliedSrgb":[12,12,19],"directThenFloatInversePremultipliedSrgb":[0,12,19]},
+    {"opacity":0.9,"alphaByte":230,"premultipliedSrgb":[7,16,26],"oldLinear":[1,2,3],"directLinear":[1,1,3],"oldThenFloatInversePremultipliedSrgb":[13,21,27],"directThenFloatInversePremultipliedSrgb":[13,13,27]}
+  ],
+  "hypothesis": "Quantization of straight linearRGB before premultiplication creates the opacity-dependent error. Decoding and premultiplying before the final8-bit rounding differs from that sequence.",
+  "expectedDiagnosticSignatureIfHypothesisFits": "Opaque tile centers should have matching13/22/28 atopacity1; native-minus-reference should primarily show about+12red at0.65 and about+8green at0.9, allowing small independent background-rasterization differences.",
+  "notAClaimAboutChromiumInternals": true,
+  "nativeBytesUnchanged": true,
+  "publicPromotion": false,
+  "wholeGoalComplete": false
+}

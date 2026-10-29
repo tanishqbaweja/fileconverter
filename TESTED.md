@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-10-29 — Three opacity controls prepared, not converted: opacity1/.65/.9
+with same#08121d flood, SourceAlpha-in composite and single merge, no blur/offset.
+Geometry/mask/background unchanged; same3bbnative/fullworker/UI/direct I/O,
+fresh references and bounded64samples/256bins/12worst evidence; original gates
+and four source proofs retained. Numeric predictions recorded BEFORE execution:
+opaque13/22/28 match; expected native-reference about+12red at.65 and+8green
+at.9 if premultiply-before-quantization hypothesis fits. Models are NOT observed
+intermediates or Chromium-internals proof.8focused PASS1158.6997ms/lint/diff/
+exact1case collection PASS. No native rebuild, original stress replacement or
+public promotion. evidence/2026-10-29-svg-opacity-predictions.json and
+evidence/2026-10-29T08-12-24-764Z-svg-precision-opacity-control.json.
+
 2026-10-29 — Integration9ff9686b COMPLETE, identity PASS/real effects+shadow FAIL.
 Identity whole0.999791/band0.999207; original effects0.979103/0.946037 (sameeee186
 pixels as rejected pair); shadow-only0.949401/0.931386.64samples/256bins/12worst
