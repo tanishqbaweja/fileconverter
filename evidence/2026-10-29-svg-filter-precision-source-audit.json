@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "status": "read-only-pinned-source-audit-hypothesis-not-fix",
+  "resvgCommit": "3495d8705b302d6d266748516973606ca9657906",
+  "source": "https://raw.githubusercontent.com/linebender/resvg/3495d8705b302d6d266748516973606ca9657906/crates/resvg/src/filter/mod.rs",
+  "findings": [
+    "Filter images use 8-bit RGBA pixmaps. Color-space conversion demultiplies, applies 256-entry tables and premultiplies.",
+    "apply_merge converts every input to the primitive color space before drawing it into another 8-bit pixmap, including SourceGraphic.",
+    "Blur dispatch can select box or IIR; do not assume the inspected IIR implementation is the active radius6 path."
+  ],
+  "sourceLineReferences": {"colorSpaceConversions":[232,241],"lookupTables":[262,348],"merge":[936,957],"blurDispatch":[796,816]},
+  "hypothesis": "Lossy linearRGB round trips of SourceGraphic in the filter pipeline may contribute to the original small-control band mismatch. This is NOT established by source inspection or the filter-removal control alone.",
+  "nextDiscriminatingControls": [
+    "Identity merge with SourceGraphic under default filter color space, independently compared to a fresh Chromium reference",
+    "Same identity merge with explicit sRGB, compared against its own fresh matching Chromium reference",
+    "Original effects chain with explicit sRGB, compared against its own matching fresh Chromium reference"
+  ],
+  "constraints": "Diagnostic source variants only; never rewrite user SVG or replace original6M acceptance. No native rebuild or expensive stress rerun justified yet.",
+  "publicPromotion": false,
+  "wholeGoalComplete": false
+}

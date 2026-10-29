@@ -24,6 +24,13 @@ export function svgComponentVariants(bytes){
     ["no-filter-square",square,{filterUseRemoved:1,roundedRectangleRadiiRemoved:144}]]
     .map(([name,text,changes])=>({name,source:text,bytes:Buffer.byteLength(text),sha256:sha(text),changes}));
 }
+export function assertSvgComponentControlNotCompleted(ledger,{nativeWasmSha256,variants}){
+  assert.match(nativeWasmSha256,/^[a-f0-9]{64}$/);assert.equal(variants.length,3);
+  const pins=variants.map(({name,sha256})=>{assert.match(sha256,/^[a-f0-9]{64}$/);return {name,sha256};});
+  const done=ledger.completedComponentControl;
+  assert.ok(!(done?.nativeWasmSha256===nativeWasmSha256&&JSON.stringify(done?.variants)===JSON.stringify(pins)),
+    "This exact component control is already complete; inspect "+done?.evidence+" instead of replaying it.");
+}
 export function makeSvgComponentFidelityControl(options){
   const base=makeSvgSmallFidelityControl(options),body=options.controlTestBytes.toString();
   const variants=svgComponentVariants(options.componentSourceBytes);

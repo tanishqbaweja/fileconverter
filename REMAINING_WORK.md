@@ -1,5 +1,18 @@
 # Remaining work audit
 
+New filter isolation evidence: all3 small component conversions pass unchanged
+whole/band0.99/exact opaque alpha; removing filter alone changes minband from
+0.982544 to0.999207. Background and square shapes also pass. Exact filter
+primitive/precision defect still OPEN; original6M acceptance still FAILS.
+Do not retry completed ablations or change halos/PNG schedules. Pinned source
+has 8-bit filter color-space conversions including merge SourceGraphic; a
+precision hypothesis now has specific identity/default-vs-sRGB diagnostic
+controls, NOT a verified fix. Never alter user SVG to make originals pass.
+All owned scratch/outputs cleaned, original hash unchanged, no public changes.
+evidence/2026-10-29-svg-component-fidelity-terminal.json. All wider original
+requirements, transparent/recovery/repeats and generic image telemetry remain.
+Final8focused PASS1133.582ms/lint/diff checks PASS; no full-goal completion.
+
 Component isolation prepared next, not run: same pinned small source with three
 precise reversible ablations (filter use, foreground group, rectangle corners).
 4focused PASS/lint/exact1case collection PASS. Original6M quality,250MiB,

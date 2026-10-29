@@ -47,5 +47,15 @@
     "evidence": "evidence/2026-10-29-svg-small-paired-fidelity-terminal.json",
     "conclusion": "Full and strip decodedRGBA equal; both fail same0.982544 band versus0.99"
   },
+  "completedComponentControl": {
+    "nativeWasmSha256": "902fc72bd6f3165e28a7982a11ff3ee12e9eabb6adb37b24459e9c7ef2be845d",
+    "variants": [
+      {"name":"no-filter","sha256":"f52afc8263c670e9125fdcb9572d89fd709c0ff0f1eef02f145463bd5434ac0b"},
+      {"name":"background-only","sha256":"1d66d38facd4bd50487d063aa589bc333a46566a2336a662ceff5340db798db3"},
+      {"name":"no-filter-square","sha256":"869aded2a4d23f5b0df89d43f2c68c8e7558f69c2850994ca33287cdc5c55d2a"}
+    ],
+    "evidence": "evidence/2026-10-29-svg-component-fidelity-terminal.json",
+    "conclusion": "All three ablations pass0.99; filter inclusion drives the failing band on the original small control, exact primitive unproven"
+  },
   "publicPromotion": false
 }

@@ -10,7 +10,7 @@ import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mj
 import { buildSvgStripWorker } from "./lib/svg-strip-worker-recipe.mjs";
 import { makeSvgSmallFidelityControl } from "./lib/svg-small-fidelity-control.mjs";
 import { makeSvgNativeWorkerCapabilityControl } from "./lib/svg-native-worker-capability-control.mjs";
-import { makeSvgComponentFidelityControl } from "./lib/svg-component-fidelity-control.mjs";
+import { makeSvgComponentFidelityControl,svgComponentVariants,assertSvgComponentControlNotCompleted } from "./lib/svg-component-fidelity-control.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
 const args=process.argv.slice(2),listOnly=args.includes("--list-only"),nativeCapability=args.includes("--native-capability"),components=args.includes("--components");
 assert.equal(new Set(args).size,args.length);assert.ok(args.length<=2&&args.every(arg=>["--list-only","--native-capability","--components"].includes(arg)));
@@ -26,12 +26,14 @@ try{
     "fixtures/images/test-pattern-effects.svg","fixtures/images/test-pattern-effects.svg.json",
     "scripts/lib/svg-native-worker-capability-control.mjs","scripts/lib/svg-native-worker-test.txt","scripts/lib/svg-native-worker-probe.txt","scripts/lib/svg-component-fidelity-control.mjs"])
     report.sourcePins[file]=sha(await readFile(path.join(root,file)));
-  if(!listOnly&&!nativeCapability&&!components){
+  if(!listOnly&&!nativeCapability){
     const pin=JSON.parse(await readFile(path.join(root,"images/resvg-source/filter-liveness-processed-input.json")));
     const ledger=JSON.parse(await readFile(path.join(root,"images/resvg-source/rejected-strip-experiments.json")));
-    const done=ledger.completedPairedSmallControl;
+    if(components)assertSvgComponentControlNotCompleted(ledger,{nativeWasmSha256:pin.wasmSha256,
+      variants:svgComponentVariants(await readFile(path.join(root,"fixtures/images/test-pattern-effects.svg")))});
+    else{const done=ledger.completedPairedSmallControl;
     assert.ok(!(done?.nativeWasmSha256===pin.wasmSha256&&done?.sourceSha256===report.sourcePins["fixtures/images/test-pattern-effects.svg"]),
-      "This exact paired small control is already complete; inspect "+done?.evidence+" instead of replaying it.");
+      "This exact paired small control is already complete; inspect "+done?.evidence+" instead of replaying it.");}
   }
   const workers=(await readdir(path.join(root,"dist/client/assets"))).filter(name=>/^conversion.worker-[\w-]+\.js$/.test(name));assert.equal(workers.length,1);
   const fullWorkerFile="dist/client/assets/"+workers[0],fullWorker=await readFile(path.join(root,fullWorkerFile));

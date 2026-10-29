@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-10-29 — Component controls at9cca631c COMPLETE, all3 genuine production
+full-worker/UI/direct-output conversions independently pass whole/band0.99 and
+exact opaque alpha. No-filter whole0.999794/minband0.999207, background-only
+0.995867/0.995855, no-filter-square0.999955/0.999846. Original small full/strip
+both0.982544band failure remains. Filter removal, not corner removal, is enough
+to remove this failure on this control; exact primitive and6M cause unproven.
+Conversion574.530/676.055/622.080ms; suite8906.547ms. Primary192.91796875MiB,
+92valid/0missing includes references/validation, diagnostic only, not profile
+or stress acceptance. No forbidden requests; all owned identities absent,
+runtime/variant SVG/reference/PNG files removed; original size+full SHA unchanged.
+HeadlessChrome156.0.8078.49, no native OS-picker/manual coverage claimed.
+Completed exact controls now guarded before browser launch. New pinned source
+audit suggests testing filter color-space precision with identity/sRGB controls,
+not rewriting user input or blindly rebuilding native code. Hypothesis only.
+evidence/2026-10-29-svg-component-fidelity-terminal.json and
+evidence/2026-10-29-svg-filter-precision-source-audit.json.
+Final8focused PASS/0fail/0skip/0cancel1133.582ms; focused lint and git diff
+whitespace checks PASS. No repeated full suite or unchanged browser conversion.
+
 2026-10-29 — Three component controls prepared, NOT yet executed: filter-use
 removed, background-only, and filter-use removed with square rectangle corners.
 All derive reversibly from the pinned11194B960x540 source; original source is

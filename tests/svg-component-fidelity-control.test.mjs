@@ -3,7 +3,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import test from "node:test";
 import ts from "typescript";
-import { svgComponentVariants,makeSvgComponentFidelityControl } from "../scripts/lib/svg-component-fidelity-control.mjs";
+import { svgComponentVariants,makeSvgComponentFidelityControl,assertSvgComponentControlNotCompleted } from "../scripts/lib/svg-component-fidelity-control.mjs";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 test("component sources have pinned reversible filter, geometry and rounded-rect ablations only",async()=>{
   const bytes=await readFile("fixtures/images/test-pattern-effects.svg"),variants=svgComponentVariants(bytes);
@@ -13,6 +13,21 @@ test("component sources have pinned reversible filter, geometry and rounded-rect
   assert.doesNotMatch(variants[2].source,/<rect[^>]+rx=/);assert.match(variants[2].source,/<ellipse[^>]+rx=/);
   assert.throws(()=>svgComponentVariants(Buffer.concat([bytes,Buffer.from(" ")])));
   const changed=Buffer.from(bytes);changed[100]^=1;assert.throws(()=>svgComponentVariants(changed));
+});
+test("completed component ablations cannot be replayed unchanged or relabelled as original stress acceptance",async()=>{
+  const ledger=JSON.parse(await readFile("images/resvg-source/rejected-strip-experiments.json"));
+  const variants=svgComponentVariants(await readFile("fixtures/images/test-pattern-effects.svg"));
+  assert.throws(()=>assertSvgComponentControlNotCompleted(ledger,{nativeWasmSha256:ledger.completedComponentControl.nativeWasmSha256,variants}),/already complete/);
+  assert.doesNotThrow(()=>assertSvgComponentControlNotCompleted(ledger,{nativeWasmSha256:"a".repeat(64),variants}));
+  const report=JSON.parse(await readFile("evidence/2026-10-29T06-50-35-575Z-svg-component-control.json"));
+  assert.equal(report.childExit,0);assert.equal(report.diagnostic.results.length,3);
+  assert.equal(report.diagnostic.independentlyValidatedEffects,true);
+  assert.equal(report.fullOriginal6MStressReplacement,false);assert.equal(report.memoryAcceptance,false);assert.equal(report.publicPromotion,false);
+  const expected={"no-filter":[0.999794,0.999207],"background-only":[0.995867,0.995855],"no-filter-square":[0.999955,0.999846]};
+  for(const row of report.diagnostic.results){assert.deepEqual([row.wholeSsim,row.minimumBandSsim],expected[row.component]);assert.equal(row.alphaExact,true);}
+  assert.equal(report.ownedRuntimeRemoved,true);assert.equal(report.ownedBrowserRuntimeRemoved,true);
+  assert.ok(report.processCleanup.every(row=>row.status==="owned-identity-absent"));
+  assert.deepEqual(report.protectedOriginalBefore,report.protectedOriginalAfter);
 });
 test("component browser recipe retains production full worker, exact alpha/all band gates and owned finally cleanup",async()=>{
   const runtime=await createOwnedRuntimeScratch("svg-reproduced-qualification-");
