@@ -20,6 +20,22 @@ test("four-proof native candidate assertion rejects missing or mutated source, k
     assert.throws(()=>assertSvgPrecisionSourceReceipt(receipt,{...pins,[field]:value}));
   assert.throws(()=>assertSvgPrecisionSourceReceipt({...receipt,sourceFinalMergePrecisionChanged:false},pins));
 });
+test("actual compiled precision pair is rejected despite exact mode equality, valid source proofs and low diagnostic memory",async()=>{
+  const report=JSON.parse(await readFile("evidence/2026-10-29T07-38-22-278Z-svg-small-precision-fidelity-control.json"));
+  assert.equal(report.childExit,1);assert.equal(report.nativePrecisionCandidate,true);assert.equal(report.diagnostic.results.length,2);
+  assert.equal(report.diagnostic.exactFullVsStripRgbaEqual,true);assert.equal(report.diagnostic.independentlyValidatedEffects,false);
+  assert.equal(report.diagnostic.fullOriginal6MStressReplacement,false);assert.equal(report.memoryAcceptance,false);assert.equal(report.publicPromotion,false);
+  for(const row of report.diagnostic.results){
+    assert.equal(row.rgbaSha256,"eee1860c25b142ce07411f563f8bffc5ca853ad85bd863ee2c970d0e378e917c");
+    assert.equal(row.wholeSsim,0.979103);assert.equal(row.minimumBandSsim,0.946037);assert.equal(row.alphaExact,true);
+  }
+  assert.equal(report.ownedRuntimeRemoved,true);assert.equal(report.ownedBrowserRuntimeRemoved,true);
+  assert.ok(report.processCleanup.every(row=>row.status==="owned-identity-absent"));assert.deepEqual(report.protectedOriginalBefore,report.protectedOriginalAfter);
+  const ledger=JSON.parse(await readFile("images/resvg-source/rejected-strip-experiments.json"));
+  const pin=JSON.parse(await readFile("images/resvg-source/filter-precision-processed-input.json"));
+  assert.equal(ledger.completedPrecisionPairedSmallControl.nativeWasmSha256,pin.wasmSha256);
+  assert.equal(ledger.completedPrecisionPairedSmallControl.sourceSha256,report.sourcePins["fixtures/images/test-pattern-effects.svg"]);
+});
 test("precision browser recipes retain exact original large and small tests, source checks, UI/direct IO, cap and strict gates",async()=>{
   const runtime=await createOwnedRuntimeScratch("svg-reproduced-qualification-");
   try{

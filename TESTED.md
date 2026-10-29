@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-10-29 — New3bb55dc3 precision-native paired run05e0b1cc COMPLETE/REJECTED.
+Both genuine original960x540 conversions complete; native PNG143566B/1247.900ms
+and stripPNG127850B/2232.205ms decode to identical2073600RGBA bytes/SHAeee1860c
+...e917c. Both whole0.979103/minband0.946037 FAIL0.99, worse than old0.99418/
+0.982544. All4source proofs and fresh unchangedChrome reference verified; this
+is a real integration/fidelity regression, not an arithmetic/build success.
+Opaque alpha exact; no transparent coverage. Native22.74/22.94MB<96MiB,
+187.75390625MiB primary/105valid0missing is DIAGNOSTIC only. All5strip viewports
+freed/finalqueues0; no forbidden requests. Allowned roots/runtime/reference/PNGs
+cleaned and original size+full SHA unchanged. Source candidate remains private;
+no6M run, supported profile or speedup claim. Exact pair now guarded from replay.
+Read-only audit rules out an unconditional apply_to_canvas color conversion;
+identity correctness/earlier shadow quantization/other integration causes still
+unproven. Need bounded identity/default-effects/shadow-only pixel diagnostics,
+not another native rebuild guess. evidence/2026-10-29-svg-small-precision-terminal.json.
+Final12focused PASS/0fail/0skip/0cancel10904.3879ms; lint/diff PASS. Regression
+tests explicitly preserve the failed browser result; all jobs are terminal.
+
 2026-10-29 — Four-proof precision browser qualifier prepared, NOT executed yet.
 It binds only new3bb55dc3 native bytes, verifies region/context/lifetime/precision
 patch digests, numeric-kernel digest, unchanged96MiB cap and exact raw lineage.

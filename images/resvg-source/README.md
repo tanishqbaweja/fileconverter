@@ -44,9 +44,14 @@ private module is 2,691,689 bytes, SHA-256
 initial and 1,536 maximum pages (96 MiB), unshared. Its ABI and binding bytes match
 the preceding private candidate. See `filter-precision-raw-input.json`,
 `filter-precision-processed-input.json` and
-`evidence/2026-10-29-svg-precision-build-terminal.json`. Browser rendering and
-full-process-tree memory remain unverified for these new bytes. Do not rebuild
-the unchanged source; the next step is browser qualification, not another build.
+`evidence/2026-10-29-svg-precision-build-terminal.json`. The subsequent original
+small-scene browser pair **failed fidelity**, despite identical full/strip pixels:
+whole SSIM 0.979103 and minimum band 0.946037 are below 0.99 and worse than the
+earlier candidate. See `evidence/2026-10-29-svg-small-precision-terminal.json`.
+This candidate is rejected; 187.75 MiB diagnostic memory is not profile acceptance.
+No large-scene run is justified. Do not rebuild or replay the unchanged pair.
+The next diagnostic must distinguish identity integration from earlier shadow
+intermediate loss with bounded pixel evidence; neither cause is proven yet.
 
 `svg-source-lock` is a manual CI scope, not a published engine recipe. It checks
 out resvg-js v2.6.2 by full commit, verifies its original Cargo manifest SHA,

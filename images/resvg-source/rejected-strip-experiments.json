@@ -67,5 +67,11 @@
     "evidence": "evidence/2026-10-29-svg-filter-precision-terminal.json",
     "conclusion": "Identity-default fails0.984086/0.948239 and all16 center samples exactly match8-bit linearRGB round trips; identity-sRGB and effects-sRGB pass0.99. Do not alter original SVG as a workaround."
   },
+  "completedPrecisionPairedSmallControl": {
+    "nativeWasmSha256": "3bb55dc356427d760021c4aea7aff7db06f776505f1fcefc96251a2bad0d7c8c",
+    "sourceSha256": "afebfa848cd052fcd656cfdda7605c6c191edf845087759ca3421cf44880981d",
+    "evidence": "evidence/2026-10-29-svg-small-precision-terminal.json",
+    "conclusion": "New high-precision final merge worsens original small-scene fidelity: full and strip decodedRGBA equal but both whole0.979103/minband0.946037 fail0.99. Do not run6M or replay unchanged pair."
+  },
   "publicPromotion": false
 }

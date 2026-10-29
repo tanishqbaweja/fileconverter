@@ -1,5 +1,17 @@
 # Remaining work audit
 
+Precision candidate3bb55dc3 REJECTED by original small browser test: whole0.979103/
+minband0.946037, identical full/strip pixels, worse than902. Native build/arithmetic
+passes did NOT translate into accepted rendering. No6M run is justified, no
+unchanged pair/native rebuild allowed. All4source proofs/reference/original SHA/
+cleanup passed; primary187.7539MiB is not memory/profile acceptance. Next bounded
+integration controls must retain pixel pairs for identity-default, original
+effects-default and shadow-only to distinguish source integration versus prior
+intermediate loss. Do not assume either cause or rewrite inputs/lower thresholds.
+All broader original requirements and generic image telemetry remain OPEN.
+evidence/2026-10-29-svg-small-precision-terminal.json.
+Final12focused PASS10904.3879ms/lint/diff PASS; candidate remains rejected.
+
 Four-proof precision browser adapter is ready/collection-verified, not converted:
 new native3bb55dc3 only, unchanged original small paired body/inputs/quality/
 96MiB/250MiB/45s/network/cleanup assertions.5focused PASS883.5814ms/lint/diff/
