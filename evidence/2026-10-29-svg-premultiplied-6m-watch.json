@@ -1,0 +1,19 @@
+{
+  "schemaVersion":1,
+  "startedAt":"2026-10-29T12:26:44Z",
+  "sourceCommit":"d540118d",
+  "sessionId":16772,
+  "command":"scripts/run-repository-owned-node.mjs scripts/test-svg-strip-pilot.mjs --premultiplied --rows128",
+  "nativeWasmSha256":"8641a4135ecc96c61edd9ff9efabb225a2c4ac041e78ec8322440ee5f44c35e0",
+  "fixtureSha256":"af4df880bee340b34ec1102a78a78cce8d04915635ea2ee5a7aa0ffe04e4ca78",
+  "centralRows":128,
+  "haloRows":48,
+  "estimatedTotalSeconds":240,
+  "observeNotBefore":"2026-10-29T12:30:44Z",
+  "lastAuthoritativeObservation":"same session exited1; first conversion quality passed, harness expected6 observations but received correct22; repeats2/3 not run",
+  "terminal":true,
+  "browserReceipt":"evidence/2026-10-29T12-27-14-249Z-source-svg-browser.json",
+  "restartOnObservationTimeout":false,
+  "publicPromotion":false,
+  "wholeGoalComplete":false
+}

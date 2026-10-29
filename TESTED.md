@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+Exact lifecycle-count fix:9 focused PASS1372.0271ms/affected lint PASS; fresh dry
+listing3 original6M cases/no browser, owned scratch removed. Source/pixels unchanged;
+qualifier now requires22 lifecycle+viewport observations and16 matching releases
+for3000x2000 at128rows, rather than incorrectly expecting6. Actual3-repeat gate
+remains next. evidence/2026-10-29T12-31-56-790Z-svg-strip-pilot.json.
+
+Original6M8641 atd540118d first output genuinely complete2882332B/30.269s.
+WholeSSIM0.999079/all31bandminimum0.998057/6Malphaexact PASS; native74,514,432B
+<96MiB; fulltree198.5078125MiB/347valid0missing. Test still FAILED: inherited
+full-render suite expects6 observations, worker correctly records6+16=22. Two
+repeats NOT RUN. Exact overlay fix now requires6+ceil(height/rows) plus exact
+render/release/completed-row counts; no correctness/memory gate relaxed. Network0,
+allowneddata cleaned/original full SHA unchanged. No profile acceptance.
+evidence/2026-10-29-svg-premultiplied-6m-first-terminal.json.
+
 Original6M premultiplied128/48 selection prepared without changing frozen owners
 or scene. Seven focused receipt/gate/rejection tests PASS1129.2704ms, affected
 ESLint PASS. Dry listing3 original stress cases; no browser/conversion, owned

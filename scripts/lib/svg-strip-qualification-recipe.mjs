@@ -12,6 +12,13 @@ export function makeSvgStripQualification(options) {
   const base=makeSvgEffectsDiagnostic(options),edits=[];
   let suite=`import { validateSvgStripSeams } from ${JSON.stringify(pathToFileURL(path.join(root,"scripts/lib/svg-strip-validator.mjs")).href)};\n`+base.suite;
   const edit=(before,after)=>{suite=replace(suite,before,after);edits.push([before,after]);};
+  // Six lifecycle reads plus one actual read per native viewport. Require the
+  // expected count from geometry, not merely whatever the worker reports.
+  edit('observations: 6, unavailableObservations: 0, maximumBytes: null',
+    `observations: 6 + Math.ceil(expectedHeight / ${centralRows}), unavailableObservations: 0, maximumBytes: null`);
+  edit('        expect(state!.metrics.svgMemoryObservation!.peakBytes).toBeGreaterThan(0);',
+    `        expect(state!.metrics.svgMemoryObservation!.peakBytes).toBeGreaterThan(0);\n`+
+    `        expect(state!.metrics.svgStripPilot).toMatchObject({centralRows:${centralRows}, renderedViewports:Math.ceil(expectedHeight / ${centralRows}), releasedViewports:Math.ceil(expectedHeight / ${centralRows}), completedRows:expectedHeight});`);
   const route='    await context.route("**/engines/svg/resvg.wasm", route => route.fulfill({ contentType: "application/wasm", path: descriptor.candidateFile }));';
   edit(route,route+`\n    const stripWorkerFile = ${JSON.stringify(workerPin.file)};\n`+
     `    const stripWorkerBytes = await readFile(stripWorkerFile);\n`+

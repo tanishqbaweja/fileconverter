@@ -28,6 +28,8 @@ test("private qualifier preserves every existing effects assertion while adding 
     assert.match(generated.suite,/\{ timeout: 45_000 \}/);
     assert.match(generated.driver,/Do not delay\/inflate the earliest stable blank baseline/);
     assert.match(generated.driver,/incrementalPrivateMiB <= 250/);
+    assert.match(generated.suite,/observations: 6 \+ Math.ceil\(expectedHeight \/ 64\), unavailableObservations: 0/);
+    assert.match(generated.suite,/releasedViewports:Math.ceil\(expectedHeight \/ 64\), completedRows:expectedHeight/);
     assert.equal(generated.proof.publicPromotion,false);
   }finally{await runtime.close();}
 });

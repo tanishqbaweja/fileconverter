@@ -36,6 +36,18 @@ test("premultiplied assertion requires its own four proofs and rejects rejected-
     assert.throws(()=>assertSvgPremultipliedSourceReceipt(receipt,{...pins,[field]:value}));
   assert.throws(()=>assertSvgPremultipliedSourceReceipt({...receipt,premultipliedTransferPatch:{...premultipliedTransferPatch,fullViewportFloatAccumulatorIntroduced:true}},pins));
 });
+test("first original6M result preserves harness failure separately from passing independent fidelity; exact viewport reads remain mandatory",async()=>{
+  const c=JSON.parse(await readFile("evidence/2026-10-29-svg-premultiplied-6m-first-terminal.json"));
+  const b=JSON.parse(await readFile(c.browserReceipt));const r=b.stressRuns[0].result;
+  assert.equal(b.runnerExitCode,1);assert.deepEqual([b.stats.expected,b.stats.unexpected,b.stats.skipped],[0,1,2]);
+  assert.equal(r.outputBytes,c.firstOutputBytes);assert.equal(r.fidelity.actualSsim,c.wholeSsim);
+  assert.equal(r.stripValidation.minimumSsim,c.minimumAll31BandsSsim);assert.equal(r.stripValidation.scores.length,31);
+  assert.equal(r.stripValidation.alphaExact,true);assert.equal(r.stripValidation.passed,true);
+  assert.equal(r.metrics.svgMemoryObservation.observations,6+Math.ceil(2000/128));
+  assert.equal(r.metrics.svgMemoryObservation.unavailableObservations,0);
+  assert.equal(r.metrics.svgStripPilot.renderedViewports,16);assert.equal(r.metrics.svgStripPilot.releasedViewports,16);
+  assert.equal(c.publicPromotion,false);assert.equal(c.wholeGoalComplete,false);
+});
 test("new native browser recipes retain exact large/small scene gates and production IO rather than weaker diagnostic inputs",async()=>{
   const runtime=await createOwnedRuntimeScratch("svg-reproduced-qualification-");
   try{

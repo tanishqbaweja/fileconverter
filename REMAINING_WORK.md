@@ -1,5 +1,17 @@
 # Remaining work audit
 
+Lifecycle-count harness fix focused verification:9PASS1372.0271ms/lint PASS,
+3 original6M cases collected/no browser, scratch removed. Exact count derives
+from geometry, each viewport release required; native/IO/input/limits unchanged.
+Actual repeat gate still required, not inferred from first output.
+
+Original6M8641 first conversion now passes all whole/31band/alpha gates at30.269s
+and198.5078125MiB fulltree, but TEST FAILED on inherited6-vs22 memory-observation
+assertion; repeats2/3 not run. Exact geometry-derived count+release assertions
+fix only the harness, not candidate/scene/limits. Relevant retest required; no
+profile/general SVG/release acceptance. Generic memory telemetry/recovery/wider
+scope still OPEN. evidence/2026-10-29-svg-premultiplied-6m-first-terminal.json.
+
 Original6M128/48 premultiplied qualifier now selectable; dry listing3 cases,
 7 focused PASS1129.2704ms and affected lint PASS. Actual large behavior unproven;
 all original gates retained. First actual run next, no unchanged native rebuild
