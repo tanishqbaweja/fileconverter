@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-10-29 — New integration diagnostic prepared, not executed: same native3bb,
+identity-default, unchanged original effects-default, and reversible shadow-only
+source. All4source proofs and original quality/96MiB/250MiB/45s gates retained.
+Each gets a matching freshChrome reference. Independent validator retains only
+64fixed center/corner/gap/bottom samples,256difference bins and12worst pixels;
+all3 collected before quality verdict. No native rebuild or6M test.
+11focused PASS1395.6522ms/lint/diff PASS. Collection found correct1case, but its
+status label initially said paired; label corrected and obsolete disposable
+collection receipt removed. Final2focused PASS990.7304ms/exact1case list PASS.
+evidence/2026-10-29T07-53-05-075Z-svg-precision-integration-control.json.
+
 2026-10-29 — New3bb55dc3 precision-native paired run05e0b1cc COMPLETE/REJECTED.
 Both genuine original960x540 conversions complete; native PNG143566B/1247.900ms
 and stripPNG127850B/2232.205ms decode to identical2073600RGBA bytes/SHAeee1860c

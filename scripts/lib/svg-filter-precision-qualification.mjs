@@ -4,6 +4,7 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 import { makeFilterLivenessSvgQualification } from "./svg-filter-liveness-qualification.mjs";
 import { makeSvgSmallFidelityControl } from "./svg-small-fidelity-control.mjs";
+import { makeSvgComponentFidelityControl } from "./svg-component-fidelity-control.mjs";
 import { filterRegionPatch } from "../../images/resvg-source/filter-region-patch.mjs";
 import { renderContextPatch } from "../../images/resvg-source/render-context-patch.mjs";
 import { filterLivenessPatch } from "../../images/resvg-source/filter-liveness-patch.mjs";
@@ -47,3 +48,4 @@ function bindPrecisionCandidate(base,options){
 }
 export function makeFilterPrecisionSvgQualification(options){return bindPrecisionCandidate(makeFilterLivenessSvgQualification(options),options);}
 export function makeSvgSmallPrecisionFidelityControl(options){return bindPrecisionCandidate(makeSvgSmallFidelityControl(options),options);}
+export function makeSvgPrecisionIntegrationControl(options){assert.equal(options.integrationDiagnostics,true);return bindPrecisionCandidate(makeSvgComponentFidelityControl(options),options);}

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { makeSvgSmallFidelityControl } from "./svg-small-fidelity-control.mjs";
 import { sha } from "../../images/resvg-source/source-pins.mjs";
 import { svgFilterPrecisionVariants } from "./svg-filter-precision-variants.mjs";
+import { svgFilterIntegrationVariants } from "./svg-filter-integration-variants.mjs";
 const replace=(source,before,after,count=1)=>{assert.equal(source.split(before).length-1,count,"Exact component diagnostic anchor: "+before.slice(0,100));return source.split(before).join(after);};
 export function svgComponentVariants(bytes){
   assert.equal(bytes.length,11194);
@@ -25,17 +26,19 @@ export function svgComponentVariants(bytes){
     ["no-filter-square",square,{filterUseRemoved:1,roundedRectangleRadiiRemoved:144}]]
     .map(([name,text,changes])=>({name,source:text,bytes:Buffer.byteLength(text),sha256:sha(text),changes}));
 }
-export function assertSvgComponentControlNotCompleted(ledger,{nativeWasmSha256,variants,filterPrecision=false}){
+export function assertSvgComponentControlNotCompleted(ledger,{nativeWasmSha256,variants,filterPrecision=false,integrationDiagnostics=false}){
   assert.match(nativeWasmSha256,/^[a-f0-9]{64}$/);assert.equal(variants.length,3);
   const pins=variants.map(({name,sha256})=>{assert.match(sha256,/^[a-f0-9]{64}$/);return {name,sha256};});
   assert.equal(typeof filterPrecision,"boolean");
-  const done=filterPrecision?ledger.completedFilterPrecisionControl:ledger.completedComponentControl;
+  assert.equal(typeof integrationDiagnostics,"boolean");assert.ok(!(filterPrecision&&integrationDiagnostics));
+  const done=integrationDiagnostics?ledger.completedPrecisionIntegrationControl:filterPrecision?ledger.completedFilterPrecisionControl:ledger.completedComponentControl;
   assert.ok(!(done?.nativeWasmSha256===nativeWasmSha256&&JSON.stringify(done?.variants)===JSON.stringify(pins)),
     "This exact component control is already complete; inspect "+done?.evidence+" instead of replaying it.");
 }
 export function makeSvgComponentFidelityControl(options){
   const base=makeSvgSmallFidelityControl(options),body=options.controlTestBytes.toString();
-  const variants=(options.filterPrecision?svgFilterPrecisionVariants:svgComponentVariants)(options.componentSourceBytes);
+  assert.ok(!(options.filterPrecision&&options.integrationDiagnostics));
+  const variants=(options.integrationDiagnostics?svgFilterIntegrationVariants:options.filterPrecision?svgFilterPrecisionVariants:svgComponentVariants)(options.componentSourceBytes);
   let fragment=replace(body,'test("paired-svg-fidelity-control",','test("svg-component-fidelity-control",');
   fragment=replace(fragment,'const sourcePath = path.join(projectRoot,"fixtures/images/test-pattern-effects.svg");','const originalSourcePath = path.join(projectRoot,"fixtures/images/test-pattern-effects.svg");');
   fragment=replace(fragment,'const sourceBytes = await readFile(sourcePath);','const originalBytes = await readFile(originalSourcePath);');
@@ -60,7 +63,7 @@ export function makeSvgComponentFidelityControl(options){
     '      }finally{if(validationSink){validationSink.destroy();validationSink=null;}await rm(referencePath,{force:true});await rm(sourcePath,{force:true});}\n    }\n    await save();expect(results.length).toBe(3);');
   fragment=replace(fragment,'}finally{await save();if(validationSink){validationSink.destroy();validationSink=null;}await rm(referencePath,{force:true});}',
     '}finally{await save();if(validationSink){validationSink.destroy();validationSink=null;}}');
-  if(options.filterPrecision){
+  if(options.filterPrecision||options.integrationDiagnostics){
     fragment=replace(fragment,'metrics:unknown}[]','metrics:unknown;pixelSamples?:unknown}[]');
     fragment=replace(fragment,'        const rgbaSha256=createHash("sha256").update(decoded.stdout).digest("hex");',
       '        const rgbaSha256=createHash("sha256").update(decoded.stdout).digest("hex");\n'+
@@ -70,6 +73,25 @@ export function makeSvgComponentFidelityControl(options){
       '        const pixelSamples=Array.from({length:16},(_unused,index)=>{const x=30+60*index,y=30,at=(960*y+x)*4;const referenceRgba=[...referenceDecoded.stdout.subarray(at,at+4)],outputRgba=[...decoded.stdout.subarray(at,at+4)];return {x,y,referenceRgba,outputRgba,predicted8BitLinearRoundTripRgb:referenceRgba.slice(0,3).map(quantizedRoundTrip)};});');
     fragment=replace(fragment,'alphaExact:bands.alphaExact,metrics:','alphaExact:bands.alphaExact,pixelSamples,metrics:');
     fragment=replace(fragment,'svg-component-fidelity-control','svg-filter-precision-control',3);
+  }
+  if(options.integrationDiagnostics){
+    fragment=replace(fragment,'svg-filter-precision-control','svg-filter-integration-control',3);
+    fragment=replace(fragment,'metrics:unknown;pixelSamples?:unknown','metrics:unknown;pixelSamples?:unknown;rgbDifference?:unknown');
+    const sample='const pixelSamples=Array.from({length:16},(_unused,index)=>{const x=30+60*index,y=30,at=(960*y+x)*4;';
+    fragment=replace(fragment,sample,
+      'const coordinates=Array.from({length:64},(_unused,index)=>{const tile=index%16,kind=Math.floor(index/16);return kind===0?{kind:"center",x:30+60*tile,y:30}:kind===1?{kind:"corner",x:2+60*tile,y:2}:kind===2?{kind:"shadow-gap",x:59+60*tile,y:30}:{kind:"bottom-shadow",x:30+60*tile,y:59};});\n'+
+      '        const pixelSamples=coordinates.map(({kind,x,y})=>{const at=(960*y+x)*4;');
+    fragment=replace(fragment,'return {x,y,referenceRgba,outputRgba,predicted8BitLinearRoundTripRgb:',
+      'return {kind,x,y,referenceRgba,outputRgba,predicted8BitLinearRoundTripRgb:');
+    const marker='        const comparison=await execFileAsync("ffmpeg",';
+    fragment=replace(fragment,marker,
+      '        const differenceCounts=Array.from({length:256},()=>0);let maximumChannelDifference=0,totalDifference=0;\n'+
+      '        const worstPixels:{x:number;y:number;totalDifference:number;referenceRgba:number[];outputRgba:number[]}[]=[];\n'+
+      '        for(let at=0;at<decoded.stdout.length;at+=4){let pixelDifference=0;for(let channel=0;channel<3;channel++){const difference=Math.abs(decoded.stdout[at+channel]-referenceDecoded.stdout[at+channel]);differenceCounts[difference]++;maximumChannelDifference=Math.max(maximumChannelDifference,difference);totalDifference+=difference;pixelDifference+=difference;}\n'+
+      '          if(worstPixels.length<12||pixelDifference>worstPixels[worstPixels.length-1].totalDifference){worstPixels.push({x:(at/4)%960,y:Math.floor(at/4/960),totalDifference:pixelDifference,referenceRgba:[...referenceDecoded.stdout.subarray(at,at+4)],outputRgba:[...decoded.stdout.subarray(at,at+4)]});worstPixels.sort((a,b)=>b.totalDifference-a.totalDifference);if(worstPixels.length>12)worstPixels.pop();}}\n'+
+      '        const rgbDifference={maximumChannelDifference,meanAbsoluteChannelDifference:totalDifference/(960*540*3),differenceCounts,worstPixels};\n'+marker);
+    fragment=replace(fragment,'alphaExact:bands.alphaExact,pixelSamples,metrics:',
+      'alphaExact:bands.alphaExact,pixelSamples,rgbDifference,metrics:');
   }
   const suite=replace(base.suite,body,fragment);
   let driver=replace(base.driver,JSON.stringify(sha(base.suite)),JSON.stringify(sha(suite)));
@@ -90,9 +112,18 @@ export function makeSvgComponentFidelityControl(options){
       '"Three small filter precision controls, same full-frame worker/UI/direct IO; not original6M acceptance"');
     driver=replace(driver,'"scripts/lib/svg-component-fidelity-control.mjs"];','"scripts/lib/svg-component-fidelity-control.mjs", "scripts/lib/svg-filter-precision-variants.mjs"];');
   }
+  if(options.integrationDiagnostics){
+    driver=replace(driver,'"--grep", "svg-component-fidelity-control",','"--grep", "svg-filter-integration-control",');
+    driver=replace(driver,'const repeat = "svg-component-fidelity-control";','const repeat = "svg-filter-integration-control";');
+    driver=replace(driver,'components:3};','components:3,integrationDiagnostics:true};');
+    driver=replace(driver,'"Three small component ablations, full-frame production worker/UI/direct IO; never original6M stress acceptance"',
+      '"Three small precision integration controls with bounded pixel evidence; same full worker/UI/direct IO, never6M acceptance"');
+    driver=replace(driver,'"scripts/lib/svg-component-fidelity-control.mjs"];','"scripts/lib/svg-component-fidelity-control.mjs", "scripts/lib/svg-filter-integration-variants.mjs", "scripts/lib/svg-filter-precision-variants.mjs"];');
+  }
   return {...base,suite,driver,proof:{...base.proof,suiteSha256:sha(suite),driverSha256:sha(driver),controlTestSha256:sha(fragment),
     bothModesSameNativeBytesAndProductionIo:false,fullFrameProductionWorkerOnly:true,
     componentVariants:variants.map(({source,...pin})=>{void source;return pin;}),
     filterPrecisionControl:options.filterPrecision===true,eachVariantHasItsOwnMatchingChromiumReference:true,
+    integrationDiagnostics:options.integrationDiagnostics===true,
     scope:"Small component ablations only; original6M acceptance unaltered and not exercised",publicPromotion:false}};
 }

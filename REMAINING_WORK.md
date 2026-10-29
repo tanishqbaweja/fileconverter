@@ -1,5 +1,12 @@
 # Remaining work audit
 
+Precision integration controls are now source/collection-verified, NOT converted:
+identity-default, original effects-default and shadow-only under new3bbnative,
+with bounded64pixel/256bin/12worst evidence and alloriginal gates/fourproofs.
+11focused PASS/lint/diff;2updated tests990.7304ms and exact1case list PASS.
+Next ONE discriminating browser run, not unchanged rejected paired/6M or native
+rebuild. No source cause claimed until actual pixel evidence is available.
+
 Precision candidate3bb55dc3 REJECTED by original small browser test: whole0.979103/
 minband0.946037, identical full/strip pixels, worse than902. Native build/arithmetic
 passes did NOT translate into accepted rendering. No6M run is justified, no
