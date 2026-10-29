@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "observedRunningAt": "2026-10-29T13:19:14.000Z",
+  "sessionId": 89727,
+  "command": "scripts/run-repository-owned-node.mjs scripts/check-og-security-candidate.mjs",
+  "estimatedRemainingSeconds": 80,
+  "observeNotBefore": "2026-10-29T13:20:34.000Z",
+  "lastAuthoritativeObservation": "same session exited1; old embedded Satori injection reproduced; probe misclassified local embedded Wasm dataURL as network; candidate not yet runtime-tested; isolated graph has separate vulnerable fflate0.7.3",
+  "terminal": true,
+  "restartOnObservationTimeout": false,
+  "scope": "Isolated framework dependency probe; no app graph change, conversion or memory acceptance"
+}

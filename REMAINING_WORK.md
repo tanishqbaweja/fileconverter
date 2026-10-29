@@ -1,5 +1,14 @@
 # Remaining work audit
 
+B08 security now evidence-directed: original3moderate lock findings remain;
+OG0.8.6 bundledSatori0.16.0 injection genuinely reproduced. Scoped Satori-only
+override is insufficient because consumer embeds old code. IsolatedOG1.0.3
+declaresfixedSatori0.33.5 but pinsvulnerablefflate0.7.3; no appgraph change.
+Initial probe failed localdataURL-vsnetwork classification, not a candidate
+runtime verdict. Allownedscratchcleaned. Fix diagnostic and inspect exact bundled
+ZIPparser before selecting source/override remedy; no security closure claimed.
+evidence/2026-10-29-og-security-candidate.json.
+
 Current bounded cycle terminal:29focused PASS1866.6023ms/lint/diff PASS. New
 private telemetry/lifecycle/basic-alpha functionality verified with precise scope;
 original6M strict memory remains FAILED/unavailable and not replaced by a small

@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-10-29 security phase: fresh original lock audit confirms3moderate groups,
+0high/critical, unchanged package/lock andowned audit scratch cleaned.
+@vercel/og0.8.6 embedsSatori0.16.0; actual isolated additive-export probe reproduces
+unescaped injectedpath through stylecolor. Merely overriding Satori would not
+patch that bundle. UpstreamOG1.0.3 declarespatchedSatori0.33.5, but its isolated
+graph pinsfflate0.7.3 with separateGHSA-px8p-9vwx-vf98; audit3moderate viafflate,
+not the same original advisory. Initial probe FAILED methodology: embedded
+WasmdataURL incorrectly counted as network; candidate runtime not reached.
+Allscratch removed/appgraph unchanged; no runtime/security/conversion closure.
+Next exact dataURL classification fix and inspect embedded ZIPparser reachability,
+not an audit-only override. evidence/2026-10-29-og-security-before-audit.json and
+evidence/2026-10-29-og-security-candidate.json.
+
 Final lifecycle/transparency cycle:29focused PASS1866.6023ms/0fail/skip/cancel,
 affected ESLint/diff PASS. Private80/128worker compilation and exact synthetic
 PNG/alpha/cleanup/replay/source proofs retained. Actual new telemetry/recovery
