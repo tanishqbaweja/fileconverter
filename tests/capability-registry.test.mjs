@@ -194,12 +194,12 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   }
 });
 
-test("registry has only the explicit changed Opus-Vorbis policy pending and keeps failed evidence hidden", () => {
+test("registry keeps unqualified SVG and the changed Opus-Vorbis policy pending and hidden", () => {
   assert.deepEqual(
     conversionProfiles
       .filter((profile) => profile.automatedTestStatus === "pending")
       .map((profile) => profile.id),
-    ["opus-to-ogg"],
+    ["svg-to-png", "opus-to-ogg"],
   );
   const changed = conversionProfiles.find(profile => profile.id === "opus-to-ogg");
   assert.equal(changed.public, false); assert.equal(changed.maxTestedBytes, null);

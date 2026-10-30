@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
+import { readPreSvgPublicationRegistry } from "./pre-svg-publication-registry.mjs";
 const pins = {
   "vite.config.ts": { bytes: 2134, sha256: "ef3bc4603131a48d6f6b013671f86b73a22cc40226196cb037c4b756700d61ae",
     gitBlobSha256: "d2dc95ac4ec9402f18c60709abea8cd5df3c952d5b53761684fdd85c1cd95b74" },
@@ -27,6 +28,7 @@ export function decodePreCiRuntimeInput(file, archive) {
   return bytes;
 }
 export async function readPreCiRuntimeInput(file, { readLive } = {}) {
+  if (file === "lib/capability-registry.ts") return readPreSvgPublicationRegistry();
   if (!Object.hasOwn(pins, file)) return readLive ? readLive(file) : readFile(new URL("../../" + file, import.meta.url));
   const archive = JSON.parse(await readFile(new URL("../../fixtures/source/pre-ci-runtime-2026-10-29.json", import.meta.url)));
   return decodePreCiRuntimeInput(file, archive);

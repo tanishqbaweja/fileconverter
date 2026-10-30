@@ -8,6 +8,15 @@ or conversion endpoint.
 
 PDF input, PDF output, and PDF tooling are intentionally out of scope.
 
+SVG-to-PNG is temporarily withheld from the public selector and support catalogue.
+The shipping renderer lacks an explicit Wasm maximum; the private source-built
+replacement still fails strict alpha and current whole-Chromium memory checks.
+Localhost qualification remains available, and lossless compression of an SVG
+file is not rasterization. Historical SVG results below remain historical, not
+current release qualification. SVG optimization and qualification remain required
+unfinished work; this safety gate does not complete the project. See
+`evidence/2026-10-29-svg-publication-gate.json` and `REMAINING_WORK.md`.
+
 ### Framework security bootstrap
 
 Use `npm run dev`, `npm run build`, and `npm run start`. Their small Node wrapper
@@ -118,7 +127,7 @@ This is small-case UI/recovery evidence, not large-file qualification.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 404
+complete-Chromium memory profile have passed. The current registry publishes 403
 routes:
 
 The published catalogue mounts at most 24 display cards at a time. Search
@@ -2813,7 +2822,7 @@ and the broader original codec/quality/legal gates remain open.
 local stress reports. `npm run evidence:public:write` refreshes the tracked,
 compact `evidence/public-profile-evidence.json` index only after that raw audit
 passes. Fresh CI checkouts run `npm run audit:public-evidence:manifest` to verify
-the indexed 404 route IDs, tested sizes, report hashes, repeatability, and memory
+the indexed 403 route IDs, tested sizes, report hashes, repeatability, and memory
 peaks against the current registry without committing hundreds of bulky raw
 reports. `npm run audit:engine-reproducibility` similarly ensures that every
 published engine directory has a reproducible build entry.

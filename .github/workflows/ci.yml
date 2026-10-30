@@ -324,7 +324,7 @@ jobs:
       - name: Run network privacy and offline browser tests
         env:
           PLAYWRIGHT_JSON_OUTPUT_NAME: output/playwright/verify-results.json
-        run: npx playwright test tests/browser/privacy-offline.spec.ts tests/browser/static-host-policy.spec.ts --reporter=line,json,html
+        run: npx playwright test tests/browser/privacy-offline.spec.ts tests/browser/static-host-policy.spec.ts tests/browser/svg-publication-gate.spec.ts --reporter=line,json,html
 
       - name: Retain compact verification results
         if: always()

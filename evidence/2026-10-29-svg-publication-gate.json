@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "profileId": "svg-to-png",
+  "status": "temporarily-withheld-pending-qualification-not-permanently-unsupported",
+  "public": false,
+  "automatedTestStatus": "pending",
+  "privateLocalhostQualificationRetained": true,
+  "historicalFunctionalMaximumInputBytes": 470390,
+  "historicalPublicEvidence": {
+    "report": "2026-08-13T14-24-32-424Z-svg-to-png-stress.json",
+    "reportSha256": "a763672c12fec00ef6ef6acb23c938ae8b0c1ff9c4093ef51586bb818538c865",
+    "runs": 3,
+    "sourceBytes": 470390,
+    "incrementalPrivateMiB": 182.76171875,
+    "retainedAsHistoricalNotCurrentQualification": true
+  },
+  "shippingBinary": {
+    "path": "public/engines/svg/resvg.wasm",
+    "bytes": 2478606,
+    "sha256": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70",
+    "initialPages": 23,
+    "maximumPages": null,
+    "sourceReproductionQualificationComplete": false,
+    "measuredPrivateCandidateFailuresMisrepresentedAsThisBinary": false
+  },
+  "reasons": [
+    "The shipping package-copy binary lacks the explicitly required Wasm maximum",
+    "The new source-built candidate cannot replace it while exact-alpha, complete-Chromium memory and recovery qualification are incomplete",
+    "Historical small/functional results do not establish current full qualification"
+  ],
+  "evidence": [
+    "evidence/2026-10-27-svg-explicit-memory-gap.json",
+    "evidence/2026-10-29-svg-blur-boundary-browser-terminal.json",
+    "evidence/2026-10-29-svg-blur-boundary-allocation-terminal.json"
+  ],
+  "qualifiedSvgStillRequiredByGoal": true,
+  "otherPublicProfilesOrNativeEnginesChanged": false,
+  "fidelityMemoryPrivacyOrCleanupThresholdsWeakened": false,
+  "publicEngineReplacement": false,
+  "wholeGoalComplete": false
+}

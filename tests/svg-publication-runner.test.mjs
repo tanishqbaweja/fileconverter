@@ -1,0 +1,32 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+import ts from "typescript";
+import { ESLint } from "eslint";
+import { makeSvgPublicationCheckDriver, svgPublicationCheckBaseSha256 } from "../scripts/lib/svg-publication-check-recipe.mjs";
+import { readPreSvgPublicationRegistry } from "./helpers/pre-svg-publication-registry.mjs";
+import { readPreCiRuntimeInput } from "./helpers/pre-ci-runtime-inputs.mjs";
+import { sha } from "../images/resvg-source/source-pins.mjs";
+test("publication checks extend the immutable19-case owner reversibly with exactly2 headless UI gates", async () => {
+  const bytes = await readFile("scripts/run-owned-privacy-offline.mjs"); assert.equal(sha(bytes), svgPublicationCheckBaseSha256);
+  const recipe = makeSvgPublicationCheckDriver({ root: process.cwd(), sourceBytes: bytes });
+  assert.equal(recipe.proof.exactSemanticEditsReversible, true); assert.equal(recipe.proof.original19TestsRetained, true);
+  assert.equal(recipe.proof.addedPublicGateTests, 2); assert.equal(recipe.proof.originalWrapperEdited, false);
+  assert.match(recipe.source, /assert.equal\(result.stats.expected, 21\)/);
+  assert.match(recipe.source, /testMatch:\["\*\*\/privacy-offline.spec.ts","\*\*\/static-host-policy.spec.ts","\*\*\/svg-publication-gate.spec.ts"\]/);
+  assert.match(recipe.source, /headless:true/); assert.match(recipe.source, /windowsHide: true/);
+  assert.match(recipe.source, /owned-identity-absent/); assert.match(recipe.source, /report.protectedOriginalAfter/);
+  assert.doesNotMatch(recipe.source, /--headed|--grep|--skip|--disable-/);
+  assert.deepEqual(ts.createSourceFile("owner.mjs", recipe.source, ts.ScriptTarget.ESNext, true).parseDiagnostics, []);
+  const lint = await new ESLint().lintText(recipe.source, { filePath: "scripts/generated-svg-publication-owner.mjs" });
+  assert.deepEqual(lint.flatMap(row => row.messages.filter(message => message.severity === 2)), []);
+});
+test("historical registry source remains exact while the only live policy change is withholding the unqualified SVG route", async () => {
+  const bytes = await readPreSvgPublicationRegistry(); assert.equal(sha(bytes), "d9f5ad4599db8b43a68acb311f16d652a9a74300c38a31f827c12590652e573b");
+  assert.deepEqual(await readPreCiRuntimeInput("lib/capability-registry.ts"), bytes);
+  const current = await readFile("lib/capability-registry.ts", "utf8");
+  const after = '      maxTestedBytes: 470_390,\n      // Historical functional reports remain retained, but source/fixed-cap,\n      // current-browser fidelity, memory and recovery qualification are open.\n      automatedTestStatus: "pending",\n      public: false,';
+  const before = '      maxTestedBytes: 470_390,\n      automatedTestStatus: "passed",\n      public: true,';
+  assert.equal(current.split(after).length, 2); assert.equal(current.replace(after, before), bytes.toString());
+  assert.notEqual(sha(Buffer.from(current)), sha(bytes), "Live policy must not silently resolve to the historical archive");
+});

@@ -1,0 +1,30 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+import { conversionProfiles, publicProfilesFor } from "../lib/capability-registry.ts";
+import { build } from "esbuild";
+import { definedWasmMemories } from "../images/resvg-source/memory-contract.mjs";
+import { sha } from "../images/resvg-source/source-pins.mjs";
+const model = await build({ entryPoints: ["lib/published-catalogue.ts"], bundle: true, format: "esm", write: false });
+const { cataloguePage } = await import("data:text/javascript;base64," + Buffer.from(model.outputFiles[0].contents).toString("base64"));
+test("SVG rasterization is withheld from public selection/catalogue/evidence but remains private qualification work", async () => {
+  const profile = conversionProfiles.find(row => row.id === "svg-to-png"); assert.ok(profile);
+  assert.equal(profile.public, false); assert.equal(profile.automatedTestStatus, "pending"); assert.equal(profile.maxTestedBytes, 470390);
+  assert.equal(publicProfilesFor("svg").some(row => row.id === "svg-to-png"), false);
+  assert.equal(publicProfilesFor("svg", true).some(row => row.id === "svg-to-png"), true);
+  assert.ok(publicProfilesFor("svg").some(row => row.id === "gzip-compress"), "Genuine lossless compression is not confused with rasterization");
+  assert.equal(cataloguePage("svg-to-png", 0).total, 0);
+  const evidence = JSON.parse(await readFile("evidence/public-profile-evidence.json"));
+  assert.equal(evidence.profiles.some(row => row.profileId === "svg-to-png"), false);
+  assert.equal(evidence.profiles.length, conversionProfiles.filter(row => row.public && row.automatedTestStatus === "passed").length);
+});
+test("withholding follows the actual shipping cap gap and recorded private failures without claiming equivalence or completion", async () => {
+  const gate = JSON.parse(await readFile("evidence/2026-10-29-svg-publication-gate.json"));
+  const bytes = await readFile(gate.shippingBinary.path); assert.equal(bytes.length, gate.shippingBinary.bytes); assert.equal(sha(bytes), gate.shippingBinary.sha256);
+  const memory = definedWasmMemories(bytes); assert.equal(memory.length, 1); assert.equal(memory[0].initialPages, 23); assert.equal(memory[0].maximumExplicit, false);
+  assert.equal(gate.shippingBinary.measuredPrivateCandidateFailuresMisrepresentedAsThisBinary, false);
+  assert.equal(gate.qualifiedSvgStillRequiredByGoal, true); assert.equal(gate.wholeGoalComplete, false);
+  const prior = JSON.parse(await readFile("evidence/2026-10-29-svg-blur-boundary-browser-terminal.json"));
+  assert.equal(prior.memory.passed, false); assert.equal(prior.memory.incrementalPrivateMiB, 265.4453125);
+  assert.notEqual(prior.nativeWasmSha256, gate.shippingBinary.sha256);
+});

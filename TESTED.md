@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+SVG publication safety gate implemented: registrysvg-to-png is publicfalse/
+pending, public catalogue and current public-evidence manifest omit it, while
+explicit localhost testmode still exposes the genuine pipeline for qualification.
+Public UI explains rasterization is temporarily unavailable and generic lossless
+compression is not rasterization. Historical470390B/three-run evidence is retained
+in evidence/2026-10-29-svg-publication-gate.json, not relabelled as current proof.
+This is NOT a permanent unsupported decision, source promotion or goal closure.
+Shipping Wasm unchanged/no explicit maximum; private exact-alpha/memory/recovery
+remain open. All other403 public cards retain exact content/order. First focused
+cycle8PASS/2FAIL exposed empty reverse anchors and stale404card expectation;
+corrected with unique nonempty reversible anchors and403 count, then10PASS
+726.2925ms. Production build/TypeScript/affected lint/diff PASS. Full portable and
+actual21-case privacy/hosting/public-gate browser validation still pending.
+First portable cycle2058PASS/16FAIL/0skip151776.2581ms: current404/pending
+expectations and historical source pins, not new conversion results. Original
+19-case browser owner restored byte-for-byte1364823a...; new21-case runner is a
+separate exact reversible derivative. Pre-gate registry243956B/d9f5ad45... archived
+from9928c79e so historical receipts keep their original sources, never new live
+policy. Only live SVG publication flags/comment reverse exactly to that archive;
+all other registry bytes unchanged.87 focused recovery PASS617.9794ms and23
+SVG/lifecycle/runner PASS9019.9164ms. Full portable rerun and actual21 browsers next.
+
 Allocation diagnostic TERMINAL atd0eb255b: exactly3 light dumps, blank/mid/post,
 0capture errors; all same alpha failures,0PASS/1FAIL/0skip/flaky11.135s. Perturbed
 280.6015625MiB is NOT acceptance; prior265.4453125MiB FAIL remains authoritative.
@@ -10692,8 +10714,8 @@ Hero correction final checkpoint: combined CURRENT836/836unit PASS5723.9312ms in
 
 ## Current totals
 
-- Public passed conversion profiles: **404**
-- Public profiles with retained successful Chrome stress evidence: **404**
+- Public passed conversion profiles: **403**
+- Public profiles with retained successful Chrome stress evidence: **403**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log

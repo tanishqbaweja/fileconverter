@@ -55,14 +55,14 @@ test("N-05 matrix accounts for every named SVG behavior exactly once", () => {
   }
 });
 
-test("the public SVG route shows exactly the audited safety and fidelity disclosures", () => {
+test("withheld SVG retains historical functional disclosures without claiming current public qualification", () => {
   const svgProfiles = conversionProfiles.filter(
     (profile) => profile.input === "svg" || profile.output === "svg",
   );
   assert.deepEqual(svgProfiles.map((profile) => profile.id), [matrix.profileId]);
   const profile = svgProfiles[0];
-  assert.equal(profile.public, true);
-  assert.equal(profile.automatedTestStatus, "passed");
+  assert.equal(profile.public, false);
+  assert.equal(profile.automatedTestStatus, "pending");
   assert.deepEqual(
     [...profile.metadataLimitations, ...profile.fidelityLimitations],
     matrix.registryDisclosures,
@@ -92,7 +92,7 @@ test("the matrix is anchored to current worker, browser, fixture, and manifest s
   }
 });
 
-test("the committed effects report proves three repeatable bounded 6-megapixel runs", () => {
+test("historical effects report retains its three measured runs, not current qualification", () => {
   const report = compactStress.proofs.svg;
   assert.equal(report.reportPath, matrix.stress.report);
   assert.match(report.reportSha256, /^[a-f0-9]{64}$/);

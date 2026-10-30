@@ -4271,8 +4271,10 @@ export const conversionProfiles: readonly ConversionProfile[] = (
       ],
       fidelityLimitations: [],
       maxTestedBytes: 470_390,
-      automatedTestStatus: "passed",
-      public: true,
+      // Historical functional reports remain retained, but source/fixed-cap,
+      // current-browser fidelity, memory and recovery qualification are open.
+      automatedTestStatus: "pending",
+      public: false,
     },
     {
       id: "tiff-to-zip",

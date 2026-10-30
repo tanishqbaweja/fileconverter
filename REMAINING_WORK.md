@@ -1,5 +1,20 @@
 # Remaining work audit
 
+Publication honesty correction IN PROGRESS: SVG rasterization is temporarily
+withheld (publicfalse/pending), absent from selector/catalogue/public-evidence
+manifest; localhost qualification remains. Public notice distinguishes compression
+from rasterization. This does NOT satisfy or remove the original SVG requirement.
+Historical functional evidence preserved; current shipping cap/source gap and
+private alpha/265.445MiB memory/recovery failures remain OPEN.403 other public
+cards unchanged.10 focused checks/build/TypeScript/lint pass; full portable and
+new public-gate/headless privacy21 validation next. No new conversion acceptance
+or performance claim. evidence/2026-10-29-svg-publication-gate.json.
+Historical-source recovery is explicit: original19-case owner byte-exact, new
+21-case derivative separately generated/archived, old registry243956B/d9f5ad45...
+retained for old receipts only. Current registry remains live/pending and cannot
+resolve to the archive. First full portable2058PASS/16FAIL retained;87+23 focused
+recovery checks pass. Original SVG implementation/qualification still OPEN.
+
 Current allocation checkpoint: one-shot diagnostic completed3/3 dumps with no
 capture errors. Same exact-alpha FAIL; instrumented280.602MiB NOT acceptance,
 original noninstrumented265.445MiB FAIL retained. Renderer V8/Blink/malloc/

@@ -63,7 +63,7 @@ test("fresh hosted verification scopes scratch before installs and removes only 
 test("verification retains all unchanged browser cases and adds machine-readable results without headed launches or retries", async () => {
   const jobs = (await load()).jobs;
   const privacy = jobs.verify.steps.find(step => step.name === "Run network privacy and offline browser tests");
-  assert.equal(privacy.run, "npx playwright test tests/browser/privacy-offline.spec.ts tests/browser/static-host-policy.spec.ts --reporter=line,json,html");
+  assert.equal(privacy.run, "npx playwright test tests/browser/privacy-offline.spec.ts tests/browser/static-host-policy.spec.ts tests/browser/svg-publication-gate.spec.ts --reporter=line,json,html");
   const conversion = jobs["browser-conversions"].steps.find(step => step.name === "Run browser conversions and independent validators");
   assert.equal(conversion.run, "npx playwright test tests/browser/${{ matrix.suite }}.spec.ts --reporter=line,json,html");
   for (const step of [privacy, conversion]) {

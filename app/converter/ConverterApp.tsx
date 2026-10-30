@@ -467,6 +467,8 @@ export function ConverterApp() {
     () => profiles.find((profile) => profile.id === profileId) ?? null,
     [profileId, profiles],
   );
+  const svgRasterizationWithheld = inputFormat === "svg" && !testMode &&
+    !profiles.some((profile) => profile.id === "svg-to-png");
   const audioEncodingOptionsEnabled = supportsAudioEncodingOptions(selectedProfile);
   const selectedAudioCodec = audioCodecForProfile(selectedProfile);
   const selectableAudioProfiles = useMemo(
@@ -1840,6 +1842,17 @@ export function ConverterApp() {
 
           {error && !file ? (
             <ConversionError message={error} />
+          ) : null}
+
+          {file && svgRasterizationWithheld ? (
+            <div className="honesty-note" role="status" data-testid="svg-qualification-notice">
+              <strong>SVG-to-PNG is temporarily unavailable.</strong>
+              <span>
+                Its source-built renderer has not passed the full fidelity, memory,
+                and recovery checks. Lossless compression of the original file is
+                still available; it does not rasterize the image.
+              </span>
+            </div>
           ) : null}
 
           {file && profiles.length === 0 ? (

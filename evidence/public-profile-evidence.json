@@ -5764,24 +5764,6 @@
       }
     },
     {
-      "profileId": "svg-to-png",
-      "maxTestedBytes": 470390,
-      "repeatableEvidence": {
-        "report": "2026-08-13T14-24-32-424Z-svg-to-png-stress.json",
-        "reportSha256": "a763672c12fec00ef6ef6acb23c938ae8b0c1ff9c4093ef51586bb818538c865",
-        "runs": 3,
-        "sourceBytes": 470390,
-        "incrementalPrivateMiB": 182.76171875
-      },
-      "maximumSizeEvidence": {
-        "report": "2026-08-13T14-24-32-424Z-svg-to-png-stress.json",
-        "reportSha256": "a763672c12fec00ef6ef6acb23c938ae8b0c1ff9c4093ef51586bb818538c865",
-        "runs": 3,
-        "sourceBytes": 470390,
-        "incrementalPrivateMiB": 182.76171875
-      }
-    },
-    {
       "profileId": "tar-bz2-to-sevenzip",
       "maxTestedBytes": 270592763,
       "repeatableEvidence": {
