@@ -1,0 +1,18 @@
+{
+  "schemaVersion": 1,
+  "runId": 41013161607,
+  "headSha": "8b93711a90984ff30064e12acb7c19fac7c493fb",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/41013161607",
+  "createdAt": "2026-10-30T06:16:55Z",
+  "observedStatus": "in_progress",
+  "selector": "portable-verify",
+  "reason": "Changed publication policy and public UI require fresh production/portable/privacy/public-gate verification",
+  "engineReproductionSelected": false,
+  "conversionMatrixReplaySelected": false,
+  "manualDispatches": 1,
+  "estimatedMinutes": [3,5],
+  "nextStatusCheckNotBefore": "2026-10-30T06:21:55Z",
+  "monitorIntervalSeconds": 300,
+  "passed": null,
+  "wholeGoalComplete": false
+}

@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "sourceHead": "8b93711a90984ff30064e12acb7c19fac7c493fb",
+  "parentReceipt": "evidence/2026-10-30T06-16-32-390Z-svg-publication-checks.json",
+  "browserReceipt": {
+    "path": "evidence/2026-10-30T06-16-32-657Z-owned-privacy-offline.json",
+    "bytes": 21924,
+    "sha256": "3b4e27d5b7edc4c9f05078496e59ceec8cd0826c2fd815d2b7421f1dd1a23ca4"
+  },
+  "hostingRuntime": "wrangler-miniflare",
+  "headless": true,
+  "headedOrNativePickerVerified": false,
+  "stats": {"expected":21,"unexpected":0,"skipped":0,"flaky":0,"durationMs":53901.367000000006},
+  "originalPrivacyHostingCasesRetained": 19,
+  "addedPublicationGateCases": 2,
+  "svgConversionPerformedByGateTests": false,
+  "publicRasterizationOptionAbsent": true,
+  "explicitUnavailableNoticeVisible": true,
+  "losslessCompressionNotMisrepresentedAsRasterization": true,
+  "privateLocalhostQualificationOptionRetained": true,
+  "catalogueAndPublicEvidenceOmitWithheldSvg": true,
+  "unchangedOtherPublicProfileCount": 403,
+  "screenshot": {
+    "path": "output/playwright/2026-10-30T06-16-32-657Z-svg-publication-notice.png",
+    "bytes": 11892,
+    "sha256": "eee38c7792654edc965dee13207b8a9d322cbf36fb9e8c0d7f5dbd2b2e847c1e",
+    "visuallyReviewed": true,
+    "reviewScope": "Notice crop legible with wrapped reason and explicit compression distinction, not full-page/headed coverage"
+  },
+  "ownedServerRunnerAndOuterOwnerAbsent": true,
+  "allOwnedBrowserProfilesAndScratchRemoved": true,
+  "protectedOriginal": {"bytes":2958573265,"sha256":"31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34","beforeAndAfterEqual":true},
+  "old19CaseWrapperByteUnchanged": true,
+  "productionBuildTypeScriptAndAffectedLintPassed": true,
+  "sourceBuiltSvgNowQualified": false,
+  "memoryFidelityRecoveryThresholdsChanged": false,
+  "publicNativeEngineReplacement": false,
+  "wholeGoalComplete": false,
+  "hostedVerification": {"runId":41013161607,"statusAtLocalCompletion":"in_progress","passed":null}
+}

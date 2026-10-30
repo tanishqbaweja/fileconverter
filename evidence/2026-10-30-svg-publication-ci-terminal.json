@@ -1,0 +1,257 @@
+{
+  "schemaVersion": 1,
+  "runId": 41013161607,
+  "headSha": "8b93711a90984ff30064e12acb7c19fac7c493fb",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/41013161607",
+  "scope": "Fresh hosted production/public-evidence/portable/privacy/publication gates, not native/stress/whole-goal acceptance",
+  "failures": [],
+  "nativeReproductionSelected": false,
+  "conversionMatrixSelected": false,
+  "wholeGoalComplete": false,
+  "hostedStatus": "completed",
+  "hostedConclusion": "success",
+  "verify": {
+    "id": 123923386909,
+    "startedAt": "2026-10-30T06:16:59Z",
+    "completedAt": "2026-10-30T06:21:09Z",
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/checkout@v4",
+        "conclusion": "success"
+      },
+      {
+        "name": "Prepare repository-owned CI runtime",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-node@v4",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm ci",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npx playwright install --with-deps chromium",
+        "conclusion": "success"
+      },
+      {
+        "name": "Audit public route evidence",
+        "conclusion": "success"
+      },
+      {
+        "name": "Audit complete unit inventory (private qualification not executed here)",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm run lint",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npx tsc --noEmit --incremental false",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run npm test",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run network privacy and offline browser tests",
+        "conclusion": "success"
+      },
+      {
+        "name": "Retain compact verification results",
+        "conclusion": "success"
+      },
+      {
+        "name": "Upload verification failure evidence",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "Remove owned CI runtime",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/setup-node@v4",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/checkout@v4",
+        "conclusion": "success"
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "unselectedJobs": [
+    {
+      "name": "audio-destination-scopes",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "svg-source-lock",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "svg-source-compile",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "svg-source-compile-bytes",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "engine-matrix",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Reproduce non-Docker ${{ matrix.id }}",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "svg-source-postprocess",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "svg-source-compile-pathfinder",
+      "conclusion": "skipped"
+    },
+    {
+      "name": "Browser conversions (${{ matrix.suite }})",
+      "conclusion": "skipped"
+    }
+  ],
+  "log": {
+    "bytes": 114400,
+    "sha256": "c12692ae85b0b4c78fa4cb0537481f9fe2508f8ec36b3a5332b567d03b8583ec"
+  },
+  "portableUnits": {
+    "success": true,
+    "counts": {
+      "tests": 2076,
+      "failed": 0,
+      "passed": 2075,
+      "cancelled": 0,
+      "skipped": 1,
+      "todo": 0,
+      "topLevel": 2076,
+      "suites": 0
+    },
+    "duration_ms": 90865.122885
+  },
+  "qualificationNotRun": true,
+  "artifact": {
+    "id": 12958174659,
+    "bytes": 3289,
+    "sha256": "60543f0a769b239e99ed9d5aa4f1787796e1f69deaf8214de252d826fa656d5e",
+    "expiresAt": "2026-10-31T06:21:04Z"
+  },
+  "browser": {
+    "stats": {
+      "startTime": "2026-10-30T06:20:17.618Z",
+      "duration": 46584.950000000004,
+      "expected": 21,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "cases": [
+      {
+        "title": "functional browser capability probes pass in production Chrome",
+        "ok": true
+      },
+      {
+        "title": "a failed functional Wasm probe blocks a Wasm profile with an exact reason",
+        "ok": true
+      },
+      {
+        "title": "conversion transmits no filename or file content",
+        "ok": true
+      },
+      {
+        "title": "bounded source inspection reports structured data, document, and subtitle facts without source text",
+        "ok": true
+      },
+      {
+        "title": "bounded source inspection reports archive and package structure without reading payloads or displaying entry names",
+        "ok": true
+      },
+      {
+        "title": "bounded source inspection reports image dimensions and animation without decoding pixels",
+        "ok": true
+      },
+      {
+        "title": "source inspection displays genuine audio and multi-stream video families from bounded local reads",
+        "ok": true
+      },
+      {
+        "title": "installed app shell loads offline without eagerly downloading engines",
+        "ok": true
+      },
+      {
+        "title": "cached VP9 media core performs a real conversion offline",
+        "ok": true
+      },
+      {
+        "title": "cached direct destination writer converts while offline",
+        "ok": true
+      },
+      {
+        "title": "cached TAR-to-7Z engine converts offline and removes scratch",
+        "ok": true
+      },
+      {
+        "title": "cached compressed-TAR and ZIP pipelines convert to 7Z offline",
+        "ok": true
+      },
+      {
+        "title": "cached compressed TAR transcoding pipelines convert offline",
+        "ok": true
+      },
+      {
+        "title": "cached raw compression transcoding pipelines convert offline",
+        "ok": true
+      },
+      {
+        "title": "cached TAR.XZ-to-ZIP pipeline converts offline",
+        "ok": true
+      },
+      {
+        "title": "cached ZIP-to-TAR.XZ pipeline converts offline",
+        "ok": true
+      },
+      {
+        "title": "cached 7Z-to-compressed-TAR pipelines convert offline",
+        "ok": true
+      },
+      {
+        "title": "static codec assets preserve cross-origin isolation for pthread workers",
+        "ok": true
+      },
+      {
+        "title": "production worker refuses submissions and server image conversion while serving the app",
+        "ok": true
+      },
+      {
+        "title": "public SVG input discloses pending rasterization without exposing it or fetching its engine",
+        "ok": true
+      },
+      {
+        "title": "explicit localhost qualification still exposes SVG without claiming public support or converting",
+        "ok": true
+      }
+    ],
+    "resultBytes": 27479,
+    "resultSha256": "0feea49c0a106854286aa5664fee74de1dec2f69a7777f72ea385d6634c95bd2",
+    "resultArchiveEncoding": "gzip-base64",
+    "resultArchive": "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"
+  },
+  "status": "verified-hosted-publication-gate-build-portable-and21-browser-checks-not-svg-conversion-acceptance",
+  "ownedInspectionRuntimeRemoved": true
+}

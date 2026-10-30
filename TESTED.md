@@ -1,5 +1,33 @@
 # Tested conversion ledger
 
+SVG publication gate hosted TERMINAL:41013161607 at8b93711a SUCCESS, job250s.
+Public evidence403/403, full lint/TypeScript/production build PASS;2075 portable
+PASS/0fail/1 existing untracked-original Linux skip90.865s,622files;162 private
+qualification files NOT RUN.21 privacy/hosting/public-gate browsers PASS46.585s,
+0fail/skip/flaky. Exact two new UI cases verified in digest-authenticated one-member
+artifact and reversible archived result; no native reproductions or successful
+conversion-matrix replay selected. Owned CI cleanup and both post-actions PASS;
+no direct post-action filesystem probe claim. Inspection runtime removed. Earlier
+local2058PASS/16FAIL retained, exact source/count repairs now pass in fresh CI.
+No new SVG fidelity/memory/recovery acceptance, speedup or full-goal completion.
+evidence/2026-10-30-svg-publication-ci-terminal.json.
+Post-receipt6 focused PASS6402.7584ms/0fail/skip, authenticated embedded browser
+result archive and exact local screenshot/receipt hashes; affected lint/diff PASS.
+These6 checks are later than hosted8b93711a, not retroactively counted in2075.
+
+Public SVG gate local browser TERMINAL at8b93711a:21PASS/0FAIL/0skip/flaky53.901s
+with genuine default Wrangler/Miniflare production build. Original19 privacy/
+hosting cases retained,2 added UI checks perform NO SVG conversion. Normal public
+input shows clear pending notice, SVG option absent, compression distinct, no
+SVG engine fetch; explicit localhost qualification still selects SVG privately.
+Catalogue/public evidence omit it,403 other public cards retained. Headless notice
+crop visually reviewed/legible; no headed/native OS-picker claim. Server/runner/
+outer-owner identities absent; all owned profiles/scratch cleaned, protected
+original full SHA/size unchanged. Original19 wrapper still byte-exact1364823a...
+Source-built SVG fidelity/memory/recovery and full original goal remain OPEN.
+Hosted41013161607 atsamehead is pending; no native rebuild/matrix replay selected.
+evidence/2026-10-30-svg-publication-local-terminal.json.
+
 SVG publication safety gate implemented: registrysvg-to-png is publicfalse/
 pending, public catalogue and current public-evidence manifest omit it, while
 explicit localhost testmode still exposes the genuine pipeline for qualification.
