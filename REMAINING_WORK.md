@@ -1,5 +1,15 @@
 # Remaining work audit
 
+M-09 private factory now wires into the real production media runtime without
+automatic/public selection. General12 ABI and nonshared-Wasm accounting verified
+with mocks;51 focused checks/TypeScript/affected lint/production build PASS.
+Actual source attempt2 downloaded/verified the archive, then configure's CommonJS
+probe inherited app ES-module mode and failed before compiling. Recorded diagnosis
+distinguishes expected configure probes from the real `require` failure. Existing
+owned CommonJS boundary is now applied. Native build, genuine browser output,
+CPU fallback orchestration, independent fidelity/metadata, recovery/A-B/stress
+and full250MiB gates still REQUIRED; this is not an accepted optimization.
+
 M-09 source attempt1 failed at source fetch (curl35), before any compilation;
 hosted focused checks/SDK and cleanup PASS, no engine artifact. Failure retained
 at evidence/2026-11-01-webcodecs-vp9-build-41304692257-terminal.json. Bounded

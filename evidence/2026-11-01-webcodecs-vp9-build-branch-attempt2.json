@@ -1,0 +1,21 @@
+{
+  "recordedAt": "2026-11-01T12:07:21.127Z",
+  "branch": "codex/webcodecs-vp9-source-20261101-attempt2",
+  "parent": "839c5b2dcb1185118e4352a1a6312dfcfad965b1",
+  "commit": "4a64cb42531e8bb78b6728d067d2b6bb09ae05f7",
+  "tree": "e377f213e2543a1b3b0c121944ddf9a6a70c2733",
+  "registeredWorkflowPath": ".github/workflows/reproduce-ffmpeg-nondocker.yml",
+  "canonicalWorkflowSha256": "cda0b434adc7dd36109b4a2cc63fe726a507889cf6d1c0f5862d5d78dbf5c965",
+  "generatedWorkflowSha256": "e22992297d3d698a66dfe2e6721266ce27c504c25d0abe0f2dc160e707c88ed5",
+  "generatedWorkflowSource": "name: Build private WebCodecs VP9 encoder without Docker\non:\n  workflow_dispatch:\npermissions:\n  contents: read\nconcurrency:\n  group: private-webcodecs-vp9-source\n  cancel-in-progress: false\njobs:\n  build:\n    runs-on: ubuntu-latest\n    timeout-minutes: 30\n    steps:\n      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262\n      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020\n        with:\n          node-version: 24.7.0\n      - name: Own all runtime scratch\n        run: node scripts/ci-owned-runtime.mjs prepare\n      - name: Check bounded JS bridge\n        run: node --test --test-reporter=tap tests/webcodecs-vp9-bridge.test.mjs tests/webcodecs-vp9-source.test.mjs\n      - name: Install build prerequisites\n        run: |\n          sudo apt-get update\n          sudo apt-get install -y --no-install-recommends ca-certificates curl make patch pkg-config xz-utils\n      - name: Install pinned SDK locally without Docker\n        shell: bash\n        run: |\n          test ! -e work/webcodecs-vp9-emsdk\n          git clone --filter=blob:none --no-checkout https://github.com/emscripten-core/emsdk.git work/webcodecs-vp9-emsdk\n          git -C work/webcodecs-vp9-emsdk checkout 224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f\n          test \"$(git -C work/webcodecs-vp9-emsdk rev-parse HEAD)\" = 224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f\n          work/webcodecs-vp9-emsdk/emsdk install 6.0.4\n          work/webcodecs-vp9-emsdk/emsdk activate 6.0.4\n      - name: Compile real FFmpeg encoder plug-in and verify static native contract\n        shell: bash\n        run: |\n          source work/webcodecs-vp9-emsdk/emsdk_env.sh\n          export PATH=\"$(dirname \"$EMSDK_NODE\"):$PATH\"\n          bash media/ffmpeg/build-webcodecs-vp9.sh\n      - name: Retain reusable private tools and compact source proofs only\n        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02\n        with:\n          name: private-webcodecs-vp9-${{ github.run_id }}\n          path: work/webcodecs-vp9-output/\n          if-no-files-found: error\n          retention-days: 1\n      - name: Remove disposable owned build and SDK data\n        if: always()\n        shell: bash\n        run: |\n          for task_path in \"$GITHUB_WORKSPACE/work/webcodecs-vp9-emsdk\" \"$GITHUB_WORKSPACE/work/webcodecs-vp9-build\" \"$GITHUB_WORKSPACE/work/webcodecs-vp9-output\"; do\n            case \"$task_path\" in\n              \"$GITHUB_WORKSPACE/work/webcodecs-vp9-emsdk\"|\"$GITHUB_WORKSPACE/work/webcodecs-vp9-build\"|\"$GITHUB_WORKSPACE/work/webcodecs-vp9-output\") ;;\n              *) exit 2 ;;\n            esac\n            ! test -L \"$task_path\"\n            rm -rf -- \"$task_path\"\n          done\n      - name: Remove owned runtime scratch\n        if: always()\n        env:\n          NODE_DISABLE_COMPILE_CACHE: 1\n        run: node scripts/ci-owned-runtime.mjs cleanup\n",
+  "changedTrackedFiles": [
+    ".github/workflows/reproduce-ffmpeg-nondocker.yml"
+  ],
+  "mainUnchanged": true,
+  "canonicalHeadIndexWorkflowUnchanged": true,
+  "remoteVerified": true,
+  "checkoutOrMediaCopiesCreated": false,
+  "actualBuildStarted": false,
+  "publicAcceptance": false,
+  "ownedIndexRuntimeRemoved": true
+}

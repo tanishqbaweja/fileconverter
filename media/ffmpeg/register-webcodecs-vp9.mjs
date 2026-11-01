@@ -5,6 +5,9 @@ import { copyFile, lstat, readFile, realpath, writeFile } from "node:fs/promises
 import path from "node:path";
 const root = path.resolve(import.meta.dirname, "../.."), build = path.join(root, "work/webcodecs-vp9-build");
 assert.equal(await realpath(build), build);
+// Emscripten configure probes emit CommonJS scripts without a .cjs suffix.
+// Do not inherit the application's type:module boundary for disposable probes.
+await writeFile(path.join(build, "package.json"), '{"type":"commonjs"}\n', { flag: "wx" });
 const ffmpeg = path.join(build, "ffmpeg-8.1.2"); assert.equal(await realpath(ffmpeg), ffmpeg);
 assert.ok(!(await lstat(ffmpeg)).isSymbolicLink());
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");

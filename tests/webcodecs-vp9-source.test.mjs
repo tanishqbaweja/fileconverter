@@ -25,6 +25,8 @@ test("WebCodecs private source build pins versions, fixed nonshared heap, JSPI a
   assert.ok(workflow.includes("retention-days: 1")); assert.ok(workflow.includes("if: always()"));
   assert.doesNotMatch(workflow, /docker (?:run|build)|actions\/(?:checkout|setup-node|upload-artifact)@v\d/);
   const verifier = await read("scripts/verify-webcodecs-vp9-native.mjs");
+  const registration = await read("media/ffmpeg/register-webcodecs-vp9.mjs");
+  assert.ok(registration.includes('"type":"commonjs"'), "Disposable configure probes must not inherit app ES-module semantics");
   for (const text of ["nodeInstantiated: false", "browserConversionVerified: false", "fallbackIntegrated: false", "speedGainProven: false",
     "completeChromiumMemoryMeasured: false", "reproducibilityVerified: false", "publicAcceptance: false"])
     assert.ok(verifier.includes(text), text);

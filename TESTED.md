@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+Private VP9 worker integration added: explicit optional factory injection into
+the existing production media AVIO runtime, general12 ABI, one native worker,
+correct nonshared-Wasm/SAB accounting and finally engine/input-reader disposal.
+Public conversion coordinator does NOT select it. TypeScript/affected lint and
+production build PASS;51 focused bridge/source/runtime/VPX-regression checks PASS
+179.296ms/0fail/skip. Initial runtime cycle49PASS/1FAIL was an incorrect new test
+expectation (VP9 code is2, not3), corrected without changing the native mapping.
+CPU fallback selection, genuine conversion and performance/memory remain OPEN.
+Source attempt2:41304963452/4a64cb42, hosted38PASS, archive SHA PASS, failed FFmpeg
+configure BEFORE native compilation: CommonJS probe inherited app type:module,
+`require is not defined`. Expected windows.h/wasm32 probes are NOT the root cause.
+Both cleanup steps PASS. Apply existing owned CommonJS build-boundary pattern;
+do not repeat unchanged attempt2. Terminal receipt plus attempt2-diagnosis.json
+retain failure. No browser or accepted acceleration claim.
+
 WebCodecs source attempt1 TERMINAL:41304692257/b65aad26 failed BEFORE source
 compilation, curl35 connection reset fetching the pinned FFmpeg archive. Focused
 test step, SDK installation and both owned cleanup steps PASS. No Wasm artifact

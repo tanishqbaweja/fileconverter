@@ -4,7 +4,7 @@ export const WEBCODECS_VP9_LIMITS = Object.freeze({ heapBytes: 33554432, maximum
 const requireValue = (condition, message) => { if (!condition) throw new Error(message); };
 const unsupported = message => new DOMException(message, "NotSupportedError");
 function view(heap, offset, bytes) {
-  requireValue(heap instanceof Uint8Array && heap.byteOffset === 0 && heap.byteLength === WEBCODECS_VP9_LIMITS.heapBytes &&
+  requireValue(heap instanceof Uint8Array && heap.buffer instanceof ArrayBuffer && heap.byteOffset === 0 && heap.byteLength === WEBCODECS_VP9_LIMITS.heapBytes &&
     heap.buffer.byteLength === heap.byteLength, "VP9 bridge requires the complete fixed32MiB native heap");
   requireValue(Number.isInteger(offset) && offset >= 0 && offset <= heap.byteLength - bytes, "Native descriptor is outside the fixed heap");
   return new DataView(heap.buffer, offset, bytes);
@@ -17,7 +17,8 @@ function colorSpace(wire) {
     throw unsupported("This private VP9 candidate requires explicit supported SDR colorimetry and limited range; use the existing Wasm route otherwise");
   return { primaries, transfer, matrix, fullRange: false };
 }
-export function createWebCodecsVp9Bridge({ Encoder = globalThis.VideoEncoder, Frame = globalThis.VideoFrame, signal } = {}) {
+/** @param {{Encoder?: typeof VideoEncoder, Frame?: typeof VideoFrame, signal?: AbortSignal, isCancelled?: () => boolean}} [options] */
+export function createWebCodecsVp9Bridge({ Encoder = globalThis.VideoEncoder, Frame = globalThis.VideoFrame, signal, isCancelled = () => false } = {}) {
   let encoder = null, config = null, colors = null, packed = null, pending = null, busy = false, closed = false, fault = null;
   let frames = 0, packets = 0, peakPackedBytes = 0, peakPacketBytes = 0, framesClosed = 0, expectedTimestamp = null, keyRequired = false;
   const stop = error => {
@@ -28,7 +29,7 @@ export function createWebCodecsVp9Bridge({ Encoder = globalThis.VideoEncoder, Fr
   };
   const cancel = () => stop(new DOMException("Conversion cancelled", "AbortError"));
   signal?.addEventListener("abort", cancel, { once: true });
-  const active = () => { if (signal?.aborted) cancel(); if (fault) throw fault; requireValue(!closed, "VP9 bridge is closed"); };
+  const active = () => { if (signal?.aborted || isCancelled()) cancel(); if (fault) throw fault; requireValue(!closed, "VP9 bridge is closed"); };
   return {
     async open(heap, offset) {
       active(); requireValue(!encoder && !config && !busy, "VP9 bridge may open only once"); busy = true;

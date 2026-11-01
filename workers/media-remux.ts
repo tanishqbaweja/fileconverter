@@ -16,6 +16,7 @@ import { mediaNativeArguments } from "../lib/media-native-arguments";
 import { observeNativeInputMemory } from "../lib/native-input-memory-observation";
 import { explainAudioMetadataBudgetError } from "../lib/audio-metadata-budget-error";
 import { requiresPersistentVorbisInput } from "../lib/audio-input-policy";
+import type { WebCodecsVp9Core } from "./webcodecs-vp9-core";
 
 const REMUX_MODULE_URL = "/engines/remux/within-remux.mjs";
 const REMUX_WASM_URL = "/engines/remux/within-remux.wasm";
@@ -98,6 +99,8 @@ export interface MediaRemuxOptions {
   /** Unpublished MPEG-2 integration. Never substitutes for a remux/audio core. */
   mpeg2SplitCore?: Mpeg2SplitCore;
   vpxDecoderCore?: VpxDecoderCore;
+  /** Explicit unpublished encoder injection. Never selected for public jobs. */
+  webCodecsVp9Core?: WebCodecsVp9Core;
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;
   lowMemoryVideoCore?: boolean;
@@ -137,6 +140,7 @@ export async function runMediaRemux({
   remuxProfile,
   mpeg2SplitCore,
   vpxDecoderCore,
+  webCodecsVp9Core,
   audioOptions,
   videoOptions,
   lowMemoryVideoCore = false,
@@ -150,6 +154,12 @@ export async function runMediaRemux({
   emitProgress,
   post,
 }: MediaRemuxOptions): Promise<void> {
+  if (webCodecsVp9Core) {
+    const { assertWebCodecsVp9Options } = await import("./webcodecs-vp9-core");
+    if (webCodecsVp9Core.abi !== "general-12" || vpxDecoderCore || mpeg2SplitCore || aiffSpecialistCore || lowMemoryVideoCore || singleThreadVideoCore)
+      throw new Error("Private VP9 cannot be combined with another specialist core.");
+    assertWebCodecsVp9Options(remuxProfile, audioOptions, videoOptions);
+  }
   if (vpxDecoderCore && (remuxProfile !== 4 || vpxDecoderCore.abi !== "general-12" ||
       vpxCodecForProfile(profileId) !== vpxDecoderCore.sourceCodec || mpeg2SplitCore || aiffSpecialistCore || lowMemoryVideoCore || singleThreadVideoCore)) {
     throw new Error("VPX requires its explicit private video profile and general12-argument core.");
@@ -189,7 +199,9 @@ export async function runMediaRemux({
       remuxProfile === 10 ||
       remuxProfile === 11);
   const phase =
-    vpxDecoderCore
+    webCodecsVp9Core
+      ? "Encoding VP9 WebM (private WebCodecs encoder)"
+    : vpxDecoderCore
       ? `Decoding ${vpxDecoderCore.sourceCodec} (CPU) / encoding MPEG-4 MP4`
     : remuxProfile === 40
       ? "Encoding MPEG-2 MP4"
@@ -273,7 +285,7 @@ export async function runMediaRemux({
   let lastDirectCancellationYieldBytes = 0;
   let inputReader: ReadableStreamBYOBReader | null = null;
   const closeMpeg2InputReader = async (): Promise<void> => {
-    try { await inputReader?.cancel("MPEG-2 conversion finished"); }
+    try { await inputReader?.cancel("Media conversion finished"); }
     finally { inputReader = null; }
   };
   let inputReaderPosition = -1;
@@ -293,7 +305,7 @@ export async function runMediaRemux({
   // Large MKV remuxes use one persistent BYOB stream. Repeated synchronous
   // Blob slices make Chromium retain transient renderer buffers at scale.
   const synchronousInputReader =
-    forceAsynchronousInput || persistentAudioInput ||
+    webCodecsVp9Core || forceAsynchronousInput || persistentAudioInput ||
     remuxProfile === 1 ||
     (remuxProfile >= 19 && remuxProfile <= 21) ||
     remuxProfile === 23 ||
@@ -309,7 +321,7 @@ export async function runMediaRemux({
       ? null
       : synchronousFileReader;
   const threadedWorkerPoolSize =
-    vpxDecoderCore || useSingleThreadVideoCore
+    webCodecsVp9Core || vpxDecoderCore || useSingleThreadVideoCore
       ? 0
       : useWebmQualityCore
       ? WEBM_QUALITY_WORKER_POOL_SIZE
@@ -654,7 +666,7 @@ export async function runMediaRemux({
       metrics.wasmMemoryBytes = progress.wasmMemoryBytes;
       if (progress.mpeg2EncoderSettings) metrics.mpeg2EncoderSettings = { ...progress.mpeg2EncoderSettings };
       metrics.sharedArrayBufferBytes =
-        progress.wasmMemoryBytes + writerSharedBytes + cancellationSharedBytes;
+        (webCodecsVp9Core ? 0 : progress.wasmMemoryBytes) + writerSharedBytes + cancellationSharedBytes;
       metrics.peakWasmMemoryBytes = Math.max(
         metrics.peakWasmMemoryBytes ?? 0,
         progress.wasmMemoryBytes,
@@ -682,7 +694,9 @@ export async function runMediaRemux({
         ? VP9_MODULE_URL
         : REMUX_MODULE_URL;
   const wasmUrl =
-    vpxDecoderCore
+    webCodecsVp9Core
+      ? webCodecsVp9Core.wasmUrl
+    : vpxDecoderCore
       ? vpxDecoderCore.wasmUrl
     : aiffSpecialistCore
       ? AIFF_WASM_URL
@@ -701,7 +715,9 @@ export async function runMediaRemux({
       : remuxProfile === 10 || remuxProfile === 11
         ? VP9_WASM_URL
         : REMUX_WASM_URL;
-  const imported = vpxDecoderCore
+  const imported = webCodecsVp9Core
+    ? { default: webCodecsVp9Core.factory }
+    : vpxDecoderCore
     ? { default: vpxDecoderCore.factory }
     : mpeg2Runtime && mpeg2SplitCore
     ? { default: (options: RemuxFactoryOptions) =>
@@ -727,7 +743,7 @@ export async function runMediaRemux({
     emitProgress(jobId, phase, metrics, startedAt, true);
 
     const usesCertifiedSpecialistAbi =
-      !vpxDecoderCore && moduleUrl !== REMUX_MODULE_URL && (
+      !vpxDecoderCore && moduleUrl !== REMUX_MODULE_URL && !webCodecsVp9Core && (
       useDirectRemuxCore ||
       useSingleThreadVideoCore ||
       useWebmQualityCore ||
@@ -775,7 +791,7 @@ export async function runMediaRemux({
       );
     }
   } finally {
-    if (mpeg2Runtime) {
+    if (mpeg2Runtime || webCodecsVp9Core) {
       try {
         engineModule?.dispose?.();
       } finally {

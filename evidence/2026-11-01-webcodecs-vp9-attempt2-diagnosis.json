@@ -1,0 +1,15 @@
+{
+  "runId": 41304963452,
+  "head": "4a64cb42531e8bb78b6728d067d2b6bb09ae05f7",
+  "sourceDownloadSha256Passed": true,
+  "nativeCompilationReached": false,
+  "failureStage": "FFmpeg configure compiler executable probe",
+  "rootCause": "Extensionless Emscripten CommonJS probe inherited the repository type:module boundary",
+  "exactDiagnostic": "ReferenceError: require is not defined in ES module scope, you can use import instead",
+  "diagnosticTimestamp": "2026-11-01T12:08:56.6726367Z",
+  "nodeVersionForProbe": "22.16.0 (pinned Emscripten SDK runtime)",
+  "notRootCauses": ["expected windows.h configure probe failure", "expected UINTPTR_MAX >= UINT64_MAX failure for wasm32"],
+  "fix": "Create a fresh owned build/package.json with type:commonjs, as existing native builders already do",
+  "thresholdsOrCodecSettingsChanged": false,
+  "publicAcceptance": false
+}

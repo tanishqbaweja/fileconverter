@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { test } from "node:test";
 import { createWebCodecsVp9Bridge, WEBCODECS_VP9_LIMITS } from "../workers/webcodecs-vp9-bridge.mjs";
 
-function harness(mode = "normal", signal) {
+function harness(mode = "normal", signal, isCancelled) {
   const heap = new Uint8Array(WEBCODECS_VP9_LIMITS.heapBytes), config = new DataView(heap.buffer, 128, 96);
   [1, 4, 4, 1, 24, 24, 1, 600000, 120, 1, 1, 1, 1, 1, 1].forEach((x, i) => config.setUint32(i * 4, x, true));
   const wire = new DataView(heap.buffer, 256, 80);
@@ -44,7 +44,7 @@ function harness(mode = "normal", signal) {
     }
     close() { assert.notEqual(this.state, "closed"); state.closed++; this.state = "closed"; this.reject?.(new DOMException("Closed", "AbortError")); }
   }
-  const bridge = createWebCodecsVp9Bridge({ Encoder, Frame, signal });
+  const bridge = createWebCodecsVp9Bridge({ Encoder, Frame, signal, isCancelled });
   return { heap, config, wire, state, expected, bridge };
 }
 function released(h) {
@@ -106,4 +106,9 @@ for (const mode of ["bounds", "length", "copy-error"]) test("VP9 native copy fai
 test("VP9 rejects missing WebCodecs without claiming a working fallback", async () => {
   const h = harness(), bridge = createWebCodecsVp9Bridge({ Encoder: null, Frame: null });
   await assert.rejects(bridge.open(h.heap, 128), { name: "NotSupportedError" }); assert.equal(bridge.snapshot().closed, true); h.bridge.close();
+});
+test("VP9 observes the production cancellation callback between native operations", async () => {
+  let cancelled = false; const h = harness("normal", undefined, () => cancelled);
+  await h.bridge.open(h.heap, 128); cancelled = true;
+  await assert.rejects(h.bridge.encode(h.heap, 256), { name: "AbortError" }); released(h);
 });

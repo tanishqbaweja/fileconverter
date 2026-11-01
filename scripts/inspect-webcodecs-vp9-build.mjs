@@ -31,7 +31,8 @@ try {
   const log = await gh(["run", "view", String(runId), "--repo", repo, "--job", String(job.id), "--log"], 16777216);
   const sha = bytes => createHash("sha256").update(bytes).digest("hex");
   report.log = { bytes: Buffer.byteLength(log), sha256: sha(log), errorLines: log.split(/\r?\n/)
-    .filter(line => /error:|curl: \(|AssertionError|ERR_ASSERTION|error\]|undefined symbol|Unknown option|strictly equal/.test(line)).slice(0, 40).map(x => x.slice(0, 1024)) };
+    .filter(line => /error:|curl: \(|AssertionError|ERR_ASSERTION|error\]|undefined symbol|Unknown option|strictly equal|ReferenceError:|compiler test failed/.test(line)).slice(0, 40).map(x => x.slice(0, 1024)),
+    configureProbeFailuresMayBeExpected: true };
   const unit = /# tests (\d+)/.exec(log), pass = /# pass (\d+)/.exec(log), fail = /# fail (\d+)/.exec(log);
   report.focusedTests = unit && pass && fail ? { tests: Number(unit[1]), pass: Number(pass[1]), fail: Number(fail[1]) } : null;
   report.sdkInstalled = job.steps.find(x => x.name === "Install pinned SDK locally without Docker")?.conclusion === "success";
