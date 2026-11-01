@@ -101,6 +101,8 @@ export interface MediaRemuxOptions {
   vpxDecoderCore?: VpxDecoderCore;
   /** Explicit unpublished encoder injection. Never selected for public jobs. */
   webCodecsVp9Core?: WebCodecsVp9Core;
+  /** Private qualification checkpoint; normal jobs never wait here. No instance or file is exposed. */
+  onNativeInitialized?: (observation: { engine: "webcodecs-vp9" | "wasm"; helperWorkers: number }) => Promise<void>;
   audioOptions?: AudioConversionOptions;
   videoOptions?: VideoConversionOptions;
   lowMemoryVideoCore?: boolean;
@@ -141,6 +143,7 @@ export async function runMediaRemux({
   mpeg2SplitCore,
   vpxDecoderCore,
   webCodecsVp9Core,
+  onNativeInitialized,
   audioOptions,
   videoOptions,
   lowMemoryVideoCore = false,
@@ -737,6 +740,10 @@ export async function runMediaRemux({
       },
     });
     assertActive();
+    if (onNativeInitialized) {
+      await onNativeInitialized({ engine: webCodecsVp9Core ? "webcodecs-vp9" : "wasm", helperWorkers: threadedWorkerPoolSize });
+      assertActive();
+    }
     // Factory/compilation messages can supersede the phase while initializing.
     // Force the genuine native-work phase even when encoding finishes within
     // the normal progress-throttle interval.

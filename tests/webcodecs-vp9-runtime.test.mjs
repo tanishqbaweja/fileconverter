@@ -107,3 +107,19 @@ test("native initialization rejection preserves its NotSupported type through th
     assert.equal(disposed, 1); assert.equal(core.snapshot().closed, true); assert.equal(core.snapshot().frames, 0);
   } finally { for (const key of names) { if (saved[key]) Object.defineProperty(globalThis, key, saved[key]); else delete globalThis[key]; } }
 }));
+test("private initialization observation precedes native work and observation errors still dispose", () => mockJSPI(async () => {
+  for (const fail of [false, true]) {
+    let observed = false, nativeCalls = 0, disposed = 0;
+    const core = await loadWebCodecsVp9Core(async () => ({ default: async options => ({ HEAPU8: new Uint8Array(33554432),
+      async ccall() { nativeCalls++; assert.equal(observed, true); await options.withinBridge.write(0, new Uint8Array([1])); return 0; },
+      dispose() { disposed++; },
+    }) }));
+    const work = runMediaRemux({ file: new File(["data"], "fixture.mkv"), profileId: "mkv-to-webm-vp9", remuxProfile: 10,
+      webCodecsVp9Core: core, jobId: "observe-init", metrics: metrics(), startedAt: performance.now(), isCancelled: () => false,
+      async onNativeInitialized(info) { assert.deepEqual(info, { engine: "webcodecs-vp9", helperWorkers: 0 }); observed = true;
+        if (fail) throw new Error("Diagnostic failed"); },
+      writable: { requiresOwnedWriteBuffer: true, async write() {}, async truncate() {}, async close() {}, async abort() {} }, emitProgress() {}, post() {} });
+    if (fail) await assert.rejects(work, /Diagnostic failed/); else await work;
+    assert.equal(nativeCalls, fail ? 0 : 1); assert.equal(disposed, 1); assert.equal(core.snapshot().closed, true);
+  }
+}));

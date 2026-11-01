@@ -76,3 +76,18 @@ test("optional VP9 snapshots bounded error text before CPU work, not after the e
   h.deps.run = async options => { assert.equal(readBeforeCpu, true); h.calls.push(options); };
   const result = await runOptionalWebCodecsVp9(h.options, h.deps); assert.equal(result.fallbackReason.length, 512);
 });
+test("private fallback checkpoint runs after reset and before CPU start without changing controls", async () => {
+  const h = harness(); let observed = false;
+  h.deps.loadCore = async () => { throw unsupported(); };
+  h.deps.beforeWasmFallback = async () => { assert.deepEqual(h.truncates, [0]); assert.equal(h.calls.length, 0); observed = true; };
+  h.deps.run = async options => { assert.equal(observed, true); assert.equal(options.videoOptions, h.options.videoOptions); h.calls.push(options); };
+  assert.equal((await runOptionalWebCodecsVp9(h.options, h.deps)).backend, "wasm");
+});
+test("cancellation during a private fallback checkpoint never starts CPU work", async () => {
+  const h = harness(); h.deps.loadCore = async () => { throw unsupported(); }; h.deps.beforeWasmFallback = async () => h.cancel();
+  await assert.rejects(runOptionalWebCodecsVp9(h.options, h.deps), { name: "AbortError" }); assert.equal(h.calls.length, 0);
+});
+test("failed private observation is visible and does not retry the codec", async () => {
+  const h = harness(); h.deps.loadCore = async () => { throw unsupported(); }; h.deps.beforeWasmFallback = async () => { throw new Error("Diagnostic unavailable"); };
+  await assert.rejects(runOptionalWebCodecsVp9(h.options, h.deps), /Diagnostic unavailable/); assert.equal(h.calls.length, 0);
+});

@@ -6,6 +6,7 @@ import type { RandomAccessDestination } from "./random-access-destination";
 export async function runOptionalWebCodecsVp9(options: MediaRemuxOptions, dependencies: {
   loadCore?: () => Promise<WebCodecsVp9Core>;
   run?: typeof runMediaRemux;
+  beforeWasmFallback?: () => Promise<void>;
 } = {}): Promise<{ backend: "webcodecs" | "wasm"; fallbackReason: string | null }> {
   if (![10, 11].includes(options.remuxProfile) || options.webCodecsVp9Core || options.vpxDecoderCore || options.mpeg2SplitCore ||
       options.aiffSpecialistCore || options.lowMemoryVideoCore || options.singleThreadVideoCore)
@@ -37,6 +38,10 @@ export async function runOptionalWebCodecsVp9(options: MediaRemuxOptions, depend
   // The candidate's production runtime already disposed its engine/input reader.
   await writable.truncate(0);
   if (options.isCancelled()) throw new DOMException("Conversion cancelled", "AbortError");
+  if (dependencies.beforeWasmFallback) {
+    await dependencies.beforeWasmFallback();
+    if (options.isCancelled()) throw new DOMException("Conversion cancelled", "AbortError");
+  }
   options.post({ type: "warning", jobId: options.jobId,
     message: "WebCodecs could not initialize this exact VP9 configuration; using the existing bounded Wasm encoder with the same requested settings." });
   await run({ ...options, writable, forceAsynchronousInput: true });

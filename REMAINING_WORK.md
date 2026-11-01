@@ -1,5 +1,13 @@
 # Remaining work audit
 
+M-09 next control is a distinct instrumented realm/lifecycle diagnosis, not a
+replay of the old fallback: bounded private checkpoints expose heap statistics
+before native work, after rejected-candidate disposal, with8CPU helpers initialized,
+and after output close. No instance/file exposed to observer; default jobs unchanged.
+All original gates stay intact, but diagnostic timing/memory will be labelled
+perturbed and cannot qualify publication. Existing300.871MiB remains authoritative.
+Actual run pending, broader objective unchanged; no fresh source build necessary.
+
 Stage handoff: final production build/TypeScript/affected lint/diff PASS;
 manifest-only consistency403/403,2hidden pending,0PDF. No fresh full matrix or
 stress qualification is implied. Rebuilt private WebCodecs small test passes;

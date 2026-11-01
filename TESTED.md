@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-01 continuation: previous turn is PROGRESS, not a wait: native source,
+real outputs, failed300.871MiB fallback and exact process attribution changed
+authoritative state. Current next control adds PRIVATE bounded initialization,
+post-candidate-disposal, CPU-ready and output-closed checkpoints (4max/4s each)
+to collect converter realm Runtime.getHeapUsage through the existing CDP sampler.
+Normal jobs never wait or observe. Same source/settings/native4/pool8/250MiB/
+earliest-blank formula/services; no GC, codec change or smaller-file substitution.
+Timing/memory are explicitly PERTURBED DIAGNOSTIC, not acceptance or a speedup.
+Prior failure remains. New actual diagnostic is PENDING; no native rebuild needed.
+
 Final local stage gates: production build PASS (existing Vite/config/sourcemap
 warnings retained), TypeScript/affected lint/diff PASS. Public MANIFEST-ONLY audit
 403passed/403entries,2hidden pending,0public nonpassing,0PDF; this is NOT a fresh

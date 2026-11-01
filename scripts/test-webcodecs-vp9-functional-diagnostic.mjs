@@ -8,7 +8,8 @@ import { pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
-const rebuiltCpuFallback = process.argv[2] === "--rebuilt-cpu-fallback";
+const realmDiagnostic = process.argv[2] === "--fallback-realms";
+const rebuiltCpuFallback = process.argv[2] === "--rebuilt-cpu-fallback" || realmDiagnostic;
 const rebuiltNative = process.argv[2] === "--rebuilt-native" || rebuiltCpuFallback;
 const preferenceFallbackFixture = process.argv[2] === "--encoder-preference-fallback" || rebuiltNative;
 const frameColorFixture = process.argv[2] === "--frame-color-fixture" || (preferenceFallbackFixture && !rebuiltCpuFallback);
@@ -16,7 +17,7 @@ const explicitColorFixture = process.argv[2] === "--explicit-color-fixture" || f
 const nativeColorDiagnostic = process.argv[2] === "--native-color-diagnostic" || explicitColorFixture || rebuiltCpuFallback;
 assert.ok(process.argv.length === 2 || (process.argv.length === 3 && nativeColorDiagnostic));
 const root = path.resolve(import.meta.dirname, ".."), sha = x => createHash("sha256").update(x).digest("hex");
-const outputLabel = rebuiltCpuFallback ? "rebuilt-cpu-fallback" : rebuiltNative ? "rebuilt-native" :
+const outputLabel = realmDiagnostic ? "fallback-realms" : rebuiltCpuFallback ? "rebuilt-cpu-fallback" : rebuiltNative ? "rebuilt-native" :
   preferenceFallbackFixture ? "encoder-preference-fallback" : frameColorFixture ? "frame-color-fixture" :
   explicitColorFixture ? "explicit-color-fixture" : "native-color-diagnostic";
 const source = await readFile(path.join(root, "scripts/test-webcodecs-vp9-smoke.mjs"), "utf8");
@@ -79,6 +80,44 @@ if (rebuiltCpuFallback) {
       '  assert.equal(report.browserResult.encoder.frames, 0); assert.equal(report.browserResult.encoder.packets, 0);'],
   );
 }
+if (realmDiagnostic) {
+  const sampler = pathToFileURL(path.join(root, "scripts/lib/chromium-attribution.mjs")).href;
+  edits.push(
+    ['import { chromium } from "playwright";', 'import { chromium } from "playwright";\nimport { connectPlaywrightRealmSampler } from ' + JSON.stringify(sampler) + ';'],
+    ['let runtime, server, chrome, browser, observer, nativeMonitor,', 'let runtime, server, chrome, browser, observer, nativeMonitor, realmSampler,'],
+    ['"workers/webcodecs-vp9-core.ts",', '"workers/webcodecs-vp9-core.ts", "workers/webcodecs-vp9-optional.ts", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/chromium-attribution.mjs",'],
+    ['  report.loadedIdle = await sampleChromiumTree(chrome.pid);',
+      '  report.loadedIdle = await sampleChromiumTree(chrome.pid);\n' +
+      '  report.diagnosticPerturbsMemoryAndTiming = true; report.realmSamples = [];\n' +
+      '  realmSampler = await connectPlaywrightRealmSampler(browser, origin);\n' +
+      '  const captureRealm = async (label, metrics = null) => {\n' +
+      '    assert.ok(report.realmSamples.length < 8);\n' +
+      '    const sample = await realmSampler.sample();\n' +
+      '    report.realmSamples.push({ label, acquiredAt: new Date().toISOString(), workerMetrics: metrics, sample });\n' +
+      '    return true;\n' +
+      '  };\n' +
+      '  await captureRealm("loaded-idle");\n' +
+      '  await page.exposeBinding("__profileVp9Realm", async ({ frame }, payload) => {\n' +
+      '    assert.equal(frame, page.mainFrame());\n' +
+      '    assert.match(payload.label, /^(webcodecs-vp9-ready|candidate-disposed|wasm-ready|output-closed)$/);\n' +
+      '    const metrics = { activeWorkerCount: payload.metrics.activeWorkerCount, wasmMemoryBytes: payload.metrics.wasmMemoryBytes, sharedArrayBufferBytes: payload.metrics.sharedArrayBufferBytes };\n' +
+      '    return captureRealm(payload.label, metrics);\n' +
+      '  });'],
+    ['        worker.onmessage = ({ data }) => {',
+      '        worker.onmessage = async ({ data }) => {\n' +
+      '          if (data.type === "diagnostic-checkpoint") {\n' +
+      '            try { await window.__profileVp9Realm(data); }\n' +
+      '            catch (error) { clearTimeout(timer); reject(error); }\n' +
+      '            finally { worker.postMessage({ diagnosticRelease: data.id }); }\n' +
+      '            return;\n' +
+      '          }'],
+    ['implementation: "automatic",', 'implementation: "automatic", diagnosticCheckpoints: true,'],
+    ['  report.conversionEndedAt = new Date().toISOString();', '  await captureRealm("workers-terminated");\n  report.conversionEndedAt = new Date().toISOString();'],
+    ['  await outputFile?.close(); await browser?.close().catch(() => {});', '  realmSampler?.close();\n  await outputFile?.close(); await browser?.close().catch(() => {});'],
+    ['  report.status = "passed-one-small-private-browser-conversion-not-public-or-stress-acceptance";',
+      '  report.status = "completed-perturbed-vp9-fallback-realm-diagnostic-not-acceptance";'],
+  );
+}
 let generated = source;
 for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
 let reversed = generated;
@@ -91,6 +130,7 @@ const recipe = { scope: "Collect previously unreached real conversion facts; all
   changedEncoderSetting: rebuiltNative ? "Rebuilt native error mapping; same video controls and checked platform preference fallback" :
     preferenceFallbackFixture ? "hardwareAcceleration preference only; no video dimensions/bitrate/timing/quality change" : null,
   nativeErrorMappingRebuilt: rebuiltNative, controlledCpuFallbackExercised: rebuiltCpuFallback,
+  realmDiagnostic, observationPerturbsTimingAndMemory: realmDiagnostic, noForcedGarbageCollection: true,
   usesConfigurationCheckedPlatformPreferenceFallback: preferenceFallbackFixture,
   fixtureBitstreamColorMetadataCorrected: explicitColorFixture,
   fixtureFrameColorMetadataAssigned: frameColorFixture,
