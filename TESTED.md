@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+Fallback realm diagnostic TERMINAL at45713b8b: valid48-frame CPU output/full
+decode but295.28515625MiB FAIL,20valid0missing, explicitly PERTURBED/non-acceptance.
+Six CDP snapshots capture2/3/3/11/11/2 app realms with no heap errors;8helpers
+each report1,310,720B allocated JS heap at CPU-ready, not enough to explain the
+235MiB renderer increase. Runtime backingStorage does not report the32/48MiB
+Wasm heaps here: do NOT interpret it as zero native memory or sum shared stores.
+No force-GC/services/threshold change. All3 owned roots and scratch removed;
+original checksum unchanged. Old300.871MiB unperturbed failure remains.
+evidence/2026-11-01-webcodecs-vp9-fallback-realms.json.
+Next compare existing default8-helper specialist vs existing1-thread general
+core; this changes MODULE+ABI as well as workers, not an isolated thread-only
+claim. Two preflight-generated bitexact source controls matched58,389B/SHA
+4fad7ea6c1dd0d374b1b69201b6af4b68e8518bf2672884d23b1f136f5f2cc46.
+One explicitly reusable small fixture retained for IDENTICAL-input core controls.
+No large-file replacement, quality/bitrate/FPS/resolution or default-public change.
+94 checkpoint/sampler checks PASS574.128ms;30 focused core-policy checks PASS
+238.601ms. Variant browser runs PENDING, no speed/memory optimization accepted.
+
 2026-11-01 continuation: previous turn is PROGRESS, not a wait: native source,
 real outputs, failed300.871MiB fallback and exact process attribution changed
 authoritative state. Current next control adds PRIVATE bounded initialization,

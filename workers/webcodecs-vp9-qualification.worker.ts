@@ -14,6 +14,7 @@ interface Request {
   video: VideoConversionOptions;
   implementation: "candidate" | "wasm-baseline" | "automatic";
   diagnosticCheckpoints?: boolean;
+  fallbackCore?: "default" | "single-thread";
 }
 const scope = self as unknown as { onmessage: ((event: MessageEvent<Request | { diagnosticRelease: number }>) => void) | null; postMessage(value: unknown): void; close(): void };
 let running = false;
@@ -46,7 +47,8 @@ scope.onmessage = async ({ data }) => {
   try {
     if (!(data.file instanceof File) || !(data.cancellation instanceof SharedArrayBuffer) || data.cancellation.byteLength !== 4 ||
         ![10, 11].includes(data.nativeProfile) || !["candidate", "wasm-baseline", "automatic"].includes(data.implementation) ||
-        (data.diagnosticCheckpoints !== undefined && typeof data.diagnosticCheckpoints !== "boolean"))
+        (data.diagnosticCheckpoints !== undefined && typeof data.diagnosticCheckpoints !== "boolean") ||
+        (data.fallbackCore !== undefined && !["default", "single-thread"].includes(data.fallbackCore)))
       throw new TypeError("Invalid private qualification request");
     const cancelled = new Int32Array(data.cancellation);
     destination = asynchronousFileStreamDestination(await data.output.createWritable());
@@ -67,6 +69,7 @@ scope.onmessage = async ({ data }) => {
     const selection = data.implementation === "automatic" ? await runOptionalWebCodecsVp9(options, {
       async loadCore() { core = await loadWebCodecsVp9Core(); return core; },
       beforeWasmFallback: data.diagnosticCheckpoints ? async () => checkpoint("candidate-disposed") : undefined,
+      wasmFallbackCore: data.fallbackCore,
     }) : null;
     if (!selection) await runMediaRemux(options);
     await destination.close(); succeeded = true;

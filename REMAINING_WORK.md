@@ -1,5 +1,14 @@
 # Remaining work audit
 
+M-09 realm diagnosis now executed:295.285MiB stillFAIL/20valid0missing, perturbed
+and NOT acceptance. All8helpers observed with~1.25MiB JS heap each; no missing
+replies. Exact native/compiled-code/stack source remains unproven; backingStorage
+omits native Wasm here, never treat that as zero. Original300.871MiB retained.
+Next distinct control compares0helper/1-thread general core to8helper specialist,
+same pinned58,389B source/SHA and encoding controls. Both module and ABI differ;
+not isolated-thread causality, not original/near10GB stress. Defaults/selector
+unchanged; variant is private pending genuine browser/fidelity/memory evidence.
+
 M-09 next control is a distinct instrumented realm/lifecycle diagnosis, not a
 replay of the old fallback: bounded private checkpoints expose heap statistics
 before native work, after rejected-candidate disposal, with8CPU helpers initialized,

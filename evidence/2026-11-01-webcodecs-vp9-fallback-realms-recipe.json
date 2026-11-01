@@ -1,0 +1,142 @@
+{
+  "scope": "Collect previously unreached real conversion facts; all original verdicts retained, not acceptance relaxation",
+  "parentSha256": "e279f100620fc00ad5822ecad01c771bfecbc3acf5656b6ba3beb011ab9feeeb",
+  "generatedSha256": "8cd6b9f03918a4bf252be79c81df91c30e95989782eed6693b9c1e306e0c93c7",
+  "edits": [
+    [
+      "import \"./lib/hidden-unit-subprocesses.mjs\";",
+      "import \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/hidden-unit-subprocesses.mjs\";"
+    ],
+    [
+      "from \"./lib/owned-runtime-scratch.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-runtime-scratch.mjs\""
+    ],
+    [
+      "from \"./lib/host-memory-preflight.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/host-memory-preflight.mjs\""
+    ],
+    [
+      "from \"./lib/installed-chrome-pin.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/installed-chrome-pin.mjs\""
+    ],
+    [
+      "from \"./lib/reliable-owned-identity.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/reliable-owned-identity.mjs\""
+    ],
+    [
+      "from \"./lib/owned-process-exit-observation.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-process-exit-observation.mjs\""
+    ],
+    [
+      "from \"./lib/parallel-memory-observer.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/parallel-memory-observer.mjs\""
+    ],
+    [
+      "from \"./lib/birth-aware-chromium-memory.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/birth-aware-chromium-memory.mjs\""
+    ],
+    [
+      "from \"./lib/chromium-private-memory.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/chromium-private-memory.mjs\""
+    ],
+    [
+      "path.resolve(import.meta.dirname, \"..\")",
+      "\"H:\\\\Github Repositories\\\\fileconverter\""
+    ],
+    [
+      "evidence/2026-11-01-webcodecs-vp9-first-smoke.json",
+      "evidence/2026-11-01-webcodecs-vp9-fallback-realms.json"
+    ],
+    [
+      "2026-11-01-webcodecs-vp9-first-smoke-failure.zip",
+      "2026-11-01-webcodecs-vp9-fallback-realms-failure.zip"
+    ],
+    [
+      "  assert.equal(report.blankBaseline?.stable, true); report.baselineAdjusted = false;",
+      "  report.baselineAdjusted = false; report.baselineAvailable = report.blankBaseline?.stable === true;\n  if (!report.baselineAvailable) report.failures.push(\"Earliest stable blank baseline unavailable; collect functional facts, retain overall failure and null incremental memory\");"
+    ],
+    [
+      "incrementalPrivateMiB: peaks.peak ? (peaks.peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 : null",
+      "incrementalPrivateMiB: peaks.peak && report.blankBaseline ? (peaks.peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 : null"
+    ],
+    [
+      "  assert.ok(peaks.validSamples > 0 && peaks.unavailableSamples === 0 && report.memory.incrementalPrivateMiB <= 250);",
+      "  assert.equal(report.blankBaseline?.stable, true, \"Stable blank baseline remains required; no smaller metric substitutes\");\n  assert.ok(peaks.validSamples > 0 && peaks.unavailableSamples === 0 && report.memory.incrementalPrivateMiB <= 250);"
+    ],
+    [
+      "  report.fixture = { generatedBeforeBrowser: true,",
+      "  report.sourceProbe = JSON.parse((await execute(ffprobe, [\"-v\", \"error\", \"-show_streams\", \"-show_format\", \"-of\", \"json\", fixture],\n    { cwd: root, env: runtime.env, windowsHide: true, timeout: 30000, maxBuffer: 1048576 })).stdout);\n  report.fixture = { generatedBeforeBrowser: true,"
+    ],
+    [
+      "evidence/2026-11-01-webcodecs-vp9-native-41305653513.json",
+      "evidence/2026-11-01-webcodecs-vp9-native-41309113218.json"
+    ],
+    [
+      "work/webcodecs-vp9-input-41305653513",
+      "work/webcodecs-vp9-input-41309113218"
+    ],
+    [
+      "  assert.equal(native.publicAcceptance, false); const input = path.resolve(root, native.retainedDirectory);",
+      "  report.nativeTool = { runId: native.runId, head: native.head, wasm: native.nativeContract.artifacts[\"within-webcodecs-vp9.wasm\"] };\n  assert.equal(native.publicAcceptance, false); const input = path.resolve(root, native.retainedDirectory);"
+    ],
+    [
+      "implementation: \"candidate\",",
+      "implementation: \"automatic\","
+    ],
+    [
+      "  assert.equal(report.browserResult.encoder.frames, 48); assert.equal(report.browserResult.encoder.packets, 48);",
+      "  assert.equal(report.browserResult.selection.backend, \"wasm\");\n  assert.match(report.browserResult.selection.fallbackReason, /native CICP primaries\\/transfer\\/matrix\\/range=2\\/2\\/1\\/1/);\n  assert.equal(report.browserResult.encoder.frames, 0); assert.equal(report.browserResult.encoder.packets, 0);"
+    ],
+    [
+      "import { chromium } from \"playwright\";",
+      "import { chromium } from \"playwright\";\nimport { connectPlaywrightRealmSampler } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/chromium-attribution.mjs\";"
+    ],
+    [
+      "let runtime, server, chrome, browser, observer, nativeMonitor,",
+      "let runtime, server, chrome, browser, observer, nativeMonitor, realmSampler,"
+    ],
+    [
+      "\"workers/webcodecs-vp9-core.ts\",",
+      "\"workers/webcodecs-vp9-core.ts\", \"workers/webcodecs-vp9-optional.ts\", \"scripts/lib/cdp-realm-memory.mjs\", \"scripts/lib/chromium-attribution.mjs\","
+    ],
+    [
+      "  report.loadedIdle = await sampleChromiumTree(chrome.pid);",
+      "  report.loadedIdle = await sampleChromiumTree(chrome.pid);\n  report.diagnosticPerturbsMemoryAndTiming = true; report.realmSamples = [];\n  realmSampler = await connectPlaywrightRealmSampler(browser, origin);\n  const captureRealm = async (label, metrics = null) => {\n    assert.ok(report.realmSamples.length < 8);\n    const sample = await realmSampler.sample();\n    report.realmSamples.push({ label, acquiredAt: new Date().toISOString(), workerMetrics: metrics, sample });\n    return true;\n  };\n  await captureRealm(\"loaded-idle\");\n  await page.exposeBinding(\"__profileVp9Realm\", async ({ frame }, payload) => {\n    assert.equal(frame, page.mainFrame());\n    assert.match(payload.label, /^(webcodecs-vp9-ready|candidate-disposed|wasm-ready|output-closed)$/);\n    const metrics = { activeWorkerCount: payload.metrics.activeWorkerCount, wasmMemoryBytes: payload.metrics.wasmMemoryBytes, sharedArrayBufferBytes: payload.metrics.sharedArrayBufferBytes };\n    return captureRealm(payload.label, metrics);\n  });"
+    ],
+    [
+      "        worker.onmessage = ({ data }) => {",
+      "        worker.onmessage = async ({ data }) => {\n          if (data.type === \"diagnostic-checkpoint\") {\n            try { await window.__profileVp9Realm(data); }\n            catch (error) { clearTimeout(timer); reject(error); }\n            finally { worker.postMessage({ diagnosticRelease: data.id }); }\n            return;\n          }"
+    ],
+    [
+      "implementation: \"automatic\",",
+      "implementation: \"automatic\", diagnosticCheckpoints: true,"
+    ],
+    [
+      "  report.conversionEndedAt = new Date().toISOString();",
+      "  await captureRealm(\"workers-terminated\");\n  report.conversionEndedAt = new Date().toISOString();"
+    ],
+    [
+      "  await outputFile?.close(); await browser?.close().catch(() => {});",
+      "  realmSampler?.close();\n  await outputFile?.close(); await browser?.close().catch(() => {});"
+    ],
+    [
+      "  report.status = \"passed-one-small-private-browser-conversion-not-public-or-stress-acceptance\";",
+      "  report.status = \"completed-perturbed-vp9-fallback-realm-diagnostic-not-acceptance\";"
+    ]
+  ],
+  "reversible": true,
+  "publicAcceptance": false,
+  "baselineFormulaChanged": false,
+  "baselineWindowOrThresholdChanged": false,
+  "nativeOrCodecSettingsChanged": true,
+  "changedEncoderSetting": "Rebuilt native error mapping; same video controls and checked platform preference fallback",
+  "nativeErrorMappingRebuilt": true,
+  "controlledCpuFallbackExercised": true,
+  "realmDiagnostic": true,
+  "observationPerturbsTimingAndMemory": true,
+  "noForcedGarbageCollection": true,
+  "usesConfigurationCheckedPlatformPreferenceFallback": true,
+  "fixtureBitstreamColorMetadataCorrected": false,
+  "fixtureFrameColorMetadataAssigned": false,
+  "generatedSourceGzipBase64": "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"
+}

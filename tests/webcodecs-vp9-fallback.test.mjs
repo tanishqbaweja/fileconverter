@@ -91,3 +91,15 @@ test("failed private observation is visible and does not retry the codec", async
   const h = harness(); h.deps.loadCore = async () => { throw unsupported(); }; h.deps.beforeWasmFallback = async () => { throw new Error("Diagnostic unavailable"); };
   await assert.rejects(runOptionalWebCodecsVp9(h.options, h.deps), /Diagnostic unavailable/); assert.equal(h.calls.length, 0);
 });
+test("private single-thread fallback changes the core policy only, not source/video/audio controls", async () => {
+  const h = harness(); h.deps.loadCore = async () => { throw unsupported(); }; h.deps.wasmFallbackCore = "single-thread";
+  const result = await runOptionalWebCodecsVp9(h.options, h.deps);
+  assert.equal(result.wasmFallbackCore, "single-thread"); assert.equal(h.calls[0].singleThreadVideoCore, true);
+  assert.equal(h.calls[0].file, h.options.file); assert.equal(h.calls[0].videoOptions, h.options.videoOptions); assert.equal(h.calls[0].audioOptions, h.options.audioOptions);
+});
+test("default fallback keeps its original core selection and rejects unknown private core policies", async () => {
+  const h = harness(); h.deps.loadCore = async () => { throw unsupported(); };
+  const result = await runOptionalWebCodecsVp9(h.options, h.deps); assert.equal(result.wasmFallbackCore, "default");
+  assert.equal(h.calls[0].singleThreadVideoCore, undefined);
+  await assert.rejects(runOptionalWebCodecsVp9(h.options, { ...h.deps, wasmFallbackCore: "unbounded" }), /Unknown private/);
+});

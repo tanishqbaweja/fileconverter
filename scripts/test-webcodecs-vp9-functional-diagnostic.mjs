@@ -9,7 +9,9 @@ import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 const realmDiagnostic = process.argv[2] === "--fallback-realms";
-const rebuiltCpuFallback = process.argv[2] === "--rebuilt-cpu-fallback" || realmDiagnostic;
+const compareDefault = process.argv[2] === "--compare-default-core", compareSingle = process.argv[2] === "--compare-single-core";
+const compareCore = compareDefault || compareSingle;
+const rebuiltCpuFallback = process.argv[2] === "--rebuilt-cpu-fallback" || realmDiagnostic || compareCore;
 const rebuiltNative = process.argv[2] === "--rebuilt-native" || rebuiltCpuFallback;
 const preferenceFallbackFixture = process.argv[2] === "--encoder-preference-fallback" || rebuiltNative;
 const frameColorFixture = process.argv[2] === "--frame-color-fixture" || (preferenceFallbackFixture && !rebuiltCpuFallback);
@@ -17,7 +19,8 @@ const explicitColorFixture = process.argv[2] === "--explicit-color-fixture" || f
 const nativeColorDiagnostic = process.argv[2] === "--native-color-diagnostic" || explicitColorFixture || rebuiltCpuFallback;
 assert.ok(process.argv.length === 2 || (process.argv.length === 3 && nativeColorDiagnostic));
 const root = path.resolve(import.meta.dirname, ".."), sha = x => createHash("sha256").update(x).digest("hex");
-const outputLabel = realmDiagnostic ? "fallback-realms" : rebuiltCpuFallback ? "rebuilt-cpu-fallback" : rebuiltNative ? "rebuilt-native" :
+const outputLabel = compareDefault ? "comparison-default-core" : compareSingle ? "comparison-single-core" :
+  realmDiagnostic ? "fallback-realms" : rebuiltCpuFallback ? "rebuilt-cpu-fallback" : rebuiltNative ? "rebuilt-native" :
   preferenceFallbackFixture ? "encoder-preference-fallback" : frameColorFixture ? "frame-color-fixture" :
   explicitColorFixture ? "explicit-color-fixture" : "native-color-diagnostic";
 const source = await readFile(path.join(root, "scripts/test-webcodecs-vp9-smoke.mjs"), "utf8");
@@ -118,6 +121,22 @@ if (realmDiagnostic) {
       '  report.status = "completed-perturbed-vp9-fallback-realm-diagnostic-not-acceptance";'],
   );
 }
+if (compareCore) {
+  edits.push(
+    ['"-color_range", "tv", fixture];', '"-color_range", "tv", "-bitexact", fixture];'],
+    ['  await execute(ffmpeg, fixtureArgs, { cwd: root, env: runtime.env, windowsHide: true, timeout: 30000, maxBuffer: 65536 });',
+      '  const comparisonManifest = JSON.parse(await readFile(path.join(root, "fixtures/media/vp9-fallback-comparison.mkv.json")));\n' +
+      '  assert.equal(comparisonManifest.sha256, "4fad7ea6c1dd0d374b1b69201b6af4b68e8518bf2672884d23b1f136f5f2cc46");\n' +
+      '  await copyFile(path.join(root, "fixtures/media/vp9-fallback-comparison.mkv"), fixture);\n' +
+      '  assert.equal(await hashFile(fixture), comparisonManifest.sha256);\n' +
+      '  report.coreComparison = { sourceSha256: comparisonManifest.sha256, sourceBytes: comparisonManifest.bytes, policy: ' + JSON.stringify(compareSingle ? "single-thread" : "default") + ', singleColdRunOnly: true, acceptedOptimization: false };'],
+    ['implementation: "automatic",', 'implementation: "automatic", fallbackCore: ' + JSON.stringify(compareSingle ? "single-thread" : "default") + ','],
+    ['  assert.equal(report.browserResult.selection.backend, "wasm");',
+      '  assert.equal(report.browserResult.selection.backend, "wasm");\n' +
+      '  assert.equal(report.browserResult.selection.wasmFallbackCore, ' + JSON.stringify(compareSingle ? "single-thread" : "default") + ');\n' +
+      '  assert.equal(report.browserResult.metrics.activeWorkerCount, ' + (compareSingle ? '1' : '9') + ');'],
+  );
+}
 let generated = source;
 for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
 let reversed = generated;
@@ -131,6 +150,7 @@ const recipe = { scope: "Collect previously unreached real conversion facts; all
     preferenceFallbackFixture ? "hardwareAcceleration preference only; no video dimensions/bitrate/timing/quality change" : null,
   nativeErrorMappingRebuilt: rebuiltNative, controlledCpuFallbackExercised: rebuiltCpuFallback,
   realmDiagnostic, observationPerturbsTimingAndMemory: realmDiagnostic, noForcedGarbageCollection: true,
+  samePinnedComparisonInput: compareCore, alternateSingleThreadCoreSelected: compareSingle,
   usesConfigurationCheckedPlatformPreferenceFallback: preferenceFallbackFixture,
   fixtureBitstreamColorMetadataCorrected: explicitColorFixture,
   fixtureFrameColorMetadataAssigned: frameColorFixture,
