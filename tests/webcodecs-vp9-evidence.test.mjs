@@ -191,6 +191,31 @@ test("single-thread control stopped at host safety preflight, not a conversion o
   assert.ok(receipt.failures.some(x => x.includes("reading 'version'")), "Retain the historical early-finally bug, do not rewrite receipt as fixed");
   assert.equal(receipt.originalAfter.sha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
 });
+test("first real single-thread recovery converts correctly but still fails286.1875MiB with no accepted speedup", async () => {
+  const receipt = await detailed("comparison-single-core-preflight-recovery"), result = receipt.browserResult;
+  assert.equal(receipt.preflightRecoveryOf, "evidence/2026-11-01-webcodecs-vp9-comparison-single-core.json");
+  assert.equal(receipt.previousAttemptReachedBrowser, false); assert.equal(receipt.hostMemory.safeToStart, true);
+  assert.equal(receipt.fixture.sha256, "4fad7ea6c1dd0d374b1b69201b6af4b68e8518bf2672884d23b1f136f5f2cc46");
+  assert.equal(receipt.coreComparison.policy, "single-thread"); assert.equal(receipt.coreComparison.acceptedOptimization, false);
+  assert.equal(result.type, "complete"); assert.equal(result.selection.backend, "wasm");
+  assert.equal(result.selection.wasmFallbackCore, "single-thread"); assert.equal(result.metrics.activeWorkerCount, 1);
+  assert.equal(result.metrics.wasmMemoryBytes, 33554432); assert.equal(result.metrics.peakPendingOperations, 1);
+  assert.equal(result.metrics.peakQueuedBytes, 98994); assert.equal(result.encoder.frames, 0); assert.equal(result.encoder.closed, true);
+  assert.equal(receipt.blankBaseline.privateBytes, 331894784); assert.equal(receipt.memory.peak.privateBytes, 631984128);
+  assert.equal(receipt.memory.incrementalPrivateMiB, (631984128 - 331894784) / 1048576);
+  assert.equal(receipt.memory.incrementalPrivateMiB, 286.1875); assert.equal(receipt.memory.validSamples, 23);
+  assert.equal(receipt.memory.unavailableSamples, 0); assert.equal(receipt.status, "failed-private-vp9-browser-smoke");
+  assert.equal(receipt.independentFullDecodePassed, true); assert.equal(receipt.outputProbe.streams[0].codec_name, "vp9");
+  assert.equal(Number(receipt.outputProbe.streams[0].nb_read_frames), 48); assert.equal(Number(receipt.outputProbe.format.duration), 1.958);
+  assert.equal(receipt.exportedBytes, 99405); assert.equal(result.elapsedMs, 1499.344999909401);
+  assert.equal(receipt.speedGainProven, false); assert.equal(receipt.publicAcceptance, false);
+  assert.equal(receipt.ownedRuntimeRemoved, true); assert.equal(receipt.runtimeCleanupStatus, "removed");
+  assert.equal(receipt.browserPinFinalCheck, "verified"); assert.equal(receipt.ownedStaticStageRemoved, true);
+  assert.equal(receipt.processCleanup.length, 3); assert.ok(receipt.processCleanup.every(x => x.status === "owned-identity-absent"));
+  assert.deepEqual(receipt.originalBefore, receipt.originalAfter); assert.deepEqual(receipt.forbiddenRequests, []);
+  const saved = await json("evidence/2026-11-01-webcodecs-vp9-single-core-control-archive.json");
+  assert.equal(saved.reports.length, 1); assert.equal(sha(await read(saved.reports[0].file)), saved.reports[0].compactSha256);
+});
 test("allocation-control archives preserve exact raw sampling and all owned cleanup evidence", async () => {
   const saved = await json("evidence/2026-11-01-webcodecs-vp9-allocation-control-archives.json");
   assert.equal(saved.originalBytes, 548573); assert.equal(saved.retainedBytes, 173626); assert.equal(saved.reports.length, 2);
@@ -206,7 +231,7 @@ test("allocation-control archives preserve exact raw sampling and all owned clea
 });
 test("rebuilt and CPU fallback driver changes are reversible and retain independent decode and full250MiB checks", async () => {
   const source = (await read("scripts/test-webcodecs-vp9-smoke.mjs")).toString();
-  for (const name of ["rebuilt-native", "rebuilt-cpu-fallback"]) {
+  for (const name of ["rebuilt-native", "rebuilt-cpu-fallback", "fallback-realms", "comparison-default-core", "comparison-single-core", "comparison-single-core-preflight-recovery"]) {
     const recipe = await json(`evidence/2026-11-01-webcodecs-vp9-${name}-recipe.json`); let generated = source;
     for (const [before, after] of recipe.edits) { assert.equal(generated.split(before).length, 2); generated = generated.replace(before, after); }
     assert.equal(sha(generated), recipe.generatedSha256);

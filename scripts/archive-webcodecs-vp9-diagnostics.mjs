@@ -7,11 +7,12 @@ import { gzipSync, gunzipSync } from "node:zlib";
 const root = path.resolve(import.meta.dirname, ".."), evidence = path.join(root, "evidence");
 const rebuilt = process.argv[2] === "--rebuilt-controls";
 const allocation = process.argv[2] === "--allocation-controls";
-assert.ok(process.argv.length === 2 || (process.argv.length === 3 && (rebuilt || allocation)));
-const names = allocation ? ["fallback-realms", "comparison-default-core"] : rebuilt ? ["rebuilt-native", "rebuilt-cpu-fallback"] :
+const single = process.argv[2] === "--single-core-control";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && (rebuilt || allocation || single)));
+const names = single ? ["comparison-single-core-preflight-recovery"] : allocation ? ["fallback-realms", "comparison-default-core"] : rebuilt ? ["rebuilt-native", "rebuilt-cpu-fallback"] :
   ["first-smoke", "functional-diagnostic", "native-color-diagnostic", "explicit-color-fixture", "frame-color-fixture", "encoder-preference-fallback"];
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
-const output = path.join(evidence, "2026-11-01-webcodecs-vp9-" + (allocation ? "allocation-control-archives" : rebuilt ? "rebuilt-control-archives" : "diagnostic-archives") + ".json");
+const output = path.join(evidence, "2026-11-01-webcodecs-vp9-" + (single ? "single-core-control-archive" : allocation ? "allocation-control-archives" : rebuilt ? "rebuilt-control-archives" : "diagnostic-archives") + ".json");
 await assert.rejects(access(output), { code: "ENOENT" });
 const prepared = [];
 // Preflight every terminal before mutating any owned receipt.

@@ -1,5 +1,21 @@
 # Remaining work audit
 
+M-09 single-thread recovery TERMINAL at1418fe24: same input/settings,1worker/32MiB
+Wasm still FAILS286.1875MiB (23valid/0missing). Real48-frame VP9/full decodePASS,
+1.499345s/99,405B, but no accepted speedup and no paired memory reduction because
+the default control's blank isNULL. Early-finally fix verified in actual browser
+teardown; all owned data/processes removed and full original checksum unchanged.
+Configuration remains PRIVATE/rejected under250MiB; never repeat unchanged or
+claim small output proves large-file compliance. Precise remaining cause is native/
+compiled-code/allocator or other full-tree allocation, not established by small JS
+heap totals. A distinct allocation/isolation investigation must precede another
+fallback control; a worker/core count change alone did not solve the failure.
+Full timestamp/pixel/metadata, repeatable same-source A/B, recovery, original/near10GB
+and current-browser gates remain open, along with the full broader backlog.
+Final scoped110tests/lint/diff and403/403manifest consistency pass; these do not
+replace full production/release gates. No new public browser code/build/native
+binary or deployment; all generated conversion copies removed in finally.
+
 Current M-09 control state (2026-11-01): default identical-input CPU conversion
 is real/decoded butFAIL because stable blank baseline is unavailable; incremental
 memory=NULL, not zero. Single-thread control did NOT launch Chrome due2GiB host
@@ -10,7 +26,7 @@ has been accepted and public defaults remain unchanged. Host RAM has now changed
 to4.12GiB available virtual; a separately guarded recovery attempts the first real
 single-core browser conversion with the same58,389B source/settings and unchanged
 250MiB formula. It cannot establish a paired memory gain against the NULL default.
-Recovery result PENDING. Still missing: pixel/timestamp/full-metadata qualification,
+Recovery result is now recorded above. Still missing: pixel/timestamp/full-metadata qualification,
 identical-input repeatable A/B, original/near10GB scaling, recovery and browsers.
 No host settings/services/apps changed; full goal remains ACTIVE and broader
 format/fidelity/source/security/release backlog below is not waived.
@@ -19,7 +35,7 @@ M-09 realm diagnosis now executed:295.285MiB stillFAIL/20valid0missing, perturbe
 and NOT acceptance. All8helpers observed with~1.25MiB JS heap each; no missing
 replies. Exact native/compiled-code/stack source remains unproven; backingStorage
 omits native Wasm here, never treat that as zero. Original300.871MiB retained.
-Next distinct control compares0helper/1-thread general core to8helper specialist,
+Completed distinct control compares0helper/1-thread general core to8helper specialist,
 same pinned58,389B source/SHA and encoding controls. Both module and ABI differ;
 not isolated-thread causality, not original/near10GB stress. Defaults/selector
 unchanged; variant is private pending genuine browser/fidelity/memory evidence.

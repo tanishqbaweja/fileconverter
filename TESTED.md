@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+2026-11-01 single-thread recovery TERMINAL at1418fe24: genuine browser CPUfallback
+on the identical58,389B source produced99,405B/48VP9frames in1.499345s; independent
+full decodePASS. Stable blank331,894,784B, simultaneous full-tree peak631,984,128B
+=>286.1875MiB FAIL (23valid/0missing). One worker,32MiB actual Wasm,98,994B peak
+write queue/one pending. The earlier default control hasNULL baseline, so no paired
+incremental-memory improvement is measurable. These single cold runs do not prove
+a speed optimization; candidate is not faster in this observation. Module/ABI and
+workers differ; not isolated thread causality. Output duration1.958s vs2s source;
+full pixel/timestamp/metadata qualification still missing. No public promotion.
+All3owned process births absent, stage/scratch/sourcecopy/output/profile removed,
+original full pre/post size+SHA unchanged;0forbidden requests. New finally helper
+ran successfully: runtime status removed/browser pin verified/no integrity error.
+Failure trace retained under approved output/playwright. Exact raw recovery report
+archived256,356B ->80,355B compact+gzip; failures and every sample preserved.
+Recovery is no longer pending; do NOT replay this unchanged configuration.
+Final focused regression110/110PASS/0skip(795.527ms), affected lint/diffPASS;
+registry manifest403public/403evidence/2hidden pending/0PDF. No production browser
+module changed in this finalization-only cycle, so prior build/TypeScript evidence
+is retained, not relabelled as a fresh full-suite/build/reproducibility pass.
+
 2026-11-01 core-control follow-up: default core genuinely produced98,585B/48VP9
 frames with independent full decode in1.407525s, but its blank baseline wasNULL.
 OverallFAIL; no incremental memory figure, comparative memory reduction, accepted
@@ -17,7 +37,7 @@ Single-thread preflight receipt remains unchanged/uncompressed. No owned VP9
 scratch remains except reusable6MB native tool;58KB comparison fixture remains
 useful. Recovery control authorized by changed host state4,425,060,352B available
 virtual memory, with new exclusive receipt linked to the no-browser attempt.
-Recovery actual result PENDING, not a second conversion/retry for a green default.
+Recovery actual result is recorded above, not a second conversion/retry for a green default.
 
 Fallback realm diagnostic TERMINAL at45713b8b: valid48-frame CPU output/full
 decode but295.28515625MiB FAIL,20valid0missing, explicitly PERTURBED/non-acceptance.
