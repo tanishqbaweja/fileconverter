@@ -3,6 +3,7 @@
  * is unchanged. No file or completed output is passed through this interface.
  */
 #include <stddef.h>
+#include <errno.h>
 #include <string.h>
 #include <emscripten.h>
 #include <emscripten/heap.h>
@@ -21,17 +22,26 @@ typedef struct WithinWebCodecsVp9 {
 } WithinWebCodecsVp9;
 EM_ASYNC_JS(int, within_wc_open, (unsigned pointer), {
   try { return await Module["withinWebCodecs"].open(HEAPU8, pointer); }
-  catch(error) { Module["withinBridge"].message(2, String(error).slice(0,512)); return -38; }
+  catch(error) { Module["withinBridge"].message(2, String(error).slice(0,512));
+    return error?.name === "NotSupportedError" ? -2 : error?.name === "AbortError" ? -3 : -1; }
 });
 EM_ASYNC_JS(int, within_wc_frame, (unsigned pointer), {
   try { return await Module["withinWebCodecs"].encode(HEAPU8, pointer); }
-  catch(error) { Module["withinBridge"].message(2, String(error).slice(0,512)); return -5; }
+  catch(error) { Module["withinBridge"].message(2, String(error).slice(0,512));
+    return error?.name === "NotSupportedError" ? -2 : error?.name === "AbortError" ? -3 : -1; }
 });
 EM_JS(int, within_wc_copy, (unsigned pointer, unsigned bytes), {
   try { return Module["withinWebCodecs"].copy(HEAPU8, pointer, bytes); }
-  catch(error) { Module["withinBridge"].message(2, String(error).slice(0,512)); return -5; }
+  catch(error) { Module["withinBridge"].message(2, String(error).slice(0,512));
+    return error?.name === "NotSupportedError" ? -2 : error?.name === "AbortError" ? -3 : -1; }
 });
 EM_JS(void, within_wc_close, (void), { if(Module["withinWebCodecs"])Module["withinWebCodecs"].close(); });
+/* JS returns protocol sentinels, never Linux errno values. Emscripten's errno
+ * numbering differs; -38 would misleadingly report "Network is down". */
+static int wc_error(int sentinel)
+{
+    return sentinel == -2 ? AVERROR(ENOSYS) : sentinel == -3 ? AVERROR_EXIT : AVERROR_EXTERNAL;
+}
 static av_cold int wc_init(AVCodecContext *ctx)
 {
     WithinWebCodecsVp9 *s = ctx->priv_data;
@@ -49,7 +59,8 @@ static av_cold int wc_init(AVCodecContext *ctx)
     AV_WL32(w+36,ctx->color_primaries); AV_WL32(w+40,ctx->color_trc);
     AV_WL32(w+44,ctx->colorspace); AV_WL32(w+48,ctx->color_range);
     AV_WL32(w+52,ctx->sample_aspect_ratio.num); AV_WL32(w+56,ctx->sample_aspect_ratio.den);
-    return within_wc_open((uintptr_t)w);
+    int opened = within_wc_open((uintptr_t)w);
+    return opened < 0 ? wc_error(opened) : opened;
 }
 static int wc_encode(AVCodecContext *ctx, AVPacket *packet, const AVFrame *frame, int *got_packet)
 {
@@ -63,10 +74,10 @@ static int wc_encode(AVCodecContext *ctx, AVPacket *packet, const AVFrame *frame
     AV_WL32(s->frame+72, !s->frames || (ctx->gop_size > 0 && !(s->frames % ctx->gop_size)));
     AV_WL32(s->frame+76,1);
     int bytes = within_wc_frame((uintptr_t)s->frame);
-    if (bytes <= 0 || bytes > 1048576) return bytes < 0 ? bytes : AVERROR(EINVAL);
+    if (bytes <= 0 || bytes > 1048576) return bytes < 0 ? wc_error(bytes) : AVERROR(EINVAL);
     result = av_new_packet(packet, bytes); if (result < 0) return result;
     result = within_wc_copy((uintptr_t)packet->data, bytes);
-    if (result < 0) { av_packet_unref(packet); return result; }
+    if (result < 0) { av_packet_unref(packet); return wc_error(result); }
     packet->pts = packet->dts = frame->pts; packet->duration = 1;
     packet->time_base = ctx->time_base; if (result == 1) packet->flags |= AV_PKT_FLAG_KEY;
     *got_packet = 1; s->frames++; return 0;

@@ -8,15 +8,21 @@ import { pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
-assert.equal(process.argv.length, 2);
+const preferenceFallbackFixture = process.argv[2] === "--encoder-preference-fallback";
+const frameColorFixture = process.argv[2] === "--frame-color-fixture" || preferenceFallbackFixture;
+const explicitColorFixture = process.argv[2] === "--explicit-color-fixture" || frameColorFixture;
+const nativeColorDiagnostic = process.argv[2] === "--native-color-diagnostic" || explicitColorFixture;
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && nativeColorDiagnostic));
 const root = path.resolve(import.meta.dirname, ".."), sha = x => createHash("sha256").update(x).digest("hex");
 const source = await readFile(path.join(root, "scripts/test-webcodecs-vp9-smoke.mjs"), "utf8");
 const prior = JSON.parse(await readFile(path.join(root, "evidence/2026-11-01-webcodecs-vp9-first-smoke.json")));
 assert.equal(sha(source), prior.sourcePins["scripts/test-webcodecs-vp9-smoke.mjs"]);
 assert.equal(prior.status, "failed-private-vp9-browser-smoke"); assert.equal(prior.browserResult, undefined);
 assert.equal(prior.blankBaseline, null); assert.equal(prior.ownedRuntimeRemoved, true);
-const edits = [...source.matchAll(/from "(\.\/lib\/[a-z0-9-]+\.mjs)"/g)].map(match =>
-  [match[0], "from " + JSON.stringify(pathToFileURL(path.resolve(root, "scripts", match[1])).href)]);
+const edits = [[ 'import "./lib/hidden-unit-subprocesses.mjs";',
+  'import ' + JSON.stringify(pathToFileURL(path.join(root, "scripts/lib/hidden-unit-subprocesses.mjs")).href) + ';' ],
+  ...[...source.matchAll(/from "(\.\/lib\/[a-z0-9-]+\.mjs)"/g)].map(match =>
+  [match[0], "from " + JSON.stringify(pathToFileURL(path.resolve(root, "scripts", match[1])).href)])];
 edits.push(
   ['path.resolve(import.meta.dirname, "..")', JSON.stringify(root)],
   ['evidence/2026-11-01-webcodecs-vp9-first-smoke.json', 'evidence/2026-11-01-webcodecs-vp9-functional-diagnostic.json'],
@@ -30,16 +36,46 @@ edits.push(
     '  assert.equal(report.blankBaseline?.stable, true, "Stable blank baseline remains required; no smaller metric substitutes");\n' +
     '  assert.ok(peaks.validSamples > 0 && peaks.unavailableSamples === 0 && report.memory.incrementalPrivateMiB <= 250);'],
 );
+if (nativeColorDiagnostic) {
+  edits[edits.findIndex(([before]) => before === 'evidence/2026-11-01-webcodecs-vp9-first-smoke.json')][1] =
+    'evidence/2026-11-01-webcodecs-vp9-' + (preferenceFallbackFixture ? 'encoder-preference-fallback' : frameColorFixture ? 'frame-color-fixture' : explicitColorFixture ? 'explicit-color-fixture' : 'native-color-diagnostic') + '.json';
+  edits[edits.findIndex(([before]) => before === '2026-11-01-webcodecs-vp9-first-smoke-failure.zip')][1] =
+    '2026-11-01-webcodecs-vp9-' + (preferenceFallbackFixture ? 'encoder-preference-fallback' : frameColorFixture ? 'frame-color-fixture' : explicitColorFixture ? 'explicit-color-fixture' : 'native-color-diagnostic') + '-failure.zip';
+  edits.push(['  report.fixture = { generatedBeforeBrowser: true,',
+    '  report.sourceProbe = JSON.parse((await execute(ffprobe, ["-v", "error", "-show_streams", "-show_format", "-of", "json", fixture],\n' +
+    '    { cwd: root, env: runtime.env, windowsHide: true, timeout: 30000, maxBuffer: 1048576 })).stdout);\n' +
+    '  report.fixture = { generatedBeforeBrowser: true,']);
+}
+if (explicitColorFixture) {
+  edits.push(['"-color_range", "tv", fixture];',
+    frameColorFixture ? '"-color_range", "tv", "-vf", "setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709:range=tv", fixture];' :
+      '"-color_range", "tv", "-bsf:v", "h264_metadata=video_full_range_flag=0:colour_primaries=1:transfer_characteristics=1:matrix_coefficients=1", fixture];']);
+  const probeEnd = '    { cwd: root, env: runtime.env, windowsHide: true, timeout: 30000, maxBuffer: 1048576 })).stdout);\n';
+  edits.push([probeEnd, probeEnd +
+    '  assert.equal(report.sourceProbe.streams.length, 1);\n' +
+    '  const sourceColor = report.sourceProbe.streams[0];\n' +
+    '  assert.deepEqual([sourceColor.color_primaries, sourceColor.color_transfer, sourceColor.color_space, sourceColor.color_range], ["bt709", "bt709", "bt709", "tv"], "Verify actual source metadata before launching Chromium");\n']);
+}
 let generated = source;
 for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
 let reversed = generated;
 for (const [before, after] of edits.toReversed()) { assert.equal(reversed.split(after).length, 2); reversed = reversed.replace(after, before); }
 assert.equal(reversed, source);
+assert.doesNotMatch(generated, /(?:from\s+|import\s+)["']\.\//, "No unresolved relative import may remain in the owned generated location");
 const recipe = { scope: "Collect previously unreached real conversion facts; all original verdicts retained, not acceptance relaxation",
   parentSha256: sha(source), generatedSha256: sha(generated), edits, reversible: true, publicAcceptance: false,
-  baselineFormulaChanged: false, baselineWindowOrThresholdChanged: false, nativeOrCodecSettingsChanged: false,
+  baselineFormulaChanged: false, baselineWindowOrThresholdChanged: false, nativeOrCodecSettingsChanged: preferenceFallbackFixture,
+  changedEncoderSetting: preferenceFallbackFixture ? "hardwareAcceleration preference only; no video dimensions/bitrate/timing/quality change" : null,
+  usesConfigurationCheckedPlatformPreferenceFallback: preferenceFallbackFixture,
+  fixtureBitstreamColorMetadataCorrected: explicitColorFixture,
+  fixtureFrameColorMetadataAssigned: frameColorFixture,
   generatedSourceGzipBase64: gzipSync(generated, { level: 9 }).toString("base64") };
-await writeFile(path.join(root, "evidence/2026-11-01-webcodecs-vp9-functional-diagnostic-recipe.json"), JSON.stringify(recipe, null, 2) + "\n", { flag: "wx" });
+const recipeName = preferenceFallbackFixture ? "2026-11-01-webcodecs-vp9-encoder-preference-fallback-recipe.json" :
+  frameColorFixture ? "2026-11-01-webcodecs-vp9-frame-color-fixture-recipe.json" :
+  explicitColorFixture ? "2026-11-01-webcodecs-vp9-explicit-color-fixture-recipe.json" :
+  nativeColorDiagnostic ? "2026-11-01-webcodecs-vp9-native-color-diagnostic-recipe.json" :
+  "2026-11-01-webcodecs-vp9-functional-diagnostic-recipe-repaired.json";
+await writeFile(path.join(root, "evidence", recipeName), JSON.stringify(recipe, null, 2) + "\n", { flag: "wx" });
 const runtime = await createOwnedRuntimeScratch("webcodecs-vp9-diagnostic-");
 try {
   const file = path.join(runtime.directory, "diagnostic.mjs"); await writeFile(file, generated, { flag: "wx" });

@@ -1,0 +1,15 @@
+{
+  "scope": "Source fixture generation and independent FFprobe inspection only; no browser conversion, no user files converted",
+  "source": "testsrc2=size=320x180:rate=24, two seconds, libx264, one thread, yuv420p in MKV",
+  "commonColorOptions": ["-color_primaries", "bt709", "-color_trc", "bt709", "-colorspace", "bt709", "-color_range", "tv"],
+  "controls": [
+    { "id": "context", "extraOptions": [], "primaries": null, "transfer": null, "matrix": "bt709", "range": "tv" },
+    { "id": "x264", "extraOptions": ["-x264-params", "colorprim=bt709:transfer=bt709:colormatrix=bt709"], "primaries": null, "transfer": null, "matrix": "bt709", "range": "tv" },
+    { "id": "frame", "extraOptions": ["-vf", "setparams=color_primaries=bt709:color_trc=bt709:colorspace=bt709:range=tv"], "primaries": "bt709", "transfer": "bt709", "matrix": "bt709", "range": "tv" }
+  ],
+  "observedConclusion": "Frame-level metadata produces the intended source tags in this installed FFmpeg build; context/x264 options alone did not. This is not proof of an algorithmic root cause.",
+  "allOwnedSmallFixturesRemovedInFinally": true,
+  "originalRead": false,
+  "browserConversionAcceptance": false,
+  "publicAcceptance": false
+}

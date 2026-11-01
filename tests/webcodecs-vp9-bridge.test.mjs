@@ -26,11 +26,12 @@ function harness(mode = "normal", signal, isCancelled) {
   class Encoder {
     static async isConfigSupported(candidate) {
       if (mode === "unsupported") return { supported: false, config: candidate };
+      if (mode === "hardware-unavailable" && candidate.hardwareAcceleration === "prefer-hardware") return { supported: false, config: candidate };
       const config = { ...candidate }; if (mode === "stripped") delete config.hardwareAcceleration;
       return { supported: true, config };
     }
     constructor(callbacks) { this.callbacks = callbacks; this.state = "unconfigured"; this.encodeQueueSize = 0; state.instance = this; }
-    configure() { state.configured++; this.state = "configured"; }
+    configure(candidate) { state.configured++; state.configuredOptions = { ...candidate }; this.state = "configured"; }
     encode(frame) { if (mode === "encode-error") throw new Error("injected encode failure"); assert.equal(frame.closed, false); }
     async flush() {
       assert.equal(state.liveFrames, 0, "VideoFrame must be closed before awaiting flush");
@@ -111,4 +112,18 @@ test("VP9 observes the production cancellation callback between native operation
   let cancelled = false; const h = harness("normal", undefined, () => cancelled);
   await h.bridge.open(h.heap, 128); cancelled = true;
   await assert.rejects(h.bridge.encode(h.heap, 256), { name: "AbortError" }); released(h);
+});
+test("VP9 rejected color metadata reports bounded numeric CICP, never substitutes guessed colorimetry", async () => {
+  const h = harness(); h.config.setUint32(36, 2, true);
+  await assert.rejects(h.bridge.open(h.heap, 128), /native CICP primaries\/transfer\/matrix\/range=2\/1\/1\/1/); released(h);
+});
+test("VP9 checks an explicit platform preference fallback without changing bitrate/dimensions or claiming GPU use", async () => {
+  const h = harness("hardware-unavailable"); try {
+    await h.bridge.open(h.heap, 128); assert.equal(await h.bridge.encode(h.heap, 256), 3); h.bridge.copy(h.heap, 8192, 3);
+    const state = h.bridge.snapshot(); assert.equal(state.supportProbeCount, 2); assert.equal(state.hardwarePreferredSupported, false);
+    assert.equal(state.selectedHardwarePreference, "no-preference"); assert.equal(state.physicalHardwareSelectionProven, false);
+    assert.deepEqual(h.state.configuredOptions, { codec: "vp09.00.50.08", width: 4, height: 4, bitrate: 600000, framerate: 24,
+      hardwareAcceleration: "no-preference", latencyMode: "realtime", bitrateMode: "variable" });
+    assert.equal(h.state.captured.options.codedWidth, 4); assert.equal(h.state.captured.options.codedHeight, 4);
+  } finally { h.bridge.close(); } released(h);
 });

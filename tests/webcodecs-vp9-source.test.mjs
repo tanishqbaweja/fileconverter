@@ -12,6 +12,8 @@ test("WebCodecs private candidate keeps the exact production native I/O and mux 
   assert.match(source, /within_split_describe_frame\(frame, &layout, emscripten_get_heap_size\(\)\)/);
   assert.match(source, /s->crf != -1/); assert.match(source, /packet->pts = packet->dts = frame->pts/);
   assert.doesNotMatch(source, /fopen|MEMFS|emscripten_wget|pthread_create/);
+  assert.doesNotMatch(source, /return -(?:38|5);/, "Do not confuse Linux errno with Emscripten errno numbering");
+  assert.match(source, /sentinel == -2 \? AVERROR\(ENOSYS\) : sentinel == -3 \? AVERROR_EXIT : AVERROR_EXTERNAL/);
 });
 test("WebCodecs private source build pins versions, fixed nonshared heap, JSPI and finally cleanup", async () => {
   const recipe = await read("media/ffmpeg/build-webcodecs-vp9.sh");

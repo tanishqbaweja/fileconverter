@@ -1,5 +1,38 @@
 # Tested conversion ledger
 
+2026-11-01 private VP9 FIRST GENUINE SMALL CONVERSION PASS (NOT promotion):
+H.264 MKV57,599B -> VP9 WebM97,756B,320x180/24fps/two seconds. Real browser
+FFmpeg demux/decode/browser encoder/mux/AVIO -> production asynchronous OPFS
+writer.48 frames/48 packets/48 VideoFrames closed; FFprobe confirms VP9,48 decoded
+frames,2.000000s and BT.709 primaries/transfer/matrix/limited range. Independent
+full native decode PASS; native tools generated input and validated output only.
+Worker elapsed3101.910ms includes initialization: NOT an A/B speedup measurement.
+Normal headless Chrome156.0.8078.79 rejected hardware-preferred config; exact
+configuration-checked no-preference fallback succeeded. Physical GPU use unproven.
+Stable blank330,477,568B, complete-tree peak479,576,064B =>142.19140625MiB,
+33 valid/0missing conversion samples; native heap32MiB, packed frame86,400B,
+largest encoded packet6,247B, queue/write97,328B, one pending write. Final buffers0.
+All3 root identities absent, static stage/profile/source/output/scratch removed;
+protected original full SHA/size unchanged,0forbidden requests. This is one small
+private worker/OPFS test, NOT full public UI/direct-picker/original/near10GB/
+three-run stress/quality equivalence/recovery/fallback-controller acceptance.
+evidence/2026-11-01-webcodecs-vp9-encoder-preference-fallback.json.
+
+Failures retained: original unstable blank (zero conversions); diagnostic launch
+side-effect-import resolution error (zero browser launches); missing fixture
+primaries/transfer (guard correctly rejects2/2/1/1); bitstream-only fixture repair
+failed independent preflight BEFORE browser; frame-level setparams fixture then
+passed metadata preflight but hardware-preferred config was unavailable. Offline
+three-source controls isolated the working fixture assignment; no guard lowered.
+Detailed six receipts1,216,715B reduced losslessly to351,917B including compact
+summaries+raw gzip, all exact byte/SHA roundtrips verified before replacement.
+61 focused bridge/runtime/source/receipt/VPX checks PASS206.030ms/0fail/skip;
+TypeScript and affected lint PASS. Production build earlier in this cycle PASS.
+Native error sentinels corrected IN SOURCE ONLY: hard-coded Linux-38 incorrectly
+rendered Emscripten "Network is down". No upload occurred. Changed C error mapping
+still REQUIRES a fresh source build and browser regression; actual successful
+conversion used authenticated build41305653513/b97e6cd6, not the unbuilt fix.
+
 Private VP9 first smoke TERMINAL at28d6ddd0: stopped BEFORE conversion because
 normal Chrome156.0.8078.79 did not reach the unchanged earliest-stable blank
 baseline within30s.19 CIM samples ranged288.371–348.301MiB; native observer292

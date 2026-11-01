@@ -1,0 +1,89 @@
+{
+  "scope": "Lossless sampler receipt storage reduction; original failed/passed results and thresholds unchanged",
+  "reports": [
+    {
+      "file": "evidence/2026-11-01-webcodecs-vp9-first-smoke.json",
+      "archive": {
+        "file": "evidence/2026-11-01-webcodecs-vp9-first-smoke.raw.json.gz",
+        "bytes": 13244,
+        "sha256": "326f724292d0cd13159ea8fe4927eaa118549568d8c3786b509b7f82dae648a0",
+        "decodedBytes": 225423,
+        "decodedSha256": "bea4d81ca63ea6d8083b98f064f0b00bb473efc9a91c10fc6c8492ce1b286f5b",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      },
+      "compactBytes": 32658,
+      "compactSha256": "fa8f2af5012ab0cb952939ab2eca7209464692a670ecfb234505fe5bd6eaa537"
+    },
+    {
+      "file": "evidence/2026-11-01-webcodecs-vp9-functional-diagnostic.json",
+      "archive": {
+        "file": "evidence/2026-11-01-webcodecs-vp9-functional-diagnostic.raw.json.gz",
+        "bytes": 15370,
+        "sha256": "d449ddac7a520667a4805c83e0503c00d407d3edd938e3141c40b3851eb50c76",
+        "decodedBytes": 249513,
+        "decodedSha256": "714fa93973c860f2b56ac2ae963126a07e43a15d28c598dbfb019f9b30c597cf",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      },
+      "compactBytes": 57237,
+      "compactSha256": "78b462412f5b206171eff5f23f7d62a297eec4cb757b600c92d3ddbc40149842"
+    },
+    {
+      "file": "evidence/2026-11-01-webcodecs-vp9-native-color-diagnostic.json",
+      "archive": {
+        "file": "evidence/2026-11-01-webcodecs-vp9-native-color-diagnostic.raw.json.gz",
+        "bytes": 16117,
+        "sha256": "fc549cf3563e276c5a221be5e64efa9c85f34a620a9de8d3488b9c130339add5",
+        "decodedBytes": 237817,
+        "decodedSha256": "25d9fea2e4b2e3588f4002b7468616c36a3604e8d353eeb0b31666441a049964",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      },
+      "compactBytes": 58422,
+      "compactSha256": "e4dd448ab3103efbb2c6f7771b298a8bee6d963824f4499b0d1301f3ba303a83"
+    },
+    {
+      "file": "evidence/2026-11-01-webcodecs-vp9-explicit-color-fixture.json",
+      "archive": {
+        "file": "evidence/2026-11-01-webcodecs-vp9-explicit-color-fixture.raw.json.gz",
+        "bytes": 2436,
+        "sha256": "93014db30681decd4138b7baeca4c64ec610b753bf02ebe63e2588ac2ef8d629",
+        "decodedBytes": 5698,
+        "decodedSha256": "84b41996e8a791b8784a3dfa5c6fb191eca60f374c24eb6f7f6bea8eeea3e4c6",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      },
+      "compactBytes": 6073,
+      "compactSha256": "c30ea18fab5b0f7068625db0b63b1feeaa22b81af1aa7fe921e78f4252f261e1"
+    },
+    {
+      "file": "evidence/2026-11-01-webcodecs-vp9-frame-color-fixture.json",
+      "archive": {
+        "file": "evidence/2026-11-01-webcodecs-vp9-frame-color-fixture.raw.json.gz",
+        "bytes": 15942,
+        "sha256": "1df29c412f7c32eb81ca0ddd56e861bd35467874c3cd77d9bab7ca00c821cbf1",
+        "decodedBytes": 241788,
+        "decodedSha256": "9204e1753074c88527eb6c7cbd84df4897a04da3faf041ce90e59608a4988bde",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      },
+      "compactBytes": 57811,
+      "compactSha256": "2bda49c097da1a239f9469c141ef8df38dc2c5b92d7fec5de17425560e352a61"
+    },
+    {
+      "file": "evidence/2026-11-01-webcodecs-vp9-encoder-preference-fallback.json",
+      "archive": {
+        "file": "evidence/2026-11-01-webcodecs-vp9-encoder-preference-fallback.raw.json.gz",
+        "bytes": 16398,
+        "sha256": "0557181da9d9da3c40b0aef44331171503965da75a6f5989e905135d1410c2bd",
+        "decodedBytes": 256476,
+        "decodedSha256": "0bec69354f5068f56c2083a2c3d8c6a0b7f2684527583b608de81f99723ed068",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      },
+      "compactBytes": 60209,
+      "compactSha256": "b82a2b05c593948d1845911293024b1f7cf1fecfe8c25a89e6544262c9e7e50d"
+    }
+  ],
+  "originalBytes": 1216715,
+  "retainedBytes": 351917,
+  "allRoundtripsVerified": true,
+  "convertedFilesRead": false,
+  "privateNativeToolRemoved": false,
+  "publicAcceptance": false
+}

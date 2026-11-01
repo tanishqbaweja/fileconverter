@@ -14,13 +14,15 @@ function colorSpace(wire) {
   const transfer = { 1: "bt709", 6: "smpte170m" }[wire.getUint32(40, true)];
   const matrix = { 1: "bt709", 5: "bt470bg", 6: "smpte170m" }[wire.getUint32(44, true)];
   if (!primaries || !transfer || !matrix || wire.getUint32(48, true) !== 1)
-    throw unsupported("This private VP9 candidate requires explicit supported SDR colorimetry and limited range; use the existing Wasm route otherwise");
+    throw unsupported("This private VP9 candidate requires explicit supported SDR colorimetry and limited range; native CICP primaries/transfer/matrix/range=" +
+      [36, 40, 44, 48].map(at => wire.getUint32(at, true)).join("/") + "; use the existing Wasm route otherwise");
   return { primaries, transfer, matrix, fullRange: false };
 }
 /** @param {{Encoder?: typeof VideoEncoder, Frame?: typeof VideoFrame, signal?: AbortSignal, isCancelled?: () => boolean}} [options] */
 export function createWebCodecsVp9Bridge({ Encoder = globalThis.VideoEncoder, Frame = globalThis.VideoFrame, signal, isCancelled = () => false } = {}) {
   let encoder = null, config = null, colors = null, packed = null, pending = null, busy = false, closed = false, fault = null;
   let frames = 0, packets = 0, peakPackedBytes = 0, peakPacketBytes = 0, framesClosed = 0, expectedTimestamp = null, keyRequired = false;
+  let supportProbeCount = 0, hardwarePreferredSupported = null, selectedHardwarePreference = null;
   const stop = error => {
     fault ??= error; pending = null; packed = null;
     signal?.removeEventListener("abort", cancel);
@@ -46,11 +48,19 @@ export function createWebCodecsVp9Bridge({ Encoder = globalThis.VideoEncoder, Fr
           "This candidate requires the existing native constant-frame-rate time base");
         const bitrate = wire.getUint32(28, true); requireValue(bitrate >= 10000 && bitrate <= 20000000, "Invalid bounded VP9 bitrate");
         colors = colorSpace(wire);
-        const candidate = { codec: "vp09.00.50.08", width, height, bitrate, framerate: numerator / denominator,
+        let candidate = { codec: "vp09.00.50.08", width, height, bitrate, framerate: numerator / denominator,
           hardwareAcceleration: "prefer-hardware", latencyMode: "realtime", bitrateMode: "variable" };
-        const support = await Encoder.isConfigSupported(candidate); active();
+        let support = await Encoder.isConfigSupported(candidate); supportProbeCount++; active();
+        hardwarePreferredSupported = support.supported;
+        if (!support.supported) {
+          // Codec/dimensions/bitrate/timing are unchanged. This is an explicit
+          // platform-encoder preference fallback, NOT proof of physical GPU use.
+          candidate = { ...candidate, hardwareAcceleration: "no-preference" };
+          support = await Encoder.isConfigSupported(candidate); supportProbeCount++; active();
+        }
         if (!support.supported) throw unsupported("Exact VP9 encoder configuration is unsupported; retain the existing Wasm route");
         for (const field of Object.keys(candidate)) requireValue(support.config[field] === candidate[field], "Encoder support check changed requested " + field);
+        selectedHardwarePreference = candidate.hardwareAcceleration;
         config = { ...candidate, timeBaseNum: wire.getUint32(12, true), timeBaseDen: wire.getUint32(16, true) };
         encoder = new Encoder({ error: error => stop(error), output: (chunk, metadata) => {
           try {
@@ -115,6 +125,7 @@ export function createWebCodecsVp9Bridge({ Encoder = globalThis.VideoEncoder, Fr
     close() { signal?.removeEventListener("abort", cancel); stop(fault ?? new Error("VP9 bridge closed")); },
     snapshot() { return { frames, packets, framesClosed, busy, closed, currentPackedBytes: packed?.byteLength ?? 0,
       pendingPacketBytes: pending?.byteLength ?? 0, peakPackedBytes, peakPacketBytes, maximumPacketsInFlight: 1,
-      maximumFramesInFlight: 1, physicalHardwareSelectionProven: false, acceptanceMetric: false }; },
+      maximumFramesInFlight: 1, supportProbeCount, hardwarePreferredSupported, selectedHardwarePreference,
+      physicalHardwareSelectionProven: false, acceptanceMetric: false }; },
   };
 }
