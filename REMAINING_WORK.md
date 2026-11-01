@@ -1,5 +1,13 @@
 # Remaining work audit
 
+M-09 first browser smoke at28d6ddd0 did NOT reach conversion: unchanged stable
+blank gate unavailable after30s (19 CIM samples; native292valid/2missing). Do not
+claim a failed converter or a successful conversion from it. All owned processes/
+staged assets/generated fixture/profile removed; original checksum unchanged.
+Next distinct diagnostic collects the previously unreached codec/output facts
+before the SAME baseline/memory verdict; missing baseline remains failure/NULL,
+not an inflated/later reference or lowered gate. No unchanged control replay.
+
 M-09 actual native compile now PASSED at41305653513/b97e6cd6,39 hosted focused
 checks and fixed32MiB/nonshared static contract. Artifact authenticated and all
 source hashes bound to exact build head; both owned cleanup steps PASS. Only one

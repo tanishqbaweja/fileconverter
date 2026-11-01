@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+Private VP9 first smoke TERMINAL at28d6ddd0: stopped BEFORE conversion because
+normal Chrome156.0.8078.79 did not reach the unchanged earliest-stable blank
+baseline within30s.19 CIM samples ranged288.371–348.301MiB; native observer292
+valid/2missing baseline samples. No conversion, native packet, output validation,
+incremental-memory or speed result. All3 owned root identities absent, static
+stage/profile/scratch/generated source fixture removed; protected original full
+SHA/size unchanged. Reusable private engine remains for qualification only.
+evidence/2026-11-01-webcodecs-vp9-first-smoke.json. Do NOT replay this unchanged
+pre-conversion control. A separate reversible diagnostic defers the SAME strict
+baseline/memory verdict until after collecting previously unreached conversion
+facts; unavailable baseline stays a failure and incremental memory stays NULL.
+No formula, baseline-window/threshold, normal service or codec-setting change.
+
 Private VP9 source attempt3 TERMINAL:41305653513/b97e6cd6 SUCCESS.39 hosted
 focused checks PASS/0FAIL, actual FFmpeg encoder plug-in compiled and static
 contract PASS. Authenticated artifact digest48156dca...; source hashes match the
