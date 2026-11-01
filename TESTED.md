@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+Private VP9 source attempt3 TERMINAL:41305653513/b97e6cd6 SUCCESS.39 hosted
+focused checks PASS/0FAIL, actual FFmpeg encoder plug-in compiled and static
+contract PASS. Authenticated artifact digest48156dca...; source hashes match the
+exact build head. Wasm5,561,813B SHAde969908086cb0d1f2ff3bb035733a5aae983e0e1d6292b9c8ba80c06e5b859e,
+fixed512/512pages32MiB/nonshared, only custom VP9 encoder, WebM muxer, JSPI;
+unchanged native I/O wrapper. Hosted SDK/build/runtime cleanup PASS. Reusable
+private tool6,004,732B retained ONLY in work/webcodecs-vp9-input-41305653513 for
+the next genuine browser qualification, not copied into public assets or
+published selector. Source-built proof is NOT conversion, speed, fidelity,
+fallback, reproducibility or full-tree250MiB acceptance. One real small browser
+worker/OPFS integration diagnostic is prepared next; original stress stays open.
+evidence/2026-11-01-webcodecs-vp9-native-41305653513.json.
+
 Private VP9 worker integration added: explicit optional factory injection into
 the existing production media AVIO runtime, general12 ABI, one native worker,
 correct nonshared-Wasm/SAB accounting and finally engine/input-reader disposal.

@@ -1,0 +1,130 @@
+{
+  "runId": 41305653513,
+  "head": "b97e6cd688e88a07e0c02cb6e7169670aa2fb682",
+  "status": "authenticated-compiled-private-tool-not-browser-acceptance",
+  "artifact": {
+    "id": 13082584850,
+    "bytes": 1584069,
+    "sha256": "48156dcacb579918feee0db48cd316eb005b4dd74dc439377e1d2a0139492d71",
+    "expiresAt": "2026-11-02T12:19:52Z"
+  },
+  "nativeContract": {
+    "scope": "private-compiled-native-tool-static-contract-only",
+    "sources": {
+      "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+      "media/ffmpeg/within_webcodecs_vp9.c": "099dfff36cd7e49d9fe6989714187d26c2450fd11b2e068ad43dc748a4088b7e",
+      "media/ffmpeg/mpeg2-split-frame-layout.h": "1ddac3dc35c54a3734885606deb0bd73ed1e5026fd81ee090e928a4a76ed9a17",
+      "media/ffmpeg/build-webcodecs-vp9.sh": "cb854b0f6118d715914a653c9b048f73bf8c530e457026c293c134c5614da624",
+      "media/ffmpeg/register-webcodecs-vp9.mjs": "e7e44cefe849377770d81bbd1fb77996d25d2ab39e6ca587737454a5bce59ad8",
+      "workers/webcodecs-vp9-bridge.mjs": "000a60d3ed0dddf58f5711a3a2b3d3ce3ff913a8c7db301b1fca23db2db2337a",
+      "scripts/verify-webcodecs-vp9-native.mjs": "8480425aa46c88da9f704e26304f61b2ce6ffba2af1b02db37a799598c5b182a",
+      "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+      ".github/workflows/webcodecs-vp9-nondocker.yml": "e22992297d3d698a66dfe2e6721266ce27c504c25d0abe0f2dc160e707c88ed5"
+    },
+    "artifacts": {
+      "within-webcodecs-vp9.mjs": {
+        "bytes": 47699,
+        "sha256": "00d708c48c3dffb1cc82043ddc7f5216dcbc52db89c71453626439e2ae53ad92"
+      },
+      "within-webcodecs-vp9.wasm": {
+        "bytes": 5561813,
+        "sha256": "de969908086cb0d1f2ff3bb035733a5aae983e0e1d6292b9c8ba80c06e5b859e"
+      },
+      "config_components.h": {
+        "bytes": 75877,
+        "sha256": "d57295deccf9aded4293ca8fdabc15870fb928ae85f160c4a96078d285048b5d"
+      },
+      "config.mak": {
+        "bytes": 89657,
+        "sha256": "e255d4ee0e5c158c5c1cb29cede317083c298084c660b8958db1a5a911ca7c26"
+      },
+      "LICENSE.LGPLv2.1": {
+        "bytes": 26517,
+        "sha256": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30"
+      },
+      "registration.json": {
+        "bytes": 837,
+        "sha256": "8403db19e0fc2e6f54e0289d03863ea8a0c7d34d8751a926115e72f3df4193c8"
+      }
+    },
+    "ffmpeg": {
+      "version": "8.1.2",
+      "releaseSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c"
+    },
+    "emscripten": "6.0.4",
+    "emsdkCommit": "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
+    "memoryLimits": [
+      {
+        "imported": false,
+        "initialPages": 512,
+        "maximumPages": 512,
+        "shared": false
+      }
+    ],
+    "stackBytesDeclared": 262144,
+    "nativeThreads": 1,
+    "workerPool": 0,
+    "enabledEncoders": [
+      "WITHIN_WEBCODECS_VP9"
+    ],
+    "enabledDecoders": [
+      "H263",
+      "H264",
+      "HEVC",
+      "MPEG2VIDEO",
+      "MPEG4",
+      "THEORA",
+      "VP3",
+      "VP8",
+      "VP9",
+      "VORBIS"
+    ],
+    "enabledDemuxers": [
+      "AVI",
+      "H264",
+      "HEVC",
+      "IVF",
+      "M4V",
+      "MATROSKA",
+      "MOV",
+      "MPEGVIDEO",
+      "OGG"
+    ],
+    "enabledMuxers": [
+      "WEBM"
+    ],
+    "enabledParsers": [
+      "H264",
+      "HEVC",
+      "MPEG4VIDEO",
+      "MPEGVIDEO",
+      "VORBIS",
+      "VP8",
+      "VP9"
+    ],
+    "enabledBitstreamFilters": [
+      "VP9_SUPERFRAME",
+      "VP9_SUPERFRAME_SPLIT"
+    ],
+    "nodeInstantiated": false,
+    "framesEncoded": 0,
+    "mediaRead": false,
+    "mediaWritten": false,
+    "browserConversionVerified": false,
+    "hardwareSelectionProven": false,
+    "fallbackIntegrated": false,
+    "speedGainProven": false,
+    "completeChromiumMemoryMeasured": false,
+    "reproducibilityVerified": false,
+    "publicAcceptance": false
+  },
+  "retainedDirectory": "work/webcodecs-vp9-input-41305653513",
+  "retainedPurpose": "One reusable private source-built tool for the next genuine browser qualification; delete when superseded or no longer used",
+  "retainedBytes": 6004732,
+  "nativeContractSha256": "ee86ac566f2f76b3ba0d5ddf42e3169da01f9fc122ed9e8b77d92dd9fd6728ac",
+  "originalRead": false,
+  "publicAssetReplacement": false,
+  "completeChromiumMemoryMeasured": false,
+  "speedGainProven": false,
+  "publicAcceptance": false
+}
