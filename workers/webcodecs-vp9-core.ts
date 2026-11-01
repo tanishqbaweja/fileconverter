@@ -27,7 +27,9 @@ export async function loadWebCodecsVp9Core(importer: Importer = url => import(/*
   const jspi = WebAssembly as typeof WebAssembly & { Suspending?: unknown; promising?: unknown };
   if (typeof jspi.Suspending !== "function" || typeof jspi.promising !== "function")
     throw new DOMException("Stable JSPI is unavailable; retain the existing Wasm path.", "NotSupportedError");
-  const imported = await importer("/engines/webcodecs-vp9/within-webcodecs-vp9.mjs");
+  let imported: { default: unknown };
+  try { imported = await importer("/engines/webcodecs-vp9/within-webcodecs-vp9.mjs"); }
+  catch { throw new DOMException("The private VP9 engine is not installed; retain the existing Wasm path.", "NotSupportedError"); }
   if (typeof imported.default !== "function") throw new TypeError("Private VP9 native factory is absent.");
   const nativeFactory = imported.default as NativeFactory;
   let last: ReturnType<EncoderBridge["snapshot"]> | null = null, active = false;
@@ -35,18 +37,25 @@ export async function loadWebCodecsVp9Core(importer: Importer = url => import(/*
     async factory(options) {
       if (active) throw new Error("The private VP9 core cannot be reused concurrently."); active = true;
       const bridge = createWebCodecsVp9Bridge({ isCancelled: options.withinBridge.cancelled });
+      let selectionRejected: unknown;
+      const nativeBridge: EncoderBridge = { ...bridge, async open(...args) {
+        try { return await bridge.open(...args); }
+        catch (error) { if (error instanceof DOMException && error.name === "NotSupportedError") selectionRejected = error; throw error; }
+      } };
       let native: Awaited<ReturnType<NativeFactory>> | undefined, disposed = false;
       const dispose = () => {
         if (disposed) return; disposed = true;
         try { native?.dispose?.(); } finally { bridge.close(); last = bridge.snapshot(); native = undefined; active = false; }
       };
       try {
-        native = await nativeFactory({ ...options, withinWebCodecs: bridge });
+        native = await nativeFactory({ ...options, withinWebCodecs: nativeBridge });
         if (native.HEAPU8.byteLength !== 33554432 || native.HEAPU8.buffer instanceof SharedArrayBuffer)
           throw new Error("Private VP9 requires its fixed32MiB nonshared native heap.");
-        return { ccall: (...args) => {
+        return { ccall: async (...args) => {
           if (!native || disposed) return Promise.reject(new Error("Private VP9 core is disposed."));
-          return native.ccall(...args);
+          const result = await native.ccall(...args);
+          if (result < 0 && selectionRejected) throw selectionRejected;
+          return result;
         }, dispose };
       } catch (error) { dispose(); throw error; }
     },

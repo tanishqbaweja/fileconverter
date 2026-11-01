@@ -1,5 +1,13 @@
 # Remaining work audit
 
+M-09 source-only errno fix now COMPILED at41309113218/cd0f0795 (41 hosted checks,
+fixed32MiB/nonshared), browser regression pending. Controlled optional CPU/Wasm
+fallback is now IMPLEMENTED privately and mock-tested, not browser-qualified:
+only typed initialization rejection before any write; unchanged controls/source,
+no retry on corruption, cancellation or destination failure.72 focused checks/
+TypeScript/lint PASS. Next real rebuilt-native and CPU-fallback controls; no
+public selection, performance win, full recovery or large-file acceptance yet.
+
 M-09 private end-to-end small integration now WORKS: H.264->VP9 WebM,48 real
 frames, independent FFprobe/full decode PASS,3.101s including initialization,
 142.19140625MiB full-tree/33valid0missing. Hardware-preferred unavailable; checked

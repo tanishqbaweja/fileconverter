@@ -88,3 +88,22 @@ test("actual private AVIO error path disposes the engine and releases its input 
     emitProgress() {}, post() {} }), /injected destination failure/);
   assert.equal(disposed, 1); assert.equal(opened, 1); assert.equal(cancelled, 1); assert.equal(core.snapshot().closed, true);
 }));
+test("native initialization rejection preserves its NotSupported type through the real runtime and still disposes", () => mockJSPI(async () => {
+  const names = ["VideoEncoder", "VideoFrame"], saved = Object.fromEntries(names.map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
+  Object.defineProperty(globalThis, "VideoEncoder", { configurable: true, value: class { static async isConfigSupported(config) { return { supported: false, config }; } } });
+  Object.defineProperty(globalThis, "VideoFrame", { configurable: true, value: class {} });
+  let disposed = 0;
+  try {
+    const heap = new Uint8Array(33554432), config = new DataView(heap.buffer, 128, 96);
+    [1, 4, 4, 1, 24, 24, 1, 600000, 120, 1, 1, 1, 1, 1, 1].forEach((x, i) => config.setUint32(i * 4, x, true));
+    const core = await loadWebCodecsVp9Core(async () => ({ default: async options => ({ HEAPU8: heap,
+      async ccall() { try { await options.withinWebCodecs.open(heap, 128); } catch { /* Same native failure-return boundary. */ } return -52; },
+      dispose() { disposed++; },
+    }) }));
+    await assert.rejects(runMediaRemux({ file: new File(["data"], "fixture.mkv"), profileId: "mkv-to-webm-vp9", remuxProfile: 10,
+      webCodecsVp9Core: core, jobId: "selection-rejected", metrics: metrics(), startedAt: performance.now(), isCancelled: () => false,
+      writable: { requiresOwnedWriteBuffer: true, async write() { throw new Error("No output may be attempted"); }, async truncate() {}, async close() {}, async abort() {} },
+      emitProgress() {}, post() {} }), { name: "NotSupportedError" });
+    assert.equal(disposed, 1); assert.equal(core.snapshot().closed, true); assert.equal(core.snapshot().frames, 0);
+  } finally { for (const key of names) { if (saved[key]) Object.defineProperty(globalThis, key, saved[key]); else delete globalThis[key]; } }
+}));

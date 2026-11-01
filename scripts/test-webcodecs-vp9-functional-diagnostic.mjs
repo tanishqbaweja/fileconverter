@@ -8,12 +8,17 @@ import { pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
-const preferenceFallbackFixture = process.argv[2] === "--encoder-preference-fallback";
-const frameColorFixture = process.argv[2] === "--frame-color-fixture" || preferenceFallbackFixture;
+const rebuiltCpuFallback = process.argv[2] === "--rebuilt-cpu-fallback";
+const rebuiltNative = process.argv[2] === "--rebuilt-native" || rebuiltCpuFallback;
+const preferenceFallbackFixture = process.argv[2] === "--encoder-preference-fallback" || rebuiltNative;
+const frameColorFixture = process.argv[2] === "--frame-color-fixture" || (preferenceFallbackFixture && !rebuiltCpuFallback);
 const explicitColorFixture = process.argv[2] === "--explicit-color-fixture" || frameColorFixture;
-const nativeColorDiagnostic = process.argv[2] === "--native-color-diagnostic" || explicitColorFixture;
+const nativeColorDiagnostic = process.argv[2] === "--native-color-diagnostic" || explicitColorFixture || rebuiltCpuFallback;
 assert.ok(process.argv.length === 2 || (process.argv.length === 3 && nativeColorDiagnostic));
 const root = path.resolve(import.meta.dirname, ".."), sha = x => createHash("sha256").update(x).digest("hex");
+const outputLabel = rebuiltCpuFallback ? "rebuilt-cpu-fallback" : rebuiltNative ? "rebuilt-native" :
+  preferenceFallbackFixture ? "encoder-preference-fallback" : frameColorFixture ? "frame-color-fixture" :
+  explicitColorFixture ? "explicit-color-fixture" : "native-color-diagnostic";
 const source = await readFile(path.join(root, "scripts/test-webcodecs-vp9-smoke.mjs"), "utf8");
 const prior = JSON.parse(await readFile(path.join(root, "evidence/2026-11-01-webcodecs-vp9-first-smoke.json")));
 assert.equal(sha(source), prior.sourcePins["scripts/test-webcodecs-vp9-smoke.mjs"]);
@@ -38,9 +43,9 @@ edits.push(
 );
 if (nativeColorDiagnostic) {
   edits[edits.findIndex(([before]) => before === 'evidence/2026-11-01-webcodecs-vp9-first-smoke.json')][1] =
-    'evidence/2026-11-01-webcodecs-vp9-' + (preferenceFallbackFixture ? 'encoder-preference-fallback' : frameColorFixture ? 'frame-color-fixture' : explicitColorFixture ? 'explicit-color-fixture' : 'native-color-diagnostic') + '.json';
+    'evidence/2026-11-01-webcodecs-vp9-' + outputLabel + '.json';
   edits[edits.findIndex(([before]) => before === '2026-11-01-webcodecs-vp9-first-smoke-failure.zip')][1] =
-    '2026-11-01-webcodecs-vp9-' + (preferenceFallbackFixture ? 'encoder-preference-fallback' : frameColorFixture ? 'frame-color-fixture' : explicitColorFixture ? 'explicit-color-fixture' : 'native-color-diagnostic') + '-failure.zip';
+    '2026-11-01-webcodecs-vp9-' + outputLabel + '-failure.zip';
   edits.push(['  report.fixture = { generatedBeforeBrowser: true,',
     '  report.sourceProbe = JSON.parse((await execute(ffprobe, ["-v", "error", "-show_streams", "-show_format", "-of", "json", fixture],\n' +
     '    { cwd: root, env: runtime.env, windowsHide: true, timeout: 30000, maxBuffer: 1048576 })).stdout);\n' +
@@ -56,6 +61,24 @@ if (explicitColorFixture) {
     '  const sourceColor = report.sourceProbe.streams[0];\n' +
     '  assert.deepEqual([sourceColor.color_primaries, sourceColor.color_transfer, sourceColor.color_space, sourceColor.color_range], ["bt709", "bt709", "bt709", "tv"], "Verify actual source metadata before launching Chromium");\n']);
 }
+if (rebuiltNative) {
+  edits.push(
+    ['evidence/2026-11-01-webcodecs-vp9-native-41305653513.json', 'evidence/2026-11-01-webcodecs-vp9-native-41309113218.json'],
+    ['work/webcodecs-vp9-input-41305653513', 'work/webcodecs-vp9-input-41309113218'],
+    ['  assert.equal(native.publicAcceptance, false); const input = path.resolve(root, native.retainedDirectory);',
+      '  report.nativeTool = { runId: native.runId, head: native.head, wasm: native.nativeContract.artifacts["within-webcodecs-vp9.wasm"] };\n' +
+      '  assert.equal(native.publicAcceptance, false); const input = path.resolve(root, native.retainedDirectory);'],
+  );
+}
+if (rebuiltCpuFallback) {
+  edits.push(
+    ['implementation: "candidate",', 'implementation: "automatic",'],
+    ['  assert.equal(report.browserResult.encoder.frames, 48); assert.equal(report.browserResult.encoder.packets, 48);',
+      '  assert.equal(report.browserResult.selection.backend, "wasm");\n' +
+      '  assert.match(report.browserResult.selection.fallbackReason, /native CICP primaries\\/transfer\\/matrix\\/range=2\\/2\\/1\\/1/);\n' +
+      '  assert.equal(report.browserResult.encoder.frames, 0); assert.equal(report.browserResult.encoder.packets, 0);'],
+  );
+}
 let generated = source;
 for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
 let reversed = generated;
@@ -65,12 +88,15 @@ assert.doesNotMatch(generated, /(?:from\s+|import\s+)["']\.\//, "No unresolved r
 const recipe = { scope: "Collect previously unreached real conversion facts; all original verdicts retained, not acceptance relaxation",
   parentSha256: sha(source), generatedSha256: sha(generated), edits, reversible: true, publicAcceptance: false,
   baselineFormulaChanged: false, baselineWindowOrThresholdChanged: false, nativeOrCodecSettingsChanged: preferenceFallbackFixture,
-  changedEncoderSetting: preferenceFallbackFixture ? "hardwareAcceleration preference only; no video dimensions/bitrate/timing/quality change" : null,
+  changedEncoderSetting: rebuiltNative ? "Rebuilt native error mapping; same video controls and checked platform preference fallback" :
+    preferenceFallbackFixture ? "hardwareAcceleration preference only; no video dimensions/bitrate/timing/quality change" : null,
+  nativeErrorMappingRebuilt: rebuiltNative, controlledCpuFallbackExercised: rebuiltCpuFallback,
   usesConfigurationCheckedPlatformPreferenceFallback: preferenceFallbackFixture,
   fixtureBitstreamColorMetadataCorrected: explicitColorFixture,
   fixtureFrameColorMetadataAssigned: frameColorFixture,
   generatedSourceGzipBase64: gzipSync(generated, { level: 9 }).toString("base64") };
-const recipeName = preferenceFallbackFixture ? "2026-11-01-webcodecs-vp9-encoder-preference-fallback-recipe.json" :
+const recipeName = rebuiltNative ? "2026-11-01-webcodecs-vp9-" + outputLabel + "-recipe.json" :
+  preferenceFallbackFixture ? "2026-11-01-webcodecs-vp9-encoder-preference-fallback-recipe.json" :
   frameColorFixture ? "2026-11-01-webcodecs-vp9-frame-color-fixture-recipe.json" :
   explicitColorFixture ? "2026-11-01-webcodecs-vp9-explicit-color-fixture-recipe.json" :
   nativeColorDiagnostic ? "2026-11-01-webcodecs-vp9-native-color-diagnostic-recipe.json" :

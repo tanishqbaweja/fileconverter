@@ -2,6 +2,7 @@
 // adapters; no Node converter. Not a public profile or a substitute for full stress.
 import { runMediaRemux } from "./media-remux";
 import { loadWebCodecsVp9Core } from "./webcodecs-vp9-core";
+import { runOptionalWebCodecsVp9 } from "./webcodecs-vp9-optional";
 import { asynchronousFileStreamDestination } from "./random-access-destination";
 import type { ConversionMetrics } from "../lib/conversion-protocol";
 import type { VideoConversionOptions } from "../lib/media-conversion-options";
@@ -11,7 +12,7 @@ interface Request {
   cancellation: SharedArrayBuffer;
   nativeProfile: 10 | 11;
   video: VideoConversionOptions;
-  implementation: "candidate" | "wasm-baseline";
+  implementation: "candidate" | "wasm-baseline" | "automatic";
 }
 const scope = self as unknown as { onmessage: ((event: MessageEvent<Request>) => void) | null; postMessage(value: unknown): void; close(): void };
 let running = false;
@@ -27,24 +28,30 @@ scope.onmessage = async ({ data }) => {
   let core: Awaited<ReturnType<typeof loadWebCodecsVp9Core>> | undefined, lastProgress = -Infinity;
   try {
     if (!(data.file instanceof File) || !(data.cancellation instanceof SharedArrayBuffer) || data.cancellation.byteLength !== 4 ||
-        ![10, 11].includes(data.nativeProfile) || !["candidate", "wasm-baseline"].includes(data.implementation))
+        ![10, 11].includes(data.nativeProfile) || !["candidate", "wasm-baseline", "automatic"].includes(data.implementation))
       throw new TypeError("Invalid private qualification request");
     const cancelled = new Int32Array(data.cancellation);
     destination = asynchronousFileStreamDestination(await data.output.createWritable());
     if (data.implementation === "candidate") core = await loadWebCodecsVp9Core();
-    await runMediaRemux({ file: data.file, profileId: data.nativeProfile === 11 ? "ogv-to-webm-vp9" : "mkv-to-webm-vp9",
+    const options = { file: data.file, profileId: data.nativeProfile === 11 ? "ogv-to-webm-vp9" : "mkv-to-webm-vp9",
       writable: destination, remuxProfile: data.nativeProfile, webCodecsVp9Core: core, forceAsynchronousInput: true,
       videoOptions: data.video, jobId: "private-webcodecs-vp9", metrics, startedAt,
       isCancelled: () => Atomics.load(cancelled, 0) !== 0,
       emitProgress(_job, phase, current, _started, force) {
+        current.elapsedMs = performance.now() - startedAt;
         if (force || performance.now() - lastProgress >= 500) {
           lastProgress = performance.now(); scope.postMessage({ type: "progress", phase, metrics: current });
         }
       }, post(message) {
         if (message.type === "warning") { if (warnings.length === 32) warnings.shift(); warnings.push(message.message.slice(0, 512)); }
-      } });
+      } } satisfies Parameters<typeof runMediaRemux>[0];
+    const selection = data.implementation === "automatic" ? await runOptionalWebCodecsVp9(options, {
+      async loadCore() { core = await loadWebCodecsVp9Core(); return core; },
+    }) : null;
+    if (!selection) await runMediaRemux(options);
     await destination.close(); succeeded = true;
-    terminal = { type: "complete", elapsedMs: performance.now() - startedAt, metrics, warnings, encoder: core?.snapshot() ?? null,
+    metrics.elapsedMs = performance.now() - startedAt;
+    terminal = { type: "complete", elapsedMs: metrics.elapsedMs, metrics, warnings, selection, encoder: core?.snapshot() ?? null,
       scope: "real-private-worker-conversion-not-stress-or-public-acceptance" };
   } catch (error) {
     terminal = { type: "error", elapsedMs: performance.now() - startedAt, metrics, warnings,

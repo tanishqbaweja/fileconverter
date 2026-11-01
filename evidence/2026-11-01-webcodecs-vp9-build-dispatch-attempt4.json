@@ -1,0 +1,30 @@
+{
+  "recordedAt": "2026-11-01T13:00:18.383Z",
+  "branch": "codex/webcodecs-vp9-source-20261101-attempt4",
+  "head": "cd0f079588bed73162e1b9bd9b52e76bc2e30837",
+  "status": "dispatched-requires-exact-head-job-step-inspection",
+  "dispatchMayHaveOccurred": true,
+  "run": {
+    "conclusion": "",
+    "createdAt": "2026-11-01T13:00:08Z",
+    "databaseId": 41309113218,
+    "event": "workflow_dispatch",
+    "headSha": "cd0f079588bed73162e1b9bd9b52e76bc2e30837",
+    "status": "in_progress",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/41309113218",
+    "workflowName": "Reproduce FFmpeg without Docker"
+  },
+  "buildAcceptance": false,
+  "publicAcceptance": false,
+  "dispatchedAt": "2026-11-01T13:00:05.782Z",
+  "workflowDisplayNameNotSelectionProof": true,
+  "expectedWaitMinutes": [
+    6,
+    10
+  ],
+  "onlyPrivateEncoderBuildSelected": true,
+  "noDocker": true,
+  "browserConversionsPerformed": 0,
+  "speedGainProven": false,
+  "ownedDispatchRuntimeRemoved": true
+}

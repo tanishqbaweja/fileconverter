@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+Native errno fix source build4 TERMINAL:41309113218/cd0f0795 SUCCESS,41 hosted
+focused checks PASS, owned SDK/build/runtime cleanup PASS. Authenticated fixed
+32MiB/nonshared Wasm5,561,904B SHA6f4457e1e292ee016c51a76ff7acbd51b6541c2183e4ebc7e9e31b23d6878c26.
+The changed error mapping is compiled now, but browser regression still PENDING.
+Private controlled CPU/Wasm fallback implemented: only NotSupported initialization
+before ANY write attempt may reset/restart with unchanged options. Never retries
+cancel/corruption/write/permission/CPU errors or loops. Typed rejection survives
+the native ccall boundary and finally disposal.72 focused checks PASS274.542ms,
+TypeScript/affected lint PASS. These new fallback checks are MOCK/adapter checks,
+not real fallback conversion proof. Next distinct browser controls use the rebuilt
+native tool, then a valid unspecified-color source to require genuine CPU fallback.
+
 2026-11-01 private VP9 FIRST GENUINE SMALL CONVERSION PASS (NOT promotion):
 H.264 MKV57,599B -> VP9 WebM97,756B,320x180/24fps/two seconds. Real browser
 FFmpeg demux/decode/browser encoder/mux/AVIO -> production asynchronous OPFS
