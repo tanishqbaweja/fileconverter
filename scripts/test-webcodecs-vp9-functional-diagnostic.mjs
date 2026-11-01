@@ -9,7 +9,9 @@ import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 const realmDiagnostic = process.argv[2] === "--fallback-realms";
-const compareDefault = process.argv[2] === "--compare-default-core", compareSingle = process.argv[2] === "--compare-single-core";
+const checkOnly = process.argv[3] === "--check-only";
+const preflightRecovery = process.argv[2] === "--compare-single-core-preflight-recovery";
+const compareDefault = process.argv[2] === "--compare-default-core", compareSingle = process.argv[2] === "--compare-single-core" || preflightRecovery;
 const compareCore = compareDefault || compareSingle;
 const rebuiltCpuFallback = process.argv[2] === "--rebuilt-cpu-fallback" || realmDiagnostic || compareCore;
 const rebuiltNative = process.argv[2] === "--rebuilt-native" || rebuiltCpuFallback;
@@ -17,9 +19,9 @@ const preferenceFallbackFixture = process.argv[2] === "--encoder-preference-fall
 const frameColorFixture = process.argv[2] === "--frame-color-fixture" || (preferenceFallbackFixture && !rebuiltCpuFallback);
 const explicitColorFixture = process.argv[2] === "--explicit-color-fixture" || frameColorFixture;
 const nativeColorDiagnostic = process.argv[2] === "--native-color-diagnostic" || explicitColorFixture || rebuiltCpuFallback;
-assert.ok(process.argv.length === 2 || (process.argv.length === 3 && nativeColorDiagnostic));
+assert.ok(process.argv.length === 2 || (process.argv.length === (checkOnly ? 4 : 3) && nativeColorDiagnostic));
 const root = path.resolve(import.meta.dirname, ".."), sha = x => createHash("sha256").update(x).digest("hex");
-const outputLabel = compareDefault ? "comparison-default-core" : compareSingle ? "comparison-single-core" :
+const outputLabel = preflightRecovery ? "comparison-single-core-preflight-recovery" : compareDefault ? "comparison-default-core" : compareSingle ? "comparison-single-core" :
   realmDiagnostic ? "fallback-realms" : rebuiltCpuFallback ? "rebuilt-cpu-fallback" : rebuiltNative ? "rebuilt-native" :
   preferenceFallbackFixture ? "encoder-preference-fallback" : frameColorFixture ? "frame-color-fixture" :
   explicitColorFixture ? "explicit-color-fixture" : "native-color-diagnostic";
@@ -32,6 +34,17 @@ const edits = [[ 'import "./lib/hidden-unit-subprocesses.mjs";',
   'import ' + JSON.stringify(pathToFileURL(path.join(root, "scripts/lib/hidden-unit-subprocesses.mjs")).href) + ';' ],
   ...[...source.matchAll(/from "(\.\/lib\/[a-z0-9-]+\.mjs)"/g)].map(match =>
   [match[0], "from " + JSON.stringify(pathToFileURL(path.resolve(root, "scripts", match[1])).href)])];
+if (preflightRecovery) {
+  const stopped = JSON.parse(await readFile(path.join(root, "evidence/2026-11-01-webcodecs-vp9-comparison-single-core.json")));
+  assert.equal(stopped.status, "failed-private-vp9-browser-smoke"); assert.equal(stopped.hostMemory.safeToStart, false);
+  assert.equal(stopped.browserResult, undefined); assert.equal(stopped.browserPin, undefined);
+  assert.equal(stopped.nativeMemory, null); assert.deepEqual(stopped.processCleanup, []);
+  assert.ok(stopped.finishedAt);
+  edits.push(['  report.hostMemory = await inspectStressHostMemory(); assert.equal(report.hostMemory.safeToStart, true);',
+    '  report.preflightRecoveryOf = "evidence/2026-11-01-webcodecs-vp9-comparison-single-core.json";\n' +
+    '  report.previousAttemptReachedBrowser = false;\n' +
+    '  report.hostMemory = await inspectStressHostMemory(); assert.equal(report.hostMemory.safeToStart, true);']);
+}
 edits.push(
   ['path.resolve(import.meta.dirname, "..")', JSON.stringify(root)],
   ['evidence/2026-11-01-webcodecs-vp9-first-smoke.json', 'evidence/2026-11-01-webcodecs-vp9-functional-diagnostic.json'],
@@ -44,6 +57,20 @@ edits.push(
   ['  assert.ok(peaks.validSamples > 0 && peaks.unavailableSamples === 0 && report.memory.incrementalPrivateMiB <= 250);',
     '  assert.equal(report.blankBaseline?.stable, true, "Stable blank baseline remains required; no smaller metric substitutes");\n' +
     '  assert.ok(peaks.validSamples > 0 && peaks.unavailableSamples === 0 && report.memory.incrementalPrivateMiB <= 250);'],
+  ['import { chromium } from "playwright";', 'import { chromium } from "playwright";\nimport { finishPrivateVp9Integrity } from ' +
+    JSON.stringify(pathToFileURL(path.join(root, "scripts/lib/private-vp9-finalization.mjs")).href) + ';'],
+  ['"workers/media-remux.ts",', '"workers/media-remux.ts", "scripts/lib/private-vp9-finalization.mjs",'],
+  ['    await runtime?.close(); report.ownedRuntimeRemoved = Boolean(runtime);\n' +
+    '    report.originalAfter = await original(); assert.deepEqual(report.originalAfter, expectedOriginal);\n' +
+    '    assertInstalledChromePinsEqual(report.browserPin, await inspectInstalledChromePin());\n' +
+    '    for (const [file, digest] of Object.entries(report.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), digest);\n' +
+    '  } catch (error) { report.failures.push("Final cleanup/integrity: " + error); }',
+    '  } catch (error) { report.failures.push("Owned stage cleanup: " + error); }\n' +
+    '  await finishPrivateVp9Integrity({ report, runtime,\n' +
+    '    runtimeRemovalAllowed: report.processCleanup.every(x => x.status === "owned-identity-absent"),\n' +
+    '    original, expectedOriginal, assertEqual: assert.deepEqual,\n' +
+    '    inspectBrowserPin: inspectInstalledChromePin, assertBrowserPinsEqual: assertInstalledChromePinsEqual,\n' +
+    '    verifySources: async () => { for (const [file, digest] of Object.entries(report.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), digest); } });'],
 );
 if (nativeColorDiagnostic) {
   edits[edits.findIndex(([before]) => before === 'evidence/2026-11-01-webcodecs-vp9-first-smoke.json')][1] =
@@ -151,6 +178,7 @@ const recipe = { scope: "Collect previously unreached real conversion facts; all
   nativeErrorMappingRebuilt: rebuiltNative, controlledCpuFallbackExercised: rebuiltCpuFallback,
   realmDiagnostic, observationPerturbsTimingAndMemory: realmDiagnostic, noForcedGarbageCollection: true,
   samePinnedComparisonInput: compareCore, alternateSingleThreadCoreSelected: compareSingle,
+  preflightRecovery, previousAttemptReachedBrowser: preflightRecovery ? false : null,
   usesConfigurationCheckedPlatformPreferenceFallback: preferenceFallbackFixture,
   fixtureBitstreamColorMetadataCorrected: explicitColorFixture,
   fixtureFrameColorMetadataAssigned: frameColorFixture,
@@ -161,12 +189,20 @@ const recipeName = rebuiltNative ? "2026-11-01-webcodecs-vp9-" + outputLabel + "
   explicitColorFixture ? "2026-11-01-webcodecs-vp9-explicit-color-fixture-recipe.json" :
   nativeColorDiagnostic ? "2026-11-01-webcodecs-vp9-native-color-diagnostic-recipe.json" :
   "2026-11-01-webcodecs-vp9-functional-diagnostic-recipe-repaired.json";
-await writeFile(path.join(root, "evidence", recipeName), JSON.stringify(recipe, null, 2) + "\n", { flag: "wx" });
-const runtime = await createOwnedRuntimeScratch("webcodecs-vp9-diagnostic-");
-try {
-  const file = path.join(runtime.directory, "diagnostic.mjs"); await writeFile(file, generated, { flag: "wx" });
-  const child = spawn(process.execPath, [file], { cwd: root, env: runtime.env, windowsHide: true, stdio: "inherit" });
-  process.exitCode = await new Promise((resolve, reject) => { child.once("error", reject); child.once("close", (code, signal) => {
-    if (signal) reject(new Error("Owned diagnostic interrupted: " + signal)); else resolve(code ?? 1);
-  }); });
-} finally { await runtime.close(); }
+if (checkOnly) {
+  // Parse all reversible edits without writing a recipe, launching Chrome, or
+  // bypassing the exclusive guards on actual conversion runs.
+  await (await import("esbuild")).transform(generated, { loader: "js", format: "esm" });
+  console.log(JSON.stringify({ checkOnly: true, generatedSha256: sha(generated), outputLabel,
+    reversible: true, browserLaunched: false, recipeWritten: false }));
+} else {
+  await writeFile(path.join(root, "evidence", recipeName), JSON.stringify(recipe, null, 2) + "\n", { flag: "wx" });
+  const runtime = await createOwnedRuntimeScratch("webcodecs-vp9-diagnostic-");
+  try {
+    const file = path.join(runtime.directory, "diagnostic.mjs"); await writeFile(file, generated, { flag: "wx" });
+    const child = spawn(process.execPath, [file], { cwd: root, env: runtime.env, windowsHide: true, stdio: "inherit" });
+    process.exitCode = await new Promise((resolve, reject) => { child.once("error", reject); child.once("close", (code, signal) => {
+      if (signal) reject(new Error("Owned diagnostic interrupted: " + signal)); else resolve(code ?? 1);
+    }); });
+  } finally { await runtime.close(); }
+}

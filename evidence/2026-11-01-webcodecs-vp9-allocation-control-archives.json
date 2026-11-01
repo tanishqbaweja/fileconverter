@@ -1,0 +1,37 @@
+{
+  "scope": "Lossless sampler receipt storage reduction; original failed/passed results and thresholds unchanged",
+  "reports": [
+    {
+      "file": "evidence/2026-11-01-webcodecs-vp9-fallback-realms.json",
+      "archive": {
+        "file": "evidence/2026-11-01-webcodecs-vp9-fallback-realms.raw.json.gz",
+        "bytes": 17874,
+        "sha256": "f11f3f6764ba3d441a0aa4c12861dc3b4587b856d9f702f04b05ac5d8aa297ec",
+        "decodedBytes": 267729,
+        "decodedSha256": "d03fbaebd65bf443d03c38296a02ef925beffabb5fbc76f542333c6cfca252d0",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      },
+      "compactBytes": 76012,
+      "compactSha256": "93fc8c4221195a3a3e9d4e5b75688b900ec59b9e8450c13faf67b770d9602d04"
+    },
+    {
+      "file": "evidence/2026-11-01-webcodecs-vp9-comparison-default-core.json",
+      "archive": {
+        "file": "evidence/2026-11-01-webcodecs-vp9-comparison-default-core.raw.json.gz",
+        "bytes": 17458,
+        "sha256": "486a9aab0102cdb62a3c81afdea399948f92eb7e8534a45c8eb83afb7b171c6d",
+        "decodedBytes": 280844,
+        "decodedSha256": "db9c7c531f3b4b59dd1c279f7f2176aaa0128422ccf74cdc80971a2fe2e4a753",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      },
+      "compactBytes": 62282,
+      "compactSha256": "7324813cd9c94c38e08243c24c4c5c09c5e679460ba67ec0fdd0153a60313fe3"
+    }
+  ],
+  "originalBytes": 548573,
+  "retainedBytes": 173626,
+  "allRoundtripsVerified": true,
+  "convertedFilesRead": false,
+  "privateNativeToolRemoved": false,
+  "publicAcceptance": false
+}

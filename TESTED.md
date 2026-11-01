@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-11-01 core-control follow-up: default core genuinely produced98,585B/48VP9
+frames with independent full decode in1.407525s, but its blank baseline wasNULL.
+OverallFAIL; no incremental memory figure, comparative memory reduction, accepted
+speedup, fidelity or large-file claim. Single-thread attempt stopped BEFORE
+browser/runtime acquisition: virtual RAM2,046,251,008B <2GiB. It converted nothing.
+The retained historical receipt also records an early-finally missing-browser-pin
+bug. New independent finalization checks skip only unacquired pin comparison,
+keep integrity checks after cleanup failure, distinguish not-created from removed,
+and never remove runtime data before verified process exit.56focused checks PASS
+(601.802ms); recovery-mode finalizer/offline recipe checks9/9PASS(733.327ms).
+Affected lint/diffPASS. No public/default pipeline change.
+Detailed realm/default sampler receipts archived byte-exactly:548,573B ->173,626B
+including compact JSON+gzip; both failure verdicts/raw process totals preserved.
+Single-thread preflight receipt remains unchanged/uncompressed. No owned VP9
+scratch remains except reusable6MB native tool;58KB comparison fixture remains
+useful. Recovery control authorized by changed host state4,425,060,352B available
+virtual memory, with new exclusive receipt linked to the no-browser attempt.
+Recovery actual result PENDING, not a second conversion/retry for a green default.
+
 Fallback realm diagnostic TERMINAL at45713b8b: valid48-frame CPU output/full
 decode but295.28515625MiB FAIL,20valid0missing, explicitly PERTURBED/non-acceptance.
 Six CDP snapshots capture2/3/3/11/11/2 app realms with no heap errors;8helpers

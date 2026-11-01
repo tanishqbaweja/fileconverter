@@ -155,6 +155,55 @@ test("superseded native tool cleanup was exact-owned and recoverable, not deleti
   assert.equal(receipt.replacementRunId, 41309113218); assert.equal(receipt.replacementBrowserRegressionPassed, true);
   assert.equal(receipt.recovery.artifactId, 13082584850); assert.equal(receipt.recovery.localCopyRetained, false);
 });
+test("realm fallback diagnosis retains full-tree failure despite small per-helper JS heaps", async () => {
+  const receipt = await detailed("fallback-realms");
+  assert.equal(receipt.status, "failed-private-vp9-browser-smoke"); assert.equal(receipt.diagnosticPerturbsMemoryAndTiming, true);
+  assert.equal(receipt.memory.incrementalPrivateMiB, 295.28515625);
+  assert.equal(receipt.memory.validSamples, 20); assert.equal(receipt.memory.unavailableSamples, 0);
+  assert.deepEqual(receipt.realmSamples.map(x => x.label), ["loaded-idle", "webcodecs-vp9-ready", "candidate-disposed", "wasm-ready", "output-closed", "workers-terminated"]);
+  assert.deepEqual(receipt.realmSamples.map(x => x.sample.targets.length), [2, 3, 3, 11, 11, 2]);
+  for (const { sample } of receipt.realmSamples) {
+    assert.equal(sample.targetsAvailable, true); assert.ok(sample.targets.every(x => x.error === null));
+  }
+  const helpers = receipt.realmSamples[3].sample.targets.filter(x => x.url.endsWith("/within-vp9.mjs"));
+  assert.equal(helpers.length, 8); assert.ok(helpers.every(x => x.allocatedJSHeapBytes === 1310720));
+  assert.equal(receipt.browserResult.metrics.wasmMemoryBytes, 50331648);
+  assert.equal(receipt.independentFullDecodePassed, true); assert.equal(receipt.publicAcceptance, false);
+});
+test("identical-source default control cannot claim memory or speed acceptance with a null blank baseline", async () => {
+  const receipt = await detailed("comparison-default-core"), fixture = await read("fixtures/media/vp9-fallback-comparison.mkv");
+  assert.equal(fixture.length, 58389); assert.equal(sha(fixture), "4fad7ea6c1dd0d374b1b69201b6af4b68e8518bf2672884d23b1f136f5f2cc46");
+  assert.equal(receipt.fixture.sha256, sha(fixture)); assert.equal(receipt.coreComparison.sourceSha256, sha(fixture));
+  assert.equal(receipt.coreComparison.policy, "default"); assert.equal(receipt.coreComparison.singleColdRunOnly, true);
+  assert.equal(receipt.coreComparison.acceptedOptimization, false); assert.equal(receipt.blankBaseline, null);
+  assert.equal(receipt.memory.incrementalPrivateMiB, null); assert.equal(receipt.memory.validSamples, 21);
+  assert.equal(receipt.browserResult.type, "complete"); assert.equal(receipt.browserResult.selection.wasmFallbackCore, "default");
+  assert.equal(receipt.independentFullDecodePassed, true); assert.equal(receipt.exportedBytes, 98585);
+  assert.equal(receipt.speedGainProven, false); assert.equal(receipt.status, "failed-private-vp9-browser-smoke");
+});
+test("single-thread control stopped at host safety preflight, not a conversion or a speed result", async () => {
+  const receipt = await json("evidence/2026-11-01-webcodecs-vp9-comparison-single-core.json");
+  assert.equal(receipt.hostMemory.safeToStart, false); assert.equal(receipt.hostMemory.freeVirtualBytes, 2046251008);
+  assert.equal(receipt.hostMemory.requiredVirtualBytes, 2147483648); assert.equal(receipt.browserResult, undefined);
+  assert.equal(receipt.memory, undefined); assert.equal(receipt.browserPin, undefined); assert.deepEqual(receipt.processCleanup, []);
+  assert.equal(receipt.ownedRuntimeRemoved, false); assert.equal(receipt.speedGainProven, false);
+  assert.equal(receipt.status, "failed-private-vp9-browser-smoke");
+  assert.ok(receipt.failures.some(x => x.includes("reading 'version'")), "Retain the historical early-finally bug, do not rewrite receipt as fixed");
+  assert.equal(receipt.originalAfter.sha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
+});
+test("allocation-control archives preserve exact raw sampling and all owned cleanup evidence", async () => {
+  const saved = await json("evidence/2026-11-01-webcodecs-vp9-allocation-control-archives.json");
+  assert.equal(saved.originalBytes, 548573); assert.equal(saved.retainedBytes, 173626); assert.equal(saved.reports.length, 2);
+  for (const row of saved.reports) {
+    assert.equal(sha(await read(row.file)), row.compactSha256);
+    const packed = await read(row.archive.file); assert.equal(sha(packed), row.archive.sha256);
+    const raw = gunzipSync(packed, { maxOutputLength: 4194304 }); assert.equal(sha(raw), row.archive.decodedSha256);
+    const receipt = JSON.parse(raw); assert.equal(receipt.ownedRuntimeRemoved, true); assert.equal(receipt.ownedStaticStageRemoved, true);
+    assert.equal(receipt.processCleanup.length, 3); assert.ok(receipt.processCleanup.every(x => x.status === "owned-identity-absent"));
+    assert.deepEqual(receipt.originalAfter, receipt.originalBefore);
+    assert.equal(receipt.originalAfter.sha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
+  }
+});
 test("rebuilt and CPU fallback driver changes are reversible and retain independent decode and full250MiB checks", async () => {
   const source = (await read("scripts/test-webcodecs-vp9-smoke.mjs")).toString();
   for (const name of ["rebuilt-native", "rebuilt-cpu-fallback"]) {

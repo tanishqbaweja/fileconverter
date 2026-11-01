@@ -1,5 +1,20 @@
 # Remaining work audit
 
+Current M-09 control state (2026-11-01): default identical-input CPU conversion
+is real/decoded butFAIL because stable blank baseline is unavailable; incremental
+memory=NULL, not zero. Single-thread control did NOT launch Chrome due2GiB host
+RAM preflight. That receipt (including missing-pin finally bug) is retained.
+Early-finally reporting fixed/tested separately; archive compression preserves
+the exact realm/default raw reports and failures. No memory/speed optimization
+has been accepted and public defaults remain unchanged. Host RAM has now changed
+to4.12GiB available virtual; a separately guarded recovery attempts the first real
+single-core browser conversion with the same58,389B source/settings and unchanged
+250MiB formula. It cannot establish a paired memory gain against the NULL default.
+Recovery result PENDING. Still missing: pixel/timestamp/full-metadata qualification,
+identical-input repeatable A/B, original/near10GB scaling, recovery and browsers.
+No host settings/services/apps changed; full goal remains ACTIVE and broader
+format/fidelity/source/security/release backlog below is not waived.
+
 M-09 realm diagnosis now executed:295.285MiB stillFAIL/20valid0missing, perturbed
 and NOT acceptance. All8helpers observed with~1.25MiB JS heap each; no missing
 replies. Exact native/compiled-code/stack source remains unproven; backingStorage
@@ -9,13 +24,9 @@ same pinned58,389B source/SHA and encoding controls. Both module and ABI differ;
 not isolated-thread causality, not original/near10GB stress. Defaults/selector
 unchanged; variant is private pending genuine browser/fidelity/memory evidence.
 
-M-09 next control is a distinct instrumented realm/lifecycle diagnosis, not a
-replay of the old fallback: bounded private checkpoints expose heap statistics
-before native work, after rejected-candidate disposal, with8CPU helpers initialized,
-and after output close. No instance/file exposed to observer; default jobs unchanged.
-All original gates stay intact, but diagnostic timing/memory will be labelled
-perturbed and cannot qualify publication. Existing300.871MiB remains authoritative.
-Actual run pending, broader objective unchanged; no fresh source build necessary.
+M-09 realm/lifecycle diagnosis has completed (receipt above); it is no longer
+pending. Existing300.871MiB unperturbed failure remains authoritative. No fresh
+native source build is necessary for the existing-core control.
 
 Stage handoff: final production build/TypeScript/affected lint/diff PASS;
 manifest-only consistency403/403,2hidden pending,0PDF. No fresh full matrix or

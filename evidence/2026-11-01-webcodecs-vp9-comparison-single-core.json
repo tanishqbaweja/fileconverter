@@ -1,0 +1,39 @@
+{
+  "startedAt": "2026-11-01T14:25:02.300Z",
+  "status": "failed-private-vp9-browser-smoke",
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nfalse !== true\n\n    at file:///H:/Github%20Repositories/fileconverter/work/webcodecs-vp9-diagnostic-ZBXgyC/diagnostic.mjs:47:63\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+    "Final cleanup/integrity: TypeError: Cannot read properties of undefined (reading 'version')"
+  ],
+  "sourcePins": {},
+  "blankSamples": [],
+  "scope": "One genuine private VP9 small-worker OPFS conversion with native validation; NOT full production UI, direct picker, A/B speed or original/near10GB qualification",
+  "fullStressAcceptance": false,
+  "speedGainProven": false,
+  "publicAcceptance": false,
+  "headed": false,
+  "browserServicesDisabled": false,
+  "formula": "(peak complete Chromium tree private bytes during conversion - earliest stable clean blank tree private bytes) / 1048576",
+  "executedHead": "f73af3cb86c4e5e5e102ff25b69c804c756319df",
+  "hostMemory": {
+    "acquiredAt": "2026-11-01T14:25:02.8272105Z",
+    "freePhysicalBytes": 4227407872,
+    "freeVirtualBytes": 2046251008,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": false,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "nativeMemory": null,
+  "nativeOwnership": null,
+  "processCleanup": [],
+  "ownedRuntimeRemoved": false,
+  "originalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "finishedAt": "2026-11-01T14:25:09.291Z",
+  "serverLogTail": ""
+}
