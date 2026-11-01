@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+2026-11-01 private WebCodecs VP9 implementation checkpoint (M-09, NOT acceptance):
+new bounded encoder bridge plus actual FFmpeg encoder plug-in retain the exact
+existing within_remux.c AVIO/demux/decode/mux source (ae501a2e...0683068).
+35 mock boundary/lifetime checks PASS116.896ms; bridge+source-recipe checks total
+38 PASS106.782ms/0fail/skip. Tests cover padded/negative-stride planes, direct
+native packet copy, pending-packet backpressure, timestamp/keyframe enforcement,
+unsupported settings, malformed bounds, encoder errors and cancellation cleanup.
+These are NOT real codec conversions, speed measurements or Chromium memory tests.
+Initial affected lint found reserved `module` identifier; renamed, rerun PASS.
+Pinned FFmpeg8.1.2/Emscripten6.0.4 non-Docker private build recipe/workflow now
+exists: fixed nonshared32MiB heap, one native thread, no libvpx encoder, unchanged
+real native I/O wrapper, JSPI encoder calls, one raw frame and encoded packet in
+flight. Source compilation/static native proof PENDING. Public modules/selector
+unchanged. Browser integration, CPU fallback selection, fidelity/metadata tests,
+three-run identical-input A/B speed and full-tree250MiB/original/near10GB gates
+remain REQUIRED. No accepted acceleration or whole-goal completion is claimed.
+
 SVG publication gate hosted TERMINAL:41013161607 at8b93711a SUCCESS, job250s.
 Public evidence403/403, full lint/TypeScript/production build PASS;2075 portable
 PASS/0fail/1 existing untracked-original Linux skip90.865s,622files;162 private
