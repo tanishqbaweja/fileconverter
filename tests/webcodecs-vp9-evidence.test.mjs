@@ -102,3 +102,70 @@ test("all diagnostic derivatives retain the exact baseline and250MiB verdict wit
     assert.ok(generated.includes('incrementalPrivateMiB: peaks.peak && report.blankBaseline ?'));
   }
 });
+test("rebuilt native error mapping is source-bound and regressed through a genuine48-frame browser conversion", async () => {
+  const native = await json("evidence/2026-11-01-webcodecs-vp9-native-41309113218.json"), receipt = await detailed("rebuilt-native");
+  assert.equal(native.head, "cd0f079588bed73162e1b9bd9b52e76bc2e30837");
+  assert.deepEqual(native.nativeContract.artifacts["within-webcodecs-vp9.wasm"], { bytes: 5561904,
+    sha256: "6f4457e1e292ee016c51a76ff7acbd51b6541c2183e4ebc7e9e31b23d6878c26" });
+  assert.equal(receipt.nativeTool.runId, 41309113218); assert.equal(receipt.browserResult.encoder.frames, 48);
+  assert.equal(receipt.browserResult.encoder.framesClosed, 48); assert.equal(receipt.independentFullDecodePassed, true);
+  assert.equal(receipt.browserResult.metrics.elapsedMs, receipt.browserResult.elapsedMs);
+  assert.equal(receipt.memory.incrementalPrivateMiB, (511881216 - 330891264) / 1048576);
+  assert.equal(receipt.memory.validSamples, 30); assert.equal(receipt.memory.unavailableSamples, 0);
+  assert.equal(receipt.status, "passed-one-small-private-browser-conversion-not-public-or-stress-acceptance");
+});
+test("real CPU fallback output is decoded but300.871MiB stays a failed qualification, not a certified fast route", async () => {
+  const receipt = await detailed("rebuilt-cpu-fallback"), result = receipt.browserResult;
+  assert.equal(result.type, "complete"); assert.equal(result.selection.backend, "wasm");
+  assert.match(result.selection.fallbackReason, /2\/2\/1\/1/); assert.doesNotMatch(result.selection.fallbackReason, /Network is down/);
+  assert.equal(result.encoder.frames, 0); assert.equal(result.encoder.currentPackedBytes, 0); assert.equal(result.encoder.pendingPacketBytes, 0);
+  assert.equal(receipt.outputProbe.streams[0].codec_name, "vp9"); assert.equal(Number(receipt.outputProbe.streams[0].nb_read_frames), 48);
+  assert.equal(receipt.independentFullDecodePassed, true); assert.equal(receipt.outputProbe.streams[0].color_primaries, undefined);
+  assert.equal(receipt.outputProbe.streams[0].color_transfer, undefined); assert.equal(Number(receipt.outputProbe.format.duration), 1.958);
+  assert.equal(result.metrics.activeWorkerCount, 9); assert.equal(result.metrics.wasmMemoryBytes, 50331648);
+  assert.equal(result.metrics.peakPendingOperations, 1); assert.equal(result.metrics.peakQueuedBytes, 98174);
+  assert.equal(receipt.memory.incrementalPrivateMiB, (648970240 - 333484032) / 1048576);
+  assert.equal(receipt.memory.incrementalPrivateMiB, 300.87109375); assert.equal(receipt.memory.validSamples, 19); assert.equal(receipt.memory.unavailableSamples, 0);
+  assert.equal(receipt.status, "failed-private-vp9-browser-smoke"); assert.ok(receipt.failures.some(x => x.includes("250")));
+  assert.equal(receipt.publicAcceptance, false); assert.equal(receipt.speedGainProven, false);
+});
+test("rebuilt control archives keep exact raw private-memory data and all cleanup/checksum evidence", async () => {
+  const saved = await json("evidence/2026-11-01-webcodecs-vp9-rebuilt-control-archives.json"); assert.equal(saved.reports.length, 2);
+  assert.equal(saved.originalBytes, 520626); assert.equal(saved.retainedBytes, 154656);
+  for (const row of saved.reports) {
+    const compact = await read(row.file), packed = await read(row.archive.file), raw = gunzipSync(packed, { maxOutputLength: 4194304 });
+    assert.equal(sha(compact), row.compactSha256); assert.equal(sha(packed), row.archive.sha256); assert.equal(sha(raw), row.archive.decodedSha256);
+    const receipt = JSON.parse(raw); assert.equal(receipt.ownedRuntimeRemoved, true); assert.equal(receipt.ownedStaticStageRemoved, true);
+    assert.ok(receipt.processCleanup.every(x => x.status === "owned-identity-absent")); assert.deepEqual(receipt.originalBefore, receipt.originalAfter);
+    assert.equal(receipt.originalAfter.sha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
+  }
+});
+test("offline fallback allocation annotation retains every process and original simultaneous total", async () => {
+  const report = await json("evidence/2026-11-01-webcodecs-vp9-fallback-allocation.json");
+  assert.equal(report.newBrowserRuns, 0); assert.equal(report.processExclusions, false); assert.equal(report.memoryFormulaChanged, false);
+  assert.equal(report.processes.length, 10); assert.equal(report.processes.reduce((sum, p) => sum + p.peakPrivateBytes, 0), 648970240);
+  assert.equal(report.dominantRenderer.pid, 8996); assert.equal(report.dominantRenderer.type, "renderer");
+  assert.equal(report.dominantRenderer.birthAndParentMatched, true); assert.equal(report.dominantRenderer.increaseSinceLoadedIdleBytes, 246960128);
+  assert.equal(report.originalIncrementalPrivateMiB, 300.87109375); assert.equal(report.additionalAllocationCategoriesMeasured, false);
+});
+test("superseded native tool cleanup was exact-owned and recoverable, not deletion of user media", async () => {
+  const receipt = await json("evidence/2026-11-01-webcodecs-vp9-superseded-input-cleanup.json");
+  assert.equal(receipt.target, "work/webcodecs-vp9-input-41305653513"); assert.equal(receipt.files, 14); assert.equal(receipt.bytes, 6004849);
+  assert.equal(receipt.removed, true); assert.equal(receipt.verifiedExactOwnedContents, true); assert.equal(receipt.userMediaReadOrRemoved, false);
+  assert.equal(receipt.replacementRunId, 41309113218); assert.equal(receipt.replacementBrowserRegressionPassed, true);
+  assert.equal(receipt.recovery.artifactId, 13082584850); assert.equal(receipt.recovery.localCopyRetained, false);
+});
+test("rebuilt and CPU fallback driver changes are reversible and retain independent decode and full250MiB checks", async () => {
+  const source = (await read("scripts/test-webcodecs-vp9-smoke.mjs")).toString();
+  for (const name of ["rebuilt-native", "rebuilt-cpu-fallback"]) {
+    const recipe = await json(`evidence/2026-11-01-webcodecs-vp9-${name}-recipe.json`); let generated = source;
+    for (const [before, after] of recipe.edits) { assert.equal(generated.split(before).length, 2); generated = generated.replace(before, after); }
+    assert.equal(sha(generated), recipe.generatedSha256);
+    assert.equal(gunzipSync(Buffer.from(recipe.generatedSourceGzipBase64, "base64")).toString(), generated);
+    assert.ok(generated.includes('assert.equal(Number(stream.nb_read_frames), 48)'));
+    assert.ok(generated.includes('peaks.unavailableSamples === 0 && report.memory.incrementalPrivateMiB <= 250'));
+    assert.ok(generated.includes('assert.equal(report.blankBaseline?.stable, true, "Stable blank baseline remains required'));
+    for (const [before, after] of recipe.edits.toReversed()) { assert.equal(generated.split(after).length, 2); generated = generated.replace(after, before); }
+    assert.equal(generated, source);
+  }
+});

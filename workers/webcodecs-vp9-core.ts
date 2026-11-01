@@ -45,7 +45,9 @@ export async function loadWebCodecsVp9Core(importer: Importer = url => import(/*
       let native: Awaited<ReturnType<NativeFactory>> | undefined, disposed = false;
       const dispose = () => {
         if (disposed) return; disposed = true;
-        try { native?.dispose?.(); } finally { bridge.close(); last = bridge.snapshot(); native = undefined; active = false; }
+        try { native?.dispose?.(); } finally {
+          bridge.close(); last = bridge.snapshot(); native = undefined; selectionRejected = undefined; active = false;
+        }
       };
       try {
         native = await nativeFactory({ ...options, withinWebCodecs: nativeBridge });

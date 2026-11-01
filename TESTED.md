@@ -1,5 +1,47 @@
 # Tested conversion ledger
 
+Final local stage gates: production build PASS (existing Vite/config/sourcemap
+warnings retained), TypeScript/affected lint/diff PASS. Public MANIFEST-ONLY audit
+403passed/403entries,2hidden pending,0public nonpassing,0PDF; this is NOT a fresh
+403-route browser/stress replay. Post-archive14 receipt checks PASS142.228ms.
+Public profiles/native assets unchanged; no deployment. Current static stage
+absent, only reusable native4 input remains; no browser/build work is left running.
+Next goal work is fallback allocation/lifecycle qualification, not completion.
+
+2026-11-01 rebuilt-native/CPU-fallback TERMINAL at872a5c90:
+rebuilt WebCodecs path PASS:48 genuine VP9 frames,97,756B output, full independent
+decode,3.060810s, stable blank330,891,264B / full-tree peak511,881,216B =>
+172.60546875MiB,30valid0missing. The native error mapping fix is browser-regressed.
+Real automatic CPU fallback produced valid48-frame VP9/98,594B/full-decode output
+in1.425430s but STRICT MEMORY FAIL: blank333,484,032B / peak648,970,240B =>
+300.87109375MiB,19valid0missing.9 private-path active workers,48MiB Wasm,
+98,174B queue/write, one pending operation; failed WebCodecs candidate0frames/
+0packets and closed buffers. Source/output both retain unspecified primaries/
+transfer rather than guessing. CPU container duration1.958s vs2s source is recorded;
+complete timestamp/metadata/pixel fidelity still needs qualification. Different
+sources/configuration paths mean these times are NOT an A/B speedup claim.
+No public selector/coordinator selects this optional path; fallback remains
+UNQUALIFIED. No threshold/formula/process/service change or unsupported-to-pass
+relabel. Both controls cleaned all3 owned roots/staged assets/fixtures/output/
+profiles; protected original full SHA/size unchanged,0forbidden requests.
+evidence/2026-11-01-webcodecs-vp9-rebuilt-{native,cpu-fallback}.json.
+
+Offline birth+parent-matched diagnosis keeps all10 processes and the unchanged
+648,970,240B peak. Renderer8996 rose53,280,768->300,240,896B from loaded idle
+(+235.51953125MiB); GPU growth0.06640625MiB. Exact native/V8 allocation source
+NOT proven. Removed unnecessary raw exception references across CPU work and
+on bridge/core close; bounded reason text retained. This is code hygiene only,
+NOT a measured memory fix;300.871MiB failure remains until a distinct profile.
+Previously tested raw-HEVC single-thread VP9 left only0.246MiB unverified headroom
+(2026-09-09); do NOT replay that unchanged configuration as a new solution.
+79 focused checks PASS249.354ms/0fail/skip; TypeScript/affected lint PASS.
+Two new raw receipts520,626B ->154,656B lossless compact+gzip, exact roundtrips.
+Superseded private native3 tool6,004,849B/14 exact-owned files removed after native4
+regression; recoverable from artifact13082584850 until2026-11-02T12:19:52Z or
+pinned sourceb97e6cd6. Only current reusable native4 tool remains in approved work.
+Required next: new allocation/lifecycle control, qualified low-memory fallback,
+same-source/settings A/B, pixel/metadata/recovery and original/near10GB gates.
+
 Native errno fix source build4 TERMINAL:41309113218/cd0f0795 SUCCESS,41 hosted
 focused checks PASS, owned SDK/build/runtime cleanup PASS. Authenticated fixed
 32MiB/nonshared Wasm5,561,904B SHA6f4457e1e292ee016c51a76ff7acbd51b6541c2183e4ebc7e9e31b23d6878c26.

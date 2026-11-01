@@ -1,0 +1,18 @@
+{
+  "target": "work/webcodecs-vp9-input-41305653513",
+  "ownedRunId": 41305653513,
+  "files": 14,
+  "bytes": 6004849,
+  "verifiedExactOwnedContents": true,
+  "replacementRunId": 41309113218,
+  "replacementBrowserRegressionPassed": true,
+  "recovery": {
+    "artifactId": 13082584850,
+    "artifactExpiresAt": "2026-11-02T12:19:52Z",
+    "pinnedSourceRebuildHead": "b97e6cd688e88a07e0c02cb6e7169670aa2fb682",
+    "localCopyRetained": false
+  },
+  "userMediaReadOrRemoved": false,
+  "removed": true,
+  "publicAcceptance": false
+}

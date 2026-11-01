@@ -122,7 +122,7 @@ export function createWebCodecsVp9Bridge({ Encoder = globalThis.VideoEncoder, Fr
       catch (error) { stop(error); throw error; }
     },
     cancel,
-    close() { signal?.removeEventListener("abort", cancel); stop(fault ?? new Error("VP9 bridge closed")); },
+    close() { signal?.removeEventListener("abort", cancel); stop(undefined); fault = null; },
     snapshot() { return { frames, packets, framesClosed, busy, closed, currentPackedBytes: packed?.byteLength ?? 0,
       pendingPacketBytes: pending?.byteLength ?? 0, peakPackedBytes, peakPacketBytes, maximumPacketsInFlight: 1,
       maximumFramesInFlight: 1, supportProbeCount, hardwarePreferredSupported, selectedHardwarePreference,

@@ -10,7 +10,7 @@ export async function runOptionalWebCodecsVp9(options: MediaRemuxOptions, depend
   if (![10, 11].includes(options.remuxProfile) || options.webCodecsVp9Core || options.vpxDecoderCore || options.mpeg2SplitCore ||
       options.aiffSpecialistCore || options.lowMemoryVideoCore || options.singleThreadVideoCore)
     throw new TypeError("Optional VP9 requires an unambiguous native VP9 profile and no other injected core.");
-  let writeAttempts = 0, rejected: DOMException | undefined;
+  let writeAttempts = 0, fallbackReason = "";
   const original = options.writable, run = dependencies.run ?? runMediaRemux;
   const writable: RandomAccessDestination = {
     requiresOwnedWriteBuffer: original.requiresOwnedWriteBuffer, additionalWorkerCount: original.additionalWorkerCount,
@@ -29,7 +29,9 @@ export async function runOptionalWebCodecsVp9(options: MediaRemuxOptions, depend
   } catch (error) {
     if (options.isCancelled()) throw new DOMException("Conversion cancelled", "AbortError");
     if (!(error instanceof DOMException) || error.name !== "NotSupportedError" || writeAttempts !== 0) throw error;
-    rejected = error;
+    // Keep bounded text, not the exception/stack across the entire CPU job.
+    // An exception can retain its initialization call graph and native instance.
+    fallbackReason = error.message.slice(0, 512);
   }
   // Never replay a write failure, partial output, cancelled job or corrupt source.
   // The candidate's production runtime already disposed its engine/input reader.
@@ -38,5 +40,5 @@ export async function runOptionalWebCodecsVp9(options: MediaRemuxOptions, depend
   options.post({ type: "warning", jobId: options.jobId,
     message: "WebCodecs could not initialize this exact VP9 configuration; using the existing bounded Wasm encoder with the same requested settings." });
   await run({ ...options, writable, forceAsynchronousInput: true });
-  return { backend: "wasm", fallbackReason: rejected.message.slice(0, 512) };
+  return { backend: "wasm", fallbackReason };
 }

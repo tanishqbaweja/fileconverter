@@ -69,3 +69,10 @@ test("optional VP9 rejects mixed core/profile requests before any conversion wor
     assert.equal(h.calls.length, 0); assert.deepEqual(h.truncates, []);
   }
 });
+test("optional VP9 snapshots bounded error text before CPU work, not after the entire conversion", async () => {
+  const h = harness(); let readBeforeCpu = false;
+  const error = unsupported(); Object.defineProperty(error, "message", { get() { readBeforeCpu = true; return "x".repeat(1024); } });
+  h.deps.loadCore = async () => { throw error; };
+  h.deps.run = async options => { assert.equal(readBeforeCpu, true); h.calls.push(options); };
+  const result = await runOptionalWebCodecsVp9(h.options, h.deps); assert.equal(result.fallbackReason.length, 512);
+});

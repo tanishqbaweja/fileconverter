@@ -5,10 +5,12 @@ import { access, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { gzipSync, gunzipSync } from "node:zlib";
 const root = path.resolve(import.meta.dirname, ".."), evidence = path.join(root, "evidence");
-assert.equal(process.argv.length, 2);
-const names = ["first-smoke", "functional-diagnostic", "native-color-diagnostic", "explicit-color-fixture", "frame-color-fixture", "encoder-preference-fallback"];
+const rebuilt = process.argv[2] === "--rebuilt-controls";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && rebuilt));
+const names = rebuilt ? ["rebuilt-native", "rebuilt-cpu-fallback"] :
+  ["first-smoke", "functional-diagnostic", "native-color-diagnostic", "explicit-color-fixture", "frame-color-fixture", "encoder-preference-fallback"];
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
-const output = path.join(evidence, "2026-11-01-webcodecs-vp9-diagnostic-archives.json");
+const output = path.join(evidence, "2026-11-01-webcodecs-vp9-" + (rebuilt ? "rebuilt-control-archives" : "diagnostic-archives") + ".json");
 await assert.rejects(access(output), { code: "ENOENT" });
 const prepared = [];
 // Preflight every terminal before mutating any owned receipt.

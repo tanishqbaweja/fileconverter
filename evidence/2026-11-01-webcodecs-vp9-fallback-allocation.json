@@ -1,0 +1,150 @@
+{
+  "scope": "Offline process-role diagnosis of the existing failed fallback; NOT allocation-stack proof or new acceptance",
+  "originalIncrementalPrivateMiB": 300.87109375,
+  "blankPrivateBytes": 333484032,
+  "simultaneousPeakPrivateBytes": 648970240,
+  "processes": [
+    {
+      "pid": 8996,
+      "parentPid": 34284,
+      "createdAt": "2026-11-01T13:14:55.9830240Z",
+      "type": "renderer",
+      "peakPrivateBytes": 300240896,
+      "loadedIdlePrivateBytes": 53280768,
+      "increaseSinceLoadedIdleBytes": 246960128,
+      "birthAndParentMatched": true
+    },
+    {
+      "pid": 13116,
+      "parentPid": 34284,
+      "createdAt": "2026-11-01T13:14:52.0374793Z",
+      "type": "utility",
+      "peakPrivateBytes": 15896576,
+      "loadedIdlePrivateBytes": 14897152,
+      "increaseSinceLoadedIdleBytes": 999424,
+      "birthAndParentMatched": true
+    },
+    {
+      "pid": 20876,
+      "parentPid": 34284,
+      "createdAt": "2026-11-01T13:14:52.0365558Z",
+      "type": "gpu-process",
+      "peakPrivateBytes": 132599808,
+      "loadedIdlePrivateBytes": 132530176,
+      "increaseSinceLoadedIdleBytes": 69632,
+      "birthAndParentMatched": true
+    },
+    {
+      "pid": 32284,
+      "parentPid": 34284,
+      "createdAt": "2026-11-01T13:14:52.0710838Z",
+      "type": "renderer",
+      "peakPrivateBytes": 38187008,
+      "loadedIdlePrivateBytes": 44322816,
+      "increaseSinceLoadedIdleBytes": -6135808,
+      "birthAndParentMatched": true
+    },
+    {
+      "pid": 34284,
+      "parentPid": 20156,
+      "createdAt": "2026-11-01T13:14:51.5697843Z",
+      "type": "browser",
+      "peakPrivateBytes": 90980352,
+      "loadedIdlePrivateBytes": 70131712,
+      "increaseSinceLoadedIdleBytes": 20848640,
+      "birthAndParentMatched": true
+    },
+    {
+      "pid": 37016,
+      "parentPid": 34284,
+      "createdAt": "2026-11-01T13:14:52.4031026Z",
+      "type": "renderer",
+      "peakPrivateBytes": 23441408,
+      "loadedIdlePrivateBytes": 23441408,
+      "increaseSinceLoadedIdleBytes": 0,
+      "birthAndParentMatched": true
+    },
+    {
+      "pid": 37912,
+      "parentPid": 34284,
+      "createdAt": "2026-11-01T13:14:56.4476347Z",
+      "type": "renderer",
+      "peakPrivateBytes": 21323776,
+      "loadedIdlePrivateBytes": 21323776,
+      "increaseSinceLoadedIdleBytes": 0,
+      "birthAndParentMatched": true
+    },
+    {
+      "pid": 41316,
+      "parentPid": 34284,
+      "createdAt": "2026-11-01T13:15:20.5927614Z",
+      "type": "renderer",
+      "peakPrivateBytes": 15511552,
+      "loadedIdlePrivateBytes": 15511552,
+      "increaseSinceLoadedIdleBytes": 0,
+      "birthAndParentMatched": true
+    },
+    {
+      "pid": 44828,
+      "parentPid": 34284,
+      "createdAt": "2026-11-01T13:14:52.0727213Z",
+      "type": "utility",
+      "peakPrivateBytes": 8253440,
+      "loadedIdlePrivateBytes": 8253440,
+      "increaseSinceLoadedIdleBytes": 0,
+      "birthAndParentMatched": true
+    },
+    {
+      "pid": 46020,
+      "parentPid": 34284,
+      "createdAt": "2026-11-01T13:14:51.6049501Z",
+      "type": "unknown",
+      "peakPrivateBytes": 2535424,
+      "loadedIdlePrivateBytes": 2674688,
+      "increaseSinceLoadedIdleBytes": -139264,
+      "birthAndParentMatched": true
+    }
+  ],
+  "dominantRenderer": {
+    "pid": 8996,
+    "parentPid": 34284,
+    "createdAt": "2026-11-01T13:14:55.9830240Z",
+    "type": "renderer",
+    "peakPrivateBytes": 300240896,
+    "loadedIdlePrivateBytes": 53280768,
+    "increaseSinceLoadedIdleBytes": 246960128,
+    "birthAndParentMatched": true
+  },
+  "actualPrivateWorkerMetrics": {
+    "inputBytes": 58468,
+    "outputBytes": 98594,
+    "queuedBytes": 0,
+    "peakQueuedBytes": 98174,
+    "pendingOperations": 0,
+    "peakPendingOperations": 1,
+    "maxReadChunkBytes": 58468,
+    "maxWriteChunkBytes": 98174,
+    "elapsedMs": 1425.4300000667572,
+    "wasmMemoryBytes": 50331648,
+    "peakWasmMemoryBytes": 50331648,
+    "wasmMemories": {},
+    "sharedArrayBufferBytes": 50331652,
+    "activeWorkerCount": 9,
+    "imageWorkingBytes": 0,
+    "audioQualityArgument": {
+      "requested": "automatic",
+      "nativeCode": 0,
+      "automaticPolicy": null
+    }
+  },
+  "hypothesesNotProven": [
+    "Eight helper worker contexts/compiled code and stacks",
+    "Retained failed-candidate instance or exception call graph"
+  ],
+  "codeHygieneFollowup": "Keep only bounded rejection text before CPU work; clear exception references on bridge/core close. Byte effect unmeasured;300.871MiB failure retained.",
+  "additionalAllocationCategoriesMeasured": false,
+  "newBrowserRuns": 0,
+  "memoryFormulaChanged": false,
+  "processExclusions": false,
+  "publicAcceptance": false
+}
