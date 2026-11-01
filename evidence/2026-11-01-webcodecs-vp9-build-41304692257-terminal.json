@@ -1,0 +1,88 @@
+{
+  "runId": 41304692257,
+  "head": "b65aad26320e4dbe1a09fa57e468f2f1f1e44631",
+  "branch": "codex/webcodecs-vp9-source-20261101",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/41304692257",
+  "publicAcceptance": false,
+  "browserConversions": 0,
+  "completeChromiumMemoryMeasured": false,
+  "speedGainProven": false,
+  "conclusion": "failure",
+  "job": {
+    "id": 124842589518,
+    "startedAt": "2026-11-01T12:04:10Z",
+    "completedAt": "2026-11-01T12:04:45Z",
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "conclusion": "success"
+      },
+      {
+        "name": "Own all runtime scratch",
+        "conclusion": "success"
+      },
+      {
+        "name": "Check bounded JS bridge",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install build prerequisites",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install pinned SDK locally without Docker",
+        "conclusion": "success"
+      },
+      {
+        "name": "Compile real FFmpeg encoder plug-in and verify static native contract",
+        "conclusion": "failure"
+      },
+      {
+        "name": "Retain reusable private tools and compact source proofs only",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "Remove disposable owned build and SDK data",
+        "conclusion": "success"
+      },
+      {
+        "name": "Remove owned runtime scratch",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "conclusion": "success"
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "log": {
+    "bytes": 62154,
+    "sha256": "1248f4200caa6c91e5cceaca6561f484ac18a6f85141afff5e309f46e5f12680",
+    "errorLines": [
+      "build\tCompile real FFmpeg encoder plug-in and verify static native contract\t2026-11-01T12:04:41.5907765Z curl: (35) Recv failure: Connection reset by peer",
+      "build\tCompile real FFmpeg encoder plug-in and verify static native contract\t2026-11-01T12:04:41.5960018Z ##[error]Process completed with exit code 35."
+    ]
+  },
+  "focusedTests": null,
+  "sdkInstalled": true,
+  "cleanupStepsPassed": true,
+  "buildAcceptance": false,
+  "status": "failed-private-source-build-retained-not-conversion-acceptance",
+  "ownedInspectionRuntimeRemoved": true
+}

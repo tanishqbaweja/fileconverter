@@ -1,0 +1,16 @@
+{
+  "scope": "Recovered dispatch after display-name assertion failed; no duplicate build dispatched",
+  "branch": "codex/webcodecs-vp9-source-20261101",
+  "head": "b65aad26320e4dbe1a09fa57e468f2f1f1e44631",
+  "run": {
+    "databaseId": 41304692257,
+    "headSha": "b65aad26320e4dbe1a09fa57e468f2f1f1e44631",
+    "createdAt": "2026-11-01T12:04:06Z",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/41304692257"
+  },
+  "scriptError": "GitHub workflow display name was Reproduce FFmpeg without Docker, not the name from the selected ref; display name is not selection proof",
+  "observedSelectedBuildStep": "Compile real FFmpeg encoder plug-in and verify static native contract",
+  "dispatchMayHaveOccurred": true,
+  "buildAcceptance": false,
+  "publicAcceptance": false
+}

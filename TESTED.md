@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+WebCodecs source attempt1 TERMINAL:41304692257/b65aad26 failed BEFORE source
+compilation, curl35 connection reset fetching the pinned FFmpeg archive. Focused
+test step, SDK installation and both owned cleanup steps PASS. No Wasm artifact
+or conversion result. Receipt collection initially rejected GitHub's registered
+workflow display name; recovered the same exact-head run, never redispatched.
+Selection is proved by exact branch/head/job step, not display name. New bounded
+curl all-error retries and durable pre-dispatch intent prevent silent loops.
+evidence/2026-11-01-webcodecs-vp9-build-41304692257-terminal.json.
+
 2026-11-01 private WebCodecs VP9 implementation checkpoint (M-09, NOT acceptance):
 new bounded encoder bridge plus actual FFmpeg encoder plug-in retain the exact
 existing within_remux.c AVIO/demux/decode/mux source (ae501a2e...0683068).

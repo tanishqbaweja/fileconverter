@@ -18,7 +18,7 @@ jobs:
       - name: Own all runtime scratch
         run: node scripts/ci-owned-runtime.mjs prepare
       - name: Check bounded JS bridge
-        run: node --test tests/webcodecs-vp9-bridge.test.mjs tests/webcodecs-vp9-source.test.mjs
+        run: node --test --test-reporter=tap tests/webcodecs-vp9-bridge.test.mjs tests/webcodecs-vp9-source.test.mjs
       - name: Install build prerequisites
         run: |
           sudo apt-get update

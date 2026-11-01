@@ -6,10 +6,12 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { createHash } from "node:crypto";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
-assert.equal(process.argv.length, 2);
+assert.ok(process.argv.length === 2 || process.argv.length === 3);
+const attempt = process.argv[2] ?? "1"; assert.match(attempt, /^[1-9]$/);
+const suffix = attempt === "1" ? "" : "-attempt" + attempt;
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile);
-const branch = "codex/webcodecs-vp9-source-20261101", workflowPath = ".github/workflows/reproduce-ffmpeg-nondocker.yml";
-const output = path.join(root, "evidence/2026-11-01-webcodecs-vp9-build-branch.json");
+const branch = "codex/webcodecs-vp9-source-20261101" + suffix, workflowPath = ".github/workflows/reproduce-ffmpeg-nondocker.yml";
+const output = path.join(root, "evidence/2026-11-01-webcodecs-vp9-build-branch" + suffix + ".json");
 await assert.rejects(access(output), { code: "ENOENT" });
 const runtime = await createOwnedRuntimeScratch("webcodecs-vp9-git-index-");
 const git = async (args, env = runtime.env) => (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", args,

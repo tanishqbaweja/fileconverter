@@ -25,7 +25,8 @@ trap cleanup EXIT
 trap 'exit 130' INT TERM
 export TMPDIR="${BUILD_ROOT}/tmp" EM_CACHE="${BUILD_ROOT}/cache" EMCC_CORES=4
 mkdir "${TMPDIR}" "${EM_CACHE}"
-curl --fail --location --retry 3 https://ffmpeg.org/releases/ffmpeg-8.1.2.tar.xz --output "${BUILD_ROOT}/ffmpeg.tar.xz"
+curl --fail --location --retry 3 --retry-all-errors --retry-delay 2 --retry-max-time 120 --connect-timeout 20 --max-time 120 \
+  https://ffmpeg.org/releases/ffmpeg-8.1.2.tar.xz --output "${BUILD_ROOT}/ffmpeg.tar.xz"
 printf '%s  %s\n' 464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c "${BUILD_ROOT}/ffmpeg.tar.xz" | sha256sum --check --strict
 tar -xf "${BUILD_ROOT}/ffmpeg.tar.xz" --directory "${BUILD_ROOT}"
 FFMPEG_ROOT="${BUILD_ROOT}/ffmpeg-8.1.2"

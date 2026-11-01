@@ -1,5 +1,12 @@
 # Remaining work audit
 
+M-09 source attempt1 failed at source fetch (curl35), before any compilation;
+hosted focused checks/SDK and cleanup PASS, no engine artifact. Failure retained
+at evidence/2026-11-01-webcodecs-vp9-build-41304692257-terminal.json. Bounded
+all-error source-download retries and durable dispatch intent added; next build
+must use a new exact-head branch, never duplicate the existing dispatch. This
+does not change any public route or establish a speed/memory benefit.
+
 2026-11-01 M-09 has moved from feasibility-only to PARTIALLY IMPLEMENTED privately:
 bounded WebCodecs VP9 bridge and a real FFmpeg encoder plug-in now exist, with
 38 focused mock/source checks PASS/0fail/skip106.782ms. Existing native demux,
