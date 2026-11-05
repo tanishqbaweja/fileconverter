@@ -1,5 +1,31 @@
 # Tested conversion ledger
 
+2026-11-05 duration-cycle finalization:203focused tests PASS(1518.4227ms),
+affected lint/diff PASS; registry403/403,2hidden pending,0PDF unchanged. These
+regressions authenticate the retained failed browser verdict, not a new conversion
+or public qualification. No expensive browser/native test replayed for this gate.
+
+2026-11-05 compiled duration candidate: genuine browser control TERMINAL FAIL,
+retained in evidence/2026-11-05-webcodecs-vp9-duration-fixed-42013264823.json.
+Container duration is now 2.000s (source 2.000s; previous output 1.958s), all48
+presentation clocks still match exactly, full48-frame SSIM0.993273 passes0.98,
+and all8checked pixel/aspect/color fields match. Output99,405B/48VP9frames fully
+decodes; SHAbe890dca0bb313b91030076c3f057f5be6eaaad98c64307f6dc32f6649819159.
+Strict verdict STILL FAILS because decoded-frame duration fields exist for7/48
+frames only. Missing fields remain unavailable, not fabricated zero or proof of
+missing encoded packet durations. Next distinct investigation: stored Matroska
+track/default/packet timing; do not blindly rebuild or replay unchanged tests.
+Separate whole-tree memory PASS228.22265625MiB (blank354029568/peak593338368B),
+49valid/0missing samples. Actual Wasm32MiB, logical2workers/one owned child handle;
+physical worker overlap/reclamation timing unmeasured. Authenticated private static
+override served exactly1JS/1Wasm; production security/MIME/cache policy preserved,
+no public disk asset replacement. Elapsed4.446155s includes override transport,
+NOT an accepted performance comparison. All3owned process births absent, runtime,
+profile, stage, copied input and converted output removed; protected original
+pre/post size/SHA unchanged,0forbidden requests. Exact raw273089B compacted with
+lossless gzip to89332B total; archive manifest authenticates all bytes. No public
+promotion, accepted optimization, repeat/large-file/full-goal completion claimed.
+
 2026-11-05 duration build42013264823/708178ce TERMINAL SUCCESS (10:44:57-10:50:54UTC):
 pinned SDK/9source checks/private compile/static contract/all cleanup PASS.
 Authenticated GitHub artifact13407119996/digest969d84db...1217b;16exact static

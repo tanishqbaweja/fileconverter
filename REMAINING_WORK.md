@@ -1,11 +1,22 @@
 # Remaining work audit
 
+2026-11-05 private native duration candidate now browser-tested: container duration
+FIXED for the pinned SMALL control (2.000s vs previous1.958s), exact48frame clocks,
+SSIM0.993273 and8metadata fields preserved. Full strict verdict remains FAIL:
+41decoded-frame duration fields unavailable; do not invent them or equate that
+alone with an encoded timing defect. Stored track/default/packet timing proof is
+the next distinct investigation, not an unchanged rebuild/retest. Separate exact
+whole-tree memory PASS228.22265625MiB/49valid0missing. Browser output and all
+disposable owned data/processes removed, original unchanged,0forbidden requests.
+Compact receipt and exact raw archive retained. No accepted speedup/public route;
+original large/repeat/direct/recovery/browser/release and broader gates stay open.
+
 2026-11-05 native duration tool NOW COMPILED/authenticated:42013264823/708178ce,
 9source checks/static contract/all hosted cleanup PASS. Private Wasm9,873,859B,
 SHA072f798e...a988577; same imported/shared32initial/96maximum MiB/1thread/0helpers.
 Only reusable10.4MB static tools retained in approved work directory; no media
-read/conversion or public asset replacement. Actual strict browser fidelity/memory
-control is next/PENDING. Native build success is NOT a fixed duration or promotion.
+read/conversion or public asset replacement during build/collection. Subsequent
+strict browser result is recorded above; native success alone was not promotion.
 All original large/repeat/direct/recovery/browser/release/broader gates remain open.
 
 2026-11-05 native attempt2 (run42010620047) FAILED configure on TMPDIR inheriting ESM;

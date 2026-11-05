@@ -1,0 +1,2398 @@
+{
+  "startedAt": "2026-11-05T11:01:31.681Z",
+  "status": "failed-private-vp9-browser-smoke",
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: [\"Decoded frame duration unavailable; do not substitute an invented zero or inferred duration\"]\n\nfalse !== true\n\n    at file:///H:/Github%20Repositories/fileconverter/work/webcodecs-vp9-diagnostic-eCyUts/diagnostic.mjs:198:10\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)"
+  ],
+  "sourcePins": {
+    "scripts/test-webcodecs-vp9-smoke.mjs": "e279f100620fc00ad5822ecad01c771bfecbc3acf5656b6ba3beb011ab9feeeb",
+    "workers/webcodecs-vp9-qualification.worker.ts": "553c1022427d226adea492235252ad0cf76e0789d231aaa0b03627f300dd607d",
+    "workers/media-remux.ts": "1b1afb350aafaa1bbc13f0f5150bdedeb85a94c1510318fa8713b4b7f5edbf59",
+    "scripts/lib/private-vp9-finalization.mjs": "6e1ba553503e94c43ff38a943a21d0d524f9938a4a5e8ba001e36f1206e5ac98",
+    "scripts/lib/vp9-duration-browser-assets.mjs": "e9bf7145f54884a599527658776131145ceaae1e53756218242140f8deb800ef",
+    "evidence/2026-11-05-vp9-duration-native-42013264823.json": "6d27655b668073cd694a9ce4683c1d6319af20a36d1322bbbe7d6acb850c164a",
+    "public/engines/remux/within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+    "public/engines/remux/within-remux.wasm": "3979aaebab7dae4e298902a2cfd18a4f53fe2ccd142526687c5ac1049e471b17",
+    "work/vp9-duration-input-42013264823/within-remux.mjs": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1",
+    "work/vp9-duration-input-42013264823/within-remux.wasm": "072f798ea4fc3a1c5f144d0ac9ba47750e4cac22296151debc39f89a0a988577",
+    "scripts/lib/small-vp9-fidelity.mjs": "74c73fffa6e6d42118c9190e1bff0c6bb93ae1c8c3d4c93ab6217ca24f8ce1b5",
+    "scripts/lib/bounded-native-lines.mjs": "e077e2d815722c1323734b8f49a3fd9f54ad16a98d1afc7b0696e549b3a07964",
+    "scripts/lib/streaming-video-clock-fidelity.mjs": "7044ac7eabc508a05f17bf7d43eb491829fef7782e32df8711782eb047d0e8f3",
+    "scripts/lib/cr-aware-ssim-summary.mjs": "6196b1016ba2adc66aae7aad2e161aca4868f26db75d8e900012cc468aac6864",
+    "scripts/lib/bounded-ssim-summary.mjs": "3dbdc1e95b73b576036b3eb08eeac5e81c6572b40a239f68b3d983243fb28016",
+    "scripts/lib/ebml-reuse-browser-components.mjs": "39247cae67a79e07044c95a15c7652f82ffee3407bb9abf442ee84b6b01e97c0",
+    "workers/webcodecs-vp9-core.ts": "c8be39c992cd4ddbba7564e2d36534ce8dc19c313e992dfe5d2d20ecc14c7719",
+    "workers/webcodecs-vp9-isolated.ts": "6e56c603cbbfdaec7b2af32e473129074dc112a0aa36cb0aa5ed25ec91e361fd",
+    "workers/webcodecs-vp9-isolated.worker.ts": "c49d8d36826cf9276553976467e7ecd9dd803aff79e592cf9f0a7a3f74bad5dc",
+    "workers/webcodecs-vp9-worker-protocol.ts": "a4bcbb4e3996ea2ec214261aa495a9af5e341063ec5f29494bd5de53b7423759",
+    "workers/webcodecs-vp9-bridge.mjs": "71f8eff8854820967c6119753f39095bf12ec34d7b23c41571dfedd980f0db03",
+    "workers/random-access-destination.ts": "f46a4db401daabeb40a0b9eaa9feb256b623c21d2a7f41af549b6797842b4375",
+    "lib/capability-registry.ts": "acc1c6cb5104f329eec92f37b31754e7842f24bb174e703cf741b11379403781"
+  },
+  "blankSamples": [
+    {
+      "timestamp": "2026-11-05T11:01:50.101Z",
+      "elapsedMs": 1389,
+      "privateBytes": 396935168,
+      "rssBytes": 778891264,
+      "sampleError": null,
+      "processCount": 15
+    },
+    {
+      "timestamp": "2026-11-05T11:01:52.315Z",
+      "elapsedMs": 3603,
+      "privateBytes": 384745472,
+      "rssBytes": 738328576,
+      "sampleError": null,
+      "processCount": 12
+    },
+    {
+      "timestamp": "2026-11-05T11:01:54.350Z",
+      "elapsedMs": 5638,
+      "privateBytes": 384753664,
+      "rssBytes": 738476032,
+      "sampleError": null,
+      "processCount": 12
+    },
+    {
+      "timestamp": "2026-11-05T11:01:56.183Z",
+      "elapsedMs": 7471,
+      "privateBytes": 371593216,
+      "rssBytes": 725540864,
+      "sampleError": null,
+      "processCount": 12
+    },
+    {
+      "timestamp": "2026-11-05T11:01:58.096Z",
+      "elapsedMs": 9384,
+      "privateBytes": 369721344,
+      "rssBytes": 724226048,
+      "sampleError": null,
+      "processCount": 12
+    },
+    {
+      "timestamp": "2026-11-05T11:02:00.084Z",
+      "elapsedMs": 11372,
+      "privateBytes": 372899840,
+      "rssBytes": 735158272,
+      "sampleError": null,
+      "processCount": 12
+    },
+    {
+      "timestamp": "2026-11-05T11:02:02.115Z",
+      "elapsedMs": 13403,
+      "privateBytes": 388186112,
+      "rssBytes": 759320576,
+      "sampleError": null,
+      "processCount": 13
+    },
+    {
+      "timestamp": "2026-11-05T11:02:03.908Z",
+      "elapsedMs": 15196,
+      "privateBytes": 379953152,
+      "rssBytes": 742686720,
+      "sampleError": null,
+      "processCount": 12
+    },
+    {
+      "timestamp": "2026-11-05T11:02:05.739Z",
+      "elapsedMs": 17027,
+      "privateBytes": 361304064,
+      "rssBytes": 695959552,
+      "sampleError": null,
+      "processCount": 11
+    },
+    {
+      "timestamp": "2026-11-05T11:02:07.626Z",
+      "elapsedMs": 18914,
+      "privateBytes": 354320384,
+      "rssBytes": 657825792,
+      "sampleError": null,
+      "processCount": 10
+    },
+    {
+      "timestamp": "2026-11-05T11:02:09.495Z",
+      "elapsedMs": 20783,
+      "privateBytes": 354320384,
+      "rssBytes": 657711104,
+      "sampleError": null,
+      "processCount": 10
+    },
+    {
+      "timestamp": "2026-11-05T11:02:11.397Z",
+      "elapsedMs": 22685,
+      "privateBytes": 354029568,
+      "rssBytes": 657711104,
+      "sampleError": null,
+      "processCount": 10
+    },
+    {
+      "timestamp": "2026-11-05T11:02:13.187Z",
+      "elapsedMs": 24475,
+      "privateBytes": 353607680,
+      "rssBytes": 657375232,
+      "sampleError": null,
+      "processCount": 10
+    },
+    {
+      "timestamp": "2026-11-05T11:02:14.956Z",
+      "elapsedMs": 26244,
+      "privateBytes": 353607680,
+      "rssBytes": 657387520,
+      "sampleError": null,
+      "processCount": 10
+    }
+  ],
+  "scope": "One genuine private VP9 small-worker OPFS conversion with native validation; NOT full production UI, direct picker, A/B speed or original/near10GB qualification",
+  "fullStressAcceptance": false,
+  "speedGainProven": false,
+  "publicAcceptance": false,
+  "headed": false,
+  "browserServicesDisabled": false,
+  "formula": "(peak complete Chromium tree private bytes during conversion - earliest stable clean blank tree private bytes) / 1048576",
+  "executedHead": "cd0d06a8a5f70c9debf0de3626dc6bbdb77eb9e7",
+  "hostMemory": {
+    "acquiredAt": "2026-11-05T11:01:32.5494752Z",
+    "freePhysicalBytes": 10665603072,
+    "freeVirtualBytes": 14537302016,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "originalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "browserPin": {
+    "version": "156.0.8078.80",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4466840,
+      "sha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4503599627954860",
+        "birthtimeNs": "1793664133995225000",
+        "mtimeNs": "1793230862205515000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.80\\chrome.dll",
+      "bytes": 306491032,
+      "sha256": "eec84f38acf7d3b1c39bc54de53c9bcb1ea7a3b9d286d6a04288d3b959a1a7a1",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4222124651244210",
+        "birthtimeNs": "1793664134006309400",
+        "mtimeNs": "1793230871423806000"
+      }
+    }
+  },
+  "nativeTool": {
+    "runId": 41309113218,
+    "head": "cd0f079588bed73162e1b9bd9b52e76bc2e30837",
+    "wasm": {
+      "bytes": 5561904,
+      "sha256": "6f4457e1e292ee016c51a76ff7acbd51b6541c2183e4ebc7e9e31b23d6878c26"
+    }
+  },
+  "coreComparison": {
+    "sourceSha256": "4fad7ea6c1dd0d374b1b69201b6af4b68e8518bf2672884d23b1f136f5f2cc46",
+    "sourceBytes": 58389,
+    "policy": "single-thread",
+    "singleColdRunOnly": true,
+    "acceptedOptimization": false
+  },
+  "sourceProbe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "mime_codec_string": "avc1.64000c",
+        "width": 320,
+        "height": 180,
+        "coded_width": 320,
+        "coded_height": 180,
+        "has_b_frames": 2,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "16:9",
+        "pix_fmt": "yuv420p",
+        "level": 12,
+        "color_range": "tv",
+        "color_space": "bt709",
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 1,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "r_frame_rate": "24/1",
+        "avg_frame_rate": "24/1",
+        "time_base": "1/1000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "bits_per_raw_sample": "8",
+        "extradata_size": 49,
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "ENCODER": "Lavc libx264",
+          "DURATION": "00:00:02.000000000"
+        }
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\work\\webcodecs-vp9-smoke-gZmb8w\\explicit-bt709.mkv",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "matroska,webm",
+      "format_long_name": "Matroska / WebM",
+      "start_time": "0.000000",
+      "duration": "2.000000",
+      "size": "58389",
+      "bit_rate": "233556",
+      "probe_score": 100,
+      "tags": {
+        "encoder": "Lavf"
+      }
+    }
+  },
+  "fixture": {
+    "generatedBeforeBrowser": true,
+    "args": [
+      "-hide_banner",
+      "-loglevel",
+      "error",
+      "-nostdin",
+      "-f",
+      "lavfi",
+      "-i",
+      "testsrc2=size=320x180:rate=24",
+      "-t",
+      "2",
+      "-an",
+      "-c:v",
+      "libx264",
+      "-threads",
+      "1",
+      "-pix_fmt",
+      "yuv420p",
+      "-color_primaries",
+      "bt709",
+      "-color_trc",
+      "bt709",
+      "-colorspace",
+      "bt709",
+      "-color_range",
+      "tv",
+      "-bitexact"
+    ],
+    "bytes": 58389,
+    "sha256": "4fad7ea6c1dd0d374b1b69201b6af4b68e8518bf2672884d23b1f136f5f2cc46",
+    "notTheProtectedOriginal": true,
+    "originalStressSubstituted": false
+  },
+  "qualificationWorkerSha256": "739595096d9fa7ad95a33e8be218f6ae5c132114c838e405ec1e4b6172924c29",
+  "isolatedWorkerSha256": "d6ed0b8730caeccfa1031d21e8ddb22859f5fe672b3e38572d6db73dd936d32e",
+  "workerIsolation": true,
+  "chromeArguments": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\webcodecs-vp9-smoke-gZmb8w\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "about:blank"
+  ],
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 354029568,
+    "spreadBytes": 712704,
+    "rssBytes": 657711104,
+    "firstTimestamp": "2026-11-05T11:02:07.626Z",
+    "lastTimestamp": "2026-11-05T11:02:14.956Z",
+    "sampleCount": 14,
+    "minimumElapsedMs": 8000
+  },
+  "baselineAdjusted": false,
+  "baselineAvailable": true,
+  "forbiddenRequests": [],
+  "privateCpuOverride": {
+    "runId": 42013264823,
+    "sourceHead": "708178cec70691a7ef11664877daf72e952d0807",
+    "served": {
+      "javascript": 1,
+      "wasm": 1
+    },
+    "files": {
+      "within-remux.mjs": {
+        "bytes": 45700,
+        "sha256": "93fa0582e5373714575ef80f0a65ecc80b106401410b7a96733326c2573961f1"
+      },
+      "within-remux.wasm": {
+        "bytes": 9873859,
+        "sha256": "072f798ea4fc3a1c5f144d0ac9ba47750e4cac22296151debc39f89a0a988577"
+      }
+    },
+    "publicAssetReplacement": false,
+    "cachePolicyChanged": false,
+    "securityCacheAndMimeHeadersPreserved": true,
+    "representationHeadersRecomputed": true
+  },
+  "privateAssetErrorCount": 0,
+  "loadedIdle": {
+    "processes": [
+      {
+        "pid": 30916,
+        "parentPid": 34276,
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-11-05T11:01:45.4118550Z",
+        "privateBytes": 68132864,
+        "rssBytes": 178163712
+      },
+      {
+        "pid": 7100,
+        "parentPid": 30916,
+        "type": "crashpad-handler",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-11-05T11:01:45.5376780Z",
+        "privateBytes": 2547712,
+        "rssBytes": 10014720
+      },
+      {
+        "pid": 36148,
+        "parentPid": 30916,
+        "type": "gpu-process",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-11-05T11:01:46.2272680Z",
+        "privateBytes": 149843968,
+        "rssBytes": 177491968
+      },
+      {
+        "pid": 29216,
+        "parentPid": 30916,
+        "type": "utility",
+        "utilitySubtype": "network.mojom.NetworkService",
+        "sandboxType": "none",
+        "createdAt": "2026-11-05T11:01:46.2406290Z",
+        "privateBytes": 14884864,
+        "rssBytes": 40640512
+      },
+      {
+        "pid": 44852,
+        "parentPid": 30916,
+        "type": "utility",
+        "utilitySubtype": "storage.mojom.StorageService",
+        "sandboxType": "service",
+        "createdAt": "2026-11-05T11:01:46.4199500Z",
+        "privateBytes": 8286208,
+        "rssBytes": 17911808
+      },
+      {
+        "pid": 44516,
+        "parentPid": 30916,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-11-05T11:01:46.5664850Z",
+        "privateBytes": 44515328,
+        "rssBytes": 86413312
+      },
+      {
+        "pid": 37948,
+        "parentPid": 30916,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-11-05T11:01:46.9485950Z",
+        "privateBytes": 23437312,
+        "rssBytes": 46137344
+      },
+      {
+        "pid": 45992,
+        "parentPid": 30916,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-11-05T11:01:50.7884480Z",
+        "privateBytes": 53817344,
+        "rssBytes": 109002752
+      },
+      {
+        "pid": 30596,
+        "parentPid": 30916,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-11-05T11:01:51.3593130Z",
+        "privateBytes": 21590016,
+        "rssBytes": 46710784
+      },
+      {
+        "pid": 41928,
+        "parentPid": 30916,
+        "type": "renderer",
+        "utilitySubtype": null,
+        "sandboxType": null,
+        "createdAt": "2026-11-05T11:02:15.1532620Z",
+        "privateBytes": 15507456,
+        "rssBytes": 31723520
+      }
+    ],
+    "privateBytes": 402563072,
+    "rssBytes": 744210432
+  },
+  "conversionStartedAt": "2026-11-05T11:02:16.495Z",
+  "browserResult": {
+    "type": "complete",
+    "elapsedMs": 4446.154999986291,
+    "metrics": {
+      "inputBytes": 58389,
+      "outputBytes": 99405,
+      "queuedBytes": 0,
+      "peakQueuedBytes": 98994,
+      "pendingOperations": 0,
+      "peakPendingOperations": 1,
+      "maxReadChunkBytes": 58389,
+      "maxWriteChunkBytes": 98994,
+      "elapsedMs": 4446.154999986291,
+      "wasmMemoryBytes": 33554432,
+      "peakWasmMemoryBytes": 33554432,
+      "wasmMemories": {},
+      "sharedArrayBufferBytes": 33554436,
+      "activeWorkerCount": 2,
+      "imageWorkingBytes": 0,
+      "audioQualityArgument": {
+        "requested": "automatic",
+        "nativeCode": 0,
+        "automaticPolicy": null
+      }
+    },
+    "warnings": [
+      "The selected frame-rate cap is at or above the source average, so the source average frame rate is retained without upconversion.",
+      "The WebM profile normalizes variable frame timing to the source average frame rate."
+    ],
+    "selection": {
+      "backend": "wasm",
+      "fallbackReason": "NotSupportedError: This private VP9 candidate requires explicit supported SDR colorimetry and limited range; native CICP primaries/transfer/matrix/range=2/2/1/1; use the existing Wasm route otherwise",
+      "wasmFallbackCore": "single-thread"
+    },
+    "encoder": {
+      "frames": 0,
+      "packets": 0,
+      "framesClosed": 0,
+      "busy": false,
+      "closed": true,
+      "currentPackedBytes": 0,
+      "pendingPacketBytes": 0,
+      "peakPackedBytes": 0,
+      "peakPacketBytes": 0,
+      "maximumPacketsInFlight": 1,
+      "maximumFramesInFlight": 1,
+      "supportProbeCount": 0,
+      "hardwarePreferredSupported": null,
+      "selectedHardwarePreference": null,
+      "physicalHardwareSelectionProven": false,
+      "acceptanceMetric": false
+    },
+    "scope": "private-isolated-worker-control-not-public-or-stress-acceptance",
+    "writeAttempts": 3,
+    "cleanupComplete": true,
+    "isolation": {
+      "childrenStarted": 2,
+      "terminationRequests": 2,
+      "maximumOwnedChildHandles": 1,
+      "coordinatorWorkers": 1,
+      "candidateTerminationRequestedBeforeFallback": true,
+      "synchronousTerminationConfirmed": false,
+      "actualPeakWorkerRealms": null
+    },
+    "phases": [
+      "Encoding VP9 WebM (private WebCodecs encoder)",
+      "Encoding VP9 WebM",
+      "Encoding VP9 WebM"
+    ]
+  },
+  "conversionEndedAt": "2026-11-05T11:02:21.387Z",
+  "memory": {
+    "peak": {
+      "sequence": 300,
+      "timestamp": "2026-11-05T11:02:20.5088149Z",
+      "phase": "conversion",
+      "privateBytes": 593338368,
+      "rssBytes": 865595392,
+      "nativeElapsedMs": 19.4072,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 7100,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:45.5376783Z",
+          "creationFileTime": "134383501055376783",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2547712,
+          "rssBytes": 10014720
+        },
+        {
+          "pid": 29216,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:46.2406298Z",
+          "creationFileTime": "134383501062406298",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 14995456,
+          "rssBytes": 40886272
+        },
+        {
+          "pid": 30596,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:51.3593137Z",
+          "creationFileTime": "134383501113593137",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 21590016,
+          "rssBytes": 46743552
+        },
+        {
+          "pid": 30916,
+          "parentPid": 34276,
+          "createdAt": "2026-11-05T11:01:45.4118554Z",
+          "creationFileTime": "134383501054118554",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 78778368,
+          "rssBytes": 189689856
+        },
+        {
+          "pid": 36148,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:46.2272681Z",
+          "creationFileTime": "134383501062272681",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 149241856,
+          "rssBytes": 177037312
+        },
+        {
+          "pid": 37948,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:46.9485957Z",
+          "creationFileTime": "134383501069485957",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 23441408,
+          "rssBytes": 46211072
+        },
+        {
+          "pid": 41928,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:02:15.1532629Z",
+          "creationFileTime": "134383501351532629",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 15507456,
+          "rssBytes": 31817728
+        },
+        {
+          "pid": 44516,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:46.5664857Z",
+          "creationFileTime": "134383501065664857",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 36364288,
+          "rssBytes": 79990784
+        },
+        {
+          "pid": 44852,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:46.4199506Z",
+          "creationFileTime": "134383501064199506",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8290304,
+          "rssBytes": 17924096
+        },
+        {
+          "pid": 45992,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:50.7884484Z",
+          "creationFileTime": "134383501107884484",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 242581504,
+          "rssBytes": 225280000
+        }
+      ]
+    },
+    "rssPeak": {
+      "sequence": 301,
+      "timestamp": "2026-11-05T11:02:20.6177263Z",
+      "phase": "conversion",
+      "privateBytes": 576761856,
+      "rssBytes": 903516160,
+      "nativeElapsedMs": 22.7799,
+      "sampleError": null,
+      "processes": [
+        {
+          "pid": 7100,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:45.5376783Z",
+          "creationFileTime": "134383501055376783",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 2547712,
+          "rssBytes": 10014720
+        },
+        {
+          "pid": 29216,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:46.2406298Z",
+          "creationFileTime": "134383501062406298",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 14995456,
+          "rssBytes": 40886272
+        },
+        {
+          "pid": 30596,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:51.3593137Z",
+          "creationFileTime": "134383501113593137",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 21590016,
+          "rssBytes": 46743552
+        },
+        {
+          "pid": 30916,
+          "parentPid": 34276,
+          "createdAt": "2026-11-05T11:01:45.4118554Z",
+          "creationFileTime": "134383501054118554",
+          "executableName": "chrome.exe",
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 105222144,
+          "rssBytes": 228937728
+        },
+        {
+          "pid": 36148,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:46.2272681Z",
+          "creationFileTime": "134383501062272681",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 149241856,
+          "rssBytes": 177037312
+        },
+        {
+          "pid": 37948,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:46.9485957Z",
+          "creationFileTime": "134383501069485957",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 23441408,
+          "rssBytes": 46211072
+        },
+        {
+          "pid": 41928,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:02:15.1532629Z",
+          "creationFileTime": "134383501351532629",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 15507456,
+          "rssBytes": 31817728
+        },
+        {
+          "pid": 44516,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:46.5664857Z",
+          "creationFileTime": "134383501065664857",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 36364288,
+          "rssBytes": 79990784
+        },
+        {
+          "pid": 44852,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:46.4199506Z",
+          "creationFileTime": "134383501064199506",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 8290304,
+          "rssBytes": 17924096
+        },
+        {
+          "pid": 45992,
+          "parentPid": 30916,
+          "createdAt": "2026-11-05T11:01:50.7884484Z",
+          "creationFileTime": "134383501107884484",
+          "executableName": "chrome.exe",
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "privateBytes": 199561216,
+          "rssBytes": 223952896
+        }
+      ]
+    },
+    "peakRssBytes": 903516160,
+    "validSamples": 49,
+    "unavailableSamples": 0,
+    "incrementalPrivateMiB": 228.22265625
+  },
+  "exportedBytes": 99405,
+  "outputProbe": {
+    "streams": [
+      {
+        "index": 0,
+        "codec_name": "vp9",
+        "codec_long_name": "Google VP9",
+        "profile": "Profile 0",
+        "codec_type": "video",
+        "codec_tag_string": "[0][0][0][0]",
+        "codec_tag": "0x0000",
+        "mime_codec_string": "vp09.00.11.08",
+        "width": 320,
+        "height": 180,
+        "coded_width": 320,
+        "coded_height": 180,
+        "has_b_frames": 0,
+        "sample_aspect_ratio": "1:1",
+        "display_aspect_ratio": "16:9",
+        "pix_fmt": "yuv420p",
+        "level": -99,
+        "color_range": "tv",
+        "color_space": "bt709",
+        "chroma_location": "left",
+        "refs": 1,
+        "r_frame_rate": "24/1",
+        "avg_frame_rate": "24/1",
+        "time_base": "1/1000",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "nb_read_frames": "48",
+        "disposition": {
+          "default": 0,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "ENCODER": "Lavc libx264",
+          "DURATION": "00:00:02.000000000"
+        }
+      }
+    ],
+    "format": {
+      "filename": "H:\\Github Repositories\\fileconverter\\work\\webcodecs-vp9-smoke-gZmb8w\\browser-output.webm",
+      "nb_streams": 1,
+      "nb_programs": 0,
+      "nb_stream_groups": 0,
+      "format_name": "matroska,webm",
+      "format_long_name": "Matroska / WebM",
+      "start_time": "0.000000",
+      "duration": "2.000000",
+      "size": "99405",
+      "bit_rate": "397620",
+      "probe_score": 100,
+      "tags": {
+        "encoder": "Lavf"
+      }
+    }
+  },
+  "independentFullDecodePassed": true,
+  "outputSha256": "be890dca0bb313b91030076c3f057f5be6eaaad98c64307f6dc32f6649819159",
+  "independentFidelity": {
+    "scope": "Independent complete48-frame small control validation; not original/near10GB/full-metadata acceptance",
+    "limits": {
+      "frames": 48,
+      "frameRate": 24,
+      "minimumSsim": 0.98,
+      "maximumContainerDurationErrorSeconds": 0.001,
+      "maximumFramePtsErrorSeconds": 0.001,
+      "validatorTimeoutMs": 30000,
+      "validatorLogBytes": 1048576
+    },
+    "failures": [
+      "Decoded frame duration unavailable; do not substitute an invented zero or inferred duration"
+    ],
+    "clocks": {
+      "frames": 48,
+      "maximumVideoPtsErrorSeconds": 0
+    },
+    "sourceFrames": {
+      "frames": 48,
+      "framesWithDuration": 48,
+      "firstPtsSeconds": 0,
+      "lastPtsSeconds": 1.958,
+      "lastDurationSeconds": 0.041
+    },
+    "outputFrames": {
+      "frames": 48,
+      "framesWithDuration": 7,
+      "firstPtsSeconds": 0,
+      "lastPtsSeconds": 1.958,
+      "lastDurationSeconds": 0.041
+    },
+    "containerDuration": {
+      "sourceSeconds": 2,
+      "outputSeconds": 2,
+      "errorSeconds": 0,
+      "toleranceSeconds": 0.001,
+      "passed": true
+    },
+    "ssim": {
+      "status": "numeric-summary",
+      "score": 0.993273,
+      "summaries": 1,
+      "summaryLine": "[Parsed_ssim_2 @ 00000214d6a73440] SSIM Y:0.993970 (22.196955) U:0.991922 (20.926829) V:0.991834 (20.879905) All:0.993273 (21.721620)",
+      "stderrBytes": 1720,
+      "stderrSha256": "1a98f3da5541abbe3ff1b4b706a627fb22302230aa3c921ca07a922786a58b6c",
+      "limits": {
+        "stderrBytes": 33554432,
+        "summaryLineBytes": 2048
+      },
+      "comparedFrames": 48,
+      "progressEnded": true,
+      "ordinalPairing": true,
+      "independentPtsGateAlsoRequired": true,
+      "nativeOutput": "null-validator-only",
+      "minimumRequired": 0.98,
+      "passed": true,
+      "progressBytes": 180,
+      "progressSha256": "72ad261113bc4435223ac34436eaafadbc2cd4e0550abd8dcd8719d84b6c136b"
+    },
+    "metadata": [
+      {
+        "field": "pix_fmt",
+        "source": "yuv420p",
+        "output": "yuv420p",
+        "equal": true
+      },
+      {
+        "field": "sample_aspect_ratio",
+        "source": "1:1",
+        "output": "1:1",
+        "equal": true
+      },
+      {
+        "field": "display_aspect_ratio",
+        "source": "16:9",
+        "output": "16:9",
+        "equal": true
+      },
+      {
+        "field": "color_range",
+        "source": "tv",
+        "output": "tv",
+        "equal": true
+      },
+      {
+        "field": "color_space",
+        "source": "bt709",
+        "output": "bt709",
+        "equal": true
+      },
+      {
+        "field": "color_transfer",
+        "source": null,
+        "output": null,
+        "equal": true
+      },
+      {
+        "field": "color_primaries",
+        "source": null,
+        "output": null,
+        "equal": true
+      },
+      {
+        "field": "chroma_location",
+        "source": "left",
+        "output": "left",
+        "equal": true
+      }
+    ],
+    "toolVersions": {
+      "ffmpeg": "ffmpeg version N-122712-g7e3781e3ca-20260211 Copyright (c) 2000-2026 the FFmpeg developers",
+      "ffprobe": "ffprobe version N-122712-g7e3781e3ca-20260211 Copyright (c) 2007-2026 the FFmpeg developers"
+    },
+    "decodedDurationsAreNotEncodedPacketDurationProof": true,
+    "passed": false
+  },
+  "failureTrace": {
+    "path": "output\\playwright\\2026-11-05-webcodecs-vp9-duration-fixed-42013264823-failure.zip",
+    "bytes": 9367195,
+    "sha256": "72735dcc101ef6053ec93e0dc538876cad2dbf534889f1c9f7d5e9caf434677b"
+  },
+  "nativeMemory": {
+    "intervalMs": 100,
+    "scope": "All owned Chromium descendants; unknown types counted; native observer is not a converter or speed proof",
+    "sequence": 336,
+    "lastAcquiredAt": 1793876544451,
+    "observerCpuFirstMs": 734.375,
+    "observerCpuLastMs": 7843.75,
+    "observerCpuDeltaMs": 7109.375,
+    "limits": {
+      "identities": 512,
+      "phases": 128,
+      "transitions": 256,
+      "graphBuckets": 4096,
+      "unavailableExamplesPerAggregate": 8
+    },
+    "graphBucketDurationMs": 1000,
+    "graphBucketsEvicted": 0,
+    "rowColumns": [
+      "sequence",
+      "timestamp",
+      "phase",
+      "privateBytes",
+      "rssBytes",
+      "nativeElapsedMs",
+      "sampleError",
+      "processRows"
+    ],
+    "processRowColumns": [
+      "identityIndex",
+      "privateBytes",
+      "rssBytes"
+    ],
+    "identities": [
+      {
+        "pid": 6340,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:46.7027400Z",
+        "creationFileTime": "134383501067027400",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 7100,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:45.5376783Z",
+        "creationFileTime": "134383501055376783",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 14696,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:46.6209206Z",
+        "creationFileTime": "134383501066209206",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 27128,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:47.1820960Z",
+        "creationFileTime": "134383501071820960",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 29216,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:46.2406298Z",
+        "creationFileTime": "134383501062406298",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 30916,
+        "parentPid": 34276,
+        "createdAt": "2026-11-05T11:01:45.4118554Z",
+        "creationFileTime": "134383501054118554",
+        "executableName": "chrome.exe",
+        "type": "browser",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 35128,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:46.7065878Z",
+        "creationFileTime": "134383501067065878",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 36148,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:46.2272681Z",
+        "creationFileTime": "134383501062272681",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 37948,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:46.9485957Z",
+        "creationFileTime": "134383501069485957",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 44516,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:46.5664857Z",
+        "creationFileTime": "134383501065664857",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 44852,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:46.4199506Z",
+        "creationFileTime": "134383501064199506",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 32884,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:48.1752424Z",
+        "creationFileTime": "134383501081752424",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 9924,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.3256964Z",
+        "creationFileTime": "134383501093256964",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 34380,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.3363840Z",
+        "creationFileTime": "134383501093363840",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 35276,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.3033392Z",
+        "creationFileTime": "134383501093033392",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 39212,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.3341604Z",
+        "creationFileTime": "134383501093341604",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 40512,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.3922254Z",
+        "creationFileTime": "134383501093922254",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 45296,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.3782918Z",
+        "creationFileTime": "134383501093782918",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 46192,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.3220959Z",
+        "creationFileTime": "134383501093220959",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 45328,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.5030590Z",
+        "creationFileTime": "134383501095030590",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 44120,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.6438205Z",
+        "creationFileTime": "134383501096438205",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 34836,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.7855092Z",
+        "creationFileTime": "134383501097855092",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 37428,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.8517717Z",
+        "creationFileTime": "134383501098517717",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 39692,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.8515008Z",
+        "creationFileTime": "134383501098515008",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 39104,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:49.9492682Z",
+        "creationFileTime": "134383501099492682",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 32844,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:50.1142637Z",
+        "creationFileTime": "134383501101142637",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 36012,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:50.2333060Z",
+        "creationFileTime": "134383501102333060",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 7916,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:50.3692061Z",
+        "creationFileTime": "134383501103692061",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 29536,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:50.7954803Z",
+        "creationFileTime": "134383501107954803",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 40032,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:50.3370917Z",
+        "creationFileTime": "134383501103370917",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 45992,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:50.7884484Z",
+        "creationFileTime": "134383501107884484",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 30596,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:51.3593137Z",
+        "creationFileTime": "134383501113593137",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 3832,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:58.8691194Z",
+        "creationFileTime": "134383501188691194",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 30288,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:59.0097220Z",
+        "creationFileTime": "134383501190097220",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 20040,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:59.1952868Z",
+        "creationFileTime": "134383501191952868",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 10704,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:59.4437637Z",
+        "creationFileTime": "134383501194437637",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 21820,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:01:59.9432632Z",
+        "creationFileTime": "134383501199432632",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 31488,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:02:00.5197744Z",
+        "creationFileTime": "134383501205197744",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 31848,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:02:01.7265906Z",
+        "creationFileTime": "134383501217265906",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      },
+      {
+        "pid": 41928,
+        "parentPid": 30916,
+        "createdAt": "2026-11-05T11:02:15.1532629Z",
+        "creationFileTime": "134383501351532629",
+        "executableName": "chrome.exe",
+        "type": "unknown",
+        "utilitySubtype": null,
+        "sandboxType": null
+      }
+    ],
+    "transitions": [
+      {
+        "phase": "blank-baseline",
+        "at": 1793876506321
+      },
+      {
+        "phase": "loaded-idle",
+        "at": 1793876534956
+      },
+      {
+        "phase": "conversion",
+        "at": 1793876536495
+      },
+      {
+        "phase": "validation-export",
+        "at": 1793876541960
+      }
+    ],
+    "phases": [
+      {
+        "phase": "blank-baseline",
+        "firstSequence": 1,
+        "lastSequence": 249,
+        "validSamples": 248,
+        "unavailableSamples": 1,
+        "peak": [
+          22,
+          "2026-11-05T11:01:49.8073586Z",
+          "blank-baseline",
+          409649152,
+          811139072,
+          35.1288,
+          null,
+          [
+            [
+              0,
+              15413248,
+              31440896
+            ],
+            [
+              1,
+              2682880,
+              10076160
+            ],
+            [
+              12,
+              11370496,
+              33144832
+            ],
+            [
+              2,
+              21721088,
+              48316416
+            ],
+            [
+              4,
+              13500416,
+              38289408
+            ],
+            [
+              5,
+              53555200,
+              152186880
+            ],
+            [
+              21,
+              1277952,
+              6107136
+            ],
+            [
+              6,
+              18587648,
+              46100480
+            ],
+            [
+              14,
+              8855552,
+              20967424
+            ],
+            [
+              7,
+              133705728,
+              155906048
+            ],
+            [
+              8,
+              23789568,
+              46137344
+            ],
+            [
+              20,
+              17367040,
+              41078784
+            ],
+            [
+              9,
+              46161920,
+              87445504
+            ],
+            [
+              10,
+              8187904,
+              17571840
+            ],
+            [
+              19,
+              17260544,
+              41058304
+            ],
+            [
+              18,
+              16211968,
+              35311616
+            ]
+          ]
+        ],
+        "rssPeak": [
+          22,
+          "2026-11-05T11:01:49.8073586Z",
+          "blank-baseline",
+          409649152,
+          811139072,
+          35.1288,
+          null,
+          [
+            [
+              0,
+              15413248,
+              31440896
+            ],
+            [
+              1,
+              2682880,
+              10076160
+            ],
+            [
+              12,
+              11370496,
+              33144832
+            ],
+            [
+              2,
+              21721088,
+              48316416
+            ],
+            [
+              4,
+              13500416,
+              38289408
+            ],
+            [
+              5,
+              53555200,
+              152186880
+            ],
+            [
+              21,
+              1277952,
+              6107136
+            ],
+            [
+              6,
+              18587648,
+              46100480
+            ],
+            [
+              14,
+              8855552,
+              20967424
+            ],
+            [
+              7,
+              133705728,
+              155906048
+            ],
+            [
+              8,
+              23789568,
+              46137344
+            ],
+            [
+              20,
+              17367040,
+              41078784
+            ],
+            [
+              9,
+              46161920,
+              87445504
+            ],
+            [
+              10,
+              8187904,
+              17571840
+            ],
+            [
+              19,
+              17260544,
+              41058304
+            ],
+            [
+              18,
+              16211968,
+              35311616
+            ]
+          ]
+        ],
+        "last": [
+          249,
+          "2026-11-05T11:02:14.9415525Z",
+          "blank-baseline",
+          340525056,
+          644427776,
+          17.8888,
+          null,
+          [
+            [
+              1,
+              2686976,
+              10080256
+            ],
+            [
+              2,
+              22663168,
+              50339840
+            ],
+            [
+              4,
+              14131200,
+              39284736
+            ],
+            [
+              31,
+              21585920,
+              46673920
+            ],
+            [
+              5,
+              65499136,
+              170905600
+            ],
+            [
+              7,
+              122826752,
+              145813504
+            ],
+            [
+              8,
+              23429120,
+              46096384
+            ],
+            [
+              9,
+              44355584,
+              86130688
+            ],
+            [
+              10,
+              8273920,
+              17678336
+            ],
+            [
+              30,
+              15073280,
+              31424512
+            ]
+          ]
+        ],
+        "unavailableExamples": [
+          [
+            27,
+            "2026-11-05T11:01:50.3517854Z",
+            "blank-baseline",
+            null,
+            null,
+            472.5561,
+            "Birth query process unavailable",
+            null
+          ]
+        ]
+      },
+      {
+        "phase": "loaded-idle",
+        "firstSequence": 250,
+        "lastSequence": 263,
+        "validSamples": 14,
+        "unavailableSamples": 0,
+        "peak": [
+          256,
+          "2026-11-05T11:02:15.7032024Z",
+          "loaded-idle",
+          405524480,
+          747610112,
+          22.2373,
+          null,
+          [
+            [
+              1,
+              2547712,
+              10014720
+            ],
+            [
+              4,
+              14884864,
+              40624128
+            ],
+            [
+              31,
+              21590016,
+              46710784
+            ],
+            [
+              5,
+              69677056,
+              180211712
+            ],
+            [
+              7,
+              151261184,
+              178892800
+            ],
+            [
+              8,
+              23437312,
+              46137344
+            ],
+            [
+              39,
+              15507456,
+              31723520
+            ],
+            [
+              9,
+              44515328,
+              86413312
+            ],
+            [
+              10,
+              8286208,
+              17911808
+            ],
+            [
+              30,
+              53817344,
+              108969984
+            ]
+          ]
+        ],
+        "rssPeak": [
+          256,
+          "2026-11-05T11:02:15.7032024Z",
+          "loaded-idle",
+          405524480,
+          747610112,
+          22.2373,
+          null,
+          [
+            [
+              1,
+              2547712,
+              10014720
+            ],
+            [
+              4,
+              14884864,
+              40624128
+            ],
+            [
+              31,
+              21590016,
+              46710784
+            ],
+            [
+              5,
+              69677056,
+              180211712
+            ],
+            [
+              7,
+              151261184,
+              178892800
+            ],
+            [
+              8,
+              23437312,
+              46137344
+            ],
+            [
+              39,
+              15507456,
+              31723520
+            ],
+            [
+              9,
+              44515328,
+              86413312
+            ],
+            [
+              10,
+              8286208,
+              17911808
+            ],
+            [
+              30,
+              53817344,
+              108969984
+            ]
+          ]
+        ],
+        "last": [
+          263,
+          "2026-11-05T11:02:16.4668595Z",
+          "loaded-idle",
+          402755584,
+          744554496,
+          20.3302,
+          null,
+          [
+            [
+              1,
+              2547712,
+              10014720
+            ],
+            [
+              4,
+              14786560,
+              40570880
+            ],
+            [
+              31,
+              21590016,
+              46710784
+            ],
+            [
+              5,
+              68349952,
+              178479104
+            ],
+            [
+              7,
+              149897216,
+              177528832
+            ],
+            [
+              8,
+              23437312,
+              46137344
+            ],
+            [
+              39,
+              15507456,
+              31723520
+            ],
+            [
+              9,
+              44515328,
+              86413312
+            ],
+            [
+              10,
+              8286208,
+              17911808
+            ],
+            [
+              30,
+              53837824,
+              109064192
+            ]
+          ]
+        ],
+        "unavailableExamples": []
+      },
+      {
+        "phase": "conversion",
+        "firstSequence": 264,
+        "lastSequence": 313,
+        "validSamples": 50,
+        "unavailableSamples": 0,
+        "peak": [
+          300,
+          "2026-11-05T11:02:20.5088149Z",
+          "conversion",
+          593338368,
+          865595392,
+          19.4072,
+          null,
+          [
+            [
+              1,
+              2547712,
+              10014720
+            ],
+            [
+              4,
+              14995456,
+              40886272
+            ],
+            [
+              31,
+              21590016,
+              46743552
+            ],
+            [
+              5,
+              78778368,
+              189689856
+            ],
+            [
+              7,
+              149241856,
+              177037312
+            ],
+            [
+              8,
+              23441408,
+              46211072
+            ],
+            [
+              39,
+              15507456,
+              31817728
+            ],
+            [
+              9,
+              36364288,
+              79990784
+            ],
+            [
+              10,
+              8290304,
+              17924096
+            ],
+            [
+              30,
+              242581504,
+              225280000
+            ]
+          ]
+        ],
+        "rssPeak": [
+          301,
+          "2026-11-05T11:02:20.6177263Z",
+          "conversion",
+          576761856,
+          903516160,
+          22.7799,
+          null,
+          [
+            [
+              1,
+              2547712,
+              10014720
+            ],
+            [
+              4,
+              14995456,
+              40886272
+            ],
+            [
+              31,
+              21590016,
+              46743552
+            ],
+            [
+              5,
+              105222144,
+              228937728
+            ],
+            [
+              7,
+              149241856,
+              177037312
+            ],
+            [
+              8,
+              23441408,
+              46211072
+            ],
+            [
+              39,
+              15507456,
+              31817728
+            ],
+            [
+              9,
+              36364288,
+              79990784
+            ],
+            [
+              10,
+              8290304,
+              17924096
+            ],
+            [
+              30,
+              199561216,
+              223952896
+            ]
+          ]
+        ],
+        "last": [
+          313,
+          "2026-11-05T11:02:21.9299554Z",
+          "conversion",
+          413999104,
+          762339328,
+          17.8567,
+          null,
+          [
+            [
+              1,
+              2547712,
+              10014720
+            ],
+            [
+              4,
+              14995456,
+              40886272
+            ],
+            [
+              31,
+              21590016,
+              46809088
+            ],
+            [
+              5,
+              78319616,
+              189333504
+            ],
+            [
+              7,
+              147660800,
+              175464448
+            ],
+            [
+              8,
+              23441408,
+              46211072
+            ],
+            [
+              39,
+              15507456,
+              31817728
+            ],
+            [
+              9,
+              36364288,
+              79990784
+            ],
+            [
+              10,
+              8290304,
+              17924096
+            ],
+            [
+              30,
+              65282048,
+              123887616
+            ]
+          ]
+        ],
+        "unavailableExamples": []
+      },
+      {
+        "phase": "validation-export",
+        "firstSequence": 314,
+        "lastSequence": 336,
+        "validSamples": 23,
+        "unavailableSamples": 0,
+        "peak": [
+          314,
+          "2026-11-05T11:02:22.0393838Z",
+          "validation-export",
+          419815424,
+          768348160,
+          20.267500000000002,
+          null,
+          [
+            [
+              1,
+              2547712,
+              10014720
+            ],
+            [
+              4,
+              14995456,
+              40886272
+            ],
+            [
+              31,
+              21590016,
+              46809088
+            ],
+            [
+              5,
+              79745024,
+              190738432
+            ],
+            [
+              7,
+              147660800,
+              175464448
+            ],
+            [
+              8,
+              23441408,
+              46211072
+            ],
+            [
+              39,
+              15507456,
+              31817728
+            ],
+            [
+              9,
+              36364288,
+              79990784
+            ],
+            [
+              10,
+              8290304,
+              17924096
+            ],
+            [
+              30,
+              69672960,
+              128491520
+            ]
+          ]
+        ],
+        "rssPeak": [
+          314,
+          "2026-11-05T11:02:22.0393838Z",
+          "validation-export",
+          419815424,
+          768348160,
+          20.267500000000002,
+          null,
+          [
+            [
+              1,
+              2547712,
+              10014720
+            ],
+            [
+              4,
+              14995456,
+              40886272
+            ],
+            [
+              31,
+              21590016,
+              46809088
+            ],
+            [
+              5,
+              79745024,
+              190738432
+            ],
+            [
+              7,
+              147660800,
+              175464448
+            ],
+            [
+              8,
+              23441408,
+              46211072
+            ],
+            [
+              39,
+              15507456,
+              31817728
+            ],
+            [
+              9,
+              36364288,
+              79990784
+            ],
+            [
+              10,
+              8290304,
+              17924096
+            ],
+            [
+              30,
+              69672960,
+              128491520
+            ]
+          ]
+        ],
+        "last": [
+          336,
+          "2026-11-05T11:02:24.4511641Z",
+          "validation-export",
+          399048704,
+          745005056,
+          20.4384,
+          null,
+          [
+            [
+              1,
+              2547712,
+              10014720
+            ],
+            [
+              4,
+              14995456,
+              40886272
+            ],
+            [
+              31,
+              21590016,
+              46809088
+            ],
+            [
+              5,
+              78524416,
+              189562880
+            ],
+            [
+              7,
+              130359296,
+              155373568
+            ],
+            [
+              8,
+              23441408,
+              46211072
+            ],
+            [
+              39,
+              15507456,
+              31817728
+            ],
+            [
+              9,
+              36364288,
+              79990784
+            ],
+            [
+              10,
+              8290304,
+              17924096
+            ],
+            [
+              30,
+              67428352,
+              126414848
+            ]
+          ]
+        ],
+        "unavailableExamples": []
+      }
+    ],
+    "error": null,
+    "graphDetail": "Preserved byte-exactly in rawArchive, not omitted from the calculation"
+  },
+  "nativeOwnership": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 1,
+    "proofs": [],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false
+  },
+  "processCleanup": [
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 30916,
+        "parentPid": 34276,
+        "createdAt": "2026-11-05T11:01:45.4118550Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-11-05T11:02:28.489Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 937,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 37440,
+        "parentPid": 34276,
+        "createdAt": "2026-11-05T11:01:40.3150900Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-11-05T11:02:29.358Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 869,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    },
+    {
+      "status": "owned-identity-absent",
+      "identity": {
+        "pid": 39240,
+        "parentPid": 34276,
+        "createdAt": "2026-11-05T11:01:46.3778650Z"
+      },
+      "observations": [
+        {
+          "acquiredAt": "2026-11-05T11:02:30.226Z",
+          "current": null,
+          "unavailable": null,
+          "ownedIdentityPresent": false,
+          "sameParent": null
+        }
+      ],
+      "pidReused": false,
+      "elapsedMs": 868,
+      "noProcessesKilled": true,
+      "unavailableIsNotZero": true
+    }
+  ],
+  "ownedStaticStageRemoved": true,
+  "ownedRuntimeRemoved": true,
+  "runtimeCleanupStatus": "removed",
+  "originalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "browserPinFinalCheck": "verified",
+  "finishedAt": "2026-11-05T11:02:36.773Z",
+  "serverLogTail": "────────┼───────────────┼─────────────┤\n│ ssr/assets/layout-segment-context-DJ93MGz0.js       │ esm           │ 1.74 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/assets/staged-save.worker-CXNG5no9.js           │ esm           │ 3.82 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/index.js                                        │ esm           │ 571.02 KiB  │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ ssr/__vite_rsc_assets_manifest.js                   │ esm           │ 1.09 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ __vite_rsc_assets_manifest.js                       │ esm           │ 1.09 KiB    │\n├─────────────────────────────────────────────────────┼───────────────┼─────────────┤\n│ Total (11 modules)                                  │               │ 2829.79 KiB │\n└─────────────────────────────────────────────────────┴───────────────┴─────────────┘\n⎔ Starting local server...\n[wrangler:info] ✨ Parsed 3 valid header rules.\nWrangler detected this dev session is running in an AI agent.\nThe Local Explorer API is available at http://127.0.0.1:63399/cdn-cgi/local/explorer/api\nUseful routes:\n  GET http://127.0.0.1:63399/cdn-cgi/local/explorer/api/local/workers - local Workers and bindings\n  POST http://127.0.0.1:63399/cdn-cgi/local/explorer/api/local/scheduled?worker=<name> - invoke a Worker's scheduled handler; cron is required (see the OpenAPI schema for the full request)\n  GET http://127.0.0.1:63399/cdn-cgi/local/explorer/api/storage/kv/namespaces - KV namespaces\n  GET http://127.0.0.1:63399/cdn-cgi/local/explorer/api/d1/database - D1 databases\n  GET http://127.0.0.1:63399/cdn-cgi/local/explorer/api/r2/buckets - R2 buckets\n  GET http://127.0.0.1:63399/cdn-cgi/local/explorer/api/workers/durable_objects/namespaces - Durable Object namespaces\n  GET http://127.0.0.1:63399/cdn-cgi/local/explorer/api/workflows - Workflows\n  POST http://127.0.0.1:63399/cdn-cgi/local/explorer/api/local/observability/query - run a read-only SQL query (SELECT/WITH only) over captured request traces and console logs. Tables: spans, logs (read attributes via json(attributes)). Example:\n    curl -X POST http://127.0.0.1:63399/cdn-cgi/local/explorer/api/local/observability/query -H 'Content-Type: application/json' -d '{\"sql\":\"SELECT service, name, outcome, duration_ms FROM spans WHERE parent_id IS NULL LIMIT 20\"}'\n  POST http://127.0.0.1:63399/cdn-cgi/local/explorer/api/local/observability/clear - clear all captured traces and logs\nIf the routes above don't cover what you need, fetch the full OpenAPI schema (large - use only as a last resort):\n  GET http://127.0.0.1:63399/cdn-cgi/local/explorer/api - OpenAPI schema\n[wrangler:info] Ready on http://127.0.0.1:63399\n[wrangler:info] HEAD / 200 OK (1642ms)\n[wrangler:info] GET / 200 OK (49ms)\n[wrangler:info] GET /assets/index-CwQ1gGtM.css 200 OK (44ms)\n[wrangler:info] GET /assets/ConverterApp-B5y7W_wQ.js 200 OK (71ms)\n[wrangler:info] GET /assets/layout-segment-context-DGTXgshT.js 200 OK (97ms)\n[wrangler:info] GET /assets/rolldown-runtime-XKyaHtl9.js 200 OK (92ms)\n[wrangler:info] GET /assets/framework-DRChgpEG.js 200 OK (90ms)\n[wrangler:info] GET /assets/index-D889uMxj.js 200 OK (89ms)\n[wrangler:info] GET /manifest.webmanifest 200 OK (80ms)\n[wrangler:info] GET /icon.svg 200 OK (21ms)\n[wrangler:info] GET /icon.svg 200 OK (18ms)\n[wrangler:info] GET /assets/conversion.worker-CzDfE4v5.js 200 OK (19ms)\n[wrangler:info] GET /engines/webcodecs-vp9/isolated.mjs 200 OK (19ms)\n[wrangler:info] GET /engines/webcodecs-vp9/qualification.mjs 200 OK (18ms)\n[wrangler:info] GET /engines/webcodecs-vp9/within-webcodecs-vp9.mjs 200 OK (15ms)\n[wrangler:info] GET /engines/webcodecs-vp9/within-webcodecs-vp9.wasm 200 OK (9ms)\n[wrangler:info] GET /engines/webcodecs-vp9/qualification.mjs 200 OK (18ms)\n[wrangler:info] HEAD /engines/remux/within-remux.mjs 200 OK (16ms)\n[wrangler:info] HEAD /engines/remux/within-remux.wasm 200 OK (16ms)\n",
+  "rawArchive": {
+    "file": "evidence/2026-11-05-webcodecs-vp9-duration-fixed-42013264823.raw.json.gz",
+    "bytes": 19814,
+    "sha256": "acf07a32e52b3dec038c6001aef02e6045ea0ee0897c4790d04176f33a5ade0a",
+    "decodedBytes": 273089,
+    "decodedSha256": "efe311564239c26e7a3e70aef18b3c4257531fffcf3f6fdd6633a82e2a8e0bb3",
+    "exactRoundtripVerifiedBeforeReplacement": true
+  }
+}
