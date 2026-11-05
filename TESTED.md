@@ -1,5 +1,30 @@
 # Tested conversion ledger
 
+2026-11-06 guarded-cycle final gates:255focused regressions PASS(1855.871ms)+
+27source/native/browser/failed-original evidence checks PASS(550.5317ms),0skip;
+affected lint/diff PASS.403/403public evidence/2hidden pending/0PDF unchanged;
+canonical C SHAae501a2e...3068 unchanged. No speed gain or public/original success
+claimed. Next failure-only allocation diagnostics (three ambiguous frame-buffer
+sites), then informed change; don't rebuild current guarded core or repeat
+original attempt4 unchanged. All original/near10GB/full-family/release gaps open.
+
+2026-11-06 actual guarded ORIGINAL attempt4 FAILED atcdb3f497: untouched full
+2958573265B/1920x804/24fps/4Mbps/one CPU worker, native42129383089. Temporal-
+filter allocation error is gone; next actual error is "Failed to allocate frame
+buffer". Only353857B input/485B header/one write, no completed video/fidelity or
+five-minute startup pass. Same blank348078080/peak544489472=>187.3125MiB,
+30valid0missing; separate memory reading is NOT conversion success. Last reported
+Wasm76283904B still NOT actual heap-at-failure or allocation request size.
+Exact guarded source has THREE matching error sites (two bit-depth branches in
+vp9_scale_references, one set_frame_size); actual site remains NULL, not guessed.
+Next: bounded failure-only allocator diagnostics for exact site/request/live heap,
+then informed optimization under SAME limits; do not rerun attempt4 unchanged.
+All partial/OPFS/profile/runtime/stage deleted, all3owned births absent, original
+size/SHA unchanged,0forbidden requests; raw282431B archived to98698B total.
+Obsolete width-only static tool42122918540 removed after exact owner/hash/content
+verification:17files/10416178B. Recoverable from pinned f8c53adc source/artifact;
+small unmodified baseline42020605269 and current guarded tool retained for reuse.
+
 2026-11-06 actual guarded-tool six-job browser control PASS at758ba729/Chrome
 headless, normal services unchanged,42129383089. Initial+3recoveries each99413B
 SHA82bdfd66...82267b BYTE-EXACT to old unmodified-libvpx output from pinned58389B

@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-11-06 guarded-cycle gates finalized:282focused tests PASS/0skip, affected
+lint/diff/public evidence consistency PASS; public source and403routes unchanged.
+Meaningful progress: actual guarded Wasm plus byte-exact/fidelity/adverse recovery
+pass. Original still fails next required allocation. Next is exact failure-only
+allocation diagnostics, NOT unchanged build/test replay. Full goal remains active
+and all broader partial requirements below retain their scope/status.
+
+2026-11-06 guarded full-original attempt4 FAILS next native frame-buffer allocation
+after prior temporal-buffer failure is avoided; no complete frame/video/fidelity/
+startup-window acceptance. Source-audited THREE identical error sites; actual
+site/request/live-heap unknown(NULL), last JS-reported76.28MB not substituted.
+Failure/raw/cleanup/original integrity retained; obsolete17file10.4MB width-only
+tool removed with identity/hash checks. Next action is bounded failure-only
+allocation diagnostics and informed lower-memory change, NOT unchanged rerun or
+raising96MiB/250MiB/lowering resolution. Small guarded bit-exact/fidelity/recovery
+pass remains valid but does NOT close original/near10GB or broader requirements.
+
 2026-11-06 actual guarded small bit-exact/fidelity/recovery control PASS:
 initial+3complete outputs identical to unmodified libvpx, all strict clocks/SSIM/
 metadata; both actual adverse-write paths recover and clean up. WholeChrome

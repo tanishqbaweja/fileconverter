@@ -3,22 +3,29 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { access, lstat, readFile, readdir, realpath, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-assert.equal(process.argv.length, 2);
-const root = path.resolve(import.meta.dirname, ".."), target = path.join(root, "work/vp9-duration-input-42013264823");
-const output = path.join(root, "evidence/2026-11-05-vp9-duration-superseded-input-cleanup.json");
+const originalWidth = process.argv[2] === "--original-width";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && originalWidth));
+const oldId = originalWidth ? 42122918540 : 42013264823, newId = originalWidth ? 42129383089 : 42020605269;
+const root = path.resolve(import.meta.dirname, ".."), target = path.join(root, "work/vp9-duration-input-" + oldId);
+const output = path.join(root, originalWidth ? "evidence/2026-11-06-vp9-original-width-superseded-input-cleanup.json" : "evidence/2026-11-05-vp9-duration-superseded-input-cleanup.json");
 const json = async file => JSON.parse(await readFile(path.join(root, file)));
-const old = await json("evidence/2026-11-05-vp9-duration-native-42013264823.json"),
-  replacement = await json("evidence/2026-11-05-vp9-duration-native-42020605269.json"),
-  browser = await json("evidence/2026-11-05-webcodecs-vp9-stream-duration-fidelity-42020605269.json");
+const nativePrefix = originalWidth ? "evidence/2026-11-06-vp9-original-width-native-" : "evidence/2026-11-05-vp9-duration-native-";
+const old = await json(nativePrefix + oldId + ".json"), replacement = await json(nativePrefix + newId + ".json"),
+  browser = await json(originalWidth ? "evidence/2026-11-06-vp9-temporal-qualification-42129383089.json" : "evidence/2026-11-05-webcodecs-vp9-stream-duration-fidelity-42020605269.json");
 await assert.rejects(access(output), { code: "ENOENT" });
-assert.equal(browser.status, "passed-one-small-private-browser-conversion-not-public-or-stress-acceptance");
+assert.equal(browser.status, originalWidth ? "passed-private-vp9-recovery-sequence-not-large-or-public-acceptance" : "passed-one-small-private-browser-conversion-not-public-or-stress-acceptance");
+if (originalWidth) {
+  assert.equal(browser.recovery.passed, true); assert.equal(browser.temporalAllocationGuard.bitExactComparedWithUnmodifiedLibvpx, true);
+  assert.equal(old.nativeContract.candidate.compiledWrapperSha256, replacement.nativeContract.candidate.compiledWrapperSha256);
+  assert.equal(replacement.nativeContract.engine, "private-vp9-realtime-temporal");
+}
 assert.equal(browser.privateCpuOverride.runId, replacement.runId); assert.equal(browser.privateCpuOverride.sourceHead, replacement.head);
 assert.equal(browser.independentFidelity.passed, true); assert.equal(browser.storedTiming.explicitDefaultDurationGatePassed, true);
 assert.equal(browser.ownedRuntimeRemoved, true); assert.ok(browser.processCleanup.every(row => row.status === "owned-identity-absent"));
-assert.equal(old.runId, 42013264823); assert.equal(replacement.runId, 42020605269);
+assert.equal(old.runId, oldId); assert.equal(replacement.runId, newId);
 assert.equal(path.dirname(target), path.join(root, "work")); assert.equal(await realpath(target), target);
 const identity = await lstat(target, { bigint: true }); assert.ok(identity.isDirectory() && !identity.isSymbolicLink());
-const owner = await json("work/vp9-duration-input-42013264823/owned-input.json");
+const owner = await json("work/vp9-duration-input-" + oldId + "/owned-input.json");
 assert.equal(owner.runId, old.runId); assert.equal(owner.head, old.head);
 assert.equal(owner.dev, String(identity.dev)); assert.equal(owner.ino, String(identity.ino));
 const names = Object.keys(old.nativeContract.artifacts).concat("build-manifest.json", "owned-input.json").sort();
@@ -37,7 +44,7 @@ for (const file of names) {
 }
 const last = await lstat(target, { bigint: true }); assert.equal(last.dev, identity.dev); assert.equal(last.ino, identity.ino);
 assert.equal(await realpath(target), target);
-const report = { target: "work/vp9-duration-input-42013264823", ownedRunId: old.runId, files: names.length, bytes,
+const report = { target: "work/vp9-duration-input-" + oldId, ownedRunId: old.runId, files: names.length, bytes,
   verifiedExactOwnedContents: true, replacementRunId: replacement.runId, replacementStrictSmallBrowserPassed: true,
   recovery: { artifactId: old.artifact.id, artifactExpiresAt: old.artifact.expiresAt, pinnedSourceRebuildHead: old.head, localCopyRetained: false },
   userMediaReadOrRemoved: false, removed: false, publicAcceptance: false };

@@ -1,0 +1,45 @@
+{
+  "recordedAt": "2026-11-05T23:49:07.191Z",
+  "scope": "Exact retained guarded source / changed actual failure audit, NOT full conversion or proven next optimization",
+  "priorRunId": 42122918540,
+  "currentRunId": 42129383089,
+  "source": {
+    "file": "work/vp9-duration-input-42129383089/vp9_encoder.temporal.guard.c",
+    "sha256": "9c831c453796fcd08598da8b8e27a494fde8d681e87349facd590c48949e9693"
+  },
+  "previousFailure": "Failed to allocate temporal filter buffer",
+  "currentFailure": "Failed to allocate frame buffer",
+  "currentFailureMessageHasMultipleSourceSites": true,
+  "actualFailingCallSite": null,
+  "callSites": [
+    {
+      "line": 3511,
+      "function": "vp9_scale_references",
+      "context": "        if (new_fb == INVALID_IDX) {\n          new_fb = get_free_fb(cm);\n          force_scaling = 1;\n        }\n        if (new_fb == INVALID_IDX) return;\n        new_fb_ptr = &pool->frame_bufs[new_fb];\n        if (force_scaling || new_fb_ptr->buf.y_crop_width != cm->width ||\n            new_fb_ptr->buf.y_crop_height != cm->height) {\n#if CONFIG_VP9_HIGHBITDEPTH\n          if (vpx_realloc_frame_buffer(&new_fb_ptr->buf, cm->width, cm->height,\n                                       cm->subsampling_x, cm->subsampling_y,\n                                       cm->use_highbitdepth,\n                                       VP9_ENC_BORDER_IN_PIXELS,\n                                       cm->byte_alignment, NULL, NULL, NULL))\n            vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                               \"Failed to allocate frame buffer\");\n          scale_and_extend_frame(ref, &new_fb_ptr->buf, (int)cm->bit_depth,\n                                 EIGHTTAP, 0);\n#else"
+    },
+    {
+      "line": 3520,
+      "function": "vp9_scale_references",
+      "context": "          if (vpx_realloc_frame_buffer(&new_fb_ptr->buf, cm->width, cm->height,\n                                       cm->subsampling_x, cm->subsampling_y,\n                                       cm->use_highbitdepth,\n                                       VP9_ENC_BORDER_IN_PIXELS,\n                                       cm->byte_alignment, NULL, NULL, NULL))\n            vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                               \"Failed to allocate frame buffer\");\n          scale_and_extend_frame(ref, &new_fb_ptr->buf, (int)cm->bit_depth,\n                                 EIGHTTAP, 0);\n#else\n          if (vpx_realloc_frame_buffer(&new_fb_ptr->buf, cm->width, cm->height,\n                                       cm->subsampling_x, cm->subsampling_y,\n                                       VP9_ENC_BORDER_IN_PIXELS,\n                                       cm->byte_alignment, NULL, NULL, NULL))\n            vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                               \"Failed to allocate frame buffer\");\n          vp9_scale_and_extend_frame(ref, &new_fb_ptr->buf, EIGHTTAP, 0);\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n          cpi->scaled_ref_idx[ref_frame - 1] = new_fb;"
+    },
+    {
+      "line": 3889,
+      "function": "set_frame_size",
+      "context": "  if ((oxcf->pass == 2) && !cpi->use_svc) {\n    vp9_set_target_rate(cpi);\n  }\n\n  alloc_frame_mvs(cm, cm->new_fb_idx);\n\n  // Reset the frame pointers to the current frame size.\n  if (vpx_realloc_frame_buffer(get_frame_new_buffer(cm), cm->width, cm->height,\n                               cm->subsampling_x, cm->subsampling_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                               cm->use_highbitdepth,\n#endif\n                               VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment,\n                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate frame buffer\");\n\n  alloc_util_frame_buffers(cpi);\n  init_motion_estimation(cpi);"
+    }
+  ],
+  "exactFailedAllocationBytes": null,
+  "actualHeapAtFailureBytes": null,
+  "lastReportedWasmBytes": 76283904,
+  "declaredMaximumWasmBytes": 100663296,
+  "maximumIsNotActualObservedHeap": true,
+  "memoryVerdictNotConversionSuccess": {
+    "incrementalPrivateMiB": 187.3125,
+    "nativeFailed": true
+  },
+  "nextAction": "Add bounded failure-only allocation diagnostics to distinguish new-frame vs scaled-reference failure and record requested allocation/current live Wasm heap; retain limits and strict controls, no unchanged original replay",
+  "codecSettingsOrMemoryLimitsChangedByAudit": false,
+  "userMediaReadOrConverted": false,
+  "speedGainProven": false,
+  "publicAcceptance": false
+}
