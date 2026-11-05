@@ -6,15 +6,17 @@ import { lstat, readFile, realpath } from "node:fs/promises";
 import path from "node:path";
 const hashFile = async file => { const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes); return hash.digest("hex"); };
-export async function loadVp9DurationCpuAssets(root, runId) {
+export async function loadVp9DurationCpuAssets(root, runId, series = "duration") {
   assert.match(String(runId), /^\d{8,14}$/);
-  const receiptFile = path.join(root, `evidence/2026-11-05-vp9-duration-native-${runId}.json`);
+  assert.ok(["duration", "original-width"].includes(series));
+  const prefix = series === "original-width" ? "evidence/2026-11-06-vp9-original-width-native-" : "evidence/2026-11-05-vp9-duration-native-";
+  const receiptFile = path.join(root, prefix + runId + ".json");
   const receiptInfo = await lstat(receiptFile);
   assert.ok(receiptInfo.isFile() && !receiptInfo.isSymbolicLink() && receiptInfo.size <= 2097152);
   assert.equal(await realpath(receiptFile), receiptFile);
   const receipt = JSON.parse(await readFile(receiptFile));
   assert.equal(receipt.runId, Number(runId)); assert.equal(receipt.publicAcceptance, false); assert.equal(receipt.publicAssetReplacement, false);
-  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration"].includes(receipt.nativeContract.engine));
+  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration", "private-vp9-original-width"].includes(receipt.nativeContract.engine));
   const target = path.join(root, `work/vp9-duration-input-${runId}`);
   assert.equal(path.resolve(root, receipt.retainedDirectory), target); assert.equal(await realpath(target), target);
   const files = {};

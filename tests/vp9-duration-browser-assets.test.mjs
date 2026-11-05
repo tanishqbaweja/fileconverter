@@ -78,10 +78,10 @@ test("tampered private module bytes are rejected before any browser request", as
   await writeFile(path.join(target, "within-remux.wasm"), "tampered static bytes");
   await assert.rejects(loadVp9DurationCpuAssets(root, runId));
 }));
-test("loader accepts the authenticated stream-duration engine but rejects unrecognized engines", async () => {
-  for (const engine of ["private-vp9-stream-duration", "unrecognized-core"]) await loaderFixture(async ({ root, runId, receipt, file }) => {
+test("loader accepts the authenticated stream-duration/original-width engines but rejects unrecognized engines", async () => {
+  for (const engine of ["private-vp9-stream-duration", "private-vp9-original-width", "unrecognized-core"]) await loaderFixture(async ({ root, runId, receipt, file }) => {
     await writeFile(file, JSON.stringify({ ...receipt, nativeContract: { ...receipt.nativeContract, engine } }));
-    if (engine === "private-vp9-stream-duration") assert.equal((await loadVp9DurationCpuAssets(root, runId)).runId, Number(runId));
+    if (engine !== "unrecognized-core") assert.equal((await loadVp9DurationCpuAssets(root, runId)).runId, Number(runId));
     else await assert.rejects(loadVp9DurationCpuAssets(root, runId));
   });
 });
@@ -91,3 +91,9 @@ test("receipt cannot redirect into another folder or turn a private source tool 
       await writeFile(file, JSON.stringify({ ...receipt, ...mutation })); await assert.rejects(loadVp9DurationCpuAssets(root, runId));
     });
 });
+test("original-width receipt namespace is explicit and bounded, never an arbitrary file path", async () => loaderFixture(async ({ root, runId, receipt }) => {
+  await writeFile(path.join(root, "evidence", "2026-11-06-vp9-original-width-native-" + runId + ".json"),
+    JSON.stringify({ ...receipt, nativeContract: { ...receipt.nativeContract, engine: "private-vp9-original-width" } }), { flag: "wx" });
+  assert.equal((await loadVp9DurationCpuAssets(root, runId, "original-width")).runId, runId);
+  await assert.rejects(loadVp9DurationCpuAssets(root, runId, "../outside"));
+}));

@@ -1,7 +1,7 @@
 // Read-only original input; bounded real CPU startup, NEVER full-file acceptance.
 import assert from "node:assert/strict";
 export const VP9_ORIGINAL_STARTUP = Object.freeze({ windowMs: 300000, cancellationGraceMs: 30000, maximumIncrementalMiB: 250,
-  width: 1920, height: 804, frameRate: 24, bitRateBps: 6000000, minimumDiskBytes: 2147483648 });
+  width: 1920, height: 804, frameRate: 24, bitRateBps: 4000000, minimumDiskBytes: 2147483648 });
 export function originalStartupStop(peaks, baseline, elapsedMs) {
   assert.ok(typeof baseline === "number" && baseline > 0); assert.ok(Number.isFinite(elapsedMs) && elapsedMs >= 0);
   if (peaks.unavailableSamples > 0) return { kind: "unavailable-memory-samples", incrementalPrivateMiB: null };

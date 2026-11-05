@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-11-06 original-width wiring READY, actual build PENDING. Generator/build now
+select three-edit VP9-only1920 candidate and pin packet/stream/width recipes;
+manifest separates private width1920/default/public policy false. Collector selects
+exact source factory from known authenticated engine; static loader accepts only
+known engines and explicit bounded original-width receipt namespace. Attempts5+
+use dated2026-11-06 original-width build receipts/branches, legacy1-4 unchanged.
+Original startup attempt3 requires DISTINCT original-width native run ID/contract;
+all CPU asset/source pins replaced, existing4Mbps chosen (1920x804/24fps retained),
+same blank/250MiB/5minute stop rules and CDP whole-original selection. It cannot
+silently reuse two-edit core42020605269.34focused tests PASS(434.1639ms), affected
+lint PASS. Canonical C/public controls/assets, native threads/I/O/Wasm limits
+unchanged. No new compile/browser/original-resolution success claimed yet.
+
 2026-11-06 original-cycle finalization:249focused regressions PASS(2010.6321ms)
 +3original evidence checks PASS(103.3798ms),0skipped; affected lint/diff PASS,
 403/403public evidence/2hidden pending/0PDF unchanged. Canonical C SHAae501a2e...

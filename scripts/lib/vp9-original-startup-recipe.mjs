@@ -4,8 +4,10 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 const sha = value => createHash("sha256").update(value).digest("hex");
-export function makeVp9OriginalStartupSource(source, root, attempt = 1) {
-  assert.ok(path.isAbsolute(root)); assert.ok([1, 2].includes(attempt)); const suffix = attempt === 1 ? "" : "-attempt2", edits = [];
+export function makeVp9OriginalStartupSource(source, root, attempt = 1, nativeRunId = "42020605269") {
+  assert.ok(path.isAbsolute(root)); assert.ok([1, 2, 3].includes(attempt));
+  assert.match(nativeRunId, /^\d{8,14}$/); if (attempt === 3) assert.notEqual(nativeRunId, "42020605269", "Original-width attempt requires a distinct compiled core");
+  const suffix = attempt === 1 ? "" : "-attempt" + attempt, edits = [];
   const add = (before, after) => { assert.equal(source.split(before).length, 2, before.slice(0, 160)); edits.push([before, after]); source = source.replace(before, after); };
   const parentSha256 = sha(source), helper = pathToFileURL(path.join(root, "scripts/lib/vp9-original-startup.mjs")).href;
   add('import { chromium } from "playwright";', 'import { chromium } from "playwright";\nimport { runVp9OriginalStartup } from ' + JSON.stringify(helper) + ';');
@@ -18,7 +20,7 @@ export function makeVp9OriginalStartupSource(source, root, attempt = 1) {
     '  const disk = await statfs(root); report.diskPreflight = { freeBytes: disk.bavail * disk.bsize, minimumBytes: 2147483648 };\n' +
     '  assert.ok(report.diskPreflight.freeBytes >= report.diskPreflight.minimumBytes);');
   add('scope: "One genuine private VP9 small-worker OPFS conversion with native validation; NOT full production UI, direct picker, A/B speed or original/near10GB qualification",',
-    'scope: "Untouched full original input, explicit CPU1920x804/24fps/6Mbps five-minute startup safety gate; NOT completed full-file conversion/fidelity/public acceptance",');
+    'scope: "Untouched full original input, explicit CPU1920x804/24fps/4Mbps five-minute startup safety gate; NOT completed full-file conversion/fidelity/public acceptance",');
   const fixtureStart = source.indexOf('  const fixture = path.join(runtime.directory, "explicit-bt709.mkv"),'), fixtureEnd = source.indexOf('  await assert.rejects(access(stage)', fixtureStart);
   assert.ok(fixtureStart > 0 && fixtureEnd > fixtureStart);
   const fixtures = source.slice(fixtureStart, fixtureEnd);
@@ -43,10 +45,16 @@ export function makeVp9OriginalStartupSource(source, root, attempt = 1) {
     '  assert.deepEqual(report.privateCpuOverride.served, { javascript: 1, wasm: 1 }); assert.equal(report.privateAssetErrorCount, 0);\n' +
     '  assert.deepEqual(report.forbiddenRequests, []);\n' +
     '  report.status = "passed-private-original-startup-only-not-completed-transcode";');
+  if (attempt === 3) {
+    add("evidence/2026-11-05-vp9-duration-native-42020605269.json", "evidence/2026-11-06-vp9-original-width-native-" + nativeRunId + ".json");
+    for (const extension of ["mjs", "wasm"]) add("work/vp9-duration-input-42020605269/within-remux." + extension,
+      "work/vp9-duration-input-" + nativeRunId + "/within-remux." + extension);
+    add('loadVp9DurationCpuAssets(root, "42020605269")', 'loadVp9DurationCpuAssets(root, ' + JSON.stringify(nativeRunId) + ', "original-width")');
+  }
   let reversed = source;
   for (const [before, after] of edits.toReversed()) { assert.equal(reversed.split(after).length, 2); reversed = reversed.replace(after, before); }
   assert.equal(sha(reversed), parentSha256);
-  return { generated: source, parentSha256, generatedSha256: sha(source), edits, reversible: true, attempt,
+  return { generated: source, parentSha256, generatedSha256: sha(source), edits, reversible: true, attempt, nativeRunId,
     protectedOriginalPassedWithoutCopyOrExcerpt: true, changesNativeCore: false, changesMemoryFormulaOrLimit: false,
     changesBaselineWindowOrThreshold: false, startupOnly: true, fullFileAcceptance: false, publicAcceptance: false };
 }

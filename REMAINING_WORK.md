@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-06 private original-width three-edit source now WIRED through build and
+authenticated collection/loading. Attempt3 enforces distinct width-core run ID,
+same full-original dimensions/timing and existing4Mbps.34focused checks/lint PASS.
+Next action: one isolated source build attempt5, authenticate actual bytes, then
+actual changed original startup. No native success or full original encoding yet;
+all public/resolution/memory policy and broader partial requirements unchanged.
+
 2026-11-06 original-cycle gates:249focused+3evidence checks PASS/0skip, lint/diff
 and403/403public consistency PASS. NEXT ACTION, not another unchanged retry:
 wire makeVp9OriginalWidthSource into private native generator/builder/collector/

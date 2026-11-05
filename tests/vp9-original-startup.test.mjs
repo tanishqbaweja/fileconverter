@@ -40,7 +40,7 @@ test("memory gate uses exact250MiB same-blank threshold, missing is unavailable 
 test("five-minute bound is a diagnostic stop, never full-file acceptance or a source-duration change", () => {
   assert.equal(VP9_ORIGINAL_STARTUP.windowMs, 300000); assert.equal(VP9_ORIGINAL_STARTUP.cancellationGraceMs, 30000);
   assert.deepEqual([VP9_ORIGINAL_STARTUP.width, VP9_ORIGINAL_STARTUP.height, VP9_ORIGINAL_STARTUP.frameRate], [1920, 804, 24]);
-  assert.equal(VP9_ORIGINAL_STARTUP.bitRateBps, 6000000);
+  assert.equal(VP9_ORIGINAL_STARTUP.bitRateBps, 4000000);
   assert.equal(originalStartupStop({ peak: { privateBytes: 400000000 }, validSamples: 1, unavailableSamples: 0 }, 300000000, 300000).kind,
     "bounded-startup-window-ended");
 });
@@ -54,8 +54,20 @@ test("changed second attempt has exclusive separate receipt/trace/recipe identit
   const result = makeVp9OriginalStartupSource(source, root, 2);
   assert.ok(result.generated.includes("evidence/2026-11-06-vp9-original-cpu-startup-attempt2.json"));
   assert.ok(result.generated.includes("2026-11-06-vp9-original-cpu-startup-attempt2-failure.zip"));
-  assert.equal(result.attempt, 2); assert.throws(() => makeVp9OriginalStartupSource(source, root, 3));
+  assert.equal(result.attempt, 2); assert.throws(() => makeVp9OriginalStartupSource(source, root, 4));
   const { stdout } = await promisify(execFile)(process.execPath, ["scripts/test-vp9-original-startup.mjs", "2", "--check-only"],
     { cwd: root, windowsHide: true, timeout: 30000, maxBuffer: 65536 });
+  assert.equal(JSON.parse(stdout).browserLaunched, false);
+});
+test("third original attempt requires a distinct authenticated width build and replaces every CPU pin/load reference", async () => {
+  assert.throws(() => makeVp9OriginalStartupSource(source, root, 3), /distinct compiled core/);
+  const result = makeVp9OriginalStartupSource(source, root, 3, "12345678");
+  assert.ok(result.generated.includes("evidence/2026-11-06-vp9-original-width-native-12345678.json"));
+  assert.ok(result.generated.includes('loadVp9DurationCpuAssets(root, "12345678", "original-width")'));
+  for (const extension of ["mjs", "wasm"]) assert.ok(result.generated.includes("work/vp9-duration-input-12345678/within-remux." + extension));
+  assert.doesNotMatch(result.generated, /vp9-duration-input-42020605269|vp9-duration-native-42020605269/);
+  assert.equal(result.nativeRunId, "12345678");
+  const { stdout } = await promisify(execFile)(process.execPath, ["scripts/test-vp9-original-startup.mjs", "3", "--check-only"],
+    { cwd: root, windowsHide: true, timeout: 30000, maxBuffer: 65536, env: { ...process.env, WITHIN_VP9_ORIGINAL_NATIVE_RUN_ID: "12345678" } });
   assert.equal(JSON.parse(stdout).browserLaunched, false);
 });

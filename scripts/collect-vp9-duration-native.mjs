@@ -10,13 +10,15 @@ import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
 import { makeVp9PacketDurationSource } from "../media/ffmpeg/vp9-packet-duration-recipe.mjs";
 import { makeVp9StreamDurationSource } from "../media/ffmpeg/vp9-stream-duration-recipe.mjs";
+import { makeVp9OriginalWidthSource } from "../media/ffmpeg/vp9-original-width-recipe.mjs";
 assert.equal(process.argv.length, 3); const attempt = process.argv[2]; assert.match(attempt, /^[1-9]$/);
 const suffix = attempt === "1" ? "" : "-attempt" + attempt, root = path.resolve(import.meta.dirname, ".."), repo = "tanishqbaweja/fileconverter";
-const dispatch = JSON.parse(await readFile(path.join(root, "evidence/2026-11-05-vp9-duration-build-dispatch" + suffix + ".json")));
+const prefix = Number(attempt) >= 5 ? "evidence/2026-11-06-vp9-original-width" : "evidence/2026-11-05-vp9-duration";
+const dispatch = JSON.parse(await readFile(path.join(root, prefix + "-build-dispatch" + suffix + ".json")));
 const runId = dispatch.run.databaseId; assert.ok(Number.isSafeInteger(runId));
-const terminal = JSON.parse(await readFile(path.join(root, `evidence/2026-11-05-vp9-duration-build-${runId}-terminal.json`)));
+const terminal = JSON.parse(await readFile(path.join(root, prefix + `-build-${runId}-terminal.json`)));
 assert.equal(terminal.head, dispatch.head); assert.equal(terminal.conclusion, "success"); assert.equal(terminal.cleanupStepsPassed, true);
-const target = path.join(root, `work/vp9-duration-input-${runId}`), output = path.join(root, `evidence/2026-11-05-vp9-duration-native-${runId}.json`);
+const target = path.join(root, `work/vp9-duration-input-${runId}`), output = path.join(root, prefix + `-native-${runId}.json`);
 await assert.rejects(access(target), { code: "ENOENT" }); await assert.rejects(access(output), { code: "ENOENT" });
 assert.equal(await realpath(path.join(root, "work")), path.join(root, "work"));
 const sha = value => createHash("sha256").update(value).digest("hex"), execute = promisify(execFile);
@@ -42,7 +44,7 @@ try {
   } });
   assert.deepEqual(Object.keys(members).sort(), allowed.toSorted());
   const manifest = JSON.parse(Buffer.from(members["build-manifest.json"]).toString());
-  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration"].includes(manifest.engine)); assert.equal(manifest.candidate.publicAcceptance, false);
+  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration", "private-vp9-original-width"].includes(manifest.engine)); assert.equal(manifest.candidate.publicAcceptance, false);
   assert.equal(manifest.candidate.browserValidated, false); assert.equal(manifest.candidate.nodeInstantiated, false);
   assert.equal(manifest.candidate.mediaRead, false); assert.equal(manifest.candidate.mediaWritten, false);
   assert.equal(manifest.candidate.memoryLimitsRaised, false); assert.equal(manifest.buildEnvironment.usedDocker, false);
@@ -55,9 +57,14 @@ try {
     assert.equal(sha(source), pin, file);
   }
   assert.equal(sha(await readFile(path.join(root, "media/ffmpeg/vp9-packet-duration-recipe.mjs"))), manifest.sources["media/ffmpeg/vp9-packet-duration-recipe.mjs"]);
-  const streamDuration = manifest.engine === "private-vp9-stream-duration";
+  const originalWidth = manifest.engine === "private-vp9-original-width", streamDuration = manifest.engine === "private-vp9-stream-duration" || originalWidth;
   if (streamDuration) assert.equal(sha(await readFile(path.join(root, "media/ffmpeg/vp9-stream-duration-recipe.mjs"))), manifest.sources["media/ffmpeg/vp9-stream-duration-recipe.mjs"]);
-  const sourceProof = (streamDuration ? makeVp9StreamDurationSource : makeVp9PacketDurationSource)(Buffer.from(members["within_remux.base.c"]).toString());
+  if (originalWidth) {
+    assert.equal(sha(await readFile(path.join(root, "media/ffmpeg/vp9-original-width-recipe.mjs"))), manifest.sources["media/ffmpeg/vp9-original-width-recipe.mjs"]);
+    assert.equal(manifest.candidate.privateVp9ExplicitWidth, 1920); assert.equal(manifest.candidate.defaultWidthPolicyChanged, false);
+    assert.equal(manifest.candidate.publicWidthRegistryOrControlsChanged, false);
+  }
+  const sourceProof = (originalWidth ? makeVp9OriginalWidthSource : streamDuration ? makeVp9StreamDurationSource : makeVp9PacketDurationSource)(Buffer.from(members["within_remux.base.c"]).toString());
   assert.equal(sourceProof.parentSha256, "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd");
   assert.equal(sourceProof.generated, Buffer.from(members["within_remux.duration.c"]).toString());
   assert.equal(sourceProof.generatedSha256, manifest.candidate.compiledWrapperSha256);
