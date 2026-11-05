@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-11-06 original startup attempt1 FAILED BEFORE CONVERSION at eb58dfa6:
+Playwright URL-connected locator.setInputFiles refuses files over50MB. Full
+original size/SHA and1920x804/24fps metadata verified, stable blank352751616B,
+but no native job/memory result: incremental NULL, not a CPU conversion failure.
+All3owned process births absent, runtime/profile/stage removed, original unchanged.
+Local failure trace19638B SHAaea01ea3...d1c4b retained in output/playwright.
+Changed attempt2 now reuses established selectExactLocalOriginal CDP DOM adapter:
+passes exact root path to browser, verifies selected File name+2958573265B, no
+remote Playwright upload/full-memory copy. Separate exclusive receipt/trace/recipe
+identity preserves attempt1.6focused checks PASS(296.7065ms), affected lint PASS;
+native core/settings/blank window/250MiB unchanged. Actual corrected attempt pending.
+
 2026-11-06 original CPU startup gate implemented; actual run PENDING. Exact
 reversible derivation of retained strict harness, same pinned corrected native
 core42020605269. Passes untouched root test.mkv directly (2958573265B); no source

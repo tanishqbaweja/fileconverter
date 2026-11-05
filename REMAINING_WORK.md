@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-06 first original startup hit test-adapter50MB transfer refusal BEFORE
+conversion, not a native memory failure. All owned data/processes cleaned, original
+unchanged; no conversion memory result. Corrected separate attempt2 reuses existing
+same-host CDP file-input adapter, selects entire3GB File directly, no copy/excerpt/
+upload.6focused checks/lint PASS. Actual original CPU startup and subsequent full
+conversion/fidelity/scaling/repeat/direct/browser/broader qualification still open.
+
 2026-11-06 next ORIGINAL-resolution CPU diagnostic implemented, actual run pending.
 Untouched full3GB test.mkv passed directly to production AVIO;1920x804/24fps/6Mbps,
 explicit CPU (no WebCodecs attribution ambiguity). Same stable blank/250MiB and

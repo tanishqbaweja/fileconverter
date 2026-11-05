@@ -26,6 +26,7 @@ test("full original is passed directly, not an excerpt/generated source, with st
   assert.ok(generated.includes('minimumBytes: 2147483648')); assert.ok(generated.includes('assert.equal(report.blankBaseline?.stable, true, "Stable blank required before the long original startup'));
   assert.equal(changesMemoryFormulaOrLimit, false); assert.equal(changesBaselineWindowOrThreshold, false);
   assert.ok(generated.includes('report.workerIsolation = false; report.explicitCpuWorker = true;'));
+  assert.doesNotMatch(generated, /setInputFiles\(fixture\)/); assert.ok(generated.includes("report.inputSelection = await selectExactLocalOriginal(page, fixture)"));
 });
 test("memory gate uses exact250MiB same-blank threshold, missing is unavailable rather than zero", () => {
   const baseline = 300000000, peak = mib => ({ peak: { privateBytes: baseline + mib * 1048576 }, validSamples: 1, unavailableSamples: 0 });
@@ -48,4 +49,13 @@ test("driver check-only verifies lineage and parses generated source without bro
     { cwd: root, windowsHide: true, timeout: 30000, maxBuffer: 65536 });
   const value = JSON.parse(stdout); assert.equal(value.reversible, true); assert.equal(value.browserLaunched, false); assert.equal(value.recipeWritten, false);
   assert.match(value.generatedSha256, /^[a-f0-9]{64}$/);
+});
+test("changed second attempt has exclusive separate receipt/trace/recipe identity and still verifies exact original via same-host CDP", async () => {
+  const result = makeVp9OriginalStartupSource(source, root, 2);
+  assert.ok(result.generated.includes("evidence/2026-11-06-vp9-original-cpu-startup-attempt2.json"));
+  assert.ok(result.generated.includes("2026-11-06-vp9-original-cpu-startup-attempt2-failure.zip"));
+  assert.equal(result.attempt, 2); assert.throws(() => makeVp9OriginalStartupSource(source, root, 3));
+  const { stdout } = await promisify(execFile)(process.execPath, ["scripts/test-vp9-original-startup.mjs", "2", "--check-only"],
+    { cwd: root, windowsHide: true, timeout: 30000, maxBuffer: 65536 });
+  assert.equal(JSON.parse(stdout).browserLaunched, false);
 });

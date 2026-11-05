@@ -4,14 +4,16 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 const sha = value => createHash("sha256").update(value).digest("hex");
-export function makeVp9OriginalStartupSource(source, root) {
-  assert.ok(path.isAbsolute(root)); const edits = [];
+export function makeVp9OriginalStartupSource(source, root, attempt = 1) {
+  assert.ok(path.isAbsolute(root)); assert.ok([1, 2].includes(attempt)); const suffix = attempt === 1 ? "" : "-attempt2", edits = [];
   const add = (before, after) => { assert.equal(source.split(before).length, 2, before.slice(0, 160)); edits.push([before, after]); source = source.replace(before, after); };
   const parentSha256 = sha(source), helper = pathToFileURL(path.join(root, "scripts/lib/vp9-original-startup.mjs")).href;
   add('import { chromium } from "playwright";', 'import { chromium } from "playwright";\nimport { runVp9OriginalStartup } from ' + JSON.stringify(helper) + ';');
-  add('"scripts/lib/private-vp9-finalization.mjs",', '"scripts/lib/private-vp9-finalization.mjs", "scripts/lib/vp9-original-startup.mjs", "scripts/lib/vp9-original-startup-recipe.mjs",');
-  add('evidence/2026-11-05-webcodecs-vp9-stream-duration-fidelity-42020605269.json', 'evidence/2026-11-06-vp9-original-cpu-startup.json');
-  add('2026-11-05-webcodecs-vp9-stream-duration-fidelity-42020605269-failure.zip', '2026-11-06-vp9-original-cpu-startup-failure.zip');
+  add('import { chromium } from "playwright";', 'import { chromium } from "playwright";\nimport { selectExactLocalOriginal } from ' + JSON.stringify(pathToFileURL(path.join(root, "scripts/lib/mpeg2-original-gate.mjs")).href) + ';');
+  add('"scripts/lib/private-vp9-finalization.mjs",', '"scripts/lib/private-vp9-finalization.mjs", "scripts/lib/vp9-original-startup.mjs", "scripts/lib/vp9-original-startup-recipe.mjs", "scripts/lib/mpeg2-original-gate.mjs",');
+  add('evidence/2026-11-05-webcodecs-vp9-stream-duration-fidelity-42020605269.json', 'evidence/2026-11-06-vp9-original-cpu-startup' + suffix + '.json');
+  add('2026-11-05-webcodecs-vp9-stream-duration-fidelity-42020605269-failure.zip', '2026-11-06-vp9-original-cpu-startup' + suffix + '-failure.zip');
+  add('await page.locator(\'input[type="file"]\').first().setInputFiles(fixture);', 'report.inputSelection = await selectExactLocalOriginal(page, fixture);');
   add('  const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 1024 ** 3);',
     '  const disk = await statfs(root); report.diskPreflight = { freeBytes: disk.bavail * disk.bsize, minimumBytes: 2147483648 };\n' +
     '  assert.ok(report.diskPreflight.freeBytes >= report.diskPreflight.minimumBytes);');
@@ -44,7 +46,7 @@ export function makeVp9OriginalStartupSource(source, root) {
   let reversed = source;
   for (const [before, after] of edits.toReversed()) { assert.equal(reversed.split(after).length, 2); reversed = reversed.replace(after, before); }
   assert.equal(sha(reversed), parentSha256);
-  return { generated: source, parentSha256, generatedSha256: sha(source), edits, reversible: true,
+  return { generated: source, parentSha256, generatedSha256: sha(source), edits, reversible: true, attempt,
     protectedOriginalPassedWithoutCopyOrExcerpt: true, changesNativeCore: false, changesMemoryFormulaOrLimit: false,
     changesBaselineWindowOrThreshold: false, startupOnly: true, fullFileAcceptance: false, publicAcceptance: false };
 }
