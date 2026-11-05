@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-05 private duration source-build path implemented, actual build PENDING.
+Exact reversible derivation of existing no-Docker general-core recipe; same pinned
+dependencies/configure/linker/thread/memory settings, within-remux ONLY. Patch applies
+to exact reconstructed pre-Theora wrapper ff8926c9..., not canonical ae501a2e...;
+private compiled source/proof/config/license files retained with1day artifact bound.
+8focused source/build checks PASS(171.217ms), shell syntax/affected lint/diff PASS.
+Controller uses isolated Git index/new branch, durable one-shot dispatch intent,
+exact head+job-step inspection, and never modifies main/canonical workflow/assets.
+No compilation/conversion/public acceptance claimed yet. Next: one hosted build,
+authenticate static tools, then SAME strict browser duration/quality/whole-tree gates.
+
 2026-11-05 strict fidelity TERMINAL at8d9d5f51/Chrome156.0.8078.80: real99,405B
 VP9/48frames/full decode, all48presentation clocks EXACT (maxerror0), full48-frame
 SSIM0.993273>=existing0.98, all8checked color/aspect/pixel fields equal. Output SHA

@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-05 scoped private duration build tooling ready; actual job PENDING.
+Reuse published dependency/compiler/thread/memory recipes without changes; only
+private VP9 zero-duration wrapper candidate differs.8source/build checks/lint pass,
+not native or browser proof. Isolated branch/one-shot exact-head job will compile
+only general core, retaining bounded reusable tools for1day with always cleanup.
+Canonical native/public assets/main remain unchanged. Full strict fidelity and
+250MiB/stress/recovery/browser/source/release plus broader objective remain open.
+
 2026-11-05 strict isolated fidelity control FAILS duration despite separate memory
 PASS226.953125MiB/19valid0missing. All48presentation clocks match exactly, full-frame
 SSIM0.993273 passes0.98 and8checked metadata fields match; container1.958s vs2s

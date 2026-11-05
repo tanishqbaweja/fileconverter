@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+import { readFile, realpath, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { makeVp9PacketDurationSource } from "./vp9-packet-duration-recipe.mjs";
+const root = path.resolve(import.meta.dirname, "../.."), build = path.join(root, "work/vp9-duration-build");
+assert.equal(process.argv.length, 2); assert.equal(await realpath(build), build);
+const recipe = makeVp9PacketDurationSource(await readFile(path.join(build, "within_remux.base.c"), "utf8"));
+assert.equal(recipe.parentSha256, "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd", "Use the exact pre-Theora general-core translation unit");
+await writeFile(path.join(build, "within_remux.duration.c"), recipe.generated, { flag: "wx" });
+const { generated: _generated, ...proof } = recipe;
+void _generated;
+await writeFile(path.join(build, "vp9-duration-source-proof.json"), JSON.stringify(proof, null, 2) + "\n", { flag: "wx" });
+console.log(JSON.stringify({ parentSha256: recipe.parentSha256, generatedSha256: recipe.generatedSha256, edits: recipe.edits.length, publicAcceptance: false }));
