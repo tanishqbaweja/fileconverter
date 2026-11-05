@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-05 native duration tool NOW COMPILED/authenticated:42013264823/708178ce,
+9source checks/static contract/all hosted cleanup PASS. Private Wasm9,873,859B,
+SHA072f798e...a988577; same imported/shared32initial/96maximum MiB/1thread/0helpers.
+Only reusable10.4MB static tools retained in approved work directory; no media
+read/conversion or public asset replacement. Actual strict browser fidelity/memory
+control is next/PENDING. Native build success is NOT a fixed duration or promotion.
+All original large/repeat/direct/recovery/browser/release/broader gates remain open.
+
 2026-11-05 native attempt2 (run42010620047) FAILED configure on TMPDIR inheriting ESM;
 download retry fix worked. Actual CommonJS probe negative/positive controls now
 prove the corrected boundary,9source/build checks pass, no native success claimed.

@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-11-05 duration build42013264823/708178ce TERMINAL SUCCESS (10:44:57-10:50:54UTC):
+pinned SDK/9source checks/private compile/static contract/all cleanup PASS.
+Authenticated GitHub artifact13407119996/digest969d84db...1217b;16exact static
+members/source hashes/one reversible wrapper delta verified. Reusable tools
+10,404,855B retained only under work/vp9-duration-input-42013264823; ZIP/scratch
+removed. Wasm9,873,859B SHA072f798ea4fc3a1c5f144d0ac9ba47750e4cac22296151debc39f89a0a988577.
+Memory unchanged from public general core: imported/shared32MiB initial/96MiB max,
+one codec thread/zero helpers. Not a fixed32MiB maximum or browser memory proof.
+No media read/converted or Node Wasm instantiation. Canonical C/public assets/main
+unchanged.7static asset loader/response checks now pass incl real filesystem
+tamper/path checks; next exact strict browser control PENDING, no acceptance yet.
+
 2026-11-05 changed build42010620047 atab0d79ef TERMINAL FAILED in configure:
 bounded retries overcamecurl35; actual root is require undefined under inherited
 ESM in TMPDIR/vp9-duration-builder, NOT expected windows.h/UINTPTR probes.

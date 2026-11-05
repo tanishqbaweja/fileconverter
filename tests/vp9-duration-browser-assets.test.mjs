@@ -1,6 +1,10 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { createVp9DurationAssetResponder } from "../scripts/lib/vp9-duration-browser-assets.mjs";
+import { createHash } from "node:crypto";
+import { mkdir, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { createVp9DurationAssetResponder, loadVp9DurationCpuAssets } from "../scripts/lib/vp9-duration-browser-assets.mjs";
+import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 const origin = "http://127.0.0.1:12345", assets = { runId: 12345678, sourceHead: "a".repeat(40), files: {
   "within-remux.mjs": { path: "private-static.mjs", sha256: "1".repeat(64) },
   "within-remux.wasm": { path: "private-static.wasm", sha256: "2".repeat(64) } } };
@@ -46,4 +50,37 @@ test("static substitution has a fixed request bound instead of retaining an unbo
   for (let n = 0; n < 16; n++) await responder.respond(route(origin + "/engines/remux/within-remux.mjs").stub);
   await assert.rejects(responder.respond(route(origin + "/engines/remux/within-remux.mjs").stub), /Bound private static/);
   assert.deepEqual(responder.report().served, { javascript: 16, wasm: 0 });
+});
+async function loaderFixture(run) {
+  const runtime = await createOwnedRuntimeScratch("vp9-duration-assets-unit-");
+  try {
+    const root = runtime.directory, runId = 12345678, target = path.join(root, "work", "vp9-duration-input-" + runId);
+    await mkdir(target, { recursive: true }); await mkdir(path.join(root, "evidence"));
+    const pins = {};
+    for (const [name, text] of [["within-remux.mjs", "static mock module"], ["within-remux.wasm", "static mock tool bytes"]]) {
+      const bytes = Buffer.from(text); pins[name] = { bytes: bytes.length, sha256: createHash("sha256").update(bytes).digest("hex") };
+      await writeFile(path.join(target, name), bytes, { flag: "wx" });
+    }
+    const receipt = { runId, head: "a".repeat(40), publicAcceptance: false, publicAssetReplacement: false,
+      nativeContract: { engine: "private-vp9-packet-duration", artifacts: pins }, retainedDirectory: "work/vp9-duration-input-" + runId };
+    const file = path.join(root, "evidence", "2026-11-05-vp9-duration-native-" + runId + ".json");
+    await writeFile(file, JSON.stringify(receipt), { flag: "wx" });
+    await run({ root, runId, target, receipt, file });
+  } finally { await runtime.close(); }
+}
+test("real filesystem loader authenticates only the two bounded static files in the exact owned tool directory", async () => loaderFixture(async ({ root, runId, target }) => {
+  const loaded = await loadVp9DurationCpuAssets(root, runId);
+  assert.equal(loaded.runId, runId); assert.equal(loaded.publicAssetReplacement, false);
+  assert.deepEqual(Object.keys(loaded.files), ["within-remux.mjs", "within-remux.wasm"]);
+  assert.equal(loaded.files["within-remux.wasm"].path, path.join(target, "within-remux.wasm"));
+}));
+test("tampered private module bytes are rejected before any browser request", async () => loaderFixture(async ({ root, runId, target }) => {
+  await writeFile(path.join(target, "within-remux.wasm"), "tampered static bytes");
+  await assert.rejects(loadVp9DurationCpuAssets(root, runId));
+}));
+test("receipt cannot redirect into another folder or turn a private source tool into a public asset replacement", async () => {
+  for (const mutation of [{ retainedDirectory: "../outside" }, { publicAssetReplacement: true }, { publicAcceptance: true }])
+    await loaderFixture(async ({ root, runId, receipt, file }) => {
+      await writeFile(file, JSON.stringify({ ...receipt, ...mutation })); await assert.rejects(loadVp9DurationCpuAssets(root, runId));
+    });
 });

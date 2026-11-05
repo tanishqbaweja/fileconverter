@@ -1,0 +1,98 @@
+{
+  "acquiredAt": "2026-11-05T10:53:52.958Z",
+  "runId": 42013264823,
+  "head": "708178cec70691a7ef11664877daf72e952d0807",
+  "branch": "codex/vp9-duration-source-20261105-attempt3",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/42013264823",
+  "exactHeadAndStepsVerified": true,
+  "job": {
+    "id": 127197344260,
+    "startedAt": "2026-11-05T10:44:57Z",
+    "completedAt": "2026-11-05T10:50:54Z",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Own all runtime scratch",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Check exact private duration recipes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install build prerequisites",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install pinned SDK locally without Docker",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Compile private duration core with unchanged codecs and memory limits",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Retain reusable private tools and compact source proofs only",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Remove disposable owned build and SDK data",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Remove owned runtime scratch",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "workflowDisplayNameNotSelectionProof": true,
+  "publicAcceptance": false,
+  "browserConversions": 0,
+  "cleanupStepsPassed": true,
+  "artifact": {
+    "id": 13407119996,
+    "name": "private-vp9-duration-42013264823",
+    "bytes": 3349349,
+    "digest": "sha256:969d84dba608609773a16b91303c1eabd06f53b5b0d88dd0f167321267d1217b",
+    "expiresAt": "2026-11-06T10:50:48Z"
+  }
+}
