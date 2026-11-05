@@ -1,5 +1,38 @@
 # Tested conversion ledger
 
+2026-11-06 original-width/allocation cycle final gates:253focused regressions
+PASS(1970.549ms)+10retained-evidence/source checks PASS(221.556ms),0skip; affected
+lint/diff PASS. Registry403/403public evidence/2hidden pending/0PDF unchanged;
+canonical C SHAae501a2e...3068 unchanged. No accepted optimization/public promotion.
+Current builder still compiles unmodified pinned libvpx with three wrapper edits;
+the proposed REALTIME/zero-lag allocation guard is SOURCE ONLY. Before another
+original run, finish config/lifetime safety checks, wire exact vendor/function
+patch and provenance into a DISTINCT build, then real C/bit-exact/fidelity controls.
+Do not redispatch current width build or rerun attempt3 unchanged. Full objective,
+original/near10GB conversions, stress repeats/direct/browser/release remain open.
+
+2026-11-06 actual original-width CPU attempt3 FAILED at2fae3ed0 after real media
+I/O: whole2958573265B original via same-host CDP,1920x804/24fps/4Mbps, corrected
+core42122918540/one worker. Settings accepted, input353857/output485B/1write,
+then libvpx1.16.0 "Error encoding frame: Memory allocation error" / "Failed to
+allocate temporal filter buffer". Attached-PNG probe-size warning is separate,
+not the allocation root. No completed video/fidelity/startup success claimed.
+Last REPORTED Wasm76283904B is not exact heap-at-failure/peak/allocation-size proof.
+Same-blank350760960/peak554868736=>194.65234375MiB,32valid0missing; this separate
+memory reading does not make native allocation failure pass. Abort completes/
+partial0B/OPFS removed, runtime/profile/stage removed, all3owned process births
+absent, original pre/post size/SHA unchanged,0forbidden requests. Raw278549B
+losslessly archived with compact JSON to99029B total. No unchanged original retry.
+Pinned LIBVPX archive SHA7a479a3c...e015c source audit scanned880C/header files:
+tf_buffer references in4files,2production temporal-filter call sites, BOTH guarded
+non-REALTIME; allocation remains unconditional with upstream TODO. All source
+checksums/contexts retained; public source held in bounded RAM, no source/media
+copies on disk. Next PRIVATE source-only candidate skips this allocation only
+when existing mode==REALTIME AND lag==0; exact vendor/function pins/reversal,
+all allocator arguments/errors/other modes/lag buffers unchanged.4source tests
+PASS(90.4604ms), affected lint PASS. Not wired/compiled/quality/bit-exact/browser
+validated; mode/config/cleanup checks and actual guarded build remain required.
+
 2026-11-06 new original-width core AUTHENTICATED:42122918540, exact16members/
 source pins/three C edits; compiled C SHA480532d8...46aa6. Wasm9873884B SHA
 a57d9167160ce1cd09bf4e2a5cd71c730bd2c4b38982828918a04b84aadfdf17.

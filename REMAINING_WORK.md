@@ -1,5 +1,25 @@
 # Remaining work audit
 
+2026-11-06 cycle finalized:253focused+10evidence/source tests PASS/0skip, affected
+lint/diff and403/403public consistency PASS. Next is guarded-library safety/build
+work, NOT another width-only or original retry. Current generator/builder still
+uses unmodified libvpx; patch recipe pins vendor SHA c42b8ef0...6fc3faa and exact
+allocation function24aecc5a...1b3328a but is not wired/compiled. Verify mode/config
+and cleanup paths, compile real guarded source with unchanged limits, require
+bit-exact controls/fidelity then a distinct original attempt. Full spec stays open.
+
+2026-11-06 original-resolution settings NOW accepted by genuine compiled core;
+actual full-original CPU attempt reaches media I/O but FAILS libvpx temporal-filter
+buffer allocation. Not full conversion/startup/fidelity success despite separate
+194.65234375MiB measurement. Partial output/owned data/processes cleaned, original
+unchanged, privacy pass. Exact failed receipt/raw archive retained. Do not rerun
+unchanged source or raise memory limits. Pinned880file source audit finds buffer
+unconditionally allocated but both actual filter callers exclude REALTIME.
+Guarded REALTIME+zero-lag allocation-only SOURCE candidate tested4PASS, not wired
+or compiled. Next: finish mode/cleanup safety audit, actual guarded-library build,
+bit-exact/fidelity controls and changed original attempt with SAME limits. Full
+major stress/repeat/direct/current-browser and broader original scope still open.
+
 2026-11-06 original-width source compiled successfully in run42122918540,
 exact headf8c53adc, all hosted gates/cleanup PASS. Authenticate actual core then
 changed original startup attempt3; no actual original encoding acceptance yet.

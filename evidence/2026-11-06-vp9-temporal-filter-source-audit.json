@@ -1,0 +1,127 @@
+{
+  "recordedAt": "2026-11-05T22:51:36.724Z",
+  "scope": "Pinned dependency allocation/call-site audit, NOT a compiled optimization or proof of actual allocation size",
+  "source": {
+    "version": "1.16.0",
+    "url": "https://github.com/webmproject/libvpx/archive/refs/tags/v1.16.0.tar.gz",
+    "archiveBytes": 5635379,
+    "archiveSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
+    "uncompressedBytes": 25640960,
+    "cFiles": 880,
+    "totalSourceBytes": 14113985,
+    "members": 1337
+  },
+  "references": [
+    {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "bytes": 251545,
+      "sha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+      "matches": [
+        {
+          "line": 1040,
+          "text": "vpx_free_frame_buffer(&cpi->tf_buffer);"
+        },
+        {
+          "line": 1292,
+          "text": "if (vpx_realloc_frame_buffer(&cpi->tf_buffer, oxcf->width, oxcf->height,"
+        },
+        {
+          "line": 6217,
+          "text": "vp9_temporal_filter(cpi, arf_src_index);"
+        },
+        {
+          "line": 6218,
+          "text": "vpx_extend_frame_borders(&cpi->tf_buffer);"
+        },
+        {
+          "line": 6228,
+          "text": "force_src_buffer = &cpi->tf_buffer;"
+        },
+        {
+          "line": 6359,
+          "text": "vp9_temporal_filter(cpi, -1);"
+        },
+        {
+          "line": 6360,
+          "text": "vpx_extend_frame_borders(&cpi->tf_buffer);"
+        },
+        {
+          "line": 6361,
+          "text": "force_src_buffer = &cpi->tf_buffer;"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_encoder.h",
+      "bytes": 43110,
+      "sha256": "299ee992384604932584c959b9504130981a5562833863751100627022662f6c",
+      "matches": [
+        {
+          "line": 744,
+          "text": "YV12_BUFFER_CONFIG tf_buffer;"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_temporal_filter.c",
+      "bytes": 53467,
+      "sha256": "0d71f6c6ecbaa116fd80e1341831f7bd204ef64bec837cf46ab799fcc1e566ce",
+      "matches": [
+        {
+          "line": 1332,
+          "text": "void vp9_temporal_filter(VP9_COMP *cpi, int distance) {"
+        },
+        {
+          "line": 1356,
+          "text": "arnr_filter_data->dst = &cpi->tf_buffer;"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_temporal_filter.h",
+      "bytes": 2402,
+      "sha256": "7be0d5ee06671e7e918c26288991e98bd683cd72a91557bf51ea54449d62802b",
+      "matches": [
+        {
+          "line": 61,
+          "text": "void vp9_temporal_filter(struct VP9_COMP *cpi, int distance);"
+        }
+      ]
+    }
+  ],
+  "filterCallSites": [
+    {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "line": 6217,
+      "text": "vp9_temporal_filter(cpi, arf_src_index);",
+      "context": "      // This assert only makes sense when not using external RC.\n      assert(arf_src_index <= rc->frames_to_key);\n    }\n    if ((source = vp9_lookahead_peek(cpi->lookahead, arf_src_index)) != NULL) {\n      cpi->alt_ref_source = source;\n\n#if !CONFIG_REALTIME_ONLY\n      if ((oxcf->mode != REALTIME) && (oxcf->arnr_max_frames > 0) &&\n          (oxcf->arnr_strength > 0)) {\n        int bitrate = cpi->rc.avg_frame_bandwidth / 40;\n        int not_low_bitrate = bitrate > ALT_REF_AQ_LOW_BITRATE_BOUNDARY;\n\n        int not_last_frame = (cpi->lookahead->sz - arf_src_index > 1);\n        not_last_frame |= ALT_REF_AQ_APPLY_TO_LAST_FRAME;\n\n#if CONFIG_COLLECT_COMPONENT_TIMING\n        start_timing(cpi, vp9_temporal_filter_time);\n#endif\n        // Produce the filtered ARF frame.\n        vp9_temporal_filter(cpi, arf_src_index);\n        vpx_extend_frame_borders(&cpi->tf_buffer);\n#if CONFIG_COLLECT_COMPONENT_TIMING\n        end_timing(cpi, vp9_temporal_filter_time);\n#endif\n"
+    },
+    {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "line": 6359,
+      "text": "vp9_temporal_filter(cpi, -1);",
+      "context": "    end_timing(cpi, vp9_rc_get_second_pass_params_time);\n#endif\n  } else if (oxcf->pass == 1) {\n    set_frame_size(cpi);\n  }\n\n  // Key frame temporal filtering\n  const int is_key_temporal_filter_enabled =\n      oxcf->enable_keyframe_filtering && cpi->oxcf.mode != REALTIME &&\n      (oxcf->pass != 1) && !cpi->use_svc &&\n      !is_lossless_requested(&cpi->oxcf) && cm->frame_type == KEY_FRAME &&\n      (oxcf->arnr_max_frames > 0) && (oxcf->arnr_strength > 0) &&\n      cpi->oxcf.speed < 2;\n  // Save the pointer to the original source image.\n  YV12_BUFFER_CONFIG *source_buffer = cpi->un_scaled_source;\n\n  if (is_key_temporal_filter_enabled && source != NULL) {\n    // Produce the filtered Key frame. Set distance to -1 since the key frame\n    // is already popped out.\n    vp9_temporal_filter(cpi, -1);\n    vpx_extend_frame_borders(&cpi->tf_buffer);\n    force_src_buffer = &cpi->tf_buffer;\n    cpi->un_scaled_source = cpi->Source =\n        force_src_buffer ? force_src_buffer : &source->img;\n  }"
+    }
+  ],
+  "allocation": {
+    "file": "vp9/encoder/vp9_encoder.c",
+    "sourceSha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+    "exactSource": "static void alloc_raw_frame_buffers(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  const VP9EncoderConfig *oxcf = &cpi->oxcf;\n\n  if (!cpi->lookahead)\n    cpi->lookahead = vp9_lookahead_init(oxcf->width, oxcf->height,\n                                        cm->subsampling_x, cm->subsampling_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                                        cm->use_highbitdepth,\n#endif\n                                        oxcf->lag_in_frames);\n  if (!cpi->lookahead)\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate lag buffers\");\n\n  // TODO(agrange) Check if ARF is enabled and skip allocation if not.\n  if (vpx_realloc_frame_buffer(&cpi->tf_buffer, oxcf->width, oxcf->height,\n                               cm->subsampling_x, cm->subsampling_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                               cm->use_highbitdepth,\n#endif\n                               VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment,\n                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate temporal filter buffer\");\n}\n\n"
+  },
+  "diagnosis": {
+    "actualFailure": "evidence/2026-11-06-vp9-original-cpu-startup-attempt3.json",
+    "unconditionalTemporalBufferAllocationObservedInPinnedSource": true,
+    "bothProductionCallSitesGuardedNonRealtime": true,
+    "exactFailedAllocationBytes": null,
+    "actualHeapAtFailureBytes": null,
+    "nextCandidate": "Investigate conditionally avoiding the temporal-filter buffer in existing REALTIME mode, with all reference/cleanup/config paths audited and bit-exact controls before any acceptance",
+    "candidateImplemented": false,
+    "compiled": false,
+    "browserValidated": false,
+    "memoryLimitsRaised": false
+  },
+  "publicSourceHeldInBoundedRamOnly": true,
+  "generatedSourceCopiesOnDisk": 0,
+  "userMediaReadOrConverted": false,
+  "publicAcceptance": false
+}
