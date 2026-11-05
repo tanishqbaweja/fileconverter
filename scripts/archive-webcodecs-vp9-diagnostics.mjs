@@ -8,13 +8,14 @@ const root = path.resolve(import.meta.dirname, ".."), evidence = path.join(root,
 const rebuilt = process.argv[2] === "--rebuilt-controls";
 const allocation = process.argv[2] === "--allocation-controls";
 const single = process.argv[2] === "--single-core-control";
-const isolated = process.argv[2] === "--isolated-control";
+const fidelity = process.argv[2] === "--isolated-fidelity-control";
+const isolated = process.argv[2] === "--isolated-control" || fidelity;
 assert.ok(process.argv.length === 2 || (process.argv.length === 3 && (rebuilt || allocation || single || isolated)));
 const prefix = isolated ? "2026-11-05" : "2026-11-01";
-const names = isolated ? ["isolated-fallback"] : single ? ["comparison-single-core-preflight-recovery"] : allocation ? ["fallback-realms", "comparison-default-core"] : rebuilt ? ["rebuilt-native", "rebuilt-cpu-fallback"] :
+const names = fidelity ? ["isolated-fidelity"] : isolated ? ["isolated-fallback"] : single ? ["comparison-single-core-preflight-recovery"] : allocation ? ["fallback-realms", "comparison-default-core"] : rebuilt ? ["rebuilt-native", "rebuilt-cpu-fallback"] :
   ["first-smoke", "functional-diagnostic", "native-color-diagnostic", "explicit-color-fixture", "frame-color-fixture", "encoder-preference-fallback"];
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
-const output = path.join(evidence, prefix + "-webcodecs-vp9-" + (isolated ? "isolated-control-archive" : single ? "single-core-control-archive" : allocation ? "allocation-control-archives" : rebuilt ? "rebuilt-control-archives" : "diagnostic-archives") + ".json");
+const output = path.join(evidence, prefix + "-webcodecs-vp9-" + (fidelity ? "isolated-fidelity-control-archive" : isolated ? "isolated-control-archive" : single ? "single-core-control-archive" : allocation ? "allocation-control-archives" : rebuilt ? "rebuilt-control-archives" : "diagnostic-archives") + ".json");
 await assert.rejects(access(output), { code: "ENOENT" });
 const prepared = [];
 // Preflight every terminal before mutating any owned receipt.

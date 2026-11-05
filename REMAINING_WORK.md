@@ -1,6 +1,21 @@
 # Remaining work audit
 
-2026-11-05 M-09 strict fidelity validation implemented; real control PENDING.
+2026-11-05 strict isolated fidelity control FAILS duration despite separate memory
+PASS226.953125MiB/19valid0missing. All48presentation clocks match exactly, full-frame
+SSIM0.993273 passes0.98 and8checked metadata fields match; container1.958s vs2s
+fails strict1ms and41decoded frame durations unavailable. Do not fabricate them or
+equate decoder fields with encoded packet-duration proof. Full original/cleanup/
+privacy checks pass; output removed. This is measured duration work, not a failed
+quality score or excuse to retry the old memory configuration.
+Private reversible VP9-only zero-duration SOURCE candidate is prepared/tested,
+not compiled or browser-verified; canonical C/public assets remain unchanged.
+Next required implementation is scoped source build + same strict gates, then
+large/repeated/direct/recovery/current-browser qualification. No public promotion,
+accepted optimization or full-goal completion. Broader original scope unchanged.
+Final scoped185tests/lint/diff and403/403registry consistency PASS; canonical C
+checksum unchanged. Native source candidate still needs a genuine source build.
+
+2026-11-05 M-09 strict fidelity validation implemented; real result recorded above.
 All48decoded clocks/SSIM/metadata and strict1ms container duration now measured,
 with partial failures retained before verdict. Existing0.98quality and full-tree
 250MiB/stable-blank/privacy/cleanup gates remain.27focused checks/lint PASS.

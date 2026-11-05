@@ -1,0 +1,174 @@
+{
+  "scope": "Collect previously unreached real conversion facts; all original verdicts retained, not acceptance relaxation",
+  "parentSha256": "e279f100620fc00ad5822ecad01c771bfecbc3acf5656b6ba3beb011ab9feeeb",
+  "generatedSha256": "051204f5756b78406b1057d7be60dfa2c0a2883ce472a051399060e40920b40a",
+  "edits": [
+    [
+      "import \"./lib/hidden-unit-subprocesses.mjs\";",
+      "import \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/hidden-unit-subprocesses.mjs\";"
+    ],
+    [
+      "from \"./lib/owned-runtime-scratch.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-runtime-scratch.mjs\""
+    ],
+    [
+      "from \"./lib/host-memory-preflight.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/host-memory-preflight.mjs\""
+    ],
+    [
+      "from \"./lib/installed-chrome-pin.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/installed-chrome-pin.mjs\""
+    ],
+    [
+      "from \"./lib/reliable-owned-identity.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/reliable-owned-identity.mjs\""
+    ],
+    [
+      "from \"./lib/owned-process-exit-observation.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/owned-process-exit-observation.mjs\""
+    ],
+    [
+      "from \"./lib/parallel-memory-observer.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/parallel-memory-observer.mjs\""
+    ],
+    [
+      "from \"./lib/birth-aware-chromium-memory.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/birth-aware-chromium-memory.mjs\""
+    ],
+    [
+      "from \"./lib/chromium-private-memory.mjs\"",
+      "from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/chromium-private-memory.mjs\""
+    ],
+    [
+      "path.resolve(import.meta.dirname, \"..\")",
+      "\"H:\\\\Github Repositories\\\\fileconverter\""
+    ],
+    [
+      "evidence/2026-11-01-webcodecs-vp9-first-smoke.json",
+      "evidence/2026-11-05-webcodecs-vp9-isolated-fidelity.json"
+    ],
+    [
+      "2026-11-01-webcodecs-vp9-first-smoke-failure.zip",
+      "2026-11-05-webcodecs-vp9-isolated-fidelity-failure.zip"
+    ],
+    [
+      "  assert.equal(report.blankBaseline?.stable, true); report.baselineAdjusted = false;",
+      "  report.baselineAdjusted = false; report.baselineAvailable = report.blankBaseline?.stable === true;\n  if (!report.baselineAvailable) report.failures.push(\"Earliest stable blank baseline unavailable; collect functional facts, retain overall failure and null incremental memory\");"
+    ],
+    [
+      "incrementalPrivateMiB: peaks.peak ? (peaks.peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 : null",
+      "incrementalPrivateMiB: peaks.peak && report.blankBaseline ? (peaks.peak.privateBytes - report.blankBaseline.privateBytes) / 1048576 : null"
+    ],
+    [
+      "  assert.ok(peaks.validSamples > 0 && peaks.unavailableSamples === 0 && report.memory.incrementalPrivateMiB <= 250);",
+      "  assert.equal(report.blankBaseline?.stable, true, \"Stable blank baseline remains required; no smaller metric substitutes\");\n  assert.ok(peaks.validSamples > 0 && peaks.unavailableSamples === 0 && report.memory.incrementalPrivateMiB <= 250);"
+    ],
+    [
+      "import { chromium } from \"playwright\";",
+      "import { chromium } from \"playwright\";\nimport { finishPrivateVp9Integrity } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/private-vp9-finalization.mjs\";"
+    ],
+    [
+      "\"workers/media-remux.ts\",",
+      "\"workers/media-remux.ts\", \"scripts/lib/private-vp9-finalization.mjs\","
+    ],
+    [
+      "    await runtime?.close(); report.ownedRuntimeRemoved = Boolean(runtime);\n    report.originalAfter = await original(); assert.deepEqual(report.originalAfter, expectedOriginal);\n    assertInstalledChromePinsEqual(report.browserPin, await inspectInstalledChromePin());\n    for (const [file, digest] of Object.entries(report.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), digest);\n  } catch (error) { report.failures.push(\"Final cleanup/integrity: \" + error); }",
+      "  } catch (error) { report.failures.push(\"Owned stage cleanup: \" + error); }\n  await finishPrivateVp9Integrity({ report, runtime,\n    runtimeRemovalAllowed: report.processCleanup.every(x => x.status === \"owned-identity-absent\"),\n    original, expectedOriginal, assertEqual: assert.deepEqual,\n    inspectBrowserPin: inspectInstalledChromePin, assertBrowserPinsEqual: assertInstalledChromePinsEqual,\n    verifySources: async () => { for (const [file, digest] of Object.entries(report.sourcePins)) assert.equal(sha(await readFile(path.join(root, file))), digest); } });"
+    ],
+    [
+      "  report.fixture = { generatedBeforeBrowser: true,",
+      "  report.sourceProbe = JSON.parse((await execute(ffprobe, [\"-v\", \"error\", \"-show_streams\", \"-show_format\", \"-of\", \"json\", fixture],\n    { cwd: root, env: runtime.env, windowsHide: true, timeout: 30000, maxBuffer: 1048576 })).stdout);\n  report.fixture = { generatedBeforeBrowser: true,"
+    ],
+    [
+      "evidence/2026-11-01-webcodecs-vp9-native-41305653513.json",
+      "evidence/2026-11-01-webcodecs-vp9-native-41309113218.json"
+    ],
+    [
+      "work/webcodecs-vp9-input-41305653513",
+      "work/webcodecs-vp9-input-41309113218"
+    ],
+    [
+      "  assert.equal(native.publicAcceptance, false); const input = path.resolve(root, native.retainedDirectory);",
+      "  report.nativeTool = { runId: native.runId, head: native.head, wasm: native.nativeContract.artifacts[\"within-webcodecs-vp9.wasm\"] };\n  assert.equal(native.publicAcceptance, false); const input = path.resolve(root, native.retainedDirectory);"
+    ],
+    [
+      "implementation: \"candidate\",",
+      "implementation: \"automatic\","
+    ],
+    [
+      "  assert.equal(report.browserResult.encoder.frames, 48); assert.equal(report.browserResult.encoder.packets, 48);",
+      "  assert.equal(report.browserResult.selection.backend, \"wasm\");\n  assert.match(report.browserResult.selection.fallbackReason, /native CICP primaries\\/transfer\\/matrix\\/range=2\\/2\\/1\\/1/);\n  assert.equal(report.browserResult.encoder.frames, 0); assert.equal(report.browserResult.encoder.packets, 0);"
+    ],
+    [
+      "\"-color_range\", \"tv\", fixture];",
+      "\"-color_range\", \"tv\", \"-bitexact\", fixture];"
+    ],
+    [
+      "  await execute(ffmpeg, fixtureArgs, { cwd: root, env: runtime.env, windowsHide: true, timeout: 30000, maxBuffer: 65536 });",
+      "  const comparisonManifest = JSON.parse(await readFile(path.join(root, \"fixtures/media/vp9-fallback-comparison.mkv.json\")));\n  assert.equal(comparisonManifest.sha256, \"4fad7ea6c1dd0d374b1b69201b6af4b68e8518bf2672884d23b1f136f5f2cc46\");\n  await copyFile(path.join(root, \"fixtures/media/vp9-fallback-comparison.mkv\"), fixture);\n  assert.equal(await hashFile(fixture), comparisonManifest.sha256);\n  report.coreComparison = { sourceSha256: comparisonManifest.sha256, sourceBytes: comparisonManifest.bytes, policy: \"single-thread\", singleColdRunOnly: true, acceptedOptimization: false };"
+    ],
+    [
+      "implementation: \"automatic\",",
+      "implementation: \"automatic\", fallbackCore: \"single-thread\","
+    ],
+    [
+      "  assert.equal(report.browserResult.selection.backend, \"wasm\");",
+      "  assert.equal(report.browserResult.selection.backend, \"wasm\");\n  assert.equal(report.browserResult.selection.wasmFallbackCore, \"single-thread\");\n  assert.equal(report.browserResult.metrics.activeWorkerCount, 2);"
+    ],
+    [
+      "\"workers/webcodecs-vp9-core.ts\",",
+      "\"workers/webcodecs-vp9-core.ts\", \"workers/webcodecs-vp9-isolated.ts\", \"workers/webcodecs-vp9-isolated.worker.ts\", \"workers/webcodecs-vp9-worker-protocol.ts\","
+    ],
+    [
+      "  await writeFile(path.join(stage, \"qualification.mjs\"), compiled.outputFiles[0].contents, { flag: \"wx\" });",
+      "  await writeFile(path.join(stage, \"qualification.mjs\"), compiled.outputFiles[0].contents, { flag: \"wx\" });\n  const isolated = await build({ entryPoints: [\"workers/webcodecs-vp9-isolated.worker.ts\"], bundle: true, format: \"esm\", platform: \"browser\", write: false });\n  assert.equal(isolated.outputFiles.length, 1); report.isolatedWorkerSha256 = sha(isolated.outputFiles[0].contents); report.workerIsolation = true;\n  await writeFile(path.join(stage, \"isolated.mjs\"), isolated.outputFiles[0].contents, { flag: \"wx\" });"
+    ],
+    [
+      "new Worker(\"/engines/webcodecs-vp9/qualification.mjs\",",
+      "new Worker(\"/engines/webcodecs-vp9/isolated.mjs\","
+    ],
+    [
+      "  assert.equal(report.browserResult.selection.wasmFallbackCore, \"single-thread\");",
+      "  assert.equal(report.browserResult.selection.wasmFallbackCore, \"single-thread\");\n  assert.equal(report.browserResult.isolation.childrenStarted, 2); assert.equal(report.browserResult.isolation.terminationRequests, 2);\n  assert.equal(report.browserResult.isolation.candidateTerminationRequestedBeforeFallback, true);\n  assert.equal(report.browserResult.cleanupComplete, true); assert.ok(report.browserResult.writeAttempts > 0);"
+    ],
+    [
+      "import { chromium } from \"playwright\";",
+      "import { chromium } from \"playwright\";\nimport { validateSmallVp9Fidelity } from \"file:///H:/Github%20Repositories/fileconverter/scripts/lib/small-vp9-fidelity.mjs\";"
+    ],
+    [
+      "\"scripts/lib/private-vp9-finalization.mjs\",",
+      "\"scripts/lib/private-vp9-finalization.mjs\", \"scripts/lib/small-vp9-fidelity.mjs\", \"scripts/lib/bounded-native-lines.mjs\", \"scripts/lib/streaming-video-clock-fidelity.mjs\", \"scripts/lib/cr-aware-ssim-summary.mjs\", \"scripts/lib/bounded-ssim-summary.mjs\", \"scripts/lib/ebml-reuse-browser-components.mjs\","
+    ],
+    [
+      "report.independentFullDecodePassed = true;",
+      "report.independentFullDecodePassed = true;\n  report.outputSha256 = await hashFile(converted);\n  report.independentFidelity = await validateSmallVp9Fidelity({ root, source: fixture, output: converted, sourceProbe: report.sourceProbe, outputProbe: report.outputProbe, ffmpeg, ffprobe, env: runtime.env });"
+    ],
+    [
+      "  assert.ok(peaks.validSamples > 0 && peaks.unavailableSamples === 0 && report.memory.incrementalPrivateMiB <= 250);",
+      "  assert.ok(peaks.validSamples > 0 && peaks.unavailableSamples === 0 && report.memory.incrementalPrivateMiB <= 250);\n  assert.equal(report.independentFidelity.passed, true, JSON.stringify(report.independentFidelity.failures));"
+    ]
+  ],
+  "reversible": true,
+  "publicAcceptance": false,
+  "baselineFormulaChanged": false,
+  "baselineWindowOrThresholdChanged": false,
+  "nativeOrCodecSettingsChanged": true,
+  "changedEncoderSetting": "Rebuilt native error mapping; same video controls and checked platform preference fallback",
+  "nativeErrorMappingRebuilt": true,
+  "controlledCpuFallbackExercised": true,
+  "realmDiagnostic": false,
+  "observationPerturbsTimingAndMemory": false,
+  "noForcedGarbageCollection": true,
+  "nativeAllocationDiagnostic": false,
+  "isolatedFallback": true,
+  "isolatedFidelity": true,
+  "fidelityThresholdsRelaxed": false,
+  "samePinnedComparisonInput": true,
+  "alternateSingleThreadCoreSelected": true,
+  "preflightRecovery": false,
+  "previousAttemptReachedBrowser": null,
+  "usesConfigurationCheckedPlatformPreferenceFallback": true,
+  "fixtureBitstreamColorMetadataCorrected": false,
+  "fixtureFrameColorMetadataAssigned": false,
+  "generatedSourceGzipBase64": "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"
+}

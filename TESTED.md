@@ -1,9 +1,34 @@
 # Tested conversion ledger
 
-2026-11-05 strict isolated fidelity control prepared, actual result PENDING.
+2026-11-05 strict fidelity TERMINAL at8d9d5f51/Chrome156.0.8078.80: real99,405B
+VP9/48frames/full decode, all48presentation clocks EXACT (maxerror0), full48-frame
+SSIM0.993273>=existing0.98, all8checked color/aspect/pixel fields equal. Output SHA
+f2126eccabdc332e4db7792080e219297905eedfdb339b9d2a8db3812433593e.
+Overall FAIL: container1.958s vs2.000s exceeds strict1ms duration gate; decoder
+reports duration for7/48frames vs48/48source. Unavailable durations are NOT zeros,
+and decoder-reported duration is NOT encoded-packet duration proof. No missing
+frame/clock drift/low SSIM was measured. Both failures retained before verdict.
+Memory separately PASS226.953125MiB/19valid0missing (blank347,181,056/peak585,158,656B),
+1.475020s; no accepted speedup/full fidelity/public/stress claim. All3owned roots/
+scratch/sourcecopy/output/profile/stage removed; full original pre/postSHA unchanged,
+0forbidden requests. Native FFmpeg/FFprobe version N-122712-g7e3781e3ca-20260211
+recorded; null output only, never native conversion. Raw receipt265,633B ->86,990B
+compact+exact gzip, full failed evidence retained.
+Prepared reversible private C SOURCE recipe to supply one codec-time-base tick
+ONLY for VP9 packets with unknown zero duration, before existing rescale. Exact
+CFR clock anchors required; nonzero durations/other codecs/PTS/DTS/I/O unchanged.
+Canonical within_remux.c remains unchanged.3source recipe checks pass, but this
+candidate is NOT built/native-tested/browser-verified and is not a claimed fix.
+Next: a scoped no-Docker source build and the SAME strict fidelity/whole-tree gates,
+before larger/repeated/direct/recovery/current-browser qualification.
+Final focused185/185PASS/0skip(1510.991ms), affected lint/diffPASS; registry
+403public/403evidence/2hidden pending/0PDF. Canonical C SHA remainsae501a2e...
+3068. No new native build, production build, full release or stress gate claimed.
+
+2026-11-05 strict isolated fidelity control prepared, actual result recorded above.
 New independent small validator streams all48source/output frame clocks through
 the existing strict<1ms comparison, records decoder-reported durations without
-claiming encoded packet-duration proof, compares9color/aspect/pixel fields, and
+claiming encoded packet-duration proof, compares8color/aspect/pixel fields, and
 requires container duration error<=1ms (not the old0.05s smoke tolerance).
 Full48-frame ordinal SSIM needs existing0.98gate AND native progress=end/frame48;
 ordinal quality cannot bypass the separate timestamp gate. Native FFmpeg is used
