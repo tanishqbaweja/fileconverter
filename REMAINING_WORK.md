@@ -1,6 +1,21 @@
 # Remaining work audit
 
-2026-11-05 M-09 isolated fallback IMPLEMENTED privately; real browser control PENDING.
+2026-11-05 isolated fallback achieved ONE SMALL private whole-tree memory pass:
+227.03515625MiB/21valid0missing, valid48-frame VP9/full independent decode. Same
+input/settings, fresh candidate then CPU worker,1.457240s total/99,405B output.
+Not accepted speedup/repeat stress/large-file/public UI/direct-save/browser recovery
+or full fidelity. Output duration1.958s vs2s source still needs timestamp analysis;
+pixel/color/full metadata preservation, repeated same-source A/B and original/near10GB
+scaling remain required. Logical2workers/one owned child handle; physical overlap
+and exact reclamation timing unmeasured, not invented as confirmed termination.
+All owned process/data cleanup, original integrity and privacy checks passed.
+Keep candidate PRIVATE. Next concrete stage is stronger bounded fidelity validation
+before repeated larger/direct/recovery/browser qualification, not another unchanged
+same-realm memory retry. Full original objective and broader backlog remain ACTIVE.
+Final scoped162tests/TypeScript/lint/diff and403/403registry consistency pass.
+No public route, production selector or native binary was changed/promoted.
+
+2026-11-05 M-09 isolated fallback IMPLEMENTED privately; real result recorded above.
 Separate disposable child attempts replace same-realm reuse. Strict typed/pre-write/
 actual-abort-complete fallback guard, stage classification, owned termination and
 same File/output/settings preserved.36focused checks/TS/lint pass; only mock lifecycle

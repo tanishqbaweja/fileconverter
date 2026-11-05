@@ -8,16 +8,18 @@ const root = path.resolve(import.meta.dirname, ".."), evidence = path.join(root,
 const rebuilt = process.argv[2] === "--rebuilt-controls";
 const allocation = process.argv[2] === "--allocation-controls";
 const single = process.argv[2] === "--single-core-control";
-assert.ok(process.argv.length === 2 || (process.argv.length === 3 && (rebuilt || allocation || single)));
-const names = single ? ["comparison-single-core-preflight-recovery"] : allocation ? ["fallback-realms", "comparison-default-core"] : rebuilt ? ["rebuilt-native", "rebuilt-cpu-fallback"] :
+const isolated = process.argv[2] === "--isolated-control";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && (rebuilt || allocation || single || isolated)));
+const prefix = isolated ? "2026-11-05" : "2026-11-01";
+const names = isolated ? ["isolated-fallback"] : single ? ["comparison-single-core-preflight-recovery"] : allocation ? ["fallback-realms", "comparison-default-core"] : rebuilt ? ["rebuilt-native", "rebuilt-cpu-fallback"] :
   ["first-smoke", "functional-diagnostic", "native-color-diagnostic", "explicit-color-fixture", "frame-color-fixture", "encoder-preference-fallback"];
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
-const output = path.join(evidence, "2026-11-01-webcodecs-vp9-" + (single ? "single-core-control-archive" : allocation ? "allocation-control-archives" : rebuilt ? "rebuilt-control-archives" : "diagnostic-archives") + ".json");
+const output = path.join(evidence, prefix + "-webcodecs-vp9-" + (isolated ? "isolated-control-archive" : single ? "single-core-control-archive" : allocation ? "allocation-control-archives" : rebuilt ? "rebuilt-control-archives" : "diagnostic-archives") + ".json");
 await assert.rejects(access(output), { code: "ENOENT" });
 const prepared = [];
 // Preflight every terminal before mutating any owned receipt.
 for (const name of names) {
-  const file = `2026-11-01-webcodecs-vp9-${name}.json`, original = await readFile(path.join(evidence, file));
+  const file = `${prefix}-webcodecs-vp9-${name}.json`, original = await readFile(path.join(evidence, file));
   assert.ok(original.length > 0 && original.length <= 4194304);
   const report = JSON.parse(original); assert.match(report.status, /^(?:passed-one-small-private-browser|failed-private-vp9-browser)/);
   assert.ok(report.finishedAt && report.ownedRuntimeRemoved); assert.equal(report.rawArchive, undefined);

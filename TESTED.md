@@ -1,6 +1,26 @@
 # Tested conversion ledger
 
-2026-11-05 isolated-worker candidate implemented, actual browser result PENDING.
+2026-11-05 isolated fallback TERMINAL at4dcb07ce/Chrome156.0.8078.80: genuine
+same58,389B input ->99,405B VP9/48frames; full independent decodePASS. Stable
+blank345,636,864B, full-tree peak583,700,480B =>227.03515625MiB/21valid0missing,
+PASS for ONE SMALL PRIVATE control only. Total1.457240s includes both attempts;
+not accepted speed optimization/A-B or original/near10GB/repeat/recovery proof.
+Two children started/termination requests2, one owned child handle at a time;
+physical overlap/reclamation timing NOT measured. Candidate zero frames/closed
+before fallback; CPU3write attempts/cleanupComplete true/98,994B peakqueue/onepending,
+32MiB actual Wasm and logical2workers including coordinator. No native engine in
+coordinator bundle. Output duration1.958s vs2s source: exact timestamps/pixel/metadata
+qualification remains missing; no full-fidelity/public promotion claim.
+All3owned process births absent, stage/profile/scratch/sourcecopy/output removed,
+full protected pre/post size+SHA unchanged,0forbidden requests. Raw report preserved
+losslessly257,224B ->77,766B compact+gzip. New proof is not a reason to replay old
+failed same-realm configurations. Next: bounded independent fidelity validation,
+then repeatable larger/direct/recovery/current-browser qualification before exposure.
+Final focused162/162PASS/0skip(1483.817ms), TypeScript/affected lint/diffPASS;
+public manifest403/403/2hidden pending/0PDF. No fresh full production build/native
+reproduction/full release qualification is claimed for this private worker cycle.
+
+2026-11-05 isolated-worker candidate implemented, actual result now recorded above.
 Coordinator imports NO native engine. It starts a candidate child, receives only
 bounded structured-cloned metadata, requests owned termination, then starts a fresh
 CPU child ONLY for typed NotSupportedError in engine load/conversion, zero actual
