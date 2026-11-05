@@ -1,5 +1,21 @@
 # Remaining work audit
 
+2026-11-05 native-allocation control TERMINAL:266.7109375MiB FAIL/53valid0missing,
+explicitly instrumented/non-acceptance. Four light dump checkpoints and6CDP realm
+snapshots succeed. Native malloc allocated objects grow48,833,452B and partition
+buffer allocated objects20,959,904B vs only557,240B V8 size growth through output
+closure in the birth-matched app renderer. These overlapping categories must NOT
+be summed; dump times are not exact OS peak and no native allocation stack/cause
+is proven. Raw reports/traces authenticated and compacted losslessly; actual
+conversion, all owned cleanup, protected full-file integrity and network checks pass.
+Next distinct implementation: disposable candidate worker then a fresh CPU worker,
+with strict typed unsupported/pre-write-only fallback, bounded protocol and unchanged
+settings/input/I/O/correctness/full-process250MiB gates. This is a hypothesis to
+qualify, not an accepted fix. Never rerun same-realm settings unchanged for green.
+No public promotion; full goal and all broader requirements remain open.
+Final scoped132tests/lint/diff and403/403registry consistency PASS; not full
+large-file/browser/release qualification. Public browser/native sources unchanged.
+
 2026-11-05 M-09 next action is a bounded native-allocation diagnostic, not a
 retry for a green result. Previous single-core286.1875MiB failure remains.
 Source audit finds native references cleared by disposal, but does not prove
@@ -7,7 +23,7 @@ compiled-code/allocator pages were released. Four light dump checkpoints will
 measure categories through disposal and CPU initialization using the same input.
 Raw dumps are bounded/archived locally; overlapping counters must never be summed
 or substituted for OS full-tree private memory.24focused checks/lint pass;
-actual diagnostic PENDING, no accepted optimization or public promotion.
+actual diagnostic result now recorded above, no accepted optimization or public promotion.
 All original large-file/fidelity/recovery/repeat/browser/release and broader
 format requirements remain open as mapped below. No Docker/deployment.
 

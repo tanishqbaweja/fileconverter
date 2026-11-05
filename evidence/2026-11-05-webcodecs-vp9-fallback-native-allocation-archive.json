@@ -1,0 +1,19 @@
+{
+  "report": "evidence/2026-11-05-webcodecs-vp9-fallback-native-allocation.json",
+  "analysis": "evidence/2026-11-05-webcodecs-vp9-fallback-native-allocation-analysis.json",
+  "rawArchive": {
+    "file": "evidence/2026-11-05-webcodecs-vp9-fallback-native-allocation.raw.json.gz",
+    "bytes": 326175,
+    "sha256": "85892ebcb44361271dfd8a90e4e9636eaf23e7b3118a35a63611790f1cc3a52d",
+    "decodedBytes": 4487393,
+    "decodedSha256": "c9286011817c8637f918508fc77cc0d248924f1d77beaf6593fb5b241138d4da",
+    "exactRoundtripVerifiedBeforeReplacement": true
+  },
+  "compactSha256": "f17d171d5abcda18f9e3d8e67e80e543dcdf575e30bdebf95f2552aa1361d966",
+  "originalBytes": 4487393,
+  "retainedReportBytes": 539838,
+  "allTraceHashesVerified": true,
+  "allRoundtripsVerified": true,
+  "convertedFilesRead": false,
+  "acceptanceChanged": false
+}

@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+2026-11-05 native-allocation diagnostic TERMINAL at91b80f0a, Chrome156.0.8078.80:
+all4light dumps captured/no loss/errors in837/971/981/914ms; all6realm snapshots
+2/3/3/3/3/2targets/no heap errors. Genuine same-source VP9 fallback99,405B/48frames,
+full independent decodePASS, duration1.958s. PERTURBED5.199695s is NOT benchmark.
+Full-tree blank354,217,984B/peak633,884,672B =>266.7109375MiB FAIL/53valid0missing.
+No accepted speedup/memory improvement/public promotion; prior286.1875MiB remains.
+Birth/parent-matched app renderer2608 native dump categories now measured:
+loaded-idle ->output-closed malloc allocated objects17,127,172->65,960,624B;
+partition buffer allocated objects4,098,848->25,058,752B; V8 size12,818,356->
+13,375,596B. Thus reported native allocation/buffer growth, not JS heap alone.
+Counters overlap and snapshots are NOT exact peak time/allocation-stack proof;
+do not add them, call them a leak, or identify a codec/compilation cause yet.
+Distinct next implementation target: isolate failed native candidate in a disposable
+worker before CPU fallback, preserving pre-write-only retry/cancellation/real AVIO
+and full-tree gates. Same-realm single-core count alone already rejected.
+All3owned roots absent; stage/profile/scratch/sourcecopy/output removed, full
+original pre/post checksum unchanged/0forbidden requests. Failure trace retained.
+Four raw native trace gzip hashes/roundtrips authenticated. Redundant report
+4,487,393B ->539,838B compact+exact rawgzip, with all original counters/samples.
+evidence/2026-11-05-webcodecs-vp9-fallback-native-allocation-analysis.json.
+Final focused132/132PASS/0skip(1477.327ms), affected lint/diffPASS; public evidence
+manifest403/403/2hidden pending/0PDF. No fresh production build/native reproduction
+or full qualification claimed for this diagnostics-only source change.
+
 2026-11-05 native-allocation diagnostic prepared (not executed yet): interrupted
 draft recovered with no live VP9 Node job and no native-allocation receipt.
 New private mode uses the SAME58,389B pinned source/single-thread CPU settings,
@@ -9,7 +33,7 @@ output-closed). One request/no queue,2.5s capture deadline,4MiB Chromium trace c
 It is explicitly PERTURBING/non-acceptance, no GC or disabled browser services.
 OS full-tree250MiB/stable blank/correctness/cleanup gates remain unchanged.
 24focused diagnostic/finalization/provider checks PASS(1441.021ms); affected lint
-PASS. No public worker/native binary/settings changed. Actual run PENDING.
+PASS. No public worker/native binary/settings changed. Actual result recorded above.
 
 2026-11-01 single-thread recovery TERMINAL at1418fe24: genuine browser CPUfallback
 on the identical58,389B source produced99,405B/48VP9frames in1.499345s; independent

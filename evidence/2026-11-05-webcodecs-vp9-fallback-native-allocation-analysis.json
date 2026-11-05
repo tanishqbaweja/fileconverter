@@ -1,0 +1,100 @@
+{
+  "scope": "Offline native category projection of a perturbed failed control; not allocation-stack causality or acceptance",
+  "browserVersion": "156.0.8078.80",
+  "incrementalPrivateMiB": 266.7109375,
+  "blankPrivateBytes": 354217984,
+  "simultaneousPeakPrivateBytes": 633884672,
+  "fullPeakProcessCount": 11,
+  "dominantRenderer": {
+    "pid": 2608,
+    "parentPid": 40164,
+    "createdAt": "2026-11-05T09:14:45.2122794Z",
+    "creationFileTime": "134383436852122794",
+    "executableName": "chrome.exe",
+    "type": "renderer",
+    "utilitySubtype": null,
+    "sandboxType": null,
+    "privateBytes": 271081472,
+    "rssBytes": 261193728,
+    "loadedIdlePrivateBytes": 55980032,
+    "diagnosticIncreaseSinceLoadedIdleBytes": 215101440
+  },
+  "series": [
+    {
+      "phase": "loaded-idle",
+      "acquiredBeforeDumpPrivateBytes": 56004608,
+      "tracePrivateFootprintBytes": 56913920,
+      "traceIntervalMicroseconds": [
+        78651616966,
+        78651653714
+      ],
+      "mallocAllocatedObjectsBytes": 17127172,
+      "mallocReportedSizeBytes": 27296038,
+      "mallocHistoricalMaximumAllocatedBytes": 20739040,
+      "bufferAllocatedObjectsBytes": 4098848,
+      "bufferReportedSizeBytes": 5328896,
+      "v8ReportedSizeBytes": 12818356
+    },
+    {
+      "phase": "candidate-disposed",
+      "acquiredBeforeDumpPrivateBytes": 135802880,
+      "tracePrivateFootprintBytes": 135819264,
+      "traceIntervalMicroseconds": [
+        78653217930,
+        78653264621
+      ],
+      "mallocAllocatedObjectsBytes": 38997008,
+      "mallocReportedSizeBytes": 54748930,
+      "mallocHistoricalMaximumAllocatedBytes": 89912416,
+      "bufferAllocatedObjectsBytes": 11825328,
+      "bufferReportedSizeBytes": 14393344,
+      "v8ReportedSizeBytes": 13383808
+    },
+    {
+      "phase": "wasm-ready",
+      "acquiredBeforeDumpPrivateBytes": 209936384,
+      "tracePrivateFootprintBytes": 209936384,
+      "traceIntervalMicroseconds": [
+        78655512728,
+        78655559238
+      ],
+      "mallocAllocatedObjectsBytes": 62223652,
+      "mallocReportedSizeBytes": 76013054,
+      "mallocHistoricalMaximumAllocatedBytes": 154192560,
+      "bufferAllocatedObjectsBytes": 25051744,
+      "bufferReportedSizeBytes": 31645696,
+      "v8ReportedSizeBytes": 13375596
+    },
+    {
+      "phase": "output-closed",
+      "acquiredBeforeDumpPrivateBytes": 224075776,
+      "tracePrivateFootprintBytes": 224088064,
+      "traceIntervalMicroseconds": [
+        78656834278,
+        78656873232
+      ],
+      "mallocAllocatedObjectsBytes": 65960624,
+      "mallocReportedSizeBytes": 87542542,
+      "mallocHistoricalMaximumAllocatedBytes": 154192560,
+      "bufferAllocatedObjectsBytes": 25058752,
+      "bufferReportedSizeBytes": 31653888,
+      "v8ReportedSizeBytes": 13375596
+    }
+  ],
+  "loadedIdleToOutputClosedDeltas": {
+    "mallocAllocatedObjectsBytes": 48833452,
+    "mallocReportedSizeBytes": 60246504,
+    "bufferAllocatedObjectsBytes": 20959904,
+    "bufferReportedSizeBytes": 26324992,
+    "v8ReportedSizeBytes": 557240
+  },
+  "allPrimaryProcessesRetained": true,
+  "counterNodesOverlap": true,
+  "summedAllocatorTotal": null,
+  "snapshotsAreNotPeakTimeAttribution": true,
+  "historicalMaximumIsNotSnapshotAllocation": true,
+  "noNativeAllocationStackIdentified": true,
+  "newBrowserRuns": 0,
+  "publicAcceptance": false,
+  "acceptedOptimization": false
+}
