@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-05 changed stream-duration native build42020605269 TERMINAL SUCCESS,
+exact head6db1490c, all hosted gates/cleanup PASS. Authenticated collection and
+new stricter --stream-duration-fidelity browser control remain next; native build
+alone does not close fidelity/memory/large/repeat/direct/recovery/browser scope.
+Added stored DefaultDuration equality gate never substitutes inferred frame
+durations;15lifecycle/recipe checks and affected lint PASS.
+
 2026-11-05 next distinct native attempt4 ready: tested two-edit stream-duration
 source wired through generator/build/collector/static loader,22focused checks and
 affected lint PASS. Still requires actual source compilation then unchanged strict

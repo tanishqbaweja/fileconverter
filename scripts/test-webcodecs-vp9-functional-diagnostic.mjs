@@ -9,7 +9,8 @@ import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 const nativeAllocation = process.argv[2] === "--fallback-native-allocation";
-const storedTimingDiagnostic = process.argv[2] === "--duration-stored-timing";
+const streamDurationFidelity = process.argv[2] === "--stream-duration-fidelity";
+const storedTimingDiagnostic = process.argv[2] === "--duration-stored-timing" || streamDurationFidelity;
 const durationFixedFidelity = process.argv[2] === "--duration-fixed-fidelity" || storedTimingDiagnostic;
 const isolatedFidelity = process.argv[2] === "--isolated-fidelity" || durationFixedFidelity;
 const isolatedFallback = process.argv[2] === "--isolated-fallback" || isolatedFidelity;
@@ -28,7 +29,7 @@ const explicitColorFixture = process.argv[2] === "--explicit-color-fixture" || f
 const nativeColorDiagnostic = process.argv[2] === "--native-color-diagnostic" || explicitColorFixture || rebuiltCpuFallback;
 assert.ok(process.argv.length === 2 || (process.argv.length === (checkOnly ? 4 : 3) && nativeColorDiagnostic));
 const root = path.resolve(import.meta.dirname, ".."), sha = x => createHash("sha256").update(x).digest("hex");
-const outputLabel = storedTimingDiagnostic ? "duration-stored-timing-" + durationRunId : durationFixedFidelity ? "duration-fixed-" + durationRunId : isolatedFidelity ? "isolated-fidelity" : isolatedFallback ? "isolated-fallback" : nativeAllocation ? "fallback-native-allocation" : preflightRecovery ? "comparison-single-core-preflight-recovery" : compareDefault ? "comparison-default-core" : compareSingle ? "comparison-single-core" :
+const outputLabel = streamDurationFidelity ? "stream-duration-fidelity-" + durationRunId : storedTimingDiagnostic ? "duration-stored-timing-" + durationRunId : durationFixedFidelity ? "duration-fixed-" + durationRunId : isolatedFidelity ? "isolated-fidelity" : isolatedFallback ? "isolated-fallback" : nativeAllocation ? "fallback-native-allocation" : preflightRecovery ? "comparison-single-core-preflight-recovery" : compareDefault ? "comparison-default-core" : compareSingle ? "comparison-single-core" :
   realmDiagnostic ? "fallback-realms" : rebuiltCpuFallback ? "rebuilt-cpu-fallback" : rebuiltNative ? "rebuilt-native" :
   preferenceFallbackFixture ? "encoder-preference-fallback" : frameColorFixture ? "frame-color-fixture" :
   explicitColorFixture ? "explicit-color-fixture" : "native-color-diagnostic";
@@ -256,6 +257,15 @@ if (storedTimingDiagnostic) {
       '  report.storedTiming = { source: await inspectSmallMatroskaTimingFile(fixture), output: await inspectSmallMatroskaTimingFile(converted), strictVerdictChanged: false };'],
   );
 }
+if (streamDurationFidelity) {
+  edits.push(['  assert.equal(report.independentFidelity.passed, true, JSON.stringify(report.independentFidelity.failures));',
+    '  assert.equal(report.independentFidelity.passed, true, JSON.stringify(report.independentFidelity.failures));\n' +
+    '  assert.equal(report.storedTiming.source.tracks[0].defaultDurationNs, 41666666);\n' +
+    '  assert.equal(report.storedTiming.output.tracks[0].defaultDurationNs, report.storedTiming.source.tracks[0].defaultDurationNs);\n' +
+    '  assert.equal(report.storedTiming.output.blocks.length, 48);\n' +
+    '  assert.ok(report.storedTiming.output.blocks.every(row => row.kind === "SimpleBlock" && !row.invisible));\n' +
+    '  report.storedTiming.explicitDefaultDurationGatePassed = true;']);
+}
 let generated = source;
 for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
 let reversed = generated;
@@ -274,6 +284,7 @@ const recipe = { scope: "Collect previously unreached real conversion facts; all
   isolatedFidelity, fidelityThresholdsRelaxed: false,
   durationFixedFidelity, privateDurationNativeRunId: durationFixedFidelity ? durationRunId : null,
   storedTimingDiagnostic, storedTimingChangesStrictVerdict: false,
+  streamDurationFidelity, additionalStoredDefaultDurationGateRequired: streamDurationFidelity,
   samePinnedComparisonInput: compareCore, alternateSingleThreadCoreSelected: compareSingle,
   preflightRecovery, previousAttemptReachedBrowser: preflightRecovery ? false : null,
   usesConfigurationCheckedPlatformPreferenceFallback: preferenceFallbackFixture,

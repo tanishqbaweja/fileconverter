@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-11-05 new native tool authenticated:42020605269,16exact members/source git
+blobs/artifact pins/two reversible C deltas verified; compiled C SHA3742b033...ffb52.
+Wasm9873881B SHAa89092c3edaa6b8b5e9b2d8503db6685ed080736109db4f4fc1708506862f05c.
+Unchanged imported/shared32MiB initial/96MiB max/1codec thread/0helpers. Reusable
+10412260B static tools retained only work/vp9-duration-input-42020605269; ZIP/
+collection scratch removed. No native media conversion/Node Wasm instantiation;
+public bytes unchanged. Strict browser control still PENDING.
+
+2026-11-05 distinct stream-duration native build42020605269/6db1490c TERMINAL
+SUCCESS(11:38:34-11:46:47UTC). Pinned SDK/source recipes/private compile/static
+contract/upload and both cleanup steps PASS. Artifact13411512998/3350708B ZIP,
+digest55c4f7d69aa096b32dee6e7417a3bde8167d7fed6f588081ed0e2a9c41c2c386,
+expires2026-11-06T11:46:39Z. Static collection/authentication then browser proof
+PENDING; native success alone is not corrected output/fidelity/memory acceptance.
+New --stream-duration-fidelity recipe keeps all previous strict gates and adds
+explicit stored DefaultDuration equality plus48visible SimpleBlocks.15lifecycle/
+reversible-recipe checks PASS(1633.5028ms), affected lint PASS. No public change.
+
 2026-11-05 stream-duration build wiring ready for distinct attempt4. Native source
 generator/builder now select tested two-edit VP9 candidate, pin both recipes and
 report actual edit count; collector regenerates exact old/new source by authenticated
