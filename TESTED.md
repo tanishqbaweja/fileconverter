@@ -1,5 +1,36 @@
 # Tested conversion ledger
 
+2026-11-05 recovery-cycle final regression: first broad run exposed historical
+bundle test incorrectly rebuilding old evidence from current edited coordinator
+(ca608f29... vs recordedd6ed0b87...). Corrected verifier now reads each executed
+4dcb07ce Git blob, checks recorded source SHA, rebuilds byte-identical historical
+bundle without checkout/scratch, and separately enforces current no-native-engine
+coordinator guard. Existing CI verify already fetches full history. No evidence
+hash/old result changed or browser conversion replayed. Final239focused tests
+PASS(2739.2261ms)/0skip, affected lint/TypeScript/diff PASS;403/403public evidence,
+2hidden pending/0PDF unchanged. Native/public assets untouched. Full scope OPEN.
+
+2026-11-05 SAME-BROWSER recovery sequence PASS atde8f6c4c/Chrome156.0.8078.80.
+Initial strict control then actual cancel-after-awaited-write, recovery, injected
+write error, recovery and third completion. Both adverse jobs:1write attempt,
+fault-trigger proof, actual stream abort complete,0B partial output,2children/
+2termination requests/no third attempt. Cancellation is AbortError; injected
+native write error remains Error, NOT real OPFS quota/permission exhaustion proof.
+All3recoveries independently validate48PTS exact/48known durations/2.000s duration/
+SSIM0.993273/8metadata fields, identical99413B outputSHA82bdfd66...82267b.
+Same clean blank347942912/aggregate peak585408512B=>226.46484375MiB,218valid/
+0missing; all six jobs included, no loaded-idle substitution. Individual recovery
+memory223.28515625/198.5546875/209.9921875MiB. Five post-cleanup deltas from
+loaded idle:-2.9453125,+1.765625,+4.6953125,-2.4921875,+2.06640625MiB after2s,
+well below existing96MiB bound.1pending/98994B peakqueue/32MiB actual Wasm,
+same input/options/core; no speedup or physical-worker reclamation timing claim.
+All OPFS/output files removed per job, runtime/profile/stage removed; all3owned
+process births absent, original pre/post size/SHA unchanged,0forbidden requests.
+Exact raw605429B losslessly archived with compact JSON to274902B total.
+This closes SMALL same-session cancel/write-recovery evidence only. Full original/
+near10GB scaling, major stress repeats/clean sessions/direct-save/quota/permission/
+reload/current-browser/UI/source/release and broader original requirements OPEN.
+
 2026-11-05 next recovery implementation ready, actual browser sequence PENDING.
 Private qualification worker injects write failure at its real destination adapter
 and cancellation only AFTER awaited successful write; unknown hooks rejected before

@@ -1,5 +1,25 @@
 # Remaining work audit
 
+2026-11-05 recovery-cycle finalization239focused tests PASS/0skip, affected lint/
+TypeScript/diff and403/403registry consistency PASS. Historical bundle assertion
+was repaired to authenticate/rebuild its recorded Git head, not later edits;
+current coordinator guard remains separate. Initial regression failure retained
+in TESTED, not hidden via changed expected output or browser replay. No full-goal
+completion: next distinct stage is actual large geometry/volume/original backend
+qualification, with direct/clean-session/recovery/browser/release scope still open.
+
+2026-11-05 SMALL same-session recovery now VERIFIED: actual browser cancellation
+after write and injected write failure both abort/leave0B partial output; no third
+retry. Three recoveries match exact output SHA/full48frame clocks/durations/SSIM/
+metadata. Entire six-job sequence226.46484375MiB/218valid0missing using SAME clean
+blank; post-job deltas within4.7MiB loaded idle. All disposable outputs/OPFS/data/
+processes cleaned, original unchanged/privacy pass. Retained byte-exact archive.
+Not real quota/permission coverage, direct-save/UI recovery, large-file stress,
+three major clean sessions, or release acceptance. Next: true geometry/volume and
+full-original scaling with explicit backend identity (original BT709 can select
+WebCodecs, unlike pinned unknown-color CPU fallback). Do not replay small sequence
+for status. Broader original scope remains partial and active.
+
 2026-11-05 recovery gap implementation prepared, not yet browser-verified. Actual
 write/cancel hooks only in private qualification worker; bounded cancellation
 terminal retains real cleanup/write proof. Same-instance sequence requires two

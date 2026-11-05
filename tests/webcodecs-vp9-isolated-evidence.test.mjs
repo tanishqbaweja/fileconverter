@@ -5,6 +5,9 @@ import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 import { build } from "esbuild";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import path from "node:path";
 const root = new URL("../", import.meta.url), base = "evidence/2026-11-05-webcodecs-vp9-isolated-fallback";
 const read = file => readFile(new URL(file, root)), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 async function detailed() {
@@ -42,9 +45,25 @@ test("termination requests are recorded honestly without claiming synchronous re
   assert.deepEqual(r.forbiddenRequests, []); assert.deepEqual(r.originalBefore, r.originalAfter);
   assert.equal(r.originalAfter.bytes, 2958573265); assert.equal(r.originalAfter.sha256, "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34");
 });
-test("isolated coordinator contains no native engine and the executed private bundle is reproducible from current source", async () => {
+test("historical private bundle is reproducible from its authenticated executed Git source, not incorrectly from later edits", async () => {
+  const report = await detailed(), cwd = path.resolve(import.meta.dirname, ".."), files = new Map();
+  for (const file of ["workers/webcodecs-vp9-isolated.worker.ts", "workers/webcodecs-vp9-isolated.ts", "workers/webcodecs-vp9-worker-protocol.ts"]) {
+    const { stdout } = await promisify(execFile)(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["show", report.executedHead + ":" + file],
+      { cwd, windowsHide: true, timeout: 10000, maxBuffer: 262144, encoding: "buffer" });
+    assert.equal(sha(stdout), report.sourcePins[file], "Historical source must match the actual execution pin");
+    files.set(path.join(cwd, file), stdout.toString());
+  }
+  const compiled = await build({ absWorkingDir: cwd, entryPoints: ["workers/webcodecs-vp9-isolated.worker.ts"],
+    bundle: true, format: "esm", platform: "browser", write: false, plugins: [{ name: "pinned-historical-source", setup(builder) {
+      builder.onLoad({ filter: /webcodecs-vp9-.*\.ts$/ }, args => {
+        assert.ok(files.has(args.path), "Only the authenticated historical coordinator files may load");
+        return { contents: files.get(args.path), loader: "ts" };
+      });
+    } }] });
+  assert.equal(compiled.outputFiles.length, 1); assert.equal(sha(compiled.outputFiles[0].contents), report.isolatedWorkerSha256);
+});
+test("current isolated coordinator still contains no native engine", async () => {
   const compiled = await build({ entryPoints: ["workers/webcodecs-vp9-isolated.worker.ts"], bundle: true, format: "esm", platform: "browser", write: false });
-  assert.equal(compiled.outputFiles.length, 1); assert.equal(sha(compiled.outputFiles[0].contents), (await detailed()).isolatedWorkerSha256);
   assert.doesNotMatch(compiled.outputFiles[0].text, /WebAssembly|ccall|within_remux|loadWebCodecsVp9Core/);
   assert.match(compiled.outputFiles[0].text, /new Worker\("\/engines\/webcodecs-vp9\/qualification\.mjs"/);
 });
