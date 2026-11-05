@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-06 guarded native build42129383089 at5e9f2d6b TERMINAL SUCCESS,
+23:27:15-23:35:14UTC(7m59s); actual source/lifetime/C-control checks, compilation,
+upload and all cleanup PASS. Authentic19member artifact13462422854 ZIP3460215B
+SHA67a30c55d3286f68d7e779cf0a842e519b9121aa14671a3aaef8994fb41c122f;
+reusable static10925714B retained only work/vp9-duration-input-42129383089.
+Wasm9873924B SHAe10e098ba63b3922b4d2655b7c5952e221c99cf45800e1453cce69a0f2a0d378;
+same imported/shared32initial/96max MiB/one codec thread/zero helpers. Wrapper
+SHA480532d8...46aa6 unchanged from width build; vendor-only one guard transforms
+c42b8ef0...6fc3faa to9c831c453796fcd08598da8b8e27a494fde8d681e87349facd590c48949e9693.
+Actual pinned config/order/empty-cleanup checks and198C calls on hosted GCC15.2
+retained in source-proof artifact. Browser/quality/bit-exact/original/speed still
+PENDING, no public promotion. Temporary commit_refs push failures resolved with
+same-commit HTTP1.1 retry; main unchanged, ca373745 verified on media-options.
+
 2026-11-06 guarded build42128952234 attempt6 FAILED before compilation: stale
 current-builder assertion expected old original-width engine name. Exact hosted
 job20s, no SDK/core/artifact/browser conversion, both cleanup steps PASS. Retained

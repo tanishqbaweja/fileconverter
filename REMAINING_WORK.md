@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 DISTINCT guarded native42129383089 compiled/authenticated SUCCESS:
+actual vendor guard and lifetime checks/198C-control calls,19artifact members,
+unchanged32initial/96max MiB/one codec thread/zero helpers, all hosted cleanup.
+No browser or performance acceptance from compilation. NEXT: actual headless
+six-job byte-exact/fidelity/recovery control using42129383089; only if that passes,
+exclusive original attempt4 under same limits. Full conversion/near10GB/scaling/
+other-browser/direct/broader family/source/release requirements stay partial.
+
 2026-11-06 attempt6 stopped on stale engine-name assertion BEFORE native compile;
 failure/cleanup retained. Assertion fixed to require new guarded engine/wiring.
 Exact CI28checks and255focused regressions PASS,0skip. Six-job strict/byte-exact

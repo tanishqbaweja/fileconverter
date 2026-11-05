@@ -1,0 +1,25 @@
+{
+  "recordedAt": "2026-11-05T23:26:47.3332635Z",
+  "branch": "codex/vp9-original-width-source-20261106-attempt7",
+  "parent": "ca373745fc168704447c9dc6973b483e5a1d66aa",
+  "commit": "5e9f2d6b1fd391474ab82084bb75ae71cf13660d",
+  "tree": "70de206304faf9713fc7cb3cd6bf02509ee05462",
+  "remoteVerified": true,
+  "canonicalWorkflowSha256": "cda0b434adc7dd36109b4a2cc63fe726a507889cf6d1c0f5862d5d78dbf5c965",
+  "generatedWorkflowSha256": "00cb8b611cbea12a49a888adafa9b755ce6d017398b5b6ee4e264f32377d41b5",
+  "sameGeneratedWorkflowSourceReceipt": "evidence/2026-11-06-vp9-original-width-build-branch-attempt6.json",
+  "mainUnchanged": true,
+  "checkoutIndexWorkflowUnchanged": true,
+  "mediaCopiesCreated": false,
+  "actualBuildStarted": false,
+  "publicAcceptance": false,
+  "preparationRecovery": {
+    "cause": "Remote rejected commit_refs before original prepare could save its receipt",
+    "reusedExactExistingLocalCommit": true,
+    "verifiedParentEqualsCurrentHead": true,
+    "verifiedOnlyChangedPath": ".github/workflows/reproduce-ffmpeg-nondocker.yml",
+    "verifiedSelectedWorkflowGitBlob": true,
+    "transportRetry": "HTTP/1.1 push; same commit, no duplicate branch, no force push",
+    "previousDispatchOccurred": false
+  }
+}
