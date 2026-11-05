@@ -8,10 +8,11 @@ import { pathToFileURL } from "node:url";
 import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
-const realmDiagnostic = process.argv[2] === "--fallback-realms";
+const nativeAllocation = process.argv[2] === "--fallback-native-allocation";
+const realmDiagnostic = process.argv[2] === "--fallback-realms" || nativeAllocation;
 const checkOnly = process.argv[3] === "--check-only";
 const preflightRecovery = process.argv[2] === "--compare-single-core-preflight-recovery";
-const compareDefault = process.argv[2] === "--compare-default-core", compareSingle = process.argv[2] === "--compare-single-core" || preflightRecovery;
+const compareDefault = process.argv[2] === "--compare-default-core", compareSingle = process.argv[2] === "--compare-single-core" || preflightRecovery || nativeAllocation;
 const compareCore = compareDefault || compareSingle;
 const rebuiltCpuFallback = process.argv[2] === "--rebuilt-cpu-fallback" || realmDiagnostic || compareCore;
 const rebuiltNative = process.argv[2] === "--rebuilt-native" || rebuiltCpuFallback;
@@ -21,7 +22,7 @@ const explicitColorFixture = process.argv[2] === "--explicit-color-fixture" || f
 const nativeColorDiagnostic = process.argv[2] === "--native-color-diagnostic" || explicitColorFixture || rebuiltCpuFallback;
 assert.ok(process.argv.length === 2 || (process.argv.length === (checkOnly ? 4 : 3) && nativeColorDiagnostic));
 const root = path.resolve(import.meta.dirname, ".."), sha = x => createHash("sha256").update(x).digest("hex");
-const outputLabel = preflightRecovery ? "comparison-single-core-preflight-recovery" : compareDefault ? "comparison-default-core" : compareSingle ? "comparison-single-core" :
+const outputLabel = nativeAllocation ? "fallback-native-allocation" : preflightRecovery ? "comparison-single-core-preflight-recovery" : compareDefault ? "comparison-default-core" : compareSingle ? "comparison-single-core" :
   realmDiagnostic ? "fallback-realms" : rebuiltCpuFallback ? "rebuilt-cpu-fallback" : rebuiltNative ? "rebuilt-native" :
   preferenceFallbackFixture ? "encoder-preference-fallback" : frameColorFixture ? "frame-color-fixture" :
   explicitColorFixture ? "explicit-color-fixture" : "native-color-diagnostic";
@@ -164,6 +165,24 @@ if (compareCore) {
       '  assert.equal(report.browserResult.metrics.activeWorkerCount, ' + (compareSingle ? '1' : '9') + ');'],
   );
 }
+if (nativeAllocation) {
+  const helper = pathToFileURL(path.join(root, "scripts/lib/vp9-native-allocation-diagnostic.mjs")).href;
+  edits[edits.findIndex(([before]) => before === 'evidence/2026-11-01-webcodecs-vp9-first-smoke.json')][1] =
+    'evidence/2026-11-05-webcodecs-vp9-fallback-native-allocation.json';
+  edits[edits.findIndex(([before]) => before === '2026-11-01-webcodecs-vp9-first-smoke-failure.zip')][1] =
+    '2026-11-05-webcodecs-vp9-fallback-native-allocation-failure.zip';
+  edits.push(
+    ['import { connectPlaywrightRealmSampler } from ', 'import { createVp9NativeAllocationDiagnostic } from ' + JSON.stringify(helper) + ';\nimport { connectPlaywrightRealmSampler } from '],
+    ['"scripts/lib/private-vp9-finalization.mjs",', '"scripts/lib/private-vp9-finalization.mjs", "scripts/lib/vp9-native-allocation-diagnostic.mjs", "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs",'],
+    ['  const captureRealm = async (label, metrics = null) => {',
+      '  const nativeCapture = createVp9NativeAllocationDiagnostic({ root, createSession: () => browser.newBrowserCDPSession(), sampleProcesses: () => sampleChromiumTree(chrome.pid) });\n' +
+      '  report.nativeAllocation = nativeCapture.report();\n' +
+      '  const captureRealm = async (label, metrics = null) => {'],
+    ['    report.realmSamples.push({ label, acquiredAt: new Date().toISOString(), workerMetrics: metrics, sample });',
+      '    report.realmSamples.push({ label, acquiredAt: new Date().toISOString(), workerMetrics: metrics, sample });\n' +
+      '    await nativeCapture.capture(label);'],
+  );
+}
 let generated = source;
 for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
 let reversed = generated;
@@ -177,13 +196,15 @@ const recipe = { scope: "Collect previously unreached real conversion facts; all
     preferenceFallbackFixture ? "hardwareAcceleration preference only; no video dimensions/bitrate/timing/quality change" : null,
   nativeErrorMappingRebuilt: rebuiltNative, controlledCpuFallbackExercised: rebuiltCpuFallback,
   realmDiagnostic, observationPerturbsTimingAndMemory: realmDiagnostic, noForcedGarbageCollection: true,
+  nativeAllocationDiagnostic: nativeAllocation,
   samePinnedComparisonInput: compareCore, alternateSingleThreadCoreSelected: compareSingle,
   preflightRecovery, previousAttemptReachedBrowser: preflightRecovery ? false : null,
   usesConfigurationCheckedPlatformPreferenceFallback: preferenceFallbackFixture,
   fixtureBitstreamColorMetadataCorrected: explicitColorFixture,
   fixtureFrameColorMetadataAssigned: frameColorFixture,
   generatedSourceGzipBase64: gzipSync(generated, { level: 9 }).toString("base64") };
-const recipeName = rebuiltNative ? "2026-11-01-webcodecs-vp9-" + outputLabel + "-recipe.json" :
+const recipeName = nativeAllocation ? "2026-11-05-webcodecs-vp9-fallback-native-allocation-recipe.json" :
+  rebuiltNative ? "2026-11-01-webcodecs-vp9-" + outputLabel + "-recipe.json" :
   preferenceFallbackFixture ? "2026-11-01-webcodecs-vp9-encoder-preference-fallback-recipe.json" :
   frameColorFixture ? "2026-11-01-webcodecs-vp9-frame-color-fixture-recipe.json" :
   explicitColorFixture ? "2026-11-01-webcodecs-vp9-explicit-color-fixture-recipe.json" :

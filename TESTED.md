@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-05 native-allocation diagnostic prepared (not executed yet): interrupted
+draft recovered with no live VP9 Node job and no native-allocation receipt.
+New private mode uses the SAME58,389B pinned source/single-thread CPU settings,
+but adds four light native-memory dumps (loaded-idle/candidate-disposed/wasm-ready/
+output-closed). One request/no queue,2.5s capture deadline,4MiB Chromium trace cap,
+8MiB serialized trace cap per dump, exact gzip raw archives under evidence.
+It is explicitly PERTURBING/non-acceptance, no GC or disabled browser services.
+OS full-tree250MiB/stable blank/correctness/cleanup gates remain unchanged.
+24focused diagnostic/finalization/provider checks PASS(1441.021ms); affected lint
+PASS. No public worker/native binary/settings changed. Actual run PENDING.
+
 2026-11-01 single-thread recovery TERMINAL at1418fe24: genuine browser CPUfallback
 on the identical58,389B source produced99,405B/48VP9frames in1.499345s; independent
 full decodePASS. Stable blank331,894,784B, simultaneous full-tree peak631,984,128B
