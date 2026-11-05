@@ -45,7 +45,7 @@ test("original and source integrity errors are both retained", async () => {
   await finishPrivateVp9Integrity(args); assert.equal(report.failures.length, 3);
   assert.match(report.failures[1], /Original integrity/); assert.match(report.failures[2], /source changed/);
 });
-for (const mode of ["--fallback-realms", "--fallback-native-allocation", "--compare-default-core", "--compare-single-core", "--compare-single-core-preflight-recovery"]) {
+for (const mode of ["--fallback-realms", "--fallback-native-allocation", "--isolated-fallback", "--compare-default-core", "--compare-single-core", "--compare-single-core-preflight-recovery"]) {
   test(`offline derivative ${mode} is reversible and parses without launching or overwriting evidence`, async () => {
     const { stdout } = await promisify(execFile)(process.execPath,
       ["scripts/test-webcodecs-vp9-functional-diagnostic.mjs", mode, "--check-only"],

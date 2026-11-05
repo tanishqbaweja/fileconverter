@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-11-05 M-09 isolated fallback IMPLEMENTED privately; real browser control PENDING.
+Separate disposable child attempts replace same-realm reuse. Strict typed/pre-write/
+actual-abort-complete fallback guard, stage classification, owned termination and
+same File/output/settings preserved.36focused checks/TS/lint pass; only mock lifecycle
+and real async adapter with mocked codec evidence so far. Physical realm overlap/
+memory reclamation remains unverified and is not implied by terminate() returning.
+Next exact changed browser control retains same58,389B input, single-thread core,
+full-tree250MiB/stable blank/correctness/cleanup gates. No public promotion/default
+change/native binary change; all broader spec/release/large-file gates remain open.
+
 2026-11-05 native-allocation control TERMINAL:266.7109375MiB FAIL/53valid0missing,
 explicitly instrumented/non-acceptance. Four light dump checkpoints and6CDP realm
 snapshots succeed. Native malloc allocated objects grow48,833,452B and partition

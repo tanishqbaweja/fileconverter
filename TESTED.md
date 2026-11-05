@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-11-05 isolated-worker candidate implemented, actual browser result PENDING.
+Coordinator imports NO native engine. It starts a candidate child, receives only
+bounded structured-cloned metadata, requests owned termination, then starts a fresh
+CPU child ONLY for typed NotSupportedError in engine load/conversion, zero actual
+write attempts, and confirmed underlying stream abort completion. Destination-open/
+close, write failures (even zero recorded bytes), corruption, cancellation, malformed
+protocol and abort failures never retry; CPU failure is final. Identical File/handle/
+cancellation/video settings and existing single-thread general core retained.
+Private child now calls raw stream.abort for proof: shared async adapter swallows
+abort errors and remains unchanged.36focused lifecycle/terminal/recipe checks PASS
+(808.360ms), TypeScript/affected lint/diff PASS. Initial TS optional-worker-count
+error corrected by a strict validated terminal contract, not a default-zero metric.
+Worker handle serialization is proven in mocks; physical realm overlap/reclamation
+is NOT yet measured (actualPeakWorkerRealms:null). No accepted optimization/public
+promotion or large-file/recovery-browser qualification claimed.
+
 2026-11-05 native-allocation diagnostic TERMINAL at91b80f0a, Chrome156.0.8078.80:
 all4light dumps captured/no loss/errors in837/971/981/914ms; all6realm snapshots
 2/3/3/3/3/2targets/no heap errors. Genuine same-source VP9 fallback99,405B/48frames,
