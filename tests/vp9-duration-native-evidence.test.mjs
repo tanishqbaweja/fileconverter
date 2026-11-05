@@ -63,3 +63,30 @@ test("missing decoded durations remain a failed strict verdict, not fabricated z
   const saved = await json("evidence/2026-11-05-webcodecs-vp9-duration-fixed-control-42013264823-archive.json");
   assert.equal(saved.allRoundtripsVerified, true); assert.equal(sha(await read(saved.reports[0].file)), saved.reports[0].compactSha256);
 });
+const storedBase = "evidence/2026-11-05-webcodecs-vp9-duration-stored-timing-42013264823";
+test("new stored timing observation proves absent VP9 default/block fields without inventing frame durations", async () => {
+  const r = await json(storedBase + ".json"), timing = r.storedTiming;
+  assert.equal(r.executedHead, "b5326c29d63e98d47e0f3b86ecda2864926a4993");
+  assert.equal(timing.source.tracks[0].defaultDurationNs, 41666666);
+  assert.equal(timing.output.tracks[0].defaultDurationNs, null); assert.equal(timing.output.blocksWithExplicitDuration, 0);
+  assert.equal(timing.output.blocks.length, 48); assert.ok(timing.output.blocks.every(row => row.kind === "SimpleBlock" && row.explicitDurationTicks === null && !row.invisible));
+  assert.equal(timing.source.durationSeconds, 2); assert.equal(timing.output.durationSeconds, 2);
+  assert.equal(timing.source.bytesRead, 1496); assert.equal(timing.output.bytesRead, 1398);
+  assert.equal(timing.output.largestRead, 12); assert.equal(timing.output.decodedFrameDurationsInvented, false);
+  assert.equal(timing.strictVerdictChanged, false); assert.equal(r.independentFidelity.passed, false);
+  assert.equal(r.independentFidelity.ssim.score, 0.993273); assert.equal(r.independentFidelity.clocks.maximumVideoPtsErrorSeconds, 0);
+  assert.equal(r.outputSha256, "be890dca0bb313b91030076c3f057f5be6eaaad98c64307f6dc32f6649819159");
+});
+test("new diagnostic retains unavailable stable baseline and failure despite valid conversion samples, with exact cleanup/archive", async () => {
+  const r = await json(storedBase + ".json"); assert.equal(r.blankBaseline, null); assert.equal(r.memory.incrementalPrivateMiB, null);
+  assert.equal(r.memory.validSamples, 41); assert.equal(r.memory.unavailableSamples, 0);
+  assert.equal(r.status, "failed-private-vp9-browser-smoke"); assert.ok(r.failures.some(row => row.includes("Stable blank baseline")));
+  assert.equal(r.publicAcceptance, false); assert.equal(r.ownedRuntimeRemoved, true); assert.equal(r.ownedStaticStageRemoved, true);
+  assert.equal(r.processCleanup.length, 3); assert.ok(r.processCleanup.every(row => row.status === "owned-identity-absent"));
+  assert.deepEqual(r.originalBefore, r.originalAfter); assert.deepEqual(r.forbiddenRequests, []); assert.equal(r.browserPinFinalCheck, "verified");
+  const packed = await read(r.rawArchive.file), raw = gunzipSync(packed, { maxOutputLength: 4194304 });
+  assert.equal(sha(packed), r.rawArchive.sha256); assert.equal(sha(raw), r.rawArchive.decodedSha256); assert.equal(raw.length, 407085);
+  const manifest = await json("evidence/2026-11-05-webcodecs-vp9-duration-stored-timing-control-42013264823-archive.json");
+  assert.equal(manifest.allRoundtripsVerified, true); assert.equal(manifest.retainedBytes, 130069);
+  assert.equal(sha(await read(storedBase + ".json")), manifest.reports[0].compactSha256);
+});

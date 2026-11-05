@@ -1,5 +1,33 @@
 # Tested conversion ledger
 
+2026-11-05 stored-timing-cycle final gate:219focused tests PASS(1788.7061ms),
+0skipped/0failures, affected lint/diff PASS.403/403public evidence/2hidden pending/
+0PDF unchanged; canonical native C SHAae501a2e...3068 unchanged. New candidate is
+source-only pending compilation; old native/browser failures retained. All new
+source, receipts and ledger updates are committed/pushed to origin/media-options.
+
+2026-11-05 stored-timing browser diagnostic TERMINAL FAIL atb5326c29. New direct
+byte evidence: input track DefaultDuration41666666ns, output DefaultDuration NULL;
+all48output SimpleBlocks visible, no explicit BlockDuration. Both Segment headers
+2.000s; decoded48PTS exact/SSIM0.993273/8metadata fields still match; same output
+SHAbe890dca...19159. Parser reads1496B source/1398B output, largest12B on output;
+no entire encoded payload read. Missing stored fields are confirmed, but this alone
+does NOT prove a different decoded presentation or permission to infer durations.
+Strict decoded-duration availability still FAILS7/48. Stable blank unavailable in
+this run: incremental memory NULL,41valid0missing conversion samples, never a
+pass inferred from absolute peak576929792B. No unchanged retry for a green baseline.
+Elapsed3.670780s includes private static override, not accepted speedup. Original
+size/SHA unchanged,0forbidden requests,3owned process births absent, all owned
+runtime/stage/profile/input/output removed. Raw407085B losslessly archived with
+compact JSON to130069B total. Existing useful private static tools remain in work.
+Pinned FFmpeg8.1.2 matroskaenc.c1894-1900 writes DefaultDuration from AVStream
+avg_frame_rate or r_frame_rate; wrapper sets encoder CFR but not output stream
+frame-rate metadata. Next PRIVATE reversible source candidate adds VP9-only
+output_stream->avg_frame_rate=encoder->framerate, retaining packet fix, same codec
+clock/settings/I/O/memory.7source checks PASS(185.3141ms) incl exact authenticated
+pre-Theora base; canonical C/public binaries unchanged. New metadata candidate
+NOT compiled or browser-verified. No public promotion or broader-goal completion.
+
 2026-11-05 new stored-timing diagnostic implemented; actual browser run PENDING.
 Read-only random-access EBML parser limited to2MiB fixtures/64KiB total reads/
 256B per read/128blocks. Records stored TimestampScale/Segment Duration/track

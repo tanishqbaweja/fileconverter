@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-11-05 stored-timing-cycle regression219PASS/0skip, affected lint/diff and
+403/403registry consistency PASS. Next actionable stage is compiling the tested
+VP9 stream-metadata candidate privately and repeating unchanged strict gates on
+that CHANGED tool, not rerunning the existing missing-duration output for green.
+Broader large/repeat/direct/recovery/browser/source/release work remains partial.
+
+2026-11-05 stored-timing investigation completed with new evidence, not acceptance.
+Output lacks track DefaultDuration and all48explicit block durations; source has
+41666666ns default. Segment2s/48PTS/SSIM remain correct; strict decoded duration
+availability still fails7/48. New run additionally fails earliest stable blank;
+incremental memory stays NULL despite41valid conversion samples. No unchanged
+retry/relaxed baseline, all owned data/processes cleaned, protected original intact.
+Next distinct fix: PRIVATE VP9-only output stream CFR metadata source candidate,
+exactly reversible on canonical and authenticated pre-Theora base,7source checks
+pass. Compilation and same strict browser validation still PENDING. No existing
+public/native artifact changed; full broader original requirements remain open.
+
 2026-11-05 distinct stored-timing investigation ready: bounded read-only EBML
 diagnostic and exclusive --duration-stored-timing browser recipe,23focused checks
 and affected lint PASS. Actual output timing PENDING; absent values remain null,
