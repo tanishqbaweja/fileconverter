@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-05 distinct stored-timing investigation ready: bounded read-only EBML
+diagnostic and exclusive --duration-stored-timing browser recipe,23focused checks
+and affected lint PASS. Actual output timing PENDING; absent values remain null,
+strict decoded-duration verdict unchanged. Reuse existing authenticated core;
+do not rebuild or replay the old unchanged browser recipe. No public acceptance.
+
 2026-11-05 private native duration candidate now browser-tested: container duration
 FIXED for the pinned SMALL control (2.000s vs previous1.958s), exact48frame clocks,
 SSIM0.993273 and8metadata fields preserved. Full strict verdict remains FAIL:

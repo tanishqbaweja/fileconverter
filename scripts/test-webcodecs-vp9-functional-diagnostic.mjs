@@ -9,7 +9,8 @@ import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 const nativeAllocation = process.argv[2] === "--fallback-native-allocation";
-const durationFixedFidelity = process.argv[2] === "--duration-fixed-fidelity";
+const storedTimingDiagnostic = process.argv[2] === "--duration-stored-timing";
+const durationFixedFidelity = process.argv[2] === "--duration-fixed-fidelity" || storedTimingDiagnostic;
 const isolatedFidelity = process.argv[2] === "--isolated-fidelity" || durationFixedFidelity;
 const isolatedFallback = process.argv[2] === "--isolated-fallback" || isolatedFidelity;
 const realmDiagnostic = process.argv[2] === "--fallback-realms" || nativeAllocation;
@@ -27,7 +28,7 @@ const explicitColorFixture = process.argv[2] === "--explicit-color-fixture" || f
 const nativeColorDiagnostic = process.argv[2] === "--native-color-diagnostic" || explicitColorFixture || rebuiltCpuFallback;
 assert.ok(process.argv.length === 2 || (process.argv.length === (checkOnly ? 4 : 3) && nativeColorDiagnostic));
 const root = path.resolve(import.meta.dirname, ".."), sha = x => createHash("sha256").update(x).digest("hex");
-const outputLabel = durationFixedFidelity ? "duration-fixed-" + durationRunId : isolatedFidelity ? "isolated-fidelity" : isolatedFallback ? "isolated-fallback" : nativeAllocation ? "fallback-native-allocation" : preflightRecovery ? "comparison-single-core-preflight-recovery" : compareDefault ? "comparison-default-core" : compareSingle ? "comparison-single-core" :
+const outputLabel = storedTimingDiagnostic ? "duration-stored-timing-" + durationRunId : durationFixedFidelity ? "duration-fixed-" + durationRunId : isolatedFidelity ? "isolated-fidelity" : isolatedFallback ? "isolated-fallback" : nativeAllocation ? "fallback-native-allocation" : preflightRecovery ? "comparison-single-core-preflight-recovery" : compareDefault ? "comparison-default-core" : compareSingle ? "comparison-single-core" :
   realmDiagnostic ? "fallback-realms" : rebuiltCpuFallback ? "rebuilt-cpu-fallback" : rebuiltNative ? "rebuilt-native" :
   preferenceFallbackFixture ? "encoder-preference-fallback" : frameColorFixture ? "frame-color-fixture" :
   explicitColorFixture ? "explicit-color-fixture" : "native-color-diagnostic";
@@ -245,6 +246,16 @@ if (durationFixedFidelity) {
       '  assert.deepEqual(report.privateCpuOverride.served, { javascript: 1, wasm: 1 }); assert.equal(report.privateAssetErrorCount, 0);'],
   );
 }
+if (storedTimingDiagnostic) {
+  const helper = pathToFileURL(path.join(root, "scripts/lib/small-matroska-stored-timing.mjs")).href;
+  edits.push(
+    ['import { chromium } from "playwright";', 'import { chromium } from "playwright";\nimport { inspectSmallMatroskaTimingFile } from ' + JSON.stringify(helper) + ';'],
+    ['"scripts/lib/private-vp9-finalization.mjs",', '"scripts/lib/private-vp9-finalization.mjs", "scripts/lib/small-matroska-stored-timing.mjs",'],
+    ['  report.outputSha256 = await hashFile(converted);',
+      '  report.outputSha256 = await hashFile(converted);\n' +
+      '  report.storedTiming = { source: await inspectSmallMatroskaTimingFile(fixture), output: await inspectSmallMatroskaTimingFile(converted), strictVerdictChanged: false };'],
+  );
+}
 let generated = source;
 for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
 let reversed = generated;
@@ -262,6 +273,7 @@ const recipe = { scope: "Collect previously unreached real conversion facts; all
   isolatedFallback,
   isolatedFidelity, fidelityThresholdsRelaxed: false,
   durationFixedFidelity, privateDurationNativeRunId: durationFixedFidelity ? durationRunId : null,
+  storedTimingDiagnostic, storedTimingChangesStrictVerdict: false,
   samePinnedComparisonInput: compareCore, alternateSingleThreadCoreSelected: compareSingle,
   preflightRecovery, previousAttemptReachedBrowser: preflightRecovery ? false : null,
   usesConfigurationCheckedPlatformPreferenceFallback: preferenceFallbackFixture,

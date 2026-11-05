@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-05 new stored-timing diagnostic implemented; actual browser run PENDING.
+Read-only random-access EBML parser limited to2MiB fixtures/64KiB total reads/
+256B per read/128blocks. Records stored TimestampScale/Segment Duration/track
+DefaultDuration/all block timestamps/explicit BlockDuration separately, skips
+encoded payload, leaves absent fields null; no inferred decoder durations or
+strict verdict changes. RFC9559 sections5.1.3.5.3/5.1.4.1.13/11 are referenced
+in source.9parser checks include real pinned58389B input; with14lifecycle/recipe
+checks23PASS(2699.172ms), affected lint PASS. New --duration-stored-timing mode
+reuses authenticated native core/settings and retains every original strict gate.
+No native rebuild, public change or claim that stored output timing is proved yet.
+
 2026-11-05 duration-cycle finalization:203focused tests PASS(1518.4227ms),
 affected lint/diff PASS; registry403/403,2hidden pending,0PDF unchanged. These
 regressions authenticate the retained failed browser verdict, not a new conversion
