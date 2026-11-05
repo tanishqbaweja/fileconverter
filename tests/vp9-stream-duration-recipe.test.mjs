@@ -40,7 +40,7 @@ test("private build, source pins and collector bind the two-edit stream candidat
   assert.ok(workflow.includes("tests/vp9-stream-duration-recipe.test.mjs"));
 });
 test("candidate also applies exactly to the authenticated reconstructed general-core base without editing it", async context => {
-  const base = await readFile(new URL("../work/vp9-duration-input-42013264823/within_remux.base.c", import.meta.url), "utf8")
+  const base = await readFile(new URL("../work/vp9-duration-input-42020605269/within_remux.base.c", import.meta.url), "utf8")
     .catch(error => { if (error.code === "ENOENT") return null; throw error; });
   if (base === null) { context.skip("Optional local authenticated native tool is not present; canonical-source tests still mandatory"); return; }
   assert.equal(sha(base), "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd");

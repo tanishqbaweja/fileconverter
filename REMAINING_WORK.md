@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-11-05 changed-duration cycle finalized:226focused tests PASS/0skip, affected
+lint/diff and403/403public consistency PASS. Strict SMALL fidelity/memory now
+verified below; full large/repeated/direct/recovery/current-browser and broader
+specification remain PARTIAL. Do not declare completion or rerun small for status.
+
+2026-11-05 strict SMALL VP9 timing+memory gate now PASS: changed authenticated
+tool42020605269 tested in Chrome156 at2c18a14e;48/48decoded durations (was7/48),
+stored41666666ns default matches source,2.000s duration/exact48PTS/SSIM0.993273/
+8metadata fields preserved. Full-tree185.72265625MiB/39valid0missing, exact stable
+blank formula unchanged. All owned scratch/output/processes cleaned, original
+unchanged/privacy pass. Superseded owned10.4MB static core removed with exact
+identity/content checks; pinned source/failed reports retained for recovery.
+M-09 remains PARTIAL, not public or optimized: next qualification must exercise
+larger/full-original scaling, repeat/clean-session retention and direct/recovery
+paths using the actual corrected core. Do not keep replaying this small gate or
+claim its3.662s transport-inclusive time is a speedup. Broader scope unchanged.
+
 2026-11-05 changed stream-duration native build42020605269 TERMINAL SUCCESS,
 exact head6db1490c, all hosted gates/cleanup PASS. Authenticated collection and
 new stricter --stream-duration-fidelity browser control remain next; native build

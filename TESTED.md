@@ -1,5 +1,34 @@
 # Tested conversion ledger
 
+2026-11-05 stream-duration-cycle finalization:226focused regression tests PASS
+(1790.2306ms),0skipped; affected lint/diff PASS. Registry403/403public evidence,
+2hidden pending/0PDF unchanged. Canonical C SHAae501a2e...3068 unchanged. No
+unchanged native/browser conversion replay for this gate; actual new strict small
+pass retained below. Larger/repeat/direct/recovery/current-browser gates remain.
+
+2026-11-05 strict changed-tool browser control PASS at2c18a14e/Chrome156.0.8078.80:
+source58389B H264 ->99413B VP9,48fully decoded frames, outputSHA82bdfd66b2411c9d9e3e8ccf24659fce9f6aa5527b4066b219238e8f7e82267b.
+ALL48decoded durations now available (previous7/48), exact48PTS/error0, source/
+output duration2.000s/error0 underunchanged1ms limit, SSIM0.993273/48frames passes
+unchanged0.98 and all8pixel/aspect/color fields match. Stored track DefaultDuration
+41666666ns matches source; explicit extra metadata gate PASS. Parser reads1496B
+source/1414B output. Genuine existing production AVIO/OPFS/browser CPU fallback,
+1codec thread/0helpers,32MiB actualWasm,1pending/98994B peakqueue,3write attempts.
+Exact whole-tree memory PASS185.72265625MiB (blank358141952/peak552886272B),
+39valid0missing. This measurement is NOT proof that the8byte metadata addition
+caused a memory reduction; no controlled comparative speed/memory gain claimed.
+Elapsed3.661665s includes static override transport, not accepted benchmark.
+Zero forbidden requests, public bytes unchanged, all3owned process births absent;
+runtime/profile/stage/copied input/converted output removed, original pre/post
+size/SHA unchanged. Raw302302B archived byte-exactly with compact JSON to120866B.
+ONE SMALL PRIVATE PASS ONLY: larger/full-original/near10GB, repeated/clean-session,
+direct selected destination, cancellation/write-failure/quota/permission/reload,
+current-browser, source/release and broader original scope remain open.
+Superseded owned static tool work/vp9-duration-input-42013264823 removed after
+exact owner(dev/ino/head) and17file/hash checks:10404971B freed. Source rebuild
+head708178ce/negative reports retained; no user media read/removed. Current10.4MB
+CPU tools and useful6MB WebCodecs candidate remain repo-local for next work.
+
 2026-11-05 new native tool authenticated:42020605269,16exact members/source git
 blobs/artifact pins/two reversible C deltas verified; compiled C SHA3742b033...ffb52.
 Wasm9873881B SHAa89092c3edaa6b8b5e9b2d8503db6685ed080736109db4f4fc1708506862f05c.
