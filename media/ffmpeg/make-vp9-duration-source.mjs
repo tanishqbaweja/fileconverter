@@ -1,10 +1,10 @@
 import assert from "node:assert/strict";
 import { readFile, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { makeVp9PacketDurationSource } from "./vp9-packet-duration-recipe.mjs";
+import { makeVp9StreamDurationSource } from "./vp9-stream-duration-recipe.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), build = path.join(root, "work/vp9-duration-build");
 assert.equal(process.argv.length, 2); assert.equal(await realpath(build), build);
-const recipe = makeVp9PacketDurationSource(await readFile(path.join(build, "within_remux.base.c"), "utf8"));
+const recipe = makeVp9StreamDurationSource(await readFile(path.join(build, "within_remux.base.c"), "utf8"));
 assert.equal(recipe.parentSha256, "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd", "Use the exact pre-Theora general-core translation unit");
 await writeFile(path.join(build, "within_remux.duration.c"), recipe.generated, { flag: "wx" });
 const { generated: _generated, ...proof } = recipe;

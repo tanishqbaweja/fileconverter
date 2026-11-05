@@ -7,14 +7,14 @@ import { createHash } from "node:crypto";
 import { createOwnedRuntimeScratch } from "../../scripts/lib/owned-runtime-scratch.mjs";
 import { readWasmMemoryLimits } from "../../scripts/lib/wasm-memory-limits.mjs";
 import { makeVp9DurationBuildRecipe } from "./vp9-duration-build-recipe.mjs";
-import { makeVp9PacketDurationSource } from "./vp9-packet-duration-recipe.mjs";
+import { makeVp9StreamDurationSource } from "./vp9-stream-duration-recipe.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), output = path.join(root, "work/vp9-duration-output");
 const read = file => readFile(path.join(root, file)), sha = value => createHash("sha256").update(value).digest("hex");
 assert.equal(process.argv.length, 2); assert.equal(process.platform, "linux");
 assert.equal(sha(await read("media/ffmpeg/within_remux.c")), "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068");
 for (const dir of [output, path.join(root, "work/vp9-duration-build")]) await assert.rejects(access(dir), { code: "ENOENT" });
 const sourcePins = {}, artifactPins = {};
-const sourceFiles = ["media/ffmpeg/within_remux.c", "media/ffmpeg/vp9-packet-duration-recipe.mjs", "media/ffmpeg/vp9-duration-build-recipe.mjs",
+const sourceFiles = ["media/ffmpeg/within_remux.c", "media/ffmpeg/vp9-packet-duration-recipe.mjs", "media/ffmpeg/vp9-stream-duration-recipe.mjs", "media/ffmpeg/vp9-duration-build-recipe.mjs",
   "media/ffmpeg/make-vp9-duration-source.mjs", "media/ffmpeg/build-vp9-duration-candidate.mjs", "media/ffmpeg/reproduce-nondocker.sh",
   "media/ffmpeg/wasm-pkg-config.sh", "scripts/lib/owned-runtime-scratch.mjs", "scripts/lib/wasm-memory-limits.mjs",
   ".github/workflows/vp9-duration-nondocker.yml"];
@@ -32,7 +32,7 @@ try {
     WITHIN_BUILD_CORE_FILTER: "within-remux", WITHIN_KEEP_NONDOCKER_OUTPUT: "1", WITHIN_VP9_DURATION_SCRIPT_DIR: path.join(root, "media/ffmpeg") } });
   await new Promise((resolve, reject) => { child.once("error", reject); child.once("close", (code, signal) =>
     code === 0 ? resolve() : reject(new Error(`Private duration build exit ${code}/${signal}`))); });
-  const before = await readFile(path.join(output, "within_remux.base.c"), "utf8"), candidate = makeVp9PacketDurationSource(before);
+  const before = await readFile(path.join(output, "within_remux.base.c"), "utf8"), candidate = makeVp9StreamDurationSource(before);
   assert.equal(await readFile(path.join(output, "within_remux.duration.c"), "utf8"), candidate.generated);
   const wasm = await readFile(path.join(output, "within-remux.wasm")); assert.ok(wasm.length < 16777216 && WebAssembly.validate(wasm));
   const limits = readWasmMemoryLimits(wasm);
@@ -47,13 +47,13 @@ try {
   }
   for (const [file, hash] of Object.entries(sourcePins)) assert.equal(sha(await read(file)), hash);
   await writeFile(path.join(output, "build-manifest.json"), JSON.stringify({ ...original,
-    engine: "private-vp9-packet-duration", scope: "private-compiled-tool-not-public-reproduction-or-browser-acceptance",
+    engine: "private-vp9-stream-duration", scope: "private-compiled-tool-not-public-reproduction-or-browser-acceptance",
     modules: core, profiles: ["private-vp9-duration-fidelity"], sources: sourcePins, artifacts: artifactPins,
     enabledDecoders: enabled("DECODER"), enabledEncoders: enabled("ENCODER"), enabledDemuxers: enabled("DEMUXER"),
     enabledMuxers: enabled("MUXER"), enabledParsers: enabled("PARSER"), enabledBitstreamFilters: enabled("BSF"),
     buildEnvironment: { usedDocker: false, emscripten: "6.0.4", emsdkCommit: "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f" },
     candidate: { baseWrapperSha256: candidate.parentSha256, compiledWrapperSha256: candidate.generatedSha256,
-      generatedBuildRecipeSha256: recipe.generatedSha256, wrapperEdits: 1, codecSettingsChanged: false, ioChanged: false,
+      generatedBuildRecipeSha256: recipe.generatedSha256, wrapperEdits: candidate.edits.length, codecSettingsChanged: false, ioChanged: false,
       wasmMemoryLimits: limits, memoryLimitsRaised: false, nodeInstantiated: false, mediaRead: false, mediaWritten: false,
       browserValidated: false, publicAcceptance: false } }, null, 2) + "\n");
   console.log(JSON.stringify({ status: "compiled-private-tool-requires-browser-validation", wasmBytes: wasm.length,

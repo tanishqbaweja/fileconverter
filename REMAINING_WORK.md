@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-05 next distinct native attempt4 ready: tested two-edit stream-duration
+source wired through generator/build/collector/static loader,22focused checks and
+affected lint PASS. Still requires actual source compilation then unchanged strict
+small fidelity/full-tree gate before any larger/repeat/recovery qualification.
+Original full objective and all broader partial items remain in scope.
+
 2026-11-05 stored-timing-cycle regression219PASS/0skip, affected lint/diff and
 403/403registry consistency PASS. Next actionable stage is compiling the tested
 VP9 stream-metadata candidate privately and repeating unchanged strict gates on

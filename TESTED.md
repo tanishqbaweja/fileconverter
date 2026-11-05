@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-11-05 stream-duration build wiring ready for distinct attempt4. Native source
+generator/builder now select tested two-edit VP9 candidate, pin both recipes and
+report actual edit count; collector regenerates exact old/new source by authenticated
+engine identity, preserving previous evidence. Browser loader accepts only the two
+known private engines.22focused checks PASS(312.6416ms), affected lint PASS.
+Canonical native/public assets unchanged; compilation/browser proof PENDING.
+
 2026-11-05 stored-timing-cycle final gate:219focused tests PASS(1788.7061ms),
 0skipped/0failures, affected lint/diff PASS.403/403public evidence/2hidden pending/
 0PDF unchanged; canonical native C SHAae501a2e...3068 unchanged. New candidate is

@@ -29,6 +29,16 @@ test("changed/duplicated CFR stream anchors cannot silently patch audio setup", 
     source.replace("encoder->framerate = frame_rate;", "encoder->framerate = frame_rate;\nencoder->framerate = frame_rate;")])
     assert.throws(() => makeVp9StreamDurationSource(text));
 });
+test("private build, source pins and collector bind the two-edit stream candidate rather than silently recompiling the old source", async () => {
+  const read = file => readFile(new URL("../" + file, import.meta.url), "utf8");
+  const generator = await read("media/ffmpeg/make-vp9-duration-source.mjs"), builder = await read("media/ffmpeg/build-vp9-duration-candidate.mjs"),
+    collector = await read("scripts/collect-vp9-duration-native.mjs"), workflow = await read(".github/workflows/vp9-duration-nondocker.yml");
+  for (const text of [generator, builder]) assert.ok(text.includes("makeVp9StreamDurationSource("));
+  assert.ok(builder.includes('"media/ffmpeg/vp9-stream-duration-recipe.mjs"')); assert.ok(builder.includes('engine: "private-vp9-stream-duration"'));
+  assert.ok(builder.includes("wrapperEdits: candidate.edits.length")); assert.ok(collector.includes("sourceProof.edits.length, manifest.candidate.wrapperEdits"));
+  assert.ok(collector.includes("streamDuration ? makeVp9StreamDurationSource : makeVp9PacketDurationSource"));
+  assert.ok(workflow.includes("tests/vp9-stream-duration-recipe.test.mjs"));
+});
 test("candidate also applies exactly to the authenticated reconstructed general-core base without editing it", async context => {
   const base = await readFile(new URL("../work/vp9-duration-input-42013264823/within_remux.base.c", import.meta.url), "utf8")
     .catch(error => { if (error.code === "ENOENT") return null; throw error; });

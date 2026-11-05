@@ -9,6 +9,7 @@ import { unzipSync } from "fflate";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
 import { makeVp9PacketDurationSource } from "../media/ffmpeg/vp9-packet-duration-recipe.mjs";
+import { makeVp9StreamDurationSource } from "../media/ffmpeg/vp9-stream-duration-recipe.mjs";
 assert.equal(process.argv.length, 3); const attempt = process.argv[2]; assert.match(attempt, /^[1-9]$/);
 const suffix = attempt === "1" ? "" : "-attempt" + attempt, root = path.resolve(import.meta.dirname, ".."), repo = "tanishqbaweja/fileconverter";
 const dispatch = JSON.parse(await readFile(path.join(root, "evidence/2026-11-05-vp9-duration-build-dispatch" + suffix + ".json")));
@@ -41,7 +42,7 @@ try {
   } });
   assert.deepEqual(Object.keys(members).sort(), allowed.toSorted());
   const manifest = JSON.parse(Buffer.from(members["build-manifest.json"]).toString());
-  assert.equal(manifest.engine, "private-vp9-packet-duration"); assert.equal(manifest.candidate.publicAcceptance, false);
+  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration"].includes(manifest.engine)); assert.equal(manifest.candidate.publicAcceptance, false);
   assert.equal(manifest.candidate.browserValidated, false); assert.equal(manifest.candidate.nodeInstantiated, false);
   assert.equal(manifest.candidate.mediaRead, false); assert.equal(manifest.candidate.mediaWritten, false);
   assert.equal(manifest.candidate.memoryLimitsRaised, false); assert.equal(manifest.buildEnvironment.usedDocker, false);
@@ -54,10 +55,13 @@ try {
     assert.equal(sha(source), pin, file);
   }
   assert.equal(sha(await readFile(path.join(root, "media/ffmpeg/vp9-packet-duration-recipe.mjs"))), manifest.sources["media/ffmpeg/vp9-packet-duration-recipe.mjs"]);
-  const sourceProof = makeVp9PacketDurationSource(Buffer.from(members["within_remux.base.c"]).toString());
+  const streamDuration = manifest.engine === "private-vp9-stream-duration";
+  if (streamDuration) assert.equal(sha(await readFile(path.join(root, "media/ffmpeg/vp9-stream-duration-recipe.mjs"))), manifest.sources["media/ffmpeg/vp9-stream-duration-recipe.mjs"]);
+  const sourceProof = (streamDuration ? makeVp9StreamDurationSource : makeVp9PacketDurationSource)(Buffer.from(members["within_remux.base.c"]).toString());
   assert.equal(sourceProof.parentSha256, "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd");
   assert.equal(sourceProof.generated, Buffer.from(members["within_remux.duration.c"]).toString());
   assert.equal(sourceProof.generatedSha256, manifest.candidate.compiledWrapperSha256);
+  assert.equal(sourceProof.edits.length, manifest.candidate.wrapperEdits);
   const limits = readWasmMemoryLimits(members["within-remux.wasm"]);
   assert.deepEqual(limits, manifest.candidate.wasmMemoryLimits);
   assert.deepEqual(limits, readWasmMemoryLimits(await readFile(path.join(root, "public/engines/remux/within-remux.wasm"))));
