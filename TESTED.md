@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-11-06 guarded build42128952234 attempt6 FAILED before compilation: stale
+current-builder assertion expected old original-width engine name. Exact hosted
+job20s, no SDK/core/artifact/browser conversion, both cleanup steps PASS. Retained
+terminal receipt/log digest; fixed assertion now requires new guard engine and
+guard wiring, not a relaxed acceptance. Exact hosted28checks PASS locally
+(851.7389ms);255focused regressions PASS(1587.0449ms),0skip. New qualification
+driver reuses authenticated six-job strict control and requires byte-exact99413B
+output SHA82bdfd66...82267b against original libvpx plus all existing timing,
+SSIM/color/recovery/memory gates. Original attempt4 cannot launch without that
+passed control and a distinct guarded tool.20driver/build checks PASS(549.1765ms)
+and affected lint PASS. Next corrected DISTINCT attempt7; no native success yet.
+
 2026-11-06 temporal-buffer guard wiring:34 focused checks PASS(562.3221ms),
 0skip; affected ESLint PASS. Actual hidden host C compilation executed198 calls
 across CONFIG_VP9_HIGHBITDEPTH0/1:48 original/candidate pairs plus3 transition

@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-06 attempt6 stopped on stale engine-name assertion BEFORE native compile;
+failure/cleanup retained. Assertion fixed to require new guarded engine/wiring.
+Exact CI28checks and255focused regressions PASS,0skip. Six-job strict/byte-exact
+control and exclusive original attempt4 driver prepared/tested; attempt4 requires
+passed control/new guarded tool. Next corrected source build attempt7, NOT
+redispatch attempt6. No guarded native/browser success or speed claim yet.
+
 2026-11-06 guarded-library implementation cycle: lifetime audit and198 actual
 host-compiled allocator-control calls PASS;34 focused checks/affected lint PASS.
 Guard is now wired BEFORE private library compilation, with four exact source

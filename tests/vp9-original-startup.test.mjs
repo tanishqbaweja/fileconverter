@@ -54,7 +54,7 @@ test("changed second attempt has exclusive separate receipt/trace/recipe identit
   const result = makeVp9OriginalStartupSource(source, root, 2);
   assert.ok(result.generated.includes("evidence/2026-11-06-vp9-original-cpu-startup-attempt2.json"));
   assert.ok(result.generated.includes("2026-11-06-vp9-original-cpu-startup-attempt2-failure.zip"));
-  assert.equal(result.attempt, 2); assert.throws(() => makeVp9OriginalStartupSource(source, root, 4));
+  assert.equal(result.attempt, 2); assert.throws(() => makeVp9OriginalStartupSource(source, root, 5));
   const { stdout } = await promisify(execFile)(process.execPath, ["scripts/test-vp9-original-startup.mjs", "2", "--check-only"],
     { cwd: root, windowsHide: true, timeout: 30000, maxBuffer: 65536 });
   assert.equal(JSON.parse(stdout).browserLaunched, false);
@@ -81,6 +81,18 @@ test("observer failures never skip independent OPFS removal or fabricate a passi
   await assert.rejects(runVp9OriginalStartup({ page, observer, blankBaseline: { stable: true, privateBytes: 100000000 }, evidence }), /every cleanup was attempted/);
   assert.deepEqual(calls, ["remove-opfs"]); assert.equal(evidence.partialOutputRemoved, true); assert.equal(evidence.memory, null);
   assert.equal(evidence.passedStartupOnly, false); assert.match(evidence.observerError, /observer unavailable/);
+});
+test("fourth attempt requires a distinct guarded tool plus passed strict small/recovery control", async () => {
+  assert.throws(() => makeVp9OriginalStartupSource(source, root, 4, "42122918540"), /unmodified vendor/);
+  const result = makeVp9OriginalStartupSource(source, root, 4, "12345678");
+  assert.ok(result.generated.includes("vp9-original-cpu-startup-attempt4.json"));
+  assert.equal(result.changesMemoryFormulaOrLimit, false); assert.equal(result.fullFileAcceptance, false);
+  const driver = await readFile(new URL("../scripts/test-vp9-original-startup.mjs", import.meta.url), "utf8");
+  assert.ok(driver.includes('qualification.recovery.passed, true'));
+  assert.ok(driver.includes('qualification.independentFidelity.passed, true'));
+  const { stdout } = await promisify(execFile)(process.execPath, ["scripts/test-vp9-original-startup.mjs", "4", "--check-only"],
+    { cwd: root, windowsHide: true, timeout: 30000, maxBuffer: 65536 });
+  assert.equal(JSON.parse(stdout).browserLaunched, false);
 });
 test("execution and OPFS cleanup failures are both recorded without pretending removed or observed", async () => {
   const evidence = {}, page = { exposeBinding: async () => {}, evaluate: async (_callback, arg) => {

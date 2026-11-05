@@ -79,7 +79,7 @@ test("tampered private module bytes are rejected before any browser request", as
   await assert.rejects(loadVp9DurationCpuAssets(root, runId));
 }));
 test("loader accepts the authenticated stream-duration/original-width engines but rejects unrecognized engines", async () => {
-  for (const engine of ["private-vp9-stream-duration", "private-vp9-original-width", "unrecognized-core"]) await loaderFixture(async ({ root, runId, receipt, file }) => {
+  for (const engine of ["private-vp9-stream-duration", "private-vp9-original-width", "private-vp9-realtime-temporal", "unrecognized-core"]) await loaderFixture(async ({ root, runId, receipt, file }) => {
     await writeFile(file, JSON.stringify({ ...receipt, nativeContract: { ...receipt.nativeContract, engine } }));
     if (engine !== "unrecognized-core") assert.equal((await loadVp9DurationCpuAssets(root, runId)).runId, Number(runId));
     else await assert.rejects(loadVp9DurationCpuAssets(root, runId));

@@ -5,8 +5,9 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 const sha = value => createHash("sha256").update(value).digest("hex");
 export function makeVp9OriginalStartupSource(source, root, attempt = 1, nativeRunId = "42020605269") {
-  assert.ok(path.isAbsolute(root)); assert.ok([1, 2, 3].includes(attempt));
-  assert.match(nativeRunId, /^\d{8,14}$/); if (attempt === 3) assert.notEqual(nativeRunId, "42020605269", "Original-width attempt requires a distinct compiled core");
+  assert.ok(path.isAbsolute(root)); assert.ok([1, 2, 3, 4].includes(attempt));
+  assert.match(nativeRunId, /^\d{8,14}$/); if (attempt >= 3) assert.notEqual(nativeRunId, "42020605269", "Original-width attempt requires a distinct compiled core");
+  if (attempt === 4) assert.notEqual(nativeRunId, "42122918540", "Guarded attempt cannot replay the unmodified vendor build");
   const suffix = attempt === 1 ? "" : "-attempt" + attempt, edits = [];
   const add = (before, after) => { assert.equal(source.split(before).length, 2, before.slice(0, 160)); edits.push([before, after]); source = source.replace(before, after); };
   const parentSha256 = sha(source), helper = pathToFileURL(path.join(root, "scripts/lib/vp9-original-startup.mjs")).href;
@@ -45,7 +46,7 @@ export function makeVp9OriginalStartupSource(source, root, attempt = 1, nativeRu
     '  assert.deepEqual(report.privateCpuOverride.served, { javascript: 1, wasm: 1 }); assert.equal(report.privateAssetErrorCount, 0);\n' +
     '  assert.deepEqual(report.forbiddenRequests, []);\n' +
     '  report.status = "passed-private-original-startup-only-not-completed-transcode";');
-  if (attempt === 3) {
+  if (attempt >= 3) {
     add("evidence/2026-11-05-vp9-duration-native-42020605269.json", "evidence/2026-11-06-vp9-original-width-native-" + nativeRunId + ".json");
     for (const extension of ["mjs", "wasm"]) add("work/vp9-duration-input-42020605269/within-remux." + extension,
       "work/vp9-duration-input-" + nativeRunId + "/within-remux." + extension);
