@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-11-05 changed build42010620047 atab0d79ef TERMINAL FAILED in configure:
+bounded retries overcamecurl35; actual root is require undefined under inherited
+ESM in TMPDIR/vp9-duration-builder, NOT expected windows.h/UINTPTR probes.
+Pinned SDK/tests/both cleanup steps PASS, no core artifact/browser conversion.
+Builder now places CommonJS package.json in the actual temporary probe directory.
+Native Node negative control reproduces the require failure before that boundary,
+and positive control succeeds after it;9source/build checks PASS(523.180ms).
+Changed attempt3 may run, no unchanged redispatch. Private authenticated16-member
+tool collector and static2-asset browser override are prepared (not executed on
+a compiled tool yet).17lifecycle/route/recipe checks PASS(2755.998ms); original
+production MIME/security/cache policy retained, representation headers recomputed,
+public disk assets never replaced. Strict fidelity/source/memory gates unchanged.
+
 2026-11-05 duration build42010056006 at7656a44e TERMINAL FAILED before compilation:
 curl35connection reset. Pinned SDK/exact recipe unit checks and both owned cleanup
 steps PASS; no tool artifact/media conversion/public change. Raw hosted log78,111B

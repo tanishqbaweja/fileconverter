@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-11-05 native attempt2 (run42010620047) FAILED configure on TMPDIR inheriting ESM;
+download retry fix worked. Actual CommonJS probe negative/positive controls now
+prove the corrected boundary,9source/build checks pass, no native success claimed.
+Changed attempt3 required. Authenticated tool collection/private2-asset override
+prepared with17checks, same production security/MIME/cache policy and no public
+asset replacement; actual corrected native core/browser result remains PENDING.
+No changes to original source, native codec settings, memory cap, strict fidelity
+or full large/repeat/direct/recovery/browser/release/broader scope.
+
 2026-11-05 native build42010056006 FAILED before compilation oncurl35connection
 reset; SDK/recipe tests/all cleanup pass. No native/browser success claimed.
 Changed bounded retry-all-errors transport is ready for separately recorded

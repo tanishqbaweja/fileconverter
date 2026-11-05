@@ -1,0 +1,106 @@
+{
+  "acquiredAt": "2026-11-05T10:39:21.083Z",
+  "runId": 42010620047,
+  "head": "ab0d79ef3c34ce7e8ecb732400aab01b61a6d90d",
+  "branch": "codex/vp9-duration-source-20261105-attempt2",
+  "status": "completed",
+  "conclusion": "failure",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/42010620047",
+  "exactHeadAndStepsVerified": true,
+  "job": {
+    "id": 127188408348,
+    "startedAt": "2026-11-05T10:25:48Z",
+    "completedAt": "2026-11-05T10:28:38Z",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Own all runtime scratch",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Check exact private duration recipes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install build prerequisites",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install pinned SDK locally without Docker",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Compile private duration core with unchanged codecs and memory limits",
+        "status": "completed",
+        "conclusion": "failure"
+      },
+      {
+        "name": "Retain reusable private tools and compact source proofs only",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "Remove disposable owned build and SDK data",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Remove owned runtime scratch",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "status": "completed",
+        "conclusion": "skipped"
+      },
+      {
+        "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "workflowDisplayNameNotSelectionProof": true,
+  "publicAcceptance": false,
+  "browserConversions": 0,
+  "cleanupStepsPassed": true,
+  "errorLines": [
+    "build\tCompile private duration core with unchanged codecs and memory limits\t2026-11-05T10:26:19.6315817Z curl: (35) Recv failure: Connection reset by peer",
+    "build\tCompile private duration core with unchanged codecs and memory limits\t2026-11-05T10:26:22.2327807Z curl: (35) Recv failure: Connection reset by peer",
+    "build\tCompile private duration core with unchanged codecs and memory limits\t2026-11-05T10:28:31.0267813Z C compiler test failed.",
+    "build\tCompile private duration core with unchanged codecs and memory limits\t2026-11-05T10:28:31.0380417Z /home/runner/work/fileconverter/fileconverter/work/vp9-duration-builder-hf1UaX/ffconf.H1tjbEle/test.c:1:10: fatal error: 'windows.h' file not found",
+    "build\tCompile private duration core with unchanged codecs and memory limits\t2026-11-05T10:28:31.0392215Z /home/runner/work/fileconverter/fileconverter/work/vp9-duration-builder-hf1UaX/ffconf.H1tjbEle/test.c:1:10: fatal error: 'windows.h' file not found",
+    "build\tCompile private duration core with unchanged codecs and memory limits\t2026-11-05T10:28:31.0396678Z /home/runner/work/fileconverter/fileconverter/work/vp9-duration-builder-hf1UaX/ffconf.H1tjbEle/test.c:3:2: error: \"unsatisfied condition: UINTPTR_MAX >= UINT64_MAX\"",
+    "build\tCompile private duration core with unchanged codecs and memory limits\t2026-11-05T10:28:31.0440765Z var Module=typeof Module!=\"undefined\"?Module:{};var ENVIRONMENT_IS_WEB=!!globalThis.window;var ENVIRONMENT_IS_WORKER=!!globalThis.WorkerGlobalScope;var ENVIRONMENT_IS_NODE=globalThis.process?.versions?.node&&globalThis.process?.type!=\"renderer\";var ENVIRONMENT_IS_PTHREAD=ENVIRONMENT_IS_WORKER&&globalThis.name==\"em-pthread\";if(ENVIRONMENT_IS_NODE){var worker_threads=require(\"node:worker_threads\");globalThis.Worker=worker_threads.Worker;ENVIRONMENT_IS_WORKER=!worker_threads.isMainThread;ENVIRONMENT_IS_PTHREAD=ENVIRONMENT_IS_WORKER&&worker_threads.workerData==\"em-pthread\"}var programArgs=[];var thisProgram=\"./this.program\";var quit_=(status,toThrow)=>{throw toThrow};var _scriptName=globalThis.document?.currentScript?.src;if(typeof __filename!=\"undefined\"){_scriptName=__filename}else if(ENVIRONMENT_IS_WORKER){_scriptName=self.location.href}var scriptDirectory=\"\";function locateFile(path){if(Module[\"locateFile\"",
+    "build\tCompile private duration core with unchanged codecs and memory limits\t2026-11-05T10:28:31.0475039Z ReferenceError: require is not defined in ES module scope, you can use import instead",
+    "build\tCompile private duration core with unchanged codecs and memory limits\t2026-11-05T10:28:31.0476789Z C compiler test failed."
+  ],
+  "log": {
+    "bytes": 572687,
+    "sha256": "59dc51c84bd0fc558c898ac09789365d698317ae3225019cd3e4b0d8c016b4e8"
+  }
+}

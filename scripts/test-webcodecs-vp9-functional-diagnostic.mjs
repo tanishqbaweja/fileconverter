@@ -9,10 +9,13 @@ import { createHash } from "node:crypto";
 import { gzipSync } from "node:zlib";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 const nativeAllocation = process.argv[2] === "--fallback-native-allocation";
-const isolatedFidelity = process.argv[2] === "--isolated-fidelity";
+const durationFixedFidelity = process.argv[2] === "--duration-fixed-fidelity";
+const isolatedFidelity = process.argv[2] === "--isolated-fidelity" || durationFixedFidelity;
 const isolatedFallback = process.argv[2] === "--isolated-fallback" || isolatedFidelity;
 const realmDiagnostic = process.argv[2] === "--fallback-realms" || nativeAllocation;
 const checkOnly = process.argv[3] === "--check-only";
+const durationRunId = process.env.WITHIN_VP9_DURATION_NATIVE_RUN_ID ?? (checkOnly ? "12345678" : "");
+if (durationFixedFidelity) assert.match(durationRunId, /^\d{8,14}$/, "Select an authenticated source-built private CPU receipt explicitly");
 const preflightRecovery = process.argv[2] === "--compare-single-core-preflight-recovery";
 const compareDefault = process.argv[2] === "--compare-default-core", compareSingle = process.argv[2] === "--compare-single-core" || preflightRecovery || nativeAllocation || isolatedFallback;
 const compareCore = compareDefault || compareSingle;
@@ -24,7 +27,7 @@ const explicitColorFixture = process.argv[2] === "--explicit-color-fixture" || f
 const nativeColorDiagnostic = process.argv[2] === "--native-color-diagnostic" || explicitColorFixture || rebuiltCpuFallback;
 assert.ok(process.argv.length === 2 || (process.argv.length === (checkOnly ? 4 : 3) && nativeColorDiagnostic));
 const root = path.resolve(import.meta.dirname, ".."), sha = x => createHash("sha256").update(x).digest("hex");
-const outputLabel = isolatedFidelity ? "isolated-fidelity" : isolatedFallback ? "isolated-fallback" : nativeAllocation ? "fallback-native-allocation" : preflightRecovery ? "comparison-single-core-preflight-recovery" : compareDefault ? "comparison-default-core" : compareSingle ? "comparison-single-core" :
+const outputLabel = durationFixedFidelity ? "duration-fixed-" + durationRunId : isolatedFidelity ? "isolated-fidelity" : isolatedFallback ? "isolated-fallback" : nativeAllocation ? "fallback-native-allocation" : preflightRecovery ? "comparison-single-core-preflight-recovery" : compareDefault ? "comparison-default-core" : compareSingle ? "comparison-single-core" :
   realmDiagnostic ? "fallback-realms" : rebuiltCpuFallback ? "rebuilt-cpu-fallback" : rebuiltNative ? "rebuilt-native" :
   preferenceFallbackFixture ? "encoder-preference-fallback" : frameColorFixture ? "frame-color-fixture" :
   explicitColorFixture ? "explicit-color-fixture" : "native-color-diagnostic";
@@ -219,6 +222,29 @@ if (isolatedFidelity) {
       '  assert.equal(report.independentFidelity.passed, true, JSON.stringify(report.independentFidelity.failures));'],
   );
 }
+if (durationFixedFidelity) {
+  const helper = pathToFileURL(path.join(root, "scripts/lib/vp9-duration-browser-assets.mjs")).href;
+  edits.push(
+    ['import { chromium } from "playwright";', 'import { chromium } from "playwright";\nimport { loadVp9DurationCpuAssets, createVp9DurationAssetResponder } from ' + JSON.stringify(helper) + ';'],
+    ['"scripts/lib/private-vp9-finalization.mjs",', '"scripts/lib/private-vp9-finalization.mjs", "scripts/lib/vp9-duration-browser-assets.mjs", ' +
+      JSON.stringify("evidence/2026-11-05-vp9-duration-native-" + durationRunId + ".json") + ', "public/engines/remux/within-remux.mjs", "public/engines/remux/within-remux.wasm", ' +
+      JSON.stringify("work/vp9-duration-input-" + durationRunId + "/within-remux.mjs") + ', ' +
+      JSON.stringify("work/vp9-duration-input-" + durationRunId + "/within-remux.wasm") + ','],
+    ['  report.forbiddenRequests = [];',
+      '  report.forbiddenRequests = [];\n' +
+      '  const privateCpuAssets = await loadVp9DurationCpuAssets(root, ' + JSON.stringify(durationRunId) + ');\n' +
+      '  const privateCpuResponder = createVp9DurationAssetResponder(origin, privateCpuAssets);\n' +
+      '  report.privateCpuOverride = privateCpuResponder.report(); report.privateAssetErrorCount = 0;'],
+    ['    } else await route.continue();',
+      '    } else {\n' +
+      '      try { if (!await privateCpuResponder.respond(route)) await route.continue(); }\n' +
+      '      catch (error) { report.privateAssetErrorCount++; if (report.failures.length < 32) report.failures.push("Private asset route: " + String(error).slice(0, 512)); await route.abort().catch(() => {}); }\n' +
+      '    }'],
+    ['  assert.equal(report.independentFidelity.passed, true, JSON.stringify(report.independentFidelity.failures));',
+      '  assert.equal(report.independentFidelity.passed, true, JSON.stringify(report.independentFidelity.failures));\n' +
+      '  assert.deepEqual(report.privateCpuOverride.served, { javascript: 1, wasm: 1 }); assert.equal(report.privateAssetErrorCount, 0);'],
+  );
+}
 let generated = source;
 for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
 let reversed = generated;
@@ -235,6 +261,7 @@ const recipe = { scope: "Collect previously unreached real conversion facts; all
   nativeAllocationDiagnostic: nativeAllocation,
   isolatedFallback,
   isolatedFidelity, fidelityThresholdsRelaxed: false,
+  durationFixedFidelity, privateDurationNativeRunId: durationFixedFidelity ? durationRunId : null,
   samePinnedComparisonInput: compareCore, alternateSingleThreadCoreSelected: compareSingle,
   preflightRecovery, previousAttemptReachedBrowser: preflightRecovery ? false : null,
   usesConfigurationCheckedPlatformPreferenceFallback: preferenceFallbackFixture,

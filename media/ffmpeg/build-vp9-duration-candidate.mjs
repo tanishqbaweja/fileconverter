@@ -24,6 +24,9 @@ for (const file of sourceFiles) sourcePins[file] = sha(await read(file));
 const recipe = makeVp9DurationBuildRecipe((await read("media/ffmpeg/reproduce-nondocker.sh")).toString());
 const runtime = await createOwnedRuntimeScratch("vp9-duration-builder-");
 try {
+  // Configure probes live under this TMPDIR, not the separate build root.
+  // Extensionless Emscripten probes require a CommonJS package boundary here.
+  await writeFile(path.join(runtime.directory, "package.json"), '{"type":"commonjs"}\n', { flag: "wx" });
   const script = path.join(runtime.directory, "recipe.sh"); await writeFile(script, recipe.generated, { flag: "wx" });
   const child = spawn("bash", [script], { cwd: root, windowsHide: true, stdio: "inherit", env: { ...runtime.env,
     WITHIN_BUILD_CORE_FILTER: "within-remux", WITHIN_KEEP_NONDOCKER_OUTPUT: "1", WITHIN_VP9_DURATION_SCRIPT_DIR: path.join(root, "media/ffmpeg") } });

@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
-import { readFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { test } from "node:test";
 import { makeVp9DurationBuildRecipe } from "../media/ffmpeg/vp9-duration-build-recipe.mjs";
+import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 const root = new URL("../", import.meta.url), read = file => readFile(new URL(file, root), "utf8");
 const source = await read("media/ffmpeg/reproduce-nondocker.sh"), sha = value => createHash("sha256").update(value).digest("hex");
 test("private duration build derivation is exact and reversible with no codec/compiler/memory changes", () => {
@@ -43,4 +44,18 @@ test("dedicated workflow has pinned SDK, bounded retention, no broad native buil
     "build-vp9-duration-candidate.mjs", "Remove disposable owned build and SDK data", "Remove owned runtime scratch", "if: always()"])
     assert.ok(workflow.includes(anchor));
   assert.doesNotMatch(workflow, /(?:docker\s+(?:run|build)|WITHIN_BUILD_CORE_FILTER:\s*all|npm\s+install)/i);
+});
+test("actual temporary configure probe fails under inherited ESM but succeeds with the builder's CommonJS boundary", async () => {
+  const runtime = await createOwnedRuntimeScratch("vp9-duration-probe-unit-");
+  try {
+    const file = runtime.directory + "/configure-probe.js";
+    await writeFile(file, 'require("node:worker_threads");process.stdout.write("configure-probe-ok");\n', { flag: "wx" });
+    const options = { cwd: runtime.directory, env: runtime.env, windowsHide: true, encoding: "utf8", timeout: 10000, maxBuffer: 65536 };
+    const before = spawnSync(process.execPath, [file], options); assert.notEqual(before.status, 0);
+    assert.match(before.stderr, /require is not defined in ES module scope/);
+    await writeFile(runtime.directory + "/package.json", '{"type":"commonjs"}\n', { flag: "wx" });
+    const after = spawnSync(process.execPath, [file], options); assert.equal(after.status, 0, after.stderr); assert.equal(after.stdout, "configure-probe-ok");
+    const builder = await read("media/ffmpeg/build-vp9-duration-candidate.mjs");
+    assert.ok(builder.includes('path.join(runtime.directory, "package.json")'));
+  } finally { await runtime.close(); }
 });
