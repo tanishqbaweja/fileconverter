@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-11-06 new original-width core AUTHENTICATED:42122918540, exact16members/
+source pins/three C edits; compiled C SHA480532d8...46aa6. Wasm9873884B SHA
+a57d9167160ce1cd09bf4e2a5cd71c730bd2c4b38982828918a04b84aadfdf17.
+Same imported/shared32initial/96maximum MiB,1codec thread/0helpers; private width
+1920 only/default/public policy unchanged. Static10416062B retained only approved
+work/vp9-duration-input-42122918540, ZIP/collection scratch removed. Actual-ID
+attempt3 check-only reversible parse PASS; no browser launch yet. No native media
+conversion/Node Wasm instantiation, public assets unchanged.
+
+2026-11-06 original-width build42122918540 atf8c53adc TERMINAL SUCCESS.
+Actual job22:36:31-22:44:40UTC (8m9s), pinned SDK/source tests/private compile/
+static contract/upload/all cleanup PASS. Artifact13459939135/3351323B ZIP digest
+395deec3c43c120945c66e521757f3dd128105ef530eac5934fa61e31c0a9b6b,
+expires2026-11-06T22:44:35Z. Collection/authentication and original browser test
+pending; no media conversion or original-resolution success claimed from compile.
+Original startup finally hardened: observer/phase failure cannot skip independent
+OPFS removal; execution+cleanup failures retained separately, null memory never
+becomes pass.9focused startup checks PASS(402.335ms), affected lint PASS.
+
 2026-11-06 original-width wiring READY, actual build PENDING. Generator/build now
 select three-edit VP9-only1920 candidate and pin packet/stream/width recipes;
 manifest separates private width1920/default/public policy false. Collector selects

@@ -7,7 +7,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import path from "node:path";
 import { makeVp9OriginalStartupSource } from "../scripts/lib/vp9-original-startup-recipe.mjs";
-import { originalStartupStop, VP9_ORIGINAL_STARTUP } from "../scripts/lib/vp9-original-startup.mjs";
+import { originalStartupStop, VP9_ORIGINAL_STARTUP, runVp9OriginalStartup } from "../scripts/lib/vp9-original-startup.mjs";
 const root = path.resolve(import.meta.dirname, ".."), parent = JSON.parse(await readFile(new URL("../evidence/2026-11-05-webcodecs-vp9-stream-duration-fidelity-42020605269-recipe.json", import.meta.url)));
 const source = gunzipSync(Buffer.from(parent.generatedSourceGzipBase64, "base64"), { maxOutputLength: 1048576 }).toString();
 const sha = value => createHash("sha256").update(value).digest("hex");
@@ -70,4 +70,24 @@ test("third original attempt requires a distinct authenticated width build and r
   const { stdout } = await promisify(execFile)(process.execPath, ["scripts/test-vp9-original-startup.mjs", "3", "--check-only"],
     { cwd: root, windowsHide: true, timeout: 30000, maxBuffer: 65536, env: { ...process.env, WITHIN_VP9_ORIGINAL_NATIVE_RUN_ID: "12345678" } });
   assert.equal(JSON.parse(stdout).browserLaunched, false);
+});
+test("observer failures never skip independent OPFS removal or fabricate a passing memory value", async () => {
+  const evidence = {}, calls = [];
+  const page = { exposeBinding: async () => {}, evaluate: async (_callback, arg) => {
+    if (typeof arg === "object") return { type: "error", message: "unit native error", encoder: null, cleanupComplete: true };
+    calls.push("remove-opfs");
+  } };
+  const observer = { through: async () => { throw new Error("observer unavailable"); }, setPhase: () => { throw new Error("observer still unavailable"); } };
+  await assert.rejects(runVp9OriginalStartup({ page, observer, blankBaseline: { stable: true, privateBytes: 100000000 }, evidence }), /every cleanup was attempted/);
+  assert.deepEqual(calls, ["remove-opfs"]); assert.equal(evidence.partialOutputRemoved, true); assert.equal(evidence.memory, null);
+  assert.equal(evidence.passedStartupOnly, false); assert.match(evidence.observerError, /observer unavailable/);
+});
+test("execution and OPFS cleanup failures are both recorded without pretending removed or observed", async () => {
+  const evidence = {}, page = { exposeBinding: async () => {}, evaluate: async (_callback, arg) => {
+    if (typeof arg === "object") throw new Error("browser job failed"); throw new Error("OPFS remove failed");
+  } };
+  const observer = { through: async () => {}, peaks: () => ({ peak: null, validSamples: 0, unavailableSamples: 1 }), setPhase: () => {} };
+  await assert.rejects(runVp9OriginalStartup({ page, observer, blankBaseline: { stable: true, privateBytes: 100000000 }, evidence }), /every cleanup was attempted/);
+  assert.match(evidence.executionError, /browser job failed/); assert.match(evidence.cleanupErrors[0], /OPFS remove failed/);
+  assert.equal(evidence.partialOutputRemoved, false); assert.equal(evidence.memory.incrementalPrivateMiB, null); assert.equal(evidence.passedStartupOnly, false);
 });

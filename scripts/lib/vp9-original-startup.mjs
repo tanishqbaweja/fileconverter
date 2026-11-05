@@ -16,7 +16,7 @@ export async function runVp9OriginalStartup({ page, observer, blankBaseline, evi
   assert.equal(blankBaseline?.stable, true); assert.ok(blankBaseline.privateBytes > 0);
   Object.assign(evidence, { scope: "Untouched full original File supplied to production CPU AVIO; bounded startup only, NOT completed original conversion or fidelity",
     limits: VP9_ORIGINAL_STARTUP, explicitBackend: "CPU/Wasm single-thread; WebCodecs not invoked", progress: [], result: null,
-    stop: null, cancellationRequested: false, cancellationError: null, observerError: null, partialOutputRemoved: false,
+    stop: null, cancellationRequested: false, cancellationError: null, observerError: null, executionError: null, cleanupErrors: [], partialOutputRemoved: false,
     memory: null, passedStartupOnly: false, fullOriginalConverted: false, independentFullFidelityPassed: false, publicAcceptance: false });
   const name = "within-private-vp9-original-startup.webm", started = Date.now();
   let timer, busy = false, pending = Promise.resolve();
@@ -68,16 +68,22 @@ export async function runVp9OriginalStartup({ page, observer, blankBaseline, evi
           storageBefore: { usage: storage.usage, quota: storage.quota }, partialOutputBytes: (await handle.getFile()).size };
       } finally { worker.terminate(); delete window.__withinVp9OriginalCancel; }
     }, { name, limits: VP9_ORIGINAL_STARTUP });
+  } catch (error) { evidence.executionError = String(error).slice(0, 2048); throw error;
   } finally {
     clearInterval(timer); await pending;
-    try { await observer.through(Date.now()); } finally {
+    const errors = [];
+    try {
+      await observer.through(Date.now());
       const peaks = observer.peaks(["conversion"]); evidence.memory = { ...peaks,
         incrementalPrivateMiB: peaks.peak ? (peaks.peak.privateBytes - blankBaseline.privateBytes) / 1048576 : null };
-      observer.setPhase("original-startup-cleanup");
+    } catch (error) { evidence.observerError ??= String(error).slice(0, 1024); errors.push(error); }
+    try { observer.setPhase("original-startup-cleanup"); } catch (error) { errors.push(error); }
+    try {
       await page.evaluate(async name => { const root = await navigator.storage.getDirectory();
         await root.removeEntry(name).catch(error => { if (error.name !== "NotFoundError") throw error; });
       }, name); evidence.partialOutputRemoved = true;
-    }
+    } catch (error) { evidence.cleanupErrors.push(String(error).slice(0, 1024)); errors.push(error); }
+    if (errors.length) throw new AggregateError(errors, "Original startup observation/cleanup failed; every cleanup was attempted");
   }
   assert.equal(evidence.cancellationError, null); assert.equal(evidence.observerError, null);
   assert.equal(evidence.result.cleanupComplete, true); assert.equal(evidence.result.encoder, null, "No WebCodecs candidate may run in the explicit CPU test");

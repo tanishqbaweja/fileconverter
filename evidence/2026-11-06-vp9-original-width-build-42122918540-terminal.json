@@ -1,0 +1,98 @@
+{
+  "acquiredAt": "2026-11-05T22:44:44.199Z",
+  "runId": 42122918540,
+  "head": "f8c53adc3da8fd87bb5ff84cc0259ad787b502aa",
+  "branch": "codex/vp9-original-width-source-20261106-attempt5",
+  "status": "completed",
+  "conclusion": "success",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/42122918540",
+  "exactHeadAndStepsVerified": true,
+  "job": {
+    "id": 127579628443,
+    "startedAt": "2026-11-05T22:36:31Z",
+    "completedAt": "2026-11-05T22:44:40Z",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Own all runtime scratch",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Check exact private duration recipes",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install build prerequisites",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install pinned SDK locally without Docker",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Compile private duration core with unchanged codecs and memory limits",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Retain reusable private tools and compact source proofs only",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Remove disposable owned build and SDK data",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Remove owned runtime scratch",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "workflowDisplayNameNotSelectionProof": true,
+  "publicAcceptance": false,
+  "browserConversions": 0,
+  "cleanupStepsPassed": true,
+  "artifact": {
+    "id": 13459939135,
+    "name": "private-vp9-duration-42122918540",
+    "bytes": 3351323,
+    "digest": "sha256:395deec3c43c120945c66e521757f3dd128105ef530eac5934fa61e31c0a9b6b",
+    "expiresAt": "2026-11-06T22:44:35Z"
+  }
+}

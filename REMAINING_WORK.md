@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-06 original-width source compiled successfully in run42122918540,
+exact headf8c53adc, all hosted gates/cleanup PASS. Authenticate actual core then
+changed original startup attempt3; no actual original encoding acceptance yet.
+Independent finally cleanup hardened/tested9PASS so missing memory observation
+cannot skip OPFS removal or fabricate a pass. Broader full requirements unchanged.
+
 2026-11-06 private original-width three-edit source now WIRED through build and
 authenticated collection/loading. Attempt3 enforces distinct width-core run ID,
 same full-original dimensions/timing and existing4Mbps.34focused checks/lint PASS.
