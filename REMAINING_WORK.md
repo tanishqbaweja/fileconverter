@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-11-05 recovery gap implementation prepared, not yet browser-verified. Actual
+write/cancel hooks only in private qualification worker; bounded cancellation
+terminal retains real cleanup/write proof. Same-instance sequence requires two
+adverse paths and three independently validated recoveries with same250MiB blank
+formula and existing96MiB cleanup-return bound.49focused checks/lint/TypeScript
+PASS. Native bytes/settings and public routing unchanged. Full original/near10GB,
+three major stress repeats/clean sessions/direct/quota/permission/reload/current
+browsers and all broader specification work remain open.
+
 2026-11-05 changed-duration cycle finalized:226focused tests PASS/0skip, affected
 lint/diff and403/403public consistency PASS. Strict SMALL fidelity/memory now
 verified below; full large/repeated/direct/recovery/current-browser and broader

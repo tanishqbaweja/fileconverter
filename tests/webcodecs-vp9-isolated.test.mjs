@@ -66,8 +66,20 @@ test("CPU error is final, never a third attempt", async () => {
 });
 test("cancellation between candidate and fallback terminates candidate and starts no CPU", async () => {
   const input = request(), fake = workers([(child) => { Atomics.store(new Int32Array(input.cancellation), 0, 1); child.onmessage({ data: unsupported() }); }]);
-  await assert.rejects(runIsolatedWebCodecsVp9(input, fake), { name: "AbortError" }); assert.equal(fake.children.length, 1);
+  const output = await runIsolatedWebCodecsVp9(input, fake); assert.equal(output.type, "error"); assert.equal(output.errorName, "AbortError");
+  assert.equal(output.cleanupComplete, true); assert.equal(fake.children.length, 1);
   assert.equal(fake.events.at(-1), "terminate0");
+});
+test("real CPU cancellation result retains write/cleanup evidence and never starts a third worker", async () => {
+  const input = request({ qualificationFault: "cancel-after-write" }), fake = workers([unsupported(), (child) => {
+    Atomics.store(new Int32Array(input.cancellation), 0, 1);
+    child.onmessage({ data: result({ type: "error", errorName: "Error", errorStage: "conversion", message: "native cancellation",
+      writeAttempts: 1, qualificationFaultTriggered: true }) });
+  }]);
+  const output = await runIsolatedWebCodecsVp9(input, fake); assert.equal(output.errorName, "AbortError");
+  assert.equal(output.writeAttempts, 1); assert.equal(output.cleanupComplete, true); assert.equal(output.qualificationFaultTriggered, true);
+  assert.equal(output.isolation.childrenStarted, 2); assert.equal(output.isolation.terminationRequests, 2);
+  assert.deepEqual(fake.requests.map(row => row.qualificationFault), ["cancel-after-write", "cancel-after-write"]);
 });
 test("already cancelled request starts no workers", async () => {
   const input = request(); Atomics.store(new Int32Array(input.cancellation), 0, 1); const fake = workers([]);
@@ -99,7 +111,7 @@ test("invalid terminal metadata cannot trigger CPU fallback", async () => {
   }
 });
 test("unknown settings, diagnostic blocking and unsupported implementation fail before child creation", async () => {
-  for (const mutation of [{ fallbackCore: "unknown" }, { diagnosticCheckpoints: true }, { implementation: "candidate" }, { cancellation: new SharedArrayBuffer(8) }]) {
+  for (const mutation of [{ fallbackCore: "unknown" }, { diagnosticCheckpoints: true }, { qualificationFault: "unknown" }, { implementation: "candidate" }, { cancellation: new SharedArrayBuffer(8) }]) {
     const fake = workers([]); await assert.rejects(runIsolatedWebCodecsVp9(request(mutation), fake), /Invalid private isolated/);
     assert.equal(fake.children.length, 0);
   }

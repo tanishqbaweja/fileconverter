@@ -12,7 +12,7 @@ const compiled = await build({ entryPoints: ["workers/webcodecs-vp9-qualificatio
   } }],
 });
 let sequence = 0;
-async function execute({ run, stream = {}, implementation = "candidate", output = undefined }) {
+async function execute({ run, stream = {}, implementation = "candidate", output = undefined, qualificationFault = undefined }) {
   const saved = { self: globalThis.self, unit: globalThis.__vp9ChildUnit }, messages = [], calls = [];
   const scope = { postMessage: message => messages.push(message), close: () => calls.push("worker-close") };
   globalThis.self = scope; globalThis.__vp9ChildUnit = { run };
@@ -21,7 +21,7 @@ async function execute({ run, stream = {}, implementation = "candidate", output 
     const fileStream = { write: async () => calls.push("write"), truncate: async () => {},
       close: async () => calls.push("stream-close"), abort: async () => calls.push("abort"), ...stream };
     await scope.onmessage({ data: { file: new File(["tiny"], "mock.mkv"), output: output ?? { createWritable: async () => fileStream },
-      cancellation: new SharedArrayBuffer(4), nativeProfile: 10, video: { codec: "vp9" }, implementation, fallbackCore: "single-thread" } });
+      cancellation: new SharedArrayBuffer(4), nativeProfile: 10, video: { codec: "vp9" }, implementation, fallbackCore: "single-thread", qualificationFault } });
     return { result: messages.at(-1), calls };
   } finally {
     if (saved.self === undefined) delete globalThis.self; else globalThis.self = saved.self;
@@ -57,4 +57,24 @@ test("CPU-only child explicitly selects single-thread general core and commits r
   } });
   assert.equal(result.type, "complete"); assert.equal(result.writeAttempts, 1); assert.equal(result.cleanupComplete, true);
   assert.deepEqual(calls, ["write", "stream-close", "worker-close"]);
+});
+test("private injected write failure is triggered by a real adapter invocation, with zero committed writes and actual abort", async () => {
+  const { result, calls } = await execute({ qualificationFault: "write", run: async options => options.writable.write(new Uint8Array([1])) });
+  assert.equal(result.type, "error"); assert.equal(result.writeAttempts, 1); assert.equal(result.errorName, "QuotaExceededError");
+  assert.equal(result.qualificationFaultTriggered, true); assert.equal(result.cleanupComplete, true);
+  assert.deepEqual(calls, ["abort", "worker-close"]);
+});
+test("private cancellation is set only AFTER an actual successful write and reaches the real cancellation callback", async () => {
+  const { result, calls } = await execute({ qualificationFault: "cancel-after-write", run: async options => {
+    assert.equal(options.isCancelled(), false); await options.writable.write(new Uint8Array([1]));
+    assert.equal(options.isCancelled(), true); throw new DOMException("cancelled", "AbortError");
+  } });
+  assert.equal(result.type, "error"); assert.equal(result.errorName, "AbortError"); assert.equal(result.qualificationFaultTriggered, true);
+  assert.equal(result.writeAttempts, 1); assert.equal(result.cleanupComplete, true); assert.deepEqual(calls, ["write", "abort", "worker-close"]);
+});
+test("unknown private fault fails before opening a destination or invoking an engine", async () => {
+  const { result, calls } = await execute({ qualificationFault: "unknown", run: () => assert.fail("No engine"),
+    output: { createWritable: () => assert.fail("No destination") } });
+  assert.equal(result.type, "error"); assert.equal(result.errorStage, "request-validation"); assert.equal(result.writeAttempts, 0);
+  assert.equal(result.qualificationFaultTriggered, false); assert.deepEqual(calls, ["worker-close"]);
 });

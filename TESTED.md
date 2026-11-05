@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-05 next recovery implementation ready, actual browser sequence PENDING.
+Private qualification worker injects write failure at its real destination adapter
+and cancellation only AFTER awaited successful write; unknown hooks rejected before
+opening output. Coordinator preserves bounded actual failure/write/abort evidence
+on cancellation and never starts another attempt after cancellation/write failure.
+New exclusive --recovery-qualification uses unchanged authenticated native core,
+initial strict fidelity gate, then same browser: cancel/recover/write-fail/recover/
+third completion. Three recoveries each require exact output SHA/full48frame clocks,
+durations/SSIM/metadata, independent FFprobe, no partial OPFS/output leftovers.
+Each job+sequence uses SAME clean blank/250MiB formula; post-job memory checked
+against existing96MiB loaded-idle recovery bound; missing samples NULL/fail.
+49focused checks PASS(1539.1346ms), affected lint/TypeScript PASS. Public routing,
+native bytes/settings and original unchanged. Not large/repeat acceptance yet.
+
 2026-11-05 stream-duration-cycle finalization:226focused regression tests PASS
 (1790.2306ms),0skipped; affected lint/diff PASS. Registry403/403public evidence,
 2hidden pending/0PDF unchanged. Canonical C SHAae501a2e...3068 unchanged. No

@@ -10,6 +10,8 @@ export interface Vp9WorkerRequest {
   implementation: "candidate" | "wasm-baseline" | "automatic";
   diagnosticCheckpoints?: boolean;
   fallbackCore?: "default" | "single-thread";
+  /** Private adverse-path qualification only; never a public conversion option. */
+  qualificationFault?: "write" | "cancel-after-write";
 }
 export interface Vp9WorkerTerminal {
   type: "complete" | "error";

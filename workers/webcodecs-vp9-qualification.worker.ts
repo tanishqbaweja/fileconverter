@@ -16,7 +16,7 @@ scope.onmessage = async ({ data }) => {
   }
   if (running) { scope.postMessage({ type: "error", message: "One private qualification job at a time" }); return; }
   running = true;
-  let destination: ReturnType<typeof asynchronousFileStreamDestination> | undefined, succeeded = false, writeAttempts = 0;
+  let destination: ReturnType<typeof asynchronousFileStreamDestination> | undefined, succeeded = false, writeAttempts = 0, qualificationFaultTriggered = false;
   let stream: FileSystemWritableFileStream | undefined, errorStage: Vp9WorkerTerminal["errorStage"] = "request-validation";
   let terminal: Record<string, unknown> = { type: "error", message: "Private worker did not finish" };
   const startedAt = performance.now(), warnings: string[] = [];
@@ -39,13 +39,23 @@ scope.onmessage = async ({ data }) => {
     if (!(data.file instanceof File) || !(data.cancellation instanceof SharedArrayBuffer) || data.cancellation.byteLength !== 4 ||
         ![10, 11].includes(data.nativeProfile) || !["candidate", "wasm-baseline", "automatic"].includes(data.implementation) ||
         (data.diagnosticCheckpoints !== undefined && typeof data.diagnosticCheckpoints !== "boolean") ||
-        (data.fallbackCore !== undefined && !["default", "single-thread"].includes(data.fallbackCore)))
+        (data.fallbackCore !== undefined && !["default", "single-thread"].includes(data.fallbackCore)) ||
+        (data.qualificationFault !== undefined && !["write", "cancel-after-write"].includes(data.qualificationFault)))
       throw new TypeError("Invalid private qualification request");
     const cancelled = new Int32Array(data.cancellation);
     errorStage = "destination-open"; stream = await data.output.createWritable();
     destination = asynchronousFileStreamDestination(stream);
     const write = destination.write.bind(destination);
-    destination.write = async operation => { writeAttempts++; await write(operation); };
+    destination.write = async operation => {
+      writeAttempts++;
+      if (data.qualificationFault === "write" && !qualificationFaultTriggered) {
+        qualificationFaultTriggered = true; throw new DOMException("Private qualification injected output write failure", "QuotaExceededError");
+      }
+      await write(operation);
+      if (data.qualificationFault === "cancel-after-write" && !qualificationFaultTriggered) {
+        qualificationFaultTriggered = true; Atomics.store(cancelled, 0, 1);
+      }
+    };
     errorStage = "engine-load";
     if (data.implementation === "candidate") core = await loadWebCodecsVp9Core();
     const options = { file: data.file, profileId: data.nativeProfile === 11 ? "ogv-to-webm-vp9" : "mkv-to-webm-vp9",
@@ -81,6 +91,7 @@ scope.onmessage = async ({ data }) => {
       message: String(error).slice(0, 4096), encoder: core?.snapshot() ?? null };
   } finally {
     terminal.writeAttempts = writeAttempts; terminal.cleanupComplete = false;
+    terminal.qualificationFault = data.qualificationFault ?? null; terminal.qualificationFaultTriggered = qualificationFaultTriggered;
     // Observe the actual stream's abort rejection; the generic adapter deliberately
     // catches abort errors, which is not sufficient proof for starting a fallback.
     try { if (!succeeded) await stream?.abort("Private qualification failed"); terminal.cleanupComplete = true; }
