@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-05 M-09 strict fidelity validation implemented; real control PENDING.
+All48decoded clocks/SSIM/metadata and strict1ms container duration now measured,
+with partial failures retained before verdict. Existing0.98quality and full-tree
+250MiB/stable-blank/privacy/cleanup gates remain.27focused checks/lint PASS.
+Likely packet-duration omission identified in native writer, but no native source
+or binary changed without actual evidence. Candidate remains PRIVATE; same-runtime
+large/repeat/direct/recovery/current-browser and full broader backlog remain open.
+
 2026-11-05 isolated fallback achieved ONE SMALL private whole-tree memory pass:
 227.03515625MiB/21valid0missing, valid48-frame VP9/full independent decode. Same
 input/settings, fresh candidate then CPU worker,1.457240s total/99,405B output.

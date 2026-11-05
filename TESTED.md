@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-05 strict isolated fidelity control prepared, actual result PENDING.
+New independent small validator streams all48source/output frame clocks through
+the existing strict<1ms comparison, records decoder-reported durations without
+claiming encoded packet-duration proof, compares9color/aspect/pixel fields, and
+requires container duration error<=1ms (not the old0.05s smoke tolerance).
+Full48-frame ordinal SSIM needs existing0.98gate AND native progress=end/frame48;
+ordinal quality cannot bypass the separate timestamp gate. Native FFmpeg is used
+ONLY for null-output independent validation, never conversion. Tool versions and
+browser output SHA recorded. All partial/failing fidelity facts retained before
+final assertion.27focused validator/clock/parser/recipe checks PASS(817.053ms),
+affected lintPASS. Native source/public browser code/options unchanged.
+Source audit: write_video_packets currently forwards missing encoder durations
+unchanged; likely cause of1.958s header, not yet an empirically isolated native fix.
+
 2026-11-05 isolated fallback TERMINAL at4dcb07ce/Chrome156.0.8078.80: genuine
 same58,389B input ->99,405B VP9/48frames; full independent decodePASS. Stable
 blank345,636,864B, full-tree peak583,700,480B =>227.03515625MiB/21valid0missing,
