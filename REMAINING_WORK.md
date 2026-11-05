@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-11-06 guarded-library implementation cycle: lifetime audit and198 actual
+host-compiled allocator-control calls PASS;34 focused checks/affected lint PASS.
+Guard is now wired BEFORE private library compilation, with four exact source
+pins, base/changed vendor C/proof, and separate one-library/three-wrapper edits.
+Same primary250MiB and32initial/96max Wasm, one codec thread/zero helpers. No
+guarded native/browser/bit-exact/fidelity or speed success yet. Next DISTINCT
+build attempt6, then strict small/recovery controls and original attempt4 if
+those pass. Do not replay width-only build or failed original attempt3. Broader
+full-original/near10GB, repeat/direct/browser/family/release requirements remain
+partial exactly as mapped below; no public promotion or changed constraints.
+
 2026-11-06 cycle finalized:253focused+10evidence/source tests PASS/0skip, affected
 lint/diff and403/403public consistency PASS. Next is guarded-library safety/build
 work, NOT another width-only or original retry. Current generator/builder still

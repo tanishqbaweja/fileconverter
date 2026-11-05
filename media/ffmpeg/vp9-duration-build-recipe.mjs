@@ -2,7 +2,8 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 const sha = value => createHash("sha256").update(value).digest("hex");
-export function makeVp9DurationBuildRecipe(source) {
+export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false } = {}) {
+  assert.equal(typeof temporalFilterGuard, "boolean");
   assert.equal(sha(source), "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e");
   const tail = source.slice(source.indexOf("comparison_files=()\n"));
   assert.ok(tail.startsWith("comparison_files=()\n") && tail.endsWith("printf 'Exact non-Docker FFmpeg artifact comparison passed.\\n'\n"));
@@ -25,12 +26,18 @@ export function makeVp9DurationBuildRecipe(source) {
       '  cp -- "${BUILD_ROOT}/libvpx/LICENSE" "${OUTPUT_ROOT}/LICENSE.libvpx"\n'],
     [tail, "# Private changed native source: NOT a public artifact reproduction claim.\nprintf 'Private VP9 duration candidate compiled; browser gates remain pending.\\n'\n"],
   ];
+  if (temporalFilterGuard) edits.push(["./build-vpx.sh\n",
+    'node "${SCRIPT_DIR}/make-vp9-temporal-filter-source.mjs"\n./build-vpx.sh\n' +
+    'cp -- "${BUILD_ROOT}/vp9_encoder.temporal.base.c" "${OUTPUT_ROOT}/vp9_encoder.temporal.base.c"\n' +
+    'cp -- "${BUILD_ROOT}/vp9_encoder.temporal.guard.c" "${OUTPUT_ROOT}/vp9_encoder.temporal.guard.c"\n' +
+    'cp -- "${BUILD_ROOT}/vp9-temporal-filter-source-proof.json" "${OUTPUT_ROOT}/vp9-temporal-filter-source-proof.json"\n']);
   let generated = source;
   for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
   let reverse = generated;
   for (const [before, after] of edits.toReversed()) { assert.equal(reverse.split(after).length, 2); reverse = reverse.replace(after, before); }
   assert.equal(reverse, source);
   return { generated, generatedSha256: sha(generated), parentSha256: sha(source), edits,
-    dependencyRecipesChanged: false, boundedTransportRetriesChanged: true, compilerSettingsChanged: false, memoryLimitsRaised: false,
+    dependencyRecipesChanged: temporalFilterGuard, boundedTransportRetriesChanged: true, compilerSettingsChanged: false, memoryLimitsRaised: false,
+    temporalFilterGuard, vendorAllocationOnlyChanged: temporalFilterGuard,
     allCoreBuildSelected: false, publicAcceptance: false };
 }

@@ -4,7 +4,8 @@ import { readFile, writeFile } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 import path from "node:path";
-assert.equal(process.argv.length, 2);
+const lifetime = process.argv[2] === "--lifetime";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && lifetime));
 const root = path.resolve(import.meta.dirname, ".."), recipe = await readFile(path.join(root, "media/ffmpeg/reproduce-nondocker.sh"), "utf8");
 const version = "1.16.0", expected = "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c";
 assert.ok(recipe.includes("LIBVPX_VERSION=" + version)); assert.ok(recipe.includes("LIBVPX_SHA256=" + expected));
@@ -50,6 +51,26 @@ assert.ok(allocation.includes("Failed to allocate temporal filter buffer")); ass
 assert.equal(filterCallSites.length, 2); assert.ok(filterCallSites.every(row => row.file === "vp9/encoder/vp9_encoder.c"));
 const contexts = filterCallSites.map(row => ({ ...row, context: encoder.split("\n").slice(Math.max(0, row.line - 20), row.line + 5).join("\n") }));
 assert.ok(contexts.every(row => row.context.includes("!= REALTIME")), "Both call paths must have explicit non-realtime guards");
+if (lifetime) {
+  const context = (file, pattern) => {
+    const source = sources.get(file); assert.ok(source, file); const lines = source.split("\n"), matches = [];
+    for (const [index, line] of lines.entries()) if (pattern.test(line)) {
+      assert.ok(matches.length < 128); matches.push({ line: index + 1, text: line.trim(),
+        context: lines.slice(Math.max(0, index - 12), index + 18).join("\n") });
+    }
+    assert.ok(matches.length > 0, file); return { file, sha256: sha(source), matches };
+  };
+  const report = { recordedAt: new Date().toISOString(), scope: "Pinned lifetime/config context inspection; not a compiled optimization or automated semantic proof",
+    archiveSha256: expected, cFiles,
+    encoder: context("vp9/encoder/vp9_encoder.c", /memset\(cpi|cpi = .*vpx_memalign|cpi->oxcf =|vpx_free_frame_buffer\(&cpi->tf_buffer/),
+    codecInterface: context("vp9/vp9_cx_iface.c", /oxcf(?:->|\.)mode\s*=(?!=)|vp9_change_config\(|vp9_receive_raw_frame\(|vp9_get_compressed_data\(/),
+    frameFree: context("vpx_scale/generic/yv12config.c", /vpx_free_frame_buffer\(/),
+    allocatorFree: context("vpx_mem/vpx_mem.c", /void vpx_free\(/),
+    filterCallSites: contexts, sourceCopiesOnDisk: 0, userMediaReadOrConverted: false, publicAcceptance: false };
+  await writeFile(path.join(root, "evidence/2026-11-06-vp9-temporal-filter-lifetime-audit.json"), JSON.stringify(report, null, 2) + "\n", { flag: "wx" });
+  console.log(JSON.stringify({ lifetimeContextRecorded: true, cFiles, sourceArchiveSha256: expected, publicAcceptance: false }));
+  process.exitCode = 0;
+} else {
 const report = { recordedAt: new Date().toISOString(), scope: "Pinned dependency allocation/call-site audit, NOT a compiled optimization or proof of actual allocation size",
   source: { version, url, archiveBytes: compressedBytes, archiveSha256: expected, uncompressedBytes: tar.length, cFiles, totalSourceBytes, members },
   references: rows, filterCallSites: contexts, allocation: { file: "vp9/encoder/vp9_encoder.c", sourceSha256: sha(encoder), exactSource: allocation },
@@ -61,3 +82,4 @@ const report = { recordedAt: new Date().toISOString(), scope: "Pinned dependency
 await writeFile(path.join(root, "evidence/2026-11-06-vp9-temporal-filter-source-audit.json"), JSON.stringify(report, null, 2) + "\n", { flag: "wx" });
 console.log(JSON.stringify({ sourceArchiveSha256: expected, cFiles, referenceFiles: rows.length, filterCallSites: filterCallSites.length,
   allProductionCallsGuardedNonRealtime: true, candidateImplemented: false, publicAcceptance: false }));
+}

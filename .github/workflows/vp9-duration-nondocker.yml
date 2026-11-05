@@ -1,4 +1,4 @@
-name: Build private original-width VP9 candidate without Docker
+name: Build private realtime VP9 allocation candidate without Docker
 on:
   workflow_dispatch:
 permissions:
@@ -18,7 +18,7 @@ jobs:
       - name: Own all runtime scratch
         run: node scripts/ci-owned-runtime.mjs prepare
       - name: Check exact private duration recipes
-        run: node --test --test-reporter=tap tests/vp9-packet-duration-recipe.test.mjs tests/vp9-stream-duration-recipe.test.mjs tests/vp9-original-width-recipe.test.mjs tests/vp9-duration-build-recipe.test.mjs
+        run: node --test --test-reporter=tap tests/vp9-packet-duration-recipe.test.mjs tests/vp9-stream-duration-recipe.test.mjs tests/vp9-original-width-recipe.test.mjs tests/vp9-duration-build-recipe.test.mjs tests/vp9-realtime-temporal-filter-recipe.test.mjs tests/vp9-temporal-c-unit.test.mjs tests/vp9-temporal-lifetime.test.mjs
       - name: Install build prerequisites
         run: |
           sudo apt-get update

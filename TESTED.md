@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-11-06 temporal-buffer guard wiring:34 focused checks PASS(562.3221ms),
+0skip; affected ESLint PASS. Actual hidden host C compilation executed198 calls
+across CONFIG_VP9_HIGHBITDEPTH0/1:48 original/candidate pairs plus3 transition
+calls per variant, allocator failures and unchanged other modes/lag handling.
+These are mocked allocator-control tests, NOT codec/fidelity/speed evidence.
+Pinned archive lifetime contexts retained separately: zero initialization,
+empty-buffer-safe cleanup, realtime configuration propagated before frame I/O.
+Private build now authenticates four actual vendor files, applies one exact
+reversible allocation guard BEFORE build-vpx, retains base/changed C/proof and
+compiled-control results; collector authenticates19members/new private engine.
+Same three wrapper fixes/32initial/96max MiB/one codec thread/zero helpers;
+public source/assets/registry unchanged. Next: DISTINCT attempt6 source build,
+strict bit-exact/fidelity/recovery controls, then changed original attempt4.
+No actual guarded Wasm build or browser conversion result yet. Full goal open.
+
 2026-11-06 original-width/allocation cycle final gates:253focused regressions
 PASS(1970.549ms)+10retained-evidence/source checks PASS(221.556ms),0skip; affected
 lint/diff PASS. Registry403/403public evidence/2hidden pending/0PDF unchanged;

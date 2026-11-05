@@ -1,0 +1,157 @@
+{
+  "recordedAt": "2026-11-05T23:03:56.718Z",
+  "scope": "Pinned lifetime/config context inspection; not a compiled optimization or automated semantic proof",
+  "archiveSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
+  "cFiles": 880,
+  "encoder": {
+    "file": "vp9/encoder/vp9_encoder.c",
+    "sha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+    "matches": [
+      {
+        "line": 1040,
+        "text": "vpx_free_frame_buffer(&cpi->tf_buffer);",
+        "context": "  vpx_free(cpi->mi_ssim_rdmult_scaling_factors);\n  cpi->mi_ssim_rdmult_scaling_factors = NULL;\n\n  vp9_free_ref_frame_buffers(cm->buffer_pool);\n#if CONFIG_VP9_POSTPROC\n  vp9_free_postproc_buffers(cm);\n#endif\n  vp9_free_context_buffers(cm);\n\n  vpx_free_frame_buffer(&cpi->last_frame_uf);\n  vpx_free_frame_buffer(&cpi->scaled_source);\n  vpx_free_frame_buffer(&cpi->scaled_last_source);\n  vpx_free_frame_buffer(&cpi->tf_buffer);\n#ifdef ENABLE_KF_DENOISE\n  vpx_free_frame_buffer(&cpi->raw_unscaled_source);\n  vpx_free_frame_buffer(&cpi->raw_scaled_source);\n#endif\n\n  vp9_lookahead_destroy(cpi->lookahead);\n\n  vpx_free(cpi->tile_tok[0][0]);\n  cpi->tile_tok[0][0] = 0;\n\n  vpx_free(cpi->tplist[0][0]);\n  cpi->tplist[0][0] = NULL;\n\n  vp9_free_pc_tree(&cpi->td);\n\n  for (i = 0; i < cpi->svc.number_spatial_layers; ++i) {\n    LAYER_CONTEXT *const lc = &cpi->svc.layer_context[i];"
+      },
+      {
+        "line": 1146,
+        "text": "memset(cpi->segmentation_map, 0, cm->mi_rows * cm->mi_cols);",
+        "context": "#if !CONFIG_REALTIME_ONLY\nstatic void configure_static_seg_features(VP9_COMP *cpi) {\n  VP9_COMMON *const cm = &cpi->common;\n  const RATE_CONTROL *const rc = &cpi->rc;\n  struct segmentation *const seg = &cm->seg;\n\n  int high_q = (int)(rc->avg_q > 48.0);\n  int qi_delta;\n\n  // Disable and clear down for KF\n  if (cm->frame_type == KEY_FRAME) {\n    // Clear down the global segmentation map\n    memset(cpi->segmentation_map, 0, cm->mi_rows * cm->mi_cols);\n    seg->update_map = 0;\n    seg->update_data = 0;\n    cpi->static_mb_pct = 0;\n\n    // Disable segmentation\n    vp9_disable_segmentation(seg);\n\n    // Clear down the segment features.\n    vp9_clearall_segfeatures(seg);\n  } else if (cpi->refresh_alt_ref_frame) {\n    // If this is an alt ref frame\n    // Clear down the global segmentation map\n    memset(cpi->segmentation_map, 0, cm->mi_rows * cm->mi_cols);\n    seg->update_map = 0;\n    seg->update_data = 0;\n    cpi->static_mb_pct = 0;\n"
+      },
+      {
+        "line": 1159,
+        "text": "memset(cpi->segmentation_map, 0, cm->mi_rows * cm->mi_cols);",
+        "context": "    seg->update_map = 0;\n    seg->update_data = 0;\n    cpi->static_mb_pct = 0;\n\n    // Disable segmentation\n    vp9_disable_segmentation(seg);\n\n    // Clear down the segment features.\n    vp9_clearall_segfeatures(seg);\n  } else if (cpi->refresh_alt_ref_frame) {\n    // If this is an alt ref frame\n    // Clear down the global segmentation map\n    memset(cpi->segmentation_map, 0, cm->mi_rows * cm->mi_cols);\n    seg->update_map = 0;\n    seg->update_data = 0;\n    cpi->static_mb_pct = 0;\n\n    // Disable segmentation and individual segment features by default\n    vp9_disable_segmentation(seg);\n    vp9_clearall_segfeatures(seg);\n\n    // Scan frames from current to arf frame.\n    // This function re-enables segmentation if appropriate.\n    vp9_update_mbgraph_stats(cpi);\n\n    // If segmentation was enabled set those features needed for the\n    // arf itself.\n    if (seg->enabled) {\n      seg->update_map = 1;\n      seg->update_data = 1;"
+      },
+      {
+        "line": 1220,
+        "text": "memset(cpi->segmentation_map, 0, cm->mi_rows * cm->mi_cols);",
+        "context": "        // Segment coding disabled for compred testing\n        if (high_q || (cpi->static_mb_pct == 100)) {\n          vp9_set_segdata(seg, 1, SEG_LVL_REF_FRAME, ALTREF_FRAME);\n          vp9_enable_segfeature(seg, 1, SEG_LVL_REF_FRAME);\n          vp9_enable_segfeature(seg, 1, SEG_LVL_SKIP);\n        }\n      } else {\n        // Disable segmentation and clear down features if alt ref\n        // is not active for this group\n\n        vp9_disable_segmentation(seg);\n\n        memset(cpi->segmentation_map, 0, cm->mi_rows * cm->mi_cols);\n\n        seg->update_map = 0;\n        seg->update_data = 0;\n\n        vp9_clearall_segfeatures(seg);\n      }\n    } else if (rc->is_src_frame_alt_ref) {\n      // Special case where we are coding over the top of a previous\n      // alt ref frame.\n      // Segment coding disabled for compred testing\n\n      // Enable ref frame features for segment 0 as well\n      vp9_enable_segfeature(seg, 0, SEG_LVL_REF_FRAME);\n      vp9_enable_segfeature(seg, 1, SEG_LVL_REF_FRAME);\n\n      // All mbs should use ALTREF_FRAME\n      vp9_clear_segdata(seg, 0, SEG_LVL_REF_FRAME);"
+      },
+      {
+        "line": 1449,
+        "text": "memset(cpi->mbmi_ext_base, 0,",
+        "context": "    }\n  }\n}\n\nstatic void update_frame_size(VP9_COMP *cpi) {\n  VP9_COMMON *const cm = &cpi->common;\n  MACROBLOCKD *const xd = &cpi->td.mb.e_mbd;\n\n  vp9_set_mb_mi(cm, cm->width, cm->height);\n  vp9_init_context_buffers(cm);\n  vp9_init_macroblockd(cm, xd, NULL);\n  cpi->td.mb.mbmi_ext_base = cpi->mbmi_ext_base;\n  memset(cpi->mbmi_ext_base, 0,\n         cm->mi_rows * cm->mi_cols * sizeof(*cpi->mbmi_ext_base));\n\n  set_tile_limits(cpi);\n}\n\nstatic void init_buffer_indices(VP9_COMP *cpi) {\n  int ref_frame;\n\n  for (ref_frame = 0; ref_frame < REF_FRAMES; ++ref_frame)\n    cpi->ref_fb_idx[ref_frame] = ref_frame;\n\n  cpi->lst_fb_idx = cpi->ref_fb_idx[LAST_FRAME - 1];\n  cpi->gld_fb_idx = cpi->ref_fb_idx[GOLDEN_FRAME - 1];\n  cpi->alt_fb_idx = cpi->ref_fb_idx[ALTREF_FRAME - 1];\n}\n\nstatic void init_level_constraint(LevelConstraint *lc) {"
+      },
+      {
+        "line": 1484,
+        "text": "cpi->oxcf = *oxcf;",
+        "context": "\nstatic void set_level_constraint(LevelConstraint *ls, int8_t level_index) {\n  vpx_clear_system_state();\n  ls->level_index = level_index;\n  if (level_index >= 0) {\n    ls->max_cpb_size = vp9_level_defs[level_index].max_cpb_size * (double)1000;\n  }\n}\n\nstatic void init_config(struct VP9_COMP *cpi, const VP9EncoderConfig *oxcf) {\n  VP9_COMMON *const cm = &cpi->common;\n\n  cpi->oxcf = *oxcf;\n  cpi->framerate = oxcf->init_framerate;\n  cm->profile = oxcf->profile;\n  cm->bit_depth = oxcf->bit_depth;\n#if CONFIG_VP9_HIGHBITDEPTH\n  cm->use_highbitdepth = oxcf->use_highbitdepth;\n#endif\n  cm->color_space = oxcf->color_space;\n  cm->color_range = oxcf->color_range;\n\n  cpi->target_level = oxcf->target_level;\n  cpi->keep_level_stats = oxcf->target_level != LEVEL_MAX;\n  set_level_constraint(&cpi->level_constraint,\n                       get_level_index(cpi->target_level));\n\n  cm->width = oxcf->width;\n  cm->height = oxcf->height;\n  alloc_compressor_data(cpi);"
+      },
+      {
+        "line": 2105,
+        "text": "cpi->oxcf = *oxcf;",
+        "context": "  cm->color_range = oxcf->color_range;\n\n  cpi->target_level = oxcf->target_level;\n  cpi->keep_level_stats = oxcf->target_level != LEVEL_MAX;\n  set_level_constraint(&cpi->level_constraint,\n                       get_level_index(cpi->target_level));\n\n  if (cm->profile <= PROFILE_1)\n    assert(cm->bit_depth == VPX_BITS_8);\n  else\n    assert(cm->bit_depth > VPX_BITS_8);\n\n  cpi->oxcf = *oxcf;\n#if CONFIG_VP9_HIGHBITDEPTH\n  cpi->td.mb.e_mbd.bd = (int)cm->bit_depth;\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\n  if ((oxcf->pass == 0) && (oxcf->rc_mode == VPX_Q)) {\n    rc->baseline_gf_interval = FIXED_GF_INTERVAL;\n  } else {\n    rc->baseline_gf_interval = (MIN_GF_INTERVAL + MAX_GF_INTERVAL) / 2;\n  }\n\n  cpi->refresh_golden_frame = 0;\n  cpi->refresh_last_frame = 1;\n  cm->refresh_frame_context = 1;\n  cm->reset_frame_context = 0;\n\n  vp9_reset_segment_features(&cm->seg);\n  vp9_set_high_precision_mv(cpi, 0);"
+      },
+      {
+        "line": 2379,
+        "text": "VP9_COMP *volatile const cpi = vpx_memalign(32, sizeof(*cpi));",
+        "context": "    // (i.e., the top layer will get stuck at the lower resolution).\n    if (cm->width > cpi->initial_width || cm->height > cpi->initial_height) {\n      cpi->initial_width = cm->width;\n      cpi->initial_height = cm->height;\n    }\n    cpi->initial_mbs = cm->MBs;\n  }\n}\n\nVP9_COMP *vp9_create_compressor(const VP9EncoderConfig *oxcf,\n                                BufferPool *const pool) {\n  unsigned int i;\n  VP9_COMP *volatile const cpi = vpx_memalign(32, sizeof(*cpi));\n  VP9_COMMON *volatile const cm = cpi != NULL ? &cpi->common : NULL;\n\n  if (!cm) return NULL;\n\n  vp9_zero(*cpi);\n\n  if (setjmp(cm->error.jmp)) {\n    cm->error.setjmp = 0;\n    vp9_remove_compressor(cpi);\n    return 0;\n  }\n\n  cm->error.setjmp = 1;\n  cm->alloc_mi = vp9_enc_alloc_mi;\n  cm->free_mi = vp9_enc_free_mi;\n  cm->setup_mi = vp9_enc_setup_mi;\n"
+      },
+      {
+        "line": 4080,
+        "text": "memset(cpi->content_state_sb_fd, 0,",
+        "context": "    cpi->raw_source_frame = cpi->Source;\n#endif\n  }\n\n  if ((cpi->use_svc &&\n       (svc->spatial_layer_id < svc->number_spatial_layers - 1 ||\n        svc->temporal_layer_id < svc->number_temporal_layers - 1 ||\n        svc->current_superframe < 1)) ||\n      cpi->resize_pending || cpi->resize_state || cpi->external_resize ||\n      cpi->resize_state != ORIG) {\n    cpi->compute_source_sad_onepass = 0;\n    if (cpi->content_state_sb_fd != NULL)\n      memset(cpi->content_state_sb_fd, 0,\n             (cm->mi_stride >> 3) * ((cm->mi_rows >> 3) + 1) *\n                 sizeof(*cpi->content_state_sb_fd));\n  }\n\n  // Avoid scaling last_source unless its needed.\n  // Last source is needed if avg_source_sad() is used, or if noise estimation\n  // is enabled.\n  if (cpi->unscaled_last_source != NULL &&\n      (cpi->oxcf.content == VP9E_CONTENT_SCREEN ||\n       (cpi->oxcf.pass == 0 && cpi->oxcf.rc_mode == VPX_VBR &&\n        cpi->oxcf.mode == REALTIME && cpi->oxcf.speed >= 5) ||\n       (cpi->noise_estimate.enabled && !cpi->oxcf.noise_sensitivity) ||\n       cpi->compute_source_sad_onepass))\n    cpi->Last_Source = vp9_scale_if_required(\n        cm, cpi->unscaled_last_source, &cpi->scaled_last_source,\n        (cpi->oxcf.pass == 0), EIGHTTAP, 0);\n"
+      },
+      {
+        "line": 4104,
+        "text": "memset(cpi->consec_zero_mv, 0,",
+        "context": "       (cpi->noise_estimate.enabled && !cpi->oxcf.noise_sensitivity) ||\n       cpi->compute_source_sad_onepass))\n    cpi->Last_Source = vp9_scale_if_required(\n        cm, cpi->unscaled_last_source, &cpi->scaled_last_source,\n        (cpi->oxcf.pass == 0), EIGHTTAP, 0);\n\n  if (cpi->Last_Source == NULL ||\n      cpi->Last_Source->y_width != cpi->Source->y_width ||\n      cpi->Last_Source->y_height != cpi->Source->y_height)\n    cpi->compute_source_sad_onepass = 0;\n\n  if (frame_is_intra_only(cm) || cpi->resize_pending != 0) {\n    memset(cpi->consec_zero_mv, 0,\n           cm->mi_rows * cm->mi_cols * sizeof(*cpi->consec_zero_mv));\n  }\n\n#if CONFIG_VP9_TEMPORAL_DENOISING\n  if (cpi->oxcf.noise_sensitivity > 0 && cpi->use_svc)\n    vp9_denoiser_reset_on_first_frame(cpi);\n#endif\n\n  // Scene detection is always used for VBR mode or screen-content case.\n  // For other cases (e.g., CBR mode) use it for 5 <= speed.\n  cpi->rc.high_source_sad = 0;\n  cpi->rc.hybrid_intra_scene_change = 0;\n  cpi->rc.re_encode_maxq_scene_change = 0;\n  if (cm->show_frame && cpi->oxcf.mode == REALTIME &&\n      !cpi->disable_scene_detection_rtc_ratectrl &&\n      (cpi->oxcf.rc_mode == VPX_VBR ||\n       cpi->oxcf.content == VP9E_CONTENT_SCREEN || cpi->oxcf.speed >= 5))"
+      },
+      {
+        "line": 5351,
+        "text": "memset(cpi->mode_chosen_counts, 0,",
+        "context": "  if (oxcf->tuning == VP8_TUNE_SSIM) set_mb_ssim_rdmult_scaling(cpi);\n\n  if (oxcf->aq_mode == PERCEPTUAL_AQ) {\n    init_mb_wiener_var_buffer(cpi);\n    set_mb_wiener_variance(cpi);\n  }\n\n  init_sb_mul_scale_buffer(cpi);\n\n  vpx_clear_system_state();\n\n#if CONFIG_INTERNAL_STATS\n  memset(cpi->mode_chosen_counts, 0,\n         MAX_MODES * sizeof(*cpi->mode_chosen_counts));\n#endif\n  // Backup to ensure consistency between recodes\n  save_encode_params(cpi);\n  if (cpi->ext_ratectrl.ready &&\n      (cpi->ext_ratectrl.funcs.rc_type & VPX_RC_RDMULT) != 0 &&\n      cpi->ext_ratectrl.funcs.get_frame_rdmult != NULL) {\n    vpx_codec_err_t codec_status;\n    const GF_GROUP *gf_group = &cpi->twopass.gf_group;\n    FRAME_UPDATE_TYPE update_type = gf_group->update_type[gf_group->index];\n    const int ref_frame_flags = get_ref_frame_flags(cpi);\n    RefCntBuffer *ref_frame_bufs[MAX_INTER_REF_FRAMES];\n    const RefCntBuffer *curr_frame_buf = get_ref_cnt_buffer(cm, cm->new_fb_idx);\n    // index 0 of a gf group is always KEY/OVERLAY/GOLDEN.\n    // index 1 refers to the first encoding frame in a gf group.\n    // Therefore if it is ARF_UPDATE, it means this gf group uses alt ref.\n    // See function define_gf_group_structure()."
+      }
+    ]
+  },
+  "codecInterface": {
+    "file": "vp9/vp9_cx_iface.c",
+    "sha256": "e45fcff4bc3380736d3bfded778afd5983cad9816c1e434cb965077304fdcd7e",
+    "matches": [
+      {
+        "line": 527,
+        "text": "oxcf->mode = GOOD;",
+        "context": "  oxcf->width = cfg->g_w;\n  oxcf->height = cfg->g_h;\n  oxcf->bit_depth = cfg->g_bit_depth;\n  oxcf->input_bit_depth = cfg->g_input_bit_depth;\n  // TODO(angiebird): Figure out if we can just use g_timebase to indicate the\n  // inverse of framerate\n  // guess a frame rate if out of whack, use 30\n  oxcf->init_framerate = (double)cfg->g_timebase.den / cfg->g_timebase.num;\n  if (oxcf->init_framerate > 180) oxcf->init_framerate = 30;\n  oxcf->g_timebase = cfg->g_timebase;\n  oxcf->g_timebase_in_ts = get_g_timebase_in_ts(oxcf->g_timebase);\n\n  oxcf->mode = GOOD;\n\n  switch (cfg->g_pass) {\n    case VPX_RC_ONE_PASS: oxcf->pass = 0; break;\n    case VPX_RC_FIRST_PASS: oxcf->pass = 1; break;\n    case VPX_RC_LAST_PASS: oxcf->pass = 2; break;\n  }\n\n  oxcf->lag_in_frames =\n      cfg->g_pass == VPX_RC_FIRST_PASS ? 0 : cfg->g_lag_in_frames;\n  oxcf->rc_mode = cfg->rc_end_usage;\n\n  raw_target_rate =\n      (unsigned int)((int64_t)oxcf->width * oxcf->height * oxcf->bit_depth * 3 *\n                     oxcf->init_framerate / 1000);\n  // Cap target bitrate to raw rate or 1000Mbps, whichever is less\n  cfg->rc_target_bitrate =\n      VPXMIN(VPXMIN(raw_target_rate, cfg->rc_target_bitrate), 1000000);"
+      },
+      {
+        "line": 856,
+        "text": "vp9_change_config(ctx->cpi, &ctx->oxcf);",
+        "context": "    ctx->cpi->common.error.setjmp = 0;\n    vpx_clear_system_state();\n    assert(codec_err != VPX_CODEC_OK);\n    return codec_err;\n  }\n  ctx->cpi->common.error.setjmp = 1;\n\n  ctx->cfg = *cfg;\n  set_encoder_config(&ctx->oxcf, &ctx->cfg, &ctx->extra_cfg);\n  set_twopass_params_from_config(&ctx->cfg, ctx->cpi);\n  // On profile change, request a key frame\n  force_key |= ctx->cpi->common.profile != ctx->oxcf.profile;\n  vp9_change_config(ctx->cpi, &ctx->oxcf);\n\n  if (force_key) ctx->next_frame_flags |= VPX_EFLAG_FORCE_KF;\n\n  ctx->cpi->common.error.setjmp = 0;\n  return VPX_CODEC_OK;\n}\n\nstatic vpx_codec_err_t ctrl_get_quantizer(vpx_codec_alg_priv_t *ctx,\n                                          va_list args) {\n  int *const arg = va_arg(args, int *);\n  if (arg == NULL) return VPX_CODEC_INVALID_PARAM;\n  *arg = vp9_get_quantizer(ctx->cpi);\n  return VPX_CODEC_OK;\n}\n\nstatic vpx_codec_err_t ctrl_get_quantizer64(vpx_codec_alg_priv_t *ctx,\n                                            va_list args) {"
+      },
+      {
+        "line": 906,
+        "text": "vp9_change_config(ctx->cpi, &ctx->oxcf);",
+        "context": "  if (arg == NULL) return VPX_CODEC_INVALID_PARAM;\n  *arg = ctx->cpi->common.lf.filter_level;\n  return VPX_CODEC_OK;\n}\n\nstatic vpx_codec_err_t update_extra_cfg(vpx_codec_alg_priv_t *ctx,\n                                        const struct vp9_extracfg *extra_cfg) {\n  const vpx_codec_err_t res = validate_config(ctx, &ctx->cfg, extra_cfg);\n  if (res == VPX_CODEC_OK) {\n    ctx->extra_cfg = *extra_cfg;\n    set_encoder_config(&ctx->oxcf, &ctx->cfg, &ctx->extra_cfg);\n    set_twopass_params_from_config(&ctx->cfg, ctx->cpi);\n    vp9_change_config(ctx->cpi, &ctx->oxcf);\n  }\n  return res;\n}\n\nstatic vpx_codec_err_t ctrl_set_cpuused(vpx_codec_alg_priv_t *ctx,\n                                        va_list args) {\n  struct vp9_extracfg extra_cfg = ctx->extra_cfg;\n  // Use fastest speed setting (speed 9 or -9) if it's set beyond the range.\n  extra_cfg.cpu_used = CAST(VP8E_SET_CPUUSED, args);\n  extra_cfg.cpu_used = clamp(extra_cfg.cpu_used, -9, 9);\n#if CONFIG_REALTIME_ONLY\n  if (extra_cfg.cpu_used > -5 && extra_cfg.cpu_used < 5)\n    extra_cfg.cpu_used = (extra_cfg.cpu_used > 0) ? 5 : -5;\n#endif\n  return update_extra_cfg(ctx, &extra_cfg);\n}\n"
+      },
+      {
+        "line": 1226,
+        "text": "ctx->oxcf.mode = new_mode;",
+        "context": "      break;\n    case VPX_RC_FIRST_PASS: break;\n    case VPX_RC_LAST_PASS: new_mode = deadline > 0 ? GOOD : BEST; break;\n  }\n#endif  // CONFIG_REALTIME_ONLY\n\n  if (deadline == VPX_DL_REALTIME) {\n    ctx->oxcf.pass = 0;\n    new_mode = REALTIME;\n  }\n\n  if (ctx->oxcf.mode != new_mode) {\n    ctx->oxcf.mode = new_mode;\n    vp9_change_config(ctx->cpi, &ctx->oxcf);\n  }\n  return VPX_CODEC_OK;\n}\n\n// Turn on to test if supplemental superframe data breaks decoding\n// #define TEST_SUPPLEMENTAL_SUPERFRAME_DATA\nstatic int write_superframe_index(vpx_codec_alg_priv_t *ctx) {\n  uint8_t marker = 0xc0;\n  unsigned int mask;\n  int mag, index_sz;\n\n  assert(ctx->pending_frame_count);\n  assert(ctx->pending_frame_count <= 8);\n\n  // Add the number of frames to the marker byte\n  marker |= ctx->pending_frame_count - 1;"
+      },
+      {
+        "line": 1227,
+        "text": "vp9_change_config(ctx->cpi, &ctx->oxcf);",
+        "context": "    case VPX_RC_FIRST_PASS: break;\n    case VPX_RC_LAST_PASS: new_mode = deadline > 0 ? GOOD : BEST; break;\n  }\n#endif  // CONFIG_REALTIME_ONLY\n\n  if (deadline == VPX_DL_REALTIME) {\n    ctx->oxcf.pass = 0;\n    new_mode = REALTIME;\n  }\n\n  if (ctx->oxcf.mode != new_mode) {\n    ctx->oxcf.mode = new_mode;\n    vp9_change_config(ctx->cpi, &ctx->oxcf);\n  }\n  return VPX_CODEC_OK;\n}\n\n// Turn on to test if supplemental superframe data breaks decoding\n// #define TEST_SUPPLEMENTAL_SUPERFRAME_DATA\nstatic int write_superframe_index(vpx_codec_alg_priv_t *ctx) {\n  uint8_t marker = 0xc0;\n  unsigned int mask;\n  int mag, index_sz;\n\n  assert(ctx->pending_frame_count);\n  assert(ctx->pending_frame_count <= 8);\n\n  // Add the number of frames to the marker byte\n  marker |= ctx->pending_frame_count - 1;\n"
+      },
+      {
+        "line": 1483,
+        "text": "if (vp9_receive_raw_frame(cpi, flags | ctx->next_frame_flags, &sd,",
+        "context": "      vpx_codec_pts_t pts_end = pts + (int64_t)duration;\n      if (pts_end > INT64_MAX / timebase_in_ts->num) {\n        vpx_internal_error(\n            &cpi->common.error, VPX_CODEC_INVALID_PARAM,\n            \"conversion of relative pts + duration to ticks would overflow\");\n      }\n      const int64_t dst_end_time_stamp =\n          timebase_units_to_ticks(timebase_in_ts, pts_end);\n      res = image2yuvconfig(img, &sd);\n\n      // Store the original flags in to the frame buffer. Will extract the\n      // key frame flag when we actually encode this frame.\n      if (vp9_receive_raw_frame(cpi, flags | ctx->next_frame_flags, &sd,\n                                dst_time_stamp, dst_end_time_stamp)) {\n        res = update_error_state(ctx, &cpi->common.error);\n      }\n      ctx->next_frame_flags = 0;\n    }\n\n    cx_data = ctx->cx_data;\n    cx_data_sz = ctx->cx_data_sz;\n\n    /* Any pending invisible frames? */\n    if (ctx->pending_cx_data) {\n      assert(cx_data_sz >= ctx->pending_cx_data_sz);\n      memmove(cx_data, ctx->pending_cx_data, ctx->pending_cx_data_sz);\n      ctx->pending_cx_data = cx_data;\n      cx_data += ctx->pending_cx_data_sz;\n      cx_data_sz -= ctx->pending_cx_data_sz;\n"
+      },
+      {
+        "line": 1521,
+        "text": "ret = vp9_get_compressed_data(",
+        "context": "\n    if (cpi->oxcf.pass == 1 && !cpi->use_svc) {\n#if !CONFIG_REALTIME_ONLY\n      // compute first pass stats\n      if (img) {\n        int ret;\n        int64_t dst_time_stamp;\n        int64_t dst_end_time_stamp;\n        vpx_codec_cx_pkt_t fps_pkt;\n        ENCODE_FRAME_RESULT encode_frame_result;\n        vp9_init_encode_frame_result(&encode_frame_result);\n        // TODO(angiebird): Call vp9_first_pass directly\n        ret = vp9_get_compressed_data(\n            cpi, &lib_flags, &size, cx_data, cx_data_sz, &dst_time_stamp,\n            &dst_end_time_stamp, !img, &encode_frame_result);\n        assert(size == 0);  // There is no compressed data in the first pass\n        (void)ret;\n        assert(ret == 0);\n        fps_pkt = get_first_pass_stats_pkt(&cpi->twopass.this_frame_stats);\n        vpx_codec_pkt_list_add(&ctx->pkt_list.head, &fps_pkt);\n      } else {\n        if (!cpi->twopass.first_pass_done) {\n          vpx_codec_cx_pkt_t fps_pkt;\n          vp9_end_first_pass(cpi);\n          fps_pkt = get_first_pass_stats_pkt(&cpi->twopass.total_stats);\n          vpx_codec_pkt_list_add(&ctx->pkt_list.head, &fps_pkt);\n        }\n      }\n#else   // !CONFIG_REALTIME_ONLY\n      assert(0);"
+      },
+      {
+        "line": 1546,
+        "text": "-1 != vp9_get_compressed_data(cpi, &lib_flags, &size, cx_data,",
+        "context": "          vpx_codec_pkt_list_add(&ctx->pkt_list.head, &fps_pkt);\n        }\n      }\n#else   // !CONFIG_REALTIME_ONLY\n      assert(0);\n#endif  // !CONFIG_REALTIME_ONLY\n    } else {\n      ENCODE_FRAME_RESULT encode_frame_result;\n      int64_t dst_time_stamp;\n      int64_t dst_end_time_stamp;\n      vp9_init_encode_frame_result(&encode_frame_result);\n      while (cx_data_sz >= ctx->cx_data_sz / 2 &&\n             -1 != vp9_get_compressed_data(cpi, &lib_flags, &size, cx_data,\n                                           cx_data_sz, &dst_time_stamp,\n                                           &dst_end_time_stamp, !img,\n                                           &encode_frame_result)) {\n        // Pack psnr pkt.\n        if (size > 0) {\n          PSNR_STATS psnr;\n          if (vp9_get_psnr(cpi, &psnr)) {\n            vpx_codec_cx_pkt_t psnr_pkt = get_psnr_pkt(&psnr);\n            vpx_codec_pkt_list_add(&ctx->pkt_list.head, &psnr_pkt);\n          }\n        }\n\n        if (size || (cpi->use_svc && cpi->svc.skip_enhancement_layer)) {\n          // Pack invisible frames with the next visible frame\n          if (!cpi->common.show_frame ||\n              (cpi->use_svc && cpi->svc.spatial_layer_id <\n                                   cpi->svc.number_spatial_layers - 1)) {"
+      }
+    ]
+  },
+  "frameFree": {
+    "file": "vpx_scale/generic/yv12config.c",
+    "sha256": "4b248ec01e4ec24194247379a3a9891b4f6d3ea024bb1c209ade86c514a92148",
+    "matches": [
+      {
+        "line": 136,
+        "text": "int vpx_free_frame_buffer(YV12_BUFFER_CONFIG *ybf) {",
+        "context": "int vp8_yv12_alloc_frame_buffer(YV12_BUFFER_CONFIG *ybf, int width, int height,\n                                int border) {\n  if (ybf) {\n    vp8_yv12_de_alloc_frame_buffer(ybf);\n    return vp8_yv12_realloc_frame_buffer(ybf, width, height, border);\n  }\n  return -2;\n}\n\n#if CONFIG_VP9\n// TODO(jkoleszar): Maybe replace this with struct vpx_image\n\nint vpx_free_frame_buffer(YV12_BUFFER_CONFIG *ybf) {\n  if (ybf) {\n    if (ybf->buffer_alloc_sz > 0) {\n      vpx_free(ybf->buffer_alloc);\n    }\n\n    /* buffer_alloc isn't accessed by most functions.  Rather y_buffer,\n      u_buffer and v_buffer point to buffer_alloc and are used.  Clear out\n      all of this so that a freed pointer isn't inadvertently used */\n    memset(ybf, 0, sizeof(YV12_BUFFER_CONFIG));\n  } else {\n    return -1;\n  }\n\n  return 0;\n}\n\nint vpx_realloc_frame_buffer(YV12_BUFFER_CONFIG *ybf, int width, int height,"
+      },
+      {
+        "line": 302,
+        "text": "vpx_free_frame_buffer(ybf);",
+        "context": "    return 0;\n  }\n  return -2;\n}\n\nint vpx_alloc_frame_buffer(YV12_BUFFER_CONFIG *ybf, int width, int height,\n                           int ss_x, int ss_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                           int use_highbitdepth,\n#endif\n                           int border, int byte_alignment) {\n  if (ybf) {\n    vpx_free_frame_buffer(ybf);\n    return vpx_realloc_frame_buffer(ybf, width, height, ss_x, ss_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                                    use_highbitdepth,\n#endif\n                                    border, byte_alignment, NULL, NULL, NULL);\n  }\n  return -2;\n}\n#endif\n"
+      }
+    ]
+  },
+  "allocatorFree": {
+    "file": "vpx_mem/vpx_mem.c",
+    "sha256": "6417e5f4f291bfbca66215bdc28064eb727667500c436ed06f903902804d3e86",
+    "matches": [
+      {
+        "line": 81,
+        "text": "void vpx_free(void *memblk) {",
+        "context": "\nvoid *vpx_malloc(size_t size) { return vpx_memalign(DEFAULT_ALIGNMENT, size); }\n\nvoid *vpx_calloc(size_t num, size_t size) {\n  void *x;\n  if (!check_size_argument_overflow(num, size)) return NULL;\n\n  x = vpx_malloc(num * size);\n  if (x) memset(x, 0, num * size);\n  return x;\n}\n\nvoid vpx_free(void *memblk) {\n  if (memblk) {\n    void *addr = get_actual_malloc_address(memblk);\n    free(addr);\n  }\n}\n"
+      }
+    ]
+  },
+  "filterCallSites": [
+    {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "line": 6217,
+      "text": "vp9_temporal_filter(cpi, arf_src_index);",
+      "context": "      // This assert only makes sense when not using external RC.\n      assert(arf_src_index <= rc->frames_to_key);\n    }\n    if ((source = vp9_lookahead_peek(cpi->lookahead, arf_src_index)) != NULL) {\n      cpi->alt_ref_source = source;\n\n#if !CONFIG_REALTIME_ONLY\n      if ((oxcf->mode != REALTIME) && (oxcf->arnr_max_frames > 0) &&\n          (oxcf->arnr_strength > 0)) {\n        int bitrate = cpi->rc.avg_frame_bandwidth / 40;\n        int not_low_bitrate = bitrate > ALT_REF_AQ_LOW_BITRATE_BOUNDARY;\n\n        int not_last_frame = (cpi->lookahead->sz - arf_src_index > 1);\n        not_last_frame |= ALT_REF_AQ_APPLY_TO_LAST_FRAME;\n\n#if CONFIG_COLLECT_COMPONENT_TIMING\n        start_timing(cpi, vp9_temporal_filter_time);\n#endif\n        // Produce the filtered ARF frame.\n        vp9_temporal_filter(cpi, arf_src_index);\n        vpx_extend_frame_borders(&cpi->tf_buffer);\n#if CONFIG_COLLECT_COMPONENT_TIMING\n        end_timing(cpi, vp9_temporal_filter_time);\n#endif\n"
+    },
+    {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "line": 6359,
+      "text": "vp9_temporal_filter(cpi, -1);",
+      "context": "    end_timing(cpi, vp9_rc_get_second_pass_params_time);\n#endif\n  } else if (oxcf->pass == 1) {\n    set_frame_size(cpi);\n  }\n\n  // Key frame temporal filtering\n  const int is_key_temporal_filter_enabled =\n      oxcf->enable_keyframe_filtering && cpi->oxcf.mode != REALTIME &&\n      (oxcf->pass != 1) && !cpi->use_svc &&\n      !is_lossless_requested(&cpi->oxcf) && cm->frame_type == KEY_FRAME &&\n      (oxcf->arnr_max_frames > 0) && (oxcf->arnr_strength > 0) &&\n      cpi->oxcf.speed < 2;\n  // Save the pointer to the original source image.\n  YV12_BUFFER_CONFIG *source_buffer = cpi->un_scaled_source;\n\n  if (is_key_temporal_filter_enabled && source != NULL) {\n    // Produce the filtered Key frame. Set distance to -1 since the key frame\n    // is already popped out.\n    vp9_temporal_filter(cpi, -1);\n    vpx_extend_frame_borders(&cpi->tf_buffer);\n    force_src_buffer = &cpi->tf_buffer;\n    cpi->un_scaled_source = cpi->Source =\n        force_src_buffer ? force_src_buffer : &source->img;\n  }"
+    }
+  ],
+  "sourceCopiesOnDisk": 0,
+  "userMediaReadOrConverted": false,
+  "publicAcceptance": false
+}

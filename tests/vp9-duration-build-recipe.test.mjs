@@ -24,6 +24,20 @@ test("generated shell parses without executing a compiler, conversion, download 
     encoding: "utf8", windowsHide: true, timeout: 10000, maxBuffer: 65536 });
   assert.equal(result.status, 0, result.stderr || String(result.error));
 });
+test("guarded private recipe patches the authenticated vendor before build-vpx and is fully reversible", () => {
+  const result = makeVp9DurationBuildRecipe(source, { temporalFilterGuard: true });
+  assert.equal(result.temporalFilterGuard, true);
+  assert.equal(result.vendorAllocationOnlyChanged, true);
+  assert.ok(result.generated.includes('node "${SCRIPT_DIR}/make-vp9-temporal-filter-source.mjs"\n./build-vpx.sh\n'));
+  let reversed = result.generated;
+  for (const [before, after] of result.edits.toReversed()) reversed = reversed.replace(after, before);
+  assert.equal(reversed, source);
+  const bash = process.platform === "win32" ? "D:/Program Files/Git/bin/bash.exe" : "/bin/bash";
+  const parsed = spawnSync(bash, ["--noprofile", "--norc", "-n"], { input: result.generated,
+    encoding: "utf8", windowsHide: true, timeout: 10000, maxBuffer: 65536 });
+  assert.equal(parsed.status, 0, parsed.stderr || String(parsed.error));
+  assert.throws(() => makeVp9DurationBuildRecipe(source, { temporalFilterGuard: 1 }));
+});
 test("private build retains original pinned downloads and actual finally cleanup/preflight", () => {
   const generated = makeVp9DurationBuildRecipe(source).generated;
   for (const anchor of ['sha256sum --check --strict', 'verify_specialist_source_rewrites', 'trap cleanup EXIT INT TERM',

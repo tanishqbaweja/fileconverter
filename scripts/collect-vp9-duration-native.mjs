@@ -11,6 +11,8 @@ import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
 import { makeVp9PacketDurationSource } from "../media/ffmpeg/vp9-packet-duration-recipe.mjs";
 import { makeVp9StreamDurationSource } from "../media/ffmpeg/vp9-stream-duration-recipe.mjs";
 import { makeVp9OriginalWidthSource } from "../media/ffmpeg/vp9-original-width-recipe.mjs";
+import { makeVp9RealtimeTemporalFilterSource } from "../media/ffmpeg/vp9-realtime-temporal-filter-recipe.mjs";
+import { VP9_TEMPORAL_LIFETIME_PINS } from "../media/ffmpeg/vp9-temporal-lifetime.mjs";
 assert.equal(process.argv.length, 3); const attempt = process.argv[2]; assert.match(attempt, /^[1-9]$/);
 const suffix = attempt === "1" ? "" : "-attempt" + attempt, root = path.resolve(import.meta.dirname, ".."), repo = "tanishqbaweja/fileconverter";
 const prefix = Number(attempt) >= 5 ? "evidence/2026-11-06-vp9-original-width" : "evidence/2026-11-05-vp9-duration";
@@ -36,6 +38,8 @@ try {
   const allowed = ["within-remux.mjs", "within-remux.wasm", "within_remux.base.c", "within_remux.duration.c", "vp9-duration-source-proof.json",
     "config_components.h", "build-manifest.json", "LICENSE.lame", "LICENSE.lame-linking", "LICENSE.libogg", "LICENSE.libtheora",
     "LICENSE.libvorbis", "LICENSE.opencore-amr", "LICENSE.opus", "LICENSE.ffmpeg-lgpl3", "LICENSE.libvpx"];
+  const temporalGuard = Number(attempt) >= 6;
+  if (temporalGuard) allowed.push("vp9_encoder.temporal.base.c", "vp9_encoder.temporal.guard.c", "vp9-temporal-filter-source-proof.json");
   const seen = new Set(); let total = 0;
   const members = unzipSync(zip, { filter(entry) {
     assert.ok(allowed.includes(entry.name) && !seen.has(entry.name)); seen.add(entry.name);
@@ -44,7 +48,8 @@ try {
   } });
   assert.deepEqual(Object.keys(members).sort(), allowed.toSorted());
   const manifest = JSON.parse(Buffer.from(members["build-manifest.json"]).toString());
-  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration", "private-vp9-original-width"].includes(manifest.engine)); assert.equal(manifest.candidate.publicAcceptance, false);
+  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration", "private-vp9-original-width", "private-vp9-realtime-temporal"].includes(manifest.engine)); assert.equal(manifest.candidate.publicAcceptance, false);
+  assert.equal(manifest.engine === "private-vp9-realtime-temporal", temporalGuard);
   assert.equal(manifest.candidate.browserValidated, false); assert.equal(manifest.candidate.nodeInstantiated, false);
   assert.equal(manifest.candidate.mediaRead, false); assert.equal(manifest.candidate.mediaWritten, false);
   assert.equal(manifest.candidate.memoryLimitsRaised, false); assert.equal(manifest.buildEnvironment.usedDocker, false);
@@ -57,7 +62,7 @@ try {
     assert.equal(sha(source), pin, file);
   }
   assert.equal(sha(await readFile(path.join(root, "media/ffmpeg/vp9-packet-duration-recipe.mjs"))), manifest.sources["media/ffmpeg/vp9-packet-duration-recipe.mjs"]);
-  const originalWidth = manifest.engine === "private-vp9-original-width", streamDuration = manifest.engine === "private-vp9-stream-duration" || originalWidth;
+  const originalWidth = manifest.engine === "private-vp9-original-width" || temporalGuard, streamDuration = manifest.engine === "private-vp9-stream-duration" || originalWidth;
   if (streamDuration) assert.equal(sha(await readFile(path.join(root, "media/ffmpeg/vp9-stream-duration-recipe.mjs"))), manifest.sources["media/ffmpeg/vp9-stream-duration-recipe.mjs"]);
   if (originalWidth) {
     assert.equal(sha(await readFile(path.join(root, "media/ffmpeg/vp9-original-width-recipe.mjs"))), manifest.sources["media/ffmpeg/vp9-original-width-recipe.mjs"]);
@@ -69,6 +74,19 @@ try {
   assert.equal(sourceProof.generated, Buffer.from(members["within_remux.duration.c"]).toString());
   assert.equal(sourceProof.generatedSha256, manifest.candidate.compiledWrapperSha256);
   assert.equal(sourceProof.edits.length, manifest.candidate.wrapperEdits);
+  if (temporalGuard) {
+    assert.equal(sha(await readFile(path.join(root, "media/ffmpeg/vp9-realtime-temporal-filter-recipe.mjs"))), manifest.sources["media/ffmpeg/vp9-realtime-temporal-filter-recipe.mjs"]);
+    const vendor = makeVp9RealtimeTemporalFilterSource(Buffer.from(members["vp9_encoder.temporal.base.c"]).toString());
+    assert.equal(vendor.generated, Buffer.from(members["vp9_encoder.temporal.guard.c"]).toString());
+    const proof = JSON.parse(Buffer.from(members["vp9-temporal-filter-source-proof.json"]).toString());
+    assert.equal(proof.parentSha256, vendor.parentSha256); assert.equal(proof.generatedSha256, vendor.generatedSha256);
+    assert.deepEqual(proof.edits, vendor.edits);
+    assert.deepEqual(proof.lifetime.sourcePins, VP9_TEMPORAL_LIFETIME_PINS);
+    assert.equal(proof.cUnit.totalFunctionCalls, 198); assert.equal(proof.cUnit.publicAcceptance, false);
+    assert.equal(manifest.candidate.vendorAllocationGuard.compiledSourceSha256, vendor.generatedSha256);
+    assert.equal(manifest.candidate.vendorAllocationGuard.edits, 1);
+    assert.deepEqual(manifest.candidate.vendorAllocationGuard.lifetimeSourcePins, VP9_TEMPORAL_LIFETIME_PINS);
+  }
   const limits = readWasmMemoryLimits(members["within-remux.wasm"]);
   assert.deepEqual(limits, manifest.candidate.wasmMemoryLimits);
   assert.deepEqual(limits, readWasmMemoryLimits(await readFile(path.join(root, "public/engines/remux/within-remux.wasm"))));

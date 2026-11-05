@@ -8,6 +8,8 @@ import { createOwnedRuntimeScratch } from "../../scripts/lib/owned-runtime-scrat
 import { readWasmMemoryLimits } from "../../scripts/lib/wasm-memory-limits.mjs";
 import { makeVp9DurationBuildRecipe } from "./vp9-duration-build-recipe.mjs";
 import { makeVp9OriginalWidthSource } from "./vp9-original-width-recipe.mjs";
+import { makeVp9RealtimeTemporalFilterSource } from "./vp9-realtime-temporal-filter-recipe.mjs";
+import { VP9_TEMPORAL_LIFETIME_PINS } from "./vp9-temporal-lifetime.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), output = path.join(root, "work/vp9-duration-output");
 const read = file => readFile(path.join(root, file)), sha = value => createHash("sha256").update(value).digest("hex");
 assert.equal(process.argv.length, 2); assert.equal(process.platform, "linux");
@@ -18,10 +20,12 @@ const sourceFiles = ["media/ffmpeg/within_remux.c", "media/ffmpeg/vp9-packet-dur
   "media/ffmpeg/make-vp9-duration-source.mjs", "media/ffmpeg/build-vp9-duration-candidate.mjs", "media/ffmpeg/reproduce-nondocker.sh",
   "media/ffmpeg/wasm-pkg-config.sh", "scripts/lib/owned-runtime-scratch.mjs", "scripts/lib/wasm-memory-limits.mjs",
   ".github/workflows/vp9-duration-nondocker.yml"];
+sourceFiles.push("media/ffmpeg/vp9-realtime-temporal-filter-recipe.mjs", "media/ffmpeg/vp9-temporal-lifetime.mjs",
+  "media/ffmpeg/vp9-temporal-c-unit.mjs", "media/ffmpeg/make-vp9-temporal-filter-source.mjs");
 for (const entry of await readdir(path.join(root, "media/ffmpeg"))) if (/^build-.*\.sh$/.test(entry)) sourceFiles.push("media/ffmpeg/" + entry);
 for (const entry of await readdir(path.join(root, "media/ffmpeg/patches"))) if (entry.endsWith(".patch")) sourceFiles.push("media/ffmpeg/patches/" + entry);
 for (const file of sourceFiles) sourcePins[file] = sha(await read(file));
-const recipe = makeVp9DurationBuildRecipe((await read("media/ffmpeg/reproduce-nondocker.sh")).toString());
+const recipe = makeVp9DurationBuildRecipe((await read("media/ffmpeg/reproduce-nondocker.sh")).toString(), { temporalFilterGuard: true });
 const runtime = await createOwnedRuntimeScratch("vp9-duration-builder-");
 try {
   // Configure probes live under this TMPDIR, not the separate build root.
@@ -34,6 +38,12 @@ try {
     code === 0 ? resolve() : reject(new Error(`Private duration build exit ${code}/${signal}`))); });
   const before = await readFile(path.join(output, "within_remux.base.c"), "utf8"), candidate = makeVp9OriginalWidthSource(before);
   assert.equal(await readFile(path.join(output, "within_remux.duration.c"), "utf8"), candidate.generated);
+  const vendor = makeVp9RealtimeTemporalFilterSource(await readFile(path.join(output, "vp9_encoder.temporal.base.c"), "utf8"));
+  assert.equal(await readFile(path.join(output, "vp9_encoder.temporal.guard.c"), "utf8"), vendor.generated);
+  const vendorProof = JSON.parse(await readFile(path.join(output, "vp9-temporal-filter-source-proof.json")));
+  assert.equal(vendorProof.generatedSha256, vendor.generatedSha256);
+  assert.deepEqual(vendorProof.lifetime.sourcePins, VP9_TEMPORAL_LIFETIME_PINS);
+  assert.equal(vendorProof.cUnit.totalFunctionCalls, 198);
   const wasm = await readFile(path.join(output, "within-remux.wasm")); assert.ok(wasm.length < 16777216 && WebAssembly.validate(wasm));
   const limits = readWasmMemoryLimits(wasm);
   assert.deepEqual(limits, readWasmMemoryLimits(await read("public/engines/remux/within-remux.wasm")), "Never raise the published core's limits");
@@ -47,8 +57,8 @@ try {
   }
   for (const [file, hash] of Object.entries(sourcePins)) assert.equal(sha(await read(file)), hash);
   await writeFile(path.join(output, "build-manifest.json"), JSON.stringify({ ...original,
-    engine: "private-vp9-original-width", scope: "private-compiled-tool-not-public-reproduction-or-browser-acceptance",
-    modules: core, profiles: ["private-vp9-original-width"], sources: sourcePins, artifacts: artifactPins,
+    engine: "private-vp9-realtime-temporal", scope: "private-compiled-tool-not-public-reproduction-or-browser-acceptance",
+    modules: core, profiles: ["private-vp9-realtime-temporal"], sources: sourcePins, artifacts: artifactPins,
     enabledDecoders: enabled("DECODER"), enabledEncoders: enabled("ENCODER"), enabledDemuxers: enabled("DEMUXER"),
     enabledMuxers: enabled("MUXER"), enabledParsers: enabled("PARSER"), enabledBitstreamFilters: enabled("BSF"),
     buildEnvironment: { usedDocker: false, emscripten: "6.0.4", emsdkCommit: "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f" },
@@ -56,6 +66,9 @@ try {
       generatedBuildRecipeSha256: recipe.generatedSha256, wrapperEdits: candidate.edits.length, codecSettingsChanged: false, ioChanged: false,
       privateVp9ExplicitWidth: candidate.privateVp9ExplicitWidth, defaultWidthPolicyChanged: candidate.defaultWidthPolicyChanged,
       publicWidthRegistryOrControlsChanged: candidate.publicWidthRegistryOrControlsChanged,
+      vendorAllocationGuard: { parentSha256: vendor.parentSha256, compiledSourceSha256: vendor.generatedSha256,
+        edits: vendor.edits.length, lifetimeSourcePins: VP9_TEMPORAL_LIFETIME_PINS, cUnitCalls: 198,
+        codecSettingsChanged: false, filteringAlgorithmsChanged: false, exactAllocationBytesSaved: null },
       wasmMemoryLimits: limits, memoryLimitsRaised: false, nodeInstantiated: false, mediaRead: false, mediaWritten: false,
       browserValidated: false, publicAcceptance: false } }, null, 2) + "\n");
   console.log(JSON.stringify({ status: "compiled-private-tool-requires-browser-validation", wasmBytes: wasm.length,
