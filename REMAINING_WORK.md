@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-05 native build42010056006 FAILED before compilation oncurl35connection
+reset; SDK/recipe tests/all cleanup pass. No native/browser success claimed.
+Changed bounded retry-all-errors transport is ready for separately recorded
+attempt2 with same source checksums/settings. Native duration/fidelity and full
+large/repeated/direct/recovery/browser/release/broader requirements remain open.
+
 2026-11-05 scoped private duration build tooling ready; actual job PENDING.
 Reuse published dependency/compiler/thread/memory recipes without changes; only
 private VP9 zero-duration wrapper candidate differs.8source/build checks/lint pass,

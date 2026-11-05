@@ -1,0 +1,20 @@
+{
+  "recordedAt": "2026-11-05T10:21:36.585Z",
+  "branch": "codex/vp9-duration-source-20261105",
+  "head": "7656a44ef384d0af0826df16bafc85ec49486db6",
+  "status": "accepted-awaiting-exact-run-discovery",
+  "dispatchMayHaveOccurred": true,
+  "run": {
+    "conclusion": "failure",
+    "createdAt": "2026-11-05T10:21:40Z",
+    "databaseId": 42010056006,
+    "event": "workflow_dispatch",
+    "headSha": "7656a44ef384d0af0826df16bafc85ec49486db6",
+    "status": "completed",
+    "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/42010056006",
+    "workflowName": "Reproduce FFmpeg without Docker"
+  },
+  "publicAcceptance": false,
+  "dispatchedAt": "2026-11-05T10:21:37.831Z",
+  "runDiscoveredAt": "2026-11-05T10:23:29.090Z"
+}

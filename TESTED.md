@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-11-05 duration build42010056006 at7656a44e TERMINAL FAILED before compilation:
+curl35connection reset. Pinned SDK/exact recipe unit checks and both owned cleanup
+steps PASS; no tool artifact/media conversion/public change. Raw hosted log78,111B
+SHAa3279ba7...f111d retained byGitHub, compact terminal receipt records exact steps.
+Private derived transport now retries all errors with3retries/180s retry-window/
+20sconnect/120srequest bounds. Dependency URLs/hashes/codec/linker/memory settings
+unchanged. A changed attempt2 may run; never redispatch the failed/unchanged head.
+
 2026-11-05 private duration source-build path implemented, actual build PENDING.
 Exact reversible derivation of existing no-Docker general-core recipe; same pinned
 dependencies/configure/linker/thread/memory settings, within-remux ONLY. Patch applies

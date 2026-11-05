@@ -12,6 +12,8 @@ export function makeVp9DurationBuildRecipe(source) {
     ['${WORK_ROOT}/ffmpeg-nondocker-build', '${WORK_ROOT}/vp9-duration-build'],
     ['${WORK_ROOT}/ffmpeg-nondocker-output', '${WORK_ROOT}/vp9-duration-output'],
     ['KEEP_OUTPUT="${WITHIN_KEEP_NONDOCKER_OUTPUT:-0}"', 'KEEP_OUTPUT="${WITHIN_KEEP_NONDOCKER_OUTPUT:-0}"\n[[ "${WITHIN_BUILD_CORE_FILTER:-}" == "within-remux" && "${KEEP_OUTPUT}" == "1" ]] || exit 2'],
+    ['curl --fail --location --retry 3 "${url}" --output "${archive}"',
+      'curl --fail --location --retry 3 --retry-all-errors --retry-delay 2 --retry-max-time 180 --connect-timeout 20 --max-time 120 "${url}" --output "${archive}"'],
     [link, '  cp -- "${BUILD_ROOT}/within_remux.c" "${BUILD_ROOT}/within_remux.base.c"\n' +
       '  node "${SCRIPT_DIR}/make-vp9-duration-source.mjs"\n' +
       '  cp -- "${BUILD_ROOT}/within_remux.duration.c" "${BUILD_ROOT}/within_remux.c"\n' + link +
@@ -29,6 +31,6 @@ export function makeVp9DurationBuildRecipe(source) {
   for (const [before, after] of edits.toReversed()) { assert.equal(reverse.split(after).length, 2); reverse = reverse.replace(after, before); }
   assert.equal(reverse, source);
   return { generated, generatedSha256: sha(generated), parentSha256: sha(source), edits,
-    dependencyRecipesChanged: false, compilerSettingsChanged: false, memoryLimitsRaised: false,
+    dependencyRecipesChanged: false, boundedTransportRetriesChanged: true, compilerSettingsChanged: false, memoryLimitsRaised: false,
     allCoreBuildSelected: false, publicAcceptance: false };
 }

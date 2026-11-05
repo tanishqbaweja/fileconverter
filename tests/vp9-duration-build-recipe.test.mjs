@@ -13,6 +13,7 @@ test("private duration build derivation is exact and reversible with no codec/co
   for (const [before, after] of result.edits.toReversed()) forward = forward.replace(after, before);
   assert.equal(forward, source); assert.equal(result.dependencyRecipesChanged, false); assert.equal(result.compilerSettingsChanged, false);
   assert.equal(result.memoryLimitsRaised, false); assert.equal(result.allCoreBuildSelected, false); assert.equal(result.publicAcceptance, false);
+  assert.equal(result.boundedTransportRetriesChanged, true); assert.ok(result.generated.includes('--retry-all-errors --retry-delay 2 --retry-max-time 180 --connect-timeout 20 --max-time 120'));
   assert.ok(result.generated.includes('[[ "${WITHIN_BUILD_CORE_FILTER:-}" == "within-remux"'));
   assert.ok(result.generated.includes('restore_pre_theora_source\n  cp -- "${BUILD_ROOT}/within_remux.c"'));
 });
