@@ -4,11 +4,12 @@ import { access, readFile, writeFile } from "node:fs/promises";
 import { gzipSync, gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 import path from "node:path";
-const third = process.argv[2] === "3"; assert.ok(process.argv.length === 2 || (process.argv.length === 3 && third));
-const root = path.resolve(import.meta.dirname, ".."), prefix = "evidence/2026-11-06-vp9-original-cpu-startup", output = path.join(root, prefix + (third ? "-attempt3-archive.json" : "-archives.json"));
+const selected = ["3", "4"].includes(process.argv[2]) ? process.argv[2] : null;
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && selected));
+const root = path.resolve(import.meta.dirname, ".."), prefix = "evidence/2026-11-06-vp9-original-cpu-startup", output = path.join(root, prefix + (selected ? "-attempt" + selected + "-archive.json" : "-archives.json"));
 const sha = value => createHash("sha256").update(value).digest("hex"); await assert.rejects(access(output), { code: "ENOENT" });
 const prepared = [];
-for (const suffix of third ? ["-attempt3"] : ["", "-attempt2"]) {
+for (const suffix of selected ? ["-attempt" + selected] : ["", "-attempt2"]) {
   const file = prefix + suffix + ".json", bytes = await readFile(path.join(root, file)); assert.ok(bytes.length <= 8388608);
   const report = JSON.parse(bytes); assert.equal(report.status, "failed-private-vp9-browser-smoke");
   assert.equal(report.ownedRuntimeRemoved, true); assert.ok(report.finishedAt); assert.equal(report.rawArchive, undefined);

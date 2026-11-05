@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-11-06 actual guarded-tool six-job browser control PASS at758ba729/Chrome
+headless, normal services unchanged,42129383089. Initial+3recoveries each99413B
+SHA82bdfd66...82267b BYTE-EXACT to old unmodified-libvpx output from pinned58389B
+input. All48PTS/durations,2.000s,SSIM.993273>=.98,all8metadata fields and stored
+DefaultDuration41666666ns retained. Real cancel/write failure each occurs after
+actual write attempt, transactional0B partial/abort cleanup, no extra retry.
+Same stable blank/completeChrome peak603475968 =>243.875MiB,240valid0missing;
+close to250, NOT a proven memory/speed improvement versus other sessions.
+Recoveries211.421875/203.87890625/234.01953125MiB; all queues one pending/<1MiB,
+all completed outputs32MiB actual Wasm. All outputs/OPFS/profile/runtime/static
+stage removed, three owned process births absent, original size/SHA unchanged,
+0forbidden requests. Raw632345B losslessly archived to282068B with compact report.
+This is one SMALL session, NOT original/near10GB/public/direct/browser coverage.
+Next exclusive guarded original attempt4, unchanged1920x804/24fps/4Mbps/250MiB.
+
 2026-11-06 guarded native build42129383089 at5e9f2d6b TERMINAL SUCCESS,
 23:27:15-23:35:14UTC(7m59s); actual source/lifetime/C-control checks, compilation,
 upload and all cleanup PASS. Authentic19member artifact13462422854 ZIP3460215B

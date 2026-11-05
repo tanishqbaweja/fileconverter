@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 actual guarded small bit-exact/fidelity/recovery control PASS:
+initial+3complete outputs identical to unmodified libvpx, all strict clocks/SSIM/
+metadata; both actual adverse-write paths recover and clean up. WholeChrome
+243.875MiB/240valid0missing, close to unchanged250MiB. Not original/stress/speed
+acceptance and no public promotion. All owned disposable data removed/original
+unchanged/raw evidence archived. NEXT exclusive guarded original attempt4 using
+42129383089, same full protected File/resolution/settings/limits; full scope open.
+
 2026-11-06 DISTINCT guarded native42129383089 compiled/authenticated SUCCESS:
 actual vendor guard and lifetime checks/198C-control calls,19artifact members,
 unchanged32initial/96max MiB/one codec thread/zero helpers, all hosted cleanup.
