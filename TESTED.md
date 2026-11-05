@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-06 original CPU startup gate implemented; actual run PENDING. Exact
+reversible derivation of retained strict harness, same pinned corrected native
+core42020605269. Passes untouched root test.mkv directly (2958573265B); no source
+copy/excerpt/generation,1920x804/24fps preserved, explicit6Mbps CPU setting. Uses
+real private qualification worker/production AVIO/OPFS, NOT WebCodecs, no native
+converter. Unchanged stable blank required BEFORE startup; same250MiB formula,
+native observer failure/missing samples/actual breach request cancellation. Bounded
+five-minute startup window plus30s cancellation grace; NOT a full-file completion
+or fidelity claim.2GiB disk preflight and512MiB OPFS quota check; partial output
+removed in finally, owned profile/process/original integrity checks retained.
+5recipe/gate/check-only tests PASS(322.2867ms), affected lint PASS. Actual source
+duration12340.096s (~3h26m); full conversion may take many hours. This bounded
+diagnostic is to catch unsafe original-resolution startup before that long run.
+
 2026-11-05 recovery-cycle final regression: first broad run exposed historical
 bundle test incorrectly rebuilding old evidence from current edited coordinator
 (ca608f29... vs recordedd6ed0b87...). Corrected verifier now reads each executed

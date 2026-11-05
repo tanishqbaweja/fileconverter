@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-06 next ORIGINAL-resolution CPU diagnostic implemented, actual run pending.
+Untouched full3GB test.mkv passed directly to production AVIO;1920x804/24fps/6Mbps,
+explicit CPU (no WebCodecs attribution ambiguity). Same stable blank/250MiB and
+missing-sample rules, automatic cancellation on breach;5minute safety window NOT
+full-file completion/fidelity.5focused checks/lint PASS. Full12340.096s source
+conversion, scaling/repeat/direct/browser/release and broader objective stay open.
+
 2026-11-05 recovery-cycle finalization239focused tests PASS/0skip, affected lint/
 TypeScript/diff and403/403registry consistency PASS. Historical bundle assertion
 was repaired to authenticate/rebuild its recorded Git head, not later edits;
