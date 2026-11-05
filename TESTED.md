@@ -1,5 +1,32 @@
 # Tested conversion ledger
 
+2026-11-06 original-cycle finalization:249focused regressions PASS(2010.6321ms)
++3original evidence checks PASS(103.3798ms),0skipped; affected lint/diff PASS,
+403/403public evidence/2hidden pending/0PDF unchanged. Canonical C SHAae501a2e...
+3068 unchanged. Exact current CPU artifact remains two-edit stream-duration build;
+new three-edit1920-width SOURCE has not been wired or compiled. Do not redispatch
+the unchanged two-edit builder or retry old original settings. Next stage must
+wire/compile/authenticate distinct private width core, then new exclusive original
+attempt using that run ID and existing4Mbps. Original-resolution encoding, full
+fidelity/scaling/direct/repeat/current-browser/broader goal remain unverified.
+
+2026-11-06 original attempt2 TERMINAL FAIL at004fe9ec. Same-host CDP selection
+correctly passes entire untouched2958573265B File with no copy/remote upload.
+Actual CPU native call rejects requested1920width/6Mbps outside existing allowlist
+BEFORE reading media: input/output0B,0writes, encoderNULL, no WebCodecs, cleanup
+complete/partial0B. Measured156.2265625MiB/25valid0missing is NOT original encoding
+or startup acceptance. Native currently permits explicit widths320/480/640 and
+bitrates through4Mbps; default WebM also downscales640, so do not substitute that
+for required original-resolution evidence. All3owned process births absent,
+runtime/profile/stage/OPFS removed, original unchanged,0forbidden requests.
+Both failures archived losslessly486544B ->158217B compact+raw gzip total.
+Next PRIVATE original-width SOURCE candidate retains verified packet+stream
+duration fixes, allows ONLY VP9 explicit1920 (not other codecs/arbitrary widths),
+keeps public/default640 policy and all frame-rate/bitrate/quality/thread/I/O/Wasm
+limits unchanged. Proposed qualification uses existing4Mbps option at1920x804/24fps.
+Canonical C/public registry/assets unchanged. Candidate not wired/compiled/browser
+verified; a distinct private build is required before any changed original retry.
+
 2026-11-06 original startup attempt1 FAILED BEFORE CONVERSION at eb58dfa6:
 Playwright URL-connected locator.setInputFiles refuses files over50MB. Full
 original size/SHA and1920x804/24fps metadata verified, stable blank352751616B,

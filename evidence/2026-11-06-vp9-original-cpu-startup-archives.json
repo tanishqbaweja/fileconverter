@@ -1,0 +1,38 @@
+{
+  "scope": "Two failed original startup attempts, exact raw archive not media",
+  "reports": [
+    {
+      "file": "evidence/2026-11-06-vp9-original-cpu-startup.json",
+      "originalBytes": 218127,
+      "compactBytes": 46352,
+      "compactSha256": "66a5f280bf5170d8235b442b31a21f8be88eb22f8e0216d5eef3970736a7e4fd",
+      "archive": {
+        "file": "evidence/2026-11-06-vp9-original-cpu-startup.raw.json.gz",
+        "bytes": 15634,
+        "sha256": "0f3367858a35b7ec227e159e9fc43c3f632db10ab602df5aeab5624f4ef69232",
+        "decodedBytes": 218127,
+        "decodedSha256": "b0b50ca06e082320709d11ad8e10feec223ccc463a14e06ae87fc61ed2fe0617",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      }
+    },
+    {
+      "file": "evidence/2026-11-06-vp9-original-cpu-startup-attempt2.json",
+      "originalBytes": 268417,
+      "compactBytes": 77509,
+      "compactSha256": "79af8326fda254f585c4b3af28466d149507e3710c42ca33a6c605e909d94525",
+      "archive": {
+        "file": "evidence/2026-11-06-vp9-original-cpu-startup-attempt2.raw.json.gz",
+        "bytes": 18722,
+        "sha256": "9454791e2a0e7af0c3e343a3a56c84ece026fdc91cbe2c54e0e9ae87b41227e9",
+        "decodedBytes": 268417,
+        "decodedSha256": "69f776360a0dad370f744875f7d3ceb793c0f09d414e5c46970ca894acd9130d",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      }
+    }
+  ],
+  "originalBytes": 486544,
+  "retainedBytes": 158217,
+  "allRoundtripsVerified": true,
+  "convertedFilesReadOrRetained": false,
+  "publicAcceptance": false
+}

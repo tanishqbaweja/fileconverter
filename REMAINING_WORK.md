@@ -1,5 +1,23 @@
 # Remaining work audit
 
+2026-11-06 original-cycle gates:249focused+3evidence checks PASS/0skip, lint/diff
+and403/403public consistency PASS. NEXT ACTION, not another unchanged retry:
+wire makeVp9OriginalWidthSource into private native generator/builder/collector/
+static loader (current builder still two-edit stream-duration), compile distinct
+private source run with same limits, authenticate it, then original attempt3 with
+new run ID and4Mbps. Existing startup helper still requests6Mbps and driver only
+has attempts1/2; update those for the changed test, preserving both failures.
+No public/resolution/memory policy promotion; full objective remains active.
+
+2026-11-06 full original selected successfully via CDP; CPU call REFUSED before
+media I/O on1920/6Mbps allowlist. No original encoding/startup success despite
+156.2265625MiB memory reading. Defaults downscale640 and must not be substituted
+for original-resolution proof. Candidate now SOURCE ONLY: retain timing fixes,
+add private VP9-only explicit1920, choose existing4Mbps, no public-width/default/
+thread/memory-limit changes. Native build and changed original attempt required.
+All owned outputs/processes cleaned, original unchanged; both failed receipts
+losslessly compacted. Full broader objective remains partial and active.
+
 2026-11-06 first original startup hit test-adapter50MB transfer refusal BEFORE
 conversion, not a native memory failure. All owned data/processes cleaned, original
 unchanged; no conversion memory result. Corrected separate attempt2 reuses existing
