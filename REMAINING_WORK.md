@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-11-06 checkpoint334distinct focused checks pass, lint/diff pass; original7
+still fails and does not qualify the route. No live test/build remains; this
+cycle's disposable data removed, original unchanged. Goal remains active, full
+scope intact; no completion or broader browser/release claim.
+
+2026-11-06 actual token original7 FAILS VP9 new-frame allocation at fixed96MiB:
+3790080B requested versus750340B free+unclaimed, at least3039740B short. WholeChrome
+239.29296875MiB/32valid0missing is NOT a passing conversion. Only485B header, no
+full-original output/fidelity/speed proof. Taskkill error preserved; supplemental
+read-only census verifies38observed owned births absent. All disposable files gone,
+original SHA unchanged. NEXT coupled reference/HEVC DPB allocation attribution or
+original-width platform-encoder qualification, not unchanged original7 replay or
+limit increases.331fresh focused regressions/public consistency pass; all broader
+scope remains intact and open.
+
 2026-11-06 distinct token strict retry PASS at234.2734375MiB/238valid0missing,
 all four byte-identical outputs/fidelity/timing/metadata and adverse recovery.
 First baseline failure remains failed/preserved; retry uses same gate BEFORE app.

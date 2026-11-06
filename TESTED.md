@@ -1,5 +1,32 @@
 # Tested conversion ledger
 
+2026-11-06 final checkpoint334distinct focused checks PASS this cycle (331
+regressions +3new original7 evidence checks),0fail/0skip; affected lint/diff PASS.
+Original7 native failure and original cleanup error remain failures, with separate
+supplemental absence proof. No live test/build handles remain. Protected original
+size/SHA verified unchanged by the actual run; all this cycle's disposable browser
+media/profiles/scratch removed. Goal remains active and the full scope uncompleted.
+
+2026-11-06 actual token original7 atb756e93e FAILED, not rerun unchanged:
+untouched2958573265B full File/same1920x804/24fps/4Mbps/oneCPU. Explicit VP9
+new-frame3790080B allocation fails at96MiB maximum, managed94106256/free42820/
+unclaimed707520B. Free+unclaimed750340 => at least3039740B short before allocator
+overhead. Live HEVC/VP9 allocation ownership and encoded frame count unproven;
+only485B mux header saved then removed. WholeChrome blank347467776/peak598384640
+=>239.29296875MiB/32valid0missing, but native failure remains FAIL. Token compaction
+does not make this full-original CPU route viable yet; no full fidelity or speed
+acceptance. Taskkill child41936 error retained; separate READ-ONLY census proves
+all38observed owned births absent, no processes killed. All partial outputs/OPFS/
+profile/runtime/stage removed, original exact SHA unchanged,0forbidden requests.
+Raw292238B archived to102595B total. NEXT attribute coupled reference/DPB live
+allocations or qualify existing platform encoder at original dimensions; do not
+repeat already applied lazy utilities/token compaction or raise limits.
+
+2026-11-06 fresh regression checkpoint331PASS (261core +70allocation/source/
+evidence),0fail/0skip. Public consistency403/403,2hidden pending,0PDF. Private
+native/browser changes do not complete broader original requirements. No new
+frontend production build/TypeScript gate claimed; source/limits unchanged there.
+
 2026-11-06 token strict retry at91c10b97 PASS, original failed baseline receipt
 preserved. Same baseline detector/window/threshold passes before app; blank358494208,
 completeChrome peak604147712=>234.2734375MiB/238valid0missing. Initial+3recovery

@@ -2,8 +2,9 @@
 import assert from "node:assert/strict";
 import { readFile,writeFile } from "node:fs/promises";
 import path from "node:path";
-assert.equal(process.argv.length,2);
-const root=path.resolve(import.meta.dirname,".."),file="evidence/2026-11-06-vp9-original-cpu-startup-attempt5.json",
+assert.ok(process.argv.length===2||(process.argv.length===3&&process.argv[2]==="7"));
+const token=process.argv[2]==="7";
+const root=path.resolve(import.meta.dirname,".."),file="evidence/2026-11-06-vp9-original-cpu-startup-attempt"+(token?"7":"5")+".json",
   r=JSON.parse(await readFile(path.join(root,file))),d=r.allocationDiagnostics;
 assert.equal(r.status,"failed-private-vp9-browser-smoke");assert.equal(d.available,true);assert.equal(d.site,"new-frame");
 assert.equal(d.wasmHeapBytes,100663296);assert.equal(d.wasmHeapMaximumBytes,d.wasmHeapBytes);
@@ -21,7 +22,8 @@ const report={recordedAt:new Date().toISOString(),scope:"Actual original failure
   earlierJsProgressHeapBytes:r.browserResult.metrics.wasmMemoryBytes,
   actualFailureHeapMinusLastProgressBytes:d.wasmHeapBytes-r.browserResult.metrics.wasmMemoryBytes,
   otherAllocationOwnershipNotProven:true,newMemoryReductionImplemented:false,
-  nextAction:"Audit preallocated utility/scaling buffers and their consumers/stride/cleanup invariants for lazy allocation; do not clip required frame bounds, raise limits, or replay unchanged original",
+  nextAction:token?"Attribute coupled VP9 reference/HEVC DPB allocations or qualify original-width platform encoder; do not repeat already applied lazy utility/token compaction, clip required bounds, raise limits or replay unchanged original":
+    "Audit preallocated utility/scaling buffers and their consumers/stride/cleanup invariants for lazy allocation; do not clip required frame bounds, raise limits, or replay unchanged original",
   userMediaReadOrConverted:false,publicAcceptance:false};
-await writeFile(path.join(root,"evidence/2026-11-06-vp9-original-allocation-capacity.json"),JSON.stringify(report,null,2)+"\n",{flag:"wx"});
+await writeFile(path.join(root,"evidence/2026-11-06-vp9-"+(token?"token-original":"original")+"-allocation-capacity.json"),JSON.stringify(report,null,2)+"\n",{flag:"wx"});
 console.log(JSON.stringify({frameRequestBytes:d.frameRequestBytes,freePlusUnclaimedBytes:remaining,shortfallAtLeastBytes:shortfall,actualFailureHeapBytes:d.wasmHeapBytes}));

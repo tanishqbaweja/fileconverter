@@ -1,12 +1,13 @@
-// Read-only census of exact births retained by original attempt5, never kill.
+// Read-only census of exact births retained by original attempt5 or7, never kill.
 import assert from "node:assert/strict";
 import { readFile,writeFile } from "node:fs/promises";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import path from "node:path";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
-assert.equal(process.argv.length,2);
-const root=path.resolve(import.meta.dirname,".."),input="evidence/2026-11-06-vp9-original-cpu-startup-attempt5.json",
+assert.ok(process.argv.length===2||(process.argv.length===3&&process.argv[2]==="7"));
+const attempt=process.argv[2]??"5";
+const root=path.resolve(import.meta.dirname,".."),input="evidence/2026-11-06-vp9-original-cpu-startup-attempt"+attempt+".json",
   report=JSON.parse(await readFile(path.join(root,input))),identities=new Map();
 const add=row=>{
   assert.ok(Number.isSafeInteger(row.pid)&&row.pid>0&&Number.isSafeInteger(row.parentPid)&&Number.isFinite(Date.parse(row.createdAt)));
@@ -40,7 +41,7 @@ try {
     sourceReport:input,originalCleanupErrorPreserved:errors[0],reportedFailedChild:failedChild,proofs,
     allObservedOwnedBirthsAbsent:proofs.every(row=>row.status==="owned-birth-absent"),
     querySucceeded:true,noProcessesKilled:true,unavailableIsNotAbsence:true,originalConversionSucceeded:false,publicAcceptance:false};
-  await writeFile(path.join(root,"evidence/2026-11-06-vp9-original-cpu-startup-attempt5-cleanup-followup.json"),JSON.stringify(result,null,2)+"\n",{flag:"wx"});
+  await writeFile(path.join(root,"evidence/2026-11-06-vp9-original-cpu-startup-attempt"+attempt+"-cleanup-followup.json"),JSON.stringify(result,null,2)+"\n",{flag:"wx"});
   assert.equal(result.allObservedOwnedBirthsAbsent,true,"Do not close unrelated applications or assume a remaining owned process is gone");
   console.log(JSON.stringify({observedIdentities:proofs.length,reportedFailedChild:failedChild,allObservedOwnedBirthsAbsent:true,noProcessesKilled:true}));
 } finally {await runtime.close();}

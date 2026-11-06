@@ -1,0 +1,395 @@
+{
+  "acquiredAt": "2026-11-06T13:59:27.506Z",
+  "scope": "Supplemental read-only census after retained taskkill error; original failure record is unchanged",
+  "sourceReport": "evidence/2026-11-06-vp9-original-cpu-startup-attempt7.json",
+  "originalCleanupErrorPreserved": "Owned process cleanup: Error: Command failed: taskkill.exe /PID 40936 /T /F\nERROR: The process with PID 41936 (child process of PID 40936) could not be terminated.\r\nReason: The operation attempted is not supported.\r\r\n",
+  "reportedFailedChild": 41936,
+  "proofs": [
+    {
+      "identity": {
+        "pid": 6384,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:13.2677575Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 33156,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:13.2938114Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 33972,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:13.3671557Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 35392,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:13.1502290Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 36284,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:13.2596926Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 38396,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:40.9427381Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 38804,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:16.2940610Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 39812,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:13.7326222Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 40936,
+        "parentPid": 45104,
+        "createdAt": "2026-11-06T13:56:13.1297214Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 41936,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:16.6481105Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 21336,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:13.9413294Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 24296,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:13.4193979Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 42584,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:13.3984834Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 43656,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:13.4191698Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 44644,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:13.8220337Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 25576,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:14.3963776Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 27328,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:15.5963495Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 28792,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:15.6118464Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 40408,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:15.6268749Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 40916,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:15.6105461Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 42004,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:15.6200953Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 42888,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:15.6212812Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 22632,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:15.7346127Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 38564,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:15.7344554Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 42988,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:15.7285686Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 37584,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:15.7907529Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 5196,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:15.8648442Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 31512,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:15.9451947Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 18136,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:16.0198786Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 26156,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:16.0516373Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 40668,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:16.0089341Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 11660,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:16.0844116Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 17216,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:16.2972850Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 46708,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:27.3175718Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 37244,
+        "parentPid": 40936,
+        "createdAt": "2026-11-06T13:56:28.7555202Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 40936,
+        "parentPid": 45104,
+        "createdAt": "2026-11-06T13:56:13.1297210Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 38544,
+        "parentPid": 45104,
+        "createdAt": "2026-11-06T13:56:11.4155790Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    },
+    {
+      "identity": {
+        "pid": 20072,
+        "parentPid": 45104,
+        "createdAt": "2026-11-06T13:56:13.5572560Z"
+      },
+      "current": null,
+      "status": "owned-birth-absent",
+      "pidReused": false
+    }
+  ],
+  "allObservedOwnedBirthsAbsent": true,
+  "querySucceeded": true,
+  "noProcessesKilled": true,
+  "unavailableIsNotAbsence": true,
+  "originalConversionSucceeded": false,
+  "publicAcceptance": false
+}

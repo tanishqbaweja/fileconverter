@@ -1,0 +1,24 @@
+{
+  "scope": "Failed original startup attempts, exact raw archive not media",
+  "reports": [
+    {
+      "file": "evidence/2026-11-06-vp9-original-cpu-startup-attempt7.json",
+      "originalBytes": 292238,
+      "compactBytes": 82008,
+      "compactSha256": "d65e55b2f0afa6ff4cd37cc0754049f54ccd9fd414e6ff778c19d6d0bc52c468",
+      "archive": {
+        "file": "evidence/2026-11-06-vp9-original-cpu-startup-attempt7.raw.json.gz",
+        "bytes": 20587,
+        "sha256": "3bbc238f8ebfbd48750fd004e8f1e70d2dfa6afe5c8c0df3ff2350afaab33300",
+        "decodedBytes": 292238,
+        "decodedSha256": "f7ca86ee97ec680f7fb97783a5a0a34448caa0b128ffa11c3907b88dcaaa6382",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      }
+    }
+  ],
+  "originalBytes": 292238,
+  "retainedBytes": 102595,
+  "allRoundtripsVerified": true,
+  "convertedFilesReadOrRetained": false,
+  "publicAcceptance": false
+}
