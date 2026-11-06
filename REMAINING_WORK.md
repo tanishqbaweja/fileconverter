@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-07 N-08 next gate IN PROGRESS: complete progressively larger DOCX HTML
+outputs with three same-session repeats and stable cleanup observations. Harness
+and fixed-buffer independent fixture/validator helpers added;43focused tests and
+four-file lint PASS. Browser execution pending; do not treat plan or unit checks
+as large-file memory/fidelity acceptance. All broader qualification gaps remain.
+
 2026-11-07 DOCX HTML implementation checkpoint: final2514portable PASS/0fail/
 0skip across701 files,162 separate qualification files UNRUN; build/TypeScript/
 15-file lint PASS. Actual small production control has corrected source-package

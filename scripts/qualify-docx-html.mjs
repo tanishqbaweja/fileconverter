@@ -1,4 +1,5 @@
-// Genuine small production-browser conversion, not public/stress qualification.
+// Genuine production-browser controls. --scaling adds completed large documents;
+// neither mode alone establishes public/full-route qualification.
 import "./lib/hidden-unit-subprocesses.mjs";
 import assert from "node:assert/strict";
 import { spawn, execFile } from "node:child_process";
@@ -24,8 +25,13 @@ import { bindOpfsOutputValidationBacking, assertOpfsOutputValidationBackingUncha
 import { cancelBrowserConversionBeforeCleanup } from "./lib/cancel-browser-conversion-before-cleanup.mjs";
 import { classifyPrivateRequest } from "./lib/private-browser-request.mjs";
 import { selectOwnedLocalBrowserFile } from "./lib/select-owned-local-browser-file.mjs";
+import { bindLargeDocumentOutputValidationBacking } from "./lib/opfs-output-validation-backing.mjs";
+import { DOCX_HTML_SCALING_PLAN as scalingPlan, summarizeDocxHtmlRunMemory, renderDocxHtmlScalingSummary } from "./lib/docx-html-scaling-control.mjs";
+import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
 
-assert.equal(process.platform, "win32"); assert.equal(process.argv.length, 2);
+assert.equal(process.platform, "win32");
+const scaling = process.argv[2] === "--scaling";
+assert.ok(process.argv.length === (scaling ? 3 : 2));
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 262144 })) hash.update(b); return hash.digest("hex"); };
@@ -36,6 +42,15 @@ const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: 
   stressAcceptance: false, nativePickerVerified: false, largeFileScalingVerified: false, speedImprovementProven: false,
   memoryFormula: "(peak complete spawned Chrome process-tree private bytes during full control window - earliest stable same clean blank Chrome private bytes) / 1048576",
   traceMode: { screenshots: true, domSnapshots: false, networkBodies: false }, requestCount: 0, forbiddenRequests: [] };
+if (scaling) {
+  report.scope = "Private DOCX HTML: genuine progressively larger completed documents, three same-session repeats each and unchanged whole-tree/cleanup observation; not full route qualification";
+  report.scalingPlan = scalingPlan;
+  report.cleanupRecoveryLimitMiB = scalingPlan.cleanupRecoveryLimitMiB;
+  report.freshSessionRepeatVerified = false;
+  report.fullOoxmlLayoutFidelityVerified = false;
+  report.largeFileScalingVerified = false;
+  report.scalingRuns = [];
+}
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const p = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
 const packageBytes = (body, level = 6, invalidPackage = false) => zipSync({
@@ -108,10 +123,23 @@ assert parser.csp and parser.current is None
 print(json.dumps({'sha256':h.hexdigest(),'paragraphs':len(parser.paragraphs),'tableCells':parser.tags['td'],'strong':parser.tags['strong'],'italic':parser.tags['em'],'csp':parser.csp,'validator':'independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts'}))
 `;
 let runtime, server, chrome, chromeBirth, browser, page, context, monitor, timer, pending = null, observerError = null, traceStarted = false;
+let realmSampler, realmPending = null, rejectSafetyStop;
+const realmObservations = [], safetyStop = new Promise((_, reject) => { rejectSafetyStop = reject; });
+// This single bounded signal is observed from creation, including between jobs.
+void safetyStop.catch(() => {});
 const samples = []; let controlStart = null, controlEnd = null;
 const drain = () => pending ??= (async () => { if (!monitor) return; const batch = await monitor.drain();
-  assert.equal(batch.overflow, false); assert.ok(samples.length + batch.samples.length <= 1200, "Finite small-control sample cap"); samples.push(...batch.samples);
+  assert.equal(batch.overflow, false); assert.ok(samples.length + batch.samples.length <= (scaling ? scalingPlan.sampleCap : 1200), "Finite control sample cap"); samples.push(...batch.samples);
+  if (scaling && controlStart !== null && report.blankBaseline) {
+    const valid = batch.samples.filter(row => Date.parse(row.timestamp) >= controlStart && row.privateBytes !== null);
+    assert.ok(valid.every(row => (row.privateBytes - report.blankBaseline.privateBytes) / 1048576 <= 250), "Unchanged full-process-tree250MiB safety stop");
+  }
 })().finally(() => { pending = null; });
+const sampleRealms = () => realmPending ??= (async () => {
+  if (!realmSampler) return;
+  assert.ok(realmObservations.length < 600);
+  realmObservations.push({ timestamp: new Date().toISOString(), ...await realmSampler.sample() });
+})().finally(() => { realmPending = null; });
 const stable = async () => {
   const rows = [], deadline = Date.now() + 30000;
   while (Date.now() < deadline) {
@@ -124,7 +152,8 @@ const stable = async () => {
 };
 try {
   report.hostMemory = await inspectStressHostMemory(); assert.equal(report.hostMemory.safeToStart, true);
-  const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 512 * 1024 ** 2);
+  const disk = await statfs(root); report.diskFreeBytes = disk.bavail * disk.bsize;
+  assert.ok(report.diskFreeBytes >= (scaling ? scalingPlan.requiredDiskBytes : 512 * 1024 ** 2));
   report.python = (await execute("python", ["--version"], { windowsHide: true, timeout: 10000 })).stdout.trim();
   report.protectedOriginalBefore = await original(); assert.deepEqual(report.protectedOriginalBefore,
     { bytes: 2958573265, sha256: "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" });
@@ -132,7 +161,8 @@ try {
   report.executedHead = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true, timeout: 10000 })).stdout.trim();
   for (const file of ["scripts/qualify-docx-html.mjs", "workers/docx-html-conversion.ts", "workers/docx-conversion.ts",
     "workers/conversion.worker.ts", "lib/capability-registry.ts", "package-lock.json", "scripts/lib/birth-aware-chromium-memory.mjs",
-    "scripts/lib/birth-type-capture.mjs", "scripts/lib/select-owned-local-browser-file.mjs"])
+    "scripts/lib/birth-type-capture.mjs", "scripts/lib/select-owned-local-browser-file.mjs",
+    "scripts/lib/docx-html-scaling-control.mjs", "scripts/lib/docx-html-scaling-fixtures.py", "scripts/lib/opfs-output-validation-backing.mjs", "scripts/lib/cdp-realm-memory.mjs"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
@@ -165,6 +195,34 @@ try {
   await assert.rejects(execute("python", ["-c", sourceValidator, invalidPackage], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }), error => error.code === 1);
   report.invalidPackageControlRejected = true;
   report.fixture = { bytes: (await stat(input)).size, sha256: await hashFile(input), cancelBytes: (await stat(cancellation)).size };
+  const scalingInputs = [];
+  if (scaling) {
+    const helper = path.join(root, "scripts/lib/docx-html-scaling-fixtures.py");
+    for (const paragraphs of scalingPlan.paragraphs) {
+      const file = path.join(runtime.directory, `scaling-${paragraphs}.docx`);
+      const generated = JSON.parse((await execute("python", [helper, "generate", file, String(paragraphs)],
+        { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 32768 })).stdout);
+      const validated = JSON.parse((await execute("python", ["-c", sourceValidator, file],
+        { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 32768 })).stdout);
+      assert.equal(validated.paragraphs, paragraphs);
+      const bytes = (await stat(file)).size;
+      if (paragraphs === scalingPlan.paragraphs.at(-1)) assert.ok(bytes > 100 * 1024 ** 2);
+      scalingInputs.push({ file, paragraphs, bytes, sha256: await hashFile(file), generated, validated });
+    }
+    report.scalingInputs = scalingInputs.map(({ file, ...proof }) => { void file; return proof; });
+    // Test the separate streaming large-output validator BEFORE conversion.
+    const fixture = path.join(runtime.directory, "validator-scaling.html");
+    const text = number => String(number).padStart(8, "0") + "|" + "bounded-stream-".repeat(280) + "|β 😀 &amp; &lt;script&gt;safe&lt;/script&gt;";
+    const positive = `<html><head><meta http-equiv="Content-Security-Policy" content="default-src 'none'"></head><body><p>${text(0)}</p><p>${text(1)}</p></body></html>`;
+    report.scalingValidatorControls = [];
+    for (const [name, value, accepted] of [["positive", positive, true], ["wrong-ordinal", positive.replace("00000001|", "00000007|"), false],
+      ["active-markup", positive.replace("</body>", "<script>bad</script></body>"), false], ["truncated", positive.slice(0, -25), false]]) {
+      await writeFile(fixture, value); let exitCode = 0;
+      try { await execute("python", [helper, "validate", fixture, "2"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
+      catch (error) { assert.equal(typeof error.code, "number"); exitCode = error.code; }
+      assert.equal(exitCode === 0, accepted); report.scalingValidatorControls.push({ name, exitCode, expectedAccepted: accepted });
+    }
+  }
   const port = await new Promise((resolve, reject) => { const socket = createServer(); socket.once("error", reject);
     socket.listen(0, "127.0.0.1", () => { const p = socket.address().port; socket.close(error => error ? reject(error) : resolve(p)); }); });
   server = await startOwnedProductionTestServer({ root, directory: runtime.directory, env, port });
@@ -181,6 +239,10 @@ try {
   assert.match(activePort ?? "", /^\d+$/); browser = await chromium.connectOverCDP(`http://127.0.0.1:${activePort}`);
   context = browser.contexts()[0]; page = context.pages()[0]; await page.goto("about:blank");
   report.blankBaseline = await stable();
+  if (scaling) {
+    const debuggerVersion = await (await fetch(`http://127.0.0.1:${activePort}/json/version`)).json();
+    realmSampler = await connectRealmSampler(debuggerVersion.webSocketDebuggerUrl, server.baseURL);
+  }
   await context.addInitScript(`window.__WITHIN_AUDIO_VALIDATION_CHUNK__=(${encodeBoundedValidationChunk.toString()});`);
   await context.route("**/*", async route => {
     const request = route.request(); report.requestCount++;
@@ -207,7 +269,10 @@ try {
   const waitEmpty = () => page.waitForFunction(async () => { const root = await navigator.storage.getDirectory();
     for await (const [name] of root.entries()) if (name.startsWith("within-")) return false; return true; }, undefined, { timeout: 10000 });
   await open(); report.loadedIdle = await stable(); controlStart = Date.now();
-  timer = setInterval(() => { void drain().catch(error => { observerError ??= error; }); }, 500);
+  timer = setInterval(() => {
+    void drain().catch(error => { observerError ??= error; rejectSafetyStop(error); });
+    if (scaling && Math.floor(Date.now() / 500) % 4 === 0) void sampleRealms().catch(error => { observerError ??= error; rejectSafetyStop(error); });
+  }, 500);
   const success = async previous => {
     await page.locator('[data-testid="convert-button"]').click();
     await page.waitForFunction(old => { const state = window.__WITHIN_TEST__?.getState(); return state?.jobState === "complete" && state.opfsName && state.opfsName !== old; }, previous, { timeout: 30000 });
@@ -224,7 +289,51 @@ try {
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
     return state.opfsName;
   };
-  await select(input); let previous = null; for (let n = 0; n < 3; n++) previous = await success(previous);
+  if (scaling) {
+    for (const fixture of scalingInputs) {
+      await select(fixture.file);
+      let previous = null;
+      for (let repeat = 1; repeat <= scalingPlan.repeats; repeat++) {
+        const started = Date.now();
+        await page.locator('[data-testid="convert-button"]').click();
+        await Promise.race([safetyStop, page.waitForFunction(old => {
+          const s = window.__WITHIN_TEST__?.getState(); return s?.jobState === "complete" && s.opfsName && s.opfsName !== old;
+        }, previous, { timeout: scalingPlan.conversionTimeoutMs })]);
+        const state = await page.evaluate(() => window.__WITHIN_TEST__.getState());
+        assert.equal(state.error, null); assert.equal(state.metrics.pendingOperations, 0); assert.equal(state.metrics.queuedBytes, 0);
+        assert.equal(state.metrics.inputBytes, fixture.bytes); assert.ok(state.metrics.maxReadChunkBytes <= 262144);
+        assert.ok(state.metrics.maxWriteChunkBytes <= 65536); assert.ok(state.metrics.peakQueuedBytes <= 65536); assert.equal(state.metrics.peakPendingOperations, 1);
+        const row = { kind: "complete-unvalidated", paragraphs: fixture.paragraphs, repeat, sourceBytes: fixture.bytes,
+          sourceSha256: fixture.sha256, outputBytes: state.metrics.outputBytes, metrics: state.metrics,
+          storageBeforeValidation: await page.evaluate(async () => { const s = await navigator.storage.estimate(); return { usage: s.usage ?? null, quota: s.quota ?? null }; }) };
+        report.cases.push(row);
+        const binding = await bindLargeDocumentOutputValidationBacking(page, profile, state.opfsName, state.metrics.outputBytes);
+        row.binding = binding.proof;
+        row.validated = JSON.parse((await execute("python", [path.join(root, "scripts/lib/docx-html-scaling-fixtures.py"), "validate", binding.file, String(fixture.paragraphs)],
+          { cwd: root, env, windowsHide: true, timeout: scalingPlan.validatorTimeoutMs, maxBuffer: 32768 })).stdout);
+        await assertOpfsOutputValidationBackingUnchanged(binding);
+        assert.equal(row.validated.bytes, row.outputBytes); assert.equal(row.validated.paragraphs, fixture.paragraphs);
+        if (fixture.paragraphs === scalingPlan.paragraphs.at(-1)) assert.ok(row.outputBytes > 100 * 1024 ** 2);
+        await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), state.opfsName);
+        await waitEmpty(); assert.deepEqual(await leftovers(), []);
+        await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
+        // Natural stable observation only: no forced GC, service changes, page
+        // replacement or baseline substitution to hide retained allocations.
+        const cleanup = await Promise.race([safetyStop, stable()]);
+        await drain();
+        row.runMemory = summarizeDocxHtmlRunMemory(samples, started, Date.now(), report.blankBaseline, report.loadedIdle, cleanup);
+        row.kind = "complete";
+        assert.ok(row.runMemory.incrementalPrivateMiB <= 250);
+        assert.ok(row.runMemory.cleanupDeltaFromLoadedMiB <= scalingPlan.cleanupRecoveryLimitMiB, "Unchanged96MiB cleanup recovery gate");
+        row.realmsAfterCleanup = await realmSampler.sample();
+        previous = state.opfsName;
+      }
+      const hashes = report.cases.filter(c => c.kind === "complete" && c.paragraphs === fixture.paragraphs).map(c => c.validated.sha256);
+      assert.equal(hashes.length, 3); assert.equal(new Set(hashes).size, 1);
+    }
+  } else {
+    await select(input); let previous = null; for (let n = 0; n < 3; n++) previous = await success(previous);
+  }
   await select(cancellation); await page.locator('[data-testid="convert-button"]').click();
   await page.waitForFunction(() => { const s = window.__WITHIN_TEST__?.getState(); return s?.jobState === "running" && s.metrics?.outputBytes >= 65536; }, undefined, { timeout: 30000 });
   const armed = await page.evaluate(() => window.__WITHIN_TEST__.getState().metrics);
@@ -243,16 +352,25 @@ try {
   const peak = valid.reduce((a, b) => a.privateBytes >= b.privateBytes ? a : b);
   report.memory = { peak, validSamples: valid.length, unavailableSamples: active.length - valid.length,
     incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576, limitMiB: 250,
-    windowStart: new Date(controlStart).toISOString(), windowEnd: new Date(controlEnd).toISOString(), scope: "sampled-complete-tree-small-control-not-stress-acceptance" };
+    windowStart: new Date(controlStart).toISOString(), windowEnd: new Date(controlEnd).toISOString(),
+    scope: scaling ? "sampled-complete-tree-progressive-document-control-with-repeats-and-cleanup-not-full-route-acceptance" : "sampled-complete-tree-small-control-not-stress-acceptance" };
   assert.ok(report.memory.incrementalPrivateMiB <= 250); assert.deepEqual(report.forbiddenRequests, []);
-  assert.equal(new Set(report.cases.filter(c => c.kind === "complete").map(c => c.validated.sha256)).size, 1);
+  if (!scaling) assert.equal(new Set(report.cases.filter(c => c.kind === "complete").map(c => c.validated.sha256)).size, 1);
   report.screenshot = `output/playwright/${stamp}-docx-html-complete.png`; await page.screenshot({ path: path.join(root, report.screenshot), fullPage: true });
-  report.status = "passed-private-small-docx-html-production-control-not-public-qualification";
-} catch (error) { report.status = "failed-not-acceptance"; report.failures.push(String(error.stack ?? error)); process.exitCode = 1; }
+  report.status = scaling ? "passed-private-progressive-docx-html-control-not-full-route-qualification" : "passed-private-small-docx-html-production-control-not-public-qualification";
+  if (scaling) report.completedDocumentScalingControlVerified = true;
+} catch (error) { report.status = "failed-not-acceptance"; report.failures.push(String(error.stack ?? error)); controlEnd ??= Date.now(); process.exitCode = 1; }
 finally {
   clearInterval(timer); await pending?.catch(() => {}); await monitor?.close().catch(error => report.failures.push("Observer cleanup: " + error));
+  await realmPending?.catch(() => {});
+  if (realmSampler) { report.realmObserverOwnership = realmSampler.ownershipSummary(); realmSampler.close(); }
+  if (scaling) report.realmObservations = realmObservations;
   try {
     if (page && !page.isClosed()) {
+      if (scaling && report.status === "failed-not-acceptance") report.failedJobState = await page.evaluate(() => {
+        const s = window.__WITHIN_TEST__?.getState(); return s ? { jobState: s.jobState, workerStatus: s.workerStatus,
+          metrics: s.metrics, error: s.error, warnings: s.warnings } : null;
+      });
       report.jobCleanup = await cancelBrowserConversionBeforeCleanup(page);
       await page.evaluate(async () => { const root = await navigator.storage.getDirectory();
         for await (const [name] of root.entries()) if (name.startsWith("within-test-") || name.startsWith("within-stage-")) await root.removeEntry(name, { recursive: true }); });
@@ -280,9 +398,28 @@ finally {
     report.protectedOriginalAfter = await original(); assert.deepEqual(report.protectedOriginalAfter, report.protectedOriginalBefore);
   } catch (error) { report.failures.push("Runtime/source protection: " + error); report.status = "failed-not-acceptance"; process.exitCode = 1; }
   const raw = Buffer.from(JSON.stringify(samples)), packed = gzipSync(raw);
+  if (!report.memory && controlStart !== null && report.blankBaseline) {
+    const active = samples.filter(row => Date.parse(row.timestamp) >= controlStart && Date.parse(row.timestamp) <= controlEnd);
+    const valid = active.filter(row => row.privateBytes !== null && row.processes);
+    if (valid.length) {
+      const peak = valid.reduce((a, b) => a.privateBytes >= b.privateBytes ? a : b);
+      report.memory = { peak, validSamples: valid.length, unavailableSamples: active.length - valid.length,
+        incrementalPrivateMiB: (peak.privateBytes - report.blankBaseline.privateBytes) / 1048576, limitMiB: 250,
+        windowStart: new Date(controlStart).toISOString(), windowEnd: new Date(controlEnd).toISOString(),
+        scope: "failed-partial-control-window-not-completion-or-acceptance" };
+    }
+  }
   const archive = `evidence/${stamp}-docx-html-native-samples.json.gz`;
   await writeFile(path.join(root, archive), packed, { flag: "wx" });
   report.nativeArchive = { file: archive, bytes: packed.length, sha256: sha(packed), decodedBytes: raw.length, decodedSha256: sha(raw) };
+  if (scaling) {
+    const base = `evidence/${stamp}-docx-html-scaling`;
+    report.readableReport = base + ".html"; report.csvReport = base + ".csv";
+    const csv = ["paragraphs,repeat,sourceBytes,outputBytes,elapsedMs,incrementalPrivateMiB,cleanupDeltaFromLoadedMiB", ...report.cases.filter(c => c.runMemory).map(c =>
+      [c.paragraphs, c.repeat, c.sourceBytes, c.outputBytes, c.metrics.elapsedMs, c.runMemory.incrementalPrivateMiB, c.runMemory.cleanupDeltaFromLoadedMiB].join(","))].join("\n") + "\n";
+    await writeFile(path.join(root, report.csvReport), csv, { flag: "wx" });
+    await writeFile(path.join(root, report.readableReport), renderDocxHtmlScalingSummary(report), { flag: "wx" });
+  }
   report.finishedAt = new Date().toISOString(); const file = path.join(root, "evidence", `${stamp}-docx-html-qualification.json`);
   await writeFile(file, JSON.stringify(report, null, 2) + "\n", { flag: "wx" });
   console.log(JSON.stringify({ path: path.relative(root, file), status: report.status, cases: report.cases.map(c => c.kind), memory: report.memory?.incrementalPrivateMiB, failures: report.failures }));

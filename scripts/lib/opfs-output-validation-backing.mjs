@@ -20,6 +20,11 @@ export function bindOpfsOutputValidationBacking(page, profileDirectory, entryNam
 export function bindLargeAudioOutputValidationBacking(page, profileDirectory, entryName, expectedBytes) {
   return bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, 256 * 1048576);
 }
+// Same read-only probe/identity limits for completed document stress outputs.
+// Only the allowed finished file size differs from the small-file control.
+export function bindLargeDocumentOutputValidationBacking(page, profileDirectory, entryName, expectedBytes) {
+  return bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, 256 * 1048576);
+}
 async function bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, maximumBytes) {
   const root = path.resolve(import.meta.dirname, "../.."), work = path.join(root, "work"), limits = OPFS_VALIDATION_BACKING_LIMITS;
   profileDirectory = path.resolve(profileDirectory);

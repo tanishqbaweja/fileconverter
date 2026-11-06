@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-11-07 NEXT changed control: DOCX HTML completed-document scaling harness
+implemented for2048/32768 ordered paragraphs, three same-session repeats each.
+Fixed-buffer native fixture generator/independent every-paragraph HTML validator,
+path-only production input, unchanged250MiB primary/96MiB cleanup gates, stable
+natural cleanup observation and diagnostic realm sampling.43focused tests and
+four-file lint PASS; actual large browser outcomes PENDING, not acceptance.
+No public promotion, original/media requirement substitution or speed claim.
+
 2026-11-07 DOCX HTML checkpoint FINAL:2514portable PASS/0fail/0skip/0cancel,
 101.604s across701 files; all863 inventoried,162 prerequisite-bound qualification
 files NOT RUN,235 previous hosted gates retained. Build/TypeScript/15-file lint
