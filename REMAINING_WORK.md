@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-06 HTTP+bounded trace small control PASS203.73046875MiB/79valid0missing,
+four exact golden/fidelity outputs and real adverse recovery/cleanup. Actual
+retained trace verifies66API calls/5screenshots/noWasm bodies/noDOM snapshots;
+bounded network metadata, all original conversion/memory gates unchanged. Source
+unchanged/disposable owned data gone. NEXT protected-original9 under unchanged
+settings/limits; not full-file/scaling/speed/manual/public acceptance.
+
 2026-11-06 real HTTP static engine hashes/headers and completed initial conversion
 fidelity pass, but HTTP-only test FAILS wholeChrome264.25390625MiB before recovery.
 Renderer, not browser root, now dominates. Failure trace demonstrably duplicates

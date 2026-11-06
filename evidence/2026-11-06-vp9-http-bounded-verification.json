@@ -1,0 +1,49 @@
+{
+  "recordedAt": "2026-11-06T16:20:35.578Z",
+  "sourceReport": "evidence/2026-11-06-vp9-token-packed-http-qualification-42244170876-attempt2.json",
+  "executedHead": "f915a0e40c9b8ece6a3d1bbc5e635f850993773a",
+  "scope": "Actual HTTP/bounded-trace small-control verification, NOT original/scaling/speed/public acceptance",
+  "primary": {
+    "blankPrivateBytes": 346501120,
+    "peakPrivateBytes": 560128000,
+    "incrementalPrivateMiB": 203.73046875,
+    "validSamples": 79,
+    "unavailableSamples": 0
+  },
+  "trace": {
+    "path": "output\\playwright\\2026-11-06-vp9-token-packed-http-qualification-42244170876-attempt2-bounded-trace.zip",
+    "bytes": 180067,
+    "sha256": "17a52544354f44571628414735250b5dc87e2ff829d09cbbc24a38da58263a4f",
+    "members": 8,
+    "uncompressedBytes": 236510,
+    "eventTypes": {
+      "context-options": 1,
+      "before": 66,
+      "after": 66,
+      "log": 3,
+      "screencast-frame": 5,
+      "input": 1
+    },
+    "wasmBodies": 0,
+    "screenshotMembers": 5,
+    "domSnapshots": 0,
+    "apiTimelineVerified": true,
+    "screenshotTimelineVerified": true,
+    "networkMetadataRows": 32,
+    "networkMetadataMaximum": 32
+  },
+  "engineDeliveredByProductionHttp": true,
+  "staticHashesAndHeadersVerified": true,
+  "outputsByteExact": 4,
+  "strictFidelityPassed": true,
+  "ssim": 0.993273,
+  "originalUnchanged": true,
+  "disposableDataRemoved": true,
+  "processRootsAbsent": true,
+  "forbiddenRequests": 0,
+  "originalRunPermittedBySmallControlOnly": true,
+  "fullOriginalConverted": false,
+  "domOrManualUiCoverageClaimed": false,
+  "speedGainProven": false,
+  "publicAcceptance": false
+}

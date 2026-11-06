@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-06 actual HTTP+bounded diagnostic trace control atf915a0e4 PASS. Same
+native/input/settings: four byte-exact99413B golden outputs,48frames/default clock/
+8metadata/SSIM.993273/zeroPTS-duration errors; actual cancel/write-error recovery
+and cleanup PASS. WholeChrome blank346501120/peak560128000=>203.73046875MiB,
+79valid0missing. RealHTTP6JS+6Wasm responses hash/security/MIME/cache verified.
+Actual retained180067B trace has66API before/after calls,5screenshots, ZERO Wasm
+bodies/DOM snapshots; bounded32-request metadata retained separately. Not headed/
+manual/DOM coverage or an identical-input encoding-speed benchmark. Offline
+inspection initially used Uint8Array.toString incorrectly; normalized to Buffer,
+no browser replay. All outputs/OPFS/profile/runtime/both stages/3owned roots gone,
+original unchanged/0forbidden requests. Raw563411B archived to289775B total.
+NEXT original9 with same full input/1920x804/24fps/4Mbps/96MiB/250MiB/five-minute
+gate and HTTP/bounded tracing; original8/first HTTP failures remain failed.
+
 2026-11-06 HTTP-only small control at5d99993c FAILS wholeChrome264.25390625MiB
 (blank349478912/peak626569216/21valid0missing), despite exact99413B golden and
 independent48-frame fidelity PASS. Stops before recovery. Both static files
