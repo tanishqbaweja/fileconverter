@@ -8,9 +8,9 @@ import path from "node:path";
 import { transform } from "esbuild";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { makeVp9OriginalStartupSource } from "./lib/vp9-original-startup-recipe.mjs";
-assert.ok(process.argv.length === 2 || (process.argv.length === 3 && ["2", "3", "4", "5","6","7", "--check-only"].includes(process.argv[2])) ||
-  (process.argv.length === 4 && ["2", "3", "4", "5","6","7"].includes(process.argv[2]) && process.argv[3] === "--check-only"));
-const attempt = ["2", "3", "4", "5","6","7"].includes(process.argv[2]) ? Number(process.argv[2]) : 1, suffix = attempt === 1 ? "" : "-attempt" + attempt, checkOnly = process.argv.includes("--check-only");
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && ["2", "3", "4", "5","6","7","8", "--check-only"].includes(process.argv[2])) ||
+  (process.argv.length === 4 && ["2", "3", "4", "5","6","7","8"].includes(process.argv[2]) && process.argv[3] === "--check-only"));
+const attempt = ["2", "3", "4", "5","6","7","8"].includes(process.argv[2]) ? Number(process.argv[2]) : 1, suffix = attempt === 1 ? "" : "-attempt" + attempt, checkOnly = process.argv.includes("--check-only");
 const tokenQualificationAttempt=attempt===7?(process.env.WITHIN_VP9_TOKEN_QUALIFICATION_ATTEMPT??"1"):"1";
 assert.ok(["1","2"].includes(tokenQualificationAttempt));
 const root = path.resolve(import.meta.dirname, ".."), sha = value => createHash("sha256").update(value).digest("hex");
@@ -26,10 +26,10 @@ if (checkOnly) console.log(JSON.stringify({ reversible: recipe.reversible, gener
 else {
   if (attempt >= 3) {
     const native = JSON.parse(await readFile(path.join(root, "evidence/2026-11-06-vp9-original-width-native-" + nativeRunId + ".json")));
-    assert.equal(native.nativeContract.engine,attempt===7?"private-vp9-token-context":attempt===6?"private-vp9-lazy-utility":attempt === 5 ? "private-vp9-allocation-diagnostic" : attempt === 4 ? "private-vp9-realtime-temporal" : "private-vp9-original-width"); assert.equal(native.nativeContract.candidate.privateVp9ExplicitWidth, 1920);
+    assert.equal(native.nativeContract.engine,attempt===8?"private-vp9-token-packed":attempt===7?"private-vp9-token-context":attempt===6?"private-vp9-lazy-utility":attempt === 5 ? "private-vp9-allocation-diagnostic" : attempt === 4 ? "private-vp9-realtime-temporal" : "private-vp9-original-width"); assert.equal(native.nativeContract.candidate.privateVp9ExplicitWidth, 1920);
     assert.equal(native.nativeContract.candidate.memoryLimitsRaised, false); assert.equal(native.publicAcceptance, false);
     if (attempt >= 4) {
-      const qualification = JSON.parse(await readFile(path.join(root, "evidence/2026-11-06-vp9-" + (attempt===7?"token":attempt===6?"lazy":attempt === 5 ? "allocation" : "temporal") + "-qualification-" + nativeRunId + (tokenQualificationAttempt==="2"?"-attempt2":"") + ".json")));
+      const qualification = JSON.parse(await readFile(path.join(root, "evidence/2026-11-06-vp9-" + (attempt===8?"token-packed":attempt===7?"token":attempt===6?"lazy":attempt === 5 ? "allocation" : "temporal") + "-qualification-" + nativeRunId + (tokenQualificationAttempt==="2"?"-attempt2":"") + ".json")));
       assert.equal(qualification.status, "passed-private-vp9-recovery-sequence-not-large-or-public-acceptance");
       assert.deepEqual(qualification.failures, []); assert.equal(qualification.privateCpuOverride.runId, Number(nativeRunId));
       assert.equal(qualification.independentFidelity.passed, true); assert.equal(qualification.recovery.passed, true);
@@ -47,6 +47,13 @@ else {
         assert.equal(native.nativeContract.candidate.tokenContext.tokenCapacityChanged,false);
         assert.equal(native.nativeContract.candidate.tokenContext.pixelAlgorithmsChanged,false);
         assert.equal(qualification.temporalAllocationGuard.tokenContextStorage,true);
+      }
+      if(attempt===8) {
+        assert.equal(native.nativeContract.candidate.tokenPacked.tokenCapacityChanged,false);
+        assert.equal(native.nativeContract.candidate.tokenPacked.entropyTokenValuesChanged,false);
+        assert.equal(native.nativeContract.candidate.tokenPacked.layout.highBitDepth,0);
+        assert.equal(native.nativeContract.candidate.tokenPacked.layout.packedRecordBytes,4);
+        assert.equal(qualification.temporalAllocationGuard.tokenPackedStorage,true);
       }
     }
   }

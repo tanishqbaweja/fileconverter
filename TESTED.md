@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-06 native12/run42243450950/db5beecd TERMINAL FAILURE before SDK/native
+compilation:2stale wiring-string tests expected old engine/options without
+tokenPacked. Both cleanup steps PASS. Failure/diagnosis retained, no redispatch.
+Corrected assertions require new explicit packed variant AND all old variants;
+no fidelity/memory/source authentication gate weakened. Exact CI batch now51local
+checks PASS/0skip;24browser-recipe/startup controls PASS including packed control
+and protected-original8. Initial packed control now failfast before app if the
+same strict blank baseline is unavailable, no threshold/window extension.
+NEXT changed native13 then browser control only with authenticated final4B layout.
+
 2026-11-06 packed-token native integration PREPARED. Separate private engine,
 exact final packed source copies, actual configured Emscripten layout/probe,
 authenticated source-domain audit and552960mock controls. The six-byte ancestor

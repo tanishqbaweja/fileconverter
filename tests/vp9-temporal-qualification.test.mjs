@@ -66,3 +66,14 @@ test("single baseline retry stops before app without the unchanged strict blank 
   const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-temporal-qualification.mjs","--token-context","--retry-baseline","--check-only"],
     {windowsHide:true,timeout:30000,maxBuffer:65536});assert.equal(JSON.parse(stdout).browserLaunched,false);
 });
+test("packed-token control has distinct native/report identity, same byte-exact golden and initial strict baseline before app",async()=>{
+  const options={allocationDiagnostics:true,lazyUtility:true,tokenContext:true,tokenPacked:true};
+  assert.throws(()=>makeVp9TemporalQualificationSource(source,"42226266102",options),/own compiled tool/);
+  const r=makeVp9TemporalQualificationSource(source,"12345678",options);let reverse=r.generated;
+  for(const [before,after]of r.edits.toReversed())reverse=reverse.replace(after,before);assert.equal(reverse,source);
+  assert.ok(r.generated.includes("vp9-token-packed-qualification-12345678.json"));assert.ok(r.generated.includes("tokenPackedStorage: true"));
+  assert.ok(r.generated.includes("Stable blank required before loading the app"));assert.ok(r.generated.includes(VP9_TEMPORAL_EXPECTED_OUTPUT_SHA256));
+  assert.equal(r.preservesStrictFidelityAndRecoveryGates,true);assert.equal(r.changesBaselineFormulaOrLimit,false);assert.equal(r.originalOrLargeFileAcceptance,false);
+  const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-temporal-qualification.mjs","--token-packed","--check-only"],
+    {windowsHide:true,timeout:30000,maxBuffer:65536});assert.equal(JSON.parse(stdout).browserLaunched,false);
+});

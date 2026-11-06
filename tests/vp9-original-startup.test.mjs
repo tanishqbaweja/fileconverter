@@ -156,10 +156,21 @@ test("seventh original attempt requires new token core plus golden qualification
   assert.ok(result.generated.includes('selectExactLocalOriginal(page, fixture)'));
   assert.equal(result.changesMemoryFormulaOrLimit,false);assert.equal(result.changesBaselineWindowOrThreshold,false);
   assert.equal(result.startupOnly,true);assert.equal(result.fullFileAcceptance,false);
-  assert.throws(()=>makeVp9OriginalStartupSource(source,root,8,"12345678"));
+  assert.throws(()=>makeVp9OriginalStartupSource(source,root,9,"12345678"));
   const driver=await readFile(new URL("../scripts/test-vp9-original-startup.mjs",import.meta.url),"utf8");
   assert.ok(driver.includes("qualification.temporalAllocationGuard.tokenContextStorage,true"));
   assert.ok(driver.includes("native.nativeContract.candidate.tokenContext.tokenCapacityChanged,false"));
   const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-original-startup.mjs","7","--check-only"],
     {cwd:root,windowsHide:true,timeout:30000,maxBuffer:65536});assert.equal(JSON.parse(stdout).browserLaunched,false);
+});
+test("eighth original attempt requires distinct packed token build and strict golden recovery control without altering original settings",async()=>{
+  assert.throws(()=>makeVp9OriginalStartupSource(source,root,8,"42226266102"),/distinct compiled tool/);
+  const r=makeVp9OriginalStartupSource(source,root,8,"12345678");assert.ok(r.generated.includes("vp9-original-cpu-startup-attempt8.json"));
+  assert.ok(r.generated.includes("selectExactLocalOriginal(page, fixture)"));assert.equal(r.changesMemoryFormulaOrLimit,false);
+  assert.equal(r.changesBaselineWindowOrThreshold,false);assert.equal(r.fullFileAcceptance,false);
+  const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-original-startup.mjs","8","--check-only"],
+    {cwd:root,windowsHide:true,timeout:30000,maxBuffer:65536});assert.equal(JSON.parse(stdout).browserLaunched,false);
+  const driver=await readFile(new URL("../scripts/test-vp9-original-startup.mjs",import.meta.url),"utf8");
+  assert.ok(driver.includes("qualification.temporalAllocationGuard.tokenPackedStorage,true"));
+  assert.ok(driver.includes("native.nativeContract.candidate.tokenPacked.layout.packedRecordBytes,4"));
 });

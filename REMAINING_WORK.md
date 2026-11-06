@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-06 native12 failed PRECOMPILE only (two stale source-wiring assertions),
+both cleanup steps passed. Corrected assertions verified with exact51-test local
+CI batch, plus24browser/startup recipe tests PASS. Native packed token build still
+pending; prepared distinct native13 and strict initial-baseline packed control /
+protected-original8. No browser result, actual savings, speed or public acceptance
+inferred from source/layout/mock proof. Failed attempt12 remains recorded.
+
 2026-11-06 packed-token build/collector integration ready,34focused controls/lint/
 diff PASS. Distinct engine/final vendor source/probe authentication; ancestor
 six-byte layout explicitly not presented as final. NEXT isolated source build12,

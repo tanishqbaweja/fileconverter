@@ -1,0 +1,22 @@
+{
+  "runId": 42243450950,
+  "head": "db5beecdd394b73128b01027e4bba22ddfc20016",
+  "status": "failed-in-precompile-source-wiring-tests",
+  "sourceTerminal": "evidence/2026-11-06-vp9-original-width-build-42243450950-terminal.json",
+  "nativeCompilationStarted": false,
+  "sdkInstallationStarted": false,
+  "failures": [
+    {
+      "test": "tests/vp9-stream-duration-recipe.test.mjs",
+      "cause": "Source string assertions still expected engine-selection expression and recipe options without tokenPacked."
+    },
+    {
+      "test": "tests/vp9-temporal-lifetime.test.mjs",
+      "cause": "Source string assertions still expected old recipe-option and engine-selection expressions."
+    }
+  ],
+  "correction": "Update wiring assertions to require the explicit new packed variant while retaining all prior variants, recipe/authentication/codec/memory checks. Run exact CI test batch locally before a changed build.",
+  "cleanupStepsPassed": true,
+  "browserConversions": 0,
+  "publicAcceptance": false
+}
