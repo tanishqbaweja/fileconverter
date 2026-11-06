@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 distinct token strict retry PASS at234.2734375MiB/238valid0missing,
+all four byte-identical outputs/fidelity/timing/metadata and adverse recovery.
+First baseline failure remains failed/preserved; retry uses same gate BEFORE app.
+All disposable data cleaned/original unchanged; obsolete lazy tool11.5MB retired
+with exact identity/hash proof and current source preimages retained. NEXT original7
+using explicit passed retry, fixed full input/settings/limits. No measured speed
+gain, full-original/scaling/public or broader-spec completion inferred.
+
 2026-11-06 first actual token browser run produces correct bit-exact48frame output
 and SSIM.993273, but FAILS because clean blank baseline unavailable; incremental
 memoryNULL, recovery sequence not reached. Cleanup/original integrity pass. Original7

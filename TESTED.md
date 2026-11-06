@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-06 token strict retry at91c10b97 PASS, original failed baseline receipt
+preserved. Same baseline detector/window/threshold passes before app; blank358494208,
+completeChrome peak604147712=>234.2734375MiB/238valid0missing. Initial+3recovery
+99413B outputs byte-identicalSHA82bd...82267b, all48PTS/durations/2s/8metadata/
+SSIM.993273/default41666666ns gates PASS. Both real cancellation-after-write and
+injected write failure leave0B partial, abort/cleanup/recover. All outputs/OPFS/
+profile/runtime/stage and3owned roots removed, original SHA unchanged,0forbidden
+requests. Raw635016B archived to283969B total. Retired obsolete lazy static tool
+31files/11505667B after exact identity/hash checks; source preimages remain in
+current token tool, recovery metadata retained. Small3.6395s elapsed includes
+asset transport and fresh-session differences: NOT speed/causal memory savings.
+NEXT original7 with passed retry selected explicitly; same full original File/
+1920x804/24fps/4Mbps/oneCPU/250MiB/96MiB. No full-original/scaling/public acceptance.
+
 2026-11-06 token actual first browser run at3e2779e8 FAILED unchanged blank
 baseline gate:18blank samples show GPU/startup-renderer private-memory changes,
 no qualifying5sample/8s/2% window before30s. Blank/incremental memory remainNULL;

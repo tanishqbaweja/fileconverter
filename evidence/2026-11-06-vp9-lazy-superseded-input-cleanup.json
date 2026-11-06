@@ -1,0 +1,19 @@
+{
+  "target": "work/vp9-duration-input-42218018139",
+  "ownedRunId": 42218018139,
+  "files": 31,
+  "bytes": 11505667,
+  "verifiedExactOwnedContents": true,
+  "replacementRunId": 42226266102,
+  "replacementStrictSmallBrowserPassed": true,
+  "sourcePreimagesRetainedWithReplacement": true,
+  "recovery": {
+    "artifactId": 13501998409,
+    "artifactExpiresAt": "2026-11-07T12:37:20Z",
+    "pinnedSourceRebuildHead": "49ab50edfa03a65a4401afb53c5d9030bb497c88",
+    "localCopyRetained": false
+  },
+  "userMediaReadOrRemoved": false,
+  "removed": true,
+  "publicAcceptance": false
+}
