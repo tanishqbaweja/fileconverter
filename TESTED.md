@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-11-06 HTTP-only small control at5d99993c FAILS wholeChrome264.25390625MiB
+(blank349478912/peak626569216/21valid0missing), despite exact99413B golden and
+independent48-frame fidelity PASS. Stops before recovery. Both static files
+served through real production HTTP, hash/MIME/security/cache verified, no body
+injection; browser root only+1359872B but renderer+222928896B diagnostic delta.
+Retained failure trace4939971B contains COMPLETE5561904B+9877633B Wasm response
+bodies; no user-media bodies. Exact private cost of trace copying UNPROVEN.
+All converted files/OPFS/profile/runtime/both static stages/3owned roots removed,
+original unchanged/0forbidden requests. Raw301019B archived losslessly to126845B.
+NEXT DISTINCT bounded trace control: retain screenshot/API traces plus32-request
+metadata, omit DOM/network BODY snapshots. Every actual golden/fidelity/recovery/
+cleanup/all-process same-blank250MiB gate/native/input/encoding setting unchanged.
+DOM snapshots explicitly not covered by this engine test; manual/UI coverage
+remains unverified. Original8 and first HTTP failure remain failed, never overwritten.
+
 2026-11-06 DISTINCT HTTP engine-delivery control PREPARED. Same authenticated
 native42244170876/static bytes, conversion inputs/settings/blank baseline/formula/
 250MiB unchanged. New owned random static stage under dist/client/engines, two

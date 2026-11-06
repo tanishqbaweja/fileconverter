@@ -1,0 +1,140 @@
+{
+  "recordedAt": "2026-11-06T16:14:40.176Z",
+  "sourceReport": "evidence/2026-11-06-vp9-token-packed-http-qualification-42244170876.json",
+  "executedHead": "5d99993c318d3c53cae28b32ca168161d35090d7",
+  "scope": "First HTTP-only delivery failure localization and exact trace contents, NOT accepted optimization or proven native allocation owner",
+  "primary": {
+    "blankPrivateBytes": 349478912,
+    "peakPrivateBytes": 626569216,
+    "incrementalPrivateMiB": 264.25390625,
+    "validSamples": 21,
+    "unavailableSamples": 0,
+    "allPeakProcessBytesIncluded": true
+  },
+  "processes": [
+    {
+      "pid": 28368,
+      "parentPid": 34848,
+      "createdAt": "2026-11-06T16:07:50.1697121Z",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 276275200,
+      "loadedPrivateBytes": 53346304,
+      "deltaFromLoadedBytes": 222928896
+    },
+    {
+      "pid": 36368,
+      "parentPid": 34848,
+      "createdAt": "2026-11-06T16:07:46.6320584Z",
+      "typeFromSameBirthLoadedCensus": "gpu-process",
+      "peakPrivateBytes": 147832832,
+      "loadedPrivateBytes": 148570112,
+      "deltaFromLoadedBytes": -737280
+    },
+    {
+      "pid": 34848,
+      "parentPid": 38788,
+      "createdAt": "2026-11-06T16:07:46.4437961Z",
+      "typeFromSameBirthLoadedCensus": "browser",
+      "peakPrivateBytes": 71163904,
+      "loadedPrivateBytes": 69804032,
+      "deltaFromLoadedBytes": 1359872
+    },
+    {
+      "pid": 42624,
+      "parentPid": 34848,
+      "createdAt": "2026-11-06T16:07:46.7694737Z",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 44990464,
+      "loadedPrivateBytes": 44990464,
+      "deltaFromLoadedBytes": 0
+    },
+    {
+      "pid": 4680,
+      "parentPid": 34848,
+      "createdAt": "2026-11-06T16:07:47.1390719Z",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 23449600,
+      "loadedPrivateBytes": 23449600,
+      "deltaFromLoadedBytes": 0
+    },
+    {
+      "pid": 31616,
+      "parentPid": 34848,
+      "createdAt": "2026-11-06T16:07:50.5664384Z",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 21635072,
+      "loadedPrivateBytes": 21635072,
+      "deltaFromLoadedBytes": 0
+    },
+    {
+      "pid": 25036,
+      "parentPid": 34848,
+      "createdAt": "2026-11-06T16:08:13.5709109Z",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 15544320,
+      "loadedPrivateBytes": 15544320,
+      "deltaFromLoadedBytes": 0
+    },
+    {
+      "pid": 42400,
+      "parentPid": 34848,
+      "createdAt": "2026-11-06T16:07:46.6409381Z",
+      "typeFromSameBirthLoadedCensus": "utility",
+      "peakPrivateBytes": 14655488,
+      "loadedPrivateBytes": 14913536,
+      "deltaFromLoadedBytes": -258048
+    },
+    {
+      "pid": 27388,
+      "parentPid": 34848,
+      "createdAt": "2026-11-06T16:07:46.6749651Z",
+      "typeFromSameBirthLoadedCensus": "utility",
+      "peakPrivateBytes": 8302592,
+      "loadedPrivateBytes": 8302592,
+      "deltaFromLoadedBytes": 0
+    },
+    {
+      "pid": 16180,
+      "parentPid": 34848,
+      "createdAt": "2026-11-06T16:07:46.4673640Z",
+      "typeFromSameBirthLoadedCensus": "crashpad-handler",
+      "peakPrivateBytes": 2719744,
+      "loadedPrivateBytes": 2719744,
+      "deltaFromLoadedBytes": 0
+    }
+  ],
+  "actualHttpEngineHashesAndHeadersPassed": true,
+  "outputBitExact": true,
+  "independentInitialFidelityPassed": true,
+  "recoveryNotRun": true,
+  "trace": {
+    "path": "output\\playwright\\2026-11-06-vp9-token-packed-http-qualification-42244170876-failure.zip",
+    "bytes": 4939971,
+    "sha256": "94c1b1b2ede53707128c4a58f134595d8e1530aade87f3d7d36e85b788de073e",
+    "wasmBodies": [
+      {
+        "name": "resources/c1761e8bb479393ca89cc3fa5fdea79d135478a4.wasm",
+        "bytes": 5561904,
+        "sha256": "6f4457e1e292ee016c51a76ff7acbd51b6541c2183e4ebc7e9e31b23d6878c26"
+      },
+      {
+        "name": "resources/3c6b8dfd9cd803cb72d817f03d5457c9b5971b6e.wasm",
+        "bytes": 9877633,
+        "sha256": "436db67db8c5c21aa862c4fb71de6fc1e2bc1344ee31c8beb084b102065118c5"
+      }
+    ],
+    "wholeEngineBodiesCaptured": true,
+    "userMediaBodiesCaptured": false
+  },
+  "installedTracingTypeDoc": "snapshots: true captures DOM snapshots on actions and records network activity; these static response bodies are present in the actual retained trace.",
+  "exactTraceOverheadPrivateBytes": null,
+  "wholeFailureRemainsFailed": true,
+  "nextChangedControl": "Keep screenshot/API traces and bounded32-request metadata, omit DOM/network response-body snapshots. Keep all conversion checks, native/input/settings, blank baseline, all Chrome processes and250MiB unchanged. Retain both failures.",
+  "originalUnchanged": true,
+  "disposableDataRemoved": true,
+  "processRootsAbsent": true,
+  "forbiddenRequests": 0,
+  "fullOriginalConverted": false,
+  "speedGainProven": false,
+  "publicAcceptance": false
+}

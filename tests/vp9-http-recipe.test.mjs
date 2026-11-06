@@ -24,4 +24,13 @@ for(const kind of ["qualification","original"]) {
     const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-http-delivery.mjs",...(kind==="original"?["--original"]:[]),"--check-only"],
       {cwd:root,windowsHide:true,timeout:30000,maxBuffer:65536});const r=JSON.parse(stdout);assert.equal(r.browserLaunched,false);assert.equal(r.recipeWritten,false);assert.equal(r.kind,kind);
   });
+  test("bounded trace "+kind+" retains screenshots/API/32network metadata and all native/memory/settings gates with exact reversal",async()=>{
+    const r=makeVp9HttpSource(source,root,runId,kind,{boundedTrace:true});let reversed=r.generated;
+    for(const [before,after]of r.edits.toReversed())reversed=reversed.replace(after,before);assert.equal(reversed,source);
+    assert.ok(r.generated.includes("screenshots: true, snapshots: false"));assert.ok(r.generated.includes("networkMetadata.length===32"));
+    assert.ok(r.generated.includes("domSnapshots:false,networkResponseBodies:false"));assert.equal(r.changesMemoryFormulaOrLimit,false);
+    assert.equal(r.changesBaselineWindowOrThreshold,false);assert.equal(r.changesNativeBytes,false);assert.equal(r.changesInputOrEncodingSettings,false);
+    const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-http-delivery.mjs",...(kind==="original"?["--original"]:[]),"--bounded-trace","--check-only"],
+      {cwd:root,windowsHide:true,timeout:30000,maxBuffer:65536});assert.equal(JSON.parse(stdout).browserLaunched,false);
+  });
 }

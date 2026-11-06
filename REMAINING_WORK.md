@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 real HTTP static engine hashes/headers and completed initial conversion
+fidelity pass, but HTTP-only test FAILS wholeChrome264.25390625MiB before recovery.
+Renderer, not browser root, now dominates. Failure trace demonstrably duplicates
+both full static Wasm bodies; exact memory cost unproven. NEXT bounded metadata/
+screenshot/API tracing control with all actual conversion/memory/cleanup gates
+unchanged. No DOM/manual-UI coverage inferred; original9 remains gated. All owned
+disposable data removed/source unchanged. Both failures preserved, broad scope open.
+
 2026-11-06 normal HTTP candidate delivery implemented privately; same native/
 input/settings/all-process same-blank250MiB gate. Exact engine hashes and production
 headers checked before browser launch; no engine preload in blank baseline or
