@@ -1,0 +1,138 @@
+{
+  "recordedAt": "2026-11-06T15:56:42.979Z",
+  "sourceReport": "evidence/2026-11-06-vp9-original-cpu-startup-attempt8.json",
+  "executedHead": "e25dc5205020adfa61dc2faffc068e843e5bcb67",
+  "nativeRunId": 42244170876,
+  "scope": "Original packed-token primary failure/process localization plus static transport source inspection, NOT accepted optimization or exact allocation-stack attribution",
+  "primary": {
+    "blankPrivateBytes": 344428544,
+    "peakWholeTreePrivateBytes": 609775616,
+    "incrementalPrivateMiB": 253.0546875,
+    "excessBytes": 3203072,
+    "maximumIncrementalMiB": 250,
+    "validSamples": 38,
+    "unavailableSamples": 0,
+    "allPeakProcessBytesIncluded": true
+  },
+  "processes": [
+    {
+      "pid": 40624,
+      "parentPid": 34240,
+      "createdAt": "2026-11-06T15:50:35.3755856Z",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 241332224,
+      "loadedPrivateBytes": 49561600,
+      "deltaFromLoadedBytes": 191770624
+    },
+    {
+      "pid": 22924,
+      "parentPid": 34240,
+      "createdAt": "2026-11-06T15:50:31.8644021Z",
+      "typeFromSameBirthLoadedCensus": "gpu-process",
+      "peakPrivateBytes": 148971520,
+      "loadedPrivateBytes": 149045248,
+      "deltaFromLoadedBytes": -73728
+    },
+    {
+      "pid": 34240,
+      "parentPid": 32808,
+      "createdAt": "2026-11-06T15:50:31.7060773Z",
+      "typeFromSameBirthLoadedCensus": "browser",
+      "peakPrivateBytes": 100184064,
+      "loadedPrivateBytes": 69681152,
+      "deltaFromLoadedBytes": 30502912
+    },
+    {
+      "pid": 22692,
+      "parentPid": 34240,
+      "createdAt": "2026-11-06T15:50:31.9586637Z",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 35573760,
+      "loadedPrivateBytes": 43970560,
+      "deltaFromLoadedBytes": -8396800
+    },
+    {
+      "pid": 23540,
+      "parentPid": 34240,
+      "createdAt": "2026-11-06T15:50:35.7770687Z",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 21639168,
+      "loadedPrivateBytes": 21639168,
+      "deltaFromLoadedBytes": 0
+    },
+    {
+      "pid": 35084,
+      "parentPid": 34240,
+      "createdAt": "2026-11-06T15:50:32.3162700Z",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 20717568,
+      "loadedPrivateBytes": 20717568,
+      "deltaFromLoadedBytes": 0
+    },
+    {
+      "pid": 8252,
+      "parentPid": 34240,
+      "createdAt": "2026-11-06T15:51:00.2292670Z",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 15511552,
+      "loadedPrivateBytes": 15511552,
+      "deltaFromLoadedBytes": 0
+    },
+    {
+      "pid": 42932,
+      "parentPid": 34240,
+      "createdAt": "2026-11-06T15:50:31.8730255Z",
+      "typeFromSameBirthLoadedCensus": "utility",
+      "peakPrivateBytes": 15007744,
+      "loadedPrivateBytes": 15077376,
+      "deltaFromLoadedBytes": -69632
+    },
+    {
+      "pid": 25852,
+      "parentPid": 34240,
+      "createdAt": "2026-11-06T15:50:31.9017983Z",
+      "typeFromSameBirthLoadedCensus": "utility",
+      "peakPrivateBytes": 8298496,
+      "loadedPrivateBytes": 8294400,
+      "deltaFromLoadedBytes": 4096
+    },
+    {
+      "pid": 9280,
+      "parentPid": 34240,
+      "createdAt": "2026-11-06T15:50:31.7456225Z",
+      "typeFromSameBirthLoadedCensus": "crashpad-handler",
+      "peakPrivateBytes": 2539520,
+      "loadedPrivateBytes": 2678784,
+      "deltaFromLoadedBytes": -139264
+    }
+  ],
+  "native": {
+    "wasmHeapBytes": 100663296,
+    "heapMaximumBytes": 100663296,
+    "explicitCpuOnly": true,
+    "actualEncodedFrames": null,
+    "whyFrameCountNull": "CPU terminal does not expose a validated encoded-frame counter; 485B mux header is not proof of frames or zero frames.",
+    "outputBytesBeforeAbort": 485,
+    "partialOutputBytes": 0,
+    "allocationFailureSampleAvailable": false
+  },
+  "transportInspection": {
+    "responderSha256": "a578db040e4cd0fda9f3dda3e0d0db5e2c2f21790b329dab9adc7ac298054ac9",
+    "installedPlaywrightCoreSha256": "9393fa79e1c67c74edc26b610d65a4f7ed73d345a762465cc88340a33a2454ac",
+    "staticWasmBytes": 9877633,
+    "privateCandidateDeliveredViaDevtoolsFulfill": true,
+    "installedFulfillPathReadsStaticFileAndBase64Encodes": true,
+    "thisIsStaticEngineNotUserFileCopy": true,
+    "exactRootProcessAllocationOwner": null,
+    "hypothesis": "Browser root increases 30502912B during this test. Static Wasm delivery via DevTools/base64 may add harness overhead; this is not yet proof of its share of private memory.",
+    "nextChangedControl": "Deliver same authenticated private static module/Wasm over existing production HTTP server, redirect only URLs (no response body in DevTools). Preserve all processes, same blank baseline, full input/settings and exact250MiB gate. Validate headers/bytes/fidelity/recovery before new original run."
+  },
+  "loadedDeltasDiagnosticOnly": true,
+  "fullOriginalConverted": false,
+  "independentFullFidelityPassed": false,
+  "speedGainProven": false,
+  "publicAcceptance": false,
+  "sourceUnchanged": true,
+  "disposableDataRemoved": true,
+  "forbiddenRequests": 0
+}

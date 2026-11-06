@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+2026-11-06 checkpoint98distinct focused build/source/ABI/artifact/browser-recipe/
+retained-evidence regressions PASS/0skip, all affected lint/diff PASS. Actual
+original8 remains FAILED253.0546875MiB despite passing small control. No live
+CI/browser/test handle remains; this cycle's disposable data removed. Reusable
+golden/six-byte/four-byte static tools remain for controlled comparisons, not
+converted user-file copies. Next normal-HTTP candidate delivery comparison must
+retain the exact full-tree metric and validate actual headers/bytes first.
+
+2026-11-06 packed-token actual ORIGINAL8 ate25dc520 FAILS primary wholeChrome:
+blank344428544/peak609775616=>253.0546875MiB/38valid0missing,3,203,072B above250.
+Untouched2958573265B/1920x804/24fps/4Mbps, CPU-only/fixed96MiB maximum; safety stop
+after~4s,485B mux header only, aborted partial0B. No allocation-failure sample,
+encoded-frame count UNAVAILABLE (not0); no valid completed output/full fidelity.
+All10peak processes counted. Renderer241332224B/loaded49561600; browser root
+100184064B/loaded69681152 (+30502912B) diagnostic only. Installed Playwright path
+fulfill reads/base64-encodes static9.88MB Wasm; this is NOT user-media buffering.
+Its share of root memory is UNPROVEN. NEXT normal same-server HTTP delivery of
+same authenticated candidate (URL redirect only, no DevTools response body),
+strict small headers/fidelity/recovery then distinct original run, no unchanged
+replay/process exclusion/forcedGC/limit change. All outputs/OPFS/profile/runtime/
+stage/3owned roots removed; protected original unchanged,0forbidden requests.
+Raw291862B archived losslessly to101580B total. Failure remains FAILED.
+
 2026-11-06 actual packed-token native42244170876 strict browser control at959a6437
 PASS. Initial+3completed99413B outputs byte-identical to unmodified golden82bdfd66;
 all48frames/default41666666ns/2s/zeroPTS-duration errors/8metadata equal and

@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-11-06 checkpoint98distinct focused tests/affected lint/diff PASS; actual
+original8 still FAILED253.0546875MiB. No live build/browser/test, disposable data
+removed. NEXT same-candidate HTTP delivery control, not native rebuild or unchanged
+original replay. Full-original correctness/scaling/speed/release and all broader
+family requirements remain incomplete; goal stays active.
+
+2026-11-06 original8 with actual4B token core FAILS wholeChrome253.0546875MiB,
+3,203,072B above unchanged250MiB. Safety-cancelled/header-only/0B aborted partial;
+no verified frame count/full fidelity. All10processes counted/all owned disposable
+data gone/protected original unchanged. Browser root+30502912B diagnostic delta;
+current static engine delivery uses DevTools/base64. Its private-memory cost is
+not yet attributed. NEXT test same exact native bytes via production HTTP rather
+than body injection, retaining all processes/input/settings/baseline/limits.
+New transport must pass strict small gates before a distinct original run.
+
 2026-11-06 packed-token strict small browser qualification PASS: four byte-exact
 golden outputs, independent48-frame timing/metadata/SSIM.993273 and actual adverse
 recovery/cleanup, wholeChrome235.13671875MiB/247valid0missing. Protected original
