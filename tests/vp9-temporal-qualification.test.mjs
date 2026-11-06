@@ -45,3 +45,15 @@ test("lazy utility control requires a distinct lazy build and keeps byte-exact r
   const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-temporal-qualification.mjs","--lazy-utility","--check-only"],
     {windowsHide:true,timeout:30000,maxBuffer:65536});assert.equal(JSON.parse(stdout).browserLaunched,false);
 });
+test("token storage control rejects old lazy native ID and retains strict identical golden/fidelity/recovery gates",async()=>{
+  const options={allocationDiagnostics:true,lazyUtility:true,tokenContext:true};
+  assert.throws(()=>makeVp9TemporalQualificationSource(source,"42218018139",options),/own compiled tool/);
+  assert.throws(()=>makeVp9TemporalQualificationSource(source,"12345678",{tokenContext:true}));
+  const result=makeVp9TemporalQualificationSource(source,"12345678",options);
+  assert.ok(result.generated.includes("2026-11-06-vp9-token-qualification-12345678.json"));
+  assert.ok(result.generated.includes("tokenContextStorage: true"));
+  assert.ok(result.generated.includes(VP9_TEMPORAL_EXPECTED_OUTPUT_SHA256));assert.equal(result.preservesStrictFidelityAndRecoveryGates,true);
+  assert.equal(result.originalOrLargeFileAcceptance,false);assert.equal(result.changesBaselineFormulaOrLimit,false);
+  const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-temporal-qualification.mjs","--token-context","--check-only"],
+    {windowsHide:true,timeout:30000,maxBuffer:65536});assert.equal(JSON.parse(stdout).browserLaunched,false);
+});

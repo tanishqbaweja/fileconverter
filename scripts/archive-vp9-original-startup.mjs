@@ -4,14 +4,14 @@ import { access, readFile, writeFile } from "node:fs/promises";
 import { gzipSync, gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 import path from "node:path";
-const selected = ["3", "4", "5","6"].includes(process.argv[2]) ? process.argv[2] : null;
+const selected = ["3", "4", "5","6","7"].includes(process.argv[2]) ? process.argv[2] : null;
 assert.ok(process.argv.length === 2 || (process.argv.length === 3 && selected));
 const root = path.resolve(import.meta.dirname, ".."), prefix = "evidence/2026-11-06-vp9-original-cpu-startup", output = path.join(root, prefix + (selected ? "-attempt" + selected + "-archive.json" : "-archives.json"));
 const sha = value => createHash("sha256").update(value).digest("hex"); await assert.rejects(access(output), { code: "ENOENT" });
 const prepared = [];
 for (const suffix of selected ? ["-attempt" + selected] : ["", "-attempt2"]) {
   const file = prefix + suffix + ".json", bytes = await readFile(path.join(root, file)); assert.ok(bytes.length <= 8388608);
-  const report = JSON.parse(bytes); assert.equal(report.status, "failed-private-vp9-browser-smoke");
+  const report = JSON.parse(bytes); assert.ok(["failed-private-vp9-browser-smoke","passed-private-original-startup-only-not-completed-transcode"].includes(report.status));
   assert.equal(report.ownedRuntimeRemoved, true); assert.ok(report.finishedAt); assert.equal(report.rawArchive, undefined);
   const archive = prefix + suffix + ".raw.json.gz"; await assert.rejects(access(path.join(root, archive)), { code: "ENOENT" });
   const packed = gzipSync(bytes, { level: 9 }); assert.deepEqual(gunzipSync(packed, { maxOutputLength: 8388608 }), bytes);

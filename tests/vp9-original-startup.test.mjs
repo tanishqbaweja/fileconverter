@@ -120,3 +120,18 @@ test("sixth original attempt requires lazy utility core and preserves original s
   const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-original-startup.mjs","6","--check-only"],
     {cwd:root,windowsHide:true,timeout:30000,maxBuffer:65536});assert.equal(JSON.parse(stdout).browserLaunched,false);
 });
+test("seventh original attempt requires new token core plus golden qualification and keeps full protected original and limits",async()=>{
+  for(const id of ["42122918540","42129383089","42135708757","42218018139"])
+    assert.throws(()=>makeVp9OriginalStartupSource(source,root,7,id),/distinct compiled tool/);
+  const result=makeVp9OriginalStartupSource(source,root,7,"12345678");
+  assert.ok(result.generated.includes("vp9-original-cpu-startup-attempt7.json"));
+  assert.ok(result.generated.includes('selectExactLocalOriginal(page, fixture)'));
+  assert.equal(result.changesMemoryFormulaOrLimit,false);assert.equal(result.changesBaselineWindowOrThreshold,false);
+  assert.equal(result.startupOnly,true);assert.equal(result.fullFileAcceptance,false);
+  assert.throws(()=>makeVp9OriginalStartupSource(source,root,8,"12345678"));
+  const driver=await readFile(new URL("../scripts/test-vp9-original-startup.mjs",import.meta.url),"utf8");
+  assert.ok(driver.includes("qualification.temporalAllocationGuard.tokenContextStorage,true"));
+  assert.ok(driver.includes("native.nativeContract.candidate.tokenContext.tokenCapacityChanged,false"));
+  const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-original-startup.mjs","7","--check-only"],
+    {cwd:root,windowsHide:true,timeout:30000,maxBuffer:65536});assert.equal(JSON.parse(stdout).browserLaunched,false);
+});

@@ -5,11 +5,12 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 const sha = value => createHash("sha256").update(value).digest("hex");
 export function makeVp9OriginalStartupSource(source, root, attempt = 1, nativeRunId = "42020605269") {
-  assert.ok(path.isAbsolute(root)); assert.ok([1, 2, 3, 4, 5,6].includes(attempt));
+  assert.ok(path.isAbsolute(root)); assert.ok([1, 2, 3, 4, 5,6,7].includes(attempt));
   assert.match(nativeRunId, /^\d{8,14}$/); if (attempt >= 3) assert.notEqual(nativeRunId, "42020605269", "Original-width attempt requires a distinct compiled core");
   if (attempt === 4) assert.notEqual(nativeRunId, "42122918540", "Guarded attempt cannot replay the unmodified vendor build");
   if (attempt === 5) assert.ok(!["42122918540", "42129383089"].includes(nativeRunId), "Diagnostic original requires a distinct compiled diagnostic tool");
   if(attempt===6)assert.ok(!["42122918540","42129383089","42135708757"].includes(nativeRunId),"Lazy utility original requires a distinct compiled tool");
+  if(attempt===7)assert.ok(!["42122918540","42129383089","42135708757","42218018139"].includes(nativeRunId),"Token context original requires a distinct compiled tool");
   const suffix = attempt === 1 ? "" : "-attempt" + attempt, edits = [];
   const add = (before, after) => { assert.equal(source.split(before).length, 2, before.slice(0, 160)); edits.push([before, after]); source = source.replace(before, after); };
   const parentSha256 = sha(source), helper = pathToFileURL(path.join(root, "scripts/lib/vp9-original-startup.mjs")).href;

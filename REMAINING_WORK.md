@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-06 native token build42226266102 live at exact50f7a3fa, one dispatch.
+Distinct strict token six-job/original7 harnesses prepared and30driver checks pass;
+all prior correctness/fidelity/250MiB/96MiB gates retained. Await same build near
+8minute ETA, not a native/browser acceptance yet. Full original/large/scaling/
+speed/broader-spec qualification remains open.
+
 2026-11-06 pinned token-context lifetime review and private native integration
 implemented; nine full-source pins/actual current encoder context references pass.
 44exact CI/42focused driver checks pass, lint/diff pass. New recipe retains actual

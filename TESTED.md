@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-06 distinct token native build42226266102 confirmed live at exact
+50f7a3fa31816477a3fa85a37bc435d47a6afc9f/job127920436846, one dispatch only.
+Previous comparable build8m10s; no rapid repeat polling while preparing actual
+browser gates. New --token-context strict six-job harness and original7 use
+distinct recipes/results and reject old lazy42218018139. Identical golden SHA,
+all fidelity/recovery/privacy/memory settings remain mandatory; original7 also
+requires the new token control PASS before launch.30focused driver checks and
+affected lint/diff PASS; check-only launches no browser. No build/browser success
+inferred. Next inspect same CI handle near ETA, collect only if terminal success,
+then run strict control; no unchanged old test replay.
+
 2026-11-06 token candidate safety/integration checkpoint: complete pinned880-file
 archive inventory finds133fc identifier references/17files, including aliases and
 allocation macros. Reviewed encoder's one fc allocation after zero-init, object
