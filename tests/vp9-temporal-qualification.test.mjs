@@ -38,3 +38,10 @@ test("diagnostic small control has a distinct tool/receipt and retains all stric
     {windowsHide:true,timeout:30000,maxBuffer:65536});
   assert.equal(JSON.parse(stdout).browserLaunched,false);
 });
+test("lazy utility control requires a distinct lazy build and keeps byte-exact recovery gates",async()=>{
+  assert.throws(()=>makeVp9TemporalQualificationSource(source,"42135708757",{allocationDiagnostics:true,lazyUtility:true}),/own compiled tool/);
+  const result=makeVp9TemporalQualificationSource(source,"12345678",{allocationDiagnostics:true,lazyUtility:true});
+  assert.ok(result.generated.includes("2026-11-06-vp9-lazy-qualification-12345678.json"));assert.equal(result.preservesStrictFidelityAndRecoveryGates,true);
+  const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-temporal-qualification.mjs","--lazy-utility","--check-only"],
+    {windowsHide:true,timeout:30000,maxBuffer:65536});assert.equal(JSON.parse(stdout).browserLaunched,false);
+});

@@ -9,7 +9,8 @@ const rebuilt = process.argv[2] === "--rebuilt-controls";
 const allocation = process.argv[2] === "--allocation-controls";
 const single = process.argv[2] === "--single-core-control";
 const fidelity = process.argv[2] === "--isolated-fidelity-control";
-const allocationQualification = process.argv[2] === "--allocation-qualification-control";
+const lazyQualification=process.argv[2]==="--lazy-qualification-control";
+const allocationQualification = process.argv[2] === "--allocation-qualification-control"||lazyQualification;
 const temporal = process.argv[2] === "--temporal-qualification-control" || allocationQualification;
 const recovery = process.argv[2] === "--recovery-qualification-control" || temporal;
 const stream = process.argv[2] === "--stream-duration-fidelity-control" || recovery;
@@ -24,12 +25,12 @@ const names = recovery ? ["recovery-qualification-" + runId] : stream ? ["stream
   ["first-smoke", "functional-diagnostic", "native-color-diagnostic", "explicit-color-fixture", "frame-color-fixture", "encoder-preference-fallback"];
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const legacyOutput = path.join(evidence, prefix + "-webcodecs-vp9-" + (recovery ? "recovery-qualification-control-" + runId + "-archive" : stream ? "stream-duration-fidelity-control-" + runId + "-archive" : stored ? "duration-stored-timing-control-" + runId + "-archive" : duration ? "duration-fixed-control-" + runId + "-archive" : fidelity ? "isolated-fidelity-control-archive" : isolated ? "isolated-control-archive" : single ? "single-core-control-archive" : allocation ? "allocation-control-archives" : rebuilt ? "rebuilt-control-archives" : "diagnostic-archives") + ".json");
-const output = allocationQualification ? path.join(evidence,prefix+"-vp9-allocation-qualification-control-"+runId+"-archive.json") : legacyOutput;
+const output = allocationQualification ? path.join(evidence,prefix+"-vp9-"+(lazyQualification?"lazy":"allocation")+"-qualification-control-"+runId+"-archive.json") : legacyOutput;
 await assert.rejects(access(output), { code: "ENOENT" });
 const prepared = [];
 // Preflight every terminal before mutating any owned receipt.
 for (const name of names) {
-  const label = allocationQualification ? "allocation-qualification-" + runId : temporal ? "temporal-qualification-" + runId : name;
+  const label = allocationQualification ? (lazyQualification?"lazy":"allocation")+"-qualification-" + runId : temporal ? "temporal-qualification-" + runId : name;
   const file = `${prefix}-${family}-${label}.json`, original = await readFile(path.join(evidence, file));
   assert.ok(original.length > 0 && original.length <= 4194304);
   const report = JSON.parse(original); assert.match(report.status, /^(?:passed-one-small-private-browser|passed-private-vp9-recovery-sequence|failed-private-vp9-browser)/);

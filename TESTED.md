@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-11-06 lazy native build42218018139 at49ab50ed dispatched ONCE;12:30UTC
+exact job confirmed live compiling, recipe/SDK gates PASS. New six-job lazy
+qualification and original6 drivers require distinct lazy engine/receipts and
+retain every prior byte-exact/fidelity/recovery/250MiB/1920x804/24fps/4Mbps gate.
+29focused driver/control checks PASS(838.8011ms),0skip; affected lint/diff PASS.
+Current host preflight11.89GB physical/20.25GB virtual exceeds unchanged2GiB
+safety check; no unrelated programs closed. Await SAME build near eight-minute
+ETA before artifact/real browser tests; no success inferred from dispatch.
+
 2026-11-06 lazy utility candidate IMPLEMENTED/host controls PASS, not yet real
 Wasm/browser acceptance. Exact diagnostic encoder8ace8613 -> e7d1012d...0a779,
 loop-filter33258b68 -> f5a66b83...01ffa. Three functions defer last_frame_uf/
