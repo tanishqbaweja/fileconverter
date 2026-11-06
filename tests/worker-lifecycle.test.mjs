@@ -72,7 +72,7 @@ test("every worker module has an explicit cross-job retained-state contract", ()
     "avif-conversion.ts", "avif-encoding.ts", "bmp-decoding.ts", "bzip2-compression.ts",
     "compressed-tar-conversion.ts", "compressed-tar-transcode.ts", "conversion.worker.ts",
     "direct-file-writer.worker.ts", "direct-writer-protocol.ts", "document-conversion.ts",
-    "docx-conversion.ts", "epub-conversion.ts", "gif-conversion.ts", "jxl-conversion.ts",
+    "docx-conversion.ts", "docx-html-conversion.ts", "epub-conversion.ts", "gif-conversion.ts", "jxl-conversion.ts",
     "jxl-encoding.ts", "jxl-source-inspection-worker.ts", "media-remux.ts", "mpeg2-core-loader.ts",
     "mpeg2-split-runtime.ts", "odf-conversion.ts", "pptx-conversion.ts", "random-access-destination.ts",
     "rgba-png-stream.ts", "sevenzip-conversion.ts", "staged-save-runtime.ts", "staged-save.worker.ts",

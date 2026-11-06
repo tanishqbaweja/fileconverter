@@ -20,7 +20,7 @@ const OFFICE_DOCUMENT_RELATIONSHIP =
 const WORD_DOCUMENT_CONTENT_TYPE =
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml";
 
-interface DocxRuntime extends ArchiveReadRuntime {
+export interface DocxRuntime extends ArchiveReadRuntime {
   write(chunk: Uint8Array<ArrayBuffer>, phase: string): Promise<void>;
   warn(message: string): void;
 }
@@ -43,6 +43,16 @@ export async function runDocxToText(runtime: DocxRuntime): Promise<void> {
     "Tracked deletions are excluded and tables are linearized as their contained paragraphs.",
   );
 
+  const source = await openDocxMainDocument(runtime);
+  runtime.progress("Extracting DOCX text");
+  await extractWordDocument(runtime, source);
+  runtime.metrics.inputBytes = runtime.file.size;
+}
+
+/** Shared bounded ZIP/package validation; never executes Word content. */
+export async function openDocxMainDocument(
+  runtime: DocxRuntime,
+): Promise<ReadableStream<Uint8Array<ArrayBuffer>>> {
   runtime.progress("Inspecting DOCX package");
   const entries = await readZipDirectory(runtime);
   const byName = new Map(entries.map((entry) => [entry.name, entry]));
@@ -55,10 +65,7 @@ export async function runDocxToText(runtime: DocxRuntime): Promise<void> {
   await validateContentTypes(runtime, contentTypes);
   await validateRelationships(runtime, relationships);
 
-  runtime.progress("Extracting DOCX text");
-  const source = await openZipEntryStream(runtime, document);
-  await extractWordDocument(runtime, source);
-  runtime.metrics.inputBytes = runtime.file.size;
+  return openZipEntryStream(runtime, document);
 }
 
 function requiredEntry(
@@ -136,21 +143,35 @@ async function readSmallXmlEntry(
   }
   const reader = (await openZipEntryStream(runtime, entry)).getReader();
   const decoder = new TextDecoder("utf-8", { fatal: true });
-  let output = "";
-  for (;;) {
-    runtime.assertActive();
-    const { done, value } = await reader.read();
-    if (done) break;
-    output += decoder.decode(value, { stream: true });
-    if (output.length > MAX_PACKAGE_METADATA_BYTES) {
-      throw new Error(`DOCX ${label} exceed the 1 MiB metadata safety limit.`);
+  let output = "", completed = false, primaryFailure = false;
+  try {
+    for (;;) {
+      runtime.assertActive();
+      const { done, value } = await reader.read();
+      if (done) break;
+      output += decoder.decode(value, { stream: true });
+      if (output.length > MAX_PACKAGE_METADATA_BYTES) {
+        throw new Error(`DOCX ${label} exceed the 1 MiB metadata safety limit.`);
+      }
     }
-  }
-  output = `${output}${decoder.decode()}`.replace(/^\uFEFF/, "");
+    output = `${output}${decoder.decode()}`.replace(/^\uFEFF/, ""); completed = true;
+  } catch (error) { primaryFailure = true; throw error; }
+  finally { await releaseXmlReader(reader, completed, primaryFailure); }
   if (/<!DOCTYPE\b|<!ENTITY\b/i.test(output)) {
     throw new Error(`DOCX ${label} contain a forbidden DTD or entity declaration.`);
   }
   return output;
+}
+
+async function releaseXmlReader(
+  reader: ReadableStreamDefaultReader<Uint8Array<ArrayBuffer>>, completed: boolean, primaryFailure: boolean,
+): Promise<void> {
+  let cleanupFailed = false, cleanupFailure: unknown;
+  try { if (!completed) await reader.cancel("XML processing stopped"); }
+  catch (error) { cleanupFailed = true; cleanupFailure = error; }
+  try { reader.releaseLock(); }
+  catch (error) { if (!cleanupFailed) { cleanupFailed = true; cleanupFailure = error; } }
+  if (cleanupFailed && !primaryFailure) throw cleanupFailure;
 }
 
 async function extractWordDocument(
@@ -320,6 +341,7 @@ export async function* readMarkupTokens(
 ): AsyncGenerator<MarkupToken> {
   const reader = source.getReader();
   const decoder = new TextDecoder("utf-8", { fatal: true });
+  let completed = false, primaryFailure = false;
   let buffer = "";
   let offset = 0;
   let cdata = false;
@@ -483,6 +505,7 @@ export async function* readMarkupTokens(
     }
   };
 
+  try {
   for (;;) {
     runtime.assertActive();
     const { done, value } = await reader.read();
@@ -511,6 +534,9 @@ export async function* readMarkupTokens(
   if (offset !== buffer.length || cdata) {
     throw new Error(`${formatLabel} XML input ends inside markup.`);
   }
+  completed = true;
+  } catch (error) { primaryFailure = true; throw error; }
+  finally { await releaseXmlReader(reader, completed, primaryFailure); }
 }
 
 function validateXmlDeclaration(value: string, formatLabel: string): void {

@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-11-07 private DOCX HTML browser attempt FAILED in independent validator's
+escaped expected emoji, not yet an accepted conversion/fidelity/memory result.
+Correct expected codepoint and preflight valid/invalid HTML before one rerun.
+Receipt:evidence/2026-11-06T20-47-18-976Z-docx-html-qualification.json.
+Route remains pending/private; all original public promotion gates still apply.
+
+2026-11-07 office scope increment PARTIAL: private DOCX-to-HTML route implemented
+with bounded XML/ZIP and64KiB backpressure, real paragraph/table/direct-emphasis
+semantics, safe escaped static output and explicit loss disclosures. Normal
+selector still403 published profiles. New83focused checks PASS; three shared
+reader-lock failures reproduced then repaired (24converter/reader checks PASS).
+Actual production-browser conversion/independent validation/memory/recovery and
+large/direct qualification remain NEXT; do not advertise the route or infer
+completion from Node fixtures. All media and original-scope blockers stay open.
+
 2026-11-07 final diagnostic lifecycle checkpoint VERIFIED: complete portable
 2483PASS/0fail/0skip/0cancel across697 files,87.082s;162 prerequisite-bound
 qualification files remain UNRUN. Exact source-pinned normal-service Chrome

@@ -1,5 +1,26 @@
 # Tested conversion ledger
 
+2026-11-07 DOCX HTML first production-browser control FAILED at independent
+validator before any accepted case: Python expectation accidentally contained
+literalU0001f600 after JS patch escaping. Actual Python parse shows correct
+Unicode emoji in produced paragraph; no passing fidelity/memory claim follows.
+evidence/2026-11-06T20-47-18-976Z-docx-html-qualification.json retains failure,
+native samples/trace and cleanup. Fix expected text withchr(codepoint), add
+positive/negative validator preflight before Chrome, then rerun once. Fresh
+production build/TypeScript/affected lint PASS. Public selector unchanged.
+
+2026-11-07 new private DOCX-to-HTML implementation added to original office
+scope, not public promotion. Reuses bounded safe ZIP/package validation and XML
+tokenizer, lazy-loads only for this route, preserves paragraphs/simple tables/
+direct emphasis/Unicode/tabs/breaks, escapes source text and emits restrictive
+static HTML CSP. Namespace/depth/metadata/output bounds and specific unsupported
+features disclosed. Normal selector remains403 published routes.83focused
+registry/capability/worker/new-converter checks PASS. Shared XML reader cleanup
+first FAILED all3 dedicated cases; fixed cancel/release/preserve-primary-error
+behavior now passes all24 converter+reader cases. TypeScript initially PASS;
+updated final type/lint/build/browser qualification NEXT. No full-process-memory,
+independent browser fidelity, repeats/scaling/direct/save or speed claim yet.
+
 2026-11-07 final CDP/worker-audit checkpoint: COMPLETE portable suite PASS2483/
 0fail/0skip/0cancel,87.082s across697 files; all859 files inventoried,162 separate
 qualification files NOT RUN,235 prior hosted gates retained. Receipt:

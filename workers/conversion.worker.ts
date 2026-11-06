@@ -4723,9 +4723,11 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         progress: (phase) =>
           emitProgress(jobId, phase, metrics, startedAt),
       });
-    } else if (profileId === "docx-to-txt") {
+    } else if (profileId === "docx-to-txt" || profileId === "docx-to-html") {
       const documentDestination = destination.writable;
-      await runDocxToText({
+      const convertDocx = profileId === "docx-to-html"
+        ? (await import("./docx-html-conversion")).runDocxToHtml : runDocxToText;
+      await convertDocx({
         file,
         metrics,
         write: (chunk, phase) =>

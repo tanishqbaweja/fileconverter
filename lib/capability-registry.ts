@@ -6345,6 +6345,20 @@ export const privateQualificationProfiles: readonly ConversionProfile[] = [{
   maxTestedBytes: null,
   automatedTestStatus: "pending",
   public: false,
+}, {
+  id: "docx-to-html", input: "docx", output: "html", engine: "document-stream", route: "stream",
+  browserRequirements: ["Web Workers", "DecompressionStream with raw DEFLATE", "File System Access"],
+  cpuClass: "low", memoryClass: "bounded-low",
+  metadataLimitations: [
+    "Private qualification only: not publicly supported until correctness, full-process memory, repeats, adverse-path recovery and browser qualification pass.",
+    "Main Word document only. Package properties, headers, footers, notes, comments, hyperlinks, images and drawings are not exported. Unsafe or macro-enabled ZIP packages, DTDs and external entities are rejected.",
+  ],
+  fidelityLimitations: [
+    "Preserves main-document paragraphs, simple table rows/cells, basic direct bold/italic/underline/strike formatting, Unicode, tabs and line breaks. Accepted insertions are included; tracked deletions and moved-from text are excluded.",
+    "Named/inherited styles, heading/list numbering semantics, underline variants, fonts/colors, merged-cell geometry, page layout and field instructions are not reproduced. Field display text is retained when present; foreign-namespace content is omitted with a warning.",
+    "Output is static self-contained HTML with escaped document text and restrictive CSP; no source URLs, scripts, styles or external resources are emitted.",
+  ],
+  maxTestedBytes: null, automatedTestStatus: "pending", public: false,
 }];
 
 export function publicProfilesFor(
