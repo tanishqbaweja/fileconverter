@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-11-07 memory-scope copy fix verified by73focused checks, TypeScript, affected
+lint and fresh production build. Final headless Edge smoke pending for changed
+rendered label; original conversion constraints/public registry remain unchanged.
+
+2026-11-07 B07 Edge156.0.4314.58 five-family small production matrix PASS with
+independent validators, exact remux packet hashes, selected-destination adapter,
+unsafe-archive recovery, bounded I/O,0privacy violations and complete owned-data
+cleanup. Receipt:evidence/2026-11-06T19-52-33-748Z-edge-installed-conversions.json.
+First missing-python attempt remains FAILED.18focused regressions PASS. This is
+headless functional coverage with existing Playwright defaults, NOT new memory,
+normal-service parity, large-file, native-picker or full B07 qualification.
+UI wording clarified recorded Chrome-only memory scope; fresh verification NEXT.
+
 2026-11-07 B07 Edge representative matrix first attempt FAILED because independent
 DOCX validator could not locate python. Original/browser binaries unchanged;
 owned outputs/profiles/runtime/roots gone. Preserve failure and trace, repair only

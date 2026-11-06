@@ -1,0 +1,262 @@
+{
+  "schemaVersion": 1,
+  "browserId": "edge",
+  "startedAt": "2026-11-06T19:52:33.749Z",
+  "status": "passed-five-representative-headless-conversions",
+  "scope": "Five representative genuine production conversions, selected-destination adapter and unsafe-archive recovery; small fixtures only",
+  "headed": false,
+  "osNativePickerVerified": false,
+  "conversionMemoryAcceptance": false,
+  "stressAcceptance": false,
+  "publicPromotion": false,
+  "additionalBrowserArguments": [],
+  "sourcePins": {
+    "scripts/run-installed-browser-conversions.mjs": "ee9d63a80f4e88585512ee26c81bce30c7ebb472ac5085e41e7c1fec4488e783",
+    "tests/browser/browser-compatibility.spec.ts": "a3492c6704d27797777a3111f7f168f2926a745a236965581f717167dc109e63",
+    "playwright.config.ts": "e1ebd9e54b5baf85227edf021b1190dca2788c226ea39209c4e22915ce9d0a84",
+    "package-lock.json": "cebcd0caf95382203084b900aecb06dbd5fb10bc8743ddb202a7a137582f603e",
+    "lib/capability-registry.ts": "acc1c6cb5104f329eec92f37b31754e7842f24bb174e703cf741b11379403781",
+    "app/converter/ConverterApp.tsx": "c0cd4331daaa4aea15a66344714e02f628e446887528ee226c3eaea3274d8d65",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee",
+    "scripts/lib/owned-production-test-server.mjs": "4b1afd23fbc8c0a0caa0f6f1b7980febb6411a8a2e06c58166698010694253a8",
+    "scripts/lib/hidden-unit-subprocesses.mjs": "cf2bebbc93113717fa4eb1619c0d1d3609c43978d3b3971511b15a23349234ef"
+  },
+  "failures": [],
+  "browserLaunchPolicy": "Existing compatibility spec's Playwright defaults plus its three original arguments; not normal-profile/service parity or memory acceptance",
+  "executedHead": "6e47e41f493ee52050239e269066618e6e0c46f9",
+  "hostMemory": {
+    "acquiredAt": "2026-11-06T19:52:34.1296459Z",
+    "freePhysicalBytes": 14078525440,
+    "freeVirtualBytes": 21204930560,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "validators": {
+    "python": [
+      "C:\\Users\\slato\\AppData\\Local\\Programs\\Python\\Python311\\python.exe",
+      "3.11.9 (tags/v3.11.9:de54cf5, Apr  2 2024, 10:12:12) [MSC v.1938 64 bit (AMD64)]"
+    ],
+    "ffprobe": [
+      "ffprobe version N-122712-g7e3781e3ca-20260211 Copyright (c) 2007-2026 the FFmpeg developers",
+      "built with gcc 15.2.0 (crosstool-NG 1.28.0.1_403899e)"
+    ],
+    "ffmpeg": [
+      "ffmpeg version N-122712-g7e3781e3ca-20260211 Copyright (c) 2000-2026 the FFmpeg developers",
+      "built with gcc 15.2.0 (crosstool-NG 1.28.0.1_403899e)"
+    ]
+  },
+  "browserBefore": {
+    "executable": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+    "version": "156.0.4314.58",
+    "bytes": 5453128,
+    "sha256": "d35d48b11f0439eeeddbbff0bf54856e922f5e1506a2f3098b5a808fcec4068b",
+    "library": {
+      "path": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\156.0.4314.58\\msedge.dll",
+      "bytes": 355200328,
+      "sha256": "033d957e39d32aeca0f4b457b325ea8829306c3d9324da05c7cf5378acff51ae"
+    }
+  },
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "buildWorker": {
+    "path": "dist/server/index.js",
+    "sha256": "108a7c78627c1f4fae6faa45b321307f561490f54f8eafa008220ad1409e9e14"
+  },
+  "runnerExitCode": 0,
+  "stats": {
+    "startTime": "2026-11-06T19:52:39.963Z",
+    "duration": 7976.053,
+    "expected": 1,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "matrix": {
+    "browser": "Microsoft Edge",
+    "browserId": "edge",
+    "executable": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36 Edg/156.0.0.0",
+    "headed": false,
+    "crossOriginIsolated": true,
+    "capabilities": {
+      "secure": true,
+      "wasm": true,
+      "wasmJspi": true,
+      "wasmSimd": true,
+      "workers": true,
+      "fileSystemAccess": true,
+      "directoryAccess": true,
+      "opfs": true,
+      "storageEstimate": true,
+      "compressionGzip": true,
+      "compressionDeflate": true,
+      "compressionDeflateRaw": true,
+      "sharedArrayBuffer": true,
+      "crossOriginIsolated": true,
+      "webCrypto": true,
+      "webCodecsVideo": true,
+      "webCodecsAudio": true,
+      "imageDecoder": true,
+      "imageDecoderTypes": {
+        "image/avif": true,
+        "image/gif": true,
+        "image/heic": false,
+        "image/heic-sequence": false,
+        "image/heif": false,
+        "image/heif-sequence": false,
+        "image/jpeg": true,
+        "image/png": true,
+        "image/webp": true,
+        "image/x-adobe-dng": false,
+        "image/x-canon-cr2": false,
+        "image/x-nikon-nef": false,
+        "image/x-sony-arw": false
+      },
+      "offscreenCanvas": true
+    },
+    "routes": [
+      {
+        "profileId": "csv-to-tsv",
+        "inputBytes": 87,
+        "outputBytes": 90,
+        "outputSha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264",
+        "elapsedMs": 25.719999998807907,
+        "maxReadChunkBytes": 87,
+        "maxWriteChunkBytes": 90,
+        "peakQueuedBytes": 90,
+        "peakPendingOperations": 1,
+        "validator": "exact UTF-8 TSV bytes and quoting semantics"
+      },
+      {
+        "profileId": "txt-to-docx",
+        "inputBytes": 113,
+        "outputBytes": 1096,
+        "outputSha256": "f1ca38b8a2a845d95dee19cbc50f71c09283502aff767fcdf71ee966152ac471",
+        "elapsedMs": 43.44499999284744,
+        "maxReadChunkBytes": 113,
+        "maxWriteChunkBytes": 291,
+        "peakQueuedBytes": 291,
+        "peakPendingOperations": 1,
+        "validator": "Python zipfile package test plus XML parse and Unicode paragraph check"
+      },
+      {
+        "profileId": "tar-to-zip",
+        "inputBytes": 4096,
+        "outputBytes": 490,
+        "outputSha256": "8695424efbcf5065b677fe2b4f146a2cc5219d760941df009770b807f1e4fcc3",
+        "elapsedMs": 69.27999997138977,
+        "maxReadChunkBytes": 512,
+        "maxWriteChunkBytes": 70,
+        "peakQueuedBytes": 70,
+        "peakPendingOperations": 1,
+        "validator": "Python zipfile testzip plus 3 entry hashes"
+      },
+      {
+        "profileId": "png-to-webp",
+        "inputBytes": 84034,
+        "outputBytes": 28410,
+        "outputSha256": "08f98bed74f281f307ddde3552511320a9f4f8afc5871cb6cb234009dca2a5e5",
+        "elapsedMs": 57.75999999046326,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 28410,
+        "peakQueuedBytes": 28410,
+        "peakPendingOperations": 1,
+        "validator": "FFprobe codec/dimensions, full decode, and SSIM 0.988655"
+      },
+      {
+        "profileId": "mkv-to-mp4",
+        "inputBytes": 936003,
+        "outputBytes": 937317,
+        "outputSha256": "23acc20bc33c01f41b9e6162e6b7b7e0ddb1478b67716f9cefe5315cd8d3aef9",
+        "elapsedMs": 564.2249999940395,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 262144,
+        "peakQueuedBytes": 262144,
+        "peakPendingOperations": 1,
+        "validator": "FFprobe structure, exact H.264/AAC packet hashes, and full decode"
+      }
+    ],
+    "directDestination": {
+      "profileId": "csv-to-tsv",
+      "outputBytes": 90,
+      "outputSha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264",
+      "validator": "normal-page selected destination plus exact TSV bytes"
+    },
+    "failureRecovery": {
+      "profileId": "tar-to-zip",
+      "error": "Unsafe TAR entry: ../escape.txt.",
+      "leftoverOutputNames": []
+    },
+    "network": {
+      "requestCount": 86,
+      "methods": [
+        "GET"
+      ],
+      "origins": [
+        "http://127.0.0.1:58621"
+      ],
+      "requestBodies": 0,
+      "privateTokensObserved": []
+    },
+    "diagnostics": [],
+    "durationMs": 5808
+  },
+  "screenshot": {
+    "path": "output/playwright/2026-11-06T19-52-33-748Z-edge-headless-complete.png",
+    "sha256": "1a09d83ff25af09b4f050d79a31cb615d7cccf0fc1d296ad2a22dffb28915a51"
+  },
+  "serverCleanup": {
+    "identity": {
+      "pid": 45644,
+      "parentPid": 24664,
+      "createdAt": "2026-11-06T19:52:37.4120510Z"
+    },
+    "ownedRootAbsent": true
+  },
+  "runnerCleanup": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 22628,
+      "parentPid": 24664,
+      "createdAt": "2026-11-06T19:52:39.3640740Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-11-06T19:52:49.347Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 346,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "convertedOutputsAndProfilesRemoved": true,
+  "browserAfter": {
+    "executable": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
+    "version": "156.0.4314.58",
+    "bytes": 5453128,
+    "sha256": "d35d48b11f0439eeeddbbff0bf54856e922f5e1506a2f3098b5a808fcec4068b",
+    "library": {
+      "path": "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\156.0.4314.58\\msedge.dll",
+      "bytes": 355200328,
+      "sha256": "033d957e39d32aeca0f4b457b325ea8829306c3d9324da05c7cf5378acff51ae"
+    }
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "ownedRuntimeRemoved": true,
+  "runnerLog": "\nRunning 1 test using 1 worker\n\n(node:40868) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.\n(Use `node --trace-warnings ...` to show where the warning was created)\n\n\n[1/1] tests\\browser\\browser-compatibility.spec.ts:319:3 › Microsoft Edge completes the representative production matrix\n  1 passed (8.0s)\n",
+  "finishedAt": "2026-11-06T19:52:52.601Z"
+}

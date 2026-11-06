@@ -24,11 +24,22 @@ const requireJsx = name => { assert.equal(name, "react/jsx-runtime"); return jsx
 const articleHtml = html => (html.match(/<article\b[^>]*>[\s\S]*?<\/article>/g) ?? []).map(card =>
   card.replace(/ data-profile-id="[^"]+"/, "").replaceAll("<!-- -->", ""));
 
+test("route memory label identifies recorded Chrome scope and never certifies this browser/version or pretends to be live measurement", () => {
+  assert.ok(app.includes('selectedProfile.automatedTestStatus === "passed" &&'));
+  assert.ok(app.includes("selectedProfile.maxTestedBytes != null"));
+  assert.ok(app.includes("Recorded Chrome tests: valid output and complete-process-tree memory checks through ${formatBytes(selectedProfile.maxTestedBytes)}."));
+  assert.ok(app.includes("Not a certification of this browser/version or a live memory measurement."));
+  assert.ok(app.includes("Test-only route: not certified for public use; consult the route limitations and retained test evidence."));
+  assert.ok(!app.includes("Correctness and complete-browser memory tested through"));
+});
+
 test("current application mounts the bounded component with explicit lifecycle and localhost qualification integration", () => {
   // Account for ONLY reviewed lifecycle/private-option integration. Each hunk is
   // unique and reversible; the complete historical UI comparison below remains
   // mandatory and still catches every unrelated change.
   const codeOwnerEdits = [
+    ['Recorded Chrome tests: valid output and complete-process-tree memory checks through ${formatBytes(selectedProfile.maxTestedBytes)}. Not a certification of this browser/version or a live memory measurement.',
+      'Correctness and complete-browser memory tested through ${formatBytes(selectedProfile.maxTestedBytes)}.'],
     ['    [profileId, profiles],\n  );\n  const svgRasterizationWithheld = inputFormat === "svg" && !testMode &&\n    !profiles.some((profile) => profile.id === "svg-to-png");\n', '    [profileId, profiles],\n  );\n'],
     ['          {file && svgRasterizationWithheld ? (\n            <div className="honesty-note" role="status" data-testid="svg-qualification-notice">\n              <strong>SVG-to-PNG is temporarily unavailable.</strong>\n              <span>\n                Its source-built renderer has not passed the full fidelity, memory,\n                and recovery checks. Lossless compression of the original file is\n                still available; it does not rasterize the image.\n              </span>\n            </div>\n          ) : null}\n\n          {file && profiles.length === 0 ? (', '          {file && profiles.length === 0 ? ('],
     ['        (batch.profile.engine.startsWith("ffmpeg-") || batch.profile.id === "svg-to-png") &&',

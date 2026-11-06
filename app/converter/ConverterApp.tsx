@@ -2392,7 +2392,7 @@ export function ConverterApp() {
                 <div className="profile-evidence">
                   {selectedProfile.automatedTestStatus === "passed" &&
                   selectedProfile.maxTestedBytes != null
-                    ? `Correctness and complete-browser memory tested through ${formatBytes(selectedProfile.maxTestedBytes)}.`
+                    ? `Recorded Chrome tests: valid output and complete-process-tree memory checks through ${formatBytes(selectedProfile.maxTestedBytes)}. Not a certification of this browser/version or a live memory measurement.`
                     : "Test-only route: not certified for public use; consult the route limitations and retained test evidence."}
                 </div>
               ) : null}

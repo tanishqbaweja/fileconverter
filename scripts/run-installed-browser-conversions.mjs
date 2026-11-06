@@ -51,6 +51,15 @@ try {
     { cwd: root, windowsHide: true, timeout: 10000 })).stdout.trim();
   report.hostMemory = await inspectStressHostMemory(); assert.equal(report.hostMemory.safeToStart, true);
   const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 512 * 1024 ** 2);
+  // Fail before launching a browser when an independent validator is absent.
+  // These commands inspect tool identity only; they never convert user media.
+  const validatorEnv = { ...process.env, PYTHONDONTWRITEBYTECODE: "1" };
+  report.validators = {};
+  for (const [command, args] of [["python", ["-c", "import sys,zipfile,xml.etree.ElementTree;print(sys.executable);print(sys.version)"]],
+    ["ffprobe", ["-version"]], ["ffmpeg", ["-version"]]]) {
+    const { stdout } = await execute(command, args, { cwd: root, env: validatorEnv, windowsHide: true, timeout: 10000, maxBuffer: 32768 });
+    report.validators[command] = stdout.trim().split(/\r?\n/).slice(0, 2);
+  }
   report.browserBefore = await inspectBinary(); report.protectedOriginalBefore = await original();
   assert.deepEqual(report.protectedOriginalBefore, { bytes: 2958573265, sha256: "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" });
   // This legacy spec owns fixed paths: refuse existing data instead of letting
@@ -69,7 +78,7 @@ try {
   const port = await new Promise((resolve, reject) => { const socket = createServer(); socket.once("error", reject);
     socket.listen(0, "127.0.0.1", () => { const port = socket.address().port; socket.close(error => error ? reject(error) : resolve(port)); }); });
   const preload = pathToFileURL(path.join(root, "scripts/lib/hidden-unit-subprocesses.mjs")).href;
-  const env = { ...runtime.env, NODE_OPTIONS: [runtime.env.NODE_OPTIONS ?? "", "--import=" + preload].filter(Boolean).join(" "),
+  const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", NODE_OPTIONS: [runtime.env.NODE_OPTIONS ?? "", "--import=" + preload].filter(Boolean).join(" "),
     WITHIN_BROWSER_TARGETS: id, WITHIN_CROSS_BROWSER_HEADED: "0", WITHIN_OPERA_GX_HEADED: "0",
     WITHIN_TEST_PORT: String(port), WITHIN_TEST_BASE_URL: `http://127.0.0.1:${port}`, WRANGLER_SEND_METRICS: "false" };
   server = await startOwnedProductionTestServer({ root, directory: runtime.directory, env, port });

@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-11-07 Chrome-evidence wording repair:73focused UI/registry/driver/history/
+inventory tests PASS/0skip; TypeScript --noEmit, affected four-file ESLint and
+fresh production build PASS (existing bundler warnings retained). Reversible
+one-line historical comparison keeps every unrelated UI byte checked. NEXT one
+Edge production smoke after this real UI change; no conversion settings altered.
+
+2026-11-07 repaired-PATH B07 Edge156.0.4314.58 matrix PASS1/1 (7.976s): genuine
+CSV/TSV exact bytes, TXT/DOCX Unicode XML, TAR/ZIP3entry hashes, PNG/WebP full
+decode/SSIM.988655, H264/AAC MKV/MP4 exact packet hashes/full decode. Inputs87B-
+936003B only. Direct-destination adapter exact TSV90B; unsafe TAR rejected with
+zero leftovers.86same-origin GET/0bodies/0private tokens; all I/O/queues<=262144B,
+one pending. Browser/engine-library pins unchanged; original exact size/SHA
+unchanged; converted outputs/profile/runtime removed and both owned roots absent.
+Receipt:evidence/2026-11-06T19-52-33-748Z-edge-installed-conversions.json.
+Screenshot visually inspected headlessly. Existing Playwright launch defaults,
+NOT normal-profile/service parity, memory/stress/speedAB/native-picker acceptance.
+18focused driver/historical-browser/inventory tests PASS/0skip. No public changes.
+Screenshot revealed ambiguous generic memory label: now explicitly says recorded
+Chrome evidence is not certification of this browser/version or live memory.
+This wording fix is pending fresh build/browser verification, not retroactively
+included in the successful receipt above. Original missing-python failure kept.
+
 2026-11-07 independent B07 Edge156.0.4314.58 representative production matrix
 first attempt FAILED at DOCX independent validator: spawn python ENOENT (not an
 application-conversion finding).0passed/1failed,3.342s. Failure trace retained at

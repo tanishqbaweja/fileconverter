@@ -10,10 +10,12 @@ test("installed conversion driver retains unchanged real production matrix, head
   for (const anchor of ["Object.hasOwn(targets, id)", 'WITHIN_CROSS_BROWSER_HEADED: "0"', 'WITHIN_OPERA_GX_HEADED: "0"',
     "headless:true", "windowsHide: true", "NODE_OPTIONS:", "scripts/lib/hidden-unit-subprocesses.mjs",
     "conversionMemoryAcceptance: false", "osNativePickerVerified: false", "stressAcceptance: false", "publicPromotion: false",
-    "browser-compatibility.spec.ts", "result.stats.expected, 1", "result.stats.unexpected, 0", "result.stats.skipped, 0", "result.stats.flaky, 0",
+    "browser-compatibility.spec.ts", "report.validators = {}", 'PYTHONDONTWRITEBYTECODE: "1"',
+    "result.stats.expected, 1", "result.stats.unexpected, 0", "result.stats.skipped, 0", "result.stats.flaky, 0",
     '"csv-to-tsv", "mkv-to-mp4", "png-to-webp", "tar-to-zip", "txt-to-docx"', "browserLaunchPolicy"])
     assert.ok(source.includes(anchor), anchor);
   assert.doesNotMatch(source, /--headed|--grep|--disable-|\.replace\(/);
+  assert.ok(source.indexOf("report.validators = {}") < source.indexOf("server = await startOwnedProductionTestServer"));
 });
 test("driver refuses pre-existing fixed paths, protects original, independently closes owned roots and removes runtime in finally", async () => {
   const source = await readFile(file, "utf8");
