@@ -1,0 +1,60 @@
+{
+  "recordedAt": "2026-11-06T19:33:27.835Z",
+  "sourceReport": "evidence/2026-11-06-vp9-original-cpu-startup-attempt9.json",
+  "executedHead": "9202c4bb33c1379853abbd6f937bfe6d88f529d6",
+  "scope": "Exact failed normal-HTTP original startup plus late-child timing localization, NOT complete output/fidelity or service-name attribution",
+  "primary": {
+    "blankPrivateBytes": 346439680,
+    "peakPrivateBytes": 754647040,
+    "incrementalPrivateMiB": 389.296875,
+    "validSamples": 1396,
+    "unavailableSamples": 0,
+    "allPeakProcessesIncluded": true,
+    "peakProcessCount": 11
+  },
+  "safetyStop": {
+    "kind": "memory-budget-exceeded",
+    "incrementalPrivateMiB": 286.12890625,
+    "acquiredAt": "2026-11-06T16:24:29.715Z",
+    "elapsedMs": 152561
+  },
+  "elapsedNativeMs": 152586.54000002146,
+  "inputFileBytes": 2958573265,
+  "actualInputBytesRead": 23160385,
+  "actualOutputBytesWrittenBeforeAbort": 20868532,
+  "actualNativeWriteAttempts": 88,
+  "wasmMemoryBytes": 100663296,
+  "activeWorkerCount": 1,
+  "actualEncodedFrameCount": null,
+  "completedOutputIndependentlyValidated": false,
+  "partialAfterAbortBytes": 0,
+  "lateChild": {
+    "pid": 34980,
+    "parentPid": 9088,
+    "createdAt": "2026-11-06T16:24:28.8999364Z",
+    "creationFileTime": "134384558688999364",
+    "privateBytesAtWholeTreePeak": 247611392,
+    "measuredSecondsAfterBrowserBirth": 180.172,
+    "type": null,
+    "utilitySubtype": null,
+    "sandboxType": null,
+    "whyUnavailable": "Native memory identity table preserves birth but deliberately reports unknown type; no contemporaneous subtype census was retained. Cannot recover a terminated child's command line."
+  },
+  "beforeLateBirth": {
+    "retainedBucketObservations": 302,
+    "timestamp": "2026-11-06T16:21:58.2504787Z",
+    "wholeTreePrivateBytes": 607186944,
+    "incrementalFromSameBlankMiB": 248.66796875,
+    "diagnosticOnly": true,
+    "notAnAlternateAcceptanceWindow": true
+  },
+  "sourceUnchanged": true,
+  "ownedCleanupComplete": true,
+  "processRootsAbsent": true,
+  "forbiddenRequests": 0,
+  "fullOriginalConverted": false,
+  "independentFullFidelityPassed": false,
+  "speedGainProven": false,
+  "publicAcceptance": false,
+  "nextAction": "Keep failures/constraints. Add bounded birth-identity-matched process-type diagnostics for future in-scope browser tests, then continue independent incomplete project work. Do not replay this original unchanged, name an unobserved service, disable services or exclude child memory."
+}

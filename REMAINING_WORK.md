@@ -1,5 +1,23 @@
 # Remaining work audit
 
+2026-11-07 checkpoint:36 focused regressions PASS/0skip, affected lint/diff PASS.
+Original9 failure and bounded role diagnostics retained. Next independent B07
+work targets changed production conversion flows on installed Edge headlessly;
+historical privacy-only coverage is not replayed or promoted to memory coverage.
+
+2026-11-07 bounded opt-in birth-role side capture added for future browser tests.
+It matches role-only CIM metadata to native birth identities; never alters,
+filters or replaces primary memory samples. Original9 child remains UNKNOWN.
+No original replay planned: continue independent open source/reproducibility or
+family work with current services/formula/limits intact.
+
+2026-11-07 original9 sustains~153s/20.9MB real output writes, but primary FAIL
+389.296875MiB/1396valid0missing. Late child247611392B purpose unobserved; keep it
+counted and unknown. Pre-birth248.66796875MiB is diagnostic only. Full output/
+fidelity/scaling/speed acceptance still missing. All disposable owned data gone,
+source unchanged. Preserve this failure; add bounded birth-role diagnostics for
+future tests and continue other incomplete work under unchanged constraints.
+
 2026-11-06 HTTP+bounded trace small control PASS203.73046875MiB/79valid0missing,
 four exact golden/fidelity outputs and real adverse recovery/cleanup. Actual
 retained trace verifies66API calls/5screenshots/noWasm bodies/noDOM snapshots;

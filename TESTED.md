@@ -1,5 +1,35 @@
 # Tested conversion ledger
 
+2026-11-07 checkpoint:36 focused HTTP/native-memory/role-capture/unit-inventory
+checks PASS/0skip (2.575s); affected four-file ESLint and git diff --check PASS.
+Original9 remains failed, not a completed conversion. Evidence tests consume
+tracked compact/gzip reports; no private runtime file prerequisite was added.
+
+2026-11-07 future birth-role side capture implemented: metadata-only PID/parent/
+birth matching at shared CIM microsecond precision, no inference from byte size.
+Native memory batches are never mutated/excluded, unknown labels stayNULL. One
+pending/no queue,16queries/512identity cap, hidden CIM query's5s timeout, no hot-
+loop polling or retained command lines. Existing birth-aware monitor remains
+unchanged; separate wrapper is opt-in for future in-scope tests. Mock controls
+cover PID reuse/parent mismatch/ambiguous births/query failure/pending and cap;
+real Windows owned Node flag fixture checks actual role parsing without media
+conversion or Chrome acceptance. This cannot retroactively identify original9's
+terminated child; no unchanged large conversion replay is warranted.
+
+2026-11-07 original9 HTTP/bounded-trace run at9202c4bb sustained152586.54ms,
+read23160385B/wrote20868532B via88real native writes, but FAILS wholeChrome
+389.296875MiB (blank346439680/peak754647040/1396valid0missing). Native remains
+96MiB/1worker/one pending write/262144B max I/O. New child34980 born180.172675s
+after browser root reaches247611392B at peak and is fully counted. Its type/
+service is UNKNOWN, not retroactively labelled OnDeviceModelService. Highest
+retained pre-birth whole-tree bucket is248.66796875MiB diagnostic ONLY, not a
+replacement acceptance window. Safety-stop sample286.12890625MiB precedes actual
+389.296875MiB peak; both retained. Encoded-frame count/full fidelity unavailable;
+aborted output0B. All outputs/OPFS/profile/runtime/both stages/3owned roots gone,
+original exact size/SHA unchanged/0forbidden requests. Raw971982B archived lossless
+to237437B total. No unchanged original replay, service disabling or exclusions.
+NEXT bounded birth-role side capture for future tests, then independent open work.
+
 2026-11-06 actual HTTP+bounded diagnostic trace control atf915a0e4 PASS. Same
 native/input/settings: four byte-exact99413B golden outputs,48frames/default clock/
 8metadata/SSIM.993273/zeroPTS-duration errors; actual cancel/write-error recovery
