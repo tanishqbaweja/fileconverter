@@ -1,5 +1,39 @@
 # Tested conversion ledger
 
+2026-11-06 allocation-diagnostic cycle final gates:257focused regressions PASS
+(1764.4591ms)+43source/native/browser/failed-original evidence checks PASS
+(3117.8073ms),0skip; affected lint/diff/public403/403consistency PASS,0PDF.
+Actual failure site/request/live heap/capacity now measured; no accepted new
+memory reduction or completed original conversion. NEXT lazy utility-buffer
+implementation with stride/consumer/cleanup controls and unchanged quality/
+memory/resolution, then changed native/browser tests. Do not repeat original5
+or diagnostic build unchanged. Full original/near10GB/family/release gaps open.
+
+2026-11-06 actual diagnostic original5 at a10ca65c FAILS (no completed video/
+startup/fidelity; no output frame independently verified). Full untouched3GB/
+1920x804/24fps/4Mbps/one CPU worker.
+Failure now EXACT site=new-frame: frame request3790080B, ACTUAL Wasm heap
+100663296B==96MiB maximum; emmalloc managed91729032/free78312/unclaimed3084744.
+Free+unclaimed3163056B is627024B SHORT before allocator overhead; not mere
+fragmentation with enough total space. This frame request is not underlying
+malloc request. Last JS-reported76283904B remains preserved,24379392B below
+actual failure heap; no invented replacement/peak. WholeChrome184.63671875MiB/
+35valid0missing does NOT pass failed encoding. Input353857/output485B header,
+abort/partial0B/OPFS/profile/runtime/stage removed, original size/SHA unchanged,
+0forbidden requests. Taskkill reported child39528 error and remains in FAILED
+record; supplemental read-only census proves ALL39observed owned birth identities
+absent, including that child, with no additional kills/unrelated closures.
+Raw283766B archived to101802B total. Obsolete guarded static42129383089 removed
+after exact identity/hash checks:20files/10925830B; equivalent source preimages
+retained in diagnostic42135708757 and pinned rebuild/artifact available.
+New pinned880C/header utility audit finds6reference files/four exact functions:
+scaled_source/scaled_last_source preallocated before new-frame failure; scale
+helper can return source when aligned geometry matches, BUT motion estimation
+reads scaled_source.y_stride, and SVC/resize/full-image filter paths need storage.
+Do not simply delete buffers. NEXT: audited lazy allocation preserving stride,
+all other modes/consumers/cleanup, compiled controls and bit-exact/fidelity tests
+before another changed original. No memory limit/resolution/quality weakening.
+
 2026-11-06 actual diagnostic42135708757 strict small/recovery control PASS at
 93494781: initial+3completed99413B outputs BYTE-EXACT SHA82bdfd66...82267b to
 unmodified libvpx, all48PTS/durations/2s/SSIM.993273/8metadata fields preserved.

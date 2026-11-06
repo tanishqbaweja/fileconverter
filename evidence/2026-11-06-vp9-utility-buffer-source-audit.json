@@ -1,0 +1,260 @@
+{
+  "recordedAt": "2026-11-06T12:11:45.661Z",
+  "scope": "Pinned complete reference audit and exact utility/scaling functions, NOT proof that any buffer may yet be skipped",
+  "archiveSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
+  "cFiles": 880,
+  "references": [
+    {
+      "file": "vp8/encoder/onyx_if.c",
+      "sha256": "a1b8f932da7a9ba08aac3a4ab4607a7799dc38198c589c492dfb55569bd3ebba",
+      "matches": [
+        {
+          "line": 437,
+          "text": "vp8_yv12_de_alloc_frame_buffer(&cpi->scaled_source);",
+          "context": "\n  vpx_free(cpi->active_map);\n  cpi->active_map = 0;\n\n  vp8_de_alloc_frame_buffers(&cpi->common);\n\n  vp8_yv12_de_alloc_frame_buffer(&cpi->pick_lf_lvl_frame);\n  vp8_yv12_de_alloc_frame_buffer(&cpi->scaled_source);\n  dealloc_raw_frame_buffers(cpi);\n\n  vpx_free(cpi->tok);\n  cpi->tok = 0;\n\n  /* Structure used to monitor GF usage */\n  vpx_free(cpi->gf_active_flags);\n  cpi->gf_active_flags = 0;\n\n  /* Activity mask based per mb zbin adjustments */\n  vpx_free(cpi->mb_activity_map);"
+        },
+        {
+          "line": 1161,
+          "text": "if (vp8_yv12_alloc_frame_buffer(&cpi->scaled_source, width, height,",
+          "context": "\n  if (vp8_yv12_alloc_frame_buffer(&cpi->pick_lf_lvl_frame, width, height,\n                                  VP8BORDERINPIXELS)) {\n    vpx_internal_error(&cpi->common.error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate last frame buffer\");\n  }\n\n  if (vp8_yv12_alloc_frame_buffer(&cpi->scaled_source, width, height,\n                                  VP8BORDERINPIXELS)) {\n    vpx_internal_error(&cpi->common.error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate scaled source buffer\");\n  }\n\n  vpx_free(cpi->tok);\n\n  {\n#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n    unsigned int tokens = 8 * 24 * 16; /* one MB for each thread */\n#else"
+        },
+        {
+          "line": 2488,
+          "text": "vpx_scale_frame(sd, &cpi->scaled_source, cm->temp_scale_frame.y_buffer,",
+          "context": "    } else {\n      tmp_height = 11;\n    }\n\n    Scale2Ratio(cm->horiz_scale, &hr, &hs);\n    Scale2Ratio(cm->vert_scale, &vr, &vs);\n\n    vpx_scale_frame(sd, &cpi->scaled_source, cm->temp_scale_frame.y_buffer,\n                    tmp_height, hs, hr, vs, vr, 0);\n\n    vp8_yv12_extend_frame_borders(&cpi->scaled_source);\n    cpi->Source = &cpi->scaled_source;\n#endif\n  } else {\n    cpi->Source = sd;\n  }\n}\n\nstatic int resize_key_frame(VP8_COMP *cpi) {"
+        },
+        {
+          "line": 2491,
+          "text": "vp8_yv12_extend_frame_borders(&cpi->scaled_source);",
+          "context": "\n    Scale2Ratio(cm->horiz_scale, &hr, &hs);\n    Scale2Ratio(cm->vert_scale, &vr, &vs);\n\n    vpx_scale_frame(sd, &cpi->scaled_source, cm->temp_scale_frame.y_buffer,\n                    tmp_height, hs, hr, vs, vr, 0);\n\n    vp8_yv12_extend_frame_borders(&cpi->scaled_source);\n    cpi->Source = &cpi->scaled_source;\n#endif\n  } else {\n    cpi->Source = sd;\n  }\n}\n\nstatic int resize_key_frame(VP8_COMP *cpi) {\n#if CONFIG_SPATIAL_RESAMPLING\n  VP8_COMMON *cm = &cpi->common;\n"
+        },
+        {
+          "line": 2492,
+          "text": "cpi->Source = &cpi->scaled_source;",
+          "context": "    Scale2Ratio(cm->horiz_scale, &hr, &hs);\n    Scale2Ratio(cm->vert_scale, &vr, &vs);\n\n    vpx_scale_frame(sd, &cpi->scaled_source, cm->temp_scale_frame.y_buffer,\n                    tmp_height, hs, hr, vs, vr, 0);\n\n    vp8_yv12_extend_frame_borders(&cpi->scaled_source);\n    cpi->Source = &cpi->scaled_source;\n#endif\n  } else {\n    cpi->Source = sd;\n  }\n}\n\nstatic int resize_key_frame(VP8_COMP *cpi) {\n#if CONFIG_SPATIAL_RESAMPLING\n  VP8_COMMON *cm = &cpi->common;\n\n  /* Do we need to apply resampling for one pass cbr."
+        }
+      ]
+    },
+    {
+      "file": "vp8/encoder/onyx_int.h",
+      "sha256": "f456681b4c0b4d9e4c2bf770f58355e80efde63ffbd0f953bb1f85962ad7d607",
+      "matches": [
+        {
+          "line": 305,
+          "text": "YV12_BUFFER_CONFIG scaled_source;",
+          "context": "  struct lookahead_ctx *lookahead;\n  struct lookahead_entry *source;\n  struct lookahead_entry *alt_ref_source;\n  struct lookahead_entry *last_source;\n\n  YV12_BUFFER_CONFIG *Source;\n  YV12_BUFFER_CONFIG *un_scaled_source;\n  YV12_BUFFER_CONFIG scaled_source;\n  YV12_BUFFER_CONFIG *last_frame_unscaled_source;\n\n  unsigned int frames_till_alt_ref_frame;\n  /* frame in src_buffers has been identified to be encoded as an alt ref */\n  int source_alt_ref_pending;\n  /* an alt ref frame has been encoded and is usable */\n  int source_alt_ref_active;\n  /* source of frame to encode is an exact copy of an alt ref frame */\n  int is_src_frame_alt_ref;\n\n  /* golden frame same as last frame ( short circuit gold searches) */"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "sha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+      "matches": [
+        {
+          "line": 1037,
+          "text": "vpx_free_frame_buffer(&cpi->last_frame_uf);",
+          "context": "\n  vp9_free_ref_frame_buffers(cm->buffer_pool);\n#if CONFIG_VP9_POSTPROC\n  vp9_free_postproc_buffers(cm);\n#endif\n  vp9_free_context_buffers(cm);\n\n  vpx_free_frame_buffer(&cpi->last_frame_uf);\n  vpx_free_frame_buffer(&cpi->scaled_source);\n  vpx_free_frame_buffer(&cpi->scaled_last_source);\n  vpx_free_frame_buffer(&cpi->tf_buffer);\n#ifdef ENABLE_KF_DENOISE\n  vpx_free_frame_buffer(&cpi->raw_unscaled_source);\n  vpx_free_frame_buffer(&cpi->raw_scaled_source);\n#endif\n\n  vp9_lookahead_destroy(cpi->lookahead);\n\n  vpx_free(cpi->tile_tok[0][0]);"
+        },
+        {
+          "line": 1038,
+          "text": "vpx_free_frame_buffer(&cpi->scaled_source);",
+          "context": "  vp9_free_ref_frame_buffers(cm->buffer_pool);\n#if CONFIG_VP9_POSTPROC\n  vp9_free_postproc_buffers(cm);\n#endif\n  vp9_free_context_buffers(cm);\n\n  vpx_free_frame_buffer(&cpi->last_frame_uf);\n  vpx_free_frame_buffer(&cpi->scaled_source);\n  vpx_free_frame_buffer(&cpi->scaled_last_source);\n  vpx_free_frame_buffer(&cpi->tf_buffer);\n#ifdef ENABLE_KF_DENOISE\n  vpx_free_frame_buffer(&cpi->raw_unscaled_source);\n  vpx_free_frame_buffer(&cpi->raw_scaled_source);\n#endif\n\n  vp9_lookahead_destroy(cpi->lookahead);\n\n  vpx_free(cpi->tile_tok[0][0]);\n  cpi->tile_tok[0][0] = 0;"
+        },
+        {
+          "line": 1039,
+          "text": "vpx_free_frame_buffer(&cpi->scaled_last_source);",
+          "context": "#if CONFIG_VP9_POSTPROC\n  vp9_free_postproc_buffers(cm);\n#endif\n  vp9_free_context_buffers(cm);\n\n  vpx_free_frame_buffer(&cpi->last_frame_uf);\n  vpx_free_frame_buffer(&cpi->scaled_source);\n  vpx_free_frame_buffer(&cpi->scaled_last_source);\n  vpx_free_frame_buffer(&cpi->tf_buffer);\n#ifdef ENABLE_KF_DENOISE\n  vpx_free_frame_buffer(&cpi->raw_unscaled_source);\n  vpx_free_frame_buffer(&cpi->raw_scaled_source);\n#endif\n\n  vp9_lookahead_destroy(cpi->lookahead);\n\n  vpx_free(cpi->tile_tok[0][0]);\n  cpi->tile_tok[0][0] = 0;\n"
+        },
+        {
+          "line": 1305,
+          "text": "if (vpx_realloc_frame_buffer(&cpi->last_frame_uf, cm->width, cm->height,",
+          "context": "                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate temporal filter buffer\");\n}\n\nstatic void alloc_util_frame_buffers(VP9_COMP *cpi) {\n  VP9_COMMON *const cm = &cpi->common;\n  if (vpx_realloc_frame_buffer(&cpi->last_frame_uf, cm->width, cm->height,\n                               cm->subsampling_x, cm->subsampling_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                               cm->use_highbitdepth,\n#endif\n                               VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment,\n                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate last frame buffer\");\n\n  if (vpx_realloc_frame_buffer(&cpi->scaled_source, cm->width, cm->height,\n                               cm->subsampling_x, cm->subsampling_y,"
+        },
+        {
+          "line": 1315,
+          "text": "if (vpx_realloc_frame_buffer(&cpi->scaled_source, cm->width, cm->height,",
+          "context": "                               cm->use_highbitdepth,\n#endif\n                               VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment,\n                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate last frame buffer\");\n\n  if (vpx_realloc_frame_buffer(&cpi->scaled_source, cm->width, cm->height,\n                               cm->subsampling_x, cm->subsampling_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                               cm->use_highbitdepth,\n#endif\n                               VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment,\n                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate scaled source buffer\");\n\n  // For 1 pass cbr: allocate scaled_frame that may be used as an intermediate\n  // buffer for a 2 stage down-sampling: two stages of 1:2 down-sampling for a"
+        },
+        {
+          "line": 1342,
+          "text": "if (vpx_realloc_frame_buffer(&cpi->scaled_last_source, cm->width, cm->height,",
+          "context": "            cm->use_highbitdepth,\n#endif\n            VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment, NULL, NULL, NULL))\n      vpx_internal_error(&cpi->common.error, VPX_CODEC_MEM_ERROR,\n                         \"Failed to allocate scaled_frame for svc \");\n  }\n\n  if (vpx_realloc_frame_buffer(&cpi->scaled_last_source, cm->width, cm->height,\n                               cm->subsampling_x, cm->subsampling_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                               cm->use_highbitdepth,\n#endif\n                               VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment,\n                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate scaled last source buffer\");\n#ifdef ENABLE_KF_DENOISE\n  if (vpx_realloc_frame_buffer(&cpi->raw_unscaled_source, cm->width, cm->height,\n                               cm->subsampling_x, cm->subsampling_y,"
+        },
+        {
+          "line": 3814,
+          "text": "static void init_motion_estimation(VP9_COMP *cpi) {",
+          "context": "    }\n    vp9_denoise(&cpi->common, cpi->Source, cpi->Source, l,\n                cpi->common.postproc_state.limits);\n  }\n#endif  // CONFIG_VP9_POSTPROC\n}\n\nstatic void init_motion_estimation(VP9_COMP *cpi) {\n  int y_stride = cpi->scaled_source.y_stride;\n\n  if (cpi->sf.mv.search_method == NSTEP) {\n    vp9_init3smotion_compensation(&cpi->ss_cfg, y_stride);\n  } else if (cpi->sf.mv.search_method == DIAMOND) {\n    vp9_init_dsmotion_compensation(&cpi->ss_cfg, y_stride);\n  }\n}\n\nstatic void set_frame_size(VP9_COMP *cpi) {\n  int ref_frame;"
+        },
+        {
+          "line": 3815,
+          "text": "int y_stride = cpi->scaled_source.y_stride;",
+          "context": "    vp9_denoise(&cpi->common, cpi->Source, cpi->Source, l,\n                cpi->common.postproc_state.limits);\n  }\n#endif  // CONFIG_VP9_POSTPROC\n}\n\nstatic void init_motion_estimation(VP9_COMP *cpi) {\n  int y_stride = cpi->scaled_source.y_stride;\n\n  if (cpi->sf.mv.search_method == NSTEP) {\n    vp9_init3smotion_compensation(&cpi->ss_cfg, y_stride);\n  } else if (cpi->sf.mv.search_method == DIAMOND) {\n    vp9_init_dsmotion_compensation(&cpi->ss_cfg, y_stride);\n  }\n}\n\nstatic void set_frame_size(VP9_COMP *cpi) {\n  int ref_frame;\n  VP9_COMMON *const cm = &cpi->common;"
+        },
+        {
+          "line": 3891,
+          "text": "init_motion_estimation(cpi);",
+          "context": "#endif\n                               VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment,\n                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate frame buffer\");\n\n  alloc_util_frame_buffers(cpi);\n  init_motion_estimation(cpi);\n\n  int has_valid_ref_frame = 0;\n  for (ref_frame = LAST_FRAME; ref_frame <= ALTREF_FRAME; ++ref_frame) {\n    RefBuffer *const ref_buf = &cm->frame_refs[ref_frame - 1];\n    const int buf_idx = get_ref_frame_buf_idx(cpi, ref_frame);\n\n    ref_buf->idx = buf_idx;\n\n    if (buf_idx != INVALID_IDX) {\n      YV12_BUFFER_CONFIG *const buf = &cm->buffer_pool->frame_bufs[buf_idx].buf;\n      ref_buf->buf = buf;"
+        },
+        {
+          "line": 3951,
+          "text": "cpi->raw_source_frame = vp9_scale_if_required(",
+          "context": "    vp9_copy(tile_data->thresh_freq_fact_prev, tile_data->thresh_freq_fact);\n  }\n}\n\nstatic INLINE void set_raw_source_frame(VP9_COMP *cpi) {\n#ifdef ENABLE_KF_DENOISE\n  if (is_spatial_denoise_enabled(cpi)) {\n    cpi->raw_source_frame = vp9_scale_if_required(\n        cm, &cpi->raw_unscaled_source, &cpi->raw_scaled_source,\n        (oxcf->pass == 0), EIGHTTAP, 0);\n  } else {\n    cpi->raw_source_frame = cpi->Source;\n  }\n#else\n  cpi->raw_source_frame = cpi->Source;\n#endif\n}\n\nstatic YV12_BUFFER_CONFIG *svc_twostage_scale("
+        },
+        {
+          "line": 4034,
+          "text": "cm, cpi->un_scaled_source, &cpi->scaled_source, &svc->scaled_temp,",
+          "context": "      svc->scaled_temp.y_height == cm->height << 1) {\n    // For svc, if it is a 1/4x1/4 downscaling, do a two-stage scaling to take\n    // advantage of the 1:2 optimized scaler. In the process, the 1/2x1/2\n    // result will be saved in scaled_temp and might be used later.\n    const INTERP_FILTER filter_scaler2 = svc->downsample_filter_type[1];\n    const int phase_scaler2 = svc->downsample_filter_phase[1];\n    cpi->Source = svc_twostage_scale(\n        cm, cpi->un_scaled_source, &cpi->scaled_source, &svc->scaled_temp,\n        filter_scaler, phase_scaler, filter_scaler2, phase_scaler2);\n    svc->scaled_one_half = 1;\n  } else if (is_one_pass_svc(cpi) &&\n             cpi->un_scaled_source->y_width == cm->width << 1 &&\n             cpi->un_scaled_source->y_height == cm->height << 1 &&\n             svc->scaled_one_half) {\n    // If the spatial layer is 1/2x1/2 and the scaling is already done in the\n    // two-stage scaling, use the result directly.\n    cpi->Source = &svc->scaled_temp;\n    svc->scaled_one_half = 0;\n  } else {"
+        },
+        {
+          "line": 4046,
+          "text": "cpi->Source = vp9_scale_if_required(",
+          "context": "             cpi->un_scaled_source->y_height == cm->height << 1 &&\n             svc->scaled_one_half) {\n    // If the spatial layer is 1/2x1/2 and the scaling is already done in the\n    // two-stage scaling, use the result directly.\n    cpi->Source = &svc->scaled_temp;\n    svc->scaled_one_half = 0;\n  } else {\n    cpi->Source = vp9_scale_if_required(\n        cm, cpi->un_scaled_source, &cpi->scaled_source, (cpi->oxcf.pass == 0),\n        filter_scaler, phase_scaler);\n  }\n#ifdef OUTPUT_YUV_SVC_SRC\n  // Write out at most 3 spatial layers.\n  if (is_one_pass_svc(cpi) && svc->spatial_layer_id < 3) {\n    vpx_write_yuv_frame(yuv_svc_src[svc->spatial_layer_id], cpi->Source);\n  }\n#endif\n  // Unfiltered raw source used in metrics calculation if the source\n  // has been filtered."
+        },
+        {
+          "line": 4047,
+          "text": "cm, cpi->un_scaled_source, &cpi->scaled_source, (cpi->oxcf.pass == 0),",
+          "context": "             svc->scaled_one_half) {\n    // If the spatial layer is 1/2x1/2 and the scaling is already done in the\n    // two-stage scaling, use the result directly.\n    cpi->Source = &svc->scaled_temp;\n    svc->scaled_one_half = 0;\n  } else {\n    cpi->Source = vp9_scale_if_required(\n        cm, cpi->un_scaled_source, &cpi->scaled_source, (cpi->oxcf.pass == 0),\n        filter_scaler, phase_scaler);\n  }\n#ifdef OUTPUT_YUV_SVC_SRC\n  // Write out at most 3 spatial layers.\n  if (is_one_pass_svc(cpi) && svc->spatial_layer_id < 3) {\n    vpx_write_yuv_frame(yuv_svc_src[svc->spatial_layer_id], cpi->Source);\n  }\n#endif\n  // Unfiltered raw source used in metrics calculation if the source\n  // has been filtered.\n  if (is_psnr_calc_enabled(cpi)) {"
+        },
+        {
+          "line": 4061,
+          "text": "cpi->raw_source_frame = vp9_scale_if_required(",
+          "context": "  }\n#endif\n  // Unfiltered raw source used in metrics calculation if the source\n  // has been filtered.\n  if (is_psnr_calc_enabled(cpi)) {\n#ifdef ENABLE_KF_DENOISE\n    if (is_spatial_denoise_enabled(cpi)) {\n      cpi->raw_source_frame = vp9_scale_if_required(\n          cm, &cpi->raw_unscaled_source, &cpi->raw_scaled_source,\n          (cpi->oxcf.pass == 0), EIGHTTAP, phase_scaler);\n    } else {\n      cpi->raw_source_frame = cpi->Source;\n    }\n#else\n    cpi->raw_source_frame = cpi->Source;\n#endif\n  }\n\n  if ((cpi->use_svc &&"
+        },
+        {
+          "line": 4094,
+          "text": "cpi->Last_Source = vp9_scale_if_required(",
+          "context": "  // is enabled.\n  if (cpi->unscaled_last_source != NULL &&\n      (cpi->oxcf.content == VP9E_CONTENT_SCREEN ||\n       (cpi->oxcf.pass == 0 && cpi->oxcf.rc_mode == VPX_VBR &&\n        cpi->oxcf.mode == REALTIME && cpi->oxcf.speed >= 5) ||\n       (cpi->noise_estimate.enabled && !cpi->oxcf.noise_sensitivity) ||\n       cpi->compute_source_sad_onepass))\n    cpi->Last_Source = vp9_scale_if_required(\n        cm, cpi->unscaled_last_source, &cpi->scaled_last_source,\n        (cpi->oxcf.pass == 0), EIGHTTAP, 0);\n\n  if (cpi->Last_Source == NULL ||\n      cpi->Last_Source->y_width != cpi->Source->y_width ||\n      cpi->Last_Source->y_height != cpi->Source->y_height)\n    cpi->compute_source_sad_onepass = 0;\n\n  if (frame_is_intra_only(cm) || cpi->resize_pending != 0) {\n    memset(cpi->consec_zero_mv, 0,\n           cm->mi_rows * cm->mi_cols * sizeof(*cpi->consec_zero_mv));"
+        },
+        {
+          "line": 4095,
+          "text": "cm, cpi->unscaled_last_source, &cpi->scaled_last_source,",
+          "context": "  if (cpi->unscaled_last_source != NULL &&\n      (cpi->oxcf.content == VP9E_CONTENT_SCREEN ||\n       (cpi->oxcf.pass == 0 && cpi->oxcf.rc_mode == VPX_VBR &&\n        cpi->oxcf.mode == REALTIME && cpi->oxcf.speed >= 5) ||\n       (cpi->noise_estimate.enabled && !cpi->oxcf.noise_sensitivity) ||\n       cpi->compute_source_sad_onepass))\n    cpi->Last_Source = vp9_scale_if_required(\n        cm, cpi->unscaled_last_source, &cpi->scaled_last_source,\n        (cpi->oxcf.pass == 0), EIGHTTAP, 0);\n\n  if (cpi->Last_Source == NULL ||\n      cpi->Last_Source->y_width != cpi->Source->y_width ||\n      cpi->Last_Source->y_height != cpi->Source->y_height)\n    cpi->compute_source_sad_onepass = 0;\n\n  if (frame_is_intra_only(cm) || cpi->resize_pending != 0) {\n    memset(cpi->consec_zero_mv, 0,\n           cm->mi_rows * cm->mi_cols * sizeof(*cpi->consec_zero_mv));\n  }"
+        },
+        {
+          "line": 4173,
+          "text": "init_motion_estimation(cpi);",
+          "context": "    vp9_scale_references(cpi);\n  }\n\n  set_size_independent_vars(cpi);\n  set_size_dependent_vars(cpi, &q, &bottom_index, &top_index);\n\n  // search method and step parameter might be changed in speed settings.\n  init_motion_estimation(cpi);\n\n  if (cpi->sf.copy_partition_flag) alloc_copy_partition_data(cpi);\n\n  if (cpi->sf.svc_use_lowres_part &&\n      svc->spatial_layer_id == svc->number_spatial_layers - 2) {\n    if (svc->prev_partition_svc == NULL) {\n      CHECK_MEM_ERROR(\n          &cm->error, svc->prev_partition_svc,\n          (BLOCK_SIZE *)vpx_calloc(cm->mi_stride * cm->mi_rows,\n                                   sizeof(*svc->prev_partition_svc)));\n    }"
+        },
+        {
+          "line": 4428,
+          "text": "vp9_scale_if_required(cm, cpi->un_scaled_source, &cpi->scaled_source,",
+          "context": "    if (loop_count == 0) {\n      vp9_rc_compute_frame_size_bounds(cpi, rc->this_frame_target,\n                                       &frame_under_shoot_limit,\n                                       &frame_over_shoot_limit);\n    }\n\n    cpi->Source =\n        vp9_scale_if_required(cm, cpi->un_scaled_source, &cpi->scaled_source,\n                              (oxcf->pass == 0), EIGHTTAP, 0);\n\n    // Unfiltered raw source used in metrics calculation if the source\n    // has been filtered.\n    if (is_psnr_calc_enabled(cpi)) {\n#ifdef ENABLE_KF_DENOISE\n      if (is_spatial_denoise_enabled(cpi)) {\n        cpi->raw_source_frame = vp9_scale_if_required(\n            cm, &cpi->raw_unscaled_source, &cpi->raw_scaled_source,\n            (oxcf->pass == 0), EIGHTTAP, 0);\n      } else {"
+        },
+        {
+          "line": 4436,
+          "text": "cpi->raw_source_frame = vp9_scale_if_required(",
+          "context": "                              (oxcf->pass == 0), EIGHTTAP, 0);\n\n    // Unfiltered raw source used in metrics calculation if the source\n    // has been filtered.\n    if (is_psnr_calc_enabled(cpi)) {\n#ifdef ENABLE_KF_DENOISE\n      if (is_spatial_denoise_enabled(cpi)) {\n        cpi->raw_source_frame = vp9_scale_if_required(\n            cm, &cpi->raw_unscaled_source, &cpi->raw_scaled_source,\n            (oxcf->pass == 0), EIGHTTAP, 0);\n      } else {\n        cpi->raw_source_frame = cpi->Source;\n      }\n#else\n      cpi->raw_source_frame = cpi->Source;\n#endif\n    }\n\n    if (cpi->unscaled_last_source != NULL)"
+        },
+        {
+          "line": 4448,
+          "text": "cpi->Last_Source = vp9_scale_if_required(cm, cpi->unscaled_last_source,",
+          "context": "      }\n#else\n      cpi->raw_source_frame = cpi->Source;\n#endif\n    }\n\n    if (cpi->unscaled_last_source != NULL)\n      cpi->Last_Source = vp9_scale_if_required(cm, cpi->unscaled_last_source,\n                                               &cpi->scaled_last_source,\n                                               (oxcf->pass == 0), EIGHTTAP, 0);\n\n    if (frame_is_intra_only(cm) == 0) {\n      if (loop_count > 0) {\n        release_scaled_references(cpi);\n      }\n      vp9_scale_references(cpi);\n    }\n\n    const GF_GROUP *gf_group = &cpi->twopass.gf_group;"
+        },
+        {
+          "line": 4449,
+          "text": "&cpi->scaled_last_source,",
+          "context": "#else\n      cpi->raw_source_frame = cpi->Source;\n#endif\n    }\n\n    if (cpi->unscaled_last_source != NULL)\n      cpi->Last_Source = vp9_scale_if_required(cm, cpi->unscaled_last_source,\n                                               &cpi->scaled_last_source,\n                                               (oxcf->pass == 0), EIGHTTAP, 0);\n\n    if (frame_is_intra_only(cm) == 0) {\n      if (loop_count > 0) {\n        release_scaled_references(cpi);\n      }\n      vp9_scale_references(cpi);\n    }\n\n    const GF_GROUP *gf_group = &cpi->twopass.gf_group;\n    int ext_rc_delta_q_uv = 0;"
+        },
+        {
+          "line": 4777,
+          "text": "YV12_BUFFER_CONFIG *vp9_scale_if_required(",
+          "context": "  if (cpi->ext_refresh_frame_flags_pending) {\n    cpi->refresh_last_frame = cpi->ext_refresh_last_frame;\n    cpi->refresh_golden_frame = cpi->ext_refresh_golden_frame;\n    cpi->refresh_alt_ref_frame = cpi->ext_refresh_alt_ref_frame;\n  }\n}\n\nYV12_BUFFER_CONFIG *vp9_scale_if_required(\n    VP9_COMMON *cm, YV12_BUFFER_CONFIG *unscaled, YV12_BUFFER_CONFIG *scaled,\n    int use_normative_scaler, INTERP_FILTER filter_type, int phase_scaler) {\n  if (cm->mi_cols * MI_SIZE != unscaled->y_width ||\n      cm->mi_rows * MI_SIZE != unscaled->y_height) {\n#if CONFIG_VP9_HIGHBITDEPTH\n    if (use_normative_scaler && unscaled->y_width <= (scaled->y_width << 1) &&\n        unscaled->y_height <= (scaled->y_height << 1))\n      if (cm->bit_depth == VPX_BITS_8)\n        vp9_scale_and_extend_frame(unscaled, scaled, filter_type, phase_scaler);\n      else\n        scale_and_extend_frame(unscaled, scaled, (int)cm->bit_depth,"
+        },
+        {
+          "line": 6499,
+          "text": "cpi->raw_source_frame = vp9_scale_if_required(",
+          "context": "#endif\n\n  if (cpi->keep_level_stats && oxcf->pass != 1)\n    update_level_info(cpi, size, arf_src_index);\n\n#if !CONFIG_REALTIME_ONLY\n  if (is_key_temporal_filter_enabled && cpi->b_calculate_psnr) {\n    cpi->raw_source_frame = vp9_scale_if_required(\n        cm, source_buffer, &cpi->scaled_source, (oxcf->pass == 0), EIGHTTAP, 0);\n  }\n#endif  // !CONFIG_REALTIME_ONLY\n\n#if CONFIG_INTERNAL_STATS\n\n  if (oxcf->pass != 1 && !cpi->last_frame_dropped) {\n    double samples = 0.0;\n    cpi->bytes += *size;\n\n    if (cm->show_frame) {"
+        },
+        {
+          "line": 6500,
+          "text": "cm, source_buffer, &cpi->scaled_source, (oxcf->pass == 0), EIGHTTAP, 0);",
+          "context": "\n  if (cpi->keep_level_stats && oxcf->pass != 1)\n    update_level_info(cpi, size, arf_src_index);\n\n#if !CONFIG_REALTIME_ONLY\n  if (is_key_temporal_filter_enabled && cpi->b_calculate_psnr) {\n    cpi->raw_source_frame = vp9_scale_if_required(\n        cm, source_buffer, &cpi->scaled_source, (oxcf->pass == 0), EIGHTTAP, 0);\n  }\n#endif  // !CONFIG_REALTIME_ONLY\n\n#if CONFIG_INTERNAL_STATS\n\n  if (oxcf->pass != 1 && !cpi->last_frame_dropped) {\n    double samples = 0.0;\n    cpi->bytes += *size;\n\n    if (cm->show_frame) {\n      uint32_t bit_depth = 8;"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_encoder.h",
+      "sha256": "299ee992384604932584c959b9504130981a5562833863751100627022662f6c",
+      "matches": [
+        {
+          "line": 608,
+          "text": "YV12_BUFFER_CONFIG scaled_source;",
+          "context": "  VP9EncoderConfig oxcf;\n  struct lookahead_ctx *lookahead;\n  struct lookahead_entry *alt_ref_source;\n\n  YV12_BUFFER_CONFIG *Source;\n  YV12_BUFFER_CONFIG *Last_Source;  // NULL for first frame and alt_ref frames\n  YV12_BUFFER_CONFIG *un_scaled_source;\n  YV12_BUFFER_CONFIG scaled_source;\n  YV12_BUFFER_CONFIG *unscaled_last_source;\n  YV12_BUFFER_CONFIG scaled_last_source;\n#ifdef ENABLE_KF_DENOISE\n  YV12_BUFFER_CONFIG raw_unscaled_source;\n  YV12_BUFFER_CONFIG raw_scaled_source;\n#endif\n  YV12_BUFFER_CONFIG *raw_source_frame;\n\n  BLOCK_SIZE tpl_bsize;\n  TplDepFrame tpl_stats[MAX_ARF_GOP_SIZE];\n  // Used to store TPL stats before propagation"
+        },
+        {
+          "line": 610,
+          "text": "YV12_BUFFER_CONFIG scaled_last_source;",
+          "context": "  struct lookahead_entry *alt_ref_source;\n\n  YV12_BUFFER_CONFIG *Source;\n  YV12_BUFFER_CONFIG *Last_Source;  // NULL for first frame and alt_ref frames\n  YV12_BUFFER_CONFIG *un_scaled_source;\n  YV12_BUFFER_CONFIG scaled_source;\n  YV12_BUFFER_CONFIG *unscaled_last_source;\n  YV12_BUFFER_CONFIG scaled_last_source;\n#ifdef ENABLE_KF_DENOISE\n  YV12_BUFFER_CONFIG raw_unscaled_source;\n  YV12_BUFFER_CONFIG raw_scaled_source;\n#endif\n  YV12_BUFFER_CONFIG *raw_source_frame;\n\n  BLOCK_SIZE tpl_bsize;\n  TplDepFrame tpl_stats[MAX_ARF_GOP_SIZE];\n  // Used to store TPL stats before propagation\n  VpxTplGopStats tpl_gop_stats;\n  YV12_BUFFER_CONFIG *tpl_recon_frames[REF_FRAMES];"
+        },
+        {
+          "line": 670,
+          "text": "YV12_BUFFER_CONFIG last_frame_uf;",
+          "context": "  int64_t *mb_wiener_variance;\n  int mb_wiener_var_rows;\n  int mb_wiener_var_cols;\n  double *mi_ssim_rdmult_scaling_factors;\n\n  int64_t *sb_mul_scale;\n\n  YV12_BUFFER_CONFIG last_frame_uf;\n\n  TOKENEXTRA *tile_tok[4][1 << 6];\n  TOKENLIST *tplist[4][1 << 6];\n\n  // Ambient reconstruction err target for force key frames\n  int64_t ambient_err;\n\n  RD_CONTROL rd_ctrl;\n  RD_OPT rd;\n\n  CODING_CONTEXT coding_context;"
+        },
+        {
+          "line": 1130,
+          "text": "YV12_BUFFER_CONFIG *vp9_scale_if_required(",
+          "context": "void vp9_scale_and_extend_frame_nonnormative(const YV12_BUFFER_CONFIG *src,\n                                             YV12_BUFFER_CONFIG *dst, int bd);\n#else\nvoid vp9_scale_and_extend_frame_nonnormative(const YV12_BUFFER_CONFIG *src,\n                                             YV12_BUFFER_CONFIG *dst);\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\nYV12_BUFFER_CONFIG *vp9_scale_if_required(\n    VP9_COMMON *cm, YV12_BUFFER_CONFIG *unscaled, YV12_BUFFER_CONFIG *scaled,\n    int use_normative_scaler, INTERP_FILTER filter_type, int phase_scaler);\n\nvoid vp9_apply_encoding_flags(VP9_COMP *cpi, vpx_enc_frame_flags_t flags);\n\nstatic INLINE int is_one_pass_svc(const struct VP9_COMP *const cpi) {\n  return (cpi->use_svc && cpi->oxcf.pass == 0);\n}\n\n#if CONFIG_VP9_TEMPORAL_DENOISING\nstatic INLINE int denoise_svc(const struct VP9_COMP *const cpi) {"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_picklpf.c",
+      "sha256": "33258b68dc898d4babe9beb5c2368f6fd78e67478a233849f07819a64bcfeee6",
+      "matches": [
+        {
+          "line": 73,
+          "text": "vpx_yv12_copy_y(&cpi->last_frame_uf, cm->frame_to_show);",
+          "context": "    filt_err = vpx_get_y_sse(sd, cm->frame_to_show);\n  }\n#else\n  filt_err = vpx_get_y_sse(sd, cm->frame_to_show);\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\n  // Re-instate the unfiltered frame\n  vpx_yv12_copy_y(&cpi->last_frame_uf, cm->frame_to_show);\n\n  return filt_err;\n}\n\nstatic int search_filter_level(const YV12_BUFFER_CONFIG *sd, VP9_COMP *cpi,\n                               int partial_frame) {\n  const VP9_COMMON *const cm = &cpi->common;\n  const struct loopfilter *const lf = &cm->lf;\n  const int min_filter_level = 0;\n  const int max_filter_level = get_max_filter_level(cpi);\n  int filt_direction = 0;"
+        },
+        {
+          "line": 100,
+          "text": "vpx_yv12_copy_y(cm->frame_to_show, &cpi->last_frame_uf);",
+          "context": "  int64_t ss_err[MAX_LOOP_FILTER + 1];\n  unsigned int section_intra_rating = get_section_intra_rating(cpi);\n\n  // Set each entry to -1\n  memset(ss_err, 0xFF, sizeof(ss_err));\n\n  //  Make a copy of the unfiltered / processed recon buffer\n  vpx_yv12_copy_y(cm->frame_to_show, &cpi->last_frame_uf);\n\n  best_err = try_filter_frame(sd, cpi, filt_mid, partial_frame);\n  filt_best = filt_mid;\n  ss_err[filt_mid] = best_err;\n\n  while (filter_step > 0) {\n    const int filt_high = VPXMIN(filt_mid + filter_step, max_filter_level);\n    const int filt_low = VPXMAX(filt_mid - filter_step, min_filter_level);\n\n    // Bias against raising loop filter in favor of lowering it.\n    int64_t bias = (best_err >> (15 - (filt_mid / 8))) * filter_step;"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_temporal_filter.c",
+      "sha256": "0d71f6c6ecbaa116fd80e1341831f7bd204ef64bec837cf46ab799fcc1e566ce",
+      "matches": [
+        {
+          "line": 1406,
+          "text": "frames[frame] = vp9_scale_if_required(",
+          "context": "                                       cm->use_highbitdepth,\n#endif\n                                       VP9_ENC_BORDER_IN_PIXELS,\n                                       cm->byte_alignment, NULL, NULL, NULL)) {\n            vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                               \"Failed to reallocate alt_ref_buffer\");\n          }\n          frames[frame] = vp9_scale_if_required(\n              cm, frames[frame], &cpi->svc.scaled_frames[frame_used], 0,\n              EIGHTTAP, 0);\n          ++frame_used;\n        }\n      }\n      cm->mi = cm->mip + cm->mi_stride + 1;\n      xd->mi = cm->mi_grid_visible;\n      xd->mi[0] = cm->mi;\n    } else {\n// ARF is produced at the native frame size and resized when coded.\n#if CONFIG_VP9_HIGHBITDEPTH"
+        }
+      ]
+    }
+  ],
+  "functions": {
+    "alloc_util_frame_buffers": {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "sourceSha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+      "exactSource": "static void alloc_util_frame_buffers(VP9_COMP *cpi) {\n  VP9_COMMON *const cm = &cpi->common;\n  if (vpx_realloc_frame_buffer(&cpi->last_frame_uf, cm->width, cm->height,\n                               cm->subsampling_x, cm->subsampling_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                               cm->use_highbitdepth,\n#endif\n                               VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment,\n                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate last frame buffer\");\n\n  if (vpx_realloc_frame_buffer(&cpi->scaled_source, cm->width, cm->height,\n                               cm->subsampling_x, cm->subsampling_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                               cm->use_highbitdepth,\n#endif\n                               VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment,\n                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate scaled source buffer\");\n\n  // For 1 pass cbr: allocate scaled_frame that may be used as an intermediate\n  // buffer for a 2 stage down-sampling: two stages of 1:2 down-sampling for a\n  // target of 1/4x1/4. number_spatial_layers must be greater than 2.\n  if (is_one_pass_svc(cpi) && !cpi->svc.scaled_temp_is_alloc &&\n      cpi->svc.number_spatial_layers > 2) {\n    cpi->svc.scaled_temp_is_alloc = 1;\n    if (vpx_realloc_frame_buffer(\n            &cpi->svc.scaled_temp, cm->width >> 1, cm->height >> 1,\n            cm->subsampling_x, cm->subsampling_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n            cm->use_highbitdepth,\n#endif\n            VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment, NULL, NULL, NULL))\n      vpx_internal_error(&cpi->common.error, VPX_CODEC_MEM_ERROR,\n                         \"Failed to allocate scaled_frame for svc \");\n  }\n\n  if (vpx_realloc_frame_buffer(&cpi->scaled_last_source, cm->width, cm->height,\n                               cm->subsampling_x, cm->subsampling_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                               cm->use_highbitdepth,\n#endif\n                               VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment,\n                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate scaled last source buffer\");\n#ifdef ENABLE_KF_DENOISE\n  if (vpx_realloc_frame_buffer(&cpi->raw_unscaled_source, cm->width, cm->height,\n                               cm->subsampling_x, cm->subsampling_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                               cm->use_highbitdepth,\n#endif\n                               VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment,\n                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate unscaled raw source frame buffer\");\n\n  if (vpx_realloc_frame_buffer(&cpi->raw_scaled_source, cm->width, cm->height,\n                               cm->subsampling_x, cm->subsampling_y,\n#if CONFIG_VP9_HIGHBITDEPTH\n                               cm->use_highbitdepth,\n#endif\n                               VP9_ENC_BORDER_IN_PIXELS, cm->byte_alignment,\n                               NULL, NULL, NULL))\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate scaled raw source frame buffer\");\n#endif\n}\n",
+      "sha256": "751cf9d0b04880dfbf97690be6f651c0ddb3f55fcefb9955eccc982c36a5f641"
+    },
+    "update_initial_width": {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "sourceSha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+      "exactSource": "static void update_initial_width(VP9_COMP *cpi, int use_highbitdepth,\n                                 int subsampling_x, int subsampling_y) {\n  VP9_COMMON *const cm = &cpi->common;\n#if !CONFIG_VP9_HIGHBITDEPTH\n  (void)use_highbitdepth;\n  assert(use_highbitdepth == 0);\n#endif\n\n  if (!cpi->initial_width ||\n#if CONFIG_VP9_HIGHBITDEPTH\n      cm->use_highbitdepth != use_highbitdepth ||\n#endif\n      cm->subsampling_x != subsampling_x ||\n      cm->subsampling_y != subsampling_y) {\n    cm->subsampling_x = subsampling_x;\n    cm->subsampling_y = subsampling_y;\n#if CONFIG_VP9_HIGHBITDEPTH\n    cm->use_highbitdepth = use_highbitdepth;\n#endif\n    alloc_util_frame_buffers(cpi);\n    // The initial_width/height is used to clamp the encoding width/height in\n    // vp9_set_size_literal(). The check below is added to avoid setting the\n    // initial_width/height to a smaller resolution than the one configured.\n    // This can happen when the user passes in a lower resolution on the very\n    // first frame (after creating the encoder with a larger resolution). For\n    // spatial layers this will prevent user from going back up in resolution\n    // (i.e., the top layer will get stuck at the lower resolution).\n    if (cm->width > cpi->initial_width || cm->height > cpi->initial_height) {\n      cpi->initial_width = cm->width;\n      cpi->initial_height = cm->height;\n    }\n    cpi->initial_mbs = cm->MBs;\n  }\n}\n",
+      "sha256": "36eac482946c63b50511231ace45d8563d8aa4a90eaad83c48f0a694fb73abaa"
+    },
+    "init_motion_estimation": {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "sourceSha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+      "exactSource": "static void init_motion_estimation(VP9_COMP *cpi) {\n  int y_stride = cpi->scaled_source.y_stride;\n\n  if (cpi->sf.mv.search_method == NSTEP) {\n    vp9_init3smotion_compensation(&cpi->ss_cfg, y_stride);\n  } else if (cpi->sf.mv.search_method == DIAMOND) {\n    vp9_init_dsmotion_compensation(&cpi->ss_cfg, y_stride);\n  }\n}\n",
+      "sha256": "2ce1f457ceb547d57c3b9411f602f922fa8dd1c06ce901fe349d8eb3a8a41075"
+    },
+    "vp9_scale_if_required": {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "sourceSha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+      "exactSource": "YV12_BUFFER_CONFIG *vp9_scale_if_required(\n    VP9_COMMON *cm, YV12_BUFFER_CONFIG *unscaled, YV12_BUFFER_CONFIG *scaled,\n    int use_normative_scaler, INTERP_FILTER filter_type, int phase_scaler) {\n  if (cm->mi_cols * MI_SIZE != unscaled->y_width ||\n      cm->mi_rows * MI_SIZE != unscaled->y_height) {\n#if CONFIG_VP9_HIGHBITDEPTH\n    if (use_normative_scaler && unscaled->y_width <= (scaled->y_width << 1) &&\n        unscaled->y_height <= (scaled->y_height << 1))\n      if (cm->bit_depth == VPX_BITS_8)\n        vp9_scale_and_extend_frame(unscaled, scaled, filter_type, phase_scaler);\n      else\n        scale_and_extend_frame(unscaled, scaled, (int)cm->bit_depth,\n                               filter_type, phase_scaler);\n    else\n      vp9_scale_and_extend_frame_nonnormative(unscaled, scaled,\n                                              (int)cm->bit_depth);\n#else\n    if (use_normative_scaler && unscaled->y_width <= (scaled->y_width << 1) &&\n        unscaled->y_height <= (scaled->y_height << 1))\n      vp9_scale_and_extend_frame(unscaled, scaled, filter_type, phase_scaler);\n    else\n      vp9_scale_and_extend_frame_nonnormative(unscaled, scaled);\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n    return scaled;\n  } else {\n    return unscaled;\n  }\n}\n",
+      "sha256": "3b6023628aedfbc2b6d624e2f31d16462bd3dc22e8eeeaf26dbab82c9494b2e5"
+    }
+  },
+  "publicSourceHeldInBoundedRamOnly": true,
+  "userMediaReadOrConverted": false,
+  "candidateImplemented": false,
+  "actualSavedBytes": null,
+  "publicAcceptance": false
+}

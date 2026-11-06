@@ -1,5 +1,24 @@
 # Remaining work audit
 
+2026-11-06 cycle finalized:300focused checks PASS/0skip, affected lint/diff/
+public consistency PASS. Definitive actual native-capacity evidence changes next
+action to tested lazy utility-buffer allocation; no completed original or public
+promotion. All owned observed births absent after separate read-only followup,
+original preserved, disposable data removed and obsolete static copy retired.
+Implement genuine memory reduction next, not another diagnostic-only replay.
+
+2026-11-06 original5 now gives DEFINITIVE failure-time data: new-frame3790080B,
+actual Wasm96MiB max, only3163056B free/unclaimed =>at least627024B shortage
+before overhead. No completed original/startup/fidelity; separate184.6367MiB
+Chrome reading cannot pass failure. Cleanup command error retained; subsequent
+read-only census proves all39observed births absent, original unchanged, all
+disposable data removed. Obsolete10.9MB guarded tool removed with pinned source
+preimages preserved. Utility-source audit complete880files/6reference files:
+next candidate is LAZY scaling/utility storage, preserving motion-estimation
+stride and SVC/resize/filter consumers. NOT safe to drop allocation blindly.
+Implement/test/compile real changed low-memory candidate next; no unchanged
+original5/diagnostic build replay. Full broader original specification remains.
+
 2026-11-06 actual diagnostic strict small/recovery PASS: four completed outputs
 bit-identical with all fidelity gates, both adverse paths recover. WholeChrome
 234.734375MiB/223valid0missing, same limits/services, all disposable data cleaned,

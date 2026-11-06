@@ -5,7 +5,8 @@ import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 import path from "node:path";
 const lifetime = process.argv[2] === "--lifetime";
-assert.ok(process.argv.length === 2 || (process.argv.length === 3 && lifetime));
+const utility = process.argv[2] === "--utility";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && (lifetime || utility)));
 const root = path.resolve(import.meta.dirname, ".."), recipe = await readFile(path.join(root, "media/ffmpeg/reproduce-nondocker.sh"), "utf8");
 const version = "1.16.0", expected = "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c";
 assert.ok(recipe.includes("LIBVPX_VERSION=" + version)); assert.ok(recipe.includes("LIBVPX_SHA256=" + expected));
@@ -51,7 +52,35 @@ assert.ok(allocation.includes("Failed to allocate temporal filter buffer")); ass
 assert.equal(filterCallSites.length, 2); assert.ok(filterCallSites.every(row => row.file === "vp9/encoder/vp9_encoder.c"));
 const contexts = filterCallSites.map(row => ({ ...row, context: encoder.split("\n").slice(Math.max(0, row.line - 20), row.line + 5).join("\n") }));
 assert.ok(contexts.every(row => row.context.includes("!= REALTIME")), "Both call paths must have explicit non-realtime guards");
-if (lifetime) {
+if (utility) {
+  const references=[];
+  for(const [file,source] of sources) {
+    const lines=source.split("\n"),matches=[];
+    for(const [index,line] of lines.entries()) if(/\bscaled_source\b|\bscaled_last_source\b|\blast_frame_uf\b|\bvp9_scale_if_required\b|\binit_motion_estimation\b/.test(line)) {
+      assert.ok(matches.length<128);
+      matches.push({line:index+1,text:line.trim(),context:lines.slice(Math.max(0,index-7),index+12).join("\n")});
+    }
+    if(matches.length)references.push({file,sha256:sha(source),matches});
+  }
+  const functions={};
+  for(const name of ["alloc_util_frame_buffers","update_initial_width","init_motion_estimation","vp9_scale_if_required"]) {
+    const matches=[];
+    for(const [file,source] of sources) {
+      const regex=new RegExp("(?:^|\\n)(?:static )?[A-Za-z_][A-Za-z_0-9 *\\t\\r\\n]*\\b"+name+"\\(");
+      const found=regex.exec(source);if(!found)continue;
+      const start=found.index+(source[found.index]==="\n"?1:0),body=source.indexOf("{",start),end=source.indexOf("\n}\n",body);
+      if(!(body>start&&end>body&&source.indexOf(";",start)>body))continue;
+      const exactSource=source.slice(start,end+3);assert.ok(exactSource.length<=16384);
+      matches.push({file,sourceSha256:sha(source),exactSource,sha256:sha(exactSource)});
+    }
+    assert.equal(matches.length,1,name);functions[name]=matches[0];
+  }
+  const report={recordedAt:new Date().toISOString(),scope:"Pinned complete reference audit and exact utility/scaling functions, NOT proof that any buffer may yet be skipped",
+    archiveSha256:expected,cFiles,references,functions,publicSourceHeldInBoundedRamOnly:true,userMediaReadOrConverted:false,
+    candidateImplemented:false,actualSavedBytes:null,publicAcceptance:false};
+  await writeFile(path.join(root,"evidence/2026-11-06-vp9-utility-buffer-source-audit.json"),JSON.stringify(report,null,2)+"\n",{flag:"wx"});
+  console.log(JSON.stringify({cFiles,referenceFiles:references.length,functions:Object.keys(functions),candidateImplemented:false}));
+} else if (lifetime) {
   const context = (file, pattern) => {
     const source = sources.get(file); assert.ok(source, file); const lines = source.split("\n"), matches = [];
     for (const [index, line] of lines.entries()) if (pattern.test(line)) {
