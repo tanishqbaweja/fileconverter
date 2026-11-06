@@ -8,6 +8,7 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { setTimeout as pause } from "node:timers/promises";
 import { validateSmallVp9Fidelity } from "./small-vp9-fidelity.mjs";
+import {assertPlatformVp9Terminal} from "./platform-vp9-terminal.mjs";
 export const VP9_RECOVERY_PLAN = Object.freeze([
   { name: "cancel-after-real-write", fault: "cancel-after-write" },
   { name: "recovery-after-cancel", fault: null },
@@ -17,11 +18,12 @@ export const VP9_RECOVERY_PLAN = Object.freeze([
 ].map(Object.freeze));
 export async function qualifyVp9Recovery({ page, observer, evidence, root, directory, source, sourceProbe,
   ffmpeg, ffprobe, env, blankBaseline, loadedIdle, sampleChromiumTree, chromePid, initialOutputSha256,
-  run = promisify(execFile) }) {
+  run = promisify(execFile),backend="isolated-cpu" }) {
+  assert.ok(["isolated-cpu","platform"].includes(backend));
   assert.equal(blankBaseline?.stable, true); assert.ok(loadedIdle.privateBytes > 0);
   Object.assign(evidence, { scope: "One browser, real cancellation/write error plus three independently validated recoveries; NOT large-file/stress/public acceptance",
     plan: VP9_RECOVERY_PLAN, cases: [], passed: false, publicAcceptance: false, speedGainProven: false,
-    maximumCleanupDeltaMiB: 96, unchangedBlankBaseline: blankBaseline.privateBytes, memory: null });
+    maximumCleanupDeltaMiB: 96, unchangedBlankBaseline: blankBaseline.privateBytes, memory: null,backend });
   let destination, exported = 0;
   const phases = ["conversion"];
   await page.exposeBinding("__appendVp9RecoveryOutput", async ({ frame }, values) => {
@@ -40,28 +42,32 @@ export async function qualifyVp9Recovery({ page, observer, evidence, root, direc
       let outputCreated = false;
       try {
         const phase = "vp9-recovery-" + ordinal; phases.push(phase); observer.setPhase(phase);
-        row.result = await page.evaluate(async ({ name, fault }) => {
+        row.result = await page.evaluate(async ({ name, fault,backend }) => {
           const root = await navigator.storage.getDirectory(), handle = await root.getFileHandle(name, { create: true });
           const file = document.querySelector('input[type="file"]').files[0], cancellation = new SharedArrayBuffer(4);
-          const worker = new Worker("/engines/webcodecs-vp9/isolated.mjs", { type: "module" });
+          const worker = new Worker(backend==="platform"?"/engines/webcodecs-vp9/qualification.mjs":"/engines/webcodecs-vp9/isolated.mjs", { type: "module" });
           try {
             return await new Promise((resolve, reject) => {
               const timer = setTimeout(() => reject(new Error("Recovery job exceeded unchanged sixty-second private control deadline")), 60000);
               worker.onerror = event => { clearTimeout(timer); reject(new Error(event.message)); };
               worker.onmessage = ({ data }) => { if (data.type !== "progress") { clearTimeout(timer); resolve(data); } };
-              worker.postMessage({ file, output: handle, cancellation, nativeProfile: 10, implementation: "automatic", fallbackCore: "single-thread",
+              worker.postMessage({ file, output: handle, cancellation, nativeProfile: 10, implementation: backend==="platform"?"candidate":"automatic",
+                ...(backend==="platform"?{}:{fallbackCore:"single-thread"}),
                 ...(fault ? { qualificationFault: fault } : {}),
                 video: { codec: "vp9", quality: "automatic", maxWidth: 320, bitRateBps: 600000, frameRateFps: 24 } });
             });
           } finally { worker.terminate(); }
-        }, { name, fault: entry.fault });
+        }, { name, fault: entry.fault,backend });
         await observer.through(Date.now()); observer.setPhase("recovery-validation");
         const peaks = observer.peaks([phase]); row.memory = { ...peaks,
           incrementalPrivateMiB: peaks.peak ? (peaks.peak.privateBytes - blankBaseline.privateBytes) / 1048576 : null };
         const result = row.result;
         assert.equal(result.cleanupComplete, true); assert.ok(result.writeAttempts >= 1);
-        assert.equal(result.isolation.childrenStarted, 2); assert.equal(result.isolation.terminationRequests, 2);
-        assert.equal(result.isolation.candidateTerminationRequestedBeforeFallback, true);
+        if(backend==="platform")assertPlatformVp9Terminal(result);
+        else {
+          assert.equal(result.isolation.childrenStarted, 2); assert.equal(result.isolation.terminationRequests, 2);
+          assert.equal(result.isolation.candidateTerminationRequestedBeforeFallback, true);
+        }
         assert.equal(result.qualificationFaultTriggered, Boolean(entry.fault));
         assert.ok(result.metrics.peakPendingOperations <= 1); assert.ok(result.metrics.peakQueuedBytes <= 1048576);
         assert.ok(result.metrics.maxReadChunkBytes <= 262144); assert.ok(result.metrics.maxWriteChunkBytes <= 1048576);

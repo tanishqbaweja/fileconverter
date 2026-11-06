@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-11-06 original-width PLATFORM native42231818045/d31883e6 TERMINAL SUCCESS,
+43actual CI tests PASS/all cleanup. Bounded download retries recovered three
+recorded curl failures; no redispatch. Authenticated15static members/6197437B,
+artifact13510671617 ZIP1614697B SHAa3220e2726964100f7f9c2dd3328e1919c31a33f8e0924449caf0ce9a62a3167.
+Wasm5562217B SHA821e9b2a5a79b45ffcccced7be1c3607d061affdbc8574b828b3e660dbc7c41c.
+Actual compiled wrapper includes exact private1920/clock edits; native decoder
+still fixed nonshared32MiB/one thread/zero helpers/JSPI. No native media execution.
+New positive-platform qualification rejects CPU fallback, demands actual support
+probes/frames/closed buffers and unchanged strict48-frame fidelity/default clock/
+250MiB/recovery gates.8focused helper checks+lint PASS. NEXT genuine platform
+control, not yet browser/original/hardware/speed or public acceptance.
+
+
 2026-11-06 next DISTINCT path: original-width private platform VP9 build.
 Authoritative original7 source probe confirms1920x804/24fps/8-bitI420/BT709
 primaries+transfer+matrix/limited range, so no invented color metadata is needed.

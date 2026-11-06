@@ -1,0 +1,102 @@
+{
+  "runId": 42231818045,
+  "head": "d31883e623a11464e8a3fb63561cc8830751dacf",
+  "branch": "codex/webcodecs-vp9-original-source-20261106-attempt5",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/42231818045",
+  "publicAcceptance": false,
+  "browserConversions": 0,
+  "completeChromiumMemoryMeasured": false,
+  "speedGainProven": false,
+  "conclusion": "success",
+  "job": {
+    "id": 127939612968,
+    "startedAt": "2026-11-06T14:12:50Z",
+    "completedAt": "2026-11-06T14:18:17Z",
+    "steps": [
+      {
+        "name": "Set up job",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "conclusion": "success"
+      },
+      {
+        "name": "Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "conclusion": "success"
+      },
+      {
+        "name": "Own all runtime scratch",
+        "conclusion": "success"
+      },
+      {
+        "name": "Check bounded JS bridge",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install build prerequisites",
+        "conclusion": "success"
+      },
+      {
+        "name": "Install pinned SDK locally without Docker",
+        "conclusion": "success"
+      },
+      {
+        "name": "Compile real FFmpeg encoder plug-in and verify static native contract",
+        "conclusion": "success"
+      },
+      {
+        "name": "Retain reusable private tools and compact source proofs only",
+        "conclusion": "success"
+      },
+      {
+        "name": "Remove disposable owned build and SDK data",
+        "conclusion": "success"
+      },
+      {
+        "name": "Remove owned runtime scratch",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020",
+        "conclusion": "success"
+      },
+      {
+        "name": "Post Run actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+        "conclusion": "success"
+      },
+      {
+        "name": "Complete job",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "log": {
+    "bytes": 180202,
+    "sha256": "635f635805778338bfc703a701fa3cd0cf66b25ef385900ebece0aee40bb5c80",
+    "errorLines": [
+      "build\tCompile real FFmpeg encoder plug-in and verify static native contract\t2026-11-06T14:13:36.1497362Z curl: (35) Recv failure: Connection reset by peer",
+      "build\tCompile real FFmpeg encoder plug-in and verify static native contract\t2026-11-06T14:13:44.1500104Z curl: (35) Recv failure: Connection reset by peer",
+      "build\tCompile real FFmpeg encoder plug-in and verify static native contract\t2026-11-06T14:14:06.1551209Z curl: (28) Connection timed out after 20002 milliseconds"
+    ],
+    "configureProbeFailuresMayBeExpected": true
+  },
+  "focusedTests": {
+    "tests": 43,
+    "pass": 43,
+    "fail": 0
+  },
+  "sdkInstalled": true,
+  "cleanupStepsPassed": true,
+  "buildAcceptance": true,
+  "artifact": {
+    "id": 13510671617,
+    "name": "private-webcodecs-vp9-42231818045",
+    "bytes": 1614697,
+    "digest": "sha256:a3220e2726964100f7f9c2dd3328e1919c31a33f8e0924449caf0ce9a62a3167",
+    "expiresAt": "2026-11-07T14:18:10Z",
+    "nativeContractIndependentlyCollected": false
+  },
+  "status": "compiled-hosted-success-requires-native-artifact-and-browser-qualification",
+  "ownedInspectionRuntimeRemoved": true
+}

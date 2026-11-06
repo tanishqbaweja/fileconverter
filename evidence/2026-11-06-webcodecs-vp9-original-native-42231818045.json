@@ -1,0 +1,178 @@
+{
+  "runId": 42231818045,
+  "head": "d31883e623a11464e8a3fb63561cc8830751dacf",
+  "status": "authenticated-compiled-private-tool-not-browser-acceptance",
+  "artifact": {
+    "id": 13510671617,
+    "bytes": 1614697,
+    "sha256": "a3220e2726964100f7f9c2dd3328e1919c31a33f8e0924449caf0ce9a62a3167",
+    "expiresAt": "2026-11-07T14:18:10Z"
+  },
+  "nativeContract": {
+    "scope": "private-compiled-native-tool-static-contract-only",
+    "sources": {
+      "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+      "media/ffmpeg/within_webcodecs_vp9.c": "eec084a380a9c26f1c2cd695d32e618a98b2bd32db677f321d27422bcd49819c",
+      "media/ffmpeg/mpeg2-split-frame-layout.h": "1ddac3dc35c54a3734885606deb0bd73ed1e5026fd81ee090e928a4a76ed9a17",
+      "media/ffmpeg/build-webcodecs-vp9.sh": "81cfe1fad2d7ae518bf417a3f22ae2ee353e64a2c8e86561e7673fd53831b028",
+      "media/ffmpeg/register-webcodecs-vp9.mjs": "e7e44cefe849377770d81bbd1fb77996d25d2ab39e6ca587737454a5bce59ad8",
+      "workers/webcodecs-vp9-bridge.mjs": "71f8eff8854820967c6119753f39095bf12ec34d7b23c41571dfedd980f0db03",
+      "scripts/verify-webcodecs-vp9-native.mjs": "941273bfc601fe37213a9788cc7badbe56267376cb69cf8e1b001d2282a771e9",
+      "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+      ".github/workflows/webcodecs-vp9-nondocker.yml": "f49deb74245f3d4f464be3d41d71a5d8859c2d20b750f639b83a268baf13a32c",
+      "media/ffmpeg/webcodecs-original-recipe.mjs": "ad95a4e3b443fd3774d6f638ee8994328f035645113c707ea45d1e87582af6e8",
+      "media/ffmpeg/make-webcodecs-original-source.mjs": "4da19027faccecdd98e54610c431f2892b643f4e72f5fa8d167776293d246537",
+      "media/ffmpeg/vp9-original-width-recipe.mjs": "6dd606cda9c5628a075e1443fbf6cd5a94432dea9a03dd0f536533faed0b0791",
+      "media/ffmpeg/vp9-stream-duration-recipe.mjs": "f1aaff35daae3419f57371f83a3c2e0f4e160665d90432279b20ef9f93da2be6",
+      "media/ffmpeg/vp9-packet-duration-recipe.mjs": "a9e7548e25a334db3a0206bd41347c5ea4a502bb1f429978d4bd311dcd9f2561"
+    },
+    "artifacts": {
+      "within-webcodecs-vp9.mjs": {
+        "bytes": 47902,
+        "sha256": "b4358cbbed8a2bcb5c48d710d099c43c97f27e35a202d34020cee2891493bb2b"
+      },
+      "within-webcodecs-vp9.wasm": {
+        "bytes": 5562217,
+        "sha256": "821e9b2a5a79b45ffcccced7be1c3607d061affdbc8574b828b3e660dbc7c41c"
+      },
+      "config_components.h": {
+        "bytes": 75877,
+        "sha256": "d57295deccf9aded4293ca8fdabc15870fb928ae85f160c4a96078d285048b5d"
+      },
+      "config.mak": {
+        "bytes": 89657,
+        "sha256": "e255d4ee0e5c158c5c1cb29cede317083c298084c660b8958db1a5a911ca7c26"
+      },
+      "LICENSE.LGPLv2.1": {
+        "bytes": 26517,
+        "sha256": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30"
+      },
+      "registration.json": {
+        "bytes": 837,
+        "sha256": "8403db19e0fc2e6f54e0289d03863ea8a0c7d34d8751a926115e72f3df4193c8"
+      },
+      "within_remux.c": {
+        "bytes": 171964,
+        "sha256": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068"
+      },
+      "within_webcodecs_vp9.c": {
+        "bytes": 6302,
+        "sha256": "eec084a380a9c26f1c2cd695d32e618a98b2bd32db677f321d27422bcd49819c"
+      },
+      "mpeg2-split-frame-layout.h": {
+        "bytes": 3913,
+        "sha256": "1ddac3dc35c54a3734885606deb0bd73ed1e5026fd81ee090e928a4a76ed9a17"
+      },
+      "build-webcodecs-vp9.sh": {
+        "bytes": 5306,
+        "sha256": "81cfe1fad2d7ae518bf417a3f22ae2ee353e64a2c8e86561e7673fd53831b028"
+      },
+      "register-webcodecs-vp9.mjs": {
+        "bytes": 2404,
+        "sha256": "e7e44cefe849377770d81bbd1fb77996d25d2ab39e6ca587737454a5bce59ad8"
+      },
+      "webcodecs-vp9-bridge.mjs": {
+        "bytes": 11127,
+        "sha256": "71f8eff8854820967c6119753f39095bf12ec34d7b23c41571dfedd980f0db03"
+      },
+      "within_remux.original.c": {
+        "bytes": 172575,
+        "sha256": "d069ed11f87eb9c4a2419a9226b2a45bc938b7d6a61622fc22ebb40cca9a72d0"
+      },
+      "within-webcodecs-original-proof.json": {
+        "bytes": 15312,
+        "sha256": "486b9b4bfb555a1baaba25dcbaa8387364eed42ed86cd718b987ef9978ccd4ca"
+      }
+    },
+    "originalWidthCandidate": {
+      "compiledWrapperSha256": "d069ed11f87eb9c4a2419a9226b2a45bc938b7d6a61622fc22ebb40cca9a72d0",
+      "parentWrapperSha256": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+      "wrapperEdits": 3,
+      "privateVp9ExplicitWidth": 1920,
+      "defaultWidthPolicyChanged": false,
+      "ioChanged": false,
+      "memoryLimitsRaised": false,
+      "browserValidated": false,
+      "publicAcceptance": false
+    },
+    "ffmpeg": {
+      "version": "8.1.2",
+      "releaseSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c"
+    },
+    "emscripten": "6.0.4",
+    "emsdkCommit": "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f",
+    "memoryLimits": [
+      {
+        "imported": false,
+        "initialPages": 512,
+        "maximumPages": 512,
+        "shared": false
+      }
+    ],
+    "stackBytesDeclared": 262144,
+    "nativeThreads": 1,
+    "workerPool": 0,
+    "enabledEncoders": [
+      "WITHIN_WEBCODECS_VP9"
+    ],
+    "enabledDecoders": [
+      "H263",
+      "H264",
+      "HEVC",
+      "MPEG2VIDEO",
+      "MPEG4",
+      "THEORA",
+      "VP3",
+      "VP8",
+      "VP9",
+      "VORBIS"
+    ],
+    "enabledDemuxers": [
+      "AVI",
+      "H264",
+      "HEVC",
+      "IVF",
+      "M4V",
+      "MATROSKA",
+      "MOV",
+      "MPEGVIDEO",
+      "OGG"
+    ],
+    "enabledMuxers": [
+      "WEBM"
+    ],
+    "enabledParsers": [
+      "H264",
+      "HEVC",
+      "MPEG4VIDEO",
+      "MPEGVIDEO",
+      "VORBIS",
+      "VP8",
+      "VP9"
+    ],
+    "enabledBitstreamFilters": [
+      "VP9_SUPERFRAME",
+      "VP9_SUPERFRAME_SPLIT"
+    ],
+    "nodeInstantiated": false,
+    "framesEncoded": 0,
+    "mediaRead": false,
+    "mediaWritten": false,
+    "browserConversionVerified": false,
+    "hardwareSelectionProven": false,
+    "fallbackIntegrated": false,
+    "speedGainProven": false,
+    "completeChromiumMemoryMeasured": false,
+    "reproducibilityVerified": false,
+    "publicAcceptance": false
+  },
+  "retainedDirectory": "work/webcodecs-vp9-input-42231818045",
+  "retainedPurpose": "One reusable private source-built tool for the next genuine browser qualification; delete when superseded or no longer used",
+  "retainedBytes": 6197437,
+  "nativeContractSha256": "ce5b650383aec047e089bdce8edb41c826945e5a684082cc213eb97955e1246a",
+  "originalRead": false,
+  "publicAssetReplacement": false,
+  "completeChromiumMemoryMeasured": false,
+  "speedGainProven": false,
+  "publicAcceptance": false
+}

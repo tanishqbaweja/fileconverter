@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-06 platform original-width native42231818045 SUCCESS/authenticated,
+43CI tests/all cleanup. Fixed32MiB decoder/one thread unchanged. Strict platform-
+only browser control prepared, no CPU fallback can pass it;8helper controls pass.
+NEXT actual small fidelity/recovery then protected original startup only if passed.
+No new browser, physical hardware, speed or full-original acceptance inferred.
+
+
 2026-11-06 original-width PLATFORM encoder candidate implemented privately,
 distinct from failed CPU original7. Bridge already supports full geometry and
 original's measured color metadata; unchanged fixed32MiB decoder/one-frame/one-
