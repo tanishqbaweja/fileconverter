@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-07 diagnostic lifecycle race reproduced from exact5230B/abc33188 source
+preimage: target disappears from census before delayed attachment completes;
+old sampler loses session and still reads heap. Initial regression1PASS/1FAIL.
+Repair retires late attachment, discards late heap replies and globally caps16
+active+retiring leases; failed/unanswered detach stays counted, no requeue.33
+focused checks/affected lint PASS. Actual normal-service headless Chrome fixture
+confirms archived session remains addressable versus repaired exact1detach and
+0retired heap reads,0remaining leases. Receipt:
+evidence/2026-11-06T20-10-48-868Z-cdp-realm-retirement.json.
+Owned browser/targets/server/profile/runtime gone; no media/original access or
+conversion/memory/speed acceptance. SVG265.445MiB/alpha failures remain unchanged;
+this proves a diagnostic lifecycle defect, not their cause. Follow-up: ensure
+repeated observations do not retain multiple Promise listeners per pending call.
+
 2026-11-07 B07 Edge156.0.4314.58 checkpoint (headless only):
 - First matrix FAILED at DOCX independent validator: spawn python ENOENT,
   0passed/1failed,3.342s. No application defect inferred. Receipt:

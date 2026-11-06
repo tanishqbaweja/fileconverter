@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-06T20:10:48.869Z",
+  "status": "passed-real-cdp-retirement-control-and-repair-not-conversion-acceptance",
+  "cases": [
+    {
+      "name": "archived-control",
+      "targetId": "81CC62BF724EB9DBF688B79C891B5EBE",
+      "actualDelayedAttachmentReply": true,
+      "samplerHeapQueriesAfterRetirement": 1,
+      "detachCommands": 0,
+      "sessionAddressableAfterReply": true,
+      "rawSessionProbeError": null,
+      "targetStillLiveAtRetirement": true,
+      "observedOutOfScopeUrl": "data:text/html,owned-realm-outside-sampling-origin",
+      "status": "observed-predicted-lifecycle",
+      "ownedTargetClosed": true
+    },
+    {
+      "name": "repaired",
+      "targetId": "E6DC5BA893402C0E298DEFDECE73962C",
+      "actualDelayedAttachmentReply": true,
+      "samplerHeapQueriesAfterRetirement": 0,
+      "detachCommands": 1,
+      "sessionAddressableAfterReply": false,
+      "rawSessionProbeError": "Error: Session with given id not found.",
+      "targetStillLiveAtRetirement": true,
+      "observedOutOfScopeUrl": "data:text/html,owned-realm-outside-sampling-origin",
+      "attachmentSummary": {
+        "activeEntries": 0,
+        "leasedEntries": 0,
+        "retiringEntries": 0,
+        "pendingOperations": 0,
+        "peakLeasedEntries": 1,
+        "maximumLeases": 16,
+        "retirementFailures": 0,
+        "lastRetirementError": null,
+        "queuedRequests": 0,
+        "closed": false,
+        "diagnosticAttachmentsOnly": true,
+        "acceptanceMetric": false
+      },
+      "status": "observed-predicted-lifecycle",
+      "ownedTargetClosed": true
+    }
+  ],
+  "sourcePins": {
+    "scripts/verify-cdp-realm-retirement.mjs": "c13db8a9c87f959e0f070b0a35bd176234eb0c842ea5039a5985522284be4e4b",
+    "scripts/lib/cdp-realm-memory.mjs": "9509f96adf5274ecd77d0e5337da422c884810c4cb24445f1ed871c0510494fd",
+    "fixtures/source/pre-cdp-lease-lifecycle-2026-11-07.json": "de1950f231464a7744de5058f7965bbfc423ca135ea88a14f562583e46adee16",
+    "scripts/lib/cdp-debugger-transport.mjs": "d9a07f1af22875de2cb895049693d632c8b85a9071e571c64346b2173b8a9eb7",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/reliable-owned-identity.mjs": "682e21c1e6baf0d02b5d23f4c18a428cee361d8b97d239adae8e7b404970a3ab"
+  },
+  "failures": [],
+  "scope": "Real CDP attach reply deliberately delayed across a real target's out-of-scope navigation; archived negative control versus repaired lifecycle",
+  "headed": false,
+  "conversionPerformed": false,
+  "protectedOriginalAccessed": false,
+  "inputOrOutputMediaCreated": false,
+  "forcedGc": false,
+  "browserServicesDisabled": false,
+  "memoryAcceptance": false,
+  "speedImprovementClaimed": false,
+  "publicPromotion": false,
+  "hostMemory": {
+    "acquiredAt": "2026-11-06T20:10:49.1805980Z",
+    "freePhysicalBytes": 14096687104,
+    "freeVirtualBytes": 21594406912,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "browserBefore": {
+    "version": "156.0.8078.80",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4466840,
+      "sha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4503599627954860",
+        "birthtimeNs": "1793664133995225000",
+        "mtimeNs": "1793230862205515000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.80\\chrome.dll",
+      "bytes": 306491032,
+      "sha256": "eec84f38acf7d3b1c39bc54de53c9bcb1ea7a3b9d286d6a04288d3b959a1a7a1",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4222124651244210",
+        "birthtimeNs": "1793664134006309400",
+        "mtimeNs": "1793230871423806000"
+      }
+    }
+  },
+  "executedHead": "3c16d0e0457c2ab7f06a31d91272361ddf19683f",
+  "archivedControl": {
+    "sourceCommit": "3c16d0e0457c2ab7f06a31d91272361ddf19683f",
+    "bytes": 5230,
+    "sha256": "abc33188e252183133d5debb54f909428324dfad4d0967b7c007434b5f0ecf9a"
+  },
+  "launchArguments": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\cdp-realm-retirement-BheL7N\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "about:blank"
+  ],
+  "browserLaunchIdentity": {
+    "pid": 21076,
+    "parentPid": 25196,
+    "createdAt": "2026-11-06T20:10:49.8599950Z"
+  },
+  "serverClosed": true,
+  "browserCleanup": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 21076,
+      "parentPid": 25196,
+      "createdAt": "2026-11-06T20:10:49.8599950Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-11-06T20:10:51.853Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 300,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "ownedRuntimeRemoved": true,
+  "browserAfter": {
+    "version": "156.0.8078.80",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4466840,
+      "sha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4503599627954860",
+        "birthtimeNs": "1793664133995225000",
+        "mtimeNs": "1793230862205515000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.80\\chrome.dll",
+      "bytes": 306491032,
+      "sha256": "eec84f38acf7d3b1c39bc54de53c9bcb1ea7a3b9d286d6a04288d3b959a1a7a1",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4222124651244210",
+        "birthtimeNs": "1793664134006309400",
+        "mtimeNs": "1793230871423806000"
+      }
+    }
+  },
+  "finishedAt": "2026-11-06T20:10:52.487Z"
+}

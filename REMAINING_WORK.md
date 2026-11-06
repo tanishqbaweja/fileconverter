@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-11-07 bounded instrumentation progress: actual delayed-attach retirement
+race reproduced and fixed;33focused checks and real headless Chrome old/new
+protocol control PASS. Source preimage and failed first regression retained.
+evidence/2026-11-06T20-10-48-868Z-cdp-realm-retirement.json proves repaired1detach/
+0retired heap queries/0leases; all owned fixture resources removed. No conversion
+or memory acceptance and no proof this caused SVG's retained objects. Bound
+repeated timeout observation listeners next; SVG quality/memory/source/release
+and all original large-file/250MiB requirements remain OPEN.
+
 2026-11-07 B07 Edge156.0.4314.58 checkpoint: first missing-python attempt remains
 FAILED; validator preflight/test-only PATH repair gives five-family small matrix
 PASS. Screenshot then exposed generic memory wording; UI now identifies recorded
