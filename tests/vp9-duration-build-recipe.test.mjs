@@ -66,6 +66,20 @@ test("token context build patches actual producers/packer before compilation and
   const parsed=spawnSync(process.platform==="win32"?"D:/Program Files/Git/bin/bash.exe":"/bin/bash",["--noprofile","--norc","-n"],
     {input:result.generated,encoding:"utf8",windowsHide:true,timeout:10000,maxBuffer:65536});assert.equal(parsed.status,0,parsed.stderr||String(parsed.error));
 });
+test("packed build compiles final four-byte candidate and retains its actual layout, never presents six-byte ancestor as compiled",()=>{
+  const result=makeVp9DurationBuildRecipe(source,{temporalFilterGuard:true,allocationDiagnostics:true,lazyUtility:true,tokenContext:true,tokenPacked:true});
+  assert.equal(result.tokenPacked,true);assert.equal(result.memoryLimitsRaised,false);
+  assert.ok(result.generated.includes('make-vp9-token-context-source.mjs"\nnode "${SCRIPT_DIR}/make-vp9-token-packed-source.mjs"\n./build-vpx.sh\nnode "${SCRIPT_DIR}/make-vp9-token-packed-source.mjs" --layout\n'));
+  assert.equal(result.generated.includes('node "${SCRIPT_DIR}/make-vp9-token-context-source.mjs" --layout\n'),false);
+  assert.ok(result.generated.includes('"${OUTPUT_ROOT}/vp9_tokenize.header.compact.c"'));
+  assert.ok(result.generated.includes('"${OUTPUT_ROOT}/vp9_tokenize.header.packed.c"'));
+  assert.equal(result.generated.includes('"${OUTPUT_ROOT}/vp9-token-vpx-config.h"'),false);
+  assert.ok(result.generated.includes('"${OUTPUT_ROOT}/vp9-packed-vpx-config.h"'));
+  let reverse=result.generated;for(const [before,after]of result.edits.toReversed())reverse=reverse.replace(after,before);assert.equal(reverse,source);
+  const parsed=spawnSync(process.platform==="win32"?"D:/Program Files/Git/bin/bash.exe":"/bin/bash",["--noprofile","--norc","-n"],
+    {input:result.generated,encoding:"utf8",windowsHide:true,timeout:10000,maxBuffer:65536});assert.equal(parsed.status,0,parsed.stderr||String(parsed.error));
+  assert.throws(()=>makeVp9DurationBuildRecipe(source,{tokenPacked:true}));
+});
 test("diagnostic build instruments only after temporal guard and before library compilation, with exact reversible provenance", () => {
   const result = makeVp9DurationBuildRecipe(source, { temporalFilterGuard: true, allocationDiagnostics: true });
   assert.equal(result.allocationDiagnostics, true); assert.equal(result.diagnosticsOnFailureOnly, true);

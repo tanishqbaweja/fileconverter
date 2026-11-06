@@ -17,6 +17,7 @@ import { makeVp9EncoderAllocationDiagnostic, makeVp9FrameAllocationDiagnostic, m
 import { makeVp9LazyUtilityEncoder,makeVp9LazyUtilityFilter } from "../media/ffmpeg/vp9-lazy-utility-recipe.mjs";
 import {makeVp9TokenContextSources} from "../media/ffmpeg/vp9-token-context-recipe.mjs";
 import {VP9_TOKEN_CONTEXT_LIFETIME_PINS} from "../media/ffmpeg/vp9-token-context-lifetime.mjs";
+import {authenticateVp9PackedArtifacts,VP9_PACKED_ARTIFACTS} from "../media/ffmpeg/vp9-token-packed-artifacts.mjs";
 assert.equal(process.argv.length, 3); const attempt = process.argv[2]; assert.match(attempt, /^[1-9]\d?$/);
 const suffix = attempt === "1" ? "" : "-attempt" + attempt, root = path.resolve(import.meta.dirname, ".."), repo = "tanishqbaweja/fileconverter";
 const prefix = Number(attempt) >= 5 ? "evidence/2026-11-06-vp9-original-width" : "evidence/2026-11-05-vp9-duration";
@@ -46,12 +47,14 @@ try {
   const allocationDiagnostic = Number(attempt) >= 8;
   const lazyUtility=Number(attempt)>=10;
   const tokenContext=Number(attempt)>=11;
+  const tokenPacked=Number(attempt)>=12;
   if (temporalGuard) allowed.push("vp9_encoder.temporal.base.c", "vp9_encoder.temporal.guard.c", "vp9-temporal-filter-source-proof.json");
   if (allocationDiagnostic) allowed.push("vp9_encoder.allocation.diagnostic.c", "yv12config.allocation.base.c", "yv12config.allocation.diagnostic.c", "vp9-allocation-diagnostic-proof.json",
     "build-libraries.allocation.base.sh", "build-libraries.allocation.diagnostic.sh", "vp9-allocation-link-proof.json");
   if(lazyUtility)allowed.push("vp9_encoder.lazy.utility.c","vp9_picklpf.lazy.base.c","vp9_picklpf.lazy.utility.c","vp9-lazy-utility-proof.json");
   if(tokenContext)allowed.push("vp9_tokenize.header.base.c","vp9_tokenize.header.compact.c","vp9_tokenize.producer.base.c","vp9_tokenize.producer.compact.c",
-    "vp9_bitstream.packer.base.c","vp9_bitstream.packer.compact.c","vp9-token-context-proof.json","vp9-token-vpx-config.h","vp9-token-layout-probe.c","vp9-token-layout-probe.ll");
+    "vp9_bitstream.packer.base.c","vp9_bitstream.packer.compact.c","vp9-token-context-proof.json",
+    ...(tokenPacked?VP9_PACKED_ARTIFACTS:["vp9-token-vpx-config.h","vp9-token-layout-probe.c","vp9-token-layout-probe.ll"]));
   const seen = new Set(); let total = 0;
   const members = unzipSync(zip, { filter(entry) {
     assert.ok(allowed.includes(entry.name) && !seen.has(entry.name)); seen.add(entry.name);
@@ -60,18 +63,19 @@ try {
   } });
   assert.deepEqual(Object.keys(members).sort(), allowed.toSorted());
   const manifest = JSON.parse(Buffer.from(members["build-manifest.json"]).toString());
-  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration", "private-vp9-original-width", "private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context"].includes(manifest.engine)); assert.equal(manifest.candidate.publicAcceptance, false);
-  assert.equal(["private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context"].includes(manifest.engine), temporalGuard);
-  assert.equal(["private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context"].includes(manifest.engine), allocationDiagnostic);
-  assert.equal(["private-vp9-lazy-utility","private-vp9-token-context"].includes(manifest.engine),lazyUtility);
-  assert.equal(manifest.engine==="private-vp9-token-context",tokenContext);
+  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration", "private-vp9-original-width", "private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(manifest.engine)); assert.equal(manifest.candidate.publicAcceptance, false);
+  assert.equal(["private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(manifest.engine), temporalGuard);
+  assert.equal(["private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(manifest.engine), allocationDiagnostic);
+  assert.equal(["private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(manifest.engine),lazyUtility);
+  assert.equal(["private-vp9-token-context","private-vp9-token-packed"].includes(manifest.engine),tokenContext);
+  assert.equal(manifest.engine==="private-vp9-token-packed",tokenPacked);
   assert.equal(manifest.candidate.browserValidated, false); assert.equal(manifest.candidate.nodeInstantiated, false);
   assert.equal(manifest.candidate.mediaRead, false); assert.equal(manifest.candidate.mediaWritten, false);
   assert.equal(manifest.candidate.memoryLimitsRaised, false); assert.equal(manifest.buildEnvironment.usedDocker, false);
   assert.deepEqual(Object.keys(manifest.artifacts).sort(), allowed.filter(file => file !== "build-manifest.json").toSorted());
   for (const [file, pin] of Object.entries(manifest.artifacts)) { assert.equal(members[file].length, pin.bytes); assert.equal(sha(members[file]), pin.sha256); }
   for (const [file, pin] of Object.entries(manifest.sources)) {
-    assert.match(file, /^(?:media\/ffmpeg|scripts\/lib|\.github\/workflows)\/[a-z0-9/_.-]+$/i); assert.ok(!file.split("/").includes(".."));
+    assert.match(file, /^(?:(?:media\/ffmpeg|scripts\/lib|\.github\/workflows)\/[a-z0-9/_.-]+|evidence\/2026-11-06-vp9-token-packed-source-audit\.json)$/i); assert.ok(!file.split("/").includes(".."));
     const source = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["show", dispatch.head + ":" + file],
       { cwd: root, env: runtime.env, windowsHide: true, timeout: 30000, maxBuffer: 1048576, encoding: "buffer" })).stdout;
     assert.equal(sha(source), pin, file);
@@ -151,11 +155,18 @@ try {
     for(const [file,row]of Object.entries(derived.sources)) {
       assert.equal(Buffer.from(members[stems[file]+".compact.c"]).toString(),row.generated);
       assert.deepEqual(proof.sources[file].edits,row.edits);assert.equal(proof.sources[file].generatedSha256,row.generatedSha256);
-      assert.equal(manifest.candidate.compiledVendorSources[file],row.generatedSha256);
+      if(!tokenPacked)assert.equal(manifest.candidate.compiledVendorSources[file],row.generatedSha256);
       assert.equal(manifest.candidate.tokenContext.sourceSha256s[file],row.generatedSha256);
     }
     assert.deepEqual(proof.lifetime.sourcePins,VP9_TOKEN_CONTEXT_LIFETIME_PINS);
     assert.deepEqual(proof.cUnit.variants.map(v=>v.producerPackerCases),[69120,207360]);
+    if(tokenPacked) {
+      assert.equal(proof.layout,null);assert.equal(manifest.candidate.tokenContext.ancestorOnly,true);assert.equal(manifest.candidate.tokenContext.layout,null);
+      const packed=await authenticateVp9PackedArtifacts(async file=>members[file],preimages);
+      assert.deepEqual(manifest.candidate.tokenPacked,packed);
+      for(const [file,digest]of Object.entries(packed.sourceSha256s))assert.equal(manifest.candidate.compiledVendorSources[file],digest);
+      assert.equal(packed.sourceAuditSha256,manifest.sources["evidence/2026-11-06-vp9-token-packed-source-audit.json"]);
+    }else {
     const config=Buffer.from(members["vp9-token-vpx-config.h"]).toString(),high=Number(config.match(/^#define CONFIG_VP9_HIGHBITDEPTH ([01])$/m)?.[1]),
       llvm=Buffer.from(members["vp9-token-layout-probe.ll"]).toString();
     assert.ok(high===0||high===1);assert.equal(proof.layout.highBitDepth,high);assert.equal(proof.layout.actualLibraryConfiguration,true);
@@ -166,6 +177,7 @@ try {
     for(const [symbol,value]of [["within_original_token_bytes",high?12:8],["within_compact_token_bytes",high?8:6],["within_token_highbitdepth",high]])
       assert.match(llvm,new RegExp("@"+symbol+" = .*i32 "+value+","));
     assert.deepEqual(manifest.candidate.tokenContext.layout,proof.layout);
+    }
     assert.equal(proof.actualMemorySavedBytes,null);assert.equal(proof.browserValidated,false);
     assert.equal(manifest.candidate.tokenContext.tokenCapacityChanged,false);assert.equal(manifest.candidate.tokenContext.actualMemorySavedBytes,null);
   }

@@ -2,11 +2,12 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 const sha = value => createHash("sha256").update(value).digest("hex");
-export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false, allocationDiagnostics = false, lazyUtility = false, tokenContext = false } = {}) {
+export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false, allocationDiagnostics = false, lazyUtility = false, tokenContext = false, tokenPacked = false } = {}) {
   assert.equal(typeof temporalFilterGuard, "boolean");
   assert.equal(typeof allocationDiagnostics, "boolean"); assert.ok(!allocationDiagnostics || temporalFilterGuard);
   assert.equal(typeof lazyUtility,"boolean");assert.ok(!lazyUtility||allocationDiagnostics);
   assert.equal(typeof tokenContext,"boolean");assert.ok(!tokenContext||lazyUtility);
+  assert.equal(typeof tokenPacked,"boolean");assert.ok(!tokenPacked||tokenContext);
   assert.equal(sha(source), "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e");
   const tail = source.slice(source.indexOf("comparison_files=()\n"));
   assert.ok(tail.startsWith("comparison_files=()\n") && tail.endsWith("printf 'Exact non-Docker FFmpeg artifact comparison passed.\\n'\n"));
@@ -59,6 +60,15 @@ export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false
       'vp9_bitstream.packer.base.c','vp9_bitstream.packer.compact.c','vp9-token-context-proof.json',
       'vp9-token-vpx-config.h','vp9-token-layout-probe.c','vp9-token-layout-probe.ll']
       .map(file=>'cp -- "${BUILD_ROOT}/'+file+'" "${OUTPUT_ROOT}/'+file+'"\n').join('')]);
+  if(tokenPacked)edits.push([
+    'node "${SCRIPT_DIR}/make-vp9-token-context-source.mjs"\n./build-vpx.sh\nnode "${SCRIPT_DIR}/make-vp9-token-context-source.mjs" --layout\n',
+    'node "${SCRIPT_DIR}/make-vp9-token-context-source.mjs"\nnode "${SCRIPT_DIR}/make-vp9-token-packed-source.mjs"\n./build-vpx.sh\nnode "${SCRIPT_DIR}/make-vp9-token-packed-source.mjs" --layout\n'+
+    ['vp9_tokenize.header.packed.c','vp9_tokenize.producer.packed.c','vp9_bitstream.packer.packed.c','vp9-token-packed-proof.json',
+      'vp9-packed-vpx-config.h','vp9-packed-layout-probe.c','vp9-packed-layout-probe.ll']
+      .map(file=>'cp -- "${BUILD_ROOT}/'+file+'" "${OUTPUT_ROOT}/'+file+'"\n').join('')]);
+  if(tokenPacked)for(const file of ['vp9-token-vpx-config.h','vp9-token-layout-probe.c','vp9-token-layout-probe.ll'])edits.push([
+    'cp -- "${BUILD_ROOT}/'+file+'" "${OUTPUT_ROOT}/'+file+'"\n',
+    '# Packed build retains its own actual configured layout, not the six-byte ancestor probe ('+file+').\n']);
   let generated = source;
   for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
   let reverse = generated;
@@ -70,5 +80,6 @@ export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false
     allocationDiagnostics, diagnosticsOnFailureOnly: allocationDiagnostics,
     lazyUtility,
     tokenContext,
+    tokenPacked,
     allCoreBuildSelected: false, publicAcceptance: false };
 }

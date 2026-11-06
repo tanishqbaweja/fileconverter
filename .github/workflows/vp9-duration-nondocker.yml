@@ -18,7 +18,7 @@ jobs:
       - name: Own all runtime scratch
         run: node scripts/ci-owned-runtime.mjs prepare
       - name: Check exact private duration recipes
-        run: node --test --test-reporter=tap tests/vp9-packet-duration-recipe.test.mjs tests/vp9-stream-duration-recipe.test.mjs tests/vp9-original-width-recipe.test.mjs tests/vp9-duration-build-recipe.test.mjs tests/vp9-realtime-temporal-filter-recipe.test.mjs tests/vp9-temporal-c-unit.test.mjs tests/vp9-temporal-lifetime.test.mjs tests/vp9-allocation-diagnostic.test.mjs tests/vp9-lazy-utility.test.mjs tests/vp9-token-context.test.mjs tests/vp9-token-context-lifetime.test.mjs
+        run: node --test --test-reporter=tap tests/vp9-packet-duration-recipe.test.mjs tests/vp9-stream-duration-recipe.test.mjs tests/vp9-original-width-recipe.test.mjs tests/vp9-duration-build-recipe.test.mjs tests/vp9-realtime-temporal-filter-recipe.test.mjs tests/vp9-temporal-c-unit.test.mjs tests/vp9-temporal-lifetime.test.mjs tests/vp9-allocation-diagnostic.test.mjs tests/vp9-lazy-utility.test.mjs tests/vp9-token-context.test.mjs tests/vp9-token-context-lifetime.test.mjs tests/vp9-token-packed.test.mjs tests/vp9-token-packed-artifacts.test.mjs
       - name: Install build prerequisites
         run: |
           sudo apt-get update
@@ -37,6 +37,7 @@ jobs:
           WITHIN_VP9_ALLOCATION_DIAGNOSTICS: "1"
           WITHIN_VP9_LAZY_UTILITY: "1"
           WITHIN_VP9_TOKEN_CONTEXT: "1"
+          WITHIN_VP9_TOKEN_PACKED: "1"
         shell: bash
         run: |
           source work/vp9-duration-emsdk/emsdk_env.sh

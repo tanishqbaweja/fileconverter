@@ -16,7 +16,7 @@ export async function loadVp9DurationCpuAssets(root, runId, series = "duration")
   assert.equal(await realpath(receiptFile), receiptFile);
   const receipt = JSON.parse(await readFile(receiptFile));
   assert.equal(receipt.runId, Number(runId)); assert.equal(receipt.publicAcceptance, false); assert.equal(receipt.publicAssetReplacement, false);
-  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration", "private-vp9-original-width", "private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context"].includes(receipt.nativeContract.engine));
+  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration", "private-vp9-original-width", "private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility","private-vp9-token-context","private-vp9-token-packed"].includes(receipt.nativeContract.engine));
   const target = path.join(root, `work/vp9-duration-input-${runId}`);
   assert.equal(path.resolve(root, receipt.retainedDirectory), target); assert.equal(await realpath(target), target);
   const files = {};

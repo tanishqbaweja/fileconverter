@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-06 packed-token native integration PREPARED. Separate private engine,
+exact final packed source copies, actual configured Emscripten layout/probe,
+authenticated source-domain audit and552960mock controls. The six-byte ancestor
+proof stays layoutNULL/ancestor-only in this build; it cannot masquerade as the
+final compiled layout. Prior default recipes/source/native receipts unchanged.
+Collector authenticates final sources/config/LLVM and rejects wrong/fabricated
+layout claims. No memory/thread/codec/I/O setting changes or public promotion.
+34focused build/source/artifact/loader regressions PASS/0skip, affected lint/diff
+PASS. NEXT distinct isolated native attempt12; not compiled/browser accepted yet.
+
 2026-11-06 cycle checkpoint115distinct focused tests PASS (102platform diagnostic/
 bridge/startup/allocator regressions +13CPU token source/layout/evidence checks),
 0fail/0skip. TypeScript noEmit/nonincremental and all affected lint/diff PASS.

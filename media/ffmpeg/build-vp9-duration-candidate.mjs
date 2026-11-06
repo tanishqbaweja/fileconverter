@@ -14,6 +14,7 @@ import { makeVp9EncoderAllocationDiagnostic, makeVp9FrameAllocationDiagnostic, m
 import { makeVp9LazyUtilityEncoder,makeVp9LazyUtilityFilter } from "./vp9-lazy-utility-recipe.mjs";
 import {makeVp9TokenContextSources} from "./vp9-token-context-recipe.mjs";
 import {VP9_TOKEN_CONTEXT_LIFETIME_PINS} from "./vp9-token-context-lifetime.mjs";
+import {authenticateVp9PackedArtifacts} from "./vp9-token-packed-artifacts.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), output = path.join(root, "work/vp9-duration-output");
 const read = file => readFile(path.join(root, file)), sha = value => createHash("sha256").update(value).digest("hex");
 assert.equal(process.argv.length, 2); assert.equal(process.platform, "linux");
@@ -23,7 +24,9 @@ assert.ok([undefined,"0","1"].includes(process.env.WITHIN_VP9_LAZY_UTILITY));
 const lazyUtility=process.env.WITHIN_VP9_LAZY_UTILITY==="1";assert.ok(!lazyUtility||allocationDiagnostics);
 assert.ok([undefined,"0","1"].includes(process.env.WITHIN_VP9_TOKEN_CONTEXT));
 const tokenContext=process.env.WITHIN_VP9_TOKEN_CONTEXT==="1";assert.ok(!tokenContext||lazyUtility);
-const privateEngine=tokenContext?"private-vp9-token-context":lazyUtility?"private-vp9-lazy-utility":allocationDiagnostics?"private-vp9-allocation-diagnostic":"private-vp9-realtime-temporal";
+assert.ok([undefined,"0","1"].includes(process.env.WITHIN_VP9_TOKEN_PACKED));
+const tokenPacked=process.env.WITHIN_VP9_TOKEN_PACKED==="1";assert.ok(!tokenPacked||tokenContext);
+const privateEngine=tokenPacked?"private-vp9-token-packed":tokenContext?"private-vp9-token-context":lazyUtility?"private-vp9-lazy-utility":allocationDiagnostics?"private-vp9-allocation-diagnostic":"private-vp9-realtime-temporal";
 assert.equal(sha(await read("media/ffmpeg/within_remux.c")), "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068");
 for (const dir of [output, path.join(root, "work/vp9-duration-build")]) await assert.rejects(access(dir), { code: "ENOENT" });
 const sourcePins = {}, artifactPins = {};
@@ -38,10 +41,13 @@ sourceFiles.push("media/ffmpeg/vp9-lazy-utility-recipe.mjs");
 if(lazyUtility)sourceFiles.push("media/ffmpeg/vp9-lazy-utility-c-unit.mjs","media/ffmpeg/make-vp9-lazy-utility-source.mjs");
 if(tokenContext)sourceFiles.push("media/ffmpeg/vp9-token-context-recipe.mjs","media/ffmpeg/vp9-token-context-lifetime.mjs",
   "media/ffmpeg/vp9-token-context-c-unit.mjs","media/ffmpeg/make-vp9-token-context-source.mjs");
+if(tokenPacked)sourceFiles.push("media/ffmpeg/vp9-token-packed-recipe.mjs","media/ffmpeg/vp9-token-packed-audit.mjs",
+  "media/ffmpeg/vp9-token-packed-c-unit.mjs","media/ffmpeg/vp9-token-packed-artifacts.mjs","media/ffmpeg/make-vp9-token-packed-source.mjs",
+  "evidence/2026-11-06-vp9-token-packed-source-audit.json");
 for (const entry of await readdir(path.join(root, "media/ffmpeg"))) if (/^build-.*\.sh$/.test(entry)) sourceFiles.push("media/ffmpeg/" + entry);
 for (const entry of await readdir(path.join(root, "media/ffmpeg/patches"))) if (entry.endsWith(".patch")) sourceFiles.push("media/ffmpeg/patches/" + entry);
 for (const file of sourceFiles) sourcePins[file] = sha(await read(file));
-const recipe = makeVp9DurationBuildRecipe((await read("media/ffmpeg/reproduce-nondocker.sh")).toString(), { temporalFilterGuard: true, allocationDiagnostics, lazyUtility, tokenContext });
+const recipe = makeVp9DurationBuildRecipe((await read("media/ffmpeg/reproduce-nondocker.sh")).toString(), { temporalFilterGuard: true, allocationDiagnostics, lazyUtility, tokenContext, tokenPacked });
 const runtime = await createOwnedRuntimeScratch("vp9-duration-builder-");
 try {
   // Configure probes live under this TMPDIR, not the separate build root.
@@ -63,6 +69,7 @@ try {
   let diagnosticContract = null;
   let lazyContract=null;
   let tokenContract=null;
+  let packedContract=null;
   if (allocationDiagnostics) {
     const encoder = makeVp9EncoderAllocationDiagnostic(vendor.generated),
       allocator = makeVp9FrameAllocationDiagnostic(await readFile(path.join(output, "yv12config.allocation.base.c"), "utf8")),
@@ -107,16 +114,23 @@ try {
     }
     assert.deepEqual(proof.lifetime.sourcePins,VP9_TOKEN_CONTEXT_LIFETIME_PINS);
     assert.deepEqual(proof.cUnit.variants.map(v=>v.producerPackerCases),[69120,207360]);
+    if(tokenPacked)assert.equal(proof.layout,null,"Six-byte ancestor was not the compiled vendor layout");
+    else {
     const config=await readFile(path.join(output,"vp9-token-vpx-config.h"),"utf8"),high=Number(config.match(/^#define CONFIG_VP9_HIGHBITDEPTH ([01])$/m)?.[1]);
     assert.ok(high===0||high===1);assert.equal(proof.layout.highBitDepth,high);assert.equal(proof.layout.actualLibraryConfiguration,true);
     assert.equal(proof.layout.originalRecordBytes,high?12:8);assert.equal(proof.layout.compactRecordBytes,high?8:6);
     assert.equal(proof.layout.vpxConfigSha256,sha(config));
     assert.equal(proof.layout.cSourceSha256,sha(await readFile(path.join(output,"vp9-token-layout-probe.c"))));
     assert.equal(proof.layout.llvmSha256,sha(await readFile(path.join(output,"vp9-token-layout-probe.ll"))));
+    }
     assert.equal(proof.actualMemorySavedBytes,null);assert.equal(proof.browserValidated,false);
     tokenContract={sourceSha256s,lifetimeSourcePins:VP9_TOKEN_CONTEXT_LIFETIME_PINS,layout:proof.layout,
       producerPackerCases:276480,tokenCapacityChanged:false,codecSettingsChanged:false,pixelAlgorithmsChanged:false,
-      actualMemorySavedBytes:null,browserValidated:false};
+      actualMemorySavedBytes:null,browserValidated:false,...(tokenPacked?{ancestorOnly:true}: {})};
+    if(tokenPacked) {
+      packedContract=await authenticateVp9PackedArtifacts(file=>readFile(path.join(output,file)),preimages);
+      assert.equal(packedContract.sourceAuditSha256,sourcePins["evidence/2026-11-06-vp9-token-packed-source-audit.json"]);
+    }
   }
   const wasm = await readFile(path.join(output, "within-remux.wasm")); assert.ok(wasm.length < 16777216 && WebAssembly.validate(wasm));
   const limits = readWasmMemoryLimits(wasm);
@@ -143,9 +157,10 @@ try {
       allocationDiagnostics: diagnosticContract,
       lazyUtility: lazyContract,
       tokenContext: tokenContract,
+      tokenPacked:packedContract,
       compiledVendorSources:lazyUtility?{"vp9/encoder/vp9_encoder.c":lazyContract.encoderSha256,
         "vp9/encoder/vp9_picklpf.c":lazyContract.filterSha256,"vpx_scale/generic/yv12config.c":diagnosticContract.allocatorSha256,
-        ...(tokenContract?.sourceSha256s??{})}:null,
+        ...(packedContract?.sourceSha256s??tokenContract?.sourceSha256s??{})}:null,
       ancestorPreimagesAreNotFinalTranslationUnits:lazyUtility,
       vendorAllocationGuard: { parentSha256: vendor.parentSha256, compiledSourceSha256: vendor.generatedSha256,
         edits: vendor.edits.length, lifetimeSourcePins: VP9_TEMPORAL_LIFETIME_PINS, cUnitCalls: 198,
