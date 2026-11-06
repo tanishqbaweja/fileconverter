@@ -1,0 +1,24 @@
+{
+  "scope": "Lossless sampler receipt storage reduction; original failed/passed results and thresholds unchanged",
+  "reports": [
+    {
+      "file": "evidence/2026-11-06-webcodecs-vp9-original-startup-42231818045.json",
+      "archive": {
+        "file": "evidence/2026-11-06-webcodecs-vp9-original-startup-42231818045.raw.json.gz",
+        "bytes": 18357,
+        "sha256": "6c8fd6da475b32a987bb8a350fca655186e9008d57d9c1d05400102264e2c710",
+        "decodedBytes": 273374,
+        "decodedSha256": "6481d33038650433929adacb28aa571e37cdb0cfc94060ce1cb624ae77e501b5",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      },
+      "compactBytes": 80417,
+      "compactSha256": "62dea83504c05a7a038166e506b7f4d5f2bd3098f41b71538c020931943056db"
+    }
+  ],
+  "originalBytes": 273374,
+  "retainedBytes": 98774,
+  "allRoundtripsVerified": true,
+  "convertedFilesRead": false,
+  "privateNativeToolRemoved": false,
+  "publicAcceptance": false
+}

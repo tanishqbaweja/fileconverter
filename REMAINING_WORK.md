@@ -1,5 +1,23 @@
 # Remaining work audit
 
+2026-11-06 checkpoint349distinct focused checks pass, lint/diff pass; actual
+original platform335.40234375MiB remains FAILED. No live build/test, this cycle's
+disposable data removed, source unchanged. Required allocation diagnosis, full-
+original correctness/scaling/speed/release and broad family coverage remain open.
+
+
+2026-11-06 full-original PLATFORM path actually encodes94frames, but FAILS whole-
+Chrome335.40234375MiB (23valid0missing) against250MiB, cancels/cleans0B partial.
+Fixed32MiB decoder no longer hits CPU encoder's heap failure; external browser
+memory still over budget. Largest same-birth renderer is337477632B; actual native
+allocation owners unknown, do not infer a leak/full-file buffering or fake success
+from small Wasm/queues. Source unchanged/all owned disposable data removed.
+NEXT CDP realm/native allocation capture at encoder initialization/first frame;
+no unchanged replay, reduced geometry, excluded processes or weaker gate.346fresh
+focused tests/public consistency pass; full original/scaling/speed and all broader
+requirements remain open.
+
+
 2026-11-06 PLATFORM small/recovery PASS: four identical48-frame outputs with
 SSIM.993428/strict clock+metadata/default-duration gates, actual VideoEncoder
 participation (not CPU fallback), wholeChrome172.94921875MiB/60valid0missing.

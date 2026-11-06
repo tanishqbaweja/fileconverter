@@ -1,0 +1,194 @@
+{
+  "recordedAt": "2026-11-06T14:42:46.409Z",
+  "scope": "Process-level localization of actual over-budget original platform run, NOT allocator ownership or optimization acceptance",
+  "sourceReport": "evidence/2026-11-06-webcodecs-vp9-original-startup-42231818045.json",
+  "nativeRunId": 42231818045,
+  "primary": {
+    "blankPrivateBytes": 348413952,
+    "peakWholeTreePrivateBytes": 700108800,
+    "incrementalPrivateMiB": 335.40234375,
+    "maximumIncrementalMiB": 250,
+    "excessBytes": 89550848,
+    "allPeakProcessBytesIncluded": true
+  },
+  "processes": [
+    {
+      "pid": 34644,
+      "parentPid": 29784,
+      "createdAt": "2026-11-06T14:32:06.0026716Z",
+      "executableName": "chrome.exe",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 337477632,
+      "loadedIdlePrivateBytes": 46116864,
+      "deltaFromLoadedBytes": 291360768
+    },
+    {
+      "pid": 23756,
+      "parentPid": 29784,
+      "createdAt": "2026-11-06T14:32:02.5770635Z",
+      "executableName": "chrome.exe",
+      "typeFromSameBirthLoadedCensus": "gpu-process",
+      "peakPrivateBytes": 165105664,
+      "loadedIdlePrivateBytes": 148914176,
+      "deltaFromLoadedBytes": 16191488
+    },
+    {
+      "pid": 29784,
+      "parentPid": 46216,
+      "createdAt": "2026-11-06T14:32:02.4243198Z",
+      "executableName": "chrome.exe",
+      "typeFromSameBirthLoadedCensus": "browser",
+      "peakPrivateBytes": 69492736,
+      "loadedIdlePrivateBytes": 70385664,
+      "deltaFromLoadedBytes": -892928
+    },
+    {
+      "pid": 30996,
+      "parentPid": 29784,
+      "createdAt": "2026-11-06T14:32:02.6732364Z",
+      "executableName": "chrome.exe",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 44290048,
+      "loadedIdlePrivateBytes": 44290048,
+      "deltaFromLoadedBytes": 0
+    },
+    {
+      "pid": 29160,
+      "parentPid": 29784,
+      "createdAt": "2026-11-06T14:32:06.3852576Z",
+      "executableName": "chrome.exe",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 21614592,
+      "loadedIdlePrivateBytes": 21614592,
+      "deltaFromLoadedBytes": 0
+    },
+    {
+      "pid": 8256,
+      "parentPid": 29784,
+      "createdAt": "2026-11-06T14:32:03.1024085Z",
+      "executableName": "chrome.exe",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 20672512,
+      "loadedIdlePrivateBytes": 20672512,
+      "deltaFromLoadedBytes": 0
+    },
+    {
+      "pid": 32404,
+      "parentPid": 29784,
+      "createdAt": "2026-11-06T14:32:29.7792615Z",
+      "executableName": "chrome.exe",
+      "typeFromSameBirthLoadedCensus": "renderer",
+      "peakPrivateBytes": 15519744,
+      "loadedIdlePrivateBytes": 15519744,
+      "deltaFromLoadedBytes": 0
+    },
+    {
+      "pid": 21640,
+      "parentPid": 29784,
+      "createdAt": "2026-11-06T14:32:02.5865864Z",
+      "executableName": "chrome.exe",
+      "typeFromSameBirthLoadedCensus": "utility",
+      "peakPrivateBytes": 14970880,
+      "loadedIdlePrivateBytes": 15036416,
+      "deltaFromLoadedBytes": -65536
+    },
+    {
+      "pid": 7400,
+      "parentPid": 29784,
+      "createdAt": "2026-11-06T14:32:02.6196729Z",
+      "executableName": "chrome.exe",
+      "typeFromSameBirthLoadedCensus": "utility",
+      "peakPrivateBytes": 8286208,
+      "loadedIdlePrivateBytes": 8282112,
+      "deltaFromLoadedBytes": 4096
+    },
+    {
+      "pid": 23592,
+      "parentPid": 29784,
+      "createdAt": "2026-11-06T14:32:02.4492103Z",
+      "executableName": "chrome.exe",
+      "typeFromSameBirthLoadedCensus": "crashpad-handler",
+      "peakPrivateBytes": 2678784,
+      "loadedIdlePrivateBytes": 2678784,
+      "deltaFromLoadedBytes": 0
+    }
+  ],
+  "largestRenderer": {
+    "pid": 34644,
+    "parentPid": 29784,
+    "createdAt": "2026-11-06T14:32:06.0026716Z",
+    "executableName": "chrome.exe",
+    "typeFromSameBirthLoadedCensus": "renderer",
+    "peakPrivateBytes": 337477632,
+    "loadedIdlePrivateBytes": 46116864,
+    "deltaFromLoadedBytes": 291360768
+  },
+  "conversionBucketObservations": [
+    {
+      "timestamp": "2026-11-06T14:32:30.9441131Z",
+      "sequence": 252,
+      "wholeTreePrivateBytes": 472592384,
+      "largestRendererPrivateBytes": 126935040
+    },
+    {
+      "timestamp": "2026-11-06T14:32:30.9441131Z",
+      "sequence": 252,
+      "wholeTreePrivateBytes": 472592384,
+      "largestRendererPrivateBytes": 126935040
+    },
+    {
+      "timestamp": "2026-11-06T14:32:31.9273231Z",
+      "sequence": 261,
+      "wholeTreePrivateBytes": 699883520,
+      "largestRendererPrivateBytes": 337256448
+    },
+    {
+      "timestamp": "2026-11-06T14:32:31.9273231Z",
+      "sequence": 261,
+      "wholeTreePrivateBytes": 699883520,
+      "largestRendererPrivateBytes": 337256448
+    },
+    {
+      "timestamp": "2026-11-06T14:32:32.3663162Z",
+      "sequence": 265,
+      "wholeTreePrivateBytes": 700108800,
+      "largestRendererPrivateBytes": 337477632
+    },
+    {
+      "timestamp": "2026-11-06T14:32:32.9080779Z",
+      "sequence": 270,
+      "wholeTreePrivateBytes": 423215104,
+      "largestRendererPrivateBytes": 61562880
+    },
+    {
+      "timestamp": "2026-11-06T14:32:33.0161127Z",
+      "sequence": 271,
+      "wholeTreePrivateBytes": 416948224,
+      "largestRendererPrivateBytes": 61562880
+    },
+    {
+      "timestamp": "2026-11-06T14:32:33.1257706Z",
+      "sequence": 272,
+      "wholeTreePrivateBytes": 416948224,
+      "largestRendererPrivateBytes": 61562880
+    }
+  ],
+  "actualEncodedFrames": 94,
+  "actualEncodedPackets": 94,
+  "closedFrames": 94,
+  "wasmHeapBytes": 33554432,
+  "peakPackedFrameBytes": 2315520,
+  "peakPacketBytes": 247789,
+  "nativeCodecAllocationOwners": null,
+  "jsRealmHeapOwnership": null,
+  "frameLeakProven": false,
+  "loadedDeltasAreDiagnosticNotAcceptance": true,
+  "missingObservationsAreNull": true,
+  "fullOriginalConverted": false,
+  "independentOriginalFidelityPassed": false,
+  "physicalHardwareSelectionProven": false,
+  "speedGainProven": false,
+  "publicAcceptance": false,
+  "nextAction": "Bounded CDP realm/native-memory allocation capture around platform encoder initialization/first frame; do not blame full-file buffering, reduce resolution, omit processes, disable services or replay unchanged conversion",
+  "userMediaReadOrConverted": false
+}

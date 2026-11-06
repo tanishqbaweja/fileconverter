@@ -1,5 +1,35 @@
 # Tested conversion ledger
 
+2026-11-06 checkpoint349distinct focused checks PASS (346regressions +3new
+platform-original evidence checks),0fail/0skip; affected lint/diff PASS. Actual
+large platform run remains FAILED despite passing small control. All this cycle's
+disposable converted files/profiles/scratch removed; protected original unchanged.
+No live build/test handles remain. Source-built tools kept only for next targeted
+allocation diagnosis/fallback controls. Goal remains active, broader scope open.
+
+
+2026-11-06 protected original PLATFORM startup atbb1edb14 FAILED primary memory:
+full untouched2958573265B File/1920x804/24fps/4Mbps, actual94frames/packets/closed
+frames (not CPU fallback), decoder stays32MiB, packed frame2315520B/packet peak
+247789B/one frame+packet in flight. API hardware-preferred false/no-preference,
+no physical GPU proof. CompleteChrome blank348413952/peak700108800=>335.40234375MiB,
+23valid0missing,89,550,848B ABOVE250MiB. Safety monitor cancels after~2s; only485B
+mux header, aborted output0B, no completed output/full fidelity/speed proof.
+All outputs/OPFS/profile/runtime/stage and3owned roots removed, original exact
+size/SHA unchanged,0forbidden requests. Raw273374B archived to98774B total.
+Same-birth process localization counts ALL10peak processes: largest renderer34644
+is337477632B versus46116864B loaded idle. Delta291360768B is DIAGNOSTIC ONLY;
+native allocation owners/JS realm ownership remainNULL, no frame leak proven.
+Initial cost plateaus in retained per-second buckets then falls on cleanup; no
+file-size-scaling or identical-input performance claim. NEXT bounded CDP realm/
+native allocation capture around encoder initialization/first frame, not an
+unchanged conversion replay, downscale, process exclusion or raised memory limit.
+
+2026-11-06 fresh346focused regressions PASS (261core/85source+allocation+evidence),
+0fail/0skip, public consistency403/403/2hidden pending/0PDF. No new frontend build/
+TypeScript release gate claimed; platform profile remains private and unaccepted.
+
+
 2026-11-06 actual PLATFORM native42231818045 small/recovery PASS at8bd8d687:
 initial+3completed97764B outputs SHA1fba59187d8111779053fcfe00a00d79ad829638dd4eec8ffa6bf67ef9a653f9,
 all48frames/packets/closed frames, strict2s/PTS/duration/default41666666ns/8metadata
