@@ -2,10 +2,11 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 const sha = value => createHash("sha256").update(value).digest("hex");
-export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false, allocationDiagnostics = false, lazyUtility = false } = {}) {
+export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false, allocationDiagnostics = false, lazyUtility = false, tokenContext = false } = {}) {
   assert.equal(typeof temporalFilterGuard, "boolean");
   assert.equal(typeof allocationDiagnostics, "boolean"); assert.ok(!allocationDiagnostics || temporalFilterGuard);
   assert.equal(typeof lazyUtility,"boolean");assert.ok(!lazyUtility||allocationDiagnostics);
+  assert.equal(typeof tokenContext,"boolean");assert.ok(!tokenContext||lazyUtility);
   assert.equal(sha(source), "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e");
   const tail = source.slice(source.indexOf("comparison_files=()\n"));
   assert.ok(tail.startsWith("comparison_files=()\n") && tail.endsWith("printf 'Exact non-Docker FFmpeg artifact comparison passed.\\n'\n"));
@@ -50,6 +51,14 @@ export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false
     'cp -- "${BUILD_ROOT}/vp9_picklpf.lazy.base.c" "${OUTPUT_ROOT}/vp9_picklpf.lazy.base.c"\n'+
     'cp -- "${BUILD_ROOT}/vp9_picklpf.lazy.utility.c" "${OUTPUT_ROOT}/vp9_picklpf.lazy.utility.c"\n'+
     'cp -- "${BUILD_ROOT}/vp9-lazy-utility-proof.json" "${OUTPUT_ROOT}/vp9-lazy-utility-proof.json"\n']);
+  if(tokenContext)edits.push([
+    'node "${SCRIPT_DIR}/make-vp9-lazy-utility-source.mjs"\n./build-vpx.sh\n',
+    'node "${SCRIPT_DIR}/make-vp9-lazy-utility-source.mjs"\nnode "${SCRIPT_DIR}/make-vp9-token-context-source.mjs"\n./build-vpx.sh\n'+
+    'node "${SCRIPT_DIR}/make-vp9-token-context-source.mjs" --layout\n'+
+    ['vp9_tokenize.header.base.c','vp9_tokenize.header.compact.c','vp9_tokenize.producer.base.c','vp9_tokenize.producer.compact.c',
+      'vp9_bitstream.packer.base.c','vp9_bitstream.packer.compact.c','vp9-token-context-proof.json',
+      'vp9-token-vpx-config.h','vp9-token-layout-probe.c','vp9-token-layout-probe.ll']
+      .map(file=>'cp -- "${BUILD_ROOT}/'+file+'" "${OUTPUT_ROOT}/'+file+'"\n').join('')]);
   let generated = source;
   for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
   let reverse = generated;
@@ -60,5 +69,6 @@ export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false
     temporalFilterGuard, vendorAllocationOnlyChanged: temporalFilterGuard,
     allocationDiagnostics, diagnosticsOnFailureOnly: allocationDiagnostics,
     lazyUtility,
+    tokenContext,
     allCoreBuildSelected: false, publicAcceptance: false };
 }

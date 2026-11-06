@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-11-06 token candidate safety/integration checkpoint: complete pinned880-file
+archive inventory finds133fc identifier references/17files, including aliases and
+allocation macros. Reviewed encoder's one fc allocation after zero-init, object
+copies, shared probability-table access and teardown; nine exact full-source pins
+and unchanged actual lazy-encoder references pass positive local verification.
+This is pinned-source review, not a generic C alias proof. New private recipe
+patches token header/producers/packer before build-vpx and emits an actual Wasm32
+LLVM layout probe using the library's generated vpx_config.h afterwards. Strict
+collector authenticates all40static members/final source hashes/config/probe;
+published assets/registry/limits untouched.44exact CI controls PASS/0skip plus
+42focused driver/evidence checks PASS/0skip; affected lint/diff PASS. One initial
+textual regression expected the old engine-selector expression; updated it to
+require the explicit new private branch, then all44 passed. Native build11 is
+NEXT, not yet dispatched/successful; no browser, heap saving, speed acceptance.
+
 2026-11-06 checkpoint:318focused regressions PASS (259core/59allocation-source-
 evidence controls),0fail/0skip. All affected ESLint and git diff checks PASS.
 Public evidence consistency unchanged403/403,2hidden pending,0PDF. No frontend

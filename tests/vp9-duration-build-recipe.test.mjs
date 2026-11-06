@@ -55,6 +55,17 @@ test("lazy utility build is reversible, requires prior guards, and patches befor
   const parsed=spawnSync(process.platform==="win32"?"D:/Program Files/Git/bin/bash.exe":"/bin/bash",["--noprofile","--norc","-n"],
     {input:result.generated,encoding:"utf8",windowsHide:true,timeout:10000,maxBuffer:65536});assert.equal(parsed.status,0,parsed.stderr||String(parsed.error));
 });
+test("token context build patches actual producers/packer before compilation and records actual configured Wasm layout afterwards",()=>{
+  const result=makeVp9DurationBuildRecipe(source,{temporalFilterGuard:true,allocationDiagnostics:true,lazyUtility:true,tokenContext:true});
+  assert.equal(result.tokenContext,true);
+  assert.ok(result.generated.includes('make-vp9-lazy-utility-source.mjs"\nnode "${SCRIPT_DIR}/make-vp9-token-context-source.mjs"\n./build-vpx.sh\nnode "${SCRIPT_DIR}/make-vp9-token-context-source.mjs" --layout\n'));
+  for(const file of ['vp9_tokenize.header.base.c','vp9_tokenize.header.compact.c','vp9-token-vpx-config.h','vp9-token-layout-probe.ll'])
+    assert.ok(result.generated.includes('"${OUTPUT_ROOT}/'+file+'"'));
+  let reverse=result.generated;for(const [before,after]of result.edits.toReversed())reverse=reverse.replace(after,before);assert.equal(reverse,source);
+  assert.throws(()=>makeVp9DurationBuildRecipe(source,{tokenContext:true}));
+  const parsed=spawnSync(process.platform==="win32"?"D:/Program Files/Git/bin/bash.exe":"/bin/bash",["--noprofile","--norc","-n"],
+    {input:result.generated,encoding:"utf8",windowsHide:true,timeout:10000,maxBuffer:65536});assert.equal(parsed.status,0,parsed.stderr||String(parsed.error));
+});
 test("diagnostic build instruments only after temporal guard and before library compilation, with exact reversible provenance", () => {
   const result = makeVp9DurationBuildRecipe(source, { temporalFilterGuard: true, allocationDiagnostics: true });
   assert.equal(result.allocationDiagnostics, true); assert.equal(result.diagnosticsOnFailureOnly, true);

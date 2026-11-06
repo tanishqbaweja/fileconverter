@@ -35,9 +35,9 @@ test("latest private build retains the stream candidate through its original-wid
     collector = await read("scripts/collect-vp9-duration-native.mjs"), workflow = await read(".github/workflows/vp9-duration-nondocker.yml");
   for (const text of [generator, builder]) assert.ok(text.includes("makeVp9OriginalWidthSource("));
   const width = await read("media/ffmpeg/vp9-original-width-recipe.mjs"); assert.ok(width.includes("makeVp9StreamDurationSource(source)"));
-  assert.ok(builder.includes('"media/ffmpeg/vp9-stream-duration-recipe.mjs"')); assert.ok(builder.includes('const privateEngine=lazyUtility?"private-vp9-lazy-utility":allocationDiagnostics?"private-vp9-allocation-diagnostic":"private-vp9-realtime-temporal"'));
+  assert.ok(builder.includes('"media/ffmpeg/vp9-stream-duration-recipe.mjs"')); assert.ok(builder.includes('const privateEngine=tokenContext?"private-vp9-token-context":lazyUtility?"private-vp9-lazy-utility":allocationDiagnostics?"private-vp9-allocation-diagnostic":"private-vp9-realtime-temporal"'));
   assert.ok(builder.includes("vendorAllocationGuard:"));
-  assert.ok(builder.includes("{ temporalFilterGuard: true, allocationDiagnostics, lazyUtility }"));
+  assert.ok(builder.includes("{ temporalFilterGuard: true, allocationDiagnostics, lazyUtility, tokenContext }"));
   assert.ok(builder.includes("wrapperEdits: candidate.edits.length")); assert.ok(collector.includes("sourceProof.edits.length, manifest.candidate.wrapperEdits"));
   assert.ok(collector.includes("streamDuration ? makeVp9StreamDurationSource : makeVp9PacketDurationSource"));
   assert.ok(workflow.includes("tests/vp9-stream-duration-recipe.test.mjs"));

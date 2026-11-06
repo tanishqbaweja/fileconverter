@@ -1,0 +1,1123 @@
+{
+  "recordedAt": "2026-11-06T13:23:59.142Z",
+  "scope": "Pinned VP9 fc identifier/macro/whole-object-write inventory for manual lifetime audit; not a generic C alias proof",
+  "archiveSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
+  "cFiles": 880,
+  "references": [
+    {
+      "file": "vp9/common/vp9_alloccommon.c",
+      "sha256": "f496640ea6344b71c0a193ddbc77eebafc3b7be2de3a4efc60d16c7d60e65e89",
+      "matches": [
+        {
+          "line": 175,
+          "text": "vpx_free(cm->fc);",
+          "context": "#endif\n  vp9_free_context_buffers(cm);\n\n  vpx_free(cm->fc);\n  cm->fc = NULL;\n  vpx_free(cm->frame_contexts);\n  cm->frame_contexts = NULL;\n}"
+        },
+        {
+          "line": 176,
+          "text": "cm->fc = NULL;",
+          "context": "  vp9_free_context_buffers(cm);\n\n  vpx_free(cm->fc);\n  cm->fc = NULL;\n  vpx_free(cm->frame_contexts);\n  cm->frame_contexts = NULL;\n}\n"
+        }
+      ]
+    },
+    {
+      "file": "vp9/common/vp9_blockd.h",
+      "sha256": "a3628f60842999fc7165b0dc045529734c7cc98609142582d8eda6434b9f059d",
+      "matches": [
+        {
+          "line": 183,
+          "text": "FRAME_CONTEXT *fc;",
+          "context": "  int mb_to_top_edge;\n  int mb_to_bottom_edge;\n\n  FRAME_CONTEXT *fc;\n\n  /* pointers to reference frames */\n  const RefBuffer *block_refs[2];\n"
+        }
+      ]
+    },
+    {
+      "file": "vp9/common/vp9_entropy.c",
+      "sha256": "d6084c983bd9848bb19a32ef87305e822873815e1ea3a30e158b6e1a489519a1",
+      "matches": [
+        {
+          "line": 1042,
+          "text": "vp9_copy(cm->fc->coef_probs[TX_4X4], default_coef_probs_4x4);",
+          "context": "}\n\nvoid vp9_default_coef_probs(VP9_COMMON *cm) {\n  vp9_copy(cm->fc->coef_probs[TX_4X4], default_coef_probs_4x4);\n  vp9_copy(cm->fc->coef_probs[TX_8X8], default_coef_probs_8x8);\n  vp9_copy(cm->fc->coef_probs[TX_16X16], default_coef_probs_16x16);\n  vp9_copy(cm->fc->coef_probs[TX_32X32], default_coef_probs_32x32);\n}"
+        },
+        {
+          "line": 1043,
+          "text": "vp9_copy(cm->fc->coef_probs[TX_8X8], default_coef_probs_8x8);",
+          "context": "\nvoid vp9_default_coef_probs(VP9_COMMON *cm) {\n  vp9_copy(cm->fc->coef_probs[TX_4X4], default_coef_probs_4x4);\n  vp9_copy(cm->fc->coef_probs[TX_8X8], default_coef_probs_8x8);\n  vp9_copy(cm->fc->coef_probs[TX_16X16], default_coef_probs_16x16);\n  vp9_copy(cm->fc->coef_probs[TX_32X32], default_coef_probs_32x32);\n}\n"
+        },
+        {
+          "line": 1044,
+          "text": "vp9_copy(cm->fc->coef_probs[TX_16X16], default_coef_probs_16x16);",
+          "context": "void vp9_default_coef_probs(VP9_COMMON *cm) {\n  vp9_copy(cm->fc->coef_probs[TX_4X4], default_coef_probs_4x4);\n  vp9_copy(cm->fc->coef_probs[TX_8X8], default_coef_probs_8x8);\n  vp9_copy(cm->fc->coef_probs[TX_16X16], default_coef_probs_16x16);\n  vp9_copy(cm->fc->coef_probs[TX_32X32], default_coef_probs_32x32);\n}\n\n#define COEF_COUNT_SAT 24"
+        },
+        {
+          "line": 1045,
+          "text": "vp9_copy(cm->fc->coef_probs[TX_32X32], default_coef_probs_32x32);",
+          "context": "  vp9_copy(cm->fc->coef_probs[TX_4X4], default_coef_probs_4x4);\n  vp9_copy(cm->fc->coef_probs[TX_8X8], default_coef_probs_8x8);\n  vp9_copy(cm->fc->coef_probs[TX_16X16], default_coef_probs_16x16);\n  vp9_copy(cm->fc->coef_probs[TX_32X32], default_coef_probs_32x32);\n}\n\n#define COEF_COUNT_SAT 24\n#define COEF_MAX_UPDATE_FACTOR 112"
+        },
+        {
+          "line": 1059,
+          "text": "vp9_coeff_probs_model *const probs = cm->fc->coef_probs[tx_size];",
+          "context": "                             unsigned int count_sat,\n                             unsigned int update_factor) {\n  const FRAME_CONTEXT *pre_fc = &cm->frame_contexts[cm->frame_context_idx];\n  vp9_coeff_probs_model *const probs = cm->fc->coef_probs[tx_size];\n  const vp9_coeff_probs_model *const pre_probs = pre_fc->coef_probs[tx_size];\n  vp9_coeff_count_model *counts = cm->counts.coef[tx_size];\n  unsigned int(*eob_counts)[REF_TYPES][COEF_BANDS][COEFF_CONTEXTS] =\n      cm->counts.eob_branch[tx_size];"
+        }
+      ]
+    },
+    {
+      "file": "vp9/common/vp9_entropymode.c",
+      "sha256": "0cb4940de5b9add383387c749c4c3f4bf13618782e0fe89677c8333d45b7e1e3",
+      "matches": [
+        {
+          "line": 323,
+          "text": "static void init_mode_probs(FRAME_CONTEXT *fc) {",
+          "context": "                                                      { 149, 144 },\n                                                    };\n\nstatic void init_mode_probs(FRAME_CONTEXT *fc) {\n  vp9_copy(fc->uv_mode_prob, default_if_uv_probs);\n  vp9_copy(fc->y_mode_prob, default_if_y_probs);\n  vp9_copy(fc->switchable_interp_prob, default_switchable_interp_prob);\n  vp9_copy(fc->partition_prob, default_partition_probs);"
+        },
+        {
+          "line": 324,
+          "text": "vp9_copy(fc->uv_mode_prob, default_if_uv_probs);",
+          "context": "                                                    };\n\nstatic void init_mode_probs(FRAME_CONTEXT *fc) {\n  vp9_copy(fc->uv_mode_prob, default_if_uv_probs);\n  vp9_copy(fc->y_mode_prob, default_if_y_probs);\n  vp9_copy(fc->switchable_interp_prob, default_switchable_interp_prob);\n  vp9_copy(fc->partition_prob, default_partition_probs);\n  vp9_copy(fc->intra_inter_prob, default_intra_inter_p);"
+        },
+        {
+          "line": 325,
+          "text": "vp9_copy(fc->y_mode_prob, default_if_y_probs);",
+          "context": "\nstatic void init_mode_probs(FRAME_CONTEXT *fc) {\n  vp9_copy(fc->uv_mode_prob, default_if_uv_probs);\n  vp9_copy(fc->y_mode_prob, default_if_y_probs);\n  vp9_copy(fc->switchable_interp_prob, default_switchable_interp_prob);\n  vp9_copy(fc->partition_prob, default_partition_probs);\n  vp9_copy(fc->intra_inter_prob, default_intra_inter_p);\n  vp9_copy(fc->comp_inter_prob, default_comp_inter_p);"
+        },
+        {
+          "line": 326,
+          "text": "vp9_copy(fc->switchable_interp_prob, default_switchable_interp_prob);",
+          "context": "static void init_mode_probs(FRAME_CONTEXT *fc) {\n  vp9_copy(fc->uv_mode_prob, default_if_uv_probs);\n  vp9_copy(fc->y_mode_prob, default_if_y_probs);\n  vp9_copy(fc->switchable_interp_prob, default_switchable_interp_prob);\n  vp9_copy(fc->partition_prob, default_partition_probs);\n  vp9_copy(fc->intra_inter_prob, default_intra_inter_p);\n  vp9_copy(fc->comp_inter_prob, default_comp_inter_p);\n  vp9_copy(fc->comp_ref_prob, default_comp_ref_p);"
+        },
+        {
+          "line": 327,
+          "text": "vp9_copy(fc->partition_prob, default_partition_probs);",
+          "context": "  vp9_copy(fc->uv_mode_prob, default_if_uv_probs);\n  vp9_copy(fc->y_mode_prob, default_if_y_probs);\n  vp9_copy(fc->switchable_interp_prob, default_switchable_interp_prob);\n  vp9_copy(fc->partition_prob, default_partition_probs);\n  vp9_copy(fc->intra_inter_prob, default_intra_inter_p);\n  vp9_copy(fc->comp_inter_prob, default_comp_inter_p);\n  vp9_copy(fc->comp_ref_prob, default_comp_ref_p);\n  vp9_copy(fc->single_ref_prob, default_single_ref_p);"
+        },
+        {
+          "line": 328,
+          "text": "vp9_copy(fc->intra_inter_prob, default_intra_inter_p);",
+          "context": "  vp9_copy(fc->y_mode_prob, default_if_y_probs);\n  vp9_copy(fc->switchable_interp_prob, default_switchable_interp_prob);\n  vp9_copy(fc->partition_prob, default_partition_probs);\n  vp9_copy(fc->intra_inter_prob, default_intra_inter_p);\n  vp9_copy(fc->comp_inter_prob, default_comp_inter_p);\n  vp9_copy(fc->comp_ref_prob, default_comp_ref_p);\n  vp9_copy(fc->single_ref_prob, default_single_ref_p);\n  fc->tx_probs = default_tx_probs;"
+        },
+        {
+          "line": 329,
+          "text": "vp9_copy(fc->comp_inter_prob, default_comp_inter_p);",
+          "context": "  vp9_copy(fc->switchable_interp_prob, default_switchable_interp_prob);\n  vp9_copy(fc->partition_prob, default_partition_probs);\n  vp9_copy(fc->intra_inter_prob, default_intra_inter_p);\n  vp9_copy(fc->comp_inter_prob, default_comp_inter_p);\n  vp9_copy(fc->comp_ref_prob, default_comp_ref_p);\n  vp9_copy(fc->single_ref_prob, default_single_ref_p);\n  fc->tx_probs = default_tx_probs;\n  vp9_copy(fc->skip_probs, default_skip_probs);"
+        },
+        {
+          "line": 330,
+          "text": "vp9_copy(fc->comp_ref_prob, default_comp_ref_p);",
+          "context": "  vp9_copy(fc->partition_prob, default_partition_probs);\n  vp9_copy(fc->intra_inter_prob, default_intra_inter_p);\n  vp9_copy(fc->comp_inter_prob, default_comp_inter_p);\n  vp9_copy(fc->comp_ref_prob, default_comp_ref_p);\n  vp9_copy(fc->single_ref_prob, default_single_ref_p);\n  fc->tx_probs = default_tx_probs;\n  vp9_copy(fc->skip_probs, default_skip_probs);\n  vp9_copy(fc->inter_mode_probs, default_inter_mode_probs);"
+        },
+        {
+          "line": 331,
+          "text": "vp9_copy(fc->single_ref_prob, default_single_ref_p);",
+          "context": "  vp9_copy(fc->intra_inter_prob, default_intra_inter_p);\n  vp9_copy(fc->comp_inter_prob, default_comp_inter_p);\n  vp9_copy(fc->comp_ref_prob, default_comp_ref_p);\n  vp9_copy(fc->single_ref_prob, default_single_ref_p);\n  fc->tx_probs = default_tx_probs;\n  vp9_copy(fc->skip_probs, default_skip_probs);\n  vp9_copy(fc->inter_mode_probs, default_inter_mode_probs);\n}"
+        },
+        {
+          "line": 332,
+          "text": "fc->tx_probs = default_tx_probs;",
+          "context": "  vp9_copy(fc->comp_inter_prob, default_comp_inter_p);\n  vp9_copy(fc->comp_ref_prob, default_comp_ref_p);\n  vp9_copy(fc->single_ref_prob, default_single_ref_p);\n  fc->tx_probs = default_tx_probs;\n  vp9_copy(fc->skip_probs, default_skip_probs);\n  vp9_copy(fc->inter_mode_probs, default_inter_mode_probs);\n}\n"
+        },
+        {
+          "line": 333,
+          "text": "vp9_copy(fc->skip_probs, default_skip_probs);",
+          "context": "  vp9_copy(fc->comp_ref_prob, default_comp_ref_p);\n  vp9_copy(fc->single_ref_prob, default_single_ref_p);\n  fc->tx_probs = default_tx_probs;\n  vp9_copy(fc->skip_probs, default_skip_probs);\n  vp9_copy(fc->inter_mode_probs, default_inter_mode_probs);\n}\n\nconst vpx_tree_index vp9_switchable_interp_tree[TREE_SIZE("
+        },
+        {
+          "line": 334,
+          "text": "vp9_copy(fc->inter_mode_probs, default_inter_mode_probs);",
+          "context": "  vp9_copy(fc->single_ref_prob, default_single_ref_p);\n  fc->tx_probs = default_tx_probs;\n  vp9_copy(fc->skip_probs, default_skip_probs);\n  vp9_copy(fc->inter_mode_probs, default_inter_mode_probs);\n}\n\nconst vpx_tree_index vp9_switchable_interp_tree[TREE_SIZE(\n    SWITCHABLE_FILTERS)] = { -EIGHTTAP, 2, -EIGHTTAP_SMOOTH, -EIGHTTAP_SHARP };"
+        },
+        {
+          "line": 342,
+          "text": "FRAME_CONTEXT *fc = cm->fc;",
+          "context": "\nvoid vp9_adapt_mode_probs(VP9_COMMON *cm) {\n  int i, j;\n  FRAME_CONTEXT *fc = cm->fc;\n  const FRAME_CONTEXT *pre_fc = &cm->frame_contexts[cm->frame_context_idx];\n  const FRAME_COUNTS *counts = &cm->counts;\n\n  for (i = 0; i < INTRA_INTER_CONTEXTS; i++)"
+        },
+        {
+          "line": 347,
+          "text": "fc->intra_inter_prob[i] = mode_mv_merge_probs(pre_fc->intra_inter_prob[i],",
+          "context": "  const FRAME_COUNTS *counts = &cm->counts;\n\n  for (i = 0; i < INTRA_INTER_CONTEXTS; i++)\n    fc->intra_inter_prob[i] = mode_mv_merge_probs(pre_fc->intra_inter_prob[i],\n                                                  counts->intra_inter[i]);\n  for (i = 0; i < COMP_INTER_CONTEXTS; i++)\n    fc->comp_inter_prob[i] =\n        mode_mv_merge_probs(pre_fc->comp_inter_prob[i], counts->comp_inter[i]);"
+        },
+        {
+          "line": 350,
+          "text": "fc->comp_inter_prob[i] =",
+          "context": "    fc->intra_inter_prob[i] = mode_mv_merge_probs(pre_fc->intra_inter_prob[i],\n                                                  counts->intra_inter[i]);\n  for (i = 0; i < COMP_INTER_CONTEXTS; i++)\n    fc->comp_inter_prob[i] =\n        mode_mv_merge_probs(pre_fc->comp_inter_prob[i], counts->comp_inter[i]);\n  for (i = 0; i < REF_CONTEXTS; i++)\n    fc->comp_ref_prob[i] =\n        mode_mv_merge_probs(pre_fc->comp_ref_prob[i], counts->comp_ref[i]);"
+        },
+        {
+          "line": 353,
+          "text": "fc->comp_ref_prob[i] =",
+          "context": "    fc->comp_inter_prob[i] =\n        mode_mv_merge_probs(pre_fc->comp_inter_prob[i], counts->comp_inter[i]);\n  for (i = 0; i < REF_CONTEXTS; i++)\n    fc->comp_ref_prob[i] =\n        mode_mv_merge_probs(pre_fc->comp_ref_prob[i], counts->comp_ref[i]);\n  for (i = 0; i < REF_CONTEXTS; i++)\n    for (j = 0; j < 2; j++)\n      fc->single_ref_prob[i][j] = mode_mv_merge_probs("
+        },
+        {
+          "line": 357,
+          "text": "fc->single_ref_prob[i][j] = mode_mv_merge_probs(",
+          "context": "        mode_mv_merge_probs(pre_fc->comp_ref_prob[i], counts->comp_ref[i]);\n  for (i = 0; i < REF_CONTEXTS; i++)\n    for (j = 0; j < 2; j++)\n      fc->single_ref_prob[i][j] = mode_mv_merge_probs(\n          pre_fc->single_ref_prob[i][j], counts->single_ref[i][j]);\n\n  for (i = 0; i < INTER_MODE_CONTEXTS; i++)\n    vpx_tree_merge_probs(vp9_inter_mode_tree, pre_fc->inter_mode_probs[i],"
+        },
+        {
+          "line": 362,
+          "text": "counts->inter_mode[i], fc->inter_mode_probs[i]);",
+          "context": "\n  for (i = 0; i < INTER_MODE_CONTEXTS; i++)\n    vpx_tree_merge_probs(vp9_inter_mode_tree, pre_fc->inter_mode_probs[i],\n                         counts->inter_mode[i], fc->inter_mode_probs[i]);\n\n  for (i = 0; i < BLOCK_SIZE_GROUPS; i++)\n    vpx_tree_merge_probs(vp9_intra_mode_tree, pre_fc->y_mode_prob[i],\n                         counts->y_mode[i], fc->y_mode_prob[i]);"
+        },
+        {
+          "line": 366,
+          "text": "counts->y_mode[i], fc->y_mode_prob[i]);",
+          "context": "\n  for (i = 0; i < BLOCK_SIZE_GROUPS; i++)\n    vpx_tree_merge_probs(vp9_intra_mode_tree, pre_fc->y_mode_prob[i],\n                         counts->y_mode[i], fc->y_mode_prob[i]);\n\n  for (i = 0; i < INTRA_MODES; ++i)\n    vpx_tree_merge_probs(vp9_intra_mode_tree, pre_fc->uv_mode_prob[i],\n                         counts->uv_mode[i], fc->uv_mode_prob[i]);"
+        },
+        {
+          "line": 370,
+          "text": "counts->uv_mode[i], fc->uv_mode_prob[i]);",
+          "context": "\n  for (i = 0; i < INTRA_MODES; ++i)\n    vpx_tree_merge_probs(vp9_intra_mode_tree, pre_fc->uv_mode_prob[i],\n                         counts->uv_mode[i], fc->uv_mode_prob[i]);\n\n  for (i = 0; i < PARTITION_CONTEXTS; i++)\n    vpx_tree_merge_probs(vp9_partition_tree, pre_fc->partition_prob[i],\n                         counts->partition[i], fc->partition_prob[i]);"
+        },
+        {
+          "line": 374,
+          "text": "counts->partition[i], fc->partition_prob[i]);",
+          "context": "\n  for (i = 0; i < PARTITION_CONTEXTS; i++)\n    vpx_tree_merge_probs(vp9_partition_tree, pre_fc->partition_prob[i],\n                         counts->partition[i], fc->partition_prob[i]);\n\n  if (cm->interp_filter == SWITCHABLE) {\n    for (i = 0; i < SWITCHABLE_FILTER_CONTEXTS; i++)\n      vpx_tree_merge_probs("
+        },
+        {
+          "line": 380,
+          "text": "counts->switchable_interp[i], fc->switchable_interp_prob[i]);",
+          "context": "    for (i = 0; i < SWITCHABLE_FILTER_CONTEXTS; i++)\n      vpx_tree_merge_probs(\n          vp9_switchable_interp_tree, pre_fc->switchable_interp_prob[i],\n          counts->switchable_interp[i], fc->switchable_interp_prob[i]);\n  }\n\n  if (cm->tx_mode == TX_MODE_SELECT) {\n    unsigned int branch_ct_8x8p[TX_SIZES - 3][2];"
+        },
+        {
+          "line": 391,
+          "text": "fc->tx_probs.p8x8[i][j] =",
+          "context": "    for (i = 0; i < TX_SIZE_CONTEXTS; ++i) {\n      tx_counts_to_branch_counts_8x8(counts->tx.p8x8[i], branch_ct_8x8p);\n      for (j = 0; j < TX_SIZES - 3; ++j)\n        fc->tx_probs.p8x8[i][j] =\n            mode_mv_merge_probs(pre_fc->tx_probs.p8x8[i][j], branch_ct_8x8p[j]);\n\n      tx_counts_to_branch_counts_16x16(counts->tx.p16x16[i], branch_ct_16x16p);\n      for (j = 0; j < TX_SIZES - 2; ++j)"
+        },
+        {
+          "line": 396,
+          "text": "fc->tx_probs.p16x16[i][j] = mode_mv_merge_probs(",
+          "context": "\n      tx_counts_to_branch_counts_16x16(counts->tx.p16x16[i], branch_ct_16x16p);\n      for (j = 0; j < TX_SIZES - 2; ++j)\n        fc->tx_probs.p16x16[i][j] = mode_mv_merge_probs(\n            pre_fc->tx_probs.p16x16[i][j], branch_ct_16x16p[j]);\n\n      tx_counts_to_branch_counts_32x32(counts->tx.p32x32[i], branch_ct_32x32p);\n      for (j = 0; j < TX_SIZES - 1; ++j)"
+        },
+        {
+          "line": 401,
+          "text": "fc->tx_probs.p32x32[i][j] = mode_mv_merge_probs(",
+          "context": "\n      tx_counts_to_branch_counts_32x32(counts->tx.p32x32[i], branch_ct_32x32p);\n      for (j = 0; j < TX_SIZES - 1; ++j)\n        fc->tx_probs.p32x32[i][j] = mode_mv_merge_probs(\n            pre_fc->tx_probs.p32x32[i][j], branch_ct_32x32p[j]);\n    }\n  }\n"
+        },
+        {
+          "line": 407,
+          "text": "fc->skip_probs[i] =",
+          "context": "  }\n\n  for (i = 0; i < SKIP_CONTEXTS; ++i)\n    fc->skip_probs[i] =\n        mode_mv_merge_probs(pre_fc->skip_probs[i], counts->skip[i]);\n}\n\nstatic void set_default_lf_deltas(struct loopfilter *lf) {"
+        },
+        {
+          "line": 448,
+          "text": "init_mode_probs(cm->fc);",
+          "context": "  lf->last_sharpness_level = -1;\n\n  vp9_default_coef_probs(cm);\n  init_mode_probs(cm->fc);\n  vp9_init_mv_probs(cm);\n  cm->fc->initialized = 1;\n\n  if (cm->frame_type == KEY_FRAME || cm->error_resilient_mode ||"
+        },
+        {
+          "line": 450,
+          "text": "cm->fc->initialized = 1;",
+          "context": "  vp9_default_coef_probs(cm);\n  init_mode_probs(cm->fc);\n  vp9_init_mv_probs(cm);\n  cm->fc->initialized = 1;\n\n  if (cm->frame_type == KEY_FRAME || cm->error_resilient_mode ||\n      cm->reset_frame_context == 3) {\n    // Reset all frame contexts."
+        },
+        {
+          "line": 455,
+          "text": "for (i = 0; i < FRAME_CONTEXTS; ++i) cm->frame_contexts[i] = *cm->fc;",
+          "context": "  if (cm->frame_type == KEY_FRAME || cm->error_resilient_mode ||\n      cm->reset_frame_context == 3) {\n    // Reset all frame contexts.\n    for (i = 0; i < FRAME_CONTEXTS; ++i) cm->frame_contexts[i] = *cm->fc;\n  } else if (cm->reset_frame_context == 2) {\n    // Reset only the frame context specified in the frame header.\n    cm->frame_contexts[cm->frame_context_idx] = *cm->fc;\n  }"
+        },
+        {
+          "line": 458,
+          "text": "cm->frame_contexts[cm->frame_context_idx] = *cm->fc;",
+          "context": "    for (i = 0; i < FRAME_CONTEXTS; ++i) cm->frame_contexts[i] = *cm->fc;\n  } else if (cm->reset_frame_context == 2) {\n    // Reset only the frame context specified in the frame header.\n    cm->frame_contexts[cm->frame_context_idx] = *cm->fc;\n  }\n\n  // prev_mip will only be allocated in encoder.\n  if (frame_is_intra_only(cm) && cm->prev_mip)"
+        }
+      ]
+    },
+    {
+      "file": "vp9/common/vp9_entropymv.c",
+      "sha256": "9ec4c5ac7c35e9a7360055d91486a9d3e8e12050f8bcbf6e72bba8d1c749fee1",
+      "matches": [
+        {
+          "line": 157,
+          "text": "nmv_context *fc = &cm->fc->nmvc;",
+          "context": "void vp9_adapt_mv_probs(VP9_COMMON *cm, int allow_hp) {\n  int i, j;\n\n  nmv_context *fc = &cm->fc->nmvc;\n  const nmv_context *pre_fc = &cm->frame_contexts[cm->frame_context_idx].nmvc;\n  const nmv_context_counts *counts = &cm->counts.mv;\n\n  vpx_tree_merge_probs(vp9_mv_joint_tree, pre_fc->joints, counts->joints,"
+        },
+        {
+          "line": 162,
+          "text": "fc->joints);",
+          "context": "  const nmv_context_counts *counts = &cm->counts.mv;\n\n  vpx_tree_merge_probs(vp9_mv_joint_tree, pre_fc->joints, counts->joints,\n                       fc->joints);\n\n  for (i = 0; i < 2; ++i) {\n    nmv_component *comp = &fc->comps[i];\n    const nmv_component *pre_comp = &pre_fc->comps[i];"
+        },
+        {
+          "line": 165,
+          "text": "nmv_component *comp = &fc->comps[i];",
+          "context": "                       fc->joints);\n\n  for (i = 0; i < 2; ++i) {\n    nmv_component *comp = &fc->comps[i];\n    const nmv_component *pre_comp = &pre_fc->comps[i];\n    const nmv_component_counts *c = &counts->comps[i];\n\n    comp->sign = mode_mv_merge_probs(pre_comp->sign, c->sign);"
+        },
+        {
+          "line": 191,
+          "text": "void vp9_init_mv_probs(VP9_COMMON *cm) { cm->fc->nmvc = default_nmv_context; }",
+          "context": "  }\n}\n\nvoid vp9_init_mv_probs(VP9_COMMON *cm) { cm->fc->nmvc = default_nmv_context; }\n"
+        }
+      ]
+    },
+    {
+      "file": "vp9/common/vp9_onyxc_int.h",
+      "sha256": "2c44a00c9c9f22e83be4835395a6692d30be18b049701bce49e2581289e0b060",
+      "matches": [
+        {
+          "line": 232,
+          "text": "FRAME_CONTEXT *fc;              /* this frame entropy */",
+          "context": "  MV_REFERENCE_FRAME comp_var_ref[2];\n  REFERENCE_MODE reference_mode;\n\n  FRAME_CONTEXT *fc;              /* this frame entropy */\n  FRAME_CONTEXT *frame_contexts;  // FRAME_CONTEXTS\n  unsigned int frame_context_idx; /* Context to use/update */\n  FRAME_COUNTS counts;\n"
+        },
+        {
+          "line": 372,
+          "text": ": (const vpx_prob(*)[PARTITION_TYPES - 1]) cm->fc->partition_prob;",
+          "context": "  xd->partition_probs =\n      frame_is_intra_only(cm)\n          ? &vp9_kf_partition_probs[0]\n          : (const vpx_prob(*)[PARTITION_TYPES - 1]) cm->fc->partition_prob;\n}\n\nstatic INLINE void vp9_init_macroblockd(VP9_COMMON *cm, MACROBLOCKD *xd,\n                                        tran_low_t *dqcoeff) {"
+        },
+        {
+          "line": 390,
+          "text": "xd->fc = cm->fc;",
+          "context": "    } else {\n      memcpy(xd->plane[i].seg_dequant, cm->uv_dequant, sizeof(cm->uv_dequant));\n    }\n    xd->fc = cm->fc;\n  }\n\n  xd->above_seg_context = cm->above_seg_context;\n  xd->mi_stride = cm->mi_stride;"
+        }
+      ]
+    },
+    {
+      "file": "vp9/common/vp9_pred_common.h",
+      "sha256": "da628da570d8c9d221204d25bd89eba75fa6b1b26a1fabf2703f762ef0df07fc",
+      "matches": [
+        {
+          "line": 65,
+          "text": "return cm->fc->skip_probs[vp9_get_skip_context(xd)];",
+          "context": "\nstatic INLINE vpx_prob vp9_get_skip_prob(const VP9_COMMON *cm,\n                                         const MACROBLOCKD *xd) {\n  return cm->fc->skip_probs[vp9_get_skip_context(xd)];\n}\n\n// Returns a context number for the given MB prediction signal\nstatic INLINE int get_pred_context_switchable_interp(const MACROBLOCKD *xd) {"
+        },
+        {
+          "line": 115,
+          "text": "return cm->fc->intra_inter_prob[get_intra_inter_context(xd)];",
+          "context": "\nstatic INLINE vpx_prob vp9_get_intra_inter_prob(const VP9_COMMON *cm,\n                                                const MACROBLOCKD *xd) {\n  return cm->fc->intra_inter_prob[get_intra_inter_context(xd)];\n}\n\nint vp9_get_reference_mode_context(const VP9_COMMON *cm, const MACROBLOCKD *xd);\n"
+        },
+        {
+          "line": 122,
+          "text": "return cm->fc->comp_inter_prob[vp9_get_reference_mode_context(cm, xd)];",
+          "context": "\nstatic INLINE vpx_prob vp9_get_reference_mode_prob(const VP9_COMMON *cm,\n                                                   const MACROBLOCKD *xd) {\n  return cm->fc->comp_inter_prob[vp9_get_reference_mode_context(cm, xd)];\n}\n\nint vp9_get_pred_context_comp_ref_p(const VP9_COMMON *cm,\n                                    const MACROBLOCKD *xd);"
+        },
+        {
+          "line": 131,
+          "text": "return cm->fc->comp_ref_prob[pred_context];",
+          "context": "static INLINE vpx_prob vp9_get_pred_prob_comp_ref_p(const VP9_COMMON *cm,\n                                                    const MACROBLOCKD *xd) {\n  const int pred_context = vp9_get_pred_context_comp_ref_p(cm, xd);\n  return cm->fc->comp_ref_prob[pred_context];\n}\n\nint vp9_get_pred_context_single_ref_p1(const MACROBLOCKD *xd);\n"
+        },
+        {
+          "line": 138,
+          "text": "return cm->fc->single_ref_prob[vp9_get_pred_context_single_ref_p1(xd)][0];",
+          "context": "\nstatic INLINE vpx_prob vp9_get_pred_prob_single_ref_p1(const VP9_COMMON *cm,\n                                                       const MACROBLOCKD *xd) {\n  return cm->fc->single_ref_prob[vp9_get_pred_context_single_ref_p1(xd)][0];\n}\n\nint vp9_get_pred_context_single_ref_p2(const MACROBLOCKD *xd);\n"
+        },
+        {
+          "line": 145,
+          "text": "return cm->fc->single_ref_prob[vp9_get_pred_context_single_ref_p2(xd)][1];",
+          "context": "\nstatic INLINE vpx_prob vp9_get_pred_prob_single_ref_p2(const VP9_COMMON *cm,\n                                                       const MACROBLOCKD *xd) {\n  return cm->fc->single_ref_prob[vp9_get_pred_context_single_ref_p2(xd)][1];\n}\n\nint vp9_compound_reference_allowed(const VP9_COMMON *cm);\n"
+        }
+      ]
+    },
+    {
+      "file": "vp9/decoder/vp9_decodeframe.c",
+      "sha256": "6ce14b99306507ca0fe34ccdb13d8bf941033fd6d55d858539dc8021452dde31",
+      "matches": [
+        {
+          "line": 91,
+          "text": "static void read_switchable_interp_probs(FRAME_CONTEXT *fc, vpx_reader *r) {",
+          "context": "      vp9_diff_update_prob(r, &tx_probs->p32x32[i][j]);\n}\n\nstatic void read_switchable_interp_probs(FRAME_CONTEXT *fc, vpx_reader *r) {\n  int i, j;\n  for (j = 0; j < SWITCHABLE_FILTER_CONTEXTS; ++j)\n    for (i = 0; i < SWITCHABLE_FILTERS - 1; ++i)\n      vp9_diff_update_prob(r, &fc->switchable_interp_prob[j][i]);"
+        },
+        {
+          "line": 95,
+          "text": "vp9_diff_update_prob(r, &fc->switchable_interp_prob[j][i]);",
+          "context": "  int i, j;\n  for (j = 0; j < SWITCHABLE_FILTER_CONTEXTS; ++j)\n    for (i = 0; i < SWITCHABLE_FILTERS - 1; ++i)\n      vp9_diff_update_prob(r, &fc->switchable_interp_prob[j][i]);\n}\n\nstatic void read_inter_mode_probs(FRAME_CONTEXT *fc, vpx_reader *r) {\n  int i, j;"
+        },
+        {
+          "line": 98,
+          "text": "static void read_inter_mode_probs(FRAME_CONTEXT *fc, vpx_reader *r) {",
+          "context": "      vp9_diff_update_prob(r, &fc->switchable_interp_prob[j][i]);\n}\n\nstatic void read_inter_mode_probs(FRAME_CONTEXT *fc, vpx_reader *r) {\n  int i, j;\n  for (i = 0; i < INTER_MODE_CONTEXTS; ++i)\n    for (j = 0; j < INTER_MODES - 1; ++j)\n      vp9_diff_update_prob(r, &fc->inter_mode_probs[i][j]);"
+        },
+        {
+          "line": 102,
+          "text": "vp9_diff_update_prob(r, &fc->inter_mode_probs[i][j]);",
+          "context": "  int i, j;\n  for (i = 0; i < INTER_MODE_CONTEXTS; ++i)\n    for (j = 0; j < INTER_MODES - 1; ++j)\n      vp9_diff_update_prob(r, &fc->inter_mode_probs[i][j]);\n}\n\nstatic REFERENCE_MODE read_frame_reference_mode(const VP9_COMMON *cm,\n                                                vpx_reader *r) {"
+        },
+        {
+          "line": 117,
+          "text": "FRAME_CONTEXT *const fc = cm->fc;",
+          "context": "}\n\nstatic void read_frame_reference_mode_probs(VP9_COMMON *cm, vpx_reader *r) {\n  FRAME_CONTEXT *const fc = cm->fc;\n  int i;\n\n  if (cm->reference_mode == REFERENCE_MODE_SELECT)\n    for (i = 0; i < COMP_INTER_CONTEXTS; ++i)"
+        },
+        {
+          "line": 122,
+          "text": "vp9_diff_update_prob(r, &fc->comp_inter_prob[i]);",
+          "context": "\n  if (cm->reference_mode == REFERENCE_MODE_SELECT)\n    for (i = 0; i < COMP_INTER_CONTEXTS; ++i)\n      vp9_diff_update_prob(r, &fc->comp_inter_prob[i]);\n\n  if (cm->reference_mode != COMPOUND_REFERENCE)\n    for (i = 0; i < REF_CONTEXTS; ++i) {\n      vp9_diff_update_prob(r, &fc->single_ref_prob[i][0]);"
+        },
+        {
+          "line": 126,
+          "text": "vp9_diff_update_prob(r, &fc->single_ref_prob[i][0]);",
+          "context": "\n  if (cm->reference_mode != COMPOUND_REFERENCE)\n    for (i = 0; i < REF_CONTEXTS; ++i) {\n      vp9_diff_update_prob(r, &fc->single_ref_prob[i][0]);\n      vp9_diff_update_prob(r, &fc->single_ref_prob[i][1]);\n    }\n\n  if (cm->reference_mode != SINGLE_REFERENCE)"
+        },
+        {
+          "line": 127,
+          "text": "vp9_diff_update_prob(r, &fc->single_ref_prob[i][1]);",
+          "context": "  if (cm->reference_mode != COMPOUND_REFERENCE)\n    for (i = 0; i < REF_CONTEXTS; ++i) {\n      vp9_diff_update_prob(r, &fc->single_ref_prob[i][0]);\n      vp9_diff_update_prob(r, &fc->single_ref_prob[i][1]);\n    }\n\n  if (cm->reference_mode != SINGLE_REFERENCE)\n    for (i = 0; i < REF_CONTEXTS; ++i)"
+        },
+        {
+          "line": 132,
+          "text": "vp9_diff_update_prob(r, &fc->comp_ref_prob[i]);",
+          "context": "\n  if (cm->reference_mode != SINGLE_REFERENCE)\n    for (i = 0; i < REF_CONTEXTS; ++i)\n      vp9_diff_update_prob(r, &fc->comp_ref_prob[i]);\n}\n\nstatic void update_mv_probs(vpx_prob *p, int n, vpx_reader *r) {\n  int i;"
+        },
+        {
+          "line": 1327,
+          "text": "static void read_coef_probs(FRAME_CONTEXT *fc, TX_MODE tx_mode, vpx_reader *r) {",
+          "context": "              vp9_diff_update_prob(r, &coef_probs[i][j][k][l][m]);\n}\n\nstatic void read_coef_probs(FRAME_CONTEXT *fc, TX_MODE tx_mode, vpx_reader *r) {\n  const TX_SIZE max_tx_size = tx_mode_to_biggest_tx_size[tx_mode];\n  TX_SIZE tx_size;\n  for (tx_size = TX_4X4; tx_size <= max_tx_size; ++tx_size)\n    read_coef_probs_common(fc->coef_probs[tx_size], r);"
+        },
+        {
+          "line": 1331,
+          "text": "read_coef_probs_common(fc->coef_probs[tx_size], r);",
+          "context": "  const TX_SIZE max_tx_size = tx_mode_to_biggest_tx_size[tx_mode];\n  TX_SIZE tx_size;\n  for (tx_size = TX_4X4; tx_size <= max_tx_size; ++tx_size)\n    read_coef_probs_common(fc->coef_probs[tx_size], r);\n}\n\nstatic void setup_segmentation(struct segmentation *seg,\n                               struct vpx_read_bit_buffer *rb) {"
+        },
+        {
+          "line": 2870,
+          "text": "FRAME_CONTEXT *const fc = cm->fc;",
+          "context": "                                  size_t partition_size) {\n  VP9_COMMON *const cm = &pbi->common;\n  MACROBLOCKD *const xd = &pbi->mb;\n  FRAME_CONTEXT *const fc = cm->fc;\n  vpx_reader r;\n  int k;\n\n  if (vpx_reader_init(&r, data, partition_size, pbi->decrypt_cb,"
+        },
+        {
+          "line": 2880,
+          "text": "if (cm->tx_mode == TX_MODE_SELECT) read_tx_mode_probs(&fc->tx_probs, &r);",
+          "context": "                       \"Failed to allocate bool decoder 0\");\n\n  cm->tx_mode = xd->lossless ? ONLY_4X4 : read_tx_mode(&r);\n  if (cm->tx_mode == TX_MODE_SELECT) read_tx_mode_probs(&fc->tx_probs, &r);\n  read_coef_probs(fc, cm->tx_mode, &r);\n\n  for (k = 0; k < SKIP_CONTEXTS; ++k)\n    vp9_diff_update_prob(&r, &fc->skip_probs[k]);"
+        },
+        {
+          "line": 2881,
+          "text": "read_coef_probs(fc, cm->tx_mode, &r);",
+          "context": "\n  cm->tx_mode = xd->lossless ? ONLY_4X4 : read_tx_mode(&r);\n  if (cm->tx_mode == TX_MODE_SELECT) read_tx_mode_probs(&fc->tx_probs, &r);\n  read_coef_probs(fc, cm->tx_mode, &r);\n\n  for (k = 0; k < SKIP_CONTEXTS; ++k)\n    vp9_diff_update_prob(&r, &fc->skip_probs[k]);\n"
+        },
+        {
+          "line": 2884,
+          "text": "vp9_diff_update_prob(&r, &fc->skip_probs[k]);",
+          "context": "  read_coef_probs(fc, cm->tx_mode, &r);\n\n  for (k = 0; k < SKIP_CONTEXTS; ++k)\n    vp9_diff_update_prob(&r, &fc->skip_probs[k]);\n\n  if (!frame_is_intra_only(cm)) {\n    nmv_context *const nmvc = &fc->nmvc;\n    int i, j;"
+        },
+        {
+          "line": 2887,
+          "text": "nmv_context *const nmvc = &fc->nmvc;",
+          "context": "    vp9_diff_update_prob(&r, &fc->skip_probs[k]);\n\n  if (!frame_is_intra_only(cm)) {\n    nmv_context *const nmvc = &fc->nmvc;\n    int i, j;\n\n    read_inter_mode_probs(fc, &r);\n"
+        },
+        {
+          "line": 2890,
+          "text": "read_inter_mode_probs(fc, &r);",
+          "context": "    nmv_context *const nmvc = &fc->nmvc;\n    int i, j;\n\n    read_inter_mode_probs(fc, &r);\n\n    if (cm->interp_filter == SWITCHABLE) read_switchable_interp_probs(fc, &r);\n\n    for (i = 0; i < INTRA_INTER_CONTEXTS; i++)"
+        },
+        {
+          "line": 2892,
+          "text": "if (cm->interp_filter == SWITCHABLE) read_switchable_interp_probs(fc, &r);",
+          "context": "\n    read_inter_mode_probs(fc, &r);\n\n    if (cm->interp_filter == SWITCHABLE) read_switchable_interp_probs(fc, &r);\n\n    for (i = 0; i < INTRA_INTER_CONTEXTS; i++)\n      vp9_diff_update_prob(&r, &fc->intra_inter_prob[i]);\n"
+        },
+        {
+          "line": 2895,
+          "text": "vp9_diff_update_prob(&r, &fc->intra_inter_prob[i]);",
+          "context": "    if (cm->interp_filter == SWITCHABLE) read_switchable_interp_probs(fc, &r);\n\n    for (i = 0; i < INTRA_INTER_CONTEXTS; i++)\n      vp9_diff_update_prob(&r, &fc->intra_inter_prob[i]);\n\n    cm->reference_mode = read_frame_reference_mode(cm, &r);\n    if (cm->reference_mode != SINGLE_REFERENCE)\n      vp9_setup_compound_reference_mode(cm);"
+        },
+        {
+          "line": 2904,
+          "text": "vp9_diff_update_prob(&r, &fc->y_mode_prob[j][i]);",
+          "context": "\n    for (j = 0; j < BLOCK_SIZE_GROUPS; j++)\n      for (i = 0; i < INTRA_MODES - 1; ++i)\n        vp9_diff_update_prob(&r, &fc->y_mode_prob[j][i]);\n\n    for (j = 0; j < PARTITION_CONTEXTS; ++j)\n      for (i = 0; i < PARTITION_TYPES - 1; ++i)\n        vp9_diff_update_prob(&r, &fc->partition_prob[j][i]);"
+        },
+        {
+          "line": 2908,
+          "text": "vp9_diff_update_prob(&r, &fc->partition_prob[j][i]);",
+          "context": "\n    for (j = 0; j < PARTITION_CONTEXTS; ++j)\n      for (i = 0; i < PARTITION_TYPES - 1; ++i)\n        vp9_diff_update_prob(&r, &fc->partition_prob[j][i]);\n\n    read_mv_probs(nmvc, cm->allow_high_precision_mv, &r);\n  }\n"
+        },
+        {
+          "line": 2993,
+          "text": "*cm->fc = cm->frame_contexts[cm->frame_context_idx];",
+          "context": "\n  vp9_setup_block_planes(xd, cm->subsampling_x, cm->subsampling_y);\n\n  *cm->fc = cm->frame_contexts[cm->frame_context_idx];\n  if (!cm->fc->initialized)\n    vpx_internal_error(&cm->error, VPX_CODEC_CORRUPT_FRAME,\n                       \"Uninitialized entropy context.\");\n"
+        },
+        {
+          "line": 2994,
+          "text": "if (!cm->fc->initialized)",
+          "context": "  vp9_setup_block_planes(xd, cm->subsampling_x, cm->subsampling_y);\n\n  *cm->fc = cm->frame_contexts[cm->frame_context_idx];\n  if (!cm->fc->initialized)\n    vpx_internal_error(&cm->error, VPX_CODEC_CORRUPT_FRAME,\n                       \"Uninitialized entropy context.\");\n\n  xd->corrupted = 0;"
+        },
+        {
+          "line": 3065,
+          "text": "cm->frame_contexts[cm->frame_context_idx] = *cm->fc;",
+          "context": "\n  // Non frame parallel update frame context here.\n  if (cm->refresh_frame_context && !context_updated)\n    cm->frame_contexts[cm->frame_context_idx] = *cm->fc;\n}\n"
+        }
+      ]
+    },
+    {
+      "file": "vp9/decoder/vp9_decodemv.c",
+      "sha256": "17eb975fc28e2691f3ba39ecaa75890a7ba65a9f10e1bee93081013ef0a8ac62",
+      "matches": [
+        {
+          "line": 34,
+          "text": "read_intra_mode(r, cm->fc->y_mode_prob[size_group]);",
+          "context": "static PREDICTION_MODE read_intra_mode_y(VP9_COMMON *cm, MACROBLOCKD *xd,\n                                         vpx_reader *r, int size_group) {\n  const PREDICTION_MODE y_mode =\n      read_intra_mode(r, cm->fc->y_mode_prob[size_group]);\n  FRAME_COUNTS *counts = xd->counts;\n  if (counts) ++counts->y_mode[size_group][y_mode];\n  return y_mode;\n}"
+        },
+        {
+          "line": 44,
+          "text": "read_intra_mode(r, cm->fc->uv_mode_prob[y_mode]);",
+          "context": "                                          vpx_reader *r,\n                                          PREDICTION_MODE y_mode) {\n  const PREDICTION_MODE uv_mode =\n      read_intra_mode(r, cm->fc->uv_mode_prob[y_mode]);\n  FRAME_COUNTS *counts = xd->counts;\n  if (counts) ++counts->uv_mode[y_mode][uv_mode];\n  return uv_mode;\n}"
+        },
+        {
+          "line": 53,
+          "text": "vpx_read_tree(r, vp9_inter_mode_tree, cm->fc->inter_mode_probs[ctx]);",
+          "context": "static PREDICTION_MODE read_inter_mode(VP9_COMMON *cm, MACROBLOCKD *xd,\n                                       vpx_reader *r, int ctx) {\n  const int mode =\n      vpx_read_tree(r, vp9_inter_mode_tree, cm->fc->inter_mode_probs[ctx]);\n  FRAME_COUNTS *counts = xd->counts;\n  if (counts) ++counts->inter_mode[ctx][mode];\n\n  return NEARESTMV + mode;"
+        },
+        {
+          "line": 68,
+          "text": "const vpx_prob *tx_probs = get_tx_probs(max_tx_size, ctx, &cm->fc->tx_probs);",
+          "context": "                                     TX_SIZE max_tx_size, vpx_reader *r) {\n  FRAME_COUNTS *counts = xd->counts;\n  const int ctx = get_tx_size_context(xd);\n  const vpx_prob *tx_probs = get_tx_probs(max_tx_size, ctx, &cm->fc->tx_probs);\n  int tx_size = vpx_read(r, tx_probs[0]);\n  if (tx_size != TX_4X4 && max_tx_size >= TX_16X16) {\n    tx_size += vpx_read(r, tx_probs[1]);\n    if (tx_size != TX_8X8 && max_tx_size >= TX_32X32)"
+        },
+        {
+          "line": 185,
+          "text": "const int skip = vpx_read(r, cm->fc->skip_probs[ctx]);",
+          "context": "    return 1;\n  } else {\n    const int ctx = vp9_get_skip_context(xd);\n    const int skip = vpx_read(r, cm->fc->skip_probs[ctx]);\n    FRAME_COUNTS *counts = xd->counts;\n    if (counts) ++counts->skip[ctx][skip];\n    return skip;\n  }"
+        },
+        {
+          "line": 293,
+          "text": "(REFERENCE_MODE)vpx_read(r, cm->fc->comp_inter_prob[ctx]);",
+          "context": "  if (cm->reference_mode == REFERENCE_MODE_SELECT) {\n    const int ctx = vp9_get_reference_mode_context(cm, xd);\n    const REFERENCE_MODE mode =\n        (REFERENCE_MODE)vpx_read(r, cm->fc->comp_inter_prob[ctx]);\n    FRAME_COUNTS *counts = xd->counts;\n    if (counts) ++counts->comp_inter[ctx][mode];\n    return mode;  // SINGLE_REFERENCE or COMPOUND_REFERENCE\n  } else {"
+        },
+        {
+          "line": 306,
+          "text": "FRAME_CONTEXT *const fc = cm->fc;",
+          "context": "static void read_ref_frames(VP9_COMMON *const cm, MACROBLOCKD *const xd,\n                            vpx_reader *r, int segment_id,\n                            MV_REFERENCE_FRAME ref_frame[2]) {\n  FRAME_CONTEXT *const fc = cm->fc;\n  FRAME_COUNTS *counts = xd->counts;\n\n  if (segfeature_active(&cm->seg, segment_id, SEG_LVL_REF_FRAME)) {\n    ref_frame[0] = (MV_REFERENCE_FRAME)get_segdata(&cm->seg, segment_id,"
+        },
+        {
+          "line": 319,
+          "text": "const int bit = vpx_read(r, fc->comp_ref_prob[ctx]);",
+          "context": "    if (mode == COMPOUND_REFERENCE) {\n      const int idx = cm->ref_frame_sign_bias[cm->comp_fixed_ref];\n      const int ctx = vp9_get_pred_context_comp_ref_p(cm, xd);\n      const int bit = vpx_read(r, fc->comp_ref_prob[ctx]);\n      if (counts) ++counts->comp_ref[ctx][bit];\n      ref_frame[idx] = cm->comp_fixed_ref;\n      ref_frame[!idx] = cm->comp_var_ref[bit];\n    } else if (mode == SINGLE_REFERENCE) {"
+        },
+        {
+          "line": 325,
+          "text": "const int bit0 = vpx_read(r, fc->single_ref_prob[ctx0][0]);",
+          "context": "      ref_frame[!idx] = cm->comp_var_ref[bit];\n    } else if (mode == SINGLE_REFERENCE) {\n      const int ctx0 = vp9_get_pred_context_single_ref_p1(xd);\n      const int bit0 = vpx_read(r, fc->single_ref_prob[ctx0][0]);\n      if (counts) ++counts->single_ref[ctx0][0][bit0];\n      if (bit0) {\n        const int ctx1 = vp9_get_pred_context_single_ref_p2(xd);\n        const int bit1 = vpx_read(r, fc->single_ref_prob[ctx1][1]);"
+        },
+        {
+          "line": 329,
+          "text": "const int bit1 = vpx_read(r, fc->single_ref_prob[ctx1][1]);",
+          "context": "      if (counts) ++counts->single_ref[ctx0][0][bit0];\n      if (bit0) {\n        const int ctx1 = vp9_get_pred_context_single_ref_p2(xd);\n        const int bit1 = vpx_read(r, fc->single_ref_prob[ctx1][1]);\n        if (counts) ++counts->single_ref[ctx1][1][bit1];\n        ref_frame[0] = bit1 ? ALTREF_FRAME : GOLDEN_FRAME;\n      } else {\n        ref_frame[0] = LAST_FRAME;"
+        },
+        {
+          "line": 348,
+          "text": "r, vp9_switchable_interp_tree, cm->fc->switchable_interp_prob[ctx]);",
+          "context": "                                                          vpx_reader *r) {\n  const int ctx = get_pred_context_switchable_interp(xd);\n  const INTERP_FILTER type = (INTERP_FILTER)vpx_read_tree(\n      r, vp9_switchable_interp_tree, cm->fc->switchable_interp_prob[ctx]);\n  FRAME_COUNTS *counts = xd->counts;\n  if (counts) ++counts->switchable_interp[ctx][type];\n  return type;\n}"
+        },
+        {
+          "line": 414,
+          "text": "read_mv(r, &mv[i].as_mv, &ref_mv[i].as_mv, &cm->fc->nmvc, mv_counts,",
+          "context": "      FRAME_COUNTS *counts = xd->counts;\n      nmv_context_counts *const mv_counts = counts ? &counts->mv : NULL;\n      for (i = 0; i < 1 + is_compound; ++i) {\n        read_mv(r, &mv[i].as_mv, &ref_mv[i].as_mv, &cm->fc->nmvc, mv_counts,\n                allow_hp);\n        ret = ret && is_mv_valid(&mv[i].as_mv);\n      }\n      break;"
+        },
+        {
+          "line": 442,
+          "text": "const int is_inter = vpx_read(r, cm->fc->intra_inter_prob[ctx]);",
+          "context": "    return get_segdata(&cm->seg, segment_id, SEG_LVL_REF_FRAME) != INTRA_FRAME;\n  } else {\n    const int ctx = get_intra_inter_context(xd);\n    const int is_inter = vpx_read(r, cm->fc->intra_inter_prob[ctx]);\n    FRAME_COUNTS *counts = xd->counts;\n    if (counts) ++counts->intra_inter[ctx][is_inter];\n    return is_inter;\n  }"
+        }
+      ]
+    },
+    {
+      "file": "vp9/decoder/vp9_decoder.c",
+      "sha256": "05c7a23ad0db1ef8967d7a70ff8a37a8df6cf4ef4703099f6972deb36380e777",
+      "matches": [
+        {
+          "line": 185,
+          "text": "CHECK_MEM_ERROR(&cm->error, cm->fc,",
+          "context": "\n  cm->error.setjmp = 1;\n\n  CHECK_MEM_ERROR(&cm->error, cm->fc,\n                  (FRAME_CONTEXT *)vpx_calloc(1, sizeof(*cm->fc)));\n  CHECK_MEM_ERROR(\n      &cm->error, cm->frame_contexts,\n      (FRAME_CONTEXT *)vpx_calloc(FRAME_CONTEXTS, sizeof(*cm->frame_contexts)));"
+        },
+        {
+          "line": 186,
+          "text": "(FRAME_CONTEXT *)vpx_calloc(1, sizeof(*cm->fc)));",
+          "context": "  cm->error.setjmp = 1;\n\n  CHECK_MEM_ERROR(&cm->error, cm->fc,\n                  (FRAME_CONTEXT *)vpx_calloc(1, sizeof(*cm->fc)));\n  CHECK_MEM_ERROR(\n      &cm->error, cm->frame_contexts,\n      (FRAME_CONTEXT *)vpx_calloc(FRAME_CONTEXTS, sizeof(*cm->frame_contexts)));\n"
+        }
+      ]
+    },
+    {
+      "file": "vp9/decoder/vp9_detokenize.c",
+      "sha256": "d1c752bb754750b732c6b6bcbf2b6508ba249b153e0c405e690656abac87e748",
+      "matches": [
+        {
+          "line": 121,
+          "text": "const FRAME_CONTEXT *const fc = xd->fc;",
+          "context": "                        vpx_reader *r) {\n  FRAME_COUNTS *counts = xd->counts;\n  const int max_eob = 16 << (tx_size << 1);\n  const FRAME_CONTEXT *const fc = xd->fc;\n  const int ref = is_inter_block(xd->mi[0]);\n  int band, c = 0;\n  const vpx_prob(*coef_probs)[COEFF_CONTEXTS][UNCONSTRAINED_NODES] =\n      fc->coef_probs[tx_size][type][ref];"
+        },
+        {
+          "line": 125,
+          "text": "fc->coef_probs[tx_size][type][ref];",
+          "context": "  const int ref = is_inter_block(xd->mi[0]);\n  int band, c = 0;\n  const vpx_prob(*coef_probs)[COEFF_CONTEXTS][UNCONSTRAINED_NODES] =\n      fc->coef_probs[tx_size][type][ref];\n  const vpx_prob *prob;\n  unsigned int(*coef_counts)[COEFF_CONTEXTS][UNCONSTRAINED_NODES + 1];\n  unsigned int(*eob_branch_count)[COEFF_CONTEXTS];\n  uint8_t token_cache[32 * 32];"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_bitstream.c",
+      "sha256": "211f57fbfeb815b3d871dd741aa9aa7570023878b86517f774ca2e3ca4ad9dcf",
+      "matches": [
+        {
+          "line": 96,
+          "text": "get_tx_probs(max_tx_size, get_tx_size_context(xd), &cm->fc->tx_probs);",
+          "context": "  BLOCK_SIZE bsize = xd->mi[0]->sb_type;\n  const TX_SIZE max_tx_size = max_txsize_lookup[bsize];\n  const vpx_prob *const tx_probs =\n      get_tx_probs(max_tx_size, get_tx_size_context(xd), &cm->fc->tx_probs);\n  vpx_write(w, tx_size != TX_4X4, tx_probs[0]);\n  if (tx_size != TX_4X4 && max_tx_size >= TX_16X16) {\n    vpx_write(w, tx_size != TX_8X8, tx_probs[1]);\n    if (tx_size != TX_8X8 && max_tx_size >= TX_32X32)"
+        },
+        {
+          "line": 121,
+          "text": "vp9_cond_prob_diff_update(w, &cm->fc->skip_probs[k], counts->skip[k]);",
+          "context": "  int k;\n\n  for (k = 0; k < SKIP_CONTEXTS; ++k)\n    vp9_cond_prob_diff_update(w, &cm->fc->skip_probs[k], counts->skip[k]);\n}\n\nstatic void update_switchable_interp_probs(VP9_COMMON *cm, vpx_writer *w,\n                                           FRAME_COUNTS *counts) {"
+        },
+        {
+          "line": 129,
+          "text": "cm->fc->switchable_interp_prob[j],",
+          "context": "  int j;\n  for (j = 0; j < SWITCHABLE_FILTER_CONTEXTS; ++j)\n    prob_diff_update(vp9_switchable_interp_tree,\n                     cm->fc->switchable_interp_prob[j],\n                     counts->switchable_interp[j], SWITCHABLE_FILTERS, w);\n}\n\nstatic void pack_mb_tokens(vpx_writer *w, TOKENEXTRA **tp,"
+        },
+        {
+          "line": 247,
+          "text": "const nmv_context *nmvc = &cm->fc->nmvc;",
+          "context": "                                unsigned int *const max_mv_magnitude,\n                                int interp_filter_selected[][SWITCHABLE]) {\n  VP9_COMMON *const cm = &cpi->common;\n  const nmv_context *nmvc = &cm->fc->nmvc;\n  const struct segmentation *const seg = &cm->seg;\n  const MODE_INFO *const mi = xd->mi[0];\n  const PREDICTION_MODE mode = mi->mode;\n  const int segment_id = mi->segment_id;"
+        },
+        {
+          "line": 281,
+          "text": "write_intra_mode(w, mode, cm->fc->y_mode_prob[size_group_lookup[bsize]]);",
+          "context": "\n  if (!is_inter) {\n    if (bsize >= BLOCK_8X8) {\n      write_intra_mode(w, mode, cm->fc->y_mode_prob[size_group_lookup[bsize]]);\n    } else {\n      int idx, idy;\n      const int num_4x4_w = num_4x4_blocks_wide_lookup[bsize];\n      const int num_4x4_h = num_4x4_blocks_high_lookup[bsize];"
+        },
+        {
+          "line": 289,
+          "text": "write_intra_mode(w, b_mode, cm->fc->y_mode_prob[0]);",
+          "context": "      for (idy = 0; idy < 2; idy += num_4x4_h) {\n        for (idx = 0; idx < 2; idx += num_4x4_w) {\n          const PREDICTION_MODE b_mode = mi->bmi[idy * 2 + idx].as_mode;\n          write_intra_mode(w, b_mode, cm->fc->y_mode_prob[0]);\n        }\n      }\n    }\n    write_intra_mode(w, mi->uv_mode, cm->fc->uv_mode_prob[mode]);"
+        },
+        {
+          "line": 293,
+          "text": "write_intra_mode(w, mi->uv_mode, cm->fc->uv_mode_prob[mode]);",
+          "context": "        }\n      }\n    }\n    write_intra_mode(w, mi->uv_mode, cm->fc->uv_mode_prob[mode]);\n  } else {\n    const int mode_ctx = mbmi_ext->mode_context[mi->ref_frame[0]];\n    const vpx_prob *const inter_probs = cm->fc->inter_mode_probs[mode_ctx];\n    write_ref_frames(cm, xd, w);"
+        },
+        {
+          "line": 296,
+          "text": "const vpx_prob *const inter_probs = cm->fc->inter_mode_probs[mode_ctx];",
+          "context": "    write_intra_mode(w, mi->uv_mode, cm->fc->uv_mode_prob[mode]);\n  } else {\n    const int mode_ctx = mbmi_ext->mode_context[mi->ref_frame[0]];\n    const vpx_prob *const inter_probs = cm->fc->inter_mode_probs[mode_ctx];\n    write_ref_frames(cm, xd, w);\n\n    // If segment skip is not enabled code the mode.\n    if (!segfeature_active(seg, segment_id, SEG_LVL_SKIP)) {"
+        },
+        {
+          "line": 309,
+          "text": "cm->fc->switchable_interp_prob[ctx],",
+          "context": "    if (cm->interp_filter == SWITCHABLE) {\n      const int ctx = get_pred_context_switchable_interp(xd);\n      vp9_write_token(w, vp9_switchable_interp_tree,\n                      cm->fc->switchable_interp_prob[ctx],\n                      &switchable_interp_encodings[mi->interp_filter]);\n      ++interp_filter_selected[0][mi->interp_filter];\n    } else {\n      assert(mi->interp_filter == cm->interp_filter);"
+        },
+        {
+          "line": 550,
+          "text": "vp9_coeff_probs_model *old_coef_probs = cpi->common.fc->coef_probs[tx_size];",
+          "context": "                                     TX_SIZE tx_size,\n                                     vp9_coeff_stats *frame_branch_ct,\n                                     vp9_coeff_probs_model *new_coef_probs) {\n  vp9_coeff_probs_model *old_coef_probs = cpi->common.fc->coef_probs[tx_size];\n  const vpx_prob upd = DIFF_UPDATE_PROB;\n  const int entropy_nodes_update = UNCONSTRAINED_NODES;\n  int i, j, k, l, t;\n  int stepsize = cpi->sf.coeff_prob_appx_step;"
+        },
+        {
+          "line": 836,
+          "text": "vp9_cond_prob_diff_update(w, &cm->fc->tx_probs.p8x8[i][j], ct_8x8p[j]);",
+          "context": "    for (i = 0; i < TX_SIZE_CONTEXTS; i++) {\n      tx_counts_to_branch_counts_8x8(counts->tx.p8x8[i], ct_8x8p);\n      for (j = 0; j < TX_SIZES - 3; j++)\n        vp9_cond_prob_diff_update(w, &cm->fc->tx_probs.p8x8[i][j], ct_8x8p[j]);\n    }\n\n    for (i = 0; i < TX_SIZE_CONTEXTS; i++) {\n      tx_counts_to_branch_counts_16x16(counts->tx.p16x16[i], ct_16x16p);"
+        },
+        {
+          "line": 842,
+          "text": "vp9_cond_prob_diff_update(w, &cm->fc->tx_probs.p16x16[i][j],",
+          "context": "    for (i = 0; i < TX_SIZE_CONTEXTS; i++) {\n      tx_counts_to_branch_counts_16x16(counts->tx.p16x16[i], ct_16x16p);\n      for (j = 0; j < TX_SIZES - 2; j++)\n        vp9_cond_prob_diff_update(w, &cm->fc->tx_probs.p16x16[i][j],\n                                  ct_16x16p[j]);\n    }\n\n    for (i = 0; i < TX_SIZE_CONTEXTS; i++) {"
+        },
+        {
+          "line": 849,
+          "text": "vp9_cond_prob_diff_update(w, &cm->fc->tx_probs.p32x32[i][j],",
+          "context": "    for (i = 0; i < TX_SIZE_CONTEXTS; i++) {\n      tx_counts_to_branch_counts_32x32(counts->tx.p32x32[i], ct_32x32p);\n      for (j = 0; j < TX_SIZES - 1; j++)\n        vp9_cond_prob_diff_update(w, &cm->fc->tx_probs.p32x32[i][j],\n                                  ct_32x32p[j]);\n    }\n  }\n}"
+        },
+        {
+          "line": 1335,
+          "text": "FRAME_CONTEXT *const fc = cm->fc;",
+          "context": "                                      size_t data_size) {\n  VP9_COMMON *const cm = &cpi->common;\n  MACROBLOCKD *const xd = &cpi->td.mb.e_mbd;\n  FRAME_CONTEXT *const fc = cm->fc;\n  FRAME_COUNTS *counts = cpi->td.counts;\n  vpx_writer header_bc;\n\n  vpx_start_encode(&header_bc, data, data_size);"
+        },
+        {
+          "line": 1353,
+          "text": "prob_diff_update(vp9_inter_mode_tree, cm->fc->inter_mode_probs[i],",
+          "context": "    int i;\n\n    for (i = 0; i < INTER_MODE_CONTEXTS; ++i)\n      prob_diff_update(vp9_inter_mode_tree, cm->fc->inter_mode_probs[i],\n                       counts->inter_mode[i], INTER_MODES, &header_bc);\n\n    if (cm->interp_filter == SWITCHABLE)\n      update_switchable_interp_probs(cm, &header_bc, counts);"
+        },
+        {
+          "line": 1360,
+          "text": "vp9_cond_prob_diff_update(&header_bc, &fc->intra_inter_prob[i],",
+          "context": "      update_switchable_interp_probs(cm, &header_bc, counts);\n\n    for (i = 0; i < INTRA_INTER_CONTEXTS; i++)\n      vp9_cond_prob_diff_update(&header_bc, &fc->intra_inter_prob[i],\n                                counts->intra_inter[i]);\n\n    if (cpi->allow_comp_inter_inter) {\n      const int use_compound_pred = cm->reference_mode != SINGLE_REFERENCE;"
+        },
+        {
+          "line": 1372,
+          "text": "vp9_cond_prob_diff_update(&header_bc, &fc->comp_inter_prob[i],",
+          "context": "        vpx_write_bit(&header_bc, use_hybrid_pred);\n        if (use_hybrid_pred)\n          for (i = 0; i < COMP_INTER_CONTEXTS; i++)\n            vp9_cond_prob_diff_update(&header_bc, &fc->comp_inter_prob[i],\n                                      counts->comp_inter[i]);\n      }\n    }\n"
+        },
+        {
+          "line": 1379,
+          "text": "vp9_cond_prob_diff_update(&header_bc, &fc->single_ref_prob[i][0],",
+          "context": "\n    if (cm->reference_mode != COMPOUND_REFERENCE) {\n      for (i = 0; i < REF_CONTEXTS; i++) {\n        vp9_cond_prob_diff_update(&header_bc, &fc->single_ref_prob[i][0],\n                                  counts->single_ref[i][0]);\n        vp9_cond_prob_diff_update(&header_bc, &fc->single_ref_prob[i][1],\n                                  counts->single_ref[i][1]);\n      }"
+        },
+        {
+          "line": 1381,
+          "text": "vp9_cond_prob_diff_update(&header_bc, &fc->single_ref_prob[i][1],",
+          "context": "      for (i = 0; i < REF_CONTEXTS; i++) {\n        vp9_cond_prob_diff_update(&header_bc, &fc->single_ref_prob[i][0],\n                                  counts->single_ref[i][0]);\n        vp9_cond_prob_diff_update(&header_bc, &fc->single_ref_prob[i][1],\n                                  counts->single_ref[i][1]);\n      }\n    }\n"
+        },
+        {
+          "line": 1388,
+          "text": "vp9_cond_prob_diff_update(&header_bc, &fc->comp_ref_prob[i],",
+          "context": "\n    if (cm->reference_mode != SINGLE_REFERENCE)\n      for (i = 0; i < REF_CONTEXTS; i++)\n        vp9_cond_prob_diff_update(&header_bc, &fc->comp_ref_prob[i],\n                                  counts->comp_ref[i]);\n\n    for (i = 0; i < BLOCK_SIZE_GROUPS; ++i)\n      prob_diff_update(vp9_intra_mode_tree, cm->fc->y_mode_prob[i],"
+        },
+        {
+          "line": 1392,
+          "text": "prob_diff_update(vp9_intra_mode_tree, cm->fc->y_mode_prob[i],",
+          "context": "                                  counts->comp_ref[i]);\n\n    for (i = 0; i < BLOCK_SIZE_GROUPS; ++i)\n      prob_diff_update(vp9_intra_mode_tree, cm->fc->y_mode_prob[i],\n                       counts->y_mode[i], INTRA_MODES, &header_bc);\n\n    for (i = 0; i < PARTITION_CONTEXTS; ++i)\n      prob_diff_update(vp9_partition_tree, fc->partition_prob[i],"
+        },
+        {
+          "line": 1396,
+          "text": "prob_diff_update(vp9_partition_tree, fc->partition_prob[i],",
+          "context": "                       counts->y_mode[i], INTRA_MODES, &header_bc);\n\n    for (i = 0; i < PARTITION_CONTEXTS; ++i)\n      prob_diff_update(vp9_partition_tree, fc->partition_prob[i],\n                       counts->partition[i], PARTITION_TYPES, &header_bc);\n\n    vp9_write_nmv_probs(cm, cm->allow_high_precision_mv, &header_bc,\n                        &counts->mv);"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_encodemv.c",
+      "sha256": "2a009d69540a601a5862cde770d972414bac25fc028f09353c5c9baa561b502e",
+      "matches": [
+        {
+          "line": 175,
+          "text": "nmv_context *const mvc = &cm->fc->nmvc;",
+          "context": "void vp9_write_nmv_probs(VP9_COMMON *cm, int usehp, vpx_writer *w,\n                         nmv_context_counts *const counts) {\n  int i, j;\n  nmv_context *const mvc = &cm->fc->nmvc;\n\n  write_mv_update(vp9_mv_joint_tree, mvc->joints, counts->joints, MV_JOINTS, w);\n\n  for (i = 0; i < 2; ++i) {"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "sha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+      "matches": [
+        {
+          "line": 165,
+          "text": "const FRAME_CONTEXT *const cur_fc = cm->fc;",
+          "context": "static int compute_context_model_diff(const VP9_COMMON *const cm) {\n  const FRAME_CONTEXT *const pre_fc =\n      &cm->frame_contexts[cm->frame_context_idx];\n  const FRAME_CONTEXT *const cur_fc = cm->fc;\n  const FRAME_COUNTS *counts = &cm->counts;\n  vpx_prob pre_last_prob, cur_last_prob;\n  int diff = 0;\n  int i, j, k, l, m, n;"
+        },
+        {
+          "line": 861,
+          "text": "*cm->fc = cm->frame_contexts[cm->frame_context_idx];",
+          "context": "    cpi->refresh_alt_ref_frame = 1;\n    vp9_zero(cpi->interp_filter_selected);\n  } else {\n    *cm->fc = cm->frame_contexts[cm->frame_context_idx];\n    vp9_zero(cpi->interp_filter_selected[0]);\n  }\n}\n"
+        },
+        {
+          "line": 1105,
+          "text": "cc->fc = *cm->fc;",
+          "context": "  vp9_copy(cc->last_ref_lf_deltas, cm->lf.last_ref_deltas);\n  vp9_copy(cc->last_mode_lf_deltas, cm->lf.last_mode_deltas);\n\n  cc->fc = *cm->fc;\n}\n\nstatic void restore_coding_context(VP9_COMP *cpi) {\n  CODING_CONTEXT *const cc = &cpi->coding_context;"
+        },
+        {
+          "line": 1131,
+          "text": "*cm->fc = cc->fc;",
+          "context": "  vp9_copy(cm->lf.last_ref_deltas, cc->last_ref_lf_deltas);\n  vp9_copy(cm->lf.last_mode_deltas, cc->last_mode_lf_deltas);\n\n  *cm->fc = cc->fc;\n}\n\n#if !CONFIG_REALTIME_ONLY\nstatic void configure_static_seg_features(VP9_COMP *cpi) {"
+        },
+        {
+          "line": 2397,
+          "text": "CHECK_MEM_ERROR(&cm->error, cm->fc,",
+          "context": "  cm->free_mi = vp9_enc_free_mi;\n  cm->setup_mi = vp9_enc_setup_mi;\n\n  CHECK_MEM_ERROR(&cm->error, cm->fc,\n                  (FRAME_CONTEXT *)vpx_calloc(1, sizeof(*cm->fc)));\n  CHECK_MEM_ERROR(\n      &cm->error, cm->frame_contexts,\n      (FRAME_CONTEXT *)vpx_calloc(FRAME_CONTEXTS, sizeof(*cm->frame_contexts)));"
+        },
+        {
+          "line": 2398,
+          "text": "(FRAME_CONTEXT *)vpx_calloc(1, sizeof(*cm->fc)));",
+          "context": "  cm->setup_mi = vp9_enc_setup_mi;\n\n  CHECK_MEM_ERROR(&cm->error, cm->fc,\n                  (FRAME_CONTEXT *)vpx_calloc(1, sizeof(*cm->fc)));\n  CHECK_MEM_ERROR(\n      &cm->error, cm->frame_contexts,\n      (FRAME_CONTEXT *)vpx_calloc(FRAME_CONTEXTS, sizeof(*cm->frame_contexts)));\n"
+        },
+        {
+          "line": 6468,
+          "text": "cm->frame_contexts[cm->frame_context_idx] = *cm->fc;",
+          "context": "  if (cm->show_frame) cm->cur_show_frame_fb_idx = cm->new_fb_idx;\n\n  if (cm->refresh_frame_context)\n    cm->frame_contexts[cm->frame_context_idx] = *cm->fc;\n\n  // No frame encoded, or frame was dropped, release scaled references.\n  if ((*size == 0) && (frame_is_intra_only(cm) == 0)) {\n    release_scaled_references(cpi);"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_encoder.h",
+      "sha256": "299ee992384604932584c959b9504130981a5562833863751100627022662f6c",
+      "matches": [
+        {
+          "line": 84,
+          "text": "FRAME_CONTEXT fc;",
+          "context": "  // 0 = ZERO_MV, MV\n  signed char last_mode_lf_deltas[MAX_MODE_LF_DELTAS];\n\n  FRAME_CONTEXT fc;\n} CODING_CONTEXT;\n\ntypedef enum {\n  // encode_breakout is disabled."
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_rd.c",
+      "sha256": "44e788614deda7e6b8f3620ec7b65f173687267dd1fd5e4c3fd4927ddb335533",
+      "matches": [
+        {
+          "line": 93,
+          "text": "const FRAME_CONTEXT *const fc = cpi->common.fc;",
+          "context": "};\n\nstatic void fill_mode_costs(VP9_COMP *cpi) {\n  const FRAME_CONTEXT *const fc = cpi->common.fc;\n  int i, j;\n\n  for (i = 0; i < INTRA_MODES; ++i) {\n    for (j = 0; j < INTRA_MODES; ++j) {"
+        },
+        {
+          "line": 103,
+          "text": "vp9_cost_tokens(cpi->mbmode_cost, fc->y_mode_prob[1], vp9_intra_mode_tree);",
+          "context": "    }\n  }\n\n  vp9_cost_tokens(cpi->mbmode_cost, fc->y_mode_prob[1], vp9_intra_mode_tree);\n  for (i = 0; i < INTRA_MODES; ++i) {\n    vp9_cost_tokens(cpi->intra_uv_mode_cost[KEY_FRAME][i],\n                    vp9_kf_uv_mode_prob[i], vp9_intra_mode_tree);\n    vp9_cost_tokens(cpi->intra_uv_mode_cost[INTER_FRAME][i],"
+        },
+        {
+          "line": 108,
+          "text": "fc->uv_mode_prob[i], vp9_intra_mode_tree);",
+          "context": "    vp9_cost_tokens(cpi->intra_uv_mode_cost[KEY_FRAME][i],\n                    vp9_kf_uv_mode_prob[i], vp9_intra_mode_tree);\n    vp9_cost_tokens(cpi->intra_uv_mode_cost[INTER_FRAME][i],\n                    fc->uv_mode_prob[i], vp9_intra_mode_tree);\n  }\n\n  for (i = 0; i < SWITCHABLE_FILTER_CONTEXTS; ++i) {\n    vp9_cost_tokens(cpi->switchable_interp_costs[i],"
+        },
+        {
+          "line": 113,
+          "text": "fc->switchable_interp_prob[i], vp9_switchable_interp_tree);",
+          "context": "\n  for (i = 0; i < SWITCHABLE_FILTER_CONTEXTS; ++i) {\n    vp9_cost_tokens(cpi->switchable_interp_costs[i],\n                    fc->switchable_interp_prob[i], vp9_switchable_interp_tree);\n  }\n\n  for (i = TX_8X8; i < TX_SIZES; ++i) {\n    for (j = 0; j < TX_SIZE_CONTEXTS; ++j) {"
+        },
+        {
+          "line": 118,
+          "text": "const vpx_prob *tx_probs = get_tx_probs(i, j, &fc->tx_probs);",
+          "context": "\n  for (i = TX_8X8; i < TX_SIZES; ++i) {\n    for (j = 0; j < TX_SIZE_CONTEXTS; ++j) {\n      const vpx_prob *tx_probs = get_tx_probs(i, j, &fc->tx_probs);\n      int k;\n      for (k = 0; k <= i; ++k) {\n        int cost = 0;\n        int m;"
+        },
+        {
+          "line": 391,
+          "text": "vp9_cost_tokens((int *)cpi->inter_mode_cost[i], cm->fc->inter_mode_probs[i],",
+          "context": "  const VP9_COMMON *const cm = &cpi->common;\n  int i;\n  for (i = 0; i < INTER_MODE_CONTEXTS; ++i) {\n    vp9_cost_tokens((int *)cpi->inter_mode_cost[i], cm->fc->inter_mode_probs[i],\n                    vp9_inter_mode_tree);\n  }\n}\n"
+        },
+        {
+          "line": 423,
+          "text": "&cm->fc->nmvc, cm->allow_high_precision_mv);",
+          "context": "      vp9_build_nmv_cost_table(\n          x->nmvjointcost,\n          cm->allow_high_precision_mv ? x->nmvcost_hp : x->nmvcost,\n          &cm->fc->nmvc, cm->allow_high_precision_mv);\n  } else {\n    if (!cpi->sf.use_nonrd_pick_mode || cm->frame_type == KEY_FRAME)\n      fill_token_costs(x->token_costs, cm->fc->coef_probs);\n"
+        },
+        {
+          "line": 426,
+          "text": "fill_token_costs(x->token_costs, cm->fc->coef_probs);",
+          "context": "          &cm->fc->nmvc, cm->allow_high_precision_mv);\n  } else {\n    if (!cpi->sf.use_nonrd_pick_mode || cm->frame_type == KEY_FRAME)\n      fill_token_costs(x->token_costs, cm->fc->coef_probs);\n\n    if (cpi->sf.partition_search_type != VAR_BASED_PARTITION ||\n        cm->frame_type == KEY_FRAME) {\n      for (i = 0; i < PARTITION_CONTEXTS; ++i)"
+        },
+        {
+          "line": 443,
+          "text": "&cm->fc->nmvc, cm->allow_high_precision_mv);",
+          "context": "        vp9_build_nmv_cost_table(\n            x->nmvjointcost,\n            cm->allow_high_precision_mv ? x->nmvcost_hp : x->nmvcost,\n            &cm->fc->nmvc, cm->allow_high_precision_mv);\n        vp9_build_inter_mode_cost(cpi);\n      }\n    }\n  }"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_tokenize.c",
+      "sha256": "909f28c30ce3aa58560e926d8d74a0872f51d45bae6625f7aa741b4e3a15d1bd",
+      "matches": [
+        {
+          "line": 372,
+          "text": "cpi->common.fc->coef_probs[tx_size][type][ref];",
+          "context": "  unsigned int(*const counts)[COEFF_CONTEXTS][ENTROPY_TOKENS] =\n      td->rd_counts.coef_counts[tx_size][type][ref];\n  vpx_prob(*const coef_probs)[COEFF_CONTEXTS][UNCONSTRAINED_NODES] =\n      cpi->common.fc->coef_probs[tx_size][type][ref];\n  unsigned int(*const eob_branch)[COEFF_CONTEXTS] =\n      td->counts->eob_branch[tx_size][type][ref];\n  const uint8_t *const band = get_band_translate(tx_size);\n  const int tx_eob = 16 << (tx_size << 1);"
+        }
+      ]
+    }
+  ],
+  "wholeObjectOperations": [
+    {
+      "file": "vp9/common/vp9_thread_common.c",
+      "sha256": "53aa7e4d912bcb4830c3f6f8e1ef2d18115cf545f7a0819bc8c94bbed32fe875",
+      "matches": [
+        {
+          "line": 425,
+          "text": "VP9_COMMON *cm = lf_data->cm;",
+          "context": "\nvoid vp9_loopfilter_rows(LFWorkerData *lf_data, VP9LfSync *lf_sync) {\n  int mi_row;\n  VP9_COMMON *cm = lf_data->cm;\n\n  while ((mi_row = get_next_row(cm, lf_sync)) != -1 && mi_row < cm->mi_rows) {\n    lf_data->start = mi_row;\n    lf_data->stop = mi_row + MI_BLOCK_SIZE;"
+        }
+      ]
+    },
+    {
+      "file": "vp9/decoder/vp9_decodeframe.c",
+      "sha256": "6ce14b99306507ca0fe34ccdb13d8bf941033fd6d55d858539dc8021452dde31",
+      "matches": [
+        {
+          "line": 2191,
+          "text": "VP9_COMMON *cm = &pbi->common;",
+          "context": "  TileInfo *volatile tile = &tile_data->xd.tile;\n  const int final_col = (1 << pbi->common.log2_tile_cols) - 1;\n  const uint8_t *volatile bit_reader_end = NULL;\n  VP9_COMMON *cm = &pbi->common;\n\n  LFWorkerData *lf_data = tile_data->lf_data;\n  VP9LfSync *lf_sync = tile_data->lf_sync;\n"
+        }
+      ]
+    },
+    {
+      "file": "vp9/decoder/vp9_decoder.c",
+      "sha256": "05c7a23ad0db1ef8967d7a70ff8a37a8df6cf4ef4703099f6972deb36380e777",
+      "matches": [
+        {
+          "line": 264,
+          "text": "VP9_COMMON *cm = &pbi->common;",
+          "context": "vpx_codec_err_t vp9_copy_reference_dec(VP9Decoder *pbi,\n                                       VP9_REFFRAME ref_frame_flag,\n                                       YV12_BUFFER_CONFIG *sd) {\n  VP9_COMMON *cm = &pbi->common;\n\n  /* TODO(jkoleszar): The decoder doesn't have any real knowledge of what the\n   * encoder is using the frame buffers for. This is just a stub to keep the\n   * vpxenc --test-decode functionality working, and will be replaced in a"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_aq_360.c",
+      "sha256": "e1092e895de9bc38ca976ff3f22cfef9833db49e22f5ecc9084135d845998b86",
+      "matches": [
+        {
+          "line": 40,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nvoid vp9_360aq_frame_setup(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  struct segmentation *seg = &cm->seg;\n  int i;\n\n  if (frame_is_intra_only(cm) || cpi->force_update_segmentation ||"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_aq_variance.c",
+      "sha256": "0e0e438517721c7768f42b21a1a688242d60dbd244286d81a360dfd2917e3ff6",
+      "matches": [
+        {
+          "line": 48,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nvoid vp9_vaq_frame_setup(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  struct segmentation *seg = &cm->seg;\n  int i;\n\n  if (frame_is_intra_only(cm) || cm->error_resilient_mode ||"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_bitstream.c",
+      "sha256": "211f57fbfeb815b3d871dd741aa9aa7570023878b86517f774ca2e3ca4ad9dcf",
+      "matches": [
+        {
+          "line": 980,
+          "text": "const VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nstatic size_t encode_tiles_buffer_alloc_size(const VP9_COMP *cpi) {\n  const VP9_COMMON *cm = &cpi->common;\n  const int image_bps =\n      (8 + 2 * (8 >> (cm->subsampling_x + cm->subsampling_y))) *\n      (1 + (cm->bit_depth > 8));\n  const int64_t size ="
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_encodeframe.c",
+      "sha256": "b72c663dfd940c8767905404c0e45f10cec2d07dfabdfadc036dbe61be84c31b",
+      "matches": [
+        {
+          "line": 3510,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nstatic void build_kmeans_segmentation(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  BLOCK_SIZE bsize = BLOCK_64X64;\n  KMEANS_DATA *kmeans_data;\n\n  vp9_disable_segmentation(&cm->seg);"
+        },
+        {
+          "line": 3562,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "#if !CONFIG_REALTIME_ONLY\nstatic int wiener_var_segment(VP9_COMP *cpi, BLOCK_SIZE bsize, int mi_row,\n                              int mi_col) {\n  VP9_COMMON *cm = &cpi->common;\n  int mb_row_start = mi_row >> 1;\n  int mb_col_start = mi_col >> 1;\n  int mb_row_end =\n      VPXMIN((mi_row + num_8x8_blocks_high_lookup[bsize]) >> 1, cm->mb_rows);"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "sha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+      "matches": [
+        {
+          "line": 580,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nstatic void apply_roi_map(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  struct segmentation *const seg = &cm->seg;\n  vpx_roi_map_t *roi = &cpi->roi;\n  const int *delta_q = roi->delta_q;\n  const int *delta_lf = roi->delta_lf;"
+        },
+        {
+          "line": 697,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "                                unsigned int rows, unsigned int cols,\n                                int delta_q[8], int delta_lf[8], int skip[8],\n                                int ref_frame[8]) {\n  VP9_COMMON *cm = &cpi->common;\n  vpx_roi_map_t *roi = &cpi->roi;\n  const int range = 63;\n  const int ref_frame_range = 3;  // Alt-ref\n  const int skip_range = 1;"
+        },
+        {
+          "line": 1080,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "\nstatic void save_coding_context(VP9_COMP *cpi) {\n  CODING_CONTEXT *const cc = &cpi->coding_context;\n  VP9_COMMON *cm = &cpi->common;\n\n  // Stores a snapshot of key state variables which can subsequently be\n  // restored with a call to vp9_restore_coding_context. These functions are\n  // intended for use in a re-code loop in vp9_compress_frame where the"
+        },
+        {
+          "line": 1110,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "\nstatic void restore_coding_context(VP9_COMP *cpi) {\n  CODING_CONTEXT *const cc = &cpi->coding_context;\n  VP9_COMMON *cm = &cpi->common;\n\n  // Restore key state variables to the snapshot state stored in the\n  // previous call to vp9_save_coding_context.\n  vp9_copy(cpi->td.mb.nmvjointcost, cc->nmvjointcost);"
+        },
+        {
+          "line": 1277,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nstatic void alloc_raw_frame_buffers(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  const VP9EncoderConfig *oxcf = &cpi->oxcf;\n\n  if (!cpi->lookahead)\n    cpi->lookahead = vp9_lookahead_init(oxcf->width, oxcf->height,"
+        },
+        {
+          "line": 1375,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nstatic void alloc_context_buffers_ext(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  int mi_size = cm->mi_cols * cm->mi_rows;\n\n  CHECK_MEM_ERROR(&cm->error, cpi->mbmi_ext_base,\n                  vpx_calloc(mi_size, sizeof(*cpi->mbmi_ext_base)));"
+        },
+        {
+          "line": 1383,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nstatic void alloc_compressor_data(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  int sb_rows;\n\n  if (vp9_alloc_context_buffers(cm, cm->width, cm->height)) {\n    vpx_internal_error(&cm->error, VPX_CODEC_MEM_ERROR,"
+        },
+        {
+          "line": 2384,
+          "text": "vp9_zero(*cpi);",
+          "context": "\n  if (!cm) return NULL;\n\n  vp9_zero(*cpi);\n\n  if (setjmp(cm->error.jmp)) {\n    cm->error.setjmp = 0;\n    vp9_remove_compressor(cpi);"
+        },
+        {
+          "line": 3474,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nvoid vp9_scale_references(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  MV_REFERENCE_FRAME ref_frame;\n  const VP9_REFFRAME ref_mask[3] = { VP9_LAST_FLAG, VP9_GOLD_FLAG,\n                                     VP9_ALT_FLAG };\n"
+        },
+        {
+          "line": 3552,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nstatic void release_scaled_references(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  int i;\n  if (cpi->oxcf.pass == 0 && !cpi->use_svc) {\n    // Only release scaled references under certain conditions:\n    // if reference will be updated, or if scaled reference has same resolution."
+        },
+        {
+          "line": 5041,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nstatic void set_mb_ssim_rdmult_scaling(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  ThreadData *td = &cpi->td;\n  MACROBLOCK *x = &td->mb;\n  MACROBLOCKD *xd = &x->e_mbd;\n  uint8_t *y_buffer = cpi->Source->y_buffer;"
+        },
+        {
+          "line": 5119,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nstatic void init_mb_wiener_var_buffer(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n\n  if (cpi->mb_wiener_variance && cpi->mb_wiener_var_rows >= cm->mb_rows &&\n      cpi->mb_wiener_var_cols >= cm->mb_cols)\n    return;"
+        },
+        {
+          "line": 5136,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nstatic void init_sb_mul_scale_buffer(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n\n  if (cpi->mb_wiener_var_rows >= cm->mb_rows &&\n      cpi->mb_wiener_var_cols >= cm->mb_cols)\n    return;"
+        },
+        {
+          "line": 5153,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nstatic void set_mb_wiener_variance(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  uint8_t *buffer = cpi->Source->y_buffer;\n  int buf_stride = cpi->Source->y_stride;\n\n#if CONFIG_VP9_HIGHBITDEPTH"
+        },
+        {
+          "line": 5745,
+          "text": "const VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nstatic int frame_is_reference(const VP9_COMP *cpi) {\n  const VP9_COMMON *cm = &cpi->common;\n\n  return cm->frame_type == KEY_FRAME || cpi->refresh_last_frame ||\n         cpi->refresh_golden_frame || cpi->refresh_alt_ref_frame ||\n         cm->refresh_frame_context || cm->lf.mode_ref_delta_update ||"
+        },
+        {
+          "line": 6718,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "\nint vp9_get_preview_raw_frame(VP9_COMP *cpi, YV12_BUFFER_CONFIG *dest,\n                              vp9_ppflags_t *flags) {\n  VP9_COMMON *cm = &cpi->common;\n#if !CONFIG_VP9_POSTPROC\n  (void)flags;\n#endif\n"
+        },
+        {
+          "line": 6748,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "\nint vp9_set_internal_size(VP9_COMP *cpi, VPX_SCALING_MODE horiz_mode,\n                          VPX_SCALING_MODE vert_mode) {\n  VP9_COMMON *cm = &cpi->common;\n  int hr = 0, hs = 0, vr = 0, vs = 0;\n\n  if (horiz_mode > VP8E_ONETWO || vert_mode > VP8E_ONETWO) return -1;\n"
+        },
+        {
+          "line": 6771,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "\nint vp9_set_size_literal(VP9_COMP *cpi, unsigned int width,\n                         unsigned int height) {\n  VP9_COMMON *cm = &cpi->common;\n#if CONFIG_VP9_HIGHBITDEPTH\n  update_initial_width(cpi, cm->use_highbitdepth, cpi->common.subsampling_x,\n                       cpi->common.subsampling_y);\n#else"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_mbgraph.c",
+      "sha256": "85b14bfbb88608a410a60d27374c6a7e110735d5f60ef9803fd1a02944cfa87a",
+      "matches": [
+        {
+          "line": 167,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "  MACROBLOCK *const x = &cpi->td.mb;\n  MACROBLOCKD *const xd = &x->e_mbd;\n  int intra_error;\n  VP9_COMMON *cm = &cpi->common;\n\n  // FIXME in practice we're completely ignoring chroma here\n  x->plane[0].src.buf = buf->y_buffer + mb_y_offset;\n  x->plane[0].src.stride = buf->y_stride;"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_multi_thread.c",
+      "sha256": "196077f41a47688534621c92ee7ac32ded9924c862614ef8ed00288b7fc26a75",
+      "matches": [
+        {
+          "line": 78,
+          "text": "struct VP9Common *cm = &cpi->common;",
+          "context": "}\n\nvoid vp9_row_mt_mem_alloc(VP9_COMP *cpi) {\n  struct VP9Common *cm = &cpi->common;\n  MultiThreadHandle *multi_thread_ctxt = &cpi->multi_thread_ctxt;\n  int tile_row, tile_col;\n  const int tile_cols = 1 << cm->log2_tile_cols;\n  const int tile_rows = 1 << cm->log2_tile_rows;"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_quantize.c",
+      "sha256": "fced39fb3a2eda0edff71475ac20a7fc0e4269506ec2ba72e9efc4a1d8498db2",
+      "matches": [
+        {
+          "line": 293,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nvoid vp9_set_quantizer(VP9_COMP *cpi, int q, int ext_rc_delta_q_uv) {\n  VP9_COMMON *cm = &cpi->common;\n  // quantizer has to be reinitialized with vp9_init_quantizer() if any\n  // delta_q changes.\n  cm->base_qindex = q;\n  cm->y_dc_delta_q = 0;"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_ratectrl.c",
+      "sha256": "2c5e6ff1d50a2137c0b6a90e1736d9b3781ec6b20350fb77ae82c3a7908e85fc",
+      "matches": [
+        {
+          "line": 1652,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nvoid vp9_configure_buffer_updates(VP9_COMP *cpi, int gf_group_index) {\n  VP9_COMMON *cm = &cpi->common;\n  TWO_PASS *const twopass = &cpi->twopass;\n\n  cpi->rc.is_src_frame_alt_ref = 0;\n  cm->show_existing_frame = 0;"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_rdopt.c",
+      "sha256": "eccd10198c34995e41ef5eda19127b4fec4f4ed397452b11c66344f2c102c493",
+      "matches": [
+        {
+          "line": 1518,
+          "text": "const VP9_COMMON *cm = &cpi->common;",
+          "context": "static int64_t rd_sbuv_dcpred(const VP9_COMP *cpi, MACROBLOCK *x, int *rate,\n                              int *rate_tokenonly, int64_t *distortion,\n                              int *skippable, BLOCK_SIZE bsize) {\n  const VP9_COMMON *cm = &cpi->common;\n  int64_t unused;\n\n  x->e_mbd.mi[0]->uv_mode = DC_PRED;\n  memset(x->skip_txfm, SKIP_TXFM_NONE, sizeof(x->skip_txfm));"
+        },
+        {
+          "line": 2091,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "  int k, br = 0, idx, idy;\n  int64_t bd = 0, block_sse = 0;\n  PREDICTION_MODE this_mode;\n  VP9_COMMON *cm = &cpi->common;\n  struct macroblock_plane *const p = &x->plane[0];\n  struct macroblockd_plane *const pd = &xd->plane[0];\n  const int label_count = 4;\n  int64_t this_segment_rd = 0;"
+        },
+        {
+          "line": 2516,
+          "text": "const VP9_COMMON *cm = &cpi->common;",
+          "context": "                               int_mv frame_nearest_mv[MAX_REF_FRAMES],\n                               int_mv frame_near_mv[MAX_REF_FRAMES],\n                               struct buf_2d yv12_mb[4][MAX_MB_PLANE]) {\n  const VP9_COMMON *cm = &cpi->common;\n  const YV12_BUFFER_CONFIG *yv12 = get_ref_frame_buffer(cpi, ref_frame);\n  MACROBLOCKD *const xd = &x->e_mbd;\n  MODE_INFO *const mi = xd->mi[0];\n  int_mv *const candidates = x->mbmi_ext->ref_mvs[ref_frame];"
+        },
+        {
+          "line": 2567,
+          "text": "const VP9_COMMON *cm = &cpi->common;",
+          "context": "                                 int mi_row, int mi_col, int_mv *tmp_mv,\n                                 int *rate_mv) {\n  MACROBLOCKD *xd = &x->e_mbd;\n  const VP9_COMMON *cm = &cpi->common;\n  MODE_INFO *mi = xd->mi[0];\n  struct buf_2d backup_yv12[MAX_MB_PLANE] = { { 0, 0 } };\n  int step_param;\n  MV mvp_full;"
+        },
+        {
+          "line": 2820,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "    int (*single_skippable)[MAX_REF_FRAMES], int *single_mode_rate,\n    int64_t *psse, const int64_t ref_best_rd, int64_t *mask_filter,\n    int64_t filter_cache[], int best_mode_index) {\n  VP9_COMMON *cm = &cpi->common;\n  MACROBLOCKD *xd = &x->e_mbd;\n  MODE_INFO *mi = xd->mi[0];\n  MB_MODE_INFO_EXT *const mbmi_ext = x->mbmi_ext;\n  const int is_comp_pred = has_second_ref(mi);"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_segmentation.c",
+      "sha256": "387e044d896705962a71e86fbb5922234dc18eb0ab0104c3ca8b79c0395e6d7b",
+      "matches": [
+        {
+          "line": 65,
+          "text": "const VP9_COMMON *cm = &cpi->common;",
+          "context": "\nvoid vp9_perceptual_aq_mode_setup(struct VP9_COMP *cpi,\n                                  struct segmentation *seg) {\n  const VP9_COMMON *cm = &cpi->common;\n  const int seg_counts = cpi->kmeans_ctr_num;\n  const int base_qindex = cm->base_qindex;\n  const double base_qstep = vp9_convert_qindex_to_q(base_qindex, cm->bit_depth);\n  const double mid_ctr = cpi->kmeans_ctr_ls[seg_counts / 2];"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_tpl_model.c",
+      "sha256": "ddbb1fdffa385502ce03e4b9c0033a4dca59deb74fe324dbde3d14ad1a96d61f",
+      "matches": [
+        {
+          "line": 31,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "\nstatic int init_gop_frames_rc(VP9_COMP *cpi, GF_PICTURE *gf_picture,\n                              const GF_GROUP *gf_group, int *tpl_group_frames) {\n  VP9_COMMON *cm = &cpi->common;\n  int frame_idx = 0;\n  int i;\n  int extend_frame_count = 0;\n  int pframe_qindex = cpi->tpl_stats[2].base_qindex;"
+        },
+        {
+          "line": 239,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "    return init_gop_frames_rc(cpi, gf_picture, gf_group, tpl_group_frames);\n  }\n\n  VP9_COMMON *cm = &cpi->common;\n  int frame_idx = 0;\n  int i;\n  int gld_index = -1;\n  int alt_index = -2;"
+        },
+        {
+          "line": 807,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "                            YV12_BUFFER_CONFIG *ref_frame[], uint8_t *predictor,\n                            int64_t *recon_error, int64_t *rate_cost,\n                            int64_t *sse, int *ref_frame_idx) {\n  VP9_COMMON *cm = &cpi->common;\n  ThreadData *td = &cpi->td;\n\n  const int bw = 4 << b_width_log2_lookup[bsize];\n  const int bh = 4 << b_height_log2_lookup[bsize];"
+        },
+        {
+          "line": 1313,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "                             MotionField *motion_field, int frame_idx,\n                             YV12_BUFFER_CONFIG *ref_frame, BLOCK_SIZE bsize,\n                             int mi_row, int mi_col) {\n  VP9_COMMON *cm = &cpi->common;\n  MACROBLOCK *x = &td->mb;\n  MACROBLOCKD *xd = &x->e_mbd;\n  const int mb_y_offset =\n      mi_row * MI_SIZE * xd->cur_buf->y_stride + mi_col * MI_SIZE;"
+        },
+        {
+          "line": 1337,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "static void build_motion_field(\n    VP9_COMP *cpi, int frame_idx,\n    YV12_BUFFER_CONFIG *ref_frame[MAX_INTER_REF_FRAMES], BLOCK_SIZE bsize) {\n  VP9_COMMON *cm = &cpi->common;\n  ThreadData *td = &cpi->td;\n  TplDepFrame *tpl_frame = &cpi->tpl_stats[frame_idx];\n  const int mi_height = num_8x8_blocks_high_lookup[bsize];\n  const int mi_width = num_8x8_blocks_wide_lookup[bsize];"
+        },
+        {
+          "line": 1375,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "  YV12_BUFFER_CONFIG *this_frame = gf_picture[frame_idx].frame;\n  YV12_BUFFER_CONFIG *ref_frame[MAX_INTER_REF_FRAMES] = { NULL, NULL, NULL };\n\n  VP9_COMMON *cm = &cpi->common;\n  struct scale_factors sf;\n  int rdmult, idx;\n  ThreadData *td = &cpi->td;\n  MACROBLOCK *x = &td->mb;"
+        },
+        {
+          "line": 1543,
+          "text": "const VP9_COMMON *cm = &cpi->common;",
+          "context": "                           const GF_GROUP *gf_group,\n                           const GF_PICTURE *gf_picture, BLOCK_SIZE bsize) {\n  int frame_idx;\n  const VP9_COMMON *cm = &cpi->common;\n  int rf_idx;\n  for (frame_idx = 1; frame_idx < tpl_group_frames; ++frame_idx) {\n    for (rf_idx = 0; rf_idx < MAX_INTER_REF_FRAMES; ++rf_idx) {\n      const TplDepFrame *tpl_frame = &cpi->tpl_stats[frame_idx];"
+        },
+        {
+          "line": 1607,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "#endif  // CONFIG_NON_GREEDY_MV\n\nvoid vp9_init_tpl_buffer(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  int frame;\n\n  const int mi_cols = mi_cols_aligned_to_sb(cm->mi_cols);\n  const int mi_rows = mi_cols_aligned_to_sb(cm->mi_rows);"
+        },
+        {
+          "line": 1681,
+          "text": "VP9_COMMON *cm = &cpi->common;",
+          "context": "}\n\nvoid vp9_estimate_tpl_qp_gop(VP9_COMP *cpi) {\n  VP9_COMMON *cm = &cpi->common;\n  int gop_length = cpi->twopass.gf_group.gf_group_size;\n  int bottom_index, top_index;\n  int idx;\n  const int gf_index = cpi->twopass.gf_group.index;"
+        }
+      ]
+    }
+  ],
+  "preimages": {
+    "vp9/common/vp9_onyxc_int.h": {
+      "sha256": "2c44a00c9c9f22e83be4835395a6692d30be18b049701bce49e2581289e0b060",
+      "exactSource": "/*\n *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.\n *\n *  Use of this source code is governed by a BSD-style license\n *  that can be found in the LICENSE file in the root of the source\n *  tree. An additional intellectual property rights grant can be found\n *  in the file PATENTS.  All contributing project authors may\n *  be found in the AUTHORS file in the root of the source tree.\n */\n\n#ifndef VPX_VP9_COMMON_VP9_ONYXC_INT_H_\n#define VPX_VP9_COMMON_VP9_ONYXC_INT_H_\n\n#include \"./vpx_config.h\"\n#include \"vpx/internal/vpx_codec_internal.h\"\n#include \"./vp9_rtcd.h\"\n#include \"vp9/common/vp9_alloccommon.h\"\n#include \"vp9/common/vp9_loopfilter.h\"\n#include \"vp9/common/vp9_entropymv.h\"\n#include \"vp9/common/vp9_entropy.h\"\n#include \"vp9/common/vp9_entropymode.h\"\n#include \"vp9/common/vp9_frame_buffers.h\"\n#include \"vp9/common/vp9_quant_common.h\"\n#include \"vp9/common/vp9_tile_common.h\"\n\n#if CONFIG_VP9_POSTPROC\n#include \"vp9/common/vp9_postproc.h\"\n#endif\n\n#ifdef __cplusplus\nextern \"C\" {\n#endif\n\n#define REFS_PER_FRAME 3\n\n#define REF_FRAMES_LOG2 3\n#define REF_FRAMES (1 << REF_FRAMES_LOG2)\n\n// 1 scratch frame for the new frame, REFS_PER_FRAME for scaled references on\n// the encoder.\n#define FRAME_BUFFERS (REF_FRAMES + 1 + REFS_PER_FRAME)\n\n#define FRAME_CONTEXTS_LOG2 2\n#define FRAME_CONTEXTS (1 << FRAME_CONTEXTS_LOG2)\n\n#define NUM_PING_PONG_BUFFERS 2\n\nextern const struct {\n  PARTITION_CONTEXT above;\n  PARTITION_CONTEXT left;\n} partition_context_lookup[BLOCK_SIZES];\n\ntypedef enum {\n  SINGLE_REFERENCE = 0,\n  COMPOUND_REFERENCE = 1,\n  REFERENCE_MODE_SELECT = 2,\n  REFERENCE_MODES = 3,\n} REFERENCE_MODE;\n\ntypedef struct {\n  int_mv mv[2];\n  MV_REFERENCE_FRAME ref_frame[2];\n} MV_REF;\n\ntypedef struct {\n  int ref_count;\n  MV_REF *mvs;\n  int mi_rows;\n  int mi_cols;\n  uint8_t released;\n\n  // Note that frame_index/frame_coding_index are only set by set_frame_index()\n  // on the encoder side.\n\n  // TODO(angiebird): Set frame_index/frame_coding_index on the decoder side\n  // properly.\n  int frame_index;         // Display order in the video, it's equivalent to the\n                           // show_idx defined in EncodeFrameInfo.\n  int frame_coding_index;  // The coding order (starting from zero) of this\n                           // frame.\n  vpx_codec_frame_buffer_t raw_frame_buffer;\n  YV12_BUFFER_CONFIG buf;\n} RefCntBuffer;\n\ntypedef struct BufferPool {\n  // Private data associated with the frame buffer callbacks.\n  void *cb_priv;\n\n  vpx_get_frame_buffer_cb_fn_t get_fb_cb;\n  vpx_release_frame_buffer_cb_fn_t release_fb_cb;\n\n  RefCntBuffer frame_bufs[FRAME_BUFFERS];\n\n  // Frame buffers allocated internally by the codec.\n  InternalFrameBufferList int_frame_buffers;\n} BufferPool;\n\ntypedef struct VP9Common {\n  struct vpx_internal_error_info error;\n  vpx_color_space_t color_space;\n  vpx_color_range_t color_range;\n  int width;\n  int height;\n  int render_width;\n  int render_height;\n  int last_width;\n  int last_height;\n\n  // TODO(jkoleszar): this implies chroma ss right now, but could vary per\n  // plane. Revisit as part of the future change to YV12_BUFFER_CONFIG to\n  // support additional planes.\n  int subsampling_x;\n  int subsampling_y;\n\n#if CONFIG_VP9_HIGHBITDEPTH\n  int use_highbitdepth;  // Marks if we need to use 16bit frame buffers.\n#endif\n\n  YV12_BUFFER_CONFIG *frame_to_show;\n  RefCntBuffer *prev_frame;\n\n  // TODO(hkuang): Combine this with cur_buf in macroblockd.\n  RefCntBuffer *cur_frame;\n\n  int ref_frame_map[REF_FRAMES]; /* maps fb_idx to reference slot */\n\n  // Prepare ref_frame_map for the next frame.\n  // Only used in frame parallel decode.\n  int next_ref_frame_map[REF_FRAMES];\n\n  // TODO(jkoleszar): could expand active_ref_idx to 4, with 0 as intra, and\n  // roll new_fb_idx into it.\n\n  // Each frame can reference REFS_PER_FRAME buffers\n  RefBuffer frame_refs[REFS_PER_FRAME];\n\n  int new_fb_idx;\n\n  int cur_show_frame_fb_idx;\n\n#if CONFIG_VP9_POSTPROC\n  YV12_BUFFER_CONFIG post_proc_buffer;\n  YV12_BUFFER_CONFIG post_proc_buffer_int;\n#endif\n\n  FRAME_TYPE last_frame_type; /* last frame's frame type for motion search.*/\n  FRAME_TYPE frame_type;\n\n  int show_frame;\n  int last_show_frame;\n  int show_existing_frame;\n\n  // Flag signaling that the frame is encoded using only INTRA modes.\n  uint8_t intra_only;\n  uint8_t last_intra_only;\n\n  int allow_high_precision_mv;\n\n  // Flag signaling that the frame context should be reset to default values.\n  // 0 or 1 implies don't reset, 2 reset just the context specified in the\n  // frame header, 3 reset all contexts.\n  int reset_frame_context;\n\n  // MBs, mb_rows/cols is in 16-pixel units; mi_rows/cols is in\n  // MODE_INFO (8-pixel) units.\n  int MBs;\n  int mb_rows, mi_rows;\n  int mb_cols, mi_cols;\n  int mi_stride;\n\n  /* profile settings */\n  TX_MODE tx_mode;\n\n  int base_qindex;\n  int y_dc_delta_q;\n  int uv_dc_delta_q;\n  int uv_ac_delta_q;\n  int16_t y_dequant[MAX_SEGMENTS][2];\n  int16_t uv_dequant[MAX_SEGMENTS][2];\n\n  /* We allocate a MODE_INFO struct for each macroblock, together with\n     an extra row on top and column on the left to simplify prediction. */\n  int mi_alloc_size;\n  MODE_INFO *mip; /* Base of allocated array */\n  MODE_INFO *mi;  /* Corresponds to upper left visible macroblock */\n\n  // TODO(agrange): Move prev_mi into encoder structure.\n  // prev_mip and prev_mi will only be allocated in VP9 encoder.\n  MODE_INFO *prev_mip; /* MODE_INFO array 'mip' from last decoded frame */\n  MODE_INFO *prev_mi;  /* 'mi' from last frame (points into prev_mip) */\n\n  // Separate mi functions between encoder and decoder.\n  int (*alloc_mi)(struct VP9Common *cm, int mi_size);\n  void (*free_mi)(struct VP9Common *cm);\n  void (*setup_mi)(struct VP9Common *cm);\n\n  // Grid of pointers to 8x8 MODE_INFO structs.  Any 8x8 not in the visible\n  // area will be NULL.\n  MODE_INFO **mi_grid_base;\n  MODE_INFO **mi_grid_visible;\n  MODE_INFO **prev_mi_grid_base;\n  MODE_INFO **prev_mi_grid_visible;\n\n  // Whether to use previous frame's motion vectors for prediction.\n  int use_prev_frame_mvs;\n\n  // Persistent mb segment id map used in prediction.\n  int seg_map_idx;\n  int prev_seg_map_idx;\n\n  uint8_t *seg_map_array[NUM_PING_PONG_BUFFERS];\n  uint8_t *last_frame_seg_map;\n  uint8_t *current_frame_seg_map;\n  int seg_map_alloc_size;\n\n  INTERP_FILTER interp_filter;\n\n  loop_filter_info_n lf_info;\n\n  int refresh_frame_context; /* Two state 0 = NO, 1 = YES */\n\n  int ref_frame_sign_bias[MAX_REF_FRAMES]; /* Two state 0, 1 */\n\n  struct loopfilter lf;\n  struct segmentation seg;\n\n  // Context probabilities for reference frame prediction\n  MV_REFERENCE_FRAME comp_fixed_ref;\n  MV_REFERENCE_FRAME comp_var_ref[2];\n  REFERENCE_MODE reference_mode;\n\n  FRAME_CONTEXT *fc;              /* this frame entropy */\n  FRAME_CONTEXT *frame_contexts;  // FRAME_CONTEXTS\n  unsigned int frame_context_idx; /* Context to use/update */\n  FRAME_COUNTS counts;\n\n  // TODO(angiebird): current_video_frame/current_frame_coding_index into a\n  // structure\n  unsigned int current_video_frame;\n  // Each show or no show frame is assigned with a coding index based on its\n  // coding order (starting from zero).\n\n  // Current frame's coding index.\n  int current_frame_coding_index;\n  BITSTREAM_PROFILE profile;\n\n  // VPX_BITS_8 in profile 0 or 1, VPX_BITS_10 or VPX_BITS_12 in profile 2 or 3.\n  vpx_bit_depth_t bit_depth;\n  vpx_bit_depth_t dequant_bit_depth;  // bit_depth of current dequantizer\n\n#if CONFIG_VP9_POSTPROC\n  struct postproc_state postproc_state;\n#endif\n\n  int error_resilient_mode;\n  int frame_parallel_decoding_mode;\n\n  int log2_tile_cols, log2_tile_rows;\n  int byte_alignment;\n  int skip_loop_filter;\n\n  // External BufferPool passed from outside.\n  BufferPool *buffer_pool;\n\n  PARTITION_CONTEXT *above_seg_context;\n  ENTROPY_CONTEXT *above_context;\n  int above_context_alloc_cols;\n\n  int lf_row;\n} VP9_COMMON;\n\nstatic INLINE void init_frame_indexes(VP9_COMMON *cm) {\n  cm->current_video_frame = 0;\n  cm->current_frame_coding_index = 0;\n}\n\nstatic INLINE void update_frame_indexes(VP9_COMMON *cm, int show_frame) {\n  if (show_frame) {\n    // Don't increment frame counters if this was an altref buffer\n    // update not a real frame\n    ++cm->current_video_frame;\n  }\n  ++cm->current_frame_coding_index;\n}\n\ntypedef struct {\n  int frame_width;\n  int frame_height;\n  int render_frame_width;\n  int render_frame_height;\n  int mi_rows;\n  int mi_cols;\n  int mb_rows;\n  int mb_cols;\n  int num_mbs;\n  vpx_bit_depth_t bit_depth;\n} FRAME_INFO;\n\nstatic INLINE void init_frame_info(FRAME_INFO *frame_info,\n                                   const VP9_COMMON *cm) {\n  frame_info->frame_width = cm->width;\n  frame_info->frame_height = cm->height;\n  frame_info->render_frame_width = cm->render_width;\n  frame_info->render_frame_height = cm->render_height;\n  frame_info->mi_cols = cm->mi_cols;\n  frame_info->mi_rows = cm->mi_rows;\n  frame_info->mb_cols = cm->mb_cols;\n  frame_info->mb_rows = cm->mb_rows;\n  frame_info->num_mbs = cm->MBs;\n  frame_info->bit_depth = cm->bit_depth;\n  // TODO(angiebird): Figure out how to get subsampling_x/y here\n}\n\nstatic INLINE YV12_BUFFER_CONFIG *get_buf_frame(VP9_COMMON *cm, int index) {\n  if (index < 0 || index >= FRAME_BUFFERS) return NULL;\n  if (cm->error.error_code != VPX_CODEC_OK) return NULL;\n  return &cm->buffer_pool->frame_bufs[index].buf;\n}\n\nstatic INLINE YV12_BUFFER_CONFIG *get_ref_frame(VP9_COMMON *cm, int index) {\n  if (index < 0 || index >= REF_FRAMES) return NULL;\n  if (cm->ref_frame_map[index] < 0) return NULL;\n  assert(cm->ref_frame_map[index] < FRAME_BUFFERS);\n  return &cm->buffer_pool->frame_bufs[cm->ref_frame_map[index]].buf;\n}\n\nstatic INLINE YV12_BUFFER_CONFIG *get_frame_new_buffer(VP9_COMMON *cm) {\n  return &cm->buffer_pool->frame_bufs[cm->new_fb_idx].buf;\n}\n\nstatic INLINE int get_free_fb(VP9_COMMON *cm) {\n  RefCntBuffer *const frame_bufs = cm->buffer_pool->frame_bufs;\n  int i;\n\n  for (i = 0; i < FRAME_BUFFERS; ++i)\n    if (frame_bufs[i].ref_count == 0) break;\n\n  if (i != FRAME_BUFFERS) {\n    frame_bufs[i].ref_count = 1;\n  } else {\n    // Reset i to be INVALID_IDX to indicate no free buffer found.\n    i = INVALID_IDX;\n  }\n\n  return i;\n}\n\nstatic INLINE void ref_cnt_fb(RefCntBuffer *bufs, int *idx, int new_idx) {\n  const int ref_index = *idx;\n\n  if (ref_index >= 0 && bufs[ref_index].ref_count > 0)\n    bufs[ref_index].ref_count--;\n\n  *idx = new_idx;\n\n  bufs[new_idx].ref_count++;\n}\n\nstatic INLINE int mi_cols_aligned_to_sb(int n_mis) {\n  return ALIGN_POWER_OF_TWO(n_mis, MI_BLOCK_SIZE_LOG2);\n}\n\nstatic INLINE int frame_is_intra_only(const VP9_COMMON *const cm) {\n  return cm->frame_type == KEY_FRAME || cm->intra_only;\n}\n\nstatic INLINE void set_partition_probs(const VP9_COMMON *const cm,\n                                       MACROBLOCKD *const xd) {\n  xd->partition_probs =\n      frame_is_intra_only(cm)\n          ? &vp9_kf_partition_probs[0]\n          : (const vpx_prob(*)[PARTITION_TYPES - 1]) cm->fc->partition_prob;\n}\n\nstatic INLINE void vp9_init_macroblockd(VP9_COMMON *cm, MACROBLOCKD *xd,\n                                        tran_low_t *dqcoeff) {\n  int i;\n\n  for (i = 0; i < MAX_MB_PLANE; ++i) {\n    xd->plane[i].dqcoeff = dqcoeff;\n    xd->above_context[i] =\n        cm->above_context +\n        i * sizeof(*cm->above_context) * 2 * mi_cols_aligned_to_sb(cm->mi_cols);\n\n    if (get_plane_type(i) == PLANE_TYPE_Y) {\n      memcpy(xd->plane[i].seg_dequant, cm->y_dequant, sizeof(cm->y_dequant));\n    } else {\n      memcpy(xd->plane[i].seg_dequant, cm->uv_dequant, sizeof(cm->uv_dequant));\n    }\n    xd->fc = cm->fc;\n  }\n\n  xd->above_seg_context = cm->above_seg_context;\n  xd->mi_stride = cm->mi_stride;\n  xd->error_info = &cm->error;\n\n  set_partition_probs(cm, xd);\n}\n\nstatic INLINE const vpx_prob *get_partition_probs(const MACROBLOCKD *xd,\n                                                  int ctx) {\n  return xd->partition_probs[ctx];\n}\n\nstatic INLINE void set_skip_context(MACROBLOCKD *xd, int mi_row, int mi_col) {\n  const int above_idx = mi_col * 2;\n  const int left_idx = (mi_row * 2) & 15;\n  int i;\n  for (i = 0; i < MAX_MB_PLANE; ++i) {\n    struct macroblockd_plane *const pd = &xd->plane[i];\n    pd->above_context = &xd->above_context[i][above_idx >> pd->subsampling_x];\n    pd->left_context = &xd->left_context[i][left_idx >> pd->subsampling_y];\n  }\n}\n\nstatic INLINE int calc_mi_size(int len) {\n  // len is in mi units.\n  return len + MI_BLOCK_SIZE;\n}\n\nstatic INLINE void set_mi_row_col(MACROBLOCKD *xd, const TileInfo *const tile,\n                                  int mi_row, int bh, int mi_col, int bw,\n                                  int mi_rows, int mi_cols) {\n  xd->mb_to_top_edge = -((mi_row * MI_SIZE) * 8);\n  xd->mb_to_bottom_edge = ((mi_rows - bh - mi_row) * MI_SIZE) * 8;\n  xd->mb_to_left_edge = -((mi_col * MI_SIZE) * 8);\n  xd->mb_to_right_edge = ((mi_cols - bw - mi_col) * MI_SIZE) * 8;\n\n  // Are edges available for intra prediction?\n  xd->above_mi = (mi_row != 0) ? xd->mi[-xd->mi_stride] : NULL;\n  xd->left_mi = (mi_col > tile->mi_col_start) ? xd->mi[-1] : NULL;\n}\n\nstatic INLINE void update_partition_context(MACROBLOCKD *xd, int mi_row,\n                                            int mi_col, BLOCK_SIZE subsize,\n                                            BLOCK_SIZE bsize) {\n  PARTITION_CONTEXT *const above_ctx = xd->above_seg_context + mi_col;\n  PARTITION_CONTEXT *const left_ctx = xd->left_seg_context + (mi_row & MI_MASK);\n\n  // num_4x4_blocks_wide_lookup[bsize] / 2\n  const int bs = num_8x8_blocks_wide_lookup[bsize];\n\n  // update the partition context at the end notes. set partition bits\n  // of block sizes larger than the current one to be one, and partition\n  // bits of smaller block sizes to be zero.\n  memset(above_ctx, partition_context_lookup[subsize].above, bs);\n  memset(left_ctx, partition_context_lookup[subsize].left, bs);\n}\n\nstatic INLINE int partition_plane_context(const MACROBLOCKD *xd, int mi_row,\n                                          int mi_col, BLOCK_SIZE bsize) {\n  const PARTITION_CONTEXT *above_ctx = xd->above_seg_context + mi_col;\n  const PARTITION_CONTEXT *left_ctx = xd->left_seg_context + (mi_row & MI_MASK);\n  const int bsl = mi_width_log2_lookup[bsize];\n  int above = (*above_ctx >> bsl) & 1, left = (*left_ctx >> bsl) & 1;\n\n  assert(b_width_log2_lookup[bsize] == b_height_log2_lookup[bsize]);\n  assert(bsl >= 0);\n\n  return (left * 2 + above) + bsl * PARTITION_PLOFFSET;\n}\n\n#ifdef __cplusplus\n}  // extern \"C\"\n#endif\n\n#endif  // VPX_VP9_COMMON_VP9_ONYXC_INT_H_\n"
+    },
+    "vp9/common/vp9_entropymode.h": {
+      "sha256": "d3e9ac5ebb30f151b4ee71d4c85f23e30ecb596317dc76c4a6c66236fb83a5da",
+      "exactSource": "/*\n *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.\n *\n *  Use of this source code is governed by a BSD-style license\n *  that can be found in the LICENSE file in the root of the source\n *  tree. An additional intellectual property rights grant can be found\n *  in the file PATENTS.  All contributing project authors may\n *  be found in the AUTHORS file in the root of the source tree.\n */\n\n#ifndef VPX_VP9_COMMON_VP9_ENTROPYMODE_H_\n#define VPX_VP9_COMMON_VP9_ENTROPYMODE_H_\n\n#include \"vp9/common/vp9_entropy.h\"\n#include \"vp9/common/vp9_entropymv.h\"\n#include \"vp9/common/vp9_filter.h\"\n#include \"vpx_dsp/vpx_filter.h\"\n\n#ifdef __cplusplus\nextern \"C\" {\n#endif\n\n#define BLOCK_SIZE_GROUPS 4\n\n#define TX_SIZE_CONTEXTS 2\n\n#define INTER_OFFSET(mode) ((mode) - NEARESTMV)\n\nstruct VP9Common;\n\nstruct tx_probs {\n  vpx_prob p32x32[TX_SIZE_CONTEXTS][TX_SIZES - 1];\n  vpx_prob p16x16[TX_SIZE_CONTEXTS][TX_SIZES - 2];\n  vpx_prob p8x8[TX_SIZE_CONTEXTS][TX_SIZES - 3];\n};\n\nstruct tx_counts {\n  unsigned int p32x32[TX_SIZE_CONTEXTS][TX_SIZES];\n  unsigned int p16x16[TX_SIZE_CONTEXTS][TX_SIZES - 1];\n  unsigned int p8x8[TX_SIZE_CONTEXTS][TX_SIZES - 2];\n  unsigned int tx_totals[TX_SIZES];\n};\n\ntypedef struct frame_contexts {\n  vpx_prob y_mode_prob[BLOCK_SIZE_GROUPS][INTRA_MODES - 1];\n  vpx_prob uv_mode_prob[INTRA_MODES][INTRA_MODES - 1];\n  vpx_prob partition_prob[PARTITION_CONTEXTS][PARTITION_TYPES - 1];\n  vp9_coeff_probs_model coef_probs[TX_SIZES][PLANE_TYPES];\n  vpx_prob switchable_interp_prob[SWITCHABLE_FILTER_CONTEXTS]\n                                 [SWITCHABLE_FILTERS - 1];\n  vpx_prob inter_mode_probs[INTER_MODE_CONTEXTS][INTER_MODES - 1];\n  vpx_prob intra_inter_prob[INTRA_INTER_CONTEXTS];\n  vpx_prob comp_inter_prob[COMP_INTER_CONTEXTS];\n  vpx_prob single_ref_prob[REF_CONTEXTS][2];\n  vpx_prob comp_ref_prob[REF_CONTEXTS];\n  struct tx_probs tx_probs;\n  vpx_prob skip_probs[SKIP_CONTEXTS];\n  nmv_context nmvc;\n  int initialized;\n} FRAME_CONTEXT;\n\ntypedef struct FRAME_COUNTS {\n  unsigned int y_mode[BLOCK_SIZE_GROUPS][INTRA_MODES];\n  unsigned int uv_mode[INTRA_MODES][INTRA_MODES];\n  unsigned int partition[PARTITION_CONTEXTS][PARTITION_TYPES];\n  vp9_coeff_count_model coef[TX_SIZES][PLANE_TYPES];\n  unsigned int eob_branch[TX_SIZES][PLANE_TYPES][REF_TYPES][COEF_BANDS]\n                         [COEFF_CONTEXTS];\n  unsigned int switchable_interp[SWITCHABLE_FILTER_CONTEXTS]\n                                [SWITCHABLE_FILTERS];\n  unsigned int inter_mode[INTER_MODE_CONTEXTS][INTER_MODES];\n  unsigned int intra_inter[INTRA_INTER_CONTEXTS][2];\n  unsigned int comp_inter[COMP_INTER_CONTEXTS][2];\n  unsigned int single_ref[REF_CONTEXTS][2][2];\n  unsigned int comp_ref[REF_CONTEXTS][2];\n  struct tx_counts tx;\n  unsigned int skip[SKIP_CONTEXTS][2];\n  nmv_context_counts mv;\n} FRAME_COUNTS;\n\nextern const vpx_prob vp9_kf_uv_mode_prob[INTRA_MODES][INTRA_MODES - 1];\nextern const vpx_prob vp9_kf_y_mode_prob[INTRA_MODES][INTRA_MODES]\n                                        [INTRA_MODES - 1];\nextern const vpx_prob vp9_kf_partition_probs[PARTITION_CONTEXTS]\n                                            [PARTITION_TYPES - 1];\nextern const vpx_tree_index vp9_intra_mode_tree[TREE_SIZE(INTRA_MODES)];\nextern const vpx_tree_index vp9_inter_mode_tree[TREE_SIZE(INTER_MODES)];\nextern const vpx_tree_index vp9_partition_tree[TREE_SIZE(PARTITION_TYPES)];\nextern const vpx_tree_index\n    vp9_switchable_interp_tree[TREE_SIZE(SWITCHABLE_FILTERS)];\n\nvoid vp9_setup_past_independence(struct VP9Common *cm);\n\nvoid vp9_adapt_mode_probs(struct VP9Common *cm);\n\nvoid tx_counts_to_branch_counts_32x32(const unsigned int *tx_count_32x32p,\n                                      unsigned int (*ct_32x32p)[2]);\nvoid tx_counts_to_branch_counts_16x16(const unsigned int *tx_count_16x16p,\n                                      unsigned int (*ct_16x16p)[2]);\nvoid tx_counts_to_branch_counts_8x8(const unsigned int *tx_count_8x8p,\n                                    unsigned int (*ct_8x8p)[2]);\n\n#ifdef __cplusplus\n}  // extern \"C\"\n#endif\n\n#endif  // VPX_VP9_COMMON_VP9_ENTROPYMODE_H_\n"
+    },
+    "vp9/common/vp9_entropy.h": {
+      "sha256": "539027204da3777f748aa4b965f91bfb629c885a4a5c9bbc0a2eaa7546cc4cbc",
+      "exactSource": "/*\n *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.\n *\n *  Use of this source code is governed by a BSD-style license\n *  that can be found in the LICENSE file in the root of the source\n *  tree. An additional intellectual property rights grant can be found\n *  in the file PATENTS.  All contributing project authors may\n *  be found in the AUTHORS file in the root of the source tree.\n */\n\n#ifndef VPX_VP9_COMMON_VP9_ENTROPY_H_\n#define VPX_VP9_COMMON_VP9_ENTROPY_H_\n\n#include \"vpx/vpx_integer.h\"\n#include \"vpx_dsp/prob.h\"\n\n#include \"vp9/common/vp9_common.h\"\n#include \"vp9/common/vp9_enums.h\"\n\n#ifdef __cplusplus\nextern \"C\" {\n#endif\n\n#define DIFF_UPDATE_PROB 252\n\n// Coefficient token alphabet\n#define ZERO_TOKEN 0        // 0     Extra Bits 0+0\n#define ONE_TOKEN 1         // 1     Extra Bits 0+1\n#define TWO_TOKEN 2         // 2     Extra Bits 0+1\n#define THREE_TOKEN 3       // 3     Extra Bits 0+1\n#define FOUR_TOKEN 4        // 4     Extra Bits 0+1\n#define CATEGORY1_TOKEN 5   // 5-6   Extra Bits 1+1\n#define CATEGORY2_TOKEN 6   // 7-10  Extra Bits 2+1\n#define CATEGORY3_TOKEN 7   // 11-18 Extra Bits 3+1\n#define CATEGORY4_TOKEN 8   // 19-34 Extra Bits 4+1\n#define CATEGORY5_TOKEN 9   // 35-66 Extra Bits 5+1\n#define CATEGORY6_TOKEN 10  // 67+   Extra Bits 14+1\n#define EOB_TOKEN 11        // EOB   Extra Bits 0+0\n\n#define ENTROPY_TOKENS 12\n\n#define ENTROPY_NODES 11\n\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_pt_energy_class[ENTROPY_TOKENS]);\n\n#define CAT1_MIN_VAL 5\n#define CAT2_MIN_VAL 7\n#define CAT3_MIN_VAL 11\n#define CAT4_MIN_VAL 19\n#define CAT5_MIN_VAL 35\n#define CAT6_MIN_VAL 67\n\n// Extra bit probabilities.\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat1_prob[1]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat2_prob[2]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat3_prob[3]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat4_prob[4]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat5_prob[5]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat6_prob[14]);\n\n#if CONFIG_VP9_HIGHBITDEPTH\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat1_prob_high10[1]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat2_prob_high10[2]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat3_prob_high10[3]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat4_prob_high10[4]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat5_prob_high10[5]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat6_prob_high10[16]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat1_prob_high12[1]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat2_prob_high12[2]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat3_prob_high12[3]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat4_prob_high12[4]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat5_prob_high12[5]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_cat6_prob_high12[18]);\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\n#define EOB_MODEL_TOKEN 3\n\n#define DCT_MAX_VALUE 16384\n#if CONFIG_VP9_HIGHBITDEPTH\n#define DCT_MAX_VALUE_HIGH10 65536\n#define DCT_MAX_VALUE_HIGH12 262144\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\n/* Coefficients are predicted via a 3-dimensional probability table. */\n\n#define REF_TYPES 2  // intra=0, inter=1\n\n/* Middle dimension reflects the coefficient position within the transform. */\n#define COEF_BANDS 6\n\n/* Inside dimension is measure of nearby complexity, that reflects the energy\n   of nearby coefficients are nonzero.  For the first coefficient (DC, unless\n   block type is 0), we look at the (already encoded) blocks above and to the\n   left of the current block.  The context index is then the number (0,1,or 2)\n   of these blocks having nonzero coefficients.\n   After decoding a coefficient, the measure is determined by the size of the\n   most recently decoded coefficient.\n   Note that the intuitive meaning of this measure changes as coefficients\n   are decoded, e.g., prior to the first token, a zero means that my neighbors\n   are empty while, after the first token, because of the use of end-of-block,\n   a zero means we just decoded a zero and hence guarantees that a non-zero\n   coefficient will appear later in this block.  However, this shift\n   in meaning is perfectly OK because our context depends also on the\n   coefficient band (and since zigzag positions 0, 1, and 2 are in\n   distinct bands). */\n\n#define COEFF_CONTEXTS 6\n#define BAND_COEFF_CONTEXTS(band) ((band) == 0 ? 3 : COEFF_CONTEXTS)\n\n// #define ENTROPY_STATS\n\ntypedef unsigned int vp9_coeff_count[REF_TYPES][COEF_BANDS][COEFF_CONTEXTS]\n                                    [ENTROPY_TOKENS];\ntypedef unsigned int vp9_coeff_stats[REF_TYPES][COEF_BANDS][COEFF_CONTEXTS]\n                                    [ENTROPY_NODES][2];\n\n#define SUBEXP_PARAM 4   /* Subexponential code parameter */\n#define MODULUS_PARAM 13 /* Modulus parameter */\n\nstruct VP9Common;\nvoid vp9_default_coef_probs(struct VP9Common *cm);\nvoid vp9_adapt_coef_probs(struct VP9Common *cm);\n\n// This is the index in the scan order beyond which all coefficients for\n// 8x8 transform and above are in the top band.\n// This macro is currently unused but may be used by certain implementations\n#define MAXBAND_INDEX 21\n\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_coefband_trans_8x8plus[1024]);\nDECLARE_ALIGNED(16, extern const uint8_t, vp9_coefband_trans_4x4[16]);\n\nstatic INLINE const uint8_t *get_band_translate(TX_SIZE tx_size) {\n  return tx_size == TX_4X4 ? vp9_coefband_trans_4x4\n                           : vp9_coefband_trans_8x8plus;\n}\n\n// 128 lists of probabilities are stored for the following ONE node probs:\n// 1, 3, 5, 7, ..., 253, 255\n// In between probabilities are interpolated linearly\n#define COEFF_PROB_MODELS 255\n\n#define UNCONSTRAINED_NODES 3\n\n#define PIVOT_NODE 2  // which node is pivot\n\n#define MODEL_NODES (ENTROPY_NODES - UNCONSTRAINED_NODES)\nextern const vpx_tree_index vp9_coef_con_tree[TREE_SIZE(ENTROPY_TOKENS)];\nextern const vpx_prob vp9_pareto8_full[COEFF_PROB_MODELS][MODEL_NODES];\n\ntypedef vpx_prob vp9_coeff_probs_model[REF_TYPES][COEF_BANDS][COEFF_CONTEXTS]\n                                      [UNCONSTRAINED_NODES];\n\ntypedef unsigned int vp9_coeff_count_model[REF_TYPES][COEF_BANDS]\n                                          [COEFF_CONTEXTS]\n                                          [UNCONSTRAINED_NODES + 1];\n\nvoid vp9_model_to_full_probs(const vpx_prob *model, vpx_prob *full);\n\ntypedef char ENTROPY_CONTEXT;\n\nstatic INLINE int combine_entropy_contexts(ENTROPY_CONTEXT a,\n                                           ENTROPY_CONTEXT b) {\n  return (a != 0) + (b != 0);\n}\n\nstatic INLINE int get_entropy_context(TX_SIZE tx_size, const ENTROPY_CONTEXT *a,\n                                      const ENTROPY_CONTEXT *l) {\n  ENTROPY_CONTEXT above_ec = 0, left_ec = 0;\n\n  switch (tx_size) {\n    case TX_4X4:\n      above_ec = a[0] != 0;\n      left_ec = l[0] != 0;\n      break;\n    case TX_8X8:\n      above_ec = !!*(const uint16_t *)a;\n      left_ec = !!*(const uint16_t *)l;\n      break;\n    case TX_16X16:\n      above_ec = !!*(const uint32_t *)a;\n      left_ec = !!*(const uint32_t *)l;\n      break;\n    case TX_32X32:\n      above_ec = !!*(const uint64_t *)a;\n      left_ec = !!*(const uint64_t *)l;\n      break;\n    default: assert(0 && \"Invalid transform size.\"); break;\n  }\n\n  return combine_entropy_contexts(above_ec, left_ec);\n}\n\n#ifdef __cplusplus\n}  // extern \"C\"\n#endif\n\n#endif  // VPX_VP9_COMMON_VP9_ENTROPY_H_\n"
+    },
+    "vp9/common/vp9_alloccommon.c": {
+      "sha256": "f496640ea6344b71c0a193ddbc77eebafc3b7be2de3a4efc60d16c7d60e65e89",
+      "exactSource": "/*\n *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.\n *\n *  Use of this source code is governed by a BSD-style license\n *  that can be found in the LICENSE file in the root of the source\n *  tree. An additional intellectual property rights grant can be found\n *  in the file PATENTS.  All contributing project authors may\n *  be found in the AUTHORS file in the root of the source tree.\n */\n\n#include \"./vpx_config.h\"\n#include \"vpx_mem/vpx_mem.h\"\n\n#include \"vp9/common/vp9_alloccommon.h\"\n#include \"vp9/common/vp9_blockd.h\"\n#include \"vp9/common/vp9_entropymode.h\"\n#include \"vp9/common/vp9_entropymv.h\"\n#include \"vp9/common/vp9_onyxc_int.h\"\n\nvoid vp9_set_mi_size(int *mi_rows, int *mi_cols, int *mi_stride, int width,\n                     int height) {\n  const int aligned_width = ALIGN_POWER_OF_TWO(width, MI_SIZE_LOG2);\n  const int aligned_height = ALIGN_POWER_OF_TWO(height, MI_SIZE_LOG2);\n  *mi_cols = aligned_width >> MI_SIZE_LOG2;\n  *mi_rows = aligned_height >> MI_SIZE_LOG2;\n  *mi_stride = calc_mi_size(*mi_cols);\n}\n\nvoid vp9_set_mb_size(int *mb_rows, int *mb_cols, int *mb_num, int mi_rows,\n                     int mi_cols) {\n  *mb_cols = (mi_cols + 1) >> 1;\n  *mb_rows = (mi_rows + 1) >> 1;\n  *mb_num = (*mb_rows) * (*mb_cols);\n}\n\nvoid vp9_set_mb_mi(VP9_COMMON *cm, int width, int height) {\n  vp9_set_mi_size(&cm->mi_rows, &cm->mi_cols, &cm->mi_stride, width, height);\n  vp9_set_mb_size(&cm->mb_rows, &cm->mb_cols, &cm->MBs, cm->mi_rows,\n                  cm->mi_cols);\n}\n\nstatic int alloc_seg_map(VP9_COMMON *cm, int seg_map_size) {\n  int i;\n\n  for (i = 0; i < NUM_PING_PONG_BUFFERS; ++i) {\n    cm->seg_map_array[i] = (uint8_t *)vpx_calloc(seg_map_size, 1);\n    if (cm->seg_map_array[i] == NULL) return 1;\n  }\n  cm->seg_map_alloc_size = seg_map_size;\n\n  // Init the index.\n  cm->seg_map_idx = 0;\n  cm->prev_seg_map_idx = 1;\n\n  cm->current_frame_seg_map = cm->seg_map_array[cm->seg_map_idx];\n  cm->last_frame_seg_map = cm->seg_map_array[cm->prev_seg_map_idx];\n\n  return 0;\n}\n\nstatic void free_seg_map(VP9_COMMON *cm) {\n  int i;\n\n  for (i = 0; i < NUM_PING_PONG_BUFFERS; ++i) {\n    vpx_free(cm->seg_map_array[i]);\n    cm->seg_map_array[i] = NULL;\n  }\n  cm->seg_map_alloc_size = 0;\n\n  cm->current_frame_seg_map = NULL;\n  cm->last_frame_seg_map = NULL;\n}\n\nvoid vp9_free_ref_frame_buffers(BufferPool *pool) {\n  int i;\n\n  if (!pool) return;\n\n  for (i = 0; i < FRAME_BUFFERS; ++i) {\n    if (!pool->frame_bufs[i].released &&\n        pool->frame_bufs[i].raw_frame_buffer.data != NULL) {\n      pool->release_fb_cb(pool->cb_priv, &pool->frame_bufs[i].raw_frame_buffer);\n      pool->frame_bufs[i].ref_count = 0;\n      pool->frame_bufs[i].released = 1;\n    }\n    vpx_free(pool->frame_bufs[i].mvs);\n    pool->frame_bufs[i].mvs = NULL;\n    vpx_free_frame_buffer(&pool->frame_bufs[i].buf);\n  }\n}\n\nvoid vp9_free_postproc_buffers(VP9_COMMON *cm) {\n#if CONFIG_VP9_POSTPROC\n  vpx_free_frame_buffer(&cm->post_proc_buffer);\n  vpx_free_frame_buffer(&cm->post_proc_buffer_int);\n  vpx_free(cm->postproc_state.limits);\n  cm->postproc_state.limits = NULL;\n  vpx_free(cm->postproc_state.generated_noise);\n  cm->postproc_state.generated_noise = NULL;\n#else\n  (void)cm;\n#endif\n}\n\nvoid vp9_free_context_buffers(VP9_COMMON *cm) {\n  if (cm->free_mi) cm->free_mi(cm);\n  free_seg_map(cm);\n  vpx_free(cm->above_context);\n  cm->above_context = NULL;\n  vpx_free(cm->above_seg_context);\n  cm->above_seg_context = NULL;\n  cm->above_context_alloc_cols = 0;\n  vpx_free(cm->lf.lfm);\n  cm->lf.lfm = NULL;\n}\n\nint vp9_alloc_loop_filter(VP9_COMMON *cm) {\n  vpx_free(cm->lf.lfm);\n  // Each lfm holds bit masks for all the 8x8 blocks in a 64x64 region.  The\n  // stride and rows are rounded up / truncated to a multiple of 8.\n  cm->lf.lfm_stride = (cm->mi_cols + (MI_BLOCK_SIZE - 1)) >> 3;\n  cm->lf.lfm = (LOOP_FILTER_MASK *)vpx_calloc(\n      ((cm->mi_rows + (MI_BLOCK_SIZE - 1)) >> 3) * cm->lf.lfm_stride,\n      sizeof(*cm->lf.lfm));\n  if (!cm->lf.lfm) return 1;\n  return 0;\n}\n\nint vp9_alloc_context_buffers(VP9_COMMON *cm, int width, int height) {\n  int new_mi_size;\n\n  vp9_set_mb_mi(cm, width, height);\n  new_mi_size = cm->mi_stride * calc_mi_size(cm->mi_rows);\n  if (cm->mi_alloc_size < new_mi_size) {\n    cm->free_mi(cm);\n    if (cm->alloc_mi(cm, new_mi_size)) goto fail;\n  }\n  if (cm->above_context_alloc_cols < cm->mi_cols) {\n    vpx_free(cm->above_context);\n    cm->above_context = (ENTROPY_CONTEXT *)vpx_calloc(\n        2 * mi_cols_aligned_to_sb(cm->mi_cols) * MAX_MB_PLANE,\n        sizeof(*cm->above_context));\n    if (!cm->above_context) goto fail;\n\n    vpx_free(cm->above_seg_context);\n    cm->above_seg_context = (PARTITION_CONTEXT *)vpx_calloc(\n        mi_cols_aligned_to_sb(cm->mi_cols), sizeof(*cm->above_seg_context));\n    if (!cm->above_seg_context) goto fail;\n    cm->above_context_alloc_cols = cm->mi_cols;\n  }\n\n  if (cm->seg_map_alloc_size < cm->mi_rows * cm->mi_cols) {\n    // Create the segmentation map structure and set to 0.\n    free_seg_map(cm);\n    if (alloc_seg_map(cm, cm->mi_rows * cm->mi_cols)) goto fail;\n  }\n\n  if (vp9_alloc_loop_filter(cm)) goto fail;\n\n  return 0;\n\nfail:\n  // clear the mi_* values to force a realloc on resync\n  vp9_set_mb_mi(cm, 0, 0);\n  vp9_free_context_buffers(cm);\n  return 1;\n}\n\nvoid vp9_remove_common(VP9_COMMON *cm) {\n#if CONFIG_VP9_POSTPROC\n  vp9_free_postproc_buffers(cm);\n#endif\n  vp9_free_context_buffers(cm);\n\n  vpx_free(cm->fc);\n  cm->fc = NULL;\n  vpx_free(cm->frame_contexts);\n  cm->frame_contexts = NULL;\n}\n\nvoid vp9_init_context_buffers(VP9_COMMON *cm) {\n  cm->setup_mi(cm);\n  if (cm->last_frame_seg_map)\n    memset(cm->last_frame_seg_map, 0, cm->mi_rows * cm->mi_cols);\n}\n\nvoid vp9_swap_current_and_last_seg_map(VP9_COMMON *cm) {\n  // Swap indices.\n  const int tmp = cm->seg_map_idx;\n  cm->seg_map_idx = cm->prev_seg_map_idx;\n  cm->prev_seg_map_idx = tmp;\n\n  cm->current_frame_seg_map = cm->seg_map_array[cm->seg_map_idx];\n  cm->last_frame_seg_map = cm->seg_map_array[cm->prev_seg_map_idx];\n}\n"
+    },
+    "vpx/internal/vpx_codec_internal.h": {
+      "sha256": "592237daf5d4d6982731a7a4a6c73d10760825c29f5c3755720bf9985c116f7f",
+      "exactSource": "/*\n *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.\n *\n *  Use of this source code is governed by a BSD-style license\n *  that can be found in the LICENSE file in the root of the source\n *  tree. An additional intellectual property rights grant can be found\n *  in the file PATENTS.  All contributing project authors may\n *  be found in the AUTHORS file in the root of the source tree.\n */\n\n/*!\\file\n * \\brief Describes the decoder algorithm interface for algorithm\n *        implementations.\n *\n * This file defines the private structures and data types that are only\n * relevant to implementing an algorithm, as opposed to using it.\n *\n * To create a decoder algorithm class, an interface structure is put\n * into the global namespace:\n *     <pre>\n *     my_codec.c:\n *       vpx_codec_iface_t my_codec = {\n *           \"My Codec v1.0\",\n *           VPX_CODEC_ALG_ABI_VERSION,\n *           ...\n *       };\n *     </pre>\n *\n * An application instantiates a specific decoder instance by using\n * vpx_codec_dec_init() and a pointer to the algorithm's interface structure:\n *     <pre>\n *     my_app.c:\n *       extern vpx_codec_iface_t my_codec;\n *       {\n *           vpx_codec_ctx_t algo;\n *           int threads = 4;\n *           vpx_codec_dec_cfg_t cfg = { threads, 0, 0 };\n *           res = vpx_codec_dec_init(&algo, &my_codec, &cfg, 0);\n *       }\n *     </pre>\n *\n * Once initialized, the instance is manged using other functions from\n * the vpx_codec_* family.\n */\n#ifndef VPX_VPX_INTERNAL_VPX_CODEC_INTERNAL_H_\n#define VPX_VPX_INTERNAL_VPX_CODEC_INTERNAL_H_\n#include \"../vpx_decoder.h\"\n#include \"../vpx_encoder.h\"\n#include <stdarg.h>\n\n#include \"vpx_config.h\"\n\n#ifdef __cplusplus\nextern \"C\" {\n#endif\n\n/*!\\brief Current ABI version number\n *\n * \\internal\n * If this file is altered in any way that changes the ABI, this value\n * must be bumped.  Examples include, but are not limited to, changing\n * types, removing or reassigning enums, adding/removing/rearranging\n * fields to structures\n */\n#define VPX_CODEC_INTERNAL_ABI_VERSION (5) /**<\\hideinitializer*/\n\ntypedef struct vpx_codec_alg_priv vpx_codec_alg_priv_t;\ntypedef struct vpx_codec_priv_enc_mr_cfg vpx_codec_priv_enc_mr_cfg_t;\n\n/*!\\brief init function pointer prototype\n *\n * Performs algorithm-specific initialization of the decoder context. This\n * function is called by vpx_codec_dec_init() and vpx_codec_enc_init(), so\n * plugins implementing this interface may trust the input parameters to be\n * properly initialized.\n *\n * \\param[in] ctx   Pointer to this instance's context\n * \\retval #VPX_CODEC_OK\n *     The input stream was recognized and decoder initialized.\n * \\retval #VPX_CODEC_MEM_ERROR\n *     Memory operation failed.\n */\ntypedef vpx_codec_err_t (*vpx_codec_init_fn_t)(\n    vpx_codec_ctx_t *ctx, vpx_codec_priv_enc_mr_cfg_t *data);\n\n/*!\\brief destroy function pointer prototype\n *\n * Performs algorithm-specific destruction of the decoder context. This\n * function is called by the generic vpx_codec_destroy() wrapper function,\n * so plugins implementing this interface may trust the input parameters\n * to be properly initialized.\n *\n * \\param[in] ctx   Pointer to this instance's context\n * \\retval #VPX_CODEC_OK\n *     The input stream was recognized and decoder initialized.\n * \\retval #VPX_CODEC_MEM_ERROR\n *     Memory operation failed.\n */\ntypedef vpx_codec_err_t (*vpx_codec_destroy_fn_t)(vpx_codec_alg_priv_t *ctx);\n\n/*!\\brief parse stream info function pointer prototype\n *\n * Performs high level parsing of the bitstream. This function is called by the\n * generic vpx_codec_peek_stream_info() wrapper function, so plugins\n * implementing this interface may trust the input parameters to be properly\n * initialized.\n *\n * \\param[in]      data    Pointer to a block of data to parse\n * \\param[in]      data_sz Size of the data buffer\n * \\param[in,out]  si      Pointer to stream info to update. The size member\n *                         \\ref MUST be properly initialized, but \\ref MAY be\n *                         clobbered by the algorithm. This parameter \\ref MAY\n *                         be NULL.\n *\n * \\retval #VPX_CODEC_OK\n *     Bitstream is parsable and stream information updated\n */\ntypedef vpx_codec_err_t (*vpx_codec_peek_si_fn_t)(const uint8_t *data,\n                                                  unsigned int data_sz,\n                                                  vpx_codec_stream_info_t *si);\n\n/*!\\brief Return information about the current stream.\n *\n * Returns information about the stream that has been parsed during decoding.\n *\n * \\param[in]      ctx     Pointer to this instance's context\n * \\param[in,out]  si      Pointer to stream info to update. The size member\n *                         \\ref MUST be properly initialized, but \\ref MAY be\n *                         clobbered by the algorithm. This parameter \\ref MAY\n *                         be NULL.\n *\n * \\retval #VPX_CODEC_OK\n *     Bitstream is parsable and stream information updated\n */\ntypedef vpx_codec_err_t (*vpx_codec_get_si_fn_t)(vpx_codec_alg_priv_t *ctx,\n                                                 vpx_codec_stream_info_t *si);\n\n/*!\\brief control function pointer prototype\n *\n * This function is used to exchange algorithm specific data with the decoder\n * instance. This can be used to implement features specific to a particular\n * algorithm.\n *\n * This function is called by the generic vpx_codec_control() wrapper\n * function, so plugins implementing this interface may trust the input\n * parameters to be properly initialized. However,  this interface does not\n * provide type safety for the exchanged data or assign meanings to the\n * control codes. Those details should be specified in the algorithm's\n * header file. In particular, the ctrl_id parameter is guaranteed to exist\n * in the algorithm's control mapping table, and the data parameter may be NULL.\n *\n *\n * \\param[in]     ctx              Pointer to this instance's context\n * \\param[in]     ctrl_id          Algorithm specific control identifier\n * \\param[in,out] data             Data to exchange with algorithm instance.\n *\n * \\retval #VPX_CODEC_OK\n *     The internal state data was deserialized.\n */\ntypedef vpx_codec_err_t (*vpx_codec_control_fn_t)(vpx_codec_alg_priv_t *ctx,\n                                                  va_list ap);\n\n/*!\\brief control function pointer mapping\n *\n * This structure stores the mapping between control identifiers and\n * implementing functions. Each algorithm provides a list of these\n * mappings. This list is searched by the vpx_codec_control() wrapper\n * function to determine which function to invoke. The special\n * value {0, NULL} is used to indicate end-of-list, and must be\n * present. The special value {0, <non-null>} can be used as a catch-all\n * mapping. This implies that ctrl_id values chosen by the algorithm\n * \\ref MUST be non-zero.\n */\ntypedef const struct vpx_codec_ctrl_fn_map {\n  int ctrl_id;\n  vpx_codec_control_fn_t fn;\n} vpx_codec_ctrl_fn_map_t;\n\n/*!\\brief decode data function pointer prototype\n *\n * Processes a buffer of coded data. If the processing results in a new\n * decoded frame becoming available, put_slice and put_frame callbacks\n * are invoked as appropriate. This function is called by the generic\n * vpx_codec_decode() wrapper function, so plugins implementing this\n * interface may trust the input parameters to be properly initialized.\n *\n * \\param[in] ctx          Pointer to this instance's context\n * \\param[in] data         Pointer to this block of new coded data. If\n *                         NULL, the put_frame callback is invoked for\n *                         the previously decoded frame.\n * \\param[in] data_sz      Size of the coded data, in bytes.\n *\n * \\return Returns #VPX_CODEC_OK if the coded data was processed completely\n *         and future pictures can be decoded without error. Otherwise,\n *         see the descriptions of the other error codes in ::vpx_codec_err_t\n *         for recoverability capabilities.\n */\ntypedef vpx_codec_err_t (*vpx_codec_decode_fn_t)(vpx_codec_alg_priv_t *ctx,\n                                                 const uint8_t *data,\n                                                 unsigned int data_sz,\n                                                 void *user_priv);\n\n/*!\\brief Decoded frames iterator\n *\n * Iterates over a list of the frames available for display. The iterator\n * storage should be initialized to NULL to start the iteration. Iteration is\n * complete when this function returns NULL.\n *\n * The list of available frames becomes valid upon completion of the\n * vpx_codec_decode call, and remains valid until the next call to\n * vpx_codec_decode.\n *\n * \\param[in]     ctx      Pointer to this instance's context\n * \\param[in out] iter     Iterator storage, initialized to NULL\n *\n * \\return Returns a pointer to an image, if one is ready for display. Frames\n *         produced will always be in PTS (presentation time stamp) order.\n */\ntypedef vpx_image_t *(*vpx_codec_get_frame_fn_t)(vpx_codec_alg_priv_t *ctx,\n                                                 vpx_codec_iter_t *iter);\n\n/*!\\brief Pass in external frame buffers for the decoder to use.\n *\n * Registers functions to be called when libvpx needs a frame buffer\n * to decode the current frame and a function to be called when libvpx does\n * not internally reference the frame buffer. This set function must\n * be called before the first call to decode or libvpx will assume the\n * default behavior of allocating frame buffers internally.\n *\n * \\param[in] ctx          Pointer to this instance's context\n * \\param[in] cb_get       Pointer to the get callback function\n * \\param[in] cb_release   Pointer to the release callback function\n * \\param[in] cb_priv      Callback's private data\n *\n * \\retval #VPX_CODEC_OK\n *     External frame buffers will be used by libvpx.\n * \\retval #VPX_CODEC_INVALID_PARAM\n *     One or more of the callbacks were NULL.\n * \\retval #VPX_CODEC_ERROR\n *     Decoder context not initialized, or algorithm not capable of\n *     using external frame buffers.\n *\n * \\note\n * When decoding VP9, the application may be required to pass in at least\n * #VP9_MAXIMUM_REF_BUFFERS + #VPX_MAXIMUM_WORK_BUFFERS external frame\n * buffers.\n */\ntypedef vpx_codec_err_t (*vpx_codec_set_fb_fn_t)(\n    vpx_codec_alg_priv_t *ctx, vpx_get_frame_buffer_cb_fn_t cb_get,\n    vpx_release_frame_buffer_cb_fn_t cb_release, void *cb_priv);\n\ntypedef vpx_codec_err_t (*vpx_codec_encode_fn_t)(vpx_codec_alg_priv_t *ctx,\n                                                 const vpx_image_t *img,\n                                                 vpx_codec_pts_t pts,\n                                                 unsigned long duration,\n                                                 vpx_enc_frame_flags_t flags,\n                                                 vpx_enc_deadline_t deadline);\ntypedef const vpx_codec_cx_pkt_t *(*vpx_codec_get_cx_data_fn_t)(\n    vpx_codec_alg_priv_t *ctx, vpx_codec_iter_t *iter);\n\ntypedef vpx_codec_err_t (*vpx_codec_enc_config_set_fn_t)(\n    vpx_codec_alg_priv_t *ctx, const vpx_codec_enc_cfg_t *cfg);\ntypedef vpx_fixed_buf_t *(*vpx_codec_get_global_headers_fn_t)(\n    vpx_codec_alg_priv_t *ctx);\n\ntypedef vpx_image_t *(*vpx_codec_get_preview_frame_fn_t)(\n    vpx_codec_alg_priv_t *ctx);\n\ntypedef vpx_codec_err_t (*vpx_codec_enc_mr_get_mem_loc_fn_t)(\n    const vpx_codec_enc_cfg_t *cfg, void **mem_loc);\n\ntypedef void (*vpx_codec_enc_mr_free_mem_loc_fn_t)(void *mem_loc);\n\n/*!\\brief usage configuration mapping\n *\n * This structure stores the mapping between usage identifiers and\n * configuration structures. Each algorithm provides a list of these\n * mappings. This list is searched by the vpx_codec_enc_config_default()\n * wrapper function to determine which config to return. The special value\n * {-1, {0}} is used to indicate end-of-list, and must be present. At least\n * one mapping must be present, in addition to the end-of-list.\n *\n */\ntypedef const struct vpx_codec_enc_cfg_map {\n  int usage;\n  vpx_codec_enc_cfg_t cfg;\n} vpx_codec_enc_cfg_map_t;\n\n/*!\\brief Decoder algorithm interface\n *\n * All decoders \\ref MUST expose a variable of this type.\n */\nstruct vpx_codec_iface {\n  const char *name;                   /**< Identification String  */\n  int abi_version;                    /**< Implemented ABI version */\n  vpx_codec_caps_t caps;              /**< Decoder capabilities */\n  vpx_codec_init_fn_t init;           /**< \\copydoc ::vpx_codec_init_fn_t */\n  vpx_codec_destroy_fn_t destroy;     /**< \\copydoc ::vpx_codec_destroy_fn_t */\n  vpx_codec_ctrl_fn_map_t *ctrl_maps; /**< \\copydoc ::vpx_codec_ctrl_fn_map_t */\n  struct vpx_codec_dec_iface {\n    vpx_codec_peek_si_fn_t peek_si; /**< \\copydoc ::vpx_codec_peek_si_fn_t */\n    vpx_codec_get_si_fn_t get_si;   /**< \\copydoc ::vpx_codec_get_si_fn_t */\n    vpx_codec_decode_fn_t decode;   /**< \\copydoc ::vpx_codec_decode_fn_t */\n    vpx_codec_get_frame_fn_t\n        get_frame;                   /**< \\copydoc ::vpx_codec_get_frame_fn_t */\n    vpx_codec_set_fb_fn_t set_fb_fn; /**< \\copydoc ::vpx_codec_set_fb_fn_t */\n  } dec;\n  struct vpx_codec_enc_iface {\n    int cfg_map_count;\n    vpx_codec_enc_cfg_map_t\n        *cfg_maps;                /**< \\copydoc ::vpx_codec_enc_cfg_map_t */\n    vpx_codec_encode_fn_t encode; /**< \\copydoc ::vpx_codec_encode_fn_t */\n    vpx_codec_get_cx_data_fn_t\n        get_cx_data; /**< \\copydoc ::vpx_codec_get_cx_data_fn_t */\n    vpx_codec_enc_config_set_fn_t\n        cfg_set; /**< \\copydoc ::vpx_codec_enc_config_set_fn_t */\n    vpx_codec_get_global_headers_fn_t\n        get_glob_hdrs; /**< \\copydoc ::vpx_codec_get_global_headers_fn_t */\n    vpx_codec_get_preview_frame_fn_t\n        get_preview; /**< \\copydoc ::vpx_codec_get_preview_frame_fn_t */\n    vpx_codec_enc_mr_get_mem_loc_fn_t\n        mr_get_mem_loc; /**< \\copydoc ::vpx_codec_enc_mr_get_mem_loc_fn_t */\n    vpx_codec_enc_mr_free_mem_loc_fn_t\n        mr_free_mem_loc; /**< \\copydoc ::vpx_codec_enc_mr_free_mem_loc_fn_t */\n  } enc;\n};\n\n/*!\\brief Callback function pointer / user data pair storage */\ntypedef struct vpx_codec_priv_cb_pair {\n  union {\n    vpx_codec_put_frame_cb_fn_t put_frame;\n    vpx_codec_put_slice_cb_fn_t put_slice;\n  } u;\n  void *user_priv;\n} vpx_codec_priv_cb_pair_t;\n\n/*!\\brief Instance private storage\n *\n * This structure is allocated by the algorithm's init function. It can be\n * extended in one of two ways. First, a second, algorithm specific structure\n * can be allocated and the priv member pointed to it. Alternatively, this\n * structure can be made the first member of the algorithm specific structure,\n * and the pointer cast to the proper type.\n */\nstruct vpx_codec_priv {\n  const char *err_detail;\n  vpx_codec_flags_t init_flags;\n  struct {\n    vpx_codec_priv_cb_pair_t put_frame_cb;\n    vpx_codec_priv_cb_pair_t put_slice_cb;\n  } dec;\n  struct {\n    vpx_fixed_buf_t cx_data_dst_buf;\n    unsigned int cx_data_pad_before;\n    unsigned int cx_data_pad_after;\n    vpx_codec_cx_pkt_t cx_data_pkt;\n    unsigned int total_encoders;\n  } enc;\n};\n\n/*\n * Multi-resolution encoding internal configuration\n */\nstruct vpx_codec_priv_enc_mr_cfg {\n  unsigned int mr_total_resolutions;\n  unsigned int mr_encoder_id;\n  struct vpx_rational mr_down_sampling_factor;\n  void *mr_low_res_mode_info;\n};\n\n#undef VPX_CTRL_USE_TYPE\n#define VPX_CTRL_USE_TYPE(id, typ) \\\n  static VPX_INLINE typ id##__value(va_list args) { return va_arg(args, typ); }\n\n#undef VPX_CTRL_USE_TYPE_DEPRECATED\n#define VPX_CTRL_USE_TYPE_DEPRECATED(id, typ) \\\n  static VPX_INLINE typ id##__value(va_list args) { return va_arg(args, typ); }\n\n#define CAST(id, arg) id##__value(arg)\n\n/* CODEC_INTERFACE convenience macro\n *\n * By convention, each codec interface is a struct with extern linkage, where\n * the symbol is suffixed with _algo. A getter function is also defined to\n * return a pointer to the struct, since in some cases it's easier to work\n * with text symbols than data symbols (see issue #169). This function has\n * the same name as the struct, less the _algo suffix. The CODEC_INTERFACE\n * macro is provided to define this getter function automatically.\n */\n#define CODEC_INTERFACE(id)                          \\\n  vpx_codec_iface_t *id(void) { return &id##_algo; } \\\n  vpx_codec_iface_t id##_algo\n\n/* Internal Utility Functions\n *\n * The following functions are intended to be used inside algorithms as\n * utilities for manipulating vpx_codec_* data structures.\n */\nstruct vpx_codec_pkt_list {\n  unsigned int cnt;\n  unsigned int max;\n  struct vpx_codec_cx_pkt pkts[1];\n};\n\n#define vpx_codec_pkt_list_decl(n)     \\\n  union {                              \\\n    struct vpx_codec_pkt_list head;    \\\n    struct {                           \\\n      struct vpx_codec_pkt_list head;  \\\n      struct vpx_codec_cx_pkt pkts[n]; \\\n    } alloc;                           \\\n  }\n\n#define vpx_codec_pkt_list_init(m) \\\n  (m)->alloc.head.cnt = 0,         \\\n  (m)->alloc.head.max = sizeof((m)->alloc.pkts) / sizeof((m)->alloc.pkts[0])\n\nint vpx_codec_pkt_list_add(struct vpx_codec_pkt_list *,\n                           const struct vpx_codec_cx_pkt *);\n\nconst vpx_codec_cx_pkt_t *vpx_codec_pkt_list_get(\n    struct vpx_codec_pkt_list *list, vpx_codec_iter_t *iter);\n\n#include <stdio.h>\n#include <setjmp.h>\n\nstruct vpx_internal_error_info {\n  vpx_codec_err_t error_code;\n  int has_detail;\n  char detail[80];\n  int setjmp;\n  jmp_buf jmp;\n};\n\n#if CONFIG_DEBUG\n#define CHECK_MEM_ERROR(error, lval, expr)                                  \\\n  do {                                                                      \\\n    assert((error)->setjmp);                                                \\\n    (lval) = (expr);                                                        \\\n    if (!(lval))                                                            \\\n      vpx_internal_error(error, VPX_CODEC_MEM_ERROR,                        \\\n                         \"Failed to allocate \" #lval \" at %s:%d\", __FILE__, \\\n                         __LINE__);                                         \\\n  } while (0)\n#else\n#define CHECK_MEM_ERROR(error, lval, expr)             \\\n  do {                                                 \\\n    assert((error)->setjmp);                           \\\n    (lval) = (expr);                                   \\\n    if (!(lval))                                       \\\n      vpx_internal_error(error, VPX_CODEC_MEM_ERROR,   \\\n                         \"Failed to allocate \" #lval); \\\n  } while (0)\n#endif\n\n#define CLANG_ANALYZER_NORETURN\n#if defined(__has_feature)\n#if __has_feature(attribute_analyzer_noreturn)\n#undef CLANG_ANALYZER_NORETURN\n#define CLANG_ANALYZER_NORETURN __attribute__((analyzer_noreturn))\n#endif\n#endif\n\n// Tells the compiler to perform `printf` format string checking if the\n// compiler supports it; see the 'format' attribute in\n// <https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html>.\n#define LIBVPX_FORMAT_PRINTF(string_index, first_to_check)\n#if defined(__has_attribute)\n#if __has_attribute(format)\n#undef LIBVPX_FORMAT_PRINTF\n#define LIBVPX_FORMAT_PRINTF(string_index, first_to_check) \\\n  __attribute__((__format__(__printf__, string_index, first_to_check)))\n#endif\n#endif\n\nvoid vpx_internal_error(struct vpx_internal_error_info *info,\n                        vpx_codec_err_t error, const char *fmt, ...)\n    LIBVPX_FORMAT_PRINTF(3, 4) CLANG_ANALYZER_NORETURN;\n\n#ifdef __cplusplus\n}  // extern \"C\"\n#endif\n\n#endif  // VPX_VPX_INTERNAL_VPX_CODEC_INTERNAL_H_\n"
+    },
+    "vp9/encoder/vp9_encoder.h": {
+      "sha256": "299ee992384604932584c959b9504130981a5562833863751100627022662f6c",
+      "exactSource": "/*\n *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.\n *\n *  Use of this source code is governed by a BSD-style license\n *  that can be found in the LICENSE file in the root of the source\n *  tree. An additional intellectual property rights grant can be found\n *  in the file PATENTS.  All contributing project authors may\n *  be found in the AUTHORS file in the root of the source tree.\n */\n\n#ifndef VPX_VP9_ENCODER_VP9_ENCODER_H_\n#define VPX_VP9_ENCODER_VP9_ENCODER_H_\n\n#include <stdio.h>\n\n#include \"./vpx_config.h\"\n#include \"./vpx_dsp_rtcd.h\"\n#include \"vpx/internal/vpx_codec_internal.h\"\n#include \"vpx/vpx_ext_ratectrl.h\"\n#include \"vpx/vp8cx.h\"\n#include \"vpx/vpx_tpl.h\"\n#if CONFIG_INTERNAL_STATS\n#include \"vpx_dsp/ssim.h\"\n#endif\n#include \"vpx_dsp/variance.h\"\n#include \"vpx_dsp/psnr.h\"\n#include \"vpx_ports/system_state.h\"\n#include \"vpx_util/vpx_pthread.h\"\n#include \"vpx_util/vpx_thread.h\"\n#include \"vpx_util/vpx_timestamp.h\"\n\n#include \"vp9/common/vp9_alloccommon.h\"\n#include \"vp9/common/vp9_ppflags.h\"\n#include \"vp9/common/vp9_entropymode.h\"\n#include \"vp9/common/vp9_thread_common.h\"\n#include \"vp9/common/vp9_onyxc_int.h\"\n\n#if !CONFIG_REALTIME_ONLY\n#include \"vp9/encoder/vp9_alt_ref_aq.h\"\n#endif\n#include \"vp9/encoder/vp9_aq_cyclicrefresh.h\"\n#include \"vp9/encoder/vp9_context_tree.h\"\n#include \"vp9/encoder/vp9_encodemb.h\"\n#include \"vp9/encoder/vp9_ethread.h\"\n#include \"vp9/encoder/vp9_ext_ratectrl.h\"\n#include \"vp9/encoder/vp9_firstpass.h\"\n#include \"vp9/encoder/vp9_job_queue.h\"\n#include \"vp9/encoder/vp9_lookahead.h\"\n#include \"vp9/encoder/vp9_mbgraph.h\"\n#include \"vp9/encoder/vp9_mcomp.h\"\n#include \"vp9/encoder/vp9_noise_estimate.h\"\n#include \"vp9/encoder/vp9_quantize.h\"\n#include \"vp9/encoder/vp9_ratectrl.h\"\n#include \"vp9/encoder/vp9_rd.h\"\n#include \"vp9/encoder/vp9_speed_features.h\"\n#include \"vp9/encoder/vp9_svc_layercontext.h\"\n#include \"vp9/encoder/vp9_tokenize.h\"\n\n#if CONFIG_VP9_TEMPORAL_DENOISING\n#include \"vp9/encoder/vp9_denoiser.h\"\n#endif\n\n#ifdef __cplusplus\nextern \"C\" {\n#endif\n\n// vp9 uses 10,000,000 ticks/second as time stamp\n#define TICKS_PER_SEC 10000000\n\ntypedef struct {\n  int nmvjointcost[MV_JOINTS];\n  int nmvcosts[2][MV_VALS];\n  int nmvcosts_hp[2][MV_VALS];\n\n  vpx_prob segment_pred_probs[PREDICTION_PROBS];\n\n  unsigned char *last_frame_seg_map_copy;\n\n  // 0 = Intra, Last, GF, ARF\n  signed char last_ref_lf_deltas[MAX_REF_LF_DELTAS];\n  // 0 = ZERO_MV, MV\n  signed char last_mode_lf_deltas[MAX_MODE_LF_DELTAS];\n\n  FRAME_CONTEXT fc;\n} CODING_CONTEXT;\n\ntypedef enum {\n  // encode_breakout is disabled.\n  ENCODE_BREAKOUT_DISABLED = 0,\n  // encode_breakout is enabled.\n  ENCODE_BREAKOUT_ENABLED = 1,\n  // encode_breakout is enabled with small max_thresh limit.\n  ENCODE_BREAKOUT_LIMITED = 2\n} ENCODE_BREAKOUT_TYPE;\n\ntypedef enum {\n  // Good Quality Fast Encoding. The encoder balances quality with the amount of\n  // time it takes to encode the output. Speed setting controls how fast.\n  GOOD,\n\n  // The encoder places priority on the quality of the output over encoding\n  // speed. The output is compressed at the highest possible quality. This\n  // option takes the longest amount of time to encode. Speed setting ignored.\n  BEST,\n\n  // Realtime/Live Encoding. This mode is optimized for realtime encoding (for\n  // example, capturing a television signal or feed from a live camera). Speed\n  // setting controls how fast.\n  REALTIME\n} MODE;\n\ntypedef enum {\n  FRAMEFLAGS_KEY = 1 << 0,\n  FRAMEFLAGS_GOLDEN = 1 << 1,\n  FRAMEFLAGS_ALTREF = 1 << 2,\n} FRAMETYPE_FLAGS;\n\ntypedef enum {\n  NO_AQ = 0,\n  VARIANCE_AQ = 1,\n  COMPLEXITY_AQ = 2,\n  CYCLIC_REFRESH_AQ = 3,\n  EQUATOR360_AQ = 4,\n  PERCEPTUAL_AQ = 5,\n  PSNR_AQ = 6,\n  // AQ based on lookahead temporal\n  // variance (only valid for altref frames)\n  LOOKAHEAD_AQ = 7,\n  AQ_MODE_COUNT  // This should always be the last member of the enum\n} AQ_MODE;\n\ntypedef enum {\n  RESIZE_NONE = 0,    // No frame resizing allowed (except for SVC).\n  RESIZE_FIXED = 1,   // All frames are coded at the specified dimension.\n  RESIZE_DYNAMIC = 2  // Coded size of each frame is determined by the codec.\n} RESIZE_TYPE;\n\ntypedef enum {\n  kInvalid = 0,\n  kLowSadLowSumdiff = 1,\n  kLowSadHighSumdiff = 2,\n  kHighSadLowSumdiff = 3,\n  kHighSadHighSumdiff = 4,\n  kLowVarHighSumdiff = 5,\n  kVeryHighSad = 6,\n} CONTENT_STATE_SB;\n\ntypedef enum {\n  LOOPFILTER_ALL = 0,\n  LOOPFILTER_REFERENCE = 1,  // Disable loopfilter on non reference frames.\n  NO_LOOPFILTER = 2,         // Disable loopfilter on all frames.\n} LOOPFILTER_CONTROL;\n\ntypedef struct VP9EncoderConfig {\n  BITSTREAM_PROFILE profile;\n  vpx_bit_depth_t bit_depth;     // Codec bit-depth.\n  int width;                     // width of data passed to the compressor\n  int height;                    // height of data passed to the compressor\n  unsigned int input_bit_depth;  // Input bit depth.\n  double init_framerate;         // set to passed in framerate\n  vpx_rational_t g_timebase;  // equivalent to g_timebase in vpx_codec_enc_cfg_t\n  vpx_rational64_t g_timebase_in_ts;  // g_timebase * TICKS_PER_SEC\n\n  int64_t target_bandwidth;  // bandwidth to be used in bits per second\n\n  int noise_sensitivity;  // pre processing blur: recommendation 0\n  int sharpness;          // sharpening output: recommendation 0:\n  int speed;\n  // maximum allowed bitrate for any intra frame in % of bitrate target.\n  unsigned int rc_max_intra_bitrate_pct;\n  // maximum allowed bitrate for any inter frame in % of bitrate target.\n  unsigned int rc_max_inter_bitrate_pct;\n  // percent of rate boost for golden frame in CBR mode.\n  unsigned int gf_cbr_boost_pct;\n\n  MODE mode;\n  int pass;\n\n  // Key Framing Operations\n  int auto_key;  // autodetect cut scenes and set the keyframes\n  int key_freq;  // maximum distance to key frame.\n\n  int lag_in_frames;  // how many frames lag before we start encoding\n\n  // ----------------------------------------------------------------\n  // DATARATE CONTROL OPTIONS\n\n  // vbr, cbr, constrained quality or constant quality\n  enum vpx_rc_mode rc_mode;\n\n  // buffer targeting aggressiveness\n  int under_shoot_pct;\n  int over_shoot_pct;\n\n  // buffering parameters\n  int64_t starting_buffer_level_ms;\n  int64_t optimal_buffer_level_ms;\n  int64_t maximum_buffer_size_ms;\n\n  // Frame drop threshold.\n  int drop_frames_water_mark;\n\n  // controlling quality\n  int fixed_q;\n  int worst_allowed_q;\n  int best_allowed_q;\n  int cq_level;\n  AQ_MODE aq_mode;  // Adaptive Quantization mode\n\n  // Special handling of Adaptive Quantization for AltRef frames\n  int alt_ref_aq;\n\n  // Internal frame size scaling.\n  RESIZE_TYPE resize_mode;\n  int scaled_frame_width;\n  int scaled_frame_height;\n\n  // Enable feature to reduce the frame quantization every x frames.\n  int frame_periodic_boost;\n\n  // two pass datarate control\n  int two_pass_vbrbias;  // two pass datarate control tweaks\n  int two_pass_vbrmin_section;\n  int two_pass_vbrmax_section;\n  int vbr_corpus_complexity;  // 0 indicates corpus vbr disabled\n  // END DATARATE CONTROL OPTIONS\n  // ----------------------------------------------------------------\n\n  // Spatial and temporal scalability.\n  int ss_number_layers;  // Number of spatial layers.\n  int ts_number_layers;  // Number of temporal layers.\n  // Bitrate allocation for spatial layers.\n  int layer_target_bitrate[VPX_MAX_LAYERS];\n  int ss_target_bitrate[VPX_SS_MAX_LAYERS];\n  int ss_enable_auto_arf[VPX_SS_MAX_LAYERS];\n  // Bitrate allocation (CBR mode) and framerate factor, for temporal layers.\n  int ts_rate_decimator[VPX_TS_MAX_LAYERS];\n\n  int enable_auto_arf;\n\n  int encode_breakout;  // early breakout : for video conf recommend 800\n\n  /* Bitfield defining the error resiliency features to enable.\n   * Can provide decodable frames after losses in previous\n   * frames and decodable partitions after losses in the same frame.\n   */\n  unsigned int error_resilient_mode;\n\n  /* Bitfield defining the parallel decoding mode where the\n   * decoding in successive frames may be conducted in parallel\n   * just by decoding the frame headers.\n   */\n  unsigned int frame_parallel_decoding_mode;\n\n  int arnr_max_frames;\n  int arnr_strength;\n\n  int min_gf_interval;\n  int max_gf_interval;\n\n  int tile_columns;\n  int tile_rows;\n\n  int enable_tpl_model;\n\n  int enable_keyframe_filtering;\n\n  int max_threads;\n\n  unsigned int target_level;\n\n  vpx_fixed_buf_t two_pass_stats_in;\n\n  vp8e_tuning tuning;\n  vp9e_tune_content content;\n#if CONFIG_VP9_HIGHBITDEPTH\n  int use_highbitdepth;\n#endif\n  vpx_color_space_t color_space;\n  vpx_color_range_t color_range;\n  int render_width;\n  int render_height;\n  VP9E_TEMPORAL_LAYERING_MODE temporal_layering_mode;\n\n  int row_mt;\n  unsigned int motion_vector_unit_test;\n  int delta_q_uv;\n} VP9EncoderConfig;\n\nstatic INLINE int is_lossless_requested(const VP9EncoderConfig *cfg) {\n  return cfg->best_allowed_q == 0 && cfg->worst_allowed_q == 0;\n}\n\ntypedef struct TplDepStats {\n  int64_t intra_cost;\n  int64_t inter_cost;\n  int64_t mc_flow;\n  int64_t mc_dep_cost;\n  int64_t mc_ref_cost;\n\n  int ref_frame_index;\n  int_mv mv;\n} TplDepStats;\n\n#if CONFIG_NON_GREEDY_MV\n\n#define ZERO_MV_MODE 0\n#define NEW_MV_MODE 1\n#define NEAREST_MV_MODE 2\n#define NEAR_MV_MODE 3\n#define MAX_MV_MODE 4\n#endif\n\ntypedef struct TplDepFrame {\n  uint8_t is_valid;\n  TplDepStats *tpl_stats_ptr;\n  int stride;\n  int width;\n  int height;\n  int mi_rows;\n  int mi_cols;\n  int base_qindex;\n#if CONFIG_NON_GREEDY_MV\n  int lambda;\n  int *mv_mode_arr[3];\n  double *rd_diff_arr[3];\n#endif\n} TplDepFrame;\n\n#define TPL_DEP_COST_SCALE_LOG2 4\n\n// TODO(jingning) All spatially adaptive variables should go to TileDataEnc.\ntypedef struct TileDataEnc {\n  TileInfo tile_info;\n  int thresh_freq_fact[BLOCK_SIZES][MAX_MODES];\n  int thresh_freq_fact_prev[BLOCK_SIZES][MAX_MODES];\n  int8_t mode_map[BLOCK_SIZES][MAX_MODES];\n  FIRSTPASS_DATA fp_data;\n  VP9RowMTSync row_mt_sync;\n\n  // Used for adaptive_rd_thresh with row multithreading\n  int *row_base_thresh_freq_fact;\n  // The value of sb_rows when row_base_thresh_freq_fact is allocated.\n  // The row_base_thresh_freq_fact array has sb_rows * BLOCK_SIZES * MAX_MODES\n  // elements.\n  int sb_rows;\n  MV firstpass_top_mv;\n} TileDataEnc;\n\ntypedef struct RowMTInfo {\n  JobQueueHandle job_queue_hdl;\n#if CONFIG_MULTITHREAD\n  pthread_mutex_t job_mutex;\n#endif\n} RowMTInfo;\n\ntypedef struct {\n  TOKENEXTRA *start;\n  TOKENEXTRA *stop;\n  unsigned int count;\n} TOKENLIST;\n\ntypedef struct MultiThreadHandle {\n  int allocated_tile_rows;\n  int allocated_tile_cols;\n  int allocated_vert_unit_rows;\n\n  // Frame level params\n  int num_tile_vert_sbs[MAX_NUM_TILE_ROWS];\n\n  // Job Queue structure and handles\n  JobQueue *job_queue;\n\n  int jobs_per_tile_col;\n\n  RowMTInfo row_mt_info[MAX_NUM_TILE_COLS];\n  int thread_id_to_tile_id[MAX_NUM_THREADS];  // Mapping of threads to tiles\n} MultiThreadHandle;\n\ntypedef struct RD_COUNTS {\n  vp9_coeff_count coef_counts[TX_SIZES][PLANE_TYPES];\n  int64_t comp_pred_diff[REFERENCE_MODES];\n  int64_t filter_diff[SWITCHABLE_FILTER_CONTEXTS];\n} RD_COUNTS;\n\ntypedef struct ThreadData {\n  MACROBLOCK mb;\n  RD_COUNTS rd_counts;\n  FRAME_COUNTS *counts;\n\n  PICK_MODE_CONTEXT *leaf_tree;\n  PC_TREE *pc_tree;\n  PC_TREE *pc_root;\n} ThreadData;\n\nstruct EncWorkerData;\n\ntypedef struct ActiveMap {\n  int enabled;\n  int update;\n  unsigned char *map;\n} ActiveMap;\n\ntypedef enum { Y, U, V, ALL } STAT_TYPE;\n\ntypedef struct IMAGE_STAT {\n  double stat[ALL + 1];\n  double worst;\n} ImageStat;\n\n// Kf noise filtering currently disabled by default in build.\n// #define ENABLE_KF_DENOISE 1\n\n#define CPB_WINDOW_SIZE 4\n#define FRAME_WINDOW_SIZE 128\n#define SAMPLE_RATE_GRACE_P 0.015\n#define VP9_LEVELS 14\n\ntypedef enum {\n  LEVEL_UNKNOWN = 0,\n  LEVEL_AUTO = 1,\n  LEVEL_1 = 10,\n  LEVEL_1_1 = 11,\n  LEVEL_2 = 20,\n  LEVEL_2_1 = 21,\n  LEVEL_3 = 30,\n  LEVEL_3_1 = 31,\n  LEVEL_4 = 40,\n  LEVEL_4_1 = 41,\n  LEVEL_5 = 50,\n  LEVEL_5_1 = 51,\n  LEVEL_5_2 = 52,\n  LEVEL_6 = 60,\n  LEVEL_6_1 = 61,\n  LEVEL_6_2 = 62,\n  LEVEL_MAX = 255\n} VP9_LEVEL;\n\ntypedef struct {\n  VP9_LEVEL level;\n  uint64_t max_luma_sample_rate;\n  uint32_t max_luma_picture_size;\n  uint32_t max_luma_picture_breadth;\n  double average_bitrate;  // in kilobits per second\n  double max_cpb_size;     // in kilobits\n  double compression_ratio;\n  uint8_t max_col_tiles;\n  uint32_t min_altref_distance;\n  uint8_t max_ref_frame_buffers;\n} Vp9LevelSpec;\n\nextern const Vp9LevelSpec vp9_level_defs[VP9_LEVELS];\n\ntypedef struct {\n  int64_t ts;  // timestamp\n  uint32_t luma_samples;\n  uint32_t size;  // in bytes\n} FrameRecord;\n\ntypedef struct {\n  FrameRecord buf[FRAME_WINDOW_SIZE];\n  uint8_t start;\n  uint8_t len;\n} FrameWindowBuffer;\n\ntypedef struct {\n  uint8_t seen_first_altref;\n  uint32_t frames_since_last_altref;\n  uint64_t total_compressed_size;\n  uint64_t total_uncompressed_size;\n  double time_encoded;  // in seconds\n  FrameWindowBuffer frame_window_buffer;\n  int ref_refresh_map;\n} Vp9LevelStats;\n\ntypedef struct {\n  Vp9LevelStats level_stats;\n  Vp9LevelSpec level_spec;\n} Vp9LevelInfo;\n\ntypedef enum {\n  BITRATE_TOO_LARGE = 0,\n  LUMA_PIC_SIZE_TOO_LARGE,\n  LUMA_PIC_BREADTH_TOO_LARGE,\n  LUMA_SAMPLE_RATE_TOO_LARGE,\n  CPB_TOO_LARGE,\n  COMPRESSION_RATIO_TOO_SMALL,\n  TOO_MANY_COLUMN_TILE,\n  ALTREF_DIST_TOO_SMALL,\n  TOO_MANY_REF_BUFFER,\n  TARGET_LEVEL_FAIL_IDS\n} TARGET_LEVEL_FAIL_ID;\n\ntypedef struct {\n  int8_t level_index;\n  uint8_t fail_flag;\n  int max_frame_size;   // in bits\n  double max_cpb_size;  // in bits\n} LevelConstraint;\n\ntypedef struct ARNRFilterData {\n  YV12_BUFFER_CONFIG *frames[MAX_LAG_BUFFERS];\n  int strength;\n  int frame_count;\n  int alt_ref_index;\n  struct scale_factors sf;\n  YV12_BUFFER_CONFIG *dst;\n} ARNRFilterData;\n\ntypedef struct EncFrameBuf {\n  int mem_valid;\n  int released;\n  YV12_BUFFER_CONFIG frame;\n} EncFrameBuf;\n\n// Maximum operating frame buffer size needed for a GOP using ARF reference.\n// This is used to allocate the memory for TPL stats for a GOP.\n#define MAX_ARF_GOP_SIZE (2 * MAX_LAG_BUFFERS)\n#define MAX_KMEANS_GROUPS 8\n\ntypedef struct KMEANS_DATA {\n  double value;\n  int pos;\n  int group_idx;\n} KMEANS_DATA;\n\n#if CONFIG_COLLECT_COMPONENT_TIMING\n#include \"vpx_ports/vpx_timer.h\"\n// Adjust the following to add new components.\ntypedef enum {\n  vp9_get_compressed_data_time,\n  vp9_temporal_filter_time,\n  vp9_rc_get_second_pass_params_time,\n  setup_tpl_stats_time,\n  Pass2Encode_time,\n\n  encode_with_recode_loop_time,\n  loopfilter_frame_time,\n  vp9_pack_bitstream_time,\n\n  encode_frame_internal_time,\n  rd_pick_partition_time,\n  rd_pick_sb_modes_time,\n  encode_sb_time,\n\n  vp9_rd_pick_inter_mode_sb_time,\n  vp9_rd_pick_inter_mode_sub8x8_time,\n\n  intra_mode_search_time,\n  handle_inter_mode_time,\n  single_motion_search_time,\n  joint_motion_search_time,\n  interp_filter_time,\n\n  kTimingComponents,\n} TIMING_COMPONENT;\n\nstatic INLINE char const *get_component_name(int index) {\n  switch (index) {\n    case vp9_get_compressed_data_time: return \"vp9_get_compressed_data_time\";\n    case vp9_temporal_filter_time: return \"vp9_temporal_filter_time\";\n    case vp9_rc_get_second_pass_params_time:\n      return \"vp9_rc_get_second_pass_params_time\";\n    case setup_tpl_stats_time: return \"setup_tpl_stats_time\";\n    case Pass2Encode_time: return \"Pass2Encode_time\";\n\n    case encode_with_recode_loop_time: return \"encode_with_recode_loop_time\";\n    case loopfilter_frame_time: return \"loopfilter_frame_time\";\n    case vp9_pack_bitstream_time: return \"vp9_pack_bitstream_time\";\n\n    case encode_frame_internal_time: return \"encode_frame_internal_time\";\n    case rd_pick_partition_time: return \"rd_pick_partition_time\";\n    case rd_pick_sb_modes_time: return \"rd_pick_sb_modes_time\";\n    case encode_sb_time: return \"encode_sb_time\";\n\n    case vp9_rd_pick_inter_mode_sb_time:\n      return \"vp9_rd_pick_inter_mode_sb_time\";\n    case vp9_rd_pick_inter_mode_sub8x8_time:\n      return \"vp9_rd_pick_inter_mode_sub8x8_time\";\n\n    case intra_mode_search_time: return \"intra_mode_search_time\";\n    case handle_inter_mode_time: return \"handle_inter_mode_time\";\n    case single_motion_search_time: return \"single_motion_search_time\";\n    case joint_motion_search_time: return \"joint_motion_search_time\";\n    case interp_filter_time: return \"interp_filter_time\";\n\n    default: assert(0);\n  }\n  return \"error\";\n}\n#endif\n\ntypedef struct VP9_COMP {\n  FRAME_INFO frame_info;\n  QUANTS quants;\n  ThreadData td;\n  MB_MODE_INFO_EXT *mbmi_ext_base;\n  DECLARE_ALIGNED(16, int16_t, y_dequant[QINDEX_RANGE][8]);\n  DECLARE_ALIGNED(16, int16_t, uv_dequant[QINDEX_RANGE][8]);\n  VP9_COMMON common;\n  VP9EncoderConfig oxcf;\n  struct lookahead_ctx *lookahead;\n  struct lookahead_entry *alt_ref_source;\n\n  YV12_BUFFER_CONFIG *Source;\n  YV12_BUFFER_CONFIG *Last_Source;  // NULL for first frame and alt_ref frames\n  YV12_BUFFER_CONFIG *un_scaled_source;\n  YV12_BUFFER_CONFIG scaled_source;\n  YV12_BUFFER_CONFIG *unscaled_last_source;\n  YV12_BUFFER_CONFIG scaled_last_source;\n#ifdef ENABLE_KF_DENOISE\n  YV12_BUFFER_CONFIG raw_unscaled_source;\n  YV12_BUFFER_CONFIG raw_scaled_source;\n#endif\n  YV12_BUFFER_CONFIG *raw_source_frame;\n\n  BLOCK_SIZE tpl_bsize;\n  TplDepFrame tpl_stats[MAX_ARF_GOP_SIZE];\n  // Used to store TPL stats before propagation\n  VpxTplGopStats tpl_gop_stats;\n  YV12_BUFFER_CONFIG *tpl_recon_frames[REF_FRAMES];\n  EncFrameBuf enc_frame_buf[REF_FRAMES];\n#if CONFIG_MULTITHREAD\n  pthread_mutex_t kmeans_mutex;\n#endif\n  int kmeans_data_arr_alloc;\n  KMEANS_DATA *kmeans_data_arr;\n  int kmeans_data_size;\n  int kmeans_data_stride;\n  double kmeans_ctr_ls[MAX_KMEANS_GROUPS];\n  double kmeans_boundary_ls[MAX_KMEANS_GROUPS];\n  int kmeans_count_ls[MAX_KMEANS_GROUPS];\n  int kmeans_ctr_num;\n#if CONFIG_NON_GREEDY_MV\n  MotionFieldInfo motion_field_info;\n  int tpl_ready;\n  int_mv *select_mv_arr;\n#endif\n\n  TileDataEnc *tile_data;\n  int allocated_tiles;  // Keep track of memory allocated for tiles.\n\n  int scaled_ref_idx[REFS_PER_FRAME];\n  int lst_fb_idx;\n  int gld_fb_idx;\n  int alt_fb_idx;\n\n  int ref_fb_idx[REF_FRAMES];\n\n  int refresh_last_frame;\n  int refresh_golden_frame;\n  int refresh_alt_ref_frame;\n\n  int ext_refresh_frame_flags_pending;\n  int ext_refresh_last_frame;\n  int ext_refresh_golden_frame;\n  int ext_refresh_alt_ref_frame;\n\n  int ext_refresh_frame_context_pending;\n  int ext_refresh_frame_context;\n\n  int64_t norm_wiener_variance;\n  int64_t *mb_wiener_variance;\n  int mb_wiener_var_rows;\n  int mb_wiener_var_cols;\n  double *mi_ssim_rdmult_scaling_factors;\n\n  int64_t *sb_mul_scale;\n\n  YV12_BUFFER_CONFIG last_frame_uf;\n\n  TOKENEXTRA *tile_tok[4][1 << 6];\n  TOKENLIST *tplist[4][1 << 6];\n\n  // Ambient reconstruction err target for force key frames\n  int64_t ambient_err;\n\n  RD_CONTROL rd_ctrl;\n  RD_OPT rd;\n\n  CODING_CONTEXT coding_context;\n\n  int *nmvcosts[2];\n  int *nmvcosts_hp[2];\n  int *nmvsadcosts[2];\n  int *nmvsadcosts_hp[2];\n\n  int64_t last_time_stamp_seen;\n  int64_t last_end_time_stamp_seen;\n  int64_t first_time_stamp_ever;\n\n  RATE_CONTROL rc;\n  double framerate;\n\n  int interp_filter_selected[REF_FRAMES][SWITCHABLE];\n\n  struct vpx_codec_pkt_list *output_pkt_list;\n\n  MBGRAPH_FRAME_STATS mbgraph_stats[MAX_LAG_BUFFERS];\n  int mbgraph_n_frames;  // number of frames filled in the above\n  int static_mb_pct;     // % forced skip mbs by segmentation\n  int ref_frame_flags;\n\n  SPEED_FEATURES sf;\n\n  uint32_t max_mv_magnitude;\n  int mv_step_param;\n\n  int allow_comp_inter_inter;\n\n  // Default value is 1. From first pass stats, encode_breakout may be disabled.\n  ENCODE_BREAKOUT_TYPE allow_encode_breakout;\n\n  // Get threshold from external input. A suggested threshold is 800 for HD\n  // clips, and 300 for < HD clips.\n  int encode_breakout;\n\n  uint8_t *segmentation_map;\n\n  uint8_t *skin_map;\n\n  // segment threshold for encode breakout\n  int segment_encode_breakout[MAX_SEGMENTS];\n\n  CYCLIC_REFRESH *cyclic_refresh;\n  ActiveMap active_map;\n\n  fractional_mv_step_fp *find_fractional_mv_step;\n  struct scale_factors me_sf;\n  vp9_diamond_search_fn_t diamond_search_sad;\n  vp9_variance_fn_ptr_t fn_ptr[BLOCK_SIZES];\n#if CONFIG_INTERNAL_STATS\n  uint64_t time_receive_data;\n  uint64_t time_compress_data;\n  uint64_t time_pick_lpf;\n  uint64_t time_encode_sb_row;\n#endif\n\n  TWO_PASS twopass;\n\n  // Force recalculation of segment_ids for each mode info\n  uint8_t force_update_segmentation;\n\n  YV12_BUFFER_CONFIG tf_buffer;\n\n  // class responsible for adaptive\n  // quantization of altref frames\n  struct ALT_REF_AQ *alt_ref_aq;\n\n#if CONFIG_INTERNAL_STATS\n  unsigned int mode_chosen_counts[MAX_MODES];\n\n  int count;\n  uint64_t total_sq_error;\n  uint64_t total_samples;\n  ImageStat psnr;\n\n  uint64_t totalp_sq_error;\n  uint64_t totalp_samples;\n  ImageStat psnrp;\n\n  double total_blockiness;\n  double worst_blockiness;\n\n  uint64_t bytes;\n  double summed_quality;\n  double summed_weights;\n  double summedp_quality;\n  double summedp_weights;\n  unsigned int tot_recode_hits;\n  double worst_ssim;\n\n  ImageStat ssimg;\n  ImageStat fastssim;\n  ImageStat psnrhvs;\n\n  int b_calculate_ssimg;\n  int b_calculate_blockiness;\n\n  int b_calculate_consistency;\n\n  double total_inconsistency;\n  double worst_consistency;\n  Ssimv *ssim_vars;\n  Metrics metrics;\n#endif\n  int b_calculate_psnr;\n\n  int droppable;\n\n  int initial_width;\n  int initial_height;\n  int initial_mbs;  // Number of MBs in the full-size frame; to be used to\n                    // normalize the firstpass stats. This will differ from the\n                    // number of MBs in the current frame when the frame is\n                    // scaled.\n\n  int last_coded_width;\n  int last_coded_height;\n\n  int use_svc;\n\n  SVC svc;\n\n  int frame_flags;\n\n  search_site_config ss_cfg;\n\n  int mbmode_cost[INTRA_MODES];\n  unsigned int inter_mode_cost[INTER_MODE_CONTEXTS][INTER_MODES];\n  int intra_uv_mode_cost[FRAME_TYPES][INTRA_MODES][INTRA_MODES];\n  int y_mode_costs[INTRA_MODES][INTRA_MODES][INTRA_MODES];\n  int switchable_interp_costs[SWITCHABLE_FILTER_CONTEXTS][SWITCHABLE_FILTERS];\n  int partition_cost[PARTITION_CONTEXTS][PARTITION_TYPES];\n  // Indices are:  max_tx_size-1,  tx_size_ctx,    tx_size\n  int tx_size_cost[TX_SIZES - 1][TX_SIZE_CONTEXTS][TX_SIZES];\n\n#if CONFIG_VP9_TEMPORAL_DENOISING\n  VP9_DENOISER denoiser;\n#endif\n\n  int resize_pending;\n  RESIZE_STATE resize_state;\n  int external_resize;\n  int resize_scale_num;\n  int resize_scale_den;\n  int resize_avg_qp;\n  int resize_buffer_underflow;\n  int resize_count;\n\n  int use_skin_detection;\n\n  int target_level;\n\n  NOISE_ESTIMATE noise_estimate;\n\n  // Count on how many consecutive times a block uses small/zeromv for encoding.\n  uint8_t *consec_zero_mv;\n\n  // VAR_BASED_PARTITION thresholds\n  // 0 - threshold_64x64; 1 - threshold_32x32;\n  // 2 - threshold_16x16; 3 - vbp_threshold_8x8;\n  int64_t vbp_thresholds[4];\n  int64_t vbp_threshold_minmax;\n  int64_t vbp_threshold_sad;\n  // Threshold used for partition copy\n  int64_t vbp_threshold_copy;\n  BLOCK_SIZE vbp_bsize_min;\n\n  // Multi-threading\n  int num_workers;\n  VPxWorker *workers;\n  struct EncWorkerData *tile_thr_data;\n  VP9LfSync lf_row_sync;\n  struct VP9BitstreamWorkerData *vp9_bitstream_worker_data;\n\n  int keep_level_stats;\n  Vp9LevelInfo level_info;\n  MultiThreadHandle multi_thread_ctxt;\n  void (*row_mt_sync_read_ptr)(VP9RowMTSync *const, int, int);\n  void (*row_mt_sync_write_ptr)(VP9RowMTSync *const, int, int, const int);\n  ARNRFilterData arnr_filter_data;\n\n  int row_mt;\n  unsigned int row_mt_bit_exact;\n\n  // Previous Partition Info\n  BLOCK_SIZE *prev_partition;\n  int8_t *prev_segment_id;\n  // Used to save the status of whether a block has a low variance in\n  // choose_partitioning. 0 for 64x64, 1~2 for 64x32, 3~4 for 32x64, 5~8 for\n  // 32x32, 9~24 for 16x16.\n  // This is for the last frame and is copied to the current frame\n  // when partition copy happens.\n  uint8_t *prev_variance_low;\n  uint8_t *copied_frame_cnt;\n  uint8_t max_copied_frame;\n  // If the last frame is dropped, we don't copy partition.\n  uint8_t last_frame_dropped;\n\n  // For each superblock: keeps track of the last time (in frame distance) the\n  // the superblock did not have low source sad.\n  uint8_t *content_state_sb_fd;\n\n  int compute_source_sad_onepass;\n\n  int compute_frame_low_motion_onepass;\n\n  LevelConstraint level_constraint;\n\n  uint8_t *count_arf_frame_usage;\n  uint8_t *count_lastgolden_frame_usage;\n\n  int multi_layer_arf;\n  vpx_roi_map_t roi;\n\n  LOOPFILTER_CONTROL loopfilter_ctrl;\n  EXT_RATECTRL ext_ratectrl;\n\n  int fixed_qp_onepass;\n\n  // Flag to keep track of dynamic change in deadline mode\n  // (good/best/realtime).\n  MODE deadline_mode_previous_frame;\n\n  // Flag to disable scene detection when rtc rate control library is used.\n  int disable_scene_detection_rtc_ratectrl;\n\n#if CONFIG_COLLECT_COMPONENT_TIMING\n  /*!\n   * component_time[] are initialized to zero while encoder starts.\n   */\n  uint64_t component_time[kTimingComponents];\n  /*!\n   * Stores timing for individual components between calls of start_timing()\n   * and end_timing().\n   */\n  struct vpx_usec_timer component_timer[kTimingComponents];\n  /*!\n   * frame_component_time[] are initialized to zero at beginning of each frame.\n   */\n  uint64_t frame_component_time[kTimingComponents];\n#endif\n} VP9_COMP;\n\ntypedef struct ENCODE_FRAME_RESULT {\n  int show_idx;\n  FRAME_UPDATE_TYPE update_type;\n  int quantize_index;\n} ENCODE_FRAME_RESULT;\n\nvoid vp9_init_encode_frame_result(ENCODE_FRAME_RESULT *encode_frame_result);\n\nvoid vp9_initialize_enc(void);\n\nstruct VP9_COMP *vp9_create_compressor(const VP9EncoderConfig *oxcf,\n                                       BufferPool *const pool);\nvoid vp9_remove_compressor(VP9_COMP *cpi);\n\nvoid vp9_change_config(VP9_COMP *cpi, const VP9EncoderConfig *oxcf);\n\n// receive a frames worth of data. caller can assume that a copy of this\n// frame is made and not just a copy of the pointer..\nint vp9_receive_raw_frame(VP9_COMP *cpi, vpx_enc_frame_flags_t frame_flags,\n                          YV12_BUFFER_CONFIG *sd, int64_t time_stamp,\n                          int64_t end_time);\n\nint vp9_get_compressed_data(VP9_COMP *cpi, unsigned int *frame_flags,\n                            size_t *size, uint8_t *dest, size_t dest_size,\n                            int64_t *time_stamp, int64_t *time_end, int flush,\n                            ENCODE_FRAME_RESULT *encode_frame_result);\n\nint vp9_get_preview_raw_frame(VP9_COMP *cpi, YV12_BUFFER_CONFIG *dest,\n                              vp9_ppflags_t *flags);\n\nint vp9_use_as_reference(VP9_COMP *cpi, int ref_frame_flags);\n\nvoid vp9_update_reference(VP9_COMP *cpi, int ref_frame_flags);\n\nint vp9_copy_reference_enc(VP9_COMP *cpi, VP9_REFFRAME ref_frame_flag,\n                           YV12_BUFFER_CONFIG *sd);\n\nint vp9_set_reference_enc(VP9_COMP *cpi, VP9_REFFRAME ref_frame_flag,\n                          YV12_BUFFER_CONFIG *sd);\n\nint vp9_update_entropy(VP9_COMP *cpi, int update);\n\nint vp9_set_active_map(VP9_COMP *cpi, unsigned char *new_map_16x16, int rows,\n                       int cols);\n\nint vp9_get_active_map(VP9_COMP *cpi, unsigned char *new_map_16x16, int rows,\n                       int cols);\n\nint vp9_set_internal_size(VP9_COMP *cpi, VPX_SCALING_MODE horiz_mode,\n                          VPX_SCALING_MODE vert_mode);\n\nint vp9_set_size_literal(VP9_COMP *cpi, unsigned int width,\n                         unsigned int height);\n\nvoid vp9_set_svc(VP9_COMP *cpi, int use_svc);\n\n// Check for resetting the rc flags (rc_1_frame, rc_2_frame) if the\n// configuration change has a large change in avg_frame_bandwidth.\n// For SVC check for resetting based on spatial layer average bandwidth.\n// Also reset buffer level to optimal level.\nvoid vp9_check_reset_rc_flag(VP9_COMP *cpi);\n\nvoid vp9_set_rc_buffer_sizes(VP9_COMP *cpi);\n\nstatic INLINE int stack_pop(int *stack, int stack_size) {\n  int idx;\n  const int r = stack[0];\n  for (idx = 1; idx < stack_size; ++idx) stack[idx - 1] = stack[idx];\n\n  return r;\n}\n\nstatic INLINE int stack_top(const int *stack) { return stack[0]; }\n\nstatic INLINE void stack_push(int *stack, int new_item, int stack_size) {\n  int idx;\n  for (idx = stack_size; idx > 0; --idx) stack[idx] = stack[idx - 1];\n  stack[0] = new_item;\n}\n\nstatic INLINE void stack_init(int *stack, int length) {\n  int idx;\n  for (idx = 0; idx < length; ++idx) stack[idx] = -1;\n}\n\nint vp9_get_quantizer(const VP9_COMP *cpi);\n\nstatic INLINE int frame_is_kf_gf_arf(const VP9_COMP *cpi) {\n  return frame_is_intra_only(&cpi->common) || cpi->refresh_alt_ref_frame ||\n         (cpi->refresh_golden_frame && !cpi->rc.is_src_frame_alt_ref);\n}\n\nstatic INLINE int ref_frame_to_flag(int8_t ref_frame) {\n  static const int kVp9RefFlagList[4] = { 0, VP9_LAST_FLAG, VP9_GOLD_FLAG,\n                                          VP9_ALT_FLAG };\n  assert(ref_frame >= LAST_FRAME && ref_frame <= ALTREF_FRAME);\n  return kVp9RefFlagList[ref_frame];\n}\n\nstatic INLINE int get_ref_frame_map_idx(const VP9_COMP *cpi,\n                                        MV_REFERENCE_FRAME ref_frame) {\n  if (ref_frame == LAST_FRAME) {\n    return cpi->lst_fb_idx;\n  } else if (ref_frame == GOLDEN_FRAME) {\n    return cpi->gld_fb_idx;\n  } else {\n    return cpi->alt_fb_idx;\n  }\n}\n\nstatic INLINE int get_ref_frame_buf_idx(const VP9_COMP *const cpi,\n                                        int ref_frame) {\n  const VP9_COMMON *const cm = &cpi->common;\n  const int map_idx = get_ref_frame_map_idx(cpi, ref_frame);\n  return (map_idx != INVALID_IDX) ? cm->ref_frame_map[map_idx] : INVALID_IDX;\n}\n\nstatic INLINE RefCntBuffer *get_ref_cnt_buffer(const VP9_COMMON *cm,\n                                               int fb_idx) {\n  return fb_idx != INVALID_IDX ? &cm->buffer_pool->frame_bufs[fb_idx] : NULL;\n}\n\nstatic INLINE void get_ref_frame_bufs(\n    const VP9_COMP *cpi, RefCntBuffer *ref_frame_bufs[MAX_INTER_REF_FRAMES]) {\n  const VP9_COMMON *const cm = &cpi->common;\n  MV_REFERENCE_FRAME ref_frame;\n  for (ref_frame = LAST_FRAME; ref_frame < MAX_REF_FRAMES; ++ref_frame) {\n    int ref_frame_buf_idx = get_ref_frame_buf_idx(cpi, ref_frame);\n    int inter_ref_idx = mv_ref_frame_to_inter_ref_idx(ref_frame);\n    ref_frame_bufs[inter_ref_idx] = get_ref_cnt_buffer(cm, ref_frame_buf_idx);\n  }\n}\n\nstatic INLINE YV12_BUFFER_CONFIG *get_ref_frame_buffer(\n    const VP9_COMP *const cpi, MV_REFERENCE_FRAME ref_frame) {\n  const VP9_COMMON *const cm = &cpi->common;\n  const int buf_idx = get_ref_frame_buf_idx(cpi, ref_frame);\n  return buf_idx != INVALID_IDX ? &cm->buffer_pool->frame_bufs[buf_idx].buf\n                                : NULL;\n}\n\nstatic INLINE int get_token_alloc(int mb_rows, int mb_cols) {\n  // TODO(JBB): double check we can't exceed this token count if we have a\n  // 32x32 transform crossing a boundary at a multiple of 16.\n  // mb_rows, cols are in units of 16 pixels. We assume 3 planes all at full\n  // resolution. We assume up to 1 token per pixel, and then allow\n  // a head room of 4.\n\n  // Use aligned mb_rows and mb_cols to better align with actual token sizes.\n  const int aligned_mb_rows =\n      ALIGN_POWER_OF_TWO(mb_rows, MI_BLOCK_SIZE_LOG2 - 1);\n  const int aligned_mb_cols =\n      ALIGN_POWER_OF_TWO(mb_cols, MI_BLOCK_SIZE_LOG2 - 1);\n  return aligned_mb_rows * aligned_mb_cols * (16 * 16 * 3 + 4);\n}\n\n// Get the allocated token size for a tile. It does the same calculation as in\n// the frame token allocation.\nstatic INLINE int allocated_tokens(TileInfo tile) {\n  int tile_mb_rows = (tile.mi_row_end - tile.mi_row_start + 1) >> 1;\n  int tile_mb_cols = (tile.mi_col_end - tile.mi_col_start + 1) >> 1;\n\n  return get_token_alloc(tile_mb_rows, tile_mb_cols);\n}\n\nstatic INLINE void get_start_tok(VP9_COMP *cpi, int tile_row, int tile_col,\n                                 int mi_row, TOKENEXTRA **tok) {\n  VP9_COMMON *const cm = &cpi->common;\n  const int tile_cols = 1 << cm->log2_tile_cols;\n  TileDataEnc *this_tile = &cpi->tile_data[tile_row * tile_cols + tile_col];\n  const TileInfo *const tile_info = &this_tile->tile_info;\n\n  int tile_mb_cols = (tile_info->mi_col_end - tile_info->mi_col_start + 1) >> 1;\n  const int mb_row = (mi_row - tile_info->mi_row_start) >> 1;\n\n  *tok =\n      cpi->tile_tok[tile_row][tile_col] + get_token_alloc(mb_row, tile_mb_cols);\n}\n\nint64_t vp9_get_y_sse(const YV12_BUFFER_CONFIG *a, const YV12_BUFFER_CONFIG *b);\n#if CONFIG_VP9_HIGHBITDEPTH\nint64_t vp9_highbd_get_y_sse(const YV12_BUFFER_CONFIG *a,\n                             const YV12_BUFFER_CONFIG *b);\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\nvoid vp9_scale_references(VP9_COMP *cpi);\n\nvoid vp9_update_reference_frames(VP9_COMP *cpi);\n\nvoid vp9_get_ref_frame_info(FRAME_UPDATE_TYPE update_type, int ref_frame_flags,\n                            RefCntBuffer *ref_frame_bufs[MAX_INTER_REF_FRAMES],\n                            int *ref_frame_coding_indexes,\n                            int *ref_frame_valid_list);\n\nvoid vp9_set_high_precision_mv(VP9_COMP *cpi, int allow_high_precision_mv);\n\n#if CONFIG_VP9_HIGHBITDEPTH\nvoid vp9_scale_and_extend_frame_nonnormative(const YV12_BUFFER_CONFIG *src,\n                                             YV12_BUFFER_CONFIG *dst, int bd);\n#else\nvoid vp9_scale_and_extend_frame_nonnormative(const YV12_BUFFER_CONFIG *src,\n                                             YV12_BUFFER_CONFIG *dst);\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\nYV12_BUFFER_CONFIG *vp9_scale_if_required(\n    VP9_COMMON *cm, YV12_BUFFER_CONFIG *unscaled, YV12_BUFFER_CONFIG *scaled,\n    int use_normative_scaler, INTERP_FILTER filter_type, int phase_scaler);\n\nvoid vp9_apply_encoding_flags(VP9_COMP *cpi, vpx_enc_frame_flags_t flags);\n\nstatic INLINE int is_one_pass_svc(const struct VP9_COMP *const cpi) {\n  return (cpi->use_svc && cpi->oxcf.pass == 0);\n}\n\n#if CONFIG_VP9_TEMPORAL_DENOISING\nstatic INLINE int denoise_svc(const struct VP9_COMP *const cpi) {\n  return (!cpi->use_svc || (cpi->use_svc && cpi->svc.spatial_layer_id >=\n                                                cpi->svc.first_layer_denoise));\n}\n#endif\n\n#define MIN_LOOKAHEAD_FOR_ARFS 4\nstatic INLINE int is_altref_enabled(const VP9_COMP *const cpi) {\n  return !(cpi->oxcf.mode == REALTIME && cpi->oxcf.rc_mode == VPX_CBR) &&\n         cpi->oxcf.lag_in_frames >= MIN_LOOKAHEAD_FOR_ARFS &&\n         cpi->oxcf.enable_auto_arf;\n}\n\nstatic INLINE void set_ref_ptrs(const VP9_COMMON *const cm, MACROBLOCKD *xd,\n                                MV_REFERENCE_FRAME ref0,\n                                MV_REFERENCE_FRAME ref1) {\n  xd->block_refs[0] =\n      &cm->frame_refs[ref0 >= LAST_FRAME ? ref0 - LAST_FRAME : 0];\n  xd->block_refs[1] =\n      &cm->frame_refs[ref1 >= LAST_FRAME ? ref1 - LAST_FRAME : 0];\n}\n\nstatic INLINE int get_chessboard_index(const int frame_index) {\n  return frame_index & 0x1;\n}\n\nstatic INLINE int *cond_cost_list(const struct VP9_COMP *cpi, int *cost_list) {\n  return cpi->sf.mv.subpel_search_method != SUBPEL_TREE ? cost_list : NULL;\n}\n\nstatic INLINE int get_num_vert_units(TileInfo tile, int shift) {\n  int num_vert_units =\n      (tile.mi_row_end - tile.mi_row_start + (1 << shift) - 1) >> shift;\n  return num_vert_units;\n}\n\nstatic INLINE int get_num_cols(TileInfo tile, int shift) {\n  int num_cols =\n      (tile.mi_col_end - tile.mi_col_start + (1 << shift) - 1) >> shift;\n  return num_cols;\n}\n\nstatic INLINE int get_level_index(VP9_LEVEL level) {\n  int i;\n  for (i = 0; i < VP9_LEVELS; ++i) {\n    if (level == vp9_level_defs[i].level) return i;\n  }\n  return -1;\n}\n\n// Return the log2 value of max column tiles corresponding to the level that\n// the picture size fits into.\nstatic INLINE int log_tile_cols_from_picsize_level(uint32_t width,\n                                                   uint32_t height) {\n  int i;\n  const uint32_t pic_size = width * height;\n  const uint32_t pic_breadth = VPXMAX(width, height);\n  for (i = 0; i < VP9_LEVELS; ++i) {\n    if (vp9_level_defs[i].max_luma_picture_size >= pic_size &&\n        vp9_level_defs[i].max_luma_picture_breadth >= pic_breadth) {\n      return get_msb(vp9_level_defs[i].max_col_tiles);\n    }\n  }\n  return INT_MAX;\n}\n\nVP9_LEVEL vp9_get_level(const Vp9LevelSpec *const level_spec);\n\nvpx_codec_err_t vp9_set_roi_map(VP9_COMP *cpi, unsigned char *map,\n                                unsigned int rows, unsigned int cols,\n                                int delta_q[8], int delta_lf[8], int skip[8],\n                                int ref_frame[8]);\n\nvoid vp9_new_framerate(VP9_COMP *cpi, double framerate);\n\nvoid vp9_set_row_mt(VP9_COMP *cpi);\n\nint vp9_get_psnr(const VP9_COMP *cpi, PSNR_STATS *psnr);\n\n#define LAYER_IDS_TO_IDX(sl, tl, num_tl) ((sl) * (num_tl) + (tl))\n\nstatic INLINE void alloc_frame_mvs(VP9_COMMON *const cm, int buffer_idx) {\n  RefCntBuffer *const new_fb_ptr = &cm->buffer_pool->frame_bufs[buffer_idx];\n  if (new_fb_ptr->mvs == NULL || new_fb_ptr->mi_rows < cm->mi_rows ||\n      new_fb_ptr->mi_cols < cm->mi_cols) {\n    vpx_free(new_fb_ptr->mvs);\n    CHECK_MEM_ERROR(&cm->error, new_fb_ptr->mvs,\n                    (MV_REF *)vpx_calloc(cm->mi_rows * cm->mi_cols,\n                                         sizeof(*new_fb_ptr->mvs)));\n    new_fb_ptr->mi_rows = cm->mi_rows;\n    new_fb_ptr->mi_cols = cm->mi_cols;\n  }\n}\n\nstatic INLINE int mv_cost(const MV *mv, const int *joint_cost,\n                          int *const comp_cost[2]) {\n  assert(mv->row >= -MV_MAX && mv->row < MV_MAX);\n  assert(mv->col >= -MV_MAX && mv->col < MV_MAX);\n  return joint_cost[vp9_get_mv_joint(mv)] + comp_cost[0][mv->row] +\n         comp_cost[1][mv->col];\n}\n\nstatic INLINE int mvsad_err_cost(const MACROBLOCK *x, const MV *mv,\n                                 const MV *ref, int sad_per_bit) {\n  MV diff;\n  diff.row = mv->row - ref->row;\n  diff.col = mv->col - ref->col;\n  return ROUND_POWER_OF_TWO(\n      (unsigned)mv_cost(&diff, x->nmvjointsadcost, x->nmvsadcost) * sad_per_bit,\n      VP9_PROB_COST_SHIFT);\n}\n\nstatic INLINE uint32_t get_start_mv_sad(const MACROBLOCK *x, const MV *mvp_full,\n                                        const MV *ref_mv_full,\n                                        vpx_sad_fn_t sad_fn_ptr, int sadpb) {\n  const int src_buf_stride = x->plane[0].src.stride;\n  const uint8_t *const src_buf = x->plane[0].src.buf;\n  const MACROBLOCKD *const xd = &x->e_mbd;\n  const int pred_buf_stride = xd->plane[0].pre[0].stride;\n  const uint8_t *const pred_buf =\n      xd->plane[0].pre[0].buf + mvp_full->row * pred_buf_stride + mvp_full->col;\n  uint32_t start_mv_sad =\n      sad_fn_ptr(src_buf, src_buf_stride, pred_buf, pred_buf_stride);\n  start_mv_sad += mvsad_err_cost(x, mvp_full, ref_mv_full, sadpb);\n\n  return start_mv_sad;\n}\n\nstatic INLINE int num_4x4_to_edge(int plane_4x4_dim, int mb_to_edge_dim,\n                                  int subsampling_dim, int blk_dim) {\n  return plane_4x4_dim + (mb_to_edge_dim >> (5 + subsampling_dim)) - blk_dim;\n}\n\n// Compute the sum of squares on all visible 4x4s in the transform block.\nstatic int64_t sum_squares_visible(const MACROBLOCKD *xd,\n                                   const struct macroblockd_plane *const pd,\n                                   const int16_t *diff, const int diff_stride,\n                                   int blk_row, int blk_col,\n                                   const BLOCK_SIZE plane_bsize,\n                                   const BLOCK_SIZE tx_bsize,\n                                   int *visible_width, int *visible_height) {\n  int64_t sse;\n  const int plane_4x4_w = num_4x4_blocks_wide_lookup[plane_bsize];\n  const int plane_4x4_h = num_4x4_blocks_high_lookup[plane_bsize];\n  const int tx_4x4_w = num_4x4_blocks_wide_lookup[tx_bsize];\n  const int tx_4x4_h = num_4x4_blocks_high_lookup[tx_bsize];\n  const int b4x4s_to_right_edge = num_4x4_to_edge(\n      plane_4x4_w, xd->mb_to_right_edge, pd->subsampling_x, blk_col);\n  const int b4x4s_to_bottom_edge = num_4x4_to_edge(\n      plane_4x4_h, xd->mb_to_bottom_edge, pd->subsampling_y, blk_row);\n  if (tx_bsize == BLOCK_4X4 ||\n      (b4x4s_to_right_edge >= tx_4x4_w && b4x4s_to_bottom_edge >= tx_4x4_h)) {\n    assert(tx_4x4_w == tx_4x4_h);\n    sse = (int64_t)vpx_sum_squares_2d_i16(diff, diff_stride, tx_4x4_w << 2);\n    *visible_width = tx_4x4_w << 2;\n    *visible_height = tx_4x4_h << 2;\n  } else {\n    int r, c;\n    const int max_r = VPXMIN(b4x4s_to_bottom_edge, tx_4x4_h);\n    const int max_c = VPXMIN(b4x4s_to_right_edge, tx_4x4_w);\n    sse = 0;\n    // if we are in the unrestricted motion border.\n    for (r = 0; r < max_r; ++r) {\n      // Skip visiting the sub blocks that are wholly within the UMV.\n      for (c = 0; c < max_c; ++c) {\n        sse += (int64_t)vpx_sum_squares_2d_i16(\n            diff + r * diff_stride * 4 + c * 4, diff_stride, 4);\n      }\n    }\n    *visible_width = max_c << 2;\n    *visible_height = max_r << 2;\n  }\n  return sse;\n}\n\n// Check if trellis coefficient optimization of the transform block is enabled.\nstatic INLINE int do_trellis_opt(const struct macroblockd_plane *pd,\n                                 const int16_t *src_diff, int diff_stride,\n                                 int blk_row, int blk_col,\n                                 BLOCK_SIZE plane_bsize, TX_SIZE tx_size,\n                                 void *arg) {\n  const struct encode_b_args *const args = (struct encode_b_args *)arg;\n  const MACROBLOCK *const x = args->x;\n\n  switch (args->enable_trellis_opt) {\n    case DISABLE_TRELLIS_OPT: return 0;\n    case ENABLE_TRELLIS_OPT: return 1;\n    case ENABLE_TRELLIS_OPT_TX_RD_SRC_VAR: {\n      vpx_clear_system_state();\n\n      return (args->trellis_opt_thresh > 0.0)\n                 ? (x->log_block_src_var <= args->trellis_opt_thresh)\n                 : 1;\n    }\n    case ENABLE_TRELLIS_OPT_TX_RD_RESIDUAL_MSE: {\n      const MACROBLOCKD *const xd = &x->e_mbd;\n      const BLOCK_SIZE tx_bsize = txsize_to_bsize[tx_size];\n#if CONFIG_VP9_HIGHBITDEPTH\n      const int dequant_shift =\n          (xd->cur_buf->flags & YV12_FLAG_HIGHBITDEPTH) ? xd->bd - 5 : 3;\n#else\n      const int dequant_shift = 3;\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n      const int qstep = pd->dequant[1] >> dequant_shift;\n      int *sse_calc_done = args->sse_calc_done;\n      int64_t *sse = args->sse;\n      int visible_width = 0, visible_height = 0;\n\n      // TODO: Enable the sf for high bit-depth case\n      if ((xd->cur_buf->flags & YV12_FLAG_HIGHBITDEPTH) || !sse ||\n          !sse_calc_done)\n        return 1;\n\n      *sse = sum_squares_visible(xd, pd, src_diff, diff_stride, blk_row,\n                                 blk_col, plane_bsize, tx_bsize, &visible_width,\n                                 &visible_height);\n      *sse_calc_done = 1;\n\n      vpx_clear_system_state();\n\n      return (*(sse) <= (int64_t)visible_width * visible_height * qstep *\n                            qstep * args->trellis_opt_thresh);\n    }\n    default: assert(0 && \"Invalid trellis optimization method.\"); return 1;\n  }\n}\n\n#if CONFIG_COLLECT_COMPONENT_TIMING\nstatic INLINE void start_timing(VP9_COMP *cpi, int component) {\n  vpx_usec_timer_start(&cpi->component_timer[component]);\n}\nstatic INLINE void end_timing(VP9_COMP *cpi, int component) {\n  vpx_usec_timer_mark(&cpi->component_timer[component]);\n  cpi->frame_component_time[component] +=\n      vpx_usec_timer_elapsed(&cpi->component_timer[component]);\n}\nstatic INLINE char const *get_frame_type_enum(int type) {\n  switch (type) {\n    case 0: return \"KEY_FRAME\";\n    case 1: return \"INTER_FRAME\";\n    default: assert(0);\n  }\n  return \"error\";\n}\n#endif\n\n#ifdef __cplusplus\n}  // extern \"C\"\n#endif\n\n#endif  // VPX_VP9_ENCODER_VP9_ENCODER_H_\n"
+    }
+  },
+  "semanticProofForArbitrarySources": false,
+  "candidateIntegrated": false,
+  "actualSavedBytes": null,
+  "publicAcceptance": false,
+  "userMediaReadOrConverted": false
+}

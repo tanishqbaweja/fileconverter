@@ -8,7 +8,8 @@ const lifetime = process.argv[2] === "--lifetime";
 const utility = process.argv[2] === "--utility";
 const tokens = process.argv[2] === "--tokens";
 const tokenContext = process.argv[2] === "--token-context";
-assert.ok(process.argv.length === 2 || (process.argv.length === 3 && (lifetime || utility || tokens || tokenContext)));
+const tokenLifetime = process.argv[2] === "--token-lifetime";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && (lifetime || utility || tokens || tokenContext || tokenLifetime)));
 const root = path.resolve(import.meta.dirname, ".."), recipe = await readFile(path.join(root, "media/ffmpeg/reproduce-nondocker.sh"), "utf8");
 const version = "1.16.0", expected = "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c";
 assert.ok(recipe.includes("LIBVPX_VERSION=" + version)); assert.ok(recipe.includes("LIBVPX_SHA256=" + expected));
@@ -54,7 +55,30 @@ assert.ok(allocation.includes("Failed to allocate temporal filter buffer")); ass
 assert.equal(filterCallSites.length, 2); assert.ok(filterCallSites.every(row => row.file === "vp9/encoder/vp9_encoder.c"));
 const contexts = filterCallSites.map(row => ({ ...row, context: encoder.split("\n").slice(Math.max(0, row.line - 20), row.line + 5).join("\n") }));
 assert.ok(contexts.every(row => row.context.includes("!= REALTIME")), "Both call paths must have explicit non-realtime guards");
-if (tokenContext) {
+if (tokenLifetime) {
+  const references=[],wholeObjectOperations=[];
+  for(const [file,source] of sources) {
+    if(!file.startsWith("vp9/"))continue;
+    const lines=source.split("\n"),matches=[],objectMatches=[];
+    for(const [index,line] of lines.entries()) {
+      const row={line:index+1,text:line.trim(),context:lines.slice(Math.max(0,index-3),index+5).join("\n")};
+      if(/\bfc\b/.test(line))matches.push(row);
+      if(/(?:\*\s*cm|\bcpi->common)\s*=(?!=)|\b(?:memcpy|memmove|memset|vp9_zero)\s*\(\s*(?:(?:cm|cpi)\s*[,)]|&?\s*cpi->common\s*[,)]|\*cpi\s*\))/.test(line))objectMatches.push(row);
+    }
+    if(matches.length)references.push({file,sha256:sha(source),matches});
+    if(objectMatches.length)wholeObjectOperations.push({file,sha256:sha(source),matches:objectMatches});
+  }
+  const files=["vp9/common/vp9_onyxc_int.h","vp9/common/vp9_entropymode.h","vp9/common/vp9_entropy.h",
+    "vp9/common/vp9_alloccommon.c","vpx/internal/vpx_codec_internal.h","vp9/encoder/vp9_encoder.h"],preimages={};
+  for(const file of files){const exactSource=sources.get(file);assert.ok(exactSource,file);preimages[file]={sha256:sha(exactSource),exactSource};}
+  const report={recordedAt:new Date().toISOString(),scope:"Pinned VP9 fc identifier/macro/whole-object-write inventory for manual lifetime audit; not a generic C alias proof",
+    archiveSha256:expected,cFiles,references,wholeObjectOperations,preimages,
+    semanticProofForArbitrarySources:false,candidateIntegrated:false,actualSavedBytes:null,publicAcceptance:false,userMediaReadOrConverted:false};
+  const output=JSON.stringify(report,null,2)+"\n";assert.ok(Buffer.byteLength(output)<524288);
+  await writeFile(path.join(root,"evidence/2026-11-06-vp9-token-context-lifetime-audit.json"),output,{flag:"wx"});
+  console.log(JSON.stringify({cFiles,referenceFiles:references.length,matches:references.reduce((n,v)=>n+v.matches.length,0),
+    objectOperationFiles:wholeObjectOperations.length,preimagePins:Object.fromEntries(Object.entries(preimages).map(([f,v])=>[f,v.sha256])),bytes:Buffer.byteLength(output)}));
+} else if (tokenContext) {
   const files=["vp9/encoder/vp9_tokenize.h","vp9/encoder/vp9_tokenize.c","vp9/encoder/vp9_bitstream.c"],preimages={};
   for(const file of files){const exactSource=sources.get(file);assert.ok(exactSource);preimages[file]={sha256:sha(exactSource),exactSource};}
   const contextAssignments=[];

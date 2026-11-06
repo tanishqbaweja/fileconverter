@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 pinned token-context lifetime review and private native integration
+implemented; nine full-source pins/actual current encoder context references pass.
+44exact CI/42focused driver checks pass, lint/diff pass. New recipe retains actual
+library bit-depth config and Wasm32 layout control, not guessed ABI/configuration.
+NEXT distinct native build11, then strict unchanged browser fidelity/recovery and
+changed original7. No new browser or measured heap/speed acceptance yet. Original
+and all broader-spec requirements remain in scope; no public route promoted.
+
 2026-11-06 checkpoint318focused tests PASS/0skip, affected lint/diff PASS,
 public consistency403/403/2hidden pending/0PDF. This confirms regressions/source
 controls only, not goal completion; no new production browser stress result.
