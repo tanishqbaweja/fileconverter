@@ -1,5 +1,17 @@
 # Tested conversion ledger
 
+2026-11-06 actual packed-token native42244170876 strict browser control at959a6437
+PASS. Initial+3completed99413B outputs byte-identical to unmodified golden82bdfd66;
+all48frames/default41666666ns/2s/zeroPTS-duration errors/8metadata equal and
+SSIM.993273>=.98. Genuine CPU fallback, not platform encoding or extension change.
+Same clean blank352567296/wholeChrome peak599126016=>235.13671875MiB,247valid/
+0missing. Actual cancellation-after-write and injected-write failure leave0B
+partial, recover, all outputs/OPFS/profile/runtime/stage/3owned roots removed;
+protected original size/SHA unchanged,0forbidden requests. Raw598534B losslessly
+archived to273674B total compact+gzip. No causal speed or original/scaling/public
+acceptance claim from this small control. NEXT protected-original8 five-minute
+CPU gate with full original1920x804/24fps/4Mbps and unchanged96MiB/250MiB limits.
+
 2026-11-06 DISTINCT packed-token native13/run42244170876/0732ce78 SUCCESS,
 8m54s; actual CI49PASS/0fail/2optional-local-tool skips (51tests), both cleanup
 steps PASS,0curl failures. Artifact13517424276/3661933B/535b6ce0834f1477f2424c0074c8db16843fc2e49511a35c11dfd892c00930d7

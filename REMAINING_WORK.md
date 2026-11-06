@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-06 packed-token strict small browser qualification PASS: four byte-exact
+golden outputs, independent48-frame timing/metadata/SSIM.993273 and actual adverse
+recovery/cleanup, wholeChrome235.13671875MiB/247valid0missing. Protected original
+unchanged/all disposable data gone. NEXT full untouched original startup8 under
+same1920x804/24fps/4Mbps/five-minute/96MiB/whole-tree250MiB gate. Not full-file,
+speed/scaling/public acceptance; broad project requirements remain open.
+
 2026-11-06 packed-token native13 successfully built/authenticated. Actual4B low-
 bit record, unchanged96MiB cap/one thread, source-commit/config/layout/LLVM all
 verified.49CI PASS/2optional-local skips/0fail, both cleanup steps PASS. Collector
