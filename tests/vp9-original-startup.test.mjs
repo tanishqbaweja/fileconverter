@@ -54,7 +54,7 @@ test("changed second attempt has exclusive separate receipt/trace/recipe identit
   const result = makeVp9OriginalStartupSource(source, root, 2);
   assert.ok(result.generated.includes("evidence/2026-11-06-vp9-original-cpu-startup-attempt2.json"));
   assert.ok(result.generated.includes("2026-11-06-vp9-original-cpu-startup-attempt2-failure.zip"));
-  assert.equal(result.attempt, 2); assert.throws(() => makeVp9OriginalStartupSource(source, root, 5));
+  assert.equal(result.attempt, 2); assert.throws(() => makeVp9OriginalStartupSource(source, root, 6));
   const { stdout } = await promisify(execFile)(process.execPath, ["scripts/test-vp9-original-startup.mjs", "2", "--check-only"],
     { cwd: root, windowsHide: true, timeout: 30000, maxBuffer: 65536 });
   assert.equal(JSON.parse(stdout).browserLaunched, false);
@@ -102,4 +102,13 @@ test("execution and OPFS cleanup failures are both recorded without pretending r
   await assert.rejects(runVp9OriginalStartup({ page, observer, blankBaseline: { stable: true, privateBytes: 100000000 }, evidence }), /every cleanup was attempted/);
   assert.match(evidence.executionError, /browser job failed/); assert.match(evidence.cleanupErrors[0], /OPFS remove failed/);
   assert.equal(evidence.partialOutputRemoved, false); assert.equal(evidence.memory.incrementalPrivateMiB, null); assert.equal(evidence.passedStartupOnly, false);
+});
+test("fifth original attempt requires changed diagnostic tool and records missing allocation statistics as unavailable",async()=>{
+  assert.throws(()=>makeVp9OriginalStartupSource(source,root,5,"42129383089"),/distinct compiled diagnostic/);
+  const result=makeVp9OriginalStartupSource(source,root,5,"12345678");
+  assert.ok(result.generated.includes("parseVp9AllocationFailure(report.browserResult?.message)"));
+  assert.ok(result.generated.includes("vp9-original-cpu-startup-attempt5.json"));
+  const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-original-startup.mjs","5","--check-only"],
+    {cwd:root,windowsHide:true,timeout:30000,maxBuffer:65536});
+  assert.equal(JSON.parse(stdout).browserLaunched,false);
 });

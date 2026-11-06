@@ -5,9 +5,10 @@ import path from "node:path";
 import { pathToFileURL } from "node:url";
 const sha = value => createHash("sha256").update(value).digest("hex");
 export function makeVp9OriginalStartupSource(source, root, attempt = 1, nativeRunId = "42020605269") {
-  assert.ok(path.isAbsolute(root)); assert.ok([1, 2, 3, 4].includes(attempt));
+  assert.ok(path.isAbsolute(root)); assert.ok([1, 2, 3, 4, 5].includes(attempt));
   assert.match(nativeRunId, /^\d{8,14}$/); if (attempt >= 3) assert.notEqual(nativeRunId, "42020605269", "Original-width attempt requires a distinct compiled core");
   if (attempt === 4) assert.notEqual(nativeRunId, "42122918540", "Guarded attempt cannot replay the unmodified vendor build");
+  if (attempt === 5) assert.ok(!["42122918540", "42129383089"].includes(nativeRunId), "Diagnostic original requires a distinct compiled diagnostic tool");
   const suffix = attempt === 1 ? "" : "-attempt" + attempt, edits = [];
   const add = (before, after) => { assert.equal(source.split(before).length, 2, before.slice(0, 160)); edits.push([before, after]); source = source.replace(before, after); };
   const parentSha256 = sha(source), helper = pathToFileURL(path.join(root, "scripts/lib/vp9-original-startup.mjs")).href;
@@ -51,6 +52,14 @@ export function makeVp9OriginalStartupSource(source, root, attempt = 1, nativeRu
     for (const extension of ["mjs", "wasm"]) add("work/vp9-duration-input-42020605269/within-remux." + extension,
       "work/vp9-duration-input-" + nativeRunId + "/within-remux." + extension);
     add('loadVp9DurationCpuAssets(root, "42020605269")', 'loadVp9DurationCpuAssets(root, ' + JSON.stringify(nativeRunId) + ', "original-width")');
+  }
+  if (attempt === 5) {
+    add('import { chromium } from "playwright";', 'import { chromium } from "playwright";\nimport { parseVp9AllocationFailure } from ' +
+      JSON.stringify(pathToFileURL(path.join(root, "scripts/lib/vp9-allocation-failure.mjs")).href) + ';');
+    add('"scripts/lib/vp9-original-startup-recipe.mjs",', '"scripts/lib/vp9-original-startup-recipe.mjs", "scripts/lib/vp9-allocation-failure.mjs",');
+    add('finally { report.browserResult = report.originalStartup.result; report.memory = report.originalStartup.memory; report.conversionEndedAt = new Date().toISOString(); }',
+      'finally { report.browserResult = report.originalStartup.result; report.memory = report.originalStartup.memory; report.conversionEndedAt = new Date().toISOString();\n' +
+      '    report.allocationDiagnostics = parseVp9AllocationFailure(report.browserResult?.message); }');
   }
   let reversed = source;
   for (const [before, after] of edits.toReversed()) { assert.equal(reversed.split(after).length, 2); reversed = reversed.replace(after, before); }

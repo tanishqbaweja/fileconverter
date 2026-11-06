@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-06 distinct diagnostic source build42134023886/9fbadfeb dispatched once;
+00:05UTC exact job confirmed live compiling, source/SDK gates PASS. No result
+inferred from timeout/intent. Diagnostic strict small control and exclusive
+original attempt5 now require the new diagnostic engine and distinct receipt;
+all old evidence untouched. Bounded failure parser separates actual failure-time
+heap from prior JS progress, labels frame request (NOT underlying malloc size),
+keeps missing/invalid/ambiguous samples NULL. Native stderr32x512-char ring can
+retain the one bounded numeric line.18driver/parser checks PASS(590.5081ms),
+affected lint PASS. No actual heap values until changed native/browser run.
+
 2026-11-06 failure-only allocation diagnostic implementation:32 exact private CI
 checks PASS(515.1264ms),0skip; affected lint/diff PASS. Two pinned vendor files:
 guarded encoder gets3 unique failure labels, frame allocator logs requested frame

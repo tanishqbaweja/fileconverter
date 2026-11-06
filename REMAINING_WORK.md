@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-06 diagnostic build42134023886 confirmed live, exact head9fbadfeb;
+await existing job, no redispatch. New strict small/original5 driver and bounded
+failure parser verified18checks, missing stats stayNULL; request size is frame
+allocator request, not inferred underlying malloc size. Source/SDK gates passed,
+actual compilation/browser allocation measurements still pending. Full scope open.
+
 2026-11-06 next-allocation diagnostics WIRED, not yet compiled/browser measured:
 3 failure-site labels plus failure-only exact frame request/current/max heap and
 allocator managed/free/unclaimed stats; actual SDK headers pinned.32 CI checks

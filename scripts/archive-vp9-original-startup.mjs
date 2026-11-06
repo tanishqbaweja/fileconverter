@@ -4,7 +4,7 @@ import { access, readFile, writeFile } from "node:fs/promises";
 import { gzipSync, gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 import path from "node:path";
-const selected = ["3", "4"].includes(process.argv[2]) ? process.argv[2] : null;
+const selected = ["3", "4", "5"].includes(process.argv[2]) ? process.argv[2] : null;
 assert.ok(process.argv.length === 2 || (process.argv.length === 3 && selected));
 const root = path.resolve(import.meta.dirname, ".."), prefix = "evidence/2026-11-06-vp9-original-cpu-startup", output = path.join(root, prefix + (selected ? "-attempt" + selected + "-archive.json" : "-archives.json"));
 const sha = value => createHash("sha256").update(value).digest("hex"); await assert.rejects(access(output), { code: "ENOENT" });

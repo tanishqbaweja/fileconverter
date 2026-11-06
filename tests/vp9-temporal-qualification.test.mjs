@@ -29,3 +29,12 @@ test("check-only parses authenticated full ancestry without launching browser or
     { windowsHide: true, timeout: 30000, maxBuffer: 65536 });
   const result = JSON.parse(stdout); assert.equal(result.reversible, true); assert.equal(result.browserLaunched, false); assert.equal(result.recipeWritten, false);
 });
+test("diagnostic small control has a distinct tool/receipt and retains all strict gates", async () => {
+  assert.throws(() => makeVp9TemporalQualificationSource(source,"42129383089",{allocationDiagnostics:true}),/own compiled tool/);
+  const result=makeVp9TemporalQualificationSource(source,"12345678",{allocationDiagnostics:true});
+  assert.ok(result.generated.includes("2026-11-06-vp9-allocation-qualification-12345678.json"));
+  assert.equal(result.preservesStrictFidelityAndRecoveryGates,true);
+  const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-temporal-qualification.mjs","--allocation-diagnostic","--check-only"],
+    {windowsHide:true,timeout:30000,maxBuffer:65536});
+  assert.equal(JSON.parse(stdout).browserLaunched,false);
+});
