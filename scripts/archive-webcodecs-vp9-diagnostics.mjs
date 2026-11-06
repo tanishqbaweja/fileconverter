@@ -11,7 +11,9 @@ const single = process.argv[2] === "--single-core-control";
 const fidelity = process.argv[2] === "--isolated-fidelity-control";
 const platformQualification=process.argv[2]==="--platform-original-qualification-control";
 const platformStartup=process.argv[2]==="--platform-original-startup-control";
-const platformOriginal=platformQualification||platformStartup;
+const platformAllocation=process.argv[2]==="--platform-original-allocation-control";
+const platformOriginal=platformQualification||platformStartup||platformAllocation;
+const platformOriginalKind=platformQualification?"qualification":platformAllocation?"allocation":"startup";
 const tokenRetry=process.argv[2]==="--token-qualification-retry-control";
 const tokenQualification=process.argv[2]==="--token-qualification-control"||tokenRetry;
 const lazyQualification=process.argv[2]==="--lazy-qualification-control"||tokenQualification;
@@ -26,11 +28,11 @@ const isolated = process.argv[2] === "--isolated-control" || fidelity || duratio
 assert.ok(process.argv.length === 2 || (process.argv.length === (duration ? 4 : 3) && (rebuilt || allocation || single || isolated)));
 const prefix = temporal || platformOriginal ? "2026-11-06" : isolated ? "2026-11-05" : "2026-11-01";
 const family = temporal ? "vp9" : "webcodecs-vp9";
-const names = platformOriginal ? ["original-"+(platformQualification?"qualification":"startup")+"-"+runId] : recovery ? ["recovery-qualification-" + runId] : stream ? ["stream-duration-fidelity-" + runId] : stored ? ["duration-stored-timing-" + runId] : duration ? ["duration-fixed-" + runId] : fidelity ? ["isolated-fidelity"] : isolated ? ["isolated-fallback"] : single ? ["comparison-single-core-preflight-recovery"] : allocation ? ["fallback-realms", "comparison-default-core"] : rebuilt ? ["rebuilt-native", "rebuilt-cpu-fallback"] :
+const names = platformOriginal ? ["original-"+platformOriginalKind+"-"+runId] : recovery ? ["recovery-qualification-" + runId] : stream ? ["stream-duration-fidelity-" + runId] : stored ? ["duration-stored-timing-" + runId] : duration ? ["duration-fixed-" + runId] : fidelity ? ["isolated-fidelity"] : isolated ? ["isolated-fallback"] : single ? ["comparison-single-core-preflight-recovery"] : allocation ? ["fallback-realms", "comparison-default-core"] : rebuilt ? ["rebuilt-native", "rebuilt-cpu-fallback"] :
   ["first-smoke", "functional-diagnostic", "native-color-diagnostic", "explicit-color-fixture", "frame-color-fixture", "encoder-preference-fallback"];
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const legacyOutput = path.join(evidence, prefix + "-webcodecs-vp9-" + (recovery ? "recovery-qualification-control-" + runId + "-archive" : stream ? "stream-duration-fidelity-control-" + runId + "-archive" : stored ? "duration-stored-timing-control-" + runId + "-archive" : duration ? "duration-fixed-control-" + runId + "-archive" : fidelity ? "isolated-fidelity-control-archive" : isolated ? "isolated-control-archive" : single ? "single-core-control-archive" : allocation ? "allocation-control-archives" : rebuilt ? "rebuilt-control-archives" : "diagnostic-archives") + ".json");
-const output = platformOriginal?path.join(evidence,prefix+"-webcodecs-vp9-original-"+(platformQualification?"qualification":"startup")+"-control-"+runId+"-archive.json"):
+const output = platformOriginal?path.join(evidence,prefix+"-webcodecs-vp9-original-"+platformOriginalKind+"-control-"+runId+"-archive.json"):
   allocationQualification ? path.join(evidence,prefix+"-vp9-"+(tokenQualification?"token":lazyQualification?"lazy":"allocation")+"-qualification-control-"+runId+(tokenRetry?"-attempt2":"")+"-archive.json") : legacyOutput;
 await assert.rejects(access(output), { code: "ENOENT" });
 const prepared = [];
@@ -38,8 +40,8 @@ const prepared = [];
 for (const name of names) {
   const label = allocationQualification ? (tokenQualification?"token":lazyQualification?"lazy":"allocation")+"-qualification-" + runId+(tokenRetry?"-attempt2":"") : temporal ? "temporal-qualification-" + runId : name;
   const file = `${prefix}-${family}-${label}.json`, original = await readFile(path.join(evidence, file));
-  assert.ok(original.length > 0 && original.length <= (platformStartup?8388608:4194304));
-  const report = JSON.parse(original); assert.match(report.status, /^(?:passed-one-small-private-browser|passed-private-vp9-recovery-sequence|passed-private-platform-original-startup-only|failed-private-vp9-browser)/);
+  assert.ok(original.length > 0 && original.length <= (platformStartup||platformAllocation?8388608:4194304));
+  const report = JSON.parse(original); assert.match(report.status, /^(?:passed-one-small-private-browser|passed-private-vp9-recovery-sequence|passed-private-platform-original-startup-only|completed-perturbed-original-platform-allocation-diagnostic-not-acceptance|failed-private-vp9-browser)/);
   assert.ok(report.finishedAt && report.ownedRuntimeRemoved); assert.equal(report.rawArchive, undefined);
   const archive = file.replace(/\.json$/, ".raw.json.gz"); await assert.rejects(access(path.join(evidence, archive)), { code: "ENOENT" });
   const compressed = gzipSync(original, { level: 9 }); assert.deepEqual(gunzipSync(compressed), original);
@@ -55,6 +57,11 @@ for (const { file, archive, original, report, compressed } of prepared) {
     blankSamples: report.blankSamples.map(({ processes, ...sample }) => ({ ...sample, processCount: processes?.length ?? null })),
     nativeMemory: report.nativeMemory ? { ...report.nativeMemory, graphBuckets: undefined,
       graphDetail: "Preserved byte-exactly in rawArchive, not omitted from the calculation" } : null };
+  if(platformAllocation&&compact.platformAllocation)compact.platformAllocation={...compact.platformAllocation,
+    checkpoints:compact.platformAllocation.checkpoints.map(row=>({...row,result:row.result?{...row.result,
+      summary:row.result.summary.map(phase=>({...phase,processes:phase.processes.map(({liveAllocatorCounters,...process})=>{
+        assert.ok(liveAllocatorCounters);return process;
+      })})),liveAllocatorCounterDetail:"Preserved byte-exactly in rawArchive and bounded trace archives; overlapping, never summed"}:null}))};
   const compactBytes = Buffer.from(JSON.stringify(compact, null, 2) + "\n");
   await writeFile(path.join(evidence, file), compactBytes);
   assert.equal(sha(gunzipSync(await readFile(path.join(evidence, archive)))), sha(original));

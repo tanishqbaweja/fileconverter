@@ -1,0 +1,207 @@
+{
+  "recordedAt": "2026-11-06T15:11:39.970Z",
+  "sourceReport": "evidence/2026-11-06-webcodecs-vp9-original-allocation-42231818045.json",
+  "executedHead": "83f10639d2356cc645da4dbdf0174521bcdb4a22",
+  "scope": "Perturbed setup allocation-category localization, NOT exact native stack owner or conversion acceptance",
+  "perturbsMemoryAndTiming": true,
+  "acceptanceMetric": false,
+  "summedAllocatorTotal": null,
+  "allocationStackAttribution": false,
+  "phases": [
+    {
+      "phase": "loaded-idle",
+      "elapsedCaptureMs": 981,
+      "wholeTreePrivateBytes": 405778432,
+      "allProcessCount": 10,
+      "rendererIdentity": {
+        "pid": 42784,
+        "parentPid": 27752,
+        "createdAt": "2026-11-06T15:08:48.0174170Z"
+      },
+      "rendererPrivateBytes": 52649984,
+      "rendererMallocAllocatedObjectsBytes": 14480228,
+      "rendererMallocEffectiveBytes": 21132432,
+      "rendererV8EffectiveBytes": 9119816,
+      "realms": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "359927257EE16C0F1920FE106156969C",
+            "type": "worker",
+            "url": "http://127.0.0.1:55578/assets/conversion.worker-CzDfE4v5.js",
+            "usedJSHeapBytes": 534088,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 404143,
+            "error": null
+          },
+          {
+            "targetId": "804778330FD9A15B701E9A38B9619B71",
+            "type": "page",
+            "url": "http://127.0.0.1:55578/?test=1",
+            "usedJSHeapBytes": 4714784,
+            "allocatedJSHeapBytes": 6873088,
+            "embedderHeapUsedBytes": 4023520,
+            "backingStorageBytes": 702927,
+            "error": null
+          }
+        ]
+      },
+      "archive": {
+        "path": "evidence\\2026-11-06-webcodecs-vp9-original-allocation-42231818045-loaded-idle.trace.json.gz",
+        "bytes": 129743,
+        "sha256": "1d9d62017b315b5bac27a691f93d481c987a166bee70a2da3ace0348621a4f83",
+        "restoredBytes": 1780283,
+        "restoredSha256": "944bffba5ffe8a375c9c235c2a557f7c0960aeb975b9a089f3f590063b20e422"
+      }
+    },
+    {
+      "phase": "webcodecs-vp9-ready",
+      "elapsedCaptureMs": 987,
+      "wholeTreePrivateBytes": 491855872,
+      "allProcessCount": 11,
+      "rendererIdentity": {
+        "pid": 42784,
+        "parentPid": 27752,
+        "createdAt": "2026-11-06T15:08:48.0174170Z"
+      },
+      "rendererPrivateBytes": 126709760,
+      "rendererMallocAllocatedObjectsBytes": 37525269,
+      "rendererMallocEffectiveBytes": 47318144,
+      "rendererV8EffectiveBytes": 11553912,
+      "realms": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "9B3476B0BF4839A036D0171BB1823631",
+            "type": "worker",
+            "url": "http://127.0.0.1:55578/engines/webcodecs-vp9/qualification.mjs",
+            "usedJSHeapBytes": 832344,
+            "allocatedJSHeapBytes": 2097152,
+            "embedderHeapUsedBytes": 870208,
+            "backingStorageBytes": 397835,
+            "error": null
+          },
+          {
+            "targetId": "359927257EE16C0F1920FE106156969C",
+            "type": "worker",
+            "url": "http://127.0.0.1:55578/assets/conversion.worker-CzDfE4v5.js",
+            "usedJSHeapBytes": 534088,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 404143,
+            "error": null
+          },
+          {
+            "targetId": "804778330FD9A15B701E9A38B9619B71",
+            "type": "page",
+            "url": "http://127.0.0.1:55578/?test=1",
+            "usedJSHeapBytes": 5142800,
+            "allocatedJSHeapBytes": 7135232,
+            "embedderHeapUsedBytes": 4138992,
+            "backingStorageBytes": 703142,
+            "error": null
+          }
+        ]
+      },
+      "archive": {
+        "path": "evidence\\2026-11-06-webcodecs-vp9-original-allocation-42231818045-webcodecs-vp9-ready.trace.json.gz",
+        "bytes": 129254,
+        "sha256": "3285c5eeb83ea82de5d33763dfa8f58316bb0e79c6f87ab496cf2930a91a6e7f",
+        "restoredBytes": 1801840,
+        "restoredSha256": "70da6ec3cb70bf4ebc4e4a575407f78996bb2d8e416a43fad4e0d29e9cd513d3"
+      }
+    },
+    {
+      "phase": "encoder-configured",
+      "elapsedCaptureMs": 1177,
+      "wholeTreePrivateBytes": 605089792,
+      "allProcessCount": 11,
+      "rendererIdentity": {
+        "pid": 42784,
+        "parentPid": 27752,
+        "createdAt": "2026-11-06T15:08:48.0174170Z"
+      },
+      "rendererPrivateBytes": 223985664,
+      "rendererMallocAllocatedObjectsBytes": 135774251,
+      "rendererMallocEffectiveBytes": 142210176,
+      "rendererV8EffectiveBytes": 12078200,
+      "realms": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "9B3476B0BF4839A036D0171BB1823631",
+            "type": "worker",
+            "url": "http://127.0.0.1:55578/engines/webcodecs-vp9/qualification.mjs",
+            "usedJSHeapBytes": 937000,
+            "allocatedJSHeapBytes": 2359296,
+            "embedderHeapUsedBytes": 870208,
+            "backingStorageBytes": 398352,
+            "error": null
+          },
+          {
+            "targetId": "359927257EE16C0F1920FE106156969C",
+            "type": "worker",
+            "url": "http://127.0.0.1:55578/assets/conversion.worker-CzDfE4v5.js",
+            "usedJSHeapBytes": 534088,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 404143,
+            "error": null
+          },
+          {
+            "targetId": "804778330FD9A15B701E9A38B9619B71",
+            "type": "page",
+            "url": "http://127.0.0.1:55578/?test=1",
+            "usedJSHeapBytes": 5173324,
+            "allocatedJSHeapBytes": 7397376,
+            "embedderHeapUsedBytes": 4138992,
+            "backingStorageBytes": 703142,
+            "error": null
+          }
+        ]
+      },
+      "archive": {
+        "path": "evidence\\2026-11-06-webcodecs-vp9-original-allocation-42231818045-encoder-configured.trace.json.gz",
+        "bytes": 130076,
+        "sha256": "1d5fe5150e5ed66584f62054f2c0e6569fd9f735c6141aa5801808f45a08c824",
+        "restoredBytes": 1811741,
+        "restoredSha256": "f3c83d9b5949e5ea9c7635a9be2e95b2f808fc8360a70ec162cdb52444bfec62"
+      }
+    }
+  ],
+  "setupDelta": {
+    "rendererPrivateBytes": 97275904,
+    "rendererMallocAllocatedObjectsBytes": 98248982,
+    "rendererV8EffectiveBytes": 524288
+  },
+  "firstFrameCheckpointReached": false,
+  "actualEncodedFrames": 0,
+  "actualFramesClosed": 0,
+  "packedFrameBytes": 0,
+  "decoderHeapBytes": 33554432,
+  "configuredHardwarePreference": "no-preference",
+  "physicalHardwareSelectionProven": false,
+  "actualNativeAllocationStackOwner": null,
+  "stop": {
+    "kind": "memory-budget-exceeded",
+    "incrementalPrivateMiB": 263.86328125,
+    "acquiredAt": "2026-11-06T15:09:17.414Z",
+    "elapsedMs": 3018
+  },
+  "perturbedWholeTree": {
+    "blankPrivateBytes": 351698944,
+    "peakPrivateBytes": 628379648,
+    "incrementalPrivateMiB": 263.86328125,
+    "validSamples": 32,
+    "unavailableSamples": 0
+  },
+  "inference": "Large renderer malloc-category increase is already present during platform encoder setup before frame submission; exact allocation call/implementation remains unproven. Do not blame packed-frame copies or treat overlapping counters as additive.",
+  "nextAction": "Do not replay unchanged platform profile; investigate controllable fixed-heap CPU token-record representation with exact semantics/ABI/fidelity proof. No software-thread knob or GPU availability is assumed.",
+  "originalUnchanged": true,
+  "disposableDataRemoved": true,
+  "forbiddenRequests": 0,
+  "fullOriginalConverted": false,
+  "speedGainProven": false,
+  "publicAcceptance": false
+}

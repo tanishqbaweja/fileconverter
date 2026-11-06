@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-11-06 actual bounded allocation diagnostic at83f10639 completed as DIAGNOSTIC
+ONLY, safety-stopped at encoder configuration BEFORE first frame. Three snapshots
+loaded/native-ready/configured, each981..1177ms. Same-birth renderer setup delta:
+private+97,275,904B; malloc allocated objects+98,248,982B; V8 effective+524,288B.
+Exact native allocation stack owner remains unknown; overlapping counters never
+summed. No packed frame allocated/encoded/closed (all0), decoder fixed32MiB.
+Perturbed wholeChrome blank351698944/peak628379648=>263.86328125MiB/32valid0missing;
+this is NOT comparable acceptance/performance evidence or a replacement for the
+unperturbed335.40234375MiB FAIL. Guard remains250MiB; no service disabled/forcedGC.
+All outputs/OPFS/profile/runtime/stage/3owned roots removed, original exactSHA/size
+unchanged,0forbidden requests. Three bounded trace archives total389073B. Raw
+3441487B report archived losslessly to437241B total compact+gzip, not media copies.
+See original-allocation-42231818045.json and original-allocation-localization.json.
+NEXT controllable fixed-heap CPU token representation investigation; no unchanged
+platform replay or claim that inaccessible Chrome encoder threads can be tuned.
+
 2026-11-06 bounded original-platform allocation diagnostic PREPARED, not yet run.
 Four maximum snapshots: loaded-idle, native-ready, encoder-configured, first real
 encoded frame. Same full original/settings/fixed32MiB decoder/250MiB watchdog;

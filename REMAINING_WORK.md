@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-11-06 platform allocation evidence narrows failure to native malloc-category
+growth already present during setup: +98,248,982B versus V8+524,288B, before first
+frame/packed-frame submission. Exact native stack owner still unproven. Diagnostic
+perturbed wholeChrome263.86328125MiB/32valid0missing safety-stop, NOT acceptance;
+original unperturbed335.40234375MiB FAIL retained. All disposable owned data gone,
+protected original unchanged, raw+trace evidence retained compactly. NEXT CPU
+token-record representation proof/control under unchanged96MiB rather than
+replaying platform conversion or changing input/settings/browser services.
+
 2026-11-06 four-checkpoint full-original platform allocation diagnostic prepared;
 56distinct focused checks/TypeScript/affected lint/diff PASS. Opt-in observation
 does not wrap normal per-frame encoding; failed observation lets native finally
