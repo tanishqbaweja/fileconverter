@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 corrected diagnostic native42135708757 SUCCESS/authenticated26members,
+same limits/codec/wrapper, all cleanup PASS. Paired actual linker controls prove
+default allocator lacks three diagnostic APIs; matching existing production
+emmalloc fixes private configure without altering final policy or omitting VP9.
+No actual browser heap measurement yet. NEXT strict small bit-exact/fidelity/
+recovery control then original5 for failure-time data, not original4 replay.
+No public/optimization/original acceptance; all broader requirements remain.
+
 2026-11-06 diagnostic42134023886 FAILED missing VP9 component, all cleanup PASS;
 no diagnostic browser/heap data. Existing final link uses emmalloc but configure
 probes default allocator: suspected missing new allocator API symbols. Corrected

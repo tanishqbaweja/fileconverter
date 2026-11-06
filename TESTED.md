@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-06 corrected diagnostic native42135708757/7f5217f8 TERMINAL SUCCESS,
+7m56s/all cleanup PASS. Authenticated26members/11221314B static, artifact13465317441
+ZIP3527374B SHA9ddfee380755d51b43bf41c983970e15b69937db945c158c27679258fffacdc9.
+Wasm9876481B SHA30b95d6a0bce643bf87a8c9e3170119f25e6720b1f0c152126d8161bf15e4283;
+unchanged imported/shared32initial/96max MiB/one codec thread/zero helpers/wrapper.
+Actual paired link controls CONFIRM suspected cause: default allocator undefined
+emmalloc_dynamic_heap_size/free_dynamic_memory/unclaimed_heap_memory, existing
+production emmalloc links successfully. Private configure selects that same
+allocator; final production flags/public scripts unchanged, VP9 mandatory.
+Exact3site-label/2allocator diagnostic edits and24C controls retained; no browser
+allocation values or speed claim from compilation. Next strict bit-exact small
+control then exclusive original5.257regressions PASS(1939.1628ms), public403/403
+consistency unchanged. Full original/near10GB/broad remaining scope stays open.
+
 2026-11-06 diagnostic build42134023886 TERMINAL FAILURE at component gate:
 6m24s, source/SDK/patched vendor/C-control build PASS, FFmpeg silently disabled
 libvpx_vp9_encoder, strict component check correctly FAILS; all cleanup PASS,

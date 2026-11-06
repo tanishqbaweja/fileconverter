@@ -1,0 +1,67 @@
+{
+  "scope": "Compact authenticated actual compiler outcomes and mocked allocator controls, NOT browser heap measurements",
+  "runId": 42135708757,
+  "head": "7f5217f8c602d2937dfb6c1afd2ec99f71f0255b",
+  "artifactSha256": "9ddfee380755d51b43bf41c983970e15b69937db945c158c27679258fffacdc9",
+  "linkControls": {
+    "scope": "Two compile/link-only libvpx VP9 detection controls, NOT codec execution",
+    "cases": [
+      {
+        "productionAllocator": false,
+        "code": 1,
+        "stderrBytes": 2527,
+        "stderrSha256": "fd9086d6ac836c8616a7ce10894cfb81ad9e1e4f9328ec45b7ffd368f34a3d59",
+        "errorLines": [
+          "wasm-ld: error: /home/runner/work/fileconverter/fileconverter/work/vp9-duration-build/install/lib/libvpx.a(yv12config.c.o): undefined symbol: emmalloc_dynamic_heap_size",
+          "wasm-ld: error: /home/runner/work/fileconverter/fileconverter/work/vp9-duration-build/install/lib/libvpx.a(yv12config.c.o): undefined symbol: emmalloc_free_dynamic_memory",
+          "wasm-ld: error: /home/runner/work/fileconverter/fileconverter/work/vp9-duration-build/install/lib/libvpx.a(yv12config.c.o): undefined symbol: emmalloc_unclaimed_heap_memory",
+          "emcc: error: '/home/runner/work/fileconverter/fileconverter/work/vp9-duration-emsdk/upstream/bin/wasm-ld -o /home/runner/work/fileconverter/fileconverter/work/vp9-allocation-link-GXan2y/default.wasm /home/runner/work/fileconverter/fileconverter/work/vp9-allocation-link-GXan2y/tmpj_gt75l8libemscripten_js_symbols.so -Bstatic --import-memory --shared-memory --strip-debug --export=_emscripten_stack_alloc --export=_emscripten_thread_free_data --export=_emscripten_thread_crashed --export=__wasm_call_ctors --expor"
+        ]
+      },
+      {
+        "productionAllocator": true,
+        "code": 0,
+        "stderrBytes": 0,
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "errorLines": []
+      }
+    ],
+    "actualCompilerOutcomeRecorded": true,
+    "wasmInstantiated": false,
+    "mediaReadOrConverted": false,
+    "publicAcceptance": false
+  },
+  "frameAllocatorCControls": {
+    "scope": "Host-compiled exact allocator controls with mocked allocation/statistic APIs, NOT real heap or media measurements",
+    "compilerVersion": "cc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "sourceSha256": "1717198325ff832712324cb94bb370f7e63f685161c8c02867576ffa2567009d",
+    "totalFunctionCalls": 24,
+    "variants": [
+      {
+        "highBitDepth": 0,
+        "cases": 6,
+        "functionCalls": 12,
+        "failureReports": 1,
+        "successfulPathStatisticCalls": 0,
+        "simulatedFailureLine": "[within-vp9-alloc] w=1920 h=804 b=160 a=32 frame=3790176 heap=100663296 max=100663296 managed=99614720 free=2097152 unclaimed=131072"
+      },
+      {
+        "highBitDepth": 1,
+        "cases": 6,
+        "functionCalls": 12,
+        "failureReports": 1,
+        "successfulPathStatisticCalls": 0,
+        "simulatedFailureLine": "[within-vp9-alloc] w=1920 h=804 b=160 a=32 frame=7580352 heap=100663296 max=100663296 managed=99614720 free=2097152 unclaimed=131072"
+      }
+    ],
+    "nativeCodecConversion": false,
+    "actualBrowserHeapMeasurements": null,
+    "publicAcceptance": false
+  },
+  "sdkHeaderPins": {
+    "heap": "c7ae99c29f94b6a2ea803c7e7e790e87e7078460980e2a68db98a8be7ee8fbde",
+    "allocator": "018d3fb45e17f3d0a9f2edcdab7f5b3be2479e193f38e076d72bf970418ee427"
+  },
+  "actualBrowserHeapMeasurements": null,
+  "publicAcceptance": false
+}
