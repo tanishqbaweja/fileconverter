@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-06 actual diagnostic42135708757 strict small/recovery control PASS at
+93494781: initial+3completed99413B outputs BYTE-EXACT SHA82bdfd66...82267b to
+unmodified libvpx, all48PTS/durations/2s/SSIM.993273/8metadata fields preserved.
+Actual cancel-after-write/injected-write-error each abort0B and recover, no extra
+retry. Normal-service headless completeChrome blank355012608/peak601149440 =>
+234.734375MiB,223valid0missing. Actual Wasm32MiB, one pending/<1MiB queues.
+All outputs/OPFS/profile/runtime/stage/3owned process births cleaned, original
+size/SHA unchanged,0forbidden requests. Raw611110B archived to271683B total.
+This is SMALL, not original/stress/public/speed acceptance. Next exclusive
+original5 for actual failure-time frame request/site/heap/allocator statistics.
+
 2026-11-06 corrected diagnostic native42135708757/7f5217f8 TERMINAL SUCCESS,
 7m56s/all cleanup PASS. Authenticated26members/11221314B static, artifact13465317441
 ZIP3527374B SHA9ddfee380755d51b43bf41c983970e15b69937db945c158c27679258fffacdc9.

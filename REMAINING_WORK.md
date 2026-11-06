@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-06 actual diagnostic strict small/recovery PASS: four completed outputs
+bit-identical with all fidelity gates, both adverse paths recover. WholeChrome
+234.734375MiB/223valid0missing, same limits/services, all disposable data cleaned,
+original unchanged. Next original5 for actual failure-time metrics. Not full
+original/stress/speed/public acceptance and broader original scope stays open.
+
 2026-11-06 corrected diagnostic native42135708757 SUCCESS/authenticated26members,
 same limits/codec/wrapper, all cleanup PASS. Paired actual linker controls prove
 default allocator lacks three diagnostic APIs; matching existing production
