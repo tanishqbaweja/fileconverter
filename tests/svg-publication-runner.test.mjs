@@ -7,6 +7,7 @@ import { makeSvgPublicationCheckDriver, svgPublicationCheckBaseSha256 } from "..
 import { readPreSvgPublicationRegistry } from "./helpers/pre-svg-publication-registry.mjs";
 import { readPreCiRuntimeInput } from "./helpers/pre-ci-runtime-inputs.mjs";
 import { sha } from "../images/resvg-source/source-pins.mjs";
+import { reviewDocxHtmlIntegration } from "../scripts/lib/reviewed-docx-html-integration.mjs";
 test("publication checks extend the immutable19-case owner reversibly with exactly2 headless UI gates", async () => {
   const bytes = await readFile("scripts/run-owned-privacy-offline.mjs"); assert.equal(sha(bytes), svgPublicationCheckBaseSha256);
   const recipe = makeSvgPublicationCheckDriver({ root: process.cwd(), sourceBytes: bytes });
@@ -21,10 +22,13 @@ test("publication checks extend the immutable19-case owner reversibly with exact
   const lint = await new ESLint().lintText(recipe.source, { filePath: "scripts/generated-svg-publication-owner.mjs" });
   assert.deepEqual(lint.flatMap(row => row.messages.filter(message => message.severity === 2)), []);
 });
-test("historical registry source remains exact while the only live policy change is withholding the unqualified SVG route", async () => {
+test("historical registry stays exact after reversing only reviewed private DOCX integration; public policy still withholds unqualified SVG", async () => {
   const bytes = await readPreSvgPublicationRegistry(); assert.equal(sha(bytes), "d9f5ad4599db8b43a68acb311f16d652a9a74300c38a31f827c12590652e573b");
   assert.deepEqual(await readPreCiRuntimeInput("lib/capability-registry.ts"), bytes);
-  const current = await readFile("lib/capability-registry.ts", "utf8");
+  const live = await readFile("lib/capability-registry.ts");
+  const integration = reviewDocxHtmlIntegration("lib/capability-registry.ts", live);
+  assert.equal(integration.reviewedDocxHtmlChange, true);
+  const current = integration.historicalBytes.toString("utf8");
   const after = '      maxTestedBytes: 470_390,\n      // Historical functional reports remain retained, but source/fixed-cap,\n      // current-browser fidelity, memory and recovery qualification are open.\n      automatedTestStatus: "pending",\n      public: false,';
   const before = '      maxTestedBytes: 470_390,\n      automatedTestStatus: "passed",\n      public: true,';
   assert.equal(current.split(after).length, 2); assert.equal(current.replace(after, before), bytes.toString());

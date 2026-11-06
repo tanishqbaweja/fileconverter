@@ -1,0 +1,1195 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-06T20:57:15.361Z",
+  "status": "passed-private-small-docx-html-production-control-not-public-qualification",
+  "cases": [
+    {
+      "kind": "complete",
+      "outputBytes": 720,
+      "metrics": {
+        "inputBytes": 811,
+        "outputBytes": 720,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 720,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 811,
+        "maxWriteChunkBytes": 720,
+        "elapsedMs": 56.45999997854233,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-Xebocg/profile/Default/File System/000/t/00/00000001",
+        "logicalBytes": 720,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "12103424006807665",
+          "size": "720",
+          "birthtimeNs": "1793998666851781300",
+          "mtimeNs": "1793998666874904500"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 720,
+            "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55"
+          }
+        ],
+        "totalBrowserSampleBytes": 720,
+        "maximumBrowserSampleBytes": 720,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55",
+        "paragraphs": 4,
+        "tableCells": 2,
+        "strong": 1,
+        "italic": 1,
+        "csp": true,
+        "validator": "independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts"
+      }
+    },
+    {
+      "kind": "complete",
+      "outputBytes": 720,
+      "metrics": {
+        "inputBytes": 811,
+        "outputBytes": 720,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 720,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 811,
+        "maxWriteChunkBytes": 720,
+        "elapsedMs": 38.07499998807907,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-Xebocg/profile/Default/File System/000/t/00/00000003",
+        "logicalBytes": 720,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "11821949030097032",
+          "size": "720",
+          "birthtimeNs": "1793998667228246400",
+          "mtimeNs": "1793998667256433900"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 720,
+            "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55"
+          }
+        ],
+        "totalBrowserSampleBytes": 720,
+        "maximumBrowserSampleBytes": 720,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55",
+        "paragraphs": 4,
+        "tableCells": 2,
+        "strong": 1,
+        "italic": 1,
+        "csp": true,
+        "validator": "independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts"
+      }
+    },
+    {
+      "kind": "complete",
+      "outputBytes": 720,
+      "metrics": {
+        "inputBytes": 811,
+        "outputBytes": 720,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 720,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 811,
+        "maxWriteChunkBytes": 720,
+        "elapsedMs": 32.875,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-Xebocg/profile/Default/File System/000/t/00/00000005",
+        "logicalBytes": 720,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "11540474053386415",
+          "size": "720",
+          "birthtimeNs": "1793998667748684700",
+          "mtimeNs": "1793998667771750900"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 720,
+            "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55"
+          }
+        ],
+        "totalBrowserSampleBytes": 720,
+        "maximumBrowserSampleBytes": 720,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55",
+        "paragraphs": 4,
+        "tableCells": 2,
+        "strong": 1,
+        "italic": 1,
+        "csp": true,
+        "validator": "independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts"
+      }
+    },
+    {
+      "kind": "payload-cancel",
+      "armedMetrics": {
+        "inputBytes": 2425489,
+        "outputBytes": 1835008,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 132.99000000953674,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "metrics": {
+        "inputBytes": 3998353,
+        "outputBytes": 2949120,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 188.68000000715256,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "leftovers": []
+    },
+    {
+      "kind": "write-error",
+      "message": "The destination rejected a bounded write.",
+      "leftovers": []
+    },
+    {
+      "kind": "complete",
+      "outputBytes": 720,
+      "metrics": {
+        "inputBytes": 811,
+        "outputBytes": 720,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 720,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 811,
+        "maxWriteChunkBytes": 720,
+        "elapsedMs": 36.479999989271164,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-Xebocg/profile/Default/File System/000/t/00/00000011",
+        "logicalBytes": 720,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "11821949030097145",
+          "size": "720",
+          "birthtimeNs": "1793998669090217200",
+          "mtimeNs": "1793998669115160500"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 720,
+            "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55"
+          }
+        ],
+        "totalBrowserSampleBytes": 720,
+        "maximumBrowserSampleBytes": 720,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55",
+        "paragraphs": 4,
+        "tableCells": 2,
+        "strong": 1,
+        "italic": 1,
+        "csp": true,
+        "validator": "independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts"
+      }
+    }
+  ],
+  "sourcePins": {
+    "scripts/qualify-docx-html.mjs": "f4364d4ba0e36de07f5390d81b6f6d9b2cb7c3530d833c65a31ecc05a64f9666",
+    "workers/docx-html-conversion.ts": "65b9aa9515faaf3249e79a4492ef24a4d2a68fc8f64576e599e01db262946895",
+    "workers/docx-conversion.ts": "9f9cbe2aaf2d31368cc5ce358eb60baa47f9fc52b0b5178da296314da8cc34d8",
+    "workers/conversion.worker.ts": "36686a93928e8c6fc628d4f0dce62c446b33d91b176108595dfc42d4b747fe04",
+    "lib/capability-registry.ts": "f270c6faf6ad2b09e5e67d3381c8c45ec83d04f87d72109e6ea197d0562a8de5",
+    "package-lock.json": "cebcd0caf95382203084b900aecb06dbd5fb10bc8743ddb202a7a137582f603e",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d",
+    "scripts/lib/birth-type-capture.mjs": "fb76463e1e90d87ffb8a2d13b3cb6b7a53db3ffffdff2aab4c1b954f7655a398",
+    "scripts/lib/select-owned-local-browser-file.mjs": "24c8db43c82868c1131c0742f60197c618e0224292c8fe4f785b41f105c21755"
+  },
+  "failures": [],
+  "scope": "Small private DOCX HTML production worker: three same-page repeats, cancellation/write-failure recovery, independent physical-output validation and sampled full-Chrome memory",
+  "headed": false,
+  "browserServicesDisabled": false,
+  "nativeConversionUsed": false,
+  "publicPromotion": false,
+  "stressAcceptance": false,
+  "nativePickerVerified": false,
+  "largeFileScalingVerified": false,
+  "speedImprovementProven": false,
+  "memoryFormula": "(peak complete spawned Chrome process-tree private bytes during full control window - earliest stable same clean blank Chrome private bytes) / 1048576",
+  "traceMode": {
+    "screenshots": true,
+    "domSnapshots": false,
+    "networkBodies": false
+  },
+  "requestCount": 35,
+  "forbiddenRequests": [],
+  "hostMemory": {
+    "acquiredAt": "2026-11-06T20:57:15.7327985Z",
+    "freePhysicalBytes": 11057283072,
+    "freeVirtualBytes": 17784422400,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "python": "Python 3.11.9",
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "browserBefore": {
+    "version": "156.0.8078.80",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4466840,
+      "sha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4503599627954860",
+        "birthtimeNs": "1793664133995225000",
+        "mtimeNs": "1793230862205515000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.80\\chrome.dll",
+      "bytes": 306491032,
+      "sha256": "eec84f38acf7d3b1c39bc54de53c9bcb1ea7a3b9d286d6a04288d3b959a1a7a1",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4222124651244210",
+        "birthtimeNs": "1793664134006309400",
+        "mtimeNs": "1793230871423806000"
+      }
+    }
+  },
+  "executedHead": "4304c8743bbb92fb14f40d3b2d2dc1ed90b0cf7e",
+  "validatorControls": [
+    {
+      "name": "positive",
+      "expectedAccepted": true,
+      "exitCode": 0
+    },
+    {
+      "name": "wrong-text",
+      "expectedAccepted": false,
+      "exitCode": 1
+    },
+    {
+      "name": "active-markup",
+      "expectedAccepted": false,
+      "exitCode": 1
+    }
+  ],
+  "fixture": {
+    "bytes": 811,
+    "sha256": "4fc9d0f783644b771287c3f6a26aeb487d6cf9e06b2506a6116a8f1ddaa00d1c",
+    "cancelBytes": 9000804
+  },
+  "launchArguments": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\docx-html-qualification-Xebocg\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "about:blank"
+  ],
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 376995840,
+    "spreadBytes": 176128,
+    "rssBytes": 737628160,
+    "firstTimestamp": "2026-11-06T20:57:26.0684901Z",
+    "lastTimestamp": "2026-11-06T20:57:30.1224360Z",
+    "sampleCount": 9,
+    "minimumElapsedMs": 8000
+  },
+  "loadedIdle": {
+    "stable": true,
+    "privateBytes": 384434176,
+    "spreadBytes": 794624,
+    "rssBytes": 727150592,
+    "firstTimestamp": "2026-11-06T20:57:42.5931502Z",
+    "lastTimestamp": "2026-11-06T20:57:46.6378798Z",
+    "sampleCount": 17,
+    "minimumElapsedMs": 8000
+  },
+  "inputSelections": [
+    {
+      "method": "DOM.setFileInputFiles",
+      "selectedLocalPathCount": 1,
+      "selectedFileBytes": 811,
+      "contentPayloadsSent": 0,
+      "nodeFileContentsRead": false,
+      "productionInputElementUsed": true,
+      "fileMetadataUnchanged": true
+    },
+    {
+      "method": "DOM.setFileInputFiles",
+      "selectedLocalPathCount": 1,
+      "selectedFileBytes": 9000804,
+      "contentPayloadsSent": 0,
+      "nodeFileContentsRead": false,
+      "productionInputElementUsed": true,
+      "fileMetadataUnchanged": true
+    },
+    {
+      "method": "DOM.setFileInputFiles",
+      "selectedLocalPathCount": 1,
+      "selectedFileBytes": 811,
+      "contentPayloadsSent": 0,
+      "nodeFileContentsRead": false,
+      "productionInputElementUsed": true,
+      "fileMetadataUnchanged": true
+    },
+    {
+      "method": "DOM.setFileInputFiles",
+      "selectedLocalPathCount": 1,
+      "selectedFileBytes": 811,
+      "contentPayloadsSent": 0,
+      "nodeFileContentsRead": false,
+      "productionInputElementUsed": true,
+      "fileMetadataUnchanged": true
+    }
+  ],
+  "nativeObserverOwnership": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 0,
+    "proofs": [],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false,
+    "birthTypeCapture": {
+      "records": [
+        {
+          "pid": 18700,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.2535124Z",
+          "creationFileTime": "134384722412535124",
+          "status": "classified",
+          "attempts": 1,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 20528,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.4216932Z",
+          "creationFileTime": "134384722414216932",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 21152,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.2619013Z",
+          "creationFileTime": "134384722412619013",
+          "status": "classified",
+          "attempts": 1,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "error": null
+        },
+        {
+          "pid": 23540,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.3662104Z",
+          "creationFileTime": "134384722413662104",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 27120,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.4182581Z",
+          "creationFileTime": "134384722414182581",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 31116,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:22.0116961Z",
+          "creationFileTime": "134384722420116961",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 36340,
+          "parentPid": 28072,
+          "createdAt": "2026-11-06T20:57:21.1090950Z",
+          "creationFileTime": "134384722411090950",
+          "status": "classified",
+          "attempts": 1,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 36736,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:22.0252101Z",
+          "creationFileTime": "134384722420252101",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 37436,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.2904649Z",
+          "creationFileTime": "134384722412904649",
+          "status": "classified",
+          "attempts": 1,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "error": null
+        },
+        {
+          "pid": 44016,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.8067988Z",
+          "creationFileTime": "134384722418067988",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 44692,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.3766150Z",
+          "creationFileTime": "134384722413766150",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 46560,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.1446141Z",
+          "creationFileTime": "134384722411446141",
+          "status": "type-unavailable",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 46604,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.8435686Z",
+          "creationFileTime": "134384722418435686",
+          "status": "type-unavailable",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 24548,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:23.8320558Z",
+          "creationFileTime": "134384722438320558",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 25816,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:23.8669451Z",
+          "creationFileTime": "134384722438669451",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 30732,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:23.8675032Z",
+          "creationFileTime": "134384722438675032",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 40972,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:23.8670996Z",
+          "creationFileTime": "134384722438670996",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 42668,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:23.8672741Z",
+          "creationFileTime": "134384722438672741",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 45688,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:23.8471483Z",
+          "creationFileTime": "134384722438471483",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 22324,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:23.9453949Z",
+          "creationFileTime": "134384722439453949",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 30152,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:23.9401962Z",
+          "creationFileTime": "134384722439401962",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 40564,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:23.9341775Z",
+          "creationFileTime": "134384722439341775",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 45524,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:24.0297378Z",
+          "creationFileTime": "134384722440297378",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 13560,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:24.1065395Z",
+          "creationFileTime": "134384722441065395",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 39660,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:24.1890816Z",
+          "creationFileTime": "134384722441890816",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 30904,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:24.2544855Z",
+          "creationFileTime": "134384722442544855",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 39356,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:24.2804763Z",
+          "creationFileTime": "134384722442804763",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 41360,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:24.2379220Z",
+          "creationFileTime": "134384722442379220",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 22980,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:24.3906761Z",
+          "creationFileTime": "134384722443906761",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 9328,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:24.5018243Z",
+          "creationFileTime": "134384722445018243",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 42052,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:24.4985653Z",
+          "creationFileTime": "134384722444985653",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 33672,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:24.8342432Z",
+          "creationFileTime": "134384722448342432",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 39124,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:30.2738665Z",
+          "creationFileTime": "134384722502738665",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 25304,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:34.1811228Z",
+          "creationFileTime": "134384722541811228",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 36880,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:34.3871285Z",
+          "creationFileTime": "134384722543871285",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 46340,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:35.0109770Z",
+          "creationFileTime": "134384722550109770",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 21752,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:35.1541689Z",
+          "creationFileTime": "134384722551541689",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 45412,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:35.3483223Z",
+          "creationFileTime": "134384722553483223",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 45064,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:35.8033441Z",
+          "creationFileTime": "134384722558033441",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 41372,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:36.6337154Z",
+          "creationFileTime": "134384722566337154",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 26572,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:48.3527742Z",
+          "creationFileTime": "134384722683527742",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 23128,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:48.7700145Z",
+          "creationFileTime": "134384722687700145",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        }
+      ],
+      "queries": 10,
+      "maximumQueries": 16,
+      "maximumIdentities": 512,
+      "maximumPending": 1,
+      "queuedRequests": 0,
+      "queryTimeoutMs": 5000,
+      "classificationPrecisionNanoseconds": 1000,
+      "globalError": null,
+      "acceptanceMetric": false,
+      "memoryFormulaChanged": false,
+      "processesExcluded": false,
+      "primarySamplesMutated": false
+    }
+  },
+  "memory": {
+    "peak": {
+      "sequence": 248,
+      "timestamp": "2026-11-06T20:57:49.0460142Z",
+      "completedAt": "2026-11-06T20:57:49.0606800Z",
+      "sampleError": null,
+      "nativeElapsedMs": 14.714300000000001,
+      "privateBytes": 464445440,
+      "rssBytes": 817250304,
+      "processes": [
+        {
+          "pid": 18700,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.2535124Z",
+          "creationFileTime": "134384722412535124",
+          "executableName": "chrome.exe",
+          "privateBytes": 179265536,
+          "rssBytes": 207622144,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 21152,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.2619013Z",
+          "creationFileTime": "134384722412619013",
+          "executableName": "chrome.exe",
+          "privateBytes": 15417344,
+          "rssBytes": 41689088,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 23128,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:48.7700145Z",
+          "creationFileTime": "134384722687700145",
+          "executableName": "chrome.exe",
+          "privateBytes": 15572992,
+          "rssBytes": 31916032,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 23540,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.3662104Z",
+          "creationFileTime": "134384722413662104",
+          "executableName": "chrome.exe",
+          "privateBytes": 43302912,
+          "rssBytes": 86671360,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 33672,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:24.8342432Z",
+          "creationFileTime": "134384722448342432",
+          "executableName": "chrome.exe",
+          "privateBytes": 22360064,
+          "rssBytes": 47710208,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 36340,
+          "parentPid": 28072,
+          "createdAt": "2026-11-06T20:57:21.1090950Z",
+          "creationFileTime": "134384722411090950",
+          "executableName": "chrome.exe",
+          "privateBytes": 71835648,
+          "rssBytes": 182853632,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 37436,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.2904649Z",
+          "creationFileTime": "134384722412904649",
+          "executableName": "chrome.exe",
+          "privateBytes": 8523776,
+          "rssBytes": 18759680,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 42052,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:24.4985653Z",
+          "creationFileTime": "134384722444985653",
+          "executableName": "chrome.exe",
+          "privateBytes": 84422656,
+          "rssBytes": 145301504,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 44016,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.8067988Z",
+          "creationFileTime": "134384722418067988",
+          "executableName": "chrome.exe",
+          "privateBytes": 21057536,
+          "rssBytes": 44199936,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 46560,
+          "parentPid": 36340,
+          "createdAt": "2026-11-06T20:57:21.1446141Z",
+          "creationFileTime": "134384722411446141",
+          "executableName": "chrome.exe",
+          "privateBytes": 2686976,
+          "rssBytes": 10526720,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    "validSamples": 25,
+    "unavailableSamples": 0,
+    "incrementalPrivateMiB": 83.3984375,
+    "limitMiB": 250,
+    "windowStart": "2026-11-06T20:57:46.705Z",
+    "windowEnd": "2026-11-06T20:57:49.421Z",
+    "scope": "sampled-complete-tree-small-control-not-stress-acceptance"
+  },
+  "screenshot": "output/playwright/2026-11-06T20-57-15-361Z-docx-html-complete.png",
+  "jobCleanup": {
+    "scope": "no-running-conversion",
+    "cancellationRequested": false,
+    "terminalState": "complete"
+  },
+  "serverCleanup": {
+    "identity": {
+      "pid": 46668,
+      "parentPid": 28072,
+      "createdAt": "2026-11-06T20:57:19.3590490Z"
+    },
+    "ownedRootAbsent": true
+  },
+  "browserCleanup": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 36340,
+      "parentPid": 28072,
+      "createdAt": "2026-11-06T20:57:21.1090950Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-11-06T20:57:50.792Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 319,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "ownedRuntimeRemoved": true,
+  "browserAfter": {
+    "version": "156.0.8078.80",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4466840,
+      "sha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4503599627954860",
+        "birthtimeNs": "1793664133995225000",
+        "mtimeNs": "1793230862205515000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.80\\chrome.dll",
+      "bytes": 306491032,
+      "sha256": "eec84f38acf7d3b1c39bc54de53c9bcb1ea7a3b9d286d6a04288d3b959a1a7a1",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4222124651244210",
+        "birthtimeNs": "1793664134006309400",
+        "mtimeNs": "1793230871423806000"
+      }
+    }
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "nativeArchive": {
+    "file": "evidence/2026-11-06T20-57-15-361Z-docx-html-native-samples.json.gz",
+    "bytes": 17361,
+    "sha256": "e903f8e8d3c51d4a9d66f45f080764d7aec4e0024f4de099f91b7979fd2981ca",
+    "decodedBytes": 746125,
+    "decodedSha256": "1dd0f5d1e80639bb98e318c36d643337dad23a16a570fbc7750e43efc21aeff9"
+  },
+  "finishedAt": "2026-11-06T20:57:54.655Z"
+}

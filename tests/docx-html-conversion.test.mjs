@@ -3,15 +3,25 @@ import { test } from "node:test";
 import { build } from "esbuild";
 import { zipSync, strToU8 } from "fflate";
 import { privateQualificationProfiles, publicProfilesFor } from "../lib/capability-registry.ts";
+import { readFile } from "node:fs/promises";
+import { reviewDocxHtmlIntegration } from "../scripts/lib/reviewed-docx-html-integration.mjs";
 const bundled = await build({ entryPoints: ["workers/docx-html-conversion.ts"], bundle: true, format: "esm", write: false, platform: "browser" });
 const { runDocxToHtml } = await import("data:text/javascript;base64," + Buffer.from(bundled.outputFiles[0].contents).toString("base64"));
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const xml = body => `<w:document xmlns:w="${word}"><w:body>${body}</w:body></w:document>`;
+test("historical comparisons reverse only the exact reviewed private integration and reject unrelated changes", async () => {
+  for (const file of ["lib/capability-registry.ts", "workers/conversion.worker.ts"]) {
+    const bytes = await readFile(file), reviewed = reviewDocxHtmlIntegration(file, bytes);
+    assert.equal(reviewed.reviewedDocxHtmlChange, true);
+    assert.equal(reviewDocxHtmlIntegration(file, reviewed.historicalBytes).reviewedDocxHtmlChange, false);
+    assert.throws(() => reviewDocxHtmlIntegration(file, Buffer.concat([bytes, Buffer.from("\n")])));
+  }
+});
 function fixture(document, extra = {}) {
   assert.ok(document.length < 2 * 1024 * 1024, "Unit fixture only, not large-file buffering evidence");
   return new File([zipSync({
-    "[Content_Types].xml": strToU8('<Types><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'),
-    "_rels/.rels": strToU8('<Relationships><Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'),
+    "[Content_Types].xml": strToU8('<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'),
+    "_rels/.rels": strToU8('<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'),
     "word/document.xml": strToU8(document), ...extra,
   }, { level: 0 })], "fixture.docx");
 }

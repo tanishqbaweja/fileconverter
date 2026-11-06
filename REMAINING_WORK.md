@@ -1,27 +1,30 @@
 # Remaining work audit
 
-2026-11-07 private DOCX HTML functional/independent fidelity/repeat/adverse recovery
-small cases pass, but full control FAIL309.1484375MiB. Keep it private. Installed
-Playwright CDP attachment causes setInputFiles to materialize whole-file/base64
-payloads; replace harness input selection with native path-only DOM API before
-another qualification. This is not proof that all309MiB is that copy, nor a
-conversion-speed claim. Failure and full process samples remain preserved:
-evidence/2026-11-06T20-50-33-200Z-docx-html-qualification.json.
+2026-11-07 DOCX HTML implementation checkpoint: final2514portable PASS/0fail/
+0skip across701 files,162 separate qualification files UNRUN; build/TypeScript/
+15-file lint PASS. Actual small production control has corrected source-package
+and output validation, repeats, payload cancellation/write-error recovery and
+72.2109375MiB sampled full-Chrome memory with0content-payload file selection.
+evidence/2026-11-07-docx-html-portable-final.json. First failures preserved;
+all owned converted data/fixtures/profiles/runtime gone, original unchanged.
+N-08 remains PARTIAL, new route pending/private and403public routes unchanged.
+Next: applicable large completed-file/scaling/cleanup-stability/direct-save and
+complex-document/browser gates; do not replay passing small controls. All media,
+SVG/source/release/original54 requirements remain intact and incomplete.
 
-2026-11-07 private DOCX HTML browser attempt FAILED in independent validator's
-escaped expected emoji, not yet an accepted conversion/fidelity/memory result.
-Correct expected codepoint and preflight valid/invalid HTML before one rerun.
-Receipt:evidence/2026-11-06T20-47-18-976Z-docx-html-qualification.json.
-Route remains pending/private; all original public promotion gates still apply.
+DOCX HTML current evidence:
+evidence/2026-11-06T21-07-40-560Z-docx-html-qualification.json. Independently
+checked979B package produces four exact720B outputs; package checks are not full
+OOXML XSD/layout verification. Bounded ZIP/XML,64KiB backpressure, static escaped
+HTML and explicit losses are implemented. Four historical source-binding failures
+were repaired with exact reviewed reversal; old outcomes/hashes remain intact.
 
-2026-11-07 office scope increment PARTIAL: private DOCX-to-HTML route implemented
-with bounded XML/ZIP and64KiB backpressure, real paragraph/table/direct-emphasis
-semantics, safe escaped static output and explicit loss disclosures. Normal
-selector still403 published profiles. New83focused checks PASS; three shared
-reader-lock failures reproduced then repaired (24converter/reader checks PASS).
-Actual production-browser conversion/independent validation/memory/recovery and
-large/direct qualification remain NEXT; do not advertise the route or infer
-completion from Node fixtures. All media and original-scope blockers stay open.
+Do not repeat superseded DOCX instructions: validator codepoint/preflight and
+path-only native input selection are now repaired, as are3 reader-lock cases.
+First validator failure and second309.1484375MiB failure stay failed; their
+receipts/native samples are retained. Third83.3984375MiB run has weaker package
+metadata and is not standards-complete source proof. See TESTED.md for chronology.
+No identical-input speed improvement or full-project completion is established.
 
 2026-11-07 final diagnostic lifecycle checkpoint VERIFIED: complete portable
 2483PASS/0fail/0skip/0cancel across697 files,87.082s;162 prerequisite-bound
@@ -19258,7 +19261,7 @@ zero artifacts. This includes the corrected non-media inspection disclosure.
 | N-05 | Broad SVG rasterization including text/CSS/animation/linked resources/filter/mask behavior where safe | Partially implemented; SVG rasterization temporarily withheld pending full qualification | Historical bounded-subset behavior is retained in `evidence/svg-safety-fidelity-matrix-2026-09-05.json`, not current release proof. Shipping package-copy Wasm lacks an explicit maximum; new source-built candidate fails exact alpha and complete-tree265.445MiB>250. `evidence/2026-10-29-svg-publication-gate.json` records publicfalse/pending, not permanent unsupported. Local production21-case privacy/hosting/publication checks PASS53.901s; localhost qualification still exposes the genuine pipeline, public selector/catalogue/evidence omit rasterization and disclose why. `evidence/2026-10-30-svg-publication-local-terminal.json`. | Qualified SVG remains REQUIRED, not dropped from the goal. Resolve residual alpha and renderer/GPU document-worker lifecycle allocations, then fixed-cap/source/fidelity/memory/recovery/repeat gates before publication. Keep measured exclusions and their reopen conditions documented; neither withholding nor historical small results completes this requirement. |
 | N-06 | Incremental archive/compression conversion with traversal, duplicate, expansion-ratio, size, and bomb protections | Verified complete for advertised ZIP/TAR/GZIP/BZIP2/XZ/7Z routes                                             | Archive workers, validators, malicious-input tests, category reports                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Re-audit limits when adding formats.                                                                                                                                                                                                                                     |
 | N-07 | SRT/WebVTT/ASS/SSA/TTML conversion preserving representable timing, styling, positioning, speakers, and metadata  | Verified complete for all advertised routes                                                                  | `evidence/subtitle-field-matrix-2026-09-05.json` maps timing, multiline text, styling, positioning/regions, speakers, cue identifiers, and document metadata for all ten public routes. `tests/subtitle-field-matrix.test.mjs` ties every field contract to exact registry disclosures, direct browser anchors, ASS/SSA extension and MIME aliases, and ten three-run Chrome reports (worst 204.473 MiB incremental private memory). The focused production-browser suite passed 16/16, including real `.ssa` alias execution and cleanup.                                                  | Keep the matrix, disclosures, alias tests, and stress evidence synchronized whenever a subtitle parser or public route changes.                                                                                                                                          |
-| N-08 | Genuine bounded EPUB/TXT/HTML/Markdown/data/office conversions with independent structural validation             | Verified complete for advertised extraction/generation profiles                                              | Dedicated workers, independent ZIP/XML/data validators, stress reports, and explicit fidelity limitations                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | Broaden office fidelity only where a reliable bounded engine exists; keep extraction-only limitations visible.                                                                                                                                                           |
+| N-08 | Genuine bounded EPUB/TXT/HTML/Markdown/data/office conversions with independent structural validation | Partially implemented; advertised extraction/generation profiles verified | Existing dedicated workers, independent ZIP/XML/data validators, stress reports and explicit fidelity limitations remain valid for their scope. Private DOCX-to-HTML now has genuine source/output structural checks, three small same-page repeats, payload cancellation, write-failure recovery and72.2109375MiB sampled full-Chrome evidence in `evidence/2026-11-06T21-07-40-560Z-docx-html-qualification.json`; it is not published or full OOXML/layout/stress qualification. | Complete applicable large completed-file/scaling/repeat/direct-save/browser and complex-document fidelity gates before promoting DOCX HTML. Broader office fidelity remains required wherever a reliable bounded engine is practical; keep every extraction/formatting exclusion explicit. |
 
 ## Interface, browser capability, privacy, and offline behavior
 

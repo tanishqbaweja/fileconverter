@@ -13,7 +13,7 @@ import { chromium } from "playwright";
 import { zipSync, strToU8 } from "fflate";
 import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runtime-scratch.mjs";
 import { startOwnedProductionTestServer } from "./lib/owned-production-test-server.mjs";
-import { startChromiumMemoryMonitor } from "./lib/birth-aware-chromium-memory.mjs";
+import { startClassifiedChromiumMemoryMonitor } from "./lib/birth-type-capture.mjs";
 import { stableWindow } from "./lib/chromium-private-memory.mjs";
 import { inspectStressHostMemory } from "./lib/host-memory-preflight.mjs";
 import { inspectInstalledChromePin, assertInstalledChromePinsEqual } from "./lib/installed-chrome-pin.mjs";
@@ -23,6 +23,7 @@ import { encodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs
 import { bindOpfsOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "./lib/opfs-output-validation-backing.mjs";
 import { cancelBrowserConversionBeforeCleanup } from "./lib/cancel-browser-conversion-before-cleanup.mjs";
 import { classifyPrivateRequest } from "./lib/private-browser-request.mjs";
+import { selectOwnedLocalBrowserFile } from "./lib/select-owned-local-browser-file.mjs";
 
 assert.equal(process.platform, "win32"); assert.equal(process.argv.length, 2);
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -37,11 +38,47 @@ const report = { schemaVersion: 1, startedAt: new Date().toISOString(), status: 
   traceMode: { screenshots: true, domSnapshots: false, networkBodies: false }, requestCount: 0, forbiddenRequests: [] };
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const p = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
-const packageBytes = (body, level = 6) => zipSync({
-  "[Content_Types].xml": strToU8('<Types><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'),
-  "_rels/.rels": strToU8('<Relationships><Relationship Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'),
+const packageBytes = (body, level = 6, invalidPackage = false) => zipSync({
+  "[Content_Types].xml": strToU8('<Types xmlns="' + (invalidPackage ? "" : "http://schemas.openxmlformats.org/package/2006/content-types") + '">' +
+    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/>' +
+    '<Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/></Types>'),
+  "_rels/.rels": strToU8('<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>'),
   "word/document.xml": strToU8(`<w:document xmlns:w="${word}"><w:body>${body}</w:body></w:document>`),
 }, { level });
+const sourceValidator = String.raw`
+import sys,json,zipfile,xml.etree.ElementTree as ET,xml.parsers.expat
+types='http://schemas.openxmlformats.org/package/2006/content-types'
+rels='http://schemas.openxmlformats.org/package/2006/relationships'
+word='http://schemas.openxmlformats.org/wordprocessingml/2006/main'
+with zipfile.ZipFile(sys.argv[1]) as z:
+ assert z.testzip() is None
+ def metadata(name):
+  with z.open(name) as f:b=f.read(4097)
+  assert len(b)<=4096
+  return ET.fromstring(b)
+ ct=metadata('[Content_Types].xml');assert ct.tag=='{'+types+'}Types'
+ assert any(x.tag=='{'+types+'}Override' and x.get('PartName')=='/word/document.xml' and x.get('ContentType')=='application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml' for x in ct)
+ assert any(x.tag=='{'+types+'}Default' and x.get('Extension')=='rels' and x.get('ContentType')=='application/vnd.openxmlformats-package.relationships+xml' for x in ct)
+ relationships=metadata('_rels/.rels');assert relationships.tag=='{'+rels+'}Relationships'
+ assert any(x.tag=='{'+rels+'}Relationship' and x.get('Id') and x.get('Type')=='http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument' and x.get('Target')=='word/document.xml' and x.get('TargetMode')!='External' for x in relationships)
+ parser=xml.parsers.expat.ParserCreate(namespace_separator='}');state={'depth':0,'root':False,'body':0,'paragraphs':0}
+ def start(name,attrs):
+  if state['depth']==0:assert name==word+'}document';state['root']=True
+  if name==word+'}body':assert state['depth']==1;state['body']+=1
+  if name==word+'}p':state['paragraphs']+=1
+  state['depth']+=1;assert state['depth']<=256
+ def end(name):state['depth']-=1
+ def forbidden(*args):raise ValueError('DTD forbidden')
+ parser.StartElementHandler=start;parser.EndElementHandler=end;parser.StartDoctypeDeclHandler=forbidden
+ with z.open('word/document.xml') as f:
+  while True:
+   b=f.read(65536)
+   if not b:break
+   parser.Parse(b,False)
+ parser.Parse(b'',True)
+ assert state['root'] and state['body']==1 and state['depth']==0
+ print(json.dumps({'zipCrcVerified':True,'packageNamespacesAndMainRelationshipVerified':True,'wordXmlWellFormed':True,'paragraphs':state['paragraphs'],'sourceValidator':'independent Python zipfile, bounded package metadata ElementTree and streaming Expat; not complete OOXML XSD/layout validation'}))
+`;
 const validator = String.raw`
 import sys,json,hashlib
 from html.parser import HTMLParser
@@ -94,7 +131,8 @@ try {
   report.browserBefore = await inspectInstalledChromePin();
   report.executedHead = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true, timeout: 10000 })).stdout.trim();
   for (const file of ["scripts/qualify-docx-html.mjs", "workers/docx-html-conversion.ts", "workers/docx-conversion.ts",
-    "workers/conversion.worker.ts", "lib/capability-registry.ts", "package-lock.json", "scripts/lib/birth-aware-chromium-memory.mjs"])
+    "workers/conversion.worker.ts", "lib/capability-registry.ts", "package-lock.json", "scripts/lib/birth-aware-chromium-memory.mjs",
+    "scripts/lib/birth-type-capture.mjs", "scripts/lib/select-owned-local-browser-file.mjs"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
@@ -113,11 +151,19 @@ try {
   }
   const input = path.join(runtime.directory, "structure.docx"), cancellation = path.join(runtime.directory, "cancel.docx");
   const body = '<w:p><w:r><w:rPr><w:b/><w:i/></w:rPr><w:t>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</w:t></w:r></w:p>' +
-    `<w:tbl><w:tr><w:tc>${p("Cell one")}</w:tc><w:tc>${p("Cell two")}</w:tc></w:tr></w:tbl>` +
-    '<w:p><w:del><w:r><w:t>Deleted</w:t></w:r></w:del><w:ins><w:r><w:t>Inserted</w:t></w:r></w:ins></w:p>';
+    `<w:tbl><w:tblPr/><w:tblGrid><w:gridCol w:w="2400"/><w:gridCol w:w="2400"/></w:tblGrid><w:tr><w:tc>${p("Cell one")}</w:tc><w:tc>${p("Cell two")}</w:tc></w:tr></w:tbl>` +
+    '<w:p><w:del w:id="1" w:author="fixture"><w:r><w:delText>Deleted</w:delText></w:r></w:del><w:ins w:id="2" w:author="fixture"><w:r><w:t>Inserted</w:t></w:r></w:ins></w:p>';
   await writeFile(input, packageBytes(body), { flag: "wx" });
   // Finite generated cancellation fixture BEFORE browser conversion, never a user-file copy.
   await writeFile(cancellation, packageBytes(p("cancel payload ".repeat(600000)), 0), { flag: "wx" });
+  report.sourceValidation = [];
+  for (const [kind, file] of [["structure", input], ["cancellation", cancellation]]) {
+    const proof = JSON.parse((await execute("python", ["-c", sourceValidator, file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
+    report.sourceValidation.push({ kind, ...proof });
+  }
+  const invalidPackage = path.join(runtime.directory, "invalid-package.docx"); await writeFile(invalidPackage, packageBytes(p("invalid package"), 6, true), { flag: "wx" });
+  await assert.rejects(execute("python", ["-c", sourceValidator, invalidPackage], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }), error => error.code === 1);
+  report.invalidPackageControlRejected = true;
   report.fixture = { bytes: (await stat(input)).size, sha256: await hashFile(input), cancelBytes: (await stat(cancellation)).size };
   const port = await new Promise((resolve, reject) => { const socket = createServer(); socket.once("error", reject);
     socket.listen(0, "127.0.0.1", () => { const p = socket.address().port; socket.close(error => error ? reject(error) : resolve(p)); }); });
@@ -126,7 +172,7 @@ try {
   report.launchArguments = ["--headless=new", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "--no-first-run", "--no-default-browser-check", "about:blank"];
   chrome = spawn(report.browserBefore.launcher.path, report.launchArguments, { cwd: root, env, windowsHide: true, stdio: "ignore" });
   chromeBirth = await queryReliableProcessIdentity(chrome.pid); assert.ok(chromeBirth);
-  monitor = await startChromiumMemoryMonitor(chrome.pid, runtime.directory, 100);
+  monitor = await startClassifiedChromiumMemoryMonitor(chrome.pid, runtime.directory, 100);
   let activePort; const debuggerDeadline = Date.now() + 15000;
   while (Date.now() < debuggerDeadline) {
     try { activePort = (await readFile(path.join(profile, "DevToolsActivePort"), "utf8")).split(/\r?\n/)[0]; if (/^\d+$/.test(activePort)) break; }
@@ -152,7 +198,8 @@ try {
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
   };
   const select = async file => {
-    await page.locator('[data-testid="file-input"]').setInputFiles(file);
+    report.inputSelections ??= []; assert.ok(report.inputSelections.length < 8);
+    report.inputSelections.push(await selectOwnedLocalBrowserFile(page, file, runtime.directory));
     await page.locator('[data-testid="format-select"]').selectOption("docx-to-html");
   };
   const leftovers = () => page.evaluate(async () => { const root = await navigator.storage.getDirectory(), names = [];
@@ -180,15 +227,17 @@ try {
   await select(input); let previous = null; for (let n = 0; n < 3; n++) previous = await success(previous);
   await select(cancellation); await page.locator('[data-testid="convert-button"]').click();
   await page.waitForFunction(() => { const s = window.__WITHIN_TEST__?.getState(); return s?.jobState === "running" && s.metrics?.outputBytes >= 65536; }, undefined, { timeout: 30000 });
+  const armed = await page.evaluate(() => window.__WITHIN_TEST__.getState().metrics);
   await page.getByRole("button", { name: "Cancel safely", exact: true }).click();
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().jobState === "cancelled", undefined, { timeout: 30000 });
-  await waitEmpty(); assert.deepEqual(await leftovers(), []); report.cases.push({ kind: "payload-cancel", leftovers: [] });
+  await waitEmpty(); assert.deepEqual(await leftovers(), []); report.cases.push({ kind: "payload-cancel", armedMetrics: armed,
+    metrics: await page.evaluate(() => window.__WITHIN_TEST__.getState().metrics), leftovers: [] });
   await open("write"); await select(input); await page.locator('[data-testid="convert-button"]').click();
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().jobState === "error", undefined, { timeout: 30000 });
   const failure = await page.evaluate(() => window.__WITHIN_TEST__.getState()); assert.ok(failure.error); await waitEmpty(); assert.deepEqual(await leftovers(), []);
   report.cases.push({ kind: "write-error", message: failure.error, leftovers: [] });
   await open(); await select(input); await success(null); assert.deepEqual(await leftovers(), []);
-  controlEnd = Date.now(); clearInterval(timer); timer = null; await drain(); await monitor.close(); monitor = null;
+  controlEnd = Date.now(); clearInterval(timer); timer = null; await drain(); await monitor.close(); report.nativeObserverOwnership = monitor.ownershipSummary(); monitor = null;
   assert.equal(observerError, null); const active = samples.filter(s => Date.parse(s.timestamp) >= controlStart && Date.parse(s.timestamp) <= controlEnd);
   const valid = active.filter(s => s.privateBytes !== null && s.processes); assert.ok(valid.length > 0);
   const peak = valid.reduce((a, b) => a.privateBytes >= b.privateBytes ? a : b);

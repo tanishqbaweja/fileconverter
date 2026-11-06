@@ -1,39 +1,63 @@
 # Tested conversion ledger
 
-2026-11-07 DOCX HTML repaired-validator browser attempt: positive plus wrong-text/
-active-markup negative controls pass; four genuine720B outputs have exact hash
-31bbd280...e0a55 and independent Unicode/paragraph/table/emphasis/CSP checks.
-Three same-page repeats, actual output-write cancellation, injected write error
-and recovery pass; no OPFS remnants, original unchanged, all owned data/roots gone.
-Overall still FAIL309.1484375MiB (52valid0missing; blank380596224/peak704761856):
-evidence/2026-11-06T20-50-33-200Z-docx-html-qualification.json.
-Peak existing process38444 grows from~51.6MB to313.0MB; no new-child explanation
-claimed. Installed Playwright CDP path confirmed non-collocated browser mode and
-prepareFilesForUpload complete-file readFile/base64. Current harness selection is
-therefore NOT acceptable disk-backed input evidence. NEXT replace only selection
-with native CDP DOM.setFileInputFiles local paths; unchanged XML/cancel payload,
-settings/baseline/formula/250MiB. No identical-byte speedAB or causal byte total.
+2026-11-07 DOCX HTML checkpoint FINAL:2514portable PASS/0fail/0skip/0cancel,
+101.604s across701 files; all863 inventoried,162 prerequisite-bound qualification
+files NOT RUN,235 previous hosted gates retained. Build/TypeScript/15-file lint
+PASS; exact current source pins saved in
+evidence/2026-11-07-docx-html-portable-final.json. First2506PASS/4FAIL preserved.
+No publication/large-file/direct-save/full OOXML layout or speedAB claim. The
+private bounded converter is implemented, with source/output independent small
+production control72.2109375MiB and real cancel/write/recovery evidence below.
+Original size/SHA unchanged; every disposable conversion/fixture/profile/runtime
+removed. Do not repeat these completed controls without a new relevant change;
+next required stages are large completed-file/memory cleanup stability, direct
+destination, complex-document fidelity and browser qualification before promotion.
 
-2026-11-07 DOCX HTML first production-browser control FAILED at independent
-validator before any accepted case: Python expectation accidentally contained
-literalU0001f600 after JS patch escaping. Actual Python parse shows correct
-Unicode emoji in produced paragraph; no passing fidelity/memory claim follows.
-evidence/2026-11-06T20-47-18-976Z-docx-html-qualification.json retains failure,
-native samples/trace and cleanup. Fix expected text withchr(codepoint), add
-positive/negative validator preflight before Chrome, then rerun once. Fresh
-production build/TypeScript/affected lint PASS. Public selector unchanged.
+2026-11-07 final small DOCX HTML control with corrected package metadata PASS:
+979B deflated genuine Word package -> four exact720B HTML outputs/hash31bbd280...
+e0a55. Independent ZIP CRC/package namespaces/main relationship/streaming Word XML
+and invalid-package negative pass; not full OOXML XSD or Word layout proof.
+Native HTMLParser verifies exact4Unicode paragraphs,2table cells/direct emphasis/
+static CSP; wrong-text and active-markup negatives rejected. Three same-page
+repeats plus recovery after real write error and9,001,106B fixture cancellation
+(armed after1,900,544B output) pass. Read/write/queue max262144/65536/65536B,one
+pending; final completed valid-package source979B only, NOT large-file proof.
+WholeChrome blank388988928/peak464707584=>72.2109375MiB/24valid0missing, unchanged
+five-sample/8s/2%/30s baseline/formula/250MiB; all peak processes counted. Native
+path-only input adapter sends0content payloads; original size/SHA and browser pins
+unchanged, generated fixtures/converted outputs/OPFS/profile/runtime/roots gone.
+evidence/2026-11-06T21-07-40-560Z-docx-html-qualification.json.
+Earlier validator expectation failure and309.148MiB copied-input failure remain
+failed; prior83.398MiB native-path run had weaker source-package namespace checks
+and is not full DOCX evidence. Metadata/schema fixture repair does not alter the
+converter/HTML output/settings; no identical-input speedAB/causal byte claim.
+First portable regression2506PASS/4historical-bindingFAIL retained; exact reviewed
+private integration reverses to old full hashes and rejects unknown edits, keeping
+current production worker intact.34focused repair checks PASS. Final portable
+run now passes above. Route remains pending/private;403published unchanged.
 
-2026-11-07 new private DOCX-to-HTML implementation added to original office
-scope, not public promotion. Reuses bounded safe ZIP/package validation and XML
-tokenizer, lazy-loads only for this route, preserves paragraphs/simple tables/
-direct emphasis/Unicode/tabs/breaks, escapes source text and emits restrictive
-static HTML CSP. Namespace/depth/metadata/output bounds and specific unsupported
-features disclosed. Normal selector remains403 published routes.83focused
-registry/capability/worker/new-converter checks PASS. Shared XML reader cleanup
-first FAILED all3 dedicated cases; fixed cancel/release/preserve-primary-error
-behavior now passes all24 converter+reader cases. TypeScript initially PASS;
-updated final type/lint/build/browser qualification NEXT. No full-process-memory,
-independent browser fidelity, repeats/scaling/direct/save or speed claim yet.
+DOCX HTML failure history, superseded for next-step instructions only:
+
+- First browser attempt failed before an accepted case because the validator
+  expected literalU0001f600. Fixed withchr(codepoint) and positive/negative
+  preflight; the original failed receipt and trace remain unchanged:
+  evidence/2026-11-06T20-47-18-976Z-docx-html-qualification.json.
+- Second attempt produced independently correct HTML and passed recovery, but
+  FAILED309.1484375MiB (blank380596224/peak704761856;52valid0missing):
+  evidence/2026-11-06T20-50-33-200Z-docx-html-qualification.json.
+  Existing process38444 grew~51.6MB to313.0MB; no new-child cause claimed.
+  Installed Playwright CDP input used whole-file readFile/base64. That adapter
+  has now been replaced by native path-only DOM.setFileInputFiles. The failed
+  run remains failed; no exact causal memory or identical-input speed claim.
+- Third native-path attempt passed83.3984375MiB, but its811B fixture lacked
+  complete package namespace/relationship metadata. Retained without upgrading
+  its scope: evidence/2026-11-06T20-57-15-361Z-docx-html-qualification.json.
+  The final979B fixture adds independent package checks, not full OOXML XSD.
+- Shared XML reader cleanup initially failed all3 regression cases; repaired
+  cancellation/release preserves primary errors. All3 now pass. The converter
+  lazy-loads bounded ZIP/XML processing, escapes text into static HTML and
+  discloses unsupported layout/styles/graphics. Final regression supersedes
+  intermediate pending build/type/lint notes; no private-to-public promotion.
 
 2026-11-07 final CDP/worker-audit checkpoint: COMPLETE portable suite PASS2483/
 0fail/0skip/0cancel,87.082s across697 files; all859 files inventoried,162 separate

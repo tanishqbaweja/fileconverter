@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "edd56842b13aef554bf3283c967c1cbef3871350",
+  "scope": "Exact reviewed private DOCX HTML integration only, no public policy or SVG native change",
+  "entries": {
+    "workers/conversion.worker.ts": {
+      "beforeSha256": "fbdbd631d791420f6af3a8dcaa9871fb367a04dbeb456999441b6f9c2a7ae833",
+      "afterSha256": "36686a93928e8c6fc628d4f0dce62c446b33d91b176108595dfc42d4b747fe04",
+      "before": "    } else if (profileId === \"docx-to-txt\") {\n      const documentDestination = destination.writable;\n      await runDocxToText({",
+      "after": "    } else if (profileId === \"docx-to-txt\" || profileId === \"docx-to-html\") {\n      const documentDestination = destination.writable;\n      const convertDocx = profileId === \"docx-to-html\"\n        ? (await import(\"./docx-html-conversion\")).runDocxToHtml : runDocxToText;\n      await convertDocx({"
+    },
+    "lib/capability-registry.ts": {
+      "beforeSha256": "acc1c6cb5104f329eec92f37b31754e7842f24bb174e703cf741b11379403781",
+      "afterSha256": "f270c6faf6ad2b09e5e67d3381c8c45ec83d04f87d72109e6ea197d0562a8de5",
+      "before": "}];",
+      "after": "}, {\n  id: \"docx-to-html\", input: \"docx\", output: \"html\", engine: \"document-stream\", route: \"stream\",\n  browserRequirements: [\"Web Workers\", \"DecompressionStream with raw DEFLATE\", \"File System Access\"],\n  cpuClass: \"low\", memoryClass: \"bounded-low\",\n  metadataLimitations: [\n    \"Private qualification only: not publicly supported until correctness, full-process memory, repeats, adverse-path recovery and browser qualification pass.\",\n    \"Main Word document only. Package properties, headers, footers, notes, comments, hyperlinks, images and drawings are not exported. Unsafe or macro-enabled ZIP packages, DTDs and external entities are rejected.\",\n  ],\n  fidelityLimitations: [\n    \"Preserves main-document paragraphs, simple table rows/cells, basic direct bold/italic/underline/strike formatting, Unicode, tabs and line breaks. Accepted insertions are included; tracked deletions and moved-from text are excluded.\",\n    \"Named/inherited styles, heading/list numbering semantics, underline variants, fonts/colors, merged-cell geometry, page layout and field instructions are not reproduced. Field display text is retained when present; foreign-namespace content is omitted with a warning.\",\n    \"Output is static self-contained HTML with escaped document text and restrictive CSP; no source URLs, scripts, styles or external resources are emitted.\",\n  ],\n  maxTestedBytes: null, automatedTestStatus: \"pending\", public: false,\n}];"
+    }
+  }
+}

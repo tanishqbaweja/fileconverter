@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "scope": "Actual first complete portable run after private DOCX HTML integration; historical bindings failed, not ignored or relabelled",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/run-unit-suite.mjs portable",
+  "exitCode": 1,
+  "selectedFiles": 700,
+  "allFiles": 862,
+  "separateQualificationFilesNotRun": 162,
+  "priorHostedFilesKeptPortable": 235,
+  "summary": {
+    "success": false,
+    "counts": {
+      "tests": 2510,
+      "failed": 4,
+      "passed": 2506,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "topLevel": 2510,
+      "suites": 0
+    },
+    "duration_ms": 94546.5316
+  },
+  "qualificationNotRun": true,
+  "suite": "portable",
+  "failures": [
+    {
+      "failed": "all three bounded traces round-trip, full raw allocator details remain byte-exact and source pins match",
+      "file": "H:\\Github Repositories\\fileconverter\\tests\\platform-vp9-allocation-evidence.test.mjs",
+      "message": "lib/capability-registry.ts\n+ actual - expected\n\n+ 'f270c6faf6ad2b09e5e67d3381c8c45ec83d04f87d72109e6ea197d0562a8de5'\n- 'acc1c6cb5104f329eec92f37b31754e7842f24bb174e703cf741b11379403781'\n"
+    },
+    {
+      "failed": "historical registry source remains exact while the only live policy change is withholding the unqualified SVG route",
+      "file": "H:\\Github Repositories\\fileconverter\\tests\\svg-publication-runner.test.mjs",
+      "message": "Expected values to be strictly equal:\n+ actual - expected\n... Skipped lines\n\n  'export type EngineId =\\n' +\n    '  | \"compression-stream\"\\n' +\n    '  | \"bzip2-wasm\"\\n' +\n    '  | \"xz-wasm\"\\n' +\n    '  | \"compression-codec-pipeline\"\\n' +\n...\n    '    metadataLimitations: [\\n' +\n+   '      `The certified input combination uses ${sourceCodec};'... 235387 more characters\n-   '      `The certified input combination uses ${sourceCodec};'... 233956 more characters\n"
+    },
+    {
+      "failed": "private worker overlay reverses to the entire pinned source and changes only SVG block plus writer URL resolution",
+      "file": "H:\\Github Repositories\\fileconverter\\tests\\svg-strip-pilot.test.mjs",
+      "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '36686a93928e8c6fc628d4f0dce62c446b33d91b176108595dfc42d4b747fe04'\n- 'fbdbd631d791420f6af3a8dcaa9871fb367a04dbeb456999441b6f9c2a7ae833'\n"
+    },
+    {
+      "failed": "80/128-row private workers change only the row constant in their archived helper and observe actual Wasm after every viewport",
+      "file": "H:\\Github Repositories\\fileconverter\\tests\\svg-strip-pilot.test.mjs",
+      "message": "Expected values to be strictly equal:\n+ actual - expected\n\n+ '36686a93928e8c6fc628d4f0dce62c446b33d91b176108595dfc42d4b747fe04'\n- 'fbdbd631d791420f6af3a8dcaa9871fb367a04dbeb456999441b6f9c2a7ae833'\n"
+    }
+  ],
+  "oldReportsOrHashesEdited": false,
+  "publicAcceptance": false
+}

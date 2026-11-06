@@ -8,6 +8,16 @@ or conversion endpoint.
 
 PDF input, PDF output, and PDF tooling are intentionally out of scope.
 
+DOCX-to-HTML is a private localhost qualification candidate, not a published
+conversion. It streams main-document paragraphs, simple table rows/cells and
+basic direct emphasis into escaped static HTML. Named styles, lists/headings,
+fonts, page/merged-cell layout, links, graphics and ancillary parts are not fully
+preserved; the UI discloses those limits. The source/output-independent small
+control passes repeats, cancellation/write-failure recovery and sampled
+72.21 MiB full-Chrome memory. Large-file, direct-save, full OOXML/layout fidelity
+and broader-browser qualification remain open. See
+`evidence/2026-11-06T21-07-40-560Z-docx-html-qualification.json`.
+
 The route's recorded memory evidence is from Chrome tests, not a live memory
 measurement or certification of every current browser/version. The installed
 Edge156.0.4314.58 refresh independently validates five representative small-file

@@ -4,13 +4,15 @@ import path from "node:path";
 import { gzipSync } from "node:zlib";
 import { build, version as esbuildVersion } from "esbuild";
 import { sha } from "../../images/resvg-source/source-pins.mjs";
+import { reviewDocxHtmlIntegration } from "./reviewed-docx-html-integration.mjs";
 export const stripWorkerPins = Object.freeze({
   "workers/conversion.worker.ts": "fbdbd631d791420f6af3a8dcaa9871fb367a04dbeb456999441b6f9c2a7ae833",
   "workers/random-access-destination.ts": "f46a4db401daabeb40a0b9eaa9feb256b623c21d2a7f41af549b6797842b4375",
 });
 const replace = (text,before,after) => { assert.equal(text.split(before).length-1,1,"Exact strip source anchor: "+before); return text.replace(before,after); };
 export function makeSvgStripWorker(worker, bridge, writerUrl) {
-  assert.equal(sha(worker),stripWorkerPins["workers/conversion.worker.ts"]);
+  const reviewedWorker = reviewDocxHtmlIntegration("workers/conversion.worker.ts", worker);
+  assert.equal(reviewedWorker.historicalSha256,stripWorkerPins["workers/conversion.worker.ts"]);
   assert.equal(sha(bridge),stripWorkerPins["workers/random-access-destination.ts"]);
   assert.match(writerUrl,/^\/assets\/direct-file-writer\.worker-[\w-]+\.js$/);
   const original = worker.toString(), begin = original.indexOf("async function runSvgToPng("), end = original.indexOf("\nasync function runImageConversion(",begin);
@@ -44,7 +46,9 @@ export function makeSvgStripWorker(worker, bridge, writerUrl) {
   return {generated,generatedBridge,proof:{workerOriginalSha256:sha(worker),workerGeneratedSha256:sha(generated),
     bridgeOriginalSha256:sha(bridge),bridgeGeneratedSha256:sha(generatedBridge),
     workerWholeSourceReversed:true,bridgeOnlyUrlResolutionChanged:true,writerUrl,
-    originalReadDirectWriteCancelErrorLifecycleRetained:true,publicSourceFilesEdited:false}};
+    originalReadDirectWriteCancelErrorLifecycleRetained:true,publicSourceFilesEdited:false,
+    reviewedPrivateDocxHtmlIntegration:reviewedWorker.reviewedDocxHtmlChange,
+    pinnedHistoricalWorkerSha256:reviewedWorker.historicalSha256}};
 }
 export async function buildSvgStripWorker({root,runtime,centralRows=64}) {
   assert.ok([64,80,128].includes(centralRows));
