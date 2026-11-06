@@ -7,10 +7,13 @@ const sha=s=>createHash("sha256").update(s).digest("hex");
 export const VP9_PACKED_ARTIFACTS=Object.freeze(["vp9_tokenize.header.packed.c","vp9_tokenize.producer.packed.c","vp9_bitstream.packer.packed.c",
   "vp9-token-packed-proof.json","vp9-packed-vpx-config.h","vp9-packed-layout-probe.c","vp9-packed-layout-probe.ll"]);
 export async function authenticateVp9PackedArtifacts(readArtifact,preimages) {
-  const derived=makeVp9TokenPackedSources(preimages),proof=JSON.parse(await readArtifact("vp9-token-packed-proof.json")),sourceSha256s={},
+  // fs returns Buffer; fflate returns Uint8Array whose toString is comma-separated
+  // numbers. Normalize both explicitly before parsing/comparing source text.
+  const read=async file=>{const value=await readArtifact(file);assert.ok(value instanceof Uint8Array&&value.byteLength>0&&value.byteLength<=2097152);return Buffer.from(value);};
+  const derived=makeVp9TokenPackedSources(preimages),proof=JSON.parse((await read("vp9-token-packed-proof.json")).toString("utf8")),sourceSha256s={},
     stems={"vp9/encoder/vp9_tokenize.h":"vp9_tokenize.header","vp9/encoder/vp9_tokenize.c":"vp9_tokenize.producer","vp9/encoder/vp9_bitstream.c":"vp9_bitstream.packer"};
   for(const [file,row]of Object.entries(derived.sources)) {
-    assert.equal((await readArtifact(stems[file]+".packed.c")).toString(),row.generated);
+    assert.equal((await read(stems[file]+".packed.c")).toString("utf8"),row.generated);
     assert.deepEqual(proof.sources[file].edits,row.edits);assert.equal(proof.sources[file].generatedSha256,row.generatedSha256);
     assert.equal(proof.parentContextSources[file].generatedSha256,derived.parentContextSources[file].generatedSha256);
     sourceSha256s[file]=row.generatedSha256;
@@ -21,12 +24,12 @@ export async function authenticateVp9PackedArtifacts(readArtifact,preimages) {
   assert.deepEqual(proof.cUnit.variants.map(v=>v.candidateRecordBytes),[4,4,8,8]);
   assert.deepEqual(proof.cUnit.variants.map(v=>v.optimization),["-O0","-O2","-O0","-O2"]);
   assert.ok(proof.cUnit.variants.every(v=>v.extraBitPatterns===65536&&v.contextIndices===1024));
-  const config=(await readArtifact("vp9-packed-vpx-config.h")).toString(),match=config.match(/^#define CONFIG_VP9_HIGHBITDEPTH ([01])$/m);assert.ok(match);
-  const high=Number(match[1]),llvm=(await readArtifact("vp9-packed-layout-probe.ll")).toString();
+  const config=(await read("vp9-packed-vpx-config.h")).toString("utf8"),match=config.match(/^#define CONFIG_VP9_HIGHBITDEPTH ([01])$/m);assert.ok(match);
+  const high=Number(match[1]),llvm=(await read("vp9-packed-layout-probe.ll")).toString("utf8");
   assert.equal(proof.layout.highBitDepth,high);assert.equal(proof.layout.actualLibraryConfiguration,true);assert.equal(proof.layout.codecInstantiated,false);
   assert.equal(proof.layout.previousRecordBytes,high?8:6);assert.equal(proof.layout.packedRecordBytes,high?8:4);assert.equal(proof.layout.extraOffset,high?4:2);
   assert.equal(proof.layout.vpxConfigSha256,sha(config));assert.equal(proof.layout.llvmSha256,sha(llvm));
-  assert.equal(proof.layout.cSourceSha256,sha(await readArtifact("vp9-packed-layout-probe.c")));
+  assert.equal(proof.layout.cSourceSha256,sha(await read("vp9-packed-layout-probe.c")));
   assert.match(llvm,/target triple = "wasm32-unknown-emscripten"/);
   for(const [symbol,value]of [["within_previous_token_bytes",high?8:6],["within_packed_token_bytes",high?8:4],["within_packed_highbitdepth",high]])
     assert.match(llvm,new RegExp("@"+symbol+" = .*i32 "+value+","));

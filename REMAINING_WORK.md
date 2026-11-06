@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 packed-token native13 successfully built/authenticated. Actual4B low-
+bit record, unchanged96MiB cap/one thread, source-commit/config/layout/LLVM all
+verified.49CI PASS/2optional-local skips/0fail, both cleanup steps PASS. Collector
+type mismatch fixed locally, same successful artifact reused (no rebuild).
+NEXT actual strict small browser golden/fidelity/recovery control; only after it
+passes may protected-original8 run. No actual memory savings/speed/public or
+full-original qualification inferred from native compilation.
+
 2026-11-06 native12 failed PRECOMPILE only (two stale source-wiring assertions),
 both cleanup steps passed. Corrected assertions verified with exact51-test local
 CI batch, plus24browser/startup recipe tests PASS. Native packed token build still

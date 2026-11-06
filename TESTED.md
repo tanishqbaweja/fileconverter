@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-06 DISTINCT packed-token native13/run42244170876/0732ce78 SUCCESS,
+8m54s; actual CI49PASS/0fail/2optional-local-tool skips (51tests), both cleanup
+steps PASS,0curl failures. Artifact13517424276/3661933B/535b6ce0834f1477f2424c0074c8db16843fc2e49511a35c11dfd892c00930d7
+authenticated. Actual compiled low-bit record4B versus6B ancestor; same shared
+32MiB initial/96MiB maximum,1codec thread/0helper workers. Wasm9877633B SHA
+436db67db8c5c21aa862c4fb71de6fc1e2bc1344ee31c8beb084b102065118c5.
+Reusable static tools11809203B retained in owned work/vp9-duration-input-42244170876.
+First local collection failed before target/receipt creation because Uint8Array
+was text-coerced as numeric CSV. Fixed bounded normalization, actual Uint8Array
+regression PASS, collected SAME artifact without native rebuild. All final vendor
+source/config/probe/LLVM/source-commit pins verified. No media/native conversion,
+actual saved-memory/speed/browser acceptance yet. NEXT strict headless browser
+control with pinned original golden/fidelity/recovery/whole-Chrome250MiB gates.
+
 2026-11-06 native12/run42243450950/db5beecd TERMINAL FAILURE before SDK/native
 compilation:2stale wiring-string tests expected old engine/options without
 tokenPacked. Both cleanup steps PASS. Failure/diagnosis retained, no redispatch.

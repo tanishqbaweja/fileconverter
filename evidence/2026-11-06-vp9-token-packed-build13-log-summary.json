@@ -1,0 +1,23 @@
+{
+  "runId": 42244170876,
+  "jobId": 127981917489,
+  "head": "0732ce78f0abb8b2a1b972ad16f1d3759fd9fd05",
+  "buildConclusion": "success",
+  "logBytes": 716447,
+  "logSha256": "63aed5f46ae57af78cd9cf5ed9da99634eef0dd36fb30c1b03bd26a2443cee5e",
+  "ciTests": 51,
+  "ciPass": 49,
+  "ciFail": 0,
+  "ciSkipped": 2,
+  "skipsAreOptionalLocalAuthenticatedToolControls": true,
+  "curlFailures": [],
+  "actualCompiledLowBitDepthRecordBytes": 4,
+  "previousRecordBytes": 6,
+  "candidateCodecInstantiatedInNode": false,
+  "collectionFirstAttempt": {
+    "status": "failed-before-owned-target-or-receipt-creation",
+    "cause": "Shared verifier expected Buffer text conversion, but unzip members are Uint8Array and coerce to numeric CSV.",
+    "correction": "Normalize bounded Uint8Array/Buffer artifacts before source/JSON decoding; add exact unzip-type regression. Native build remains valid and must not be rerun for this collector-only fix."
+  },
+  "publicAcceptance": false
+}

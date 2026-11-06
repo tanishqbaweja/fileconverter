@@ -36,6 +36,13 @@ test("mock auth rejects changed final sources, header config, probe source and L
     const m=mockArtifacts();m.files[file]+="changed";await assert.rejects(authenticateVp9PackedArtifacts(m.read,preimages));
   }
 });
+test("fflate Uint8Array members authenticate identically to filesystem Buffers, never numeric-string coercion",async()=>{
+  const m=mockArtifacts(),expected=await authenticateVp9PackedArtifacts(m.read,preimages),
+    actual=await authenticateVp9PackedArtifacts(async file=>new Uint8Array(await m.read(file)),preimages);
+  assert.deepEqual(actual,expected);
+  await assert.rejects(authenticateVp9PackedArtifacts(async()=>new Uint8Array(2097153),preimages));
+  await assert.rejects(authenticateVp9PackedArtifacts(async()=>"not bytes",preimages));
+});
 test("mock auth rejects missing layout, wrong record, false validation claims and incomplete entropy controls",async()=>{
   for(const mutate of [p=>p.layout=null,p=>p.layout.packedRecordBytes=6,p=>p.layout.actualLibraryConfiguration=false,
     p=>p.actualMemorySavedBytes=100,p=>p.browserValidated=true,p=>p.cUnit.variants[0].producerPackerCases=0,
