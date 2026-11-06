@@ -13,13 +13,15 @@ export function originalStartupStop(peaks, baseline, elapsedMs) {
   } else if (elapsedMs >= 5000) return { kind: "no-valid-memory-samples", incrementalPrivateMiB: null };
   return elapsedMs >= VP9_ORIGINAL_STARTUP.windowMs ? { kind: "bounded-startup-window-ended", incrementalPrivateMiB: null } : null;
 }
-export async function runVp9OriginalStartup({ page, observer, blankBaseline, evidence,backend="cpu" }) {
+export async function runVp9OriginalStartup({ page, observer, blankBaseline, evidence,backend="cpu",diagnosticCapture }) {
   assert.ok(["cpu","platform"].includes(backend));
+  assert.ok(diagnosticCapture===undefined||(backend==="platform"&&typeof diagnosticCapture==="function"));
   assert.equal(blankBaseline?.stable, true); assert.ok(blankBaseline.privateBytes > 0);
   Object.assign(evidence, { scope: "Untouched full original File supplied to production AVIO; bounded startup only, NOT completed original conversion or fidelity",
     limits: VP9_ORIGINAL_STARTUP, explicitBackend: backend==="platform"?"Platform VP9 encoder/fixed32MiB Wasm decoder; CPU fallback not invoked":"CPU/Wasm single-thread; WebCodecs not invoked", progress: [], result: null,
     stop: null, cancellationRequested: false, cancellationError: null, observerError: null, executionError: null, cleanupErrors: [], partialOutputRemoved: false,
-    memory: null, passedStartupOnly: false, fullOriginalConverted: false, independentFullFidelityPassed: false, publicAcceptance: false });
+    memory: null, passedStartupOnly: false, fullOriginalConverted: false, independentFullFidelityPassed: false, publicAcceptance: false,
+    ...(diagnosticCapture?{diagnosticOnly:true,perturbsMemoryAndTiming:true,diagnosticError:null}:{}) });
   const name = "within-private-vp9-original-startup.webm", started = Date.now();
   let timer, busy = false, pending = Promise.resolve();
   const cancel = async reason => {
@@ -37,6 +39,17 @@ export async function runVp9OriginalStartup({ page, observer, blankBaseline, evi
     if (evidence.progress.length === 128) evidence.progress.shift();
     evidence.progress.push({ acquiredAt: new Date().toISOString(), phase: value.phase, metrics: value.metrics });
   });
+  if(diagnosticCapture)await page.exposeBinding("__profileOriginalPlatform",async({frame},value)=>{
+    assert.equal(frame,page.mainFrame());assert.ok(value&&["webcodecs-vp9-ready","encoder-configured","first-frame-encoded","output-closed"].includes(value.label));
+    try { await diagnosticCapture(value.label,value.metrics); }
+    catch(error) {
+      evidence.diagnosticError=String(error).slice(0,2048);
+      // Release the worker checkpoint and let native/destination finally run.
+      // Do not terminate a live native call merely because observation failed.
+      await cancel({kind:"allocation-diagnostic-failed",incrementalPrivateMiB:null});
+    }
+    if(value.label==="first-frame-encoded")await cancel({kind:"allocation-diagnostic-ended",incrementalPrivateMiB:null});
+  });
   try {
     timer = setInterval(() => {
       if (busy) return; busy = true;
@@ -46,7 +59,7 @@ export async function runVp9OriginalStartup({ page, observer, blankBaseline, evi
         } catch (error) { evidence.observerError = String(error).slice(0, 1024); await cancel({ kind: "observer-failure", incrementalPrivateMiB: null }); }
       })().finally(() => { busy = false; });
     }, 1000);
-    evidence.result = await page.evaluate(async ({ name, limits,backend }) => {
+    evidence.result = await page.evaluate(async ({ name, limits,backend,diagnostic }) => {
       const root = await navigator.storage.getDirectory(), storage = await navigator.storage.estimate();
       if (!Number.isFinite(storage.quota) || !Number.isFinite(storage.usage) || storage.quota - storage.usage < 536870912)
         throw new Error("Insufficient or unavailable OPFS quota for bounded original startup");
@@ -59,18 +72,24 @@ export async function runVp9OriginalStartup({ page, observer, blankBaseline, evi
         const result = await new Promise((resolve, reject) => {
           const timeout = setTimeout(() => reject(new Error("Original startup did not stop within its cancellation grace")), limits.windowMs + limits.cancellationGraceMs);
           worker.onerror = event => { clearTimeout(timeout); reject(new Error(event.message)); };
-          worker.onmessage = ({ data }) => {
+          worker.onmessage = async ({ data }) => {
+            if(diagnostic&&data.type==="diagnostic-checkpoint") {
+              try {await window.__profileOriginalPlatform(data);}catch(error){clearTimeout(timeout);reject(error);}
+              finally {worker.postMessage({diagnosticRelease:data.id});}
+              return;
+            }
             if (data.type === "progress") { window.__vp9OriginalProgress(data).catch(() => {}); return; }
             clearTimeout(timeout); resolve(data);
           };
           worker.postMessage({ file, output: handle, cancellation, nativeProfile: 10, implementation: backend==="platform"?"candidate":"wasm-baseline",
+            ...(diagnostic?{diagnosticCheckpoints:true}:{}),
             ...(backend==="platform"?{}:{fallbackCore:"single-thread"}),
             video: { codec: "vp9", quality: "automatic", maxWidth: limits.width, bitRateBps: limits.bitRateBps, frameRateFps: limits.frameRate } });
         });
         return { ...result, sourceFileBytes: file.size, sourceCopied: false, nativeBrowserCpuOnly: backend!=="platform",nativeBrowserPlatformOnly:backend==="platform",
           storageBefore: { usage: storage.usage, quota: storage.quota }, partialOutputBytes: (await handle.getFile()).size };
       } finally { worker.terminate(); delete window.__withinVp9OriginalCancel; }
-    }, { name, limits: VP9_ORIGINAL_STARTUP,backend });
+    }, { name, limits: VP9_ORIGINAL_STARTUP,backend,diagnostic:Boolean(diagnosticCapture) });
   } catch (error) { evidence.executionError = String(error).slice(0, 2048); throw error;
   } finally {
     clearInterval(timer); await pending;
@@ -87,6 +106,16 @@ export async function runVp9OriginalStartup({ page, observer, blankBaseline, evi
       }, name); evidence.partialOutputRemoved = true;
     } catch (error) { evidence.cleanupErrors.push(String(error).slice(0, 1024)); errors.push(error); }
     if (errors.length) throw new AggregateError(errors, "Original startup observation/cleanup failed; every cleanup was attempted");
+  }
+  if(diagnosticCapture) {
+    assert.equal(evidence.diagnosticError,null);assert.equal(evidence.cancellationError,null);assert.equal(evidence.observerError,null);
+    assert.equal(evidence.result.cleanupComplete,true);assert.equal(evidence.partialOutputRemoved,true);
+    assert.equal(evidence.cancellationRequested,true);
+    assert.ok(["allocation-diagnostic-ended","memory-budget-exceeded"].includes(evidence.stop?.kind));
+    assert.ok(evidence.memory.validSamples>0&&evidence.memory.unavailableSamples===0);
+    // Capture may be stopped by the unchanged safety gate before the first
+    // frame. Never relabel a perturbed diagnostic as passing startup/stress.
+    assert.equal(evidence.passedStartupOnly,false);return;
   }
   assert.equal(evidence.cancellationError, null); assert.equal(evidence.observerError, null);
   assert.equal(evidence.result.cleanupComplete, true);

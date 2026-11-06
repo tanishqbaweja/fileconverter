@@ -82,6 +82,34 @@ test("observer failures never skip independent OPFS removal or fabricate a passi
   assert.deepEqual(calls, ["remove-opfs"]); assert.equal(evidence.partialOutputRemoved, true); assert.equal(evidence.memory, null);
   assert.equal(evidence.passedStartupOnly, false); assert.match(evidence.observerError, /observer unavailable/);
 });
+test("private allocation capture failure cancels and lets native cleanup finish before reporting observation error",async()=>{
+  const evidence={},bindings=new Map(),frame={},calls=[];
+  const page={mainFrame:()=>frame,exposeBinding:async(name,callback)=>bindings.set(name,callback),
+    evaluate:async(_callback,arg)=>{
+      if(arg&&typeof arg==="object") {
+        assert.equal(arg.diagnostic,true);
+        await bindings.get("__profileOriginalPlatform")({frame},{label:"encoder-configured",metrics:{wasmMemoryBytes:33554432}});
+        calls.push("native-and-destination-cleanup");return {type:"error",cleanupComplete:true};
+      }
+      calls.push(typeof arg==="string"?"remove-opfs":"cancel");
+    }};
+  const observer={through:async()=>{},setPhase:()=>{},peaks:()=>({peak:{privateBytes:200000000},validSamples:1,unavailableSamples:0})};
+  await assert.rejects(runVp9OriginalStartup({page,observer,blankBaseline:{stable:true,privateBytes:100000000},evidence,backend:"platform",
+    diagnosticCapture:async()=>{throw new Error("mock capture failed");}}),/mock capture failed/);
+  assert.deepEqual(calls,["cancel","native-and-destination-cleanup","remove-opfs"]);
+  assert.equal(evidence.partialOutputRemoved,true);assert.equal(evidence.result.cleanupComplete,true);assert.equal(evidence.stop.kind,"allocation-diagnostic-failed");
+  assert.equal(evidence.passedStartupOnly,false);assert.equal(evidence.diagnosticOnly,true);assert.equal(evidence.publicAcceptance,false);
+});
+test("first-frame diagnostic ends deliberately and can never claim passed startup even below budget",async()=>{
+  const evidence={},bindings=new Map(),frame={};
+  const page={mainFrame:()=>frame,exposeBinding:async(name,callback)=>bindings.set(name,callback),evaluate:async(_callback,arg)=>{
+    if(arg&&typeof arg==="object") {await bindings.get("__profileOriginalPlatform")({frame},{label:"first-frame-encoded",metrics:{}});return {type:"error",cleanupComplete:true};}
+  }};
+  const observer={through:async()=>{},setPhase:()=>{},peaks:()=>({peak:{privateBytes:200000000},validSamples:1,unavailableSamples:0})};
+  await runVp9OriginalStartup({page,observer,blankBaseline:{stable:true,privateBytes:100000000},evidence,backend:"platform",diagnosticCapture:async()=>{}});
+  assert.equal(evidence.stop.kind,"allocation-diagnostic-ended");assert.equal(evidence.passedStartupOnly,false);assert.equal(evidence.fullOriginalConverted,false);
+  assert.equal(evidence.publicAcceptance,false);assert.equal(evidence.partialOutputRemoved,true);
+});
 test("fourth attempt requires a distinct guarded tool plus passed strict small/recovery control", async () => {
   assert.throws(() => makeVp9OriginalStartupSource(source, root, 4, "42122918540"), /unmodified vendor/);
   const result = makeVp9OriginalStartupSource(source, root, 4, "12345678");

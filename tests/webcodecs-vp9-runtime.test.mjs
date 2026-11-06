@@ -17,6 +17,40 @@ async function mockJSPI(run) {
 }
 function metrics() { return { inputBytes: 0, outputBytes: 0, queuedBytes: 0, peakQueuedBytes: 0,
   pendingOperations: 0, peakPendingOperations: 0, maxReadChunkBytes: 0, maxWriteChunkBytes: 0, elapsedMs: 0, sharedArrayBufferBytes: 4 }; }
+for(const failure of [null,"encoder-configured","first-frame-encoded"])test("mock native allocation checkpoints are opt-in, ordered and dispose after observation failure: "+failure,()=>mockJSPI(async()=>{
+  const saved=Object.fromEntries(["VideoEncoder","VideoFrame"].map(key=>[key,Object.getOwnPropertyDescriptor(globalThis,key)]));
+  let disposed=0,closed=0,frameClosed=0;const observed=[];
+  class Frame {constructor(_data,options){this.timestamp=options.timestamp;}close(){frameClosed++;}}
+  class Encoder {
+    static async isConfigSupported(config){return {supported:true,config};}
+    constructor(callbacks){this.callbacks=callbacks;this.state="unconfigured";this.encodeQueueSize=0;}
+    configure(){this.state="configured";}encode(frame){this.timestamp=frame.timestamp;}
+    async flush(){this.callbacks.output({byteLength:3,timestamp:this.timestamp,type:"key",copyTo:target=>target.set([1,2,3])},{});}
+    close(){this.state="closed";closed++;}
+  }
+  Object.defineProperty(globalThis,"VideoEncoder",{configurable:true,value:Encoder});Object.defineProperty(globalThis,"VideoFrame",{configurable:true,value:Frame});
+  const heap=new Uint8Array(33554432),config=new DataView(heap.buffer,128,96),wire=new DataView(heap.buffer,256,80);
+  [1,4,4,1,24,24,1,600000,120,1,1,1,1].forEach((x,i)=>config.setUint32(i*4,x,true));
+  [1,4,4,0].forEach((x,i)=>wire.setUint32(i*4,x,true));
+  for(const [i,plane]of [[1024,4,1024,16],[2048,2,2048,4],[3072,2,3072,4]].entries())plane.forEach((x,j)=>wire.setUint32(16+i*16+j*4,x,true));
+  wire.setUint32(72,1,true);wire.setUint32(76,1,true);
+  try {
+    for(const enabled of failure?[true]:[false,true]) {
+      const core=await loadWebCodecsVp9Core(async()=>({default:async({withinWebCodecs:bridge})=>({HEAPU8:heap,dispose(){disposed++;},async ccall(){
+        await bridge.open(heap,128);
+        for(let i=0;i<2;i++){wire.setBigInt64(64,BigInt(i),true);const bytes=await bridge.encode(heap,256);bridge.copy(heap,8192,bytes);}
+        return 0;
+      }})}),enabled?async label=>{observed.push(label);if(label===failure)throw new Error("mock observer failure");}:undefined);
+      const native=await core.factory({withinBridge:{cancelled:()=>false}});
+      try {if(failure)await assert.rejects(native.ccall(),/mock observer failure/);else await native.ccall();}
+      finally {native.dispose();}
+      assert.equal(core.snapshot().closed,true);assert.equal(core.snapshot().pendingPacketBytes,0);assert.equal(core.snapshot().currentPackedBytes,0);
+      if(!enabled)assert.deepEqual(observed,[]);
+    }
+    assert.deepEqual(observed,failure==="encoder-configured"?["encoder-configured"]:["encoder-configured","first-frame-encoded"]);
+    assert.equal(disposed,failure?1:2);assert.equal(closed,disposed);assert.equal(frameClosed,failure==="encoder-configured"?0:failure?1:4);
+  } finally {for(const [key,descriptor]of Object.entries(saved)){if(descriptor)Object.defineProperty(globalThis,key,descriptor);else delete globalThis[key];}}
+}));
 test("private VP9 accepts only bounded automatic-quality VP9 profiles and never approximates CRF/audio controls", () => {
   for (const id of [10, 11]) assert.doesNotThrow(() => assertWebCodecsVp9Options(id, undefined,
     { codec: "vp9", quality: "automatic", maxWidth: 640, bitRateBps: 600000, frameRateFps: 24 }));

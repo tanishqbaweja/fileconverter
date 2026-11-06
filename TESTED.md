@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-06 bounded original-platform allocation diagnostic PREPARED, not yet run.
+Four maximum snapshots: loaded-idle, native-ready, encoder-configured, first real
+encoded frame. Same full original/settings/fixed32MiB decoder/250MiB watchdog;
+no forced GC/services disabled/process exclusions. Whole-tree OS samples plus
+accessible JS realm heaps and overlapping MemoryInfra counters; diagnostic
+perturbs memory/timing and can NEVER claim startup/conversion/speed acceptance.
+Capture errors now cancel and release the checkpoint so native/output cleanup
+finishes before error reporting. 56distinct focused checks PASS (51 initial +5
+new opt-in/cleanup checks), TypeScript noEmit/nonincremental, affected lint/diff
+PASS. Headless one-shot retains authenticated reversible failed-run ancestry;
+trace cap8MiB/4MiB tracing buffer, one pending/no queue/1500ms trace deadline.
+Host preflight passes (7.06GiB physical/9.88GiB virtual free); next actual bounded
+diagnostic, not another unchanged acceptance attempt. No new performance claim.
+
 2026-11-06 checkpoint349distinct focused checks PASS (346regressions +3new
 platform-original evidence checks),0fail/0skip; affected lint/diff PASS. Actual
 large platform run remains FAILED despite passing small control. All this cycle's

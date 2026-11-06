@@ -57,7 +57,7 @@ scope.onmessage = async ({ data }) => {
       }
     };
     errorStage = "engine-load";
-    if (data.implementation === "candidate") core = await loadWebCodecsVp9Core();
+    if (data.implementation === "candidate") core = await loadWebCodecsVp9Core(undefined, data.diagnosticCheckpoints ? checkpoint : undefined);
     const options = { file: data.file, profileId: data.nativeProfile === 11 ? "ogv-to-webm-vp9" : "mkv-to-webm-vp9",
       onNativeInitialized: data.diagnosticCheckpoints ? async observation => checkpoint(observation.engine + "-ready") : undefined,
       writable: destination, remuxProfile: data.nativeProfile, webCodecsVp9Core: core, forceAsynchronousInput: true,
@@ -74,7 +74,7 @@ scope.onmessage = async ({ data }) => {
       } } satisfies Parameters<typeof runMediaRemux>[0];
     errorStage = "conversion";
     const selection = data.implementation === "automatic" ? await runOptionalWebCodecsVp9(options, {
-      async loadCore() { core = await loadWebCodecsVp9Core(); return core; },
+      async loadCore() { core = await loadWebCodecsVp9Core(undefined, data.diagnosticCheckpoints ? checkpoint : undefined); return core; },
       beforeWasmFallback: data.diagnosticCheckpoints ? async () => checkpoint("candidate-disposed") : undefined,
       wasmFallbackCore: data.fallbackCore,
     }) : null;

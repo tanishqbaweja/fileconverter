@@ -12,6 +12,7 @@ export interface WebCodecsVp9Core {
 }
 type NativeFactory = (options: RemuxFactoryOptions & { withinWebCodecs: EncoderBridge }) => Promise<RemuxModule & { HEAPU8: Uint8Array }>;
 type Importer = (url: string) => Promise<{ default: unknown }>;
+type AllocationCheckpoint = (label: "encoder-configured" | "first-frame-encoded") => Promise<void>;
 
 export function assertWebCodecsVp9Options(profile: number, audio?: AudioConversionOptions, video?: VideoConversionOptions): void {
   const bounded = (value: number | undefined, minimum: number, maximum: number, even = false) => value === undefined || value === 0 ||
@@ -23,7 +24,7 @@ export function assertWebCodecsVp9Options(profile: number, audio?: AudioConversi
         value !== undefined && value !== "automatic" : !["bitRateBps", "sampleRateHz", "channels"].includes(key) || Boolean(value)))
     throw new DOMException("This private VP9 encoder does not implement those controls; retain the existing Wasm path.", "NotSupportedError");
 }
-export async function loadWebCodecsVp9Core(importer: Importer = url => import(/* @vite-ignore */ url)): Promise<WebCodecsVp9Core> {
+export async function loadWebCodecsVp9Core(importer: Importer = url => import(/* @vite-ignore */ url), allocationCheckpoint?: AllocationCheckpoint): Promise<WebCodecsVp9Core> {
   const jspi = WebAssembly as typeof WebAssembly & { Suspending?: unknown; promising?: unknown };
   if (typeof jspi.Suspending !== "function" || typeof jspi.promising !== "function")
     throw new DOMException("Stable JSPI is unavailable; retain the existing Wasm path.", "NotSupportedError");
@@ -39,9 +40,20 @@ export async function loadWebCodecsVp9Core(importer: Importer = url => import(/*
       const bridge = createWebCodecsVp9Bridge({ isCancelled: options.withinBridge.cancelled });
       let selectionRejected: unknown;
       const nativeBridge: EncoderBridge = { ...bridge, async open(...args) {
-        try { return await bridge.open(...args); }
+        try {
+          const result = await bridge.open(...args);
+          if (allocationCheckpoint) await allocationCheckpoint("encoder-configured");
+          return result;
+        }
         catch (error) { if (error instanceof DOMException && error.name === "NotSupportedError") selectionRejected = error; throw error; }
       } };
+      // Normal conversion retains the original encode function: no per-frame
+      // observation/microtask wrapper unless a private diagnostic requests it.
+      if (allocationCheckpoint) nativeBridge.encode = async (...args) => {
+        const bytes = await bridge.encode(...args);
+        if (bridge.snapshot().frames === 1) await allocationCheckpoint("first-frame-encoded");
+        return bytes;
+      };
       let native: Awaited<ReturnType<NativeFactory>> | undefined, disposed = false;
       const dispose = () => {
         if (disposed) return; disposed = true;

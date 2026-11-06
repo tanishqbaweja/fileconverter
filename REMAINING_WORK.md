@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 four-checkpoint full-original platform allocation diagnostic prepared;
+56distinct focused checks/TypeScript/affected lint/diff PASS. Opt-in observation
+does not wrap normal per-frame encoding; failed observation lets native finally
+complete. Exact same input/settings/blank baseline/250MiB safety gate retained.
+NEXT execute once and use OS+realm+native allocator evidence to select a concrete
+fix. Existing335.40234375MiB original FAIL unchanged; no passing stress, speed,
+full-original fidelity, near10GB, or broader release coverage inferred.
+
 2026-11-06 checkpoint349distinct focused checks pass, lint/diff pass; actual
 original platform335.40234375MiB remains FAILED. No live build/test, this cycle's
 disposable data removed, source unchanged. Required allocation diagnosis, full-
