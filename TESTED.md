@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-06 actual lazy42218018139 strict small/recovery PASS ate649bf6e:
+initial+3complete99413B outputs SHA82bdfd66...82267b BYTE-EXACT to prior core,
+all48PTS/durations/2s/SSIM.993273/8metadata/stored default duration preserved.
+Real cancel-after-write and injected-write failure abort0B and recover, no third
+attempt. Same blank351117312/completeChrome peak587759616=>225.6796875MiB,
+214valid0missing; actual small Wasm32MiB. Different sessions do not prove causal
+memory/speed savings. All outputs/OPFS/profile/runtime/stage and3owned process
+births removed, original size/SHA unchanged,0forbidden requests; raw613030B
+archived to272377B total. Next exclusive original6, same full File/settings/
+250MiB/96MiB gates. Small success is NOT full-original/scaling/public acceptance.
+
 2026-11-06 lazy native42218018139/49ab50ed TERMINAL SUCCESS,8m10s/all cleanup
 PASS. Authenticated30members/11505551B reusable static only in approved work;
 artifact13501998409 ZIP3589219B SHAc751ba0f307f06fd4242ee7cb6d76ce186d18b45afb684dfd2d0f0d245e8fff9.

@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-06 lazy core actual strict small/recovery PASS: four completed outputs
+byte-identical, unchanged fidelity/timing/metadata, both adverse paths recover,
+wholeChrome225.6796875MiB/214valid0missing. All disposable data cleaned/original
+unchanged. NEXT original6 with same full protected input and limits; no original/
+large/scaling/speed/public acceptance or broader-spec completion from small test.
+
 2026-11-06 actual lazy library compiled/authenticated42218018139 SUCCESS,
 30static members/final vendor hashes/all cleanup, same limits/options/threads.
 Not a browser/optimization acceptance. NEXT strict bit-exact/fidelity/recovery
