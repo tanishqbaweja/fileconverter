@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 PLATFORM small/recovery PASS: four identical48-frame outputs with
+SSIM.993428/strict clock+metadata/default-duration gates, actual VideoEncoder
+participation (not CPU fallback), wholeChrome172.94921875MiB/60valid0missing.
+Hardware-preferred support false; no physical GPU claim. All disposable data gone,
+original unchanged. NEXT protected original five-minute platform startup with same
+250MiB and fixed32MiB decoder, not a full-file/speed/scaling/public acceptance.
+
+
 2026-11-06 platform original-width native42231818045 SUCCESS/authenticated,
 43CI tests/all cleanup. Fixed32MiB decoder/one thread unchanged. Strict platform-
 only browser control prepared, no CPU fallback can pass it;8helper controls pass.

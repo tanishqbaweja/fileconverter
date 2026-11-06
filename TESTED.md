@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-11-06 actual PLATFORM native42231818045 small/recovery PASS at8bd8d687:
+initial+3completed97764B outputs SHA1fba59187d8111779053fcfe00a00d79ad829638dd4eec8ffa6bf67ef9a653f9,
+all48frames/packets/closed frames, strict2s/PTS/duration/default41666666ns/8metadata
+and SSIM.993428>=.98. Explicit-color57599B fixture is not the older unknown-color
+CPU fixture; no A/B performance claim. API hardware preference was unsupported,
+no-preference passed; actual physical GPU use UNPROVEN, CPU fallback NOT used.
+Same blank352800768/wholeChrome peak534151168=>172.94921875MiB/60valid0missing.
+Both actual cancellation-after-write and injected-write error leave0B partial and
+recover. All outputs/OPFS/profile/runtime/stage and3owned roots removed, original
+exact size/SHA unchanged,0forbidden requests. Raw530285B archived to262008B total.
+.8749s initial elapsed is functional timing, NOT an identical-input speed benchmark.
+Protected original platform startup harness prepared with identical5minute/250MiB
+gates and fixed32MiB decoder; retains positive platform observation and can never
+claim a full conversion.15startup controls/lint PASS. NEXT actual protected original.
+
+
 2026-11-06 original-width PLATFORM native42231818045/d31883e6 TERMINAL SUCCESS,
 43actual CI tests PASS/all cleanup. Bounded download retries recovered three
 recorded curl failures; no redispatch. Authenticated15static members/6197437B,
