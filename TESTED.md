@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-11-07 independent B07 Edge156.0.4314.58 representative production matrix
+first attempt FAILED at DOCX independent validator: spawn python ENOENT (not an
+application-conversion finding).0passed/1failed,3.342s. Failure trace retained at
+output/playwright/2026-11-06T19-50-09-397Z-edge-conversion-failure; converted
+outputs/profile/runtime removed, owned server/runner absent, original unchanged.
+Fresh production build PASS with existing bundler warnings. Driver safety3PASS
+after unit fixture's encoded-space path fixed via fileURLToPath. NEXT preflight
+validator dependencies and one repaired-PATH run; no memory/headed/stress claim.
+
 2026-11-07 checkpoint:36 focused HTTP/native-memory/role-capture/unit-inventory
 checks PASS/0skip (2.575s); affected four-file ESLint and git diff --check PASS.
 Original9 remains failed, not a completed conversion. Evidence tests consume

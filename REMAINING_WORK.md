@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-07 B07 Edge representative matrix first attempt FAILED because independent
+DOCX validator could not locate python. Original/browser binaries unchanged;
+owned outputs/profiles/runtime/roots gone. Preserve failure and trace, repair only
+test-only PATH and preflight validators before one rerun. No production defect,
+whole-process-memory pass or changed public support inferred.
+
 2026-11-07 checkpoint:36 focused regressions PASS/0skip, affected lint/diff PASS.
 Original9 failure and bounded role diagnostics retained. Next independent B07
 work targets changed production conversion flows on installed Edge headlessly;
