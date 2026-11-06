@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-11-06 DISTINCT HTTP engine-delivery control PREPARED. Same authenticated
+native42244170876/static bytes, conversion inputs/settings/blank baseline/formula/
+250MiB unchanged. New owned random static stage under dist/client/engines, two
+static files only, cleanup in finally after owned process exit. Before Chrome
+launch, same production server HEAD headers compared and GET bodies hashed via
+bounded262144B stream; no preloading engine in blank Chrome. Browser route only
+continues URL, never fulfills static body/base64 over DevTools. Actual response
+status/security/MIME/cache headers observed with16request/4pending/2s header bound.
+Source derivation exactly reverses actual small-control/original8 recipes; original9
+requires newly passing HTTP small golden/fidelity/recovery/memory control. No new
+native build, process omissions, forced GC, disabled services or public promotion.
+21focused static/HTTP/recipe/legacy-loader checks PASS/affected lint/diff
+PASS. Initial unit syntax typo corrected before browser launch. NEXT HTTP small
+control then protected original only if passed; no memory/speed result inferred.
+
 2026-11-06 checkpoint98distinct focused build/source/ABI/artifact/browser-recipe/
 retained-evidence regressions PASS/0skip, all affected lint/diff PASS. Actual
 original8 remains FAILED253.0546875MiB despite passing small control. No live

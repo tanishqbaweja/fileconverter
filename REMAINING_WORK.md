@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 normal HTTP candidate delivery implemented privately; same native/
+input/settings/all-process same-blank250MiB gate. Exact engine hashes and production
+headers checked before browser launch; no engine preload in blank baseline or
+DevTools body injection. Bounded actual-response observations/owned-stage cleanup
+and reversible small/original9 recipes tested. NEXT strict HTTP small browser
+control, then original9 only if passing; original8 remains FAILED253.0546875MiB.
+No new full-file, speed/scaling/public acceptance claim.
+
 2026-11-06 checkpoint98distinct focused tests/affected lint/diff PASS; actual
 original8 still FAILED253.0546875MiB. No live build/browser/test, disposable data
 removed. NEXT same-candidate HTTP delivery control, not native rebuild or unchanged
