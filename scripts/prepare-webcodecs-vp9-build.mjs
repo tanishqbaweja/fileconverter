@@ -7,11 +7,12 @@ import { promisify } from "node:util";
 import { createHash } from "node:crypto";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 assert.ok(process.argv.length === 2 || process.argv.length === 3);
-const attempt = process.argv[2] ?? "1"; assert.match(attempt, /^[1-9]$/);
+const attempt = process.argv[2] ?? "1"; assert.match(attempt, /^[1-9]\d?$/);
 const suffix = attempt === "1" ? "" : "-attempt" + attempt;
+const originalWidth=Number(attempt)>=5,prefix=originalWidth?"2026-11-06-webcodecs-vp9-original":"2026-11-01-webcodecs-vp9";
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile);
-const branch = "codex/webcodecs-vp9-source-20261101" + suffix, workflowPath = ".github/workflows/reproduce-ffmpeg-nondocker.yml";
-const output = path.join(root, "evidence/2026-11-01-webcodecs-vp9-build-branch" + suffix + ".json");
+const branch = (originalWidth?"codex/webcodecs-vp9-original-source-20261106":"codex/webcodecs-vp9-source-20261101") + suffix, workflowPath = ".github/workflows/reproduce-ffmpeg-nondocker.yml";
+const output = path.join(root, "evidence/"+prefix+"-build-branch" + suffix + ".json");
 await assert.rejects(access(output), { code: "ENOENT" });
 const runtime = await createOwnedRuntimeScratch("webcodecs-vp9-git-index-");
 const git = async (args, env = runtime.env) => (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", args,
@@ -26,6 +27,7 @@ try {
   const parent = await git(["rev-parse", "HEAD"]), main = await git(["ls-remote", "origin", "refs/heads/main"]);
   const source = await readFile(path.join(root, workflowPath), "utf8");
   const generated = await readFile(path.join(root, ".github/workflows/webcodecs-vp9-nondocker.yml"), "utf8");
+  if(originalWidth)assert.ok(generated.includes('WITHIN_WEBCODECS_ORIGINAL_WIDTH: "1"'));
   const env = { ...runtime.env, GIT_INDEX_FILE: path.join(runtime.directory, "isolated.index") };
   await git(["read-tree", parent], env);
   const hashed = spawnSync(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["hash-object", "-w", "--stdin"],

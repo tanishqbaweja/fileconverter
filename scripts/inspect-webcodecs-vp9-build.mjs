@@ -6,14 +6,15 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { createHash } from "node:crypto";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
-assert.equal(process.argv.length, 3); const attempt = process.argv[2]; assert.match(attempt, /^[1-9]$/);
+assert.equal(process.argv.length, 3); const attempt = process.argv[2]; assert.match(attempt, /^[1-9]\d?$/);
 const suffix = attempt === "1" ? "" : "-attempt" + attempt;
+const originalWidth=Number(attempt)>=5,prefix=originalWidth?"2026-11-06-webcodecs-vp9-original":"2026-11-01-webcodecs-vp9";
 const root = path.resolve(import.meta.dirname, ".."), repo = "tanishqbaweja/fileconverter", execute = promisify(execFile);
-const dispatch = JSON.parse(await readFile(path.join(root, "evidence/2026-11-01-webcodecs-vp9-build-dispatch" + suffix + ".json")));
-const branch = JSON.parse(await readFile(path.join(root, "evidence/2026-11-01-webcodecs-vp9-build-branch" + suffix + ".json")));
+const dispatch = JSON.parse(await readFile(path.join(root, "evidence/"+prefix+"-build-dispatch" + suffix + ".json")));
+const branch = JSON.parse(await readFile(path.join(root, "evidence/"+prefix+"-build-branch" + suffix + ".json")));
 assert.equal(dispatch.head, branch.commit); assert.equal(dispatch.branch, branch.branch);
 const runId = dispatch.run.databaseId; assert.ok(Number.isSafeInteger(runId));
-const output = path.join(root, `evidence/2026-11-01-webcodecs-vp9-build-${runId}-terminal.json`);
+const output = path.join(root, "evidence/"+prefix+`-build-${runId}-terminal.json`);
 await assert.rejects(access(output), { code: "ENOENT" });
 const runtime = await createOwnedRuntimeScratch("webcodecs-vp9-inspection-");
 const report = { runId, head: branch.commit, branch: branch.branch, url: `https://github.com/${repo}/actions/runs/${runId}`,
@@ -22,7 +23,9 @@ try {
   const gh = async (args, maxBuffer = 1048576) => (await execute(process.env.WITHIN_GH_EXECUTABLE ?? "gh", args,
     { cwd: root, env: runtime.env, windowsHide: true, timeout: 60000, maxBuffer })).stdout;
   const run = JSON.parse(await gh(["api", `repos/${repo}/actions/runs/${runId}`]));
-  assert.equal(run.head_sha, branch.commit); assert.equal(run.status, "completed"); assert.equal(run.run_attempt, 1);
+  assert.equal(run.head_sha, branch.commit);assert.equal(run.run_attempt,1);
+  if(run.status!=="completed") {report.status=run.status;report.exactHeadVerified=true;}
+  else {
   const jobs = JSON.parse(await gh(["api", `repos/${repo}/actions/runs/${runId}/jobs`]));
   assert.equal(jobs.jobs.length, 1); const job = jobs.jobs[0]; assert.equal(job.name, "build");
   assert.ok(job.steps.some(x => x.name === "Compile real FFmpeg encoder plug-in and verify static native contract"));
@@ -47,9 +50,10 @@ try {
       digest: selected[0].digest, expiresAt: selected[0].expires_at, nativeContractIndependentlyCollected: false };
     report.status = "compiled-hosted-success-requires-native-artifact-and-browser-qualification";
   } else report.status = "failed-private-source-build-retained-not-conversion-acceptance";
+  }
 } finally {
   await runtime.close(); await assert.rejects(access(runtime.directory), { code: "ENOENT" }); report.ownedInspectionRuntimeRemoved = true;
 }
-await writeFile(output, JSON.stringify(report, null, 2) + "\n", { flag: "wx" });
-console.log(JSON.stringify({ output, status: report.status, conclusion: report.conclusion, focusedTests: report.focusedTests, errors: report.log.errorLines,
+if(report.conclusion!==undefined)await writeFile(output, JSON.stringify(report, null, 2) + "\n", { flag: "wx" });
+console.log(JSON.stringify({ output:report.conclusion!==undefined?output:null,runId,head:report.head,status: report.status, conclusion: report.conclusion, focusedTests: report.focusedTests, errors: report.log?.errorLines,
   cleanupStepsPassed: report.cleanupStepsPassed, artifact: report.artifact }));

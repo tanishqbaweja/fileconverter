@@ -6,13 +6,14 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 assert.ok(process.argv.length === 2 || process.argv.length === 3);
-const attempt = process.argv[2] ?? "1"; assert.match(attempt, /^[1-9]$/);
+const attempt = process.argv[2] ?? "1"; assert.match(attempt, /^[1-9]\d?$/);
 const suffix = attempt === "1" ? "" : "-attempt" + attempt;
+const originalWidth=Number(attempt)>=5,prefix=originalWidth?"2026-11-06-webcodecs-vp9-original":"2026-11-01-webcodecs-vp9";
 const root = path.resolve(import.meta.dirname, ".."), repo = "tanishqbaweja/fileconverter", execute = promisify(execFile);
-const output = path.join(root, "evidence/2026-11-01-webcodecs-vp9-build-dispatch" + suffix + ".json");
+const output = path.join(root, "evidence/"+prefix+"-build-dispatch" + suffix + ".json");
 await assert.rejects(access(output), { code: "ENOENT" });
-const branch = JSON.parse(await readFile(path.join(root, "evidence/2026-11-01-webcodecs-vp9-build-branch" + suffix + ".json")));
-assert.equal(branch.branch, "codex/webcodecs-vp9-source-20261101" + suffix);
+const branch = JSON.parse(await readFile(path.join(root, "evidence/"+prefix+"-build-branch" + suffix + ".json")));
+assert.equal(branch.branch, (originalWidth?"codex/webcodecs-vp9-original-source-20261106":"codex/webcodecs-vp9-source-20261101") + suffix);
 assert.match(branch.commit, /^[a-f0-9]{40}$/);
 const runtime = await createOwnedRuntimeScratch("webcodecs-vp9-dispatch-");
 const report = { recordedAt: new Date().toISOString(), branch: branch.branch, head: branch.commit,
@@ -24,7 +25,8 @@ try {
   const remote = JSON.parse(await gh(["api", `repos/${repo}/git/ref/heads/${branch.branch}`])); assert.equal(remote.object.sha, branch.commit);
   const list = async () => JSON.parse(await gh(["run", "list", "--repo", repo, "--branch", branch.branch, "--limit", "10", "--json",
     "databaseId,headSha,status,conclusion,event,createdAt,url,workflowName"]));
-  const before = new Set((await list()).map(x => x.databaseId)), dispatchedAt = new Date().toISOString();
+  const existing=await list();assert.deepEqual(existing,[],"Existing run requires inspection, never duplicate dispatch");
+  const before = new Set(existing.map(x => x.databaseId)), dispatchedAt = new Date().toISOString();
   report.dispatchedAt = dispatchedAt; report.dispatchMayHaveOccurred = true; report.status = "dispatch-in-flight";
   await writeFile(output, JSON.stringify(report, null, 2) + "\n");
   await gh(["api", "--method", "POST", `repos/${repo}/actions/workflows/reproduce-ffmpeg-nondocker.yml/dispatches`, "-f", `ref=${branch.branch}`]);

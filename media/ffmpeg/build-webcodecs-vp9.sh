@@ -47,7 +47,13 @@ node "${SCRIPT_DIR}/register-webcodecs-vp9.mjs"
     --extra-cflags="-O3 -fno-math-errno -msimd128 -I${SCRIPT_DIR}" --extra-ldflags='-O3'
   emmake make -j4 libavformat/libavformat.a libavcodec/libavcodec.a libswresample/libswresample.a libswscale/libswscale.a libavutil/libavutil.a
 )
-emcc "${SCRIPT_DIR}/within_remux.c" -I"${FFMPEG_ROOT}" -DWITHIN_VIDEO_THREADS=1 -DWITHIN_AVIO_OUTPUT_BUFFER_SIZE=262144 \
+WRAPPER_SOURCE="${SCRIPT_DIR}/within_remux.c"
+[[ "${WITHIN_WEBCODECS_ORIGINAL_WIDTH:-0}" == 0 || "${WITHIN_WEBCODECS_ORIGINAL_WIDTH:-0}" == 1 ]] || exit 2
+if [[ "${WITHIN_WEBCODECS_ORIGINAL_WIDTH:-0}" == 1 ]]; then
+  node "${SCRIPT_DIR}/make-webcodecs-original-source.mjs"
+  WRAPPER_SOURCE="${BUILD_ROOT}/within_remux.original.c"
+fi
+emcc "${WRAPPER_SOURCE}" -I"${FFMPEG_ROOT}" -DWITHIN_VIDEO_THREADS=1 -DWITHIN_AVIO_OUTPUT_BUFFER_SIZE=262144 \
   "${FFMPEG_ROOT}/libavformat/libavformat.a" "${FFMPEG_ROOT}/libavcodec/libavcodec.a" \
   "${FFMPEG_ROOT}/libswresample/libswresample.a" "${FFMPEG_ROOT}/libswscale/libswscale.a" "${FFMPEG_ROOT}/libavutil/libavutil.a" \
   -O3 -flto -msimd128 -sMALLOC=emmalloc -sFILESYSTEM=0 -sMODULARIZE=1 -sEXPORT_ES6=1 -sENVIRONMENT=worker \
@@ -63,6 +69,10 @@ for file in within_remux.c within_webcodecs_vp9.c mpeg2-split-frame-layout.h bui
   cp "${SCRIPT_DIR}/${file}" "${OUTPUT_ROOT}/${file}"
 done
 cp "${PROJECT_ROOT}/workers/webcodecs-vp9-bridge.mjs" "${OUTPUT_ROOT}/webcodecs-vp9-bridge.mjs"
+if [[ "${WITHIN_WEBCODECS_ORIGINAL_WIDTH:-0}" == 1 ]]; then
+  cp "${WRAPPER_SOURCE}" "${OUTPUT_ROOT}/within_remux.original.c"
+  cp "${BUILD_ROOT}/within-webcodecs-original-proof.json" "${OUTPUT_ROOT}/within-webcodecs-original-proof.json"
+fi
 node "${PROJECT_ROOT}/scripts/verify-webcodecs-vp9-native.mjs"
 test -s "${OUTPUT_ROOT}/native-contract.json"
 succeeded=1

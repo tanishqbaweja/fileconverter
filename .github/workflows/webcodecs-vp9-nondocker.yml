@@ -18,7 +18,7 @@ jobs:
       - name: Own all runtime scratch
         run: node scripts/ci-owned-runtime.mjs prepare
       - name: Check bounded JS bridge
-        run: node --test --test-reporter=tap tests/webcodecs-vp9-bridge.test.mjs tests/webcodecs-vp9-source.test.mjs
+        run: node --test --test-reporter=tap tests/webcodecs-vp9-bridge.test.mjs tests/webcodecs-vp9-source.test.mjs tests/webcodecs-original-source.test.mjs
       - name: Install build prerequisites
         run: |
           sudo apt-get update
@@ -33,6 +33,8 @@ jobs:
           work/webcodecs-vp9-emsdk/emsdk install 6.0.4
           work/webcodecs-vp9-emsdk/emsdk activate 6.0.4
       - name: Compile real FFmpeg encoder plug-in and verify static native contract
+        env:
+          WITHIN_WEBCODECS_ORIGINAL_WIDTH: "1"
         shell: bash
         run: |
           source work/webcodecs-vp9-emsdk/emsdk_env.sh

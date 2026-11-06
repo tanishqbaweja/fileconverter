@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-11-06 original-width PLATFORM encoder candidate implemented privately,
+distinct from failed CPU original7. Bridge already supports full geometry and
+original's measured color metadata; unchanged fixed32MiB decoder/one-frame/one-
+packet bounds. Three exact width/clock wrapper edits, no public route changes.
+43source/bridge controls+lint/diff pass. NEXT dedicated native5, actual platform
+small fidelity/recovery, then protected original startup with full-tree250MiB
+gate. No compilation, hardware, speed or full-original acceptance inferred yet.
+
+
 2026-11-06 checkpoint334distinct focused checks pass, lint/diff pass; original7
 still fails and does not qualify the route. No live test/build remains; this
 cycle's disposable data removed, original unchanged. Goal remains active, full

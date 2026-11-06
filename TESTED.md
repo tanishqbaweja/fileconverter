@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-11-06 next DISTINCT path: original-width private platform VP9 build.
+Authoritative original7 source probe confirms1920x804/24fps/8-bitI420/BT709
+primaries+transfer+matrix/limited range, so no invented color metadata is needed.
+Existing JS/native encoder bridge already permits1920x1080 with one frame/packet,
+1MiB packet cap and fixed nonshared32MiB JSPI decoder. No bridge/frame bounds are
+raised. New private wrapper composes three exact reversible edits: explicit1920
+permission, zero-duration guard (preserves actual nonzero packet duration), and
+established CFR stream clock. Default640/public selection/canonical source remain
+unchanged. Native verifier now binds every retained source copy to its source
+hash, plus actual compiled wrapper/proof.43exact CI controls and affected lint/
+diff PASS. Dedicated dated attempt5 is NEXT, not yet a compiled/browser pass.
+
+
 2026-11-06 final checkpoint334distinct focused checks PASS this cycle (331
 regressions +3new original7 evidence checks),0fail/0skip; affected lint/diff PASS.
 Original7 native failure and original cleanup error remain failures, with separate

@@ -8,14 +8,17 @@ import { createHash } from "node:crypto";
 import { unzipSync } from "fflate";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { readWasmMemoryLimits } from "./lib/wasm-memory-limits.mjs";
-assert.equal(process.argv.length, 3); const attempt = process.argv[2]; assert.match(attempt, /^[1-9]$/);
+import {makeWebCodecsOriginalSource} from "../media/ffmpeg/webcodecs-original-recipe.mjs";
+assert.equal(process.argv.length, 3); const attempt = process.argv[2]; assert.match(attempt, /^[1-9]\d?$/);
 const suffix = attempt === "1" ? "" : "-attempt" + attempt;
+const originalWidth=Number(attempt)>=5,prefix=originalWidth?"2026-11-06-webcodecs-vp9-original":"2026-11-01-webcodecs-vp9";
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), repo = "tanishqbaweja/fileconverter";
-const dispatch = JSON.parse(await readFile(path.join(root, "evidence/2026-11-01-webcodecs-vp9-build-dispatch" + suffix + ".json")));
+const dispatch = JSON.parse(await readFile(path.join(root, "evidence/"+prefix+"-build-dispatch" + suffix + ".json")));
 const runId = dispatch.run.databaseId; assert.ok(Number.isSafeInteger(runId));
-const terminal = JSON.parse(await readFile(path.join(root, `evidence/2026-11-01-webcodecs-vp9-build-${runId}-terminal.json`)));
+const terminal = JSON.parse(await readFile(path.join(root, "evidence/"+prefix+`-build-${runId}-terminal.json`)));
 assert.equal(terminal.head, dispatch.head); assert.equal(terminal.conclusion, "success");
-const target = path.join(root, `work/webcodecs-vp9-input-${runId}`), output = path.join(root, `evidence/2026-11-01-webcodecs-vp9-native-${runId}.json`);
+assert.equal(terminal.cleanupStepsPassed,true);
+const target = path.join(root, `work/webcodecs-vp9-input-${runId}`), output = path.join(root, "evidence/"+prefix+`-native-${runId}.json`);
 await assert.rejects(access(target), { code: "ENOENT" }); await assert.rejects(access(output), { code: "ENOENT" });
 assert.equal(await realpath(path.join(root, "work")), path.join(root, "work"));
 const sha = value => createHash("sha256").update(value).digest("hex");
@@ -33,6 +36,7 @@ try {
   const allowed = ["within-webcodecs-vp9.mjs", "within-webcodecs-vp9.wasm", "config_components.h", "config.mak", "LICENSE.LGPLv2.1",
     "within_remux.c", "within_webcodecs_vp9.c", "mpeg2-split-frame-layout.h", "build-webcodecs-vp9.sh", "register-webcodecs-vp9.mjs",
     "webcodecs-vp9-bridge.mjs", "registration.json", "native-contract.json"];
+  if(originalWidth)allowed.push("within_remux.original.c","within-webcodecs-original-proof.json");
   const seen = new Set(); let total = 0;
   const members = unzipSync(zip, { filter(entry) {
     assert.ok(allowed.includes(entry.name) && !seen.has(entry.name)); seen.add(entry.name);
@@ -44,6 +48,15 @@ try {
   assert.equal(contract.scope, "private-compiled-native-tool-static-contract-only");
   assert.equal(contract.publicAcceptance, false); assert.equal(contract.browserConversionVerified, false);
   assert.equal(contract.fallbackIntegrated, false); assert.equal(contract.speedGainProven, false);
+  if(originalWidth) {
+    assert.deepEqual(Object.keys(contract.artifacts).sort(),allowed.filter(f=>f!=="native-contract.json").sort());
+    const {generated,...proof}=makeWebCodecsOriginalSource(Buffer.from(members["within_remux.c"]).toString());
+    assert.equal(Buffer.from(members["within_remux.original.c"]).toString(),generated);
+    assert.deepEqual(JSON.parse(Buffer.from(members["within-webcodecs-original-proof.json"]).toString()),proof);
+    assert.equal(contract.originalWidthCandidate.compiledWrapperSha256,proof.generatedSha256);
+    assert.equal(contract.originalWidthCandidate.privateVp9ExplicitWidth,1920);
+    assert.equal(contract.originalWidthCandidate.memoryLimitsRaised,false);assert.equal(contract.originalWidthCandidate.defaultWidthPolicyChanged,false);
+  }
   for (const [file, expected] of Object.entries(contract.artifacts)) {
     assert.equal(members[file].length, expected.bytes); assert.equal(sha(members[file]), expected.sha256);
   }
