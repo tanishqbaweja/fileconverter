@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-06 lazy native42218018139/49ab50ed TERMINAL SUCCESS,8m10s/all cleanup
+PASS. Authenticated30members/11505551B reusable static only in approved work;
+artifact13501998409 ZIP3589219B SHAc751ba0f307f06fd4242ee7cb6d76ce186d18b45afb684dfd2d0f0d245e8fff9.
+Wasm9877462B SHAa39f54e28cdfc09cd63debe6ea38efff60cc53dfb346f8d2944231ca0c4dabd6.
+Actual final encoder e7d1012d...0a779/filter f5a66b83...01ffa explicitly separated
+from preserved ancestor sources; frame allocator diagnostics unchanged. Same
+32initial/96max MiB/shared/1codec/0helpers/wrapper, all pinned C controls passed.
+Browser/bit-exact/fidelity/original/memory-savings/speed still unproven. Next
+actual strict lazy six-job control, then changed original6 only if that passes.
+
 2026-11-06 lazy native build42218018139 at49ab50ed dispatched ONCE;12:30UTC
 exact job confirmed live compiling, recipe/SDK gates PASS. New six-job lazy
 qualification and original6 drivers require distinct lazy engine/receipts and
