@@ -72,6 +72,7 @@ try {
     if (target.type === "page" && target.targetId !== first) await driver.send("Target.closeTarget", { targetId: target.targetId });
   const run = async (factory, name, targetId) => {
     const row = { name, targetId, actualDelayedAttachmentReply: false, samplerHeapQueriesAfterRetirement: 0,
+      attachmentCommands: 0, unavailableObservationsBeforeRetirement: 0,
       detachCommands: 0, sessionAddressableAfterReply: null, rawSessionProbeError: null };
     report.cases.push(row);
     let raw, sampler, drive, release, attachedSession;
@@ -80,6 +81,7 @@ try {
       drive = (await driver.send("Target.attachToTarget", { targetId, flatten: true })).sessionId;
       raw = await connectDebuggerTransport(socketUrl);
       sampler = factory({ close() { raw.close(); }, async send(method, params, sessionId) {
+        if (method === "Target.attachToTarget" && params.targetId === targetId) row.attachmentCommands++;
         if (method === "Runtime.getHeapUsage" && sessionId === attachedSession) row.samplerHeapQueriesAfterRetirement++;
         if (method === "Target.detachFromTarget" && params.sessionId === attachedSession) row.detachCommands++;
         const result = await raw.send(method, params, sessionId);
@@ -89,8 +91,12 @@ try {
         }
         return result;
       } }, origin, 100);
-      const firstSample = await sampler.sample();
-      assert.equal(firstSample.targets.find(target => target.targetId === targetId).usedJSHeapBytes, null);
+      for (let observation = 0; observation < 5; observation++) {
+        const sample = await sampler.sample();
+        assert.equal(sample.targets.find(target => target.targetId === targetId).usedJSHeapBytes, null);
+        row.unavailableObservationsBeforeRetirement++;
+      }
+      assert.equal(row.attachmentCommands, 1);
       await waitUntil(async () => Boolean(release), "real attachment reply received and held");
       const outside = "data:text/html,owned-realm-outside-sampling-origin";
       await driver.send("Page.navigate", { url: outside }, drive);

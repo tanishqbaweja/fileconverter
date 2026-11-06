@@ -13,7 +13,7 @@ async function deadline(promise, ms) {
 export function createRealmSampler(transport, origin, timeoutMs = 1000) {
   const entries = new Map(), leases = new Set();
   const maximumLeases = 16;
-  let discovery = null, closed = false, peakLeasedEntries = 0, retirementFailures = 0, lastRetirementError = null;
+  let discovery = null, discoveryObservation = null, closed = false, peakLeasedEntries = 0, retirementFailures = 0, lastRetirementError = null;
   const unavailable = error => ({ ...normalizeHeapUsage(null), error });
   const releaseRetired = entry => {
     // A failed/unanswered detach still owns a possible browser-side session.
@@ -42,12 +42,17 @@ export function createRealmSampler(transport, origin, timeoutMs = 1000) {
         retiringEntries: [...leases].filter(entry => entry.retired).length,
         pendingOperations: [...leases].reduce((n, entry) => n + Number(Boolean(entry.pending)) + Number(Boolean(entry.detaching)), 0),
         peakLeasedEntries, maximumLeases, retirementFailures, lastRetirementError,
-        queuedRequests: 0, closed, diagnosticAttachmentsOnly: true, acceptanceMetric: false };
+        maximumObservationRacesPerOperation: 1, queuedRequests: 0, closed, diagnosticAttachmentsOnly: true, acceptanceMetric: false };
     },
     async sample() {
       if (closed) return { targetsAvailable: false, targets: null };
-      if (!discovery) discovery = transport.send("Target.getTargets").catch(() => null).finally(() => { discovery = null; });
-      const result = await deadline(discovery, timeoutMs);
+      if (!discovery) {
+        discovery = transport.send("Target.getTargets").catch(() => null).finally(() => { discovery = null; discoveryObservation = null; });
+        // Memoize the observation, not just the request: racing an unanswered
+        // Promise again on every tick would retain another listener each time.
+        discoveryObservation = deadline(discovery, timeoutMs);
+      }
+      const result = await discoveryObservation;
       if (closed || !result) return { targetsAvailable: false, targets: null };
       const targets = result.targetInfos.filter((target) => ["page", "iframe", "worker", "shared_worker", "service_worker"].includes(target.type) &&
         (target.url === "about:blank" || target.url.startsWith(`${origin}/`)));
@@ -63,12 +68,13 @@ export function createRealmSampler(transport, origin, timeoutMs = 1000) {
         if (!entry) {
           if (leases.size >= maximumLeases) return { targetId: target.targetId, type: target.type, url: target.url,
             ...unavailable("Diagnostic CDP attachment lease cap reached; no attachment queued") };
-          entry = { sessionId: null, pending: null, detaching: null, retired: false, detachAttempted: false, retirementFailed: false };
+          entry = { sessionId: null, pending: null, observation: null, detaching: null, retired: false, detachAttempted: false, retirementFailed: false };
           entries.set(target.targetId, entry); leases.add(entry); peakLeasedEntries = Math.max(peakLeasedEntries, leases.size);
         }
         // A timeout does not clear the outstanding command. Keep one pending
         // request per target until its actual reply/close; do not grow queues.
-        if (!entry.pending) entry.pending = (async () => {
+        if (!entry.pending) {
+          entry.pending = (async () => {
           if (!entry.sessionId) entry.sessionId = (await transport.send("Target.attachToTarget", { targetId: target.targetId, flatten: true })).sessionId;
           if (typeof entry.sessionId !== "string" || !entry.sessionId) throw new Error("Diagnostic CDP attachment identity unavailable");
           if (closed || entry.retired) {
@@ -86,8 +92,10 @@ export function createRealmSampler(transport, origin, timeoutMs = 1000) {
           if (/Session with given id not found|No session with given id|Realm target detached/i.test(message)) entry.sessionId = null;
           return { ...normalizeHeapUsage(null), error: message };
         })
-          .finally(() => { entry.pending = null; releaseRetired(entry); });
-        const usage = await deadline(entry.pending, timeoutMs);
+          .finally(() => { entry.pending = null; entry.observation = null; releaseRetired(entry); });
+          entry.observation = deadline(entry.pending, timeoutMs);
+        }
+        const usage = await entry.observation;
         return { targetId: target.targetId, type: target.type, url: target.url,
           ...(usage ?? { ...normalizeHeapUsage(null), error: "CDP heap reply unavailable before diagnostic deadline; operation remains bounded" }) };
       })) };

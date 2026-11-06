@@ -1,0 +1,175 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-06T20:14:11.479Z",
+  "status": "passed-real-cdp-retirement-control-and-repair-not-conversion-acceptance",
+  "cases": [
+    {
+      "name": "archived-control",
+      "targetId": "7620DE87BDE8D4E2C54ADD3D0935470D",
+      "actualDelayedAttachmentReply": true,
+      "samplerHeapQueriesAfterRetirement": 1,
+      "attachmentCommands": 1,
+      "unavailableObservationsBeforeRetirement": 5,
+      "detachCommands": 0,
+      "sessionAddressableAfterReply": true,
+      "rawSessionProbeError": null,
+      "targetStillLiveAtRetirement": true,
+      "observedOutOfScopeUrl": "data:text/html,owned-realm-outside-sampling-origin",
+      "status": "observed-predicted-lifecycle",
+      "ownedTargetClosed": true
+    },
+    {
+      "name": "repaired",
+      "targetId": "D62A20198A10FBF1DDAB521C9BEB2B17",
+      "actualDelayedAttachmentReply": true,
+      "samplerHeapQueriesAfterRetirement": 0,
+      "attachmentCommands": 1,
+      "unavailableObservationsBeforeRetirement": 5,
+      "detachCommands": 1,
+      "sessionAddressableAfterReply": false,
+      "rawSessionProbeError": "Error: Session with given id not found.",
+      "targetStillLiveAtRetirement": true,
+      "observedOutOfScopeUrl": "data:text/html,owned-realm-outside-sampling-origin",
+      "attachmentSummary": {
+        "activeEntries": 0,
+        "leasedEntries": 0,
+        "retiringEntries": 0,
+        "pendingOperations": 0,
+        "peakLeasedEntries": 1,
+        "maximumLeases": 16,
+        "retirementFailures": 0,
+        "lastRetirementError": null,
+        "maximumObservationRacesPerOperation": 1,
+        "queuedRequests": 0,
+        "closed": false,
+        "diagnosticAttachmentsOnly": true,
+        "acceptanceMetric": false
+      },
+      "status": "observed-predicted-lifecycle",
+      "ownedTargetClosed": true
+    }
+  ],
+  "sourcePins": {
+    "scripts/verify-cdp-realm-retirement.mjs": "ad4c66bd4fb41b4911304a981b304e2d53d1720045e6030dd05d626256cf249a",
+    "scripts/lib/cdp-realm-memory.mjs": "dacac72ad581a52fa46cdcec4fae3cf97e52f065c8594c4341ef6940be9e41bd",
+    "fixtures/source/pre-cdp-lease-lifecycle-2026-11-07.json": "de1950f231464a7744de5058f7965bbfc423ca135ea88a14f562583e46adee16",
+    "scripts/lib/cdp-debugger-transport.mjs": "d9a07f1af22875de2cb895049693d632c8b85a9071e571c64346b2173b8a9eb7",
+    "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+    "scripts/lib/reliable-owned-identity.mjs": "682e21c1e6baf0d02b5d23f4c18a428cee361d8b97d239adae8e7b404970a3ab"
+  },
+  "failures": [],
+  "scope": "Real CDP attach reply deliberately delayed across a real target's out-of-scope navigation; archived negative control versus repaired lifecycle",
+  "headed": false,
+  "conversionPerformed": false,
+  "protectedOriginalAccessed": false,
+  "inputOrOutputMediaCreated": false,
+  "forcedGc": false,
+  "browserServicesDisabled": false,
+  "memoryAcceptance": false,
+  "speedImprovementClaimed": false,
+  "publicPromotion": false,
+  "hostMemory": {
+    "acquiredAt": "2026-11-06T20:14:11.8289652Z",
+    "freePhysicalBytes": 13804105728,
+    "freeVirtualBytes": 21169094656,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "browserBefore": {
+    "version": "156.0.8078.80",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4466840,
+      "sha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4503599627954860",
+        "birthtimeNs": "1793664133995225000",
+        "mtimeNs": "1793230862205515000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.80\\chrome.dll",
+      "bytes": 306491032,
+      "sha256": "eec84f38acf7d3b1c39bc54de53c9bcb1ea7a3b9d286d6a04288d3b959a1a7a1",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4222124651244210",
+        "birthtimeNs": "1793664134006309400",
+        "mtimeNs": "1793230871423806000"
+      }
+    }
+  },
+  "executedHead": "6d8c36b2e18be51669bb4648096263ee481b6ed2",
+  "archivedControl": {
+    "sourceCommit": "3c16d0e0457c2ab7f06a31d91272361ddf19683f",
+    "bytes": 5230,
+    "sha256": "abc33188e252183133d5debb54f909428324dfad4d0967b7c007434b5f0ecf9a"
+  },
+  "launchArguments": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\cdp-realm-retirement-U6qzNw\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "about:blank"
+  ],
+  "browserLaunchIdentity": {
+    "pid": 10156,
+    "parentPid": 27692,
+    "createdAt": "2026-11-06T20:14:12.4443410Z"
+  },
+  "serverClosed": true,
+  "browserCleanup": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 10156,
+      "parentPid": 27692,
+      "createdAt": "2026-11-06T20:14:12.4443410Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-11-06T20:14:15.035Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 432,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "ownedRuntimeRemoved": true,
+  "browserAfter": {
+    "version": "156.0.8078.80",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4466840,
+      "sha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4503599627954860",
+        "birthtimeNs": "1793664133995225000",
+        "mtimeNs": "1793230862205515000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.80\\chrome.dll",
+      "bytes": 306491032,
+      "sha256": "eec84f38acf7d3b1c39bc54de53c9bcb1ea7a3b9d286d6a04288d3b959a1a7a1",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4222124651244210",
+        "birthtimeNs": "1793664134006309400",
+        "mtimeNs": "1793230871423806000"
+      }
+    }
+  },
+  "finishedAt": "2026-11-06T20:14:15.753Z"
+}

@@ -3,12 +3,13 @@ import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 import test from "node:test";
 import ts from "typescript";
+import { runInNewContext } from "node:vm";
 import { STAGED_SAVE_COPY_CHUNK_BYTES } from "../lib/resource-limits.ts";
 
 const projectRoot = path.resolve(import.meta.dirname, "..");
 const workersRoot = path.join(projectRoot, "workers");
 const workerFiles = readdirSync(workersRoot)
-  .filter((name) => name.endsWith(".ts"))
+  .filter((name) => name.endsWith(".ts") || name.endsWith(".mjs"))
   .sort();
 
 const source = (relativePath) =>
@@ -64,7 +65,23 @@ function topLevelConstContainers(tree) {
 }
 
 test("every worker module has an explicit cross-job retained-state contract", () => {
-  assert.equal(workerFiles.length, 38, "audit inventory must be updated for worker additions or removals");
+  // Include the JS bridge too: the private addition is six TS modules plus one
+  // MJS factory, not six new persistent message loops. This list fails closed.
+  assert.deepEqual(workerFiles, [
+    "apng-conversion.ts", "archive-conversion.ts", "archive-to-sevenzip-conversion.ts",
+    "avif-conversion.ts", "avif-encoding.ts", "bmp-decoding.ts", "bzip2-compression.ts",
+    "compressed-tar-conversion.ts", "compressed-tar-transcode.ts", "conversion.worker.ts",
+    "direct-file-writer.worker.ts", "direct-writer-protocol.ts", "document-conversion.ts",
+    "docx-conversion.ts", "epub-conversion.ts", "gif-conversion.ts", "jxl-conversion.ts",
+    "jxl-encoding.ts", "jxl-source-inspection-worker.ts", "media-remux.ts", "mpeg2-core-loader.ts",
+    "mpeg2-split-runtime.ts", "odf-conversion.ts", "pptx-conversion.ts", "random-access-destination.ts",
+    "rgba-png-stream.ts", "sevenzip-conversion.ts", "staged-save-runtime.ts", "staged-save.worker.ts",
+    "tar-stream-validator.ts", "tiff-conversion.ts", "vpx-core-loader.ts", "wasm-metrics.ts",
+    "webcodecs-vp9-bridge.mjs", "webcodecs-vp9-core.ts", "webcodecs-vp9-isolated.ts",
+    "webcodecs-vp9-isolated.worker.ts", "webcodecs-vp9-optional.ts", "webcodecs-vp9-qualification.worker.ts",
+    "webcodecs-vp9-worker-protocol.ts", "webp-animation.ts", "xlsx-conversion.ts", "xml-conversion.ts",
+    "xz-compression.ts", "zip-compressed-tar-conversion.ts",
+  ], "audit inventory must be updated for worker additions or removals");
   assert.ok(workerFiles.includes("rgba-png-stream.ts"));
   // The private encoder adds no message loop, module-scoped job state or public route.
   assert.doesNotMatch(source("workers/conversion.worker.ts"), /from ["']\.\/rgba-png-stream["']/);
@@ -73,6 +90,8 @@ test("every worker module has an explicit cross-job retained-state contract", ()
   assert.ok(workerFiles.includes("mpeg2-core-loader.ts"));
   const expectedMutable = new Map([
     ["staged-save.worker.ts", ["active", "cancelled"]],
+    ["webcodecs-vp9-isolated.worker.ts", ["running"]],
+    ["webcodecs-vp9-qualification.worker.ts", ["pendingCheckpoint", "running"]],
     [
       "conversion.worker.ts",
       [
@@ -150,13 +169,15 @@ test("module-scoped worker containers are immutable after initialization", () =>
 
 test("the only message-loop entrypoints have bounded responses and terminal cleanup", () => {
   const entrypoints = workerFiles.filter((name) =>
-    parseWorker(name).text.includes("DedicatedWorkerGlobalScope"),
+    name.endsWith(".worker.ts") || parseWorker(name).text.includes("DedicatedWorkerGlobalScope"),
   );
   assert.deepEqual(entrypoints, [
     "conversion.worker.ts",
     "direct-file-writer.worker.ts",
     "jxl-source-inspection-worker.ts",
     "staged-save.worker.ts",
+    "webcodecs-vp9-isolated.worker.ts",
+    "webcodecs-vp9-qualification.worker.ts",
   ]);
 
   const conversionWorker = source("workers/conversion.worker.ts");
@@ -210,6 +231,26 @@ test("the only message-loop entrypoints have bounded responses and terminal clea
   assert.match(app, /return \(\) => window\.clearInterval\(timer\)/);
 });
 
+test("private VP9 message loops are one-shot, bounded and terminate their child before fallback; helpers retain no module job state", () => {
+  for (const name of ["webcodecs-vp9-isolated.worker.ts", "webcodecs-vp9-qualification.worker.ts"]) {
+    const text = source("workers/" + name);
+    assert.match(text, /if \(running\)/); assert.match(text, /running = true/);
+    assert.match(text, /finally\s*{[^}]*scope\.close\(\)/s);
+    assert.match(text, /String\(error\)\.slice\(0, 4096\)/);
+    assert.doesNotMatch(text, /setInterval\s*\(/);
+  }
+  const child = source("workers/webcodecs-vp9-qualification.worker.ts");
+  assert.match(child, /\+\+checkpointCount > 4/); assert.match(child, /pendingCheckpoint = null; reject\(new Error\("Private diagnostic checkpoint timed out"\)\); }, 4000/);
+  assert.match(child, /warnings\.length === 32/); assert.match(child, /warnings\.push\(message\.message\.slice\(0, 512\)\)/);
+  assert.match(child, /if \(!succeeded\) await stream\?\.abort/);
+  const parent = source("workers/webcodecs-vp9-isolated.ts");
+  assert.match(parent, /clearTimeout\(timer\); child\.onmessage = null; child\.onerror = null; child\.onmessageerror = null;\s*child\.terminate\(\)/);
+  assert.match(parent, /maximumOwnedChildHandles: 1/); assert.match(parent, /synchronousTerminationConfirmed: false/);
+  const core = source("workers/webcodecs-vp9-core.ts");
+  assert.match(core, /bridge\.close\(\); last = bridge\.snapshot\(\); native = undefined; selectionRejected = undefined; active = false/);
+  assert.match(core, /catch \(error\) { dispose\(\); throw error; }/);
+});
+
 test("IVF, AIFF, and direct compatible-WebM inputs use the reusable asynchronous BYOB reader", () => {
   const worker = source("workers/conversion.worker.ts");
   assert.match(
@@ -218,10 +259,18 @@ test("IVF, AIFF, and direct compatible-WebM inputs use the reusable asynchronous
   );
 
   const remux = source("workers/media-remux.ts");
-  assert.match(
-    remux,
-    /const synchronousInputReader =\s*forceAsynchronousInput \|\|/,
-  );
+  const tree = parseWorker("media-remux.ts").tree; let policy;
+  const find = node => {
+    if (ts.isVariableDeclaration(node) && node.name.getText(tree) === "synchronousInputReader") policy = node.initializer.getText(tree);
+    ts.forEachChild(node, find);
+  };
+  find(tree); assert.ok(policy, "Real input-transport selection expression required");
+  const reader = {}, defaults = { webCodecsVp9Core: null, forceAsynchronousInput: false, persistentAudioInput: false,
+    remuxProfile: 2, synchronousFileReader: reader };
+  for (const override of [{ forceAsynchronousInput: true }, { webCodecsVp9Core: {} }, { persistentAudioInput: true },
+    ...[1, 19, 20, 21, 23, 24, 25, 26, 27, 36, 37, 38, 39, 40].map(remuxProfile => ({ remuxProfile }))])
+    assert.equal(runInNewContext(policy, { ...defaults, ...override }), null);
+  assert.equal(runInNewContext(policy, defaults), reader, "Unforced compatible input retains its existing synchronous option");
   assert.match(
     remux,
     /\.stream\(\)\s*\.getReader\({ mode: "byob" }\)/,

@@ -4,6 +4,7 @@ import {readFile} from "node:fs/promises";
 import {createHash} from "node:crypto";
 import {gunzipSync} from "node:zlib";
 import path from "node:path";
+import {readPreLeaseLifecycleSampler} from "./helpers/pre-cdp-lease-lifecycle.mjs";
 const root=path.resolve(import.meta.dirname,".."),json=async f=>JSON.parse(await readFile(path.join(root,f))),
   file="evidence/2026-11-06-webcodecs-vp9-original-allocation-42231818045.json",r=await json(file),sha=s=>createHash("sha256").update(s).digest("hex");
 test("actual platform setup diagnostic is perturbing and over budget, never passing conversion or first-frame evidence",()=>{
@@ -31,7 +32,8 @@ test("all three bounded traces round-trip, full raw allocator details remain byt
     assert.ok(c.result.summary[0].processes.some(p=>Object.keys(p.liveAllocatorCounters).length>0));
     assert.equal(c.realms.targetsAvailable,true);assert.ok(c.realms.targets.every(t=>t.error===null));
   }
-  for(const [f,pin]of Object.entries(r.sourcePins))assert.equal(sha(await readFile(path.join(root,f))),pin,f);
+  for(const [f,pin]of Object.entries(r.sourcePins))assert.equal(sha(await (f==="scripts/lib/cdp-realm-memory.mjs"
+    ?readPreLeaseLifecycleSampler(f):readFile(path.join(root,f)))),pin,f);
 });
 test("native malloc category grew during setup; stack owner unknown and original data/owned cleanup verified",async()=>{
   const a=await json("evidence/2026-11-06-webcodecs-vp9-original-allocation-localization.json");

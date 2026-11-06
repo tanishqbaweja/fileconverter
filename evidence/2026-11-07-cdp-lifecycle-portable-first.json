@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "scope": "Actual first broad portable run after CDP lease/listener changes, not qualification or browser conversion acceptance",
+  "command": "node scripts/run-repository-owned-node.mjs scripts/run-unit-suite.mjs portable",
+  "samplerSha256": "dacac72ad581a52fa46cdcec4fae3cf97e52f065c8594c4341ef6940be9e41bd",
+  "selectedFiles": 696,
+  "allFiles": 858,
+  "separateQualificationFilesNotRun": 162,
+  "priorHostedFilesKeptPortable": 235,
+  "exitCode": 1,
+  "counts": { "tests": 2478, "passed": 2473, "failed": 5, "cancelled": 0, "skipped": 0, "todo": 0 },
+  "durationMs": 88616.9488,
+  "failures": [
+    { "file": "tests/cdp-session-recovery-browser-evidence.test.mjs", "cause": "Historical source abc33188 compared with new live sampler instead of its exact preimage" },
+    { "file": "tests/platform-vp9-allocation-evidence.test.mjs", "cause": "Historical source abc33188 compared with new live sampler instead of its exact preimage" },
+    { "file": "tests/webcodecs-acceleration-audit.test.mjs", "cause": "Historical audit reference absent from REMAINING_WORK.md" },
+    { "file": "tests/worker-lifecycle.test.mjs", "cause": "Stale38-module TS inventory versus44 current TS modules, before checking new private state" },
+    { "file": "tests/worker-lifecycle.test.mjs", "cause": "Old forceAsynchronousInput-leading textual pattern no longer reflects actual selector's additional WebCodecs guard" }
+  ],
+  "oldReportsOrHashesEdited": false,
+  "publicAcceptance": false
+}

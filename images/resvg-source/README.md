@@ -1,5 +1,13 @@
 # Private SVG source reconstruction
 
+2026-11-07 diagnostic follow-up found and fixed a shared CDP sampler race: a
+late attachment could escape retirement, and repeated timeout observations could
+accumulate Promise listeners. The archived-control/repaired normal-service Chrome
+fixture proves session cleanup, not that this caused the SVG allocation growth.
+See `evidence/2026-11-06T20-14-11-478Z-cdp-realm-retirement.json`. The SVG alpha
+and complete-tree memory failures below remain failures; no native bytes changed,
+no conversion was replayed, and no speed or publication acceptance follows.
+
 One subsequent allocation diagnostic is complete, not a new acceptance claim.
 Retained baseline birth metadata identifies renderer/GPU growth in the prior
 265.445MiB failure. The new perturbed blank/mid/post dumps show renderer V8,

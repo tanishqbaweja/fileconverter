@@ -1,5 +1,33 @@
 # Tested conversion ledger
 
+2026-11-07 final CDP/worker-audit checkpoint: COMPLETE portable suite PASS2483/
+0fail/0skip/0cancel,87.082s across697 files; all859 files inventoried,162 separate
+qualification files NOT RUN,235 prior hosted gates retained. Receipt:
+evidence/2026-11-07-cdp-lifecycle-portable-final.json. Prior2473PASS/5FAIL stays
+failed. Eight affected files ESLint and diff --check PASS; final protected original
+2958573265B/SHA31f36695... unchanged. Both source-pinned real Chrome fixtures and
+owned targets/browser/server/profile/runtime cleanup pass. No converted copies
+created, no Docker/headed windows/services disabled, no runtime/public route or
+quality/memory/speed claims changed. This supersedes pending portable notes below;
+do not replay completed fixtures without a new relevant change. Original SVG
+alpha/265.445MiB and protected VP9 memory failures stay failures.
+
+2026-11-07 CDP lifecycle/listener follow-up: repeated discovery/attach/heap
+timeouts each reproduced5 Promise.race observers on one pending request (first
+regression8PASS/3FAIL). Memoized observation now keeps1 race per actual operation,
+without dropping pending requests or changing NULL readings. Actual normal-service
+Chrome156.0.8078.80 five-observation fixture passes archived-control versus repaired
+session probes, all owned resources gone, no media/original access:
+evidence/2026-11-06T20-14-11-478Z-cdp-realm-retirement.json.
+First broad portable run FAILED2473PASS/5FAIL/0skip,88.617s/696files, preserved in
+evidence/2026-11-07-cdp-lifecycle-portable-first.json. Two old-source bindings now
+use exact authenticated5230B preimage, no report/hash edits. Three pre-existing
+gates repaired: missing historical M09 citation; worker audit now explicitly covers
+44TS+1MJS modules including private one-shot message loops and cleanup; real input
+policy expression tested semantically instead of obsolete token order.63focused
+checks passed before final evidence/helper additions. Full repaired portable run
+is now verified above. No conversion/memory/speed acceptance or cause-of-SVG claim.
+
 2026-11-07 diagnostic lifecycle race reproduced from exact5230B/abc33188 source
 preimage: target disappears from census before delayed attachment completes;
 old sampler loses session and still reads heap. Initial regression1PASS/1FAIL.

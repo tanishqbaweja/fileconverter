@@ -1,5 +1,30 @@
 # Remaining work audit
 
+2026-11-07 final diagnostic lifecycle checkpoint VERIFIED: complete portable
+2483PASS/0fail/0skip/0cancel across697 files,87.082s;162 prerequisite-bound
+qualification files remain UNRUN. Exact source-pinned normal-service Chrome
+controls verify attachment retirement; timeout listeners globally bounded and
+all45 worker modules explicitly audited. Original SHA/size and owned cleanup
+verified; affected lint/diff PASS. Evidence:
+evidence/2026-11-07-cdp-lifecycle-portable-final.json. No conversion/native/runtime
+profile bytes or primary formula changed. SVG fidelity/whole-tree memory, original
+VP9/full media/scaling and B08 source/release gaps remain OPEN; diagnostic fix is
+not their causal diagnosis or acceptance. Continue those real requirements, not
+another unchanged observer/Edge rerun.
+
+2026-11-07 instrumentation retirement and timeout-observer bounds now have actual
+normal-service Chrome protocol proof. First portable2473PASS/5FAIL retained;
+historical sampler bytes restored only for two old receipts, and worker audit
+strengthened to explicit44TS+1MJS inventory, private worker lifecycle and semantic
+BYOB-selection checks. No public route/quality/memory policy changed. Full repaired
+portable run now verified above. SVG alpha/memory and broader B08/source/release gates
+remain OPEN; observer fix is not retroactive conversion acceptance.
+
+Historical M-09 decision: evidence/webcodecs-acceleration-audit-2026-09-07.json
+records the original bounded primitive experiment and no-adoption decision then.
+Newer private VP9 work supersedes that as an implementation inventory, not as
+public qualification; its current original-file memory failure remains open.
+
 2026-11-07 bounded instrumentation progress: actual delayed-attach retirement
 race reproduced and fixed;33focused checks and real headless Chrome old/new
 protocol control PASS. Source preimage and failed first regression retained.

@@ -4,8 +4,22 @@ import { readFile } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 import { createRealmSampler } from "../scripts/lib/cdp-realm-memory.mjs";
+import { readPreLeaseLifecycleSampler } from "./helpers/pre-cdp-lease-lifecycle.mjs";
 const origin = "http://127.0.0.1:3000", worker = { targetId: "worker", type: "worker", url: origin + "/worker.js" };
 const tick = () => new Promise(resolve => setImmediate(resolve));
+test("historical receipt adapter returns only exact5230B old bytes, never live policy or another file", async () => {
+  const bytes = await readPreLeaseLifecycleSampler("scripts/lib/cdp-realm-memory.mjs");
+  assert.equal(bytes.length, 5230);
+  assert.notEqual(createHash("sha256").update(bytes).digest("hex"),
+    createHash("sha256").update(await readFile(new URL("../scripts/lib/cdp-realm-memory.mjs", import.meta.url))).digest("hex"));
+  await assert.rejects(readPreLeaseLifecycleSampler("workers/media-remux.ts"), /Only the exact historical/);
+});
+async function archivedSamplerFactory() {
+  const pin = JSON.parse(await readFile(new URL("../fixtures/source/pre-cdp-lease-lifecycle-2026-11-07.json", import.meta.url)));
+  const bytes = gunzipSync(Buffer.from(pin.gzipBase64, "base64"), { maxOutputLength: 16384 });
+  assert.equal(createHash("sha256").update(bytes).digest("hex"), pin.sha256);
+  return (await import("data:text/javascript;base64," + bytes.toString("base64"))).createRealmSampler;
+}
 function delayedAttachFixture() {
   let targets = [worker], finish, heaps = 0, closed = 0;
   const detached = [], transport = { close() { closed++; }, async send(method, params) {
@@ -129,3 +143,29 @@ test("unanswered detach retains its lease until the real reply, then frees capac
     finish({}); await tick(); assert.equal(sampler.ownershipSummary().leasedEntries, 0);
   } finally { sampler.close(); }
 });
+for (const delayedMethod of ["Target.getTargets", "Target.attachToTarget", "Runtime.getHeapUsage"])
+  test(`repeated timeout observations install only one race listener per pending operation: ${delayedMethod}`, async () => {
+    const run = async factory => {
+      const originalRace = Promise.race, observations = new Map(); let finish, sampler, heldRequests = 0;
+      Promise.race = function (values) {
+        const items = [...values]; observations.set(items[0], (observations.get(items[0]) ?? 0) + 1);
+        return originalRace.call(this, items);
+      };
+      try {
+        sampler = factory({ close() {}, async send(method) {
+          const response = method === "Target.getTargets" ? { targetInfos: [worker] }
+            : method === "Target.attachToTarget" ? { sessionId: "pending-session" } : { usedSize: 1, totalSize: 2 };
+          if (method === delayedMethod) { heldRequests++; return new Promise(resolve => { finish = () => resolve(response); }); }
+          return response;
+        } }, origin, 2);
+        for (let n = 0; n < 5; n++) {
+          const sample = await sampler.sample();
+          if (delayedMethod === "Target.getTargets") assert.equal(sample.targets, null);
+          else assert.equal(sample.targets[0].usedJSHeapBytes, null);
+        }
+        assert.equal(heldRequests, 1); return Math.max(...observations.values());
+      } finally { Promise.race = originalRace; finish?.(); await tick(); sampler?.close(); observations.clear(); }
+    };
+    assert.equal(await run(await archivedSamplerFactory()), 5, "Old single-flight requests still accumulate observation handlers");
+    assert.equal(await run(createRealmSampler), 1, "Current diagnostic observers must stay bounded too");
+  });

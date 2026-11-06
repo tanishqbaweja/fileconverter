@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "scope": "Actual complete repaired portable suite after CDP lifecycle/listener and worker-audit changes; not separate qualification or conversion acceptance",
+  "recordedAt": "2026-11-06T20:24:44.465Z",
+  "selectedFiles": 697,
+  "allFiles": 859,
+  "separateQualificationFilesNotRun": 162,
+  "priorHostedFilesKeptPortable": 235,
+  "sourcePins": {
+    "scripts/lib/cdp-realm-memory.mjs": "dacac72ad581a52fa46cdcec4fae3cf97e52f065c8594c4341ef6940be9e41bd",
+    "scripts/verify-cdp-realm-retirement.mjs": "ad4c66bd4fb41b4911304a981b304e2d53d1720045e6030dd05d626256cf249a",
+    "tests/cdp-realm-lifecycle.test.mjs": "fe00a37f2a41bd004f11c4b294a05b64baab43c653c2a654b830138a47ee9c14",
+    "tests/cdp-realm-retirement-evidence.test.mjs": "6ec4afb2de98cb082acf252d2009bf1708e65c1d80fd95c83f09cc2130989350",
+    "tests/worker-lifecycle.test.mjs": "5f3d73cbc72645ae62aac63b83d0399545d471e62bdfaf9a9fbc6a1f513abcbc",
+    "tests/helpers/pre-cdp-lease-lifecycle.mjs": "3e2c16a6ef6fd4f60c8f4ca488ee3d773ea73fb4df569b65747de6482655e97d",
+    "tests/cdp-session-recovery-browser-evidence.test.mjs": "7a72de3744d7efb9499444b115b2b827315e43183e039cfdadf097486b48f4cc",
+    "tests/platform-vp9-allocation-evidence.test.mjs": "0a7ba5695ef8e9fbee50e0e991fb52b2562049581559fd8247181067ab9c22e0"
+  },
+  "command": "node scripts/run-repository-owned-node.mjs scripts/run-unit-suite.mjs portable",
+  "exitCode": 0,
+  "summary": {
+    "success": true,
+    "counts": {
+      "tests": 2483,
+      "failed": 0,
+      "passed": 2483,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "topLevel": 2483,
+      "suites": 0
+    },
+    "duration_ms": 87081.7537
+  },
+  "qualificationNotRun": true,
+  "suite": "portable",
+  "firstFailedRun": "evidence/2026-11-07-cdp-lifecycle-portable-first.json",
+  "realBrowserProof": "evidence/2026-11-06T20-14-11-478Z-cdp-realm-retirement.json",
+  "realBrowserProofSha256": "f5dffc138683a95c65a92cdd9af303acafb3d154d07a0fc946c616c0a06e64f8",
+  "protectedOriginalFinal": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "affectedEightFileLintPassed": true,
+  "diffCheckPassed": true,
+  "productionBrowserCodeChanged": false,
+  "memoryFormulaChanged": false,
+  "qualityThresholdsChanged": false,
+  "browserConversionAcceptance": false,
+  "speedImprovementProven": false,
+  "publicAcceptance": false
+}
