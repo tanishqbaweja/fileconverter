@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-11-06 lazy utility candidate IMPLEMENTED/host controls PASS, not yet real
+Wasm/browser acceptance. Exact diagnostic encoder8ace8613 -> e7d1012d...0a779,
+loop-filter33258b68 -> f5a66b83...01ffa. Three functions defer last_frame_uf/
+scaled_source/scaled_last_source only REALTIME+zeroLag+nonSVC; actual scaling
+and actual filter search allocate before use, same allocator args/error codes/
+pixel algorithms. Motion-estimation stride comes from already allocated current
+reference under lazy mode; other modes/SVC retain eager behavior. Zero-init/free
+invariants retained, no silent nullptr use, no changed controls/limits.
+Compiled controls:120original/candidate allocation pairs,36scaling cases,
+72motion cases,12filter setup cases,9mode-transition calls across two build
+bit-depth variants. Mocked controls NOT actual codec/fidelity/saved-byte proof.
+37 exact CI checks PASS(638.5188ms),0skip; affected lint/diff PASS. Native pipeline
+now retains30static members and explicit final translation-unit hashes separate
+from ancestor preimages. Next DISTINCT attempt10, strict byte-exact/recovery
+control, then changed original6. Full scope remains incomplete.
+
 2026-11-06 allocation-diagnostic cycle final gates:257focused regressions PASS
 (1764.4591ms)+43source/native/browser/failed-original evidence checks PASS
 (3117.8073ms),0skip; affected lint/diff/public403/403consistency PASS,0PDF.

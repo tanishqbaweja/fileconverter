@@ -8,7 +8,7 @@ import { createHash } from "node:crypto";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 assert.ok(process.argv.length === 3 || process.argv.length === 4);
 const action = process.argv[2], attempt = process.argv[3] ?? "1";
-assert.ok(["prepare", "dispatch", "inspect"].includes(action)); assert.match(attempt, /^[1-9]$/);
+assert.ok(["prepare", "dispatch", "inspect"].includes(action)); assert.match(attempt, /^[1-9]\d?$/);
 const suffix = attempt === "1" ? "" : "-attempt" + attempt;
 const root = path.resolve(import.meta.dirname, ".."), repo = "tanishqbaweja/fileconverter", execute = promisify(execFile);
 const originalWidth = Number(attempt) >= 5;

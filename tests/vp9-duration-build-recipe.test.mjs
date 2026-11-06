@@ -46,6 +46,15 @@ test("private build retains original pinned downloads and actual finally cleanup
   assert.equal(generated.includes('fail "Non-Docker FFmpeg artifacts differ from the published engine."'), false);
   assert.ok(generated.includes('Private VP9 duration candidate compiled; browser gates remain pending.'));
 });
+test("lazy utility build is reversible, requires prior guards, and patches before compilation",()=>{
+  const result=makeVp9DurationBuildRecipe(source,{temporalFilterGuard:true,allocationDiagnostics:true,lazyUtility:true});
+  assert.equal(result.lazyUtility,true);
+  assert.ok(result.generated.includes('make-vp9-allocation-diagnostic-source.mjs"\nnode "${SCRIPT_DIR}/make-vp9-lazy-utility-source.mjs"\n./build-vpx.sh'));
+  let reverse=result.generated;for(const [before,after] of result.edits.toReversed())reverse=reverse.replace(after,before);assert.equal(reverse,source);
+  assert.throws(()=>makeVp9DurationBuildRecipe(source,{lazyUtility:true}));
+  const parsed=spawnSync(process.platform==="win32"?"D:/Program Files/Git/bin/bash.exe":"/bin/bash",["--noprofile","--norc","-n"],
+    {input:result.generated,encoding:"utf8",windowsHide:true,timeout:10000,maxBuffer:65536});assert.equal(parsed.status,0,parsed.stderr||String(parsed.error));
+});
 test("diagnostic build instruments only after temporal guard and before library compilation, with exact reversible provenance", () => {
   const result = makeVp9DurationBuildRecipe(source, { temporalFilterGuard: true, allocationDiagnostics: true });
   assert.equal(result.allocationDiagnostics, true); assert.equal(result.diagnosticsOnFailureOnly, true);

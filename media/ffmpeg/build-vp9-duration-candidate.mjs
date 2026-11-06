@@ -11,11 +11,15 @@ import { makeVp9OriginalWidthSource } from "./vp9-original-width-recipe.mjs";
 import { makeVp9RealtimeTemporalFilterSource } from "./vp9-realtime-temporal-filter-recipe.mjs";
 import { VP9_TEMPORAL_LIFETIME_PINS } from "./vp9-temporal-lifetime.mjs";
 import { makeVp9EncoderAllocationDiagnostic, makeVp9FrameAllocationDiagnostic, makeVp9AllocationConfigureProbe, VP9_ALLOCATION_DIAGNOSTIC_PINS } from "./vp9-allocation-diagnostic-recipe.mjs";
+import { makeVp9LazyUtilityEncoder,makeVp9LazyUtilityFilter } from "./vp9-lazy-utility-recipe.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), output = path.join(root, "work/vp9-duration-output");
 const read = file => readFile(path.join(root, file)), sha = value => createHash("sha256").update(value).digest("hex");
 assert.equal(process.argv.length, 2); assert.equal(process.platform, "linux");
 assert.ok([undefined, "0", "1"].includes(process.env.WITHIN_VP9_ALLOCATION_DIAGNOSTICS));
 const allocationDiagnostics = process.env.WITHIN_VP9_ALLOCATION_DIAGNOSTICS === "1";
+assert.ok([undefined,"0","1"].includes(process.env.WITHIN_VP9_LAZY_UTILITY));
+const lazyUtility=process.env.WITHIN_VP9_LAZY_UTILITY==="1";assert.ok(!lazyUtility||allocationDiagnostics);
+const privateEngine=lazyUtility?"private-vp9-lazy-utility":allocationDiagnostics?"private-vp9-allocation-diagnostic":"private-vp9-realtime-temporal";
 assert.equal(sha(await read("media/ffmpeg/within_remux.c")), "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068");
 for (const dir of [output, path.join(root, "work/vp9-duration-build")]) await assert.rejects(access(dir), { code: "ENOENT" });
 const sourcePins = {}, artifactPins = {};
@@ -26,10 +30,12 @@ const sourceFiles = ["media/ffmpeg/within_remux.c", "media/ffmpeg/vp9-packet-dur
 sourceFiles.push("media/ffmpeg/vp9-realtime-temporal-filter-recipe.mjs", "media/ffmpeg/vp9-temporal-lifetime.mjs",
   "media/ffmpeg/vp9-temporal-c-unit.mjs", "media/ffmpeg/make-vp9-temporal-filter-source.mjs");
 if (allocationDiagnostics) sourceFiles.push("media/ffmpeg/vp9-allocation-diagnostic-recipe.mjs", "media/ffmpeg/vp9-allocation-c-unit.mjs", "media/ffmpeg/make-vp9-allocation-diagnostic-source.mjs", "media/ffmpeg/probe-vp9-allocation-link.mjs");
+sourceFiles.push("media/ffmpeg/vp9-lazy-utility-recipe.mjs");
+if(lazyUtility)sourceFiles.push("media/ffmpeg/vp9-lazy-utility-c-unit.mjs","media/ffmpeg/make-vp9-lazy-utility-source.mjs");
 for (const entry of await readdir(path.join(root, "media/ffmpeg"))) if (/^build-.*\.sh$/.test(entry)) sourceFiles.push("media/ffmpeg/" + entry);
 for (const entry of await readdir(path.join(root, "media/ffmpeg/patches"))) if (entry.endsWith(".patch")) sourceFiles.push("media/ffmpeg/patches/" + entry);
 for (const file of sourceFiles) sourcePins[file] = sha(await read(file));
-const recipe = makeVp9DurationBuildRecipe((await read("media/ffmpeg/reproduce-nondocker.sh")).toString(), { temporalFilterGuard: true, allocationDiagnostics });
+const recipe = makeVp9DurationBuildRecipe((await read("media/ffmpeg/reproduce-nondocker.sh")).toString(), { temporalFilterGuard: true, allocationDiagnostics, lazyUtility });
 const runtime = await createOwnedRuntimeScratch("vp9-duration-builder-");
 try {
   // Configure probes live under this TMPDIR, not the separate build root.
@@ -49,6 +55,7 @@ try {
   assert.deepEqual(vendorProof.lifetime.sourcePins, VP9_TEMPORAL_LIFETIME_PINS);
   assert.equal(vendorProof.cUnit.totalFunctionCalls, 198);
   let diagnosticContract = null;
+  let lazyContract=null;
   if (allocationDiagnostics) {
     const encoder = makeVp9EncoderAllocationDiagnostic(vendor.generated),
       allocator = makeVp9FrameAllocationDiagnostic(await readFile(path.join(output, "yv12config.allocation.base.c"), "utf8")),
@@ -69,6 +76,18 @@ try {
       failureOnly: true, successfulPathStatisticCalls: 0, allocatorAlgorithmChanged: false, actualBrowserMeasurements: null,
       configureProbeAllocatorAlignedToFinal: true, productionFinalLinkFlagsChanged: false, configureRecipeSha256: configure.generatedSha256 };
   }
+  if(lazyUtility) {
+    const encoder=makeVp9LazyUtilityEncoder(await readFile(path.join(output,"vp9_encoder.allocation.diagnostic.c"),"utf8")),
+      filter=makeVp9LazyUtilityFilter(await readFile(path.join(output,"vp9_picklpf.lazy.base.c"),"utf8")),
+      proof=JSON.parse(await readFile(path.join(output,"vp9-lazy-utility-proof.json")));
+    assert.equal(await readFile(path.join(output,"vp9_encoder.lazy.utility.c"),"utf8"),encoder.generated);
+    assert.equal(await readFile(path.join(output,"vp9_picklpf.lazy.utility.c"),"utf8"),filter.generated);
+    assert.equal(proof.encoder.generatedSha256,encoder.generatedSha256);assert.equal(proof.filter.generatedSha256,filter.generatedSha256);
+    assert.deepEqual(proof.cUnit.variants.map(v=>v.allocationPairs),[40,80]);assert.equal(proof.actualMemorySavedBytes,null);
+    lazyContract={encoderSha256:encoder.generatedSha256,filterSha256:filter.generatedSha256,encoderEdits:3,filterEdits:1,
+      originalCandidateAllocationPairs:120,scalingCases:36,motionCases:72,filterCases:12,transitionCalls:9,
+      codecSettingsChanged:false,pixelAlgorithmsChanged:false,actualMemorySavedBytes:null,browserValidated:false};
+  }
   const wasm = await readFile(path.join(output, "within-remux.wasm")); assert.ok(wasm.length < 16777216 && WebAssembly.validate(wasm));
   const limits = readWasmMemoryLimits(wasm);
   assert.deepEqual(limits, readWasmMemoryLimits(await read("public/engines/remux/within-remux.wasm")), "Never raise the published core's limits");
@@ -82,8 +101,8 @@ try {
   }
   for (const [file, hash] of Object.entries(sourcePins)) assert.equal(sha(await read(file)), hash);
   await writeFile(path.join(output, "build-manifest.json"), JSON.stringify({ ...original,
-    engine: allocationDiagnostics ? "private-vp9-allocation-diagnostic" : "private-vp9-realtime-temporal", scope: "private-compiled-tool-not-public-reproduction-or-browser-acceptance",
-    modules: core, profiles: [allocationDiagnostics ? "private-vp9-allocation-diagnostic" : "private-vp9-realtime-temporal"], sources: sourcePins, artifacts: artifactPins,
+    engine: privateEngine, scope: "private-compiled-tool-not-public-reproduction-or-browser-acceptance",
+    modules: core, profiles: [privateEngine], sources: sourcePins, artifacts: artifactPins,
     enabledDecoders: enabled("DECODER"), enabledEncoders: enabled("ENCODER"), enabledDemuxers: enabled("DEMUXER"),
     enabledMuxers: enabled("MUXER"), enabledParsers: enabled("PARSER"), enabledBitstreamFilters: enabled("BSF"),
     buildEnvironment: { usedDocker: false, emscripten: "6.0.4", emsdkCommit: "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f" },
@@ -92,6 +111,10 @@ try {
       privateVp9ExplicitWidth: candidate.privateVp9ExplicitWidth, defaultWidthPolicyChanged: candidate.defaultWidthPolicyChanged,
       publicWidthRegistryOrControlsChanged: candidate.publicWidthRegistryOrControlsChanged,
       allocationDiagnostics: diagnosticContract,
+      lazyUtility: lazyContract,
+      compiledVendorSources:lazyUtility?{"vp9/encoder/vp9_encoder.c":lazyContract.encoderSha256,
+        "vp9/encoder/vp9_picklpf.c":lazyContract.filterSha256,"vpx_scale/generic/yv12config.c":diagnosticContract.allocatorSha256}:null,
+      ancestorPreimagesAreNotFinalTranslationUnits:lazyUtility,
       vendorAllocationGuard: { parentSha256: vendor.parentSha256, compiledSourceSha256: vendor.generatedSha256,
         edits: vendor.edits.length, lifetimeSourcePins: VP9_TEMPORAL_LIFETIME_PINS, cUnitCalls: 198,
         codecSettingsChanged: false, filteringAlgorithmsChanged: false, exactAllocationBytesSaved: null },

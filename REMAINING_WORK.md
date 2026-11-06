@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 genuine lazy utility storage candidate now implemented/host-tested,
+not yet compiled into Wasm/browser qualified. Preserves actual scaling/filter
+algorithms, reference stride, SVC/nonrealtime behavior, errors/cleanup/limits.
+120allocation comparisons/36scale/72motion/12filter/9transition controls pass;
+37exact CI tests/lint pass. Next DISTINCT native10 -> strict byte-exact control
+-> original6, not original5 replay. No accepted memory/speed/public promotion;
+all broader original/near10GB/family/browser/release requirements stay open.
+
 2026-11-06 cycle finalized:300focused checks PASS/0skip, affected lint/diff/
 public consistency PASS. Definitive actual native-capacity evidence changes next
 action to tested lazy utility-buffer allocation; no completed original or public

@@ -2,9 +2,10 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 const sha = value => createHash("sha256").update(value).digest("hex");
-export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false, allocationDiagnostics = false } = {}) {
+export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false, allocationDiagnostics = false, lazyUtility = false } = {}) {
   assert.equal(typeof temporalFilterGuard, "boolean");
   assert.equal(typeof allocationDiagnostics, "boolean"); assert.ok(!allocationDiagnostics || temporalFilterGuard);
+  assert.equal(typeof lazyUtility,"boolean");assert.ok(!lazyUtility||allocationDiagnostics);
   assert.equal(sha(source), "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e");
   const tail = source.slice(source.indexOf("comparison_files=()\n"));
   assert.ok(tail.startsWith("comparison_files=()\n") && tail.endsWith("printf 'Exact non-Docker FFmpeg artifact comparison passed.\\n'\n"));
@@ -42,6 +43,13 @@ export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false
     'cp -- "${BUILD_ROOT}/build-libraries.allocation.base.sh" "${OUTPUT_ROOT}/build-libraries.allocation.base.sh"\n' +
     'cp -- "${BUILD_ROOT}/build-libraries.allocation.diagnostic.sh" "${OUTPUT_ROOT}/build-libraries.allocation.diagnostic.sh"\n' +
     'cp -- "${BUILD_ROOT}/vp9-allocation-link-proof.json" "${OUTPUT_ROOT}/vp9-allocation-link-proof.json"\n']);
+  if(lazyUtility)edits.push([
+    'node "${SCRIPT_DIR}/make-vp9-allocation-diagnostic-source.mjs"\n./build-vpx.sh\n',
+    'node "${SCRIPT_DIR}/make-vp9-allocation-diagnostic-source.mjs"\nnode "${SCRIPT_DIR}/make-vp9-lazy-utility-source.mjs"\n./build-vpx.sh\n'+
+    'cp -- "${BUILD_ROOT}/vp9_encoder.lazy.utility.c" "${OUTPUT_ROOT}/vp9_encoder.lazy.utility.c"\n'+
+    'cp -- "${BUILD_ROOT}/vp9_picklpf.lazy.base.c" "${OUTPUT_ROOT}/vp9_picklpf.lazy.base.c"\n'+
+    'cp -- "${BUILD_ROOT}/vp9_picklpf.lazy.utility.c" "${OUTPUT_ROOT}/vp9_picklpf.lazy.utility.c"\n'+
+    'cp -- "${BUILD_ROOT}/vp9-lazy-utility-proof.json" "${OUTPUT_ROOT}/vp9-lazy-utility-proof.json"\n']);
   let generated = source;
   for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
   let reverse = generated;
@@ -51,5 +59,6 @@ export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false
     dependencyRecipesChanged: temporalFilterGuard, boundedTransportRetriesChanged: true, compilerSettingsChanged: allocationDiagnostics, productionFinalLinkFlagsChanged: false, memoryLimitsRaised: false,
     temporalFilterGuard, vendorAllocationOnlyChanged: temporalFilterGuard,
     allocationDiagnostics, diagnosticsOnFailureOnly: allocationDiagnostics,
+    lazyUtility,
     allCoreBuildSelected: false, publicAcceptance: false };
 }

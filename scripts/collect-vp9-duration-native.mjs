@@ -14,7 +14,8 @@ import { makeVp9OriginalWidthSource } from "../media/ffmpeg/vp9-original-width-r
 import { makeVp9RealtimeTemporalFilterSource } from "../media/ffmpeg/vp9-realtime-temporal-filter-recipe.mjs";
 import { VP9_TEMPORAL_LIFETIME_PINS } from "../media/ffmpeg/vp9-temporal-lifetime.mjs";
 import { makeVp9EncoderAllocationDiagnostic, makeVp9FrameAllocationDiagnostic, makeVp9AllocationConfigureProbe } from "../media/ffmpeg/vp9-allocation-diagnostic-recipe.mjs";
-assert.equal(process.argv.length, 3); const attempt = process.argv[2]; assert.match(attempt, /^[1-9]$/);
+import { makeVp9LazyUtilityEncoder,makeVp9LazyUtilityFilter } from "../media/ffmpeg/vp9-lazy-utility-recipe.mjs";
+assert.equal(process.argv.length, 3); const attempt = process.argv[2]; assert.match(attempt, /^[1-9]\d?$/);
 const suffix = attempt === "1" ? "" : "-attempt" + attempt, root = path.resolve(import.meta.dirname, ".."), repo = "tanishqbaweja/fileconverter";
 const prefix = Number(attempt) >= 5 ? "evidence/2026-11-06-vp9-original-width" : "evidence/2026-11-05-vp9-duration";
 const dispatch = JSON.parse(await readFile(path.join(root, prefix + "-build-dispatch" + suffix + ".json")));
@@ -41,9 +42,11 @@ try {
     "LICENSE.libvorbis", "LICENSE.opencore-amr", "LICENSE.opus", "LICENSE.ffmpeg-lgpl3", "LICENSE.libvpx"];
   const temporalGuard = Number(attempt) >= 6;
   const allocationDiagnostic = Number(attempt) >= 8;
+  const lazyUtility=Number(attempt)>=10;
   if (temporalGuard) allowed.push("vp9_encoder.temporal.base.c", "vp9_encoder.temporal.guard.c", "vp9-temporal-filter-source-proof.json");
   if (allocationDiagnostic) allowed.push("vp9_encoder.allocation.diagnostic.c", "yv12config.allocation.base.c", "yv12config.allocation.diagnostic.c", "vp9-allocation-diagnostic-proof.json",
     "build-libraries.allocation.base.sh", "build-libraries.allocation.diagnostic.sh", "vp9-allocation-link-proof.json");
+  if(lazyUtility)allowed.push("vp9_encoder.lazy.utility.c","vp9_picklpf.lazy.base.c","vp9_picklpf.lazy.utility.c","vp9-lazy-utility-proof.json");
   const seen = new Set(); let total = 0;
   const members = unzipSync(zip, { filter(entry) {
     assert.ok(allowed.includes(entry.name) && !seen.has(entry.name)); seen.add(entry.name);
@@ -52,9 +55,10 @@ try {
   } });
   assert.deepEqual(Object.keys(members).sort(), allowed.toSorted());
   const manifest = JSON.parse(Buffer.from(members["build-manifest.json"]).toString());
-  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration", "private-vp9-original-width", "private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic"].includes(manifest.engine)); assert.equal(manifest.candidate.publicAcceptance, false);
-  assert.equal(["private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic"].includes(manifest.engine), temporalGuard);
-  assert.equal(manifest.engine === "private-vp9-allocation-diagnostic", allocationDiagnostic);
+  assert.ok(["private-vp9-packet-duration", "private-vp9-stream-duration", "private-vp9-original-width", "private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility"].includes(manifest.engine)); assert.equal(manifest.candidate.publicAcceptance, false);
+  assert.equal(["private-vp9-realtime-temporal", "private-vp9-allocation-diagnostic","private-vp9-lazy-utility"].includes(manifest.engine), temporalGuard);
+  assert.equal(["private-vp9-allocation-diagnostic","private-vp9-lazy-utility"].includes(manifest.engine), allocationDiagnostic);
+  assert.equal(manifest.engine==="private-vp9-lazy-utility",lazyUtility);
   assert.equal(manifest.candidate.browserValidated, false); assert.equal(manifest.candidate.nodeInstantiated, false);
   assert.equal(manifest.candidate.mediaRead, false); assert.equal(manifest.candidate.mediaWritten, false);
   assert.equal(manifest.candidate.memoryLimitsRaised, false); assert.equal(manifest.buildEnvironment.usedDocker, false);
@@ -116,6 +120,22 @@ try {
     }
   }
   const limits = readWasmMemoryLimits(members["within-remux.wasm"]);
+  if(lazyUtility) {
+    assert.equal(sha(await readFile(path.join(root,"media/ffmpeg/vp9-lazy-utility-recipe.mjs"))),manifest.sources["media/ffmpeg/vp9-lazy-utility-recipe.mjs"]);
+    const encoder=makeVp9LazyUtilityEncoder(Buffer.from(members["vp9_encoder.allocation.diagnostic.c"]).toString()),
+      filter=makeVp9LazyUtilityFilter(Buffer.from(members["vp9_picklpf.lazy.base.c"]).toString()),
+      proof=JSON.parse(Buffer.from(members["vp9-lazy-utility-proof.json"]).toString());
+    for(const [kind,derived,file] of [["encoder",encoder,"vp9_encoder.lazy.utility.c"],["filter",filter,"vp9_picklpf.lazy.utility.c"]]) {
+      assert.equal(Buffer.from(members[file]).toString(),derived.generated);
+      assert.equal(proof[kind].generatedSha256,derived.generatedSha256);assert.deepEqual(proof[kind].edits,derived.edits);
+      assert.equal(manifest.candidate.lazyUtility[kind+"Sha256"],derived.generatedSha256);
+    }
+    assert.deepEqual(proof.cUnit.variants.map(v=>v.allocationPairs),[40,80]);
+    assert.equal(manifest.candidate.compiledVendorSources["vp9/encoder/vp9_encoder.c"],encoder.generatedSha256);
+    assert.equal(manifest.candidate.compiledVendorSources["vp9/encoder/vp9_picklpf.c"],filter.generatedSha256);
+    assert.equal(manifest.candidate.compiledVendorSources["vpx_scale/generic/yv12config.c"],manifest.candidate.allocationDiagnostics.allocatorSha256);
+    assert.equal(manifest.candidate.lazyUtility.actualMemorySavedBytes,null);
+  }
   assert.deepEqual(limits, manifest.candidate.wasmMemoryLimits);
   assert.deepEqual(limits, readWasmMemoryLimits(await readFile(path.join(root, "public/engines/remux/within-remux.wasm"))));
   assert.ok(WebAssembly.validate(members["within-remux.wasm"]));
