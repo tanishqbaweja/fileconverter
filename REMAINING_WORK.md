@@ -1,5 +1,26 @@
 # Remaining work audit
 
+2026-11-06 checkpoint318focused tests PASS/0skip, affected lint/diff PASS,
+public consistency403/403/2hidden pending/0PDF. This confirms regressions/source
+controls only, not goal completion; no new production browser stress result.
+
+2026-11-06 private token-context compaction recipe +276480 mocked C controls and
+genuine Wasm32 layout controls PASS (8->6B or12->8B records), unchanged capacity/
+codec settings/limits. Not integrated, not a linked codec/browser pass, no actual
+heap savings or speed claimed. Complete context-base lifetime/alias/macro audit
+still needed before distinct native integration and real unchanged-threshold
+bit-exact/recovery/original browser qualification. Broader scope remains open.
+
+2026-11-06 original6 with actual lazy core42218018139 FAILED HEVC decoder ENOMEM,
+not prior VP9 new-frame error. WholeChrome206.9140625MiB/35valid0missing does not
+make failed conversion pass; full-original/scaling/fidelity remain unverified.
+Exact current allocator failure request/free are unavailable. Original unchanged,
+all disposable data/owned births removed; obsolete diagnostic tool11.22MB removed
+after hash/identity verification. No unconditional wrapper scaling copy exists to
+remove at matching geometry. NEXT inventory retained token records/live codec
+allocations before a genuinely changed candidate; do not replay original6.
+Broader specification and fixed limits remain unchanged and open.
+
 2026-11-06 lazy core actual strict small/recovery PASS: four completed outputs
 byte-identical, unchanged fidelity/timing/metadata, both adverse paths recover,
 wholeChrome225.6796875MiB/214valid0missing. All disposable data cleaned/original

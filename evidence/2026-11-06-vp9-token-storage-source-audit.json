@@ -1,0 +1,811 @@
+{
+  "recordedAt": "2026-11-06T13:11:13.835Z",
+  "scope": "Complete pinned C/header token-record reference inventory, NOT safe token removal or storage-compaction proof",
+  "archiveSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
+  "cFiles": 880,
+  "references": [
+    {
+      "file": "vp8/encoder/bitstream.c",
+      "bytes": 40621,
+      "sha256": "7cc8bce4a25137b2c6c7a7ecfd26ddd70d5e69d009df6d4d9c8e8d324580b842",
+      "matches": [
+        {
+          "line": 122,
+          "text": "const TOKENEXTRA *p,",
+          "context": "                  vp8_mbsplit_encodings + x);\n}\n\nvoid VPX_NO_UNSIGNED_SHIFT_CHECK vp8_pack_tokens(vp8_writer *w,\n                                                 const TOKENEXTRA *p,\n                                                 int xcount) {\n  const TOKENEXTRA *stop = p + xcount;\n  unsigned int split;\n  int shift;\n  int count = w->count;\n  unsigned int range = w->range;"
+        },
+        {
+          "line": 124,
+          "text": "const TOKENEXTRA *stop = p + xcount;",
+          "context": "\nvoid VPX_NO_UNSIGNED_SHIFT_CHECK vp8_pack_tokens(vp8_writer *w,\n                                                 const TOKENEXTRA *p,\n                                                 int xcount) {\n  const TOKENEXTRA *stop = p + xcount;\n  unsigned int split;\n  int shift;\n  int count = w->count;\n  unsigned int range = w->range;\n  unsigned int lowvalue = w->lowvalue;\n"
+        },
+        {
+          "line": 136,
+          "text": "const unsigned char *pp = p->context_tree;",
+          "context": "    const int t = p->Token;\n    vp8_token *a = vp8_coef_encodings + t;\n    const vp8_extra_bit_struct *b = vp8_extra_bits + t;\n    int i = 0;\n    const unsigned char *pp = p->context_tree;\n    int v = a->value;\n    int n = a->Len;\n\n    if (p->skip_eob_node) {\n      n--;\n      i = 2;"
+        },
+        {
+          "line": 308,
+          "text": "const TOKENEXTRA *p = cpi->tplist[mb_row].start;",
+          "context": "\n    vp8_start_encode(w, ptr, ptr_end);\n\n    for (mb_row = i; mb_row < cpi->common.mb_rows; mb_row += num_part) {\n      const TOKENEXTRA *p = cpi->tplist[mb_row].start;\n      const TOKENEXTRA *stop = cpi->tplist[mb_row].stop;\n      int tokens = (int)(stop - p);\n\n      vp8_pack_tokens(w, p, tokens);\n    }\n"
+        },
+        {
+          "line": 309,
+          "text": "const TOKENEXTRA *stop = cpi->tplist[mb_row].stop;",
+          "context": "    vp8_start_encode(w, ptr, ptr_end);\n\n    for (mb_row = i; mb_row < cpi->common.mb_rows; mb_row += num_part) {\n      const TOKENEXTRA *p = cpi->tplist[mb_row].start;\n      const TOKENEXTRA *stop = cpi->tplist[mb_row].stop;\n      int tokens = (int)(stop - p);\n\n      vp8_pack_tokens(w, p, tokens);\n    }\n\n    vp8_stop_encode(w);"
+        },
+        {
+          "line": 325,
+          "text": "const TOKENEXTRA *p = cpi->tplist[mb_row].start;",
+          "context": "static void pack_mb_row_tokens(VP8_COMP *cpi, vp8_writer *w) {\n  int mb_row;\n\n  for (mb_row = 0; mb_row < cpi->common.mb_rows; ++mb_row) {\n    const TOKENEXTRA *p = cpi->tplist[mb_row].start;\n    const TOKENEXTRA *stop = cpi->tplist[mb_row].stop;\n    int tokens = (int)(stop - p);\n\n    vp8_pack_tokens(w, p, tokens);\n  }\n}"
+        },
+        {
+          "line": 326,
+          "text": "const TOKENEXTRA *stop = cpi->tplist[mb_row].stop;",
+          "context": "  int mb_row;\n\n  for (mb_row = 0; mb_row < cpi->common.mb_rows; ++mb_row) {\n    const TOKENEXTRA *p = cpi->tplist[mb_row].start;\n    const TOKENEXTRA *stop = cpi->tplist[mb_row].stop;\n    int tokens = (int)(stop - p);\n\n    vp8_pack_tokens(w, p, tokens);\n  }\n}\n#endif  // CONFIG_MULTITHREAD"
+        },
+        {
+          "line": 1369,
+          "text": "vp8_pack_tokens(&cpi->bc[1], cpi->tok, cpi->tok_count);",
+          "context": "#if CONFIG_MULTITHREAD\n    if (vpx_atomic_load_acquire(&cpi->b_multi_threaded)) {\n      pack_mb_row_tokens(cpi, &cpi->bc[1]);\n    } else {\n      vp8_pack_tokens(&cpi->bc[1], cpi->tok, cpi->tok_count);\n    }\n#else\n    vp8_pack_tokens(&cpi->bc[1], cpi->tok, cpi->tok_count);\n#endif  // CONFIG_MULTITHREAD\n\n    vp8_stop_encode(&cpi->bc[1]);"
+        },
+        {
+          "line": 1372,
+          "text": "vp8_pack_tokens(&cpi->bc[1], cpi->tok, cpi->tok_count);",
+          "context": "    } else {\n      vp8_pack_tokens(&cpi->bc[1], cpi->tok, cpi->tok_count);\n    }\n#else\n    vp8_pack_tokens(&cpi->bc[1], cpi->tok, cpi->tok_count);\n#endif  // CONFIG_MULTITHREAD\n\n    vp8_stop_encode(&cpi->bc[1]);\n\n    *size += cpi->bc[1].pos;\n    cpi->partition_sz[1] = cpi->bc[1].pos;"
+        }
+      ]
+    },
+    {
+      "file": "vp8/encoder/bitstream.h",
+      "bytes": 1046,
+      "sha256": "b7442cdc434ed59c8e83b28a16537c65dbff52610e65d2db33c491cfa8ed46dd",
+      "matches": [
+        {
+          "line": 21,
+          "text": "void vp8_pack_tokens(vp8_writer *w, const TOKENEXTRA *p, int xcount);",
+          "context": "\n#include \"vp8/encoder/treewriter.h\"\n#include \"vp8/encoder/tokenize.h\"\n\nvoid vp8_pack_tokens(vp8_writer *w, const TOKENEXTRA *p, int xcount);\nvoid vp8_convert_rfct_to_prob(struct VP8_COMP *const cpi);\nvoid vp8_calc_ref_frame_costs(int *ref_frame_cost, int prob_intra,\n                              int prob_last, int prob_garf);\nint vp8_estimate_entropy_savings(struct VP8_COMP *cpi);\nvoid vp8_update_coef_probs(struct VP8_COMP *cpi);\n"
+        }
+      ]
+    },
+    {
+      "file": "vp8/encoder/encodeframe.c",
+      "bytes": 40216,
+      "sha256": "683e12c388608a1679b0bb4217a8ddf70f01a67ef0e5f381078843329b79aa57",
+      "matches": [
+        {
+          "line": 40,
+          "text": "extern void vp8_stuff_mb(VP8_COMP *cpi, MACROBLOCK *x, TOKENEXTRA **t);",
+          "context": "#if CONFIG_MULTITHREAD\n#include \"vp8/encoder/ethreading.h\"\n#endif\n\nextern void vp8_stuff_mb(VP8_COMP *cpi, MACROBLOCK *x, TOKENEXTRA **t);\nstatic void adjust_act_zbin(VP8_COMP *cpi, MACROBLOCK *x);\n\n#ifdef MODE_STATS\nunsigned int inter_y_modes[10] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };\nunsigned int inter_uv_modes[4] = { 0, 0, 0, 0 };\nunsigned int inter_b_modes[15] = {"
+        },
+        {
+          "line": 317,
+          "text": "MACROBLOCK *x, MACROBLOCKD *xd, TOKENEXTRA **tp,",
+          "context": "  adjust_act_zbin(cpi, x);\n}\n\nstatic void encode_mb_row(VP8_COMP *cpi, VP8_COMMON *cm, int mb_row,\n                          MACROBLOCK *x, MACROBLOCKD *xd, TOKENEXTRA **tp,\n                          int *segment_counts, int *totalrate) {\n  int recon_yoffset, recon_uvoffset;\n  int mb_col;\n  int ref_fb_idx = cm->lst_fb_idx;\n  int dst_fb_idx = cm->new_fb_idx;\n  int recon_y_stride = cm->yv12_fb[ref_fb_idx].y_stride;"
+        },
+        {
+          "line": 329,
+          "text": "TOKENEXTRA *tp_start = cpi->tok;",
+          "context": "  int map_index = (mb_row * cpi->common.mb_cols);\n\n#if (CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING)\n  const int num_part = (1 << cm->multi_token_partition);\n  TOKENEXTRA *tp_start = cpi->tok;\n  vp8_writer *w;\n#endif\n\n#if CONFIG_MULTITHREAD\n  const int nsync = cpi->mt_sync_range;\n  vpx_atomic_int rightmost_col = VPX_ATOMIC_INIT(cm->mb_cols + nsync);"
+        },
+        {
+          "line": 384,
+          "text": "*tp = cpi->tok;",
+          "context": "\n  /* for each macroblock col in image */\n  for (mb_col = 0; mb_col < cm->mb_cols; ++mb_col) {\n#if (CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING)\n    *tp = cpi->tok;\n#endif\n    /* Distance of Mb to the left & right edges, specified in\n     * 1/8th pel units as they are always compared to values\n     * that are in 1/8th pel units\n     */\n    xd->mb_to_left_edge = -((mb_col * 16) << 3);"
+        },
+        {
+          "line": 534,
+          "text": "int tok_count = *tp - tp_start;",
+          "context": "\n#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n    /* pack tokens for this MB */\n    {\n      int tok_count = *tp - tp_start;\n      vp8_pack_tokens(w, tp_start, tok_count);\n    }\n#endif\n    /* Increment pointer into gf usage flags structure. */\n    x->gf_active_ptr++;\n"
+        },
+        {
+          "line": 535,
+          "text": "vp8_pack_tokens(w, tp_start, tok_count);",
+          "context": "#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n    /* pack tokens for this MB */\n    {\n      int tok_count = *tp - tp_start;\n      vp8_pack_tokens(w, tp_start, tok_count);\n    }\n#endif\n    /* Increment pointer into gf usage flags structure. */\n    x->gf_active_ptr++;\n\n    /* Increment the activity mask pointers. */"
+        },
+        {
+          "line": 674,
+          "text": "TOKENEXTRA *tp = cpi->tok;",
+          "context": "  int mb_row;\n  MACROBLOCK *const x = &cpi->mb;\n  VP8_COMMON *const cm = &cpi->common;\n  MACROBLOCKD *const xd = &x->e_mbd;\n  TOKENEXTRA *tp = cpi->tok;\n  int segment_counts[MAX_MB_SEGMENTS];\n  int totalrate;\n#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n  BOOL_CODER *bc = &cpi->bc[1]; /* bc[0] is for control partition */\n  const int num_part = (1 << cm->multi_token_partition);\n#endif"
+        },
+        {
+          "line": 707,
+          "text": "cpi->tok_count = 0;",
+          "context": "    xd->subpixel_predict16x16 = vp8_bilinear_predict16x16;\n  }\n\n  cpi->mb.skip_true_count = 0;\n  cpi->tok_count = 0;\n\n#if 0\n    /* Experimental code */\n    cpi->frame_distortion = 0;\n    cpi->last_mb_distortion = 0;\n#endif"
+        },
+        {
+          "line": 783,
+          "text": "tp = cpi->tok;",
+          "context": "           mb_row += (cpi->encoding_thread_count + 1)) {\n        vp8_zero(cm->left_context);\n\n#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n        tp = cpi->tok;\n#else\n        tp = cpi->tok + mb_row * (cm->mb_cols * 16 * 24);\n#endif\n\n        encode_mb_row(cpi, cm, mb_row, x, xd, &tp, segment_counts, &totalrate);\n"
+        },
+        {
+          "line": 785,
+          "text": "tp = cpi->tok + mb_row * (cm->mb_cols * 16 * 24);",
+          "context": "\n#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n        tp = cpi->tok;\n#else\n        tp = cpi->tok + mb_row * (cm->mb_cols * 16 * 24);\n#endif\n\n        encode_mb_row(cpi, cm, mb_row, x, xd, &tp, segment_counts, &totalrate);\n\n        /* adjust to the next row of mbs */\n        x->src.y_buffer +="
+        },
+        {
+          "line": 812,
+          "text": "cpi->tok_count += (unsigned int)(cpi->tplist[mb_row].stop -",
+          "context": "        vp8_sem_wait(&cpi->h_event_end_encoding[i]);\n      }\n\n      for (mb_row = 0; mb_row < cm->mb_rows; ++mb_row) {\n        cpi->tok_count += (unsigned int)(cpi->tplist[mb_row].stop -\n                                         cpi->tplist[mb_row].start);\n      }\n\n      if (xd->segmentation_enabled) {\n        int j;\n"
+        },
+        {
+          "line": 875,
+          "text": "tp = cpi->tok;",
+          "context": "      for (mb_row = 0; mb_row < cm->mb_rows; ++mb_row) {\n        vp8_zero(cm->left_context);\n\n#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n        tp = cpi->tok;\n#endif\n\n        encode_mb_row(cpi, cm, mb_row, x, xd, &tp, segment_counts, &totalrate);\n\n        /* adjust to the next row of mbs */\n        x->src.y_buffer += 16 * x->src.y_stride - 16 * cm->mb_cols;"
+        },
+        {
+          "line": 886,
+          "text": "cpi->tok_count = (unsigned int)(tp - cpi->tok);",
+          "context": "        x->src.u_buffer += 8 * x->src.uv_stride - 8 * cm->mb_cols;\n        x->src.v_buffer += 8 * x->src.uv_stride - 8 * cm->mb_cols;\n      }\n\n      cpi->tok_count = (unsigned int)(tp - cpi->tok);\n    }\n\n#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n    {\n      int i;\n      for (i = 0; i < num_part; ++i) {"
+        },
+        {
+          "line": 1095,
+          "text": "TOKENEXTRA **t) {",
+          "context": "#endif\n}\n\nint vp8cx_encode_intra_macroblock(VP8_COMP *cpi, MACROBLOCK *x,\n                                  TOKENEXTRA **t) {\n  MACROBLOCKD *xd = &x->e_mbd;\n  int rate;\n\n  if (cpi->sf.RD && cpi->compressor_speed != 2) {\n    vp8_rd_pick_intra_mode(x, &rate);\n  } else {"
+        },
+        {
+          "line": 1135,
+          "text": "int vp8cx_encode_inter_macroblock(VP8_COMP *cpi, MACROBLOCK *x, TOKENEXTRA **t,",
+          "context": "#endif\n\nextern void vp8_fix_contexts(MACROBLOCKD *x);\n\nint vp8cx_encode_inter_macroblock(VP8_COMP *cpi, MACROBLOCK *x, TOKENEXTRA **t,\n                                  int recon_yoffset, int recon_uvoffset,\n                                  int mb_row, int mb_col) {\n  MACROBLOCKD *const xd = &x->e_mbd;\n  int intra_error = 0;\n  int rate;\n  int distortion;"
+        }
+      ]
+    },
+    {
+      "file": "vp8/encoder/encodeframe.h",
+      "bytes": 1258,
+      "sha256": "8cb85752e38303476bd6c11b3907a094c6b838754e91beaf214aa7c684fc1eae",
+      "matches": [
+        {
+          "line": 31,
+          "text": "TOKENEXTRA **t, int recon_yoffset,",
+          "context": "\nvoid vp8_encode_frame(struct VP8_COMP *cpi);\n\nint vp8cx_encode_inter_macroblock(struct VP8_COMP *cpi, struct macroblock *x,\n                                  TOKENEXTRA **t, int recon_yoffset,\n                                  int recon_uvoffset, int mb_row, int mb_col);\n\nint vp8cx_encode_intra_macroblock(struct VP8_COMP *cpi, struct macroblock *x,\n                                  TOKENEXTRA **t);\n#ifdef __cplusplus\n}  // extern \"C\""
+        },
+        {
+          "line": 35,
+          "text": "TOKENEXTRA **t);",
+          "context": "                                  TOKENEXTRA **t, int recon_yoffset,\n                                  int recon_uvoffset, int mb_row, int mb_col);\n\nint vp8cx_encode_intra_macroblock(struct VP8_COMP *cpi, struct macroblock *x,\n                                  TOKENEXTRA **t);\n#ifdef __cplusplus\n}  // extern \"C\"\n#endif\n\n#endif  // VPX_VP8_ENCODER_ENCODEFRAME_H_\n"
+        }
+      ]
+    },
+    {
+      "file": "vp8/encoder/ethreading.c",
+      "bytes": 23774,
+      "sha256": "1d98ca0c0e3d117ce6913a8352d2c7792d314a9bb70b69e022c867360bd8cba7",
+      "matches": [
+        {
+          "line": 61,
+          "text": "TOKENEXTRA *tp;",
+          "context": "      VP8_COMMON *cm = &cpi->common;\n      int mb_row;\n      MACROBLOCK *x = &mbri->mb;\n      MACROBLOCKD *xd = &x->e_mbd;\n      TOKENEXTRA *tp;\n#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n      TOKENEXTRA *tp_start = cpi->tok + (1 + ithread) * (16 * 24);\n      const int num_part = (1 << cm->multi_token_partition);\n#endif\n\n      int *segment_counts = mbri->segment_counts;"
+        },
+        {
+          "line": 63,
+          "text": "TOKENEXTRA *tp_start = cpi->tok + (1 + ithread) * (16 * 24);",
+          "context": "      MACROBLOCK *x = &mbri->mb;\n      MACROBLOCKD *xd = &x->e_mbd;\n      TOKENEXTRA *tp;\n#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n      TOKENEXTRA *tp_start = cpi->tok + (1 + ithread) * (16 * 24);\n      const int num_part = (1 << cm->multi_token_partition);\n#endif\n\n      int *segment_counts = mbri->segment_counts;\n      int *totalrate = &mbri->totalrate;\n"
+        },
+        {
+          "line": 91,
+          "text": "tp = cpi->tok + (mb_row * (cm->mb_cols * 16 * 24));",
+          "context": "\n#if (CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING)\n        vp8_writer *w = &cpi->bc[1 + (mb_row % num_part)];\n#else\n        tp = cpi->tok + (mb_row * (cm->mb_cols * 16 * 24));\n        cpi->tplist[mb_row].start = tp;\n#endif\n\n        last_row_current_mb_col = &cpi->mt_current_mb_col[mb_row - 1];\n\n        /* reset above block coeffs */"
+        },
+        {
+          "line": 257,
+          "text": "int tok_count = tp - tp_start;",
+          "context": "\n#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n          /* pack tokens for this MB */\n          {\n            int tok_count = tp - tp_start;\n            vp8_pack_tokens(w, tp_start, tok_count);\n          }\n#else\n          cpi->tplist[mb_row].stop = tp;\n#endif\n          /* Increment pointer into gf usage flags structure. */"
+        },
+        {
+          "line": 258,
+          "text": "vp8_pack_tokens(w, tp_start, tok_count);",
+          "context": "#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n          /* pack tokens for this MB */\n          {\n            int tok_count = tp - tp_start;\n            vp8_pack_tokens(w, tp_start, tok_count);\n          }\n#else\n          cpi->tplist[mb_row].stop = tp;\n#endif\n          /* Increment pointer into gf usage flags structure. */\n          x->gf_active_ptr++;"
+        }
+      ]
+    },
+    {
+      "file": "vp8/encoder/onyx_if.c",
+      "bytes": 184384,
+      "sha256": "a1b8f932da7a9ba08aac3a4ab4607a7799dc38198c589c492dfb55569bd3ebba",
+      "matches": [
+        {
+          "line": 440,
+          "text": "vpx_free(cpi->tok);",
+          "context": "  vp8_yv12_de_alloc_frame_buffer(&cpi->pick_lf_lvl_frame);\n  vp8_yv12_de_alloc_frame_buffer(&cpi->scaled_source);\n  dealloc_raw_frame_buffers(cpi);\n\n  vpx_free(cpi->tok);\n  cpi->tok = 0;\n\n  /* Structure used to monitor GF usage */\n  vpx_free(cpi->gf_active_flags);\n  cpi->gf_active_flags = 0;\n"
+        },
+        {
+          "line": 441,
+          "text": "cpi->tok = 0;",
+          "context": "  vp8_yv12_de_alloc_frame_buffer(&cpi->scaled_source);\n  dealloc_raw_frame_buffers(cpi);\n\n  vpx_free(cpi->tok);\n  cpi->tok = 0;\n\n  /* Structure used to monitor GF usage */\n  vpx_free(cpi->gf_active_flags);\n  cpi->gf_active_flags = 0;\n\n  /* Activity mask based per mb zbin adjustments */"
+        },
+        {
+          "line": 1167,
+          "text": "vpx_free(cpi->tok);",
+          "context": "    vpx_internal_error(&cpi->common.error, VPX_CODEC_MEM_ERROR,\n                       \"Failed to allocate scaled source buffer\");\n  }\n\n  vpx_free(cpi->tok);\n\n  {\n#if CONFIG_REALTIME_ONLY & CONFIG_ONTHEFLY_BITPACKING\n    unsigned int tokens = 8 * 24 * 16; /* one MB for each thread */\n#else\n    unsigned int tokens = cm->mb_rows * cm->mb_cols * 24 * 16;"
+        },
+        {
+          "line": 1175,
+          "text": "CHECK_MEM_ERROR(&cpi->common.error, cpi->tok,",
+          "context": "    unsigned int tokens = 8 * 24 * 16; /* one MB for each thread */\n#else\n    unsigned int tokens = cm->mb_rows * cm->mb_cols * 24 * 16;\n#endif\n    CHECK_MEM_ERROR(&cpi->common.error, cpi->tok,\n                    vpx_calloc(tokens, sizeof(*cpi->tok)));\n  }\n\n  /* Data used for real time vc mode to see if gf needs refreshing */\n  cpi->zeromv_count = 0;\n"
+        },
+        {
+          "line": 1176,
+          "text": "vpx_calloc(tokens, sizeof(*cpi->tok)));",
+          "context": "#else\n    unsigned int tokens = cm->mb_rows * cm->mb_cols * 24 * 16;\n#endif\n    CHECK_MEM_ERROR(&cpi->common.error, cpi->tok,\n                    vpx_calloc(tokens, sizeof(*cpi->tok)));\n  }\n\n  /* Data used for real time vc mode to see if gf needs refreshing */\n  cpi->zeromv_count = 0;\n\n  /* Structures used to monitor GF usage */"
+        },
+        {
+          "line": 2274,
+          "text": "vpx_free(cpi->tok);",
+          "context": "  vp8_denoiser_free(&cpi->denoiser);\n#endif\n  dealloc_compressor_data(cpi);\n  vpx_free(cpi->mb.ss);\n  vpx_free(cpi->tok);\n  vpx_free(cpi->skin_map);\n  vpx_free(cpi->cyclic_refresh_map);\n  vpx_free(cpi->consec_zero_last);\n  vpx_free(cpi->consec_zero_last_mvbias);\n\n  vp8_remove_common(&cpi->common);"
+        }
+      ]
+    },
+    {
+      "file": "vp8/encoder/onyx_int.h",
+      "bytes": 19566,
+      "sha256": "f456681b4c0b4d9e4c2bf770f58355e80efde63ffbd0f953bb1f85962ad7d607",
+      "matches": [
+        {
+          "line": 193,
+          "text": "TOKENEXTRA *start;",
+          "context": "  int totalrate;\n} MB_ROW_COMP;\n\ntypedef struct {\n  TOKENEXTRA *start;\n  TOKENEXTRA *stop;\n} TOKENLIST;\n\ntypedef struct {\n  int ithread;\n  void *ptr1;"
+        },
+        {
+          "line": 194,
+          "text": "TOKENEXTRA *stop;",
+          "context": "} MB_ROW_COMP;\n\ntypedef struct {\n  TOKENEXTRA *start;\n  TOKENEXTRA *stop;\n} TOKENLIST;\n\ntypedef struct {\n  int ithread;\n  void *ptr1;\n  void *ptr2;"
+        },
+        {
+          "line": 325,
+          "text": "TOKENEXTRA *tok;",
+          "context": "  int gold_is_alt;\n\n  YV12_BUFFER_CONFIG pick_lf_lvl_frame;\n\n  TOKENEXTRA *tok;\n  unsigned int tok_count;\n\n  unsigned int frames_since_key;\n  unsigned int key_frame_frequency;\n  unsigned int this_key_frame_forced;\n  unsigned int next_key_frame_forced;"
+        },
+        {
+          "line": 326,
+          "text": "unsigned int tok_count;",
+          "context": "\n  YV12_BUFFER_CONFIG pick_lf_lvl_frame;\n\n  TOKENEXTRA *tok;\n  unsigned int tok_count;\n\n  unsigned int frames_since_key;\n  unsigned int key_frame_frequency;\n  unsigned int this_key_frame_forced;\n  unsigned int next_key_frame_forced;\n"
+        },
+        {
+          "line": 738,
+          "text": "void vp8_tokenize_mb(VP8_COMP *, MACROBLOCK *, TOKENEXTRA **);",
+          "context": "\nvoid vp8_pack_bitstream(VP8_COMP *cpi, unsigned char *dest,\n                        unsigned char *dest_end, size_t *size);\n\nvoid vp8_tokenize_mb(VP8_COMP *, MACROBLOCK *, TOKENEXTRA **);\n\nvoid vp8_set_speed_features(VP8_COMP *cpi);\n\nint vp8_check_drop_buffer(VP8_COMP *cpi);\n\n#ifdef __cplusplus"
+        }
+      ]
+    },
+    {
+      "file": "vp8/encoder/tokenize.c",
+      "bytes": 12341,
+      "sha256": "e105b4b89340267df5d3d7c922b4ef8a22a3e3fa22bcdd057dfc32107de48447",
+      "matches": [
+        {
+          "line": 22,
+          "text": "void vp8_stuff_mb(VP8_COMP *cpi, MACROBLOCK *x, TOKENEXTRA **t);",
+          "context": "\n/* Global event counters used for accumulating statistics across several\n   compressions, then generating context.c = initial stats. */\n\nvoid vp8_stuff_mb(VP8_COMP *cpi, MACROBLOCK *x, TOKENEXTRA **t);\nvoid vp8_fix_contexts(MACROBLOCKD *x);\n\n#include \"dct_value_tokens.h\"\n#include \"dct_value_cost.h\"\n\nconst TOKENVALUE *const vp8_dct_value_tokens_ptr ="
+        },
+        {
+          "line": 101,
+          "text": "static void tokenize2nd_order_b(MACROBLOCK *x, TOKENEXTRA **tp, VP8_COMP *cpi) {",
+          "context": "    vp8_dct_value_cost_ptr   = dct_value_cost + DCT_MAX_VALUE;\n}\n*/\n\nstatic void tokenize2nd_order_b(MACROBLOCK *x, TOKENEXTRA **tp, VP8_COMP *cpi) {\n  MACROBLOCKD *xd = &x->e_mbd;\n  int pt;              /* near block/prev token context index */\n  int c;               /* start at DC */\n  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  const BLOCKD *b;\n  const short *qcoeff_ptr;"
+        },
+        {
+          "line": 105,
+          "text": "TOKENEXTRA *t = *tp; /* store tokens starting here */",
+          "context": "static void tokenize2nd_order_b(MACROBLOCK *x, TOKENEXTRA **tp, VP8_COMP *cpi) {\n  MACROBLOCKD *xd = &x->e_mbd;\n  int pt;              /* near block/prev token context index */\n  int c;               /* start at DC */\n  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  const BLOCKD *b;\n  const short *qcoeff_ptr;\n  ENTROPY_CONTEXT *a;\n  ENTROPY_CONTEXT *l;\n  int band, rc, v, token;\n  int eob;"
+        },
+        {
+          "line": 123,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[1][0][pt];",
+          "context": "\n  if (!eob) {\n    /* c = band for this case */\n    t->Token = DCT_EOB_TOKEN;\n    t->context_tree = cpi->common.fc.coef_probs[1][0][pt];\n    t->skip_eob_node = 0;\n\n    ++x->coef_counts[1][0][pt][DCT_EOB_TOKEN];\n    t++;\n    *tp = t;\n    *a = *l = 0;"
+        },
+        {
+          "line": 138,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[1][0][pt];",
+          "context": "  t->Extra = vp8_dct_value_tokens_ptr[v].Extra;\n  token = vp8_dct_value_tokens_ptr[v].Token;\n  t->Token = token;\n\n  t->context_tree = cpi->common.fc.coef_probs[1][0][pt];\n  t->skip_eob_node = 0;\n  ++x->coef_counts[1][0][pt][token];\n  pt = vp8_prev_token_class[token];\n  t++;\n  c = 1;\n"
+        },
+        {
+          "line": 154,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[1][band][pt];",
+          "context": "    t->Extra = vp8_dct_value_tokens_ptr[v].Extra;\n    token = vp8_dct_value_tokens_ptr[v].Token;\n\n    t->Token = token;\n    t->context_tree = cpi->common.fc.coef_probs[1][band][pt];\n\n    t->skip_eob_node = ((pt == 0));\n\n    ++x->coef_counts[1][band][pt][token];\n\n    pt = vp8_prev_token_class[token];"
+        },
+        {
+          "line": 166,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[1][band][pt];",
+          "context": "  }\n  if (c < 16) {\n    band = vp8_coef_bands[c];\n    t->Token = DCT_EOB_TOKEN;\n    t->context_tree = cpi->common.fc.coef_probs[1][band][pt];\n\n    t->skip_eob_node = 0;\n\n    ++x->coef_counts[1][band][pt][DCT_EOB_TOKEN];\n\n    t++;"
+        },
+        {
+          "line": 180,
+          "text": "MACROBLOCK *x, TOKENEXTRA **tp,",
+          "context": "  *a = *l = 1;\n}\n\nstatic void tokenize1st_order_b(\n    MACROBLOCK *x, TOKENEXTRA **tp,\n    int type, /* which plane: 0=Y no DC, 1=Y2, 2=UV, 3=Y with DC */\n    VP8_COMP *cpi) {\n  MACROBLOCKD *xd = &x->e_mbd;\n  unsigned int block;\n  const BLOCKD *b;\n  int pt; /* near block/prev token context index */"
+        },
+        {
+          "line": 189,
+          "text": "TOKENEXTRA *t = *tp; /* store tokens starting here */",
+          "context": "  const BLOCKD *b;\n  int pt; /* near block/prev token context index */\n  int c;\n  int token;\n  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  const short *qcoeff_ptr;\n  ENTROPY_CONTEXT *a;\n  ENTROPY_CONTEXT *l;\n  int band, rc, v;\n  int tmp1, tmp2;\n"
+        },
+        {
+          "line": 213,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[type][c][pt];",
+          "context": "\n    if (c >= eob) {\n      /* c = band for this case */\n      t->Token = DCT_EOB_TOKEN;\n      t->context_tree = cpi->common.fc.coef_probs[type][c][pt];\n      t->skip_eob_node = 0;\n\n      ++x->coef_counts[type][c][pt][DCT_EOB_TOKEN];\n      t++;\n      *tp = t;\n      *a = *l = 0;"
+        },
+        {
+          "line": 229,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[type][c][pt];",
+          "context": "    t->Extra = vp8_dct_value_tokens_ptr[v].Extra;\n    token = vp8_dct_value_tokens_ptr[v].Token;\n    t->Token = token;\n\n    t->context_tree = cpi->common.fc.coef_probs[type][c][pt];\n    t->skip_eob_node = 0;\n    ++x->coef_counts[type][c][pt][token];\n    pt = vp8_prev_token_class[token];\n    t++;\n    c++;\n"
+        },
+        {
+          "line": 246,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[type][band][pt];",
+          "context": "      t->Extra = vp8_dct_value_tokens_ptr[v].Extra;\n      token = vp8_dct_value_tokens_ptr[v].Token;\n\n      t->Token = token;\n      t->context_tree = cpi->common.fc.coef_probs[type][band][pt];\n\n      t->skip_eob_node = (pt == 0);\n      ++x->coef_counts[type][band][pt][token];\n\n      pt = vp8_prev_token_class[token];\n      t++;"
+        },
+        {
+          "line": 257,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[type][band][pt];",
+          "context": "    }\n    if (c < 16) {\n      band = vp8_coef_bands[c];\n      t->Token = DCT_EOB_TOKEN;\n      t->context_tree = cpi->common.fc.coef_probs[type][band][pt];\n\n      t->skip_eob_node = 0;\n      ++x->coef_counts[type][band][pt][DCT_EOB_TOKEN];\n\n      t++;\n    }"
+        },
+        {
+          "line": 282,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[2][0][pt];",
+          "context": "\n    if (!eob) {\n      /* c = band for this case */\n      t->Token = DCT_EOB_TOKEN;\n      t->context_tree = cpi->common.fc.coef_probs[2][0][pt];\n      t->skip_eob_node = 0;\n\n      ++x->coef_counts[2][0][pt][DCT_EOB_TOKEN];\n      t++;\n      *tp = t;\n      *a = *l = 0;"
+        },
+        {
+          "line": 298,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[2][0][pt];",
+          "context": "    t->Extra = vp8_dct_value_tokens_ptr[v].Extra;\n    token = vp8_dct_value_tokens_ptr[v].Token;\n    t->Token = token;\n\n    t->context_tree = cpi->common.fc.coef_probs[2][0][pt];\n    t->skip_eob_node = 0;\n    ++x->coef_counts[2][0][pt][token];\n    pt = vp8_prev_token_class[token];\n    t++;\n    c = 1;\n"
+        },
+        {
+          "line": 315,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[2][band][pt];",
+          "context": "      t->Extra = vp8_dct_value_tokens_ptr[v].Extra;\n      token = vp8_dct_value_tokens_ptr[v].Token;\n\n      t->Token = token;\n      t->context_tree = cpi->common.fc.coef_probs[2][band][pt];\n\n      t->skip_eob_node = (pt == 0);\n\n      ++x->coef_counts[2][band][pt][token];\n\n      pt = vp8_prev_token_class[token];"
+        },
+        {
+          "line": 327,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[2][band][pt];",
+          "context": "    }\n    if (c < 16) {\n      band = vp8_coef_bands[c];\n      t->Token = DCT_EOB_TOKEN;\n      t->context_tree = cpi->common.fc.coef_probs[2][band][pt];\n\n      t->skip_eob_node = 0;\n\n      ++x->coef_counts[2][band][pt][DCT_EOB_TOKEN];\n\n      t++;"
+        },
+        {
+          "line": 353,
+          "text": "void vp8_tokenize_mb(VP8_COMP *cpi, MACROBLOCK *x, TOKENEXTRA **t) {",
+          "context": "\n  return skip;\n}\n\nvoid vp8_tokenize_mb(VP8_COMP *cpi, MACROBLOCK *x, TOKENEXTRA **t) {\n  MACROBLOCKD *xd = &x->e_mbd;\n  int plane_type;\n  int has_y2_block;\n\n  has_y2_block = (xd->mode_info_context->mbmi.mode != B_PRED &&\n                  xd->mode_info_context->mbmi.mode != SPLITMV);"
+        },
+        {
+          "line": 382,
+          "text": "static void stuff2nd_order_b(TOKENEXTRA **tp, ENTROPY_CONTEXT *a,",
+          "context": "\n  tokenize1st_order_b(x, t, plane_type, cpi);\n}\n\nstatic void stuff2nd_order_b(TOKENEXTRA **tp, ENTROPY_CONTEXT *a,\n                             ENTROPY_CONTEXT *l, VP8_COMP *cpi, MACROBLOCK *x) {\n  int pt;              /* near block/prev token context index */\n  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  VP8_COMBINEENTROPYCONTEXTS(pt, *a, *l);\n\n  t->Token = DCT_EOB_TOKEN;"
+        },
+        {
+          "line": 385,
+          "text": "TOKENEXTRA *t = *tp; /* store tokens starting here */",
+          "context": "\nstatic void stuff2nd_order_b(TOKENEXTRA **tp, ENTROPY_CONTEXT *a,\n                             ENTROPY_CONTEXT *l, VP8_COMP *cpi, MACROBLOCK *x) {\n  int pt;              /* near block/prev token context index */\n  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  VP8_COMBINEENTROPYCONTEXTS(pt, *a, *l);\n\n  t->Token = DCT_EOB_TOKEN;\n  t->context_tree = cpi->common.fc.coef_probs[1][0][pt];\n  t->skip_eob_node = 0;\n  ++x->coef_counts[1][0][pt][DCT_EOB_TOKEN];"
+        },
+        {
+          "line": 389,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[1][0][pt];",
+          "context": "  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  VP8_COMBINEENTROPYCONTEXTS(pt, *a, *l);\n\n  t->Token = DCT_EOB_TOKEN;\n  t->context_tree = cpi->common.fc.coef_probs[1][0][pt];\n  t->skip_eob_node = 0;\n  ++x->coef_counts[1][0][pt][DCT_EOB_TOKEN];\n  ++t;\n\n  *tp = t;\n  pt = 0;"
+        },
+        {
+          "line": 399,
+          "text": "static void stuff1st_order_b(TOKENEXTRA **tp, ENTROPY_CONTEXT *a,",
+          "context": "  pt = 0;\n  *a = *l = pt;\n}\n\nstatic void stuff1st_order_b(TOKENEXTRA **tp, ENTROPY_CONTEXT *a,\n                             ENTROPY_CONTEXT *l, int type, VP8_COMP *cpi,\n                             MACROBLOCK *x) {\n  int pt; /* near block/prev token context index */\n  int band;\n  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  VP8_COMBINEENTROPYCONTEXTS(pt, *a, *l);"
+        },
+        {
+          "line": 404,
+          "text": "TOKENEXTRA *t = *tp; /* store tokens starting here */",
+          "context": "                             ENTROPY_CONTEXT *l, int type, VP8_COMP *cpi,\n                             MACROBLOCK *x) {\n  int pt; /* near block/prev token context index */\n  int band;\n  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  VP8_COMBINEENTROPYCONTEXTS(pt, *a, *l);\n  band = type ? 0 : 1;\n  t->Token = DCT_EOB_TOKEN;\n  t->context_tree = cpi->common.fc.coef_probs[type][band][pt];\n  t->skip_eob_node = 0;\n  ++x->coef_counts[type][band][pt][DCT_EOB_TOKEN];"
+        },
+        {
+          "line": 408,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[type][band][pt];",
+          "context": "  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  VP8_COMBINEENTROPYCONTEXTS(pt, *a, *l);\n  band = type ? 0 : 1;\n  t->Token = DCT_EOB_TOKEN;\n  t->context_tree = cpi->common.fc.coef_probs[type][band][pt];\n  t->skip_eob_node = 0;\n  ++x->coef_counts[type][band][pt][DCT_EOB_TOKEN];\n  ++t;\n  *tp = t;\n  pt = 0; /* 0 <-> all coeff data is zero */\n  *a = *l = pt;"
+        },
+        {
+          "line": 417,
+          "text": "static void stuff1st_order_buv(TOKENEXTRA **tp, ENTROPY_CONTEXT *a,",
+          "context": "  pt = 0; /* 0 <-> all coeff data is zero */\n  *a = *l = pt;\n}\n\nstatic void stuff1st_order_buv(TOKENEXTRA **tp, ENTROPY_CONTEXT *a,\n                               ENTROPY_CONTEXT *l, VP8_COMP *cpi,\n                               MACROBLOCK *x) {\n  int pt;              /* near block/prev token context index */\n  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  VP8_COMBINEENTROPYCONTEXTS(pt, *a, *l);\n"
+        },
+        {
+          "line": 421,
+          "text": "TOKENEXTRA *t = *tp; /* store tokens starting here */",
+          "context": "static void stuff1st_order_buv(TOKENEXTRA **tp, ENTROPY_CONTEXT *a,\n                               ENTROPY_CONTEXT *l, VP8_COMP *cpi,\n                               MACROBLOCK *x) {\n  int pt;              /* near block/prev token context index */\n  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  VP8_COMBINEENTROPYCONTEXTS(pt, *a, *l);\n\n  t->Token = DCT_EOB_TOKEN;\n  t->context_tree = cpi->common.fc.coef_probs[2][0][pt];\n  t->skip_eob_node = 0;\n  ++x->coef_counts[2][0][pt][DCT_EOB_TOKEN];"
+        },
+        {
+          "line": 425,
+          "text": "t->context_tree = cpi->common.fc.coef_probs[2][0][pt];",
+          "context": "  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  VP8_COMBINEENTROPYCONTEXTS(pt, *a, *l);\n\n  t->Token = DCT_EOB_TOKEN;\n  t->context_tree = cpi->common.fc.coef_probs[2][0][pt];\n  t->skip_eob_node = 0;\n  ++x->coef_counts[2][0][pt][DCT_EOB_TOKEN];\n  ++t;\n  *tp = t;\n  pt = 0; /* 0 <-> all coeff data is zero */\n  *a = *l = pt;"
+        },
+        {
+          "line": 434,
+          "text": "void vp8_stuff_mb(VP8_COMP *cpi, MACROBLOCK *x, TOKENEXTRA **t) {",
+          "context": "  pt = 0; /* 0 <-> all coeff data is zero */\n  *a = *l = pt;\n}\n\nvoid vp8_stuff_mb(VP8_COMP *cpi, MACROBLOCK *x, TOKENEXTRA **t) {\n  MACROBLOCKD *xd = &x->e_mbd;\n  ENTROPY_CONTEXT *A = (ENTROPY_CONTEXT *)xd->above_context;\n  ENTROPY_CONTEXT *L = (ENTROPY_CONTEXT *)xd->left_context;\n  int plane_type;\n  int b;\n  plane_type = 3;"
+        }
+      ]
+    },
+    {
+      "file": "vp8/encoder/tokenize.h",
+      "bytes": 1175,
+      "sha256": "c9225d28fcd6f07d02acbf0a874ac845b423995c10615422058b66d60e8af53a",
+      "matches": [
+        {
+          "line": 27,
+          "text": "const vp8_prob *context_tree;",
+          "context": "  short Extra;\n} TOKENVALUE;\n\ntypedef struct {\n  const vp8_prob *context_tree;\n  short Extra;\n  unsigned char Token;\n  unsigned char skip_eob_node;\n} TOKENEXTRA;\n\nint rd_cost_mby(MACROBLOCKD *);"
+        },
+        {
+          "line": 31,
+          "text": "} TOKENEXTRA;",
+          "context": "  const vp8_prob *context_tree;\n  short Extra;\n  unsigned char Token;\n  unsigned char skip_eob_node;\n} TOKENEXTRA;\n\nint rd_cost_mby(MACROBLOCKD *);\n\nextern const short *const vp8_dct_value_cost_ptr;\n/* TODO: The Token field should be broken out into a separate char array to\n *  improve cache locality, since it's needed for costing when the rest of the"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_bitstream.c",
+      "bytes": 53169,
+      "sha256": "211f57fbfeb815b3d871dd741aa9aa7570023878b86517f774ca2e3ca4ad9dcf",
+      "matches": [
+        {
+          "line": 133,
+          "text": "static void pack_mb_tokens(vpx_writer *w, TOKENEXTRA **tp,",
+          "context": "                     cm->fc->switchable_interp_prob[j],\n                     counts->switchable_interp[j], SWITCHABLE_FILTERS, w);\n}\n\nstatic void pack_mb_tokens(vpx_writer *w, TOKENEXTRA **tp,\n                           const TOKENEXTRA *const stop,\n                           vpx_bit_depth_t bit_depth) {\n  const TOKENEXTRA *p;\n  const vp9_extra_bit *const extra_bits =\n#if CONFIG_VP9_HIGHBITDEPTH\n      (bit_depth == VPX_BITS_12)   ? vp9_extra_bits_high12"
+        },
+        {
+          "line": 134,
+          "text": "const TOKENEXTRA *const stop,",
+          "context": "                     counts->switchable_interp[j], SWITCHABLE_FILTERS, w);\n}\n\nstatic void pack_mb_tokens(vpx_writer *w, TOKENEXTRA **tp,\n                           const TOKENEXTRA *const stop,\n                           vpx_bit_depth_t bit_depth) {\n  const TOKENEXTRA *p;\n  const vp9_extra_bit *const extra_bits =\n#if CONFIG_VP9_HIGHBITDEPTH\n      (bit_depth == VPX_BITS_12)   ? vp9_extra_bits_high12\n      : (bit_depth == VPX_BITS_10) ? vp9_extra_bits_high10"
+        },
+        {
+          "line": 136,
+          "text": "const TOKENEXTRA *p;",
+          "context": "\nstatic void pack_mb_tokens(vpx_writer *w, TOKENEXTRA **tp,\n                           const TOKENEXTRA *const stop,\n                           vpx_bit_depth_t bit_depth) {\n  const TOKENEXTRA *p;\n  const vp9_extra_bit *const extra_bits =\n#if CONFIG_VP9_HIGHBITDEPTH\n      (bit_depth == VPX_BITS_12)   ? vp9_extra_bits_high12\n      : (bit_depth == VPX_BITS_10) ? vp9_extra_bits_high10\n                                   : vp9_extra_bits;\n#else"
+        },
+        {
+          "line": 149,
+          "text": "vpx_write(w, 0, p->context_tree[0]);",
+          "context": "#endif  // CONFIG_VP9_HIGHBITDEPTH\n\n  for (p = *tp; p < stop && p->token != EOSB_TOKEN; ++p) {\n    if (p->token == EOB_TOKEN) {\n      vpx_write(w, 0, p->context_tree[0]);\n      continue;\n    }\n    vpx_write(w, 1, p->context_tree[0]);\n    while (p->token == ZERO_TOKEN) {\n      vpx_write(w, 0, p->context_tree[1]);\n      ++p;"
+        },
+        {
+          "line": 152,
+          "text": "vpx_write(w, 1, p->context_tree[0]);",
+          "context": "    if (p->token == EOB_TOKEN) {\n      vpx_write(w, 0, p->context_tree[0]);\n      continue;\n    }\n    vpx_write(w, 1, p->context_tree[0]);\n    while (p->token == ZERO_TOKEN) {\n      vpx_write(w, 0, p->context_tree[1]);\n      ++p;\n      if (p == stop || p->token == EOSB_TOKEN) {\n        *tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);\n        return;"
+        },
+        {
+          "line": 154,
+          "text": "vpx_write(w, 0, p->context_tree[1]);",
+          "context": "      continue;\n    }\n    vpx_write(w, 1, p->context_tree[0]);\n    while (p->token == ZERO_TOKEN) {\n      vpx_write(w, 0, p->context_tree[1]);\n      ++p;\n      if (p == stop || p->token == EOSB_TOKEN) {\n        *tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);\n        return;\n      }\n    }"
+        },
+        {
+          "line": 157,
+          "text": "*tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);",
+          "context": "    while (p->token == ZERO_TOKEN) {\n      vpx_write(w, 0, p->context_tree[1]);\n      ++p;\n      if (p == stop || p->token == EOSB_TOKEN) {\n        *tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);\n        return;\n      }\n    }\n\n    {\n      const int t = p->token;"
+        },
+        {
+          "line": 164,
+          "text": "const vpx_prob *const context_tree = p->context_tree;",
+          "context": "    }\n\n    {\n      const int t = p->token;\n      const vpx_prob *const context_tree = p->context_tree;\n      assert(t != ZERO_TOKEN);\n      assert(t != EOB_TOKEN);\n      assert(t != EOSB_TOKEN);\n      vpx_write(w, 1, context_tree[1]);\n      if (t == ONE_TOKEN) {\n        vpx_write(w, 0, context_tree[2]);"
+        },
+        {
+          "line": 168,
+          "text": "vpx_write(w, 1, context_tree[1]);",
+          "context": "      const vpx_prob *const context_tree = p->context_tree;\n      assert(t != ZERO_TOKEN);\n      assert(t != EOB_TOKEN);\n      assert(t != EOSB_TOKEN);\n      vpx_write(w, 1, context_tree[1]);\n      if (t == ONE_TOKEN) {\n        vpx_write(w, 0, context_tree[2]);\n        vpx_write_bit(w, p->extra & 1);\n      } else {  // t >= TWO_TOKEN && t < EOB_TOKEN\n        const struct vp9_token *const a = &vp9_coef_encodings[t];\n        int v = a->value;"
+        },
+        {
+          "line": 170,
+          "text": "vpx_write(w, 0, context_tree[2]);",
+          "context": "      assert(t != EOB_TOKEN);\n      assert(t != EOSB_TOKEN);\n      vpx_write(w, 1, context_tree[1]);\n      if (t == ONE_TOKEN) {\n        vpx_write(w, 0, context_tree[2]);\n        vpx_write_bit(w, p->extra & 1);\n      } else {  // t >= TWO_TOKEN && t < EOB_TOKEN\n        const struct vp9_token *const a = &vp9_coef_encodings[t];\n        int v = a->value;\n        int n = a->len;\n        const int e = p->extra;"
+        },
+        {
+          "line": 177,
+          "text": "vpx_write(w, 1, context_tree[2]);",
+          "context": "        const struct vp9_token *const a = &vp9_coef_encodings[t];\n        int v = a->value;\n        int n = a->len;\n        const int e = p->extra;\n        vpx_write(w, 1, context_tree[2]);\n        vp9_write_tree(w, vp9_coef_con_tree,\n                       vp9_pareto8_full[context_tree[PIVOT_NODE] - 1], v,\n                       n - UNCONSTRAINED_NODES, 0);\n        if (t >= CATEGORY1_TOKEN) {\n          const vp9_extra_bit *const b = &extra_bits[t];\n          const unsigned char *pb = b->prob;"
+        },
+        {
+          "line": 179,
+          "text": "vp9_pareto8_full[context_tree[PIVOT_NODE] - 1], v,",
+          "context": "        int n = a->len;\n        const int e = p->extra;\n        vpx_write(w, 1, context_tree[2]);\n        vp9_write_tree(w, vp9_coef_con_tree,\n                       vp9_pareto8_full[context_tree[PIVOT_NODE] - 1], v,\n                       n - UNCONSTRAINED_NODES, 0);\n        if (t >= CATEGORY1_TOKEN) {\n          const vp9_extra_bit *const b = &extra_bits[t];\n          const unsigned char *pb = b->prob;\n          v = e >> 1;\n          n = b->len;  // number of bits in v, assumed nonzero"
+        },
+        {
+          "line": 195,
+          "text": "*tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);",
+          "context": "        vpx_write_bit(w, e & 1);\n      }\n    }\n  }\n  *tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);\n}\n\nstatic void write_segment_id(vpx_writer *w, const struct segmentation *seg,\n                             int segment_id) {\n  if (seg->enabled && seg->update_map)\n    vp9_write_tree(w, vp9_segment_tree, seg->tree_probs, segment_id, 3, 0);"
+        },
+        {
+          "line": 380,
+          "text": "TOKENEXTRA **tok, const TOKENEXTRA *const tok_end,",
+          "context": "}\n\nstatic void write_modes_b(VP9_COMP *cpi, MACROBLOCKD *const xd,\n                          const TileInfo *const tile, vpx_writer *w,\n                          TOKENEXTRA **tok, const TOKENEXTRA *const tok_end,\n                          int mi_row, int mi_col,\n                          unsigned int *const max_mv_magnitude,\n                          int interp_filter_selected[][SWITCHABLE]) {\n  const VP9_COMMON *const cm = &cpi->common;\n  const MB_MODE_INFO_EXT *const mbmi_ext =\n      cpi->td.mb.mbmi_ext_base + (mi_row * cm->mi_cols + mi_col);"
+        },
+        {
+          "line": 430,
+          "text": "TOKENEXTRA **tok, const TOKENEXTRA *const tok_end,",
+          "context": "}\n\nstatic void write_modes_sb(VP9_COMP *cpi, MACROBLOCKD *const xd,\n                           const TileInfo *const tile, vpx_writer *w,\n                           TOKENEXTRA **tok, const TOKENEXTRA *const tok_end,\n                           int mi_row, int mi_col, BLOCK_SIZE bsize,\n                           unsigned int *const max_mv_magnitude,\n                           int interp_filter_selected[][SWITCHABLE]) {\n  const VP9_COMMON *const cm = &cpi->common;\n  const int bsl = b_width_log2_lookup[bsize];\n  const int bs = (1 << bsl) / 4;"
+        },
+        {
+          "line": 497,
+          "text": "TOKENEXTRA *tok = NULL;",
+          "context": "                        int tile_col, unsigned int *const max_mv_magnitude,\n                        int interp_filter_selected[][SWITCHABLE]) {\n  const VP9_COMMON *const cm = &cpi->common;\n  int mi_row, mi_col, tile_sb_row;\n  TOKENEXTRA *tok = NULL;\n  TOKENEXTRA *tok_end = NULL;\n\n  set_partition_probs(cm, xd);\n\n  for (mi_row = tile->mi_row_start; mi_row < tile->mi_row_end;\n       mi_row += MI_BLOCK_SIZE) {"
+        },
+        {
+          "line": 498,
+          "text": "TOKENEXTRA *tok_end = NULL;",
+          "context": "                        int interp_filter_selected[][SWITCHABLE]) {\n  const VP9_COMMON *const cm = &cpi->common;\n  int mi_row, mi_col, tile_sb_row;\n  TOKENEXTRA *tok = NULL;\n  TOKENEXTRA *tok_end = NULL;\n\n  set_partition_probs(cm, xd);\n\n  for (mi_row = tile->mi_row_start; mi_row < tile->mi_row_end;\n       mi_row += MI_BLOCK_SIZE) {\n    tile_sb_row = mi_cols_aligned_to_sb(mi_row - tile->mi_row_start) >>"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_encodeframe.c",
+      "bytes": 237254,
+      "sha256": "b72c663dfd940c8767905404c0e45f10cec2d07dfabdfadc036dbe61be84c31b",
+      "matches": [
+        {
+          "line": 62,
+          "text": "static void encode_superblock(VP9_COMP *cpi, ThreadData *td, TOKENEXTRA **t,",
+          "context": "#include \"vp9/encoder/vp9_rdopt.h\"\n#include \"vp9/encoder/vp9_segmentation.h\"\n#include \"vp9/encoder/vp9_tokenize.h\"\n\nstatic void encode_superblock(VP9_COMP *cpi, ThreadData *td, TOKENEXTRA **t,\n                              int output_enabled, int mi_row, int mi_col,\n                              BLOCK_SIZE bsize, PICK_MODE_CONTEXT *ctx);\n\n// This is used as a reference when computing the source variance for the\n//  purpose of activity masking.\n// Eventually this should be replaced by custom no-reference routines,"
+        },
+        {
+          "line": 2226,
+          "text": "TOKENEXTRA **tp, int mi_row, int mi_col,",
+          "context": "         sizeof(xd->left_seg_context[0]) * mi_height);\n}\n\nstatic void encode_b(VP9_COMP *cpi, const TileInfo *const tile, ThreadData *td,\n                     TOKENEXTRA **tp, int mi_row, int mi_col,\n                     int output_enabled, BLOCK_SIZE bsize,\n                     PICK_MODE_CONTEXT *ctx) {\n  MACROBLOCK *const x = &td->mb;\n  set_offsets(cpi, tile, x, mi_row, mi_col, bsize);\n\n  if (cpi->sf.enable_tpl_model &&"
+        },
+        {
+          "line": 2253,
+          "text": "TOKENEXTRA **tp, int mi_row, int mi_col,",
+          "context": "  }\n}\n\nstatic void encode_sb(VP9_COMP *cpi, ThreadData *td, const TileInfo *const tile,\n                      TOKENEXTRA **tp, int mi_row, int mi_col,\n                      int output_enabled, BLOCK_SIZE bsize, PC_TREE *pc_tree) {\n  VP9_COMMON *const cm = &cpi->common;\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;\n\n  const int bsl = b_width_log2_lookup[bsize], hbs = (1 << bsl) / 4;"
+        },
+        {
+          "line": 2463,
+          "text": "const TileInfo *const tile, TOKENEXTRA **tp, int mi_row,",
+          "context": "  x->skip_txfm[0] = (mi->segment_id || xd->lossless) ? 0 : ctx->skip_txfm[0];\n}\n\nstatic void encode_b_rt(VP9_COMP *cpi, ThreadData *td,\n                        const TileInfo *const tile, TOKENEXTRA **tp, int mi_row,\n                        int mi_col, int output_enabled, BLOCK_SIZE bsize,\n                        PICK_MODE_CONTEXT *ctx) {\n  MACROBLOCK *const x = &td->mb;\n  set_offsets(cpi, tile, x, mi_row, mi_col, bsize);\n  update_state_rt(cpi, td, ctx, mi_row, mi_col, bsize);\n"
+        },
+        {
+          "line": 2478,
+          "text": "const TileInfo *const tile, TOKENEXTRA **tp,",
+          "context": "  (*tp)++;\n}\n\nstatic void encode_sb_rt(VP9_COMP *cpi, ThreadData *td,\n                         const TileInfo *const tile, TOKENEXTRA **tp,\n                         int mi_row, int mi_col, int output_enabled,\n                         BLOCK_SIZE bsize, PC_TREE *pc_tree) {\n  VP9_COMMON *const cm = &cpi->common;\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;\n"
+        },
+        {
+          "line": 2548,
+          "text": "TOKENEXTRA **tp, int mi_row, int mi_col,",
+          "context": "\n#if !CONFIG_REALTIME_ONLY\nstatic void rd_use_partition(VP9_COMP *cpi, ThreadData *td,\n                             TileDataEnc *tile_data, MODE_INFO **mi_8x8,\n                             TOKENEXTRA **tp, int mi_row, int mi_col,\n                             BLOCK_SIZE bsize, int *rate, int64_t *dist,\n                             int do_recon, PC_TREE *pc_tree) {\n  VP9_COMMON *const cm = &cpi->common;\n  TileInfo *const tile_info = &tile_data->tile_info;\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;"
+        },
+        {
+          "line": 3668,
+          "text": "TileDataEnc *tile_data, TOKENEXTRA **tp,",
+          "context": "// TODO(jingning,jimbankoski,rbultje): properly skip partition types that are\n// unlikely to be selected depending on previous rate-distortion optimization\n// results, for encoding speed-up.\nstatic int rd_pick_partition(VP9_COMP *cpi, ThreadData *td,\n                             TileDataEnc *tile_data, TOKENEXTRA **tp,\n                             int mi_row, int mi_col, BLOCK_SIZE bsize,\n                             RD_COST *rd_cost, RD_COST best_rdc,\n                             PC_TREE *pc_tree) {\n  VP9_COMMON *const cm = &cpi->common;\n  const VP9EncoderConfig *const oxcf = &cpi->oxcf;\n  TileInfo *const tile_info = &tile_data->tile_info;"
+        },
+        {
+          "line": 3680,
+          "text": "TOKENEXTRA *tp_orig = *tp;",
+          "context": "  MACROBLOCKD *const xd = &x->e_mbd;\n  const int mi_step = num_8x8_blocks_wide_lookup[bsize] / 2;\n  ENTROPY_CONTEXT l[16 * MAX_MB_PLANE], a[16 * MAX_MB_PLANE];\n  PARTITION_CONTEXT sl[8], sa[8];\n  TOKENEXTRA *tp_orig = *tp;\n  PICK_MODE_CONTEXT *const ctx = &pc_tree->none;\n  int i;\n  const int pl = partition_plane_context(xd, mi_row, mi_col, bsize);\n  BLOCK_SIZE subsize;\n  RD_COST this_rdc, sum_rdc;\n  int do_split = bsize >= BLOCK_8X8;"
+        },
+        {
+          "line": 4168,
+          "text": "TOKENEXTRA **tp) {",
+          "context": "}\n\nstatic void encode_rd_sb_row(VP9_COMP *cpi, ThreadData *td,\n                             TileDataEnc *tile_data, int mi_row,\n                             TOKENEXTRA **tp) {\n  VP9_COMMON *const cm = &cpi->common;\n  TileInfo *const tile_info = &tile_data->tile_info;\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;\n  SPEED_FEATURES *const sf = &cpi->sf;\n  const int mi_col_start = tile_info->mi_col_start;"
+        },
+        {
+          "line": 4599,
+          "text": "TileDataEnc *tile_data, TOKENEXTRA **tp,",
+          "context": "#undef FEATURES\n#undef LABELS\n\nstatic void nonrd_pick_partition(VP9_COMP *cpi, ThreadData *td,\n                                 TileDataEnc *tile_data, TOKENEXTRA **tp,\n                                 int mi_row, int mi_col, BLOCK_SIZE bsize,\n                                 RD_COST *rd_cost, int do_recon,\n                                 int64_t best_rd, PC_TREE *pc_tree) {\n  const SPEED_FEATURES *const sf = &cpi->sf;\n  VP9_COMMON *const cm = &cpi->common;\n  TileInfo *const tile_info = &tile_data->tile_info;"
+        },
+        {
+          "line": 4609,
+          "text": "TOKENEXTRA *tp_orig = *tp;",
+          "context": "  TileInfo *const tile_info = &tile_data->tile_info;\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;\n  const int ms = num_8x8_blocks_wide_lookup[bsize] / 2;\n  TOKENEXTRA *tp_orig = *tp;\n  PICK_MODE_CONTEXT *ctx = &pc_tree->none;\n  int i;\n  BLOCK_SIZE subsize = bsize;\n  RD_COST this_rdc, sum_rdc, best_rdc;\n  int do_split = bsize >= BLOCK_8X8;\n  int do_rect = 1;"
+        },
+        {
+          "line": 4861,
+          "text": "TOKENEXTRA **tp, int mi_row, int mi_col,",
+          "context": "}\n\nstatic void nonrd_select_partition(VP9_COMP *cpi, ThreadData *td,\n                                   TileDataEnc *tile_data, MODE_INFO **mi,\n                                   TOKENEXTRA **tp, int mi_row, int mi_col,\n                                   BLOCK_SIZE bsize, int output_enabled,\n                                   RD_COST *rd_cost, PC_TREE *pc_tree) {\n  VP9_COMMON *const cm = &cpi->common;\n  TileInfo *const tile_info = &tile_data->tile_info;\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;"
+        },
+        {
+          "line": 4995,
+          "text": "TOKENEXTRA **tp, int mi_row, int mi_col,",
+          "context": "}\n\nstatic void nonrd_use_partition(VP9_COMP *cpi, ThreadData *td,\n                                TileDataEnc *tile_data, MODE_INFO **mi,\n                                TOKENEXTRA **tp, int mi_row, int mi_col,\n                                BLOCK_SIZE bsize, int output_enabled,\n                                RD_COST *dummy_cost, PC_TREE *pc_tree) {\n  VP9_COMMON *const cm = &cpi->common;\n  TileInfo *tile_info = &tile_data->tile_info;\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;"
+        },
+        {
+          "line": 5202,
+          "text": "TOKENEXTRA **tp) {",
+          "context": "}\n\nstatic void encode_nonrd_sb_row(VP9_COMP *cpi, ThreadData *td,\n                                TileDataEnc *tile_data, int mi_row,\n                                TOKENEXTRA **tp) {\n  SPEED_FEATURES *const sf = &cpi->sf;\n  VP9_COMMON *const cm = &cpi->common;\n  TileInfo *const tile_info = &tile_data->tile_info;\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;\n  const int mi_col_start = tile_info->mi_col_start;"
+        },
+        {
+          "line": 5398,
+          "text": "TOKENEXTRA *pre_tok = cpi->tile_tok[0][0];",
+          "context": "  VP9_COMMON *const cm = &cpi->common;\n  const int tile_cols = 1 << cm->log2_tile_cols;\n  const int tile_rows = 1 << cm->log2_tile_rows;\n  int tile_col, tile_row;\n  TOKENEXTRA *pre_tok = cpi->tile_tok[0][0];\n  TOKENLIST *tplist = cpi->tplist[0][0];\n  int tile_tok = 0;\n  int tplist_count = 0;\n\n  if (cpi->tile_data == NULL || cpi->allocated_tiles < tile_cols * tile_rows) {\n    if (cpi->tile_data != NULL) {"
+        },
+        {
+          "line": 5400,
+          "text": "int tile_tok = 0;",
+          "context": "  const int tile_rows = 1 << cm->log2_tile_rows;\n  int tile_col, tile_row;\n  TOKENEXTRA *pre_tok = cpi->tile_tok[0][0];\n  TOKENLIST *tplist = cpi->tplist[0][0];\n  int tile_tok = 0;\n  int tplist_count = 0;\n\n  if (cpi->tile_data == NULL || cpi->allocated_tiles < tile_cols * tile_rows) {\n    if (cpi->tile_data != NULL) {\n      // Free the row mt memory in cpi->tile_data first.\n      vp9_row_mt_mem_dealloc(cpi);"
+        },
+        {
+          "line": 5444,
+          "text": "cpi->tile_tok[tile_row][tile_col] = pre_tok + tile_tok;",
+          "context": "        vp9_row_mt_alloc_rd_thresh(cpi, this_tile);\n      }\n      vp9_tile_init(tile_info, cm, tile_row, tile_col);\n\n      cpi->tile_tok[tile_row][tile_col] = pre_tok + tile_tok;\n      pre_tok = cpi->tile_tok[tile_row][tile_col];\n      tile_tok = allocated_tokens(*tile_info);\n\n      cpi->tplist[tile_row][tile_col] = tplist + tplist_count;\n      tplist = cpi->tplist[tile_row][tile_col];\n      tplist_count = get_num_vert_units(*tile_info, MI_BLOCK_SIZE_LOG2);"
+        },
+        {
+          "line": 5445,
+          "text": "pre_tok = cpi->tile_tok[tile_row][tile_col];",
+          "context": "      }\n      vp9_tile_init(tile_info, cm, tile_row, tile_col);\n\n      cpi->tile_tok[tile_row][tile_col] = pre_tok + tile_tok;\n      pre_tok = cpi->tile_tok[tile_row][tile_col];\n      tile_tok = allocated_tokens(*tile_info);\n\n      cpi->tplist[tile_row][tile_col] = tplist + tplist_count;\n      tplist = cpi->tplist[tile_row][tile_col];\n      tplist_count = get_num_vert_units(*tile_info, MI_BLOCK_SIZE_LOG2);\n    }"
+        },
+        {
+          "line": 5446,
+          "text": "tile_tok = allocated_tokens(*tile_info);",
+          "context": "      vp9_tile_init(tile_info, cm, tile_row, tile_col);\n\n      cpi->tile_tok[tile_row][tile_col] = pre_tok + tile_tok;\n      pre_tok = cpi->tile_tok[tile_row][tile_col];\n      tile_tok = allocated_tokens(*tile_info);\n\n      cpi->tplist[tile_row][tile_col] = tplist + tplist_count;\n      tplist = cpi->tplist[tile_row][tile_col];\n      tplist_count = get_num_vert_units(*tile_info, MI_BLOCK_SIZE_LOG2);\n    }\n  }"
+        },
+        {
+          "line": 5461,
+          "text": "TOKENEXTRA *tok = NULL;",
+          "context": "  VP9_COMMON *const cm = &cpi->common;\n  const int tile_cols = 1 << cm->log2_tile_cols;\n  TileDataEnc *this_tile = &cpi->tile_data[tile_row * tile_cols + tile_col];\n  const TileInfo *const tile_info = &this_tile->tile_info;\n  TOKENEXTRA *tok = NULL;\n  int tile_sb_row;\n  int tile_mb_cols = (tile_info->mi_col_end - tile_info->mi_col_start + 1) >> 1;\n\n  tile_sb_row = mi_cols_aligned_to_sb(mi_row - tile_info->mi_row_start) >>\n                MI_BLOCK_SIZE_LOG2;\n  get_start_tok(cpi, tile_row, tile_col, mi_row, &tok);"
+        },
+        {
+          "line": 5485,
+          "text": "get_token_alloc(MI_BLOCK_SIZE >> 1, tile_mb_cols));",
+          "context": "  cpi->tplist[tile_row][tile_col][tile_sb_row].count =\n      (unsigned int)(cpi->tplist[tile_row][tile_col][tile_sb_row].stop -\n                     cpi->tplist[tile_row][tile_col][tile_sb_row].start);\n  assert(tok - cpi->tplist[tile_row][tile_col][tile_sb_row].start <=\n         get_token_alloc(MI_BLOCK_SIZE >> 1, tile_mb_cols));\n\n  (void)tile_mb_cols;\n}\n\nvoid vp9_encode_tile(VP9_COMP *cpi, ThreadData *td, int tile_row,\n                     int tile_col) {"
+        },
+        {
+          "line": 6024,
+          "text": "static void encode_superblock(VP9_COMP *cpi, ThreadData *td, TOKENEXTRA **t,",
+          "context": "      }\n    }\n}\n\nstatic void encode_superblock(VP9_COMP *cpi, ThreadData *td, TOKENEXTRA **t,\n                              int output_enabled, int mi_row, int mi_col,\n                              BLOCK_SIZE bsize, PICK_MODE_CONTEXT *ctx) {\n  VP9_COMMON *const cm = &cpi->common;\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;\n  MODE_INFO *mi = xd->mi[0];"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_encoder.c",
+      "bytes": 251545,
+      "sha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+      "matches": [
+        {
+          "line": 1048,
+          "text": "vpx_free(cpi->tile_tok[0][0]);",
+          "context": "#endif\n\n  vp9_lookahead_destroy(cpi->lookahead);\n\n  vpx_free(cpi->tile_tok[0][0]);\n  cpi->tile_tok[0][0] = 0;\n\n  vpx_free(cpi->tplist[0][0]);\n  cpi->tplist[0][0] = NULL;\n\n  vp9_free_pc_tree(&cpi->td);"
+        },
+        {
+          "line": 1049,
+          "text": "cpi->tile_tok[0][0] = 0;",
+          "context": "\n  vp9_lookahead_destroy(cpi->lookahead);\n\n  vpx_free(cpi->tile_tok[0][0]);\n  cpi->tile_tok[0][0] = 0;\n\n  vpx_free(cpi->tplist[0][0]);\n  cpi->tplist[0][0] = NULL;\n\n  vp9_free_pc_tree(&cpi->td);\n"
+        },
+        {
+          "line": 1393,
+          "text": "vpx_free(cpi->tile_tok[0][0]);",
+          "context": "  }\n\n  alloc_context_buffers_ext(cpi);\n\n  vpx_free(cpi->tile_tok[0][0]);\n\n  {\n    unsigned int tokens = get_token_alloc(cm->mb_rows, cm->mb_cols);\n    CHECK_MEM_ERROR(&cm->error, cpi->tile_tok[0][0],\n                    vpx_calloc(tokens, sizeof(*cpi->tile_tok[0][0])));\n  }"
+        },
+        {
+          "line": 1396,
+          "text": "unsigned int tokens = get_token_alloc(cm->mb_rows, cm->mb_cols);",
+          "context": "\n  vpx_free(cpi->tile_tok[0][0]);\n\n  {\n    unsigned int tokens = get_token_alloc(cm->mb_rows, cm->mb_cols);\n    CHECK_MEM_ERROR(&cm->error, cpi->tile_tok[0][0],\n                    vpx_calloc(tokens, sizeof(*cpi->tile_tok[0][0])));\n  }\n\n  sb_rows = mi_cols_aligned_to_sb(cm->mi_rows) >> MI_BLOCK_SIZE_LOG2;\n  vpx_free(cpi->tplist[0][0]);"
+        },
+        {
+          "line": 1397,
+          "text": "CHECK_MEM_ERROR(&cm->error, cpi->tile_tok[0][0],",
+          "context": "  vpx_free(cpi->tile_tok[0][0]);\n\n  {\n    unsigned int tokens = get_token_alloc(cm->mb_rows, cm->mb_cols);\n    CHECK_MEM_ERROR(&cm->error, cpi->tile_tok[0][0],\n                    vpx_calloc(tokens, sizeof(*cpi->tile_tok[0][0])));\n  }\n\n  sb_rows = mi_cols_aligned_to_sb(cm->mi_rows) >> MI_BLOCK_SIZE_LOG2;\n  vpx_free(cpi->tplist[0][0]);\n  CHECK_MEM_ERROR("
+        },
+        {
+          "line": 1398,
+          "text": "vpx_calloc(tokens, sizeof(*cpi->tile_tok[0][0])));",
+          "context": "\n  {\n    unsigned int tokens = get_token_alloc(cm->mb_rows, cm->mb_cols);\n    CHECK_MEM_ERROR(&cm->error, cpi->tile_tok[0][0],\n                    vpx_calloc(tokens, sizeof(*cpi->tile_tok[0][0])));\n  }\n\n  sb_rows = mi_cols_aligned_to_sb(cm->mi_rows) >> MI_BLOCK_SIZE_LOG2;\n  vpx_free(cpi->tplist[0][0]);\n  CHECK_MEM_ERROR(\n      &cm->error, cpi->tplist[0][0],"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_encoder.h",
+      "bytes": 43110,
+      "sha256": "299ee992384604932584c959b9504130981a5562833863751100627022662f6c",
+      "matches": [
+        {
+          "line": 358,
+          "text": "TOKENEXTRA *start;",
+          "context": "#endif\n} RowMTInfo;\n\ntypedef struct {\n  TOKENEXTRA *start;\n  TOKENEXTRA *stop;\n  unsigned int count;\n} TOKENLIST;\n\ntypedef struct MultiThreadHandle {\n  int allocated_tile_rows;"
+        },
+        {
+          "line": 359,
+          "text": "TOKENEXTRA *stop;",
+          "context": "} RowMTInfo;\n\ntypedef struct {\n  TOKENEXTRA *start;\n  TOKENEXTRA *stop;\n  unsigned int count;\n} TOKENLIST;\n\ntypedef struct MultiThreadHandle {\n  int allocated_tile_rows;\n  int allocated_tile_cols;"
+        },
+        {
+          "line": 672,
+          "text": "TOKENEXTRA *tile_tok[4][1 << 6];",
+          "context": "  int64_t *sb_mul_scale;\n\n  YV12_BUFFER_CONFIG last_frame_uf;\n\n  TOKENEXTRA *tile_tok[4][1 << 6];\n  TOKENLIST *tplist[4][1 << 6];\n\n  // Ambient reconstruction err target for force key frames\n  int64_t ambient_err;\n\n  RD_CONTROL rd_ctrl;"
+        },
+        {
+          "line": 1067,
+          "text": "static INLINE int get_token_alloc(int mb_rows, int mb_cols) {",
+          "context": "  return buf_idx != INVALID_IDX ? &cm->buffer_pool->frame_bufs[buf_idx].buf\n                                : NULL;\n}\n\nstatic INLINE int get_token_alloc(int mb_rows, int mb_cols) {\n  // TODO(JBB): double check we can't exceed this token count if we have a\n  // 32x32 transform crossing a boundary at a multiple of 16.\n  // mb_rows, cols are in units of 16 pixels. We assume 3 planes all at full\n  // resolution. We assume up to 1 token per pixel, and then allow\n  // a head room of 4.\n"
+        },
+        {
+          "line": 1088,
+          "text": "return get_token_alloc(tile_mb_rows, tile_mb_cols);",
+          "context": "static INLINE int allocated_tokens(TileInfo tile) {\n  int tile_mb_rows = (tile.mi_row_end - tile.mi_row_start + 1) >> 1;\n  int tile_mb_cols = (tile.mi_col_end - tile.mi_col_start + 1) >> 1;\n\n  return get_token_alloc(tile_mb_rows, tile_mb_cols);\n}\n\nstatic INLINE void get_start_tok(VP9_COMP *cpi, int tile_row, int tile_col,\n                                 int mi_row, TOKENEXTRA **tok) {\n  VP9_COMMON *const cm = &cpi->common;\n  const int tile_cols = 1 << cm->log2_tile_cols;"
+        },
+        {
+          "line": 1092,
+          "text": "int mi_row, TOKENEXTRA **tok) {",
+          "context": "  return get_token_alloc(tile_mb_rows, tile_mb_cols);\n}\n\nstatic INLINE void get_start_tok(VP9_COMP *cpi, int tile_row, int tile_col,\n                                 int mi_row, TOKENEXTRA **tok) {\n  VP9_COMMON *const cm = &cpi->common;\n  const int tile_cols = 1 << cm->log2_tile_cols;\n  TileDataEnc *this_tile = &cpi->tile_data[tile_row * tile_cols + tile_col];\n  const TileInfo *const tile_info = &this_tile->tile_info;\n\n  int tile_mb_cols = (tile_info->mi_col_end - tile_info->mi_col_start + 1) >> 1;"
+        },
+        {
+          "line": 1102,
+          "text": "cpi->tile_tok[tile_row][tile_col] + get_token_alloc(mb_row, tile_mb_cols);",
+          "context": "  int tile_mb_cols = (tile_info->mi_col_end - tile_info->mi_col_start + 1) >> 1;\n  const int mb_row = (mi_row - tile_info->mi_row_start) >> 1;\n\n  *tok =\n      cpi->tile_tok[tile_row][tile_col] + get_token_alloc(mb_row, tile_mb_cols);\n}\n\nint64_t vp9_get_y_sse(const YV12_BUFFER_CONFIG *a, const YV12_BUFFER_CONFIG *b);\n#if CONFIG_VP9_HIGHBITDEPTH\nint64_t vp9_highbd_get_y_sse(const YV12_BUFFER_CONFIG *a,\n                             const YV12_BUFFER_CONFIG *b);"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_tokenize.c",
+      "bytes": 25416,
+      "sha256": "909f28c30ce3aa58560e926d8d74a0872f51d45bae6625f7aa741b4e3a15d1bd",
+      "matches": [
+        {
+          "line": 314,
+          "text": "TOKENEXTRA **tp;",
+          "context": "\nstruct tokenize_b_args {\n  VP9_COMP *cpi;\n  ThreadData *td;\n  TOKENEXTRA **tp;\n};\n\nstatic void set_entropy_context_b(int plane, int block, int row, int col,\n                                  BLOCK_SIZE plane_bsize, TX_SIZE tx_size,\n                                  void *arg) {\n  struct tokenize_b_args *const args = arg;"
+        },
+        {
+          "line": 329,
+          "text": "static INLINE void add_token(TOKENEXTRA **t, const vpx_prob *context_tree,",
+          "context": "  struct macroblockd_plane *pd = &xd->plane[plane];\n  vp9_set_contexts(xd, pd, plane_bsize, tx_size, p->eobs[block] > 0, col, row);\n}\n\nstatic INLINE void add_token(TOKENEXTRA **t, const vpx_prob *context_tree,\n                             int16_t token, EXTRABIT extra,\n                             unsigned int *counts) {\n  (*t)->context_tree = context_tree;\n  (*t)->token = token;\n  (*t)->extra = extra;\n  (*t)++;"
+        },
+        {
+          "line": 332,
+          "text": "(*t)->context_tree = context_tree;",
+          "context": "\nstatic INLINE void add_token(TOKENEXTRA **t, const vpx_prob *context_tree,\n                             int16_t token, EXTRABIT extra,\n                             unsigned int *counts) {\n  (*t)->context_tree = context_tree;\n  (*t)->token = token;\n  (*t)->extra = extra;\n  (*t)++;\n  ++counts[token];\n}\n"
+        },
+        {
+          "line": 339,
+          "text": "static INLINE void add_token_no_extra(TOKENEXTRA **t,",
+          "context": "  (*t)++;\n  ++counts[token];\n}\n\nstatic INLINE void add_token_no_extra(TOKENEXTRA **t,\n                                      const vpx_prob *context_tree,\n                                      int16_t token, unsigned int *counts) {\n  (*t)->context_tree = context_tree;\n  (*t)->token = token;\n  (*t)++;\n  ++counts[token];"
+        },
+        {
+          "line": 340,
+          "text": "const vpx_prob *context_tree,",
+          "context": "  ++counts[token];\n}\n\nstatic INLINE void add_token_no_extra(TOKENEXTRA **t,\n                                      const vpx_prob *context_tree,\n                                      int16_t token, unsigned int *counts) {\n  (*t)->context_tree = context_tree;\n  (*t)->token = token;\n  (*t)++;\n  ++counts[token];\n}"
+        },
+        {
+          "line": 342,
+          "text": "(*t)->context_tree = context_tree;",
+          "context": "\nstatic INLINE void add_token_no_extra(TOKENEXTRA **t,\n                                      const vpx_prob *context_tree,\n                                      int16_t token, unsigned int *counts) {\n  (*t)->context_tree = context_tree;\n  (*t)->token = token;\n  (*t)++;\n  ++counts[token];\n}\n\nstatic void tokenize_b(int plane, int block, int row, int col,"
+        },
+        {
+          "line": 355,
+          "text": "TOKENEXTRA **tp = args->tp;",
+          "context": "  VP9_COMP *cpi = args->cpi;\n  ThreadData *const td = args->td;\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;\n  TOKENEXTRA **tp = args->tp;\n  uint8_t token_cache[32 * 32];\n  struct macroblock_plane *p = &x->plane[plane];\n  struct macroblockd_plane *pd = &xd->plane[plane];\n  MODE_INFO *mi = xd->mi[0];\n  int pt; /* near block/prev token context index */\n  int c;"
+        },
+        {
+          "line": 362,
+          "text": "TOKENEXTRA *t = *tp; /* store tokens starting here */",
+          "context": "  struct macroblockd_plane *pd = &xd->plane[plane];\n  MODE_INFO *mi = xd->mi[0];\n  int pt; /* near block/prev token context index */\n  int c;\n  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  int eob = p->eobs[block];\n  const PLANE_TYPE type = get_plane_type(plane);\n  const tran_low_t *qcoeff = BLOCK_OFFSET(p->qcoeff, block);\n  const int16_t *scan, *nb;\n  const ScanOrder *so;\n  const int ref = is_inter_block(mi);"
+        },
+        {
+          "line": 466,
+          "text": "void vp9_tokenize_sb(VP9_COMP *cpi, ThreadData *td, TOKENEXTRA **t, int dry_run,",
+          "context": "                                         has_high_freq_coeff, &args);\n  return result;\n}\n\nvoid vp9_tokenize_sb(VP9_COMP *cpi, ThreadData *td, TOKENEXTRA **t, int dry_run,\n                     int seg_skip, BLOCK_SIZE bsize) {\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;\n  MODE_INFO *const mi = xd->mi[0];\n  const int ctx = vp9_get_skip_context(xd);\n  struct tokenize_b_args arg = { cpi, td, t };"
+        }
+      ]
+    },
+    {
+      "file": "vp9/encoder/vp9_tokenize.h",
+      "bytes": 4010,
+      "sha256": "5942c93a8f07fc7e5f2b479954ec77c3672294816f3bf6d168d65fee9d40d6a7",
+      "matches": [
+        {
+          "line": 37,
+          "text": "const vpx_prob *context_tree;",
+          "context": "  EXTRABIT extra;\n} TOKENVALUE;\n\ntypedef struct {\n  const vpx_prob *context_tree;\n  int16_t token;\n  EXTRABIT extra;\n} TOKENEXTRA;\n\nextern const vpx_tree_index vp9_coef_tree[];\nextern const vpx_tree_index vp9_coef_con_tree[];"
+        },
+        {
+          "line": 40,
+          "text": "} TOKENEXTRA;",
+          "context": "typedef struct {\n  const vpx_prob *context_tree;\n  int16_t token;\n  EXTRABIT extra;\n} TOKENEXTRA;\n\nextern const vpx_tree_index vp9_coef_tree[];\nextern const vpx_tree_index vp9_coef_con_tree[];\nextern const struct vp9_token vp9_coef_encodings[];\n\nint vp9_is_skippable_in_plane(MACROBLOCK *x, BLOCK_SIZE bsize, int plane);"
+        },
+        {
+          "line": 53,
+          "text": "TOKENEXTRA **t, int dry_run, int seg_skip,",
+          "context": "struct VP9_COMP;\nstruct ThreadData;\n\nvoid vp9_tokenize_sb(struct VP9_COMP *cpi, struct ThreadData *td,\n                     TOKENEXTRA **t, int dry_run, int seg_skip,\n                     BLOCK_SIZE bsize);\n\ntypedef struct {\n  const vpx_prob *prob;\n  int len;\n  int base_val;"
+        }
+      ]
+    }
+  ],
+  "tokenHeader": {
+    "file": "vp9/encoder/vp9_tokenize.h",
+    "sha256": "5942c93a8f07fc7e5f2b479954ec77c3672294816f3bf6d168d65fee9d40d6a7",
+    "exactSource": "/*\n *  Copyright (c) 2010 The WebM project authors. All Rights Reserved.\n *\n *  Use of this source code is governed by a BSD-style license\n *  that can be found in the LICENSE file in the root of the source\n *  tree. An additional intellectual property rights grant can be found\n *  in the file PATENTS.  All contributing project authors may\n *  be found in the AUTHORS file in the root of the source tree.\n */\n\n#ifndef VPX_VP9_ENCODER_VP9_TOKENIZE_H_\n#define VPX_VP9_ENCODER_VP9_TOKENIZE_H_\n\n#include \"vp9/common/vp9_entropy.h\"\n\n#include \"vp9/encoder/vp9_block.h\"\n#include \"vp9/encoder/vp9_treewriter.h\"\n\n#ifdef __cplusplus\nextern \"C\" {\n#endif\n\n#define EOSB_TOKEN 127  // Not signalled, encoder only\n\n#if CONFIG_VP9_HIGHBITDEPTH\ntypedef int32_t EXTRABIT;\n#else\ntypedef int16_t EXTRABIT;\n#endif\n\ntypedef struct {\n  int16_t token;\n  EXTRABIT extra;\n} TOKENVALUE;\n\ntypedef struct {\n  const vpx_prob *context_tree;\n  int16_t token;\n  EXTRABIT extra;\n} TOKENEXTRA;\n\nextern const vpx_tree_index vp9_coef_tree[];\nextern const vpx_tree_index vp9_coef_con_tree[];\nextern const struct vp9_token vp9_coef_encodings[];\n\nint vp9_is_skippable_in_plane(MACROBLOCK *x, BLOCK_SIZE bsize, int plane);\nint vp9_has_high_freq_in_plane(MACROBLOCK *x, BLOCK_SIZE bsize, int plane);\n\nstruct VP9_COMP;\nstruct ThreadData;\n\nvoid vp9_tokenize_sb(struct VP9_COMP *cpi, struct ThreadData *td,\n                     TOKENEXTRA **t, int dry_run, int seg_skip,\n                     BLOCK_SIZE bsize);\n\ntypedef struct {\n  const vpx_prob *prob;\n  int len;\n  int base_val;\n  const int16_t *cost;\n} vp9_extra_bit;\n\n// indexed by token value\nextern const vp9_extra_bit vp9_extra_bits[ENTROPY_TOKENS];\n#if CONFIG_VP9_HIGHBITDEPTH\nextern const vp9_extra_bit vp9_extra_bits_high10[ENTROPY_TOKENS];\nextern const vp9_extra_bit vp9_extra_bits_high12[ENTROPY_TOKENS];\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\nextern const int16_t *vp9_dct_value_cost_ptr;\n/* TODO: The Token field should be broken out into a separate char array to\n *  improve cache locality, since it's needed for costing when the rest of the\n *  fields are not.\n */\nextern const TOKENVALUE *vp9_dct_value_tokens_ptr;\nextern const TOKENVALUE *vp9_dct_cat_lt_10_value_tokens;\nextern const int *vp9_dct_cat_lt_10_value_cost;\nextern const int16_t vp9_cat6_low_cost[256];\nextern const uint16_t vp9_cat6_high_cost[64];\nextern const uint16_t vp9_cat6_high10_high_cost[256];\nextern const uint16_t vp9_cat6_high12_high_cost[1024];\n\n#if CONFIG_VP9_HIGHBITDEPTH\nstatic INLINE const uint16_t *vp9_get_high_cost_table(int bit_depth) {\n  return bit_depth == 8 ? vp9_cat6_high_cost\n                        : (bit_depth == 10 ? vp9_cat6_high10_high_cost\n                                           : vp9_cat6_high12_high_cost);\n}\n#else\nstatic INLINE const uint16_t *vp9_get_high_cost_table(int bit_depth) {\n  (void)bit_depth;\n  return vp9_cat6_high_cost;\n}\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\nstatic INLINE void vp9_get_token_extra(int v, int16_t *token, EXTRABIT *extra) {\n  if (v >= CAT6_MIN_VAL || v <= -CAT6_MIN_VAL) {\n    *token = CATEGORY6_TOKEN;\n    if (v >= CAT6_MIN_VAL)\n      *extra = 2 * v - 2 * CAT6_MIN_VAL;\n    else\n      *extra = -2 * v - 2 * CAT6_MIN_VAL + 1;\n    return;\n  }\n  *token = vp9_dct_cat_lt_10_value_tokens[v].token;\n  *extra = vp9_dct_cat_lt_10_value_tokens[v].extra;\n}\nstatic INLINE int16_t vp9_get_token(int v) {\n  if (v >= CAT6_MIN_VAL || v <= -CAT6_MIN_VAL) return 10;\n  return vp9_dct_cat_lt_10_value_tokens[v].token;\n}\n\nstatic INLINE int vp9_get_token_cost(int v, int16_t *token,\n                                     const uint16_t *cat6_high_table) {\n  if (v >= CAT6_MIN_VAL || v <= -CAT6_MIN_VAL) {\n    EXTRABIT extrabits;\n    *token = CATEGORY6_TOKEN;\n    extrabits = abs(v) - CAT6_MIN_VAL;\n    return vp9_cat6_low_cost[extrabits & 0xff] +\n           cat6_high_table[extrabits >> 8];\n  }\n  *token = vp9_dct_cat_lt_10_value_tokens[v].token;\n  return vp9_dct_cat_lt_10_value_cost[v];\n}\n\n#ifdef __cplusplus\n}  // extern \"C\"\n#endif\n\n#endif  // VPX_VP9_ENCODER_VP9_TOKENIZE_H_\n"
+  },
+  "actualCompiledHighBitDepthConfiguration": null,
+  "actualTokenBytes": null,
+  "actualSavedBytes": null,
+  "candidateImplemented": false,
+  "browserValidated": false,
+  "publicAcceptance": false,
+  "publicSourceHeldInBoundedRamOnly": true,
+  "userMediaReadOrConverted": false
+}

@@ -1,0 +1,29 @@
+{
+  "recordedAt": "2026-11-06T13:04:55.545Z",
+  "scope": "Changed actual original failure and rejected duplicate-scaling-copy hypothesis, NOT completed conversion/optimization acceptance",
+  "priorNativeRunId": 42135708757,
+  "lazyNativeRunId": 42218018139,
+  "priorFailure": "VP9 new-frame allocation",
+  "currentFailure": "HEVC decoder reports out of memory while parsing NAL unit #0",
+  "vp9AllocationFailureNotPresentInCurrentLog": true,
+  "encodedOutputFramesVerified": null,
+  "lastObservedWasmBytes": 100663296,
+  "declaredMaximumWasmBytes": 100663296,
+  "currentFailureAllocatorRequestBytes": null,
+  "currentFailureAllocatorFreeBytes": null,
+  "previousFailureStatisticsNotReused": true,
+  "wrapper": {
+    "file": "work/vp9-duration-input-42218018139/within_remux.duration.c",
+    "sha256": "480532d89a4b4f696fced0faaa7be4f29cdbe7a71b990c69dfd2ddef6d346aa6",
+    "matchingGeometryUsesDecodedFrameDirectly": true,
+    "conversionFrameAllocatedOnlyForGeometryChange": true,
+    "exactAllocationGuard": "  if (encoder->width != decoder->width ||\n      encoder->height != decoder->height) {"
+  },
+  "rejectedNextChange": "Do not remove a nonexistent unconditional scaling copy: the pinned wrapper already bypasses it at matching dimensions",
+  "nextAction": "Attribute coupled HEVC/VP9 live allocations; audit token/context record storage or qualify the existing platform-encoder path at original dimensions before another changed run",
+  "fullOriginalConverted": false,
+  "independentFullFidelityPassed": false,
+  "actualSavedBytes": null,
+  "publicAcceptance": false,
+  "userMediaReadOrConverted": false
+}

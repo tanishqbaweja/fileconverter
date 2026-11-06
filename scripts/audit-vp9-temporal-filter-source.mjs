@@ -6,7 +6,9 @@ import { createHash } from "node:crypto";
 import path from "node:path";
 const lifetime = process.argv[2] === "--lifetime";
 const utility = process.argv[2] === "--utility";
-assert.ok(process.argv.length === 2 || (process.argv.length === 3 && (lifetime || utility)));
+const tokens = process.argv[2] === "--tokens";
+const tokenContext = process.argv[2] === "--token-context";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && (lifetime || utility || tokens || tokenContext)));
 const root = path.resolve(import.meta.dirname, ".."), recipe = await readFile(path.join(root, "media/ffmpeg/reproduce-nondocker.sh"), "utf8");
 const version = "1.16.0", expected = "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c";
 assert.ok(recipe.includes("LIBVPX_VERSION=" + version)); assert.ok(recipe.includes("LIBVPX_SHA256=" + expected));
@@ -52,7 +54,45 @@ assert.ok(allocation.includes("Failed to allocate temporal filter buffer")); ass
 assert.equal(filterCallSites.length, 2); assert.ok(filterCallSites.every(row => row.file === "vp9/encoder/vp9_encoder.c"));
 const contexts = filterCallSites.map(row => ({ ...row, context: encoder.split("\n").slice(Math.max(0, row.line - 20), row.line + 5).join("\n") }));
 assert.ok(contexts.every(row => row.context.includes("!= REALTIME")), "Both call paths must have explicit non-realtime guards");
-if (utility) {
+if (tokenContext) {
+  const files=["vp9/encoder/vp9_tokenize.h","vp9/encoder/vp9_tokenize.c","vp9/encoder/vp9_bitstream.c"],preimages={};
+  for(const file of files){const exactSource=sources.get(file);assert.ok(exactSource);preimages[file]={sha256:sha(exactSource),exactSource};}
+  const contextAssignments=[];
+  for(const [file,source] of sources) {
+    if(!file.startsWith("vp9/"))continue;
+    const lines=source.split("\n"),matches=[];
+    for(const [index,line] of lines.entries())if(/(?:\bcm->fc|\bcpi->common\.fc)\s*=(?!=)/.test(line))
+      matches.push({line:index+1,context:lines.slice(Math.max(0,index-8),index+12).join("\n")});
+    if(matches.length)contextAssignments.push({file,sha256:sha(source),matches});
+  }
+  const report={recordedAt:new Date().toISOString(),scope:"Pinned token producer/packer preimages and frame-context pointer assignment inventory, NOT accepted compaction",
+    archiveSha256:expected,cFiles,preimages,contextAssignments,
+    candidateImplemented:false,actualSavedBytes:null,publicAcceptance:false,userMediaReadOrConverted:false};
+  const output=JSON.stringify(report,null,2)+"\n";assert.ok(Buffer.byteLength(output)<524288);
+  await writeFile(path.join(root,"evidence/2026-11-06-vp9-token-context-source-audit.json"),output,{flag:"wx"});
+  console.log(JSON.stringify({cFiles,preimages:Object.fromEntries(Object.entries(preimages).map(([f,v])=>[f,v.sha256])),contextAssignmentFiles:contextAssignments.length,bytes:Buffer.byteLength(output)}));
+} else if (tokens) {
+  const references=[];
+  for(const [file,source] of sources) {
+    const lines=source.split("\n"),matches=[];
+    for(const [index,line] of lines.entries()) if(/\bTOKENEXTRA\b|\bcontext_tree\b|\bget_token_alloc\b|\btile_tok\b|\btok_count\b|\bcpi->tok\b/.test(line)) {
+      assert.ok(matches.length<256);
+      matches.push({line:index+1,text:line.trim(),context:lines.slice(Math.max(0,index-4),index+7).join("\n")});
+    }
+    if(matches.length) references.push({file,bytes:Buffer.byteLength(source),sha256:sha(source),matches});
+  }
+  const header=sources.get("vp9/encoder/vp9_tokenize.h");
+  assert.equal(sha(header),"5942c93a8f07fc7e5f2b479954ec77c3672294816f3bf6d168d65fee9d40d6a7");
+  assert.ok(references.length>3&&references.length<64);
+  const report={recordedAt:new Date().toISOString(),scope:"Complete pinned C/header token-record reference inventory, NOT safe token removal or storage-compaction proof",
+    archiveSha256:expected,cFiles,references,tokenHeader:{file:"vp9/encoder/vp9_tokenize.h",sha256:sha(header),exactSource:header},
+    actualCompiledHighBitDepthConfiguration:null,actualTokenBytes:null,actualSavedBytes:null,
+    candidateImplemented:false,browserValidated:false,publicAcceptance:false,
+    publicSourceHeldInBoundedRamOnly:true,userMediaReadOrConverted:false};
+  const output=JSON.stringify(report,null,2)+"\n";assert.ok(Buffer.byteLength(output)<=524288);
+  await writeFile(path.join(root,"evidence/2026-11-06-vp9-token-storage-source-audit.json"),output,{flag:"wx"});
+  console.log(JSON.stringify({cFiles,referenceFiles:references.length,matches:references.reduce((n,r)=>n+r.matches.length,0),reportBytes:Buffer.byteLength(output),candidateImplemented:false}));
+} else if (utility) {
   const references=[];
   for(const [file,source] of sources) {
     const lines=source.split("\n"),matches=[];

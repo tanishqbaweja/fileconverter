@@ -1,5 +1,45 @@
 # Tested conversion ledger
 
+2026-11-06 checkpoint:318focused regressions PASS (259core/59allocation-source-
+evidence controls),0fail/0skip. All affected ESLint and git diff checks PASS.
+Public evidence consistency unchanged403/403,2hidden pending,0PDF. No frontend
+production source/assets changed; no new full production build/TypeScript or
+browser stress acceptance claimed. Fresh compiler/wrapper scratch census empty.
+
+2026-11-06 distinct PRIVATE token-record candidate implemented, not integrated
+into a codec build or public assets. Pinned archive scan880C/headers retains all
+137token/context references in15files; exact3producer/packer/header preimages.
+Reversible edits replace per-token context pointer with uint16 offset; preserve
+capacity, algorithms, codec options, probability updates, and memory limits.
+276480 host-compiled original/candidate mock entropy-operation comparisons PASS;
+actual clang Wasm32 static layout controls PASS8->6B low-bit and12->8B high-bit.
+These are representation/control results, NOT actual codec heap savings, speed,
+bit-exact browser, or full-original acceptance. Actual build HBD config unknown.
+The first source-qualification preflight expected9context-reference lines but
+found7; corrected the exact census (no conversion ran), then controls passed.
+Pinned current encoder has one frame-context allocation and two *object-copy*
+writes, not pointer rebinding. Simple assignment inventory omits macro/alias
+analysis: complete context-base lifetime still required before build integration.
+All compiler scratch removed in finally; no user media read/converted. NEXT
+lifetime/consumer safety audit, distinct native candidate, strict real browser
+bit-exact/fidelity/recovery control, then changed original test. No unchanged
+original6/native build replay and no public promotion.
+
+2026-11-06 actual lazy original6 at fca2ae63 FAILED, preserved separately:
+full untouched2958573265B File/1920x804/24fps/4Mbps/oneCPU worker. Prior VP9
+new-frame allocation error absent; HEVC now reports NAL#0 parse/Out of memory.
+Last observed Wasm96MiB; failure-time allocator request/free unavailable, not
+reused from original5. Only485B mux header, no verified encoded frame count or
+completed conversion. Same blank354885632/wholeChrome peak571850752 gives
+206.9140625MiB,35valid0missing, but native failure remains FAIL. All disposable
+outputs/OPFS/profile/runtime/stage and3owned births cleaned; original exact SHA
+unchanged,0forbidden requests. Raw273730B archived to100801B total. Removed exact
+obsolete diagnostic static tool27files/11221430B; reusable current core/source
+preimages retained. Wrapper audit rejects nonexistent unconditional scaling-copy
+optimization: matching dimensions already use decoded frame directly. NEXT
+coupled HEVC/VP9 allocation and token-storage source audit, NOT unchanged rerun.
+No full-original/fidelity/speed/scaling/public acceptance.
+
 2026-11-06 actual lazy42218018139 strict small/recovery PASS ate649bf6e:
 initial+3complete99413B outputs SHA82bdfd66...82267b BYTE-EXACT to prior core,
 all48PTS/durations/2s/SSIM.993273/8metadata/stored default duration preserved.
