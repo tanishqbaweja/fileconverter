@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-06 first actual token browser run produces correct bit-exact48frame output
+and SSIM.993273, but FAILS because clean blank baseline unavailable; incremental
+memoryNULL, recovery sequence not reached. Cleanup/original integrity pass. Original7
+is held. Next ONE separately recorded fresh-session retry now requires unchanged
+baseline gate before loading app/conversion; preserve first failure, no third retry
+or relaxed memory/quality requirement. This remains partial, not accepted profile.
+
 2026-11-06 token native42226266102 built/authenticated SUCCESS7m38s/all cleanup.
 Actual config HBD0 and compiled Wasm32 layout8->6B now known, same heap/thread/
 codec limits. No actual browser heap/speed acceptance follows from layout. NEXT

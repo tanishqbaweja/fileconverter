@@ -11,6 +11,8 @@ import { makeVp9OriginalStartupSource } from "./lib/vp9-original-startup-recipe.
 assert.ok(process.argv.length === 2 || (process.argv.length === 3 && ["2", "3", "4", "5","6","7", "--check-only"].includes(process.argv[2])) ||
   (process.argv.length === 4 && ["2", "3", "4", "5","6","7"].includes(process.argv[2]) && process.argv[3] === "--check-only"));
 const attempt = ["2", "3", "4", "5","6","7"].includes(process.argv[2]) ? Number(process.argv[2]) : 1, suffix = attempt === 1 ? "" : "-attempt" + attempt, checkOnly = process.argv.includes("--check-only");
+const tokenQualificationAttempt=attempt===7?(process.env.WITHIN_VP9_TOKEN_QUALIFICATION_ATTEMPT??"1"):"1";
+assert.ok(["1","2"].includes(tokenQualificationAttempt));
 const root = path.resolve(import.meta.dirname, ".."), sha = value => createHash("sha256").update(value).digest("hex");
 const parentFile = "evidence/2026-11-05-webcodecs-vp9-stream-duration-fidelity-42020605269-recipe.json", parentBytes = await readFile(path.join(root, parentFile));
 const parent = JSON.parse(parentBytes), bytes = gunzipSync(Buffer.from(parent.generatedSourceGzipBase64, "base64"), { maxOutputLength: 1048576 });
@@ -27,7 +29,7 @@ else {
     assert.equal(native.nativeContract.engine,attempt===7?"private-vp9-token-context":attempt===6?"private-vp9-lazy-utility":attempt === 5 ? "private-vp9-allocation-diagnostic" : attempt === 4 ? "private-vp9-realtime-temporal" : "private-vp9-original-width"); assert.equal(native.nativeContract.candidate.privateVp9ExplicitWidth, 1920);
     assert.equal(native.nativeContract.candidate.memoryLimitsRaised, false); assert.equal(native.publicAcceptance, false);
     if (attempt >= 4) {
-      const qualification = JSON.parse(await readFile(path.join(root, "evidence/2026-11-06-vp9-" + (attempt===7?"token":attempt===6?"lazy":attempt === 5 ? "allocation" : "temporal") + "-qualification-" + nativeRunId + ".json")));
+      const qualification = JSON.parse(await readFile(path.join(root, "evidence/2026-11-06-vp9-" + (attempt===7?"token":attempt===6?"lazy":attempt === 5 ? "allocation" : "temporal") + "-qualification-" + nativeRunId + (tokenQualificationAttempt==="2"?"-attempt2":"") + ".json")));
       assert.equal(qualification.status, "passed-private-vp9-recovery-sequence-not-large-or-public-acceptance");
       assert.deepEqual(qualification.failures, []); assert.equal(qualification.privateCpuOverride.runId, Number(nativeRunId));
       assert.equal(qualification.independentFidelity.passed, true); assert.equal(qualification.recovery.passed, true);

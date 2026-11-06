@@ -1,0 +1,24 @@
+{
+  "scope": "Lossless sampler receipt storage reduction; original failed/passed results and thresholds unchanged",
+  "reports": [
+    {
+      "file": "evidence/2026-11-06-vp9-token-qualification-42226266102.json",
+      "archive": {
+        "file": "evidence/2026-11-06-vp9-token-qualification-42226266102.raw.json.gz",
+        "bytes": 22458,
+        "sha256": "1c44285c320290fb2bc6136a81e3f9e58a1384a24ae1ce6e0fec07275997e5ff",
+        "decodedBytes": 328183,
+        "decodedSha256": "f529481ce098fd10af070ffe431da0cd1cd6b4c1bdf53f0d80010719f11b6eb3",
+        "exactRoundtripVerifiedBeforeReplacement": true
+      },
+      "compactBytes": 100328,
+      "compactSha256": "b477c2d9fa4251e8d13e08c58c8a4b1cb481e92d6f043ad4e15478e13b4586c7"
+    }
+  ],
+  "originalBytes": 328183,
+  "retainedBytes": 122786,
+  "allRoundtripsVerified": true,
+  "convertedFilesRead": false,
+  "privateNativeToolRemoved": false,
+  "publicAcceptance": false
+}

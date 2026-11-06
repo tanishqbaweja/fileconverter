@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-11-06 token actual first browser run at3e2779e8 FAILED unchanged blank
+baseline gate:18blank samples show GPU/startup-renderer private-memory changes,
+no qualifying5sample/8s/2% window before30s. Blank/incremental memory remainNULL;
+52conversion samples0missing cannot substitute a baseline. Genuine99413B output
+SHA82bd...82267b matches old core byte-for-byte; all48PTS/durations/2s/8metadata/
+SSIM.993273 PASS. Stored source/output default duration both41666666ns recorded;
+later explicit stored-timing/recovery gates NOT reached,
+no public/original acceptance. All disposable output/OPFS/profile/runtime/stage
+cleaned,3owned roots absent, original SHA unchanged,0forbidden requests. Raw328183B
+losslessly archived to122786B total. Original7 held. One distinctly recorded
+fresh-session retry is now fail-fast BEFORE app/conversion if identical baseline
+gate fails; prior failure must be baseline-only with valid golden/fidelity/cleanup,
+and stays preserved. No extended/inflated baseline, excluded services or third
+retry.20focused driver checks/lint PASS; next actual single baseline retry.
+
 2026-11-06 token native42226266102/50f7a3fa TERMINAL SUCCESS7m38s, both cleanup
 steps PASS. Authenticated40static members/11696417B; ZIP3636557B artifact13506113531
 SHA57f60e667ef87da6eb9e3b0f1eee85643fc7199afa7d9bb282f3b7df57950df4.

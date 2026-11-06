@@ -9,8 +9,9 @@ import { transform } from "esbuild";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { makeVp9TemporalQualificationSource } from "./lib/vp9-temporal-qualification-recipe.mjs";
 const args = process.argv.slice(2);
-assert.ok(args.length <= 2 && new Set(args).size === args.length && args.every(arg => ["--allocation-diagnostic","--lazy-utility","--token-context", "--check-only"].includes(arg)));
-assert.ok(args.filter(arg=>arg!=="--check-only").length<=1);
+assert.ok(args.length <= 3 && new Set(args).size === args.length && args.every(arg => ["--allocation-diagnostic","--lazy-utility","--token-context","--retry-baseline", "--check-only"].includes(arg)));
+assert.ok(args.filter(arg=>!["--check-only","--retry-baseline"].includes(arg)).length<=1);
+const baselinePreflight=args.includes("--retry-baseline");assert.ok(!baselinePreflight||args.includes("--token-context"));
 const checkOnly = args.includes("--check-only"),tokenContext=args.includes("--token-context"),lazyUtility=args.includes("--lazy-utility")||tokenContext, allocationDiagnostics = args.includes("--allocation-diagnostic")||lazyUtility, root = path.resolve(import.meta.dirname, ".."),
   runId = process.env.WITHIN_VP9_ORIGINAL_NATIVE_RUN_ID ?? (checkOnly ? "12345678" : ""), sha = v => createHash("sha256").update(v).digest("hex");
 const parentFile = "evidence/2026-11-05-webcodecs-vp9-recovery-qualification-42020605269-recipe.json", parentBytes = await readFile(path.join(root, parentFile)), parent = JSON.parse(parentBytes);
@@ -19,9 +20,22 @@ assert.equal(sha(source), parent.generatedSha256);
 let reconstructed = await readFile(path.join(root, "scripts/test-webcodecs-vp9-smoke.mjs"), "utf8"); assert.equal(sha(reconstructed), parent.parentSha256);
 for (const [before, after] of parent.edits) { assert.equal(reconstructed.split(before).length, 2); reconstructed = reconstructed.replace(before, after); }
 assert.equal(reconstructed, source);
-const recipe = makeVp9TemporalQualificationSource(source, runId, { allocationDiagnostics,lazyUtility,tokenContext }); await transform(recipe.generated, { loader: "js", format: "esm" });
+const recipe = makeVp9TemporalQualificationSource(source, runId, { allocationDiagnostics,lazyUtility,tokenContext,baselinePreflight }); await transform(recipe.generated, { loader: "js", format: "esm" });
 if (checkOnly) console.log(JSON.stringify({ reversible: true, generatedSha256: recipe.generatedSha256, browserLaunched: false, recipeWritten: false }));
 else {
+  let baselineRetry=null;
+  if(baselinePreflight) {
+    const file="evidence/2026-11-06-vp9-token-qualification-"+runId+".json",bytes=await readFile(path.join(root,file)),prior=JSON.parse(bytes);
+    assert.equal(prior.status,"failed-private-vp9-browser-smoke");assert.equal(prior.baselineAvailable,false);assert.equal(prior.blankBaseline,null);
+    assert.equal(prior.outputSha256,"82bdfd66b2411c9d9e3e8ccf24659fce9f6aa5527b4066b219238e8f7e82267b");
+    assert.equal(prior.independentFidelity.passed,true);assert.equal(prior.recovery,undefined);
+    assert.equal(prior.memory.incrementalPrivateMiB,null);assert.equal(prior.ownedRuntimeRemoved,true);
+    assert.ok(prior.processCleanup.every(row=>row.status==="owned-identity-absent"));assert.deepEqual(prior.forbiddenRequests,[]);
+    assert.deepEqual(prior.originalBefore,prior.originalAfter);
+    assert.equal(prior.failures.length,2);assert.ok(prior.failures.every(message=>/stable blank baseline unavailable|Stable blank baseline remains required/.test(message)));
+    baselineRetry={priorFile:file,priorSha256:sha(bytes),priorFailedBaselinePreserved:true,maximumAdditionalSessions:1,
+      stopsBeforeAppWithoutSameStrictBaseline:true,baselineWindowOrThresholdChanged:false};
+  }
   const native = JSON.parse(await readFile(path.join(root, "evidence/2026-11-06-vp9-original-width-native-" + runId + ".json")));
   assert.equal(native.nativeContract.engine,tokenContext?"private-vp9-token-context":lazyUtility?"private-vp9-lazy-utility":allocationDiagnostics ? "private-vp9-allocation-diagnostic" : "private-vp9-realtime-temporal");
   if(tokenContext)assert.equal(native.nativeContract.candidate.tokenContext.tokenCapacityChanged,false);
@@ -30,7 +44,7 @@ else {
   assert.equal(native.nativeContract.candidate.vendorAllocationGuard.edits, 1);
   assert.equal(native.nativeContract.candidate.memoryLimitsRaised, false); assert.equal(native.publicAcceptance, false);
   const { generated, ...compact } = recipe;
-  await writeFile(path.join(root, "evidence/2026-11-06-vp9-" + (tokenContext?"token":lazyUtility?"lazy":allocationDiagnostics ? "allocation" : "temporal") + "-qualification-" + runId + "-recipe.json"), JSON.stringify({ ...compact,
+  await writeFile(path.join(root, "evidence/2026-11-06-vp9-" + (tokenContext?"token":lazyUtility?"lazy":allocationDiagnostics ? "allocation" : "temporal") + "-qualification-" + runId + (baselinePreflight?"-attempt2":"") + "-recipe.json"), JSON.stringify({ ...compact,baselineRetry,
     parentRecipe: parentFile, parentRecipeSha256: sha(parentBytes), generatedSourceGzipBase64: gzipSync(generated, { level: 9 }).toString("base64") }, null, 2) + "\n", { flag: "wx" });
   const runtime = await createOwnedRuntimeScratch("vp9-temporal-qualification-");
   try {

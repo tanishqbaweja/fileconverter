@@ -57,3 +57,12 @@ test("token storage control rejects old lazy native ID and retains strict identi
   const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-temporal-qualification.mjs","--token-context","--check-only"],
     {windowsHide:true,timeout:30000,maxBuffer:65536});assert.equal(JSON.parse(stdout).browserLaunched,false);
 });
+test("single baseline retry stops before app without the unchanged strict blank gate and cannot overwrite failed first receipt",async()=>{
+  const result=makeVp9TemporalQualificationSource(source,"12345678",{allocationDiagnostics:true,lazyUtility:true,tokenContext:true,baselinePreflight:true});
+  assert.ok(result.generated.includes("vp9-token-qualification-12345678-attempt2.json"));
+  assert.ok(result.generated.includes("Stable blank required before loading the app or converting on the one baseline retry"));
+  assert.equal(result.changesBaselineFormulaOrLimit,false);assert.equal(result.baselinePreflight,true);
+  assert.throws(()=>makeVp9TemporalQualificationSource(source,"12345678",{baselinePreflight:true}));
+  const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-vp9-temporal-qualification.mjs","--token-context","--retry-baseline","--check-only"],
+    {windowsHide:true,timeout:30000,maxBuffer:65536});assert.equal(JSON.parse(stdout).browserLaunched,false);
+});

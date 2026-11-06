@@ -3,10 +3,11 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 const sha = value => createHash("sha256").update(value).digest("hex");
 export const VP9_TEMPORAL_EXPECTED_OUTPUT_SHA256 = "82bdfd66b2411c9d9e3e8ccf24659fce9f6aa5527b4066b219238e8f7e82267b";
-export function makeVp9TemporalQualificationSource(source, nativeRunId, { allocationDiagnostics = false,lazyUtility=false,tokenContext=false } = {}) {
+export function makeVp9TemporalQualificationSource(source, nativeRunId, { allocationDiagnostics = false,lazyUtility=false,tokenContext=false,baselinePreflight=false } = {}) {
   assert.equal(typeof allocationDiagnostics, "boolean");
   assert.equal(typeof lazyUtility,"boolean");assert.ok(!lazyUtility||allocationDiagnostics);
   assert.equal(typeof tokenContext,"boolean");assert.ok(!tokenContext||lazyUtility);
+  assert.equal(typeof baselinePreflight,"boolean");assert.ok(!baselinePreflight||tokenContext);
   assert.match(nativeRunId, /^\d{8,14}$/);
   assert.ok(!["42020605269", "42122918540"].includes(nativeRunId), "Guard requires a distinct source-built tool");
   if (allocationDiagnostics) assert.notEqual(nativeRunId, "42129383089", "Diagnostic control requires its own compiled tool");
@@ -16,7 +17,11 @@ export function makeVp9TemporalQualificationSource(source, nativeRunId, { alloca
   const edits = [], parentSha256 = sha(source);
   const add = (before, after) => { assert.equal(source.split(before).length, 2, before); edits.push([before, after]); source = source.replace(before, after); };
   for (const ending of [".json", "-failure.zip"]) add("2026-11-05-webcodecs-vp9-recovery-qualification-42020605269" + ending,
-    "2026-11-06-vp9-" + (tokenContext?"token":lazyUtility?"lazy":allocationDiagnostics ? "allocation" : "temporal") + "-qualification-" + nativeRunId + ending);
+    "2026-11-06-vp9-" + (tokenContext?"token":lazyUtility?"lazy":allocationDiagnostics ? "allocation" : "temporal") + "-qualification-" + nativeRunId + (baselinePreflight?"-attempt2":"") + ending);
+  if(baselinePreflight)add('  report.baselineAdjusted = false; report.baselineAvailable = report.blankBaseline?.stable === true;\n' +
+    '  if (!report.baselineAvailable) report.failures.push("Earliest stable blank baseline unavailable; collect functional facts, retain overall failure and null incremental memory");',
+    '  assert.equal(report.blankBaseline?.stable, true, "Stable blank required before loading the app or converting on the one baseline retry; same window/threshold, no extension");\n'+
+    '  report.baselineAdjusted = false; report.baselineAvailable = true;');
   add("evidence/2026-11-05-vp9-duration-native-42020605269.json", "evidence/2026-11-06-vp9-original-width-native-" + nativeRunId + ".json");
   for (const extension of ["mjs", "wasm"]) add("work/vp9-duration-input-42020605269/within-remux." + extension,
     "work/vp9-duration-input-" + nativeRunId + "/within-remux." + extension);
@@ -30,6 +35,6 @@ export function makeVp9TemporalQualificationSource(source, nativeRunId, { alloca
   for (const [before, after] of edits.toReversed()) { assert.equal(reversed.split(after).length, 2); reversed = reversed.replace(after, before); }
   assert.equal(sha(reversed), parentSha256);
   return { generated: source, parentSha256, generatedSha256: sha(source), edits, reversible: true, nativeRunId,
-    expectedOutputSha256: VP9_TEMPORAL_EXPECTED_OUTPUT_SHA256, allocationDiagnostics,lazyUtility,tokenContext, preservesStrictFidelityAndRecoveryGates: true,
+    expectedOutputSha256: VP9_TEMPORAL_EXPECTED_OUTPUT_SHA256, allocationDiagnostics,lazyUtility,tokenContext,baselinePreflight, preservesStrictFidelityAndRecoveryGates: true,
     changesBaselineFormulaOrLimit: false, speedGainProven: false, originalOrLargeFileAcceptance: false, publicAcceptance: false };
 }
