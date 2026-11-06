@@ -1,23 +1,19 @@
 # Remaining work audit
 
-2026-11-07 memory-scope copy fix verified by73focused checks, TypeScript, affected
-lint and fresh production build. Final headless Edge smoke pending for changed
-rendered label; original conversion constraints/public registry remain unchanged.
-
-2026-11-07 B07 Edge156.0.4314.58 five-family small production matrix PASS with
-independent validators, exact remux packet hashes, selected-destination adapter,
-unsafe-archive recovery, bounded I/O,0privacy violations and complete owned-data
-cleanup. Receipt:evidence/2026-11-06T19-52-33-748Z-edge-installed-conversions.json.
-First missing-python attempt remains FAILED.18focused regressions PASS. This is
-headless functional coverage with existing Playwright defaults, NOT new memory,
-normal-service parity, large-file, native-picker or full B07 qualification.
-UI wording clarified recorded Chrome-only memory scope; fresh verification NEXT.
-
-2026-11-07 B07 Edge representative matrix first attempt FAILED because independent
-DOCX validator could not locate python. Original/browser binaries unchanged;
-owned outputs/profiles/runtime/roots gone. Preserve failure and trace, repair only
-test-only PATH and preflight validators before one rerun. No production defect,
-whole-process-memory pass or changed public support inferred.
+2026-11-07 B07 Edge156.0.4314.58 checkpoint: first missing-python attempt remains
+FAILED; validator preflight/test-only PATH repair gives five-family small matrix
+PASS. Screenshot then exposed generic memory wording; UI now identifies recorded
+Chrome-only scope. Final changed-UI smoke PASS1/1, five outputs byte-exact to prior
+pass; independent validators, bounded I/O, selected-destination adapter,
+unsafe-archive recovery and0privacy violations pass. Final actual receipt:
+evidence/2026-11-06T19-56-35-166Z-edge-installed-conversions.json.
+76focused checks, TypeScript, affected lint/diff and production build PASS.
+All attempts remove owned converted data/profiles/runtime/roots; original and
+browser binaries unchanged. B07 remains PARTIAL: existing Playwright defaults
+are not normal-service parity, whole-process memory, stress or native-picker
+qualification; other changed-flow browser coverage remains open. No conversion
+settings/limits/public routes changed. Continue independent open work; do not
+replay this passing small matrix without a new relevant change.
 
 2026-11-07 checkpoint:36 focused regressions PASS/0skip, affected lint/diff PASS.
 Original9 failure and bounded role diagnostics retained. Next independent B07

@@ -1,35 +1,30 @@
 # Tested conversion ledger
 
-2026-11-07 Chrome-evidence wording repair:73focused UI/registry/driver/history/
-inventory tests PASS/0skip; TypeScript --noEmit, affected four-file ESLint and
-fresh production build PASS (existing bundler warnings retained). Reversible
-one-line historical comparison keeps every unrelated UI byte checked. NEXT one
-Edge production smoke after this real UI change; no conversion settings altered.
-
-2026-11-07 repaired-PATH B07 Edge156.0.4314.58 matrix PASS1/1 (7.976s): genuine
-CSV/TSV exact bytes, TXT/DOCX Unicode XML, TAR/ZIP3entry hashes, PNG/WebP full
-decode/SSIM.988655, H264/AAC MKV/MP4 exact packet hashes/full decode. Inputs87B-
-936003B only. Direct-destination adapter exact TSV90B; unsafe TAR rejected with
-zero leftovers.86same-origin GET/0bodies/0private tokens; all I/O/queues<=262144B,
-one pending. Browser/engine-library pins unchanged; original exact size/SHA
-unchanged; converted outputs/profile/runtime removed and both owned roots absent.
-Receipt:evidence/2026-11-06T19-52-33-748Z-edge-installed-conversions.json.
-Screenshot visually inspected headlessly. Existing Playwright launch defaults,
-NOT normal-profile/service parity, memory/stress/speedAB/native-picker acceptance.
-18focused driver/historical-browser/inventory tests PASS/0skip. No public changes.
-Screenshot revealed ambiguous generic memory label: now explicitly says recorded
-Chrome evidence is not certification of this browser/version or live memory.
-This wording fix is pending fresh build/browser verification, not retroactively
-included in the successful receipt above. Original missing-python failure kept.
-
-2026-11-07 independent B07 Edge156.0.4314.58 representative production matrix
-first attempt FAILED at DOCX independent validator: spawn python ENOENT (not an
-application-conversion finding).0passed/1failed,3.342s. Failure trace retained at
-output/playwright/2026-11-06T19-50-09-397Z-edge-conversion-failure; converted
-outputs/profile/runtime removed, owned server/runner absent, original unchanged.
-Fresh production build PASS with existing bundler warnings. Driver safety3PASS
-after unit fixture's encoded-space path fixed via fileURLToPath. NEXT preflight
-validator dependencies and one repaired-PATH run; no memory/headed/stress claim.
+2026-11-07 B07 Edge156.0.4314.58 checkpoint (headless only):
+- First matrix FAILED at DOCX independent validator: spawn python ENOENT,
+  0passed/1failed,3.342s. No application defect inferred. Receipt:
+  evidence/2026-11-06T19-50-09-397Z-edge-installed-conversions.json; failure trace
+  retained under output/playwright/2026-11-06T19-50-09-397Z-edge-conversion-failure.
+- Added validator preflight and repaired test-only PATH; matrix PASS1/1,7.976s:
+  evidence/2026-11-06T19-52-33-748Z-edge-installed-conversions.json.
+- Screenshot review exposed generic memory wording. UI now names recorded Chrome
+  evidence and disclaims certification of this browser/version or live memory.
+  Final smoke atbe3cf458 PASS1/1,8.985s; screenshot visually confirms changed text:
+  evidence/2026-11-06T19-56-35-166Z-edge-installed-conversions.json.
+- Both passes genuinely convert CSV/TSV exact bytes, TXT/DOCX Unicode XML,
+  TAR/ZIP3entry hashes, PNG/WebP full decode/SSIM.988655 and H264/AAC MKV/MP4 exact
+  packet hashes/full decode. Inputs87B-936003B only; all five output hashes match
+  across passes. Direct-destination adapter TSV90B; unsafe TAR rejected cleanly.
+  All I/O/queues<=262144B,one pending;86/88same-origin GETs,0bodies/private tokens.
+- All three attempts preserve original exact size/SHA and browser/library pins;
+  converted outputs,profiles,runtime and owned server/runner gone. Small compact
+  receipts and diagnostic screenshots/failed trace retained, no converted copies.
+- Final76focused checks PASS/0skip; TypeScript --noEmit, affected lint/diff and
+  fresh production build PASS (existing bundler warnings). Unit fixture's encoded
+  path was repaired with fileURLToPath; no browser replay for that unit failure.
+- Existing Playwright launch defaults, NOT normal-profile/service parity,
+  memory/stress/speedAB/native-picker or full B07/goal acceptance. No route added
+  or settings/limits changed. Do not replay without a new relevant change.
 
 2026-11-07 checkpoint:36 focused HTTP/native-memory/role-capture/unit-inventory
 checks PASS/0skip (2.575s); affected four-file ESLint and git diff --check PASS.

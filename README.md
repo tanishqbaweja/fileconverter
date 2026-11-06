@@ -13,7 +13,8 @@ measurement or certification of every current browser/version. The installed
 Edge156.0.4314.58 refresh independently validates five representative small-file
 conversions, bounded I/O, privacy and cleanup; it does not establish Edge stress,
 native-picker or complete-process memory acceptance. See
-`evidence/2026-11-06T19-52-33-748Z-edge-installed-conversions.json`.
+`evidence/2026-11-06T19-56-35-166Z-edge-installed-conversions.json` (after the
+memory-scope wording fix); the earlier failed validator-PATH attempt is retained.
 
 SVG-to-PNG is temporarily withheld from the public selector and support catalogue.
 The shipping renderer lacks an explicit Wasm maximum; the private source-built
