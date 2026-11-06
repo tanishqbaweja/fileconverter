@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 diagnostic42134023886 FAILED missing VP9 component, all cleanup PASS;
+no diagnostic browser/heap data. Existing final link uses emmalloc but configure
+probes default allocator: suspected missing new allocator API symbols. Corrected
+private configure plus early paired LINK-ONLY controls will verify/reject that
+cause before another long build. VP9 remains mandatory, no weakened checks or
+production allocator/memory/resolution changes. Next DISTINCT attempt9 after
+exact CI tests; do not redispatch8 or run old original unchanged. Full scope open.
+
 2026-11-06 diagnostic build42134023886 confirmed live, exact head9fbadfeb;
 await existing job, no redispatch. New strict small/original5 driver and bounded
 failure parser verified18checks, missing stats stayNULL; request size is frame

@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-06 diagnostic build42134023886 TERMINAL FAILURE at component gate:
+6m24s, source/SDK/patched vendor/C-control build PASS, FFmpeg silently disabled
+libvpx_vp9_encoder, strict component check correctly FAILS; all cleanup PASS,
+no artifact/browser/heap measurements. Suspected: new emmalloc statistics references
+are unavailable to default-allocator configure links, while actual final linker
+already uses emmalloc. Root needs explicit link controls, not assumed from logs.
+Private configure now selects SAME existing final allocator, with exact reversible
+source proof/public scripts untouched. New early default-vs-emmalloc link-only
+controls must demonstrate undefined allocator symbols then success BEFORE other
+dependency builds; never execute their Wasm. Disabled VP9 also fails immediately
+after configure and retains bounded config-log tail. Production final flags/limits
+unchanged.33 exact CI checks including early-config shell guard PASS(839.4751ms),
+0skip; affected lint/diff PASS. Next corrected DISTINCT attempt9.
+
 2026-11-06 distinct diagnostic source build42134023886/9fbadfeb dispatched once;
 00:05UTC exact job confirmed live compiling, source/SDK gates PASS. No result
 inferred from timeout/intent. Diagnostic strict small control and exclusive

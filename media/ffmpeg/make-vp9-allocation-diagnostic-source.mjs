@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { readFile, realpath, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import path from "node:path";
-import { makeVp9EncoderAllocationDiagnostic, makeVp9FrameAllocationDiagnostic, VP9_ALLOCATION_DIAGNOSTIC_PINS } from "./vp9-allocation-diagnostic-recipe.mjs";
+import { makeVp9EncoderAllocationDiagnostic, makeVp9FrameAllocationDiagnostic, makeVp9AllocationConfigureProbe, VP9_ALLOCATION_DIAGNOSTIC_PINS } from "./vp9-allocation-diagnostic-recipe.mjs";
 import { runVp9AllocationCUnit } from "./vp9-allocation-c-unit.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), build = path.join(root, "work/vp9-duration-build");
 assert.equal(process.argv.length, 2); assert.equal(await realpath(build), build);
@@ -17,14 +17,19 @@ for (const file of [encoderFile, allocatorFile]) assert.equal(await realpath(fil
 const encoder = makeVp9EncoderAllocationDiagnostic(await readFile(encoderFile, "utf8")),
   frameBase = await readFile(allocatorFile, "utf8"), allocator = makeVp9FrameAllocationDiagnostic(frameBase);
 const cUnit = await runVp9AllocationCUnit(frameBase);
+const configureFile = path.join(build, "build-libraries.sh"), configureBase = await readFile(configureFile, "utf8"), configure = makeVp9AllocationConfigureProbe(configureBase);
 for (const [name, content] of [["vp9_encoder.allocation.diagnostic.c", encoder.generated], ["yv12config.allocation.base.c", frameBase],
-  ["yv12config.allocation.diagnostic.c", allocator.generated]]) await writeFile(path.join(build, name), content, { flag: "wx" });
+  ["yv12config.allocation.diagnostic.c", allocator.generated], ["build-libraries.allocation.base.sh", configureBase],
+  ["build-libraries.allocation.diagnostic.sh", configure.generated]]) await writeFile(path.join(build, name), content, { flag: "wx" });
 const compact = ({ generated: _generated, ...proof }) => { void _generated; return proof; };
 await writeFile(path.join(build, "vp9-allocation-diagnostic-proof.json"), JSON.stringify({ encoder: compact(encoder), allocator: compact(allocator),
   cUnit,
+  configure: compact(configure),
   installedSdkHeaderPins: { heap: VP9_ALLOCATION_DIAGNOSTIC_PINS.heapHeader, allocator: VP9_ALLOCATION_DIAGNOSTIC_PINS.allocatorHeader },
   sampleTiming: "Failure only, after null return and before stderr formatting", frameRequestIsNotUnderlyingMallocRequest: true,
   actualBrowserMeasurements: null, publicAcceptance: false }, null, 2) + "\n", { flag: "wx" });
 await writeFile(encoderFile, encoder.generated); await writeFile(allocatorFile, allocator.generated);
+await writeFile(configureFile, configure.generated);
 assert.equal(await readFile(encoderFile, "utf8"), encoder.generated); assert.equal(await readFile(allocatorFile, "utf8"), allocator.generated);
+assert.equal(await readFile(configureFile, "utf8"), configure.generated);
 console.log(JSON.stringify({ diagnosticOnly: true, encoderSha256: encoder.generatedSha256, allocatorSha256: allocator.generatedSha256, publicAcceptance: false }));

@@ -13,7 +13,7 @@ import { makeVp9StreamDurationSource } from "../media/ffmpeg/vp9-stream-duration
 import { makeVp9OriginalWidthSource } from "../media/ffmpeg/vp9-original-width-recipe.mjs";
 import { makeVp9RealtimeTemporalFilterSource } from "../media/ffmpeg/vp9-realtime-temporal-filter-recipe.mjs";
 import { VP9_TEMPORAL_LIFETIME_PINS } from "../media/ffmpeg/vp9-temporal-lifetime.mjs";
-import { makeVp9EncoderAllocationDiagnostic, makeVp9FrameAllocationDiagnostic } from "../media/ffmpeg/vp9-allocation-diagnostic-recipe.mjs";
+import { makeVp9EncoderAllocationDiagnostic, makeVp9FrameAllocationDiagnostic, makeVp9AllocationConfigureProbe } from "../media/ffmpeg/vp9-allocation-diagnostic-recipe.mjs";
 assert.equal(process.argv.length, 3); const attempt = process.argv[2]; assert.match(attempt, /^[1-9]$/);
 const suffix = attempt === "1" ? "" : "-attempt" + attempt, root = path.resolve(import.meta.dirname, ".."), repo = "tanishqbaweja/fileconverter";
 const prefix = Number(attempt) >= 5 ? "evidence/2026-11-06-vp9-original-width" : "evidence/2026-11-05-vp9-duration";
@@ -42,7 +42,8 @@ try {
   const temporalGuard = Number(attempt) >= 6;
   const allocationDiagnostic = Number(attempt) >= 8;
   if (temporalGuard) allowed.push("vp9_encoder.temporal.base.c", "vp9_encoder.temporal.guard.c", "vp9-temporal-filter-source-proof.json");
-  if (allocationDiagnostic) allowed.push("vp9_encoder.allocation.diagnostic.c", "yv12config.allocation.base.c", "yv12config.allocation.diagnostic.c", "vp9-allocation-diagnostic-proof.json");
+  if (allocationDiagnostic) allowed.push("vp9_encoder.allocation.diagnostic.c", "yv12config.allocation.base.c", "yv12config.allocation.diagnostic.c", "vp9-allocation-diagnostic-proof.json",
+    "build-libraries.allocation.base.sh", "build-libraries.allocation.diagnostic.sh", "vp9-allocation-link-proof.json");
   const seen = new Set(); let total = 0;
   const members = unzipSync(zip, { filter(entry) {
     assert.ok(allowed.includes(entry.name) && !seen.has(entry.name)); seen.add(entry.name);
@@ -105,6 +106,13 @@ try {
       assert.equal(manifest.candidate.allocationDiagnostics.encoderSha256, encoder.generatedSha256);
       assert.equal(manifest.candidate.allocationDiagnostics.allocatorSha256, allocator.generatedSha256);
       assert.equal(manifest.candidate.allocationDiagnostics.failureOnly, true);
+      const configure=makeVp9AllocationConfigureProbe(Buffer.from(members["build-libraries.allocation.base.sh"]).toString()),
+        linkProof=JSON.parse(Buffer.from(members["vp9-allocation-link-proof.json"]).toString());
+      assert.equal(configure.generated,Buffer.from(members["build-libraries.allocation.diagnostic.sh"]).toString());
+      assert.equal(proof.configure.generatedSha256,configure.generatedSha256);
+      assert.notEqual(linkProof.cases[0].code,0); assert.equal(linkProof.cases[1].code,0); assert.equal(linkProof.wasmInstantiated,false);
+      assert.equal(manifest.candidate.allocationDiagnostics.configureRecipeSha256,configure.generatedSha256);
+      assert.equal(manifest.candidate.allocationDiagnostics.productionFinalLinkFlagsChanged,false);
     }
   }
   const limits = readWasmMemoryLimits(members["within-remux.wasm"]);

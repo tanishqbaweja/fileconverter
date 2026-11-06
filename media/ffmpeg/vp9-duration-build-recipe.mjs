@@ -34,18 +34,21 @@ export function makeVp9DurationBuildRecipe(source, { temporalFilterGuard = false
     'cp -- "${BUILD_ROOT}/vp9-temporal-filter-source-proof.json" "${OUTPUT_ROOT}/vp9-temporal-filter-source-proof.json"\n']);
   if (allocationDiagnostics) edits.push([
     'node "${SCRIPT_DIR}/make-vp9-temporal-filter-source.mjs"\n./build-vpx.sh\n',
-    'node "${SCRIPT_DIR}/make-vp9-temporal-filter-source.mjs"\nnode "${SCRIPT_DIR}/make-vp9-allocation-diagnostic-source.mjs"\n./build-vpx.sh\n' +
+    'node "${SCRIPT_DIR}/make-vp9-temporal-filter-source.mjs"\nnode "${SCRIPT_DIR}/make-vp9-allocation-diagnostic-source.mjs"\n./build-vpx.sh\nnode "${SCRIPT_DIR}/probe-vp9-allocation-link.mjs"\n' +
     'cp -- "${BUILD_ROOT}/vp9_encoder.allocation.diagnostic.c" "${OUTPUT_ROOT}/vp9_encoder.allocation.diagnostic.c"\n' +
     'cp -- "${BUILD_ROOT}/yv12config.allocation.base.c" "${OUTPUT_ROOT}/yv12config.allocation.base.c"\n' +
     'cp -- "${BUILD_ROOT}/yv12config.allocation.diagnostic.c" "${OUTPUT_ROOT}/yv12config.allocation.diagnostic.c"\n' +
-    'cp -- "${BUILD_ROOT}/vp9-allocation-diagnostic-proof.json" "${OUTPUT_ROOT}/vp9-allocation-diagnostic-proof.json"\n']);
+    'cp -- "${BUILD_ROOT}/vp9-allocation-diagnostic-proof.json" "${OUTPUT_ROOT}/vp9-allocation-diagnostic-proof.json"\n' +
+    'cp -- "${BUILD_ROOT}/build-libraries.allocation.base.sh" "${OUTPUT_ROOT}/build-libraries.allocation.base.sh"\n' +
+    'cp -- "${BUILD_ROOT}/build-libraries.allocation.diagnostic.sh" "${OUTPUT_ROOT}/build-libraries.allocation.diagnostic.sh"\n' +
+    'cp -- "${BUILD_ROOT}/vp9-allocation-link-proof.json" "${OUTPUT_ROOT}/vp9-allocation-link-proof.json"\n']);
   let generated = source;
   for (const [before, after] of edits) { assert.equal(generated.split(before).length, 2, before); generated = generated.replace(before, after); }
   let reverse = generated;
   for (const [before, after] of edits.toReversed()) { assert.equal(reverse.split(after).length, 2); reverse = reverse.replace(after, before); }
   assert.equal(reverse, source);
   return { generated, generatedSha256: sha(generated), parentSha256: sha(source), edits,
-    dependencyRecipesChanged: temporalFilterGuard, boundedTransportRetriesChanged: true, compilerSettingsChanged: false, memoryLimitsRaised: false,
+    dependencyRecipesChanged: temporalFilterGuard, boundedTransportRetriesChanged: true, compilerSettingsChanged: allocationDiagnostics, productionFinalLinkFlagsChanged: false, memoryLimitsRaised: false,
     temporalFilterGuard, vendorAllocationOnlyChanged: temporalFilterGuard,
     allocationDiagnostics, diagnosticsOnFailureOnly: allocationDiagnostics,
     allCoreBuildSelected: false, publicAcceptance: false };

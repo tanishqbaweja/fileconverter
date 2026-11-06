@@ -10,7 +10,7 @@ import { makeVp9DurationBuildRecipe } from "./vp9-duration-build-recipe.mjs";
 import { makeVp9OriginalWidthSource } from "./vp9-original-width-recipe.mjs";
 import { makeVp9RealtimeTemporalFilterSource } from "./vp9-realtime-temporal-filter-recipe.mjs";
 import { VP9_TEMPORAL_LIFETIME_PINS } from "./vp9-temporal-lifetime.mjs";
-import { makeVp9EncoderAllocationDiagnostic, makeVp9FrameAllocationDiagnostic, VP9_ALLOCATION_DIAGNOSTIC_PINS } from "./vp9-allocation-diagnostic-recipe.mjs";
+import { makeVp9EncoderAllocationDiagnostic, makeVp9FrameAllocationDiagnostic, makeVp9AllocationConfigureProbe, VP9_ALLOCATION_DIAGNOSTIC_PINS } from "./vp9-allocation-diagnostic-recipe.mjs";
 const root = path.resolve(import.meta.dirname, "../.."), output = path.join(root, "work/vp9-duration-output");
 const read = file => readFile(path.join(root, file)), sha = value => createHash("sha256").update(value).digest("hex");
 assert.equal(process.argv.length, 2); assert.equal(process.platform, "linux");
@@ -25,7 +25,7 @@ const sourceFiles = ["media/ffmpeg/within_remux.c", "media/ffmpeg/vp9-packet-dur
   ".github/workflows/vp9-duration-nondocker.yml"];
 sourceFiles.push("media/ffmpeg/vp9-realtime-temporal-filter-recipe.mjs", "media/ffmpeg/vp9-temporal-lifetime.mjs",
   "media/ffmpeg/vp9-temporal-c-unit.mjs", "media/ffmpeg/make-vp9-temporal-filter-source.mjs");
-if (allocationDiagnostics) sourceFiles.push("media/ffmpeg/vp9-allocation-diagnostic-recipe.mjs", "media/ffmpeg/vp9-allocation-c-unit.mjs", "media/ffmpeg/make-vp9-allocation-diagnostic-source.mjs");
+if (allocationDiagnostics) sourceFiles.push("media/ffmpeg/vp9-allocation-diagnostic-recipe.mjs", "media/ffmpeg/vp9-allocation-c-unit.mjs", "media/ffmpeg/make-vp9-allocation-diagnostic-source.mjs", "media/ffmpeg/probe-vp9-allocation-link.mjs");
 for (const entry of await readdir(path.join(root, "media/ffmpeg"))) if (/^build-.*\.sh$/.test(entry)) sourceFiles.push("media/ffmpeg/" + entry);
 for (const entry of await readdir(path.join(root, "media/ffmpeg/patches"))) if (entry.endsWith(".patch")) sourceFiles.push("media/ffmpeg/patches/" + entry);
 for (const file of sourceFiles) sourcePins[file] = sha(await read(file));
@@ -59,9 +59,15 @@ try {
     assert.equal(proof.cUnit.totalFunctionCalls, 24);
     assert.equal(proof.installedSdkHeaderPins.heap, VP9_ALLOCATION_DIAGNOSTIC_PINS.heapHeader);
     assert.equal(proof.installedSdkHeaderPins.allocator, VP9_ALLOCATION_DIAGNOSTIC_PINS.allocatorHeader);
+    const configure = makeVp9AllocationConfigureProbe(await readFile(path.join(output,"build-libraries.allocation.base.sh"),"utf8")),
+      linkProof = JSON.parse(await readFile(path.join(output,"vp9-allocation-link-proof.json")));
+    assert.equal(await readFile(path.join(output,"build-libraries.allocation.diagnostic.sh"),"utf8"),configure.generated);
+    assert.equal(proof.configure.generatedSha256,configure.generatedSha256);
+    assert.notEqual(linkProof.cases[0].code,0); assert.equal(linkProof.cases[1].code,0); assert.equal(linkProof.wasmInstantiated,false);
     diagnosticContract = { encoderSha256: encoder.generatedSha256, allocatorSha256: allocator.generatedSha256,
       encoderEdits: encoder.edits.length, allocatorEdits: allocator.edits.length, cUnitCalls: 24,
-      failureOnly: true, successfulPathStatisticCalls: 0, allocatorAlgorithmChanged: false, actualBrowserMeasurements: null };
+      failureOnly: true, successfulPathStatisticCalls: 0, allocatorAlgorithmChanged: false, actualBrowserMeasurements: null,
+      configureProbeAllocatorAlignedToFinal: true, productionFinalLinkFlagsChanged: false, configureRecipeSha256: configure.generatedSha256 };
   }
   const wasm = await readFile(path.join(output, "within-remux.wasm")); assert.ok(wasm.length < 16777216 && WebAssembly.validate(wasm));
   const limits = readWasmMemoryLimits(wasm);

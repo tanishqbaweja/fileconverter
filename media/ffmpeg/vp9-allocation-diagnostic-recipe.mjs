@@ -56,3 +56,11 @@ export function makeVp9FrameAllocationDiagnostic(source) {
     [before, after],
   ]);
 }
+export function makeVp9AllocationConfigureProbe(source) {
+  return { ...derive(source, "6414ea37233cf82ebb4cbac2352061ed830befbdf7eb395988b7c1e2d187f6cf", [
+    ['--extra-ldflags="-O3 -pthread -L${PREFIX}/lib"', '--extra-ldflags="-O3 -pthread -sMALLOC=emmalloc -L${PREFIX}/lib"'],
+    ['emmake make -j"$(nproc)"', 'if ! grep -qx \'#define CONFIG_LIBVPX_VP9_ENCODER 1\' config_components.h; then\n' +
+      '  tail -n 160 ffbuild/config.log >&2\n  exit 1\nfi\nemmake make -j"$(nproc)"'],
+  ]), failureOnly: false, scope: "Configure-link probes select the SAME allocator already required by the unchanged production final link",
+  configureProbeAllocatorAlignedToFinal: true, productionFinalLinkFlagsChanged: false };
+}
