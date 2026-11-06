@@ -1,5 +1,34 @@
 # Tested conversion ledger
 
+2026-11-06 cycle checkpoint115distinct focused tests PASS (102platform diagnostic/
+bridge/startup/allocator regressions +13CPU token source/layout/evidence checks),
+0fail/0skip. TypeScript noEmit/nonincremental and all affected lint/diff PASS.
+No live browser/build/test remains. All disposable owned runtime/outputs removed;
+compact evidence and source-qualified private candidate retained. Next distinct
+native packed-token build, NOT a replay of unchanged failed original controls.
+
+2026-11-06 DISTINCT CPU token-packed candidate source qualification PASS, NOT yet
+native/browser accepted. Pinned whole libvpx1.16 archive audit:880C/headers,
+5VP9 token-reference files/62matches; internal EOSB has exactly2writer sites,
+one reader function, never signalled/indexed as an entropy token. Entropy tokens
+0..11 unchanged. Private EOSB127->15 permits10-bit context index+4-bit token;
+context still reads the live probability table, extras/capacity/settings untouched.
+Actual clang Wasm32 static assertions/LLVM: current low-bit6B record ->4B;
+high-bit8B remains8B. Actual prior native42226266102 is low-bit, but new linked
+library layout/savings still UNPROVEN.552960original/candidate producer-packer
+mock cases PASS at-O0/-O2, all65536extra patterns/1024context indices, changed
+probabilities, zero/EOB/end-sentinel paths. Not a native media conversion or
+identical-input speed proof. Initial github.com source fetch failed timeout;
+same archive via codeload succeeded with exact unchanged SHA. No source archive
+copy retained, no media read/outputs generated, all owned compiler scratch gone.
+NEXT distinct full native build with actual source/config/layout authentication,
+then unchanged strict small bit-exact/fidelity/recovery and original browser
+gates. Do not rerun failed token6 original7 or unchanged platform profile.
+
+2026-11-06 platform diagnostic regression checkpoint102distinct focused tests
+PASS/0skip plus earlier nonincremental TypeScript and affected lint/diff PASS.
+No new public profile, production build, headed/manual or release claim.
+
 2026-11-06 actual bounded allocation diagnostic at83f10639 completed as DIAGNOSTIC
 ONLY, safety-stopped at encoder configuration BEFORE first frame. Three snapshots
 loaded/native-ready/configured, each981..1177ms. Same-birth renderer setup delta:

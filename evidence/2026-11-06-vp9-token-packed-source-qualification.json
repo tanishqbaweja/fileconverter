@@ -1,0 +1,200 @@
+{
+  "recordedAt": "2026-11-06T15:20:34.342Z",
+  "scope": "Private four-byte token source/ABI/mock qualification; NOT a compiled or accepted browser conversion",
+  "sourceAudit": {
+    "file": "evidence/2026-11-06-vp9-token-packed-source-audit.json",
+    "sha256": "42a271447d6ce968b967b9e119b3853e07f0aa552e3ea9c6cabe06b5807e9445"
+  },
+  "reviewedDomain": {
+    "sourceArchiveSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
+    "reviewedCHeaderFiles": 880,
+    "tokenReferenceFiles": 5,
+    "sentinelWriterSites": 2,
+    "sentinelReadFunction": "pack_mb_tokens",
+    "sentinelIsNotEntropyIndexOrSignalled": true,
+    "entropyTokenValuesUnchanged": true,
+    "semanticProofForArbitrarySources": false,
+    "actualLinkedCodecValidated": false,
+    "publicAcceptance": false
+  },
+  "recipeSha256": "42d5ba2f55790e4215fb906907e45bb5eaca9ec3b47e1858b04f3c22d19429f8",
+  "parentContextSources": {
+    "vp9/encoder/vp9_tokenize.h": {
+      "edits": [
+        [
+          "  const vpx_prob *context_tree;\n  int16_t token;\n  EXTRABIT extra;\n} TOKENEXTRA;",
+          "  uint16_t context_tree_offset;\n  int16_t token;\n  EXTRABIT extra;\n} TOKENEXTRA;"
+        ]
+      ],
+      "parentSha256": "5942c93a8f07fc7e5f2b479954ec77c3672294816f3bf6d168d65fee9d40d6a7",
+      "generatedSha256": "bb64fe54d05391f68f76a43c25f79b3108a808158f5920647fb1f4add3a1eebb"
+    },
+    "vp9/encoder/vp9_tokenize.c": {
+      "edits": [
+        [
+          "static INLINE void add_token(TOKENEXTRA **t, const vpx_prob *context_tree,\n                             int16_t token, EXTRABIT extra,\n                             unsigned int *counts) {\n  (*t)->context_tree = context_tree;\n  (*t)->token = token;\n  (*t)->extra = extra;\n  (*t)++;\n  ++counts[token];\n}\n",
+          "static INLINE void add_token(TOKENEXTRA **t, const vpx_prob *context_tree,\n                             int16_t token, EXTRABIT extra,\n                             unsigned int *counts,\n                             const unsigned char *context_base) {\n  const size_t offset = (const unsigned char *)context_tree - context_base;\n  assert(sizeof(((FRAME_CONTEXT *)0)->coef_probs) <= 65536);\n  assert(offset <= sizeof(((FRAME_CONTEXT *)0)->coef_probs) - UNCONSTRAINED_NODES);\n  (*t)->context_tree_offset = (uint16_t)offset;\n  (*t)->token = token;\n  (*t)->extra = extra;\n  (*t)++;\n  ++counts[token];\n}\n"
+        ],
+        [
+          "static INLINE void add_token_no_extra(TOKENEXTRA **t,\n                                      const vpx_prob *context_tree,\n                                      int16_t token, unsigned int *counts) {\n  (*t)->context_tree = context_tree;\n  (*t)->token = token;\n  (*t)++;\n  ++counts[token];\n}\n",
+          "static INLINE void add_token_no_extra(TOKENEXTRA **t,\n                                      const vpx_prob *context_tree,\n                                      int16_t token, unsigned int *counts,\n                             const unsigned char *context_base) {\n  const size_t offset = (const unsigned char *)context_tree - context_base;\n  assert(sizeof(((FRAME_CONTEXT *)0)->coef_probs) <= 65536);\n  assert(offset <= sizeof(((FRAME_CONTEXT *)0)->coef_probs) - UNCONSTRAINED_NODES);\n  (*t)->context_tree_offset = (uint16_t)offset;\n  (*t)->token = token;\n  (*t)++;\n  ++counts[token];\n}\n"
+        ],
+        [
+          "static void tokenize_b(int plane, int block, int row, int col,\n                       BLOCK_SIZE plane_bsize, TX_SIZE tx_size, void *arg) {\n  struct tokenize_b_args *const args = arg;\n  VP9_COMP *cpi = args->cpi;\n  ThreadData *const td = args->td;\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;\n  TOKENEXTRA **tp = args->tp;\n  uint8_t token_cache[32 * 32];\n  struct macroblock_plane *p = &x->plane[plane];\n  struct macroblockd_plane *pd = &xd->plane[plane];\n  MODE_INFO *mi = xd->mi[0];\n  int pt; /* near block/prev token context index */\n  int c;\n  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  int eob = p->eobs[block];\n  const PLANE_TYPE type = get_plane_type(plane);\n  const tran_low_t *qcoeff = BLOCK_OFFSET(p->qcoeff, block);\n  const int16_t *scan, *nb;\n  const ScanOrder *so;\n  const int ref = is_inter_block(mi);\n  unsigned int(*const counts)[COEFF_CONTEXTS][ENTROPY_TOKENS] =\n      td->rd_counts.coef_counts[tx_size][type][ref];\n  vpx_prob(*const coef_probs)[COEFF_CONTEXTS][UNCONSTRAINED_NODES] =\n      cpi->common.fc->coef_probs[tx_size][type][ref];\n  unsigned int(*const eob_branch)[COEFF_CONTEXTS] =\n      td->counts->eob_branch[tx_size][type][ref];\n  const uint8_t *const band = get_band_translate(tx_size);\n  const int tx_eob = 16 << (tx_size << 1);\n  int16_t token;\n  EXTRABIT extra;\n  pt = get_entropy_context(tx_size, pd->above_context + col,\n                           pd->left_context + row);\n  so = get_scan(xd, tx_size, type, block);\n  scan = so->scan;\n  nb = so->neighbors;\n  c = 0;\n\n  while (c < eob) {\n    int v = 0;\n    v = qcoeff[scan[c]];\n    ++eob_branch[band[c]][pt];\n\n    while (!v) {\n      add_token_no_extra(&t, coef_probs[band[c]][pt], ZERO_TOKEN,\n                         counts[band[c]][pt]);\n\n      token_cache[scan[c]] = 0;\n      ++c;\n      pt = get_coef_context(nb, token_cache, c);\n      v = qcoeff[scan[c]];\n    }\n\n    vp9_get_token_extra(v, &token, &extra);\n\n    add_token(&t, coef_probs[band[c]][pt], token, extra, counts[band[c]][pt]);\n\n    token_cache[scan[c]] = vp9_pt_energy_class[token];\n    ++c;\n    pt = get_coef_context(nb, token_cache, c);\n  }\n  if (c < tx_eob) {\n    ++eob_branch[band[c]][pt];\n    add_token_no_extra(&t, coef_probs[band[c]][pt], EOB_TOKEN,\n                       counts[band[c]][pt]);\n  }\n\n  *tp = t;\n\n  vp9_set_contexts(xd, pd, plane_bsize, tx_size, c > 0, col, row);\n}\n",
+          "static void tokenize_b(int plane, int block, int row, int col,\n                       BLOCK_SIZE plane_bsize, TX_SIZE tx_size, void *arg) {\n  struct tokenize_b_args *const args = arg;\n  VP9_COMP *cpi = args->cpi;\n  const unsigned char *const context_base =\n      (const unsigned char *)&cpi->common.fc->coef_probs;\n  typedef char WithinTokenContextFits[\n      sizeof(cpi->common.fc->coef_probs) <= 65536 ? 1 : -1];\n  (void)sizeof(WithinTokenContextFits);\n  ThreadData *const td = args->td;\n  MACROBLOCK *const x = &td->mb;\n  MACROBLOCKD *const xd = &x->e_mbd;\n  TOKENEXTRA **tp = args->tp;\n  uint8_t token_cache[32 * 32];\n  struct macroblock_plane *p = &x->plane[plane];\n  struct macroblockd_plane *pd = &xd->plane[plane];\n  MODE_INFO *mi = xd->mi[0];\n  int pt; /* near block/prev token context index */\n  int c;\n  TOKENEXTRA *t = *tp; /* store tokens starting here */\n  int eob = p->eobs[block];\n  const PLANE_TYPE type = get_plane_type(plane);\n  const tran_low_t *qcoeff = BLOCK_OFFSET(p->qcoeff, block);\n  const int16_t *scan, *nb;\n  const ScanOrder *so;\n  const int ref = is_inter_block(mi);\n  unsigned int(*const counts)[COEFF_CONTEXTS][ENTROPY_TOKENS] =\n      td->rd_counts.coef_counts[tx_size][type][ref];\n  vpx_prob(*const coef_probs)[COEFF_CONTEXTS][UNCONSTRAINED_NODES] =\n      cpi->common.fc->coef_probs[tx_size][type][ref];\n  unsigned int(*const eob_branch)[COEFF_CONTEXTS] =\n      td->counts->eob_branch[tx_size][type][ref];\n  const uint8_t *const band = get_band_translate(tx_size);\n  const int tx_eob = 16 << (tx_size << 1);\n  int16_t token;\n  EXTRABIT extra;\n  pt = get_entropy_context(tx_size, pd->above_context + col,\n                           pd->left_context + row);\n  so = get_scan(xd, tx_size, type, block);\n  scan = so->scan;\n  nb = so->neighbors;\n  c = 0;\n\n  while (c < eob) {\n    int v = 0;\n    v = qcoeff[scan[c]];\n    ++eob_branch[band[c]][pt];\n\n    while (!v) {\n      add_token_no_extra(&t, coef_probs[band[c]][pt], ZERO_TOKEN,\n                         counts[band[c]][pt], context_base);\n\n      token_cache[scan[c]] = 0;\n      ++c;\n      pt = get_coef_context(nb, token_cache, c);\n      v = qcoeff[scan[c]];\n    }\n\n    vp9_get_token_extra(v, &token, &extra);\n\n    add_token(&t, coef_probs[band[c]][pt], token, extra, counts[band[c]][pt], context_base);\n\n    token_cache[scan[c]] = vp9_pt_energy_class[token];\n    ++c;\n    pt = get_coef_context(nb, token_cache, c);\n  }\n  if (c < tx_eob) {\n    ++eob_branch[band[c]][pt];\n    add_token_no_extra(&t, coef_probs[band[c]][pt], EOB_TOKEN,\n                       counts[band[c]][pt], context_base);\n  }\n\n  *tp = t;\n\n  vp9_set_contexts(xd, pd, plane_bsize, tx_size, c > 0, col, row);\n}\n"
+        ]
+      ],
+      "parentSha256": "909f28c30ce3aa58560e926d8d74a0872f51d45bae6625f7aa741b4e3a15d1bd",
+      "generatedSha256": "f437c942cda9a87c377796c50e0c2b42b784e431647ea4e613be2c4cc6c7239c"
+    },
+    "vp9/encoder/vp9_bitstream.c": {
+      "edits": [
+        [
+          "static void pack_mb_tokens(vpx_writer *w, TOKENEXTRA **tp,\n                           const TOKENEXTRA *const stop,\n                           vpx_bit_depth_t bit_depth) {\n  const TOKENEXTRA *p;\n  const vp9_extra_bit *const extra_bits =\n#if CONFIG_VP9_HIGHBITDEPTH\n      (bit_depth == VPX_BITS_12)   ? vp9_extra_bits_high12\n      : (bit_depth == VPX_BITS_10) ? vp9_extra_bits_high10\n                                   : vp9_extra_bits;\n#else\n      vp9_extra_bits;\n  (void)bit_depth;\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\n  for (p = *tp; p < stop && p->token != EOSB_TOKEN; ++p) {\n    if (p->token == EOB_TOKEN) {\n      vpx_write(w, 0, p->context_tree[0]);\n      continue;\n    }\n    vpx_write(w, 1, p->context_tree[0]);\n    while (p->token == ZERO_TOKEN) {\n      vpx_write(w, 0, p->context_tree[1]);\n      ++p;\n      if (p == stop || p->token == EOSB_TOKEN) {\n        *tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);\n        return;\n      }\n    }\n\n    {\n      const int t = p->token;\n      const vpx_prob *const context_tree = p->context_tree;\n      assert(t != ZERO_TOKEN);\n      assert(t != EOB_TOKEN);\n      assert(t != EOSB_TOKEN);\n      vpx_write(w, 1, context_tree[1]);\n      if (t == ONE_TOKEN) {\n        vpx_write(w, 0, context_tree[2]);\n        vpx_write_bit(w, p->extra & 1);\n      } else {  // t >= TWO_TOKEN && t < EOB_TOKEN\n        const struct vp9_token *const a = &vp9_coef_encodings[t];\n        int v = a->value;\n        int n = a->len;\n        const int e = p->extra;\n        vpx_write(w, 1, context_tree[2]);\n        vp9_write_tree(w, vp9_coef_con_tree,\n                       vp9_pareto8_full[context_tree[PIVOT_NODE] - 1], v,\n                       n - UNCONSTRAINED_NODES, 0);\n        if (t >= CATEGORY1_TOKEN) {\n          const vp9_extra_bit *const b = &extra_bits[t];\n          const unsigned char *pb = b->prob;\n          v = e >> 1;\n          n = b->len;  // number of bits in v, assumed nonzero\n          do {\n            const int bb = (v >> --n) & 1;\n            vpx_write(w, bb, *pb++);\n          } while (n);\n        }\n        vpx_write_bit(w, e & 1);\n      }\n    }\n  }\n  *tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);\n}\n",
+          "static void pack_mb_tokens(vpx_writer *w, TOKENEXTRA **tp,\n                           const TOKENEXTRA *const stop,\n                           vpx_bit_depth_t bit_depth,\n                           const unsigned char *context_base) {\n  const TOKENEXTRA *p;\n  const vp9_extra_bit *const extra_bits =\n#if CONFIG_VP9_HIGHBITDEPTH\n      (bit_depth == VPX_BITS_12)   ? vp9_extra_bits_high12\n      : (bit_depth == VPX_BITS_10) ? vp9_extra_bits_high10\n                                   : vp9_extra_bits;\n#else\n      vp9_extra_bits;\n  (void)bit_depth;\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\n  for (p = *tp; p < stop && p->token != EOSB_TOKEN; ++p) {\n    if (p->token == EOB_TOKEN) {\n      vpx_write(w, 0, (context_base + p->context_tree_offset)[0]);\n      continue;\n    }\n    vpx_write(w, 1, (context_base + p->context_tree_offset)[0]);\n    while (p->token == ZERO_TOKEN) {\n      vpx_write(w, 0, (context_base + p->context_tree_offset)[1]);\n      ++p;\n      if (p == stop || p->token == EOSB_TOKEN) {\n        *tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);\n        return;\n      }\n    }\n\n    {\n      const int t = p->token;\n      const vpx_prob *const context_tree = (context_base + p->context_tree_offset);\n      assert(t != ZERO_TOKEN);\n      assert(t != EOB_TOKEN);\n      assert(t != EOSB_TOKEN);\n      vpx_write(w, 1, context_tree[1]);\n      if (t == ONE_TOKEN) {\n        vpx_write(w, 0, context_tree[2]);\n        vpx_write_bit(w, p->extra & 1);\n      } else {  // t >= TWO_TOKEN && t < EOB_TOKEN\n        const struct vp9_token *const a = &vp9_coef_encodings[t];\n        int v = a->value;\n        int n = a->len;\n        const int e = p->extra;\n        vpx_write(w, 1, context_tree[2]);\n        vp9_write_tree(w, vp9_coef_con_tree,\n                       vp9_pareto8_full[context_tree[PIVOT_NODE] - 1], v,\n                       n - UNCONSTRAINED_NODES, 0);\n        if (t >= CATEGORY1_TOKEN) {\n          const vp9_extra_bit *const b = &extra_bits[t];\n          const unsigned char *pb = b->prob;\n          v = e >> 1;\n          n = b->len;  // number of bits in v, assumed nonzero\n          do {\n            const int bb = (v >> --n) & 1;\n            vpx_write(w, bb, *pb++);\n          } while (n);\n        }\n        vpx_write_bit(w, e & 1);\n      }\n    }\n  }\n  *tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);\n}\n"
+        ],
+        [
+          "  pack_mb_tokens(w, tok, tok_end, cm->bit_depth);",
+          "  pack_mb_tokens(w, tok, tok_end, cm->bit_depth,\n                 (const unsigned char *)&cm->fc->coef_probs);"
+        ]
+      ],
+      "parentSha256": "211f57fbfeb815b3d871dd741aa9aa7570023878b86517f774ca2e3ca4ad9dcf",
+      "generatedSha256": "8e798b1b38cc1607e99a6ebf95bfb6d4d80629dcb8227a27f6d75a20ae0c9500"
+    }
+  },
+  "sources": {
+    "vp9/encoder/vp9_tokenize.h": {
+      "edits": [
+        [
+          "#define EOSB_TOKEN 127  // Not signalled, encoder only",
+          "#define EOSB_TOKEN 15  // Not signalled, encoder only; private packed sentinel"
+        ],
+        [
+          "  uint16_t context_tree_offset;\n  int16_t token;\n  EXTRABIT extra;\n} TOKENEXTRA;",
+          "  uint16_t context_tree_index : 10;\n  uint16_t token : 4;\n  EXTRABIT extra;\n} TOKENEXTRA;\ntypedef char WithinPackedTokenSize[\n    sizeof(TOKENEXTRA) == (CONFIG_VP9_HIGHBITDEPTH ? 8 : 4) ? 1 : -1];\ntypedef char WithinPackedTokenDomain[\n    ENTROPY_TOKENS == 12 && EOB_TOKEN == 11 && EOSB_TOKEN == 15 ? 1 : -1];"
+        ]
+      ],
+      "parentSha256": "bb64fe54d05391f68f76a43c25f79b3108a808158f5920647fb1f4add3a1eebb",
+      "generatedSha256": "98abdd557e93910725c7457f9e6d76585df5001c2c1e150543699e26d2a6829b"
+    },
+    "vp9/encoder/vp9_tokenize.c": {
+      "edits": [
+        [
+          "static INLINE void add_token(TOKENEXTRA **t, const vpx_prob *context_tree,\n                             int16_t token, EXTRABIT extra,\n                             unsigned int *counts,\n                             const unsigned char *context_base) {\n  const size_t offset = (const unsigned char *)context_tree - context_base;\n  assert(sizeof(((FRAME_CONTEXT *)0)->coef_probs) <= 65536);\n  assert(offset <= sizeof(((FRAME_CONTEXT *)0)->coef_probs) - UNCONSTRAINED_NODES);\n  (*t)->context_tree_offset = (uint16_t)offset;\n  (*t)->token = token;\n  (*t)->extra = extra;\n  (*t)++;\n  ++counts[token];\n}\n",
+          "static INLINE void add_token(TOKENEXTRA **t, const vpx_prob *context_tree,\n                             int16_t token, EXTRABIT extra,\n                             unsigned int *counts,\n                             const unsigned char *context_base) {\n  const size_t offset = (const unsigned char *)context_tree - context_base;\n  assert(UNCONSTRAINED_NODES == 3);\n  assert(sizeof(((FRAME_CONTEXT *)0)->coef_probs) <= 1024 * UNCONSTRAINED_NODES);\n  assert(offset <= sizeof(((FRAME_CONTEXT *)0)->coef_probs) - UNCONSTRAINED_NODES);\n  assert(offset % UNCONSTRAINED_NODES == 0);\n  assert(token >= ZERO_TOKEN && token < ENTROPY_TOKENS);\n  (*t)->context_tree_index = (uint16_t)(offset / UNCONSTRAINED_NODES);\n  (*t)->token = token;\n  (*t)->extra = extra;\n  (*t)++;\n  ++counts[token];\n}\n"
+        ],
+        [
+          "static INLINE void add_token_no_extra(TOKENEXTRA **t,\n                                      const vpx_prob *context_tree,\n                                      int16_t token, unsigned int *counts,\n                             const unsigned char *context_base) {\n  const size_t offset = (const unsigned char *)context_tree - context_base;\n  assert(sizeof(((FRAME_CONTEXT *)0)->coef_probs) <= 65536);\n  assert(offset <= sizeof(((FRAME_CONTEXT *)0)->coef_probs) - UNCONSTRAINED_NODES);\n  (*t)->context_tree_offset = (uint16_t)offset;\n  (*t)->token = token;\n  (*t)++;\n  ++counts[token];\n}\n",
+          "static INLINE void add_token_no_extra(TOKENEXTRA **t,\n                                      const vpx_prob *context_tree,\n                                      int16_t token, unsigned int *counts,\n                             const unsigned char *context_base) {\n  const size_t offset = (const unsigned char *)context_tree - context_base;\n  assert(UNCONSTRAINED_NODES == 3);\n  assert(sizeof(((FRAME_CONTEXT *)0)->coef_probs) <= 1024 * UNCONSTRAINED_NODES);\n  assert(offset <= sizeof(((FRAME_CONTEXT *)0)->coef_probs) - UNCONSTRAINED_NODES);\n  assert(offset % UNCONSTRAINED_NODES == 0);\n  assert(token >= ZERO_TOKEN && token < ENTROPY_TOKENS);\n  (*t)->context_tree_index = (uint16_t)(offset / UNCONSTRAINED_NODES);\n  (*t)->token = token;\n  (*t)++;\n  ++counts[token];\n}\n"
+        ],
+        [
+          "      sizeof(cpi->common.fc->coef_probs) <= 65536 ? 1 : -1];",
+          "      UNCONSTRAINED_NODES == 3 &&\n      sizeof(cpi->common.fc->coef_probs) <= 1024 * UNCONSTRAINED_NODES ? 1 : -1];"
+        ]
+      ],
+      "parentSha256": "f437c942cda9a87c377796c50e0c2b42b784e431647ea4e613be2c4cc6c7239c",
+      "generatedSha256": "3a2d78cf0f874f43b159dbafa28f3735320fd36806400e584dfa73ad9370af5c"
+    },
+    "vp9/encoder/vp9_bitstream.c": {
+      "edits": [
+        [
+          "static void pack_mb_tokens(vpx_writer *w, TOKENEXTRA **tp,\n                           const TOKENEXTRA *const stop,\n                           vpx_bit_depth_t bit_depth,\n                           const unsigned char *context_base) {\n  const TOKENEXTRA *p;\n  const vp9_extra_bit *const extra_bits =\n#if CONFIG_VP9_HIGHBITDEPTH\n      (bit_depth == VPX_BITS_12)   ? vp9_extra_bits_high12\n      : (bit_depth == VPX_BITS_10) ? vp9_extra_bits_high10\n                                   : vp9_extra_bits;\n#else\n      vp9_extra_bits;\n  (void)bit_depth;\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\n  for (p = *tp; p < stop && p->token != EOSB_TOKEN; ++p) {\n    if (p->token == EOB_TOKEN) {\n      vpx_write(w, 0, (context_base + p->context_tree_offset)[0]);\n      continue;\n    }\n    vpx_write(w, 1, (context_base + p->context_tree_offset)[0]);\n    while (p->token == ZERO_TOKEN) {\n      vpx_write(w, 0, (context_base + p->context_tree_offset)[1]);\n      ++p;\n      if (p == stop || p->token == EOSB_TOKEN) {\n        *tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);\n        return;\n      }\n    }\n\n    {\n      const int t = p->token;\n      const vpx_prob *const context_tree = (context_base + p->context_tree_offset);\n      assert(t != ZERO_TOKEN);\n      assert(t != EOB_TOKEN);\n      assert(t != EOSB_TOKEN);\n      vpx_write(w, 1, context_tree[1]);\n      if (t == ONE_TOKEN) {\n        vpx_write(w, 0, context_tree[2]);\n        vpx_write_bit(w, p->extra & 1);\n      } else {  // t >= TWO_TOKEN && t < EOB_TOKEN\n        const struct vp9_token *const a = &vp9_coef_encodings[t];\n        int v = a->value;\n        int n = a->len;\n        const int e = p->extra;\n        vpx_write(w, 1, context_tree[2]);\n        vp9_write_tree(w, vp9_coef_con_tree,\n                       vp9_pareto8_full[context_tree[PIVOT_NODE] - 1], v,\n                       n - UNCONSTRAINED_NODES, 0);\n        if (t >= CATEGORY1_TOKEN) {\n          const vp9_extra_bit *const b = &extra_bits[t];\n          const unsigned char *pb = b->prob;\n          v = e >> 1;\n          n = b->len;  // number of bits in v, assumed nonzero\n          do {\n            const int bb = (v >> --n) & 1;\n            vpx_write(w, bb, *pb++);\n          } while (n);\n        }\n        vpx_write_bit(w, e & 1);\n      }\n    }\n  }\n  *tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);\n}\n",
+          "static void pack_mb_tokens(vpx_writer *w, TOKENEXTRA **tp,\n                           const TOKENEXTRA *const stop,\n                           vpx_bit_depth_t bit_depth,\n                           const unsigned char *context_base) {\n  const TOKENEXTRA *p;\n  const vp9_extra_bit *const extra_bits =\n#if CONFIG_VP9_HIGHBITDEPTH\n      (bit_depth == VPX_BITS_12)   ? vp9_extra_bits_high12\n      : (bit_depth == VPX_BITS_10) ? vp9_extra_bits_high10\n                                   : vp9_extra_bits;\n#else\n      vp9_extra_bits;\n  (void)bit_depth;\n#endif  // CONFIG_VP9_HIGHBITDEPTH\n\n  for (p = *tp; p < stop && p->token != EOSB_TOKEN; ++p) {\n    if (p->token == EOB_TOKEN) {\n      vpx_write(w, 0, (context_base + p->context_tree_index * UNCONSTRAINED_NODES)[0]);\n      continue;\n    }\n    vpx_write(w, 1, (context_base + p->context_tree_index * UNCONSTRAINED_NODES)[0]);\n    while (p->token == ZERO_TOKEN) {\n      vpx_write(w, 0, (context_base + p->context_tree_index * UNCONSTRAINED_NODES)[1]);\n      ++p;\n      if (p == stop || p->token == EOSB_TOKEN) {\n        *tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);\n        return;\n      }\n    }\n\n    {\n      const int t = p->token;\n      const vpx_prob *const context_tree = (context_base + p->context_tree_index * UNCONSTRAINED_NODES);\n      assert(t != ZERO_TOKEN);\n      assert(t != EOB_TOKEN);\n      assert(t != EOSB_TOKEN);\n      vpx_write(w, 1, context_tree[1]);\n      if (t == ONE_TOKEN) {\n        vpx_write(w, 0, context_tree[2]);\n        vpx_write_bit(w, p->extra & 1);\n      } else {  // t >= TWO_TOKEN && t < EOB_TOKEN\n        const struct vp9_token *const a = &vp9_coef_encodings[t];\n        int v = a->value;\n        int n = a->len;\n        const int e = p->extra;\n        vpx_write(w, 1, context_tree[2]);\n        vp9_write_tree(w, vp9_coef_con_tree,\n                       vp9_pareto8_full[context_tree[PIVOT_NODE] - 1], v,\n                       n - UNCONSTRAINED_NODES, 0);\n        if (t >= CATEGORY1_TOKEN) {\n          const vp9_extra_bit *const b = &extra_bits[t];\n          const unsigned char *pb = b->prob;\n          v = e >> 1;\n          n = b->len;  // number of bits in v, assumed nonzero\n          do {\n            const int bb = (v >> --n) & 1;\n            vpx_write(w, bb, *pb++);\n          } while (n);\n        }\n        vpx_write_bit(w, e & 1);\n      }\n    }\n  }\n  *tp = (TOKENEXTRA *)(uintptr_t)p + (p->token == EOSB_TOKEN);\n}\n"
+        ]
+      ],
+      "parentSha256": "8e798b1b38cc1607e99a6ebf95bfb6d4d80629dcb8227a27f6d75a20ae0c9500",
+      "generatedSha256": "2ddd2ba65812e474e6a365d4b6e9a3ce560d140405adf5d2656cb31a935135c9"
+    }
+  },
+  "internalSentinel": {
+    "old": 127,
+    "candidate": 15,
+    "signalled": false
+  },
+  "layout": {
+    "scope": "clang Wasm32 static assertions/LLVM; not linked codec",
+    "variants": [
+      {
+        "highBitDepth": 0,
+        "previousRecordBytes": 6,
+        "packedRecordBytes": 4,
+        "extraOffset": 2,
+        "cSourceSha256": "e6d83de1b88c78f10f13d2724c7d968b56aa58a1b72bce5217aa7ae43bb0f632",
+        "llvmSha256": "897a5eb1d8ec21b8d9a031006ed2d408e9a7852e319b56f12b97ab6991e75531"
+      },
+      {
+        "highBitDepth": 1,
+        "previousRecordBytes": 8,
+        "packedRecordBytes": 8,
+        "extraOffset": 4,
+        "cSourceSha256": "16ed509d11c3f29db2e3e6897f638d84c8fb806b3950e56af57163be0bc7c860",
+        "llvmSha256": "61b3785e391c8d2e5cdf81bbfa5a97edd3968e2ed6741bff22535dbcc1a9d5e4"
+      }
+    ]
+  },
+  "cUnit": {
+    "scope": "Exact pinned original/packed producer/packer snippets with mocked entropy writer, NOT codec or browser acceptance",
+    "sourceSha256": "fc27a595f2f3207f0efa80478a193ee120082ce2573c5f2e5e3c2b18858c6ac5",
+    "variants": [
+      {
+        "highBitDepth": 0,
+        "optimization": "-O0",
+        "producerPackerCases": 69120,
+        "candidateRecordBytes": 4,
+        "extraBitPatterns": 65536,
+        "contextIndices": 1024
+      },
+      {
+        "highBitDepth": 0,
+        "optimization": "-O2",
+        "producerPackerCases": 69120,
+        "candidateRecordBytes": 4,
+        "extraBitPatterns": 65536,
+        "contextIndices": 1024
+      },
+      {
+        "highBitDepth": 1,
+        "optimization": "-O0",
+        "producerPackerCases": 207360,
+        "candidateRecordBytes": 8,
+        "extraBitPatterns": 65536,
+        "contextIndices": 1024
+      },
+      {
+        "highBitDepth": 1,
+        "optimization": "-O2",
+        "producerPackerCases": 207360,
+        "candidateRecordBytes": 8,
+        "extraBitPatterns": 65536,
+        "contextIndices": 1024
+      }
+    ],
+    "actualMemorySavedBytes": null,
+    "nativeCodecConversion": false,
+    "browserValidated": false,
+    "publicAcceptance": false
+  },
+  "previousActualNativeRunId": 42226266102,
+  "previousActualHighBitDepth": 0,
+  "previousActualRecordBytes": 6,
+  "candidateActualLibraryLayout": null,
+  "actualMemorySavedBytes": null,
+  "tokenCapacityChanged": false,
+  "entropyTokenValuesChanged": false,
+  "extraBitsChanged": false,
+  "memoryLimitsRaised": false,
+  "codecSettingsChanged": false,
+  "pixelAlgorithmsChanged": false,
+  "wasmCodecBuilt": false,
+  "browserValidated": false,
+  "independentBitExactBrowserControlPassed": false,
+  "speedGainProven": false,
+  "publicAcceptance": false,
+  "userMediaReadOrConverted": false,
+  "sourceDownloadFailure": {
+    "endpoint": "github.com",
+    "code": "UND_ERR_CONNECT_TIMEOUT",
+    "alternative": "Same archive via codeload.github.com; exact SHA256 verified"
+  },
+  "nextAction": "Distinct full native compilation with actual library layout/source authentication; then unchanged strict bit-exact/fidelity/recovery and original browser gates. Never infer actual savings or speed from record layout alone."
+}

@@ -1,5 +1,19 @@
 # Remaining work audit
 
+2026-11-06 checkpoint115distinct focused tests PASS/0skip, TypeScript/affected
+lint/diff PASS. No live test/build. Native packed-token compilation and browser
+acceptance remain next; full original/scaling/speed/broad family/release scope
+still open. This checkpoint is not goal completion or public profile promotion.
+
+2026-11-06 next DISTINCT CPU representation candidate source-qualified: 4-byte
+low-bit token record versus current6, entropy/extras/counts/capacity/settings
+unchanged; internal non-signalled sentinel compacted only after pinned full-
+archive consumer audit.552960mock producer/packer cases and actual clang Wasm32
+layout assertions PASS. New linked library/actual memory savings/browser fidelity/
+recovery/full original still UNVERIFIED; no speed claim. NEXT distinct native
+build/authentication then unchanged browser gates. All compiler scratch gone;
+source archive held bounded in RAM only, user media not read/converted.
+
 2026-11-06 platform allocation evidence narrows failure to native malloc-category
 growth already present during setup: +98,248,982B versus V8+524,288B, before first
 frame/packed-frame submission. Exact native stack owner still unproven. Diagnostic

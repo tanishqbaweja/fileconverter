@@ -9,11 +9,14 @@ const utility = process.argv[2] === "--utility";
 const tokens = process.argv[2] === "--tokens";
 const tokenContext = process.argv[2] === "--token-context";
 const tokenLifetime = process.argv[2] === "--token-lifetime";
-assert.ok(process.argv.length === 2 || (process.argv.length === 3 && (lifetime || utility || tokens || tokenContext || tokenLifetime)));
+const tokenPacked = process.argv[2] === "--token-packed";
+assert.ok(process.argv.length === 2 || (process.argv.length === 3 && (lifetime || utility || tokens || tokenContext || tokenLifetime || tokenPacked)));
 const root = path.resolve(import.meta.dirname, ".."), recipe = await readFile(path.join(root, "media/ffmpeg/reproduce-nondocker.sh"), "utf8");
 const version = "1.16.0", expected = "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c";
 assert.ok(recipe.includes("LIBVPX_VERSION=" + version)); assert.ok(recipe.includes("LIBVPX_SHA256=" + expected));
-const sha = bytes => createHash("sha256").update(bytes).digest("hex"), url = "https://github.com/webmproject/libvpx/archive/refs/tags/v" + version + ".tar.gz";
+const sha = bytes => createHash("sha256").update(bytes).digest("hex"), url = tokenPacked
+  ? "https://codeload.github.com/webmproject/libvpx/tar.gz/refs/tags/v"+version
+  : "https://github.com/webmproject/libvpx/archive/refs/tags/v" + version + ".tar.gz";
 const response = await fetch(url, { signal: AbortSignal.timeout(120000) }); assert.equal(response.status, 200);
 const reader = response.body.getReader(), storage = Buffer.alloc(8388608); let compressedBytes = 0;
 try {
@@ -55,7 +58,30 @@ assert.ok(allocation.includes("Failed to allocate temporal filter buffer")); ass
 assert.equal(filterCallSites.length, 2); assert.ok(filterCallSites.every(row => row.file === "vp9/encoder/vp9_encoder.c"));
 const contexts = filterCallSites.map(row => ({ ...row, context: encoder.split("\n").slice(Math.max(0, row.line - 20), row.line + 5).join("\n") }));
 assert.ok(contexts.every(row => row.context.includes("!= REALTIME")), "Both call paths must have explicit non-realtime guards");
-if (tokenLifetime) {
+if (tokenPacked) {
+  const references=[],sentinelReferences=[],preimages={};
+  for(const [file,source]of sources) {
+    const lines=source.split("\n"),matches=[],sentinels=[];
+    for(const [index,line]of lines.entries()) {
+      const row={line:index+1,text:line.trim(),context:lines.slice(Math.max(0,index-3),index+4).join("\n")};
+      if(file.startsWith("vp9/")&&(/\bTOKENEXTRA\b|(?:->|\.)token\b|\bcontext_tree\b/.test(line)))matches.push(row);
+      if(/\bEOSB_TOKEN\b/.test(line))sentinels.push(row);
+    }
+    if(matches.length)references.push({file,sha256:sha(source),matches});
+    if(sentinels.length)sentinelReferences.push({file,sha256:sha(source),matches:sentinels});
+  }
+  for(const file of ["vp9/encoder/vp9_tokenize.h","vp9/encoder/vp9_tokenize.c","vp9/encoder/vp9_bitstream.c",
+    "vp9/encoder/vp9_encodeframe.c","vp9/common/vp9_entropy.h"]) {
+    const exactSource=sources.get(file);assert.ok(exactSource);preimages[file]={sha256:sha(exactSource),exactSource};
+  }
+  const report={recordedAt:new Date().toISOString(),scope:"Pinned entire C/header sentinel inventory and VP9 token-field/reference audit, NOT arbitrary C alias proof or accepted packing",
+    sourceUrl:url,archiveSha256:expected,cFiles,references,sentinelReferences,preimages,
+    codecBuilt:false,actualMemorySavedBytes:null,browserValidated:false,publicAcceptance:false,userMediaReadOrConverted:false};
+  const output=JSON.stringify(report,null,2)+"\n";assert.ok(Buffer.byteLength(output)<=1048576);
+  await writeFile(path.join(root,"evidence/2026-11-06-vp9-token-packed-source-audit.json"),output,{flag:"wx"});
+  console.log(JSON.stringify({cFiles,referenceFiles:references.length,tokenMatches:references.reduce((n,x)=>n+x.matches.length,0),
+    sentinelFiles:sentinelReferences.map(x=>({file:x.file,matches:x.matches.map(y=>({line:y.line,text:y.text}))})),bytes:Buffer.byteLength(output),codecBuilt:false}));
+} else if (tokenLifetime) {
   const references=[],wholeObjectOperations=[];
   for(const [file,source] of sources) {
     if(!file.startsWith("vp9/"))continue;
