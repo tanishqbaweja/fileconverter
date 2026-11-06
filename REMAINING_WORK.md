@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-06 token native42226266102 built/authenticated SUCCESS7m38s/all cleanup.
+Actual config HBD0 and compiled Wasm32 layout8->6B now known, same heap/thread/
+codec limits. No actual browser heap/speed acceptance follows from layout. NEXT
+unchanged-threshold strict token browser control -> original7 if PASS. All broader
+original requirements remain open and original6 failure stays recorded.
+
 2026-11-06 native token build42226266102 live at exact50f7a3fa, one dispatch.
 Distinct strict token six-job/original7 harnesses prepared and30driver checks pass;
 all prior correctness/fidelity/250MiB/96MiB gates retained. Await same build near

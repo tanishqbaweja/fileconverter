@@ -1,0 +1,151 @@
+{
+  "scope": "Compact authenticated actual compiler outcomes and mocked allocator controls, NOT browser heap measurements",
+  "runId": 42226266102,
+  "head": "50f7a3fa31816477a3fa85a37bc435d47a6afc9f",
+  "artifactSha256": "57f60e667ef87da6eb9e3b0f1eee85643fc7199afa7d9bb282f3b7df57950df4",
+  "linkControls": {
+    "scope": "Two compile/link-only libvpx VP9 detection controls, NOT codec execution",
+    "cases": [
+      {
+        "productionAllocator": false,
+        "code": 1,
+        "stderrBytes": 2527,
+        "stderrSha256": "9ebee692c1981622f5d1ec184215a03edf584260c38ca1fee382ec8f743d5431",
+        "errorLines": [
+          "wasm-ld: error: /home/runner/work/fileconverter/fileconverter/work/vp9-duration-build/install/lib/libvpx.a(yv12config.c.o): undefined symbol: emmalloc_dynamic_heap_size",
+          "wasm-ld: error: /home/runner/work/fileconverter/fileconverter/work/vp9-duration-build/install/lib/libvpx.a(yv12config.c.o): undefined symbol: emmalloc_free_dynamic_memory",
+          "wasm-ld: error: /home/runner/work/fileconverter/fileconverter/work/vp9-duration-build/install/lib/libvpx.a(yv12config.c.o): undefined symbol: emmalloc_unclaimed_heap_memory",
+          "emcc: error: '/home/runner/work/fileconverter/fileconverter/work/vp9-duration-emsdk/upstream/bin/wasm-ld -o /home/runner/work/fileconverter/fileconverter/work/vp9-allocation-link-90S8A2/default.wasm /home/runner/work/fileconverter/fileconverter/work/vp9-allocation-link-90S8A2/tmpafwx177tlibemscripten_js_symbols.so -Bstatic --import-memory --shared-memory --strip-debug --export=_emscripten_stack_alloc --export=_emscripten_thread_free_data --export=_emscripten_thread_crashed --export=__wasm_call_ctors --expor"
+        ]
+      },
+      {
+        "productionAllocator": true,
+        "code": 0,
+        "stderrBytes": 0,
+        "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "errorLines": []
+      }
+    ],
+    "actualCompilerOutcomeRecorded": true,
+    "wasmInstantiated": false,
+    "mediaReadOrConverted": false,
+    "publicAcceptance": false
+  },
+  "frameAllocatorCControls": {
+    "scope": "Host-compiled exact allocator controls with mocked allocation/statistic APIs, NOT real heap or media measurements",
+    "compilerVersion": "cc (Ubuntu 15.2.0-16ubuntu1) 15.2.0",
+    "sourceSha256": "1717198325ff832712324cb94bb370f7e63f685161c8c02867576ffa2567009d",
+    "totalFunctionCalls": 24,
+    "variants": [
+      {
+        "highBitDepth": 0,
+        "cases": 6,
+        "functionCalls": 12,
+        "failureReports": 1,
+        "successfulPathStatisticCalls": 0,
+        "simulatedFailureLine": "[within-vp9-alloc] w=1920 h=804 b=160 a=32 frame=3790176 heap=100663296 max=100663296 managed=99614720 free=2097152 unclaimed=131072"
+      },
+      {
+        "highBitDepth": 1,
+        "cases": 6,
+        "functionCalls": 12,
+        "failureReports": 1,
+        "successfulPathStatisticCalls": 0,
+        "simulatedFailureLine": "[within-vp9-alloc] w=1920 h=804 b=160 a=32 frame=7580352 heap=100663296 max=100663296 managed=99614720 free=2097152 unclaimed=131072"
+      }
+    ],
+    "nativeCodecConversion": false,
+    "actualBrowserHeapMeasurements": null,
+    "publicAcceptance": false
+  },
+  "sdkHeaderPins": {
+    "heap": "c7ae99c29f94b6a2ea803c7e7e790e87e7078460980e2a68db98a8be7ee8fbde",
+    "allocator": "018d3fb45e17f3d0a9f2edcdab7f5b3be2479e193f38e076d72bf970418ee427"
+  },
+  "lazyUtilityCControls": {
+    "scope": "Host-compiled exact utility control snippets with mocked allocators/scalers, NOT actual codec/fidelity or heap savings",
+    "sourceSha256": "0a7a89e8815723f5a450097b5f0c9398e509100107d44eb5efd0afab0ceda5ed",
+    "variants": [
+      {
+        "highBitDepth": 0,
+        "allocationPairs": 40,
+        "scalingCases": 12,
+        "motionCases": 24,
+        "filterCases": 4,
+        "transitionCalls": 3
+      },
+      {
+        "highBitDepth": 1,
+        "allocationPairs": 80,
+        "scalingCases": 24,
+        "motionCases": 48,
+        "filterCases": 8,
+        "transitionCalls": 6
+      }
+    ],
+    "actualMemorySavedBytes": null,
+    "nativeCodecConversion": false,
+    "publicAcceptance": false
+  },
+  "finalVendorSources": {
+    "vp9/encoder/vp9_encoder.c": "e7d1012d3ababe3054fe90347c4a1a65f63715599a35a35867b1aebafd60a779",
+    "vp9/encoder/vp9_picklpf.c": "f5a66b83100c1d938a3f835a609b947db7d5349b7c5007b1eb77fa84d1f01ffa",
+    "vpx_scale/generic/yv12config.c": "a302d8921a906b074e8ead6ec4443e318c2f7a874c44ea9e6015f385d8a36a7e",
+    "vp9/encoder/vp9_tokenize.h": "bb64fe54d05391f68f76a43c25f79b3108a808158f5920647fb1f4add3a1eebb",
+    "vp9/encoder/vp9_tokenize.c": "f437c942cda9a87c377796c50e0c2b42b784e431647ea4e613be2c4cc6c7239c",
+    "vp9/encoder/vp9_bitstream.c": "8e798b1b38cc1607e99a6ebf95bfb6d4d80629dcb8227a27f6d75a20ae0c9500"
+  },
+  "tokenContextCControls": {
+    "scope": "Exact original/candidate token producer/packer snippets with mocked entropy writer, NOT codec/media or actual Wasm heap savings",
+    "sourceSha256": "f09a5166608540491bb59c22e7a025e48b3855e11a193c121360d2871944f69a",
+    "variants": [
+      {
+        "highBitDepth": 0,
+        "producerPackerCases": 69120,
+        "candidateRecordBytes": 6
+      },
+      {
+        "highBitDepth": 1,
+        "producerPackerCases": 207360,
+        "candidateRecordBytes": 8
+      }
+    ],
+    "actualMemorySavedBytes": null,
+    "nativeCodecConversion": false,
+    "browserValidated": false,
+    "publicAcceptance": false
+  },
+  "tokenContextLifetime": {
+    "sourcePins": {
+      "vp9/common/vp9_onyxc_int.h": "2c44a00c9c9f22e83be4835395a6692d30be18b049701bce49e2581289e0b060",
+      "vp9/common/vp9_entropymode.h": "d3e9ac5ebb30f151b4ee71d4c85f23e30ecb596317dc76c4a6c66236fb83a5da",
+      "vp9/common/vp9_entropy.h": "539027204da3777f748aa4b965f91bfb629c885a4a5c9bbc0a2eaa7546cc4cbc",
+      "vp9/common/vp9_alloccommon.c": "f496640ea6344b71c0a193ddbc77eebafc3b7be2de3a4efc60d16c7d60e65e89",
+      "vpx/internal/vpx_codec_internal.h": "592237daf5d4d6982731a7a4a6c73d10760825c29f5c3755720bf9985c116f7f",
+      "vp9/encoder/vp9_encoder.h": "299ee992384604932584c959b9504130981a5562833863751100627022662f6c",
+      "vp9/encoder/vp9_encoder.c": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+      "vp9/encoder/vp9_tokenize.c": "909f28c30ce3aa58560e926d8d74a0872f51d45bae6625f7aa741b4e3a15d1bd",
+      "vp9/encoder/vp9_bitstream.c": "211f57fbfeb815b3d871dd741aa9aa7570023878b86517f774ca2e3ca4ad9dcf"
+    },
+    "encoderAllocationBeforeTokenization": true,
+    "encoderFrameContextWritesAreObjectCopies": true,
+    "probabilityContentsMayChangeBeforePacking": true,
+    "sameLiveTableUsedByProducerAndPacker": true,
+    "existingPrivateAllocationPatchesPreserveContextReferences": true,
+    "reviewedPinnedSourcesOnly": true,
+    "semanticProofForArbitrarySources": false,
+    "publicAcceptance": false
+  },
+  "tokenContextActualLayout": {
+    "highBitDepth": 0,
+    "originalRecordBytes": 8,
+    "compactRecordBytes": 6,
+    "actualLibraryConfiguration": true,
+    "vpxConfigSha256": "fb78ef744859140ea2d5849d844d78e4a205053c8045f0701485e740edae2a2d",
+    "cSourceSha256": "267ff3e189ce2ab141f2be80b7af06b0af1d195635df81dd6bd69037bc63358e",
+    "llvmSha256": "7a6171a764c0a0b47ecc4f6d6c1f1bb478d6585b700cf5c0c29de9b9bf61cbe1",
+    "codecInstantiated": false
+  },
+  "actualBrowserHeapMeasurements": null,
+  "publicAcceptance": false
+}

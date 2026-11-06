@@ -1,0 +1,742 @@
+{
+  "runId": 42226266102,
+  "head": "50f7a3fa31816477a3fa85a37bc435d47a6afc9f",
+  "status": "authenticated-private-source-built-duration-tool-not-browser-acceptance",
+  "artifact": {
+    "id": 13506113531,
+    "bytes": 3636557,
+    "sha256": "57f60e667ef87da6eb9e3b0f1eee85643fc7199afa7d9bb282f3b7df57950df4",
+    "expiresAt": "2026-11-07T13:39:45Z"
+  },
+  "nativeContract": {
+    "engine": "private-vp9-token-context",
+    "ffmpegVersion": "8.1.2",
+    "ffmpegSourceSha256": "464beb5e7bf0c311e68b45ae2f04e9cc2af88851abb4082231742a74d97b524c",
+    "ffmpegAmrPatchSha256": "cdfa17008d34716c1b16783cd4677647bb4b6c211628fa5adff22be450b711d5",
+    "ffmpegAviIndexPatchSha256": "0b6771caab27b60763d57a42086e4e7fa1addfb4e72e95294d0859a90af08732",
+    "opencoreAmrVersion": "0.1.6",
+    "opencoreAmrSourceSha256": "483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1",
+    "lameVersion": "4.0",
+    "lameSourceSha256": "3df5124d5ad3a98312ffd7ba6a9b36230e4f8a3e66d3ce0f425e336c32d216eb",
+    "opusVersion": "1.6.1",
+    "opusSourceSha256": "6ffcb593207be92584df15b32466ed64bbec99109f007c82205f0194572411a1",
+    "liboggVersion": "1.3.6",
+    "liboggSourceSha256": "5c8253428e181840cd20d41f3ca16557a9cc04bad4a3d04cce84808677fa1061",
+    "libvorbisVersion": "1.3.7",
+    "libvorbisSourceSha256": "b33cc4934322bcbf6efcbacf49e3ca01aadbea4114ec9589d1b1e9d20f72954b",
+    "libtheoraVersion": "1.2.0",
+    "libtheoraSourceSha256": "279327339903b544c28a92aeada7d0dcfd0397b59c2f368cc698ac56f515906e",
+    "libvpxVersion": "1.16.0",
+    "libvpxSourceSha256": "7a479a3c66b9f5d5542a4c6a1b7d3768a983b1e5c14c60a9396edc9b649e015c",
+    "emscriptenImage": "emscripten/emsdk:6.0.4-x64@sha256:8b2291b45733cd26142d2ff21252d06b851f2e15ed8963143b5406850dbb7a3b",
+    "currentWrapperSourceSha256": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+    "matroskaArtworkSourcePatchSha256": "f2d7b2e9dbfdc8204e88e8a68305fa205262391127b9fb9175d5bfaf2a1821bf",
+    "mp4WebmOpusPrimingSourcePatchSha256": "c2f56a458552e3d0bac647c26de0042eebb62e6d2eb4054ac8574fed6b908da2",
+    "audioOptionsSourcePatchSha256": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
+    "directCoreSourceCommit": "79e4db4833e66babb8d8a4e745594a5cb6779262",
+    "directSourcePatchSha256": "e9b140d5999d3b90a555023825b831210520cccbb328810b3d73521d1e80d5bd",
+    "directMp4OnlySourcePatchSha256": "935505aad24d5b5a8cbf693b3d4a3e3b6442843c7b0a931b444c422f48f17764",
+    "licenses": [
+      "FFmpeg LGPL-3.0-or-later",
+      "LAME LGPL-2.0-or-later",
+      "libopus BSD-3-Clause",
+      "libogg BSD-3-Clause",
+      "libvorbis BSD-3-Clause",
+      "libtheora BSD-3-Clause",
+      "libvpx BSD-3-Clause",
+      "OpenCORE AMR Apache-2.0"
+    ],
+    "initialWasmMemoryBytes": 33554432,
+    "maximumWasmMemoryBytes": 100663296,
+    "modules": [
+      {
+        "name": "within-remux",
+        "wasmPthreadPoolSize": 0,
+        "videoCodecThreads": 1,
+        "profiles": [
+          "stream-copy",
+          "audio",
+          "aiff-audio",
+          "amr-audio",
+          "amr-wb-input",
+          "mp3-audio",
+          "aac-audio",
+          "opus-audio",
+          "vorbis-audio",
+          "h264-extract",
+          "hevc-extract",
+          "mpeg2-extract",
+          "mpeg2-wrap",
+          "mpegts-copy",
+          "threegp-copy",
+          "mov-copy",
+          "flv-copy",
+          "ogv-copy",
+          "avi-copy",
+          "ivf-extract",
+          "ivf-input-copy",
+          "m4v-extract",
+          "m4v-wrap",
+          "compatible-webm-copy",
+          "matroska-copy",
+          "mp3-extract",
+          "aac-extract",
+          "ogg-audio-extract",
+          "m4a-aac-transcode",
+          "amr-extract",
+          "hevc-to-webm-vp9"
+        ]
+      }
+    ],
+    "wasmSimd": true,
+    "avioInputBufferBytes": 262144,
+    "avioOutputBufferBytes": 262144,
+    "outstandingWrites": 1,
+    "audioFifoMaximumQueuedSamples": 16384,
+    "audioEncoderOptions": {
+      "selectableCodecs": [
+        "mp3",
+        "aac",
+        "opus",
+        "vorbis",
+        "wma",
+        "amr",
+        "flac",
+        "alac",
+        "pcm"
+      ],
+      "selectableCompressionModes": [
+        "lossy",
+        "lossless"
+      ],
+      "selectableBitRates": [
+        64000,
+        96000,
+        128000,
+        192000,
+        256000,
+        320000
+      ],
+      "selectableSampleRates": [
+        24000,
+        32000,
+        44100,
+        48000
+      ],
+      "selectableChannels": [
+        1,
+        2
+      ],
+      "selectableQualityPolicies": [
+        "smaller",
+        "balanced",
+        "higher"
+      ],
+      "zeroSelectsCertifiedAutomaticPolicy": true,
+      "codecAndCompressionMustMatchOutputProfile": true
+    },
+    "audioArtworkOptions": {
+      "supportedOutputs": [
+        "mp3",
+        "flac"
+      ],
+      "supportedImageCodecs": [
+        "mjpeg",
+        "png"
+      ],
+      "maximumImages": 1,
+      "maximumBytes": 4194304,
+      "maximumDimension": 4096,
+      "maximumPixels": 16777216,
+      "packetCopyWithoutImageDecode": true
+    },
+    "matroskaArtworkOptions": {
+      "supportedImageCodecs": [
+        "mjpeg",
+        "png"
+      ],
+      "maximumImages": 8,
+      "maximumBytesPerImage": 4194304,
+      "maximumTotalBytes": 8388608,
+      "maximumDimension": 4096,
+      "maximumPixelsPerImage": 16777216,
+      "representation": "matroska-attachment",
+      "packetCopyWithoutImageDecode": true
+    },
+    "aacEncoderOptions": {
+      "coder": "fast",
+      "tns": false,
+      "pns": false,
+      "intensityStereo": false,
+      "midSideStereo": false,
+      "supportedSampleRates": [
+        8000,
+        11025,
+        12000,
+        16000,
+        22050,
+        24000,
+        32000,
+        44100,
+        48000
+      ],
+      "preserveStandardSourceRate": true,
+      "maximumSampleRate": 48000,
+      "monoBitRate": 128000,
+      "stereoBitRate": 192000
+    },
+    "opusEncoderOptions": {
+      "application": "audio",
+      "complexity": 0,
+      "vbr": true,
+      "supportedSampleRates": [
+        8000,
+        12000,
+        16000,
+        24000,
+        48000
+      ],
+      "preserveStandardSourceRate": true,
+      "maximumSampleRate": 48000,
+      "monoBitRate": 64000,
+      "stereoBitRate": 128000
+    },
+    "vorbisEncoderOptions": {
+      "quality": 4,
+      "preserveSourceRate": true,
+      "maximumSampleRate": 48000,
+      "maximumChannels": 2
+    },
+    "mp3EncoderOptions": {
+      "compressionLevel": 9,
+      "preservedSpeechSampleRates": [
+        8000,
+        16000
+      ],
+      "monoBitRatesBySampleRate": {
+        "8000": 32000,
+        "16000": 64000,
+        "default": 128000
+      },
+      "stereoBitRate": 192000,
+      "selectableBitRates": [
+        64000,
+        96000,
+        128000,
+        192000,
+        256000,
+        320000
+      ],
+      "selectableSampleRates": [
+        32000,
+        44100,
+        48000
+      ],
+      "selectableChannels": [
+        1,
+        2
+      ],
+      "zeroSelectsCertifiedAutomaticPolicy": true
+    },
+    "videoEncoderOptions": {
+      "selectableCodecs": [
+        "vp8",
+        "vp9",
+        "mpeg4",
+        "theora"
+      ],
+      "selectableMaximumWidths": [
+        320,
+        480,
+        640
+      ],
+      "selectableBitRates": [
+        300000,
+        600000,
+        1000000,
+        2000000,
+        4000000
+      ],
+      "theoraUsesQualityBasedVbr": true,
+      "selectableFrameRateCaps": [
+        15,
+        24,
+        25,
+        30
+      ],
+      "selectableQualityPolicies": [
+        "smaller",
+        "balanced",
+        "higher"
+      ],
+      "zeroSelectsCertifiedAutomaticPolicy": true,
+      "neverUpscales": true,
+      "neverFrameRateUpconverts": true
+    },
+    "wmaEncoderOptions": {
+      "speechInputMaximumSampleRate": 16000,
+      "speechOutputSampleRate": 32000,
+      "speechMonoBitRate": 64000,
+      "defaultOutputSampleRate": 48000,
+      "defaultBitRate": 320000
+    },
+    "largeFileMemfs": false,
+    "profiles": [
+      "private-vp9-token-context"
+    ],
+    "enabledDecoders": [
+      "h263",
+      "h264",
+      "hevc",
+      "mpeg2video",
+      "mpeg4",
+      "theora",
+      "vp3",
+      "aac",
+      "alac",
+      "amrnb",
+      "amrwb",
+      "flac",
+      "mp3",
+      "opus",
+      "vorbis",
+      "wmav1",
+      "wmav2",
+      "pcm_s16be",
+      "pcm_s16le"
+    ],
+    "enabledEncoders": [
+      "h263",
+      "mpeg4",
+      "aac",
+      "alac",
+      "flac",
+      "wmav2",
+      "pcm_s16be",
+      "pcm_s16le",
+      "libmp3lame",
+      "libopencore_amrnb",
+      "libopus",
+      "libvorbis",
+      "libvpx_vp8",
+      "libvpx_vp9"
+    ],
+    "enabledDemuxers": [
+      "aac",
+      "aiff",
+      "amr",
+      "asf",
+      "avi",
+      "flac",
+      "flv",
+      "h264",
+      "hevc",
+      "ivf",
+      "m4v",
+      "matroska",
+      "mov",
+      "mp3",
+      "mpegts",
+      "mpegvideo",
+      "ogg",
+      "wav"
+    ],
+    "enabledMuxers": [
+      "adts",
+      "aiff",
+      "amr",
+      "asf",
+      "avi",
+      "flac",
+      "flv",
+      "h264",
+      "hevc",
+      "ipod",
+      "ivf",
+      "latm",
+      "m4v",
+      "matroska",
+      "mov",
+      "mp3",
+      "mp4",
+      "mpeg2video",
+      "mpegts",
+      "ogg",
+      "tgp",
+      "wav",
+      "webm"
+    ],
+    "enabledParsers": [
+      "aac",
+      "ac3",
+      "av1",
+      "flac",
+      "h264",
+      "hevc",
+      "mpeg4video",
+      "mpegaudio",
+      "mpegvideo",
+      "opus",
+      "vorbis"
+    ],
+    "enabledBitstreamFilters": [
+      "aac_adtstoasc",
+      "av1_metadata",
+      "extract_extradata",
+      "h264_mp4toannexb",
+      "hevc_mp4toannexb",
+      "pgs_frame_merge",
+      "vp9_superframe",
+      "vvc_mp4toannexb"
+    ],
+    "scope": "private-compiled-tool-not-public-reproduction-or-browser-acceptance",
+    "sources": {
+      "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+      "media/ffmpeg/vp9-packet-duration-recipe.mjs": "a9e7548e25a334db3a0206bd41347c5ea4a502bb1f429978d4bd311dcd9f2561",
+      "media/ffmpeg/vp9-stream-duration-recipe.mjs": "f1aaff35daae3419f57371f83a3c2e0f4e160665d90432279b20ef9f93da2be6",
+      "media/ffmpeg/vp9-original-width-recipe.mjs": "6dd606cda9c5628a075e1443fbf6cd5a94432dea9a03dd0f536533faed0b0791",
+      "media/ffmpeg/vp9-duration-build-recipe.mjs": "289dfc5373e69b900378a3bea022eb1d1ede89707b444195d4aba64ce6881093",
+      "media/ffmpeg/make-vp9-duration-source.mjs": "d508818ad2c52cd732cee4f88cf810277a98fbca2529d0195067cf9e1df225f8",
+      "media/ffmpeg/build-vp9-duration-candidate.mjs": "3ad39e25c97ffdffa69314ad04c779788a3e5c7359ea799117c888f3893adde1",
+      "media/ffmpeg/reproduce-nondocker.sh": "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e",
+      "media/ffmpeg/wasm-pkg-config.sh": "2d72728fc32bf856f3f46f525f1fe48f91126304e42d16175b1e527b701f6998",
+      "scripts/lib/owned-runtime-scratch.mjs": "96c036a7e04910f8ad4e62f38290738f0164b8d2405a28117945f755c8d590b5",
+      "scripts/lib/wasm-memory-limits.mjs": "b454cc1ec87aae89ed5ad73dc9e2c98cd42e955e1fce3d3f3bc14d540c872e2a",
+      ".github/workflows/vp9-duration-nondocker.yml": "020e241575fe65c5bf65cc25570aa295b0d44b5108d73190943af232c193c4c4",
+      "media/ffmpeg/vp9-realtime-temporal-filter-recipe.mjs": "a077637d418be7b5ab179b74888bbe8c2be1c0831b748c11a2067b63eb91f74d",
+      "media/ffmpeg/vp9-temporal-lifetime.mjs": "eaa70b34d1011a8cac29258701d1f9f39127e02a2d79e1f1d8f9d61ed1bda608",
+      "media/ffmpeg/vp9-temporal-c-unit.mjs": "289b3a44bc4ace3f3b123860a489ffa4904bab334c5b6a8a70de97ea129b7052",
+      "media/ffmpeg/make-vp9-temporal-filter-source.mjs": "1a7cd52cdc3632733a45b6c05466a8900fb3f88784565d2958c9b377ba578f40",
+      "media/ffmpeg/vp9-allocation-diagnostic-recipe.mjs": "2e71700d392055afa6c27a86872560960fbc0f4aed54123e7e4d8421db257ce5",
+      "media/ffmpeg/vp9-allocation-c-unit.mjs": "1b7ef43cff86ba66888448cbce02c0fccd0dd508240494a98964787de86fd91d",
+      "media/ffmpeg/make-vp9-allocation-diagnostic-source.mjs": "3b6949911a48f06034bea99e933814ac81df7868d60ee9d86e28d8b3a8d95ede",
+      "media/ffmpeg/probe-vp9-allocation-link.mjs": "3485c5031b6c3a55ce9801e742b172e80fbf56d2aacb9a87ced2115e7b5590f0",
+      "media/ffmpeg/vp9-lazy-utility-recipe.mjs": "6c6a79edd139e82490a3ef772edeccf44269cfe449d6afdf64186059b408b7c6",
+      "media/ffmpeg/vp9-lazy-utility-c-unit.mjs": "bf776e7670cc2d3470b783dc4b344633f9a786efeb47eb51674cd61770b8e7f6",
+      "media/ffmpeg/make-vp9-lazy-utility-source.mjs": "098f3e2121ce229c13f48e6b07988df6694303a4ba9b79336bb8a2ac86b817e5",
+      "media/ffmpeg/vp9-token-context-recipe.mjs": "d8a22641a8ee4dfd2fa0cd33705a4ed08f01f297cf3aa2f876ccde92309b4bcc",
+      "media/ffmpeg/vp9-token-context-lifetime.mjs": "16c289a8ddd2a4dc37b8c599f574ae5bfe78563484c6359fa62b2f4023ee245d",
+      "media/ffmpeg/vp9-token-context-c-unit.mjs": "8f1030d2d3f974fb67ca43eaeb8f14cd82347e8b6e9fa94e4e9ca740cb4f1818",
+      "media/ffmpeg/make-vp9-token-context-source.mjs": "1cac30956c5338da02619ef946f90683c79f316a983d6471c42db8eb01a38ad9",
+      "media/ffmpeg/build-h264-candidate.sh": "2c253674faa3c3a10e4609f69787ab0532b35abe6c07cf57fd7fd9aff9f459a6",
+      "media/ffmpeg/build-lame.sh": "12089e665699250514741677b7358b8207b099317d1e671ec908171b90b83913",
+      "media/ffmpeg/build-libraries.sh": "6414ea37233cf82ebb4cbac2352061ed830befbdf7eb395988b7c1e2d187f6cf",
+      "media/ffmpeg/build-mpeg2-candidate.sh": "462c8553eb3e831a22d03595d75e639aef34c411af05b00f0395db7be55d9cfc",
+      "media/ffmpeg/build-mpeg2-split-encoder.sh": "200ec267d8b00a664911abf535e278b59bd6beed0568634ff7475aa8b603dc9c",
+      "media/ffmpeg/build-mpeg2-split-pipeline.sh": "eb00f3f3a23319e8b067d7d19bd41432df2b319a85a93ac4ad4f032a84ed9574",
+      "media/ffmpeg/build-ogg.sh": "8dda87254f43bcea0125e2f1e0464ddf3db237776bf807e2fd60c343793de38f",
+      "media/ffmpeg/build-opencore-amr.sh": "37fde3e50eec823b6fdc8c2dda1b8d47547dbcd0d74844a618ce1ebbdb9d4185",
+      "media/ffmpeg/build-opus.sh": "76fe92ffba0e6ea011be0998de78ef76431874bb6c7c5b7336b6f84d4d23a0fb",
+      "media/ffmpeg/build-remux.sh": "904f06e36b2a3ee4509a7cb8faeda3a375314ffd5d1fd119017eb90ad0bb3a9e",
+      "media/ffmpeg/build-theora.sh": "3e0041af926afebecebbf2e25e66ac2e159bdcb8b5b94d1f027d1eae84e75e22",
+      "media/ffmpeg/build-vorbis.sh": "9559bbcd2ab8f4b57a8c4248573c08b4724c3ccd3b2533fa283b83a5d13522a7",
+      "media/ffmpeg/build-vpx.sh": "11bb4bb4d9650e82ec47a3b7ae4f6ca0c45b21261fc306e012594cd880a7dc7c",
+      "media/ffmpeg/build-webcodecs-vp9.sh": "cb854b0f6118d715914a653c9b048f73bf8c530e457026c293c134c5614da624",
+      "media/ffmpeg/patches/amr-bounded-packets.patch": "cdfa17008d34716c1b16783cd4677647bb4b6c211628fa5adff22be450b711d5",
+      "media/ffmpeg/patches/audio-options-source.patch": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
+      "media/ffmpeg/patches/avi-bounded-index.patch": "0b6771caab27b60763d57a42086e4e7fa1addfb4e72e95294d0859a90af08732",
+      "media/ffmpeg/patches/direct-mp4-only-source.patch": "935505aad24d5b5a8cbf693b3d4a3e3b6442843c7b0a931b444c422f48f17764",
+      "media/ffmpeg/patches/direct-published-source.patch": "514c6b9a4c1f59d865ad457c510b3d06cba7ae6f8f68f7a7a25097945db1a212",
+      "media/ffmpeg/patches/direct-source-79e4db.patch": "e9b140d5999d3b90a555023825b831210520cccbb328810b3d73521d1e80d5bd",
+      "media/ffmpeg/patches/hevc-decoder-uncached-frame-buffers.patch": "fef319d0497683a45a09959e12d524fa1dc46356f7a17f0f7c8c89f5b20699b0",
+      "media/ffmpeg/patches/matroska-artwork-source.patch": "f2d7b2e9dbfdc8204e88e8a68305fa205262391127b9fb9175d5bfaf2a1821bf",
+      "media/ffmpeg/patches/matroska-bounded-no-cues.patch": "fc1a78c9a1a084412981f222e359d8c140c05ab33f4bc18194278f92023eda62",
+      "media/ffmpeg/patches/mov-bounded-custom-metadata.patch": "b0bcd47e5997073071f06da3f093f08940536035c75888b4a18bce0fc2c7ecff",
+      "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch": "f6c9ab0dfe0a918e6e197f779d77b58b4f7e0e525ba4e72d6ed6375a5ed3381a",
+      "media/ffmpeg/patches/mov-fragmented-cover-metadata-only.patch": "2e0da9a1978ce31858117c91d6349b0a933e1fa4a0d4de1e0d459054e567210b",
+      "media/ffmpeg/patches/mp4-webm-opus-priming-source.patch": "c2f56a458552e3d0bac647c26de0042eebb62e6d2eb4054ac8574fed6b908da2",
+      "media/ffmpeg/patches/mpeg2-encoder-pool-release-diagnostic.patch": "e8925b20f9e87d2eaecf77fedd030547416679ad0afce4300feef5265ed70d92",
+      "media/ffmpeg/patches/mpeg2-encoder-uncached-accessories.patch": "095c43cf7f636209be78d32cbedec1beacfa30c0d50978954d70bcf5abf9f645",
+      "media/ffmpeg/patches/mpeg2-encoder-uncached-frame-buffers.patch": "d06563699a8747c429bdcc9432657a38c4a5c03446e2530a108cce10cae336ee",
+      "media/ffmpeg/patches/openh264-force-intra-wasm.patch": "aa2292dee4498598d4ef7ec28b8fe92b07150360f66a64d9ea1f5d99caeef55f",
+      "media/ffmpeg/patches/refstruct-readonly-pool-diagnostic.patch": "18e5a8889c2675a419757eb04ed6aa2c9a9730a7e4f9300e059e9e53da3d1280",
+      "media/ffmpeg/patches/specialist-source-79e4db.patch": "5b6f5276b396b129c1229a05ad53a6f1a4c76c9bf7bdc08953ad890181207941",
+      "media/ffmpeg/patches/theora-source.patch": "903f48bdc2b06db90b378c60f006fe110880e47684102340f99ddb5f02a15dde"
+    },
+    "artifacts": {
+      "LICENSE.ffmpeg-lgpl3": {
+        "bytes": 7651,
+        "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+      },
+      "LICENSE.lame": {
+        "bytes": 25281,
+        "sha256": "e64f9c5a18f56828c10a575df13ade641aa3af4512a7afe6c411256943b57aaf"
+      },
+      "LICENSE.lame-linking": {
+        "bytes": 503,
+        "sha256": "5c1f8d44f1eacbea3e1c31ff6ee11a4e1690ccbed4ee4af16de3b6eb61dc69a8"
+      },
+      "LICENSE.libogg": {
+        "bytes": 1466,
+        "sha256": "d2ab5758336489da61c12cc5bb757da5339c4ae9001f9bb0562b4370249af814"
+      },
+      "LICENSE.libtheora": {
+        "bytes": 1470,
+        "sha256": "8417fad7da775735564e209484a2e011e0fa201e94f01fdbee6e4977e478e6fc"
+      },
+      "LICENSE.libvorbis": {
+        "bytes": 1470,
+        "sha256": "ec1815db59fcd302846df949d7424876cb2e2dc5ed1606c5fb0b36787b1cf43a"
+      },
+      "LICENSE.libvpx": {
+        "bytes": 1537,
+        "sha256": "8267348d5af1262c11d1a08de2f5afc77457755f1ac658627dd9acf71011d615"
+      },
+      "LICENSE.opencore-amr": {
+        "bytes": 10271,
+        "sha256": "8b3f1762349248d444ab9acbafe73941254e36e1064954da56bb9ddbd5873ddb"
+      },
+      "LICENSE.opus": {
+        "bytes": 1945,
+        "sha256": "01e1167d54a096d123cf6dfbbeb19587278845c6481d2d66d545669846079551"
+      },
+      "build-libraries.allocation.base.sh": {
+        "bytes": 3202,
+        "sha256": "6414ea37233cf82ebb4cbac2352061ed830befbdf7eb395988b7c1e2d187f6cf"
+      },
+      "build-libraries.allocation.diagnostic.sh": {
+        "bytes": 3347,
+        "sha256": "daea3a61ffa77d4728517e642773fbd72261a31c79524618088ee491557e2600"
+      },
+      "config_components.h": {
+        "bytes": 75831,
+        "sha256": "ce9c59dfc4bf2af0f1c2a51e7302035447924c3d6f266a3a9bbe1314f52ba0c4"
+      },
+      "vp9-allocation-diagnostic-proof.json": {
+        "bytes": 8043,
+        "sha256": "490184a67ca50718fb090812ba91089b4af51a901f2f3781768657372f88269c"
+      },
+      "vp9-allocation-link-proof.json": {
+        "bytes": 1723,
+        "sha256": "b30bb1b7b74e1c5bbde6e77133bd984d368e7dd57c4dae9bc6e8ea3ca5dd4eec"
+      },
+      "vp9-duration-source-proof.json": {
+        "bytes": 13292,
+        "sha256": "13525082f22b45fd8e323d49b6aeafc4fa233c82246270c8e9beb6ae83ffd954"
+      },
+      "vp9-lazy-utility-proof.json": {
+        "bytes": 13812,
+        "sha256": "229150cb26e240b64ca0ca116a00f4bf56585cf601ea4f9076f1bf85b94c1f71"
+      },
+      "vp9-temporal-filter-source-proof.json": {
+        "bytes": 4680,
+        "sha256": "fb3e3b8ba741c60e0a6db5f04b09641145289ac647dca2834bce4ab09c89538f"
+      },
+      "vp9-token-context-proof.json": {
+        "bytes": 15851,
+        "sha256": "5fa08fe13c6e528a96d92fcfee17d3cb048b0c181033c609c7322e5d6d13dd66"
+      },
+      "vp9-token-layout-probe.c": {
+        "bytes": 476,
+        "sha256": "267ff3e189ce2ab141f2be80b7af06b0af1d195635df81dd6bd69037bc63358e"
+      },
+      "vp9-token-layout-probe.ll": {
+        "bytes": 682,
+        "sha256": "7a6171a764c0a0b47ecc4f6d6c1f1bb478d6585b700cf5c0c29de9b9bf61cbe1"
+      },
+      "vp9-token-vpx-config.h": {
+        "bytes": 3157,
+        "sha256": "fb78ef744859140ea2d5849d844d78e4a205053c8045f0701485e740edae2a2d"
+      },
+      "vp9_bitstream.packer.base.c": {
+        "bytes": 53169,
+        "sha256": "211f57fbfeb815b3d871dd741aa9aa7570023878b86517f774ca2e3ca4ad9dcf"
+      },
+      "vp9_bitstream.packer.compact.c": {
+        "bytes": 53388,
+        "sha256": "8e798b1b38cc1607e99a6ebf95bfb6d4d80629dcb8227a27f6d75a20ae0c9500"
+      },
+      "vp9_encoder.allocation.diagnostic.c": {
+        "bytes": 251953,
+        "sha256": "8ace86130847ded082c84bd847375c643754d37ef8d89f1f65a666f593d69970"
+      },
+      "vp9_encoder.lazy.utility.c": {
+        "bytes": 252866,
+        "sha256": "e7d1012d3ababe3054fe90347c4a1a65f63715599a35a35867b1aebafd60a779"
+      },
+      "vp9_encoder.temporal.base.c": {
+        "bytes": 251545,
+        "sha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa"
+      },
+      "vp9_encoder.temporal.guard.c": {
+        "bytes": 251607,
+        "sha256": "9c831c453796fcd08598da8b8e27a494fde8d681e87349facd590c48949e9693"
+      },
+      "vp9_picklpf.lazy.base.c": {
+        "bytes": 7065,
+        "sha256": "33258b68dc898d4babe9beb5c2368f6fd78e67478a233849f07819a64bcfeee6"
+      },
+      "vp9_picklpf.lazy.utility.c": {
+        "bytes": 7625,
+        "sha256": "f5a66b83100c1d938a3f835a609b947db7d5349b7c5007b1eb77fa84d1f01ffa"
+      },
+      "vp9_tokenize.header.base.c": {
+        "bytes": 4010,
+        "sha256": "5942c93a8f07fc7e5f2b479954ec77c3672294816f3bf6d168d65fee9d40d6a7"
+      },
+      "vp9_tokenize.header.compact.c": {
+        "bytes": 4010,
+        "sha256": "bb64fe54d05391f68f76a43c25f79b3108a808158f5920647fb1f4add3a1eebb"
+      },
+      "vp9_tokenize.producer.base.c": {
+        "bytes": 25416,
+        "sha256": "909f28c30ce3aa58560e926d8d74a0872f51d45bae6625f7aa741b4e3a15d1bd"
+      },
+      "vp9_tokenize.producer.compact.c": {
+        "bytes": 26292,
+        "sha256": "f437c942cda9a87c377796c50e0c2b42b784e431647ea4e613be2c4cc6c7239c"
+      },
+      "within-remux.mjs": {
+        "bytes": 45700,
+        "sha256": "9fb7bc4f4a48a4d9047359d9620c8c079335ad718fa087a9eef694c63e7c170a"
+      },
+      "within-remux.wasm": {
+        "bytes": 9877525,
+        "sha256": "cf5e6e78fbc59c7b68569d54fcbcc2b3fb2211a673b32ce0b75ad09f4708a148"
+      },
+      "within_remux.base.c": {
+        "bytes": 168948,
+        "sha256": "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd"
+      },
+      "within_remux.duration.c": {
+        "bytes": 169559,
+        "sha256": "480532d89a4b4f696fced0faaa7be4f29cdbe7a71b990c69dfd2ddef6d346aa6"
+      },
+      "yv12config.allocation.base.c": {
+        "bytes": 10854,
+        "sha256": "4b248ec01e4ec24194247379a3a9891b4f6d3ea024bb1c209ade86c514a92148"
+      },
+      "yv12config.allocation.diagnostic.c": {
+        "bytes": 11690,
+        "sha256": "a302d8921a906b074e8ead6ec4443e318c2f7a874c44ea9e6015f385d8a36a7e"
+      }
+    },
+    "buildEnvironment": {
+      "usedDocker": false,
+      "emscripten": "6.0.4",
+      "emsdkCommit": "224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f"
+    },
+    "candidate": {
+      "baseWrapperSha256": "ff8926c995010617bcc76701f0ea75feb5a2c99dadb136d8b8d1c8703e5d6dcd",
+      "compiledWrapperSha256": "480532d89a4b4f696fced0faaa7be4f29cdbe7a71b990c69dfd2ddef6d346aa6",
+      "generatedBuildRecipeSha256": "8d953ecc6963d46134c52fea97b645be11cb0bb2b0e725e78c78a6fa9e974d89",
+      "wrapperEdits": 3,
+      "codecSettingsChanged": false,
+      "ioChanged": false,
+      "privateVp9ExplicitWidth": 1920,
+      "defaultWidthPolicyChanged": false,
+      "publicWidthRegistryOrControlsChanged": false,
+      "allocationDiagnostics": {
+        "encoderSha256": "8ace86130847ded082c84bd847375c643754d37ef8d89f1f65a666f593d69970",
+        "allocatorSha256": "a302d8921a906b074e8ead6ec4443e318c2f7a874c44ea9e6015f385d8a36a7e",
+        "encoderEdits": 3,
+        "allocatorEdits": 2,
+        "cUnitCalls": 24,
+        "failureOnly": true,
+        "successfulPathStatisticCalls": 0,
+        "allocatorAlgorithmChanged": false,
+        "actualBrowserMeasurements": null,
+        "configureProbeAllocatorAlignedToFinal": true,
+        "productionFinalLinkFlagsChanged": false,
+        "configureRecipeSha256": "daea3a61ffa77d4728517e642773fbd72261a31c79524618088ee491557e2600"
+      },
+      "lazyUtility": {
+        "encoderSha256": "e7d1012d3ababe3054fe90347c4a1a65f63715599a35a35867b1aebafd60a779",
+        "filterSha256": "f5a66b83100c1d938a3f835a609b947db7d5349b7c5007b1eb77fa84d1f01ffa",
+        "encoderEdits": 3,
+        "filterEdits": 1,
+        "originalCandidateAllocationPairs": 120,
+        "scalingCases": 36,
+        "motionCases": 72,
+        "filterCases": 12,
+        "transitionCalls": 9,
+        "codecSettingsChanged": false,
+        "pixelAlgorithmsChanged": false,
+        "actualMemorySavedBytes": null,
+        "browserValidated": false
+      },
+      "tokenContext": {
+        "sourceSha256s": {
+          "vp9/encoder/vp9_tokenize.h": "bb64fe54d05391f68f76a43c25f79b3108a808158f5920647fb1f4add3a1eebb",
+          "vp9/encoder/vp9_tokenize.c": "f437c942cda9a87c377796c50e0c2b42b784e431647ea4e613be2c4cc6c7239c",
+          "vp9/encoder/vp9_bitstream.c": "8e798b1b38cc1607e99a6ebf95bfb6d4d80629dcb8227a27f6d75a20ae0c9500"
+        },
+        "lifetimeSourcePins": {
+          "vp9/common/vp9_onyxc_int.h": "2c44a00c9c9f22e83be4835395a6692d30be18b049701bce49e2581289e0b060",
+          "vp9/common/vp9_entropymode.h": "d3e9ac5ebb30f151b4ee71d4c85f23e30ecb596317dc76c4a6c66236fb83a5da",
+          "vp9/common/vp9_entropy.h": "539027204da3777f748aa4b965f91bfb629c885a4a5c9bbc0a2eaa7546cc4cbc",
+          "vp9/common/vp9_alloccommon.c": "f496640ea6344b71c0a193ddbc77eebafc3b7be2de3a4efc60d16c7d60e65e89",
+          "vpx/internal/vpx_codec_internal.h": "592237daf5d4d6982731a7a4a6c73d10760825c29f5c3755720bf9985c116f7f",
+          "vp9/encoder/vp9_encoder.h": "299ee992384604932584c959b9504130981a5562833863751100627022662f6c",
+          "vp9/encoder/vp9_encoder.c": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+          "vp9/encoder/vp9_tokenize.c": "909f28c30ce3aa58560e926d8d74a0872f51d45bae6625f7aa741b4e3a15d1bd",
+          "vp9/encoder/vp9_bitstream.c": "211f57fbfeb815b3d871dd741aa9aa7570023878b86517f774ca2e3ca4ad9dcf"
+        },
+        "layout": {
+          "highBitDepth": 0,
+          "originalRecordBytes": 8,
+          "compactRecordBytes": 6,
+          "actualLibraryConfiguration": true,
+          "vpxConfigSha256": "fb78ef744859140ea2d5849d844d78e4a205053c8045f0701485e740edae2a2d",
+          "cSourceSha256": "267ff3e189ce2ab141f2be80b7af06b0af1d195635df81dd6bd69037bc63358e",
+          "llvmSha256": "7a6171a764c0a0b47ecc4f6d6c1f1bb478d6585b700cf5c0c29de9b9bf61cbe1",
+          "codecInstantiated": false
+        },
+        "producerPackerCases": 276480,
+        "tokenCapacityChanged": false,
+        "codecSettingsChanged": false,
+        "pixelAlgorithmsChanged": false,
+        "actualMemorySavedBytes": null,
+        "browserValidated": false
+      },
+      "compiledVendorSources": {
+        "vp9/encoder/vp9_encoder.c": "e7d1012d3ababe3054fe90347c4a1a65f63715599a35a35867b1aebafd60a779",
+        "vp9/encoder/vp9_picklpf.c": "f5a66b83100c1d938a3f835a609b947db7d5349b7c5007b1eb77fa84d1f01ffa",
+        "vpx_scale/generic/yv12config.c": "a302d8921a906b074e8ead6ec4443e318c2f7a874c44ea9e6015f385d8a36a7e",
+        "vp9/encoder/vp9_tokenize.h": "bb64fe54d05391f68f76a43c25f79b3108a808158f5920647fb1f4add3a1eebb",
+        "vp9/encoder/vp9_tokenize.c": "f437c942cda9a87c377796c50e0c2b42b784e431647ea4e613be2c4cc6c7239c",
+        "vp9/encoder/vp9_bitstream.c": "8e798b1b38cc1607e99a6ebf95bfb6d4d80629dcb8227a27f6d75a20ae0c9500"
+      },
+      "ancestorPreimagesAreNotFinalTranslationUnits": true,
+      "vendorAllocationGuard": {
+        "parentSha256": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+        "compiledSourceSha256": "9c831c453796fcd08598da8b8e27a494fde8d681e87349facd590c48949e9693",
+        "edits": 1,
+        "lifetimeSourcePins": {
+          "vp9/encoder/vp9_encoder.c": "c42b8ef0665831f40715eca748bf7cecfcc98dd212927bbfe042a355c6fc3faa",
+          "vp9/vp9_cx_iface.c": "e45fcff4bc3380736d3bfded778afd5983cad9816c1e434cb965077304fdcd7e",
+          "vpx_scale/generic/yv12config.c": "4b248ec01e4ec24194247379a3a9891b4f6d3ea024bb1c209ade86c514a92148",
+          "vpx_mem/vpx_mem.c": "6417e5f4f291bfbca66215bdc28064eb727667500c436ed06f903902804d3e86"
+        },
+        "cUnitCalls": 198,
+        "codecSettingsChanged": false,
+        "filteringAlgorithmsChanged": false,
+        "exactAllocationBytesSaved": null
+      },
+      "wasmMemoryLimits": [
+        {
+          "imported": true,
+          "initialPages": 512,
+          "maximumPages": 1536,
+          "shared": true
+        }
+      ],
+      "memoryLimitsRaised": false,
+      "nodeInstantiated": false,
+      "mediaRead": false,
+      "mediaWritten": false,
+      "browserValidated": false,
+      "publicAcceptance": false
+    }
+  },
+  "retainedDirectory": "work/vp9-duration-input-42226266102",
+  "retainedBytes": 11696417,
+  "retainedPurpose": "One reusable static private CPU core for strict browser fidelity testing; remove when obsolete",
+  "originalRead": false,
+  "mediaRead": false,
+  "publicAssetReplacement": false,
+  "nodeInstantiated": false,
+  "browserValidated": false,
+  "speedGainProven": false,
+  "publicAcceptance": false
+}

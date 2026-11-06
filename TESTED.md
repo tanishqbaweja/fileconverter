@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-06 token native42226266102/50f7a3fa TERMINAL SUCCESS7m38s, both cleanup
+steps PASS. Authenticated40static members/11696417B; ZIP3636557B artifact13506113531
+SHA57f60e667ef87da6eb9e3b0f1eee85643fc7199afa7d9bb282f3b7df57950df4.
+Wasm9877525B SHAcf5e6e78fbc59c7b68569d54fcbcc2b3fb2211a673b32ce0b75ad09f4708a148.
+ACTUAL generated libvpx config confirms HBD0, Wasm32 record8->6B; compiler probe
+and all six final vendor source hashes retained/authenticated separately from
+ancestor preimages. Same32initial/96maxMiB/shared/1codec/0helpers/wrapper/options.
+No codec instantiated in Node; actual saved heap/speed/browser acceptance remain
+unproven. NEXT strict real token bit-exact/fidelity/recovery six-job control,
+then original7 only if it passes; no public asset/registry replacement.
+
 2026-11-06 distinct token native build42226266102 confirmed live at exact
 50f7a3fa31816477a3fa85a37bc435d47a6afc9f/job127920436846, one dispatch only.
 Previous comparable build8m10s; no rapid repeat polling while preparing actual
