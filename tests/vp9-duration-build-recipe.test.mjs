@@ -46,6 +46,18 @@ test("private build retains original pinned downloads and actual finally cleanup
   assert.equal(generated.includes('fail "Non-Docker FFmpeg artifacts differ from the published engine."'), false);
   assert.ok(generated.includes('Private VP9 duration candidate compiled; browser gates remain pending.'));
 });
+test("diagnostic build instruments only after temporal guard and before library compilation, with exact reversible provenance", () => {
+  const result = makeVp9DurationBuildRecipe(source, { temporalFilterGuard: true, allocationDiagnostics: true });
+  assert.equal(result.allocationDiagnostics, true); assert.equal(result.diagnosticsOnFailureOnly, true);
+  assert.ok(result.generated.includes('make-vp9-temporal-filter-source.mjs"\nnode "${SCRIPT_DIR}/make-vp9-allocation-diagnostic-source.mjs"\n./build-vpx.sh'));
+  let reversed = result.generated;
+  for (const [before, after] of result.edits.toReversed()) reversed = reversed.replace(after,before);
+  assert.equal(reversed,source);
+  assert.throws(() => makeVp9DurationBuildRecipe(source, { allocationDiagnostics: true }));
+  const bash = process.platform === "win32" ? "D:/Program Files/Git/bin/bash.exe" : "/bin/bash";
+  const parsed = spawnSync(bash, ["--noprofile","--norc","-n"], { input:result.generated,encoding:"utf8",windowsHide:true,timeout:10000,maxBuffer:65536 });
+  assert.equal(parsed.status,0,parsed.stderr || String(parsed.error));
+});
 test("canonical native source, library configuration and linker stay pinned and untouched", async () => {
   const expected = { "media/ffmpeg/within_remux.c": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
     "media/ffmpeg/build-libraries.sh": "6414ea37233cf82ebb4cbac2352061ed830befbdf7eb395988b7c1e2d187f6cf",

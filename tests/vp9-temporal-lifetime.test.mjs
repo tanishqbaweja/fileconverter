@@ -27,7 +27,7 @@ test("build patch verifies actual files before writing and precedes libvpx compi
   assert.ok(script.includes("runVp9TemporalCUnit(recipe.edits[0][0])"));
   assert.ok(script.includes("assert.equal(await realpath(target), target)"));
   const builder = await read("media/ffmpeg/build-vp9-duration-candidate.mjs");
-  assert.ok(builder.includes("{ temporalFilterGuard: true }"));
-  assert.ok(builder.includes('engine: "private-vp9-realtime-temporal"'));
+  assert.ok(builder.includes("{ temporalFilterGuard: true, allocationDiagnostics }"));
+  assert.ok(builder.includes('engine: allocationDiagnostics ? "private-vp9-allocation-diagnostic" : "private-vp9-realtime-temporal"'));
   assert.ok(builder.includes("readWasmMemoryLimits(await read(\"public/engines/remux/within-remux.wasm\"))"));
 });

@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-06 failure-only allocation diagnostic implementation:32 exact private CI
+checks PASS(515.1264ms),0skip; affected lint/diff PASS. Two pinned vendor files:
+guarded encoder gets3 unique failure labels, frame allocator logs requested frame
+bytes/current/max Wasm heap/emmalloc managed/free/unclaimed ONLY after null
+allocation, before formatting. Underlying malloc request differs from frame
+request and is not invented. Actual host C runs24 original/candidate calls across
+both bit-depth configs, preserving success/reuse/callback/invalid/failure behavior
+and ZERO statistic calls on success. Simulated controls are NOT actual heap data.
+Actual installed SDK6.0.4 headers must match retained public-source SHA pins.
+New private engine/provenance23static members, unchanged wrapper/codec/allocator/
+32initial/96max MiB/threads/250MiB. Next DISTINCT source build attempt8, then
+strict small control and exclusive original diagnostic; no actual diagnostic
+Wasm/browser result or optimization acceptance yet. Full scope remains open.
+
 2026-11-06 guarded-cycle final gates:255focused regressions PASS(1855.871ms)+
 27source/native/browser/failed-original evidence checks PASS(550.5317ms),0skip;
 affected lint/diff PASS.403/403public evidence/2hidden pending/0PDF unchanged;

@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-06 next-allocation diagnostics WIRED, not yet compiled/browser measured:
+3 failure-site labels plus failure-only exact frame request/current/max heap and
+allocator managed/free/unclaimed stats; actual SDK headers pinned.32 CI checks
+and24 host C control calls pass, zero statistic calls on success, unchanged
+allocator/codec/resolution/limits. Next DISTINCT attempt8 diagnostic build; then
+strict control/original diagnostic. This diagnoses the still-failing original,
+not a conversion optimization/public promotion. Broader spec remains unchanged.
+
 2026-11-06 guarded-cycle gates finalized:282focused tests PASS/0skip, affected
 lint/diff/public evidence consistency PASS; public source and403routes unchanged.
 Meaningful progress: actual guarded Wasm plus byte-exact/fidelity/adverse recovery
