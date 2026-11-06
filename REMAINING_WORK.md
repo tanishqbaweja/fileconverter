@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-07 private DOCX HTML functional/independent fidelity/repeat/adverse recovery
+small cases pass, but full control FAIL309.1484375MiB. Keep it private. Installed
+Playwright CDP attachment causes setInputFiles to materialize whole-file/base64
+payloads; replace harness input selection with native path-only DOM API before
+another qualification. This is not proof that all309MiB is that copy, nor a
+conversion-speed claim. Failure and full process samples remain preserved:
+evidence/2026-11-06T20-50-33-200Z-docx-html-qualification.json.
+
 2026-11-07 private DOCX HTML browser attempt FAILED in independent validator's
 escaped expected emoji, not yet an accepted conversion/fidelity/memory result.
 Correct expected codepoint and preflight valid/invalid HTML before one rerun.

@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-07 DOCX HTML repaired-validator browser attempt: positive plus wrong-text/
+active-markup negative controls pass; four genuine720B outputs have exact hash
+31bbd280...e0a55 and independent Unicode/paragraph/table/emphasis/CSP checks.
+Three same-page repeats, actual output-write cancellation, injected write error
+and recovery pass; no OPFS remnants, original unchanged, all owned data/roots gone.
+Overall still FAIL309.1484375MiB (52valid0missing; blank380596224/peak704761856):
+evidence/2026-11-06T20-50-33-200Z-docx-html-qualification.json.
+Peak existing process38444 grows from~51.6MB to313.0MB; no new-child explanation
+claimed. Installed Playwright CDP path confirmed non-collocated browser mode and
+prepareFilesForUpload complete-file readFile/base64. Current harness selection is
+therefore NOT acceptable disk-backed input evidence. NEXT replace only selection
+with native CDP DOM.setFileInputFiles local paths; unchanged XML/cancel payload,
+settings/baseline/formula/250MiB. No identical-byte speedAB or causal byte total.
+
 2026-11-07 DOCX HTML first production-browser control FAILED at independent
 validator before any accepted case: Python expectation accidentally contained
 literalU0001f600 after JS patch escaping. Actual Python parse shows correct

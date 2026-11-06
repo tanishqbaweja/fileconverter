@@ -65,7 +65,7 @@ with open(sys.argv[1],'rb') as f:
   if not b:break
   h.update(b);parser.feed(decoder.decode(b))
  parser.feed(decoder.decode(b'',True));parser.close()
-assert parser.paragraphs==['Hello β & <script>not-executable</script> U0001f600','Cell one','Cell two','Inserted'],parser.paragraphs
+assert parser.paragraphs==['Hello '+chr(0x03b2)+' & <script>not-executable</script> '+chr(0x1f600),'Cell one','Cell two','Inserted'],parser.paragraphs
 assert parser.tags['strong']==1 and parser.tags['em']==1 and parser.tags['table']==1 and parser.tags['tr']==1 and parser.tags['td']==2
 assert parser.csp and parser.current is None
 print(json.dumps({'sha256':h.hexdigest(),'paragraphs':len(parser.paragraphs),'tableCells':parser.tags['td'],'strong':parser.tags['strong'],'italic':parser.tags['em'],'csp':parser.csp,'validator':'independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts'}))
@@ -98,6 +98,19 @@ try {
     report.sourcePins[file] = await hashFile(path.join(root, file));
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
+  report.validatorControls = [];
+  const referenceHtml = '<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="default-src \'none\'"></head><body>' +
+    '<p><strong><em>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</em></strong></p>' +
+    '<table><tr><td><p>Cell one</p></td><td><p>Cell two</p></td></tr></table><p>Inserted</p></body></html>';
+  for (const [name, html, accepted] of [["positive", referenceHtml, true], ["wrong-text", referenceHtml.replace("Cell two", "wrong"), false],
+    ["active-markup", referenceHtml.replace("</body>", "<script>alert(1)</script></body>"), false]]) {
+    const file = path.join(runtime.directory, `validator-${name}.html`); await writeFile(file, html, { flag: "wx" });
+    let exitCode = 0;
+    try { await execute("python", ["-c", validator, file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
+    catch (error) { assert.equal(typeof error.code, "number"); exitCode = error.code; }
+    assert.equal(exitCode === 0, accepted, "Independent validator preflight: " + name);
+    report.validatorControls.push({ name, expectedAccepted: accepted, exitCode });
+  }
   const input = path.join(runtime.directory, "structure.docx"), cancellation = path.join(runtime.directory, "cancel.docx");
   const body = '<w:p><w:r><w:rPr><w:b/><w:i/></w:rPr><w:t>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</w:t></w:r></w:p>' +
     `<w:tbl><w:tr><w:tc>${p("Cell one")}</w:tc><w:tc>${p("Cell two")}</w:tc></w:tr></w:tbl>` +
@@ -155,9 +168,11 @@ try {
     assert.equal(state.error, null); assert.equal(state.metrics.pendingOperations, 0); assert.equal(state.metrics.queuedBytes, 0);
     assert.ok(state.metrics.peakPendingOperations <= 1); assert.ok(state.metrics.maxReadChunkBytes <= 262144); assert.ok(state.metrics.maxWriteChunkBytes <= 65536);
     const binding = await bindOpfsOutputValidationBacking(page, profile, state.opfsName, state.metrics.outputBytes);
+    const caseRow = { kind: "complete-unvalidated", outputBytes: state.metrics.outputBytes, metrics: state.metrics, binding: binding.proof };
+    report.cases.push(caseRow);
     const validated = JSON.parse((await execute("python", ["-c", validator, binding.file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
     await assertOpfsOutputValidationBackingUnchanged(binding);
-    report.cases.push({ kind: "complete", outputBytes: state.metrics.outputBytes, metrics: state.metrics, validated, binding: binding.proof });
+    caseRow.validated = validated; caseRow.kind = "complete";
     await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), state.opfsName);
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
     return state.opfsName;

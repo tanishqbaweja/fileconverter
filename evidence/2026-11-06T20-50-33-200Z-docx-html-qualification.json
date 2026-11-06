@@ -1,0 +1,594 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-06T20:50:33.200Z",
+  "status": "failed-not-acceptance",
+  "cases": [
+    {
+      "kind": "complete",
+      "outputBytes": 720,
+      "metrics": {
+        "inputBytes": 811,
+        "outputBytes": 720,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 720,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 811,
+        "maxWriteChunkBytes": 720,
+        "elapsedMs": 52.96500000357628,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-OJplFI/profile/Default/File System/000/t/00/00000001",
+        "logicalBytes": 720,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "12103424006807651",
+          "size": "720",
+          "birthtimeNs": "1793998264843373600",
+          "mtimeNs": "1793998264861366900"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 720,
+            "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55"
+          }
+        ],
+        "totalBrowserSampleBytes": 720,
+        "maximumBrowserSampleBytes": 720,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55",
+        "paragraphs": 4,
+        "tableCells": 2,
+        "strong": 1,
+        "italic": 1,
+        "csp": true,
+        "validator": "independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts"
+      }
+    },
+    {
+      "kind": "complete",
+      "outputBytes": 720,
+      "metrics": {
+        "inputBytes": 811,
+        "outputBytes": 720,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 720,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 811,
+        "maxWriteChunkBytes": 720,
+        "elapsedMs": 42.104999989271164,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-OJplFI/profile/Default/File System/000/t/00/00000003",
+        "logicalBytes": 720,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "11821949030097017",
+          "size": "720",
+          "birthtimeNs": "1793998265226465600",
+          "mtimeNs": "1793998265254579900"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 720,
+            "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55"
+          }
+        ],
+        "totalBrowserSampleBytes": 720,
+        "maximumBrowserSampleBytes": 720,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55",
+        "paragraphs": 4,
+        "tableCells": 2,
+        "strong": 1,
+        "italic": 1,
+        "csp": true,
+        "validator": "independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts"
+      }
+    },
+    {
+      "kind": "complete",
+      "outputBytes": 720,
+      "metrics": {
+        "inputBytes": 811,
+        "outputBytes": 720,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 720,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 811,
+        "maxWriteChunkBytes": 720,
+        "elapsedMs": 30.770000010728836,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-OJplFI/profile/Default/File System/000/t/00/00000005",
+        "logicalBytes": 720,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "11821949030097059",
+          "size": "720",
+          "birthtimeNs": "1793998265745653900",
+          "mtimeNs": "1793998265764377800"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 720,
+            "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55"
+          }
+        ],
+        "totalBrowserSampleBytes": 720,
+        "maximumBrowserSampleBytes": 720,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55",
+        "paragraphs": 4,
+        "tableCells": 2,
+        "strong": 1,
+        "italic": 1,
+        "csp": true,
+        "validator": "independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts"
+      }
+    },
+    {
+      "kind": "payload-cancel",
+      "leftovers": []
+    },
+    {
+      "kind": "write-error",
+      "message": "The destination rejected a bounded write.",
+      "leftovers": []
+    },
+    {
+      "kind": "complete",
+      "outputBytes": 720,
+      "metrics": {
+        "inputBytes": 811,
+        "outputBytes": 720,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 720,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 811,
+        "maxWriteChunkBytes": 720,
+        "elapsedMs": 46.53999999165535,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-OJplFI/profile/Default/File System/000/t/00/00000011",
+        "logicalBytes": 720,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "11821949030097131",
+          "size": "720",
+          "birthtimeNs": "1793998270140864200",
+          "mtimeNs": "1793998270173101000"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 720,
+            "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55"
+          }
+        ],
+        "totalBrowserSampleBytes": 720,
+        "maximumBrowserSampleBytes": 720,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55",
+        "paragraphs": 4,
+        "tableCells": 2,
+        "strong": 1,
+        "italic": 1,
+        "csp": true,
+        "validator": "independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts"
+      }
+    }
+  ],
+  "sourcePins": {
+    "scripts/qualify-docx-html.mjs": "179d92d73b008ed9e32f5291c41e16729caac2f7033c7a9c74cbd4dbc7fa9168",
+    "workers/docx-html-conversion.ts": "65b9aa9515faaf3249e79a4492ef24a4d2a68fc8f64576e599e01db262946895",
+    "workers/docx-conversion.ts": "9f9cbe2aaf2d31368cc5ce358eb60baa47f9fc52b0b5178da296314da8cc34d8",
+    "workers/conversion.worker.ts": "36686a93928e8c6fc628d4f0dce62c446b33d91b176108595dfc42d4b747fe04",
+    "lib/capability-registry.ts": "f270c6faf6ad2b09e5e67d3381c8c45ec83d04f87d72109e6ea197d0562a8de5",
+    "package-lock.json": "cebcd0caf95382203084b900aecb06dbd5fb10bc8743ddb202a7a137582f603e",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d"
+  },
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: The expression evaluated to a falsy value:\n\n  assert.ok(report.memory.incrementalPrivateMiB <= 250)\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/qualify-docx-html.mjs:198:10"
+  ],
+  "scope": "Small private DOCX HTML production worker: three same-page repeats, cancellation/write-failure recovery, independent physical-output validation and sampled full-Chrome memory",
+  "headed": false,
+  "browserServicesDisabled": false,
+  "nativeConversionUsed": false,
+  "publicPromotion": false,
+  "stressAcceptance": false,
+  "nativePickerVerified": false,
+  "largeFileScalingVerified": false,
+  "speedImprovementProven": false,
+  "memoryFormula": "(peak complete spawned Chrome process-tree private bytes during full control window - earliest stable same clean blank Chrome private bytes) / 1048576",
+  "traceMode": {
+    "screenshots": true,
+    "domSnapshots": false,
+    "networkBodies": false
+  },
+  "requestCount": 35,
+  "forbiddenRequests": [],
+  "hostMemory": {
+    "acquiredAt": "2026-11-06T20:50:33.6633183Z",
+    "freePhysicalBytes": 11631706112,
+    "freeVirtualBytes": 18053648384,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "python": "Python 3.11.9",
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "browserBefore": {
+    "version": "156.0.8078.80",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4466840,
+      "sha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4503599627954860",
+        "birthtimeNs": "1793664133995225000",
+        "mtimeNs": "1793230862205515000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.80\\chrome.dll",
+      "bytes": 306491032,
+      "sha256": "eec84f38acf7d3b1c39bc54de53c9bcb1ea7a3b9d286d6a04288d3b959a1a7a1",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4222124651244210",
+        "birthtimeNs": "1793664134006309400",
+        "mtimeNs": "1793230871423806000"
+      }
+    }
+  },
+  "executedHead": "c696e530b55fd5016f1636fd9bb743c36403df5f",
+  "validatorControls": [
+    {
+      "name": "positive",
+      "expectedAccepted": true,
+      "exitCode": 0
+    },
+    {
+      "name": "wrong-text",
+      "expectedAccepted": false,
+      "exitCode": 1
+    },
+    {
+      "name": "active-markup",
+      "expectedAccepted": false,
+      "exitCode": 1
+    }
+  ],
+  "fixture": {
+    "bytes": 811,
+    "sha256": "bee68423541bfab57a30d4f0ad07ba54bc0347bd59c65f94be80db53181dfd7f",
+    "cancelBytes": 9000804
+  },
+  "launchArguments": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\docx-html-qualification-OJplFI\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "about:blank"
+  ],
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 380596224,
+    "spreadBytes": 61440,
+    "rssBytes": 742723584,
+    "firstTimestamp": "2026-11-06T20:50:45.0760649Z",
+    "lastTimestamp": "2026-11-06T20:50:49.1326695Z",
+    "sampleCount": 9,
+    "minimumElapsedMs": 8000
+  },
+  "loadedIdle": {
+    "stable": true,
+    "privateBytes": 387756032,
+    "spreadBytes": 827392,
+    "rssBytes": 724127744,
+    "firstTimestamp": "2026-11-06T20:51:00.5260943Z",
+    "lastTimestamp": "2026-11-06T20:51:04.5738052Z",
+    "sampleCount": 16,
+    "minimumElapsedMs": 8000
+  },
+  "memory": {
+    "peak": {
+      "sequence": 258,
+      "timestamp": "2026-11-06T20:51:09.1653099Z",
+      "completedAt": "2026-11-06T20:51:09.1749131Z",
+      "sampleError": null,
+      "nativeElapsedMs": 10.3225,
+      "privateBytes": 704761856,
+      "rssBytes": 1051103232,
+      "processes": [
+        {
+          "pid": 21124,
+          "parentPid": 43292,
+          "createdAt": "2026-11-06T20:50:40.5797729Z",
+          "creationFileTime": "134384718405797729",
+          "executableName": "chrome.exe",
+          "privateBytes": 23887872,
+          "rssBytes": 47734784,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 22224,
+          "parentPid": 43292,
+          "createdAt": "2026-11-06T20:50:40.1927874Z",
+          "creationFileTime": "134384718401927874",
+          "executableName": "chrome.exe",
+          "privateBytes": 44085248,
+          "rssBytes": 86147072,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 23920,
+          "parentPid": 43292,
+          "createdAt": "2026-11-06T20:50:40.0905207Z",
+          "creationFileTime": "134384718400905207",
+          "executableName": "chrome.exe",
+          "privateBytes": 15151104,
+          "rssBytes": 41230336,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 27412,
+          "parentPid": 43292,
+          "createdAt": "2026-11-06T20:50:44.4794390Z",
+          "creationFileTime": "134384718444794390",
+          "executableName": "chrome.exe",
+          "privateBytes": 21639168,
+          "rssBytes": 46895104,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 34032,
+          "parentPid": 43292,
+          "createdAt": "2026-11-06T20:50:39.9609469Z",
+          "creationFileTime": "134384718399609469",
+          "executableName": "chrome.exe",
+          "privateBytes": 2674688,
+          "rssBytes": 10510336,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 35956,
+          "parentPid": 43292,
+          "createdAt": "2026-11-06T20:50:40.0817922Z",
+          "creationFileTime": "134384718400817922",
+          "executableName": "chrome.exe",
+          "privateBytes": 175648768,
+          "rssBytes": 203874304,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 38444,
+          "parentPid": 43292,
+          "createdAt": "2026-11-06T20:50:44.0252782Z",
+          "creationFileTime": "134384718440252782",
+          "executableName": "chrome.exe",
+          "privateBytes": 313004032,
+          "rssBytes": 369872896,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 39080,
+          "parentPid": 43292,
+          "createdAt": "2026-11-06T20:50:49.2669846Z",
+          "creationFileTime": "134384718492669846",
+          "executableName": "chrome.exe",
+          "privateBytes": 15106048,
+          "rssBytes": 31563776,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 43292,
+          "parentPid": 41252,
+          "createdAt": "2026-11-06T20:50:39.9214143Z",
+          "creationFileTime": "134384718399214143",
+          "executableName": "chrome.exe",
+          "privateBytes": 84234240,
+          "rssBytes": 195190784,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 44072,
+          "parentPid": 43292,
+          "createdAt": "2026-11-06T20:50:40.1173745Z",
+          "creationFileTime": "134384718401173745",
+          "executableName": "chrome.exe",
+          "privateBytes": 9330688,
+          "rssBytes": 18083840,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    "validSamples": 52,
+    "unavailableSamples": 0,
+    "incrementalPrivateMiB": 309.1484375,
+    "limitMiB": 250,
+    "windowStart": "2026-11-06T20:51:04.684Z",
+    "windowEnd": "2026-11-06T20:51:10.479Z",
+    "scope": "sampled-complete-tree-small-control-not-stress-acceptance"
+  },
+  "jobCleanup": {
+    "scope": "no-running-conversion",
+    "cancellationRequested": false,
+    "terminalState": "complete"
+  },
+  "failureTrace": "output\\playwright\\2026-11-06T20-50-33-200Z-docx-html-failure.zip",
+  "serverCleanup": {
+    "identity": {
+      "pid": 44852,
+      "parentPid": 41252,
+      "createdAt": "2026-11-06T20:50:37.6854570Z"
+    },
+    "ownedRootAbsent": true
+  },
+  "browserCleanup": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 43292,
+      "parentPid": 41252,
+      "createdAt": "2026-11-06T20:50:39.9214140Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-11-06T20:51:12.172Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 534,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "ownedRuntimeRemoved": true,
+  "browserAfter": {
+    "version": "156.0.8078.80",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4466840,
+      "sha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4503599627954860",
+        "birthtimeNs": "1793664133995225000",
+        "mtimeNs": "1793230862205515000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.80\\chrome.dll",
+      "bytes": 306491032,
+      "sha256": "eec84f38acf7d3b1c39bc54de53c9bcb1ea7a3b9d286d6a04288d3b959a1a7a1",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4222124651244210",
+        "birthtimeNs": "1793664134006309400",
+        "mtimeNs": "1793230871423806000"
+      }
+    }
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "nativeArchive": {
+    "file": "evidence/2026-11-06T20-50-33-200Z-docx-html-native-samples.json.gz",
+    "bytes": 18711,
+    "sha256": "129787f15bc705fdae9e175431ec72925f7092ddf59cdb865ce35c6ad02773cf",
+    "decodedBytes": 791067,
+    "decodedSha256": "e6033c36a9adf75dfee34dce3cecdd8f3419a1ff6087d8c3e80e803f483c0e85"
+  },
+  "finishedAt": "2026-11-06T20:51:15.913Z"
+}
