@@ -1,5 +1,37 @@
 # Tested conversion ledger
 
+2026-11-07 final checkpoint regression2577PASS/0fail/0skip/0cancel,
+113556.1188ms;714portable files/876inventoried/162qualification UNRUN,
+235prior-hosted retained. Latest13focused evidence/observer checks PASS; earlier
+32affected checks PASS. TypeScript/eight-file lint PASS. Existing unchanged
+production build used by real browser controls, not rebuilt this harness-only
+cycle. Current source pins/limits/cleanup/results and honest qualification limits:
+evidence/2026-11-07-docx-heading-recovery-portable-final.json.
+Small heading/recovery success does NOT close original large cleanup or project.
+
+2026-11-07 previously unreached native heading/recovery control PASSED:
+evidence/2026-11-07T03-28-03-106Z-docx-html-qualification.json, executed e6ba305b.
+Real36933B python-docx1.2.0 package/166styles converted THREE times by production
+browser async handle writer ->887B static HTML, identical SHA
+b96bb990f9b011eba9dec30a3e62b9fefd76119c4a101769471192acf262bc07.
+Independent Python streaming HTMLParser verifies all8semantic blocks, outline
+levels1/2/3/9, inherited heading/direct body override/emphasis/two cells/CSP.
+Elapsed79.17/72.765/84.66ms (small fixture, NOT speed optimization benchmark).
+Whole Chrome50.2890625MiB/330valid0missing; first stable heading cleanup deltas
+12.25/13.67578125/11.0859375MiB all<96. One real worker/SAB0, bounded writes/reads,
+one pending. Native picker/external destination/full Word rendering NOT tested.
+
+Real payload cancellation armed2162688B/terminal2293760B; injected destination
+write error propagated; subsequent720B golden recovery passed. All29observed
+Chrome PIDs independently absent; root birth/parent verified before tree teardown,
+no individual-child kills; owned server absent and runtime/profile/outputs removed.
+No forbidden requests; normal browser services unchanged; original size/full SHA
+unchanged. Outline small-control flag true, full outline qualification false.
+Raw journal reconciliation finds first heading window97valid versus96reported
+online (other96/114 unchanged), same peak/cleanup/result; original receipt retained
+unchanged. Future recorder now finalizes these separate heading windows too.
+Original large cleanup110.43MiB failure remains unresolved; NO public promotion.
+
 2026-11-07 changed eight-phase diagnostic executed:
 evidence/2026-11-07T03-18-12-703Z-docx-html-qualification.json.gz (lossless).
 SAME production source/input hashes; three8897390B jobs then141871070B source ->

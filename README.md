@@ -17,10 +17,16 @@ from referenced/default/direct properties is now implemented with 1 MiB metadata
 1,024-style and 64-level safety bounds, but its latest browser qualification FAILED
 the unchanged cleanup-recovery gate (110.43 MiB above loaded idle versus 96 MiB).
 Four style-referencing conversions completed correctly, including 141.87 MB DOCX
-to 139.76 MB HTML; primary whole-Chrome memory was 143.29 MiB. The real python-docx
-heading fixture's generation and validator controls pass, but its browser jobs
-were not reached. No full font/style/list/layout fidelity or public support is
-claimed. See `evidence/2026-11-07-docx-outline-first-control-analysis.json`.
+to 139.76 MB HTML; primary whole-Chrome memory was 143.29 MiB. A changed, perturbing
+allocation diagnostic did not reproduce the cleanup failure; it is not evidence
+of a converter fix. The previously unreached real python-docx heading fixture now
+passes three production-browser conversions with independent heading/content
+validation, payload cancellation, write-error/recovery and cleanup, at 50.29 MiB
+whole-Chrome peak. This small control does not qualify large-file cleanup, full
+font/style/list/layout fidelity or public support. See
+`evidence/2026-11-07-docx-outline-first-control-analysis.json`,
+`evidence/2026-11-07-docx-cleanup-diagnostic-analysis.json` and
+`evidence/2026-11-07T03-28-03-106Z-docx-html-qualification.json`.
 Outline interpretation follows the documented
 [outline-level](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.outlinelevel?view=openxml-3.0.1)
 and [style-base](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.basedon?view=openxml-3.0.1)

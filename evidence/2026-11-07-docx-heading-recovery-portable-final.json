@@ -1,0 +1,121 @@
+{
+  "recordedAt": "2026-11-07T03:35:38.308Z",
+  "scope": "Private DOCX outline diagnostic, owned teardown reconciliation and previously unreached small native heading/recovery checkpoint; NOT full route or original project completion",
+  "portable": {
+    "tests": 2577,
+    "passed": 2577,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 113556.1188,
+    "selectedFiles": 714,
+    "allFiles": 876,
+    "qualificationFilesNotRun": 162,
+    "retainedPriorHostedFiles": 235
+  },
+  "focused": {
+    "latest": 13,
+    "earlierAffected": 32
+  },
+  "typeScript": "pass",
+  "affectedEightFileLint": "pass",
+  "productionBuild": {
+    "rebuiltThisCycle": false,
+    "reason": "Only harness/test/docs changed. Actual production browser controls reused the existing build with unchanged converter sources; source equality to failed full control enforced before diagnostic."
+  },
+  "browser": {
+    "receipt": "evidence/2026-11-07T03-28-03-106Z-docx-html-qualification.json",
+    "receiptSha256": "46f97fa291b749551d7540f38720b018e61d3bc6d71df2fcf110890fc9851806",
+    "executedHead": "e6ba305b07716a1cb3d461053bd9f2f571bb4345",
+    "status": "passed-private-native-heading-and-recovery-control-not-scaling-or-promotion",
+    "actualNativeHeadingConversions": 3,
+    "independentValidator": true,
+    "peakIncrementalPrivateMiB": 50.2890625,
+    "validNativeSamples": 330,
+    "unavailableNativeSamples": 0,
+    "headingCleanupDeltasMiB": [
+      12.25,
+      13.67578125,
+      11.0859375
+    ],
+    "headingFinalValidSamples": [
+      97,
+      96,
+      114
+    ],
+    "firstHeadingHistoricalOnlineCount": 96,
+    "lateSampleChangesPeak": false,
+    "cancelAfterRealPayload": true,
+    "writeErrorAndRecovery": true,
+    "forbiddenRequests": 0,
+    "headless": true,
+    "nativeExternalDestinationVerified": false,
+    "fullWordLayoutVerified": false,
+    "wholeRouteQualification": false
+  },
+  "diagnostic": {
+    "analysis": "evidence/2026-11-07-docx-cleanup-diagnostic-analysis.json",
+    "overallFailed": true,
+    "unchangedSourceAndInputs": true,
+    "peakIncrementalPrivateMiB": 123.2421875,
+    "firstCleanupMiB": 43.06640625,
+    "originalFailureResolved": false,
+    "productionMemoryFixImplemented": false,
+    "perturbsMemory": true,
+    "losslessReportBytesSaved": 7857986
+  },
+  "ownedCleanup": {
+    "observedChromePids": 29,
+    "allAbsent": true,
+    "serverAbsent": true,
+    "runtimeRemoved": true,
+    "rootBirthAndParentVerifiedBeforeKill": true,
+    "individualChildKills": false,
+    "sourceUnchanged": {
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+    }
+  },
+  "recorderFollowup": {
+    "change": "Finalize separate small-heading native windows from complete retained journal",
+    "newBrowserReplay": false,
+    "independentHistoricalJournalVerification": true
+  },
+  "sourcePins": {
+    "scripts/qualify-docx-html.mjs": "d97ce41ff0a8f5f35b983a82b88d940e356efc41449bc6ef4d8d9c501a96d07e",
+    "workers/docx-html-conversion.ts": "eb9e7a86baf98e82d9f1a5998f800731a9075d152a23a983a5628f92f3db438a",
+    "workers/docx-conversion.ts": "e64d554d7bb2f762bcf33b75c90dd22ea492419c5374db79a4a3745ec61bce4a",
+    "workers/conversion.worker.ts": "57b9f4b9edeb981d9d267e8e2892d89007c114fb999708aff2407311b0147ce9",
+    "lib/capability-registry.ts": "e04961e2e9cd96bec145a28bb4b35d4c551c433dbd5c58b86fa308bf431357d7",
+    "package-lock.json": "cebcd0caf95382203084b900aecb06dbd5fb10bc8743ddb202a7a137582f603e",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d",
+    "scripts/lib/birth-type-capture.mjs": "fb76463e1e90d87ffb8a2d13b3cb6b7a53db3ffffdff2aab4c1b954f7655a398",
+    "scripts/lib/select-owned-local-browser-file.mjs": "24c8db43c82868c1131c0742f60197c618e0224292c8fe4f785b41f105c21755",
+    "scripts/lib/docx-html-scaling-control.mjs": "d8623f6170ae7f3b88f2b8c3a16ce7b5fe7866793778c7ba3837d804c851bf36",
+    "scripts/lib/docx-html-scaling-fixtures.py": "490570cd9223c6f77c802b314d78444a1e6b0421d2a1bf4d73a3734b35ba0349",
+    "scripts/lib/opfs-output-validation-backing.mjs": "cb06939a7c6f7f3422209b3ff24fc8860e20327f092059a61d67f8030d71f9d7",
+    "scripts/lib/cdp-realm-memory.mjs": "dacac72ad581a52fa46cdcec4fae3cf97e52f065c8594c4341ef6940be9e41bd",
+    "scripts/lib/browser-payload-cancellation.mjs": "63a90c78efac05f7eda4cc90af5d6eb5daf4ec5a9ba374ddd1fcab41ce89e9ab",
+    "scripts/lib/docx-direct-control.mjs": "76daac79a630a7f45e71a6a8129e8d05b40f18d56313a355885a4b98865dc862",
+    "app/converter/ConverterApp.tsx": "a8e7a15cf4470b62ccf56baa3c9af267b91e553fca6b412eeb1897c62bb1b6db",
+    "workers/random-access-destination.ts": "f46a4db401daabeb40a0b9eaa9feb256b623c21d2a7f41af549b6797842b4375",
+    "workers/direct-file-writer.worker.ts": "212b8d6dd6ef9344e26cf65ca66fe0aae7db9a8bba7272b96c0cf8e74f55acaa",
+    "workers/direct-writer-protocol.ts": "4ca103db370944f162660749984e872e3d3abc18ee349d5f1231316386e8bf47",
+    "workers/docx-outline.ts": "cccfe294e19546a7055e7ebb39a215367e5d7794e84cb33eda96ffc2a375d735",
+    "scripts/lib/docx-outline-fixtures.py": "d2e460fa9472b596735d73b8322ca1c7c829cf07c7c3818d2328788b60db16c0",
+    "scripts/lib/bounded-error-details.mjs": "6a2af6cf5c61d680db1e5b8099b0f2cd0797573a8395071c831b97ea44554eab",
+    "scripts/lib/docx-cleanup-diagnostic.mjs": "50a6556d9c33955f0a909655093e2a018519a32b0835de1ef6e3b5c31f4b6dd4",
+    "scripts/lib/bounded-dom-counters.mjs": "c56c81f64adb753c96d2189b0283c52a8b7e2b824fa66992d958a98c3fb34b45",
+    "scripts/lib/live-memory-infra.mjs": "8178653cbf6b8aaf4d631b52fcb626b3acce0dfc62a30c8c848d887521af08e0",
+    "scripts/lib/memory-infra-attribution.mjs": "057d8308f612ba56620003d1e6f8393ef907372663b92c476ab1a3e62d02902d",
+    "scripts/lib/owned-chromium-cleanup.mjs": "1cfc3af050aed6d55bce8c4d40ef68eb374e507da6925dc741a54421efbdb0f8",
+    "scripts/analyze-docx-cleanup-diagnostic.mjs": "73a158618323148b57897a7d3ea58802f4c50cb18742c7ae1e4459b044b38c0d",
+    "tests/docx-cleanup-diagnostic.test.mjs": "420995ea297aa854a675ad1d9dbd13c4e247a629bca2bd67713afc195342ce24",
+    "tests/docx-cleanup-diagnostic-evidence.test.mjs": "812da7cf4bdcbc1bfcbaa4cb121e881f52f9fee01415d27ae24777cfc1e3dd45",
+    "tests/owned-chromium-cleanup.test.mjs": "8c025328755125832b85797409e545fc862b6745b6aee01da4dda0c3ca9577dd",
+    "tests/docx-native-heading-evidence.test.mjs": "8512a91ffd4b27d30804b49d2840dc9620fa1eeb79831b9cac5c98c5d5f2b970"
+  },
+  "publicPromotion": false,
+  "fullGoalComplete": false,
+  "next": "Keep original full-size cleanup failure open; no unchanged scaling/small-test replay without a concrete diagnostic or production change. Remaining office fidelity/external-destination/browser/original-media/near10GB/source-release gates remain open."
+}

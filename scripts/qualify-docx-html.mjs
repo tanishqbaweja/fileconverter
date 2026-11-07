@@ -634,6 +634,18 @@ finally {
         scope: "failed-partial-control-window-not-completion-or-acceptance" };
     }
   }
+  // Heading controls have separate cases, but the same late native replies
+  // must be reconciled against their original immutable run windows as scaling.
+  if (outlineSmall && report.blankBaseline && report.loadedIdle) for (const row of report.outlineControl?.cases ?? []) {
+    if (!row.smallRunMemory) continue;
+    const online = row.smallRunMemory;
+    row.onlineSampleCounts = { validSamples: online.validSamples, unavailableSamples: online.unavailableSamples };
+    row.smallRunMemory = summarizeDocxHtmlRunMemory(samples, Date.parse(online.windowStart), Date.parse(online.windowEnd),
+      report.blankBaseline, report.loadedIdle, online.cleanupStable);
+    if (row.smallRunMemory.incrementalPrivateMiB > 250 || row.smallRunMemory.cleanupDeltaFromLoadedMiB > scalingPlan.cleanupRecoveryLimitMiB) {
+      report.status = "failed-not-acceptance"; report.failures.push("Finalized native heading journal fails unchanged primary/cleanup gate"); process.exitCode = 1;
+    }
+  }
   const archive = `evidence/${stamp}-docx-html-native-samples.json.gz`;
   await writeFile(path.join(root, archive), packed, { flag: "wx" });
   report.nativeArchive = { file: archive, bytes: packed.length, sha256: sha(packed), decodedBytes: raw.length, decodedSha256: sha(raw) };
