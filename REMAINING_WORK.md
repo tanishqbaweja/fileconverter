@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-07 T-10 hosted portability: record both failed attempts rather than
+replaying unchanged code. Run 42406102049 failed on eight host-source and seven
+VP9 portability checks; 42407047083 resolved all 15 but stopped at the stale
+162-file qualification inventory assertion. Exact raw authentication is now
+separate (three local passes), not removed or passed by implication on Linux.
+The replacement count is bound to the new private file and all 235 prior
+hosted files remain portable. See `evidence/2026-11-07-svg-release-hosted-cycle.json`.
+
 2026-11-07 B08/T-09/T-10 default **browser** release asset gap closed:
 withheld SVG package-copy is absent from the default client build. Exact
 93-file/19-Wasm remaining engine tree, empty HTTP 404s, and stale-cache

@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-07 hosted SVG release verification and Linux portability. The first
+portable run failed on 15 tests after a successful build; the first recovery
+resolved all 15 but exposed one stale exact inventory count (162 vs 163).
+The reviewed host change now reverses to exact historical source pins; the
+VP9 recipes accept only known root substitutions for syntax-only checks.
+Existing committed trace bytes and compact receipts remain portable; the two
+private ZIPs and native tree still require exact raw authentication, and all
+three checks passed locally. No raw traces, media, or native outputs were
+created or uploaded. Both hosted failures and successful cleanup steps are
+retained in [the hosted cycle receipt](evidence/2026-11-07-svg-release-hosted-cycle.json).
+
 2026-11-07 browser SVG qualification artifact withheld from the **default
 client package**, not just its UI. A fresh default build had 93 engine files
 and 19 Wasm files; all 93 non-SVG files matched the checkout byte-for-byte.

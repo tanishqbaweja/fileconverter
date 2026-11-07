@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "workflow": "ci.yml",
+  "selection": "portable-verify",
+  "branch": "media-options",
+  "scope": "Default browser release package verification. Not a new conversion, stress, hosted deployment, or native source rebuild.",
+  "initial": {
+    "runId": 42406102049,
+    "jobId": 128504033268,
+    "head": "deb84d60aedca9f85a143b86550cadead4e3ffa2",
+    "conclusion": "failure",
+    "failedStep": "Run npm test (portable units after successful production build)",
+    "unit": { "total": 2655, "passed": 2636, "failed": 15, "skipped": 4, "cancelled": 0, "durationMs": 95074.497794 },
+    "failureGroups": {
+      "changedHostSourceAndHistoricalPins": 8,
+      "vp9WindowsTracePath": 1,
+      "vp9PrivateTraceOrNativeInputsAbsent": 3,
+      "vp9ArchivedRecipeImportRoots": 3
+    },
+    "browserPrivacyAndReleasePackageSteps": "skipped",
+    "ownedRuntimeCleanupStep": "success"
+  },
+  "firstRecovery": {
+    "runId": 42407047083,
+    "jobId": 128506880243,
+    "head": "0c768af018ae08157bd8f859d0baa17e44e8e297",
+    "conclusion": "failure",
+    "failedStep": "Run npm test",
+    "unit": { "total": 2658, "passed": 2653, "failed": 1, "skipped": 4, "cancelled": 0, "durationMs": 77204.31093 },
+    "allFifteenOriginalFailuresResolved": true,
+    "soleFailure": "tests/unit-suite-contract.test.mjs expected 162 qualification files but manifest intentionally has 163",
+    "browserPrivacyAndReleasePackageSteps": "skipped",
+    "ownedRuntimeCleanupStep": "success"
+  },
+  "localProof": {
+    "initialHeadSourceTreeMatchedCommittedBlobs": { "directories": 12, "files": 95, "wasm": 20 },
+    "defaultBuildMatchedNonSvgSourceTree": { "files": 93, "wasm": 19, "workerFirst": true, "packagedSvg": null },
+    "firstRecoveryFocusedChecksPassed": 53,
+    "privateRawArtifactChecksPassedLocally": 3,
+    "privateRawScope": "Two existing VP9 HTTP trace ZIPs and the retained native/source tree authenticated; no new artifacts created or uploaded.",
+    "portableFiles": 724,
+    "qualificationFiles": 163,
+    "priorHostedFilesKeptPortable": 235
+  },
+  "notRunInEitherHostedAttempt": ["Private raw-artifact checks", "Browser conversion matrix", "Engine reproduction matrix", "Manual/headed browser checks", "Protected original conversion"]
+}
