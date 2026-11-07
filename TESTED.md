@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-07 T-09/T-10 independent fresh-output artifact gate implemented. Old
+git-diff-only green reproduced for ignored extra Wasm and missing fresh output.
+New gate compares every regular file/license/manifest in published and isolated
+rebuilt trees against raw checked-out Git blob sizes/SHA-256; rejects extra/missing,
+same-size drift, links, wrong commit and unsafe paths. Native11 recipes unchanged;
+SVG runs package copy in fresh owned scratch, not source compilation. Initial
+8PASS/1test-loaderFAIL (wrong YAML import) fixed using existing locked parser;
+13focused tests/four-file lint PASS. Next actual all-tree published inventory and
+isolated package copy plus targeted hosted native/packaging gate verification.
+No app/browser/conversion replay or SVG public/source closure.
+
 2026-11-07 installed-browser final checkpoint30focused PASS/0fail/0skip/0cancel,
 449.5502ms. TypeScript/five-file lint PASS.718portable/880all/162qualification
 inventory; full portable not replayed for this harness-only cycle (previous

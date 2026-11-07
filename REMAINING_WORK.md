@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-07 T-09/T-10 fresh artifact tree CI guard implemented;13focused/lint PASS.
+Old Git diff ignored extra Wasm/missing actual rebuild output reproduced; compare
+raw Git blobs vs every published/rebuilt file with finite path/byte bounds and
+no symlinks. Source recipes untouched; SVG package-copy distinct and isolated.
+Actual local/hosted verification pending; SVG source-only gate remains open.
+
 2026-11-07 installed-browser checkpoint final30focusedPASS/0fail/0skip/0cancel,
 TypeScript/five-file lint PASS;718portable/880all/162qualification inventory.
 No unnecessary full portable replay or app rebuild on unchanged production source.

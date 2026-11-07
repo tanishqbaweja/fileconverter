@@ -1,5 +1,6 @@
+import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
+import { copyFile, lstat, mkdir, readFile, realpath, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -12,9 +13,18 @@ if (packageMetadata.version !== "2.6.2") {
   throw new Error(`Expected @resvg/resvg-wasm 2.6.2, found ${packageMetadata.version}.`);
 }
 const source = path.join(packageRoot, "index_bg.wasm");
-const destinationRoot = path.join(projectRoot, "public", "engines", "svg");
+let destinationRoot = path.join(projectRoot, "public", "engines", "svg");
+if (process.argv.length !== 2) {
+  assert.equal(process.argv.length, 4); assert.equal(process.argv[2], "--owned-output");
+  destinationRoot = path.resolve(process.argv[3]);
+  const work = path.join(projectRoot, "work"), parent = path.dirname(destinationRoot);
+  assert.equal(path.dirname(parent), work); assert.match(path.basename(parent), /^engine-package-copy-[A-Za-z0-9]+$/);
+  assert.equal(path.basename(destinationRoot), "svg");
+  assert.equal(await realpath(work), work); assert.equal(await realpath(parent), parent);
+  const info = await lstat(parent); assert.ok(info.isDirectory() && !info.isSymbolicLink());
+  await mkdir(destinationRoot); // Exclusive: never compare against stale prior output.
+} else await mkdir(destinationRoot, { recursive: true });
 const destination = path.join(destinationRoot, "resvg.wasm");
-await mkdir(destinationRoot, { recursive: true });
 await copyFile(source, destination);
 const bytes = await readFile(destination);
 const manifest = {

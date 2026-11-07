@@ -110,17 +110,31 @@ jobs:
           work/emsdk/emsdk activate "${{ matrix.emscriptenVersion }}"
 
       - name: Rebuild pinned engine
+        if: matrix.reproductionKind == 'native-source'
         shell: bash
         run: ${{ matrix.command }}
         env:
           WITHIN_KEEP_NONDOCKER_OUTPUT: "1"
 
-      - name: Normalize generated artifact permissions
+      - name: Compare fresh native output and published tree to committed blobs
+        if: matrix.reproductionKind == 'native-source'
         shell: bash
-        run: find "${{ matrix.output }}" -type f -exec chmod 0644 {} +
+        env:
+          ENGINE_ID: ${{ matrix.id }}
+        run: node scripts/verify-engine-artifacts.mjs "$GITHUB_SHA" "$ENGINE_ID" rebuilt
 
-      - name: Verify reproducible engine artifacts
-        run: git diff --exit-code -- ${{ matrix.output }}
+      - name: Verify isolated pinned SVG package copy (not source compilation)
+        if: matrix.reproductionKind == 'pinned-package-copy'
+        shell: bash
+        env:
+          ENGINE_ID: ${{ matrix.id }}
+        run: node scripts/verify-engine-artifacts.mjs "$GITHUB_SHA" "$ENGINE_ID" package-copy
+
+      - name: Confirm published tracked artifacts were not changed
+        shell: bash
+        env:
+          ENGINE_OUTPUT: ${{ matrix.output }}
+        run: git diff --exit-code HEAD -- "$ENGINE_OUTPUT"
 
       - name: Upload bounded engine mismatch evidence
         if: failure() && matrix.emscriptenVersion
