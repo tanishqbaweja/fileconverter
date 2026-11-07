@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-07 U-05/B07 installed-browser matrix implementation ready: eight real
+representative families, direct OPFS-backed handle and unsafe/write-error/recovery
+on Brave/Opera GX, exact binary pins and unchanged full-tree250MiB/cleanup96MiB.
+No output copies or browser-service disable flags.23focused checks/lint PASS;
+NEXT sequential actual headless runs. Existing Edge/Chrome and DOCX controls
+remain retained; current installed compatibility not full original goal.
+
 2026-11-07 final inherited-emphasis checkpoint regression2589PASS/0fail/0skip/
 0cancel,148.130s,716portable/878all/162qualification UNRUN/235prior-hosted.37
 latest focused checks, fresh production build, TypeScript/eight-file lint PASS.

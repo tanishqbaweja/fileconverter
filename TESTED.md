@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-07 new installed-browser matrix PREPARED, browser pending. Eight public
+families (data/document/archive/image/video/audio/subtitle/ebook), OPFS-backed
+real direct CSV handle, unsafe TAR/injected write failure/recovery. Reuses the
+unchanged production build; path-only CDP input, no converted validation copies;
+independent file/PCM/packet hashes, full decode, SSIM and exact text/structure.
+Normal-service fresh headless Brave and Opera GX sequential; full native250MiB
+and natural96MiB cleanup limits, exact built asset network allowlist.23focused
+checks and three-file lint PASS. No latest-vendor-version, headed/native picker,
+large/stress or public route promotion claims. Existing Edge/Chrome tests not replayed.
+
 2026-11-07 inherited-emphasis final checkpoint:2589portablePASS/0fail/0skip/
 0cancel,148130.1471ms;716portable/878all/162qualification UNRUN;235prior-hosted
 retained. Latest37focused PASS, earlier67affected PASS; fresh production build,
