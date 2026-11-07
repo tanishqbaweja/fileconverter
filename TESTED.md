@@ -1,5 +1,51 @@
 # Tested conversion ledger
 
+2026-11-07 inherited-emphasis final checkpoint:2589portablePASS/0fail/0skip/
+0cancel,148130.1471ms;716portable/878all/162qualification UNRUN;235prior-hosted
+retained. Latest37focused PASS, earlier67affected PASS; fresh production build,
+TypeScript/eight-file lint PASS. Headless recovery screenshot reviewed: private
+route warning, new emphasis limitations and403published routes visible. Native
+picker/headed/manual/full layout remain unverified. Exact source pins and tests:
+evidence/2026-11-07-docx-emphasis-portable-final.json.
+
+2026-11-07 fresh-session inherited-emphasis repeat PASSED on unchanged52c8fae6
+source, same input/settings/browser binary. Second control:
+evidence/2026-11-07T03-53-20-013Z-docx-html-qualification.json.
+Two normal-service fresh profiles,30actual jobs/26independently validated outputs,
+six full141871070B ->139756049B outputs, six native169style emphasis outputs and
+six native heading outputs. Primary116.28515625/124.890625MiB;1282/1117valid and
+ZERO missing each. Scaling cleanup maxima53.3125/58.92578125MiB (<96). Native
+emphasis13blocks/15segments checked per text segment, not extension/tag counts.
+Large per-session median8004.255/7773.825ms; observational, no randomized A/B or
+speed-improvement/fastest claim. Both cancel/write-error/recovery/privacy pass.
+All43/49observed Chrome PIDs plus owned servers absent; disposable profiles,
+fixtures and outputs removed; original full size/SHA unchanged. No unrelated
+processes killed, browser services disabled, forced GC or baseline changes.
+Comparison and latest37focused checks PASS:
+evidence/2026-11-07-docx-emphasis-repeatability.json.
+Current changed private build passes these full controls; prior outline-build
+failure remains failed and its allocation cause is NOT retroactively resolved.
+Native external destination/full Word/list/font/layout/broader office/browser/
+original media/near10GB gates remain OPEN. Do not repeat these closed controls
+without a concrete relevant change.
+
+2026-11-07 first changed inherited-emphasis full browser session PASSED, executed
+52c8fae6, evidence/2026-11-07T03-47-48-096Z-docx-html-qualification.json.
+37137B real python-docx/169styles ->1264B static HTML THREE times; native streaming
+oracle verified all13blocks/15text segments and effective emphasis, not just text.
+Wrong-toggle/text/active-markup/unclosed controls rejected. Three8897390B and
+three141871070B full styled sources produced8735249B/139756049B identical golden
+outputs with all ordered paragraphs checked. Same failed-control input hashes,
+not smaller substitutes. Large elapsed8004.255/7836.965/8098.515ms, NOT A/B proof.
+Whole Chrome116.28515625MiB/1282valid0missing; scaling cleanup0.535-53.3125MiB,
+native emphasis cleanup6.012-8.094MiB, unchanged250/96gates pass. Native heading
+fixtures now correctly include inherited bold (921B, repeated identical hash).
+Real payload cancel2228224B, write-error/golden720B recovery, privacy and all43
+observed Chrome PIDs/server/runtime/profile/output cleanup pass; original full
+SHA unchanged. No services disabled, forced GC or public promotion. Prior failed
+outline build remains failed; no causal memory-fix claim. Mandatory same-build,
+same-input/settings fresh-browser repeat NEXT; not replaying a closed gate.
+
 2026-11-07 new N-08 inherited emphasis implementation (browser pending): document
 run defaults, paragraph/character style chains and direct bold/italic/underline/
 strike overrides. Bold/italic/strike compose as style toggles, direct values set;

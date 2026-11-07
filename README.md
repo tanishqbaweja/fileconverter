@@ -10,12 +10,21 @@ PDF input, PDF output, and PDF tooling are intentionally out of scope.
 
 DOCX-to-HTML is a private localhost qualification candidate, not a published
 conversion. It streams main-document paragraphs, simple table rows/cells and
-basic direct emphasis into escaped static HTML. Named styles, lists/headings,
+direct and supported inherited emphasis into escaped static HTML. Named styles, lists/headings,
 fonts, page/merged-cell layout, links, graphics and ancillary parts are not fully
 preserved; the UI discloses those limits. Paragraph outline/heading inheritance
 and supported document-default/paragraph/character-style emphasis are implemented
 with 1 MiB metadata, 1,024-style and 64-level safety bounds. The new emphasis
-increment still awaits browser qualification. Its earlier outline-only build FAILED
+increment passed two fresh normal-service Chrome sessions: 30 production jobs,
+26 independently validated outputs, including six 141.87 MB DOCX to 139.76 MB
+HTML conversions. Whole-Chrome peaks were 116.29/124.89 MiB and scaling cleanup
+maxima 53.31/58.93 MiB (unchanged 250/96 MiB limits). Native fixtures verify
+effective emphasis per text segment, headings and table cells; cancellation,
+write-error/recovery, privacy and owned cleanup pass. This remains private, not
+full Word appearance, native external-destination, broader-browser or media/10 GB
+qualification. See `evidence/2026-11-07-docx-emphasis-repeatability.json`.
+
+Historical earlier outline-only build FAILED
 the unchanged cleanup-recovery gate (110.43 MiB above loaded idle versus 96 MiB).
 Four style-referencing conversions completed correctly, including 141.87 MB DOCX
 to 139.76 MB HTML; primary whole-Chrome memory was 143.29 MiB. A changed, perturbing
@@ -37,7 +46,7 @@ and [toggle-property rules](https://python-docx.readthedocs.io/en/latest/dev/ana
 Direct overrides are absolute; underline patterns/colors normalize to single.
 
 Earlier source-pinned controls below remain historical evidence, not acceptance
-of the current outline increment. Two clean Chrome sessions each produced
+of the current inherited-emphasis build. Two clean Chrome sessions each produced
 three 139.8 MB HTML outputs from genuine 140.6 MB DOCX inputs, plus three 8.7 MB
 outputs. Independent streaming validation compares every ordered paragraph;
 whole-tree memory peaks were 173.39 and 157.01 MiB with stable cleanup readings.

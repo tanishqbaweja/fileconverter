@@ -1,0 +1,219 @@
+{
+  "recordedAt": "2026-11-07T03:58:06.468Z",
+  "scope": "Private inherited supported DOCX emphasis: two genuine fresh normal-service Chrome sessions, 30 actual production jobs, exact native semantic oracles and full styled scaling inputs; not full Word/native picker/public promotion",
+  "receipts": [
+    {
+      "path": "evidence/2026-11-07T03-47-48-096Z-docx-html-qualification.json",
+      "sha256": "06961be1e202a4cabc081d42e3e3fb95469e00e430041aff7a566ab2dbb8b3e6",
+      "executedHead": "52c8fae6e4bfd9ba8028c7c36a4feff38a5558d6",
+      "sourceFixtureBytes": 37137,
+      "sourceFixtureSha256": "66bbbb0154494a46b10ac9cecf8946a0e3e242adba74ba8ac9605f940097f2f7",
+      "styleDefinitions": 169,
+      "actualBrowserJobs": 15,
+      "emphasisOutputs": [
+        {
+          "bytes": 1264,
+          "sha256": "defda80f12f8bd95450506bb8b19753b0c64f4a49c1c72c1d151e3dce15a01cc",
+          "elapsedMs": 88.60499998927116,
+          "cleanupMiB": 6.01171875
+        },
+        {
+          "bytes": 1264,
+          "sha256": "defda80f12f8bd95450506bb8b19753b0c64f4a49c1c72c1d151e3dce15a01cc",
+          "elapsedMs": 84.61500000953674,
+          "cleanupMiB": 7.9375
+        },
+        {
+          "bytes": 1264,
+          "sha256": "defda80f12f8bd95450506bb8b19753b0c64f4a49c1c72c1d151e3dce15a01cc",
+          "elapsedMs": 82.28999999165535,
+          "cleanupMiB": 8.09375
+        }
+      ],
+      "headingOutputs": [
+        {
+          "bytes": 921,
+          "sha256": "ff4df819005fee917798e0b6cd86c5f037fd359d72651f1b4a3749613819a025"
+        },
+        {
+          "bytes": 921,
+          "sha256": "ff4df819005fee917798e0b6cd86c5f037fd359d72651f1b4a3749613819a025"
+        },
+        {
+          "bytes": 921,
+          "sha256": "ff4df819005fee917798e0b6cd86c5f037fd359d72651f1b4a3749613819a025"
+        }
+      ],
+      "scaling": [
+        {
+          "sourceBytes": 8897390,
+          "outputBytes": 8735249,
+          "elapsedMs": 510,
+          "incrementalPrivateMiB": 98.1484375,
+          "cleanupDeltaMiB": 32.421875
+        },
+        {
+          "sourceBytes": 8897390,
+          "outputBytes": 8735249,
+          "elapsedMs": 497.1399999856949,
+          "incrementalPrivateMiB": 111.08984375,
+          "cleanupDeltaMiB": 0.53515625
+        },
+        {
+          "sourceBytes": 8897390,
+          "outputBytes": 8735249,
+          "elapsedMs": 576.9899999797344,
+          "incrementalPrivateMiB": 97.83984375,
+          "cleanupDeltaMiB": 16.92578125
+        },
+        {
+          "sourceBytes": 141871070,
+          "outputBytes": 139756049,
+          "elapsedMs": 8004.255000025034,
+          "incrementalPrivateMiB": 103.8671875,
+          "cleanupDeltaMiB": 15.7265625
+        },
+        {
+          "sourceBytes": 141871070,
+          "outputBytes": 139756049,
+          "elapsedMs": 7836.965000003576,
+          "incrementalPrivateMiB": 103.8515625,
+          "cleanupDeltaMiB": 53.3125
+        },
+        {
+          "sourceBytes": 141871070,
+          "outputBytes": 139756049,
+          "elapsedMs": 8098.515000015497,
+          "incrementalPrivateMiB": 116.28515625,
+          "cleanupDeltaMiB": 52.171875
+        }
+      ],
+      "largeMedianElapsedMs": 8004.255000025034,
+      "peakIncrementalPrivateMiB": 116.28515625,
+      "validSamples": 1282,
+      "unavailableSamples": 0,
+      "ownedObservedChromePids": 43,
+      "allObservedPidsAbsent": true,
+      "serverAbsent": true,
+      "runtimeRemoved": true
+    },
+    {
+      "path": "evidence/2026-11-07T03-53-20-013Z-docx-html-qualification.json",
+      "sha256": "558efd9969b524644a1ac8e31f3fad89bd58dd51e3829ad6c7ffe064b3abcdd3",
+      "executedHead": "52c8fae6e4bfd9ba8028c7c36a4feff38a5558d6",
+      "sourceFixtureBytes": 37137,
+      "sourceFixtureSha256": "66bbbb0154494a46b10ac9cecf8946a0e3e242adba74ba8ac9605f940097f2f7",
+      "styleDefinitions": 169,
+      "actualBrowserJobs": 15,
+      "emphasisOutputs": [
+        {
+          "bytes": 1264,
+          "sha256": "defda80f12f8bd95450506bb8b19753b0c64f4a49c1c72c1d151e3dce15a01cc",
+          "elapsedMs": 86.9050000011921,
+          "cleanupMiB": 5.6484375
+        },
+        {
+          "bytes": 1264,
+          "sha256": "defda80f12f8bd95450506bb8b19753b0c64f4a49c1c72c1d151e3dce15a01cc",
+          "elapsedMs": 92.61499997973442,
+          "cleanupMiB": 3.6171875
+        },
+        {
+          "bytes": 1264,
+          "sha256": "defda80f12f8bd95450506bb8b19753b0c64f4a49c1c72c1d151e3dce15a01cc",
+          "elapsedMs": 98.40999999642372,
+          "cleanupMiB": 5.97265625
+        }
+      ],
+      "headingOutputs": [
+        {
+          "bytes": 921,
+          "sha256": "ff4df819005fee917798e0b6cd86c5f037fd359d72651f1b4a3749613819a025"
+        },
+        {
+          "bytes": 921,
+          "sha256": "ff4df819005fee917798e0b6cd86c5f037fd359d72651f1b4a3749613819a025"
+        },
+        {
+          "bytes": 921,
+          "sha256": "ff4df819005fee917798e0b6cd86c5f037fd359d72651f1b4a3749613819a025"
+        }
+      ],
+      "scaling": [
+        {
+          "sourceBytes": 8897390,
+          "outputBytes": 8735249,
+          "elapsedMs": 580.6850000023842,
+          "incrementalPrivateMiB": 96.16015625,
+          "cleanupDeltaMiB": 31.02734375
+        },
+        {
+          "sourceBytes": 8897390,
+          "outputBytes": 8735249,
+          "elapsedMs": 579.0250000059605,
+          "incrementalPrivateMiB": 109.1171875,
+          "cleanupDeltaMiB": 27.94140625
+        },
+        {
+          "sourceBytes": 8897390,
+          "outputBytes": 8735249,
+          "elapsedMs": 716.7899999916553,
+          "incrementalPrivateMiB": 106.6796875,
+          "cleanupDeltaMiB": 17.73828125
+        },
+        {
+          "sourceBytes": 141871070,
+          "outputBytes": 139756049,
+          "elapsedMs": 8683.580000013113,
+          "incrementalPrivateMiB": 103.3828125,
+          "cleanupDeltaMiB": 49.1640625
+        },
+        {
+          "sourceBytes": 141871070,
+          "outputBytes": 139756049,
+          "elapsedMs": 7773.824999988079,
+          "incrementalPrivateMiB": 124.890625,
+          "cleanupDeltaMiB": 47.05078125
+        },
+        {
+          "sourceBytes": 141871070,
+          "outputBytes": 139756049,
+          "elapsedMs": 7592.294999986887,
+          "incrementalPrivateMiB": 102.69140625,
+          "cleanupDeltaMiB": 58.92578125
+        }
+      ],
+      "largeMedianElapsedMs": 7773.824999988079,
+      "peakIncrementalPrivateMiB": 124.890625,
+      "validSamples": 1117,
+      "unavailableSamples": 0,
+      "ownedObservedChromePids": 49,
+      "allObservedPidsAbsent": true,
+      "serverAbsent": true,
+      "runtimeRemoved": true
+    }
+  ],
+  "freshSessionRepeatVerified": true,
+  "identicalSourceInputSettingsAndOutputHashes": true,
+  "largestSourceBytes": 141871070,
+  "largestOutputBytes": 139756049,
+  "totalActualBrowserJobs": 30,
+  "totalIndependentlyValidatedOutputs": 26,
+  "originalFailedReceiptRewritten": false,
+  "causalMemoryFixProven": false,
+  "styleSemanticsSources": [
+    "https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.runstyle?view=openxml-3.0.1",
+    "https://python-docx.readthedocs.io/en/latest/dev/analysis/features/text/font.html#toggle-properties"
+  ],
+  "publicPromotion": false,
+  "nativeExternalDestinationVerified": false,
+  "fullWordLayoutVerified": false,
+  "near10GBMediaVerified": false,
+  "speedImprovementProven": false,
+  "fullGoalComplete": false,
+  "protectedOriginal": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "remaining": "Full inherited font/theme/list/layout and broader office/browser/native-destination coverage; all original media/near10GB/source-release gates remain open. Earlier outline-build failure remains historical failure; no allocation cause or causal fix inferred."
+}

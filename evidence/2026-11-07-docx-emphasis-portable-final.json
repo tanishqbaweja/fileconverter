@@ -1,0 +1,114 @@
+{
+  "recordedAt": "2026-11-07T13:08:51.257Z",
+  "scope": "Private bounded inherited DOCX emphasis and same-input scaling/recovery, not whole Word fidelity, release, or full goal completion",
+  "productionBuild": "pass",
+  "typeScript": "pass",
+  "affectedEightFileLint": "pass",
+  "focused": {
+    "initialFeatureTestsPassed": 2,
+    "initialFeatureTestsFailed": 5,
+    "affectedPass": 67,
+    "latestEvidenceAndFeaturePass": 37
+  },
+  "portable": {
+    "passed": 2589,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 148130.1471,
+    "portableFiles": 716,
+    "allFiles": 878,
+    "qualificationFilesNotRun": 162,
+    "priorHostedFilesRetained": 235
+  },
+  "browser": {
+    "comparison": "evidence/2026-11-07-docx-emphasis-repeatability.json",
+    "comparisonSha256": "8af32fd45c30ed914685aab93164d94d4ecb517237e86ae6d1a297530aa71590",
+    "executedHead": "52c8fae6e4bfd9ba8028c7c36a4feff38a5558d6",
+    "freshNormalServiceSessions": 2,
+    "actualJobs": 30,
+    "independentlyValidatedOutputs": 26,
+    "largestInputBytes": 141871070,
+    "largestOutputBytes": 139756049,
+    "peakIncrementalPrivateMiB": [
+      116.28515625,
+      124.890625
+    ],
+    "maxScalingCleanupMiB": [
+      53.3125,
+      58.92578125
+    ],
+    "validNativeSamples": [
+      1282,
+      1117
+    ],
+    "missingNativeSamples": [
+      0,
+      0
+    ],
+    "ownedObservedChromePidsAbsent": [
+      43,
+      49
+    ],
+    "allOwnedServersAbsent": true,
+    "disposableRuntimeDataRemoved": true,
+    "forbiddenRequests": 0,
+    "headless": true,
+    "manualHeadedCoverageVerified": false,
+    "nativeExternalDestinationVerified": false,
+    "reviewedTerminalRecoveryScreenshot": {
+      "path": "output/playwright/2026-11-07T03-53-20-013Z-docx-html-complete.png",
+      "sha256": "e51331353a32bed59afab37474e89d7853991c92a48da1e475a2302696351264",
+      "localOnly": true,
+      "visiblePrivateRouteWarning": true,
+      "visibleUpdatedStyleLimitations": true,
+      "visiblePublicRouteCount": 403
+    }
+  },
+  "protectedOriginal": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "sourcePins": {
+    "scripts/qualify-docx-html.mjs": "11b2b01216626a559e79fcf08e1e86727d9f10c1b991ec75dcc890eda2b0f471",
+    "workers/docx-html-conversion.ts": "3a7e8beaa1f859cffa6880a8c21ed1f1064d58e31f4f390640d40d52f1b3882f",
+    "workers/docx-conversion.ts": "e64d554d7bb2f762bcf33b75c90dd22ea492419c5374db79a4a3745ec61bce4a",
+    "workers/conversion.worker.ts": "57b9f4b9edeb981d9d267e8e2892d89007c114fb999708aff2407311b0147ce9",
+    "lib/capability-registry.ts": "371738c549f0abba5194b25ea3807ebe602cfe1ba9456974e4570639d512b49e",
+    "package-lock.json": "cebcd0caf95382203084b900aecb06dbd5fb10bc8743ddb202a7a137582f603e",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d",
+    "scripts/lib/birth-type-capture.mjs": "fb76463e1e90d87ffb8a2d13b3cb6b7a53db3ffffdff2aab4c1b954f7655a398",
+    "scripts/lib/select-owned-local-browser-file.mjs": "24c8db43c82868c1131c0742f60197c618e0224292c8fe4f785b41f105c21755",
+    "scripts/lib/docx-html-scaling-control.mjs": "d8623f6170ae7f3b88f2b8c3a16ce7b5fe7866793778c7ba3837d804c851bf36",
+    "scripts/lib/docx-html-scaling-fixtures.py": "490570cd9223c6f77c802b314d78444a1e6b0421d2a1bf4d73a3734b35ba0349",
+    "scripts/lib/opfs-output-validation-backing.mjs": "cb06939a7c6f7f3422209b3ff24fc8860e20327f092059a61d67f8030d71f9d7",
+    "scripts/lib/cdp-realm-memory.mjs": "dacac72ad581a52fa46cdcec4fae3cf97e52f065c8594c4341ef6940be9e41bd",
+    "scripts/lib/browser-payload-cancellation.mjs": "63a90c78efac05f7eda4cc90af5d6eb5daf4ec5a9ba374ddd1fcab41ce89e9ab",
+    "scripts/lib/docx-direct-control.mjs": "76daac79a630a7f45e71a6a8129e8d05b40f18d56313a355885a4b98865dc862",
+    "app/converter/ConverterApp.tsx": "a8e7a15cf4470b62ccf56baa3c9af267b91e553fca6b412eeb1897c62bb1b6db",
+    "workers/random-access-destination.ts": "f46a4db401daabeb40a0b9eaa9feb256b623c21d2a7f41af549b6797842b4375",
+    "workers/direct-file-writer.worker.ts": "212b8d6dd6ef9344e26cf65ca66fe0aae7db9a8bba7272b96c0cf8e74f55acaa",
+    "workers/direct-writer-protocol.ts": "4ca103db370944f162660749984e872e3d3abc18ee349d5f1231316386e8bf47",
+    "workers/docx-outline.ts": "ad239ccea7a3527b4e4cf7aaa2aeb3d9dd972920d5cd425b23be230ad1dd20e6",
+    "scripts/lib/docx-outline-fixtures.py": "a9b63541e3e943fc78aee41434a263e0ef6d9256b0609212efcd5657ff26d9b2",
+    "scripts/lib/docx-emphasis-fixtures.py": "35433186ebf6aa51cf0d41f5947b54384e2215aac83170cc8916ee7e59b33225",
+    "scripts/lib/bounded-error-details.mjs": "6a2af6cf5c61d680db1e5b8099b0f2cd0797573a8395071c831b97ea44554eab",
+    "scripts/lib/docx-cleanup-diagnostic.mjs": "50a6556d9c33955f0a909655093e2a018519a32b0835de1ef6e3b5c31f4b6dd4",
+    "scripts/lib/bounded-dom-counters.mjs": "c56c81f64adb753c96d2189b0283c52a8b7e2b824fa66992d958a98c3fb34b45",
+    "scripts/lib/live-memory-infra.mjs": "8178653cbf6b8aaf4d631b52fcb626b3acce0dfc62a30c8c848d887521af08e0",
+    "scripts/lib/memory-infra-attribution.mjs": "057d8308f612ba56620003d1e6f8393ef907372663b92c476ab1a3e62d02902d",
+    "scripts/lib/owned-chromium-cleanup.mjs": "1cfc3af050aed6d55bce8c4d40ef68eb374e507da6925dc741a54421efbdb0f8",
+    "scripts/lib/reviewed-docx-html-integration.mjs": "11a569c32d9f68779adbae1a996cab5958b8e7324356f65bab6821357bb76714",
+    "fixtures/source/docx-html-reviewed-integration-2026-11-07.json": "58acfd6628669d802a1c666e90814d3e97620ae075b152b2b645943361c43807",
+    "fixtures/source/docx-before-run-emphasis-2026-11-07.json": "87dcbd0dc08bcf777a26b3140a73732d3f35427b7e1426d7960fe7fc92a57558",
+    "tests/docx-style-emphasis.test.mjs": "ad9c59ed7d9a0223b040ca4e706ccda5e7f13ae15585719b84b1ae8e39345ec5",
+    "tests/docx-inherited-emphasis-evidence.test.mjs": "7ab49816c9db81cda751a81eafd0f3818c2ac9715bdf10f7933bb735c87569d1",
+    "tests/docx-native-heading-evidence.test.mjs": "5c84d2e32ebaf00eb4156f93b4d3b15639c7c725047e5cef96f3b2b8cbffd65d"
+  },
+  "publicPromotion": false,
+  "earlierOutlineFailureRewritten": false,
+  "causalMemoryFixProven": false,
+  "newSpeedOptimizationProven": false,
+  "fullGoalComplete": false,
+  "remaining": "Do not replay these successful same-source controls unchanged. Broader document fidelity/native destination/browser gates, original full-media conversion/scaling and source/release gates remain open."
+}
