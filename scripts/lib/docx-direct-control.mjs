@@ -33,7 +33,8 @@ export function installDocxDestinationObservation() {
   };
 }
 
-export function assertDirectDocxCompletion(state, observation) {
+export function assertDirectDocxCompletion(state, observation, implementation = "shared-atomics") {
+  assert.ok(["shared-atomics", "async-file-stream"].includes(implementation));
   assert.equal(state.jobState, "complete"); assert.equal(state.error, null);
   assert.equal(state.selectedProfileId, "docx-to-html"); assert.equal(state.opfsName, null);
   assert.equal(state.batchOutputNames.length, 1);
@@ -41,8 +42,8 @@ export function assertDirectDocxCompletion(state, observation) {
   assert.match(name, /^within-test-direct-docx-html-[a-z0-9-]+\.html$/);
   assert.equal(observation.mode, "handle"); assert.equal(observation.actualFileHandle, true);
   assert.equal(observation.sourceBytes, state.metrics.inputBytes);
-  assert.equal(state.metrics.activeWorkerCount, 2);
-  assert.equal(state.metrics.sharedArrayBufferBytes, 262144 + 4096 + 32);
+  assert.equal(state.metrics.activeWorkerCount, implementation === "shared-atomics" ? 2 : 1);
+  assert.equal(state.metrics.sharedArrayBufferBytes, implementation === "shared-atomics" ? 262144 + 4096 + 32 : 0);
   assert.equal(state.metrics.peakWasmMemoryBytes, 0);
   return name;
 }

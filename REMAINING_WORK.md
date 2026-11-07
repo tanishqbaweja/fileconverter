@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-07 N-08 direct-handle baselineA PASS: six validated scaling outputs plus
+cancel/write/recovery,185.92578125MiB/843valid0missing, stable cleanup<=87.617MiB,
+two actual workers/266272B SAB. Native picker/external drive remain UNVERIFIED.
+Private async-writer candidateB pending: identical inputs/settings, all memory/
+fidelity/recovery gates and>=10% large median gain required before keeping it.
+BaselineA retained in02-15-56-367Z receipt; do not replay it unchanged.
+
 2026-11-07 N-08 direct-handle gate IN PROGRESS. DOCX worker/SAB diagnostic omission
 reproduced1PASS/2FAIL and corrected from actual writer resources. Existing native
 writer/converter/250MiB/96MiB gates unchanged. Harness targets real handle-mode

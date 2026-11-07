@@ -29,6 +29,10 @@ test("direct evidence requires an actual handle request, no fallback temp name a
     const s = state(); Object.assign(s.metrics, metrics); assert.throws(() => assertDirectDocxCompletion(s, observation));
   }
   assert.throws(() => assertDirectDocxCompletion({ ...state(), opfsName: "within-test-fallback" }, observation));
+  const asynchronous = state(); asynchronous.metrics.activeWorkerCount = 1; asynchronous.metrics.sharedArrayBufferBytes = 0;
+  assert.equal(assertDirectDocxCompletion(asynchronous, observation, "async-file-stream"), asynchronous.batchOutputNames[0]);
+  assert.throws(() => assertDirectDocxCompletion(asynchronous, observation, "shared-atomics"));
+  assert.throws(() => assertDirectDocxCompletion(asynchronous, observation, "anything-faster"));
 });
 test("test observation forwards exact request/transfer objects and is bounded metadata only", async () => {
   const source = await readFile("scripts/lib/docx-direct-control.mjs", "utf8");

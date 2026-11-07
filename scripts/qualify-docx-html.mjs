@@ -32,7 +32,8 @@ import { cancelAfterRealBrowserPayload } from "./lib/browser-payload-cancellatio
 import { completeNewBrowserJob, installDocxDestinationObservation, assertDirectDocxCompletion } from "./lib/docx-direct-control.mjs";
 
 assert.equal(process.platform, "win32");
-const direct = process.argv[2] === "--direct-scaling";
+const asyncDirect = process.argv[2] === "--direct-async-scaling";
+const direct = process.argv[2] === "--direct-scaling" || asyncDirect;
 const scaling = process.argv[2] === "--scaling" || direct;
 const cancellationOnly = process.argv[2] === "--cancel-control";
 assert.ok(process.argv.length === (scaling || cancellationOnly ? 3 : 2));
@@ -62,6 +63,11 @@ if (direct) {
   report.destinationMode = "handle";
   report.nativeExternalDestinationVerified = false;
   report.directHandleWriterControlVerified = false;
+  report.directWriterImplementation = asyncDirect ? "async-file-stream" : "shared-atomics";
+  if (asyncDirect) report.performanceCandidate = { baseline: "evidence/2026-11-07T02-15-56-367Z-docx-html-qualification.json",
+    baselineSha256: "df685c42d11a994276f03dbb2cef99570d0ae717881e7a15bc6e11cdc8ce2e47",
+    minimumLargeMedianImprovement: .10, accepted: false,
+    caveat: "Three repeats per size; sequential fresh sessions, not randomized interleaved A/B or universal fastest proof" };
 }
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const p = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
@@ -313,7 +319,7 @@ try {
     assert.equal(state.error, null); assert.equal(state.metrics.pendingOperations, 0); assert.equal(state.metrics.queuedBytes, 0);
     assert.ok(state.metrics.peakPendingOperations <= 1); assert.ok(state.metrics.maxReadChunkBytes <= 262144); assert.ok(state.metrics.maxWriteChunkBytes <= 65536);
     const observation = direct ? await directObservation() : null;
-    const name = direct ? assertDirectDocxCompletion(state, observation) : state.opfsName;
+    const name = direct ? assertDirectDocxCompletion(state, observation, report.directWriterImplementation) : state.opfsName;
     const binding = await bindOpfsOutputValidationBacking(page, profile, name, state.metrics.outputBytes);
     const caseRow = { kind: "complete-unvalidated", outputBytes: state.metrics.outputBytes, metrics: state.metrics, binding: binding.proof };
     if (direct) caseRow.destinationObservation = observation;
@@ -347,7 +353,7 @@ try {
           storageBeforeValidation: await page.evaluate(async () => { const s = await navigator.storage.estimate(); return { usage: s.usage ?? null, quota: s.quota ?? null }; }) };
         report.cases.push(row);
         const observation = direct ? await directObservation() : null;
-        const name = direct ? assertDirectDocxCompletion(state, observation) : state.opfsName;
+        const name = direct ? assertDirectDocxCompletion(state, observation, report.directWriterImplementation) : state.opfsName;
         if (direct) row.destinationObservation = observation;
         const binding = await bindLargeDocumentOutputValidationBacking(page, profile, name, state.metrics.outputBytes);
         row.binding = binding.proof;
@@ -420,6 +426,26 @@ try {
   if (cancellationOnly) report.status = "passed-changed-docx-html-payload-cancel-write-recovery-control-not-scaling-or-promotion";
   if (direct) { report.status = "passed-private-direct-handle-docx-html-scaling-control-not-native-picker-or-promotion"; report.directHandleWriterControlVerified = true; }
   if (scaling) report.completedDocumentScalingControlVerified = true;
+  if (asyncDirect) {
+    const candidate = report.performanceCandidate, bytes = await readFile(path.join(root, candidate.baseline));
+    assert.equal(sha(bytes), candidate.baselineSha256); const baseline = JSON.parse(bytes);
+    assert.equal(baseline.status, "passed-private-direct-handle-docx-html-scaling-control-not-native-picker-or-promotion");
+    assertInstalledChromePinsEqual(baseline.browserBefore, report.browserBefore);
+    for (const file of ["workers/docx-html-conversion.ts", "workers/docx-conversion.ts", "workers/random-access-destination.ts",
+      "workers/direct-file-writer.worker.ts", "workers/direct-writer-protocol.ts", "lib/capability-registry.ts", "package-lock.json", "app/converter/ConverterApp.tsx"])
+      assert.equal(report.sourcePins[file], baseline.sourcePins[file], "Only private DOCX destination selection/diagnostics may differ: " + file);
+    const before = baseline.cases.filter(c => c.runMemory), after = report.cases.filter(c => c.runMemory);
+    assert.equal(before.length, 6); assert.equal(after.length, 6);
+    for (let n = 0; n < 6; n++) {
+      for (const key of ["paragraphs", "repeat", "sourceBytes", "sourceSha256", "outputBytes"]) assert.equal(after[n][key], before[n][key]);
+      assert.equal(after[n].validated.sha256, before[n].validated.sha256);
+    }
+    const medianLarge = rows => rows.filter(c => c.paragraphs === scalingPlan.paragraphs.at(-1)).map(c => c.metrics.elapsedMs).sort((a, b) => a - b)[1];
+    candidate.baselineLargeMedianMs = medianLarge(before); candidate.candidateLargeMedianMs = medianLarge(after);
+    candidate.observedMedianImprovement = 1 - candidate.candidateLargeMedianMs / candidate.baselineLargeMedianMs;
+    assert.ok(candidate.observedMedianImprovement >= candidate.minimumLargeMedianImprovement, "Reject candidate without preregistered10% median gain");
+    candidate.identicalInputSettingsAndOutputHashesVerified = true; candidate.accepted = true;
+  }
 } catch (error) { report.status = "failed-not-acceptance"; report.failures.push(String(error.stack ?? error)); controlEnd ??= Date.now(); process.exitCode = 1; }
 finally {
   clearInterval(timer); await pending?.catch(() => {}); await monitor?.close().catch(error => report.failures.push("Observer cleanup: " + error));

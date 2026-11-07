@@ -4443,7 +4443,7 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
             profileId === "zip-to-tar-xz"
           ? ARCHIVE_WASM_WRITE_CHUNK
           : MAX_WRITE_CHUNK,
-        profileId === "avi-to-flv" || profileId === "mkv-to-mp4",
+        profileId === "avi-to-flv" || profileId === "mkv-to-mp4" || profileId === "docx-to-html",
       );
     }
     if (profileId === "svg-to-png") {

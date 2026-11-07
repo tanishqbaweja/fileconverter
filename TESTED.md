@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-11-07 direct DOCX HTML baselineA PASS185.92578125MiB/843valid0missing,
+all six full scaling outputs + payload-cancel/write-error/independent recovery.
+Actual9handle requests, two workers/266272B SAB, bounded262144reads/65536writes/
+queues/one pending. Large140575793B->139756049B each8.850-9.318s; median9193.830ms.
+Stable cleanup23.906-87.617MiB under96MiB, all owned data/roots gone/original SHA
+unchanged. Receipt02-15-56-367Z DOCX HTML qualification/native gzip/CSV/HTML.
+Native OS picker/external destination still UNVERIFIED (real OPFS-backed handle
+adapter). CandidateB now tests private DOCX HTML asynchronous native file stream
+without unnecessary Atomics writer worker. Keep only if ALL existing gates pass,
+identical source/settings/output hashes match and large median improves>=10%.
+This is preregistered, not a knob sweep; no repeated baselineA or OPFS replay.
+Candidate44focused checks/six-file lint/TypeScript/fresh production build PASS.
+Only private DOCX HTML destination-selection predicate changes; DOCX TXT/public
+writers retain their prior backend. Actual candidate browser benchmark NEXT.
+
 2026-11-07 direct DOCX HTML gate IN PROGRESS: code inspection found destination
 worker/SAB counters omitted for DOCX handle output. Actual worker-fragment
 regression reproduced1PASS/2FAIL (worker1 instead of2; missing266272B writer SAB).

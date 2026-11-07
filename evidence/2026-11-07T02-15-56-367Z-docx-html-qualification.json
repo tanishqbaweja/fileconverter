@@ -1,0 +1,4760 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-07T02:15:56.367Z",
+  "status": "passed-private-direct-handle-docx-html-scaling-control-not-native-picker-or-promotion",
+  "cases": [
+    {
+      "kind": "complete",
+      "paragraphs": 2048,
+      "repeat": 1,
+      "sourceBytes": 8786993,
+      "sourceSha256": "2a3292a2abe3223365c3d18f5e2ab327ce83119381faa8f0be214b006de0ca52",
+      "outputBytes": 8735249,
+      "metrics": {
+        "inputBytes": 8786993,
+        "outputBytes": 8735249,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 547.5550000071526,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 266272,
+        "activeWorkerCount": 2,
+        "imageWorkingBytes": 0
+      },
+      "storageBeforeValidation": {
+        "usage": 8735471,
+        "quota": 10746153711
+      },
+      "destinationObservation": {
+        "mode": "handle",
+        "actualFileHandle": true,
+        "sourceBytes": 8786993,
+        "jobId": "1a2fbfc1-14b1-4dc3-9a6c-795aa9991cca"
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-IRABvL/profile/Default/File System/000/t/00/00000001",
+        "logicalBytes": 8735249,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "4503599629066057",
+          "size": "8735249",
+          "birthtimeNs": "1794017791065439300",
+          "mtimeNs": "1794017791565319600"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "ac541fec2b7678986771f57370f5584dd27f113284e37b0ac252b79221466429"
+          },
+          {
+            "offset": 4365576,
+            "bytes": 4096,
+            "sha256": "c08e7d91c845d35919cf0b5701a33850df6e0e8c65ac8569de7f070d141310f0"
+          },
+          {
+            "offset": 8731153,
+            "bytes": 4096,
+            "sha256": "099cfdab2b9d956409916e4a783ca4163d90f2000ab38adf769a810426426b2d"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "c4658ddacf4a35dd3b8330c9c7221619e68542b08d46985b4eac45df0fdffca0",
+        "bytes": 8735249,
+        "paragraphs": 2048,
+        "maximumParagraphChars": 4237,
+        "readBufferBytes": 65536,
+        "allParagraphsComparedInOrder": true,
+        "csp": true,
+        "validator": "independent streaming Python HTMLParser; every ordinal, Unicode paragraph and inactive escaped markup"
+      },
+      "runMemory": {
+        "peak": {
+          "sequence": 232,
+          "timestamp": "2026-11-07T02:16:31.5486362Z",
+          "completedAt": "2026-11-07T02:16:31.5653196Z",
+          "sampleError": null,
+          "nativeElapsedMs": 16.6,
+          "privateBytes": 475172864,
+          "rssBytes": 813248512,
+          "processes": [
+            {
+              "pid": 12808,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.3820977Z",
+              "creationFileTime": "134384913653820977",
+              "executableName": "chrome.exe",
+              "privateBytes": 150863872,
+              "rssBytes": 178782208,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 15608,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.4707427Z",
+              "creationFileTime": "134384913654707427",
+              "executableName": "chrome.exe",
+              "privateBytes": 43466752,
+              "rssBytes": 85766144,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 16884,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:09.6229772Z",
+              "creationFileTime": "134384913696229772",
+              "executableName": "chrome.exe",
+              "privateBytes": 21852160,
+              "rssBytes": 46956544,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 22984,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.8704691Z",
+              "creationFileTime": "134384913658704691",
+              "executableName": "chrome.exe",
+              "privateBytes": 20598784,
+              "rssBytes": 43466752,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25188,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:09.2118854Z",
+              "creationFileTime": "134384913692118854",
+              "executableName": "chrome.exe",
+              "privateBytes": 126550016,
+              "rssBytes": 176431104,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25916,
+              "parentPid": 15208,
+              "createdAt": "2026-11-07T02:16:05.2296957Z",
+              "creationFileTime": "134384913652296957",
+              "executableName": "chrome.exe",
+              "privateBytes": 70758400,
+              "rssBytes": 180592640,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 26120,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.4158682Z",
+              "creationFileTime": "134384913654158682",
+              "executableName": "chrome.exe",
+              "privateBytes": 8278016,
+              "rssBytes": 18092032,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 29440,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.3900198Z",
+              "creationFileTime": "134384913653900198",
+              "executableName": "chrome.exe",
+              "privateBytes": 15032320,
+              "rssBytes": 41115648,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34340,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:14.4608730Z",
+              "creationFileTime": "134384913744608730",
+              "executableName": "chrome.exe",
+              "privateBytes": 15089664,
+              "rssBytes": 31539200,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39912,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.2666075Z",
+              "creationFileTime": "134384913652666075",
+              "executableName": "chrome.exe",
+              "privateBytes": 2682880,
+              "rssBytes": 10506240,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 92,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 93.1796875,
+        "conversionOnlyPrivateMiB": 88.56640625,
+        "cleanupDeltaFromLoadedMiB": 23.90625,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 407371776,
+          "spreadBytes": 6316032,
+          "rssBytes": 758005760,
+          "firstTimestamp": "2026-11-07T02:16:36.9019508Z",
+          "lastTimestamp": "2026-11-07T02:16:40.9480074Z",
+          "sampleCount": 10,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T02:16:30.985Z",
+        "windowEnd": "2026-11-07T02:16:40.964Z"
+      },
+      "realmsAfterCleanup": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+            "type": "worker",
+            "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+            "usedJSHeapBytes": 535340,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 411653,
+            "error": null
+          },
+          {
+            "targetId": "ABD5156F40B744962B44111A78AEE891",
+            "type": "page",
+            "url": "http://127.0.0.1:64690/?test=1&directory=1",
+            "usedJSHeapBytes": 4747692,
+            "allocatedJSHeapBytes": 8146944,
+            "embedderHeapUsedBytes": 5784448,
+            "backingStorageBytes": 729690,
+            "error": null
+          }
+        ]
+      },
+      "onlineSampleCounts": {
+        "validSamples": 92,
+        "unavailableSamples": 0
+      }
+    },
+    {
+      "kind": "complete",
+      "paragraphs": 2048,
+      "repeat": 2,
+      "sourceBytes": 8786993,
+      "sourceSha256": "2a3292a2abe3223365c3d18f5e2ab327ce83119381faa8f0be214b006de0ca52",
+      "outputBytes": 8735249,
+      "metrics": {
+        "inputBytes": 8786993,
+        "outputBytes": 8735249,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 555.2700000107288,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 266272,
+        "activeWorkerCount": 2,
+        "imageWorkingBytes": 0
+      },
+      "storageBeforeValidation": {
+        "usage": 8735471,
+        "quota": 10746153711
+      },
+      "destinationObservation": {
+        "mode": "handle",
+        "actualFileHandle": true,
+        "sourceBytes": 8786993,
+        "jobId": "b0775e58-1014-435a-b1a9-709d3a1c7bd7"
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-IRABvL/profile/Default/File System/000/t/00/00000003",
+        "logicalBytes": 8735249,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "5066549582487369",
+          "size": "8735249",
+          "birthtimeNs": "1794017801005392800",
+          "mtimeNs": "1794017801533504100"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "ac541fec2b7678986771f57370f5584dd27f113284e37b0ac252b79221466429"
+          },
+          {
+            "offset": 4365576,
+            "bytes": 4096,
+            "sha256": "c08e7d91c845d35919cf0b5701a33850df6e0e8c65ac8569de7f070d141310f0"
+          },
+          {
+            "offset": 8731153,
+            "bytes": 4096,
+            "sha256": "099cfdab2b9d956409916e4a783ca4163d90f2000ab38adf769a810426426b2d"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "c4658ddacf4a35dd3b8330c9c7221619e68542b08d46985b4eac45df0fdffca0",
+        "bytes": 8735249,
+        "paragraphs": 2048,
+        "maximumParagraphChars": 4237,
+        "readBufferBytes": 65536,
+        "allParagraphsComparedInOrder": true,
+        "csp": true,
+        "validator": "independent streaming Python HTMLParser; every ordinal, Unicode paragraph and inactive escaped markup"
+      },
+      "runMemory": {
+        "peak": {
+          "sequence": 329,
+          "timestamp": "2026-11-07T02:16:42.1477566Z",
+          "completedAt": "2026-11-07T02:16:42.1574800Z",
+          "sampleError": null,
+          "nativeElapsedMs": 10.5721,
+          "privateBytes": 477569024,
+          "rssBytes": 821272576,
+          "processes": [
+            {
+              "pid": 12808,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.3820977Z",
+              "creationFileTime": "134384913653820977",
+              "executableName": "chrome.exe",
+              "privateBytes": 151572480,
+              "rssBytes": 179687424,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 15608,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.4707427Z",
+              "creationFileTime": "134384913654707427",
+              "executableName": "chrome.exe",
+              "privateBytes": 35094528,
+              "rssBytes": 79130624,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 16884,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:09.6229772Z",
+              "creationFileTime": "134384913696229772",
+              "executableName": "chrome.exe",
+              "privateBytes": 21852160,
+              "rssBytes": 47026176,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 22984,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.8704691Z",
+              "creationFileTime": "134384913658704691",
+              "executableName": "chrome.exe",
+              "privateBytes": 20602880,
+              "rssBytes": 43540480,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25188,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:09.2118854Z",
+              "creationFileTime": "134384913692118854",
+              "executableName": "chrome.exe",
+              "privateBytes": 135901184,
+              "rssBytes": 188104704,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25916,
+              "parentPid": 15208,
+              "createdAt": "2026-11-07T02:16:05.2296957Z",
+              "creationFileTime": "134384913652296957",
+              "executableName": "chrome.exe",
+              "privateBytes": 71692288,
+              "rssBytes": 182439936,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 26120,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.4158682Z",
+              "creationFileTime": "134384913654158682",
+              "executableName": "chrome.exe",
+              "privateBytes": 8278016,
+              "rssBytes": 18092032,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 29440,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.3900198Z",
+              "creationFileTime": "134384913653900198",
+              "executableName": "chrome.exe",
+              "privateBytes": 14942208,
+              "rssBytes": 41271296,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34340,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:14.4608730Z",
+              "creationFileTime": "134384913744608730",
+              "executableName": "chrome.exe",
+              "privateBytes": 15089664,
+              "rssBytes": 31539200,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39912,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.2666075Z",
+              "creationFileTime": "134384913652666075",
+              "executableName": "chrome.exe",
+              "privateBytes": 2543616,
+              "rssBytes": 10440704,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 91,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 95.46484375,
+        "conversionOnlyPrivateMiB": 90.8515625,
+        "cleanupDeltaFromLoadedMiB": 80.68359375,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 466907136,
+          "spreadBytes": 8773632,
+          "rssBytes": 812593152,
+          "firstTimestamp": "2026-11-07T02:16:46.8599132Z",
+          "lastTimestamp": "2026-11-07T02:16:50.8021230Z",
+          "sampleCount": 10,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T02:16:40.966Z",
+        "windowEnd": "2026-11-07T02:16:50.909Z"
+      },
+      "realmsAfterCleanup": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "B9C0F15C5C827FC4C58E972A29022001",
+            "type": "worker",
+            "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+            "usedJSHeapBytes": 537536,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 411653,
+            "error": null
+          },
+          {
+            "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+            "type": "worker",
+            "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+            "usedJSHeapBytes": null,
+            "allocatedJSHeapBytes": null,
+            "embedderHeapUsedBytes": null,
+            "backingStorageBytes": null,
+            "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+          },
+          {
+            "targetId": "ABD5156F40B744962B44111A78AEE891",
+            "type": "page",
+            "url": "http://127.0.0.1:64690/?test=1&directory=1",
+            "usedJSHeapBytes": 4435008,
+            "allocatedJSHeapBytes": 5001216,
+            "embedderHeapUsedBytes": 1603832,
+            "backingStorageBytes": 626595,
+            "error": null
+          }
+        ]
+      },
+      "onlineSampleCounts": {
+        "validSamples": 90,
+        "unavailableSamples": 0
+      }
+    },
+    {
+      "kind": "complete",
+      "paragraphs": 2048,
+      "repeat": 3,
+      "sourceBytes": 8786993,
+      "sourceSha256": "2a3292a2abe3223365c3d18f5e2ab327ce83119381faa8f0be214b006de0ca52",
+      "outputBytes": 8735249,
+      "metrics": {
+        "inputBytes": 8786993,
+        "outputBytes": 8735249,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 627.875,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 266272,
+        "activeWorkerCount": 2,
+        "imageWorkingBytes": 0
+      },
+      "storageBeforeValidation": {
+        "usage": 8735471,
+        "quota": 10746153711
+      },
+      "destinationObservation": {
+        "mode": "handle",
+        "actualFileHandle": true,
+        "sourceBytes": 8786993,
+        "jobId": "16617ae5-dd3f-408f-ba70-52c186b51c1f"
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-IRABvL/profile/Default/File System/000/t/00/00000005",
+        "logicalBytes": 8735249,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "5066549582487375",
+          "size": "8735249",
+          "birthtimeNs": "1794017810951714400",
+          "mtimeNs": "1794017811551008800"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "ac541fec2b7678986771f57370f5584dd27f113284e37b0ac252b79221466429"
+          },
+          {
+            "offset": 4365576,
+            "bytes": 4096,
+            "sha256": "c08e7d91c845d35919cf0b5701a33850df6e0e8c65ac8569de7f070d141310f0"
+          },
+          {
+            "offset": 8731153,
+            "bytes": 4096,
+            "sha256": "099cfdab2b9d956409916e4a783ca4163d90f2000ab38adf769a810426426b2d"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "c4658ddacf4a35dd3b8330c9c7221619e68542b08d46985b4eac45df0fdffca0",
+        "bytes": 8735249,
+        "paragraphs": 2048,
+        "maximumParagraphChars": 4237,
+        "readBufferBytes": 65536,
+        "allParagraphsComparedInOrder": true,
+        "csp": true,
+        "validator": "independent streaming Python HTMLParser; every ordinal, Unicode paragraph and inactive escaped markup"
+      },
+      "runMemory": {
+        "peak": {
+          "sequence": 414,
+          "timestamp": "2026-11-07T02:16:51.4543334Z",
+          "completedAt": "2026-11-07T02:16:51.4694811Z",
+          "sampleError": null,
+          "nativeElapsedMs": 15.442200000000001,
+          "privateBytes": 544288768,
+          "rssBytes": 884215808,
+          "processes": [
+            {
+              "pid": 12808,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.3820977Z",
+              "creationFileTime": "134384913653820977",
+              "executableName": "chrome.exe",
+              "privateBytes": 157380608,
+              "rssBytes": 185237504,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 15608,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.4707427Z",
+              "creationFileTime": "134384913654707427",
+              "executableName": "chrome.exe",
+              "privateBytes": 35094528,
+              "rssBytes": 79130624,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 16884,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:09.6229772Z",
+              "creationFileTime": "134384913696229772",
+              "executableName": "chrome.exe",
+              "privateBytes": 21852160,
+              "rssBytes": 47026176,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 22984,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.8704691Z",
+              "creationFileTime": "134384913658704691",
+              "executableName": "chrome.exe",
+              "privateBytes": 20602880,
+              "rssBytes": 43540480,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25188,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:09.2118854Z",
+              "creationFileTime": "134384913692118854",
+              "executableName": "chrome.exe",
+              "privateBytes": 196861952,
+              "rssBytes": 245481472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25916,
+              "parentPid": 15208,
+              "createdAt": "2026-11-07T02:16:05.2296957Z",
+              "creationFileTime": "134384913652296957",
+              "executableName": "chrome.exe",
+              "privateBytes": 71663616,
+              "rssBytes": 182452224,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 26120,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.4158682Z",
+              "creationFileTime": "134384913654158682",
+              "executableName": "chrome.exe",
+              "privateBytes": 8278016,
+              "rssBytes": 18092032,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 29440,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.3900198Z",
+              "creationFileTime": "134384913653900198",
+              "executableName": "chrome.exe",
+              "privateBytes": 14921728,
+              "rssBytes": 41275392,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34340,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:14.4608730Z",
+              "creationFileTime": "134384913744608730",
+              "executableName": "chrome.exe",
+              "privateBytes": 15089664,
+              "rssBytes": 31539200,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39912,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.2666075Z",
+              "creationFileTime": "134384913652666075",
+              "executableName": "chrome.exe",
+              "privateBytes": 2543616,
+              "rssBytes": 10440704,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 128,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 159.09375,
+        "conversionOnlyPrivateMiB": 154.48046875,
+        "cleanupDeltaFromLoadedMiB": 87.6171875,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 474177536,
+          "spreadBytes": 0,
+          "rssBytes": 820293632,
+          "firstTimestamp": "2026-11-07T02:17:00.8660238Z",
+          "lastTimestamp": "2026-11-07T02:17:04.9077355Z",
+          "sampleCount": 14,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T02:16:50.911Z",
+        "windowEnd": "2026-11-07T02:17:05.004Z"
+      },
+      "realmsAfterCleanup": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "CD84472609162604569CC75F2D1D8096",
+            "type": "worker",
+            "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+            "usedJSHeapBytes": 537536,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 411653,
+            "error": null
+          },
+          {
+            "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+            "type": "worker",
+            "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+            "usedJSHeapBytes": null,
+            "allocatedJSHeapBytes": null,
+            "embedderHeapUsedBytes": null,
+            "backingStorageBytes": null,
+            "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+          },
+          {
+            "targetId": "ABD5156F40B744962B44111A78AEE891",
+            "type": "page",
+            "url": "http://127.0.0.1:64690/?test=1&directory=1",
+            "usedJSHeapBytes": 4607384,
+            "allocatedJSHeapBytes": 5263360,
+            "embedderHeapUsedBytes": 5319400,
+            "backingStorageBytes": 655584,
+            "error": null
+          }
+        ]
+      },
+      "onlineSampleCounts": {
+        "validSamples": 128,
+        "unavailableSamples": 0
+      }
+    },
+    {
+      "kind": "complete",
+      "paragraphs": 32768,
+      "repeat": 1,
+      "sourceBytes": 140575793,
+      "sourceSha256": "a41ad00872a39ce5b1962eeed4393b7b69db929eaa37c9def2d197fe3997a8c1",
+      "outputBytes": 139756049,
+      "metrics": {
+        "inputBytes": 140575793,
+        "outputBytes": 139756049,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 9193.830000013113,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 266272,
+        "activeWorkerCount": 2,
+        "imageWorkingBytes": 0
+      },
+      "storageBeforeValidation": {
+        "usage": 139756273,
+        "quota": 10877174513
+      },
+      "destinationObservation": {
+        "mode": "handle",
+        "actualFileHandle": true,
+        "sourceBytes": 140575793,
+        "jobId": "5a29254b-2490-4137-8d4a-5d8f42cba552"
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-IRABvL/profile/Default/File System/000/t/00/00000007",
+        "logicalBytes": 139756049,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "5066549582487378",
+          "size": "139756049",
+          "birthtimeNs": "1794017825096496900",
+          "mtimeNs": "1794017834265667700"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "ac541fec2b7678986771f57370f5584dd27f113284e37b0ac252b79221466429"
+          },
+          {
+            "offset": 69875976,
+            "bytes": 4096,
+            "sha256": "b63dadd177d767239a90be30b6e0d455cc8e1d426778202dc1669773e45997c1"
+          },
+          {
+            "offset": 139751953,
+            "bytes": 4096,
+            "sha256": "099cfdab2b9d956409916e4a783ca4163d90f2000ab38adf769a810426426b2d"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "b8ef8ba6178329962cc48943d18e3dd049b1b4b1e7423b821c766f457f8ea859",
+        "bytes": 139756049,
+        "paragraphs": 32768,
+        "maximumParagraphChars": 4237,
+        "readBufferBytes": 65536,
+        "allParagraphsComparedInOrder": true,
+        "csp": true,
+        "validator": "independent streaming Python HTMLParser; every ordinal, Unicode paragraph and inactive escaped markup"
+      },
+      "runMemory": {
+        "peak": {
+          "sequence": 585,
+          "timestamp": "2026-11-07T02:17:10.1475952Z",
+          "completedAt": "2026-11-07T02:17:10.1610712Z",
+          "sampleError": null,
+          "nativeElapsedMs": 13.9718,
+          "privateBytes": 572424192,
+          "rssBytes": 969187328,
+          "processes": [
+            {
+              "pid": 12808,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.3820977Z",
+              "creationFileTime": "134384913653820977",
+              "executableName": "chrome.exe",
+              "privateBytes": 156745728,
+              "rssBytes": 184721408,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 15364,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:17:09.3770641Z",
+              "creationFileTime": "134384914293770641",
+              "executableName": "updater.exe",
+              "privateBytes": 3530752,
+              "rssBytes": 16347136,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 15608,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.4707427Z",
+              "creationFileTime": "134384913654707427",
+              "executableName": "chrome.exe",
+              "privateBytes": 35094528,
+              "rssBytes": 79134720,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 16884,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:09.6229772Z",
+              "creationFileTime": "134384913696229772",
+              "executableName": "chrome.exe",
+              "privateBytes": 21852160,
+              "rssBytes": 47030272,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 22984,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.8704691Z",
+              "creationFileTime": "134384913658704691",
+              "executableName": "chrome.exe",
+              "privateBytes": 20602880,
+              "rssBytes": 43544576,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 23444,
+              "parentPid": 36104,
+              "createdAt": "2026-11-07T02:17:09.4438218Z",
+              "creationFileTime": "134384914294438218",
+              "executableName": "updater.exe",
+              "privateBytes": 3289088,
+              "rssBytes": 15486976,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25188,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:09.2118854Z",
+              "creationFileTime": "134384913692118854",
+              "executableName": "chrome.exe",
+              "privateBytes": 213291008,
+              "rssBytes": 265580544,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25916,
+              "parentPid": 15208,
+              "createdAt": "2026-11-07T02:16:05.2296957Z",
+              "creationFileTime": "134384913652296957",
+              "executableName": "chrome.exe",
+              "privateBytes": 70967296,
+              "rssBytes": 183382016,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 26120,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.4158682Z",
+              "creationFileTime": "134384913654158682",
+              "executableName": "chrome.exe",
+              "privateBytes": 8224768,
+              "rssBytes": 18096128,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 27000,
+              "parentPid": 15364,
+              "createdAt": "2026-11-07T02:17:09.4043486Z",
+              "creationFileTime": "134384914294043486",
+              "executableName": "updater.exe",
+              "privateBytes": 3313664,
+              "rssBytes": 15491072,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 29440,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.3900198Z",
+              "creationFileTime": "134384913653900198",
+              "executableName": "chrome.exe",
+              "privateBytes": 14131200,
+              "rssBytes": 40656896,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34340,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:14.4608730Z",
+              "creationFileTime": "134384913744608730",
+              "executableName": "chrome.exe",
+              "privateBytes": 15089664,
+              "rssBytes": 31539200,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 36104,
+              "parentPid": 15364,
+              "createdAt": "2026-11-07T02:17:09.4258069Z",
+              "creationFileTime": "134384914294258069",
+              "executableName": "updater.exe",
+              "privateBytes": 3747840,
+              "rssBytes": 17735680,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39912,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.2666075Z",
+              "creationFileTime": "134384913652666075",
+              "executableName": "chrome.exe",
+              "privateBytes": 2543616,
+              "rssBytes": 10440704,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 167,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 185.92578125,
+        "conversionOnlyPrivateMiB": 181.3125,
+        "cleanupDeltaFromLoadedMiB": 81.66015625,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 467931136,
+          "spreadBytes": 7454720,
+          "rssBytes": 873299968,
+          "firstTimestamp": "2026-11-07T02:17:19.2183180Z",
+          "lastTimestamp": "2026-11-07T02:17:23.2655347Z",
+          "sampleCount": 9,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T02:17:05.061Z",
+        "windowEnd": "2026-11-07T02:17:23.331Z"
+      },
+      "realmsAfterCleanup": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "A5C3F010EE9F01F84B06BD49ECBDA692",
+            "type": "worker",
+            "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+            "usedJSHeapBytes": 537536,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 411653,
+            "error": null
+          },
+          {
+            "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+            "type": "worker",
+            "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+            "usedJSHeapBytes": null,
+            "allocatedJSHeapBytes": null,
+            "embedderHeapUsedBytes": null,
+            "backingStorageBytes": null,
+            "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+          },
+          {
+            "targetId": "ABD5156F40B744962B44111A78AEE891",
+            "type": "page",
+            "url": "http://127.0.0.1:64690/?test=1&directory=1",
+            "usedJSHeapBytes": 5070040,
+            "allocatedJSHeapBytes": 6049792,
+            "embedderHeapUsedBytes": 8579120,
+            "backingStorageBytes": 655659,
+            "error": null
+          }
+        ]
+      },
+      "onlineSampleCounts": {
+        "validSamples": 167,
+        "unavailableSamples": 0
+      }
+    },
+    {
+      "kind": "complete",
+      "paragraphs": 32768,
+      "repeat": 2,
+      "sourceBytes": 140575793,
+      "sourceSha256": "a41ad00872a39ce5b1962eeed4393b7b69db929eaa37c9def2d197fe3997a8c1",
+      "outputBytes": 139756049,
+      "metrics": {
+        "inputBytes": 140575793,
+        "outputBytes": 139756049,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 9317.710000008345,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 266272,
+        "activeWorkerCount": 2,
+        "imageWorkingBytes": 0
+      },
+      "storageBeforeValidation": {
+        "usage": 139756273,
+        "quota": 10877174513
+      },
+      "destinationObservation": {
+        "mode": "handle",
+        "actualFileHandle": true,
+        "sourceBytes": 140575793,
+        "jobId": "af29a297-beae-4363-995a-54422f081d8e"
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-IRABvL/profile/Default/File System/000/t/00/00000009",
+        "logicalBytes": 139756049,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "4785074605776735",
+          "size": "139756049",
+          "birthtimeNs": "1794017843373958100",
+          "mtimeNs": "1794017852665583600"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "ac541fec2b7678986771f57370f5584dd27f113284e37b0ac252b79221466429"
+          },
+          {
+            "offset": 69875976,
+            "bytes": 4096,
+            "sha256": "b63dadd177d767239a90be30b6e0d455cc8e1d426778202dc1669773e45997c1"
+          },
+          {
+            "offset": 139751953,
+            "bytes": 4096,
+            "sha256": "099cfdab2b9d956409916e4a783ca4163d90f2000ab38adf769a810426426b2d"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "b8ef8ba6178329962cc48943d18e3dd049b1b4b1e7423b821c766f457f8ea859",
+        "bytes": 139756049,
+        "paragraphs": 32768,
+        "maximumParagraphChars": 4237,
+        "readBufferBytes": 65536,
+        "allParagraphsComparedInOrder": true,
+        "csp": true,
+        "validator": "independent streaming Python HTMLParser; every ordinal, Unicode paragraph and inactive escaped markup"
+      },
+      "runMemory": {
+        "peak": {
+          "sequence": 748,
+          "timestamp": "2026-11-07T02:17:27.9616854Z",
+          "completedAt": "2026-11-07T02:17:27.9769550Z",
+          "sampleError": null,
+          "nativeElapsedMs": 15.899700000000001,
+          "privateBytes": 536977408,
+          "rssBytes": 942260224,
+          "processes": [
+            {
+              "pid": 12808,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.3820977Z",
+              "creationFileTime": "134384913653820977",
+              "executableName": "chrome.exe",
+              "privateBytes": 159141888,
+              "rssBytes": 187084800,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 15364,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:17:09.3770641Z",
+              "creationFileTime": "134384914293770641",
+              "executableName": "updater.exe",
+              "privateBytes": 3530752,
+              "rssBytes": 16347136,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 15608,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.4707427Z",
+              "creationFileTime": "134384913654707427",
+              "executableName": "chrome.exe",
+              "privateBytes": 35094528,
+              "rssBytes": 79134720,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 16884,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:09.6229772Z",
+              "creationFileTime": "134384913696229772",
+              "executableName": "chrome.exe",
+              "privateBytes": 21852160,
+              "rssBytes": 47030272,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 22984,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.8704691Z",
+              "creationFileTime": "134384913658704691",
+              "executableName": "chrome.exe",
+              "privateBytes": 20602880,
+              "rssBytes": 43544576,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 23444,
+              "parentPid": 36104,
+              "createdAt": "2026-11-07T02:17:09.4438218Z",
+              "creationFileTime": "134384914294438218",
+              "executableName": "updater.exe",
+              "privateBytes": 3289088,
+              "rssBytes": 15486976,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25188,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:09.2118854Z",
+              "creationFileTime": "134384913692118854",
+              "executableName": "chrome.exe",
+              "privateBytes": 146563072,
+              "rssBytes": 205877248,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25916,
+              "parentPid": 15208,
+              "createdAt": "2026-11-07T02:16:05.2296957Z",
+              "creationFileTime": "134384913652296957",
+              "executableName": "chrome.exe",
+              "privateBytes": 99364864,
+              "rssBytes": 211767296,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 26120,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.4158682Z",
+              "creationFileTime": "134384913654158682",
+              "executableName": "chrome.exe",
+              "privateBytes": 8224768,
+              "rssBytes": 18096128,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 27000,
+              "parentPid": 15364,
+              "createdAt": "2026-11-07T02:17:09.4043486Z",
+              "creationFileTime": "134384914294043486",
+              "executableName": "updater.exe",
+              "privateBytes": 3313664,
+              "rssBytes": 15491072,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 29440,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.3900198Z",
+              "creationFileTime": "134384913653900198",
+              "executableName": "chrome.exe",
+              "privateBytes": 14340096,
+              "rssBytes": 41144320,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34340,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:14.4608730Z",
+              "creationFileTime": "134384913744608730",
+              "executableName": "chrome.exe",
+              "privateBytes": 15089664,
+              "rssBytes": 31543296,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 36104,
+              "parentPid": 15364,
+              "createdAt": "2026-11-07T02:17:09.4258069Z",
+              "creationFileTime": "134384914294258069",
+              "executableName": "updater.exe",
+              "privateBytes": 4026368,
+              "rssBytes": 19271680,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39912,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.2666075Z",
+              "creationFileTime": "134384913652666075",
+              "executableName": "chrome.exe",
+              "privateBytes": 2543616,
+              "rssBytes": 10440704,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 169,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 152.12109375,
+        "conversionOnlyPrivateMiB": 147.5078125,
+        "cleanupDeltaFromLoadedMiB": 66.765625,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 452313088,
+          "spreadBytes": 7168000,
+          "rssBytes": 806440960,
+          "firstTimestamp": "2026-11-07T02:17:37.6834494Z",
+          "lastTimestamp": "2026-11-07T02:17:41.7283759Z",
+          "sampleCount": 9,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T02:17:23.335Z",
+        "windowEnd": "2026-11-07T02:17:41.761Z"
+      },
+      "realmsAfterCleanup": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "F6BD1EDAE321C74336ABEEA3FBB904B0",
+            "type": "worker",
+            "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+            "usedJSHeapBytes": 537536,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 411653,
+            "error": null
+          },
+          {
+            "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+            "type": "worker",
+            "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+            "usedJSHeapBytes": null,
+            "allocatedJSHeapBytes": null,
+            "embedderHeapUsedBytes": null,
+            "backingStorageBytes": null,
+            "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+          },
+          {
+            "targetId": "ABD5156F40B744962B44111A78AEE891",
+            "type": "page",
+            "url": "http://127.0.0.1:64690/?test=1&directory=1",
+            "usedJSHeapBytes": 5490540,
+            "allocatedJSHeapBytes": 6836224,
+            "embedderHeapUsedBytes": 4054584,
+            "backingStorageBytes": 655695,
+            "error": null
+          }
+        ]
+      },
+      "onlineSampleCounts": {
+        "validSamples": 169,
+        "unavailableSamples": 0
+      }
+    },
+    {
+      "kind": "complete",
+      "paragraphs": 32768,
+      "repeat": 3,
+      "sourceBytes": 140575793,
+      "sourceSha256": "a41ad00872a39ce5b1962eeed4393b7b69db929eaa37c9def2d197fe3997a8c1",
+      "outputBytes": 139756049,
+      "metrics": {
+        "inputBytes": 140575793,
+        "outputBytes": 139756049,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 8850.155000001192,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 266272,
+        "activeWorkerCount": 2,
+        "imageWorkingBytes": 0
+      },
+      "storageBeforeValidation": {
+        "usage": 139756273,
+        "quota": 10877174513
+      },
+      "destinationObservation": {
+        "mode": "handle",
+        "actualFileHandle": true,
+        "sourceBytes": 140575793,
+        "jobId": "f2964eaa-2ba3-4924-ae50-5353f627aa06"
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-IRABvL/profile/Default/File System/000/t/00/00000011",
+        "logicalBytes": 139756049,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "4785074605776755",
+          "size": "139756049",
+          "birthtimeNs": "1794017861805210500",
+          "mtimeNs": "1794017870626752400"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "ac541fec2b7678986771f57370f5584dd27f113284e37b0ac252b79221466429"
+          },
+          {
+            "offset": 69875976,
+            "bytes": 4096,
+            "sha256": "b63dadd177d767239a90be30b6e0d455cc8e1d426778202dc1669773e45997c1"
+          },
+          {
+            "offset": 139751953,
+            "bytes": 4096,
+            "sha256": "099cfdab2b9d956409916e4a783ca4163d90f2000ab38adf769a810426426b2d"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validated": {
+        "sha256": "b8ef8ba6178329962cc48943d18e3dd049b1b4b1e7423b821c766f457f8ea859",
+        "bytes": 139756049,
+        "paragraphs": 32768,
+        "maximumParagraphChars": 4237,
+        "readBufferBytes": 65536,
+        "allParagraphsComparedInOrder": true,
+        "csp": true,
+        "validator": "independent streaming Python HTMLParser; every ordinal, Unicode paragraph and inactive escaped markup"
+      },
+      "runMemory": {
+        "peak": {
+          "sequence": 880,
+          "timestamp": "2026-11-07T02:17:42.3811884Z",
+          "completedAt": "2026-11-07T02:17:42.3928019Z",
+          "sampleError": null,
+          "nativeElapsedMs": 12.336500000000001,
+          "privateBytes": 527007744,
+          "rssBytes": 876195840,
+          "processes": [
+            {
+              "pid": 12808,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.3820977Z",
+              "creationFileTime": "134384913653820977",
+              "executableName": "chrome.exe",
+              "privateBytes": 164003840,
+              "rssBytes": 191131648,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 15608,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.4707427Z",
+              "creationFileTime": "134384913654707427",
+              "executableName": "chrome.exe",
+              "privateBytes": 35094528,
+              "rssBytes": 79134720,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 16884,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:09.6229772Z",
+              "creationFileTime": "134384913696229772",
+              "executableName": "chrome.exe",
+              "privateBytes": 21852160,
+              "rssBytes": 47030272,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 22984,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.8704691Z",
+              "creationFileTime": "134384913658704691",
+              "executableName": "chrome.exe",
+              "privateBytes": 20602880,
+              "rssBytes": 43544576,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25188,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:09.2118854Z",
+              "creationFileTime": "134384913692118854",
+              "executableName": "chrome.exe",
+              "privateBytes": 171859968,
+              "rssBytes": 227430400,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25916,
+              "parentPid": 15208,
+              "createdAt": "2026-11-07T02:16:05.2296957Z",
+              "creationFileTime": "134384913652296957",
+              "executableName": "chrome.exe",
+              "privateBytes": 73371648,
+              "rssBytes": 186818560,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 26120,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.4158682Z",
+              "creationFileTime": "134384913654158682",
+              "executableName": "chrome.exe",
+              "privateBytes": 8224768,
+              "rssBytes": 18096128,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 29440,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.3900198Z",
+              "creationFileTime": "134384913653900198",
+              "executableName": "chrome.exe",
+              "privateBytes": 14364672,
+              "rssBytes": 41025536,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34340,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:14.4608730Z",
+              "creationFileTime": "134384913744608730",
+              "executableName": "chrome.exe",
+              "privateBytes": 15089664,
+              "rssBytes": 31543296,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39912,
+              "parentPid": 25916,
+              "createdAt": "2026-11-07T02:16:05.2666075Z",
+              "creationFileTime": "134384913652666075",
+              "executableName": "chrome.exe",
+              "privateBytes": 2543616,
+              "rssBytes": 10440704,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 182,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 142.61328125,
+        "conversionOnlyPrivateMiB": 138,
+        "cleanupDeltaFromLoadedMiB": 60.51171875,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 445755392,
+          "spreadBytes": 6623232,
+          "rssBytes": 801005568,
+          "firstTimestamp": "2026-11-07T02:17:57.5765982Z",
+          "lastTimestamp": "2026-11-07T02:18:01.6213038Z",
+          "sampleCount": 11,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T02:17:41.764Z",
+        "windowEnd": "2026-11-07T02:18:01.700Z"
+      },
+      "realmsAfterCleanup": {
+        "targetsAvailable": true,
+        "targets": [
+          {
+            "targetId": "87DFCB40508C21E486513A3757E9D00F",
+            "type": "worker",
+            "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+            "usedJSHeapBytes": 537536,
+            "allocatedJSHeapBytes": 1835008,
+            "embedderHeapUsedBytes": 773712,
+            "backingStorageBytes": 411653,
+            "error": null
+          },
+          {
+            "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+            "type": "worker",
+            "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+            "usedJSHeapBytes": null,
+            "allocatedJSHeapBytes": null,
+            "embedderHeapUsedBytes": null,
+            "backingStorageBytes": null,
+            "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+          },
+          {
+            "targetId": "ABD5156F40B744962B44111A78AEE891",
+            "type": "page",
+            "url": "http://127.0.0.1:64690/?test=1&directory=1",
+            "usedJSHeapBytes": 4847148,
+            "allocatedJSHeapBytes": 7098368,
+            "embedderHeapUsedBytes": 5736888,
+            "backingStorageBytes": 655731,
+            "error": null
+          }
+        ]
+      },
+      "onlineSampleCounts": {
+        "validSamples": 182,
+        "unavailableSamples": 0
+      }
+    },
+    {
+      "kind": "payload-cancel",
+      "armedMetrics": {
+        "inputBytes": 2425791,
+        "outputBytes": 1638400,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 168.9549999833107,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 266272,
+        "activeWorkerCount": 2,
+        "imageWorkingBytes": 0
+      },
+      "metrics": {
+        "inputBytes": 2950079,
+        "outputBytes": 2097152,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 65536,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 65536,
+        "elapsedMs": 188.30499997735023,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 266272,
+        "activeWorkerCount": 2,
+        "imageWorkingBytes": 0
+      },
+      "leftovers": [],
+      "destinationObservation": {
+        "mode": "handle",
+        "actualFileHandle": true,
+        "sourceBytes": 9001106,
+        "jobId": "e6f11fc2-946f-47b2-a630-4592ddf05ece"
+      }
+    },
+    {
+      "kind": "write-error",
+      "message": "Error: The destination rejected a bounded write.",
+      "leftovers": [],
+      "metrics": {
+        "inputBytes": 979,
+        "outputBytes": 0,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 720,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 979,
+        "maxWriteChunkBytes": 720,
+        "elapsedMs": 55.21500000357628,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 266272,
+        "activeWorkerCount": 2,
+        "imageWorkingBytes": 0
+      },
+      "destinationObservation": {
+        "mode": "handle",
+        "actualFileHandle": true,
+        "sourceBytes": 979,
+        "jobId": "8dcdc147-ac33-45bb-842a-3b2c8639aeb7"
+      }
+    },
+    {
+      "kind": "complete",
+      "outputBytes": 720,
+      "metrics": {
+        "inputBytes": 979,
+        "outputBytes": 720,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 720,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 979,
+        "maxWriteChunkBytes": 720,
+        "elapsedMs": 71.2800000011921,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 266272,
+        "activeWorkerCount": 2,
+        "imageWorkingBytes": 0
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/docx-html-qualification-IRABvL/profile/Default/File System/000/t/00/00000017",
+        "logicalBytes": 720,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "3940649675645604",
+          "size": "720",
+          "birthtimeNs": "1794017882736592000",
+          "mtimeNs": "1794017882779041900"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 720,
+            "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55"
+          }
+        ],
+        "totalBrowserSampleBytes": 720,
+        "maximumBrowserSampleBytes": 720,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "destinationObservation": {
+        "mode": "handle",
+        "actualFileHandle": true,
+        "sourceBytes": 979,
+        "jobId": "f7e0c47d-8ab7-4d78-a61c-1fe3c030f046"
+      },
+      "validated": {
+        "sha256": "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55",
+        "paragraphs": 4,
+        "tableCells": 2,
+        "strong": 1,
+        "italic": 1,
+        "csp": true,
+        "validator": "independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts"
+      }
+    }
+  ],
+  "sourcePins": {
+    "scripts/qualify-docx-html.mjs": "da9e3e311d0c008dcdce8c725062aefada831f4a4aae6d7a01218c6243d15dc8",
+    "workers/docx-html-conversion.ts": "65b9aa9515faaf3249e79a4492ef24a4d2a68fc8f64576e599e01db262946895",
+    "workers/docx-conversion.ts": "9f9cbe2aaf2d31368cc5ce358eb60baa47f9fc52b0b5178da296314da8cc34d8",
+    "workers/conversion.worker.ts": "f5aeec0add0e600e5c5577ed6d02ea0880737b51d9d1238e20a3a4a3a847e021",
+    "lib/capability-registry.ts": "f270c6faf6ad2b09e5e67d3381c8c45ec83d04f87d72109e6ea197d0562a8de5",
+    "package-lock.json": "cebcd0caf95382203084b900aecb06dbd5fb10bc8743ddb202a7a137582f603e",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d",
+    "scripts/lib/birth-type-capture.mjs": "fb76463e1e90d87ffb8a2d13b3cb6b7a53db3ffffdff2aab4c1b954f7655a398",
+    "scripts/lib/select-owned-local-browser-file.mjs": "24c8db43c82868c1131c0742f60197c618e0224292c8fe4f785b41f105c21755",
+    "scripts/lib/docx-html-scaling-control.mjs": "d8623f6170ae7f3b88f2b8c3a16ce7b5fe7866793778c7ba3837d804c851bf36",
+    "scripts/lib/docx-html-scaling-fixtures.py": "07b27c350581a495ff0456ab4bf6feb41daf8f19f7a74be05a2d46eeb4cc1347",
+    "scripts/lib/opfs-output-validation-backing.mjs": "cb06939a7c6f7f3422209b3ff24fc8860e20327f092059a61d67f8030d71f9d7",
+    "scripts/lib/cdp-realm-memory.mjs": "dacac72ad581a52fa46cdcec4fae3cf97e52f065c8594c4341ef6940be9e41bd",
+    "scripts/lib/browser-payload-cancellation.mjs": "63a90c78efac05f7eda4cc90af5d6eb5daf4ec5a9ba374ddd1fcab41ce89e9ab",
+    "scripts/lib/docx-direct-control.mjs": "4f524d685d276a5a01158fdb0e5268b8ae4ce1140d7b06318369d35d4d89bbf4",
+    "app/converter/ConverterApp.tsx": "a8e7a15cf4470b62ccf56baa3c9af267b91e553fca6b412eeb1897c62bb1b6db",
+    "workers/random-access-destination.ts": "f46a4db401daabeb40a0b9eaa9feb256b623c21d2a7f41af549b6797842b4375",
+    "workers/direct-file-writer.worker.ts": "212b8d6dd6ef9344e26cf65ca66fe0aae7db9a8bba7272b96c0cf8e74f55acaa",
+    "workers/direct-writer-protocol.ts": "4ca103db370944f162660749984e872e3d3abc18ee349d5f1231316386e8bf47"
+  },
+  "failures": [],
+  "scope": "Changed direct-handle writer path: progressively larger genuine DOCX outputs/repeats/recovery; OPFS-backed test directory, NOT native picker/external drive/full route qualification",
+  "headed": false,
+  "browserServicesDisabled": false,
+  "nativeConversionUsed": false,
+  "publicPromotion": false,
+  "stressAcceptance": false,
+  "nativePickerVerified": false,
+  "largeFileScalingVerified": false,
+  "speedImprovementProven": false,
+  "memoryFormula": "(peak complete spawned Chrome process-tree private bytes during full control window - earliest stable same clean blank Chrome private bytes) / 1048576",
+  "traceMode": {
+    "screenshots": true,
+    "domSnapshots": false,
+    "networkBodies": false
+  },
+  "requestCount": 38,
+  "forbiddenRequests": [],
+  "scalingPlan": {
+    "paragraphs": [
+      2048,
+      32768
+    ],
+    "repeats": 3,
+    "outputLimitBytes": 268435456,
+    "cleanupRecoveryLimitMiB": 96,
+    "sampleCap": 12000,
+    "conversionTimeoutMs": 300000,
+    "validatorTimeoutMs": 120000,
+    "requiredDiskBytes": 2147483648
+  },
+  "cleanupRecoveryLimitMiB": 96,
+  "freshSessionRepeatVerified": false,
+  "fullOoxmlLayoutFidelityVerified": false,
+  "scalingRuns": [],
+  "destinationAdapter": "Existing production directory=1 adapter supplies real FileSystemFileHandle from owned browser OPFS; engine/writer/bridge unchanged",
+  "destinationMode": "handle",
+  "nativeExternalDestinationVerified": false,
+  "directHandleWriterControlVerified": true,
+  "hostMemory": {
+    "acquiredAt": "2026-11-07T02:15:56.7484095Z",
+    "freePhysicalBytes": 10082791424,
+    "freeVirtualBytes": 17816899584,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "diskFreeBytes": 1110426124288,
+  "python": "Python 3.11.9",
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "browserBefore": {
+    "version": "156.0.8078.80",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4466840,
+      "sha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4503599627954860",
+        "birthtimeNs": "1793664133995225000",
+        "mtimeNs": "1793230862205515000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.80\\chrome.dll",
+      "bytes": 306491032,
+      "sha256": "eec84f38acf7d3b1c39bc54de53c9bcb1ea7a3b9d286d6a04288d3b959a1a7a1",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4222124651244210",
+        "birthtimeNs": "1793664134006309400",
+        "mtimeNs": "1793230871423806000"
+      }
+    }
+  },
+  "executedHead": "870952f12bf82fbd856451861ec8b85a1a1550a6",
+  "validatorControls": [
+    {
+      "name": "positive",
+      "expectedAccepted": true,
+      "exitCode": 0
+    },
+    {
+      "name": "wrong-text",
+      "expectedAccepted": false,
+      "exitCode": 1
+    },
+    {
+      "name": "active-markup",
+      "expectedAccepted": false,
+      "exitCode": 1
+    }
+  ],
+  "sourceValidation": [
+    {
+      "kind": "structure",
+      "zipCrcVerified": true,
+      "packageNamespacesAndMainRelationshipVerified": true,
+      "wordXmlWellFormed": true,
+      "paragraphs": 4,
+      "sourceValidator": "independent Python zipfile, bounded package metadata ElementTree and streaming Expat; not complete OOXML XSD/layout validation"
+    },
+    {
+      "kind": "cancellation",
+      "zipCrcVerified": true,
+      "packageNamespacesAndMainRelationshipVerified": true,
+      "wordXmlWellFormed": true,
+      "paragraphs": 1,
+      "sourceValidator": "independent Python zipfile, bounded package metadata ElementTree and streaming Expat; not complete OOXML XSD/layout validation"
+    }
+  ],
+  "invalidPackageControlRejected": true,
+  "fixture": {
+    "bytes": 979,
+    "sha256": "ac384d01666d26a8bb2c7169cf02dcf8749edf96cf6d19953cc4cbdc4b8e021e",
+    "cancelBytes": 9001106
+  },
+  "scalingInputs": [
+    {
+      "paragraphs": 2048,
+      "bytes": 8786993,
+      "sha256": "2a3292a2abe3223365c3d18f5e2ab327ce83119381faa8f0be214b006de0ca52",
+      "generated": {
+        "paragraphs": 2048,
+        "zipMethod": "stored",
+        "deterministicZipMetadata": true,
+        "maximumGeneratedParagraphBytes": 8192,
+        "nativeConversionUsed": false
+      },
+      "validated": {
+        "zipCrcVerified": true,
+        "packageNamespacesAndMainRelationshipVerified": true,
+        "wordXmlWellFormed": true,
+        "paragraphs": 2048,
+        "sourceValidator": "independent Python zipfile, bounded package metadata ElementTree and streaming Expat; not complete OOXML XSD/layout validation"
+      }
+    },
+    {
+      "paragraphs": 32768,
+      "bytes": 140575793,
+      "sha256": "a41ad00872a39ce5b1962eeed4393b7b69db929eaa37c9def2d197fe3997a8c1",
+      "generated": {
+        "paragraphs": 32768,
+        "zipMethod": "stored",
+        "deterministicZipMetadata": true,
+        "maximumGeneratedParagraphBytes": 8192,
+        "nativeConversionUsed": false
+      },
+      "validated": {
+        "zipCrcVerified": true,
+        "packageNamespacesAndMainRelationshipVerified": true,
+        "wordXmlWellFormed": true,
+        "paragraphs": 32768,
+        "sourceValidator": "independent Python zipfile, bounded package metadata ElementTree and streaming Expat; not complete OOXML XSD/layout validation"
+      }
+    }
+  ],
+  "scalingValidatorControls": [
+    {
+      "name": "positive",
+      "exitCode": 0,
+      "expectedAccepted": true
+    },
+    {
+      "name": "wrong-ordinal",
+      "exitCode": 1,
+      "expectedAccepted": false
+    },
+    {
+      "name": "active-markup",
+      "exitCode": 1,
+      "expectedAccepted": false
+    },
+    {
+      "name": "truncated",
+      "exitCode": 1,
+      "expectedAccepted": false
+    }
+  ],
+  "launchArguments": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\docx-html-qualification-IRABvL\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "about:blank"
+  ],
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 377466880,
+    "spreadBytes": 77824,
+    "rssBytes": 738304000,
+    "firstTimestamp": "2026-11-07T02:16:10.2563880Z",
+    "lastTimestamp": "2026-11-07T02:16:14.2987002Z",
+    "sampleCount": 9,
+    "minimumElapsedMs": 8000
+  },
+  "loadedIdle": {
+    "stable": true,
+    "privateBytes": 382304256,
+    "spreadBytes": 634880,
+    "rssBytes": 722075648,
+    "firstTimestamp": "2026-11-07T02:16:26.7406189Z",
+    "lastTimestamp": "2026-11-07T02:16:30.8925401Z",
+    "sampleCount": 17,
+    "minimumElapsedMs": 8000
+  },
+  "inputSelections": [
+    {
+      "method": "DOM.setFileInputFiles",
+      "selectedLocalPathCount": 1,
+      "selectedFileBytes": 8786993,
+      "contentPayloadsSent": 0,
+      "nodeFileContentsRead": false,
+      "productionInputElementUsed": true,
+      "fileMetadataUnchanged": true
+    },
+    {
+      "method": "DOM.setFileInputFiles",
+      "selectedLocalPathCount": 1,
+      "selectedFileBytes": 140575793,
+      "contentPayloadsSent": 0,
+      "nodeFileContentsRead": false,
+      "productionInputElementUsed": true,
+      "fileMetadataUnchanged": true
+    },
+    {
+      "method": "DOM.setFileInputFiles",
+      "selectedLocalPathCount": 1,
+      "selectedFileBytes": 9001106,
+      "contentPayloadsSent": 0,
+      "nodeFileContentsRead": false,
+      "productionInputElementUsed": true,
+      "fileMetadataUnchanged": true
+    },
+    {
+      "method": "DOM.setFileInputFiles",
+      "selectedLocalPathCount": 1,
+      "selectedFileBytes": 979,
+      "contentPayloadsSent": 0,
+      "nodeFileContentsRead": false,
+      "productionInputElementUsed": true,
+      "fileMetadataUnchanged": true
+    },
+    {
+      "method": "DOM.setFileInputFiles",
+      "selectedLocalPathCount": 1,
+      "selectedFileBytes": 979,
+      "contentPayloadsSent": 0,
+      "nodeFileContentsRead": false,
+      "productionInputElementUsed": true,
+      "fileMetadataUnchanged": true
+    }
+  ],
+  "destinationObservations": [
+    {
+      "mode": "handle",
+      "actualFileHandle": true,
+      "sourceBytes": 8786993,
+      "jobId": "1a2fbfc1-14b1-4dc3-9a6c-795aa9991cca"
+    },
+    {
+      "mode": "handle",
+      "actualFileHandle": true,
+      "sourceBytes": 8786993,
+      "jobId": "b0775e58-1014-435a-b1a9-709d3a1c7bd7"
+    },
+    {
+      "mode": "handle",
+      "actualFileHandle": true,
+      "sourceBytes": 8786993,
+      "jobId": "16617ae5-dd3f-408f-ba70-52c186b51c1f"
+    },
+    {
+      "mode": "handle",
+      "actualFileHandle": true,
+      "sourceBytes": 140575793,
+      "jobId": "5a29254b-2490-4137-8d4a-5d8f42cba552"
+    },
+    {
+      "mode": "handle",
+      "actualFileHandle": true,
+      "sourceBytes": 140575793,
+      "jobId": "af29a297-beae-4363-995a-54422f081d8e"
+    },
+    {
+      "mode": "handle",
+      "actualFileHandle": true,
+      "sourceBytes": 140575793,
+      "jobId": "f2964eaa-2ba3-4924-ae50-5353f627aa06"
+    },
+    {
+      "mode": "handle",
+      "actualFileHandle": true,
+      "sourceBytes": 9001106,
+      "jobId": "e6f11fc2-946f-47b2-a630-4592ddf05ece"
+    },
+    {
+      "mode": "handle",
+      "actualFileHandle": true,
+      "sourceBytes": 979,
+      "jobId": "8dcdc147-ac33-45bb-842a-3b2c8639aeb7"
+    },
+    {
+      "mode": "handle",
+      "actualFileHandle": true,
+      "sourceBytes": 979,
+      "jobId": "f7e0c47d-8ab7-4d78-a61c-1fe3c030f046"
+    }
+  ],
+  "cancellationTrigger": "in-page-real-output-observation-then-production-cancel-button",
+  "nativeObserverOwnership": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 1,
+    "proofs": [],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false,
+    "birthTypeCapture": {
+      "records": [
+        {
+          "pid": 12808,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.3820977Z",
+          "creationFileTime": "134384913653820977",
+          "status": "classified",
+          "attempts": 1,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 15608,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.4707427Z",
+          "creationFileTime": "134384913654707427",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 22984,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.8704691Z",
+          "creationFileTime": "134384913658704691",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 25916,
+          "parentPid": 15208,
+          "createdAt": "2026-11-07T02:16:05.2296957Z",
+          "creationFileTime": "134384913652296957",
+          "status": "classified",
+          "attempts": 1,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 26120,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.4158682Z",
+          "creationFileTime": "134384913654158682",
+          "status": "classified",
+          "attempts": 1,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "error": null
+        },
+        {
+          "pid": 27552,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.5153852Z",
+          "creationFileTime": "134384913655153852",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 29440,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.3900198Z",
+          "creationFileTime": "134384913653900198",
+          "status": "classified",
+          "attempts": 1,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "error": null
+        },
+        {
+          "pid": 38660,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.5356425Z",
+          "creationFileTime": "134384913655356425",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 39348,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.5353185Z",
+          "creationFileTime": "134384913655353185",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 39912,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.2666075Z",
+          "creationFileTime": "134384913652666075",
+          "status": "type-unavailable",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 43900,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.9531725Z",
+          "creationFileTime": "134384913659531725",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 40352,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.5021816Z",
+          "creationFileTime": "134384913685021816",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 42188,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.4917392Z",
+          "creationFileTime": "134384913684917392",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 3076,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.5471403Z",
+          "creationFileTime": "134384913685471403",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 3992,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.6094293Z",
+          "creationFileTime": "134384913686094293",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 10220,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.5992161Z",
+          "creationFileTime": "134384913685992161",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 25168,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.6092672Z",
+          "creationFileTime": "134384913686092672",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 39020,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.5037802Z",
+          "creationFileTime": "134384913685037802",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 30328,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.6771024Z",
+          "creationFileTime": "134384913686771024",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 14960,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.7722867Z",
+          "creationFileTime": "134384913687722867",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 18352,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.9191598Z",
+          "creationFileTime": "134384913689191598",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 22120,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.8613026Z",
+          "creationFileTime": "134384913688613026",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 30124,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.9048507Z",
+          "creationFileTime": "134384913689048507",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 23324,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:08.9733994Z",
+          "creationFileTime": "134384913689733994",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 38976,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:09.0246798Z",
+          "creationFileTime": "134384913690246798",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 10068,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:09.2150541Z",
+          "creationFileTime": "134384913692150541",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 25188,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:09.2118854Z",
+          "creationFileTime": "134384913692118854",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 16884,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:09.6229772Z",
+          "creationFileTime": "134384913696229772",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 34340,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:14.4608730Z",
+          "creationFileTime": "134384913744608730",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 39488,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:17.7062095Z",
+          "creationFileTime": "134384913777062095",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 41168,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:17.8893711Z",
+          "creationFileTime": "134384913778893711",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 31872,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:18.2419954Z",
+          "creationFileTime": "134384913782419954",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 44240,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:18.8777143Z",
+          "creationFileTime": "134384913788777143",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 41640,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:20.6020030Z",
+          "creationFileTime": "134384913806020030",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 15364,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:17:09.3770641Z",
+          "creationFileTime": "134384914293770641",
+          "status": "type-unavailable",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 23444,
+          "parentPid": 36104,
+          "createdAt": "2026-11-07T02:17:09.4438218Z",
+          "creationFileTime": "134384914294438218",
+          "status": "type-unavailable",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 27000,
+          "parentPid": 15364,
+          "createdAt": "2026-11-07T02:17:09.4043486Z",
+          "creationFileTime": "134384914294043486",
+          "status": "type-unavailable",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 36104,
+          "parentPid": 15364,
+          "createdAt": "2026-11-07T02:17:09.4258069Z",
+          "creationFileTime": "134384914294258069",
+          "status": "type-unavailable",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 41204,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:17:14.2983194Z",
+          "creationFileTime": "134384914342983194",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 41908,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:17:22.7156949Z",
+          "creationFileTime": "134384914427156949",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 22280,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:17:35.1987243Z",
+          "creationFileTime": "134384914551987243",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 26400,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:17:52.2147704Z",
+          "creationFileTime": "134384914722147704",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 42940,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:18:01.9917578Z",
+          "creationFileTime": "134384914819917578",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 31872,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:18:02.4091752Z",
+          "creationFileTime": "134384914824091752",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        }
+      ],
+      "queries": 15,
+      "maximumQueries": 16,
+      "maximumIdentities": 512,
+      "maximumPending": 1,
+      "queuedRequests": 0,
+      "queryTimeoutMs": 5000,
+      "classificationPrecisionNanoseconds": 1000,
+      "globalError": null,
+      "acceptanceMetric": false,
+      "memoryFormulaChanged": false,
+      "processesExcluded": false,
+      "primarySamplesMutated": false
+    }
+  },
+  "memory": {
+    "peak": {
+      "sequence": 585,
+      "timestamp": "2026-11-07T02:17:10.1475952Z",
+      "completedAt": "2026-11-07T02:17:10.1610712Z",
+      "sampleError": null,
+      "nativeElapsedMs": 13.9718,
+      "privateBytes": 572424192,
+      "rssBytes": 969187328,
+      "processes": [
+        {
+          "pid": 12808,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.3820977Z",
+          "creationFileTime": "134384913653820977",
+          "executableName": "chrome.exe",
+          "privateBytes": 156745728,
+          "rssBytes": 184721408,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 15364,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:17:09.3770641Z",
+          "creationFileTime": "134384914293770641",
+          "executableName": "updater.exe",
+          "privateBytes": 3530752,
+          "rssBytes": 16347136,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 15608,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.4707427Z",
+          "creationFileTime": "134384913654707427",
+          "executableName": "chrome.exe",
+          "privateBytes": 35094528,
+          "rssBytes": 79134720,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 16884,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:09.6229772Z",
+          "creationFileTime": "134384913696229772",
+          "executableName": "chrome.exe",
+          "privateBytes": 21852160,
+          "rssBytes": 47030272,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 22984,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.8704691Z",
+          "creationFileTime": "134384913658704691",
+          "executableName": "chrome.exe",
+          "privateBytes": 20602880,
+          "rssBytes": 43544576,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 23444,
+          "parentPid": 36104,
+          "createdAt": "2026-11-07T02:17:09.4438218Z",
+          "creationFileTime": "134384914294438218",
+          "executableName": "updater.exe",
+          "privateBytes": 3289088,
+          "rssBytes": 15486976,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 25188,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:09.2118854Z",
+          "creationFileTime": "134384913692118854",
+          "executableName": "chrome.exe",
+          "privateBytes": 213291008,
+          "rssBytes": 265580544,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 25916,
+          "parentPid": 15208,
+          "createdAt": "2026-11-07T02:16:05.2296957Z",
+          "creationFileTime": "134384913652296957",
+          "executableName": "chrome.exe",
+          "privateBytes": 70967296,
+          "rssBytes": 183382016,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 26120,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.4158682Z",
+          "creationFileTime": "134384913654158682",
+          "executableName": "chrome.exe",
+          "privateBytes": 8224768,
+          "rssBytes": 18096128,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 27000,
+          "parentPid": 15364,
+          "createdAt": "2026-11-07T02:17:09.4043486Z",
+          "creationFileTime": "134384914294043486",
+          "executableName": "updater.exe",
+          "privateBytes": 3313664,
+          "rssBytes": 15491072,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 29440,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.3900198Z",
+          "creationFileTime": "134384913653900198",
+          "executableName": "chrome.exe",
+          "privateBytes": 14131200,
+          "rssBytes": 40656896,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 34340,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:14.4608730Z",
+          "creationFileTime": "134384913744608730",
+          "executableName": "chrome.exe",
+          "privateBytes": 15089664,
+          "rssBytes": 31539200,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 36104,
+          "parentPid": 15364,
+          "createdAt": "2026-11-07T02:17:09.4258069Z",
+          "creationFileTime": "134384914294258069",
+          "executableName": "updater.exe",
+          "privateBytes": 3747840,
+          "rssBytes": 17735680,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 39912,
+          "parentPid": 25916,
+          "createdAt": "2026-11-07T02:16:05.2666075Z",
+          "creationFileTime": "134384913652666075",
+          "executableName": "chrome.exe",
+          "privateBytes": 2543616,
+          "rssBytes": 10440704,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    "validSamples": 843,
+    "unavailableSamples": 0,
+    "incrementalPrivateMiB": 185.92578125,
+    "limitMiB": 250,
+    "windowStart": "2026-11-07T02:16:30.908Z",
+    "windowEnd": "2026-11-07T02:18:03.095Z",
+    "scope": "sampled-complete-tree-progressive-document-control-with-repeats-and-cleanup-not-full-route-acceptance"
+  },
+  "screenshot": "output/playwright/2026-11-07T02-15-56-367Z-docx-html-complete.png",
+  "completedDocumentScalingControlVerified": true,
+  "realmObserverOwnership": {
+    "activeEntries": 2,
+    "leasedEntries": 10,
+    "retiringEntries": 8,
+    "pendingOperations": 1,
+    "peakLeasedEntries": 10,
+    "maximumLeases": 16,
+    "retirementFailures": 8,
+    "lastRetirementError": "Error: No session with given id",
+    "maximumObservationRacesPerOperation": 1,
+    "queuedRequests": 0,
+    "closed": false,
+    "diagnosticAttachmentsOnly": true,
+    "acceptanceMetric": false
+  },
+  "realmObservations": [
+    {
+      "timestamp": "2026-11-07T02:16:32.439Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 535340,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4747692,
+          "allocatedJSHeapBytes": 8146944,
+          "embedderHeapUsedBytes": 5784448,
+          "backingStorageBytes": 729690,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:34.498Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 535340,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4747692,
+          "allocatedJSHeapBytes": 8146944,
+          "embedderHeapUsedBytes": 5784448,
+          "backingStorageBytes": 729690,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:36.041Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 535340,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4747692,
+          "allocatedJSHeapBytes": 8146944,
+          "embedderHeapUsedBytes": 5784448,
+          "backingStorageBytes": 729690,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:38.043Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 535340,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4747692,
+          "allocatedJSHeapBytes": 8146944,
+          "embedderHeapUsedBytes": 5784448,
+          "backingStorageBytes": 729690,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:40.068Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 535340,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4747692,
+          "allocatedJSHeapBytes": 8146944,
+          "embedderHeapUsedBytes": 5784448,
+          "backingStorageBytes": 729690,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:42.084Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "B9C0F15C5C827FC4C58E972A29022001",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5049004,
+          "allocatedJSHeapBytes": 7098368,
+          "embedderHeapUsedBytes": 8663600,
+          "backingStorageBytes": 742050,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:44.107Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "B9C0F15C5C827FC4C58E972A29022001",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5049004,
+          "allocatedJSHeapBytes": 7098368,
+          "embedderHeapUsedBytes": 8663600,
+          "backingStorageBytes": 742050,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:46.155Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "B9C0F15C5C827FC4C58E972A29022001",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4435008,
+          "allocatedJSHeapBytes": 5001216,
+          "embedderHeapUsedBytes": 1603832,
+          "backingStorageBytes": 626595,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:48.161Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "B9C0F15C5C827FC4C58E972A29022001",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4435008,
+          "allocatedJSHeapBytes": 5001216,
+          "embedderHeapUsedBytes": 1603832,
+          "backingStorageBytes": 626595,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:50.206Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "B9C0F15C5C827FC4C58E972A29022001",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4435008,
+          "allocatedJSHeapBytes": 5001216,
+          "embedderHeapUsedBytes": 1603832,
+          "backingStorageBytes": 626595,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:52.221Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "CD84472609162604569CC75F2D1D8096",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4607384,
+          "allocatedJSHeapBytes": 5263360,
+          "embedderHeapUsedBytes": 5319400,
+          "backingStorageBytes": 655584,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:54.277Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "CD84472609162604569CC75F2D1D8096",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4607384,
+          "allocatedJSHeapBytes": 5263360,
+          "embedderHeapUsedBytes": 5319400,
+          "backingStorageBytes": 655584,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:56.311Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "CD84472609162604569CC75F2D1D8096",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4607384,
+          "allocatedJSHeapBytes": 5263360,
+          "embedderHeapUsedBytes": 5319400,
+          "backingStorageBytes": 655584,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:16:58.344Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "CD84472609162604569CC75F2D1D8096",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4607384,
+          "allocatedJSHeapBytes": 5263360,
+          "embedderHeapUsedBytes": 5319400,
+          "backingStorageBytes": 655584,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:00.366Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "CD84472609162604569CC75F2D1D8096",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4607384,
+          "allocatedJSHeapBytes": 5263360,
+          "embedderHeapUsedBytes": 5319400,
+          "backingStorageBytes": 655584,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:02.396Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "CD84472609162604569CC75F2D1D8096",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4607384,
+          "allocatedJSHeapBytes": 5263360,
+          "embedderHeapUsedBytes": 5319400,
+          "backingStorageBytes": 655584,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:04.422Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "CD84472609162604569CC75F2D1D8096",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4607384,
+          "allocatedJSHeapBytes": 5263360,
+          "embedderHeapUsedBytes": 5319400,
+          "backingStorageBytes": 655584,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:06.467Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "CD84472609162604569CC75F2D1D8096",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 4455696,
+          "allocatedJSHeapBytes": 18636800,
+          "embedderHeapUsedBytes": 415864,
+          "backingStorageBytes": 3574828,
+          "error": null
+        },
+        {
+          "targetId": "C0750EFD61F1FAB8E4B8891425AAF732",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 685640,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4537048,
+          "allocatedJSHeapBytes": 6311936,
+          "embedderHeapUsedBytes": 2866224,
+          "backingStorageBytes": 704692,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:10.037Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "CD84472609162604569CC75F2D1D8096",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 13240792,
+          "allocatedJSHeapBytes": 37019648,
+          "embedderHeapUsedBytes": 886184,
+          "backingStorageBytes": 9848883,
+          "error": null
+        },
+        {
+          "targetId": "C0750EFD61F1FAB8E4B8891425AAF732",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 897808,
+          "allocatedJSHeapBytes": 2097152,
+          "embedderHeapUsedBytes": 1675376,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5149656,
+          "allocatedJSHeapBytes": 6311936,
+          "embedderHeapUsedBytes": 8121976,
+          "backingStorageBytes": 626836,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:12.068Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "CD84472609162604569CC75F2D1D8096",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 16806200,
+          "allocatedJSHeapBytes": 38084608,
+          "embedderHeapUsedBytes": 1013976,
+          "backingStorageBytes": 12243552,
+          "error": null
+        },
+        {
+          "targetId": "C0750EFD61F1FAB8E4B8891425AAF732",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 929076,
+          "allocatedJSHeapBytes": 2359296,
+          "embedderHeapUsedBytes": 2062000,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5142696,
+          "allocatedJSHeapBytes": 6574080,
+          "embedderHeapUsedBytes": 7821864,
+          "backingStorageBytes": 626836,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:14.112Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "CD84472609162604569CC75F2D1D8096",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 7357764,
+          "allocatedJSHeapBytes": 34897920,
+          "embedderHeapUsedBytes": 406608,
+          "backingStorageBytes": 5658965,
+          "error": null
+        },
+        {
+          "targetId": "C0750EFD61F1FAB8E4B8891425AAF732",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 888776,
+          "allocatedJSHeapBytes": 2097152,
+          "embedderHeapUsedBytes": 2448600,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5125184,
+          "allocatedJSHeapBytes": 6311936,
+          "embedderHeapUsedBytes": 7281936,
+          "backingStorageBytes": 626836,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:16.132Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A5C3F010EE9F01F84B06BD49ECBDA692",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5070040,
+          "allocatedJSHeapBytes": 6049792,
+          "embedderHeapUsedBytes": 8579120,
+          "backingStorageBytes": 655659,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:18.174Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A5C3F010EE9F01F84B06BD49ECBDA692",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5070040,
+          "allocatedJSHeapBytes": 6049792,
+          "embedderHeapUsedBytes": 8579120,
+          "backingStorageBytes": 655659,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:20.204Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A5C3F010EE9F01F84B06BD49ECBDA692",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5070040,
+          "allocatedJSHeapBytes": 6049792,
+          "embedderHeapUsedBytes": 8579120,
+          "backingStorageBytes": 655659,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:22.235Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A5C3F010EE9F01F84B06BD49ECBDA692",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5070040,
+          "allocatedJSHeapBytes": 6049792,
+          "embedderHeapUsedBytes": 8579120,
+          "backingStorageBytes": 655659,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:24.265Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A5C3F010EE9F01F84B06BD49ECBDA692",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 10843172,
+          "allocatedJSHeapBytes": 18132992,
+          "embedderHeapUsedBytes": 720928,
+          "backingStorageBytes": 8016593,
+          "error": null
+        },
+        {
+          "targetId": "FC6EE6B0FEB5222D380B011B74A8ED0F",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 599172,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4758188,
+          "allocatedJSHeapBytes": 5525504,
+          "embedderHeapUsedBytes": 4057576,
+          "backingStorageBytes": 639199,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:26.304Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A5C3F010EE9F01F84B06BD49ECBDA692",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 12346464,
+          "allocatedJSHeapBytes": 37011456,
+          "embedderHeapUsedBytes": 963032,
+          "backingStorageBytes": 9405018,
+          "error": null
+        },
+        {
+          "targetId": "FC6EE6B0FEB5222D380B011B74A8ED0F",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 1076896,
+          "allocatedJSHeapBytes": 2097152,
+          "embedderHeapUsedBytes": 1159864,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4784080,
+          "allocatedJSHeapBytes": 6049792,
+          "embedderHeapUsedBytes": 3697520,
+          "backingStorageBytes": 626911,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:28.334Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A5C3F010EE9F01F84B06BD49ECBDA692",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 9146408,
+          "allocatedJSHeapBytes": 35426304,
+          "embedderHeapUsedBytes": 732776,
+          "backingStorageBytes": 6926137,
+          "error": null
+        },
+        {
+          "targetId": "FC6EE6B0FEB5222D380B011B74A8ED0F",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 910944,
+          "allocatedJSHeapBytes": 2097152,
+          "embedderHeapUsedBytes": 1675376,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4747160,
+          "allocatedJSHeapBytes": 6049792,
+          "embedderHeapUsedBytes": 3554528,
+          "backingStorageBytes": 626911,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:30.369Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A5C3F010EE9F01F84B06BD49ECBDA692",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 12901956,
+          "allocatedJSHeapBytes": 37019648,
+          "embedderHeapUsedBytes": 1024000,
+          "backingStorageBytes": 9427325,
+          "error": null
+        },
+        {
+          "targetId": "FC6EE6B0FEB5222D380B011B74A8ED0F",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 916252,
+          "allocatedJSHeapBytes": 2359296,
+          "embedderHeapUsedBytes": 2062000,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4760388,
+          "allocatedJSHeapBytes": 6049792,
+          "embedderHeapUsedBytes": 3127424,
+          "backingStorageBytes": 626911,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:32.413Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A5C3F010EE9F01F84B06BD49ECBDA692",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 23212880,
+          "allocatedJSHeapBytes": 40738816,
+          "embedderHeapUsedBytes": 1487336,
+          "backingStorageBytes": 17018629,
+          "error": null
+        },
+        {
+          "targetId": "FC6EE6B0FEB5222D380B011B74A8ED0F",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 852644,
+          "allocatedJSHeapBytes": 2097152,
+          "embedderHeapUsedBytes": 2448600,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4713696,
+          "allocatedJSHeapBytes": 6049792,
+          "embedderHeapUsedBytes": 2564872,
+          "backingStorageBytes": 626911,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:34.465Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F6BD1EDAE321C74336ABEEA3FBB904B0",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5490540,
+          "allocatedJSHeapBytes": 6836224,
+          "embedderHeapUsedBytes": 4054584,
+          "backingStorageBytes": 655695,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:36.497Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F6BD1EDAE321C74336ABEEA3FBB904B0",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5490540,
+          "allocatedJSHeapBytes": 6836224,
+          "embedderHeapUsedBytes": 4054584,
+          "backingStorageBytes": 655695,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:38.028Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F6BD1EDAE321C74336ABEEA3FBB904B0",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5490540,
+          "allocatedJSHeapBytes": 6836224,
+          "embedderHeapUsedBytes": 4054584,
+          "backingStorageBytes": 655695,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:40.070Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F6BD1EDAE321C74336ABEEA3FBB904B0",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 5490540,
+          "allocatedJSHeapBytes": 6836224,
+          "embedderHeapUsedBytes": 4054584,
+          "backingStorageBytes": 655695,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:42.100Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F6BD1EDAE321C74336ABEEA3FBB904B0",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 7419444,
+          "allocatedJSHeapBytes": 16175104,
+          "embedderHeapUsedBytes": 1673944,
+          "backingStorageBytes": 18960279,
+          "error": null
+        },
+        {
+          "targetId": "C9606BD65A38DB3B6CC8FAC9D32F3397",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 440772,
+          "allocatedJSHeapBytes": 1572864,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4965116,
+          "allocatedJSHeapBytes": 6311936,
+          "embedderHeapUsedBytes": 5341256,
+          "backingStorageBytes": 655780,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:44.133Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F6BD1EDAE321C74336ABEEA3FBB904B0",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 4161196,
+          "allocatedJSHeapBytes": 30162944,
+          "embedderHeapUsedBytes": 437536,
+          "backingStorageBytes": 3301376,
+          "error": null
+        },
+        {
+          "targetId": "C9606BD65A38DB3B6CC8FAC9D32F3397",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 992916,
+          "allocatedJSHeapBytes": 2097152,
+          "embedderHeapUsedBytes": 1159864,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4995336,
+          "allocatedJSHeapBytes": 6311936,
+          "embedderHeapUsedBytes": 4930624,
+          "backingStorageBytes": 639235,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:46.164Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F6BD1EDAE321C74336ABEEA3FBB904B0",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 21072144,
+          "allocatedJSHeapBytes": 39669760,
+          "embedderHeapUsedBytes": 1332760,
+          "backingStorageBytes": 15147891,
+          "error": null
+        },
+        {
+          "targetId": "C9606BD65A38DB3B6CC8FAC9D32F3397",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 839516,
+          "allocatedJSHeapBytes": 2097152,
+          "embedderHeapUsedBytes": 1546472,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4921780,
+          "allocatedJSHeapBytes": 6049792,
+          "embedderHeapUsedBytes": 4354640,
+          "backingStorageBytes": 626947,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:48.213Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F6BD1EDAE321C74336ABEEA3FBB904B0",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 13482616,
+          "allocatedJSHeapBytes": 37015552,
+          "embedderHeapUsedBytes": 890912,
+          "backingStorageBytes": 9851677,
+          "error": null
+        },
+        {
+          "targetId": "C9606BD65A38DB3B6CC8FAC9D32F3397",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 878444,
+          "allocatedJSHeapBytes": 2359296,
+          "embedderHeapUsedBytes": 2062000,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4921596,
+          "allocatedJSHeapBytes": 6049792,
+          "embedderHeapUsedBytes": 4342016,
+          "backingStorageBytes": 626947,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:50.227Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F6BD1EDAE321C74336ABEEA3FBB904B0",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 11317980,
+          "allocatedJSHeapBytes": 36753408,
+          "embedderHeapUsedBytes": 816896,
+          "backingStorageBytes": 8412465,
+          "error": null
+        },
+        {
+          "targetId": "C9606BD65A38DB3B6CC8FAC9D32F3397",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/direct-file-writer.worker-Cd6e6fgR.js",
+          "usedJSHeapBytes": 835732,
+          "allocatedJSHeapBytes": 2097152,
+          "embedderHeapUsedBytes": 2448600,
+          "backingStorageBytes": 264180,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4816296,
+          "allocatedJSHeapBytes": 6049792,
+          "embedderHeapUsedBytes": 3608160,
+          "backingStorageBytes": 626947,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:52.251Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "87DFCB40508C21E486513A3757E9D00F",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4847148,
+          "allocatedJSHeapBytes": 7098368,
+          "embedderHeapUsedBytes": 5736888,
+          "backingStorageBytes": 655731,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:54.299Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "87DFCB40508C21E486513A3757E9D00F",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4847148,
+          "allocatedJSHeapBytes": 7098368,
+          "embedderHeapUsedBytes": 5736888,
+          "backingStorageBytes": 655731,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:56.342Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "87DFCB40508C21E486513A3757E9D00F",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4847148,
+          "allocatedJSHeapBytes": 7098368,
+          "embedderHeapUsedBytes": 5736888,
+          "backingStorageBytes": 655731,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:17:58.371Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "87DFCB40508C21E486513A3757E9D00F",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4847148,
+          "allocatedJSHeapBytes": 7098368,
+          "embedderHeapUsedBytes": 5736888,
+          "backingStorageBytes": 655731,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:18:00.411Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "87DFCB40508C21E486513A3757E9D00F",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": 537536,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 411653,
+          "error": null
+        },
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 4847148,
+          "allocatedJSHeapBytes": 7098368,
+          "embedderHeapUsedBytes": 5736888,
+          "backingStorageBytes": 655731,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T02:18:02.417Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "18557DCBCFDEF3882D0052ABB64E785E",
+          "type": "worker",
+          "url": "http://127.0.0.1:64690/assets/conversion.worker-tYlAlkEL.js",
+          "usedJSHeapBytes": null,
+          "allocatedJSHeapBytes": null,
+          "embedderHeapUsedBytes": null,
+          "backingStorageBytes": null,
+          "error": "CDP heap reply unavailable before diagnostic deadline; operation remains bounded"
+        },
+        {
+          "targetId": "ABD5156F40B744962B44111A78AEE891",
+          "type": "page",
+          "url": "http://127.0.0.1:64690/?test=1&directory=1",
+          "usedJSHeapBytes": 7530064,
+          "allocatedJSHeapBytes": 10620928,
+          "embedderHeapUsedBytes": 3998136,
+          "backingStorageBytes": 712464,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "jobCleanup": {
+    "scope": "no-running-conversion",
+    "cancellationRequested": false,
+    "terminalState": "complete"
+  },
+  "serverCleanup": {
+    "identity": {
+      "pid": 22196,
+      "parentPid": 15208,
+      "createdAt": "2026-11-07T02:16:03.4738210Z"
+    },
+    "ownedRootAbsent": true
+  },
+  "browserCleanup": {
+    "status": "owned-identity-absent",
+    "identity": {
+      "pid": 25916,
+      "parentPid": 15208,
+      "createdAt": "2026-11-07T02:16:05.2296950Z"
+    },
+    "observations": [
+      {
+        "acquiredAt": "2026-11-07T02:18:04.853Z",
+        "current": null,
+        "unavailable": null,
+        "ownedIdentityPresent": false,
+        "sameParent": null
+      }
+    ],
+    "pidReused": false,
+    "elapsedMs": 386,
+    "noProcessesKilled": true,
+    "unavailableIsNotZero": true
+  },
+  "ownedRuntimeRemoved": true,
+  "browserAfter": {
+    "version": "156.0.8078.80",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4466840,
+      "sha256": "46461accbdc87dc88a5bdd6d611be095dd6147db009863d794f742ca90662efa",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4503599627954860",
+        "birthtimeNs": "1793664133995225000",
+        "mtimeNs": "1793230862205515000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\156.0.8078.80\\chrome.dll",
+      "bytes": 306491032,
+      "sha256": "eec84f38acf7d3b1c39bc54de53c9bcb1ea7a3b9d286d6a04288d3b959a1a7a1",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "4222124651244210",
+        "birthtimeNs": "1793664134006309400",
+        "mtimeNs": "1793230871423806000"
+      }
+    }
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "nativeArchive": {
+    "file": "evidence/2026-11-07T02-15-56-367Z-docx-html-native-samples.json.gz",
+    "bytes": 62989,
+    "sha256": "e0b5f8bbcf1f67b39b8609c4abee29e7253a80123bcedd9580ad219b27d70ad6",
+    "decodedBytes": 3124872,
+    "decodedSha256": "bd33405be90c18436301bdd0a0787ddbd5c7550b9753ff1b67421a90eaff3d2f"
+  },
+  "readableReport": "evidence/2026-11-07T02-15-56-367Z-docx-html-scaling.html",
+  "csvReport": "evidence/2026-11-07T02-15-56-367Z-docx-html-scaling.csv",
+  "finishedAt": "2026-11-07T02:18:08.540Z"
+}

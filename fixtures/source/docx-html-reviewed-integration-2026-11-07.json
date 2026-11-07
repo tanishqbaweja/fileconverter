@@ -5,9 +5,17 @@
   "entries": {
     "workers/conversion.worker.ts": {
       "beforeSha256": "fbdbd631d791420f6af3a8dcaa9871fb367a04dbeb456999441b6f9c2a7ae833",
-      "afterSha256": "f5aeec0add0e600e5c5577ed6d02ea0880737b51d9d1238e20a3a4a3a847e021",
-      "before": "    } else if (profileId === \"docx-to-txt\") {\n      const documentDestination = destination.writable;\n      await runDocxToText({",
-      "after": "    } else if (profileId === \"docx-to-txt\" || profileId === \"docx-to-html\") {\n      const documentDestination = destination.writable;\n      metrics.activeWorkerCount = 1 + (documentDestination.additionalWorkerCount ?? 0);\n      metrics.sharedArrayBufferBytes = (cancellationSignal?.byteLength ?? 0) +\n        (documentDestination.sharedBufferBytes ?? 0);\n      const convertDocx = profileId === \"docx-to-html\"\n        ? (await import(\"./docx-html-conversion\")).runDocxToHtml : runDocxToText;\n      await convertDocx({"
+      "afterSha256": "57b9f4b9edeb981d9d267e8e2892d89007c114fb999708aff2407311b0147ce9",
+      "edits": [
+        {
+          "before": "    } else if (profileId === \"docx-to-txt\") {\n      const documentDestination = destination.writable;\n      await runDocxToText({",
+          "after": "    } else if (profileId === \"docx-to-txt\" || profileId === \"docx-to-html\") {\n      const documentDestination = destination.writable;\n      metrics.activeWorkerCount = 1 + (documentDestination.additionalWorkerCount ?? 0);\n      metrics.sharedArrayBufferBytes = (cancellationSignal?.byteLength ?? 0) +\n        (documentDestination.sharedBufferBytes ?? 0);\n      const convertDocx = profileId === \"docx-to-html\"\n        ? (await import(\"./docx-html-conversion\")).runDocxToHtml : runDocxToText;\n      await convertDocx({"
+        },
+        {
+          "before": "        profileId === \"avi-to-flv\" || profileId === \"mkv-to-mp4\",",
+          "after": "        profileId === \"avi-to-flv\" || profileId === \"mkv-to-mp4\" || profileId === \"docx-to-html\","
+        }
+      ]
     },
     "lib/capability-registry.ts": {
       "beforeSha256": "acc1c6cb5104f329eec92f37b31754e7842f24bb174e703cf741b11379403781",
