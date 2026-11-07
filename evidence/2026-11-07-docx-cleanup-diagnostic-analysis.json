@@ -1,0 +1,652 @@
+{
+  "recordedAt": "2026-11-07T03:26:51.609Z",
+  "status": "verified-changed-diagnostic-not-acceptance-original-cleanup-failure-unresolved",
+  "analyzer": {
+    "path": "scripts/analyze-docx-cleanup-diagnostic.mjs",
+    "sha256": "73a158618323148b57897a7d3ea58802f4c50cb18742c7ae1e4459b044b38c0d"
+  },
+  "originalReceipt": {
+    "path": "evidence/2026-11-07T03-18-12-703Z-docx-html-qualification.json",
+    "bytes": 8477858,
+    "sha256": "d7f79516d45b89df4dd78421fa08ba8592202fec116411127eedc642c8804421"
+  },
+  "archivedReceipt": {
+    "path": "evidence/2026-11-07T03-18-12-703Z-docx-html-qualification.json.gz",
+    "bytes": 619872,
+    "sha256": "01969e305e8b060fba505c2a03e19445a74c368e75d62cb5be8a8a7751a3b31d"
+  },
+  "originalRemovedAfterIdentityAndLosslessVerification": true,
+  "bytesSaved": 7857986,
+  "semanticsChanged": false,
+  "executedHead": "b515a6d70dad2e19f455e9ea81b88295872e409b",
+  "comparison": {
+    "file": "evidence/2026-11-07T02-51-38-596Z-docx-html-qualification.json",
+    "sha256": "ecea1214979260e55527d2592daf71033ea1a9dd140543dc8e4cd17c8dced3ac",
+    "identicalProductionSourcesAndInputs": true,
+    "identicalSettings": true,
+    "browserServiceExclusions": false,
+    "qualification": false
+  },
+  "overallStatusRemainsFailed": true,
+  "memory": {
+    "peak": {
+      "sequence": 582,
+      "timestamp": "2026-11-07T03:19:30.8624564Z",
+      "completedAt": "2026-11-07T03:19:30.8761337Z",
+      "sampleError": null,
+      "nativeElapsedMs": 14.347800000000001,
+      "privateBytes": 512262144,
+      "rssBytes": 987668480,
+      "processes": [
+        {
+          "pid": 9236,
+          "parentPid": 45800,
+          "createdAt": "2026-11-07T03:18:27.2995539Z",
+          "creationFileTime": "134384951072995539",
+          "executableName": "chrome.exe",
+          "privateBytes": 21712896,
+          "rssBytes": 45617152,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 12616,
+          "parentPid": 45800,
+          "createdAt": "2026-11-07T03:18:30.0470435Z",
+          "creationFileTime": "134384951100470435",
+          "executableName": "chrome.exe",
+          "privateBytes": 134361088,
+          "rssBytes": 198307840,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 21628,
+          "parentPid": 45800,
+          "createdAt": "2026-11-07T03:18:35.8520996Z",
+          "creationFileTime": "134384951158520996",
+          "executableName": "chrome.exe",
+          "privateBytes": 18870272,
+          "rssBytes": 36519936,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 22536,
+          "parentPid": 45800,
+          "createdAt": "2026-11-07T03:18:26.7928822Z",
+          "creationFileTime": "134384951067928822",
+          "executableName": "chrome.exe",
+          "privateBytes": 35770368,
+          "rssBytes": 81096704,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 22768,
+          "parentPid": 25120,
+          "createdAt": "2026-11-07T03:19:30.6948915Z",
+          "creationFileTime": "134384951706948915",
+          "executableName": "updater.exe",
+          "privateBytes": 3280896,
+          "rssBytes": 15462400,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 25120,
+          "parentPid": 45800,
+          "createdAt": "2026-11-07T03:19:30.6680340Z",
+          "creationFileTime": "134384951706680340",
+          "executableName": "updater.exe",
+          "privateBytes": 3612672,
+          "rssBytes": 16408576,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 28436,
+          "parentPid": 45800,
+          "createdAt": "2026-11-07T03:18:26.7355794Z",
+          "creationFileTime": "134384951067355794",
+          "executableName": "chrome.exe",
+          "privateBytes": 9732096,
+          "rssBytes": 19804160,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 31328,
+          "parentPid": 45800,
+          "createdAt": "2026-11-07T03:18:26.3875852Z",
+          "creationFileTime": "134384951063875852",
+          "executableName": "chrome.exe",
+          "privateBytes": 2555904,
+          "rssBytes": 10452992,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 31908,
+          "parentPid": 45800,
+          "createdAt": "2026-11-07T03:18:26.6868928Z",
+          "creationFileTime": "134384951066868928",
+          "executableName": "chrome.exe",
+          "privateBytes": 14479360,
+          "rssBytes": 41648128,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 33088,
+          "parentPid": 25120,
+          "createdAt": "2026-11-07T03:19:30.7352534Z",
+          "creationFileTime": "134384951707352534",
+          "executableName": "updater.exe",
+          "privateBytes": 3710976,
+          "rssBytes": 17686528,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 35404,
+          "parentPid": 45800,
+          "createdAt": "2026-11-07T03:18:26.6777898Z",
+          "creationFileTime": "134384951066777898",
+          "executableName": "chrome.exe",
+          "privateBytes": 151519232,
+          "rssBytes": 180383744,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 38620,
+          "parentPid": 45800,
+          "createdAt": "2026-11-07T03:18:51.4813571Z",
+          "creationFileTime": "134384951314813571",
+          "executableName": "chrome.exe",
+          "privateBytes": 10272768,
+          "rssBytes": 63508480,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 39104,
+          "parentPid": 33088,
+          "createdAt": "2026-11-07T03:19:30.7534913Z",
+          "creationFileTime": "134384951707534913",
+          "executableName": "updater.exe",
+          "privateBytes": 3227648,
+          "rssBytes": 15425536,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 44544,
+          "parentPid": 45800,
+          "createdAt": "2026-11-07T03:18:30.5019285Z",
+          "creationFileTime": "134384951105019285",
+          "executableName": "chrome.exe",
+          "privateBytes": 25387008,
+          "rssBytes": 51728384,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 45800,
+          "parentPid": 37752,
+          "createdAt": "2026-11-07T03:18:26.3549948Z",
+          "creationFileTime": "134384951063549948",
+          "executableName": "chrome.exe",
+          "privateBytes": 73768960,
+          "rssBytes": 193617920,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    "validSamples": 484,
+    "unavailableSamples": 0,
+    "incrementalPrivateMiB": 123.2421875,
+    "limitMiB": 250,
+    "windowStart": "2026-11-07T03:18:51.460Z",
+    "windowEnd": "2026-11-07T03:19:44.199Z",
+    "scope": "failed-partial-control-window-not-completion-or-acceptance"
+  },
+  "firstLargeCleanupMiB": 43.06640625,
+  "firstCleanupWithinGate": true,
+  "earlierCleanupFailureResolved": false,
+  "nativeWordHeadingBrowserJobs": 0,
+  "phases": [
+    {
+      "phase": "loaded",
+      "nativePrivateBytesBefore": 389783552,
+      "dom": {
+        "documents": 6,
+        "nodes": 638,
+        "jsEventListeners": 170
+      },
+      "realms": [
+        {
+          "type": "worker",
+          "usedJSHeapBytes": 539348,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 418916
+        },
+        {
+          "type": "page",
+          "usedJSHeapBytes": 3151408,
+          "allocatedJSHeapBytes": 5562368,
+          "embedderHeapUsedBytes": 3028384,
+          "backingStorageBytes": 631609
+        }
+      ],
+      "rendererCategoryObservations": [
+        {
+          "pid": 12616,
+          "traceName": "Renderer",
+          "nativePrivateBytesBeforeDump": 40792064,
+          "blinkGcSize": 3932160,
+          "v8Size": 7659588,
+          "mallocSize": 13361942,
+          "allocatorValuesOverlap": true,
+          "summedAllocatorTotal": null
+        }
+      ],
+      "traceArchive": {
+        "path": "output/playwright/2026-11-07T03-18-12-703Z-docx-cleanup-loaded.json.gz",
+        "bytes": 127981,
+        "sha256": "72f16dae0752a93aed1c2931e1742954a161ac7076738d01b94bfc2016d7ddbd",
+        "restoredBytes": 1752496,
+        "restoredSha256": "718813f8054b99b3ab067da34b70e8c59276b1d59b0e422840fdddc265b5482b"
+      }
+    },
+    {
+      "phase": "before-large",
+      "nativePrivateBytesBefore": 430161920,
+      "dom": {
+        "documents": 1,
+        "nodes": 1004,
+        "jsEventListeners": 237
+      },
+      "realms": [
+        {
+          "type": "worker",
+          "usedJSHeapBytes": 539348,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 418916
+        },
+        {
+          "type": "page",
+          "usedJSHeapBytes": 4841292,
+          "allocatedJSHeapBytes": 6049792,
+          "embedderHeapUsedBytes": 5131048,
+          "backingStorageBytes": 721832
+        }
+      ],
+      "rendererCategoryObservations": [
+        {
+          "pid": 12616,
+          "traceName": "Renderer",
+          "nativePrivateBytesBeforeDump": 73830400,
+          "blinkGcSize": 7733248,
+          "v8Size": 8186884,
+          "mallocSize": 27742182,
+          "allocatorValuesOverlap": true,
+          "summedAllocatorTotal": null
+        }
+      ],
+      "traceArchive": {
+        "path": "output/playwright/2026-11-07T03-18-12-703Z-docx-cleanup-before-large.json.gz",
+        "bytes": 128203,
+        "sha256": "3850badfa5fb471783172f4e1cd698aac521a1612dbd32321ce19735ebfcb1ae",
+        "restoredBytes": 1774099,
+        "restoredSha256": "54b09f50e296051585a248d509bfb85ef4739d118607d37df7e1ba3247a95fec"
+      }
+    },
+    {
+      "phase": "complete",
+      "nativePrivateBytesBefore": 480460800,
+      "dom": {
+        "documents": 1,
+        "nodes": 893,
+        "jsEventListeners": 197
+      },
+      "realms": [
+        {
+          "type": "page",
+          "usedJSHeapBytes": 4792520,
+          "allocatedJSHeapBytes": 5787648,
+          "embedderHeapUsedBytes": 3313912,
+          "backingStorageBytes": 627350
+        }
+      ],
+      "rendererCategoryObservations": [
+        {
+          "pid": 12616,
+          "traceName": "Renderer",
+          "nativePrivateBytesBeforeDump": 115953664,
+          "blinkGcSize": 12320768,
+          "v8Size": 6014932,
+          "mallocSize": 22808182,
+          "allocatorValuesOverlap": true,
+          "summedAllocatorTotal": null
+        }
+      ],
+      "traceArchive": {
+        "path": "output/playwright/2026-11-07T03-18-12-703Z-docx-cleanup-complete.json.gz",
+        "bytes": 126365,
+        "sha256": "c6a3ff465f0002906f7f57662ec17dd33d52835ca4252fce2c145dbb77f78700",
+        "restoredBytes": 1748578,
+        "restoredSha256": "a096aa16c936f0f1a7b713bd7ffeaae65b550b4948999c8ef04a03ca69c1f573"
+      }
+    },
+    {
+      "phase": "bound",
+      "nativePrivateBytesBefore": 487895040,
+      "dom": {
+        "documents": 1,
+        "nodes": 893,
+        "jsEventListeners": 204
+      },
+      "realms": [
+        {
+          "type": "worker",
+          "usedJSHeapBytes": 539348,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 418916
+        },
+        {
+          "type": "page",
+          "usedJSHeapBytes": 5311884,
+          "allocatedJSHeapBytes": 6311936,
+          "embedderHeapUsedBytes": 3792040,
+          "backingStorageBytes": 656167
+        }
+      ],
+      "rendererCategoryObservations": [
+        {
+          "pid": 12616,
+          "traceName": "Renderer",
+          "nativePrivateBytesBeforeDump": 100200448,
+          "blinkGcSize": 13107200,
+          "v8Size": 8504308,
+          "mallocSize": 25961286,
+          "allocatorValuesOverlap": true,
+          "summedAllocatorTotal": null
+        }
+      ],
+      "traceArchive": {
+        "path": "output/playwright/2026-11-07T03-18-12-703Z-docx-cleanup-bound.json.gz",
+        "bytes": 128035,
+        "sha256": "04da55941cf42dd342bbeca1cd84c5951f69e5f07e495ac327b93272a7113c5a",
+        "restoredBytes": 1770393,
+        "restoredSha256": "be740f899714fa1288a46d27c8b2e96a01a193089f2ac3ad84b960877aa6379a"
+      }
+    },
+    {
+      "phase": "validated",
+      "nativePrivateBytesBefore": 486789120,
+      "dom": {
+        "documents": 1,
+        "nodes": 893,
+        "jsEventListeners": 204
+      },
+      "realms": [
+        {
+          "type": "worker",
+          "usedJSHeapBytes": 539348,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 418916
+        },
+        {
+          "type": "page",
+          "usedJSHeapBytes": 5311884,
+          "allocatedJSHeapBytes": 6311936,
+          "embedderHeapUsedBytes": 3792040,
+          "backingStorageBytes": 656167
+        }
+      ],
+      "rendererCategoryObservations": [
+        {
+          "pid": 12616,
+          "traceName": "Renderer",
+          "nativePrivateBytesBeforeDump": 101527552,
+          "blinkGcSize": 13107200,
+          "v8Size": 8504308,
+          "mallocSize": 23683206,
+          "allocatorValuesOverlap": true,
+          "summedAllocatorTotal": null
+        }
+      ],
+      "traceArchive": {
+        "path": "output/playwright/2026-11-07T03-18-12-703Z-docx-cleanup-validated.json.gz",
+        "bytes": 126385,
+        "sha256": "ee2f785a9abd7c47cf24fc1c07d0fd3b8bcf9d765738462721457b8b4c535cc6",
+        "restoredBytes": 1752775,
+        "restoredSha256": "779c87c03ceca349c535a4610e124d1c835cb3e7c93e5f634ba404dea153ce0c"
+      }
+    },
+    {
+      "phase": "deleted",
+      "nativePrivateBytesBefore": 484597760,
+      "dom": {
+        "documents": 1,
+        "nodes": 893,
+        "jsEventListeners": 204
+      },
+      "realms": [
+        {
+          "type": "worker",
+          "usedJSHeapBytes": 539348,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 418916
+        },
+        {
+          "type": "page",
+          "usedJSHeapBytes": 5335372,
+          "allocatedJSHeapBytes": 6311936,
+          "embedderHeapUsedBytes": 3798376,
+          "backingStorageBytes": 656167
+        }
+      ],
+      "rendererCategoryObservations": [
+        {
+          "pid": 12616,
+          "traceName": "Renderer",
+          "nativePrivateBytesBeforeDump": 101523456,
+          "blinkGcSize": 13107200,
+          "v8Size": 8449028,
+          "mallocSize": 24202262,
+          "allocatorValuesOverlap": true,
+          "summedAllocatorTotal": null
+        }
+      ],
+      "traceArchive": {
+        "path": "output/playwright/2026-11-07T03-18-12-703Z-docx-cleanup-deleted.json.gz",
+        "bytes": 128039,
+        "sha256": "a21525eb6762581a28c369b22782ffed3fe8ad8ba901df0fb4f210c79a4a4d2e",
+        "restoredBytes": 1775129,
+        "restoredSha256": "e4681e2ef585809be14b656a5eb855306169dafbcb5029d08fac90bdda4803c9"
+      }
+    },
+    {
+      "phase": "cleanup-first",
+      "nativePrivateBytesBefore": 432730112,
+      "dom": {
+        "documents": 1,
+        "nodes": 893,
+        "jsEventListeners": 204
+      },
+      "realms": [
+        {
+          "type": "worker",
+          "usedJSHeapBytes": 539348,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 418916
+        },
+        {
+          "type": "page",
+          "usedJSHeapBytes": 5335372,
+          "allocatedJSHeapBytes": 6311936,
+          "embedderHeapUsedBytes": 3798376,
+          "backingStorageBytes": 656167
+        }
+      ],
+      "rendererCategoryObservations": [
+        {
+          "pid": 12616,
+          "traceName": "Renderer",
+          "nativePrivateBytesBeforeDump": 66371584,
+          "blinkGcSize": 13107200,
+          "v8Size": 8449028,
+          "mallocSize": 21097510,
+          "allocatorValuesOverlap": true,
+          "summedAllocatorTotal": null
+        }
+      ],
+      "traceArchive": {
+        "path": "output/playwright/2026-11-07T03-18-12-703Z-docx-cleanup-cleanup-first.json.gz",
+        "bytes": 125732,
+        "sha256": "eb47601cd9fd5a9e1a102331e744f0bb84372915c90a69f0a3c6dc45dcb2b86f",
+        "restoredBytes": 1744461,
+        "restoredSha256": "8c5601d6638895d260bc041850b1d771630b90f599756d9e5b2a61db49b5d024"
+      }
+    },
+    {
+      "phase": "cleanup-plus45s",
+      "nativePrivateBytesBefore": 406171648,
+      "dom": {
+        "documents": 1,
+        "nodes": 893,
+        "jsEventListeners": 204
+      },
+      "realms": [
+        {
+          "type": "worker",
+          "usedJSHeapBytes": 539348,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 418916
+        },
+        {
+          "type": "page",
+          "usedJSHeapBytes": 5335372,
+          "allocatedJSHeapBytes": 6311936,
+          "embedderHeapUsedBytes": 3798376,
+          "backingStorageBytes": 656167
+        }
+      ],
+      "rendererCategoryObservations": [
+        {
+          "pid": 12616,
+          "traceName": "Renderer",
+          "nativePrivateBytesBeforeDump": 61235200,
+          "blinkGcSize": 13107200,
+          "v8Size": 8449028,
+          "mallocSize": 16847318,
+          "allocatorValuesOverlap": true,
+          "summedAllocatorTotal": null
+        }
+      ],
+      "traceArchive": {
+        "path": "output/playwright/2026-11-07T03-18-12-703Z-docx-cleanup-cleanup-plus45s.json.gz",
+        "bytes": 124842,
+        "sha256": "b1589d7eb9347fc4d532882aa937b964678f26a1a0ee4bb9afc5bb474cd14c0a",
+        "restoredBytes": 1728488,
+        "restoredSha256": "62643f0bfcbc890dee37038b1b0e7dd447ca6b490ec52cd9571cc43705930f29"
+      }
+    }
+  ],
+  "ownedCleanupCommandErrors": [
+    {
+      "name": "AggregateError",
+      "message": "One or more owned cleanup actions failed",
+      "code": null
+    },
+    {
+      "name": "Error",
+      "message": "Command failed: taskkill.exe /PID 45800 /T /F\nERROR: The process with PID 44544 (child process of PID 45800) could not be terminated.\r\nReason: The operation attempted is not supported.\r\r\n",
+      "code": 255
+    }
+  ],
+  "laterOwnedProcessReconciliation": {
+    "acquiredAt": "2026-11-07T03:26:51.615Z",
+    "observedPids": [
+      6928,
+      8640,
+      9236,
+      12616,
+      14572,
+      19984,
+      21448,
+      21628,
+      22536,
+      22568,
+      22768,
+      23208,
+      23988,
+      25120,
+      26188,
+      26584,
+      28052,
+      28436,
+      29012,
+      29396,
+      31328,
+      31488,
+      31908,
+      32096,
+      33088,
+      35368,
+      35404,
+      36700,
+      37764,
+      38620,
+      39104,
+      39124,
+      39664,
+      42492,
+      44544,
+      44720,
+      44936,
+      45004,
+      45732,
+      45800
+    ],
+    "current": [],
+    "noAdditionalProcessesKilled": true
+  },
+  "ownedRuntimeRemoved": true,
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "publicPromotion": false,
+  "productionMemoryFixImplemented": false,
+  "allocationStackAttribution": false,
+  "pageTargetNativeBirthJoinVerified": false,
+  "newBrowserRuns": 0,
+  "nextAction": "Preserve teardown errors and fail closed on live/unavailable observed-process census; run previously unreached real native heading and recovery jobs. Do not infer a converter fix from the diagnostic non-reproduction."
+}

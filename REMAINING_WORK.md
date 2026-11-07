@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-11-07 changed diagnostic completed; N-08 remains PARTIAL/PRIVATE. Same
+production/input hashes and four golden outputs;123.2421875MiB primary, first
+cleanup43.06640625MiB. Diagnostic is perturbing/not acceptance; original110.43MiB
+cleanup failure remains unresolved, no causal production fix inferred. Overall
+diagnostic FAILED taskkill255 (child operation not supported); subsequent ALL40
+observed Chrome/server PIDs absent. Outputs/profile/runtime removed, original
+unchanged. Evidence:2026-11-07-docx-cleanup-diagnostic-analysis.json plus lossless
+2026-11-07T03-18-12-703Z-docx-html-qualification.json.gz (saved7857986B).
+NEXT: fail-closed owned teardown reconciliation that preserves command errors,
+then previously unreached native Word heading/cancel/write-error/recovery tests.
+Do not replay unchanged scaling or call the diagnostic a qualification pass.
+
+Owned teardown reconciliation implemented;32focused checks/three-file lint PASS,
+not yet browser-verified. New targeted --outline-small-control keeps production
+worker/settings/250MiB/96MiB heading-cleanup gates; three native heading jobs plus
+adverse recovery. Remaining large/fresh-session fidelity qualification still open.
+
 2026-11-07 next changed experiment prepared: --outline-memory-diagnostic adds
 bounded per-phase DOM/realm/full-tree/native allocator observations. Production
 source and exact failed input hashes must match; same250MiB/96MiB gates, normal

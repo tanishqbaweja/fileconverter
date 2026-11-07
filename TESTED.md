@@ -1,5 +1,40 @@
 # Tested conversion ledger
 
+2026-11-07 changed eight-phase diagnostic executed:
+evidence/2026-11-07T03-18-12-703Z-docx-html-qualification.json.gz (lossless).
+SAME production source/input hashes; three8897390B jobs then141871070B source ->
+139756049B output; all ordered paragraphs/golden hashes valid. Whole Chrome
+123.2421875MiB/484valid0missing; first stable cleanup43.06640625MiB (<96).
+Instrumentation deliberately perturbs memory/timing: earlier110.43MiB cleanup
+failure NOT reproduced or repaired, and no new qualification/speed claim made.
+Eight bounded light dumps/DOM/realm phases captured without forced GC/services
+changes. DOM638 ->893nodes at completion/cleanup (not input-sized growth); native
+trace identifies Renderer12616 and category counters, NOT a page-target PID join
+or original failed-process cause. Page embedder3.80MB at cleanup, unlike earlier
+41.01MB; cause of variation unresolved. Real python-docx heading jobs still0.
+
+Diagnostic overall remains FAILED: nested teardown error now known, taskkill255
+reported child44544 could not be terminated (operation not supported). Original
+earlier generic cleanup error cause remains unknown. Later read-only census of
+ALL39observed Chrome PIDs plus owned server (40unique) found NONE at03:22:46Z;
+no additional kills. Runtime/profile/fixtures/outputs removed; original full
+SHA/size unchanged. Next fix: always reconcile observed owned-process absence
+after teardown-command failure; retain command error, fail closed on live or
+unavailable census. Then execute previously unreached native heading/recovery
+controls, not another unchanged scaling replay. No speculative production fix.
+
+Teardown follow-up now checks root PID/parent/exact birth before any root-tree
+termination, preserves taskkill errors, and always reconciles ALL observed PIDs.
+Only an available EMPTY census can establish cleanup; live/unavailable/reused-PID
+census fails closed, never kills individual children or unrelated replacements.
+32focused checks PASS and three-file lint PASS; browser follow-up pending.
+New --outline-small-control targets previously unreached native Word headings
+three times plus payload-cancel/write-error/recovery, not scaling requalification.
+Full diagnostic JSON losslessly compressed with exact-byte/SHA/identity checks,
+saving7857986B; eight compressed traces retained, future summaries omit duplicate
+allocator buckets (not underlying trace evidence). Compact analysis:
+evidence/2026-11-07-docx-cleanup-diagnostic-analysis.json.
+
 2026-11-07 cleanup diagnostic prepared (browser run not yet executed): eight
 ordered DOM/realm/full-native/light-memory-infra phase observations on the SAME
 failed production source and exact generated input hashes. Three small jobs then

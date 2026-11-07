@@ -7,6 +7,12 @@ import { captureLiveMemoryInfra } from "./live-memory-infra.mjs";
 import { boundedErrorDetails } from "./bounded-error-details.mjs";
 
 export const DOCX_CLEANUP_PHASES = Object.freeze(["loaded", "before-large", "complete", "bound", "validated", "deleted", "cleanup-first", "cleanup-plus45s"]);
+export function compactDocxMemoryInfra(value) {
+  return { ...value, summary: value.summary.map(row => ({ ...row, processes: row.processes.map(process => {
+    const { liveAllocatorCounters, ...compact } = process;
+    void liveAllocatorCounters; return compact;
+  }) })), detailedAllocatorBucketsInHashedTraceArchive: true };
+}
 export async function createDocxCleanupDiagnostic({ page, context, browser, realms, nativeSnapshot, archiveDirectory, stamp,
   capture = captureLiveMemoryInfra }) {
   assert.match(stamp, /^[0-9TZ.-]+$/);
@@ -24,9 +30,9 @@ export async function createDocxCleanupDiagnostic({ page, context, browser, real
         row.nativeBefore = await nativeSnapshot();
         row.dom = await dom.sample(phase);
         row.realms = await realms.sample();
-        row.memoryInfra = await capture({ session: await browser.newBrowserCDPSession(), phase,
+        row.memoryInfra = compactDocxMemoryInfra(await capture({ session: await browser.newBrowserCDPSession(), phase,
           processes: row.nativeBefore?.processes ?? null,
-          archivePath: path.join(archiveDirectory, `${stamp}-docx-cleanup-${phase}.json.gz`) });
+          archivePath: path.join(archiveDirectory, `${stamp}-docx-cleanup-${phase}.json.gz`) }));
         row.nativeAfter = await nativeSnapshot();
         return row;
       } catch (error) { row.errors = boundedErrorDetails(error); throw error; }

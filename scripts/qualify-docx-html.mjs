@@ -19,7 +19,6 @@ import { stableWindow } from "./lib/chromium-private-memory.mjs";
 import { inspectStressHostMemory } from "./lib/host-memory-preflight.mjs";
 import { inspectInstalledChromePin, assertInstalledChromePinsEqual } from "./lib/installed-chrome-pin.mjs";
 import { queryReliableProcessIdentity } from "./lib/reliable-owned-identity.mjs";
-import { observeOwnedProcessExit } from "./lib/owned-process-exit-observation.mjs";
 import { encodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { bindOpfsOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "./lib/opfs-output-validation-backing.mjs";
 import { cancelBrowserConversionBeforeCleanup } from "./lib/cancel-browser-conversion-before-cleanup.mjs";
@@ -32,16 +31,18 @@ import { cancelAfterRealBrowserPayload } from "./lib/browser-payload-cancellatio
 import { completeNewBrowserJob, installDocxDestinationObservation, assertDirectDocxCompletion } from "./lib/docx-direct-control.mjs";
 import { boundedErrorDetails } from "./lib/bounded-error-details.mjs";
 import { createDocxCleanupDiagnostic } from "./lib/docx-cleanup-diagnostic.mjs";
+import { cleanupOwnedChromium } from "./lib/owned-chromium-cleanup.mjs";
 
 assert.equal(process.platform, "win32");
 const memoryDiagnostic = process.argv[2] === "--outline-memory-diagnostic";
-const outlineControl = process.argv[2] === "--outline-direct-scaling" || memoryDiagnostic;
+const outlineSmall = process.argv[2] === "--outline-small-control";
+const outlineControl = process.argv[2] === "--outline-direct-scaling" || memoryDiagnostic || outlineSmall;
 const benchmark = process.argv[2] === "--direct-async-scaling";
 const asyncDirect = benchmark || outlineControl;
 const direct = process.argv[2] === "--direct-scaling" || asyncDirect;
-const scaling = process.argv[2] === "--scaling" || direct;
+const scaling = !outlineSmall && (process.argv[2] === "--scaling" || direct);
 const cancellationOnly = process.argv[2] === "--cancel-control";
-assert.ok(process.argv.length === (scaling || cancellationOnly ? 3 : 2));
+assert.ok(process.argv.length === (scaling || cancellationOnly || outlineSmall ? 3 : 2));
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 262144 })) hash.update(b); return hash.digest("hex"); };
@@ -75,6 +76,7 @@ if (direct) {
     caveat: "Three repeats per size; sequential fresh sessions, not randomized interleaved A/B or universal fastest proof" };
 }
 if (outlineControl) report.scope = "Changed outline reader: real python-docx headings and inherited/default/direct outlines plus large documents with257referenced styles, actual async handle writer; not full Word layout, native picker or promotion";
+if (outlineSmall) report.scope = "Previously unreached real python-docx heading repetitions plus actual payload cancellation/write-error/recovery only; NOT scaling, native picker, full Word rendering or public qualification";
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const p = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
 const packageBytes = (body, level = 6, invalidPackage = false) => zipSync({
@@ -190,7 +192,7 @@ try {
     "scripts/lib/docx-html-scaling-control.mjs", "scripts/lib/docx-html-scaling-fixtures.py", "scripts/lib/opfs-output-validation-backing.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/browser-payload-cancellation.mjs",
     "scripts/lib/docx-direct-control.mjs", "app/converter/ConverterApp.tsx", "workers/random-access-destination.ts", "workers/direct-file-writer.worker.ts", "workers/direct-writer-protocol.ts",
     "workers/docx-outline.ts", "scripts/lib/docx-outline-fixtures.py", "scripts/lib/bounded-error-details.mjs",
-    "scripts/lib/docx-cleanup-diagnostic.mjs", "scripts/lib/bounded-dom-counters.mjs", "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs"])
+    "scripts/lib/docx-cleanup-diagnostic.mjs", "scripts/lib/bounded-dom-counters.mjs", "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "scripts/lib/owned-chromium-cleanup.mjs"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
@@ -310,7 +312,7 @@ try {
     realmSampler = await connectRealmSampler(debuggerVersion.webSocketDebuggerUrl, server.baseURL);
   }
   await context.addInitScript(`window.__WITHIN_AUDIO_VALIDATION_CHUNK__=(${encodeBoundedValidationChunk.toString()});`);
-  if (scaling || cancellationOnly) await context.addInitScript(`window.__WITHIN_PAYLOAD_CANCEL__=(${cancelAfterRealBrowserPayload.toString()});`);
+  if (scaling || cancellationOnly || outlineSmall) await context.addInitScript(`window.__WITHIN_PAYLOAD_CANCEL__=(${cancelAfterRealBrowserPayload.toString()});`);
   if (direct) {
     await context.addInitScript(`window.__WITHIN_NEW_DOCX_COMPLETION__=(${completeNewBrowserJob.toString()});`);
     await context.addInitScript(`(${installDocxDestinationObservation.toString()})();`);
@@ -461,8 +463,12 @@ try {
   if (outlineControl) {
     await select(outlineFixture);
     for (let repeat = 1; repeat <= 3; repeat++) {
+      const started = Date.now();
       await Promise.race([safetyStop, directCompletion()]);
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState());
+      assert.ok(state.metrics.maxReadChunkBytes <= 262144 && state.metrics.maxWriteChunkBytes <= 65536);
+      assert.equal(state.metrics.pendingOperations, 0); assert.equal(state.metrics.queuedBytes, 0);
+      assert.equal(state.metrics.peakPendingOperations, 1); assert.ok(state.metrics.peakQueuedBytes <= 65536);
       const observation = await directObservation(), name = assertDirectDocxCompletion(state, observation, report.directWriterImplementation);
       const binding = await bindOpfsOutputValidationBacking(page, profile, name, state.metrics.outputBytes);
       const row = { repeat, outputBytes: state.metrics.outputBytes, metrics: state.metrics, destinationObservation: observation, binding: binding.proof };
@@ -475,12 +481,18 @@ try {
       await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
       await waitEmpty(); assert.deepEqual(await leftovers(), []);
       await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
+      if (outlineSmall) {
+        const cleanup = await Promise.race([safetyStop, stable()]); await drain();
+        row.smallRunMemory = summarizeDocxHtmlRunMemory(samples, started, Date.now(), report.blankBaseline, report.loadedIdle, cleanup);
+        assert.ok(row.smallRunMemory.incrementalPrivateMiB <= 250);
+        assert.ok(row.smallRunMemory.cleanupDeltaFromLoadedMiB <= scalingPlan.cleanupRecoveryLimitMiB, "Unchanged96MiB small-heading cleanup gate");
+      }
     }
     assert.equal(new Set(report.outlineControl.cases.map(c => c.validated.sha256)).size, 1);
   }
   await select(cancellation);
   let armed;
-  if (scaling || cancellationOnly) {
+  if (scaling || cancellationOnly || outlineSmall) {
     const trigger = await page.evaluate(() => window.__WITHIN_PAYLOAD_CANCEL__({
       getState: () => window.__WITHIN_TEST__.getState(),
       start: () => document.querySelector('[data-testid="convert-button"]').click(),
@@ -520,9 +532,10 @@ try {
   report.screenshot = `output/playwright/${stamp}-docx-html-complete.png`; await page.screenshot({ path: path.join(root, report.screenshot), fullPage: true });
   report.status = scaling ? "passed-private-progressive-docx-html-control-not-full-route-qualification" : "passed-private-small-docx-html-production-control-not-public-qualification";
   if (cancellationOnly) report.status = "passed-changed-docx-html-payload-cancel-write-recovery-control-not-scaling-or-promotion";
-  if (direct) { report.status = "passed-private-direct-handle-docx-html-scaling-control-not-native-picker-or-promotion"; report.directHandleWriterControlVerified = true; }
+  if (direct) { report.status = outlineSmall ? "passed-private-native-heading-and-recovery-control-not-scaling-or-promotion" : "passed-private-direct-handle-docx-html-scaling-control-not-native-picker-or-promotion"; report.directHandleWriterControlVerified = !outlineSmall; }
   if (scaling) report.completedDocumentScalingControlVerified = true;
-  if (outlineControl) report.outlineControlVerified = true;
+  if (outlineControl) report.outlineControlVerified = !outlineSmall;
+  if (outlineSmall) report.smallNativeHeadingRecoveryVerified = true;
   if (benchmark) {
     const candidate = report.performanceCandidate, bytes = await readFile(path.join(root, candidate.baseline));
     assert.equal(sha(bytes), candidate.baselineSha256); const baseline = JSON.parse(bytes);
@@ -565,7 +578,7 @@ finally {
   if (scaling) report.realmObservations = realmObservations;
   try {
     if (page && !page.isClosed()) {
-      if ((scaling || cancellationOnly) && report.status === "failed-not-acceptance") report.failedJobState = await page.evaluate(() => {
+      if ((scaling || cancellationOnly || outlineSmall) && report.status === "failed-not-acceptance") report.failedJobState = await page.evaluate(() => {
         const s = window.__WITHIN_TEST__?.getState(); return s ? { jobState: s.jobState, workerStatus: s.workerStatus,
           metrics: s.metrics, error: s.error, warnings: s.warnings } : null;
       });
@@ -579,17 +592,18 @@ finally {
     }
   } catch (error) { report.failures.push("Browser data cleanup: " + error); report.status = "failed-not-acceptance"; process.exitCode = 1; }
   await finishOwnedCleanup([
-    async () => { await browser?.close().catch(() => {});
-      if (chrome && chrome.exitCode === null && chrome.signalCode === null) {
-        assert.ok(chromeBirth); const current = await queryReliableProcessIdentity(chrome.pid);
-        if (current) { assert.deepEqual(current, chromeBirth); await execute("taskkill.exe", ["/PID", String(chrome.pid), "/T", "/F"], { windowsHide: true, timeout: 15000 }); }
-      }
-      if (chromeBirth) { report.browserCleanup = await observeOwnedProcessExit(chromeBirth); assert.equal(report.browserCleanup.status, "owned-identity-absent"); }
+    async () => {
+      if (chromeBirth) {
+        const observedPids = [...new Set(samples.flatMap(sample => (sample.processes ?? []).map(p => p.pid)))];
+        report.browserCleanup = await cleanupOwnedChromium({ identity: chromeBirth, observedPids,
+          disconnect: async () => { await browser?.close(); } });
+        assert.equal(report.browserCleanup.status, "owned-observed-pids-absent");
+      } else await browser?.close();
     },
     async () => { if (server) report.serverCleanup = await server.close(); },
   ]).catch(error => { report.ownedProcessCleanupErrors = boundedErrorDetails(error); report.failures.push("Owned process cleanup: " + error); report.status = "failed-not-acceptance"; process.exitCode = 1; });
   try {
-    assert.ok(!chrome || chrome.exitCode !== null || chrome.signalCode !== null || report.browserCleanup?.status === "owned-identity-absent");
+    assert.ok(!chrome || report.browserCleanup?.status === "owned-observed-pids-absent", "Never remove profile while observed owned processes may remain");
     if (runtime) { await runtime.close(); report.ownedRuntimeRemoved = true; }
     for (const [file, digest] of Object.entries(report.sourcePins)) assert.equal(await hashFile(path.join(root, file)), digest);
     if (report.browserBefore) { report.browserAfter = await inspectInstalledChromePin(); assertInstalledChromePinsEqual(report.browserBefore, report.browserAfter); }

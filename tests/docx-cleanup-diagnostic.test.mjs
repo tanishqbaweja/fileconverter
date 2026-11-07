@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import path from "node:path";
-import { createDocxCleanupDiagnostic, DOCX_CLEANUP_PHASES } from "../scripts/lib/docx-cleanup-diagnostic.mjs";
+import { createDocxCleanupDiagnostic, DOCX_CLEANUP_PHASES, compactDocxMemoryInfra } from "../scripts/lib/docx-cleanup-diagnostic.mjs";
 
 function setup(capture = async () => ({ summary: [], acceptanceMetric: false })) {
   const commands = []; let detached = 0, native = 0;
@@ -12,7 +12,7 @@ function setup(capture = async () => ({ summary: [], acceptanceMetric: false }))
   return { options, commands, detached: () => detached };
 }
 test("DOCX diagnostic observes only eight ordered metadata phases without changing acceptance or forcing GC", async () => {
-  const calls = [], s = setup(async options => { calls.push(options); return { acceptanceMetric: false }; });
+  const calls = [], s = setup(async options => { calls.push(options); return { summary: [], acceptanceMetric: false }; });
   const d = await createDocxCleanupDiagnostic(s.options);
   for (const phase of DOCX_CLEANUP_PHASES) await d.sample(phase);
   await assert.rejects(d.sample("cleanup-first"));
@@ -24,6 +24,15 @@ test("DOCX diagnostic observes only eight ordered metadata phases without changi
   }
   assert.equal(d.report().nativeTargetJoinVerified, false); assert.equal(d.report().maximumPending, 1);
   await d.close(); await d.close(); assert.equal(s.detached(), 1); await assert.rejects(d.sample("loaded"));
+});
+test("diagnostic compact summary retains category counters and exact trace archive identity, not duplicated thousands of buckets", () => {
+  const full = { archive: { sha256: "unchanged" }, summary: [{ phase: "complete", processes: [{ pid: 42,
+    allocators: { v8: { size: 123 } }, liveAllocatorCounters: { "malloc/bucket": { size: 4 } } }] }] };
+  const compact = compactDocxMemoryInfra(full);
+  assert.equal(compact.archive, full.archive); assert.equal(compact.summary[0].processes[0].allocators.v8.size, 123);
+  assert.equal(compact.summary[0].processes[0].liveAllocatorCounters, undefined);
+  assert.deepEqual(full.summary[0].processes[0].liveAllocatorCounters, { "malloc/bucket": { size: 4 } });
+  assert.equal(compact.detailedAllocatorBucketsInHashedTraceArchive, true);
 });
 test("DOCX diagnostic refuses concurrent/queued captures, retains failed phase and closes owned DOM session", async () => {
   let rejectCapture, entered;
