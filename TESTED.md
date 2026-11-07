@@ -1,22 +1,51 @@
 # Tested conversion ledger
 
-2026-11-07 DOCX outline fidelity increment IN PROGRESS: first3regressions all
-FAILED because inherited/default/direct outline levels flattened to paragraphs.
-Bounded namespace-aware referenced styles reader and delayed paragraph opening
-now emit semantic h1-h6/ARIA levels7-9, with direct body-level9 overrides. Only
-outline hierarchy is inherited; run-style/font/list/layout fidelity stays OPEN.
-Metadata1MiB each/1024styles/64inheritance levels, internal relationships only,
-DTD/entity/cycle/ambiguity guards and escaped static output retained. Additional
-19PASS/1FAIL exposed cached parent-first chains bypassing64levels; explicit cached
-depth now enforces the limit.54focused checks, five-file lint/TypeScript PASS.
-Real python-docx fixture + larger257-style source browser qualification NEXT;
-not yet memory/production fidelity acceptance. Optimized handle writer unchanged.
-Updated76affected checks PASS, fresh build/TypeScript/eight-file lint PASS before
-adding actual parsed-style count diagnostics for the browser assertions. Final
-fresh build after that meaningful source change now PASS, as do updated45DOCX/
-outline/reader checks. No unchanged benchmark replay. Outline semantics reviewed
-against Microsoft's OutlineLevel/BasedOn primary documentation; the profile does
-not infer heading level from a style's display name or claim full style rendering.
+2026-11-07 DOCX outline fidelity increment remains PRIVATE/PENDING and browser
+qualification FAILED. Direct/inherited/default paragraph outline semantics are
+implemented (h1-h6/ARIA7-9; direct body9 override), not inherited font/run/list/page
+layout. Internal namespace-aware optional metadata is bounded1MiB each/1024styles/
+64inheritance levels; cyclic/ambiguous/DTD/entity/unsafe references fail. Initial
+feature tests0PASS/3FAIL reproduced flattened headings; subsequent19PASS/1FAIL
+caught cached parent-first chains bypassing64levels; repaired.76affected checks,
+45updated converter/reader checks, fresh build/TypeScript/eight-file lint PASS.
+Worker audit now explicitly covers46TS+1MJS modules; public selector403 unchanged.
+
+Actual first257-style browser control:
+evidence/2026-11-07T02-51-38-596Z-docx-html-qualification.json.
+Three smaller conversions plus first141871070B DOCX ->139756049B HTML completed
+with every ordered paragraph independently checked and exact golden hashes.
+Actual257style-definition reads confirmed, bounded262144read/65536write/queue/
+one pending. Whole Chrome143.2890625MiB/521valid0missing (<250), but stable cleanup
+110.43359375MiB above loaded idle EXCEEDS unchanged96MiB; stop remains FAILED.
+No clean-session/recovery/native Word heading pass inferred.36933B canonical
+python-docx1.2.0 fixture with166styles passed ZIP/package/streaming source checks
+and positive/wrong-heading/wrong-text/active-markup/unclosed HTML validator
+controls, but actual native-fixture browser jobs were NOT REACHED.
+
+Failure also recorded generic owned-process cleanup AggregateError, losing nested
+cause and failed-run birth-role summary; do NOT guess a taskkill race or allocation
+owner. New harness retains launch identities/birth-role summaries and bounded
+nested Error/code details (8causes/2048chars, no buffers/stdout/command dumps).
+Three diagnostic-helper regressions PASS. Historical failed receipt unchanged.
+Read-only later census checks ALL38observed owned PIDs absent, runtime/outputs/
+fixtures/profile removed, no other applications killed. Original full size/SHA
+unchanged. Exact reconciliation and endpoint facts:
+evidence/2026-11-07-docx-outline-first-control-analysis.json.
+Existing Chrome PID23880 grew42266624->150732800B between loaded/cleanup endpoints;
+role UNKNOWN, not claimed renderer/AI or causal source. Endpoint diagnostics never
+replace blank/idle medians or remove updater/other processes from primary totals.
+
+Current failed-evidence checks PASS; final portable2564PASS/0fail/0skip/0cancel,
+106.993s across710files;872inventoried/162qualification files UNRUN,235previous
+hosted gates retained. Eleven affected files lint/TypeScript/fresh app build PASS.
+Receipt:evidence/2026-11-07-docx-outline-portable-final.json. These unit/source
+results never turn the failed browser control into a pass. NEXT:
+one changed bounded allocation/DOM/role diagnostic on SAME full141871070B source/
+settings and250MiB/96MiB gates; preserve failed first cleanup window, no forced GC,
+disabled services, inflated baseline, smaller file or unchanged replay. Actual
+Word heading/recovery/native external destination/complex office/browser/media/
+near10GB/source/release/full goal remain OPEN. Prior writer results below are
+source-pinned history, not acceptance of this new outline increment.
 
 2026-11-07 private DOCX HTML direct-writer optimization ACCEPTED. Identical valid
 8,786,993B/140,575,793B DOCX sources, three repeats each per writer, byte-exact

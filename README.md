@@ -12,7 +12,22 @@ DOCX-to-HTML is a private localhost qualification candidate, not a published
 conversion. It streams main-document paragraphs, simple table rows/cells and
 basic direct emphasis into escaped static HTML. Named styles, lists/headings,
 fonts, page/merged-cell layout, links, graphics and ancillary parts are not fully
-preserved; the UI discloses those limits. Two clean Chrome sessions each produced
+preserved; the UI discloses those limits. Paragraph outline/heading inheritance
+from referenced/default/direct properties is now implemented with 1 MiB metadata,
+1,024-style and 64-level safety bounds, but its latest browser qualification FAILED
+the unchanged cleanup-recovery gate (110.43 MiB above loaded idle versus 96 MiB).
+Four style-referencing conversions completed correctly, including 141.87 MB DOCX
+to 139.76 MB HTML; primary whole-Chrome memory was 143.29 MiB. The real python-docx
+heading fixture's generation and validator controls pass, but its browser jobs
+were not reached. No full font/style/list/layout fidelity or public support is
+claimed. See `evidence/2026-11-07-docx-outline-first-control-analysis.json`.
+Outline interpretation follows the documented
+[outline-level](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.outlinelevel?view=openxml-3.0.1)
+and [style-base](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.basedon?view=openxml-3.0.1)
+rules; HTML headings reflow rather than reproducing Word appearance.
+
+Earlier source-pinned controls below remain historical evidence, not acceptance
+of the current outline increment. Two clean Chrome sessions each produced
 three 139.8 MB HTML outputs from genuine 140.6 MB DOCX inputs, plus three 8.7 MB
 outputs. Independent streaming validation compares every ordered paragraph;
 whole-tree memory peaks were 173.39 and 157.01 MiB with stable cleanup readings.

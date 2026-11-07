@@ -30,6 +30,7 @@ import { DOCX_HTML_SCALING_PLAN as scalingPlan, summarizeDocxHtmlRunMemory, rend
 import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
 import { cancelAfterRealBrowserPayload } from "./lib/browser-payload-cancellation.mjs";
 import { completeNewBrowserJob, installDocxDestinationObservation, assertDirectDocxCompletion } from "./lib/docx-direct-control.mjs";
+import { boundedErrorDetails } from "./lib/bounded-error-details.mjs";
 
 assert.equal(process.platform, "win32");
 const outlineControl = process.argv[2] === "--outline-direct-scaling";
@@ -185,7 +186,7 @@ try {
     "scripts/lib/birth-type-capture.mjs", "scripts/lib/select-owned-local-browser-file.mjs",
     "scripts/lib/docx-html-scaling-control.mjs", "scripts/lib/docx-html-scaling-fixtures.py", "scripts/lib/opfs-output-validation-backing.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/browser-payload-cancellation.mjs",
     "scripts/lib/docx-direct-control.mjs", "app/converter/ConverterApp.tsx", "workers/random-access-destination.ts", "workers/direct-file-writer.worker.ts", "workers/direct-writer-protocol.ts",
-    "workers/docx-outline.ts", "scripts/lib/docx-outline-fixtures.py"])
+    "workers/docx-outline.ts", "scripts/lib/docx-outline-fixtures.py", "scripts/lib/bounded-error-details.mjs"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
@@ -271,10 +272,12 @@ try {
   const port = await new Promise((resolve, reject) => { const socket = createServer(); socket.once("error", reject);
     socket.listen(0, "127.0.0.1", () => { const p = socket.address().port; socket.close(error => error ? reject(error) : resolve(p)); }); });
   server = await startOwnedProductionTestServer({ root, directory: runtime.directory, env, port });
+  report.serverLaunchIdentity = server.identity;
   const profile = path.join(runtime.directory, "profile");
   report.launchArguments = ["--headless=new", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "--no-first-run", "--no-default-browser-check", "about:blank"];
   chrome = spawn(report.browserBefore.launcher.path, report.launchArguments, { cwd: root, env, windowsHide: true, stdio: "ignore" });
   chromeBirth = await queryReliableProcessIdentity(chrome.pid); assert.ok(chromeBirth);
+  report.browserLaunchIdentity = chromeBirth;
   monitor = await startClassifiedChromiumMemoryMonitor(chrome.pid, runtime.directory, 100);
   let activePort; const debuggerDeadline = Date.now() + 15000;
   while (Date.now() < debuggerDeadline) {
@@ -499,7 +502,12 @@ try {
   }
 } catch (error) { report.status = "failed-not-acceptance"; report.failures.push(String(error.stack ?? error)); controlEnd ??= Date.now(); process.exitCode = 1; }
 finally {
-  clearInterval(timer); await pending?.catch(() => {}); await monitor?.close().catch(error => report.failures.push("Observer cleanup: " + error));
+  clearInterval(timer); await pending?.catch(() => {});
+  if (monitor) {
+    try { await monitor.close(); }
+    catch (error) { report.observerCleanupErrors = boundedErrorDetails(error); report.failures.push("Observer cleanup: " + error); }
+    finally { report.nativeObserverOwnership = monitor.ownershipSummary(); }
+  }
   await realmPending?.catch(() => {});
   if (realmSampler) { report.realmObserverOwnership = realmSampler.ownershipSummary(); realmSampler.close(); }
   if (scaling) report.realmObservations = realmObservations;
@@ -527,7 +535,7 @@ finally {
       if (chromeBirth) { report.browserCleanup = await observeOwnedProcessExit(chromeBirth); assert.equal(report.browserCleanup.status, "owned-identity-absent"); }
     },
     async () => { if (server) report.serverCleanup = await server.close(); },
-  ]).catch(error => { report.failures.push("Owned process cleanup: " + error); report.status = "failed-not-acceptance"; process.exitCode = 1; });
+  ]).catch(error => { report.ownedProcessCleanupErrors = boundedErrorDetails(error); report.failures.push("Owned process cleanup: " + error); report.status = "failed-not-acceptance"; process.exitCode = 1; });
   try {
     assert.ok(!chrome || chrome.exitCode !== null || chrome.signalCode !== null || report.browserCleanup?.status === "owned-identity-absent");
     if (runtime) { await runtime.close(); report.ownedRuntimeRemoved = true; }

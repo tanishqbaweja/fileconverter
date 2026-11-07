@@ -1,12 +1,36 @@
 # Remaining work audit
 
-2026-11-07 N-08 heading fidelity increment IN PROGRESS: referenced/default/direct
-paragraph outline hierarchy now implemented with bounded safe styles metadata;
-first3missing-feature failures and19PASS/1FAIL cache-depth defect reproduced then
-repaired.54focused checks/lint/TypeScript PASS. Native-generated Word fixture and
-larger257-style browser controls pending. Only outline hierarchy, not full named
-run formatting/fonts/list/layout, is implemented. No public promotion or weaker
-250MiB/96MiB/cleanup/privacy/quality limits; all remaining original scope retained.
+2026-11-07 N-08 outline hierarchy implemented privately, NOT browser-qualified.
+Bounded referenced/default/direct heading levels pass unit/namespace/unsafe/
+metadata-chain tests; first0PASS/3FAIL and19PASS/1FAIL defects repaired.76affected
+checks,45updated converter/reader checks, fresh build/TypeScript/eight-file lint
+PASS. Other inherited run/font/list/page-layout support remains missing.
+
+First real257-style control FAILED cleanup110.43359375MiB above loaded idle
+versus unchanged96MiB gate, despite four exact validated outputs (largest source
+141871070B ->139756049B) and whole Chrome143.2890625MiB (<250),521valid0missing.
+Actual native Word fixture source/validator preflights pass; browser heading jobs,
+remaining repeats and adverse recovery NOT REACHED. No public promotion;403normal
+routes unchanged. Evidence:
+evidence/2026-11-07T02-51-38-596Z-docx-html-qualification.json
+evidence/2026-11-07-docx-outline-first-control-analysis.json
+
+ALL38observed owned PIDs absent in later read-only census; runtime/outputs/profile/
+fixtures removed, original full size/SHA unchanged, no other applications killed.
+Generic original process-cleanup exception cause UNKNOWN. Recorder now preserves
+bounded nested error identity/codes, launch identity and failed-run birth-role
+summary; tests pass. Final portable2564PASS/0fail/0skip/0cancel,106.993s across
+710files;872inventoried/162qualification files UNRUN; eleven affected-file lint,
+TypeScript/fresh app build PASS. Browser control remains FAILED; exact receipt:
+evidence/2026-11-07-docx-outline-portable-final.json.
+
+NEXT: changed bounded allocation/DOM/process-role diagnostic on same full styled
+source/settings, unchanged250MiB/96MiB/normal-service gates. Do not infer cause
+from unknown Chrome process growth, drop processes, force GC, inflate baseline,
+use smaller input, replay unchanged or relabel fixture validation as conversion.
+Native Word heading/recovery, external destination, broader office/browser/media/
+near10GB/source/release/full-spec gates remain OPEN. Prior writer benchmarks below
+remain historical source-pinned evidence, not qualification of the new feature.
 
 2026-11-07 N-08 private DOCX HTML handle-writer gate now has real large evidence
 and one accepted optimization. BaselineA versus private async candidateB:
@@ -19299,7 +19323,7 @@ zero artifacts. This includes the corrected non-media inspection disclosure.
 | N-05 | Broad SVG rasterization including text/CSS/animation/linked resources/filter/mask behavior where safe | Partially implemented; SVG rasterization temporarily withheld pending full qualification | Historical bounded-subset behavior is retained in `evidence/svg-safety-fidelity-matrix-2026-09-05.json`, not current release proof. Shipping package-copy Wasm lacks an explicit maximum; new source-built candidate fails exact alpha and complete-tree265.445MiB>250. `evidence/2026-10-29-svg-publication-gate.json` records publicfalse/pending, not permanent unsupported. Local production21-case privacy/hosting/publication checks PASS53.901s; localhost qualification still exposes the genuine pipeline, public selector/catalogue/evidence omit rasterization and disclose why. `evidence/2026-10-30-svg-publication-local-terminal.json`. | Qualified SVG remains REQUIRED, not dropped from the goal. Resolve residual alpha and renderer/GPU document-worker lifecycle allocations, then fixed-cap/source/fidelity/memory/recovery/repeat gates before publication. Keep measured exclusions and their reopen conditions documented; neither withholding nor historical small results completes this requirement. |
 | N-06 | Incremental archive/compression conversion with traversal, duplicate, expansion-ratio, size, and bomb protections | Verified complete for advertised ZIP/TAR/GZIP/BZIP2/XZ/7Z routes                                             | Archive workers, validators, malicious-input tests, category reports                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Re-audit limits when adding formats.                                                                                                                                                                                                                                     |
 | N-07 | SRT/WebVTT/ASS/SSA/TTML conversion preserving representable timing, styling, positioning, speakers, and metadata  | Verified complete for all advertised routes                                                                  | `evidence/subtitle-field-matrix-2026-09-05.json` maps timing, multiline text, styling, positioning/regions, speakers, cue identifiers, and document metadata for all ten public routes. `tests/subtitle-field-matrix.test.mjs` ties every field contract to exact registry disclosures, direct browser anchors, ASS/SSA extension and MIME aliases, and ten three-run Chrome reports (worst 204.473 MiB incremental private memory). The focused production-browser suite passed 16/16, including real `.ssa` alias execution and cleanup.                                                  | Keep the matrix, disclosures, alias tests, and stress evidence synchronized whenever a subtitle parser or public route changes.                                                                                                                                          |
-| N-08 | Genuine bounded EPUB/TXT/HTML/Markdown/data/office conversions with independent structural validation | Partially implemented; advertised extraction/generation profiles verified | Existing workers/validators/limitations remain valid for their scope. Private DOCX HTML has 8.79MB/140.58MB inputs ->8.74MB/139.76MB outputs with every ordered paragraph independently validated, repeated OPFS controls and real handle-writer controls. Identical-input direct baseline versus private async candidate each passes six completed scaling jobs plus cancellation/write-error/recovery: 9.194s->7.268s large median (20.9% observed sequential improvement), 185.93->105.00MiB full-Chrome peaks, unchanged250MiB/96MiB gates. Exact receipts `evidence/2026-11-07T02-15-56-367Z-docx-html-qualification.json` and `evidence/2026-11-07T02-22-59-206Z-docx-html-qualification.json`. Removed extra bridge only for private HTML route; resource diagnostics corrected from actual destination. Prior failed OPFS cancellation-observer session stays failed; no public/full-route promotion. | Complete native save-dialog/external destination coverage (headless tests use real OPFS-backed handles), complex-document/full OOXML/layout fidelity, broader-browser and remaining applicable gates before promotion. No media/10GB or fastest-possible proof inferred. Preserve failed history and avoid unchanged replays; broader practical office conversions and explicit losses remain required. |
+| N-08 | Genuine bounded EPUB/TXT/HTML/Markdown/data/office conversions with independent structural validation | Partially implemented; advertised extraction/generation profiles verified | Prior source-pinned private DOCX controls/20.9% async-writer improvement remain historical, not current-outline qualification. Bounded referenced/default/direct paragraph heading inheritance is implemented and unit-verified (other inherited run/font/list/layout features remain missing). Current257-style source control completed four exact independently validated outputs, including141.87MB->139.76MB, but FAILED cleanup110.4336MiB above idle (>96MiB); whole-Chrome143.289MiB stayed below250. Native Word heading fixture source/validator preflights pass, browser heading jobs NOT REACHED. Evidence `evidence/2026-11-07T02-51-38-596Z-docx-html-qualification.json` and `evidence/2026-11-07-docx-outline-first-control-analysis.json`. All38observed owned PIDs absent and runtime removed in later reconciliation; generic original cleanup exception cause unknown. No promotion. | Diagnose actual retained allocations on same full141871070B styled source/settings; preserve250MiB/96MiB gates, normal services and failed first window. New recorder retains bounded nested errors/launch identities/birth-role summaries. Real Word browser heading/recovery, native save-dialog/external destination, complex/full office fidelity, broader browsers and remaining gates OPEN. No smaller-input substitution, unchanged replay or media/10GB/fastest proof. |
 
 ## Interface, browser capability, privacy, and offline behavior
 

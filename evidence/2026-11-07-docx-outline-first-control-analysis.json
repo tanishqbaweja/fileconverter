@@ -1,0 +1,338 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-07T03:00:47.483Z",
+  "status": "failed-outline-style-large-control-preserved-no-route-acceptance",
+  "sourceReceipt": {
+    "file": "evidence/2026-11-07T02-51-38-596Z-docx-html-qualification.json",
+    "sha256": "ecea1214979260e55527d2592daf71033ea1a9dd140543dc8e4cd17c8dced3ac",
+    "status": "failed-not-acceptance",
+    "failures": [
+      "AssertionError [ERR_ASSERTION]: Unchanged96MiB cleanup recovery gate\n    at file:///H:/Github%20Repositories/fileconverter/scripts/qualify-docx-html.mjs:405:16\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+      "Owned process cleanup: AggregateError: One or more owned cleanup actions failed",
+      "Finalized native journal fails unchanged primary/cleanup gate"
+    ]
+  },
+  "primary": {
+    "incrementalPrivateMiB": 143.2890625,
+    "limitMiB": 250,
+    "validSamples": 521,
+    "unavailableSamples": 0,
+    "allProcessesCounted": true
+  },
+  "failedCleanup": {
+    "stablePrivateBytes": 502628352,
+    "loadedIdleMedianPrivateBytes": 386830336,
+    "deltaMiB": 110.43359375,
+    "limitMiB": 96,
+    "passed": false
+  },
+  "processEndpointDiagnosis": {
+    "loadedTimestamp": "2026-11-07T02:52:13.9202982Z",
+    "cleanupTimestamp": "2026-11-07T02:53:10.9233979Z",
+    "scope": "Endpoint diagnostics only, not substituted acceptance baseline or proof of allocation cause",
+    "processes": [
+      {
+        "pid": 3064,
+        "parentPid": 20148,
+        "createdAt": "2026-11-07T02:52:52.4564853Z",
+        "executableName": "updater.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": null,
+        "cleanupPrivateBytes": 3686400,
+        "deltaPrivateBytes": null
+      },
+      {
+        "pid": 11824,
+        "parentPid": 20148,
+        "createdAt": "2026-11-07T02:51:57.4914922Z",
+        "executableName": "chrome.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": 15056896,
+        "cleanupPrivateBytes": 15056896,
+        "deltaPrivateBytes": 0
+      },
+      {
+        "pid": 17428,
+        "parentPid": 20148,
+        "createdAt": "2026-11-07T02:51:48.4407737Z",
+        "executableName": "chrome.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": 142729216,
+        "cleanupPrivateBytes": 145137664,
+        "deltaPrivateBytes": 2408448
+      },
+      {
+        "pid": 20148,
+        "parentPid": 38164,
+        "createdAt": "2026-11-07T02:51:48.2813608Z",
+        "executableName": "chrome.exe",
+        "nativeRole": "browser",
+        "loadedPrivateBytes": 70266880,
+        "cleanupPrivateBytes": 70320128,
+        "deltaPrivateBytes": 53248
+      },
+      {
+        "pid": 23880,
+        "parentPid": 20148,
+        "createdAt": "2026-11-07T02:51:51.7164162Z",
+        "executableName": "chrome.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": 42266624,
+        "cleanupPrivateBytes": 150732800,
+        "deltaPrivateBytes": 108466176
+      },
+      {
+        "pid": 32364,
+        "parentPid": 20148,
+        "createdAt": "2026-11-07T02:51:48.3226552Z",
+        "executableName": "chrome.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": 2670592,
+        "cleanupPrivateBytes": 2535424,
+        "deltaPrivateBytes": -135168
+      },
+      {
+        "pid": 33080,
+        "parentPid": 20148,
+        "createdAt": "2026-11-07T02:51:48.5326962Z",
+        "executableName": "chrome.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": 44072960,
+        "cleanupPrivateBytes": 35934208,
+        "deltaPrivateBytes": -8138752
+      },
+      {
+        "pid": 36660,
+        "parentPid": 3064,
+        "createdAt": "2026-11-07T02:52:52.5040063Z",
+        "executableName": "updater.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": null,
+        "cleanupPrivateBytes": 4050944,
+        "deltaPrivateBytes": null
+      },
+      {
+        "pid": 40668,
+        "parentPid": 3064,
+        "createdAt": "2026-11-07T02:52:52.4828431Z",
+        "executableName": "updater.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": null,
+        "cleanupPrivateBytes": 3297280,
+        "deltaPrivateBytes": null
+      },
+      {
+        "pid": 41360,
+        "parentPid": 20148,
+        "createdAt": "2026-11-07T02:51:52.1775019Z",
+        "executableName": "chrome.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": 21602304,
+        "cleanupPrivateBytes": 21602304,
+        "deltaPrivateBytes": 0
+      },
+      {
+        "pid": 43044,
+        "parentPid": 36660,
+        "createdAt": "2026-11-07T02:52:52.5213379Z",
+        "executableName": "updater.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": null,
+        "cleanupPrivateBytes": 3231744,
+        "deltaPrivateBytes": null
+      },
+      {
+        "pid": 45684,
+        "parentPid": 20148,
+        "createdAt": "2026-11-07T02:51:48.4751702Z",
+        "executableName": "chrome.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": 9347072,
+        "cleanupPrivateBytes": 9293824,
+        "deltaPrivateBytes": -53248
+      },
+      {
+        "pid": 45752,
+        "parentPid": 20148,
+        "createdAt": "2026-11-07T02:51:48.9069181Z",
+        "executableName": "chrome.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": 23478272,
+        "cleanupPrivateBytes": 23478272,
+        "deltaPrivateBytes": 0
+      },
+      {
+        "pid": 46572,
+        "parentPid": 20148,
+        "createdAt": "2026-11-07T02:51:48.4495222Z",
+        "executableName": "chrome.exe",
+        "nativeRole": "unknown",
+        "loadedPrivateBytes": 15187968,
+        "cleanupPrivateBytes": 14270464,
+        "deltaPrivateBytes": -917504
+      }
+    ]
+  },
+  "completedControls": [
+    {
+      "paragraphs": 2048,
+      "repeat": 1,
+      "sourceBytes": 8897390,
+      "outputBytes": 8735249,
+      "sha256": "c4658ddacf4a35dd3b8330c9c7221619e68542b08d46985b4eac45df0fdffca0",
+      "independentAllParagraphChecks": true,
+      "elapsedMs": 538.2599999904633,
+      "stylesActuallyRead257": true
+    },
+    {
+      "paragraphs": 2048,
+      "repeat": 2,
+      "sourceBytes": 8897390,
+      "outputBytes": 8735249,
+      "sha256": "c4658ddacf4a35dd3b8330c9c7221619e68542b08d46985b4eac45df0fdffca0",
+      "independentAllParagraphChecks": true,
+      "elapsedMs": 566.3249999880791,
+      "stylesActuallyRead257": true
+    },
+    {
+      "paragraphs": 2048,
+      "repeat": 3,
+      "sourceBytes": 8897390,
+      "outputBytes": 8735249,
+      "sha256": "c4658ddacf4a35dd3b8330c9c7221619e68542b08d46985b4eac45df0fdffca0",
+      "independentAllParagraphChecks": true,
+      "elapsedMs": 532.8000000119209,
+      "stylesActuallyRead257": true
+    },
+    {
+      "paragraphs": 32768,
+      "repeat": 1,
+      "sourceBytes": 141871070,
+      "outputBytes": 139756049,
+      "sha256": "b8ef8ba6178329962cc48943d18e3dd049b1b4b1e7423b821c766f457f8ea859",
+      "independentAllParagraphChecks": true,
+      "elapsedMs": 7743.7249999940395,
+      "stylesActuallyRead257": true
+    }
+  ],
+  "nativeWordFixture": {
+    "bytes": 36933,
+    "sha256": "c2e3f8b7d1c2802e05eecddda9a197fd1d7c7be990320ba62ef4d7bc257e214b",
+    "generator": {
+      "fixtureGenerator": "python-docx",
+      "version": "1.2.0",
+      "styleDefinitions": 166,
+      "canonicalZipMetadata": true,
+      "smallFixturePackageCapBytes": 131072,
+      "nativeConversionUsed": false,
+      "semanticBlocks": 8
+    },
+    "sourceValidation": {
+      "zipCrcVerified": true,
+      "packageNamespacesAndMainRelationshipVerified": true,
+      "wordXmlWellFormed": true,
+      "paragraphs": 8,
+      "sourceValidator": "independent Python zipfile, bounded package metadata ElementTree and streaming Expat; not complete OOXML XSD/layout validation"
+    },
+    "validatorControls": [
+      {
+        "name": "positive",
+        "exitCode": 0,
+        "expectedAccepted": true
+      },
+      {
+        "name": "wrong-heading",
+        "exitCode": 1,
+        "expectedAccepted": false
+      },
+      {
+        "name": "wrong-text",
+        "exitCode": 1,
+        "expectedAccepted": false
+      },
+      {
+        "name": "active-markup",
+        "exitCode": 1,
+        "expectedAccepted": false
+      },
+      {
+        "name": "unclosed",
+        "exitCode": 1,
+        "expectedAccepted": false
+      }
+    ],
+    "actualBrowserHeadingConversions": 0
+  },
+  "ownedCleanupReconciliation": {
+    "current": [],
+    "observedAt": "2026-11-07T03:00:47.4532682Z",
+    "noProcessesKilled": true,
+    "observedNativePidCount": 38,
+    "observedNativePids": [
+      17428,
+      20148,
+      24068,
+      26400,
+      28112,
+      32364,
+      33080,
+      35224,
+      45684,
+      45752,
+      46572,
+      15920,
+      18328,
+      32576,
+      33796,
+      5204,
+      16508,
+      14560,
+      24044,
+      40180,
+      23880,
+      27752,
+      41360,
+      11824,
+      45408,
+      38124,
+      42464,
+      27548,
+      14564,
+      25484,
+      3064,
+      36660,
+      40668,
+      43044,
+      30332,
+      5116,
+      25148,
+      18040
+    ],
+    "ownedRuntimeDirectory": "work/docx-html-qualification-ZNUSJM",
+    "ownedRuntimeDirectoryAbsent": true,
+    "originalBrowserCleanupErrorCauseUnknown": true,
+    "oldFailedReceiptUnchanged": true
+  },
+  "protectedOriginal": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "firstUnitFailures": {
+    "missingOutlineFeature": {
+      "tests": 3,
+      "passed": 0,
+      "failed": 3
+    },
+    "cachedChainBound": {
+      "tests": 20,
+      "passed": 19,
+      "failed": 1
+    }
+  },
+  "failureRecorderFollowup": "Bounded nested Error identity/codes plus launch identities and failed-run birth-role summaries now retained; historical cleanup exception cause is not guessed",
+  "nextAction": "One changed bounded allocation/DOM/role diagnostic on the same full141871070B source/settings and unchanged250MiB/96MiB gates; preserve failed first cleanup window, no forced GC/services disabled/baseline substitution/smaller input. Actual native Word heading conversion/recovery remains unrun.",
+  "publicPromotion": false,
+  "fullOutlineBrowserQualification": false,
+  "fullGoalComplete": false,
+  "finalPortableRegression": "2564PASS/0fail/0skip/0cancel,106992.8831ms;710portable files,162qualification files UNRUN; evidence/2026-11-07-docx-outline-portable-final.json"
+}
