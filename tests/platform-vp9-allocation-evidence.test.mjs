@@ -27,7 +27,11 @@ test("all three bounded traces round-trip, full raw allocator details remain byt
   const original=JSON.parse(decoded);assert.equal(original.memory.incrementalPrivateMiB,r.memory.incrementalPrivateMiB);
   assert.deepEqual(r.platformAllocation.checkpoints.map(x=>x.label),["loaded-idle","webcodecs-vp9-ready","encoder-configured"]);
   for(const c of original.platformAllocation.checkpoints) {
-    assert.equal(c.error,null);const a=c.result.archive,bytes=await readFile(a.path),restored=gunzipSync(bytes,{maxOutputLength:8388608});
+    assert.equal(c.error,null);
+    assert.ok(["loaded-idle","webcodecs-vp9-ready","encoder-configured"].includes(c.label));
+    const a=c.result.archive,name=`2026-11-06-webcodecs-vp9-original-allocation-42231818045-${c.label}.trace.json.gz`;
+    assert.equal(path.win32.basename(a.path),name);
+    const bytes=await readFile(path.join(root,"evidence",name)),restored=gunzipSync(bytes,{maxOutputLength:8388608});
     assert.equal(sha(bytes),a.sha256);assert.equal(sha(restored),a.restoredSha256);assert.equal(restored.length,a.restoredBytes);
     assert.equal(c.result.dataLossOccurred,false);assert.equal(c.result.allocationStackAttribution,false);
     assert.ok(c.result.summary[0].processes.some(p=>Object.keys(p.liveAllocatorCounters).length>0));

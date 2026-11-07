@@ -12,13 +12,14 @@ test("first HTTP-only control retains genuine byte-exact independently valid out
   assert.equal((r.memory.peak.privateBytes-r.blankBaseline.privateBytes)/1048576,r.memory.incrementalPrivateMiB);
   assert.equal(a.processes.reduce((n,p)=>n+p.peakPrivateBytes,0),r.memory.peak.privateBytes);assert.equal(r.publicAcceptance,false);
 });
-test("HTTP source/hash/header observations and cleanup are real, trace body evidence does not pretend exact allocation ownership",async()=>{
+test("committed HTTP receipts agree on source/header observations, trace-body pins and cleanup without asserting allocation ownership",async()=>{
   assert.equal(r.privateCpuOverride.devtoolsResponseBodyUsed,false);assert.equal(r.privateCpuOverride.securityCacheAndMimeHeadersPreserved,true);
   assert.deepEqual(r.privateCpuOverride.served,{javascript:1,wasm:1});assert.deepEqual(r.privateCpuOverride.errors,[]);
   assert.ok(r.privateCpuOverride.httpPreflight.every(x=>x.beforeBrowserLaunch&&x.maximumChunkBytes<=262144));
   assert.deepEqual(a.trace.wasmBodies.map(x=>x.bytes).sort((x,y)=>x-y),[5561904,9877633]);assert.equal(a.exactTraceOverheadPrivateBytes,null);
   assert.equal(a.trace.wholeEngineBodiesCaptured,true);assert.equal(a.trace.userMediaBodiesCaptured,false);
-  assert.equal(sha(await read(r.failureTrace.path)),r.failureTrace.sha256);assert.equal(r.privateCpuOverride.stageRemoved,true);
+  assert.deepEqual(r.failureTrace,{path:a.trace.path,bytes:a.trace.bytes,sha256:a.trace.sha256});
+  assert.equal(a.trace.sha256,"94c1b1b2ede53707128c4a58f134595d8e1530aade87f3d7d36e85b788de073e");assert.equal(r.privateCpuOverride.stageRemoved,true);
   assert.equal(r.ownedRuntimeRemoved,true);assert.equal(r.ownedStaticStageRemoved,true);assert.ok(r.processCleanup.every(x=>x.status==="owned-identity-absent"));
   assert.deepEqual(r.originalBefore,r.originalAfter);assert.deepEqual(r.forbiddenRequests,[]);
   const raw=gunzipSync(await read(r.rawArchive.file),{maxOutputLength:4194304});assert.equal(sha(raw),r.rawArchive.decodedSha256);

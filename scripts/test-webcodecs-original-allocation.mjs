@@ -9,6 +9,7 @@ import {transform} from "esbuild";
 import {createOwnedRuntimeScratch} from "./lib/owned-runtime-scratch.mjs";
 import {makeWebCodecsOriginalStartup} from "./lib/webcodecs-original-startup-recipe.mjs";
 import {makeWebCodecsOriginalAllocation} from "./lib/webcodecs-original-allocation-recipe.mjs";
+import {assertReviewedVp9RecipeParent} from "./lib/reviewed-vp9-recipe-root.mjs";
 assert.ok(process.argv.length===2||(process.argv.length===3&&process.argv[2]==="--check-only"));
 const checkOnly=process.argv[2]==="--check-only",root=path.resolve(import.meta.dirname,".."),
   runId=process.env.WITHIN_WEBCODECS_ORIGINAL_RUN_ID??"42231818045",sha=s=>createHash("sha256").update(s).digest("hex"),
@@ -20,7 +21,8 @@ for(const [before,after]of nativeParent.edits){assert.equal(ancestry.split(befor
 const parentFile="evidence/2026-11-06-webcodecs-vp9-original-startup-"+runId+"-recipe.json",
   parentBytes=await readFile(path.join(root,parentFile)),parent=JSON.parse(parentBytes),
   source=gunzipSync(Buffer.from(parent.generatedSourceGzipBase64,"base64"),{maxOutputLength:1048576}).toString();
-assert.equal(sha(source),parent.generatedSha256);assert.equal(source,makeWebCodecsOriginalStartup(nativeSource,root,runId).generated);
+assert.equal(sha(source),parent.generatedSha256);
+assertReviewedVp9RecipeParent(makeWebCodecsOriginalStartup(nativeSource,root,runId).generated,source,root,"allocation",checkOnly);
 const recipe=makeWebCodecsOriginalAllocation(source,root,runId);await transform(recipe.generated,{loader:"js",format:"esm"});
 if(checkOnly)console.log(JSON.stringify({reversible:true,generatedSha256:recipe.generatedSha256,browserLaunched:false,recipeWritten:false}));
 else {

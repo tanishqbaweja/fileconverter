@@ -57,7 +57,13 @@ test("production source has no Drizzle consumer or active remote storage binding
     }
   }
   const worker = await readFile("worker/index.ts", "utf8");
-  assert.match(worker, /rejectNonStaticRequest\(request\)/); assert.doesNotMatch(worker, /\b(?:DB|D1Database|R2Bucket)\b/);
+  const policy = "const rejected = rejectNonStaticRequest(request, localSvgQualification);";
+  const reject = "if (rejected) return withSecurityHeaders(rejected);";
+  assert.ok(worker.includes(`${policy}\n    ${reject}`) || worker.includes(`${policy}\r\n    ${reject}`));
+  for (const downstream of ["env.ASSETS.fetch(request)", "handler.fetch(request, env, ctx)"]) {
+    assert.ok(worker.indexOf(downstream) > worker.indexOf(reject));
+  }
+  assert.doesNotMatch(worker, /\b(?:DB|D1Database|R2Bucket)\b/);
 });
 test("the explicit compiler transforms bounded JSX/TypeScript without introducing a conversion or network path", async () => {
   const result = await transform("const value: number = 2; export const View = () => <b>{value}</b>;", {

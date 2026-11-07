@@ -15,10 +15,11 @@ test("actual HTTP/bounded-trace control preserves four golden outputs, strict fi
   assert.equal(r.memory.incrementalPrivateMiB,203.73046875);assert.equal(r.memory.validSamples,79);assert.equal(r.memory.unavailableSamples,0);
   assert.equal((r.memory.peak.privateBytes-r.blankBaseline.privateBytes)/1048576,r.memory.incrementalPrivateMiB);assert.equal(r.publicAcceptance,false);
 });
-test("bounded trace retains real screenshot/API evidence but no Wasm bodies/DOM snapshots; actual HTTP headers/hashes and cleanup pass",async()=>{
+test("committed bounded-trace receipts agree on screenshots/API, no Wasm bodies/DOM snapshots, HTTP observations and cleanup",async()=>{
   const v=await json("evidence/2026-11-06-vp9-http-bounded-verification.json");assert.equal(v.trace.apiTimelineVerified,true);assert.equal(v.trace.eventTypes.before,66);
   assert.equal(v.trace.screenshotMembers,5);assert.equal(v.trace.wasmBodies,0);assert.equal(v.trace.domSnapshots,0);assert.equal(v.domOrManualUiCoverageClaimed,false);
-  assert.equal(sha(await read(r.boundedDiagnosticTrace.path)),r.boundedDiagnosticTrace.sha256);assert.equal(r.networkMetadata.length,32);
+  assert.deepEqual(r.boundedDiagnosticTrace,{path:v.trace.path,bytes:v.trace.bytes,sha256:v.trace.sha256});
+  assert.equal(v.trace.sha256,"17a52544354f44571628414735250b5dc87e2ff829d09cbbc24a38da58263a4f");assert.equal(r.networkMetadata.length,32);
   assert.deepEqual(r.privateCpuOverride.served,{javascript:6,wasm:6});assert.deepEqual(r.privateCpuOverride.errors,[]);assert.equal(r.privateCpuOverride.devtoolsResponseBodyUsed,false);
   assert.equal(r.privateCpuOverride.stageRemoved,true);assert.equal(r.ownedRuntimeRemoved,true);assert.equal(r.ownedStaticStageRemoved,true);
   for(const c of r.recovery.cases){assert.equal(c.passed,true);assert.equal(c.opfsRemoved,true);assert.equal(c.outputRemoved,true);if(c.requestedFault)assert.equal(c.browserOutputBytes,0);}

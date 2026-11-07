@@ -7,6 +7,7 @@ import test from "node:test";
 import { decodePreCiRuntimeInput, readPreCiRuntimeInput } from "./helpers/pre-ci-runtime-inputs.mjs";
 import { readPreImageSizePatch } from "./helpers/pre-image-size-patch.mjs";
 import { readPreSvgMemoryInput } from "./helpers/pre-svg-memory-inputs.mjs";
+import { reverseReviewedSvgReleaseHost } from "./helpers/reviewed-svg-release-host.mjs";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const archive = JSON.parse(await readFile(new URL("../fixtures/source/pre-ci-runtime-2026-10-29.json", import.meta.url)));
 
@@ -17,7 +18,14 @@ test("historical worker preserves exact mixed Windows bytes; normalized source i
   assert.equal(sha(lf), "427c980ca2d22a309a355f1cb9b1a3fadfb5cecb86cc1d3071530d8117e17c30");
   assert.equal(sha(bytes), "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee");
   const live = await readFile("worker/index.ts");
-  assert.equal(sha(Buffer.from(live.toString().replace(/\r\n/g, "\n"))), sha(lf));
+  assert.deepEqual(reverseReviewedSvgReleaseHost("worker/index.ts", live), lf);
+});
+
+test("reviewed SVG release reversal refuses unrelated edits to both host inputs", async () => {
+  for (const file of ["worker/index.ts", "lib/static-host-request-policy.ts"]) {
+    const bytes = await readFile(file);
+    assert.throws(() => reverseReviewedSvgReleaseHost(file, Buffer.concat([bytes, Buffer.from("// changed\n")])));
+  }
 });
 
 test("prior CI bytes match original receipts while the changed live workflow is not mislabelled executed historical source", async () => {

@@ -6,10 +6,23 @@ import {execFile} from "node:child_process";
 import {promisify} from "node:util";
 import path from "node:path";
 import {makeVp9HttpSource} from "../scripts/lib/vp9-http-recipe.mjs";
+import {makeVp9OriginalStartupSource} from "../scripts/lib/vp9-original-startup-recipe.mjs";
+import {assertReviewedVp9RecipeParent} from "../scripts/lib/reviewed-vp9-recipe-root.mjs";
 const root=path.resolve(import.meta.dirname,".."),runId="42244170876";
 for(const kind of ["qualification","original"]) {
   const parent=JSON.parse(await readFile(path.join(root,kind==="original"?"evidence/2026-11-06-vp9-original-cpu-startup-attempt8-recipe.json":
     "evidence/2026-11-06-vp9-token-packed-qualification-"+runId+"-recipe.json"))),source=gunzipSync(Buffer.from(parent.generatedSourceGzipBase64,"base64")).toString();
+  if(kind==="original")test("relocated HTTP ancestry permits only reviewed import changes, and only in check-only mode",async()=>{
+    const ancestor=JSON.parse(await readFile(path.join(root,"evidence/2026-11-05-webcodecs-vp9-stream-duration-fidelity-42020605269-recipe.json")));
+    const ancestorSource=gunzipSync(Buffer.from(ancestor.generatedSourceGzipBase64,"base64"),{maxOutputLength:1048576}).toString();
+    const relocated=path.join(root,"work","nonexistent-recipe-checkout");
+    const generated=makeVp9OriginalStartupSource(ancestorSource,relocated,8,runId).generated;
+    assert.notEqual(generated,source);
+    assertReviewedVp9RecipeParent(generated,source,relocated,"http",true);
+    assert.throws(()=>assertReviewedVp9RecipeParent(generated,source,relocated,"http",false));
+    assert.throws(()=>assertReviewedVp9RecipeParent(generated+"// unrelated",source,relocated,"http",true));
+    assert.throws(()=>assertReviewedVp9RecipeParent(generated.replace("vp9-allocation-failure.mjs","unreviewed.mjs"),source,relocated,"http",true));
+  });
   test("HTTP-only recipe reverses actual "+kind+" source without native/input/settings/baseline or memory-gate changes",()=>{
     const r=makeVp9HttpSource(source,root,runId,kind);let reverse=r.generated;
     for(const [before,after]of r.edits.toReversed()){assert.equal(reverse.split(after).length,2);reverse=reverse.replace(after,before);}assert.equal(reverse,source);

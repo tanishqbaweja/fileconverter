@@ -10,6 +10,7 @@ import {createOwnedRuntimeScratch} from "./lib/owned-runtime-scratch.mjs";
 import {makeVp9HttpSource} from "./lib/vp9-http-recipe.mjs";
 import {makeVp9TemporalQualificationSource} from "./lib/vp9-temporal-qualification-recipe.mjs";
 import {makeVp9OriginalStartupSource} from "./lib/vp9-original-startup-recipe.mjs";
+import {assertReviewedVp9RecipeParent} from "./lib/reviewed-vp9-recipe-root.mjs";
 const args=process.argv.slice(2);assert.ok(args.length<=3&&new Set(args).size===args.length&&args.every(x=>["--original","--check-only","--bounded-trace"].includes(x)));
 const checkOnly=args.includes("--check-only"),boundedTrace=args.includes("--bounded-trace"),kind=args.includes("--original")?"original":"qualification",root=path.resolve(import.meta.dirname,".."),
   runId=process.env.WITHIN_VP9_ORIGINAL_NATIVE_RUN_ID??"42244170876",sha=b=>createHash("sha256").update(b).digest("hex"),
@@ -23,8 +24,8 @@ const ancestorFile=kind==="original"?"evidence/2026-11-05-webcodecs-vp9-stream-d
 assert.equal(sha(ancestorSource),ancestor.generatedSha256);
 let reconstructed=await readFile(path.join(root,"scripts/test-webcodecs-vp9-smoke.mjs"),"utf8");assert.equal(sha(reconstructed),ancestor.parentSha256);
 for(const [before,after]of ancestor.edits){assert.equal(reconstructed.split(before).length,2);reconstructed=reconstructed.replace(before,after);}assert.equal(reconstructed,ancestorSource);
-assert.equal(source,kind==="original"?makeVp9OriginalStartupSource(ancestorSource,root,8,runId).generated:
-  makeVp9TemporalQualificationSource(ancestorSource,runId,{allocationDiagnostics:true,lazyUtility:true,tokenContext:true,tokenPacked:true}).generated);
+if(kind==="original")assertReviewedVp9RecipeParent(makeVp9OriginalStartupSource(ancestorSource,root,8,runId).generated,source,root,"http",checkOnly);
+else assert.equal(source,makeVp9TemporalQualificationSource(ancestorSource,runId,{allocationDiagnostics:true,lazyUtility:true,tokenContext:true,tokenPacked:true}).generated);
 const recipe=makeVp9HttpSource(source,root,runId,kind,{boundedTrace});await transform(recipe.generated,{loader:"js",format:"esm"});
 if(checkOnly)console.log(JSON.stringify({reversible:true,kind,generatedSha256:recipe.generatedSha256,browserLaunched:false,recipeWritten:false}));
 else {

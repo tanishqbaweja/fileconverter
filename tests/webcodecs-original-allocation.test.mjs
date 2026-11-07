@@ -6,6 +6,8 @@ import {execFile} from "node:child_process";
 import {promisify} from "node:util";
 import path from "node:path";
 import {makeWebCodecsOriginalAllocation} from "../scripts/lib/webcodecs-original-allocation-recipe.mjs";
+import {makeWebCodecsOriginalStartup} from "../scripts/lib/webcodecs-original-startup-recipe.mjs";
+import {assertReviewedVp9RecipeParent} from "../scripts/lib/reviewed-vp9-recipe-root.mjs";
 const root=path.resolve(import.meta.dirname,".."),runId="42231818045",parent=JSON.parse(await readFile(path.join(root,"evidence/2026-11-06-webcodecs-vp9-original-startup-"+runId+"-recipe.json"))),
   source=gunzipSync(Buffer.from(parent.generatedSourceGzipBase64,"base64")).toString();
 test("allocation recipe reverses exactly to actual failed original source and never changes baseline, geometry, settings or native core",()=>{
@@ -20,4 +22,14 @@ test("allocation recipe reverses exactly to actual failed original source and ne
 test("check-only authenticates whole source ancestry and parses without browser or evidence write",async()=>{
   const {stdout}=await promisify(execFile)(process.execPath,["scripts/test-webcodecs-original-allocation.mjs","--check-only"],{cwd:root,windowsHide:true,timeout:30000,maxBuffer:65536});
   const result=JSON.parse(stdout);assert.equal(result.browserLaunched,false);assert.equal(result.recipeWritten,false);assert.equal(result.reversible,true);
+});
+test("relocated allocation ancestry permits only reviewed import changes and never permits execution",async()=>{
+  const ancestor=JSON.parse(await readFile(path.join(root,"evidence/2026-11-01-webcodecs-vp9-rebuilt-native-recipe.json")));
+  const ancestorSource=gunzipSync(Buffer.from(ancestor.generatedSourceGzipBase64,"base64"),{maxOutputLength:1048576}).toString();
+  const relocated=path.join(root,"work","nonexistent-recipe-checkout");
+  const generated=makeWebCodecsOriginalStartup(ancestorSource,relocated,runId).generated;
+  assert.notEqual(generated,source);
+  assertReviewedVp9RecipeParent(generated,source,relocated,"allocation",true);
+  assert.throws(()=>assertReviewedVp9RecipeParent(generated,source,relocated,"allocation",false));
+  assert.throws(()=>assertReviewedVp9RecipeParent(generated+"// unrelated",source,relocated,"allocation",true));
 });
