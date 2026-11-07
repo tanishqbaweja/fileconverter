@@ -1829,11 +1829,23 @@ presentation relationships, and every declared slide before extracting text.
 It follows declared slide order, opens only one slide stream at a time, and
 writes DrawingML runs through one reusable 256 KiB buffer. Paragraphs, tabs,
 line breaks, Unicode, table-cell text, and hidden-slide text are retained;
-hidden slides are disclosed. Themes, fonts, styling, positions, layouts,
-transitions, animations, charts, diagrams, equations, images, media,
-hyperlinks, comments, speaker notes, masters, and embedded objects are omitted.
-Macro packages, unsafe references, encryption, ZIP64, archive bombs, DTDs,
-custom entities, non-UTF-8 XML, and malformed package structures are rejected.
+the existing disclosure uses the slide-list visibility hint. Themes, fonts,
+styling, positions, layouts, transitions, animations, charts, diagrams,
+equations, images, media, hyperlinks, comments, speaker notes, masters, and
+embedded objects are omitted. Macro packages, unsafe references, encryption,
+ZIP64, archive bombs, DTDs, custom entities, non-UTF-8 XML, and malformed
+package structures are rejected.
+
+The published extractor assumes the DrawingML prefix is declared on the
+slide root; scoped aliases/rebindings and the actual
+[slide visibility attribute](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.presentation.slide.show?view=openxml-3.0.1)
+are known limitations. An unwired candidate resolves
+[XML namespace scope](https://www.w3.org/TR/xml-names/) and recognizes native
+hidden slides. Its reuse of depth-bounded frames and batching of up to 16
+short fragments (fewer than 8,192 UTF-16 code units) retain the original
+256 KiB write cap. It is not part of the public worker: one full headless
+session passed, but fresh-session cleanup exceeded the unchanged limit.
+See the PPTX entries in `TESTED.md` and `REMAINING_WORK.md`.
 
 The OpenDocument routes require the exact uncompressed first `mimetype` entry,
 validate the package manifest and root media type, and stream `content.xml`

@@ -1,5 +1,47 @@
 # Tested conversion ledger
 
+2026-11-07 PPTX namespace/visibility candidate **held; public worker unchanged**.
+Four normal-service Chrome 156.0.8078.80 headless sessions: 15 jobs, 12
+independently validated outputs, including seven full-size 135,296,355 →
+92,391,679 byte outputs with the exact historical SHA-256. Initial candidate
+large runs were 11.59–11.93 s; optimized runs were 7.20–7.74 s, an observed
+sequential comparison, not a controlled A/B or a universal speed claim.
+Optimized full session passed (128.238 MiB primary / 84.391 MiB max cleanup),
+but its fresh repeat failed cleanup (128.508 / 117.855 MiB) and removing only
+test trace screenshots did not prevent it (124.898 / 116.637 MiB). Both
+failed runs stopped after their first large output. Thresholds remain
+250/96 MiB. Renderer memory persisted after the replacement worker returned
+near idle; precise allocation unknown. Across four sessions: 2,059 valid
+active samples, zero unavailable, 79 requests, zero forbidden. All owned
+browser PIDs/servers exited; all disposable outputs, fixtures, and profiles
+were removed; the full protected original hash was unchanged each time.
+Retained [combined receipt](evidence/2026-11-07-pptx-text-candidate.json),
+[CSV](evidence/2026-11-07-pptx-text-candidate.csv), and
+[chart](evidence/2026-11-07-pptx-text-candidate.html). Final focused checks:
+102 pass, including 23 candidate/isolation checks; no broad portable replay.
+
+2026-11-07 optimized PPTX parser/writer, first full normal-service headless
+Chrome 156.0.8078.80 control passed. Three exact 135,296,355 → 92,391,679
+byte conversions in 7.52–7.74 s; 128.238 MiB whole-tree peak above blank,
+84.391 MiB maximum cleanup above loaded idle (250/96 gates unchanged).
+Native presentation, legacy golden, DTD/reference rejection, and write-error
+recovery passed. 1,024 valid memory samples, zero unavailable; 39 observed
+requests, zero forbidden; owned processes/data removed and protected source
+unchanged. Fresh-session repeat pending at this checkpoint. Evidence:
+`evidence/2026-11-07T14-10-24-656Z-pptx-text-normal-services.json`.
+
+2026-11-07 PPTX namespace/visibility regression reproduced: 16 of the
+original 18 focused cases failed on the old parser. The first fix produced a
+93-byte native-fixture match and two exact 92,391,679-byte outputs from the
+135,296,355-byte historical input on normal-service headless Chrome. It
+**failed cleanup** after repeat 2: 98.769 MiB vs the unchanged 96 MiB gate,
+despite a 204.070 MiB full-tree peak above blank (under 250 MiB). A renderer
+accounted for most of the observed rise, but the specific allocation is not
+identified. Repeat 3 and adverse cases were not reached. No forbidden
+requests; the owned profile, outputs, and fixtures were removed; original
+`test.mkv` SHA-256 unchanged. See
+`evidence/2026-11-07T14-05-22-745Z-pptx-text-normal-services.json`.
+
 2026-11-07 artifact-gate final21focusedPASS/0fail/0skip/0cancel,3808.9789ms;
 five-file lint PASS. Published application/engine source and bytes unchanged;
 no unnecessary app build, browser or full portable replay. Existing source-only

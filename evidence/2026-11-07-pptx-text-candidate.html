@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<title>PPTX candidate memory and cleanup — 2026-11-07</title>
+<style>body{font:16px system-ui,sans-serif;max-width:56rem;margin:2rem auto;padding:0 1rem;color:#132238}table{border-collapse:collapse}td,th{padding:.5rem;border-bottom:1px solid #bcc7d6;text-align:left}svg{max-width:100%;height:auto}a{color:#164a81}</style>
+<h1>PPTX candidate held</h1>
+<p>Four headless Chrome sessions with normal browser services. The exact 135,296,355-byte stress input produced 92,391,679-byte outputs. The optimized candidate was faster in these sequential runs, but its cleanup pass did not repeat; the public route is unchanged.</p>
+<table><thead><tr><th>Session</th><th>Large conversion seconds</th><th>Full-tree peak above blank (MiB)</th><th>Max cleanup above idle (MiB)</th><th>Receipt</th></tr></thead><tbody>
+<tr><th scope="row">Initial fix</th><td>11.93, 11.59</td><td>204.070</td><td>98.770</td><td><a href="2026-11-07T14-05-22-745Z-pptx-text-normal-services.json">Failed cleanup</a></td></tr>
+<tr><th scope="row">Optimized: full run</th><td>7.72, 7.74, 7.52</td><td>128.238</td><td>84.391</td><td><a href="2026-11-07T14-10-24-656Z-pptx-text-normal-services.json">Passed</a></td></tr>
+<tr><th scope="row">Optimized: fresh repeat</th><td>7.20</td><td>128.508</td><td>117.855</td><td><a href="2026-11-07T14-13-22-336Z-pptx-text-normal-services.json">Failed cleanup</a></td></tr>
+<tr><th scope="row">Optimized: no-screencast diagnostic</th><td>7.40</td><td>124.898</td><td>116.637</td><td><a href="2026-11-07T14-16-13-545Z-pptx-text-normal-services.json">Failed cleanup</a></td></tr>
+</tbody></table>
+<h2>Memory by session</h2>
+<p>Blue: incremental full-tree peak (limit 250 MiB). Green/red: cleanup delta (limit 96 MiB). Numbers match the table order.</p>
+<svg viewBox="0 0 550 192" role="img" aria-label="All peaks were below 250 MiB; only session two was below the 96 MiB cleanup limit">
+<line x1="535" x2="535" y1="9" y2="178" stroke="#265f98" stroke-dasharray="4 4"/>
+<line x1="227" x2="227" y1="9" y2="178" stroke="#a03730" stroke-dasharray="4 4"/>
+<g transform="translate(0 18)"><text x="5" y="13">1</text><rect x="35" width="408.140625" height="11" fill="#265f98"/><rect x="35" y="14" width="197.5390625" height="11" fill="#a03730"/></g>
+<g transform="translate(0 60)"><text x="5" y="13">2</text><rect x="35" width="256.4765625" height="11" fill="#265f98"/><rect x="35" y="14" width="168.78125" height="11" fill="#236a45"/></g>
+<g transform="translate(0 102)"><text x="5" y="13">3</text><rect x="35" width="257.015625" height="11" fill="#265f98"/><rect x="35" y="14" width="235.7109375" height="11" fill="#a03730"/></g>
+<g transform="translate(0 144)"><text x="5" y="13">4</text><rect x="35" width="249.796875" height="11" fill="#265f98"/><rect x="35" y="14" width="233.2734375" height="11" fill="#a03730"/></g>
+</svg>
+<p><a href="2026-11-07-pptx-text-candidate.csv">Per-job CSV</a> · <a href="2026-11-07-pptx-text-candidate.json">Combined JSON evidence</a></p>
+</html>

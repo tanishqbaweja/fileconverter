@@ -1,5 +1,30 @@
 # Remaining work audit
 
+2026-11-07 PPTX scoped namespace/slide-visibility and lower-churn text writer
+retained as an **unwired candidate**. Fresh repeat failed cleanup (117.855
+MiB) and no-screencast diagnostic also failed (116.637 MiB), both after
+validating exact full-size output, with primary peaks under 250 MiB. One
+earlier optimized session passed both gates. No service or process
+exclusions and no change to the public worker or registry. Next meaningful
+work: localize the renderer's retained native/embedder allocation with
+phase-marked, birth-matched diagnostics; don't replay the unchanged four
+controls or promote on the single pass. Candidate reruns must use a
+disposable review checkout and the exact candidate build. Broader office
+fidelity, native picker/manual coverage, media stress, and release gates
+remain open. Receipts: `evidence/2026-11-07-pptx-text-candidate.json`.
+
+2026-11-07 PPTX optimized namespace/visibility conversion passed the first
+full normal-service session: 3× historical-size outputs with exact independent
+hashes, 128.238 MiB primary peak, maximum cleanup under 96 MiB, native fixture
+and adverse/recovery controls passed. Fresh-session repeat pending. No native
+picker, manual coverage, new format promotion, or full-project closure.
+
+2026-11-07 PPTX changed-parser initial normal-service browser gate failed
+cleanup on the second full-size repeat (98.769 MiB vs 96 MiB); primary peak
+204.070 MiB vs 250 MiB, both large outputs exact. No exception granted or
+causation asserted. Reduced parser/writer allocation churn, fresh production
+build and 22 focused checks passed. Full-size same-conditions rerun pending.
+
 2026-11-07 artifact-gate final21focusedPASS/0fail/0skip/0cancel, five-file lint
 PASS. No production byte changes or browser/full portable replay. New CI gate
 verified on its selected source/package branches, not all-source qualification.

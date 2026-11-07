@@ -1,0 +1,16 @@
+session,case,status,input_bytes,validated_output_bytes,processing_ms,incremental_private_mib,cleanup_delta_mib
+Initial fix,native,failed-not-acceptance,34135,93,64.37999999523163,34.30078125,20.50390625
+Initial fix,large-1,failed-not-acceptance,135296355,92391679,11929.134999990463,204.0703125,22.19140625
+Initial fix,large-2,failed-not-acceptance,135296355,92391679,11589.180000007153,175.1953125,98.76953125
+Optimized: full run,native,passed-pptx-text-change-control,34135,93,78.28000003099442,22.58984375,1.58203125
+Optimized: full run,large-1,passed-pptx-text-change-control,135296355,92391679,7719.895000040531,127.5625,69.421875
+Optimized: full run,large-2,passed-pptx-text-change-control,135296355,92391679,7736.530000030994,114.76171875,84.390625
+Optimized: full run,large-3,passed-pptx-text-change-control,135296355,92391679,7523.280000030994,128.23828125,12.328125
+Optimized: full run,dtd-rejected,passed-pptx-text-change-control,4750,,39.88499999046326,37.95703125,0.63671875
+Optimized: full run,unsafe-reference-rejected,passed-pptx-text-change-control,4920,,41.97000002861023,36.3359375,6.63671875
+Optimized: full run,write-error,passed-pptx-text-change-control,4912,,58.4549999833107,124.1953125,14.3515625
+Optimized: full run,legacy-fixture-recovery,passed-pptx-text-change-control,4912,73,54.125,68.1796875,44.25
+Optimized: fresh repeat,native,failed-not-acceptance,34135,93,74.03000003099442,18.9375,3.20703125
+Optimized: fresh repeat,large-1,failed-not-acceptance,135296355,92391679,7204.8550000190735,128.5078125,117.85546875
+Optimized: no-screencast diagnostic,native,failed-not-acceptance,34135,93,66.47999995946884,14.140625,0.8359375
+Optimized: no-screencast diagnostic,large-1,failed-not-acceptance,135296355,92391679,7404.439999997616,124.8984375,116.63671875

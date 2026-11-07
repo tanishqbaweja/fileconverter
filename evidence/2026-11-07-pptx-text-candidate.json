@@ -1,0 +1,285 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-07",
+  "status": "candidate-held-public-unchanged",
+  "browser": "Chrome 156.0.8078.80",
+  "headless": true,
+  "browserServicesDisabled": false,
+  "qualificationPassed": false,
+  "publicRouteChanged": false,
+  "fullPortableSuiteRerun": false,
+  "nativePickerVerified": false,
+  "fullOriginalGoalAchieved": false,
+  "limitsMiB": {
+    "completeTreeAboveCleanBlank": 250,
+    "cleanupAboveLoadedIdle": 96
+  },
+  "jobs": 15,
+  "validatedOutputs": 12,
+  "exactLargeOutputs": 7,
+  "validatedLargeCandidateBuilds": 2,
+  "distinctOptimizedSessions": 3,
+  "optimizedWorkerAsset": {
+    "name": "conversion.worker-BTd8OrzM.js",
+    "bytes": 421025,
+    "sha256": "4830f98c854c9b13939fd36d08bcae6c6c23ef54570ce0bace2107e21e00fefd"
+  },
+  "results": [
+    {
+      "report": "evidence/2026-11-07T14-05-22-745Z-pptx-text-normal-services.json",
+      "status": "failed-not-acceptance",
+      "source": "e5512db6a069d21e751929cd5bc6f0fca13096588367cc297a204f9a93868f91",
+      "build": {
+        "configSha256": "46a2a564521ba3c6322959ab984b4e8c96660ab7a518899be81b8ddbfa044a61",
+        "workerSha256": "ad5223d92d9b2998f926bba20e154b3ecc29b71a16cdd4506b9cb2e086f49c1f",
+        "assets": 125
+      },
+      "requests": 14,
+      "forbidden": 0,
+      "memory": 204.0703125,
+      "valid": 542,
+      "unavailable": 0,
+      "pids": 40,
+      "cleaned": true,
+      "serverExited": true,
+      "sourceUnchanged": true,
+      "archive": {
+        "path": "evidence/2026-11-07T14-05-22-745Z-pptx-text-normal-services.samples.json.gz",
+        "bytes": 50770,
+        "sha256": "122eaad23ca92893182b16c9fc1ce4c435ec62e8af91bd5cc934a6b63480e93b",
+        "decodedSha256": "8d78b1d97c87cb441579f4fec44535769a109d145be3586ad6d62bbd55fa75b9"
+      },
+      "cases": [
+        {
+          "name": "native",
+          "ms": 64.37999999523163,
+          "source": 34135,
+          "output": 93,
+          "hash": "bb8e39465b3100fc801feae9460e6e9ec3cb63a6330f42f543b4eae291090367",
+          "peak": 34.30078125,
+          "cleanup": 20.50390625
+        },
+        {
+          "name": "large-1",
+          "ms": 11929.134999990463,
+          "source": 135296355,
+          "output": 92391679,
+          "hash": "2c32bb680e8ce5d7917ba180829a39b8b9431fc0b460ad5e62776db4bb51bff5",
+          "peak": 204.0703125,
+          "cleanup": 22.19140625
+        },
+        {
+          "name": "large-2",
+          "ms": 11589.180000007153,
+          "source": 135296355,
+          "output": 92391679,
+          "hash": "2c32bb680e8ce5d7917ba180829a39b8b9431fc0b460ad5e62776db4bb51bff5",
+          "peak": 175.1953125,
+          "cleanup": 98.76953125
+        }
+      ],
+      "mode": "Initial fix",
+      "maxCleanupMiB": 98.76953125,
+      "diagnosticOnly": false
+    },
+    {
+      "report": "evidence/2026-11-07T14-10-24-656Z-pptx-text-normal-services.json",
+      "status": "passed-pptx-text-change-control",
+      "source": "ae0ad6b161208f5c366d485e84280bdb6d60f39fd03415edbbb1b5d47f8ae91a",
+      "build": {
+        "configSha256": "46a2a564521ba3c6322959ab984b4e8c96660ab7a518899be81b8ddbfa044a61",
+        "workerSha256": "a2462e02e930500323e1a82a2e919c41954abe988beddf1f2a0e3a5efa30b1d6",
+        "assets": 125
+      },
+      "requests": 39,
+      "forbidden": 0,
+      "memory": 128.23828125,
+      "valid": 1024,
+      "unavailable": 0,
+      "pids": 47,
+      "cleaned": true,
+      "serverExited": true,
+      "sourceUnchanged": true,
+      "archive": {
+        "path": "evidence/2026-11-07T14-10-24-656Z-pptx-text-normal-services.samples.json.gz",
+        "bytes": 68485,
+        "sha256": "0b195ed59fd566d47f6402cf68d40d8226f28abcd6a843bf8478fac2cd1fe97f",
+        "decodedSha256": "a88ea88f715fb0589a702477f66a585703092baacb1186e0f9cacbdb5980f2c0"
+      },
+      "cases": [
+        {
+          "name": "native",
+          "ms": 78.28000003099442,
+          "source": 34135,
+          "output": 93,
+          "hash": "bb8e39465b3100fc801feae9460e6e9ec3cb63a6330f42f543b4eae291090367",
+          "peak": 22.58984375,
+          "cleanup": 1.58203125
+        },
+        {
+          "name": "large-1",
+          "ms": 7719.895000040531,
+          "source": 135296355,
+          "output": 92391679,
+          "hash": "2c32bb680e8ce5d7917ba180829a39b8b9431fc0b460ad5e62776db4bb51bff5",
+          "peak": 127.5625,
+          "cleanup": 69.421875
+        },
+        {
+          "name": "large-2",
+          "ms": 7736.530000030994,
+          "source": 135296355,
+          "output": 92391679,
+          "hash": "2c32bb680e8ce5d7917ba180829a39b8b9431fc0b460ad5e62776db4bb51bff5",
+          "peak": 114.76171875,
+          "cleanup": 84.390625
+        },
+        {
+          "name": "large-3",
+          "ms": 7523.280000030994,
+          "source": 135296355,
+          "output": 92391679,
+          "hash": "2c32bb680e8ce5d7917ba180829a39b8b9431fc0b460ad5e62776db4bb51bff5",
+          "peak": 128.23828125,
+          "cleanup": 12.328125
+        },
+        {
+          "name": "dtd-rejected",
+          "ms": 39.88499999046326,
+          "source": 4750,
+          "output": null,
+          "hash": null,
+          "peak": 37.95703125,
+          "cleanup": 0.63671875
+        },
+        {
+          "name": "unsafe-reference-rejected",
+          "ms": 41.97000002861023,
+          "source": 4920,
+          "output": null,
+          "hash": null,
+          "peak": 36.3359375,
+          "cleanup": 6.63671875
+        },
+        {
+          "name": "write-error",
+          "ms": 58.4549999833107,
+          "source": 4912,
+          "output": null,
+          "hash": null,
+          "peak": 124.1953125,
+          "cleanup": 14.3515625
+        },
+        {
+          "name": "legacy-fixture-recovery",
+          "ms": 54.125,
+          "source": 4912,
+          "output": 73,
+          "hash": "ba227b0e35d599faeca1a6af642dc0633469141d6d4786b05e3b9655bfd2c90c",
+          "peak": 68.1796875,
+          "cleanup": 44.25
+        }
+      ],
+      "mode": "Optimized: full run",
+      "maxCleanupMiB": 84.390625,
+      "diagnosticOnly": false
+    },
+    {
+      "report": "evidence/2026-11-07T14-13-22-336Z-pptx-text-normal-services.json",
+      "status": "failed-not-acceptance",
+      "source": "ae0ad6b161208f5c366d485e84280bdb6d60f39fd03415edbbb1b5d47f8ae91a",
+      "build": {
+        "configSha256": "46a2a564521ba3c6322959ab984b4e8c96660ab7a518899be81b8ddbfa044a61",
+        "workerSha256": "a2462e02e930500323e1a82a2e919c41954abe988beddf1f2a0e3a5efa30b1d6",
+        "assets": 125
+      },
+      "requests": 13,
+      "forbidden": 0,
+      "memory": 128.5078125,
+      "valid": 250,
+      "unavailable": 0,
+      "pids": 32,
+      "cleaned": true,
+      "serverExited": true,
+      "sourceUnchanged": true,
+      "archive": {
+        "path": "evidence/2026-11-07T14-13-22-336Z-pptx-text-normal-services.samples.json.gz",
+        "bytes": 27609,
+        "sha256": "4246105816239b74d2132dce989bd678384fd5544c8c6dd75499807bee4abbfc",
+        "decodedSha256": "6ca2ed4d756a6c3677a8805e0f7da2d42d18986d2021f23bf132f540f1dc587e"
+      },
+      "cases": [
+        {
+          "name": "native",
+          "ms": 74.03000003099442,
+          "source": 34135,
+          "output": 93,
+          "hash": "bb8e39465b3100fc801feae9460e6e9ec3cb63a6330f42f543b4eae291090367",
+          "peak": 18.9375,
+          "cleanup": 3.20703125
+        },
+        {
+          "name": "large-1",
+          "ms": 7204.8550000190735,
+          "source": 135296355,
+          "output": 92391679,
+          "hash": "2c32bb680e8ce5d7917ba180829a39b8b9431fc0b460ad5e62776db4bb51bff5",
+          "peak": 128.5078125,
+          "cleanup": 117.85546875
+        }
+      ],
+      "mode": "Optimized: fresh repeat",
+      "maxCleanupMiB": 117.85546875,
+      "diagnosticOnly": false
+    },
+    {
+      "report": "evidence/2026-11-07T14-16-13-545Z-pptx-text-normal-services.json",
+      "status": "failed-not-acceptance",
+      "source": "ae0ad6b161208f5c366d485e84280bdb6d60f39fd03415edbbb1b5d47f8ae91a",
+      "build": {
+        "configSha256": "46a2a564521ba3c6322959ab984b4e8c96660ab7a518899be81b8ddbfa044a61",
+        "workerSha256": "a2462e02e930500323e1a82a2e919c41954abe988beddf1f2a0e3a5efa30b1d6",
+        "assets": 125
+      },
+      "requests": 13,
+      "forbidden": 0,
+      "memory": 124.8984375,
+      "valid": 243,
+      "unavailable": 0,
+      "pids": 31,
+      "cleaned": true,
+      "serverExited": true,
+      "sourceUnchanged": true,
+      "archive": {
+        "path": "evidence/2026-11-07T14-16-13-545Z-pptx-text-normal-services.samples.json.gz",
+        "bytes": 27232,
+        "sha256": "5e91cc11c0bc8792bf3a8342bcecc292a0c4c837796c2f6c0758cbf98c0299b8",
+        "decodedSha256": "eb0ef70cc9b2e6ae08881ef743adea6701ef07f4ade2199d3fa3e6462abdd629"
+      },
+      "cases": [
+        {
+          "name": "native",
+          "ms": 66.47999995946884,
+          "source": 34135,
+          "output": 93,
+          "hash": "bb8e39465b3100fc801feae9460e6e9ec3cb63a6330f42f543b4eae291090367",
+          "peak": 14.140625,
+          "cleanup": 0.8359375
+        },
+        {
+          "name": "large-1",
+          "ms": 7404.439999997616,
+          "source": 135296355,
+          "output": 92391679,
+          "hash": "2c32bb680e8ce5d7917ba180829a39b8b9431fc0b460ad5e62776db4bb51bff5",
+          "peak": 124.8984375,
+          "cleanup": 116.63671875
+        }
+      ],
+      "mode": "Optimized: no-screencast diagnostic",
+      "maxCleanupMiB": 116.63671875,
+      "diagnosticOnly": true
+    }
+  ],
+  "conclusion": "The optimized build fixed the scoped correctness cases and was faster in observed sequential runs. Cleanup did not repeat reliably. Turning off only trace screenshots did not prevent the failure; the exact allocation remains unidentified. These are not acceptance or a controlled speed claim."
+}
