@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-07 N-08 direct-handle gate IN PROGRESS. DOCX worker/SAB diagnostic omission
+reproduced1PASS/2FAIL and corrected from actual writer resources. Existing native
+writer/converter/250MiB/96MiB gates unchanged. Harness targets real handle-mode
+writer via repository-owned OPFS directory adapter; native save-dialog/external
+destination remains UNVERIFIED. No direct large-file acceptance claimed before
+browser execution.59focused checks plus updated8direct/counter checks, six-file
+lint/TypeScript/fresh build PASS. Complex-document/browser/media/release gaps OPEN.
+
 2026-11-07 N-08 DOCX HTML checkpoint remains PARTIAL/PRIVATE/PENDING,403public
 profiles unchanged. Genuine8.79MB/140.58MB DOCX ->8.74MB/139.76MB HTML conversions
 completed three repeats at each size in EACH of two clean Chrome sessions.

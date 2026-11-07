@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-11-07 direct DOCX HTML gate IN PROGRESS: code inspection found destination
+worker/SAB counters omitted for DOCX handle output. Actual worker-fragment
+regression reproduced1PASS/2FAIL (worker1 instead of2; missing266272B writer SAB).
+Scoped DOCX branch now derives counters from actual destination/cancellation
+resources; conversion/quality/I/O/primary-memory policy unchanged. Exact reviewed
+private DOCX source hunk updated/reversed to unchanged historical worker hash;
+old receipts are immutable. New direct-scaling harness uses existing directory=1
+adapter/real OPFS-backed FileSystemFileHandle and production direct writer, not
+the opfs-test destination route. Native picker/external-drive coverage UNVERIFIED.
+Focused59checks PASS, then updated direct/counter8checks PASS. Six-file lint,
+TypeScript and fresh production build PASS. Actual direct browser result NEXT;
+no public promotion or speed claim. Do not replay previous OPFS scaling controls.
+
 2026-11-07 DOCX HTML scaling checkpoint: implementation remains PRIVATE/PENDING,
 normal public selector403 unchanged. Two clean normal-service headless Chrome
 sessions EACH completed three8,786,993B ->8,735,249B and three140,575,793B ->

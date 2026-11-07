@@ -4725,6 +4725,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       });
     } else if (profileId === "docx-to-txt" || profileId === "docx-to-html") {
       const documentDestination = destination.writable;
+      metrics.activeWorkerCount = 1 + (documentDestination.additionalWorkerCount ?? 0);
+      metrics.sharedArrayBufferBytes = (cancellationSignal?.byteLength ?? 0) +
+        (documentDestination.sharedBufferBytes ?? 0);
       const convertDocx = profileId === "docx-to-html"
         ? (await import("./docx-html-conversion")).runDocxToHtml : runDocxToText;
       await convertDocx({

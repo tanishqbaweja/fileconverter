@@ -29,9 +29,11 @@ import { bindLargeDocumentOutputValidationBacking } from "./lib/opfs-output-vali
 import { DOCX_HTML_SCALING_PLAN as scalingPlan, summarizeDocxHtmlRunMemory, renderDocxHtmlScalingSummary } from "./lib/docx-html-scaling-control.mjs";
 import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
 import { cancelAfterRealBrowserPayload } from "./lib/browser-payload-cancellation.mjs";
+import { completeNewBrowserJob, installDocxDestinationObservation, assertDirectDocxCompletion } from "./lib/docx-direct-control.mjs";
 
 assert.equal(process.platform, "win32");
-const scaling = process.argv[2] === "--scaling";
+const direct = process.argv[2] === "--direct-scaling";
+const scaling = process.argv[2] === "--scaling" || direct;
 const cancellationOnly = process.argv[2] === "--cancel-control";
 assert.ok(process.argv.length === (scaling || cancellationOnly ? 3 : 2));
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
@@ -54,6 +56,13 @@ if (scaling) {
   report.scalingRuns = [];
 }
 if (cancellationOnly) report.scope = "Changed real-payload cancellation trigger plus write-error/recovery only; not a replay of completed scaling controls or full route qualification";
+if (direct) {
+  report.scope = "Changed direct-handle writer path: progressively larger genuine DOCX outputs/repeats/recovery; OPFS-backed test directory, NOT native picker/external drive/full route qualification";
+  report.destinationAdapter = "Existing production directory=1 adapter supplies real FileSystemFileHandle from owned browser OPFS; engine/writer/bridge unchanged";
+  report.destinationMode = "handle";
+  report.nativeExternalDestinationVerified = false;
+  report.directHandleWriterControlVerified = false;
+}
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const p = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
 const packageBytes = (body, level = 6, invalidPackage = false) => zipSync({
@@ -165,7 +174,8 @@ try {
   for (const file of ["scripts/qualify-docx-html.mjs", "workers/docx-html-conversion.ts", "workers/docx-conversion.ts",
     "workers/conversion.worker.ts", "lib/capability-registry.ts", "package-lock.json", "scripts/lib/birth-aware-chromium-memory.mjs",
     "scripts/lib/birth-type-capture.mjs", "scripts/lib/select-owned-local-browser-file.mjs",
-    "scripts/lib/docx-html-scaling-control.mjs", "scripts/lib/docx-html-scaling-fixtures.py", "scripts/lib/opfs-output-validation-backing.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/browser-payload-cancellation.mjs"])
+    "scripts/lib/docx-html-scaling-control.mjs", "scripts/lib/docx-html-scaling-fixtures.py", "scripts/lib/opfs-output-validation-backing.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/browser-payload-cancellation.mjs",
+    "scripts/lib/docx-direct-control.mjs", "app/converter/ConverterApp.tsx", "workers/random-access-destination.ts", "workers/direct-file-writer.worker.ts", "workers/direct-writer-protocol.ts"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
@@ -182,7 +192,8 @@ try {
     assert.equal(exitCode === 0, accepted, "Independent validator preflight: " + name);
     report.validatorControls.push({ name, expectedAccepted: accepted, exitCode });
   }
-  const input = path.join(runtime.directory, "structure.docx"), cancellation = path.join(runtime.directory, "cancel.docx");
+  const ownedPrefix = direct ? "within-test-direct-docx-html-" : "";
+  const input = path.join(runtime.directory, ownedPrefix + "structure.docx"), cancellation = path.join(runtime.directory, ownedPrefix + "cancel.docx");
   const body = '<w:p><w:r><w:rPr><w:b/><w:i/></w:rPr><w:t>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</w:t></w:r></w:p>' +
     `<w:tbl><w:tblPr/><w:tblGrid><w:gridCol w:w="2400"/><w:gridCol w:w="2400"/></w:tblGrid><w:tr><w:tc>${p("Cell one")}</w:tc><w:tc>${p("Cell two")}</w:tc></w:tr></w:tbl>` +
     '<w:p><w:del w:id="1" w:author="fixture"><w:r><w:delText>Deleted</w:delText></w:r></w:del><w:ins w:id="2" w:author="fixture"><w:r><w:t>Inserted</w:t></w:r></w:ins></w:p>';
@@ -202,7 +213,7 @@ try {
   if (scaling) {
     const helper = path.join(root, "scripts/lib/docx-html-scaling-fixtures.py");
     for (const paragraphs of scalingPlan.paragraphs) {
-      const file = path.join(runtime.directory, `scaling-${paragraphs}.docx`);
+      const file = path.join(runtime.directory, direct ? `${ownedPrefix}${paragraphs}.docx` : `scaling-${paragraphs}.docx`);
       const generated = JSON.parse((await execute("python", [helper, "generate", file, String(paragraphs)],
         { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 32768 })).stdout);
       const validated = JSON.parse((await execute("python", ["-c", sourceValidator, file],
@@ -248,6 +259,10 @@ try {
   }
   await context.addInitScript(`window.__WITHIN_AUDIO_VALIDATION_CHUNK__=(${encodeBoundedValidationChunk.toString()});`);
   if (scaling || cancellationOnly) await context.addInitScript(`window.__WITHIN_PAYLOAD_CANCEL__=(${cancelAfterRealBrowserPayload.toString()});`);
+  if (direct) {
+    await context.addInitScript(`window.__WITHIN_NEW_DOCX_COMPLETION__=(${completeNewBrowserJob.toString()});`);
+    await context.addInitScript(`(${installDocxDestinationObservation.toString()})();`);
+  }
   await context.route("**/*", async route => {
     const request = route.request(); report.requestCount++;
     let frameUrl = null; try { frameUrl = request.frame()?.url() ?? null; } catch { /* worker-owned request */ }
@@ -260,7 +275,7 @@ try {
   });
   await context.tracing.start({ screenshots: true, snapshots: false, sources: false }); traceStarted = true;
   const open = async fault => {
-    await page.goto(server.baseURL + "/?test=1" + (fault ? "&fault=" + fault : ""));
+    await page.goto(server.baseURL + "/?test=1" + (direct ? "&directory=1" : "") + (fault ? "&fault=" + fault : ""));
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
   };
   const select = async file => {
@@ -272,26 +287,43 @@ try {
     for await (const [name] of root.entries()) if (name.startsWith("within-")) names.push(name); return names; });
   const waitEmpty = () => page.waitForFunction(async () => { const root = await navigator.storage.getDirectory();
     for await (const [name] of root.entries()) if (name.startsWith("within-")) return false; return true; }, undefined, { timeout: 10000 });
+  const directCompletion = () => page.evaluate(() => window.__WITHIN_NEW_DOCX_COMPLETION__({
+    getState: () => window.__WITHIN_TEST__.getState(),
+    start: () => document.querySelector('[data-testid="convert-button"]').click(),
+    nextFrame: () => new Promise(resolve => requestAnimationFrame(resolve)), now: () => performance.now(),
+  }));
+  const directObservation = async () => {
+    const observation = await page.evaluate(() => window.__WITHIN_DOCX_DESTINATIONS__?.at(-1));
+    assert.equal(observation?.mode, "handle"); assert.equal(observation.actualFileHandle, true);
+    report.destinationObservations ??= []; assert.ok(report.destinationObservations.length < 16);
+    report.destinationObservations.push(observation); return observation;
+  };
   await open(); report.loadedIdle = await stable(); controlStart = Date.now();
   timer = setInterval(() => {
     void drain().catch(error => { observerError ??= error; rejectSafetyStop(error); });
     if (scaling && Math.floor(Date.now() / 500) % 4 === 0) void sampleRealms().catch(error => { observerError ??= error; rejectSafetyStop(error); });
   }, 500);
   const success = async previous => {
-    await page.locator('[data-testid="convert-button"]').click();
-    await page.waitForFunction(old => { const state = window.__WITHIN_TEST__?.getState(); return state?.jobState === "complete" && state.opfsName && state.opfsName !== old; }, previous, { timeout: 30000 });
+    if (direct) await Promise.race([safetyStop, directCompletion()]);
+    else {
+      await page.locator('[data-testid="convert-button"]').click();
+      await page.waitForFunction(old => { const state = window.__WITHIN_TEST__?.getState(); return state?.jobState === "complete" && state.opfsName && state.opfsName !== old; }, previous, { timeout: 30000 });
+    }
     const state = await page.evaluate(() => window.__WITHIN_TEST__.getState());
     assert.equal(state.error, null); assert.equal(state.metrics.pendingOperations, 0); assert.equal(state.metrics.queuedBytes, 0);
     assert.ok(state.metrics.peakPendingOperations <= 1); assert.ok(state.metrics.maxReadChunkBytes <= 262144); assert.ok(state.metrics.maxWriteChunkBytes <= 65536);
-    const binding = await bindOpfsOutputValidationBacking(page, profile, state.opfsName, state.metrics.outputBytes);
+    const observation = direct ? await directObservation() : null;
+    const name = direct ? assertDirectDocxCompletion(state, observation) : state.opfsName;
+    const binding = await bindOpfsOutputValidationBacking(page, profile, name, state.metrics.outputBytes);
     const caseRow = { kind: "complete-unvalidated", outputBytes: state.metrics.outputBytes, metrics: state.metrics, binding: binding.proof };
+    if (direct) caseRow.destinationObservation = observation;
     report.cases.push(caseRow);
     const validated = JSON.parse((await execute("python", ["-c", validator, binding.file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
     await assertOpfsOutputValidationBackingUnchanged(binding);
     caseRow.validated = validated; caseRow.kind = "complete";
-    await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), state.opfsName);
+    await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
-    return state.opfsName;
+    return name;
   };
   if (scaling) {
     for (const fixture of scalingInputs) {
@@ -299,10 +331,13 @@ try {
       let previous = null;
       for (let repeat = 1; repeat <= scalingPlan.repeats; repeat++) {
         const started = Date.now();
-        await page.locator('[data-testid="convert-button"]').click();
-        await Promise.race([safetyStop, page.waitForFunction(old => {
-          const s = window.__WITHIN_TEST__?.getState(); return s?.jobState === "complete" && s.opfsName && s.opfsName !== old;
-        }, previous, { timeout: scalingPlan.conversionTimeoutMs })]);
+        if (direct) await Promise.race([safetyStop, directCompletion()]);
+        else {
+          await page.locator('[data-testid="convert-button"]').click();
+          await Promise.race([safetyStop, page.waitForFunction(old => {
+            const s = window.__WITHIN_TEST__?.getState(); return s?.jobState === "complete" && s.opfsName && s.opfsName !== old;
+          }, previous, { timeout: scalingPlan.conversionTimeoutMs })]);
+        }
         const state = await page.evaluate(() => window.__WITHIN_TEST__.getState());
         assert.equal(state.error, null); assert.equal(state.metrics.pendingOperations, 0); assert.equal(state.metrics.queuedBytes, 0);
         assert.equal(state.metrics.inputBytes, fixture.bytes); assert.ok(state.metrics.maxReadChunkBytes <= 262144);
@@ -311,14 +346,17 @@ try {
           sourceSha256: fixture.sha256, outputBytes: state.metrics.outputBytes, metrics: state.metrics,
           storageBeforeValidation: await page.evaluate(async () => { const s = await navigator.storage.estimate(); return { usage: s.usage ?? null, quota: s.quota ?? null }; }) };
         report.cases.push(row);
-        const binding = await bindLargeDocumentOutputValidationBacking(page, profile, state.opfsName, state.metrics.outputBytes);
+        const observation = direct ? await directObservation() : null;
+        const name = direct ? assertDirectDocxCompletion(state, observation) : state.opfsName;
+        if (direct) row.destinationObservation = observation;
+        const binding = await bindLargeDocumentOutputValidationBacking(page, profile, name, state.metrics.outputBytes);
         row.binding = binding.proof;
         row.validated = JSON.parse((await execute("python", [path.join(root, "scripts/lib/docx-html-scaling-fixtures.py"), "validate", binding.file, String(fixture.paragraphs)],
           { cwd: root, env, windowsHide: true, timeout: scalingPlan.validatorTimeoutMs, maxBuffer: 32768 })).stdout);
         await assertOpfsOutputValidationBackingUnchanged(binding);
         assert.equal(row.validated.bytes, row.outputBytes); assert.equal(row.validated.paragraphs, fixture.paragraphs);
         if (fixture.paragraphs === scalingPlan.paragraphs.at(-1)) assert.ok(row.outputBytes > 100 * 1024 ** 2);
-        await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), state.opfsName);
+        await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
         await waitEmpty(); assert.deepEqual(await leftovers(), []);
         await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
         // Natural stable observation only: no forced GC, service changes, page
@@ -330,7 +368,7 @@ try {
         assert.ok(row.runMemory.incrementalPrivateMiB <= 250);
         assert.ok(row.runMemory.cleanupDeltaFromLoadedMiB <= scalingPlan.cleanupRecoveryLimitMiB, "Unchanged96MiB cleanup recovery gate");
         row.realmsAfterCleanup = await realmSampler.sample();
-        previous = state.opfsName;
+        previous = name;
       }
       const hashes = report.cases.filter(c => c.kind === "complete" && c.paragraphs === fixture.paragraphs).map(c => c.validated.sha256);
       assert.equal(hashes.length, 3); assert.equal(new Set(hashes).size, 1);
@@ -359,11 +397,13 @@ try {
   }
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().jobState === "cancelled", undefined, { timeout: 30000 });
   await waitEmpty(); assert.deepEqual(await leftovers(), []); report.cases.push({ kind: "payload-cancel", armedMetrics: armed,
-    metrics: await page.evaluate(() => window.__WITHIN_TEST__.getState().metrics), leftovers: [] });
+    metrics: await page.evaluate(() => window.__WITHIN_TEST__.getState().metrics), leftovers: [],
+    ...(direct ? { destinationObservation: await directObservation() } : {}) });
   await open("write"); await select(input); await page.locator('[data-testid="convert-button"]').click();
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().jobState === "error", undefined, { timeout: 30000 });
   const failure = await page.evaluate(() => window.__WITHIN_TEST__.getState()); assert.ok(failure.error); await waitEmpty(); assert.deepEqual(await leftovers(), []);
-  report.cases.push({ kind: "write-error", message: failure.error, leftovers: [] });
+  report.cases.push({ kind: "write-error", message: failure.error, leftovers: [],
+    ...(direct ? { metrics: failure.metrics, destinationObservation: await directObservation() } : {}) });
   await open(); await select(input); await success(null); assert.deepEqual(await leftovers(), []);
   controlEnd = Date.now(); clearInterval(timer); timer = null; await drain(); await monitor.close(); report.nativeObserverOwnership = monitor.ownershipSummary(); monitor = null;
   assert.equal(observerError, null); const active = samples.filter(s => Date.parse(s.timestamp) >= controlStart && Date.parse(s.timestamp) <= controlEnd);
@@ -378,6 +418,7 @@ try {
   report.screenshot = `output/playwright/${stamp}-docx-html-complete.png`; await page.screenshot({ path: path.join(root, report.screenshot), fullPage: true });
   report.status = scaling ? "passed-private-progressive-docx-html-control-not-full-route-qualification" : "passed-private-small-docx-html-production-control-not-public-qualification";
   if (cancellationOnly) report.status = "passed-changed-docx-html-payload-cancel-write-recovery-control-not-scaling-or-promotion";
+  if (direct) { report.status = "passed-private-direct-handle-docx-html-scaling-control-not-native-picker-or-promotion"; report.directHandleWriterControlVerified = true; }
   if (scaling) report.completedDocumentScalingControlVerified = true;
 } catch (error) { report.status = "failed-not-acceptance"; report.failures.push(String(error.stack ?? error)); controlEnd ??= Date.now(); process.exitCode = 1; }
 finally {
