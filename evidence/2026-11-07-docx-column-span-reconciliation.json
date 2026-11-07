@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "scope": "Private small table fidelity and process teardown reconciliation; original run remains failed; no stress, performance, manual or public acceptance",
+  "browserReceipt": "evidence/2026-11-07T19-55-42-198Z-docx-html-qualification.json",
+  "browserReceiptSha256": "af602e02470023d6193ce24dc486495901ce37c87a520812c3db2fb36c00960d",
+  "executedHead": "7e71329ce57a1cce201e71c75a8063b421754e64",
+  "independentlyValidatedOutput": { "repeatsIncludingRecovery": 4, "bytes": 837, "columnSpans": [2, 2], "cells": 7, "sha256": "6deeadd4e5450ccb189c3f069716ddf06641da5eec2c58289965954d23c58d1b" },
+  "browserObserved": { "incrementalPrivateMiB": 71.68359375, "validSamples": 430, "unavailableSamples": 0, "maximumPerRunCleanupAboveIdleMiB": 31.48828125, "requests": 35, "forbiddenRequests": 0 },
+  "teardown": {
+    "legacyVerdict": "owned-observed-pids-not-proven-absent",
+    "checkedProcessIdentities": 47,
+    "blockerPid": 38340,
+    "ownedBirthAtMicrosecondPrecision": "2026-11-07T19:55:59.921732Z",
+    "unrelatedBirthAtMicrosecondPrecision": "2026-11-07T19:56:45.545684Z",
+    "followupLiveCensusReusedPids": [38340, 2024],
+    "allObservedChromeBirthsAbsent": true,
+    "ownedServerAbsent": true,
+    "followupKilledAnyProcess": false,
+    "validatedOutputsRemovedInBrowser": true,
+    "ownedScratch": "work/docx-html-qualification-N4IlkP",
+    "ownedScratchObservedBytes": 114217352,
+    "ownedScratchObservedFiles": 874,
+    "ownedScratchRemoved": false,
+    "deletionBlockedByShellPolicy": true
+  },
+  "protectedOriginalFollowup": { "bytes": 2958573265, "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34", "matchesBefore": true },
+  "originalReceiptRewritten": false,
+  "nativeBrowserConversionRepeated": false,
+  "publicPromotion": false
+}

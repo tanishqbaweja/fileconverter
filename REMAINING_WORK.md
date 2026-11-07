@@ -1,5 +1,21 @@
 # Remaining work audit
 
+2026-11-07 N-08 private DOCX table fidelity: horizontal Word grid spans now
+emit bounded HTML column spans without staging a row or table. The small
+production-browser control independently validates two nested spans and
+exact content on four identical outputs, bounded direct-handle I/O, real
+cancellation, write-error recovery and 71.684 MiB whole-tree peak. The
+original overall test remains FAILED at final teardown, not conversion:
+live/archived births prove PID reuse and all owned process identities absent.
+Browser outputs are gone; shell policy blocked deletion of the verified
+114 MB scratch directory. Do not replay the same conversion just to change
+the historical status. The changed harness has a birth-aware proof-only
+fallback; 99 focused checks, build, TypeScript and lint passed. Exercise
+the harness in the next genuinely distinct browser run. Vertical and
+legacy merges, omitted grid positions, broader layout/fidelity, external
+picker, scaling, and publication remain open. See
+`evidence/2026-11-07-docx-column-span-reconciliation.json`.
+
 2026-11-07 T-10 hosted release verification **passed** at `38e8d1c4`, run
 42407482501: lint, TypeScript, production build, 2,654 portable passes/4 skips/
 0 failures, 21 headless browser passes, 93 allowed engine files/19 Wasm with

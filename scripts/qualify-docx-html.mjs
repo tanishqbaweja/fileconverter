@@ -31,7 +31,8 @@ import { cancelAfterRealBrowserPayload } from "./lib/browser-payload-cancellatio
 import { completeNewBrowserJob, installDocxDestinationObservation, assertDirectDocxCompletion } from "./lib/docx-direct-control.mjs";
 import { boundedErrorDetails } from "./lib/bounded-error-details.mjs";
 import { createDocxCleanupDiagnostic } from "./lib/docx-cleanup-diagnostic.mjs";
-import { cleanupOwnedChromium } from "./lib/owned-chromium-cleanup.mjs";
+import { cleanupOwnedChromium, queryObservedPidCensus } from "./lib/owned-chromium-cleanup.mjs";
+import { reconcileChromiumBirths } from "./lib/reconcile-chromium-births.mjs";
 
 assert.equal(process.platform, "win32");
 const memoryDiagnostic = process.argv[2] === "--outline-memory-diagnostic";
@@ -201,7 +202,10 @@ try {
     "workers/docx-outline.ts", "scripts/lib/docx-outline-fixtures.py", "scripts/lib/docx-emphasis-fixtures.py", "scripts/lib/bounded-error-details.mjs",
     "scripts/lib/docx-cleanup-diagnostic.mjs", "scripts/lib/bounded-dom-counters.mjs", "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "scripts/lib/owned-chromium-cleanup.mjs"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
-  if (tableSmall) report.sourcePins["scripts/lib/docx-table-span-fixtures.py"] = await hashFile(tableFixtureHelper);
+  if (tableSmall) {
+    report.sourcePins["scripts/lib/docx-table-span-fixtures.py"] = await hashFile(tableFixtureHelper);
+    report.sourcePins["scripts/lib/reconcile-chromium-births.mjs"] = await hashFile(path.join(root, "scripts/lib/reconcile-chromium-births.mjs"));
+  }
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
   report.validatorControls = [];
@@ -672,18 +676,26 @@ finally {
         const observedPids = [...new Set(samples.flatMap(sample => (sample.processes ?? []).map(p => p.pid)))];
         report.browserCleanup = await cleanupOwnedChromium({ identity: chromeBirth, observedPids,
           disconnect: async () => { await browser?.close(); } });
-        assert.equal(report.browserCleanup.status, "owned-observed-pids-absent");
+        if (tableSmall && report.browserCleanup.status !== "owned-observed-pids-absent") {
+          const pids = report.browserCleanup.observedPids;
+          report.browserBirthReconciliation = reconcileChromiumBirths({ identity: chromeBirth, observedPids: pids,
+            samples, current: await queryObservedPidCensus(pids) });
+        }
+        assert.ok(report.browserCleanup.status === "owned-observed-pids-absent" || report.browserBirthReconciliation?.allObservedBirthsAbsent,
+          "Observed browser identities were not proven absent");
       } else await browser?.close();
     },
     async () => { if (server) report.serverCleanup = await server.close(); },
   ]).catch(error => { report.ownedProcessCleanupErrors = boundedErrorDetails(error); report.failures.push("Owned process cleanup: " + error); report.status = "failed-not-acceptance"; process.exitCode = 1; });
   try {
-    assert.ok(!chrome || report.browserCleanup?.status === "owned-observed-pids-absent", "Never remove profile while observed owned processes may remain");
+    assert.ok(!chrome || report.browserCleanup?.status === "owned-observed-pids-absent" || report.browserBirthReconciliation?.allObservedBirthsAbsent,
+      "Never remove profile while observed owned processes may remain");
     if (runtime) { await runtime.close(); report.ownedRuntimeRemoved = true; }
     for (const [file, digest] of Object.entries(report.sourcePins)) assert.equal(await hashFile(path.join(root, file)), digest);
     if (report.browserBefore) { report.browserAfter = await inspectInstalledChromePin(); assertInstalledChromePinsEqual(report.browserBefore, report.browserAfter); }
-    report.protectedOriginalAfter = await original(); assert.deepEqual(report.protectedOriginalAfter, report.protectedOriginalBefore);
   } catch (error) { report.failures.push("Runtime/source protection: " + error); report.status = "failed-not-acceptance"; process.exitCode = 1; }
+  try { report.protectedOriginalAfter = await original(); assert.deepEqual(report.protectedOriginalAfter, report.protectedOriginalBefore); }
+  catch (error) { report.failures.push("Protected original: " + error); report.status = "failed-not-acceptance"; process.exitCode = 1; }
   const raw = Buffer.from(JSON.stringify(samples)), packed = gzipSync(raw);
   if (scaling && report.blankBaseline && report.loadedIdle) {
     for (const row of report.cases.filter(c => c.runMemory)) {

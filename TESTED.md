@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-11-07 private DOCX → HTML now emits bounded horizontal table spans in
+one pass. A native 36,828-byte DOCX with two horizontal merges, including a
+nested table, produced four identical 837-byte outputs in normal-service
+headless Chrome. Independent HTML parsing verified both spans, nesting,
+seven cells and exact text. Actual handle writes, cancellation after
+1,835,008 acknowledged output bytes, injected write failure and recovery
+passed. The whole-tree peak was 71.684 MiB (430 valid, zero unavailable),
+maximum per-run cleanup was 31.488 MiB above loaded idle, and none of 35
+requests was forbidden. This was not a speed or scaling test.
+
+The browser run remains **failed at final scratch teardown**. The PID-only
+guard saw a reused Windows PID; the immutable native birth records and a
+live census proved all 47 observed Chrome identities and the owned server
+absent without touching either unrelated process. The browser outputs were
+removed, but shell policy blocked removal of the owned 114 MB scratch folder
+`work/docx-html-qualification-N4IlkP`. `test.mkv` was independently rehashed
+unchanged. The new test path reconciles births before removing scratch and
+does not change the memory formula or authorize kills. Production build,
+TypeScript, affected lint and 99 focused tests passed. See
+[reconciliation](evidence/2026-11-07-docx-column-span-reconciliation.json)
+and [original receipt](evidence/2026-11-07T19-55-42-198Z-docx-html-qualification.json).
+
 2026-11-07 hosted SVG release verification and Linux portability **passed**
 at `38e8d1c4`, [run 42407482501](https://github.com/tanishqbaweja/fileconverter/actions/runs/42407482501).
 Lint, TypeScript, production build, 403-profile evidence audit, 2,654 portable

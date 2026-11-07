@@ -4,7 +4,10 @@ import { build } from "esbuild";
 import { zipSync, strToU8 } from "fflate";
 import { privateQualificationProfiles, publicProfilesFor } from "../lib/capability-registry.ts";
 import { readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
 import { reviewDocxHtmlIntegration } from "../scripts/lib/reviewed-docx-html-integration.mjs";
+import { reconcileChromiumBirths } from "../scripts/lib/reconcile-chromium-births.mjs";
 const bundled = await build({ entryPoints: ["workers/docx-html-conversion.ts"], bundle: true, format: "esm", write: false, platform: "browser" });
 const { runDocxToHtml } = await import("data:text/javascript;base64," + Buffer.from(bundled.outputFiles[0].contents).toString("base64"));
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
@@ -117,4 +120,41 @@ test("macro packages, cancellation and write failure are not successful conversi
   await assert.rejects(convert(xml("<w:p/>"), { extra: { "word/vbaProject.bin": new Uint8Array([1]) } }), /Macro-enabled/);
   await assert.rejects(convert(xml("<w:p/>"), { cancel: true }), error => error.name === "AbortError");
   await assert.rejects(convert(xml("<w:p/>"), { failWrite: true }), error => error.name === "QuotaExceededError");
+});
+
+test("native horizontal-span browser outputs were genuine; PID reuse explains the retained failed teardown without claiming scratch removal", async () => {
+  const read = file => readFile(new URL("../" + file, import.meta.url));
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const followup = JSON.parse(await read("evidence/2026-11-07-docx-column-span-reconciliation.json"));
+  const reportBytes = await read(followup.browserReceipt);
+  assert.equal(sha(reportBytes), followup.browserReceiptSha256);
+  const report = JSON.parse(reportBytes);
+  assert.equal(report.status, "failed-not-acceptance"); assert.equal(report.executedHead, followup.executedHead);
+  assert.deepEqual(report.tableFixture.wordGridSpans, [2, 2]);
+  assert.deepEqual(report.validatorControls.map(row => row.exitCode), [0, 1, 1, 1, 1]);
+  const complete = report.cases.filter(c => c.kind === "complete");
+  assert.equal(complete.length, 4);
+  for (const row of complete) {
+    assert.equal(row.outputBytes, 837); assert.equal(row.validated.sha256, followup.independentlyValidatedOutput.sha256);
+    assert.deepEqual(row.validated.columnSpans, [2, 2]); assert.equal(row.validated.tableCells, 7);
+    assert.equal(row.validated.nestedStructureVerified, true); assert.equal(row.validated.exactParagraphContentVerified, true);
+    assert.equal(row.destinationObservation.actualFileHandle, true); assert.equal(row.destinationObservation.mode, "handle");
+    assert.ok(row.metrics.maxReadChunkBytes <= 262144 && row.metrics.maxWriteChunkBytes <= 65536);
+    assert.ok(row.metrics.peakPendingOperations <= 1 && row.smallRunMemory.cleanupDeltaFromLoadedMiB <= 96);
+  }
+  for (const kind of ["payload-cancel", "write-error"]) assert.deepEqual(report.cases.find(row => row.kind === kind).leftovers, []);
+  assert.deepEqual(report.forbiddenRequests, []); assert.equal(report.headed, false); assert.equal(report.publicPromotion, false);
+  const packed = await read(report.nativeArchive.file), decoded = gunzipSync(packed, { maxOutputLength: 4194304 });
+  assert.equal(sha(packed), report.nativeArchive.sha256); assert.equal(sha(decoded), report.nativeArchive.decodedSha256);
+  const samples = JSON.parse(decoded), time = Date.parse;
+  const valid = samples.filter(row => row.privateBytes !== null && time(row.timestamp) >= time(report.memory.windowStart) && time(row.timestamp) <= time(report.memory.windowEnd));
+  assert.equal(valid.length, 430);
+  assert.ok(valid.every(row => row.processes.reduce((sum, p) => sum + p.privateBytes, 0) === row.privateBytes));
+  assert.equal((Math.max(...valid.map(row => row.privateBytes)) - report.blankBaseline.privateBytes) / 1048576, 71.68359375);
+  const result = reconcileChromiumBirths({ identity: report.browserLaunchIdentity, observedPids: report.browserCleanup.observedPids,
+    samples, current: report.browserCleanup.observations.at(-1).current });
+  assert.equal(result.allObservedBirthsAbsent, true); assert.equal(result.observedPidCount, 47);
+  assert.deepEqual(result.reused.map(row => row.pid), [38340]); assert.equal(result.noProcessesKilled, true);
+  assert.equal(followup.teardown.ownedScratchRemoved, false); assert.equal(report.ownedRuntimeRemoved, undefined);
+  assert.deepEqual(followup.protectedOriginalFollowup, { ...report.protectedOriginalBefore, matchesBefore: true });
 });
