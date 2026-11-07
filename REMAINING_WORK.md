@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-07 next changed experiment prepared: --outline-memory-diagnostic adds
+bounded per-phase DOM/realm/full-tree/native allocator observations. Production
+source and exact failed input hashes must match; same250MiB/96MiB gates, normal
+services, no forced GC. First stable cleanup is frozen before45s diagnostic-only
+follow-up.14focused observer/error checks PASS; browser execution still pending.
+No production memory fix or causation claim yet; N-08 remains PARTIAL/PRIVATE.
+
 2026-11-07 N-08 outline hierarchy implemented privately, NOT browser-qualified.
 Bounded referenced/default/direct heading levels pass unit/namespace/unsafe/
 metadata-chain tests; first0PASS/3FAIL and19PASS/1FAIL defects repaired.76affected

@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-07 cleanup diagnostic prepared (browser run not yet executed): eight
+ordered DOM/realm/full-native/light-memory-infra phase observations on the SAME
+failed production source and exact generated input hashes. Three small jobs then
+first full141871070B styled source; no smaller substitute. First stable96MiB
+cleanup window retained before optional45s natural follow-up; no forced GC,
+service exclusions, baseline changes or public acceptance. Diagnostic intentionally
+perturbs timing/memory and is not a benchmark.14focused observer/error tests PASS.
+Native trace PID/name and overlapping allocator counters are not allocation
+stacks or a verified CDP-target/native-birth join. Artifacts remain repository-owned.
+
 2026-11-07 DOCX outline fidelity increment remains PRIVATE/PENDING and browser
 qualification FAILED. Direct/inherited/default paragraph outline semantics are
 implemented (h1-h6/ARIA7-9; direct body9 override), not inherited font/run/list/page

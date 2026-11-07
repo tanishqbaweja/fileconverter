@@ -31,9 +31,11 @@ import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
 import { cancelAfterRealBrowserPayload } from "./lib/browser-payload-cancellation.mjs";
 import { completeNewBrowserJob, installDocxDestinationObservation, assertDirectDocxCompletion } from "./lib/docx-direct-control.mjs";
 import { boundedErrorDetails } from "./lib/bounded-error-details.mjs";
+import { createDocxCleanupDiagnostic } from "./lib/docx-cleanup-diagnostic.mjs";
 
 assert.equal(process.platform, "win32");
-const outlineControl = process.argv[2] === "--outline-direct-scaling";
+const memoryDiagnostic = process.argv[2] === "--outline-memory-diagnostic";
+const outlineControl = process.argv[2] === "--outline-direct-scaling" || memoryDiagnostic;
 const benchmark = process.argv[2] === "--direct-async-scaling";
 const asyncDirect = benchmark || outlineControl;
 const direct = process.argv[2] === "--direct-scaling" || asyncDirect;
@@ -146,6 +148,7 @@ print(json.dumps({'sha256':h.hexdigest(),'paragraphs':len(parser.paragraphs),'ta
 `;
 let runtime, server, chrome, chromeBirth, browser, page, context, monitor, timer, pending = null, observerError = null, traceStarted = false;
 let realmSampler, realmPending = null, rejectSafetyStop;
+let cleanupDiagnostic;
 const realmObservations = [], safetyStop = new Promise((_, reject) => { rejectSafetyStop = reject; });
 // This single bounded signal is observed from creation, including between jobs.
 void safetyStop.catch(() => {});
@@ -186,7 +189,8 @@ try {
     "scripts/lib/birth-type-capture.mjs", "scripts/lib/select-owned-local-browser-file.mjs",
     "scripts/lib/docx-html-scaling-control.mjs", "scripts/lib/docx-html-scaling-fixtures.py", "scripts/lib/opfs-output-validation-backing.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/browser-payload-cancellation.mjs",
     "scripts/lib/docx-direct-control.mjs", "app/converter/ConverterApp.tsx", "workers/random-access-destination.ts", "workers/direct-file-writer.worker.ts", "workers/direct-writer-protocol.ts",
-    "workers/docx-outline.ts", "scripts/lib/docx-outline-fixtures.py", "scripts/lib/bounded-error-details.mjs"])
+    "workers/docx-outline.ts", "scripts/lib/docx-outline-fixtures.py", "scripts/lib/bounded-error-details.mjs",
+    "scripts/lib/docx-cleanup-diagnostic.mjs", "scripts/lib/bounded-dom-counters.mjs", "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
@@ -235,6 +239,20 @@ try {
       scalingInputs.push({ file, paragraphs, bytes, sha256: await hashFile(file), generated, validated });
     }
     report.scalingInputs = scalingInputs.map(({ file, ...proof }) => { void file; return proof; });
+    if (memoryDiagnostic) {
+      const file = "evidence/2026-11-07T02-51-38-596Z-docx-html-qualification.json", bytes = await readFile(path.join(root, file));
+      assert.equal(sha(bytes), "ecea1214979260e55527d2592daf71033ea1a9dd140543dc8e4cd17c8dced3ac");
+      const failed = JSON.parse(bytes);
+      for (const key of ["workers/docx-html-conversion.ts", "workers/docx-conversion.ts", "workers/docx-outline.ts", "workers/conversion.worker.ts",
+        "workers/random-access-destination.ts", "workers/direct-file-writer.worker.ts", "workers/direct-writer-protocol.ts", "app/converter/ConverterApp.tsx", "lib/capability-registry.ts", "package-lock.json"])
+        assert.equal(report.sourcePins[key], failed.sourcePins[key], "Diagnostic must retain failed production source: " + key);
+      for (const fixture of scalingInputs) {
+        const prior = failed.scalingInputs.find(row => row.paragraphs === fixture.paragraphs);
+        assert.equal(fixture.bytes, prior.bytes); assert.equal(fixture.sha256, prior.sha256);
+      }
+      report.diagnosticComparison = { file, sha256: sha(bytes), identicalProductionSourcesAndInputs: true,
+        identicalSettings: true, browserServiceExclusions: false, qualification: false };
+    }
     // Test the separate streaming large-output validator BEFORE conversion.
     const fixture = path.join(runtime.directory, "validator-scaling.html");
     const text = number => String(number).padStart(8, "0") + "|" + "bounded-stream-".repeat(280) + "|β 😀 &amp; &lt;script&gt;safe&lt;/script&gt;";
@@ -333,6 +351,13 @@ try {
     report.destinationObservations.push(observation); return observation;
   };
   await open(); report.loadedIdle = await stable(); controlStart = Date.now();
+  if (memoryDiagnostic) {
+    report.scope = "Diagnostic-only unchanged styled inputs/settings: three small conversions then first full large conversion, phase DOM/realm/native allocator observations; NOT qualification or a speed benchmark";
+    cleanupDiagnostic = await createDocxCleanupDiagnostic({ page, context, browser, realms: realmSampler,
+      nativeSnapshot: async () => { await drain(); return samples.at(-1) ?? null; },
+      archiveDirectory: path.join(root, "output/playwright"), stamp });
+    await cleanupDiagnostic.sample("loaded");
+  }
   timer = setInterval(() => {
     void drain().catch(error => { observerError ??= error; rejectSafetyStop(error); });
     if (scaling && Math.floor(Date.now() / 500) % 4 === 0) void sampleRealms().catch(error => { observerError ??= error; rejectSafetyStop(error); });
@@ -364,6 +389,8 @@ try {
       await select(fixture.file);
       let previous = null;
       for (let repeat = 1; repeat <= scalingPlan.repeats; repeat++) {
+        const diagnoseLarge = memoryDiagnostic && fixture.paragraphs === scalingPlan.paragraphs.at(-1);
+        if (diagnoseLarge) await cleanupDiagnostic.sample("before-large");
         const started = Date.now();
         if (direct) await Promise.race([safetyStop, directCompletion()]);
         else {
@@ -373,6 +400,7 @@ try {
           }, previous, { timeout: scalingPlan.conversionTimeoutMs })]);
         }
         const state = await page.evaluate(() => window.__WITHIN_TEST__.getState());
+        if (diagnoseLarge) await cleanupDiagnostic.sample("complete");
         assert.equal(state.error, null); assert.equal(state.metrics.pendingOperations, 0); assert.equal(state.metrics.queuedBytes, 0);
         assert.equal(state.metrics.inputBytes, fixture.bytes); assert.ok(state.metrics.maxReadChunkBytes <= 262144);
         assert.ok(state.metrics.maxWriteChunkBytes <= 65536); assert.ok(state.metrics.peakQueuedBytes <= 65536); assert.equal(state.metrics.peakPendingOperations, 1);
@@ -390,20 +418,35 @@ try {
         if (direct) row.destinationObservation = observation;
         const binding = await bindLargeDocumentOutputValidationBacking(page, profile, name, state.metrics.outputBytes);
         row.binding = binding.proof;
+        if (diagnoseLarge) await cleanupDiagnostic.sample("bound");
         row.validated = JSON.parse((await execute("python", [path.join(root, "scripts/lib/docx-html-scaling-fixtures.py"), "validate", binding.file, String(fixture.paragraphs)],
           { cwd: root, env, windowsHide: true, timeout: scalingPlan.validatorTimeoutMs, maxBuffer: 32768 })).stdout);
         await assertOpfsOutputValidationBackingUnchanged(binding);
+        if (diagnoseLarge) await cleanupDiagnostic.sample("validated");
         assert.equal(row.validated.bytes, row.outputBytes); assert.equal(row.validated.paragraphs, fixture.paragraphs);
         if (fixture.paragraphs === scalingPlan.paragraphs.at(-1)) assert.ok(row.outputBytes > 100 * 1024 ** 2);
         await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
         await waitEmpty(); assert.deepEqual(await leftovers(), []);
         await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
+        if (diagnoseLarge) await cleanupDiagnostic.sample("deleted");
         // Natural stable observation only: no forced GC, service changes, page
         // replacement or baseline substitution to hide retained allocations.
         const cleanup = await Promise.race([safetyStop, stable()]);
         await drain();
         row.runMemory = summarizeDocxHtmlRunMemory(samples, started, Date.now(), report.blankBaseline, report.loadedIdle, cleanup);
         row.kind = "complete";
+        if (diagnoseLarge) {
+          // Freeze the ORIGINAL stable window before any later observation. The
+          // added delay is diagnostic, never a replacement cleanup acceptance.
+          controlEnd = Date.now(); report.firstCleanupWithinGate = row.runMemory.cleanupDeltaFromLoadedMiB <= scalingPlan.cleanupRecoveryLimitMiB;
+          await cleanupDiagnostic.sample("cleanup-first");
+          await Promise.race([safetyStop, pause(45000)]);
+          await cleanupDiagnostic.sample("cleanup-plus45s");
+          assert.ok(row.runMemory.incrementalPrivateMiB <= 250);
+          assert.ok(report.firstCleanupWithinGate, "Unchanged96MiB FIRST cleanup recovery gate; later diagnostic cannot override");
+          const complete = new Error("Changed diagnostic complete; remaining qualification deliberately not executed");
+          complete.code = "DOCX_DIAGNOSTIC_COMPLETE"; throw complete;
+        }
         assert.ok(row.runMemory.incrementalPrivateMiB <= 250);
         assert.ok(row.runMemory.cleanupDeltaFromLoadedMiB <= scalingPlan.cleanupRecoveryLimitMiB, "Unchanged96MiB cleanup recovery gate");
         row.realmsAfterCleanup = await realmSampler.sample();
@@ -500,9 +543,18 @@ try {
     assert.ok(candidate.observedMedianImprovement >= candidate.minimumLargeMedianImprovement, "Reject candidate without preregistered10% median gain");
     candidate.identicalInputSettingsAndOutputHashesVerified = true; candidate.accepted = true;
   }
-} catch (error) { report.status = "failed-not-acceptance"; report.failures.push(String(error.stack ?? error)); controlEnd ??= Date.now(); process.exitCode = 1; }
+} catch (error) {
+  if (memoryDiagnostic && error.code === "DOCX_DIAGNOSTIC_COMPLETE") report.status = "completed-private-cleanup-diagnostic-not-acceptance";
+  else { report.status = "failed-not-acceptance"; report.failures.push(String(error.stack ?? error)); process.exitCode = 1; }
+  controlEnd ??= Date.now();
+}
 finally {
   clearInterval(timer); await pending?.catch(() => {});
+  if (cleanupDiagnostic) {
+    try { await cleanupDiagnostic.close(); }
+    catch (error) { report.diagnosticCleanupErrors = boundedErrorDetails(error); report.failures.push("Diagnostic cleanup: " + error); report.status = "failed-not-acceptance"; process.exitCode = 1; }
+    finally { report.cleanupDiagnostic = cleanupDiagnostic.report(); }
+  }
   if (monitor) {
     try { await monitor.close(); }
     catch (error) { report.observerCleanupErrors = boundedErrorDetails(error); report.failures.push("Observer cleanup: " + error); }
