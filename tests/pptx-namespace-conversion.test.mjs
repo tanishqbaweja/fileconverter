@@ -3,14 +3,18 @@ import { readFile } from "node:fs/promises";
 import { test } from "node:test";
 import { build } from "esbuild";
 import { strToU8, zipSync } from "fflate";
+import { preparePptxTokenDeliverySources, tokenDeliveryPlugin } from "../scripts/lib/pptx-token-delivery-overlay.mjs";
 
-const bundled = await build({
-  entryPoints: ["workers/pptx-namespace-candidate.ts"], bundle: true,
-  format: "esm", write: false, platform: "browser",
-});
-const { runPptxToText } = await import(
-  "data:text/javascript;base64," + Buffer.from(bundled.outputFiles[0].contents).toString("base64")
-);
+const [docx, candidate] = await Promise.all(["workers/docx-conversion.ts", "workers/pptx-namespace-candidate.ts"].map(file => readFile(file)));
+const implementations = await Promise.all(["original", "iterator", "callback"].map(async mode => {
+  const sources = mode === "original" ? null : preparePptxTokenDeliverySources(docx, candidate, mode);
+  const bundled = await build({
+    entryPoints: [sources ? "workers/pptx-conversion.ts" : "workers/pptx-namespace-candidate.ts"], bundle: true,
+    format: "esm", write: false, platform: "browser",
+    plugins: sources ? [tokenDeliveryPlugin({ root: process.cwd(), sources })] : [],
+  });
+  return (await import("data:text/javascript;base64," + Buffer.from(bundled.outputFiles[0].contents).toString("base64"))).runPptxToText;
+}));
 
 test("the unqualified PPTX candidate is not imported by the public worker", async () => {
   const worker = await readFile("workers/conversion.worker.ts", "utf8");
@@ -30,7 +34,7 @@ const presentation = body => `<p:presentation xmlns:p="${p}" xmlns:r="${r}"><p:s
 const slide = (body, attrs = "") => `<p:sld xmlns:p="${p}" xmlns:a="${a}" ${attrs}><p:cSld><p:spTree><p:sp><p:txBody>${body}</p:txBody></p:sp></p:spTree></p:cSld></p:sld>`;
 const paragraph = text => `<a:p><a:r><a:t>${text}</a:t></a:r></a:p>`;
 
-async function convert(overrides = {}) {
+async function convertWith(runPptxToText, overrides = {}) {
   const parts = {
     "[Content_Types].xml": `<Types xmlns="${types}">${override}</Types>`,
     "_rels/.rels": relations(relation("office", "officeDocument", "ppt/presentation.xml")),
@@ -57,6 +61,11 @@ async function convert(overrides = {}) {
     },
   });
   return { text: Buffer.concat(output).toString("utf8"), warnings: warnings.join(" ") };
+}
+async function convert(overrides = {}) {
+  const expected = await convertWith(implementations[0], overrides);
+  for (const run of implementations.slice(1)) assert.deepEqual(await convertWith(run, overrides), expected);
+  return expected;
 }
 
 test("reads scoped DrawingML names and excludes rebound, foreign and extension text", async () => {
@@ -128,5 +137,5 @@ for (const [name, parts, error] of [
   ["invalid visibility", { "ppt/slides/one.xml": slide("", 'show="no"') }, /invalid visibility/],
   ["mismatched closing tags", { "ppt/slides/one.xml": slide("<a:p></a:r>") }, /does not match/],
 ]) test(`rejects ${name}`, async () => {
-  await assert.rejects(convert(parts), error);
+  for (const run of implementations) await assert.rejects(convertWith(run, parts), error);
 });

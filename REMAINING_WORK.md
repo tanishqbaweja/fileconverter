@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-11-07 PPTX token callback experimentally reduced mean processing time
+18.77% (7.027 → 5.708 s) on four exact 135 MB conversions in a matched
+private browser comparison. Byte fidelity and 250 MiB peak gates held,
+but callback repeat 2 failed the unchanged 96 MiB cleanup gate
+(135.359 MiB); the control's maximum was 75.586 MiB. Do not publish the
+callback or rerun these exact arms merely to get a green receipt. The
+renderer gap remains: the callback changed the delivery cost, not the
+underlying cleanup result. Retain the speed finding, prioritize another
+open requirement or an independently justified renderer-memory change,
+and require a reviewed production-build qualification before any adoption.
+Both owned sessions and disposable data were cleaned. See `TESTED.md`.
+
 2026-11-07 PPTX renderer localization: the **published parser** also
 reproduced the 96 MiB cleanup failure with both actual async OPFS
 (120.031 MiB) and real shared handle backed by OPFS (145.070 MiB), even

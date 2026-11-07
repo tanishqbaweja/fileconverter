@@ -1,5 +1,38 @@
 # Tested conversion ledger
 
+2026-11-07 private PPTX **token-delivery A/B**. Two fresh, headless normal-service
+Chrome sessions used the same production UI/worker dispatch and async OPFS
+writer. Both variants loaded a private esbuild worker overlay at the same
+app asset path; exact source comparisons verify the only factor was whether
+the lexer yielded each token across its async iterator or called the parser
+inline and awaited only pending work. No shipped asset was changed.
+
+| Token delivery | Full-input conversion time | Whole-tree peak above blank | Maximum first cleanup above idle |
+| --- | ---: | ---: | ---: |
+| Iterator control | 7.035 s, 7.019 s | 113.879 MiB | 75.586 MiB |
+| Inline callback | 5.604 s, 5.812 s | 167.852 MiB | **135.359 MiB — fail** |
+
+Mean processing time fell from 7.027 to 5.708 s (18.77%); these were
+sequential sessions, not a randomized benchmark. All four 135,296,355-byte
+inputs produced the same independently checked 92,391,679-byte SHA-256;
+both 93-byte native presentation outputs matched, including hidden-slide
+disclosure. Each large job held read/write/queued bytes to 256 KiB and
+pending writes to one. The callback's second cleanup missed the unchanged
+96 MiB gate. At the last sample in that cleanup window, a birth-matched
+renderer was 137.273 MiB above its loaded-window sample; the allocator
+behind the increase is unproven. A speed benefit is not a memory fix.
+
+778 valid and zero unavailable active samples, 28 observed requests and
+zero forbidden, all 34/41 observed PIDs and both servers gone, scratch
+and converted outputs removed, and original `test.mkv` SHA unchanged.
+No native picker, adverse-browser qualification, registry change or
+promotion. See [iterator](evidence/2026-11-07T19-03-46-916Z-pptx-token-iterator.json)
+and [callback](evidence/2026-11-07T19-05-48-761Z-pptx-token-callback.json)
+receipts. 103 focused checks and affected lint passed, including stream
+parity, hostile namespaces, bounded backpressure, and reader release on write
+failure. No production rebuild or broad suite replay: production bytes were
+unchanged.
+
 2026-11-07 PPTX published-parser renderer diagnostics and destination-metric
 fix. The exact 135,296,355-byte input produced the same independently hashed
 92,391,679-byte TXT via the async OPFS stream and the real shared-bridge

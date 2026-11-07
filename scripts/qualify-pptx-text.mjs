@@ -32,16 +32,18 @@ import { classifyPrivateRequest } from "./lib/private-browser-request.mjs";
 import { queryReliableProcessIdentity } from "./lib/reliable-owned-identity.mjs";
 import { selectOwnedLocalBrowserFile } from "./lib/select-owned-local-browser-file.mjs";
 import { createPptxRendererDiagnostic } from "./lib/pptx-renderer-attribution.mjs";
+import { buildPrivatePptxTokenWorker } from "./lib/pptx-token-delivery-overlay.mjs";
 
 assert.equal(process.platform, "win32");
 const noScreencastDiagnostic = process.argv[2] === "--diagnose-no-screencast";
 const verifyHandleMetrics = process.argv[2] === "--verify-published-handle-metrics";
+const tokenMode = /^--compare-token-(iterator|callback)$/.exec(process.argv[2] ?? "")?.[1];
 const handleDiagnostic = process.argv[2] === "--diagnose-published-handle" || verifyHandleMetrics;
 const publishedDiagnostic = process.argv[2] === "--diagnose-published-renderer" || handleDiagnostic;
-assert.equal(process.argv.length, noScreencastDiagnostic || publishedDiagnostic ? 3 : 2);
+assert.equal(process.argv.length, noScreencastDiagnostic || publishedDiagnostic || tokenMode ? 3 : 2);
 const root = path.resolve(import.meta.dirname, "..");
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
-const base = `evidence/${stamp}-${verifyHandleMetrics ? "pptx-handle-metrics" : handleDiagnostic ? "pptx-published-handle" : publishedDiagnostic ? "pptx-published-renderer" : "pptx-text-normal-services"}`;
+const base = `evidence/${stamp}-${tokenMode ? `pptx-token-${tokenMode}` : verifyHandleMetrics ? "pptx-handle-metrics" : handleDiagnostic ? "pptx-published-handle" : publishedDiagnostic ? "pptx-published-renderer" : "pptx-text-normal-services"}`;
 const execute = promisify(execFile);
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => {
@@ -49,7 +51,7 @@ const hashFile = async file => {
   for await (const chunk of createReadStream(file, { highWaterMark: 262144 })) digest.update(chunk);
   return digest.digest("hex");
 };
-if (!publishedDiagnostic) assert.equal(
+if (!publishedDiagnostic && !tokenMode) assert.equal(
   await hashFile(path.join(root, "workers/pptx-conversion.ts")),
   await hashFile(path.join(root, "workers/pptx-namespace-candidate.ts")),
   "Use a disposable review checkout with the exact candidate at workers/pptx-conversion.ts and build it first; the public route is deliberately unchanged.",
@@ -64,8 +66,8 @@ const report = {
   headed: false, browserServicesDisabled: false, nativePickerVerified: false, nativeConversionUsed: false,
   normalInstalledUserProfileUsed: false,
   diskMode: handleDiagnostic ? "shared-direct-handle-opfs-adapter" : "async-opfs-file-stream", limits, sourcePins: {},
-  diagnosticOnly: noScreencastDiagnostic || publishedDiagnostic,
-  traceScreenshots: !noScreencastDiagnostic && !publishedDiagnostic,
+  diagnosticOnly: noScreencastDiagnostic || publishedDiagnostic || Boolean(tokenMode),
+  traceScreenshots: !noScreencastDiagnostic && !publishedDiagnostic && !tokenMode,
   memoryFormula: "(peak complete spawned Chrome process-tree private bytes - earliest stable same clean blank Chrome private bytes) / 1048576",
   requestCount: 0, forbiddenRequests: [], realmObservations: [],
 };
@@ -148,6 +150,15 @@ try {
   report.build = { configSha256: await hashFile(config), workerSha256: await hashFile(path.join(path.dirname(config), build.main)), assets: assets.size };
   runtime = await createOwnedRuntimeScratch("pptx-text-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
+  let privateWorker;
+  if (tokenMode) {
+    report.scope = "Private parser token-delivery A/B, with otherwise identical esbuild worker overlay and production UI, not acceptance";
+    report.sourcePins["scripts/lib/pptx-token-delivery-overlay.mjs"] = await hashFile(path.join(root, "scripts/lib/pptx-token-delivery-overlay.mjs"));
+    privateWorker = await buildPrivatePptxTokenWorker({ root, runtime, mode: tokenMode });
+    const { file, ...proof } = privateWorker;
+    report.tokenDelivery = { ...proof, fulfilledRequests: 0 };
+    assert.equal(await hashFile(file), proof.sha256);
+  }
   const native = async (...args) => JSON.parse((await execute("python",
     ["-B", "scripts/lib/pptx-native-control.py", ...args],
     { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 16384 })).stdout);
@@ -222,6 +233,24 @@ try {
       if (report.forbiddenRequests.length < 16) report.forbiddenRequests.push({ method, category, urlSha256: sha(request.url()) });
       rejectStop(new Error("Request outside exact built-asset/privacy policy"));
       await route.abort();
+    } else if (privateWorker && request.url() === server.baseURL + privateWorker.requestedAsset) {
+      try {
+        assert.equal(method, "GET");
+        assert.ok(report.tokenDelivery.fulfilledRequests < 16);
+        const response = await route.fetch({ maxRedirects: 0 });
+        try {
+          assert.equal(response.status(), 200);
+          const headers = response.headers();
+          assert.equal(headers["cross-origin-embedder-policy"], "require-corp");
+          assert.equal(headers["cross-origin-resource-policy"], "same-origin");
+          assert.equal(headers["cross-origin-opener-policy"], "same-origin");
+          assert.match(headers["content-security-policy"], /wasm-unsafe-eval/);
+          delete headers["content-encoding"]; delete headers["content-length"]; delete headers.etag;
+          headers["cache-control"] = "no-store";
+          await route.fulfill({ response, headers, contentType: "text/javascript", path: privateWorker.file });
+          report.tokenDelivery.fulfilledRequests++;
+        } finally { await response.dispose(); }
+      } catch (error) { rejectStop(error); await route.abort().catch(() => {}); }
     } else await route.continue();
   });
   await context.tracing.start({ screenshots: report.traceScreenshots, snapshots: false, sources: false }); tracing = true;
@@ -271,7 +300,7 @@ try {
     assert.deepEqual(await opfsNames(), []);
     row.cleanup = await guard(stable()); row.endedAt = Date.now();
     row.cleanupGatePassed = (row.cleanup.privateBytes - report.loadedIdle.privateBytes) / 1048576 <= limits.cleanupMiB;
-    if (!publishedDiagnostic) assert.ok(row.cleanupGatePassed, "Unchanged 96 MiB cleanup gate");
+    if (!publishedDiagnostic && !tokenMode) assert.ok(row.cleanupGatePassed, "Unchanged 96 MiB cleanup gate");
   };
   const convert = async (kind, file, validate, hidden = false) => {
     const row = await choose(kind, file);
@@ -355,6 +384,15 @@ try {
     report.status = handleDiagnostic
       ? "completed-published-handle-diagnostic-not-acceptance"
       : "completed-published-renderer-diagnostic-not-acceptance";
+  } else if (tokenMode) {
+    await convert("native", nativeFixture, validateNative, true);
+    assert.ok(report.tokenDelivery.fulfilledRequests > 0, "Private browser worker must have been served");
+    for (let repeat = 1; repeat <= 2; repeat++) {
+      await convert(`large-${repeat}`, largeFixture, validateLarge);
+      if (!report.cases.at(-1).cleanupGatePassed) break;
+    }
+    assert.equal(await hashFile(path.join(root, "dist/client", privateWorker.requestedAsset)), privateWorker.originalAssetSha256);
+    report.status = "completed-token-delivery-diagnostic-not-acceptance";
   } else {
     await convert("native", nativeFixture, validateNative, true);
     for (let repeat = 1; repeat <= 3; repeat++) await convert(`large-${repeat}`, largeFixture, validateLarge);
