@@ -5,6 +5,7 @@ import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 import { assertInstalledChromePinsEqual } from "../scripts/lib/installed-chrome-pin.mjs";
 import { prePptxMetricWorker } from "../scripts/lib/reviewed-pptx-destination-metrics.mjs";
+import { preDocxRowspanRegistry } from "../scripts/lib/reviewed-docx-html-integration.mjs";
 const read = file => readFile(new URL("../" + file.replaceAll("\\", "/"), import.meta.url));
 const sha = value => createHash("sha256").update(value).digest("hex");
 const comparison = JSON.parse(await read("evidence/2026-11-07-docx-emphasis-repeatability.json"));
@@ -30,7 +31,9 @@ test("two fresh normal-service Chrome sessions validate supported inherited emph
       continue;
     }
     const bytes = await read(key);
-    assert.equal(sha(key === "workers/conversion.worker.ts" ? prePptxMetricWorker(bytes) : bytes), records[0].sourcePins[key]);
+    const source = key === "workers/conversion.worker.ts" ? prePptxMetricWorker(bytes)
+      : key === "lib/capability-registry.ts" ? preDocxRowspanRegistry(bytes) : bytes;
+    assert.equal(sha(source), records[0].sourcePins[key]);
   }
   for (const r of records) {
     assert.equal(r.inheritedEmphasisControlVerified, true); assert.equal(r.browserServicesDisabled, false); assert.equal(r.headed, false);

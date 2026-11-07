@@ -28,8 +28,9 @@ function fixture(document, extra = {}) {
     "word/document.xml": strToU8(document), ...extra,
   }, { level: 0 })], "fixture.docx");
 }
-async function convert(document, { extra, failWrite, cancel } = {}) {
+async function convert(document, { extra, failWrite, failPatch, cancel } = {}) {
   const chunks = [], warnings = [], metrics = { inputBytes: 0 }, file = fixture(document, extra);
+  const patches = [];
   let writes = 0, active = 0, peak = 0, maximumChunkBytes = 0, total = 0;
   await runDocxToHtml({ file, metrics, warn: value => warnings.push(value), progress() {},
     assertActive() { if (cancel) throw new DOMException("Synthetic cancellation", "AbortError"); },
@@ -38,8 +39,20 @@ async function convert(document, { extra, failWrite, cancel } = {}) {
       active++; peak = Math.max(peak, active); maximumChunkBytes = Math.max(maximumChunkBytes, chunk.length);
       total += chunk.length; assert.ok(total <= 4 * 1024 * 1024, "Small bounded unit output capture only");
       chunks.push(Buffer.from(chunk)); await new Promise(resolve => setImmediate(resolve)); active--;
+    },
+    async patch(position, bytes) {
+      if (failPatch) throw new DOMException("Synthetic row-span patch failure", "QuotaExceededError");
+      assert.equal(active, 0); assert.equal(bytes.length, 5);
+      let offset = position;
+      const target = chunks.find(chunk => {
+        if (offset < chunk.length) return true;
+        offset -= chunk.length; return false;
+      });
+      assert.ok(target && offset + bytes.length <= target.length);
+      patches.push({ position, value: Buffer.from(bytes).toString() });
+      target.set(bytes, offset);
     } });
-  return { html: Buffer.concat(chunks).toString("utf8"), warnings, metrics, inputBytes: file.size, writes, peak, maximumChunkBytes };
+  return { html: Buffer.concat(chunks).toString("utf8"), warnings, metrics, inputBytes: file.size, writes, peak, maximumChunkBytes, patches };
 }
 test("DOCX HTML is a genuine private worker route, absent from normal public selection", () => {
   const profile = privateQualificationProfiles.find(row => row.id === "docx-to-html"); assert.ok(profile);
@@ -67,11 +80,66 @@ test("horizontal grid spans survive on their own cell without carrying state int
   assert.deepEqual([...r.html.matchAll(/<td(?: colspan="([0-9]+)")?>/g)].map(m => m[1] ?? null), ["3", "2", null, "1000", null]);
   assert.ok(r.html.includes('<td colspan="3"><table><tr><td colspan="2"><p>nested</p>'));
   assert.ok(r.html.includes('<td colspan="1000"></td>\n<td><p>next</p>'));
-  assert.ok(r.warnings.some(value => value.includes("Vertical and legacy table merges")));
+  assert.ok(r.warnings.some(value => value.includes("Legacy horizontal merges")));
 });
 test("foreign or historical span properties cannot change the current horizontal grid", async () => {
-  const r = await convert(xml('<w:tbl><w:tr><w:tc><w:tcPr><x:gridSpan xmlns:x="urn:fake" w:val="8"/><w:tcPrChange><w:tcPr><w:gridSpan w:val="9"/></w:tcPr></w:tcPrChange><w:vMerge w:val="restart"/></w:tcPr><w:p/></w:tc></w:tr></w:tbl>'));
+  const r = await convert(xml('<w:tbl><w:tr><w:tc><w:tcPr><x:gridSpan xmlns:x="urn:fake" w:val="8"/><w:tcPrChange><w:tcPr><w:gridSpan w:val="9"/><w:vMerge w:val="restart"/></w:tcPr></w:tcPrChange><x:vMerge xmlns:x="urn:fake" w:val="restart"/></w:tcPr><w:p/></w:tc></w:tr></w:tbl>'));
   assert.ok(r.html.includes("<td><p></p>")); assert.doesNotMatch(r.html, /colspan|rowspan/);
+});
+const wordParagraph = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
+const rowCell = (text, merge, width = 1) => `<w:tc>${merge || width !== 1 ? `<w:tcPr>${width === 1 ? "" : `<w:gridSpan w:val="${width}"/>`}${merge === "default" ? "<w:vMerge/>" : merge ? `<w:vMerge w:val="${merge}"/>` : ""}</w:tcPr>` : ""}${text ? wordParagraph(text) : "<w:p/>"}</w:tc>`;
+const row = (cells, props = "") => `<w:tr>${props}${cells.join("")}</w:tr>`;
+const table = rows => xml(`<w:tbl>${rows.join("")}</w:tbl>`);
+
+test("bounded vertical spans preserve exact grid columns, omit empty continuations and preserve edge positions", async () => {
+  const gap = '<w:trPr><w:gridBefore w:val="2"/><w:gridAfter w:val="1"/></w:trPr>';
+  const r = await convert(table([row([rowCell("joined", "restart", 2), rowCell("A")], gap),
+    row([rowCell("", "default", 2), rowCell("B")], gap),
+    row([rowCell("", "continue", 2), rowCell("C")], gap), row([rowCell("new", undefined, 2)], gap)]));
+  assert.equal(r.patches.length, 0, "Small spans stay in the existing buffer");
+  assert.match(r.html, /<td colspan="2" aria-hidden="true"><\/td><td colspan="2" rowspan="00003"><p>joined<\/p>/);
+  assert.equal((r.html.match(/rowspan=/g) ?? []).length, 1);
+  assert.equal((r.html.match(/aria-hidden="true"/g) ?? []).length, 8);
+  for (const letter of ["A", "B", "C", "new"]) assert.ok(r.html.includes(`<p>${letter}</p>`));
+  assert.ok(!r.html.includes("<p></p>"));
+});
+
+test("a flushed merge header gets one five-byte patch and later rows keep their byte order", async () => {
+  const input = table([row([rowCell("é😀".repeat(30000), "restart"), rowCell("row one")]),
+    row([rowCell("", "continue"), rowCell("row two")]), row([rowCell("tail")])]);
+  const r = await convert(input);
+  assert.equal(r.peak, 1); assert.equal(r.maximumChunkBytes, 65536);
+  assert.equal(r.patches.length, 1); assert.equal(r.patches[0].value, "00002");
+  assert.equal(Buffer.from(r.html).subarray(r.patches[0].position, r.patches[0].position + 5).toString(), "00002");
+  assert.match(r.html, /<td rowspan="00002"><p>é😀/); assert.ok(r.html.includes("<td><p>tail</p>"));
+  await assert.rejects(convert(input, { failPatch: true }), error => error.name === "QuotaExceededError");
+});
+
+test("a row-span field near the chunk edge is reserved intact before a later patch", async () => {
+  const rows = [row([rowCell("anchor", "restart")]), row([rowCell("", "continue"), rowCell("x".repeat(70000))])];
+  const contents = prefix => xml(wordParagraph(prefix) + `<w:tbl>${rows.join("")}</w:tbl>`);
+  const base = await convert(contents(""));
+  const prefix = "p".repeat(65534 - base.patches[0].position);
+  const r = await convert(contents(prefix));
+  assert.deepEqual(r.patches, [{ position: 65534, value: "00002" }]);
+  assert.match(r.html, /rowspan="00002"><p>anchor/);
+  assert.ok(r.html.includes("x".repeat(70000)));
+});
+
+test("active merge records and edge grid offsets have explicit finite limits", async () => {
+  await assert.rejects(convert(table([row(Array.from({ length: 1025 }, () => rowCell("", "restart")))])), /active vertical merge limit/);
+  await assert.rejects(convert(table([row([rowCell("value")], '<w:trPr><w:gridBefore w:val="1001"/></w:trPr>')])), /HTML limit/);
+  await assert.rejects(convert(table([row([rowCell("value")], '<w:trPr><w:gridBefore w:val="0"/><w:gridBefore w:val="1"/></w:trPr>')])), /late or repeated/);
+});
+
+for (const [rows, pattern] of [
+  [[row([rowCell("", "default")])], /does not match/],
+  [[row([rowCell("first", "restart", 2)]), row([rowCell("", "default")])], /does not match/],
+  [[row([rowCell("first", "restart")]), row([rowCell("ordinary")]), row([rowCell("", "default")])], /does not match/],
+  [[row([rowCell("first", "restart")]), row([rowCell("must not disappear", "default")])], /contains text/],
+  [[row([rowCell("first", "bogus")])], /invalid vertical merge/],
+]) test(`unsafe vertical merge geometry or content is rejected: ${rows.join("")}`, async () => {
+  await assert.rejects(convert(table(rows)), pattern);
 });
 for (const [properties, message] of [
   ['<w:tcPr><w:gridSpan w:val="1001"/></w:tcPr>', /HTML limit/],

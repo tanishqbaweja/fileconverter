@@ -4725,6 +4725,13 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       });
     } else if (profileId === "docx-to-txt" || profileId === "docx-to-html") {
       const documentDestination = destination.writable;
+      // A row-span patch moves the underlying writer's cursor. Append from
+      // the acknowledged output extent so the next chunk cannot overwrite it.
+      const documentAppendDestination: RandomAccessDestination = profileId === "docx-to-html" ? {
+        ...documentDestination,
+        write: (data) => documentDestination.write(data instanceof Uint8Array
+          ? { type: "write", position: metrics.outputBytes, data } : data),
+      } : documentDestination;
       metrics.activeWorkerCount = 1 + (documentDestination.additionalWorkerCount ?? 0);
       metrics.sharedArrayBufferBytes = (cancellationSignal?.byteLength ?? 0) +
         (documentDestination.sharedBufferBytes ?? 0);
@@ -4735,13 +4742,15 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
         metrics,
         write: (chunk, phase) =>
           writeBounded(
-            documentDestination,
+            documentAppendDestination,
             chunk,
             jobId,
             phase,
             metrics,
             startedAt,
           ),
+        patch: (position, chunk, phase) =>
+          patchBounded(documentDestination, position, chunk, jobId, phase, metrics, startedAt),
         warn: (message) => post({ type: "warning", jobId, message }),
         assertActive,
         progress: (phase) =>
