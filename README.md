@@ -1918,6 +1918,18 @@ Current Chrome, Edge, Brave, and Opera are the primary targets. Missing features
 produce a visible limited-browser state; there is no full-memory or server-side
 fallback.
 
+The 2026-11-07 installed Brave 157.1.99.55 and Opera GX 138.0.6044.65 refresh
+passed eight representative format families in separate fresh headless profiles,
+with normal browser services left enabled. Each produced ten independently
+validated outputs, including an OPFS-backed direct file handle and recovery;
+unsafe archive and write failures left no partial output. Whole-process-tree
+peaks were 166.02 and 185.86 MiB above clean blank baselines. Neither run changed
+the 250 MiB peak or 96 MiB cleanup gates. Video was packet-preserving remux;
+WAV-to-FLAC was genuine lossless audio encoding with exact decoded PCM. See
+`evidence/2026-11-07-installed-brave-opera-compatibility.json`. This is small-file
+headless evidence, not native-picker, headed, regular Opera, latest vendor release,
+or multi-gigabyte stress certification.
+
 The 2026-09-19 installed-browser refresh ran genuine structured-data,
 document, archive, image, and media conversions in Chrome 153.0.8010.48,
 Edge 153.0.4234.32, Brave 1.95.104, and Opera GX 135.0.5973.153. All four
@@ -1926,10 +1938,10 @@ picker adapter, unsafe-archive rejection/cleanup, and same-origin GET-only
 privacy checks. Chrome, Edge, and Brave ran headed with completed-state
 screenshots reviewed; Opera GX passed only in isolated headless mode because
 its singleton GUI cannot be safely automated alongside the user's session.
-Standard Opera 136 was not installed and is not claimed. Brave completed
-direct-file output but still lacks folder-picker support, so batch-folder
-destinations remain unavailable there. Complete process-tree memory and
-multi-gigabyte stress results remain Chrome-only. See
+Standard Opera 136 was not installed and is not claimed. At that refresh Brave
+completed direct-file output but did not expose the folder picker. That earlier
+matrix did not measure complete process-tree memory; multi-gigabyte stress
+evidence remains Chrome-only. See
 `evidence/browser-compatibility-matrix-2026-09-19.json` for exact versions,
 hashes, validators, SSIM, timings, privacy observations, and limitations. The
 earlier baseline remains in

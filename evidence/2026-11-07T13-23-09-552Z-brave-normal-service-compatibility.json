@@ -1,0 +1,4670 @@
+{
+  "schemaVersion": 1,
+  "browserId": "brave",
+  "startedAt": "2026-11-07T13:23:09.552Z",
+  "status": "passed-eight-family-installed-headless-compatibility-not-stress",
+  "scope": "Eight independently validated representative production families on installed Chromium fork, OPFS-backed direct handle and unsafe/write-error/recovery; no large/stress/native-picker qualification",
+  "headed": false,
+  "browserServicesDisabled": false,
+  "normalInstalledUserProfileUsed": false,
+  "nativePickerVerified": false,
+  "nativeConversionUsed": false,
+  "stressAcceptance": false,
+  "publicPromotion": false,
+  "cases": [
+    {
+      "family": "data",
+      "profileId": "csv-to-tsv",
+      "kind": "success",
+      "startedAt": 1794057829863,
+      "sourceBytes": 87,
+      "sourceSha256": "6a30e8f50200e6b591a94141cf4755799e7d9eef4ada016d9727286c560d4f13",
+      "input": {
+        "method": "DOM.setFileInputFiles",
+        "selectedLocalPathCount": 1,
+        "selectedFileBytes": 87,
+        "contentPayloadsSent": 0,
+        "nodeFileContentsRead": false,
+        "productionInputElementUsed": true,
+        "fileMetadataUnchanged": true
+      },
+      "metrics": {
+        "inputBytes": 87,
+        "outputBytes": 90,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 90,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 87,
+        "maxWriteChunkBytes": 90,
+        "elapsedMs": 39.935000002384186,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "destination": {
+        "profileId": "csv-to-tsv",
+        "mode": "opfs-test",
+        "actualFileHandle": false,
+        "inputBytes": 87
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/installed-compatibility-lX5s9s/profile/Default/File System/000/t/00/00000001",
+        "logicalBytes": 90,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "1688849865822393",
+          "size": "90",
+          "birthtimeNs": "1794057830005183900",
+          "mtimeNs": "1794057830011738300"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 90,
+            "sha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264"
+          }
+        ],
+        "totalBrowserSampleBytes": 90,
+        "maximumBrowserSampleBytes": 90,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validation": {
+        "validator": "exact expected UTF-8 TSV quoting, rows and Unicode bytes"
+      },
+      "outputSha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264",
+      "validated": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 338145280,
+        "spreadBytes": 520192,
+        "rssBytes": 573775872,
+        "firstTimestamp": "2026-11-07T13:23:54.3922079Z",
+        "lastTimestamp": "2026-11-07T13:23:58.4461025Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "endedAt": 1794057838463,
+      "memory": {
+        "peak": {
+          "sequence": 231,
+          "timestamp": "2026-11-07T13:23:50.4570365Z",
+          "completedAt": "2026-11-07T13:23:50.4671240Z",
+          "sampleError": null,
+          "nativeElapsedMs": 10.1469,
+          "privateBytes": 340729856,
+          "rssBytes": 577748992,
+          "processes": [
+            {
+              "pid": 23980,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.1967668Z",
+              "creationFileTime": "134385314041967668",
+              "executableName": "brave.exe",
+              "privateBytes": 2826240,
+              "rssBytes": 10027008,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25752,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6724833Z",
+              "creationFileTime": "134385314046724833",
+              "executableName": "brave.exe",
+              "privateBytes": 14327808,
+              "rssBytes": 41000960,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 30420,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.9176173Z",
+              "creationFileTime": "134385314049176173",
+              "executableName": "brave.exe",
+              "privateBytes": 56283136,
+              "rssBytes": 117678080,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34088,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6394978Z",
+              "creationFileTime": "134385314046394978",
+              "executableName": "brave.exe",
+              "privateBytes": 137043968,
+              "rssBytes": 143708160,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39364,
+              "parentPid": 11824,
+              "createdAt": "2026-11-07T13:23:24.1380099Z",
+              "creationFileTime": "134385314041380099",
+              "executableName": "brave.exe",
+              "privateBytes": 106242048,
+              "rssBytes": 214257664,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 40252,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:40.6897555Z",
+              "creationFileTime": "134385314206897555",
+              "executableName": "brave.exe",
+              "privateBytes": 15409152,
+              "rssBytes": 31981568,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 46808,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6797062Z",
+              "creationFileTime": "134385314046797062",
+              "executableName": "brave.exe",
+              "privateBytes": 8597504,
+              "rssBytes": 19095552,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 79,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 68.44140625,
+        "conversionOnlyPrivateMiB": 10.51171875,
+        "cleanupDeltaFromLoadedMiB": 8.046875,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 338145280,
+          "spreadBytes": 520192,
+          "rssBytes": 573775872,
+          "firstTimestamp": "2026-11-07T13:23:54.3922079Z",
+          "lastTimestamp": "2026-11-07T13:23:58.4461025Z",
+          "sampleCount": 9,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T13:23:49.863Z",
+        "windowEnd": "2026-11-07T13:23:58.463Z"
+      }
+    },
+    {
+      "family": "document",
+      "profileId": "txt-to-docx",
+      "kind": "success",
+      "startedAt": 1794057838463,
+      "sourceBytes": 113,
+      "sourceSha256": "0d662d9583cc2bf51fe67677d54f7f82547f3ebe7e51245c8f347f986321bdef",
+      "input": {
+        "method": "DOM.setFileInputFiles",
+        "selectedLocalPathCount": 1,
+        "selectedFileBytes": 113,
+        "contentPayloadsSent": 0,
+        "nodeFileContentsRead": false,
+        "productionInputElementUsed": true,
+        "fileMetadataUnchanged": true
+      },
+      "metrics": {
+        "inputBytes": 113,
+        "outputBytes": 1096,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 291,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 113,
+        "maxWriteChunkBytes": 291,
+        "elapsedMs": 68.38500002026558,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "destination": {
+        "profileId": "txt-to-docx",
+        "mode": "opfs-test",
+        "actualFileHandle": false,
+        "inputBytes": 113
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/installed-compatibility-lX5s9s/profile/Default/File System/000/t/00/00000003",
+        "logicalBytes": 1096,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "1688849865821580",
+          "size": "1096",
+          "birthtimeNs": "1794057838511331400",
+          "mtimeNs": "1794057838567233600"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 1096,
+            "sha256": "f1ca38b8a2a845d95dee19cbc50f71c09283502aff767fcdf71ee966152ac471"
+          }
+        ],
+        "totalBrowserSampleBytes": 1096,
+        "maximumBrowserSampleBytes": 1096,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validation": {
+        "paragraphs": 3,
+        "unicodeTextAndOrderVerified": true,
+        "zipCrcVerified": true,
+        "packageTypesAndMainRelationshipVerified": true,
+        "validator": "independent Python zipfile and bounded XML parsing"
+      },
+      "outputSha256": "f1ca38b8a2a845d95dee19cbc50f71c09283502aff767fcdf71ee966152ac471",
+      "validated": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 345137152,
+        "spreadBytes": 303104,
+        "rssBytes": 574275584,
+        "firstTimestamp": "2026-11-07T13:24:02.8220887Z",
+        "lastTimestamp": "2026-11-07T13:24:06.8741369Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "endedAt": 1794057846952,
+      "memory": {
+        "peak": {
+          "sequence": 323,
+          "timestamp": "2026-11-07T13:24:00.5265544Z",
+          "completedAt": "2026-11-07T13:24:00.5400069Z",
+          "sampleError": null,
+          "nativeElapsedMs": 13.6357,
+          "privateBytes": 346660864,
+          "rssBytes": 575848448,
+          "processes": [
+            {
+              "pid": 23980,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.1967668Z",
+              "creationFileTime": "134385314041967668",
+              "executableName": "brave.exe",
+              "privateBytes": 2686976,
+              "rssBytes": 9961472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25752,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6724833Z",
+              "creationFileTime": "134385314046724833",
+              "executableName": "brave.exe",
+              "privateBytes": 14213120,
+              "rssBytes": 41058304,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 30420,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.9176173Z",
+              "creationFileTime": "134385314049176173",
+              "executableName": "brave.exe",
+              "privateBytes": 59699200,
+              "rssBytes": 121020416,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34088,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6394978Z",
+              "creationFileTime": "134385314046394978",
+              "executableName": "brave.exe",
+              "privateBytes": 139776000,
+              "rssBytes": 138313728,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39364,
+              "parentPid": 11824,
+              "createdAt": "2026-11-07T13:23:24.1380099Z",
+              "creationFileTime": "134385314041380099",
+              "executableName": "brave.exe",
+              "privateBytes": 106631168,
+              "rssBytes": 214736896,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 40252,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:40.6897555Z",
+              "creationFileTime": "134385314206897555",
+              "executableName": "brave.exe",
+              "privateBytes": 15056896,
+              "rssBytes": 31662080,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 46808,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6797062Z",
+              "creationFileTime": "134385314046797062",
+              "executableName": "brave.exe",
+              "privateBytes": 8597504,
+              "rssBytes": 19095552,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 77,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 74.09765625,
+        "conversionOnlyPrivateMiB": 16.16796875,
+        "cleanupDeltaFromLoadedMiB": 14.71484375,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 345137152,
+          "spreadBytes": 303104,
+          "rssBytes": 574275584,
+          "firstTimestamp": "2026-11-07T13:24:02.8220887Z",
+          "lastTimestamp": "2026-11-07T13:24:06.8741369Z",
+          "sampleCount": 9,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T13:23:58.463Z",
+        "windowEnd": "2026-11-07T13:24:06.952Z"
+      }
+    },
+    {
+      "family": "archive",
+      "profileId": "tar-to-zip",
+      "kind": "success",
+      "startedAt": 1794057846952,
+      "sourceBytes": 4096,
+      "sourceSha256": "975d0238e50ed6bafa8ff5ef5c0bb8132fe1063c6e847c8ceb109b857aee40e4",
+      "input": {
+        "method": "DOM.setFileInputFiles",
+        "selectedLocalPathCount": 1,
+        "selectedFileBytes": 4096,
+        "contentPayloadsSent": 0,
+        "nodeFileContentsRead": false,
+        "productionInputElementUsed": true,
+        "fileMetadataUnchanged": true
+      },
+      "metrics": {
+        "inputBytes": 4096,
+        "outputBytes": 490,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 70,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 512,
+        "maxWriteChunkBytes": 70,
+        "elapsedMs": 80.02000001072884,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "destination": {
+        "profileId": "tar-to-zip",
+        "mode": "opfs-test",
+        "actualFileHandle": false,
+        "inputBytes": 4096
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/installed-compatibility-lX5s9s/profile/Default/File System/000/t/00/00000005",
+        "logicalBytes": 490,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "1688849865821596",
+          "size": "490",
+          "birthtimeNs": "1794057847006456600",
+          "mtimeNs": "1794057847067287500"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 490,
+            "sha256": "8695424efbcf5065b677fe2b4f146a2cc5219d760941df009770b807f1e4fcc3"
+          }
+        ],
+        "totalBrowserSampleBytes": 490,
+        "maximumBrowserSampleBytes": 490,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validation": {
+        "entries": 3,
+        "payloadBytes": 88,
+        "allEntryNamesSizesAndSha256Equal": true,
+        "validator": "independent streaming Python tarfile/zipfile, every entry CRC and SHA-256"
+      },
+      "outputSha256": "8695424efbcf5065b677fe2b4f146a2cc5219d760941df009770b807f1e4fcc3",
+      "validated": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 344219648,
+        "spreadBytes": 5656576,
+        "rssBytes": 575664128,
+        "firstTimestamp": "2026-11-07T13:24:11.3554093Z",
+        "lastTimestamp": "2026-11-07T13:24:15.3995865Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "endedAt": 1794057855479,
+      "memory": {
+        "peak": {
+          "sequence": 410,
+          "timestamp": "2026-11-07T13:24:10.0452150Z",
+          "completedAt": "2026-11-07T13:24:10.0573801Z",
+          "sampleError": null,
+          "nativeElapsedMs": 11.922600000000001,
+          "privateBytes": 349876224,
+          "rssBytes": 578461696,
+          "processes": [
+            {
+              "pid": 23980,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.1967668Z",
+              "creationFileTime": "134385314041967668",
+              "executableName": "brave.exe",
+              "privateBytes": 2686976,
+              "rssBytes": 9961472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25752,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6724833Z",
+              "creationFileTime": "134385314046724833",
+              "executableName": "brave.exe",
+              "privateBytes": 14123008,
+              "rssBytes": 40984576,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 30420,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.9176173Z",
+              "creationFileTime": "134385314049176173",
+              "executableName": "brave.exe",
+              "privateBytes": 62349312,
+              "rssBytes": 124153856,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34088,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6394978Z",
+              "creationFileTime": "134385314046394978",
+              "executableName": "brave.exe",
+              "privateBytes": 140197888,
+              "rssBytes": 136974336,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39364,
+              "parentPid": 11824,
+              "createdAt": "2026-11-07T13:23:24.1380099Z",
+              "creationFileTime": "134385314041380099",
+              "executableName": "brave.exe",
+              "privateBytes": 106864640,
+              "rssBytes": 215629824,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 40252,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:40.6897555Z",
+              "creationFileTime": "134385314206897555",
+              "executableName": "brave.exe",
+              "privateBytes": 15056896,
+              "rssBytes": 31662080,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 46808,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6797062Z",
+              "creationFileTime": "134385314046797062",
+              "executableName": "brave.exe",
+              "privateBytes": 8597504,
+              "rssBytes": 19095552,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 78,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 77.1640625,
+        "conversionOnlyPrivateMiB": 19.234375,
+        "cleanupDeltaFromLoadedMiB": 13.83984375,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 344219648,
+          "spreadBytes": 5656576,
+          "rssBytes": 575664128,
+          "firstTimestamp": "2026-11-07T13:24:11.3554093Z",
+          "lastTimestamp": "2026-11-07T13:24:15.3995865Z",
+          "sampleCount": 9,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T13:24:06.952Z",
+        "windowEnd": "2026-11-07T13:24:15.479Z"
+      }
+    },
+    {
+      "family": "image",
+      "profileId": "png-to-webp",
+      "kind": "success",
+      "startedAt": 1794057855479,
+      "sourceBytes": 84034,
+      "sourceSha256": "3857160be56ad974f617fb395c0e6e677fa50655190d285fd92e277bda106267",
+      "input": {
+        "method": "DOM.setFileInputFiles",
+        "selectedLocalPathCount": 1,
+        "selectedFileBytes": 84034,
+        "contentPayloadsSent": 0,
+        "nodeFileContentsRead": false,
+        "productionInputElementUsed": true,
+        "fileMetadataUnchanged": true
+      },
+      "metrics": {
+        "inputBytes": 84034,
+        "outputBytes": 28330,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 28330,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 65536,
+        "maxWriteChunkBytes": 28330,
+        "elapsedMs": 91.23000001907349,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0,
+        "imageFrameFormat": "BGRX",
+        "imageColorSpace": {
+          "primaries": null,
+          "transfer": null,
+          "matrix": null,
+          "fullRange": null
+        }
+      },
+      "destination": {
+        "profileId": "png-to-webp",
+        "mode": "opfs-test",
+        "actualFileHandle": false,
+        "inputBytes": 84034
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/installed-compatibility-lX5s9s/profile/Default/File System/000/t/00/00000007",
+        "logicalBytes": 28330,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "1407374889110942",
+          "size": "28330",
+          "birthtimeNs": "1794057855534317900",
+          "mtimeNs": "1794057855606315300"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "c70d6b3ffc6f3654963d207ad0b4be7bc3f8c3bb05cd64d213902da43ee8efab"
+          },
+          {
+            "offset": 12117,
+            "bytes": 4096,
+            "sha256": "f807c34e3d4f5e55bcc8b099bbf032fe8bbb94ec48bd3f49e58b2cb132286e54"
+          },
+          {
+            "offset": 24234,
+            "bytes": 4096,
+            "sha256": "b5f85eb80dd65a861093ecb36ea3698cbea6f65f8c29db5506ad07551be1c06a"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validation": {
+        "validator": "FFprobe codec/dimensions, full native decode and independent SSIM",
+        "width": 1024,
+        "height": 768,
+        "ssim": 0.988733
+      },
+      "outputSha256": "92215697e9ecda1f8a6a7fab66a05bf3ae492285ce5617156fd03e42419e9c4e",
+      "validated": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 345133056,
+        "spreadBytes": 40960,
+        "rssBytes": 580284416,
+        "firstTimestamp": "2026-11-07T13:24:19.8834827Z",
+        "lastTimestamp": "2026-11-07T13:24:23.9228762Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "endedAt": 1794057864018,
+      "memory": {
+        "peak": {
+          "sequence": 464,
+          "timestamp": "2026-11-07T13:24:15.9486057Z",
+          "completedAt": "2026-11-07T13:24:15.9586243Z",
+          "sampleError": null,
+          "nativeElapsedMs": 10.5324,
+          "privateBytes": 345309184,
+          "rssBytes": 580788224,
+          "processes": [
+            {
+              "pid": 23980,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.1967668Z",
+              "creationFileTime": "134385314041967668",
+              "executableName": "brave.exe",
+              "privateBytes": 2686976,
+              "rssBytes": 9961472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25752,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6724833Z",
+              "creationFileTime": "134385314046724833",
+              "executableName": "brave.exe",
+              "privateBytes": 14123008,
+              "rssBytes": 40992768,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 30420,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.9176173Z",
+              "creationFileTime": "134385314049176173",
+              "executableName": "brave.exe",
+              "privateBytes": 57548800,
+              "rssBytes": 127221760,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34088,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6394978Z",
+              "creationFileTime": "134385314046394978",
+              "executableName": "brave.exe",
+              "privateBytes": 140353536,
+              "rssBytes": 136122368,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39364,
+              "parentPid": 11824,
+              "createdAt": "2026-11-07T13:23:24.1380099Z",
+              "creationFileTime": "134385314041380099",
+              "executableName": "brave.exe",
+              "privateBytes": 106942464,
+              "rssBytes": 215732224,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 40252,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:40.6897555Z",
+              "creationFileTime": "134385314206897555",
+              "executableName": "brave.exe",
+              "privateBytes": 15056896,
+              "rssBytes": 31662080,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 46808,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6797062Z",
+              "creationFileTime": "134385314046797062",
+              "executableName": "brave.exe",
+              "privateBytes": 8597504,
+              "rssBytes": 19095552,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 78,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 72.80859375,
+        "conversionOnlyPrivateMiB": 14.87890625,
+        "cleanupDeltaFromLoadedMiB": 14.7109375,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 345133056,
+          "spreadBytes": 40960,
+          "rssBytes": 580284416,
+          "firstTimestamp": "2026-11-07T13:24:19.8834827Z",
+          "lastTimestamp": "2026-11-07T13:24:23.9228762Z",
+          "sampleCount": 9,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T13:24:15.479Z",
+        "windowEnd": "2026-11-07T13:24:24.018Z"
+      }
+    },
+    {
+      "family": "video",
+      "profileId": "mkv-to-mp4",
+      "kind": "success",
+      "startedAt": 1794057864018,
+      "sourceBytes": 936003,
+      "sourceSha256": "3d0baf6159dcf7219ba4ef8f29b265a26a2fccfb3eefa002e902ca24de68a84d",
+      "input": {
+        "method": "DOM.setFileInputFiles",
+        "selectedLocalPathCount": 1,
+        "selectedFileBytes": 936003,
+        "contentPayloadsSent": 0,
+        "nodeFileContentsRead": false,
+        "productionInputElementUsed": true,
+        "fileMetadataUnchanged": true
+      },
+      "metrics": {
+        "inputBytes": 936003,
+        "outputBytes": 937317,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 262144,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 262144,
+        "maxWriteChunkBytes": 262144,
+        "elapsedMs": 585.3799999952316,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0,
+        "audioQualityArgument": {
+          "requested": "automatic",
+          "nativeCode": 0,
+          "automaticPolicy": null
+        }
+      },
+      "destination": {
+        "profileId": "mkv-to-mp4",
+        "mode": "opfs-test",
+        "actualFileHandle": false,
+        "inputBytes": 936003
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/installed-compatibility-lX5s9s/profile/Default/File System/000/t/00/00000008",
+        "logicalBytes": 937317,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "2533274795953548",
+          "size": "937317",
+          "birthtimeNs": "1794057864174185000",
+          "mtimeNs": "1794057864630531000"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "057348e65a48ca26949430a529725928e2f6d89f888870778711d4a2972334b9"
+          },
+          {
+            "offset": 466610,
+            "bytes": 4096,
+            "sha256": "0f6b9ab73f85435202d2355f31506c834e966f5cf0cb289ba1d1975b361ec104"
+          },
+          {
+            "offset": 933221,
+            "bytes": 4096,
+            "sha256": "2d7461f5648ac401f1b296e24cd9207f057e7b2a94b2501200db64613fe5f722"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validation": {
+        "validator": "FFprobe MP4 streams/duration, exact H.264/AAC packet payload hashes and full native decode",
+        "duration": 4.031,
+        "videoPacketSha256": "8447ae1ceee0786512b33cc113fa2c6721d412b8aa2324f6d929c74a23852419",
+        "audioPacketSha256": "7a446514eb4f759e62869241d571a851f501b87fe3fdcf520a1d2ba624a11409",
+        "streamCopyRemux": true,
+        "genuineReencode": false
+      },
+      "outputSha256": "23acc20bc33c01f41b9e6162e6b7b7e0ddb1478b67716f9cefe5315cd8d3aef9",
+      "validated": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 336314368,
+        "spreadBytes": 184320,
+        "rssBytes": 575569920,
+        "firstTimestamp": "2026-11-07T13:24:30.0453192Z",
+        "lastTimestamp": "2026-11-07T13:24:34.0994609Z",
+        "sampleCount": 10,
+        "minimumElapsedMs": 8000
+      },
+      "endedAt": 1794057874131,
+      "memory": {
+        "peak": {
+          "sequence": 543,
+          "timestamp": "2026-11-07T13:24:24.5772424Z",
+          "completedAt": "2026-11-07T13:24:24.5873718Z",
+          "sampleError": null,
+          "nativeElapsedMs": 10.790000000000001,
+          "privateBytes": 443043840,
+          "rssBytes": 645181440,
+          "processes": [
+            {
+              "pid": 23980,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.1967668Z",
+              "creationFileTime": "134385314041967668",
+              "executableName": "brave.exe",
+              "privateBytes": 2686976,
+              "rssBytes": 9961472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25752,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6724833Z",
+              "creationFileTime": "134385314046724833",
+              "executableName": "brave.exe",
+              "privateBytes": 13758464,
+              "rssBytes": 40730624,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 30420,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.9176173Z",
+              "creationFileTime": "134385314049176173",
+              "executableName": "brave.exe",
+              "privateBytes": 154185728,
+              "rssBytes": 190726144,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34088,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6394978Z",
+              "creationFileTime": "134385314046394978",
+              "executableName": "brave.exe",
+              "privateBytes": 141803520,
+              "rssBytes": 137199616,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39364,
+              "parentPid": 11824,
+              "createdAt": "2026-11-07T13:23:24.1380099Z",
+              "creationFileTime": "134385314041380099",
+              "executableName": "brave.exe",
+              "privateBytes": 106954752,
+              "rssBytes": 215805952,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 40252,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:40.6897555Z",
+              "creationFileTime": "134385314206897555",
+              "executableName": "brave.exe",
+              "privateBytes": 15056896,
+              "rssBytes": 31662080,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 46808,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6797062Z",
+              "creationFileTime": "134385314046797062",
+              "executableName": "brave.exe",
+              "privateBytes": 8597504,
+              "rssBytes": 19095552,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 92,
+        "unavailableSamples": 1,
+        "incrementalPrivateMiB": 166.015625,
+        "conversionOnlyPrivateMiB": 108.0859375,
+        "cleanupDeltaFromLoadedMiB": 6.30078125,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 336314368,
+          "spreadBytes": 184320,
+          "rssBytes": 575569920,
+          "firstTimestamp": "2026-11-07T13:24:30.0453192Z",
+          "lastTimestamp": "2026-11-07T13:24:34.0994609Z",
+          "sampleCount": 10,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T13:24:24.018Z",
+        "windowEnd": "2026-11-07T13:24:34.131Z"
+      }
+    },
+    {
+      "family": "audio",
+      "profileId": "wav-to-flac",
+      "kind": "success",
+      "startedAt": 1794057874131,
+      "sourceBytes": 176444,
+      "sourceSha256": "1c9d00804e8f583499dc97e8dd45f58bc74cfe18c83e4bd12ff37a11d11fb80f",
+      "input": {
+        "method": "DOM.setFileInputFiles",
+        "selectedLocalPathCount": 1,
+        "selectedFileBytes": 176444,
+        "contentPayloadsSent": 0,
+        "nodeFileContentsRead": false,
+        "productionInputElementUsed": true,
+        "fileMetadataUnchanged": true
+      },
+      "metrics": {
+        "inputBytes": 176444,
+        "outputBytes": 131666,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 8288,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 176444,
+        "maxWriteChunkBytes": 8288,
+        "elapsedMs": 494.2300000190735,
+        "wasmMemoryBytes": 33554432,
+        "peakWasmMemoryBytes": 33554432,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 33554436,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0,
+        "audioQualityArgument": {
+          "requested": "automatic",
+          "nativeCode": 0,
+          "automaticPolicy": null
+        }
+      },
+      "destination": {
+        "profileId": "wav-to-flac",
+        "mode": "opfs-test",
+        "actualFileHandle": false,
+        "inputBytes": 176444
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/installed-compatibility-lX5s9s/profile/Default/File System/000/t/00/00000009",
+        "logicalBytes": 131666,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "1407374889110962",
+          "size": "131666",
+          "birthtimeNs": "1794057874185604800",
+          "mtimeNs": "1794057874659940400"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "d2da8f313f335418699af2b03e437a5b93a9570e947e3f5db18f3f96b4f79655"
+          },
+          {
+            "offset": 63785,
+            "bytes": 4096,
+            "sha256": "542421ad2cf17e2d09b9cbb610595646f47c8dab5c560e8867036a658bb28edd"
+          },
+          {
+            "offset": 127570,
+            "bytes": 4096,
+            "sha256": "5f858dc91f664e7517a1f42f6db4171e2b9bff7fab9bb15994b71e4fcee00a1a"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validation": {
+        "validator": "FFprobe FLAC structure and exact full decoded PCM SHA-256",
+        "pcmSha256": "e5d848aec722d5066682d0199ce94493143734f5aa09db0c2bdd3f702644dd91",
+        "sampleRate": 44100,
+        "channels": 1,
+        "durationSeconds": 2,
+        "genuineReencode": true
+      },
+      "outputSha256": "e099713e7580e0d4c92fa884e3edd6260dd5b6f7f8b3d5800938ad8e99392e8f",
+      "validated": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 340193280,
+        "spreadBytes": 819200,
+        "rssBytes": 603525120,
+        "firstTimestamp": "2026-11-07T13:24:47.1024539Z",
+        "lastTimestamp": "2026-11-07T13:24:51.0445489Z",
+        "sampleCount": 17,
+        "minimumElapsedMs": 8000
+      },
+      "endedAt": 1794057891154,
+      "memory": {
+        "peak": {
+          "sequence": 635,
+          "timestamp": "2026-11-07T13:24:34.6432533Z",
+          "completedAt": "2026-11-07T13:24:34.6553788Z",
+          "sampleError": null,
+          "nativeElapsedMs": 12.0854,
+          "privateBytes": 436203520,
+          "rssBytes": 648622080,
+          "processes": [
+            {
+              "pid": 23980,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.1967668Z",
+              "creationFileTime": "134385314041967668",
+              "executableName": "brave.exe",
+              "privateBytes": 2686976,
+              "rssBytes": 9961472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25752,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6724833Z",
+              "creationFileTime": "134385314046724833",
+              "executableName": "brave.exe",
+              "privateBytes": 13565952,
+              "rssBytes": 40906752,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 30420,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.9176173Z",
+              "creationFileTime": "134385314049176173",
+              "executableName": "brave.exe",
+              "privateBytes": 156352512,
+              "rssBytes": 201187328,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34088,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6394978Z",
+              "creationFileTime": "134385314046394978",
+              "executableName": "brave.exe",
+              "privateBytes": 141017088,
+              "rssBytes": 136310784,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39364,
+              "parentPid": 11824,
+              "createdAt": "2026-11-07T13:23:24.1380099Z",
+              "creationFileTime": "134385314041380099",
+              "executableName": "brave.exe",
+              "privateBytes": 98983936,
+              "rssBytes": 209477632,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 40252,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:40.6897555Z",
+              "creationFileTime": "134385314206897555",
+              "executableName": "brave.exe",
+              "privateBytes": 15056896,
+              "rssBytes": 31670272,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 46808,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6797062Z",
+              "creationFileTime": "134385314046797062",
+              "executableName": "brave.exe",
+              "privateBytes": 8540160,
+              "rssBytes": 19107840,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 156,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 159.4921875,
+        "conversionOnlyPrivateMiB": 101.5625,
+        "cleanupDeltaFromLoadedMiB": 10,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 340193280,
+          "spreadBytes": 819200,
+          "rssBytes": 603525120,
+          "firstTimestamp": "2026-11-07T13:24:47.1024539Z",
+          "lastTimestamp": "2026-11-07T13:24:51.0445489Z",
+          "sampleCount": 17,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T13:24:34.131Z",
+        "windowEnd": "2026-11-07T13:24:51.154Z"
+      }
+    },
+    {
+      "family": "subtitle",
+      "profileId": "srt-to-vtt",
+      "kind": "success",
+      "startedAt": 1794057891154,
+      "sourceBytes": 118,
+      "sourceSha256": "ecb2104f5b356a2023df86496f9f67b5d730a8e264cec8ac919d466c168275cf",
+      "input": {
+        "method": "DOM.setFileInputFiles",
+        "selectedLocalPathCount": 1,
+        "selectedFileBytes": 118,
+        "contentPayloadsSent": 0,
+        "nodeFileContentsRead": false,
+        "productionInputElementUsed": true,
+        "fileMetadataUnchanged": true
+      },
+      "metrics": {
+        "inputBytes": 118,
+        "outputBytes": 132,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 132,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 118,
+        "maxWriteChunkBytes": 132,
+        "elapsedMs": 23.139999985694885,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "destination": {
+        "profileId": "srt-to-vtt",
+        "mode": "opfs-test",
+        "actualFileHandle": false,
+        "inputBytes": 118
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/installed-compatibility-lX5s9s/profile/Default/File System/000/t/00/00000011",
+        "logicalBytes": 132,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "1970324842532387",
+          "size": "132",
+          "birthtimeNs": "1794057891196915100",
+          "mtimeNs": "1794057891202388900"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 132,
+            "sha256": "c0902faec6c3db9b7d612cbd3b2ab7d704d7d166305690df1532dc7842d0c2b2"
+          }
+        ],
+        "totalBrowserSampleBytes": 132,
+        "maximumBrowserSampleBytes": 132,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validation": {
+        "validator": "independent WebVTT cue parse: exact two intervals, italics and multiline content",
+        "cues": 2
+      },
+      "outputSha256": "c0902faec6c3db9b7d612cbd3b2ab7d704d7d166305690df1532dc7842d0c2b2",
+      "validated": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 340008960,
+        "spreadBytes": 270336,
+        "rssBytes": 601067520,
+        "firstTimestamp": "2026-11-07T13:24:56.0635033Z",
+        "lastTimestamp": "2026-11-07T13:25:00.1167088Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "endedAt": 1794057900148,
+      "memory": {
+        "peak": {
+          "sequence": 796,
+          "timestamp": "2026-11-07T13:24:52.2451907Z",
+          "completedAt": "2026-11-07T13:24:52.2544822Z",
+          "sampleError": null,
+          "nativeElapsedMs": 9.3856,
+          "privateBytes": 343207936,
+          "rssBytes": 606056448,
+          "processes": [
+            {
+              "pid": 23980,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.1967668Z",
+              "creationFileTime": "134385314041967668",
+              "executableName": "brave.exe",
+              "privateBytes": 2686976,
+              "rssBytes": 9961472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25752,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6724833Z",
+              "creationFileTime": "134385314046724833",
+              "executableName": "brave.exe",
+              "privateBytes": 14073856,
+              "rssBytes": 41291776,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 30420,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.9176173Z",
+              "creationFileTime": "134385314049176173",
+              "executableName": "brave.exe",
+              "privateBytes": 62099456,
+              "rssBytes": 133750784,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34088,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6394978Z",
+              "creationFileTime": "134385314046394978",
+              "executableName": "brave.exe",
+              "privateBytes": 139673600,
+              "rssBytes": 158257152,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39364,
+              "parentPid": 11824,
+              "createdAt": "2026-11-07T13:23:24.1380099Z",
+              "creationFileTime": "134385314041380099",
+              "executableName": "brave.exe",
+              "privateBytes": 101076992,
+              "rssBytes": 212017152,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 40252,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:40.6897555Z",
+              "creationFileTime": "134385314206897555",
+              "executableName": "brave.exe",
+              "privateBytes": 15056896,
+              "rssBytes": 31670272,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 46808,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6797062Z",
+              "creationFileTime": "134385314046797062",
+              "executableName": "brave.exe",
+              "privateBytes": 8540160,
+              "rssBytes": 19107840,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 82,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 70.8046875,
+        "conversionOnlyPrivateMiB": 12.875,
+        "cleanupDeltaFromLoadedMiB": 9.82421875,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 340008960,
+          "spreadBytes": 270336,
+          "rssBytes": 601067520,
+          "firstTimestamp": "2026-11-07T13:24:56.0635033Z",
+          "lastTimestamp": "2026-11-07T13:25:00.1167088Z",
+          "sampleCount": 9,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T13:24:51.154Z",
+        "windowEnd": "2026-11-07T13:25:00.148Z"
+      }
+    },
+    {
+      "family": "ebook",
+      "profileId": "epub-to-txt",
+      "kind": "success",
+      "startedAt": 1794057900148,
+      "sourceBytes": 2129,
+      "sourceSha256": "de6c639c97e1dd4f018e41329abe14425dbea2928394243c6261a58ccbcf78a5",
+      "input": {
+        "method": "DOM.setFileInputFiles",
+        "selectedLocalPathCount": 1,
+        "selectedFileBytes": 2129,
+        "contentPayloadsSent": 0,
+        "nodeFileContentsRead": false,
+        "productionInputElementUsed": true,
+        "fileMetadataUnchanged": true
+      },
+      "metrics": {
+        "inputBytes": 2129,
+        "outputBytes": 283,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 283,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 2129,
+        "maxWriteChunkBytes": 283,
+        "elapsedMs": 44.08500000834465,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "destination": {
+        "profileId": "epub-to-txt",
+        "mode": "opfs-test",
+        "actualFileHandle": false,
+        "inputBytes": 2129
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/installed-compatibility-lX5s9s/profile/Default/File System/000/t/00/00000013",
+        "logicalBytes": 283,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "1688849865821741",
+          "size": "283",
+          "birthtimeNs": "1794057900189889600",
+          "mtimeNs": "1794057900215928200"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 283,
+            "sha256": "23435dfbd66fd1c566e14818c09c4a473ab162aef0f4b8b76a76d8c9a0661bf3"
+          }
+        ],
+        "totalBrowserSampleBytes": 283,
+        "maximumBrowserSampleBytes": 283,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validation": {
+        "validator": "exact independent EPUB reading-order text, Unicode, lists, table cells and exclusions"
+      },
+      "outputSha256": "23435dfbd66fd1c566e14818c09c4a473ab162aef0f4b8b76a76d8c9a0661bf3",
+      "validated": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 343019520,
+        "spreadBytes": 126976,
+        "rssBytes": 600985600,
+        "firstTimestamp": "2026-11-07T13:25:04.4975365Z",
+        "lastTimestamp": "2026-11-07T13:25:08.5441197Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "endedAt": 1794057908575,
+      "memory": {
+        "peak": {
+          "sequence": 872,
+          "timestamp": "2026-11-07T13:25:00.5539706Z",
+          "completedAt": "2026-11-07T13:25:00.5672762Z",
+          "sampleError": null,
+          "nativeElapsedMs": 13.020900000000001,
+          "privateBytes": 346079232,
+          "rssBytes": 605949952,
+          "processes": [
+            {
+              "pid": 23980,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.1967668Z",
+              "creationFileTime": "134385314041967668",
+              "executableName": "brave.exe",
+              "privateBytes": 2686976,
+              "rssBytes": 9961472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25752,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6724833Z",
+              "creationFileTime": "134385314046724833",
+              "executableName": "brave.exe",
+              "privateBytes": 14082048,
+              "rssBytes": 41316352,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 30420,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.9176173Z",
+              "creationFileTime": "134385314049176173",
+              "executableName": "brave.exe",
+              "privateBytes": 64978944,
+              "rssBytes": 137297920,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34088,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6394978Z",
+              "creationFileTime": "134385314046394978",
+              "executableName": "brave.exe",
+              "privateBytes": 139665408,
+              "rssBytes": 154583040,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39364,
+              "parentPid": 11824,
+              "createdAt": "2026-11-07T13:23:24.1380099Z",
+              "creationFileTime": "134385314041380099",
+              "executableName": "brave.exe",
+              "privateBytes": 101068800,
+              "rssBytes": 212013056,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 40252,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:40.6897555Z",
+              "creationFileTime": "134385314206897555",
+              "executableName": "brave.exe",
+              "privateBytes": 15056896,
+              "rssBytes": 31670272,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 46808,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6797062Z",
+              "creationFileTime": "134385314046797062",
+              "executableName": "brave.exe",
+              "privateBytes": 8540160,
+              "rssBytes": 19107840,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 77,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 73.54296875,
+        "conversionOnlyPrivateMiB": 15.61328125,
+        "cleanupDeltaFromLoadedMiB": 12.6953125,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 343019520,
+          "spreadBytes": 126976,
+          "rssBytes": 600985600,
+          "firstTimestamp": "2026-11-07T13:25:04.4975365Z",
+          "lastTimestamp": "2026-11-07T13:25:08.5441197Z",
+          "sampleCount": 9,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T13:25:00.148Z",
+        "windowEnd": "2026-11-07T13:25:08.575Z"
+      }
+    },
+    {
+      "family": "data",
+      "profileId": "csv-to-tsv",
+      "kind": "direct",
+      "startedAt": 1794057908823,
+      "sourceBytes": 87,
+      "sourceSha256": "6a30e8f50200e6b591a94141cf4755799e7d9eef4ada016d9727286c560d4f13",
+      "input": {
+        "method": "DOM.setFileInputFiles",
+        "selectedLocalPathCount": 1,
+        "selectedFileBytes": 87,
+        "contentPayloadsSent": 0,
+        "nodeFileContentsRead": false,
+        "productionInputElementUsed": true,
+        "fileMetadataUnchanged": true
+      },
+      "metrics": {
+        "inputBytes": 87,
+        "outputBytes": 90,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 90,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 87,
+        "maxWriteChunkBytes": 90,
+        "elapsedMs": 97.79000002145767,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "destination": {
+        "profileId": "csv-to-tsv",
+        "mode": "handle",
+        "actualFileHandle": true,
+        "inputBytes": 87
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/installed-compatibility-lX5s9s/profile/Default/File System/000/t/00/00000015",
+        "logicalBytes": 90,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "1688849865821755",
+          "size": "90",
+          "birthtimeNs": "1794057908976545200",
+          "mtimeNs": "1794057909027434200"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 90,
+            "sha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264"
+          }
+        ],
+        "totalBrowserSampleBytes": 90,
+        "maximumBrowserSampleBytes": 90,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validation": {
+        "validator": "exact expected UTF-8 TSV quoting, rows and Unicode bytes"
+      },
+      "outputSha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264",
+      "validated": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 353480704,
+        "spreadBytes": 3457024,
+        "rssBytes": 606285824,
+        "firstTimestamp": "2026-11-07T13:25:13.3507696Z",
+        "lastTimestamp": "2026-11-07T13:25:17.3966097Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "endedAt": 1794057917428,
+      "memory": {
+        "peak": {
+          "sequence": 949,
+          "timestamp": "2026-11-07T13:25:08.9785449Z",
+          "completedAt": "2026-11-07T13:25:08.9900880Z",
+          "sampleError": null,
+          "nativeElapsedMs": 12.1712,
+          "privateBytes": 374329344,
+          "rssBytes": 625000448,
+          "processes": [
+            {
+              "pid": 23980,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.1967668Z",
+              "creationFileTime": "134385314041967668",
+              "executableName": "brave.exe",
+              "privateBytes": 2686976,
+              "rssBytes": 9961472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25752,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6724833Z",
+              "creationFileTime": "134385314046724833",
+              "executableName": "brave.exe",
+              "privateBytes": 13746176,
+              "rssBytes": 41021440,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 26804,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:25:08.5841393Z",
+              "creationFileTime": "134385315085841393",
+              "executableName": "brave.exe",
+              "privateBytes": 15396864,
+              "rssBytes": 31916032,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 30420,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.9176173Z",
+              "creationFileTime": "134385314049176173",
+              "executableName": "brave.exe",
+              "privateBytes": 80191488,
+              "rssBytes": 150114304,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34088,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6394978Z",
+              "creationFileTime": "134385314046394978",
+              "executableName": "brave.exe",
+              "privateBytes": 145158144,
+              "rssBytes": 153669632,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39364,
+              "parentPid": 11824,
+              "createdAt": "2026-11-07T13:23:24.1380099Z",
+              "creationFileTime": "134385314041380099",
+              "executableName": "brave.exe",
+              "privateBytes": 108605440,
+              "rssBytes": 219156480,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 46808,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6797062Z",
+              "creationFileTime": "134385314046797062",
+              "executableName": "brave.exe",
+              "privateBytes": 8544256,
+              "rssBytes": 19161088,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 79,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 100.484375,
+        "conversionOnlyPrivateMiB": 42.5546875,
+        "cleanupDeltaFromLoadedMiB": 22.671875,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 353480704,
+          "spreadBytes": 3457024,
+          "rssBytes": 606285824,
+          "firstTimestamp": "2026-11-07T13:25:13.3507696Z",
+          "lastTimestamp": "2026-11-07T13:25:17.3966097Z",
+          "sampleCount": 9,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T13:25:08.823Z",
+        "windowEnd": "2026-11-07T13:25:17.428Z"
+      }
+    },
+    {
+      "family": "unsafe",
+      "profileId": "tar-to-zip",
+      "kind": "unsafe-archive",
+      "startedAt": 1794057917706,
+      "sourceBytes": 2048,
+      "sourceSha256": "86a30851dfc4d3aa93567172dd4946da2404f27ebce73f691a0f70d87e3ab9c6",
+      "input": {
+        "method": "DOM.setFileInputFiles",
+        "selectedLocalPathCount": 1,
+        "selectedFileBytes": 2048,
+        "contentPayloadsSent": 0,
+        "nodeFileContentsRead": false,
+        "productionInputElementUsed": true,
+        "fileMetadataUnchanged": true
+      },
+      "error": "Unsafe TAR entry: ../escape.txt.",
+      "metrics": {
+        "inputBytes": 512,
+        "outputBytes": 0,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 0,
+        "pendingOperations": 0,
+        "peakPendingOperations": 0,
+        "maxReadChunkBytes": 512,
+        "maxWriteChunkBytes": 0,
+        "elapsedMs": 15.400000005960464,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 367931392,
+        "spreadBytes": 2535424,
+        "rssBytes": 612601856,
+        "firstTimestamp": "2026-11-07T13:25:22.0856276Z",
+        "lastTimestamp": "2026-11-07T13:25:26.1244831Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "endedAt": 1794057926202,
+      "leftovers": [],
+      "memory": {
+        "peak": {
+          "sequence": 1096,
+          "timestamp": "2026-11-07T13:25:25.0313182Z",
+          "completedAt": "2026-11-07T13:25:25.0443790Z",
+          "sampleError": null,
+          "nativeElapsedMs": 12.597800000000001,
+          "privateBytes": 427151360,
+          "rssBytes": 665182208,
+          "processes": [
+            {
+              "pid": 23680,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:25:24.6455085Z",
+              "creationFileTime": "134385315246455085",
+              "executableName": "brave.exe",
+              "privateBytes": 59224064,
+              "rssBytes": 52486144,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 23980,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.1967668Z",
+              "creationFileTime": "134385314041967668",
+              "executableName": "brave.exe",
+              "privateBytes": 2686976,
+              "rssBytes": 9961472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25752,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6724833Z",
+              "creationFileTime": "134385314046724833",
+              "executableName": "brave.exe",
+              "privateBytes": 13606912,
+              "rssBytes": 40988672,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 26656,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:25:17.4594778Z",
+              "creationFileTime": "134385315174594778",
+              "executableName": "brave.exe",
+              "privateBytes": 15351808,
+              "rssBytes": 31977472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 30420,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.9176173Z",
+              "creationFileTime": "134385314049176173",
+              "executableName": "brave.exe",
+              "privateBytes": 80166912,
+              "rssBytes": 153571328,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34088,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6394978Z",
+              "creationFileTime": "134385314046394978",
+              "executableName": "brave.exe",
+              "privateBytes": 147394560,
+              "rssBytes": 144945152,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39364,
+              "parentPid": 11824,
+              "createdAt": "2026-11-07T13:23:24.1380099Z",
+              "creationFileTime": "134385314041380099",
+              "executableName": "brave.exe",
+              "privateBytes": 100175872,
+              "rssBytes": 212090880,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 46808,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6797062Z",
+              "creationFileTime": "134385314046797062",
+              "executableName": "brave.exe",
+              "privateBytes": 8544256,
+              "rssBytes": 19161088,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 78,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 150.859375,
+        "conversionOnlyPrivateMiB": 92.9296875,
+        "cleanupDeltaFromLoadedMiB": 36.453125,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 367931392,
+          "spreadBytes": 2535424,
+          "rssBytes": 612601856,
+          "firstTimestamp": "2026-11-07T13:25:22.0856276Z",
+          "lastTimestamp": "2026-11-07T13:25:26.1244831Z",
+          "sampleCount": 9,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T13:25:17.706Z",
+        "windowEnd": "2026-11-07T13:25:26.202Z"
+      }
+    },
+    {
+      "family": "data",
+      "profileId": "csv-to-tsv",
+      "kind": "write-error",
+      "startedAt": 1794057926447,
+      "sourceBytes": 87,
+      "sourceSha256": "6a30e8f50200e6b591a94141cf4755799e7d9eef4ada016d9727286c560d4f13",
+      "input": {
+        "method": "DOM.setFileInputFiles",
+        "selectedLocalPathCount": 1,
+        "selectedFileBytes": 87,
+        "contentPayloadsSent": 0,
+        "nodeFileContentsRead": false,
+        "productionInputElementUsed": true,
+        "fileMetadataUnchanged": true
+      },
+      "error": "The destination rejected a bounded write.",
+      "metrics": {
+        "inputBytes": 87,
+        "outputBytes": 0,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 90,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 87,
+        "maxWriteChunkBytes": 90,
+        "elapsedMs": 19.319999992847443,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 376606720,
+        "spreadBytes": 2453504,
+        "rssBytes": 620937216,
+        "firstTimestamp": "2026-11-07T13:25:30.8130878Z",
+        "lastTimestamp": "2026-11-07T13:25:34.8633095Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "endedAt": 1794057934895,
+      "leftovers": [],
+      "memory": {
+        "peak": {
+          "sequence": 1113,
+          "timestamp": "2026-11-07T13:25:26.8879782Z",
+          "completedAt": "2026-11-07T13:25:26.9001326Z",
+          "sampleError": null,
+          "nativeElapsedMs": 11.967500000000001,
+          "privateBytes": 392749056,
+          "rssBytes": 635842560,
+          "processes": [
+            {
+              "pid": 23980,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.1967668Z",
+              "creationFileTime": "134385314041967668",
+              "executableName": "brave.exe",
+              "privateBytes": 2686976,
+              "rssBytes": 9961472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25752,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6724833Z",
+              "creationFileTime": "134385314046724833",
+              "executableName": "brave.exe",
+              "privateBytes": 14135296,
+              "rssBytes": 41414656,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 30420,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.9176173Z",
+              "creationFileTime": "134385314049176173",
+              "executableName": "brave.exe",
+              "privateBytes": 87867392,
+              "rssBytes": 160755712,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 33260,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:25:26.2082836Z",
+              "creationFileTime": "134385315262082836",
+              "executableName": "brave.exe",
+              "privateBytes": 15372288,
+              "rssBytes": 31899648,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34088,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6394978Z",
+              "creationFileTime": "134385314046394978",
+              "executableName": "brave.exe",
+              "privateBytes": 153739264,
+              "rssBytes": 151224320,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39364,
+              "parentPid": 11824,
+              "createdAt": "2026-11-07T13:23:24.1380099Z",
+              "creationFileTime": "134385314041380099",
+              "executableName": "brave.exe",
+              "privateBytes": 110403584,
+              "rssBytes": 221425664,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 46808,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6797062Z",
+              "creationFileTime": "134385314046797062",
+              "executableName": "brave.exe",
+              "privateBytes": 8544256,
+              "rssBytes": 19161088,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 78,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 118.05078125,
+        "conversionOnlyPrivateMiB": 60.12109375,
+        "cleanupDeltaFromLoadedMiB": 44.7265625,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 376606720,
+          "spreadBytes": 2453504,
+          "rssBytes": 620937216,
+          "firstTimestamp": "2026-11-07T13:25:30.8130878Z",
+          "lastTimestamp": "2026-11-07T13:25:34.8633095Z",
+          "sampleCount": 9,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T13:25:26.447Z",
+        "windowEnd": "2026-11-07T13:25:34.895Z"
+      }
+    },
+    {
+      "family": "data",
+      "profileId": "csv-to-tsv",
+      "kind": "recovery",
+      "startedAt": 1794057935169,
+      "sourceBytes": 87,
+      "sourceSha256": "6a30e8f50200e6b591a94141cf4755799e7d9eef4ada016d9727286c560d4f13",
+      "input": {
+        "method": "DOM.setFileInputFiles",
+        "selectedLocalPathCount": 1,
+        "selectedFileBytes": 87,
+        "contentPayloadsSent": 0,
+        "nodeFileContentsRead": false,
+        "productionInputElementUsed": true,
+        "fileMetadataUnchanged": true
+      },
+      "metrics": {
+        "inputBytes": 87,
+        "outputBytes": 90,
+        "queuedBytes": 0,
+        "peakQueuedBytes": 90,
+        "pendingOperations": 0,
+        "peakPendingOperations": 1,
+        "maxReadChunkBytes": 87,
+        "maxWriteChunkBytes": 90,
+        "elapsedMs": 30.759999990463257,
+        "wasmMemoryBytes": 0,
+        "peakWasmMemoryBytes": 0,
+        "wasmMemories": {},
+        "sharedArrayBufferBytes": 0,
+        "activeWorkerCount": 1,
+        "imageWorkingBytes": 0
+      },
+      "destination": {
+        "profileId": "csv-to-tsv",
+        "mode": "opfs-test",
+        "actualFileHandle": false,
+        "inputBytes": 87
+      },
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/installed-compatibility-lX5s9s/profile/Default/File System/000/t/00/00000021",
+        "logicalBytes": 90,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "1407374889111150",
+          "size": "90",
+          "birthtimeNs": "1794057935258425800",
+          "mtimeNs": "1794057935263447400"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 90,
+            "sha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264"
+          }
+        ],
+        "totalBrowserSampleBytes": 90,
+        "maximumBrowserSampleBytes": 90,
+        "bindingMode": "every-output-byte-in-bounded-nonoverlapping-chunks",
+        "allOutputBytesCompared": true,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true
+      },
+      "validation": {
+        "validator": "exact expected UTF-8 TSV quoting, rows and Unicode bytes"
+      },
+      "outputSha256": "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264",
+      "validated": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 366424064,
+        "spreadBytes": 1265664,
+        "rssBytes": 615739392,
+        "firstTimestamp": "2026-11-07T13:25:43.5961952Z",
+        "lastTimestamp": "2026-11-07T13:25:47.6407314Z",
+        "sampleCount": 13,
+        "minimumElapsedMs": 8000
+      },
+      "endedAt": 1794057947702,
+      "memory": {
+        "peak": {
+          "sequence": 1197,
+          "timestamp": "2026-11-07T13:25:36.0627299Z",
+          "completedAt": "2026-11-07T13:25:36.0702669Z",
+          "sampleError": null,
+          "nativeElapsedMs": 8.438600000000001,
+          "privateBytes": 397918208,
+          "rssBytes": 639086592,
+          "processes": [
+            {
+              "pid": 16532,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:25:34.9026135Z",
+              "creationFileTime": "134385315349026135",
+              "executableName": "brave.exe",
+              "privateBytes": 15450112,
+              "rssBytes": 31940608,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 23980,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.1967668Z",
+              "creationFileTime": "134385314041967668",
+              "executableName": "brave.exe",
+              "privateBytes": 2686976,
+              "rssBytes": 9961472,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 25752,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6724833Z",
+              "creationFileTime": "134385314046724833",
+              "executableName": "brave.exe",
+              "privateBytes": 14233600,
+              "rssBytes": 41582592,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 30420,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.9176173Z",
+              "creationFileTime": "134385314049176173",
+              "executableName": "brave.exe",
+              "privateBytes": 95997952,
+              "rssBytes": 167976960,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 34088,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6394978Z",
+              "creationFileTime": "134385314046394978",
+              "executableName": "brave.exe",
+              "privateBytes": 150138880,
+              "rssBytes": 146575360,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 39364,
+              "parentPid": 11824,
+              "createdAt": "2026-11-07T13:23:24.1380099Z",
+              "creationFileTime": "134385314041380099",
+              "executableName": "brave.exe",
+              "privateBytes": 110899200,
+              "rssBytes": 221921280,
+              "type": "browser",
+              "utilitySubtype": null,
+              "sandboxType": null
+            },
+            {
+              "pid": 46808,
+              "parentPid": 39364,
+              "createdAt": "2026-11-07T13:23:24.6797062Z",
+              "creationFileTime": "134385314046797062",
+              "executableName": "brave.exe",
+              "privateBytes": 8511488,
+              "rssBytes": 19128320,
+              "type": "unknown",
+              "utilitySubtype": null,
+              "sandboxType": null
+            }
+          ]
+        },
+        "validSamples": 115,
+        "unavailableSamples": 0,
+        "incrementalPrivateMiB": 122.98046875,
+        "conversionOnlyPrivateMiB": 65.05078125,
+        "cleanupDeltaFromLoadedMiB": 35.015625,
+        "cleanupStable": {
+          "stable": true,
+          "privateBytes": 366424064,
+          "spreadBytes": 1265664,
+          "rssBytes": 615739392,
+          "firstTimestamp": "2026-11-07T13:25:43.5961952Z",
+          "lastTimestamp": "2026-11-07T13:25:47.6407314Z",
+          "sampleCount": 13,
+          "minimumElapsedMs": 8000
+        },
+        "cleanupRecoveryLimitMiB": 96,
+        "windowStart": "2026-11-07T13:25:35.169Z",
+        "windowEnd": "2026-11-07T13:25:47.702Z"
+      }
+    }
+  ],
+  "sourcePins": {
+    "scripts/qualify-installed-compatibility.mjs": "2ac6a3739ba84d38c54a02c309d422cecdf7a2dac6a0045a0617a67fb131f3b5",
+    "scripts/lib/installed-compatibility-plan.mjs": "58fa3b7c719d47d443d5ba458e8dac5552ad39826db2b12c3113d014fa4afbb2",
+    "scripts/lib/installed-compatibility-validators.mjs": "9d221fc15ecad718deb36e9667bd59a2174696c50f3ec2d99ff30ae80b2dc852",
+    "scripts/lib/owned-chromium-cleanup.mjs": "1cfc3af050aed6d55bce8c4d40ef68eb374e507da6925dc741a54421efbdb0f8",
+    "scripts/lib/owned-production-test-server.mjs": "4b1afd23fbc8c0a0caa0f6f1b7980febb6411a8a2e06c58166698010694253a8",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d",
+    "scripts/lib/opfs-output-validation-backing.mjs": "cb06939a7c6f7f3422209b3ff24fc8860e20327f092059a61d67f8030d71f9d7",
+    "scripts/lib/select-owned-local-browser-file.mjs": "24c8db43c82868c1131c0742f60197c618e0224292c8fe4f785b41f105c21755",
+    "app/converter/ConverterApp.tsx": "a8e7a15cf4470b62ccf56baa3c9af267b91e553fca6b412eeb1897c62bb1b6db",
+    "workers/conversion.worker.ts": "57b9f4b9edeb981d9d267e8e2892d89007c114fb999708aff2407311b0147ce9",
+    "lib/capability-registry.ts": "371738c549f0abba5194b25ea3807ebe602cfe1ba9456974e4570639d512b49e",
+    "package-lock.json": "cebcd0caf95382203084b900aecb06dbd5fb10bc8743ddb202a7a137582f603e",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee"
+  },
+  "failures": [],
+  "limits": {
+    "inputBytes": 2097152,
+    "outputBytes": 8388608,
+    "readChunkBytes": 1048576,
+    "writeChunkBytes": 1048576,
+    "queuedBytes": 1048576,
+    "pendingOperations": 1,
+    "primaryMiB": 250,
+    "cleanupMiB": 96,
+    "samples": 3600,
+    "requests": 512,
+    "realmObservations": 256
+  },
+  "requestCount": 67,
+  "forbiddenRequests": [],
+  "realmObservations": [
+    {
+      "timestamp": "2026-11-07T13:23:50.372Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5310908,
+          "allocatedJSHeapBytes": 7884800,
+          "embedderHeapUsedBytes": 4336928,
+          "backingStorageBytes": 649687,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:23:52.421Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "B5CE148A4D660E233014AB5C9F50CCE4",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 538280,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5358292,
+          "allocatedJSHeapBytes": 7884800,
+          "embedderHeapUsedBytes": 4466296,
+          "backingStorageBytes": 649687,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:23:54.424Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "B5CE148A4D660E233014AB5C9F50CCE4",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 538280,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5358292,
+          "allocatedJSHeapBytes": 7884800,
+          "embedderHeapUsedBytes": 4466296,
+          "backingStorageBytes": 649687,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:23:56.453Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "B5CE148A4D660E233014AB5C9F50CCE4",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 538280,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5358292,
+          "allocatedJSHeapBytes": 7884800,
+          "embedderHeapUsedBytes": 4466296,
+          "backingStorageBytes": 649687,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:23:58.461Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "B5CE148A4D660E233014AB5C9F50CCE4",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 538280,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5358292,
+          "allocatedJSHeapBytes": 7884800,
+          "embedderHeapUsedBytes": 4466296,
+          "backingStorageBytes": 649687,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:00.480Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "1A83E85AA48DE2176ECBF8AF03EFDA2A",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 6107128,
+          "allocatedJSHeapBytes": 8671232,
+          "embedderHeapUsedBytes": 5540224,
+          "backingStorageBytes": 653646,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:02.496Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "1A83E85AA48DE2176ECBF8AF03EFDA2A",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 6107128,
+          "allocatedJSHeapBytes": 8671232,
+          "embedderHeapUsedBytes": 5540224,
+          "backingStorageBytes": 653646,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:04.041Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "1A83E85AA48DE2176ECBF8AF03EFDA2A",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 6107128,
+          "allocatedJSHeapBytes": 8671232,
+          "embedderHeapUsedBytes": 5540224,
+          "backingStorageBytes": 653646,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:06.075Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "1A83E85AA48DE2176ECBF8AF03EFDA2A",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 6107128,
+          "allocatedJSHeapBytes": 8671232,
+          "embedderHeapUsedBytes": 5540224,
+          "backingStorageBytes": 653646,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:08.093Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "EF55A9B819148743158CBCACD67F2C0B",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 538280,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5415252,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 6581304,
+          "backingStorageBytes": 659051,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:10.138Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "EF55A9B819148743158CBCACD67F2C0B",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 538280,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5415252,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 6581304,
+          "backingStorageBytes": 659051,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:12.168Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "EF55A9B819148743158CBCACD67F2C0B",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 538280,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 4719560,
+          "allocatedJSHeapBytes": 5525504,
+          "embedderHeapUsedBytes": 1692088,
+          "backingStorageBytes": 642578,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:14.194Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "EF55A9B819148743158CBCACD67F2C0B",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 538280,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 4712260,
+          "allocatedJSHeapBytes": 5263360,
+          "embedderHeapUsedBytes": 1687392,
+          "backingStorageBytes": 642578,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:16.219Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "EBBCC8DF326347C63D19321F2D3850A7",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 4934116,
+          "allocatedJSHeapBytes": 5525504,
+          "embedderHeapUsedBytes": 3231512,
+          "backingStorageBytes": 757348,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:18.258Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "EBBCC8DF326347C63D19321F2D3850A7",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 4934116,
+          "allocatedJSHeapBytes": 5525504,
+          "embedderHeapUsedBytes": 3231512,
+          "backingStorageBytes": 757348,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:20.274Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "EBBCC8DF326347C63D19321F2D3850A7",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 4934116,
+          "allocatedJSHeapBytes": 5525504,
+          "embedderHeapUsedBytes": 3231512,
+          "backingStorageBytes": 757348,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:22.317Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "EBBCC8DF326347C63D19321F2D3850A7",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 4934116,
+          "allocatedJSHeapBytes": 5525504,
+          "embedderHeapUsedBytes": 3231512,
+          "backingStorageBytes": 757348,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:24.346Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "EBBCC8DF326347C63D19321F2D3850A7",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 753060,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 722368,
+          "backingStorageBytes": 729082,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5474032,
+          "allocatedJSHeapBytes": 6311936,
+          "embedderHeapUsedBytes": 3936520,
+          "backingStorageBytes": 825070,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:26.374Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "BAB68136350159915F1A7B980B683D70",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5424044,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 4668264,
+          "backingStorageBytes": 853900,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:28.416Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "BAB68136350159915F1A7B980B683D70",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5424044,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 4668264,
+          "backingStorageBytes": 853900,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:30.436Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "BAB68136350159915F1A7B980B683D70",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5424044,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 4668264,
+          "backingStorageBytes": 853900,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:32.466Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "BAB68136350159915F1A7B980B683D70",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5424044,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 4668264,
+          "backingStorageBytes": 853900,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:34.493Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "BAB68136350159915F1A7B980B683D70",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 753848,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 828656,
+          "backingStorageBytes": 729082,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5368512,
+          "allocatedJSHeapBytes": 7098368,
+          "embedderHeapUsedBytes": 5834160,
+          "backingStorageBytes": 856506,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:36.031Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "DB8F4AAFC3D4D73C39AEA0DA357EB431",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5391368,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 6926592,
+          "backingStorageBytes": 885338,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:38.074Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "DB8F4AAFC3D4D73C39AEA0DA357EB431",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5391368,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 6926592,
+          "backingStorageBytes": 885338,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:40.106Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "DB8F4AAFC3D4D73C39AEA0DA357EB431",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5391368,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 6926592,
+          "backingStorageBytes": 885338,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:42.131Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "DB8F4AAFC3D4D73C39AEA0DA357EB431",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5391368,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 6926592,
+          "backingStorageBytes": 885338,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:44.169Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "DB8F4AAFC3D4D73C39AEA0DA357EB431",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5391368,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 6926592,
+          "backingStorageBytes": 885338,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:46.209Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "DB8F4AAFC3D4D73C39AEA0DA357EB431",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5391368,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 6926592,
+          "backingStorageBytes": 885338,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:48.230Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "DB8F4AAFC3D4D73C39AEA0DA357EB431",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5391368,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 6926592,
+          "backingStorageBytes": 885338,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:50.248Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "DB8F4AAFC3D4D73C39AEA0DA357EB431",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5391368,
+          "allocatedJSHeapBytes": 7622656,
+          "embedderHeapUsedBytes": 6926592,
+          "backingStorageBytes": 885338,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:52.292Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A6A97EF4150DD9BDD7FC1470DEFF670D",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5927480,
+          "allocatedJSHeapBytes": 8671232,
+          "embedderHeapUsedBytes": 7548144,
+          "backingStorageBytes": 886613,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:54.320Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A6A97EF4150DD9BDD7FC1470DEFF670D",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5927480,
+          "allocatedJSHeapBytes": 8671232,
+          "embedderHeapUsedBytes": 7548144,
+          "backingStorageBytes": 886613,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:56.345Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A6A97EF4150DD9BDD7FC1470DEFF670D",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5927480,
+          "allocatedJSHeapBytes": 8671232,
+          "embedderHeapUsedBytes": 7548144,
+          "backingStorageBytes": 886613,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:24:58.382Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A6A97EF4150DD9BDD7FC1470DEFF670D",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5927480,
+          "allocatedJSHeapBytes": 8671232,
+          "embedderHeapUsedBytes": 7548144,
+          "backingStorageBytes": 886613,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:00.412Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5810040,
+          "allocatedJSHeapBytes": 7884800,
+          "embedderHeapUsedBytes": 8397248,
+          "backingStorageBytes": 890873,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:02.447Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "8C675BB45BBB3125838D8EAB272482C8",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5854964,
+          "allocatedJSHeapBytes": 7884800,
+          "embedderHeapUsedBytes": 8531768,
+          "backingStorageBytes": 890873,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:04.465Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "8C675BB45BBB3125838D8EAB272482C8",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5854964,
+          "allocatedJSHeapBytes": 7884800,
+          "embedderHeapUsedBytes": 8531768,
+          "backingStorageBytes": 890873,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:06.485Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "8C675BB45BBB3125838D8EAB272482C8",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5854964,
+          "allocatedJSHeapBytes": 7884800,
+          "embedderHeapUsedBytes": 8531768,
+          "backingStorageBytes": 890873,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:08.014Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "8C675BB45BBB3125838D8EAB272482C8",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 5854964,
+          "allocatedJSHeapBytes": 7884800,
+          "embedderHeapUsedBytes": 8531768,
+          "backingStorageBytes": 890873,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:10.055Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F984C006DC1BB26EB4F57B6D87F171CA",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1&directory=1",
+          "usedJSHeapBytes": 8844240,
+          "allocatedJSHeapBytes": 11407360,
+          "embedderHeapUsedBytes": 5465872,
+          "backingStorageBytes": 1277898,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:12.085Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F984C006DC1BB26EB4F57B6D87F171CA",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1&directory=1",
+          "usedJSHeapBytes": 8844240,
+          "allocatedJSHeapBytes": 11407360,
+          "embedderHeapUsedBytes": 5465872,
+          "backingStorageBytes": 1277898,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:14.104Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F984C006DC1BB26EB4F57B6D87F171CA",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1&directory=1",
+          "usedJSHeapBytes": 8844240,
+          "allocatedJSHeapBytes": 11407360,
+          "embedderHeapUsedBytes": 5465872,
+          "backingStorageBytes": 1277898,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:16.129Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "F984C006DC1BB26EB4F57B6D87F171CA",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1&directory=1",
+          "usedJSHeapBytes": 8844240,
+          "allocatedJSHeapBytes": 11407360,
+          "embedderHeapUsedBytes": 5465872,
+          "backingStorageBytes": 1277898,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:18.148Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "AA890808D9AF5CE4EC05E81022A136D2",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 10198560,
+          "allocatedJSHeapBytes": 14405632,
+          "embedderHeapUsedBytes": 4976520,
+          "backingStorageBytes": 662495,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:20.169Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "AA890808D9AF5CE4EC05E81022A136D2",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 10198560,
+          "allocatedJSHeapBytes": 14405632,
+          "embedderHeapUsedBytes": 4976520,
+          "backingStorageBytes": 662495,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:22.197Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "AA890808D9AF5CE4EC05E81022A136D2",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 10198560,
+          "allocatedJSHeapBytes": 14405632,
+          "embedderHeapUsedBytes": 4976520,
+          "backingStorageBytes": 662495,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:24.236Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "AA890808D9AF5CE4EC05E81022A136D2",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 10198560,
+          "allocatedJSHeapBytes": 14405632,
+          "embedderHeapUsedBytes": 4976520,
+          "backingStorageBytes": 662495,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:26.280Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1&fault=write",
+          "usedJSHeapBytes": 10850512,
+          "allocatedJSHeapBytes": 14667776,
+          "embedderHeapUsedBytes": 7016728,
+          "backingStorageBytes": 680846,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:28.304Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "046E1E59CFB53E66D81168F1055B77E9",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1&fault=write",
+          "usedJSHeapBytes": 13351596,
+          "allocatedJSHeapBytes": 14520320,
+          "embedderHeapUsedBytes": 8917536,
+          "backingStorageBytes": 1296380,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:30.334Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "046E1E59CFB53E66D81168F1055B77E9",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1&fault=write",
+          "usedJSHeapBytes": 13351596,
+          "allocatedJSHeapBytes": 14520320,
+          "embedderHeapUsedBytes": 8917536,
+          "backingStorageBytes": 1296380,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:32.375Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "046E1E59CFB53E66D81168F1055B77E9",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1&fault=write",
+          "usedJSHeapBytes": 13351596,
+          "allocatedJSHeapBytes": 14520320,
+          "embedderHeapUsedBytes": 8917536,
+          "backingStorageBytes": 1296380,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:34.395Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "046E1E59CFB53E66D81168F1055B77E9",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1&fault=write",
+          "usedJSHeapBytes": 13351596,
+          "allocatedJSHeapBytes": 14520320,
+          "embedderHeapUsedBytes": 8917536,
+          "backingStorageBytes": 1296380,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:36.437Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A0762FD0F406F0D583A54418BB8CB502",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 16195256,
+          "allocatedJSHeapBytes": 19091456,
+          "embedderHeapUsedBytes": 9038040,
+          "backingStorageBytes": 1285904,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:38.482Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A0762FD0F406F0D583A54418BB8CB502",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 16195256,
+          "allocatedJSHeapBytes": 19091456,
+          "embedderHeapUsedBytes": 9038040,
+          "backingStorageBytes": 1285904,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:40.011Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A0762FD0F406F0D583A54418BB8CB502",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 16195256,
+          "allocatedJSHeapBytes": 19091456,
+          "embedderHeapUsedBytes": 9038040,
+          "backingStorageBytes": 1285904,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:42.038Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A0762FD0F406F0D583A54418BB8CB502",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 16195256,
+          "allocatedJSHeapBytes": 19091456,
+          "embedderHeapUsedBytes": 9038040,
+          "backingStorageBytes": 1285904,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:44.094Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A0762FD0F406F0D583A54418BB8CB502",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 15132104,
+          "allocatedJSHeapBytes": 16207872,
+          "embedderHeapUsedBytes": 6887216,
+          "backingStorageBytes": 658986,
+          "error": null
+        }
+      ]
+    },
+    {
+      "timestamp": "2026-11-07T13:25:46.124Z",
+      "targetsAvailable": true,
+      "targets": [
+        {
+          "targetId": "A0762FD0F406F0D583A54418BB8CB502",
+          "type": "worker",
+          "url": "http://127.0.0.1:53565/assets/conversion.worker-G35zDWlV.js",
+          "usedJSHeapBytes": 540476,
+          "allocatedJSHeapBytes": 1835008,
+          "embedderHeapUsedBytes": 773712,
+          "backingStorageBytes": 420923,
+          "error": null
+        },
+        {
+          "targetId": "0A98738F56E065233BE3EF66A43FA6D5",
+          "type": "page",
+          "url": "http://127.0.0.1:53565/?test=1",
+          "usedJSHeapBytes": 15132104,
+          "allocatedJSHeapBytes": 16207872,
+          "embedderHeapUsedBytes": 6887216,
+          "backingStorageBytes": 658986,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "memoryFormula": "(peak complete spawned process-tree private bytes - earliest stable same clean blank browser private bytes) / 1048576",
+  "hostMemory": {
+    "acquiredAt": "2026-11-07T13:23:09.9886202Z",
+    "freePhysicalBytes": 10295377920,
+    "freeVirtualBytes": 15190859776,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "diskFreeBytes": 1065831690240,
+  "executedHead": "60f179c4f51ecd233bd46d454c6fdcb2566a8fdd",
+  "browserBefore": {
+    "version": "157.1.99.55",
+    "launcher": {
+      "path": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
+      "bytes": 4094032,
+      "sha256": "e8ad45143e75f8bca56959dc65a9a909603958be8627b12a6fe489f12e341057",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "43065671437225053",
+        "size": "4094032",
+        "birthtimeNs": "1793911364365643500",
+        "mtimeNs": "1793824503054870000"
+      }
+    },
+    "executable": {
+      "path": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
+      "bytes": 4094032,
+      "sha256": "e8ad45143e75f8bca56959dc65a9a909603958be8627b12a6fe489f12e341057",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "43065671437225053",
+        "size": "4094032",
+        "birthtimeNs": "1793911364365643500",
+        "mtimeNs": "1793824503054870000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\157.1.99.55\\chrome.dll",
+      "bytes": 336493648,
+      "sha256": "41d24dfdfbfec47f59feb6c4f1cea8ef0af624e40ad56e562d582a2fd078622b",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "20266198323659752",
+        "size": "336493648",
+        "birthtimeNs": "1793911361492313700",
+        "mtimeNs": "1793824503256395000"
+      }
+    }
+  },
+  "protectedOriginalBefore": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "staticAssetCount": 125,
+  "build": {
+    "configSha256": "46a2a564521ba3c6322959ab984b4e8c96660ab7a518899be81b8ddbfa044a61",
+    "workerSha256": "1fa27b7cb19f6ecf45b2868168b18b284af74f5a37dcdec0747a352344aecf82"
+  },
+  "validators": {
+    "python": "Python 3.11.9",
+    "ffmpeg": "ffmpeg version N-122712-g7e3781e3ca-20260211 Copyright (c) 2000-2026 the FFmpeg developers",
+    "ffprobe": "ffprobe version N-122712-g7e3781e3ca-20260211 Copyright (c) 2007-2026 the FFmpeg developers"
+  },
+  "serverIdentity": {
+    "pid": 19420,
+    "parentPid": 11824,
+    "createdAt": "2026-11-07T13:23:20.1018490Z"
+  },
+  "launchArguments": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\installed-compatibility-lX5s9s\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "about:blank"
+  ],
+  "browserIdentity": {
+    "pid": 39364,
+    "parentPid": 11824,
+    "createdAt": "2026-11-07T13:23:24.1380090Z"
+  },
+  "blankBaseline": {
+    "stable": true,
+    "privateBytes": 268963840,
+    "spreadBytes": 3010560,
+    "rssBytes": 445145088,
+    "firstTimestamp": "2026-11-07T13:23:36.5005287Z",
+    "lastTimestamp": "2026-11-07T13:23:40.5372738Z",
+    "sampleCount": 16,
+    "minimumElapsedMs": 8000
+  },
+  "browserProtocolVersion": "Chrome/157.0.8103.39",
+  "runtimeCapabilities": {
+    "isolated": true,
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/157.0.0.0 Safari/537.36",
+    "opfs": true,
+    "fsa": false,
+    "sab": true
+  },
+  "loadedIdle": {
+    "stable": true,
+    "privateBytes": 329707520,
+    "spreadBytes": 3420160,
+    "rssBytes": 560078848,
+    "firstTimestamp": "2026-11-07T13:23:45.7605419Z",
+    "lastTimestamp": "2026-11-07T13:23:49.8001667Z",
+    "sampleCount": 9,
+    "minimumElapsedMs": 8000
+  },
+  "screenshot": "output/playwright/2026-11-07T13-23-09-552Z-brave-normal-service-compatibility.png",
+  "realmObserver": {
+    "activeEntries": 2,
+    "leasedEntries": 13,
+    "retiringEntries": 11,
+    "pendingOperations": 0,
+    "peakLeasedEntries": 13,
+    "maximumLeases": 16,
+    "retirementFailures": 11,
+    "lastRetirementError": "Error: No session with given id",
+    "maximumObservationRacesPerOperation": 1,
+    "queuedRequests": 0,
+    "closed": false,
+    "diagnosticAttachmentsOnly": true,
+    "acceptanceMetric": false
+  },
+  "nativeObserver": {
+    "generatedSourceSha256": "26bb39b72e37aa93f7a46be54e884754d7a1e57512e828a94f0c09cd8e9e516f",
+    "baselineSha256": "4854ca5f6a5b50eedf1c2c8f37d4dc5c9494376a225bae224f577b4c18e00a82",
+    "helperSha256": "d7c9900dba5fa4f225a56dca5c8513d9daa7a576e178b8c4da8cf5b03bfae06d",
+    "fallbackBirthQueries": 3,
+    "proofs": [],
+    "memoryFormulaChanged": false,
+    "processNameOrSandboxExclusions": false,
+    "birthTypeCapture": {
+      "records": [
+        {
+          "pid": 8232,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:25.0123173Z",
+          "creationFileTime": "134385314050123173",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 23980,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:24.1967668Z",
+          "creationFileTime": "134385314041967668",
+          "status": "type-unavailable",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 25752,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:24.6724833Z",
+          "creationFileTime": "134385314046724833",
+          "status": "classified",
+          "attempts": 1,
+          "type": "utility",
+          "utilitySubtype": "network.mojom.NetworkService",
+          "sandboxType": "none",
+          "error": null
+        },
+        {
+          "pid": 30420,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:24.9176173Z",
+          "creationFileTime": "134385314049176173",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 31676,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:24.9178263Z",
+          "creationFileTime": "134385314049178263",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 34088,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:24.6394978Z",
+          "creationFileTime": "134385314046394978",
+          "status": "classified",
+          "attempts": 1,
+          "type": "gpu-process",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 39364,
+          "parentPid": 11824,
+          "createdAt": "2026-11-07T13:23:24.1380099Z",
+          "creationFileTime": "134385314041380099",
+          "status": "classified",
+          "attempts": 1,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 46808,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:24.6797062Z",
+          "creationFileTime": "134385314046797062",
+          "status": "classified",
+          "attempts": 1,
+          "type": "utility",
+          "utilitySubtype": "storage.mojom.StorageService",
+          "sandboxType": "service",
+          "error": null
+        },
+        {
+          "pid": 39616,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:25.4575674Z",
+          "creationFileTime": "134385314054575674",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 39288,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:26.0231669Z",
+          "creationFileTime": "134385314060231669",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 5196,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:27.3102168Z",
+          "creationFileTime": "134385314073102168",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 15184,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:27.2503554Z",
+          "creationFileTime": "134385314072503554",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 11508,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:28.0605768Z",
+          "creationFileTime": "134385314080605768",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 44952,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:33.4164675Z",
+          "creationFileTime": "134385314134164675",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 46492,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:34.1535771Z",
+          "creationFileTime": "134385314141535771",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 20280,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:35.5084439Z",
+          "creationFileTime": "134385314155084439",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 40252,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:40.6897555Z",
+          "creationFileTime": "134385314206897555",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 45600,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:24:35.5090207Z",
+          "creationFileTime": "134385314755090207",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 29564,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:24:36.4863075Z",
+          "creationFileTime": "134385314764863075",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 26284,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:24:42.9447764Z",
+          "creationFileTime": "134385314829447764",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 38512,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:24:45.9830711Z",
+          "creationFileTime": "134385314859830711",
+          "status": "not-in-matching-census",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 26804,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:25:08.5841393Z",
+          "creationFileTime": "134385315085841393",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 26656,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:25:17.4594778Z",
+          "creationFileTime": "134385315174594778",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 23680,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:25:24.6455085Z",
+          "creationFileTime": "134385315246455085",
+          "status": "type-unavailable",
+          "attempts": 1,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 33260,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:25:26.2082836Z",
+          "creationFileTime": "134385315262082836",
+          "status": "classified",
+          "attempts": 1,
+          "type": "renderer",
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        },
+        {
+          "pid": 16532,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:25:34.9026135Z",
+          "creationFileTime": "134385315349026135",
+          "status": "not-yet-queried",
+          "attempts": 0,
+          "type": null,
+          "utilitySubtype": null,
+          "sandboxType": null,
+          "error": null
+        }
+      ],
+      "queries": 16,
+      "maximumQueries": 16,
+      "maximumIdentities": 512,
+      "maximumPending": 1,
+      "queuedRequests": 0,
+      "queryTimeoutMs": 5000,
+      "classificationPrecisionNanoseconds": 1000,
+      "globalError": null,
+      "acceptanceMetric": false,
+      "memoryFormulaChanged": false,
+      "processesExcluded": false,
+      "primarySamplesMutated": false
+    }
+  },
+  "memory": {
+    "peak": {
+      "sequence": 543,
+      "timestamp": "2026-11-07T13:24:24.5772424Z",
+      "completedAt": "2026-11-07T13:24:24.5873718Z",
+      "sampleError": null,
+      "nativeElapsedMs": 10.790000000000001,
+      "privateBytes": 443043840,
+      "rssBytes": 645181440,
+      "processes": [
+        {
+          "pid": 23980,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:24.1967668Z",
+          "creationFileTime": "134385314041967668",
+          "executableName": "brave.exe",
+          "privateBytes": 2686976,
+          "rssBytes": 9961472,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 25752,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:24.6724833Z",
+          "creationFileTime": "134385314046724833",
+          "executableName": "brave.exe",
+          "privateBytes": 13758464,
+          "rssBytes": 40730624,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 30420,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:24.9176173Z",
+          "creationFileTime": "134385314049176173",
+          "executableName": "brave.exe",
+          "privateBytes": 154185728,
+          "rssBytes": 190726144,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 34088,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:24.6394978Z",
+          "creationFileTime": "134385314046394978",
+          "executableName": "brave.exe",
+          "privateBytes": 141803520,
+          "rssBytes": 137199616,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 39364,
+          "parentPid": 11824,
+          "createdAt": "2026-11-07T13:23:24.1380099Z",
+          "creationFileTime": "134385314041380099",
+          "executableName": "brave.exe",
+          "privateBytes": 106954752,
+          "rssBytes": 215805952,
+          "type": "browser",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 40252,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:40.6897555Z",
+          "creationFileTime": "134385314206897555",
+          "executableName": "brave.exe",
+          "privateBytes": 15056896,
+          "rssBytes": 31662080,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        },
+        {
+          "pid": 46808,
+          "parentPid": 39364,
+          "createdAt": "2026-11-07T13:23:24.6797062Z",
+          "creationFileTime": "134385314046797062",
+          "executableName": "brave.exe",
+          "privateBytes": 8597504,
+          "rssBytes": 19095552,
+          "type": "unknown",
+          "utilitySubtype": null,
+          "sandboxType": null
+        }
+      ]
+    },
+    "windowStart": "2026-11-07T13:23:49.863Z",
+    "windowEnd": "2026-11-07T13:25:47.702Z",
+    "validSamples": 1077,
+    "unavailableSamples": 1,
+    "incrementalPrivateMiB": 166.015625
+  },
+  "jobCleanup": {
+    "scope": "no-running-conversion",
+    "cancellationRequested": false,
+    "terminalState": "complete"
+  },
+  "serverCleanup": {
+    "identity": {
+      "pid": 19420,
+      "parentPid": 11824,
+      "createdAt": "2026-11-07T13:23:20.1018490Z"
+    },
+    "ownedRootAbsent": true
+  },
+  "browserCleanup": {
+    "status": "owned-observed-pids-absent",
+    "identity": {
+      "pid": 39364,
+      "parentPid": 11824,
+      "createdAt": "2026-11-07T13:23:24.1380090Z"
+    },
+    "observedPids": [
+      8232,
+      23980,
+      25752,
+      30420,
+      31676,
+      34088,
+      39364,
+      46808,
+      39616,
+      39288,
+      5196,
+      15184,
+      11508,
+      44952,
+      46492,
+      20280,
+      40252,
+      45600,
+      29564,
+      26284,
+      38512,
+      26804,
+      26656,
+      23680,
+      33260,
+      16532
+    ],
+    "observations": [
+      {
+        "acquiredAt": "2026-11-07T13:25:48.678Z",
+        "current": [
+          {
+            "pid": 25752,
+            "parentPid": 39364,
+            "createdAt": "2026-11-07T13:23:24.6724830Z"
+          }
+        ],
+        "unavailable": null
+      },
+      {
+        "acquiredAt": "2026-11-07T13:25:49.391Z",
+        "current": [],
+        "unavailable": null
+      }
+    ],
+    "commandErrors": [],
+    "rootKillAttempted": true,
+    "rootIdentityMatched": true,
+    "individualChildKills": false,
+    "pidReuseTreatedConservatively": true,
+    "maximumCensusQueries": 4
+  },
+  "ownedRuntimeRemoved": true,
+  "browserAfter": {
+    "version": "157.1.99.55",
+    "launcher": {
+      "path": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
+      "bytes": 4094032,
+      "sha256": "e8ad45143e75f8bca56959dc65a9a909603958be8627b12a6fe489f12e341057",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "43065671437225053",
+        "size": "4094032",
+        "birthtimeNs": "1793911364365643500",
+        "mtimeNs": "1793824503054870000"
+      }
+    },
+    "executable": {
+      "path": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
+      "bytes": 4094032,
+      "sha256": "e8ad45143e75f8bca56959dc65a9a909603958be8627b12a6fe489f12e341057",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "43065671437225053",
+        "size": "4094032",
+        "birthtimeNs": "1793911364365643500",
+        "mtimeNs": "1793824503054870000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\157.1.99.55\\chrome.dll",
+      "bytes": 336493648,
+      "sha256": "41d24dfdfbfec47f59feb6c4f1cea8ef0af624e40ad56e562d582a2fd078622b",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "20266198323659752",
+        "size": "336493648",
+        "birthtimeNs": "1793911361492313700",
+        "mtimeNs": "1793824503256395000"
+      }
+    }
+  },
+  "protectedOriginalAfter": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "nativeArchive": {
+    "path": "evidence/2026-11-07T13-23-09-552Z-brave-compatibility-native.json.gz",
+    "bytes": 59011,
+    "sha256": "cde3cd71882e0d4f7efee6fb4b93e0eecf1d534968189233ce306ffffc6ac921",
+    "decodedBytes": 2529279,
+    "decodedSha256": "b759dea4c5d37dbef536fb8a00e1da5449946cef211a79299a8942e9ee1eb523"
+  },
+  "finishedAt": "2026-11-07T13:25:53.476Z"
+}

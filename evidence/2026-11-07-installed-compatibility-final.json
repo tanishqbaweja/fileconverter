@@ -1,0 +1,85 @@
+{
+  "recordedAt": "2026-11-07T13:35:12.346Z",
+  "scope": "Installed normal-service headless compatibility checkpoint, not full stress, native picker, latest-release parity, or original goal completion",
+  "comparison": {
+    "path": "evidence/2026-11-07-installed-brave-opera-compatibility.json",
+    "sha256": "d47185926181b0bcb59a3db49a46450f503bf4fa5dfa513eb7d783e1bd21d415"
+  },
+  "focused": {
+    "tests": 30,
+    "passed": 30,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 449.5502
+  },
+  "lint": "pass-five-affected-files",
+  "typeScript": "pass",
+  "productionBuildReused": true,
+  "productionSourceChanged": false,
+  "fullPortableRerun": false,
+  "portableInventory": {
+    "portableFiles": 718,
+    "allFiles": 880,
+    "qualificationFiles": 162,
+    "newTestsSelected": true
+  },
+  "priorFullPortableReceipt": "evidence/2026-11-07-docx-emphasis-portable-final.json",
+  "browserResults": [
+    {
+      "browserId": "brave",
+      "installedVersion": "157.1.99.55",
+      "peakIncrementalPrivateMiB": 166.015625,
+      "maxCleanupDeltaMiB": 44.7265625,
+      "validNativeSamples": 1077,
+      "unavailableNativeSamples": 1,
+      "observedBrowserPidsAbsent": 26
+    },
+    {
+      "browserId": "opera-gx",
+      "installedVersion": "138.0.6044.65",
+      "peakIncrementalPrivateMiB": 185.86328125,
+      "maxCleanupDeltaMiB": 50.76171875,
+      "validNativeSamples": 1042,
+      "unavailableNativeSamples": 1,
+      "observedBrowserPidsAbsent": 42
+    }
+  ],
+  "totalBrowserJobs": 24,
+  "independentlyValidatedOutputs": 20,
+  "forbiddenAppRequests": 0,
+  "allOwnedServersAbsent": true,
+  "allDisposableOutputsProfilesFixturesRemoved": true,
+  "reviewedHeadlessRecoveryScreenshot": {
+    "path": "output/playwright/2026-11-07T13-26-38-131Z-opera-gx-normal-service-compatibility.png",
+    "sha256": "d82e4c203be1dd209189557ec30b28faa69266a0739d3214f6a7c305c2462ab4",
+    "localOnly": true,
+    "savedStateVisible": true,
+    "recordedChromeMemoryDisclosureStillScoped": true,
+    "publicRoutesVisible": 403,
+    "manualHeadedCoverage": false
+  },
+  "protectedOriginal": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "sourcePins": {
+    "scripts/qualify-installed-compatibility.mjs": "2ac6a3739ba84d38c54a02c309d422cecdf7a2dac6a0045a0617a67fb131f3b5",
+    "scripts/lib/installed-compatibility-plan.mjs": "58fa3b7c719d47d443d5ba458e8dac5552ad39826db2b12c3113d014fa4afbb2",
+    "scripts/lib/installed-compatibility-validators.mjs": "9d221fc15ecad718deb36e9667bd59a2174696c50f3ec2d99ff30ae80b2dc852",
+    "scripts/lib/owned-chromium-cleanup.mjs": "1cfc3af050aed6d55bce8c4d40ef68eb374e507da6925dc741a54421efbdb0f8",
+    "scripts/lib/owned-production-test-server.mjs": "4b1afd23fbc8c0a0caa0f6f1b7980febb6411a8a2e06c58166698010694253a8",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d",
+    "scripts/lib/opfs-output-validation-backing.mjs": "cb06939a7c6f7f3422209b3ff24fc8860e20327f092059a61d67f8030d71f9d7",
+    "scripts/lib/select-owned-local-browser-file.mjs": "24c8db43c82868c1131c0742f60197c618e0224292c8fe4f785b41f105c21755",
+    "app/converter/ConverterApp.tsx": "a8e7a15cf4470b62ccf56baa3c9af267b91e553fca6b412eeb1897c62bb1b6db",
+    "workers/conversion.worker.ts": "57b9f4b9edeb981d9d267e8e2892d89007c114fb999708aff2407311b0147ce9",
+    "lib/capability-registry.ts": "371738c549f0abba5194b25ea3807ebe602cfe1ba9456974e4570639d512b49e",
+    "package-lock.json": "cebcd0caf95382203084b900aecb06dbd5fb10bc8743ddb202a7a137582f603e",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee"
+  },
+  "publicPromotion": false,
+  "largeStressAcceptance": false,
+  "nativePickerVerified": false,
+  "fullGoalComplete": false
+}

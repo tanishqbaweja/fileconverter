@@ -1,0 +1,421 @@
+{
+  "recordedAt": "2026-11-07T13:31:37.962Z",
+  "scope": "Installed Brave and Opera GX, two fresh normal-service headless profiles; eight public production families plus direct handle and two adverse jobs/recovery per browser",
+  "receipts": [
+    {
+      "path": "evidence/2026-11-07T13-23-09-552Z-brave-normal-service-compatibility.json",
+      "sha256": "1c65d398ed41379079fe58a237bacbf04047d1670fb121628566b1ddd1088ea5",
+      "browserId": "brave",
+      "installedVersion": "157.1.99.55",
+      "protocolVersion": "Chrome/157.0.8103.39",
+      "executedHead": "60f179c4f51ecd233bd46d454c6fdcb2566a8fdd",
+      "peakIncrementalPrivateMiB": 166.015625,
+      "maxCleanupDeltaMiB": 44.7265625,
+      "validNativeSamples": 1077,
+      "unavailableNativeSamples": 1,
+      "unavailableReasons": [
+        "Birth query process unavailable"
+      ],
+      "requestCount": 67,
+      "forbiddenRequests": 0,
+      "observedBrowserPidsAbsent": 26,
+      "serverAbsent": true,
+      "ownedRuntimeRemoved": true,
+      "nativeArchive": {
+        "path": "evidence/2026-11-07T13-23-09-552Z-brave-compatibility-native.json.gz",
+        "bytes": 59011,
+        "sha256": "cde3cd71882e0d4f7efee6fb4b93e0eecf1d534968189233ce306ffffc6ac921",
+        "decodedBytes": 2529279,
+        "decodedSha256": "b759dea4c5d37dbef536fb8a00e1da5449946cef211a79299a8942e9ee1eb523"
+      }
+    },
+    {
+      "path": "evidence/2026-11-07T13-26-38-131Z-opera-gx-normal-service-compatibility.json",
+      "sha256": "6544cc41eeccd14286aa0fb8ea54842e989a75fce7bfb4f51334d0921e6ab3e4",
+      "browserId": "opera-gx",
+      "installedVersion": "138.0.6044.65",
+      "protocolVersion": "Chrome/154.0.8037.99",
+      "executedHead": "60f179c4f51ecd233bd46d454c6fdcb2566a8fdd",
+      "peakIncrementalPrivateMiB": 185.86328125,
+      "maxCleanupDeltaMiB": 50.76171875,
+      "validNativeSamples": 1042,
+      "unavailableNativeSamples": 1,
+      "unavailableReasons": [
+        "Birth query process unavailable"
+      ],
+      "requestCount": 59,
+      "forbiddenRequests": 0,
+      "observedBrowserPidsAbsent": 42,
+      "serverAbsent": true,
+      "ownedRuntimeRemoved": true,
+      "nativeArchive": {
+        "path": "evidence/2026-11-07T13-26-38-131Z-opera-gx-compatibility-native.json.gz",
+        "bytes": 88460,
+        "sha256": "d50efbdb0045a80774fb90aa138301fd6542f15cfbefa8b5e50f4d7e11a8da55",
+        "decodedBytes": 6079151,
+        "decodedSha256": "4214c49ff4c61af62b7234401daa1c2c8e3aaf7d2d50c931aea1d8a1bdf204d3"
+      }
+    }
+  ],
+  "build": {
+    "configSha256": "46a2a564521ba3c6322959ab984b4e8c96660ab7a518899be81b8ddbfa044a61",
+    "workerSha256": "1fa27b7cb19f6ecf45b2868168b18b284af74f5a37dcdec0747a352344aecf82"
+  },
+  "sourcePins": {
+    "scripts/qualify-installed-compatibility.mjs": "2ac6a3739ba84d38c54a02c309d422cecdf7a2dac6a0045a0617a67fb131f3b5",
+    "scripts/lib/installed-compatibility-plan.mjs": "58fa3b7c719d47d443d5ba458e8dac5552ad39826db2b12c3113d014fa4afbb2",
+    "scripts/lib/installed-compatibility-validators.mjs": "9d221fc15ecad718deb36e9667bd59a2174696c50f3ec2d99ff30ae80b2dc852",
+    "scripts/lib/owned-chromium-cleanup.mjs": "1cfc3af050aed6d55bce8c4d40ef68eb374e507da6925dc741a54421efbdb0f8",
+    "scripts/lib/owned-production-test-server.mjs": "4b1afd23fbc8c0a0caa0f6f1b7980febb6411a8a2e06c58166698010694253a8",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d",
+    "scripts/lib/opfs-output-validation-backing.mjs": "cb06939a7c6f7f3422209b3ff24fc8860e20327f092059a61d67f8030d71f9d7",
+    "scripts/lib/select-owned-local-browser-file.mjs": "24c8db43c82868c1131c0742f60197c618e0224292c8fe4f785b41f105c21755",
+    "app/converter/ConverterApp.tsx": "a8e7a15cf4470b62ccf56baa3c9af267b91e553fca6b412eeb1897c62bb1b6db",
+    "workers/conversion.worker.ts": "57b9f4b9edeb981d9d267e8e2892d89007c114fb999708aff2407311b0147ce9",
+    "lib/capability-registry.ts": "371738c549f0abba5194b25ea3807ebe602cfe1ba9456974e4570639d512b49e",
+    "package-lock.json": "cebcd0caf95382203084b900aecb06dbd5fb10bc8743ddb202a7a137582f603e",
+    "worker/index.ts": "e43e89df0db0146e75d8a71123e4dd08881ed63dfb4b7190cf5a7bdf671420ee"
+  },
+  "identicalProductionBuildAndInputs": true,
+  "routeComparisons": [
+    {
+      "family": "data",
+      "profileId": "csv-to-tsv",
+      "kind": "success",
+      "inputBytes": 87,
+      "inputSha256": "6a30e8f50200e6b591a94141cf4755799e7d9eef4ada016d9727286c560d4f13",
+      "outputBytes": [
+        90,
+        90
+      ],
+      "outputSha256": [
+        "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264",
+        "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264"
+      ],
+      "byteIdentical": true,
+      "independentValidation": [
+        {
+          "validator": "exact expected UTF-8 TSV quoting, rows and Unicode bytes"
+        },
+        {
+          "validator": "exact expected UTF-8 TSV quoting, rows and Unicode bytes"
+        }
+      ]
+    },
+    {
+      "family": "document",
+      "profileId": "txt-to-docx",
+      "kind": "success",
+      "inputBytes": 113,
+      "inputSha256": "0d662d9583cc2bf51fe67677d54f7f82547f3ebe7e51245c8f347f986321bdef",
+      "outputBytes": [
+        1096,
+        1096
+      ],
+      "outputSha256": [
+        "f1ca38b8a2a845d95dee19cbc50f71c09283502aff767fcdf71ee966152ac471",
+        "f1ca38b8a2a845d95dee19cbc50f71c09283502aff767fcdf71ee966152ac471"
+      ],
+      "byteIdentical": true,
+      "independentValidation": [
+        {
+          "paragraphs": 3,
+          "unicodeTextAndOrderVerified": true,
+          "zipCrcVerified": true,
+          "packageTypesAndMainRelationshipVerified": true,
+          "validator": "independent Python zipfile and bounded XML parsing"
+        },
+        {
+          "paragraphs": 3,
+          "unicodeTextAndOrderVerified": true,
+          "zipCrcVerified": true,
+          "packageTypesAndMainRelationshipVerified": true,
+          "validator": "independent Python zipfile and bounded XML parsing"
+        }
+      ]
+    },
+    {
+      "family": "archive",
+      "profileId": "tar-to-zip",
+      "kind": "success",
+      "inputBytes": 4096,
+      "inputSha256": "975d0238e50ed6bafa8ff5ef5c0bb8132fe1063c6e847c8ceb109b857aee40e4",
+      "outputBytes": [
+        490,
+        490
+      ],
+      "outputSha256": [
+        "8695424efbcf5065b677fe2b4f146a2cc5219d760941df009770b807f1e4fcc3",
+        "8695424efbcf5065b677fe2b4f146a2cc5219d760941df009770b807f1e4fcc3"
+      ],
+      "byteIdentical": true,
+      "independentValidation": [
+        {
+          "entries": 3,
+          "payloadBytes": 88,
+          "allEntryNamesSizesAndSha256Equal": true,
+          "validator": "independent streaming Python tarfile/zipfile, every entry CRC and SHA-256"
+        },
+        {
+          "entries": 3,
+          "payloadBytes": 88,
+          "allEntryNamesSizesAndSha256Equal": true,
+          "validator": "independent streaming Python tarfile/zipfile, every entry CRC and SHA-256"
+        }
+      ]
+    },
+    {
+      "family": "image",
+      "profileId": "png-to-webp",
+      "kind": "success",
+      "inputBytes": 84034,
+      "inputSha256": "3857160be56ad974f617fb395c0e6e677fa50655190d285fd92e277bda106267",
+      "outputBytes": [
+        28330,
+        28410
+      ],
+      "outputSha256": [
+        "92215697e9ecda1f8a6a7fab66a05bf3ae492285ce5617156fd03e42419e9c4e",
+        "08f98bed74f281f307ddde3552511320a9f4f8afc5871cb6cb234009dca2a5e5"
+      ],
+      "byteIdentical": false,
+      "independentValidation": [
+        {
+          "validator": "FFprobe codec/dimensions, full native decode and independent SSIM",
+          "width": 1024,
+          "height": 768,
+          "ssim": 0.988733
+        },
+        {
+          "validator": "FFprobe codec/dimensions, full native decode and independent SSIM",
+          "width": 1024,
+          "height": 768,
+          "ssim": 0.988655
+        }
+      ]
+    },
+    {
+      "family": "video",
+      "profileId": "mkv-to-mp4",
+      "kind": "success",
+      "inputBytes": 936003,
+      "inputSha256": "3d0baf6159dcf7219ba4ef8f29b265a26a2fccfb3eefa002e902ca24de68a84d",
+      "outputBytes": [
+        937317,
+        937317
+      ],
+      "outputSha256": [
+        "23acc20bc33c01f41b9e6162e6b7b7e0ddb1478b67716f9cefe5315cd8d3aef9",
+        "23acc20bc33c01f41b9e6162e6b7b7e0ddb1478b67716f9cefe5315cd8d3aef9"
+      ],
+      "byteIdentical": true,
+      "independentValidation": [
+        {
+          "validator": "FFprobe MP4 streams/duration, exact H.264/AAC packet payload hashes and full native decode",
+          "duration": 4.031,
+          "videoPacketSha256": "8447ae1ceee0786512b33cc113fa2c6721d412b8aa2324f6d929c74a23852419",
+          "audioPacketSha256": "7a446514eb4f759e62869241d571a851f501b87fe3fdcf520a1d2ba624a11409",
+          "streamCopyRemux": true,
+          "genuineReencode": false
+        },
+        {
+          "validator": "FFprobe MP4 streams/duration, exact H.264/AAC packet payload hashes and full native decode",
+          "duration": 4.031,
+          "videoPacketSha256": "8447ae1ceee0786512b33cc113fa2c6721d412b8aa2324f6d929c74a23852419",
+          "audioPacketSha256": "7a446514eb4f759e62869241d571a851f501b87fe3fdcf520a1d2ba624a11409",
+          "streamCopyRemux": true,
+          "genuineReencode": false
+        }
+      ]
+    },
+    {
+      "family": "audio",
+      "profileId": "wav-to-flac",
+      "kind": "success",
+      "inputBytes": 176444,
+      "inputSha256": "1c9d00804e8f583499dc97e8dd45f58bc74cfe18c83e4bd12ff37a11d11fb80f",
+      "outputBytes": [
+        131666,
+        131666
+      ],
+      "outputSha256": [
+        "e099713e7580e0d4c92fa884e3edd6260dd5b6f7f8b3d5800938ad8e99392e8f",
+        "e099713e7580e0d4c92fa884e3edd6260dd5b6f7f8b3d5800938ad8e99392e8f"
+      ],
+      "byteIdentical": true,
+      "independentValidation": [
+        {
+          "validator": "FFprobe FLAC structure and exact full decoded PCM SHA-256",
+          "pcmSha256": "e5d848aec722d5066682d0199ce94493143734f5aa09db0c2bdd3f702644dd91",
+          "sampleRate": 44100,
+          "channels": 1,
+          "durationSeconds": 2,
+          "genuineReencode": true
+        },
+        {
+          "validator": "FFprobe FLAC structure and exact full decoded PCM SHA-256",
+          "pcmSha256": "e5d848aec722d5066682d0199ce94493143734f5aa09db0c2bdd3f702644dd91",
+          "sampleRate": 44100,
+          "channels": 1,
+          "durationSeconds": 2,
+          "genuineReencode": true
+        }
+      ]
+    },
+    {
+      "family": "subtitle",
+      "profileId": "srt-to-vtt",
+      "kind": "success",
+      "inputBytes": 118,
+      "inputSha256": "ecb2104f5b356a2023df86496f9f67b5d730a8e264cec8ac919d466c168275cf",
+      "outputBytes": [
+        132,
+        132
+      ],
+      "outputSha256": [
+        "c0902faec6c3db9b7d612cbd3b2ab7d704d7d166305690df1532dc7842d0c2b2",
+        "c0902faec6c3db9b7d612cbd3b2ab7d704d7d166305690df1532dc7842d0c2b2"
+      ],
+      "byteIdentical": true,
+      "independentValidation": [
+        {
+          "validator": "independent WebVTT cue parse: exact two intervals, italics and multiline content",
+          "cues": 2
+        },
+        {
+          "validator": "independent WebVTT cue parse: exact two intervals, italics and multiline content",
+          "cues": 2
+        }
+      ]
+    },
+    {
+      "family": "ebook",
+      "profileId": "epub-to-txt",
+      "kind": "success",
+      "inputBytes": 2129,
+      "inputSha256": "de6c639c97e1dd4f018e41329abe14425dbea2928394243c6261a58ccbcf78a5",
+      "outputBytes": [
+        283,
+        283
+      ],
+      "outputSha256": [
+        "23435dfbd66fd1c566e14818c09c4a473ab162aef0f4b8b76a76d8c9a0661bf3",
+        "23435dfbd66fd1c566e14818c09c4a473ab162aef0f4b8b76a76d8c9a0661bf3"
+      ],
+      "byteIdentical": true,
+      "independentValidation": [
+        {
+          "validator": "exact independent EPUB reading-order text, Unicode, lists, table cells and exclusions"
+        },
+        {
+          "validator": "exact independent EPUB reading-order text, Unicode, lists, table cells and exclusions"
+        }
+      ]
+    },
+    {
+      "family": "data",
+      "profileId": "csv-to-tsv",
+      "kind": "direct",
+      "inputBytes": 87,
+      "inputSha256": "6a30e8f50200e6b591a94141cf4755799e7d9eef4ada016d9727286c560d4f13",
+      "outputBytes": [
+        90,
+        90
+      ],
+      "outputSha256": [
+        "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264",
+        "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264"
+      ],
+      "byteIdentical": true,
+      "independentValidation": [
+        {
+          "validator": "exact expected UTF-8 TSV quoting, rows and Unicode bytes"
+        },
+        {
+          "validator": "exact expected UTF-8 TSV quoting, rows and Unicode bytes"
+        }
+      ]
+    },
+    {
+      "family": "unsafe",
+      "profileId": "tar-to-zip",
+      "kind": "unsafe-archive",
+      "inputBytes": 2048,
+      "inputSha256": "86a30851dfc4d3aa93567172dd4946da2404f27ebce73f691a0f70d87e3ab9c6",
+      "outputBytes": [
+        0,
+        0
+      ],
+      "outputSha256": [
+        null,
+        null
+      ],
+      "byteIdentical": null,
+      "independentValidation": [
+        null,
+        null
+      ]
+    },
+    {
+      "family": "data",
+      "profileId": "csv-to-tsv",
+      "kind": "write-error",
+      "inputBytes": 87,
+      "inputSha256": "6a30e8f50200e6b591a94141cf4755799e7d9eef4ada016d9727286c560d4f13",
+      "outputBytes": [
+        0,
+        0
+      ],
+      "outputSha256": [
+        null,
+        null
+      ],
+      "byteIdentical": null,
+      "independentValidation": [
+        null,
+        null
+      ]
+    },
+    {
+      "family": "data",
+      "profileId": "csv-to-tsv",
+      "kind": "recovery",
+      "inputBytes": 87,
+      "inputSha256": "6a30e8f50200e6b591a94141cf4755799e7d9eef4ada016d9727286c560d4f13",
+      "outputBytes": [
+        90,
+        90
+      ],
+      "outputSha256": [
+        "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264",
+        "78dd7c7a964c027a995c242d9ca46a5988334841d12e064702618bd0ad587264"
+      ],
+      "byteIdentical": true,
+      "independentValidation": [
+        {
+          "validator": "exact expected UTF-8 TSV quoting, rows and Unicode bytes"
+        },
+        {
+          "validator": "exact expected UTF-8 TSV quoting, rows and Unicode bytes"
+        }
+      ]
+    }
+  ],
+  "completedOutputs": 20,
+  "adverseJobs": 4,
+  "noConvertedValidationCopies": true,
+  "nativeConversionUsed": false,
+  "nativePickerVerified": false,
+  "largeStressAcceptance": false,
+  "installedUserProfilesUsed": false,
+  "latestVendorReleaseClaim": false,
+  "regularOperaNonGxVerified": false,
+  "headedManualCoverageVerified": false,
+  "privacyScope": "Observed application requests limited to exact built asset paths and fixed navigation queries; not native browser vendor traffic or fresh offline certification",
+  "protectedOriginal": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "publicPromotion": false,
+  "fullGoalComplete": false
+}

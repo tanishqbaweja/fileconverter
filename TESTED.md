@@ -1,5 +1,38 @@
 # Tested conversion ledger
 
+2026-11-07 installed-browser final checkpoint30focused PASS/0fail/0skip/0cancel,
+449.5502ms. TypeScript/five-file lint PASS.718portable/880all/162qualification
+inventory; full portable not replayed for this harness-only cycle (previous
+2589pass checkpoint retained). Existing unchanged production build reused.
+Reviewed Opera GX headless recovery screenshot shows Saved, scoped recorded
+Chrome memory disclosure and403published routes; not headed/manual evidence.
+Exact final source pins/cleanup/results:2026-11-07-installed-compatibility-final.json.
+
+2026-11-07 installed Brave/Opera GX same-production eight-family matrix PASS:
+evidence/2026-11-07-installed-brave-opera-compatibility.json. Brave157.1.99.55
+and OperaGX138.0.6044.65 each12real jobs/10validated outputs (8families +
+OPFS-backed direct CSV + recovery), unsafe archive and injected write failure.
+No converted validation copies; actual file-handle destination metadata checked.
+H264/AAC packet-copy remux distinct from genuine FLAC re-encode with exact PCM.
+All non-image outputs byte-identical; WebP differs28330/28410B but both decode
+1024x768 with independent SSIM0.988733/0.988655. No speed or universal fidelity claim.
+Whole tree166.015625/185.86328125MiB;1077/1042valid,1unavailable each (birth query
+process unavailable, not zero). Cleanup max44.7265625/50.76171875MiB, unchanged
+250/96 gates.67/59 observed app requests,0forbidden. All26/42observed Chrome-fork
+PIDs + servers absent; outputs/fixtures/profiles removed, original full SHA
+unchanged. No service disable flags, headed/native picker, latest-release or
+regular Opera claim. Small compatibility only, not broader stress acceptance.
+
+2026-11-07 installed Brave157.1.99.55 normal-service headless matrix PASS:
+evidence/2026-11-07T13-23-09-552Z-brave-normal-service-compatibility.json.
+All eight public families plus exact direct-handle/recovery TSV,10independently
+validated outputs, unsafe TAR and write failure rejected with empty leftovers.
+H264/AAC packet hashes unchanged (REMUX, not video re-encode); real WAV->FLAC
+decoded PCM exact; WebP SSIM0.988733.166.015625MiB/1077valid1unavailable, cleanup
+max44.7265625MiB.67static requests/0forbidden, all26observed Brave PIDs and owned
+server absent; runtime/fixtures/outputs removed and original full SHA unchanged.
+Opera GX same matrix NEXT; no native picker/large stress/public promotion claim.
+
 2026-11-07 new installed-browser matrix PREPARED, browser pending. Eight public
 families (data/document/archive/image/video/audio/subtitle/ebook), OPFS-backed
 real direct CSV handle, unsafe TAR/injected write failure/recovery. Reuses the
