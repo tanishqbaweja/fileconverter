@@ -1952,6 +1952,17 @@ temporary files; it refuses unexpected report files.
 
 ## Reproducible Wasm builds
 
+CI checks each freshly rebuilt native engine tree against the checked-out Git
+commit, including every license, manifest, wrapper and Wasm file. Unexpected,
+missing, symbolic-link or byte-different files fail even when a plain `git diff` would
+be empty. SVG is verified separately as an isolated pinned npm package copy;
+that does not satisfy source compilation or qualify SVG rasterization.
+`node scripts/verify-engine-artifacts.mjs <HEAD-commit> all published` is a
+read-only inventory/byte check, not a rebuild. See
+`evidence/2026-11-07-engine-artifact-tree-local.json` for the measured inventory
+and `evidence/2026-11-07-engine-artifact-tree-hosted.json` for the targeted hosted
+BZIP2 source-build and SVG package-copy checks.
+
 Pinned inputs:
 
 - FFmpeg 8.1.2 official source archive, SHA-256

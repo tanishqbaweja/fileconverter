@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+2026-11-07 artifact-gate final21focusedPASS/0fail/0skip/0cancel,3808.9789ms;
+five-file lint PASS. Published application/engine source and bytes unchanged;
+no unnecessary app build, browser or full portable replay. Existing source-only
+SVG gap remains deliberately unpassed. Exact local/hosted receipts below.
+
+2026-11-07 independent CI tree gate terminal PASS for both selected branches
+at1d74b2db. BZIP2 source run42378371912/job128420647034 installed pinned
+Emscripten6.0.4, rebuilt from source without Docker, passed existing recursive
+diff and new raw-commit tree comparator (4files/72150B), unchanged published
+tree and cleanup/post-actions. SVG run42378374450/job128420653014 independently
+verified actual isolated npm package copy (2files/2479355B), scratch removed,
+published bytes unchanged. Source stages SKIPPED for SVG; other10native engines,
+general verify and browser suites unselected/NOT RUN. No public SVG promotion.
+Exact stage/log/SHA evidence:2026-11-07-engine-artifact-tree-hosted.json.
+
+2026-11-07 local artifact gate executed on1d74b2db: all12published directories,
+95files/20Wasm matched committed raw sizes and SHA-256. Actual isolated SVG npm
+copy verified both files/tree and removed owned scratch, without touching published
+bytes. This is NOT source compilation; strict source-only audit still fails SVG.
+Evidence:2026-11-07-engine-artifact-tree-local.json. Hosted new-gate checks:
+BZIP2 source42378371912, SVG package copy42378374450 (pending at this checkpoint).
+No browser/engine-conversion or full native-matrix replay; test.mkv not opened.
+
 2026-11-07 T-09/T-10 independent fresh-output artifact gate implemented. Old
 git-diff-only green reproduced for ignored extra Wasm and missing fresh output.
 New gate compares every regular file/license/manifest in published and isolated

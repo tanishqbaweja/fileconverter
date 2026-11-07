@@ -1,0 +1,372 @@
+{
+  "recordedAt": "2026-11-07T13:48:40.674Z",
+  "localSha256": "941a887cfb75dcd74f529088eab642a5193cc576e6a839e235ae979b89f68a88",
+  "scope": "Targeted hosted verification of both CI artifact gate branches, not all native rebuilds or SVG source qualification",
+  "checkedOutHead": "1d74b2dbf0a2b7252393e9f6cbb6a3d26d2ccf1d",
+  "localReceipt": "evidence/2026-11-07-engine-artifact-tree-local.json",
+  "records": [
+    {
+      "runId": 42378371912,
+      "jobId": 128420647034,
+      "runUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/42378371912",
+      "jobUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/42378371912/job/128420647034",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "1d74b2dbf0a2b7252393e9f6cbb6a3d26d2ccf1d",
+      "engine": "bzip2",
+      "nativeSourceRecipeExecuted": true,
+      "pinnedPackageCopyExecuted": false,
+      "comparison": {
+        "engine": "bzip2",
+        "expectedCommit": "1d74b2dbf0a2b7252393e9f6cbb6a3d26d2ccf1d",
+        "reproductionKind": "native-source",
+        "publishedDirectory": "public/engines/bzip2",
+        "rebuiltDirectory": "work/bzip2-nondocker-output",
+        "files": 4,
+        "wasmFiles": 1,
+        "bytes": 72150,
+        "treeSha256": "f11ee32e655845eb3bc04f7c740c4f15865693963c9bcc51c350f27ba00d36f3",
+        "publishedTreeMatchesCommit": true,
+        "rebuiltTreeMatchesCommit": true,
+        "sourceCompilationProvenByComparator": false,
+        "dockerUsed": false,
+        "mode": "rebuilt"
+      },
+      "logExtracts": [
+        "Reproduce non-Docker bzip2\tInstall pinned Emscripten SDK without Docker\t2026-11-07T13:45:39.2635548Z work/emsdk/emsdk install \"6.0.4\"",
+        "Reproduce non-Docker bzip2\tRebuild pinned engine\t2026-11-07T13:46:23.9609654Z Exact non-Docker BZIP2 artifact comparison passed.",
+        "Reproduce non-Docker bzip2\tCompare fresh native output and published tree to committed blobs\t2026-11-07T13:46:24.1130478Z {\"engine\":\"bzip2\",\"expectedCommit\":\"1d74b2dbf0a2b7252393e9f6cbb6a3d26d2ccf1d\",\"reproductionKind\":\"native-source\",\"publishedDirectory\":\"public/engines/bzip2\",\"rebuiltDirectory\":\"work/bzip2-nondocker-output\",\"files\":4,\"wasmFiles\":1,\"bytes\":72150,\"treeSha256\":\"f11ee32e655845eb3bc04f7c740c4f15865693963c9bcc51c350f27ba00d36f3\",\"publishedTreeMatchesCommit\":true,\"rebuiltTreeMatchesCommit\":true,\"sourceCompilationProvenByComparator\":false,\"dockerUsed\":false,\"mode\":\"rebuilt\"}"
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Install Node dependencies for the engine builder",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 4
+        },
+        {
+          "name": "Install native FFmpeg build prerequisites",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5
+        },
+        {
+          "name": "Install pinned Emscripten SDK without Docker",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6
+        },
+        {
+          "name": "Rebuild pinned engine",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7
+        },
+        {
+          "name": "Compare fresh native output and published tree to committed blobs",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8
+        },
+        {
+          "name": "Verify isolated pinned SVG package copy (not source compilation)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 9
+        },
+        {
+          "name": "Confirm published tracked artifacts were not changed",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Upload bounded engine mismatch evidence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11
+        },
+        {
+          "name": "Remove repository-local engine build data",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 12
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25
+        }
+      ],
+      "otherJobs": [
+        {
+          "name": "engine-matrix",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Browser conversions (${{ matrix.suite }})",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "svg-source-compile-pathfinder",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "audio-destination-scopes",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "svg-source-postprocess",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "svg-source-compile",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "svg-source-compile-bytes",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "verify",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "svg-source-lock",
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      ],
+      "cleanupScope": "Native recipe/workflow cleanup and post-actions passed; no independent after-run filesystem probe"
+    },
+    {
+      "runId": 42378374450,
+      "jobId": 128420653014,
+      "runUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/42378374450",
+      "jobUrl": "https://github.com/tanishqbaweja/fileconverter/actions/runs/42378374450/job/128420653014",
+      "status": "completed",
+      "conclusion": "success",
+      "headSha": "1d74b2dbf0a2b7252393e9f6cbb6a3d26d2ccf1d",
+      "engine": "svg",
+      "nativeSourceRecipeExecuted": false,
+      "pinnedPackageCopyExecuted": true,
+      "comparison": {
+        "engine": "svg",
+        "expectedCommit": "1d74b2dbf0a2b7252393e9f6cbb6a3d26d2ccf1d",
+        "reproductionKind": "pinned-package-copy",
+        "publishedDirectory": "public/engines/svg",
+        "rebuiltDirectory": "work/engine-package-copy-IhrH2e/svg",
+        "files": 2,
+        "wasmFiles": 1,
+        "bytes": 2479355,
+        "treeSha256": "20c54a695326e20128eb2794b238e69141a871dff64aecb5bb8599998581e5a6",
+        "publishedTreeMatchesCommit": true,
+        "rebuiltTreeMatchesCommit": true,
+        "sourceCompilationProvenByComparator": false,
+        "dockerUsed": false,
+        "mode": "package-copy",
+        "pinnedPackageCopyExecuted": true,
+        "sourceCompilationExecuted": false,
+        "scratchRemoved": true
+      },
+      "logExtracts": [
+        "Reproduce non-Docker svg\tVerify isolated pinned SVG package copy (not source compilation)\t2026-11-07T13:46:04.9010318Z {\"engine\":\"svg\",\"expectedCommit\":\"1d74b2dbf0a2b7252393e9f6cbb6a3d26d2ccf1d\",\"reproductionKind\":\"pinned-package-copy\",\"publishedDirectory\":\"public/engines/svg\",\"rebuiltDirectory\":\"work/engine-package-copy-IhrH2e/svg\",\"files\":2,\"wasmFiles\":1,\"bytes\":2479355,\"treeSha256\":\"20c54a695326e20128eb2794b238e69141a871dff64aecb5bb8599998581e5a6\",\"publishedTreeMatchesCommit\":true,\"rebuiltTreeMatchesCommit\":true,\"sourceCompilationProvenByComparator\":false,\"dockerUsed\":false,\"mode\":\"package-copy\",\"pinnedPackageCopyExecuted\":true,\"sourceCompilationExecuted\":false,\"scratchRemoved\":true}"
+      ],
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2
+        },
+        {
+          "name": "Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3
+        },
+        {
+          "name": "Install Node dependencies for the engine builder",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4
+        },
+        {
+          "name": "Install native FFmpeg build prerequisites",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 5
+        },
+        {
+          "name": "Install pinned Emscripten SDK without Docker",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 6
+        },
+        {
+          "name": "Rebuild pinned engine",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 7
+        },
+        {
+          "name": "Compare fresh native output and published tree to committed blobs",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8
+        },
+        {
+          "name": "Verify isolated pinned SVG package copy (not source compilation)",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9
+        },
+        {
+          "name": "Confirm published tracked artifacts were not changed",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10
+        },
+        {
+          "name": "Upload bounded engine mismatch evidence",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 11
+        },
+        {
+          "name": "Remove repository-local engine build data",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 12
+        },
+        {
+          "name": "Post Run actions/setup-node@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 24
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 25
+        }
+      ],
+      "otherJobs": [
+        {
+          "name": "engine-matrix",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "svg-source-compile-bytes",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "svg-source-postprocess",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "svg-source-compile",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "svg-source-compile-pathfinder",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "verify",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "audio-destination-scopes",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "svg-source-lock",
+          "status": "completed",
+          "conclusion": "skipped"
+        },
+        {
+          "name": "Browser conversions (${{ matrix.suite }})",
+          "status": "completed",
+          "conclusion": "skipped"
+        }
+      ],
+      "cleanupScope": "Owned package scratch removed before success; post-actions passed"
+    }
+  ],
+  "nativeSourceRebuildsExecuted": [
+    "bzip2"
+  ],
+  "packageCopiesExecuted": [
+    "svg"
+  ],
+  "otherNativeRebuildsNotRun": 10,
+  "publicTreeMutated": false,
+  "productionBrowserJobsRun": 0,
+  "portableVerifyJobRun": false,
+  "sourceOnlyReleaseGateStillOpen": true,
+  "allPublishedEnginesSourceRebuilt": false,
+  "svgSourceCompilationExecuted": false,
+  "publicPromotion": false,
+  "dockerUsed": false,
+  "fullGoalComplete": false
+}
