@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-11-07 browser SVG qualification artifact withheld from the **default
+client package**, not just its UI. A fresh default build had 93 engine files
+and 19 Wasm files; all 93 non-SVG files matched the checkout byte-for-byte.
+Both SVG paths returned empty, no-store 404s for GET and HEAD on the
+production host. An explicit loopback qualification build retained the two
+pinned files (2,478,606-byte Wasm and 749-byte manifest); actual GET digests
+matched and HEAD returned no body. The unit host test also rejects
+non-loopback requests, forwarded host claims, and encoded aliases.
+
+Rebuilt the default package after the opt-in check. All 21 headless
+privacy/hosting/offline/SVG gates passed, including a stale Cache Storage
+entry that the updated service worker could not replay. 77 focused checks,
+TypeScript, and affected lint passed. Owned profiles and probe scratch were
+removed, and the original video hash was unchanged. No conversion or
+memory qualification for SVG, no new native build, no hosted CI run or
+deployment. CI now audits the release package and keeps image qualification
+explicitly opt-in. See [packaging receipt](evidence/2026-11-07-svg-release-asset-policy.json)
+and [browser receipt](evidence/2026-11-07T19-20-00-335Z-svg-publication-checks.json).
+
 2026-11-07 private PPTX **token-delivery A/B**. Two fresh, headless normal-service
 Chrome sessions used the same production UI/worker dispatch and async OPFS
 writer. Both variants loaded a private esbuild worker overlay at the same

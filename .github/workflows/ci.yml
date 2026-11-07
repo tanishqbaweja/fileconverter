@@ -340,6 +340,9 @@ jobs:
           PLAYWRIGHT_JSON_OUTPUT_NAME: output/playwright/verify-results.json
         run: npx playwright test tests/browser/privacy-offline.spec.ts tests/browser/static-host-policy.spec.ts tests/browser/svg-publication-gate.spec.ts --reporter=line,json,html
 
+      - name: Verify the release omits localhost SVG qualification bytes
+        run: node scripts/verify-svg-package-mode.mjs release
+
       - name: Retain compact verification results
         if: always()
         uses: actions/upload-artifact@v4
@@ -406,7 +409,14 @@ jobs:
       - name: Run browser conversions and independent validators
         env:
           PLAYWRIGHT_JSON_OUTPUT_NAME: output/playwright/${{ matrix.suite }}-results.json
+          # The image suite explicitly qualifies SVG on localhost; general
+          # verification above always exercises the default release package.
+          WITHIN_LOCAL_SVG_QUALIFICATION: ${{ matrix.suite == 'image-conversions' && '1' || '0' }}
         run: npx playwright test tests/browser/${{ matrix.suite }}.spec.ts --reporter=line,json,html
+
+      - name: Verify the localhost-only image qualification package
+        if: matrix.suite == 'image-conversions'
+        run: node scripts/verify-svg-package-mode.mjs qualification
 
       - name: Retain compact browser results
         if: always()

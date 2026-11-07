@@ -1,10 +1,22 @@
-const CACHE_NAME = "within-shell-v35";
+const CACHE_NAME = "within-shell-v36";
 const APP_SHELL = [
   "/",
   "/icon.svg",
   "/manifest.webmanifest",
   "/THIRD_PARTY_NOTICES.txt",
 ];
+
+function isSvgQualificationAsset(pathname) {
+  let decoded;
+  try { decoded = decodeURIComponent(pathname); }
+  catch { return false; }
+  const segments = [];
+  for (const segment of decoded.replaceAll("\\", "/").split("/")) {
+    if (segment === "..") segments.pop();
+    else if (segment && segment !== ".") segments.push(segment);
+  }
+  return segments[0]?.toLowerCase() === "engines" && segments[1]?.toLowerCase() === "svg";
+}
 
 self.addEventListener("install", (event) => {
   event.waitUntil(
@@ -37,7 +49,8 @@ self.addEventListener("fetch", (event) => {
     request.method !== "GET" ||
     url.origin !== self.location.origin ||
     url.searchParams.get("test") === "1" ||
-    url.pathname === "/test-validator.html"
+    url.pathname === "/test-validator.html" ||
+    isSvgQualificationAsset(url.pathname)
   ) {
     return;
   }

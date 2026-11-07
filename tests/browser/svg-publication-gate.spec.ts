@@ -36,6 +36,24 @@ test("public SVG input discloses pending rasterization without exposing it or fe
     expect(engineRequests).toEqual([]); expect(nonReadRequests).toEqual([]);
     if (process.env.WITHIN_SVG_GATE_SCREENSHOT) await notice.screenshot({ path: process.env.WITHIN_SVG_GATE_SCREENSHOT });
   } finally { page.off("request", requestListener); }
+  for (const asset of ["resvg.wasm", "build-manifest.json"]) {
+    const response = await page.request.head(`/engines/svg/${asset}?test=1`);
+    expect(response.status()).toBe(404);
+    expect(response.headers()["cache-control"]).toBe("no-store");
+    expect(response.headers()["cross-origin-embedder-policy"]).toBe("require-corp");
+  }
+  await page.waitForFunction(() => navigator.serviceWorker.controller !== null);
+  const cachedProbe = await page.evaluate(async () => {
+    const name = "within-svg-stale-probe", asset = "/engines/svg/resvg.wasm";
+    const cache = await caches.open(name);
+    try {
+      await cache.put(asset, new Response("old-svg-asset"));
+      const hit = await caches.match(asset);
+      const live = await fetch(asset);
+      return { wasCached: (await hit?.text()) === "old-svg-asset", status: live.status, body: await live.text() };
+    } finally { await caches.delete(name); }
+  });
+  expect(cachedProbe).toEqual({ wasCached: true, status: 404, body: "" });
 });
 test("explicit localhost qualification still exposes SVG without claiming public support or converting", async () => {
   await page.goto("/?test=1");

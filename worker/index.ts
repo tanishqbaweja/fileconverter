@@ -1,5 +1,8 @@
 import handler from "vinext/server/app-router-entry";
-import { rejectNonStaticRequest } from "../lib/static-host-request-policy";
+import { allowSvgQualificationAsset, rejectNonStaticRequest } from "../lib/static-host-request-policy";
+
+// Inlined at build time. Requests and headers cannot enable qualification.
+declare const __WITHIN_LOCAL_SVG_QUALIFICATION__: boolean;
 
 interface Fetcher {
   fetch(request: Request): Promise<Response>;
@@ -16,20 +19,24 @@ interface ExecutionContext {
 
 const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    const rejected = rejectNonStaticRequest(request);
+    const localSvgQualification =
+      typeof __WITHIN_LOCAL_SVG_QUALIFICATION__ !== "undefined" && __WITHIN_LOCAL_SVG_QUALIFICATION__;
+    const rejected = rejectNonStaticRequest(request, localSvgQualification);
     if (rejected) return withSecurityHeaders(rejected);
     // Worker-first routing must explicitly forward static reads. This Vinext
     // version does not resolve every generated /assets URL on its own.
     if (env.ASSETS) {
       const asset = await env.ASSETS.fetch(request);
-      if (asset.status !== 404) return withSecurityHeaders(asset);
+      if (asset.status !== 404) return withSecurityHeaders(asset,
+        localSvgQualification && allowSvgQualificationAsset(new URL(request.url), true));
     }
     return withSecurityHeaders(await handler.fetch(request, env, ctx));
   },
 };
 
-function withSecurityHeaders(response: Response): Response {
+function withSecurityHeaders(response: Response, qualificationAsset = false): Response {
   const headers = new Headers(response.headers);
+  if (qualificationAsset) headers.set("Cache-Control", "no-store");
   headers.set("Cross-Origin-Opener-Policy", "same-origin");
   headers.set("Cross-Origin-Embedder-Policy", "require-corp");
   headers.set("Cross-Origin-Resource-Policy", "same-origin");

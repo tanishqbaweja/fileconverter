@@ -2053,13 +2053,31 @@ are in `evidence/non-docker-all-engine-repro-2026-08-30.json`; the earlier
 FFmpeg-specific source audit remains in
 `evidence/non-docker-ffmpeg-repro-audit-2026-08-29.json`.
 
-Build the application and Node-built SVG artifact locally:
+Build the default application locally:
 
 ```powershell
 npm ci
-npm run build:svg
 npm run build
+node scripts/verify-svg-package-mode.mjs release
 ```
+
+The default client package omits the unqualified browser SVG engine and its
+manifest. Both URLs are denied before static asset lookup, including on
+localhost, and the service worker will not replay or cache them. This does
+not remove ordinary SVG assets such as the site icon.
+
+For a local SVG qualification session only, build with
+`WITHIN_LOCAL_SVG_QUALIFICATION=1` (in PowerShell, set
+`$env:WITHIN_LOCAL_SVG_QUALIFICATION = "1"` for the build). This keeps the
+pinned package-copy fixture in the generated client directory. The host only
+delivers its two exact URLs on loopback and uses `Cache-Control: no-store`.
+Use the existing `?test=1` qualification UI; this is not source reproduction or
+public SVG support. Clear the flag and rebuild before packaging a release.
+`npm run build:svg` reproduces the pinned local package copy if needed.
+Run `npx playwright test tests/browser/image-conversions.spec.ts` with the
+flag set for the image qualification suite. Run
+`npx playwright test tests/browser/svg-publication-gate.spec.ts` with it
+unset to exercise the default release; these checks use different packages.
 
 All 11 published engine directories now have executable exact clean no-Docker
 reproduction. Legacy container recipes remain only as historical build

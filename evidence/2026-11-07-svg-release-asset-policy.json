@@ -1,0 +1,165 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-07",
+  "status": "verified-default-client-package-excludes-withheld-svg",
+  "scope": "Local production client asset package, worker-first hosting, and service-worker cache refusal. Not conversion, SVG source rebuild, memory qualification or deployment.",
+  "pins": [
+    {
+      "path": "build/svg-qualification-assets.ts",
+      "bytes": 3051,
+      "sha256": "6779a03825ab0a898919af6d9f9545754a82d54bfff00a24b78d9e08dc2fc51d"
+    },
+    {
+      "path": "lib/static-host-request-policy.ts",
+      "bytes": 1706,
+      "sha256": "be09b39f2cc00ffdb90309bfe2125e3f5bd2406985e6542de54d7fed44221361"
+    },
+    {
+      "path": "worker/index.ts",
+      "bytes": 2545,
+      "sha256": "f75c5b1d74087b619054900cce9bd566474b0bec9469323bcf1a459a29e8a741"
+    },
+    {
+      "path": "public/sw.js",
+      "bytes": 2017,
+      "sha256": "8bb8d1788fbf783edea33b29d1324a1ecdaf74ba1081e90384cfdb30a6abec2d"
+    },
+    {
+      "path": "vite.config.ts",
+      "bytes": 2441,
+      "sha256": "f0e7f80fc86bde103af2abbdbe5efc1fbc3ab09efbeabe76e82c6fcad84e8cbc"
+    },
+    {
+      "path": "scripts/verify-svg-package-mode.mjs",
+      "bytes": 4844,
+      "sha256": "d85373ed123a0454302215fe82963161a463e877d567501441b17af7a69a744b"
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "bytes": 18694,
+      "sha256": "3de9836bd62c64a1b5ce549c1f9a4f2de59c6ecbdb1ee6e4a6caf59f93ea8393"
+    },
+    {
+      "path": "tests/browser/svg-publication-gate.spec.ts",
+      "bytes": 4380,
+      "sha256": "b9720608ac7ce5476b17b404d3115798bd93505ea4255f76c2ca7e1a0aba3893"
+    },
+    {
+      "path": "evidence/2026-11-07T19-20-00-335Z-svg-publication-checks.json",
+      "bytes": 10010,
+      "sha256": "a52f80465dfe4c4ad8d6b57d976a17e50e092d819eb5acf08131d029a2a54b1c"
+    },
+    {
+      "path": "evidence/2026-11-07T19-20-00-438Z-owned-privacy-offline.json",
+      "bytes": 22276,
+      "sha256": "b353773baf46d54bed7b22b31ebac5316bfe497b1e08b5071c1a98a02abfd671"
+    }
+  ],
+  "release": {
+    "engineFiles": 93,
+    "wasmFiles": 19,
+    "svgDirectoryAbsent": true,
+    "nativeEngineFilesMatched": 93,
+    "probes": [
+      {
+        "asset": "resvg.wasm",
+        "method": "GET",
+        "status": 404,
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cacheControl": "no-store"
+      },
+      {
+        "asset": "resvg.wasm",
+        "method": "HEAD",
+        "status": 404,
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cacheControl": "no-store"
+      },
+      {
+        "asset": "build-manifest.json",
+        "method": "GET",
+        "status": 404,
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cacheControl": "no-store"
+      },
+      {
+        "asset": "build-manifest.json",
+        "method": "HEAD",
+        "status": 404,
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cacheControl": "no-store"
+      }
+    ],
+    "serverExited": true,
+    "scratchRemoved": true
+  },
+  "qualification": {
+    "engineFiles": 95,
+    "wasmFiles": 20,
+    "nativeEngineFilesMatched": 93,
+    "packagedSvg": {
+      "bytes": 2478606,
+      "sha256": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70"
+    },
+    "probes": [
+      {
+        "asset": "resvg.wasm",
+        "method": "GET",
+        "status": 200,
+        "bytes": 2478606,
+        "sha256": "22bf6e9f9a100d972da0411a69c5ba504367fc1fa87b3b64e3f35e53926d2d70",
+        "cacheControl": "no-store"
+      },
+      {
+        "asset": "resvg.wasm",
+        "method": "HEAD",
+        "status": 200,
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cacheControl": "no-store"
+      },
+      {
+        "asset": "build-manifest.json",
+        "method": "GET",
+        "status": 200,
+        "bytes": 749,
+        "sha256": "354d9ab9ba1af3fb9ca717ad9156016890524670eadcef1f8ca6316806bedc99",
+        "cacheControl": "no-store"
+      },
+      {
+        "asset": "build-manifest.json",
+        "method": "HEAD",
+        "status": 200,
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "cacheControl": "no-store"
+      }
+    ],
+    "serverExited": true,
+    "scratchRemoved": true
+  },
+  "releaseBrowser": {
+    "headed": false,
+    "passed": 21,
+    "failed": 0,
+    "skipped": 0,
+    "staleCacheCannotReplaySvgAsset": true,
+    "ownedRuntimeRemoved": true
+  },
+  "focusedTests": {
+    "passed": 77,
+    "failed": 0,
+    "typescript": true,
+    "affectedLint": true
+  },
+  "releasedBuildRebuiltAfterPrivate": true,
+  "nativeRebuildsPerformed": 0,
+  "githubWorkflowRunPerformed": false,
+  "registryChanged": false,
+  "publicPromotion": false,
+  "caveat": "The browser SVG engine is omitted from dist/client. The framework may package separate server-only modules; no assertion of source provenance for unrelated server dependencies."
+}

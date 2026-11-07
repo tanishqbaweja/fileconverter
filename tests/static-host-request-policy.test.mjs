@@ -5,14 +5,18 @@ import test from "node:test";
 import { build } from "esbuild";
 
 let handlerCalls = 0;
-const bundle = await build({ entryPoints: ["worker/index.ts"], bundle: true, write: false, format: "esm", platform: "node",
+async function compileWorker(qualification) {
+  const bundle = await build({ entryPoints: ["worker/index.ts"], bundle: true, write: false, format: "esm", platform: "node",
+  define: { __WITHIN_LOCAL_SVG_QUALIFICATION__: JSON.stringify(qualification) },
   plugins: [{ name: "stub-only-framework-handler", setup(builder) {
     builder.onResolve({ filter: /^vinext\/server\/app-router-entry$/ }, () => ({ path: "handler", namespace: "test-framework" }));
     builder.onLoad({ filter: /.*/, namespace: "test-framework" }, () => ({ contents:
       'export default { async fetch() { globalThis.__withinStaticHostHandlerCalled(); return new Response("application"); } };' }));
   } }] });
+  return (await import("data:text/javascript;base64," + Buffer.from(bundle.outputFiles[0].contents).toString("base64"))).default;
+}
 globalThis.__withinStaticHostHandlerCalled = () => { handlerCalls++; };
-const { default: worker } = await import("data:text/javascript;base64," + Buffer.from(bundle.outputFiles[0].contents).toString("base64"));
+const [worker, qualificationWorker] = await Promise.all([compileWorker(false), compileWorker(true)]);
 const reject = async request => worker.fetch(request, {}, {});
 
 test("static host rejects body-bearing methods before any framework handler consumes them", async () => {
@@ -50,6 +54,54 @@ test("ordinary application/engine reads and HEAD remain available; malformed esc
   assert.equal(handlerCalls, before + 6);
   assert.equal((await reject(new Request("https://app.local/%xy"))).status, 400);
   assert.equal(handlerCalls, before + 6);
+});
+
+test("release hosting refuses SVG qualification assets before calling either handler", async () => {
+  const before = handlerCalls;
+  let assetCalls = 0;
+  const env = { ASSETS: { async fetch() { assetCalls++; return new Response("not public"); } } };
+  for (const origin of ["https://app.local", "http://127.0.0.1:3000"]) {
+    for (const pathname of ["/engines/svg/resvg.wasm", "/engines/svg/build-manifest.json",
+      "/engines/SVG/resvg.wasm", "/engines%2Fsvg%2Fresvg.wasm", "/engines/svg/", "/engines//svg/resvg.wasm"]) {
+      for (const method of ["GET", "HEAD"]) {
+        const response = await worker.fetch(new Request(origin + pathname + "?test=1", { method }), env, {});
+        assert.equal(response.status, 404, pathname);
+        assert.equal(await response.text(), "");
+        assert.equal(response.headers.get("cache-control"), "no-store");
+        assert.equal(response.headers.get("cross-origin-embedder-policy"), "require-corp");
+      }
+    }
+  }
+  assert.equal(assetCalls, 0);
+  assert.equal(handlerCalls, before);
+});
+
+test("opt-in worker delivers only canonical SVG assets on loopback and marks them no-store", async () => {
+  const before = handlerCalls;
+  let assetCalls = 0;
+  const env = { ASSETS: { async fetch() {
+    assetCalls++;
+    return new Response(null, { status: 200, headers: { "Cache-Control": "public, immutable" } });
+  } } };
+  for (const origin of ["http://127.0.0.1:3000", "http://localhost:3000", "http://[::1]:3000"]) {
+    for (const pathname of ["/engines/svg/resvg.wasm", "/engines/svg/build-manifest.json"]) {
+      const response = await qualificationWorker.fetch(new Request(origin + pathname, { method: "HEAD" }), env, {});
+      assert.equal(response.status, 200);
+      assert.equal(response.headers.get("cache-control"), "no-store");
+      assert.equal(response.headers.get("cross-origin-embedder-policy"), "require-corp");
+    }
+  }
+  for (const url of ["https://converter.invalid/engines/svg/resvg.wasm?test=1",
+    "http://localhost.attacker.invalid/engines/svg/resvg.wasm",
+    "http://localhost:3000/engines%2fsvg/resvg.wasm",
+    "http://localhost:3000/engines/svg/unreviewed.bin"]) {
+    const response = await qualificationWorker.fetch(new Request(url, {
+      headers: { "X-Forwarded-Host": "localhost", Origin: "http://localhost:3000" },
+    }), env, {});
+    assert.equal(response.status, 404, url);
+  }
+  assert.equal(assetCalls, 6);
+  assert.equal(handlerCalls, before);
 });
 
 test("worker has no native/server image transformer and patched framework pins stay synchronized", async () => {
