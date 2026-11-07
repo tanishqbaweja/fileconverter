@@ -5,7 +5,7 @@ import { createHash } from "node:crypto";
 import patch from "../../fixtures/source/docx-html-reviewed-integration-2026-11-07.json" with { type: "json" };
 const pins = Object.freeze({
   "workers/conversion.worker.ts": ["fbdbd631d791420f6af3a8dcaa9871fb367a04dbeb456999441b6f9c2a7ae833", "57b9f4b9edeb981d9d267e8e2892d89007c114fb999708aff2407311b0147ce9"],
-  "lib/capability-registry.ts": ["acc1c6cb5104f329eec92f37b31754e7842f24bb174e703cf741b11379403781", "e04961e2e9cd96bec145a28bb4b35d4c551c433dbd5c58b86fa308bf431357d7"],
+  "lib/capability-registry.ts": ["acc1c6cb5104f329eec92f37b31754e7842f24bb174e703cf741b11379403781", "371738c549f0abba5194b25ea3807ebe602cfe1ba9456974e4570639d512b49e"],
 });
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 export function reviewDocxHtmlIntegration(file, bytes) {
@@ -25,5 +25,13 @@ export function reviewDocxHtmlIntegration(file, bytes) {
   for (const hunk of edits) { assert.equal(reapplied.split(hunk.before).length, 2); reapplied = reapplied.replace(hunk.before, hunk.after); }
   assert.equal(reapplied, current, "Complete current source must round-trip exactly");
   const historicalBytes = Buffer.from(restored); assert.equal(sha(historicalBytes), beforeSha256);
-  return { historicalBytes, currentSha256: digest, historicalSha256: beforeSha256, reviewedDocxHtmlChange: true };
+  let previousReviewedBytes;
+  if (edit.previousAfter !== undefined) {
+    assert.equal(file, "lib/capability-registry.ts");
+    assert.equal(edit.previousAfterSha256, "e04961e2e9cd96bec145a28bb4b35d4c551c433dbd5c58b86fa308bf431357d7");
+    assert.equal(current.split(edit.after).length, 2);
+    previousReviewedBytes = Buffer.from(current.replace(edit.after, edit.previousAfter));
+    assert.equal(sha(previousReviewedBytes), edit.previousAfterSha256, "Exact previous outline-only private registry, not current qualification");
+  }
+  return { historicalBytes, currentSha256: digest, historicalSha256: beforeSha256, reviewedDocxHtmlChange: true, previousReviewedBytes };
 }

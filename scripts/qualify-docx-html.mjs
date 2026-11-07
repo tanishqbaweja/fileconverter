@@ -36,7 +36,8 @@ import { cleanupOwnedChromium } from "./lib/owned-chromium-cleanup.mjs";
 assert.equal(process.platform, "win32");
 const memoryDiagnostic = process.argv[2] === "--outline-memory-diagnostic";
 const outlineSmall = process.argv[2] === "--outline-small-control";
-const outlineControl = process.argv[2] === "--outline-direct-scaling" || memoryDiagnostic || outlineSmall;
+const emphasisControl = process.argv[2] === "--emphasis-direct-scaling";
+const outlineControl = process.argv[2] === "--outline-direct-scaling" || memoryDiagnostic || outlineSmall || emphasisControl;
 const benchmark = process.argv[2] === "--direct-async-scaling";
 const asyncDirect = benchmark || outlineControl;
 const direct = process.argv[2] === "--direct-scaling" || asyncDirect;
@@ -77,6 +78,7 @@ if (direct) {
 }
 if (outlineControl) report.scope = "Changed outline reader: real python-docx headings and inherited/default/direct outlines plus large documents with257referenced styles, actual async handle writer; not full Word layout, native picker or promotion";
 if (outlineSmall) report.scope = "Previously unreached real python-docx heading repetitions plus actual payload cancellation/write-error/recovery only; NOT scaling, native picker, full Word rendering or public qualification";
+if (emphasisControl) report.scope = "Changed supported inherited style emphasis: three native-generated semantic fixtures then unchanged full styled scaling inputs/repeats, native heading checks and payload-cancel/write-error/recovery; NOT full Word rendering/native external destination/public promotion";
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const p = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
 const packageBytes = (body, level = 6, invalidPackage = false) => zipSync({
@@ -191,7 +193,7 @@ try {
     "scripts/lib/birth-type-capture.mjs", "scripts/lib/select-owned-local-browser-file.mjs",
     "scripts/lib/docx-html-scaling-control.mjs", "scripts/lib/docx-html-scaling-fixtures.py", "scripts/lib/opfs-output-validation-backing.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/browser-payload-cancellation.mjs",
     "scripts/lib/docx-direct-control.mjs", "app/converter/ConverterApp.tsx", "workers/random-access-destination.ts", "workers/direct-file-writer.worker.ts", "workers/direct-writer-protocol.ts",
-    "workers/docx-outline.ts", "scripts/lib/docx-outline-fixtures.py", "scripts/lib/bounded-error-details.mjs",
+    "workers/docx-outline.ts", "scripts/lib/docx-outline-fixtures.py", "scripts/lib/docx-emphasis-fixtures.py", "scripts/lib/bounded-error-details.mjs",
     "scripts/lib/docx-cleanup-diagnostic.mjs", "scripts/lib/bounded-dom-counters.mjs", "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "scripts/lib/owned-chromium-cleanup.mjs"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
@@ -277,7 +279,7 @@ try {
     report.outlineControl = { fixtureBytes: (await stat(outlineFixture)).size, fixtureSha256: await hashFile(outlineFixture), generated, sourceValidation,
       validatorControls: [], cases: [], fullWordRenderingVerified: false };
     const reference = '<html><head><meta http-equiv="Content-Security-Policy" content="default-src \'none\'"></head><body>' +
-      '<h1>Outline α 😀</h1><h2>Inherited heading</h2><p>Body override</p><h3>Third level</h3><p role="heading" aria-level="9">Deep outline</p>' +
+      '<h1><strong>Outline α 😀</strong></h1><h2>Inherited heading</h2><p>Body override</p><h3><strong>Third level</strong></h3><p role="heading" aria-level="9">Deep outline</p>' +
       '<p><strong><em>Direct emphasis</em></strong></p><table><tr><td><p>Cell one</p></td><td><p>Cell two</p></td></tr></table></body></html>';
     const file = path.join(runtime.directory, "outline-validator.html");
     for (const [name, html, accepted] of [["positive", reference, true], ["wrong-heading", reference.replaceAll("h2>", "p>"), false],
@@ -287,6 +289,25 @@ try {
       try { await execute("python", [helper, "validate", file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
       catch (error) { assert.equal(typeof error.code, "number"); exitCode = error.code; }
       assert.equal(exitCode === 0, accepted); report.outlineControl.validatorControls.push({ name, exitCode, expectedAccepted: accepted });
+    }
+  }
+  let emphasisFixture;
+  if (emphasisControl) {
+    const helper = path.join(root, "scripts/lib/docx-emphasis-fixtures.py");
+    emphasisFixture = path.join(runtime.directory, ownedPrefix + "emphasis.docx");
+    const generated = JSON.parse((await execute("python", [helper, "generate", emphasisFixture], { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
+    const validated = JSON.parse((await execute("python", ["-c", sourceValidator, emphasisFixture], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
+    report.emphasisControl = { generated, sourceValidation: validated, fixtureBytes: (await stat(emphasisFixture)).size,
+      fixtureSha256: await hashFile(emphasisFixture), validatorControls: [], cases: [], fullWordRenderingVerified: false };
+    const reference = (await execute("python", [helper, "reference"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout;
+    const file = path.join(runtime.directory, "emphasis-validator.html");
+    for (const [name, value, accepted] of [["positive", reference, true], ["wrong-toggle", reference.replace("<strong>Direct override</strong>", "Direct override"), false],
+      ["wrong-text", reference.replace("Mixed second", "bad"), false], ["active-markup", reference.replace("</body>", "<script>bad</script></body>"), false],
+      ["unclosed", reference.replace("</html>", ""), false]]) {
+      await writeFile(file, value); let exitCode = 0;
+      try { await execute("python", [helper, "validate", file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
+      catch (error) { assert.equal(typeof error.code, "number"); exitCode = error.code; }
+      assert.equal(exitCode === 0, accepted); report.emphasisControl.validatorControls.push({ name, expectedAccepted: accepted, exitCode });
     }
   }
   const port = await new Promise((resolve, reject) => { const socket = createServer(); socket.once("error", reject);
@@ -387,6 +408,31 @@ try {
     return name;
   };
   if (scaling) {
+    if (emphasisControl) {
+      await select(emphasisFixture);
+      for (let repeat = 1; repeat <= 3; repeat++) {
+        const started = Date.now(); await Promise.race([safetyStop, directCompletion()]);
+        const state = await page.evaluate(() => window.__WITHIN_TEST__.getState());
+        assert.equal(state.error, null); assert.equal(state.metrics.pendingOperations, 0); assert.equal(state.metrics.queuedBytes, 0);
+        assert.ok(state.metrics.maxReadChunkBytes <= 262144 && state.metrics.maxWriteChunkBytes <= 65536);
+        assert.equal(state.metrics.peakPendingOperations, 1); assert.ok(state.metrics.peakQueuedBytes <= 65536);
+        const observation = await directObservation(), name = assertDirectDocxCompletion(state, observation, report.directWriterImplementation);
+        const binding = await bindOpfsOutputValidationBacking(page, profile, name, state.metrics.outputBytes);
+        const row = { repeat, outputBytes: state.metrics.outputBytes, metrics: state.metrics, destinationObservation: observation, binding: binding.proof, warnings: state.warnings };
+        report.emphasisControl.cases.push(row);
+        assert.ok(state.warnings.includes(`DOCX outline metadata read ${report.emphasisControl.generated.styleDefinitions} style definitions from a referenced internal package part.`));
+        row.validated = JSON.parse((await execute("python", [path.join(root, "scripts/lib/docx-emphasis-fixtures.py"), "validate", binding.file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
+        await assertOpfsOutputValidationBackingUnchanged(binding);
+        await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
+        await waitEmpty(); assert.deepEqual(await leftovers(), []);
+        await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
+        const cleanup = await Promise.race([safetyStop, stable()]); await drain();
+        row.smallRunMemory = summarizeDocxHtmlRunMemory(samples, started, Date.now(), report.blankBaseline, report.loadedIdle, cleanup);
+        assert.ok(row.smallRunMemory.incrementalPrivateMiB <= 250);
+        assert.ok(row.smallRunMemory.cleanupDeltaFromLoadedMiB <= scalingPlan.cleanupRecoveryLimitMiB, "Unchanged96MiB emphasis cleanup gate");
+      }
+      assert.equal(new Set(report.emphasisControl.cases.map(row => row.validated.sha256)).size, 1);
+    }
     for (const fixture of scalingInputs) {
       await select(fixture.file);
       let previous = null;
@@ -536,6 +582,7 @@ try {
   if (scaling) report.completedDocumentScalingControlVerified = true;
   if (outlineControl) report.outlineControlVerified = !outlineSmall;
   if (outlineSmall) report.smallNativeHeadingRecoveryVerified = true;
+  if (emphasisControl) report.inheritedEmphasisControlVerified = true;
   if (benchmark) {
     const candidate = report.performanceCandidate, bytes = await readFile(path.join(root, candidate.baseline));
     assert.equal(sha(bytes), candidate.baselineSha256); const baseline = JSON.parse(bytes);
@@ -636,7 +683,7 @@ finally {
   }
   // Heading controls have separate cases, but the same late native replies
   // must be reconciled against their original immutable run windows as scaling.
-  if (outlineSmall && report.blankBaseline && report.loadedIdle) for (const row of report.outlineControl?.cases ?? []) {
+  if (report.blankBaseline && report.loadedIdle) for (const row of [...report.outlineControl?.cases ?? [], ...report.emphasisControl?.cases ?? []]) {
     if (!row.smallRunMemory) continue;
     const online = row.smallRunMemory;
     row.onlineSampleCounts = { validSamples: online.validSamples, unavailableSamples: online.unavailableSamples };

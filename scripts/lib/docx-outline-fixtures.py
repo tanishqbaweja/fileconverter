@@ -121,7 +121,8 @@ def validate(file):
         parser.close()
     assert parser.blocks == expected and not parser.stack, parser.blocks
     assert parser.heading_levels == [1, 2, 3, 9], parser.heading_levels
-    assert parser.tags['strong'] == 1 and parser.tags['em'] == 1
+    # Heading1/Heading3 each inherit bold in addition to the direct run.
+    assert parser.tags['strong'] == 3 and parser.tags['em'] == 1
     assert parser.tags['table'] == 1 and parser.tags['td'] == 2 and parser.csp
     print(json.dumps({'sha256': digest.hexdigest(), 'blocks': len(parser.blocks), 'headingLevels': parser.heading_levels,
                       'tableCells': parser.tags['td'], 'csp': parser.csp,

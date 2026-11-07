@@ -1,5 +1,26 @@
 # Tested conversion ledger
 
+2026-11-07 new N-08 inherited emphasis implementation (browser pending): document
+run defaults, paragraph/character style chains and direct bold/italic/underline/
+strike overrides. Bold/italic/strike compose as style toggles, direct values set;
+underline is an absolute override normalized to single. No inferred font/list/
+layout/table-style/complex-script fidelity. Same1MiB metadata/1024definitions/
+64chain bounds, job-local caches,64KiB output/backpressure; cyclic or ambiguous
+character chains now fail explicitly too. Initial7tests2PASS/5FAIL reproduced
+missing behavior; latest67focused checks and TypeScript PASS. One temporary
+48PASS/1FAIL was an old warning-text assertion; preserved Named-styles disclosure
+and rerun green. Historical native-heading sources frozen byte-exact; old reports
+remain historical rather than current-feature qualification. Only private DOCX
+registry disclosure changed; selector/public count unchanged.
+
+Seven affected-file lint and fresh production build now PASS (existing Vinext
+sourcemap/config warnings remain). New --emphasis-direct-scaling control will first exercise a real python-docx
+13block/15segment emphasis oracle three times, then SAME full257-style scaling
+inputs/repeats, native headings and adverse recovery. No smaller substitute,
+service exclusions, forced GC, new memory baseline or relaxed250/96MiB gates.
+Independent native HTML validator checks text AND emphasis per segment, with
+positive/wrong-toggle/wrong-text/active-markup/unclosed controls. Browser not run.
+
 2026-11-07 final checkpoint regression2577PASS/0fail/0skip/0cancel,
 113556.1188ms;714portable files/876inventoried/162qualification UNRUN,
 235prior-hosted retained. Latest13focused evidence/observer checks PASS; earlier

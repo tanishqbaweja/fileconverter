@@ -13,8 +13,9 @@ conversion. It streams main-document paragraphs, simple table rows/cells and
 basic direct emphasis into escaped static HTML. Named styles, lists/headings,
 fonts, page/merged-cell layout, links, graphics and ancillary parts are not fully
 preserved; the UI discloses those limits. Paragraph outline/heading inheritance
-from referenced/default/direct properties is now implemented with 1 MiB metadata,
-1,024-style and 64-level safety bounds, but its latest browser qualification FAILED
+and supported document-default/paragraph/character-style emphasis are implemented
+with 1 MiB metadata, 1,024-style and 64-level safety bounds. The new emphasis
+increment still awaits browser qualification. Its earlier outline-only build FAILED
 the unchanged cleanup-recovery gate (110.43 MiB above loaded idle versus 96 MiB).
 Four style-referencing conversions completed correctly, including 141.87 MB DOCX
 to 139.76 MB HTML; primary whole-Chrome memory was 143.29 MiB. A changed, perturbing
@@ -31,6 +32,9 @@ Outline interpretation follows the documented
 [outline-level](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.outlinelevel?view=openxml-3.0.1)
 and [style-base](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.basedon?view=openxml-3.0.1)
 rules; HTML headings reflow rather than reproducing Word appearance.
+Supported emphasis follows the documented [style ordering](https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.runstyle?view=openxml-3.0.1)
+and [toggle-property rules](https://python-docx.readthedocs.io/en/latest/dev/analysis/features/text/font.html#toggle-properties).
+Direct overrides are absolute; underline patterns/colors normalize to single.
 
 Earlier source-pinned controls below remain historical evidence, not acceptance
 of the current outline increment. Two clean Chrome sessions each produced

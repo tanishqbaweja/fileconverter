@@ -2,26 +2,26 @@ import {
   assertXmlCharacters, decodeXmlEntities, normalizeXmlNewlines, openDocxMainDocument,
   parseEndElement, parseStartElement, readMarkupTokens, type DocxRuntime,
 } from "./docx-conversion";
-import { readDocxOutlineModel, parseDocxOutlineLevel, type DocxOutlineModel } from "./docx-outline";
+import { readDocxOutlineModel, parseDocxOutlineLevel, docxEmphasisKey, parseDocxEmphasisValue, type DocxOutlineModel, type DocxEmphasis } from "./docx-outline";
 
 const WORD = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const XML = "http://www.w3.org/XML/1998/namespace";
 const MAX_DEPTH = 256, MAX_NAMESPACE_BINDINGS = 512, MAX_NAMESPACE_CHARS = 65536;
 const OUTPUT_CHUNK_BYTES = 65536;
 type Block = "p" | "table" | "tr" | "td";
-type Run = { bold: boolean; italic: boolean; underline: boolean; strike: boolean; opened: boolean; close: string };
+type Run = { direct: Partial<DocxEmphasis>; styleId?: string; propertiesSeen: boolean; contentStarted: boolean; opened: boolean; close: string };
 type Paragraph = { opened: boolean; contentStarted: boolean; propertiesSeen: boolean; styleId?: string; outline?: number; tag: string };
 type Frame = { name: string; local: string | null; declarations: Map<string, string>; namespaceChars: number;
   block?: Block; paragraph?: Paragraph; run?: Run; text?: boolean; suppress: boolean };
 
 /** Private candidate until complete production/browser/memory qualification.
- * Only main-document structure and direct run emphasis are represented.
+ * Main-document structure and bounded supported style/direct emphasis only.
  * User XML attributes, URLs, styles, markup and relationship targets are NEVER
  * copied into executable HTML/CSS. Output text is escaped after XML decoding.
  */
 export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
   runtime.warn("DOCX HTML preserves main-document paragraphs, simple table rows/cells, direct bold/italic/underline/strike runs, tabs, line breaks, Unicode and accepted tracked insertions. Tracked deletions and moved-from text are excluded.");
-  runtime.warn("Named styles are used only for paragraph outline/heading hierarchy; inherited run formatting, list numbering, fonts, colors, borders, merged-cell layout, page layout, links, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.");
+  runtime.warn("Named styles (referenced/default paragraph and character) preserve outline hierarchy and supported bold/italic/underline/strike emphasis with direct overrides. Underline patterns/colors are normalized to a single underline. Table/numbering style effects, complex-script properties, other font/run styling, list numbering, fonts, colors, borders, merged-cell layout, page layout, links, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.");
   let outlines: DocxOutlineModel;
   const source = await openDocxMainDocument(runtime, async entries => { outlines = await readDocxOutlineModel(runtime, entries); }), writer = htmlWriter(runtime);
   if (outlines!.definitionCount) runtime.warn(`DOCX outline metadata read ${outlines!.definitionCount} style definitions from a referenced internal package part.`);
@@ -54,7 +54,8 @@ export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
     await openParagraph();
     if (run.opened) return;
     run.opened = true;
-    for (const [enabled, tag] of [[run.bold, "strong"], [run.italic, "em"], [run.underline, "u"], [run.strike, "s"]] as const)
+    const emphasis = outlines.emphasis(paragraph?.styleId, run.styleId, run.direct);
+    for (const [enabled, tag] of [[emphasis.bold, "strong"], [emphasis.italic, "em"], [emphasis.underline, "u"], [emphasis.strike, "s"]] as const)
       if (enabled) { await writer.markup(`<${tag}>`); run.close = `</${tag}>` + run.close; }
   };
   const close = async (frame: Frame) => {
@@ -155,27 +156,34 @@ export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
       if (local === "r") {
         if (run || blocks.at(-1) !== "p") throw new Error("DOCX HTML contains an invalid paragraph run.");
         if (paragraph) paragraph.contentStarted = true;
-        frame.run = run = { bold: false, italic: false, underline: false, strike: false, opened: false, close: "" };
+        frame.run = run = { direct: {}, propertiesSeen: false, contentStarted: false, opened: false, close: "" };
       }
-      if (local === "rPr" && run?.opened) throw new Error("DOCX HTML run properties must precede run text.");
-      if (run && stack.at(-1)?.local === "rPr" && ["b", "i", "u", "strike"].includes(local ?? "")) {
+      if (local === "rPr" && stack.at(-1)?.run === run && run) {
+        if (run.contentStarted) throw new Error("DOCX HTML run properties must precede run text.");
+        if (run.propertiesSeen) throw new Error("DOCX HTML run properties must occur once.");
+        run.propertiesSeen = true;
+      }
+      const emphasisKey = docxEmphasisKey(local);
+      if (run && stack.at(-1)?.local === "rPr" && stack.at(-2)?.run === run && (emphasisKey || local === "rStyle")) {
         const val = element.attributes.find(attr => {
           if (attr.name === "xmlns" || attr.name.startsWith("xmlns:")) return false;
           const name = resolve(attr.name, true, declarations); return name.uri === WORD && name.local === "val";
         })?.value;
-        if (local !== "u" && val !== undefined && !["0", "1", "true", "false", "on", "off"].includes(val))
-          throw new Error("DOCX HTML direct emphasis has an invalid on/off value.");
-        const enabled = val === undefined || !["0", "false", "off", "none"].includes(val);
-        if (local === "b") run.bold = enabled;
-        if (local === "i") run.italic = enabled;
-        if (local === "u") run.underline = enabled;
-        if (local === "strike") run.strike = enabled;
+        if (local === "rStyle") {
+          if (!val || val.length > 256 || run.styleId !== undefined) throw new Error("DOCX character style reference is invalid or repeated.");
+          run.styleId = val;
+        } else if (emphasisKey) {
+          if (run.direct[emphasisKey] !== undefined) throw new Error("DOCX run repeats a supported emphasis property.");
+          run.direct[emphasisKey] = parseDocxEmphasisValue(local!, val);
+        }
       }
       if (local === "t") {
         if (!run || textDepth) throw new Error("DOCX HTML contains text outside a supported run.");
+        run.contentStarted = true;
         textDepth++; frame.text = true;
       }
       if (["tab", "br", "cr", "noBreakHyphen", "softHyphen"].includes(local ?? "")) {
+        if (run) run.contentStarted = true;
         await openRun();
         if (local === "br" || local === "cr") await writer.markup("<br>");
         else await writer.text(local === "tab" ? "\t" : local === "noBreakHyphen" ? "\u2011" : "\u00ad");

@@ -8,8 +8,26 @@ const STYLE_RELATIONSHIP = "http://schemas.openxmlformats.org/officeDocument/200
 const METADATA_BYTES = 1048576, MAX_STYLES = 1024, MAX_CHAIN = 64;
 type Element = { name: string; local: string; uri: string; attributes: Map<string, string>; parent?: Element;
   namespaces: Map<string, string>; namespaceChars: number; depth: number };
-type Style = { type: string; base?: string; outline?: number };
-export type DocxOutlineModel = { definitionCount: number; outline(styleId?: string): number | undefined };
+export type DocxEmphasis = { bold: boolean; italic: boolean; underline: boolean; strike: boolean };
+type Style = { type: string; base?: string; outline?: number; emphasis: Partial<DocxEmphasis> };
+type Resolved = { outline: number | undefined; levels: number; toggleMask: number; underline?: boolean };
+export type DocxOutlineModel = { definitionCount: number; outline(styleId?: string): number | undefined;
+  emphasis(paragraphStyleId?: string, characterStyleId?: string, direct?: Partial<DocxEmphasis>): DocxEmphasis };
+
+export function docxEmphasisKey(local: string | null): keyof DocxEmphasis | undefined {
+  switch (local) { case "b": return "bold"; case "i": return "italic"; case "u": return "underline"; case "strike": return "strike"; }
+}
+export function parseDocxEmphasisValue(local: string, value: string | undefined): boolean {
+  if (local === "u") {
+    if (value !== undefined && !["none", "single", "words", "double", "thick", "dotted", "dottedHeavy", "dash", "dashedHeavy",
+      "dashLong", "dashLongHeavy", "dotDash", "dashDotHeavy", "dotDotDash", "dashDotDotHeavy", "wave", "wavyHeavy", "wavyDouble"].includes(value))
+      throw new Error("DOCX underline has an unsupported or invalid pattern.");
+    return value !== "none";
+  }
+  if (value !== undefined && !["0", "1", "true", "false", "on", "off"].includes(value)) throw new Error("DOCX emphasis has an invalid on/off value.");
+  return value === undefined || !["0", "false", "off"].includes(value);
+}
+const toggleMask = (value: Partial<DocxEmphasis>) => (value.bold ? 1 : 0) | (value.italic ? 2 : 0) | (value.strike ? 8 : 0);
 
 export function parseDocxOutlineLevel(value: string | undefined): number {
   if (value === undefined || !/^\+?\d{1,3}$/.test(value) || Number(value) > 9)
@@ -44,7 +62,8 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
     if (!stylePart || stylePart.split("/").some(part => !part || part === "." || part === "..") || /[\\\u0000]/.test(stylePart))
       throw new Error("DOCX styles relationship has an unsafe part path.");
   }
-  const styles = new Map<string, Style>(); let defaultStyle: string | undefined, documentOutline: number | undefined;
+  const styles = new Map<string, Style>(), defaults: Partial<DocxEmphasis> = {};
+  let defaultStyle: string | undefined, documentOutline: number | undefined;
   if (stylePart !== undefined) {
     const entry = entries.get(stylePart);
     if (!entry || entry.directory) throw new Error("DOCX referenced styles part is missing.");
@@ -54,7 +73,7 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
         if (styles.size >= MAX_STYLES) throw new Error("DOCX styles exceed the1024-definition safety limit.");
         const id = identifier(attribute(element, "styleId")), type = attribute(element, "type") ?? "paragraph";
         if (styles.has(id)) throw new Error("DOCX contains duplicate style identifiers.");
-        const value: Style = { type }; styles.set(id, value); current = { element, value };
+        const value: Style = { type, emphasis: {} }; styles.set(id, value); current = { element, value };
         const isDefault = attribute(element, "default");
         if (type === "paragraph" && ["1", "true", "on"].includes(isDefault ?? "")) {
           if (defaultStyle !== undefined) throw new Error("DOCX has ambiguous default paragraph styles.");
@@ -63,6 +82,15 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
       } else if (current && element.parent === current.element && word(element, "basedOn")) {
         if (current.value.base !== undefined) throw new Error("DOCX style repeats its base reference.");
         current.value.base = identifier(attribute(element, "val"));
+      } else if (word(element.parent, "rPr")) {
+        const key = element.uri === WORD ? docxEmphasisKey(element.local) : undefined;
+        let properties: Partial<DocxEmphasis> | undefined;
+        if (current && element.parent?.parent === current.element && ["paragraph", "character"].includes(current.value.type)) properties = current.value.emphasis;
+        else if (word(element.parent?.parent, "rPrDefault") && word(element.parent?.parent?.parent, "docDefaults") && element.parent?.parent?.parent?.depth === 2) properties = defaults;
+        if (key && properties) {
+          if (properties[key] !== undefined) throw new Error("DOCX style/defaults repeats a supported run property.");
+          properties[key] = parseDocxEmphasisValue(element.local, attribute(element, "val"));
+        }
       } else if (word(element, "outlineLvl") && word(element.parent, "pPr")) {
         if (current && element.parent?.parent === current.element) {
           if (current.value.outline !== undefined) throw new Error("DOCX style repeats its outline level.");
@@ -74,29 +102,42 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
       }
     }
   }
-  const resolved = new Map<string, { outline: number | undefined; levels: number }>(), visiting = new Set<string>();
-  const resolve = (id: string, depth = 0): number | undefined => {
+  const resolved = new Map<string, Resolved>(), visiting = new Set<string>();
+  const resolve = (id: string, depth = 0): Resolved | undefined => {
     runtime.assertActive();
     if (depth >= MAX_CHAIN || visiting.has(id)) throw new Error("DOCX style inheritance is cyclic or exceeds64 levels.");
-    if (resolved.has(id)) return resolved.get(id)!.outline;
-    const style = styles.get(id); if (!style || style.type !== "paragraph") return undefined;
+    if (resolved.has(id)) return resolved.get(id)!;
+    const style = styles.get(id); if (!style || !["paragraph", "character"].includes(style.type)) return undefined;
     visiting.add(id);
     const parent = style.base ? styles.get(style.base) : undefined;
     const inherited = parent?.type === style.type ? resolve(style.base!, depth + 1) : undefined;
-    const levels = 1 + (parent?.type === style.type ? resolved.get(style.base!)!.levels : 0);
+    const levels = 1 + (inherited?.levels ?? 0);
     if (levels > MAX_CHAIN) throw new Error("DOCX style inheritance is cyclic or exceeds64 levels.");
-    const value = style.outline ?? inherited;
-    visiting.delete(id); resolved.set(id, { outline: value, levels }); return value;
+    const value: Resolved = { outline: style.outline ?? inherited?.outline, levels,
+      toggleMask: (inherited?.toggleMask ?? 0) ^ toggleMask(style.emphasis), underline: style.emphasis.underline ?? inherited?.underline };
+    visiting.delete(id); resolved.set(id, value); return value;
   };
-  for (const [id, style] of styles) if (style.type === "paragraph") resolve(id);
-  let missingWarning = false;
-  return { definitionCount: styles.size, outline(id) {
+  for (const [id, style] of styles) if (["paragraph", "character"].includes(style.type)) resolve(id);
+  let missingWarning = false, missingCharacterWarning = false;
+  const paragraphStyle = (id?: string) => {
     if (id !== undefined && styles.get(id)?.type !== "paragraph") {
       if (!missingWarning) { runtime.warn("A referenced paragraph style is missing or has another type; default paragraph outline is used."); missingWarning = true; }
       id = undefined;
     }
-    return (id !== undefined ? resolved.get(id)?.outline : defaultStyle ? resolved.get(defaultStyle)?.outline : undefined) ?? documentOutline;
-  } };
+    return resolved.get(id ?? defaultStyle ?? "");
+  };
+  return { definitionCount: styles.size, outline: id => paragraphStyle(id)?.outline ?? documentOutline,
+    emphasis(paragraphId, characterId, direct = {}) {
+      const paragraph = paragraphStyle(paragraphId);
+      if (characterId !== undefined && styles.get(characterId)?.type !== "character") {
+        if (!missingCharacterWarning) { runtime.warn("A referenced character style is missing or has another type; no character style is applied."); missingCharacterWarning = true; }
+        characterId = undefined;
+      }
+      const character = characterId !== undefined ? resolved.get(characterId) : undefined;
+      const mask = toggleMask(defaults) ^ (paragraph?.toggleMask ?? 0) ^ (character?.toggleMask ?? 0);
+      return { bold: Boolean(mask & 1), italic: Boolean(mask & 2), strike: Boolean(mask & 8),
+        underline: character?.underline ?? paragraph?.underline ?? defaults.underline ?? false, ...direct };
+    } };
 }
 
 // Stream namespace-aware start elements only; parents are bounded by XML depth.

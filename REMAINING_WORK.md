@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-11-07 N-08 inherited supported emphasis implemented privately, NOT YET
+browser-qualified: document defaults -> paragraph style -> character style ->
+direct overrides, proper style toggles/underline reset, same1024style/64chain/
+1MiB bounds and64KiB writer.67focused checks/TypeScript PASS after initial5
+missing-feature failures. Run/font/theme/complex-script/table/numbering/layout
+fidelity still partial; no public promotion or old large-cleanup failure closure.
+Fresh production build and seven-file lint PASS. NEXT --emphasis-direct-scaling: three real
+native-generated emphasis fixtures then same141871070B full styled source and
+three repeats/size plus heading/adverse controls. Independent13block/15segment
+semantic oracle, unchanged250MiB/96MiB and all normal browser services required.
+
 2026-11-07 final checkpoint:2577portablePASS/0fail/0skip/0cancel,113.556s;
 714portable/876all/162qualification UNRUN/235prior-hosted retained. TypeScript,
 eight-file lint and13latest focused checks PASS. Existing production build reused

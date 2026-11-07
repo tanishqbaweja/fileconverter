@@ -3,12 +3,14 @@ import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
+import { reviewDocxHtmlIntegration } from "../scripts/lib/reviewed-docx-html-integration.mjs";
 const read = file => readFile(new URL("../" + file.replaceAll("\\", "/"), import.meta.url));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const raw = await read("evidence/2026-11-07T03-28-03-106Z-docx-html-qualification.json");
 assert.equal(sha(raw), "46f97fa291b749551d7540f38720b018e61d3bc6d71df2fcf110890fc9851806");
 const r = JSON.parse(raw);
-test("real native-generated heading fixture has three independently validated browser outputs, not full Word/scaling qualification", async () => {
+const historical = JSON.parse(await read("fixtures/source/docx-before-run-emphasis-2026-11-07.json"));
+test("historical native-generated heading fixture has three independently validated browser outputs, not current emphasis/full Word/scaling qualification", async () => {
   assert.equal(r.status, "passed-private-native-heading-and-recovery-control-not-scaling-or-promotion");
   assert.equal(r.executedHead, "e6ba305b07716a1cb3d461053bd9f2f571bb4345");
   assert.equal(r.outlineControl.fixtureBytes, 36933); assert.equal(r.outlineControl.generated.styleDefinitions, 166);
@@ -25,7 +27,12 @@ test("real native-generated heading fixture has three independently validated br
   }
   assert.deepEqual(r.outlineControl.validatorControls.map(c => c.exitCode), [0, 1, 1, 1, 1]);
   for (const key of ["workers/docx-html-conversion.ts", "workers/docx-conversion.ts", "workers/docx-outline.ts", "workers/conversion.worker.ts", "lib/capability-registry.ts"])
-    assert.equal(sha(await read(key)), r.sourcePins[key]);
+    if (historical.files[key]) {
+      assert.equal(historical.executedBrowserHead, r.executedHead);
+      assert.equal(sha(Buffer.from(historical.files[key].utf8)), r.sourcePins[key]);
+      assert.equal(historical.files[key].sha256, r.sourcePins[key]);
+    } else if (key === "lib/capability-registry.ts") assert.equal(sha(reviewDocxHtmlIntegration(key, await read(key)).previousReviewedBytes), r.sourcePins[key]);
+    else assert.equal(sha(await read(key)), r.sourcePins[key]);
   assert.equal(r.smallNativeHeadingRecoveryVerified, true); assert.equal(r.outlineControlVerified, false);
   assert.equal(r.largeFileScalingVerified, false); assert.equal(r.publicPromotion, false); assert.equal(r.nativePickerVerified, false);
   assert.equal(r.nativeConversionUsed, false); assert.equal(r.headed, false); assert.equal(r.browserServicesDisabled, false);
