@@ -1,5 +1,23 @@
 # Remaining work audit
 
+2026-11-07 DOCX HTML fresh session produced all six matching full scaling outputs
+under157.012MiB/96MiB cleanup gate, but its OVERALL control FAILED because a451ms
+9MB conversion completed before the cancellation observer armed. Failed receipt
+21-40-53 retained; no recovery pass inferred. Fix is in-page real-byte observation
+and actual cancel-button click; targeted changed cancellation-only control NEXT,
+not another six completed scaling conversions. One late finalized native sample
+changes an online run count186->187 but no peak/formula; reports stay immutable.
+N-08 remains partial/private; full-route/public/media requirements unchanged.
+
+2026-11-07 N-08 first complete document scaling session now PASS: three genuine
+140,575,793B DOCX ->139,756,049B HTML outputs, plus three8.79MB inputs; independent
+every-paragraph structure/content checks and stable cleanup observations pass.
+Whole Chrome173.390625MiB/1023valid1unavailable, no process/service exclusions;
+all owned data gone/original unchanged. Evidence21-36-55 DOCX HTML receipt/CSV/HTML.
+Required repeat in a fresh clean session NEXT, not an unchanged exploratory loop.
+Direct save, complex/full Word layout and broader browser gates remain open;
+private/pending/public403 unchanged. No original/media/scaling requirement waived.
+
 2026-11-07 N-08 next gate IN PROGRESS: complete progressively larger DOCX HTML
 outputs with three same-session repeats and stable cleanup observations. Harness
 and fixed-buffer independent fixture/validator helpers added;43focused tests and

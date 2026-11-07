@@ -1,5 +1,37 @@
 # Tested conversion ledger
 
+2026-11-07 DOCX HTML fresh-session control FAILED after six fully validated
+scaling outputs: cancellation observer missed the9MB fixture's451ms conversion,
+which genuinely completed9000537B before polling caught running output. No cancel
+or subsequent write-recovery pass claimed for that session. Original failed
+receipt/native samples/trace remain:21-40-53-256Z DOCX HTML qualification.
+All six scaling outputs match first-session hashes; second-session whole-tree
+157.01171875MiB/1224valid0missing, stable cleanup2.285-43.906MiB; all owned data
+gone/original unchanged. Changed trigger now observes real output inside the
+page and clicks the actual production cancel button in the same frame, without
+slowing the engine/writer or changing fixture/settings. Targeted cancellation-only
+browser control NEXT; do not replay completed scaling conversions.
+First new evidence regression7PASS/1FAIL found one online per-repeat count186
+versus187 in finalized raw archive (late native sample); actual peak is unchanged.
+Finalized whole-control counts already exact. Driver now finalizes per-run windows
+from its full raw journal; historical receipts unchanged. Follow-up49PASS/1FAIL
+was a test expectation of5selections for the failed session, which correctly
+stopped after3. Corrected expected chronology, not a relaxed conversion gate.
+
+2026-11-07 DOCX HTML first completed scaling session PASS, not promotion:
+8,786,993B ->8,735,249B and140,575,793B ->139,756,049B, three same-page repeats
+each. Every ordered Unicode paragraph independently parsed/compared; all outputs
+at each size have identical hashes. Large conversion7.187-8.464s, unchanged
+262144B reads/65536B writes/queues/one pending. Whole Chrome173.390625MiB,
+1023valid/1unavailable sample (never zero). Natural stable cleanup deltas
+18.117-34.352MiB versus loaded idle, under unchanged96MiB gate. Cancel/write-error
+and small recovery PASS;56 diagnostic realm observations retained. All owned
+fixtures/outputs/OPFS/profile/runtime/roots removed; original full SHA/size unchanged.
+evidence/2026-11-06T21-36-55-127Z-docx-html-qualification.json plus native gzip,
+numeric CSV and readable HTML graphs. Required fresh-session repeat NEXT; this
+does not verify direct destination, full OOXML/layout, complex documents, near10GB
+media or a speed improvement. Existing public selector403 remains unchanged.
+
 2026-11-07 NEXT changed control: DOCX HTML completed-document scaling harness
 implemented for2048/32768 ordered paragraphs, three same-session repeats each.
 Fixed-buffer native fixture generator/independent every-paragraph HTML validator,

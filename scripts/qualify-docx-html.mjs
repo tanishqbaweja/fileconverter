@@ -28,10 +28,12 @@ import { selectOwnedLocalBrowserFile } from "./lib/select-owned-local-browser-fi
 import { bindLargeDocumentOutputValidationBacking } from "./lib/opfs-output-validation-backing.mjs";
 import { DOCX_HTML_SCALING_PLAN as scalingPlan, summarizeDocxHtmlRunMemory, renderDocxHtmlScalingSummary } from "./lib/docx-html-scaling-control.mjs";
 import { connectRealmSampler } from "./lib/cdp-realm-memory.mjs";
+import { cancelAfterRealBrowserPayload } from "./lib/browser-payload-cancellation.mjs";
 
 assert.equal(process.platform, "win32");
 const scaling = process.argv[2] === "--scaling";
-assert.ok(process.argv.length === (scaling ? 3 : 2));
+const cancellationOnly = process.argv[2] === "--cancel-control";
+assert.ok(process.argv.length === (scaling || cancellationOnly ? 3 : 2));
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 262144 })) hash.update(b); return hash.digest("hex"); };
@@ -51,6 +53,7 @@ if (scaling) {
   report.largeFileScalingVerified = false;
   report.scalingRuns = [];
 }
+if (cancellationOnly) report.scope = "Changed real-payload cancellation trigger plus write-error/recovery only; not a replay of completed scaling controls or full route qualification";
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const p = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
 const packageBytes = (body, level = 6, invalidPackage = false) => zipSync({
@@ -162,7 +165,7 @@ try {
   for (const file of ["scripts/qualify-docx-html.mjs", "workers/docx-html-conversion.ts", "workers/docx-conversion.ts",
     "workers/conversion.worker.ts", "lib/capability-registry.ts", "package-lock.json", "scripts/lib/birth-aware-chromium-memory.mjs",
     "scripts/lib/birth-type-capture.mjs", "scripts/lib/select-owned-local-browser-file.mjs",
-    "scripts/lib/docx-html-scaling-control.mjs", "scripts/lib/docx-html-scaling-fixtures.py", "scripts/lib/opfs-output-validation-backing.mjs", "scripts/lib/cdp-realm-memory.mjs"])
+    "scripts/lib/docx-html-scaling-control.mjs", "scripts/lib/docx-html-scaling-fixtures.py", "scripts/lib/opfs-output-validation-backing.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/browser-payload-cancellation.mjs"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
@@ -244,6 +247,7 @@ try {
     realmSampler = await connectRealmSampler(debuggerVersion.webSocketDebuggerUrl, server.baseURL);
   }
   await context.addInitScript(`window.__WITHIN_AUDIO_VALIDATION_CHUNK__=(${encodeBoundedValidationChunk.toString()});`);
+  if (scaling || cancellationOnly) await context.addInitScript(`window.__WITHIN_PAYLOAD_CANCEL__=(${cancelAfterRealBrowserPayload.toString()});`);
   await context.route("**/*", async route => {
     const request = route.request(); report.requestCount++;
     let frameUrl = null; try { frameUrl = request.frame()?.url() ?? null; } catch { /* worker-owned request */ }
@@ -331,13 +335,28 @@ try {
       const hashes = report.cases.filter(c => c.kind === "complete" && c.paragraphs === fixture.paragraphs).map(c => c.validated.sha256);
       assert.equal(hashes.length, 3); assert.equal(new Set(hashes).size, 1);
     }
-  } else {
+  } else if (!cancellationOnly) {
     await select(input); let previous = null; for (let n = 0; n < 3; n++) previous = await success(previous);
   }
-  await select(cancellation); await page.locator('[data-testid="convert-button"]').click();
-  await page.waitForFunction(() => { const s = window.__WITHIN_TEST__?.getState(); return s?.jobState === "running" && s.metrics?.outputBytes >= 65536; }, undefined, { timeout: 30000 });
-  const armed = await page.evaluate(() => window.__WITHIN_TEST__.getState().metrics);
-  await page.getByRole("button", { name: "Cancel safely", exact: true }).click();
+  await select(cancellation);
+  let armed;
+  if (scaling || cancellationOnly) {
+    const trigger = await page.evaluate(() => window.__WITHIN_PAYLOAD_CANCEL__({
+      getState: () => window.__WITHIN_TEST__.getState(),
+      start: () => document.querySelector('[data-testid="convert-button"]').click(),
+      cancel: () => {
+        const button = [...document.querySelectorAll("button")].find(node => node.textContent.trim() === "Cancel safely");
+        if (!button || button.disabled) throw new Error("Production cancel button unavailable"); button.click();
+      },
+      nextFrame: () => new Promise(resolve => requestAnimationFrame(resolve)), now: () => performance.now(),
+    }));
+    armed = trigger.armedMetrics; report.cancellationTrigger = trigger.method;
+  } else {
+    await page.locator('[data-testid="convert-button"]').click();
+    await page.waitForFunction(() => { const s = window.__WITHIN_TEST__?.getState(); return s?.jobState === "running" && s.metrics?.outputBytes >= 65536; }, undefined, { timeout: 30000 });
+    armed = await page.evaluate(() => window.__WITHIN_TEST__.getState().metrics);
+    await page.getByRole("button", { name: "Cancel safely", exact: true }).click();
+  }
   await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().jobState === "cancelled", undefined, { timeout: 30000 });
   await waitEmpty(); assert.deepEqual(await leftovers(), []); report.cases.push({ kind: "payload-cancel", armedMetrics: armed,
     metrics: await page.evaluate(() => window.__WITHIN_TEST__.getState().metrics), leftovers: [] });
@@ -358,6 +377,7 @@ try {
   if (!scaling) assert.equal(new Set(report.cases.filter(c => c.kind === "complete").map(c => c.validated.sha256)).size, 1);
   report.screenshot = `output/playwright/${stamp}-docx-html-complete.png`; await page.screenshot({ path: path.join(root, report.screenshot), fullPage: true });
   report.status = scaling ? "passed-private-progressive-docx-html-control-not-full-route-qualification" : "passed-private-small-docx-html-production-control-not-public-qualification";
+  if (cancellationOnly) report.status = "passed-changed-docx-html-payload-cancel-write-recovery-control-not-scaling-or-promotion";
   if (scaling) report.completedDocumentScalingControlVerified = true;
 } catch (error) { report.status = "failed-not-acceptance"; report.failures.push(String(error.stack ?? error)); controlEnd ??= Date.now(); process.exitCode = 1; }
 finally {
@@ -367,7 +387,7 @@ finally {
   if (scaling) report.realmObservations = realmObservations;
   try {
     if (page && !page.isClosed()) {
-      if (scaling && report.status === "failed-not-acceptance") report.failedJobState = await page.evaluate(() => {
+      if ((scaling || cancellationOnly) && report.status === "failed-not-acceptance") report.failedJobState = await page.evaluate(() => {
         const s = window.__WITHIN_TEST__?.getState(); return s ? { jobState: s.jobState, workerStatus: s.workerStatus,
           metrics: s.metrics, error: s.error, warnings: s.warnings } : null;
       });
@@ -398,6 +418,19 @@ finally {
     report.protectedOriginalAfter = await original(); assert.deepEqual(report.protectedOriginalAfter, report.protectedOriginalBefore);
   } catch (error) { report.failures.push("Runtime/source protection: " + error); report.status = "failed-not-acceptance"; process.exitCode = 1; }
   const raw = Buffer.from(JSON.stringify(samples)), packed = gzipSync(raw);
+  if (scaling && report.blankBaseline && report.loadedIdle) {
+    for (const row of report.cases.filter(c => c.runMemory)) {
+      const online = row.runMemory;
+      row.onlineSampleCounts = { validSamples: online.validSamples, unavailableSamples: online.unavailableSamples };
+      // A sample may finish after an online drain although its start timestamp
+      // is within that run. Finalize from the immutable complete raw journal.
+      row.runMemory = summarizeDocxHtmlRunMemory(samples, Date.parse(online.windowStart), Date.parse(online.windowEnd),
+        report.blankBaseline, report.loadedIdle, online.cleanupStable);
+      if (row.runMemory.incrementalPrivateMiB > 250 || row.runMemory.cleanupDeltaFromLoadedMiB > scalingPlan.cleanupRecoveryLimitMiB) {
+        report.status = "failed-not-acceptance"; report.failures.push("Finalized native journal fails unchanged primary/cleanup gate"); process.exitCode = 1;
+      }
+    }
+  }
   if (!report.memory && controlStart !== null && report.blankBaseline) {
     const active = samples.filter(row => Date.parse(row.timestamp) >= controlStart && Date.parse(row.timestamp) <= controlEnd);
     const valid = active.filter(row => row.privateBytes !== null && row.processes);
