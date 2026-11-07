@@ -8,11 +8,13 @@ const WORD = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const XML = "http://www.w3.org/XML/1998/namespace";
 const MAX_DEPTH = 256, MAX_NAMESPACE_BINDINGS = 512, MAX_NAMESPACE_CHARS = 65536;
 const OUTPUT_CHUNK_BYTES = 65536;
+const MAX_HTML_COLUMN_SPAN = 1000;
 type Block = "p" | "table" | "tr" | "td";
 type Run = { direct: Partial<DocxEmphasis>; styleId?: string; propertiesSeen: boolean; contentStarted: boolean; opened: boolean; close: string };
 type Paragraph = { opened: boolean; contentStarted: boolean; propertiesSeen: boolean; styleId?: string; outline?: number; tag: string };
+type Cell = { opened: boolean; propertiesSeen: boolean; columnSpan?: number };
 type Frame = { name: string; local: string | null; declarations: Map<string, string>; namespaceChars: number;
-  block?: Block; paragraph?: Paragraph; run?: Run; text?: boolean; suppress: boolean };
+  block?: Block; paragraph?: Paragraph; cell?: Cell; run?: Run; text?: boolean; suppress: boolean };
 
 /** Private candidate until complete production/browser/memory qualification.
  * Main-document structure and bounded supported style/direct emphasis only.
@@ -20,12 +22,12 @@ type Frame = { name: string; local: string | null; declarations: Map<string, str
  * copied into executable HTML/CSS. Output text is escaped after XML decoding.
  */
 export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
-  runtime.warn("DOCX HTML preserves main-document paragraphs, simple table rows/cells, direct bold/italic/underline/strike runs, tabs, line breaks, Unicode and accepted tracked insertions. Tracked deletions and moved-from text are excluded.");
-  runtime.warn("Named styles (referenced/default paragraph and character) preserve outline hierarchy and supported bold/italic/underline/strike emphasis with direct overrides. Underline patterns/colors are normalized to a single underline. Table/numbering style effects, complex-script properties, other font/run styling, list numbering, fonts, colors, borders, merged-cell layout, page layout, links, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.");
+  runtime.warn("DOCX HTML preserves main-document paragraphs, table rows/cells and horizontal grid spans, direct bold/italic/underline/strike runs, tabs, line breaks, Unicode and accepted tracked insertions. Tracked deletions and moved-from text are excluded.");
+  runtime.warn("Named styles (referenced/default paragraph and character) preserve outline hierarchy and supported bold/italic/underline/strike emphasis with direct overrides. Underline patterns/colors are normalized to a single underline. Vertical and legacy table merges, omitted grid positions, table/numbering style effects, complex-script properties, other font/run styling, list numbering, fonts, colors, borders, page layout, links, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.");
   let outlines: DocxOutlineModel;
   const source = await openDocxMainDocument(runtime, async entries => { outlines = await readDocxOutlineModel(runtime, entries); }), writer = htmlWriter(runtime);
   if (outlines!.definitionCount) runtime.warn(`DOCX outline metadata read ${outlines!.definitionCount} style definitions from a referenced internal package part.`);
-  const stack: Frame[] = [], blocks: Block[] = [];
+  const stack: Frame[] = [], blocks: Block[] = [], cells: Cell[] = [];
   let rootSeen = false, rootClosed = false, bodySeen = false, bodyDepth = 0, textDepth = 0, suppressed = 0;
   let bindings = 0, namespaceChars = 0, run: Run | null = null, foreignWarning = false;
   let paragraph: Paragraph | null = null;
@@ -58,13 +60,27 @@ export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
     for (const [enabled, tag] of [[emphasis.bold, "strong"], [emphasis.italic, "em"], [emphasis.underline, "u"], [emphasis.strike, "s"]] as const)
       if (enabled) { await writer.markup(`<${tag}>`); run.close = `</${tag}>` + run.close; }
   };
+  // A cell's own properties precede its blocks. Defer only its opening tag,
+  // not its content or row; nested tables each keep their own cell state.
+  const openCell = async (cell: Cell) => {
+    if (cell.opened) return;
+    const span = cell.columnSpan ?? 1;
+    await writer.markup(span > 1 ? `<td colspan="${span}">` : "<td>");
+    cell.opened = true;
+  };
   const close = async (frame: Frame) => {
     if (frame.text) textDepth--;
     if (frame.run) { await writer.markup(frame.run.close); run = null; }
     if (frame.block) {
       if (blocks.pop() !== frame.block) throw new Error("DOCX HTML block state is inconsistent.");
       if (frame.paragraph) { await openParagraph(); await writer.markup(`</${frame.paragraph.tag}>\n`); paragraph = null; }
-      else await writer.markup(`</${frame.block}>\n`);
+      else {
+        if (frame.cell) {
+          if (cells.pop() !== frame.cell) throw new Error("DOCX HTML table cell state is inconsistent.");
+          if (!frame.cell.opened) await openCell(frame.cell);
+        }
+        await writer.markup(`</${frame.block}>\n`);
+      }
     }
     if (frame.local === "body") bodyDepth--;
     if (frame.local === "document") rootClosed = true;
@@ -116,7 +132,7 @@ export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
     // Deletions/graphics and foreign XML cannot inject their descendants as
     // visible Word text. Namespace bindings are still checked in skipped data.
     frame.suppress = local === "del" || local === "moveFrom" || local === "drawing" || local === "pict" ||
-      local === "object" || local === "rPrChange" || local === null;
+      local === "object" || local === "rPrChange" || local === "tcPrChange" || local === null;
     if (local === null && bodyDepth && !suppressed && !foreignWarning) {
       runtime.warn("Foreign-namespace document content is omitted from this DOCX HTML profile."); foreignWarning = true;
     }
@@ -132,9 +148,33 @@ export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
         if ((block === "p" || block === "table") ? parent !== undefined && parent !== "td"
           : block === "tr" ? parent !== "table" : parent !== "tr")
           throw new Error("DOCX HTML cannot represent malformed or overlapping paragraph/table structure.");
+        if (parent === "td") {
+          const cell = cells.at(-1)!;
+          if (!cell.opened) await openCell(cell);
+        }
         frame.block = block; blocks.push(block);
         if (block === "p") frame.paragraph = paragraph = { opened: false, contentStarted: false, propertiesSeen: false, tag: "p" };
+        else if (block === "td") { frame.cell = { opened: false, propertiesSeen: false }; cells.push(frame.cell); }
         else await writer.markup(`<${block}>`);
+      }
+      if (local === "tcPr") {
+        const cell = stack.at(-1)?.cell;
+        if (cell) {
+          if (cell.opened || cell.propertiesSeen) throw new Error("DOCX table cell properties must occur once before content.");
+          cell.propertiesSeen = true;
+        }
+      }
+      if (local === "gridSpan" && stack.at(-1)?.local === "tcPr") {
+        const cell = stack.at(-2)?.cell;
+        if (cell) {
+          if (cell.opened) throw new Error("DOCX table cell grid span must precede content.");
+          if (cell.columnSpan !== undefined) throw new Error("DOCX table cell repeats its grid span.");
+          const value = element.attributes.find(attr => {
+            if (attr.name === "xmlns" || attr.name.startsWith("xmlns:")) return false;
+            const name = resolve(attr.name, true, declarations); return name.uri === WORD && name.local === "val";
+          })?.value;
+          cell.columnSpan = parseColumnSpan(value);
+        }
       }
       if (local === "pPr" && stack.at(-1)?.paragraph) {
         if (!paragraph || paragraph.contentStarted || paragraph.propertiesSeen) throw new Error("DOCX paragraph properties must occur once before content.");
@@ -198,9 +238,18 @@ export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
       stack.push(frame);
     }
   }
-  if (!rootSeen || !rootClosed || !bodySeen || stack.length || blocks.length || run || paragraph || bodyDepth || textDepth || suppressed)
+  if (!rootSeen || !rootClosed || !bodySeen || stack.length || blocks.length || cells.length || run || paragraph || bodyDepth || textDepth || suppressed)
     throw new Error("DOCX HTML main-document structure is incomplete.");
   await writer.markup("</body></html>\n"); await writer.flush(); runtime.metrics.inputBytes = runtime.file.size;
+}
+
+function parseColumnSpan(value: string | undefined): number {
+  if (value === undefined || !/^[\t\n\r ]*\+?[0-9]+[\t\n\r ]*$/.test(value))
+    throw new Error("DOCX table cell has an invalid grid span.");
+  const span = Number(value);
+  if (!Number.isSafeInteger(span) || span > MAX_HTML_COLUMN_SPAN)
+    throw new Error("DOCX table cell grid span exceeds the HTML limit of 1000 columns.");
+  return Math.max(1, span); // Word treats an explicit zero as one column.
 }
 
 function htmlWriter(runtime: DocxRuntime) {

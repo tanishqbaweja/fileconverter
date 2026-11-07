@@ -36,15 +36,18 @@ import { cleanupOwnedChromium } from "./lib/owned-chromium-cleanup.mjs";
 assert.equal(process.platform, "win32");
 const memoryDiagnostic = process.argv[2] === "--outline-memory-diagnostic";
 const outlineSmall = process.argv[2] === "--outline-small-control";
+const tableSmall = process.argv[2] === "--table-small-control";
 const emphasisControl = process.argv[2] === "--emphasis-direct-scaling";
 const outlineControl = process.argv[2] === "--outline-direct-scaling" || memoryDiagnostic || outlineSmall || emphasisControl;
 const benchmark = process.argv[2] === "--direct-async-scaling";
-const asyncDirect = benchmark || outlineControl;
+const asyncDirect = benchmark || outlineControl || tableSmall;
 const direct = process.argv[2] === "--direct-scaling" || asyncDirect;
-const scaling = !outlineSmall && (process.argv[2] === "--scaling" || direct);
+const scaling = !outlineSmall && !tableSmall && (process.argv[2] === "--scaling" || direct);
 const cancellationOnly = process.argv[2] === "--cancel-control";
-assert.ok(process.argv.length === (scaling || cancellationOnly || outlineSmall ? 3 : 2));
+const payloadControl = scaling || cancellationOnly || outlineSmall || tableSmall;
+assert.ok(process.argv.length === (payloadControl ? 3 : 2));
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
+const tableFixtureHelper = path.join(root, "scripts/lib/docx-table-span-fixtures.py");
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 262144 })) hash.update(b); return hash.digest("hex"); };
 const original = async () => ({ bytes: (await stat(path.join(root, "test.mkv"))).size, sha256: await hashFile(path.join(root, "test.mkv")) });
@@ -79,6 +82,7 @@ if (direct) {
 if (outlineControl) report.scope = "Changed outline reader: real python-docx headings and inherited/default/direct outlines plus large documents with257referenced styles, actual async handle writer; not full Word layout, native picker or promotion";
 if (outlineSmall) report.scope = "Previously unreached real python-docx heading repetitions plus actual payload cancellation/write-error/recovery only; NOT scaling, native picker, full Word rendering or public qualification";
 if (emphasisControl) report.scope = "Changed supported inherited style emphasis: three native-generated semantic fixtures then unchanged full styled scaling inputs/repeats, native heading checks and payload-cancel/write-error/recovery; NOT full Word rendering/native external destination/public promotion";
+if (tableSmall) report.scope = "New native DOCX horizontal span and nested table fixture with repeated async handle writes and recovery; not stress, speed, native picker, full Word layout or promotion";
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const p = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
 const packageBytes = (body, level = 6, invalidPackage = false) => zipSync({
@@ -150,6 +154,7 @@ assert parser.tags['strong']==1 and parser.tags['em']==1 and parser.tags['table'
 assert parser.csp and parser.current is None
 print(json.dumps({'sha256':h.hexdigest(),'paragraphs':len(parser.paragraphs),'tableCells':parser.tags['td'],'strong':parser.tags['strong'],'italic':parser.tags['em'],'csp':parser.csp,'validator':'independent Python streaming HTMLParser, exact Unicode paragraph content and semantic tag counts'}))
 `;
+const validateArgs = file => tableSmall ? [tableFixtureHelper, "validate", file] : ["-c", validator, file];
 let runtime, server, chrome, chromeBirth, browser, page, context, monitor, timer, pending = null, observerError = null, traceStarted = false;
 let realmSampler, realmPending = null, rejectSafetyStop;
 let cleanupDiagnostic;
@@ -159,7 +164,7 @@ void safetyStop.catch(() => {});
 const samples = []; let controlStart = null, controlEnd = null;
 const drain = () => pending ??= (async () => { if (!monitor) return; const batch = await monitor.drain();
   assert.equal(batch.overflow, false); assert.ok(samples.length + batch.samples.length <= (scaling ? scalingPlan.sampleCap : 1200), "Finite control sample cap"); samples.push(...batch.samples);
-  if (scaling && controlStart !== null && report.blankBaseline) {
+  if ((scaling || tableSmall) && controlStart !== null && report.blankBaseline) {
     const valid = batch.samples.filter(row => Date.parse(row.timestamp) >= controlStart && row.privateBytes !== null);
     assert.ok(valid.every(row => (row.privateBytes - report.blankBaseline.privateBytes) / 1048576 <= 250), "Unchanged full-process-tree250MiB safety stop");
   }
@@ -196,17 +201,23 @@ try {
     "workers/docx-outline.ts", "scripts/lib/docx-outline-fixtures.py", "scripts/lib/docx-emphasis-fixtures.py", "scripts/lib/bounded-error-details.mjs",
     "scripts/lib/docx-cleanup-diagnostic.mjs", "scripts/lib/bounded-dom-counters.mjs", "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "scripts/lib/owned-chromium-cleanup.mjs"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
+  if (tableSmall) report.sourcePins["scripts/lib/docx-table-span-fixtures.py"] = await hashFile(tableFixtureHelper);
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
   report.validatorControls = [];
-  const referenceHtml = '<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="default-src \'none\'"></head><body>' +
+  const referenceHtml = tableSmall
+    ? (await execute("python", [tableFixtureHelper, "reference"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout
+    : '<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="default-src \'none\'"></head><body>' +
     '<p><strong><em>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</em></strong></p>' +
     '<table><tr><td><p>Cell one</p></td><td><p>Cell two</p></td></tr></table><p>Inserted</p></body></html>';
-  for (const [name, html, accepted] of [["positive", referenceHtml, true], ["wrong-text", referenceHtml.replace("Cell two", "wrong"), false],
-    ["active-markup", referenceHtml.replace("</body>", "<script>alert(1)</script></body>"), false]]) {
+  const validatorCases = [["positive", referenceHtml, true], ["wrong-text", referenceHtml.replace("Cell two", "wrong"), false],
+    ["active-markup", referenceHtml.replace("</body>", "<script>alert(1)</script></body>"), false]];
+  if (tableSmall) validatorCases.push(["missing-column-span", referenceHtml.replace(' colspan="2"', ""), false],
+    ["lost-nested-table", referenceHtml.replace("<table><tr><td colspan=", "<tr><td colspan="), false]);
+  for (const [name, html, accepted] of validatorCases) {
     const file = path.join(runtime.directory, `validator-${name}.html`); await writeFile(file, html, { flag: "wx" });
     let exitCode = 0;
-    try { await execute("python", ["-c", validator, file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
+    try { await execute("python", validateArgs(file), { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
     catch (error) { assert.equal(typeof error.code, "number"); exitCode = error.code; }
     assert.equal(exitCode === 0, accepted, "Independent validator preflight: " + name);
     report.validatorControls.push({ name, expectedAccepted: accepted, exitCode });
@@ -216,7 +227,9 @@ try {
   const body = '<w:p><w:r><w:rPr><w:b/><w:i/></w:rPr><w:t>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</w:t></w:r></w:p>' +
     `<w:tbl><w:tblPr/><w:tblGrid><w:gridCol w:w="2400"/><w:gridCol w:w="2400"/></w:tblGrid><w:tr><w:tc>${p("Cell one")}</w:tc><w:tc>${p("Cell two")}</w:tc></w:tr></w:tbl>` +
     '<w:p><w:del w:id="1" w:author="fixture"><w:r><w:delText>Deleted</w:delText></w:r></w:del><w:ins w:id="2" w:author="fixture"><w:r><w:t>Inserted</w:t></w:r></w:ins></w:p>';
-  await writeFile(input, packageBytes(body), { flag: "wx" });
+  if (tableSmall) report.tableFixture = JSON.parse((await execute("python", [tableFixtureHelper, "generate", input],
+    { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
+  else await writeFile(input, packageBytes(body), { flag: "wx" });
   // Finite generated cancellation fixture BEFORE browser conversion, never a user-file copy.
   await writeFile(cancellation, packageBytes(p("cancel payload ".repeat(600000)), 0), { flag: "wx" });
   report.sourceValidation = [];
@@ -333,7 +346,7 @@ try {
     realmSampler = await connectRealmSampler(debuggerVersion.webSocketDebuggerUrl, server.baseURL);
   }
   await context.addInitScript(`window.__WITHIN_AUDIO_VALIDATION_CHUNK__=(${encodeBoundedValidationChunk.toString()});`);
-  if (scaling || cancellationOnly || outlineSmall) await context.addInitScript(`window.__WITHIN_PAYLOAD_CANCEL__=(${cancelAfterRealBrowserPayload.toString()});`);
+  if (payloadControl) await context.addInitScript(`window.__WITHIN_PAYLOAD_CANCEL__=(${cancelAfterRealBrowserPayload.toString()});`);
   if (direct) {
     await context.addInitScript(`window.__WITHIN_NEW_DOCX_COMPLETION__=(${completeNewBrowserJob.toString()});`);
     await context.addInitScript(`(${installDocxDestinationObservation.toString()})();`);
@@ -386,6 +399,7 @@ try {
     if (scaling && Math.floor(Date.now() / 500) % 4 === 0) void sampleRealms().catch(error => { observerError ??= error; rejectSafetyStop(error); });
   }, 500);
   const success = async previous => {
+    const started = Date.now();
     if (direct) await Promise.race([safetyStop, directCompletion()]);
     else {
       await page.locator('[data-testid="convert-button"]').click();
@@ -400,11 +414,20 @@ try {
     const caseRow = { kind: "complete-unvalidated", outputBytes: state.metrics.outputBytes, metrics: state.metrics, binding: binding.proof };
     if (direct) caseRow.destinationObservation = observation;
     report.cases.push(caseRow);
-    const validated = JSON.parse((await execute("python", ["-c", validator, binding.file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
+    const validated = JSON.parse((await execute("python", validateArgs(binding.file), { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
     await assertOpfsOutputValidationBackingUnchanged(binding);
     caseRow.validated = validated; caseRow.kind = "complete";
     await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
     await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
+    if (tableSmall) {
+      assert.ok(state.warnings.some(message => message.includes("Vertical and legacy table merges")));
+      assert.ok(state.metrics.peakQueuedBytes <= 65536);
+      await waitEmpty(); assert.deepEqual(await leftovers(), []);
+      const cleanup = await Promise.race([safetyStop, stable()]); await drain();
+      caseRow.smallRunMemory = summarizeDocxHtmlRunMemory(samples, started, Date.now(), report.blankBaseline, report.loadedIdle, cleanup);
+      assert.ok(caseRow.smallRunMemory.incrementalPrivateMiB <= 250);
+      assert.ok(caseRow.smallRunMemory.cleanupDeltaFromLoadedMiB <= scalingPlan.cleanupRecoveryLimitMiB);
+    }
     return name;
   };
   if (scaling) {
@@ -538,7 +561,7 @@ try {
   }
   await select(cancellation);
   let armed;
-  if (scaling || cancellationOnly || outlineSmall) {
+  if (payloadControl) {
     const trigger = await page.evaluate(() => window.__WITHIN_PAYLOAD_CANCEL__({
       getState: () => window.__WITHIN_TEST__.getState(),
       start: () => document.querySelector('[data-testid="convert-button"]').click(),
@@ -575,10 +598,15 @@ try {
     scope: scaling ? "sampled-complete-tree-progressive-document-control-with-repeats-and-cleanup-not-full-route-acceptance" : "sampled-complete-tree-small-control-not-stress-acceptance" };
   assert.ok(report.memory.incrementalPrivateMiB <= 250); assert.deepEqual(report.forbiddenRequests, []);
   if (!scaling) assert.equal(new Set(report.cases.filter(c => c.kind === "complete").map(c => c.validated.sha256)).size, 1);
-  report.screenshot = `output/playwright/${stamp}-docx-html-complete.png`; await page.screenshot({ path: path.join(root, report.screenshot), fullPage: true });
+  if (!tableSmall) { report.screenshot = `output/playwright/${stamp}-docx-html-complete.png`; await page.screenshot({ path: path.join(root, report.screenshot), fullPage: true }); }
   report.status = scaling ? "passed-private-progressive-docx-html-control-not-full-route-qualification" : "passed-private-small-docx-html-production-control-not-public-qualification";
   if (cancellationOnly) report.status = "passed-changed-docx-html-payload-cancel-write-recovery-control-not-scaling-or-promotion";
   if (direct) { report.status = outlineSmall ? "passed-private-native-heading-and-recovery-control-not-scaling-or-promotion" : "passed-private-direct-handle-docx-html-scaling-control-not-native-picker-or-promotion"; report.directHandleWriterControlVerified = !outlineSmall; }
+  if (tableSmall) {
+    report.status = "passed-private-docx-table-spans-and-recovery-control-not-scaling-or-promotion";
+    report.directHandleWriterControlVerified = false;
+    report.smallDirectHandleWriterVerified = true;
+  }
   if (scaling) report.completedDocumentScalingControlVerified = true;
   if (outlineControl) report.outlineControlVerified = !outlineSmall;
   if (outlineSmall) report.smallNativeHeadingRecoveryVerified = true;
@@ -625,7 +653,7 @@ finally {
   if (scaling) report.realmObservations = realmObservations;
   try {
     if (page && !page.isClosed()) {
-      if ((scaling || cancellationOnly || outlineSmall) && report.status === "failed-not-acceptance") report.failedJobState = await page.evaluate(() => {
+      if (payloadControl && report.status === "failed-not-acceptance") report.failedJobState = await page.evaluate(() => {
         const s = window.__WITHIN_TEST__?.getState(); return s ? { jobState: s.jobState, workerStatus: s.workerStatus,
           metrics: s.metrics, error: s.error, warnings: s.warnings } : null;
       });
@@ -683,14 +711,14 @@ finally {
   }
   // Heading controls have separate cases, but the same late native replies
   // must be reconciled against their original immutable run windows as scaling.
-  if (report.blankBaseline && report.loadedIdle) for (const row of [...report.outlineControl?.cases ?? [], ...report.emphasisControl?.cases ?? []]) {
+  if (report.blankBaseline && report.loadedIdle) for (const row of [...report.outlineControl?.cases ?? [], ...report.emphasisControl?.cases ?? [], ...(tableSmall ? report.cases : [])]) {
     if (!row.smallRunMemory) continue;
     const online = row.smallRunMemory;
     row.onlineSampleCounts = { validSamples: online.validSamples, unavailableSamples: online.unavailableSamples };
     row.smallRunMemory = summarizeDocxHtmlRunMemory(samples, Date.parse(online.windowStart), Date.parse(online.windowEnd),
       report.blankBaseline, report.loadedIdle, online.cleanupStable);
     if (row.smallRunMemory.incrementalPrivateMiB > 250 || row.smallRunMemory.cleanupDeltaFromLoadedMiB > scalingPlan.cleanupRecoveryLimitMiB) {
-      report.status = "failed-not-acceptance"; report.failures.push("Finalized native heading journal fails unchanged primary/cleanup gate"); process.exitCode = 1;
+      report.status = "failed-not-acceptance"; report.failures.push("Finalized native small-control journal fails unchanged primary/cleanup gate"); process.exitCode = 1;
     }
   }
   const archive = `evidence/${stamp}-docx-html-native-samples.json.gz`;

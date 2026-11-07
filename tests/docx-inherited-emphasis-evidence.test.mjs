@@ -8,6 +8,7 @@ import { prePptxMetricWorker } from "../scripts/lib/reviewed-pptx-destination-me
 const read = file => readFile(new URL("../" + file.replaceAll("\\", "/"), import.meta.url));
 const sha = value => createHash("sha256").update(value).digest("hex");
 const comparison = JSON.parse(await read("evidence/2026-11-07-docx-emphasis-repeatability.json"));
+const priorParser = JSON.parse(await read("fixtures/source/docx-before-table-column-spans-2026-11-07.json"));
 const records = [];
 for (const receipt of comparison.receipts) {
   const raw = await read(receipt.path); assert.equal(sha(raw), receipt.sha256); records.push(JSON.parse(raw));
@@ -19,6 +20,15 @@ test("two fresh normal-service Chrome sessions validate supported inherited emph
   assert.notEqual(records[0].launchArguments.find(a => a.startsWith("--user-data-dir=")), records[1].launchArguments.find(a => a.startsWith("--user-data-dir=")));
   assert.deepEqual(records[0].sourcePins, records[1].sourcePins);
   for (const key of ["workers/docx-outline.ts", "workers/docx-html-conversion.ts", "workers/docx-conversion.ts", "workers/conversion.worker.ts", "lib/capability-registry.ts", "scripts/lib/docx-emphasis-fixtures.py"]) {
+    if (key === "workers/docx-html-conversion.ts") {
+      assert.equal(priorParser.path, key); assert.equal(priorParser.schemaVersion, 1);
+      assert.equal(priorParser.sourceCommit, "29a697b2bbf120dc9a35b747ae84db4a732b28d3");
+      const bytes = gunzipSync(Buffer.from(priorParser.gzipBase64, "base64"), { maxOutputLength: 32768 });
+      assert.equal(bytes.length, priorParser.bytes); assert.equal(sha(bytes), priorParser.sha256);
+      assert.equal(sha(bytes), records[0].sourcePins[key]);
+      assert.notEqual(sha(await read(key)), priorParser.sha256, "Historical parser is not the current table-capable parser");
+      continue;
+    }
     const bytes = await read(key);
     assert.equal(sha(key === "workers/conversion.worker.ts" ? prePptxMetricWorker(bytes) : bytes), records[0].sourcePins[key]);
   }

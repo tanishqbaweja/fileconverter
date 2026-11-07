@@ -57,6 +57,30 @@ test("table rows/cells and nested tables remain structured rather than flattened
   assert.equal((r.html.match(/<table>/g) ?? []).length, 2); assert.equal((r.html.match(/<td>/g) ?? []).length, 3);
   assert.ok(r.html.includes("<td><p>two</p>")); assert.ok(r.html.endsWith("</body></html>\n"));
 });
+test("horizontal grid spans survive on their own cell without carrying state into nested or following cells", async () => {
+  const p = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
+  const span = value => `<w:tcPr><w:gridSpan w:val="${value}"/></w:tcPr>`;
+  const r = await convert(xml(`<w:tbl><w:tr><w:tc><w:tcPr><z:gridSpan xmlns:z="${word}" z:val="+0003"/><w:tcPrChange><w:tcPr><w:gridSpan w:val="6"/></w:tcPr></w:tcPrChange></w:tcPr><w:tbl><w:tr><w:tc>${span(2)}${p("nested")}</w:tc><w:tc>${p("ordinary")}</w:tc></w:tr></w:tbl>${p("outer")}</w:tc><w:tc>${span(1000)}</w:tc><w:tc>${span(0)}${p("next")}</w:tc></w:tr></w:tbl>`));
+  assert.deepEqual([...r.html.matchAll(/<td(?: colspan="([0-9]+)")?>/g)].map(m => m[1] ?? null), ["3", "2", null, "1000", null]);
+  assert.ok(r.html.includes('<td colspan="3"><table><tr><td colspan="2"><p>nested</p>'));
+  assert.ok(r.html.includes('<td colspan="1000"></td>\n<td><p>next</p>'));
+  assert.ok(r.warnings.some(value => value.includes("Vertical and legacy table merges")));
+});
+test("foreign or historical span properties cannot change the current horizontal grid", async () => {
+  const r = await convert(xml('<w:tbl><w:tr><w:tc><w:tcPr><x:gridSpan xmlns:x="urn:fake" w:val="8"/><w:tcPrChange><w:tcPr><w:gridSpan w:val="9"/></w:tcPr></w:tcPrChange><w:vMerge w:val="restart"/></w:tcPr><w:p/></w:tc></w:tr></w:tbl>'));
+  assert.ok(r.html.includes("<td><p></p>")); assert.doesNotMatch(r.html, /colspan|rowspan/);
+});
+for (const [properties, message] of [
+  ['<w:tcPr><w:gridSpan w:val="1001"/></w:tcPr>', /HTML limit/],
+  ['<w:tcPr><w:gridSpan w:val="-1"/></w:tcPr>', /invalid grid span/],
+  ['<w:tcPr><w:gridSpan w:val="2e1"/></w:tcPr>', /invalid grid span/],
+  ['<w:tcPr><w:gridSpan val="2"/></w:tcPr>', /invalid grid span/],
+  ['<w:tcPr><w:gridSpan w:val="2"/><w:gridSpan w:val="3"/></w:tcPr>', /repeats its grid span/],
+  ['<w:tcPr/><w:tcPr/>', /once before content/],
+  ['<w:p/><w:tcPr><w:gridSpan w:val="2"/></w:tcPr>', /once before content/],
+]) test(`invalid or late table geometry is rejected: ${properties}`, async () => {
+  await assert.rejects(convert(xml(`<w:tbl><w:tr><w:tc>${properties}</w:tc></w:tr></w:tbl>`)), message);
+});
 test("accepted insertions and field display text remain, deletions/graphics/foreign contents are omitted with disclosure", async () => {
   const r = await convert(xml('<w:p><w:del><w:r><w:t>deleted</w:t></w:r></w:del><w:moveFrom><w:r><w:t>moved</w:t></w:r></w:moveFrom><w:ins><w:r><w:t>inserted</w:t></w:r></w:ins><w:r><w:drawing><w:t>graphic</w:t></w:drawing><w:instrText>INSTRUCTION</w:instrText><w:t>display</w:t></w:r><x:data xmlns:x="urn:foreign"><w:r><w:t>foreign</w:t></w:r></x:data></w:p>'));
   assert.ok(r.html.includes("inserteddisplay")); for (const word of ["deleted", "moved", "graphic", "INSTRUCTION", "foreign"]) assert.ok(!r.html.includes(word));
