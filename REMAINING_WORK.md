@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-07 N-08 heading fidelity increment IN PROGRESS: referenced/default/direct
+paragraph outline hierarchy now implemented with bounded safe styles metadata;
+first3missing-feature failures and19PASS/1FAIL cache-depth defect reproduced then
+repaired.54focused checks/lint/TypeScript PASS. Native-generated Word fixture and
+larger257-style browser controls pending. Only outline hierarchy, not full named
+run formatting/fonts/list/layout, is implemented. No public promotion or weaker
+250MiB/96MiB/cleanup/privacy/quality limits; all remaining original scope retained.
+
 2026-11-07 N-08 private DOCX HTML handle-writer gate now has real large evidence
 and one accepted optimization. BaselineA versus private async candidateB:
 three completed8.79MB and140.58MB DOCX inputs each, matching output hashes and every

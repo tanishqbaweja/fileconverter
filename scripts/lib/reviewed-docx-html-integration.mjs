@@ -5,7 +5,7 @@ import { createHash } from "node:crypto";
 import patch from "../../fixtures/source/docx-html-reviewed-integration-2026-11-07.json" with { type: "json" };
 const pins = Object.freeze({
   "workers/conversion.worker.ts": ["fbdbd631d791420f6af3a8dcaa9871fb367a04dbeb456999441b6f9c2a7ae833", "57b9f4b9edeb981d9d267e8e2892d89007c114fb999708aff2407311b0147ce9"],
-  "lib/capability-registry.ts": ["acc1c6cb5104f329eec92f37b31754e7842f24bb174e703cf741b11379403781", "f270c6faf6ad2b09e5e67d3381c8c45ec83d04f87d72109e6ea197d0562a8de5"],
+  "lib/capability-registry.ts": ["acc1c6cb5104f329eec92f37b31754e7842f24bb174e703cf741b11379403781", "e04961e2e9cd96bec145a28bb4b35d4c551c433dbd5c58b86fa308bf431357d7"],
 });
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 export function reviewDocxHtmlIntegration(file, bytes) {

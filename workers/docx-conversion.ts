@@ -52,6 +52,7 @@ export async function runDocxToText(runtime: DocxRuntime): Promise<void> {
 /** Shared bounded ZIP/package validation; never executes Word content. */
 export async function openDocxMainDocument(
   runtime: DocxRuntime,
+  beforeDocument?: (entries: ReadonlyMap<string, ZipEntry>) => Promise<void>,
 ): Promise<ReadableStream<Uint8Array<ArrayBuffer>>> {
   runtime.progress("Inspecting DOCX package");
   const entries = await readZipDirectory(runtime);
@@ -64,6 +65,7 @@ export async function openDocxMainDocument(
   const document = requiredEntry(byName, "word/document.xml");
   await validateContentTypes(runtime, contentTypes);
   await validateRelationships(runtime, relationships);
+  await beforeDocument?.(byName);
 
   return openZipEntryStream(runtime, document);
 }

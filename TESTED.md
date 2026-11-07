@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-11-07 DOCX outline fidelity increment IN PROGRESS: first3regressions all
+FAILED because inherited/default/direct outline levels flattened to paragraphs.
+Bounded namespace-aware referenced styles reader and delayed paragraph opening
+now emit semantic h1-h6/ARIA levels7-9, with direct body-level9 overrides. Only
+outline hierarchy is inherited; run-style/font/list/layout fidelity stays OPEN.
+Metadata1MiB each/1024styles/64inheritance levels, internal relationships only,
+DTD/entity/cycle/ambiguity guards and escaped static output retained. Additional
+19PASS/1FAIL exposed cached parent-first chains bypassing64levels; explicit cached
+depth now enforces the limit.54focused checks, five-file lint/TypeScript PASS.
+Real python-docx fixture + larger257-style source browser qualification NEXT;
+not yet memory/production fidelity acceptance. Optimized handle writer unchanged.
+Updated76affected checks PASS, fresh build/TypeScript/eight-file lint PASS before
+adding actual parsed-style count diagnostics for the browser assertions. Final
+fresh build after that meaningful source change now PASS, as do updated45DOCX/
+outline/reader checks. No unchanged benchmark replay. Outline semantics reviewed
+against Microsoft's OutlineLevel/BasedOn primary documentation; the profile does
+not infer heading level from a style's display name or claim full style rendering.
+
 2026-11-07 private DOCX HTML direct-writer optimization ACCEPTED. Identical valid
 8,786,993B/140,575,793B DOCX sources, three repeats each per writer, byte-exact
 8,735,249B/139,756,049B HTML outputs and independent every-paragraph validation.

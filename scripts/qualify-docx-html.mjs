@@ -32,7 +32,9 @@ import { cancelAfterRealBrowserPayload } from "./lib/browser-payload-cancellatio
 import { completeNewBrowserJob, installDocxDestinationObservation, assertDirectDocxCompletion } from "./lib/docx-direct-control.mjs";
 
 assert.equal(process.platform, "win32");
-const asyncDirect = process.argv[2] === "--direct-async-scaling";
+const outlineControl = process.argv[2] === "--outline-direct-scaling";
+const benchmark = process.argv[2] === "--direct-async-scaling";
+const asyncDirect = benchmark || outlineControl;
 const direct = process.argv[2] === "--direct-scaling" || asyncDirect;
 const scaling = process.argv[2] === "--scaling" || direct;
 const cancellationOnly = process.argv[2] === "--cancel-control";
@@ -64,11 +66,12 @@ if (direct) {
   report.nativeExternalDestinationVerified = false;
   report.directHandleWriterControlVerified = false;
   report.directWriterImplementation = asyncDirect ? "async-file-stream" : "shared-atomics";
-  if (asyncDirect) report.performanceCandidate = { baseline: "evidence/2026-11-07T02-15-56-367Z-docx-html-qualification.json",
+  if (benchmark) report.performanceCandidate = { baseline: "evidence/2026-11-07T02-15-56-367Z-docx-html-qualification.json",
     baselineSha256: "df685c42d11a994276f03dbb2cef99570d0ae717881e7a15bc6e11cdc8ce2e47",
     minimumLargeMedianImprovement: .10, accepted: false,
     caveat: "Three repeats per size; sequential fresh sessions, not randomized interleaved A/B or universal fastest proof" };
 }
+if (outlineControl) report.scope = "Changed outline reader: real python-docx headings and inherited/default/direct outlines plus large documents with257referenced styles, actual async handle writer; not full Word layout, native picker or promotion";
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const p = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
 const packageBytes = (body, level = 6, invalidPackage = false) => zipSync({
@@ -181,7 +184,8 @@ try {
     "workers/conversion.worker.ts", "lib/capability-registry.ts", "package-lock.json", "scripts/lib/birth-aware-chromium-memory.mjs",
     "scripts/lib/birth-type-capture.mjs", "scripts/lib/select-owned-local-browser-file.mjs",
     "scripts/lib/docx-html-scaling-control.mjs", "scripts/lib/docx-html-scaling-fixtures.py", "scripts/lib/opfs-output-validation-backing.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/browser-payload-cancellation.mjs",
-    "scripts/lib/docx-direct-control.mjs", "app/converter/ConverterApp.tsx", "workers/random-access-destination.ts", "workers/direct-file-writer.worker.ts", "workers/direct-writer-protocol.ts"])
+    "scripts/lib/docx-direct-control.mjs", "app/converter/ConverterApp.tsx", "workers/random-access-destination.ts", "workers/direct-file-writer.worker.ts", "workers/direct-writer-protocol.ts",
+    "workers/docx-outline.ts", "scripts/lib/docx-outline-fixtures.py"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
   runtime = await createOwnedRuntimeScratch("docx-html-qualification-");
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
@@ -220,7 +224,7 @@ try {
     const helper = path.join(root, "scripts/lib/docx-html-scaling-fixtures.py");
     for (const paragraphs of scalingPlan.paragraphs) {
       const file = path.join(runtime.directory, direct ? `${ownedPrefix}${paragraphs}.docx` : `scaling-${paragraphs}.docx`);
-      const generated = JSON.parse((await execute("python", [helper, "generate", file, String(paragraphs)],
+      const generated = JSON.parse((await execute("python", [helper, outlineControl ? "generate-styled" : "generate", file, String(paragraphs)],
         { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 32768 })).stdout);
       const validated = JSON.parse((await execute("python", ["-c", sourceValidator, file],
         { cwd: root, env, windowsHide: true, timeout: 120000, maxBuffer: 32768 })).stdout);
@@ -241,6 +245,27 @@ try {
       try { await execute("python", [helper, "validate", fixture, "2"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
       catch (error) { assert.equal(typeof error.code, "number"); exitCode = error.code; }
       assert.equal(exitCode === 0, accepted); report.scalingValidatorControls.push({ name, exitCode, expectedAccepted: accepted });
+    }
+  }
+  let outlineFixture;
+  if (outlineControl) {
+    const helper = path.join(root, "scripts/lib/docx-outline-fixtures.py");
+    outlineFixture = path.join(runtime.directory, ownedPrefix + "outline.docx");
+    const generated = JSON.parse((await execute("python", [helper, "generate", outlineFixture], { cwd: root, env, windowsHide: true, timeout: 30000, maxBuffer: 32768 })).stdout);
+    const sourceValidation = JSON.parse((await execute("python", ["-c", sourceValidator, outlineFixture], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
+    report.outlineControl = { fixtureBytes: (await stat(outlineFixture)).size, fixtureSha256: await hashFile(outlineFixture), generated, sourceValidation,
+      validatorControls: [], cases: [], fullWordRenderingVerified: false };
+    const reference = '<html><head><meta http-equiv="Content-Security-Policy" content="default-src \'none\'"></head><body>' +
+      '<h1>Outline α 😀</h1><h2>Inherited heading</h2><p>Body override</p><h3>Third level</h3><p role="heading" aria-level="9">Deep outline</p>' +
+      '<p><strong><em>Direct emphasis</em></strong></p><table><tr><td><p>Cell one</p></td><td><p>Cell two</p></td></tr></table></body></html>';
+    const file = path.join(runtime.directory, "outline-validator.html");
+    for (const [name, html, accepted] of [["positive", reference, true], ["wrong-heading", reference.replaceAll("h2>", "p>"), false],
+      ["wrong-text", reference.replace("Cell two", "bad"), false], ["active-markup", reference.replace("</body>", "<script>bad</script></body>"), false],
+      ["unclosed", reference.replace("</html>", ""), false]]) {
+      await writeFile(file, html); let exitCode = 0;
+      try { await execute("python", [helper, "validate", file], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 }); }
+      catch (error) { assert.equal(typeof error.code, "number"); exitCode = error.code; }
+      assert.equal(exitCode === 0, accepted); report.outlineControl.validatorControls.push({ name, exitCode, expectedAccepted: accepted });
     }
   }
   const port = await new Promise((resolve, reject) => { const socket = createServer(); socket.once("error", reject);
@@ -352,6 +377,11 @@ try {
           sourceSha256: fixture.sha256, outputBytes: state.metrics.outputBytes, metrics: state.metrics,
           storageBeforeValidation: await page.evaluate(async () => { const s = await navigator.storage.estimate(); return { usage: s.usage ?? null, quota: s.quota ?? null }; }) };
         report.cases.push(row);
+        if (outlineControl) {
+          row.outlineWarnings = state.warnings;
+          assert.ok(state.warnings.includes("DOCX outline metadata read 257 style definitions from a referenced internal package part."));
+          assert.equal(fixture.generated.referencedOutlineStyleDefinitions, 257);
+        }
         const observation = direct ? await directObservation() : null;
         const name = direct ? assertDirectDocxCompletion(state, observation, report.directWriterImplementation) : state.opfsName;
         if (direct) row.destinationObservation = observation;
@@ -381,6 +411,26 @@ try {
     }
   } else if (!cancellationOnly) {
     await select(input); let previous = null; for (let n = 0; n < 3; n++) previous = await success(previous);
+  }
+  if (outlineControl) {
+    await select(outlineFixture);
+    for (let repeat = 1; repeat <= 3; repeat++) {
+      await Promise.race([safetyStop, directCompletion()]);
+      const state = await page.evaluate(() => window.__WITHIN_TEST__.getState());
+      const observation = await directObservation(), name = assertDirectDocxCompletion(state, observation, report.directWriterImplementation);
+      const binding = await bindOpfsOutputValidationBacking(page, profile, name, state.metrics.outputBytes);
+      const row = { repeat, outputBytes: state.metrics.outputBytes, metrics: state.metrics, destinationObservation: observation, binding: binding.proof };
+      row.outlineWarnings = state.warnings;
+      assert.ok(state.warnings.includes(`DOCX outline metadata read ${report.outlineControl.generated.styleDefinitions} style definitions from a referenced internal package part.`));
+      report.outlineControl.cases.push(row);
+      row.validated = JSON.parse((await execute("python", [path.join(root, "scripts/lib/docx-outline-fixtures.py"), "validate", binding.file],
+        { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: 32768 })).stdout);
+      await assertOpfsOutputValidationBackingUnchanged(binding);
+      await page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
+      await waitEmpty(); assert.deepEqual(await leftovers(), []);
+      await page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 });
+    }
+    assert.equal(new Set(report.outlineControl.cases.map(c => c.validated.sha256)).size, 1);
   }
   await select(cancellation);
   let armed;
@@ -426,7 +476,8 @@ try {
   if (cancellationOnly) report.status = "passed-changed-docx-html-payload-cancel-write-recovery-control-not-scaling-or-promotion";
   if (direct) { report.status = "passed-private-direct-handle-docx-html-scaling-control-not-native-picker-or-promotion"; report.directHandleWriterControlVerified = true; }
   if (scaling) report.completedDocumentScalingControlVerified = true;
-  if (asyncDirect) {
+  if (outlineControl) report.outlineControlVerified = true;
+  if (benchmark) {
     const candidate = report.performanceCandidate, bytes = await readFile(path.join(root, candidate.baseline));
     assert.equal(sha(bytes), candidate.baselineSha256); const baseline = JSON.parse(bytes);
     assert.equal(baseline.status, "passed-private-direct-handle-docx-html-scaling-control-not-native-picker-or-promotion");

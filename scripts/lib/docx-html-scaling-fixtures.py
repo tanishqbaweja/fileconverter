@@ -25,7 +25,7 @@ RELATIONSHIPS = ('<Relationships xmlns="' + RELS + '">'
                  '</Relationships>')
 
 
-def generate(file, count):
+def generate(file, count, styled=False):
     assert 1 <= count <= 32768
     # ZIP_STORED makes both input and output genuinely large, without a sparse
     # placeholder, artificial unused padding, or an archive-expansion exception.
@@ -33,16 +33,25 @@ def generate(file, count):
         with zipfile.ZipFile(sink, 'w', compression=zipfile.ZIP_STORED, allowZip64=False) as archive:
             def info(name):
                 return zipfile.ZipInfo(name, date_time=(2026, 1, 1, 0, 0, 0))
-            archive.writestr(info('[Content_Types].xml'), CONTENT)
+            content = CONTENT if not styled else CONTENT.replace('</Types>', '<Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>')
+            archive.writestr(info('[Content_Types].xml'), content)
             archive.writestr(info('_rels/.rels'), RELATIONSHIPS)
+            if styled:
+                archive.writestr(info('word/_rels/document.xml.rels'),
+                    '<Relationships xmlns="' + RELS + '"><Relationship Id="styles" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>')
+                definitions = '<w:styles xmlns:w="' + WORD + '"><w:style w:type="paragraph" w:styleId="Body" w:default="1"><w:pPr><w:outlineLvl w:val="9"/></w:pPr></w:style>'
+                definitions += ''.join('<w:style w:type="paragraph" w:styleId="S' + str(n) + '"><w:basedOn w:val="Body"/><w:pPr><w:outlineLvl w:val="9"/></w:pPr></w:style>' for n in range(256))
+                archive.writestr(info('word/styles.xml'), definitions + '</w:styles>')
             with archive.open(info('word/document.xml'), 'w') as document:
                 document.write(('<w:document xmlns:w="' + WORD + '"><w:body>').encode())
                 for number in range(count):
                     value = str(number).zfill(8) + '|' + 'bounded-stream-' * 280 + '|\u03b2 \U0001f600 & <script>safe</script>'
-                    document.write(('<w:p><w:r><w:t>' + escape(value) + '</w:t></w:r></w:p>').encode())
+                    properties = '<w:pPr><w:pStyle w:val="S' + str(number % 256) + '"/></w:pPr>' if styled else ''
+                    document.write(('<w:p>' + properties + '<w:r><w:t>' + escape(value) + '</w:t></w:r></w:p>').encode())
                 document.write(b'</w:body></w:document>')
     print(json.dumps({'paragraphs': count, 'zipMethod': 'stored', 'deterministicZipMetadata': True,
-                      'maximumGeneratedParagraphBytes': 8192, 'nativeConversionUsed': False}))
+                      'maximumGeneratedParagraphBytes': 8192, 'nativeConversionUsed': False,
+                      'referencedOutlineStyleDefinitions': 257 if styled else 0}))
 
 
 class Document(HTMLParser):
@@ -113,7 +122,10 @@ def validate(file, count):
 
 
 if __name__ == '__main__':
-    assert len(sys.argv) == 4 and sys.argv[1] in ['generate', 'validate']
+    assert len(sys.argv) == 4 and sys.argv[1] in ['generate', 'generate-styled', 'validate']
     operation, target, paragraphs = sys.argv[1], sys.argv[2], int(sys.argv[3])
     assert 1 <= paragraphs <= 32768
-    (generate if operation == 'generate' else validate)(target, paragraphs)
+    if operation.startswith('generate'):
+        generate(target, paragraphs, styled=operation == 'generate-styled')
+    else:
+        validate(target, paragraphs)

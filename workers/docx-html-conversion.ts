@@ -2,6 +2,7 @@ import {
   assertXmlCharacters, decodeXmlEntities, normalizeXmlNewlines, openDocxMainDocument,
   parseEndElement, parseStartElement, readMarkupTokens, type DocxRuntime,
 } from "./docx-conversion";
+import { readDocxOutlineModel, parseDocxOutlineLevel, type DocxOutlineModel } from "./docx-outline";
 
 const WORD = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const XML = "http://www.w3.org/XML/1998/namespace";
@@ -9,8 +10,9 @@ const MAX_DEPTH = 256, MAX_NAMESPACE_BINDINGS = 512, MAX_NAMESPACE_CHARS = 65536
 const OUTPUT_CHUNK_BYTES = 65536;
 type Block = "p" | "table" | "tr" | "td";
 type Run = { bold: boolean; italic: boolean; underline: boolean; strike: boolean; opened: boolean; close: string };
+type Paragraph = { opened: boolean; contentStarted: boolean; propertiesSeen: boolean; styleId?: string; outline?: number; tag: string };
 type Frame = { name: string; local: string | null; declarations: Map<string, string>; namespaceChars: number;
-  block?: Block; run?: Run; text?: boolean; suppress: boolean };
+  block?: Block; paragraph?: Paragraph; run?: Run; text?: boolean; suppress: boolean };
 
 /** Private candidate until complete production/browser/memory qualification.
  * Only main-document structure and direct run emphasis are represented.
@@ -19,11 +21,14 @@ type Frame = { name: string; local: string | null; declarations: Map<string, str
  */
 export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
   runtime.warn("DOCX HTML preserves main-document paragraphs, simple table rows/cells, direct bold/italic/underline/strike runs, tabs, line breaks, Unicode and accepted tracked insertions. Tracked deletions and moved-from text are excluded.");
-  runtime.warn("Named styles, heading/list numbering semantics, fonts, colors, borders, merged-cell layout, page layout, links, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced; field display text is retained when present.");
-  const source = await openDocxMainDocument(runtime), writer = htmlWriter(runtime);
+  runtime.warn("Named styles are used only for paragraph outline/heading hierarchy; inherited run formatting, list numbering, fonts, colors, borders, merged-cell layout, page layout, links, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.");
+  let outlines: DocxOutlineModel;
+  const source = await openDocxMainDocument(runtime, async entries => { outlines = await readDocxOutlineModel(runtime, entries); }), writer = htmlWriter(runtime);
+  if (outlines!.definitionCount) runtime.warn(`DOCX outline metadata read ${outlines!.definitionCount} style definitions from a referenced internal package part.`);
   const stack: Frame[] = [], blocks: Block[] = [];
   let rootSeen = false, rootClosed = false, bodySeen = false, bodyDepth = 0, textDepth = 0, suppressed = 0;
   let bindings = 0, namespaceChars = 0, run: Run | null = null, foreignWarning = false;
+  let paragraph: Paragraph | null = null;
   const resolve = (name: string, attribute = false, current?: Map<string, string>): { uri: string; local: string } => {
     const parts = name.split(":");
     if (parts.length > 2 || parts.some(part => !part)) throw new Error("DOCX HTML encountered an invalid qualified XML name.");
@@ -36,8 +41,17 @@ export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
     if (prefix) throw new Error("DOCX HTML encountered an undeclared XML namespace prefix.");
     return { uri: "", local };
   };
+  const openParagraph = async () => {
+    if (!paragraph || paragraph.opened) return;
+    const level = paragraph.outline ?? outlines.outline(paragraph.styleId);
+    paragraph.tag = level !== undefined && level < 6 ? `h${level + 1}` : "p";
+    const attributes = level !== undefined && level < 9
+      ? level >= 6 ? ` role="heading" aria-level="${level + 1}"` : ' style="white-space:pre-wrap"' : "";
+    await writer.markup(`<${paragraph.tag}${attributes}>`); paragraph.opened = true;
+  };
   const openRun = async () => {
     if (!run || blocks.at(-1) !== "p") throw new Error("DOCX HTML text must belong to a paragraph run.");
+    await openParagraph();
     if (run.opened) return;
     run.opened = true;
     for (const [enabled, tag] of [[run.bold, "strong"], [run.italic, "em"], [run.underline, "u"], [run.strike, "s"]] as const)
@@ -48,7 +62,8 @@ export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
     if (frame.run) { await writer.markup(frame.run.close); run = null; }
     if (frame.block) {
       if (blocks.pop() !== frame.block) throw new Error("DOCX HTML block state is inconsistent.");
-      await writer.markup(`</${frame.block}>\n`);
+      if (frame.paragraph) { await openParagraph(); await writer.markup(`</${frame.paragraph.tag}>\n`); paragraph = null; }
+      else await writer.markup(`</${frame.block}>\n`);
     }
     if (frame.local === "body") bodyDepth--;
     if (frame.local === "document") rootClosed = true;
@@ -116,10 +131,30 @@ export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
         if ((block === "p" || block === "table") ? parent !== undefined && parent !== "td"
           : block === "tr" ? parent !== "table" : parent !== "tr")
           throw new Error("DOCX HTML cannot represent malformed or overlapping paragraph/table structure.");
-        frame.block = block; blocks.push(block); await writer.markup(`<${block}>`);
+        frame.block = block; blocks.push(block);
+        if (block === "p") frame.paragraph = paragraph = { opened: false, contentStarted: false, propertiesSeen: false, tag: "p" };
+        else await writer.markup(`<${block}>`);
+      }
+      if (local === "pPr" && stack.at(-1)?.paragraph) {
+        if (!paragraph || paragraph.contentStarted || paragraph.propertiesSeen) throw new Error("DOCX paragraph properties must occur once before content.");
+        paragraph.propertiesSeen = true;
+      }
+      if ((local === "pStyle" || local === "outlineLvl") && stack.at(-1)?.local === "pPr" && stack.at(-2)?.paragraph === paragraph && paragraph) {
+        const value = element.attributes.find(attr => {
+          if (attr.name === "xmlns" || attr.name.startsWith("xmlns:")) return false;
+          const name = resolve(attr.name, true, declarations); return name.uri === WORD && name.local === "val";
+        })?.value;
+        if (local === "pStyle") {
+          if (!value || value.length > 256 || paragraph.styleId !== undefined) throw new Error("DOCX paragraph style reference is invalid or repeated.");
+          paragraph.styleId = value;
+        } else {
+          if (paragraph.outline !== undefined) throw new Error("DOCX paragraph repeats its outline level.");
+          paragraph.outline = parseDocxOutlineLevel(value);
+        }
       }
       if (local === "r") {
         if (run || blocks.at(-1) !== "p") throw new Error("DOCX HTML contains an invalid paragraph run.");
+        if (paragraph) paragraph.contentStarted = true;
         frame.run = run = { bold: false, italic: false, underline: false, strike: false, opened: false, close: "" };
       }
       if (local === "rPr" && run?.opened) throw new Error("DOCX HTML run properties must precede run text.");
@@ -155,7 +190,7 @@ export async function runDocxToHtml(runtime: DocxRuntime): Promise<void> {
       stack.push(frame);
     }
   }
-  if (!rootSeen || !rootClosed || !bodySeen || stack.length || blocks.length || run || bodyDepth || textDepth || suppressed)
+  if (!rootSeen || !rootClosed || !bodySeen || stack.length || blocks.length || run || paragraph || bodyDepth || textDepth || suppressed)
     throw new Error("DOCX HTML main-document structure is incomplete.");
   await writer.markup("</body></html>\n"); await writer.flush(); runtime.metrics.inputBytes = runtime.file.size;
 }

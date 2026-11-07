@@ -6354,8 +6354,8 @@ export const privateQualificationProfiles: readonly ConversionProfile[] = [{
     "Main Word document only. Package properties, headers, footers, notes, comments, hyperlinks, images and drawings are not exported. Unsafe or macro-enabled ZIP packages, DTDs and external entities are rejected.",
   ],
   fidelityLimitations: [
-    "Preserves main-document paragraphs, simple table rows/cells, basic direct bold/italic/underline/strike formatting, Unicode, tabs and line breaks. Accepted insertions are included; tracked deletions and moved-from text are excluded.",
-    "Named/inherited styles, heading/list numbering semantics, underline variants, fonts/colors, merged-cell geometry, page layout and field instructions are not reproduced. Field display text is retained when present; foreign-namespace content is omitted with a warning.",
+    "Preserves main-document paragraphs, direct/inherited paragraph outline hierarchy as semantic headings, simple table rows/cells, basic direct bold/italic/underline/strike formatting, Unicode, tabs and line breaks. Accepted insertions are included; tracked deletions and moved-from text are excluded.",
+    "Named/inherited styles supply outline levels only, not inherited run formatting. List numbering, underline variants, fonts/colors, merged-cell geometry, page layout and field instructions are not reproduced. Headings reflow in HTML rather than preserving exact Word appearance; field display text remains. Optional styles/relationships are bounded to1MiB each,1024definitions and64inheritance levels. Foreign-namespace content is omitted with a warning.",
     "Output is static self-contained HTML with escaped document text and restrictive CSP; no source URLs, scripts, styles or external resources are emitted.",
   ],
   maxTestedBytes: null, automatedTestStatus: "pending", public: false,
