@@ -32,15 +32,35 @@
     "browserPrivacyAndReleasePackageSteps": "skipped",
     "ownedRuntimeCleanupStep": "success"
   },
+  "finalRecovery": {
+    "runId": 42407482501,
+    "jobId": 128508208130,
+    "head": "38e8d1c46cc2480c37ee7822c4ee6f0e1cee08ab",
+    "conclusion": "success",
+    "publicEvidenceAudit": { "passedProfiles": 403, "compactEvidenceEntries": 403 },
+    "inventory": { "totalFiles": 887, "portableFiles": 724, "qualificationFilesNotRun": 163, "priorHostedFilesKeptPortable": 235 },
+    "lint": "success",
+    "typescript": "success",
+    "productionBuild": "success",
+    "unit": { "total": 2658, "passed": 2654, "failed": 0, "skipped": 4, "cancelled": 0, "durationMs": 88594.342877 },
+    "headlessBrowser": { "passed": 21, "durationSeconds": 43.3, "suites": ["privacy-offline", "static-host-policy", "svg-publication-gate"] },
+    "releasePackage": { "mode": "release", "staticRoot": "dist/client", "workerFirst": true, "engineFiles": 93, "wasmFiles": 19, "packagedSvg": null, "nativeEngineFilesMatched": 93 },
+    "verificationResultsArtifact": { "id": 13588286462, "name": "verification-results", "bytes": 3264, "digest": "sha256:9d01a0d7127fabb6f37398db00925d97fbfca8f6e03aabcb036ac149b8001f1c", "retentionDays": 1, "downloaded": false },
+    "ownedRuntimeCleanupStep": "success",
+    "ownedRuntimeRemovalReported": true,
+    "noProcessesKilled": true,
+    "postActions": "success"
+  },
   "localProof": {
     "initialHeadSourceTreeMatchedCommittedBlobs": { "directories": 12, "files": 95, "wasm": 20 },
     "defaultBuildMatchedNonSvgSourceTree": { "files": 93, "wasm": 19, "workerFirst": true, "packagedSvg": null },
     "firstRecoveryFocusedChecksPassed": 53,
+    "finalRecoveryFocusedChecksPassed": 57,
     "privateRawArtifactChecksPassedLocally": 3,
     "privateRawScope": "Two existing VP9 HTTP trace ZIPs and the retained native/source tree authenticated; no new artifacts created or uploaded.",
     "portableFiles": 724,
     "qualificationFiles": 163,
     "priorHostedFilesKeptPortable": 235
   },
-  "notRunInEitherHostedAttempt": ["Private raw-artifact checks", "Browser conversion matrix", "Engine reproduction matrix", "Manual/headed browser checks", "Protected original conversion"]
+  "notRunInAnyHostedAttempt": ["Private raw-artifact checks", "Browser conversion matrix", "Engine reproduction matrix", "Manual/headed browser checks", "Protected original conversion"]
 }

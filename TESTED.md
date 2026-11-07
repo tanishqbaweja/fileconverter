@@ -1,15 +1,22 @@
 # Tested conversion ledger
 
-2026-11-07 hosted SVG release verification and Linux portability. The first
-portable run failed on 15 tests after a successful build; the first recovery
-resolved all 15 but exposed one stale exact inventory count (162 vs 163).
+2026-11-07 hosted SVG release verification and Linux portability **passed**
+at `38e8d1c4`, [run 42407482501](https://github.com/tanishqbaweja/fileconverter/actions/runs/42407482501).
+Lint, TypeScript, production build, 403-profile evidence audit, 2,654 portable
+passes (4 skipped, 0 failures), and all 21 headless browser checks passed.
+The hosted release has 93 allowed engine files/19 Wasm and no SVG package;
+the job reported owned runtime removal. The first run failed on 15 tests after
+a successful build; the first recovery resolved all 15 but exposed one stale
+exact inventory count (162 vs 163). The final fix passed 57 focused checks.
 The reviewed host change now reverses to exact historical source pins; the
 VP9 recipes accept only known root substitutions for syntax-only checks.
 Existing committed trace bytes and compact receipts remain portable; the two
 private ZIPs and native tree still require exact raw authentication, and all
 three checks passed locally. No raw traces, media, or native outputs were
-created or uploaded. Both hosted failures and successful cleanup steps are
-retained in [the hosted cycle receipt](evidence/2026-11-07-svg-release-hosted-cycle.json).
+created or uploaded. Browser conversion, fresh native rebuild, private
+qualification, and headed/manual gates were not run on GitHub in this cycle.
+Both failures, final success and cleanup are retained in
+[the hosted cycle receipt](evidence/2026-11-07-svg-release-hosted-cycle.json).
 
 2026-11-07 browser SVG qualification artifact withheld from the **default
 client package**, not just its UI. A fresh default build had 93 engine files
@@ -25,8 +32,8 @@ privacy/hosting/offline/SVG gates passed, including a stale Cache Storage
 entry that the updated service worker could not replay. 77 focused checks,
 TypeScript, and affected lint passed. Owned profiles and probe scratch were
 removed, and the original video hash was unchanged. No conversion or
-memory qualification for SVG, no new native build, no hosted CI run or
-deployment. CI now audits the release package and keeps image qualification
+memory qualification for SVG, no new native build or deployment. This first
+checkpoint was local only. CI audits the release package and keeps image qualification
 explicitly opt-in. See [packaging receipt](evidence/2026-11-07-svg-release-asset-policy.json)
 and [browser receipt](evidence/2026-11-07T19-20-00-335Z-svg-publication-checks.json).
 
