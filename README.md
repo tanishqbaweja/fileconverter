@@ -12,11 +12,18 @@ DOCX-to-HTML is a private localhost qualification candidate, not a published
 conversion. It streams main-document paragraphs, simple table rows/cells and
 basic direct emphasis into escaped static HTML. Named styles, lists/headings,
 fonts, page/merged-cell layout, links, graphics and ancillary parts are not fully
-preserved; the UI discloses those limits. The source/output-independent small
-control passes repeats, cancellation/write-failure recovery and sampled
-72.21 MiB full-Chrome memory. Large-file, direct-save, full OOXML/layout fidelity
-and broader-browser qualification remain open. See
-`evidence/2026-11-06T21-07-40-560Z-docx-html-qualification.json`.
+preserved; the UI discloses those limits. Two clean Chrome sessions each produced
+three 139.8 MB HTML outputs from genuine 140.6 MB DOCX inputs, plus three 8.7 MB
+outputs. Independent streaming validation compares every ordered paragraph;
+whole-tree memory peaks were 173.39 and 157.01 MiB with stable cleanup readings.
+The second session's overall control failed because its cancellation observer
+missed a fast completion; that failure remains recorded. A changed in-page
+real-payload cancellation/write-error/recovery control passes at 69.77 MiB.
+These are private OPFS document controls, not full route, direct-save, complex
+OOXML/layout, broader-browser, media/10 GB or speed-improvement qualification.
+See `evidence/2026-11-06T21-36-55-127Z-docx-html-qualification.json`,
+`evidence/2026-11-06T21-40-53-256Z-docx-html-qualification.json` and
+`evidence/2026-11-07T02-01-08-508Z-docx-html-qualification.json`.
 
 The route's recorded memory evidence is from Chrome tests, not a live memory
 measurement or certification of every current browser/version. The installed

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-07T02:06:22.760Z",
+  "scope": "Actual final portable regression after private DOCX HTML completed scaling and race-safe cancellation controls; no separate qualification/public promotion implied",
+  "selectedFiles": 704,
+  "allFiles": 866,
+  "separateQualificationFilesNotRun": 162,
+  "priorHostedFilesKeptPortable": 235,
+  "sourcePins": {
+    "scripts/qualify-docx-html.mjs": "3613ca032010e70f92144c97a9c9797f07989780bb826defdea1501df6b0c304",
+    "workers/docx-html-conversion.ts": "65b9aa9515faaf3249e79a4492ef24a4d2a68fc8f64576e599e01db262946895",
+    "workers/docx-conversion.ts": "9f9cbe2aaf2d31368cc5ce358eb60baa47f9fc52b0b5178da296314da8cc34d8",
+    "workers/conversion.worker.ts": "36686a93928e8c6fc628d4f0dce62c446b33d91b176108595dfc42d4b747fe04",
+    "lib/capability-registry.ts": "f270c6faf6ad2b09e5e67d3381c8c45ec83d04f87d72109e6ea197d0562a8de5",
+    "package-lock.json": "cebcd0caf95382203084b900aecb06dbd5fb10bc8743ddb202a7a137582f603e",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d",
+    "scripts/lib/birth-type-capture.mjs": "fb76463e1e90d87ffb8a2d13b3cb6b7a53db3ffffdff2aab4c1b954f7655a398",
+    "scripts/lib/select-owned-local-browser-file.mjs": "24c8db43c82868c1131c0742f60197c618e0224292c8fe4f785b41f105c21755",
+    "scripts/lib/docx-html-scaling-control.mjs": "d8623f6170ae7f3b88f2b8c3a16ce7b5fe7866793778c7ba3837d804c851bf36",
+    "scripts/lib/docx-html-scaling-fixtures.py": "07b27c350581a495ff0456ab4bf6feb41daf8f19f7a74be05a2d46eeb4cc1347",
+    "scripts/lib/opfs-output-validation-backing.mjs": "cb06939a7c6f7f3422209b3ff24fc8860e20327f092059a61d67f8030d71f9d7",
+    "scripts/lib/cdp-realm-memory.mjs": "dacac72ad581a52fa46cdcec4fae3cf97e52f065c8594c4341ef6940be9e41bd",
+    "scripts/lib/browser-payload-cancellation.mjs": "63a90c78efac05f7eda4cc90af5d6eb5daf4ec5a9ba374ddd1fcab41ce89e9ab",
+    "tests/docx-html-scaling-control.test.mjs": "e7c0737bb39bdadeffa46bb4ca04dc933a55582978a01e5bb7eff5ef114548a4",
+    "tests/docx-html-scaling-evidence.test.mjs": "a1651952192e073c5f2c48b60b815cdcdf3bd5ddcfc78f844a711c40cf3e7cc6",
+    "tests/browser-payload-cancellation.test.mjs": "f0a7214eb6f6a3b390a50fcd2b179c54b3268e7f0790ac77f1b4966b8e531437"
+  },
+  "command": "node scripts/run-repository-owned-node.mjs scripts/run-unit-suite.mjs portable",
+  "exitCode": 0,
+  "summary": {
+    "success": true,
+    "counts": {
+      "tests": 2527,
+      "failed": 0,
+      "passed": 2527,
+      "cancelled": 0,
+      "skipped": 0,
+      "todo": 0,
+      "topLevel": 2527,
+      "suites": 0
+    },
+    "duration_ms": 102803.3615
+  },
+  "qualificationNotRun": true,
+  "suite": "portable",
+  "productionBuildPassed": true,
+  "sevenFileLintPassed": true,
+  "typeScriptPassed": true,
+  "analysis": "evidence/2026-11-07-docx-html-scaling-analysis.json",
+  "secondFullBrowserControlRemainsFailed": true,
+  "publicPromotion": false,
+  "fullGoalComplete": false
+}

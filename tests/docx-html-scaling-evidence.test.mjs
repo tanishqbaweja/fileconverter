@@ -110,3 +110,26 @@ test("fresh-session complete outputs do not erase the overall cancellation-obser
   assert.equal(a.memory.incrementalPrivateMiB, 173.390625); assert.equal(b.memory.incrementalPrivateMiB, 157.01171875);
   for (let i = 0; i < 2; i++) assert.equal(a.scalingInputs[i].sha256, b.scalingInputs[i].sha256);
 });
+
+test("changed cancellation-only browser control really cancels after payload, recovers and leaves earlier full-session failure untouched", async () => {
+  const bytes = await read("evidence/2026-11-07T02-01-08-508Z-docx-html-qualification.json");
+  assert.equal(sha(bytes), "9e5b61478f2987c1ffd4ce9e16522cdc7eead36fb075eb975f44066bb081e78a");
+  const r = JSON.parse(bytes);
+  assert.equal(r.status, "passed-changed-docx-html-payload-cancel-write-recovery-control-not-scaling-or-promotion");
+  assert.deepEqual(r.failures, []); assert.deepEqual(r.cases.map(x => x.kind), ["payload-cancel", "write-error", "complete"]);
+  assert.equal(r.cancellationTrigger, "in-page-real-output-observation-then-production-cancel-button");
+  const cancel = r.cases[0]; assert.equal(cancel.armedMetrics.outputBytes, 1703936); assert.equal(cancel.metrics.outputBytes, 1835008);
+  assert.equal(cancel.metrics.peakPendingOperations, 1); assert.equal(cancel.metrics.peakQueuedBytes, 65536);
+  assert.deepEqual(cancel.leftovers, []); assert.deepEqual(r.cases[1].leftovers, []);
+  assert.equal(r.cases[2].validated.sha256, "31bbd28016f7eaef9a9c2ef4fbf91221c7f34450710949302daacdcef5de0a55");
+  assert.equal(r.memory.incrementalPrivateMiB, 69.765625); assert.equal(r.memory.validSamples, 12); assert.equal(r.memory.unavailableSamples, 0);
+  const packed = await read(r.nativeArchive.file), raw = gunzipSync(packed, { maxOutputLength: 1048576 });
+  assert.equal(sha(packed), r.nativeArchive.sha256); assert.equal(sha(raw), r.nativeArchive.decodedSha256);
+  const valid = JSON.parse(raw).filter(s => Date.parse(s.timestamp) >= Date.parse(r.memory.windowStart) && Date.parse(s.timestamp) <= Date.parse(r.memory.windowEnd) && s.privateBytes !== null);
+  assert.equal(valid.length, 12); assert.equal(Math.max(...valid.map(s => s.privateBytes)), r.memory.peak.privateBytes);
+  assert.equal((r.memory.peak.privateBytes - r.blankBaseline.privateBytes) / 1048576, 69.765625);
+  assert.equal(r.browserServicesDisabled, false); assert.equal(r.publicPromotion, false); assert.equal(r.largeFileScalingVerified, false);
+  assert.equal(r.ownedRuntimeRemoved, true); assert.equal(r.browserCleanup.status, "owned-identity-absent"); assert.equal(r.serverCleanup.ownedRootAbsent, true);
+  assert.deepEqual(r.protectedOriginalBefore, r.protectedOriginalAfter); assert.deepEqual(r.forbiddenRequests, []);
+  assert.equal(reports[1].status, "failed-not-acceptance");
+});
