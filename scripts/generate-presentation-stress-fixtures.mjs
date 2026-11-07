@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -7,8 +8,9 @@ import { textEntry, writeZip } from "./zip-fixture-utils.mjs";
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const fixtureRoot = path.join(projectRoot, "fixtures", "stress", "presentations");
 // The caller owns its output directory. The default CLI preserves the historical fixture.
-export async function generatePresentationStressFixture(fixtureRoot) {
-  const fixturePath = path.join(fixtureRoot, "presentation-128m.pptx");
+export async function generatePresentationStressFixture(fixtureRoot, basename = "presentation-128m.pptx") {
+  assert.ok(["presentation-128m.pptx", "within-test-presentation-128m.pptx"].includes(basename));
+  const fixturePath = path.join(fixtureRoot, basename);
   await mkdir(fixtureRoot, { recursive: true });
 
   const slideCount = 128;

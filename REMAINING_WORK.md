@@ -1,5 +1,28 @@
 # Remaining work audit
 
+2026-11-07 PPTX renderer localization: the **published parser** also
+reproduced the 96 MiB cleanup failure with both actual async OPFS
+(120.031 MiB) and real shared handle backed by OPFS (145.070 MiB), even
+though both full 92,391,679-byte outputs were exact and their primary
+208.531/239.074 MiB peaks were below 250 MiB. Old `sync-opfs` harness label
+did not describe the worker's async file-stream destination. Per-phase
+Windows birth and page-marker joins identify the affected renderer, not
+the exact retained allocation. Removing the selected file did not
+consistently reclaim memory. Do not rerun either unchanged diagnostic.
+
+Fixed and verified PPTX worker/SAB reporting only: two actual workers and
+266,272 bytes with the existing shared bridge, exact output, 191.371 MiB
+primary and 90.949 MiB first cleanup in one changed diagnostic. This does
+not repair or supersede the prior cleanup failures. The faster namespace
+candidate remains unwired; neither native-picker/manual nor release
+coverage is claimed. Next memory change should reduce renderer allocation
+churn or measure retained native regions with an explicit control; no
+forced GC, service exclusions, threshold changes or repeated unchanged runs.
+Evidence links and exact observations are in `TESTED.md`.
+Focused verification: 197 portable checks, production build, TypeScript,
+and affected lint pass; the historical compiled-cache qualification remains
+separate and its precondition mismatch was not weakened.
+
 2026-11-07 PPTX scoped namespace/slide-visibility and lower-churn text writer
 retained as an **unwired candidate**. Fresh repeat failed cleanup (117.855
 MiB) and no-screencast diagnostic also failed (116.637 MiB), both after

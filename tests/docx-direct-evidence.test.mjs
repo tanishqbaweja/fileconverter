@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 import { summarizeDocxHtmlRunMemory } from "../scripts/lib/docx-html-scaling-control.mjs";
+import { prePptxMetricWorker } from "../scripts/lib/reviewed-pptx-destination-metrics.mjs";
 const read = file => readFile(new URL("../" + file, import.meta.url));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const reports = [];
@@ -69,7 +70,7 @@ test("candidate exceeds preregistered10percent criterion on byte-identical input
   }
   assert.equal(median(a), p.baselineLargeMedianMs); assert.equal(median(b), p.candidateLargeMedianMs);
   assert.equal(1 - median(b) / median(a), p.observedMedianImprovement); assert.ok(p.observedMedianImprovement >= .10);
-  const source = await read("workers/conversion.worker.ts");
+  const source = prePptxMetricWorker(await read("workers/conversion.worker.ts"));
   assert.equal(sha(source), "57b9f4b9edeb981d9d267e8e2892d89007c114fb999708aff2407311b0147ce9");
   const before = '        profileId === "avi-to-flv" || profileId === "mkv-to-mp4",';
   const after = '        profileId === "avi-to-flv" || profileId === "mkv-to-mp4" || profileId === "docx-to-html",';

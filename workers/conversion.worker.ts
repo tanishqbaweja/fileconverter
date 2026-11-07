@@ -4787,6 +4787,9 @@ async function runJob(message: Extract<WorkerRequest, { type: "start" }>) {
       });
     } else if (profileId === "pptx-to-txt") {
       const presentationDestination = destination.writable;
+      metrics.activeWorkerCount = 1 + (presentationDestination.additionalWorkerCount ?? 0);
+      metrics.sharedArrayBufferBytes = (cancellationSignal?.byteLength ?? 0) +
+        (presentationDestination.sharedBufferBytes ?? 0);
       await runPptxToText({
         file,
         metrics,

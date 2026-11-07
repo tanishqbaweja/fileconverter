@@ -1846,6 +1846,11 @@ short fragments (fewer than 8,192 UTF-16 code units) retain the original
 256 KiB write cap. It is not part of the public worker: one full headless
 session passed, but fresh-session cleanup exceeded the unchanged limit.
 See the PPTX entries in `TESTED.md` and `REMAINING_WORK.md`.
+The production worker reports the actual bridge worker count and fixed shared
+buffer allocation for file-handle output. Current Chrome diagnostics also
+found cleanup retention on the existing extractor for both async OPFS and a
+real file handle backed by a test OPFS directory; byte-exact output and a
+sub-250 MiB conversion peak do not establish repeatable cleanup.
 
 The OpenDocument routes require the exact uncompressed first `mimetype` entry,
 validate the package manifest and root media type, and stream `content.xml`

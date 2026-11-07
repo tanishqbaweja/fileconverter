@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 import { reviewDocxHtmlIntegration } from "../scripts/lib/reviewed-docx-html-integration.mjs";
+import { prePptxMetricWorker } from "../scripts/lib/reviewed-pptx-destination-metrics.mjs";
 const read = file => readFile(new URL("../" + file.replaceAll("\\", "/"), import.meta.url));
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const raw = await read("evidence/2026-11-07T03-28-03-106Z-docx-html-qualification.json");
@@ -32,6 +33,7 @@ test("historical native-generated heading fixture has three independently valida
       assert.equal(sha(Buffer.from(historical.files[key].utf8)), r.sourcePins[key]);
       assert.equal(historical.files[key].sha256, r.sourcePins[key]);
     } else if (key === "lib/capability-registry.ts") assert.equal(sha(reviewDocxHtmlIntegration(key, await read(key)).previousReviewedBytes), r.sourcePins[key]);
+    else if (key === "workers/conversion.worker.ts") assert.equal(sha(prePptxMetricWorker(await read(key))), r.sourcePins[key]);
     else assert.equal(sha(await read(key)), r.sourcePins[key]);
   assert.equal(r.smallNativeHeadingRecoveryVerified, true); assert.equal(r.outlineControlVerified, false);
   assert.equal(r.largeFileScalingVerified, false); assert.equal(r.publicPromotion, false); assert.equal(r.nativePickerVerified, false);

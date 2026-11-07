@@ -1,5 +1,49 @@
 # Tested conversion ledger
 
+2026-11-07 PPTX published-parser renderer diagnostics and destination-metric
+fix. The exact 135,296,355-byte input produced the same independently hashed
+92,391,679-byte TXT via the async OPFS stream and the real shared-bridge
+file handle backed by an owned OPFS test directory. The earlier harness label
+`sync-opfs` was incorrect for this route; the worker used
+`createWritable()`. No native-picker claim.
+
+| Headless diagnostic, normal Chrome services | Conversion time | Whole-tree peak above blank | First stable cleanup above idle |
+| --- | ---: | ---: | ---: |
+| Published async OPFS | 11.77 s | 208.531 MiB | **120.031 MiB — fail** |
+| Published shared direct handle | 11.21 s | 239.074 MiB | **145.070 MiB — fail** |
+| Shared direct handle after reporting-only fix | 11.30 s | 191.371 MiB | 90.949 MiB |
+
+The first two diagnostics reproduced the cleanup miss with the existing
+parser, not just the faster candidate. Six phase snapshots in each
+validated session join the page timing mark and native renderer PID/birth
+before and after each light dump. For async OPFS, that renderer measured
+43.375 → 128.539 → 129.172 MiB (loaded / first cleanup / after Remove).
+For the shared bridge it measured 42.898 → 157.254 → 62.602 MiB. The
+uncontrolled later fall after Remove did not reproduce on both paths and
+does not identify the allocation or replace the first cleanup window.
+Light allocator buckets overlap; the diagnostic did not capture allocation
+stacks. These runs are not a speed A/B or a full qualification.
+
+The actual shared writer exposed two worker realms while PPTX metrics had
+reported one and zero shared bytes. The scoped worker fix reads destination
+resource counters; the changed production build reported two workers and
+266,272 shared bytes (256 KiB payload, 4 KiB errors, 32 B control). No parser,
+writer, registry, or gate changes. The initial handle diagnostic reached
+browser completion but failed the validator's owned-name check; no
+independent output validation was claimed for it. All four runs were
+headless, zero forbidden requests, scratch and outputs removed, all owned
+processes stopped, and the original SHA-256 unchanged.
+
+Receipts: [async OPFS](evidence/2026-11-07T14-25-05-809Z-pptx-published-renderer.json),
+[initial handle harness failure](evidence/2026-11-07T14-28-59-392Z-pptx-published-handle.json),
+[validated handle](evidence/2026-11-07T14-30-48-876Z-pptx-published-handle.json),
+[verified metrics fix](evidence/2026-11-07T14-34-23-732Z-pptx-handle-metrics.json).
+197 focused portable checks passed (129 + 68), TypeScript, affected lint,
+and production build passed. A separately invoked historical compiled-cache
+qualification failed its old app SHA precondition on the unchanged current
+app; that archived control is not counted as passed and its pin was not
+relaxed. Full portable and broad browser suites were not replayed.
+
 2026-11-07 PPTX namespace/visibility candidate **held; public worker unchanged**.
 Four normal-service Chrome 156.0.8078.80 headless sessions: 15 jobs, 12
 independently validated outputs, including seven full-size 135,296,355 →

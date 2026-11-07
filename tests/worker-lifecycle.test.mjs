@@ -74,7 +74,8 @@ test("every worker module has an explicit cross-job retained-state contract", ()
     "direct-file-writer.worker.ts", "direct-writer-protocol.ts", "document-conversion.ts",
     "docx-conversion.ts", "docx-html-conversion.ts", "docx-outline.ts", "epub-conversion.ts", "gif-conversion.ts", "jxl-conversion.ts",
     "jxl-encoding.ts", "jxl-source-inspection-worker.ts", "media-remux.ts", "mpeg2-core-loader.ts",
-    "mpeg2-split-runtime.ts", "odf-conversion.ts", "pptx-conversion.ts", "random-access-destination.ts",
+    "mpeg2-split-runtime.ts", "odf-conversion.ts", "pptx-conversion.ts", "pptx-namespace-candidate.ts",
+    "random-access-destination.ts",
     "rgba-png-stream.ts", "sevenzip-conversion.ts", "staged-save-runtime.ts", "staged-save.worker.ts",
     "tar-stream-validator.ts", "tiff-conversion.ts", "vpx-core-loader.ts", "wasm-metrics.ts",
     "webcodecs-vp9-bridge.mjs", "webcodecs-vp9-core.ts", "webcodecs-vp9-isolated.ts",
@@ -83,6 +84,10 @@ test("every worker module has an explicit cross-job retained-state contract", ()
     "xz-compression.ts", "zip-compressed-tar-conversion.ts",
   ], "audit inventory must be updated for worker additions or removals");
   assert.ok(workerFiles.includes("rgba-png-stream.ts"));
+  for (const file of workerFiles) {
+    assert.doesNotMatch(source(path.join("workers", file)), /["']\.\/pptx-namespace-candidate(?:\.ts)?["']/,
+      "The PPTX candidate must remain outside the worker import graph");
+  }
   // The private encoder adds no message loop, module-scoped job state or public route.
   assert.doesNotMatch(source("workers/conversion.worker.ts"), /from ["']\.\/rgba-png-stream["']/);
   assert.ok(workerFiles.includes("vpx-core-loader.ts"));

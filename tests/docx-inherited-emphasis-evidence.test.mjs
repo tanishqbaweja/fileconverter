@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 import { assertInstalledChromePinsEqual } from "../scripts/lib/installed-chrome-pin.mjs";
+import { prePptxMetricWorker } from "../scripts/lib/reviewed-pptx-destination-metrics.mjs";
 const read = file => readFile(new URL("../" + file.replaceAll("\\", "/"), import.meta.url));
 const sha = value => createHash("sha256").update(value).digest("hex");
 const comparison = JSON.parse(await read("evidence/2026-11-07-docx-emphasis-repeatability.json"));
@@ -17,8 +18,10 @@ test("two fresh normal-service Chrome sessions validate supported inherited emph
   assert.notDeepEqual(records[0].browserLaunchIdentity, records[1].browserLaunchIdentity);
   assert.notEqual(records[0].launchArguments.find(a => a.startsWith("--user-data-dir=")), records[1].launchArguments.find(a => a.startsWith("--user-data-dir=")));
   assert.deepEqual(records[0].sourcePins, records[1].sourcePins);
-  for (const key of ["workers/docx-outline.ts", "workers/docx-html-conversion.ts", "workers/docx-conversion.ts", "workers/conversion.worker.ts", "lib/capability-registry.ts", "scripts/lib/docx-emphasis-fixtures.py"])
-    assert.equal(sha(await read(key)), records[0].sourcePins[key]);
+  for (const key of ["workers/docx-outline.ts", "workers/docx-html-conversion.ts", "workers/docx-conversion.ts", "workers/conversion.worker.ts", "lib/capability-registry.ts", "scripts/lib/docx-emphasis-fixtures.py"]) {
+    const bytes = await read(key);
+    assert.equal(sha(key === "workers/conversion.worker.ts" ? prePptxMetricWorker(bytes) : bytes), records[0].sourcePins[key]);
+  }
   for (const r of records) {
     assert.equal(r.inheritedEmphasisControlVerified, true); assert.equal(r.browserServicesDisabled, false); assert.equal(r.headed, false);
     assert.equal(r.emphasisControl.fixtureBytes, 37137); assert.equal(r.emphasisControl.generated.styleDefinitions, 169);
