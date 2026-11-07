@@ -19,11 +19,24 @@ whole-tree memory peaks were 173.39 and 157.01 MiB with stable cleanup readings.
 The second session's overall control failed because its cancellation observer
 missed a fast completion; that failure remains recorded. A changed in-page
 real-payload cancellation/write-error/recovery control passes at 69.77 MiB.
-These are private OPFS document controls, not full route, direct-save, complex
-OOXML/layout, broader-browser, media/10 GB or speed-improvement qualification.
+These earlier OPFS controls are not full route, native-destination, complex
+OOXML/layout, broader-browser or media/10 GB qualification.
 See `evidence/2026-11-06T21-36-55-127Z-docx-html-qualification.json`,
 `evidence/2026-11-06T21-40-53-256Z-docx-html-qualification.json` and
 `evidence/2026-11-07T02-01-08-508Z-docx-html-qualification.json`.
+
+The real handle-writer test now also passes three repeats at each size plus
+cancellation/write-failure recovery. On identical inputs/settings and exact
+output hashes, private DOCX HTML's asynchronous file-stream writer reduces the
+observed large median from 9.194 s to 7.268 s (20.9%); measured whole-Chrome peaks
+were 185.93 MiB before and 105.00 MiB after. It removes the unnecessary bridge
+worker and its 266,272 shared-buffer bytes for this naturally asynchronous route.
+This is a sequential fresh-session comparison, not randomized interleaved A/B,
+causal attribution of every memory-byte difference, or universal fastest proof.
+Both tests use the production writer with real OPFS-backed file handles; native
+save-dialog/external-drive coverage remains unverified. No route is promoted.
+See `evidence/2026-11-07T02-15-56-367Z-docx-html-qualification.json` and
+`evidence/2026-11-07T02-22-59-206Z-docx-html-qualification.json`.
 
 The route's recorded memory evidence is from Chrome tests, not a live memory
 measurement or certification of every current browser/version. The installed

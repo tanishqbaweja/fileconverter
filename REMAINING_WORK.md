@@ -1,19 +1,30 @@
 # Remaining work audit
 
-2026-11-07 N-08 direct-handle baselineA PASS: six validated scaling outputs plus
-cancel/write/recovery,185.92578125MiB/843valid0missing, stable cleanup<=87.617MiB,
-two actual workers/266272B SAB. Native picker/external drive remain UNVERIFIED.
-Private async-writer candidateB pending: identical inputs/settings, all memory/
-fidelity/recovery gates and>=10% large median gain required before keeping it.
-BaselineA retained in02-15-56-367Z receipt; do not replay it unchanged.
+2026-11-07 N-08 private DOCX HTML handle-writer gate now has real large evidence
+and one accepted optimization. BaselineA versus private async candidateB:
+three completed8.79MB and140.58MB DOCX inputs each, matching output hashes and every
+ordered paragraph independently validated, actual handle requests and cancel/
+write-error/recovery/cleanup pass. Observed large median9.194s ->7.268s (20.9%),
+above preregistered10% criterion, with unchanged inputs/settings/browser binaries.
+Whole Chrome185.93 ->105.00MiB, unchanged250MiB formula/96MiB cleanup gate and
+bounded I/O. Removed extra bridge only for private HTML; fixed actual resource
+diagnostics. Sequential fresh sessions, not randomized A/B or universal fastest/
+exact-allocation-cause proof. Reports:
+evidence/2026-11-07T02-15-56-367Z-docx-html-qualification.json
+evidence/2026-11-07T02-22-59-206Z-docx-html-qualification.json
+evidence/2026-11-07-docx-html-direct-writer-comparison.json
 
-2026-11-07 N-08 direct-handle gate IN PROGRESS. DOCX worker/SAB diagnostic omission
-reproduced1PASS/2FAIL and corrected from actual writer resources. Existing native
-writer/converter/250MiB/96MiB gates unchanged. Harness targets real handle-mode
-writer via repository-owned OPFS directory adapter; native save-dialog/external
-destination remains UNVERIFIED. No direct large-file acceptance claimed before
-browser execution.59focused checks plus updated8direct/counter checks, six-file
-lint/TypeScript/fresh build PASS. Complex-document/browser/media/release gaps OPEN.
+N-08 remains PARTIAL/PRIVATE/PENDING,403published unchanged. Real OPFS-backed
+handle adapter exercises the production direct writer; native save-dialog/
+external destination and optimized-writer fresh-session repeat UNVERIFIED.
+Complex-document/full OOXML/layout and broader-browser qualification still OPEN.
+All owned data/profiles/runtime gone, original full size/SHA unchanged. Fresh
+build/TypeScript/seven-file lint/focused evidence checks pass; final portable
+2539PASS/0fail/0skip/0cancel,101.338s/707files;869inventoried,162qualification files
+UNRUN. Receipt:evidence/2026-11-07-docx-html-direct-portable-final.json.
+Previous failed controls remain failed. No original media,
+near10GB, quality, source/release or full-spec requirement replaced or waived.
+Do not replay completed baseline/OPFS controls without a relevant change.
 
 2026-11-07 N-08 DOCX HTML checkpoint remains PARTIAL/PRIVATE/PENDING,403public
 profiles unchanged. Genuine8.79MB/140.58MB DOCX ->8.74MB/139.76MB HTML conversions
@@ -19280,7 +19291,7 @@ zero artifacts. This includes the corrected non-media inspection disclosure.
 | N-05 | Broad SVG rasterization including text/CSS/animation/linked resources/filter/mask behavior where safe | Partially implemented; SVG rasterization temporarily withheld pending full qualification | Historical bounded-subset behavior is retained in `evidence/svg-safety-fidelity-matrix-2026-09-05.json`, not current release proof. Shipping package-copy Wasm lacks an explicit maximum; new source-built candidate fails exact alpha and complete-tree265.445MiB>250. `evidence/2026-10-29-svg-publication-gate.json` records publicfalse/pending, not permanent unsupported. Local production21-case privacy/hosting/publication checks PASS53.901s; localhost qualification still exposes the genuine pipeline, public selector/catalogue/evidence omit rasterization and disclose why. `evidence/2026-10-30-svg-publication-local-terminal.json`. | Qualified SVG remains REQUIRED, not dropped from the goal. Resolve residual alpha and renderer/GPU document-worker lifecycle allocations, then fixed-cap/source/fidelity/memory/recovery/repeat gates before publication. Keep measured exclusions and their reopen conditions documented; neither withholding nor historical small results completes this requirement. |
 | N-06 | Incremental archive/compression conversion with traversal, duplicate, expansion-ratio, size, and bomb protections | Verified complete for advertised ZIP/TAR/GZIP/BZIP2/XZ/7Z routes                                             | Archive workers, validators, malicious-input tests, category reports                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Re-audit limits when adding formats.                                                                                                                                                                                                                                     |
 | N-07 | SRT/WebVTT/ASS/SSA/TTML conversion preserving representable timing, styling, positioning, speakers, and metadata  | Verified complete for all advertised routes                                                                  | `evidence/subtitle-field-matrix-2026-09-05.json` maps timing, multiline text, styling, positioning/regions, speakers, cue identifiers, and document metadata for all ten public routes. `tests/subtitle-field-matrix.test.mjs` ties every field contract to exact registry disclosures, direct browser anchors, ASS/SSA extension and MIME aliases, and ten three-run Chrome reports (worst 204.473 MiB incremental private memory). The focused production-browser suite passed 16/16, including real `.ssa` alias execution and cleanup.                                                  | Keep the matrix, disclosures, alias tests, and stress evidence synchronized whenever a subtitle parser or public route changes.                                                                                                                                          |
-| N-08 | Genuine bounded EPUB/TXT/HTML/Markdown/data/office conversions with independent structural validation | Partially implemented; advertised extraction/generation profiles verified | Existing dedicated workers, independent ZIP/XML/data validators and explicit fidelity limits remain valid for their scope. Private DOCX HTML has genuine 8.79MB/140.58MB source ->8.74MB/139.76MB completed outputs, three repeats at each size in each of two clean Chrome sessions, all ordered paragraphs independently checked, stable cleanup and173.39/157.01MiB whole-tree peaks. First overall control passes (`evidence/2026-11-06T21-36-55-127Z-docx-html-qualification.json`); second stays failed after its completed scaling runs because cancellation observation missed fast completion (`evidence/2026-11-06T21-40-53-256Z-docx-html-qualification.json`). Changed targeted cancellation/write-error/recovery passes69.77MiB (`evidence/2026-11-07T02-01-08-508Z-docx-html-qualification.json`). No public/full-route promotion. | Complete direct-save, complex-document/full OOXML/layout fidelity, broader-browser and remaining applicable qualification gates before promoting DOCX HTML. Preserve failed overall-session scope; do not replay completed scaling runs without a relevant change. Broader practical office conversion remains required, with explicit extraction/formatting exclusions. |
+| N-08 | Genuine bounded EPUB/TXT/HTML/Markdown/data/office conversions with independent structural validation | Partially implemented; advertised extraction/generation profiles verified | Existing workers/validators/limitations remain valid for their scope. Private DOCX HTML has 8.79MB/140.58MB inputs ->8.74MB/139.76MB outputs with every ordered paragraph independently validated, repeated OPFS controls and real handle-writer controls. Identical-input direct baseline versus private async candidate each passes six completed scaling jobs plus cancellation/write-error/recovery: 9.194s->7.268s large median (20.9% observed sequential improvement), 185.93->105.00MiB full-Chrome peaks, unchanged250MiB/96MiB gates. Exact receipts `evidence/2026-11-07T02-15-56-367Z-docx-html-qualification.json` and `evidence/2026-11-07T02-22-59-206Z-docx-html-qualification.json`. Removed extra bridge only for private HTML route; resource diagnostics corrected from actual destination. Prior failed OPFS cancellation-observer session stays failed; no public/full-route promotion. | Complete native save-dialog/external destination coverage (headless tests use real OPFS-backed handles), complex-document/full OOXML/layout fidelity, broader-browser and remaining applicable gates before promotion. No media/10GB or fastest-possible proof inferred. Preserve failed history and avoid unchanged replays; broader practical office conversions and explicit losses remain required. |
 
 ## Interface, browser capability, privacy, and offline behavior
 

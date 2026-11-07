@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-07T02:29:00.498Z",
+  "status": "private-docx-html-async-direct-writer-accepted-under-preregistered-identical-input10percent-criterion",
+  "sessions": [
+    {
+      "file": "evidence/2026-11-07T02-15-56-367Z-docx-html-qualification.json",
+      "sha256": "df685c42d11a994276f03dbb2cef99570d0ae717881e7a15bc6e11cdc8ce2e47",
+      "executedHead": "870952f12bf82fbd856451861ec8b85a1a1550a6",
+      "status": "passed-private-direct-handle-docx-html-scaling-control-not-native-picker-or-promotion",
+      "implementation": "shared-atomics",
+      "memory": {
+        "incrementalPrivateMiB": 185.92578125,
+        "validSamples": 843,
+        "unavailableSamples": 0,
+        "processesAtPeak": 14
+      },
+      "runs": [
+        {
+          "paragraphs": 2048,
+          "repeat": 1,
+          "sourceBytes": 8786993,
+          "sourceSha256": "2a3292a2abe3223365c3d18f5e2ab327ce83119381faa8f0be214b006de0ca52",
+          "outputBytes": 8735249,
+          "outputSha256": "c4658ddacf4a35dd3b8330c9c7221619e68542b08d46985b4eac45df0fdffca0",
+          "allParagraphsIndependentlyCompared": true,
+          "elapsedMs": 547.5550000071526,
+          "incrementalPrivateMiB": 93.1796875,
+          "cleanupDeltaFromLoadedMiB": 23.90625,
+          "workers": 2,
+          "sharedArrayBufferBytes": 266272
+        },
+        {
+          "paragraphs": 2048,
+          "repeat": 2,
+          "sourceBytes": 8786993,
+          "sourceSha256": "2a3292a2abe3223365c3d18f5e2ab327ce83119381faa8f0be214b006de0ca52",
+          "outputBytes": 8735249,
+          "outputSha256": "c4658ddacf4a35dd3b8330c9c7221619e68542b08d46985b4eac45df0fdffca0",
+          "allParagraphsIndependentlyCompared": true,
+          "elapsedMs": 555.2700000107288,
+          "incrementalPrivateMiB": 95.46484375,
+          "cleanupDeltaFromLoadedMiB": 80.68359375,
+          "workers": 2,
+          "sharedArrayBufferBytes": 266272
+        },
+        {
+          "paragraphs": 2048,
+          "repeat": 3,
+          "sourceBytes": 8786993,
+          "sourceSha256": "2a3292a2abe3223365c3d18f5e2ab327ce83119381faa8f0be214b006de0ca52",
+          "outputBytes": 8735249,
+          "outputSha256": "c4658ddacf4a35dd3b8330c9c7221619e68542b08d46985b4eac45df0fdffca0",
+          "allParagraphsIndependentlyCompared": true,
+          "elapsedMs": 627.875,
+          "incrementalPrivateMiB": 159.09375,
+          "cleanupDeltaFromLoadedMiB": 87.6171875,
+          "workers": 2,
+          "sharedArrayBufferBytes": 266272
+        },
+        {
+          "paragraphs": 32768,
+          "repeat": 1,
+          "sourceBytes": 140575793,
+          "sourceSha256": "a41ad00872a39ce5b1962eeed4393b7b69db929eaa37c9def2d197fe3997a8c1",
+          "outputBytes": 139756049,
+          "outputSha256": "b8ef8ba6178329962cc48943d18e3dd049b1b4b1e7423b821c766f457f8ea859",
+          "allParagraphsIndependentlyCompared": true,
+          "elapsedMs": 9193.830000013113,
+          "incrementalPrivateMiB": 185.92578125,
+          "cleanupDeltaFromLoadedMiB": 81.66015625,
+          "workers": 2,
+          "sharedArrayBufferBytes": 266272
+        },
+        {
+          "paragraphs": 32768,
+          "repeat": 2,
+          "sourceBytes": 140575793,
+          "sourceSha256": "a41ad00872a39ce5b1962eeed4393b7b69db929eaa37c9def2d197fe3997a8c1",
+          "outputBytes": 139756049,
+          "outputSha256": "b8ef8ba6178329962cc48943d18e3dd049b1b4b1e7423b821c766f457f8ea859",
+          "allParagraphsIndependentlyCompared": true,
+          "elapsedMs": 9317.710000008345,
+          "incrementalPrivateMiB": 152.12109375,
+          "cleanupDeltaFromLoadedMiB": 66.765625,
+          "workers": 2,
+          "sharedArrayBufferBytes": 266272
+        },
+        {
+          "paragraphs": 32768,
+          "repeat": 3,
+          "sourceBytes": 140575793,
+          "sourceSha256": "a41ad00872a39ce5b1962eeed4393b7b69db929eaa37c9def2d197fe3997a8c1",
+          "outputBytes": 139756049,
+          "outputSha256": "b8ef8ba6178329962cc48943d18e3dd049b1b4b1e7423b821c766f457f8ea859",
+          "allParagraphsIndependentlyCompared": true,
+          "elapsedMs": 8850.155000001192,
+          "incrementalPrivateMiB": 142.61328125,
+          "cleanupDeltaFromLoadedMiB": 60.51171875,
+          "workers": 2,
+          "sharedArrayBufferBytes": 266272
+        }
+      ],
+      "allNineJobsActualHandleMode": true,
+      "cancelWriteErrorRecoveryPassed": true,
+      "allOwnedOutputsAndRuntimeAbsent": true,
+      "protectedOriginal": {
+        "bytes": 2958573265,
+        "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+      },
+      "performance": null
+    },
+    {
+      "file": "evidence/2026-11-07T02-22-59-206Z-docx-html-qualification.json",
+      "sha256": "f5c0786e9f0d1f8dc1e7cfabf8b98d4e59d6c230bfe4c17cfa7e72a543870297",
+      "executedHead": "5dc953f195c2c7e8f6ca0da74c7e9ed89abcf882",
+      "status": "passed-private-direct-handle-docx-html-scaling-control-not-native-picker-or-promotion",
+      "implementation": "async-file-stream",
+      "memory": {
+        "incrementalPrivateMiB": 104.99609375,
+        "validSamples": 946,
+        "unavailableSamples": 1,
+        "processesAtPeak": 11
+      },
+      "runs": [
+        {
+          "paragraphs": 2048,
+          "repeat": 1,
+          "sourceBytes": 8786993,
+          "sourceSha256": "2a3292a2abe3223365c3d18f5e2ab327ce83119381faa8f0be214b006de0ca52",
+          "outputBytes": 8735249,
+          "outputSha256": "c4658ddacf4a35dd3b8330c9c7221619e68542b08d46985b4eac45df0fdffca0",
+          "allParagraphsIndependentlyCompared": true,
+          "elapsedMs": 452.94499999284744,
+          "incrementalPrivateMiB": 81.6875,
+          "cleanupDeltaFromLoadedMiB": 26.328125,
+          "workers": 1,
+          "sharedArrayBufferBytes": 0
+        },
+        {
+          "paragraphs": 2048,
+          "repeat": 2,
+          "sourceBytes": 8786993,
+          "sourceSha256": "2a3292a2abe3223365c3d18f5e2ab327ce83119381faa8f0be214b006de0ca52",
+          "outputBytes": 8735249,
+          "outputSha256": "c4658ddacf4a35dd3b8330c9c7221619e68542b08d46985b4eac45df0fdffca0",
+          "allParagraphsIndependentlyCompared": true,
+          "elapsedMs": 455.38499999046326,
+          "incrementalPrivateMiB": 95.38671875,
+          "cleanupDeltaFromLoadedMiB": 8.8828125,
+          "workers": 1,
+          "sharedArrayBufferBytes": 0
+        },
+        {
+          "paragraphs": 2048,
+          "repeat": 3,
+          "sourceBytes": 8786993,
+          "sourceSha256": "2a3292a2abe3223365c3d18f5e2ab327ce83119381faa8f0be214b006de0ca52",
+          "outputBytes": 8735249,
+          "outputSha256": "c4658ddacf4a35dd3b8330c9c7221619e68542b08d46985b4eac45df0fdffca0",
+          "allParagraphsIndependentlyCompared": true,
+          "elapsedMs": 502.16499999165535,
+          "incrementalPrivateMiB": 99.9609375,
+          "cleanupDeltaFromLoadedMiB": 11.00390625,
+          "workers": 1,
+          "sharedArrayBufferBytes": 0
+        },
+        {
+          "paragraphs": 32768,
+          "repeat": 1,
+          "sourceBytes": 140575793,
+          "sourceSha256": "a41ad00872a39ce5b1962eeed4393b7b69db929eaa37c9def2d197fe3997a8c1",
+          "outputBytes": 139756049,
+          "outputSha256": "b8ef8ba6178329962cc48943d18e3dd049b1b4b1e7423b821c766f457f8ea859",
+          "allParagraphsIndependentlyCompared": true,
+          "elapsedMs": 7268.465000003576,
+          "incrementalPrivateMiB": 95.95703125,
+          "cleanupDeltaFromLoadedMiB": 28.69140625,
+          "workers": 1,
+          "sharedArrayBufferBytes": 0
+        },
+        {
+          "paragraphs": 32768,
+          "repeat": 2,
+          "sourceBytes": 140575793,
+          "sourceSha256": "a41ad00872a39ce5b1962eeed4393b7b69db929eaa37c9def2d197fe3997a8c1",
+          "outputBytes": 139756049,
+          "outputSha256": "b8ef8ba6178329962cc48943d18e3dd049b1b4b1e7423b821c766f457f8ea859",
+          "allParagraphsIndependentlyCompared": true,
+          "elapsedMs": 7287.4749999940395,
+          "incrementalPrivateMiB": 102.6640625,
+          "cleanupDeltaFromLoadedMiB": 17.74609375,
+          "workers": 1,
+          "sharedArrayBufferBytes": 0
+        },
+        {
+          "paragraphs": 32768,
+          "repeat": 3,
+          "sourceBytes": 140575793,
+          "sourceSha256": "a41ad00872a39ce5b1962eeed4393b7b69db929eaa37c9def2d197fe3997a8c1",
+          "outputBytes": 139756049,
+          "outputSha256": "b8ef8ba6178329962cc48943d18e3dd049b1b4b1e7423b821c766f457f8ea859",
+          "allParagraphsIndependentlyCompared": true,
+          "elapsedMs": 7153.415000021458,
+          "incrementalPrivateMiB": 104.99609375,
+          "cleanupDeltaFromLoadedMiB": 19.046875,
+          "workers": 1,
+          "sharedArrayBufferBytes": 0
+        }
+      ],
+      "allNineJobsActualHandleMode": true,
+      "cancelWriteErrorRecoveryPassed": true,
+      "allOwnedOutputsAndRuntimeAbsent": true,
+      "protectedOriginal": {
+        "bytes": 2958573265,
+        "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+      },
+      "performance": {
+        "baseline": "evidence/2026-11-07T02-15-56-367Z-docx-html-qualification.json",
+        "baselineSha256": "df685c42d11a994276f03dbb2cef99570d0ae717881e7a15bc6e11cdc8ce2e47",
+        "minimumLargeMedianImprovement": 0.1,
+        "accepted": true,
+        "caveat": "Three repeats per size; sequential fresh sessions, not randomized interleaved A/B or universal fastest proof",
+        "baselineLargeMedianMs": 9193.830000013113,
+        "candidateLargeMedianMs": 7268.465000003576,
+        "observedMedianImprovement": 0.20941925182505994,
+        "identicalInputSettingsAndOutputHashesVerified": true
+      }
+    }
+  ],
+  "observedLargeMedianImprovement": 0.20941925182505994,
+  "primaryLimitMiB": 250,
+  "cleanupLimitMiB": 96,
+  "allOutputHashesAndInputSettingsIdentical": true,
+  "allValidationMemoryRecoveryCleanupGatesPassed": true,
+  "removedBridgeWorkers": 1,
+  "removedSharedBufferBytes": 266272,
+  "resourceCounterFirstRegression": {
+    "tests": 3,
+    "passed": 1,
+    "failed": 2,
+    "reproduced": "DOCX did not count existing direct writer resources"
+  },
+  "comparisonCaveat": "Sequential fresh sessions with three repeats at each size, not randomized interleaved A/B or universal fastest proof; observed memory differences are not exact allocation-source attribution",
+  "publicPromotion": false,
+  "nativeSaveDialogOrExternalDriveVerified": false,
+  "complexOoxmlLayoutVerified": false,
+  "broaderBrowserVerified": false,
+  "originalMediaAndNear10GBVerified": false,
+  "finalPortableRegression": "2539PASS/0fail/0skip/0cancel,101337.5396ms;707portable files,162separate qualification files UNRUN; evidence/2026-11-07-docx-html-direct-portable-final.json"
+}

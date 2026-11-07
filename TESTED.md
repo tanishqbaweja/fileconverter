@@ -1,32 +1,50 @@
 # Tested conversion ledger
 
-2026-11-07 direct DOCX HTML baselineA PASS185.92578125MiB/843valid0missing,
-all six full scaling outputs + payload-cancel/write-error/independent recovery.
-Actual9handle requests, two workers/266272B SAB, bounded262144reads/65536writes/
-queues/one pending. Large140575793B->139756049B each8.850-9.318s; median9193.830ms.
-Stable cleanup23.906-87.617MiB under96MiB, all owned data/roots gone/original SHA
-unchanged. Receipt02-15-56-367Z DOCX HTML qualification/native gzip/CSV/HTML.
-Native OS picker/external destination still UNVERIFIED (real OPFS-backed handle
-adapter). CandidateB now tests private DOCX HTML asynchronous native file stream
-without unnecessary Atomics writer worker. Keep only if ALL existing gates pass,
-identical source/settings/output hashes match and large median improves>=10%.
-This is preregistered, not a knob sweep; no repeated baselineA or OPFS replay.
-Candidate44focused checks/six-file lint/TypeScript/fresh production build PASS.
-Only private DOCX HTML destination-selection predicate changes; DOCX TXT/public
-writers retain their prior backend. Actual candidate browser benchmark NEXT.
+2026-11-07 private DOCX HTML direct-writer optimization ACCEPTED. Identical valid
+8,786,993B/140,575,793B DOCX sources, three repeats each per writer, byte-exact
+8,735,249B/139,756,049B HTML outputs and independent every-paragraph validation.
+BaselineA real handle/Atomics writer PASS:
+evidence/2026-11-07T02-15-56-367Z-docx-html-qualification.json.
+CandidateB native async file stream PASS:
+evidence/2026-11-07T02-22-59-206Z-docx-html-qualification.json.
+Large median9193.830ms ->7268.465ms,20.9419% observed gain, exceeding preregistered
+>=10% keep criterion. All18actual handle requests, payload cancellation,
+write-error and independent recovery pass. Same browser binaries/input/settings/
+converter/output hashes; only private HTML direct-writer selection changes.
+DOCX TXT/public writers retain prior backend. One unnecessary bridge worker and
+266272B of shared buffers removed for HTML. No universal fastest claim: sequential
+fresh sessions, not randomized interleaved A/B; memory differences are observations,
+not exact causal allocation attribution.
 
-2026-11-07 direct DOCX HTML gate IN PROGRESS: code inspection found destination
-worker/SAB counters omitted for DOCX handle output. Actual worker-fragment
-regression reproduced1PASS/2FAIL (worker1 instead of2; missing266272B writer SAB).
-Scoped DOCX branch now derives counters from actual destination/cancellation
-resources; conversion/quality/I/O/primary-memory policy unchanged. Exact reviewed
-private DOCX source hunk updated/reversed to unchanged historical worker hash;
-old receipts are immutable. New direct-scaling harness uses existing directory=1
-adapter/real OPFS-backed FileSystemFileHandle and production direct writer, not
-the opfs-test destination route. Native picker/external-drive coverage UNVERIFIED.
-Focused59checks PASS, then updated direct/counter8checks PASS. Six-file lint,
-TypeScript and fresh production build PASS. Actual direct browser result NEXT;
-no public promotion or speed claim. Do not replay previous OPFS scaling controls.
+Whole Chrome185.92578125MiB/843valid0missing ->104.99609375MiB/946valid1unavailable.
+All processes counted, null is never zero, unchanged250MiB blank-baseline formula.
+Stable cleanup23.906-87.617MiB ->8.883-28.691MiB versus loaded idle, unchanged96MiB
+gate; reads262144B/writes/queue65536B/one pending, output/terminal queues0. Fixed
+native journals, realm observations, numeric CSV and readable HTML graphs retained.
+Recomputed comparison:
+evidence/2026-11-07-docx-html-direct-writer-comparison.json.
+Both controls use production handle-mode writer with real OPFS-backed handles.
+Native OS picker/external-drive/fresh repeat of optimized writer remain UNVERIFIED;
+not the opfs-test engine destination path, not full route/public qualification.
+
+Before testing, actual worker-fragment regression reproduced1PASS/2FAIL: DOCX
+omitted existing writer worker/SAB diagnostics. Scoped counters now derive actual
+destination/cancellation resources (shared backend2/266272B; async1/0B).59initial
+focused checks,8updated direct/counter checks,44candidate checks,12final direct/
+evidence checks PASS. Exact reviewed private DOCX integration + private async
+predicate reverse to unchanged historical full-worker hash, reject unknown edits;
+old receipts/status/hashes unchanged. Fresh build/TypeScript/seven-file lint PASS.
+Final portable2539PASS/0fail/0skip/0cancel,101.338s across707 files;869inventoried,
+162separate qualification files UNRUN,235prior hosted gates retained. Source-pinned
+receipt:evidence/2026-11-07-docx-html-direct-portable-final.json.
+
+All owned generated fixtures, converted outputs, OPFS entries, profiles/runtime
+and owned browser/server roots removed in finally. Protected test.mkv unchanged
+2958573265B/SHA31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34.
+Route stays private/pending/403public unchanged. NEXT: native external-destination
+coverage, optimized-writer clean-session qualification, complex-document/full Word
+layout and broader browsers; all media/near10GB/source/release/full goal gates OPEN.
+Do not replay baselineA or completed OPFS controls unchanged.
 
 2026-11-07 DOCX HTML scaling checkpoint: implementation remains PRIVATE/PENDING,
 normal public selector403 unchanged. Two clean normal-service headless Chrome
