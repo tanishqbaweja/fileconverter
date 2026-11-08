@@ -7,6 +7,16 @@ passed 14/14. The hosted job is restricted to an isolated ref and would retain
 only the bounded tools, source and proof for one day. These local checks did
 not run the compiler, open Chrome, or convert media. Published assets unchanged.
 
+The isolated [GitHub build 42431402082](https://github.com/tanishqbaweja/fileconverter/actions/runs/42431402082)
+passed the checked-out recipe and release-preimage checks before SDK setup.
+Head `b01b3896b187159d47ad55ab36c04be7ee345ec6`; the working branch retains the
+normal workflow. Added an explicit headless candidate mode that verifies the
+hosted run, ZIP digest, exact build configuration, tool hashes, ABI and Wasm
+limits before launching Chrome. Only the two exact loopback engine responses
+are replaced. The run keeps the source packet, duration, AAC trim/decoded-PCM
+and whole-process memory gates; initial fidelity failure skips recovery replay.
+Fifteen focused checks passed; the candidate browser mode was not run here.
+
 2026-11-08 current public staged MKV → MP4 **fails exact timeline preservation**
 on the same synthetic HEVC/AAC packet payloads. The untouched production worker
 staged and removed the real 5,948,888-byte output; it was byte-identical to

@@ -29,10 +29,13 @@ import { bindOpfsOutputValidationBacking, assertOpfsOutputValidationBackingUncha
 import { cancelBrowserConversionBeforeCleanup } from "./lib/cancel-browser-conversion-before-cleanup.mjs";
 import { compareSmallMkvPacketClocks } from "./lib/mkv-direct-packet-clocks.mjs";
 import { readMkvMp4TimelineBoxes } from "./lib/mkv-mp4-timeline-boxes.mjs";
+import { loadMkvEditListBuildArtifact } from "./lib/mkv-edit-list-build-artifact.mjs";
+import { validateCopiedAudioTiming } from "./lib/copied-audio-timing.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
-assert.equal(process.argv.length, stagedDiagnostic ? 3 : 2);
+const editListCandidate = process.argv[2] === "--edit-list-candidate";
+assert.equal(process.argv.length, editListCandidate ? 5 : stagedDiagnostic ? 3 : 2);
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), profileId = "mkv-to-mp4";
 const syntheticName = "within-test-synthetic-hevc-aac";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex"), stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
@@ -40,12 +43,13 @@ const report = { schemaVersion: 1, status: "running", scope: "Small real MKV-to-
   headed: false, browserServicesDisabled: false, peakLimitMiB: 250, cleanupLimitMiB: 96, nativeConversionUsed: false,
   originalMediaSelected: false, productionFilesReplaced: false, speedGainProven: false, publicAcceptance: false, arms: [], failures: [] };
 if (stagedDiagnostic) report.scope = "One unchanged public staged-handle MKV-to-MP4 small-fixture diagnostic against retained private output hashes; not a rerun of the direct A/B or acceptance of shifted clocks.";
+if (editListCandidate) report.scope = "Unpublished MKV edit-list tools only, normal staged worker and same bounded HEVC/AAC fixture. Not original-file, speed or public acceptance.";
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env) => execute(file, args, { cwd: root, env, windowsHide: true, timeout: 90000, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env)).stdout);
@@ -53,6 +57,14 @@ const packetClocks = async (file, env) => JSON.parse((await runNative(ffprobe,
   ["-v", "error", "-show_packets", "-show_entries", "packet=stream_index,pts_time,dts_time", "-of", "json", file], env)).stdout).packets;
 const packets = async (file, env) => (await runNative(ffmpeg,
   ["-v", "error", "-i", file, "-map", "0:v:0", "-map", "0:a:0", "-c", "copy", "-f", "streamhash", "-hash", "sha256", "-"], env)).stdout.trim();
+const aacPackets = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-select_streams", "a:0", "-show_packets",
+  "-show_entries", "packet=stream_index,pts_time,dts_time,duration_time:packet_side_data=side_data_type,skip_samples,discard_padding", "-of", "json", file], env)).stdout).packets;
+const decodedPcm = async (file, env) => {
+  const result = (await runNative(ffmpeg, ["-v", "error", "-xerror", "-threads", "1", "-i", file,
+    "-map", "0:a:0", "-c:a", "pcm_s16le", "-f", "streamhash", "-hash", "sha256", "-"], env)).stdout.trim();
+  assert.match(result, /^0,a,SHA256=[a-f0-9]{64}$/i);
+  return result;
+};
 const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 512 * 1024 ** 2, "Repository scratch needs at least 512 MiB");
 const protectedPath = path.join(root, "test.mkv");
 const original = async () => ({ bytes: (await stat(protectedPath)).size, sha256: await hashFile(protectedPath) });
@@ -79,7 +91,9 @@ const port = async () => {
 };
 
 async function arm(mode, fixture, fixtureRuntime, baseline) {
+  const candidate = mode === "edit-list", staged = mode === "staged" || candidate;
   const result = { mode, status: "running", requests: 0, workerResponses: 0, directEngineRequests: { module: 0, wasm: 0 }, forbiddenRequests: [], cases: [], failures: [] };
+  if (candidate) result.engineResponses = { module: 0, wasm: 0 };
   report.arms.push(result);
   const runtime = await createOwnedRuntimeScratch("mkv-direct-reuse-");
   const env = { ...runtime.env, WRANGLER_SEND_METRICS: "false", NEXT_TELEMETRY_DISABLED: "1" };
@@ -98,7 +112,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
   })().finally(() => { pending = null; });
   try {
     result.host = await inspectStressHostMemory(); assert.equal(result.host.safeToStart, true);
-    const overlay = mode === "staged" ? null : await buildMkvDirectReuseOverlay({ root, directory: runtime.directory, mode });
+    const overlay = staged ? null : await buildMkvDirectReuseOverlay({ root, directory: runtime.directory, mode });
     if (overlay) result.overlay = overlay.proof;
     else {
       const names = [...assets].filter(name => /^\/assets\/conversion\.worker-[\w-]+\.js$/.test(name)); assert.equal(names.length, 1);
@@ -134,6 +148,24 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
           (url === faultUrl || isCompatibilityStaticPath(url, server.baseURL, assets)))) {
         if (result.forbiddenRequests.length < 16) result.forbiddenRequests.push({ method, kind, urlSha256: sha(url) });
         fail(new Error("Request outside exact built-asset/privacy policy")); await route.abort();
+      } else if (candidate && kind === "app-static" && baseline.candidate.assets.has(new URL(url).pathname)) {
+        try {
+          const pathname = new URL(url).pathname, tool = baseline.candidate.assets.get(pathname);
+          const role = pathname.endsWith(".wasm") ? "wasm" : "module";
+          assert.equal(method, "GET"); assert.equal(url, server.baseURL + pathname);
+          assert.ok(++result.directEngineRequests[role] <= 16);
+          const response = await route.fetch({ maxRedirects: 0 });
+          try {
+            assert.equal(response.status(), 200);
+            const headers = response.headers();
+            assert.equal(headers["cross-origin-resource-policy"], "same-origin");
+            assert.equal(headers["cross-origin-embedder-policy"], "require-corp");
+            for (const header of ["content-encoding", "content-length", "etag", "last-modified"]) delete headers[header];
+            headers["cache-control"] = "no-store";
+            await route.fulfill({ response, headers, body: tool.body, contentType: tool.type });
+            result.engineResponses[role]++;
+          } finally { await response.dispose(); }
+        } catch (error) { fail(error); await route.abort().catch(() => {}); }
       } else if (overlay && url === server.baseURL + overlay.requestedAsset) {
         try {
           assert.equal(method, "GET"); assert.ok(result.workerResponses < 16);
@@ -197,7 +229,15 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
           sourceVideoAverageRate: inStreams[0].avg_frame_rate, durationDeltaSeconds: Math.abs(Number(output.format.duration) - Number(baseline.probe.format.duration)),
           sourceHeader: { startSeconds: Number(baseline.probe.format.start_time), durationSeconds: Number(baseline.probe.format.duration) },
           outputHeader: { startSeconds: Number(output.format.start_time), durationSeconds: Number(output.format.duration) } };
-        if (mode === "staged") row.validation.serializedTimeline = await readMkvMp4TimelineBoxes(binding.file);
+        if (staged) row.validation.serializedTimeline = await readMkvMp4TimelineBoxes(binding.file);
+        if (candidate) {
+          const outputPcm = await decodedPcm(binding.file, env), outputPackets = await aacPackets(binding.file, env);
+          row.validation.aac = { sourcePcm: baseline.aac.pcm, outputPcm, completeDecodedPcmEqual: baseline.aac.pcm === outputPcm,
+            outputPacketCount: outputPackets.length, outputEdges: [outputPackets[0], outputPackets.at(-1)] };
+          try {
+            row.validation.aac.packetTimingAndTrim = validateCopiedAudioTiming(baseline.aac.packets, outputPackets, [1], [1])[0];
+          } catch (error) { row.validation.aac.packetTimingOrTrimFailure = String(error.message).slice(0, 512); }
+        }
         await runNative(ffmpeg, ["-v", "error", "-xerror", "-threads", "1", "-i", binding.file,
           "-map", "0:v:0", "-map", "0:a:0", "-f", "null", "-"], env);
         row.validation.fullDecode = true;
@@ -214,13 +254,16 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
         const packetClocksPassed = row.validation.clocks.every(track => track.maximumPtsErrorUs <= 1000 && track.outputDtsMonotonic);
         row.validation.timingGate = { durationPassed, packetClocksPassed, passed: durationPassed && packetClocksPassed,
           maxDurationDeltaSecondsExclusive: 0.05, maxPacketPtsDeltaUs: 1000 };
-        if (mode !== "staged") {
+        if (!staged) {
           assert.ok(durationPassed, "Container duration differs by at least 50 ms");
           assert.ok(packetClocksPassed, "Packet clock exceeds one source tick or output DTS is not monotonic");
         } else {
           row.validation.byteIdenticalToRetainedDirect = baseline.retained.arms.every(a => a.cases[0].validation.outputSha256 === row.validation.outputSha256);
-          assert.equal(row.metrics.peakScratchBytes, row.metrics.outputBytes, "The unchanged staged path must actually stage the full small output");
+          assert.equal(row.metrics.peakScratchBytes, row.metrics.outputBytes, "The staged path must actually stage the full small output");
         }
+        if (candidate) row.validation.candidateGate = { passed: row.validation.timingGate.passed &&
+          row.validation.aac.completeDecodedPcmEqual && Boolean(row.validation.aac.packetTimingAndTrim) &&
+          row.validation.serializedTimeline.tracks.every(track => track.editListPresent) };
         assert.equal(row.metrics.activeWorkerCount, 1);
         // The native bridge counts both its shared Wasm backing and the 4-byte
         // cancellation flag. Neither the direct writer nor the reuse buffer adds SAB.
@@ -233,13 +276,20 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
       assert.deepEqual(await entries(), []); row.outputRemoved = true;
     }
     await job();
-    if (mode === "reuse") { await open(true); await job(true); await open(); await job(); }
+    if (mode === "reuse" || (candidate && result.cases[0].validation.candidateGate.passed)) {
+      await open(true); await job(true); await open(); await job();
+    }
     result.cleanupStable = await guard(stable(drain, samples)); until = Date.now(); await drain();
     assert.equal(errorSeen, undefined); assert.deepEqual(result.forbiddenRequests, []);
-    if (mode === "staged") { assert.equal(result.workerResponses, 0); assert.ok(result.releaseWorker.requests > 0); }
+    if (staged) { assert.equal(result.workerResponses, 0); assert.ok(result.releaseWorker.requests > 0); }
     else assert.ok(result.workerResponses > 0);
     assert.ok(result.directEngineRequests.module > 0 && result.directEngineRequests.wasm > 0);
-    result.status = mode === "staged" ? "completed-staged-timeline-diagnostic-not-acceptance" : "passed-private-small-direct-control";
+    if (candidate) {
+      assert.deepEqual(result.engineResponses, result.directEngineRequests);
+      assert.equal(result.cases.length, 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
+      assert.ok(result.cases.filter(row => !row.fault).every(row => row.validation.candidateGate.passed));
+      result.status = "passed-unpublished-small-staged-clock-control";
+    } else result.status = staged ? "completed-staged-timeline-diagnostic-not-acceptance" : "passed-private-small-direct-control";
   } catch (error) { result.status = "failed-not-acceptance"; result.failures.push(String(error.stack ?? error).slice(0, 2048)); }
   finally {
     until ??= Date.now(); clearInterval(timer); await pending?.catch(fail);
@@ -280,14 +330,22 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
   }
 }
 
-let fixtureRuntime;
+let fixtureRuntime, toolRuntime;
 try {
   report.originalBefore = await original(); assert.deepEqual(report.originalBefore, { bytes: 2958573265, sha256: "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" });
   const sourceFiles = ["scripts/qualify-mkv-direct-reuse.mjs", "scripts/lib/mkv-direct-reuse-overlay.mjs", "scripts/lib/private-mkv-write-reuse.ts", "scripts/lib/mkv-direct-packet-clocks.mjs", "scripts/lib/mkv-mp4-timeline-boxes.mjs",
     "workers/media-remux.ts", "workers/conversion.worker.ts", "workers/random-access-destination.ts", "public/engines/remux/within-direct.mjs", "public/engines/remux/within-direct.wasm"];
+  if (editListCandidate) sourceFiles.push("scripts/lib/mkv-edit-list-build-artifact.mjs", "scripts/lib/copied-audio-timing.mjs",
+    "media/ffmpeg/mkv-edit-list-build-recipe.mjs", "media/ffmpeg/reproduce-nondocker.sh");
   report.sourcePins = Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, await hashFile(path.join(root, file))])));
   report.executedHead = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true })).stdout.trim();
   fixtureRuntime = await createOwnedRuntimeScratch("mkv-direct-reuse-fixture-");
+  let candidate;
+  if (editListCandidate) {
+    toolRuntime = await createOwnedRuntimeScratch("mkv-edit-list-tool-download-");
+    candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime);
+    report.candidateBuild = candidate.proof;
+  }
   const fixture = path.join(fixtureRuntime.directory, `${syntheticName}.mkv`);
   await runNative(ffmpeg, ["-v", "error", "-n", "-f", "lavfi", "-i", "testsrc2=size=1280x720:rate=24",
     "-f", "lavfi", "-i", "sine=frequency=553:sample_rate=48000", "-t", "12", "-c:v", "libx265", "-preset", "ultrafast",
@@ -298,18 +356,26 @@ try {
   assert.match(packetHashes, /^0,v,SHA256=[a-f0-9]{64}\r?\n1,a,SHA256=[a-f0-9]{64}$/i);
   report.fixture = { bytes, sha256: await hashFile(fixture), packetHashes };
   const baseline = { browser: await inspectInstalledChromePin(), probe: inputProbe, packetHashes, clocks: await packetClocks(fixture, fixtureRuntime.env) };
-  if (stagedDiagnostic) {
+  if (stagedDiagnostic || editListCandidate) {
     const file = "evidence/2026-11-08T00-23-59-928Z-mkv-direct-reuse.json", retained = await readFile(path.join(root, file));
     const digest = sha(retained); assert.equal(digest, "1106498457688f125da4e7bce849af797293c63820a87bdc18025da0449553ac");
     baseline.retained = JSON.parse(retained); report.retainedDirectControl = { file, sha256: digest };
     assert.equal(packetHashes, baseline.retained.fixture.packetHashes); assert.equal(bytes, baseline.retained.fixture.bytes);
     for (const file of ["public/engines/remux/within-direct.mjs", "public/engines/remux/within-direct.wasm"])
       assert.equal(report.sourcePins[file], baseline.retained.sourcePins[file]);
-    await arm("staged", fixture, fixtureRuntime, baseline);
+    if (editListCandidate) {
+      baseline.candidate = candidate;
+      baseline.aac = { pcm: await decodedPcm(fixture, fixtureRuntime.env), packets: await aacPackets(fixture, fixtureRuntime.env) };
+      report.fixture.aac = { pcm: baseline.aac.pcm, packets: baseline.aac.packets.length, edges: [baseline.aac.packets[0], baseline.aac.packets.at(-1)] };
+      await arm("edit-list", fixture, fixtureRuntime, baseline);
+    } else await arm("staged", fixture, fixtureRuntime, baseline);
   } else for (const mode of ["fresh", "reuse"]) await arm(mode, fixture, fixtureRuntime, baseline);
   assert.equal(await hashFile(fixture), report.fixture.sha256);
   assertInstalledChromePinsEqual(await inspectInstalledChromePin(), baseline.browser);
-  if (stagedDiagnostic) {
+  if (editListCandidate) {
+    assert.equal(report.arms[0].status, "passed-unpublished-small-staged-clock-control");
+    report.status = "passed-unpublished-small-staged-clock-control-not-public-acceptance";
+  } else if (stagedDiagnostic) {
     assert.equal(report.arms[0].status, "completed-staged-timeline-diagnostic-not-acceptance");
     report.status = "completed-public-staged-clock-diagnostic-not-acceptance";
   } else {
@@ -322,6 +388,7 @@ try {
 } catch (error) { report.status = "failed-not-acceptance"; report.failures.push(String(error.stack ?? error).slice(0, 2048)); }
 finally {
   await finishOwnedCleanup([
+    async () => { if (toolRuntime) { await toolRuntime.close(); report.toolDownloadRemoved = true; } },
     async () => { if (fixtureRuntime) {
       assert.ok(report.arms.every(arm => arm.ownedRuntimeRemoved), "Never remove a fixture while browser ownership is unresolved");
       await fixtureRuntime.close(); report.fixtureRuntimeRemoved = true;

@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-08 M-03/P-08 follow-up: the pinned no-Docker build was dispatched on
+an isolated ref ([run 42431402082](https://github.com/tanishqbaweja/fileconverter/actions/runs/42431402082)).
+The unpublished artifact gate and headless small-fixture comparison are wired;
+the build and browser outcomes are pending at this checkpoint. The original
+file, release engine, normal workflow, and limits were not changed. No media
+was uploaded. No optimization, manual coverage, or release acceptance claim.
+
 2026-11-08 M-03/P-08: the unchanged public staged MKV → MP4 route reproduces
 the private arms' exact output and timing failure on synthetic HEVC/AAC.
 All 852 packet payloads match and full independent decode passes; video PTS
