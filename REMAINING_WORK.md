@@ -10,6 +10,8 @@ sustained writes with a structurally valid larger fixture, independent
 streaming packet/PCM validation, repeat timings and mid-write cancellation;
 keep broader timing, protected-file and scale qualification separate. See
 `evidence/2026-11-08T01-21-27-483Z-mkv-exact-aac-destination-control.json`.
+The bounded video validator and existing streaming AAC/PCM checks are ready
+to wire into that fixture; neither substitutes for an actual sustained run.
 
 2026-11-08 M-03/P-08: the exact-AAC candidate passed the unpublished small
 staged gate. The source's 1,024-sample trim and full decoded PCM now match,

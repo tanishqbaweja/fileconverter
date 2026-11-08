@@ -16,6 +16,12 @@ The 93 observed Chrome processes, servers, outputs, fixture, downloaded tools
 and scratch were removed; protected `test.mkv` rehashed unchanged. No release
 or large-file acceptance. See `evidence/2026-11-08T01-21-27-483Z-mkv-exact-aac-destination-control.json`.
 
+Prepared the sustained video packet validator: paired bounded FFprobe streams
+compare payload hash, decode order, signed PTS/DTS and durations while retaining
+only the current packet pair. Thirteen focused checks passed, and a real
+96-packet repository fixture parsed end-to-end in a validator self-control.
+This was not a conversion or a sustained performance run.
+
 2026-11-08 MKV → MP4 exact-AAC follow-up (source checks): reconstructed all
 six release-wrapper patches, then verified the exact edit-list parent and the
 sample-precise candidate wrapper (`eff90a4908b5fe0d37d56d1d142d823d1c389408e38a8fa415645344a389550c`).
