@@ -1,11 +1,19 @@
 # Remaining work audit
 
-2026-11-08 M-03/P-08 follow-up: the pinned no-Docker build was dispatched on
-an isolated ref ([run 42431402082](https://github.com/tanishqbaweja/fileconverter/actions/runs/42431402082)).
-The unpublished artifact gate and headless small-fixture comparison are wired;
-the build and browser outcomes are pending at this checkpoint. The original
-file, release engine, normal workflow, and limits were not changed. No media
-was uploaded. No optimization, manual coverage, or release acceptance claim.
+2026-11-08 M-03/P-08 follow-up: the pinned no-Docker build succeeded on an
+isolated ref ([run 42431402082](https://github.com/tanishqbaweja/fileconverter/actions/runs/42431402082)).
+The genuine headless staged output passed the existing clock and duration
+gates with exact packet payloads and zero comparable PTS/DTS error. However,
+rounded AAC preroll produced a 1,008-sample edit instead of the source's
+1,024-sample trim, so full decoded audio hashes differ. Do not rerun this
+unchanged build. Next scope: carry source-declared AAC padding into the
+isolated direct MOV edit writer using the existing sample-precise patch as a
+starting point; it passed exact trim/PCM on a separate MPEG-2 route but is
+not qualified here. Preserve the successful packet clocks and require the
+same PCM, trim, duration, memory, and fault/recovery gates before any larger
+test. The protected input hash, release engine, normal workflow and limits
+did not change. All owned media and local scratch were removed. No speed,
+manual-browser, or public acceptance. Exact evidence is linked in `TESTED.md`.
 
 2026-11-08 M-03/P-08: the unchanged public staged MKV → MP4 route reproduces
 the private arms' exact output and timing failure on synthetic HEVC/AAC.

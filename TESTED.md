@@ -15,7 +15,28 @@ hosted run, ZIP digest, exact build configuration, tool hashes, ABI and Wasm
 limits before launching Chrome. Only the two exact loopback engine responses
 are replaced. The run keeps the source packet, duration, AAC trim/decoded-PCM
 and whole-process memory gates; initial fidelity failure skips recovery replay.
-Fifteen focused checks passed; the candidate browser mode was not run here.
+Fifteen focused checks passed before running the candidate browser mode.
+
+2026-11-08 MKV edit-list candidate **passed packet clocks and failed decoded
+audio fidelity**. The isolated native build and hosted cleanup succeeded; the
+candidate Wasm is 1,197,910 bytes, with the same 24–64 MiB bound and unchanged
+loader, ABI and build configuration. Installed headless Chrome used the
+unmodified staged worker and two authenticated tool responses. Independent
+validation found the same 288 HEVC + 564 AAC packet payloads, zero PTS or
+comparable DTS error, both serialized edit lists, a 10.333 ms header-duration
+delta, and a full decode. But the source declares 1,024 AAC priming samples
+and MP4 retained only 1,008. Complete decoded PCM hashes differ. The 1,008
+ticks equal the rounded 21 ms preroll at 48 kHz; the other 16 samples cannot
+be recovered from that timestamp alone. Initial fidelity failed, so no
+fault/recovery replay, original-file conversion, or speed benchmark ran.
+
+The small run peaked at 59.156 MiB over stable blank Chrome and cleaned up
+to 16.707 MiB above idle (105 valid samples, zero unavailable). All 34 observed
+Chrome PIDs and the local server were gone; the 5,948,960-byte staged result,
+synthetic input, downloaded tools and owned scratch were removed. Protected
+`test.mkv` rehashed unchanged before/after. No release changes or manual/large
+acceptance. Exact report and memory journal are in
+`evidence/2026-11-08T00-57-09-678Z-mkv-edit-list-candidate.json`.
 
 2026-11-08 current public staged MKV → MP4 **fails exact timeline preservation**
 on the same synthetic HEVC/AAC packet payloads. The untouched production worker
