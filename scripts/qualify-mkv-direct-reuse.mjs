@@ -30,6 +30,7 @@ import { cancelBrowserConversionBeforeCleanup } from "./lib/cancel-browser-conve
 
 assert.equal(process.platform, "win32"); assert.equal(process.argv.length, 2);
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), profileId = "mkv-to-mp4";
+const syntheticName = "within-test-synthetic-hevc-aac";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex"), stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
 const report = { schemaVersion: 1, status: "running", scope: "Small real MKV-to-MP4 packet copy. Two private async direct arms; not the public staged route, original-file, speed, or promotion.",
   headed: false, browserServicesDisabled: false, peakLimitMiB: 250, cleanupLimitMiB: 96, nativeConversionUsed: false,
@@ -171,7 +172,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
         for (const item of leftovers) await remove(item.name);
       } else {
         assert.equal(row.state, "complete"); assert.equal(state.opfsName, null);
-        assert.equal(state.batchOutputNames.length, 1); const name = state.batchOutputNames[0]; assert.match(name, /^within-test-.*\.mp4$/);
+        assert.deepEqual(state.batchOutputNames, [`${syntheticName}.mp4`]); const name = state.batchOutputNames[0];
         assert.equal(row.metrics.activeWorkerCount, 1); assert.ok(row.metrics.sharedArrayBufferBytes <= 4);
         assert.equal(row.metrics.scratchBytes ?? 0, 0); assert.ok(row.metrics.maxReadChunkBytes <= 262144);
         assert.ok(row.metrics.maxWriteChunkBytes <= 1048576 && row.metrics.peakQueuedBytes <= 1048576);
@@ -249,7 +250,7 @@ try {
   report.sourcePins = Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, await hashFile(path.join(root, file))])));
   report.executedHead = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true })).stdout.trim();
   fixtureRuntime = await createOwnedRuntimeScratch("mkv-direct-reuse-fixture-");
-  const fixture = path.join(fixtureRuntime.directory, "synthetic-hevc-aac.mkv");
+  const fixture = path.join(fixtureRuntime.directory, `${syntheticName}.mkv`);
   await runNative(ffmpeg, ["-v", "error", "-n", "-f", "lavfi", "-i", "testsrc2=size=1280x720:rate=24",
     "-f", "lavfi", "-i", "sine=frequency=553:sample_rate=48000", "-t", "12", "-c:v", "libx265", "-preset", "ultrafast",
     "-x265-params", "pools=1:frame-threads=1:log-level=error:keyint=48", "-b:v", "3600k", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "128k", fixture], fixtureRuntime.env);
