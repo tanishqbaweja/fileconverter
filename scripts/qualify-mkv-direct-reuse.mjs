@@ -27,6 +27,7 @@ import { selectOwnedLocalBrowserFile } from "./lib/select-owned-local-browser-fi
 import { encodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
 import { bindOpfsOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "./lib/opfs-output-validation-backing.mjs";
 import { cancelBrowserConversionBeforeCleanup } from "./lib/cancel-browser-conversion-before-cleanup.mjs";
+import { compareSmallMkvPacketClocks } from "./lib/mkv-direct-packet-clocks.mjs";
 
 assert.equal(process.platform, "win32"); assert.equal(process.argv.length, 2);
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), profileId = "mkv-to-mp4";
@@ -44,6 +45,8 @@ const prefix = `evidence/${stamp}-mkv-direct-reuse`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env) => execute(file, args, { cwd: root, env, windowsHide: true, timeout: 90000, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env)).stdout);
+const packetClocks = async (file, env) => JSON.parse((await runNative(ffprobe,
+  ["-v", "error", "-show_packets", "-show_entries", "packet=stream_index,pts_time,dts_time", "-of", "json", file], env)).stdout).packets;
 const packets = async (file, env) => (await runNative(ffmpeg,
   ["-v", "error", "-i", file, "-map", "0:v:0", "-map", "0:a:0", "-c", "copy", "-f", "streamhash", "-hash", "sha256", "-"], env)).stdout.trim();
 const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= 512 * 1024 ** 2, "Repository scratch needs at least 512 MiB");
@@ -176,19 +179,24 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
         assert.ok(row.metrics.outputBytes > 2 * 1048576 && row.metrics.outputBytes <= 8 * 1048576);
         const binding = await bindOpfsOutputValidationBacking(page, profile, name, row.metrics.outputBytes); row.binding = binding.proof;
         const output = await probe(binding.file, env), inStreams = baseline.probe.streams, outStreams = output.streams;
+        row.validation = { outputSha256: await hashFile(binding.file), packetHashes: await packets(binding.file, env),
+          clocks: compareSmallMkvPacketClocks(baseline.clocks, await packetClocks(binding.file, env)),
+          streams: outStreams.map(s => ({ codec: s.codec_name, packetCount: Number(s.nb_read_packets), nominalFrameRate: s.r_frame_rate, averageFrameRate: s.avg_frame_rate })),
+          sourceVideoAverageRate: inStreams[0].avg_frame_rate, durationDeltaSeconds: Math.abs(Number(output.format.duration) - Number(baseline.probe.format.duration)) };
+        await runNative(ffmpeg, ["-v", "error", "-xerror", "-threads", "1", "-i", binding.file,
+          "-map", "0:v:0", "-map", "0:a:0", "-f", "null", "-"], env);
+        row.validation.fullDecode = true;
+        await assertOpfsOutputValidationBackingUnchanged(binding); await remove(name);
         assert.deepEqual(outStreams.map(s => s.codec_name), ["hevc", "aac"]);
-        for (const [index, fields] of [[0, ["width", "height", "avg_frame_rate", "pix_fmt"]], [1, ["sample_rate", "channels"]]]) {
+        for (const [index, fields] of [[0, ["width", "height", "r_frame_rate", "pix_fmt"]], [1, ["sample_rate", "channels"]]]) {
           for (const field of fields) assert.equal(outStreams[index][field], inStreams[index][field]);
           assert.equal(outStreams[index].nb_read_packets, inStreams[index].nb_read_packets);
         }
-        assert.ok(Math.abs(Number(output.format.duration) - Number(baseline.probe.format.duration)) < 0.05);
+        assert.equal(outStreams[0].r_frame_rate, "24/1");
+        assert.ok(row.validation.durationDeltaSeconds < 0.05);
         assert.match(output.format.format_name, /mp4/);
-        const packetHashes = await packets(binding.file, env); assert.equal(packetHashes, baseline.packetHashes);
-        await runNative(ffmpeg, ["-v", "error", "-xerror", "-threads", "1", "-i", binding.file,
-          "-map", "0:v:0", "-map", "0:a:0", "-f", "null", "-"], env);
-        row.validation = { outputSha256: await hashFile(binding.file), packetHashes, fullDecode: true,
-          streams: outStreams.map(s => ({ codec: s.codec_name, packetCount: Number(s.nb_read_packets) })) };
-        await assertOpfsOutputValidationBackingUnchanged(binding); await remove(name);
+        assert.equal(row.validation.packetHashes, baseline.packetHashes);
+        assert.ok(row.validation.clocks.every(track => track.maximumPtsErrorUs <= 1000 && track.outputDtsMonotonic), "Packet clock exceeds one source tick or output DTS is not monotonic");
         assert.equal(row.metrics.activeWorkerCount, 1);
         // The native bridge counts both its shared Wasm backing and the 4-byte
         // cancellation flag. Neither the direct writer nor the reuse buffer adds SAB.
@@ -249,7 +257,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
 let fixtureRuntime;
 try {
   report.originalBefore = await original(); assert.deepEqual(report.originalBefore, { bytes: 2958573265, sha256: "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" });
-  const sourceFiles = ["scripts/qualify-mkv-direct-reuse.mjs", "scripts/lib/mkv-direct-reuse-overlay.mjs", "scripts/lib/private-mkv-write-reuse.ts",
+  const sourceFiles = ["scripts/qualify-mkv-direct-reuse.mjs", "scripts/lib/mkv-direct-reuse-overlay.mjs", "scripts/lib/private-mkv-write-reuse.ts", "scripts/lib/mkv-direct-packet-clocks.mjs",
     "workers/media-remux.ts", "workers/conversion.worker.ts", "workers/random-access-destination.ts", "public/engines/remux/within-direct.mjs", "public/engines/remux/within-direct.wasm"];
   report.sourcePins = Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, await hashFile(path.join(root, file))])));
   report.executedHead = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true })).stdout.trim();
@@ -263,7 +271,7 @@ try {
   assert.deepEqual(inputProbe.streams.map(s => s.codec_name), ["hevc", "aac"]);
   assert.match(packetHashes, /^0,v,SHA256=[a-f0-9]{64}\r?\n1,a,SHA256=[a-f0-9]{64}$/i);
   report.fixture = { bytes, sha256: await hashFile(fixture), packetHashes };
-  const baseline = { browser: await inspectInstalledChromePin(), probe: inputProbe, packetHashes };
+  const baseline = { browser: await inspectInstalledChromePin(), probe: inputProbe, packetHashes, clocks: await packetClocks(fixture, fixtureRuntime.env) };
   for (const mode of ["fresh", "reuse"]) await arm(mode, fixture, fixtureRuntime, baseline);
   assert.equal(await hashFile(fixture), report.fixture.sha256);
   assertInstalledChromePinsEqual(await inspectInstalledChromePin(), baseline.browser);

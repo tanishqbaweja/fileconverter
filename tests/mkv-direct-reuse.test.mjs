@@ -3,6 +3,7 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { transform } from "esbuild";
 import { prepareMkvDirectReuseOverlay } from "../scripts/lib/mkv-direct-reuse-overlay.mjs";
+import { compareSmallMkvPacketClocks } from "../scripts/lib/mkv-direct-packet-clocks.mjs";
 
 const read = file => readFile(new URL("../" + file, import.meta.url));
 const paths = ["workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts"];
@@ -61,4 +62,20 @@ test("write failures propagate without retaining a pending operation; unsafe siz
   await assert.rejects(write(0, new Uint8Array([2])), error => error.name === "QuotaExceededError");
   await write(0, new Uint8Array([2]));
   assert.equal(calls, 2);
+});
+
+test("packet clocks match in each track's decode order and expose shifts, missing clocks, or nonmonotonic DTS", () => {
+  const packet = (stream_index, pts_time, dts_time) => ({ stream_index, pts_time, dts_time });
+  const source = [packet(0, "0.021000"), packet(1, "0.000000", "0.000000"), packet(0, "0.105000", "0.021000"), packet(0, "0.063000", "0.063000")];
+  const output = [packet(1, "0.000000", "0.000000"), packet(0, "0.021000", "-0.021000"),
+    packet(0, "0.104917", "0.021000"), packet(0, "0.063250", "0.063000")];
+  const [video, audio] = compareSmallMkvPacketClocks(source, output);
+  assert.equal(video.maximumPtsErrorUs, 250); assert.equal(video.outputDtsMonotonic, true); assert.equal(video.comparableDts, 2);
+  assert.equal(audio.maximumPtsErrorUs, 0);
+  assert.throws(() => compareSmallMkvPacketClocks(source, output.slice(1)));
+  const bad = structuredClone(output); bad[3].dts_time = "-0.090000"; bad[3].pts_time = "0.069000";
+  assert.equal(compareSmallMkvPacketClocks(source, bad)[0].outputDtsMonotonic, false);
+  assert.equal(compareSmallMkvPacketClocks(source, bad)[0].maximumPtsErrorUs, 6000);
+  bad[3].pts_time = "N/A";
+  assert.throws(() => compareSmallMkvPacketClocks(source, bad));
 });
