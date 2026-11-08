@@ -31,10 +31,12 @@ import { compareSmallMkvPacketClocks } from "./lib/mkv-direct-packet-clocks.mjs"
 import { readMkvMp4TimelineBoxes } from "./lib/mkv-mp4-timeline-boxes.mjs";
 import { loadMkvEditListBuildArtifact } from "./lib/mkv-edit-list-build-artifact.mjs";
 import { validateCopiedAudioTiming } from "./lib/copied-audio-timing.mjs";
+import { mkvStagedReference, readMkvExactAacStagedReference } from "./lib/mkv-exact-aac-staged-reference.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
-const exactAacCandidate = process.argv[2] === "--edit-list-aac-candidate";
+const compareDestinations = process.argv[2] === "--edit-list-aac-destination-control";
+const exactAacCandidate = compareDestinations || process.argv[2] === "--edit-list-aac-candidate";
 const editListCandidate = exactAacCandidate || process.argv[2] === "--edit-list-candidate";
 assert.equal(process.argv.length, editListCandidate ? 5 : stagedDiagnostic ? 3 : 2);
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), profileId = "mkv-to-mp4";
@@ -46,12 +48,13 @@ const report = { schemaVersion: 1, status: "running", scope: "Small real MKV-to-
 if (stagedDiagnostic) report.scope = "One unchanged public staged-handle MKV-to-MP4 small-fixture diagnostic against retained private output hashes; not a rerun of the direct A/B or acceptance of shifted clocks.";
 if (editListCandidate) report.scope = "Unpublished MKV edit-list tools only, normal staged worker and same bounded HEVC/AAC fixture. Not original-file, speed or public acceptance.";
 if (exactAacCandidate) report.exactAacCandidate = true;
+if (compareDestinations) report.scope = "Matched small-fixture staged, direct-fresh and direct-reuse controls, one exact AAC-correct Wasm; not a sustained throughput or promotion test.";
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env) => execute(file, args, { cwd: root, env, windowsHide: true, timeout: 90000, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env)).stdout);
@@ -93,7 +96,7 @@ const port = async () => {
 };
 
 async function arm(mode, fixture, fixtureRuntime, baseline) {
-  const candidate = mode === "edit-list", staged = mode === "staged" || candidate;
+  const candidate = Boolean(baseline.candidate), staged = mode === "staged" || mode === "edit-list";
   const result = { mode, status: "running", requests: 0, workerResponses: 0, directEngineRequests: { module: 0, wasm: 0 }, forbiddenRequests: [], cases: [], failures: [] };
   if (candidate) result.engineResponses = { module: 0, wasm: 0 };
   report.arms.push(result);
@@ -259,7 +262,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
           sourceVideoAverageRate: inStreams[0].avg_frame_rate, durationDeltaSeconds: Math.abs(Number(output.format.duration) - Number(baseline.probe.format.duration)),
           sourceHeader: { startSeconds: Number(baseline.probe.format.start_time), durationSeconds: Number(baseline.probe.format.duration) },
           outputHeader: { startSeconds: Number(output.format.start_time), durationSeconds: Number(output.format.duration) } };
-        if (staged) row.validation.serializedTimeline = await readMkvMp4TimelineBoxes(binding.file);
+        if (staged || candidate) row.validation.serializedTimeline = await readMkvMp4TimelineBoxes(binding.file);
         if (candidate) {
           const outputPcm = await decodedPcm(binding.file, env), outputPackets = await aacPackets(binding.file, env);
           row.validation.aac = { sourcePcm: baseline.aac.pcm, outputPcm, completeDecodedPcmEqual: baseline.aac.pcm === outputPcm,
@@ -294,6 +297,11 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
         if (candidate) row.validation.candidateGate = { passed: row.validation.timingGate.passed &&
           row.validation.aac.completeDecodedPcmEqual && Boolean(row.validation.aac.packetTimingAndTrim) &&
           row.validation.serializedTimeline.tracks.every(track => track.editListPresent) };
+        if (compareDestinations) {
+          assert.equal(row.validation.outputSha256, baseline.reference.outputSha256, "Destination must not change MP4 bytes");
+          assert.equal(row.metrics.outputBytes, baseline.reference.outputBytes);
+          assert.equal(row.metrics.peakScratchBytes ?? 0, staged ? row.metrics.outputBytes : 0);
+        }
         assert.equal(row.metrics.activeWorkerCount, 1);
         // The native bridge counts both its shared Wasm backing and the 4-byte
         // cancellation flag. Neither the direct writer nor the reuse buffer adds SAB.
@@ -306,7 +314,9 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
       assert.deepEqual(await entries(), []); row.outputRemoved = true;
     }
     await job();
-    if (mode === "reuse" || (candidate && result.cases[0].validation.candidateGate.passed)) {
+    if (compareDestinations) {
+      if (result.cases[0].validation.candidateGate.passed) { await open(true); await job(true); await open(); await job(); }
+    } else if (mode === "reuse" || (candidate && result.cases[0].validation.candidateGate.passed)) {
       if (exactAacCandidate) { await open(); await job(false, true); }
       await open(true); await job(true); await open(); await job();
     }
@@ -317,11 +327,11 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
     assert.ok(result.directEngineRequests.module > 0 && result.directEngineRequests.wasm > 0);
     if (candidate) {
       assert.deepEqual(result.engineResponses, result.directEngineRequests);
-      assert.equal(result.cases.length, exactAacCandidate ? 4 : 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
+      assert.equal(result.cases.length, exactAacCandidate && !compareDestinations ? 4 : 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
       const successes = result.cases.filter(row => !row.fault && !row.cancel);
       assert.ok(successes.every(row => row.validation.candidateGate.passed));
       if (exactAacCandidate) assert.equal(successes[0].validation.outputSha256, successes[1].validation.outputSha256, "Recovery changed a deterministic output");
-      result.status = "passed-unpublished-small-staged-clock-control";
+      result.status = compareDestinations ? "passed-small-exact-aac-destination-arm" : "passed-unpublished-small-staged-clock-control";
     } else result.status = staged ? "completed-staged-timeline-diagnostic-not-acceptance" : "passed-private-small-direct-control";
   } catch (error) { result.status = "failed-not-acceptance"; result.failures.push(String(error.stack ?? error).slice(0, 2048)); }
   finally {
@@ -372,6 +382,7 @@ try {
   if (editListCandidate) sourceFiles.push("scripts/lib/mkv-edit-list-build-artifact.mjs", "scripts/lib/copied-audio-timing.mjs",
     "media/ffmpeg/mkv-edit-list-build-recipe.mjs", "media/ffmpeg/reproduce-nondocker.sh");
   if (exactAacCandidate) sourceFiles.push("media/ffmpeg/mkv-exact-aac-timeline-candidate.mjs", "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch");
+  if (compareDestinations) sourceFiles.push("scripts/lib/mkv-exact-aac-staged-reference.mjs", mkvStagedReference.file);
   report.sourcePins = Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, await hashFile(path.join(root, file))])));
   report.executedHead = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true })).stdout.trim();
   fixtureRuntime = await createOwnedRuntimeScratch("mkv-direct-reuse-fixture-");
@@ -411,12 +422,28 @@ try {
         assert.equal(report.fixture.packetHashes, predecessor.fixture.packetHashes);
         report.retainedTrimFailure = { file, sha256 };
       }
-      await arm("edit-list", fixture, fixtureRuntime, baseline);
+      if (compareDestinations) {
+        baseline.reference = readMkvExactAacStagedReference(await readFile(path.join(root, mkvStagedReference.file)), candidate.proof, report.fixture);
+        report.stagedReference = baseline.reference;
+        for (const mode of ["edit-list", "fresh", "reuse"]) {
+          await arm(mode, fixture, fixtureRuntime, baseline);
+          const outcome = report.arms.at(-1);
+          assert.equal(outcome.ownedRuntimeRemoved, true, "Previous browser ownership must be resolved before a new arm");
+          if (mode === "edit-list") assert.equal(outcome.status, "passed-small-exact-aac-destination-arm");
+        }
+      } else await arm("edit-list", fixture, fixtureRuntime, baseline);
     } else await arm("staged", fixture, fixtureRuntime, baseline);
   } else for (const mode of ["fresh", "reuse"]) await arm(mode, fixture, fixtureRuntime, baseline);
   assert.equal(await hashFile(fixture), report.fixture.sha256);
   assertInstalledChromePinsEqual(await inspectInstalledChromePin(), baseline.browser);
-  if (editListCandidate) {
+  if (compareDestinations) {
+    assert.deepEqual(report.arms.map(a => a.mode), ["edit-list", "fresh", "reuse"]);
+    assert.ok(report.arms.every(a => a.status === "passed-small-exact-aac-destination-arm"));
+    const [, fresh, reuse] = report.arms;
+    for (const key of ["commonPrivateWorkerSha256", "commonPrivateWriterSha256", "releaseWorkerSha256"]) assert.equal(fresh.overlay[key], reuse.overlay[key]);
+    assert.notEqual(fresh.overlay.mediaArmSha256, reuse.overlay.mediaArmSha256);
+    report.status = "passed-small-exact-aac-destination-control-not-speed-or-public-acceptance";
+  } else if (editListCandidate) {
     assert.equal(report.arms[0].status, "passed-unpublished-small-staged-clock-control");
     report.status = "passed-unpublished-small-staged-clock-control-not-public-acceptance";
   } else if (stagedDiagnostic) {

@@ -3,9 +3,19 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
 import test from "node:test";
+import { mkvStagedReference, readMkvExactAacStagedReference } from "../scripts/lib/mkv-exact-aac-staged-reference.mjs";
 
 const read = name => readFile(new URL(`../${name}`, import.meta.url));
 const sha = value => createHash("sha256").update(value).digest("hex");
+
+test("Destination comparison refuses changed evidence, tools or source audio", async () => {
+  const bytes = await read(mkvStagedReference.file), { candidateBuild, fixture } = JSON.parse(bytes);
+  assert.deepEqual(readMkvExactAacStagedReference(bytes, candidateBuild, fixture), { ...mkvStagedReference,
+    outputSha256: "6a45619c0e9af37a2ff9577b0a520b45d322cdccb8b4aec4f3fdfc361776becf", outputBytes: 5948960 });
+  assert.throws(() => readMkvExactAacStagedReference(Buffer.concat([bytes, Buffer.from("\n")]), candidateBuild, fixture));
+  assert.throws(() => readMkvExactAacStagedReference(bytes, { ...candidateBuild, runId: "12345" }, fixture));
+  assert.throws(() => readMkvExactAacStagedReference(bytes, candidateBuild, { ...fixture, aac: null }));
+});
 
 test("Real MKV edit-list output restores exact clocks but fails source-declared AAC trim and PCM", async () => {
   const bytes = await read("evidence/2026-11-08T00-57-09-678Z-mkv-edit-list-candidate.json");
