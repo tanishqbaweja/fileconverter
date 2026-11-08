@@ -34,7 +34,8 @@ import { validateCopiedAudioTiming } from "./lib/copied-audio-timing.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
-const editListCandidate = process.argv[2] === "--edit-list-candidate";
+const exactAacCandidate = process.argv[2] === "--edit-list-aac-candidate";
+const editListCandidate = exactAacCandidate || process.argv[2] === "--edit-list-candidate";
 assert.equal(process.argv.length, editListCandidate ? 5 : stagedDiagnostic ? 3 : 2);
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), profileId = "mkv-to-mp4";
 const syntheticName = "within-test-synthetic-hevc-aac";
@@ -44,12 +45,13 @@ const report = { schemaVersion: 1, status: "running", scope: "Small real MKV-to-
   originalMediaSelected: false, productionFilesReplaced: false, speedGainProven: false, publicAcceptance: false, arms: [], failures: [] };
 if (stagedDiagnostic) report.scope = "One unchanged public staged-handle MKV-to-MP4 small-fixture diagnostic against retained private output hashes; not a rerun of the direct A/B or acceptance of shifted clocks.";
 if (editListCandidate) report.scope = "Unpublished MKV edit-list tools only, normal staged worker and same bounded HEVC/AAC fixture. Not original-file, speed or public acceptance.";
+if (exactAacCandidate) report.exactAacCandidate = true;
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env) => execute(file, args, { cwd: root, env, windowsHide: true, timeout: 90000, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env)).stdout);
@@ -337,13 +339,14 @@ try {
     "workers/media-remux.ts", "workers/conversion.worker.ts", "workers/random-access-destination.ts", "public/engines/remux/within-direct.mjs", "public/engines/remux/within-direct.wasm"];
   if (editListCandidate) sourceFiles.push("scripts/lib/mkv-edit-list-build-artifact.mjs", "scripts/lib/copied-audio-timing.mjs",
     "media/ffmpeg/mkv-edit-list-build-recipe.mjs", "media/ffmpeg/reproduce-nondocker.sh");
+  if (exactAacCandidate) sourceFiles.push("media/ffmpeg/mkv-exact-aac-timeline-candidate.mjs", "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch");
   report.sourcePins = Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, await hashFile(path.join(root, file))])));
   report.executedHead = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true })).stdout.trim();
   fixtureRuntime = await createOwnedRuntimeScratch("mkv-direct-reuse-fixture-");
   let candidate;
   if (editListCandidate) {
     toolRuntime = await createOwnedRuntimeScratch("mkv-edit-list-tool-download-");
-    candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime);
+    candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate);
     report.candidateBuild = candidate.proof;
   }
   const fixture = path.join(fixtureRuntime.directory, `${syntheticName}.mkv`);

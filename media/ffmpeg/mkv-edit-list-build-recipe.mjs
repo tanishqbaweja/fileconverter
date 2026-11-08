@@ -4,7 +4,8 @@ import { createHash } from "node:crypto";
 export const baseRecipeSha256 = "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e";
 export const sha256 = bytes => createHash("sha256").update(bytes).digest("hex");
 
-export function deriveMkvEditListBuildRecipe(bytes) {
+export function deriveMkvEditListBuildRecipe(bytes, { exactAac = false } = {}) {
+  assert.equal(typeof exactAac, "boolean");
   assert.equal(sha256(bytes), baseRecipeSha256, "Exact released reproduction recipe required");
   const source = bytes.toString("utf8");
   const directLink = `  WITHIN_BUILD_CORE_FILTER=within-direct ./build-remux.sh\n`;
@@ -23,11 +24,15 @@ export function deriveMkvEditListBuildRecipe(bytes) {
       directLink + '  cp -- "${BUILD_ROOT}/ffmpeg/COPYING.LGPLv3" "${OUTPUT_ROOT}/LICENSE.ffmpeg-lgpl3"\n' + nextCore],
     [source.slice(comparison), "\nprintf 'Unpublished MKV timeline tool compiled; no public reproduction or browser acceptance claim.\\n'\n"],
   ];
+  if (exactAac) {
+    const link = '    WITHIN_MP4_COPY_ONLY=1 ./build-libraries.sh\n';
+    edits.push([link, '    node "${SCRIPT_DIR}/build-mkv-edit-list-candidate.mjs" --prepare-mov "${BUILD_ROOT}" "${OUTPUT_ROOT}"\n' + link]);
+  }
   const replace = (text, [from, to]) => {
     assert.equal(text.split(from).length, 2, "Expected exactly one reviewed build-recipe anchor");
     return text.replace(from, () => to);
   };
   const generated = edits.reduce(replace, source);
   assert.equal(edits.toReversed().reduce((text, [from, to]) => replace(text, [to, from]), generated), source);
-  return { generated, generatedSha256: sha256(generated), baseRecipeSha256, exactReversal: true };
+  return { generated, generatedSha256: sha256(generated), baseRecipeSha256, exactReversal: true, ...(exactAac ? { exactAac: true } : {}) };
 }

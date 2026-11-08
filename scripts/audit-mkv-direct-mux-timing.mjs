@@ -9,6 +9,7 @@ import path from "node:path";
 import { promisify } from "node:util";
 import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { directWrapperSha256, makeMkvEditListTimelineCandidate } from "../media/ffmpeg/mkv-edit-list-timeline-candidate.mjs";
+import { makeMkvExactAacTimelineCandidate, makeMkvExactAacMovSource } from "../media/ffmpeg/mkv-exact-aac-timeline-candidate.mjs";
 
 const root = path.resolve(import.meta.dirname, ".."), repo = "media/ffmpeg";
 const digest = bytes => createHash("sha256").update(bytes).digest("hex");
@@ -46,7 +47,8 @@ async function upstream(name, expectedSha256) {
   return { url, bytes, sha256: expectedSha256, source: source.toString("utf8") };
 }
 
-assert.equal(process.argv.length, 2);
+const exactAac = process.argv[2] === "--exact-aac";
+assert.equal(process.argv.length, exactAac ? 3 : 2);
 const manifest = JSON.parse(await read("public/engines/remux/build-manifest.json"));
 const shippedSource = await read(`${repo}/within_remux.c`), originalSha256 = digest(shippedSource);
 assert.equal(originalSha256, manifest.currentWrapperSourceSha256);
@@ -104,8 +106,10 @@ assert.match(mux.source, /pkt->dts \+= offset;\s+if \(pkt->pts != AV_NOPTS_VALUE
 const core = "public/engines/remux/within-direct.wasm", binarySha256 = digest(await read(core));
 assert.equal(binarySha256, "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0");
 const sources = [mov, mux].map(({ url, bytes, sha256 }) => ({ url, bytes, sha256 }));
+const exactAacCandidate = exactAac ? { wrapper: makeMkvExactAacTimelineCandidate(source).proof,
+  mov: makeMkvExactAacMovSource(mov.source, await read(`${repo}/patches/mov-fragmented-aac-exact-priming.patch`)).proof } : undefined;
 console.log(JSON.stringify({ scope: "Source reconstruction and upstream cause, no media conversion or new native build",
   revision: "n8.1.2", originalSha256, recipeSha256: digest(recipe), stages, finalWrapperSha256: digest(source), binarySha256, sources,
   directPolicy: { nativeProfile: 1, flags: ["frag_keyframe", "empty_moov", "default_base_moof"],
     fallbackHevcReorderFrames: 2, predictedFirstDtsTicksAt24FpsAnd1kHz: -83, predictedCommonShiftUs: 83000,
-    earlyMovNoEditMayMoveFirstSampleToZero: true }, candidate: candidate.proof, ownedScratchRemoved: cleaned }));
+    earlyMovNoEditMayMoveFirstSampleToZero: true }, candidate: candidate.proof, exactAacCandidate, ownedScratchRemoved: cleaned }));

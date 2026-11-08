@@ -21,6 +21,17 @@ test("The unpublished recipe reverses exactly and edits the direct-only link, no
   assert.throws(() => deriveMkvEditListBuildRecipe(Buffer.concat([bytes, Buffer.from("# changed\n")])), /Exact released/);
 });
 
+test("Exact AAC adds one direct-only precompile source hook and keeps the original candidate intact", async () => {
+  const bytes = await read("media/ffmpeg/reproduce-nondocker.sh");
+  const original = deriveMkvEditListBuildRecipe(bytes), exact = deriveMkvEditListBuildRecipe(bytes, { exactAac: true });
+  const hook = '    node "${SCRIPT_DIR}/build-mkv-edit-list-candidate.mjs" --prepare-mov "${BUILD_ROOT}" "${OUTPUT_ROOT}"\n';
+  assert.equal(exact.generated.split(hook).length, 2);
+  assert.ok(exact.generated.includes(hook + '    WITHIN_MP4_COPY_ONLY=1 ./build-libraries.sh\n'));
+  assert.equal(exact.generated.replace(hook, ""), original.generated);
+  assert.equal(exact.exactReversal, true);
+  assert.equal(exact.exactAac, true);
+});
+
 test("Candidate handoff rejects an unfinished run, another ref, expiry or archive-byte drift", () => {
   const runId = "1234", head = "c".repeat(40), archive = Buffer.from("test archive");
   const run = { id: 1234, workflow_id: 345162646, head_sha: head, head_branch: "codex/mkv-edit-list-native-20261108",
@@ -33,6 +44,10 @@ test("Candidate handoff rejects an unfinished run, another ref, expiry or archiv
   assert.throws(() => checkMkvEditListArchive({ run: { ...run, head_branch: "main" }, artifact, archive }, runId, head));
   assert.throws(() => checkMkvEditListArchive({ run, artifact: { ...artifact, expired: true }, archive }, runId, head));
   assert.throws(() => checkMkvEditListArchive({ run, artifact, archive: Buffer.alloc(archive.length) }, runId, head));
+  assert.throws(() => checkMkvEditListArchive({ run, artifact, archive }, runId, head, true));
+  const exactRun = { ...run, head_branch: "codex/mkv-edit-list-aac-native-20261108" };
+  const exactArtifact = { ...artifact, workflow_run: { ...artifact.workflow_run, head_branch: exactRun.head_branch } };
+  checkMkvEditListArchive({ run: exactRun, artifact: exactArtifact, archive }, runId, head, true);
 });
 
 test("The hosted template is isolated, preserves the release, and never runs media conversion", async () => {

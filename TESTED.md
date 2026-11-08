@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-08 MKV → MP4 exact-AAC follow-up (source checks): reconstructed all
+six release-wrapper patches, then verified the exact edit-list parent and the
+sample-precise candidate wrapper (`eff90a4908b5fe0d37d56d1d142d823d1c389408e38a8fa415645344a389550c`).
+The existing pinned MOV patch reverses byte-for-byte and yields
+`f927c6e1919a17186cade3b67565f4f418c3247b464e92f4f0a9eaeafdac1d6e`.
+Only first-packet AAC padding metadata is carried to the muxer. No packet
+clock assignment, new packet buffer, compiler flag or released engine was
+changed. Both isolated recipes pass `bash -n`; 25 focused tests pass. The
+source audit removed its scratch and did not run media conversion.
+
 2026-11-08 MKV → MP4 edit-list build preparation: the unpublished
 `within-direct` recipe reverses to the byte-exact release build script and
 passes `bash -n`. The focused build, timeline and historical-workflow tests
