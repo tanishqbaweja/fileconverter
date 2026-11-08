@@ -1,0 +1,62 @@
+# Install at the already registered dispatch path on an isolated ref only.
+name: Build unpublished MKV MP4 edit-list candidate without Docker
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: unpublished-mkv-edit-list
+  cancel-in-progress: false
+jobs:
+  mkv-edit-list:
+    if: github.ref == 'refs/heads/codex/mkv-edit-list-native-20261108'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: 24.7.0
+      - name: Own repository-local runtime scratch
+        run: node scripts/ci-owned-runtime.mjs prepare
+      - name: Check exact workflow, native derivation and release preimage
+        shell: bash
+        run: |
+          cmp --silent media/ffmpeg/mkv-edit-list-nondocker.yml .github/workflows/reproduce-ffmpeg-nondocker.yml
+          node --test --test-reporter=tap tests/mkv-edit-list-build-recipe.test.mjs
+          node --input-type=module -e 'import {readFileSync} from "node:fs"; import {deriveMkvEditListBuildRecipe} from "./media/ffmpeg/mkv-edit-list-build-recipe.mjs"; process.stdout.write(deriveMkvEditListBuildRecipe(readFileSync("media/ffmpeg/reproduce-nondocker.sh")).generated)' | bash -n
+      - name: Install build prerequisites
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends autoconf automake ca-certificates curl libtool make patch pkg-config xz-utils
+      - name: Activate pinned Emscripten SDK without Docker
+        run: |
+          sdk="$TMPDIR/emsdk"
+          test ! -e "$sdk" && test ! -L "$sdk"
+          git clone --filter=blob:none --no-checkout https://github.com/emscripten-core/emsdk.git "$sdk"
+          git -C "$sdk" checkout 224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f
+          test "$(git -C "$sdk" rev-parse HEAD)" = 224ec5f9f2f72f09f9ce0e26d66bae7dbd8b692f
+          "$sdk/emsdk" install 6.0.4
+          "$sdk/emsdk" activate 6.0.4
+      - name: Compile and seal only the unpublished direct MP4 candidate
+        id: compile
+        shell: bash
+        run: |
+          source "$TMPDIR/emsdk/emsdk_env.sh"
+          node media/ffmpeg/build-mkv-edit-list-candidate.mjs
+          git diff --exit-code HEAD -- public/engines
+          printf 'artifacts=%s/mkv-timeline-artifacts\n' "$(dirname "$WITHIN_CI_RUNTIME_OWNER")" >> "$GITHUB_OUTPUT"
+      - name: Retain tools, wrapper source and proof for one day
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: unpublished-mkv-edit-list-${{ github.run_id }}
+          path: ${{ steps.compile.outputs.artifacts }}/
+          if-no-files-found: error
+          retention-days: 1
+      - name: Remove owned SDK, tools and runtime scratch
+        if: always()
+        env:
+          NODE_DISABLE_COMPILE_CACHE: 1
+        run: node scripts/ci-owned-runtime.mjs cleanup

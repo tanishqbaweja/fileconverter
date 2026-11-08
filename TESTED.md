@@ -1,5 +1,12 @@
 # Tested conversion ledger
 
+2026-11-08 MKV → MP4 edit-list build preparation: the unpublished
+`within-direct` recipe reverses to the byte-exact release build script and
+passes `bash -n`. The focused build, timeline and historical-workflow tests
+passed 14/14. The hosted job is restricted to an isolated ref and would retain
+only the bounded tools, source and proof for one day. These local checks did
+not run the compiler, open Chrome, or convert media. Published assets unchanged.
+
 2026-11-08 current public staged MKV → MP4 **fails exact timeline preservation**
 on the same synthetic HEVC/AAC packet payloads. The untouched production worker
 staged and removed the real 5,948,888-byte output; it was byte-identical to
