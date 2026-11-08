@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-11-08 M-03/P-08: sustained 194.5 MB browser comparison passed all three
+arms with three genuine byte-identical outputs per arm, exact AAC trim/PCM,
+12,050 matching packet payloads, complete decode, mid-write cancellation,
+write-failure recovery, and disk/process cleanup. Reuse median 1.652 s vs
+2.291 s staged (27.9% lower elapsed time here); 166.594 vs 167.797 MiB peak,
+no staging file. Fresh median 1.686 s, 197.336 MiB peak. Select reuse for
+the next protected-file scale qualification, not for publication yet. Expand
+timing/track coverage and repeat in clean sessions; no extrapolation to 10 GB.
+The original was not selected by this fixture and rehashed unchanged. See
+`evidence/2026-11-08T13-13-11-767Z-mkv-exact-aac-sustained.json`.
+
 2026-11-08 M-03/P-08: matched staged, direct-fresh and direct-reuse small
 arms passed on the same AAC-correct Wasm. All six successful outputs matched
 the staged reference byte-for-byte and all three arms recovered after a

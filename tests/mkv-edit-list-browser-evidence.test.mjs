@@ -8,6 +8,55 @@ import { mkvStagedReference, readMkvExactAacStagedReference } from "../scripts/l
 const read = name => readFile(new URL(`../${name}`, import.meta.url));
 const sha = value => createHash("sha256").update(value).digest("hex");
 
+test("Sustained three-way MKV evidence binds timings and safety to nine identical independently validated MP4 outputs", async () => {
+  const bytes = await read("evidence/2026-11-08T13-13-11-767Z-mkv-exact-aac-sustained.json");
+  assert.equal(sha(bytes), "82baa7d9f3543fc653e162ef73d012a6cdc9cf2d461fb6672f43a39de4d28080");
+  const report = JSON.parse(bytes), [staged, fresh, reuse] = report.arms, validated = staged.cases[0].validation;
+  assert.equal(report.status, "passed-sustained-exact-aac-destination-comparison-not-public-acceptance");
+  assert.deepEqual(report.arms.map(a => a.mode), ["edit-list", "fresh", "reuse"]);
+  assert.equal(report.fixture.bytes, 194492056);
+  assert.equal(report.sustainedReference.outputBytes, 194532754);
+  assert.equal(report.sustainedReference.outputSha256, "39d1ee3b61ba22ca0de14e0db1f24e4469046b3bbf32d4804deafe1c7ef9e7b4");
+  assert.equal(validated.video.packets, 4080);
+  assert.equal(validated.aac.packets, 7970);
+  assert.ok(validated.video.packetBytesIdentical && validated.aac.packetBytesIdentical && validated.fullDecode);
+  assert.equal(validated.video.maximumPtsDeltaUs, 0);
+  assert.equal(validated.video.maximumDtsDeltaUs, 0);
+  assert.ok(validated.aac.maximumPtsErrorSeconds <= 0.001 && validated.aac.maximumDtsErrorSeconds <= 0.001 && validated.durationDeltaSeconds < 0.05);
+  assert.equal(validated.aac.initialSkipSamples, 1024);
+  assert.equal(validated.aac.outputPcm, validated.aac.sourcePcm);
+  assert.deepEqual(report.arms.map(a => a.memory.incrementalPrivateMiB), [167.796875, 197.3359375, 166.59375]);
+  assert.equal(report.arms.reduce((sum, a) => sum + a.memory.validSamples, 0), 680);
+  assert.equal(report.arms.reduce((sum, a) => sum + a.browserCleanup.observedPids.length, 0), 105);
+  const median = [];
+  for (const arm of [staged, fresh, reuse]) {
+    assert.deepEqual(arm.cases.map(c => c.state), ["complete", "cancelled", "error", "complete", "complete"]);
+    const successes = arm.cases.filter(c => c.state === "complete");
+    median.push(Math.round(successes.map(c => c.metrics.elapsedMs).sort((a, b) => a - b)[1]));
+    for (const row of successes) {
+      assert.equal(row.validation.outputSha256, report.sustainedReference.outputSha256);
+      assert.equal(row.metrics.outputBytes, report.sustainedReference.outputBytes);
+      assert.equal(row.metrics.peakScratchBytes ?? 0, arm === staged ? report.sustainedReference.outputBytes : 0);
+      assert.ok(row.metrics.peakQueuedBytes <= 2 ** 20 && row.metrics.peakPendingOperations === 1);
+    }
+    assert.ok(arm.cases[1].cancellationBefore.outputBytes >= 2 * 2 ** 20);
+    assert.ok(arm.cases[1].cancellationBefore.outputBytes < report.sustainedReference.outputBytes);
+    assert.ok(arm.cases[1].onlyEmptyPlaceholders && arm.cases[2].onlyEmptyPlaceholders);
+    assert.ok(arm.cases.every(row => row.outputRemoved));
+    assert.equal(arm.memory.unavailableSamples, 0);
+    assert.equal(arm.browserCleanup.status, "owned-observed-pids-absent");
+    assert.ok(arm.ownedRuntimeRemoved && arm.serverCleanup.ownedRootAbsent);
+    assert.deepEqual(arm.forbiddenRequests, []);
+    const archive = await read(arm.archive.file);
+    assert.equal(sha(archive), arm.archive.sha256);
+    assert.equal(sha(gunzipSync(archive, { maxOutputLength: 2 * 1024 ** 2 })), arm.archive.decodedSha256);
+  }
+  assert.deepEqual(median, [2291, 1686, 1652]);
+  assert.deepEqual(report.originalBefore, report.originalAfter);
+  assert.ok(report.fixtureRuntimeRemoved && report.toolDownloadRemoved);
+  for (const key of ["originalMediaSelected", "publicAcceptance", "headed"]) assert.equal(report[key], false);
+});
+
 test("Destination comparison refuses changed evidence, tools or source audio", async () => {
   const bytes = await read(mkvStagedReference.file), { candidateBuild, fixture } = JSON.parse(bytes);
   assert.deepEqual(readMkvExactAacStagedReference(bytes, candidateBuild, fixture), { ...mkvStagedReference,

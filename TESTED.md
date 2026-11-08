@@ -1,5 +1,26 @@
 # Tested conversion ledger
 
+2026-11-08 **194.5 MB MKV → MP4 sustained destination comparison**: the same
+authenticated AAC-correct Wasm and generated 194,492,056-byte HEVC/AAC source
+produced nine byte-identical 194,532,754-byte outputs. Full native validation
+of the reference passed all 4,080 video and 7,970 AAC payloads, exact video
+PTS and comparable DTS, ≤0.333 ms audio clocks, exact 1,024-sample AAC trim
+and complete decoded audio, both MP4 edits, 5.333 ms duration delta, and full
+decode. Each later output was independently hashed in full on its bound disk
+backing and matched that validated reference.
+
+Median of three browser job times: staged 2.291 s, direct-fresh 1.686 s,
+direct-reuse 1.652 s (27.9% less elapsed time than staged for this fixture).
+Complete Chrome peaks above blank: 167.797, 197.336 and 166.594 MiB; cleanup
+60.102, 66.215 and 73.340 MiB above idle. All 680 active samples were valid.
+The staged run used 194,532,754 bytes of staging; direct arms used none.
+All three cancelled after 3.1–16.2 MB of observed destination output, passed
+injected write-failure cleanup, and recovered. All 105 owned Chrome processes,
+servers, scratch, generated source, downloads and output files were removed.
+Protected `test.mkv` rehashed unchanged. Headless only, one fixture and one
+browser session per arm; results are not release or multi-gigabyte acceptance.
+Exact timings and native journals: `evidence/2026-11-08T13-13-11-767Z-mkv-exact-aac-sustained.json`.
+
 2026-11-08 MKV → MP4 exact-AAC destination comparison: **all three small
 headless arms passed** with the same authenticated Wasm, packet payloads,
 decoded audio and 1,024-sample trim. Six complete outputs were byte-identical
