@@ -72,6 +72,15 @@ save-dialog/external-drive coverage remains unverified. No route is promoted.
 See `evidence/2026-11-07T02-15-56-367Z-docx-html-qualification.json` and
 `evidence/2026-11-07T02-22-59-206Z-docx-html-qualification.json`.
 
+The private route also preserves standard horizontal and vertical table merges.
+It keeps only active merge metadata and patches a five-byte row-span field in
+place if the table header has already been written; it does not stage a row or
+table. Vertical continuations must have matching columns and no visible content.
+Legacy horizontal merges, cell sizing, and exact Word table layout are not
+reproduced. The small headless control verified the patch and subsequent writes
+but is not a full layout, scaling, or public qualification result. See
+`evidence/2026-11-07-docx-vertical-span-verification.json`.
+
 The route's recorded memory evidence is from Chrome tests, not a live memory
 measurement or certification of every current browser/version. The installed
 Edge156.0.4314.58 refresh independently validates five representative small-file

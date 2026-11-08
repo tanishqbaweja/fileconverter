@@ -226,3 +226,45 @@ test("native horizontal-span browser outputs were genuine; PID reuse explains th
   assert.equal(followup.teardown.ownedScratchRemoved, false); assert.equal(report.ownedRuntimeRemoved, undefined);
   assert.deepEqual(followup.protectedOriginalFollowup, { ...report.protectedOriginalBefore, matchesBefore: true });
 });
+
+test("native vertical merge receipt authenticates the flushed header patch, later output, full-tree memory and this run's cleanup", async () => {
+  const read = file => readFile(new URL("../" + file, import.meta.url));
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const proof = JSON.parse(await read("evidence/2026-11-07-docx-vertical-span-verification.json"));
+  const receipt = await read(proof.browserReceipt);
+  assert.equal(sha(receipt), proof.browserReceiptSha256);
+  const report = JSON.parse(receipt);
+  assert.equal(report.executedHead, proof.executedHead);
+  assert.equal(report.status, "passed-private-docx-vertical-span-patch-and-recovery-not-scaling-or-promotion");
+  assert.deepEqual(report.failures, []);
+  assert.deepEqual(report.tableFixture.verticalMergeRoles, ["restart", "continue"]);
+  assert.ok(report.tableFixture.anchorContentBytes > 2 * 65536);
+  assert.deepEqual(report.validatorControls.map(c => c.exitCode), [0, 1, 1, 1, 1, 1, 1]);
+  const done = report.cases.filter(c => c.kind === "complete");
+  assert.equal(done.length, 4);
+  for (const row of done) {
+    assert.equal(row.outputBytes, 216842); assert.equal(row.validated.sha256, proof.output.sha256);
+    assert.deepEqual(row.validated.rowSpans, [2]); assert.deepEqual(row.validated.columnSpans, [2]);
+    assert.equal(row.validated.rowSpanDigitsByteOffset, 564);
+    assert.equal(row.validated.allTextAndPostPatchTailVerified, true); assert.equal(row.validated.nestedStructureVerified, true);
+    assert.equal(row.destinationObservation.actualFileHandle, true);
+    assert.equal(row.metrics.maxWriteChunkBytes, 65536); assert.equal(row.metrics.peakPendingOperations, 1);
+    assert.equal(row.metrics.pendingOperations, 0); assert.ok(row.smallRunMemory.cleanupDeltaFromLoadedMiB <= 96);
+  }
+  assert.equal(report.cases.find(row => row.kind === "payload-cancel").armedMetrics.outputBytes, 1835008);
+  for (const kind of ["payload-cancel", "write-error"]) assert.deepEqual(report.cases.find(row => row.kind === kind).leftovers, []);
+  const packed = await read(report.nativeArchive.file), raw = gunzipSync(packed, { maxOutputLength: 4194304 });
+  assert.equal(sha(packed), report.nativeArchive.sha256); assert.equal(sha(raw), report.nativeArchive.decodedSha256);
+  const native = JSON.parse(raw), window = native.filter(r => Date.parse(r.timestamp) >= Date.parse(report.memory.windowStart)
+    && Date.parse(r.timestamp) <= Date.parse(report.memory.windowEnd));
+  assert.equal(window.length, 443); assert.equal(window.filter(r => r.privateBytes === null).length, 0);
+  assert.ok(window.every(r => r.processes.reduce((sum, p) => sum + p.privateBytes, 0) === r.privateBytes));
+  assert.equal((Math.max(...window.map(r => r.privateBytes)) - report.blankBaseline.privateBytes) / 1048576, 77.80078125);
+  assert.deepEqual(report.forbiddenRequests, []);
+  assert.equal(report.browserCleanup.status, "owned-observed-pids-absent"); assert.equal(report.browserCleanup.observedPids.length, 41);
+  assert.equal(report.serverCleanup.ownedRootAbsent, true); assert.equal(report.ownedRuntimeRemoved, true);
+  assert.deepEqual(report.protectedOriginalBefore, report.protectedOriginalAfter);
+  assert.equal(report.protectedOriginalAfter.sha256, proof.cleanup.protectedOriginalSha256Unchanged);
+  assert.equal(report.headed, false); assert.equal(report.nativePickerVerified, false); assert.equal(report.publicPromotion, false);
+  assert.equal(proof.priorHorizontalFailureSuperseded, false);
+});

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "scope": "Private two-dimensional Word table merge, flushed row-span patch, and append recovery in the production browser pipeline. Not route publication, speed, large-file, or native-picker qualification.",
+  "executedHead": "99bf66bcda12b200d5f43c5e51bf139452e0ac2f",
+  "browserReceipt": "evidence/2026-11-07T20-12-27-732Z-docx-html-qualification.json",
+  "browserReceiptSha256": "2f8352bac9afa3c3a454b7ce62cba10bfe17b3505243731f5bbe89eca31eb253",
+  "fixture": { "bytes": 37585, "sha256": "c8be34d07871a9012f1a7cca7de37fa97c1373ff90862d8f00ccdb0d786fb1ab", "anchorContentBytes": 144000, "verticalRoles": ["restart", "continue"] },
+  "output": { "successfulJobsIncludingRecovery": 4, "bytes": 216842, "sha256": "c53cbfa26351d36e8cc1d38c98be28feb7fb3b02e3fed904d1be4a1cebaa9291", "columnSpan": 2, "rowSpan": 2, "rowSpanDigitsByteOffset": 564, "allTextAndPostPatchTailVerified": true },
+  "memory": { "incrementalPrivateMiB": 77.80078125, "validSamples": 443, "unavailableSamples": 0, "maximumPerRunCleanupAboveIdleMiB": 27.18359375, "unchangedLimitsMiB": { "peakAboveBlank": 250, "cleanupAboveIdle": 96 } },
+  "observed": { "headed": false, "browserServicesDisabled": false, "requests": 35, "forbiddenRequests": 0, "cancelAfterOutputBytes": 1835008, "writeErrorCleaned": true, "opfsBackedFileSystemHandle": true },
+  "cleanup": { "convertedOutputsRemoved": true, "observedChromePidsAbsent": 41, "ownedServerAbsent": true, "ownedRuntimeRemoved": true, "priorHorizontalRunScratchStillPresent": true, "protectedOriginalBytes": 2958573265, "protectedOriginalSha256Unchanged": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" },
+  "regression": {
+    "initialPortable": { "files": 724, "passed": 2676, "failed": 1, "skipped": 0, "durationMs": 112913.7049, "failedFile": "tests/docx-destination-resources.test.mjs", "cause": "Test executed a new type-annotated worker fragment as raw JavaScript" },
+    "recovery": { "focusedPassed": 122, "failed": 0, "skipped": 0, "productionBytesChanged": false, "fullPortableReplayed": false },
+    "auditedPublicProfiles": 403,
+    "releasePackageAllowedEngineFiles": 93,
+    "releasePackageSvgAbsent": true
+  },
+  "priorHorizontalFailureSuperseded": false,
+  "publicPromotion": false
+}

@@ -1,5 +1,29 @@
 # Tested conversion ledger
 
+2026-11-07 private DOCX → HTML vertical table merges passed the changed
+normal-service headless Chrome control. A native 37,585-byte DOCX with a
+2×2 merge, nested table, and 144,000 UTF-8 bytes in the merge anchor produced
+four identical 216,842-byte HTML outputs. An independent parser verified
+both spans, exact text and nesting, and the tail written after patching the
+five-byte field at offset 564. The test rejects an unpatched span, lost
+structure, altered text/tail or active markup. Reads were at most 256 KiB,
+writes at most 64 KiB, one outstanding operation. Cancellation after
+1,835,008 acknowledged output bytes and write-failure recovery passed.
+
+Peak whole-tree increase was 77.801 MiB (443 valid, zero unavailable);
+maximum per-run cleanup was 27.184 MiB above loaded idle. All 41 observed
+Chrome PIDs and the server exited; this run removed its converted files
+and runtime. None of 35 observed requests was forbidden, and `test.mkv`
+size and SHA-256 matched before and after. This does not rewrite the
+previous run's retained scratch failure. No native picker, scaling, speed
+or public qualification. Build, TypeScript, affected lint, and 403-profile
+evidence audit passed. The broad portable run had 2,676 passes and one
+test-harness failure: a type-annotated worker fragment was parsed as raw JS.
+After compiling that fragment in the test and adding a cursor-resume check,
+all 122 focused tests passed. Production source did not change during this
+recovery; the entire portable suite was not replayed. See
+[vertical span receipt](evidence/2026-11-07-docx-vertical-span-verification.json).
+
 2026-11-07 private DOCX → HTML now emits bounded horizontal table spans in
 one pass. A native 36,828-byte DOCX with two horizontal merges, including a
 nested table, produced four identical 837-byte outputs in normal-service
