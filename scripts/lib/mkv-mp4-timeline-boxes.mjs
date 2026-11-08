@@ -4,8 +4,10 @@ import { lstat, open, realpath } from "node:fs/promises";
 import path from "node:path";
 
 const LIMIT = 8 * 1024 * 1024;
-export async function inspectMkvMp4TimelineBoxes(reader, size) {
-  assert.ok(Number.isSafeInteger(size) && size >= 8 && size <= LIMIT);
+const SUSTAINED_LIMIT = 256 * 1024 * 1024;
+export async function inspectMkvMp4TimelineBoxes(reader, size, { sustained = false } = {}) {
+  assert.equal(typeof sustained, "boolean");
+  assert.ok(Number.isSafeInteger(size) && size >= 8 && size <= (sustained ? SUSTAINED_LIMIT : LIMIT));
   let headers = 0, bytesRead = 0, maximumReadBytes = 0;
   const read = async (offset, count) => {
     assert.ok(Number.isSafeInteger(offset) && offset >= 0 && count > 0 && count <= 24 && offset + count <= size);
@@ -83,16 +85,16 @@ export async function inspectMkvMp4TimelineBoxes(reader, size) {
   return { movie: await duration(find(movie, "mvhd")), tracks, fragmentCount: fragments.length, bytesRead, maximumReadBytes, mediaPayloadBytesRead: 0 };
 }
 
-export async function readMkvMp4TimelineBoxes(file) {
+export async function readMkvMp4TimelineBoxes(file, { sustained = false } = {}) {
   const work = await realpath(path.resolve(import.meta.dirname, "../../work")), absolute = await realpath(file);
   const relative = path.relative(work, absolute);
   assert.ok(relative && !relative.startsWith("..") && !path.isAbsolute(relative));
-  const info = await lstat(absolute); assert.ok(info.isFile() && !info.isSymbolicLink() && info.size <= LIMIT);
+  const info = await lstat(absolute); assert.ok(info.isFile() && !info.isSymbolicLink() && info.size <= (sustained ? SUSTAINED_LIMIT : LIMIT));
   const handle = await open(absolute, "r");
   try {
     return await inspectMkvMp4TimelineBoxes(async (offset, length) => {
       const buffer = Buffer.alloc(length), { bytesRead } = await handle.read(buffer, 0, length, offset);
       assert.equal(bytesRead, length); return buffer;
-    }, info.size);
+    }, info.size, { sustained });
   } finally { await handle.close(); }
 }
