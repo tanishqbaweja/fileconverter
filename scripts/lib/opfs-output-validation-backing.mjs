@@ -25,6 +25,10 @@ export function bindLargeAudioOutputValidationBacking(page, profileDirectory, en
 export function bindLargeDocumentOutputValidationBacking(page, profileDirectory, entryName, expectedBytes) {
   return bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, 256 * 1048576);
 }
+// Same bounded read-only proof; only the allowed completed media extent differs.
+export function bindProtectedMkvOutputValidationBacking(page, profileDirectory, entryName, expectedBytes) {
+  return bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, 4 * 1024 ** 3);
+}
 async function bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, maximumBytes) {
   const root = path.resolve(import.meta.dirname, "../.."), work = path.join(root, "work"), limits = OPFS_VALIDATION_BACKING_LIMITS;
   profileDirectory = path.resolve(profileDirectory);

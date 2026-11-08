@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import { execFile, spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { readFile, readdir, stat, statfs, writeFile } from "node:fs/promises";
+import { lstat, readFile, readdir, realpath, stat, statfs, writeFile } from "node:fs/promises";
 import { createServer } from "node:net";
 import path from "node:path";
 import { setTimeout as pause } from "node:timers/promises";
@@ -25,7 +25,7 @@ import { isCompatibilityStaticPath } from "./lib/installed-compatibility-plan.mj
 import { classifyPrivateRequest } from "./lib/private-browser-request.mjs";
 import { selectOwnedLocalBrowserFile } from "./lib/select-owned-local-browser-file.mjs";
 import { encodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs";
-import { bindOpfsOutputValidationBacking, bindLargeAudioOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "./lib/opfs-output-validation-backing.mjs";
+import { bindOpfsOutputValidationBacking, bindLargeAudioOutputValidationBacking, bindProtectedMkvOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "./lib/opfs-output-validation-backing.mjs";
 import { cancelBrowserConversionBeforeCleanup } from "./lib/cancel-browser-conversion-before-cleanup.mjs";
 import { compareSmallMkvPacketClocks } from "./lib/mkv-direct-packet-clocks.mjs";
 import { readMkvMp4TimelineBoxes } from "./lib/mkv-mp4-timeline-boxes.mjs";
@@ -34,12 +34,15 @@ import { validateCopiedAudioTiming } from "./lib/copied-audio-timing.mjs";
 import { mkvStagedReference, readMkvExactAacStagedReference } from "./lib/mkv-exact-aac-staged-reference.mjs";
 import { compareMkvVideoPackets, probeMkvVideoPackets } from "./lib/mkv-streaming-video-fidelity.mjs";
 import { compareMkvSustainedAac, probeMkvSustainedAac } from "./lib/mkv-sustained-aac-fidelity.mjs";
+import { selectExactLocalOriginal } from "./lib/mpeg2-original-gate.mjs";
+import { assertMkvProtectedSource, assertMkvProtectedOutput, mkvProtectedCopy } from "./lib/mkv-protected-copy-contract.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
 const sustained = process.argv[2] === "--edit-list-aac-sustained";
+const protectedMode = process.argv[2] === "--edit-list-aac-protected";
 const compareDestinations = sustained || process.argv[2] === "--edit-list-aac-destination-control";
-const exactAacCandidate = compareDestinations || process.argv[2] === "--edit-list-aac-candidate";
+const exactAacCandidate = protectedMode || compareDestinations || process.argv[2] === "--edit-list-aac-candidate";
 const editListCandidate = exactAacCandidate || process.argv[2] === "--edit-list-candidate";
 assert.equal(process.argv.length, editListCandidate ? 5 : stagedDiagnostic ? 3 : 2);
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), profileId = "mkv-to-mp4";
@@ -47,6 +50,8 @@ const syntheticName = sustained ? "within-test-sustained-hevc-aac" : "within-tes
 const mib = 1048576, minSustainedBytes = 128 * mib, maxSustainedBytes = 256 * mib;
 const smallControl = { file: "evidence/2026-11-08T01-21-27-483Z-mkv-exact-aac-destination-control.json",
   sha256: "3eca8a3b925ef55fb22cb444f42a237ab12ed412c6c613d06264903d22e777bb" };
+const sustainedControl = { file: "evidence/2026-11-08T13-13-11-767Z-mkv-exact-aac-sustained.json",
+  sha256: "82baa7d9f3543fc653e162ef73d012a6cdc9cf2d461fb6672f43a39de4d28080" };
 const sha = bytes => createHash("sha256").update(bytes).digest("hex"), stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
 const report = { schemaVersion: 1, status: "running", scope: "Small real MKV-to-MP4 packet copy. Two private async direct arms; not the public staged route, original-file, speed, or promotion.",
   headed: false, browserServicesDisabled: false, peakLimitMiB: 250, cleanupLimitMiB: 96, nativeConversionUsed: false,
@@ -56,15 +61,17 @@ if (editListCandidate) report.scope = "Unpublished MKV edit-list tools only, nor
 if (exactAacCandidate) report.exactAacCandidate = true;
 if (compareDestinations) report.scope = "Matched small-fixture staged, direct-fresh and direct-reuse controls, one exact AAC-correct Wasm; not a sustained throughput or promotion test.";
 if (sustained) report.scope = "Matched 128–256 MiB synthetic HEVC/AAC staged and direct saves; no original-file, 10 GB, manual-browser or promotion claim.";
+if (protectedMode) report.scope = "One original 2.96 GB browser direct-reuse remux, whole-file packet/PCM and sampled independent video decode; no repeat, production promotion or 10 GB claim.";
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env, timeout = 90000) => execute(file, args, { cwd: root, env, windowsHide: true, timeout, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env)).stdout);
+const probeProtected = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-show_streams", "-show_format", "-show_chapters", "-of", "json", file], env)).stdout);
 const packetClocks = async (file, env) => JSON.parse((await runNative(ffprobe,
   ["-v", "error", "-show_packets", "-show_entries", "packet=stream_index,pts_time,dts_time", "-of", "json", file], env)).stdout).packets;
 const packets = async (file, env) => (await runNative(ffmpeg,
@@ -73,14 +80,48 @@ const aacPackets = async (file, env) => JSON.parse((await runNative(ffprobe, ["-
   "-show_entries", "packet=stream_index,pts_time,dts_time,duration_time:packet_side_data=side_data_type,skip_samples,discard_padding", "-of", "json", file], env)).stdout).packets;
 const decodedPcm = async (file, env) => {
   const result = (await runNative(ffmpeg, ["-v", "error", "-xerror", "-threads", "1", "-i", file,
-    "-map", "0:a:0", "-c:a", "pcm_s16le", "-f", "streamhash", "-hash", "sha256", "-"], env)).stdout.trim();
+    "-map", "0:a:0", "-c:a", "pcm_s16le", "-f", "streamhash", "-hash", "sha256", "-"], env, protectedMode ? 480000 : 90000)).stdout.trim();
   assert.match(result, /^0,a,SHA256=[a-f0-9]{64}$/i);
   return result;
 };
-const disk = await statfs(root); assert.ok(disk.bavail * disk.bsize >= (sustained ? 2048 : 512) * mib, "Insufficient repository disk scratch for the selected case");
-if (sustained) report.diskPreflight = { availableBytes: disk.bavail * disk.bsize, requiredBytes: 2048 * mib };
+const disk = await statfs(root), diskRequired = (protectedMode ? 8192 : sustained ? 2048 : 512) * mib;
+assert.ok(disk.bavail * disk.bsize >= diskRequired, "Insufficient repository disk scratch for the selected case");
+if (sustained || protectedMode) report.diskPreflight = { availableBytes: disk.bavail * disk.bsize, requiredBytes: diskRequired };
 const protectedPath = path.join(root, "test.mkv");
-const original = async () => ({ bytes: (await stat(protectedPath)).size, sha256: await hashFile(protectedPath) });
+const original = async () => {
+  const info = await lstat(protectedPath);
+  assert.ok(info.isFile() && !info.isSymbolicLink());
+  assert.equal((await realpath(protectedPath)).toLowerCase(), protectedPath.toLowerCase());
+  return { bytes: info.size, sha256: await hashFile(protectedPath) };
+};
+
+async function validateProtectedOutput(fixture, output, bytes, baseline, warnings, env, row) {
+  const validation = row.validation = { outputSha256: await hashFile(output) };
+  const inspected = await probeProtected(output, env);
+  validation.structure = assertMkvProtectedOutput(baseline.probe, inspected, warnings, bytes);
+  validation.serializedTimeline = await readMkvMp4TimelineBoxes(output, { protectedPrefix: true });
+  assert.deepEqual(validation.serializedTimeline.tracks.map(t => [t.kind, t.editListPresent]), [["vide", true], ["soun", true]]);
+  assert.equal(validation.serializedTimeline.tracks[1].edits[0].mediaTimeTicks, String(mkvProtectedCopy.primingSamples));
+  validation.video = await compareMkvVideoPackets(probeMkvVideoPackets(fixture, 0, { cwd: root, env }),
+    probeMkvVideoPackets(output, 0, { cwd: root, env }), { sourceIndex: 0, outputIndex: 0 });
+  assert.equal(validation.video.packets, mkvProtectedCopy.videoPackets);
+  validation.aac = await compareMkvSustainedAac(probeMkvSustainedAac(fixture, { cwd: root, env }), probeMkvSustainedAac(output, { cwd: root, env }));
+  assert.equal(validation.aac.initialSkipSamples, mkvProtectedCopy.primingSamples);
+  validation.aac.sourcePcm = await decodedPcm(fixture, env);
+  validation.aac.outputPcm = await decodedPcm(output, env);
+  assert.equal(validation.aac.outputPcm, validation.aac.sourcePcm, "Protected HE-AAC decoded PCM differs");
+  validation.decodedVideoSpans = [];
+  for (const seconds of [0, 6170, 12337]) {
+    const { stdout } = await runNative(ffmpeg, ["-v", "error", "-xerror", "-ss", String(seconds), "-threads", "1", "-i", output,
+      "-t", "2", "-map", "0:v:0", "-f", "framehash", "-hash", "sha256", "-"], env);
+    const frames = stdout.split(/\r?\n/).filter(line => /^\s*0\s*,/.test(line)).length;
+    assert.equal(frames, 48, "Independent 2-second decode window must contain all 48 frames");
+    validation.decodedVideoSpans.push({ seconds, frames });
+  }
+  assert.ok(validation.structure.durationDeltaSeconds < 0.05, "Protected duration differs by at least 50 ms");
+  validation.fullVideoDecode = false;
+  validation.candidateGate = { passed: true };
+}
 
 async function validateSustainedOutput(fixture, output, bytes, baseline, env, row) {
   const validation = row.validation = { outputSha256: await hashFile(output) };
@@ -149,6 +190,8 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
   const runtime = await createOwnedRuntimeScratch("mkv-direct-reuse-");
   const env = { ...runtime.env, WRANGLER_SEND_METRICS: "false", NEXT_TELEMETRY_DISABLED: "1" };
   const samples = []; let server, chrome, identity, monitor, browser, page, timer, pending, activeAt, until, rejectStop, errorSeen;
+  let protectedStarted, protectedTerminal;
+  const duringConversion = time => !protectedMode || (protectedStarted !== undefined && time >= protectedStarted && (protectedTerminal === undefined || time <= protectedTerminal));
   let startupCancellation;
   const stop = new Promise((_, reject) => { rejectStop = reject; }); void stop.catch(() => {});
   const fail = error => { errorSeen ??= error; rejectStop(error); };
@@ -156,9 +199,9 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
   const drain = () => pending ??= (async () => {
     if (!monitor) return;
     const batch = await monitor.drain(); assert.equal(batch.overflow, false);
-    assert.ok(samples.length + batch.samples.length <= 3000, "Finite native journal"); samples.push(...batch.samples);
+    assert.ok(samples.length + batch.samples.length <= (protectedMode ? 9000 : 3000), "Finite native journal"); samples.push(...batch.samples);
     if (activeAt !== undefined) for (const row of batch.samples) {
-      if (Date.parse(row.timestamp) >= activeAt && (until === undefined || Date.parse(row.timestamp) <= until) && row.privateBytes !== null &&
+      if (Date.parse(row.timestamp) >= activeAt && (until === undefined || Date.parse(row.timestamp) <= until) && duringConversion(Date.parse(row.timestamp)) && row.privateBytes !== null &&
           (row.privateBytes - result.blank.privateBytes) / 1048576 > report.peakLimitMiB) fail(new Error("Unchanged 250 MiB whole-Chromium gate exceeded"));
     }
   })().finally(() => { pending = null; });
@@ -263,7 +306,8 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
     await open(); result.loaded = await stable(drain, samples); activeAt = Date.now();
     timer = setInterval(() => void drain().catch(fail), 500);
     async function job(fault = false, cancel = false) {
-      const row = { fault, selection: await guard(selectOwnedLocalBrowserFile(page, fixture, fixtureRuntime.directory)) };
+      const row = { fault, selection: await guard(protectedMode ? selectExactLocalOriginal(page, fixture) : selectOwnedLocalBrowserFile(page, fixture, fixtureRuntime.directory)) };
+      if (protectedMode) report.originalMediaSelected = row.selection.completeOriginalSelected;
       if (cancel) row.cancel = sustained ? "after-positive-destination-writes" : "during-authenticated-wasm-load-before-native-packets";
       result.cases.push(row);
       await guard(page.locator('[data-testid="format-select"]').selectOption(profileId));
@@ -296,8 +340,12 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
         } finally {
           timeout.abort(); resume.resolve(); startupCancellation = null;
         }
-      } else await guard(page.locator('[data-testid="convert-button"]').click());
-      await guard(page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState), undefined, { timeout: 45000 }));
+      } else {
+        if (protectedMode) protectedStarted = Date.now();
+        await guard(page.locator('[data-testid="convert-button"]').click());
+      }
+      await guard(page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState), undefined, { timeout: protectedMode ? 180000 : 45000 }));
+      if (protectedMode) protectedTerminal = Date.now();
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState()); row.state = state.jobState; row.metrics = state.metrics;
       const leftovers = await entries(); assert.ok(leftovers.every(item => !item.name.startsWith("within-stage-")));
       if (fault || cancel) {
@@ -311,12 +359,17 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
         for (const item of leftovers) await remove(item.name);
       } else {
         assert.equal(row.state, "complete"); assert.equal(state.opfsName, null);
-        assert.deepEqual(state.batchOutputNames, [`${syntheticName}.mp4`]); const name = state.batchOutputNames[0];
-        if (sustained) assert.ok(row.metrics.outputBytes >= minSustainedBytes && row.metrics.outputBytes <= maxSustainedBytes);
+        assert.deepEqual(state.batchOutputNames, [protectedMode ? "test.mp4" : `${syntheticName}.mp4`]); const name = state.batchOutputNames[0];
+        if (protectedMode) assert.ok(row.metrics.outputBytes >= mkvProtectedCopy.minOutputBytes && row.metrics.outputBytes <= mkvProtectedCopy.maxOutputBytes);
+        else if (sustained) assert.ok(row.metrics.outputBytes >= minSustainedBytes && row.metrics.outputBytes <= maxSustainedBytes);
         else assert.ok(row.metrics.outputBytes > 2 * mib && row.metrics.outputBytes <= 8 * mib);
-        const bind = sustained ? bindLargeAudioOutputValidationBacking : bindOpfsOutputValidationBacking;
+        const bind = protectedMode ? bindProtectedMkvOutputValidationBacking : sustained ? bindLargeAudioOutputValidationBacking : bindOpfsOutputValidationBacking;
         const binding = await bind(page, profile, name, row.metrics.outputBytes); row.binding = binding.proof;
-        if (sustained) {
+        if (protectedMode) {
+          await validateProtectedOutput(fixture, binding.file, row.metrics.outputBytes, baseline, state.warnings, env, row);
+          await assertOpfsOutputValidationBackingUnchanged(binding); await remove(name);
+          assert.equal(row.metrics.peakScratchBytes ?? 0, 0);
+        } else if (sustained) {
           await validateSustainedOutput(fixture, binding.file, row.metrics.outputBytes, baseline, env, row);
           await assertOpfsOutputValidationBackingUnchanged(binding); await remove(name);
           assert.equal(row.metrics.peakScratchBytes ?? 0, staged ? row.metrics.outputBytes : 0);
@@ -389,7 +442,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
       await open(); await job();
     } else if (compareDestinations) {
       if (result.cases[0].validation.candidateGate.passed) { await open(true); await job(true); await open(); await job(); }
-    } else if (mode === "reuse" || (candidate && result.cases[0].validation.candidateGate.passed)) {
+    } else if (!protectedMode && (mode === "reuse" || (candidate && result.cases[0].validation.candidateGate.passed))) {
       if (exactAacCandidate) { await open(); await job(false, true); }
       await open(true); await job(true); await open(); await job();
     }
@@ -400,11 +453,11 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
     assert.ok(result.directEngineRequests.module > 0 && result.directEngineRequests.wasm > 0);
     if (candidate) {
       assert.deepEqual(result.engineResponses, result.directEngineRequests);
-      assert.equal(result.cases.length, sustained ? 5 : exactAacCandidate && !compareDestinations ? 4 : 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
+      assert.equal(result.cases.length, protectedMode ? 1 : sustained ? 5 : exactAacCandidate && !compareDestinations ? 4 : 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
       const successes = result.cases.filter(row => !row.fault && !row.cancel);
       assert.ok(successes.every(row => row.validation.candidateGate.passed));
-      if (exactAacCandidate) assert.equal(successes[0].validation.outputSha256, successes[1].validation.outputSha256, "Recovery changed a deterministic output");
-      result.status = sustained ? "passed-sustained-exact-aac-destination-arm" : compareDestinations ? "passed-small-exact-aac-destination-arm" : "passed-unpublished-small-staged-clock-control";
+      if (exactAacCandidate && !protectedMode) assert.equal(successes[0].validation.outputSha256, successes[1].validation.outputSha256, "Recovery changed a deterministic output");
+      result.status = protectedMode ? "passed-first-protected-exact-aac-direct-reuse" : sustained ? "passed-sustained-exact-aac-destination-arm" : compareDestinations ? "passed-small-exact-aac-destination-arm" : "passed-unpublished-small-staged-clock-control";
     } else result.status = staged ? "completed-staged-timeline-diagnostic-not-acceptance" : "passed-private-small-direct-control";
   } catch (error) { result.status = "failed-not-acceptance"; result.failures.push(String(error.stack ?? error).slice(0, 2048)); }
   finally {
@@ -412,6 +465,10 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
     until ??= Date.now(); clearInterval(timer); await pending?.catch(fail);
     if (monitor) { await drain().catch(fail); await monitor.close().catch(fail); result.observer = monitor.ownershipSummary(); }
     if (page && !page.isClosed()) {
+      if (protectedMode && result.status === "failed-not-acceptance") result.preCleanupJob = await page.evaluate(() => {
+        const state = window.__WITHIN_TEST__?.getState();
+        return state && { state: state.jobState, phase: state.phase, metrics: state.metrics };
+      }).catch(() => null);
       try { result.jobCleanup = await cancelBrowserConversionBeforeCleanup(page); }
       catch (error) { fail(error); }
     }
@@ -429,13 +486,13 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
       await runtime.close(); result.ownedRuntimeRemoved = true;
     } catch (error) { fail(error); }
     if (activeAt !== undefined) {
-      const active = samples.filter(s => Date.parse(s.timestamp) >= activeAt && Date.parse(s.timestamp) <= until);
+      const active = samples.filter(s => Date.parse(s.timestamp) >= activeAt && Date.parse(s.timestamp) <= until && duringConversion(Date.parse(s.timestamp)));
       const valid = active.filter(s => s.privateBytes !== null && Array.isArray(s.processes));
       if (valid.length) {
         for (const s of valid) assert.equal(s.processes.reduce((sum, p) => sum + p.privateBytes, 0), s.privateBytes);
         const peak = valid.reduce((a, b) => a.privateBytes >= b.privateBytes ? a : b);
         result.memory = { peak, incrementalPrivateMiB: (peak.privateBytes - result.blank.privateBytes) / 1048576,
-          validSamples: valid.length, unavailableSamples: active.length - valid.length, start: activeAt, end: until,
+          validSamples: valid.length, unavailableSamples: active.length - valid.length, start: protectedMode ? protectedStarted : activeAt, end: protectedMode ? protectedTerminal ?? until : until,
           cleanupAboveIdleMiB: result.cleanupStable ? (result.cleanupStable.privateBytes - result.loaded.privateBytes) / 1048576 : null };
       }
     }
@@ -457,15 +514,38 @@ try {
   if (exactAacCandidate) sourceFiles.push("media/ffmpeg/mkv-exact-aac-timeline-candidate.mjs", "media/ffmpeg/patches/mov-fragmented-aac-exact-priming.patch");
   if (compareDestinations) sourceFiles.push("scripts/lib/mkv-exact-aac-staged-reference.mjs", mkvStagedReference.file);
   if (sustained) sourceFiles.push(smallControl.file, "scripts/lib/mkv-streaming-video-fidelity.mjs", "scripts/lib/mkv-sustained-aac-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs", "scripts/lib/opfs-output-validation-backing.mjs");
+  if (protectedMode) sourceFiles.push(sustainedControl.file, "scripts/lib/mkv-protected-copy-contract.mjs", "scripts/lib/mpeg2-original-gate.mjs",
+    "scripts/lib/mkv-streaming-video-fidelity.mjs", "scripts/lib/mkv-sustained-aac-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs", "scripts/lib/opfs-output-validation-backing.mjs");
   report.sourcePins = Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, await hashFile(path.join(root, file))])));
   report.executedHead = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true })).stdout.trim();
-  fixtureRuntime = await createOwnedRuntimeScratch("mkv-direct-reuse-fixture-");
+  if (!protectedMode) fixtureRuntime = await createOwnedRuntimeScratch("mkv-direct-reuse-fixture-");
   let candidate;
   if (editListCandidate) {
     toolRuntime = await createOwnedRuntimeScratch("mkv-edit-list-tool-download-");
     candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate);
     report.candidateBuild = candidate.proof;
   }
+  if (protectedMode) {
+    const bytes = await readFile(path.join(root, sustainedControl.file)); assert.equal(sha(bytes), sustainedControl.sha256);
+    const prior = JSON.parse(bytes);
+    assert.equal(prior.status, "passed-sustained-exact-aac-destination-comparison-not-public-acceptance");
+    assert.deepEqual(prior.candidateBuild, candidate.proof);
+    assert.ok(prior.arms.some(a => a.mode === "reuse" && a.status === "passed-sustained-exact-aac-destination-arm"));
+    report.sustainedControl = sustainedControl;
+    report.hostPreflight = await inspectStressHostMemory(); assert.equal(report.hostPreflight.safeToStart, true);
+    const env = toolRuntime.env, input = await probeProtected(protectedPath, env);
+    assertMkvProtectedSource(input);
+    let priming;
+    for await (const packet of probeMkvSustainedAac(protectedPath, { cwd: root, env })) { priming = packet.skip; break; }
+    assert.equal(priming, mkvProtectedCopy.primingSamples);
+    report.fixture = { bytes: mkvProtectedCopy.bytes, sha256: mkvProtectedCopy.sha256, seconds: mkvProtectedCopy.seconds,
+      primaryVideo: "HEVC Main 1920x804 24fps", primaryAudio: "HE-AAC 48kHz 5.1", declaredPrimingSamples: priming };
+    const browser = await inspectInstalledChromePin();
+    await arm("reuse", protectedPath, null, { browser, probe: input, candidate });
+    assertInstalledChromePinsEqual(await inspectInstalledChromePin(), browser);
+    assert.equal(report.arms[0].status, "passed-first-protected-exact-aac-direct-reuse");
+    report.status = "passed-first-protected-exact-aac-direct-reuse-not-public-acceptance";
+  } else {
   const fixture = path.join(fixtureRuntime.directory, `${syntheticName}.mkv`);
   if (sustained) {
     const bytes = await readFile(path.join(root, smallControl.file)); assert.equal(sha(bytes), smallControl.sha256);
@@ -555,6 +635,7 @@ try {
     for (const key of ["commonPrivateWorkerSha256", "commonPrivateWriterSha256", "releaseWorkerSha256"]) assert.equal(fresh.overlay[key], reuse.overlay[key]);
     assert.equal(new Set(report.arms.flatMap(a => a.cases.flatMap(c => c.validation?.outputSha256 ?? []))).size, 1);
     report.status = "passed-small-real-direct-buffer-ab-not-speed-or-public-acceptance";
+  }
   }
 } catch (error) { report.status = "failed-not-acceptance"; report.failures.push(String(error.stack ?? error).slice(0, 2048)); }
 finally {
