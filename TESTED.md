@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-11-08 **first protected `test.mkv` AAC-correct direct-reuse gate passed**.
+Headless installed Chrome 156.0.8078.80 selected the unchanged 2,958,573,265-byte
+original through the production file input with no upload or source copy.
+The candidate completed a 2,962,151,594-byte fragmented MP4 in 21.782 s
+(135.99 MB/s of output), without a staging file. Independent validation
+matched all 296,160 HEVC and 289,221 HE-AAC packets, with exact video PTS and
+known DTS, audio clocks within 0.375 ms, the exact 5,058-sample trim, complete
+5.1 decoded PCM equality, and a 1 ms duration difference. Video independently
+decoded in three two-second spans at start/middle/end (not a full video decode).
+Video geometry/color and HE-AAC channel layout/language passed; SRT and PNG
+exclusions were explicitly disclosed. Output binding used three 4 KiB probes
+and no validation copy; the resulting disk backing was hashed in full.
+
+Whole Chrome peak was 196.957 MiB above blank (200 valid samples, none
+unavailable), cleanup 41.977 MiB above idle. Peak Wasm was 49.438 MiB;
+reads 256 KiB, writes and queued bytes 1 MiB, one outstanding operation.
+All 45 observed Chrome processes, the server, output, downloaded tools and
+owned scratch were removed. The original size and SHA-256 matched before and
+after. One successful protected gate only: not same-session repeat, clean-run
+repeat, full video decode, matched protected speedup, public or 10 GB acceptance.
+See `evidence/2026-11-08T13-27-29-790Z-mkv-exact-aac-protected.json`.
+
 2026-11-08 first protected MKV direct-reuse run: Chrome completed a
 2,962,151,594-byte result in 22.479 s at 195.711 MiB over blank (206 valid
 samples). No staging file was used. Independent fidelity did not start: the

@@ -8,6 +8,61 @@ import { mkvStagedReference, readMkvExactAacStagedReference } from "../scripts/l
 const read = name => readFile(new URL(`../${name}`, import.meta.url));
 const sha = value => createHash("sha256").update(value).digest("hex");
 
+test("Protected-file direct reuse is a genuine validated 2.96 GB remux, distinct from the binder-only failure", async () => {
+  const prior = await read("evidence/2026-11-08T13-25-14-279Z-mkv-exact-aac-protected.json");
+  assert.equal(sha(prior), "407b7503343dc0625398d64e30e65dd3d27863634c9dcde1728e26b56ee1be7a");
+  const first = JSON.parse(prior);
+  assert.equal(first.status, "failed-not-acceptance");
+  assert.equal(first.arms[0].cases[0].state, "complete");
+  assert.match(first.arms[0].failures[0], /entryName\.startsWith/);
+  assert.equal(first.arms[0].ownedRuntimeRemoved, true);
+
+  const bytes = await read("evidence/2026-11-08T13-27-29-790Z-mkv-exact-aac-protected.json");
+  assert.equal(sha(bytes), "77dcd5260b5c7ee17699f05f24878820ef53b20f82de9847c73ca6b9630c2286");
+  const report = JSON.parse(bytes), [arm] = report.arms, [row] = arm.cases, v = row.validation;
+  assert.equal(report.status, "passed-first-protected-exact-aac-direct-reuse-not-public-acceptance");
+  assert.equal(arm.cases.length, 1);
+  assert.ok(report.originalMediaSelected && row.selection.completeOriginalSelected && !row.selection.sourceCopyCreated);
+  assert.deepEqual(report.originalBefore, report.originalAfter);
+  assert.equal(report.originalBefore.bytes, 2958573265);
+  assert.equal(row.state, "complete");
+  assert.equal(row.metrics.outputBytes, 2962151594);
+  assert.equal(Math.round(row.metrics.elapsedMs), 21782);
+  assert.equal(row.metrics.peakScratchBytes ?? 0, 0);
+  assert.equal(row.metrics.maxReadChunkBytes, 262144);
+  assert.equal(row.metrics.maxWriteChunkBytes, 1048576);
+  assert.equal(row.metrics.peakPendingOperations, 1);
+  assert.equal(row.metrics.pendingOperations, 0);
+  assert.equal(v.outputSha256, "247c77c371340f8bfb090dc8f8cfde22d83ca1e83483672847013527c50d937b");
+  assert.equal(row.binding.convertedCopyCreated, false);
+  assert.equal(row.binding.maximumBrowserSampleBytes, 4096);
+  assert.equal(v.video.packets, 296160);
+  assert.equal(v.aac.packets, 289221);
+  assert.ok(v.video.packetBytesIdentical && v.aac.packetBytesIdentical);
+  assert.equal(v.video.maximumPtsDeltaUs, 0);
+  assert.equal(v.video.maximumDtsDeltaUs, 0);
+  assert.ok(v.aac.maximumPtsErrorSeconds <= 0.001 && v.aac.maximumDtsErrorSeconds <= 0.001);
+  assert.equal(v.aac.initialSkipSamples, 5058);
+  assert.equal(v.aac.sourcePcm, v.aac.outputPcm);
+  assert.equal(v.serializedTimeline.tracks[1].edits[0].mediaTimeTicks, "5058");
+  assert.equal(v.serializedTimeline.completeFragmentInventory, false);
+  assert.deepEqual(v.decodedVideoSpans.map(s => s.frames), [48, 48, 48]);
+  assert.equal(v.fullVideoDecode, false);
+  assert.ok(v.structure.subtitleDisclosed && v.structure.artworkDisclosed && v.structure.languagePreserved);
+  assert.ok(v.structure.durationDeltaSeconds < 0.05);
+  assert.equal(arm.memory.incrementalPrivateMiB, 196.95703125);
+  assert.equal(arm.memory.validSamples, 200);
+  assert.equal(arm.memory.unavailableSamples, 0);
+  assert.ok(row.outputRemoved && arm.ownedRuntimeRemoved && arm.serverCleanup.ownedRootAbsent && report.toolDownloadRemoved);
+  assert.equal(arm.browserCleanup.status, "owned-observed-pids-absent");
+  assert.equal(arm.browserCleanup.observedPids.length, 45);
+  assert.deepEqual(arm.forbiddenRequests, []);
+  assert.equal(report.publicAcceptance, false);
+  const archive = await read(arm.archive.file);
+  assert.equal(sha(archive), arm.archive.sha256);
+  assert.equal(sha(gunzipSync(archive, { maxOutputLength: 8 * 1024 ** 2 })), arm.archive.decodedSha256);
+});
+
 test("Sustained three-way MKV evidence binds timings and safety to nine identical independently validated MP4 outputs", async () => {
   const bytes = await read("evidence/2026-11-08T13-13-11-767Z-mkv-exact-aac-sustained.json");
   assert.equal(sha(bytes), "82baa7d9f3543fc653e162ef73d012a6cdc9cf2d461fb6672f43a39de4d28080");

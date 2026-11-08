@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-11-08 M-03/P-08: the unchanged 2.96 GB `test.mkv` passed the first
+headless direct-reuse gate with the exact sustained-test candidate. Real
+2,962,151,594-byte output in 21.782 s; 196.957 MiB whole-Chrome peak; no stage.
+585,381 matching compressed packets, video clocks exact where available,
+audio within 0.375 ms, exact 5,058-sample trim and full decoded PCM, three
+sampled video decode spans, source properties and both exclusions verified.
+The validator-only first attempt (normal filename rejected) is separately
+recorded; it is not a second fidelity pass. Protected same-session/clean
+repeats, matched full-file comparison, broader format and browser coverage,
+release reproducibility/validation, and near-10 GB scale still remain. No
+release change. See `evidence/2026-11-08T13-27-29-790Z-mkv-exact-aac-protected.json`.
+
 2026-11-08 M-03/P-08: sustained 194.5 MB browser comparison passed all three
 arms with three genuine byte-identical outputs per arm, exact AAC trim/PCM,
 12,050 matching packet payloads, complete decode, mid-write cancellation,
