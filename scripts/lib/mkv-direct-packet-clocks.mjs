@@ -21,10 +21,15 @@ export function compareSmallMkvPacketClocks(source, output) {
   const before = perTrack(source), after = perTrack(output);
   return after.map((packets, streamIndex) => {
     const base = before[streamIndex]; assert.equal(packets.length, base.length); assert.ok(packets.length > 0);
-    let maximumPtsErrorUs = 0, maximumComparableDtsErrorUs = 0, comparableDts = 0;
+    let minimumPtsDeltaUs = Infinity, maximumPtsDeltaUs = -Infinity;
+    let minimumSourcePtsUs = Infinity, maximumSourcePtsUs = -Infinity, minimumOutputPtsUs = Infinity, maximumOutputPtsUs = -Infinity;
+    let maximumComparableDtsErrorUs = 0, comparableDts = 0;
     let lastDts = -Infinity, outputDtsMonotonic = true;
     for (const [index, packet] of packets.entries()) {
-      maximumPtsErrorUs = Math.max(maximumPtsErrorUs, Math.abs(packet.ptsUs - base[index].ptsUs));
+      const delta = packet.ptsUs - base[index].ptsUs;
+      minimumPtsDeltaUs = Math.min(minimumPtsDeltaUs, delta); maximumPtsDeltaUs = Math.max(maximumPtsDeltaUs, delta);
+      minimumSourcePtsUs = Math.min(minimumSourcePtsUs, base[index].ptsUs); maximumSourcePtsUs = Math.max(maximumSourcePtsUs, base[index].ptsUs);
+      minimumOutputPtsUs = Math.min(minimumOutputPtsUs, packet.ptsUs); maximumOutputPtsUs = Math.max(maximumOutputPtsUs, packet.ptsUs);
       if (packet.dtsUs === null || packet.dtsUs < lastDts) outputDtsMonotonic = false;
       if (packet.dtsUs !== null) {
         lastDts = packet.dtsUs;
@@ -34,7 +39,11 @@ export function compareSmallMkvPacketClocks(source, output) {
         }
       }
     }
-    return { streamIndex, packets: packets.length, maximumPtsErrorUs, comparableDts,
+    return { streamIndex, packets: packets.length, maximumPtsErrorUs: Math.max(Math.abs(minimumPtsDeltaUs), Math.abs(maximumPtsDeltaUs)),
+      minimumPtsDeltaUs, maximumPtsDeltaUs, ptsDeltaSpreadUs: maximumPtsDeltaUs - minimumPtsDeltaUs,
+      sourcePtsRangeUs: [minimumSourcePtsUs, maximumSourcePtsUs], outputPtsRangeUs: [minimumOutputPtsUs, maximumOutputPtsUs],
+      sourceFirstDecodeOrderPtsUs: base[0].ptsUs, outputFirstDecodeOrderPtsUs: packets[0].ptsUs,
+      sourceFirstDtsUs: base[0].dtsUs, outputFirstDtsUs: packets[0].dtsUs, comparableDts,
       maximumComparableDtsErrorUs: comparableDts ? maximumComparableDtsErrorUs : null, outputDtsMonotonic };
   });
 }

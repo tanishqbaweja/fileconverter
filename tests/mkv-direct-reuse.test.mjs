@@ -6,6 +6,7 @@ import { gunzipSync } from "node:zlib";
 import { transform } from "esbuild";
 import { prepareMkvDirectReuseOverlay } from "../scripts/lib/mkv-direct-reuse-overlay.mjs";
 import { compareSmallMkvPacketClocks } from "../scripts/lib/mkv-direct-packet-clocks.mjs";
+import { inspectMkvMp4TimelineBoxes } from "../scripts/lib/mkv-mp4-timeline-boxes.mjs";
 
 const read = file => readFile(new URL("../" + file, import.meta.url));
 const paths = ["workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts"];
@@ -73,6 +74,9 @@ test("packet clocks match in each track's decode order and expose shifts, missin
     packet(0, "0.104917", "0.021000"), packet(0, "0.063250", "0.063000")];
   const [video, audio] = compareSmallMkvPacketClocks(source, output);
   assert.equal(video.maximumPtsErrorUs, 250); assert.equal(video.outputDtsMonotonic, true); assert.equal(video.comparableDts, 2);
+  assert.deepEqual([video.minimumPtsDeltaUs, video.maximumPtsDeltaUs, video.ptsDeltaSpreadUs], [-83, 250, 333]);
+  assert.deepEqual(video.sourcePtsRangeUs, [21000, 105000]); assert.deepEqual(video.outputPtsRangeUs, [21000, 104917]);
+  assert.equal(video.sourceFirstDtsUs, null); assert.equal(video.outputFirstDtsUs, -21000);
   assert.equal(audio.maximumPtsErrorUs, 0);
   assert.throws(() => compareSmallMkvPacketClocks(source, output.slice(1)));
   const bad = structuredClone(output); bad[3].dts_time = "-0.090000"; bad[3].pts_time = "0.069000";
@@ -80,6 +84,32 @@ test("packet clocks match in each track's decode order and expose shifts, missin
   assert.equal(compareSmallMkvPacketClocks(source, bad)[0].maximumPtsErrorUs, 6000);
   bad[3].pts_time = "N/A";
   assert.throws(() => compareSmallMkvPacketClocks(source, bad));
+});
+
+test("MP4 clock metadata reads versioned edit lists and fragment origins without reading media payload", async () => {
+  const box = (type, ...payload) => {
+    const data = Buffer.concat(payload), head = Buffer.alloc(8);
+    head.writeUInt32BE(data.length + 8); head.write(type, 4, "latin1"); return Buffer.concat([head, data]);
+  };
+  const words = (...values) => {
+    const result = Buffer.alloc(values.length * 4);
+    values.forEach((value, i) => result.writeUInt32BE(value >>> 0, i * 4)); return result;
+  };
+  const fixture = Buffer.concat([
+    box("moov", box("mvhd", words(0, 0, 0, 1000, 0)),
+      box("trak", box("tkhd", words(0, 0, 0, 1)), box("edts", box("elst", words(0, 1, 80, -1, 65536))),
+        box("mdia", box("mdhd", words(0, 0, 0, 48000, 0)), box("hdlr", words(0, 0), Buffer.from("soun"))))),
+    box("moof", box("traf", box("tfhd", words(0, 1)), box("tfdt", words(0x01000000, 0, 123)))), box("mdat", Buffer.alloc(512)),
+  ]);
+  const payloadAt = fixture.length - 512;
+  const proof = await inspectMkvMp4TimelineBoxes(async (at, count) => {
+    assert.ok(at + count <= payloadAt); return fixture.subarray(at, at + count);
+  }, fixture.length);
+  assert.deepEqual(proof.movie, { timeScale: 1000, durationTicks: "0" });
+  assert.equal(proof.tracks[0].firstFragmentDecodeTimeTicks, "123");
+  assert.deepEqual(proof.tracks[0].edits, [{ segmentDurationTicks: "80", mediaTimeTicks: "-1", mediaRateInteger: 1, mediaRateFraction: 0 }]);
+  assert.equal(proof.mediaPayloadBytesRead, 0); assert.ok(proof.maximumReadBytes <= 24);
+  await assert.rejects(inspectMkvMp4TimelineBoxes(async (at, count) => fixture.subarray(at, at + count), fixture.length - 1));
 });
 
 test("the real private MKV A/B is retained as a common timing failure, not a speedup or public regression", async () => {

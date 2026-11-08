@@ -28,20 +28,24 @@ import { encodeBoundedValidationChunk } from "./lib/bounded-validation-chunk.mjs
 import { bindOpfsOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "./lib/opfs-output-validation-backing.mjs";
 import { cancelBrowserConversionBeforeCleanup } from "./lib/cancel-browser-conversion-before-cleanup.mjs";
 import { compareSmallMkvPacketClocks } from "./lib/mkv-direct-packet-clocks.mjs";
+import { readMkvMp4TimelineBoxes } from "./lib/mkv-mp4-timeline-boxes.mjs";
 
-assert.equal(process.platform, "win32"); assert.equal(process.argv.length, 2);
+assert.equal(process.platform, "win32");
+const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
+assert.equal(process.argv.length, stagedDiagnostic ? 3 : 2);
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), profileId = "mkv-to-mp4";
 const syntheticName = "within-test-synthetic-hevc-aac";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex"), stamp = new Date().toISOString().replaceAll(/[:.]/g, "-");
 const report = { schemaVersion: 1, status: "running", scope: "Small real MKV-to-MP4 packet copy. Two private async direct arms; not the public staged route, original-file, speed, or promotion.",
   headed: false, browserServicesDisabled: false, peakLimitMiB: 250, cleanupLimitMiB: 96, nativeConversionUsed: false,
   originalMediaSelected: false, productionFilesReplaced: false, speedGainProven: false, publicAcceptance: false, arms: [], failures: [] };
+if (stagedDiagnostic) report.scope = "One unchanged public staged-handle MKV-to-MP4 small-fixture diagnostic against retained private output hashes; not a rerun of the direct A/B or acceptance of shifted clocks.";
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-direct-reuse`;
+const prefix = `evidence/${stamp}-mkv-${stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env) => execute(file, args, { cwd: root, env, windowsHide: true, timeout: 90000, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env)).stdout);
@@ -94,7 +98,14 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
   })().finally(() => { pending = null; });
   try {
     result.host = await inspectStressHostMemory(); assert.equal(result.host.safeToStart, true);
-    const overlay = await buildMkvDirectReuseOverlay({ root, directory: runtime.directory, mode }); result.overlay = overlay.proof;
+    const overlay = mode === "staged" ? null : await buildMkvDirectReuseOverlay({ root, directory: runtime.directory, mode });
+    if (overlay) result.overlay = overlay.proof;
+    else {
+      const names = [...assets].filter(name => /^\/assets\/conversion\.worker-[\w-]+\.js$/.test(name)); assert.equal(names.length, 1);
+      const workerSha256 = await hashFile(path.join(root, "dist/client", names[0].slice(1)));
+      assert.equal(workerSha256, baseline.retained.arms[0].overlay.releaseWorkerSha256);
+      result.releaseWorker = { asset: names[0], sha256: workerSha256, overrides: false, requests: 0 };
+    }
     result.browser = await inspectInstalledChromePin(); assertInstalledChromePinsEqual(result.browser, baseline.browser);
     server = await startOwnedProductionTestServer({ root, directory: runtime.directory, env, port: await port() });
     const profile = path.join(runtime.directory, "profile");
@@ -123,7 +134,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
           (url === faultUrl || isCompatibilityStaticPath(url, server.baseURL, assets)))) {
         if (result.forbiddenRequests.length < 16) result.forbiddenRequests.push({ method, kind, urlSha256: sha(url) });
         fail(new Error("Request outside exact built-asset/privacy policy")); await route.abort();
-      } else if (url === server.baseURL + overlay.requestedAsset) {
+      } else if (overlay && url === server.baseURL + overlay.requestedAsset) {
         try {
           assert.equal(method, "GET"); assert.ok(result.workerResponses < 16);
           const response = await route.fetch({ maxRedirects: 0 });
@@ -139,6 +150,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
           } finally { await response.dispose(); }
         } catch (error) { fail(error); await route.abort().catch(() => {}); }
       } else {
+        if (result.releaseWorker && url === server.baseURL + result.releaseWorker.asset) result.releaseWorker.requests++;
         if (url === server.baseURL + "/engines/remux/within-direct.mjs") result.directEngineRequests.module++;
         if (url === server.baseURL + "/engines/remux/within-direct.wasm") result.directEngineRequests.wasm++;
         await route.continue();
@@ -182,7 +194,10 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
         row.validation = { outputSha256: await hashFile(binding.file), packetHashes: await packets(binding.file, env),
           clocks: compareSmallMkvPacketClocks(baseline.clocks, await packetClocks(binding.file, env)),
           streams: outStreams.map(s => ({ codec: s.codec_name, packetCount: Number(s.nb_read_packets), nominalFrameRate: s.r_frame_rate, averageFrameRate: s.avg_frame_rate })),
-          sourceVideoAverageRate: inStreams[0].avg_frame_rate, durationDeltaSeconds: Math.abs(Number(output.format.duration) - Number(baseline.probe.format.duration)) };
+          sourceVideoAverageRate: inStreams[0].avg_frame_rate, durationDeltaSeconds: Math.abs(Number(output.format.duration) - Number(baseline.probe.format.duration)),
+          sourceHeader: { startSeconds: Number(baseline.probe.format.start_time), durationSeconds: Number(baseline.probe.format.duration) },
+          outputHeader: { startSeconds: Number(output.format.start_time), durationSeconds: Number(output.format.duration) } };
+        if (mode === "staged") row.validation.serializedTimeline = await readMkvMp4TimelineBoxes(binding.file);
         await runNative(ffmpeg, ["-v", "error", "-xerror", "-threads", "1", "-i", binding.file,
           "-map", "0:v:0", "-map", "0:a:0", "-f", "null", "-"], env);
         row.validation.fullDecode = true;
@@ -193,10 +208,19 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
           assert.equal(outStreams[index].nb_read_packets, inStreams[index].nb_read_packets);
         }
         assert.equal(outStreams[0].r_frame_rate, "24/1");
-        assert.ok(row.validation.durationDeltaSeconds < 0.05);
         assert.match(output.format.format_name, /mp4/);
         assert.equal(row.validation.packetHashes, baseline.packetHashes);
-        assert.ok(row.validation.clocks.every(track => track.maximumPtsErrorUs <= 1000 && track.outputDtsMonotonic), "Packet clock exceeds one source tick or output DTS is not monotonic");
+        const durationPassed = row.validation.durationDeltaSeconds < 0.05;
+        const packetClocksPassed = row.validation.clocks.every(track => track.maximumPtsErrorUs <= 1000 && track.outputDtsMonotonic);
+        row.validation.timingGate = { durationPassed, packetClocksPassed, passed: durationPassed && packetClocksPassed,
+          maxDurationDeltaSecondsExclusive: 0.05, maxPacketPtsDeltaUs: 1000 };
+        if (mode !== "staged") {
+          assert.ok(durationPassed, "Container duration differs by at least 50 ms");
+          assert.ok(packetClocksPassed, "Packet clock exceeds one source tick or output DTS is not monotonic");
+        } else {
+          row.validation.byteIdenticalToRetainedDirect = baseline.retained.arms.every(a => a.cases[0].validation.outputSha256 === row.validation.outputSha256);
+          assert.equal(row.metrics.peakScratchBytes, row.metrics.outputBytes, "The unchanged staged path must actually stage the full small output");
+        }
         assert.equal(row.metrics.activeWorkerCount, 1);
         // The native bridge counts both its shared Wasm backing and the 4-byte
         // cancellation flag. Neither the direct writer nor the reuse buffer adds SAB.
@@ -211,9 +235,11 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
     await job();
     if (mode === "reuse") { await open(true); await job(true); await open(); await job(); }
     result.cleanupStable = await guard(stable(drain, samples)); until = Date.now(); await drain();
-    assert.equal(errorSeen, undefined); assert.ok(result.workerResponses > 0); assert.deepEqual(result.forbiddenRequests, []);
+    assert.equal(errorSeen, undefined); assert.deepEqual(result.forbiddenRequests, []);
+    if (mode === "staged") { assert.equal(result.workerResponses, 0); assert.ok(result.releaseWorker.requests > 0); }
+    else assert.ok(result.workerResponses > 0);
     assert.ok(result.directEngineRequests.module > 0 && result.directEngineRequests.wasm > 0);
-    result.status = "passed-private-small-direct-control";
+    result.status = mode === "staged" ? "completed-staged-timeline-diagnostic-not-acceptance" : "passed-private-small-direct-control";
   } catch (error) { result.status = "failed-not-acceptance"; result.failures.push(String(error.stack ?? error).slice(0, 2048)); }
   finally {
     until ??= Date.now(); clearInterval(timer); await pending?.catch(fail);
@@ -246,7 +272,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
           cleanupAboveIdleMiB: result.cleanupStable ? (result.cleanupStable.privateBytes - result.loaded.privateBytes) / 1048576 : null };
       }
     }
-    if (result.status === "passed-private-small-direct-control" && (!result.memory || result.memory.incrementalPrivateMiB > 250 ||
+    if (result.status !== "failed-not-acceptance" && (!result.memory || result.memory.incrementalPrivateMiB > 250 ||
         result.memory.cleanupAboveIdleMiB === null || result.memory.cleanupAboveIdleMiB > 96)) fail(new Error("Unchanged native peak/cleanup gate failed"));
     if (errorSeen) { result.status = "failed-not-acceptance"; result.failures.push(String(errorSeen).slice(0, 2048)); }
     const raw = Buffer.from(JSON.stringify(samples)), packed = gzipSync(raw), file = `${prefix}-${mode}-native.json.gz`;
@@ -257,7 +283,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
 let fixtureRuntime;
 try {
   report.originalBefore = await original(); assert.deepEqual(report.originalBefore, { bytes: 2958573265, sha256: "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34" });
-  const sourceFiles = ["scripts/qualify-mkv-direct-reuse.mjs", "scripts/lib/mkv-direct-reuse-overlay.mjs", "scripts/lib/private-mkv-write-reuse.ts", "scripts/lib/mkv-direct-packet-clocks.mjs",
+  const sourceFiles = ["scripts/qualify-mkv-direct-reuse.mjs", "scripts/lib/mkv-direct-reuse-overlay.mjs", "scripts/lib/private-mkv-write-reuse.ts", "scripts/lib/mkv-direct-packet-clocks.mjs", "scripts/lib/mkv-mp4-timeline-boxes.mjs",
     "workers/media-remux.ts", "workers/conversion.worker.ts", "workers/random-access-destination.ts", "public/engines/remux/within-direct.mjs", "public/engines/remux/within-direct.wasm"];
   report.sourcePins = Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, await hashFile(path.join(root, file))])));
   report.executedHead = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true })).stdout.trim();
@@ -272,14 +298,27 @@ try {
   assert.match(packetHashes, /^0,v,SHA256=[a-f0-9]{64}\r?\n1,a,SHA256=[a-f0-9]{64}$/i);
   report.fixture = { bytes, sha256: await hashFile(fixture), packetHashes };
   const baseline = { browser: await inspectInstalledChromePin(), probe: inputProbe, packetHashes, clocks: await packetClocks(fixture, fixtureRuntime.env) };
-  for (const mode of ["fresh", "reuse"]) await arm(mode, fixture, fixtureRuntime, baseline);
+  if (stagedDiagnostic) {
+    const file = "evidence/2026-11-08T00-23-59-928Z-mkv-direct-reuse.json", retained = await readFile(path.join(root, file));
+    const digest = sha(retained); assert.equal(digest, "1106498457688f125da4e7bce849af797293c63820a87bdc18025da0449553ac");
+    baseline.retained = JSON.parse(retained); report.retainedDirectControl = { file, sha256: digest };
+    assert.equal(packetHashes, baseline.retained.fixture.packetHashes); assert.equal(bytes, baseline.retained.fixture.bytes);
+    for (const file of ["public/engines/remux/within-direct.mjs", "public/engines/remux/within-direct.wasm"])
+      assert.equal(report.sourcePins[file], baseline.retained.sourcePins[file]);
+    await arm("staged", fixture, fixtureRuntime, baseline);
+  } else for (const mode of ["fresh", "reuse"]) await arm(mode, fixture, fixtureRuntime, baseline);
   assert.equal(await hashFile(fixture), report.fixture.sha256);
   assertInstalledChromePinsEqual(await inspectInstalledChromePin(), baseline.browser);
-  assert.ok(report.arms.every(a => a.status === "passed-private-small-direct-control"));
-  const [fresh, reuse] = report.arms;
-  for (const key of ["commonPrivateWorkerSha256", "commonPrivateWriterSha256", "releaseWorkerSha256"]) assert.equal(fresh.overlay[key], reuse.overlay[key]);
-  assert.equal(new Set(report.arms.flatMap(a => a.cases.flatMap(c => c.validation?.outputSha256 ?? []))).size, 1);
-  report.status = "passed-small-real-direct-buffer-ab-not-speed-or-public-acceptance";
+  if (stagedDiagnostic) {
+    assert.equal(report.arms[0].status, "completed-staged-timeline-diagnostic-not-acceptance");
+    report.status = "completed-public-staged-clock-diagnostic-not-acceptance";
+  } else {
+    assert.ok(report.arms.every(a => a.status === "passed-private-small-direct-control"));
+    const [fresh, reuse] = report.arms;
+    for (const key of ["commonPrivateWorkerSha256", "commonPrivateWriterSha256", "releaseWorkerSha256"]) assert.equal(fresh.overlay[key], reuse.overlay[key]);
+    assert.equal(new Set(report.arms.flatMap(a => a.cases.flatMap(c => c.validation?.outputSha256 ?? []))).size, 1);
+    report.status = "passed-small-real-direct-buffer-ab-not-speed-or-public-acceptance";
+  }
 } catch (error) { report.status = "failed-not-acceptance"; report.failures.push(String(error.stack ?? error).slice(0, 2048)); }
 finally {
   await finishOwnedCleanup([
