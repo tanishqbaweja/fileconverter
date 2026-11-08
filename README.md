@@ -434,6 +434,14 @@ Pushed commit `c3a525a` passed the exact no-Docker `within-direct` rebuild in
 [run 35809382089](https://github.com/tanishqbaweja/fileconverter/actions/runs/35809382089)
 with no retained build artifact.
 
+Known timing limitation: on a verified HEVC/AAC Matroska fixture, the current
+staged MKV-to-MP4 route copied every compressed packet but changed their
+presentation timestamps. Video moved 83 ms later; audio packet offsets varied
+from 21 to 83 ms. Do not rely on this route for exact source timestamps until
+the fix is verified. This is one measured fixture, not a finding about every
+MKV or a measurement of audible desynchronization. See
+`evidence/2026-11-08-mkv-staged-timeline-cause.json`.
+
 Measured audio extraction also converts AAC in MP4, MOV, MPEG-TS, or FLV and
 MP3 in AVI to Opus or Ogg Vorbis. Vorbis in OGV converts to Opus or MP3. These
 lossy routes use the same fastest quality-certified encoders as standalone

@@ -1,5 +1,33 @@
 # Tested conversion ledger
 
+2026-11-08 current public staged MKV → MP4 **fails exact timeline preservation**
+on the same synthetic HEVC/AAC packet payloads. The untouched production worker
+staged and removed the real 5,948,888-byte output; it was byte-identical to
+both retained private direct arms. All 288 HEVC and 564 AAC packet payloads
+matched the MKV and independent full decode passed. Signed video PTS moved
+exactly +83 ms on every packet; audio moved +21 to +83 ms. Header durations
+were 12.021 and 12.093333 s. The bounded MP4 box inspection found no edit list
+in either track and both first fragment decode bases were zero. Timing still
+fails the unchanged 1 ms packet / <50 ms duration gates.
+
+Reconstructed all six hash-pinned patches of the released direct wrapper.
+Its two-frame HEVC fallback produces an initial −83 ms DTS at 24 fps on the
+fixture timebase. Pinned FFmpeg source shows the early fragmented MP4 policy
+disables edit lists, rebases both tracks, and can move a first sample to zero.
+This explains the observed signature without claiming an internal runtime
+trace or audible-desync measurement. Prepared a reversible private source
+candidate using a delayed header and explicit edits instead of automatic
+rebasing. No candidate native build, browser test, release, or speed claim.
+
+Actual headless Chrome 156 staged diagnostic: 67.813 MiB above stable blank,
+111 valid samples and zero unavailable; cleanup 16.574 MiB above loaded idle.
+No forbidden requests; all 30 observed Chrome PIDs/server, both owned runtimes,
+and disposable media were removed. Protected `test.mkv` was rehashed unchanged
+and never selected. All 21 focused checks and affected lint passed. The
+registry/evidence inventory and unchanged release asset package also passed;
+neither overrides the clock failure. See
+[the timing and source receipt](evidence/2026-11-08-mkv-staged-timeline-cause.json).
+
 2026-11-08 private MKV → MP4 direct-write allocation A/B **held**. Both
 normal-service headless arms used the same published decoder-free muxer and
 1 MiB write limit; the private candidate replaced per-write copies with one

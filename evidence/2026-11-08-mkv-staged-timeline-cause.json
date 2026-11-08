@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 1,
+  "scope": "Changed evidence collection on unchanged public staged MKV-to-MP4 route; one synthetic HEVC/AAC fixture, not a speed or large-file result.",
+  "status": "source-clock-preservation-failed-on-published-staged-path",
+  "browserDiagnostic": {
+    "file": "evidence/2026-11-08T00-33-55-488Z-mkv-staged-clock.json",
+    "sha256": "d6ba8ad2b228cd14e2c346017765cd01962f59e30e9aaf3ab36e29f9157fdd86",
+    "executedHead": "91e33cfd58241c475f8459746fb5dfc0c1720d06",
+    "browser": "156.0.8078.80",
+    "workerSha256": "9935a1ff6ee00c14197da2dabf0a36b81e893d379601a6ccaaf1e4372521c9cf",
+    "workerOverridden": false,
+    "fixtureBytes": 5945358,
+    "outputBytes": 5948888,
+    "outputSha256": "f22195cc420a938fe1ce0813fc58c43d3a730355614820b8caa286429fee3648",
+    "privateArmsByteIdentical": true,
+    "sourceCompressedPayloadsMatched": true,
+    "packetCounts": [
+      288,
+      564
+    ],
+    "fullIndependentDecode": true,
+    "videoPtsDeltaUs": [
+      83000,
+      83000
+    ],
+    "audioPtsDeltaUs": [
+      21000,
+      83000
+    ],
+    "firstDtsUs": {
+      "video": {
+        "source": null,
+        "output": 0
+      },
+      "audio": {
+        "source": -21000,
+        "output": 0
+      }
+    },
+    "sourceDurationSeconds": 12.021,
+    "outputDurationSeconds": 12.093333,
+    "editListPresent": [
+      false,
+      false
+    ],
+    "firstFragmentDecodeTimeTicks": [
+      "0",
+      "0"
+    ],
+    "timelineMetadataBytesRead": 383,
+    "mediaPayloadBytesReadByBoxInspection": 0,
+    "timingGatesUnchanged": {
+      "maximumPtsErrorUs": 1000,
+      "maximumDurationDeltaSecondsExclusive": 0.05,
+      "passed": false
+    },
+    "wholeTreeIncrementalPrivateMiB": 67.8125,
+    "validSamples": 111,
+    "unavailableSamples": 0,
+    "cleanupAboveLoadedMiB": 16.57421875,
+    "forbiddenRequests": 0,
+    "observedChromePidsAbsent": 30,
+    "serverAbsent": true,
+    "outputsAndBothOwnedRuntimesRemoved": true,
+    "protectedOriginalSha256Unchanged": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+  },
+  "sourceAudit": {
+    "scope": "Source reconstruction and upstream cause, no media conversion or new native build",
+    "revision": "n8.1.2",
+    "originalSha256": "ae501a2e7b435b246a1056959ae93b7e573f1548b1729171eec5b215e0683068",
+    "recipeSha256": "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e",
+    "stages": [
+      {
+        "patch": "media/ffmpeg/patches/mp4-webm-opus-priming-source.patch",
+        "patchSha256": "c2f56a458552e3d0bac647c26de0042eebb62e6d2eb4054ac8574fed6b908da2",
+        "direction": "reverse",
+        "wrapperSha256": "9eb4cbea6099787cd66be883003152d813751548902b0094ff1c04ee7ffca93a"
+      },
+      {
+        "patch": "media/ffmpeg/patches/matroska-artwork-source.patch",
+        "patchSha256": "f2d7b2e9dbfdc8204e88e8a68305fa205262391127b9fb9175d5bfaf2a1821bf",
+        "direction": "reverse",
+        "wrapperSha256": "4fbd30dcbb199a338d7f36394543d811118227d754ad599ef42a2ace17f3c9b5"
+      },
+      {
+        "patch": "media/ffmpeg/patches/audio-options-source.patch",
+        "patchSha256": "918ec19252a14282b6b05629650677251c90b7733c82e4ffb3ed2fe47703d10c",
+        "direction": "reverse",
+        "wrapperSha256": "cef5eb274e26b01554728231bece72723e45ccb4a46ac8c2933795e7d7d99134"
+      },
+      {
+        "patch": "media/ffmpeg/patches/direct-source-79e4db.patch",
+        "patchSha256": "e9b140d5999d3b90a555023825b831210520cccbb328810b3d73521d1e80d5bd",
+        "direction": "reverse",
+        "wrapperSha256": "b8125f1277ba1e40541adc6c13540694c62cefe7c830631bf3b4eeceeb32597b"
+      },
+      {
+        "patch": "media/ffmpeg/patches/direct-published-source.patch",
+        "patchSha256": "514c6b9a4c1f59d865ad457c510b3d06cba7ae6f8f68f7a7a25097945db1a212",
+        "direction": "forward",
+        "wrapperSha256": "b0b20712a1ad47a923de3cab7ced24c25cdeef46f70743ded439e88c892f2eaa"
+      },
+      {
+        "patch": "media/ffmpeg/patches/direct-mp4-only-source.patch",
+        "patchSha256": "935505aad24d5b5a8cbf693b3d4a3e3b6442843c7b0a931b444c422f48f17764",
+        "direction": "forward",
+        "wrapperSha256": "cb93f934f0abd64b625fa34a766546f9265f8c77fae4c0be2c0c54b971941bce"
+      }
+    ],
+    "finalWrapperSha256": "cb93f934f0abd64b625fa34a766546f9265f8c77fae4c0be2c0c54b971941bce",
+    "binarySha256": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0",
+    "sources": [
+      {
+        "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/movenc.c",
+        "bytes": 344984,
+        "sha256": "d7aa80a99efecf757100dbd6d9d7adb84d263cbeed0603873206975405907068"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/mux.c",
+        "bytes": 48534,
+        "sha256": "57b64d7a1d6d81d7ac05d79085e5f9b282bf1bba773b4200a64aeede6599b55a"
+      }
+    ],
+    "directPolicy": {
+      "nativeProfile": 1,
+      "flags": [
+        "frag_keyframe",
+        "empty_moov",
+        "default_base_moof"
+      ],
+      "fallbackHevcReorderFrames": 2,
+      "predictedFirstDtsTicksAt24FpsAnd1kHz": -83,
+      "predictedCommonShiftUs": 83000,
+      "earlyMovNoEditMayMoveFirstSampleToZero": true
+    },
+    "candidate": {
+      "baseWrapperSha256": "cb93f934f0abd64b625fa34a766546f9265f8c77fae4c0be2c0c54b971941bce",
+      "candidateWrapperSha256": "a55da1418f671f93932d97f879260763da74bf2e260a09914812d93869afab99",
+      "nativeProfile": 1,
+      "useEditList": true,
+      "automaticNegativeTimestampShift": false,
+      "flags": [
+        "frag_keyframe",
+        "delay_moov",
+        "default_base_moof"
+      ],
+      "exactReversal": true,
+      "otherWrapperSourceChanged": false,
+      "compilerOrLibraryChanged": false,
+      "candidateBuildRun": false,
+      "browserTimelineVerified": false,
+      "firstFragmentMemoryVerified": false,
+      "publicAcceptance": false
+    },
+    "ownedScratchRemoved": true
+  },
+  "cause": {
+    "commonVideoShiftMatchesNativeReorderAndMuxRebase": true,
+    "firstAudioPacketRebaseConsistentWithNoEditFirstSampleRule": true,
+    "internalPacketTraceCollected": false,
+    "audibleDesynchronizationMeasured": false
+  },
+  "publicBinaryOrRouteChanged": false,
+  "candidateCompiled": false,
+  "candidateBrowserVerified": false,
+  "speedGainProven": false,
+  "next": "Compile the private native policy candidate without Docker and compare a distinct browser output. Verify signed clocks, trim and decoded audio, track edit lists, fragment memory, lifecycle and independent validation before changing a public engine or running the protected original."
+}

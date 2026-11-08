@@ -7,6 +7,7 @@ import { transform } from "esbuild";
 import { prepareMkvDirectReuseOverlay } from "../scripts/lib/mkv-direct-reuse-overlay.mjs";
 import { compareSmallMkvPacketClocks } from "../scripts/lib/mkv-direct-packet-clocks.mjs";
 import { inspectMkvMp4TimelineBoxes } from "../scripts/lib/mkv-mp4-timeline-boxes.mjs";
+import { directWrapperSha256, makeMkvEditListTimelineCandidate } from "../media/ffmpeg/mkv-edit-list-timeline-candidate.mjs";
 
 const read = file => readFile(new URL("../" + file, import.meta.url));
 const paths = ["workers/conversion.worker.ts", "workers/media-remux.ts", "workers/random-access-destination.ts"];
@@ -149,4 +150,41 @@ test("the real private MKV A/B is retained as a common timing failure, not a spe
   }
   assert.equal(result.speedGainProven, false); assert.equal(result.publicAcceptance, false);
   assert.equal(terminal.publicStagedPathAffectedProven, false);
+});
+
+test("unmodified public staged control confirms the source-clock regression and binds it to the released mux policy", async () => {
+  const digest = value => createHash("sha256").update(value).digest("hex");
+  const proof = JSON.parse(await read("evidence/2026-11-08-mkv-staged-timeline-cause.json"));
+  const raw = await read(proof.browserDiagnostic.file); assert.equal(digest(raw), proof.browserDiagnostic.sha256);
+  const r = JSON.parse(raw), [arm] = r.arms, [job] = arm.cases, v = job.validation;
+  assert.equal(r.status, "completed-public-staged-clock-diagnostic-not-acceptance");
+  assert.equal(r.executedHead, proof.browserDiagnostic.executedHead);
+  assert.equal(arm.mode, "staged"); assert.equal(arm.workerResponses, 0); assert.equal(arm.releaseWorker.overrides, false);
+  assert.equal(arm.releaseWorker.sha256, proof.browserDiagnostic.workerSha256); assert.ok(arm.releaseWorker.requests > 0);
+  assert.equal(v.byteIdenticalToRetainedDirect, true); assert.equal(v.outputSha256, proof.browserDiagnostic.outputSha256);
+  assert.equal(v.packetHashes, r.fixture.packetHashes); assert.equal(v.fullDecode, true);
+  assert.deepEqual(v.clocks.map(c => c.packets), [288, 564]);
+  assert.deepEqual(v.clocks.map(c => [c.minimumPtsDeltaUs, c.maximumPtsDeltaUs]), [[83000, 83000], [21000, 83000]]);
+  assert.deepEqual(v.serializedTimeline.tracks.map(t => [t.editListPresent, t.firstFragmentDecodeTimeTicks]), [[false, "0"], [false, "0"]]);
+  assert.equal(v.serializedTimeline.bytesRead, 383); assert.equal(v.serializedTimeline.mediaPayloadBytesRead, 0);
+  assert.deepEqual(v.timingGate, { durationPassed: false, packetClocksPassed: false, passed: false,
+    maxDurationDeltaSecondsExclusive: 0.05, maxPacketPtsDeltaUs: 1000 });
+  assert.equal(job.metrics.peakScratchBytes, 5948888); assert.equal(job.metrics.scratchBytes, 0);
+  assert.equal(job.metrics.maxScratchWriteChunkBytes, 524288); assert.equal(job.outputRemoved, true);
+  const packed = await read(arm.archive.file), sampleBytes = gunzipSync(packed, { maxOutputLength: 4194304 });
+  assert.equal(digest(packed), arm.archive.sha256); assert.equal(digest(sampleBytes), arm.archive.decodedSha256);
+  const samples = JSON.parse(sampleBytes).filter(s => Date.parse(s.timestamp) >= arm.memory.start && Date.parse(s.timestamp) <= arm.memory.end);
+  assert.equal(samples.length, 111); assert.ok(samples.every(s => s.privateBytes === s.processes.reduce((sum, p) => sum + p.privateBytes, 0)));
+  assert.equal((Math.max(...samples.map(s => s.privateBytes)) - arm.blank.privateBytes) / 1048576, 67.8125);
+  assert.equal(arm.browserCleanup.status, "owned-observed-pids-absent"); assert.equal(arm.browserCleanup.observedPids.length, 30);
+  assert.equal(arm.serverCleanup.ownedRootAbsent, true); assert.equal(arm.ownedRuntimeRemoved, true);
+  assert.equal(r.fixtureRuntimeRemoved, true); assert.deepEqual(arm.forbiddenRequests, []);
+  assert.deepEqual(r.originalBefore, r.originalAfter); assert.equal(r.originalMediaSelected, false);
+  assert.equal(proof.sourceAudit.finalWrapperSha256, directWrapperSha256);
+  assert.equal(proof.sourceAudit.stages.length, 6);
+  assert.equal(proof.sourceAudit.binarySha256, r.sourcePins["public/engines/remux/within-direct.wasm"]);
+  assert.equal(proof.sourceAudit.directPolicy.predictedCommonShiftUs, v.clocks[0].minimumPtsDeltaUs);
+  assert.equal(proof.sourceAudit.candidate.exactReversal, true); assert.equal(proof.sourceAudit.candidate.candidateBuildRun, false);
+  assert.throws(() => makeMkvEditListTimelineCandidate(Buffer.from("unreviewed wrapper")), /Exact published/);
+  assert.equal(proof.candidateBrowserVerified, false); assert.equal(proof.cause.audibleDesynchronizationMeasured, false);
 });
