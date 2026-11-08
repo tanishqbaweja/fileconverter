@@ -47,3 +47,54 @@ test("Real MKV edit-list output restores exact clocks but fails source-declared 
   assert.equal(sha(archive), arm.archive.sha256);
   assert.equal(sha(gunzipSync(archive, { maxOutputLength: 2 * 1024 ** 2 })), arm.archive.decodedSha256);
 });
+
+test("Exact AAC edit-list candidate preserves all packet and decoded audio content and recovers in the real browser", async () => {
+  const bytes = await read("evidence/2026-11-08T01-16-10-010Z-mkv-edit-list-aac-candidate.json");
+  assert.equal(sha(bytes), "e35ecbb2b7c882aa0a7a117a9babff9de71d5343cfa4d5009b9a78e2fd8c8c9f");
+  const report = JSON.parse(bytes), [arm] = report.arms, [first, cancelled, fault, recovered] = arm.cases;
+  assert.equal(report.status, "passed-unpublished-small-staged-clock-control-not-public-acceptance");
+  assert.equal(report.candidateBuild.runId, "42432771502");
+  assert.equal(report.candidateBuild.build.artifacts["within-direct.wasm"].sha256, "f56a8592f81294dc07190f400d9ce1399361ebfe963a558ff63bff4041707be7");
+  assert.equal(report.candidateBuild.build.artifacts["within-direct.mjs"].sha256, "fe3567c6e025d3cd6085e5e2e846bddac0426dd4fbf91d53145b5d011a8d7079");
+  assert.deepEqual(arm.engineResponses, { module: 4, wasm: 4 });
+  assert.equal(arm.workerResponses, 0);
+  assert.deepEqual(arm.forbiddenRequests, []);
+  for (const { state, metrics, validation: v } of [first, recovered]) {
+    assert.equal(state, "complete");
+    assert.equal(v.packetHashes, report.fixture.packetHashes);
+    assert.deepEqual(v.clocks.map(track => [track.packets, track.maximumPtsErrorUs, track.maximumComparableDtsErrorUs]), [[288, 0, 0], [564, 333, 333]]);
+    assert.equal(v.serializedTimeline.tracks.find(track => track.kind === "soun").edits[0].mediaTimeTicks, "1024");
+    assert.equal(v.aac.packetTimingAndTrim.initialSkipSamples, 1024);
+    assert.equal(v.aac.outputPcm, v.aac.sourcePcm);
+    assert.ok(v.fullDecode && v.candidateGate.passed && v.timingGate.passed);
+    assert.equal(metrics.peakWasmMemoryBytes, 24 * 2 ** 20);
+    assert.equal(metrics.maxReadChunkBytes, 262144);
+    assert.ok(metrics.peakQueuedBytes <= 2 ** 20 && metrics.maxWriteChunkBytes <= 2 ** 20);
+    assert.equal(metrics.peakPendingOperations, 1);
+    assert.equal(metrics.scratchBytes, 0);
+  }
+  assert.equal(first.validation.outputSha256, recovered.validation.outputSha256);
+  assert.equal(cancelled.state, "cancelled");
+  assert.deepEqual(cancelled.cancellationBefore, { jobState: "running", outputBytes: 0, wasmResponseHeld: true });
+  assert.equal(fault.state, "error");
+  assert.equal(fault.metrics.outputBytes, 524288);
+  assert.ok(cancelled.onlyEmptyPlaceholders && fault.onlyEmptyPlaceholders);
+  assert.ok(arm.cases.every(row => row.outputRemoved));
+  assert.ok(report.toolDownloadRemoved && report.fixtureRuntimeRemoved && arm.ownedRuntimeRemoved);
+  assert.equal(arm.memory.validSamples, 134);
+  assert.equal(arm.memory.unavailableSamples, 0);
+  assert.equal(arm.memory.incrementalPrivateMiB, 125.61328125);
+  assert.equal(arm.memory.cleanupAboveIdleMiB, 59.67578125);
+  assert.ok(arm.birthCleanup.allObservedBirthsAbsent && arm.birthCleanup.noProcessesKilled);
+  assert.equal(arm.birthCleanup.observedPidCount, 38);
+  assert.equal(arm.birthCleanup.reused.length, 1);
+  assert.equal(arm.serverCleanup.ownedRootAbsent, true);
+  assert.deepEqual(report.originalBefore, report.originalAfter);
+  assert.equal(report.originalMediaSelected, false);
+  assert.equal(report.headed, false);
+  assert.equal(report.publicAcceptance, false);
+  assert.equal(report.speedGainProven, false);
+  const archive = await read(arm.archive.file);
+  assert.equal(sha(archive), arm.archive.sha256);
+  assert.equal(sha(gunzipSync(archive, { maxOutputLength: 2 * 1024 ** 2 })), arm.archive.decodedSha256);
+});

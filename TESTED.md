@@ -10,12 +10,31 @@ clock assignment, new packet buffer, compiler flag or released engine was
 changed. Both isolated recipes pass `bash -n`; 25 focused tests pass. The
 source audit removed its scratch and did not run media conversion.
 
-The changed candidate is compiling in isolated [run 42432771502](https://github.com/tanishqbaweja/fileconverter/actions/runs/42432771502),
+The changed candidate compiled in isolated [run 42432771502](https://github.com/tanishqbaweja/fileconverter/actions/runs/42432771502),
 head `7523065d304d3f1bb7e4587d5f97ba6d2c17df23`. The local test is bound to the
 prior failed run's source PCM and padding as well as packet hashes. If the first
 output passes, it checks startup cancellation with one authenticated Wasm
 response held, an injected destination write failure, and byte-exact recovery.
 Startup cancellation does not stand in for cancellation after output writes.
+
+2026-11-08 exact-AAC edit-list **passed unpublished small staged control**.
+The no-Docker build retained the same ABI, loader and 24–64 MiB Wasm limits.
+Two real 5,948,960-byte staged outputs were byte-identical. All 288 HEVC and
+564 AAC packets matched source payloads; video PTS and comparable DTS were
+exact, AAC PTS/DTS differed by 0.333 ms (within 1 ms), duration differed by
+10.333 ms (below 50 ms), source and output both skipped exactly 1,024 AAC
+samples, full decoded PCM matched, and independent full decode passed.
+Headless startup cancellation and destination failure after a 512 KiB write
+left only empty placeholders, which were removed; the next run recovered.
+
+Whole-tree peak was 125.613 MiB above stable blank, cleanup 59.676 MiB above
+idle, 134 valid samples and none unavailable. Wasm stayed at 24 MiB, reads
+at 256 KiB, writes/queue below 1 MiB and one pending operation. Birth-aware
+reconciliation proved all 38 observed Chrome births absent and did not touch
+the unrelated process reusing one PID. The local server, generated inputs,
+outputs, tool download and scratch were removed; protected `test.mkv` size
+and SHA-256 were unchanged. No large-file, speed or release acceptance. See
+`evidence/2026-11-08T01-16-10-010Z-mkv-edit-list-aac-candidate.json`.
 
 2026-11-08 MKV → MP4 edit-list build preparation: the unpublished
 `within-direct` recipe reverses to the byte-exact release build script and
