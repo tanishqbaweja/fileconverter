@@ -173,10 +173,6 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
       } else {
         assert.equal(row.state, "complete"); assert.equal(state.opfsName, null);
         assert.deepEqual(state.batchOutputNames, [`${syntheticName}.mp4`]); const name = state.batchOutputNames[0];
-        assert.equal(row.metrics.activeWorkerCount, 1); assert.ok(row.metrics.sharedArrayBufferBytes <= 4);
-        assert.equal(row.metrics.scratchBytes ?? 0, 0); assert.ok(row.metrics.maxReadChunkBytes <= 262144);
-        assert.ok(row.metrics.maxWriteChunkBytes <= 1048576 && row.metrics.peakQueuedBytes <= 1048576);
-        assert.equal(row.metrics.peakPendingOperations, 1); assert.equal(row.metrics.pendingOperations, 0);
         assert.ok(row.metrics.outputBytes > 2 * 1048576 && row.metrics.outputBytes <= 8 * 1048576);
         const binding = await bindOpfsOutputValidationBacking(page, profile, name, row.metrics.outputBytes); row.binding = binding.proof;
         const output = await probe(binding.file, env), inStreams = baseline.probe.streams, outStreams = output.streams;
@@ -193,6 +189,14 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
         row.validation = { outputSha256: await hashFile(binding.file), packetHashes, fullDecode: true,
           streams: outStreams.map(s => ({ codec: s.codec_name, packetCount: Number(s.nb_read_packets) })) };
         await assertOpfsOutputValidationBackingUnchanged(binding); await remove(name);
+        assert.equal(row.metrics.activeWorkerCount, 1);
+        // The native bridge counts both its shared Wasm backing and the 4-byte
+        // cancellation flag. Neither the direct writer nor the reuse buffer adds SAB.
+        assert.ok(row.metrics.peakWasmMemoryBytes >= 24 * 1048576 && row.metrics.peakWasmMemoryBytes <= 64 * 1048576);
+        assert.equal(row.metrics.sharedArrayBufferBytes, row.metrics.peakWasmMemoryBytes + 4);
+        assert.equal(row.metrics.scratchBytes ?? 0, 0); assert.ok(row.metrics.maxReadChunkBytes <= 262144);
+        assert.ok(row.metrics.maxWriteChunkBytes <= 1048576 && row.metrics.peakQueuedBytes <= 1048576);
+        assert.equal(row.metrics.peakPendingOperations, 1); assert.equal(row.metrics.pendingOperations, 0);
       }
       assert.deepEqual(await entries(), []); row.outputRemoved = true;
     }
