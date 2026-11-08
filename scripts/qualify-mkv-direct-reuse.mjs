@@ -100,6 +100,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
   const runtime = await createOwnedRuntimeScratch("mkv-direct-reuse-");
   const env = { ...runtime.env, WRANGLER_SEND_METRICS: "false", NEXT_TELEMETRY_DISABLED: "1" };
   const samples = []; let server, chrome, identity, monitor, browser, page, timer, pending, activeAt, until, rejectStop, errorSeen;
+  let startupCancellation;
   const stop = new Promise((_, reject) => { rejectStop = reject; }); void stop.catch(() => {});
   const fail = error => { errorSeen ??= error; rejectStop(error); };
   const guard = work => Promise.race([stop, work]);
@@ -164,6 +165,12 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
             assert.equal(headers["cross-origin-embedder-policy"], "require-corp");
             for (const header of ["content-encoding", "content-length", "etag", "last-modified"]) delete headers[header];
             headers["cache-control"] = "no-store";
+            if (role === "wasm" && startupCancellation) {
+              const gate = startupCancellation;
+              assert.equal(gate.hits++, 0, "Cancel control holds exactly one authenticated Wasm response");
+              gate.arrive();
+              await gate.resume;
+            }
             await route.fulfill({ response, headers, body: tool.body, contentType: tool.type });
             result.engineResponses[role]++;
           } finally { await response.dispose(); }
@@ -206,16 +213,37 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
     const remove = name => page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
     await open(); result.loaded = await stable(drain, samples); activeAt = Date.now();
     timer = setInterval(() => void drain().catch(fail), 500);
-    async function job(fault = false) {
+    async function job(fault = false, cancel = false) {
       const row = { fault, selection: await guard(selectOwnedLocalBrowserFile(page, fixture, fixtureRuntime.directory)) };
+      if (cancel) row.cancel = "during-authenticated-wasm-load-before-native-packets";
       result.cases.push(row);
       await guard(page.locator('[data-testid="format-select"]').selectOption(profileId));
-      await guard(page.locator('[data-testid="convert-button"]').click());
+      if (cancel) {
+        assert.ok(exactAacCandidate && candidate && !fault && !startupCancellation);
+        const arrival = Promise.withResolvers(), resume = Promise.withResolvers();
+        startupCancellation = { hits: 0, arrive: arrival.resolve, resume: resume.promise, release: resume.resolve };
+        const timeout = new AbortController();
+        try {
+          await guard(page.locator('[data-testid="convert-button"]').click());
+          await guard(Promise.race([arrival.promise, pause(12000, null, { signal: timeout.signal }).then(() => { throw new Error("Candidate Wasm request not observed during cancellation control"); })]));
+          const state = await page.evaluate(() => window.__WITHIN_TEST__.getState());
+          assert.equal(state.jobState, "running");
+          assert.equal(state.metrics?.outputBytes ?? 0, 0);
+          row.cancellationBefore = { jobState: state.jobState, outputBytes: 0, wasmResponseHeld: true };
+          await guard(page.getByRole("button", { name: "Cancel safely", exact: true }).click({ timeout: 10000 }));
+        } finally {
+          timeout.abort(); resume.resolve(); startupCancellation = null;
+        }
+      } else await guard(page.locator('[data-testid="convert-button"]').click());
       await guard(page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState), undefined, { timeout: 45000 }));
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState()); row.state = state.jobState; row.metrics = state.metrics;
       const leftovers = await entries(); assert.ok(leftovers.every(item => !item.name.startsWith("within-stage-")));
-      if (fault) {
-        assert.equal(row.state, "error"); assert.match(state.error, /destination rejected a bounded write/);
+      if (fault || cancel) {
+        if (fault) { assert.equal(row.state, "error"); assert.match(state.error, /destination rejected a bounded write/); }
+        else {
+          assert.equal(row.state, "cancelled"); assert.equal(state.opfsName, null);
+          assert.equal(row.metrics?.queuedBytes ?? 0, 0); assert.equal(row.metrics?.pendingOperations ?? 0, 0);
+        }
         assert.ok(leftovers.every(item => item.name.startsWith("within-test-") && item.bytes === 0));
         row.onlyEmptyPlaceholders = true;
         for (const item of leftovers) await remove(item.name);
@@ -279,6 +307,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
     }
     await job();
     if (mode === "reuse" || (candidate && result.cases[0].validation.candidateGate.passed)) {
+      if (exactAacCandidate) { await open(); await job(false, true); }
       await open(true); await job(true); await open(); await job();
     }
     result.cleanupStable = await guard(stable(drain, samples)); until = Date.now(); await drain();
@@ -288,12 +317,15 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
     assert.ok(result.directEngineRequests.module > 0 && result.directEngineRequests.wasm > 0);
     if (candidate) {
       assert.deepEqual(result.engineResponses, result.directEngineRequests);
-      assert.equal(result.cases.length, 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
-      assert.ok(result.cases.filter(row => !row.fault).every(row => row.validation.candidateGate.passed));
+      assert.equal(result.cases.length, exactAacCandidate ? 4 : 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
+      const successes = result.cases.filter(row => !row.fault && !row.cancel);
+      assert.ok(successes.every(row => row.validation.candidateGate.passed));
+      if (exactAacCandidate) assert.equal(successes[0].validation.outputSha256, successes[1].validation.outputSha256, "Recovery changed a deterministic output");
       result.status = "passed-unpublished-small-staged-clock-control";
     } else result.status = staged ? "completed-staged-timeline-diagnostic-not-acceptance" : "passed-private-small-direct-control";
   } catch (error) { result.status = "failed-not-acceptance"; result.failures.push(String(error.stack ?? error).slice(0, 2048)); }
   finally {
+    startupCancellation?.release();
     until ??= Date.now(); clearInterval(timer); await pending?.catch(fail);
     if (monitor) { await drain().catch(fail); await monitor.close().catch(fail); result.observer = monitor.ownershipSummary(); }
     if (page && !page.isClosed()) {
@@ -370,6 +402,15 @@ try {
       baseline.candidate = candidate;
       baseline.aac = { pcm: await decodedPcm(fixture, fixtureRuntime.env), packets: await aacPackets(fixture, fixtureRuntime.env) };
       report.fixture.aac = { pcm: baseline.aac.pcm, packets: baseline.aac.packets.length, edges: [baseline.aac.packets[0], baseline.aac.packets.at(-1)] };
+      if (exactAacCandidate) {
+        const file = "evidence/2026-11-08T00-57-09-678Z-mkv-edit-list-candidate.json";
+        const prior = await readFile(path.join(root, file)), sha256 = sha(prior);
+        assert.equal(sha256, "a3517df868618a75f1e2c6576361eb2e189bcac42659acb809b66f8d1d926e7b");
+        const predecessor = JSON.parse(prior);
+        assert.deepEqual(report.fixture.aac, predecessor.fixture.aac, "Same source PCM and declared priming are required");
+        assert.equal(report.fixture.packetHashes, predecessor.fixture.packetHashes);
+        report.retainedTrimFailure = { file, sha256 };
+      }
       await arm("edit-list", fixture, fixtureRuntime, baseline);
     } else await arm("staged", fixture, fixtureRuntime, baseline);
   } else for (const mode of ["fresh", "reuse"]) await arm(mode, fixture, fixtureRuntime, baseline);

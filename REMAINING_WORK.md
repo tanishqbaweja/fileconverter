@@ -5,7 +5,10 @@ passed to the existing sample-precise MOV edit patch on an unpublished
 source candidate. Both generated sources reverse exactly; no packet clock
 rewrite or extra packet buffer. The same fixture and strict PCM/trim gates
 will distinguish a genuine fix from a clock-only result. Source checks and
-25 focused tests passed; native/browser qualification is still required.
+25 focused tests passed. Build [42432771502](https://github.com/tanishqbaweja/fileconverter/actions/runs/42432771502)
+is isolated; subsequent startup cancellation, destination write fault and
+recovery checks are gated on initial fidelity. Mid-write cancellation and large
+qualification remain distinct.
 
 2026-11-08 M-03/P-08 follow-up: the pinned no-Docker build succeeded on an
 isolated ref ([run 42431402082](https://github.com/tanishqbaweja/fileconverter/actions/runs/42431402082)).

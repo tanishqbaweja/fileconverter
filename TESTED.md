@@ -10,6 +10,13 @@ clock assignment, new packet buffer, compiler flag or released engine was
 changed. Both isolated recipes pass `bash -n`; 25 focused tests pass. The
 source audit removed its scratch and did not run media conversion.
 
+The changed candidate is compiling in isolated [run 42432771502](https://github.com/tanishqbaweja/fileconverter/actions/runs/42432771502),
+head `7523065d304d3f1bb7e4587d5f97ba6d2c17df23`. The local test is bound to the
+prior failed run's source PCM and padding as well as packet hashes. If the first
+output passes, it checks startup cancellation with one authenticated Wasm
+response held, an injected destination write failure, and byte-exact recovery.
+Startup cancellation does not stand in for cancellation after output writes.
+
 2026-11-08 MKV → MP4 edit-list build preparation: the unpublished
 `within-direct` recipe reverses to the byte-exact release build script and
 passes `bash -n`. The focused build, timeline and historical-workflow tests
