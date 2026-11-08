@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-11-08 private MKV → MP4 direct-write allocation A/B **held**. Both
+normal-service headless arms used the same published decoder-free muxer and
+1 MiB write limit; the private candidate replaced per-write copies with one
+reusable unshared buffer, keeping one pending write. No published route,
+bundle, or engine binary was changed. Both 5,945,358-byte fixture jobs
+produced byte-identical 5,948,888-byte MP4s. Independent native full decode
+passed and all 288 HEVC and 564 AAC compressed packets matched the source.
+
+The terminal control nevertheless **failed timing** in both arms. Maximum
+absolute presentation-clock difference was 83 ms on both tracks; container
+duration differed by 72.333 ms. Nominal rate stayed 24 fps. The result does
+not establish whether the displacement is uniform, what caused it, or whether
+the public staged path has it. Whole-tree observations were 44.035/55.254 MiB
+above blank (14/11 valid, zero unavailable); the small failed control is not
+stress or a speed result. Adverse recovery and stable loaded-idle recovery
+were not reached. All outputs, fixtures, profiles, and servers from these runs
+were cleaned, and the protected original was never selected and rehashed
+unchanged. The first three harness stops and the real timing failure are
+recorded separately in [the cycle receipt](evidence/2026-11-08-mkv-direct-reuse-cycle.json).
+All 15 focused checks, affected lint, TypeScript, 403-profile evidence audit,
+and verification of the unchanged 93-file client engine package passed.
+
 2026-11-07 private DOCX → HTML vertical table merges passed the changed
 normal-service headless Chrome control. A native 37,585-byte DOCX with a
 2×2 merge, nested table, and 144,000 UTF-8 bytes in the merge anchor produced

@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "scope": "Private async direct MKV-to-MP4 packet-copy buffer A/B. Not a public staged-path comparison, qualified optimization, or full-original conversion.",
+  "status": "held-both-direct-arms-failed-source-timing",
+  "attempts": [
+    { "file": "evidence/2026-11-08T00-15-01-520Z-mkv-direct-reuse.json", "sha256": "69dbad42efa534afa9331d468bfcd58985fe915283a76edbc6e56d95a3567ce2", "stoppedAt": "generated fixture name did not match the owned-output binding prefix" },
+    { "file": "evidence/2026-11-08T00-17-38-793Z-mkv-direct-reuse.json", "sha256": "7173dd5b2f6bb6d4570e3b88f2e03a1cebdb5ef3acc079839af38a25bb1034ed", "stoppedAt": "incorrect test-only SAB expectation omitted actual 24 MiB shared Wasm backing" },
+    { "file": "evidence/2026-11-08T00-20-04-977Z-mkv-direct-reuse.json", "sha256": "8ed457123c6a2cd191a6ac0d021772fe3b91d63178324a16f50bf311329176ac", "stoppedAt": "container average rate rationals differed, requiring packet-level clock comparison" },
+    { "file": "evidence/2026-11-08T00-23-59-928Z-mkv-direct-reuse.json", "sha256": "1106498457688f125da4e7bce849af797293c63820a87bdc18025da0449553ac", "stoppedAt": "measured source-to-output duration and packet-clock differences, same in both arms" }
+  ],
+  "terminalControl": {
+    "executedHead": "a039b6894799694faf9c6cc2569144f36cf1e1b3",
+    "syntheticInputBytes": 5945358,
+    "eachOutputBytes": 5948888,
+    "outputSha256BothArms": "f22195cc420a938fe1ce0813fc58c43d3a730355614820b8caa286429fee3648",
+    "compressedPacketHashesMatchSource": true,
+    "packets": { "hevc": 288, "aac": 564 },
+    "fullIndependentDecodeBothArms": true,
+    "absolutePacketPtsDeltaMaxUsBothTracksAndArms": 83000,
+    "allowedPacketPtsDeltaUs": 1000,
+    "containerDurationDeltaSeconds": 0.07233299999999865,
+    "durationDifferenceLimitSecondsExclusive": 0.05,
+    "sourceVideoNominalRate": "24/1",
+    "outputVideoNominalRate": "24/1",
+    "outputVideoAverageRate": "288000/11999",
+    "maximumReadBytes": 262144,
+    "maximumWriteAndQueueBytes": 1031369,
+    "maximumPendingWrites": 1,
+    "sharedWasmBytes": 25165824,
+    "totalSharedBytes": 25165828,
+    "wholeTreePrivateMiBFreshThenReuse": [44.03515625, 55.25390625],
+    "validSamplesFreshThenReuse": [14, 11],
+    "unavailableSamplesFreshThenReuse": [0, 0],
+    "phaseScopedMeasurementNotStressAcceptance": true,
+    "faultAndRecoveryNotReached": true,
+    "signedOrUniformTimelineShiftProven": false,
+    "publicStagedPathAffectedProven": false
+  },
+  "cleanup": { "allFourCyclesRemovedOwnedRuntimeAndFixture": true, "allTerminalObservedChromePidsAbsent": [28, 26], "forbiddenRequestsInTerminalCycle": 0, "protectedOriginalUnchanged": true, "convertedCopiesRetained": false },
+  "speedGainProven": false,
+  "publicRouteOrBinaryChanged": false,
+  "next": "Localize the shared timing discrepancy before another browser A/B. Use signed per-track clock endpoints and a source-level direct MP4 mux audit; compare to the public staged output only in a distinct matched control. Do not relax timing, memory, or cleanup gates, or launch protected original with this unqualified candidate."
+}

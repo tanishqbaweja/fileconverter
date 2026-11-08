@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
+import { gunzipSync } from "node:zlib";
 import { transform } from "esbuild";
 import { prepareMkvDirectReuseOverlay } from "../scripts/lib/mkv-direct-reuse-overlay.mjs";
 import { compareSmallMkvPacketClocks } from "../scripts/lib/mkv-direct-packet-clocks.mjs";
@@ -78,4 +80,43 @@ test("packet clocks match in each track's decode order and expose shifts, missin
   assert.equal(compareSmallMkvPacketClocks(source, bad)[0].maximumPtsErrorUs, 6000);
   bad[3].pts_time = "N/A";
   assert.throws(() => compareSmallMkvPacketClocks(source, bad));
+});
+
+test("the real private MKV A/B is retained as a common timing failure, not a speedup or public regression", async () => {
+  const digest = value => createHash("sha256").update(value).digest("hex");
+  const cycle = JSON.parse(await read("evidence/2026-11-08-mkv-direct-reuse-cycle.json"));
+  const receipts = await Promise.all(cycle.attempts.map(async ({ file, sha256 }) => {
+    const bytes = await read(file); assert.equal(digest(bytes), sha256); return JSON.parse(bytes);
+  }));
+  assert.equal(receipts.length, 4);
+  for (const report of receipts) {
+    assert.equal(report.status, "failed-not-acceptance"); assert.equal(report.originalMediaSelected, false);
+    assert.equal(report.fixtureRuntimeRemoved, true); assert.deepEqual(report.originalAfter, report.originalBefore);
+    assert.ok(report.arms.every(a => a.ownedRuntimeRemoved && a.serverCleanup.ownedRootAbsent));
+  }
+  const result = receipts.at(-1), terminal = cycle.terminalControl;
+  assert.equal(result.executedHead, terminal.executedHead);
+  assert.equal(result.fixture.bytes, 5945358);
+  assert.deepEqual(result.arms.map(a => a.mode), ["fresh", "reuse"]);
+  for (const [index, arm] of result.arms.entries()) {
+    assert.equal(arm.cases.length, 1); const job = arm.cases[0], v = job.validation;
+    assert.equal(job.state, "complete"); assert.equal(job.metrics.outputBytes, 5948888);
+    assert.equal(v.outputSha256, terminal.outputSha256BothArms); assert.equal(v.fullDecode, true);
+    assert.equal(v.packetHashes, result.fixture.packetHashes);
+    assert.deepEqual(v.clocks.map(c => c.packets), [288, 564]);
+    assert.deepEqual(v.clocks.map(c => c.maximumPtsErrorUs), [83000, 83000]);
+    assert.ok(v.clocks.every(c => c.outputDtsMonotonic));
+    assert.equal(v.durationDeltaSeconds, terminal.containerDurationDeltaSeconds);
+    assert.ok(v.durationDeltaSeconds >= terminal.durationDifferenceLimitSecondsExclusive);
+    assert.ok(v.clocks.every(c => c.maximumPtsErrorUs > terminal.allowedPacketPtsDeltaUs));
+    assert.deepEqual(arm.forbiddenRequests, []); assert.equal(arm.browserCleanup.status, "owned-observed-pids-absent");
+    const packed = await read(arm.archive.file), raw = gunzipSync(packed, { maxOutputLength: 4194304 });
+    assert.equal(digest(packed), arm.archive.sha256); assert.equal(digest(raw), arm.archive.decodedSha256);
+    const valid = JSON.parse(raw).filter(s => s.privateBytes !== null && Date.parse(s.timestamp) >= arm.memory.start && Date.parse(s.timestamp) <= arm.memory.end);
+    assert.equal(valid.length, terminal.validSamplesFreshThenReuse[index]);
+    assert.ok(valid.every(row => row.processes.reduce((sum, p) => sum + p.privateBytes, 0) === row.privateBytes));
+    assert.equal((Math.max(...valid.map(s => s.privateBytes)) - arm.blank.privateBytes) / 1048576, terminal.wholeTreePrivateMiBFreshThenReuse[index]);
+  }
+  assert.equal(result.speedGainProven, false); assert.equal(result.publicAcceptance, false);
+  assert.equal(terminal.publicStagedPathAffectedProven, false);
 });

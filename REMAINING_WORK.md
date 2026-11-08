@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-11-08 P-08/M-03: private asynchronous direct MKV → MP4 write-reuse
+candidate built and compared with fresh per-write copying using the same
+current published muxer and synthetic HEVC/AAC input. Both outputs are
+identical and fully decode with exact compressed packet payloads, but both
+FAIL source timing (83 ms maximum absolute PTS on each track, 72.333 ms
+container duration delta). The private A/B does not compare or change the
+public staged route. Stop these replays; localize the common mux timeline
+using signed per-track positions and source audit before another changed
+control or full-original run. No speed, original-file, adverse recovery, or
+public qualification. All test-owned output and scratch were removed and
+the protected original rehashed unchanged. See
+`evidence/2026-11-08-mkv-direct-reuse-cycle.json` for all four verdicts.
+
 2026-11-07 N-08 private DOCX vertical table merge control **passed**. One pass
 tracks only current/previous row merge metadata, maps omitted edge positions
 to empty cells, and patches a fixed five-byte HTML row span in the existing
