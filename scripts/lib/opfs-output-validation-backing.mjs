@@ -27,15 +27,16 @@ export function bindLargeDocumentOutputValidationBacking(page, profileDirectory,
 }
 // Same bounded read-only proof; only the allowed completed media extent differs.
 export function bindProtectedMkvOutputValidationBacking(page, profileDirectory, entryName, expectedBytes) {
-  return bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, 4 * 1024 ** 3);
+  return bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, 4 * 1024 ** 3, "test.mp4");
 }
-async function bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, maximumBytes) {
+async function bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, maximumBytes, exactName) {
   const root = path.resolve(import.meta.dirname, "../.."), work = path.join(root, "work"), limits = OPFS_VALIDATION_BACKING_LIMITS;
   profileDirectory = path.resolve(profileDirectory);
   const relative = path.relative(work, profileDirectory); assert.ok(relative && !relative.startsWith("..") && !path.isAbsolute(relative));
   assert.equal(await realpath(profileDirectory), profileDirectory); const directoryInfo = await lstat(profileDirectory);
   assert.ok(directoryInfo.isDirectory() && !directoryInfo.isSymbolicLink());
-  assert.ok(typeof entryName === "string" && entryName.startsWith("within-test-") && entryName.length <= 240 && !/[\\/]/.test(entryName));
+  assert.ok(typeof entryName === "string" && (exactName ? entryName === exactName : entryName.startsWith("within-test-")) &&
+    entryName.length <= 240 && !/[\\/]/.test(entryName));
   assert.ok(Number.isSafeInteger(expectedBytes) && expectedBytes > 0 && expectedBytes <= maximumBytes);
   const completeSmallOutput = expectedBytes <= limits.sampleRanges * limits.sampleBytes;
   const ranges = completeSmallOutput ? Array.from({ length: Math.ceil(expectedBytes / limits.sampleBytes) }, (_, index) => index * limits.sampleBytes)

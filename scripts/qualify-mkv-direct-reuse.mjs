@@ -294,14 +294,14 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
       await guard(page.waitForFunction(() => window.__WITHIN_TEST__?.getState().workerStatus === "ready", undefined, { timeout: 20000 }));
       assert.ok(await page.evaluate(() => crossOriginIsolated));
     };
-    const entries = () => page.evaluate(async () => {
+    const entries = () => page.evaluate(async protectedMode => {
       const directory = await navigator.storage.getDirectory(), found = [];
       for await (const [name, handle] of directory.entries()) {
-        if (name.startsWith("within-")) { if (found.length >= 16 || handle.kind !== "file") throw new Error("Unexpected OPFS entries");
+        if (name.startsWith("within-") || (protectedMode && name === "test.mp4")) { if (found.length >= 16 || handle.kind !== "file") throw new Error("Unexpected OPFS entries");
           found.push({ name, bytes: (await handle.getFile()).size }); }
       }
       return found;
-    });
+    }, protectedMode);
     const remove = name => page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
     await open(); result.loaded = await stable(drain, samples); activeAt = Date.now();
     timer = setInterval(() => void drain().catch(fail), 500);

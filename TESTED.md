@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-11-08 first protected MKV direct-reuse run: Chrome completed a
+2,962,151,594-byte result in 22.479 s at 195.711 MiB over blank (206 valid
+samples). No staging file was used. Independent fidelity did not start: the
+backing validator rejected the normal filename `test.mp4` because it only
+allowed synthetic names. The owned browser profile/output, server and tools
+were removed and the original rehashed unchanged. Added an exact-name-only
+protected validator path; the existing synthetic allowlist did not change.
+See `evidence/2026-11-08T13-25-14-279Z-mkv-exact-aac-protected.json`.
+
 2026-11-08 **194.5 MB MKV → MP4 sustained destination comparison**: the same
 authenticated AAC-correct Wasm and generated 194,492,056-byte HEVC/AAC source
 produced nine byte-identical 194,532,754-byte outputs. Full native validation

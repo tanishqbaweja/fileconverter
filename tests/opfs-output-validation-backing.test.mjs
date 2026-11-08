@@ -4,11 +4,11 @@ import path from "node:path";
 import test from "node:test";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 import { encodeBoundedValidationChunk } from "../scripts/lib/bounded-validation-chunk.mjs";
-import { bindOpfsOutputValidationBacking, bindLargeAudioOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "../scripts/lib/opfs-output-validation-backing.mjs";
+import { bindOpfsOutputValidationBacking, bindLargeAudioOutputValidationBacking, bindProtectedMkvOutputValidationBacking, assertOpfsOutputValidationBackingUnchanged } from "../scripts/lib/opfs-output-validation-backing.mjs";
 import { gunzipSync } from "node:zlib";
 import { createHash } from "node:crypto";
 
-async function fixture(run, size = 131072) {
+async function fixture(run, size = 131072, entryName = "within-test-unit-binding") {
   const runtime = await createOwnedRuntimeScratch("opfs-validation-backing-unit-");
   try {
     const profile = path.join(runtime.directory, "profile"), storage = path.join(profile, "Default", "File System", "000", "t", "00");
@@ -17,12 +17,21 @@ async function fixture(run, size = 131072) {
     const file = path.join(storage, "00000002"); await writeFile(file, bytes, { flag: "wx" });
     // Synthetic unit adapter only; not real OPFS or conversion acceptance.
     const page = { async evaluate(callback, args) {
-      assert.equal(args.name, "within-test-unit-binding"); assert.equal(args.sampleBytes, 4096);
+      assert.equal(args.name, entryName); assert.equal(args.sampleBytes, 4096);
       return { bytes: bytes.length, samples: args.ranges.map(offset => ({ offset, encoded: encodeBoundedValidationChunk(bytes.subarray(offset, offset + args.sampleBytes)) })) };
     } };
     await run({ profile, storage, file, bytes, page });
   } finally { await runtime.close(); }
 }
+
+test("Only the protected validator admits the exact normal output name test.mp4", async () => {
+  await fixture(async ({ profile, file, bytes, page }) => {
+    await assert.rejects(bindOpfsOutputValidationBacking(page, profile, "test.mp4", bytes.length));
+    await assert.rejects(bindProtectedMkvOutputValidationBacking(page, profile, "../test.mp4", bytes.length));
+    await assert.rejects(bindProtectedMkvOutputValidationBacking(page, profile, "within-test-unit-binding", bytes.length));
+    assert.equal((await bindProtectedMkvOutputValidationBacking(page, profile, "test.mp4", bytes.length)).file, file);
+  }, 131072, "test.mp4");
+});
 
 test("synthetic binding unit proves unique size/range match and unchanged identity without making a converted copy", async () => {
   await fixture(async ({ profile, file, bytes, page }) => {
