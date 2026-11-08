@@ -17,6 +17,46 @@ test("Destination comparison refuses changed evidence, tools or source audio", a
   assert.throws(() => readMkvExactAacStagedReference(bytes, candidateBuild, { ...fixture, aac: null }));
 });
 
+test("Corrected staged and direct destination arms produce the same real MP4 without claiming sustained speed", async () => {
+  const bytes = await read("evidence/2026-11-08T01-21-27-483Z-mkv-exact-aac-destination-control.json");
+  assert.equal(sha(bytes), "3eca8a3b925ef55fb22cb444f42a237ab12ed412c6c613d06264903d22e777bb");
+  const report = JSON.parse(bytes), [staged, fresh, reuse] = report.arms;
+  assert.equal(report.status, "passed-small-exact-aac-destination-control-not-speed-or-public-acceptance");
+  assert.deepEqual(report.arms.map(arm => arm.mode), ["edit-list", "fresh", "reuse"]);
+  assert.equal(staged.workerResponses, 0);
+  assert.ok(fresh.workerResponses > 0 && reuse.workerResponses > 0);
+  for (const key of ["commonPrivateWorkerSha256", "commonPrivateWriterSha256", "releaseWorkerSha256"])
+    assert.equal(fresh.overlay[key], reuse.overlay[key]);
+  assert.notEqual(fresh.overlay.mediaArmSha256, reuse.overlay.mediaArmSha256);
+  assert.deepEqual(report.arms.map(arm => arm.memory.incrementalPrivateMiB), [100.79296875, 169.98046875, 132.4609375]);
+  assert.equal(report.arms.reduce((total, arm) => total + arm.memory.validSamples, 0), 394);
+  for (const arm of report.arms) {
+    assert.deepEqual(arm.engineResponses, { module: 3, wasm: 3 });
+    assert.deepEqual(arm.cases.map(row => row.state), ["complete", "error", "complete"]);
+    assert.equal(arm.cases[1].onlyEmptyPlaceholders, true);
+    assert.ok(arm.cases.every(row => row.outputRemoved));
+    for (const row of [arm.cases[0], arm.cases[2]]) {
+      assert.equal(row.validation.outputSha256, report.stagedReference.outputSha256);
+      assert.equal(row.metrics.outputBytes, 5948960);
+      assert.equal(row.metrics.peakScratchBytes ?? 0, arm === staged ? 5948960 : 0);
+      assert.ok(row.validation.fullDecode && row.validation.candidateGate.passed);
+      assert.equal(row.validation.aac.packetTimingAndTrim.initialSkipSamples, 1024);
+      assert.equal(row.validation.aac.outputPcm, row.validation.aac.sourcePcm);
+      assert.ok(row.metrics.peakQueuedBytes <= 2 ** 20 && row.metrics.peakPendingOperations === 1);
+    }
+    assert.deepEqual(arm.forbiddenRequests, []);
+    assert.equal(arm.memory.unavailableSamples, 0);
+    assert.ok(arm.ownedRuntimeRemoved && arm.serverCleanup.ownedRootAbsent);
+    assert.equal(arm.browserCleanup.status, "owned-observed-pids-absent");
+    const archive = await read(arm.archive.file);
+    assert.equal(sha(archive), arm.archive.sha256);
+    assert.equal(sha(gunzipSync(archive, { maxOutputLength: 2 * 1024 ** 2 })), arm.archive.decodedSha256);
+  }
+  assert.deepEqual(report.originalBefore, report.originalAfter);
+  assert.ok(report.fixtureRuntimeRemoved && report.toolDownloadRemoved);
+  for (const key of ["originalMediaSelected", "speedGainProven", "publicAcceptance", "headed"]) assert.equal(report[key], false);
+});
+
 test("Real MKV edit-list output restores exact clocks but fails source-declared AAC trim and PCM", async () => {
   const bytes = await read("evidence/2026-11-08T00-57-09-678Z-mkv-edit-list-candidate.json");
   assert.equal(sha(bytes), "a3517df868618a75f1e2c6576361eb2e189bcac42659acb809b66f8d1d926e7b");

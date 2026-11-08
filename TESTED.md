@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-11-08 MKV → MP4 exact-AAC destination comparison: **all three small
+headless arms passed** with the same authenticated Wasm, packet payloads,
+decoded audio and 1,024-sample trim. Six complete outputs were byte-identical
+to the retained staged output (5,948,960 bytes). Staged save used a full
+disk-backed stage; neither direct arm used staging scratch. Each recovered
+byte-exactly after its destination write fault; no partial file remained.
+
+Successful job times were 341–383 ms staged, 282–283 ms direct with fresh
+buffers, and 304–307 ms direct with buffer reuse. Whole-Chrome peaks above
+blank were 100.793, 169.980 and 132.461 MiB, respectively. These short jobs
+are not sustained-throughput or allocation-causality evidence. All 394 active
+memory samples were valid; cleanup ended 19.051–47.590 MiB above loaded idle.
+The 93 observed Chrome processes, servers, outputs, fixture, downloaded tools
+and scratch were removed; protected `test.mkv` rehashed unchanged. No release
+or large-file acceptance. See `evidence/2026-11-08T01-21-27-483Z-mkv-exact-aac-destination-control.json`.
+
 2026-11-08 MKV → MP4 exact-AAC follow-up (source checks): reconstructed all
 six release-wrapper patches, then verified the exact edit-list parent and the
 sample-precise candidate wrapper (`eff90a4908b5fe0d37d56d1d142d823d1c389408e38a8fa415645344a389550c`).
