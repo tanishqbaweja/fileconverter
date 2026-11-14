@@ -9,12 +9,13 @@ concurrency:
   cancel-in-progress: false
 jobs:
   mkv-edit-list:
-    if: github.ref == 'refs/heads/codex/mkv-edit-list-native-20261108' || github.ref == 'refs/heads/codex/mkv-edit-list-aac-native-20261108' || github.ref == 'refs/heads/codex/mkv-h264-vfr-native-20261114'
+    if: github.ref == 'refs/heads/codex/mkv-edit-list-native-20261108' || github.ref == 'refs/heads/codex/mkv-edit-list-aac-native-20261108' || github.ref == 'refs/heads/codex/mkv-h264-vfr-native-20261114' || github.ref == 'refs/heads/codex/mkv-h264-probe-decoder-native-20261114'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
       WITHIN_MKV_EXACT_AAC: ${{ github.ref_name != 'codex/mkv-edit-list-native-20261108' && '1' || '0' }}
-      WITHIN_MKV_H264_VFR: ${{ github.ref_name == 'codex/mkv-h264-vfr-native-20261114' && '1' || '0' }}
+      WITHIN_MKV_H264_VFR: ${{ (github.ref_name == 'codex/mkv-h264-vfr-native-20261114' || github.ref_name == 'codex/mkv-h264-probe-decoder-native-20261114') && '1' || '0' }}
+      WITHIN_MKV_H264_PROBE_DECODER: ${{ github.ref_name == 'codex/mkv-h264-probe-decoder-native-20261114' && '1' || '0' }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:

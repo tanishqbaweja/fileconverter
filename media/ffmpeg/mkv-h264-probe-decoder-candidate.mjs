@@ -12,6 +12,16 @@ export const h264ProbeLibrarySha256 = "49929353da80a2a42f49c5664ba3e9445b463a58a
 export const h264ProbeManifestSha256 = "16723e3b5e8e7a515851e0023b54b02847461d159810651f64ca24044416f536";
 const manifestParent = "37bb34cb852d2a72784f1aa93cb67ae5e63c64395c314badc1c51976f5e6b012";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+export function assertH264ProbeDecoderConfig(bytes) {
+  assert.ok(bytes.length > 0 && bytes.length <= 512 * 1024);
+  const definitions = [...bytes.toString("utf8").matchAll(/^#define CONFIG_([A-Z0-9_]+)_DECODER ([01])$/gm)];
+  assert.ok(definitions.length > 0, "Compiled decoder configuration is unavailable");
+  const enabled = definitions.filter(match => match[2] === "1").map(match => match[1]);
+  assert.deepEqual(enabled, ["H264"], "Only the H.264 probe decoder may be enabled");
+  const encoders = [...bytes.toString("utf8").matchAll(/^#define CONFIG_([A-Z0-9_]+)_ENCODER ([01])$/gm)];
+  assert.ok(encoders.length > 0 && encoders.every(match => match[2] === "0"), "The probe core must not enable encoders");
+  return { enabledDecoders: ["h264"], configSha256: sha(bytes) };
+}
 const exact = (source, before, after) => {
   assert.equal(source.split(before).length, 2, "Unique reviewed probe-decoder anchor required");
   const generated = source.replace(before, () => after);

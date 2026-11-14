@@ -40,11 +40,13 @@ import { assertSameMkvNativeBuild, protectedRepeatReference, readProtectedRepeat
 import { decodeCompleteProtectedVideo } from "./lib/mkv-full-video-decode.mjs";
 import { complexMkvFixture, compareComplexMkvPackets, assertComplexMkvStructure } from "./lib/mkv-complex-fidelity.mjs";
 import { h264VfrWrapperSha256 } from "../media/ffmpeg/mkv-h264-vfr-candidate.mjs";
+import { h264ProbeWrapperSha256 } from "../media/ffmpeg/mkv-h264-probe-decoder-candidate.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
 const terminalDiagnostic = process.argv[2] === "--h264-vfr-error-diagnostic";
-const h264Vfr = terminalDiagnostic || process.argv[2] === "--h264-vfr-complex";
+const probeDecoder = process.argv[2] === "--h264-probe-decoder-complex";
+const h264Vfr = probeDecoder || terminalDiagnostic || process.argv[2] === "--h264-vfr-complex";
 const complexTimeline = h264Vfr || process.argv[2] === "--edit-list-aac-complex";
 const sustained = process.argv[2] === "--edit-list-aac-sustained";
 const protectedRepeats = process.argv[2] === "--edit-list-aac-protected-repeats";
@@ -75,6 +77,7 @@ if (protectedRepeats) report.scope = "Three same-page protected original remuxes
 if (protectedFullDecode) report.scope = "One real protected browser remux, full-file identity to prior packet/PCM evidence and independent complete video decode; not a public release or scaling claim.";
 if (complexTimeline) report.scope = "Existing complex VFR/two-AAC fixture, exact unpublished candidate, direct-reuse browser pipeline, strict packet/trim/decoded-content/metadata and recovery gates; not a speed, original-file, scale or public claim.";
 if (h264Vfr) report.h264VfrCandidate = true;
+if (probeDecoder) report.h264ProbeDecoderCandidate = true;
 if (terminalDiagnostic) {
   report.diagnosticOnly = true;
   report.scope = "One bounded browser-engine error capture for the failed H.264 candidate; no fidelity, recovery, speed or acceptance claim.";
@@ -606,13 +609,14 @@ try {
   if (protectedFullDecode) sourceFiles.push(protectedRepeatReference.file, "scripts/lib/mkv-protected-repeat-contract.mjs", "scripts/lib/mkv-full-video-decode.mjs");
   if (complexTimeline) sourceFiles.push(complexMkvFixture.file, "scripts/lib/mkv-complex-fidelity.mjs", "scripts/lib/mkv-protected-repeat-contract.mjs");
   if (h264Vfr) sourceFiles.push("media/ffmpeg/mkv-h264-vfr-candidate.mjs");
+  if (probeDecoder) sourceFiles.push("media/ffmpeg/mkv-h264-probe-decoder-candidate.mjs");
   report.sourcePins = Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, await hashFile(path.join(root, file))])));
   report.executedHead = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true })).stdout.trim();
   if (!protectedMode) fixtureRuntime = await createOwnedRuntimeScratch("mkv-direct-reuse-fixture-");
   let candidate;
   if (editListCandidate) {
     toolRuntime = await createOwnedRuntimeScratch("mkv-edit-list-tool-download-");
-    candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate, h264Vfr);
+    candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate, h264Vfr, probeDecoder);
     report.candidateBuild = candidate.proof;
   }
   if (protectedMode) {
@@ -663,8 +667,8 @@ try {
     report.fixture = { ...complexMkvFixture, copiedOnlyIntoOwnedScratch: true };
     const prior = JSON.parse(await readFile(path.join(root, protectedRepeatReference.file)));
     if (h264Vfr) {
-      assert.equal(candidate.proof.build.source.candidateWrapperSha256, h264VfrWrapperSha256);
-      assert.equal(candidate.proof.build.source.parentWrapperSha256, prior.candidateBuild.build.source.candidateWrapperSha256);
+      assert.equal(candidate.proof.build.source.candidateWrapperSha256, probeDecoder ? h264ProbeWrapperSha256 : h264VfrWrapperSha256);
+      assert.equal(candidate.proof.build.source.parentWrapperSha256, probeDecoder ? h264VfrWrapperSha256 : prior.candidateBuild.build.source.candidateWrapperSha256);
       assert.deepEqual(candidate.proof.build.wasmMemory, prior.candidateBuild.build.wasmMemory);
       assert.deepEqual(candidate.proof.build.source.mov, prior.candidateBuild.build.source.mov);
     } else assertSameMkvNativeBuild(prior.candidateBuild, candidate.proof);

@@ -1,5 +1,17 @@
 # Remaining work audit
 
+2026-11-14 M-03: probe-decoder build/config/handoff wired, not yet compiled
+or browser-accepted. The isolated variant enables only H.264 decoding, uses
+the already-preflighted one-thread wrapper, retains the generated library
+script and actual config header, rejects other decoders or any encoder, and
+declares the probe decoder in its private manifest. Published files remain
+byte-exact. Old candidate envelope caps stay unchanged; only this decoder's
+bounded offline tool/ZIP cap is 8 MiB, not a Wasm heap or user-file buffer
+increase. Runtime remains 24/64 MiB, one pending write and 250 MiB whole-tree.
+The separate ref and `--h264-probe-decoder-complex` keep failed parser-only
+evidence immutable. Next: isolated no-Docker compile, inspect actual config
+and artifacts, then run the same VFR/two-AAC case and recovery gates.
+
 2026-11-14 M-03 follow-up: next probe-decoder source preparation exercised
 against the authenticated failed-candidate wrapper. Exact reversible wrapper
 `a6987467…338fb98d` passes per-stream one-thread probe options and frees them

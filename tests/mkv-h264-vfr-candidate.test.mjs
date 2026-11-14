@@ -6,7 +6,8 @@ import { checkMkvEditListArchive } from "../scripts/lib/mkv-edit-list-build-arti
 import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 import { makeH264ProbeDecoderWrapper, makeH264ProbeDecoderLibraries, makeH264ProbeDecoderManifest,
-  h264ProbeLibrarySha256, h264ProbeManifestSha256 } from "../media/ffmpeg/mkv-h264-probe-decoder-candidate.mjs";
+  h264ProbeLibrarySha256, h264ProbeManifestSha256, assertH264ProbeDecoderConfig,
+  h264ProbeDecoderBuildRef } from "../media/ffmpeg/mkv-h264-probe-decoder-candidate.mjs";
 
 test("H.264 VFR source derivation rejects an unverified parent and pins only reviewed timing changes", async () => {
   assert.throws(() => makeMkvH264VfrCandidate(Buffer.from("changed source")), /Exact independently tested AAC parent/);
@@ -109,4 +110,41 @@ test("Next probe manifest changes only the decoder declaration, not unrelated en
   delete direct.enabledDecoders; delete direct.probeDecoderThreads;
   assert.deepEqual(after, before);
   assert.throws(() => makeH264ProbeDecoderManifest(Buffer.from("{}")));
+});
+
+test("Probe core must attest the actual compiled H264-only decoder and zero encoders", () => {
+  const config = Buffer.from("#define CONFIG_H264_DECODER 1\n#define CONFIG_HEVC_DECODER 0\n#define CONFIG_H264_ENCODER 0\n");
+  assert.deepEqual(assertH264ProbeDecoderConfig(config).enabledDecoders, ["h264"]);
+  assert.throws(() => assertH264ProbeDecoderConfig(Buffer.from("")));
+  assert.throws(() => assertH264ProbeDecoderConfig(Buffer.from(config.toString().replace("CONFIG_HEVC_DECODER 0", "CONFIG_HEVC_DECODER 1"))));
+  assert.throws(() => assertH264ProbeDecoderConfig(Buffer.from(config.toString().replace("CONFIG_H264_DECODER 1", "CONFIG_H264_DECODER 0"))));
+  assert.throws(() => assertH264ProbeDecoderConfig(Buffer.from(config.toString().replace("CONFIG_H264_ENCODER 0", "CONFIG_H264_ENCODER 1"))));
+});
+
+test("Probe decoder has its own authenticated branch; the larger tool cap does not relax old envelopes", () => {
+  const runId = "1234", head = "a".repeat(40);
+  const run = { id: 1234, workflow_id: 345162646, head_sha: head, head_branch: h264ProbeDecoderBuildRef,
+    event: "workflow_dispatch", status: "completed", conclusion: "success" };
+  const artifact = { name: "unpublished-mkv-edit-list-1234", expired: false, size_in_bytes: 3 * 1024 * 1024,
+    workflow_run: { id: 1234, head_sha: head, head_branch: h264ProbeDecoderBuildRef }, digest: "sha256:" + "b".repeat(64) };
+  checkMkvEditListArchive({ run, artifact }, runId, head, true, true, true);
+  assert.throws(() => checkMkvEditListArchive({ run, artifact }, runId, head, true, true));
+  assert.throws(() => checkMkvEditListArchive({ run, artifact }, runId, head, false, false, true));
+  assert.throws(() => checkMkvEditListArchive({ run, artifact: { ...artifact, size_in_bytes: 8388609 } }, runId, head, true, true, true));
+});
+
+test("Probe build preserves executable permissions and retains real configuration before build scratch cleanup", async () => {
+  const read = file => readFile(new URL(`../${file}`, import.meta.url), "utf8");
+  const builder = await read("media/ffmpeg/build-mkv-edit-list-candidate.mjs");
+  assert.match(builder, /writeFile\(replacement, library.generated, \{ flag: "wx", mode \}\)/);
+  assert.match(builder, /assertH264ProbeDecoderConfig\(config\)/);
+  assert.match(builder, /"config-components.h"/);
+  assert.match(builder, /makeH264ProbeDecoderManifest\(artifacts\["build-manifest.json"\]\)/);
+  const loader = await read("scripts/lib/mkv-edit-list-build-artifact.mjs");
+  assert.match(loader, /assertH264ProbeDecoderConfig\(content\["config-components.h"\]\)/);
+  assert.match(loader, /probeDecoderThreads, 1/);
+  assert.match(loader, /readWasmMemoryLimits\(wasm\), readWasmMemoryLimits\(baseline\)/);
+  const workflow = await read("media/ffmpeg/mkv-edit-list-nondocker.yml");
+  assert.ok(workflow.includes(`refs/heads/${h264ProbeDecoderBuildRef}`));
+  assert.match(workflow, /WITHIN_MKV_H264_PROBE_DECODER:/);
 });

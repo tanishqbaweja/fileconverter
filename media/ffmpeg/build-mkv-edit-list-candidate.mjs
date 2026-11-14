@@ -10,6 +10,8 @@ import { editListParentSha256, exactAacWrapperSha256, exactAacMovSha256, exactAa
   makeMkvExactAacTimelineCandidate, makeMkvExactAacMovSource } from "./mkv-exact-aac-timeline-candidate.mjs";
 import { deriveMkvEditListBuildRecipe, sha256 } from "./mkv-edit-list-build-recipe.mjs";
 import { h264VfrBuildRef, h264VfrWrapperSha256, makeMkvH264VfrCandidate } from "./mkv-h264-vfr-candidate.mjs";
+import { h264ProbeDecoderBuildRef, h264ProbeWrapperSha256, makeH264ProbeDecoderWrapper,
+  makeH264ProbeDecoderLibraries, makeH264ProbeDecoderManifest, assertH264ProbeDecoderConfig } from "./mkv-h264-probe-decoder-candidate.mjs";
 
 const root = path.resolve(import.meta.dirname, "../.."), work = path.join(root, "work");
 const publicDir = path.join(root, "public/engines/remux");
@@ -22,10 +24,14 @@ const vfrMode = process.env.WITHIN_MKV_H264_VFR ?? "0";
 assert.ok(["0", "1"].includes(vfrMode));
 const h264Vfr = vfrMode === "1";
 assert.ok(!h264Vfr || exactAac);
-const wrapperSha256 = h264Vfr ? h264VfrWrapperSha256 : exactAac ? exactAacWrapperSha256 : editListParentSha256;
+const probeMode = process.env.WITHIN_MKV_H264_PROBE_DECODER ?? "0";
+assert.ok(["0", "1"].includes(probeMode));
+const probeDecoder = probeMode === "1";
+assert.ok(!probeDecoder || h264Vfr);
+const wrapperSha256 = probeDecoder ? h264ProbeWrapperSha256 : h264Vfr ? h264VfrWrapperSha256 : exactAac ? exactAacWrapperSha256 : editListParentSha256;
 const files = {
   "within-direct.mjs": 256 * 1024,
-  "within-direct.wasm": 2 * 1024 * 1024,
+  "within-direct.wasm": (probeDecoder ? 8 : 2) * 1024 * 1024,
   "build-manifest.json": 32 * 1024,
   "within_remux.c": 512 * 1024,
   "LICENSE.ffmpeg-lgpl3": 32 * 1024,
@@ -59,12 +65,27 @@ async function prepare(action, build, output) {
     await writeFile(path.join(output, "movenc.c"), generated, { flag: "wx" });
     await writeFile(path.join(output, movProof), JSON.stringify(proof), { flag: "wx" });
     await rename(staged, path.join(directory, "movenc.c"));
+    if (probeDecoder) {
+      const script = path.join(build, "build-libraries.sh"), mode = (await lstat(script)).mode & 0o777;
+      const library = makeH264ProbeDecoderLibraries(await readBounded(build, "build-libraries.sh", 32768));
+      const replacement = script + ".candidate";
+      await writeFile(replacement, library.generated, { flag: "wx", mode });
+      await rename(replacement, script);
+      await writeFile(path.join(output, "build-libraries.sh"), library.generated, { flag: "wx" });
+      await writeFile(path.join(output, "h264-probe-library-proof.json"), JSON.stringify(library.proof), { flag: "wx" });
+    }
     return;
   }
   const base = await readBounded(build, "within_remux.c", files["within_remux.c"]);
   const parent = (exactAac ? makeMkvExactAacTimelineCandidate : makeMkvEditListTimelineCandidate)(base);
-  const derived = h264Vfr ? makeMkvH264VfrCandidate(parent.generated) : parent;
-  const { generated } = derived, proof = { ...parent.proof, ...derived.proof };
+  const vfr = h264Vfr ? makeMkvH264VfrCandidate(parent.generated) : parent;
+  const derived = probeDecoder ? makeH264ProbeDecoderWrapper(vfr.generated) : vfr;
+  const { generated } = derived, proof = { ...parent.proof, ...vfr.proof, ...derived.proof };
+  if (probeDecoder) {
+    const config = await readBounded(path.join(build, "ffmpeg"), "config_components.h", 512 * 1024);
+    proof.library = { ...JSON.parse(await readBounded(output, "h264-probe-library-proof.json", 8192)), ...assertH264ProbeDecoderConfig(config) };
+    await writeFile(path.join(output, "config-components.h"), config, { flag: "wx" });
+  }
   const staged = path.join(build, "within_remux.c.candidate");
   await writeFile(staged, generated, { flag: "wx" });
   await writeFile(path.join(output, "within_remux.c"), generated, { flag: "wx" });
@@ -82,7 +103,7 @@ function runRecipe(script, env) {
 
 async function buildCandidate() {
   assert.equal(process.env.GITHUB_ACTIONS, "true", "Use the isolated hosted candidate job");
-  if (exactAac) assert.equal(process.env.GITHUB_REF, `refs/heads/${h264Vfr ? h264VfrBuildRef : exactAacBuildRef}`);
+  if (exactAac) assert.equal(process.env.GITHUB_REF, `refs/heads/${probeDecoder ? h264ProbeDecoderBuildRef : h264Vfr ? h264VfrBuildRef : exactAacBuildRef}`);
   const ciOwner = process.env.WITHIN_CI_RUNTIME_OWNER, ciRoot = path.dirname(ciOwner);
   assert.equal(path.dirname(ciRoot), work);
   assert.match(path.basename(ciRoot), /^ci-[A-Za-z0-9]{6}$/);
@@ -105,7 +126,8 @@ async function buildCandidate() {
       WITHIN_MKV_TIMELINE_SCRIPT_DIR: import.meta.dirname, WITHIN_KEEP_NONDOCKER_OUTPUT: "1",
       WITHIN_VERIFY_SOURCE_REWRITES_ONLY: "0", WITHIN_BUILD_CORE_FILTER: "within-direct" });
     assert.equal(await realpath(compiled), compiled);
-    const expected = exactAac ? { ...files, "movenc.c": 512 * 1024 } : files;
+    const expected = { ...files, ...(exactAac ? { "movenc.c": 512 * 1024 } : {}),
+      ...(probeDecoder ? { "build-libraries.sh": 32768, "config-components.h": 512 * 1024 } : {}) };
     const artifacts = Object.fromEntries(await Promise.all(Object.entries(expected)
       .map(async ([file, limit]) => [file, await readBounded(compiled, file, limit)])));
     const derivation = JSON.parse(await readBounded(compiled, sourceProof, 8192));
@@ -121,6 +143,12 @@ async function buildCandidate() {
     }
     assert.deepEqual(await published(), release, "Published artifacts must stay byte-exact");
     assert.deepEqual(artifacts["build-manifest.json"], release["build-manifest.json"], "Build configuration must stay byte-exact");
+    if (probeDecoder) {
+      assert.deepEqual(assertH264ProbeDecoderConfig(artifacts["config-components.h"]),
+        { enabledDecoders: derivation.library.enabledDecoders, configSha256: derivation.library.configSha256 });
+      assert.equal(sha256(artifacts["build-libraries.sh"]), derivation.library.generatedSha256);
+      artifacts["build-manifest.json"] = Buffer.from(makeH264ProbeDecoderManifest(artifacts["build-manifest.json"]));
+    }
     const wasm = artifacts["within-direct.wasm"];
     assert.ok(WebAssembly.validate(wasm));
     assert.notEqual(sha256(wasm), sha256(release["within-direct.wasm"]), "Refuse to label released Wasm a candidate");

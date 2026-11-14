@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-11-14 probe-decoder wiring (not compiled/browser acceptance): builder
+now applies the exact copy-only library delta while preserving script execute
+permissions, saves actual `config_components.h` before scratch teardown,
+requires H.264 as the sole decoder and zero encoders, and declares it in the
+private manifest. Handoff authenticates that config, script, wrapper and
+manifest as well as unchanged Wasm memory/ABI. Separate ref/mode introduced;
+old native candidates are not overwritten. Offline code-artifact caps alone
+allow up to 8 MiB for this build; no runtime or user-data buffer limit raised.
+
 2026-11-14 probe-decoder source preflight (not compiled/browser acceptance):
 the authenticated parser-only wrapper was transformed reversibly to
 `a6987467…338fb98d`, adding one-thread H.264 inspection options with success/
