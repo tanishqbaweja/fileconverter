@@ -1,5 +1,19 @@
 # Tested conversion ledger
 
+2026-11-15 prepared, not browser-accepted: same B-frame/VFR source with exact
++5s timestamps; one 765,369-byte reusable source remains, SHA-256
+`3bc3dfd4a3909b33dd3532a10c4f423dea77e836de31347b8b835e7c7e55b38f`.
+Generated twice identically. Independent comparison verifies all 450 media
+packet payloads/trim and unavailable timestamps unchanged, every available
+PTS/DTS shifted exactly 5s. Metadata rotation/chapters/priming retained, no
+extra generation copy remains. Positive-start independent timeline gates use
+actual packet clocks and spans, full decoded hashes, both correct header
+meanings at unchanged 1ms clock/50ms header tolerances; reject rebasing,
+unavailable endpoints, changed content and invalid headers. New browser mode
+also requires +5s empty edits plus exact AAC trim. Three focused new checks
+pass, full relevant suite 67/67. Browser success and memory/recovery for both
+zero/positive-start controls remain unverified while build43653656481 runs.
+
 2026-11-15 bounded startup-DTS **source candidate only**, no browser acceptance.
 New wrapper `1c6b184978eecb8ce966a6db55cc3b8f3aa2d216e102a81e11aa9cc80d83db1f`
 is an exact reversible derivative of the prior probe wrapper; helper and bridge

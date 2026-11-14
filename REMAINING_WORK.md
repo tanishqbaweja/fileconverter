@@ -1,5 +1,25 @@
 # Remaining work audit
 
+2026-11-15 M-03: while run43653656481 compiles, prepared a second bitexact
+765,369-byte reusable B-frame/VFR source with +5s start (SHA-256
+`3bc3dfd4…7e55b38f`). Both generations identical; all 450 media packet payloads,
+trim, unavailable initial DTS and every available clock independently compared
+with the parent (only exact +5s clocks differ). Extra copies removed.
+Positive-start browser mode/gates prepared, **not yet run**. Unlike raw format
+durations (Matroska zero-origin endpoint vs MP4 span), compare every actual
+PTS/known DTS, decoded content, per-track start/end and both packet-derived
+header endpoints at the original 1ms/50ms gates; assert +5s empty edits and
+exact AAC 1024-sample trim. No timestamp rebasing or weaker scalar tolerance.
+Three new positive-timeline/fixture checks pass; full relevant focused suite
+67/67 passes. Zero-start B-frame run comes first after successful compilation;
+neither the unit suite nor the unrun mode is browser acceptance.
+
+2026-11-15 M-03: isolated startup candidate dispatched once, run **43653656481**,
+head `147b05167d5d5729a8aa186c2c073c833816aa3c`, confirmed in progress.
+Build arithmetic/source smoke has no media inputs. Do not redispatch on an
+observation timeout; follow this run to terminal state. Source branch/source
+derivation receipts retained; build/browser acceptance still unverified.
+
 2026-11-15 M-03: bounded startup-DTS candidate implemented, **not yet compiled
 or browser-qualified**. Derives byte-exactly/reversibly from the measured probe
 wrapper `a6987467…338fb98d`; new wrapper `1c6b1849…0d83db1f`. Reconstructs only

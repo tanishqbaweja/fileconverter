@@ -6,6 +6,8 @@ export const complexMkvFixture = Object.freeze({ file: "fixtures/media/complex-r
   sha256: "33d7ac90faed1d7598a5226bb0eae98892e4b4914080915b4902b7acf1f7f65f" });
 export const bframeMkvFixture = Object.freeze({ file: "fixtures/media/within-test-h264-bframes.mkv", bytes: 765366,
   sha256: "a17d9a37d8336967551a71d1c8c4cea2024be53e182e14ecc28cdd254f727559" });
+export const positiveBFrameMkvFixture = Object.freeze({ file: "fixtures/media/within-test-h264-bframes-positive.mkv", bytes: 765369,
+  sha256: "3bc3dfd4a3909b33dd3532a10c4f423dea77e836de31347b8b835e7c7e55b38f" });
 
 export function assertBFrameMkvSource(probe, packets) {
   assert.equal(probe.streams[0].codec_name, "h264");
@@ -67,7 +69,7 @@ export function compareComplexMkvPackets(source, output) {
 
 const rotation = stream => stream.side_data_list?.find(s => s.side_data_type === "Display Matrix")?.rotation;
 const tag = (tags, name) => Object.entries(tags ?? {}).find(([key]) => key.toLowerCase() === name)?.[1];
-export function assertComplexMkvStructure(source, output, warnings) {
+export function assertComplexMkvMetadata(source, output, warnings) {
   assert.deepEqual(source.streams.map(s => s.codec_type), ["video", "audio", "audio", "subtitle", "attachment"]);
   assert.equal(source.chapters.length, 2);
   assert.deepEqual(output.streams.map(s => s.codec_name), ["h264", "aac", "aac"]);
@@ -91,9 +93,14 @@ export function assertComplexMkvStructure(source, output, warnings) {
   assert.deepEqual(output.chapters ?? [], []);
   const warningText = warnings.join(" ").toLowerCase();
   for (const excluded of ["subtitle", "attachment", "chapter"]) assert.ok(warningText.includes(excluded), `${excluded} exclusion not disclosed`);
-  const durationDeltaSeconds = Math.abs(Number(output.format.duration) - Number(source.format.duration));
-  assert.ok(Number.isFinite(durationDeltaSeconds) && durationDeltaSeconds < 0.05, "Complex container duration differs by at least 50 ms");
   return { videoFields: fields, rotationDegrees: 90, audioLanguages: output.streams.slice(1).map(s => s.tags.language),
     audioDefaultDispositions: output.streams.slice(1).map(s => s.disposition.default), titleAndCommentPreserved: true, streamTitlesPreserved: true,
-    subtitleDisclosed: true, attachmentDisclosed: true, chapterDisclosed: true, durationDeltaSeconds };
+    subtitleDisclosed: true, attachmentDisclosed: true, chapterDisclosed: true };
+}
+
+export function assertComplexMkvStructure(source, output, warnings) {
+  const metadata = assertComplexMkvMetadata(source, output, warnings);
+  const durationDeltaSeconds = Math.abs(Number(output.format.duration) - Number(source.format.duration));
+  assert.ok(Number.isFinite(durationDeltaSeconds) && durationDeltaSeconds < 0.05, "Complex container duration differs by at least 50 ms");
+  return { ...metadata, durationDeltaSeconds };
 }

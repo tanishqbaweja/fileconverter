@@ -1,0 +1,23 @@
+{
+  "status": "reusable-bitexact-source-generated-twice-identically",
+  "file": "fixtures/media/within-test-h264-bframes-positive.mkv",
+  "bytes": 765369,
+  "sha256": "3bc3dfd4a3909b33dd3532a10c4f423dea77e836de31347b8b835e7c7e55b38f",
+  "parent": {
+    "file": "fixtures/media/within-test-h264-bframes.mkv",
+    "bytes": 765366,
+    "sha256": "a17d9a37d8336967551a71d1c8c4cea2024be53e182e14ecc28cdd254f727559"
+  },
+  "offsetSeconds": 5,
+  "packetCounts": [
+    72,
+    189,
+    189
+  ],
+  "packetPayloadAndTrimIdentity": true,
+  "everyAvailablePtsAndDtsShiftedExactlyFiveSeconds": true,
+  "unavailableInitialDtsPreserved": true,
+  "formatStartSeconds": 5,
+  "matroskaSegmentEndpointSeconds": 9.031,
+  "nativeToolUsedOnlyForFixtureGenerationAndInspection": true
+}
