@@ -1,0 +1,14 @@
+{
+  "status": "dispatched-in-progress-not-acceptance",
+  "runId": 43583077059,
+  "head": "93c0d4d8455947745e92f4acedfe42d27aea5368",
+  "branch": "codex/mkv-h264-vfr-native-20261114",
+  "workflowId": 345162646,
+  "createdAt": "2026-11-14T09:59:07Z",
+  "url": "https://github.com/tanishqbaweja/fileconverter/actions/runs/43583077059",
+  "candidateWrapperSha256": "02e6dcbac2160882132cd19606b0820a3f6aa0718cc800abf9caa5c741f2ce8a",
+  "focusedLocalTestsPassed": 43,
+  "mediaInputs": 0,
+  "noDocker": true,
+  "publicAcceptance": false
+}

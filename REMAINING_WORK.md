@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-14 M-03: H.264 correction build dispatched once as run 43583077059,
+isolated ref `codex/mkv-h264-vfr-native-20261114`, head
+`93c0d4d8455947745e92f4acedfe42d27aea5368`; confirmed in progress. Canonical
+HEAD/index/registered production workflow and remote main stayed unchanged
+while installing the isolated workflow. Forty-three focused local checks pass.
+Observe this run; do not redispatch on an observation timeout. Build and browser
+acceptance remain unproven until the actual results and artifacts are inspected.
+
 2026-11-14 M-03: isolated H.264 timing correction implemented, not yet compiled
 or browser-accepted. Authenticated prior tool ZIP/source preflight exercised
 the exact reversible derivation: wrapper `02e6dcba…41f2ce8a`. H.264 uses the

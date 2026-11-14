@@ -1,0 +1,18 @@
+{
+  "status": "isolated-h264-vfr-build-branch-pushed-not-dispatched",
+  "branch": "codex/mkv-h264-vfr-native-20261114",
+  "parent": "ba7d96f60d99ee40682f152d70c00eaee1c6a6c5",
+  "commit": "93c0d4d8455947745e92f4acedfe42d27aea5368",
+  "tree": "713261db4a4016a3f5ff580a0ad00fc58f1bd3cd",
+  "changedTrackedFiles": [
+    ".github/workflows/reproduce-ffmpeg-nondocker.yml"
+  ],
+  "workflowSha256": "86dee260789b4790b68b6c947ea8bac7c9472fdbac5f482bbb669424d823cdb4",
+  "canonicalHeadIndexWorkflowUnchanged": true,
+  "mainUnchanged": true,
+  "ownedIndexRuntimeRemoved": true,
+  "remoteVerified": true,
+  "mediaInputs": 0,
+  "noDocker": true,
+  "publicAcceptance": false
+}
