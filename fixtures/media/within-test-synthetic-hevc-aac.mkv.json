@@ -1,0 +1,19 @@
+{
+  "status": "reusable-bitexact-source-generated-twice-identically",
+  "fixture": {
+    "bytes": 5945271,
+    "sha256": "5b8fdc40c1679299442736984826ff4d01be2e69915906ea4e31c0dde267dedc",
+    "packetHashes": "0,v,SHA256=5e6f785adac7ccd13935aed7a5653640f7b5b5f52c2aa4b8756be1153e37fd25\n1,a,SHA256=548c22684f4175fa249ed958f37bc9f12bba0eacc85e431535f9a7a3983d92fc",
+    "decodedPcm": "0,a,SHA256=17e94a559cddd4633034e25ecd565ff195adf64aedd95321864e227fd7693a60"
+  },
+  "historicalReference": {
+    "file": "evidence/2026-11-08T01-16-10-010Z-mkv-edit-list-aac-candidate.json",
+    "sha256": "e35ecbb2b7c882aa0a7a117a9babff9de71d5343cfa4d5009b9a78e2fd8c8c9f"
+  },
+  "historicalInputByteIdentity": false,
+  "historicalPacketHashesAndDecodedPcmMatch": true,
+  "inputIdentityRequiredForFutureRuns": true,
+  "reason": "Historical disposable Matroska had non-deterministic container identifiers; this source fixes future input identity without changing encoded packet streams or relaxing output validation.",
+  "nativeToolUsedOnlyForFixtureGenerationAndInspection": true,
+  "protectedOriginalSelected": false
+}

@@ -1,5 +1,43 @@
 # Tested conversion ledger
 
+2026-11-15 **HEVC regression passes on the changed private core**, with an
+identical pinned source and independently validated old-core baseline.
+Headless Chrome 157.0.8103.51, source 5,945,271 bytes SHA-256
+`5b8fdc40c1679299442736984826ff4d01be2e69915906ea4e31c0dde267dedc`.
+Both old (`f56a8592…1707be7`) and probe-decoder (`3d08c462…f3148fc`) Wasm
+cores produced 5,948,960-byte MP4s with full SHA-256
+`44aaba0e37cdfcca8bb6ee7a32569ef2af7d36c52906b7ba38e07d65eafe6d37`.
+Each session: complete, startup-cancelled, injected write error, complete;
+recovery output byte-identical. Changed-core jobs 470.460/461.820 ms, not a
+speedup benchmark. Exact compressed video/audio streams, video PTS/DTS exact,
+audio <=333 us, exact 1,024-sample trim and full PCM, complete independent
+decode and 10.333 ms duration delta passed under unchanged fidelity limits.
+
+Whole-Chromium peaks above each original stable blank: old 134.438 MiB,
+changed 148.082 MiB. Cleanup above each original loaded idle: +54.078 and
++67.848 MiB. Native valid samples 142/144, none unavailable, totals rederived
+from journals. Wasm peak 24 MiB, <=256 KiB reads, <=1 MiB writes/queued bytes,
+one pending operation, no staging or validation copy. All outputs/profiles,
+servers, 41/44 observed owned Chrome PIDs and temporary fixture/tool scratch
+removed; `test.mkv` unchanged. Retain ONE explicitly reusable 5.95 MB source
+in `fixtures/media`, generated twice byte-identically; no converted copy kept.
+
+Setup failures are preserved honestly. `22-47-22-811Z` stopped before Chrome
+because regenerated historical Matroska bytes differed despite matching packet
+streams/PCM. `22-52-43-009Z` passed independent content/decode checks but failed
+an invalid cross-fixture output-hash comparison. Neither is acceptance. The
+old core was then run against the exact pinned input to establish a genuine
+baseline; the new core had to match it in full. Historical input-byte identity
+and speedup are not claimed, and no output threshold was relaxed.
+
+Receipts: `evidence/2026-11-14T22-55-45-030Z-mkv-fixed-input-hevc-baseline.json`
+and `evidence/2026-11-14T22-57-45-449Z-mkv-probe-decoder-hevc-control.json`.
+Fifty-three focused source/reference/fidelity/evidence/I/O checks pass.
+The Playwright skill guided headless validation; no headed/manual claim.
+Broader H.264 timing, changed-core original stress, production/reproducibility/
+privacy, repeat, browser and near-10 GB qualification remain open. Do not
+replay accepted controls; no released asset/registry changes.
+
 2026-11-14 **previously failing VFR/two-AAC case now passes on the private
 probe-decoder candidate**. No-Docker run 43585154631 succeeded at isolated
 head `3000ccdc…6479db`; compile/seal 404 s, job 451 s, neither is conversion

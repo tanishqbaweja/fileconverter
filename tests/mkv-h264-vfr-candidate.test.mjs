@@ -6,6 +6,9 @@ import { checkMkvEditListArchive } from "../scripts/lib/mkv-edit-list-build-arti
 import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 import { summarizeProtectedWindow } from "../scripts/lib/mkv-protected-repeat-contract.mjs";
+import { readMkvHevcRegressionReference, readMkvFixedHevcReference, mkvFixedHevcReference, mkvStagedReference, mkvHevcRegressionFixture } from "../scripts/lib/mkv-exact-aac-staged-reference.mjs";
+import { createReadStream } from "node:fs";
+import { reconcileChromiumBirths } from "../scripts/lib/reconcile-chromium-births.mjs";
 import { makeH264ProbeDecoderWrapper, makeH264ProbeDecoderLibraries, makeH264ProbeDecoderManifest,
   h264ProbeLibrarySha256, h264ProbeManifestSha256, assertH264ProbeDecoderConfig,
   h264ProbeDecoderBuildRef } from "../media/ffmpeg/mkv-h264-probe-decoder-candidate.mjs";
@@ -213,4 +216,91 @@ test("Actual probe-decoder browser run restores VFR, both AAC tracks and determi
   assert.deepEqual(report.originalBefore, report.originalAfter);
   assert.equal(report.publicAcceptance, false); assert.equal(report.productionFilesReplaced, false);
   assert.equal(report.headed, false); assert.equal(report.nativeConversionUsed, false);
+});
+
+test("Pinned HEVC control binds historical media content and birth-verified cleanup", async () => {
+  const read = file => readFile(new URL(`../${file}`, import.meta.url));
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const bytes = await read(mkvStagedReference.file), report = JSON.parse(bytes), [arm] = report.arms;
+  const fixture = { ...report.fixture, bytes: mkvHevcRegressionFixture.bytes, sha256: mkvHevcRegressionFixture.sha256 };
+  const digest = createHash("sha256");
+  for await (const chunk of createReadStream(new URL(`../${mkvHevcRegressionFixture.file}`, import.meta.url), { highWaterMark: 262144 })) digest.update(chunk);
+  assert.equal(digest.digest("hex"), fixture.sha256);
+  const reference = readMkvHevcRegressionReference(bytes, fixture);
+  assert.equal(reference.outputBytes, 5948960);
+  assert.equal(reference.outputSha256, "6a45619c0e9af37a2ff9577b0a520b45d322cdccb8b4aec4f3fdfc361776becf");
+  assert.match(reference.scope, /not same-tool or historical input-byte equivalence/);
+  assert.equal(reference.historicalInputByteIdentity, false);
+  assert.throws(() => readMkvHevcRegressionReference(Buffer.concat([bytes, Buffer.from("\n")]), fixture));
+  assert.throws(() => readMkvHevcRegressionReference(bytes, { ...fixture, sha256: "0".repeat(64) }));
+  assert.throws(() => readMkvHevcRegressionReference(bytes, { ...fixture, aac: null }));
+  const packed = await read(arm.archive.file); assert.equal(sha(packed), arm.archive.sha256);
+  const raw = gunzipSync(packed, { maxOutputLength: 2 * 1024 ** 2 }); assert.equal(sha(raw), arm.archive.decodedSha256);
+  assert.deepEqual(reconcileChromiumBirths({ identity: arm.identity, observedPids: arm.browserCleanup.observedPids,
+    samples: JSON.parse(raw), current: arm.browserCleanup.observations.at(-1).current }), arm.birthCleanup);
+});
+
+test("Identical pinned HEVC input yields identical valid output on old and probe-decoder cores", async () => {
+  const read = file => readFile(new URL(`../${file}`, import.meta.url));
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const baselineBytes = await read(mkvFixedHevcReference.file), baseline = JSON.parse(baselineBytes);
+  const ref = readMkvFixedHevcReference(baselineBytes, baseline.fixture);
+  assert.throws(() => readMkvFixedHevcReference(Buffer.concat([baselineBytes, Buffer.from("\n")]), baseline.fixture));
+  assert.throws(() => readMkvFixedHevcReference(baselineBytes, { ...baseline.fixture, sha256: "0".repeat(64) }));
+  const bytes = await read("evidence/2026-11-14T22-57-45-449Z-mkv-probe-decoder-hevc-control.json");
+  assert.equal(sha(bytes), "3b142de687d6b1088f94660477a81030849d8993646cf95544cfc3e9487e35c2");
+  const changed = JSON.parse(bytes);
+  assert.equal(changed.status, "passed-probe-decoder-hevc-regression-not-public-acceptance");
+  assert.deepEqual(changed.hevcReference, ref);
+  assert.equal(ref.outputSha256, "44aaba0e37cdfcca8bb6ee7a32569ef2af7d36c52906b7ba38e07d65eafe6d37");
+  for (const [report, peak, cleanup, count] of [[baseline, 134.4375, 54.078125, 41], [changed, 148.08203125, 67.84765625, 44]]) {
+    assert.equal(report.fixture.sha256, mkvHevcRegressionFixture.sha256);
+    const [arm] = report.arms;
+    assert.deepEqual(arm.cases.map(row => row.state), ["complete", "cancelled", "error", "complete"]);
+    for (const row of [arm.cases[0], arm.cases[3]]) {
+      assert.ok(row.validation.candidateGate.passed && row.validation.fullDecode && row.validation.timingGate.passed);
+      assert.equal(row.metrics.outputBytes, 5948960); assert.equal(row.validation.outputSha256, ref.outputSha256);
+      assert.ok(row.validation.aac.completeDecodedPcmEqual);
+      assert.equal(row.validation.aac.packetTimingAndTrim.initialSkipSamples, 1024);
+      assert.deepEqual(row.validation.clocks.map(clock => clock.maximumPtsErrorUs), [0, 333]);
+      assert.deepEqual(row.validation.clocks.map(clock => clock.maximumComparableDtsErrorUs), [0, 333]);
+      assert.ok(row.metrics.maxReadChunkBytes <= 262144 && row.metrics.maxWriteChunkBytes <= 1048576);
+      assert.ok(row.metrics.peakQueuedBytes <= 1048576); assert.equal(row.metrics.peakPendingOperations, 1);
+      assert.equal(row.metrics.peakWasmMemoryBytes, 24 * 1048576);
+      assert.equal(row.metrics.peakScratchBytes ?? 0, 0); assert.equal(row.binding.convertedCopyCreated, false);
+    }
+    assert.ok(arm.cases.every(row => row.outputRemoved));
+    assert.match(arm.cases[2].error, /destination rejected a bounded write/);
+    const packed = await read(arm.archive.file); assert.equal(sha(packed), arm.archive.sha256);
+    const raw = gunzipSync(packed, { maxOutputLength: 2 * 1024 ** 2 }); assert.equal(sha(raw), arm.archive.decodedSha256);
+    assert.equal(summarizeProtectedWindow(JSON.parse(raw), arm.memory, arm.blank.privateBytes).incrementalPrivateMiB, peak);
+    assert.equal((arm.cleanupStable.privateBytes - arm.loaded.privateBytes) / 1048576, cleanup);
+    assert.equal(arm.memory.unavailableSamples, 0);
+    assert.ok(arm.ownedRuntimeRemoved && arm.serverCleanup.ownedRootAbsent && report.fixtureRuntimeRemoved && report.toolDownloadRemoved);
+    assert.equal(arm.browserCleanup.status, "owned-observed-pids-absent"); assert.equal(arm.browserCleanup.observedPids.length, count);
+    assert.deepEqual(arm.forbiddenRequests, []); assert.deepEqual(report.originalBefore, report.originalAfter);
+    assert.equal(report.publicAcceptance, false); assert.equal(report.productionFilesReplaced, false);
+  }
+  assert.notEqual(baseline.candidateBuild.build.artifacts["within-direct.wasm"].sha256,
+    changed.candidateBuild.build.artifacts["within-direct.wasm"].sha256);
+});
+
+test("Fixture-identity and cross-fixture output mismatches stay failed, not retroactively accepted", async () => {
+  const read = file => readFile(new URL(`../${file}`, import.meta.url));
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const firstBytes = await read("evidence/2026-11-14T22-47-22-811Z-mkv-probe-decoder-hevc-control.json");
+  assert.equal(sha(firstBytes), "0d72ab1f496cfbd4123f00814a06b81ae9d21316b99c56e95401b6df9cd79636");
+  const preflight = JSON.parse(firstBytes);
+  assert.equal(preflight.status, "failed-not-acceptance"); assert.deepEqual(preflight.arms, []);
+  assert.match(preflight.failures[0], /Same HEVC fixture required: sha256/);
+  assert.ok(preflight.fixtureRuntimeRemoved && preflight.toolDownloadRemoved);
+  const secondBytes = await read("evidence/2026-11-14T22-52-43-009Z-mkv-probe-decoder-hevc-control.json");
+  assert.equal(sha(secondBytes), "6cb95d78fa5a59bdf87891e2fea6cee99039e0a9753a6e39953a2523ffc68993");
+  const second = JSON.parse(secondBytes), [arm] = second.arms;
+  assert.equal(second.status, "failed-not-acceptance"); assert.equal(arm.cases.length, 1);
+  assert.equal(arm.cases[0].state, "complete"); assert.equal(arm.cases[0].validation.fullDecode, true);
+  assert.match(arm.failures[0], /Changed core altered previously validated HEVC output bytes/);
+  assert.equal(arm.memory.cleanupAboveIdleMiB, null);
+  assert.ok(arm.ownedRuntimeRemoved && arm.serverCleanup.ownedRootAbsent && second.fixtureRuntimeRemoved && second.toolDownloadRemoved);
+  assert.equal(arm.browserCleanup.status, "owned-observed-pids-absent");
 });
