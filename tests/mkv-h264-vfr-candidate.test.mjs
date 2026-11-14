@@ -5,6 +5,7 @@ import { h264VfrBuildRef, h264VfrWrapperSha256, makeMkvH264VfrCandidate } from "
 import { checkMkvEditListArchive } from "../scripts/lib/mkv-edit-list-build-artifact.mjs";
 import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
+import { summarizeProtectedWindow } from "../scripts/lib/mkv-protected-repeat-contract.mjs";
 import { makeH264ProbeDecoderWrapper, makeH264ProbeDecoderLibraries, makeH264ProbeDecoderManifest,
   h264ProbeLibrarySha256, h264ProbeManifestSha256, assertH264ProbeDecoderConfig,
   h264ProbeDecoderBuildRef } from "../media/ffmpeg/mkv-h264-probe-decoder-candidate.mjs";
@@ -147,4 +148,69 @@ test("Probe build preserves executable permissions and retains real configuratio
   const workflow = await read("media/ffmpeg/mkv-edit-list-nondocker.yml");
   assert.ok(workflow.includes(`refs/heads/${h264ProbeDecoderBuildRef}`));
   assert.match(workflow, /WITHIN_MKV_H264_PROBE_DECODER:/);
+});
+
+test("Actual probe-decoder browser run restores VFR, both AAC tracks and deterministic fault recovery", async () => {
+  const read = file => readFile(new URL(`../${file}`, import.meta.url));
+  const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+  const stem = "evidence/2026-11-14T10-33-21-625Z-mkv-exact-aac-complex";
+  const bytes = await read(stem + ".json");
+  assert.equal(sha(bytes), "70120713e776e87bd33799ed1c55cef795cb5e6509e68a9e13841a3f09c5e170");
+  const report = JSON.parse(bytes), [arm] = report.arms;
+  assert.equal(report.status, "passed-complex-exact-aac-direct-reuse-not-public-acceptance");
+  assert.equal(report.h264ProbeDecoderCandidate, true);
+  assert.equal(report.candidateBuild.head, "3000ccdc32b6ffaec770500f850327a7c46479db");
+  assert.equal(report.candidateBuild.runId, "43585154631");
+  assert.equal(report.candidateBuild.build.artifacts["within-direct.wasm"].sha256,
+    "3d08c462c2075da150386de99b1408cfc72e0d2f21436c40153b95a6ff3148fc");
+  assert.equal(report.candidateBuild.build.artifacts["build-manifest.json"].sha256, h264ProbeManifestSha256);
+  assert.equal(report.candidateBuild.build.artifacts["build-libraries.sh"].sha256, h264ProbeLibrarySha256);
+  const configPacked = await read(stem + "-compiled-config.h.gz");
+  assert.equal(sha(configPacked), "7f337f2010a3b04df2f8a0523faa907a12b710f1d5b06b3f2feda82683127b62");
+  const config = gunzipSync(configPacked, { maxOutputLength: 512 * 1024 });
+  assert.equal(config.length, 75831);
+  assert.deepEqual(assertH264ProbeDecoderConfig(config), { enabledDecoders: ["h264"],
+    configSha256: report.candidateBuild.build.source.library.configSha256 });
+  assert.deepEqual(arm.cases.map(row => row.state), ["complete", "cancelled", "error", "complete"]);
+  const successful = [arm.cases[0], arm.cases[3]];
+  assert.deepEqual(successful.map(row => row.metrics.elapsedMs), [528.3450000286102, 525.8999999761581]);
+  for (const row of successful) {
+    assert.ok(row.validation.candidateGate.passed && row.validation.fullDecode && row.outputRemoved);
+    assert.equal(row.metrics.outputBytes, 782689);
+    assert.equal(row.validation.outputSha256, "cb62dd3f503c942cffd8ffc2547c29a68e6010a3338f45da24d76f9da395847b");
+    assert.equal(row.validation.outputProbe.streams[0].duration, "3.999000");
+    assert.equal(row.validation.sourceDecodedHashes, row.validation.outputDecodedHashes);
+    assert.equal(row.validation.sourceDecodedHashes.split(/\r?\n/).length, 3);
+    const packets = row.validation.packets;
+    assert.deepEqual(packets.packetCounts, [72, 189, 189]); assert.equal(packets.packetBytesIdentical, true);
+    assert.deepEqual(packets.clocks.map(clock => clock.maximumPtsErrorUs), [0, 333, 333]);
+    assert.deepEqual(packets.clocks.map(clock => clock.maximumComparableDtsErrorUs), [0, 333, 333]);
+    assert.deepEqual(packets.aac.map(track => track.initialSkipSamples), [1024, 1024]);
+    assert.deepEqual(packets.sourceCadenceMs, [41, 42, 83, 84]);
+    assert.deepEqual(row.validation.serializedTimeline.tracks.map(track => track.edits[0].mediaTimeTicks), ["0", "1024", "1024"]);
+    assert.ok(row.validation.structure.streamTitlesPreserved && row.validation.structure.titleAndCommentPreserved);
+    assert.deepEqual(row.validation.structure.audioLanguages, ["eng", "spa"]);
+    assert.equal(row.validation.structure.rotationDegrees, 90);
+    assert.ok(row.validation.structure.subtitleDisclosed && row.validation.structure.attachmentDisclosed && row.validation.structure.chapterDisclosed);
+    assert.equal(row.binding.convertedCopyCreated, false);
+    assert.equal(row.metrics.peakWasmMemoryBytes, 24 * 1048576);
+    assert.ok(row.metrics.maxReadChunkBytes <= 262144 && row.metrics.maxWriteChunkBytes <= 1048576);
+    assert.ok(row.metrics.peakQueuedBytes <= 1048576); assert.equal(row.metrics.peakPendingOperations, 1);
+    assert.equal(row.metrics.peakScratchBytes ?? 0, 0);
+  }
+  assert.deepEqual(arm.cases[1].cancellationBefore, { jobState: "running", outputBytes: 0, wasmResponseHeld: true });
+  assert.match(arm.cases[2].error, /destination rejected a bounded write/);
+  assert.ok(arm.cases.every(row => row.outputRemoved));
+  const packed = await read(arm.archive.file); assert.equal(sha(packed), arm.archive.sha256);
+  const raw = gunzipSync(packed, { maxOutputLength: 2 * 1024 ** 2 }); assert.equal(sha(raw), arm.archive.decodedSha256);
+  const memory = summarizeProtectedWindow(JSON.parse(raw), arm.memory, arm.blank.privateBytes);
+  assert.equal(memory.incrementalPrivateMiB, 206.15234375);
+  assert.equal(memory.validSamples, 142); assert.equal(memory.unavailableSamples, 0);
+  assert.equal((arm.cleanupStable.privateBytes - arm.loaded.privateBytes) / 1048576, 62.75390625);
+  assert.ok(arm.ownedRuntimeRemoved && arm.serverCleanup.ownedRootAbsent && report.fixtureRuntimeRemoved && report.toolDownloadRemoved);
+  assert.equal(arm.browserCleanup.status, "owned-observed-pids-absent"); assert.equal(arm.browserCleanup.observedPids.length, 43);
+  assert.deepEqual(arm.forbiddenRequests, []); assert.deepEqual(arm.failures, []); assert.deepEqual(report.failures, []);
+  assert.deepEqual(report.originalBefore, report.originalAfter);
+  assert.equal(report.publicAcceptance, false); assert.equal(report.productionFilesReplaced, false);
+  assert.equal(report.headed, false); assert.equal(report.nativeConversionUsed, false);
 });

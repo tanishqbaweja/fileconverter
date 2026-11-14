@@ -1,5 +1,44 @@
 # Tested conversion ledger
 
+2026-11-14 **previously failing VFR/two-AAC case now passes on the private
+probe-decoder candidate**. No-Docker run 43585154631 succeeded at isolated
+head `3000ccdc…6479db`; compile/seal 404 s, job 451 s, neither is conversion
+time. Wasm 2,399,135 bytes, SHA-256
+`3d08c462c2075da150386de99b1408cfc72e0d2f21436c40153b95a6ff3148fc`.
+Actual compiled config proves only H.264 decoding and zero encoders. The
+one-thread bounded probe establishes DTS; final media is still stream-copied.
+Config header retained as a 10,104-byte gzip alongside the JSON and native
+memory journal; its hash and actual macro definitions are rechecked in tests.
+
+Headless installed Chrome 157.0.8103.51 selected the unchanged existing
+780,989-byte complex fixture. States: complete, startup-cancelled, injected
+write error, complete. Both successful MP4s were 782,689 bytes with full hash
+`cb62dd3f503c942cffd8ffc2547c29a68e6010a3338f45da24d76f9da395847b`,
+in 528.345/525.900 ms. No speedup claimed against the invalid old outputs.
+All 72 H.264 and 189 packets in EACH AAC track retained payload/decode order.
+Video PTS/DTS exact, varying 41/42/83/84 ms cadence retained, video duration
+3.999 s instead of the old erroneous 2.999 s. Both AAC tracks stayed within
+333 us, preserved exact 1,024-sample trim/edit lists, and complete decoded
+video plus both PCM hashes matched. Container duration delta 0.333 ms.
+Rotation/color/geometry, both languages/default dispositions, stream titles,
+general title/comment and disclosed subtitle/attachment/chapter exclusions pass.
+
+Whole-Chromium peak 206.152 MiB above stable blank across all four cases,
+cleanup +62.754 MiB above original loaded idle (142 valid samples, none
+unavailable). Actual process totals are rederived from the archived journal.
+Wasm peak 24 MiB, reads <=256 KiB, writes/queued bytes <=1 MiB, one pending
+operation, no staging/validation copy. All outputs, profile, server, all 43
+owned observed Chrome PIDs, fixture and tool scratch removed; original
+`test.mkv` size/SHA-256 unchanged. Fifty focused tests pass, including the
+actual source/config/fidelity/recovery/memory/cleanup receipt. The Playwright
+skill guided the headless check; no manual/headed claim.
+
+Receipt: `evidence/2026-11-14T10-33-21-625Z-mkv-exact-aac-complex.json`.
+This closes that exact private-case defect only. HEVC on this changed core,
+broader H.264 B-frame/nonzero-start cases, eventual production promotion and
+reproducibility/privacy, stress repeats, other browsers and >4 GB/near-10 GB
+scale remain unverified. No released asset or registry change.
+
 2026-11-14 probe-decoder wiring (not compiled/browser acceptance): builder
 now applies the exact copy-only library delta while preserving script execute
 permissions, saves actual `config_components.h` before scratch teardown,
