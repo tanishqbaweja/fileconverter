@@ -1,0 +1,19 @@
+{
+  "status": "verified-source-derivation-only-not-compiled-or-browser-accepted",
+  "parentArtifactId": 14109567419,
+  "parentArtifactSha256": "2313eb0948b59d6dd09b5d94a4d8a5ed6e253fc6227dc15a342ef55f5d4a91fe",
+  "parentWrapperSha256": "02e6dcbac2160882132cd19606b0820a3f6aa0718cc800abf9caa5c741f2ce8a",
+  "candidateWrapperSha256": "a6987467063bf113ec2403955bdb3f7147c50bd72c1bf1a98ae0b3d4338fb98d",
+  "libraryParentSha256": "6414ea37233cf82ebb4cbac2352061ed830befbdf7eb395988b7c1e2d187f6cf",
+  "libraryGeneratedSha256": "49929353da80a2a42f49c5664ba3e9445b463a58a3dec2a4f22f9bc508a48857",
+  "manifestGeneratedSha256": "16723e3b5e8e7a515851e0023b54b02847461d159810651f64ca24044416f536",
+  "exactReversalsVerified": true,
+  "enabledDecoders": ["h264"],
+  "probeDecoderThreads": 1,
+  "probeOptionsFreedOnFailureAndSuccess": true,
+  "probeAndWasmBoundsChanged": false,
+  "publicFilesChanged": false,
+  "ownedScratchRemoved": true,
+  "mediaInputs": 0,
+  "publicAcceptance": false
+}

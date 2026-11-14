@@ -43,7 +43,8 @@ import { h264VfrWrapperSha256 } from "../media/ffmpeg/mkv-h264-vfr-candidate.mjs
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
-const h264Vfr = process.argv[2] === "--h264-vfr-complex";
+const terminalDiagnostic = process.argv[2] === "--h264-vfr-error-diagnostic";
+const h264Vfr = terminalDiagnostic || process.argv[2] === "--h264-vfr-complex";
 const complexTimeline = h264Vfr || process.argv[2] === "--edit-list-aac-complex";
 const sustained = process.argv[2] === "--edit-list-aac-sustained";
 const protectedRepeats = process.argv[2] === "--edit-list-aac-protected-repeats";
@@ -74,6 +75,10 @@ if (protectedRepeats) report.scope = "Three same-page protected original remuxes
 if (protectedFullDecode) report.scope = "One real protected browser remux, full-file identity to prior packet/PCM evidence and independent complete video decode; not a public release or scaling claim.";
 if (complexTimeline) report.scope = "Existing complex VFR/two-AAC fixture, exact unpublished candidate, direct-reuse browser pipeline, strict packet/trim/decoded-content/metadata and recovery gates; not a speed, original-file, scale or public claim.";
 if (h264Vfr) report.h264VfrCandidate = true;
+if (terminalDiagnostic) {
+  report.diagnosticOnly = true;
+  report.scope = "One bounded browser-engine error capture for the failed H.264 candidate; no fidelity, recovery, speed or acceptance claim.";
+}
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
@@ -394,6 +399,13 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
       await guard(page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState), undefined, { timeout: protectedMode ? 180000 : 45000 }));
       if (protectedMode) { protectedTerminal = Date.now(); row.conversionWindow.end = protectedTerminal; }
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState()); row.state = state.jobState; row.metrics = state.metrics;
+      row.error = typeof state.error === "string" ? state.error.slice(0, 2048) : null;
+      row.phase = typeof state.phase === "string" ? state.phase.slice(0, 256) : null;
+      if (terminalDiagnostic) {
+        assert.equal(row.state, "error"); assert.ok(row.error); assert.equal(row.metrics.outputBytes, 0);
+        row.diagnosticTerminalCaptured = true;
+        throw new Error(`Diagnostic-only engine refusal, not acceptance: ${row.error}`);
+      }
       const leftovers = await entries(); assert.ok(leftovers.every(item => !item.name.startsWith("within-stage-")));
       if (fault || cancel) {
         if (fault) { assert.equal(row.state, "error"); assert.match(state.error, /destination rejected a bounded write/); }

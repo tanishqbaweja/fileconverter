@@ -1,5 +1,41 @@
 # Remaining work audit
 
+2026-11-14 M-03 follow-up: next probe-decoder source preparation exercised
+against the authenticated failed-candidate wrapper. Exact reversible wrapper
+`a6987467…338fb98d` passes per-stream one-thread probe options and frees them
+on success/failure. Exact library-script delta enables only the H.264 decoder
+in the copy-only branch; manifest delta declares it without changing another
+engine or any memory bound. No published source was edited. This is source
+preflight only, not compiled or wired into the builder/handoff yet. Next:
+wire an isolated decoder build/ref, attest actual CONFIG_H264_DECODER and
+compiled library/source/manifest hashes, then run the unchanged complex case.
+Keep the failed parser-only build immutable; do not retry it. Receipt:
+`evidence/mkv-h264-probe-decoder-source-preflight-2026-11-14.json`.
+
+2026-11-14 M-03: **parser-only H.264 correction compiled, then refused the
+complex fixture; not accepted**. Run 43583077059 succeeded at the pinned head,
+Wasm `01ffd944…677de7` (1,279,617 bytes), wrapper `02e6dcba…41f2ce8a`, unchanged
+MOV patch and 24/64 MiB limits. Browser run produced no output: H.264 DTS was
+still unavailable after bounded inspection, so the new safety guard stopped it.
+First receipt lacked terminal error text; a separately labelled one-job
+diagnostic captured the explicit refusal after fixing bounded error/phase
+retention. Do not replay either unchanged candidate or diagnostic.
+
+The specialist library configuration contains H.264 parser but no decoder.
+Pinned FFmpeg demux source establishes H.264 delay using decoded-frame evidence;
+parser inspection alone did not establish the missing DTS here. Next: build
+an isolated variant with only the H.264 probe decoder enabled, one inspection
+thread, unchanged probe/Wasm/whole-Chrome bounds, and accurate library/manifest
+proof; then run the same complex fidelity test. No PTS-as-DTS guess, CFR
+reconstruction, larger probe budget or silent unsupported-profile substitution.
+Relevant primary source: https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/demux.c
+
+Both failed jobs cleaned output placeholders/profile/server/fixture/tool
+scratch and all 40/38 observed Chrome PIDs; original hash unchanged. Receipts:
+`evidence/2026-11-14T10-09-16-982Z-mkv-exact-aac-complex.json` and
+`evidence/2026-11-14T10-11-11-359Z-mkv-exact-aac-complex.json`.
+No production asset or advertised support changed. Full objective stays open.
+
 2026-11-14 M-03: H.264 correction build dispatched once as run 43583077059,
 isolated ref `codex/mkv-h264-vfr-native-20261114`, head
 `93c0d4d8455947745e92f4acedfe42d27aea5368`; confirmed in progress. Canonical

@@ -1,5 +1,47 @@
 # Tested conversion ledger
 
+2026-11-14 probe-decoder source preflight (not compiled/browser acceptance):
+the authenticated parser-only wrapper was transformed reversibly to
+`a6987467…338fb98d`, adding one-thread H.264 inspection options with success/
+failure cleanup. A separate exact library derivation enables only H.264
+decoding in the copy-only branch; manifest derivation declares it and leaves
+all other fields byte-for-byte unchanged. No public file edited, no media
+run, owned inspection scratch removed. Build/config/handoff wiring and an
+actual browser test still required. See
+`evidence/mkv-h264-probe-decoder-source-preflight-2026-11-14.json`.
+All 46 focused source/build, bounded I/O, fidelity-validator and retained
+evidence checks pass; these do not turn the failed browser jobs into successes.
+
+2026-11-14 **H.264 parser-only correction failed safely; no conversion pass**.
+No-Docker run 43583077059 completed at immutable head `93c0d4d…aea5368`.
+Its compile/seal step took 524 s (job 562 s), not conversion time. Actual
+artifact ZIP 564,146 bytes SHA-256 `2313eb09…4a91fe`; actual Wasm 1,279,617
+bytes SHA-256 `01ffd9446fdc3503aafb2f8c657bb9a955e36d3243ffc7a12d7765a50d677de7`.
+Wrapper, exact AAC MOV patch, ABI and 24/64 MiB memory bounds authenticated
+before browser launch. Build success did not imply valid media conversion.
+
+The same complex fixture stopped after 292.855 ms with zero output, because
+the strict H.264 guard could not establish usable DTS. The first test failed
+before saving the engine error; bounded terminal error/phase capture is now
+fixed. One separately labelled diagnostic (273.190 ms, zero output) captured
+the exact H.264 timestamp refusal, not another fidelity acceptance attempt.
+Do not repeat either unchanged configuration. Both retained journals and
+all engine/error/cleanup proofs are bound by regression tests.
+
+The direct library has parsers but no H.264 decoder. FFmpeg's pinned demux
+code uses decoded-frame evidence when establishing H.264 reorder delay;
+the observed parser-only inspection did not fill these timestamps. A minimal
+single-thread probe-decoder variant is the next implementation, not a larger
+probe budget or a validator change. See
+[FFmpeg 8.1.2 demux source](https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/demux.c).
+
+No output/fidelity/recovery or success-memory acceptance. Runtime/profile,
+placeholder, fixture and tool scratch removed; all 40 then 38 owned observed
+Chrome PIDs and both servers absent. Original size/hash unchanged, no released
+assets changed. Compact receipts:
+`evidence/2026-11-14T10-09-16-982Z-mkv-exact-aac-complex.json` and
+`evidence/2026-11-14T10-11-11-359Z-mkv-exact-aac-complex.json`.
+
 2026-11-14 H.264 VFR correction preparation, **not browser acceptance**:
 authenticated prior ZIP `6cc21b78…e176` and exact AAC wrapper `eff90a49…550c`
 were used for a real source-derivation preflight. The three reviewed edits
