@@ -26,7 +26,15 @@ test("stale, duplicate, invalid, prior-public or production-import exceptions ca
 });
 test("actual manifest retains every one of235 prior hosted files plus current public worker/cache/save checks",async()=>{
   const root=path.resolve(import.meta.dirname,".."),plan=await loadUnitSuitePlan(root);
-  assert.equal(plan.protectedPriorHostedFiles,235);assert.equal(plan.qualification.length,163);
+  assert.equal(plan.protectedPriorHostedFiles,235);assert.equal(plan.qualification.length,164);
+  const bframeNative="tests/mkv-bframe-native-source-qualification.test.mjs";
+  assert.equal(plan.prerequisites[bframeNative].group,"native-source-inspection");
+  assert.ok(plan.qualification.includes(bframeNative));
+  assert.ok(plan.portable.includes("tests/mkv-bframe-control.test.mjs"));
+  assert.ok(plan.portable.includes("tests/mkv-complex-fidelity.test.mjs"));
+  const bframeSource=await readFile(path.join(root,bframeNative),"utf8");
+  assert.doesNotMatch(bframeSource,/skip\s*:/);
+  assert.match(bframeSource,/windowsHide: true/);
   const vp9Local="tests/vp9-local-artifact-authentication.test.mjs";
   assert.equal(plan.prerequisites[vp9Local].group,"private-artifacts");
   assert.ok(plan.qualification.includes(vp9Local));assert.ok(!plan.portable.includes(vp9Local));

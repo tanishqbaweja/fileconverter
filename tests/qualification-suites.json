@@ -4,6 +4,13 @@
   "policy": "Every root tests/*.test.mjs belongs to portable unless explicitly listed below. All lists remain runnable; qualification is unverified until its prerequisites and assertions pass. This manifest changes no production capability or acceptance threshold.",
   "groups": [
     {
+      "id": "native-source-inspection",
+      "reason": "Requires an independently installed FFprobe executable to inspect real fixture packet timestamps; unavailable tooling fails this mandatory local qualification, while portable receipt/clock checks remain in the default suite.",
+      "files": [
+        "tests/mkv-bframe-native-source-qualification.test.mjs"
+      ]
+    },
+    {
       "id": "historical-workspace",
       "reason": "Requires the original private qualification's absolute workspace/runtime bindings and recorded source/receipt preimages; not an arbitrary-checkout unit fixture.",
       "files": [

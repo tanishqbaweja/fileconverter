@@ -5,7 +5,7 @@ import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 import { summarizeProtectedWindow } from "../scripts/lib/mkv-protected-repeat-contract.mjs";
 import { reconcileChromiumBirths } from "../scripts/lib/reconcile-chromium-births.mjs";
-import { compareComplexMkvPackets, assertComplexMkvStructure } from "../scripts/lib/mkv-complex-fidelity.mjs";
+import { compareComplexMkvPackets, assertComplexMkvStructure, assertBFrameMkvSource } from "../scripts/lib/mkv-complex-fidelity.mjs";
 
 const packets = () => [0, 1, 2].flatMap(stream_index => Array.from({ length: [72, 189, 189][stream_index] }, (_, i) => {
   const seconds = stream_index === 0 ? i < 24 ? i / 12 : 2 + (i - 24) / 24 : i * 1024 / 48000;
@@ -48,6 +48,27 @@ const probes = () => {
   output.format = { format_name: "mov,mp4,m4a,3gp,3g2,mj2", duration: "4.031", tags: { title: "test", comment: "note" } };
   return { source, output };
 };
+test("B-frame gate measures VFR cadence in presentation order but never sorts packet identity or decode clocks", () => {
+  const source = packets(), video = source.slice(0, 72);
+  [video[1], video[3]] = [video[3], video[1]];
+  video.forEach((p, i) => { p.data_hash = "SHA256:" + i.toString(16).padStart(64, "0"); p.dts_time = ((i - 2) / 24).toFixed(6); });
+  const before = [...video, ...source.slice(72)], after = structuredClone(before);
+  delete before[0].dts_time; delete before[1].dts_time;
+  const result = compareComplexMkvPackets(before, after);
+  assert.equal(result.sourceVideoPtsReorderedInDecodeOrder, true);
+  assert.equal(result.cadenceMeasuredInPresentationOrder, true);
+  assert.deepEqual(result.sourceCadenceMs, [42, 83]);
+  assert.equal(result.clocks[0].comparableDts, 70);
+  assert.equal(result.clocks[0].sourceFirstDtsUs, null);
+  assert.ok(result.clocks[0].outputFirstDtsUs < 0);
+  const probe = { streams: [{ codec_name: "h264", has_b_frames: 2 }] };
+  assert.equal(assertBFrameMkvSource(probe, before).unavailableSourceVideoDts, 2);
+  assert.throws(() => assertBFrameMkvSource({ streams: [{ codec_name: "h264", has_b_frames: 0 }] }, before), /B frames/);
+  const missing = structuredClone(after); delete missing[0].dts_time;
+  assert.throws(() => compareComplexMkvPackets(before, missing), /DTS changed/);
+  const swapped = structuredClone(after); [swapped[1], swapped[2]] = [swapped[2], swapped[1]];
+  assert.throws(() => compareComplexMkvPackets(before, swapped), /payload\/decode order/);
+});
 test("Complex metadata gate rejects changed rotation/languages/defaults, lost tags and silent exclusions", () => {
   const { source, output } = probes(), warnings = ["subtitle, attachment and chapter exclusions"];
   assert.deepEqual(assertComplexMkvStructure(source, output, warnings).audioLanguages, ["eng", "spa"]);

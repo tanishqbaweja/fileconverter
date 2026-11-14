@@ -1,5 +1,55 @@
 # Tested conversion ledger
 
+2026-11-15 **new H.264 B-frame/VFR control fails safely; not acceptance**.
+One distinct headless normal-service Chrome 157.0.8103.51 run of the exact
+probe-decoder core (`3d08c462…f3148fc`), with no native media conversion,
+public asset replacement, wider probe/heap limits or completed-control replay.
+Receipt: `evidence/2026-11-14T23-11-45-586Z-mkv-probe-decoder-bframes.json`,
+SHA-256 `36d1619ee1b71b62c141ddcb83dc0d7d577f01d0ef8e37c446824df232ae8c6a`.
+The browser reports “H.264 stream copy cannot preserve unverified or
+non-monotonic decode timestamps,” stops before output (0 bytes; no queued
+writes), and does not proceed to the cancel/fault/recovery success sequence.
+This does NOT invalidate the earlier no-B-frame VFR and HEVC receipts, but
+proves they are insufficient for general H.264 timing qualification.
+
+Reusable SOURCE only: `fixtures/media/within-test-h264-bframes.mkv`,
+765,366 bytes, SHA-256
+`a17d9a37d8336967551a71d1c8c4cea2024be53e182e14ecc28cdd254f727559`.
+Generated twice byte-identically from the pinned complex fixture; actual
+H.264 High/reorder depth 2, 72 video + 189/189 AAC packets, rotation 90,
+two chapters, SRT, attachment and original two AAC priming declarations.
+Native tools generated/inspected this synthetic source only. Initial generation
+caught libx264 dropping the display matrix; a fixture-only copy mux restores
+that metadata without rotating pixels. All extra generation copies were
+removed; one 0.77 MB source and its compact descriptor are intentionally kept.
+
+Independent bounded FFprobe source inspection confirms first decode-order
+PTS 0.000, 0.250, 0.083, 0.167, 0.500 s; the first two DTS are unavailable,
+then DTS 0.000, 0.083, 0.167 s. Presentation cadences are 41/42/83/84 ms,
+while packet DefaultDuration is 41 ms: forcing every DTS to that nominal grid
+would recreate the previously rejected VFR error. The validator now sorts a
+copy of PTS ONLY for cadence; all payload/PTS/known-DTS identity remains in
+decode order. Unit checks reject packet swaps, missing output DTS and altered
+clocks/trim; unknown source DTS never becomes zero.
+
+Observed failed-window whole-tree increment 93.742 MiB, 6 valid / 0 missing
+samples; **not a successful-conversion memory result**. Stable cleanup metric
+remains null after initial failure. Wasm 24 MiB, read <=256 KiB, output/queue
+0. All 40 observed owned process births absent (one PID reused by an unrelated
+process, left untouched), owned server/profile/source-copy/tool scratch removed.
+Original size/SHA unchanged. The compressed native journal is retained and
+rederived by tests. Next: bounded startup-DTS handling that leaves every known
+source DTS and every PTS intact, then rerun THIS rejected case only after a
+reviewed implementation change. Nonzero-start, changed-core original stress,
+repeats, promotion/repro/privacy/browser/scale gates remain open. No speed or
+headed/manual claim; no public profile promoted; full goal remains incomplete.
+Focused regression suite: 61 tests passed (including failure-evidence, suite
+classification and the separate native-source inspection qualification).
+Portable receipt/clock checks need no local native executable; the independent
+inspection is an explicit prerequisite-bound qualification that fails on
+missing FFprobe, never silently skips. This suite pass must not be confused
+with the failed browser conversion.
+
 2026-11-15 **HEVC regression passes on the changed private core**, with an
 identical pinned source and independently validated old-core baseline.
 Headless Chrome 157.0.8103.51, source 5,945,271 bytes SHA-256

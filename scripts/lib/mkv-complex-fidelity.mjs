@@ -4,6 +4,23 @@ import { validateCopiedAudioTiming } from "./copied-audio-timing.mjs";
 
 export const complexMkvFixture = Object.freeze({ file: "fixtures/media/complex-remux-source.mkv", bytes: 780989,
   sha256: "33d7ac90faed1d7598a5226bb0eae98892e4b4914080915b4902b7acf1f7f65f" });
+export const bframeMkvFixture = Object.freeze({ file: "fixtures/media/within-test-h264-bframes.mkv", bytes: 765366,
+  sha256: "a17d9a37d8336967551a71d1c8c4cea2024be53e182e14ecc28cdd254f727559" });
+
+export function assertBFrameMkvSource(probe, packets) {
+  assert.equal(probe.streams[0].codec_name, "h264");
+  assert.equal(probe.streams[0].has_b_frames, 2, "Fixture must really use B frames");
+  const video = packets.filter(p => p.stream_index === 0);
+  assert.equal(video.length, 72);
+  const pts = video.map(p => Number(p.pts_time));
+  assert.ok(pts.every(Number.isFinite) && pts.some((p, i) => i > 0 && p < pts[i - 1]), "Fixture presentation order must differ from decode order");
+  const missing = video.filter(p => p.dts_time === undefined || p.dts_time === "N/A").length;
+  assert.equal(missing, 2, "Fixture keeps its two unavailable initial source DTS, never fabricates zero");
+  assert.ok(video.slice(0, 2).every(p => p.dts_time === undefined || p.dts_time === "N/A") &&
+    video.slice(2).every(p => /^-?\d+\.\d{6}$/.test(p.dts_time)), "Only the initial two source DTS may be unavailable");
+  return { hasBFrames: 2, reorderedPresentationInDecodeOrder: true, unavailableSourceVideoDts: missing,
+    availableSourceVideoDts: video.length - missing };
+}
 
 // Only the existing four-second fixture. Offline validators have a finite stdout
 // and packet cap, never read media payloads into JS, and never remux an output.
@@ -35,10 +52,14 @@ export function compareComplexMkvPackets(source, output) {
     clocks.push({ ...pair[1], streamIndex: audioIndex });
   }
   const video = source.filter(p => p.stream_index === 0).map(p => Number(p.pts_time));
-  const cadenceMs = [...new Set(video.slice(1).map((pts, i) => Math.round((pts - video[i]) * 1000)))].sort((a, b) => a - b);
+  // Cadence is a presentation-order property. Packet payload/PTS/DTS checks
+  // above deliberately remain in decode order, including reordered B frames.
+  const presentation = [...video].sort((a, b) => a - b);
+  const cadenceMs = [...new Set(presentation.slice(1).map((pts, i) => Math.round((pts - presentation[i]) * 1000)))].sort((a, b) => a - b);
   assert.ok(cadenceMs.includes(83) && cadenceMs.includes(42), "Existing VFR fixture must retain both presentation cadences");
   const aac = validateCopiedAudioTiming(source.filter(p => p.stream_index > 0), output.filter(p => p.stream_index > 0), [1, 2], [1, 2]);
   return { clocks, aac, sourceCadenceMs: cadenceMs, packetBytesIdentical: true, packetCounts: [72, 189, 189],
+    cadenceMeasuredInPresentationOrder: true, sourceVideoPtsReorderedInDecodeOrder: video.some((p, i) => i > 0 && p < video[i - 1]),
     videoPresentationAndComparableDecodeTimesChecked: true,
     // Matroska DefaultDuration is not the varying inter-presentation interval.
     videoDefaultDurationNotUsedAsVfrCadence: true };
@@ -50,6 +71,7 @@ export function assertComplexMkvStructure(source, output, warnings) {
   assert.deepEqual(source.streams.map(s => s.codec_type), ["video", "audio", "audio", "subtitle", "attachment"]);
   assert.equal(source.chapters.length, 2);
   assert.deepEqual(output.streams.map(s => s.codec_name), ["h264", "aac", "aac"]);
+  assert.equal(output.streams[0].has_b_frames, source.streams[0].has_b_frames, "Video reorder depth changed");
   assert.match(output.format.format_name, /mp4/);
   const fields = ["width", "height", "pix_fmt", "sample_aspect_ratio", "display_aspect_ratio", "color_range",
     "color_space", "color_transfer", "color_primaries", "chroma_location", "field_order"];

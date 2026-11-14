@@ -1,5 +1,42 @@
 # Remaining work audit
 
+2026-11-15 M-03: **new H.264 B-frame timing coverage implemented; browser
+control fails safely, so general timing qualification remains partial**.
+Exact already compiled probe core, genuine 765,366-byte H.264 High/VFR source,
+72 video packets with reorder depth 2 + two 189-packet AAC tracks. Source is
+byte-deterministic across two generations; one small explicitly reusable source
+is retained, no converted output. Independent source inspection reproduces two
+unavailable initial DTS, then known DTS 0/83/167 ms; 41ms DefaultDuration is not
+the VFR cadence. Browser refuses before output, without guessing DTS, widening
+the probe, or rewriting all timestamps. New cadence validation separates
+presentation order from unchanged packet/decode-order checks.
+
+Receipt `evidence/2026-11-14T23-11-45-586Z-mkv-probe-decoder-bframes.json`
+(SHA-256 `36d1619e…ae8c6a`): failed-not-acceptance, one job only, 0 output,
+no queued writes, Wasm24MiB/read256KiB. Failed-window whole-tree +93.742MiB,
+6 valid samples/no missing; stable successful cleanup increment null, not
+claimed passed. All 40 owned observed births absent (one unrelated reused PID
+untouched), server/profile/tool/source-copy scratch gone; original hash intact.
+Seven focused fixture/clock/failure-evidence checks pass, including independent
+bounded FFprobe inspection on Windows; full relevant focused suite 61/61 pass.
+Native inspection has its own explicit prerequisite-bound qualification, no
+platform skip; receipt/clock checks remain portable. No old gate moved suites.
+The suite pass does not turn the browser refusal into acceptance.
+No accepted HEVC/no-B-frame VFR replay,
+rebuild, production asset/registry change, speedup or manual-headed claim.
+
+Next concrete correction: bounded startup-DTS handling for the missing prefix,
+with strict preservation of every known DTS and every PTS, packet payload/order,
+AAC trim and decoded content; retain safe refusal for genuinely unverified or
+nonmonotonic clocks. Review the pinned FFmpeg 8.1.2 `select_from_pts_buffer` /
+`update_dts_from_pts` initialization (initial reorder slots are unavailable),
+not an assumed larger probe/decoder-thread fix. Official source:
+https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/demux.c .
+Do not replay the unchanged failed browser control or generate another copy of
+the retained source. After an actual correction: this B-frame case, nonzero-
+start coverage, changed-core original/repeats and the existing production/
+repro/privacy/browsers/near10GB gates. Full original specification stays partial.
+
 2026-11-15 M-03: **changed-core small HEVC control passes on identical pinned
 input**, closing that regression gate only. Prior exact-AAC core and the
 probe-decoder core both produced 5,948,960 bytes with full SHA-256
