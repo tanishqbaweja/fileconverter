@@ -1,5 +1,68 @@
 # Remaining work audit
 
+2026-11-15 M-03: **bounded startup candidate passes both actual B-frame/VFR
+controls (zero and +5s starts)**, exact private Wasm `62cf939c…f4ae8ef`.
+Fresh accepted receipts, not rewritten earlier failures:
+`evidence/2026-11-14T23-48-39-600Z-mkv-startup-dts-bframes.json` and
+`evidence/2026-11-14T23-50-09-667Z-mkv-startup-dts-positive.json`.
+Each: complete/startup-cancelled/injected-writer-error/complete, deterministic
+recovery. Zero output767,355 bytes hash `5958e362…23c70a0e`, 536.170/432.650ms;
++5s output767,391 hash `e63d7254…227934cf`, 468.835/462.995ms. No speedup claim.
+All450 payloads/order preserved; videoPTS/70 knownDTS exact, two AAC clocks
+<=333us, exact1024 trims and complete decoded video/two PCM hashes equal.
+Only two previously unavailable leading DTS generated (-167/-84ms, or
+4.833/4.916s), explicitly disclosed. Start5s retained, no rebasing; actual
+presentation span4.010s unchanged, final video endpoint within1ms. Physical
+zero-duration headers, fragment origins, active edits, +5s empty edits, AAC
+trim and reported decode spans all independently checked. Original1ms/50ms
+limits unchanged; raw unlike duration differences retained (52ms/4.948s).
+
+Whole-tree peaks over each original stable blank181.012/179.602MiB; cleanup
+over original idle45.508/52.281MiB. 133/132 valid samples, none unavailable,
+totals rederived from retained native journals. Wasm24MiB, reads<=256KiB,
+writes/queued<=1MiB, one outstanding operation, no staging/validation copy.
+All44/42 owned observed Chrome PIDs, servers, profiles, outputs and temporary
+tool/source-copy scratch removed; original bytes/SHA unchanged. Only two
+explicitly reusable 0.77MB source fixtures (zero/+5s) retained. Seventy-one
+focused checks pass, plus native arithmetic smoke; no accepted-control replay.
+
+These two timing gaps are closed for this exact candidate only. Next:
+same-input HEVC/no-B-frame regression on THIS startup core (do not reuse the
+older probe core's result), then changed-core protected-original stress/repeats,
+production/reproducibility/privacy/browsers and >4GB/near10GB scale gates.
+All broader missing formats/UI/security/CI/manual coverage remain as audited.
+No public asset, capability registry or production support claim changed;
+headed/manual unverified under the user's headless-only rule. Full goal partial.
+
+2026-11-15 M-03: build43653656481 succeeded and was authenticated; Wasm
+2,402,739 bytes SHA-256 `62cf939ce720022ebf73e2f7dcf82fcdcfc33e7e4221334d691b992a2f4ae8ef`.
+First changed-core B-frame browser run completed output (767,355 bytes) but
+failed the raw format-duration assertion: 4.083 vs 4.031s (52ms > unchanged
+50ms). Receipt `2026-11-14T23-41-47-534Z-mkv-startup-dts-bframes.json` stays
+failed. One diagnostic run collected the previously skipped independent checks
+BEFORE intentionally retaining that same assertion failure: receipt
+`2026-11-14T23-44-15-049Z-mkv-startup-dts-bframes.json`, diagnosticOnly true.
+All 450 payloads/order, video PTS and all70 known video DTS exact; two AAC
+clocks <=333us, exact1024 trims, full decoded video+two PCM hashes unchanged,
+metadata/exclusions preserved. Output same SHA-256 `5958e362…23c70a0e`.
+No recovery or successful-memory acceptance claimed for either failed run.
+
+The diagnostic proves physical mvhd/mdhd durations are all ZERO/unknown,
+edits carry167ms video delay and exact1024 AAC trim, tfdt origins zero. The
+reported 4.083s equals actual video decode span (-167ms through3.875s+41ms),
+not the presented frame endpoint; FFmpeg MOV `mov_read_trun` derives track
+duration from decode endpoints/time_offset. Official pinned source:
+https://raw.githubusercontent.com/FFmpeg/FFmpeg/n8.1.2/libavformat/mov.c .
+The first positive-start helper's "MP4 presentation span" interpretation was
+therefore insufficient for B frames and is corrected, not counted accepted.
+New independent gate requires every output track's reported decode span within
+1ms, packet-derived presentation starts/ends within1ms, source segment endpoint
+and aggregate reported duration at unchanged50ms, and physical unknown-duration
+headers/fragment origins/edit delays/trim checked independently. No raw-tolerance
+increase, clock rebasing or content check removed. Next: fresh zero-start
+qualification with this corrected validator, then +5s control. Retain both
+failed receipts; do not replay the diagnostic or rebuild the unchanged engine.
+
 2026-11-15 M-03: while run43653656481 compiles, prepared a second bitexact
 765,369-byte reusable B-frame/VFR source with +5s start (SHA-256
 `3bc3dfd4…7e55b38f`). Both generations identical; all 450 media packet payloads,

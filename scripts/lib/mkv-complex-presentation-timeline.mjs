@@ -35,31 +35,72 @@ function edges(probe, packets) {
   return { tracks, start: Math.min(...tracks.map(t => t.start)), end: Math.max(...tracks.map(t => t.end)) };
 }
 
-export function validateComplexPositiveStartTimeline({ sourceProbe, outputProbe, sourcePackets, outputPackets,
-  sourceDecodedHashes, outputDecodedHashes }) {
+export function validateComplexFragmentedTimeline({ sourceProbe, outputProbe, sourcePackets, outputPackets,
+  sourceDecodedHashes, outputDecodedHashes, serializedTimeline, requirePositiveStart = false }) {
   assert.equal(sourceProbe.format.format_name, "matroska,webm");
   assert.equal(outputProbe.format.format_name, "mov,mp4,m4a,3gp,3g2,mj2");
   assert.match(sourceDecodedHashes, /^0,v,SHA256=[a-f0-9]{64}\r?\n1,a,SHA256=[a-f0-9]{64}\r?\n2,a,SHA256=[a-f0-9]{64}$/);
   assert.equal(outputDecodedHashes, sourceDecodedHashes, "Complete decoded content changed");
   const packetIdentityAndClocks = compareComplexMkvPackets(sourcePackets, outputPackets);
   const source = edges(sourceProbe, sourcePackets), output = edges(outputProbe, outputPackets);
-  assert.ok(source.start > 0, "This is a positive-start control, not a rebased zero-start substitute");
+  assert.ok(source.start >= 0);
+  if (requirePositiveStart) assert.ok(source.start > 0, "This is a positive-start control, not a rebased zero-start substitute");
   for (let i = 0; i < source.tracks.length; i++) {
     near(source.tracks[i].start, output.tracks[i].start, `Track ${i} presentation start`);
     near(source.tracks[i].end, output.tracks[i].end, `Track ${i} presentation end`);
   }
   const sourceStart = time(sourceProbe.format.start_time, "Source header start"), outputStart = time(outputProbe.format.start_time, "Output header start");
   near(sourceStart, source.start, "Source header start"); near(outputStart, output.start, "Output header start");
-  const sourceDuration = time(sourceProbe.format.duration, "Source segment endpoint"), outputDuration = time(outputProbe.format.duration, "Output presentation span");
+  const sourceDuration = time(sourceProbe.format.duration, "Source segment endpoint"), outputDuration = time(outputProbe.format.duration, "Output reported duration");
   assert.ok(sourceDuration > 0 && outputDuration > 0);
   const sourceHeaderEndErrorSeconds = Math.abs(sourceDuration - source.end);
-  const outputHeaderEndErrorSeconds = Math.abs(outputStart + outputDuration - output.end);
   assert.ok(sourceHeaderEndErrorSeconds < headerTolerance, "Source header endpoint inconsistent");
-  assert.ok(outputHeaderEndErrorSeconds < headerTolerance, "Output header endpoint inconsistent");
+  // The physical fMP4 headers explicitly have unknown (zero) duration. The
+  // MOV demuxer derives reported track duration from fragment decode endpoints
+  // before the edit offset, NOT from the final presented frame. Check that
+  // estimate against every actual decode packet, and validate presentation
+  // clocks/endpoints and serialized edits independently. Never enlarge 50ms
+  // to hide the 52ms raw cross-container scalar difference in the B-frame case.
+  assert.equal(serializedTimeline.movie.durationTicks, "0");
+  assert.ok(Number.isSafeInteger(serializedTimeline.movie.timeScale) && serializedTimeline.movie.timeScale > 0);
+  assert.equal(serializedTimeline.tracks.length, 3);
+  const outputDecodeSpans = [0, 1, 2].map(index => {
+    const rows = outputPackets.filter(p => p.stream_index === index);
+    const first = time(rows[0].dts_time, "First output DTS"), last = rows.at(-1);
+    const finalDuration = time(last.duration_time, "Final decode duration");
+    assert.ok(finalDuration > 0 && finalDuration <= 1);
+    const end = time(last.dts_time, "Final output DTS") + finalDuration;
+    const span = end - first; assert.ok(span > 0);
+    near(time(outputProbe.streams[index].duration, "Reported track duration"), span, `Track ${index} reported decode span`);
+    const box = serializedTimeline.tracks[index];
+    assert.equal(box.kind, index ? "soun" : "vide"); assert.equal(box.durationTicks, "0");
+    assert.equal(box.firstFragmentDecodeTimeTicks, "0"); assert.equal(box.editListPresent, true);
+    assert.ok(Number.isSafeInteger(box.timeScale) && box.timeScale > 0);
+    if (index) assert.equal(box.timeScale, Number(outputProbe.streams[index].sample_rate));
+    const edits = box.edits; assert.equal(edits.length, source.start > 0 ? 2 : 1);
+    assert.ok(edits.every(e => e.mediaRateInteger === 1 && e.mediaRateFraction === 0));
+    if (source.start > 0) {
+      assert.equal(edits[0].mediaTimeTicks, "-1");
+      near(Number(edits[0].segmentDurationTicks) / serializedTimeline.movie.timeScale, output.tracks[index].start, `Track ${index} empty edit delay`);
+    }
+    const active = edits.at(-1); assert.equal(active.segmentDurationTicks, "0");
+    const expectedMediaTime = index ? trim(rows[0], "skip_samples")
+      : Math.round((time(rows[0].pts_time, "First output PTS") - first) * box.timeScale);
+    assert.equal(active.mediaTimeTicks, String(expectedMediaTime), `Track ${index} edit time`);
+    return { index, start: first, end, span };
+  });
+  const expectedOutputReportedDuration = Math.max(...outputDecodeSpans.map(t => t.span));
+  const outputProbeDurationErrorSeconds = Math.abs(outputDuration - expectedOutputReportedDuration);
+  assert.ok(outputProbeDurationErrorSeconds < headerTolerance, "Output reported decode duration inconsistent");
   near(source.end - source.start, output.end - output.start, "Actual presentation span");
   return { source, output, packetIdentityAndClocks, clockToleranceSeconds: clockTolerance,
-    headerToleranceSeconds: headerTolerance, sourceHeaderEndErrorSeconds, outputHeaderEndErrorSeconds,
+    headerToleranceSeconds: headerTolerance, sourceHeaderEndErrorSeconds, outputProbeDurationErrorSeconds,
+    outputDecodeSpans, expectedOutputReportedDuration, serializedUnknownDurationsAndEditsChecked: true,
     rawFormatDurationDifferenceSeconds: Math.abs(sourceDuration - outputDuration),
-    sourceHeaderMeaning: "Matroska zero-origin segment endpoint", outputHeaderMeaning: "Fragmented MP4 presentation span",
+    sourceHeaderMeaning: "Matroska zero-origin segment endpoint", outputHeaderMeaning: "Physical fMP4 durations unknown; FFprobe reports maximum fragment decode span before edits",
     defaultDurationNotUsedAsCadence: true, noTimestampRebasing: true, completeDecodedContentEqual: true };
+}
+
+export function validateComplexPositiveStartTimeline(input) {
+  return validateComplexFragmentedTimeline({ ...input, requirePositiveStart: true });
 }

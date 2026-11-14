@@ -1,5 +1,77 @@
 # Tested conversion ledger
 
+2026-11-15 **startup candidate browser acceptance for two SMALL B-frame/VFR
+controls only**, not a public release or full-project completion. Normal-service
+headless Chrome157.0.8103.51, authenticated Wasm2,402,739 bytes SHA-256
+`62cf939ce720022ebf73e2f7dcf82fcdcfc33e7e4221334d691b992a2f4ae8ef`, build
+43653656481/head147b05167d5d5729a8aa186c2c073c833816aa3c, no Docker.
+
+Zero-start input765,366 -> MP4 767,355 bytes, SHA-256
+`5958e362932a277ceba09d4734c3428dd8d5f8759b51e30fb18dde6723c70a0e`;
+successful jobs536.170/432.650ms. +5s input765,369 -> MP4 767,391 bytes,
+SHA-256 `e63d72546361c88aa7746265439d425fe834c562794f5d9ce7c1557d227934cf`;
+jobs468.835/462.995ms. These are not matched successful-parent speed benchmarks.
+Each browser session: complete, startup cancel holding Wasm response, injected
+writer failure, complete. Both recovery MP4s byte-identical to initial outputs.
+
+All72 H.264+189/189 AAC payloads/decode order retained; videoPTS and all70
+available videoDTS exact; two AAC clocks <=333us, both exact1024-sample trims.
+Complete decoded video and both PCM hashes match. Metadata, color, geometry,
+rotation90, audio languages/defaults/titles and general tags retained; chapters,
+SRT and attachment exclusions disclosed. Only two unavailable leading DTS
+generated from observed cadence, not nominal CFR, and disclosed. Zero-start
+DTS -.167/-.084s; +5s DTS4.833/4.916s. Positive presentation starts remain5s,
+both actual spans4.010s, audio endpoints unchanged, finalvideo endpoint3.999
+vs4.000s (or8.999 vs9.000s), within original1ms. Physical unknown-duration
+headers, first tfdt0, active video/AAC edits, +5s empty edits and reported
+decode spans validated independently. Unchanged1ms/50ms tolerances; raw probe
+duration differences52ms/4.948s are retained, not suppressed. Older failed
+raw-duration receipts stay failed; the diagnostic was not called acceptance.
+
+Whole-Chrome private increments181.01171875MiB /179.6015625MiB, cleanup over
+original loaded idle45.5078125/52.28125MiB, 133/132 valid native samples and0
+missing, totals rederived from journals. Wasm24MiB, <=256KiB reads, <=1MiB
+writes/queue, one pending op; no staging or converted validation copy. Browser
+binding remains three4KiB sampled ranges, not falsely claimed all-byte logical
+binding; independent physical full hashes/all-packet/decoded checks performed.
+All44/42 owned observed PIDs, servers, outputs/profiles and source-copy/tool
+scratch removed; protected `test.mkv` bytes/SHA unchanged. Only two explicitly
+reusable 0.77MB sources remain, not converted outputs.
+
+Receipts:
+`evidence/2026-11-14T23-48-39-600Z-mkv-startup-dts-bframes.json`, SHA-256
+`8c8824bda4c4f273693f2356a069b80e3af1047cac3df5eeb8a7390c42995fc9`;
+`evidence/2026-11-14T23-50-09-667Z-mkv-startup-dts-positive.json`, SHA-256
+`28cbb51c8a45237f312b33e773e30316fd6277aedeb2653a280870b3a42bf646`.
+Seventy-one relevant focused checks and native arithmetic smoke pass. No
+manual-headed, new-core original/scale, production promotion or speedup claim.
+Next exact-core HEVC/no-B-frame regression, protected original/repeats, and
+release/repro/privacy/browser/scale qualification; entire goal still incomplete.
+
+2026-11-15 startup Wasm compiled/authenticated: `62cf939c…f4ae8ef`, 2,402,739
+bytes; fixed24/64MiB heap and H264-only/zero-encoder compiled config unchanged.
+Initial browser result: complete767,355-byte MP4, hash `5958e362…23c70a0e`,
+but raw duration4.083 vs4.031 failed the50ms gate. One explicitly diagnostic
+run then proved all450 packet payloads, allvideoPTS/70 knownvideoDTS exact,
+AAC clocks <=333us, exact1024-sample trim, complete decoded video/two PCM
+hashes, metadata and exclusions unchanged before intentionally failing the
+same duration assertion. Both receipts remain failed, not retroactive passes:
+`evidence/2026-11-14T23-41-47-534Z-mkv-startup-dts-bframes.json` and
+`evidence/2026-11-14T23-44-15-049Z-mkv-startup-dts-bframes.json`.
+
+Physical MP4 mvhd/mdhd durations are zero/unknown, while FFprobe estimates
+4.083s from the fragment DECODE span (-.167 through3.875+.041), not final
+presentation time. Actual frame PTS max3.958 unchanged, final presentation
+duration differs by one source tick at most. Video edit2672/16000s=.167s,
+AAC edits1024/48000s, first fragment decode origins0. The independent validator
+now verifies these physical fields and all actual clock/endpoints separately
+from the probe's reported decode spans, at unchanged1ms/50ms tolerances. See
+FFmpeg8.1.2 `mov_read_trun` in official `libavformat/mov.c`; no larger threshold
+or arbitrary duration subtraction. Earlier prepared positive-header inference
+was incomplete for B frames, not accepted evidence. Fresh qualification pending.
+Both failed runs removed output/profile/server/tools/source-copy scratch and
+preserved original hash; no successful cleanup/recovery claim for either.
+
 2026-11-15 prepared, not browser-accepted: same B-frame/VFR source with exact
 +5s timestamps; one 765,369-byte reusable source remains, SHA-256
 `3bc3dfd4a3909b33dd3532a10c4f423dea77e836de31347b8b835e7c7e55b38f`.
