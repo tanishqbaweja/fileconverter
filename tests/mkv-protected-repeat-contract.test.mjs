@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { assertSameMkvNativeBuild, protectedRepeatReference, readProtectedRepeatReference, summarizeProtectedWindow } from "../scripts/lib/mkv-protected-repeat-contract.mjs";
+import { renderProtectedRepeatReport } from "../scripts/lib/mkv-protected-repeat-report.mjs";
 
 test("Protected repeats bind to validated whole-output bytes even after an exact build gets a new ZIP", async () => {
   const bytes = await readFile(new URL(`../${protectedRepeatReference.file}`, import.meta.url));
@@ -34,4 +35,15 @@ test("Each protected job uses its original blank baseline and only its own conve
   assert.throws(() => summarizeProtectedWindow(rows, { start: 150, end: 150 }, blank), /no valid/);
   const altered = [sample(100, 290 * mib)]; altered[0].processes[0].privateBytes--;
   assert.throws(() => summarizeProtectedWindow(altered, { start: 100, end: 100 }, blank));
+});
+
+test("Derived repeat report labels missing measurements unavailable and preserves incomplete status", () => {
+  const report = { status: "failed-not-acceptance", originalBefore: { bytes: 2958573265 }, arms: [{ cases: [{ state: "error" }] }] };
+  const { csv, html } = renderProtectedRepeatReport(report);
+  assert.match(csv, /unavailable/);
+  assert.match(html, /failed-not-acceptance/);
+  assert.match(html, /S1 J1: unavailable/);
+  assert.match(html, /not public-release or 10 GB acceptance/);
+  assert.doesNotMatch(html, /<script|https?:\/\//);
+  assert.throws(() => renderProtectedRepeatReport({ ...report, status: "running" }));
 });
