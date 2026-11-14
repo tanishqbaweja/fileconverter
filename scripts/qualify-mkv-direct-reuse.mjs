@@ -39,10 +39,12 @@ import { assertMkvProtectedSource, assertMkvProtectedOutput, mkvProtectedCopy } 
 import { assertSameMkvNativeBuild, protectedRepeatReference, readProtectedRepeatReference, summarizeProtectedWindow } from "./lib/mkv-protected-repeat-contract.mjs";
 import { decodeCompleteProtectedVideo } from "./lib/mkv-full-video-decode.mjs";
 import { complexMkvFixture, compareComplexMkvPackets, assertComplexMkvStructure } from "./lib/mkv-complex-fidelity.mjs";
+import { h264VfrWrapperSha256 } from "../media/ffmpeg/mkv-h264-vfr-candidate.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
-const complexTimeline = process.argv[2] === "--edit-list-aac-complex";
+const h264Vfr = process.argv[2] === "--h264-vfr-complex";
+const complexTimeline = h264Vfr || process.argv[2] === "--edit-list-aac-complex";
 const sustained = process.argv[2] === "--edit-list-aac-sustained";
 const protectedRepeats = process.argv[2] === "--edit-list-aac-protected-repeats";
 const protectedFullDecode = process.argv[2] === "--edit-list-aac-protected-full-decode";
@@ -71,6 +73,7 @@ if (protectedMode) report.scope = "One original 2.96 GB browser direct-reuse rem
 if (protectedRepeats) report.scope = "Three same-page protected original remuxes plus one clean-session repeat, each full-hash matched to independent packet/PCM evidence; no full-video-decode or public claim.";
 if (protectedFullDecode) report.scope = "One real protected browser remux, full-file identity to prior packet/PCM evidence and independent complete video decode; not a public release or scaling claim.";
 if (complexTimeline) report.scope = "Existing complex VFR/two-AAC fixture, exact unpublished candidate, direct-reuse browser pipeline, strict packet/trim/decoded-content/metadata and recovery gates; not a speed, original-file, scale or public claim.";
+if (h264Vfr) report.h264VfrCandidate = true;
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
@@ -590,13 +593,14 @@ try {
   if (protectedRepeats) sourceFiles.push(protectedRepeatReference.file, "scripts/lib/mkv-protected-repeat-contract.mjs");
   if (protectedFullDecode) sourceFiles.push(protectedRepeatReference.file, "scripts/lib/mkv-protected-repeat-contract.mjs", "scripts/lib/mkv-full-video-decode.mjs");
   if (complexTimeline) sourceFiles.push(complexMkvFixture.file, "scripts/lib/mkv-complex-fidelity.mjs", "scripts/lib/mkv-protected-repeat-contract.mjs");
+  if (h264Vfr) sourceFiles.push("media/ffmpeg/mkv-h264-vfr-candidate.mjs");
   report.sourcePins = Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, await hashFile(path.join(root, file))])));
   report.executedHead = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true })).stdout.trim();
   if (!protectedMode) fixtureRuntime = await createOwnedRuntimeScratch("mkv-direct-reuse-fixture-");
   let candidate;
   if (editListCandidate) {
     toolRuntime = await createOwnedRuntimeScratch("mkv-edit-list-tool-download-");
-    candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate);
+    candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate, h264Vfr);
     report.candidateBuild = candidate.proof;
   }
   if (protectedMode) {
@@ -646,7 +650,12 @@ try {
     await copyFile(originalFixture, fixture);
     report.fixture = { ...complexMkvFixture, copiedOnlyIntoOwnedScratch: true };
     const prior = JSON.parse(await readFile(path.join(root, protectedRepeatReference.file)));
-    assertSameMkvNativeBuild(prior.candidateBuild, candidate.proof);
+    if (h264Vfr) {
+      assert.equal(candidate.proof.build.source.candidateWrapperSha256, h264VfrWrapperSha256);
+      assert.equal(candidate.proof.build.source.parentWrapperSha256, prior.candidateBuild.build.source.candidateWrapperSha256);
+      assert.deepEqual(candidate.proof.build.wasmMemory, prior.candidateBuild.build.wasmMemory);
+      assert.deepEqual(candidate.proof.build.source.mov, prior.candidateBuild.build.source.mov);
+    } else assertSameMkvNativeBuild(prior.candidateBuild, candidate.proof);
     const baseline = { browser: await inspectInstalledChromePin(), probe: await probeProtected(fixture, fixtureRuntime.env), candidate,
       complexPackets: await complexPackets(fixture, fixtureRuntime.env), complexDecodedHashes: await complexDecodedHashes(fixture, fixtureRuntime.env) };
     report.fixture.sourceProbe = baseline.probe;

@@ -8,6 +8,7 @@ import { deriveMkvEditListBuildRecipe, sha256 } from "../../media/ffmpeg/mkv-edi
 import { editListParentSha256, exactAacWrapperSha256, exactAacMovSha256, exactAacBuildRef } from "../../media/ffmpeg/mkv-exact-aac-timeline-candidate.mjs";
 import { readWasmMemoryLimits } from "./wasm-memory-limits.mjs";
 import { readEmscriptenExportAbi } from "./wasm-export-abi.mjs";
+import { h264VfrBuildRef, h264VfrWrapperSha256 } from "../../media/ffmpeg/mkv-h264-vfr-candidate.mjs";
 
 const repo = "tanishqbaweja/fileconverter", branch = "codex/mkv-edit-list-native-20261108";
 const root = path.resolve(import.meta.dirname, "../.."), execute = promisify(execFile);
@@ -15,9 +16,10 @@ const proofName = "mkv-edit-list-build-proof.json";
 const limits = { "within-direct.mjs": 256 * 1024, "within-direct.wasm": 2 * 1024 * 1024,
   "build-manifest.json": 32 * 1024, "within_remux.c": 512 * 1024, "LICENSE.ffmpeg-lgpl3": 32 * 1024, [proofName]: 8192 };
 
-export function checkMkvEditListArchive({ run, artifact, archive }, runId, head, exactAac = false) {
+export function checkMkvEditListArchive({ run, artifact, archive }, runId, head, exactAac = false, h264Vfr = false) {
   assert.equal(typeof exactAac, "boolean");
-  const expectedBranch = exactAac ? exactAacBuildRef : branch;
+  assert.equal(typeof h264Vfr, "boolean"); assert.ok(!h264Vfr || exactAac);
+  const expectedBranch = h264Vfr ? h264VfrBuildRef : exactAac ? exactAacBuildRef : branch;
   assert.equal(String(run.id), runId);
   assert.equal(run.workflow_id, 345162646);
   assert.equal(run.head_sha, head);
@@ -37,7 +39,7 @@ export function checkMkvEditListArchive({ run, artifact, archive }, runId, head,
   } else assert.match(artifact.digest, /^sha256:[a-f0-9]{64}$/);
 }
 
-export async function loadMkvEditListBuildArtifact(runId, head, runtime, exactAac = false) {
+export async function loadMkvEditListBuildArtifact(runId, head, runtime, exactAac = false, h264Vfr = false) {
   assert.match(runId, /^[1-9]\d{1,14}$/);
   assert.match(head, /^[a-f0-9]{40}$/);
   const gh = process.env.WITHIN_GH_EXECUTABLE ?? "gh";
@@ -51,9 +53,9 @@ export async function loadMkvEditListBuildArtifact(runId, head, runtime, exactAa
   assert.equal(artifacts.length, 1);
   const artifact = artifacts[0];
   assert.ok(Number.isSafeInteger(artifact.id) && artifact.id > 0);
-  checkMkvEditListArchive({ run: identity, artifact }, runId, head, exactAac);
+  checkMkvEditListArchive({ run: identity, artifact }, runId, head, exactAac, h264Vfr);
   const archive = await request(`artifacts/${artifact.id}/zip`, 2097152);
-  checkMkvEditListArchive({ run: identity, artifact, archive }, runId, head, exactAac);
+  checkMkvEditListArchive({ run: identity, artifact, archive }, runId, head, exactAac, h264Vfr);
   const file = path.join(runtime.directory, "mkv-edit-list-tools.zip");
   await writeFile(file, archive, { flag: "wx" });
   // List first, then read each allowlisted entry to bounded stdout. Never
@@ -69,11 +71,21 @@ export async function loadMkvEditListBuildArtifact(runId, head, runtime, exactAa
   assert.equal(proof.head, head);
   assert.equal(proof.runId, runId);
   assert.equal(proof.source.candidateBuildRun, true);
-  assert.equal(proof.source.candidateWrapperSha256, exactAac ? exactAacWrapperSha256 : editListParentSha256);
+  assert.equal(proof.source.candidateWrapperSha256, h264Vfr ? h264VfrWrapperSha256 : exactAac ? exactAacWrapperSha256 : editListParentSha256);
   if (exactAac) {
     assert.equal(proof.source.exactAacPriming, true);
     assert.equal(proof.source.packetClocksRewritten, false);
-    assert.equal(proof.source.extraPacketBuffering, false);
+    assert.equal(proof.source.extraPacketBuffering, h264Vfr);
+    if (h264Vfr) {
+      assert.equal(proof.source.parentWrapperSha256, exactAacWrapperSha256);
+      assert.equal(proof.source.h264VfrTiming, true);
+      assert.equal(proof.source.h264NominalDtsSynthesis, false);
+      assert.equal(proof.source.missingH264DtsRejected, true);
+      assert.equal(proof.source.hevcTimingPolicyUnchanged, true);
+      assert.equal(proof.source.inspectionBytes, 2097152);
+      assert.equal(proof.source.inspectionMicroseconds, 2000000);
+      assert.equal(proof.source.extraPacketBufferingScope, "existing bounded FFmpeg stream-info queue; no added wrapper queue");
+    }
     assert.equal(proof.source.mov.exactReversal, true);
     assert.equal(proof.source.mov.generatedSha256, exactAacMovSha256);
     assert.equal(sha256(content["movenc.c"]), exactAacMovSha256);
@@ -95,6 +107,7 @@ export async function loadMkvEditListBuildArtifact(runId, head, runtime, exactAa
   assert.equal(sha256(baseline), proof.publishedWasmSha256);
   assert.notEqual(sha256(wasm), sha256(baseline));
   if (exactAac) assert.notEqual(sha256(wasm), "f313b5aaa78ec7d6b98e33741241d176d07d92eaf63bcb5ebb14b45989a3273e");
+  if (h264Vfr) assert.notEqual(sha256(wasm), "f56a8592f81294dc07190f400d9ce1399361ebfe963a558ff63bff4041707be7");
   assert.deepEqual(readWasmMemoryLimits(wasm), readWasmMemoryLimits(baseline));
   assert.deepEqual(readWasmMemoryLimits(wasm), proof.wasmMemory);
   const abi = readEmscriptenExportAbi(module.toString(), wasm);

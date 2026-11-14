@@ -9,6 +9,7 @@ import { makeMkvEditListTimelineCandidate } from "./mkv-edit-list-timeline-candi
 import { editListParentSha256, exactAacWrapperSha256, exactAacMovSha256, exactAacBuildRef,
   makeMkvExactAacTimelineCandidate, makeMkvExactAacMovSource } from "./mkv-exact-aac-timeline-candidate.mjs";
 import { deriveMkvEditListBuildRecipe, sha256 } from "./mkv-edit-list-build-recipe.mjs";
+import { h264VfrBuildRef, h264VfrWrapperSha256, makeMkvH264VfrCandidate } from "./mkv-h264-vfr-candidate.mjs";
 
 const root = path.resolve(import.meta.dirname, "../.."), work = path.join(root, "work");
 const publicDir = path.join(root, "public/engines/remux");
@@ -17,6 +18,11 @@ const movProof = "mkv-exact-aac-mov-proof.json";
 const envMode = process.env.WITHIN_MKV_EXACT_AAC ?? "0";
 assert.ok(["0", "1"].includes(envMode));
 const exactAac = envMode === "1";
+const vfrMode = process.env.WITHIN_MKV_H264_VFR ?? "0";
+assert.ok(["0", "1"].includes(vfrMode));
+const h264Vfr = vfrMode === "1";
+assert.ok(!h264Vfr || exactAac);
+const wrapperSha256 = h264Vfr ? h264VfrWrapperSha256 : exactAac ? exactAacWrapperSha256 : editListParentSha256;
 const files = {
   "within-direct.mjs": 256 * 1024,
   "within-direct.wasm": 2 * 1024 * 1024,
@@ -56,7 +62,9 @@ async function prepare(action, build, output) {
     return;
   }
   const base = await readBounded(build, "within_remux.c", files["within_remux.c"]);
-  const { generated, proof } = (exactAac ? makeMkvExactAacTimelineCandidate : makeMkvEditListTimelineCandidate)(base);
+  const parent = (exactAac ? makeMkvExactAacTimelineCandidate : makeMkvEditListTimelineCandidate)(base);
+  const derived = h264Vfr ? makeMkvH264VfrCandidate(parent.generated) : parent;
+  const { generated } = derived, proof = { ...parent.proof, ...derived.proof };
   const staged = path.join(build, "within_remux.c.candidate");
   await writeFile(staged, generated, { flag: "wx" });
   await writeFile(path.join(output, "within_remux.c"), generated, { flag: "wx" });
@@ -74,7 +82,7 @@ function runRecipe(script, env) {
 
 async function buildCandidate() {
   assert.equal(process.env.GITHUB_ACTIONS, "true", "Use the isolated hosted candidate job");
-  if (exactAac) assert.equal(process.env.GITHUB_REF, `refs/heads/${exactAacBuildRef}`);
+  if (exactAac) assert.equal(process.env.GITHUB_REF, `refs/heads/${h264Vfr ? h264VfrBuildRef : exactAacBuildRef}`);
   const ciOwner = process.env.WITHIN_CI_RUNTIME_OWNER, ciRoot = path.dirname(ciOwner);
   assert.equal(path.dirname(ciRoot), work);
   assert.match(path.basename(ciRoot), /^ci-[A-Za-z0-9]{6}$/);
@@ -102,7 +110,7 @@ async function buildCandidate() {
       .map(async ([file, limit]) => [file, await readBounded(compiled, file, limit)])));
     const derivation = JSON.parse(await readBounded(compiled, sourceProof, 8192));
     assert.equal(derivation.exactReversal, true);
-    assert.equal(derivation.candidateWrapperSha256, exactAac ? exactAacWrapperSha256 : editListParentSha256);
+    assert.equal(derivation.candidateWrapperSha256, wrapperSha256);
     assert.equal(sha256(artifacts["within_remux.c"]), derivation.candidateWrapperSha256);
     if (exactAac) {
       const mov = JSON.parse(await readBounded(compiled, movProof, 8192));

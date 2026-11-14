@@ -1,5 +1,18 @@
 # Remaining work audit
 
+2026-11-14 M-03: isolated H.264 timing correction implemented, not yet compiled
+or browser-accepted. Authenticated prior tool ZIP/source preflight exercised
+the exact reversible derivation: wrapper `02e6dcba…41f2ce8a`. H.264 uses the
+existing 2 MiB/two-second stream inspection, no forced CFR DTS, and explicit
+refusal of missing/nonmonotonic clocks. HEVC policy, exact AAC MOV patch and
+24/64 MiB Wasm bounds stay unchanged. Additional bounded FFmpeg probe buffering
+is disclosed, not claimed absent; actual memory must pass the same gate.
+The build/handoff now authenticates the separate candidate ref and wrapper;
+`--h264-vfr-complex` runs the existing unchanged failed fixture and all prior
+fidelity/recovery gates. Fourteen focused tests pass. Next: compile through
+the isolated no-Docker job, inspect its proof, then run this small failing
+case before any expensive scale test. No released engine/registry changes.
+
 2026-11-14 M-03 **complex VFR qualification failed; do not promote/replay the
 unchanged candidate**. The existing 780,989-byte fixture produced a real
 782,961-byte browser MP4 in 250.370 ms, but strict DTS validation failed.

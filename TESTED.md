@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-14 H.264 VFR correction preparation, **not browser acceptance**:
+authenticated prior ZIP `6cc21b78…e176` and exact AAC wrapper `eff90a49…550c`
+were used for a real source-derivation preflight. The three reviewed edits
+reverse exactly and produce wrapper `02e6dcbac2160882132cd19606b0820a3f6aa0718cc800abf9caa5c741f2ce8a`.
+H.264 parser inspection uses existing 2 MiB/two-second bounds, preserves real
+DTS and refuses unusable clocks; HEVC policy/AAC sample-precise edits and
+Wasm/thread/write limits unchanged. Bounded FFmpeg inspection buffering is
+explicitly disclosed; no memory-pass claim before the browser run. Owned
+source-inspection scratch removed, no media conversion performed. Separate
+native build/handoff/complex-fixture mode wired; fourteen focused tests pass.
+
 2026-11-14 **complex VFR/two-AAC candidate test failed**. The unchanged
 780,989-byte existing complex fixture was selected by the real headless
 Chrome file input, using the exact previously protected-tested candidate.
