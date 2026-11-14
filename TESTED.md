@@ -1,5 +1,35 @@
 # Tested conversion ledger
 
+2026-11-14 **complex VFR/two-AAC candidate test failed**. The unchanged
+780,989-byte existing complex fixture was selected by the real headless
+Chrome file input, using the exact previously protected-tested candidate.
+Browser output: 782,961 bytes in 250.370 ms, three H.264/AAC/AAC streams.
+All packet counts/payloads matched, but strict DTS preservation failed before
+the full decoded-content, trim and recovery gates. The output video track is
+2.999 s instead of source 3.999 s; overall duration 4.031333 s looks correct
+only because audio is longer. This is not a pass or a speed benchmark.
+
+Native-source review identifies the direct specialist's unconditional H.264
+and HEVC DTS synthesis from nominal frame rate plus skipped stream-info
+inspection. That policy loses this variable cadence. Preserve verified H.264
+DTS with bounded inspection in a new isolated candidate; do not replay the
+unchanged candidate, normalize the validator or weaken the one-tick bound.
+The prior protected HEVC success remains valid for its exact bytes, not VFR.
+
+Rotation/color/geometry, both languages/defaults, general title/comment,
+stream titles and subtitle/attachment/chapter warnings independently checked.
+Whole-tree diagnostic increment 100.734 MiB (five valid samples, none missing);
+stable successful cleanup was not reached, so no memory acceptance claim.
+Output/profile and owned fixture/tool scratch removed in finally. All 42
+observed Chrome births absent; one PID was reused by an unrelated new process
+and was not killed. Original `test.mkv` size/hash rechecked unchanged.
+Receipt and native journal:
+`evidence/2026-11-14T09-47-53-431Z-mkv-exact-aac-complex.json`.
+Forty focused validator/evidence/build/I/O checks pass, including a regression
+binding this real failure and birth-reconciled cleanup; that is not a browser
+conversion pass. The Playwright-guided headless run stopped after the first
+failed fidelity check and did not start cancellation/recovery or large tests.
+
 2026-11-14 **protected full-video decode passed**. The changed-deadline retry
 completed all 296,160 HEVC frames to the expected 12,340 s endpoint, with
 zero dropped/duplicated frames and genuine terminal progress. The independent
