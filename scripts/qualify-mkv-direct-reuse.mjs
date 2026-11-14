@@ -36,11 +36,13 @@ import { compareMkvVideoPackets, probeMkvVideoPackets } from "./lib/mkv-streamin
 import { compareMkvSustainedAac, probeMkvSustainedAac } from "./lib/mkv-sustained-aac-fidelity.mjs";
 import { selectExactLocalOriginal } from "./lib/mpeg2-original-gate.mjs";
 import { assertMkvProtectedSource, assertMkvProtectedOutput, mkvProtectedCopy } from "./lib/mkv-protected-copy-contract.mjs";
+import { assertSameMkvNativeBuild, protectedRepeatReference, readProtectedRepeatReference, summarizeProtectedWindow } from "./lib/mkv-protected-repeat-contract.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
 const sustained = process.argv[2] === "--edit-list-aac-sustained";
-const protectedMode = process.argv[2] === "--edit-list-aac-protected";
+const protectedRepeats = process.argv[2] === "--edit-list-aac-protected-repeats";
+const protectedMode = protectedRepeats || process.argv[2] === "--edit-list-aac-protected";
 const compareDestinations = sustained || process.argv[2] === "--edit-list-aac-destination-control";
 const exactAacCandidate = protectedMode || compareDestinations || process.argv[2] === "--edit-list-aac-candidate";
 const editListCandidate = exactAacCandidate || process.argv[2] === "--edit-list-candidate";
@@ -62,12 +64,13 @@ if (exactAacCandidate) report.exactAacCandidate = true;
 if (compareDestinations) report.scope = "Matched small-fixture staged, direct-fresh and direct-reuse controls, one exact AAC-correct Wasm; not a sustained throughput or promotion test.";
 if (sustained) report.scope = "Matched 128–256 MiB synthetic HEVC/AAC staged and direct saves; no original-file, 10 GB, manual-browser or promotion claim.";
 if (protectedMode) report.scope = "One original 2.96 GB browser direct-reuse remux, whole-file packet/PCM and sampled independent video decode; no repeat, production promotion or 10 GB claim.";
+if (protectedRepeats) report.scope = "Three same-page protected original remuxes plus one clean-session repeat, each full-hash matched to independent packet/PCM evidence; no full-video-decode or public claim.";
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env, timeout = 90000) => execute(file, args, { cwd: root, env, windowsHide: true, timeout, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env)).stdout);
@@ -102,6 +105,15 @@ async function validateProtectedOutput(fixture, output, bytes, baseline, warning
   validation.serializedTimeline = await readMkvMp4TimelineBoxes(output, { protectedPrefix: true });
   assert.deepEqual(validation.serializedTimeline.tracks.map(t => [t.kind, t.editListPresent]), [["vide", true], ["soun", true]]);
   assert.equal(validation.serializedTimeline.tracks[1].edits[0].mediaTimeTicks, String(mkvProtectedCopy.primingSamples));
+  if (protectedRepeats) {
+    assert.equal(bytes, baseline.protectedReference.outputBytes);
+    assert.equal(validation.outputSha256, baseline.protectedReference.outputSha256, "Protected repeat differs from independently validated full output");
+    assert.ok(validation.structure.durationDeltaSeconds < 0.05);
+    validation.independentValidation = { ...baseline.protectedReference, method: "full disk-output SHA-256 equality, same source and byte-exact rebuilt native engine" };
+    validation.fullVideoDecode = false;
+    validation.candidateGate = { passed: true };
+    return;
+  }
   validation.video = await compareMkvVideoPackets(probeMkvVideoPackets(fixture, 0, { cwd: root, env }),
     probeMkvVideoPackets(output, 0, { cwd: root, env }), { sourceIndex: 0, outputIndex: 0 });
   assert.equal(validation.video.packets, mkvProtectedCopy.videoPackets);
@@ -182,16 +194,18 @@ const port = async () => {
   });
 };
 
-async function arm(mode, fixture, fixtureRuntime, baseline) {
+async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
   const candidate = Boolean(baseline.candidate), staged = mode === "staged" || mode === "edit-list";
   const result = { mode, status: "running", requests: 0, workerResponses: 0, directEngineRequests: { module: 0, wasm: 0 }, forbiddenRequests: [], cases: [], failures: [] };
+  if (protectedRepeats) result.plannedProtectedJobs = protectedJobs;
   if (candidate) result.engineResponses = { module: 0, wasm: 0 };
   report.arms.push(result);
   const runtime = await createOwnedRuntimeScratch("mkv-direct-reuse-");
   const env = { ...runtime.env, WRANGLER_SEND_METRICS: "false", NEXT_TELEMETRY_DISABLED: "1" };
   const samples = []; let server, chrome, identity, monitor, browser, page, timer, pending, activeAt, until, rejectStop, errorSeen;
   let protectedStarted, protectedTerminal;
-  const duringConversion = time => !protectedMode || (protectedStarted !== undefined && time >= protectedStarted && (protectedTerminal === undefined || time <= protectedTerminal));
+  const protectedWindows = [];
+  const duringConversion = time => !protectedMode || protectedWindows.some(w => time >= w.start && (w.end === undefined || time <= w.end));
   let startupCancellation;
   const stop = new Promise((_, reject) => { rejectStop = reject; }); void stop.catch(() => {});
   const fail = error => { errorSeen ??= error; rejectStop(error); };
@@ -341,11 +355,15 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
           timeout.abort(); resume.resolve(); startupCancellation = null;
         }
       } else {
-        if (protectedMode) protectedStarted = Date.now();
+        if (protectedMode) {
+          protectedStarted = Date.now(); protectedTerminal = undefined;
+          row.conversionWindow = { start: protectedStarted };
+          protectedWindows.push(row.conversionWindow);
+        }
         await guard(page.locator('[data-testid="convert-button"]').click());
       }
       await guard(page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState), undefined, { timeout: protectedMode ? 180000 : 45000 }));
-      if (protectedMode) protectedTerminal = Date.now();
+      if (protectedMode) { protectedTerminal = Date.now(); row.conversionWindow.end = protectedTerminal; }
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState()); row.state = state.jobState; row.metrics = state.metrics;
       const leftovers = await entries(); assert.ok(leftovers.every(item => !item.name.startsWith("within-stage-")));
       if (fault || cancel) {
@@ -432,10 +450,19 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
         assert.equal(row.metrics.peakPendingOperations, 1); assert.equal(row.metrics.pendingOperations, 0);
       }
       assert.deepEqual(await entries(), []); row.outputRemoved = true;
+      if (protectedRepeats) {
+        await drain();
+        row.memory = summarizeProtectedWindow(samples, row.conversionWindow, result.blank.privateBytes);
+        row.cleanupStable = await guard(stable(drain, samples));
+        row.cleanupAboveIdleMiB = (row.cleanupStable.privateBytes - result.loaded.privateBytes) / mib;
+        assert.ok(row.cleanupAboveIdleMiB <= 96, "Protected repeat cleanup exceeded unchanged 96 MiB gate");
+      }
       if (sustained && !fault && !cancel && !baseline.reference) baseline.reference = { outputSha256: row.validation.outputSha256, outputBytes: row.metrics.outputBytes };
     }
     await job();
-    if (sustained) {
+    if (protectedRepeats) {
+      for (let index = 1; index < protectedJobs; index++) await job();
+    } else if (sustained) {
       await open(); await job(false, true);
       await open(true); await job(true);
       await open(); await job();
@@ -453,11 +480,11 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
     assert.ok(result.directEngineRequests.module > 0 && result.directEngineRequests.wasm > 0);
     if (candidate) {
       assert.deepEqual(result.engineResponses, result.directEngineRequests);
-      assert.equal(result.cases.length, protectedMode ? 1 : sustained ? 5 : exactAacCandidate && !compareDestinations ? 4 : 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
+      assert.equal(result.cases.length, protectedRepeats ? protectedJobs : protectedMode ? 1 : sustained ? 5 : exactAacCandidate && !compareDestinations ? 4 : 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
       const successes = result.cases.filter(row => !row.fault && !row.cancel);
       assert.ok(successes.every(row => row.validation.candidateGate.passed));
       if (exactAacCandidate && !protectedMode) assert.equal(successes[0].validation.outputSha256, successes[1].validation.outputSha256, "Recovery changed a deterministic output");
-      result.status = protectedMode ? "passed-first-protected-exact-aac-direct-reuse" : sustained ? "passed-sustained-exact-aac-destination-arm" : compareDestinations ? "passed-small-exact-aac-destination-arm" : "passed-unpublished-small-staged-clock-control";
+      result.status = protectedRepeats ? "passed-protected-repeat-session" : protectedMode ? "passed-first-protected-exact-aac-direct-reuse" : sustained ? "passed-sustained-exact-aac-destination-arm" : compareDestinations ? "passed-small-exact-aac-destination-arm" : "passed-unpublished-small-staged-clock-control";
     } else result.status = staged ? "completed-staged-timeline-diagnostic-not-acceptance" : "passed-private-small-direct-control";
   } catch (error) { result.status = "failed-not-acceptance"; result.failures.push(String(error.stack ?? error).slice(0, 2048)); }
   finally {
@@ -492,14 +519,15 @@ async function arm(mode, fixture, fixtureRuntime, baseline) {
         for (const s of valid) assert.equal(s.processes.reduce((sum, p) => sum + p.privateBytes, 0), s.privateBytes);
         const peak = valid.reduce((a, b) => a.privateBytes >= b.privateBytes ? a : b);
         result.memory = { peak, incrementalPrivateMiB: (peak.privateBytes - result.blank.privateBytes) / 1048576,
-          validSamples: valid.length, unavailableSamples: active.length - valid.length, start: protectedMode ? protectedStarted : activeAt, end: protectedMode ? protectedTerminal ?? until : until,
+          validSamples: valid.length, unavailableSamples: active.length - valid.length, start: protectedMode ? protectedWindows[0]?.start : activeAt, end: protectedMode ? protectedTerminal ?? until : until,
           cleanupAboveIdleMiB: result.cleanupStable ? (result.cleanupStable.privateBytes - result.loaded.privateBytes) / 1048576 : null };
       }
     }
     if (result.status !== "failed-not-acceptance" && (!result.memory || result.memory.incrementalPrivateMiB > 250 ||
         result.memory.cleanupAboveIdleMiB === null || result.memory.cleanupAboveIdleMiB > 96)) fail(new Error("Unchanged native peak/cleanup gate failed"));
     if (errorSeen) { result.status = "failed-not-acceptance"; result.failures.push(String(errorSeen).slice(0, 2048)); }
-    const raw = Buffer.from(JSON.stringify(samples)), packed = gzipSync(raw), file = `${prefix}-${mode}-native.json.gz`;
+    const archiveMode = protectedRepeats ? `${mode}-session${report.arms.indexOf(result) + 1}` : mode;
+    const raw = Buffer.from(JSON.stringify(samples)), packed = gzipSync(raw), file = `${prefix}-${archiveMode}-native.json.gz`;
     await writeFile(path.join(root, file), packed, { flag: "wx" }); result.archive = { file, bytes: packed.length, sha256: sha(packed), decodedSha256: sha(raw) };
   }
 }
@@ -516,6 +544,7 @@ try {
   if (sustained) sourceFiles.push(smallControl.file, "scripts/lib/mkv-streaming-video-fidelity.mjs", "scripts/lib/mkv-sustained-aac-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs", "scripts/lib/opfs-output-validation-backing.mjs");
   if (protectedMode) sourceFiles.push(sustainedControl.file, "scripts/lib/mkv-protected-copy-contract.mjs", "scripts/lib/mpeg2-original-gate.mjs",
     "scripts/lib/mkv-streaming-video-fidelity.mjs", "scripts/lib/mkv-sustained-aac-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs", "scripts/lib/opfs-output-validation-backing.mjs");
+  if (protectedRepeats) sourceFiles.push(protectedRepeatReference.file, "scripts/lib/mkv-protected-repeat-contract.mjs");
   report.sourcePins = Object.fromEntries(await Promise.all(sourceFiles.map(async file => [file, await hashFile(path.join(root, file))])));
   report.executedHead = (await execute(process.env.WITHIN_GIT_EXECUTABLE ?? "git", ["rev-parse", "HEAD"], { cwd: root, windowsHide: true })).stdout.trim();
   if (!protectedMode) fixtureRuntime = await createOwnedRuntimeScratch("mkv-direct-reuse-fixture-");
@@ -529,7 +558,7 @@ try {
     const bytes = await readFile(path.join(root, sustainedControl.file)); assert.equal(sha(bytes), sustainedControl.sha256);
     const prior = JSON.parse(bytes);
     assert.equal(prior.status, "passed-sustained-exact-aac-destination-comparison-not-public-acceptance");
-    assert.deepEqual(prior.candidateBuild, candidate.proof);
+    assertSameMkvNativeBuild(prior.candidateBuild, candidate.proof);
     assert.ok(prior.arms.some(a => a.mode === "reuse" && a.status === "passed-sustained-exact-aac-destination-arm"));
     report.sustainedControl = sustainedControl;
     report.hostPreflight = await inspectStressHostMemory(); assert.equal(report.hostPreflight.safeToStart, true);
@@ -541,10 +570,24 @@ try {
     report.fixture = { bytes: mkvProtectedCopy.bytes, sha256: mkvProtectedCopy.sha256, seconds: mkvProtectedCopy.seconds,
       primaryVideo: "HEVC Main 1920x804 24fps", primaryAudio: "HE-AAC 48kHz 5.1", declaredPrimingSamples: priming };
     const browser = await inspectInstalledChromePin();
-    await arm("reuse", protectedPath, null, { browser, probe: input, candidate });
+    const baseline = { browser, probe: input, candidate };
+    if (protectedRepeats) {
+      baseline.protectedReference = readProtectedRepeatReference(await readFile(path.join(root, protectedRepeatReference.file)), candidate.proof);
+      report.protectedReference = baseline.protectedReference;
+      for (const count of [3, 1]) {
+        await arm("reuse", protectedPath, null, baseline, count);
+        assert.equal(report.arms.at(-1).ownedRuntimeRemoved, true, "Previous browser must be cleaned before another session");
+        assert.equal(report.arms.at(-1).status, "passed-protected-repeat-session");
+      }
+    } else await arm("reuse", protectedPath, null, baseline);
     assertInstalledChromePinsEqual(await inspectInstalledChromePin(), browser);
-    assert.equal(report.arms[0].status, "passed-first-protected-exact-aac-direct-reuse");
-    report.status = "passed-first-protected-exact-aac-direct-reuse-not-public-acceptance";
+    if (protectedRepeats) {
+      assert.deepEqual(report.arms.map(a => a.cases.length), [3, 1]);
+      report.status = "passed-protected-repeats-not-public-acceptance";
+    } else {
+      assert.equal(report.arms[0].status, "passed-first-protected-exact-aac-direct-reuse");
+      report.status = "passed-first-protected-exact-aac-direct-reuse-not-public-acceptance";
+    }
   } else {
   const fixture = path.join(fixtureRuntime.directory, `${syntheticName}.mkv`);
   if (sustained) {

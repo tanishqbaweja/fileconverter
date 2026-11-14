@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-14 protected repeat preparation: the prior one-day hosted artifact is
+gone (GitHub returned 404), so the exact immutable candidate build was rerun
+as attempt 2 of run 42432771502. No new source/flags or released assets were
+selected. The repeat harness now requires the rebuilt tool manifest, source
+proof and ABI to match the accepted protected engine exactly, while allowing
+the authenticated ZIP envelope to change. Planned checks: three conversions
+on one page and one in a clean session, whole-output hashes matched to the
+independently validated prior file, unchanged blank baseline, per-job native
+memory/cleanup and output deletion. Preparation is not repeat acceptance.
+
 2026-11-08 **first protected `test.mkv` AAC-correct direct-reuse gate passed**.
 Headless installed Chrome 156.0.8078.80 selected the unchanged 2,958,573,265-byte
 original through the production file input with no upload or source copy.

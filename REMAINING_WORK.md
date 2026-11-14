@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-14 M-03/P-08: protected repeats are prepared, not yet run. The original
+candidate artifact expired, so its immutable no-Docker job is rebuilding at
+the same source SHA. Exact tool equivalence is mandatory before the browser
+launch. The new repeat mode checks three same-page jobs plus a clean-session
+job, each against the previously validated whole-file hash, with native
+per-job peak and cleanup checks. No change to limits, inputs or release.
+
 2026-11-08 M-03/P-08: the unchanged 2.96 GB `test.mkv` passed the first
 headless direct-reuse gate with the exact sustained-test candidate. Real
 2,962,151,594-byte output in 21.782 s; 196.957 MiB whole-Chrome peak; no stage.
