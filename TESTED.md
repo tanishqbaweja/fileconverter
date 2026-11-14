@@ -1,5 +1,37 @@
 # Tested conversion ledger
 
+2026-11-14 **protected full-video decode passed**. The changed-deadline retry
+completed all 296,160 HEVC frames to the expected 12,340 s endpoint, with
+zero dropped/duplicated frames and genuine terminal progress. The independent
+four-thread native decoder took 703.241 s, wrote no decoded media and retained
+no frames. This is validation time, not conversion time. The earlier ten-minute
+watchdog failure below remains recorded; do not repeat either accepted check.
+
+The real browser stream-copy job produced the same 2,962,151,594-byte MP4,
+SHA-256 `247c77c371340f8bfb090dc8f8cfde22d83ca1e83483672847013527c50d937b`,
+in 64.756 s on headless installed Chrome 157.0.8103.51. Complete output hash
+equality binds this result to the prior complete packet/decoded-PCM checks;
+stream properties, 5,058-sample edit and documented SRT/PNG exclusions were
+also checked. This was not a matched speed benchmark and proves no speedup.
+
+Whole-Chromium conversion-window peak was 187.051 MiB above the stable blank
+baseline (592 valid samples, one unavailable/excluded, never zero). Cleanup
+was +19.516 MiB above original loaded idle. Reads remained <=256 KiB, writes
+and queued bytes <=1 MiB, one pending operation, no staging or validation copy.
+All 58 observed owned Chrome PIDs, server, output, profile and tool scratch
+were removed; original size and SHA-256 rechecked unchanged. Only compact
+evidence remains. JSON plus derived conversion-memory CSV/HTML graph:
+`evidence/2026-11-14T09-24-11-075Z-mkv-exact-aac-protected-full-decode.json`.
+All 37 focused decoder, packet/audio fidelity, build, repeat, memory-window,
+bounded writer and physical-backing checks passed. The HTML chart was rendered
+headlessly and its screenshot visually checked at 1280 px with no overflow;
+all nine observed report-preview Chrome processes and its scratch were removed.
+
+Full-video decoding is now verified for these exact protected output bytes.
+The candidate remains unpublished; broader timing/stream cases, eventual
+production correction/reproducibility/privacy regressions, other browsers and
+>4 GB/near-10 GB scaling remain open. Headed/manual coverage is unverified.
+
 2026-11-14 full video decode attempt **incomplete: validator watchdog**.
 Chrome completed the exact previously validated 2,962,151,594-byte file in
 25.852 s at 217.598 MiB over blank (236 valid samples, one unavailable).
