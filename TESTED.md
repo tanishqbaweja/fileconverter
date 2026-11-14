@@ -1,5 +1,34 @@
 # Tested conversion ledger
 
+2026-11-14 **protected repeats passed on installed Chrome 157.0.8103.51**.
+The no-Docker job at the immutable prior source SHA rebuilt the identical
+1,198,468-byte Wasm (`f56a8592…1707be7`) and manifest/ABI in attempt 2.
+Three conversions on one page, then one in a clean profile, each produced
+2,962,151,594 bytes with full SHA-256 `247c77c3…50d937b`, exactly the prior
+Chrome 156 output whose complete packet streams and decoded audio had been
+independently validated. Stream/trim/edit metadata and documented exclusions
+were checked on each finished output; no packet/PCM history or validation
+copy was allocated. Full video decode remains unverified.
+
+Browser job times were 44.844, 26.997 and 55.969 s in session 1 and 35.987 s
+in session 2. These are not a matched speedup comparison across versions.
+Per-job whole-tree peaks above each session's original blank were 211.340,
+161.480, 219.328 and 201.746 MiB. Cleanup against the original loaded idle
+was −0.508, +30.461, +14.711 and −4.352 MiB. No baseline was rebased between
+same-page jobs. Native samples: 1,503 valid, one unavailable (excluded, not
+zero). All four files were removed before proceeding; both servers, all 98
+observed Chrome PIDs, tool download and owned runtimes were removed. Protected
+input size and SHA-256 rechecked unchanged. Released engines and normal CI
+workflow unchanged. Not public, full-video-decode or near-10 GB acceptance.
+
+Retained JSON, per-job CSV, readable memory chart HTML and native journals:
+`evidence/2026-11-14T08-57-02-899Z-mkv-exact-aac-protected-repeats.json`
+(same stem `.csv` / `.html`).
+The chart was rendered headlessly and visually checked; four table rows and
+memory bars, no desktop overflow. Its separate 12-process owned report-preview
+browser and scratch were removed. Thirty-three focused evidence, validator,
+memory-window and build checks passed after the repeat run.
+
 2026-11-14 protected repeat preparation: the prior one-day hosted artifact is
 gone (GitHub returned 404), so the exact immutable candidate build was rerun
 as attempt 2 of run 42432771502. No new source/flags or released assets were

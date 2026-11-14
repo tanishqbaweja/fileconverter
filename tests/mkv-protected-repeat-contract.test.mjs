@@ -3,6 +3,8 @@ import { readFile } from "node:fs/promises";
 import test from "node:test";
 import { assertSameMkvNativeBuild, protectedRepeatReference, readProtectedRepeatReference, summarizeProtectedWindow } from "../scripts/lib/mkv-protected-repeat-contract.mjs";
 import { renderProtectedRepeatReport } from "../scripts/lib/mkv-protected-repeat-report.mjs";
+import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
 
 test("Protected repeats bind to validated whole-output bytes even after an exact build gets a new ZIP", async () => {
   const bytes = await readFile(new URL(`../${protectedRepeatReference.file}`, import.meta.url));
@@ -46,4 +48,58 @@ test("Derived repeat report labels missing measurements unavailable and preserve
   assert.match(html, /not public-release or 10 GB acceptance/);
   assert.doesNotMatch(html, /<script|https?:\/\//);
   assert.throws(() => renderProtectedRepeatReport({ ...report, status: "running" }));
+});
+
+test("Actual protected repeats include three same-page jobs, a clean-session job and honest per-job memory", async () => {
+  const read = file => readFile(new URL(`../${file}`, import.meta.url));
+  const sha = value => createHash("sha256").update(value).digest("hex");
+  const stem = "evidence/2026-11-14T08-57-02-899Z-mkv-exact-aac-protected-repeats";
+  const bytes = await read(stem + ".json");
+  assert.equal(sha(bytes), "f6104f45830821f14aa0fc0b366c98c683a3e24af7ed8583de9ef51d183899c3");
+  const report = JSON.parse(bytes);
+  assert.equal(report.status, "passed-protected-repeats-not-public-acceptance");
+  assert.deepEqual(report.arms.map(arm => arm.cases.length), [3, 1]);
+  assert.ok(report.arms.every(arm => arm.browser.version === "157.0.8103.51"));
+  assert.equal(report.protectedReference.priorBrowserVersion, "156.0.8078.80");
+  assert.equal(report.candidateBuild.build.artifacts["within-direct.wasm"].sha256, "f56a8592f81294dc07190f400d9ce1399361ebfe963a558ff63bff4041707be7");
+  assert.notEqual(report.candidateBuild.artifact.id, 13598298761);
+  readProtectedRepeatReference(await read(protectedRepeatReference.file), report.candidateBuild);
+  const peaks = [], cleanup = []; let valid = 0, unavailable = 0, observed = 0;
+  for (const arm of report.arms) {
+    assert.equal(arm.status, "passed-protected-repeat-session");
+    assert.ok(arm.ownedRuntimeRemoved && arm.serverCleanup.ownedRootAbsent);
+    assert.equal(arm.browserCleanup.status, "owned-observed-pids-absent");
+    assert.deepEqual(arm.forbiddenRequests, []);
+    observed += arm.browserCleanup.observedPids.length;
+    const archive = await read(arm.archive.file);
+    assert.equal(sha(archive), arm.archive.sha256);
+    const raw = gunzipSync(archive, { maxOutputLength: 8 * 1024 ** 2 });
+    assert.equal(sha(raw), arm.archive.decodedSha256);
+    const samples = JSON.parse(raw);
+    for (const row of arm.cases) {
+      assert.equal(row.state, "complete");
+      assert.ok(row.outputRemoved && row.selection.completeOriginalSelected);
+      assert.equal(row.metrics.outputBytes, 2962151594);
+      assert.equal(row.metrics.peakScratchBytes ?? 0, 0);
+      assert.equal(row.validation.outputSha256, report.protectedReference.outputSha256);
+      assert.equal(row.validation.fullVideoDecode, false);
+      assert.equal(row.validation.serializedTimeline.tracks[1].edits[0].mediaTimeTicks, "5058");
+      assert.ok(row.validation.structure.subtitleDisclosed && row.validation.structure.artworkDisclosed);
+      assert.deepEqual(summarizeProtectedWindow(samples, row.conversionWindow, arm.blank.privateBytes), row.memory);
+      assert.equal(row.cleanupAboveIdleMiB, (row.cleanupStable.privateBytes - arm.loaded.privateBytes) / 1048576);
+      assert.ok(row.cleanupAboveIdleMiB <= 96);
+      peaks.push(row.memory.incrementalPrivateMiB); cleanup.push(row.cleanupAboveIdleMiB);
+      valid += row.memory.validSamples; unavailable += row.memory.unavailableSamples;
+    }
+  }
+  assert.deepEqual(peaks, [211.33984375, 161.48046875, 219.328125, 201.74609375]);
+  assert.deepEqual(cleanup, [-0.5078125, 30.4609375, 14.7109375, -4.3515625]);
+  assert.equal(valid, 1503); assert.equal(unavailable, 1); assert.equal(observed, 98);
+  assert.deepEqual(report.originalBefore, report.originalAfter);
+  assert.equal(report.originalBefore.bytes, 2958573265);
+  assert.ok(report.toolDownloadRemoved);
+  assert.equal(report.publicAcceptance, false);
+  const rendered = renderProtectedRepeatReport(report);
+  assert.equal((await read(stem + ".csv")).toString(), rendered.csv);
+  assert.equal((await read(stem + ".html")).toString(), rendered.html);
 });
