@@ -1,5 +1,18 @@
 # Tested conversion ledger
 
+2026-11-14 full video decode attempt **incomplete: validator watchdog**.
+Chrome completed the exact previously validated 2,962,151,594-byte file in
+25.852 s at 217.598 MiB over blank (236 valid samples, one unavailable).
+Independent decode progressed beyond 243,807 frames in its stdout reports,
+but the ten-minute native-validator watchdog aborted before terminal proof.
+This is not full-decode acceptance. Output/profile, all 56 observed Chrome
+processes, server and tool scratch were removed; original rehashed unchanged.
+The validator now has a finite 30-minute deadline and retains its last scalar
+progress on failure; browser memory, fidelity and completion gates are not
+raised. Its finite offline observer-journal cap covers that longer validation
+phase without dropping active-browser samples. A changed-deadline retry is
+needed. See `evidence/2026-11-14T09-10-47-838Z-mkv-exact-aac-protected-full-decode.json`.
+
 2026-11-14 full-video-decode preparation: added a bounded independent native
 decoder check for the finished protected MP4. It decodes to a null sink and
 requires real terminal progress, all 296,160 frames, the 12,340 s video

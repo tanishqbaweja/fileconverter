@@ -114,8 +114,14 @@ async function validateProtectedOutput(fixture, output, bytes, baseline, warning
     assert.ok(validation.structure.durationDeltaSeconds < 0.05);
     validation.independentValidation = { ...baseline.protectedReference, method: "full disk-output SHA-256 equality, same source and byte-exact rebuilt native engine" };
     if (protectedFullDecode) {
-      validation.completeVideo = await decodeCompleteProtectedVideo(output, { cwd: root, env,
-        onProgress: update => console.log(JSON.stringify(update)) });
+      try {
+        validation.completeVideo = await decodeCompleteProtectedVideo(output, { cwd: root, env,
+          onProgress: update => console.log(JSON.stringify(update)) });
+      } catch (error) {
+        validation.completeVideo = error.mkvFullDecodeEvidence ?? { status: "incomplete-independent-video-decode", errorName: error.name };
+        validation.fullVideoDecode = false;
+        throw error;
+      }
       validation.fullVideoDecode = true;
     } else validation.fullVideoDecode = false;
     validation.candidateGate = { passed: true };
@@ -220,7 +226,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
   const drain = () => pending ??= (async () => {
     if (!monitor) return;
     const batch = await monitor.drain(); assert.equal(batch.overflow, false);
-    assert.ok(samples.length + batch.samples.length <= (protectedMode ? 9000 : 3000), "Finite native journal"); samples.push(...batch.samples);
+    assert.ok(samples.length + batch.samples.length <= (protectedFullDecode ? 20000 : protectedMode ? 9000 : 3000), "Finite native journal"); samples.push(...batch.samples);
     if (activeAt !== undefined) for (const row of batch.samples) {
       if (Date.parse(row.timestamp) >= activeAt && (until === undefined || Date.parse(row.timestamp) <= until) && duringConversion(Date.parse(row.timestamp)) && row.privateBytes !== null &&
           (row.privateBytes - result.blank.privateBytes) / 1048576 > report.peakLimitMiB) fail(new Error("Unchanged 250 MiB whole-Chromium gate exceeded"));

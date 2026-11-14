@@ -1,5 +1,12 @@
 # Remaining work audit
 
+2026-11-14 M-03: the first full-video check timed out at the independent
+validator's ten-minute watchdog, after a successful hash-identical browser
+conversion. Do not count that as a full decode pass or replay the unchanged
+ten-minute configuration. The bounded validator deadline is now 30 minutes,
+with scalar partial progress retained on failure. Actual full-video-decode
+completion remains open. Prior protected repeat/fidelity results are unchanged.
+
 2026-11-14 M-03: full protected-video decode is now wired as a distinct gate,
 not yet accepted. The native tool only validates the browser's finished,
 full-hash-matched MP4; a bounded progress parser checks all decoded frames

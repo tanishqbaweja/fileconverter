@@ -5,6 +5,8 @@ import { lstat, realpath } from "node:fs/promises";
 import path from "node:path";
 import { boundedNativeLines } from "./bounded-native-lines.mjs";
 
+export const FULL_VIDEO_VALIDATOR_DEADLINE_MS = 30 * 60 * 1000;
+
 const allowed = new Set(["frame", "fps", "stream_0_0_q", "bitrate", "total_size", "out_time_us", "out_time_ms", "out_time", "dup_frames", "drop_frames", "speed", "progress"]);
 
 export function createFullVideoDecodeProgress(expectedFrames, expectedSeconds) {
@@ -52,19 +54,29 @@ export async function decodeCompleteProtectedVideo(file, { cwd, env, onProgress 
   const before = await lstat(actual, { bigint: true });
   assert.ok(before.isFile() && !before.isSymbolicLink() && before.size === 2962151594n);
   const parser = createFullVideoDecodeProgress(296160, 12340), startedAt = Date.now();
+  let lastProgress = null;
   const args = ["-v", "error", "-xerror", "-nostats", "-stats_period", "30", "-threads", "4", "-i", actual,
     "-map", "0:v:0", "-an", "-fps_mode", "passthrough", "-progress", "pipe:1", "-f", "null", "-"];
-  for await (const line of boundedNativeLines("ffmpeg", args, { cwd, env, timeoutMs: 600000 })) {
-    const update = parser.line(line);
-    if (update && !update.ended && Date.now() - startedAt >= 25000) {
-      const elapsedMs = Date.now() - startedAt;
-      onProgress({ phase: "independent-full-video-decode", decodedFrames: update.frames, expectedFrames: 296160,
-        elapsedMs, estimatedRemainingMs: update.frames > 0 ? Math.round(elapsedMs * (296160 - update.frames) / update.frames) : null });
+  try {
+    for await (const line of boundedNativeLines("ffmpeg", args, { cwd, env, timeoutMs: FULL_VIDEO_VALIDATOR_DEADLINE_MS })) {
+      const update = parser.line(line);
+      if (update) {
+        const elapsedMs = Date.now() - startedAt;
+        lastProgress = { phase: "independent-full-video-decode", decodedFrames: update.frames, expectedFrames: 296160,
+          elapsedMs, finalProgressObserved: update.ended,
+          estimatedRemainingMs: update.frames > 0 ? Math.round(elapsedMs * (296160 - update.frames) / update.frames) : null };
+        if (!update.ended && elapsedMs >= 25000) onProgress(lastProgress);
+      }
     }
+  } catch (error) {
+    Object.defineProperty(error, "mkvFullDecodeEvidence", { value: { status: "incomplete-independent-video-decode",
+      lastProgress, elapsedMs: Date.now() - startedAt, deadlineMs: FULL_VIDEO_VALIDATOR_DEADLINE_MS,
+      errorName: error.name, terminalAcceptance: false } });
+    throw error;
   }
   const after = await lstat(actual, { bigint: true });
   for (const key of ["dev", "ino", "size", "birthtimeNs", "mtimeNs"]) assert.equal(after[key], before[key], "Finished browser output changed during decode");
   return { status: "passed-complete-independent-video-decode", ...parser.finish(), decoderThreads: 4,
-    elapsedMs: Date.now() - startedAt, maximumProgressLineBytes: 4096, maximumProgressReports: 600,
+    elapsedMs: Date.now() - startedAt, deadlineMs: FULL_VIDEO_VALIDATOR_DEADLINE_MS, maximumProgressLineBytes: 4096, maximumProgressReports: 600,
     nativeToolUsedForConversion: false };
 }
