@@ -1,5 +1,11 @@
 # Remaining work audit
 
+2026-11-14 M-03: full protected-video decode is now wired as a distinct gate,
+not yet accepted. The native tool only validates the browser's finished,
+full-hash-matched MP4; a bounded progress parser checks all decoded frames
+and terminal completion without writing decoded media. The native validator
+time is not the browser conversion time or part of its active-memory metric.
+
 2026-11-14 M-03/P-08: protected same-page (3) and clean-profile (1) repeats
 passed on installed Chrome 157 with the byte-exact rebuilt candidate and
 whole-output hashes equal to the independently validated Chrome 156 file.

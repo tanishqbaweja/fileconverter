@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-14 full-video-decode preparation: added a bounded independent native
+decoder check for the finished protected MP4. It decodes to a null sink and
+requires real terminal progress, all 296,160 frames, the 12,340 s video
+endpoint, and zero duplicated/dropped frames. No decoded frame or media file
+is retained. Parser refusal tests and a genuine 96-frame control pass. An
+8-second source calibration (192 frames in 186 ms) estimates roughly five
+minutes for full validation, not browser conversion speed. The browser job
+must first reproduce the already independently packet/PCM-validated full
+output hash with the exact engine. The full decoder has not run yet.
+
 2026-11-14 **protected repeats passed on installed Chrome 157.0.8103.51**.
 The no-Docker job at the immutable prior source SHA rebuilt the identical
 1,198,468-byte Wasm (`f56a8592…1707be7`) and manifest/ABI in attempt 2.
