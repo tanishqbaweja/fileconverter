@@ -1,5 +1,30 @@
 # Remaining work audit
 
+2026-11-15 M-03: bounded startup-DTS candidate implemented, **not yet compiled
+or browser-qualified**. Derives byte-exactly/reversibly from the measured probe
+wrapper `a6987467…338fb98d`; new wrapper `1c6b1849…0d83db1f`. Reconstructs only
+an unavailable leading H.264 DTS prefix from observed presentation intervals
+and a matching first-known DTS/earliest-PTS anchor; existing PTS/known DTS are
+untouched and nominal frame rate is never used. Limits: verified reorder depth
+<=16, <=33 video packets, <=4096 inspected packets, separate fixed <=2MiB of
+packet+side-data payload and <=2s presentation window. Existing 2MiB/two-second
+stream-info probe and 24/64MiB Wasm bounds unchanged. Cancellation and all
+packet-reference cleanup use the existing production loop/finally path.
+Warnings explicitly disclose generated initial decode times. Invalid/interior
+missing/nonmonotonic/overflow/unanchored clocks still refuse safely.
+
+Native arithmetic-only smoke compiled/ran headlessly: actual missing-prefix
+example, +5s example, every missing count across reorder depths 1..16,
+known-clock identity, bounds, interior gaps, duplicate/backwards clocks,
+unavailable PTS, null arguments and signed underflow. No media conversion.
+Twenty-six focused source/build/authentication/clock/failure-evidence checks
+pass. New isolated build ref `codex/mkv-h264-startup-native-20261115`; workflow
+only gains this private variant, public assets/registry remain byte-unchanged.
+Next: dispatch that isolated no-Docker build once, authenticate its artifacts,
+then run the retained B-frame source through the changed production browser
+pipeline and all unchanged fidelity/memory/recovery gates. Do not replay the
+rejected parent binary. Full goal remains partial.
+
 2026-11-15 M-03: **new H.264 B-frame timing coverage implemented; browser
 control fails safely, so general timing qualification remains partial**.
 Exact already compiled probe core, genuine 765,366-byte H.264 High/VFR source,

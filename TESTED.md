@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+2026-11-15 bounded startup-DTS **source candidate only**, no browser acceptance.
+New wrapper `1c6b184978eecb8ce966a6db55cc3b8f3aa2d216e102a81e11aa9cc80d83db1f`
+is an exact reversible derivative of the prior probe wrapper; helper and bridge
+sources are pinned. Generates only missing leading DTS from an observed
+presentation window/known anchor, never regenerates existing clocks or uses
+nominal CFR. Separate fixed startup prefix: <=2MiB including packet side data,
+<=4096 inspected packets, <=33 video packets, verified reorder depth <=16,
+<=2s presentation span. Probe and Wasm limits unchanged; additional prefix
+buffering is explicitly recorded rather than mislabeled as no buffering.
+Native headless arithmetic smoke passes every missing count at depths 1..16,
+the real 0/250/83/167/500ms presentation sequence, +5s starts, known-clock
+identity, failure immutability, invalid clocks/bounds/underflow; no media input
+or native conversion. All disposable smoke/source-inspection scratch removed.
+Twenty-six focused tests pass. Build/browser fidelity, memory and recovery
+remain unverified until the new private binary is compiled and exercised.
+The earlier B-frame refusal remains failed; no public engine/profile changed.
+
 2026-11-15 **new H.264 B-frame/VFR control fails safely; not acceptance**.
 One distinct headless normal-service Chrome 157.0.8103.51 run of the exact
 probe-decoder core (`3d08c462…f3148fc`), with no native media conversion,

@@ -12,6 +12,7 @@ import { deriveMkvEditListBuildRecipe, sha256 } from "./mkv-edit-list-build-reci
 import { h264VfrBuildRef, h264VfrWrapperSha256, makeMkvH264VfrCandidate } from "./mkv-h264-vfr-candidate.mjs";
 import { h264ProbeDecoderBuildRef, h264ProbeWrapperSha256, makeH264ProbeDecoderWrapper,
   makeH264ProbeDecoderLibraries, makeH264ProbeDecoderManifest, assertH264ProbeDecoderConfig } from "./mkv-h264-probe-decoder-candidate.mjs";
+import { h264StartupBuildRef, h264StartupWrapperSha256, makeH264StartupCandidate } from "./mkv-h264-startup-candidate.mjs";
 
 const root = path.resolve(import.meta.dirname, "../.."), work = path.join(root, "work");
 const publicDir = path.join(root, "public/engines/remux");
@@ -28,7 +29,11 @@ const probeMode = process.env.WITHIN_MKV_H264_PROBE_DECODER ?? "0";
 assert.ok(["0", "1"].includes(probeMode));
 const probeDecoder = probeMode === "1";
 assert.ok(!probeDecoder || h264Vfr);
-const wrapperSha256 = probeDecoder ? h264ProbeWrapperSha256 : h264Vfr ? h264VfrWrapperSha256 : exactAac ? exactAacWrapperSha256 : editListParentSha256;
+const startupMode = process.env.WITHIN_MKV_H264_STARTUP ?? "0";
+assert.ok(["0", "1"].includes(startupMode));
+const startup = startupMode === "1";
+assert.ok(!startup || probeDecoder);
+const wrapperSha256 = startup ? h264StartupWrapperSha256 : probeDecoder ? h264ProbeWrapperSha256 : h264Vfr ? h264VfrWrapperSha256 : exactAac ? exactAacWrapperSha256 : editListParentSha256;
 const files = {
   "within-direct.mjs": 256 * 1024,
   "within-direct.wasm": (probeDecoder ? 8 : 2) * 1024 * 1024,
@@ -80,7 +85,10 @@ async function prepare(action, build, output) {
   const parent = (exactAac ? makeMkvExactAacTimelineCandidate : makeMkvEditListTimelineCandidate)(base);
   const vfr = h264Vfr ? makeMkvH264VfrCandidate(parent.generated) : parent;
   const derived = probeDecoder ? makeH264ProbeDecoderWrapper(vfr.generated) : vfr;
-  const { generated } = derived, proof = { ...parent.proof, ...vfr.proof, ...derived.proof };
+  const scheduled = startup ? makeH264StartupCandidate(Buffer.from(derived.generated),
+    await readBounded(import.meta.dirname, "h264-startup-dts.h", 16384),
+    await readBounded(import.meta.dirname, "h264-startup-prefix.inc", 16384)) : derived;
+  const { generated } = scheduled, proof = { ...parent.proof, ...vfr.proof, ...derived.proof, ...scheduled.proof };
   if (probeDecoder) {
     const config = await readBounded(path.join(build, "ffmpeg"), "config_components.h", 512 * 1024);
     proof.library = { ...JSON.parse(await readBounded(output, "h264-probe-library-proof.json", 8192)), ...assertH264ProbeDecoderConfig(config) };
@@ -103,7 +111,7 @@ function runRecipe(script, env) {
 
 async function buildCandidate() {
   assert.equal(process.env.GITHUB_ACTIONS, "true", "Use the isolated hosted candidate job");
-  if (exactAac) assert.equal(process.env.GITHUB_REF, `refs/heads/${probeDecoder ? h264ProbeDecoderBuildRef : h264Vfr ? h264VfrBuildRef : exactAacBuildRef}`);
+  if (exactAac) assert.equal(process.env.GITHUB_REF, `refs/heads/${startup ? h264StartupBuildRef : probeDecoder ? h264ProbeDecoderBuildRef : h264Vfr ? h264VfrBuildRef : exactAacBuildRef}`);
   const ciOwner = process.env.WITHIN_CI_RUNTIME_OWNER, ciRoot = path.dirname(ciOwner);
   assert.equal(path.dirname(ciRoot), work);
   assert.match(path.basename(ciRoot), /^ci-[A-Za-z0-9]{6}$/);
