@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-11-15 M-03: **changed-core H264 regression routing prepared, not yet run**.
+Explicit `--hevc-header-parser-core` option permits ONLY the existing pinned
+no-B/VFR, B-frame/VFR and +5s B-frame/VFR controls on authenticated native
+run43691831594/Wasm41c4a075…830a3eba. Old core guard and old fixture/packet/clock/
+trim/full-decode/metadata/output identity/recovery/memory gates remain; override
+refuses original/HEVC/arbitrary modes rather than relaxing their native or
+whole-output references. Accepted HEVC loop receipt93e71282…2e21ea4 reused only
+after exact-native equality and report authentication, no conversion replay.
+Next run those three unchanged source controls once each on the changed core.
+Current-core original and >4GB/near10GB scaling still unverified.
+
 2026-11-15 M-03: **HEVC loop-join clock correction now passes the actual exact
 failed input**, not just source/unit checks. Native run43691831594/head
 0e2f2caa…952fec8, Wasm41c4a075…830a3eba, exact authenticated Matroska header

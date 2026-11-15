@@ -1,5 +1,13 @@
 # Tested conversion ledger
 
+2026-11-15 **H264 regressions prepared on corrected HEVC native tools**.
+Explicit new core option selects only the existing pinned no-B, B-frame and
++5s fixtures; unchanged full packet/available clocks/initial-DTS/trim/metadata/
+decoded content/recovery and250MiB gates. Native run/head/Wasm/wrapper/parser/
+Matroska/config/24–64MiB envelope pinned, exact accepted loop evidence bound
+without replay. Old native-identity guards remain for unselected modes. No new
+browser result yet; original/HEVC zero-start and real multi-GB gates pending.
+
 2026-11-15 **HEVC join-clock bug fixed in the actual browser control**. Exact
 same11,887,449-byte/fullSHAfe5f8d41…4a2629 source as the retained failing run,
 new authenticated native core41c4a075…830a3eba/run43691831594/head0e2f2caa…952fec8.
