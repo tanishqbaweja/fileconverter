@@ -47,6 +47,8 @@ import { h264StartupWrapperSha256 } from "../media/ffmpeg/mkv-h264-startup-candi
 import { assertMkvStartupCore, readStartupComplexReference, startupComplexReference,
   readStartupSmallRegressions, startupSmallRegressions, readStartupProtectedReference, protectedCompleteVideoReference } from "./lib/mkv-startup-core-reference.mjs";
 import { createSmallMkvScalingLoop } from "./lib/mkv-scaling-fixture.mjs";
+import { compareMkvGapAwareVideoPackets } from "./lib/mkv-gap-aware-video-fidelity.mjs";
+import { hevcKnownDtsWrapperSha256 } from "../media/ffmpeg/mkv-hevc-known-dts-candidate.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
@@ -54,7 +56,8 @@ const terminalDiagnostic = process.argv[2] === "--h264-vfr-error-diagnostic";
 const fixedHevcBaseline = process.argv[2] === "--exact-aac-fixed-hevc-baseline";
 const startupHevcControl = process.argv[2] === "--h264-startup-hevc-control";
 const startupSimpleControl = process.argv[2] === "--h264-startup-no-b-control";
-const scalingLoopControl = process.argv[2] === "--h264-startup-loop-source-control";
+const hevcKnownDts = process.argv[2] === "--hevc-known-dts-loop-source-control";
+const scalingLoopControl = hevcKnownDts || process.argv[2] === "--h264-startup-loop-source-control";
 const startupProtectedRepeats = process.argv[2] === "--h264-startup-protected-repeats";
 const startupProtected = startupProtectedRepeats || process.argv[2] === "--h264-startup-protected";
 const probeHevcControl = startupHevcControl || process.argv[2] === "--h264-probe-decoder-hevc-control";
@@ -119,6 +122,10 @@ if (scalingLoopControl) {
   report.h264StartupDtsCandidate = true; report.scalingLoopSourceControl = true;
   report.scope = "Small real-media loop-join construction control on exact startup core, strict existing packet/clock/PCM/full-decode and250MiB gates. New finite read-only validation extent, not actual >4GB/near10GB scaling, native conversion or public acceptance.";
 }
+if (hevcKnownDts) {
+  report.hevcKnownDtsCandidate = true;
+  report.scope = "Same real12MB HEVC/AAC loop-source control on newly authenticated known-DTS core. Every payload/knownPTS/DTS at1ms, adjacent output decode intervals, exact trim/complete decoded content/recovery and unchanged full-tree memory; not >4GB/near10GB or public acceptance.";
+}
 if (positiveStartCandidate) {
   report.positiveStartCandidate = true;
   report.scope = "Exact +5s B-frame/VFR/two-AAC fixture on bounded startup-DTS core, unchanged packet/known-DTS/PTS/trim/decoded-content/metadata/recovery/memory gates, packet-derived header semantics and empty edit delays; no timestamp rebasing, original-file/scale/public acceptance or manual-headed claim.";
@@ -138,7 +145,7 @@ const hashFile = async file => {
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env, timeout = 90000) => execute(file, args, { cwd: root, env, windowsHide: true, timeout, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env)).stdout);
@@ -274,13 +281,30 @@ async function validateLoopSourceOutput(fixture, output, baseline, env, row) {
     [1, ["profile", "sample_rate", "channels", "channel_layout", "extradata_size"]]])
     for (const field of fields) assert.equal(v.outputProbe.streams[index][field], baseline.probe.streams[index][field], `Stream ${index} ${field} changed`);
   v.serializedTimeline = await readMkvMp4TimelineBoxes(output, { scalingPrefix: true });
-  v.video = await compareMkvVideoPackets(probeMkvVideoPackets(fixture, 0, { cwd: root, env }),
-    probeMkvVideoPackets(output, 0, { cwd: root, env }), { sourceIndex: 0, outputIndex: 0 });
+  if (hevcKnownDts) {
+    assert.deepEqual(v.serializedTimeline.tracks.map(t => t.kind), ["vide", "soun"]);
+    assert.ok(v.serializedTimeline.tracks.every(t => t.editListPresent && t.firstFragmentDecodeTimeTicks === "0" && t.durationTicks === "0"));
+    assert.equal(v.serializedTimeline.movie.durationTicks, "0");
+    const audioTrack = v.serializedTimeline.tracks[1]; assert.equal(audioTrack.timeScale, 48000);
+    assert.deepEqual(audioTrack.edits, [{ segmentDurationTicks: "0", mediaTimeTicks: "1024", mediaRateInteger: 1, mediaRateFraction: 0 }]);
+  }
+  v.video = await (hevcKnownDts ? compareMkvGapAwareVideoPackets : compareMkvVideoPackets)(probeMkvVideoPackets(fixture, 0, { cwd: root, env }),
+    probeMkvVideoPackets(output, 0, { cwd: root, env }), { sourceIndex: 0, outputIndex: 0, sourceReorderDepth: baseline.probe.streams[0].has_b_frames });
   assert.equal(v.video.packets, 576);
   v.aac = await compareMkvSustainedAac(probeMkvSustainedAac(fixture, { cwd: root, env }), probeMkvSustainedAac(output, { cwd: root, env }));
   assert.equal(v.aac.initialSkipSamples, 1024);
   v.sourcePcm = await decodedPcm(fixture, env); v.outputPcm = await decodedPcm(output, env);
   assert.equal(v.outputPcm, v.sourcePcm);
+  if (hevcKnownDts) {
+    const decode = async file => (await runNative(ffmpeg, ["-v", "error", "-xerror", "-threads", "1", "-noautorotate", "-i", file,
+      "-map", "0:v:0", "-map", "0:a:0", "-c:v", "rawvideo", "-pix_fmt", "yuv420p", "-fps_mode", "passthrough",
+      "-c:a", "pcm_s16le", "-f", "streamhash", "-hash", "sha256", "-"], env)).stdout.trim();
+    v.sourceDecodedHashes = baseline.decodedHashes ??= await decode(fixture);
+    v.outputDecodedHashes = await decode(output);
+    assert.match(v.sourceDecodedHashes, /^0,v,SHA256=[a-f0-9]{64}\r?\n1,a,SHA256=[a-f0-9]{64}$/);
+    assert.equal(v.outputDecodedHashes, v.sourceDecodedHashes, "Complete decoded video or PCM changed");
+    v.completeDecodedVideoAndPcmEqual = true;
+  }
   await runNative(ffmpeg, ["-v", "error", "-xerror", "-threads", "1", "-i", output, "-map", "0:v:0", "-map", "0:a:0", "-f", "null", "-"], env);
   v.fullDecode = true; v.candidateGate = { passed: true };
 }
@@ -745,6 +769,8 @@ try {
   if (startupCore) sourceFiles.push("scripts/lib/mkv-startup-core-reference.mjs");
   if (scalingLoopControl) sourceFiles.push("scripts/lib/mkv-scaling-fixture.mjs", "scripts/lib/mkv-streaming-video-fidelity.mjs",
     "scripts/lib/mkv-sustained-aac-fidelity.mjs", "scripts/lib/bounded-native-lines.mjs", "scripts/lib/opfs-output-validation-backing.mjs", mkvHevcRegressionFixture.file);
+  if (hevcKnownDts) sourceFiles.push("media/ffmpeg/mkv-hevc-known-dts-candidate.mjs", "scripts/lib/mkv-gap-aware-video-fidelity.mjs",
+    "evidence/2026-11-15T00-31-57-030Z-mkv-startup-core-loop-source-control.json");
   if (startupSimpleControl) sourceFiles.push(startupComplexReference.file);
   if (startupProtected) sourceFiles.push(protectedRepeatReference.file, protectedCompleteVideoReference.file,
     "scripts/lib/mkv-protected-repeat-contract.mjs", ...startupSmallRegressions.map(ref => ref.file));
@@ -757,9 +783,15 @@ try {
   let candidate;
   if (editListCandidate) {
     toolRuntime = await createOwnedRuntimeScratch("mkv-edit-list-tool-download-");
-    candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate, h264Vfr, probeDecoder, startupCore);
+    candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate, h264Vfr, probeDecoder, startupCore, hevcKnownDts);
     report.candidateBuild = candidate.proof;
-    if (startupCore) assertMkvStartupCore(candidate.proof);
+    if (startupCore && !hevcKnownDts) assertMkvStartupCore(candidate.proof);
+    if (hevcKnownDts) {
+      assert.equal(candidate.proof.build.source.candidateWrapperSha256, hevcKnownDtsWrapperSha256);
+      assert.equal(candidate.proof.build.source.hevcKnownDtsPreserved, true);
+      assert.equal(candidate.proof.build.source.hevcNominalDtsSynthesis, false);
+      assert.deepEqual(candidate.proof.build.source.library.enabledDecoders, ["h264"]);
+    }
   }
   if (protectedMode) {
     if (startupProtected) {
@@ -813,6 +845,16 @@ try {
       packetHashes: await packets(created.file, fixtureRuntime.env), candidate };
     assert.equal(Number(baseline.probe.streams[0].nb_read_packets), created.expectedVideoPackets);
     report.fixture = { ...created, sha256: await hashFile(created.file), sourceProbe: baseline.probe, sourcePacketHashes: baseline.packetHashes };
+    if (hevcKnownDts) {
+      const failureFile = "evidence/2026-11-15T00-31-57-030Z-mkv-startup-core-loop-source-control.json";
+      const failure = await readFile(path.join(root, failureFile));
+      assert.equal(sha(failure), "9e80b288d17288be539864a6493368668b0c18ee9c3f32acce245f580167a5b3");
+      const prior = JSON.parse(failure);
+      assert.equal(prior.status, "failed-not-acceptance");
+      assert.equal(created.bytes, prior.fixture.bytes); assert.equal(report.fixture.sha256, prior.fixture.sha256);
+      assert.equal(baseline.packetHashes, prior.fixture.sourcePacketHashes);
+      report.unchangedFailedInputReference = { file: failureFile, sha256: sha(failure), sameEntireInputSha256: true };
+    }
     await arm("reuse", created.file, fixtureRuntime, baseline);
     assert.equal(report.arms[0].status, "passed-loop-source-fidelity-control");
     assert.equal(await hashFile(created.file), report.fixture.sha256);

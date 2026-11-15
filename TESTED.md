@@ -1,5 +1,20 @@
 # Tested conversion ledger
 
+2026-11-15 **new native build dispatched once; browser gate prepared, NOT passed**.
+Run43690480447/native head6af53d42…b8d57eb, isolated branch only. At last verified
+observation prerequisites completed and compilation running. Exact branch proof
+`evidence/mkv-hevc-known-dts-build-branch-2026-11-15.json`; normal workflow/main/
+checkout unchanged, no media uploaded. Same failing source full hash now required
+by new browser mode, no easier fixture. Gap-aware streaming validator retains
+all payload/PTS/known-DTS1ms checks and bounded startup-cadence proof; separately
+requires each MP4 sample duration to equal next actual decode interval and final
+presentation endpoint unchanged. It does not compare Matroska nominal
+DefaultDuration to a discontinuous decode interval as though they mean the same
+thing. Three new validator unit checks PASS, including rejection of the old31ms
+DTS rewrite, forged intervals/endpoints and prefix clocks. Complete decoded
+video/PCM equality added after packet gates. No actual new-core conversion,
+>4GB/near10GB, matched speed gain or public acceptance yet.
+
 2026-11-15 **HEVC known-DTS source candidate: source proof only**. Actual
 authenticated accepted startup wrapper plus exact pinned upstream FFmpeg8.1.2
 HEVC parser derive reversibly to wrapper5c0a8caa…05c4bb6/parser9f8f3965…4e3752.

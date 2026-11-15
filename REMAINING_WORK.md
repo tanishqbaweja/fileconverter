@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-11-15 M-03 build **43690480447** running on separate native head
+`6af53d42be1c4cc468e3a59f83f7fb8bcb8d57eb`; source/SDK prerequisite gates pass,
+compilation still in progress at latest observation. Do not dispatch a duplicate
+on an observation timeout. Source checkpointffcc7375 pushed to media-options;
+live workflow/main/public assets unchanged. New browser mode prepared for same
+entire failed11,887,449-byte input SHAfe5f8d41…4a2629, strict1ms payload/known
+PTS/DTS comparison, independently validated missing prefix, complete video/PCM
+hashes and original4-state recovery/full-tree memory gates. Separate gap-aware
+video validator checks EACH MP4 decode interval against adjacent DTS and final
+presentation endpoint; source Matroska DefaultDuration is not substituted for
+actual source clocks. Previous strict comparator/failed report unchanged;
+unit cases still reject original31ms-DTS defect, altered payloads/endpoints,
+incorrect durations, extra/missing/interior clocks and wrong startup cadence.
+Three new validator tests pass. Actual new-core browser result unverified.
+
 2026-11-15 M-03: **HEVC known-clock candidate implemented, not yet compiled or
 browser-qualified**. Authenticated actual startup wrapper1c6b1849…83db1f and
 exact FFmpeg8.1.2 parsercc826ccb…baed34; reversible private derivative removes

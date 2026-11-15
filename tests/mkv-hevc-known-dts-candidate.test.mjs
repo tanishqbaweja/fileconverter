@@ -55,3 +55,15 @@ test("isolated workflow and loader pin parser/wrapper/probe config while preserv
   assert.match(loader, /assertH264ProbeDecoderConfig\(content\["config-components.h"\]\)/);
   assert.match(loader, /proof.source.hevcTimingPolicyUnchanged, !hevcKnownDts/);
 });
+
+test("new browser mode keeps exact failed input, full decoded content and old core guards separate", async () => {
+  const harness = await read("scripts/qualify-mkv-direct-reuse.mjs");
+  assert.match(harness, /--hevc-known-dts-loop-source-control/);
+  assert.match(harness, /startupCore && !hevcKnownDts\) assertMkvStartupCore/);
+  assert.match(harness, /loadMkvEditListBuildArtifact\(process.argv\[3\], process.argv\[4\], toolRuntime, exactAacCandidate, h264Vfr, probeDecoder, startupCore, hevcKnownDts\)/);
+  assert.match(harness, /assert.equal\(report.fixture.sha256, prior.fixture.sha256\)/);
+  assert.match(harness, /compareMkvGapAwareVideoPackets : compareMkvVideoPackets/);
+  assert.match(harness, /assert.equal\(v.outputDecodedHashes, v.sourceDecodedHashes/);
+  assert.match(harness, /sourceReorderDepth: baseline.probe.streams\[0\].has_b_frames/);
+  assert.match(harness, /v.aac.initialSkipSamples, 1024/);
+});
