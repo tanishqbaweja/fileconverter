@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-11-15 M-03: **first genuine >4GiB scaling gate prepared, NOT run**.
+New explicit5–6GB source (900 valid pinned-media loops),259200 video packets,
+18GiB space preflight. Exact corrected native/current original and loop evidence
+authenticated without replay; actual browser pipeline plus all payload/clocks,
+codec init and COMPLETE independent source/output video+PCM decoded hashes.
+Original test.mkv preserved and hashed before/after; source and ONE browser
+output in owned repo scratch, removed in finally including failure. Same250MiB
+fulltree/sameblank and96MiB original-idle cleanup, fixed buffers/queues. Prior
+retention diagnostic stays failed and does not get rerun unchanged. One-job
+initial scaling fidelity; repeats/near10GB/public release remain separate gates.
+
 2026-11-15 M-03: **retention diagnostic FAIL during second original run**.
 Receipt09-26-19-641Z/fullSHA989c37d1b261ddc6e0989b8cfed6707929b442e58fca932eea9f32fe79c538d9.
 First original output2,962,151,594B/fullSHA64f8a3c3…76fc7b36 matches current

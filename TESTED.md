@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-15 **real >4GiB scaling case prepared, NOT run**. Explicit5–6GB/900-loop
+source from exact reusable5.9MB HEVC/AAC fixture,259200 video packets; native
+fixture generation only,18GiB disk preflight for source+ONE browser output and
+margin. Same exact current header core and production input/worker/direct-reuse
+path; every packet/payload/known clock, codec-init bytes and complete source AND
+output decoded video+PCM equality required. Fixed progress parser/null hashes,
+no decoded media copies,30-minute validator deadline each. Old12MB/original
+extents unchanged. Same original blank/idle,250MiB/96MiB gates, bounded I/O and
+all disposable fixture/output/runtime cleanup. One initial job only; no actual
+>4GB result, repeats, near10GB, flat memory, speedup or public claim yet.
+
 2026-11-15 **retention investigation failed safely on second original**, not a
 six-job pass. Receipt09-26-19-641Z/fullSHA989c37d1…79c538d9. First completed original
 MP4 exact current64f8a3c3…76fc7b36/2,962,151,594B,61.436715s,236.8515625MiB
