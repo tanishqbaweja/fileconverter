@@ -1,5 +1,32 @@
 # Remaining work audit
 
+2026-11-15 M-03: **first corrected-header-core original-file test PASS with NEW
+output and FRESH complete independent video decode**. Receipt
+`evidence/2026-11-15T08-35-42-532Z-mkv-hevc-header-core-protected.json`, SHA
+5529d464b9248226ab79d3e0dc858e7dada90d15e2c235e5058f412c4b3f4039.
+Actual unchanged test.mkv2,958,573,265B ->MP4 2,962,151,594B in24.385390s;
+new full outputSHA64f8a3c3…76fc7b36 differs from old247c77c3, so old decoded
+bytes were NOT reused as proof. Fresh296160 video payloads/PTS and296158 known
+DTS exact, all MP4 decode intervals exact, two missing prefix clocks verified,
+endpoint within1ms.289221AAC payloads,5058-sample trim, complete source/output
+HE-AAC PCM equal; both codec-init byte hashes identical. Hindi/stream properties
+preserved, subtitle/artwork exclusions disclosed, duration within1ms.
+
+Fresh native validation reaches all296160 video frames/12340s, zero drops/dups,
+23 genuine progress reports,679355ms,4threads/null output/no decoded copy. Full
+Chrome delta223.46484375MiB <=250, cleanup over original loaded idle18.078125MiB,
+224valid/0missing conversion samples. Wasm46.3125MiB, read256KiB/write+queue1MiB,
+one pending, no staging/exported validation copy. Disk795.5GB >=8GiB preflight;
+RAM safety unchanged. All49 observed owned Chrome births/server/profile/output/
+downloaded tools removed; source exact size/SHA unchanged. Compact native journal
+plus independently rederived CSV/HTML memory graph retained;123 focused checks
+and affected lint PASS. Graph separates
+actual conversion from later native validation and never substitutes loaded idle.
+No matched speedup claim. Current-core original REQUIRED3 same-page +1 clean
+repeats, genuine >4GB/near10GB, release/repro/privacy/offline/installed-browser/
+broader full-spec gates remain pending. Do not replay this completed expensive
+full-video check unchanged; repeats must bind EVERY byte to this new output.
+
 2026-11-15 M-03: **all three H264 regressions PASS on corrected HEVC core**.
 No-B receipt08-13-54, B-frame08-18-29, +5s08-19-49 all full4-state sequences,
 fresh full decoded video/twoPCM/packet/clock/metadata checks; output SHA exactly

@@ -1,5 +1,41 @@
 # Tested conversion ledger
 
+2026-11-15 **corrected HEVC header-parser core genuinely remuxes full original**.
+Unchanged2,958,573,265B test.mkv/fullSHA31f36695…db34 selected without copying or
+alternative converter. Actual2,962,151,594B MP4 in24.385390s, fullSHA
+64f8a3c3fc8812857ec0c0fd2ec446622100e389e8377911d6d1e0b976fc7b36.
+This is lossless stream-copy remuxing, not decode/re-encode or a renamed file;
+output comparable in size to input. NEW bytes differ from old validated247c77c3
+output, so all current content checks and complete video decode ran afresh.
+
+Fresh all296160 compressed video packets/PTS,296158 known DTS and every output
+decode interval EXACT; two unavailable leading clocks independently checked from
+observed bounded cadence. Video endpoint differs only1ms, unchanged tolerance.
+All289221AAC packets,5058-sample trim and full HE-AAC5.1 PCM preserved; source/
+output codec initialization hashes identical (HEVC2519B/AAC4B), Hindi/stream
+properties match and subtitle/artwork exclusions disclosed. Container duration
+diff1ms within unchanged50ms. Full independent finished-output decode296160frames,
+12340s, zero dropped/duplicate frames,23 terminal/progress reports,679355ms;
+4threads, null sink, no decoded file. It is expressly FRESH, not inherited from
+unlike old bytes; native tools never performed the browser conversion.
+
+Primary complete-Chrome peak above same original stable blank223.46484375MiB,
+cleanup above original loaded idle18.078125MiB,224valid/0missing conversion samples.
+Read256KiB/write+queued1MiB, one pending, Wasm46.3125MiB, no staging/export copy.
+Host/disk preflight passed (795.5GB free,8GiB required). All49 observed owned
+Chrome births/server/profile/2.962GB output/downloaded tools removed. Original
+size/fullSHA unchanged. Native journal355584B retained; new CSV/HTML graph shows
+conversion versus later validation, never rebases blank or invents missing zeros.
+
+Receipt `evidence/2026-11-15T08-35-42-532Z-mkv-hevc-header-core-protected.json`,
+SHA5529d464b9248226ab79d3e0dc858e7dada90d15e2c235e5058f412c4b3f4039.
+Five new report/evidence checks independently rederive primary samples/cleanup,
+bind full validation and byte-reproduce CSV/HTML; total123 focused checks and
+affected lint PASS. Not matched speedup, current-core
+major repeats, >4GB/near10GB, manual/headed, public promotion or full-goal acceptance.
+Next REQUIRED3 same-page original repeats plus1 clean-session using this exact
+new output identity; do not repeat unchanged full packet/PCM/video decoding.
+
 2026-11-15 **corrected HEVC core retains all H264 source controls**. Accepted
 no-B08-13-54, B-frame08-18-29 and +5s08-19-49 receipts each complete/startup-
 cancel/error/complete; all outputs byte-identical to earlier validated fixtures.
