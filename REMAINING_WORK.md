@@ -1,5 +1,28 @@
 # Remaining work audit
 
+2026-11-15 M-03: **startup-core HEVC and no-B-frame regressions now pass**,
+without rebuilding or replaying accepted B-frame controls. Same pinned inputs,
+all independent fidelity/full-decode checks and complete output hashes equal
+prior validated cores (HEVC5,948,960/hash44aaba0e…afe6d37; VFR782,689/hash
+cb62dd3f…95847b). Both complete/startup-cancel/error/complete sequences recover
+byte-identically. Whole-tree157.227/199.063MiB; cleanup55.609/58.887MiB;
+140/120 valid samples, none missing. All43/45 owned process births absent
+(one reused unrelated PID verified and untouched), outputs/profiles/server/
+tool/source-copy scratch removed, original hash unchanged. Receipts:
+`evidence/2026-11-14T23-59-14-309Z-mkv-startup-core-hevc-control.json` and
+`evidence/2026-11-15T00-00-35-705Z-mkv-startup-core-no-b-control.json`.
+
+Original-file startup-core gate prepared, not yet run: authenticate these two
+actual exact-current-core regressions, source original bytes/SHA, prior all-
+packet/completePCM receipt77dcd526…0c2286 AND complete296160-frame decode
+receipt25b044e5…985070. Require current browser output2962151594 bytes/full
+SHA247c77c3…50d937b to match EVERY byte of the independently verified output;
+fresh FFprobe structure/edit checks and unchanged full-tree250MiB/cleanup,
+I/O/storage/ownership gates. Explicitly different native core, NOT native-
+build equality or a fresh full-video decode claim. Older same-core reference
+gate remains strict. Three focused new reference checks pass; next run this
+new original control, then required repeats/release/privacy/browsers/scale.
+
 2026-11-15 M-03: **bounded startup candidate passes both actual B-frame/VFR
 controls (zero and +5s starts)**, exact private Wasm `62cf939c…f4ae8ef`.
 Fresh accepted receipts, not rewritten earlier failures:

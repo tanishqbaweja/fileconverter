@@ -43,25 +43,32 @@ import { validateComplexFragmentedTimeline } from "./lib/mkv-complex-presentatio
 import { h264VfrWrapperSha256 } from "../media/ffmpeg/mkv-h264-vfr-candidate.mjs";
 import { h264ProbeWrapperSha256 } from "../media/ffmpeg/mkv-h264-probe-decoder-candidate.mjs";
 import { h264StartupWrapperSha256 } from "../media/ffmpeg/mkv-h264-startup-candidate.mjs";
+import { assertMkvStartupCore, readStartupComplexReference, startupComplexReference,
+  readStartupSmallRegressions, startupSmallRegressions, readStartupProtectedReference, protectedCompleteVideoReference } from "./lib/mkv-startup-core-reference.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
 const terminalDiagnostic = process.argv[2] === "--h264-vfr-error-diagnostic";
 const fixedHevcBaseline = process.argv[2] === "--exact-aac-fixed-hevc-baseline";
-const probeHevcControl = process.argv[2] === "--h264-probe-decoder-hevc-control";
+const startupHevcControl = process.argv[2] === "--h264-startup-hevc-control";
+const startupSimpleControl = process.argv[2] === "--h264-startup-no-b-control";
+const startupProtectedRepeats = process.argv[2] === "--h264-startup-protected-repeats";
+const startupProtected = startupProtectedRepeats || process.argv[2] === "--h264-startup-protected";
+const probeHevcControl = startupHevcControl || process.argv[2] === "--h264-probe-decoder-hevc-control";
 const pinnedHevc = fixedHevcBaseline || probeHevcControl;
 const positiveStartCandidate = process.argv[2] === "--h264-startup-positive";
 const startupHeaderDiagnostic = process.argv[2] === "--h264-startup-header-diagnostic";
 const startupCandidate = startupHeaderDiagnostic || positiveStartCandidate || process.argv[2] === "--h264-startup-bframes";
+const startupCore = startupProtected || startupCandidate || startupHevcControl || startupSimpleControl;
 const bframeControl = startupCandidate || process.argv[2] === "--h264-probe-decoder-bframes";
 const selectedComplexFixture = positiveStartCandidate ? positiveBFrameMkvFixture : bframeControl ? bframeMkvFixture : complexMkvFixture;
-const probeDecoder = bframeControl || probeHevcControl || process.argv[2] === "--h264-probe-decoder-complex";
+const probeDecoder = startupCore || bframeControl || probeHevcControl || process.argv[2] === "--h264-probe-decoder-complex";
 const h264Vfr = probeDecoder || terminalDiagnostic || process.argv[2] === "--h264-vfr-complex";
-const complexTimeline = (h264Vfr && !probeHevcControl) || process.argv[2] === "--edit-list-aac-complex";
+const complexTimeline = !startupProtected && ((h264Vfr && !probeHevcControl) || process.argv[2] === "--edit-list-aac-complex");
 const sustained = process.argv[2] === "--edit-list-aac-sustained";
-const protectedRepeats = process.argv[2] === "--edit-list-aac-protected-repeats";
+const protectedRepeats = startupProtectedRepeats || process.argv[2] === "--edit-list-aac-protected-repeats";
 const protectedFullDecode = process.argv[2] === "--edit-list-aac-protected-full-decode";
-const protectedMode = protectedFullDecode || protectedRepeats || process.argv[2] === "--edit-list-aac-protected";
+const protectedMode = startupProtected || protectedFullDecode || protectedRepeats || process.argv[2] === "--edit-list-aac-protected";
 const compareDestinations = sustained || process.argv[2] === "--edit-list-aac-destination-control";
 const exactAacCandidate = pinnedHevc || probeDecoder || complexTimeline || protectedMode || compareDestinations || process.argv[2] === "--edit-list-aac-candidate";
 const editListCandidate = exactAacCandidate || process.argv[2] === "--edit-list-candidate";
@@ -96,6 +103,15 @@ if (startupCandidate) {
   report.h264StartupDtsCandidate = true;
   report.scope = "Pinned B-frame/VFR/two-AAC source on isolated bounded startup-DTS candidate; all PTS/known DTS/payload/order/trim/decoded-content/metadata/recovery/memory gates, initial missing-DTS scheduling explicitly disclosed; not nonzero-start, original-file, scale or public acceptance.";
 }
+if (startupHevcControl || startupSimpleControl) {
+  report.h264StartupDtsCandidate = true;
+  report.startupCoreRegression = startupHevcControl ? "hevc" : "h264-no-b-frames";
+  report.scope = "Same pinned HEVC or no-B-frame VFR input on exact startup-DTS core, full output-byte identity to independently qualified older-core baseline plus all original fidelity/recovery/full-tree-memory checks; no original/scale/speed/public acceptance.";
+}
+if (startupProtected) {
+  report.h264StartupDtsCandidate = true; report.startupProtectedCandidate = true;
+  report.scope = "Original 2.96GB browser remux on exact changed startup core, fresh whole-tree memory and whole-output SHA-256 identity to prior complete independent packet/PCM/video validators. Different engine under test, not a fresh full native decode, public release or scale claim.";
+}
 if (positiveStartCandidate) {
   report.positiveStartCandidate = true;
   report.scope = "Exact +5s B-frame/VFR/two-AAC fixture on bounded startup-DTS core, unchanged packet/known-DTS/PTS/trim/decoded-content/metadata/recovery/memory gates, packet-derived header semantics and empty edit delays; no timestamp rebasing, original-file/scale/public acceptance or manual-headed claim.";
@@ -115,7 +131,7 @@ const hashFile = async file => {
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env, timeout = 90000) => execute(file, args, { cwd: root, env, windowsHide: true, timeout, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env)).stdout);
@@ -160,11 +176,14 @@ async function validateProtectedOutput(fixture, output, bytes, baseline, warning
   validation.serializedTimeline = await readMkvMp4TimelineBoxes(output, { protectedPrefix: true });
   assert.deepEqual(validation.serializedTimeline.tracks.map(t => [t.kind, t.editListPresent]), [["vide", true], ["soun", true]]);
   assert.equal(validation.serializedTimeline.tracks[1].edits[0].mediaTimeTicks, String(mkvProtectedCopy.primingSamples));
-  if (protectedRepeats || protectedFullDecode) {
+  if (startupProtected || protectedRepeats || protectedFullDecode) {
     assert.equal(bytes, baseline.protectedReference.outputBytes);
     assert.equal(validation.outputSha256, baseline.protectedReference.outputSha256, "Protected repeat differs from independently validated full output");
     assert.ok(validation.structure.durationDeltaSeconds < 0.05);
-    validation.independentValidation = { ...baseline.protectedReference, method: "full disk-output SHA-256 equality, same source and byte-exact rebuilt native engine" };
+    validation.independentValidation = { ...baseline.protectedReference, method: startupProtected
+      ? "full disk-output SHA-256 equality to independently packet/PCM/full-video-decoded bytes, same source and deliberately different authenticated engine"
+      : "full disk-output SHA-256 equality, same source and byte-exact rebuilt native engine" };
+    if (startupProtected) validation.fullVideoDecodeInheritedThroughWholeOutputIdentity = true;
     if (protectedFullDecode) {
       try {
         validation.completeVideo = await decodeCompleteProtectedVideo(output, { cwd: root, env,
@@ -461,6 +480,11 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
           assert.equal(row.metrics.peakScratchBytes ?? 0, 0);
         } else if (complexTimeline) {
           const validation = row.validation = { outputSha256: await hashFile(binding.file) };
+          if (startupSimpleControl) {
+            assert.equal(validation.outputSha256, baseline.complexReference.outputSha256);
+            assert.equal(row.metrics.outputBytes, baseline.complexReference.outputBytes);
+            validation.sameInputPriorOutput = baseline.complexReference;
+          }
           validation.outputProbe = await probeProtected(binding.file, env);
           validation.warnings = state.warnings;
           validation.structure = (startupCandidate ? assertComplexMkvMetadata : assertComplexMkvStructure)(baseline.probe, validation.outputProbe, state.warnings);
@@ -682,8 +706,12 @@ try {
   if (bframeControl) sourceFiles.push(selectedComplexFixture.file + ".json", "scripts/prepare-h264-bframe-fixture.mjs");
   if (h264Vfr) sourceFiles.push("media/ffmpeg/mkv-h264-vfr-candidate.mjs");
   if (probeDecoder) sourceFiles.push("media/ffmpeg/mkv-h264-probe-decoder-candidate.mjs");
-  if (startupCandidate) sourceFiles.push("media/ffmpeg/mkv-h264-startup-candidate.mjs", "media/ffmpeg/h264-startup-dts.h", "media/ffmpeg/h264-startup-prefix.inc");
+  if (startupCore) sourceFiles.push("media/ffmpeg/mkv-h264-startup-candidate.mjs", "media/ffmpeg/h264-startup-dts.h", "media/ffmpeg/h264-startup-prefix.inc");
   if (startupCandidate) sourceFiles.push("scripts/lib/mkv-complex-presentation-timeline.mjs");
+  if (startupCore) sourceFiles.push("scripts/lib/mkv-startup-core-reference.mjs");
+  if (startupSimpleControl) sourceFiles.push(startupComplexReference.file);
+  if (startupProtected) sourceFiles.push(protectedRepeatReference.file, protectedCompleteVideoReference.file,
+    "scripts/lib/mkv-protected-repeat-contract.mjs", ...startupSmallRegressions.map(ref => ref.file));
   if (positiveStartCandidate) sourceFiles.push("scripts/prepare-h264-positive-start-fixture.mjs");
   if (pinnedHevc) sourceFiles.push("scripts/lib/mkv-exact-aac-staged-reference.mjs", mkvStagedReference.file, mkvHevcRegressionFixture.file, mkvHevcRegressionFixture.file + ".json");
   if (probeHevcControl) sourceFiles.push(mkvFixedHevcReference.file);
@@ -693,16 +721,21 @@ try {
   let candidate;
   if (editListCandidate) {
     toolRuntime = await createOwnedRuntimeScratch("mkv-edit-list-tool-download-");
-    candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate, h264Vfr, probeDecoder, startupCandidate);
+    candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate, h264Vfr, probeDecoder, startupCore);
     report.candidateBuild = candidate.proof;
+    if (startupCore) assertMkvStartupCore(candidate.proof);
   }
   if (protectedMode) {
+    if (startupProtected) {
+      report.currentCoreSmallRegressions = readStartupSmallRegressions(await Promise.all(startupSmallRegressions.map(ref => readFile(path.join(root, ref.file)))), candidate.proof);
+    } else {
     const bytes = await readFile(path.join(root, sustainedControl.file)); assert.equal(sha(bytes), sustainedControl.sha256);
     const prior = JSON.parse(bytes);
     assert.equal(prior.status, "passed-sustained-exact-aac-destination-comparison-not-public-acceptance");
     assertSameMkvNativeBuild(prior.candidateBuild, candidate.proof);
     assert.ok(prior.arms.some(a => a.mode === "reuse" && a.status === "passed-sustained-exact-aac-destination-arm"));
     report.sustainedControl = sustainedControl;
+    }
     report.hostPreflight = await inspectStressHostMemory(); assert.equal(report.hostPreflight.safeToStart, true);
     const env = toolRuntime.env, input = await probeProtected(protectedPath, env);
     assertMkvProtectedSource(input);
@@ -713,8 +746,10 @@ try {
       primaryVideo: "HEVC Main 1920x804 24fps", primaryAudio: "HE-AAC 48kHz 5.1", declaredPrimingSamples: priming };
     const browser = await inspectInstalledChromePin();
     const baseline = { browser, probe: input, candidate };
-    if (protectedRepeats || protectedFullDecode) {
-      baseline.protectedReference = readProtectedRepeatReference(await readFile(path.join(root, protectedRepeatReference.file)), candidate.proof);
+    if (startupProtected || protectedRepeats || protectedFullDecode) {
+      baseline.protectedReference = startupProtected ? readStartupProtectedReference(
+        await readFile(path.join(root, protectedRepeatReference.file)), await readFile(path.join(root, protectedCompleteVideoReference.file)), candidate.proof)
+        : readProtectedRepeatReference(await readFile(path.join(root, protectedRepeatReference.file)), candidate.proof);
       report.protectedReference = baseline.protectedReference;
     }
     if (protectedRepeats) {
@@ -727,14 +762,14 @@ try {
     assertInstalledChromePinsEqual(await inspectInstalledChromePin(), browser);
     if (protectedRepeats) {
       assert.deepEqual(report.arms.map(a => a.cases.length), [3, 1]);
-      report.status = "passed-protected-repeats-not-public-acceptance";
+      report.status = startupProtected ? "passed-startup-core-protected-repeats-not-public-acceptance" : "passed-protected-repeats-not-public-acceptance";
     } else if (protectedFullDecode) {
       assert.equal(report.arms[0].status, "passed-protected-complete-video-decode");
       assert.equal(report.arms[0].cases[0].validation.fullVideoDecode, true);
       report.status = "passed-protected-complete-video-decode-not-public-acceptance";
     } else {
       assert.equal(report.arms[0].status, "passed-first-protected-exact-aac-direct-reuse");
-      report.status = "passed-first-protected-exact-aac-direct-reuse-not-public-acceptance";
+      report.status = startupProtected ? "passed-startup-core-protected-not-public-acceptance" : "passed-first-protected-exact-aac-direct-reuse-not-public-acceptance";
     }
   } else if (complexTimeline) {
     const fixture = path.join(fixtureRuntime.directory, `${syntheticName}.mkv`), originalFixture = path.join(root, selectedComplexFixture.file);
@@ -744,8 +779,8 @@ try {
     report.fixture = { ...selectedComplexFixture, copiedOnlyIntoOwnedScratch: true };
     const prior = JSON.parse(await readFile(path.join(root, protectedRepeatReference.file)));
     if (h264Vfr) {
-      assert.equal(candidate.proof.build.source.candidateWrapperSha256, startupCandidate ? h264StartupWrapperSha256 : probeDecoder ? h264ProbeWrapperSha256 : h264VfrWrapperSha256);
-      assert.equal(candidate.proof.build.source.parentWrapperSha256, startupCandidate ? h264ProbeWrapperSha256 : probeDecoder ? h264VfrWrapperSha256 : prior.candidateBuild.build.source.candidateWrapperSha256);
+      assert.equal(candidate.proof.build.source.candidateWrapperSha256, startupCore ? h264StartupWrapperSha256 : probeDecoder ? h264ProbeWrapperSha256 : h264VfrWrapperSha256);
+      assert.equal(candidate.proof.build.source.parentWrapperSha256, startupCore ? h264ProbeWrapperSha256 : probeDecoder ? h264VfrWrapperSha256 : prior.candidateBuild.build.source.candidateWrapperSha256);
       assert.deepEqual(candidate.proof.build.wasmMemory, prior.candidateBuild.build.wasmMemory);
       assert.deepEqual(candidate.proof.build.source.mov, prior.candidateBuild.build.source.mov);
     } else assertSameMkvNativeBuild(prior.candidateBuild, candidate.proof);
@@ -753,6 +788,11 @@ try {
       complexPackets: await complexPackets(fixture, fixtureRuntime.env), complexDecodedHashes: await complexDecodedHashes(fixture, fixtureRuntime.env) };
     report.fixture.sourceProbe = baseline.probe;
     report.fixture.decodedHashes = baseline.complexDecodedHashes;
+    if (startupSimpleControl) {
+      assert.equal(baseline.probe.streams[0].has_b_frames, 0);
+      baseline.complexReference = readStartupComplexReference(await readFile(path.join(root, startupComplexReference.file)), report.fixture);
+      report.complexReference = baseline.complexReference;
+    }
     if (bframeControl) report.fixture.bframeSource = assertBFrameMkvSource(baseline.probe, baseline.complexPackets);
     await arm("reuse", fixture, fixtureRuntime, baseline);
     assert.equal(report.arms[0].status, "passed-complex-exact-aac-direct-reuse");

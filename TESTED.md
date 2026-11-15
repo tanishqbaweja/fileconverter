@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+2026-11-15 **current startup-core HEVC/no-B-frame controls pass**, exact same
+native build43653656481/head147b0516/Wasm62cf939c…f4ae8ef as the B-frame tests.
+No new build or accepted-B-frame replay. Pinned5.95MB HEVC output5,948,960 bytes
+fullSHA44aaba0e…afe6d37, successful458.960/507.875ms; pinned780,989-byte no-B VFR
+output782,689/fullSHAcb62dd3f…95847b, jobs568.600/571.515ms. Each matches the
+complete output of its independently validated older-core same-input baseline,
+plus original packet/clock/trim/decoded-content/metadata gates and complete/
+startup-cancelled/write-error/complete recovery. No speedup benchmark claim.
+
+Normal-service headless Chrome157: whole-tree increments157.2265625MiB HEVC /
+199.0625MiB no-B; cleanup55.609375/58.88671875MiB above original loaded idle;
+140/120 valid samples,0missing. All43/45 observed owned process births absent;
+one reused PID in no-B cleanup verified by birth and not killed. All outputs,
+profiles/server/tool/source-copy scratch removed; protected original untouched.
+Receipts23-59-14-309Z startup-core-hevc and00-00-35-705Z startup-core-no-b;
+digests9883ce62…008f2d0 /4e921662…17f1ea. Original-file gate now binds this
+EXACT current core to old full-output packet/PCM AND full-video decode proofs
+through required whole-byte identity, not a claim the native binaries match
+or a new native decode was performed. Original check/repeats still pending.
+
 2026-11-15 **startup candidate browser acceptance for two SMALL B-frame/VFR
 controls only**, not a public release or full-project completion. Normal-service
 headless Chrome157.0.8103.51, authenticated Wasm2,402,739 bytes SHA-256
