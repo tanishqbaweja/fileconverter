@@ -1,0 +1,2 @@
+session,job,state,input_bytes,output_bytes,elapsed_ms,peak_incremental_private_mib,cleanup_above_idle_mib,valid_samples,unavailable_samples,output_sha256,output_removed
+1,1,complete,2958573265,2962151594,28982.40999996662,222.12890625,5.015625,266,0,247c77c371340f8bfb090dc8f8cfde22d83ca1e83483672847013527c50d937b,true

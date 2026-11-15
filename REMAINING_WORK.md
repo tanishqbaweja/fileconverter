@@ -1,5 +1,50 @@
 # Remaining work audit
 
+2026-11-15 M-03: **startup-core protected original repeats pass:3 same-page
+and1 clean-session**. New receipt
+`evidence/2026-11-15T00-10-16-881Z-mkv-startup-core-protected-repeats.json`,
+SHA-256 `af3b6e677c7dabf146c541b59139c57df73207018383d859499e5cf0c803833e`.
+Each actual original remux outputs2,962,151,594 bytes/fullSHA247c77c3…50d937b,
+fresh FFprobe/edit/disclosure checks, complete prior packet/PCM/video proof
+through entire-output identity; no new native decode claim. Times29.094,
+53.769,33.876,35.353s, not matched speedup measurements. Whole-tree increases
+225.285,200.207,163.234,211.176MiB; cleanup over ORIGINAL loaded idle23.520,
+32.824,19.012,-4.281MiB. No baseline rebasing, no monotonically retained growth.
+1389valid/3unavailable conversion samples; missing excluded, never zero. Wasm
+50.25MiB, read256KiB/write+queue1MiB, one pending operation. Every output removed
+before the next run; all48/50 per-session observed owned PIDs/profiles/servers/
+tool scratch gone. Original size/SHA unchanged. JSON/native journals/CSV/HTML
+graphs retained and byte-rederived by focused tests; first-run reports also
+retained. Seventy-seven focused checks pass. Public assets/registry unchanged.
+
+Current startup core now has B-frame zero/+5s controls, HEVC/no-B controls and
+original first+required repeats. Do not replay accepted unchanged controls.
+Next concrete gate: valid progressively larger >4GB and near10GB real media
+fixtures through THIS same bounded production browser path, with scalable
+read-only independent validation/reporting and finally-cleaned large sources
+and outputs. Existing4GiB original-only binder contract must not be silently
+widened or confused with tested >4GB support. Then release/reproducibility,
+network privacy/offline, installed browsers and remaining stress/failure gates.
+All broader-format/UI/CI/manual/other original-spec gaps remain audited partial;
+this media checkpoint is not completion or permission to broaden public claims.
+
+2026-11-15 M-03: **first startup-core original-file run passes**, receipt
+`evidence/2026-11-15T00-06-48-699Z-mkv-startup-core-protected.json` SHA-256
+`d256385dadb3a0290ced4dc61c04288ab0b6d964bdcc08fa2f85e9fa0944f64f`.
+Actual unchanged2,958,573,265-byte `test.mkv` selected in production Chrome;
+2,962,151,594-byte MP4 in28.982s, complete outputSHA247c77c3…50d937b exactly
+matches prior all-packet/completePCM/full296160-frame video-decoded bytes.
+Fresh FFprobe metadata/stream/exclusion/1ms-duration and exact5058-sample edit
+checks pass. Prior full decode is inherited through entire-byte identity, not
+relabeled as a new native decode or equal native binaries. Source unchanged.
+Whole-tree peak222.129MiB, cleanup+5.016MiB,266valid/0missing, Wasm50.25MiB,
+<=256KiB reads/1MiB writes+queue, one pending operation; no staging or validation
+copy. Output/server/profile/all42owned PIDs/tool scratch removed. Available
+disk805.2GB exceeded required8GiB. JSON/native journal/CSV/HTML graph retained;
+report labels first run, not repeats; older report bytes remain reproducible.
+Required3 same-page +1 clean-session current-core repeats now running once.
+Do not mark them passed until the actual terminal report proves each job.
+
 2026-11-15 M-03: **startup-core HEVC and no-B-frame regressions now pass**,
 without rebuilding or replaying accepted B-frame controls. Same pinned inputs,
 all independent fidelity/full-decode checks and complete output hashes equal

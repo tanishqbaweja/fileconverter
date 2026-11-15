@@ -1,5 +1,58 @@
 # Tested conversion ledger
 
+2026-11-15 **required original-file repeats pass on the corrected startup core**:
+three jobs in one normal-service headless Chrome157 session plus one clean
+session. Actual `test.mkv` unchanged2,958,573,265 bytes/SHA31f36695…db34;
+every output2,962,151,594 bytes/fullSHA
+`247c77c371340f8bfb090dc8f8cfde22d83ca1e83483672847013527c50d937b`.
+Fresh output structure/edit/exclusion checks and full disk-output hashes bind
+to prior all-packet/completePCM/296160-frame video validation. Different native
+engine expressly tested; no native-core equality, new native full decode,
+genuine re-encoding, matched speedup or release claim.
+
+Successful browser remux times29.093770/53.768875/33.875690/35.352995s.
+Per-job full-Chrome peaks above ORIGINAL session blank225.28515625,
+200.20703125,163.234375,211.17578125MiB, all <=250MiB. Per-job cleanup above
+ORIGINAL loaded idle23.51953125/32.82421875/19.01171875/-4.28125MiB. Stable
+baselines never rebased; no retained per-job memory growth. Valid samples
+265/492/310/322, unavailable1/1/0/1 (1389valid/3missing total); gaps retained
+and excluded, not zero. Wasm50.25MiB, reads256KiB, writes/queued1MiB, one
+pending operation, no staging or validation copy. Each MP4 deleted before
+the next conversion; all48/50 per-session observed owned PIDs, profiles,
+servers and downloaded-tool scratch removed. Source size/hash unchanged.
+
+Receipt `evidence/2026-11-15T00-10-16-881Z-mkv-startup-core-protected-repeats.json`,
+SHA-256 `af3b6e677c7dabf146c541b59139c57df73207018383d859499e5cf0c803833e`;
+two compact journals plus CSV/HTML graph. Tests rederive each job from its own
+native window against the same original blank and byte-reproduce reports.
+Seventy-seven relevant focused checks pass, including historical report-byte
+compatibility and explicit changed-core/inherited-decode labeling. No public
+asset or registry promotion. Next >4GB/near10GB fixtures, scalable validators,
+then release/repro/privacy/offline/browser and remaining feature/stress gates.
+Do not replay these accepted controls unchanged; full goal still incomplete.
+
+2026-11-15 **first actual startup-core `test.mkv` remux passes**. Exact original
+2,958,573,265 bytes/SHA31f36695…db34 selected via same production input adapter,
+not copied/substituted. Chrome157 normal services/headless; exact Wasm62cf939c.
+MP4 output2,962,151,594 bytes in28,982.410ms; fullSHA-256
+`247c77c371340f8bfb090dc8f8cfde22d83ca1e83483672847013527c50d937b` equals
+every byte of independently all-packet/completePCM/full-video-validated output.
+Fresh FFprobe properties/dispositions/Hindi/subtitle+cover-art disclosures,
+duration difference1ms and serialized5058-sample AAC edit checked. Prior
+296160-frame full-video decode is explicitly inherited by output identity;
+no native media conversion, new full native decode, native-core equality,
+matched speedup or public-release claim.
+
+Whole-tree increment222.12890625MiB, original-idle cleanup+5.015625MiB;
+266valid/0missing samples, source checksum unchanged. Wasm50.25MiB, reads256KiB,
+writes/queue1MiB, one pending op. No staging/copy; browser-to-physical binding
+remains three4KiB samples, while the independent physical output is hashed in
+full. All42owned observed Chrome PIDs/server/profile/output/tools removed.
+Receipt `evidence/2026-11-15T00-06-48-699Z-mkv-startup-core-protected.json`,
+SHA-256 d256385d…944f64f; compact journal, CSV and HTML graph retained. Report
+distinguishes a first run and inherited decode evidence; historical CSV/HTML
+output stays byte-reproducible. Current-core3+1 repeats running, not yet passed.
+
 2026-11-15 **current startup-core HEVC/no-B-frame controls pass**, exact same
 native build43653656481/head147b0516/Wasm62cf939c…f4ae8ef as the B-frame tests.
 No new build or accepted-B-frame replay. Pinned5.95MB HEVC output5,948,960 bytes
