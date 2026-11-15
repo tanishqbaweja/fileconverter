@@ -14,6 +14,7 @@ import { h264ProbeDecoderBuildRef, h264ProbeWrapperSha256, makeH264ProbeDecoderW
   makeH264ProbeDecoderLibraries, makeH264ProbeDecoderManifest, assertH264ProbeDecoderConfig } from "./mkv-h264-probe-decoder-candidate.mjs";
 import { h264StartupBuildRef, h264StartupWrapperSha256, makeH264StartupCandidate } from "./mkv-h264-startup-candidate.mjs";
 import { hevcKnownDtsBuildRef, hevcKnownDtsWrapperSha256, makeHevcKnownDtsCandidate, makeHevcKnownDtsParser, makeHevcKnownDtsPrefix } from "./mkv-hevc-known-dts-candidate.mjs";
+import { hevcHeaderParserBuildRef, makeHevcMatroskaHeaderParser } from "./mkv-hevc-header-parser-candidate.mjs";
 
 const root = path.resolve(import.meta.dirname, "../.."), work = path.join(root, "work");
 const publicDir = path.join(root, "public/engines/remux");
@@ -38,6 +39,10 @@ const hevcClockMode = process.env.WITHIN_MKV_HEVC_KNOWN_DTS ?? "0";
 assert.ok(["0", "1"].includes(hevcClockMode));
 const hevcKnownDts = hevcClockMode === "1";
 assert.ok(!hevcKnownDts || startup);
+const hevcHeaderMode = process.env.WITHIN_MKV_HEVC_HEADER_PARSER ?? "0";
+assert.ok(["0", "1"].includes(hevcHeaderMode));
+const hevcHeaderParser = hevcHeaderMode === "1";
+assert.ok(!hevcHeaderParser || hevcKnownDts);
 const wrapperSha256 = hevcKnownDts ? hevcKnownDtsWrapperSha256 : startup ? h264StartupWrapperSha256 : probeDecoder ? h264ProbeWrapperSha256 : h264Vfr ? h264VfrWrapperSha256 : exactAac ? exactAacWrapperSha256 : editListParentSha256;
 const files = {
   "within-direct.mjs": 256 * 1024,
@@ -94,6 +99,14 @@ async function prepare(action, build, output) {
       await writeFile(path.join(output, "hevc-parser.c"), parser.generated, { flag: "wx" });
       await writeFile(path.join(output, "hevc-parser-proof.json"), JSON.stringify(parser.proof), { flag: "wx" });
     }
+    if (hevcHeaderParser) {
+      const reader = makeHevcMatroskaHeaderParser(await readBounded(directory, "matroskadec.c", 262144));
+      const replacement = path.join(directory, "matroskadec.c.candidate");
+      await writeFile(replacement, reader.generated, { flag: "wx" });
+      await rename(replacement, path.join(directory, "matroskadec.c"));
+      await writeFile(path.join(output, "matroskadec.c"), reader.generated, { flag: "wx" });
+      await writeFile(path.join(output, "hevc-header-parser-proof.json"), JSON.stringify(reader.proof), { flag: "wx" });
+    }
     return;
   }
   const base = await readBounded(build, "within_remux.c", files["within_remux.c"]);
@@ -107,6 +120,7 @@ async function prepare(action, build, output) {
   if (hevcKnownDts) makeHevcKnownDtsPrefix(await readBounded(import.meta.dirname, "h264-startup-prefix.inc", 16384));
   const { generated } = clocked, proof = { ...parent.proof, ...vfr.proof, ...derived.proof, ...scheduled.proof, ...clocked.proof };
   if (hevcKnownDts) proof.hevcParser = JSON.parse(await readBounded(output, "hevc-parser-proof.json", 8192));
+  if (hevcHeaderParser) proof.hevcHeaderParser = JSON.parse(await readBounded(output, "hevc-header-parser-proof.json", 8192));
   if (probeDecoder) {
     const config = await readBounded(path.join(build, "ffmpeg"), "config_components.h", 512 * 1024);
     proof.library = { ...JSON.parse(await readBounded(output, "h264-probe-library-proof.json", 8192)), ...assertH264ProbeDecoderConfig(config) };
@@ -129,7 +143,7 @@ function runRecipe(script, env) {
 
 async function buildCandidate() {
   assert.equal(process.env.GITHUB_ACTIONS, "true", "Use the isolated hosted candidate job");
-  if (exactAac) assert.equal(process.env.GITHUB_REF, `refs/heads/${hevcKnownDts ? hevcKnownDtsBuildRef : startup ? h264StartupBuildRef : probeDecoder ? h264ProbeDecoderBuildRef : h264Vfr ? h264VfrBuildRef : exactAacBuildRef}`);
+  if (exactAac) assert.equal(process.env.GITHUB_REF, `refs/heads/${hevcHeaderParser ? hevcHeaderParserBuildRef : hevcKnownDts ? hevcKnownDtsBuildRef : startup ? h264StartupBuildRef : probeDecoder ? h264ProbeDecoderBuildRef : h264Vfr ? h264VfrBuildRef : exactAacBuildRef}`);
   const ciOwner = process.env.WITHIN_CI_RUNTIME_OWNER, ciRoot = path.dirname(ciOwner);
   assert.equal(path.dirname(ciRoot), work);
   assert.match(path.basename(ciRoot), /^ci-[A-Za-z0-9]{6}$/);
@@ -154,7 +168,7 @@ async function buildCandidate() {
     assert.equal(await realpath(compiled), compiled);
     const expected = { ...files, ...(exactAac ? { "movenc.c": 512 * 1024 } : {}),
       ...(probeDecoder ? { "build-libraries.sh": 32768, "config-components.h": 512 * 1024 } : {}),
-      ...(hevcKnownDts ? { "hevc-parser.c": 32768 } : {}) };
+      ...(hevcKnownDts ? { "hevc-parser.c": 32768 } : {}), ...(hevcHeaderParser ? { "matroskadec.c": 262144 } : {}) };
     const artifacts = Object.fromEntries(await Promise.all(Object.entries(expected)
       .map(async ([file, limit]) => [file, await readBounded(compiled, file, limit)])));
     const derivation = JSON.parse(await readBounded(compiled, sourceProof, 8192));

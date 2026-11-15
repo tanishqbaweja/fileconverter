@@ -9,15 +9,16 @@ concurrency:
   cancel-in-progress: false
 jobs:
   mkv-edit-list:
-    if: github.ref == 'refs/heads/codex/mkv-edit-list-native-20261108' || github.ref == 'refs/heads/codex/mkv-edit-list-aac-native-20261108' || github.ref == 'refs/heads/codex/mkv-h264-vfr-native-20261114' || github.ref == 'refs/heads/codex/mkv-h264-probe-decoder-native-20261114' || github.ref == 'refs/heads/codex/mkv-h264-startup-native-20261115' || github.ref == 'refs/heads/codex/mkv-hevc-known-dts-native-20261115'
+    if: github.ref == 'refs/heads/codex/mkv-edit-list-native-20261108' || github.ref == 'refs/heads/codex/mkv-edit-list-aac-native-20261108' || github.ref == 'refs/heads/codex/mkv-h264-vfr-native-20261114' || github.ref == 'refs/heads/codex/mkv-h264-probe-decoder-native-20261114' || github.ref == 'refs/heads/codex/mkv-h264-startup-native-20261115' || github.ref == 'refs/heads/codex/mkv-hevc-known-dts-native-20261115' || github.ref == 'refs/heads/codex/mkv-hevc-header-parser-native-20261115'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
       WITHIN_MKV_EXACT_AAC: ${{ github.ref_name != 'codex/mkv-edit-list-native-20261108' && '1' || '0' }}
-      WITHIN_MKV_H264_VFR: ${{ (github.ref_name == 'codex/mkv-h264-vfr-native-20261114' || github.ref_name == 'codex/mkv-h264-probe-decoder-native-20261114' || github.ref_name == 'codex/mkv-h264-startup-native-20261115' || github.ref_name == 'codex/mkv-hevc-known-dts-native-20261115') && '1' || '0' }}
-      WITHIN_MKV_H264_PROBE_DECODER: ${{ (github.ref_name == 'codex/mkv-h264-probe-decoder-native-20261114' || github.ref_name == 'codex/mkv-h264-startup-native-20261115' || github.ref_name == 'codex/mkv-hevc-known-dts-native-20261115') && '1' || '0' }}
-      WITHIN_MKV_H264_STARTUP: ${{ (github.ref_name == 'codex/mkv-h264-startup-native-20261115' || github.ref_name == 'codex/mkv-hevc-known-dts-native-20261115') && '1' || '0' }}
-      WITHIN_MKV_HEVC_KNOWN_DTS: ${{ github.ref_name == 'codex/mkv-hevc-known-dts-native-20261115' && '1' || '0' }}
+      WITHIN_MKV_H264_VFR: ${{ (github.ref_name == 'codex/mkv-h264-vfr-native-20261114' || github.ref_name == 'codex/mkv-h264-probe-decoder-native-20261114' || github.ref_name == 'codex/mkv-h264-startup-native-20261115' || github.ref_name == 'codex/mkv-hevc-known-dts-native-20261115' || github.ref_name == 'codex/mkv-hevc-header-parser-native-20261115') && '1' || '0' }}
+      WITHIN_MKV_H264_PROBE_DECODER: ${{ (github.ref_name == 'codex/mkv-h264-probe-decoder-native-20261114' || github.ref_name == 'codex/mkv-h264-startup-native-20261115' || github.ref_name == 'codex/mkv-hevc-known-dts-native-20261115' || github.ref_name == 'codex/mkv-hevc-header-parser-native-20261115') && '1' || '0' }}
+      WITHIN_MKV_H264_STARTUP: ${{ (github.ref_name == 'codex/mkv-h264-startup-native-20261115' || github.ref_name == 'codex/mkv-hevc-known-dts-native-20261115' || github.ref_name == 'codex/mkv-hevc-header-parser-native-20261115') && '1' || '0' }}
+      WITHIN_MKV_HEVC_KNOWN_DTS: ${{ (github.ref_name == 'codex/mkv-hevc-known-dts-native-20261115' || github.ref_name == 'codex/mkv-hevc-header-parser-native-20261115') && '1' || '0' }}
+      WITHIN_MKV_HEVC_HEADER_PARSER: ${{ github.ref_name == 'codex/mkv-hevc-header-parser-native-20261115' && '1' || '0' }}
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
         with:
@@ -34,6 +35,7 @@ jobs:
           node --test --test-reporter=tap tests/mkv-edit-list-build-recipe.test.mjs tests/mkv-h264-vfr-candidate.test.mjs
           node --test --test-reporter=tap tests/mkv-h264-startup-candidate.test.mjs
           node --test --test-reporter=tap tests/mkv-hevc-known-dts-candidate.test.mjs
+          node --test --test-reporter=tap tests/mkv-hevc-header-parser-candidate.test.mjs
           WITHIN_CC_EXECUTABLE=cc node scripts/test-h264-startup-smoke.mjs
           node --input-type=module -e 'import {readFileSync} from "node:fs"; import {deriveMkvEditListBuildRecipe} from "./media/ffmpeg/mkv-edit-list-build-recipe.mjs"; process.stdout.write(deriveMkvEditListBuildRecipe(readFileSync("media/ffmpeg/reproduce-nondocker.sh"), {exactAac:process.env.WITHIN_MKV_EXACT_AAC==="1"}).generated)' | bash -n
       - name: Install build prerequisites

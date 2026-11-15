@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+2026-11-15 **actual first HEVC clock candidate safely refuses; not a conversion
+pass**. Native run43690480447 completed successfully, Wasm2,402,965B/fullSHA
+24da64b60b52e59c66f042b09b04f50949f01cda14db93b210c1b85573dd061b,
+actual wrapper/parser/manifest/config authenticated, same24/64MiB envelope.
+Exact source11,887,449B/fullSHAfe5f8d41…4a2629 selected in production browser;
+native guard refuses unverified/nonmonotonic HEVC DTS after262144 input bytes,
+output0/queued0,416.155ms. No validation/full-decode/recovery success or stable
+cleanup metric; sampled85.270MiB is NOT conversion/memory acceptance. All44
+observed Chrome births/server/profile/generated source/tool scratch removed;
+original2,958,573,265B/fullSHA unchanged. Receipt
+`evidence/2026-11-15T07-40-48-911Z-mkv-hevc-known-dts-loop-source-control.json`,
+SHA18b63a70a9d51a3bd98201503831926bc3462b3a88ad6ecc9212e52bd1bca9c9;
+native journal retained. First failed join receipt remains unchanged too.
+
+Pinned source investigation found Matroska explicitly excludes HEVC from
+AVSTREAM_PARSE_HEADERS; exporting SPS metadata in the unused parser alone was
+insufficient. Minimal private Matroska policy derivative now enables that
+header path: source45261fc3…ce99e093 ->4aabbf70…c9d4c1ee. No HEVC decoder/pictures,
+nominal rewrite, larger buffers or heap added. New isolated branch/library/source
+authentication planned; not another run of unchanged failed code. Source trace:
+https://github.com/FFmpeg/FFmpeg/blob/n8.1.2/libavformat/matroskadec.c#L2828
+New native compilation/browser proof pending; no release/scaling claim.
+
 2026-11-15 **new native build dispatched once; browser gate prepared, NOT passed**.
 Run43690480447/native head6af53d42…b8d57eb, isolated branch only. At last verified
 observation prerequisites completed and compilation running. Exact branch proof

@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-11-15 M-03: **first compiled HEVC known-DTS core safely refuses**, not pass.
+Run43690480447 succeeded; actual Wasm24da64b6…3dd061b/config unchanged24/64MiB,
+onlyH264 decoder. Exact failed-source browser test07-40-48 stops before output
+with unverified/nonmonotonic video DTS, 416.155ms/zero output/zero queued writes.
+All44 observed Chrome births/server/profile/source/tools removed in finally;
+original size/SHA unchanged. Stable success cleanup not measured, so no memory
+acceptance. Receipt and native journal retained; no unchanged retry.
+
+Next cause identified in pinned FFmpeg source: Matroska's video setup explicitly
+skips HEVC header parsing (matroskadec.c2828); the first candidate exported SPS
+delay in a parser that was not invoked in this decoder-free path. Implemented
+minimal exact-source reader-policy derivative45261fc3…ce99e093 ->4aabbf70…c9d4c1ee
+enabling header parsing, no pictures/codec or heap/probe/prefix changes. Wrapper/
+SPS patch unchanged and independently pinned. Separate native ref and explicit
+loader mode must authenticate additional184909-byte Matroska source AND Wasm
+different from first failed core. Actual new build/browser result pending.
+
 2026-11-15 M-03 build **43690480447** running on separate native head
 `6af53d42be1c4cc468e3a59f83f7fb8bcb8d57eb`; source/SDK prerequisite gates pass,
 compilation still in progress at latest observation. Do not dispatch a duplicate
