@@ -1,5 +1,29 @@
 # Remaining work audit
 
+2026-11-16 M-03: **genuine5.35GB browser conversion completed; independent full
+decode interrupted, NOT ACCEPTED**. Receipt09-42-55-791Z/fullSHA5898cb81796508782f0b22512e582273ed29c7c29e1cc8c40378fdbb1eee230d.
+Input5,347,972,392B/fullSHA5583bb8e…389b9a7; output5,350,648,699B/fullSHAbc0d3bac…
+5a38a835,49.490475s. Full259200 video payloads/PTS/259198 knownDTS/intervals,
+507600AAC/trim and codec-init bytes match; sameblank Chrome delta198.69921875MiB,
+455valid/0missing. Source/output really exceed4GiB. Original untouched/fullhash
+verified. Native source decoder32707/259200 frames after210207ms projected24min
+more, plus output decode; existing20000-row journal would overflow over both.
+Stopped exact birth-owned native validator only, durable plan/terminal receipt
+09-50-29-730Z; no unrelated processes. Current result stays failed/incomplete,
+with no full decoded-content/cleanup-stability/repeat/public acceptance.
+
+All generated source/output/profile/server/tools/53 Chrome births removed;
+compact receipt/native journal/CSV/HTML retained. New harness fix streams EVERY
+100ms native row to existing lossless bounded-record disk journal and authenticates
+compressed readback; only validation-only graph points thin to1s, never conversion
+samples, process totals or baseline. Failure journal artifacts retained, every
+observed birth kept for cleanup. Corrected full validation run still pending,
+then required repeats and near10GB; unrelated spec requirements remain open.
+162 focused regression/evidence tests and affected lint PASS. A21001-record
+unit exercise crosses old20000 cap with lossless compressed readback, every
+conversion/missing sample and early peak retained, graph view under5000 points.
+It is monitoring-only unit evidence, not another conversion or scaling pass.
+
 2026-11-15 M-03: **first genuine >4GiB scaling gate prepared, NOT run**.
 New explicit5–6GB source (900 valid pinned-media loops),259200 video packets,
 18GiB space preflight. Exact corrected native/current original and loop evidence

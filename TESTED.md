@@ -1,5 +1,36 @@
 # Tested conversion ledger
 
+2026-11-16 **first actual >4GiB browser remux completed; full qualification
+INCOMPLETE**, superseding preparation-only below. Receipt09-42-55-791Z/fullSHA
+5898cb81796508782f0b22512e582273ed29c7c29e1cc8c40378fdbb1eee230d.
+Real900-loop source5,347,972,392B/SHA5583bb8e…389b9a7 -> actual browser MP4
+5,350,648,699B/SHAbc0d3bac…5a38a835 in49.490475s. Every259200 video payload/PTS,
+259198 known DTS and adjacent output interval exact;507600AAC payloads/1024 trim
+and both codec-init byte hashes equal, endpoint10827.868s exact. Full Chrome
+delta198.69921875MiB,455valid/0missing; I/O fixed. Not re-encoding or a matched
+speedup. The real >32-bit input/output extent is exercised, not a virtual proof.
+
+Complete source decode reached32707/259200 frames at210207ms, projected another
+24min plus a similar output validation. Preemptively stopped ONE birth-verified
+owned native validator (PID45312/parent8940), receipt09-50-29-730Z; the existing
+20000-row native journal would fill during both long validations. No unrelated
+app, browser converter or process tree killed. Validation exit remains failed;
+NO complete decoded video/PCM equality, cleanup stability, repeat or release
+pass claimed. All5.35GB source/output/profile/server/tools and53 observed Chrome
+births removed in finally; original exact size/fullSHA unchanged.
+
+Harness correction: losslessly stream EVERY100ms native row to bounded-record
+disk journal, compact/readback SHA verification, preserve every conversion point
+and use1s spacing ONLY for validation graph points. No sampling-frequency,
+whole-tree peak/count, denominator or fidelity relaxation; incomplete journals
+are retained as failure evidence. Corrected full run not yet performed. Near10GB,
+repeats/long-session stability and wider full-spec work remain open.
+162 focused regression/evidence checks and affected lint PASS.21001-record
+monitoring-only unit test proves crossing old20000 cap, bounded streamed archive
+readback, all conversion points/early peak/missing samples retained; graph under
+5000 points. Not media-conversion evidence. Historical first-run report bytes
+remain reproducible; interrupted full validator remains incomplete.
+
 2026-11-15 **real >4GiB scaling case prepared, NOT run**. Explicit5–6GB/900-loop
 source from exact reusable5.9MB HEVC/AAC fixture,259200 video packets; native
 fixture generation only,18GiB disk preflight for source+ONE browser output and

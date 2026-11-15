@@ -3,7 +3,7 @@ import "./lib/hidden-unit-subprocesses.mjs";
 import assert from "node:assert/strict";
 import { execFile, spawn } from "node:child_process";
 import { createHash } from "node:crypto";
-import { createReadStream } from "node:fs";
+import { createReadStream, constants } from "node:fs";
 import { copyFile, lstat, readFile, readdir, realpath, stat, statfs, writeFile } from "node:fs/promises";
 import { createServer } from "node:net";
 import path from "node:path";
@@ -54,6 +54,8 @@ import { headerCoreH264References, readHeaderCoreH264Regressions, readPriorCompl
   headerProtectedReference, readHeaderProtectedReference } from "./lib/mkv-header-protected-reference.mjs";
 import { MKV_RETENTION_LIMITS, createMkvRetentionDiagnostic } from "./lib/mkv-retention-diagnostic.mjs";
 import { MKV_SCALE_5GB, createLargeMkvScalingSource, assertLargeScalingExtent, decodeCompleteScalingContent } from "./lib/mkv-large-scaling.mjs";
+import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
+import { createScalingSampleView } from "./lib/mkv-scaling-sample-view.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
@@ -432,7 +434,9 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
   report.arms.push(result);
   const runtime = await createOwnedRuntimeScratch("mkv-direct-reuse-");
   const env = { ...runtime.env, WRANGLER_SEND_METRICS: "false", NEXT_TELEMETRY_DISABLED: "1" };
-  const samples = []; let server, chrome, identity, monitor, browser, page, timer, pending, activeAt, until, rejectStop, errorSeen, retention;
+  const samples = []; let server, chrome, identity, monitor, browser, page, timer, pending, activeAt, until, rejectStop, errorSeen, retention, losslessJournal;
+  const scalingView = largeScaling ? createScalingSampleView() : null;
+  let scalingValidation = false;
   let protectedStarted, protectedTerminal;
   const protectedWindows = [];
   const duringConversion = time => !largeRun || protectedWindows.some(w => time >= w.start && (w.end === undefined || time <= w.end));
@@ -443,7 +447,10 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
   const drain = () => pending ??= (async () => {
     if (!monitor) return;
     const batch = await monitor.drain(); assert.equal(batch.overflow, false);
-    assert.ok(samples.length + batch.samples.length <= (largeScaling ? 20000 : protectedFullDecode || headerProtected ? 20000 : protectedMode ? 9000 : 3000), "Finite native journal"); samples.push(...batch.samples);
+    if (losslessJournal) await losslessJournal.appendBatch({ ...batch, samples: batch.samples.map(s => ({ ...s,
+      phase: activeAt === undefined ? "baseline" : duringConversion(Date.parse(s.timestamp)) ? "conversion" : scalingValidation ? "independent-validation" : "cleanup" })) });
+    const view = scalingView ? scalingView.select(batch, { validation: scalingValidation, duringConversion }) : batch.samples;
+    assert.ok(samples.length + view.length <= (largeScaling ? 20000 : protectedFullDecode || headerProtected ? 20000 : protectedMode ? 9000 : 3000), "Finite native journal"); samples.push(...view);
     if (activeAt !== undefined) for (const row of batch.samples) {
       if (Date.parse(row.timestamp) >= activeAt && (until === undefined || Date.parse(row.timestamp) <= until) && duringConversion(Date.parse(row.timestamp)) && row.privateBytes !== null &&
           (row.privateBytes - result.blank.privateBytes) / 1048576 > report.peakLimitMiB) fail(new Error("Unchanged 250 MiB whole-Chromium gate exceeded"));
@@ -468,6 +475,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     chrome.on("error", fail);
     identity = await queryReliableProcessIdentity(chrome.pid); assert.ok(identity); result.identity = identity;
     monitor = await startClassifiedChromiumMemoryMonitor(chrome.pid, runtime.directory, 100);
+    if (largeScaling) losslessJournal = await createLosslessNativeMemoryJournal(chrome.pid, path.join(runtime.directory, "scaling-native.ndjson"));
     let debugPort;
     for (let attempt = 0; attempt < 45 && !debugPort; attempt++) {
       try { debugPort = /^(\d+)\r?\n/.exec(await readFile(path.join(profile, "DevToolsActivePort"), "utf8"))?.[1]; }
@@ -634,7 +642,9 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
         const bind = scalingLoopControl ? bindScalingMkvOutputValidationBacking : protectedMode ? bindProtectedMkvOutputValidationBacking : sustained ? bindLargeAudioOutputValidationBacking : bindOpfsOutputValidationBacking;
         const binding = await bind(page, profile, name, row.metrics.outputBytes); row.binding = binding.proof;
         if (scalingLoopControl) {
-          await validateLoopSourceOutput(fixture, binding.file, baseline, env, row);
+          scalingValidation = largeScaling;
+          try { await validateLoopSourceOutput(fixture, binding.file, baseline, env, row); }
+          finally { scalingValidation = false; }
           if (largeScaling) row.validation.startupDisclosure = assertStartupDtsDisclosure(state.warnings, true);
           await assertOpfsOutputValidationBackingUnchanged(binding); await remove(name);
           assert.equal(row.metrics.peakScratchBytes ?? 0, 0);
@@ -823,6 +833,18 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     }
     until ??= Date.now(); clearInterval(timer); await pending?.catch(fail);
     if (monitor) { await drain().catch(fail); await monitor.close().catch(fail); result.observer = monitor.ownershipSummary(); }
+    if (losslessJournal) {
+      try {
+        let receipt;
+        try { receipt = await losslessJournal.close(); }
+        catch (error) { result.losslessNativeJournalFailure = boundedErrorDetails(error); receipt = await losslessJournal.failedReceipt(); fail(error); }
+        const compact = await compactLosslessNativeMemoryJournal(receipt);
+        const file = `output/playwright/${path.basename(prefix)}-lossless-native.ndjson.gz`;
+        await copyFile(compact.file, path.join(root, file), constants.COPYFILE_EXCL);
+        assert.equal(await hashFile(path.join(root, file)), compact.archiveSha256);
+        result.losslessNativeArchive = { ...compact, file, sampleView: scalingView.report() };
+      } catch (error) { result.losslessNativeArchiveError = boundedErrorDetails(error); fail(error); }
+    }
     if (page && !page.isClosed()) {
       if (largeRun && result.status === "failed-not-acceptance") result.preCleanupJob = await page.evaluate(() => {
         const state = window.__WITHIN_TEST__?.getState();
@@ -834,11 +856,11 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     try {
       await finishOwnedCleanup([async () => {
         if (!identity) { assert.ok(!chrome || chrome.exitCode !== null, "Browser birth identity was unavailable"); return; }
-        result.browserCleanup = await cleanupOwnedChromium({ identity, observedPids: [...new Set(samples.flatMap(s => (s.processes ?? []).map(p => p.pid)))],
+        result.browserCleanup = await cleanupOwnedChromium({ identity, observedPids: [...new Set(scalingView ? scalingView.births().map(p => p.pid) : samples.flatMap(s => (s.processes ?? []).map(p => p.pid)))],
           disconnect: async () => { await browser?.close(); } });
         if (result.browserCleanup.status !== "owned-observed-pids-absent") {
           const observedPids = result.browserCleanup.observedPids;
-          result.birthCleanup = reconcileChromiumBirths({ identity, observedPids, samples, current: await queryObservedPidCensus(observedPids) });
+          result.birthCleanup = reconcileChromiumBirths({ identity, observedPids, samples: scalingView ? [...samples, { processes: scalingView.births() }] : samples, current: await queryObservedPidCensus(observedPids) });
           assert.equal(result.birthCleanup.allObservedBirthsAbsent, true);
         }
       }, async () => { if (server) result.serverCleanup = await server.close(); }]);
@@ -898,7 +920,8 @@ try {
   if (headerProtectedRepeats) sourceFiles.push(headerProtectedReference.file);
   if (headerProtectedRetention) sourceFiles.push("scripts/lib/mkv-retention-diagnostic.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/lifecycle-allocation-attribution.mjs");
   if (largeScaling) sourceFiles.push("scripts/lib/mkv-large-scaling.mjs", "scripts/lib/mkv-full-video-decode.mjs", "scripts/lib/mkv-hevc-header-core-reference.mjs",
-    hevcHeaderLoopReference.file, "scripts/lib/mkv-header-protected-reference.mjs", headerProtectedReference.file);
+    hevcHeaderLoopReference.file, "scripts/lib/mkv-header-protected-reference.mjs", headerProtectedReference.file,
+    "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/mkv-scaling-sample-view.mjs");
   if (startupSimpleControl) sourceFiles.push(startupComplexReference.file);
   if (startupProtected) sourceFiles.push(protectedRepeatReference.file, protectedCompleteVideoReference.file,
     "scripts/lib/mkv-protected-repeat-contract.mjs", ...startupSmallRegressions.map(ref => ref.file));

@@ -1,0 +1,22 @@
+{
+  "reason": "Projected two full content decodes exceed the fixed 20000-sample validation-phase journal; stop this owned validator to avoid a doomed run. Conversion peak sampling/fidelity gates are NOT relaxed.",
+  "main": {
+    "pid": 8940,
+    "parentPid": 47844,
+    "createdAt": "2026-11-15T09:42:55.3801580Z",
+    "executable": "C:\\Program Files\\nodejs\\node.exe",
+    "commandSha256": "4631a49d969102f083f64192f553c867a4a75face576c76559c46204ef6a0b2e"
+  },
+  "child": {
+    "pid": 45312,
+    "parentPid": 8940,
+    "createdAt": "2026-11-15T09:46:39.0257540Z",
+    "executable": "C:\\ffmpeg\\bin\\ffmpeg.exe",
+    "commandSha256": "f42837e8c7267554af4bdb582b8cb593eab1005e2726d66868179151cc494278"
+  },
+  "source": "work/mkv-direct-reuse-fixture-NSzKHT/within-test-scaled-hevc.mkv",
+  "scope": "ONE independently validated owned native validator birth only",
+  "processTreeKilled": false,
+  "outcome": "stopped-exact-owned-validator",
+  "completedAt": "2026-11-15T09:50:30.555Z"
+}
