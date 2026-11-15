@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "status": "passed-real-owned-server-launch-readiness-and-root-cleanup",
+  "scope": "real-owned-headless-server-lifecycle-only-not-browser-or-conversion-acceptance",
+  "browserLaunched": false,
+  "mediaSelected": false,
+  "originalOpened": false,
+  "productionFilesChanged": false,
+  "publicAcceptance": false,
+  "launch": {
+    "schemaVersion": 1,
+    "role": "owned-production-test-server",
+    "identity": {
+      "pid": 34056,
+      "parentPid": 9932,
+      "createdAt": "2026-11-15T00:52:52.5437510Z"
+    },
+    "root": "H:\\Github Repositories\\fileconverter",
+    "directory": "H:\\Github Repositories\\fileconverter\\work\\owned-server-cleanup-smoke-0ZVVMf",
+    "executable": "C:\\Program Files\\nodejs\\node.exe",
+    "arguments": [
+      "node_modules/wrangler/bin/wrangler.js",
+      "dev",
+      "--config",
+      "dist/server/wrangler.json",
+      "--port",
+      "64524",
+      "--persist-to",
+      "H:\\Github Repositories\\fileconverter\\work\\owned-server-cleanup-smoke-0ZVVMf\\wrangler"
+    ],
+    "baseURL": "http://127.0.0.1:64524",
+    "windowsHide": true,
+    "nestedSubprocessPreload": "--import=\"file:///H:/Github%20Repositories/fileconverter/scripts/lib/hidden-unit-subprocesses.mjs\""
+  },
+  "healthStatus": 200,
+  "cleanup": {
+    "identity": {
+      "pid": 34056,
+      "parentPid": 9932,
+      "createdAt": "2026-11-15T00:52:52.5437510Z"
+    },
+    "ownedRootAbsent": true,
+    "pidReused": false
+  },
+  "ownedRuntimeRemoved": true,
+  "sourcePins": {
+    "scripts/test-owned-production-server-cleanup.mjs": "6c8fe3c11efabacef3126d735ab2e29eca4cd39bf78f0a89e2f8f7d6ab51c559",
+    "scripts/lib/owned-production-test-server.mjs": "dd5bf361f58c04dc7fec6ddc92ddba3f03a6d54944198463de68fccb8c6a2f8b",
+    "scripts/lib/owned-server-close.mjs": "4fe753edf44adc765340a74748dd67e18a9b78425045cb0270b009e1da6ae15d",
+    "scripts/lib/reliable-owned-identity.mjs": "682e21c1e6baf0d02b5d23f4c18a428cee361d8b97d239adae8e7b404970a3ab",
+    "scripts/lib/hidden-unit-subprocesses.mjs": "cf2bebbc93113717fa4eb1619c0d1d3609c43978d3b3971511b15a23349234ef"
+  }
+}

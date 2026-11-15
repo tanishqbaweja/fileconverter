@@ -5,11 +5,13 @@ import path from "node:path";
 
 const LIMIT = 8 * 1024 * 1024;
 const SUSTAINED_LIMIT = 256 * 1024 * 1024;
-export async function inspectMkvMp4TimelineBoxes(reader, size, { sustained = false, protectedPrefix = false } = {}) {
+export async function inspectMkvMp4TimelineBoxes(reader, size, { sustained = false, protectedPrefix = false, scalingPrefix = false } = {}) {
   assert.equal(typeof sustained, "boolean");
   assert.equal(typeof protectedPrefix, "boolean");
+  assert.equal(typeof scalingPrefix, "boolean");
+  assert.ok(!scalingPrefix || (!protectedPrefix && !sustained));
   assert.ok(!protectedPrefix || !sustained);
-  assert.ok(Number.isSafeInteger(size) && size >= 8 && size <= (protectedPrefix ? 4 * 1024 ** 3 : sustained ? SUSTAINED_LIMIT : LIMIT));
+  assert.ok(Number.isSafeInteger(size) && size >= 8 && size <= (scalingPrefix ? 12 * 1024 ** 3 : protectedPrefix ? 4 * 1024 ** 3 : sustained ? SUSTAINED_LIMIT : LIMIT));
   let headers = 0, bytesRead = 0, maximumReadBytes = 0;
   const read = async (offset, count) => {
     assert.ok(Number.isSafeInteger(offset) && offset >= 0 && count > 0 && count <= 24 && offset + count <= size);
@@ -54,7 +56,7 @@ export async function inspectMkvMp4TimelineBoxes(reader, size, { sustained = fal
     assert.ok(timeScale > 0);
     return { timeScale, durationTicks: (v ? fields.readBigUInt64BE(4) : BigInt(fields.readUInt32BE(4))).toString() };
   };
-  const roots = await list(0, size, protectedPrefix ? 8 : 0), movie = await children(find(roots, "moov"));
+  const roots = await list(0, size, protectedPrefix || scalingPrefix ? 8 : 0), movie = await children(find(roots, "moov"));
   const tracks = [];
   for (const trak of movie.filter(box => box.type === "trak")) {
     assert.ok(tracks.length < 8);
@@ -88,19 +90,20 @@ export async function inspectMkvMp4TimelineBoxes(reader, size, { sustained = fal
     if (tracks.every(track => track.firstFragmentDecodeTimeTicks !== null)) break;
   }
   return { movie: await duration(find(movie, "mvhd")), tracks, fragmentCount: fragments.length, bytesRead, maximumReadBytes, mediaPayloadBytesRead: 0,
-    ...(protectedPrefix ? { completeFragmentInventory: roots.at(-1).end === size } : {}) };
+    ...(protectedPrefix || scalingPrefix ? { completeFragmentInventory: roots.at(-1).end === size } : {}),
+    ...(scalingPrefix ? { scalingExtentScope: true } : {}) };
 }
 
-export async function readMkvMp4TimelineBoxes(file, { sustained = false, protectedPrefix = false } = {}) {
+export async function readMkvMp4TimelineBoxes(file, { sustained = false, protectedPrefix = false, scalingPrefix = false } = {}) {
   const work = await realpath(path.resolve(import.meta.dirname, "../../work")), absolute = await realpath(file);
   const relative = path.relative(work, absolute);
   assert.ok(relative && !relative.startsWith("..") && !path.isAbsolute(relative));
-  const info = await lstat(absolute); assert.ok(info.isFile() && !info.isSymbolicLink() && info.size <= (protectedPrefix ? 4 * 1024 ** 3 : sustained ? SUSTAINED_LIMIT : LIMIT));
+  const info = await lstat(absolute); assert.ok(info.isFile() && !info.isSymbolicLink() && info.size <= (scalingPrefix ? 12 * 1024 ** 3 : protectedPrefix ? 4 * 1024 ** 3 : sustained ? SUSTAINED_LIMIT : LIMIT));
   const handle = await open(absolute, "r");
   try {
     return await inspectMkvMp4TimelineBoxes(async (offset, length) => {
       const buffer = Buffer.alloc(length), { bytesRead } = await handle.read(buffer, 0, length, offset);
       assert.equal(bytesRead, length); return buffer;
-    }, info.size, { sustained, protectedPrefix });
+    }, info.size, { sustained, protectedPrefix, scalingPrefix });
   } finally { await handle.close(); }
 }

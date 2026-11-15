@@ -1,5 +1,35 @@
 # Remaining work audit
 
+2026-11-15 M-03: **new scaling-source fidelity failure; not completion**.
+The actual12MB/two-loop HEVC/AAC browser control has unchanged complete payload
+hashes but FAILS the existing1ms DTS gate at packet291. Source inspection
+measures a31ms join discontinuity; the current HEVC nominal-CFR DTS overwrite
+erases that gap. Current core is therefore NOT accepted for arbitrary HEVC
+timelines or scaling fixtures. Do not substitute a gap-free/easier fixture,
+relax the clock tolerance, or replay accepted H.264/original controls unchanged.
+Failed browser receipt
+`evidence/2026-11-15T00-31-57-030Z-mkv-startup-core-loop-source-control.json`
+and source feasibility receipt00-31-30 retained. PCM/full-decode/recovery stages
+were not reached; browser complete != fidelity pass. >4GB/near10GB pending.
+
+Owned Chrome births exited, but server cleanup failed and generic aggregation
+lost the specific nested cause. Separate exact-birth/parent/unique-path recovery
+verified8 server-tree births absent, removed the two disposable job directories,
+and rehashed protected original unchanged. Recovery does NOT turn the failed
+conversion/cleanup report into a pass. See
+`evidence/2026-11-15-mkv-loop-source-owned-recovery.json`.
+Reliable identity/retry/exit-race safeguards, durable launch records, inherited
+headless subprocesses and bounded nested diagnostics implemented; real
+server-only cleanup smoke00-52-56 PASS, not browser/full-tree acceptance.
+Explicit-field birth comparison tolerates CIM property-order changes but refuses
+malformed identities; changed closer's fresh server-only smoke07-21-32 PASS.
+93 focused checks and affected lint PASS. Separate exact-name finite12GiB
+validation scope retains fixed probes/metadata bounds and old8MiB/4GiB rejection;
+virtual-offset unit checks are NOT real large media. Next implement bounded
+HEVC reorder metadata/known-DTS preservation and missing-prefix handling, then
+the failed small join gate on a newly authenticated core before actual scaling.
+All broader original-spec requirements and release gates below remain partial.
+
 2026-11-15 M-03: **startup-core protected original repeats pass:3 same-page
 and1 clean-session**. New receipt
 `evidence/2026-11-15T00-10-16-881Z-mkv-startup-core-protected-repeats.json`,

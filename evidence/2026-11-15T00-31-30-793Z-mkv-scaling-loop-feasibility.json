@@ -1,0 +1,86 @@
+{
+  "status": "source-loop-feasibility-inspected-not-browser-acceptance",
+  "source": {
+    "file": "fixtures/media/within-test-synthetic-hevc-aac.mkv",
+    "bytes": 5945271,
+    "sha256": "5b8fdc40c1679299442736984826ff4d01be2e69915906ea4e31c0dde267dedc"
+  },
+  "generatedBytes": 11887449,
+  "formatDuration": "24.062000",
+  "videoPackets": 576,
+  "maximumKnownDtsVsCurrentNominalPolicyErrorUs": 31000,
+  "join": [
+    {
+      "index": 284,
+      "pts": "11.792000",
+      "dts": "11.750000",
+      "nominalDtsUs": 11750000,
+      "errorUs": 0
+    },
+    {
+      "index": 285,
+      "pts": "11.958000",
+      "dts": "11.792000",
+      "nominalDtsUs": 11792000,
+      "errorUs": 0
+    },
+    {
+      "index": 286,
+      "pts": "11.917000",
+      "dts": "11.833000",
+      "nominalDtsUs": 11833000,
+      "errorUs": 0
+    },
+    {
+      "index": 287,
+      "pts": "11.875000",
+      "dts": "11.875000",
+      "nominalDtsUs": 11875000,
+      "errorUs": 0
+    },
+    {
+      "index": 288,
+      "pts": "12.031000",
+      "dts": "11.917000",
+      "nominalDtsUs": 11917000,
+      "errorUs": 0
+    },
+    {
+      "index": 289,
+      "pts": "12.198000",
+      "dts": "11.958000",
+      "nominalDtsUs": 11958000,
+      "errorUs": 0
+    },
+    {
+      "index": 290,
+      "pts": "12.114000",
+      "dts": "12.031000",
+      "nominalDtsUs": 12000000,
+      "errorUs": 31000
+    },
+    {
+      "index": 291,
+      "pts": "12.073000",
+      "dts": "12.073000",
+      "nominalDtsUs": 12042000,
+      "errorUs": 31000
+    },
+    {
+      "index": 292,
+      "pts": "12.156000",
+      "dts": "12.114000",
+      "nominalDtsUs": 12083000,
+      "errorUs": 31000
+    },
+    {
+      "index": 293,
+      "pts": "12.364000",
+      "dts": "12.156000",
+      "nominalDtsUs": 12125000,
+      "errorUs": 31000
+    }
+  ],
+  "nativeToolUsedOnlyForFixtureGenerationAndInspection": true,
+  "generatedSourceRemovedInFinally": true
+}

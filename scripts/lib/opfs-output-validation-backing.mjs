@@ -29,6 +29,12 @@ export function bindLargeDocumentOutputValidationBacking(page, profileDirectory,
 export function bindProtectedMkvOutputValidationBacking(page, profileDirectory, entryName, expectedBytes) {
   return bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, 4 * 1024 ** 3, "test.mp4");
 }
+// Explicit scaling qualification scope, not a change to any released profile
+// or the original-only 4GiB contract. Reads remain three <=4KiB probes; actual
+// >4GiB conversion support is unverified until a real browser test passes.
+export function bindScalingMkvOutputValidationBacking(page, profileDirectory, entryName, expectedBytes) {
+  return bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, 12 * 1024 ** 3, "within-test-scaled-hevc.mp4");
+}
 async function bindFinishedOutput(page, profileDirectory, entryName, expectedBytes, maximumBytes, exactName) {
   const root = path.resolve(import.meta.dirname, "../.."), work = path.join(root, "work"), limits = OPFS_VALIDATION_BACKING_LIMITS;
   profileDirectory = path.resolve(profileDirectory);

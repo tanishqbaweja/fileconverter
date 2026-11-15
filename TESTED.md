@@ -1,5 +1,51 @@
 # Tested conversion ledger
 
+2026-11-15 **scaling prerequisite exposes a real HEVC join-clock defect**.
+Before generating multi-GB sources, looped the pinned small HEVC/AAC source
+twice into a valid11,887,449-byte MKV (576 video packets). Native tools generated
+and inspected the SOURCE only. Source feasibility receipt
+`evidence/2026-11-15T00-31-30-793Z-mkv-scaling-loop-feasibility.json` records a
+31ms source-DTS discontinuity at the join, which the current native wrapper's
+unconditional nominal-CFR HEVC DTS rewrite loses. Generated source removed.
+
+Actual production-browser loop control on unchanged private startup core
+62cf939c…f4ae8ef completed a genuine11,894,121-byte MP4 in538.970ms. Entire
+compressed video/audio stream hashes match source (576HEVC/1128AAC packets),
+but strict independent validation FAILS: `Video DTS exceeds one source tick
+at packet 291`. Receipt
+`evidence/2026-11-15T00-31-57-030Z-mkv-startup-core-loop-source-control.json`,
+SHA-256 `9e80b288d17288be539864a6493368668b0c18ee9c3f32acce245f580167a5b3`.
+The browser's complete state and exact payloads do NOT establish fidelity.
+No subsequent PCM/full-decode/recovery acceptance or >4GB/near10GB claim;
+existing1ms clock and250MiB/full-tree limits unchanged. Native journal retained.
+
+The same failed run's Chrome births were gone, but owned server cleanup failed;
+its generic AggregateError lost the nested cause, so the exact cause is unknown.
+Separate birth/parent/unique-arguments-verified recovery stopped only that owned
+server tree, verified all8 observed births absent, and removed only its two
+literal owned job directories (11,894,121-byte output +11,887,449-byte source,
+profile/server scratch). `test.mkv` size/full SHA unchanged, unrelated processes
+untouched. Separate receipt `evidence/2026-11-15-mkv-loop-source-owned-recovery.json`;
+original failed report NOT rewritten or reclassified as cleanup success.
+
+Implemented reliable/retrying identity observations, birth-bound retryable
+server close, verified-absence-only handling of taskkill exit races, durable
+launch records before readiness, inherited hidden-window subprocess preload,
+and bounded nested cleanup diagnostics in the media harness. Real server-only
+launch/readiness/root-cleanup smoke PASS with HTTP200 and runtime removed:
+`evidence/2026-11-15T00-52-56-558Z-owned-production-server-cleanup.json`.
+Birth equality also normalizes explicit fields rather than JSON property order;
+malformed observations fail closed. Changed closer's fresh server-only smoke
+07-21-32 also PASS; both immutable smoke receipts retained. This is not browser/
+conversion or full-process-tree coverage. Ninety-three focused
+checks PASS, affected ESLint PASS. Separate finite12GiB read-only validation
+extent added for the exact scaling output name; historical8MiB/4GiB contracts,
+three4KiB probes and24B metadata reads unchanged. Above32-bit virtual-offset
+unit tests write NO large/sparse fixture and are NOT large-media acceptance.
+Next: preserve HEVC known DTS/gaps with verified bounded reorder metadata and
+missing-prefix handling, then rerun THIS failed small join control on a new
+authenticated native candidate before larger real media. No release promotion.
+
 2026-11-15 **required original-file repeats pass on the corrected startup core**:
 three jobs in one normal-service headless Chrome157 session plus one clean
 session. Actual `test.mkv` unchanged2,958,573,265 bytes/SHA31f36695…db34;

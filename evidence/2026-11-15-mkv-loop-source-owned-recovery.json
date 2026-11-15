@@ -1,0 +1,126 @@
+{
+  "status": "owned-server-and-disposable-data-recovered-failed-conversion-still-failed",
+  "sourceFile": "evidence/2026-11-15T00-31-57-030Z-mkv-startup-core-loop-source-control.json",
+  "expectedHarness": {
+    "pid": 30400,
+    "parentPid": 29428,
+    "createdAt": "2026-11-15T00:31:56.6068130Z"
+  },
+  "expectedServer": {
+    "pid": 36068,
+    "parentPid": 30400,
+    "createdAt": "2026-11-15T00:32:13.6154720Z"
+  },
+  "uniqueOwnedServerArgumentsVerified": true,
+  "serverTreeBefore": [
+    {
+      "pid": 36068,
+      "parentPid": 30400,
+      "commandLine": "\"C:\\Program Files\\nodejs\\node.exe\" node_modules/wrangler/bin/wrangler.js dev --config dist/server/wrangler.json --port 53612 --persist-to \"H:\\Github Repositories\\fileconverter\\work\\mkv-direct-reuse-q4Og5Q\\wrangler\"",
+      "createdAt": "2026-11-15T00:32:13.6154720Z"
+    },
+    {
+      "pid": 39800,
+      "parentPid": 36068,
+      "commandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4",
+      "createdAt": "2026-11-15T00:32:13.6286770Z"
+    },
+    {
+      "pid": 43224,
+      "parentPid": 36068,
+      "commandLine": "\"C:\\Program Files\\nodejs\\node.exe\" --no-warnings \"H:\\Github Repositories\\fileconverter\\node_modules\\wrangler\\wrangler-dist\\cli.js\" dev --config dist/server/wrangler.json --port 53612 --persist-to \"H:\\Github Repositories\\fileconverter\\work\\mkv-direct-reuse-q4Og5Q\\wrangler\"",
+      "createdAt": "2026-11-15T00:32:13.7144840Z"
+    },
+    {
+      "pid": 50476,
+      "parentPid": 43224,
+      "commandLine": "\"H:\\Github Repositories\\fileconverter\\node_modules\\wrangler\\node_modules\\@esbuild\\win32-x64\\esbuild.exe\" --service=0.28.2 --ping",
+      "createdAt": "2026-11-15T00:32:15.0332680Z"
+    },
+    {
+      "pid": 28408,
+      "parentPid": 43224,
+      "commandLine": "\"H:\\Github Repositories\\fileconverter\\node_modules\\@cloudflare\\workerd-windows-64\\bin\\workerd.exe\" serve --binary --experimental --socket-addr=entry=127.0.0.1:53612 --external-addr=loopback=127.0.0.1:53616 --control-fd=3 -",
+      "createdAt": "2026-11-15T00:32:15.2187560Z"
+    },
+    {
+      "pid": 45632,
+      "parentPid": 43224,
+      "commandLine": "\"H:\\Github Repositories\\fileconverter\\node_modules\\@cloudflare\\workerd-windows-64\\bin\\workerd.exe\" serve --binary --experimental --socket-addr=entry=127.0.0.1:0 --external-addr=loopback=127.0.0.1:53617 --control-fd=3 - --inspector-addr=127.0.0.1:0 --debug-port=127.0.0.1:0",
+      "createdAt": "2026-11-15T00:32:15.5397280Z"
+    },
+    {
+      "pid": 36908,
+      "parentPid": 28408,
+      "commandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4",
+      "createdAt": "2026-11-15T00:32:15.2517710Z"
+    },
+    {
+      "pid": 27496,
+      "parentPid": 45632,
+      "commandLine": "\\??\\C:\\WINDOWS\\system32\\conhost.exe 0x4",
+      "createdAt": "2026-11-15T00:32:15.5561270Z"
+    }
+  ],
+  "after": [
+    {
+      "pid": 36068,
+      "ownedBirth": "2026-11-15T00:32:13.6154720Z",
+      "current": null,
+      "pidReused": false
+    },
+    {
+      "pid": 39800,
+      "ownedBirth": "2026-11-15T00:32:13.6286770Z",
+      "current": null,
+      "pidReused": false
+    },
+    {
+      "pid": 43224,
+      "ownedBirth": "2026-11-15T00:32:13.7144840Z",
+      "current": null,
+      "pidReused": false
+    },
+    {
+      "pid": 50476,
+      "ownedBirth": "2026-11-15T00:32:15.0332680Z",
+      "current": null,
+      "pidReused": false
+    },
+    {
+      "pid": 28408,
+      "ownedBirth": "2026-11-15T00:32:15.2187560Z",
+      "current": null,
+      "pidReused": false
+    },
+    {
+      "pid": 45632,
+      "ownedBirth": "2026-11-15T00:32:15.5397280Z",
+      "current": null,
+      "pidReused": false
+    },
+    {
+      "pid": 36908,
+      "ownedBirth": "2026-11-15T00:32:15.2517710Z",
+      "current": null,
+      "pidReused": false
+    },
+    {
+      "pid": 27496,
+      "ownedBirth": "2026-11-15T00:32:15.5561270Z",
+      "current": null,
+      "pidReused": false
+    }
+  ],
+  "allObservedServerBirthsAbsent": true,
+  "killError": null,
+  "removed": [
+    "work\\mkv-direct-reuse-q4Og5Q",
+    "work\\mkv-direct-reuse-fixture-1FhHCc"
+  ],
+  "removedOutputBytes": 11894121,
+  "removedGeneratedSourceBytes": 11887449,
+  "protectedOriginalUnchanged": true,
+  "unrelatedProcessesKilled": false,
+  "originalBrowserFailureReclassified": false
+}
