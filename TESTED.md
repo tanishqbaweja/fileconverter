@@ -1,5 +1,43 @@
 # Tested conversion ledger
 
+2026-11-15 **HEVC join-clock bug fixed in the actual browser control**. Exact
+same11,887,449-byte/fullSHAfe5f8d41…4a2629 source as the retained failing run,
+new authenticated native core41c4a075…830a3eba/run43691831594/head0e2f2caa…952fec8.
+Header-parser change invokes the already-enabled HEVC parser so validated SPS
+reorder metadata reaches bounded demuxing. No HEVC picture decoder, encoders,
+nominal-CFR rewrite, larger probe/prefix buffers or Wasm envelope added.
+
+Actual complete/startup-cancelled/injected-first-write-error/complete sequence
+recovers deterministically. Both genuine MP4s11,894,121B/fullSHA
+19adadcc74ba2a2acde01de262303ba2dcc43035de371999160c115eb7d750e9,
+500.525/506.320ms (NOT a matched speedup benchmark). All576 video payloads/PTS
+and574 available DTS EXACT; two missing leading DTS independently validated
+from observed bounded cadence. Every MP4 decode interval checked against
+adjacent DTS, final presentation endpoint24.030s exact. The actual join's32ms
+DefaultDuration/decode-interval difference remains recorded; source clocks
+are never replaced with DefaultDuration and the1ms tolerance is unchanged.
+Old output video duration23.999s was wrong by31ms; new24.030s matches source.
+All1128 AAC payloads preserved; clocks <=333us, exact1024-sample trim, packet
+durations within unchanged1ms. Complete native-independent decoded video and
+PCM hashes equal source, not just successful playback or compressed hashes.
+
+Whole-Chrome peak over same original stable blank162.125MiB <=250; cleanup over
+original loaded idle36.96484375MiB,204valid/0missing samples. Retained native
+journal rederives process sums/peak/cleanup; no baseline rebasing or forced GC.
+Wasm24MiB, read256KiB/write+queue<=1MiB, one pending. Bounded physical OPFS
+validation remains three4KiB probes followed by full output hash/content checks,
+no exported media copy. All42 observed Chrome births/server/profile/generated
+source/outputs/downloaded tools removed; original2,958,573,265B/fullSHA unchanged.
+
+Receipt `evidence/2026-11-15T08-00-36-051Z-mkv-hevc-header-parser-loop-source-control.json`,
+SHA93e71282cad5a7b57d8ba7e22b5991c459d187c47e421c84b4c6ea5b82e21ea4;
+compact native journal retained. Three new immutable evidence/independent-journal
+checks PASS; total108 focused checks and affected lint PASS. Both earlier
+failures unchanged. This is ONLY the12MB join control;
+current-core original/H264/HEVC regressions, >4GB/near10GB, major repeats, public
+promotion and full-goal completion remain pending. Do not replay this control
+unchanged or inherit old complete-original decode proof through unlike bytes.
+
 2026-11-15 **header-parser correction dispatched once**, run43691831594/head
 0e2f2caa…952fec8, isolated codex/mkv-hevc-header-parser-native-20261115. Last
 verified state in_progress; do not infer conversion success or restart merely

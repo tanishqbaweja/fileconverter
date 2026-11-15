@@ -1,5 +1,34 @@
 # Remaining work audit
 
+2026-11-15 M-03: **HEVC loop-join clock correction now passes the actual exact
+failed input**, not just source/unit checks. Native run43691831594/head
+0e2f2caa…952fec8, Wasm41c4a075…830a3eba, exact authenticated Matroska header
+policy plus SPS metadata export, no HEVC decoder or changed buffers/heap.
+Receipt `evidence/2026-11-15T08-00-36-051Z-mkv-hevc-header-parser-loop-source-control.json`,
+SHA93e71282cad5a7b57d8ba7e22b5991c459d187c47e421c84b4c6ea5b82e21ea4.
+Same11,887,449-byte source/fullSHAfe5f8d41…4a2629 as failed join test. Both genuine
+11,894,121-byte MP4s/fullSHA19adadcc…7d750e9 pass: all576 video payloads/PTS,
+574 available source DTS and every actual MP4 decode interval EXACT, two missing
+initial DTS independently verified from bounded cadence; final video endpoint
+24.030s exact. Old31ms DTS loss gone. Source nominal DefaultDuration remains
+distinct from the32ms longer join decode interval; no tolerance was widened.
+1128AAC payloads/clocks within333us, exact1024-sample trim, full decoded video
+AND PCM hashes equal source. Startup-cancel/injected-first-write-error/complete
+recovery yields identical output. Times500.525/506.320ms, not matched speedup.
+
+Full-Chrome increase162.125MiB, cleanup above original loaded idle36.965MiB,
+204valid/0missing samples,24MiB Wasm, read256KiB/write+queue<=1MiB/one pending.
+108 focused checks and affected lint PASS. Native journal retained and
+independently rederived; all42 observed owned
+Chrome births/server/profile/generated source/output/tools removed; original
+size/fullSHA unchanged. Public assets/registry unchanged, both earlier failures
+retained. Current-core original/HEVC/H264 no-B/B-frame/+5s regressions, genuine
+>4GB/near10GB sources, major repeats, release/repro/privacy/offline/browsers and
+broader original-spec gates remain UNVERIFIED on this changed native core.
+Do not replay this accepted loop control unchanged. In particular the old
+original output-byte-identity proof is NOT evidence for a new output hash;
+new original validation must verify new bytes/timestamps independently.
+
 2026-11-15 M-03: header-parser native build **43691831594** is now running on
 isolated head `0e2f2caa924413a1edc81c23c49c027dd952fec8` (not a restart of the
 unchanged first candidate). Branch-only workflow receipt
