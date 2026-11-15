@@ -15,6 +15,13 @@ export function headerParserH264Regression(args) {
   assert.ok(Object.hasOwn(modes, args[0]), "Header-core override requires an explicit existing H264 regression fixture");
   return modes[args[0]];
 }
+export function assertStartupDtsDisclosure(warnings, hevcHeaderParser = false) {
+  assert.ok(Array.isArray(warnings)); assert.equal(typeof hevcHeaderParser, "boolean");
+  const codec = hevcHeaderParser ? "H.264/HEVC" : "H.264";
+  const message = `Missing initial ${codec} decode timestamps reconstructed from bounded observed presentation cadence; existing PTS and known DTS are unchanged.`;
+  assert.ok(warnings.includes(message), "Startup scheduling must be disclosed");
+  return { exactMessageChecked: true, codecLabel: codec };
+}
 export function assertHevcHeaderParserCore(tools) {
   assert.equal(tools.head, "0e2f2caa924413a1edc81c23c49c027dd952fec8"); assert.equal(tools.runId, "43691831594");
   const b = tools.build, s = b.source;

@@ -49,7 +49,7 @@ import { assertMkvStartupCore, readStartupComplexReference, startupComplexRefere
 import { createSmallMkvScalingLoop } from "./lib/mkv-scaling-fixture.mjs";
 import { compareMkvGapAwareVideoPackets } from "./lib/mkv-gap-aware-video-fidelity.mjs";
 import { hevcKnownDtsWrapperSha256 } from "../media/ffmpeg/mkv-hevc-known-dts-candidate.mjs";
-import { headerParserH264Regression, assertHevcHeaderParserCore, readHevcHeaderLoopReference, hevcHeaderLoopReference } from "./lib/mkv-hevc-header-core-reference.mjs";
+import { headerParserH264Regression, assertHevcHeaderParserCore, readHevcHeaderLoopReference, hevcHeaderLoopReference, assertStartupDtsDisclosure } from "./lib/mkv-hevc-header-core-reference.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
@@ -561,9 +561,9 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
             const offset = positiveStartCandidate ? 5000000 : 0, initialDts = [-167000 + offset, -84000 + offset];
             assert.equal(validation.packets.clocks[0].outputFirstDtsUs, initialDts[0]);
             assert.deepEqual(outputComplexPackets.filter(p => p.stream_index === 0).slice(0, 2).map(p => Math.round(Number(p.dts_time) * 1e6)), initialDts);
-            assert.ok(state.warnings.some(w => /Missing initial H\.264 decode timestamps reconstructed/.test(w)), "Startup scheduling must be disclosed");
+            const disclosure = assertStartupDtsDisclosure(state.warnings, hevcHeaderParser);
             validation.startupDts = { generatedOnlyForUnavailablePrefix: true, sourceMissing: 2, knownSourceDtsCompared: 70,
-              expectedInitialDtsUs: initialDts, nominalFrameRateUsed: false };
+              expectedInitialDtsUs: initialDts, nominalFrameRateUsed: false, disclosure };
           }
           validation.sourceDecodedHashes = baseline.complexDecodedHashes;
           validation.outputDecodedHashes = await complexDecodedHashes(binding.file, env);

@@ -1,5 +1,24 @@
 # Tested conversion ledger
 
+2026-11-15 **corrected-core no-B/VFR control PASS; first B-frame control is a
+retained validator-wording failure**. No-B receipt
+`evidence/2026-11-15T08-13-54-689Z-mkv-hevc-header-core-h264-no-b-frames.json`:
+complete/startup-cancel/error/complete, outputfullSHAcb62dd3f…95847b identical to
+validated baseline, native211.1796875MiB/cleanup55.4375MiB,133valid/0missing,
+owned runtimes/processes/fixtures/tools removed, protected original unchanged.
+
+`evidence/2026-11-15T08-15-19-262Z-mkv-hevc-header-core-h264-bframes.json`
+remains FAILED: genuine complete outputfullSHA5958e362…23c70a0e, full packet
+clocks/metadata passed, but old matcher rejected the present documented
+`Missing initial H.264/HEVC...` warning because it expected `H.264...`.
+Later full-decoded/recovery/stable-cleanup gates NOT reached; not accepted.
+All owned Chrome/server/profile/source/tools removed and original unchanged.
+Only validator wording changed: require exact FULL selected-core warning,
+including bounded observed cadence and unchanged known DTS/PTS. No warning,
+truncated/forged qualifier or other-core message still fails. Native assets,
+clock1ms/header50ms/full-tree250MiB limits unchanged; first failure retained.
+Next rerun affected B-frame gate once, then first +5s new-core control.
+
 2026-11-15 **H264 regressions prepared on corrected HEVC native tools**.
 Explicit new core option selects only the existing pinned no-B, B-frame and
 +5s fixtures; unchanged full packet/available clocks/initial-DTS/trim/metadata/

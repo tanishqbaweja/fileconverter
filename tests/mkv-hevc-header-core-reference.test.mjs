@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
-import { headerParserH264Regression, assertHevcHeaderParserCore, readHevcHeaderLoopReference, hevcHeaderLoopReference } from "../scripts/lib/mkv-hevc-header-core-reference.mjs";
+import { headerParserH264Regression, assertHevcHeaderParserCore, readHevcHeaderLoopReference, hevcHeaderLoopReference, assertStartupDtsDisclosure } from "../scripts/lib/mkv-hevc-header-core-reference.mjs";
 
 test("header-core override is explicit and admits only the three unchanged H264 controls, never original/HEVC or arbitrary profiles", () => {
   const modes = { "--h264-startup-no-b-control": "h264-no-b-frames", "--h264-startup-bframes": "h264-bframes", "--h264-startup-positive": "h264-positive-start" };
@@ -38,4 +38,15 @@ test("production qualification preserves old core guards and unchanged H264 vali
   assert.match(source, /hevcHeaderParser \? hevcKnownDtsWrapperSha256 : startupCore \? h264StartupWrapperSha256/);
   assert.match(source, /validation.packets = compareComplexMkvPackets\(baseline.complexPackets, outputComplexPackets\)/);
   assert.match(source, /Complete decoded VFR video or either AAC track changed/);
+});
+
+test("startup disclosure must match the exact documented message for the selected core, not just contain a permissive substring", () => {
+  const old = "Missing initial H.264 decode timestamps reconstructed from bounded observed presentation cadence; existing PTS and known DTS are unchanged.";
+  const corrected = old.replace("H.264", "H.264/HEVC");
+  assert.deepEqual(assertStartupDtsDisclosure([old]), { exactMessageChecked: true, codecLabel: "H.264" });
+  assert.deepEqual(assertStartupDtsDisclosure([corrected], true), { exactMessageChecked: true, codecLabel: "H.264/HEVC" });
+  assert.throws(() => assertStartupDtsDisclosure([old], true)); assert.throws(() => assertStartupDtsDisclosure([corrected], false));
+  assert.throws(() => assertStartupDtsDisclosure([]));
+  for (const changed of [corrected.replace("known DTS are unchanged", "known DTS may change"), corrected.slice(0, 70), "hidden " + corrected])
+    assert.throws(() => assertStartupDtsDisclosure([changed], true));
 });

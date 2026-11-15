@@ -1,5 +1,19 @@
 # Remaining work audit
 
+2026-11-15 M-03: **new-core no-B/VFR control passes**, receipt08-13-54, full
+outputSHAcb62dd3f…95847b unchanged from validated baseline. Full4-state recovery,
+native211.1796875MiB, cleanup55.4375MiB,133valid/0missing, owned data/processes
+removed and original hash unchanged. Do not replay this accepted control.
+First new-core B-frame run08-15-19 completed expected outputSHA5958e362…23c70a0e
+and passed packet/clock/metadata checks, then FAILED an obsolete disclosure
+matcher requiring H.264 rather than the actual documented H.264/HEVC message.
+Report remains failed; later full-decode/recovery/memory acceptance not reached.
+All owned browser/server/profile/source/tool scratch removed. Validator now
+requires the FULL exact message for its selected core, including unchanged
+known DTS/PTS and bounded observed cadence; missing/truncated/other-core text
+still fails. Native code and fidelity/memory thresholds unchanged. Rerun only
+the affected B-frame gate, then first +5s control; no new native build required.
+
 2026-11-15 M-03: **changed-core H264 regression routing prepared, not yet run**.
 Explicit `--hevc-header-parser-core` option permits ONLY the existing pinned
 no-B/VFR, B-frame/VFR and +5s B-frame/VFR controls on authenticated native
