@@ -1,0 +1,22 @@
+{
+  "status": "isolated-h264-vfr-build-branch-pushed-not-dispatched",
+  "branch": "codex/mkv-hevc-header-parser-native-20261115",
+  "probeDecoder": true,
+  "startup": true,
+  "hevcKnownDts": true,
+  "hevcHeaderParser": true,
+  "parent": "627a9dcab0bd0fb9a07f4d19706d6d46d4de61ef",
+  "commit": "0e2f2caa924413a1edc81c23c49c027dd952fec8",
+  "tree": "fcdbffb22c5159bff2d999c473b6288b64238d2a",
+  "changedTrackedFiles": [
+    ".github/workflows/reproduce-ffmpeg-nondocker.yml"
+  ],
+  "workflowSha256": "d2c822da089d1398af0f947c2c39cdf4ffac5520db08e17608ff5f125a99fd89",
+  "canonicalHeadIndexWorkflowUnchanged": true,
+  "mainUnchanged": true,
+  "ownedIndexRuntimeRemoved": true,
+  "remoteVerified": true,
+  "mediaInputs": 0,
+  "noDocker": true,
+  "publicAcceptance": false
+}

@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-15 **header-parser correction dispatched once**, run43691831594/head
+0e2f2caa…952fec8, isolated codex/mkv-hevc-header-parser-native-20261115. Last
+verified state in_progress; do not infer conversion success or restart merely
+because observation times out. 32 focused candidate/clock checks and affected
+lint PASS before dispatch, unchanged H264 arithmetic helper previously passed.
+105 complete focused media/validation/ownership checks PASS while compiling.
+Explicit extra Matroska-source authentication and distinct Wasm required;
+browser gate prepared with same entire failed input and full validations.
+`evidence/mkv-hevc-header-parser-build-branch-2026-11-15.json`.
+
 2026-11-15 **actual first HEVC clock candidate safely refuses; not a conversion
 pass**. Native run43690480447 completed successfully, Wasm2,402,965B/fullSHA
 24da64b60b52e59c66f042b09b04f50949f01cda14db93b210c1b85573dd061b,

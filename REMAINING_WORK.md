@@ -1,5 +1,15 @@
 # Remaining work audit
 
+2026-11-15 M-03: header-parser native build **43691831594** is now running on
+isolated head `0e2f2caa924413a1edc81c23c49c027dd952fec8` (not a restart of the
+unchanged first candidate). Branch-only workflow receipt
+`evidence/mkv-hevc-header-parser-build-branch-2026-11-15.json`; canonical
+checkpoint627a9dca pushed. Matroska-header source policy only added to the prior
+clock fix; same wrapper/SPS helper/config/buffers and headless exact-input gate.
+32 focused candidate/clock checks plus affected lint PASS before dispatch;
+105 complete focused media/validation/ownership checks PASS while compiling.
+Next authenticate completed artifacts and run exact loop-source control once.
+
 2026-11-15 M-03: **first compiled HEVC known-DTS core safely refuses**, not pass.
 Run43690480447 succeeded; actual Wasm24da64b6…3dd061b/config unchanged24/64MiB,
 onlyH264 decoder. Exact failed-source browser test07-40-48 stops before output
