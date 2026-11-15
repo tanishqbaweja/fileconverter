@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-11-15 **new-core required3+1 original repeats prepared, not yet run**.
+Authenticate current first-original5529d464…4b3f4039 and exact same native41c4a075;
+require every2,962,151,594-byte output/fullSHA64f8a3c3…76fc7b36 plus fresh stream/
+edit/exclusion checks. The completed all-packet/codec/PCM/full-video proof is
+inherited only via entire output identity on SAME current native build; never
+called a fresh decode. Same original blank/loaded-idle and250MiB/cleanup gates,
+one output at a time/finally cleanup, old core/report contracts unchanged.
+No actual new repeat or multi-GB scaling acceptance yet.
+
 2026-11-15 **corrected HEVC header-parser core genuinely remuxes full original**.
 Unchanged2,958,573,265B test.mkv/fullSHA31f36695…db34 selected without copying or
 alternative converter. Actual2,962,151,594B MP4 in24.385390s, fullSHA

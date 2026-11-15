@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
-import { headerCoreH264References, readHeaderCoreH264Regressions, readPriorCompleteProtectedVideo, canInheritCompleteProtectedVideo } from "../scripts/lib/mkv-header-protected-reference.mjs";
+import { headerCoreH264References, readHeaderCoreH264Regressions, readPriorCompleteProtectedVideo, canInheritCompleteProtectedVideo,
+  headerProtectedReference, readHeaderProtectedReference } from "../scripts/lib/mkv-header-protected-reference.mjs";
 import { protectedCompleteVideoReference } from "../scripts/lib/mkv-startup-core-reference.mjs";
 import { assertFreshProtectedVideoBytes } from "../scripts/lib/mkv-full-video-decode.mjs";
 
@@ -41,4 +42,22 @@ test("fresh full decode uses a separate realistic extent while preserving the or
   assert.match(qualifier, /decodeFreshProtectedVideo\(output, \{ cwd: root, env, expectedOutputBytes: bytes/);
   assert.match(qualifier, /Codec initialization bytes changed/);
   assert.match(qualifier, /protectedFullDecode \|\| headerProtected \? 20000/);
+});
+
+test("repeat gate binds EVERY new output byte to exact-current-native fresh original packet/PCM/complete-video proof; never replays native validation", async () => {
+  const bytes = await readFile(headerProtectedReference.file), r = JSON.parse(bytes);
+  const ref = readHeaderProtectedReference(bytes, r.candidateBuild);
+  assert.equal(ref.outputBytes, 2962151594);
+  assert.equal(ref.outputSha256, "64f8a3c3fc8812857ec0c0fd2ec446622100e389e8377911d6d1e0b976fc7b36");
+  assert.equal(ref.fullDecodedVideoFrames, 296160); assert.equal(ref.exactCurrentNativeBuildVerified, true);
+  assert.equal(ref.noValidationReplay, true);
+  assert.throws(() => readHeaderProtectedReference(Buffer.from("changed first-output proof"), r.candidateBuild));
+  const changed = structuredClone(r.candidateBuild); changed.runId = "1";
+  assert.throws(() => readHeaderProtectedReference(bytes, changed));
+  const source = await readFile("scripts/qualify-mkv-direct-reuse.mjs", "utf8");
+  assert.match(source, /--hevc-header-parser-protected-repeats/);
+  const repeatGate = source.slice(source.indexOf("  if (headerProtectedRepeats) {", source.indexOf("async function validateProtectedOutput")), source.indexOf("  if (headerProtected) {", source.indexOf("async function validateProtectedOutput")));
+  assert.match(repeatGate, /Current-core repeat changed independently validated complete output/);
+  assert.match(repeatGate, /fullVideoDecode = false/); assert.match(repeatGate, /fullVideoDecodeInheritedThroughWholeOutputIdentity = true/);
+  assert.doesNotMatch(repeatGate, /decodedPcm\(|compareMkvGapAwareVideoPackets\(|decodeFreshProtectedVideo\(/);
 });

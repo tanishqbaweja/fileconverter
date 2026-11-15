@@ -1,5 +1,16 @@
 # Remaining work audit
 
+2026-11-15 M-03: **corrected-core original repeats prepared, not yet run**.
+Explicit new mode requires immutable current-native original receipt5529d464…
+4b3f4039, including fresh all-packet/codec/PCM/296160-frame decode, unchanged
+source size/SHA, <=250MiB and owned cleanup. Three same-page jobs plus one clean
+session each must output2,962,151,594B/fullSHA64f8a3c3…76fc7b36, with fresh
+structure/edit/disclosure checks and complete output hashing. Inherited content
+proof is labeled SAME exact native build, not a fresh full decode; old247c77c3
+reference/native guards remain unchanged. Original blank and original loaded
+idle are retained per session; output removed before next conversion. No actual
+repeat, scaling or public-release result yet. Do not rerun completed full decode.
+
 2026-11-15 M-03: **first corrected-header-core original-file test PASS with NEW
 output and FRESH complete independent video decode**. Receipt
 `evidence/2026-11-15T08-35-42-532Z-mkv-hevc-header-core-protected.json`, SHA

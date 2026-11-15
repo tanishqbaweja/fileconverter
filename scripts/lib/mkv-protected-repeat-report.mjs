@@ -4,9 +4,11 @@ const escape = value => String(value).replaceAll("&", "&amp;").replaceAll("<", "
 const fixed = value => Number.isFinite(value) ? value.toFixed(3) : "unavailable";
 export function renderProtectedRepeatReport(report) {
   assert.ok(["passed-protected-repeats-not-public-acceptance", "passed-startup-core-protected-not-public-acceptance",
-    "passed-startup-core-protected-repeats-not-public-acceptance", "failed-not-acceptance"].includes(report.status));
+    "passed-startup-core-protected-repeats-not-public-acceptance", "passed-header-core-protected-repeats-not-public-acceptance", "failed-not-acceptance"].includes(report.status));
   assert.ok(report.arms.length <= 2);
-  const changedCore = report.startupProtectedCandidate === true;
+  const headerCore = report.hevcHeaderProtectedCandidate === true;
+  const changedCore = report.startupProtectedCandidate === true || headerCore;
+  if (report.status === "passed-header-core-protected-repeats-not-public-acceptance") assert.equal(report.hevcHeaderProtectedRepeats, true);
   if (report.status.startsWith("passed-startup-core-")) assert.equal(changedCore, true);
   const memory = (row, arm) => row.memory ?? (changedCore && arm.cases.length === 1 ? arm.memory : undefined);
   const cleanup = (row, arm) => row.cleanupAboveIdleMiB ?? (changedCore && arm.cases.length === 1 ? arm.memory?.cleanupAboveIdleMiB : undefined);
@@ -34,7 +36,9 @@ export function renderProtectedRepeatReport(report) {
   const title = changedCore && report.arms.length === 1 && report.arms[0].cases.length === 1
     ? "Protected MKV first changed-core run" : "Protected MKV repeat results";
   const inherited = changedCore && chartRows.length > 0 && chartRows.every(({ row }) => row.validation?.fullVideoDecodeInheritedThroughWholeOutputIdentity === true);
-  const videoText = inherited ? "Prior complete packet, PCM and video-decode evidence is bound by entire-output byte identity; no new full native decode or native-core equality is claimed." : "Full video decode remains unverified.";
+  const videoText = inherited && headerCore
+    ? "Prior complete packet, codec, PCM and video-decode evidence is bound by EVERY output byte on the SAME authenticated native build; no fresh full native decode is claimed."
+    : inherited ? "Prior complete packet, PCM and video-decode evidence is bound by entire-output byte identity; no new full native decode or native-core equality is claimed." : "Full video decode remains unverified.";
   const fidelityText = changedCore ? "Each successful job is hashed in full and must match the independently validated prior output."
     : "Each successful repeat is hashed in full and must match the independently packet/audio-validated prior output.";
   const html = `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>${title}</title>

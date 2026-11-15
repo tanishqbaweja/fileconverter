@@ -5,6 +5,10 @@ import { assertSameMkvNativeBuild } from "./mkv-protected-repeat-contract.mjs";
 import { protectedCompleteVideoReference } from "./mkv-startup-core-reference.mjs";
 import { mkvProtectedCopy } from "./mkv-protected-copy-contract.mjs";
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
+export const headerProtectedReference = Object.freeze({
+  file: "evidence/2026-11-15T08-35-42-532Z-mkv-hevc-header-core-protected.json",
+  sha256: "5529d464b9248226ab79d3e0dc858e7dada90d15e2c235e5058f412c4b3f4039",
+});
 export const headerCoreH264References = Object.freeze([
   { file: "evidence/2026-11-15T08-13-54-689Z-mkv-hevc-header-core-h264-no-b-frames.json", sha256: "56fb5a91a42b5fa0c9727560aa65980184b49aad76e5f4db28d6d8b1ac1df32a", kind: "h264-no-b-frames", outputBytes: 782689, outputSha256: "cb62dd3f503c942cffd8ffc2547c29a68e6010a3338f45da24d76f9da395847b" },
   { file: "evidence/2026-11-15T08-18-29-063Z-mkv-hevc-header-core-h264-bframes.json", sha256: "832b43fdf79eda64d834caa701e0b2bd4212554856f02bdea4baeed82080344c", kind: "h264-bframes", outputBytes: 767355, outputSha256: "5958e362932a277ceba09d4734c3428dd8d5f8759b51e30fb18dde6723c70a0e" },
@@ -52,4 +56,24 @@ export function readPriorCompleteProtectedVideo(bytes) {
 export function canInheritCompleteProtectedVideo(prior, outputBytes, outputSha256) {
   assert.ok(Number.isSafeInteger(outputBytes) && outputBytes > 0); assert.match(outputSha256, /^[a-f0-9]{64}$/);
   return outputBytes === prior.outputBytes && outputSha256 === prior.outputSha256;
+}
+
+export function readHeaderProtectedReference(bytes, tools) {
+  assert.equal(sha(bytes), headerProtectedReference.sha256);
+  const r = JSON.parse(bytes), [a] = r.arms, [c] = a.cases, v = c.validation;
+  assert.equal(r.status, "passed-header-core-protected-not-public-acceptance");
+  assertHevcHeaderParserCore(tools); assertHevcHeaderParserCore(r.candidateBuild); assertSameMkvNativeBuild(r.candidateBuild, tools);
+  assert.deepEqual(r.originalBefore, { bytes: mkvProtectedCopy.bytes, sha256: mkvProtectedCopy.sha256 });
+  assert.deepEqual(r.originalBefore, r.originalAfter); assert.equal(c.selection.completeOriginalSelected, true);
+  assert.equal(v.video.packets, 296160); assert.equal(v.video.maximumPtsDeltaUs, 0); assert.equal(v.video.maximumDtsDeltaUs, 0);
+  assert.equal(v.video.packetBytesIdentical, true); assert.equal(v.aac.packetBytesIdentical, true);
+  assert.equal(v.aac.packets, 289221); assert.equal(v.aac.initialSkipSamples, 5058); assert.equal(v.aac.sourcePcm, v.aac.outputPcm);
+  assert.deepEqual(v.codecConfiguration.source, v.codecConfiguration.output);
+  assert.equal(v.fullVideoDecode, true); assert.equal(v.fullVideoDecodeInheritedThroughWholeOutputIdentity, false);
+  assert.equal(v.completeVideo.status, "passed-complete-independent-video-decode"); assert.equal(v.completeVideo.decodedFrames, 296160);
+  assert.equal(v.completeVideo.duplicateFrames, 0); assert.equal(v.completeVideo.droppedFrames, 0); assert.equal(v.completeVideo.nativeToolUsedForConversion, false);
+  assert.ok(v.candidateGate.passed && c.outputRemoved && a.ownedRuntimeRemoved && a.serverCleanup.ownedRootAbsent && r.toolDownloadRemoved);
+  assert.ok(a.memory.incrementalPrivateMiB <= 250 && a.memory.cleanupAboveIdleMiB !== null && a.memory.cleanupAboveIdleMiB <= 96);
+  return { ...headerProtectedReference, outputBytes: c.metrics.outputBytes, outputSha256: v.outputSha256,
+    fullDecodedVideoFrames: v.completeVideo.decodedFrames, exactCurrentNativeBuildVerified: true, noValidationReplay: true };
 }

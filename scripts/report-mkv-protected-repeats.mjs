@@ -6,7 +6,7 @@ import { renderProtectedRepeatReport } from "./lib/mkv-protected-repeat-report.m
 
 assert.equal(process.argv.length, 3);
 const root = path.resolve(import.meta.dirname, ".."), input = process.argv[2];
-assert.match(input, /^evidence\/\d{4}-\d\d-\d\dT[\dZ-]+-mkv-(?:exact-aac-protected-repeats|startup-core-protected(?:-repeats)?)\.json$/);
+assert.match(input, /^evidence\/\d{4}-\d\d-\d\dT[\dZ-]+-mkv-(?:exact-aac-protected-repeats|startup-core-protected(?:-repeats)?|hevc-header-core-protected-repeats)\.json$/);
 const report = JSON.parse(await readFile(path.join(root, input), "utf8"));
 for (const [extension, bytes] of Object.entries(renderProtectedRepeatReport(report))) {
   const output = input.replace(/\.json$/, `.${extension}`);
