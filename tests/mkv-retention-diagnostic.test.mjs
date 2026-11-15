@@ -14,6 +14,7 @@ test("retention diagnostic is finite, explicitly non-acceptance, same real origi
   assert.match(source, /same clean Chromium|whole-Chromium gate exceeded/);
   assert.match(source, /cleanupAboveIdleMiB <= 96/);
   assert.match(source, /result\.retention = await retention\.close\(\)/);
+  assert.match(source, /retentionFailureCheckpoint = await retention\.capture\("budget-failure", true\)/);
   const helper = await readFile("scripts/lib/mkv-retention-diagnostic.mjs", "utf8");
   assert.match(helper, /assert\.equal\(pending, null\)/);
   assert.match(helper, /forcedGc: false, perturbsMemory: true, acceptanceMetric: false/);

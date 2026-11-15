@@ -1,5 +1,34 @@
 # Remaining work audit
 
+2026-11-15 M-03: **retention diagnostic FAIL during second original run**.
+Receipt09-26-19-641Z/fullSHA989c37d1b261ddc6e0989b8cfed6707929b442e58fca932eea9f32fe79c538d9.
+First original output2,962,151,594B/fullSHA64f8a3c3…76fc7b36 matches current
+complete content proof;61.436715s,236.8515625MiB peak,11.8359375MiB cleanup.
+Second still running when unchanged250MiB fulltree gate trips262.46875MiB;
+normal cancellation verified, all owned source-independent outputs/profile/
+server/tools and49 observed Chrome births removed, original size/SHA unchanged.
+754valid/2missing conversion samples (1088 total) retained; unknown100.84375MiB
+Chrome child born09:28:34.4881753Z stays INCLUDED, purpose unavailable, not
+assumed to be any particular service. Tracing service is also included. No
+repeat/stability/release pass, smaller-baseline comparison or disabled service.
+
+Two authenticated finite allocator dumps +5 realm/DOM checkpoints narrow
+first-run retention: main JS allocated5,562,368 ->5,263,360B; replacement worker
+heap1,835,008B, page backing626,746B, not a retained full-media buffer. Main Blink
+committed3,276,800 ->8,781,824B while allocated objects3,144,664 ->1,778,600B.
+These overlapping nondeterministic diagnostics suggest committed native/Blink
+capacity rather than growing live JS here, NOT a proven leak callsite, cause of
+unknown child, or extension of these single-run observations to six runs.
+One CDP retirement failure is retained; transport closure releases remaining
+attachments. This diagnostic perturbs memory and cannot replace uninstrumented
+whole-tree qualification. Do NOT rerun unchanged or weaken gates. Added explicit
+bounded budget-failure allocator capture for FUTURE diagnostics; current failed
+receipt is immutable and has no failure-time dump. >4GB/near10GB and all broader
+full-spec work remain open. Derived CSV/HTML/raw-native/allocator evidence kept.
+150 focused regression/diagnostic/evidence tests and affected lint PASS. This
+means evidence and safety checks pass, NOT that the failed browser test passed.
+Post-run read-only exact runtime-directory/server-root absence confirmed.
+
 2026-11-15 M-03: **targeted six-job retention investigation prepared, NOT run**.
 Current3+1 receipt concretely motivates same-page cleanup attribution, not
 repeating completed fidelity work. Exact original/current native/full output

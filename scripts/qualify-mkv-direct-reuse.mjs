@@ -781,7 +781,14 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
       if (exactAacCandidate && !protectedMode) assert.equal(successes[0].validation.outputSha256, successes[1].validation.outputSha256, "Recovery changed a deterministic output");
       result.status = scalingLoopControl ? "passed-loop-source-fidelity-control" : fixedHevcBaseline ? "passed-fixed-input-hevc-baseline" : probeHevcControl ? "passed-probe-decoder-hevc-regression" : complexTimeline ? "passed-complex-exact-aac-direct-reuse" : protectedFullDecode ? "passed-protected-complete-video-decode" : protectedRepeats ? "passed-protected-repeat-session" : protectedMode ? "passed-first-protected-exact-aac-direct-reuse" : sustained ? "passed-sustained-exact-aac-destination-arm" : compareDestinations ? "passed-small-exact-aac-destination-arm" : "passed-unpublished-small-staged-clock-control";
     } else result.status = staged ? "completed-staged-timeline-diagnostic-not-acceptance" : "passed-private-small-direct-control";
-  } catch (error) { result.status = "failed-not-acceptance"; result.failures.push(String(error.stack ?? error).slice(0, 2048)); }
+  } catch (error) {
+    result.status = "failed-not-acceptance"; result.failures.push(String(error.stack ?? error).slice(0, 2048));
+    if (retention && /250 MiB whole-Chromium gate exceeded/.test(String(error))) {
+      // A separate bounded diagnostic checkpoint; never erase/rebase the
+      // original native peak, or claim this later dump is its exact allocation.
+      result.retentionFailureCheckpoint = await retention.capture("budget-failure", true).catch(reason => ({ error: String(reason).slice(0, 1024) }));
+    }
+  }
   finally {
     startupCancellation?.release();
     if (retention) {

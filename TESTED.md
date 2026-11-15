@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+2026-11-15 **retention investigation failed safely on second original**, not a
+six-job pass. Receipt09-26-19-641Z/fullSHA989c37d1…79c538d9. First completed original
+MP4 exact current64f8a3c3…76fc7b36/2,962,151,594B,61.436715s,236.8515625MiB
+peak/11.8359375MiB cleanup. Second hits262.46875MiB >250, normal cancellation,
+all owned output/profile/server/tools/49 Chrome births removed; original exact
+size/fullSHA unchanged. Unknown new child100.84375MiB INCLUDED; subtype could
+not be identified, no service attribution guessed.754valid/2missing actual
+conversion samples,1088 total native rows. Instrumentation perturbs memory;
+no release/flatness/scale/speed claim; previous uninstrumented3+1 stays recorded.
+
+First-run allocator evidence: main Blink committed3,276,800 ->8,781,824B but
+allocated objects3,144,664 ->1,778,600B; main JS allocated5,562,368 ->5,263,360B,
+replacement worker1,835,008B, page backing626,746B. Committed capacity is NOT
+live-object/callsite proof; no unbounded copied-media buffer demonstrated here.
+Two compact raw allocator dumps +5 realm/DOM checkpoints/raw native and
+rederived analysis/CSV/HTML retained. One retired-session detach failed; closure
+retained in report. Future diagnostic now captures an explicit bounded
+budget-failure snapshot; none retroactively claimed for this immutable run.
+Do not repeat unchanged or widen limits; longer-session stability remains open.
+150 focused regression/diagnostic/evidence checks and affected lint PASS;
+failed browser status remains failed. Read-only exact owned runtime/server
+absence confirmed after cleanup. No public engine or native binary changed.
+
 2026-11-15 **six-original retention diagnostic prepared, NOT run**. Concrete
 reason: last original3+1 receipt shows increasing same-page cleanup5.55/16.39/
 39.03MiB. New explicit diagnostic keeps exact native/current full output hash,
