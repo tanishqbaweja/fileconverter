@@ -13,6 +13,7 @@ import { h264VfrBuildRef, h264VfrWrapperSha256, makeMkvH264VfrCandidate } from "
 import { h264ProbeDecoderBuildRef, h264ProbeWrapperSha256, makeH264ProbeDecoderWrapper,
   makeH264ProbeDecoderLibraries, makeH264ProbeDecoderManifest, assertH264ProbeDecoderConfig } from "./mkv-h264-probe-decoder-candidate.mjs";
 import { h264StartupBuildRef, h264StartupWrapperSha256, makeH264StartupCandidate } from "./mkv-h264-startup-candidate.mjs";
+import { hevcKnownDtsBuildRef, hevcKnownDtsWrapperSha256, makeHevcKnownDtsCandidate, makeHevcKnownDtsParser, makeHevcKnownDtsPrefix } from "./mkv-hevc-known-dts-candidate.mjs";
 
 const root = path.resolve(import.meta.dirname, "../.."), work = path.join(root, "work");
 const publicDir = path.join(root, "public/engines/remux");
@@ -33,7 +34,11 @@ const startupMode = process.env.WITHIN_MKV_H264_STARTUP ?? "0";
 assert.ok(["0", "1"].includes(startupMode));
 const startup = startupMode === "1";
 assert.ok(!startup || probeDecoder);
-const wrapperSha256 = startup ? h264StartupWrapperSha256 : probeDecoder ? h264ProbeWrapperSha256 : h264Vfr ? h264VfrWrapperSha256 : exactAac ? exactAacWrapperSha256 : editListParentSha256;
+const hevcClockMode = process.env.WITHIN_MKV_HEVC_KNOWN_DTS ?? "0";
+assert.ok(["0", "1"].includes(hevcClockMode));
+const hevcKnownDts = hevcClockMode === "1";
+assert.ok(!hevcKnownDts || startup);
+const wrapperSha256 = hevcKnownDts ? hevcKnownDtsWrapperSha256 : startup ? h264StartupWrapperSha256 : probeDecoder ? h264ProbeWrapperSha256 : h264Vfr ? h264VfrWrapperSha256 : exactAac ? exactAacWrapperSha256 : editListParentSha256;
 const files = {
   "within-direct.mjs": 256 * 1024,
   "within-direct.wasm": (probeDecoder ? 8 : 2) * 1024 * 1024,
@@ -79,6 +84,16 @@ async function prepare(action, build, output) {
       await writeFile(path.join(output, "build-libraries.sh"), library.generated, { flag: "wx" });
       await writeFile(path.join(output, "h264-probe-library-proof.json"), JSON.stringify(library.proof), { flag: "wx" });
     }
+    if (hevcKnownDts) {
+      const parserDirectory = path.join(build, "ffmpeg/libavcodec/hevc");
+      assert.equal(await realpath(parserDirectory), parserDirectory);
+      const parser = makeHevcKnownDtsParser(await readBounded(parserDirectory, "parser.c", 32768));
+      const replacement = path.join(parserDirectory, "parser.c.candidate");
+      await writeFile(replacement, parser.generated, { flag: "wx" });
+      await rename(replacement, path.join(parserDirectory, "parser.c"));
+      await writeFile(path.join(output, "hevc-parser.c"), parser.generated, { flag: "wx" });
+      await writeFile(path.join(output, "hevc-parser-proof.json"), JSON.stringify(parser.proof), { flag: "wx" });
+    }
     return;
   }
   const base = await readBounded(build, "within_remux.c", files["within_remux.c"]);
@@ -88,7 +103,10 @@ async function prepare(action, build, output) {
   const scheduled = startup ? makeH264StartupCandidate(Buffer.from(derived.generated),
     await readBounded(import.meta.dirname, "h264-startup-dts.h", 16384),
     await readBounded(import.meta.dirname, "h264-startup-prefix.inc", 16384)) : derived;
-  const { generated } = scheduled, proof = { ...parent.proof, ...vfr.proof, ...derived.proof, ...scheduled.proof };
+  const clocked = hevcKnownDts ? makeHevcKnownDtsCandidate(Buffer.from(scheduled.generated)) : scheduled;
+  if (hevcKnownDts) makeHevcKnownDtsPrefix(await readBounded(import.meta.dirname, "h264-startup-prefix.inc", 16384));
+  const { generated } = clocked, proof = { ...parent.proof, ...vfr.proof, ...derived.proof, ...scheduled.proof, ...clocked.proof };
+  if (hevcKnownDts) proof.hevcParser = JSON.parse(await readBounded(output, "hevc-parser-proof.json", 8192));
   if (probeDecoder) {
     const config = await readBounded(path.join(build, "ffmpeg"), "config_components.h", 512 * 1024);
     proof.library = { ...JSON.parse(await readBounded(output, "h264-probe-library-proof.json", 8192)), ...assertH264ProbeDecoderConfig(config) };
@@ -111,7 +129,7 @@ function runRecipe(script, env) {
 
 async function buildCandidate() {
   assert.equal(process.env.GITHUB_ACTIONS, "true", "Use the isolated hosted candidate job");
-  if (exactAac) assert.equal(process.env.GITHUB_REF, `refs/heads/${startup ? h264StartupBuildRef : probeDecoder ? h264ProbeDecoderBuildRef : h264Vfr ? h264VfrBuildRef : exactAacBuildRef}`);
+  if (exactAac) assert.equal(process.env.GITHUB_REF, `refs/heads/${hevcKnownDts ? hevcKnownDtsBuildRef : startup ? h264StartupBuildRef : probeDecoder ? h264ProbeDecoderBuildRef : h264Vfr ? h264VfrBuildRef : exactAacBuildRef}`);
   const ciOwner = process.env.WITHIN_CI_RUNTIME_OWNER, ciRoot = path.dirname(ciOwner);
   assert.equal(path.dirname(ciRoot), work);
   assert.match(path.basename(ciRoot), /^ci-[A-Za-z0-9]{6}$/);
@@ -135,7 +153,8 @@ async function buildCandidate() {
       WITHIN_VERIFY_SOURCE_REWRITES_ONLY: "0", WITHIN_BUILD_CORE_FILTER: "within-direct" });
     assert.equal(await realpath(compiled), compiled);
     const expected = { ...files, ...(exactAac ? { "movenc.c": 512 * 1024 } : {}),
-      ...(probeDecoder ? { "build-libraries.sh": 32768, "config-components.h": 512 * 1024 } : {}) };
+      ...(probeDecoder ? { "build-libraries.sh": 32768, "config-components.h": 512 * 1024 } : {}),
+      ...(hevcKnownDts ? { "hevc-parser.c": 32768 } : {}) };
     const artifacts = Object.fromEntries(await Promise.all(Object.entries(expected)
       .map(async ([file, limit]) => [file, await readBounded(compiled, file, limit)])));
     const derivation = JSON.parse(await readBounded(compiled, sourceProof, 8192));

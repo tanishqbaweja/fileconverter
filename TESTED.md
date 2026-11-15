@@ -1,5 +1,21 @@
 # Tested conversion ledger
 
+2026-11-15 **HEVC known-DTS source candidate: source proof only**. Actual
+authenticated accepted startup wrapper plus exact pinned upstream FFmpeg8.1.2
+HEVC parser derive reversibly to wrapper5c0a8caa…05c4bb6/parser9f8f3965…4e3752.
+No HEVC decoder, encoders, larger probe/prefix buffers or Wasm envelope added.
+Reuses existing bounded missing-prefix scheduler, preserves later verified clocks
+instead of applying whole-stream nominal CFR. Distinct actual derived prefix
+SHA6f7dd36f…3d18c8b and its parent prefix both recorded; old source not mislabeled.
+New isolated-ref builder/loader authenticates extra parser source/config/ABI;
+historical artifact modes remain strict. 24 focused checks and existing native
+arithmetic smoke PASS. First too-broad source anchor refused safely; replaced
+by unique exact indented anchor, not a skipped assertion. All downloaded tools
+removed. Receipt
+`evidence/2026-11-15T07-31-45-145Z-hevc-known-dts-source-derivation.json`.
+Native compilation, actual join-clock browser fidelity, regressions and scaling
+remain pending; no conversion result or memory/speed/release acceptance claim.
+
 2026-11-15 **scaling prerequisite exposes a real HEVC join-clock defect**.
 Before generating multi-GB sources, looped the pinned small HEVC/AAC source
 twice into a valid11,887,449-byte MKV (576 video packets). Native tools generated

@@ -1,0 +1,48 @@
+{
+  "status": "passed-authenticated-source-derivation-only-not-build-or-browser-acceptance",
+  "mediaInputs": 0,
+  "nativeConversionUsed": false,
+  "parent": {
+    "head": "147b05167d5d5729a8aa186c2c073c833816aa3c",
+    "runId": "43653656481",
+    "artifact": {
+      "id": 14136768761,
+      "digest": "sha256:cfe0df2d629b08a3846a286b19083c0e14b4b98f2df4cbe982c4c4a503969ea2",
+      "bytes": 832424
+    }
+  },
+  "wrapper": {
+    "parentWrapperSha256": "1c6b184978eecb8ce966a6db55cc3b8f3aa2d216e102a81e11aa9cc80d83db1f",
+    "candidateWrapperSha256": "5c0a8caa8f3efeb6a024aa6708694203a1529d1d099e9e5faababd5be05c4bb6",
+    "hevcKnownDtsPreserved": true,
+    "hevcNominalDtsSynthesis": false,
+    "hevcTimingPolicyUnchanged": false,
+    "hevcBoundedStreamInspection": true,
+    "existingPtsAndKnownDtsUnchanged": true,
+    "parentStartupPrefixSha256": "e77569b73fdec3653e51ccfdd17eb862e5a093c97ffceebeccfb23317267e758",
+    "startupPrefixSha256": "6f7dd36f5d17ccde88dba43d47d0f732ca7c6998bd909021de8a7f9a93d18c8b",
+    "onlyMissingStartupDtsGenerated": true,
+    "knownPacketClocksRewritten": false,
+    "nominalFrameRateUsedForStartup": false,
+    "packetClocksRewritten": true,
+    "exactReversal": true,
+    "probeBoundsChanged": false,
+    "startupBoundsChanged": false,
+    "wasmBoundsChanged": false,
+    "hevcDecoderAdded": false,
+    "finalPacketsReencoded": false,
+    "publicAcceptance": false
+  },
+  "parser": {
+    "parentSha256": "cc826ccb51e7aaa1d8c478ad8d2d6b1f09fd326da1aab55649d549d5fabaed34",
+    "generatedSha256": "9f8f39654688c25e02deb95793b7128fbb4b68e3073a392ac795a232154e3752",
+    "exactReversal": true,
+    "metadataOnly": true,
+    "maximumReorderDepth": 16,
+    "hevcDecoderAdded": false,
+    "upstreamParser": "https://github.com/FFmpeg/FFmpeg/blob/n8.1.2/libavcodec/hevc/parser.c",
+    "upstreamDecoderMetadata": "https://github.com/FFmpeg/FFmpeg/blob/n8.1.2/libavcodec/hevc/hevcdec.c#L316"
+  },
+  "prefixSha256": "6f7dd36f5d17ccde88dba43d47d0f732ca7c6998bd909021de8a7f9a93d18c8b",
+  "downloadedToolsRemoved": true
+}

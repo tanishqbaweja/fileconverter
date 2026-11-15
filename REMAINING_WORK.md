@@ -1,5 +1,23 @@
 # Remaining work audit
 
+2026-11-15 M-03: **HEVC known-clock candidate implemented, not yet compiled or
+browser-qualified**. Authenticated actual startup wrapper1c6b1849…83db1f and
+exact FFmpeg8.1.2 parsercc826ccb…baed34; reversible private derivative removes
+the unconditional HEVC CFR rewrite, extends unchanged2MiB/two-second inspection
+and fixed startup prefix to HEVC, and exports validated SPS reorder depth like
+FFmpeg's HEVC decoder metadata path without adding that decoder or pictures.
+Only missing initial DTS may be generated from observed cadence; every known
+DTS/PTS must remain unchanged, invalid/nonmonotonic clocks fail. Wrapper
+5c0a8caa…05c4bb6, parser9f8f3965…4e3752, derived prefix6f7dd36f…3d18c8b
+separately pinned. Old native/loader contracts unchanged; own isolated branch
+and explicit new loader mode require new parser source/config/ABI/heap proof.
+Source receipt `evidence/2026-11-15T07-31-45-145Z-hevc-known-dts-source-derivation.json`;
+downloaded tools removed. Initial ambiguous source-anchor assertion refused the
+derivation; exact indented anchor corrected, no browser/native test relabeled.
+24 focused checks and native startup arithmetic smoke PASS (no media inputs).
+Next compile once without Docker, then actual failed loop input on the new core.
+No claim yet that the31ms bug is fixed in a browser, >4GB works or release is safe.
+
 2026-11-15 M-03: **new scaling-source fidelity failure; not completion**.
 The actual12MB/two-loop HEVC/AAC browser control has unchanged complete payload
 hashes but FAILS the existing1ms DTS gate at packet291. Source inspection

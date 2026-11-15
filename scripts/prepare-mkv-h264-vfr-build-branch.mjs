@@ -9,13 +9,15 @@ import { createOwnedRuntimeScratch } from "./lib/owned-runtime-scratch.mjs";
 import { h264VfrBuildRef } from "../media/ffmpeg/mkv-h264-vfr-candidate.mjs";
 import { h264ProbeDecoderBuildRef } from "../media/ffmpeg/mkv-h264-probe-decoder-candidate.mjs";
 import { h264StartupBuildRef } from "../media/ffmpeg/mkv-h264-startup-candidate.mjs";
+import { hevcKnownDtsBuildRef } from "../media/ffmpeg/mkv-hevc-known-dts-candidate.mjs";
 
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile);
 const gitExe = process.env.WITHIN_GIT_EXECUTABLE ?? "git", workflow = ".github/workflows/reproduce-ffmpeg-nondocker.yml";
-assert.ok(process.argv.length === 2 || process.argv.length === 3 && ["--probe-decoder", "--startup"].includes(process.argv[2]));
-const startup = process.argv[2] === "--startup", probeDecoder = startup || process.argv[2] === "--probe-decoder";
-const branch = startup ? h264StartupBuildRef : probeDecoder ? h264ProbeDecoderBuildRef : h264VfrBuildRef;
-const output = startup ? "evidence/mkv-h264-startup-build-branch-2026-11-15.json" : probeDecoder ? "evidence/mkv-h264-probe-decoder-build-branch-2026-11-14.json" : "evidence/mkv-h264-vfr-build-branch-2026-11-14.json";
+assert.ok(process.argv.length === 2 || process.argv.length === 3 && ["--probe-decoder", "--startup", "--hevc-known-dts"].includes(process.argv[2]));
+const hevcKnownDts = process.argv[2] === "--hevc-known-dts";
+const startup = hevcKnownDts || process.argv[2] === "--startup", probeDecoder = startup || process.argv[2] === "--probe-decoder";
+const branch = hevcKnownDts ? hevcKnownDtsBuildRef : startup ? h264StartupBuildRef : probeDecoder ? h264ProbeDecoderBuildRef : h264VfrBuildRef;
+const output = hevcKnownDts ? "evidence/mkv-hevc-known-dts-build-branch-2026-11-15.json" : startup ? "evidence/mkv-h264-startup-build-branch-2026-11-15.json" : probeDecoder ? "evidence/mkv-h264-probe-decoder-build-branch-2026-11-14.json" : "evidence/mkv-h264-vfr-build-branch-2026-11-14.json";
 const git = async (args, env = process.env) => (await execute(gitExe, args, { cwd: root, env,
   windowsHide: true, timeout: 30000, maxBuffer: 65536 })).stdout.trim();
 await assert.rejects(access(path.join(root, output)), { code: "ENOENT" });
@@ -36,7 +38,7 @@ try {
   assert.equal(blob.status, 0, blob.stderr);
   await git(["update-index", "--add", "--cacheinfo", `100644,${blob.stdout.trim()},${workflow}`], env);
   tree = await git(["write-tree"], env);
-  commit = await git(["commit-tree", tree, "-p", parent, "-m", "Compile isolated bounded H.264 VFR timestamp candidate without Docker"], env);
+  commit = await git(["commit-tree", tree, "-p", parent, "-m", hevcKnownDts ? "Compile isolated HEVC known-DTS preservation candidate without Docker" : "Compile isolated bounded H.264 VFR timestamp candidate without Docker"], env);
   assert.deepEqual((await git(["diff", "--name-only", parent, commit])).split("\n"), [workflow]);
   await git(["update-ref", `refs/heads/${branch}`, commit, "0".repeat(40)]);
   await git(["push", "origin", `${commit}:refs/heads/${branch}`]);
@@ -48,7 +50,7 @@ try {
 } finally { await runtime.close(); await assert.rejects(access(runtime.directory), { code: "ENOENT" }); }
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 await writeFile(path.join(root, output), JSON.stringify({ status: "isolated-h264-vfr-build-branch-pushed-not-dispatched",
-  branch, probeDecoder, startup, parent, commit, tree, changedTrackedFiles: [workflow], workflowSha256: sha(replacement),
+  branch, probeDecoder, startup, hevcKnownDts, parent, commit, tree, changedTrackedFiles: [workflow], workflowSha256: sha(replacement),
   canonicalHeadIndexWorkflowUnchanged: true, mainUnchanged: true, ownedIndexRuntimeRemoved: true,
   remoteVerified: true, mediaInputs: 0, noDocker: true, publicAcceptance: false }, null, 2) + "\n", { flag: "wx" });
 console.log(JSON.stringify({ output, branch, commit }));
