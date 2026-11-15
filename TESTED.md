@@ -1,5 +1,14 @@
 # Tested conversion ledger
 
+2026-11-15 **six-original retention diagnostic prepared, NOT run**. Concrete
+reason: last original3+1 receipt shows increasing same-page cleanup5.55/16.39/
+39.03MiB. New explicit diagnostic keeps exact native/current full output hash,
+unchanged250MiB peak and96MiB cleanup gates, one disposable output per job and
+original source before/after. Finite19 realm/DOM checkpoints and4 light allocator
+dumps (loaded, after1/3/6) use existing bounded diagnostics, no forced GC or
+service exclusions. Diagnostic instrumentation perturbs memory; not release
+acceptance, fresh complete native video decode, scale or speed evidence.
+
 2026-11-15 **corrected-core original3 same-session +1 clean-session runs PASS
 unchanged peak/cleanup gates**, receipt09-13-19-493Z/fullSHA
 d56b4c7cc38504aec24778d6f0e5776ca96dcf441010d56a690276b2617bedef.

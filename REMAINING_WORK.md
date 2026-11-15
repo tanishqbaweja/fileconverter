@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-15 M-03: **targeted six-job retention investigation prepared, NOT run**.
+Current3+1 receipt concretely motivates same-page cleanup attribution, not
+repeating completed fidelity work. Exact original/current native/full output
+identity retained;19 finite realm/DOM checkpoints and4 light allocator dumps
+only. Original blank/idle baselines,250MiB/96MiB gates and all owned cleanup
+unchanged. Diagnostics explicitly perturb memory and cannot establish release
+acceptance. No production/native change or full-video validation replay.
+
 2026-11-15 M-03: **corrected-core required original3+1 repeats PASS existing
 peak/cleanup gates; retained-memory trend remains OPEN**. Supersedes the
 preparation-only entry below. Receipt

@@ -52,6 +52,7 @@ import { hevcKnownDtsWrapperSha256 } from "../media/ffmpeg/mkv-hevc-known-dts-ca
 import { headerParserH264Regression, assertHevcHeaderParserCore, readHevcHeaderLoopReference, hevcHeaderLoopReference, assertStartupDtsDisclosure } from "./lib/mkv-hevc-header-core-reference.mjs";
 import { headerCoreH264References, readHeaderCoreH264Regressions, readPriorCompleteProtectedVideo, canInheritCompleteProtectedVideo,
   headerProtectedReference, readHeaderProtectedReference } from "./lib/mkv-header-protected-reference.mjs";
+import { MKV_RETENTION_LIMITS, createMkvRetentionDiagnostic } from "./lib/mkv-retention-diagnostic.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
@@ -60,7 +61,8 @@ const fixedHevcBaseline = process.argv[2] === "--exact-aac-fixed-hevc-baseline";
 const startupHevcControl = process.argv[2] === "--h264-startup-hevc-control";
 const startupSimpleControl = process.argv[2] === "--h264-startup-no-b-control";
 const headerH264Regression = headerParserH264Regression(process.argv.slice(2));
-const headerProtectedRepeats = process.argv[2] === "--hevc-header-parser-protected-repeats";
+const headerProtectedRetention = process.argv[2] === "--hevc-header-parser-protected-retention";
+const headerProtectedRepeats = headerProtectedRetention || process.argv[2] === "--hevc-header-parser-protected-repeats";
 const headerProtected = headerProtectedRepeats || process.argv[2] === "--hevc-header-parser-protected";
 const hevcHeaderParser = headerProtected || !!headerH264Regression || process.argv[2] === "--hevc-header-parser-loop-source-control";
 const hevcKnownDts = hevcHeaderParser || process.argv[2] === "--hevc-known-dts-loop-source-control";
@@ -160,12 +162,16 @@ if (headerProtectedRepeats) {
   report.hevcHeaderProtectedRepeats = true;
   report.scope = "Three same-page original remuxes and one clean-session repeat on exact corrected header core, each complete-output hash bound to the fresh current-core all-packet/codec/PCM/complete-video proof. Original blank/loaded-idle baselines unchanged; outputs removed before next run. Not fresh native decoding, speed, scale or release acceptance.";
 }
+if (headerProtectedRetention) {
+  report.diagnosticOnly = true; report.hevcHeaderProtectedRetention = true;
+  report.scope = "Six same-page original remuxes, exact current native and every output byte bound to fresh complete content proof; bounded realm/DOM/allocator checkpoints investigate rising cleanup. Instrumentation perturbs memory, no forced GC, no release acceptance, no fresh full decode, no speed or scale claim.";
+}
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${headerProtected ? `hevc-header-core-protected${headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env, timeout = 90000) => execute(file, args, { cwd: root, env, windowsHide: true, timeout, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env)).stdout);
@@ -402,7 +408,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
   report.arms.push(result);
   const runtime = await createOwnedRuntimeScratch("mkv-direct-reuse-");
   const env = { ...runtime.env, WRANGLER_SEND_METRICS: "false", NEXT_TELEMETRY_DISABLED: "1" };
-  const samples = []; let server, chrome, identity, monitor, browser, page, timer, pending, activeAt, until, rejectStop, errorSeen;
+  const samples = []; let server, chrome, identity, monitor, browser, page, timer, pending, activeAt, until, rejectStop, errorSeen, retention;
   let protectedStarted, protectedTerminal;
   const protectedWindows = [];
   const duringConversion = time => !protectedMode || protectedWindows.some(w => time >= w.start && (w.end === undefined || time <= w.end));
@@ -518,13 +524,23 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
       return found;
     }, protectedMode);
     const remove = name => page.evaluate(async name => (await navigator.storage.getDirectory()).removeEntry(name), name);
-    await open(); result.loaded = await stable(drain, samples); activeAt = Date.now();
+    await open(); result.loaded = await stable(drain, samples);
+    if (headerProtectedRetention) {
+      const debugPath = (await readFile(path.join(profile, "DevToolsActivePort"), "utf8")).trim().split(/\r?\n/)[1];
+      assert.match(debugPath, /^\/devtools\/browser\/[a-f0-9-]+$/);
+      retention = await createMkvRetentionDiagnostic({ root, reportBase: path.join(root, "outputs/reports", `${stamp}-mkv-retention`),
+        socketUrl: `ws://127.0.0.1:${debugPort}${debugPath}`, origin: server.baseURL, browser, page,
+        getProcesses: async () => { await drain(); const row = samples.findLast(s => s.privateBytes !== null && Array.isArray(s.processes)); assert.ok(row); return row.processes; } });
+      assert.equal((await retention.capture("loaded-before-media", true)).error, null);
+    }
+    activeAt = Date.now();
     timer = setInterval(() => void drain().catch(fail), 500);
     async function job(fault = false, cancel = false) {
       const row = { fault, selection: await guard(protectedMode ? selectExactLocalOriginal(page, fixture) : selectOwnedLocalBrowserFile(page, fixture, fixtureRuntime.directory)) };
       if (protectedMode) report.originalMediaSelected = row.selection.completeOriginalSelected;
       if (cancel) row.cancel = sustained ? "after-positive-destination-writes" : "during-authenticated-wasm-load-before-native-packets";
       result.cases.push(row);
+      if (retention) assert.equal((await retention.capture(`job-${result.cases.length}-before`)).error, null);
       await guard(page.locator('[data-testid="format-select"]').selectOption(profileId));
       if (cancel && sustained) {
         await guard(page.locator('[data-testid="convert-button"]').click());
@@ -566,6 +582,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
       await guard(page.waitForFunction(() => ["complete", "error", "cancelled"].includes(window.__WITHIN_TEST__?.getState().jobState), undefined, { timeout: protectedMode ? 180000 : 45000 }));
       if (protectedMode) { protectedTerminal = Date.now(); row.conversionWindow.end = protectedTerminal; }
       const state = await page.evaluate(() => window.__WITHIN_TEST__.getState()); row.state = state.jobState; row.metrics = state.metrics;
+      if (retention) assert.equal((await retention.capture(`job-${result.cases.length}-terminal`)).error, null);
       row.error = typeof state.error === "string" ? state.error.slice(0, 2048) : null;
       row.phase = typeof state.phase === "string" ? state.phase.slice(0, 256) : null;
       if (terminalDiagnostic) {
@@ -733,6 +750,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
         row.cleanupStable = await guard(stable(drain, samples));
         row.cleanupAboveIdleMiB = (row.cleanupStable.privateBytes - result.loaded.privateBytes) / mib;
         assert.ok(row.cleanupAboveIdleMiB <= 96, "Protected repeat cleanup exceeded unchanged 96 MiB gate");
+        if (retention) assert.equal((await retention.capture(`job-${result.cases.length}-cleanup`, [1, 3, 6].includes(result.cases.length))).error, null);
       }
       if (sustained && !fault && !cancel && !baseline.reference) baseline.reference = { outputSha256: row.validation.outputSha256, outputBytes: row.metrics.outputBytes };
     }
@@ -766,6 +784,10 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
   } catch (error) { result.status = "failed-not-acceptance"; result.failures.push(String(error.stack ?? error).slice(0, 2048)); }
   finally {
     startupCancellation?.release();
+    if (retention) {
+      try { result.retention = await retention.close(); }
+      catch (error) { result.retention = retention.report(); result.retentionCleanupError = boundedErrorDetails(error); fail(error); }
+    }
     until ??= Date.now(); clearInterval(timer); await pending?.catch(fail);
     if (monitor) { await drain().catch(fail); await monitor.close().catch(fail); result.observer = monitor.ownershipSummary(); }
     if (page && !page.isClosed()) {
@@ -841,6 +863,7 @@ try {
     "scripts/lib/mkv-header-protected-reference.mjs", "scripts/lib/mkv-full-video-decode.mjs", protectedCompleteVideoReference.file,
     ...headerCoreH264References.map(ref => ref.file));
   if (headerProtectedRepeats) sourceFiles.push(headerProtectedReference.file);
+  if (headerProtectedRetention) sourceFiles.push("scripts/lib/mkv-retention-diagnostic.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/lifecycle-allocation-attribution.mjs");
   if (startupSimpleControl) sourceFiles.push(startupComplexReference.file);
   if (startupProtected) sourceFiles.push(protectedRepeatReference.file, protectedCompleteVideoReference.file,
     "scripts/lib/mkv-protected-repeat-contract.mjs", ...startupSmallRegressions.map(ref => ref.file));
@@ -906,7 +929,7 @@ try {
       report.protectedReference = baseline.protectedReference;
     }
     if (protectedRepeats) {
-      for (const count of [3, 1]) {
+      for (const count of headerProtectedRetention ? [MKV_RETENTION_LIMITS.jobs] : [3, 1]) {
         await arm("reuse", protectedPath, null, baseline, count);
         assert.equal(report.arms.at(-1).ownedRuntimeRemoved, true, "Previous browser must be cleaned before another session");
         assert.equal(report.arms.at(-1).status, "passed-protected-repeat-session");
@@ -914,8 +937,8 @@ try {
     } else await arm("reuse", protectedPath, null, baseline);
     assertInstalledChromePinsEqual(await inspectInstalledChromePin(), browser);
     if (protectedRepeats) {
-      assert.deepEqual(report.arms.map(a => a.cases.length), [3, 1]);
-      report.status = headerProtectedRepeats ? "passed-header-core-protected-repeats-not-public-acceptance" : startupProtected ? "passed-startup-core-protected-repeats-not-public-acceptance" : "passed-protected-repeats-not-public-acceptance";
+      assert.deepEqual(report.arms.map(a => a.cases.length), headerProtectedRetention ? [MKV_RETENTION_LIMITS.jobs] : [3, 1]);
+      report.status = headerProtectedRetention ? "completed-header-core-protected-retention-diagnostic-not-acceptance" : headerProtectedRepeats ? "passed-header-core-protected-repeats-not-public-acceptance" : startupProtected ? "passed-startup-core-protected-repeats-not-public-acceptance" : "passed-protected-repeats-not-public-acceptance";
     } else if (protectedFullDecode) {
       assert.equal(report.arms[0].status, "passed-protected-complete-video-decode");
       assert.equal(report.arms[0].cases[0].validation.fullVideoDecode, true);
