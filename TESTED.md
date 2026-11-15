@@ -1,5 +1,28 @@
 # Tested conversion ledger
 
+2026-11-15 **corrected-core original3 same-session +1 clean-session runs PASS
+unchanged peak/cleanup gates**, receipt09-13-19-493Z/fullSHA
+d56b4c7cc38504aec24778d6f0e5776ca96dcf441010d56a690276b2617bedef.
+Actual original2,958,573,265B ->2,962,151,594B MP4 each; all four entire output
+hashes64f8a3c3…76fc7b36 bind SAME current native to freshly validated full content,
+not another native decode. Times31.092885/30.535250/34.938835/34.823750s. Full
+Chrome delta211.1953125/146.67578125/206.984375/207.78515625MiB <=250, valid
+285/281/321/318, missing0/0/0/1 unavailable/excluded. Wasm46.3125MiB;
+read256KiB/write+queue1MiB/1pending. No matched speedup claim.
+
+IMPORTANT: original-loaded-idle cleanup5.5546875/16.390625/39.02734375MiB rises
+across all three same-page jobs; clean-session -5.234375MiB. Existing96MiB gate
+passes, but long-session flatness/no-leak is UNVERIFIED, explicitly left open.
+No rebase, forced GC or process exclusion. Same renderer grows in retained
+process rows, not yet allocation-attributed. All outputs removed before next
+job; both owned profiles/servers/tools and45/44 Chrome births removed; exact
+original size/fullSHA preserved. Raw1542+727 samples and CSV/HTML graph retained;
+current repeat preparation entry below is superseded. Public engine unchanged;
+genuine >4GB/near10GB and remaining release/full-spec checks still pending.
+126 focused regression/evidence checks and affected lint PASS; old startup-core
+rendered evidence stays byte-identical. Post-run read-only owned-directory and
+server-root absence confirmed; no further cleanup mutation required.
+
 2026-11-15 **new-core required3+1 original repeats prepared, not yet run**.
 Authenticate current first-original5529d464…4b3f4039 and exact same native41c4a075;
 require every2,962,151,594-byte output/fullSHA64f8a3c3…76fc7b36 plus fresh stream/

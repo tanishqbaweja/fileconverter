@@ -1,5 +1,34 @@
 # Remaining work audit
 
+2026-11-15 M-03: **corrected-core required original3+1 repeats PASS existing
+peak/cleanup gates; retained-memory trend remains OPEN**. Supersedes the
+preparation-only entry below. Receipt
+`evidence/2026-11-15T09-13-19-493Z-mkv-hevc-header-core-protected-repeats.json`,
+SHA d56b4c7cc38504aec24778d6f0e5776ca96dcf441010d56a690276b2617bedef.
+Every actual2,958,573,265B original remux produces2,962,151,594B/fullSHA64f8a3c3…
+76fc7b36; complete output identity binds SAME authenticated current native to
+the fresh all-packet/codec/PCM/296160-frame video proof. No fresh video decode
+or native conversion. Times31.092885/30.535250/34.938835/34.823750s; not a matched
+speedup comparison. Same-original-blank fulltree peaks211.1953125/146.67578125/
+206.984375/207.78515625MiB, valid samples285/281/321/318, missing0/0/0/1 retained
+as unavailable and excluded, never zero. Read256KiB/write+queue1MiB/1pending,
+Wasm46.3125MiB. All four outputs removed before next job; both owned profiles,
+servers, downloaded tools and45/44 observed Chrome births removed. Original
+before/after full size/SHA unchanged; no excluded services or changed limits.
+
+Same-page cleanup over ORIGINAL loaded idle rises5.5546875 →16.390625 →
+39.02734375MiB (+33.47265625MiB first-to-third); clean-session repeat -5.234375MiB.
+All under existing96MiB observation threshold, but rising retained private
+memory is NOT evidence of flat long-session behavior. Current receipt stays
+immutable; investigate allocation/lifecycle attribution and extended-session
+stability before public promotion. Native process rows implicate growth in the
+same renderer, but do not identify an allocation-level cause. Compact raw native
+journals1542+727 samples plus reproducible CSV/HTML graph retained. Genuine
+>4GB/near10GB, privacy/offline/repro/browser/full-spec gates remain pending.
+126 focused regression/evidence checks and affected lint PASS. Historical
+startup-core CSV/HTML bytes remain unchanged. Post-run read-only checks confirm
+both exact owned runtime directories and recorded server roots are absent.
+
 2026-11-15 M-03: **corrected-core original repeats prepared, not yet run**.
 Explicit new mode requires immutable current-native original receipt5529d464…
 4b3f4039, including fresh all-packet/codec/PCM/296160-frame decode, unchanged
