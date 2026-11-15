@@ -1,5 +1,26 @@
 # Remaining work audit
 
+2026-11-15 M-03: **all three H264 regressions PASS on corrected HEVC core**.
+No-B receipt08-13-54, B-frame08-18-29, +5s08-19-49 all full4-state sequences,
+fresh full decoded video/twoPCM/packet/clock/metadata checks; output SHA exactly
+cb62dd3f…95847b /5958e362…23c70a0e /e63d7254…227934cf as validated predecessors.
+Full-tree peaks211.1797/180.5313/226.4375MiB, original-idle cleanup55.4375/
+67.4688/49.6055MiB,133/143/143 valid samples and0missing. All owned output/
+browser/server/profile/source-copy/tools removed, original hash unchanged.
+The first B-frame wording failure remains failed. Do not replay accepted cases.
+
+New explicit original-file gate prepared, NOT yet run: require exact-native
+HEVC loop proof and all three H264 receipts; select unchanged2,958,573,265-byte
+test.mkv, fresh ALL video/AAC packet hashes+known clocks, codec initialization
+hashes,5058-sample trim, complete HE-AAC PCM and structural/exclusion checks.
+Old complete-video proof may be inherited ONLY if every new output byte matches;
+otherwise run fresh complete296160-frame independent video decode to null.
+Separate fresh-output extent remains finite2.9–3.1GB; old exact2,962,151,594-byte
+legacy validator unchanged. Fixed30-minute/4-thread/no-drop/no-duplicate video
+guards preserved. Fourteen focused reference/decode/evidence checks and lint
+PASS. Disk/RAM preflight, actual first new-core original, repeats and >4GB/
+near10GB remain pending. No public/core promotion or full-goal completion.
+
 2026-11-15 M-03: **new-core no-B/VFR control passes**, receipt08-13-54, full
 outputSHAcb62dd3f…95847b unchanged from validated baseline. Full4-state recovery,
 native211.1796875MiB, cleanup55.4375MiB,133valid/0missing, owned data/processes

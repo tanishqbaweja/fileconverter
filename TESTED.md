@@ -1,5 +1,26 @@
 # Tested conversion ledger
 
+2026-11-15 **corrected HEVC core retains all H264 source controls**. Accepted
+no-B08-13-54, B-frame08-18-29 and +5s08-19-49 receipts each complete/startup-
+cancel/error/complete; all outputs byte-identical to earlier validated fixtures.
+No-B782689B/SHAcb62dd3f…95847b; B767355B/SHA5958e362…23c70a0e; +5s767391B/
+SHAe63d7254…227934cf. Fresh full decoded video/twoPCM/packet/metadata checks,
+source clocks unchanged, exact startupDTS[-167,-84]ms or[4833,4916]ms, no rebasing.
+Full-tree211.1796875/180.53125/226.4375MiB, original-idle cleanup55.4375/67.46875/
+49.60546875MiB;133/143/143valid,0missing, independently journal-rederived. All
+44/44/45 observed owned Chrome births/server/profile/source-copy/outputs/tools
+removed; protected original size/fullSHA unchanged. First failed wording report
+kept unchanged; not relabeled. Do not replay these accepted controls unchanged.
+
+New original gate prepared, not yet run: exact-native small references required,
+unchanged test.mkv, fresh all-packet/clocks/codec-init hashes/HE-AAC PCM/trim/
+structure checks, complete-video inheritance ONLY via complete output identity.
+New output hash forces fresh296160-frame decode-to-null, same30-minute deadline,
+4threads and zero dropped/duplicate frames. New separate2.9–3.1GB extent accepts
+only independently validated actual browser bytes, old legacy exact-size scope
+preserved. Fourteen focused checks and affected lint PASS. Disk/RAM/real original/
+repeats/scale/release gates still pending; no full-goal or new native build claim.
+
 2026-11-15 **corrected-core no-B/VFR control PASS; first B-frame control is a
 retained validator-wording failure**. No-B receipt
 `evidence/2026-11-15T08-13-54-689Z-mkv-hevc-header-core-h264-no-b-frames.json`:

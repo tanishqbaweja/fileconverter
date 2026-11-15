@@ -49,10 +49,25 @@ export function createFullVideoDecodeProgress(expectedFrames, expectedSeconds) {
 }
 
 export async function decodeCompleteProtectedVideo(file, { cwd, env, onProgress = () => {} }) {
+  return decodeFinishedProtectedVideo(file, { cwd, env, onProgress }, 2962151594n);
+}
+
+export function assertFreshProtectedVideoBytes(bytes) {
+  assert.ok(Number.isSafeInteger(bytes) && bytes >= 2900000000 && bytes <= 3100000000,
+    "Fresh protected output must have the independently verified realistic media extent");
+}
+
+export async function decodeFreshProtectedVideo(file, { cwd, env, expectedOutputBytes, onProgress = () => {} }) {
+  assertFreshProtectedVideoBytes(expectedOutputBytes);
+  return { ...await decodeFinishedProtectedVideo(file, { cwd, env, onProgress }, BigInt(expectedOutputBytes)),
+    exactBrowserOutputBytes: expectedOutputBytes, extentScope: "fresh-independently-validated-protected-browser-output" };
+}
+
+async function decodeFinishedProtectedVideo(file, { cwd, env, onProgress }, expectedOutputBytes) {
   const work = await realpath(path.join(cwd, "work")), actual = await realpath(file), relative = path.relative(work, actual);
   assert.ok(relative && !relative.startsWith("..") && !path.isAbsolute(relative));
   const before = await lstat(actual, { bigint: true });
-  assert.ok(before.isFile() && !before.isSymbolicLink() && before.size === 2962151594n);
+  assert.ok(before.isFile() && !before.isSymbolicLink() && before.size === expectedOutputBytes);
   const parser = createFullVideoDecodeProgress(296160, 12340), startedAt = Date.now();
   let lastProgress = null;
   const args = ["-v", "error", "-xerror", "-nostats", "-stats_period", "30", "-threads", "4", "-i", actual,
