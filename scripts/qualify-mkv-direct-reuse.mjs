@@ -56,6 +56,7 @@ import { MKV_RETENTION_LIMITS, createMkvRetentionDiagnostic } from "./lib/mkv-re
 import { MKV_SCALE_5GB, createLargeMkvScalingSource, assertLargeScalingExtent, decodeCompleteScalingContent } from "./lib/mkv-large-scaling.mjs";
 import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
 import { createScalingSampleView } from "./lib/mkv-scaling-sample-view.mjs";
+import { largeScalingReference, readLargeScalingReference } from "./lib/mkv-large-scaling-reference.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
@@ -67,7 +68,8 @@ const headerH264Regression = headerParserH264Regression(process.argv.slice(2));
 const headerProtectedRetention = process.argv[2] === "--hevc-header-parser-protected-retention";
 const headerProtectedRepeats = headerProtectedRetention || process.argv[2] === "--hevc-header-parser-protected-repeats";
 const headerProtected = headerProtectedRepeats || process.argv[2] === "--hevc-header-parser-protected";
-const largeScaling = process.argv[2] === "--hevc-header-parser-scale-5gb";
+const largeScalingRepeats = process.argv[2] === "--hevc-header-parser-scale-5gb-repeats";
+const largeScaling = largeScalingRepeats || process.argv[2] === "--hevc-header-parser-scale-5gb";
 const hevcHeaderParser = largeScaling || headerProtected || !!headerH264Regression || process.argv[2] === "--hevc-header-parser-loop-source-control";
 const hevcKnownDts = hevcHeaderParser || process.argv[2] === "--hevc-known-dts-loop-source-control";
 const scalingLoopControl = largeScaling || ["--hevc-header-parser-loop-source-control", "--hevc-known-dts-loop-source-control", "--h264-startup-loop-source-control"].includes(process.argv[2]);
@@ -89,6 +91,7 @@ const protectedRepeats = headerProtectedRepeats || startupProtectedRepeats || pr
 const protectedFullDecode = process.argv[2] === "--edit-list-aac-protected-full-decode";
 const protectedMode = headerProtected || startupProtected || protectedFullDecode || protectedRepeats || process.argv[2] === "--edit-list-aac-protected";
 const largeRun = protectedMode || largeScaling;
+const repeatJobs = protectedRepeats || largeScalingRepeats;
 const compareDestinations = sustained || process.argv[2] === "--edit-list-aac-destination-control";
 const exactAacCandidate = pinnedHevc || probeDecoder || complexTimeline || protectedMode || compareDestinations || process.argv[2] === "--edit-list-aac-candidate";
 const editListCandidate = exactAacCandidate || process.argv[2] === "--edit-list-candidate";
@@ -175,12 +178,16 @@ if (largeScaling) {
   report.largeScalingCandidate = true;
   report.scope = "First real >4GiB/5–6GB valid HEVC/AAC loop source on exact corrected core and same production browser path. Every packet/payload/clock, codec initialization, complete independently decoded video+PCM and unchanged full-tree memory/I/O/cleanup gates. One job, not repeat/near10GB/public acceptance or a speedup benchmark.";
 }
+if (largeScalingRepeats) {
+  report.largeScalingRepeats = true;
+  report.scope = "Three same-page and one clean-session real5.35GB remuxes. Fresh full disk-output SHA and structure/edit checks; complete content proof inherited ONLY through EVERY input/output byte and SAME exact authenticated native build. All100ms native rows retained; original blank/loaded idle unchanged. Not fresh native decode, near10GB, speedup or release acceptance.";
+}
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${largeScaling ? "hevc-header-core-scale-5gb" : headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${largeScaling ? `hevc-header-core-scale-5gb${largeScalingRepeats ? "-repeats" : ""}` : headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env, timeout = 90000) => execute(file, args, { cwd: root, env, windowsHide: true, timeout, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env)).stdout);
@@ -351,6 +358,24 @@ async function validateSustainedOutput(fixture, output, bytes, baseline, env, ro
 }
 
 async function validateLoopSourceOutput(fixture, output, baseline, env, row) {
+  if (largeScalingRepeats) {
+    const v = row.validation = { outputSha256: await hashFile(output), outputProbe: await probeProtected(output, env) };
+    assert.equal(row.metrics.outputBytes, baseline.largeReference.outputBytes);
+    assert.equal(v.outputSha256, baseline.largeReference.outputSha256, "Scaling repeat changed EVERY-byte validated current-native output");
+    assert.match(v.outputProbe.format.format_name, /mp4/);
+    assert.deepEqual(v.outputProbe.streams.map(s => s.codec_name), ["hevc", "aac"]);
+    for (const [index, fields] of [[0, ["profile", "width", "height", "pix_fmt", "sample_aspect_ratio", "color_space", "color_range", "color_primaries", "color_transfer", "extradata_size"]],
+      [1, ["profile", "sample_rate", "channels", "channel_layout", "extradata_size"]]])
+      for (const field of fields) assert.equal(v.outputProbe.streams[index][field], baseline.probe.streams[index][field]);
+    v.serializedTimeline = await readMkvMp4TimelineBoxes(output, { scalingPrefix: true });
+    assert.deepEqual(v.serializedTimeline.tracks.map(t => t.kind), ["vide", "soun"]);
+    assert.ok(v.serializedTimeline.tracks.every(t => t.editListPresent && t.firstFragmentDecodeTimeTicks === "0"));
+    assert.equal(v.serializedTimeline.tracks[1].edits[0].mediaTimeTicks, "1024");
+    v.independentValidation = { ...baseline.largeReference,
+      method: "every current source/output byte and SAME native build bound to fresh complete packet/clock/codec/video/PCM proof; no fresh native decode" };
+    v.fullDecode = false; v.fullDecodedContentInheritedThroughWholeOutputIdentity = true;
+    v.candidateGate = { passed: true }; return;
+  }
   const v = row.validation = { outputSha256: await hashFile(output), outputProbe: await probe(output, env),
     sourcePacketHashes: baseline.packetHashes, outputPacketHashes: await packets(output, env) };
   assert.equal(v.outputPacketHashes, v.sourcePacketHashes, "Complete encoded streams changed");
@@ -429,13 +454,14 @@ const port = async () => {
 async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
   const candidate = Boolean(baseline.candidate), staged = mode === "staged" || mode === "edit-list";
   const result = { mode, status: "running", requests: 0, workerResponses: 0, directEngineRequests: { module: 0, wasm: 0 }, forbiddenRequests: [], cases: [], failures: [] };
-  if (protectedRepeats) result.plannedProtectedJobs = protectedJobs;
+  if (repeatJobs) result.plannedProtectedJobs = protectedJobs;
+  if (largeScalingRepeats) result.nativeJournalMode = "every-100ms-native-row-in-finite-repeat-archive-no-thinning";
   if (candidate) result.engineResponses = { module: 0, wasm: 0 };
   report.arms.push(result);
   const runtime = await createOwnedRuntimeScratch("mkv-direct-reuse-");
   const env = { ...runtime.env, WRANGLER_SEND_METRICS: "false", NEXT_TELEMETRY_DISABLED: "1" };
   const samples = []; let server, chrome, identity, monitor, browser, page, timer, pending, activeAt, until, rejectStop, errorSeen, retention, losslessJournal;
-  const scalingView = largeScaling ? createScalingSampleView() : null;
+  const scalingView = largeScaling && !largeScalingRepeats ? createScalingSampleView() : null;
   let scalingValidation = false;
   let protectedStarted, protectedTerminal;
   const protectedWindows = [];
@@ -475,7 +501,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     chrome.on("error", fail);
     identity = await queryReliableProcessIdentity(chrome.pid); assert.ok(identity); result.identity = identity;
     monitor = await startClassifiedChromiumMemoryMonitor(chrome.pid, runtime.directory, 100);
-    if (largeScaling) losslessJournal = await createLosslessNativeMemoryJournal(chrome.pid, path.join(runtime.directory, "scaling-native.ndjson"));
+    if (largeScaling && !largeScalingRepeats) losslessJournal = await createLosslessNativeMemoryJournal(chrome.pid, path.join(runtime.directory, "scaling-native.ndjson"));
     let debugPort;
     for (let attempt = 0; attempt < 45 && !debugPort; attempt++) {
       try { debugPort = /^(\d+)\r?\n/.exec(await readFile(path.join(profile, "DevToolsActivePort"), "utf8"))?.[1]; }
@@ -780,7 +806,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
         assert.equal(row.metrics.peakPendingOperations, 1); assert.equal(row.metrics.pendingOperations, 0);
       }
       assert.deepEqual(await entries(), []); row.outputRemoved = true;
-      if (protectedRepeats) {
+      if (repeatJobs) {
         await drain();
         row.memory = summarizeProtectedWindow(samples, row.conversionWindow, result.blank.privateBytes);
         row.cleanupStable = await guard(stable(drain, samples));
@@ -791,7 +817,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
       if (sustained && !fault && !cancel && !baseline.reference) baseline.reference = { outputSha256: row.validation.outputSha256, outputBytes: row.metrics.outputBytes };
     }
     await job();
-    if (protectedRepeats) {
+    if (repeatJobs) {
       for (let index = 1; index < protectedJobs; index++) await job();
     } else if (sustained) {
       await open(); await job(false, true);
@@ -811,7 +837,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     assert.ok(result.directEngineRequests.module > 0 && result.directEngineRequests.wasm > 0);
     if (candidate) {
       assert.deepEqual(result.engineResponses, result.directEngineRequests);
-      assert.equal(result.cases.length, protectedRepeats ? protectedJobs : largeRun ? 1 : sustained ? 5 : exactAacCandidate && !compareDestinations ? 4 : 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
+      assert.equal(result.cases.length, repeatJobs ? protectedJobs : largeRun ? 1 : sustained ? 5 : exactAacCandidate && !compareDestinations ? 4 : 3, "Candidate failed initial timing/trim/PCM/edit-list gate; do not replay");
       const successes = result.cases.filter(row => !row.fault && !row.cancel);
       assert.ok(successes.every(row => row.validation.candidateGate.passed));
       if (exactAacCandidate && !largeRun) assert.equal(successes[0].validation.outputSha256, successes[1].validation.outputSha256, "Recovery changed a deterministic output");
@@ -880,7 +906,7 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     if (result.status !== "failed-not-acceptance" && (!result.memory || result.memory.incrementalPrivateMiB > 250 ||
         result.memory.cleanupAboveIdleMiB === null || result.memory.cleanupAboveIdleMiB > 96)) fail(new Error("Unchanged native peak/cleanup gate failed"));
     if (errorSeen) { result.status = "failed-not-acceptance"; result.failures.push(String(errorSeen).slice(0, 2048)); }
-    const archiveMode = protectedRepeats ? `${mode}-session${report.arms.indexOf(result) + 1}` : mode;
+    const archiveMode = repeatJobs ? `${mode}-session${report.arms.indexOf(result) + 1}` : mode;
     const raw = Buffer.from(JSON.stringify(samples)), packed = gzipSync(raw), file = `${prefix}-${archiveMode}-native.json.gz`;
     await writeFile(path.join(root, file), packed, { flag: "wx" }); result.archive = { file, bytes: packed.length, sha256: sha(packed), decodedSha256: sha(raw) };
   }
@@ -922,6 +948,7 @@ try {
   if (largeScaling) sourceFiles.push("scripts/lib/mkv-large-scaling.mjs", "scripts/lib/mkv-full-video-decode.mjs", "scripts/lib/mkv-hevc-header-core-reference.mjs",
     hevcHeaderLoopReference.file, "scripts/lib/mkv-header-protected-reference.mjs", headerProtectedReference.file,
     "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/mkv-scaling-sample-view.mjs");
+  if (largeScalingRepeats) sourceFiles.push("scripts/lib/mkv-large-scaling-reference.mjs", "scripts/lib/mkv-large-scaling-report.mjs", largeScalingReference.file);
   if (startupSimpleControl) sourceFiles.push(startupComplexReference.file);
   if (startupProtected) sourceFiles.push(protectedRepeatReference.file, protectedCompleteVideoReference.file,
     "scripts/lib/mkv-protected-repeat-contract.mjs", ...startupSmallRegressions.map(ref => ref.file));
@@ -1012,15 +1039,24 @@ try {
     report.hostPreflight = await inspectStressHostMemory(); assert.equal(report.hostPreflight.safeToStart, true);
     const created = await createLargeMkvScalingSource(fixtureRuntime);
     report.fixture = { ...created, sha256: await hashFile(created.file) };
+    const reference = largeScalingRepeats ? readLargeScalingReference(await readFile(path.join(root, largeScalingReference.file)), candidate.proof) : null;
+    if (reference) {
+      assert.equal(created.bytes, reference.sourceBytes); assert.equal(report.fixture.sha256, reference.sourceSha256);
+      report.largeScalingReference = reference;
+    }
     const baseline = { browser: await inspectInstalledChromePin(), probe: await probe(created.file, fixtureRuntime.env),
-      packetHashes: await packets(created.file, fixtureRuntime.env), sourceBytes: created.bytes, candidate };
+      packetHashes: largeScalingRepeats ? null : await packets(created.file, fixtureRuntime.env), sourceBytes: created.bytes, candidate, largeReference: reference };
     assert.equal(Number(baseline.probe.streams[0].nb_read_packets), MKV_SCALE_5GB.expectedVideoPackets);
     report.fixture.sourceProbe = baseline.probe; report.fixture.sourcePacketHashes = baseline.packetHashes;
-    await arm("reuse", created.file, fixtureRuntime, baseline);
-    assert.equal(report.arms[0].status, "passed-loop-source-fidelity-control");
+    for (const count of largeScalingRepeats ? [3, 1] : [1]) {
+      await arm("reuse", created.file, fixtureRuntime, baseline, count);
+      assert.equal(report.arms.at(-1).ownedRuntimeRemoved, true);
+      assert.equal(report.arms.at(-1).status, "passed-loop-source-fidelity-control");
+    }
     assert.equal(await hashFile(created.file), report.fixture.sha256);
     assertInstalledChromePinsEqual(await inspectInstalledChromePin(), baseline.browser);
-    report.status = "passed-first-real-5gb-scaling-not-repeats-or-public-acceptance";
+    if (largeScalingRepeats) assert.deepEqual(report.arms.map(a => a.cases.length), [3, 1]);
+    report.status = largeScalingRepeats ? "passed-real-5gb-scaling-repeats-not-public-acceptance" : "passed-first-real-5gb-scaling-not-repeats-or-public-acceptance";
   } else if (scalingLoopControl) {
     const created = await createSmallMkvScalingLoop(fixtureRuntime);
     const baseline = { browser: await inspectInstalledChromePin(), probe: await probe(created.file, fixtureRuntime.env),

@@ -1,5 +1,15 @@
 # Tested conversion ledger
 
+2026-11-16 **required real5.35GB3+1 repeat gate prepared, NOT run**. Exact first
+complete receipt81ae205a…82ef9c2 authenticates current native,5,347,972,392B source
+and5,350,648,699B output/full hashes. Every repeat freshly hashes entire output
+plus structure/edit/disclosure checks; complete packet/video/PCM proof inherited
+only through ALL input/output bytes and SAME current native. No fresh decode.
+Three same-page jobs plus one clean session, same original blank/loaded idle,
+250MiB/96MiB gates,100ms native acquisition/all rows retained in finite repeat
+archives (no thinning), ONE output at a time and finally cleanup. Prior full
+decode is not replayed. No actual repeat, near10GB or release claim yet.
+
 2026-11-16 **first real5.35GB FULL qualification PASS (one job only)**.
 Receipt23-19-43-422Z/fullSHA81ae205ad1f3455983c8d78863642a92565f10ff3483cbd8b9e6efc8f82ef9c2.
 Same genuine5,347,972,392B source/fullSHA5583bb8e…389b9a7 -> browser MP4

@@ -1,5 +1,14 @@
 # Remaining work audit
 
+2026-11-16 M-03: **real5.35GB required3+1 repeats prepared, not yet measured**.
+New explicit gate binds entire generated source and every converted output byte
+to authenticated first full-content receipt81ae205a…82ef9c2 on SAME native core.
+Fresh structure/edit checks; inherited complete content clearly labeled, no
+46-minute decoder replay. No normal-profile services, baselines, memory gates,
+I/O bounds or fidelity thresholds changed. Three same-page +one clean session;
+all100ms rows retained, ONE output removed before next job. Required repeat
+result still pending, then near10GB and broader full-spec/release work.
+
 2026-11-16 M-03: **first genuine >4GiB media conversion with complete independent
 content validation PASS**, one job, not stress repeats/release. Receipt
 23-19-43-422Z/fullSHA81ae205ad1f3455983c8d78863642a92565f10ff3483cbd8b9e6efc8f82ef9c2.
