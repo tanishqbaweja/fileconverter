@@ -1,5 +1,25 @@
 # Tested conversion ledger
 
+2026-11-16 **production-staged native-only gate prepared, NOT yet run**.
+Explicit --hevc-header-parser-production-staged selects the existing unmodified
+built conversion worker and real staged save, substitutes only authenticated
+corrected native assets. Server-served worker SHA/extent/security headers bound
+to compiled artifact through bounded read-only static-code request; no browser
+worker override or application/media/writer source patch. Same12MB loop source,
+fresh complete small packet/clock/video/PCM/trim proof, EVERY output byte compared
+to current-core golden, success/cancel/write-failure/recovery and unchanged
+250MiB whole-tree/96MiB cleanup. Full scratch extent,512KiB bounded final copy
+and zero residual scratch required. Not public integration/promotion, matched
+speedup, large scaling or a replay of prior expensive completed decoding.
+191 focused regression/evidence checks and affected lint PASS. Before launch,
+GitHub returned EMPTY artifacts for original run43691831594; approved local
+tool copy absent. Exact same source/run re-run requested (queued), no Docker or
+code changes. This restores expired tools AND tests byte-exact reproducibility,
+not a replay of completed large decoding. Require full native/module/source/
+ABI/recipe/memory identity before browser launch. Request receipt retained in
+`evidence/2026-11-16-mkv-header-native-rebuild-request.json`; no terminal build,
+reproducibility or browser result claimed yet.
+
 2026-11-16 **first real9.51GB FULL browser/content/memory gate PASS; one job only**.
 Receipt01-26-25-831Z/fullSHA1bbc256752f4bd3806fc1d9ff5a978f0b426b55ef4bf165e07478379212ecf4a.
 Same actual9,507,509,956B/1600-loop source/fullSHAd137ddeb…919a2b1 -> browser

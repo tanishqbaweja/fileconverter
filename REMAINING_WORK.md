@@ -1,5 +1,26 @@
 # Remaining work audit
 
+2026-11-16 M-03: **native-only production-staged integration gate prepared**.
+New explicit control uses exact corrected header core on the UNMODIFIED built
+production conversion worker/media/writer modules, normal staging +512KiB final
+copy. No direct-writer overlay or asset/source promotion. Entire served worker
+bytes and security headers independently bound to existing compiled artifact;
+static code only, no selected-file request or browser worker override.
+
+Same pinned12MB/576-video loop source and current-core EVERY-output-byte golden
+proof, fresh complete small video/PCM/packet/clocks/trim checks, cancellation,
+write-failure/recovery, original stable blank/250MiB full-tree/96MiB cleanup.
+Real full-output scratch extent/copy buffers/zero remaining scratch required;
+source/output/profile/tools finally removed. This distinct production I/O
+topology check is needed before integration; it is NOT another unchanged large
+decode or a public release pass.191 focused checks and affected lint PASS.
+Original run43691831594 artifact list EMPTY and no approved local core copy:
+same pinned source/run non-Docker rebuild requested, authoritative QUEUED.
+Require identical complete Wasm/module/source/recipe/ABI/memory fingerprints;
+this is fresh reproducibility/tool restoration, not large media conversion.
+`evidence/2026-11-16-mkv-header-native-rebuild-request.json`. Build terminal/
+reproducibility and production-staged browser result still pending.
+
 2026-11-16 M-03: **first near10GB FULL single-case gate CLOSED**.
 Receipt01-26-25-831Z/fullSHA1bbc2567…12ecf4a: valid9,507,509,956B -> actual
 browser9,512,261,399B MP4 in91.319345s, same exact native core/normal Chrome.

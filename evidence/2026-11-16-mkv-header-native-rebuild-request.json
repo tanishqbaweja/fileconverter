@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "recordedAt": "2026-11-16T12:37:31Z",
+  "scope": "Restore expired exact native tool and independently verify reproducibility before production-staged integration; not a browser conversion or acceptance",
+  "priorRun": {
+    "id": 43691831594,
+    "attempt": 1,
+    "head": "0e2f2caa924413a1edc81c23c49c027dd952fec8",
+    "branch": "codex/mkv-hevc-header-parser-native-20261115",
+    "status": "completed",
+    "conclusion": "success",
+    "artifactList": [],
+    "localApprovedToolCopyFound": false
+  },
+  "requestedAction": "POST repos/tanishqbaweja/fileconverter/actions/runs/43691831594/rerun",
+  "immediateVerifiedState": {
+    "id": 43691831594,
+    "attemptReportedWhileQueued": 1,
+    "status": "queued",
+    "head": "0e2f2caa924413a1edc81c23c49c027dd952fec8",
+    "branch": "codex/mkv-hevc-header-parser-native-20261115"
+  },
+  "workflow": ".github/workflows/reproduce-ffmpeg-nondocker.yml",
+  "dockerUsed": false,
+  "sourceChanged": false,
+  "requiredWasmSha256": "41c4a075de285d0d906b2711c5e5420a401235ab89e1f185abe5d48a830a3eba",
+  "requiredModuleSha256": "a9d567d7005260176675ad70cac83f63b1b7d87024420491ad8f676ac413e8f8",
+  "allSourceRecipeArtifactAbiAndMemoryPinsStillRequired": true,
+  "terminalSuccessClaimed": false,
+  "browserLaunched": false,
+  "largeMediaDecodeReplayed": false,
+  "publicAcceptance": false
+}

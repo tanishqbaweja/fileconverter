@@ -59,6 +59,7 @@ import { createScalingSampleView } from "./lib/mkv-scaling-sample-view.mjs";
 import { largeScalingReference, readLargeScalingReference } from "./lib/mkv-large-scaling-reference.mjs";
 import { matchOwnedBurstRole } from "./lib/owned-burst-role.mjs";
 import { MKV_SCALE_NEAR10GB, createNear10GbScalingSource, assertNear10GbExtent, decodeNear10GbContent, near10GbExpectedPcmSamples } from "./lib/mkv-near10gb-scaling.mjs";
+import { verifyProductionWorkerBinding } from "./lib/production-worker-binding.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
@@ -72,11 +73,12 @@ const headerProtectedRepeats = headerProtectedRetention || process.argv[2] === "
 const headerProtected = headerProtectedRepeats || process.argv[2] === "--hevc-header-parser-protected";
 const largeScalingRepeats = process.argv[2] === "--hevc-header-parser-scale-5gb-repeats";
 const near10GbScaling = process.argv[2] === "--hevc-header-parser-scale-near10gb";
+const headerStagedIntegration = process.argv[2] === "--hevc-header-parser-production-staged";
 const largeScaling = near10GbScaling || largeScalingRepeats || process.argv[2] === "--hevc-header-parser-scale-5gb";
 const scalingCase = near10GbScaling ? MKV_SCALE_NEAR10GB : MKV_SCALE_5GB;
-const hevcHeaderParser = largeScaling || headerProtected || !!headerH264Regression || process.argv[2] === "--hevc-header-parser-loop-source-control";
+const hevcHeaderParser = headerStagedIntegration || largeScaling || headerProtected || !!headerH264Regression || process.argv[2] === "--hevc-header-parser-loop-source-control";
 const hevcKnownDts = hevcHeaderParser || process.argv[2] === "--hevc-known-dts-loop-source-control";
-const scalingLoopControl = largeScaling || ["--hevc-header-parser-loop-source-control", "--hevc-known-dts-loop-source-control", "--h264-startup-loop-source-control"].includes(process.argv[2]);
+const scalingLoopControl = headerStagedIntegration || largeScaling || ["--hevc-header-parser-loop-source-control", "--hevc-known-dts-loop-source-control", "--h264-startup-loop-source-control"].includes(process.argv[2]);
 const startupProtectedRepeats = process.argv[2] === "--h264-startup-protected-repeats";
 const startupProtected = startupProtectedRepeats || process.argv[2] === "--h264-startup-protected";
 const probeHevcControl = startupHevcControl || process.argv[2] === "--h264-probe-decoder-hevc-control";
@@ -148,6 +150,10 @@ if (hevcKnownDts && scalingLoopControl) {
   report.scope = "Same real12MB HEVC/AAC loop-source control on newly authenticated known-DTS core. Every payload/knownPTS/DTS at1ms, adjacent output decode intervals, exact trim/complete decoded content/recovery and unchanged full-tree memory; not >4GB/near10GB or public acceptance.";
 }
 if (hevcHeaderParser) report.hevcHeaderParserCandidate = true;
+if (headerStagedIntegration) {
+  report.hevcHeaderProductionStagedIntegration = true;
+  report.scope = "Corrected exact header core on UNMODIFIED production worker, real staged-save I/O, no worker/media/writer overlay. Fresh loop-source content/clocks/trim/recovery/full-tree250MiB checks. Only authenticated native asset responses substituted; not public promotion, direct-writer or large-file/repeat acceptance.";
+}
 if (positiveStartCandidate) {
   report.positiveStartCandidate = true;
   report.scope = "Exact +5s B-frame/VFR/two-AAC fixture on bounded startup-DTS core, unchanged packet/known-DTS/PTS/trim/decoded-content/metadata/recovery/memory gates, packet-derived header semantics and empty edit delays; no timestamp rebasing, original-file/scale/public acceptance or manual-headed claim.";
@@ -195,7 +201,7 @@ const hashFile = async file => {
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${near10GbScaling ? "hevc-header-core-scale-near10gb" : largeScaling ? `hevc-header-core-scale-5gb${largeScalingRepeats ? "-repeats" : ""}` : headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${headerStagedIntegration ? "hevc-header-core-production-staged" : near10GbScaling ? "hevc-header-core-scale-near10gb" : largeScaling ? `hevc-header-core-scale-5gb${largeScalingRepeats ? "-repeats" : ""}` : headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env, timeout = 90000) => execute(file, args, { cwd: root, env, windowsHide: true, timeout, maxBuffer: 2097152 });
 const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env, near10GbScaling ? 180000 : 90000)).stdout);
@@ -506,12 +512,18 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     else {
       const names = [...assets].filter(name => /^\/assets\/conversion\.worker-[\w-]+\.js$/.test(name)); assert.equal(names.length, 1);
       const workerSha256 = await hashFile(path.join(root, "dist/client", names[0].slice(1)));
-      assert.equal(workerSha256, baseline.retained.arms[0].overlay.releaseWorkerSha256);
+      assert.equal(workerSha256, baseline.productionWorkerSha256 ?? baseline.retained.arms[0].overlay.releaseWorkerSha256);
       result.releaseWorker = { asset: names[0], sha256: workerSha256, overrides: false, requests: 0 };
     }
     result.browser = await inspectInstalledChromePin(); assertInstalledChromePinsEqual(result.browser, baseline.browser);
     server = await startOwnedProductionTestServer({ root, directory: runtime.directory, env, port: await port() });
     result.serverLaunch = server.launchRecord;
+    if (headerStagedIntegration) {
+      assert.ok(staged && !overlay);
+      const workerFile = path.join(root, "dist/client", result.releaseWorker.asset.slice(1));
+      result.productionWorkerBinding = await verifyProductionWorkerBinding({ baseURL: server.baseURL, asset: result.releaseWorker.asset,
+        expectedBytes: (await lstat(workerFile)).size, expectedSha256: result.releaseWorker.sha256 });
+    }
     const profile = path.join(runtime.directory, "profile");
     result.launch = ["--headless=new", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "--no-first-run", "--no-default-browser-check", "about:blank"];
     chrome = spawn(result.browser.launcher.path, result.launch, { cwd: root, env, windowsHide: true, stdio: "ignore" });
@@ -691,7 +703,14 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
           finally { scalingValidation = false; }
           if (largeScaling) row.validation.startupDisclosure = assertStartupDtsDisclosure(state.warnings, true);
           await assertOpfsOutputValidationBackingUnchanged(binding); await remove(name);
-          assert.equal(row.metrics.peakScratchBytes ?? 0, 0);
+          assert.equal(row.metrics.peakScratchBytes ?? 0, headerStagedIntegration ? row.metrics.outputBytes : 0);
+          if (headerStagedIntegration) {
+            assert.ok(row.metrics.maxScratchReadChunkBytes > 0 && row.metrics.maxScratchReadChunkBytes <= 524288);
+            assert.ok(row.metrics.maxScratchWriteChunkBytes > 0 && row.metrics.maxScratchWriteChunkBytes <= 524288);
+            assert.equal(row.validation.outputSha256, baseline.productionStagedReference.outputSha256, "Unmodified staged writer changed EVERY-byte-qualified current-core output");
+            assert.equal(row.metrics.outputBytes, baseline.productionStagedReference.outputBytes);
+            row.validation.sameExactCoreDirectOutputIdentity = baseline.productionStagedReference;
+          }
         } else if (protectedMode) {
           await validateProtectedOutput(fixture, binding.file, row.metrics.outputBytes, baseline, state.warnings, env, row);
           await assertOpfsOutputValidationBackingUnchanged(binding); await remove(name);
@@ -976,6 +995,7 @@ try {
     "evidence/2026-11-15T00-31-57-030Z-mkv-startup-core-loop-source-control.json");
   if (hevcHeaderParser) sourceFiles.push("media/ffmpeg/mkv-hevc-header-parser-candidate.mjs");
   if (headerH264Regression) sourceFiles.push("scripts/lib/mkv-hevc-header-core-reference.mjs", hevcHeaderLoopReference.file);
+  if (headerStagedIntegration) sourceFiles.push("scripts/lib/production-worker-binding.mjs", "scripts/lib/mkv-hevc-header-core-reference.mjs", hevcHeaderLoopReference.file);
   if (headerProtected) sourceFiles.push("scripts/lib/mkv-hevc-header-core-reference.mjs", hevcHeaderLoopReference.file,
     "scripts/lib/mkv-header-protected-reference.mjs", "scripts/lib/mkv-full-video-decode.mjs", protectedCompleteVideoReference.file,
     ...headerCoreH264References.map(ref => ref.file));
@@ -1116,11 +1136,21 @@ try {
       assert.equal(baseline.packetHashes, prior.fixture.sourcePacketHashes);
       report.unchangedFailedInputReference = { file: failureFile, sha256: sha(failure), sameEntireInputSha256: true };
     }
-    await arm("reuse", created.file, fixtureRuntime, baseline);
+    if (headerStagedIntegration) {
+      const referenceBytes = await readFile(path.join(root, hevcHeaderLoopReference.file));
+      readHevcHeaderLoopReference(referenceBytes, candidate.proof);
+      const prior = JSON.parse(referenceBytes), [priorArm] = prior.arms, [priorCase] = priorArm.cases;
+      assert.equal(created.bytes, prior.fixture.bytes); assert.equal(report.fixture.sha256, prior.fixture.sha256);
+      baseline.productionWorkerSha256 = priorArm.overlay.releaseWorkerSha256;
+      baseline.productionStagedReference = { ...hevcHeaderLoopReference, outputBytes: priorCase.metrics.outputBytes,
+        outputSha256: priorCase.validation.outputSha256, exactCurrentCoreAndEveryOutputByte: true, freshSmallContentDecodeStillRequired: true };
+      report.currentCoreLoopReference = baseline.productionStagedReference;
+    }
+    await arm(headerStagedIntegration ? "edit-list" : "reuse", created.file, fixtureRuntime, baseline);
     assert.equal(report.arms[0].status, "passed-loop-source-fidelity-control");
     assert.equal(await hashFile(created.file), report.fixture.sha256);
     assertInstalledChromePinsEqual(await inspectInstalledChromePin(), baseline.browser);
-    report.status = "passed-loop-source-fidelity-control-not-large-file-or-public-acceptance";
+    report.status = headerStagedIntegration ? "passed-unmodified-production-staged-header-core-not-public-or-scale-acceptance" : "passed-loop-source-fidelity-control-not-large-file-or-public-acceptance";
   } else if (complexTimeline) {
     const fixture = path.join(fixtureRuntime.directory, `${syntheticName}.mkv`), originalFixture = path.join(root, selectedComplexFixture.file);
     assert.equal((await stat(originalFixture)).size, selectedComplexFixture.bytes);
