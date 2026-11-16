@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { preDocxNumbering } from "../scripts/lib/reviewed-docx-numbering.mjs";
 import test from "node:test";
 import { readFile } from "node:fs/promises";
 import { gunzipSync } from "node:zlib";
@@ -34,7 +35,7 @@ test("historical native-generated heading fixture has three independently valida
       assert.equal(historical.files[key].sha256, r.sourcePins[key]);
     } else if (key === "lib/capability-registry.ts") assert.equal(sha(reviewDocxHtmlIntegration(key, await read(key)).previousReviewedBytes), r.sourcePins[key]);
     else if (key === "workers/conversion.worker.ts") assert.equal(sha(prePptxMetricWorker(await read(key))), r.sourcePins[key]);
-    else assert.equal(sha(await read(key)), r.sourcePins[key]);
+    else assert.equal(sha(key === "workers/docx-outline.ts" ? preDocxNumbering(key, await read(key)) : await read(key)), r.sourcePins[key]);
   assert.equal(r.smallNativeHeadingRecoveryVerified, true); assert.equal(r.outlineControlVerified, false);
   assert.equal(r.largeFileScalingVerified, false); assert.equal(r.publicPromotion, false); assert.equal(r.nativePickerVerified, false);
   assert.equal(r.nativeConversionUsed, false); assert.equal(r.headed, false); assert.equal(r.browserServicesDisabled, false);

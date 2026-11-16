@@ -1,5 +1,45 @@
 # Remaining work audit
 
+2026-11-16 N-08: **genuine DOCX list-numbering preservation implemented and
+small production-browser qualification PASS**, still private. Dedicated streamed
+numbering model reads only an internal referenced1MiB package part; at most1024
+abstract definitions/instances,9levels and bounded counters/labels. Standard
+start0/decimal defaults, Word A..Z/AA/BB sequence, Roman/Unicode bullets,
+multi-level/legal labels, never/default/explicit restart, full level/start
+overrides, per-instance continuation and inherited style associations are
+implemented. Direct numId0 removes inherited lists; style ilvl is correctly
+ignored. Escaped labels and valid nested HTML list/table structure preserve
+headings and subsequent content,64KiB output/one outstanding write. Unsupported
+systems/picture/legacy/linked styles fail explicitly; original marker fonts,
+tab-stop/indent geometry and broader Word layout remain open.
+
+Actual normal-service Chrome157 headless production receipt
+`evidence/2026-11-16T14-24-12-204Z-docx-html-qualification.json`:
+37,964B real python-docx package -> four identical227,399B HTML outputs,
+SHA6bbb8982…dd37d4. Three same-page repeats and exact recovery, independent
+18-case hardcoded Python labels/text/levels/values/tree oracle, seven rejecting
+validator mutations, real-payload cancellation and injected after-write failure
+PASS. Peak83.296875MiB over SAME blank,433valid/0unavailable; per-run cleanup
+max20.65625MiB over original loaded idle, limits unchanged250/96. Full native
+journal retained losslessly. All45 observed owned birth identities absent;
+three reused PIDs were left alone. Owned profile/native fixture/outputs/runtime
+removed; server absent; original pre/post full size/SHA unchanged.35static app
+requests/0forbidden. OPFS-backed real selected file handle, not native picker or
+external-drive coverage. No public promotion, large-file scaling, flat retention,
+matched speedup or full Word fidelity claim. Playwright skill used headlessly.
+
+New numbering/model/security and HTML integration36checks PASS; combined existing
+DOCX100checks and new actual-evidence/lifecycle48checks PASS (overlapping, not
+summed). First full portable2883/2884 passed: one fail-closed inventory test
+correctly required the new worker module's explicit lifecycle contract; repaired
+after confirming all numbering maps/counters are job-local. Final portable rerun
+**2887/2887 PASS**,0fail/skip/cancel,119452.6365ms across778 portable files;
+164 prerequisite qualification files not rerun/implied passed. After additional
+guard assertions and duplicate-test cleanup, all48 focused model/HTML/evidence/
+lifecycle checks and affected lint PASS. Production build/TypeScript and402-entry
+evidence audit PASS. No repeated browser conversions or unchanged media tests.
+Final checkpoint: `evidence/2026-11-16-docx-numbering-checkpoint.json`.
+
 2026-11-16 P-05/M-03: **temporary public withdrawal implemented, not a conversion
 fix or goal completion**. Exact `mkv-to-mp4` is failed/hidden, with explicit
 timestamp and corrected-core repeat-memory limitations; public selector,
@@ -20693,7 +20733,7 @@ zero artifacts. This includes the corrected non-media inspection disclosure.
 | N-05 | Broad SVG rasterization including text/CSS/animation/linked resources/filter/mask behavior where safe | Partially implemented; SVG rasterization temporarily withheld pending full qualification | Historical bounded-subset behavior is retained in `evidence/svg-safety-fidelity-matrix-2026-09-05.json`, not current release proof. Shipping package-copy Wasm lacks an explicit maximum; new source-built candidate fails exact alpha and complete-tree265.445MiB>250. `evidence/2026-10-29-svg-publication-gate.json` records publicfalse/pending, not permanent unsupported. Local production21-case privacy/hosting/publication checks PASS53.901s; localhost qualification still exposes the genuine pipeline, public selector/catalogue/evidence omit rasterization and disclose why. `evidence/2026-10-30-svg-publication-local-terminal.json`. | Qualified SVG remains REQUIRED, not dropped from the goal. Resolve residual alpha and renderer/GPU document-worker lifecycle allocations, then fixed-cap/source/fidelity/memory/recovery/repeat gates before publication. Keep measured exclusions and their reopen conditions documented; neither withholding nor historical small results completes this requirement. |
 | N-06 | Incremental archive/compression conversion with traversal, duplicate, expansion-ratio, size, and bomb protections | Verified complete for advertised ZIP/TAR/GZIP/BZIP2/XZ/7Z routes                                             | Archive workers, validators, malicious-input tests, category reports                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Re-audit limits when adding formats.                                                                                                                                                                                                                                     |
 | N-07 | SRT/WebVTT/ASS/SSA/TTML conversion preserving representable timing, styling, positioning, speakers, and metadata  | Verified complete for all advertised routes                                                                  | `evidence/subtitle-field-matrix-2026-09-05.json` maps timing, multiline text, styling, positioning/regions, speakers, cue identifiers, and document metadata for all ten public routes. `tests/subtitle-field-matrix.test.mjs` ties every field contract to exact registry disclosures, direct browser anchors, ASS/SSA extension and MIME aliases, and ten three-run Chrome reports (worst 204.473 MiB incremental private memory). The focused production-browser suite passed 16/16, including real `.ssa` alias execution and cleanup.                                                  | Keep the matrix, disclosures, alias tests, and stress evidence synchronized whenever a subtitle parser or public route changes.                                                                                                                                          |
-| N-08 | Genuine bounded EPUB/TXT/HTML/Markdown/data/office conversions with independent structural validation | Partially implemented; advertised extraction/generation profiles verified | Private DOCX now preserves standard horizontal and vertical table geometry. The distinct vertical-merge browser control at 99bf66bc has four identical 216,842-byte outputs, exact nested structure and text after a flushed five-byte span patch, 77.801 MiB primary peak, 27.184 MiB maximum per-run cleanup, and owned teardown. Earlier horizontal-only final scratch failure is retained. See `evidence/2026-11-07-docx-vertical-span-verification.json`. Earlier private DOCX work preserves bounded document-default/paragraph/character-style bold/italic/underline/strike and direct overrides, plus inherited outlines. Two fresh normal-service Chrome sessions on same52c8fae6 source/input/settings/binary completed30jobs/26validated outputs, including six141871070B->139756049B outputs, six169style/13block/15segment emphasis outputs and six heading outputs; cancel/write-error/recovery/privacy pass. Whole-tree116.285/124.891MiB,2399valid0missing, scaling cleanup max53.313/58.926MiB. All43/49observed Chrome PIDs/servers absent; runtime removed, original unchanged. `evidence/2026-11-07-docx-emphasis-repeatability.json` authenticates receipts/native journals. Earlier outline-build110.43MiB cleanup failure is retained, not retroactively repaired. Prior20.9% writer benchmark historical, no new speed claim. No public promotion. | Two-session inherited-emphasis controls CLOSED; do not replay unchanged. Full inherited font/theme/list/table/complex-script and exact page/table layout and unsupported merge variants, native external destination, broader browsers and office routes remain OPEN. Earlier allocation cause unknown; no causal memory-fix or media/10GB/fastest claim. Whole original scope remains active. |
+| N-08 | Genuine bounded EPUB/TXT/HTML/Markdown/data/office conversions with independent structural validation | Partially implemented; advertised extraction/generation profiles verified | Private DOCX now also preserves bounded decimal/letter/Roman/Unicode-bullet list labels, levels, continuation, restarts, overrides and inherited numbering; genuine small three-repeat/recovery production proof at83.296875MiB in `evidence/2026-11-16T14-24-12-204Z-docx-html-qualification.json`, not new scaling/public qualification. Standard horizontal and vertical table geometry is retained. The distinct vertical-merge browser control at 99bf66bc has four identical 216,842-byte outputs, exact nested structure and text after a flushed five-byte span patch, 77.801 MiB primary peak, 27.184 MiB maximum per-run cleanup, and owned teardown. Earlier horizontal-only final scratch failure is retained. See `evidence/2026-11-07-docx-vertical-span-verification.json`. Earlier private DOCX work preserves bounded document-default/paragraph/character-style bold/italic/underline/strike and direct overrides, plus inherited outlines. Two fresh normal-service Chrome sessions on same52c8fae6 source/input/settings/binary completed30jobs/26validated outputs, including six141871070B->139756049B outputs, six169style/13block/15segment emphasis outputs and six heading outputs; cancel/write-error/recovery/privacy pass. Whole-tree116.285/124.891MiB,2399valid0missing, scaling cleanup max53.313/58.926MiB. All43/49observed Chrome PIDs/servers absent; runtime removed, original unchanged. `evidence/2026-11-07-docx-emphasis-repeatability.json` authenticates receipts/native journals. Earlier outline-build110.43MiB cleanup failure is retained, not retroactively repaired. Prior20.9% writer benchmark historical, no new speed claim. No public promotion. | Two-session inherited-emphasis controls CLOSED; do not replay unchanged. Broader numbering systems/marker styling and inherited font/theme/table/complex-script and exact page/table layout and unsupported merge variants, native external destination, broader browsers and office routes remain OPEN. Earlier allocation cause unknown; no causal memory-fix or media/10GB/fastest claim. Whole original scope remains active. |
 
 ## Interface, browser capability, privacy, and offline behavior
 

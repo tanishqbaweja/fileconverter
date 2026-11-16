@@ -3,6 +3,7 @@ import {
   parseEndElement, parseStartElement, readMarkupTokens, type DocxRuntime,
 } from "./docx-conversion";
 import { readDocxOutlineModel, parseDocxOutlineLevel, docxEmphasisKey, parseDocxEmphasisValue, type DocxOutlineModel, type DocxEmphasis } from "./docx-outline";
+import { readDocxNumberingModel, parseDocxNumberingInteger, type DocxNumberingModel, type DocxNumberingReference, type DocxListMarker } from "./docx-numbering";
 
 const WORD = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const XML = "http://www.w3.org/XML/1998/namespace";
@@ -15,7 +16,7 @@ type Merge = { width: number; rows: number; position: number };
 type Table = { previous?: Map<number, Merge>; current?: Map<number, Merge>;
   column: number; before?: number; after?: number; rowOpened: boolean; propertiesSeen: boolean };
 type Run = { direct: Partial<DocxEmphasis>; styleId?: string; propertiesSeen: boolean; contentStarted: boolean; opened: boolean; close: string };
-type Paragraph = { opened: boolean; contentStarted: boolean; propertiesSeen: boolean; styleId?: string; outline?: number; tag: string; muted: boolean };
+type Paragraph = { opened: boolean; contentStarted: boolean; propertiesSeen: boolean; styleId?: string; outline?: number; tag: string; muted: boolean; numbering?: DocxNumberingReference };
 type Cell = { opened: boolean; propertiesSeen: boolean; columnSpan?: number; vertical?: "restart" | "continue"; continued?: boolean };
 type Frame = { name: string; local: string | null; declarations: Map<string, string>; namespaceChars: number;
   block?: Block; paragraph?: Paragraph; table?: Table; row?: Table; cell?: Cell; run?: Run; text?: boolean; suppress: boolean };
@@ -28,14 +29,34 @@ type DocxHtmlRuntime = DocxRuntime & { patch(position: number, chunk: Uint8Array
  */
 export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
   runtime.warn("DOCX HTML preserves main-document paragraphs, table rows/cells, horizontal grid spans, and standard vertical merges with empty continuation cells. Omitted edge grid positions use empty HTML cells. Direct bold/italic/underline/strike, tabs, line breaks, Unicode and accepted tracked insertions are preserved. Tracked deletions and moved-from text are excluded.");
-  runtime.warn("Named styles (referenced/default paragraph and character) preserve outline hierarchy and supported bold/italic/underline/strike emphasis with direct overrides. Underline patterns/colors are normalized to a single underline. Legacy horizontal merges, table/numbering style effects, complex-script properties, other font/run styling, list numbering, fonts, colors, borders, page layout, links, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.");
-  let outlines: DocxOutlineModel;
-  const source = await openDocxMainDocument(runtime, async entries => { outlines = await readDocxOutlineModel(runtime, entries); }), writer = htmlWriter(runtime);
+  runtime.warn("Named styles (referenced/default paragraph and character) preserve outline hierarchy and supported bold/italic/underline/strike emphasis with direct overrides. Underline patterns/colors are normalized to a single underline. Legacy horizontal merges, table-style effects, complex-script properties, other font/run styling, fonts, colors, borders, page layout, links, fields, images/drawings, headers/footers, notes/comments and document properties are not reproduced. Field display text is retained when present; headings reflow in static HTML, not original Word layout.");
+  let outlines: DocxOutlineModel, numbering: DocxNumberingModel;
+  const source = await openDocxMainDocument(runtime, async entries => {
+    outlines = await readDocxOutlineModel(runtime, entries); numbering = await readDocxNumberingModel(runtime, entries);
+  }), writer = htmlWriter(runtime);
+  runtime.warn("Supported DOCX decimal, repeated-letter, Roman and Unicode-bullet list labels, instance continuation, level restarts and inherited paragraph-style numbering are preserved in streamed HTML lists. Marker fonts, original tab stops and indent geometry are normalized; picture/legacy markers, linked numbering styles and other numbering systems are rejected when used.");
   if (outlines!.definitionCount) runtime.warn(`DOCX outline metadata read ${outlines!.definitionCount} style definitions from a referenced internal package part.`);
   const stack: Frame[] = [], blocks: Block[] = [], cells: Cell[] = [], tables: Table[] = [];
   let rootSeen = false, rootClosed = false, bodySeen = false, bodyDepth = 0, textDepth = 0, suppressed = 0;
   let bindings = 0, namespaceChars = 0, run: Run | null = null, foreignWarning = false;
   let paragraph: Paragraph | null = null;
+  const lists: { numId: number; level: number; tag: "ol" | "ul" }[] = [];
+  const closeLists = async (keep = 0) => {
+    while (lists.length > keep) { const list = lists.pop()!; await writer.markup(`</li></${list.tag}>\n`); }
+  };
+  const startListItem = async (marker?: DocxListMarker) => {
+    if (!marker) { await closeLists(); return; }
+    if (lists.length && lists[0].numId !== marker.numId) await closeLists();
+    while (lists.length && lists.at(-1)!.level > marker.level) await closeLists(lists.length - 1);
+    const previous = lists.at(-1), tag = marker.ordered ? "ol" : "ul";
+    if (previous?.level === marker.level) await writer.markup("</li>");
+    else {
+      const gap = marker.level - (previous?.level ?? -1);
+      await writer.markup(`<${tag} data-docx-list-level="${marker.level}" style="list-style:none;padding-left:${gap * 2}em">`);
+      lists.push({ numId: marker.numId, level: marker.level, tag });
+    }
+    await writer.markup(`<li${marker.ordered ? ` value="${marker.value}"` : ""}>`);
+  };
   const resolve = (name: string, attribute = false, current?: Map<string, string>): { uri: string; local: string } => {
     const parts = name.split(":");
     if (parts.length > 2 || parts.some(part => !part)) throw new Error("DOCX HTML encountered an invalid qualified XML name.");
@@ -51,10 +72,17 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
   const openParagraph = async () => {
     if (!paragraph || paragraph.opened || paragraph.muted) return;
     const level = paragraph.outline ?? outlines.outline(paragraph.styleId);
+    const inherited = outlines.numbering(paragraph.styleId);
+    const marker = numbering.next({ numId: paragraph.numbering?.numId ?? inherited.numId, level: paragraph.numbering?.level }, inherited.styleIds);
+    await startListItem(marker);
     paragraph.tag = level !== undefined && level < 6 ? `h${level + 1}` : "p";
     const attributes = level !== undefined && level < 9
       ? level >= 6 ? ` role="heading" aria-level="${level + 1}"` : ' style="white-space:pre-wrap"' : "";
     await writer.markup(`<${paragraph.tag}${attributes}>`); paragraph.opened = true;
+    if (marker) {
+      await writer.markup('<span class="docx-list-marker" style="white-space:pre-wrap">');
+      await writer.text(marker.text + marker.suffix); await writer.markup("</span>");
+    }
   };
   const openRun = async () => {
     if (!run || blocks.at(-1) !== "p") throw new Error("DOCX HTML text must belong to a paragraph run.");
@@ -119,11 +147,14 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
     if (frame.block) {
       if (blocks.pop() !== frame.block) throw new Error("DOCX HTML block state is inconsistent.");
       if (frame.paragraph) {
+        if (frame.paragraph.muted && (frame.paragraph.numbering?.numId ?? outlines.numbering(frame.paragraph.styleId).numId ?? 0) !== 0)
+          throw new Error("DOCX vertical merge continuation contains a visible list marker that cannot be preserved in place.");
         if (!frame.paragraph.muted) { await openParagraph(); await writer.markup(`</${frame.paragraph.tag}>\n`); }
         paragraph = null;
       }
       else {
         if (frame.cell) {
+          await closeLists();
           if (!frame.cell.opened) await openCell(frame.cell);
           if (cells.pop() !== frame.cell) throw new Error("DOCX HTML table cell state is inconsistent.");
         }
@@ -222,6 +253,7 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
           const table = frame.row = tables.at(-1)!;
           table.rowOpened = false; table.propertiesSeen = false; table.before = table.after = undefined;
         } else {
+          await closeLists();
           frame.table = { column: 0, rowOpened: false, propertiesSeen: false }; tables.push(frame.table);
           await writer.markup("<table>");
         }
@@ -266,6 +298,16 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
       if (local === "pPr" && stack.at(-1)?.paragraph) {
         if (!paragraph || paragraph.contentStarted || paragraph.propertiesSeen) throw new Error("DOCX paragraph properties must occur once before content.");
         paragraph.propertiesSeen = true;
+      }
+      if (local === "numPr" && stack.at(-1)?.local === "pPr" && stack.at(-2)?.paragraph === paragraph && paragraph) {
+        if (paragraph.numbering) throw new Error("DOCX paragraph repeats numbering properties.");
+        paragraph.numbering = {};
+      }
+      if ((local === "numId" || local === "ilvl") && stack.at(-1)?.local === "numPr" &&
+          stack.at(-2)?.local === "pPr" && stack.at(-3)?.paragraph === paragraph && paragraph?.numbering) {
+        const key = local === "numId" ? "numId" : "level";
+        if (paragraph.numbering[key] !== undefined) throw new Error("DOCX paragraph repeats a numbering reference.");
+        paragraph.numbering[key] = parseDocxNumberingInteger(wordValue(element.attributes, declarations, resolve), local === "ilvl" ? 8 : undefined);
       }
       if ((local === "pStyle" || local === "outlineLvl") && stack.at(-1)?.local === "pPr" && stack.at(-2)?.paragraph === paragraph && paragraph) {
         const value = element.attributes.find(attr => {
@@ -328,7 +370,7 @@ export async function runDocxToHtml(runtime: DocxHtmlRuntime): Promise<void> {
   }
   if (!rootSeen || !rootClosed || !bodySeen || stack.length || blocks.length || cells.length || tables.length || run || paragraph || bodyDepth || textDepth || suppressed)
     throw new Error("DOCX HTML main-document structure is incomplete.");
-  await writer.markup("</body></html>\n"); await writer.flush(); runtime.metrics.inputBytes = runtime.file.size;
+  await closeLists(); await writer.markup("</body></html>\n"); await writer.flush(); runtime.metrics.inputBytes = runtime.file.size;
 }
 
 function wordValue(attributes: { name: string; value: string }[], declarations: Map<string, string>,

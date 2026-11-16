@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-16T14:36:57.488Z",
+  "scope": "Private genuine DOCX list preservation and repeated small production/adverse recovery; broader route qualification still open",
+  "baseCommit": "437cda44fb692debbba1f484a137f0ae425e4afe",
+  "browserReceipt": {
+    "path": "evidence/2026-11-16T14-24-12-204Z-docx-html-qualification.json",
+    "bytes": 81131,
+    "sha256": "cd950697c2833e2b8903c4202dffa4d2cade299d1860de4e847272ff4a192a16"
+  },
+  "nativeArchive": {
+    "file": "evidence/2026-11-16T14-24-12-204Z-docx-html-native-samples.json.gz",
+    "bytes": 38906,
+    "sha256": "ab7445e5c7ee02450112e33a6de664e779c2278c2451732cdf0caea25beb9eff",
+    "decodedBytes": 2251479,
+    "decodedSha256": "99904ee35a1a31ec8ef17c37899eab486717a2dedc62ac9376bd48c603a3561d"
+  },
+  "sourcePins": {
+    "scripts/qualify-docx-html.mjs": "dd5b1e3d7e052eba1b0d90381bb13822febc815843985123c562d470c03f8c93",
+    "workers/docx-html-conversion.ts": "1178dbe546b7ec55a099652c15f19269d7ab058a42eee5e8b8be6e57b1d50413",
+    "workers/docx-conversion.ts": "e64d554d7bb2f762bcf33b75c90dd22ea492419c5374db79a4a3745ec61bce4a",
+    "workers/conversion.worker.ts": "893908859d5098d7e2078d2ae8e4231e1b6b7ba199dac9126d8cf8a5c761dbe5",
+    "lib/capability-registry.ts": "3be48c5f6b0fcbd49233d1b84eb9bceca38620468005f90e27cda963141b0340",
+    "package-lock.json": "cebcd0caf95382203084b900aecb06dbd5fb10bc8743ddb202a7a137582f603e",
+    "scripts/lib/birth-aware-chromium-memory.mjs": "33dc6709599dac4908c66f739b394fd2faa9fe7816261c497f4d8fe5ff29764d",
+    "scripts/lib/birth-type-capture.mjs": "fb76463e1e90d87ffb8a2d13b3cb6b7a53db3ffffdff2aab4c1b954f7655a398",
+    "scripts/lib/select-owned-local-browser-file.mjs": "24c8db43c82868c1131c0742f60197c618e0224292c8fe4f785b41f105c21755",
+    "scripts/lib/docx-html-scaling-control.mjs": "d8623f6170ae7f3b88f2b8c3a16ce7b5fe7866793778c7ba3837d804c851bf36",
+    "scripts/lib/docx-html-scaling-fixtures.py": "490570cd9223c6f77c802b314d78444a1e6b0421d2a1bf4d73a3734b35ba0349",
+    "scripts/lib/opfs-output-validation-backing.mjs": "3efb96b0016827b405f56fe7d68920e1ad58296fb1dac8a03c30cd7944bfa9f2",
+    "scripts/lib/cdp-realm-memory.mjs": "dacac72ad581a52fa46cdcec4fae3cf97e52f065c8594c4341ef6940be9e41bd",
+    "scripts/lib/browser-payload-cancellation.mjs": "63a90c78efac05f7eda4cc90af5d6eb5daf4ec5a9ba374ddd1fcab41ce89e9ab",
+    "scripts/lib/docx-direct-control.mjs": "76daac79a630a7f45e71a6a8129e8d05b40f18d56313a355885a4b98865dc862",
+    "app/converter/ConverterApp.tsx": "a89177c10e3e97851980b30f7756a4805db337cfbfb62b4c21835bdc021d0df7",
+    "workers/random-access-destination.ts": "f46a4db401daabeb40a0b9eaa9feb256b623c21d2a7f41af549b6797842b4375",
+    "workers/direct-file-writer.worker.ts": "212b8d6dd6ef9344e26cf65ca66fe0aae7db9a8bba7272b96c0cf8e74f55acaa",
+    "workers/direct-writer-protocol.ts": "4ca103db370944f162660749984e872e3d3abc18ee349d5f1231316386e8bf47",
+    "workers/docx-outline.ts": "ac11aa2eb3d122131ab8108daffc0e66cb1397acd47cb649ccb5a5e3c528b882",
+    "workers/docx-numbering.ts": "abfe275f5b194bb50ea678443ba92523e1ba957e05a304fbd260a17d695bbeac",
+    "scripts/lib/docx-outline-fixtures.py": "a9b63541e3e943fc78aee41434a263e0ef6d9256b0609212efcd5657ff26d9b2",
+    "scripts/lib/docx-emphasis-fixtures.py": "35433186ebf6aa51cf0d41f5947b54384e2215aac83170cc8916ee7e59b33225",
+    "scripts/lib/bounded-error-details.mjs": "6a2af6cf5c61d680db1e5b8099b0f2cd0797573a8395071c831b97ea44554eab",
+    "scripts/lib/docx-cleanup-diagnostic.mjs": "50a6556d9c33955f0a909655093e2a018519a32b0835de1ef6e3b5c31f4b6dd4",
+    "scripts/lib/bounded-dom-counters.mjs": "c56c81f64adb753c96d2189b0283c52a8b7e2b824fa66992d958a98c3fb34b45",
+    "scripts/lib/live-memory-infra.mjs": "8178653cbf6b8aaf4d631b52fcb626b3acce0dfc62a30c8c848d887521af08e0",
+    "scripts/lib/memory-infra-attribution.mjs": "057d8308f612ba56620003d1e6f8393ef907372663b92c476ab1a3e62d02902d",
+    "scripts/lib/owned-chromium-cleanup.mjs": "1cfc3af050aed6d55bce8c4d40ef68eb374e507da6925dc741a54421efbdb0f8",
+    "scripts/lib/docx-numbering-fixtures.py": "58961bd66e21e1ba0dd49d76984c2a09e9ceb229076163bdd07bf3bd822bc19f",
+    "scripts/lib/reconcile-chromium-births.mjs": "7666f5149412a65849544a90135ba915e372e75084c976a082f5c21f750f3056",
+    "scripts/lib/reviewed-docx-numbering.mjs": "cb2c4029921f4923e7312f9be653f1381b913b6f9c8fc7b2ffd801cfbbc96320",
+    "scripts/lib/reviewed-mkv-publication-hold.mjs": "f461d306b131963273e090c0410aaf7b8414f9e946c7bb47832f5e3c64917128",
+    "fixtures/source/docx-numbering-reviewed-2026-11-16.json": "9816072e0b72f47e2ed7edff50649ab67ceb1f8d014e9f191c0d046fbb841274",
+    "tests/docx-numbering.test.mjs": "5c277f8ada644f19b80485f59fdc74cf3ae47dd2a16fd4e0adc61f4f022292b7",
+    "tests/docx-numbering-conversion.test.mjs": "d922fa7f6f97d5a6b071c439cab41f45428f3bad713132fa1216b12576c20ba9",
+    "tests/docx-numbering-browser-evidence.test.mjs": "447fb0cbbf0fe02a53bda5a0e4370b6b70e508f55b9f98e560f0fc4115125e92",
+    "tests/worker-lifecycle.test.mjs": "c8b0ed3ac5243fe288ca14995c72cf64b62c2c6e78e190b06e6bb8732f938c56"
+  },
+  "sourceReferences": [
+    "https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.numberingproperties?view=openxml-3.0.1",
+    "https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.levelrestart?view=openxml-3.0.1",
+    "https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.leveltext?view=openxml-3.0.1",
+    "https://learn.microsoft.com/en-us/dotnet/api/documentformat.openxml.wordprocessing.startnumberingvalue?view=openxml-3.0.1"
+  ],
+  "qualification": {
+    "browserVersion": "157.0.8103.51",
+    "successfulOutputs": 4,
+    "inputBytes": 37964,
+    "outputBytes": 227399,
+    "outputSha256": "6bbb8982c6606924add8607351ea68815d378970177b74b58c531f39d2dd37d4",
+    "semanticCases": 18,
+    "samePageRepeats": 3,
+    "recoveryOutputs": 1,
+    "adverseCases": [
+      "real-payload-cancellation",
+      "injected-write-error"
+    ],
+    "peakIncrementalPrivateMiB": 83.296875,
+    "validSamples": 433,
+    "unavailableSamples": 0,
+    "maximumPerRunCleanupAboveLoadedMiB": 20.65625,
+    "limitsMiB": {
+      "completeTreeAboveSameBlank": 250,
+      "cleanupAboveSameLoaded": 96
+    },
+    "requests": 35,
+    "forbiddenRequests": 0
+  },
+  "regression": {
+    "portable": {
+      "files": 778,
+      "passed": 2887,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "durationMs": 119452.6365,
+      "qualificationFilesNotRun": 164
+    },
+    "firstPortable": {
+      "passed": 2883,
+      "failed": 1,
+      "cause": "New module absent from fail-closed worker lifecycle inventory",
+      "durationMs": 141503.4223
+    },
+    "postPortableFocused": {
+      "passed": 48,
+      "failed": 0,
+      "extraGuardAssertionsAndDuplicateTestCleanup": true
+    },
+    "productionBuildPassed": true,
+    "typeScriptPassed": true,
+    "affectedLintPassed": true,
+    "publicEvidenceEntries": 402
+  },
+  "limits": {
+    "numberingMetadataBytes": 1048576,
+    "abstractDefinitions": 1024,
+    "instances": 1024,
+    "levels": 9,
+    "counterMaximum": 2147483647,
+    "literalLabelCharacters": 256,
+    "expandedLabelCharacters": 8192,
+    "alphabeticLabelCharacters": 256,
+    "romanValueMaximum": 3999,
+    "outputChunkBytes": 65536,
+    "maximumPendingWrites": 1
+  },
+  "cleanup": {
+    "allObservedOwnedBirthsAbsent": true,
+    "observedBirths": 45,
+    "reusedPidsLeftAlone": 3,
+    "ownedRuntimeRemoved": true,
+    "ownedRuntimeFreshlyAbsent": true,
+    "ownedServerAbsent": true,
+    "convertedOutputsRetained": 0,
+    "generatedFixturesRetained": 0,
+    "protectedOriginal": {
+      "bytes": 2958573265,
+      "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34"
+    }
+  },
+  "nativeEnginesChanged": false,
+  "publicProfilesChanged": false,
+  "publicPromotion": false,
+  "newLargeFileScalingQualification": false,
+  "nativeExternalDestinationVerified": false,
+  "speedImprovementClaim": false,
+  "wholeGoalComplete": false
+}

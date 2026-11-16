@@ -14014,6 +14014,29 @@ Updated 2026-11-16 from the capability registry, retained successful Chrome stre
 - **2026-09-27 bounded archive/package source inspection:** ZIP, DOCX, XLSX, PPTX, ODT, ODS, ODP, and EPUB read only the 65,557-byte ZIP tail plus at most a 1 MiB central-directory prefix. TAR performs at most 256 isolated 512-byte header reads while skipping payloads; GZIP/BZIP2/XZ wrappers read at most 64 KiB plus an eight-byte GZIP trailer; 7Z reads its 32-byte start header plus one next-header marker. The panel reports bounded entry/size/compression/encryption/path-safety and package facts without decompressing payloads or displaying names. Eight ZIP-based families, TAR/TAR.GZ/TAR.BZ2/TAR.XZ/7Z, raw GZIP/BZIP2/XZ, unsafe ZIP/TAR, an in-memory 20,000-entry oversized ZIP directory, and a 1,024-entry TAR passed the focused production-Chromium gate 1/1. The ZIP stress stopped at exactly 1,114,133 bytes; TAR stopped at exactly 131,072 header bytes and both qualified incomplete counts. Exact scope and cleanup are in `evidence/package-source-inspection-2026-09-27.json`.
 <!-- BEGIN MANUAL TEST LOG -->
 
+2026-11-16 N-08 — Private DOCX lists now preserve supported labels/levels,
+Word letter numbering, Roman/Unicode bullet formats, legal multi-level labels,
+instance continuation, start/level overrides, restarts and inherited paragraph
+style associations. Bound:1MiB metadata/1024definitions andinstances/9levels,
+64KiB output/one pending write; no per-paragraph retained history. Actual
+headless normal-service production Chrome157 control14:24:12Z PASS:
+37964B Word -> four identical227399B HTML outputs/6bbb8982…dd37d4, eighteen
+independent label/text/level/value/tree cases,3same-page repeats plus real-payload
+cancel/write-error/recovery. Peak83.296875MiB,433valid0unavailable; cleanup
+max20.65625MiB over same loaded idle. Full native gzip retained;45ownedbirths
+absent (3reused PIDs untouched), profile/fixtures/outputs/runtime removed,
+server absent; protected original pre/post full SHA unchanged.35requests0forbidden.
+Not full Word/large scaling/native picker/external drive/public qualification
+or speedup. Source, limits, private registry disclosures and independent oracle
+are retained; no unchanged media conversions replayed. Receipt:
+`evidence/2026-11-16T14-24-12-204Z-docx-html-qualification.json`.
+First full portable2883/2884; worker inventory repaired after explicit job-state
+audit. Final portable2887/2887 PASS/778files/119452.6365ms;164 prerequisite
+qualification files not run/implied passed. Post-run strengthened guard checks:
+48/48 PASS; build/TypeScript/scoped lint and402-entry public audit PASS.
+`evidence/2026-11-16-docx-numbering-checkpoint.json` retains final source/receipt
+bindings. No public/native-engine promotion or new matched speed claim.
+
 2026-11-16 — Lossless MKV/MP4 public withdrawal implemented, not fixed or
 permanently unsupported. Timestamp-defective released route is failed/hidden;
 corrected private core still fails original production-staged repeat-memory gate.

@@ -9,9 +9,14 @@ or conversion endpoint.
 PDF input, PDF output, and PDF tooling are intentionally out of scope.
 
 DOCX-to-HTML is a private localhost qualification candidate, not a published
-conversion. It streams main-document paragraphs, simple table rows/cells and
-direct and supported inherited emphasis into escaped static HTML. Named styles, lists/headings,
-fonts, page/merged-cell layout, links, graphics and ancillary parts are not fully
+conversion. It streams main-document paragraphs, bounded horizontal/vertical
+table merges and supported inherited emphasis into escaped static HTML.
+Numbered/bulleted lists now retain supported labels, levels, instance continuation,
+restarts, start overrides and paragraph-style inheritance. Numbering uses a
+1 MiB metadata-part cap, 1,024 definitions/instances and nine levels; counters
+do not grow with paragraph count. Original marker fonts, tab/indent geometry,
+picture/legacy markers and other numbering systems are not fully reproduced.
+Fonts, exact page/table layout, links, graphics and ancillary parts are not fully
 preserved; the UI discloses those limits. Paragraph outline/heading inheritance
 and supported document-default/paragraph/character-style emphasis are implemented
 with 1 MiB metadata, 1,024-style and 64-level safety bounds. The new emphasis
@@ -23,6 +28,15 @@ effective emphasis per text segment, headings and table cells; cancellation,
 write-error/recovery, privacy and owned cleanup pass. This remains private, not
 full Word appearance, native external-destination, broader-browser or media/10 GB
 qualification. See `evidence/2026-11-07-docx-emphasis-repeatability.json`.
+
+The distinct November16 numbering control produced four identical 227,399-byte
+HTML outputs from a real 37,964-byte Word package, with all 18 expected
+label/text/level cases independently validated. Three same-page repeats plus
+payload cancellation, injected write failure and recovery passed at 83.30 MiB
+sampled complete-Chrome peak and 20.66 MiB maximum per-run cleanup over loaded
+idle. The owned fixture/output/profile scratch was removed. This is a small
+private control, not new scaling, full Word layout, speedup or public-route
+qualification. See `evidence/2026-11-16T14-24-12-204Z-docx-html-qualification.json`.
 
 Historical earlier outline-only build FAILED
 the unchanged cleanup-recovery gate (110.43 MiB above loaded idle versus 96 MiB).

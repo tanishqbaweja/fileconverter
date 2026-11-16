@@ -38,7 +38,8 @@ assert.equal(process.platform, "win32");
 const memoryDiagnostic = process.argv[2] === "--outline-memory-diagnostic";
 const outlineSmall = process.argv[2] === "--outline-small-control";
 const tableVertical = process.argv[2] === "--table-vertical-control";
-const tableSmall = process.argv[2] === "--table-small-control" || tableVertical;
+const numberingControl = process.argv[2] === "--numbering-control";
+const tableSmall = process.argv[2] === "--table-small-control" || tableVertical || numberingControl;
 const emphasisControl = process.argv[2] === "--emphasis-direct-scaling";
 const outlineControl = process.argv[2] === "--outline-direct-scaling" || memoryDiagnostic || outlineSmall || emphasisControl;
 const benchmark = process.argv[2] === "--direct-async-scaling";
@@ -49,7 +50,7 @@ const cancellationOnly = process.argv[2] === "--cancel-control";
 const payloadControl = scaling || cancellationOnly || outlineSmall || tableSmall;
 assert.ok(process.argv.length === (payloadControl ? 3 : 2));
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
-const tableFixtureHelper = path.join(root, tableVertical ? "scripts/lib/docx-row-span-fixtures.py" : "scripts/lib/docx-table-span-fixtures.py");
+const tableFixtureHelper = path.join(root, numberingControl ? "scripts/lib/docx-numbering-fixtures.py" : tableVertical ? "scripts/lib/docx-row-span-fixtures.py" : "scripts/lib/docx-table-span-fixtures.py");
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), sha = bytes => createHash("sha256").update(bytes).digest("hex");
 const hashFile = async file => { const hash = createHash("sha256"); for await (const b of createReadStream(file, { highWaterMark: 262144 })) hash.update(b); return hash.digest("hex"); };
 const original = async () => ({ bytes: (await stat(path.join(root, "test.mkv"))).size, sha256: await hashFile(path.join(root, "test.mkv")) });
@@ -86,6 +87,7 @@ if (outlineSmall) report.scope = "Previously unreached real python-docx heading 
 if (emphasisControl) report.scope = "Changed supported inherited style emphasis: three native-generated semantic fixtures then unchanged full styled scaling inputs/repeats, native heading checks and payload-cancel/write-error/recovery; NOT full Word rendering/native external destination/public promotion";
 if (tableSmall) report.scope = "New native DOCX horizontal span and nested table fixture with repeated async handle writes and recovery; not stress, speed, native picker, full Word layout or promotion";
 if (tableVertical) report.scope = "Native two-by-two Word merge with a nested table, a flushed row-span patch, later output chunks, repeated async handle writes and recovery; not stress, speed, native picker or promotion";
+if (numberingControl) report.scope = "Native Word numbered/bullet/inherited/restarted lists and nested tables through actual async selected-handle production writes; three repeats and adverse recovery, not full Word/scaling/native-picker/public qualification";
 const word = "http://schemas.openxmlformats.org/wordprocessingml/2006/main";
 const p = text => `<w:p><w:r><w:t>${text}</w:t></w:r></w:p>`;
 const packageBytes = (body, level = 6, invalidPackage = false) => zipSync({
@@ -201,7 +203,7 @@ try {
     "scripts/lib/birth-type-capture.mjs", "scripts/lib/select-owned-local-browser-file.mjs",
     "scripts/lib/docx-html-scaling-control.mjs", "scripts/lib/docx-html-scaling-fixtures.py", "scripts/lib/opfs-output-validation-backing.mjs", "scripts/lib/cdp-realm-memory.mjs", "scripts/lib/browser-payload-cancellation.mjs",
     "scripts/lib/docx-direct-control.mjs", "app/converter/ConverterApp.tsx", "workers/random-access-destination.ts", "workers/direct-file-writer.worker.ts", "workers/direct-writer-protocol.ts",
-    "workers/docx-outline.ts", "scripts/lib/docx-outline-fixtures.py", "scripts/lib/docx-emphasis-fixtures.py", "scripts/lib/bounded-error-details.mjs",
+    "workers/docx-outline.ts", "workers/docx-numbering.ts", "scripts/lib/docx-outline-fixtures.py", "scripts/lib/docx-emphasis-fixtures.py", "scripts/lib/bounded-error-details.mjs",
     "scripts/lib/docx-cleanup-diagnostic.mjs", "scripts/lib/bounded-dom-counters.mjs", "scripts/lib/live-memory-infra.mjs", "scripts/lib/memory-infra-attribution.mjs", "scripts/lib/owned-chromium-cleanup.mjs"])
     report.sourcePins[file] = await hashFile(path.join(root, file));
   if (tableSmall) {
@@ -212,7 +214,7 @@ try {
   const env = { ...runtime.env, PYTHONDONTWRITEBYTECODE: "1", WRANGLER_SEND_METRICS: "false" };
   report.validatorControls = [];
   const referenceHtml = tableSmall
-    ? (await execute("python", [tableFixtureHelper, "reference"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: tableVertical ? 524288 : 32768 })).stdout
+    ? (await execute("python", [tableFixtureHelper, "reference"], { cwd: root, env, windowsHide: true, timeout: 10000, maxBuffer: tableVertical || numberingControl ? 1048576 : 32768 })).stdout
     : '<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="default-src \'none\'"></head><body>' +
     '<p><strong><em>Hello β &amp; &lt;script&gt;not-executable&lt;/script&gt; 😀</em></strong></p>' +
     '<table><tr><td><p>Cell one</p></td><td><p>Cell two</p></td></tr></table><p>Inserted</p></body></html>';
@@ -222,6 +224,9 @@ try {
     ["lost-nested-table", referenceHtml.replace("<table><tr><td colspan=", "<tr><td colspan="), false]);
   if (tableVertical) validatorCases.push(["unpatched-row-span", referenceHtml.replace('rowspan="00002"', 'rowspan="00001"'), false],
     ["lost-post-patch-tail", referenceHtml.replace("After patch", "Damaged"), false]);
+  if (numberingControl) validatorCases.push(["wrong-list-label", referenceHtml.replace("A.i)", "A.ii)"), false],
+    ["wrong-list-level", referenceHtml.replace('data-docx-list-level="1"', 'data-docx-list-level="2"'), false],
+    ["wrong-restart-value", referenceHtml.replace('value="7"', 'value="8"'), false]);
   for (const [name, html, accepted] of validatorCases) {
     const file = path.join(runtime.directory, `validator-${name}.html`); await writeFile(file, html, { flag: "wx" });
     let exitCode = 0;
@@ -437,6 +442,11 @@ try {
         assert.equal(validated.allTextAndPostPatchTailVerified, true);
         assert.equal(state.metrics.maxWriteChunkBytes, 65536);
       }
+      if (numberingControl) {
+        assert.equal(validated.semanticCases, 18); assert.equal(validated.allLabelsTextLevelsAndValuesVerified, true);
+        assert.equal(validated.nestedHtmlListsAndTablesVerified, true);
+        assert.ok(state.warnings.some(message => message.includes("instance continuation")));
+      }
       await waitEmpty(); assert.deepEqual(await leftovers(), []);
       const cleanup = await Promise.race([safetyStop, stable()]); await drain();
       caseRow.smallRunMemory = summarizeDocxHtmlRunMemory(samples, started, Date.now(), report.blankBaseline, report.loadedIdle, cleanup);
@@ -624,6 +634,7 @@ try {
     report.smallDirectHandleWriterVerified = true;
   }
   if (scaling) report.completedDocumentScalingControlVerified = true;
+  if (numberingControl) report.status = "passed-private-docx-numbering-and-recovery-not-scaling-or-promotion";
   if (outlineControl) report.outlineControlVerified = !outlineSmall;
   if (outlineSmall) report.smallNativeHeadingRecoveryVerified = true;
   if (emphasisControl) report.inheritedEmphasisControlVerified = true;

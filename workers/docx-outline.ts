@@ -6,12 +6,13 @@ const RELS = "http://schemas.openxmlformats.org/package/2006/relationships";
 const XML = "http://www.w3.org/XML/1998/namespace";
 const STYLE_RELATIONSHIP = "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles";
 const METADATA_BYTES = 1048576, MAX_STYLES = 1024, MAX_CHAIN = 64;
-type Element = { name: string; local: string; uri: string; attributes: Map<string, string>; parent?: Element;
+export type Element = { name: string; local: string; uri: string; attributes: Map<string, string>; parent?: Element;
   namespaces: Map<string, string>; namespaceChars: number; depth: number };
 export type DocxEmphasis = { bold: boolean; italic: boolean; underline: boolean; strike: boolean };
-type Style = { type: string; base?: string; outline?: number; emphasis: Partial<DocxEmphasis> };
-type Resolved = { outline: number | undefined; levels: number; toggleMask: number; underline?: boolean };
+type Style = { type: string; base?: string; outline?: number; emphasis: Partial<DocxEmphasis>; numbering?: { numId?: number } };
+type Resolved = { outline: number | undefined; levels: number; toggleMask: number; underline?: boolean; numId?: number };
 export type DocxOutlineModel = { definitionCount: number; outline(styleId?: string): number | undefined;
+  numbering(styleId?: string): { numId?: number; styleIds: readonly string[] };
   emphasis(paragraphStyleId?: string, characterStyleId?: string, direct?: Partial<DocxEmphasis>): DocxEmphasis };
 
 export function docxEmphasisKey(local: string | null): keyof DocxEmphasis | undefined {
@@ -63,7 +64,7 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
       throw new Error("DOCX styles relationship has an unsafe part path.");
   }
   const styles = new Map<string, Style>(), defaults: Partial<DocxEmphasis> = {};
-  let defaultStyle: string | undefined, documentOutline: number | undefined;
+  let defaultStyle: string | undefined, documentOutline: number | undefined, defaultNumbering: { numId?: number } | undefined;
   if (stylePart !== undefined) {
     const entry = entries.get(stylePart);
     if (!entry || entry.directory) throw new Error("DOCX referenced styles part is missing.");
@@ -82,6 +83,26 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
       } else if (current && element.parent === current.element && word(element, "basedOn")) {
         if (current.value.base !== undefined) throw new Error("DOCX style repeats its base reference.");
         current.value.base = identifier(attribute(element, "val"));
+      } else if (word(element, "numPr") && word(element.parent, "pPr")) {
+        if (current && element.parent?.parent === current.element && current.value.type === "paragraph") {
+          if (current.value.numbering) throw new Error("DOCX paragraph style repeats numbering properties.");
+          current.value.numbering = {};
+        } else if (word(element.parent?.parent, "pPrDefault") && word(element.parent?.parent?.parent, "docDefaults")) {
+          if (defaultNumbering) throw new Error("DOCX defaults repeat numbering properties.");
+          defaultNumbering = {};
+        }
+      } else if (word(element, "numId") && word(element.parent, "numPr") && word(element.parent?.parent, "pPr")) {
+        const properties = current && element.parent?.parent?.parent === current.element && current.value.type === "paragraph"
+          ? current.value.numbering : word(element.parent?.parent?.parent, "pPrDefault") &&
+            word(element.parent?.parent?.parent?.parent, "docDefaults") ? defaultNumbering : undefined;
+        if (properties) {
+          const val = attribute(element, "val");
+          if (properties.numId !== undefined || val === undefined || !/^\+?\d{1,10}$/.test(val) || Number(val) > 2147483647)
+            throw new Error("DOCX style numbering identifier is invalid or repeated.");
+          properties.numId = Number(val);
+        }
+        // ilvl inside a paragraph style is intentionally ignored: Word uses
+        // the associated abstract level's pStyle, not that style's ilvl.
       } else if (word(element.parent, "rPr")) {
         const key = element.uri === WORD ? docxEmphasisKey(element.local) : undefined;
         let properties: Partial<DocxEmphasis> | undefined;
@@ -114,7 +135,8 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
     const levels = 1 + (inherited?.levels ?? 0);
     if (levels > MAX_CHAIN) throw new Error("DOCX style inheritance is cyclic or exceeds64 levels.");
     const value: Resolved = { outline: style.outline ?? inherited?.outline, levels,
-      toggleMask: (inherited?.toggleMask ?? 0) ^ toggleMask(style.emphasis), underline: style.emphasis.underline ?? inherited?.underline };
+      toggleMask: (inherited?.toggleMask ?? 0) ^ toggleMask(style.emphasis), underline: style.emphasis.underline ?? inherited?.underline,
+      numId: style.numbering?.numId ?? inherited?.numId };
     visiting.delete(id); resolved.set(id, value); return value;
   };
   for (const [id, style] of styles) if (["paragraph", "character"].includes(style.type)) resolve(id);
@@ -127,6 +149,15 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
     return resolved.get(id ?? defaultStyle ?? "");
   };
   return { definitionCount: styles.size, outline: id => paragraphStyle(id)?.outline ?? documentOutline,
+    numbering(id) {
+      const resolvedStyle = paragraphStyle(id), styleIds: string[] = [];
+      let currentId = id !== undefined && styles.get(id)?.type === "paragraph" ? id : defaultStyle;
+      while (currentId !== undefined && styles.get(currentId)?.type === "paragraph") {
+        if (styleIds.length >= MAX_CHAIN) throw new Error("DOCX numbering style chain exceeds64levels.");
+        styleIds.push(currentId); currentId = styles.get(currentId)?.base;
+      }
+      return { numId: resolvedStyle?.numId ?? defaultNumbering?.numId, styleIds };
+    },
     emphasis(paragraphId, characterId, direct = {}) {
       const paragraph = paragraphStyle(paragraphId);
       if (characterId !== undefined && styles.get(characterId)?.type !== "character") {
@@ -143,7 +174,7 @@ export async function readDocxOutlineModel(runtime: DocxRuntime, entries: Readon
 // Stream namespace-aware start elements only; parents are bounded by XML depth.
 // Closing names, expanded attribute uniqueness, entities and the root are still
 // validated even in ignored metadata, so foreign namespaces cannot spoof styles.
-async function* metadataElements(runtime: DocxRuntime, entry: ZipEntry, rootUri: string, rootName: string): AsyncGenerator<Element> {
+export async function* metadataElements(runtime: DocxRuntime, entry: ZipEntry, rootUri: string, rootName: string): AsyncGenerator<Element> {
   if (entry.directory || entry.uncompressedSize > METADATA_BYTES) throw new Error("DOCX optional metadata exceeds the1MiB safety limit.");
   const stack: Element[] = []; let rootSeen = false, rootClosed = false, bindings = 0, namespaceChars = 0;
   for await (const token of readMarkupTokens(await openZipEntryStream(runtime, entry), runtime, "DOCX metadata")) {
