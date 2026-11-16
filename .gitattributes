@@ -1,3 +1,6 @@
 compression/libarchive7z/*.patch -whitespace
 media/ffmpeg/patches/openh264-force-intra-wasm.patch -whitespace
 media/ffmpeg/patches/matroska-bounded-no-cues.patch -whitespace
+fixtures/qualification-tools/within-test-mkv-header-core.mjs -text
+fixtures/qualification-tools/within-test-mkv-header-core.wasm -text
+fixtures/qualification-tools/LICENSE.ffmpeg-lgpl3 -text

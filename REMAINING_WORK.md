@@ -1,5 +1,31 @@
 # Remaining work audit
 
+2026-11-16 M-03: **unmodified production-staged small integration CLOSED**.
+Receipt12-50-51-794Z/fullSHA18b85a75…957dca0. Actual built worker424331B/
+9935a1ff…521c9cf served with verified security headers,0 JS/worker overrides;
+only exact native code substituted. Complete/startup-cancel/injected-copy-write-
+failure/recovery pass. Full source/output packet/knownclock/interval/trim and
+COMPLETE small decoded video/PCM equal; deterministic11894121B MP4 equals
+current-core direct gold. Full Chrome163.72265625MiB, cleanup59.41015625MiB,
+196valid/0missing native samples; real full-output stage +512KiB copy, scratch0.
+All disposable data/owned42 births absent, original fullSHA/size unchanged.
+PID29668 later reused by unrelated birth; complete native/census birth replay
+proves absence without touching that process. Initial unit's PID-only absence
+assumption failed; corrected from the actual retained full birth evidence,
+stale-birth negative control fails. No historical report rewritten or rerun.
+
+Prepared distinct production-staged ORIGINAL3+1 gate, not replaying private
+direct I/O: full protected test.mkv, exact current core +unmodified worker,
+each EVERY output byte bound to complete original reference, no expensive
+fresh native decode.8GiB repository preflight, full scratch accounting,512KiB
+bounded final copy, one output at a time, unchanged250MiB/96MiB/original blank
+and all100ms native rows. Actual original-repeat result and public promotion
+remain unverified; prior direct-retention/5GB-repeat failures remain FAILED.
+199 focused regression/evidence checks and affected lint PASS. Initial retention
+source-contract mismatch corrected by retaining its existing boolean precedence;
+all original tests remain. Git -text pins exact cached factory/Wasm/license
+bytes across checkouts; this is not a different native core or release change.
+
 2026-11-16 M-03: **native reproducibility/tool restoration CLOSED**.
 Same run43691831594 attempt2/native source0e2f2caa terminal SUCCESS. Fresh ZIP
 14227141288 has different container digest, but complete native build/source/

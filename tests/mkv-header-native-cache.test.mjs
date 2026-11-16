@@ -20,6 +20,8 @@ test("actual explicitly reusable code cache authenticates full factory/Wasm/lice
   assert.equal(tools.delivery.remoteAvailabilityClaimed, false); assert.equal(tools.delivery.freshBuildClaimed, false); assert.equal(tools.delivery.publicAcceptance, false);
   assert.equal(sha(tools.assets.get("/engines/remux/within-direct.wasm").body), "41c4a075de285d0d906b2711c5e5420a401235ab89e1f185abe5d48a830a3eba");
   assert.equal(sha(await read("fixtures/qualification-tools/LICENSE.ffmpeg-lgpl3")), "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768");
+  const attributes = (await read(".gitattributes")).toString();
+  for (const entry of headerNativeCodeCache) assert.ok(attributes.split(/\r?\n/).includes(`${entry.file} -text`), "Git checkout must not rewrite authenticated code/license line endings");
 });
 test("same-size corrupted cached code fails whole-file authentication before missing later entries could be accepted", async () => {
   const runtime = await mockRoot();

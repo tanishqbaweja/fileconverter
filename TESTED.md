@@ -1,5 +1,40 @@
 # Tested conversion ledger
 
+2026-11-16 **native-only unmodified production-staged small gate PASS**.
+Receipt12-50-51-794Z/fullSHA18b85a75ae36b2d2b179d529c104da4e64d250cdef165d9e655dec096957dca0.
+Actual built424331B conversion worker/SHA9935a1ff…521c9cf independently fetched
+with real security headers,0 browser worker overrides,6 real worker requests;
+application/media/writer sources unchanged, only exact cached native asset
+responses substituted. Valid11887449B source ->11894121B MP4, fullSHA19adadcc…7d750e9
+equal to current-core direct gold. Every576 video/574knownDTS/1128AAC payload,
+PTS/DTS/adjacent intervals,1024trim and COMPLETE decoded video/PCM equal.
+Real staged full-output scratch,512KiB selected-destination copy, scratch0 at
+terminal; two completed outputs634.005/514.36ms. This is NOT a matched speedup.
+
+Four states complete/cancelled/error/complete. Cancellation is STARTUP before
+first media read (not mid-mux). Injected write rejection after512KiB selected
+copy, full staging/output cleanup and byte-identical recovery. Full Chrome
+163.72265625MiB over original stable blank,59.41015625MiB cleanup above loaded
+idle;196valid/0missing samples, full native tree sums independently rederived.
+All owned source/output/profile/server/tool scratch removed, test.mkv fullSHA/
+size unchanged, no forbidden network requests. One numeric PID29668 was reused
+by an unrelated later birth: existing fallback rederived ALL42 sampled births
+absent,0unresolved, no unrelated kill. Initial evidence unit incorrectly demanded
+numeric PID absence; corrected to replay actual birth reconciliation and reject
+a stale same-birth counterexample. Original receipt unchanged, no browser replay.
+
+Next distinct gate prepared: actual original test.mkv, THREE same-page plus ONE
+clean-session production-staged remuxes. Same native/current-worker small recovery
+proof,8GiB repository preflight for stage+ONE final output, full-output SHA binds
+each to current-core COMPLETE original packet/PCM/video proof (no fresh large
+decode). All100ms native samples, original250MiB/96MiB limits unchanged. Stage
+and final output removed before next job; no promotion or repeat pass yet.
+199 focused regression/evidence checks and affected lint PASS. One initial
+source-contract failure from reordered boolean terms was resolved by preserving
+the existing retention-mode precedence/contract; no test gate removed. Exact
+generated cache code/license marked -text so Git cannot rewrite their bytes on
+another Windows checkout. No browser or expensive content proof replayed.
+
 2026-11-16 **native core reproduction PASS; one reusable qualification cache**.
 Run43691831594 attempt2 SUCCESS at same source0e2f2caa. Receipt12-46-18-964Z/
 fullSHA4e0c7304ec079829501e9202946e1d32a1b1c01dc27d1e4149d3766cf1405259.
