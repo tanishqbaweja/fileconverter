@@ -1,0 +1,223 @@
+{
+  "scope": "exact native rebuild reproduction and explicit reusable qualification-code retention, not browser conversion",
+  "status": "passed-complete-native-rebuild-byte-reproduction-not-browser-or-public-acceptance",
+  "failures": [],
+  "dockerUsed": false,
+  "nativeConversionUsed": false,
+  "publicAcceptance": false,
+  "actualRebuiltNativeProof": {
+    "head": "0e2f2caa924413a1edc81c23c49c027dd952fec8",
+    "runId": "43691831594",
+    "artifact": {
+      "id": 14227141288,
+      "digest": "sha256:621562a2f900816b64ad2636e73d919d6d73c012fb0015142c583d323e53ca5d",
+      "bytes": 876863
+    },
+    "build": {
+      "schemaVersion": 1,
+      "head": "0e2f2caa924413a1edc81c23c49c027dd952fec8",
+      "runId": "43691831594",
+      "recipe": {
+        "generatedSha256": "987e0817360f54d388eaa13af86009c9b656a6a59a56cb0b13dae6ec7f9f2801",
+        "baseRecipeSha256": "6323620da9f7046d440aac362cd3211f21e4e19a679cd3c4b2f09182cb457f5e",
+        "exactReversal": true,
+        "exactAac": true
+      },
+      "source": {
+        "baseWrapperSha256": "cb93f934f0abd64b625fa34a766546f9265f8c77fae4c0be2c0c54b971941bce",
+        "candidateWrapperSha256": "5c0a8caa8f3efeb6a024aa6708694203a1529d1d099e9e5faababd5be05c4bb6",
+        "nativeProfile": 1,
+        "useEditList": true,
+        "automaticNegativeTimestampShift": false,
+        "flags": [
+          "frag_keyframe",
+          "delay_moov",
+          "default_base_moof"
+        ],
+        "exactReversal": true,
+        "otherWrapperSourceChanged": true,
+        "compilerOrLibraryChanged": true,
+        "candidateBuildRun": true,
+        "browserTimelineVerified": false,
+        "firstFragmentMemoryVerified": false,
+        "publicAcceptance": false,
+        "editListParentSha256": "a55da1418f671f93932d97f879260763da74bf2e260a09914812d93869afab99",
+        "exactAacPriming": true,
+        "packetClocksRewritten": true,
+        "compilerSettingsChanged": false,
+        "extraPacketBuffering": true,
+        "exactAacSourceReversal": true,
+        "parentWrapperSha256": "1c6b184978eecb8ce966a6db55cc3b8f3aa2d216e102a81e11aa9cc80d83db1f",
+        "h264VfrTiming": true,
+        "boundedH264Inspection": true,
+        "inspectionBytes": 2097152,
+        "inspectionMicroseconds": 2000000,
+        "h264NominalDtsSynthesis": false,
+        "missingH264DtsRejected": true,
+        "hevcTimingPolicyUnchanged": false,
+        "extraPacketBufferingScope": "existing bounded FFmpeg stream-info queue plus separate fixed 2 MiB/4096-packet startup prefix",
+        "probeDecoderThreads": 1,
+        "probeOptionsFreedOnFailureAndSuccess": true,
+        "probeBoundsChanged": false,
+        "wasmBoundsChanged": false,
+        "finalPacketsReencoded": false,
+        "startupHeaderSha256": "c818a5337b0ee7d9d6644fe9db46777ae150008a37e34173bbda6fc06fe3a712",
+        "startupPrefixSha256": "6f7dd36f5d17ccde88dba43d47d0f732ca7c6998bd909021de8a7f9a93d18c8b",
+        "h264StartupDts": true,
+        "onlyMissingStartupDtsGenerated": true,
+        "existingPtsAndKnownDtsUnchanged": true,
+        "nominalFrameRateUsedForStartup": false,
+        "startupMaximumPayloadBytes": 2097152,
+        "startupMaximumInspectedPackets": 4096,
+        "startupMaximumVideoPackets": 33,
+        "startupMaximumSpanMicroseconds": 2000000,
+        "startupMaximumReorderDepth": 16,
+        "knownPacketClocksRewritten": false,
+        "hevcKnownDtsPreserved": true,
+        "hevcNominalDtsSynthesis": false,
+        "hevcBoundedStreamInspection": true,
+        "parentStartupPrefixSha256": "e77569b73fdec3653e51ccfdd17eb862e5a093c97ffceebeccfb23317267e758",
+        "startupBoundsChanged": false,
+        "hevcDecoderAdded": false,
+        "hevcParser": {
+          "parentSha256": "cc826ccb51e7aaa1d8c478ad8d2d6b1f09fd326da1aab55649d549d5fabaed34",
+          "generatedSha256": "9f8f39654688c25e02deb95793b7128fbb4b68e3073a392ac795a232154e3752",
+          "exactReversal": true,
+          "metadataOnly": true,
+          "maximumReorderDepth": 16,
+          "hevcDecoderAdded": false,
+          "upstreamParser": "https://github.com/FFmpeg/FFmpeg/blob/n8.1.2/libavcodec/hevc/parser.c",
+          "upstreamDecoderMetadata": "https://github.com/FFmpeg/FFmpeg/blob/n8.1.2/libavcodec/hevc/hevcdec.c#L316"
+        },
+        "hevcHeaderParser": {
+          "parentSha256": "45261fc3f0bc3f3cce0395966eeadfdacc4779d97fb4b31d2ae490a2ce99e093",
+          "generatedSha256": "4aabbf70e250dbb3f3538abe27ae1e6030b336e794a055e846488437c9d4c1ee",
+          "exactReversal": true,
+          "onlyHevcHeaderParsingPolicyChanged": true,
+          "decodedPicturesAdded": false,
+          "probeBoundsChanged": false,
+          "startupBoundsChanged": false,
+          "wasmBoundsChanged": false,
+          "upstream": "https://github.com/FFmpeg/FFmpeg/blob/n8.1.2/libavformat/matroskadec.c#L2828"
+        },
+        "library": {
+          "parentSha256": "6414ea37233cf82ebb4cbac2352061ed830befbdf7eb395988b7c1e2d187f6cf",
+          "generatedSha256": "49929353da80a2a42f49c5664ba3e9445b463a58a3dec2a4f22f9bc508a48857",
+          "enabledDecoders": [
+            "h264"
+          ],
+          "exactReversal": true,
+          "copyOnlyBranchChanged": true,
+          "encodersAdded": false,
+          "configSha256": "c30d169bd302ebaecb9de56b7352de1153375d4cfb6d8f79d43fe69440b8a6bc"
+        },
+        "mov": {
+          "generatedSha256": "f927c6e1919a17186cade3b67565f4f418c3247b464e92f4f0a9eaeafdac1d6e",
+          "parentSha256": "d7aa80a99efecf757100dbd6d9d7adb84d263cbeed0603873206975405907068",
+          "patchSha256": "f6c9ab0dfe0a918e6e197f779d77b58b4f7e0e525ba4e72d6ed6375a5ed3381a",
+          "exactReversal": true
+        }
+      },
+      "wasmMemory": [
+        {
+          "imported": true,
+          "initialPages": 384,
+          "maximumPages": 1024,
+          "shared": true
+        }
+      ],
+      "publishedWasmSha256": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0",
+      "publishedArtifactsUnchanged": true,
+      "artifacts": {
+        "within-direct.mjs": {
+          "bytes": 39795,
+          "sha256": "a9d567d7005260176675ad70cac83f63b1b7d87024420491ad8f676ac413e8f8"
+        },
+        "within-direct.wasm": {
+          "bytes": 2402953,
+          "sha256": "41c4a075de285d0d906b2711c5e5420a401235ab89e1f185abe5d48a830a3eba"
+        },
+        "build-manifest.json": {
+          "bytes": 12614,
+          "sha256": "16723e3b5e8e7a515851e0023b54b02847461d159810651f64ca24044416f536"
+        },
+        "within_remux.c": {
+          "bytes": 129062,
+          "sha256": "5c0a8caa8f3efeb6a024aa6708694203a1529d1d099e9e5faababd5be05c4bb6"
+        },
+        "LICENSE.ffmpeg-lgpl3": {
+          "bytes": 7651,
+          "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+        },
+        "movenc.c": {
+          "bytes": 345610,
+          "sha256": "f927c6e1919a17186cade3b67565f4f418c3247b464e92f4f0a9eaeafdac1d6e"
+        },
+        "build-libraries.sh": {
+          "bytes": 3252,
+          "sha256": "49929353da80a2a42f49c5664ba3e9445b463a58a3dec2a4f22f9bc508a48857"
+        },
+        "config-components.h": {
+          "bytes": 75831,
+          "sha256": "c30d169bd302ebaecb9de56b7352de1153375d4cfb6d8f79d43fe69440b8a6bc"
+        },
+        "hevc-parser.c": {
+          "bytes": 12245,
+          "sha256": "9f8f39654688c25e02deb95793b7128fbb4b68e3073a392ac795a232154e3752"
+        },
+        "matroskadec.c": {
+          "bytes": 184909,
+          "sha256": "4aabbf70e250dbb3f3538abe27ae1e6030b336e794a055e846488437c9d4c1ee"
+        }
+      },
+      "browserTimelineVerified": false,
+      "firstFragmentMemoryVerified": false,
+      "mediaInputs": 0,
+      "publicAcceptance": false
+    },
+    "abi": {
+      "symbol": "_within_remux",
+      "exportName": "Z",
+      "parameters": [
+        127
+      ],
+      "results": [
+        127
+      ],
+      "parameterCount": 1
+    }
+  },
+  "retainedQualificationCode": {
+    "kind": "explicit-reusable-qualification-native-code-cache",
+    "qualificationReference": {
+      "file": "evidence/2026-11-15T08-00-36-051Z-mkv-hevc-header-parser-loop-source-control.json",
+      "sha256": "93e71282cad5a7b57d8ba7e22b5991c459d187c47e421c84b4c6ea5b82e21ea4"
+    },
+    "remoteAvailabilityClaimed": false,
+    "freshBuildClaimed": false,
+    "publicAcceptance": false,
+    "retainedCodeAssets": [
+      {
+        "file": "fixtures/qualification-tools/within-test-mkv-header-core.mjs",
+        "bytes": 39795,
+        "sha256": "a9d567d7005260176675ad70cac83f63b1b7d87024420491ad8f676ac413e8f8"
+      },
+      {
+        "file": "fixtures/qualification-tools/within-test-mkv-header-core.wasm",
+        "bytes": 2402953,
+        "sha256": "41c4a075de285d0d906b2711c5e5420a401235ab89e1f185abe5d48a830a3eba"
+      },
+      {
+        "file": "fixtures/qualification-tools/LICENSE.ffmpeg-lgpl3",
+        "bytes": 7651,
+        "sha256": "da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768"
+      }
+    ]
+  },
+  "disposableDownloadedArchiveRemoved": true,
+  "sourcePins": {
+    "scripts/retain-mkv-header-native.mjs": "b18c3f64cdada5c17364a58ba727f975ff1381d995667984b133bbed71edc4a6",
+    "scripts/lib/mkv-header-native-cache.mjs": "84c613d8ea2c11e93b818ead7c22973f86d5d456b47fc7c01587faeba23605de",
+    "scripts/lib/mkv-edit-list-build-artifact.mjs": "443de89f27bef42d18367d64930faaed85e440012fc083a511cae8619ad912ad"
+  }
+}

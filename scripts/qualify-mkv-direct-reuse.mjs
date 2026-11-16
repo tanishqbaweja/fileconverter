@@ -60,6 +60,7 @@ import { largeScalingReference, readLargeScalingReference } from "./lib/mkv-larg
 import { matchOwnedBurstRole } from "./lib/owned-burst-role.mjs";
 import { MKV_SCALE_NEAR10GB, createNear10GbScalingSource, assertNear10GbExtent, decodeNear10GbContent, near10GbExpectedPcmSamples } from "./lib/mkv-near10gb-scaling.mjs";
 import { verifyProductionWorkerBinding } from "./lib/production-worker-binding.mjs";
+import { loadQualifiedHeaderNativeCache, headerNativeCodeCache } from "./lib/mkv-header-native-cache.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
@@ -73,7 +74,8 @@ const headerProtectedRepeats = headerProtectedRetention || process.argv[2] === "
 const headerProtected = headerProtectedRepeats || process.argv[2] === "--hevc-header-parser-protected";
 const largeScalingRepeats = process.argv[2] === "--hevc-header-parser-scale-5gb-repeats";
 const near10GbScaling = process.argv[2] === "--hevc-header-parser-scale-near10gb";
-const headerStagedIntegration = process.argv[2] === "--hevc-header-parser-production-staged";
+const headerStagedCachedCore = process.argv[2] === "--hevc-header-parser-production-staged-cache";
+const headerStagedIntegration = headerStagedCachedCore || process.argv[2] === "--hevc-header-parser-production-staged";
 const largeScaling = near10GbScaling || largeScalingRepeats || process.argv[2] === "--hevc-header-parser-scale-5gb";
 const scalingCase = near10GbScaling ? MKV_SCALE_NEAR10GB : MKV_SCALE_5GB;
 const hevcHeaderParser = headerStagedIntegration || largeScaling || headerProtected || !!headerH264Regression || process.argv[2] === "--hevc-header-parser-loop-source-control";
@@ -996,6 +998,7 @@ try {
   if (hevcHeaderParser) sourceFiles.push("media/ffmpeg/mkv-hevc-header-parser-candidate.mjs");
   if (headerH264Regression) sourceFiles.push("scripts/lib/mkv-hevc-header-core-reference.mjs", hevcHeaderLoopReference.file);
   if (headerStagedIntegration) sourceFiles.push("scripts/lib/production-worker-binding.mjs", "scripts/lib/mkv-hevc-header-core-reference.mjs", hevcHeaderLoopReference.file);
+  if (headerStagedCachedCore) sourceFiles.push("scripts/lib/mkv-header-native-cache.mjs", ...headerNativeCodeCache.map(entry => entry.file));
   if (headerProtected) sourceFiles.push("scripts/lib/mkv-hevc-header-core-reference.mjs", hevcHeaderLoopReference.file,
     "scripts/lib/mkv-header-protected-reference.mjs", "scripts/lib/mkv-full-video-decode.mjs", protectedCompleteVideoReference.file,
     ...headerCoreH264References.map(ref => ref.file));
@@ -1022,7 +1025,12 @@ try {
   let candidate;
   if (editListCandidate) {
     toolRuntime = await createOwnedRuntimeScratch("mkv-edit-list-tool-download-");
-    candidate = await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate, h264Vfr, probeDecoder, startupCore, hevcKnownDts, hevcHeaderParser);
+    candidate = headerStagedCachedCore ? await loadQualifiedHeaderNativeCache(root)
+      : await loadMkvEditListBuildArtifact(process.argv[3], process.argv[4], toolRuntime, exactAacCandidate, h264Vfr, probeDecoder, startupCore, hevcKnownDts, hevcHeaderParser);
+    if (headerStagedCachedCore) {
+      assert.equal(candidate.proof.runId, process.argv[3]); assert.equal(candidate.proof.head, process.argv[4]);
+      report.qualifiedCodeDelivery = candidate.delivery;
+    }
     report.candidateBuild = candidate.proof;
     if (startupCore && !hevcKnownDts) assertMkvStartupCore(candidate.proof);
     if (hevcKnownDts) {

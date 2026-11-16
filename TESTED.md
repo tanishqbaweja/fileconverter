@@ -1,5 +1,27 @@
 # Tested conversion ledger
 
+2026-11-16 **native core reproduction PASS; one reusable qualification cache**.
+Run43691831594 attempt2 SUCCESS at same source0e2f2caa. Receipt12-46-18-964Z/
+fullSHA4e0c7304ec079829501e9202946e1d32a1b1c01dc27d1e4149d3766cf1405259.
+Fresh archive14227141288/876863B/fullSHA621562a2…53ca5d has different ZIP identity,
+but ENTIRE native build/source/recipe/artifact hashes/ABI/memory match the full
+original qualified proof. Wasm2402953B/41c4a075…30a3eba, module39795B/a9d567d7…13e8f8;
+actual24MiB-initial/64MiB-max imported shared memory unchanged. No Docker,
+media conversion or large decode replay. Downloaded ZIP/owned runtime removed.
+
+Explicitly reusable CODE pair (~2.33MiB) plus original exact LGPL license7651B
+retained only in fixtures/qualification-tools to prevent identical rebuilds just
+because hosted artifacts expire after one day. Full byte counts/SHA, ABI, memory,
+golden source/native build are rechecked before use; delivery explicitly cached,
+not a current remote artifact or fresh build. No selected files, media, profiles,
+outputs or user metadata retained. Remove exact pair when superseded/unused.
+Corruption, bad license, partial-generation cleanup and existing-file protection
+checks pass. Exact generated factory excluded from lint like public engine code;
+authored cache/loader/driver code remains linted. Production-staged integration
+will exercise this same exact code through unchanged compiled worker/I/O.
+196 focused regression/evidence checks and affected lint PASS; no public asset
+or media conversion behavior changed by retaining this private code fixture.
+
 2026-11-16 **production-staged native-only gate prepared, NOT yet run**.
 Explicit --hevc-header-parser-production-staged selects the existing unmodified
 built conversion worker and real staged save, substitutes only authenticated

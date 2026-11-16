@@ -34,7 +34,7 @@ test("nonlocal origins, wrong asset namespace and unbounded extents rejected bef
 });
 test("native-only staged integration chooses unmodified compiled worker and existing finite loop validator, preserving all fidelity, memory and real scratch/copy checks", async () => {
   const source = await readFile("scripts/qualify-mkv-direct-reuse.mjs", "utf8");
-  assert.match(source, /headerStagedIntegration = process.argv\[2\] === "--hevc-header-parser-production-staged"/);
+  assert.match(source, /headerStagedIntegration = headerStagedCachedCore \|\| process.argv\[2\] === "--hevc-header-parser-production-staged"/);
   assert.match(source, /assert.ok\(staged && !overlay\)/); assert.match(source, /result.productionWorkerBinding = await verifyProductionWorkerBinding/);
   assert.match(source, /await arm\(headerStagedIntegration \? "edit-list" : "reuse", created.file/);
   assert.match(source, /headerStagedIntegration \? row.metrics.outputBytes : 0/);

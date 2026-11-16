@@ -16,6 +16,8 @@ const eslintConfig = defineConfig([
     "work/**",
     "build/**",
     "public/engines/**",
+    // Exact byte-authenticated generated Emscripten fixture, not authored code.
+    "fixtures/qualification-tools/within-test-mkv-header-core.mjs",
     "next-env.d.ts",
   ]),
 ]);

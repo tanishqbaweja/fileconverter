@@ -1,5 +1,21 @@
 # Remaining work audit
 
+2026-11-16 M-03: **native reproducibility/tool restoration CLOSED**.
+Same run43691831594 attempt2/native source0e2f2caa terminal SUCCESS. Fresh ZIP
+14227141288 has different container digest, but complete native build/source/
+recipe/all artifact hashes/ABI/Wasm limits EXACTLY reproduce earlier qualified
+core. Receipt12-46-18-964Z/fullSHA4e0c7304…1405259. Original private evidence,
+clock/fidelity/250MiB/96MiB gates unchanged; no Docker or media conversion.
+Explicit one reusable2.33MiB code pair +LGPL license under fixtures/qualification-tools
+prevents repeated same-code rebuilds after remote expiry; every use authenticates
+ALL code bytes/native proof/ABI/memory and clearly labels cached delivery, no
+fresh-build/remote-availability claim. Dispose only when obsolete, not media.
+Disposable download/runtime removed, no selected user data retained. Failure
+cleanup preserves existing files and removes only newly owned partial code.
+Next: real unmodified production-staged browser check, still NOT public promotion.
+196 focused regression/evidence checks and affected lint PASS. No public engine
+or user-facing conversion path changed by this qualification code cache.
+
 2026-11-16 M-03: **native-only production-staged integration gate prepared**.
 New explicit control uses exact corrected header core on the UNMODIFIED built
 production conversion worker/media/writer modules, normal staging +512KiB final
