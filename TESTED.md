@@ -1,5 +1,38 @@
 # Tested conversion ledger
 
+2026-11-16 **unmodified production-staged ORIGINAL3+1 gate FAILED on job3**.
+Receipt13-03-58-368Z/fullSHAd5edb76abe6f4a239bb44d89bcae0c121d7a4085d7964b0f797e5d62ced18258.
+Actual full test.mkv source unchanged. First TWO genuine browser remuxes finish
+53.729035/43.37856s, each2962151594B/fullSHA64f8a3c3…fc7b36 EXACTLY matches
+current-core COMPLETE original packet/codec/PCM/296160-frame proof. Inherited
+content, no fresh large native decode. Full stage2962151594B,512KiB selected copy,
+scratch0 and output removed after each. Peaks194.4453125/219.38671875MiB;
+cleanup10.05078125 ->17.265625MiB, not a flat-retention claim or matched speedup.
+
+Third job reaches405.11328125MiB over SAME original blank (>250), cancelled
+during final selected-destination copy by normal production cancellation. No
+validated third output and no clean-session run. New Chrome child32416/birth
+13:07:05.2747657Z has264974336B (252.699MiB) at diagnostic capture and303366144B
+(289.3125MiB) at later OVERALL native peak, INCLUDED. Exact-birth role census
+did not observe matching child; role/subtype UNAVAILABLE, not guessed as a model
+service. Initial evidence unit wrongly equated diagnostic and later peak byte
+counts; corrected to compare immutable birth identity and authenticate BOTH
+actual readings. Whole memory failure/old reports unchanged, no browser replay.
+
+All1657 native100ms rows retained; per-job valid491/399/317, unavailable1/0/2;
+whole1207valid/3unavailable counts, per-process sums and all three peaks rederived.
+Normal failure quiescence terminal cancelled, stage0, all owned runtime/output/
+server/tool scratch removed;47 original process births absent, unrelated reused
+PIDs11780/30856 preserved. Fresh exact-path absence verified. test.mkv fullSHA/
+size unchanged. JSON/gzip/caseCSV/all-nativeCSV/HTML kept. Earlier direct
+retention/5GB repeat failures stay FAILED. Do NOT retry this configuration
+unchanged or promote corrected private native assets. Next implementation
+priority: correct or temporarily withhold the known publicly advertised old
+MKV clock regression while full memory feasibility/integration remains open.
+201 focused regression/evidence checks and affected lint PASS. Exact selected
+test file list is retained in `evidence/2026-11-16-mkv-integration-focused-tests.json`;
+this is not a full release-suite pass and does not turn the stress FAIL green.
+
 2026-11-16 **native-only unmodified production-staged small gate PASS**.
 Receipt12-50-51-794Z/fullSHA18b85a75ae36b2d2b179d529c104da4e64d250cdef165d9e655dec096957dca0.
 Actual built424331B conversion worker/SHA9935a1ff…521c9cf independently fetched
