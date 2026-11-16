@@ -46,6 +46,17 @@ function audioProgress(expectedSeconds) {
   };
 }
 
+export function decodedMediaStreamArguments(file, kind) {
+  assert.ok(["video-1280x720-yuv420p", "audio-48000-mono-s16le"].includes(kind));
+  const video = kind.startsWith("video");
+  return ["-v", "error", "-xerror", "-nostats", "-stats_period", "30", "-threads", "4", "-noautorotate", "-i", file,
+    // Preserve the demuxer time base instead of quantizing VFR/rounded source
+    // clocks to nominal24fps. Quantization can collide despite valid source PTS.
+    ...(video ? ["-map", "0:v:0", "-an", "-c:v", "rawvideo", "-pix_fmt", "yuv420p", "-fps_mode", "passthrough", "-enc_time_base:v", "-1"]
+      : ["-map", "0:a:0", "-vn", "-c:a", "pcm_s16le"]),
+    "-progress", "pipe:2", "-f", video ? "rawvideo" : "s16le", "pipe:1"];
+}
+
 export async function hashDecodedMediaStream(file, { cwd, env, kind, expectedFrames, expectedSeconds, expectedAudioSamples = null, timeoutMs = 1800000, onProgress = () => {} }) {
   assert.ok(["video-1280x720-yuv420p", "audio-48000-mono-s16le"].includes(kind));
   assert.ok(Number.isSafeInteger(expectedFrames) && expectedFrames > 0 && expectedFrames <= 1000000);
@@ -59,10 +70,7 @@ export async function hashDecodedMediaStream(file, { cwd, env, kind, expectedFra
   const video = kind.startsWith("video"), expectedBytes = video ? expectedFrames * 1280 * 720 * 3 / 2 : expectedAudioSamples === null ? null : expectedAudioSamples * 2;
   const digest = createDecodedByteHash({ expectedBytes, maximumBytes: expectedBytes ?? Math.ceil((expectedSeconds + 1) * 48000) * 2 });
   const progress = video ? createFullVideoDecodeProgress(expectedFrames, expectedSeconds) : audioProgress(expectedSeconds);
-  const args = ["-v", "error", "-xerror", "-nostats", "-stats_period", "30", "-threads", "4", "-noautorotate", "-i", actual,
-    ...(video ? ["-map", "0:v:0", "-an", "-c:v", "rawvideo", "-pix_fmt", "yuv420p", "-fps_mode", "passthrough"]
-      : ["-map", "0:a:0", "-vn", "-c:a", "pcm_s16le"]),
-    "-progress", "pipe:2", "-f", video ? "rawvideo" : "s16le", "pipe:1"];
+  const args = decodedMediaStreamArguments(actual, kind);
   const controller = new AbortController(), startedAt = Date.now();
   const child = spawn("C:/ffmpeg/bin/ffmpeg.exe", args, { cwd, env, windowsHide: true, signal: controller.signal, stdio: ["ignore", "pipe", "pipe"] });
   const exit = new Promise((resolve, reject) => { child.once("error", reject); child.once("close", resolve); }); void exit.catch(() => {});

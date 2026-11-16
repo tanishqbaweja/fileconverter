@@ -1,5 +1,31 @@
 # Remaining work audit
 
+2026-11-16 M-03: **48-loop validator collision isolated and corrected**.
+Receipt01-23-38-047Z/fullSHA5ac325fd…36b8627. Valid285MB/13824frame source
+reproduces same old11840>=11840 raw24fps time-base collision. Explicit demuxer
+encoder time base completes entire19.110GB decoded video and55.441MB PCM,
+hash-identical to existing streamhash oracle with empty stderr. No discarded
+errors, frame drops/dupes, native conversion or production engine changes.
+All disposable source/scratch removed.182 focused regression/evidence checks
+and affected lint PASS. Fresh near10GB full gate justified by
+this measured validator-only correction; priorfailed receipts remain immutable.
+
+2026-11-16 M-03: **near10GB browser remux complete; full gate FAILED**.
+Receipt01-06-04-238Z/fullSHA0397e864…6d5777: genuine9,507,509,956B source ->
+9,512,261,399B browser MP4 in120.78919s. All460800 video/902400AAC payloads,
+known clocks/adjacent intervals/codec initialization match. Original-blank full
+Chrome peak233.5078125MiB,1108valid/0missing conversion samples, all I/O bounds
+unchanged. All4421 native records retained; not a public route or repeat pass.
+
+Complete SOURCE decode fails20.077s into new raw-pipe validator on rawvideo mux
+non-monotonic DTS11840. No complete decoded source/output parity or close-to-idle
+claim. All owned source/output/profile/server/tools/53 Chrome births removed;
+original test.mkv size/full SHA unchanged. Failed JSON/CSV/HTML retained. Next:
+48-loop deterministic SOURCE control crossing same collision; preserve demuxer
+encoder time base and prove complete decoded video/PCM against existing oracle.
+Do not repeat near10GB unchanged or weaken strict error/fidelity/memory checks.
+Prior5GB-repeat and Chrome-background failures remain FAILED.
+
 2026-11-16 M-03: **sustained independent-validator A/B closed; near10GB gate
 prepared, not yet measured**. Receipt00-54-05-296Z/fullSHAe9c5dbaa…ea207d7: real
 119MB source/5760frames, three pairs exact decoded video/PCM hashes,30.115s ->

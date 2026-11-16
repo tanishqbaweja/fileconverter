@@ -1,0 +1,60 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { createHash } from "node:crypto";
+import { readFile } from "node:fs/promises";
+import { gunzipSync } from "node:zlib";
+import { renderNear10GbReport } from "../scripts/lib/mkv-near10gb-report.mjs";
+import { assertLargeScalingLosslessCoverage } from "../scripts/lib/mkv-large-scaling-report.mjs";
+import { replayLosslessNativeMemoryJournal } from "../scripts/lib/lossless-native-memory-journal.mjs";
+import { assertHevcHeaderParserCore } from "../scripts/lib/mkv-hevc-header-core-reference.mjs";
+import { mkvProtectedCopy } from "../scripts/lib/mkv-protected-copy-contract.mjs";
+const file = "evidence/2026-11-16T01-06-04-238Z-mkv-hevc-header-core-scale-near10gb.json";
+const read = f => readFile(new URL(`../${f}`, import.meta.url)), sha = b => createHash("sha256").update(b).digest("hex");
+
+test("actual9.51GB browser remux and every encoded packet/clock pass; source raw-mux diagnostic error keeps COMPLETE content/release gate FAILED", async () => {
+  const bytes = await read(file); assert.equal(sha(bytes), "0397e86401a5f40f0cded71d20a1522731fcc12174f27c59324949d73f6d5777");
+  const r = JSON.parse(bytes), [a] = r.arms, [c] = a.cases, v = c.validation;
+  assert.equal(r.status, "failed-not-acceptance"); assert.equal(a.status, "failed-not-acceptance"); assertHevcHeaderParserCore(r.candidateBuild);
+  assert.equal(r.fixture.bytes, 9507509956); assert.equal(r.fixture.loops, 1600);
+  assert.equal(r.fixture.sha256, "d137ddebdac4307f00c80e6887e7ae052fe74d8aecd29e074b23f50c8919a2b1");
+  assert.equal(c.state, "complete"); assert.equal(c.metrics.outputBytes, 9512261399); assert.equal(c.metrics.elapsedMs, 120789.18999999762);
+  assert.equal(v.outputSha256, "c63e89c25c3122adbe31f8362c7da3e56c2514bd84105ade918a0ac2e766b3f4");
+  assert.equal(v.video.packets, 460800); assert.equal(v.video.comparableDts, 460798); assert.equal(v.aac.packets, 902400);
+  for (const name of ["maximumPtsDeltaUs", "maximumDtsDeltaUs", "maximumIntervalErrorUs"]) assert.equal(v.video[name], 0);
+  assert.equal(v.video.sourceEndUs, 19249568000); assert.equal(v.video.outputEndUs, 19249568000);
+  assert.ok(v.video.packetBytesIdentical && v.aac.packetBytesIdentical && v.completeEncodedStreamHashesEqual);
+  assert.equal(v.sourcePacketHashes, v.outputPacketHashes); assert.deepEqual(v.codecConfiguration.source, v.codecConfiguration.output);
+  assert.equal(v.incompleteDecode.role, "source"); assert.equal(v.incompleteDecode.completeDecodeClaimed, false); assert.equal(v.incompleteDecode.elapsedMs, 20077);
+  assert.equal(v.incompleteDecode.lastProgress, null); assert.match(a.failures[0], /\[rawvideo @ .*non monotonically increasing dts.*11840 >/);
+  assert.equal(v.completeDecodedVideoAndPcmEqual, undefined); assert.equal(v.sourceCompleteDecode, undefined); assert.equal(v.outputCompleteDecode, undefined);
+  assert.equal(a.memory.cleanupAboveIdleMiB, null); // no post-validation close-to-idle acceptance
+  assert.equal(c.metrics.peakWasmMemoryBytes, 24 * 1048576); assert.equal(c.metrics.maxReadChunkBytes, 262144);
+  assert.ok(c.metrics.maxWriteChunkBytes <= 1048576 && c.metrics.peakQueuedBytes <= 1048576); assert.equal(c.metrics.peakPendingOperations, 1);
+  assert.equal(c.binding.convertedCopyCreated, false); assert.deepEqual(a.forbiddenRequests, []);
+  assert.deepEqual(r.originalBefore, { bytes: mkvProtectedCopy.bytes, sha256: mkvProtectedCopy.sha256 }); assert.deepEqual(r.originalBefore, r.originalAfter);
+  assert.ok(a.ownedRuntimeRemoved && a.serverCleanup.ownedRootAbsent && r.fixtureRuntimeRemoved && r.toolDownloadRemoved);
+  assert.equal(a.browserCleanup.status, "owned-observed-pids-absent"); assert.equal(a.browserCleanup.observedPids.length, 53);
+  assert.equal(a.jobCleanup.cancellationRequested, false); assert.equal(a.jobCleanup.terminalState, "complete");
+  for (const name of ["headed", "browserServicesDisabled", "productionFilesReplaced", "speedGainProven", "nativeConversionUsed", "publicAcceptance"]) assert.equal(r[name], false);
+});
+
+test("failed near10GB report replays all4421 native records and exact conversion peak; missing cleanup/content never relabelled PASS", async () => {
+  const r = JSON.parse(await read(file)), [a] = r.arms, receipt = a.losslessNativeArchive;
+  const replay = await replayLosslessNativeMemoryJournal(receipt); assert.equal(replay.verified, true); assert.equal(replay.records, 4421);
+  assert.equal(receipt.archiveSha256, "c7c7d15d545e90956e8e0b5d69455dbc8fb9dd8114ab06958e7d4748e05c0000");
+  assert.equal(receipt.sha256, "55a7c0bc1b9ae1d7539378d2dc004138aecfb33703a93b8dc66ca410dca4c2af");
+  assert.equal(a.memory.incrementalPrivateMiB, 233.5078125); assert.equal(a.memory.validSamples, 1108); assert.equal(a.memory.unavailableSamples, 0);
+  assert.equal(assertLargeScalingLosslessCoverage(r).completeNativeRecords, 4421);
+  const packed = await read(a.archive.file); assert.equal(sha(packed), a.archive.sha256);
+  const raw = gunzipSync(packed, { maxOutputLength: 128 * 1048576 }); assert.equal(sha(raw), a.archive.decodedSha256);
+  const samples = JSON.parse(raw); assert.equal(samples.length, 1632);
+  const rendered = renderNear10GbReport(r, samples);
+  assert.equal(rendered.csv, (await read(file.replace(/\.json$/, ".csv"))).toString());
+  assert.equal(rendered.html, (await read(file.replace(/\.json$/, ".html"))).toString());
+  assert.match(rendered.html, /233\.508/); assert.match(rendered.html, /decoded-content equality is UNVERIFIED/);
+  assert.match(rendered.html, /failed5GB repeats stay FAILED/); assert.doesNotMatch(rendered.html, /<script|https?:\/\//);
+  const forged = structuredClone(r); forged.status = "passed-first-real-near10gb-scaling-not-repeats-or-public-acceptance";
+  assert.throws(() => renderNear10GbReport(forged, samples));
+  const wrongPeak = structuredClone(r); wrongPeak.arms[0].memory.incrementalPrivateMiB = 0;
+  assert.throws(() => renderNear10GbReport(wrongPeak, samples));
+});

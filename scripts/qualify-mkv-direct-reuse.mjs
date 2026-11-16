@@ -988,7 +988,8 @@ try {
   if (largeScalingRepeats) sourceFiles.push("scripts/lib/mkv-large-scaling-reference.mjs", "scripts/lib/mkv-large-scaling-report.mjs", largeScalingReference.file);
   if (near10GbScaling) sourceFiles.push("scripts/lib/mkv-near10gb-scaling.mjs", "scripts/lib/streamed-decoded-hash.mjs",
     "scripts/lib/mkv-large-scaling-reference.mjs", "scripts/lib/mkv-large-scaling-report.mjs", largeScalingReference.file,
-    "evidence/2026-11-16T00-54-05-296Z-decoded-stream-hash-benchmark.json");
+    "evidence/2026-11-16T00-54-05-296Z-decoded-stream-hash-benchmark.json",
+    "evidence/2026-11-16T01-23-38-047Z-decoded-timestamp-control.json");
   if (startupSimpleControl) sourceFiles.push(startupComplexReference.file);
   if (startupProtected) sourceFiles.push(protectedRepeatReference.file, protectedCompleteVideoReference.file,
     "scripts/lib/mkv-protected-repeat-contract.mjs", ...startupSmallRegressions.map(ref => ref.file));

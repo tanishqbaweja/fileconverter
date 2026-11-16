@@ -1,0 +1,88 @@
+{
+  "status": "passed-reproduced-old-error-and-complete-corrected-hash-parity-not-large-browser-acceptance",
+  "scope": "48loop-source-independent-validator-timestamp-control-not-browser-acceptance",
+  "nativeConversionUsed": false,
+  "productionConverterChanged": false,
+  "publicAcceptance": false,
+  "originalFileAccessed": false,
+  "failures": [],
+  "fixture": {
+    "parent": {
+      "file": "fixtures/media/within-test-synthetic-hevc-aac.mkv",
+      "bytes": 5945271,
+      "sha256": "5b8fdc40c1679299442736984826ff4d01be2e69915906ea4e31c0dde267dedc"
+    },
+    "loops": 48,
+    "bytes": 285228004,
+    "sha256": "ebfcddd6b6e4957d89b473e5221162d7cea8174ec3a38555d55e9ceb675994d0",
+    "expectedFrames": 13824,
+    "expectedSeconds": 577.488,
+    "expectedAudioSamples": 27720704
+  },
+  "oldRawMux": {
+    "status": "reproduced-invalid-dts-no-acceptance",
+    "errors": [
+      "[rawvideo @ 000001497d6c8b80] Application provided invalid, non monotonically increasing dts to muxer in stream 0: 11840 >= 11840"
+    ],
+    "elapsedMs": 15271,
+    "stdoutDiscarded": true,
+    "decodedFileCreated": false
+  },
+  "oracle": {
+    "decodedFrames": 13824,
+    "finalOutputTimeSeconds": 577.458333,
+    "duplicateFrames": 0,
+    "droppedFrames": 0,
+    "completedProgressReports": 3,
+    "retainedDecodedFrames": 0,
+    "decodedFileCreated": false,
+    "elapsedMs": 72152,
+    "decodedVideoSha256": "69b6ba1a74eed11c3fe17b6a8074c62073db8c144da4a72d75d30293f0252e96",
+    "decodedPcmSha256": "a796036caeb1c81c0a65365fe8412cbc02624eea58069f964fca47762f0948a3",
+    "stderrEmpty": true
+  },
+  "corrected": {
+    "video": {
+      "sha256": "69b6ba1a74eed11c3fe17b6a8074c62073db8c144da4a72d75d30293f0252e96",
+      "bytes": 19110297600,
+      "maximumChunkBytes": 65536,
+      "retainedDecodedFrames": 0,
+      "decodedFileCreated": false,
+      "decodedFrames": 13824,
+      "finalOutputTimeSeconds": 577.456,
+      "duplicateFrames": 0,
+      "droppedFrames": 0,
+      "completedProgressReports": 1,
+      "kind": "video-1280x720-yuv420p",
+      "elapsedMs": 22890,
+      "decoderThreads": 4,
+      "nativeToolUsedForConversion": false,
+      "maximumRetainedDecodedChunks": 1,
+      "fullMediaBufferCreated": false,
+      "sha256Provider": "Node/OpenSSL 3.5.2"
+    },
+    "audio": {
+      "sha256": "a796036caeb1c81c0a65365fe8412cbc02624eea58069f964fca47762f0948a3",
+      "bytes": 55441408,
+      "maximumChunkBytes": 65536,
+      "retainedDecodedFrames": 0,
+      "decodedFileCreated": false,
+      "finalOutputTimeSeconds": 577.467833,
+      "completedProgressReports": 1,
+      "kind": "audio-48000-mono-s16le",
+      "elapsedMs": 327,
+      "decoderThreads": 4,
+      "nativeToolUsedForConversion": false,
+      "maximumRetainedDecodedChunks": 1,
+      "fullMediaBufferCreated": false,
+      "sha256Provider": "Node/OpenSSL 3.5.2"
+    }
+  },
+  "runtimeRemoved": true,
+  "sourcePins": {
+    "scripts/qualify-decoded-timestamps.mjs": "09149247f1db0abcbd6fed448a5de09a6a88e80a93ca97a95bccd55c0ec56f7a",
+    "scripts/lib/streamed-decoded-hash.mjs": "baaf168e636c3c7f36acdfb3e8ce05f51c9f7ffb888695498339ec8fb06252d1",
+    "scripts/lib/mkv-full-video-decode.mjs": "aaf9d725d157ebdefc4a878ad4d27ea2755e9cea65a25f19759ba4032faf1787",
+    "scripts/lib/bounded-native-lines.mjs": "e077e2d815722c1323734b8f49a3fd9f54ad16a98d1afc7b0696e549b3a07964"
+  }
+}

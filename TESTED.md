@@ -1,5 +1,34 @@
 # Tested conversion ledger
 
+2026-11-16 **native-validator timestamp correction QUALIFIED on48-loop source**.
+Receipt01-23-38-047Z/fullSHA5ac325fd0a6908dfaff5ab9eef0ed098fd5330b788b2c097cbaa06ea336b8627.
+285,228,004B/13824frames reproduces OLD rawvideo mux error `11840 >=11840`
+in15.271s. Preserving demuxer encoder time base (`-enc_time_base:v -1`, NOT
+discarding errors/reordering/dropping frames) completes ALL19,110,297,600 decoded
+video bytes and55,441,408 PCM bytes, exact SHA equality to existing independent
+streamhash oracle (empty stderr). Corrected video22.890s/audio0.327s, zero drops/
+dupes, max64KiB chunks/hard256KiB. Source/scratch removed. Native validation only;
+browser converter unchanged.182 focused checks and affected lint PASS. Failed
+9.51GB receipt stays failed. Concrete fix
+now justifies fresh near10GB full gate; no large-file acceptance/speedup yet.
+
+2026-11-16 **first real near10GB browser job COMPLETE, full qualification FAIL**.
+Receipt01-06-04-238Z/fullSHA0397e86401a5f40f0cded71d20a1522731fcc12174f27c59324949d73f6d5777.
+Actual9,507,509,956B/1600-loop valid source/fullSHAd137ddeb…919a2b1 -> browser
+MP4 9,512,261,399B/fullSHAc63e89c2…66b3f4 in120.78919s. Every460800 video
+payload/PTS/460798 known DTS/adjacent interval and902400 AAC/codec configuration
+matched. Whole-tree peak233.5078125MiB,1108valid/0missing conversion samples;
+Wasm24MiB/read256KiB/write+queue<=1MiB/one pending. No browser speedup claim.
+
+Fresh complete SOURCE decode stopped after20.077s on rawvideo mux diagnostic
+`non monotonically increasing dts ...11840 >...`; strict parser correctly fails.
+No complete source/output decoded hashes, no cleanup-to-idle acceptance and no
+repeat/public acceptance. All53 owned Chrome births/server/profile/generated
+source/output/tools removed in finally; original test.mkv full size/SHA unchanged.
+All4421 original100ms native rows retained in lossless archive; graph1632 rows
+thins validation only. JSON/CSV/HTML preserve failure. Native validator diagnosis
+below supplies a concrete correction before any new9.51GB test.
+
 2026-11-16 **longer-source validator parity/speed control PASS; near10GB prepared,
 NOT run**. Receipt00-54-05-296Z/fullSHAe9c5dbaa181907f9eb8bfd5dd75b512519c3285c86308099dc202ad61ea207d7.
 Real20-loop118,846,768B source/5760frames; three alternating matched pairs,
