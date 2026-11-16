@@ -1,0 +1,54 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { readFile } from "node:fs/promises";
+import { createHash } from "node:crypto";
+import { gunzipSync } from "node:zlib";
+import { replayLosslessNativeMemoryJournal } from "../scripts/lib/lossless-native-memory-journal.mjs";
+import { renderLargeScalingReport, assertLargeScalingLosslessCoverage } from "../scripts/lib/mkv-large-scaling-report.mjs";
+import { largeScalingReference, readLargeScalingReference } from "../scripts/lib/mkv-large-scaling-reference.mjs";
+const read = name => readFile(new URL(`../${name}`, import.meta.url));
+const sha = b => createHash("sha256").update(b).digest("hex");
+
+test("actual first5.35GB complete browser/content/memory proof binds exact current native and does not imply repeats, speedup or public release", async () => {
+  const bytes = await read(largeScalingReference.file); assert.equal(sha(bytes), largeScalingReference.sha256);
+  const r = JSON.parse(bytes), [a] = r.arms, [c] = a.cases, v = c.validation;
+  const ref = readLargeScalingReference(bytes, r.candidateBuild);
+  assert.equal(ref.outputBytes, 5350648699); assert.equal(ref.sameExactNativeBuildRequired, true);
+  assert.equal(ref.noValidationReplay, true); assert.equal(ref.repeatsAcceptance, false);
+  assert.throws(() => readLargeScalingReference(Buffer.from("changed proof"), r.candidateBuild));
+  const wrong = structuredClone(r.candidateBuild); wrong.runId = "different";
+  assert.throws(() => readLargeScalingReference(bytes, wrong));
+  assert.equal(c.metrics.elapsedMs, 49829.5); assert.equal(c.metrics.peakWasmMemoryBytes, 24 * 1048576);
+  assert.equal(c.metrics.maxReadChunkBytes, 262144); assert.ok(c.metrics.maxWriteChunkBytes <= 1048576);
+  assert.ok(c.metrics.peakQueuedBytes <= 1048576); assert.equal(c.metrics.peakPendingOperations, 1);
+  assert.equal(c.metrics.pendingOperations, 0); assert.equal(c.metrics.queuedBytes, 0);
+  assert.equal(v.video.sourceEndUs, 10827868000); assert.equal(v.video.outputEndUs, 10827868000);
+  assert.equal(v.sourceCompleteDecode.elapsedMs, 1372997); assert.equal(v.outputCompleteDecode.elapsedMs, 1412183);
+  assert.equal(v.sourceCompleteDecode.completedProgressReports, 46); assert.equal(v.outputCompleteDecode.completedProgressReports, 47);
+  assert.equal(v.outputCompleteDecode.decodedVideoSha256, "f04bfd9dcf7ff0c6f4eb1dd9ecdffd8f54a24febeba17fe5e393ddaefe775fe7");
+  assert.equal(v.outputCompleteDecode.decodedPcmSha256, "fee43714abc43a4cbd027bbca4979da0d988b29325cfdb571759901c5cfdad07");
+  assert.deepEqual(a.forbiddenRequests, []); assert.deepEqual(a.failures, []); assert.deepEqual(r.failures, []);
+  assert.equal(a.browserCleanup.observedPids.length, 61);
+  for (const field of ["headed", "browserServicesDisabled", "productionFilesReplaced", "speedGainProven", "nativeConversionUsed", "publicAcceptance"]) assert.equal(r[field], false);
+});
+
+test("27855 actual native records replay losslessly beyond old cap; every conversion peak/count matches graph view and original baseline", async () => {
+  const r = JSON.parse(await read(largeScalingReference.file)), [a] = r.arms, receipt = a.losslessNativeArchive;
+  const replay = await replayLosslessNativeMemoryJournal(receipt);
+  assert.equal(replay.verified, true); assert.equal(replay.records, 27855); assert.ok(replay.maximumReadBytes <= 65536);
+  assert.equal(receipt.bytes, 90710005); assert.equal(receipt.archiveBytes, 1196462);
+  assert.equal(receipt.archiveSha256, "ed74917ed98750a5d135392a6018f82a3a4c7f02c73068f1ff688983130920be");
+  assert.equal(receipt.sampleView.retainedViewSamples, 3573); assert.equal(receipt.sampleView.validationGraphPointsThinned, 24282);
+  assert.equal(a.memory.incrementalPrivateMiB, 173.59375); assert.equal(a.memory.cleanupAboveIdleMiB, 44.3203125);
+  assert.equal(a.memory.validSamples, 457); assert.equal(a.memory.unavailableSamples, 0);
+  assert.equal(assertLargeScalingLosslessCoverage(r).completeNativeRecords, 27855);
+  const packed = await read(a.archive.file); assert.equal(sha(packed), a.archive.sha256);
+  const raw = gunzipSync(packed, { maxOutputLength: 128 * 1048576 }); assert.equal(sha(raw), a.archive.decodedSha256);
+  const samples = JSON.parse(raw); assert.equal(samples.length, 3573);
+  const rendered = renderLargeScalingReport(r, samples);
+  assert.equal(rendered.csv, (await read(largeScalingReference.file.replace(/\.json$/, ".csv"))).toString());
+  assert.equal(rendered.html, (await read(largeScalingReference.file.replace(/\.json$/, ".html"))).toString());
+  assert.match(rendered.html, /173\.594/); assert.match(rendered.html, /EVERY conversion point/);
+  assert.match(rendered.html, /not required repeat\/near10GB\/public-release/);
+  assert.doesNotMatch(rendered.html, /<script|https?:\/\//);
+});

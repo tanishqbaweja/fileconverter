@@ -5,6 +5,7 @@ import { createScalingSampleView } from "../scripts/lib/mkv-scaling-sample-view.
 import path from "node:path";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal, replayLosslessNativeMemoryJournal } from "../scripts/lib/lossless-native-memory-journal.mjs";
+import { assertLargeScalingLosslessCoverage } from "../scripts/lib/mkv-large-scaling-report.mjs";
 
 test("UNIT ONLY: every conversion/missing/baseline/cleanup point remains; only long-validation graph points thin, all raw rows have a separate lossless path", async () => {
   const view = createScalingSampleView(), rows = [];
@@ -58,5 +59,13 @@ test("UNIT ONLY: 21001 monitoring records cross old20000 cap losslessly, keep EV
     assert.ok(retained.length < 5000); assert.equal(view.report().totalNativeSamples, 21001);
     assert.equal(view.report().retainedViewSamples, retained.length); assert.equal(view.births().length, 1);
     assert.equal(archive.conversionAcceptance, false);
+    const diagnostic = { arms: [{ blank: { privateBytes: 100 }, memory: { peak: { sequence: 155 },
+      incrementalPrivateMiB: (999 - 100) / 1048576, validSamples: 499, unavailableSamples: 1 },
+      losslessNativeArchive: { ...archive, sampleView: view.report() } }] };
+    assert.equal(assertLargeScalingLosslessCoverage(diagnostic).completeNativeRecords, 21001);
+    for (const mutate of [r => { r.arms[0].memory.incrementalPrivateMiB--; }, r => { r.arms[0].memory.validSamples--; },
+      r => { r.arms[0].losslessNativeArchive.sampleView.allConversionSamplesRetained = false; }]) {
+      const changed = structuredClone(diagnostic); mutate(changed); assert.throws(() => assertLargeScalingLosslessCoverage(changed));
+    }
   } finally { await journal?.close().catch(() => {}); await runtime.close(); }
 });

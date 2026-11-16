@@ -5,6 +5,21 @@ import { mkvProtectedCopy } from "./mkv-protected-copy-contract.mjs";
 const escape = value => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll('"', "&quot;");
 const fixed = value => typeof value === "number" && Number.isFinite(value) ? value.toFixed(3) : "unavailable";
 
+export function assertLargeScalingLosslessCoverage(report) {
+  const [arm] = report.arms, receipt = arm.losslessNativeArchive;
+  assert.ok(receipt && receipt.complete === true && receipt.readbackVerified === true && receipt.rawRemoved === true);
+  assert.equal(receipt.sampleView.nativeAcquisitionIntervalMs, 100);
+  assert.equal(receipt.sampleView.allConversionSamplesRetained, true);
+  assert.equal(receipt.sampleView.everyRawSamplePreservedInLosslessJournal, true);
+  assert.equal(receipt.sampleView.primaryFormulaChanged, false); assert.equal(receipt.sampleView.processesExcluded, false);
+  assert.equal(receipt.sampleView.totalNativeSamples, receipt.records);
+  const phase = receipt.summary.native.phases.find(p => p.phase === "conversion"); assert.ok(phase?.peak);
+  assert.equal((phase.peak[3] - arm.blank.privateBytes) / 1048576, arm.memory.incrementalPrivateMiB);
+  assert.equal(phase.validSamples, arm.memory.validSamples); assert.equal(phase.unavailableSamples, arm.memory.unavailableSamples);
+  assert.equal(phase.peak[0], arm.memory.peak.sequence);
+  return { conversionPeakAndCountsEqualFullLosslessJournal: true, completeNativeRecords: receipt.records };
+}
+
 export function renderLargeScalingReport(report, samples) {
   assert.equal(report.largeScalingCandidate, true); assert.equal(report.nativeConversionUsed, false); assert.equal(report.publicAcceptance, false);
   assert.ok(["passed-first-real-5gb-scaling-not-repeats-or-public-acceptance", "failed-not-acceptance"].includes(report.status));
@@ -24,6 +39,7 @@ export function renderLargeScalingReport(report, samples) {
     assert.equal(selected.length - available.length, arm.memory.unavailableSamples);
   }
   if (passed) {
+    assertLargeScalingLosslessCoverage(report);
     assertHevcHeaderParserCore(report.candidateBuild); assertLargeScalingExtent(report.fixture.bytes); assertLargeScalingExtent(job.metrics.outputBytes);
     assert.equal(report.fixture.loops, MKV_SCALE_5GB.loops); assert.equal(v.video.packets, MKV_SCALE_5GB.expectedVideoPackets);
     assert.ok(v.video.packetBytesIdentical && v.aac.packetBytesIdentical && v.completeDecodedVideoAndPcmEqual && v.candidateGate.passed);

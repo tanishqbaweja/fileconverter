@@ -1,5 +1,34 @@
 # Remaining work audit
 
+2026-11-16 M-03: **first genuine >4GiB media conversion with complete independent
+content validation PASS**, one job, not stress repeats/release. Receipt
+23-19-43-422Z/fullSHA81ae205ad1f3455983c8d78863642a92565f10ff3483cbd8b9e6efc8f82ef9c2.
+Exact same5,347,972,392B pinned source ->5,350,648,699B actual browser MP4 in
+49.8295s/fullSHAbc0d3bac…5a38a835. Every259200 video payload/PTS/259198 known DTS/
+adjacent interval,507600AAC/1024trim and codec initialization match. COMPLETE
+source/output video+PCM decoded hashes equal,259200frames each,0drop/dup,
+46/47 progress reports;1372997/1412183ms independent native validation. No native
+conversion, decoded media copy, fidelity relaxation or matched speedup claim.
+
+Full-tree peak173.59375MiB over original blank; cleanup44.3203125MiB over original
+loaded idle;457valid/0missing conversion samples. Wasm24MiB/read256KiB/write+queue
+<=1MiB/one pending. Lossless full native journal27855records crossed old20000cap,
+all90,710,005 raw bytes compressed/authenticated/replayed into1,196,462B; raw
+removed. EVERY conversion sample/peak/count retained;3573 graph points thin only
+validation outside conversion, no process omission or baseline switch. All
+generated source/output/owned profiles/servers/tools/61 Chrome births removed;
+original exact size/fullSHA preserved. Prior interrupted run stays incomplete.
+
+New authenticated first-scale reference enables FUTURE repeats to bind all
+bytes/SAME native without replaying46min complete-content proof. It is not an
+actual repeat result. Next required scale3 same-page +1 clean-session runs,
+near10GB, long-session retention cause and wider full-spec/release gates remain
+open; public engine not promoted. Do not rerun accepted full decodes unchanged.
+164 focused regression/evidence checks and affected lint PASS. New full-journal
+replay test authenticates all27855 records and exact peak/count parity; old
+interrupted HTML/CSV stays byte-reproducible. Read-only post-run exact owned
+runtime/source-directory and server-root absence confirmed.
+
 2026-11-16 M-03: **genuine5.35GB browser conversion completed; independent full
 decode interrupted, NOT ACCEPTED**. Receipt09-42-55-791Z/fullSHA5898cb81796508782f0b22512e582273ed29c7c29e1cc8c40378fdbb1eee230d.
 Input5,347,972,392B/fullSHA5583bb8e…389b9a7; output5,350,648,699B/fullSHAbc0d3bac…

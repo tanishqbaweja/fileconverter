@@ -1,5 +1,35 @@
 # Tested conversion ledger
 
+2026-11-16 **first real5.35GB FULL qualification PASS (one job only)**.
+Receipt23-19-43-422Z/fullSHA81ae205ad1f3455983c8d78863642a92565f10ff3483cbd8b9e6efc8f82ef9c2.
+Same genuine5,347,972,392B source/fullSHA5583bb8e…389b9a7 -> browser MP4
+5,350,648,699B/fullSHAbc0d3bac…5a38a835 in49.8295s. Every259200 video payload/PTS,
+259198 knownDTS/output decode interval exact;507600AAC/1024 trim and codec init
+bytes identical; source/output presentation endpoint10827.868s exact.
+
+FRESH COMPLETE source AND output decoding259200frames each, no drops/dups,
+same decoded videoSHAf04bfd9d…775fe7 and PCMSHAfee43714…fdad07.46/47 genuine
+progress reports,1372997/1412183ms native VALIDATION, no decoded file or full-media
+buffer. Native tools did not convert the browser file; the49.8295s browser remux
+and46min independent validation are distinct. Not a matched speedup benchmark.
+
+Full Chrome delta173.59375MiB over SAME original blank,457valid/0missing;
+cleanup44.3203125MiB above original loaded idle. Wasm24MiB fixed current core,
+read256KiB/write+queue<=1MiB/1pending. ALL27855 acquired100ms samples preserved
+and independently streamed/replayed:90,710,005B raw ->1,196,462B compact journal,
+raw deleted, entire conversion peak/count equal view.3573 graph samples retain
+EVERY conversion point;24282 validation-only points thinned, no processes omitted.
+All5.35GB source/output/profile/server/tools/61 Chrome births removed, original
+test.mkv exact before/after size/fullSHA unchanged. JSON/CSV/HTML/native journals
+retained. Immutable reference added so FUTURE repeats can inherit complete proof
+ONLY through every source/output byte and SAME native build, never relabelled a
+fresh decode. Required3+1 scale repeats, near10GB, long-session retention and
+broader release/full-spec work remain open. Do not replay completed full decodes.
+164 focused regression/evidence checks and affected lint PASS, including full
+27855-row lossless replay and exact primary-peak/count parity. Historical
+interrupted report bytes remain reproducible; read-only exact owned directories
+and server root confirmed absent after successful cleanup.
+
 2026-11-16 **first actual >4GiB browser remux completed; full qualification
 INCOMPLETE**, superseding preparation-only below. Receipt09-42-55-791Z/fullSHA
 5898cb81796508782f0b22512e582273ed29c7c29e1cc8c40378fdbb1eee230d.

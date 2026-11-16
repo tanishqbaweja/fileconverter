@@ -3,7 +3,7 @@ import { readFile, writeFile } from "node:fs/promises";
 import { createHash } from "node:crypto";
 import { gunzipSync } from "node:zlib";
 import path from "node:path";
-import { renderLargeScalingReport } from "./lib/mkv-large-scaling-report.mjs";
+import { renderLargeScalingReport, assertLargeScalingLosslessCoverage } from "./lib/mkv-large-scaling-report.mjs";
 import { replayLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
 assert.equal(process.argv.length, 3);
 const root = path.resolve(import.meta.dirname, ".."), file = process.argv[2];
@@ -16,7 +16,10 @@ const raw = gunzipSync(packed, { maxOutputLength: 128 * 1048576 }); assert.equal
 if (arm.losslessNativeArchive) {
   const receipt = arm.losslessNativeArchive;
   assert.match(receipt.file, /^output\/playwright\/[a-zA-Z0-9.-]+\.ndjson\.gz$/);
-  if (receipt.complete !== false) await replayLosslessNativeMemoryJournal({ ...receipt, file: path.join(root, receipt.file) });
+  if (receipt.complete !== false) {
+    await replayLosslessNativeMemoryJournal({ ...receipt, file: path.join(root, receipt.file) });
+    assertLargeScalingLosslessCoverage(report);
+  }
   else assert.equal(report.status, "failed-not-acceptance");
 }
 for (const [extension, contents] of Object.entries(renderLargeScalingReport(report, JSON.parse(raw)))) {
