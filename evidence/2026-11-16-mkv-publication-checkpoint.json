@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-16T14:02:17.598Z",
+  "scope": "Temporary publication guard and regression checkpoint; underlying conversion remains required and unqualified",
+  "baseCommit": "149e6241be68dbd8dbfdff25627c14ebb99f302f",
+  "sourcePins": {
+    "lib/capability-registry.ts": "2cf533d4ad37fd8da578b0332c4ee69bc036af4a650f5a32f655c0306d5911b6",
+    "lib/published-catalogue.ts": "5e608338709d34ff3d6a668fe9162e3f1db4221e7517ecc0dfa47a5a2bc8b6d8",
+    "app/converter/ConverterApp.tsx": "a89177c10e3e97851980b30f7756a4805db337cfbfb62b4c21835bdc021d0df7",
+    "scripts/check-mkv-publication-hold.mjs": "10a4c0458209777531eb1bdb164667643d391f163b287145cf3057e1fbe1eaad",
+    "scripts/lib/tested-ledger-notes.mjs": "2623ceea544af009560180f8d4a3b50538c0d7d4815af5cf04a27dddcb217a3e",
+    "scripts/generate-tested-ledger.mjs": "a0e017dffd8e0b2d15fd62def48beb25a23368b415893a86ff868a15ce31a8d8",
+    "scripts/audit-public-evidence.mjs": "63e0429d9027a7111a9e9d8fb031b51163cede8656d70dc2c328cdbe63d2e109",
+    "scripts/lib/reviewed-mkv-publication-hold.mjs": "63dc35fd2b4dad17d481d147488fca2ce1c949f1c21e2dbb12f06fe6a5083b5c",
+    "scripts/lib/reviewed-docx-html-integration.mjs": "5c95bd52f8110c7d0f43882121a7fe3faf55910c3fcf8f55eeb75f913d0e34ef",
+    "scripts/qualify-installed-compatibility.mjs": "231beed7b534b4ec3bb60bfb1f77313aec19b999e4968b16ecc6c22b1a2c7c0c",
+    "evidence/public-profile-evidence.json": "c3445af62ad09b288766293114e4691ce101d9285b45522477ccd63fc85b4751",
+    "evidence/2026-11-16-mkv-publication-hold.json": "e916f9aad9033f6a14c96c71942196100132244db8cdb4e05455f773371419aa",
+    "fixtures/source/mkv-publication-hold-reviewed-2026-11-16.json": "50752ccf73ab494915a32a21a6de4ec9ebe1113ec9718191278357626148191e"
+  },
+  "portable": {
+    "command": "node scripts/run-unit-suite.mjs portable",
+    "files": 775,
+    "passed": 2848,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 107981.5868,
+    "prerequisiteQualificationFilesNotRun": 164
+  },
+  "firstPortableAttempt": {
+    "passed": 2836,
+    "failed": 10,
+    "durationMs": 114559.163,
+    "failuresRecordedInLedgers": true
+  },
+  "focusedGroups": {
+    "initial": 62,
+    "repaired": 94,
+    "holdLedgerAndLink": 13,
+    "overlapNotSummed": true
+  },
+  "productionBuild": {
+    "command": "node --import ./scripts/lib/hidden-unit-subprocesses.mjs scripts/run-vinext.mjs build",
+    "exitCode": 0,
+    "existingViteConfigAndSourcemapWarnings": true
+  },
+  "typeScript": {
+    "command": "node node_modules/typescript/bin/tsc --noEmit",
+    "exitCode": 0
+  },
+  "affectedLint": {
+    "bothGroupsPassed": true,
+    "maxWarnings": 0
+  },
+  "publicEvidenceAudit": {
+    "publicRoutes": 402,
+    "entries": 402,
+    "fullAndManifestAuditPassed": true,
+    "removedOnly": "mkv-to-mp4",
+    "other402EntriesUnchanged": true
+  },
+  "ledger": {
+    "regenerationByteIdentical": true,
+    "manualPrefixSuffixAndUnmarkedChronologyPreserved": true,
+    "legacyChronologyChars": 747796
+  },
+  "browser": {
+    "receipt": "evidence/2026-11-16T13-51-19-029Z-mkv-publication-ui.json",
+    "sha256": "bec6dbd1268920d3833cbb0254e96f3ca8153c1bd4e18751968df98128cae27b",
+    "headless": true,
+    "conversions": 0,
+    "privateQualificationRetained": true,
+    "observedChromeBirths": 15,
+    "ownedRuntimeRemoved": true,
+    "headedOrManualCoverageVerified": false
+  },
+  "productionWorker": {
+    "bytes": 424331,
+    "sha256": "9935a1ff6ee00c14197da2dabf0a36b81e893d379601a6ccaaf1e4372521c9cf",
+    "unchanged": true
+  },
+  "original": {
+    "bytes": 2958573265,
+    "sha256": "31f36695b5b44c62125a9e4264e84dc085accd21c02cc3487aae597f54b9db34",
+    "freshFullHashPassed": true
+  },
+  "publicEngineReplacement": false,
+  "newSpeedOrConversionMemoryAcceptance": false,
+  "wholeGoalComplete": false
+}

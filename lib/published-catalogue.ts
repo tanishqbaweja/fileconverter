@@ -1,9 +1,9 @@
-import { conversionProfiles, formatById, type ConversionProfile } from "./capability-registry";
+import { conversionProfiles, formatById, isPublishedProfile, type ConversionProfile } from "./capability-registry";
 
 export const CATALOGUE_PAGE_SIZE = 24;
 export const CATALOGUE_QUERY_LIMIT = 128;
 // Immutable registry metadata only: never filenames, file handles or conversion data.
-const published = conversionProfiles.filter(profile => profile.public && profile.automatedTestStatus === "passed");
+const published = conversionProfiles.filter(isPublishedProfile);
 const entries = published.map(profile => ({
   profile,
   search: [profile.id, profile.input, profile.output, profile.route,

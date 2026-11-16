@@ -15,6 +15,7 @@ import {
   formatById,
   preferredProfileFor,
   publicProfilesFor,
+  temporarilyWithheldProfilesFor,
   type ConversionProfile,
 } from "../../lib/capability-registry";
 import {
@@ -469,6 +470,10 @@ export function ConverterApp() {
   );
   const svgRasterizationWithheld = inputFormat === "svg" && !testMode &&
     !profiles.some((profile) => profile.id === "svg-to-png");
+  const temporarilyWithheldProfiles = useMemo(
+    () => temporarilyWithheldProfilesFor(inputFormat),
+    [inputFormat],
+  );
   const audioEncodingOptionsEnabled = supportsAudioEncodingOptions(selectedProfile);
   const selectedAudioCodec = audioCodecForProfile(selectedProfile);
   const selectableAudioProfiles = useMemo(
@@ -1843,6 +1848,14 @@ export function ConverterApp() {
           {error && !file ? (
             <ConversionError message={error} />
           ) : null}
+
+          {file && !testMode ? temporarilyWithheldProfiles.map(profile => (
+            <div key={profile.id} className="honesty-note" role="status"
+              data-testid="withheld-profile-notice" data-profile-id={profile.id}>
+              <strong>{profile.publicationHold!.title}</strong>
+              <span>{profile.publicationHold!.reason}</span>
+            </div>
+          )) : null}
 
           {file && svgRasterizationWithheld ? (
             <div className="honesty-note" role="status" data-testid="svg-qualification-notice">

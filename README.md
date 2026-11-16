@@ -208,7 +208,7 @@ This is small-case UI/recovery evidence, not large-file qualification.
 The selector and published matrix are generated from
 `lib/capability-registry.ts`. A route is visible only when its implementation,
 independent output validation, three-run repeatability check, cleanup check, and
-complete-Chromium memory profile have passed. The current registry publishes 403
+complete-Chromium memory profile have passed. The current registry publishes 402
 routes:
 
 The published catalogue mounts at most 24 display cards at a time. Search
@@ -433,6 +433,15 @@ are in `evidence/mkv-to-mp4-current-chrome-optimization-2026-09-21.json`.
 Pushed commit `c3a525a` passed the exact no-Docker `within-direct` rebuild in
 [run 35809382089](https://github.com/tanishqbaweja/fileconverter/actions/runs/35809382089)
 with no retained build artifact.
+
+Publication hold (2026-11-16): lossless `mkv-to-mp4` is temporarily absent from
+the public selector and catalogue. The released core has the timestamp defect
+below; its corrected private replacement has not passed the unchanged 250 MiB
+complete-browser repeat-memory gate (repeat 3: 405.113 MiB). Historical results
+remain retained, not current certification. Restoring this route remains required
+work; other destinations are not advertised as equivalent lossless substitutes.
+Explicit localhost qualification remains available. See
+`evidence/2026-11-16-mkv-publication-hold.json` and `REMAINING_WORK.md`.
 
 Known timing limitation: on a verified HEVC/AAC Matroska fixture, the current
 staged MKV-to-MP4 route copied every compressed packet but changed their

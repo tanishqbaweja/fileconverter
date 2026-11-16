@@ -38,6 +38,9 @@ test("current application mounts the bounded component with explicit lifecycle a
   // unique and reversible; the complete historical UI comparison below remains
   // mandatory and still catches every unrelated change.
   const codeOwnerEdits = [
+    ['  publicProfilesFor,\n  temporarilyWithheldProfilesFor,\n', '  publicProfilesFor,\n'],
+    ['  const temporarilyWithheldProfiles = useMemo(\n    () => temporarilyWithheldProfilesFor(inputFormat),\n    [inputFormat],\n  );\n  const audioEncodingOptionsEnabled', '  const audioEncodingOptionsEnabled'],
+    ['          {file && !testMode ? temporarilyWithheldProfiles.map(profile => (\n            <div key={profile.id} className="honesty-note" role="status"\n              data-testid="withheld-profile-notice" data-profile-id={profile.id}>\n              <strong>{profile.publicationHold!.title}</strong>\n              <span>{profile.publicationHold!.reason}</span>\n            </div>\n          )) : null}\n\n          {file && svgRasterizationWithheld ? (', '          {file && svgRasterizationWithheld ? ('],
     ['Recorded Chrome tests: valid output and complete-process-tree memory checks through ${formatBytes(selectedProfile.maxTestedBytes)}. Not a certification of this browser/version or a live memory measurement.',
       'Correctness and complete-browser memory tested through ${formatBytes(selectedProfile.maxTestedBytes)}.'],
     ['    [profileId, profiles],\n  );\n  const svgRasterizationWithheld = inputFormat === "svg" && !testMode &&\n    !profiles.some((profile) => profile.id === "svg-to-png");\n', '    [profileId, profiles],\n  );\n'],
@@ -136,7 +139,7 @@ test("current component reuses only stateless display slots and preserves the te
   assert.doesNotMatch(card, /<(?:input|button|select|textarea|[A-Z])\b|\bon[A-Z]\w*=|\bref=|dangerouslySetInnerHTML/);
 });
 
-test("all403 current public registry cards retain old rendered content/order; unqualified SVG and q7 stay hidden", () => {
+test("all402 current public registry cards retain old rendered content/order; unqualified routes stay hidden", () => {
   const tree = ts.createSourceFile("old.tsx", oldApp, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
   let expression, formatter;
   const visit = node => {
@@ -160,7 +163,7 @@ test("all403 current public registry cards retain old rendered content/order; un
   for (let page = 0; page < cataloguePage("", 0).pages; page++) {
     const cards = articleHtml(render("", page)); assert.ok(cards.length > 0 && cards.length <= 24); observed.push(...cards);
   }
-  assert.equal(expected.length, 403); assert.deepEqual(observed, expected);
+  assert.equal(expected.length, 402); assert.deepEqual(observed, expected);
   assert.equal(published.some(profile => profile.id === "svg-to-png"), false);
   assert.equal(published.some(profile => profile.id === "opus-to-ogg"), false);
   for (const query of ["PNG", "NO_MATCH_音楽", "   "]) {

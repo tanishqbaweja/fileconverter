@@ -2,7 +2,8 @@ import { readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { conversionProfiles, formatById } from "../lib/capability-registry.ts";
+import { conversionProfiles, formatById, isPublishedProfile } from "../lib/capability-registry.ts";
+import { regenerateTestedLedgerPreservingNotes } from "./lib/tested-ledger-notes.mjs";
 
 const projectRoot = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
@@ -69,9 +70,7 @@ const ledgerDate = new Intl.DateTimeFormat("en-CA", {
   day: "2-digit",
 }).format(new Date());
 
-const publicPassed = conversionProfiles.filter(
-  (profile) => profile.public && profile.automatedTestStatus === "passed",
-);
+const publicPassed = conversionProfiles.filter(isPublishedProfile);
 const compactEvidence = JSON.parse(
   await readFile(
     path.join(projectRoot, "evidence", "public-profile-evidence.json"),
@@ -939,6 +938,12 @@ for (const report of failedReports.sort((left, right) =>
   );
 }
 
+const publicationHolds = conversionProfiles.filter(profile => profile.publicationHold);
+if (publicationHolds.length) {
+  lines.push("", "## Temporarily withheld routes — still required work", "",
+    "These are not public passed profiles. Historical measurements are retained, not current release certification; private localhost qualification remains available.", "");
+  for (const profile of publicationHolds) lines.push(`- **${cell(profile.id)}**: ${profile.publicationHold.reason} Evidence: ${profile.publicationHold.evidenceFiles.map(file => "`" + file + "`").join(", ")}.`);
+}
 lines.push(
   "",
   "## Every public passed profile",
@@ -1338,7 +1343,8 @@ lines.push("", "Terminal late-allocator focusedcheckpoint8/8 PASS254.9596ms; fou
 
 await writeFile(
   ledgerPath,
-  `${lines.join("\n")}\n\n${headedAuditNote}\n\n${requirementTestIndexNote}\n\n${subtitleFieldMatrixNote}\n\n${svgSafetyFidelityNote}\n\n${heifHeicFeasibilityNote}\n\n${cameraRawFeasibilityNote}\n\n${webCodecsAccelerationNote}\n\n${aviOutputFeasibilityNote}\n\n${aviSourceExpansionNote}\n\n${mp4AviCurrentChromeNote}\n\n${movAviCurrentChromeNote}\n\n${threeGpAviCurrentChromeNote}\n\n${mkvAviCurrentChromeNote}\n\n${mpegTsAviCurrentChromeNote}\n\n${aviMpeg2Note}\n\n${aviThreeGpNote}\n\n${aviMovNote}\n\n${aviMpegTsNote}\n\n${aviMpegTsCurrentChromeNote}\n\n${aviFlvNote}\n\n${aviOgvNote}\n\n${av1Mp4FeasibilityNote}\n\n${aiffSpecialistNote}\n`,
+  regenerateTestedLedgerPreservingNotes(previousLedger,
+    `${lines.join("\n")}\n\n${headedAuditNote}\n\n${requirementTestIndexNote}\n\n${subtitleFieldMatrixNote}\n\n${svgSafetyFidelityNote}\n\n${heifHeicFeasibilityNote}\n\n${cameraRawFeasibilityNote}\n\n${webCodecsAccelerationNote}\n\n${aviOutputFeasibilityNote}\n\n${aviSourceExpansionNote}\n\n${mp4AviCurrentChromeNote}\n\n${movAviCurrentChromeNote}\n\n${threeGpAviCurrentChromeNote}\n\n${mkvAviCurrentChromeNote}\n\n${mpegTsAviCurrentChromeNote}\n\n${aviMpeg2Note}\n\n${aviThreeGpNote}\n\n${aviMovNote}\n\n${aviMpegTsNote}\n\n${aviMpegTsCurrentChromeNote}\n\n${aviFlvNote}\n\n${aviOgvNote}\n\n${av1Mp4FeasibilityNote}\n\n${aiffSpecialistNote}\n`, aiffSpecialistNote),
   "utf8",
 );
 process.stdout.write(`${ledgerPath}\n`);

@@ -2,16 +2,19 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { stat, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { publicProfilesFor } from "../lib/capability-registry.ts";
+import { conversionProfiles, publicProfilesFor } from "../lib/capability-registry.ts";
 import { createOwnedRuntimeScratch } from "../scripts/lib/owned-runtime-scratch.mjs";
 import { INSTALLED_COMPATIBILITY_CASES as cases, INSTALLED_COMPATIBILITY_LIMITS as limits, installedCompatibilityPaths,
   isCompatibilityStaticPath, makeCompatibilityWave, validateCompatibilityMetrics } from "../scripts/lib/installed-compatibility-plan.mjs";
 import { validateInstalledCompatibilityOutput } from "../scripts/lib/installed-compatibility-validators.mjs";
 
-test("eight real public families with finite fixtures, original MKV is never copied or substituted", async () => {
+test("eight historical families retain finite fixtures; held video prerequisite is explicit, never silently skipped", async () => {
   assert.equal(cases.length, 8); assert.equal(new Set(cases.map(c => c.family)).size, 8);
   for (const c of cases) {
-    assert.ok(publicProfilesFor(c.extension).some(p => p.id === c.profileId), c.profileId);
+    if (c.profileId === "mkv-to-mp4") {
+      const held = conversionProfiles.find(p => p.id === c.profileId);
+      assert.equal(held.public, false); assert.equal(held.automatedTestStatus, "failed"); assert.ok(held.publicationHold);
+    } else assert.ok(publicProfilesFor(c.extension).some(p => p.id === c.profileId), c.profileId);
     if (c.fixture) {
       assert.match(c.fixture, /^fixtures\/[a-z]+\/[a-zA-Z0-9.-]+$/); assert.doesNotMatch(c.fixture, /test\.mkv$/);
       const info = await stat(new URL("../" + c.fixture, import.meta.url)); assert.ok(info.size > 0 && info.size <= limits.inputBytes);

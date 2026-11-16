@@ -116,7 +116,7 @@ test("normal selector exposes only public profiles with passed evidence", () => 
 test("initial selection prefers an exact same-category stream copy", () => {
   assert.equal(
     preferredProfileFor("mkv", publicProfilesFor("mkv"))?.id,
-    "mkv-to-mp4",
+    "mkv-to-ogv",
   );
   assert.equal(
     preferredProfileFor("mp4", publicProfilesFor("mp4"))?.id,
@@ -140,7 +140,7 @@ test("every public FFmpeg profile discloses route and metadata behavior", () => 
   const publicMedia = conversionProfiles.filter(
     (profile) => profile.public && profile.engine.startsWith("ffmpeg-"),
   );
-  assert.equal(publicMedia.length, 275); // Opus-to-Vorbis q7 awaits its own qualification.
+  assert.equal(publicMedia.length, 274); // Lossless MKV/MP4 and Opus/Vorbis q7 remain withheld.
   for (const profile of publicMedia) {
     const metadata = profile.metadataLimitations.join(" ");
     const allLimitations = [
@@ -226,11 +226,13 @@ test("registry keeps unqualified SVG and the changed Opus-Vorbis policy pending 
   );
   assert.deepEqual(
     failed.map((profile) => profile.id),
-    ["ogv-to-amr", "mp4-to-ogv", "mkv-to-avi", "hevc-to-webm-vp9"],
+    ["mkv-to-mp4", "ogv-to-amr", "mp4-to-ogv", "mkv-to-avi", "hevc-to-webm-vp9"],
   );
   for (const profile of failed) {
     assert.equal(profile.public, false);
-    if (profile.id === "mkv-to-avi") {
+    if (profile.id === "mkv-to-mp4") {
+      assert.equal(profile.maxTestedBytes, 10_737_988_703); // Historical extent, not current qualification.
+    } else if (profile.id === "mkv-to-avi") {
       assert.equal(profile.maxTestedBytes, 215_339_432);
     } else {
       assert.equal(profile.maxTestedBytes, null);

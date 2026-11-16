@@ -32,6 +32,11 @@ import { INSTALLED_COMPATIBILITY_CASES as cases, INSTALLED_COMPATIBILITY_TARGETS
 import { validateInstalledCompatibilityOutput } from "./lib/installed-compatibility-validators.mjs";
 
 assert.equal(process.platform, "win32");
+// Fail before launching or touching fixtures, rather than silently replacing or
+// skipping a historical family whose public qualification has been withdrawn.
+const { publicProfilesFor } = await import("../lib/capability-registry.ts");
+for (const c of cases) assert.ok(publicProfilesFor(c.extension).some(p => p.id === c.profileId),
+  `Compatibility plan needs a newly validated public replacement before running: ${c.profileId}`);
 const id = process.argv[2]; assert.ok(process.argv.length === 3 && Object.hasOwn(targets, id), "Select brave or opera-gx explicitly");
 const root = path.resolve(import.meta.dirname, ".."), execute = promisify(execFile), pause = ms => new Promise(resolve => setTimeout(resolve, ms));
 const stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), sha = b => createHash("sha256").update(b).digest("hex");

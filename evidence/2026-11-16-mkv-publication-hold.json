@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "historicalPublicManifestSha256": "a62ed4e6e6793494ada6f115a7cfe4bd9accc682f5e3312685b861ed9cfeab1b",
+  "profileId": "mkv-to-mp4",
+  "status": "temporarily-withheld-pending-correction-and-qualification-not-permanently-unsupported",
+  "public": false,
+  "automatedTestStatus": "failed",
+  "privateLocalhostQualificationRetained": true,
+  "historicalFunctionalMaximumInputBytes": 10737988703,
+  "historicalPublicEvidenceManifestSha256": "a62ed4e6e6793494ada6f115a7cfe4bd9accc682f5e3312685b861ed9cfeab1b",
+  "historicalPublicEvidence": {
+    "profileId": "mkv-to-mp4",
+    "maxTestedBytes": 10737988703,
+    "repeatableEvidence": {
+      "report": "2026-09-22T09-16-40-121Z-mkv-to-mp4-direct-handle-stress.json",
+      "reportSha256": "ed953da38a2f7a98ff71860c53176d5bb5082b4050ac6561389498757df1e26d",
+      "runs": 3,
+      "sourceBytes": 2958573265,
+      "incrementalPrivateMiB": 207.09375
+    },
+    "maximumSizeEvidence": {
+      "report": "2026-08-13T12-44-21-282Z-mkv-to-mp4-stress.json",
+      "reportSha256": "d0ce3249c728a442683a893e0fc589da9c02ff55ec5b4e9c5f76eb91058fb577",
+      "runs": 1,
+      "sourceBytes": 10737988703,
+      "incrementalPrivateMiB": 210.33984375
+    }
+  },
+  "shippingBinary": {
+    "path": "public/engines/remux/within-direct.wasm",
+    "bytes": 1197888,
+    "sha256": "306d44ccae312668190f6e43c6e51867981e75868c6c45a7267f1b24e3ce30d0"
+  },
+  "evidence": [
+    {
+      "path": "evidence/2026-11-08-mkv-staged-timeline-cause.json",
+      "sha256": "40a5ee6ed02a3ced8ded257f384330c233ef3f7486b62963b3b0c4d886721b96"
+    },
+    {
+      "path": "evidence/2026-11-16T13-03-58-368Z-mkv-hevc-header-core-production-staged-original-repeats.json",
+      "sha256": "d5edb76abe6f4a239bb44d89bcae0c121d7a4085d7964b0f797e5d62ced18258"
+    }
+  ],
+  "reasons": [
+    "Unmodified released remuxer changed verified source video timestamps by +83 ms and audio timestamps by +21..83 ms; unchanged timing checks failed. Audible desynchronization was not measured.",
+    "Corrected private native core passes complete original and larger content checks, but unmodified production-staged original repeat 3 exceeded 250 MiB at 405.11328125 MiB. No public engine replacement is authorized by those results."
+  ],
+  "publicProfilesBefore": 403,
+  "publicProfilesAfter": 402,
+  "otherPublicProfilesOrNativeEnginesChanged": false,
+  "fidelityMemoryPrivacyOrCleanupThresholdsWeakened": false,
+  "publicEngineReplacement": false,
+  "qualifiedLosslessMkvMp4StillRequiredByGoal": true,
+  "wholeGoalComplete": false
+}

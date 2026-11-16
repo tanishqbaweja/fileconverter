@@ -3,7 +3,7 @@ import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { conversionProfiles, formats } from "../lib/capability-registry.ts";
+import { conversionProfiles, formats, isPublishedProfile } from "../lib/capability-registry.ts";
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const reportRoot = path.join(projectRoot, "outputs", "reports");
@@ -85,9 +85,7 @@ function compactEntryIsValid(profile, entry) {
   );
 }
 
-const publicPassed = conversionProfiles.filter(
-  (profile) => profile.public && profile.automatedTestStatus === "passed",
-);
+const publicPassed = conversionProfiles.filter(isPublishedProfile);
 const pending = conversionProfiles.filter(
   (profile) => profile.automatedTestStatus === "pending",
 );
@@ -95,7 +93,7 @@ const publicPending = pending.filter((profile) => profile.public);
 const hiddenPending = pending.filter((profile) => !profile.public);
 const leaked = conversionProfiles.filter(
   (profile) =>
-    profile.public && profile.automatedTestStatus !== "passed",
+    profile.public && (profile.automatedTestStatus !== "passed" || profile.publicationHold),
 );
 const pdfFormats = formats.filter(
   (format) =>

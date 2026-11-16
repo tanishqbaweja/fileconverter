@@ -1,0 +1,207 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-16T13:51:19.030Z",
+  "scope": "Unmodified production public/private selector and catalogue only; no conversion or memory acceptance",
+  "headless": true,
+  "windowsHide": true,
+  "conversions": 0,
+  "publicEngineReplacement": false,
+  "wholeGoalComplete": false,
+  "failures": [],
+  "requests": 24,
+  "forbiddenRequests": [],
+  "sourcePins": {
+    "scripts/check-mkv-publication-hold.mjs": "10a4c0458209777531eb1bdb164667643d391f163b287145cf3057e1fbe1eaad",
+    "app/converter/ConverterApp.tsx": "a89177c10e3e97851980b30f7756a4805db337cfbfb62b4c21835bdc021d0df7",
+    "lib/capability-registry.ts": "2cf533d4ad37fd8da578b0332c4ee69bc036af4a650f5a32f655c0306d5911b6",
+    "lib/published-catalogue.ts": "5e608338709d34ff3d6a668fe9162e3f1db4221e7517ecc0dfa47a5a2bc8b6d8",
+    "evidence/public-profile-evidence.json": "c3445af62ad09b288766293114e4691ce101d9285b45522477ccd63fc85b4751"
+  },
+  "host": {
+    "acquiredAt": "2026-11-16T13:51:19.4317663Z",
+    "freePhysicalBytes": 15254499328,
+    "freeVirtualBytes": 24756592640,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "browser": {
+    "version": "157.0.8103.51",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4191896,
+      "sha256": "5b835c10836045119334d9524e62437110e00e1bd20612c9072a0ae155f94a17",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "13792273859582016",
+        "birthtimeNs": "1794432192714086800",
+        "mtimeNs": "1794093782382780000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\157.0.8103.51\\chrome.dll",
+      "bytes": 311393432,
+      "sha256": "32a0c2f1b144c2ad57dbb42a36c33c57e2f261c856f9bca7166fd8c9b70cbc00",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "11821949022607434",
+        "birthtimeNs": "1794432192722385900",
+        "mtimeNs": "1794093790383278000"
+      }
+    }
+  },
+  "runtime": "H:\\Github Repositories\\fileconverter\\work\\mkv-publication-check-OCOYya",
+  "fixture": {
+    "bytes": 5945271,
+    "sha256": "5b8fdc40c1679299442736984826ff4d01be2e69915906ea4e31c0dde267dedc",
+    "reusableSourceModified": false
+  },
+  "serverLaunch": {
+    "schemaVersion": 1,
+    "role": "owned-production-test-server",
+    "identity": {
+      "pid": 12080,
+      "parentPid": 12724,
+      "createdAt": "2026-11-16T13:51:20.0306980Z"
+    },
+    "root": "H:\\Github Repositories\\fileconverter",
+    "directory": "H:\\Github Repositories\\fileconverter\\work\\mkv-publication-check-OCOYya",
+    "executable": "C:\\Program Files\\nodejs\\node.exe",
+    "arguments": [
+      "node_modules/wrangler/bin/wrangler.js",
+      "dev",
+      "--config",
+      "dist/server/wrangler.json",
+      "--port",
+      "63539",
+      "--persist-to",
+      "H:\\Github Repositories\\fileconverter\\work\\mkv-publication-check-OCOYya\\wrangler"
+    ],
+    "baseURL": "http://127.0.0.1:63539",
+    "windowsHide": true,
+    "nestedSubprocessPreload": "--import=\"file:///H:/Github%20Repositories/fileconverter/scripts/lib/hidden-unit-subprocesses.mjs\""
+  },
+  "launch": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\mkv-publication-check-OCOYya\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "about:blank"
+  ],
+  "browserBirth": {
+    "pid": 944,
+    "parentPid": 12724,
+    "createdAt": "2026-11-16T13:51:22.0093730Z"
+  },
+  "publicSelection": {
+    "method": "DOM.setFileInputFiles",
+    "selectedLocalPathCount": 1,
+    "selectedFileBytes": 5945271,
+    "contentPayloadsSent": 0,
+    "nodeFileContentsRead": false,
+    "productionInputElementUsed": true,
+    "fileMetadataUnchanged": true
+  },
+  "publicOptionIds": [
+    "gzip-compress",
+    "bzip2-compress",
+    "xz-compress",
+    "mkv-to-m4a",
+    "mkv-to-wav",
+    "mkv-to-aiff",
+    "mkv-to-amr",
+    "mkv-to-flac",
+    "mkv-to-wma",
+    "mkv-to-ogv",
+    "mkv-to-webm",
+    "mkv-to-webm-vp9",
+    "mkv-to-mp4-mpeg4",
+    "mkv-to-h264",
+    "mkv-to-hevc",
+    "mkv-to-mpeg-ts",
+    "mkv-to-3gp",
+    "mkv-to-mov",
+    "mkv-to-flv",
+    "mkv-to-m2v",
+    "mkv-to-m4v",
+    "mkv-to-webm-av1",
+    "mkv-to-ivf",
+    "mkv-to-mp3",
+    "mkv-to-aac",
+    "mkv-to-ogg",
+    "mkv-to-opus"
+  ],
+  "publishedRoutes": 402,
+  "screenshot": "output\\playwright\\2026-11-16T13-51-19-029Z-mkv-publication-hold\\public-hold.png",
+  "privateSelection": {
+    "method": "DOM.setFileInputFiles",
+    "selectedLocalPathCount": 1,
+    "selectedFileBytes": 5945271,
+    "contentPayloadsSent": 0,
+    "nodeFileContentsRead": false,
+    "productionInputElementUsed": true,
+    "fileMetadataUnchanged": true
+  },
+  "privateQualificationRetained": true,
+  "pageErrors": [],
+  "status": "passed-headless-selector-only-not-conversion-acceptance",
+  "browserCleanup": {
+    "status": "owned-observed-pids-absent",
+    "identity": {
+      "pid": 944,
+      "parentPid": 12724,
+      "createdAt": "2026-11-16T13:51:22.0093730Z"
+    },
+    "observedPids": [
+      944,
+      5328,
+      18784,
+      18984,
+      19936,
+      21908,
+      30480,
+      31912,
+      32144,
+      32284,
+      32348,
+      32680,
+      31884,
+      18668,
+      32616
+    ],
+    "observations": [
+      {
+        "acquiredAt": "2026-11-16T13:51:25.486Z",
+        "current": [],
+        "unavailable": null
+      }
+    ],
+    "commandErrors": [],
+    "rootKillAttempted": true,
+    "rootIdentityMatched": true,
+    "individualChildKills": false,
+    "pidReuseTreatedConservatively": true,
+    "maximumCensusQueries": 4
+  },
+  "birthCleanup": {
+    "allObservedBirthsAbsent": true,
+    "observedPidCount": 15,
+    "reused": [],
+    "unresolved": [],
+    "noProcessesKilled": true
+  },
+  "memoryDiagnostic": {
+    "acceptanceMetric": false,
+    "reason": "UI-only, no conversion and no stable blank qualification",
+    "samples": 16,
+    "validSamples": 16,
+    "missingSamples": 0,
+    "peakCompleteTreePrivateBytes": 440655872
+  },
+  "ownedRuntimeRemoved": true,
+  "finishedAt": "2026-11-16T13:51:27.645Z"
+}

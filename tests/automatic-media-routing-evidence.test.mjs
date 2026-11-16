@@ -11,7 +11,7 @@ const evidence = JSON.parse(
   await readFile(path.join(projectRoot, "evidence", evidenceName), "utf8"),
 );
 
-test("M-02 evidence inventories every current copy-plus-encode family", () => {
+test("M-02 historical inventory accounts for every current family and the exact later MKV publication hold", () => {
   assert.equal(evidence.requirement, "M-02");
   assert.equal(evidence.status, "verified-current-registry");
   assert.equal(evidence.dockerUsed, false);
@@ -33,9 +33,12 @@ test("M-02 evidence inventories every current copy-plus-encode family", () => {
       .map(([key]) => key)
       .sort(),
     evidence.implementation.currentCopyAndEncodeFamilies
+      .filter(family => family.copyProfile !== "mkv-to-mp4")
       .map((family) => `${family.input}:${family.destinationFamily}`)
       .sort(),
   );
+  const held = conversionProfiles.find(p => p.id === "mkv-to-mp4");
+  assert.equal(held.public, false); assert.equal(held.automatedTestStatus, "failed"); assert.ok(held.publicationHold);
 });
 
 test("browser evidence proves both retained copy and genuine fallback output", () => {

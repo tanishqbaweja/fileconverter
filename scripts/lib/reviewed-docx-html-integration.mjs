@@ -2,6 +2,7 @@
 // SVG overlays. Unknown edits still fail; production imports no such adapter.
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
+import { preMkvPublicationHoldRegistry } from "./reviewed-mkv-publication-hold.mjs";
 import patch from "../../fixtures/source/docx-html-reviewed-integration-2026-11-07.json" with { type: "json" };
 import { postPptxMetricWorkerSha256, prePptxMetricWorker, preDocxRowspanWorker } from "./reviewed-pptx-destination-metrics.mjs";
 const pins = Object.freeze({
@@ -10,6 +11,7 @@ const pins = Object.freeze({
 });
 const sha = bytes => createHash("sha256").update(bytes).digest("hex");
 export function preDocxRowspanRegistry(bytes) {
+  bytes = preMkvPublicationHoldRegistry(bytes);
   if (sha(bytes) !== "d133f2b4ce071996ef183e476f4310ccb868248f7f950f9ec7ee13cd92043f3d") return bytes;
   const old = patch.entries["lib/capability-registry.ts"].after;
   const updated = old.replace("simple table rows/cells", "table rows/cells with horizontal grid spans and standard vertical merges")

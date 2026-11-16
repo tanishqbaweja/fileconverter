@@ -62,6 +62,12 @@ export interface ConversionProfile {
   maxTestedBytes: number | null;
   automatedTestStatus: AutomatedTestStatus;
   public: boolean;
+  /** Temporary publication withdrawal; implementation/requalification remains required. */
+  publicationHold?: {
+    title: string;
+    reason: string;
+    evidenceFiles: readonly string[];
+  };
 }
 
 export const boundedAudioArtworkDisclosure =
@@ -4380,10 +4386,21 @@ export const conversionProfiles: readonly ConversionProfile[] = (
         "Source chapters are not copied by this initial fragmented-MP4 profile.",
         "For current Chrome direct saves, the mux is written to quota-preflighted browser-private storage, copied to the selected destination through one reusable 512 KiB buffer, and deleted on every terminal path.",
       ],
-      fidelityLimitations: [],
+      fidelityLimitations: [
+        "The released muxer shifted source presentation timestamps in a verified HEVC/AAC fixture: video by 83 ms and audio packets by 21–83 ms. Exact source timing is not certified.",
+        "The corrected private engine preserves complete content, but its production-staged original-file repeat gate exceeded the unchanged 250 MiB complete-Chrome limit. This route remains required and under qualification, not permanently unsupported.",
+      ],
       maxTestedBytes: 10_737_988_703,
-      automatedTestStatus: "passed",
-      public: true,
+      automatedTestStatus: "failed",
+      public: false,
+      publicationHold: {
+        title: "Lossless MKV-to-MP4 is temporarily unavailable.",
+        reason: "The released remuxer changed source timestamps in a verified fixture. Its corrected replacement has not passed the 250 MiB complete-browser repeat-memory gate. Choose another verified destination only if it meets your needs; restoring this lossless route remains planned.",
+        evidenceFiles: [
+          "evidence/2026-11-08-mkv-staged-timeline-cause.json",
+          "evidence/2026-11-16T13-03-58-368Z-mkv-hevc-header-core-production-staged-original-repeats.json",
+        ],
+      },
     },
     {
       id: "mkv-to-m4a",
@@ -6362,6 +6379,14 @@ export const privateQualificationProfiles: readonly ConversionProfile[] = [{
   maxTestedBytes: null, automatedTestStatus: "pending", public: false,
 }];
 
+export function isPublishedProfile(profile: ConversionProfile): boolean {
+  return profile.public && profile.automatedTestStatus === "passed" && !profile.publicationHold;
+}
+
+export function temporarilyWithheldProfilesFor(input: string): readonly ConversionProfile[] {
+  return conversionProfiles.filter(profile => profile.input === input && Boolean(profile.publicationHold));
+}
+
 export function publicProfilesFor(
   input: string,
   includePending = false,
@@ -6372,8 +6397,7 @@ export function publicProfilesFor(
         (profile.id === "gzip-compress" && input !== "gzip") ||
         (profile.id === "bzip2-compress" && input !== "bzip2") ||
         (profile.id === "xz-compress" && input !== "xz")) &&
-      (includePending ||
-        (profile.public && profile.automatedTestStatus === "passed")),
+      (includePending || isPublishedProfile(profile)),
   );
 }
 

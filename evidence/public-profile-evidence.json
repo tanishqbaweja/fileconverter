@@ -3334,24 +3334,6 @@
       }
     },
     {
-      "profileId": "mkv-to-mp4",
-      "maxTestedBytes": 10737988703,
-      "repeatableEvidence": {
-        "report": "2026-09-22T09-16-40-121Z-mkv-to-mp4-direct-handle-stress.json",
-        "reportSha256": "ed953da38a2f7a98ff71860c53176d5bb5082b4050ac6561389498757df1e26d",
-        "runs": 3,
-        "sourceBytes": 2958573265,
-        "incrementalPrivateMiB": 207.09375
-      },
-      "maximumSizeEvidence": {
-        "report": "2026-08-13T12-44-21-282Z-mkv-to-mp4-stress.json",
-        "reportSha256": "d0ce3249c728a442683a893e0fc589da9c02ff55ec5b4e9c5f76eb91058fb577",
-        "runs": 1,
-        "sourceBytes": 10737988703,
-        "incrementalPrivateMiB": 210.33984375
-      }
-    },
-    {
       "profileId": "mkv-to-mp4-mpeg4",
       "maxTestedBytes": 2958573265,
       "repeatableEvidence": {

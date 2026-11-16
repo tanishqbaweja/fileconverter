@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "149e6241be68dbd8dbfdff25627c14ebb99f302f",
+  "file": "lib/capability-registry.ts",
+  "beforeSha256": "d133f2b4ce071996ef183e476f4310ccb868248f7f950f9ec7ee13cd92043f3d",
+  "afterSha256": "2cf533d4ad37fd8da578b0332c4ee69bc036af4a650f5a32f655c0306d5911b6",
+  "scope": "Exact reversible temporary MKV publication hold only, never changes retained conversion evidence",
+  "edits": [
+    {
+      "before": "  maxTestedBytes: number | null;\n  automatedTestStatus: AutomatedTestStatus;\n  public: boolean;\n}\n\nexport const boundedAudioArtworkDisclosure =\n",
+      "after": "  maxTestedBytes: number | null;\n  automatedTestStatus: AutomatedTestStatus;\n  public: boolean;\n  /** Temporary publication withdrawal; implementation/requalification remains required. */\n  publicationHold?: {\n    title: string;\n    reason: string;\n    evidenceFiles: readonly string[];\n  };\n}\n\nexport const boundedAudioArtworkDisclosure =\n"
+    },
+    {
+      "before": "        \"Source chapters are not copied by this initial fragmented-MP4 profile.\",\n        \"For current Chrome direct saves, the mux is written to quota-preflighted browser-private storage, copied to the selected destination through one reusable 512 KiB buffer, and deleted on every terminal path.\",\n      ],\n      fidelityLimitations: [],\n      maxTestedBytes: 10_737_988_703,\n      automatedTestStatus: \"passed\",\n      public: true,\n    },\n    {\n      id: \"mkv-to-m4a\",\n",
+      "after": "        \"Source chapters are not copied by this initial fragmented-MP4 profile.\",\n        \"For current Chrome direct saves, the mux is written to quota-preflighted browser-private storage, copied to the selected destination through one reusable 512 KiB buffer, and deleted on every terminal path.\",\n      ],\n      fidelityLimitations: [\n        \"The released muxer shifted source presentation timestamps in a verified HEVC/AAC fixture: video by 83 ms and audio packets by 21–83 ms. Exact source timing is not certified.\",\n        \"The corrected private engine preserves complete content, but its production-staged original-file repeat gate exceeded the unchanged 250 MiB complete-Chrome limit. This route remains required and under qualification, not permanently unsupported.\",\n      ],\n      maxTestedBytes: 10_737_988_703,\n      automatedTestStatus: \"failed\",\n      public: false,\n      publicationHold: {\n        title: \"Lossless MKV-to-MP4 is temporarily unavailable.\",\n        reason: \"The released remuxer changed source timestamps in a verified fixture. Its corrected replacement has not passed the 250 MiB complete-browser repeat-memory gate. Choose another verified destination only if it meets your needs; restoring this lossless route remains planned.\",\n        evidenceFiles: [\n          \"evidence/2026-11-08-mkv-staged-timeline-cause.json\",\n          \"evidence/2026-11-16T13-03-58-368Z-mkv-hevc-header-core-production-staged-original-repeats.json\",\n        ],\n      },\n    },\n    {\n      id: \"mkv-to-m4a\",\n"
+    },
+    {
+      "before": "  maxTestedBytes: null, automatedTestStatus: \"pending\", public: false,\n}];\n\nexport function publicProfilesFor(\n  input: string,\n  includePending = false,\n",
+      "after": "  maxTestedBytes: null, automatedTestStatus: \"pending\", public: false,\n}];\n\nexport function isPublishedProfile(profile: ConversionProfile): boolean {\n  return profile.public && profile.automatedTestStatus === \"passed\" && !profile.publicationHold;\n}\n\nexport function temporarilyWithheldProfilesFor(input: string): readonly ConversionProfile[] {\n  return conversionProfiles.filter(profile => profile.input === input && Boolean(profile.publicationHold));\n}\n\nexport function publicProfilesFor(\n  input: string,\n  includePending = false,\n"
+    },
+    {
+      "before": "        (profile.id === \"gzip-compress\" && input !== \"gzip\") ||\n        (profile.id === \"bzip2-compress\" && input !== \"bzip2\") ||\n        (profile.id === \"xz-compress\" && input !== \"xz\")) &&\n      (includePending ||\n        (profile.public && profile.automatedTestStatus === \"passed\")),\n  );\n}\n",
+      "after": "        (profile.id === \"gzip-compress\" && input !== \"gzip\") ||\n        (profile.id === \"bzip2-compress\" && input !== \"bzip2\") ||\n        (profile.id === \"xz-compress\" && input !== \"xz\")) &&\n      (includePending || isPublishedProfile(profile)),\n  );\n}\n"
+    }
+  ]
+}

@@ -13988,6 +13988,9 @@ Hero correction final checkpoint: combined CURRENT836/836unit PASS5723.9312ms in
 
 2026-10-08 new full-original matrix-only attempt actually LIVE session83524 at11:09:24UTC on pushedremoteverifiedc7f81ac/main0904d93unchanged. Runner34604parent33784birth11:06:48.7350600Z/Chrome31168parent34604birth11:06:57.7590600Z observedlive/pageabout:blank. Host11:06:49safe physical5473517568/virtual7837712384; protectedfullSHA/size and32GiBdisk assertions precede observedChrome. Same lower stable five-minute blank/ALL-process250MiB/fixed32+16MiB/three FULL runs/quality/validators/recovery/finally; only fully rendered matrix CSS changed from prior original. ZEROfull completed/validated/memory/speed/public passes. Four matrix runtime directories IN USE/final cleanup/post-SHA pending. PollSAME83524/nativebirths, no duplicate/active deletion/source mutation on quiet output. HistoricalLIVE must be superseded by terminal evidence when available. See mpeg2-matrix-original-launch-2026-10-08.json; fullgoalACTIVE.
 
+<!-- BEGIN GENERATED LEDGER -->
+Updated 2026-11-16 from the capability registry, retained successful Chrome stress reports, and hash-bound compact evidence.
+
 ## What the labels mean
 
 - **Public passed**: implemented, small production-browser correctness tested, independently validated, cleanup tested, and accepted by the registry.
@@ -13996,8 +13999,8 @@ Hero correction final checkpoint: combined CURRENT836/836unit PASS5723.9312ms in
 
 ## Current totals
 
-- Public passed conversion profiles: **403**
-- Public profiles with retained successful Chrome stress evidence: **403**
+- Public passed conversion profiles: **402**
+- Public profiles with retained successful Chrome stress evidence: **402**
 - PDF profiles: **0** (intentionally prohibited)
 
 ## Active optimization log
@@ -14010,6 +14013,26 @@ Hero correction final checkpoint: combined CURRENT836/836unit PASS5723.9312ms in
 - **2026-09-28 JPEG XL inspection worker lifecycle extension:** The static worker audit now inventories 32 production TypeScript worker modules and all three message loops. The JPEG XL inspection loop has no mutable module-scoped job state, caps error responses at 2,048 characters, closes itself after its one terminal response, and is also terminated by the caller on success, error, cancellation, or the 30-second deadline. The audit passes within the 248/248 unit suite.
 - **2026-09-27 bounded archive/package source inspection:** ZIP, DOCX, XLSX, PPTX, ODT, ODS, ODP, and EPUB read only the 65,557-byte ZIP tail plus at most a 1 MiB central-directory prefix. TAR performs at most 256 isolated 512-byte header reads while skipping payloads; GZIP/BZIP2/XZ wrappers read at most 64 KiB plus an eight-byte GZIP trailer; 7Z reads its 32-byte start header plus one next-header marker. The panel reports bounded entry/size/compression/encryption/path-safety and package facts without decompressing payloads or displaying names. Eight ZIP-based families, TAR/TAR.GZ/TAR.BZ2/TAR.XZ/7Z, raw GZIP/BZIP2/XZ, unsafe ZIP/TAR, an in-memory 20,000-entry oversized ZIP directory, and a 1,024-entry TAR passed the focused production-Chromium gate 1/1. The ZIP stress stopped at exactly 1,114,133 bytes; TAR stopped at exactly 131,072 header bytes and both qualified incomplete counts. Exact scope and cleanup are in `evidence/package-source-inspection-2026-09-27.json`.
 <!-- BEGIN MANUAL TEST LOG -->
+
+2026-11-16 — Lossless MKV/MP4 public withdrawal implemented, not fixed or
+permanently unsupported. Timestamp-defective released route is failed/hidden;
+corrected private core still fails original production-staged repeat-memory gate.
+402 public routes; all other active evidence entries unchanged; full historical
+entry retained in `evidence/2026-11-16-mkv-publication-hold.json`. Unmodified
+production headless UI PASS (`evidence/2026-11-16T13-51-19-029Z-mkv-publication-ui.json`):
+held option/catalogue entry absent, accurate notice shown, private localhost
+qualification retained, public bridge absent. Zero conversions/output; all15
+observed Chrome births absent, owned profile/fixture/runtime removed. No current
+conversion/memory/speed or headed coverage claimed. Production build/tsc/scoped
+lint and62 initial focused tests passed; full portable first run2836/2846 with10
+failures, then94 focused repair checks and13 ledger/hold/link checks passed.
+Final full portable rerun2848/2848 PASS,0 skipped/cancelled,107981.5868ms,
+775 files;164 prerequisite-bound qualification files not run/implied passed.
+Both402-entry evidence audits PASS; compiled production worker unchanged.
+Fresh full original SHA and byte-identical ledger regeneration PASS. Final compact
+checkpoint: `evidence/2026-11-16-mkv-publication-checkpoint.json`.
+Immutable receipts untouched. Generator retains ALL unmarked legacy chronological
+notes and marked manual notes. Summary: `evidence/2026-11-16-mkv-publication-checkpoint.json`.
 2026-10-23 final journal checkpoint48focused/0fail/0skip, TS/lint PASS. Fresh
 original SHA/size exact; synthetic/probe scratch absent. No browser/large-profile
 acceptance. evidence/2026-10-23-lossless-native-journal.json.
@@ -14497,7 +14520,6 @@ or unchanged native rebuild. See evidence/2026-10-22-vpx-first-volume-observer-f
 | mkv-to-m4v | 180,576,319 | 3 | 179,609,473 | 1.88 s–2.10 s | 211.5 MiB | 32.0 MiB | read 262,144 B / write 150,681 B | passed |
 | mkv-to-mov | 147,131,073 | 3 | 147,140,262 | 0.72 s–1.11 s | 215.8 MiB | 60.3 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-mp3 | 181,340,062 | 3 | 1,440,788 | 1.22 s–1.54 s | 234.4 MiB | 32.0 MiB | read 262,144 B / write 576 B | passed |
-| mkv-to-mp4 | 2,958,573,265 | 3 | 2,962,151,522 | 39.30 s–48.80 s | 207.1 MiB | 50.4 MiB | read 262,144 B / write 1,048,576 B | passed |
 | mkv-to-mp4-mpeg4 | 2,958,573,265 | 3 | 3,086,358,463 | 3091.16 s–3096.06 s | 211.3 MiB | 89.6 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-mpeg-ts | 147,131,071 | 3 | 150,835,596 | 1.20 s–1.40 s | 187.4 MiB | 32.0 MiB | read 262,144 B / write 262,144 B | passed |
 | mkv-to-ogg | 222,125,242 | 3 | 106,739 | 0.39 s–0.70 s | 191.1 MiB | 32.0 MiB | read 262,144 B / write 3,533 B | passed |
@@ -14612,7 +14634,6 @@ or unchanged native rebuild. See evidence/2026-10-22-vpx-first-volume-observer-f
 | opus-to-amr | 147,964,541 | 3 | 3,680,038 | 34.38 s–35.64 s | 163.1 MiB | 32.0 MiB | read 262,144 B / write 32 B | passed |
 | opus-to-flac | 147,964,541 | 3 | 386,531,887 | 25.55 s–26.09 s | 194.4 MiB | 32.0 MiB | read 262,144 B / write 16,213 B | passed |
 | opus-to-mp3 | 147,964,541 | 3 | 55,201,581 | 47.71 s–49.00 s | 144.0 MiB | 32.0 MiB | read 262,144 B / write 621 B | passed |
-| opus-to-ogg | 147,964,541 | 3 | 36,194,998 | 57.51 s–58.47 s | 159.8 MiB | 32.0 MiB | read 262,144 B / write 16,243 B | passed |
 | opus-to-wav | 40,289,464 | 3 | 201,600,078 | 11.63 s–11.80 s | 229.3 MiB | 32.0 MiB | read 262,144 B / write 1,920 B | passed |
 | opus-to-wma | 147,964,541 | 3 | 172,503,065 | 50.17 s–51.77 s | 166.1 MiB | 32.0 MiB | read 262,144 B / write 3,200 B | passed |
 | png-to-avif | 84,034 | 3 | 17,785 | 0.30 s–0.53 s | 207.3 MiB | 80.0 MiB | read 65,536 B / write 17,488 B | passed |
@@ -14632,7 +14653,6 @@ or unchanged native rebuild. See evidence/2026-10-22-vpx-first-volume-observer-f
 | srt-to-ass | 67,327,792 | 3 | 83,203,467 | 4.00 s–4.09 s | 177.0 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | srt-to-ttml | 67,327,792 | 3 | 82,349,061 | 3.71 s–3.83 s | 201.3 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
 | srt-to-vtt | 67,327,792 | 3 | 63,088,906 | 2.89 s–2.93 s | 180.6 MiB | 0.0 MiB | read 262,144 B / write 262,144 B | passed |
-| svg-to-png | 470,390 | 3 | 3,543,078 | 6.18 s–6.34 s | 182.8 MiB | not exposed | read 262,144 B / write 262,144 B | passed |
 | tar-bz2-to-sevenzip | 270,592,763 | 3 | 268,435,574 | 25.06 s–25.69 s | 187.2 MiB | 64.0 MiB | read 262,144 B / write 65,536 B / scratch 61,440 B read/write | passed |
 | tar-bz2-to-tar | 270,592,763 | 3 | 268,436,992 | 23.50 s–23.77 s | 137.0 MiB | 8.0 MiB | read 262,144 B / write 65,536 B | passed |
 | tar-bz2-to-tar-gz | 270,592,763 | 3 | 268,517,551 | 51.26 s–52.65 s | 183.9 MiB | 8.0 MiB | read 262,144 B / write 16,384 B | passed |
@@ -14820,6 +14840,12 @@ Stream ma |
 | 2026-09-10T18:55:47.970Z | ivf-to-webm | 169,519,329 | 3 | 169,519,329 | Failed checks: processTreePrivateMemory; measured 276.9 MiB against a 250.0 MiB limit. |
 | 2026-09-10T19:24:03.363Z | ivf-to-webm | 169,519,329 | 0 | 169,519,329 | IVF cancellation left output state or browser-owned files behind. |
 | 2026-09-19T10:02:44.412Z | mp4-to-ogv | 147,242,147 | 3 | 147,242,147 | Failed checks: processTreePrivateMemory; measured 255.1 MiB against a 250.0 MiB limit. |
+
+## Temporarily withheld routes — still required work
+
+These are not public passed profiles. Historical measurements are retained, not current release certification; private localhost qualification remains available.
+
+- **mkv-to-mp4**: The released remuxer changed source timestamps in a verified fixture. Its corrected replacement has not passed the 250 MiB complete-browser repeat-memory gate. Choose another verified destination only if it meets your needs; restoring this lossless route remains planned. Evidence: `evidence/2026-11-08-mkv-staged-timeline-cause.json`, `evidence/2026-11-16T13-03-58-368Z-mkv-hevc-header-core-production-staged-original-repeats.json`.
 
 ## Every public passed profile
 
@@ -15010,7 +15036,6 @@ Stream ma |
 | mkv-to-m4v | video | ffmpeg-remux | stream-copy | 180,576,319 B | 3-run Chrome report |
 | mkv-to-mov | video | ffmpeg-remux | stream-copy | 147,131,073 B | 3-run Chrome report |
 | mkv-to-mp3 | video | ffmpeg-remux | stream-copy | 181,340,062 B | 3-run Chrome report |
-| mkv-to-mp4 | video | ffmpeg-remux | stream-copy | 10,737,988,703 B | 3-run Chrome report |
 | mkv-to-mp4-mpeg4 | video | ffmpeg-video | re-encode | 2,958,573,265 B | 3-run Chrome report |
 | mkv-to-mpeg-ts | video | ffmpeg-remux | stream-copy | 147,131,071 B | 3-run Chrome report |
 | mkv-to-ogg | video | ffmpeg-remux | stream-copy | 222,125,242 B | 3-run Chrome report |
@@ -15126,7 +15151,6 @@ Stream ma |
 | opus-to-amr | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
 | opus-to-flac | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
 | opus-to-mp3 | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
-| opus-to-ogg | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
 | opus-to-wav | audio | ffmpeg-audio | re-encode | 40,289,464 B | 3-run Chrome report |
 | opus-to-wma | audio | ffmpeg-audio | re-encode | 147,964,541 B | 3-run Chrome report |
 | png-to-avif | image | libaom-avif-encoder-wasm | re-encode | 482,505 B | 3-run Chrome report |
@@ -15146,7 +15170,6 @@ Stream ma |
 | srt-to-ass | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
 | srt-to-ttml | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
 | srt-to-vtt | subtitle | subtitle-stream | stream | 67,327,792 B | 3-run Chrome report |
-| svg-to-png | image | svg-browser | re-encode | 470,390 B | 3-run Chrome report |
 | tar-bz2-to-sevenzip | archive | libarchive7z-wasm | stream | 270,592,763 B | 3-run Chrome report |
 | tar-bz2-to-tar | archive | bzip2-wasm | stream | 270,592,763 B | 3-run Chrome report |
 | tar-bz2-to-tar-gz | archive | archive-codec-pipeline | stream | 270,592,763 B | 3-run Chrome report |
@@ -15727,6 +15750,7 @@ M-04/P-08 AVI-to-OGV publication (2026-09-13): official libtheora 1.2.0 is pinne
 M-04/P-08 AV1 MP4-to-WebM publication (2026-09-15): the rebuilt browser Wasm packet-copies AV1/VP8/VP9 plus Opus/Vorbis from MP4 to genuine live WebM. The focused 3/3 Chrome gate preserved exact compressed AV1/Opus packets, exact decoded video and PCM for the difficult 336-sample priming case, and removed an injected write-failure output. A 170,433,726-byte 1,920x1,080 VP9/Opus MP4 passed three OPFS runs in 1.531-1.858 seconds at 206.191 MiB worst incremental complete-Chromium private memory. Initial direct-save input via synchronous Blob slices failed at 316.6 MiB; increasing writes to 1 MiB worsened it to 358.332 MiB and was reverted. Reusing the proven bounded asynchronous BYOB input reader only for direct saves passed three runs in 2.300-2.642 seconds at 219.063 MiB, with cleanup within 12.536 MiB of loaded idle. Both modes produced the same 170,426,241-byte SHA-256, exact decoded hashes, 256 KiB reads/writes/queueing, one pending operation, and fixed 32 MiB Wasm. Corrected no-Docker build run 34823637056 compiled the candidate in 6m10s and changed only the expected manifest/Wasm while keeping JavaScript and licenses byte-exact; exact run 34899740113 then reproduced the pushed engine byte-for-byte at commit 0c8bc78 in 5m10s, skipped mismatch upload, passed cleanup, and retained zero artifacts. Generated stress inputs, outputs, manifests, browser profiles, raw reports after compaction, the local candidate download, and the obsolete remote mismatch artifact were deleted. See `evidence/av1-mp4-webm-native-feasibility-2026-09-14.json` and `evidence/av1-mp4-webm-browser-acceptance-2026-09-15.json`.
 
 - **2026-09-20 M4A-to-AIFF current-Chrome memory acceptance:** A source-hash-pinned, no-Docker `within-aiff` specialist keeps the existing profile-28 audio transcode and selects only the public M4A-to-AIFF route. It starts at 16 MiB Wasm with a 32 MiB maximum. Chrome 153 production-browser runs on the same 140,941,469-byte ALAC source passed three direct-save and three OPFS conversions plus additional cold runs, producing the identical genuine 153,600,102-byte AIFF hash as the general core. Native FFprobe, complete packet traversal, and full decoded PCM equality passed; one pending operation, 256 KiB reads, bounded writes/queueing, fixed 16 MiB actual Wasm, cleanup recovery, injected write failure, and cancellation after 6.55/15.70 MB of actual output passed. The worst observed direct run reached 246.648 MiB against the unchanged 250 MiB complete-Chromium incremental private-memory limit, including a transient updater descendant; its 3.352 MiB headroom is narrow and no cross-machine guarantee or isolated direct-save speedup is claimed. The prior general core reached 260.172 MiB direct and 251.094 MiB OPFS. Pushed commit `51e6074` passed scoped no-Docker exact reproduction in run [35563828254](https://github.com/tanishqbaweja/fileconverter/actions/runs/35563828254) in 7m50s and aggregate exact reproduction of all eight FFmpeg modules in run [35564331436](https://github.com/tanishqbaweja/fileconverter/actions/runs/35564331436) in 18m44s. Both skipped mismatch upload, passed cleanup, and retain zero artifacts. Exact report, source, output, and module hashes are retained in `evidence/aiff-specialist-browser-acceptance-2026-09-20.json`; generated input, converted copies, raw reports, downloaded candidate, Playwright helper, and browser profiles were deleted after compaction.
+<!-- END GENERATED LEDGER -->
 2026-10-10 — Actual full-video encoder stack static audit (not a conversion): all12 numeric function bodies/types/original PCs preserved from the actual anonymous674,961-byte encoder SHA8b2fd64d…4242; synthetic labels explicitly non-symbolic, no decoder-name substitution. All12 PCs match exact original disassembly instructions. f75/0x9501 loads offset76 before call350; actual uncached-plane patch adds FramePool.buffer_size[0] at76, and f350 zeroes allocated memory. First encoder pixel-plane identification is source-informed inference, NOT C-symbol certification; individual request/live heap/free block unavailable, fragmentation unproven. First collector ERR_CHILD_PROCESS_STDIO_MAXBUFFER remains failed with frozen byte-exact executed source; corrected streaming collector reads14,625,748B, retains1,035,229B selected disassembly and preserves full selectedWAT/original-address listings in141,443B lossless gzip. PinnedWABT1.0.39 own package/cache/runtime removed; actual binary unchanged.13focused PASS158.584ms/all1,021unit PASS7976.1931ms/eightfile zero-warning lint PASS. Zero browser/conversion/original-video-read/original-Wasm-function execution/public-runtime-registry changes/Docker/production fix/full acceptance/speedup. Exact receipts: evidence/2026-10-10T09-36-00-902Z-single-idle-encoder-stack-static.json, evidence/single-idle-encoder-stack-first-failure-2026-10-10.json, evidence/2026-10-10T09-39-02-488Z-single-idle-encoder-stack-static.json, evidence/single-idle-encoder-static-analysis-2026-10-10.json. Next bounded final-unref encoder pixel-plane pool with zero-every-acquisition/compiled-lifecycle/browsergoldens before any full-original retest; unchanged69-minute OOM not replayed. Fullgoal remains ACTIVE/incomplete; tasks hidden/headless.
 2026-10-18 - JSPI full-original harness preparation (not a conversion): original
 three-full-job loop restored with unchanged quality/timestamp/metadata/audio/
