@@ -1,5 +1,22 @@
 # Tested conversion ledger
 
+2026-11-16 **longer-source validator parity/speed control PASS; near10GB prepared,
+NOT run**. Receipt00-54-05-296Z/fullSHAe9c5dbaa181907f9eb8bfd5dd75b512519c3285c86308099dc202ad61ea207d7.
+Real20-loop118,846,768B source/5760frames; three alternating matched pairs,
+legacy mean30114.667ms vs bounded-pipe12316.333ms (2.445x VALIDATOR only). Every
+7,962,624,000 decoded video bytes and23,099,392 PCM bytes hash exactly equal per
+pair, observed max64KiB chunks/hard256KiB, no decoded files. Source/scratch removed.
+No browser converter change, no multiGB or production speedup claim.
+
+New separate near10GB scope:1600 valid pinned-media loops,460800frames/902400AAC,
+actual9–10.2GB required,28GiB disk preflight for source+ONE output. Exact924056576
+PCM samples required, complete decoded video+PCM SHA equality, old30min TOTAL
+per-file deadline retained. Same core/browser pipeline and250MiB/originalblank/
+96MiB cleanup gates; old5GB and protected extents unchanged. Full source/output
+decodes fresh, not inherited smaller-file proof. Source inspection count/hash
+timeouts180s only for this larger case; bounded/no correctness relaxation.
+No actual near10GB result yet; failed Chrome repeats remain FAILED.
+
 2026-11-16 **independent validator small-source A/B PASS, not browser speedup**.
 Receipt00-49-46-286Z/fullSHA590598f7a95003a9fb6611b96bf94fc88f5ec99af21c8b552a8fa79f5325f12a.
 Pinned5,945,271B/288-frame source, three alternating pairs, same native4-thread

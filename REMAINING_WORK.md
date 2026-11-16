@@ -1,5 +1,20 @@
 # Remaining work audit
 
+2026-11-16 M-03: **sustained independent-validator A/B closed; near10GB gate
+prepared, not yet measured**. Receipt00-54-05-296Z/fullSHAe9c5dbaa…ea207d7: real
+119MB source/5760frames, three pairs exact decoded video/PCM hashes,30.115s ->
+12.316s mean validator only.7.963GB decoded video bytes per candidate processed
+through bounded local pipe/hash/discard; no decoded copy. No converter or
+multiGB speedup inferred. All owned fixture/scratch removed.
+
+Explicit near10GB requires9–10.2GB valid source/output,1600 loops/460800 video/
+902400AAC and exact924056576 decoded PCM samples. New complete raw decoded SHA
+validator qualified against existing hashes; old30min total per source/output
+file retained. All packet/clocks/codec/metadata, same browser/core,250MiB baseline,
+I/O and cleanup gates unchanged;28GiB repository-space preflight, finally remove
+ONE output and generated source. Fresh complete content required; no5GB proof
+substitution. Near10GB not yet run; existing repeat/background failures unchanged.
+
 2026-11-16 M-03: **small-source independent decoded-hash optimization measured**.
 Receipt00-49-46-286Z/fullSHA590598f7…5325f12a: three matched alternating12s source
 pairs preserve complete288-frame pixels and PCM SHA-256,1058ms legacy mean vs

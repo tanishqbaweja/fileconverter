@@ -46,7 +46,7 @@ function audioProgress(expectedSeconds) {
   };
 }
 
-export async function hashDecodedMediaStream(file, { cwd, env, kind, expectedFrames, expectedSeconds, timeoutMs = 1800000, onProgress = () => {} }) {
+export async function hashDecodedMediaStream(file, { cwd, env, kind, expectedFrames, expectedSeconds, expectedAudioSamples = null, timeoutMs = 1800000, onProgress = () => {} }) {
   assert.ok(["video-1280x720-yuv420p", "audio-48000-mono-s16le"].includes(kind));
   assert.ok(Number.isSafeInteger(expectedFrames) && expectedFrames > 0 && expectedFrames <= 1000000);
   assert.ok(Number.isFinite(expectedSeconds) && expectedSeconds > 0 && expectedSeconds <= 86400);
@@ -55,8 +55,9 @@ export async function hashDecodedMediaStream(file, { cwd, env, kind, expectedFra
   const reusable = path.resolve(cwd, "fixtures/media/within-test-synthetic-hevc-aac.mkv");
   assert.ok(actual === reusable || relative && !relative.startsWith("..") && !path.isAbsolute(relative));
   const before = await lstat(actual, { bigint: true }); assert.ok(before.isFile() && !before.isSymbolicLink());
-  const video = kind.startsWith("video"), expectedBytes = video ? expectedFrames * 1280 * 720 * 3 / 2 : null;
-  const digest = createDecodedByteHash({ expectedBytes, maximumBytes: video ? expectedBytes : Math.ceil((expectedSeconds + 1) * 48000) * 2 });
+  assert.ok(expectedAudioSamples === null || Number.isSafeInteger(expectedAudioSamples) && expectedAudioSamples > 0 && expectedAudioSamples <= 86400 * 48000);
+  const video = kind.startsWith("video"), expectedBytes = video ? expectedFrames * 1280 * 720 * 3 / 2 : expectedAudioSamples === null ? null : expectedAudioSamples * 2;
+  const digest = createDecodedByteHash({ expectedBytes, maximumBytes: expectedBytes ?? Math.ceil((expectedSeconds + 1) * 48000) * 2 });
   const progress = video ? createFullVideoDecodeProgress(expectedFrames, expectedSeconds) : audioProgress(expectedSeconds);
   const args = ["-v", "error", "-xerror", "-nostats", "-stats_period", "30", "-threads", "4", "-noautorotate", "-i", actual,
     ...(video ? ["-map", "0:v:0", "-an", "-c:v", "rawvideo", "-pix_fmt", "yuv420p", "-fps_mode", "passthrough"]

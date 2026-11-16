@@ -58,6 +58,7 @@ import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal }
 import { createScalingSampleView } from "./lib/mkv-scaling-sample-view.mjs";
 import { largeScalingReference, readLargeScalingReference } from "./lib/mkv-large-scaling-reference.mjs";
 import { matchOwnedBurstRole } from "./lib/owned-burst-role.mjs";
+import { MKV_SCALE_NEAR10GB, createNear10GbScalingSource, assertNear10GbExtent, decodeNear10GbContent, near10GbExpectedPcmSamples } from "./lib/mkv-near10gb-scaling.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
@@ -70,7 +71,9 @@ const headerProtectedRetention = process.argv[2] === "--hevc-header-parser-prote
 const headerProtectedRepeats = headerProtectedRetention || process.argv[2] === "--hevc-header-parser-protected-repeats";
 const headerProtected = headerProtectedRepeats || process.argv[2] === "--hevc-header-parser-protected";
 const largeScalingRepeats = process.argv[2] === "--hevc-header-parser-scale-5gb-repeats";
-const largeScaling = largeScalingRepeats || process.argv[2] === "--hevc-header-parser-scale-5gb";
+const near10GbScaling = process.argv[2] === "--hevc-header-parser-scale-near10gb";
+const largeScaling = near10GbScaling || largeScalingRepeats || process.argv[2] === "--hevc-header-parser-scale-5gb";
+const scalingCase = near10GbScaling ? MKV_SCALE_NEAR10GB : MKV_SCALE_5GB;
 const hevcHeaderParser = largeScaling || headerProtected || !!headerH264Regression || process.argv[2] === "--hevc-header-parser-loop-source-control";
 const hevcKnownDts = hevcHeaderParser || process.argv[2] === "--hevc-known-dts-loop-source-control";
 const scalingLoopControl = largeScaling || ["--hevc-header-parser-loop-source-control", "--hevc-known-dts-loop-source-control", "--h264-startup-loop-source-control"].includes(process.argv[2]);
@@ -183,15 +186,19 @@ if (largeScalingRepeats) {
   report.largeScalingRepeats = true;
   report.scope = "Three same-page and one clean-session real5.35GB remuxes. Fresh full disk-output SHA and structure/edit checks; complete content proof inherited ONLY through EVERY input/output byte and SAME exact authenticated native build. All100ms native rows retained; original blank/loaded idle unchanged. Not fresh native decode, near10GB, speedup or release acceptance.";
 }
+if (near10GbScaling) {
+  report.near10GbScalingCandidate = true;
+  report.scope = "First actual9–10.2GB/1600-loop HEVC/AAC remux through same authenticated production browser path. Complete packet/payload/clocks/codec and full independently decoded raw video/PCM SHA-256 equality, unchanged250MiB fulltree/originalblank, I/O and cleanup. New bounded decoded-pipe validator; not repeat/long-session/public acceptance or converter speedup.";
+}
 const hashFile = async file => {
   const hash = createHash("sha256");
   for await (const bytes of createReadStream(file, { highWaterMark: 262144 })) hash.update(bytes);
   return hash.digest("hex");
 };
-const prefix = `evidence/${stamp}-mkv-${largeScaling ? `hevc-header-core-scale-5gb${largeScalingRepeats ? "-repeats" : ""}` : headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
+const prefix = `evidence/${stamp}-mkv-${near10GbScaling ? "hevc-header-core-scale-near10gb" : largeScaling ? `hevc-header-core-scale-5gb${largeScalingRepeats ? "-repeats" : ""}` : headerProtected ? `hevc-header-core-protected${headerProtectedRetention ? "-retention-diagnostic" : headerProtectedRepeats ? "-repeats" : ""}` : headerH264Regression ? `hevc-header-core-${headerH264Regression}` : hevcHeaderParser ? "hevc-header-parser-loop-source-control" : hevcKnownDts ? "hevc-known-dts-loop-source-control" : scalingLoopControl ? "startup-core-loop-source-control" : startupProtectedRepeats ? "startup-core-protected-repeats" : startupProtected ? "startup-core-protected" : startupHevcControl ? "startup-core-hevc-control" : startupSimpleControl ? "startup-core-no-b-control" : fixedHevcBaseline ? "fixed-input-hevc-baseline" : probeHevcControl ? "probe-decoder-hevc-control" : positiveStartCandidate ? "startup-dts-positive" : startupCandidate ? "startup-dts-bframes" : bframeControl ? "probe-decoder-bframes" : complexTimeline ? "exact-aac-complex" : protectedFullDecode ? "exact-aac-protected-full-decode" : protectedRepeats ? "exact-aac-protected-repeats" : protectedMode ? "exact-aac-protected" : sustained ? "exact-aac-sustained" : compareDestinations ? "exact-aac-destination-control" : exactAacCandidate ? "edit-list-aac-candidate" : editListCandidate ? "edit-list-candidate" : stagedDiagnostic ? "staged-clock" : "direct-reuse"}`;
 const ffmpeg = "C:/ffmpeg/bin/ffmpeg.exe", ffprobe = "C:/ffmpeg/bin/ffprobe.exe";
 const runNative = (file, args, env, timeout = 90000) => execute(file, args, { cwd: root, env, windowsHide: true, timeout, maxBuffer: 2097152 });
-const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env)).stdout);
+const probe = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-count_packets", "-show_streams", "-show_format", "-of", "json", file], env, near10GbScaling ? 180000 : 90000)).stdout);
 const probeProtected = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-show_streams", "-show_format", "-show_chapters", "-of", "json", file], env)).stdout);
 const complexPackets = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-show_packets", "-show_entries",
   "packet=stream_index,pts_time,dts_time,duration_time,data_hash:packet_side_data=side_data_type,skip_samples,discard_padding",
@@ -206,7 +213,7 @@ const complexDecodedHashes = async (file, env) => {
 const packetClocks = async (file, env) => JSON.parse((await runNative(ffprobe,
   ["-v", "error", "-show_packets", "-show_entries", "packet=stream_index,pts_time,dts_time", "-of", "json", file], env)).stdout).packets;
 const packets = async (file, env) => (await runNative(ffmpeg,
-  ["-v", "error", "-i", file, "-map", "0:v:0", "-map", "0:a:0", "-c", "copy", "-f", "streamhash", "-hash", "sha256", "-"], env)).stdout.trim();
+  ["-v", "error", "-i", file, "-map", "0:v:0", "-map", "0:a:0", "-c", "copy", "-f", "streamhash", "-hash", "sha256", "-"], env, near10GbScaling ? 180000 : 90000)).stdout.trim();
 const aacPackets = async (file, env) => JSON.parse((await runNative(ffprobe, ["-v", "error", "-select_streams", "a:0", "-show_packets",
   "-show_entries", "packet=stream_index,pts_time,dts_time,duration_time:packet_side_data=side_data_type,skip_samples,discard_padding", "-of", "json", file], env)).stdout).packets;
 const decodedPcm = async (file, env) => {
@@ -215,7 +222,7 @@ const decodedPcm = async (file, env) => {
   assert.match(result, /^0,a,SHA256=[a-f0-9]{64}$/i);
   return result;
 };
-const disk = await statfs(root), diskRequired = largeScaling ? MKV_SCALE_5GB.requiredDiskBytes : (protectedMode ? 8192 : sustained ? 2048 : 512) * mib;
+const disk = await statfs(root), diskRequired = largeScaling ? scalingCase.requiredDiskBytes : (protectedMode ? 8192 : sustained ? 2048 : 512) * mib;
 assert.ok(disk.bavail * disk.bsize >= diskRequired, "Insufficient repository disk scratch for the selected case");
 if (sustained || largeRun) report.diskPreflight = { availableBytes: disk.bavail * disk.bsize, requiredBytes: diskRequired };
 const protectedPath = path.join(root, "test.mkv");
@@ -395,7 +402,7 @@ async function validateLoopSourceOutput(fixture, output, baseline, env, row) {
   }
   v.video = await (hevcKnownDts ? compareMkvGapAwareVideoPackets : compareMkvVideoPackets)(probeMkvVideoPackets(fixture, 0, { cwd: root, env }),
     probeMkvVideoPackets(output, 0, { cwd: root, env }), { sourceIndex: 0, outputIndex: 0, sourceReorderDepth: baseline.probe.streams[0].has_b_frames });
-  assert.equal(v.video.packets, largeScaling ? MKV_SCALE_5GB.expectedVideoPackets : 576);
+  assert.equal(v.video.packets, largeScaling ? scalingCase.expectedVideoPackets : 576);
   v.aac = await compareMkvSustainedAac(probeMkvSustainedAac(fixture, { cwd: root, env }), probeMkvSustainedAac(output, { cwd: root, env }));
   assert.equal(v.aac.initialSkipSamples, 1024);
   if (largeScaling) {
@@ -408,8 +415,17 @@ async function validateLoopSourceOutput(fixture, output, baseline, env, row) {
     const options = { cwd: root, env, expectedSeconds: v.video.outputEndUs / 1e6,
       onProgress: update => console.log(JSON.stringify(update)) };
     try {
+      if (near10GbScaling) {
+        const video = baseline.probe.streams[0], audio = baseline.probe.streams[1];
+        assert.equal(video.width, 1280); assert.equal(video.height, 720); assert.equal(video.pix_fmt, "yuv420p");
+        assert.equal(audio.profile, "LC"); assert.equal(audio.sample_rate, "48000"); assert.equal(audio.channels, 1);
+        const expectedAudioSamples = near10GbExpectedPcmSamples(v.aac.packets, v.aac.initialSkipSamples, v.aac.trailingDiscardSamples);
+        v.sourceCompleteDecode = await decodeNear10GbContent(fixture, { ...options, expectedAudioSamples, expectedBytes: baseline.sourceBytes, role: "source" });
+        v.outputCompleteDecode = await decodeNear10GbContent(output, { ...options, expectedAudioSamples, expectedBytes: row.metrics.outputBytes, role: "browser-output" });
+      } else {
       v.sourceCompleteDecode = await decodeCompleteScalingContent(fixture, { ...options, expectedBytes: baseline.sourceBytes, role: "source" });
       v.outputCompleteDecode = await decodeCompleteScalingContent(output, { ...options, expectedBytes: row.metrics.outputBytes, role: "browser-output" });
+      }
     } catch (error) { v.incompleteDecode = error.mkvScalingDecodeEvidence ?? null; throw error; }
     assert.equal(v.outputCompleteDecode.decodedVideoSha256, v.sourceCompleteDecode.decodedVideoSha256, "Complete scaling video pixels changed");
     assert.equal(v.outputCompleteDecode.decodedPcmSha256, v.sourceCompleteDecode.decodedPcmSha256, "Complete scaling PCM changed");
@@ -662,7 +678,8 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
       } else {
         assert.equal(row.state, "complete"); assert.equal(state.opfsName, null);
         assert.deepEqual(state.batchOutputNames, [protectedMode ? "test.mp4" : `${syntheticName}.mp4`]); const name = state.batchOutputNames[0];
-        if (largeScaling) assertLargeScalingExtent(row.metrics.outputBytes);
+        if (near10GbScaling) assertNear10GbExtent(row.metrics.outputBytes);
+        else if (largeScaling) assertLargeScalingExtent(row.metrics.outputBytes);
         else if (protectedMode) assert.ok(row.metrics.outputBytes >= mkvProtectedCopy.minOutputBytes && row.metrics.outputBytes <= mkvProtectedCopy.maxOutputBytes);
         else if (sustained) assert.ok(row.metrics.outputBytes >= minSustainedBytes && row.metrics.outputBytes <= maxSustainedBytes);
         else assert.ok(row.metrics.outputBytes > (complexTimeline ? 400000 : 2 * mib) && row.metrics.outputBytes <= (scalingLoopControl ? 16 : 8) * mib);
@@ -969,6 +986,9 @@ try {
     "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/mkv-scaling-sample-view.mjs");
   sourceFiles.push("scripts/lib/owned-burst-role.mjs");
   if (largeScalingRepeats) sourceFiles.push("scripts/lib/mkv-large-scaling-reference.mjs", "scripts/lib/mkv-large-scaling-report.mjs", largeScalingReference.file);
+  if (near10GbScaling) sourceFiles.push("scripts/lib/mkv-near10gb-scaling.mjs", "scripts/lib/streamed-decoded-hash.mjs",
+    "scripts/lib/mkv-large-scaling-reference.mjs", "scripts/lib/mkv-large-scaling-report.mjs", largeScalingReference.file,
+    "evidence/2026-11-16T00-54-05-296Z-decoded-stream-hash-benchmark.json");
   if (startupSimpleControl) sourceFiles.push(startupComplexReference.file);
   if (startupProtected) sourceFiles.push(protectedRepeatReference.file, protectedCompleteVideoReference.file,
     "scripts/lib/mkv-protected-repeat-contract.mjs", ...startupSmallRegressions.map(ref => ref.file));
@@ -1057,16 +1077,18 @@ try {
     report.currentCoreLoopReference = readHevcHeaderLoopReference(await readFile(path.join(root, hevcHeaderLoopReference.file)), candidate.proof);
     report.currentCoreProtectedReference = readHeaderProtectedReference(await readFile(path.join(root, headerProtectedReference.file)), candidate.proof);
     report.hostPreflight = await inspectStressHostMemory(); assert.equal(report.hostPreflight.safeToStart, true);
-    const created = await createLargeMkvScalingSource(fixtureRuntime);
+    const created = await (near10GbScaling ? createNear10GbScalingSource(fixtureRuntime) : createLargeMkvScalingSource(fixtureRuntime));
     report.fixture = { ...created, sha256: await hashFile(created.file) };
-    const reference = largeScalingRepeats ? readLargeScalingReference(await readFile(path.join(root, largeScalingReference.file)), candidate.proof) : null;
-    if (reference) {
+    const reference = largeScalingRepeats || near10GbScaling ? readLargeScalingReference(await readFile(path.join(root, largeScalingReference.file)), candidate.proof) : null;
+    if (near10GbScaling) report.prior5GBScalingReference = reference;
+    if (largeScalingRepeats) {
       assert.equal(created.bytes, reference.sourceBytes); assert.equal(report.fixture.sha256, reference.sourceSha256);
       report.largeScalingReference = reference;
     }
     const baseline = { browser: await inspectInstalledChromePin(), probe: await probe(created.file, fixtureRuntime.env),
       packetHashes: largeScalingRepeats ? null : await packets(created.file, fixtureRuntime.env), sourceBytes: created.bytes, candidate, largeReference: reference };
-    assert.equal(Number(baseline.probe.streams[0].nb_read_packets), MKV_SCALE_5GB.expectedVideoPackets);
+    assert.equal(Number(baseline.probe.streams[0].nb_read_packets), scalingCase.expectedVideoPackets);
+    if (near10GbScaling) assert.equal(Number(baseline.probe.streams[1].nb_read_packets), MKV_SCALE_NEAR10GB.expectedAudioPackets);
     report.fixture.sourceProbe = baseline.probe; report.fixture.sourcePacketHashes = baseline.packetHashes;
     for (const count of largeScalingRepeats ? [3, 1] : [1]) {
       await arm("reuse", created.file, fixtureRuntime, baseline, count);
@@ -1076,7 +1098,7 @@ try {
     assert.equal(await hashFile(created.file), report.fixture.sha256);
     assertInstalledChromePinsEqual(await inspectInstalledChromePin(), baseline.browser);
     if (largeScalingRepeats) assert.deepEqual(report.arms.map(a => a.cases.length), [3, 1]);
-    report.status = largeScalingRepeats ? "passed-real-5gb-scaling-repeats-not-public-acceptance" : "passed-first-real-5gb-scaling-not-repeats-or-public-acceptance";
+    report.status = near10GbScaling ? "passed-first-real-near10gb-scaling-not-repeats-or-public-acceptance" : largeScalingRepeats ? "passed-real-5gb-scaling-repeats-not-public-acceptance" : "passed-first-real-5gb-scaling-not-repeats-or-public-acceptance";
   } else if (scalingLoopControl) {
     const created = await createSmallMkvScalingLoop(fixtureRuntime);
     const baseline = { browser: await inspectInstalledChromePin(), probe: await probe(created.file, fixtureRuntime.env),
