@@ -1,5 +1,22 @@
 # Remaining work audit
 
+2026-11-16 M-03: **real5.35GB3+1 repeats FAILED during second job**, not complete.
+Receipt00-22-35-030Z/fullSHA0dd0aa257a95ca34970e8b55f4a915cec9444e0ede3f21a88412f195af429638.
+First48.766625s full-byte-identical output at195.859375MiB peak and3.17578125MiB
+cleanup. Job2 exceeds unchanged250MiB at321.4609375MiB, including new234.0664MiB
+owned child; diagnostic16-query role budget exhausted so subtype UNVERIFIED.
+All100ms rows kept;1234valid/1missing conversion samples across both windows,
+no process omission/rebase/disabled service. Second conversion finishes during
+teardown, not a validated second output or claimed cancellation. All disposable
+source/output/owned runtime/server/tools/53 Chrome births removed, original size/
+SHA unchanged. Fresh full decoded first-scale proof remains valid, repeats NOT.
+
+Concrete next diagnostic: four-minute NORMAL-services blank control with no
+converter/file/engine. Bounded4 targeted new-large-child censuses verify both
+root and child births; determine whether the large role also starts without
+site conversion. No historical failure is rewritten or role retroactively
+inferred; baseline/250MiB constraint unchanged. Control prepared, not yet run.
+
 2026-11-16 M-03: **real5.35GB required3+1 repeats prepared, not yet measured**.
 New explicit gate binds entire generated source and every converted output byte
 to authenticated first full-content receipt81ae205a…82ef9c2 on SAME native core.

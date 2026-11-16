@@ -1,5 +1,23 @@
 # Tested conversion ledger
 
+2026-11-16 **real5.35GB repeat gate FAIL during job2; do not replay unchanged**.
+Receipt00-22-35-030Z/fullSHA0dd0aa257a95ca34970e8b55f4a915cec9444e0ede3f21a88412f195af429638.
+First fresh remux48.766625s/exact validated5,350,648,699B/bc0d3bac…5a38a835,
+195.859375MiB peak/3.17578125MiB cleanup,446valid/1missing. Job2 native peak
+321.4609375MiB >250,788valid/0missing, new owned Chrome child27200/birth
+00:26:35.4327709Z contributes234.06640625MiB INCLUDED. Role diagnostic16-query
+budget exhausted; subtype unqueried, not guessed. No second/third/clean-session
+pass. Converter was running at failure snapshot and finished during teardown;
+normal cleanup reports complete, NOT a claimed successful cancellation test.
+All generated source/output/profile/server/tools/53 Chrome births removed;
+test.mkv exact size/fullSHA unchanged. Full100ms native journal/CSV/HTML kept.
+
+Distinct four-minute normal-service BLANK child-role control prepared, not run:
+no app/files/conversion, no disabled features or changed baseline. At most4
+extra census queries specifically on new >=64MiB descendants with SAME owned
+root/child birth checks. Existing failure/limits remain unchanged; this is only
+attribution, never conversion acceptance or retrospective service identity.
+
 2026-11-16 **required real5.35GB3+1 repeat gate prepared, NOT run**. Exact first
 complete receipt81ae205a…82ef9c2 authenticates current native,5,347,972,392B source
 and5,350,648,699B output/full hashes. Every repeat freshly hashes entire output

@@ -1,0 +1,3 @@
+session,job,state,input_bytes,output_bytes,elapsed_ms,peak_incremental_private_mib,cleanup_above_original_idle_mib,valid_samples,unavailable_samples,output_sha256,output_removed
+1,1,complete,5347972392,5350648699,48766.625,195.859375,3.17578125,446,1,bc0d3bac6d8a18b9589b74bdb1bc7c035e1c7b4ee25d40c260360e1b5a38a835,true
+1,2,unavailable,unavailable,unavailable,unavailable,321.4609375,unavailable,788,0,unavailable,false
