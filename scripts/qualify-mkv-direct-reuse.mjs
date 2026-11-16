@@ -14,7 +14,7 @@ import { chromium } from "playwright";
 import { createOwnedRuntimeScratch, finishOwnedCleanup } from "./lib/owned-runtime-scratch.mjs";
 import { startOwnedProductionTestServer } from "./lib/owned-production-test-server.mjs";
 import { startClassifiedChromiumMemoryMonitor } from "./lib/birth-type-capture.mjs";
-import { stableWindow } from "./lib/chromium-private-memory.mjs";
+import { stableWindow, sampleChromiumTree } from "./lib/chromium-private-memory.mjs";
 import { inspectInstalledChromePin, assertInstalledChromePinsEqual } from "./lib/installed-chrome-pin.mjs";
 import { inspectStressHostMemory } from "./lib/host-memory-preflight.mjs";
 import { cleanupOwnedChromium, queryObservedPidCensus } from "./lib/owned-chromium-cleanup.mjs";
@@ -57,6 +57,7 @@ import { MKV_SCALE_5GB, createLargeMkvScalingSource, assertLargeScalingExtent, d
 import { createLosslessNativeMemoryJournal, compactLosslessNativeMemoryJournal } from "./lib/lossless-native-memory-journal.mjs";
 import { createScalingSampleView } from "./lib/mkv-scaling-sample-view.mjs";
 import { largeScalingReference, readLargeScalingReference } from "./lib/mkv-large-scaling-reference.mjs";
+import { matchOwnedBurstRole } from "./lib/owned-burst-role.mjs";
 
 assert.equal(process.platform, "win32");
 const stagedDiagnostic = process.argv[2] === "--staged-clock-diagnostic";
@@ -845,6 +846,24 @@ async function arm(mode, fixture, fixtureRuntime, baseline, protectedJobs = 1) {
     } else result.status = staged ? "completed-staged-timeline-diagnostic-not-acceptance" : "passed-private-small-direct-control";
   } catch (error) {
     result.status = "failed-not-acceptance"; result.failures.push(String(error.stack ?? error).slice(0, 2048));
+    if (/250 MiB whole-Chromium gate exceeded/.test(String(error)) && identity && page && !page.isClosed()) {
+      const diagnostic = result.budgetFailureRoleDiagnostic = { acceptanceMetric: false, memoryFormulaChanged: false,
+        maximumCensusQueries: 1, maximumMatchedChildren: 4, roles: [], error: null };
+      try {
+        diagnostic.stateBeforeQuiescence = await page.evaluate(() => {
+          const s = window.__WITHIN_TEST__?.getState(); return s && { state: s.jobState, phase: s.phase, metrics: s.metrics };
+        });
+        // Stop the owned production job first, but leave its Chrome root alive
+        // for ONE role census. The ORIGINAL native peak remains untouched.
+        diagnostic.quiescence = await cancelBrowserConversionBeforeCleanup(page);
+        const peak = samples.filter(s => s.privateBytes !== null && duringConversion(Date.parse(s.timestamp)))
+          .reduce((best, s) => !best || s.privateBytes > best.privateBytes ? s : best, null);
+        const children = peak?.processes.filter(p => p.pid !== identity.pid && p.privateBytes >= 64 * mib &&
+          Date.parse(p.createdAt) > Date.parse(result.blank.lastTimestamp)).sort((a, b) => b.privateBytes - a.privateBytes).slice(0, 4) ?? [];
+        const tree = await sampleChromiumTree(identity.pid);
+        diagnostic.roles = children.map(nativeBirth => ({ nativeBirth, result: matchOwnedBurstRole(identity, nativeBirth, tree) }));
+      } catch (cause) { diagnostic.error = String(cause).slice(0, 1024); }
+    }
     if (retention && /250 MiB whole-Chromium gate exceeded/.test(String(error))) {
       // A separate bounded diagnostic checkpoint; never erase/rebase the
       // original native peak, or claim this later dump is its exact allocation.
@@ -948,6 +967,7 @@ try {
   if (largeScaling) sourceFiles.push("scripts/lib/mkv-large-scaling.mjs", "scripts/lib/mkv-full-video-decode.mjs", "scripts/lib/mkv-hevc-header-core-reference.mjs",
     hevcHeaderLoopReference.file, "scripts/lib/mkv-header-protected-reference.mjs", headerProtectedReference.file,
     "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/mkv-scaling-sample-view.mjs");
+  sourceFiles.push("scripts/lib/owned-burst-role.mjs");
   if (largeScalingRepeats) sourceFiles.push("scripts/lib/mkv-large-scaling-reference.mjs", "scripts/lib/mkv-large-scaling-report.mjs", largeScalingReference.file);
   if (startupSimpleControl) sourceFiles.push(startupComplexReference.file);
   if (startupProtected) sourceFiles.push(protectedRepeatReference.file, protectedCompleteVideoReference.file,

@@ -1,0 +1,16 @@
+{
+  "scope": "explicit-empty-held-blank-scratch-recovery",
+  "priorReceipt": "evidence/2026-11-16T00-33-21-046Z-normal-blank-large-child.json",
+  "priorSha256": "3a001fb9d024e85e04112be053fc9860759cadd4c7f4a0a19e02f20d8c242ec9",
+  "target": "work/normal-blank-child-aFxRKS",
+  "identity": {
+    "dev": "1887170595",
+    "ino": "3659174705019111",
+    "birthtimeNs": "1794789201056796300"
+  },
+  "emptyDirectoryRemoved": true,
+  "recursiveDeletion": false,
+  "processesKilled": false,
+  "mediaFilesRemoved": false,
+  "priorReceiptUnchanged": true
+}

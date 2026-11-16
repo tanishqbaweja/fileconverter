@@ -1,5 +1,38 @@
 # Tested conversion ledger
 
+2026-11-16 **normal-service BLANK control identifies independent Chrome model
+allocation, not conversion acceptance**. Receipt00-35-35-988Z/fullSHA
+659ca570f0972f222650af5382bb0c3ef6c5189a214c944793db74c295f8c32b.
+240265ms about:blank, no app/input/engine/conversion/disabled flags. New child
+10876/birth00:38:37.5329684Z,246,362,112B private, directly matched owned root/
+child birth through bounded census: utility on_device_model.mojom.OnDeviceModelService,
+sandbox on_device_model_execution. Full blank-tree private peak grows238.39453125MiB
+over early blank WITHOUT converter. All2197 native rows retained;44 Chrome births/
+owned profile removed, no unrelated apps/settings touched.
+
+This does NOT identify earlier failed child27200 retroactively or prove it the
+sole cause; that role stays unknown and321.46MiB repeat stays FAILED. Diagnostic
+blank is NOT a larger replacement baseline or authority to disable services.
+Future budget failures now capture state, quiesce the owned production job, then
+perform ONE reserved census for up to4 large newly born children with exact
+root/child birth matching; original native peak/totals stay unchanged. Prepared/
+unit-checked only, not a rerun or release pass. Earlier preflight refusal remains
+recorded; corrected control passed host-memory preflight before launching.
+172 focused regression/evidence checks and affected lint PASS. Native blank
+archive2197 rows and earlier held/recovery receipts independently authenticated;
+full conversion/repeat failures remain unchanged. Post-run read-only exact
+normal-blank profile/scratch and owned browser root absence confirmed.
+
+2026-11-16 **normal-blank role control held by host-memory safety**, no browser
+launched or native memory samples. Receipt00-33-21-046Z records physical4.60GB,
+virtual1,511,260,160B < unchanged2GiB requirement. Do not infer service identity
+or any conversion result. It exposed no-launch cleanup assertions in the new
+driver, now corrected: preflight BEFORE scratch creation, and no unverified-PID
+cleanup when nothing launched. Explicit empty scratch recovery is nonrecursive,
+checks canonical repo path/empty contents/dev+ino+birth and preserves old receipt.
+No apps/settings touched. Further live role investigation requires safe host RAM;
+limits remain unchanged. Pending3+1 result stays FAILED, not blocked/complete.
+
 2026-11-16 **real5.35GB repeat gate FAIL during job2; do not replay unchanged**.
 Receipt00-22-35-030Z/fullSHA0dd0aa257a95ca34970e8b55f4a915cec9444e0ede3f21a88412f195af429638.
 First fresh remux48.766625s/exact validated5,350,648,699B/bc0d3bac…5a38a835,

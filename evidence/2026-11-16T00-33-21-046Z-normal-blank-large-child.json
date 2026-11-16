@@ -1,0 +1,46 @@
+{
+  "scope": "four-minute-normal-services-blank-child-role-control-not-conversion-or-acceptance",
+  "durationMs": 240000,
+  "status": "failed-blank-diagnostic",
+  "converterLoaded": false,
+  "inputsSelected": 0,
+  "conversionsPerformed": 0,
+  "publicAcceptance": false,
+  "baselineReplaced": false,
+  "featuresDisabled": false,
+  "roles": [],
+  "failures": [
+    "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n\nfalse !== true\n\n    at file:///H:/Github%20Repositories/fileconverter/scripts/diagnose-normal-blank-large-child.mjs:30:66\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)",
+    "AssertionError [ERR_ASSERTION]: No unverified process ownership cleanup",
+    "AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n+ actual - expected\n\n+ undefined\n- 'owned-observed-pids-absent'\n"
+  ],
+  "hostPreflight": {
+    "acquiredAt": "2026-11-16T00:33:21.4532673Z",
+    "freePhysicalBytes": 4602392576,
+    "freeVirtualBytes": 1511260160,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": false,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "memory": {
+    "peak": null,
+    "incrementalOverEarlyBlankMiB": null,
+    "acceptanceMetric": false,
+    "originalBaselineNotReplaced": true
+  },
+  "archive": {
+    "file": "evidence/2026-11-16T00-33-21-046Z-normal-blank-large-child-native.json.gz",
+    "sha256": "50c15d921df28492e2d9bf2da5d1cd5c78ee416bdcf478074db63d76d2381cba",
+    "decodedSha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+    "records": 0
+  },
+  "sourcePins": {
+    "scripts/diagnose-normal-blank-large-child.mjs": "eef1feb43376ddfdc04a83458a0e121d5dde08460d5fd49bcd78e1c2663138f7",
+    "scripts/lib/owned-burst-role.mjs": "d682f8e952775c901ef2b804d84fb48a67981fc5935db7542686209836f9af63",
+    "scripts/lib/birth-type-capture.mjs": "fb76463e1e90d87ffb8a2d13b3cb6b7a53db3ffffdff2aab4c1b954f7655a398",
+    "scripts/lib/chromium-private-memory.mjs": "f50546c4f2553249019a780f721fd7756d0871279512a9a535b99e2309c8a094"
+  }
+}

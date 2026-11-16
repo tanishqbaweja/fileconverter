@@ -18,16 +18,18 @@ import { cleanupOwnedChromium } from "./lib/owned-chromium-cleanup.mjs";
 import { matchOwnedBurstRole } from "./lib/owned-burst-role.mjs";
 import { inspectStressHostMemory } from "./lib/host-memory-preflight.mjs";
 const root = path.resolve(import.meta.dirname, ".."), stamp = new Date().toISOString().replaceAll(/[:.]/g, "-"), prefix = `evidence/${stamp}-normal-blank-large-child`;
-const runtime = await createOwnedRuntimeScratch("normal-blank-child-");
 const report = { scope: "four-minute-normal-services-blank-child-role-control-not-conversion-or-acceptance", durationMs: 240000,
   status: "running", converterLoaded: false, inputsSelected: 0, conversionsPerformed: 0, publicAcceptance: false,
-  baselineReplaced: false, featuresDisabled: false, roles: [], failures: [] };
-const samples = [], attempted = new Set(); let chrome, identity, monitor, browser, pending = null;
+  baselineReplaced: false, featuresDisabled: false, runtimeCreated: false, roles: [], failures: [] };
+const samples = [], attempted = new Set(); let runtime, chrome, identity, monitor, browser, pending = null;
 let baselineBirths;
 const key = p => `${p.pid}:${p.creationFileTime}`;
 const sha = b => createHash("sha256").update(b).digest("hex");
 try {
-  report.hostPreflight = await inspectStressHostMemory(); assert.equal(report.hostPreflight.safeToStart, true);
+  report.hostPreflight = await inspectStressHostMemory();
+  if (!report.hostPreflight.safeToStart) { report.status = "held-host-memory-preflight-no-browser-launched"; }
+  else {
+  runtime = await createOwnedRuntimeScratch("normal-blank-child-"); report.runtimeCreated = true; report.runtimeDirectory = runtime.directory;
   const pin = await inspectInstalledChromePin(), profile = path.join(runtime.directory, "profile"); report.browser = pin;
   report.launch = ["--headless=new", "--remote-debugging-port=0", `--user-data-dir=${profile}`, "--no-first-run", "--no-default-browser-check", "about:blank"];
   chrome = spawn(pin.launcher.path, report.launch, { cwd: root, env: runtime.env, windowsHide: true, stdio: "ignore" });
@@ -64,6 +66,7 @@ try {
   await pending; assert.equal(page.url(), "about:blank");
   report.actualObservationMs = Date.now() - start;
   report.status = "completed-blank-role-diagnostic-not-conversion-acceptance";
+  }
 } catch (error) { report.status = "failed-blank-diagnostic"; report.failures.push(String(error.stack ?? error).slice(0, 2048)); }
 finally {
   await pending;
@@ -72,13 +75,17 @@ finally {
     await attempt(async () => { const batch = await monitor.drain(); assert.equal(batch.overflow, false); samples.push(...batch.samples); });
     await attempt(async () => { await monitor.close(); report.observer = monitor.ownershipSummary(); });
   }
-  await attempt(async () => {
-    assert.ok(identity, "No unverified process ownership cleanup");
-    report.browserCleanup = await cleanupOwnedChromium({ identity,
-      observedPids: [...new Set([identity.pid, ...samples.flatMap(s => (s.processes ?? []).map(p => p.pid))])], disconnect: async () => { await browser?.close(); } });
-    assert.equal(report.browserCleanup.status, "owned-observed-pids-absent");
+  if (chrome) await attempt(async () => {
+      assert.ok(identity, "No unverified process ownership cleanup");
+      report.browserCleanup = await cleanupOwnedChromium({ identity,
+        observedPids: [...new Set([identity.pid, ...samples.flatMap(s => (s.processes ?? []).map(p => p.pid))])], disconnect: async () => { await browser?.close(); } });
+      assert.equal(report.browserCleanup.status, "owned-observed-pids-absent");
+    });
+  if (runtime) await attempt(async () => {
+    if (chrome) assert.equal(report.browserCleanup?.status, "owned-observed-pids-absent");
+    await runtime.close(); report.runtimeRemoved = true;
   });
-  await attempt(async () => { assert.equal(report.browserCleanup?.status, "owned-observed-pids-absent"); await runtime.close(); report.runtimeRemoved = true; });
+  if (!chrome && !runtime) report.cleanup = "no-browser-or-runtime-created";
   const valid = samples.filter(s => s.privateBytes !== null && Array.isArray(s.processes));
   for (const s of valid) assert.equal(s.processes.reduce((n, p) => n + p.privateBytes, 0), s.privateBytes);
   const peak = valid.reduce((a, b) => !a || a.privateBytes < b.privateBytes ? b : a, null);

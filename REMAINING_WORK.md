@@ -1,5 +1,36 @@
 # Remaining work audit
 
+2026-11-16 M-03: **distinct normal-service blank diagnostic COMPLETED**, not
+repeat qualification. Receipt00-35-35-988Z/fullSHA659ca570f0972f222650af5382bb0c3ef6c5189a214c944793db74c295f8c32b.
+No converter/file/engine,240265ms about:blank; new246,362,112B child directly
+birth-matched to on_device_model.mojom.OnDeviceModelService. Whole blank Chrome
+tree grows238.39453125MiB;2197 native rows retained,44 owned Chrome births/profile
+removed. No feature disabled, no user app closed and no acceptance baseline
+substituted. This supports independent Chrome-background allocation, NOT a
+retroactive identity/sole-cause proof for failed child27200. Repeat321.46MiB still
+FAILS original gate. User's keep-constraints decision remains in force.
+
+Reserved post-failure role capture now saves state/quiesces production conversion
+before ONE bounded role census, exact root/child births, max4 children; neither
+total private bytes nor original baseline is changed. Unit-checked/prepared,
+not another conversion test. Need a genuinely compliant mitigation/feasibility
+decision without disabled services, then scale repeats/near10GB; meanwhile
+continue other full-spec work. Prior low-RAM control refusal is historical,
+not the current global blocker; later control passed preflight normally.
+172 focused regression/evidence tests and affected lint PASS. Controlled blank
+and prior refused-run/empty recovery evidence independently verified; this is
+not a converter-memory mitigation. Exact owned scratch/profile/root absence
+confirmed without further process or media deletion.
+
+2026-11-16 M-03: blank-role control **not run past host preflight**: virtual
+1,511,260,160B < unchanged2GiB (physical4,602,392,576B). Receipt00-33-21-046Z has
+no browser identity/no samples; NOT attribution or conversion evidence. Fixed
+driver no-launch cleanup path and moved preflight before any scratch creation.
+Explicit verified-empty prior scratch recovered nonrecursively, no process or
+media deletion and old failure unchanged. No user apps closed/settings changed.
+Live role control still requires safe host memory; repeated5.35GB qualification
+remains failed. Continue safe non-browser work rather than weakening safety.
+
 2026-11-16 M-03: **real5.35GB3+1 repeats FAILED during second job**, not complete.
 Receipt00-22-35-030Z/fullSHA0dd0aa257a95ca34970e8b55f4a915cec9444e0ede3f21a88412f195af429638.
 First48.766625s full-byte-identical output at195.859375MiB peak and3.17578125MiB

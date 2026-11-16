@@ -21,4 +21,7 @@ test("blank control retains NORMAL services, no file/app/conversion/baseline sub
   assert.doesNotMatch(source, /--disable-|page\.goto\(|setInputFiles|selectExactLocalOriginal/);
   assert.match(source, /attempted\.size < 4/); assert.match(source, /cleanupOwnedChromium/);
   assert.match(source, /baselineReplaced: false, featuresDisabled: false/);
+  assert.ok(source.indexOf("safeToStart") < source.indexOf('await createOwnedRuntimeScratch("normal-blank-child-"'));
+  assert.match(source, /held-host-memory-preflight-no-browser-launched/);
+  assert.match(source, /no-browser-or-runtime-created/);
 });
