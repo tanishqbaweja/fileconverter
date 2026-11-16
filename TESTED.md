@@ -1,5 +1,16 @@
 # Tested conversion ledger
 
+2026-11-16 **independent validator small-source A/B PASS, not browser speedup**.
+Receipt00-49-46-286Z/fullSHA590598f7a95003a9fb6611b96bf94fc88f5ec99af21c8b552a8fa79f5325f12a.
+Pinned5,945,271B/288-frame source, three alternating pairs, same native4-thread
+decode/YUV420p/PCM. Every video SHA0dd31024…6c2437d and PCM17e94a55…7693a60
+exact between existing FFmpeg streamhash and bounded raw-pipe Node/OpenSSL hash.
+Mean1058ms ->597.333ms (1.771x SMALL source only); actual398,131,200 video bytes,
+1,153,024 PCM bytes per candidate, max observed chunk64KiB/hard256KiB, no decoded
+file/full buffer. All scratch removed, no original file accessed. Candidate not
+integrated into browser converter or large-file gate; longer-source parity and
+performance still required before near10GB. Memory/profile constraints unchanged.
+
 2026-11-16 **normal-service BLANK control identifies independent Chrome model
 allocation, not conversion acceptance**. Receipt00-35-35-988Z/fullSHA
 659ca570f0972f222650af5382bb0c3ef6c5189a214c944793db74c295f8c32b.

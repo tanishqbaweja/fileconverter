@@ -1,5 +1,13 @@
 # Remaining work audit
 
+2026-11-16 M-03: **small-source independent decoded-hash optimization measured**.
+Receipt00-49-46-286Z/fullSHA590598f7…5325f12a: three matched alternating12s source
+pairs preserve complete288-frame pixels and PCM SHA-256,1058ms legacy mean vs
+597.333ms candidate. Bounded stdout pipe/max256KiB/hash+discard, no decoded media
+copy or server transport; actual chunks64KiB. Native validator ONLY, not browser
+conversion or a large-file speedup proof. Longer-source qualification pending,
+then near10GB; failed Chrome memory repeats remain failed, no constraint change.
+
 2026-11-16 M-03: **distinct normal-service blank diagnostic COMPLETED**, not
 repeat qualification. Receipt00-35-35-988Z/fullSHA659ca570f0972f222650af5382bb0c3ef6c5189a214c944793db74c295f8c32b.
 No converter/file/engine,240265ms about:blank; new246,362,112B child directly
