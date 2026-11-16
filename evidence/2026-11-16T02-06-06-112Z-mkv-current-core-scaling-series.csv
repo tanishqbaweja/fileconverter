@@ -1,0 +1,4 @@
+label,status,inputBytes,outputBytes,elapsedSeconds,inputMiBPerSecond,incrementalPrivateMiB,cleanupAboveIdleMiB,validSamples,unavailableSamples
+original,passed-header-core-protected-not-public-acceptance,2958573265,2962151594,24.385389999985694,115.70515526052023,223.46484375,18.078125,224,0
+synthetic-900loops,passed-first-real-5gb-scaling-not-repeats-or-public-acceptance,5347972392,5350648699,49.8295,102.35350374978873,173.59375,44.3203125,457,0
+synthetic-1600loops,passed-first-real-near10gb-scaling-not-repeats-or-public-acceptance,9507509956,9512261399,91.319344999969,99.28967469069116,245.2890625,18.171875,837,0

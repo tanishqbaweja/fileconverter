@@ -1,5 +1,41 @@
 # Tested conversion ledger
 
+2026-11-16 **first real9.51GB FULL browser/content/memory gate PASS; one job only**.
+Receipt01-26-25-831Z/fullSHA1bbc256752f4bd3806fc1d9ff5a978f0b426b55ef4bf165e07478379212ecf4a.
+Same actual9,507,509,956B/1600-loop source/fullSHAd137ddeb…919a2b1 -> browser
+MP4 9,512,261,399B/fullSHAc63e89c2…66b3f4 in91.319345s. Genuine browser
+stream-copy remux, NOT re-encoding. Complete460800 video payloads/PTS/460798 known
+DTS/adjacent intervals and902400 AAC packets/1024trim/codec initialization pass.
+
+COMPLETE source AND output independently decoded:460800frames each,0drop/dup,
+637,009,920,000 YUV bytes and1,848,113,152 PCM bytes per file, exact video SHA
+a5415078…e33d835 and PCM0b0050a0…9932d36. Source837491ms/output766158ms,
+27/25 progress reports; bounded64KiB observed/256KiB hard local pipes, no decoded
+media copies, old30min TOTAL per-file deadline unchanged. Validator correction
+does not change browser engine or prove a production conversion speedup;91s vs
+prior121s is observed run variation, NOT a matched optimization benchmark.
+
+Full Chrome peak245.2890625MiB over SAME original stable blank (<250MiB), cleanup
+18.171875MiB over original loaded idle (<96MiB);837valid/0missing conversion
+samples. All18434 original100ms native rows retained/replayed;2897 graph rows,
+only15537 independent-validation graph points thinned. All conversion points/
+whole-tree sums/peak/counts independently match lossless archive. Wasm24MiB,
+read256KiB/write+queue<=1MiB/one pending. ALL generated source/output/server/
+profile/tools/59 owned Chrome births removed; original test.mkv fullSHA/size
+unchanged, no forbidden network requests. JSON/CSV/HTML and raw native gzip kept.
+
+Compact same-native/same-Chrome original/5.35GB/9.51GB scaling plots retained:
+`evidence/2026-11-16T02-06-06-112Z-mkv-current-core-scaling-series.json`/CSV/HTML.
+Peaks223.46484375/173.59375/245.2890625MiB, times24.38539/49.8295/91.319345s.
+Original content/geometry differs; only larger synthetic points share parent.
+Three isolated single passes do NOT prove flat long-session memory, repeats,
+speedup, public promotion or headed/manual coverage. Earlier failed9.51GB
+validator attempt,5GB repeat and original retention stay FAILED. Future content
+inheritance authenticates this entire receipt, SAME core and EVERY input/output
+byte; no replay of completed expensive decodes without a concrete reason.
+187 focused regression/evidence checks and affected lint PASS. Fresh read-only
+checks confirm exact generated source, output and owned runtime paths absent.
+
 2026-11-16 **native-validator timestamp correction QUALIFIED on48-loop source**.
 Receipt01-23-38-047Z/fullSHA5ac325fd0a6908dfaff5ab9eef0ed098fd5330b788b2c097cbaa06ea336b8627.
 285,228,004B/13824frames reproduces OLD rawvideo mux error `11840 >=11840`
