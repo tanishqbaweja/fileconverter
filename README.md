@@ -1,5 +1,9 @@
 # Within
 
+Project continuation: start with [the compact current checkpoint](CURRENT_STATUS.md).
+The full requirement audit and immutable test evidence remain authoritative;
+the project is not yet complete.
+
 Within is a privacy-first file converter for current Chromium browsers. User
 files are processed inside a dedicated browser worker and written directly to a
 destination selected with the File System Access API. The hosting service

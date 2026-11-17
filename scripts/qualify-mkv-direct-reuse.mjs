@@ -1021,7 +1021,8 @@ try {
   if (largeScaling) sourceFiles.push("scripts/lib/mkv-large-scaling.mjs", "scripts/lib/mkv-full-video-decode.mjs", "scripts/lib/mkv-hevc-header-core-reference.mjs",
     hevcHeaderLoopReference.file, "scripts/lib/mkv-header-protected-reference.mjs", headerProtectedReference.file,
     "scripts/lib/lossless-native-memory-journal.mjs", "scripts/lib/mkv-scaling-sample-view.mjs");
-  sourceFiles.push("scripts/lib/owned-burst-role.mjs");
+  sourceFiles.push("scripts/lib/owned-burst-role.mjs", "scripts/lib/birth-type-capture.mjs",
+    "scripts/lib/birth-aware-chromium-memory.mjs");
   if (largeScalingRepeats) sourceFiles.push("scripts/lib/mkv-large-scaling-reference.mjs", "scripts/lib/mkv-large-scaling-report.mjs", largeScalingReference.file);
   if (near10GbScaling) sourceFiles.push("scripts/lib/mkv-near10gb-scaling.mjs", "scripts/lib/streamed-decoded-hash.mjs",
     "scripts/lib/mkv-large-scaling-reference.mjs", "scripts/lib/mkv-large-scaling-report.mjs", largeScalingReference.file,

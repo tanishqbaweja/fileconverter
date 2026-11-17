@@ -54,7 +54,8 @@ test("all1657 full native rows retained; every original job/aggregate peak and m
   assert.equal(a.memory.validSamples, 1207); assert.equal(a.memory.unavailableSamples, 3); assert.equal(a.memory.incrementalPrivateMiB, 405.11328125);
   const current = a.browserCleanup.observations.at(-1).current;
   assert.deepEqual(reconcileChromiumBirths({ identity: a.identity, observedPids: a.browserCleanup.observedPids, samples, current }), a.birthCleanup);
-  const rendered = renderProductionStagedRepeatReport(r, [samples]);
+  // Preserve the original census-only HTML byte-for-byte, not rewrite history.
+  const rendered = renderProductionStagedRepeatReport(r, [samples], { observerRoles: false });
   for (const [suffix, value] of Object.entries(rendered)) assert.equal(value, (await read(file.replace(/\.json$/, `.${suffix}`))).toString());
   assert.equal(rendered["native.csv"].trim().split("\n").length, 1658);
   assert.match(rendered.html, /405\.113/); assert.match(rendered.html, /snapshot 252\.699 MiB/);
@@ -63,4 +64,14 @@ test("all1657 full native rows retained; every original job/aggregate peak and m
   assert.match(rendered.html, /NOT a new decode/); assert.match(rendered.html, /earlier|Earlier/);
   const forged = structuredClone(r); forged.status = "passed-unmodified-production-staged-original-repeats-not-public-acceptance";
   assert.throws(() => renderProductionStagedRepeatReport(forged, [samples]));
+});
+
+test("current rendering reconciles the already-retained observer without rewriting the raw failure or missed census", async () => {
+  const { r, a, samples } = await load(), before = JSON.stringify(r);
+  const rendered = renderProductionStagedRepeatReport(r, [samples]);
+  assert.match(rendered.html, /Role census: observed-birth-not-in-matching-census; type unavailable, subtype unavailable/);
+  assert.match(rendered.html, /classified-from-retained-same-birth-observer; type utility, subtype on_device_model.mojom.OnDeviceModelService/);
+  assert.match(rendered.html, /405\.113/); assert.match(rendered.html, /289\.313 MiB INCLUDED/);
+  assert.equal(JSON.stringify(r), before); assert.equal(a.memory.incrementalPrivateMiB, 405.11328125);
+  assert.equal(r.status, "failed-not-acceptance");
 });

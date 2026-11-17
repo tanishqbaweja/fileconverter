@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { deriveScalingRepeatWindow } from "./mkv-large-scaling-repeat-report.mjs";
 import { mkvProtectedCopy } from "./mkv-protected-copy-contract.mjs";
+import { reconcileNativeBirthRole } from "./native-birth-role.mjs";
 const fixed = n => typeof n === "number" && Number.isFinite(n) ? n.toFixed(3) : "unavailable";
 const escape = s => String(s).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll('"', "&quot;");
-export function renderProductionStagedRepeatReport(r, nativeArms) {
+export function renderProductionStagedRepeatReport(r, nativeArms, { observerRoles = true } = {}) {
   assert.equal(r.hevcHeaderProductionStagedOriginalRepeats, true); assert.equal(r.nativeConversionUsed, false); assert.equal(r.publicAcceptance, false);
   assert.equal(r.headed, false); assert.equal(r.browserServicesDisabled, false);
   assert.ok(["passed-unmodified-production-staged-original-repeats-not-public-acceptance", "failed-not-acceptance"].includes(r.status));
@@ -58,8 +59,10 @@ export function renderProductionStagedRepeatReport(r, nativeArms) {
     const d = a.budgetFailureRoleDiagnostic; if (!d) return [];
     return [`Before quiescence: ${d.stateBeforeQuiescence?.phase ?? "unavailable"}; production cancellation requested: ${d.quiescence?.cancellationRequested === true}; terminal: ${d.quiescence?.terminalState ?? "unavailable"}.`,
       ...d.roles.map(p => {
-        const peakChild = a.memory?.peak?.processes.find(q => q.pid === p.nativeBirth.pid && q.createdAt === p.nativeBirth.createdAt);
-        return `Native child ${p.nativeBirth.pid}, birth ${p.nativeBirth.createdAt}, captured diagnostic snapshot ${fixed(p.nativeBirth.privateBytes / 1048576)} MiB; at the overall native peak ${fixed(peakChild?.privateBytes / 1048576)} MiB INCLUDED. Role census: ${p.result.status}; type ${p.result.type ?? "unavailable"}, subtype ${p.result.utilitySubtype ?? "unavailable"}.`;
+        const peakChild = a.memory?.peak?.processes.find(q => ["pid", "parentPid", "createdAt", "creationFileTime"].every(k => q[k] === p.nativeBirth[k]));
+        const role = observerRoles ? reconcileNativeBirthRole(p.nativeBirth, a.observer?.birthTypeCapture) : null;
+        const retained = role ? ` Separate retained birth-aware observer: ${role.status}; type ${role.type ?? "unavailable"}, subtype ${role.utilitySubtype ?? "unavailable"}. This label does not exclude the process, prove an app-triggered allocation, or change acceptance.` : "";
+        return `Native child ${p.nativeBirth.pid}, birth ${p.nativeBirth.createdAt}, captured diagnostic snapshot ${fixed(p.nativeBirth.privateBytes / 1048576)} MiB; at the overall native peak ${fixed(peakChild?.privateBytes / 1048576)} MiB INCLUDED. Role census: ${p.result.status}; type ${p.result.type ?? "unavailable"}, subtype ${p.result.utilitySubtype ?? "unavailable"}.${retained}`;
       })];
   });
   const html = `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width"><title>Production-staged original repeat gate</title><style>body{font:15px system-ui;max-width:1000px;margin:2rem auto;padding:1rem;color:#172337}svg{width:100%;height:auto}text{font:12px system-ui;fill:#172337}table{width:100%;border-collapse:collapse}td,th{padding:.5rem;border-bottom:1px solid #ccd;text-align:left}</style>
@@ -67,6 +70,6 @@ export function renderProductionStagedRepeatReport(r, nativeArms) {
 <svg viewBox="0 0 680 300" role="img" aria-label="Each original conversion whole Chrome private peak over SAME original blank"><path d="M60 ${y(250)}h570" stroke="#b92338" stroke-dasharray="5 4"/><text x="520" y="${y(250) - 10}">250MiB limit</text>${bars}</svg>
 <table><tr><th>Session/job</th><th>State</th><th>Seconds</th><th>Peak MiB</th><th>Cleanup MiB</th><th>Full output validated/removed</th></tr>${jobs.map(j => `<tr><td>${j.session}/${j.job}</td><td>${escape(j.state)}</td><td>${fixed(j.elapsedMs === null ? null : j.elapsedMs / 1000)}</td><td>${fixed(j.memory.incrementalPrivateMiB)}</td><td>${fixed(j.cleanupAboveOriginalIdleMiB)}</td><td>${j.validatedOutputRemoved ? "yes" : "unverified; owned runtime " + (j.runtimeRemoved ? "removed" : "unverified")}</td></tr>`).join("")}</table>
 <p>Every100ms native row retained; per-job and aggregate whole-tree sums/counts/peaks independently rederived without rebasing or excluding processes. Missing values stay unavailable, never zero. Each validated output matches EVERY byte of the SAME-core complete original packet/codec/PCM/video proof: inherited complete content, NOT a new decode.</p>
-<p>A failed/incomplete job is not a validated output. A later production cancellation may clean it up but does not turn the memory failure into a pass. New-child roles stay unavailable if exact-birth census did not observe them; no retrospective role guess. Earlier private direct-retention and5GB-repeat failures remain FAILED.</p>${diagnostics.map(d => `<p>${escape(d)}</p>`).join("\n")}</html>\n`;
+<p>A failed/incomplete job is not a validated output. A later production cancellation may clean it up but does not turn the memory failure into a pass. ${observerRoles ? "Independent role witnesses are reported separately; only a unique, full native-birth match in the retained observer may supply its role. A missed later census does not erase an earlier classified witness. Neither witness changes memory accounting." : "New-child roles stay unavailable if exact-birth census did not observe them; no retrospective role guess."} Earlier private direct-retention and5GB-repeat failures remain FAILED.</p>${diagnostics.map(d => `<p>${escape(d)}</p>`).join("\n")}</html>\n`;
   return { csv, html, "native.csv": nativeCsv.join("\n") + "\n" };
 }

@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "scope": "Focused offline checkpoint and rejected saver optimization verification; no new conversion acceptance",
+  "baseCommit": "4093c44ff2351f066d353ea0b295f71f03214768",
+  "unit": {
+    "command": "node --import ./scripts/lib/hidden-unit-subprocesses.mjs --test --test-concurrency=2 tests/staged-save-runtime.test.mjs tests/staged-writer-control.test.mjs tests/staged-writer-candidate.test.mjs tests/staged-writer-evidence.test.mjs tests/native-birth-role.test.mjs tests/mkv-production-staged-repeat-evidence.test.mjs tests/mkv-staged-attribution-reconciliation.test.mjs tests/tested-ledger-notes.test.mjs tests/mkv-header-staged-evidence.test.mjs",
+    "passed": 39,
+    "failed": 0,
+    "skipped": 0,
+    "cancelled": 0,
+    "durationMs": 11600.9153,
+    "exitCode": 0,
+    "wholePortableSuite": false,
+    "includesHistoricalOverlayTypeScriptCheck": true
+  },
+  "lint": {
+    "command": "node node_modules/eslint/bin/eslint.js scripts/lib/staged-writer-control.mjs scripts/qualify-staged-writer-control.mjs scripts/lib/native-birth-role.mjs scripts/lib/mkv-production-staged-repeat-report.mjs scripts/reconcile-mkv-staged-attribution.mjs scripts/qualify-mkv-direct-reuse.mjs tests/staged-writer-control.test.mjs tests/staged-writer-candidate.test.mjs tests/staged-writer-evidence.test.mjs tests/native-birth-role.test.mjs tests/mkv-production-staged-repeat-evidence.test.mjs tests/mkv-staged-attribution-reconciliation.test.mjs",
+    "exitCode": 0,
+    "wholeProjectLint": false
+  },
+  "postReviewGuardVerification": {
+    "reason": "Reject malformed capture rows as unavailable rather than throwing; no acceptance changes",
+    "command": "node --import ./scripts/lib/hidden-unit-subprocesses.mjs --test tests/native-birth-role.test.mjs tests/mkv-staged-attribution-reconciliation.test.mjs tests/mkv-production-staged-repeat-evidence.test.mjs",
+    "passed": 10,
+    "failed": 0,
+    "skipped": 0,
+    "durationMs": 224.9281,
+    "affectedLintExitCode": 0
+  },
+  "productionSaver": {
+    "file": "workers/staged-save-runtime.ts",
+    "sha256": "6c5c885fdb7094cae6728de9ea4cc55365a160bf81aa2d122002c24147bfcc8e",
+    "matchesBaseCommit": true,
+    "heldWriterProposalAccepted": false
+  },
+  "cleanup": {
+    "initialFailedControlRuntime": "work/staged-writer-control-VHPcS9",
+    "completedControlRuntime": "work/staged-writer-control-fLOTB2",
+    "freshExactPathAbsenceVerified": true,
+    "ownedBirthAbsenceRetainedInRawReceipts": true,
+    "originalFixtureTouchedByReconciliation": false
+  },
+  "rawBenchmarkReceipt": "evidence/2026-11-16T23-24-56-258Z-staged-writer-control.json",
+  "attributionReconciliation": "evidence/2026-11-17-mkv-staged-attribution-reconciliation.json",
+  "currentCheckpoint": "CURRENT_STATUS.md",
+  "newBrowserRun": false,
+  "newMediaConversion": false,
+  "newSpeedupProven": false,
+  "browserServicesDisabled": false,
+  "primaryFormulaOrLimitChanged": false,
+  "publicProfilesPromoted": false,
+  "fullBuildRun": false,
+  "fullReleaseGatePassed": false,
+  "wholeGoalComplete": false
+}

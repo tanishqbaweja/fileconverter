@@ -1,0 +1,254 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-16T23:22:43.757Z",
+  "scope": "Isolated real saver256MiB pattern-file A/B. App loaded, same fixed buffer and real handles; NOT video conversion/original/scaling/public acceptance",
+  "headless": true,
+  "browserServicesDisabled": false,
+  "plan": {
+    "bytes": 268435439,
+    "chunkBytes": 524288,
+    "order": [
+      "baseline",
+      "candidate",
+      "candidate",
+      "baseline",
+      "baseline",
+      "candidate"
+    ],
+    "minimumMedianImprovement": 0.05,
+    "primaryLimitMiB": 250,
+    "cleanupLimitMiB": 96
+  },
+  "cases": [
+    {
+      "arm": "baseline",
+      "sourceBytes": 268435439,
+      "jobId": "writer-1",
+      "ownedFilesRemoved": true
+    }
+  ],
+  "failures": [
+    "page.evaluate: Error\n    at w.onerror (eval at evaluate (:311:30), <anonymous>:1:515)\n    at H:\\Github Repositories\\fileconverter\\scripts\\qualify-staged-writer-control.mjs:58:31"
+  ],
+  "requests": 17,
+  "forbiddenRequests": [],
+  "sourcePins": {
+    "scripts/qualify-staged-writer-control.mjs": "6011268f6043f60595b0f1dcb9918f1257d660ae86ae35182cdea61d3ded543b",
+    "scripts/lib/staged-writer-control.mjs": "2033d0be83037b998bfc33d63ae1e05a7b1725ec839514fc8e568ddb731450c1",
+    "workers/staged-save-runtime.ts": "80323b8a3dc9c59010ce61ef32332473949304b38685ea406d57f182502b0e38",
+    "workers/staged-save.worker.ts": "fe8a83566f83026cec5558b11936d5fbef65ea673cb8edd62919f0b905ac60b0",
+    "lib/resource-limits.ts": "4d89489f32d9a68abfad7916b15b8763a04319890fd85cbdc4ccebe29c6cdb39",
+    "lib/staged-copy-protocol.ts": "4e2930b67257a58ed269957ae6b8305760cdd485ae59998b05bb0b998c57a098"
+  },
+  "wholeGoalComplete": false,
+  "host": {
+    "acquiredAt": "2026-11-16T23:22:44.2203435Z",
+    "freePhysicalBytes": 13132931072,
+    "freeVirtualBytes": 23785467904,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "singleFactor": {
+    "sourceCommit": "4093c44ff2351f066d353ea0b295f71f03214768",
+    "exactSingleFactor": true,
+    "baselineRuntimeSha256": "6c5c885fdb7094cae6728de9ea4cc55365a160bf81aa2d122002c24147bfcc8e",
+    "candidateRuntimeSha256": "80323b8a3dc9c59010ce61ef32332473949304b38685ea406d57f182502b0e38",
+    "byteBuffersQueueSizeAndCancellationUnchanged": true,
+    "stagedOnlyNotConversionAcceptance": true
+  },
+  "compiledArms": {
+    "baseline": {
+      "bytes": 4374,
+      "sha256": "8d2460af7639860407406d855cd057b792807b19cdd93a756c7ab7211cae23d6",
+      "runtimeSha256": "6c5c885fdb7094cae6728de9ea4cc55365a160bf81aa2d122002c24147bfcc8e"
+    },
+    "candidate": {
+      "bytes": 4481,
+      "sha256": "71044deff764b0c5fcc6d41b9d120c7b1225ed3e2f96a1eb7fcfbcd462983076",
+      "runtimeSha256": "80323b8a3dc9c59010ce61ef32332473949304b38685ea406d57f182502b0e38"
+    }
+  },
+  "expectedSha256": "4ee320204a511fa0b7c667e8605b7070dbc3f90b722ab9c6b5368ccfae03cfd0",
+  "runtime": "H:\\Github Repositories\\fileconverter\\work\\staged-writer-control-VHPcS9",
+  "browser": {
+    "version": "157.0.8103.51",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4191896,
+      "sha256": "5b835c10836045119334d9524e62437110e00e1bd20612c9072a0ae155f94a17",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "13792273859582016",
+        "birthtimeNs": "1794432192714086800",
+        "mtimeNs": "1794093782382780000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\157.0.8103.51\\chrome.dll",
+      "bytes": 311393432,
+      "sha256": "32a0c2f1b144c2ad57dbb42a36c33c57e2f261c856f9bca7166fd8c9b70cbc00",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "11821949022607434",
+        "birthtimeNs": "1794432192722385900",
+        "mtimeNs": "1794093790383278000"
+      }
+    }
+  },
+  "serverLaunch": {
+    "schemaVersion": 1,
+    "role": "owned-production-test-server",
+    "identity": {
+      "pid": 30340,
+      "parentPid": 31008,
+      "createdAt": "2026-11-16T23:22:45.2108380Z"
+    },
+    "root": "H:\\Github Repositories\\fileconverter",
+    "directory": "H:\\Github Repositories\\fileconverter\\work\\staged-writer-control-VHPcS9",
+    "executable": "C:\\Program Files\\nodejs\\node.exe",
+    "arguments": [
+      "node_modules/wrangler/bin/wrangler.js",
+      "dev",
+      "--config",
+      "dist/server/wrangler.json",
+      "--port",
+      "51643",
+      "--persist-to",
+      "H:\\Github Repositories\\fileconverter\\work\\staged-writer-control-VHPcS9\\wrangler"
+    ],
+    "baseURL": "http://127.0.0.1:51643",
+    "windowsHide": true,
+    "nestedSubprocessPreload": "--import=\"file:///H:/Github%20Repositories/fileconverter/scripts/lib/hidden-unit-subprocesses.mjs\""
+  },
+  "launch": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\staged-writer-control-VHPcS9\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "about:blank"
+  ],
+  "browserBirth": {
+    "pid": 30892,
+    "parentPid": 31008,
+    "createdAt": "2026-11-16T23:22:48.3677180Z"
+  },
+  "blank": {
+    "stable": true,
+    "privateBytes": 394342400,
+    "spreadBytes": 106496,
+    "rssBytes": 762028032,
+    "firstTimestamp": "2026-11-16T23:22:53.6180064Z",
+    "lastTimestamp": "2026-11-16T23:22:57.6633589Z",
+    "sampleCount": 9,
+    "minimumElapsedMs": 8000
+  },
+  "loaded": {
+    "stable": true,
+    "privateBytes": 446484480,
+    "spreadBytes": 774144,
+    "rssBytes": 893911040,
+    "firstTimestamp": "2026-11-16T23:23:10.1520039Z",
+    "lastTimestamp": "2026-11-16T23:23:14.1931198Z",
+    "sampleCount": 17,
+    "minimumElapsedMs": 8000
+  },
+  "status": "failed-not-acceptance",
+  "browserCleanup": {
+    "status": "owned-observed-pids-absent",
+    "identity": {
+      "pid": 30892,
+      "parentPid": 31008,
+      "createdAt": "2026-11-16T23:22:48.3677180Z"
+    },
+    "observedPids": [
+      30892,
+      2704,
+      10368,
+      11780,
+      15108,
+      16888,
+      25348,
+      26396,
+      28472,
+      28532,
+      30432,
+      31608,
+      940,
+      28192,
+      23172,
+      24464,
+      25540,
+      30304,
+      30320,
+      30460,
+      32328,
+      11416,
+      31052,
+      15048,
+      28364,
+      30880,
+      21036,
+      27120,
+      31016,
+      31264,
+      31660,
+      32116,
+      27756,
+      31228,
+      31648,
+      17044,
+      11372,
+      28768,
+      32764,
+      26736,
+      23944,
+      31020,
+      31640,
+      29880
+    ],
+    "observations": [
+      {
+        "acquiredAt": "2026-11-16T23:23:14.871Z",
+        "current": [
+          {
+            "pid": 32328,
+            "parentPid": 29668,
+            "createdAt": "2026-11-16T23:23:14.8877120Z"
+          }
+        ],
+        "unavailable": null
+      },
+      {
+        "acquiredAt": "2026-11-16T23:23:15.534Z",
+        "current": [],
+        "unavailable": null
+      }
+    ],
+    "commandErrors": [],
+    "rootKillAttempted": true,
+    "rootIdentityMatched": true,
+    "individualChildKills": false,
+    "pidReuseTreatedConservatively": true,
+    "maximumCensusQueries": 4
+  },
+  "birthCleanup": {
+    "allObservedBirthsAbsent": true,
+    "observedPidCount": 44,
+    "reused": [],
+    "unresolved": [],
+    "noProcessesKilled": true
+  },
+  "ownedRuntimeRemoved": true,
+  "nativeArchive": {
+    "file": "evidence/2026-11-16T23-22-43-757Z-staged-writer-control-native.json.gz",
+    "sha256": "16adf678fae044a76382182c9767089e03074b9c2c495ca16ad1662a08839504",
+    "decodedSha256": "a60aacb5f230e2cce6fa2e259208d1a68db6fecf26489ea305738906b7414cf7",
+    "samples": 226
+  },
+  "finishedAt": "2026-11-16T23:23:17.489Z"
+}

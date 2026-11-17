@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-11-16T23:54:05.183Z",
+  "scope": "Offline diagnostic reconciliation, not a new conversion or acceptance",
+  "sourceReceipt": {
+    "file": "evidence/2026-11-16T13-03-58-368Z-mkv-hevc-header-core-production-staged-original-repeats.json",
+    "sha256": "d5edb76abe6f4a239bb44d89bcae0c121d7a4085d7964b0f797e5d62ced18258",
+    "executedHead": "1f7e2d6da12d8a441d4ca5a825275b816cb18fda"
+  },
+  "nativeArchive": {
+    "file": "evidence/2026-11-16T13-03-58-368Z-mkv-hevc-header-core-production-staged-original-repeats-edit-list-session1-native.json.gz",
+    "bytes": 111503,
+    "sha256": "7a1303cd9eaedf3512dfc81df5e2740615e9527d9c49183fbe5c6116c3e3fac2",
+    "decodedSha256": "728608cc94bc219ef02284c82d7d5233ce669b5fe87bcfa7e16e5b6c8c806986"
+  },
+  "classifierProvenance": {
+    "file": "scripts/lib/birth-type-capture.mjs",
+    "sha256": "fb76463e1e90d87ffb8a2d13b3cb6b7a53db3ffffdff2aab4c1b954f7655a398",
+    "matchesTrackedExecutedHead": true,
+    "matchesCurrentBytes": true,
+    "directlyPinnedInOriginalReceipt": false,
+    "callerPinnedInOriginalReceipt": true,
+    "limitation": "Transitive helper was omitted from original sourcePins; tracked historical identity is not a runtime pin"
+  },
+  "nativeBirth": {
+    "pid": 32416,
+    "parentPid": 21976,
+    "createdAt": "2026-11-16T13:07:05.2747657Z",
+    "creationFileTime": "134393080252747657"
+  },
+  "diagnosticSnapshotPrivateBytes": 264974336,
+  "nativePeakTimestamp": "2026-11-16T13:07:06.8353300Z",
+  "nativePeakChildPrivateBytes": 303366144,
+  "laterCensus": {
+    "status": "observed-birth-not-in-matching-census",
+    "type": null,
+    "utilitySubtype": null,
+    "sandboxType": null
+  },
+  "retainedObserver": {
+    "status": "classified-from-retained-same-birth-observer",
+    "reason": null,
+    "type": "utility",
+    "utilitySubtype": "on_device_model.mojom.OnDeviceModelService",
+    "sandboxType": "on_device_model_execution"
+  },
+  "acceptance": {
+    "status": "failed-not-acceptance",
+    "originalBlankPrivateBytes": 388407296,
+    "peakTreePrivateBytes": 813199360,
+    "incrementalPrivateMiB": 405.11328125,
+    "limitMiB": 250,
+    "passed": false,
+    "processIncluded": true,
+    "baselineChanged": false
+  },
+  "diagnosticsOnly": {
+    "childMiB": 289.3125,
+    "restOfTreeDeltaFromOriginalBlankMiB": 115.80078125,
+    "restOfTreeDeltaNeededToPassWithSameChildMiB": -39.3125,
+    "smallerMetricIsNotAcceptance": true,
+    "appTriggeredServiceAllocationProven": false
+  },
+  "action": "Do not rerun unchanged, exclude the service, disable it, rebase the blank or claim that writer tuning fixes this failed run",
+  "newConversionPerformed": false,
+  "rawEvidenceModified": false,
+  "wholeGoalComplete": false,
+  "currentHtml": {
+    "file": "evidence/2026-11-17-mkv-staged-attribution-reconciliation.html",
+    "sha256": "99437aeea9694e4b2ecb080c86f55245a1aca8c71bc162fc85a2aaaa67b98ceb"
+  }
+}

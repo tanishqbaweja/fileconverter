@@ -1,5 +1,31 @@
 # Remaining work audit
 
+2026-11-17 current navigation: [CURRENT_STATUS.md](CURRENT_STATUS.md). Complete
+requirement scope and all historical entries below are retained. Offline
+reconciliation corrects an incomplete earlier diagnosis: the later original
+repeat-failure census missed child32416, but its already-retained exact-birth
+observer classified it as Chrome's on-device model service. See
+`evidence/2026-11-17-mkv-staged-attribution-reconciliation.json` and current HTML.
+The raw failure stays405.11328125MiB, with289.3125MiB child INCLUDED; no model
+service disabled, baseline changed, process excluded, replay or acceptance.
+Historical statements saying unavailable describe the separate later census,
+not all retained witnesses. App-triggered allocation remains unproven. Original
+transitive-helper source-pin omission is disclosed; future runs now pin it.
+
+Matched real saver I/O proposal (held writable writer) REJECTED: three samples
+each/interleaved ABBAAB, baseline1586.84ms vs candidate1590.01ms;0.20% slower.
+All six268435439B full hashes equal; fixed512KiB/one pending,39.640625MiB whole
+tree, owned files/runtime removed. Initial worker-header setup failure retained
+separately. Source/runtime restored to4093c44f; test tooling preserves exact
+proposal for reproducibility, not production. No video speedup or large/current
+conversion qualification. Actual receipts23-22-43-757Z and23-24-56-258Z.
+Do not retry this proposal or unchanged Chrome3+1 failure. All original missing/
+partial codec, fidelity, scaling, browser and release gates remain open.
+Focused39/39 PASS,0skip/fail/11600.9153ms, affected lint PASS; includes unchanged
+saver and rejected candidate, actual evidence replay, role safety and immutable
+history checks plus historical overlay TypeScript. No full release assertion.
+Exact selected files/command: evidence/2026-11-17-current-checkpoint-verification.json.
+
 2026-11-16 N-08: **genuine DOCX list-numbering preservation implemented and
 small production-browser qualification PASS**, still private. Dedicated streamed
 numbering model reads only an internal referenced1MiB package part; at most1024

@@ -1,0 +1,802 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-11-16T23:24:56.259Z",
+  "scope": "Isolated real saver256MiB pattern-file A/B. App loaded, same fixed buffer and real handles; NOT video conversion/original/scaling/public acceptance",
+  "headless": true,
+  "browserServicesDisabled": false,
+  "plan": {
+    "bytes": 268435439,
+    "chunkBytes": 524288,
+    "order": [
+      "baseline",
+      "candidate",
+      "candidate",
+      "baseline",
+      "baseline",
+      "candidate"
+    ],
+    "minimumMedianImprovement": 0.05,
+    "primaryLimitMiB": 250,
+    "cleanupLimitMiB": 96
+  },
+  "cases": [
+    {
+      "arm": "baseline",
+      "sourceBytes": 268435439,
+      "jobId": "writer-1",
+      "generation": {
+        "type": "generated",
+        "bytes": 268435439
+      },
+      "start": 1794871528221,
+      "result": {
+        "type": "complete",
+        "jobId": "writer-1",
+        "metrics": {
+          "inputBytes": 268435439,
+          "outputBytes": 268435439,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 524288,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 0,
+          "maxWriteChunkBytes": 524288,
+          "elapsedMs": 1586.690117187798,
+          "wasmMemoryBytes": 0,
+          "peakWasmMemoryBytes": 0,
+          "sharedArrayBufferBytes": 4,
+          "activeWorkerCount": 1,
+          "scratchBytes": 0,
+          "peakScratchBytes": 268435439,
+          "wasmMemories": {},
+          "maxScratchReadChunkBytes": 524288,
+          "maxScratchWriteChunkBytes": 524288
+        },
+        "wallElapsedMs": 1586.8399999961257
+      },
+      "end": 1794871529824,
+      "elapsedMs": 1586.8399999961257,
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/staged-writer-control-fLOTB2/profile/Default/File System/000/t/00/00000002",
+        "logicalBytes": 268435439,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "562949961292501",
+          "size": "268435439",
+          "birthtimeNs": "1794871528242066500",
+          "mtimeNs": "1794871529772310300"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193"
+          },
+          {
+            "offset": 134215671,
+            "bytes": 4096,
+            "sha256": "2b4aa94484bc6659ecdd89451a5b60c292798757005390509c23f55e15b2808a"
+          },
+          {
+            "offset": 268431343,
+            "bytes": 4096,
+            "sha256": "64bc1d2b1dd6008b33f1a2148f6edbb891bfa9864daee3176fcdffbde732d144"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true,
+        "controlScope": "generic pattern-file saver only, not a document conversion"
+      },
+      "outputSha256": "4ee320204a511fa0b7c667e8605b7070dbc3f90b722ab9c6b5368ccfae03cfd0",
+      "ownedFilesRemoved": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 428490752,
+        "spreadBytes": 2428928,
+        "rssBytes": 832057344,
+        "firstTimestamp": "2026-11-16T23:25:34.0510436Z",
+        "lastTimestamp": "2026-11-16T23:25:38.1005245Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "cleanupAboveLoadedMiB": -6.84375
+    },
+    {
+      "arm": "candidate",
+      "sourceBytes": 268435439,
+      "jobId": "writer-2",
+      "generation": {
+        "type": "generated",
+        "bytes": 268435439
+      },
+      "start": 1794871538648,
+      "result": {
+        "type": "complete",
+        "jobId": "writer-2",
+        "metrics": {
+          "inputBytes": 268435439,
+          "outputBytes": 268435439,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 524288,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 0,
+          "maxWriteChunkBytes": 524288,
+          "elapsedMs": 1550.3400781229138,
+          "wasmMemoryBytes": 0,
+          "peakWasmMemoryBytes": 0,
+          "sharedArrayBufferBytes": 4,
+          "activeWorkerCount": 1,
+          "scratchBytes": 0,
+          "peakScratchBytes": 268435439,
+          "wasmMemories": {},
+          "maxScratchReadChunkBytes": 524288,
+          "maxScratchWriteChunkBytes": 524288
+        },
+        "wallElapsedMs": 1550.530000001192
+      },
+      "end": 1794871540217,
+      "elapsedMs": 1550.530000001192,
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/staged-writer-control-fLOTB2/profile/Default/File System/000/t/00/00000005",
+        "logicalBytes": 268435439,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "562949961292523",
+          "size": "268435439",
+          "birthtimeNs": "1794871538670172800",
+          "mtimeNs": "1794871540173684300"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193"
+          },
+          {
+            "offset": 134215671,
+            "bytes": 4096,
+            "sha256": "2b4aa94484bc6659ecdd89451a5b60c292798757005390509c23f55e15b2808a"
+          },
+          {
+            "offset": 268431343,
+            "bytes": 4096,
+            "sha256": "64bc1d2b1dd6008b33f1a2148f6edbb891bfa9864daee3176fcdffbde732d144"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true,
+        "controlScope": "generic pattern-file saver only, not a document conversion"
+      },
+      "outputSha256": "4ee320204a511fa0b7c667e8605b7070dbc3f90b722ab9c6b5368ccfae03cfd0",
+      "ownedFilesRemoved": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 426434560,
+        "spreadBytes": 638976,
+        "rssBytes": 833855488,
+        "firstTimestamp": "2026-11-16T23:25:44.4453092Z",
+        "lastTimestamp": "2026-11-16T23:25:48.4972983Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "cleanupAboveLoadedMiB": -8.8046875
+    },
+    {
+      "arm": "candidate",
+      "sourceBytes": 268435439,
+      "jobId": "writer-3",
+      "generation": {
+        "type": "generated",
+        "bytes": 268435439
+      },
+      "start": 1794871549062,
+      "result": {
+        "type": "complete",
+        "jobId": "writer-3",
+        "metrics": {
+          "inputBytes": 268435439,
+          "outputBytes": 268435439,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 524288,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 0,
+          "maxWriteChunkBytes": 524288,
+          "elapsedMs": 1589.8499707058072,
+          "wasmMemoryBytes": 0,
+          "peakWasmMemoryBytes": 0,
+          "sharedArrayBufferBytes": 4,
+          "activeWorkerCount": 1,
+          "scratchBytes": 0,
+          "peakScratchBytes": 268435439,
+          "wasmMemories": {},
+          "maxScratchReadChunkBytes": 524288,
+          "maxScratchWriteChunkBytes": 524288
+        },
+        "wallElapsedMs": 1590.0099999979138
+      },
+      "end": 1794871550667,
+      "elapsedMs": 1590.0099999979138,
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/staged-writer-control-fLOTB2/profile/Default/File System/000/t/00/00000008",
+        "logicalBytes": 268435439,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "562949961292543",
+          "size": "268435439",
+          "birthtimeNs": "1794871549078928100",
+          "mtimeNs": "1794871550630335900"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193"
+          },
+          {
+            "offset": 134215671,
+            "bytes": 4096,
+            "sha256": "2b4aa94484bc6659ecdd89451a5b60c292798757005390509c23f55e15b2808a"
+          },
+          {
+            "offset": 268431343,
+            "bytes": 4096,
+            "sha256": "64bc1d2b1dd6008b33f1a2148f6edbb891bfa9864daee3176fcdffbde732d144"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true,
+        "controlScope": "generic pattern-file saver only, not a document conversion"
+      },
+      "outputSha256": "4ee320204a511fa0b7c667e8605b7070dbc3f90b722ab9c6b5368ccfae03cfd0",
+      "ownedFilesRemoved": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 427171840,
+        "spreadBytes": 0,
+        "rssBytes": 834465792,
+        "firstTimestamp": "2026-11-16T23:25:54.9447680Z",
+        "lastTimestamp": "2026-11-16T23:25:58.9812467Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "cleanupAboveLoadedMiB": -8.1015625
+    },
+    {
+      "arm": "baseline",
+      "sourceBytes": 268435439,
+      "jobId": "writer-4",
+      "generation": {
+        "type": "generated",
+        "bytes": 268435439
+      },
+      "start": 1794871559525,
+      "result": {
+        "type": "complete",
+        "jobId": "writer-4",
+        "metrics": {
+          "inputBytes": 268435439,
+          "outputBytes": 268435439,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 524288,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 0,
+          "maxWriteChunkBytes": 524288,
+          "elapsedMs": 1654.2300390601158,
+          "wasmMemoryBytes": 0,
+          "peakWasmMemoryBytes": 0,
+          "sharedArrayBufferBytes": 4,
+          "activeWorkerCount": 1,
+          "scratchBytes": 0,
+          "peakScratchBytes": 268435439,
+          "wasmMemories": {},
+          "maxScratchReadChunkBytes": 524288,
+          "maxScratchWriteChunkBytes": 524288
+        },
+        "wallElapsedMs": 1654.4749999940395
+      },
+      "end": 1794871561195,
+      "elapsedMs": 1654.4749999940395,
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/staged-writer-control-fLOTB2/profile/Default/File System/000/t/00/00000011",
+        "logicalBytes": 268435439,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "562949961292562",
+          "size": "268435439",
+          "birthtimeNs": "1794871559541621600",
+          "mtimeNs": "1794871561146813200"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193"
+          },
+          {
+            "offset": 134215671,
+            "bytes": 4096,
+            "sha256": "2b4aa94484bc6659ecdd89451a5b60c292798757005390509c23f55e15b2808a"
+          },
+          {
+            "offset": 268431343,
+            "bytes": 4096,
+            "sha256": "64bc1d2b1dd6008b33f1a2148f6edbb891bfa9864daee3176fcdffbde732d144"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true,
+        "controlScope": "generic pattern-file saver only, not a document conversion"
+      },
+      "outputSha256": "4ee320204a511fa0b7c667e8605b7070dbc3f90b722ab9c6b5368ccfae03cfd0",
+      "ownedFilesRemoved": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 422756352,
+        "spreadBytes": 245760,
+        "rssBytes": 830836736,
+        "firstTimestamp": "2026-11-16T23:26:05.4190933Z",
+        "lastTimestamp": "2026-11-16T23:26:09.4599699Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "cleanupAboveLoadedMiB": -12.3125
+    },
+    {
+      "arm": "baseline",
+      "sourceBytes": 268435439,
+      "jobId": "writer-5",
+      "generation": {
+        "type": "generated",
+        "bytes": 268435439
+      },
+      "start": 1794871570001,
+      "result": {
+        "type": "complete",
+        "jobId": "writer-5",
+        "metrics": {
+          "inputBytes": 268435439,
+          "outputBytes": 268435439,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 524288,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 0,
+          "maxWriteChunkBytes": 524288,
+          "elapsedMs": 1537.240029297769,
+          "wasmMemoryBytes": 0,
+          "peakWasmMemoryBytes": 0,
+          "sharedArrayBufferBytes": 4,
+          "activeWorkerCount": 1,
+          "scratchBytes": 0,
+          "peakScratchBytes": 268435439,
+          "wasmMemories": {},
+          "maxScratchReadChunkBytes": 524288,
+          "maxScratchWriteChunkBytes": 524288
+        },
+        "wallElapsedMs": 1537.375
+      },
+      "end": 1794871571551,
+      "elapsedMs": 1537.375,
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/staged-writer-control-fLOTB2/profile/Default/File System/000/t/00/00000014",
+        "logicalBytes": 268435439,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "844424938003243",
+          "size": "268435439",
+          "birthtimeNs": "1794871570015372100",
+          "mtimeNs": "1794871571505791900"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193"
+          },
+          {
+            "offset": 134215671,
+            "bytes": 4096,
+            "sha256": "2b4aa94484bc6659ecdd89451a5b60c292798757005390509c23f55e15b2808a"
+          },
+          {
+            "offset": 268431343,
+            "bytes": 4096,
+            "sha256": "64bc1d2b1dd6008b33f1a2148f6edbb891bfa9864daee3176fcdffbde732d144"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true,
+        "controlScope": "generic pattern-file saver only, not a document conversion"
+      },
+      "outputSha256": "4ee320204a511fa0b7c667e8605b7070dbc3f90b722ab9c6b5368ccfae03cfd0",
+      "ownedFilesRemoved": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 422158336,
+        "spreadBytes": 5488640,
+        "rssBytes": 830734336,
+        "firstTimestamp": "2026-11-16T23:26:15.8025604Z",
+        "lastTimestamp": "2026-11-16T23:26:19.8555223Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "cleanupAboveLoadedMiB": -12.8828125
+    },
+    {
+      "arm": "candidate",
+      "sourceBytes": 268435439,
+      "jobId": "writer-6",
+      "generation": {
+        "type": "generated",
+        "bytes": 268435439
+      },
+      "start": 1794871580432,
+      "result": {
+        "type": "complete",
+        "jobId": "writer-6",
+        "metrics": {
+          "inputBytes": 268435439,
+          "outputBytes": 268435439,
+          "queuedBytes": 0,
+          "peakQueuedBytes": 524288,
+          "pendingOperations": 0,
+          "peakPendingOperations": 1,
+          "maxReadChunkBytes": 0,
+          "maxWriteChunkBytes": 524288,
+          "elapsedMs": 1800.874931640923,
+          "wasmMemoryBytes": 0,
+          "peakWasmMemoryBytes": 0,
+          "sharedArrayBufferBytes": 4,
+          "activeWorkerCount": 1,
+          "scratchBytes": 0,
+          "peakScratchBytes": 268435439,
+          "wasmMemories": {},
+          "maxScratchReadChunkBytes": 524288,
+          "maxScratchWriteChunkBytes": 524288
+        },
+        "wallElapsedMs": 1801.0249999985099
+      },
+      "end": 1794871582246,
+      "elapsedMs": 1801.0249999985099,
+      "binding": {
+        "scope": "read-only-independent-validation-of-finished-browser-OPFS-output",
+        "physicalFile": "work/staged-writer-control-fLOTB2/profile/Default/File System/000/t/00/00000017",
+        "logicalBytes": 268435439,
+        "physicalIdentity": {
+          "dev": "1887170595",
+          "ino": "844424938003250",
+          "size": "268435439",
+          "birthtimeNs": "1794871580447585200",
+          "mtimeNs": "1794871582137095100"
+        },
+        "samples": [
+          {
+            "offset": 0,
+            "bytes": 4096,
+            "sha256": "c8f5d0341d54d951a71b136e6e2afcb14d11ed8489a7ae126a8fee0df6ecf193"
+          },
+          {
+            "offset": 134215671,
+            "bytes": 4096,
+            "sha256": "2b4aa94484bc6659ecdd89451a5b60c292798757005390509c23f55e15b2808a"
+          },
+          {
+            "offset": 268431343,
+            "bytes": 4096,
+            "sha256": "64bc1d2b1dd6008b33f1a2148f6edbb891bfa9864daee3176fcdffbde732d144"
+          }
+        ],
+        "totalBrowserSampleBytes": 12288,
+        "maximumBrowserSampleBytes": 4096,
+        "bindingMode": "three-fixed-sampled-ranges",
+        "allOutputBytesCompared": false,
+        "maximumHostProbeBufferBytes": 4096,
+        "inspectedEntries": 19,
+        "sizeCandidates": 1,
+        "uniqueLogicalEntry": true,
+        "uniquePhysicalMatch": true,
+        "convertedCopyCreated": false,
+        "nativeConversionUsed": false,
+        "fullContentAndFidelityValidationStillRequired": true,
+        "controlScope": "generic pattern-file saver only, not a document conversion"
+      },
+      "outputSha256": "4ee320204a511fa0b7c667e8605b7070dbc3f90b722ab9c6b5368ccfae03cfd0",
+      "ownedFilesRemoved": true,
+      "cleanup": {
+        "stable": true,
+        "privateBytes": 420122624,
+        "spreadBytes": 0,
+        "rssBytes": 829382656,
+        "firstTimestamp": "2026-11-16T23:26:26.5078157Z",
+        "lastTimestamp": "2026-11-16T23:26:30.5532779Z",
+        "sampleCount": 9,
+        "minimumElapsedMs": 8000
+      },
+      "cleanupAboveLoadedMiB": -14.82421875
+    }
+  ],
+  "failures": [],
+  "requests": 19,
+  "forbiddenRequests": [],
+  "sourcePins": {
+    "scripts/qualify-staged-writer-control.mjs": "dcc99fd7e423f946d1dc7474571c7853e7ba71f2fdac575f4ce81e6dcb4f29db",
+    "scripts/lib/staged-writer-control.mjs": "2033d0be83037b998bfc33d63ae1e05a7b1725ec839514fc8e568ddb731450c1",
+    "workers/staged-save-runtime.ts": "80323b8a3dc9c59010ce61ef32332473949304b38685ea406d57f182502b0e38",
+    "workers/staged-save.worker.ts": "fe8a83566f83026cec5558b11936d5fbef65ea673cb8edd62919f0b905ac60b0",
+    "lib/resource-limits.ts": "4d89489f32d9a68abfad7916b15b8763a04319890fd85cbdc4ccebe29c6cdb39",
+    "lib/staged-copy-protocol.ts": "4e2930b67257a58ed269957ae6b8305760cdd485ae59998b05bb0b998c57a098"
+  },
+  "wholeGoalComplete": false,
+  "host": {
+    "acquiredAt": "2026-11-16T23:24:56.5941015Z",
+    "freePhysicalBytes": 13208367104,
+    "freeVirtualBytes": 23871082496,
+    "requiredPhysicalBytes": 2147483648,
+    "requiredVirtualBytes": 2147483648,
+    "safeToStart": true,
+    "primaryConversionLimitMiB": 250,
+    "primaryMemoryFormulaChanged": false,
+    "noProcessesKilled": true
+  },
+  "singleFactor": {
+    "sourceCommit": "4093c44ff2351f066d353ea0b295f71f03214768",
+    "exactSingleFactor": true,
+    "baselineRuntimeSha256": "6c5c885fdb7094cae6728de9ea4cc55365a160bf81aa2d122002c24147bfcc8e",
+    "candidateRuntimeSha256": "80323b8a3dc9c59010ce61ef32332473949304b38685ea406d57f182502b0e38",
+    "byteBuffersQueueSizeAndCancellationUnchanged": true,
+    "stagedOnlyNotConversionAcceptance": true
+  },
+  "compiledArms": {
+    "baseline": {
+      "bytes": 4374,
+      "sha256": "8d2460af7639860407406d855cd057b792807b19cdd93a756c7ab7211cae23d6",
+      "runtimeSha256": "6c5c885fdb7094cae6728de9ea4cc55365a160bf81aa2d122002c24147bfcc8e"
+    },
+    "candidate": {
+      "bytes": 4481,
+      "sha256": "71044deff764b0c5fcc6d41b9d120c7b1225ed3e2f96a1eb7fcfbcd462983076",
+      "runtimeSha256": "80323b8a3dc9c59010ce61ef32332473949304b38685ea406d57f182502b0e38"
+    }
+  },
+  "expectedSha256": "4ee320204a511fa0b7c667e8605b7070dbc3f90b722ab9c6b5368ccfae03cfd0",
+  "runtime": "H:\\Github Repositories\\fileconverter\\work\\staged-writer-control-fLOTB2",
+  "browser": {
+    "version": "157.0.8103.51",
+    "launcher": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+      "bytes": 4191896,
+      "sha256": "5b835c10836045119334d9524e62437110e00e1bd20612c9072a0ae155f94a17",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "13792273859582016",
+        "birthtimeNs": "1794432192714086800",
+        "mtimeNs": "1794093782382780000"
+      }
+    },
+    "library": {
+      "path": "C:\\Program Files\\Google\\Chrome\\Application\\157.0.8103.51\\chrome.dll",
+      "bytes": 311393432,
+      "sha256": "32a0c2f1b144c2ad57dbb42a36c33c57e2f261c856f9bca7166fd8c9b70cbc00",
+      "identity": {
+        "dev": "1386679384",
+        "ino": "11821949022607434",
+        "birthtimeNs": "1794432192722385900",
+        "mtimeNs": "1794093790383278000"
+      }
+    }
+  },
+  "serverLaunch": {
+    "schemaVersion": 1,
+    "role": "owned-production-test-server",
+    "identity": {
+      "pid": 8976,
+      "parentPid": 31112,
+      "createdAt": "2026-11-16T23:24:57.3715060Z"
+    },
+    "root": "H:\\Github Repositories\\fileconverter",
+    "directory": "H:\\Github Repositories\\fileconverter\\work\\staged-writer-control-fLOTB2",
+    "executable": "C:\\Program Files\\nodejs\\node.exe",
+    "arguments": [
+      "node_modules/wrangler/bin/wrangler.js",
+      "dev",
+      "--config",
+      "dist/server/wrangler.json",
+      "--port",
+      "62114",
+      "--persist-to",
+      "H:\\Github Repositories\\fileconverter\\work\\staged-writer-control-fLOTB2\\wrangler"
+    ],
+    "baseURL": "http://127.0.0.1:62114",
+    "windowsHide": true,
+    "nestedSubprocessPreload": "--import=\"file:///H:/Github%20Repositories/fileconverter/scripts/lib/hidden-unit-subprocesses.mjs\""
+  },
+  "launch": [
+    "--headless=new",
+    "--remote-debugging-port=0",
+    "--user-data-dir=H:\\Github Repositories\\fileconverter\\work\\staged-writer-control-fLOTB2\\profile",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "about:blank"
+  ],
+  "browserBirth": {
+    "pid": 22124,
+    "parentPid": 31112,
+    "createdAt": "2026-11-16T23:24:59.6397280Z"
+  },
+  "blank": {
+    "stable": true,
+    "privateBytes": 398512128,
+    "spreadBytes": 77824,
+    "rssBytes": 764907520,
+    "firstTimestamp": "2026-11-16T23:25:05.1042339Z",
+    "lastTimestamp": "2026-11-16T23:25:09.1525718Z",
+    "sampleCount": 9,
+    "minimumElapsedMs": 8000
+  },
+  "browserErrors": [],
+  "loaded": {
+    "stable": true,
+    "privateBytes": 435666944,
+    "spreadBytes": 1118208,
+    "rssBytes": 831746048,
+    "firstTimestamp": "2026-11-16T23:25:23.6802103Z",
+    "lastTimestamp": "2026-11-16T23:25:27.7230455Z",
+    "sampleCount": 19,
+    "minimumElapsedMs": 8000
+  },
+  "controlEnd": 1794871590603,
+  "memory": {
+    "peakPrivateBytes": 440078336,
+    "incrementalPrivateMiB": 39.640625,
+    "validSamples": 575
+  },
+  "timing": {
+    "baselineMedianMs": 1586.8399999961257,
+    "candidateMedianMs": 1590.0099999979138,
+    "relativeMedianImprovement": -0.0019976809267447937,
+    "matchedCopyTimingGatePassed": false,
+    "conversionSpeedupProven": false,
+    "universalFastestClaim": false
+  },
+  "status": "completed-no-meaningful-copy-speedup-candidate-not-accepted",
+  "browserCleanup": {
+    "status": "owned-observed-pids-absent",
+    "identity": {
+      "pid": 22124,
+      "parentPid": 31112,
+      "createdAt": "2026-11-16T23:24:59.6397280Z"
+    },
+    "observedPids": [
+      22124,
+      12620,
+      14072,
+      17496,
+      18008,
+      24904,
+      25004,
+      28716,
+      29372,
+      31960,
+      32152,
+      32652,
+      33044,
+      32812,
+      32856,
+      33008,
+      33048,
+      33076,
+      33104,
+      19936,
+      32748,
+      32796,
+      33480,
+      33172,
+      33180,
+      21552,
+      33564,
+      32928,
+      33012,
+      33028,
+      25540,
+      12360,
+      32912,
+      33456,
+      33644,
+      27400,
+      32780,
+      33068,
+      30532,
+      33312,
+      33676,
+      33704,
+      29240,
+      29376
+    ],
+    "observations": [
+      {
+        "acquiredAt": "2026-11-16T23:26:31.200Z",
+        "current": [],
+        "unavailable": null
+      }
+    ],
+    "commandErrors": [],
+    "rootKillAttempted": true,
+    "rootIdentityMatched": true,
+    "individualChildKills": false,
+    "pidReuseTreatedConservatively": true,
+    "maximumCensusQueries": 4
+  },
+  "birthCleanup": {
+    "allObservedBirthsAbsent": true,
+    "observedPidCount": 44,
+    "reused": [],
+    "unresolved": [],
+    "noProcessesKilled": true
+  },
+  "ownedRuntimeRemoved": true,
+  "nativeArchive": {
+    "file": "evidence/2026-11-16T23-24-56-258Z-staged-writer-control-native.json.gz",
+    "sha256": "d6fb5778d0783b497e33b6eafc44bfd1bb66b4d6a51104badf1306cf2de82b56",
+    "decodedSha256": "619317546b17a7e2979bb115e9cdd1bec3d005a2954f605267e2ebabf667919d",
+    "samples": 819
+  },
+  "finishedAt": "2026-11-16T23:26:33.129Z"
+}

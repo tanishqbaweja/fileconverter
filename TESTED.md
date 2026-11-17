@@ -14014,6 +14014,36 @@ Updated 2026-11-16 from the capability registry, retained successful Chrome stre
 - **2026-09-27 bounded archive/package source inspection:** ZIP, DOCX, XLSX, PPTX, ODT, ODS, ODP, and EPUB read only the 65,557-byte ZIP tail plus at most a 1 MiB central-directory prefix. TAR performs at most 256 isolated 512-byte header reads while skipping payloads; GZIP/BZIP2/XZ wrappers read at most 64 KiB plus an eight-byte GZIP trailer; 7Z reads its 32-byte start header plus one next-header marker. The panel reports bounded entry/size/compression/encryption/path-safety and package facts without decompressing payloads or displaying names. Eight ZIP-based families, TAR/TAR.GZ/TAR.BZ2/TAR.XZ/7Z, raw GZIP/BZIP2/XZ, unsafe ZIP/TAR, an in-memory 20,000-entry oversized ZIP directory, and a 1,024-entry TAR passed the focused production-Chromium gate 1/1. The ZIP stress stopped at exactly 1,114,133 bytes; TAR stopped at exactly 131,072 header bytes and both qualified incomplete counts. Exact scope and cleanup are in `evidence/package-source-inspection-2026-09-27.json`.
 <!-- BEGIN MANUAL TEST LOG -->
 
+2026-11-17 — Current handoff is CURRENT_STATUS.md; full audit/history retained.
+Offline reconciliation found an earlier missed witness in the FAILED original
+production-staged repeat receipt d5edb76a…ced18258. The retained birth-aware
+observer classified the exact PID/parent/full timestamp/FILETIME of child32416
+as on_device_model.mojom.OnDeviceModelService. The separate later census missed
+it; both observations remain unchanged, not a guessed retrospective role.
+Overall405.11328125MiB FAIL, child289.3125MiB INCLUDED; app causation unproven.
+No service disabled/excluded, no rebasing, no replay or modified raw receipt.
+New derived JSON/HTML: evidence/2026-11-17-mkv-staged-attribution-reconciliation.
+Historical helper bytes match executedHead/current; omitted original transitive
+runtime pin is disclosed, not invented. Future MKV receipts now pin classifier
+and observer helpers. Current renderer reconciles witnesses; historical HTML
+is retained byte-for-byte through its explicit census-only reproduction mode.
+
+Isolated saver single-factor control: held writer REJECTED, baseline1586.84ms
+versus candidate1590.01ms median (0.20% slower), order ABBAAB/three samples each.
+Each268435439B output full SHA4ee32020…ae03cfd0,512KiB/one pending; whole-tree
+39.640625MiB, all six owned source/output pairs removed,44births absent and owned
+runtime gone. Actual report23-24-56-258Z-staged-writer-control.json. Initial
+23-22-43-757Z worker-header setup failed before any copy; retained, corrected
+custom worker COEP/COOP, no production security relaxation. Production saver
+restored exactly to4093c44f. NOT video conversion, public/scaling acceptance,
+universal-fastest proof or speedup. Do not retry the unchanged rejected proposal.
+Verification:39/39 focused PASS,0skip/fail,11600.9153ms; affected lint PASS.
+Includes exact original saver/retained proposal, immutable comparison/native
+replay, role ambiguity/PID-reuse/error guards, historical report preservation,
+helper pin contract and ledger-history preservation; historical TypeScript
+overlay check also PASS. No new full portable/build/browser/release claim.
+Exact list: evidence/2026-11-17-current-checkpoint-verification.json.
+
 2026-11-16 N-08 — Private DOCX lists now preserve supported labels/levels,
 Word letter numbering, Roman/Unicode bullet formats, legal multi-level labels,
 instance continuation, start/level overrides, restarts and inherited paragraph
